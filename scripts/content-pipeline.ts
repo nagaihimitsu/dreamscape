@@ -7,6 +7,9 @@ import {
 } from "inkjs/compiler/Compiler";
 import { Story } from "inkjs";
 import {
+  battleCatalogSchema,
+  quizSchema,
+  type QuizDefinition,
   balanceSchema,
   citySchema,
   dateCatalogSchema,
@@ -19,6 +22,7 @@ import {
   type EffectDefinition,
 } from "../src/content/schemas";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
+import { validateBattleStory } from "./battle-validation";
 
 async function json(file: string): Promise<unknown> {
   try {
@@ -185,6 +189,10 @@ export function validateStory(
 
 export async function buildContent(root: string, writeOutput = true) {
   const content = path.join(root, "content");
+  const battles = battleCatalogSchema.parse(
+    await json(path.join(content, "battles/catalog.json")),
+  ).battles;
+  unique(battles.map((battle) => battle.id), "battleId");
   const dates = dateCatalogSchema.parse(
     await json(path.join(content, "romance/date_catalog.json")),
   ).dates;
@@ -307,10 +315,6 @@ export async function buildContent(root: string, writeOutput = true) {
       );
     }
   }
-  for (const storyId of Object.keys(stories)) {
-    if (!dates.some((date) => date.storyId === storyId))
-      throw new Error(`Story lacks validation contract: ${storyId}`);
-  }
   const verifyDateReferences = (ids: string[], label: string) => {
     unique(ids, label);
     if (ids.some((id) => !dates.some((date) => date.id === id)))
@@ -365,10 +369,19 @@ export async function buildContent(root: string, writeOutput = true) {
     visited.add(date.id);
   };
   dates.forEach(visitPrerequisites);
-  // Existing future content stays out of the runtime bundle, but malformed JSON cannot pass the build.
+  // Samples remain validated but excluded from gameplay. Production quizzes are discovered by data alone.
+  const quizzes: Record<string, QuizDefinition> = {};
+  const productionQuestionIds: string[] = [];
   for (const file of await filesIn(path.join(content, "quizzes"))) {
     if (!file.endsWith(".json")) continue;
-    const quiz = quizSampleSchema.parse(await json(file));
+    const isSample = file.endsWith(".sample.json");
+    const data = await json(file);
+    const quiz = isSample ? quizSampleSchema.parse(data) : quizSchema.parse(data);
+    if (!isSample) {
+      if (quizzes[quiz.id]) throw new Error(`Duplicate quizId: ${quiz.id}`);
+      quizzes[quiz.id] = quizSchema.parse(data);
+      productionQuestionIds.push(...quiz.questions.map((question) => question.id));
+    }
     if (!city.landmarkIdsPlanned.includes(quiz.landmarkId))
       throw new Error(`Unknown landmark: ${quiz.landmarkId}`);
     unique(
@@ -380,6 +393,7 @@ export async function buildContent(root: string, writeOutput = true) {
         question.options.map((option) => option.id),
         "quiz option ID",
       );
+      unique(question.options.map((option) => option.textEn.toLowerCase()), "quiz option text");
       if (
         question.options.filter(
           (option) => option.id === question.correctOptionId,
@@ -389,13 +403,34 @@ export async function buildContent(root: string, writeOutput = true) {
       }
     }
   }
+  unique(productionQuestionIds, "production quiz question ID");
+  let battleScenarios = 0;
+  for (const battle of battles) {
+    const quiz = quizzes[battle.quizId];
+    if (!quiz) throw new Error(`Unknown battle quizId: ${battle.quizId}`);
+    if (!city.landmarkIdsPlanned.includes(battle.landmarkId) || battle.landmarkId !== quiz.landmarkId)
+      throw new Error(`Battle landmark mismatch: ${battle.id}`);
+    if (!stories[battle.storyId]) throw new Error(`Unknown battle storyId: ${battle.storyId}`);
+    if (!presentation.backgrounds[battle.backgroundAssetId])
+      throw new Error(`Unknown battle background: ${battle.backgroundAssetId}`);
+    unique([battle.scenes.intro, ...battle.scenes.afterRounds, battle.scenes.outro], "battle scene");
+    battleScenarios += validateBattleStory(stories[battle.storyId], battle, context);
+  }
+  for (const storyId of Object.keys(stories)) {
+    if (!dates.some((date) => date.storyId === storyId) && !battles.some((battle) => battle.storyId === storyId))
+      throw new Error(`Story lacks validation contract: ${storyId}`);
+  }
   if (writeOutput) {
     const directory = path.join(root, "src/content/generated");
     await mkdir(directory, { recursive: true });
+    await writeFile(
+      path.join(directory, "quizzes.json"),
+      `${JSON.stringify(quizzes, null, 2)}\n`,
+    );
     await writeFile(
       path.join(directory, "stories.json"),
       `${JSON.stringify(stories, null, 2)}\n`,
     );
   }
-  return { stories, routes, dates, effects };
+  return { stories, routes, dates, effects, battles, quizzes, battleScenarios };
 }

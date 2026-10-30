@@ -1,0 +1,164 @@
+{
+  "idle": {
+    "schemaVersion": 2,
+    "revision": 0,
+    "playerName": "凪",
+    "heroineName": "澪",
+    "ap": 0,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [],
+    "claimedRewardIds": [],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null,
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false
+  },
+  "activeDate": {
+    "schemaVersion": 2,
+    "revision": 19,
+    "playerName": "凪",
+    "heroineName": "澪",
+    "ap": 3,
+    "affection": 4,
+    "romanceStage": 2,
+    "completedChapters": [
+      "milano"
+    ],
+    "claimedRewardIds": [
+      "chapter_milano_first_clear",
+      "trial_after_cafe_reward"
+    ],
+    "playedDateIds": [
+      "milano_cafe_01"
+    ],
+    "memories": [
+      "milano_cafe_interest",
+      "milano_cafe_secret_destination"
+    ],
+    "activeDate": {
+      "dateId": "milano_walk_01",
+      "runId": "milano_walk_01:19",
+      "replay": false,
+      "storyState": "{\"flows\":{\"DEFAULT_FLOW\":{\"callstack\":{\"threads\":[{\"callstack\":[{\"cPath\":\"start.0\",\"idx\":8,\"exp\":false,\"type\":0}],\"threadIndex\":0,\"previousContentObject\":\"start.0.7\"}],\"threadCounter\":0},\"outputStream\":[\"#\",\"^background: milano_walk\",\"/#\",\"#\",\"^speaker: narrator\",\"/#\",\"^夕暮れの道で、二人の影だけが先に角を曲がろうとしていた。\",\"\\n\"],\"currentChoices\":[]}},\"currentFlowName\":\"DEFAULT_FLOW\",\"variablesState\":{\"player_name\":\"^凪\",\"heroine_name\":\"^澪\",\"player_address\":\"^凪さん\",\"romance_stage\":2,\"memory_callback\":\"^私の行きたい場所を聞いてくれたこと\"},\"evalStack\":[],\"visitCounts\":{},\"turnIndices\":{},\"turnIdx\":-1,\"storySeed\":31,\"previousRandom\":0,\"inkSaveVersion\":10,\"inkFormatVersion\":21}",
+      "storyHash": "43c45349",
+      "frame": {
+        "text": "夕暮れの道で、二人の影だけが先に角を曲がろうとしていた。",
+        "speaker": "narrator",
+        "background": "milano_walk",
+        "emotion": "neutral",
+        "choices": [],
+        "ended": false
+      },
+      "choiceCount": 0,
+      "step": 1,
+      "appliedEffectIds": [],
+      "pendingOutcome": null
+    },
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false
+  },
+  "confessionPending": {
+    "schemaVersion": 2,
+    "revision": 71,
+    "playerName": "凪",
+    "heroineName": "澪",
+    "ap": 4,
+    "affection": 11,
+    "romanceStage": 4,
+    "completedChapters": [
+      "milano"
+    ],
+    "claimedRewardIds": [
+      "chapter_milano_first_clear",
+      "trial_after_cafe_reward",
+      "trial_after_walk_reward"
+    ],
+    "playedDateIds": [
+      "milano_cafe_01",
+      "milano_walk_01",
+      "milano_invitation_01",
+      "milano_night_01"
+    ],
+    "memories": [
+      "milano_cafe_interest",
+      "milano_cafe_secret_destination",
+      "milano_walk_first_listen",
+      "milano_walk_second_honest",
+      "milano_invitation_chosen_listen",
+      "milano_night_first_listen",
+      "milano_night_second_honest"
+    ],
+    "activeDate": {
+      "dateId": "milano_confession_01",
+      "runId": "milano_confession_01:61",
+      "replay": false,
+      "storyState": "{\"flows\":{\"DEFAULT_FLOW\":{\"callstack\":{\"threads\":[{\"callstack\":[{\"exp\":false,\"type\":0}],\"threadIndex\":0}],\"threadCounter\":3},\"outputStream\":[\"#\",\"^speaker: narrator\",\"/#\",\"^運河の灯りの下で、恋人として歩き始めた。\",\"\\n\"],\"currentChoices\":[]}},\"currentFlowName\":\"DEFAULT_FLOW\",\"variablesState\":{\"player_name\":\"^凪\",\"heroine_name\":\"^澪\",\"player_address\":\"^凪\",\"romance_stage\":4,\"memory_callback\":\"^私の行きたい場所を聞いてくれたこと\",\"confession_ready\":true},\"evalStack\":[],\"visitCounts\":{\"start.0.c-0\":1},\"turnIndices\":{},\"turnIdx\":0,\"storySeed\":19,\"previousRandom\":0,\"inkSaveVersion\":10,\"inkFormatVersion\":21}",
+      "storyHash": "8466e173",
+      "frame": {
+        "text": "運河の灯りの下で、恋人として歩き始めた。",
+        "speaker": "narrator",
+        "background": "milano_night",
+        "emotion": "neutral",
+        "choices": [],
+        "ended": true
+      },
+      "choiceCount": 1,
+      "step": 11,
+      "appliedEffectIds": [
+        "milano_confession_01:61:5:0:milano_confession_accepted"
+      ],
+      "pendingOutcome": "accepted"
+    },
+    "unlockedEventIds": [
+      "milano_invitation_01",
+      "milano_confession_01"
+    ],
+    "confessionStatus": "none",
+    "endingReached": false
+  },
+  "ending": {
+    "schemaVersion": 2,
+    "revision": 72,
+    "playerName": "凪",
+    "heroineName": "澪",
+    "ap": 4,
+    "affection": 11,
+    "romanceStage": 4,
+    "completedChapters": [
+      "milano"
+    ],
+    "claimedRewardIds": [
+      "chapter_milano_first_clear",
+      "trial_after_cafe_reward",
+      "trial_after_walk_reward"
+    ],
+    "playedDateIds": [
+      "milano_cafe_01",
+      "milano_walk_01",
+      "milano_invitation_01",
+      "milano_night_01",
+      "milano_confession_01"
+    ],
+    "memories": [
+      "milano_cafe_interest",
+      "milano_cafe_secret_destination",
+      "milano_walk_first_listen",
+      "milano_walk_second_honest",
+      "milano_invitation_chosen_listen",
+      "milano_night_first_listen",
+      "milano_night_second_honest",
+      "milano_confession_promise"
+    ],
+    "activeDate": null,
+    "unlockedEventIds": [
+      "milano_invitation_01",
+      "milano_confession_01"
+    ],
+    "confessionStatus": "accepted",
+    "endingReached": true
+  }
+}

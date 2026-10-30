@@ -5,7 +5,7 @@ export interface TagContext {
 }
 
 export interface StoryTags {
-  speaker?: "narrator" | "heroine" | "player";
+  speaker?: "narrator" | "heroine" | "player" | "enemy";
   background?: string;
   emotion?: string;
   effects: string[];
@@ -29,7 +29,7 @@ export function parseStoryTags(
         throw new Error(`Duplicate effect tag: ${value}`);
       result.effects.push(value);
     } else if (key === "speaker") {
-      if (!["narrator", "heroine", "player"].includes(value))
+      if (!["narrator", "heroine", "player", "enemy"].includes(value))
         throw new Error(`Unknown speaker: ${value}`);
       if (result.speaker) throw new Error("Duplicate speaker tag");
       result.speaker = value as StoryTags["speaker"];

@@ -182,3 +182,70 @@ export const trialProgressionSchema = z
   .object({ schemaVersion: version, milestones: z.array(trialMilestoneSchema) })
   .strict();
 export type TrialMilestone = z.infer<typeof trialMilestoneSchema>;
+
+const englishText = text.refine(
+  (value) => /[A-Za-z]/.test(value) && !/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(value),
+  "Quiz questions and options must be English",
+);
+const japaneseText = text.refine(
+  (value) => /[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(value),
+  "Expected Japanese text",
+);
+
+export const battleSchema = z.object({
+  id,
+  titleJa: japaneseText,
+  descriptionJa: japaneseText,
+  landmarkId: id,
+  enemyNameJa: japaneseText,
+  enemyTitleJa: japaneseText,
+  enemyDescriptionJa: japaneseText,
+  storyId: z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/),
+  quizId: id,
+  backgroundAssetId: id,
+  scenes: z.object({
+    intro: id,
+    afterRounds: z.array(id).length(2),
+    outro: id,
+  }).strict(),
+}).strict();
+
+export const battleCatalogSchema = z.object({
+  schemaVersion: version,
+  battles: z.array(battleSchema).min(1),
+}).strict();
+
+export const quizQuestionSchema = z.object({
+  id,
+  questionEn: englishText,
+  options: z.array(z.object({
+    id: z.enum(["A", "B", "C"]),
+    textEn: englishText,
+  }).strict()).length(3),
+  correctOptionId: z.enum(["A", "B", "C"]),
+  vocabularyJa: z.array(z.object({ word: text, meaning: japaneseText }).strict()),
+  hintJa: japaneseText,
+  correctExplanationJa: japaneseText,
+  incorrectExplanationJa: japaneseText,
+  sources: z.array(z.object({
+    publisher: text,
+    title: text,
+    url: z.url({ protocol: /^https$/ }),
+    checkedAt: z.iso.date(),
+    claimType: z.enum(["documented_fact", "interpretation", "legend"]),
+    claimJa: japaneseText,
+  }).strict()).min(1),
+  difficulty: z.enum(["easy", "medium", "hard"]),
+}).strict();
+
+export const quizSchema = z.object({
+  schemaVersion: version,
+  id,
+  landmarkId: id,
+  englishLevel: z.enum(["A2", "B1", "B2"]),
+  questions: z.array(quizQuestionSchema).length(3),
+}).strict();
+
+export type BattleDefinition = z.infer<typeof battleSchema>;
+export type QuizDefinition = z.infer<typeof quizSchema>;
+export type QuizQuestion = z.infer<typeof quizQuestionSchema>;

@@ -1,8 +1,9 @@
 import { Story } from "inkjs";
+import { z } from "zod";
 import { stories, tagContext } from "../content";
 import { parseStoryTags } from "../content/tags";
 
-export type Speaker = "narrator" | "heroine" | "player";
+export type Speaker = "narrator" | "heroine" | "player" | "enemy";
 export interface StoryFrame {
   text: string;
   speaker: Speaker;
@@ -11,6 +12,25 @@ export interface StoryFrame {
   choices: { index: number; text: string }[];
   ended: boolean;
 }
+export const storyFrameSchema = z
+  .object({
+    text: z.string(),
+    speaker: z.enum(["narrator", "heroine", "player", "enemy"]),
+    background: z.string(),
+    emotion: z.string(),
+    choices: z
+      .array(
+        z
+          .object({
+            index: z.number().int().nonnegative(),
+            text: z.string().min(1),
+          })
+          .strict(),
+      )
+      .max(3),
+    ended: z.boolean(),
+  })
+  .strict();
 export interface StoryStep {
   storyState: string;
   frame: StoryFrame;
@@ -131,7 +151,12 @@ export function validateStorySnapshot(
   storyId: string,
   saved: string,
   frame: StoryFrame,
-  expected: { playerName: string; heroineName: string; choiceCount: number },
+  expected: {
+    playerName: string;
+    heroineName: string;
+    choiceCount: number;
+    variables?: Record<string, string | number | boolean>;
+  },
 ): void {
   const story = runtime(storyId, saved);
   if (
@@ -144,6 +169,10 @@ export function validateStorySnapshot(
     story.variablesState.$("heroine_name") !== expected.heroineName
   )
     throw new Error("保存された名前が一致しません。");
+  for (const [name, value] of Object.entries(expected.variables ?? {})) {
+    if (story.variablesState.$(name) !== value)
+      throw new Error("保存された会話の条件が一致しません。");
+  }
   // Ink starts at turn -1 and increments once for each ChooseChoiceIndex call.
   if (story.state.currentTurnIndex + 1 !== expected.choiceCount)
     throw new Error("保存された選択回数が一致しません。");

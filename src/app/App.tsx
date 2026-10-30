@@ -23,6 +23,15 @@ import { DialogueText } from "../components/DialogueText";
 import { Modal } from "../components/Modal";
 import { RomanceMenu, withNames } from "../features/romance/RomanceMenu";
 import { MemoryList } from "../features/romance/MemoryList";
+import { BattleEntry } from "../features/battle/BattleEntry";
+import { BattleScreen } from "../features/battle/BattleScreen";
+import {
+  startBattle,
+  advanceBattle,
+  answerBattle,
+  toggleBattleHint,
+  leaveBattle,
+} from "../domain/battle";
 
 const storage = {
   getItem: (key: string) => window.localStorage.getItem(key),
@@ -152,7 +161,7 @@ export default function App() {
         <a href="#main" className="brand">
           Dreamscape<span>旅の余白</span>
         </a>
-        <span className="edition">ミラノ編 · Phase 2</span>
+        <span className="edition">ミラノ編 · Phase 3</span>
       </header>
       {game && (
         <div className="journey-bar">
@@ -175,6 +184,17 @@ export default function App() {
               閉じる
             </button>
           </div>
+        )}
+        {game && !game.activeBattle && (
+          <BattleEntry
+            game={game}
+            onStart={(id) => {
+              if (commit((state) => startBattle(state, id))) {
+                setResult(false);
+                setPaused(false);
+              }
+            }}
+          />
         )}
         {!game ? (
           <>
@@ -219,6 +239,30 @@ export default function App() {
               </p>
             </section>
           </>
+        ) : game.activeBattle ? (
+          <BattleScreen
+            game={game}
+            speed={speed}
+            onSpeed={setSpeed}
+            onAdvance={() =>
+              commit((state) => advanceBattle(state, game.revision))
+            }
+            onAnswer={(id) =>
+              commit((state) => answerBattle(state, id, game.revision))
+            }
+            onHint={() =>
+              commit((state) => toggleBattleHint(state, game.revision))
+            }
+            onReplay={() =>
+              commit((state) => startBattle(state, game.activeBattle!.battleId))
+            }
+            onLeave={() => {
+              if (commit((state) => leaveBattle(state, game.revision))) {
+                setResult(false);
+                setPaused(false);
+              }
+            }}
+          />
         ) : !game.completedChapters.includes("milano") ? (
           <>
             <CanalScene />
@@ -506,8 +550,8 @@ export default function App() {
       {settings && game && (
         <Modal labelledBy="settings-title" onClose={() => setSettings(false)}>
           <h2 id="settings-title">名前の設定</h2>
-          {active ? (
-            <p>デートを終えたあとで、名前を変更できます。</p>
+          {active || game.activeBattle ? (
+            <p>進行中の会話やバトルを終えたあとで、名前を変更できます。</p>
           ) : (
             <form
               className="name-form"

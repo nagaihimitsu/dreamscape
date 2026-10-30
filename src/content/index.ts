@@ -1,3 +1,5 @@
+import battleData from "../../content/battles/catalog.json";
+import generatedQuizzes from "./generated/quizzes.json";
 import progressionData from "../../content/romance/progression.json";
 import trialData from "../../content/romance/trial_progression.json";
 import dateData from "../../content/romance/date_catalog.json";
@@ -7,6 +9,9 @@ import balanceData from "../../content/romance/balance.json";
 import presentationData from "../../content/romance/presentation.json";
 import generatedStories from "./generated/stories.json";
 import {
+  battleCatalogSchema,
+  quizSchema,
+  type QuizDefinition,
   progressionSchema,
   trialProgressionSchema,
   balanceSchema,
@@ -16,6 +21,10 @@ import {
   presentationSchema,
 } from "./schemas";
 
+export const battles = battleCatalogSchema.parse(battleData).battles;
+export const battleQuizzes: Record<string, QuizDefinition> = Object.fromEntries(
+  Object.entries(generatedQuizzes).map(([id, quiz]) => [id, quizSchema.parse(quiz)]),
+);
 export const progression = progressionSchema.parse(progressionData);
 export const trialMilestones =
   trialProgressionSchema.parse(trialData).milestones;
@@ -30,4 +39,4 @@ export const tagContext = {
   backgroundIds: Object.keys(presentation.backgrounds),
   emotionIds: Object.keys(presentation.emotions),
 };
-export type { DateDefinition, EffectDefinition } from "./schemas";
+export type { BattleDefinition, QuizDefinition, QuizQuestion, DateDefinition, EffectDefinition } from "./schemas";

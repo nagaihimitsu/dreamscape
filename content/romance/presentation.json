@@ -15,6 +15,11 @@
       "nameJa": "灯りの見える岸辺",
       "captionJa": "ミラノ ／ 窓に灯りがともる頃",
       "color": "#455a68"
+    },
+    "milano_refectory": {
+      "nameJa": "『最後の晩餐』のある食堂",
+      "captionJa": "ミラノ ／ サンタ・マリア・デッレ・グラツィエ",
+      "color": "#75665b"
     }
   },
   "emotions": {

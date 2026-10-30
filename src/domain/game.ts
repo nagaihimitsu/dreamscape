@@ -1,5 +1,10 @@
 import { z } from "zod";
 import {
+  activeBattleSchema,
+  battleRecordSchema,
+  validateBattleState,
+} from "./battle";
+import {
   balance,
   city,
   dates,
@@ -15,30 +20,13 @@ import {
   storyFingerprint,
   validateStorySnapshot,
   type StoryStep,
+  storyFrameSchema,
 } from "../story/runtime";
 
 const uniqueStrings = z
   .array(z.string().min(1))
   .refine((items) => new Set(items).size === items.length);
-const frameSchema = z
-  .object({
-    text: z.string(),
-    speaker: z.enum(["narrator", "heroine", "player"]),
-    background: z.string(),
-    emotion: z.string(),
-    choices: z
-      .array(
-        z
-          .object({
-            index: z.number().int().nonnegative(),
-            text: z.string().min(1),
-          })
-          .strict(),
-      )
-      .max(3),
-    ended: z.boolean(),
-  })
-  .strict();
+const frameSchema = storyFrameSchema;
 const oldActiveSchema = z
   .object({
     dateId: z.string(),
@@ -75,7 +63,7 @@ const oldStateSchema = z
     activeDate: oldActiveSchema.nullable(),
   })
   .strict();
-export const gameStateSchema = oldStateSchema
+const phase2StateSchema = oldStateSchema
   .extend({
     schemaVersion: z.literal(2),
     romanceStage: z.union([
@@ -90,6 +78,13 @@ export const gameStateSchema = oldStateSchema
     endingReached: z.boolean(),
   })
   .strict();
+export const gameStateSchema = phase2StateSchema
+  .extend({
+    schemaVersion: z.literal(3),
+    activeBattle: activeBattleSchema.nullable(),
+    battleRecords: z.array(battleRecordSchema),
+  })
+  .strict();
 export type GameState = z.infer<typeof gameStateSchema>;
 export type ActiveDate = NonNullable<GameState["activeDate"]>;
 export interface Availability {
@@ -102,7 +97,7 @@ export function createGame(
   heroineName = balance.defaultHeroineName,
 ): GameState {
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     revision: 0,
     playerName: nameSchema.parse(playerName),
     heroineName: nameSchema.parse(heroineName),
@@ -117,6 +112,8 @@ export function createGame(
     unlockedEventIds: [],
     confessionStatus: "none",
     endingReached: false,
+    activeBattle: null,
+    battleRecords: [],
   };
 }
 
@@ -198,7 +195,7 @@ export function setNames(
   playerName: string,
   heroineName: string,
 ): GameState {
-  if (state.activeDate) return state;
+  if (state.activeDate || state.activeBattle) return state;
   const player = nameSchema.safeParse(playerName),
     heroine = nameSchema.safeParse(heroineName);
   if (
@@ -242,6 +239,7 @@ export function completeChapter(
   if (
     chapterId !== city.id ||
     state.activeDate ||
+    state.activeBattle ||
     state.completedChapters.includes(chapterId)
   )
     return state;
@@ -266,8 +264,11 @@ export function getMilestoneAvailability(
     return { available: false, reason: "この試遊用の進行は終了しました。" };
   if (state.claimedRewardIds.includes(milestone.rewardSourceId))
     return { available: false, reason: "受け取り済みです。" };
-  if (state.activeDate)
-    return { available: false, reason: "今の会話を終えてから進めます。" };
+  if (state.activeDate || state.activeBattle)
+    return {
+      available: false,
+      reason: "今の会話・バトルを終えてから進めます。",
+    };
   if (
     !state.completedChapters.includes(city.id) ||
     !milestone.requiredPlayedDateIds.every((id) =>
@@ -310,8 +311,11 @@ export function getDateAvailability(
       available: false,
       reason: "ふたりの物語は、交際エンディングを迎えました。",
     };
-  if (state.activeDate)
-    return { available: false, reason: "途中の会話を再開してください。" };
+  if (state.activeDate || state.activeBattle)
+    return {
+      available: false,
+      reason: "途中の会話・バトルを再開してください。",
+    };
   if (!date.repeatable && state.playedDateIds.includes(dateId))
     return {
       available: false,
@@ -537,20 +541,32 @@ export function migrateGameState(input: unknown): GameState {
     const old = oldStateSchema.parse(input);
     return evaluateProgression({
       ...old,
-      schemaVersion: 2,
+      schemaVersion: 3,
       activeDate: old.activeDate
         ? { ...old.activeDate, pendingOutcome: null }
         : null,
       endingReached: false,
       confessionStatus: "none",
       unlockedEventIds: [],
+      activeBattle: null,
+      battleRecords: [],
     });
+  }
+  if (
+    typeof input === "object" &&
+    input !== null &&
+    "schemaVersion" in input &&
+    input.schemaVersion === 2
+  ) {
+    const old = phase2StateSchema.parse(input);
+    return { ...old, schemaVersion: 3, activeBattle: null, battleRecords: [] };
   }
   return gameStateSchema.parse(input);
 }
 
 export function validateGameState(input: unknown): GameState {
   const state = migrateGameState(input);
+  validateBattleState(state);
   const knownMemories = new Set(
     effects.flatMap((effect) => (effect.memoryId ? [effect.memoryId] : [])),
   );

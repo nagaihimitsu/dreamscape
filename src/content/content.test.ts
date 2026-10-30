@@ -5,6 +5,7 @@ import path from "node:path";
 import { Story } from "inkjs";
 import { buildContent } from "../../scripts/content-pipeline";
 import dateData from "../../content/romance/date_catalog.json";
+import battleData from "../../content/battles/catalog.json";
 import { parseStoryTags } from "./tags";
 
 let fixture: string;
@@ -53,7 +54,7 @@ describe("content build acceptance", () => {
       ),
     );
     expect(Object.keys(generated).sort()).toEqual(
-      dateData.dates.map((date) => date.storyId).sort(),
+      [...dateData.dates.map((date) => date.storyId), ...battleData.battles.map((battle) => battle.storyId)].sort(),
     );
   });
 
@@ -255,7 +256,7 @@ describe("content build acceptance", () => {
     );
   });
 
-  it("checks the existing future quiz sample without adding battle gameplay", async () => {
+  it("still validates the unpublished quiz sample", async () => {
     await replace(
       "content/quizzes/last_supper_B1.sample.json",
       '"correctOptionId": "A"',

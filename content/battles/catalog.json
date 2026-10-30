@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "battles": [
+    {
+      "id": "milano_last_supper_01",
+      "titleJa": "白い手袋は何も持たない",
+      "descriptionJa": "『最後の晩餐』の前で、保存に取り憑かれた男と出会う。英語３問で、その理屈をほどいていこう。",
+      "landmarkId": "last_supper",
+      "enemyNameJa": "アルド・ヴェルニーチェ",
+      "enemyTitleJa": "何も持たない保存主義者",
+      "enemyDescriptionJa": "白い手袋を何枚も重ねた男。物を持たなければ落とさない、と胸を張るが、手袋の枚数はもう数えられない。",
+      "storyId": "battles/milano_last_supper",
+      "quizId": "milano_last_supper_b1",
+      "backgroundAssetId": "milano_refectory",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": ["after_1", "after_2"],
+        "outro": "outro"
+      }
+    }
+  ]
+}
