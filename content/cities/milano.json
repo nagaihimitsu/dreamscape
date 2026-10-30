@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "milano",
+  "countryCode": "IT",
+  "nameJa": "ミラノ",
+  "themeJa": "芸術と天才の街",
+  "firstClearReward": {
+    "rewardSourceId": "chapter_milano_first_clear",
+    "ap": 4
+  },
+  "landmarkIdsPlanned": [
+    "duomo_milano",
+    "galleria_vittorio_emanuele_ii",
+    "last_supper",
+    "castello_sforzesco"
+  ],
+  "productionStatus": "prototype"
+}
