@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "entryEpisodeId": "milano_last_supper_episode",
+  "episodes": [
+    {
+      "id": "milano_last_supper_episode",
+      "kind": "trial_episode",
+      "cityId": "milano",
+      "landmarkId": "last_supper",
+      "battleId": "milano_last_supper_01",
+      "legacyChapterId": "milano",
+      "titleJa": "ミラノ第1話／最後の晩餐編",
+      "descriptionJa": "ふたりで訪ねるのは、修道院の旧食堂。『最後の晩餐』を眺めたら、白い手袋の男との三問勝負へ。今回はこの場所を巡る、短い旅の一区切りです。",
+      "clearTitleJa": "ミラノ第1話 クリア",
+      "clearDescriptionJa": "修道院を出ると、街にはまだ午後の光が残っていた。絵の中の食卓から、今度はふたりの席へ。空いた時間の使い道を、一緒に決めよう。"
+    }
+  ],
+  "rewards": [
+    {
+      "id": "guide_last_supper_first_read",
+      "episodeId": "milano_last_supper_episode",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "battle_last_supper_first_complete",
+      "episodeId": "milano_last_supper_episode",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "バトルを初めて完了"
+    },
+    {
+      "id": "battle_last_supper_first_victory",
+      "episodeId": "milano_last_supper_episode",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて2問以上正解"
+    },
+    {
+      "id": "chapter_milano_first_clear",
+      "episodeId": "milano_last_supper_episode",
+      "trigger": "episode_clear",
+      "ap": 4,
+      "minScore": null,
+      "titleJa": "ミラノ第1話を初めてクリア"
+    }
+  ]
+}

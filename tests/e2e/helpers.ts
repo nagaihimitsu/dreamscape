@@ -1,5 +1,6 @@
 import { expect, type Page } from "@playwright/test";
 import type { GameState } from "../../src/domain/game";
+import phase4 from "../fixtures/phase4-saves.json" with { type: "json" };
 
 export const SAVE_KEY = "dreamscape.save.v1";
 
@@ -28,14 +29,28 @@ export async function startNewGame(page: Page, names?: [string, string]) {
   await expect.poll(async () => (await saved(page)).ap).toBe(0);
 }
 
-export async function clearChapter(page: Page) {
-  await page
-    .getByRole("button", { name: /ミラノ章初回クリア/ })
-    .evaluate((button: HTMLButtonElement) => {
-      button.click();
-      button.click();
-    });
-  await expect.poll(async () => (await saved(page)).ap).toBe(4);
+/** Isolate existing romance regressions using a genuine pre-integration chapter save. */
+export async function loadLegacyFreeTime(page: Page) {
+  const current = await saved(page);
+  const legacy = {
+    ...phase4.legacyChapter,
+    playerName: current.playerName,
+    heroineName: current.heroineName,
+  };
+  await page.evaluate(
+    ({ key, value }) => localStorage.setItem(key, JSON.stringify(value)),
+    { key: SAVE_KEY, value: legacy },
+  );
+  await page.reload();
+  await expect(page.getByTestId("event-milano_cafe_01")).toBeVisible();
+  expect((await saved(page)).ap).toBe(4);
+}
+
+export async function openRevisits(page: Page) {
+  const summary = page.getByText("旅先を再訪する", { exact: true });
+  const details = summary.locator("..");
+  if (!(await details.evaluate((element: HTMLDetailsElement) => element.open)))
+    await summary.click();
 }
 
 export async function returnToMenu(page: Page) {

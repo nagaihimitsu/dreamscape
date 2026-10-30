@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { finalizeBattleProgress } from "./chapter";
 import { battles, battleQuizzes, progression } from "../content";
 import {
   beginStory,
@@ -137,6 +138,7 @@ export function startBattle(state: GameState, battleId: string): GameState {
     ...state,
     revision: state.revision + 1,
     activeBattle: withDialogue(state, active, battle.scenes.intro),
+    battleRewardReceipt: null,
   };
 }
 export function answerBattle(
@@ -240,7 +242,7 @@ export function advanceBattle(
           bestScore: active.score,
           lastScore: active.score,
         };
-    return {
+    return finalizeBattleProgress({
       ...state,
       revision: state.revision + 1,
       activeBattle: {
@@ -257,7 +259,7 @@ export function advanceBattle(
         ),
         record,
       ],
-    };
+    });
   }
   return {
     ...state,
@@ -284,7 +286,12 @@ export function leaveBattle(
     state.activeBattle?.phase !== "result"
   )
     return state;
-  return { ...state, revision: state.revision + 1, activeBattle: null };
+  return {
+    ...state,
+    revision: state.revision + 1,
+    activeBattle: null,
+    battleRewardReceipt: null,
+  };
 }
 
 export function validateBattleState(state: GameState): void {

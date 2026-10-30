@@ -5,18 +5,10 @@ import {
   useState,
   type FormEvent,
 } from "react";
-import {
-  balance,
-  city,
-  dates,
-  presentation,
-  battles,
-  landmarks,
-} from "../content";
+import { balance, dates, presentation, battles, landmarks } from "../content";
 import {
   advanceDate,
   chooseDate,
-  completeChapter,
   createGame,
   finishDate,
   claimTrialMilestone,
@@ -35,6 +27,16 @@ import { BattleScreen } from "../features/battle/BattleScreen";
 import { TourismEntry } from "../features/tourism/TourismEntry";
 import { TourismScreen } from "../features/tourism/TourismScreen";
 import { ClueNotebook } from "../features/tourism/ClueNotebook";
+import { EpisodeScreen } from "../features/journey/EpisodeScreen";
+import { PendingRewards } from "../features/journey/PendingRewards";
+import {
+  canAccessFreeTime,
+  getCurrentEpisode,
+  startEpisode,
+  enterFreeTime,
+} from "../domain/chapter";
+import { claimPendingRewards } from "../domain/rewards";
+import "../features/journey/journey.css";
 import {
   openTourism,
   advanceTourismGuide,
@@ -42,13 +44,13 @@ import {
   closeTourism,
   discoverClue,
   startTourismBattle,
+  replayTourismGuide,
 } from "../domain/tourism";
 import {
   startBattle,
   advanceBattle,
   answerBattle,
   toggleBattleHint,
-  leaveBattle,
 } from "../domain/battle";
 
 const storage = {
@@ -138,6 +140,9 @@ export default function App() {
       );
   }
   const active = game?.activeDate;
+  const freeTimeAvailable = game ? canAccessFreeTime(game) : false;
+  const idle =
+    game && !game.activeDate && !game.activeBattle && !game.activeTourism;
   const frame = active?.frame;
   useEffect(() => {
     if (active?.dateId || result || game?.endingReached)
@@ -188,7 +193,7 @@ export default function App() {
         <a href="#main" className="brand">
           Dreamscape<span>旅の余白</span>
         </a>
-        <span className="edition">ミラノ編 · Phase 4</span>
+        <span className="edition">ミラノ編 · Phase 5</span>
       </header>
       {game && (
         <div className="journey-bar">
@@ -203,6 +208,24 @@ export default function App() {
           </span>
         </div>
       )}
+      {game && (
+        <div className="journey-stage" aria-label="旅の進行">
+          <span>{getCurrentEpisode(game).titleJa}</span>
+          <span>
+            {game.activeTourism
+              ? game.activeTourism.phase === "guide"
+                ? "観光案内"
+                : "自由な観察"
+              : game.activeBattle
+                ? game.activeBattle.phase === "result"
+                  ? "旅の一区切り"
+                  : "クイズバトル"
+                : freeTimeAvailable
+                  ? "ふたりの自由時間"
+                  : "出発前"}
+          </span>
+        </div>
+      )}
       <main id="main">
         {notice && (
           <div className="notice" role="status">
@@ -212,29 +235,12 @@ export default function App() {
             </button>
           </div>
         )}
-        {game &&
-          !game.activeBattle &&
-          !game.activeTourism &&
-          !game.activeDate && (
-            <TourismEntry
-              game={game}
-              onStart={(id) => {
-                if (commit((state) => openTourism(state, id))) {
-                  setResult(false);
-                  setPaused(false);
-                }
-              }}
-            />
-          )}
-        {game && !game.activeBattle && !game.activeTourism && (
-          <BattleEntry
+        {idle && (
+          <PendingRewards
             game={game}
-            onStart={(id) => {
-              if (commit((state) => startBattle(state, id))) {
-                setResult(false);
-                setPaused(false);
-              }
-            }}
+            onClaim={() =>
+              commit((state) => claimPendingRewards(state, game.revision))
+            }
           />
         )}
         {!game ? (
@@ -248,9 +254,9 @@ export default function App() {
                 きみと。
               </h1>
               <p className="lead">
-                旅先で見つけた、小さな自由時間。
+                絵の前で立ち止まり、奇妙な男と出会う。
                 <br />
-                どんな言葉を交わすかは、あなた次第。
+                そのあとは、ふたりの自由時間へ。
               </p>
               {invalid && (
                 <div className="notice warning" role="alert">
@@ -292,6 +298,9 @@ export default function App() {
             onSkip={() =>
               commit((state) => skipTourismGuide(state, game.revision))
             }
+            onReplayGuide={() =>
+              commit((state) => replayTourismGuide(state, game.revision))
+            }
             onDiscover={(id) =>
               game.discoveredClueIds.includes(id) ||
               commit((state) => discoverClue(state, id, game.revision))
@@ -310,6 +319,9 @@ export default function App() {
             speed={speed}
             onSpeed={setSpeed}
             onNotebook={canObserve ? () => setNotebook(true) : undefined}
+            onClaimRewards={() =>
+              commit((state) => claimPendingRewards(state, game.revision))
+            }
             onAdvance={() =>
               commit((state) => advanceBattle(state, game.revision))
             }
@@ -323,43 +335,17 @@ export default function App() {
               commit((state) => startBattle(state, game.activeBattle!.battleId))
             }
             onLeave={() => {
-              if (commit((state) => leaveBattle(state, game.revision))) {
+              if (commit((state) => enterFreeTime(state, game.revision))) {
                 setResult(false);
                 setPaused(false);
               }
             }}
           />
-        ) : !game.completedChapters.includes("milano") ? (
-          <>
-            <CanalScene />
-            <section className="paper">
-              <p className="eyebrow">第1章 · ミラノ</p>
-              <h1>
-                旅のあとに、
-                <br />
-                ふたりの時間。
-              </h1>
-              <p className="lead">
-                まずはミラノ章を仮クリアして、
-                <br />
-                自由時間へ進みましょう。
-              </p>
-              <div className="chapter-note">
-                <span className="pill">開発用操作</span>
-                <p>
-                  この試遊版では、デートを重ねて告白するまでの物語を遊べます。まずは章を仮クリアして、デートに誘うためのAPを受け取りましょう。
-                </p>
-              </div>
-              <button
-                className="primary"
-                onClick={() =>
-                  commit((state) => completeChapter(state, "milano"))
-                }
-              >
-                ミラノ章初回クリア <span>＋{city.firstClearReward.ap} AP</span>
-              </button>
-            </section>
-          </>
+        ) : !freeTimeAvailable ? (
+          <EpisodeScreen
+            game={game}
+            onStart={(id) => commit((state) => startEpisode(state, id))}
+          />
         ) : active && frame ? (
           <>
             <CanalScene compact backgroundId={frame.background} />
@@ -549,6 +535,32 @@ export default function App() {
               )}
             </section>
           </>
+        )}
+        {idle && freeTimeAvailable && (
+          <details className="revisit-menu">
+            <summary>旅先を再訪する</summary>
+            <p className="fine-print">
+              同じ場所をもう一度訪ねられます。初回報酬の再取得はありません。
+            </p>
+            <TourismEntry
+              game={game}
+              onStart={(id) => {
+                if (commit((state) => openTourism(state, id))) {
+                  setResult(false);
+                  setPaused(false);
+                }
+              }}
+            />
+            <BattleEntry
+              game={game}
+              onStart={(id) => {
+                if (commit((state) => startBattle(state, id))) {
+                  setResult(false);
+                  setPaused(false);
+                }
+              }}
+            />
+          </details>
         )}
       </main>
       {game && (

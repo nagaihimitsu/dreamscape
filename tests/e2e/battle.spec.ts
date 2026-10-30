@@ -34,6 +34,16 @@ for (const example of cases) {
     await startBattleFromEntry(page);
     const result = await playBattle(page, quiz.questions, example.correctness);
     expect(result.state.activeBattle!.score).toBe(example.score);
+    expect(result.state.ap).toBe(example.score >= 2 ? 6 : 5);
+    expect(result.state.completedEpisodeIds).toEqual([
+      "milano_last_supper_episode",
+    ]);
+    expect(result.state.completedCityIds).toEqual([]);
+    expect(
+      result.state.claimedRewardIds.filter(
+        (id) => id === "chapter_milano_first_clear",
+      ),
+    ).toHaveLength(1);
     expect(romanceProgress(result.state)).toEqual(romance);
     expect(result.state.battleRecords).toEqual([
       {
@@ -53,7 +63,7 @@ for (const example of cases) {
     await reloadUnchanged(page);
     await expect(page.getByTestId("battle-result")).toBeVisible();
     await page
-      .getByRole("button", { name: "恋愛モードに戻る", exact: true })
+      .getByRole("button", { name: "自由時間へ進む", exact: true })
       .click();
     expect((await saved(page)).activeBattle).toBeNull();
     expect(romanceProgress(await saved(page))).toEqual(romance);
@@ -121,6 +131,7 @@ test("hints, vocabulary, locked answers and saved reactions survive reload, then
   const first = await saved(page);
   expect(first.activeBattle!.phase).toBe("result");
   expect(first.activeBattle!.score).toBe(0);
+  expect(first.ap).toBe(5);
   expect(romanceProgress(first)).toEqual(initial);
   await page
     .getByRole("button", { name: "再戦する", exact: true })
@@ -145,6 +156,7 @@ test("hints, vocabulary, locked answers and saved reactions survive reload, then
   }
   const replay = await saved(page);
   expect(replay.activeBattle!.phase).toBe("result");
+  expect(replay.ap).toBe(6);
   expect(replay.battleRecords).toEqual([
     { battleId, attempts: 2, firstScore: 0, bestScore: 3, lastScore: 3 },
   ]);
@@ -152,6 +164,21 @@ test("hints, vocabulary, locked answers and saved reactions survive reload, then
   await reloadUnchanged(page);
   expect((await saved(page)).battleRecords[0].attempts).toBe(2);
   await expectNoOverflow(page);
+  await page.getByRole("button", { name: "再戦する", exact: true }).click();
+  const third = await playBattle(page, quiz.questions, [true, true, false]);
+  expect(third.state.ap).toBe(6);
+  expect(third.state.battleRecords[0]).toEqual({
+    battleId,
+    attempts: 3,
+    firstScore: 0,
+    bestScore: 3,
+    lastScore: 2,
+  });
+  expect(
+    third.state.claimedRewardIds.filter(
+      (id) => id === "battle_last_supper_first_victory",
+    ),
+  ).toHaveLength(1);
 });
 
 test("a real Phase 2 ending save can play a battle and return to the same ending", async ({
@@ -168,10 +195,10 @@ test("a real Phase 2 ending save can play a battle and return to the same ending
   const before = romanceProgress(await saved(page));
   await startBattleFromEntry(page);
   const result = await playBattle(page, quiz.questions, [true, false, true]);
-  expect(result.state.schemaVersion).toBe(4);
+  expect(result.state.schemaVersion).toBe(5);
   expect(romanceProgress(result.state)).toEqual(before);
   await page
-    .getByRole("button", { name: "恋愛モードに戻る", exact: true })
+    .getByRole("button", { name: "自由時間へ進む", exact: true })
     .click();
   await expect(page.getByTestId("romance-ending")).toBeVisible();
   await reloadUnchanged(page);
@@ -192,7 +219,7 @@ test("a real Phase 2 romance conversation resumes safely and blocks battle entry
   );
   await expect(
     page.getByRole("button", { name: "クイズバトルを試す", exact: true }),
-  ).toBeDisabled();
+  ).toHaveCount(0);
   await expect(
     page.getByRole("button", { name: "観光・観察を試す", exact: true }),
   ).toHaveCount(0);
@@ -204,7 +231,7 @@ test("a real Phase 2 romance conversation resumes safely and blocks battle entry
   await expect
     .poll(async () => (await saved(page)).revision)
     .toBeGreaterThan(before.revision);
-  expect((await saved(page)).schemaVersion).toBe(4);
+  expect((await saved(page)).schemaVersion).toBe(5);
   expect((await saved(page)).activeBattle).toBeNull();
   expect((await saved(page)).ap).toBe(before.ap);
 });

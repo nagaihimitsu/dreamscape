@@ -4,6 +4,7 @@ import type { GameState } from "../../domain/game";
 import { getBattleOutcome } from "../../domain/battle";
 import { DialogueText } from "../../components/DialogueText";
 import { EnemyPortrait } from "./EnemyPortrait";
+import { BattleRewards } from "../journey/BattleRewards";
 
 interface Props {
   game: GameState;
@@ -15,6 +16,7 @@ interface Props {
   onReplay: () => void;
   onLeave: () => void;
   onNotebook?: () => void;
+  onClaimRewards: () => void;
 }
 
 export function BattleScreen({
@@ -27,6 +29,7 @@ export function BattleScreen({
   onReplay,
   onLeave,
   onNotebook,
+  onClaimRewards,
 }: Props) {
   const active = game.activeBattle!;
   const battle = battles.find((item) => item.id === active.battleId)!;
@@ -132,11 +135,12 @@ export function BattleScreen({
                 {record.bestScore}問正解
               </p>
             )}
-            <button className="primary" onClick={onReplay}>
-              再戦する <span aria-hidden="true">↻</span>
+            <BattleRewards game={game} onClaim={onClaimRewards} />
+            <button className="primary" onClick={onLeave}>
+              自由時間へ進む <span aria-hidden="true">→</span>
             </button>
-            <button className="secondary" onClick={onLeave}>
-              恋愛モードに戻る
+            <button className="secondary" onClick={onReplay}>
+              再戦する <span aria-hidden="true">↻</span>
             </button>
           </div>
         ) : isDialogue && frame ? (

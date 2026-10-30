@@ -1,0 +1,198 @@
+.episode-image {
+  width: 100%;
+  height: auto;
+  max-height: 340px;
+  object-fit: cover;
+  display: block;
+}
+.episode-screen h1 {
+  font-size: clamp(23px, 5vw, 30px);
+}
+.episode-route {
+  margin: 0 0 26px;
+  padding: 0;
+  list-style: none;
+  counter-reset: journey;
+  display: grid;
+  gap: 12px;
+}
+.episode-route li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: #586851;
+}
+.episode-route li::before {
+  counter-increment: journey;
+  content: counter(journey);
+  background: #e7e8d8;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  flex-shrink: 0;
+  font-family: Georgia, serif;
+}
+.episode-screen .primary + .fine-print {
+  margin-top: 16px;
+}
+.journey-stage {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  font-size: 11px;
+  background: #e9eadd;
+  color: #566749;
+  border-bottom: 1px solid #d9ddcc;
+}
+.journey-stage span:last-child {
+  flex-shrink: 0;
+  font-weight: 600;
+}
+.revisit-menu {
+  max-width: 680px;
+  margin: 12px auto 30px;
+  padding: 0 24px;
+}
+.revisit-menu > summary {
+  cursor: pointer;
+  min-height: 48px;
+  padding: 12px 0;
+  color: var(--green);
+  font-size: 13px;
+  border-top: 1px solid var(--line);
+}
+.revisit-menu .battle-entry,
+.revisit-menu .tourism-entry {
+  margin: 16px 0;
+  max-width: none;
+}
+.pending-rewards {
+  padding: 18px 22px;
+  margin: 20px auto;
+  max-width: 576px;
+  background: #f0eadb;
+  border: 1px solid #dac8a6;
+  border-radius: 4px;
+}
+.pending-rewards h2 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+.pending-rewards p,
+.pending-rewards li {
+  font-size: 12px;
+  line-height: 1.9;
+}
+.pending-rewards summary {
+  font-size: 11px;
+  min-height: 44px;
+  padding: 12px 0;
+  cursor: pointer;
+}
+.pending-rewards ul {
+  padding-left: 18px;
+  margin: 0;
+}
+.pending-rewards .fine-print {
+  margin-top: 12px;
+  font-size: 11px;
+}
+.battle-rewards {
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+  margin: 24px 0;
+  text-align: left;
+}
+.reward-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+}
+.reward-total strong {
+  font:
+    30px Georgia,
+    serif;
+  color: var(--green);
+  white-space: nowrap;
+}
+.reward-total small {
+  font:
+    12px "Noto Sans JP",
+    sans-serif;
+}
+.battle-rewards ul {
+  padding: 0;
+  margin: 12px 0;
+  list-style: none;
+}
+.battle-rewards li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #e7e4d6;
+}
+.battle-rewards li > span:last-child {
+  flex-shrink: 0;
+  text-align: right;
+}
+.battle-rewards li small {
+  display: block;
+  font-size: 10px;
+}
+.current-ap {
+  margin-top: 14px;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+}
+.episode-clear {
+  padding: 22px 20px;
+  background: #eeeee2;
+  margin: 24px 0 20px;
+  text-align: left;
+  border-radius: 4px;
+}
+.episode-clear h2 {
+  font-size: 21px;
+  margin: 7px 0 13px;
+}
+.episode-clear > p:not(.eyebrow):not(.fine-print) {
+  font-family: "Noto Serif JP", serif;
+  font-size: 14px;
+  line-height: 2.1;
+}
+.episode-clear .fine-print {
+  margin-top: 14px;
+}
+.guide-reward-note {
+  font-size: 11px;
+  color: #5c7254;
+  margin-top: 12px;
+}
+.replay-guide {
+  margin: 16px 24px 0;
+}
+.replay-guide .text-button {
+  padding: 8px 0;
+}
+@media (max-width: 480px) {
+  .journey-stage {
+    padding: 10px 24px;
+    font-size: 10px;
+  }
+  main > .pending-rewards {
+    margin: 16px 24px;
+  }
+  .episode-image {
+    max-height: 230px;
+  }
+}

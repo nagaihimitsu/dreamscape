@@ -1,5 +1,12 @@
+import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
 import { describe, expect, it } from "vitest";
-import { battles, battleQuizzes, landmarks, tourismClues } from "../content";
+import {
+  battles,
+  battleQuizzes,
+  landmarks,
+  rewardRules,
+  tourismClues,
+} from "../content";
 import {
   claimTrialMilestone,
   completeChapter,
@@ -38,16 +45,18 @@ function reload(state: GameState) {
   return restored;
 }
 function romance(state: GameState) {
-  const {
-    revision: _r,
-    activeTourism: _t,
-    discoveredClueIds: _c,
-    visitedLandmarkIds: _v,
-    activeBattle: _b,
-    battleRecords: _br,
-    ...rest
-  } = state;
-  return rest;
+  return {
+    playerName: state.playerName,
+    heroineName: state.heroineName,
+    affection: state.affection,
+    romanceStage: state.romanceStage,
+    memories: state.memories,
+    playedDateIds: state.playedDateIds,
+    activeDate: state.activeDate,
+    unlockedEventIds: state.unlockedEventIds,
+    confessionStatus: state.confessionStatus,
+    endingReached: state.endingReached,
+  };
 }
 function explore(initial = createGame()) {
   const state = openTourism(initial, landmarkId());
@@ -73,6 +82,9 @@ describe("optional tourism and discoveries", () => {
     expect(state.activeTourism!.phase).toBe("exploring");
     expect(state.visitedLandmarkIds).toEqual([landmarkId()]);
     expect(romance(state)).toEqual(romance(before));
+    expect(state.ap).toBe(
+      before.ap + rewardRules.find((rule) => rule.trigger === "guide_read")!.ap,
+    );
     expect(reload(state)).toEqual(state);
     state = closeTourism(state, state.revision);
     state = openTourism(state, landmarkId());
@@ -89,6 +101,7 @@ describe("optional tourism and discoveries", () => {
     expect(state.discoveredClueIds).toEqual([]);
     expect(state.visitedLandmarkIds).toEqual([landmarkId()]);
     expect(romance(state)).toEqual(romance(before));
+    expect(state.ap).toBe(before.ap);
     expect(startTourismBattle(state, before.revision)).toBe(state);
     expect(reload(state)).toEqual(state);
   });
@@ -135,7 +148,7 @@ describe("optional tourism and discoveries", () => {
     expect(grantRewardOnce(fresh, "unexpected", 4)).toBe(fresh);
     expect(setNames(fresh, "違う", "名前")).toBe(fresh);
     expect(startBattle(fresh, battles[0].id)).toBe(fresh);
-    const state = explore(completeChapter(createGame()));
+    const state = explore(seedLegacyChapter(createGame()));
     expect(startDate(state, "milano_cafe_01")).toBe(state);
     expect(claimTrialMilestone(state, "trial_after_cafe")).toBe(state);
     const dating = validateGameState(phase2.activeDate);

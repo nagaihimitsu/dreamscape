@@ -17,12 +17,13 @@ export function TourismEntry({
           <div key={landmark.id}>
             <div className="section-meta">
               <span className="eyebrow">絵の前で、ひと休み</span>
-              <span className="pill">Phase 4 試遊</span>
+              <span className="pill">再訪・観察</span>
             </div>
             <h2>{landmark.nameJa}</h2>
             <p>{landmark.descriptionJa}</p>
             <button
               className="primary"
+              data-testid={`revisit-tourism-${landmark.id}`}
               onClick={() => onStart(landmark.id)}
               disabled={!availability.available}
             >

@@ -1,11 +1,6 @@
+import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
 import { describe, expect, it, vi } from "vitest";
-import {
-  advanceDate,
-  chooseDate,
-  completeChapter,
-  createGame,
-  startDate,
-} from "../domain";
+import { advanceDate, chooseDate, createGame, startDate } from "../domain";
 import {
   backupAndCreate,
   loadGame,
@@ -123,7 +118,7 @@ describe("local save persistence", () => {
       },
     };
     expect(
-      saveGame(blocked, completeChapter(previous), previous),
+      saveGame(blocked, seedLegacyChapter(previous), previous),
     ).toMatchObject({
       ok: false,
       message: expect.stringContaining("空き容量"),
@@ -135,7 +130,7 @@ describe("local save persistence", () => {
 describe("multiple tabs sharing a save slot", () => {
   it("rejects an older manual save without restoring spent AP", () => {
     const storage = new MemoryStorage();
-    const menu = completeChapter(createGame());
+    const menu = seedLegacyChapter(createGame());
     saveGame(storage, menu);
     const started = startDate(menu, "milano_cafe_01");
     expect(saveGame(storage, started, menu)).toEqual({ ok: true });
@@ -149,7 +144,7 @@ describe("multiple tabs sharing a save slot", () => {
 
   it("rejects conflicting choices at the same revision and retains the first branch", () => {
     const storage = new MemoryStorage();
-    let choice = startDate(completeChapter(createGame()), "milano_cafe_01");
+    let choice = startDate(seedLegacyChapter(createGame()), "milano_cafe_01");
     while (!choice.activeDate!.frame.choices.length)
       choice = advanceDate(choice, choice.revision);
     saveGame(storage, choice);
@@ -164,7 +159,7 @@ describe("multiple tabs sharing a save slot", () => {
 
   it("rejects a higher-revision branch whose expected prior snapshot is stale", () => {
     const storage = new MemoryStorage();
-    const menu = completeChapter(createGame());
+    const menu = seedLegacyChapter(createGame());
     saveGame(storage, menu);
     const first = startDate(menu, "milano_cafe_01");
     const staleNext = advanceDate(first, first.revision);
@@ -177,7 +172,7 @@ describe("multiple tabs sharing a save slot", () => {
     const storage = new MemoryStorage();
     const initial = createGame();
     saveGame(storage, initial);
-    const completed = completeChapter(initial);
+    const completed = seedLegacyChapter(initial);
     expect(saveGame(storage, completed, initial)).toEqual({ ok: true });
     expect(saveGame(storage, completed)).toEqual({ ok: true });
     expect(saveGame(storage, completed, initial)).toEqual({ ok: true });
@@ -187,7 +182,9 @@ describe("multiple tabs sharing a save slot", () => {
   it("does not silently recreate a slot removed since the previous snapshot", () => {
     const storage = new MemoryStorage();
     const initial = createGame();
-    expect(saveGame(storage, completeChapter(initial), initial).ok).toBe(false);
+    expect(saveGame(storage, seedLegacyChapter(initial), initial).ok).toBe(
+      false,
+    );
     expect(loadGame(storage)).toEqual({ status: "empty" });
   });
 });

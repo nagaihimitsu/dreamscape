@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { recordGuideRead } from "./chapter";
 import { battles, landmarks, progression, tourismClues } from "../content";
 import {
   beginStory,
@@ -142,7 +143,12 @@ export function advanceTourismGuide(
     !active.storyState
   )
     return state;
-  if (active.frame.ended) return skipTourismGuide(state, expectedRevision);
+  if (active.frame.ended) {
+    return recordGuideRead(
+      skipTourismGuide(state, expectedRevision),
+      active.landmarkId,
+    );
+  }
   const landmark = landmarks.find((item) => item.id === active.landmarkId)!;
   return {
     ...state,
@@ -150,6 +156,36 @@ export function advanceTourismGuide(
     activeTourism: fromGuide(
       active,
       continueStory(landmark.guideStoryId, active.storyState, active.frame),
+    ),
+  };
+}
+
+/** Re-reading is available after a skip or a legacy visit; its reward still has one stable ID. */
+export function replayTourismGuide(
+  state: GameState,
+  expectedRevision: number,
+): GameState {
+  const active = state.activeTourism;
+  if (
+    state.revision !== expectedRevision ||
+    !active ||
+    active.phase !== "exploring"
+  )
+    return state;
+  const landmark = landmarks.find((item) => item.id === active.landmarkId)!;
+  const next = {
+    ...active,
+    phase: "guide" as const,
+    contentHash: tourismFingerprint(active.landmarkId),
+  };
+  return {
+    ...state,
+    revision: state.revision + 1,
+    activeTourism: fromGuide(
+      next,
+      beginStory(landmark.guideStoryId, state.playerName, state.heroineName, {
+        player_address: playerAddress(state),
+      }),
     ),
   };
 }
@@ -228,8 +264,7 @@ export function validateTourismState(state: GameState): void {
       active.contentHash !== tourismFingerprint(active.landmarkId) ||
       !active.frame ||
       !active.storyState ||
-      active.frame.choices.length ||
-      state.visitedLandmarkIds.includes(active.landmarkId)
+      active.frame.choices.length
     )
       throw new Error(
         "観光案内が更新されたか、途中の案内が一致しません。元のデータは保管されています。",

@@ -1,3 +1,4 @@
+import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
 import { describe, expect, it } from "vitest";
 import { dates, progression, trialMilestones } from "../content";
 import {
@@ -5,7 +6,6 @@ import {
   canConfessSuccessfully,
   chooseDate,
   claimTrialMilestone,
-  completeChapter,
   createGame,
   evaluateProgression,
   finishDate,
@@ -52,7 +52,7 @@ function play(
 }
 function toWalk() {
   return claimTrialMilestone(
-    play(completeChapter(createGame("晴", "灯")), cafe, [0, 0]),
+    play(seedLegacyChapter(createGame("晴", "灯")), cafe, [0, 0]),
     trialMilestones[0].id,
   );
 }
@@ -78,7 +78,7 @@ describe("Phase 2 relationship progression", () => {
     expect(
       evaluateProgression({ ...initial, playedDateIds: [cafe] }).romanceStage,
     ).toBe(1);
-    const afterCafe = play(completeChapter(initial), cafe, [0, 0]);
+    const afterCafe = play(seedLegacyChapter(initial), cafe, [0, 0]);
     expect(afterCafe.romanceStage).toBe(2);
     const afterWalk = toInvitation();
     expect(afterWalk.romanceStage).toBe(3);
@@ -92,7 +92,7 @@ describe("Phase 2 relationship progression", () => {
   });
   it("makes finite trial rewards idempotent, locked until history, capped without wasting rewards", () => {
     const first = trialMilestones[0];
-    const initial = completeChapter(createGame());
+    const initial = seedLegacyChapter(createGame());
     expect(claimTrialMilestone(initial, first.id)).toBe(initial);
     const afterCafe = play(initial, cafe, [0, 0]);
     const awarded = claimTrialMilestone(afterCafe, first.id);
@@ -135,7 +135,11 @@ describe("Phase 2 relationship progression", () => {
     expect(completed.affection).toBe(state.affection + 1);
     expect(startDate(completed, invitation)).toBe(completed);
     expect(transcript.join("\n")).toContain(getMemoryCallback(state));
-    const differentlyChosen = play(completeChapter(createGame()), cafe, [2, 2]);
+    const differentlyChosen = play(
+      seedLegacyChapter(createGame()),
+      cafe,
+      [2, 2],
+    );
     expect(getMemoryCallback(differentlyChosen)).not.toBe(
       getMemoryCallback(state),
     );
@@ -193,7 +197,7 @@ describe("confession and relationship ending", () => {
     expect(validateGameState(JSON.parse(JSON.stringify(state)))).toEqual(state);
   });
   it("requires sincere expression even when affection is sufficient, then permits free retry", () => {
-    let state = play(completeChapter(createGame()), cafe, [2, 1]);
+    let state = play(seedLegacyChapter(createGame()), cafe, [2, 1]);
     state = claimTrialMilestone(state, trialMilestones[0].id);
     state = play(state, walk, [1, 0]);
     state = play(state, invitation, [1]);

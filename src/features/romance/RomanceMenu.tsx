@@ -43,10 +43,10 @@ export function RomanceMenu({
       <section className="trial-progress" aria-label="試遊用の旅の進行">
         <div className="section-meta">
           <h2>旅をもう一歩</h2>
-          <span className="pill">Phase 2 試遊用</span>
+          <span className="pill">試遊専用の補助AP</span>
         </div>
         <p>
-          観光パートの代わりに、旅の区切りを進められます。APを受け取れるのは、それぞれ一度だけ。
+          次のエピソードが届くまで、告白までの物語を試せる補助の自由時間です。それぞれ一度だけ受け取れます。
         </p>
         {trialMilestones.map((milestone) => {
           const eligibility = getMilestoneAvailability(game, milestone.id);

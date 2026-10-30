@@ -1,6 +1,6 @@
 import { expect, type Page } from "@playwright/test";
 import type { GameState } from "../../src/domain/game";
-import { expectNoOverflow, saved } from "./helpers";
+import { expectNoOverflow, saved, openRevisits } from "./helpers";
 
 export interface QuizQuestionForTest {
   id: string;
@@ -9,16 +9,13 @@ export interface QuizQuestionForTest {
   correctOptionId: string;
 }
 
-/** Fields that battle play must never modify. Revision/schema and battle records are intentionally excluded. */
+/** Romance state is independent of quiz score. AP and chapter unlocks now change through integration rewards. */
 export function romanceProgress(state: GameState) {
   return {
     playerName: state.playerName,
     heroineName: state.heroineName,
-    ap: state.ap,
     affection: state.affection,
     romanceStage: state.romanceStage,
-    completedChapters: state.completedChapters,
-    claimedRewardIds: state.claimedRewardIds,
     playedDateIds: state.playedDateIds,
     memories: state.memories,
     activeDate: state.activeDate,
@@ -29,9 +26,15 @@ export function romanceProgress(state: GameState) {
 }
 
 export async function startBattleFromEntry(page: Page) {
-  await page
-    .getByRole("button", { name: "クイズバトルを試す", exact: true })
-    .click();
+  if (await page.getByTestId("episode-start").isVisible()) {
+    await page.getByTestId("episode-start").click();
+    await page
+      .getByRole("button", { name: "バトルを始める", exact: true })
+      .click();
+  } else {
+    await openRevisits(page);
+    await page.getByTestId("revisit-battle-milano_last_supper_01").click();
+  }
   await expect
     .poll(async () => (await saved(page)).activeBattle?.phase)
     .toBe("dialogue");

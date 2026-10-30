@@ -42,6 +42,8 @@ test("a named guide resumes, the real image loads, and every discovery persists 
   );
   const transcript = await finishTourismGuide(page);
   expect(transcript.join("\n")).toMatch(/澪|航/);
+  expect((await saved(page)).ap).toBe(1);
+  expect((await saved(page)).completedGuideIds).toEqual([landmark.id]);
   await expect(
     page.getByRole("heading", { name: landmark.nameJa, exact: true }),
   ).toBeVisible();
@@ -260,6 +262,7 @@ test("battle cluebook preserves the question, open hint and locked answer, inclu
   }
   const result = await battleDialogueUntilQuestionOrResult(page);
   expect(result.activeBattle!.score).toBe(3);
+  expect(result.ap).toBe(6);
   expect(result.battleRecords[0].attempts).toBe(1);
   expect(romanceProgress(result)).toEqual(romance);
   expect(result.discoveredClueIds).toHaveLength(3);
@@ -286,6 +289,7 @@ test("observation and the guide can be skipped to complete a battle with no clue
   await page.getByTestId("cluebook-close").click();
   const result = await playBattle(page, quiz.questions, [false, false, false]);
   expect(result.state.activeBattle!.score).toBe(0);
+  expect(result.state.ap).toBe(5);
   expect(romanceProgress(result.state)).toEqual(romance);
   expect(result.state.discoveredClueIds).toEqual([]);
 });
@@ -313,7 +317,7 @@ test("an authentic Phase 3 answered battle migrates without changing its answer 
   await skipTourismGuide(page);
   await page.getByTestId(`discovery-${hotspots[0].id}`).click();
   const migrated = await saved(page);
-  expect(migrated.schemaVersion).toBe(4);
+  expect(migrated.schemaVersion).toBe(5);
   expect(migrated.activeBattle).toEqual(phase3.feedback.activeBattle);
   expect(romanceProgress(migrated)).toEqual(
     romanceProgress(phase3.feedback as unknown as typeof migrated),
@@ -346,7 +350,7 @@ test("a Phase 3 romance ending can visit and leave tourism without changing the 
   await finishTourismGuide(page);
   await page.getByTestId(`discovery-${document.id}`).click();
   await page
-    .getByRole("button", { name: "恋愛モードに戻る", exact: true })
+    .getByRole("button", { name: "自由時間へ戻る", exact: true })
     .click();
   await expect(page.getByTestId("romance-ending")).toBeVisible();
   expect(romanceProgress(await saved(page))).toEqual(initial);

@@ -4,7 +4,7 @@ import {
   saved,
   expectNoOverflow,
   startNewGame,
-  clearChapter,
+  loadLegacyFreeTime,
   startCafe,
   advanceToChoiceOrEnd,
   choose,
@@ -13,7 +13,7 @@ import {
 
 test.use({ reducedMotion: "reduce" });
 
-test("default names, chapter reward, two choices, reload and replay keep AP and memories consistent", async ({
+test("default names and a legacy chapter save keep cafe choices, reload and replay consistent", async ({
   page,
 }) => {
   const errors: string[] = [];
@@ -22,7 +22,7 @@ test("default names, chapter reward, two choices, reload and replay keep AP and 
   await expect(page.getByLabel("主人公の名前")).toHaveValue("なお");
   await expect(page.getByLabel("ヒロインの名前")).toHaveValue("りえ");
   await startNewGame(page);
-  await clearChapter(page);
+  await loadLegacyFreeTime(page);
   await page.reload();
   expect((await saved(page)).ap).toBe(4);
   await startCafe(page);
@@ -80,7 +80,7 @@ test("custom names remain plain text and fit a 360px screen throughout the date"
   const player = "<b>あいうえおかきくけこ</b>";
   const heroine = "あいうえおかきくけこさしすせそたちつてとなにぬね";
   await startNewGame(page, [player, heroine]);
-  await clearChapter(page);
+  await loadLegacyFreeTime(page);
   await startCafe(page);
   const observed: string[] = [];
   for (let step = 0; step < 40; step++) {
@@ -140,7 +140,7 @@ test("corrupted save is preserved until explicit backup and fresh start", async 
         key.startsWith(`${SAVE_KEY}.backup.`) && value === "{broken-save",
     ),
   ).toBe(true);
-  expect((await saved(page)).schemaVersion).toBe(4);
+  expect((await saved(page)).schemaVersion).toBe(5);
   expect((await saved(page)).ap).toBe(0);
 });
 
@@ -148,7 +148,7 @@ test("pause, manual save/load and keyboard confirmation preserve the current lin
   page,
 }) => {
   await startNewGame(page);
-  await clearChapter(page);
+  await loadLegacyFreeTime(page);
   await startCafe(page);
   await expect(page.locator(".dialogue-text")).toMatchAriaSnapshot(`
     - paragraph: 運河沿いの小さなカフェ。
@@ -178,7 +178,7 @@ test("an older tab cannot overwrite a date started in another tab", async ({
   context,
 }) => {
   await startNewGame(page);
-  await clearChapter(page);
+  await loadLegacyFreeTime(page);
   const older = await context.newPage();
   await older.goto("/");
   await expect(

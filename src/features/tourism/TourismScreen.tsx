@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import { landmarks, tourismAssets, tourismClues } from "../../content";
+import {
+  landmarks,
+  tourismAssets,
+  tourismClues,
+  episodes,
+  rewardRules,
+} from "../../content";
+import { canAccessFreeTime } from "../../domain/chapter";
 import type { GameState } from "../../domain/game";
 import { DialogueText } from "../../components/DialogueText";
 import { ObservationViewer } from "./ObservationViewer";
@@ -16,6 +23,7 @@ interface Props {
   onNotebook: () => void;
   onBattle: () => void;
   onLeave: () => void;
+  onReplayGuide: () => void;
 }
 
 export function TourismScreen({
@@ -28,6 +36,7 @@ export function TourismScreen({
   onNotebook,
   onBattle,
   onLeave,
+  onReplayGuide,
 }: Props) {
   const active = game.activeTourism!;
   const landmark = landmarks.find((item) => item.id === active.landmarkId)!;
@@ -51,6 +60,10 @@ export function TourismScreen({
   const [ready, setReady] = useState(false);
   const onReady = useCallback((value: boolean) => setReady(value), []);
   const frame = active.frame;
+  const episode = episodes.find((item) => item.landmarkId === landmark.id);
+  const guideReward = rewardRules.find(
+    (item) => item.episodeId === episode?.id && item.trigger === "guide_read",
+  );
 
   useEffect(() => {
     document
@@ -101,11 +114,27 @@ export function TourismScreen({
             手がかり帳
           </button>
         </div>
+        {guideReward && game.completedGuideIds.includes(landmark.id) && (
+          <p className="guide-reward-note">
+            {guideReward.titleJa} · {guideReward.ap}APの報酬を記録しました
+          </p>
+        )}
       </header>
       {asset.isPlaceholder && (
         <p className="image-placeholder-note">
           仮画像です。実物の細部を再現した資料ではありません。
         </p>
+      )}
+      {active.phase === "exploring" && (
+        <div className="replay-guide">
+          <button
+            className="text-button"
+            data-testid="guide-replay"
+            onClick={onReplayGuide}
+          >
+            観光案内をもう一度読む
+          </button>
+        </div>
       )}
       {active.phase === "guide" && frame ? (
         <>
@@ -254,7 +283,7 @@ export function TourismScreen({
         </button>
         {!game.activeBattle && (
           <button className="secondary" onClick={onLeave}>
-            恋愛モードに戻る
+            {canAccessFreeTime(game) ? "自由時間へ戻る" : "旅の予定に戻る"}
           </button>
         )}
       </div>

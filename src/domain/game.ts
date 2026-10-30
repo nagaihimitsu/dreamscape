@@ -1,4 +1,15 @@
 import { z } from "zod";
+import {
+  completeRecordedChapter,
+  migrateJourneyProgress,
+  validateJourneyState,
+} from "./chapter";
+import {
+  battleRewardReceiptSchema,
+  pendingApRewardSchema,
+  settlePendingAp,
+  validateRewardState,
+} from "./rewards";
 import { activeTourismSchema, validateTourismState } from "./tourism";
 import {
   activeBattleSchema,
@@ -86,12 +97,22 @@ const phase3StateSchema = phase2StateSchema
     battleRecords: z.array(battleRecordSchema),
   })
   .strict();
-export const gameStateSchema = phase3StateSchema
+const phase4StateSchema = phase3StateSchema
   .extend({
     schemaVersion: z.literal(4),
     activeTourism: activeTourismSchema.nullable(),
     discoveredClueIds: uniqueStrings,
     visitedLandmarkIds: uniqueStrings,
+  })
+  .strict();
+export const gameStateSchema = phase4StateSchema
+  .extend({
+    schemaVersion: z.literal(5),
+    completedEpisodeIds: uniqueStrings,
+    completedCityIds: uniqueStrings,
+    completedGuideIds: uniqueStrings,
+    pendingApRewards: z.array(pendingApRewardSchema),
+    battleRewardReceipt: battleRewardReceiptSchema.nullable(),
   })
   .strict();
 export type GameState = z.infer<typeof gameStateSchema>;
@@ -106,7 +127,7 @@ export function createGame(
   heroineName = balance.defaultHeroineName,
 ): GameState {
   return {
-    schemaVersion: 4,
+    schemaVersion: 5,
     revision: 0,
     playerName: nameSchema.parse(playerName),
     heroineName: nameSchema.parse(heroineName),
@@ -126,6 +147,11 @@ export function createGame(
     activeTourism: null,
     discoveredClueIds: [],
     visitedLandmarkIds: [],
+    completedEpisodeIds: [],
+    completedCityIds: [],
+    completedGuideIds: [],
+    pendingApRewards: [],
+    battleRewardReceipt: null,
   };
 }
 
@@ -246,27 +272,12 @@ export function grantRewardOnce(
   };
 }
 
+/** Compatibility entry point; real battle evidence is required. */
 export function completeChapter(
   state: GameState,
   chapterId = city.id,
 ): GameState {
-  if (
-    chapterId !== city.id ||
-    state.activeDate ||
-    state.activeBattle ||
-    state.activeTourism ||
-    state.completedChapters.includes(chapterId)
-  )
-    return state;
-  const rewarded = grantRewardOnce(
-    state,
-    city.firstClearReward.rewardSourceId,
-    city.firstClearReward.ap,
-  );
-  return {
-    ...rewarded,
-    completedChapters: [...rewarded.completedChapters, chapterId],
-  };
+  return completeRecordedChapter(state, chapterId);
 }
 
 /** Trial AP sources are finite, separately configured, and never grant affection. */
@@ -342,24 +353,28 @@ export function getDateAvailability(
     return { available: false, reason: "APが足りません。" };
   if (date.kind === "normal" && state.playedDateIds.includes(dateId)) {
     // A replay must never spend the finite budget needed by an unplayed date.
-    const futureAP = trialMilestones
-      .filter((item) => !state.claimedRewardIds.includes(item.rewardSourceId))
-      .reduce((sum, item) => sum + item.ap, 0);
+    const futureAP =
+      trialMilestones
+        .filter((item) => !state.claimedRewardIds.includes(item.rewardSourceId))
+        .reduce((sum, item) => sum + item.ap, 0) +
+      state.pendingApRewards.reduce((sum, item) => sum + item.remainingAp, 0);
     const remainingCost = dates
       .filter(
         (item) =>
           item.kind === "normal" && !state.playedDateIds.includes(item.id),
       )
       .reduce((sum, item) => sum + item.apCost, 0);
-    const availableMilestoneAP = trialMilestones
-      .filter(
-        (item) =>
-          !state.claimedRewardIds.includes(item.rewardSourceId) &&
-          item.requiredPlayedDateIds.every((id) =>
-            state.playedDateIds.includes(id),
-          ),
-      )
-      .reduce((sum, item) => sum + item.ap, 0);
+    const availableMilestoneAP =
+      trialMilestones
+        .filter(
+          (item) =>
+            !state.claimedRewardIds.includes(item.rewardSourceId) &&
+            item.requiredPlayedDateIds.every((id) =>
+              state.playedDateIds.includes(id),
+            ),
+        )
+        .reduce((sum, item) => sum + item.ap, 0) +
+      state.pendingApRewards.reduce((sum, item) => sum + item.remainingAp, 0);
     const nextNormalDates = dates.filter(
       (item) =>
         item.kind === "normal" &&
@@ -444,7 +459,7 @@ export function startDate(state: GameState, dateId: string): GameState {
     ap: state.ap - date.apCost,
   };
   return applyStep(
-    next,
+    settlePendingAp(next),
     {
       dateId,
       runId: `${dateId}:${next.revision}`,
@@ -547,18 +562,20 @@ export function finishDate(
 
 /** Validate the old structure before migrating; never guess when a snapshot is incompatible. */
 export function migrateGameState(input: unknown): GameState {
-  if (
-    typeof input === "object" &&
-    input !== null &&
-    "schemaVersion" in input &&
-    input.schemaVersion === 1
-  ) {
-    const old = oldStateSchema.parse(input);
-    return evaluateProgression({
-      ...old,
+  const version =
+    typeof input === "object" && input !== null && "schemaVersion" in input
+      ? input.schemaVersion
+      : undefined;
+  if (version !== 1 && version !== 2 && version !== 3 && version !== 4)
+    return gameStateSchema.parse(input);
+  let old: z.infer<typeof phase4StateSchema>;
+  if (version === 1) {
+    const parsed = oldStateSchema.parse(input);
+    old = {
+      ...parsed,
       schemaVersion: 4,
-      activeDate: old.activeDate
-        ? { ...old.activeDate, pendingOutcome: null }
+      activeDate: parsed.activeDate
+        ? { ...parsed.activeDate, pendingOutcome: null }
         : null,
       endingReached: false,
       confessionStatus: "none",
@@ -568,17 +585,10 @@ export function migrateGameState(input: unknown): GameState {
       activeTourism: null,
       discoveredClueIds: [],
       visitedLandmarkIds: [],
-    });
-  }
-  if (
-    typeof input === "object" &&
-    input !== null &&
-    "schemaVersion" in input &&
-    input.schemaVersion === 2
-  ) {
-    const old = phase2StateSchema.parse(input);
-    return {
-      ...old,
+    };
+  } else if (version === 2) {
+    old = {
+      ...phase2StateSchema.parse(input),
       schemaVersion: 4,
       activeBattle: null,
       battleRecords: [],
@@ -586,29 +596,50 @@ export function migrateGameState(input: unknown): GameState {
       discoveredClueIds: [],
       visitedLandmarkIds: [],
     };
-  }
-  if (
-    typeof input === "object" &&
-    input !== null &&
-    "schemaVersion" in input &&
-    input.schemaVersion === 3
-  ) {
-    const old = phase3StateSchema.parse(input);
-    return {
-      ...old,
+  } else if (version === 3) {
+    old = {
+      ...phase3StateSchema.parse(input),
       schemaVersion: 4,
       activeTourism: null,
       discoveredClueIds: [],
       visitedLandmarkIds: [],
     };
-  }
-  return gameStateSchema.parse(input);
+  } else old = phase4StateSchema.parse(input);
+  // Do not let new completion inference repair an inconsistent legacy reward record.
+  if (
+    old.completedChapters.includes(city.id) !==
+    old.claimedRewardIds.includes(city.firstClearReward.rewardSourceId)
+  )
+    throw new Error("以前の章報酬の記録が一致しません。");
+  if (
+    old.activeDate &&
+    !dates
+      .find((date) => date.id === old.activeDate!.dateId)
+      ?.requiredCompletedChapters.every((id) =>
+        old.completedChapters.includes(id),
+      )
+  )
+    throw new Error("以前のデートの解放条件が一致しません。");
+  const next: GameState = {
+    ...old,
+    schemaVersion: 5,
+    completedEpisodeIds: [],
+    completedCityIds: [],
+    completedGuideIds: [],
+    pendingApRewards: [],
+    battleRewardReceipt: null,
+  };
+  return migrateJourneyProgress(
+    version === 1 ? evaluateProgression(next) : next,
+  );
 }
 
 export function validateGameState(input: unknown): GameState {
   const state = migrateGameState(input);
   validateBattleState(state);
   validateTourismState(state);
+  validateJourneyState(state);
+  validateRewardState(state);
   const knownMemories = new Set(
     effects.flatMap((effect) => (effect.memoryId ? [effect.memoryId] : [])),
   );

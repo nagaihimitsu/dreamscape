@@ -1,3 +1,4 @@
+import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
 import { describe, expect, it } from "vitest";
 import { balance, city, dates, effects } from "../content";
 import {
@@ -16,7 +17,7 @@ import {
 
 const dateId = dates[0].id;
 function freshDate() {
-  return startDate(completeChapter(createGame()), dateId);
+  return startDate(seedLegacyChapter(createGame()), dateId);
 }
 function untilChoice(state: GameState): GameState {
   let steps = 0;
@@ -61,8 +62,10 @@ describe("AP and date rules", () => {
       heroineName: "花",
     });
   });
-  it("grants first chapter reward exactly once across clicks and reload", () => {
-    const state = completeChapter(createGame());
+  it("protects legacy chapter rewards and prevents mock completion without battle evidence", () => {
+    const initial = createGame();
+    expect(completeChapter(initial)).toBe(initial);
+    const state = seedLegacyChapter(initial);
     expect(state.ap).toBe(city.firstClearReward.ap);
     expect(completeChapter(state)).toBe(state);
     expect(
@@ -87,7 +90,7 @@ describe("AP and date rules", () => {
     const locked = createGame();
     expect(startDate(locked, dateId)).toBe(locked);
     expect(startDate(locked, "unknown")).toBe(locked);
-    const poor = { ...completeChapter(locked), ap: dates[0].apCost - 1 };
+    const poor = { ...seedLegacyChapter(locked), ap: dates[0].apCost - 1 };
     expect(getDateAvailability(poor, dateId).available).toBe(false);
     expect(startDate(poor, dateId)).toBe(poor);
     const started = freshDate();
@@ -125,7 +128,7 @@ describe("Ink choices and reload boundaries", () => {
     for (let second = 0; second < 3; second++) {
       it(`plays route ${first + 1}/${second + 1}, round-tripping every line and choice`, () => {
         let state = startDate(
-          completeChapter(createGame("主人公試験", "ヒロイン試験")),
+          seedLegacyChapter(createGame("主人公試験", "ヒロイン試験")),
           dateId,
         );
         const selected = [first, second];
@@ -164,7 +167,7 @@ describe("Ink choices and reload boundaries", () => {
   }
   it("keeps malicious-looking player names as plain Ink text", () => {
     const state = startDate(
-      completeChapter(createGame("<img src=x>", "{heroine_name}")),
+      seedLegacyChapter(createGame("<img src=x>", "{heroine_name}")),
       dateId,
     );
     const chosen = untilChoice(state);

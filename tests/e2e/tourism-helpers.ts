@@ -1,10 +1,13 @@
 import { expect, type Page } from "@playwright/test";
-import { expectNoOverflow, saved } from "./helpers";
+import { expectNoOverflow, saved, openRevisits } from "./helpers";
 
 export async function openTourismFromEntry(page: Page) {
-  await page
-    .getByRole("button", { name: "観光・観察を試す", exact: true })
-    .click();
+  if (await page.getByTestId("episode-start").isVisible()) {
+    await page.getByTestId("episode-start").click();
+  } else {
+    await openRevisits(page);
+    await page.getByTestId("revisit-tourism-last_supper").click();
+  }
   await expect
     .poll(async () => (await saved(page)).activeTourism?.landmarkId)
     .toBe("last_supper");

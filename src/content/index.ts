@@ -1,4 +1,6 @@
 import battleData from "../../content/battles/catalog.json";
+import journeyData from "../../content/progression/journey.json";
+import { journeySchema } from "./journey-schemas";
 import tourismData from "../../content/tourism/catalog.json";
 import { tourismCatalogSchema } from "./tourism-schemas";
 import generatedQuizzes from "./generated/quizzes.json";
@@ -24,6 +26,9 @@ import {
 } from "./schemas";
 
 export const battles = battleCatalogSchema.parse(battleData).battles;
+export const journeyConfig = journeySchema.parse(journeyData);
+export const episodes = journeyConfig.episodes;
+export const rewardRules = journeyConfig.rewards;
 const tourism = tourismCatalogSchema.parse(tourismData);
 export const landmarks = tourism.landmarks;
 export const tourismAssets = tourism.assets;
@@ -61,3 +66,8 @@ export type {
   TourismClue,
   ObservationRegion,
 } from "./tourism-schemas";
+export type {
+  EpisodeDefinition,
+  RewardRule,
+  JourneyConfig,
+} from "./journey-schemas";

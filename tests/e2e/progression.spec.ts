@@ -5,7 +5,7 @@ import {
   saved,
   expectNoOverflow,
   startNewGame,
-  clearChapter,
+  loadLegacyFreeTime,
   returnToMenu,
   startEvent,
   advanceToChoiceOrEnd,
@@ -14,6 +14,8 @@ import {
   playEvent,
   claimMilestone,
 } from "./helpers";
+
+import { completeEpisode, enterFreeTime } from "./journey-helpers";
 
 test.use({ reducedMotion: "reduce" });
 
@@ -24,16 +26,22 @@ const NIGHT = "milano_night_01";
 const CONFESSION = "milano_confession_01";
 const REASSURANCE = "milano_reassurance_01";
 
-test("lowest-affection choices can recover from a deferred confession and reach the saved ending", async ({
+test("a new zero-score journey reaches free time and low-affection choices recover through the saved romance ending", async ({
   page,
 }) => {
-  test.setTimeout(90_000);
+  test.setTimeout(150_000);
   await page.setViewportSize({ width: 360, height: 740 });
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await startNewGame(page);
   expect((await saved(page)).romanceStage).toBe(1);
-  await clearChapter(page);
+  const episode = await completeEpisode(page, [false, false, false]);
+  expect(episode.ap).toBe(5);
+  expect(episode.affection).toBe(0);
+  expect(episode.discoveredClueIds).toEqual([]);
+  await page.reload();
+  expect(await saved(page)).toEqual(episode);
+  await enterFreeTime(page);
   await expect(page.getByTestId(`event-${CONFESSION}`)).toHaveCount(0);
   await playEvent(page, CAFE, 2, [0, 0]);
   expect((await saved(page)).romanceStage).toBe(2);
@@ -106,7 +114,7 @@ test("warm choices and renamed characters reach a successful first confession wi
 }) => {
   test.setTimeout(90_000);
   await startNewGame(page, ["航", "澪"]);
-  await clearChapter(page);
+  await loadLegacyFreeTime(page);
   await playEvent(page, CAFE, 2, [2, 1]);
   await returnToMenu(page);
   await page.getByRole("button", { name: "設定", exact: true }).click();
@@ -153,7 +161,7 @@ for (const fixtureKey of ["beforeChoice", "afterChoice", "replay"] as const) {
       await choose(page, 1);
     await finishEvent(page, 2);
     const current = await saved(page);
-    expect(current.schemaVersion).toBe(4);
+    expect(current.schemaVersion).toBe(5);
     expect(current.ap).toBe(old.ap);
     expect(current.playerName).toBe(old.playerName);
     expect(current.heroineName).toBe(old.heroineName);

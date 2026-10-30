@@ -19,12 +19,13 @@ export function BattleEntry({
           <div key={battle.id}>
             <div className="section-meta">
               <span className="eyebrow">ミラノ · 英語3択バトル</span>
-              <span className="pill">Phase 3 試遊</span>
+              <span className="pill">再訪・復習</span>
             </div>
             <h2>{battle.titleJa}</h2>
             <p>{battle.descriptionJa}</p>
             <button
               className="primary"
+              data-testid={`revisit-battle-${battle.id}`}
               disabled={!availability.available}
               onClick={() => onStart(battle.id)}
             >
@@ -34,7 +35,7 @@ export function BattleEntry({
               <p className="fine-print">{availability.reason}</p>
             )}
             <p className="fine-print">
-              恋愛の進行やAPはそのまま。3問の短いバトルです。
+              恋愛の進行はそのまま。未達成の好成績ボーナスは、再戦でも一度だけ受け取れます。
               {record &&
                 ` 挑戦${record.attempts}回 · 最高${record.bestScore}問正解`}
             </p>

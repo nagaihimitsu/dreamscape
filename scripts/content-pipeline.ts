@@ -25,6 +25,8 @@ import { parseStoryTags, type TagContext } from "../src/content/tags";
 import { validateBattleStory } from "./battle-validation";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { validateTourism } from "./tourism-validation";
+import { journeySchema } from "../src/content/journey-schemas";
+import { validateJourney } from "./journey-validation";
 
 async function json(file: string): Promise<unknown> {
   try {
@@ -191,6 +193,9 @@ export function validateStory(
 
 export async function buildContent(root: string, writeOutput = true) {
   const content = path.join(root, "content");
+  const journey = journeySchema.parse(
+    await json(path.join(content, "progression/journey.json")),
+  );
   const tourism = tourismCatalogSchema.parse(
     await json(path.join(content, "tourism/catalog.json")),
   );
@@ -452,6 +457,15 @@ export async function buildContent(root: string, writeOutput = true) {
     stories,
     context,
   );
+  validateJourney(
+    journey,
+    city,
+    balance.apCap,
+    tourism.landmarks,
+    battles,
+    quizzes,
+    milestones,
+  );
   for (const storyId of Object.keys(stories)) {
     if (
       !dates.some((date) => date.storyId === storyId) &&
@@ -482,5 +496,6 @@ export async function buildContent(root: string, writeOutput = true) {
     battleScenarios,
     tourism,
     tourismGuides,
+    journey,
   };
 }

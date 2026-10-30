@@ -1,5 +1,6 @@
+import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
 import { describe, expect, it } from "vitest";
-import { battles, battleQuizzes } from "../content";
+import { battles, battleQuizzes, rewardRules } from "../content";
 import {
   createGame,
   completeChapter,
@@ -23,13 +24,18 @@ import { loadGame, saveGame, SAVE_KEY, type StorageLike } from "../persistence";
 const battleId = () => battles[0].id;
 const quiz = () => battleQuizzes[battles[0].quizId];
 function romance(state: GameState) {
-  const {
-    revision: _revision,
-    activeBattle: _battle,
-    battleRecords: _records,
-    ...unchanged
-  } = state;
-  return unchanged;
+  return {
+    playerName: state.playerName,
+    heroineName: state.heroineName,
+    affection: state.affection,
+    romanceStage: state.romanceStage,
+    memories: state.memories,
+    playedDateIds: state.playedDateIds,
+    activeDate: state.activeDate,
+    unlockedEventIds: state.unlockedEventIds,
+    confessionStatus: state.confessionStatus,
+    endingReached: state.endingReached,
+  };
 }
 function roundTrip(state: GameState) {
   const result = validateGameState(JSON.parse(JSON.stringify(state)));
@@ -83,7 +89,7 @@ describe("three-round quiz battle", () => {
   )(
     "scores exact choices %i/%i/%i with reload at every boundary",
     (a, b, c) => {
-      const before = completeChapter(createGame("なお", "りえ"));
+      const before = seedLegacyChapter(createGame("なお", "りえ"));
       const selections = [a, b, c].map(
         (value, index) => quiz().questions[index].options[value].id,
       );
@@ -108,6 +114,14 @@ describe("three-round quiz battle", () => {
         expected === 3 ? "perfect" : expected === 2 ? "victory" : "defeat",
       );
       expect(romance(state)).toEqual(romance(before));
+      const battleAP = rewardRules
+        .filter(
+          (rule) =>
+            rule.trigger === "battle_complete" ||
+            (rule.trigger === "battle_score" && expected >= rule.minScore!),
+        )
+        .reduce((total, rule) => total + rule.ap, 0);
+      expect(state.ap).toBe(before.ap + battleAP);
       expect(advanceBattle(state, state.revision)).toBe(state);
     },
   );
@@ -188,7 +202,7 @@ describe("three-round quiz battle", () => {
     expect(perfect).toMatch(/[ぁ-んァ-ヶ一-龠]/);
   });
   it("records first and best scores across direct replay without duplicate completion", () => {
-    const before = completeChapter(createGame());
+    const before = seedLegacyChapter(createGame());
     let state = finish(startBattle(before, battleId()), choicesForScore(1));
     state = finish(startBattle(state, battleId()), choicesForScore(3));
     state = finish(startBattle(state, battleId()), choicesForScore(0));
@@ -199,6 +213,13 @@ describe("three-round quiz battle", () => {
       bestScore: 3,
       lastScore: 0,
     });
+    const allBattleAP = rewardRules
+      .filter(
+        (rule) =>
+          rule.trigger === "battle_complete" || rule.trigger === "battle_score",
+      )
+      .reduce((total, rule) => total + rule.ap, 0);
+    expect(state.ap).toBe(before.ap + allBattleAP);
     expect(advanceBattle(state, state.revision)).toBe(state);
     const revision = state.revision;
     state = leaveBattle(state, revision);
@@ -207,7 +228,7 @@ describe("three-round quiz battle", () => {
     expect(romance(state)).toEqual(romance(before));
   });
   it("blocks overlapping romance, rewards, names, and battle runs", () => {
-    const before = completeChapter(createGame());
+    const before = seedLegacyChapter(createGame());
     const dating = startDate(before, "milano_cafe_01");
     expect(getBattleAvailability(dating, battleId()).available).toBe(false);
     expect(startBattle(dating, battleId())).toBe(dating);
