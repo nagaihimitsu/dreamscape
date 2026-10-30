@@ -59,7 +59,7 @@ describe("Phase 1 save compatibility", () => {
         throw new Error("Legacy fixture did not load");
       const migrated = loaded.state;
       expect(migrated).toMatchObject({
-        schemaVersion: 5,
+        schemaVersion: 6,
         revision: fixture.revision,
         playerName: fixture.playerName,
         heroineName: fixture.heroineName,
@@ -113,14 +113,14 @@ describe("Phase 1 save compatibility", () => {
     expect(result.playedDateIds).toEqual(fixtures.replay.playedDateIds);
   });
 
-  it("saves the next action as version 5 while retaining optimistic conflict checks", () => {
+  it("saves the next action as version 6 while retaining optimistic conflict checks", () => {
     const storage = new MemoryStorage();
     storage.setItem(SAVE_KEY, JSON.stringify(fixtures.completed));
     const original = parseGameState(storage.getItem(SAVE_KEY)!);
     const next = setNames(original, "凪", "澪");
     expect(saveGame(storage, next, original)).toEqual({ ok: true });
     expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({
-      schemaVersion: 5,
+      schemaVersion: 6,
       playerName: "凪",
       heroineName: "澪",
     });

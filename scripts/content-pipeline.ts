@@ -22,7 +22,11 @@ import {
   type EffectDefinition,
 } from "../src/content/schemas";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
-import { validateBattleStory } from "./battle-validation";
+import {
+  reasoningScenes,
+  validateBattleEvidence,
+  validateBattleStory,
+} from "./battle-validation";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { validateTourism } from "./tourism-validation";
 import { journeySchema } from "../src/content/journey-schemas";
@@ -438,7 +442,12 @@ export async function buildContent(root: string, writeOutput = true) {
     if (!presentation.backgrounds[battle.backgroundAssetId])
       throw new Error(`Unknown battle background: ${battle.backgroundAssetId}`);
     unique(
-      [battle.scenes.intro, ...battle.scenes.afterRounds, battle.scenes.outro],
+      [
+        battle.scenes.intro,
+        ...battle.scenes.afterRounds,
+        battle.scenes.outro,
+        ...reasoningScenes(battle),
+      ],
       "battle scene",
     );
     battleScenarios += validateBattleStory(
@@ -457,6 +466,7 @@ export async function buildContent(root: string, writeOutput = true) {
     stories,
     context,
   );
+  for (const battle of battles) validateBattleEvidence(battle, tourism.clues);
   validateJourney(
     journey,
     city,
@@ -494,6 +504,7 @@ export async function buildContent(root: string, writeOutput = true) {
     battles,
     quizzes,
     battleScenarios,
+    reasoningBattles: battles.filter((battle) => battle.reasoning).length,
     tourism,
     tourismGuides,
     journey,

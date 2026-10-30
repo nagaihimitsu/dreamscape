@@ -1,0 +1,162 @@
+dialog.modal.case-notebook {
+  display: flex;
+  flex-direction: column;
+  width: min(680px, calc(100vw - 24px));
+  max-width: 680px;
+  height: min(880px, 94dvh);
+  max-height: 94dvh;
+  padding: 0;
+  overflow: hidden;
+}
+.case-notebook .cluebook-header {
+  position: static;
+  flex-shrink: 0;
+  padding: 12px 20px 8px;
+}
+.case-notebook .cluebook-header h2 {
+  font-size: 20px;
+}
+.case-context {
+  flex-shrink: 0;
+  padding: 10px 20px 12px;
+  background: #e9eddf;
+  border-bottom: 1px solid #c4cdb5;
+  max-height: 32dvh;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.case-context-label {
+  color: var(--green);
+  font-size: 10px;
+  letter-spacing: .08em;
+  margin-bottom: 4px;
+}
+.case-context blockquote {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.65;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.case-question {
+  margin-top: 7px;
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+.case-notebook .cluebook-body {
+  flex: 1;
+  min-height: 100px;
+  padding: 14px 20px 22px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+.case-provenance {
+  display: inline-block;
+  padding: 3px 8px;
+  margin-bottom: 10px;
+  font-size: 11px;
+  background: #e8ebdf;
+  color: var(--green);
+  border-radius: 3px;
+}
+.case-selected .case-provenance {
+  background: #dce8cf;
+}
+.case-select {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 14px;
+  padding: 10px 12px;
+  border: 1px solid #a8b397;
+  border-radius: 3px;
+  background: #f2f3e9;
+  color: var(--green);
+  font-size: 13px;
+}
+.case-select[aria-pressed="true"] {
+  border: 2px solid var(--green);
+  background: #e1ead6;
+  font-weight: 600;
+}
+.case-select:disabled {
+  opacity: .55;
+}
+.case-select[aria-pressed="true"]:disabled {
+  opacity: 1;
+}
+.case-image-details {
+  margin-top: 8px;
+}
+.case-image-details > summary {
+  min-height: 44px;
+  padding: 10px 0;
+  cursor: pointer;
+  color: var(--green);
+  font-size: 12px;
+}
+.case-image {
+  margin: 0;
+}
+.case-image svg {
+  display: block;
+  width: 100%;
+  max-height: 250px;
+  background: #39372d;
+}
+.case-image .secondary {
+  min-height: 44px;
+  margin: 8px 0;
+}
+.case-image figcaption {
+  color: var(--muted);
+  margin-top: 8px;
+  font-size: 10px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.case-image figcaption a {
+  display: inline-block;
+  min-height: 44px;
+  padding: 12px 8px 8px 0;
+  color: var(--green);
+}
+.case-footer {
+  flex-shrink: 0;
+  padding: 10px 20px max(12px, env(safe-area-inset-bottom));
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+}
+.case-footer p {
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: var(--green);
+}
+.case-footer p span {
+  display: block;
+  font-size: 10px;
+  line-height: 1.5;
+}
+.case-footer .primary {
+  margin: 0;
+  min-height: 46px;
+  padding: 10px 14px;
+}
+@media (max-width: 480px) {
+  dialog.modal.case-notebook {
+    width: 100%;
+    max-width: 100%;
+    height: 96dvh;
+    max-height: 96dvh;
+    margin: auto 0 0;
+    border-radius: 14px 14px 0 0;
+  }
+  .case-notebook .cluebook-header,
+  .case-context,
+  .case-notebook .cluebook-body,
+  .case-footer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}

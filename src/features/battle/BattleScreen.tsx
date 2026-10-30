@@ -5,6 +5,7 @@ import { getBattleOutcome } from "../../domain/battle";
 import { DialogueText } from "../../components/DialogueText";
 import { EnemyPortrait } from "./EnemyPortrait";
 import { BattleRewards } from "../journey/BattleRewards";
+import { ReasoningPanel } from "./ReasoningPanel";
 
 interface Props {
   game: GameState;
@@ -17,6 +18,8 @@ interface Props {
   onLeave: () => void;
   onNotebook?: () => void;
   onClaimRewards: () => void;
+  onPress: () => void;
+  onSubmitEvidence: () => void;
 }
 
 export function BattleScreen({
@@ -30,6 +33,8 @@ export function BattleScreen({
   onLeave,
   onNotebook,
   onClaimRewards,
+  onPress,
+  onSubmitEvidence,
 }: Props) {
   const active = game.activeBattle!;
   const battle = battles.find((item) => item.id === active.battleId)!;
@@ -50,6 +55,9 @@ export function BattleScreen({
   const frame = active.frame;
   const isDialogue = active.phase === "dialogue";
   const isResult = active.phase === "result";
+  const isSpecial = !!battle.reasoning;
+  const showReasoning =
+    !!battle.reasoning && battle.reasoning.roundIndex === active.roundIndex;
 
   return (
     <div className="battle-screen" data-phase={active.phase}>
@@ -62,7 +70,7 @@ export function BattleScreen({
           <h1>{battle.enemyNameJa}</h1>
           <p className="enemy-detail">{battle.enemyDescriptionJa}</p>
         </div>
-        <EnemyPortrait emotion={frame?.emotion} />
+        <EnemyPortrait emotion={frame?.emotion} variant={battle.format} />
       </div>
       <section
         className="paper battle-paper"
@@ -135,9 +143,16 @@ export function BattleScreen({
                 {record.bestScore}問正解
               </p>
             )}
-            <BattleRewards game={game} onClaim={onClaimRewards} />
+            {isSpecial ? (
+              <p className="special-result-note">
+                特別対決の戦績を記録しました。この対決によるAPや恋愛の進行の変化はありません。
+              </p>
+            ) : (
+              <BattleRewards game={game} onClaim={onClaimRewards} />
+            )}
             <button className="primary" onClick={onLeave}>
-              自由時間へ進む <span aria-hidden="true">→</span>
+              {isSpecial ? "自由時間へ戻る" : "自由時間へ進む"}{" "}
+              <span aria-hidden="true">→</span>
             </button>
             <button className="secondary" onClick={onReplay}>
               再戦する <span aria-hidden="true">↻</span>
@@ -178,13 +193,30 @@ export function BattleScreen({
               {frame.ended
                 ? active.dialogueScene === battle.scenes.outro
                   ? "結果を見る"
-                  : "問題へ進む"
+                  : isSpecial
+                    ? "次へ進む"
+                    : "問題へ進む"
                 : "続きを読む"}{" "}
               <span aria-hidden="true">→</span>
             </button>
           </>
+        ) : active.phase === "reasoning" ? (
+          <ReasoningPanel
+            game={game}
+            onNotebook={onNotebook!}
+            onPress={onPress}
+            onSubmit={onSubmitEvidence}
+          />
         ) : (
           <div className="question-area" data-testid="battle-question">
+            {showReasoning && (
+              <ReasoningPanel
+                game={game}
+                onNotebook={onNotebook!}
+                onPress={onPress}
+                onSubmit={onSubmitEvidence}
+              />
+            )}
             <h2 className="question-en" lang="en">
               {question.questionEn}
             </h2>
@@ -269,8 +301,8 @@ export function BattleScreen({
                 <details className="quiz-sources">
                   <summary>解説の根拠を読む</summary>
                   <ul>
-                    {question.sources.map((source) => (
-                      <li key={source.url}>
+                    {question.sources.map((source, index) => (
+                      <li key={`${source.url}:${index}`}>
                         <a href={source.url} target="_blank" rel="noreferrer">
                           {source.publisher}
                         </a>

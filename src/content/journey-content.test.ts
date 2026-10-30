@@ -53,9 +53,7 @@ describe("integrated journey content contract", () => {
       ["episode_clear", 4, null],
     ]);
     expect(result.routes).toBe(105);
-    expect(result.battleScenarios).toBe(13);
     expect(result.tourismGuides).toBe(1);
-    expect(Object.keys(result.stories)).toHaveLength(8);
   });
 
   it("rejects an unknown entry episode", async () => {

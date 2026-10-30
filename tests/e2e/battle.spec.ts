@@ -195,7 +195,7 @@ test("a real Phase 2 ending save can play a battle and return to the same ending
   const before = romanceProgress(await saved(page));
   await startBattleFromEntry(page);
   const result = await playBattle(page, quiz.questions, [true, false, true]);
-  expect(result.state.schemaVersion).toBe(5);
+  expect(result.state.schemaVersion).toBe(6);
   expect(romanceProgress(result.state)).toEqual(before);
   await page
     .getByRole("button", { name: "自由時間へ進む", exact: true })
@@ -231,7 +231,7 @@ test("a real Phase 2 romance conversation resumes safely and blocks battle entry
   await expect
     .poll(async () => (await saved(page)).revision)
     .toBeGreaterThan(before.revision);
-  expect((await saved(page)).schemaVersion).toBe(5);
+  expect((await saved(page)).schemaVersion).toBe(6);
   expect((await saved(page)).activeBattle).toBeNull();
   expect((await saved(page)).ap).toBe(before.ap);
 });

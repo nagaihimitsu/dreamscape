@@ -98,7 +98,12 @@ function recordEpisodes(state: GameState): GameState {
 /** Called inside the battle's final atomic transition, after its score/history were recorded. */
 export function finalizeBattleProgress(state: GameState): GameState {
   const active = state.activeBattle;
-  if (!active || active.phase !== "result") return state;
+  if (
+    !active ||
+    active.phase !== "result" ||
+    !episodes.some((episode) => episode.battleId === active.battleId)
+  )
+    return state;
   const next = recordEpisodes(state);
   const ids = rewardRules
     .filter((rule) => {

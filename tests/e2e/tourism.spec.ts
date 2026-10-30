@@ -317,16 +317,20 @@ test("an authentic Phase 3 answered battle migrates without changing its answer 
   await skipTourismGuide(page);
   await page.getByTestId(`discovery-${hotspots[0].id}`).click();
   const migrated = await saved(page);
-  expect(migrated.schemaVersion).toBe(5);
-  expect(migrated.activeBattle).toEqual(phase3.feedback.activeBattle);
+  expect(migrated.schemaVersion).toBe(6);
+  expect(migrated.activeBattle).toEqual({
+    ...phase3.feedback.activeBattle,
+    reasoning: null,
+  });
   expect(romanceProgress(migrated)).toEqual(
     romanceProgress(phase3.feedback as unknown as typeof migrated),
   );
   await reloadUnchanged(page);
   await page.getByRole("button", { name: "バトルに戻る", exact: true }).click();
-  expect((await saved(page)).activeBattle).toEqual(
-    phase3.feedback.activeBattle,
-  );
+  expect((await saved(page)).activeBattle).toEqual({
+    ...phase3.feedback.activeBattle,
+    reasoning: null,
+  });
   for (const option of quiz.questions[0].options)
     await expect(page.getByTestId(`answer-${option.id}`)).toBeDisabled();
   await page.getByTestId("battle-advance").click();

@@ -5,7 +5,14 @@ import {
   useState,
   type FormEvent,
 } from "react";
-import { balance, dates, presentation, battles, landmarks } from "../content";
+import {
+  balance,
+  dates,
+  presentation,
+  battles,
+  battleQuizzes,
+  landmarks,
+} from "../content";
 import {
   advanceDate,
   chooseDate,
@@ -51,6 +58,11 @@ import {
   advanceBattle,
   answerBattle,
   toggleBattleHint,
+  getReasoningContext,
+  selectReasoningClue,
+  pressBattleClaim,
+  submitBattleEvidence,
+  leaveBattle,
 } from "../domain/battle";
 
 const storage = {
@@ -149,10 +161,14 @@ export default function App() {
       document.getElementById("main")?.scrollIntoView({ block: "start" });
   }, [active?.dateId, result, game?.endingReached]);
   const currentDate = dates.find((date) => date.id === active?.dateId);
+  const currentBattle = battles.find(
+    (battle) => battle.id === game?.activeBattle?.battleId,
+  );
+  const reasoningRule = currentBattle?.reasoning;
+  const reasoningContext =
+    game && reasoningRule ? getReasoningContext(game) : null;
   const currentLandmarkId =
-    game?.activeTourism?.landmarkId ??
-    battles.find((battle) => battle.id === game?.activeBattle?.battleId)
-      ?.landmarkId;
+    game?.activeTourism?.landmarkId ?? currentBattle?.landmarkId;
   const canObserve = landmarks.some(
     (landmark) => landmark.id === currentLandmarkId,
   );
@@ -193,7 +209,7 @@ export default function App() {
         <a href="#main" className="brand">
           Dreamscape<span>旅の余白</span>
         </a>
-        <span className="edition">ミラノ編 · Phase 5</span>
+        <span className="edition">ミラノ編 · Phase 6</span>
       </header>
       {game && (
         <div className="journey-bar">
@@ -210,7 +226,11 @@ export default function App() {
       )}
       {game && (
         <div className="journey-stage" aria-label="旅の進行">
-          <span>{getCurrentEpisode(game).titleJa}</span>
+          <span>
+            {reasoningRule
+              ? `${landmarks.find((item) => item.id === currentLandmarkId)?.nameJa} · 特別対決`
+              : getCurrentEpisode(game).titleJa}
+          </span>
           <span>
             {game.activeTourism
               ? game.activeTourism.phase === "guide"
@@ -218,8 +238,12 @@ export default function App() {
                 : "自由な観察"
               : game.activeBattle
                 ? game.activeBattle.phase === "result"
-                  ? "旅の一区切り"
-                  : "クイズバトル"
+                  ? reasoningRule
+                    ? "対決の結果"
+                    : "旅の一区切り"
+                  : reasoningRule
+                    ? "証拠で考える"
+                    : "クイズバトル"
                 : freeTimeAvailable
                   ? "ふたりの自由時間"
                   : "出発前"}
@@ -331,11 +355,23 @@ export default function App() {
             onHint={() =>
               commit((state) => toggleBattleHint(state, game.revision))
             }
+            onPress={() =>
+              commit((state) => pressBattleClaim(state, game.revision))
+            }
+            onSubmitEvidence={() =>
+              commit((state) => submitBattleEvidence(state, game.revision))
+            }
             onReplay={() =>
               commit((state) => startBattle(state, game.activeBattle!.battleId))
             }
             onLeave={() => {
-              if (commit((state) => enterFreeTime(state, game.revision))) {
+              if (
+                commit((state) =>
+                  reasoningRule
+                    ? leaveBattle(state, game.revision)
+                    : enterFreeTime(state, game.revision),
+                )
+              ) {
                 setResult(false);
                 setPaused(false);
               }
@@ -587,8 +623,32 @@ export default function App() {
           landmarkId={currentLandmarkId}
           discoveredIds={game.discoveredClueIds}
           onClose={() => setNotebook(false)}
-          onObserve={
+          reasoning={
+            reasoningRule &&
+            currentBattle &&
+            game.activeBattle &&
+            reasoningContext &&
             !game.activeTourism
+              ? {
+                  caseClueIds: reasoningRule.caseClueIds,
+                  claimText: reasoningContext.claimText,
+                  questionEn:
+                    battleQuizzes[currentBattle.quizId].questions[
+                      game.activeBattle.roundIndex
+                    ].questionEn,
+                  selectedIds:
+                    game.activeBattle.reasoning?.selectedClueIds ?? [],
+                  maxSelections: reasoningRule.kind === "contradiction" ? 1 : 2,
+                  selectionEnabled: game.activeBattle.phase === "reasoning",
+                  onSelect: (id) =>
+                    commit((state) =>
+                      selectReasoningClue(state, id, game.revision),
+                    ),
+                }
+              : undefined
+          }
+          onObserve={
+            !game.activeTourism && !reasoningRule
               ? () => {
                   if (commit((state) => openTourism(state, currentLandmarkId)))
                     setNotebook(false);

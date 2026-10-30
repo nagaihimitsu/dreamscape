@@ -51,13 +51,18 @@ describe("Phase 3 save compatibility", () => {
       } = fixture;
       expect(loaded.state).toMatchObject({
         ...protectedFields,
-        schemaVersion: 5,
+        schemaVersion: 6,
         activeTourism: null,
         discoveredClueIds: [],
         visitedLandmarkIds: [],
         completedCityIds: [],
         completedGuideIds: [],
       });
+      expect(loaded.state.activeBattle).toEqual(
+        fixture.activeBattle
+          ? { ...fixture.activeBattle, reasoning: null }
+          : null,
+      );
       expect(loaded.state.completedChapters).toEqual(
         fixture.battleRecords.length
           ? [episodes[0].legacyChapterId]
@@ -121,7 +126,7 @@ describe("Phase 3 save compatibility", () => {
     },
   );
 
-  it("commits schema 5 on first discovery and rejects stale tab changes", () => {
+  it("commits schema 6 on first discovery and rejects stale tab changes", () => {
     const storage = new MemoryStorage();
     const raw = JSON.stringify(fixtures.question);
     storage.setItem(SAVE_KEY, raw);
@@ -136,7 +141,7 @@ describe("Phase 3 save compatibility", () => {
       exploring.revision,
     );
     expect(saveGame(storage, discovered, exploring)).toEqual({ ok: true });
-    expect(JSON.parse(storage.getItem(SAVE_KEY)!).schemaVersion).toBe(5);
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!).schemaVersion).toBe(6);
     expect(
       saveGame(
         storage,
@@ -145,7 +150,10 @@ describe("Phase 3 save compatibility", () => {
       ).ok,
     ).toBe(false);
     expect(parseGameState(storage.getItem(SAVE_KEY)!)).toEqual(discovered);
-    expect(discovered.activeBattle).toEqual(fixtures.question.activeBattle);
+    expect(discovered.activeBattle).toEqual({
+      ...fixtures.question.activeBattle,
+      reasoning: null,
+    });
   });
 });
 

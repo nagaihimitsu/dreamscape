@@ -55,6 +55,7 @@ export const tagContext = {
 };
 export type {
   BattleDefinition,
+  BattleReasoning,
   QuizDefinition,
   QuizQuestion,
   DateDefinition,

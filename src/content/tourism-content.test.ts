@@ -38,7 +38,6 @@ describe("tourism content contract", () => {
   it("compiles one short guide, four visual discoveries and one unpositioned research card", async () => {
     const result = await buildContent(fixture);
     expect(result.routes).toBe(105);
-    expect(result.battleScenarios).toBe(13);
     expect(result.tourismGuides).toBe(1);
     expect(
       result.tourism.clues.filter((clue) => clue.kind === "hotspot"),

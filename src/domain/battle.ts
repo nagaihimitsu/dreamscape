@@ -1,6 +1,12 @@
 import { z } from "zod";
 import { finalizeBattleProgress } from "./chapter";
-import { battles, battleQuizzes, progression } from "../content";
+import {
+  battles,
+  battleQuizzes,
+  progression,
+  tourismClues,
+  type BattleDefinition,
+} from "../content";
 import {
   beginStory,
   continueStory,
@@ -28,7 +34,7 @@ export const battleRecordSchema = z
     lastScore: z.number().int().min(0).max(3),
   })
   .strict();
-export const activeBattleSchema = z
+export const legacyActiveBattleSchema = z
   .object({
     battleId: z.string().min(1),
     runId: z.string().min(1),
@@ -44,6 +50,22 @@ export const activeBattleSchema = z
     frame: storyFrameSchema.nullable(),
   })
   .strict();
+/** One small proof step per special battle; quiz answers remain the only score source. */
+const reasoningStateSchema = z
+  .object({
+    statementId: z.string().min(1),
+    selectedClueIds: z.array(z.string().min(1)).max(2),
+    submittedClueIds: z.array(z.string().min(1)).max(2),
+    pressed: z.boolean(),
+    status: z.enum(["selecting", "incorrect", "accepted"]),
+  })
+  .strict();
+export const activeBattleSchema = legacyActiveBattleSchema
+  .extend({
+    phase: z.enum(["dialogue", "reasoning", "question", "feedback", "result"]),
+    reasoning: reasoningStateSchema.nullable(),
+  })
+  .strict();
 export type ActiveBattle = z.infer<typeof activeBattleSchema>;
 export type BattleRecord = z.infer<typeof battleRecordSchema>;
 export type BattleOutcome = "perfect" | "victory" | "defeat";
@@ -54,11 +76,19 @@ export function getBattleOutcome(score: number): BattleOutcome {
 export function battleFingerprint(id: string): string {
   const battle = battles.find((item) => item.id === id);
   if (!battle) throw new Error("バトルが見つかりません。");
-  const content = JSON.stringify([
+  const parts: unknown[] = [
     battle,
     battleQuizzes[battle.quizId],
     storyFingerprint(battle.storyId),
-  ]);
+  ];
+  // Preserve every existing A fingerprint; special proofs also depend on the case evidence.
+  if (battle.reasoning)
+    parts.push(
+      battle.reasoning.caseClueIds.map((clueId) =>
+        tourismClues.find((clue) => clue.id === clueId),
+      ),
+    );
+  const content = JSON.stringify(parts);
   let hash = 2166136261;
   for (let index = 0; index < content.length; index++)
     hash = Math.imul(hash ^ content.charCodeAt(index), 16777619);
@@ -133,6 +163,7 @@ export function startBattle(state: GameState, battleId: string): GameState {
     dialogueScene: null,
     storyState: null,
     frame: null,
+    reasoning: null,
   };
   return {
     ...state,
@@ -141,6 +172,172 @@ export function startBattle(state: GameState, battleId: string): GameState {
     battleRewardReceipt: null,
   };
 }
+function sameClues(left: string[], right: string[]): boolean {
+  return left.length === right.length && left.every((id) => right.includes(id));
+}
+function specialScene(battle: BattleDefinition, scene: string | null): boolean {
+  const config = battle.reasoning;
+  return (
+    !!config &&
+    scene !== null &&
+    [
+      config.claimScene,
+      config.successScene,
+      config.failureScene,
+      config.kind === "contradiction" ? config.pressScene : null,
+    ].includes(scene)
+  );
+}
+
+/** Current case statement is always readable, including while the notebook is open. */
+export function getReasoningContext(
+  state: GameState,
+): { claimText: string; pressedText: string | null } | null {
+  const active = state.activeBattle;
+  const battle = battles.find((item) => item.id === active?.battleId);
+  const config = battle?.reasoning;
+  if (!active || !battle || !config) return null;
+  // A later quiz answer must not rewrite the statement that introduced this proof.
+  const priorAnswers = active.answers.slice(0, config.roundIndex);
+  const context = {
+    ...active,
+    answers: priorAnswers,
+    score: priorAnswers.filter((answer) => answer.correct).length,
+  };
+  const readScene = (scene: string): string => {
+    let current = withDialogue(state, context, scene);
+    const lines: string[] = [];
+    for (let count = 0; count < 200; count++) {
+      if (current.frame!.text && current.frame!.text !== lines.at(-1))
+        lines.push(current.frame!.text);
+      if (current.frame!.ended) return lines.join("\n");
+      current = fromStory(
+        current,
+        continueStory(battle.storyId, current.storyState!, current.frame!),
+      );
+    }
+    throw new Error("推理の主張が長すぎます。");
+  };
+  return {
+    claimText: readScene(config.claimScene),
+    pressedText:
+      active.reasoning?.pressed && config.kind === "contradiction"
+        ? readScene(config.pressScene)
+        : null,
+  };
+}
+
+export function selectReasoningClue(
+  state: GameState,
+  clueId: string,
+  expectedRevision: number,
+): GameState {
+  const active = state.activeBattle;
+  const config = battles.find(
+    (item) => item.id === active?.battleId,
+  )?.reasoning;
+  if (
+    state.activeTourism ||
+    state.revision !== expectedRevision ||
+    active?.phase !== "reasoning" ||
+    !active.reasoning ||
+    !config ||
+    !config.caseClueIds.includes(clueId)
+  )
+    return state;
+  const selected = active.reasoning.selectedClueIds;
+  const next = selected.includes(clueId)
+    ? selected.filter((id) => id !== clueId)
+    : config.kind === "contradiction"
+      ? [clueId]
+      : selected.length < 2
+        ? [...selected, clueId]
+        : selected;
+  if (next === selected) return state;
+  return {
+    ...state,
+    revision: state.revision + 1,
+    activeBattle: {
+      ...active,
+      reasoning: {
+        ...active.reasoning,
+        selectedClueIds: next,
+        submittedClueIds: [],
+        status: "selecting",
+      },
+    },
+  };
+}
+
+export function pressBattleClaim(
+  state: GameState,
+  expectedRevision: number,
+): GameState {
+  const active = state.activeBattle;
+  const config = battles.find(
+    (item) => item.id === active?.battleId,
+  )?.reasoning;
+  if (
+    state.activeTourism ||
+    state.revision !== expectedRevision ||
+    active?.phase !== "reasoning" ||
+    !active.reasoning ||
+    config?.kind !== "contradiction"
+  )
+    return state;
+  return {
+    ...state,
+    revision: state.revision + 1,
+    activeBattle: withDialogue(
+      state,
+      {
+        ...active,
+        reasoning: { ...active.reasoning, pressed: true },
+      },
+      config.pressScene,
+    ),
+  };
+}
+
+export function submitBattleEvidence(
+  state: GameState,
+  expectedRevision: number,
+): GameState {
+  const active = state.activeBattle;
+  const config = battles.find(
+    (item) => item.id === active?.battleId,
+  )?.reasoning;
+  if (
+    state.activeTourism ||
+    state.revision !== expectedRevision ||
+    active?.phase !== "reasoning" ||
+    !active.reasoning ||
+    !config ||
+    active.reasoning.selectedClueIds.length !== config.correctClueIds.length
+  )
+    return state;
+  const accepted = sameClues(
+    active.reasoning.selectedClueIds,
+    config.correctClueIds,
+  );
+  return {
+    ...state,
+    revision: state.revision + 1,
+    activeBattle: withDialogue(
+      state,
+      {
+        ...active,
+        reasoning: {
+          ...active.reasoning,
+          submittedClueIds: [...active.reasoning.selectedClueIds],
+          status: accepted ? "accepted" : "incorrect",
+        },
+      },
+      accepted ? config.successScene : config.failureScene,
+    ),
+  };
+}
+
 export function answerBattle(
   state: GameState,
   optionId: string,
@@ -224,6 +421,22 @@ export function advanceBattle(
       activeBattle: fromStory(active, step),
     };
   }
+  if (specialScene(battle, active.dialogueScene)) {
+    return {
+      ...state,
+      revision: state.revision + 1,
+      activeBattle: {
+        ...active,
+        phase:
+          active.reasoning!.status === "accepted" ? "question" : "reasoning",
+        dialogueScene: null,
+        storyState: null,
+        frame: null,
+        hintOpen: false,
+        hintUsed: false,
+      },
+    };
+  }
   if (active.dialogueScene === battle.scenes.outro) {
     const previous = state.battleRecords.find(
       (record) => record.battleId === active.battleId,
@@ -260,6 +473,34 @@ export function advanceBattle(
         record,
       ],
     });
+  }
+  const config = battle.reasoning;
+  if (
+    config &&
+    config.roundIndex === active.answers.length &&
+    !active.reasoning
+  ) {
+    return {
+      ...state,
+      revision: state.revision + 1,
+      activeBattle: withDialogue(
+        state,
+        {
+          ...active,
+          roundIndex: config.roundIndex,
+          hintOpen: false,
+          hintUsed: false,
+          reasoning: {
+            statementId: config.claimScene,
+            selectedClueIds: [],
+            submittedClueIds: [],
+            pressed: false,
+            status: "selecting",
+          },
+        },
+        config.claimScene,
+      ),
+    };
   }
   return {
     ...state,
@@ -321,6 +562,8 @@ export function validateBattleState(state: GameState): void {
       "バトルが更新されています。以前の途中データは保管されています。",
     );
   const quiz = battleQuizzes[battle.quizId];
+  const isSpecialScene = specialScene(battle, active.dialogueScene);
+  validateReasoningState(active, battle);
   active.answers.forEach((answer, index) => {
     const question = quiz.questions[index];
     if (
@@ -335,18 +578,21 @@ export function validateBattleState(state: GameState): void {
   if (active.hintOpen && !active.hintUsed)
     throw new Error("ヒントの記録が一致しません。");
   if (
-    (active.phase === "dialogue" || active.phase === "result") &&
+    active.phase !== "question" &&
+    active.phase !== "feedback" &&
     active.hintOpen
   )
     throw new Error("会話中にヒントは開けません。");
   if (
     active.answers.length &&
     active.phase !== "question" &&
+    active.phase !== "reasoning" &&
+    !isSpecialScene &&
     active.answers.at(-1)!.hintUsed !== active.hintUsed
   )
     throw new Error("回答時のヒント記録が一致しません。");
   if (
-    active.phase === "question" &&
+    (active.phase === "question" || active.phase === "reasoning") &&
     active.answers.length !== active.roundIndex
   )
     throw new Error("問題の位置が一致しません。");
@@ -367,13 +613,16 @@ export function validateBattleState(state: GameState): void {
       throw new Error("最終結果が一致しません。");
   }
   if (active.phase === "dialogue") {
-    const expectedScene =
-      active.answers.length === 0
+    const expectedScene = isSpecialScene
+      ? active.dialogueScene
+      : active.answers.length === 0
         ? battle.scenes.intro
         : active.answers.length === 3
           ? battle.scenes.outro
           : battle.scenes.afterRounds[active.answers.length - 1];
-    const expectedRound = Math.max(0, active.answers.length - 1);
+    const expectedRound = isSpecialScene
+      ? battle.reasoning!.roundIndex
+      : Math.max(0, active.answers.length - 1);
     if (
       active.dialogueScene !== expectedScene ||
       active.roundIndex !== expectedRound ||
@@ -394,4 +643,98 @@ export function validateBattleState(state: GameState): void {
     active.dialogueScene !== null
   )
     throw new Error("不要な会話状態が保存されています。");
+}
+
+/** Do not accept forged proof flags, unrelated evidence, or a skipped proof stage. */
+function validateReasoningState(
+  active: ActiveBattle,
+  battle: BattleDefinition,
+): void {
+  const config = battle.reasoning;
+  const proof = active.reasoning;
+  const special = specialScene(battle, active.dialogueScene);
+  const fail = () => {
+    throw new Error("保存された推理の進行が一致しません。");
+  };
+  if (!config) {
+    if (proof || active.phase === "reasoning") fail();
+    return;
+  }
+  if (!proof) {
+    if (
+      special ||
+      active.phase === "reasoning" ||
+      (active.roundIndex >= config.roundIndex && active.phase !== "dialogue") ||
+      active.answers.length > config.roundIndex
+    )
+      fail();
+    return;
+  }
+  if (
+    proof.statementId !== config.claimScene ||
+    active.roundIndex < config.roundIndex ||
+    (active.answers.length === config.roundIndex &&
+      active.phase === "dialogue" &&
+      !special)
+  )
+    fail();
+  for (const ids of [proof.selectedClueIds, proof.submittedClueIds]) {
+    if (
+      new Set(ids).size !== ids.length ||
+      ids.length > config.correctClueIds.length ||
+      ids.some((id) => !config.caseClueIds.includes(id))
+    )
+      fail();
+  }
+  if (config.kind === "connection" && proof.pressed) fail();
+  if (proof.status === "selecting") {
+    if (proof.submittedClueIds.length) fail();
+  } else {
+    if (
+      proof.submittedClueIds.length !== config.correctClueIds.length ||
+      !sameClues(proof.selectedClueIds, proof.submittedClueIds) ||
+      (proof.status === "accepted") !==
+        sameClues(proof.submittedClueIds, config.correctClueIds)
+    )
+      fail();
+  }
+  if (
+    active.phase === "reasoning" &&
+    (proof.status === "accepted" || active.roundIndex !== config.roundIndex)
+  )
+    fail();
+  if (special) {
+    if (
+      active.phase !== "dialogue" ||
+      active.roundIndex !== config.roundIndex ||
+      active.answers.length !== config.roundIndex ||
+      active.hintUsed
+    )
+      fail();
+    if (
+      active.dialogueScene === config.claimScene &&
+      (proof.pressed ||
+        proof.status !== "selecting" ||
+        proof.selectedClueIds.length)
+    )
+      fail();
+    if (
+      config.kind === "contradiction" &&
+      active.dialogueScene === config.pressScene &&
+      (!proof.pressed || proof.status === "accepted")
+    )
+      fail();
+    if (
+      active.dialogueScene === config.successScene &&
+      proof.status !== "accepted"
+    )
+      fail();
+    if (
+      active.dialogueScene === config.failureScene &&
+      proof.status !== "incorrect"
+    )
+      fail();
+  } else if (active.phase !== "reasoning" && proof.status !== "accepted")
+    fail();
+  if (active.phase === "reasoning" && active.hintUsed) fail();
 }

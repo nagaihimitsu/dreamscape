@@ -34,7 +34,7 @@ describe("published Phase 4 saves migrate without overwriting their checkpoints"
       if (loaded.status !== "loaded")
         throw new Error("Actual Phase 4 save failed to load");
       const next = loaded.state;
-      expect(next.schemaVersion).toBe(5);
+      expect(next.schemaVersion).toBe(6);
       for (const key of [
         "playerName",
         "heroineName",
@@ -48,13 +48,17 @@ describe("published Phase 4 saves migrate without overwriting their checkpoints"
         "confessionStatus",
         "endingReached",
         "activeDate",
-        "activeBattle",
         "battleRecords",
         "activeTourism",
         "visitedLandmarkIds",
         "discoveredClueIds",
       ] as const)
         expect(next[key], key).toEqual(fixture[key]);
+      expect(next.activeBattle).toEqual(
+        fixture.activeBattle
+          ? { ...fixture.activeBattle, reasoning: null }
+          : null,
+      );
       expect(next.completedCityIds).toEqual([]);
       expect(next.completedGuideIds).toEqual([]); // A visit may have skipped its guide.
       expect(next.claimedRewardIds).toEqual(
@@ -81,7 +85,10 @@ describe("published Phase 4 saves migrate without overwriting their checkpoints"
     expect(received.pendingApRewards).toEqual([]);
     expect(claimPendingRewards(received, state.revision)).toBe(received);
     expect(claimPendingRewards(received, received.revision)).toBe(received);
-    expect(received.activeBattle).toEqual(fixtures.result.activeBattle);
+    expect(received.activeBattle).toEqual({
+      ...fixtures.result.activeBattle,
+      reasoning: null,
+    });
     expect(validateGameState(JSON.parse(JSON.stringify(received)))).toEqual(
       received,
     );

@@ -164,10 +164,13 @@ test("a real Phase 4 completed battle migrates without overwriting AP, then outs
       button.click();
     });
   const migrated = await saved(page);
-  expect(migrated.schemaVersion).toBe(5);
+  expect(migrated.schemaVersion).toBe(6);
   expect(migrated.ap).toBe(6);
   expect(migrated.pendingApRewards).toEqual([]);
-  expect(migrated.activeBattle).toEqual(phase4.result.activeBattle);
+  expect(migrated.activeBattle).toEqual({
+    ...phase4.result.activeBattle,
+    reasoning: null,
+  });
   expect(migrated.battleRecords).toEqual(phase4.result.battleRecords);
   expect(migrated.completedEpisodeIds).toEqual(["milano_last_supper_episode"]);
   expect(migrated.completedCityIds).toEqual([]);

@@ -1,0 +1,759 @@
+{
+  "empty": {
+    "schemaVersion": 5,
+    "revision": 0,
+    "playerName": "航",
+    "heroineName": "澪",
+    "ap": 0,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [],
+    "claimedRewardIds": [],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null,
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": null,
+    "battleRecords": [],
+    "activeTourism": null,
+    "discoveredClueIds": [],
+    "visitedLandmarkIds": [],
+    "completedEpisodeIds": [],
+    "completedCityIds": [],
+    "completedGuideIds": [],
+    "pendingApRewards": [],
+    "battleRewardReceipt": null
+  },
+  "guide": {
+    "schemaVersion": 5,
+    "revision": 1,
+    "playerName": "航",
+    "heroineName": "澪",
+    "ap": 0,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [],
+    "claimedRewardIds": [],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null,
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": null,
+    "battleRecords": [],
+    "activeTourism": {
+      "landmarkId": "last_supper",
+      "phase": "guide",
+      "contentHash": "tourism/last_supper_guide:b9a9cdb6",
+      "storyState": "{\"flows\":{\"DEFAULT_FLOW\":{\"callstack\":{\"threads\":[{\"callstack\":[{\"cPath\":\"0\",\"idx\":8,\"exp\":false,\"type\":0}],\"threadIndex\":0,\"previousContentObject\":\"0.7\"}],\"threadCounter\":0},\"outputStream\":[\"#\",\"^background: milano_refectory\",\"/#\",\"#\",\"^speaker: narrator\",\"/#\",\"^ミラノ、サンタ・マリア・デッレ・グラツィエ修道院の旧食堂。壁の向こうにも、食卓が続いているようだった。\",\"\\n\"],\"currentChoices\":[]}},\"currentFlowName\":\"DEFAULT_FLOW\",\"variablesState\":{\"player_name\":\"^航\",\"heroine_name\":\"^澪\",\"player_address\":\"^航さん\"},\"evalStack\":[],\"visitCounts\":{},\"turnIndices\":{},\"turnIdx\":-1,\"storySeed\":44,\"previousRandom\":0,\"inkSaveVersion\":10,\"inkFormatVersion\":21}",
+      "frame": {
+        "text": "ミラノ、サンタ・マリア・デッレ・グラツィエ修道院の旧食堂。壁の向こうにも、食卓が続いているようだった。",
+        "speaker": "narrator",
+        "background": "milano_refectory",
+        "emotion": "neutral",
+        "choices": [],
+        "ended": false
+      }
+    },
+    "discoveredClueIds": [],
+    "visitedLandmarkIds": [],
+    "completedEpisodeIds": [],
+    "completedCityIds": [],
+    "completedGuideIds": [],
+    "pendingApRewards": [],
+    "battleRewardReceipt": null
+  },
+  "exploring": {
+    "schemaVersion": 5,
+    "revision": 6,
+    "playerName": "航",
+    "heroineName": "澪",
+    "ap": 1,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [],
+    "claimedRewardIds": [
+      "guide_last_supper_first_read"
+    ],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null,
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": null,
+    "battleRecords": [],
+    "activeTourism": {
+      "landmarkId": "last_supper",
+      "phase": "exploring",
+      "contentHash": "tourism/last_supper_guide:b9a9cdb6",
+      "storyState": null,
+      "frame": null
+    },
+    "discoveredClueIds": [],
+    "visitedLandmarkIds": [
+      "last_supper"
+    ],
+    "completedEpisodeIds": [],
+    "completedCityIds": [],
+    "completedGuideIds": [
+      "last_supper"
+    ],
+    "pendingApRewards": [],
+    "battleRewardReceipt": null
+  },
+  "discovered": {
+    "schemaVersion": 5,
+    "revision": 7,
+    "playerName": "航",
+    "heroineName": "澪",
+    "ap": 1,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [],
+    "claimedRewardIds": [
+      "guide_last_supper_first_read"
+    ],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null,
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": null,
+    "battleRecords": [],
+    "activeTourism": {
+      "landmarkId": "last_supper",
+      "phase": "exploring",
+      "contentHash": "tourism/last_supper_guide:b9a9cdb6",
+      "storyState": null,
+      "frame": null
+    },
+    "discoveredClueIds": [
+      "last_supper_perspective"
+    ],
+    "visitedLandmarkIds": [
+      "last_supper"
+    ],
+    "completedEpisodeIds": [],
+    "completedCityIds": [],
+    "completedGuideIds": [
+      "last_supper"
+    ],
+    "pendingApRewards": [],
+    "battleRewardReceipt": null
+  },
+  "battleDialogue": {
+    "schemaVersion": 5,
+    "revision": 8,
+    "playerName": "航",
+    "heroineName": "澪",
+    "ap": 1,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [],
+    "claimedRewardIds": [
+      "guide_last_supper_first_read"
+    ],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null,
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": {
+      "battleId": "milano_last_supper_01",
+      "runId": "milano_last_supper_01:8",
+      "contentHash": "de6907f7",
+      "phase": "dialogue",
+      "roundIndex": 0,
+      "answers": [],
+      "score": 0,
+      "hintOpen": false,
+      "hintUsed": false,
+      "dialogueScene": "intro",
+      "storyState": "{\"flows\":{\"DEFAULT_FLOW\":{\"callstack\":{\"threads\":[{\"callstack\":[{\"cPath\":\"introduction\",\"idx\":8,\"exp\":false,\"type\":0}],\"threadIndex\":0,\"previousContentObject\":\"introduction.7\"}],\"threadCounter\":0},\"outputStream\":[\"^ \",\"#\",\"^background: milano_refectory\",\"/#\",\"#\",\"^speaker: narrator\",\"/#\",\"^ミラノ、サンタ・マリア・デッレ・グラツィエの旧食堂。壁いっぱいの『最後の晩餐』を、二人で見上げた。\",\"\\n\"],\"currentChoices\":[]}},\"currentFlowName\":\"DEFAULT_FLOW\",\"variablesState\":{\"player_name\":\"^航\",\"heroine_name\":\"^澪\",\"player_address\":\"^航さん\"},\"evalStack\":[],\"visitCounts\":{},\"turnIndices\":{},\"turnIdx\":-1,\"storySeed\":9,\"previousRandom\":0,\"inkSaveVersion\":10,\"inkFormatVersion\":21}",
+      "frame": {
+        "text": "ミラノ、サンタ・マリア・デッレ・グラツィエの旧食堂。壁いっぱいの『最後の晩餐』を、二人で見上げた。",
+        "speaker": "narrator",
+        "background": "milano_refectory",
+        "emotion": "neutral",
+        "choices": [],
+        "ended": false
+      }
+    },
+    "battleRecords": [],
+    "activeTourism": null,
+    "discoveredClueIds": [
+      "last_supper_perspective"
+    ],
+    "visitedLandmarkIds": [
+      "last_supper"
+    ],
+    "completedEpisodeIds": [],
+    "completedCityIds": [],
+    "completedGuideIds": [
+      "last_supper"
+    ],
+    "pendingApRewards": [],
+    "battleRewardReceipt": null
+  },
+  "battleQuestion": {
+    "schemaVersion": 5,
+    "revision": 17,
+    "playerName": "航",
+    "heroineName": "澪",
+    "ap": 1,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [],
+    "claimedRewardIds": [
+      "guide_last_supper_first_read"
+    ],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null,
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": {
+      "battleId": "milano_last_supper_01",
+      "runId": "milano_last_supper_01:8",
+      "contentHash": "de6907f7",
+      "phase": "question",
+      "roundIndex": 0,
+      "answers": [],
+      "score": 0,
+      "hintOpen": false,
+      "hintUsed": false,
+      "dialogueScene": null,
+      "storyState": null,
+      "frame": null
+    },
+    "battleRecords": [],
+    "activeTourism": null,
+    "discoveredClueIds": [
+      "last_supper_perspective"
+    ],
+    "visitedLandmarkIds": [
+      "last_supper"
+    ],
+    "completedEpisodeIds": [],
+    "completedCityIds": [],
+    "completedGuideIds": [
+      "last_supper"
+    ],
+    "pendingApRewards": [],
+    "battleRewardReceipt": null
+  },
+  "battleFeedback": {
+    "schemaVersion": 5,
+    "revision": 18,
+    "playerName": "航",
+    "heroineName": "澪",
+    "ap": 1,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [],
+    "claimedRewardIds": [
+      "guide_last_supper_first_read"
+    ],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null,
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": {
+      "battleId": "milano_last_supper_01",
+      "runId": "milano_last_supper_01:8",
+      "contentHash": "de6907f7",
+      "phase": "feedback",
+      "roundIndex": 0,
+      "answers": [
+        {
+          "questionId": "last_supper_central_triangle",
+          "optionId": "B",
+          "correct": true,
+          "hintUsed": false
+        }
+      ],
+      "score": 1,
+      "hintOpen": false,
+      "hintUsed": false,
+      "dialogueScene": null,
+      "storyState": null,
+      "frame": null
+    },
+    "battleRecords": [],
+    "activeTourism": null,
+    "discoveredClueIds": [
+      "last_supper_perspective"
+    ],
+    "visitedLandmarkIds": [
+      "last_supper"
+    ],
+    "completedEpisodeIds": [],
+    "completedCityIds": [],
+    "completedGuideIds": [
+      "last_supper"
+    ],
+    "pendingApRewards": [],
+    "battleRewardReceipt": null
+  },
+  "battleReaction": {
+    "schemaVersion": 5,
+    "revision": 19,
+    "playerName": "航",
+    "heroineName": "澪",
+    "ap": 1,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [],
+    "claimedRewardIds": [
+      "guide_last_supper_first_read"
+    ],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null,
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": {
+      "battleId": "milano_last_supper_01",
+      "runId": "milano_last_supper_01:8",
+      "contentHash": "de6907f7",
+      "phase": "dialogue",
+      "roundIndex": 0,
+      "answers": [
+        {
+          "questionId": "last_supper_central_triangle",
+          "optionId": "B",
+          "correct": true,
+          "hintUsed": false
+        }
+      ],
+      "score": 1,
+      "hintOpen": false,
+      "hintUsed": false,
+      "dialogueScene": "after_1",
+      "storyState": "{\"flows\":{\"DEFAULT_FLOW\":{\"callstack\":{\"threads\":[{\"callstack\":[{\"cPath\":\"after_first.6.b\",\"idx\":6,\"exp\":false,\"type\":0}],\"threadIndex\":0,\"previousContentObject\":\"after_first.6.b.5\"}],\"threadCounter\":0},\"outputStream\":[\"#\",\"^speaker: enemy\",\"/#\",\"^「中央のキリストは、三角形の安定した姿。その周りでは、十二人があんなに手を動かしている……」\",\"\\n\"],\"currentChoices\":[]}},\"currentFlowName\":\"DEFAULT_FLOW\",\"variablesState\":{\"player_name\":\"^航\",\"heroine_name\":\"^澪\",\"player_address\":\"^航さん\",\"battle_scene\":\"^after_1\",\"answer_correct\":true,\"battle_score\":1},\"evalStack\":[],\"visitCounts\":{},\"turnIndices\":{},\"turnIdx\":-1,\"storySeed\":36,\"previousRandom\":0,\"inkSaveVersion\":10,\"inkFormatVersion\":21}",
+      "frame": {
+        "text": "「中央のキリストは、三角形の安定した姿。その周りでは、十二人があんなに手を動かしている……」",
+        "speaker": "enemy",
+        "background": "milano_refectory",
+        "emotion": "neutral",
+        "choices": [],
+        "ended": false
+      }
+    },
+    "battleRecords": [],
+    "activeTourism": null,
+    "discoveredClueIds": [
+      "last_supper_perspective"
+    ],
+    "visitedLandmarkIds": [
+      "last_supper"
+    ],
+    "completedEpisodeIds": [],
+    "completedCityIds": [],
+    "completedGuideIds": [
+      "last_supper"
+    ],
+    "pendingApRewards": [],
+    "battleRewardReceipt": null
+  },
+  "result": {
+    "schemaVersion": 5,
+    "revision": 43,
+    "playerName": "航",
+    "heroineName": "澪",
+    "ap": 7,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [
+      "milano"
+    ],
+    "claimedRewardIds": [
+      "guide_last_supper_first_read",
+      "battle_last_supper_first_complete",
+      "battle_last_supper_first_victory",
+      "chapter_milano_first_clear"
+    ],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null,
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": {
+      "battleId": "milano_last_supper_01",
+      "runId": "milano_last_supper_01:8",
+      "contentHash": "de6907f7",
+      "phase": "result",
+      "roundIndex": 2,
+      "answers": [
+        {
+          "questionId": "last_supper_central_triangle",
+          "optionId": "B",
+          "correct": true,
+          "hintUsed": false
+        },
+        {
+          "questionId": "last_supper_vanishing_point",
+          "optionId": "C",
+          "correct": true,
+          "hintUsed": false
+        },
+        {
+          "questionId": "last_supper_dry_tradeoff",
+          "optionId": "A",
+          "correct": true,
+          "hintUsed": false
+        }
+      ],
+      "score": 3,
+      "hintOpen": false,
+      "hintUsed": false,
+      "dialogueScene": null,
+      "storyState": null,
+      "frame": null
+    },
+    "battleRecords": [
+      {
+        "battleId": "milano_last_supper_01",
+        "attempts": 1,
+        "firstScore": 3,
+        "bestScore": 3,
+        "lastScore": 3
+      }
+    ],
+    "activeTourism": null,
+    "discoveredClueIds": [
+      "last_supper_perspective"
+    ],
+    "visitedLandmarkIds": [
+      "last_supper"
+    ],
+    "completedEpisodeIds": [
+      "milano_last_supper_episode"
+    ],
+    "completedCityIds": [],
+    "completedGuideIds": [
+      "last_supper"
+    ],
+    "pendingApRewards": [],
+    "battleRewardReceipt": {
+      "battleRunId": "milano_last_supper_01:8",
+      "entries": [
+        {
+          "rewardId": "battle_last_supper_first_complete",
+          "earnedAp": 1,
+          "creditedAp": 1,
+          "pendingAp": 0
+        },
+        {
+          "rewardId": "battle_last_supper_first_victory",
+          "earnedAp": 1,
+          "creditedAp": 1,
+          "pendingAp": 0
+        },
+        {
+          "rewardId": "chapter_milano_first_clear",
+          "earnedAp": 4,
+          "creditedAp": 4,
+          "pendingAp": 0
+        }
+      ]
+    }
+  },
+  "freeTime": {
+    "schemaVersion": 5,
+    "revision": 44,
+    "playerName": "航",
+    "heroineName": "澪",
+    "ap": 7,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [
+      "milano"
+    ],
+    "claimedRewardIds": [
+      "guide_last_supper_first_read",
+      "battle_last_supper_first_complete",
+      "battle_last_supper_first_victory",
+      "chapter_milano_first_clear"
+    ],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null,
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": null,
+    "battleRecords": [
+      {
+        "battleId": "milano_last_supper_01",
+        "attempts": 1,
+        "firstScore": 3,
+        "bestScore": 3,
+        "lastScore": 3
+      }
+    ],
+    "activeTourism": null,
+    "discoveredClueIds": [
+      "last_supper_perspective"
+    ],
+    "visitedLandmarkIds": [
+      "last_supper"
+    ],
+    "completedEpisodeIds": [
+      "milano_last_supper_episode"
+    ],
+    "completedCityIds": [],
+    "completedGuideIds": [
+      "last_supper"
+    ],
+    "pendingApRewards": [],
+    "battleRewardReceipt": null
+  },
+  "activeDate": {
+    "schemaVersion": 5,
+    "revision": 45,
+    "playerName": "航",
+    "heroineName": "澪",
+    "ap": 5,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [
+      "milano"
+    ],
+    "claimedRewardIds": [
+      "guide_last_supper_first_read",
+      "battle_last_supper_first_complete",
+      "battle_last_supper_first_victory",
+      "chapter_milano_first_clear"
+    ],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": {
+      "dateId": "milano_cafe_01",
+      "runId": "milano_cafe_01:45",
+      "replay": false,
+      "storyState": "{\"flows\":{\"DEFAULT_FLOW\":{\"callstack\":{\"threads\":[{\"callstack\":[{\"cPath\":\"start.0\",\"idx\":8,\"exp\":false,\"type\":0}],\"threadIndex\":0,\"previousContentObject\":\"start.0.7\"}],\"threadCounter\":0},\"outputStream\":[\"#\",\"^background: milano_cafe\",\"/#\",\"#\",\"^speaker: narrator\",\"/#\",\"^運河沿いの小さなカフェ。\",\"\\n\"],\"currentChoices\":[]}},\"currentFlowName\":\"DEFAULT_FLOW\",\"variablesState\":{\"player_name\":\"^航\",\"heroine_name\":\"^澪\"},\"evalStack\":[],\"visitCounts\":{},\"turnIndices\":{},\"turnIdx\":-1,\"storySeed\":79,\"previousRandom\":0,\"inkSaveVersion\":10,\"inkFormatVersion\":21}",
+      "storyHash": "6edaf704",
+      "frame": {
+        "text": "運河沿いの小さなカフェ。",
+        "speaker": "narrator",
+        "background": "milano_cafe",
+        "emotion": "neutral",
+        "choices": [],
+        "ended": false
+      },
+      "choiceCount": 0,
+      "step": 1,
+      "appliedEffectIds": [],
+      "pendingOutcome": null
+    },
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": null,
+    "battleRecords": [
+      {
+        "battleId": "milano_last_supper_01",
+        "attempts": 1,
+        "firstScore": 3,
+        "bestScore": 3,
+        "lastScore": 3
+      }
+    ],
+    "activeTourism": null,
+    "discoveredClueIds": [
+      "last_supper_perspective"
+    ],
+    "visitedLandmarkIds": [
+      "last_supper"
+    ],
+    "completedEpisodeIds": [
+      "milano_last_supper_episode"
+    ],
+    "completedCityIds": [],
+    "completedGuideIds": [
+      "last_supper"
+    ],
+    "pendingApRewards": [],
+    "battleRewardReceipt": null
+  },
+  "ending": {
+    "schemaVersion": 5,
+    "revision": 72,
+    "playerName": "凪",
+    "heroineName": "澪",
+    "ap": 4,
+    "affection": 11,
+    "romanceStage": 4,
+    "completedChapters": [
+      "milano"
+    ],
+    "claimedRewardIds": [
+      "chapter_milano_first_clear",
+      "trial_after_cafe_reward",
+      "trial_after_walk_reward"
+    ],
+    "playedDateIds": [
+      "milano_cafe_01",
+      "milano_walk_01",
+      "milano_invitation_01",
+      "milano_night_01",
+      "milano_confession_01"
+    ],
+    "memories": [
+      "milano_cafe_interest",
+      "milano_cafe_secret_destination",
+      "milano_walk_first_listen",
+      "milano_walk_second_honest",
+      "milano_invitation_chosen_listen",
+      "milano_night_first_listen",
+      "milano_night_second_honest",
+      "milano_confession_promise"
+    ],
+    "activeDate": null,
+    "unlockedEventIds": [
+      "milano_invitation_01",
+      "milano_confession_01"
+    ],
+    "confessionStatus": "accepted",
+    "endingReached": true,
+    "activeBattle": null,
+    "battleRecords": [],
+    "activeTourism": null,
+    "discoveredClueIds": [],
+    "visitedLandmarkIds": [],
+    "completedEpisodeIds": [],
+    "completedCityIds": [],
+    "completedGuideIds": [],
+    "pendingApRewards": [],
+    "battleRewardReceipt": null
+  },
+  "pendingResult": {
+    "schemaVersion": 5,
+    "revision": 45,
+    "playerName": "航",
+    "heroineName": "澪",
+    "ap": 0,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [
+      "milano"
+    ],
+    "claimedRewardIds": [
+      "battle_last_supper_first_complete",
+      "battle_last_supper_first_victory",
+      "chapter_milano_first_clear"
+    ],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null,
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": {
+      "battleId": "milano_last_supper_01",
+      "runId": "milano_last_supper_01:8",
+      "contentHash": "de6907f7",
+      "phase": "result",
+      "roundIndex": 2,
+      "answers": [
+        {
+          "questionId": "last_supper_central_triangle",
+          "optionId": "B",
+          "correct": true,
+          "hintUsed": false
+        },
+        {
+          "questionId": "last_supper_vanishing_point",
+          "optionId": "C",
+          "correct": true,
+          "hintUsed": false
+        },
+        {
+          "questionId": "last_supper_dry_tradeoff",
+          "optionId": "A",
+          "correct": true,
+          "hintUsed": false
+        }
+      ],
+      "score": 3,
+      "hintOpen": false,
+      "hintUsed": false,
+      "dialogueScene": null,
+      "storyState": null,
+      "frame": null
+    },
+    "battleRecords": [
+      {
+        "battleId": "milano_last_supper_01",
+        "attempts": 1,
+        "firstScore": 3,
+        "bestScore": 3,
+        "lastScore": 3
+      }
+    ],
+    "activeTourism": null,
+    "discoveredClueIds": [
+      "last_supper_perspective"
+    ],
+    "visitedLandmarkIds": [
+      "last_supper"
+    ],
+    "completedEpisodeIds": [
+      "milano_last_supper_episode"
+    ],
+    "completedCityIds": [],
+    "completedGuideIds": [],
+    "pendingApRewards": [
+      {
+        "rewardId": "battle_last_supper_first_complete",
+        "earnedAp": 1,
+        "remainingAp": 1
+      },
+      {
+        "rewardId": "battle_last_supper_first_victory",
+        "earnedAp": 1,
+        "remainingAp": 1
+      },
+      {
+        "rewardId": "chapter_milano_first_clear",
+        "earnedAp": 4,
+        "remainingAp": 4
+      }
+    ],
+    "battleRewardReceipt": {
+      "battleRunId": "milano_last_supper_01:8",
+      "entries": [
+        {
+          "rewardId": "battle_last_supper_first_complete",
+          "earnedAp": 1,
+          "creditedAp": 0,
+          "pendingAp": 1
+        },
+        {
+          "rewardId": "battle_last_supper_first_victory",
+          "earnedAp": 1,
+          "creditedAp": 0,
+          "pendingAp": 1
+        },
+        {
+          "rewardId": "chapter_milano_first_clear",
+          "earnedAp": 4,
+          "creditedAp": 0,
+          "pendingAp": 4
+        }
+      ]
+    }
+  }
+}

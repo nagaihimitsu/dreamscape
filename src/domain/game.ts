@@ -13,6 +13,7 @@ import {
 import { activeTourismSchema, validateTourismState } from "./tourism";
 import {
   activeBattleSchema,
+  legacyActiveBattleSchema,
   battleRecordSchema,
   validateBattleState,
 } from "./battle";
@@ -93,7 +94,7 @@ const phase2StateSchema = oldStateSchema
 const phase3StateSchema = phase2StateSchema
   .extend({
     schemaVersion: z.literal(3),
-    activeBattle: activeBattleSchema.nullable(),
+    activeBattle: legacyActiveBattleSchema.nullable(),
     battleRecords: z.array(battleRecordSchema),
   })
   .strict();
@@ -105,7 +106,7 @@ const phase4StateSchema = phase3StateSchema
     visitedLandmarkIds: uniqueStrings,
   })
   .strict();
-export const gameStateSchema = phase4StateSchema
+const phase5StateSchema = phase4StateSchema
   .extend({
     schemaVersion: z.literal(5),
     completedEpisodeIds: uniqueStrings,
@@ -113,6 +114,12 @@ export const gameStateSchema = phase4StateSchema
     completedGuideIds: uniqueStrings,
     pendingApRewards: z.array(pendingApRewardSchema),
     battleRewardReceipt: battleRewardReceiptSchema.nullable(),
+  })
+  .strict();
+export const gameStateSchema = phase5StateSchema
+  .extend({
+    schemaVersion: z.literal(6),
+    activeBattle: activeBattleSchema.nullable(),
   })
   .strict();
 export type GameState = z.infer<typeof gameStateSchema>;
@@ -127,7 +134,7 @@ export function createGame(
   heroineName = balance.defaultHeroineName,
 ): GameState {
   return {
-    schemaVersion: 5,
+    schemaVersion: 6,
     revision: 0,
     playerName: nameSchema.parse(playerName),
     heroineName: nameSchema.parse(heroineName),
@@ -566,6 +573,16 @@ export function migrateGameState(input: unknown): GameState {
     typeof input === "object" && input !== null && "schemaVersion" in input
       ? input.schemaVersion
       : undefined;
+  if (version === 5) {
+    const old = phase5StateSchema.parse(input);
+    return {
+      ...old,
+      schemaVersion: 6,
+      activeBattle: old.activeBattle
+        ? { ...old.activeBattle, reasoning: null }
+        : null,
+    };
+  }
   if (version !== 1 && version !== 2 && version !== 3 && version !== 4)
     return gameStateSchema.parse(input);
   let old: z.infer<typeof phase4StateSchema>;
@@ -622,7 +639,10 @@ export function migrateGameState(input: unknown): GameState {
     throw new Error("以前のデートの解放条件が一致しません。");
   const next: GameState = {
     ...old,
-    schemaVersion: 5,
+    schemaVersion: 6,
+    activeBattle: old.activeBattle
+      ? { ...old.activeBattle, reasoning: null }
+      : null,
     completedEpisodeIds: [],
     completedCityIds: [],
     completedGuideIds: [],

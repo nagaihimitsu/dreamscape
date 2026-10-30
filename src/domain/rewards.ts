@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { balance, rewardRules } from "../content";
+import { balance, episodes, rewardRules } from "../content";
 import type { GameState } from "./game";
 
 export const pendingApRewardSchema = z
@@ -109,6 +109,10 @@ export function validateRewardState(state: GameState): void {
     receipt.battleRunId !== state.activeBattle.runId
   )
     throw new Error("バトルの報酬記録が一致しません。");
+  const episode = episodes.find(
+    (item) => item.battleId === state.activeBattle?.battleId,
+  );
+  if (!episode) throw new Error("この対決に章報酬はありません。");
   if (
     new Set(receipt.entries.map((item) => item.rewardId)).size !==
     receipt.entries.length
@@ -117,7 +121,10 @@ export function validateRewardState(state: GameState): void {
   for (const entry of receipt.entries) {
     if (
       !rewardRules.some(
-        (rule) => rule.id === entry.rewardId && rule.trigger !== "guide_read",
+        (rule) =>
+          rule.id === entry.rewardId &&
+          rule.trigger !== "guide_read" &&
+          rule.episodeId === episode.id,
       ) ||
       !state.claimedRewardIds.includes(entry.rewardId)
     )

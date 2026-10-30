@@ -63,7 +63,7 @@ describe("Phase 2 saves migrate to the independent battle version", () => {
       const { schemaVersion: _oldVersion, ...oldFields } = fixture;
       expect(loaded.state).toEqual({
         ...oldFields,
-        schemaVersion: 5,
+        schemaVersion: 6,
         activeBattle: null,
         battleRecords: [],
         activeTourism: null,
@@ -149,14 +149,14 @@ describe("Phase 2 saves migrate to the independent battle version", () => {
     },
   );
 
-  it("writes schema 5 on the next action and rejects a stale older tab", () => {
+  it("writes schema 6 on the next action and rejects a stale older tab", () => {
     const storage = new MemoryStorage();
     storage.setItem(SAVE_KEY, JSON.stringify(fixtures.idle));
     const migrated = parseGameState(storage.getItem(SAVE_KEY)!);
     const renamed = setNames(migrated, "空", "紬");
     expect(saveGame(storage, renamed, migrated)).toEqual({ ok: true });
     expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({
-      schemaVersion: 5,
+      schemaVersion: 6,
       playerName: "空",
       heroineName: "紬",
       activeBattle: null,
