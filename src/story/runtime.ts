@@ -90,10 +90,16 @@ export function beginStory(
   storyId: string,
   playerName: string,
   heroineName: string,
+  variables: Record<string, string | number | boolean> = {},
 ): StoryStep {
   const story = runtime(storyId);
   story.variablesState.$("player_name", playerName);
   story.variablesState.$("heroine_name", heroineName);
+  for (const [name, value] of Object.entries(variables)) {
+    // Old cafe saves/scripts do not declare Phase 2 variables. Never rewrite them.
+    if (story.variablesState.GlobalVariableExistsWithName(name))
+      story.variablesState.$(name, value);
+  }
   return readFrame(story);
 }
 

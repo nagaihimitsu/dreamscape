@@ -1,11 +1,136 @@
 {
   "schemaVersion": 1,
   "effects": [
-    {"id": "milano_cafe_first_joke", "affectionDelta": 1, "memoryId": "milano_cafe_joke"},
-    {"id": "milano_cafe_first_flirt", "affectionDelta": 1, "memoryId": "milano_cafe_flirt"},
-    {"id": "milano_cafe_first_interest", "affectionDelta": 2, "memoryId": "milano_cafe_interest"},
-    {"id": "milano_cafe_second_playful", "affectionDelta": 1, "memoryId": "milano_cafe_free_time_joke"},
-    {"id": "milano_cafe_second_warm", "affectionDelta": 2, "memoryId": "milano_cafe_secret_destination"},
-    {"id": "milano_cafe_second_honest", "affectionDelta": 1, "memoryId": "milano_cafe_future_talk"}
+    {
+      "id": "milano_cafe_first_joke",
+      "affectionDelta": 1,
+      "memoryId": "milano_cafe_joke"
+    },
+    {
+      "id": "milano_cafe_first_flirt",
+      "affectionDelta": 1,
+      "memoryId": "milano_cafe_flirt"
+    },
+    {
+      "id": "milano_cafe_first_interest",
+      "affectionDelta": 2,
+      "memoryId": "milano_cafe_interest"
+    },
+    {
+      "id": "milano_cafe_second_playful",
+      "affectionDelta": 1,
+      "memoryId": "milano_cafe_free_time_joke"
+    },
+    {
+      "id": "milano_cafe_second_warm",
+      "affectionDelta": 2,
+      "memoryId": "milano_cafe_secret_destination"
+    },
+    {
+      "id": "milano_cafe_second_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_cafe_future_talk"
+    },
+    {
+      "id": "milano_walk_first_joke",
+      "affectionDelta": 1,
+      "memoryId": "milano_walk_first_joke"
+    },
+    {
+      "id": "milano_walk_first_listen",
+      "affectionDelta": 2,
+      "memoryId": "milano_walk_first_listen"
+    },
+    {
+      "id": "milano_walk_first_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_walk_first_honest"
+    },
+    {
+      "id": "milano_walk_second_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_walk_second_joke"
+    },
+    {
+      "id": "milano_walk_second_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_walk_second_listen"
+    },
+    {
+      "id": "milano_walk_second_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_walk_second_honest"
+    },
+    {
+      "id": "milano_night_first_joke",
+      "affectionDelta": 1,
+      "memoryId": "milano_night_first_joke"
+    },
+    {
+      "id": "milano_night_first_listen",
+      "affectionDelta": 2,
+      "memoryId": "milano_night_first_listen"
+    },
+    {
+      "id": "milano_night_first_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_night_first_honest"
+    },
+    {
+      "id": "milano_night_second_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_night_second_joke"
+    },
+    {
+      "id": "milano_night_second_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_night_second_listen"
+    },
+    {
+      "id": "milano_night_second_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_night_second_honest"
+    },
+    {
+      "id": "milano_invitation_chosen_joke",
+      "affectionDelta": 1,
+      "memoryId": "milano_invitation_chosen_joke"
+    },
+    {
+      "id": "milano_invitation_chosen_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_invitation_chosen_listen"
+    },
+    {
+      "id": "milano_invitation_chosen_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_invitation_chosen_honest"
+    },
+    {
+      "id": "milano_reassurance_chosen_joke",
+      "affectionDelta": 1,
+      "memoryId": "milano_reassurance_chosen_joke"
+    },
+    {
+      "id": "milano_reassurance_chosen_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_reassurance_chosen_listen"
+    },
+    {
+      "id": "milano_reassurance_chosen_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_reassurance_chosen_honest"
+    },
+    {
+      "id": "milano_confession_accepted",
+      "affectionDelta": 0,
+      "memoryId": "milano_confession_promise",
+      "outcome": "accepted"
+    },
+    {
+      "id": "milano_confession_deferred",
+      "affectionDelta": 0,
+      "outcome": "deferred"
+    }
   ]
 }

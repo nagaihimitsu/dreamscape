@@ -7,6 +7,7 @@ export function CanalScene({
   compact?: boolean;
   backgroundId?: string;
 }) {
+  const backdrop = presentation.backgrounds[backgroundId];
   return (
     <div
       className={`canal-scene ${compact ? "compact" : ""}`}
@@ -15,7 +16,13 @@ export function CanalScene({
       <svg viewBox="0 0 800 440" preserveAspectRatio="xMidYMid slice">
         <defs>
           <linearGradient id="sky" x2="0" y2="1">
-            <stop stopColor="#e6d8bb" />
+            <stop
+              stopColor={
+                backgroundId === "milano_cafe"
+                  ? "#e6d8bb"
+                  : (backdrop?.color ?? "#e6d8bb")
+              }
+            />
             <stop offset="1" stopColor="#f6ebd5" />
           </linearGradient>
           <linearGradient id="water" x2="0" y2="1">

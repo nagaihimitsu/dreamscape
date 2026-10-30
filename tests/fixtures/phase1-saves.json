@@ -1,0 +1,201 @@
+{
+  "empty": {
+    "schemaVersion": 1,
+    "revision": 0,
+    "playerName": "晴",
+    "heroineName": "灯",
+    "ap": 0,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [],
+    "claimedRewardIds": [],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null
+  },
+  "started": {
+    "schemaVersion": 1,
+    "revision": 2,
+    "playerName": "晴",
+    "heroineName": "灯",
+    "ap": 2,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [
+      "milano"
+    ],
+    "claimedRewardIds": [
+      "chapter_milano_first_clear"
+    ],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": {
+      "dateId": "milano_cafe_01",
+      "runId": "milano_cafe_01:2",
+      "replay": false,
+      "storyState": "{\"flows\":{\"DEFAULT_FLOW\":{\"callstack\":{\"threads\":[{\"callstack\":[{\"cPath\":\"start.0\",\"idx\":8,\"exp\":false,\"type\":0}],\"threadIndex\":0,\"previousContentObject\":\"start.0.7\"}],\"threadCounter\":0},\"outputStream\":[\"#\",\"^background: milano_cafe\",\"/#\",\"#\",\"^speaker: narrator\",\"/#\",\"^運河沿いの小さなカフェ。\",\"\\n\"],\"currentChoices\":[]}},\"currentFlowName\":\"DEFAULT_FLOW\",\"variablesState\":{\"player_name\":\"^晴\",\"heroine_name\":\"^灯\"},\"evalStack\":[],\"visitCounts\":{},\"turnIndices\":{},\"turnIdx\":-1,\"storySeed\":75,\"previousRandom\":0,\"inkSaveVersion\":10,\"inkFormatVersion\":21}",
+      "storyHash": "6edaf704",
+      "frame": {
+        "text": "運河沿いの小さなカフェ。",
+        "speaker": "narrator",
+        "background": "milano_cafe",
+        "emotion": "neutral",
+        "choices": [],
+        "ended": false
+      },
+      "choiceCount": 0,
+      "step": 1,
+      "appliedEffectIds": []
+    }
+  },
+  "beforeChoice": {
+    "schemaVersion": 1,
+    "revision": 6,
+    "playerName": "晴",
+    "heroineName": "灯",
+    "ap": 2,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [
+      "milano"
+    ],
+    "claimedRewardIds": [
+      "chapter_milano_first_clear"
+    ],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": {
+      "dateId": "milano_cafe_01",
+      "runId": "milano_cafe_01:2",
+      "replay": false,
+      "storyState": "{\"flows\":{\"DEFAULT_FLOW\":{\"callstack\":{\"threads\":[{\"callstack\":[{\"exp\":false,\"type\":0}],\"threadIndex\":0,\"previousContentObject\":\"start.0.52\"}],\"threadCounter\":3},\"outputStream\":[\"#\",\"^speaker: heroine\",\"/#\",\"^「でも今は……もう少しだけ、予定がないままでいたいな」\",\"\\n\"],\"choiceThreads\":{\"1\":{\"callstack\":[{\"cPath\":\"start.0\",\"idx\":35,\"exp\":false,\"type\":0}],\"threadIndex\":1,\"previousContentObject\":\"start.0.34\"},\"2\":{\"callstack\":[{\"cPath\":\"start.0\",\"idx\":46,\"exp\":false,\"type\":0}],\"threadIndex\":2,\"previousContentObject\":\"start.0.45\"},\"3\":{\"callstack\":[{\"cPath\":\"start.0\",\"idx\":52,\"exp\":false,\"type\":0}],\"threadIndex\":3,\"previousContentObject\":\"start.0.51\"}},\"currentChoices\":[{\"text\":\"「明日は『15時に道に迷う』って予定を入れよう」\",\"index\":0,\"originalChoicePath\":\"start.0.35\",\"originalThreadIndex\":1,\"targetPath\":\"start.0.c-0\",\"isInvisibleDefault\":false},{\"text\":\"「灯といると、時間が短く感じる」\",\"index\":1,\"originalChoicePath\":\"start.0.46\",\"originalThreadIndex\":2,\"targetPath\":\"start.0.c-1\",\"isInvisibleDefault\":false},{\"text\":\"「明日はどこへ行きたい？」\",\"index\":2,\"originalChoicePath\":\"start.0.52\",\"originalThreadIndex\":3,\"targetPath\":\"start.0.c-2\",\"isInvisibleDefault\":false}]}},\"currentFlowName\":\"DEFAULT_FLOW\",\"variablesState\":{\"player_name\":\"^晴\",\"heroine_name\":\"^灯\"},\"evalStack\":[],\"visitCounts\":{},\"turnIndices\":{},\"turnIdx\":-1,\"storySeed\":75,\"previousRandom\":0,\"inkSaveVersion\":10,\"inkFormatVersion\":21}",
+      "storyHash": "6edaf704",
+      "frame": {
+        "text": "「でも今は……もう少しだけ、予定がないままでいたいな」",
+        "speaker": "heroine",
+        "background": "milano_cafe",
+        "emotion": "neutral",
+        "choices": [
+          {
+            "index": 0,
+            "text": "「明日は『15時に道に迷う』って予定を入れよう」"
+          },
+          {
+            "index": 1,
+            "text": "「灯といると、時間が短く感じる」"
+          },
+          {
+            "index": 2,
+            "text": "「明日はどこへ行きたい？」"
+          }
+        ],
+        "ended": false
+      },
+      "choiceCount": 0,
+      "step": 5,
+      "appliedEffectIds": []
+    }
+  },
+  "afterChoice": {
+    "schemaVersion": 1,
+    "revision": 7,
+    "playerName": "晴",
+    "heroineName": "灯",
+    "ap": 2,
+    "affection": 1,
+    "romanceStage": 1,
+    "completedChapters": [
+      "milano"
+    ],
+    "claimedRewardIds": [
+      "chapter_milano_first_clear"
+    ],
+    "playedDateIds": [],
+    "memories": [
+      "milano_cafe_joke"
+    ],
+    "activeDate": {
+      "dateId": "milano_cafe_01",
+      "runId": "milano_cafe_01:2",
+      "replay": false,
+      "storyState": "{\"flows\":{\"DEFAULT_FLOW\":{\"callstack\":{\"threads\":[{\"callstack\":[{\"cPath\":\"start.0.c-0\",\"idx\":9,\"exp\":false,\"type\":0}],\"threadIndex\":1,\"previousContentObject\":\"start.0.c-0.8\"}],\"threadCounter\":3},\"outputStream\":[\"#\",\"^effect: milano_cafe_first_joke\",\"/#\",\"#\",\"^speaker: heroine\",\"/#\",\"^「……迷子を予約する人、初めて見た」\",\"\\n\"],\"currentChoices\":[]}},\"currentFlowName\":\"DEFAULT_FLOW\",\"variablesState\":{\"player_name\":\"^晴\",\"heroine_name\":\"^灯\"},\"evalStack\":[],\"visitCounts\":{\"start.0.c-0\":1},\"turnIndices\":{},\"turnIdx\":0,\"storySeed\":75,\"previousRandom\":0,\"inkSaveVersion\":10,\"inkFormatVersion\":21}",
+      "storyHash": "6edaf704",
+      "frame": {
+        "text": "「……迷子を予約する人、初めて見た」",
+        "speaker": "heroine",
+        "background": "milano_cafe",
+        "emotion": "neutral",
+        "choices": [],
+        "ended": false
+      },
+      "choiceCount": 1,
+      "step": 6,
+      "appliedEffectIds": [
+        "milano_cafe_01:2:6:0:milano_cafe_first_joke"
+      ]
+    }
+  },
+  "completed": {
+    "schemaVersion": 1,
+    "revision": 17,
+    "playerName": "晴",
+    "heroineName": "灯",
+    "ap": 2,
+    "affection": 3,
+    "romanceStage": 1,
+    "completedChapters": [
+      "milano"
+    ],
+    "claimedRewardIds": [
+      "chapter_milano_first_clear"
+    ],
+    "playedDateIds": [
+      "milano_cafe_01"
+    ],
+    "memories": [
+      "milano_cafe_joke",
+      "milano_cafe_secret_destination"
+    ],
+    "activeDate": null
+  },
+  "replay": {
+    "schemaVersion": 1,
+    "revision": 18,
+    "playerName": "晴",
+    "heroineName": "灯",
+    "ap": 0,
+    "affection": 3,
+    "romanceStage": 1,
+    "completedChapters": [
+      "milano"
+    ],
+    "claimedRewardIds": [
+      "chapter_milano_first_clear"
+    ],
+    "playedDateIds": [
+      "milano_cafe_01"
+    ],
+    "memories": [
+      "milano_cafe_joke",
+      "milano_cafe_secret_destination"
+    ],
+    "activeDate": {
+      "dateId": "milano_cafe_01",
+      "runId": "milano_cafe_01:18",
+      "replay": true,
+      "storyState": "{\"flows\":{\"DEFAULT_FLOW\":{\"callstack\":{\"threads\":[{\"callstack\":[{\"cPath\":\"start.0\",\"idx\":8,\"exp\":false,\"type\":0}],\"threadIndex\":0,\"previousContentObject\":\"start.0.7\"}],\"threadCounter\":0},\"outputStream\":[\"#\",\"^background: milano_cafe\",\"/#\",\"#\",\"^speaker: narrator\",\"/#\",\"^運河沿いの小さなカフェ。\",\"\\n\"],\"currentChoices\":[]}},\"currentFlowName\":\"DEFAULT_FLOW\",\"variablesState\":{\"player_name\":\"^晴\",\"heroine_name\":\"^灯\"},\"evalStack\":[],\"visitCounts\":{},\"turnIndices\":{},\"turnIdx\":-1,\"storySeed\":63,\"previousRandom\":0,\"inkSaveVersion\":10,\"inkFormatVersion\":21}",
+      "storyHash": "6edaf704",
+      "frame": {
+        "text": "運河沿いの小さなカフェ。",
+        "speaker": "narrator",
+        "background": "milano_cafe",
+        "emotion": "neutral",
+        "choices": [],
+        "ended": false
+      },
+      "choiceCount": 0,
+      "step": 1,
+      "appliedEffectIds": []
+    }
+  }
+}

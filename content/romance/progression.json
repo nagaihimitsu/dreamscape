@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "stages": [
+    {
+      "stage": 1,
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "playerSuffix": "さん"
+    },
+    {
+      "stage": 2,
+      "minAffection": 2,
+      "requiredPlayedDateIds": [
+        "milano_cafe_01"
+      ],
+      "playerSuffix": "さん"
+    },
+    {
+      "stage": 3,
+      "minAffection": 4,
+      "requiredPlayedDateIds": [
+        "milano_cafe_01",
+        "milano_walk_01"
+      ],
+      "playerSuffix": ""
+    },
+    {
+      "stage": 4,
+      "minAffection": 6,
+      "requiredPlayedDateIds": [
+        "milano_cafe_01",
+        "milano_walk_01",
+        "milano_invitation_01",
+        "milano_night_01"
+      ],
+      "playerSuffix": ""
+    }
+  ],
+  "confession": {
+    "minAffection": 8,
+    "requiredPlayedDateIds": [
+      "milano_cafe_01",
+      "milano_walk_01",
+      "milano_invitation_01",
+      "milano_night_01"
+    ]
+  },
+  "memoryCallbacks": [
+    {
+      "memoryId": "milano_cafe_joke",
+      "textJa": "迷子を予約する約束"
+    },
+    {
+      "memoryId": "milano_cafe_flirt",
+      "textJa": "時間が短く感じる、という言葉"
+    },
+    {
+      "memoryId": "milano_cafe_interest",
+      "textJa": "私の行きたい場所を聞いてくれたこと"
+    },
+    {
+      "memoryId": "milano_cafe_free_time_joke",
+      "textJa": "絶対に何もしない予定"
+    },
+    {
+      "memoryId": "milano_cafe_secret_destination",
+      "textJa": "まだ秘密だった行き先"
+    },
+    {
+      "memoryId": "milano_cafe_future_talk",
+      "textJa": "また、こうして話そうという約束"
+    }
+  ],
+  "fallbackMemoryCallbackJa": "カフェで一緒に過ごした、予定のない時間"
+}

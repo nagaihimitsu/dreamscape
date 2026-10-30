@@ -13,6 +13,10 @@ import {
   effectCatalogSchema,
   presentationSchema,
   quizSampleSchema,
+  progressionSchema,
+  trialProgressionSchema,
+  type DateDefinition,
+  type EffectDefinition,
 } from "../src/content/schemas";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
 
@@ -69,46 +73,91 @@ export function compileInk(source: string, filename = "story.ink"): string {
   }
 }
 
-/** Explore every reachable branch with the official runtime. A bounded traversal also catches loops. */
-export function validateStory(compiled: string, context: TagContext): number {
+/** Traverse every branch for each declared input context with the official runtime. */
+export function validateStory(
+  compiled: string,
+  context: TagContext,
+  contract: Pick<DateDefinition, "choiceCount" | "effectCount" | "kind"> = {
+    choiceCount: 2,
+    effectCount: 2,
+    kind: "normal",
+  },
+  variables: Record<string, string | number | boolean> = {},
+  effects: EffectDefinition[] = [],
+): number {
   const initial = new Story(compiled);
-  initial.variablesState.$("player_name", "検証主人公");
-  initial.variablesState.$("heroine_name", "検証ヒロイン");
+  initial.onError = (message) => {
+    throw new Error(message);
+  };
+  for (const required of ["player_name", "heroine_name"]) {
+    if (!initial.variablesState.GlobalVariableExistsWithName(required))
+      throw new Error(`Missing required Ink variable: ${required}`);
+  }
+  const input = {
+    player_name: "検証主人公",
+    heroine_name: "検証ヒロイン",
+    ...variables,
+  };
+  for (const [key, value] of Object.entries(input)) {
+    if (initial.variablesState.GlobalVariableExistsWithName(key))
+      initial.variablesState.$(key, value);
+  }
   let routes = 0;
+  const appendEffects = (previous: string[], added: string[]) => {
+    const result = [...previous];
+    for (const effect of added) {
+      if (result.includes(effect))
+        throw new Error(`Repeated effect in one route: ${effect}`);
+      result.push(effect);
+    }
+    return result;
+  };
   const visit = (
     saved: string,
     choiceCount: number,
     previousEffects: string[],
   ) => {
     const story = new Story(compiled);
+    story.onError = (message) => {
+      throw new Error(message);
+    };
     story.state.LoadJson(saved);
-    const seenEffects = [...previousEffects];
+    let seenEffects = [...previousEffects];
     let lineCount = 0;
     while (story.canContinue) {
       if (++lineCount > 200)
         throw new Error("Story contains a loop or too many lines");
       story.Continue();
       const tags = parseStoryTags(story.currentTags ?? [], context);
-      for (const effect of tags.effects) {
-        if (seenEffects.includes(effect))
-          throw new Error(`Repeated effect in one route: ${effect}`);
-        seenEffects.push(effect);
-      }
+      seenEffects = appendEffects(seenEffects, tags.effects);
     }
     const choices = story.currentChoices;
     if (choices.length === 0) {
-      if (choiceCount !== 2)
-        throw new Error(`Expected two choice moments; found ${choiceCount}`);
-      if (seenEffects.length !== 2)
+      if (choiceCount !== contract.choiceCount)
         throw new Error(
-          `Expected two choice effects; found ${seenEffects.length}`,
+          `Expected ${contract.choiceCount} choice moments; found ${choiceCount}`,
         );
+      if (seenEffects.length !== contract.effectCount)
+        throw new Error(
+          `Expected ${contract.effectCount} choice effects; found ${seenEffects.length}`,
+        );
+      const outcomes = seenEffects
+        .map((id) => effects.find((effect) => effect.id === id)?.outcome)
+        .filter(Boolean);
+      if (contract.kind === "confession") {
+        if (outcomes.length !== 1)
+          throw new Error("Confession must resolve exactly one outcome");
+        if (!variables.confession_ready && outcomes.includes("accepted"))
+          throw new Error("Confession accepts before readiness");
+      } else if (outcomes.length)
+        throw new Error("Only confession can apply a confession outcome");
       routes += 1;
       return;
     }
     if (choices.length !== 3)
       throw new Error(`Expected three choices; found ${choices.length}`);
-    if (choiceCount >= 2) throw new Error("Too many choice moments");
+    if (choiceCount >= contract.choiceCount)
+      throw new Error("Too many choice moments");
     unique(
       choices.map((choice) => choice.text),
       "choice text",
@@ -120,14 +169,17 @@ export function validateStory(compiled: string, context: TagContext): number {
       const branch = new Story(compiled);
       branch.state.LoadJson(checkpoint);
       branch.ChooseChoiceIndex(choice.index);
-      visit(branch.state.ToJson(), choiceCount + 1, [
-        ...seenEffects,
-        ...tags.effects,
-      ]);
+      visit(
+        branch.state.ToJson(),
+        choiceCount + 1,
+        appendEffects(seenEffects, tags.effects),
+      );
     }
   };
   visit(initial.state.ToJson(), 0, []);
-  if (routes !== 9) throw new Error(`Expected nine routes; found ${routes}`);
+  const expectedRoutes = 3 ** contract.choiceCount;
+  if (routes !== expectedRoutes)
+    throw new Error(`Expected ${expectedRoutes} routes; found ${routes}`);
   return routes;
 }
 
@@ -148,6 +200,12 @@ export async function buildContent(root: string, writeOutput = true) {
   const presentation = presentationSchema.parse(
     await json(path.join(content, "romance/presentation.json")),
   );
+  const progression = progressionSchema.parse(
+    await json(path.join(content, "romance/progression.json")),
+  );
+  const milestones = trialProgressionSchema.parse(
+    await json(path.join(content, "romance/trial_progression.json")),
+  ).milestones;
   unique(
     dates.map((date) => date.id),
     "dateId",
@@ -171,7 +229,11 @@ export async function buildContent(root: string, writeOutput = true) {
     emotionIds: Object.keys(presentation.emotions),
   };
   for (const effect of effects) {
-    if (!presentation.memories[effect.memoryId])
+    if (effect.outcome && effect.affectionDelta !== 0)
+      throw new Error("Confession outcome cannot award affection");
+    if (!effect.memoryId && !effect.outcome)
+      throw new Error(`Effect has neither memory nor outcome: ${effect.id}`);
+    if (effect.memoryId && !presentation.memories[effect.memoryId])
       throw new Error(`Unknown memory: ${effect.memoryId}`);
   }
   const stories: Record<string, string> = {};
@@ -184,7 +246,6 @@ export async function buildContent(root: string, writeOutput = true) {
       .replaceAll(path.sep, "/")
       .slice(0, -4);
     const compiled = compileInk(await readFile(file, "utf8"), file);
-    routes += validateStory(compiled, context);
     stories[id] = compiled;
   }
   for (const date of dates) {
@@ -200,7 +261,110 @@ export async function buildContent(root: string, writeOutput = true) {
       throw new Error(`Unknown background: ${date.backgroundAssetId}`);
     if (date.apCost > balance.apCap)
       throw new Error(`Date cost exceeds AP cap: ${date.id}`);
+    unique(date.requiredPlayedDateIds, "required date ID");
+    if (
+      date.requiredPlayedDateIds.some(
+        (id) => !dates.some((other) => other.id === id),
+      )
+    )
+      throw new Error(`Unknown prerequisite date: ${date.id}`);
+    if (date.kind !== "normal" && date.apCost !== 0)
+      throw new Error(`Special events must be free: ${date.id}`);
+    if (
+      (date.kind === "special" || date.kind === "reassurance") &&
+      date.repeatable
+    )
+      throw new Error(`One-time event is repeatable: ${date.id}`);
+    if (date.kind === "normal" && date.choiceCount !== 2)
+      throw new Error(`Normal date must have two choice moments: ${date.id}`);
+    if (
+      date.kind === "confession" &&
+      (!date.validationContexts.some((c) => c.confessionReady) ||
+        !date.validationContexts.some((c) => !c.confessionReady))
+    )
+      throw new Error("Confession validation needs both readiness states");
+    for (const seed of date.validationContexts) {
+      if (seed.memoryId && !presentation.memories[seed.memoryId])
+        throw new Error(`Unknown validation memory: ${seed.memoryId}`);
+      const suffix = progression.stages.find(
+        (stage) => stage.stage === seed.romanceStage,
+      )!.playerSuffix;
+      const memory =
+        progression.memoryCallbacks.find(
+          (callback) => callback.memoryId === seed.memoryId,
+        )?.textJa ?? progression.fallbackMemoryCallbackJa;
+      routes += validateStory(
+        stories[date.storyId],
+        context,
+        date,
+        {
+          player_address: `検証主人公${suffix}`,
+          romance_stage: seed.romanceStage,
+          memory_callback: memory,
+          confession_ready: seed.confessionReady,
+        },
+        effects,
+      );
+    }
   }
+  for (const storyId of Object.keys(stories)) {
+    if (!dates.some((date) => date.storyId === storyId))
+      throw new Error(`Story lacks validation contract: ${storyId}`);
+  }
+  const verifyDateReferences = (ids: string[], label: string) => {
+    unique(ids, label);
+    if (ids.some((id) => !dates.some((date) => date.id === id)))
+      throw new Error(`Unknown ${label}`);
+  };
+  progression.stages.forEach((stage, index) => {
+    if (
+      stage.stage !== index + 1 ||
+      (index > 0 &&
+        stage.minAffection < progression.stages[index - 1].minAffection)
+    )
+      throw new Error("Stages must be ordered with nondecreasing thresholds");
+    verifyDateReferences(stage.requiredPlayedDateIds, "stage prerequisite");
+  });
+  verifyDateReferences(
+    progression.confession.requiredPlayedDateIds,
+    "confession prerequisite",
+  );
+  unique(
+    progression.memoryCallbacks.map((callback) => callback.memoryId),
+    "memory callback",
+  );
+  for (const callback of progression.memoryCallbacks) {
+    if (!presentation.memories[callback.memoryId])
+      throw new Error(`Unknown callback memory: ${callback.memoryId}`);
+  }
+  unique(
+    milestones.map((item) => item.id),
+    "trial milestone",
+  );
+  unique(
+    [
+      city.firstClearReward.rewardSourceId,
+      ...milestones.map((item) => item.rewardSourceId),
+    ],
+    "reward source",
+  );
+  for (const milestone of milestones) {
+    verifyDateReferences(milestone.requiredPlayedDateIds, "trial prerequisite");
+    if (milestone.ap > balance.apCap)
+      throw new Error("Trial reward exceeds AP cap");
+  }
+  const visiting = new Set<string>();
+  const visited = new Set<string>();
+  const visitPrerequisites = (date: DateDefinition) => {
+    if (visiting.has(date.id)) throw new Error("Cyclic date prerequisites");
+    if (visited.has(date.id)) return;
+    visiting.add(date.id);
+    for (const id of date.requiredPlayedDateIds)
+      visitPrerequisites(dates.find((other) => other.id === id)!);
+    visiting.delete(date.id);
+    visited.add(date.id);
+  };
+  dates.forEach(visitPrerequisites);
   // Existing future content stays out of the runtime bundle, but malformed JSON cannot pass the build.
   for (const file of await filesIn(path.join(content, "quizzes"))) {
     if (!file.endsWith(".json")) continue;

@@ -37,16 +37,24 @@ async function changeDates(change: (data: typeof dateData) => void) {
 }
 
 describe("content build acceptance", () => {
-  it("compiles and traverses all nine routes with exactly two three-way choices", async () => {
+  it("compiles every declared scenario context and route", async () => {
     const result = await buildContent(fixture);
-    expect(result.routes).toBe(9);
+    expect(result.routes).toBe(
+      dateData.dates.reduce(
+        (sum, date) =>
+          sum + 3 ** date.choiceCount * date.validationContexts.length,
+        0,
+      ),
+    );
     const generated = JSON.parse(
       await readFile(
         path.join(fixture, "src/content/generated/stories.json"),
         "utf8",
       ),
     );
-    expect(Object.keys(generated)).toEqual(["milano/cafe_01"]);
+    expect(Object.keys(generated).sort()).toEqual(
+      dateData.dates.map((date) => date.storyId).sort(),
+    );
   });
 
   it("reflects edited Ink prose in runtime without a UI source change", async () => {
@@ -124,7 +132,7 @@ describe("content build acceptance", () => {
   it("rejects routes ending before the second choice", async () => {
     await replace(storyFile, "-> after_first", "-> END");
     await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Expected two choice moments",
+      "Expected 2 choice moments",
     );
   });
 
@@ -140,6 +148,111 @@ describe("content build acceptance", () => {
       data.dates[0].apCost = -1;
     });
     await expect(buildContent(fixture, false)).rejects.toThrow();
+  });
+
+  it("requires the name variables expected by the runtime", async () => {
+    await replace(
+      "content/stories/milano/invitation_01.ink",
+      'VAR player_name = ""',
+      "// player name accidentally removed",
+    );
+    await expect(buildContent(fixture, false)).rejects.toThrow(
+      "Missing required Ink variable: player_name",
+    );
+  });
+
+  it("rejects affection rewards attached to confession outcomes", async () => {
+    const file = path.join(fixture, "content/romance/effect_catalog.json");
+    const data = JSON.parse(await readFile(file, "utf8"));
+    data.effects.find(
+      (effect: { id: string }) => effect.id === "milano_confession_accepted",
+    ).affectionDelta = 1;
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).rejects.toThrow(
+      "Confession outcome cannot award affection",
+    );
+  });
+
+  it("validates special events with one choice instead of demanding nine routes", async () => {
+    const result = await buildContent(fixture, false);
+    const invitation = result.dates.find((date) => date.kind === "special")!;
+    expect(invitation.choiceCount).toBe(1);
+    const story = new Story(result.stories[invitation.storyId]);
+    while (story.canContinue) story.Continue();
+    expect(story.currentChoices).toHaveLength(3);
+  });
+
+  it("rejects an unknown relationship prerequisite", async () => {
+    await replace(
+      "content/romance/progression.json",
+      '"milano_walk_01"',
+      '"unknown_date"',
+    );
+    await expect(buildContent(fixture, false)).rejects.toThrow(
+      "Unknown stage prerequisite",
+    );
+  });
+
+  it("rejects cyclic date prerequisites", async () => {
+    await changeDates((data) => {
+      data.dates[0].requiredPlayedDateIds = ["milano_walk_01"];
+    });
+    await expect(buildContent(fixture, false)).rejects.toThrow(
+      "Cyclic date prerequisites",
+    );
+  });
+
+  it("rejects a paid special event", async () => {
+    await changeDates((data) => {
+      data.dates.find((date) => date.kind === "special")!.apCost = 1;
+    });
+    await expect(buildContent(fixture, false)).rejects.toThrow(
+      "Special events must be free",
+    );
+  });
+
+  it("rejects invalid confession readiness branches", async () => {
+    await replace(
+      "content/stories/milano/confession_01.ink",
+      "{confession_ready:",
+      "{true:",
+    );
+    await expect(buildContent(fixture, false)).rejects.toThrow(
+      "Confession accepts before readiness",
+    );
+  });
+
+  it("rejects missing outcome events in confession", async () => {
+    await replace(
+      "content/stories/milano/confession_01.ink",
+      "# effect: milano_confession_accepted",
+      "# effect: milano_invitation_chosen_joke",
+    );
+    await expect(buildContent(fixture, false)).rejects.toThrow(
+      "Confession must resolve exactly one outcome",
+    );
+  });
+
+  it("rejects outcome effects in a normal date", async () => {
+    await replace(
+      storyFile,
+      "# effect: milano_cafe_first_joke",
+      "# effect: milano_confession_deferred",
+    );
+    await expect(buildContent(fixture, false)).rejects.toThrow(
+      "Only confession",
+    );
+  });
+
+  it("rejects duplicate milestone reward source IDs", async () => {
+    await replace(
+      "content/romance/trial_progression.json",
+      '"trial_after_walk_reward"',
+      '"trial_after_cafe_reward"',
+    );
+    await expect(buildContent(fixture, false)).rejects.toThrow(
+      "Duplicate reward source",
+    );
   });
 
   it("checks the existing future quiz sample without adding battle gameplay", async () => {

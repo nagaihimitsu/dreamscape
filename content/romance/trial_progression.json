@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "milestones": [
+    {
+      "id": "trial_after_cafe",
+      "rewardSourceId": "trial_after_cafe_reward",
+      "titleJa": "試遊用：翌日の自由時間",
+      "descriptionJa": "カフェのあと、次の仮章へ進みます。報酬はこの旅で一度だけ。",
+      "ap": 4,
+      "requiredPlayedDateIds": [
+        "milano_cafe_01"
+      ]
+    },
+    {
+      "id": "trial_after_walk",
+      "rewardSourceId": "trial_after_walk_reward",
+      "titleJa": "試遊用：夜の自由時間",
+      "descriptionJa": "散歩のあと、夜の仮章へ進みます。報酬はこの旅で一度だけ。",
+      "ap": 4,
+      "requiredPlayedDateIds": [
+        "milano_walk_01"
+      ]
+    }
+  ]
+}

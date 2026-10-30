@@ -1,4 +1,10 @@
-import { useCallback, useRef, useState, type FormEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
 import { balance, city, dates, presentation } from "../content";
 import {
   advanceDate,
@@ -6,7 +12,7 @@ import {
   completeChapter,
   createGame,
   finishDate,
-  getDateAvailability,
+  claimTrialMilestone,
   setNames,
   startDate,
   type GameState,
@@ -15,6 +21,8 @@ import { backupAndCreate, loadGame, saveGame } from "../persistence";
 import { CanalScene } from "../components/CanalScene";
 import { DialogueText } from "../components/DialogueText";
 import { Modal } from "../components/Modal";
+import { RomanceMenu, withNames } from "../features/romance/RomanceMenu";
+import { MemoryList } from "../features/romance/MemoryList";
 
 const storage = {
   getItem: (key: string) => window.localStorage.getItem(key),
@@ -102,7 +110,15 @@ export default function App() {
   }
   const active = game?.activeDate;
   const frame = active?.frame;
+  useEffect(() => {
+    if (active?.dateId || result || game?.endingReached)
+      document.getElementById("main")?.scrollIntoView({ block: "start" });
+  }, [active?.dateId, result, game?.endingReached]);
   const currentDate = dates.find((date) => date.id === active?.dateId);
+  const selectedDate =
+    confirmation?.kind === "date"
+      ? dates.find((date) => date.id === confirmation.id)
+      : undefined;
   const nameForm = (
     <>
       <label>
@@ -136,7 +152,7 @@ export default function App() {
         <a href="#main" className="brand">
           Dreamscape<span>旅の余白</span>
         </a>
-        <span className="edition">ミラノ編 · 試遊版</span>
+        <span className="edition">ミラノ編 · Phase 2</span>
       </header>
       {game && (
         <div className="journey-bar">
@@ -221,7 +237,7 @@ export default function App() {
               <div className="chapter-note">
                 <span className="pill">開発用操作</span>
                 <p>
-                  この試遊版では、章クリア後のカフェデートを遊べます。初回クリアで、デートに誘うためのAPがもらえます。
+                  この試遊版では、デートを重ねて告白するまでの物語を遊べます。まずは章を仮クリアして、デートに誘うためのAPを受け取りましょう。
                 </p>
               </div>
               <button
@@ -241,7 +257,12 @@ export default function App() {
               <div className="section-meta">
                 <span className="eyebrow">{currentDate?.titleJa}</span>
                 <span className="fine-print">
-                  会話 {Math.min(active.choiceCount + 1, 2)} / 2
+                  会話{" "}
+                  {Math.min(
+                    active.choiceCount + 1,
+                    currentDate?.choiceCount ?? 2,
+                  )}{" "}
+                  / {currentDate?.choiceCount ?? 2}
                 </span>
               </div>
               <div className="speaker">
@@ -315,7 +336,10 @@ export default function App() {
                           setResult(true);
                       }}
                     >
-                      デートを終える <span aria-hidden="true">→</span>
+                      {currentDate?.kind === "normal"
+                        ? "デートを終える"
+                        : "この時間を終える"}{" "}
+                      <span aria-hidden="true">→</span>
                     </button>
                   ) : (
                     <button
@@ -355,6 +379,31 @@ export default function App() {
               )}
             </section>
           </>
+        ) : game.endingReached ? (
+          <>
+            <CanalScene backgroundId="milano_night" />
+            <section className="paper ending" data-testid="romance-ending">
+              <p className="eyebrow">交際開始 · 恋愛ルートクリア</p>
+              <h1>{presentation.ending.titleJa}</h1>
+              <p className="ending-names">
+                {game.playerName}
+                <span> & </span>
+                {game.heroineName}
+              </p>
+              <p className="lead">
+                {withNames(presentation.ending.descriptionJa, game)}
+              </p>
+              <p className="fine-print">
+                ふたりの物語は、ここでひと区切り。
+                <br />
+                ここまでの旅は保存されています。
+              </p>
+              <details className="memories">
+                <summary>{presentation.ending.buttonJa}</summary>
+                <MemoryList ids={game.memories} />
+              </details>
+            </section>
+          </>
         ) : (
           <>
             <CanalScene />
@@ -380,61 +429,13 @@ export default function App() {
                   </button>
                 </>
               ) : (
-                <>
-                  {dates.map((date) => {
-                    const eligibility = getDateAvailability(game, date.id);
-                    return (
-                      <article className="date-card" key={date.id}>
-                        <div className="section-meta">
-                          <span className="pill">
-                            {game.playedDateIds.includes(date.id)
-                              ? "体験済み"
-                              : "未体験"}
-                          </span>
-                          <span className="cost">{date.apCost} AP</span>
-                        </div>
-                        <h2>{date.titleJa}</h2>
-                        <p>{date.descriptionJa}</p>
-                        <p className="date-detail">
-                          必要な章：ミラノ クリア済み
-                        </p>
-                        <button
-                          className="primary"
-                          disabled={!eligibility.available}
-                          onClick={() =>
-                            setConfirmation({ kind: "date", id: date.id })
-                          }
-                        >
-                          {game.playedDateIds.includes(date.id)
-                            ? "もう一度誘う"
-                            : "カフェデートに誘う"}
-                          <span aria-hidden="true"> →</span>
-                        </button>
-                        {!eligibility.available && (
-                          <p role="status">{eligibility.reason}</p>
-                        )}
-                        {game.playedDateIds.includes(date.id) && (
-                          <p className="fine-print">
-                            再鑑賞にもAPを使います。好感度や思い出の追加獲得はありません。
-                          </p>
-                        )}
-                      </article>
-                    );
-                  })}
-                  <p className="fine-print ap-help">
-                    APは一緒に過ごす機会のために。
-                    <br />
-                    どんな時間になるかは、交わす言葉から。
-                  </p>
-                  {!!game.memories.length && (
-                    <details className="memories">
-                      <summary>
-                        旅のしおり · 思い出 {game.memories.length}件
-                      </summary>
-                      <MemoryList ids={game.memories} />
-                    </details>
-                  )}
-                </>
+                <RomanceMenu
+                  game={game}
+                  onChoose={(id) => setConfirmation({ kind: "date", id })}
+                  onMilestone={(id) =>
+                    commit((state) => claimTrialMilestone(state, id))
+                  }
+                />
               )}
             </section>
           </>
@@ -466,12 +467,14 @@ export default function App() {
           </p>
           <h2 id="confirm-title">
             {confirmation.kind === "date"
-              ? "カフェに誘いますか？"
+              ? `${selectedDate?.titleJa}を始めますか？`
               : "この言葉を伝えますか？"}
           </h2>
           <p className="confirm-text">
             {confirmation.kind === "date"
-              ? `${dates.find((d) => d.id === confirmation.id)?.apCost}APを使って、デートを始めます。`
+              ? selectedDate?.apCost
+                ? `${selectedDate.apCost}APを使って、デートを始めます。`
+                : "APは使いません。ふたりの時間を始めます。"
               : confirmation.text}
           </p>
           <button
@@ -490,7 +493,9 @@ export default function App() {
             }}
           >
             {confirmation.kind === "date"
-              ? "APを使って始める"
+              ? selectedDate?.apCost
+                ? "APを使って始める"
+                : "この時間を過ごす"
               : "この言葉を伝える"}
           </button>
           <button className="secondary" onClick={() => setConfirmation(null)}>
@@ -535,20 +540,5 @@ export default function App() {
         </Modal>
       )}
     </div>
-  );
-}
-function MemoryList({ ids }: { ids: string[] }) {
-  return (
-    <ul className="memory-list">
-      {ids.map((id) => (
-        <li key={id}>
-          <span aria-hidden="true">✧</span>
-          <div>
-            <h3>{presentation.memories[id]?.titleJa ?? id}</h3>
-            <p>{presentation.memories[id]?.descriptionJa}</p>
-          </div>
-        </li>
-      ))}
-    </ul>
   );
 }

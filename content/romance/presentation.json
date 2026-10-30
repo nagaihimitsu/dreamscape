@@ -5,6 +5,16 @@
       "nameJa": "運河沿いのカフェ",
       "captionJa": "ミラノ ／ 予定のない午後",
       "color": "#b87964"
+    },
+    "milano_walk": {
+      "nameJa": "夕暮れの散歩道",
+      "captionJa": "ミラノ ／ 日暮れの寄り道",
+      "color": "#b88b64"
+    },
+    "milano_night": {
+      "nameJa": "灯りの見える岸辺",
+      "captionJa": "ミラノ ／ 窓に灯りがともる頃",
+      "color": "#455a68"
     }
   },
   "emotions": {
@@ -35,6 +45,91 @@
     "milano_cafe_future_talk": {
       "titleJa": "また、こうして",
       "descriptionJa": "何もしないなら、また話そう。窓へ向いた横顔の口元が、少しだけ緩んだ。"
+    },
+    "milano_walk_first_joke": {
+      "titleJa": "背伸びの内緒話",
+      "descriptionJa": "秘密を聞くには背が高すぎる街灯。彼女は一度だけつま先を上げた。"
+    },
+    "milano_walk_first_listen": {
+      "titleJa": "街灯の特等席",
+      "descriptionJa": "彼女が好きな傾き方を、狭い隙間から一緒に眺めた。"
+    },
+    "milano_walk_first_honest": {
+      "titleJa": "街灯の趣味",
+      "descriptionJa": "何気ないものを見つけるところが好きだと伝えた。彼女は鞄の紐を持ち直した。"
+    },
+    "milano_walk_second_joke": {
+      "titleJa": "絵の中の休憩",
+      "descriptionJa": "倒れそうな街灯を支える人。その人が休める小さな椅子が描き足された。"
+    },
+    "milano_walk_second_listen": {
+      "titleJa": "消さなかった線",
+      "descriptionJa": "今日ここで描いた線だから。その言葉で、消しゴムは鞄へ戻った。"
+    },
+    "milano_walk_second_honest": {
+      "titleJa": "空けてくれた半分",
+      "descriptionJa": "上手だったら隣は考える、と言いながら、彼女はページの半分を空けた。"
+    },
+    "milano_night_first_joke": {
+      "titleJa": "窓に負けた夜",
+      "descriptionJa": "何もしないまま勝ち続ける暗い窓。彼女はカメラを下ろして笑った。"
+    },
+    "milano_night_first_listen": {
+      "titleJa": "待つ時間",
+      "descriptionJa": "写真にならなくても、一緒に待っていたい。彼女は半歩こちらへ寄った。"
+    },
+    "milano_night_first_honest": {
+      "titleJa": "カメラの陰",
+      "descriptionJa": "覚えて帰りたい横顔。彼女はカメラに隠れかけて、途中でやめた。"
+    },
+    "milano_night_second_joke": {
+      "titleJa": "二人の証言",
+      "descriptionJa": "窓に灯りがついたことを、二人とも見ていた。写真の代わりに証言が残った。"
+    },
+    "milano_night_second_listen": {
+      "titleJa": "どっちかが覚えてる",
+      "descriptionJa": "全部を持って帰らなくてもいい。忘れたら、どちらかが覚えているかもしれない。"
+    },
+    "milano_night_second_honest": {
+      "titleJa": "帰ってからの話",
+      "descriptionJa": "うまく説明できない話も、帰ってから一緒に。彼女はすぐには歩き出さなかった。"
+    },
+    "milano_invitation_chosen_joke": {
+      "titleJa": "白紙の深い意味",
+      "descriptionJa": "何も書かない葉書は、まず書き忘れを心配される。彼女は裏返して笑った。"
+    },
+    "milano_invitation_chosen_listen": {
+      "titleJa": "二つの白",
+      "descriptionJa": "この白と、もう少し白い方。彼女は真面目な顔で、二枚の葉書を並べた。"
+    },
+    "milano_invitation_chosen_honest": {
+      "titleJa": "彼女の行きたい場所",
+      "descriptionJa": "まだ何も案内してないよ、と彼女は言った。葉書は二人の間に置かれたままだった。"
+    },
+    "milano_reassurance_chosen_joke": {
+      "titleJa": "訂正しない一行",
+      "descriptionJa": "配達される前に読んだ葉書。訂正はしない、と彼女は言った。"
+    },
+    "milano_reassurance_chosen_listen": {
+      "titleJa": "考えているふりをやめて",
+      "descriptionJa": "急がなくていい。でも、考えているふりはしたくない。彼女はこちらを見た。"
+    },
+    "milano_reassurance_chosen_honest": {
+      "titleJa": "次はいつ話せるか",
+      "descriptionJa": "返事を待つ帰り道にも、二人は次に会う時間を考えていた。"
+    },
+    "milano_confession_promise": {
+      "titleJa": "予定表にない約束",
+      "descriptionJa": "恋人として、一緒にいたい。差し出された手に、自分の手を重ねた。"
     }
+  },
+  "ending": {
+    "titleJa": "旅の続きに、きみと。",
+    "descriptionJa": "ふたりは、自分の言葉でこれからを選びました。\n交際が始まり、この恋の物語はひとつの結末を迎えます。",
+    "buttonJa": "旅のしおりを見る"
+  },
+  "deferred": {
+    "titleJa": "まだ、言葉の途中。",
+    "descriptionJa": "返事を急がず、もう少し話す時間を。\n気持ちを伝える機会は、ここに残っています。"
   }
 }
