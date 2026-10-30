@@ -5,7 +5,14 @@ import {
   useState,
   type FormEvent,
 } from "react";
-import { balance, city, dates, presentation } from "../content";
+import {
+  balance,
+  city,
+  dates,
+  presentation,
+  battles,
+  landmarks,
+} from "../content";
 import {
   advanceDate,
   chooseDate,
@@ -25,6 +32,17 @@ import { RomanceMenu, withNames } from "../features/romance/RomanceMenu";
 import { MemoryList } from "../features/romance/MemoryList";
 import { BattleEntry } from "../features/battle/BattleEntry";
 import { BattleScreen } from "../features/battle/BattleScreen";
+import { TourismEntry } from "../features/tourism/TourismEntry";
+import { TourismScreen } from "../features/tourism/TourismScreen";
+import { ClueNotebook } from "../features/tourism/ClueNotebook";
+import {
+  openTourism,
+  advanceTourismGuide,
+  skipTourismGuide,
+  closeTourism,
+  discoverClue,
+  startTourismBattle,
+} from "../domain/tourism";
 import {
   startBattle,
   advanceBattle,
@@ -55,6 +73,7 @@ export default function App() {
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
   const [paused, setPaused] = useState(false);
   const [settings, setSettings] = useState(false);
+  const [notebook, setNotebook] = useState(false);
   const [speed, setSpeed] = useState(25);
   const [ready, setReady] = useState(false);
   const onReady = useCallback((value: boolean) => setReady(value), []);
@@ -109,6 +128,7 @@ export default function App() {
       setConfirmation(null);
       setResult(false);
       setPaused(false);
+      setNotebook(false);
       setNotice("保存した場面から再開しました。");
     } else
       setNotice(
@@ -124,6 +144,13 @@ export default function App() {
       document.getElementById("main")?.scrollIntoView({ block: "start" });
   }, [active?.dateId, result, game?.endingReached]);
   const currentDate = dates.find((date) => date.id === active?.dateId);
+  const currentLandmarkId =
+    game?.activeTourism?.landmarkId ??
+    battles.find((battle) => battle.id === game?.activeBattle?.battleId)
+      ?.landmarkId;
+  const canObserve = landmarks.some(
+    (landmark) => landmark.id === currentLandmarkId,
+  );
   const selectedDate =
     confirmation?.kind === "date"
       ? dates.find((date) => date.id === confirmation.id)
@@ -161,7 +188,7 @@ export default function App() {
         <a href="#main" className="brand">
           Dreamscape<span>旅の余白</span>
         </a>
-        <span className="edition">ミラノ編 · Phase 3</span>
+        <span className="edition">ミラノ編 · Phase 4</span>
       </header>
       {game && (
         <div className="journey-bar">
@@ -185,7 +212,21 @@ export default function App() {
             </button>
           </div>
         )}
-        {game && !game.activeBattle && (
+        {game &&
+          !game.activeBattle &&
+          !game.activeTourism &&
+          !game.activeDate && (
+            <TourismEntry
+              game={game}
+              onStart={(id) => {
+                if (commit((state) => openTourism(state, id))) {
+                  setResult(false);
+                  setPaused(false);
+                }
+              }}
+            />
+          )}
+        {game && !game.activeBattle && !game.activeTourism && (
           <BattleEntry
             game={game}
             onStart={(id) => {
@@ -239,11 +280,36 @@ export default function App() {
               </p>
             </section>
           </>
+        ) : game.activeTourism ? (
+          <TourismScreen
+            key={game.activeTourism.landmarkId}
+            game={game}
+            speed={speed}
+            onSpeed={setSpeed}
+            onAdvance={() =>
+              commit((state) => advanceTourismGuide(state, game.revision))
+            }
+            onSkip={() =>
+              commit((state) => skipTourismGuide(state, game.revision))
+            }
+            onDiscover={(id) =>
+              game.discoveredClueIds.includes(id) ||
+              commit((state) => discoverClue(state, id, game.revision))
+            }
+            onNotebook={() => setNotebook(true)}
+            onBattle={() =>
+              commit((state) => startTourismBattle(state, game.revision))
+            }
+            onLeave={() =>
+              commit((state) => closeTourism(state, game.revision))
+            }
+          />
         ) : game.activeBattle ? (
           <BattleScreen
             game={game}
             speed={speed}
             onSpeed={setSpeed}
+            onNotebook={canObserve ? () => setNotebook(true) : undefined}
             onAdvance={() =>
               commit((state) => advanceBattle(state, game.revision))
             }
@@ -504,6 +570,21 @@ export default function App() {
       <footer>
         Dreamscape <span>·</span> 旅の余白に、ふたりの物語。
       </footer>
+      {notebook && game && currentLandmarkId && canObserve && (
+        <ClueNotebook
+          landmarkId={currentLandmarkId}
+          discoveredIds={game.discoveredClueIds}
+          onClose={() => setNotebook(false)}
+          onObserve={
+            !game.activeTourism
+              ? () => {
+                  if (commit((state) => openTourism(state, currentLandmarkId)))
+                    setNotebook(false);
+                }
+              : undefined
+          }
+        />
+      )}
       {confirmation && (
         <Modal labelledBy="confirm-title" onClose={() => setConfirmation(null)}>
           <p className="eyebrow">
@@ -550,8 +631,8 @@ export default function App() {
       {settings && game && (
         <Modal labelledBy="settings-title" onClose={() => setSettings(false)}>
           <h2 id="settings-title">名前の設定</h2>
-          {active || game.activeBattle ? (
-            <p>進行中の会話やバトルを終えたあとで、名前を変更できます。</p>
+          {active || game.activeBattle || game.activeTourism ? (
+            <p>進行中の会話やバトル・観光を閉じると、名前を変更できます。</p>
           ) : (
             <form
               className="name-form"

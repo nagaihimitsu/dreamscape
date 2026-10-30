@@ -6,6 +6,7 @@ import { Story } from "inkjs";
 import { buildContent } from "../../scripts/content-pipeline";
 import dateData from "../../content/romance/date_catalog.json";
 import battleData from "../../content/battles/catalog.json";
+import tourismData from "../../content/tourism/catalog.json";
 import { parseStoryTags } from "./tags";
 
 let fixture: string;
@@ -15,6 +16,9 @@ const dateFile = "content/romance/date_catalog.json";
 beforeEach(async () => {
   fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-content-"));
   await cp(path.resolve("content"), path.join(fixture, "content"), {
+    recursive: true,
+  });
+  await cp(path.resolve("public"), path.join(fixture, "public"), {
     recursive: true,
   });
 });
@@ -54,7 +58,11 @@ describe("content build acceptance", () => {
       ),
     );
     expect(Object.keys(generated).sort()).toEqual(
-      [...dateData.dates.map((date) => date.storyId), ...battleData.battles.map((battle) => battle.storyId)].sort(),
+      [
+        ...dateData.dates.map((date) => date.storyId),
+        ...battleData.battles.map((battle) => battle.storyId),
+        ...tourismData.landmarks.map((landmark) => landmark.guideStoryId),
+      ].sort(),
     );
   });
 

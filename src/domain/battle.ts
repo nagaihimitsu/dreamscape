@@ -70,6 +70,8 @@ export function getBattleAvailability(
 ): Availability {
   if (!battles.some((item) => item.id === battleId))
     return { available: false, reason: "バトルが見つかりません。" };
+  if (state.activeTourism)
+    return { available: false, reason: "観光画面からバトルへ進んでください。" };
   if (state.activeDate)
     return { available: false, reason: "途中の恋愛会話を終えてから試せます。" };
   if (state.activeBattle && state.activeBattle.phase !== "result")
@@ -144,6 +146,7 @@ export function answerBattle(
 ): GameState {
   const active = state.activeBattle;
   if (
+    state.activeTourism ||
     state.revision !== expectedRevision ||
     !active ||
     active.phase !== "question"
@@ -178,6 +181,7 @@ export function toggleBattleHint(
 ): GameState {
   const active = state.activeBattle;
   if (
+    state.activeTourism ||
     state.revision !== expectedRevision ||
     !active ||
     active.phase !== "question"
@@ -194,7 +198,8 @@ export function advanceBattle(
   expectedRevision: number,
 ): GameState {
   const active = state.activeBattle;
-  if (state.revision !== expectedRevision || !active) return state;
+  if (state.activeTourism || state.revision !== expectedRevision || !active)
+    return state;
   const battle = battles.find((item) => item.id === active.battleId)!;
   if (active.phase === "feedback") {
     const scene =
@@ -274,6 +279,7 @@ export function leaveBattle(
   expectedRevision: number,
 ): GameState {
   if (
+    state.activeTourism ||
     state.revision !== expectedRevision ||
     state.activeBattle?.phase !== "result"
   )

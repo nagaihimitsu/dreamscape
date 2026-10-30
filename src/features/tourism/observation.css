@@ -1,0 +1,114 @@
+.observation-viewer {
+  margin-block: 22px;
+}
+.observation-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #282e29;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+  isolation: isolate;
+}
+.observation-viewport:active {
+  cursor: grabbing;
+}
+.observation-viewport:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 4px;
+}
+.observation-image {
+  position: absolute;
+  display: block;
+  max-width: none;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.observation-hotspot {
+  position: absolute;
+  z-index: 1;
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 0;
+  background: transparent;
+  transform: translate(-50%, -50%);
+  font-weight: 600;
+  line-height: 1;
+  touch-action: none;
+}
+.observation-hotspot > span {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid #fff8e6;
+  background: #294c40e8;
+  color: #fff8e6;
+  font-size: 13px;
+  box-shadow: 0 1px 5px #0009;
+}
+.observation-hotspot.is-found > span {
+  background: #f5eedeea;
+  color: #294c40;
+}
+.observation-hotspot.is-selected > span {
+  border-color: #edd17e;
+  box-shadow:
+    0 0 0 4px #947446b0,
+    0 1px 8px #0009;
+}
+.observation-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-block: 12px;
+}
+.observation-controls button {
+  min-width: 48px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: #eeece0;
+  color: var(--green);
+  font-size: 22px;
+}
+.observation-controls output {
+  min-width: 3.5em;
+  font-size: 13px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.observation-controls .observation-reset {
+  margin-left: auto;
+  padding-inline: 12px;
+  font-size: 13px;
+}
+.observation-help {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.observation-options {
+  display: flex;
+  justify-content: flex-end;
+  margin: -4px 0 8px;
+}
+.observation-marker-toggle {
+  min-height: 44px;
+  padding: 6px 12px;
+  background: transparent;
+  color: var(--green);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  font-size: 12px;
+}

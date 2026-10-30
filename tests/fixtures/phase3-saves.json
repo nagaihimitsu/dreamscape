@@ -1,0 +1,279 @@
+{
+  "idle": {
+    "schemaVersion": 3,
+    "revision": 0,
+    "playerName": "凪",
+    "heroineName": "澪",
+    "ap": 0,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [],
+    "claimedRewardIds": [],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null,
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": null,
+    "battleRecords": []
+  },
+  "ending": {
+    "schemaVersion": 3,
+    "revision": 72,
+    "playerName": "凪",
+    "heroineName": "澪",
+    "ap": 4,
+    "affection": 11,
+    "romanceStage": 4,
+    "completedChapters": [
+      "milano"
+    ],
+    "claimedRewardIds": [
+      "chapter_milano_first_clear",
+      "trial_after_cafe_reward",
+      "trial_after_walk_reward"
+    ],
+    "playedDateIds": [
+      "milano_cafe_01",
+      "milano_walk_01",
+      "milano_invitation_01",
+      "milano_night_01",
+      "milano_confession_01"
+    ],
+    "memories": [
+      "milano_cafe_interest",
+      "milano_cafe_secret_destination",
+      "milano_walk_first_listen",
+      "milano_walk_second_honest",
+      "milano_invitation_chosen_listen",
+      "milano_night_first_listen",
+      "milano_night_second_honest",
+      "milano_confession_promise"
+    ],
+    "activeDate": null,
+    "unlockedEventIds": [
+      "milano_invitation_01",
+      "milano_confession_01"
+    ],
+    "confessionStatus": "accepted",
+    "endingReached": true,
+    "activeBattle": null,
+    "battleRecords": []
+  },
+  "intro": {
+    "schemaVersion": 3,
+    "revision": 1,
+    "playerName": "凪",
+    "heroineName": "澪",
+    "ap": 0,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [],
+    "claimedRewardIds": [],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null,
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": {
+      "battleId": "milano_last_supper_01",
+      "runId": "milano_last_supper_01:1",
+      "contentHash": "de6907f7",
+      "phase": "dialogue",
+      "roundIndex": 0,
+      "answers": [],
+      "score": 0,
+      "hintOpen": false,
+      "hintUsed": false,
+      "dialogueScene": "intro",
+      "storyState": "{\"flows\":{\"DEFAULT_FLOW\":{\"callstack\":{\"threads\":[{\"callstack\":[{\"cPath\":\"introduction\",\"idx\":8,\"exp\":false,\"type\":0}],\"threadIndex\":0,\"previousContentObject\":\"introduction.7\"}],\"threadCounter\":0},\"outputStream\":[\"^ \",\"#\",\"^background: milano_refectory\",\"/#\",\"#\",\"^speaker: narrator\",\"/#\",\"^ミラノ、サンタ・マリア・デッレ・グラツィエの旧食堂。壁いっぱいの『最後の晩餐』を、二人で見上げた。\",\"\\n\"],\"currentChoices\":[]}},\"currentFlowName\":\"DEFAULT_FLOW\",\"variablesState\":{\"player_name\":\"^凪\",\"heroine_name\":\"^澪\",\"player_address\":\"^凪さん\"},\"evalStack\":[],\"visitCounts\":{},\"turnIndices\":{},\"turnIdx\":-1,\"storySeed\":75,\"previousRandom\":0,\"inkSaveVersion\":10,\"inkFormatVersion\":21}",
+      "frame": {
+        "text": "ミラノ、サンタ・マリア・デッレ・グラツィエの旧食堂。壁いっぱいの『最後の晩餐』を、二人で見上げた。",
+        "speaker": "narrator",
+        "background": "milano_refectory",
+        "emotion": "neutral",
+        "choices": [],
+        "ended": false
+      }
+    },
+    "battleRecords": []
+  },
+  "question": {
+    "schemaVersion": 3,
+    "revision": 11,
+    "playerName": "凪",
+    "heroineName": "澪",
+    "ap": 0,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [],
+    "claimedRewardIds": [],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null,
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": {
+      "battleId": "milano_last_supper_01",
+      "runId": "milano_last_supper_01:1",
+      "contentHash": "de6907f7",
+      "phase": "question",
+      "roundIndex": 0,
+      "answers": [],
+      "score": 0,
+      "hintOpen": true,
+      "hintUsed": true,
+      "dialogueScene": null,
+      "storyState": null,
+      "frame": null
+    },
+    "battleRecords": []
+  },
+  "feedback": {
+    "schemaVersion": 3,
+    "revision": 12,
+    "playerName": "凪",
+    "heroineName": "澪",
+    "ap": 0,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [],
+    "claimedRewardIds": [],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null,
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": {
+      "battleId": "milano_last_supper_01",
+      "runId": "milano_last_supper_01:1",
+      "contentHash": "de6907f7",
+      "phase": "feedback",
+      "roundIndex": 0,
+      "answers": [
+        {
+          "questionId": "last_supper_central_triangle",
+          "optionId": "B",
+          "correct": true,
+          "hintUsed": true
+        }
+      ],
+      "score": 1,
+      "hintOpen": true,
+      "hintUsed": true,
+      "dialogueScene": null,
+      "storyState": null,
+      "frame": null
+    },
+    "battleRecords": []
+  },
+  "reaction": {
+    "schemaVersion": 3,
+    "revision": 13,
+    "playerName": "凪",
+    "heroineName": "澪",
+    "ap": 0,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [],
+    "claimedRewardIds": [],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null,
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": {
+      "battleId": "milano_last_supper_01",
+      "runId": "milano_last_supper_01:1",
+      "contentHash": "de6907f7",
+      "phase": "dialogue",
+      "roundIndex": 0,
+      "answers": [
+        {
+          "questionId": "last_supper_central_triangle",
+          "optionId": "B",
+          "correct": true,
+          "hintUsed": true
+        }
+      ],
+      "score": 1,
+      "hintOpen": false,
+      "hintUsed": true,
+      "dialogueScene": "after_1",
+      "storyState": "{\"flows\":{\"DEFAULT_FLOW\":{\"callstack\":{\"threads\":[{\"callstack\":[{\"cPath\":\"after_first.6.b\",\"idx\":6,\"exp\":false,\"type\":0}],\"threadIndex\":0,\"previousContentObject\":\"after_first.6.b.5\"}],\"threadCounter\":0},\"outputStream\":[\"#\",\"^speaker: enemy\",\"/#\",\"^「中央のキリストは、三角形の安定した姿。その周りでは、十二人があんなに手を動かしている……」\",\"\\n\"],\"currentChoices\":[]}},\"currentFlowName\":\"DEFAULT_FLOW\",\"variablesState\":{\"player_name\":\"^凪\",\"heroine_name\":\"^澪\",\"player_address\":\"^凪さん\",\"battle_scene\":\"^after_1\",\"answer_correct\":true,\"battle_score\":1},\"evalStack\":[],\"visitCounts\":{},\"turnIndices\":{},\"turnIdx\":-1,\"storySeed\":95,\"previousRandom\":0,\"inkSaveVersion\":10,\"inkFormatVersion\":21}",
+      "frame": {
+        "text": "「中央のキリストは、三角形の安定した姿。その周りでは、十二人があんなに手を動かしている……」",
+        "speaker": "enemy",
+        "background": "milano_refectory",
+        "emotion": "neutral",
+        "choices": [],
+        "ended": false
+      }
+    },
+    "battleRecords": []
+  },
+  "result": {
+    "schemaVersion": 3,
+    "revision": 37,
+    "playerName": "凪",
+    "heroineName": "澪",
+    "ap": 0,
+    "affection": 0,
+    "romanceStage": 1,
+    "completedChapters": [],
+    "claimedRewardIds": [],
+    "playedDateIds": [],
+    "memories": [],
+    "activeDate": null,
+    "unlockedEventIds": [],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": {
+      "battleId": "milano_last_supper_01",
+      "runId": "milano_last_supper_01:1",
+      "contentHash": "de6907f7",
+      "phase": "result",
+      "roundIndex": 2,
+      "answers": [
+        {
+          "questionId": "last_supper_central_triangle",
+          "optionId": "B",
+          "correct": true,
+          "hintUsed": true
+        },
+        {
+          "questionId": "last_supper_vanishing_point",
+          "optionId": "C",
+          "correct": true,
+          "hintUsed": false
+        },
+        {
+          "questionId": "last_supper_dry_tradeoff",
+          "optionId": "A",
+          "correct": true,
+          "hintUsed": false
+        }
+      ],
+      "score": 3,
+      "hintOpen": false,
+      "hintUsed": false,
+      "dialogueScene": null,
+      "storyState": null,
+      "frame": null
+    },
+    "battleRecords": [
+      {
+        "battleId": "milano_last_supper_01",
+        "attempts": 1,
+        "firstScore": 3,
+        "bestScore": 3,
+        "lastScore": 3
+      }
+    ]
+  }
+}

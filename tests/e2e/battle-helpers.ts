@@ -65,6 +65,9 @@ export async function answerRound(
 ) {
   const before = await saved(page);
   expect(before.activeBattle!.phase).toBe("question");
+  await expect(
+    page.getByRole("button", { name: "手がかり帳", exact: true }),
+  ).toBeInViewport();
   const option = correct
     ? question.options.find((item) => item.id === question.correctOptionId)!
     : question.options.find((item) => item.id !== question.correctOptionId)!;
@@ -90,6 +93,9 @@ export async function answerRound(
   await expect(page.getByTestId("battle-feedback")).toBeFocused();
   await expect(
     page.getByTestId("battle-feedback").getByRole("status"),
+  ).toBeInViewport();
+  await expect(
+    page.getByRole("button", { name: "手がかり帳", exact: true }),
   ).toBeInViewport();
   const after = await saved(page);
   expect(after.activeBattle!.answers).toHaveLength(

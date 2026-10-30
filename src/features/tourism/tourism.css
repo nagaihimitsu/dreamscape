@@ -1,0 +1,316 @@
+.tourism-entry {
+  margin: 24px auto;
+  padding: 24px 26px;
+  max-width: 576px;
+  border: 1px solid #cebaa0;
+  background: #f0ebdf;
+  border-radius: 4px;
+}
+.tourism-entry h2 {
+  margin: 12px 0 8px;
+  font-size: 23px;
+}
+.tourism-entry p {
+  color: #626859;
+  font-size: 13px;
+}
+.tourism-entry .primary {
+  margin: 18px 0 10px;
+}
+.tourism-entry > div + div {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+.tourism-screen {
+  max-width: 760px;
+  margin: auto;
+}
+.tourism-heading {
+  padding: 30px 36px 16px;
+}
+.tourism-heading h1 {
+  margin: 7px 0 3px;
+}
+.landmark-english {
+  font-family: Georgia, serif;
+  font-size: 14px;
+  color: var(--muted);
+}
+.tourism-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+}
+.notebook-button {
+  color: var(--green);
+  background: #eeeee3;
+  border: 1px solid #bac5ae;
+  border-radius: 4px;
+  padding: 8px 18px;
+  font-size: 13px;
+  min-height: 48px;
+}
+.battle-notebook {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  justify-content: flex-end;
+  margin: -12px 0 20px;
+  padding: 6px 0;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+.battle-paper .quiz-feedback {
+  scroll-margin-top: 76px;
+}
+.tourism-arrival-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #413b32;
+}
+.tourism-guide.paper {
+  padding-top: 25px;
+}
+.tourism-guide .story-tools {
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}
+.tourism-guide .story-tools > label {
+  margin-left: auto;
+}
+.tourism-observation {
+  padding: 0 24px;
+}
+.observation-notes {
+  padding-top: 15px;
+}
+.discovery-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+}
+.discovery-list button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 10px 14px;
+  text-align: left;
+  border: 1px solid #d1d4c4;
+  background: #f2f1e7;
+  color: var(--green);
+  border-radius: 4px;
+  font-size: 13px;
+}
+.discovery-list button[aria-pressed="true"] {
+  border-color: var(--green);
+  background: #e6eadb;
+}
+.discovery-number {
+  width: 25px;
+  height: 25px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #dddcc9;
+  font-family: Georgia, serif;
+}
+.discovered-mark {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 10px;
+  color: var(--muted);
+}
+.discovery-detail {
+  margin-top: 16px;
+  padding: 20px;
+  background: #f0eee2;
+  border-left: 3px solid var(--gold);
+  border-radius: 3px;
+}
+.recorded-label {
+  font-size: 11px;
+  color: var(--green);
+  padding-bottom: 12px;
+  margin-bottom: 13px;
+  border-bottom: 1px solid #d9d9c7;
+}
+.clue-kind {
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  margin-bottom: 5px;
+}
+.discovery-detail h3,
+.notebook-clue h3 {
+  font-family: "Noto Serif JP", serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+.clue-description {
+  margin-top: 12px;
+  line-height: 2;
+  font-size: 14px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.claim-types {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.clue-sources {
+  margin-top: 14px;
+  font-size: 11px;
+  color: #5e685a;
+  overflow-wrap: anywhere;
+}
+.clue-sources summary {
+  padding: 10px 0;
+  cursor: pointer;
+  min-height: 44px;
+}
+.clue-sources > div {
+  margin-top: 9px;
+  padding: 9px 0;
+  border-top: 1px solid var(--line);
+}
+.clue-sources p {
+  margin: 9px 0;
+}
+.clue-sources a {
+  display: inline-block;
+  padding: 8px 0;
+}
+.document-cards {
+  margin-top: 30px;
+}
+.document-cards h2 {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+.document-card {
+  display: grid;
+  gap: 5px;
+  width: 100%;
+  text-align: left;
+  padding: 16px;
+  margin-top: 12px;
+  border: 1px solid #d2c7ae;
+  border-radius: 4px;
+  background: #f2edde;
+  color: var(--green);
+  font-size: 14px;
+}
+.document-card small {
+  font-size: 11px;
+  color: var(--muted);
+}
+.tourism-credits {
+  margin: 24px 36px 0;
+  font-size: 11px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.tourism-credits summary {
+  min-height: 44px;
+  cursor: pointer;
+  padding: 8px 0;
+}
+.tourism-credits p {
+  margin-top: 6px;
+}
+.tourism-actions {
+  padding: 16px 36px 32px;
+}
+.tourism-actions > .fine-print {
+  margin-bottom: 12px;
+}
+.image-placeholder-note {
+  margin: 0 24px 16px;
+  padding: 12px;
+  font-size: 12px;
+  background: #f0e5cb;
+}
+.modal:has(.cluebook-header) {
+  width: min(620px, calc(100vw - 24px));
+  max-width: 620px;
+  padding: 0;
+  border: 1px solid #c3c8b8;
+}
+.cluebook-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 22px 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+}
+.cluebook-header h2 {
+  margin: 2px 0;
+}
+.cluebook-header .text-button {
+  padding: 8px;
+  flex-shrink: 0;
+}
+.cluebook-body {
+  padding: 18px 22px 26px;
+}
+.notebook-clue {
+  padding: 20px 0;
+}
+.notebook-clue + .notebook-clue {
+  border-top: 1px solid var(--line);
+}
+.empty-clues {
+  font-size: 14px;
+  line-height: 2;
+  margin: 18px 0;
+}
+@media (max-width: 480px) {
+  .tourism-entry {
+    margin: 20px 20px 16px;
+    padding: 20px;
+  }
+  .tourism-heading {
+    padding: 24px 24px 14px;
+  }
+  .tourism-observation {
+    padding: 0 12px;
+  }
+  .observation-notes {
+    padding: 14px 12px 0;
+  }
+  .discovery-detail {
+    padding: 17px;
+  }
+  .discovery-list button {
+    gap: 8px;
+    padding: 10px;
+  }
+  .tourism-credits {
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+  .tourism-actions {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  .cluebook-header,
+  .cluebook-body {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}

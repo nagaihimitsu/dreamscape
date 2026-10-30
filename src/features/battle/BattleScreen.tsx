@@ -14,6 +14,7 @@ interface Props {
   onHint: () => void;
   onReplay: () => void;
   onLeave: () => void;
+  onNotebook?: () => void;
 }
 
 export function BattleScreen({
@@ -25,6 +26,7 @@ export function BattleScreen({
   onHint,
   onReplay,
   onLeave,
+  onNotebook,
 }: Props) {
   const active = game.activeBattle!;
   const battle = battles.find((item) => item.id === active.battleId)!;
@@ -72,6 +74,13 @@ export function BattleScreen({
           </span>
           <span>英語 {quiz.englishLevel}</span>
         </div>
+        {onNotebook && (
+          <div className="battle-notebook">
+            <button className="notebook-button" onClick={onNotebook}>
+              手がかり帳
+            </button>
+          </div>
+        )}
         {paused ? (
           <div className="paused">
             <h2>ひと休み</h2>

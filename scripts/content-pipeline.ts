@@ -23,6 +23,8 @@ import {
 } from "../src/content/schemas";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
 import { validateBattleStory } from "./battle-validation";
+import { tourismCatalogSchema } from "../src/content/tourism-schemas";
+import { validateTourism } from "./tourism-validation";
 
 async function json(file: string): Promise<unknown> {
   try {
@@ -189,10 +191,16 @@ export function validateStory(
 
 export async function buildContent(root: string, writeOutput = true) {
   const content = path.join(root, "content");
+  const tourism = tourismCatalogSchema.parse(
+    await json(path.join(content, "tourism/catalog.json")),
+  );
   const battles = battleCatalogSchema.parse(
     await json(path.join(content, "battles/catalog.json")),
   ).battles;
-  unique(battles.map((battle) => battle.id), "battleId");
+  unique(
+    battles.map((battle) => battle.id),
+    "battleId",
+  );
   const dates = dateCatalogSchema.parse(
     await json(path.join(content, "romance/date_catalog.json")),
   ).dates;
@@ -376,11 +384,15 @@ export async function buildContent(root: string, writeOutput = true) {
     if (!file.endsWith(".json")) continue;
     const isSample = file.endsWith(".sample.json");
     const data = await json(file);
-    const quiz = isSample ? quizSampleSchema.parse(data) : quizSchema.parse(data);
+    const quiz = isSample
+      ? quizSampleSchema.parse(data)
+      : quizSchema.parse(data);
     if (!isSample) {
       if (quizzes[quiz.id]) throw new Error(`Duplicate quizId: ${quiz.id}`);
       quizzes[quiz.id] = quizSchema.parse(data);
-      productionQuestionIds.push(...quiz.questions.map((question) => question.id));
+      productionQuestionIds.push(
+        ...quiz.questions.map((question) => question.id),
+      );
     }
     if (!city.landmarkIdsPlanned.includes(quiz.landmarkId))
       throw new Error(`Unknown landmark: ${quiz.landmarkId}`);
@@ -393,7 +405,10 @@ export async function buildContent(root: string, writeOutput = true) {
         question.options.map((option) => option.id),
         "quiz option ID",
       );
-      unique(question.options.map((option) => option.textEn.toLowerCase()), "quiz option text");
+      unique(
+        question.options.map((option) => option.textEn.toLowerCase()),
+        "quiz option text",
+      );
       if (
         question.options.filter(
           (option) => option.id === question.correctOptionId,
@@ -408,16 +423,41 @@ export async function buildContent(root: string, writeOutput = true) {
   for (const battle of battles) {
     const quiz = quizzes[battle.quizId];
     if (!quiz) throw new Error(`Unknown battle quizId: ${battle.quizId}`);
-    if (!city.landmarkIdsPlanned.includes(battle.landmarkId) || battle.landmarkId !== quiz.landmarkId)
+    if (
+      !city.landmarkIdsPlanned.includes(battle.landmarkId) ||
+      battle.landmarkId !== quiz.landmarkId
+    )
       throw new Error(`Battle landmark mismatch: ${battle.id}`);
-    if (!stories[battle.storyId]) throw new Error(`Unknown battle storyId: ${battle.storyId}`);
+    if (!stories[battle.storyId])
+      throw new Error(`Unknown battle storyId: ${battle.storyId}`);
     if (!presentation.backgrounds[battle.backgroundAssetId])
       throw new Error(`Unknown battle background: ${battle.backgroundAssetId}`);
-    unique([battle.scenes.intro, ...battle.scenes.afterRounds, battle.scenes.outro], "battle scene");
-    battleScenarios += validateBattleStory(stories[battle.storyId], battle, context);
+    unique(
+      [battle.scenes.intro, ...battle.scenes.afterRounds, battle.scenes.outro],
+      "battle scene",
+    );
+    battleScenarios += validateBattleStory(
+      stories[battle.storyId],
+      battle,
+      context,
+    );
   }
+  const tourismGuides = await validateTourism(
+    root,
+    tourism,
+    city.id,
+    city.landmarkIdsPlanned,
+    battles,
+    quizzes,
+    stories,
+    context,
+  );
   for (const storyId of Object.keys(stories)) {
-    if (!dates.some((date) => date.storyId === storyId) && !battles.some((battle) => battle.storyId === storyId))
+    if (
+      !dates.some((date) => date.storyId === storyId) &&
+      !battles.some((battle) => battle.storyId === storyId) &&
+      !tourism.landmarks.some((landmark) => landmark.guideStoryId === storyId)
+    )
       throw new Error(`Story lacks validation contract: ${storyId}`);
   }
   if (writeOutput) {
@@ -432,5 +472,15 @@ export async function buildContent(root: string, writeOutput = true) {
       `${JSON.stringify(stories, null, 2)}\n`,
     );
   }
-  return { stories, routes, dates, effects, battles, quizzes, battleScenarios };
+  return {
+    stories,
+    routes,
+    dates,
+    effects,
+    battles,
+    quizzes,
+    battleScenarios,
+    tourism,
+    tourismGuides,
+  };
 }

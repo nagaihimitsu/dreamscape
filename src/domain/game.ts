@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { activeTourismSchema, validateTourismState } from "./tourism";
 import {
   activeBattleSchema,
   battleRecordSchema,
@@ -78,11 +79,19 @@ const phase2StateSchema = oldStateSchema
     endingReached: z.boolean(),
   })
   .strict();
-export const gameStateSchema = phase2StateSchema
+const phase3StateSchema = phase2StateSchema
   .extend({
     schemaVersion: z.literal(3),
     activeBattle: activeBattleSchema.nullable(),
     battleRecords: z.array(battleRecordSchema),
+  })
+  .strict();
+export const gameStateSchema = phase3StateSchema
+  .extend({
+    schemaVersion: z.literal(4),
+    activeTourism: activeTourismSchema.nullable(),
+    discoveredClueIds: uniqueStrings,
+    visitedLandmarkIds: uniqueStrings,
   })
   .strict();
 export type GameState = z.infer<typeof gameStateSchema>;
@@ -97,7 +106,7 @@ export function createGame(
   heroineName = balance.defaultHeroineName,
 ): GameState {
   return {
-    schemaVersion: 3,
+    schemaVersion: 4,
     revision: 0,
     playerName: nameSchema.parse(playerName),
     heroineName: nameSchema.parse(heroineName),
@@ -114,6 +123,9 @@ export function createGame(
     endingReached: false,
     activeBattle: null,
     battleRecords: [],
+    activeTourism: null,
+    discoveredClueIds: [],
+    visitedLandmarkIds: [],
   };
 }
 
@@ -195,7 +207,8 @@ export function setNames(
   playerName: string,
   heroineName: string,
 ): GameState {
-  if (state.activeDate || state.activeBattle) return state;
+  if (state.activeDate || state.activeBattle || state.activeTourism)
+    return state;
   const player = nameSchema.safeParse(playerName),
     heroine = nameSchema.safeParse(heroineName);
   if (
@@ -218,6 +231,7 @@ export function grantRewardOnce(
   amount: number,
 ): GameState {
   if (
+    state.activeTourism ||
     !rewardId ||
     state.claimedRewardIds.includes(rewardId) ||
     !Number.isSafeInteger(amount) ||
@@ -240,6 +254,7 @@ export function completeChapter(
     chapterId !== city.id ||
     state.activeDate ||
     state.activeBattle ||
+    state.activeTourism ||
     state.completedChapters.includes(chapterId)
   )
     return state;
@@ -264,7 +279,7 @@ export function getMilestoneAvailability(
     return { available: false, reason: "この試遊用の進行は終了しました。" };
   if (state.claimedRewardIds.includes(milestone.rewardSourceId))
     return { available: false, reason: "受け取り済みです。" };
-  if (state.activeDate || state.activeBattle)
+  if (state.activeDate || state.activeBattle || state.activeTourism)
     return {
       available: false,
       reason: "今の会話・バトルを終えてから進めます。",
@@ -311,7 +326,7 @@ export function getDateAvailability(
       available: false,
       reason: "ふたりの物語は、交際エンディングを迎えました。",
     };
-  if (state.activeDate || state.activeBattle)
+  if (state.activeDate || state.activeBattle || state.activeTourism)
     return {
       available: false,
       reason: "途中の会話・バトルを再開してください。",
@@ -541,7 +556,7 @@ export function migrateGameState(input: unknown): GameState {
     const old = oldStateSchema.parse(input);
     return evaluateProgression({
       ...old,
-      schemaVersion: 3,
+      schemaVersion: 4,
       activeDate: old.activeDate
         ? { ...old.activeDate, pendingOutcome: null }
         : null,
@@ -550,6 +565,9 @@ export function migrateGameState(input: unknown): GameState {
       unlockedEventIds: [],
       activeBattle: null,
       battleRecords: [],
+      activeTourism: null,
+      discoveredClueIds: [],
+      visitedLandmarkIds: [],
     });
   }
   if (
@@ -559,7 +577,30 @@ export function migrateGameState(input: unknown): GameState {
     input.schemaVersion === 2
   ) {
     const old = phase2StateSchema.parse(input);
-    return { ...old, schemaVersion: 3, activeBattle: null, battleRecords: [] };
+    return {
+      ...old,
+      schemaVersion: 4,
+      activeBattle: null,
+      battleRecords: [],
+      activeTourism: null,
+      discoveredClueIds: [],
+      visitedLandmarkIds: [],
+    };
+  }
+  if (
+    typeof input === "object" &&
+    input !== null &&
+    "schemaVersion" in input &&
+    input.schemaVersion === 3
+  ) {
+    const old = phase3StateSchema.parse(input);
+    return {
+      ...old,
+      schemaVersion: 4,
+      activeTourism: null,
+      discoveredClueIds: [],
+      visitedLandmarkIds: [],
+    };
   }
   return gameStateSchema.parse(input);
 }
@@ -567,6 +608,7 @@ export function migrateGameState(input: unknown): GameState {
 export function validateGameState(input: unknown): GameState {
   const state = migrateGameState(input);
   validateBattleState(state);
+  validateTourismState(state);
   const knownMemories = new Set(
     effects.flatMap((effect) => (effect.memoryId ? [effect.memoryId] : [])),
   );

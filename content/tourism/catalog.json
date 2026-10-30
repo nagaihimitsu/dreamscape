@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "id": "last_supper_photo",
+      "path": "assets/tourism/last-supper.webp",
+      "width": 2560,
+      "height": 1422,
+      "altJa": "レオナルド・ダ・ヴィンチ『最後の晩餐』。中央のキリストを囲んで十二使徒が食卓につき、上には奥行きのある天井、下部中央には後世の出入口の跡が見える。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Last_Supper_by_Leonardo_da_Vinci.jpg",
+      "licenseName": "Public Domain Mark 1.0 / PD-Art（PD-old-100-expired）",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "creditJa": "レオナルド・ダ・ヴィンチ『最後の晩餐』／写真：Paris Orlando（2019）、Wikimedia Commons",
+      "modificationJa": "Commonsの3840px版から、全体の縦横比を保って2560px幅へ縮小しWebP圧縮。切り抜き、描き足し、左右反転、生成AIによる補完は行っていません。",
+      "checkedAt": "2026-10-30"
+    }
+  ],
+  "landmarks": [
+    {
+      "id": "last_supper",
+      "cityId": "milano",
+      "nameJa": "最後の晩餐",
+      "nameEn": "The Last Supper",
+      "descriptionJa": "サンタ・マリア・デッレ・グラツィエ修道院の旧食堂。壁いっぱいの絵を、少し近くで眺めてみよう。",
+      "imageAssetId": "last_supper_photo",
+      "guideStoryId": "tourism/last_supper_guide",
+      "battleId": "milano_last_supper_01",
+      "clueIds": [
+        "last_supper_perspective",
+        "last_supper_apostle_groups",
+        "last_supper_light",
+        "last_supper_doorway",
+        "last_supper_technique_card"
+      ]
+    }
+  ],
+  "clues": [
+    {
+      "id": "last_supper_perspective",
+      "landmarkId": "last_supper",
+      "kind": "hotspot",
+      "titleJa": "天井の線をたどる",
+      "descriptionJa": "天井の奥行きの線を、中央へ延ばしてみよう。遠近法の消失点は、キリスト本人の右のこめかみ付近にある。絵の中の部屋も、その頭部へ視線を集めている。",
+      "factId": "fact_last_supper_vanishing_point",
+      "relatedQuestionIds": [
+        "last_supper_vanishing_point"
+      ],
+      "region": {
+        "x": 0.28,
+        "y": 0.08,
+        "width": 0.42,
+        "height": 0.2
+      },
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano（公式）",
+          "title": "A powerful theatrical machine — The perspective box",
+          "url": "https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "公式解説は消失点をキリストの右のこめかみ付近と記載する。観察範囲は、その点へ向かう天井の線。右はキリスト本人の右側。"
+        }
+      ]
+    },
+    {
+      "id": "last_supper_apostle_groups",
+      "landmarkId": "last_supper",
+      "kind": "hotspot",
+      "titleJa": "三人ずつのざわめき",
+      "descriptionJa": "左端にも三人、その隣にも三人。十二使徒は三人ずつ四組に分かれ、身振りで応じ合う。中央のキリストは両隣から離れて座る。にぎやかな周囲と、静かな中央を見比べてみよう。",
+      "factId": "fact_last_supper_four_groups",
+      "relatedQuestionIds": [
+        "last_supper_central_triangle"
+      ],
+      "region": {
+        "x": 0.06,
+        "y": 0.46,
+        "width": 0.22,
+        "height": 0.26
+      },
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano／DescriVedendo（公式掲載資料）",
+          "title": "DescriVedendo — Il Cenacolo Vinciano, pp. 2–3",
+          "url": "https://cenacolovinciano.org/wp-content/uploads/2019/07/DescriVedendo-Cenacolo.pdf",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "十二使徒がキリストの左右で三人ずつ二組、合計四組に分かれる配置を説明している。画像ではまず左端の一組を示す。"
+        }
+      ]
+    },
+    {
+      "id": "last_supper_light",
+      "landmarkId": "last_supper",
+      "kind": "hotspot",
+      "titleJa": "光輪のかわりに",
+      "descriptionJa": "キリストの頭の後ろに、くっきりした輪はない。あるのは中央の窓と明るい空。美術館の解説では、この自然の光が従来の光輪に代わる表現として読まれている。",
+      "factId": "fact_last_supper_window_light",
+      "relatedQuestionIds": [
+        "last_supper_central_triangle"
+      ],
+      "region": {
+        "x": 0.46,
+        "y": 0.42,
+        "width": 0.08,
+        "height": 0.17
+      },
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano（公式）",
+          "title": "Last Supper Museum and Santa Maria delle Grazie — museum leaflet, p. 4",
+          "url": "https://cenacolovinciano.org/wp-content/uploads/2024/11/Depliant-Cenacolo-ENG.pdf",
+          "checkedAt": "2026-10-30",
+          "claimType": "interpretation",
+          "claimJa": "窓の空の明るさが伝統的な光輪に代わるとする美術館の象徴的な読み取り。作者自身の発言として断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "last_supper_doorway",
+      "landmarkId": "last_supper",
+      "kind": "hotspot",
+      "titleJa": "食卓の下に残る切れ目",
+      "descriptionJa": "中央の下部は、絵が弧を描いて途切れている。これは十七世紀に厨房へ通じる出入口を広げた跡で、キリストの足元が失われた部分。絵の傷みが、すべて同じ理由で起きたわけではない。",
+      "factId": "fact_last_supper_doorway_loss",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.37,
+        "y": 0.79,
+        "width": 0.26,
+        "height": 0.2
+      },
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano／DescriVedendo（公式掲載資料）",
+          "title": "DescriVedendo — Il Cenacolo Vinciano, p. 4, La tavola",
+          "url": "https://cenacolovinciano.org/wp-content/uploads/2019/07/DescriVedendo-Cenacolo.pdf",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "足元の灰色のアーチ形部分は、十七世紀に厨房へ通じる扉を拡張した結果と説明される。この箇所を顔料の自然劣化とは混同しない。"
+        }
+      ]
+    },
+    {
+      "id": "last_supper_technique_card",
+      "landmarkId": "last_supper",
+      "kind": "document",
+      "titleJa": "資料：ゆっくり描くための選択",
+      "descriptionJa": "画像だけでは判別できない制作技法の話。乾いた下地に描く方法なら、時間をかけて細部を直せる。一方、顔料は湿った漆喰に取り込まれず、傷みやすかった。劣化には室内環境も関わる。現在の保存は、空気の管理にも及んでいる。",
+      "factId": "fact_last_supper_dry_technique",
+      "relatedQuestionIds": [
+        "last_supper_dry_tradeoff"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano（公式）",
+          "title": "Backstage — Conservation / The state of conservation",
+          "url": "https://cenacolovinciano.org/en/museum/backstage/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "乾いた下地への制作は遅い作業と修正を可能にする一方、顔料層が脆弱で環境条件とともに劣化に関与した。1999年までの大修復後は空気や入場者数の管理も行われる。"
+        }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,6 @@
 import battleData from "../../content/battles/catalog.json";
+import tourismData from "../../content/tourism/catalog.json";
+import { tourismCatalogSchema } from "./tourism-schemas";
 import generatedQuizzes from "./generated/quizzes.json";
 import progressionData from "../../content/romance/progression.json";
 import trialData from "../../content/romance/trial_progression.json";
@@ -22,8 +24,15 @@ import {
 } from "./schemas";
 
 export const battles = battleCatalogSchema.parse(battleData).battles;
+const tourism = tourismCatalogSchema.parse(tourismData);
+export const landmarks = tourism.landmarks;
+export const tourismAssets = tourism.assets;
+export const tourismClues = tourism.clues;
 export const battleQuizzes: Record<string, QuizDefinition> = Object.fromEntries(
-  Object.entries(generatedQuizzes).map(([id, quiz]) => [id, quizSchema.parse(quiz)]),
+  Object.entries(generatedQuizzes).map(([id, quiz]) => [
+    id,
+    quizSchema.parse(quiz),
+  ]),
 );
 export const progression = progressionSchema.parse(progressionData);
 export const trialMilestones =
@@ -39,4 +48,16 @@ export const tagContext = {
   backgroundIds: Object.keys(presentation.backgrounds),
   emotionIds: Object.keys(presentation.emotions),
 };
-export type { BattleDefinition, QuizDefinition, QuizQuestion, DateDefinition, EffectDefinition } from "./schemas";
+export type {
+  BattleDefinition,
+  QuizDefinition,
+  QuizQuestion,
+  DateDefinition,
+  EffectDefinition,
+} from "./schemas";
+export type {
+  LandmarkDefinition,
+  TourismAsset,
+  TourismClue,
+  ObservationRegion,
+} from "./tourism-schemas";

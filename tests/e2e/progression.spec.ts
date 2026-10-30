@@ -153,7 +153,7 @@ for (const fixtureKey of ["beforeChoice", "afterChoice", "replay"] as const) {
       await choose(page, 1);
     await finishEvent(page, 2);
     const current = await saved(page);
-    expect(current.schemaVersion).toBe(3);
+    expect(current.schemaVersion).toBe(4);
     expect(current.ap).toBe(old.ap);
     expect(current.playerName).toBe(old.playerName);
     expect(current.heroineName).toBe(old.heroineName);
