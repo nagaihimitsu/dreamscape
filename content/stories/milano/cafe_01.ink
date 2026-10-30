@@ -1,4 +1,4 @@
-// Dreamscape / デート例。正式実装前にInkコンパイラで検証すること。
+// Dreamscape / Phase 1 のカフェデート。編集後は npm run content:check を実行。
 // プログラム側で player_name, heroine_name を現在の設定値に差し替える。
 VAR player_name = "なお"
 VAR heroine_name = "りえ"
@@ -44,9 +44,10 @@ VAR heroine_name = "りえ"
 
 === after_first ===
 # speaker: narrator
+# emotion: neutral
 しばらくして、{heroine_name}は鞄から小さなメモ帳を取り出した。
 # speaker: heroine
-「……明日の予定、一つだけ書いてもいい？」
+「……{player_name}さん。明日の予定、一つだけ書いてもいい？」
 # speaker: narrator
 彼女のペンが止まる。ページの一番上には、すでに『自由時間』とあった。
 # speaker: heroine

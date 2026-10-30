@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "backgrounds": {
+    "milano_cafe": {
+      "nameJa": "運河沿いのカフェ",
+      "captionJa": "ミラノ ／ 予定のない午後",
+      "color": "#b87964"
+    }
+  },
+  "emotions": {
+    "neutral": "静かなまなざし",
+    "shy": "少し、目をそらして"
+  },
+  "memories": {
+    "milano_cafe_joke": {
+      "titleJa": "予約した迷子",
+      "descriptionJa": "明日の予定に、道に迷う時間を。ガイドブックの向こうで、小さく笑った。"
+    },
+    "milano_cafe_flirt": {
+      "titleJa": "飲まなかったコーヒー",
+      "descriptionJa": "時間が短く感じると伝えたら、カップが口元の手前で止まった。"
+    },
+    "milano_cafe_interest": {
+      "titleJa": "明日の行き先",
+      "descriptionJa": "行きたい場所を聞いた。「私が決めても、いいの？」という声が残っている。"
+    },
+    "milano_cafe_free_time_joke": {
+      "titleJa": "何もしない予定",
+      "descriptionJa": "自由時間には、絶対に何もしない。その「絶対に」だけが二重線で囲まれた。"
+    },
+    "milano_cafe_secret_destination": {
+      "titleJa": "まだ秘密の場所",
+      "descriptionJa": "観光案内には載っていない行き先。閉じたメモ帳に、明日の楽しみが一つ増えた。"
+    },
+    "milano_cafe_future_talk": {
+      "titleJa": "また、こうして",
+      "descriptionJa": "何もしないなら、また話そう。窓へ向いた横顔の口元が、少しだけ緩んだ。"
+    }
+  }
+}

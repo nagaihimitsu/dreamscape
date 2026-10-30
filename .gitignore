@@ -1,0 +1,7 @@
+node_modules/
+dist/
+src/content/generated/
+playwright-report/
+test-results/
+*.local
+artifacts/
