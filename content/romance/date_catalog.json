@@ -280,6 +280,68 @@
           "confessionReady": true
         }
       ]
+    },
+    {
+      "id": "milano_city_date_01",
+      "kind": "normal",
+      "chapterId": "milano",
+      "titleJa": "地図にない帰り道",
+      "descriptionJa": "四つの場所を巡ったあと、旅のメモに一行だけ残った余白。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "minAffection": 0,
+      "storyId": "milano/city_date_01",
+      "requiredCompletedChapters": [
+        "milano"
+      ],
+      "requiredCompletedCityIds": [
+        "milano"
+      ],
+      "allowAfterEnding": true,
+      "requiredPlayedDateIds": [],
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "milano_city_date",
+      "repeatable": true,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "旅の余韻を一緒に過ごす",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": true,
+          "memoryId": "milano_cafe_joke"
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": true,
+          "memoryId": "milano_cafe_interest"
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": false,
+          "hasCafeMemory": true,
+          "memoryId": "milano_cafe_secret_destination"
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": true,
+          "memoryId": "milano_cafe_future_talk"
+        }
+      ]
     }
   ]
 }

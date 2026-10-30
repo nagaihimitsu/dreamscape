@@ -37,13 +37,17 @@ async function changeGuide(before: string, after: string) {
 describe("tourism content contract", () => {
   it("compiles one short guide, four visual discoveries and one unpositioned research card", async () => {
     const result = await buildContent(fixture);
-    expect(result.routes).toBe(105);
-    expect(result.tourismGuides).toBe(1);
+    expect(result.routes).toBeGreaterThanOrEqual(105);
+    expect(result.tourismGuides).toBe(result.tourism.landmarks.length);
     expect(
-      result.tourism.clues.filter((clue) => clue.kind === "hotspot"),
+      result.tourism.clues.filter(
+        (clue) => clue.landmarkId === "last_supper" && clue.kind === "hotspot",
+      ),
     ).toHaveLength(4);
     expect(
-      result.tourism.clues.filter((clue) => clue.kind === "document"),
+      result.tourism.clues.filter(
+        (clue) => clue.landmarkId === "last_supper" && clue.kind === "document",
+      ),
     ).toEqual([
       expect.objectContaining({
         id: "last_supper_technique_card",

@@ -1,6 +1,7 @@
 import { expect, type Page } from "@playwright/test";
 import type { GameState } from "../../src/domain/game";
 import phase4 from "../fixtures/phase4-saves.json" with { type: "json" };
+import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
 
 export const SAVE_KEY = "dreamscape.save.v1";
 
@@ -27,6 +28,35 @@ export async function startNewGame(page: Page, names?: [string, string]) {
   }
   await page.getByRole("button", { name: "旅をはじめる", exact: true }).click();
   await expect.poll(async () => (await saved(page)).ap).toBe(0);
+}
+
+/** Resume an authentic Phase 6 guide to isolate the published Last Supper route. */
+export async function startLegacyJourney(page: Page, names?: [string, string]) {
+  await startNewGame(
+    page,
+    names ?? [phase6.guide.playerName, phase6.guide.heroineName],
+  );
+  // Keep the original Ink variables, text and name fields intact as one snapshot.
+  await loadSnapshot(page, phase6.guide);
+}
+
+export async function loadSnapshot(page: Page, snapshot: unknown) {
+  await page.goto("/");
+  await page.evaluate(
+    ({ key, value }) => localStorage.setItem(key, JSON.stringify(value)),
+    { key: SAVE_KEY, value: snapshot },
+  );
+  await page.reload();
+}
+
+export function availableAp(state: GameState) {
+  return (
+    state.ap +
+    (state.pendingApRewards ?? []).reduce(
+      (sum, reward) => sum + reward.remainingAp,
+      0,
+    )
+  );
 }
 
 /** Isolate existing romance regressions using a genuine pre-integration chapter save. */
@@ -82,7 +112,9 @@ export async function startEvent(
   await expect
     .poll(async () => (await saved(page)).activeDate?.dateId)
     .toBe(dateId);
-  expect((await saved(page)).ap).toBe(before.ap - expectedCost);
+  const started = await saved(page);
+  expect(availableAp(started)).toBe(availableAp(before) - expectedCost);
+  expect(started.ap).toBeLessThanOrEqual(12);
 }
 
 export async function startCafe(page: Page) {

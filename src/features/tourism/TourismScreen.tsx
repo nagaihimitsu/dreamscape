@@ -215,7 +215,7 @@ export function TourismScreen({
             <p className="fine-print">
               印をタップすると、その場所に近づきます。下の一覧からも選べます。
             </p>
-            <div className="discovery-list" aria-label="絵の観察ポイント">
+            <div className="discovery-list" aria-label="画像の観察ポイント">
               {points.map((point, index) => (
                 <button
                   key={point.id}
@@ -237,7 +237,7 @@ export function TourismScreen({
               <div className="document-cards">
                 <h2>資料からわかること</h2>
                 <p className="fine-print">
-                  絵を見るだけでは確かめられないことを、資料で補います。
+                  画像を見るだけでは確かめられないことを、資料で補います。
                 </p>
                 {documents.map((clue) => (
                   <button

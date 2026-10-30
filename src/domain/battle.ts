@@ -1,7 +1,8 @@
 import { z } from "zod";
-import { finalizeBattleProgress } from "./chapter";
+import { finalizeBattleProgress, isEpisodeUnlocked } from "./chapter";
 import {
   battles,
+  episodes,
   battleQuizzes,
   progression,
   tourismClues,
@@ -25,13 +26,20 @@ export const battleAnswerSchema = z
     hintUsed: z.boolean(),
   })
   .strict();
-export const battleRecordSchema = z
+export const legacyBattleRecordSchema = z
   .object({
     battleId: z.string().min(1),
     attempts: z.number().int().positive(),
     firstScore: z.number().int().min(0).max(3),
     bestScore: z.number().int().min(0).max(3),
     lastScore: z.number().int().min(0).max(3),
+  })
+  .strict();
+export const battleRecordSchema = legacyBattleRecordSchema
+  .extend({
+    firstScore: z.number().int().min(0).max(5),
+    bestScore: z.number().int().min(0).max(5),
+    lastScore: z.number().int().min(0).max(5),
   })
   .strict();
 export const legacyActiveBattleSchema = z
@@ -60,17 +68,28 @@ const reasoningStateSchema = z
     status: z.enum(["selecting", "incorrect", "accepted"]),
   })
   .strict();
-export const activeBattleSchema = legacyActiveBattleSchema
+export const phase6ActiveBattleSchema = legacyActiveBattleSchema
   .extend({
     phase: z.enum(["dialogue", "reasoning", "question", "feedback", "result"]),
     reasoning: reasoningStateSchema.nullable(),
   })
   .strict();
+export const activeBattleSchema = phase6ActiveBattleSchema
+  .extend({
+    roundIndex: z.number().int().min(0).max(4),
+    answers: z.array(battleAnswerSchema).max(5),
+    score: z.number().int().min(0).max(5),
+  })
+  .strict();
 export type ActiveBattle = z.infer<typeof activeBattleSchema>;
 export type BattleRecord = z.infer<typeof battleRecordSchema>;
 export type BattleOutcome = "perfect" | "victory" | "defeat";
-export function getBattleOutcome(score: number): BattleOutcome {
-  return score === 3 ? "perfect" : score === 2 ? "victory" : "defeat";
+export function getBattleOutcome(score: number, total = 3): BattleOutcome {
+  return score === total
+    ? "perfect"
+    : score >= Math.ceil(total * 0.6)
+      ? "victory"
+      : "defeat";
 }
 
 export function battleFingerprint(id: string): string {
@@ -103,12 +122,18 @@ export function getBattleAvailability(
     return { available: false, reason: "バトルが見つかりません。" };
   if (state.activeTourism)
     return { available: false, reason: "観光画面からバトルへ進んでください。" };
-  if (state.activeDate)
+  if (state.activeDate || state.activeEpilogue)
     return { available: false, reason: "途中の恋愛会話を終えてから試せます。" };
   if (state.activeBattle && state.activeBattle.phase !== "result")
     return {
       available: false,
       reason: "途中のクイズバトルを再開してください。",
+    };
+  const episode = episodes.find((item) => item.battleId === battleId);
+  if (episode && !isEpisodeUnlocked(state, episode))
+    return {
+      available: false,
+      reason: "先の観光エピソードを終えると対決できます。",
     };
   return { available: true, reason: "" };
 }
@@ -402,7 +427,7 @@ export function advanceBattle(
   const battle = battles.find((item) => item.id === active.battleId)!;
   if (active.phase === "feedback") {
     const scene =
-      active.roundIndex === 2
+      active.roundIndex === battleQuizzes[battle.quizId].questions.length - 1
         ? battle.scenes.outro
         : battle.scenes.afterRounds[active.roundIndex];
     return {
@@ -542,7 +567,12 @@ export function validateBattleState(state: GameState): void {
   )
     throw new Error("バトルの記録が重複しています。");
   for (const record of state.battleRecords) {
+    const definition = battles.find((item) => item.id === record.battleId);
+    const total = definition
+      ? battleQuizzes[definition.quizId].questions.length
+      : 0;
     if (
+      Math.max(record.firstScore, record.bestScore, record.lastScore) > total ||
       !battles.some((item) => item.id === record.battleId) ||
       record.bestScore < Math.max(record.firstScore, record.lastScore) ||
       (record.attempts === 1 &&
@@ -555,13 +585,23 @@ export function validateBattleState(state: GameState): void {
   }
   const active = state.activeBattle;
   if (!active) return;
-  if (state.activeDate) throw new Error("恋愛会話とバトルが重複しています。");
+  if (state.activeDate || state.activeEpilogue)
+    throw new Error("恋愛会話とバトルが重複しています。");
   const battle = battles.find((item) => item.id === active.battleId);
   if (!battle || active.contentHash !== battleFingerprint(active.battleId))
     throw new Error(
       "バトルが更新されています。以前の途中データは保管されています。",
     );
+  const episode = episodes.find((item) => item.battleId === battle.id);
+  if (episode && !isEpisodeUnlocked(state, episode))
+    throw new Error("未解放のバトルの途中記録です。");
   const quiz = battleQuizzes[battle.quizId];
+  if (
+    active.answers.length > quiz.questions.length ||
+    active.roundIndex >= quiz.questions.length ||
+    active.score > quiz.questions.length
+  )
+    throw new Error("問題数と保存された得点が一致しません。");
   const isSpecialScene = specialScene(battle, active.dialogueScene);
   validateReasoningState(active, battle);
   active.answers.forEach((answer, index) => {
@@ -606,7 +646,7 @@ export function validateBattleState(state: GameState): void {
       (item) => item.battleId === active.battleId,
     );
     if (
-      active.answers.length !== 3 ||
+      active.answers.length !== quiz.questions.length ||
       !record ||
       record.lastScore !== active.score
     )
@@ -617,7 +657,7 @@ export function validateBattleState(state: GameState): void {
       ? active.dialogueScene
       : active.answers.length === 0
         ? battle.scenes.intro
-        : active.answers.length === 3
+        : active.answers.length === quiz.questions.length
           ? battle.scenes.outro
           : battle.scenes.afterRounds[active.answers.length - 1];
     const expectedRound = isSpecialScene

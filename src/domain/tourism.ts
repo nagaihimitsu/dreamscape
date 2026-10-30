@@ -1,6 +1,12 @@
 import { z } from "zod";
-import { recordGuideRead } from "./chapter";
-import { battles, landmarks, progression, tourismClues } from "../content";
+import { recordGuideRead, isEpisodeUnlocked } from "./chapter";
+import {
+  battles,
+  episodes,
+  landmarks,
+  progression,
+  tourismClues,
+} from "../content";
 import {
   beginStory,
   continueStory,
@@ -43,7 +49,7 @@ export function getTourismAvailability(
 ): Availability {
   if (!landmarks.some((item) => item.id === landmarkId))
     return { available: false, reason: "観光地が見つかりません。" };
-  if (state.activeDate)
+  if (state.activeDate || state.activeEpilogue)
     return {
       available: false,
       reason: "途中の恋愛会話を終えてから訪ねられます。",
@@ -59,6 +65,17 @@ export function getTourismAvailability(
       ?.landmarkId !== landmarkId
   )
     return { available: false, reason: "今のバトルと同じ観光地へ戻れます。" };
+  const episode = episodes.find((item) => item.landmarkId === landmarkId);
+  if (
+    episode &&
+    !isEpisodeUnlocked(state, episode) &&
+    state.activeBattle?.battleId !== episode.battleId &&
+    state.activeTourism?.landmarkId !== landmarkId
+  )
+    return {
+      available: false,
+      reason: "先の観光エピソードを終えると訪ねられます。",
+    };
   return { available: true, reason: "" };
 }
 
@@ -251,8 +268,13 @@ export function validateTourismState(state: GameState): void {
   const active = state.activeTourism;
   if (!active) return;
   const landmark = landmarks.find((item) => item.id === active.landmarkId);
-  if (!landmark || state.activeDate)
+  if (!landmark || state.activeDate || state.activeEpilogue)
     throw new Error("観光の進行状態を確認できません。");
+  const episode = episodes.find(
+    (item) => item.landmarkId === active.landmarkId,
+  );
+  if (episode && !isEpisodeUnlocked(state, episode))
+    throw new Error("未解放の観光地の途中記録です。");
   if (
     state.activeBattle &&
     battles.find((item) => item.id === state.activeBattle!.battleId)

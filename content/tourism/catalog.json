@@ -14,6 +14,48 @@
       "creditJa": "レオナルド・ダ・ヴィンチ『最後の晩餐』／写真：Paris Orlando（2019）、Wikimedia Commons",
       "modificationJa": "Commonsの3840px版から、全体の縦横比を保って2560px幅へ縮小しWebP圧縮。切り抜き、描き足し、左右反転、生成AIによる補完は行っていません。",
       "checkedAt": "2026-10-30"
+    },
+    {
+      "id": "duomo_milano_photo",
+      "path": "assets/tourism/duomo-milano.webp",
+      "width": 2560,
+      "height": 2224,
+      "altJa": "ミラノ大聖堂の正面。淡い大理石の壁、尖塔の上の人物像、中央の大窓と入口が、広場から見える。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:20110724_Milan_Cathedral_5260.jpg",
+      "licenseName": "CC BY-SA 4.0（写真および縮小・WebP変換版）",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Jakub Hałun（2011年7月24日）／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "原画像3140×2728pxを全体の構図を保って2560×2224pxへ縮小しWebP変換。切り抜き、反転、描き足し、生成AI加工なし。変換画像もCC BY-SA 4.0で提供。",
+      "checkedAt": "2026-10-30"
+    },
+    {
+      "id": "galleria_milano_photo",
+      "path": "assets/tourism/galleria-milano.webp",
+      "width": 2200,
+      "height": 1641,
+      "altJa": "ガッレリア・ヴィットーリオ・エマヌエーレ2世の内部。鉄の線で区切られたガラス屋根の下を通路が伸び、両側に店舗やカフェの席が並ぶ。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Galleria_Vittorio_Emanuele_II,_Milan,_interior.jpg",
+      "licenseName": "CC0 1.0 Universal Public Domain Dedication",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creditJa": "写真：Gerda Arendt（2025年10月30日撮影）／Wikimedia Commons、CC0 1.0",
+      "modificationJa": "オリジナルの3515×2622px写真を縦横比を保って2200×1641pxへ縮小しWebP圧縮。切り抜き、描き足し、左右反転、生成AIによる補完は行っていません。",
+      "checkedAt": "2026-10-30"
+    },
+    {
+      "id": "castello_courtyard_photo",
+      "path": "assets/tourism/castello-sforzesco.webp",
+      "width": 2400,
+      "height": 1539,
+      "altJa": "スフォルツェスコ城の主中庭。煉瓦の高い壁とボーナ・ディ・サヴォイアの塔に囲まれ、人々が歩いている。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Main_courtyard_of_Castello_Sforzesco,_Milan.jpg",
+      "licenseName": "CC BY-SA 3.0（このWebPも同条件）",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "creditJa": "写真：Daniel Case（2016年6月21日）、Wikimedia Commons／CC BY-SA 3.0",
+      "modificationJa": "Commonsの3840px版を全体の縦横比を保って2400×1539pxへ縮小しWebP圧縮。切り抜き・描き足し・左右反転・AI補完はしていません。この変換版もCC BY-SA 3.0で提供します。",
+      "checkedAt": "2026-10-30"
     }
   ],
   "landmarks": [
@@ -32,6 +74,54 @@
         "last_supper_light",
         "last_supper_doorway",
         "last_supper_technique_card"
+      ]
+    },
+    {
+      "id": "duomo_milano",
+      "cityId": "milano",
+      "nameJa": "ミラノ大聖堂（ドゥオモ）",
+      "nameEn": "Milan Cathedral (Duomo di Milano)",
+      "descriptionJa": "空へ伸びる石の尖塔。その石がここへ届き、今も残るまでの旅を見つける。",
+      "imageAssetId": "duomo_milano_photo",
+      "guideStoryId": "tourism/duomo_guide",
+      "battleId": "milano_duomo_01",
+      "clueIds": [
+        "duomo_marble_surface",
+        "duomo_spire_figures",
+        "duomo_marble_waterway",
+        "duomo_original_and_copy"
+      ]
+    },
+    {
+      "id": "galleria_vittorio_emanuele_ii",
+      "cityId": "milano",
+      "nameJa": "ヴィットーリオ・エマヌエーレ2世のガッレリア",
+      "nameEn": "Galleria Vittorio Emanuele II",
+      "descriptionJa": "見上げる屋根と、歩いていく先。華やかな店の間で、街の道が続いている。",
+      "imageAssetId": "galleria_milano_photo",
+      "guideStoryId": "tourism/galleria_guide",
+      "battleId": "milano_galleria_01",
+      "clueIds": [
+        "galleria_roof_light",
+        "galleria_bull_card",
+        "galleria_shopfronts",
+        "galleria_city_link"
+      ]
+    },
+    {
+      "id": "castello_sforzesco",
+      "cityId": "milano",
+      "nameJa": "スフォルツェスコ城",
+      "nameEn": "Castello Sforzesco",
+      "descriptionJa": "高い城壁の内側で、場所の役割と見る人のまなざしが変わる。中庭の写真と室内の資料を、一緒にひもとく。",
+      "imageAssetId": "castello_courtyard_photo",
+      "guideStoryId": "tourism/castello_guide",
+      "battleId": "milano_castello_01",
+      "clueIds": [
+        "castello_bona_tower",
+        "castello_public_courtyard",
+        "castello_sala_asse",
+        "castello_court_reception"
       ]
     }
   ],
@@ -161,6 +251,329 @@
           "checkedAt": "2026-10-30",
           "claimType": "documented_fact",
           "claimJa": "乾いた下地への制作は遅い作業と修正を可能にする一方、顔料層が脆弱で環境条件とともに劣化に関与した。1999年までの大修復後は空気や入場者数の管理も行われる。"
+        }
+      ]
+    },
+    {
+      "id": "duomo_marble_surface",
+      "landmarkId": "duomo_milano",
+      "kind": "hotspot",
+      "titleJa": "白一色ではない石の肌",
+      "descriptionJa": "正面の石を見比べると、明るい部分にも淡い色や筋があります。公式資料によると、建設に使われたのは桃色の筋をもつカンドーリアの大理石。写真から産地を断定するのではなく、見える表面と採石場の記録を結びつける手がかりです。",
+      "factId": "duomo_candoglia_material",
+      "relatedQuestionIds": [
+        "duomo_candoglia_marble"
+      ],
+      "region": {
+        "x": 0.375,
+        "y": 0.31,
+        "width": 0.09,
+        "height": 0.27
+      },
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+          "title": "The Candoglia Quarry: at the Duomo’s Roots",
+          "url": "https://www.duomomilano.it/en/about-us/the-candoglia-quarry/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "大聖堂に使う大理石はピエモンテ州カンドーリアの採石場に由来し、桃色の筋をもつと説明している。計画当初の煉瓦から大理石へ変更した経緯も記載されている。"
+        }
+      ]
+    },
+    {
+      "id": "duomo_spire_figures",
+      "landmarkId": "duomo_milano",
+      "kind": "hotspot",
+      "titleJa": "尖塔の上にも、人がいる",
+      "descriptionJa": "尖った輪郭の先を拡大すると、人物像が立っています。建物の屋根をただ尖らせただけではなく、一つずつ彫刻が組み込まれた姿です。写真だけで個々の像の制作年代や、原像か写しかまでは判断できません。",
+      "factId": "duomo_spire_sculpture",
+      "relatedQuestionIds": [
+        "duomo_statue_copies"
+      ],
+      "region": {
+        "x": 0.545,
+        "y": 0.04,
+        "width": 0.09,
+        "height": 0.27
+      },
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+          "title": "Adopt a Spire — statues and façade spires",
+          "url": "https://www.duomomilano.it/en/support/adopt-a-spire/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "公式の尖塔一覧は、正面の尖塔上に立つ聖アグリコラや聖ジェネシウスなどの像を紹介している。尖塔と、その頂上の人物像を別の要素として確認できる。"
+        }
+      ]
+    },
+    {
+      "id": "duomo_marble_waterway",
+      "landmarkId": "duomo_milano",
+      "kind": "document",
+      "titleJa": "石の旅は、水の上を通った",
+      "descriptionJa": "大理石は船に載せられ、トーチェ川からマッジョーレ湖へ、ティチーノ川とナヴィリオ・グランデを経て街へ運ばれました。大聖堂近くには石材を降ろす船溜まりもありました。広場の写真に水路は写っていませんが、建物の大きさを支えた道です。",
+      "factId": "duomo_transport_network",
+      "relatedQuestionIds": [
+        "duomo_water_transport"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+          "title": "The Candoglia Quarry: at the Duomo’s Roots — transport route",
+          "url": "https://www.duomomilano.it/en/about-us/the-candoglia-quarry/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "石材はトーチェ川、マッジョーレ湖、ティチーノ川、ナヴィリオ・グランデを通り、閘門を経て大聖堂近くの小さな船溜まりへ運ばれた。水運は1920年まで続いたと記載されている。"
+        }
+      ]
+    },
+    {
+      "id": "duomo_original_and_copy",
+      "landmarkId": "duomo_milano",
+      "kind": "document",
+      "titleJa": "同じ場所を、別の石が受け継ぐ",
+      "descriptionJa": "カレッリ尖塔の聖ゲオルギウス像は、空襲で損傷した原像を守るため、1950年代に写しへ置き換えられました。修復された原像は大聖堂美術館にあります。この尖塔は正面写真では確認できないため、資料として扱います。写しと原像は、屋外の姿を保つ役割と作品を保存する役割を分けています。",
+      "factId": "duomo_carelli_copy_conservation",
+      "relatedQuestionIds": [
+        "duomo_statue_copies"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+          "title": "Adopt a Spire — G6, St. George (Carelli Spire)",
+          "url": "https://www.duomomilano.it/en/support/adopt-a-spire/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "カレッリ尖塔の聖ゲオルギウス像は、1943年の空襲で損傷した1403年の原像を保存するため、1950年代にマリオ・バセッティが制作した写し。修復された原像は大聖堂美術館に展示されていると説明している。"
+        }
+      ]
+    },
+    {
+      "id": "galleria_roof_light",
+      "landmarkId": "galleria_vittorio_emanuele_ii",
+      "kind": "hotspot",
+      "titleJa": "空を区切る細い線",
+      "descriptionJa": "頭上の明るい面はガラス、それを区切る骨組みは鉄。華やかな壁の装飾から視線を上げると、光を取り込みながら通路を覆う構造が見える。",
+      "factId": "fact_galleria_iron_glass",
+      "relatedQuestionIds": [
+        "galleria_roof_materials"
+      ],
+      "region": {
+        "x": 0.32,
+        "y": 0.015,
+        "width": 0.36,
+        "height": 0.36
+      },
+      "sources": [
+        {
+          "publisher": "Comune di Milano（ミラノ市公式）",
+          "title": "Galleria Vittorio Emanuele II. Project approved for roof consolidation and restoration work.",
+          "url": "https://www.comune.milano.it/en/w/galleria-vittorio-emanuele-ii.-approvato-il-progetto-per-gli-interventi-di-consolidamento-e-restauro-della-copertura",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市の屋根修復計画は、ガッレリアの屋根を鉄とガラスによる構造と明記している。"
+        }
+      ]
+    },
+    {
+      "id": "galleria_bull_card",
+      "landmarkId": "galleria_vittorio_emanuele_ii",
+      "kind": "document",
+      "titleJa": "資料：雄牛の出身地",
+      "descriptionJa": "床の雄牛はトリノの紋章。この写真では雄牛の細部は確認できないため、資料カードで紹介する。雄牛の上で回ると幸運が来るという言い伝えもあるが、その効き目が確認された史実ではない。",
+      "factId": "fact_galleria_turin_bull",
+      "relatedQuestionIds": [
+        "galleria_bull_city"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Comune di Milano（ミラノ市公式）",
+          "title": "Galleria Vittorio Emanuele II. Restoration of the Bull mosaic completed.",
+          "url": "https://www.comune.milano.it/en/w/galleria-vittorio-emanuele-ii.-completato-il-restauro-del-mosaico-del-toro",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市の修復案内は、雄牛をトリノの紋章と説明している。"
+        },
+        {
+          "publisher": "YesMilano（ミラノ公式観光サイト）",
+          "title": "Galleria Vittorio Emanuele II — The Legend of the Bull",
+          "url": "https://www.yesmilano.it/en/see-and-do/venues/galleria-vittorio-emanuele-ii",
+          "checkedAt": "2026-10-30",
+          "claimType": "legend",
+          "claimJa": "雄牛の上で回って幸運を願う行為は言い伝えとして紹介される。幸運が生じるという因果関係が証明された事実ではない。"
+        }
+      ]
+    },
+    {
+      "id": "galleria_shopfronts",
+      "landmarkId": "galleria_vittorio_emanuele_ii",
+      "kind": "hotspot",
+      "titleJa": "椅子が道へ向く",
+      "descriptionJa": "通路の両側には店やカフェ。写真の店先には椅子も見える。買い物だけでなく、一杯を飲みながら街を眺める時間も、この通りの風景に加わっている。",
+      "factId": "fact_galleria_cafes_shops",
+      "relatedQuestionIds": [
+        "galleria_city_passage"
+      ],
+      "region": {
+        "x": 0.59,
+        "y": 0.65,
+        "width": 0.25,
+        "height": 0.235
+      },
+      "sources": [
+        {
+          "publisher": "YesMilano（ミラノ公式観光サイト）",
+          "title": "Grab a coffee and explore the city neighborhoods",
+          "url": "https://www.yesmilano.it/en/see-and-do/itineraries/grab-coffee-and-explore-city-neighborhoods",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "公式観光案内は、カフェや店舗の並ぶ歴史的な商業アーケードを通ってスカラ広場へ至る経路を紹介している。"
+        }
+      ]
+    },
+    {
+      "id": "galleria_city_link",
+      "landmarkId": "galleria_vittorio_emanuele_ii",
+      "kind": "hotspot",
+      "titleJa": "店の先にも続く道",
+      "descriptionJa": "中央の通路は店舗の入口だけで終わらない。ガッレリアはドゥオモ広場とスカラ広場をつなぐ屋根付きの道でもある。写真で見える通路の先を、街の動線としてたどってみよう。",
+      "factId": "fact_galleria_square_link",
+      "relatedQuestionIds": [
+        "galleria_city_passage"
+      ],
+      "region": {
+        "x": 0.43,
+        "y": 0.66,
+        "width": 0.145,
+        "height": 0.25
+      },
+      "sources": [
+        {
+          "publisher": "Lombardia Beni Culturali（ロンバルディア州文化財ポータル）",
+          "title": "Galleria Vittorio Emanuele II — SIRBeC LMD80-00142",
+          "url": "https://www.lombardiabeniculturali.it/architetture/schede/LMD80-00142/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "州文化財ポータルは、ドゥオモ広場とスカラ広場をつなぐ屋根付き通路の計画を説明している。"
+        }
+      ]
+    },
+    {
+      "id": "castello_bona_tower",
+      "landmarkId": "castello_sforzesco",
+      "kind": "hotspot",
+      "titleJa": "中庭に立つ高い塔",
+      "descriptionJa": "中庭の写真では、煉瓦の壁から高い塔が突き出している。これはボーナ・ディ・サヴォイアの塔。防御を思わせる姿だけで城の歴史を決めつけず、宮廷の住まいや、後の博物館としての役割も合わせて考えたい。",
+      "factId": "castello_fortress_and_residence",
+      "relatedQuestionIds": [
+        "castello_changing_roles"
+      ],
+      "region": {
+        "x": 0.74,
+        "y": 0.07,
+        "width": 0.15,
+        "height": 0.56
+      },
+      "sources": [
+        {
+          "publisher": "Comune di Milano（ミラノ市公式）",
+          "title": "Carta dei Servizi dei Musei del Castello Sforzesco, p. 3",
+          "url": "https://www.comune.milano.it/documents/20118/3102963/21dicembre2022CARTA%2BDEI%2BSERVIZI%2BDEL%2BSERVIZIO%2BMUSEI%2BCASTELLO_2022.pdf/e05d9e1b-754d-97af-7b5b-5952df8331e4?download=true&t=1763981294913&version=1.0",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "防御のための要塞から宮廷の住まいへ変化し、修復・再建を経て博物館や図書館を収める公共の文化施設となったことを説明している。"
+        },
+        {
+          "publisher": "Wikimedia Commons／Daniel Case",
+          "title": "Main courtyard of Castello Sforzesco, Milan",
+          "url": "https://commons.wikimedia.org/wiki/File:Main_courtyard_of_Castello_Sforzesco,_Milan.jpg",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "写真の説明は、ボーナ・ディ・サヴォイアの塔を含む城の主中庭と特定している。"
+        }
+      ]
+    },
+    {
+      "id": "castello_public_courtyard",
+      "landmarkId": "castello_sforzesco",
+      "kind": "hotspot",
+      "titleJa": "壁の内側を歩く人たち",
+      "descriptionJa": "写真の中庭では、人が門や案内表示の間を行き交っている。かつての城は、現在は博物館や文化施設を収める場所でもある。建物の外形が残っていても、訪れる理由や使い方は変わってきた。",
+      "factId": "castello_public_cultural_use",
+      "relatedQuestionIds": [
+        "castello_changing_roles"
+      ],
+      "region": {
+        "x": 0.53,
+        "y": 0.56,
+        "width": 0.18,
+        "height": 0.17
+      },
+      "sources": [
+        {
+          "publisher": "Comune di Milano（ミラノ市公式）",
+          "title": "Carta dei Servizi dei Musei del Castello Sforzesco, p. 3",
+          "url": "https://www.comune.milano.it/documents/20118/3102963/21dicembre2022CARTA%2BDEI%2BSERVIZI%2BDEL%2BSERVIZIO%2BMUSEI%2BCASTELLO_2022.pdf/e05d9e1b-754d-97af-7b5b-5952df8331e4?download=true&t=1763981294913&version=1.0",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "防御のための要塞から宮廷の住まいへ変化し、修復・再建を経て博物館や図書館を収める公共の文化施設となったことを説明している。"
+        }
+      ]
+    },
+    {
+      "id": "castello_sala_asse",
+      "landmarkId": "castello_sforzesco",
+      "kind": "document",
+      "titleJa": "壁から天井へ広がる木陰",
+      "descriptionJa": "アッセの間には、レオナルドによる枝や結び紐のあずまやのような装飾が、壁から天井へ広がる。本物の木を植えたのではなく、描かれた空間だ。この室内は中庭の写真には写っていないため、公式資料をもとにしたカードで確認する。",
+      "factId": "castello_sala_painted_arbor",
+      "relatedQuestionIds": [
+        "castello_painted_arbor"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Art Bonus／Comune di Milano（公式）",
+          "title": "Sala delle Asse di Leonardo al Castello Sforzesco",
+          "url": "https://artbonus.gov.it/la-sala-delle-asse-di-leonardo-da-vinci-al-castello-sforzesco-di-milano.html",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "レオナルドによる樹木のあずまやを表す装飾が、壁から天井全体へ広がる。スフォルツァ家に仕えていたミラノ滞在期の仕事と記されている。"
+        },
+        {
+          "publisher": "Ministero della Cultura（イタリア文化省）",
+          "title": "Castello Sforzesco, Milano: Sala delle Asse. Il restauro",
+          "url": "https://cultura.gov.it/comunicato/castello-sforzesco-milano-sala-delle-asse-il-restauro-1",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "スフォルツァ家が客や大使を迎える重要な部屋だったと説明し、ルドヴィーコに招かれたレオナルドが装飾したこと、枝と結び紐の架空のあずまやを描いたことを記している。"
+        }
+      ]
+    },
+    {
+      "id": "castello_court_reception",
+      "landmarkId": "castello_sforzesco",
+      "kind": "document",
+      "titleJa": "客を迎えるための絵",
+      "descriptionJa": "アッセの間は、スフォルツァ家が客や大使を迎える場だった。ルドヴィーコに招かれたレオナルドが装飾した部屋で、人と人が会っていた。絵の題材に加えて部屋の用途を見ると、宮廷と芸術のつながりがわかる。",
+      "factId": "castello_sforza_guests",
+      "relatedQuestionIds": [
+        "castello_art_and_court"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Ministero della Cultura（イタリア文化省）",
+          "title": "Castello Sforzesco, Milano: Sala delle Asse. Il restauro",
+          "url": "https://cultura.gov.it/comunicato/castello-sforzesco-milano-sala-delle-asse-il-restauro-1",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "スフォルツァ家が客や大使を迎える重要な部屋だったと説明し、ルドヴィーコに招かれたレオナルドが装飾したこと、枝と結び紐の架空のあずまやを描いたことを記している。"
         }
       ]
     }

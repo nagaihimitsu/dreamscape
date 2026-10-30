@@ -3,7 +3,12 @@ import tourism from "../../content/tourism/catalog.json" with { type: "json" };
 const tourismAssets = tourism.assets;
 const tourismClues = tourism.clues;
 import phase5 from "../fixtures/phase5-saves.json" with { type: "json" };
-import { SAVE_KEY, saved, startNewGame, expectNoOverflow } from "./helpers";
+import {
+  SAVE_KEY,
+  saved,
+  startLegacyJourney,
+  expectNoOverflow,
+} from "./helpers";
 import {
   answerRound,
   battleDialogueUntilQuestionOrResult,
@@ -60,7 +65,7 @@ test("B exposes a definite contradiction with readable case evidence, persists r
   await page.setViewportSize({ width: 360, height: 740 });
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await startNewGame(page, ["航", "澪"]);
+  await startLegacyJourney(page, ["航", "澪"]);
   await completeEpisode(page, [false, false, false]);
   await enterFreeTime(page);
   const original = await saved(page);
@@ -295,7 +300,7 @@ test("an authentic Phase 5 A question remains intact until the next action migra
   await closeBookUnchanged(page);
   await page.getByRole("button", { name: "ヒントを見る", exact: true }).click();
   const migrated = await saved(page);
-  expect(migrated.schemaVersion).toBe(6);
+  expect(migrated.schemaVersion).toBe(7);
   expect(migrated.activeBattle).toEqual({
     ...phase5.battleQuestion.activeBattle,
     reasoning: null,

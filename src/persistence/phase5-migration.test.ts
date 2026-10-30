@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import fixtures from "../../tests/fixtures/phase4-saves.json";
-import { episodes, rewardRules } from "../content";
+import {
+  episodes as allEpisodes,
+  rewardRules as allRewardRules,
+} from "../content";
 import {
   createGame,
   enterFreeTime,
@@ -9,6 +12,13 @@ import {
   validateGameState,
 } from "../domain";
 import { loadGame, saveGame, SAVE_KEY, type StorageLike } from "./index";
+
+const episodes = allEpisodes.filter(
+  (episode) => episode.id === "milano_last_supper_episode",
+);
+const rewardRules = allRewardRules.filter(
+  (rule) => rule.episodeId === episodes[0].id,
+);
 
 class MemoryStorage implements StorageLike {
   values = new Map<string, string>();
@@ -34,7 +44,7 @@ describe("published Phase 4 saves migrate without overwriting their checkpoints"
       if (loaded.status !== "loaded")
         throw new Error("Actual Phase 4 save failed to load");
       const next = loaded.state;
-      expect(next.schemaVersion).toBe(6);
+      expect(next.schemaVersion).toBe(7);
       for (const key of [
         "playerName",
         "heroineName",

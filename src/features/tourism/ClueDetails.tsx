@@ -11,7 +11,7 @@ export function ClueDetails({ clue }: { clue: TourismClue }) {
   return (
     <>
       <p className="clue-kind">
-        {clue.kind === "document" ? "資料カード" : "絵からの発見"}
+        {clue.kind === "document" ? "資料カード" : "観察での発見"}
       </p>
       <h3>{clue.titleJa}</h3>
       <div className="claim-types">

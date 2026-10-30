@@ -11,7 +11,7 @@ function unique(values: string[], label: string) {
     throw new Error(`Duplicate ${label}`);
 }
 
-/** Validate integration references without changing the existing scenario or quiz contracts. */
+/** Validate the ordered city route while keeping episode and city rewards distinct. */
 export function validateJourney(
   journey: JourneyConfig,
   city: {
@@ -48,35 +48,81 @@ export function validateJourney(
   ) {
     throw new Error("Unknown entry episode");
   }
-  for (const episode of journey.episodes) {
+  const entry = journey.episodes.find(
+    (episode) => episode.id === journey.entryEpisodeId,
+  )!;
+  if (entry.requiredEpisodeIds.length || journey.episodes[0].id !== entry.id)
+    throw new Error("Entry episode must begin the route without prerequisites");
+  const finales = journey.episodes.filter(
+    (episode) => episode.kind === "city_finale",
+  );
+  unique(
+    finales.map((episode) => episode.cityId),
+    "city finale",
+  );
+  for (const [index, episode] of journey.episodes.entries()) {
+    unique(episode.requiredEpisodeIds, "episode prerequisite");
+    for (const required of episode.requiredEpisodeIds) {
+      const prerequisiteIndex = journey.episodes.findIndex(
+        (item) => item.id === required,
+      );
+      if (prerequisiteIndex < 0 || prerequisiteIndex >= index)
+        throw new Error(
+          `Unknown or unordered episode prerequisite: ${episode.id}`,
+        );
+    }
+    if (
+      index > 0 &&
+      !episode.requiredEpisodeIds.includes(journey.episodes[index - 1].id)
+    )
+      throw new Error(`Episode must follow the preceding stop: ${episode.id}`);
     const landmark = landmarks.find((item) => item.id === episode.landmarkId);
     const battle = battles.find((item) => item.id === episode.battleId);
     if (episode.cityId !== city.id || episode.legacyChapterId !== city.id) {
       throw new Error(`Unknown episode city/chapter: ${episode.id}`);
     }
-    if (
-      !landmark ||
-      landmark.cityId !== episode.cityId ||
-      !battle ||
-      landmark.battleId !== battle.id ||
-      battle.landmarkId !== landmark.id
-    ) {
-      throw new Error(`Episode tourism/battle mismatch: ${episode.id}`);
+    if (episode.kind === "city_finale") {
+      const stops = journey.episodes.filter(
+        (item) => item.cityId === episode.cityId && item.kind !== "city_finale",
+      );
+      if (
+        index !== journey.episodes.length - 1 ||
+        !battle ||
+        battle.scope !== "city_finale" ||
+        battle.cityId !== episode.cityId ||
+        episode.landmarkId !== null ||
+        episode.requiredEpisodeIds.length !== stops.length ||
+        !stops.every((stop) => episode.requiredEpisodeIds.includes(stop.id))
+      )
+        throw new Error(
+          `City finale must require every sightseeing episode: ${episode.id}`,
+        );
+    } else {
+      if (
+        !landmark ||
+        landmark.cityId !== episode.cityId ||
+        !battle ||
+        battle.scope ||
+        landmark.battleId !== battle.id ||
+        battle.landmarkId !== landmark.id
+      )
+        throw new Error(`Episode tourism/battle mismatch: ${episode.id}`);
     }
     const rules = journey.rewards.filter(
       (rule) => rule.episodeId === episode.id,
     );
-    for (const trigger of [
-      "guide_read",
-      "battle_complete",
-      "battle_score",
-      "episode_clear",
-    ]) {
+    const triggers =
+      episode.kind === "city_finale"
+        ? ["battle_complete", "battle_score", "city_clear"]
+        : ["guide_read", "battle_complete", "battle_score", "episode_clear"];
+    if (rules.some((rule) => !triggers.includes(rule.trigger)))
+      throw new Error(`Reward trigger does not fit the episode: ${episode.id}`);
+    for (const trigger of triggers) {
       if (rules.filter((rule) => rule.trigger === trigger).length !== 1) {
         throw new Error(`Episode needs one ${trigger} reward: ${episode.id}`);
       }
     }
-    const quiz = quizzes[battle.quizId];
+    const quiz = battle ? quizzes[battle.quizId] : undefined;
     for (const rule of rules) {
       if (rule.ap > apCap)
         throw new Error(`Journey reward exceeds AP cap: ${rule.id}`);

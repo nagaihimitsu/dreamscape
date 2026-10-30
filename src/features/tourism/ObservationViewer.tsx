@@ -197,7 +197,7 @@ export function ObservationViewer({
         data-y={view.y}
         tabIndex={0}
         role="region"
-        aria-label="絵画の観察"
+        aria-label="観光画像の観察"
         aria-describedby="observation-help"
         onPointerDown={pointerDown}
         onPointerMove={pointerMove}

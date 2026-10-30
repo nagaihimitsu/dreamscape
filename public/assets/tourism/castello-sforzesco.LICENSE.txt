@@ -1,0 +1,17 @@
+Castello Sforzesco courtyard photograph
+
+Original: "Main courtyard of Castello Sforzesco, Milan.jpg"
+Photographer: Daniel Case
+Date photographed: 21 June 2016
+Source: https://commons.wikimedia.org/wiki/File:Main_courtyard_of_Castello_Sforzesco,_Milan.jpg
+License selected: Creative Commons Attribution-ShareAlike 3.0 Unported
+License URL: https://creativecommons.org/licenses/by-sa/3.0/
+License and attribution checked: 2026-10-30 (Commons file page)
+
+The Commons 3840-pixel-wide version was resized proportionally to 2400 x 1539
+and encoded as WebP for Dreamscape. No crop, mirror, painted additions, or
+generative AI changes were made. The adapted image castello-sforzesco.webp
+is distributed under the same CC BY-SA 3.0 license. This image license does
+not change the license of the surrounding game code or text.
+
+Attribution: Daniel Case / Wikimedia Commons / CC BY-SA 3.0.

@@ -31,6 +31,7 @@ import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { validateTourism } from "./tourism-validation";
 import { journeySchema } from "../src/content/journey-schemas";
 import { validateJourney } from "./journey-validation";
+import { validateEpilogue } from "./epilogue-validation";
 
 async function json(file: string): Promise<unknown> {
   try {
@@ -278,7 +279,8 @@ export async function buildContent(root: string, writeOutput = true) {
       throw new Error(`Unknown storyId: ${date.storyId}`);
     if (
       date.chapterId !== city.id ||
-      date.requiredCompletedChapters.some((id) => id !== city.id)
+      date.requiredCompletedChapters.some((id) => id !== city.id) ||
+      date.requiredCompletedCityIds?.some((id) => id !== city.id)
     ) {
       throw new Error(`Unknown chapter reference: ${date.id}`);
     }
@@ -287,6 +289,12 @@ export async function buildContent(root: string, writeOutput = true) {
     if (date.apCost > balance.apCap)
       throw new Error(`Date cost exceeds AP cap: ${date.id}`);
     unique(date.requiredPlayedDateIds, "required date ID");
+    unique(date.requiredCompletedCityIds ?? [], "required city ID");
+    if (
+      date.allowAfterEnding &&
+      (date.kind !== "normal" || !date.requiredCompletedCityIds?.length)
+    )
+      throw new Error(`After-ending date needs a completed city: ${date.id}`);
     if (
       date.requiredPlayedDateIds.some(
         (id) => !dates.some((other) => other.id === id),
@@ -327,6 +335,8 @@ export async function buildContent(root: string, writeOutput = true) {
           romance_stage: seed.romanceStage,
           memory_callback: memory,
           confession_ready: seed.confessionReady,
+          ending_reached: seed.endingReached ?? false,
+          has_cafe_memory: seed.hasCafeMemory ?? false,
         },
         effects,
       );
@@ -403,7 +413,13 @@ export async function buildContent(root: string, writeOutput = true) {
         ...quiz.questions.map((question) => question.id),
       );
     }
-    if (!city.landmarkIdsPlanned.includes(quiz.landmarkId))
+    if ("scope" in quiz && quiz.scope === "city_finale") {
+      if (quiz.cityId !== city.id)
+        throw new Error(`Unknown quiz city: ${quiz.id}`);
+    } else if (
+      quiz.landmarkId === null ||
+      !city.landmarkIdsPlanned.includes(quiz.landmarkId)
+    )
       throw new Error(`Unknown landmark: ${quiz.landmarkId}`);
     unique(
       quiz.questions.map((question) => question.id),
@@ -432,11 +448,22 @@ export async function buildContent(root: string, writeOutput = true) {
   for (const battle of battles) {
     const quiz = quizzes[battle.quizId];
     if (!quiz) throw new Error(`Unknown battle quizId: ${battle.quizId}`);
-    if (
+    if (battle.scope === "city_finale") {
+      if (
+        battle.cityId !== city.id ||
+        quiz.scope !== "city_finale" ||
+        quiz.cityId !== battle.cityId
+      )
+        throw new Error(`City finale quiz mismatch: ${battle.id}`);
+    } else if (
+      battle.landmarkId === null ||
       !city.landmarkIdsPlanned.includes(battle.landmarkId) ||
-      battle.landmarkId !== quiz.landmarkId
+      battle.landmarkId !== quiz.landmarkId ||
+      quiz.scope
     )
       throw new Error(`Battle landmark mismatch: ${battle.id}`);
+    if (battle.scenes.afterRounds.length !== quiz.questions.length - 1)
+      throw new Error(`Battle intermediate scene count mismatch: ${battle.id}`);
     if (!stories[battle.storyId])
       throw new Error(`Unknown battle storyId: ${battle.storyId}`);
     if (!presentation.backgrounds[battle.backgroundAssetId])
@@ -476,10 +503,21 @@ export async function buildContent(root: string, writeOutput = true) {
     quizzes,
     milestones,
   );
+  let epilogueScenarios = 0;
+  for (const episode of journey.episodes) {
+    if (!episode.epilogueStoryId) continue;
+    const compiled = stories[episode.epilogueStoryId];
+    if (!compiled)
+      throw new Error(`Unknown epilogue story: ${episode.epilogueStoryId}`);
+    epilogueScenarios += validateEpilogue(compiled, context);
+  }
   for (const storyId of Object.keys(stories)) {
     if (
       !dates.some((date) => date.storyId === storyId) &&
       !battles.some((battle) => battle.storyId === storyId) &&
+      !journey.episodes.some(
+        (episode) => episode.epilogueStoryId === storyId,
+      ) &&
       !tourism.landmarks.some((landmark) => landmark.guideStoryId === storyId)
     )
       throw new Error(`Story lacks validation contract: ${storyId}`);
@@ -507,6 +545,7 @@ export async function buildContent(root: string, writeOutput = true) {
     reasoningBattles: battles.filter((battle) => battle.reasoning).length,
     tourism,
     tourismGuides,
+    epilogueScenarios,
     journey,
   };
 }

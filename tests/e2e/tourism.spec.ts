@@ -2,7 +2,12 @@ import { expect, test } from "@playwright/test";
 import catalog from "../../content/tourism/catalog.json" with { type: "json" };
 import quiz from "../../content/quizzes/last_supper_B1.json" with { type: "json" };
 import phase3 from "../fixtures/phase3-saves.json" with { type: "json" };
-import { SAVE_KEY, expectNoOverflow, saved, startNewGame } from "./helpers";
+import {
+  SAVE_KEY,
+  expectNoOverflow,
+  saved,
+  startLegacyJourney,
+} from "./helpers";
 import {
   answerRound,
   battleDialogueUntilQuestionOrResult,
@@ -32,7 +37,7 @@ test("a named guide resumes, the real image loads, and every discovery persists 
   await page.setViewportSize({ width: 360, height: 740 });
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await startNewGame(page, ["航", "澪"]);
+  await startLegacyJourney(page, ["航", "澪"]);
   const before = romanceProgress(await saved(page));
   await openTourismFromEntry(page);
   expect((await saved(page)).activeTourism!.phase).toBe("guide");
@@ -147,7 +152,7 @@ test("native touch pinch and drag change the view within bounds without accident
   page,
 }) => {
   await page.setViewportSize({ width: 360, height: 740 });
-  await startNewGame(page);
+  await startLegacyJourney(page);
   await openTourismFromEntry(page);
   await skipTourismGuide(page);
   const viewport = page.getByTestId("observation-viewport");
@@ -207,7 +212,7 @@ test("battle cluebook preserves the question, open hint and locked answer, inclu
 }) => {
   test.setTimeout(90_000);
   await page.setViewportSize({ width: 360, height: 740 });
-  await startNewGame(page);
+  await startLegacyJourney(page);
   const romance = romanceProgress(await saved(page));
   await openTourismFromEntry(page);
   await skipTourismGuide(page);
@@ -273,7 +278,7 @@ test("observation and the guide can be skipped to complete a battle with no clue
 }) => {
   test.setTimeout(90_000);
   await page.setViewportSize({ width: 360, height: 740 });
-  await startNewGame(page);
+  await startLegacyJourney(page);
   const romance = romanceProgress(await saved(page));
   await openTourismFromEntry(page);
   await page
@@ -317,7 +322,7 @@ test("an authentic Phase 3 answered battle migrates without changing its answer 
   await skipTourismGuide(page);
   await page.getByTestId(`discovery-${hotspots[0].id}`).click();
   const migrated = await saved(page);
-  expect(migrated.schemaVersion).toBe(6);
+  expect(migrated.schemaVersion).toBe(7);
   expect(migrated.activeBattle).toEqual({
     ...phase3.feedback.activeBattle,
     reasoning: null,

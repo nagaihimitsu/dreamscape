@@ -1,8 +1,12 @@
+import { createLegacyJourneyGame as createGame } from "../../tests/fixtures/legacy-game";
 import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
 import { describe, expect, it } from "vitest";
-import { battles, battleQuizzes, rewardRules } from "../content";
 import {
-  createGame,
+  battles,
+  battleQuizzes,
+  rewardRules as allRewardRules,
+} from "../content";
+import {
   completeChapter,
   claimTrialMilestone,
   setNames,
@@ -21,6 +25,9 @@ import {
 } from "./battle";
 import { loadGame, saveGame, SAVE_KEY, type StorageLike } from "../persistence";
 
+const rewardRules = allRewardRules.filter(
+  (rule) => rule.episodeId === "milano_last_supper_episode",
+);
 const battleId = () => battles[0].id;
 const quiz = () => battleQuizzes[battles[0].quizId];
 function romance(state: GameState) {

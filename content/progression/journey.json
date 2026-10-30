@@ -1,18 +1,83 @@
 {
   "schemaVersion": 1,
-  "entryEpisodeId": "milano_last_supper_episode",
+  "entryEpisodeId": "milano_duomo_episode",
   "episodes": [
     {
+      "id": "milano_duomo_episode",
+      "kind": "episode",
+      "cityId": "milano",
+      "landmarkId": "duomo_milano",
+      "battleId": "milano_duomo_01",
+      "legacyChapterId": "milano",
+      "requiredEpisodeIds": [],
+      "titleJa": "ミラノ 第1話／ドゥオモ",
+      "descriptionJa": "広場に出ると、白い尖塔が空へ続いていた。見上げるふたりの横で、重たい靴を引きずる男が立ち止まる。",
+      "clearTitleJa": "ドゥオモ編 クリア",
+      "clearDescriptionJa": "大聖堂を見上げていた首を、少し休める。次の通りへ歩いても、ふたりの時間を取ってもいい。旅はまだ始まったばかりだ。"
+    },
+    {
+      "id": "milano_galleria_episode",
+      "kind": "episode",
+      "cityId": "milano",
+      "landmarkId": "galleria_vittorio_emanuele_ii",
+      "battleId": "milano_galleria_01",
+      "legacyChapterId": "milano",
+      "requiredEpisodeIds": [
+        "milano_duomo_episode"
+      ],
+      "titleJa": "ミラノ 第2話／ガッレリア",
+      "descriptionJa": "店先の明かりと、人の足音。その間を、踵を地面につけずに歩く男がいる。今日は何を買わずに帰るつもりだろう。",
+      "clearTitleJa": "ガッレリア編 クリア",
+      "clearDescriptionJa": "通り抜けるだけのつもりが、いつの間にか足を緩めていた。寄り道にも、ちゃんと使い道がある。"
+    },
+    {
       "id": "milano_last_supper_episode",
-      "kind": "trial_episode",
+      "kind": "episode",
       "cityId": "milano",
       "landmarkId": "last_supper",
       "battleId": "milano_last_supper_01",
       "legacyChapterId": "milano",
-      "titleJa": "ミラノ第1話／最後の晩餐編",
-      "descriptionJa": "ふたりで訪ねるのは、修道院の旧食堂。『最後の晩餐』を眺めたら、白い手袋の男との三問勝負へ。今回はこの場所を巡る、短い旅の一区切りです。",
-      "clearTitleJa": "ミラノ第1話 クリア",
-      "clearDescriptionJa": "修道院を出ると、街にはまだ午後の光が残っていた。絵の中の食卓から、今度はふたりの席へ。空いた時間の使い道を、一緒に決めよう。"
+      "titleJa": "ミラノ 第3話／最後の晩餐",
+      "descriptionJa": "修道院の旧食堂で、絵の前に立ち止まる。白い手袋の男が守ろうとしているものは、いったい何だろう。",
+      "clearTitleJa": "最後の晩餐編 クリア",
+      "clearDescriptionJa": "修道院を出ると、街にはまだ午後の光が残っていた。絵の中の食卓から、今度はふたりの席へ。空いた時間の使い道を、一緒に決めよう。",
+      "requiredEpisodeIds": [
+        "milano_galleria_episode"
+      ]
+    },
+    {
+      "id": "milano_castello_episode",
+      "kind": "episode",
+      "cityId": "milano",
+      "landmarkId": "castello_sforzesco",
+      "battleId": "milano_castello_01",
+      "legacyChapterId": "milano",
+      "requiredEpisodeIds": [
+        "milano_last_supper_episode"
+      ],
+      "titleJa": "ミラノ 第4話／スフォルツェスコ城",
+      "descriptionJa": "城の入口で、小さな引き出しを抱えた男に呼び止められる。まだ何も見ていないのに、見学終了の準備だけは万全らしい。",
+      "clearTitleJa": "スフォルツェスコ城編 クリア",
+      "clearDescriptionJa": "城を出る前に、もう一度だけ振り返る。今日のことは全部しまい込まず、少しだけ続きを開けておこう。"
+    },
+    {
+      "id": "milano_finale",
+      "kind": "city_finale",
+      "cityId": "milano",
+      "landmarkId": null,
+      "battleId": "milano_city_boss_01",
+      "legacyChapterId": "milano",
+      "requiredEpisodeIds": [
+        "milano_duomo_episode",
+        "milano_galleria_episode",
+        "milano_last_supper_episode",
+        "milano_castello_episode"
+      ],
+      "epilogueStoryId": "milano/city_epilogue",
+      "titleJa": "ミラノ 都市フィナーレ",
+      "descriptionJa": "四つの場所を歩いたふたりを、旅を終わらせたがる男が待っている。ばらばらの発見を、ひとつの答えにして持っていこう。",
+      "clearTitleJa": "ミラノ 都市クリア",
+      "clearDescriptionJa": "四つの場所と、そこで交わした言葉。今日の旅にひと区切りをつけて、ふたりの余韻へ。"
     }
   ],
   "rewards": [
@@ -46,7 +111,127 @@
       "trigger": "episode_clear",
       "ap": 4,
       "minScore": null,
-      "titleJa": "ミラノ第1話を初めてクリア"
+      "titleJa": "最後の晩餐編を初めてクリア"
+    },
+    {
+      "id": "guide_duomo_first",
+      "episodeId": "milano_duomo_episode",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "battle_duomo_first",
+      "episodeId": "milano_duomo_episode",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "バトルを初めて完了"
+    },
+    {
+      "id": "victory_duomo_first",
+      "episodeId": "milano_duomo_episode",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて2問以上正解"
+    },
+    {
+      "id": "episode_duomo_first",
+      "episodeId": "milano_duomo_episode",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光エピソードを初めてクリア"
+    },
+    {
+      "id": "guide_galleria_first",
+      "episodeId": "milano_galleria_episode",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "battle_galleria_first",
+      "episodeId": "milano_galleria_episode",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "バトルを初めて完了"
+    },
+    {
+      "id": "victory_galleria_first",
+      "episodeId": "milano_galleria_episode",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて2問以上正解"
+    },
+    {
+      "id": "episode_galleria_first",
+      "episodeId": "milano_galleria_episode",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光エピソードを初めてクリア"
+    },
+    {
+      "id": "guide_castello_first",
+      "episodeId": "milano_castello_episode",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "battle_castello_first",
+      "episodeId": "milano_castello_episode",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "バトルを初めて完了"
+    },
+    {
+      "id": "victory_castello_first",
+      "episodeId": "milano_castello_episode",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて2問以上正解"
+    },
+    {
+      "id": "episode_castello_first",
+      "episodeId": "milano_castello_episode",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光エピソードを初めてクリア"
+    },
+    {
+      "id": "battle_milano_finale_first",
+      "episodeId": "milano_finale",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "都市ボスとの対決を初めて完了"
+    },
+    {
+      "id": "victory_milano_finale_first",
+      "episodeId": "milano_finale",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 3,
+      "titleJa": "都市ボスで初めて3問以上正解"
+    },
+    {
+      "id": "city_milano_first_clear",
+      "episodeId": "milano_finale",
+      "trigger": "city_clear",
+      "ap": 3,
+      "minScore": null,
+      "titleJa": "ミラノ都市を初めてクリア"
     }
   ]
 }

@@ -4,7 +4,7 @@ import {
   SAVE_KEY,
   saved,
   expectNoOverflow,
-  startNewGame,
+  startLegacyJourney,
   loadLegacyFreeTime,
   returnToMenu,
   startEvent,
@@ -26,14 +26,14 @@ const NIGHT = "milano_night_01";
 const CONFESSION = "milano_confession_01";
 const REASSURANCE = "milano_reassurance_01";
 
-test("a new zero-score journey reaches free time and low-affection choices recover through the saved romance ending", async ({
+test("a legacy zero-score journey reaches free time and low-affection choices recover through the saved romance ending", async ({
   page,
 }) => {
   test.setTimeout(150_000);
   await page.setViewportSize({ width: 360, height: 740 });
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await startNewGame(page);
+  await startLegacyJourney(page);
   expect((await saved(page)).romanceStage).toBe(1);
   const episode = await completeEpisode(page, [false, false, false]);
   expect(episode.ap).toBe(5);
@@ -113,7 +113,7 @@ test("warm choices and renamed characters reach a successful first confession wi
   page,
 }) => {
   test.setTimeout(90_000);
-  await startNewGame(page, ["航", "澪"]);
+  await startLegacyJourney(page, ["航", "澪"]);
   await loadLegacyFreeTime(page);
   await playEvent(page, CAFE, 2, [2, 1]);
   await returnToMenu(page);
@@ -161,7 +161,7 @@ for (const fixtureKey of ["beforeChoice", "afterChoice", "replay"] as const) {
       await choose(page, 1);
     await finishEvent(page, 2);
     const current = await saved(page);
-    expect(current.schemaVersion).toBe(6);
+    expect(current.schemaVersion).toBe(7);
     expect(current.ap).toBe(old.ap);
     expect(current.playerName).toBe(old.playerName);
     expect(current.heroineName).toBe(old.heroineName);

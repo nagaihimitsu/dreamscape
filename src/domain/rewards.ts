@@ -82,6 +82,7 @@ export function claimPendingRewards(
   if (
     state.revision !== expectedRevision ||
     state.activeDate ||
+    state.activeEpilogue ||
     state.activeTourism ||
     (state.activeBattle && state.activeBattle.phase !== "result")
   )

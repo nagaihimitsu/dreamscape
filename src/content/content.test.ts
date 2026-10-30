@@ -62,6 +62,7 @@ describe("content build acceptance", () => {
         ...dateData.dates.map((date) => date.storyId),
         ...battleData.battles.map((battle) => battle.storyId),
         ...tourismData.landmarks.map((landmark) => landmark.guideStoryId),
+        ...result.journey.episodes.flatMap((episode) => episode.epilogueStoryId ? [episode.epilogueStoryId] : []),
       ].sort(),
     );
   });

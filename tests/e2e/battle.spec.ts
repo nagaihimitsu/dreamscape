@@ -1,7 +1,12 @@
 import { expect, test } from "@playwright/test";
 import quiz from "../../content/quizzes/last_supper_B1.json" with { type: "json" };
 import phase2 from "../fixtures/phase2-saves.json" with { type: "json" };
-import { SAVE_KEY, saved, startNewGame, expectNoOverflow } from "./helpers";
+import {
+  SAVE_KEY,
+  saved,
+  startLegacyJourney,
+  expectNoOverflow,
+} from "./helpers";
 import {
   answerRound,
   battleDialogueUntilQuestionOrResult,
@@ -29,7 +34,7 @@ for (const example of cases) {
     await page.setViewportSize({ width: 360, height: 740 });
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
-    await startNewGame(page);
+    await startLegacyJourney(page);
     const romance = romanceProgress(await saved(page));
     await startBattleFromEntry(page);
     const result = await playBattle(page, quiz.questions, example.correctness);
@@ -76,7 +81,7 @@ test("hints, vocabulary, locked answers and saved reactions survive reload, then
 }) => {
   test.setTimeout(120_000);
   await page.setViewportSize({ width: 360, height: 740 });
-  await startNewGame(page, ["航", "澪"]);
+  await startLegacyJourney(page, ["航", "澪"]);
   const initial = romanceProgress(await saved(page));
   await startBattleFromEntry(page);
   await reloadUnchanged(page); // Intro dialogue.
@@ -195,7 +200,7 @@ test("a real Phase 2 ending save can play a battle and return to the same ending
   const before = romanceProgress(await saved(page));
   await startBattleFromEntry(page);
   const result = await playBattle(page, quiz.questions, [true, false, true]);
-  expect(result.state.schemaVersion).toBe(6);
+  expect(result.state.schemaVersion).toBe(7);
   expect(romanceProgress(result.state)).toEqual(before);
   await page
     .getByRole("button", { name: "自由時間へ進む", exact: true })
@@ -231,7 +236,7 @@ test("a real Phase 2 romance conversation resumes safely and blocks battle entry
   await expect
     .poll(async () => (await saved(page)).revision)
     .toBeGreaterThan(before.revision);
-  expect((await saved(page)).schemaVersion).toBe(6);
+  expect((await saved(page)).schemaVersion).toBe(7);
   expect((await saved(page)).activeBattle).toBeNull();
   expect((await saved(page)).ap).toBe(before.ap);
 });

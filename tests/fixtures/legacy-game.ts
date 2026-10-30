@@ -20,3 +20,16 @@ export function seedLegacyChapter(
     claimedRewardIds: phase1.started.claimedRewardIds,
   });
 }
+
+/** An authentic pre-city empty save keeps access to the original Last Supper trial. */
+export function createLegacyJourneyGame(
+  playerName?: string,
+  heroineName?: string,
+): GameState {
+  const fresh = createGame(playerName, heroineName);
+  return validateGameState({
+    ...phase1.empty,
+    playerName: fresh.playerName,
+    heroineName: fresh.heroineName,
+  });
+}

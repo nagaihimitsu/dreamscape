@@ -51,7 +51,10 @@ describe("Phase 5 to 6 save migration", () => {
       const state = validateGameState(raw);
       expect(state).toEqual({
         ...raw,
-        schemaVersion: 6,
+        schemaVersion: 7,
+        activeEpilogue: null,
+        viewedEpilogueCityIds: [],
+        legacyTrialAvailable: true,
         activeBattle: raw.activeBattle
           ? { ...raw.activeBattle, reasoning: null }
           : null,

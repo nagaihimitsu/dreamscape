@@ -1,4 +1,5 @@
 import {
+  city,
   episodes,
   journeyConfig,
   rewardRules,
@@ -6,36 +7,100 @@ import {
   type RewardRule,
 } from "../content";
 import { openTourism } from "./tourism";
+import { startBattle } from "./battle";
 import { earnRewards, type RewardCredit } from "./rewards";
-import type { GameState } from "./game";
+import type { GameState, Availability } from "./game";
 
+/** Legacy access applies only to the episode that used the old chapter reward. */
+function hasLegacyEpisodeAccess(
+  state: GameState,
+  episode: EpisodeDefinition,
+): boolean {
+  return (
+    state.legacyTrialAvailable &&
+    rewardRules.some(
+      (rule) =>
+        rule.episodeId === episode.id &&
+        rule.id === city.firstClearReward.rewardSourceId,
+    )
+  );
+}
+export function isEpisodeUnlocked(
+  state: GameState,
+  episode: EpisodeDefinition,
+): boolean {
+  return (
+    state.completedEpisodeIds.includes(episode.id) ||
+    hasLegacyEpisodeAccess(state, episode) ||
+    episode.requiredEpisodeIds.every((id) =>
+      state.completedEpisodeIds.includes(id),
+    )
+  );
+}
+export function getNextEpisode(state: GameState): EpisodeDefinition | null {
+  return (
+    episodes.find(
+      (episode) =>
+        !state.completedEpisodeIds.includes(episode.id) &&
+        isEpisodeUnlocked(state, episode),
+    ) ?? null
+  );
+}
 export function getCurrentEpisode(state: GameState): EpisodeDefinition {
   return (
     episodes.find((episode) =>
-      state.activeTourism
-        ? episode.landmarkId === state.activeTourism.landmarkId
-        : state.activeBattle?.battleId === episode.battleId,
+      state.activeEpilogue
+        ? episode.id === state.activeEpilogue.episodeId
+        : state.activeTourism
+          ? episode.landmarkId === state.activeTourism.landmarkId
+          : state.activeBattle?.battleId === episode.battleId,
     ) ??
-    episodes.find(
-      (episode) => !state.completedEpisodeIds.includes(episode.id),
-    ) ??
+    getNextEpisode(state) ??
     episodes.find((episode) => episode.id === journeyConfig.entryEpisodeId)!
   );
 }
+export function getEpisodeAvailability(
+  state: GameState,
+  episodeId: string,
+): Availability {
+  const episode = episodes.find((item) => item.id === episodeId);
+  if (!episode)
+    return { available: false, reason: "旅の予定が見つかりません。" };
+  if (
+    state.activeDate ||
+    state.activeEpilogue ||
+    state.activeTourism ||
+    (state.activeBattle && state.activeBattle.phase !== "result")
+  )
+    return { available: false, reason: "途中の場面を終えてから出発できます。" };
+  if (!isEpisodeUnlocked(state, episode))
+    return {
+      available: false,
+      reason:
+        episode.kind === "city_finale"
+          ? "4つの観光地を巡ると、この対決へ進めます。"
+          : "先の観光エピソードを終えると出発できます。",
+    };
+  return { available: true, reason: "" };
+}
 export function canAccessFreeTime(state: GameState): boolean {
-  return episodes.some(
-    (episode) =>
-      state.completedEpisodeIds.includes(episode.id) ||
-      state.completedChapters.includes(episode.legacyChapterId),
+  return (
+    state.completedEpisodeIds.length > 0 ||
+    state.completedChapters.includes(city.id)
   );
 }
 export function startEpisode(
   state: GameState,
   episodeId = getCurrentEpisode(state).id,
 ): GameState {
-  const episode = episodes.find((item) => item.id === episodeId);
-  if (!episode) return state;
-  return openTourism(state, episode.landmarkId);
+  if (!getEpisodeAvailability(state, episodeId).available) return state;
+  const episode = episodes.find((item) => item.id === episodeId)!;
+  const next = state.activeBattle
+    ? { ...state, activeBattle: null, battleRewardReceipt: null }
+    : state;
+  return episode.kind === "city_finale"
+    ? startBattle(next, episode.battleId)
+    : openTourism(next, episode.landmarkId!);
 }
 export function enterFreeTime(
   state: GameState,
@@ -45,6 +110,7 @@ export function enterFreeTime(
     state.revision !== expectedRevision ||
     state.activeTourism ||
     state.activeDate ||
+    state.activeEpilogue ||
     state.activeBattle?.phase !== "result" ||
     !canAccessFreeTime(state)
   )
@@ -56,7 +122,6 @@ export function enterFreeTime(
     battleRewardReceipt: null,
   };
 }
-
 function hasCompletedBattle(state: GameState, episode: EpisodeDefinition) {
   return state.battleRecords.some(
     (record) => record.battleId === episode.battleId && record.attempts > 0,
@@ -65,9 +130,14 @@ function hasCompletedBattle(state: GameState, episode: EpisodeDefinition) {
 export function isRewardEarned(state: GameState, rule: RewardRule): boolean {
   const episode = episodes.find((item) => item.id === rule.episodeId)!;
   if (rule.trigger === "guide_read")
-    return state.completedGuideIds.includes(episode.landmarkId);
+    return (
+      !!episode.landmarkId &&
+      state.completedGuideIds.includes(episode.landmarkId)
+    );
   if (rule.trigger === "episode_clear")
     return state.completedEpisodeIds.includes(episode.id);
+  if (rule.trigger === "city_clear")
+    return state.completedCityIds.includes(episode.cityId);
   const record = state.battleRecords.find(
     (item) => item.battleId === episode.battleId,
   );
@@ -76,26 +146,36 @@ export function isRewardEarned(state: GameState, rule: RewardRule): boolean {
     (rule.trigger === "battle_complete" || record.bestScore >= rule.minScore!)
   );
 }
-
-/** A real battle completion unlocks this trial episode, never the whole city. */
+/** Chapter is a compatibility token for existing dates; only a finale marks the whole city. */
 function recordEpisodes(state: GameState): GameState {
   const completedEpisodeIds = [...state.completedEpisodeIds];
   const completedChapters = [...state.completedChapters];
+  const completedCityIds = [...state.completedCityIds];
   for (const episode of episodes) {
     if (!hasCompletedBattle(state, episode)) continue;
+    if (
+      episode.kind === "city_finale" &&
+      !episode.requiredEpisodeIds.every((id) =>
+        completedEpisodeIds.includes(id),
+      )
+    )
+      continue;
     if (!completedEpisodeIds.includes(episode.id))
       completedEpisodeIds.push(episode.id);
-    // Compatibility token for existing date definitions. It does not mean city completion.
     if (!completedChapters.includes(episode.legacyChapterId))
       completedChapters.push(episode.legacyChapterId);
+    if (
+      episode.kind === "city_finale" &&
+      !completedCityIds.includes(episode.cityId)
+    )
+      completedCityIds.push(episode.cityId);
   }
   return completedEpisodeIds.length === state.completedEpisodeIds.length &&
-    completedChapters.length === state.completedChapters.length
+    completedChapters.length === state.completedChapters.length &&
+    completedCityIds.length === state.completedCityIds.length
     ? state
-    : { ...state, completedEpisodeIds, completedChapters };
+    : { ...state, completedEpisodeIds, completedChapters, completedCityIds };
 }
-
-/** Called inside the battle's final atomic transition, after its score/history were recorded. */
 export function finalizeBattleProgress(state: GameState): GameState {
   const active = state.activeBattle;
   if (
@@ -124,8 +204,6 @@ export function finalizeBattleProgress(state: GameState): GameState {
     },
   };
 }
-
-/** Completing the actual guide is distinct from visiting or explicitly skipping it. */
 export function recordGuideRead(
   state: GameState,
   landmarkId: string,
@@ -145,8 +223,7 @@ export function recordGuideRead(
     .map((rule) => rule.id);
   return earnRewards(next, ids).state;
 }
-
-/** Legacy AP stays unchanged on load. Verified old achievements become pending entitlements. */
+/** Old achievements become pending entitlements without changing the saved AP balance. */
 export function migrateJourneyProgress(state: GameState): GameState {
   const next = recordEpisodes(state);
   const eligible = rewardRules
@@ -157,7 +234,10 @@ export function migrateJourneyProgress(state: GameState): GameState {
   const recorded = earnRewards(next, eligible, false);
   let entries: RewardCredit[] = recorded.entries;
   const active = state.activeBattle;
-  if (active?.phase === "result") {
+  if (
+    active?.phase === "result" &&
+    episodes.some((episode) => episode.battleId === active.battleId)
+  ) {
     entries = entries.filter((entry) =>
       episodes.some(
         (episode) =>
@@ -173,13 +253,16 @@ export function migrateJourneyProgress(state: GameState): GameState {
   }
   return recorded.state;
 }
-
-/** Kept for old internal callers, but never awards a chapter without a finished battle. */
 export function completeRecordedChapter(
   state: GameState,
   chapterId: string,
 ): GameState {
-  if (state.activeDate || state.activeTourism || state.activeBattle)
+  if (
+    state.activeDate ||
+    state.activeTourism ||
+    state.activeBattle ||
+    state.activeEpilogue
+  )
     return state;
   const matched = episodes.filter(
     (episode) =>
@@ -201,43 +284,55 @@ export function completeRecordedChapter(
     ? state
     : { ...awarded, revision: state.revision + 1 };
 }
-
 export function validateJourneyState(state: GameState): void {
-  if (state.completedCityIds.length)
-    throw new Error("都市全体のクリアはまだ実装されていません。");
   for (const id of state.completedEpisodeIds) {
     const episode = episodes.find((item) => item.id === id);
     if (
       !episode ||
       !hasCompletedBattle(state, episode) ||
-      !state.completedChapters.includes(episode.legacyChapterId)
+      !state.completedChapters.includes(episode.legacyChapterId) ||
+      (!hasLegacyEpisodeAccess(state, episode) &&
+        !episode.requiredEpisodeIds.every((required) =>
+          state.completedEpisodeIds.includes(required),
+        ))
     )
-      throw new Error("試遊章のクリア記録が一致しません。");
+      throw new Error("観光エピソードのクリア記録が一致しません。");
   }
   for (const episode of episodes) {
     if (
-      hasCompletedBattle(state, episode) &&
-      !state.completedEpisodeIds.includes(episode.id)
+      hasCompletedBattle(state, episode) !==
+      state.completedEpisodeIds.includes(episode.id)
     )
       throw new Error("完了したバトルと章の記録が一致しません。");
+    if (
+      episode.kind === "city_finale" &&
+      state.completedCityIds.includes(episode.cityId) !==
+        state.completedEpisodeIds.includes(episode.id)
+    )
+      throw new Error("都市クリアの記録が一致しません。");
   }
-  for (const id of state.completedGuideIds) {
+  if (
+    state.completedCityIds.some(
+      (id) =>
+        !episodes.some(
+          (episode) => episode.kind === "city_finale" && episode.cityId === id,
+        ),
+    )
+  )
+    throw new Error("都市の記録が見つかりません。");
+  for (const id of state.completedGuideIds)
     if (
       !episodes.some((episode) => episode.landmarkId === id) ||
       !state.visitedLandmarkIds.includes(id)
     )
       throw new Error("案内の読了記録が一致しません。");
-  }
   for (const rule of rewardRules) {
     const earned = isRewardEarned(state, rule);
     const claimed = state.claimedRewardIds.includes(rule.id);
     const legacyChapter =
-      rule.trigger === "episode_clear" &&
-      episodes.some(
-        (episode) =>
-          episode.id === rule.episodeId &&
-          state.completedChapters.includes(episode.legacyChapterId),
-      );
+      rule.id === city.firstClearReward.rewardSourceId &&
+      state.legacyTrialAvailable &&
+      state.completedChapters.includes(city.id);
     if ((earned && !claimed) || (claimed && !earned && !legacyChapter))
       throw new Error("進行条件と報酬記録が一致しません。");
   }

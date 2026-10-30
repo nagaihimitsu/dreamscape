@@ -40,40 +40,42 @@ export function RomanceMenu({
       {availableMoments.map((date) => (
         <EventCard key={date.id} game={game} date={date} onChoose={onChoose} />
       ))}
-      <section className="trial-progress" aria-label="試遊用の旅の進行">
-        <div className="section-meta">
-          <h2>旅をもう一歩</h2>
-          <span className="pill">試遊専用の補助AP</span>
-        </div>
-        <p>
-          次のエピソードが届くまで、告白までの物語を試せる補助の自由時間です。それぞれ一度だけ受け取れます。
-        </p>
-        {trialMilestones.map((milestone) => {
-          const eligibility = getMilestoneAvailability(game, milestone.id);
-          const claimed = game.claimedRewardIds.includes(
-            milestone.rewardSourceId,
-          );
-          return (
-            <div className="milestone" key={milestone.id}>
-              <h3>{milestone.titleJa}</h3>
-              <p>{milestone.descriptionJa}</p>
-              <button
-                className="secondary"
-                data-testid={`milestone-${milestone.id}`}
-                disabled={!eligibility.available}
-                onClick={() => onMilestone(milestone.id)}
-              >
-                {claimed
-                  ? "受け取り済み"
-                  : `${milestone.titleJa}を進める ＋${milestone.ap}AP`}
-              </button>
-              {!claimed && !eligibility.available && (
-                <p className="fine-print">{eligibility.reason}</p>
-              )}
-            </div>
-          );
-        })}
-      </section>
+      {game.legacyTrialAvailable && (
+        <section className="trial-progress" aria-label="試遊用の旅の進行">
+          <div className="section-meta">
+            <h2>旅をもう一歩</h2>
+            <span className="pill">試遊専用の補助AP</span>
+          </div>
+          <p>
+            以前の試遊から続けている旅の補助APです。各報酬は一度だけ受け取れます。観光を進めてもAPを獲得できます。
+          </p>
+          {trialMilestones.map((milestone) => {
+            const eligibility = getMilestoneAvailability(game, milestone.id);
+            const claimed = game.claimedRewardIds.includes(
+              milestone.rewardSourceId,
+            );
+            return (
+              <div className="milestone" key={milestone.id}>
+                <h3>{milestone.titleJa}</h3>
+                <p>{milestone.descriptionJa}</p>
+                <button
+                  className="secondary"
+                  data-testid={`milestone-${milestone.id}`}
+                  disabled={!eligibility.available}
+                  onClick={() => onMilestone(milestone.id)}
+                >
+                  {claimed
+                    ? "受け取り済み"
+                    : `${milestone.titleJa}を進める ＋${milestone.ap}AP`}
+                </button>
+                {!claimed && !eligibility.available && (
+                  <p className="fine-print">{eligibility.reason}</p>
+                )}
+              </div>
+            );
+          })}
+        </section>
+      )}
       <div className="date-list">
         {ordinaryDates.map((date) => (
           <EventCard
@@ -98,7 +100,7 @@ export function RomanceMenu({
     </>
   );
 }
-function EventCard({
+export function EventCard({
   game,
   date,
   onChoose,

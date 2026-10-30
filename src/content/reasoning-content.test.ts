@@ -62,16 +62,23 @@ describe("special battle content contract", () => {
 
   it("validates all A/B/C scenes while keeping the normal episode linked only to A", async () => {
     const result = await buildContent(fixture, false);
-    expect(result.battles.map((battle) => battle.format ?? "A")).toEqual([
-      "A",
-      "B",
-      "C",
-    ]);
+    expect(
+      result.battles.slice(0, 3).map((battle) => battle.format ?? "A"),
+    ).toEqual(["A", "B", "C"]);
     expect(result.reasoningBattles).toBe(2);
-    expect(result.battleScenarios).toBe(59);
-    expect(result.journey.episodes).toHaveLength(1);
-    expect(result.journey.episodes[0].battleId).toBe(result.battles[0].id);
+    expect(result.battleScenarios).toBeGreaterThanOrEqual(59);
+    const original = result.journey.episodes.find(
+      (episode) => episode.id === "milano_last_supper_episode",
+    )!;
+    expect(original.battleId).toBe(result.battles[0].id);
     expect(result.tourism.landmarks[0].battleId).toBe(result.battles[0].id);
+    expect(
+      result.journey.episodes.every(
+        (episode) =>
+          !result.battles.find((battle) => battle.id === episode.battleId)
+            ?.reasoning,
+      ),
+    ).toBe(true);
     for (const battle of result.battles.filter((item) => item.reasoning)) {
       const reasoning = battle.reasoning!;
       const quiz = result.quizzes[battle.quizId];

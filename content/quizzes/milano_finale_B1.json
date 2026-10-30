@@ -1,0 +1,297 @@
+{
+  "schemaVersion": 1,
+  "id": "milano_city_finale_b1",
+  "scope": "city_finale",
+  "cityId": "milano",
+  "landmarkId": null,
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "milano_finale_materials",
+      "questionEn": "Which pair correctly matches the Duomo and the Galleria roof?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The Duomo uses Carrara marble; the Galleria roof uses iron and glass."
+        },
+        {
+          "id": "B",
+          "textEn": "The Duomo uses Candoglia marble; the Galleria roof uses wood and glass."
+        },
+        {
+          "id": "C",
+          "textEn": "The Duomo uses Candoglia marble; the Galleria roof uses iron and glass."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "matches",
+          "meaning": "ここでは、正しく対応する"
+        },
+        {
+          "word": "roof",
+          "meaning": "屋根"
+        },
+        {
+          "word": "Carrara",
+          "meaning": "カッラーラ。別の大理石の産地"
+        }
+      ],
+      "hintJa": "大聖堂の石肌と、光が入る屋根。形だけでなく、何でできているかを比べよう。",
+      "correctExplanationJa": "ドゥオモはカンドーリア産の大理石、ガッレリアの屋根は鉄とガラスです。同じ街の大きな建築でも、材料と見え方は異なります。すべてを同じ素材で造った街ではありません。",
+      "incorrectExplanationJa": "ドゥオモの石材はカッラーラ産ではなく、カンドーリア産の大理石です。ガッレリアの屋根は木とガラスではなく、鉄とガラス。どちらか一つだけでなく、二つの建築の材料を組にして確かめましょう。",
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+          "title": "The Candoglia Quarry",
+          "url": "https://www.duomomilano.it/en/about-us/the-candoglia-quarry/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "大聖堂にはカンドーリア産の大理石が使われ、石材はトーチェ川、マッジョーレ湖、ティチーノ川、ナヴィリオ・グランデなどの水路を経てミラノへ運ばれた。"
+        },
+        {
+          "publisher": "Comune di Milano（公式）",
+          "title": "Galleria Vittorio Emanuele II — consolidation and restoration of the roof",
+          "url": "https://www.comune.milano.it/en/w/galleria-vittorio-emanuele-ii.-approvato-il-progetto-per-gli-interventi-di-consolidamento-e-restauro-della-copertura",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "市の屋根修復事業の説明は、ガッレリアの屋根を鉄とガラスの構造としている。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "milano_finale_routes",
+      "questionEn": "Which pair describes the use of the old marble route and the Galleria passage?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Waterways brought stone to Milan; the passage links the Duomo and Scala squares."
+        },
+        {
+          "id": "B",
+          "textEn": "Waterways brought stone to Milan; the passage links the castle area and Scala square."
+        },
+        {
+          "id": "C",
+          "textEn": "Carts alone brought stone to Milan; the passage links the Duomo and Scala squares."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "waterways",
+          "meaning": "川・湖・運河などの水路"
+        },
+        {
+          "word": "passage",
+          "meaning": "通り抜けられる通路"
+        },
+        {
+          "word": "links",
+          "meaning": "〜を結ぶ"
+        }
+      ],
+      "hintJa": "大理石の移動に役立った水路と、二つの広場の間を歩く通路。運ぶものと結ぶ場所を別々に確かめよう。",
+      "correctExplanationJa": "カンドーリアからの石材は湖・川・運河を利用してミラノへ運ばれました。ガッレリアはドゥオモ広場とスカラ広場を結ぶ通路です。物を届ける道と、人が行き交う道。用途は異なっても、どちらも場所をつなぎます。",
+      "incorrectExplanationJa": "水路は大理石運搬の重要な経路でした。ガッレリアが結ぶのはドゥオモ広場とスカラ広場で、城とスカラ広場ではありません。「石も人も同じ道を通る」とひとまとめにしないのが要点です。",
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+          "title": "The Candoglia Quarry",
+          "url": "https://www.duomomilano.it/en/about-us/the-candoglia-quarry/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "大聖堂にはカンドーリア産の大理石が使われ、石材はトーチェ川、マッジョーレ湖、ティチーノ川、ナヴィリオ・グランデなどの水路を経てミラノへ運ばれた。"
+        },
+        {
+          "publisher": "Regione Lombardia — Lombardia Beni Culturali（公式）",
+          "title": "Galleria Vittorio Emanuele II",
+          "url": "https://www.lombardiabeniculturali.it/architetture/schede/LMD80-00142/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "ドゥオモ広場とスカラ広場を結ぶ、屋根のある通路として建設されたことを説明している。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "milano_finale_painted_spaces",
+      "questionEn": "What effect can the paintings in the Last Supper refectory and the Sala delle Asse both create?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "They copy the real rooms without changing the sense of space."
+        },
+        {
+          "id": "B",
+          "textEn": "They extend the sense of space through images on real surfaces."
+        },
+        {
+          "id": "C",
+          "textEn": "They separate the painted scenes from the rooms around them."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "refectory",
+          "meaning": "修道院などの食堂"
+        },
+        {
+          "word": "extend",
+          "meaning": "広げる、延長する"
+        },
+        {
+          "word": "sense of space",
+          "meaning": "空間の感じ方"
+        },
+        {
+          "word": "surfaces",
+          "meaning": "ここでは、実際の壁や天井の表面"
+        }
+      ],
+      "hintJa": "本当の壁を壊したのではない。食堂の奥行きと、描かれた木々の天井が、部屋の感じ方に何を加えるか考えよう。",
+      "correctExplanationJa": "『最後の晩餐』では描かれた食堂が実際の部屋の続きのように、アッセの間では描かれた枝が木陰のように感じられます。壁の形が物理的に変わったという意味ではなく、美術館や文化省の解説を踏まえた空間表現の読み取りです。",
+      "incorrectExplanationJa": "絵は本当の壁を取り去りません。しかし、その場所で感じる奥行きや雰囲気を変えられます。食堂の続きのような空間と、描かれた木々の下にいるような空間が、共通する手がかりです。",
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano（公式）",
+          "title": "A powerful theatrical machine — The perspective box",
+          "url": "https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/",
+          "checkedAt": "2026-10-30",
+          "claimType": "interpretation",
+          "claimJa": "遠近法や光の表現によって、絵の中の空間と実際の食堂が関係し、場面が食堂の続きのように感じられる効果を説明している。"
+        },
+        {
+          "publisher": "Ministero della Cultura（公式）",
+          "title": "Castello Sforzesco, Milano: Sala delle Asse, il restauro",
+          "url": "https://cultura.gov.it/comunicato/castello-sforzesco-milano-sala-delle-asse-il-restauro-1",
+          "checkedAt": "2026-10-30",
+          "claimType": "interpretation",
+          "claimJa": "アッセの間は枝や金色の結び紐による、絵の中のあずまや・木陰（falso pergolato）として説明される。絵の効果であり、本物の樹木が室内に生えたという意味ではない。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "milano_finale_different_care",
+      "questionEn": "Which pair matches how the original St. George statue and The Last Supper are protected today?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The statue stays on the spire; the air around the painting is controlled."
+        },
+        {
+          "id": "B",
+          "textEn": "The statue stays in the museum; the wall painting is regularly repainted."
+        },
+        {
+          "id": "C",
+          "textEn": "The statue stays in the museum; the air around the painting is controlled."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "original",
+          "meaning": "複製ではない原作"
+        },
+        {
+          "word": "spire",
+          "meaning": "尖塔"
+        },
+        {
+          "word": "controlled",
+          "meaning": "ここでは、環境が適切に管理されている"
+        },
+        {
+          "word": "repainted",
+          "meaning": "新しく塗り直される"
+        }
+      ],
+      "hintJa": "像の原作は移せても、壁画を同じように扱えるとは限らない。実際に取られている保存方法を、それぞれの作品に合わせよう。",
+      "correctExplanationJa": "尖塔の聖ゲオルギウス像は、損傷した原作を室内で守り、外には複製を置く方法が取られました。『最後の晩餐』は傷みやすい壁画で、空気や入場人数など周囲の環境を管理します。同じ処置を何にでも当てはめることはできません。",
+      "incorrectExplanationJa": "原作の聖ゲオルギウス像はドゥオモ美術館へ移され、尖塔には複製があります。『最後の晩餐』の画面を定期的に新しく塗り直すことが現在の保存方針なのではありません。傷みやすい絵の具を守るため、空気や入場人数などの環境を管理しています。",
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+          "title": "Adopt a Spire — G6 St. George (Carelli Spire)",
+          "url": "https://www.duomomilano.it/en/support/adopt-a-spire/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "聖ゲオルギウス像は原作を守るため1950年代に制作された複製で、原作は現在ドゥオモ美術館で展示されている。原作は1943年の爆撃で損傷していた。すべての彫像が複製だという一般化はしない。"
+        },
+        {
+          "publisher": "Museo del Cenacolo Vinciano（公式）",
+          "title": "Backstage — The state of conservation",
+          "url": "https://cenacolovinciano.org/en/museum/backstage/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "乾いた下地の絵の具は脆弱で、室内環境も劣化に関係する。現在は空調や入場人数の管理で湿気・微粒子などの負担を抑える。"
+        }
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "milano_finale_living_city",
+      "questionEn": "Which comparison of the Castello and the Galleria today is supported by their uses?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The castle houses public museums; the Galleria is a display-only gallery without shops."
+        },
+        {
+          "id": "B",
+          "textEn": "The castle houses public museums; the Galleria is a passage with shops and cafes."
+        },
+        {
+          "id": "C",
+          "textEn": "The castle houses a private court; the Galleria is a passage with shops and cafes."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "supported by",
+          "meaning": "〜を根拠に裏付けられる"
+        },
+        {
+          "word": "houses",
+          "meaning": "ここでは、施設などを内部に置く"
+        },
+        {
+          "word": "display-only",
+          "meaning": "展示だけのための"
+        },
+        {
+          "word": "court",
+          "meaning": "ここでは、支配者の宮廷"
+        }
+      ],
+      "hintJa": "城の昔の役割だけで決めないこと。今そこに何があり、ガッレリアでは今どんな日常が続いているかを比べよう。",
+      "correctExplanationJa": "スフォルツェスコ城は現在、博物館など公共の文化施設を担います。ガッレリアは店舗やカフェのある通路として使われています。二つの確認できる現在の用途を比べると、歴史的な場所が今の暮らしにも関わっているとわかります。これは、昔の役割がすべてそのまま続くという意味ではありません。",
+      "incorrectExplanationJa": "城を昔の宮廷の居所だけとして見ると、現在の公共博物館を見落とします。ガッレリアも、店舗をなくした展示専用の画廊ではありません。店やカフェのある通路として使われています。残る建物と現在の用途を、それぞれ確かめましょう。",
+      "sources": [
+        {
+          "publisher": "Comune di Milano（公式）",
+          "title": "Carta dei servizi del Servizio Musei Castello, p. 3",
+          "url": "https://www.comune.milano.it/documents/20118/3102963/21dicembre2022CARTA%2BDEI%2BSERVIZI%2BDEL%2BSERVIZIO%2BMUSEI%2BCASTELLO_2022.pdf/e05d9e1b-754d-97af-7b5b-5952df8331e4?download=true&t=1763981294913&version=1.0",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "城の防衛施設・宮廷の居所という過去と、現在の博物館や図書館などの公共文化機能を説明している。"
+        },
+        {
+          "publisher": "YesMilano — Milano & Partners（公式観光案内）",
+          "title": "Grab a coffee and explore city neighbourhoods",
+          "url": "https://www.yesmilano.it/en/see-and-do/itineraries/grab-coffee-and-explore-city-neighborhoods",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリアをカフェや店舗のある歴史的な商業通路として紹介し、スカラ広場へ続くことを説明している。"
+        }
+      ],
+      "difficulty": "hard"
+    }
+  ]
+}

@@ -10,19 +10,21 @@ export function EpisodeScreen({
   onStart: (id: string) => void;
 }) {
   const episode = getCurrentEpisode(game);
-  const landmark = landmarks.find((item) => item.id === episode.landmarkId)!;
+  const landmark = landmarks.find((item) => item.id === episode.landmarkId);
   const asset = tourismAssets.find(
-    (item) => item.id === landmark.imageAssetId,
-  )!;
+    (item) => item.id === landmark?.imageAssetId,
+  );
   return (
     <section className="episode-screen" data-testid="episode-screen">
-      <img
-        className="episode-image"
-        src={`${import.meta.env.BASE_URL}${asset.path}`}
-        width={asset.width}
-        height={asset.height}
-        alt={asset.altJa}
-      />
+      {asset && (
+        <img
+          className="episode-image"
+          src={`${import.meta.env.BASE_URL}${asset.path}`}
+          width={asset.width}
+          height={asset.height}
+          alt={asset.altJa}
+        />
+      )}
       <div className="paper">
         <p className="eyebrow">ふたりの旅 · 観光エピソード</p>
         <h1>{episode.titleJa}</h1>

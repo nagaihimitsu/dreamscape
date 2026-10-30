@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { activeEpilogueSchema, validateEpilogueState } from "./epilogue";
 import {
   completeRecordedChapter,
   migrateJourneyProgress,
@@ -14,6 +15,8 @@ import { activeTourismSchema, validateTourismState } from "./tourism";
 import {
   activeBattleSchema,
   legacyActiveBattleSchema,
+  legacyBattleRecordSchema,
+  phase6ActiveBattleSchema,
   battleRecordSchema,
   validateBattleState,
 } from "./battle";
@@ -24,6 +27,7 @@ import {
   effects,
   progression,
   trialMilestones,
+  rewardRules,
   type DateDefinition,
 } from "../content";
 import {
@@ -95,7 +99,7 @@ const phase3StateSchema = phase2StateSchema
   .extend({
     schemaVersion: z.literal(3),
     activeBattle: legacyActiveBattleSchema.nullable(),
-    battleRecords: z.array(battleRecordSchema),
+    battleRecords: z.array(legacyBattleRecordSchema),
   })
   .strict();
 const phase4StateSchema = phase3StateSchema
@@ -116,10 +120,20 @@ const phase5StateSchema = phase4StateSchema
     battleRewardReceipt: battleRewardReceiptSchema.nullable(),
   })
   .strict();
-export const gameStateSchema = phase5StateSchema
+const phase6StateSchema = phase5StateSchema
   .extend({
     schemaVersion: z.literal(6),
+    activeBattle: phase6ActiveBattleSchema.nullable(),
+  })
+  .strict();
+export const gameStateSchema = phase6StateSchema
+  .extend({
+    schemaVersion: z.literal(7),
     activeBattle: activeBattleSchema.nullable(),
+    battleRecords: z.array(battleRecordSchema),
+    activeEpilogue: activeEpilogueSchema.nullable(),
+    viewedEpilogueCityIds: uniqueStrings,
+    legacyTrialAvailable: z.boolean(),
   })
   .strict();
 export type GameState = z.infer<typeof gameStateSchema>;
@@ -134,7 +148,7 @@ export function createGame(
   heroineName = balance.defaultHeroineName,
 ): GameState {
   return {
-    schemaVersion: 6,
+    schemaVersion: 7,
     revision: 0,
     playerName: nameSchema.parse(playerName),
     heroineName: nameSchema.parse(heroineName),
@@ -159,6 +173,9 @@ export function createGame(
     completedGuideIds: [],
     pendingApRewards: [],
     battleRewardReceipt: null,
+    activeEpilogue: null,
+    viewedEpilogueCityIds: [],
+    legacyTrialAvailable: false,
   };
 }
 
@@ -166,6 +183,9 @@ function meetsDateConditions(state: GameState, date: DateDefinition): boolean {
   return (
     date.requiredCompletedChapters.every((id) =>
       state.completedChapters.includes(id),
+    ) &&
+    (date.requiredCompletedCityIds ?? []).every((id) =>
+      state.completedCityIds.includes(id),
     ) &&
     date.requiredPlayedDateIds.every((id) =>
       state.playedDateIds.includes(id),
@@ -240,7 +260,12 @@ export function setNames(
   playerName: string,
   heroineName: string,
 ): GameState {
-  if (state.activeDate || state.activeBattle || state.activeTourism)
+  if (
+    state.activeDate ||
+    state.activeBattle ||
+    state.activeTourism ||
+    state.activeEpilogue
+  )
     return state;
   const player = nameSchema.safeParse(playerName),
     heroine = nameSchema.safeParse(heroineName);
@@ -265,6 +290,7 @@ export function grantRewardOnce(
 ): GameState {
   if (
     state.activeTourism ||
+    state.activeEpilogue ||
     !rewardId ||
     state.claimedRewardIds.includes(rewardId) ||
     !Number.isSafeInteger(amount) ||
@@ -293,11 +319,16 @@ export function getMilestoneAvailability(
   milestoneId: string,
 ): Availability {
   const milestone = trialMilestones.find((item) => item.id === milestoneId);
-  if (!milestone || state.endingReached)
+  if (!milestone || state.endingReached || !state.legacyTrialAvailable)
     return { available: false, reason: "この試遊用の進行は終了しました。" };
   if (state.claimedRewardIds.includes(milestone.rewardSourceId))
     return { available: false, reason: "受け取り済みです。" };
-  if (state.activeDate || state.activeBattle || state.activeTourism)
+  if (
+    state.activeDate ||
+    state.activeBattle ||
+    state.activeTourism ||
+    state.activeEpilogue
+  )
     return {
       available: false,
       reason: "今の会話・バトルを終えてから進めます。",
@@ -339,12 +370,17 @@ export function getDateAvailability(
 ): Availability {
   const date = dates.find((item) => item.id === dateId);
   if (!date) return { available: false, reason: "デートが見つかりません。" };
-  if (state.endingReached)
+  if (state.endingReached && !date.allowAfterEnding)
     return {
       available: false,
       reason: "ふたりの物語は、交際エンディングを迎えました。",
     };
-  if (state.activeDate || state.activeBattle || state.activeTourism)
+  if (
+    state.activeDate ||
+    state.activeBattle ||
+    state.activeTourism ||
+    state.activeEpilogue
+  )
     return {
       available: false,
       reason: "途中の会話・バトルを再開してください。",
@@ -354,6 +390,15 @@ export function getDateAvailability(
       available: false,
       reason: "このひとときは、もう思い出になりました。",
     };
+  if (
+    !(date.requiredCompletedCityIds ?? []).every((id) =>
+      state.completedCityIds.includes(id),
+    )
+  )
+    return {
+      available: false,
+      reason: "都市の旅を終えると、このデートに誘えます。",
+    };
   if (!meetsDateConditions(state, date))
     return { available: false, reason: "もう少し、一緒の時間を過ごしてから。" };
   if (state.ap < date.apCost)
@@ -362,9 +407,21 @@ export function getDateAvailability(
     // A replay must never spend the finite budget needed by an unplayed date.
     const futureAP =
       trialMilestones
-        .filter((item) => !state.claimedRewardIds.includes(item.rewardSourceId))
+        .filter(
+          (item) =>
+            state.legacyTrialAvailable &&
+            !state.claimedRewardIds.includes(item.rewardSourceId),
+        )
         .reduce((sum, item) => sum + item.ap, 0) +
-      state.pendingApRewards.reduce((sum, item) => sum + item.remainingAp, 0);
+      state.pendingApRewards.reduce((sum, item) => sum + item.remainingAp, 0) +
+      rewardRules
+        .filter(
+          (rule) =>
+            !state.claimedRewardIds.includes(rule.id) &&
+            rule.trigger !== "guide_read" &&
+            rule.trigger !== "battle_score",
+        )
+        .reduce((sum, rule) => sum + rule.ap, 0);
     const remainingCost = dates
       .filter(
         (item) =>
@@ -375,6 +432,7 @@ export function getDateAvailability(
       trialMilestones
         .filter(
           (item) =>
+            state.legacyTrialAvailable &&
             !state.claimedRewardIds.includes(item.rewardSourceId) &&
             item.requiredPlayedDateIds.every((id) =>
               state.playedDateIds.includes(id),
@@ -386,6 +444,9 @@ export function getDateAvailability(
       (item) =>
         item.kind === "normal" &&
         !state.playedDateIds.includes(item.id) &&
+        (item.requiredCompletedCityIds ?? []).every((id) =>
+          state.completedCityIds.includes(id),
+        ) &&
         item.requiredPlayedDateIds.every(
           (id) =>
             state.playedDateIds.includes(id) ||
@@ -458,6 +519,10 @@ export function startDate(state: GameState, dateId: string): GameState {
     player_address: getPlayerAddress(state),
     romance_stage: state.romanceStage,
     memory_callback: getMemoryCallback(state),
+    has_cafe_memory: progression.memoryCallbacks.some((item) =>
+      state.memories.includes(item.memoryId),
+    ),
+    ending_reached: state.endingReached,
     confession_ready: canConfessSuccessfully(state),
   });
   const next = {
@@ -573,14 +638,33 @@ export function migrateGameState(input: unknown): GameState {
     typeof input === "object" && input !== null && "schemaVersion" in input
       ? input.schemaVersion
       : undefined;
-  if (version === 5) {
-    const old = phase5StateSchema.parse(input);
+  if (version === 5 || version === 6) {
+    const parsed =
+      version === 5
+        ? phase5StateSchema.parse(input)
+        : phase6StateSchema.parse(input);
+    if (
+      parsed.completedChapters.includes(city.id) !==
+      parsed.claimedRewardIds.includes(city.firstClearReward.rewardSourceId)
+    )
+      throw new Error("以前の章報酬の記録が一致しません。");
+    if (parsed.completedCityIds.length)
+      throw new Error("旧版に都市クリアの記録はありません。");
     return {
-      ...old,
-      schemaVersion: 6,
-      activeBattle: old.activeBattle
-        ? { ...old.activeBattle, reasoning: null }
+      ...parsed,
+      schemaVersion: 7,
+      activeBattle: parsed.activeBattle
+        ? {
+            ...parsed.activeBattle,
+            reasoning:
+              "reasoning" in parsed.activeBattle
+                ? parsed.activeBattle.reasoning
+                : null,
+          }
         : null,
+      activeEpilogue: null,
+      viewedEpilogueCityIds: [],
+      legacyTrialAvailable: true,
     };
   }
   if (version !== 1 && version !== 2 && version !== 3 && version !== 4)
@@ -639,7 +723,10 @@ export function migrateGameState(input: unknown): GameState {
     throw new Error("以前のデートの解放条件が一致しません。");
   const next: GameState = {
     ...old,
-    schemaVersion: 6,
+    schemaVersion: 7,
+    activeEpilogue: null,
+    viewedEpilogueCityIds: [],
+    legacyTrialAvailable: true,
     activeBattle: old.activeBattle
       ? { ...old.activeBattle, reasoning: null }
       : null,
@@ -660,6 +747,7 @@ export function validateGameState(input: unknown): GameState {
   validateTourismState(state);
   validateJourneyState(state);
   validateRewardState(state);
+  validateEpilogueState(state);
   const knownMemories = new Set(
     effects.flatMap((effect) => (effect.memoryId ? [effect.memoryId] : [])),
   );
@@ -674,7 +762,8 @@ export function validateGameState(input: unknown): GameState {
     throw new Error("保存データの参照先が見つかりません。");
   if (
     state.completedChapters.includes(city.id) !==
-    state.claimedRewardIds.includes(city.firstClearReward.rewardSourceId)
+    (state.completedEpisodeIds.length > 0 ||
+      state.claimedRewardIds.includes(city.firstClearReward.rewardSourceId))
   )
     throw new Error("章の報酬記録が一致しません。");
   if (state.endingReached !== (state.confessionStatus === "accepted"))
@@ -691,7 +780,10 @@ export function validateGameState(input: unknown): GameState {
     const date = dates.find((item) => item.id === active.dateId);
     if (
       !date ||
-      state.endingReached ||
+      (state.endingReached && !date.allowAfterEnding) ||
+      !(date.requiredCompletedCityIds ?? []).every((id) =>
+        state.completedCityIds.includes(id),
+      ) ||
       !date.requiredCompletedChapters.every((id) =>
         state.completedChapters.includes(id),
       )

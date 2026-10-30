@@ -2,9 +2,7 @@ import { expect, type Page } from "@playwright/test";
 import { expectNoOverflow, saved, openRevisits } from "./helpers";
 
 export async function openTourismFromEntry(page: Page) {
-  if (await page.getByTestId("episode-start").isVisible()) {
-    await page.getByTestId("episode-start").click();
-  } else {
+  if ((await saved(page)).activeTourism?.landmarkId !== "last_supper") {
     await openRevisits(page);
     await page.getByTestId("revisit-tourism-last_supper").click();
   }

@@ -4,7 +4,7 @@ import phase4 from "../fixtures/phase4-saves.json" with { type: "json" };
 import {
   SAVE_KEY,
   saved,
-  startNewGame,
+  startLegacyJourney,
   startCafe,
   expectNoOverflow,
 } from "./helpers";
@@ -31,8 +31,8 @@ test("a full guide and successful battle grant seven AP once and lead directly t
 }) => {
   test.setTimeout(90_000);
   await page.setViewportSize({ width: 360, height: 740 });
-  await startNewGame(page, ["航", "澪"]);
-  await expect(page.getByTestId("episode-start")).toBeVisible();
+  await startLegacyJourney(page, ["航", "澪"]);
+  expect((await saved(page)).activeTourism?.landmarkId).toBe("last_supper");
   await expect(
     page.getByRole("button", { name: /仮クリア|ミラノ章初回クリア/ }),
   ).toHaveCount(0);
@@ -164,7 +164,7 @@ test("a real Phase 4 completed battle migrates without overwriting AP, then outs
       button.click();
     });
   const migrated = await saved(page);
-  expect(migrated.schemaVersion).toBe(6);
+  expect(migrated.schemaVersion).toBe(7);
   expect(migrated.ap).toBe(6);
   expect(migrated.pendingApRewards).toEqual([]);
   expect(migrated.activeBattle).toEqual({

@@ -14,7 +14,10 @@
       "backgroundAssetId": "milano_refectory",
       "scenes": {
         "intro": "intro",
-        "afterRounds": ["after_1", "after_2"],
+        "afterRounds": [
+          "after_1",
+          "after_2"
+        ],
         "outro": "outro"
       }
     },
@@ -91,6 +94,94 @@
         "claimScene": "claim",
         "successScene": "evidence_success",
         "failureScene": "evidence_failure"
+      }
+    },
+    {
+      "id": "milano_duomo_01",
+      "titleJa": "肩だけで、街は運べない",
+      "descriptionJa": "地図にまで重りを載せる運び屋。石の出身地、旅の道、残し方から、「一人で耐える」誇りをほどく。",
+      "landmarkId": "duomo_milano",
+      "enemyNameJa": "ブルーノ・ザヴォッラ",
+      "enemyTitleJa": "重さを背負う運び屋",
+      "enemyDescriptionJa": "大きな肩当てと、分銅付きの靴。価値ある物は自分の肩で運ぶべきだと信じ、手伝いを頼むのが誰より苦手。",
+      "storyId": "battles/milano_duomo",
+      "quizId": "milano_duomo_b1",
+      "backgroundAssetId": "milano_duomo",
+      "portrait": "porter",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2"
+        ],
+        "outro": "outro"
+      }
+    },
+    {
+      "id": "milano_galleria_01",
+      "titleJa": "幸運は、まだ開けない",
+      "descriptionJa": "踵を浮かせた男が、空の瓶に幸運を貯めている。買い物より前に、彼の「あとで」をほどこう。",
+      "landmarkId": "galleria_vittorio_emanuele_ii",
+      "enemyNameJa": "ヴィットリオ・タリスマーニ",
+      "enemyTitleJa": "幸運を使わない収集家",
+      "enemyDescriptionJa": "踵に小さな袋をかぶせ、爪先立ちで歩く。幸運を使い切るのが怖くて、買い物も休憩も先送り。大切な瓶は、ずっと空のまま。",
+      "storyId": "battles/milano_galleria",
+      "quizId": "milano_galleria_b1",
+      "backgroundAssetId": "milano_galleria",
+      "portrait": "fortune",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2"
+        ],
+        "outro": "outro"
+      }
+    },
+    {
+      "id": "milano_castello_01",
+      "titleJa": "昨日の引き出しに、今日は入らない",
+      "descriptionJa": "見終わったものだけを集める男。城も感動も整理済みにしたい彼の前で、記録に収まらない使われ方を見つける。",
+      "landmarkId": "castello_sforzesco",
+      "enemyNameJa": "オッターヴィオ・インヴェンタリオ",
+      "enemyTitleJa": "見学を終わらせたい収集家",
+      "enemyDescriptionJa": "小さな引き出しを胸に抱え、空箱まで丁寧に並べる男。新しい驚きが増えると、昨日の記録が完成しないと困っている。",
+      "storyId": "battles/milano_castello",
+      "quizId": "milano_castello_b1",
+      "backgroundAssetId": "milano_castello",
+      "portrait": "archivist",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2"
+        ],
+        "outro": "outro"
+      }
+    },
+    {
+      "id": "milano_city_boss_01",
+      "scope": "city_finale",
+      "cityId": "milano",
+      "landmarkId": null,
+      "titleJa": "最後の一拍は、まだ鳴らない",
+      "descriptionJa": "四つの場所を巡った先で、街を完全な静寂に揃えようとする指揮者が待つ。五つの問いで、ミラノの音を聞き直そう。",
+      "enemyNameJa": "マエストロ・ゼーロ",
+      "enemyTitleJa": "静寂で街を完成させる指揮者",
+      "enemyDescriptionJa": "音の出ない指揮棒と、振り子を結んだメトロノームを持つ。完成とは、もう動かなくなることだと信じている。",
+      "storyId": "battles/milano_city_finale",
+      "quizId": "milano_city_finale_b1",
+      "backgroundAssetId": "milano_finale",
+      "portrait": "conductor",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2",
+          "after_3",
+          "after_4"
+        ],
+        "outro": "outro"
       }
     }
   ]

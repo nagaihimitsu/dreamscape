@@ -4,7 +4,7 @@ import { saved } from "./helpers";
 import { playBattle } from "./battle-helpers";
 import { finishTourismGuide, openTourismFromEntry } from "./tourism-helpers";
 
-/** Real integrated route: no fixture injection, development clear or reward shortcut. */
+/** Complete the original route from its guide, without a development clear or reward shortcut. */
 export async function completeEpisode(
   page: Page,
   correctness: boolean[],

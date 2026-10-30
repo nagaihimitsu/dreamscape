@@ -1,11 +1,15 @@
+import { CityEnemyPortrait } from "./CityEnemyPortrait";
 /** Original temporary character illustration, separate from dialogue and battle rules. */
 export function EnemyPortrait({
   emotion = "neutral",
   variant,
+  portrait,
 }: {
   emotion?: string;
   variant?: "A" | "B" | "C";
+  portrait?: "porter" | "fortune" | "archivist" | "conductor";
 }) {
+  if (portrait) return <CityEnemyPortrait kind={portrait} emotion={emotion} />;
   if (variant === "B" || variant === "C")
     return (
       <svg

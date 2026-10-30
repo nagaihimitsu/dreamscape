@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "id": "milano_galleria_b1",
+  "landmarkId": "galleria_vittorio_emanuele_ii",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "galleria_bull_city",
+      "questionEn": "Which city does the bull in the Galleria floor mosaic represent?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Milan."
+        },
+        {
+          "id": "B",
+          "textEn": "Florence."
+        },
+        {
+          "id": "C",
+          "textEn": "Turin."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "bull",
+          "meaning": "雄牛"
+        },
+        {
+          "word": "floor mosaic",
+          "meaning": "床のモザイク"
+        },
+        {
+          "word": "represent",
+          "meaning": "表す"
+        }
+      ],
+      "hintJa": "ここにある紋章は、ミラノだけのものではない。動物を使った別の都市の紋章も並んでいる。",
+      "correctExplanationJa": "雄牛はトリノの紋章です。床の絵は、他都市との関わりも示しています。雄牛の上で回ると幸運が来るという話は言い伝えであり、紋章が何を表すかとは別の話です。",
+      "incorrectExplanationJa": "雄牛が表すのはトリノです。ミラノの建物の中にあるからといって、すべての紋章がミラノを指すわけではありません。幸運祈願は伝承として区別しましょう。",
+      "sources": [
+        {
+          "publisher": "Comune di Milano（ミラノ市公式）",
+          "title": "Galleria Vittorio Emanuele II. Restoration of the Bull mosaic completed.",
+          "url": "https://www.comune.milano.it/en/w/galleria-vittorio-emanuele-ii.-completato-il-restauro-del-mosaico-del-toro",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市の修復案内は、雄牛をトリノの紋章と説明している。"
+        },
+        {
+          "publisher": "YesMilano（ミラノ公式観光サイト）",
+          "title": "Galleria Vittorio Emanuele II — The Legend of the Bull",
+          "url": "https://www.yesmilano.it/en/see-and-do/venues/galleria-vittorio-emanuele-ii",
+          "checkedAt": "2026-10-30",
+          "claimType": "legend",
+          "claimJa": "雄牛の上で回って幸運を願う行為は言い伝えとして紹介される。幸運が生じるという因果関係が証明された事実ではない。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "galleria_roof_materials",
+      "questionEn": "Which materials form the frame and covering of the Galleria roof?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "An iron frame with a covering of glass panels."
+        },
+        {
+          "id": "B",
+          "textEn": "A timber frame with a covering of glass panels."
+        },
+        {
+          "id": "C",
+          "textEn": "A stone frame with a covering of wooden panels."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "frame",
+          "meaning": "骨組み"
+        },
+        {
+          "word": "covering",
+          "meaning": "覆い"
+        },
+        {
+          "word": "iron",
+          "meaning": "鉄"
+        },
+        {
+          "word": "timber",
+          "meaning": "建築用の木材"
+        }
+      ],
+      "hintJa": "明るい面と、それを細かく区切って支える線を見分けてみよう。屋根全体が厚い石で覆われているわけではない。",
+      "correctExplanationJa": "屋根は鉄の骨組みとガラスを組み合わせています。光を通す面だけでなく、それを支える線も眺めると、華やかな空間を成立させる構造が見えてきます。",
+      "incorrectExplanationJa": "鉄とガラスの組み合わせです。店や装飾のある壁と、頭上の屋根は同じ作りではありません。光を通すガラスを、鉄の骨組みが支えています。",
+      "sources": [
+        {
+          "publisher": "Comune di Milano（ミラノ市公式）",
+          "title": "Galleria Vittorio Emanuele II. Project approved for roof consolidation and restoration work.",
+          "url": "https://www.comune.milano.it/en/w/galleria-vittorio-emanuele-ii.-approvato-il-progetto-per-gli-interventi-di-consolidamento-e-restauro-della-copertura",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市の屋根修復計画は、ガッレリアの屋根を鉄とガラスによる構造と明記している。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "galleria_city_passage",
+      "questionEn": "Which description best matches the Galleria and its role in the city?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A covered court with shops, entered and left through one main gate."
+        },
+        {
+          "id": "B",
+          "textEn": "A covered link between two squares, with shops and cafés along it."
+        },
+        {
+          "id": "C",
+          "textEn": "A covered market with stalls, set apart from the main city streets."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "covered",
+          "meaning": "屋根で覆われた"
+        },
+        {
+          "word": "link",
+          "meaning": "つなぐもの、連絡路"
+        },
+        {
+          "word": "court",
+          "meaning": "中庭"
+        },
+        {
+          "word": "stalls",
+          "meaning": "露店・売店"
+        }
+      ],
+      "hintJa": "入口を一つの店の玄関として見るか、街の先へ続く道として見るか。ドゥオモ広場から入り、向こう側のスカラ広場へ歩く経路を考えよう。",
+      "correctExplanationJa": "ガッレリアはドゥオモ広場とスカラ広場を結ぶ屋根付き通路で、店やカフェが並びます。商品を買う場所というだけでなく、街の中を歩いたり、待ち合わせたりする空間としても見ることができます。",
+      "incorrectExplanationJa": "店の建物の中で行き止まるのではなく、二つの広場をつなぐ道でもあります。ドゥオモ広場とスカラ広場を結ぶ通路に店舗やカフェが並ぶ、という二つの役割を一緒に捉えてみましょう。",
+      "sources": [
+        {
+          "publisher": "Lombardia Beni Culturali（ロンバルディア州文化財ポータル）",
+          "title": "Galleria Vittorio Emanuele II — SIRBeC LMD80-00142",
+          "url": "https://www.lombardiabeniculturali.it/architetture/schede/LMD80-00142/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "州文化財ポータルは、ドゥオモ広場とスカラ広場をつなぐ屋根付き通路の計画を説明している。"
+        },
+        {
+          "publisher": "YesMilano（ミラノ公式観光サイト）",
+          "title": "Grab a coffee and explore the city neighborhoods",
+          "url": "https://www.yesmilano.it/en/see-and-do/itineraries/grab-coffee-and-explore-city-neighborhoods",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "公式観光案内は、カフェや店舗の並ぶ歴史的な商業アーケードを通ってスカラ広場へ至る経路を紹介している。"
+        }
+      ],
+      "difficulty": "hard"
+    }
+  ]
+}

@@ -1,12 +1,13 @@
+import { createLegacyJourneyGame as createGame } from "../../tests/fixtures/legacy-game";
 import { describe, expect, it } from "vitest";
 import fixtures from "../../tests/fixtures/phase3-saves.json";
-import { episodes, landmarks, rewardRules, tourismClues } from "../content";
 import {
-  advanceBattle,
-  answerBattle,
-  createGame,
-  validateGameState,
-} from "../domain";
+  episodes as allEpisodes,
+  landmarks,
+  rewardRules as allRewardRules,
+  tourismClues,
+} from "../content";
+import { advanceBattle, answerBattle, validateGameState } from "../domain";
 import {
   discoverClue,
   openTourism,
@@ -20,6 +21,13 @@ import {
   saveGame,
   type StorageLike,
 } from "./index";
+
+const episodes = allEpisodes.filter(
+  (episode) => episode.id === "milano_last_supper_episode",
+);
+const rewardRules = allRewardRules.filter(
+  (rule) => rule.episodeId === episodes[0].id,
+);
 
 class MemoryStorage implements StorageLike {
   values = new Map<string, string>();
@@ -51,7 +59,7 @@ describe("Phase 3 save compatibility", () => {
       } = fixture;
       expect(loaded.state).toMatchObject({
         ...protectedFields,
-        schemaVersion: 6,
+        schemaVersion: 7,
         activeTourism: null,
         discoveredClueIds: [],
         visitedLandmarkIds: [],
@@ -126,7 +134,7 @@ describe("Phase 3 save compatibility", () => {
     },
   );
 
-  it("commits schema 6 on first discovery and rejects stale tab changes", () => {
+  it("commits schema 7 on first discovery and rejects stale tab changes", () => {
     const storage = new MemoryStorage();
     const raw = JSON.stringify(fixtures.question);
     storage.setItem(SAVE_KEY, raw);
@@ -141,7 +149,7 @@ describe("Phase 3 save compatibility", () => {
       exploring.revision,
     );
     expect(saveGame(storage, discovered, exploring)).toEqual({ ok: true });
-    expect(JSON.parse(storage.getItem(SAVE_KEY)!).schemaVersion).toBe(6);
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!).schemaVersion).toBe(7);
     expect(
       saveGame(
         storage,

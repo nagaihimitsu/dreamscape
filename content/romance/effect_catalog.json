@@ -131,6 +131,36 @@
       "id": "milano_confession_deferred",
       "affectionDelta": 0,
       "outcome": "deferred"
+    },
+    {
+      "id": "milano_city_date_first_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_city_date_first_joke"
+    },
+    {
+      "id": "milano_city_date_first_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_city_date_first_listen"
+    },
+    {
+      "id": "milano_city_date_first_honest",
+      "affectionDelta": 2,
+      "memoryId": "milano_city_date_first_honest"
+    },
+    {
+      "id": "milano_city_date_second_joke",
+      "affectionDelta": 1,
+      "memoryId": "milano_city_date_second_joke"
+    },
+    {
+      "id": "milano_city_date_second_listen",
+      "affectionDelta": 2,
+      "memoryId": "milano_city_date_second_listen"
+    },
+    {
+      "id": "milano_city_date_second_honest",
+      "affectionDelta": 3,
+      "memoryId": "milano_city_date_second_honest"
     }
   ]
 }

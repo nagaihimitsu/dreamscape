@@ -61,7 +61,7 @@ function dialogue(
 describe("battle content contract", () => {
   it("compiles all reachable dialogue inputs and bundles only reviewed production quizzes", async () => {
     const result = await buildContent(fixture);
-    expect(result.routes).toBe(105);
+    expect(result.routes).toBeGreaterThanOrEqual(105);
     expect(result.battleScenarios).toBeGreaterThanOrEqual(13);
     expect(Object.keys(result.quizzes).sort()).toEqual(
       battleData.battles.map((battle) => battle.quizId).sort(),

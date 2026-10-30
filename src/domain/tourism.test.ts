@@ -1,3 +1,4 @@
+import { createLegacyJourneyGame as createGame } from "../../tests/fixtures/legacy-game";
 import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
 import { describe, expect, it } from "vitest";
 import {
@@ -10,7 +11,6 @@ import {
 import {
   claimTrialMilestone,
   completeChapter,
-  createGame,
   grantRewardOnce,
   setNames,
   startDate,

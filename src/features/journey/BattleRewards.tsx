@@ -66,12 +66,11 @@ export function BattleRewards({
       <PendingRewards game={game} onClaim={onClaim} />
       {episode && game.completedEpisodeIds.includes(episode.id) && (
         <section className="episode-clear" data-testid="episode-clear">
-          <p className="eyebrow">旅の一区切り</p>
+          <p className="eyebrow">
+            {episode.kind === "city_finale" ? "都市クリア" : "旅の一区切り"}
+          </p>
           <h2>{episode.clearTitleJa}</h2>
           <p>{episode.clearDescriptionJa}</p>
-          <p className="fine-print">
-            この観光エピソードの試遊章を終えました。都市全体の観光は、これからの旅へ。
-          </p>
         </section>
       )}
     </>

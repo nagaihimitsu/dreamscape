@@ -20,6 +20,31 @@
       "nameJa": "『最後の晩餐』のある食堂",
       "captionJa": "ミラノ ／ サンタ・マリア・デッレ・グラツィエ",
       "color": "#75665b"
+    },
+    "milano_duomo": {
+      "nameJa": "ドゥオモの広場",
+      "captionJa": "ミラノ ／ 石の輪郭を見上げて",
+      "color": "#877969"
+    },
+    "milano_galleria": {
+      "nameJa": "ガッレリアの通り",
+      "captionJa": "ミラノ ／ 屋根の下の街角",
+      "color": "#9b8061"
+    },
+    "milano_castello": {
+      "nameJa": "スフォルツェスコ城の中庭",
+      "captionJa": "ミラノ ／ 壁の内側に残る時間",
+      "color": "#84634f"
+    },
+    "milano_finale": {
+      "nameJa": "ミラノの街角",
+      "captionJa": "ミラノ ／ 四つの場所を巡ったあと",
+      "color": "#4d615b"
+    },
+    "milano_city_date": {
+      "nameJa": "ガッレリアからの帰り道",
+      "captionJa": "ミラノ ／ メモに残した余白",
+      "color": "#8c7867"
     }
   },
   "emotions": {
@@ -126,6 +151,30 @@
     "milano_confession_promise": {
       "titleJa": "予定表にない約束",
       "descriptionJa": "恋人として、一緒にいたい。差し出された手に、自分の手を重ねた。"
+    },
+    "milano_city_date_first_joke": {
+      "titleJa": "許可された深呼吸",
+      "descriptionJa": "指揮者の話を思い出して、二人で息を吸った。メモの余白は、まだ埋まらない。"
+    },
+    "milano_city_date_first_listen": {
+      "titleJa": "目が忙しかった日",
+      "descriptionJa": "名所の名前より、彼女が今日どう感じたかを聞いた。笑いを我慢した話が残った。"
+    },
+    "milano_city_date_first_honest": {
+      "titleJa": "隣で見ていた顔",
+      "descriptionJa": "街よりも笑っていた顔を覚えている。彼女はメモをこちらへ傾けた。"
+    },
+    "milano_city_date_second_joke": {
+      "titleJa": "余白の休業日",
+      "descriptionJa": "メモに残業を頼んだら、欄の外に「本日休業」と書かれた。空いた行が少し堂々として見えた。"
+    },
+    "milano_city_date_second_listen": {
+      "titleJa": "書かなくてもあった日",
+      "descriptionJa": "空けたままの最後の行。ペンをしまって、一緒に腰を下ろしていた。"
+    },
+    "milano_city_date_second_honest": {
+      "titleJa": "次の一行",
+      "descriptionJa": "旅の次の言葉も一緒に考えたい。彼女の指が、空いた端を二度たたいた。"
     }
   },
   "ending": {

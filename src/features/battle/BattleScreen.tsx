@@ -20,6 +20,9 @@ interface Props {
   onClaimRewards: () => void;
   onPress: () => void;
   onSubmitEvidence: () => void;
+  onNextEpisode?: () => void;
+  nextIsFinale?: boolean;
+  onEpilogue?: () => void;
 }
 
 export function BattleScreen({
@@ -35,6 +38,9 @@ export function BattleScreen({
   onClaimRewards,
   onPress,
   onSubmitEvidence,
+  onNextEpisode,
+  nextIsFinale,
+  onEpilogue,
 }: Props) {
   const active = game.activeBattle!;
   const battle = battles.find((item) => item.id === active.battleId)!;
@@ -62,7 +68,7 @@ export function BattleScreen({
   return (
     <div className="battle-screen" data-phase={active.phase}>
       <div
-        className={`battle-stage ${isDialogue ? "" : "battle-stage-compact"}`}
+        className={`battle-stage ${isDialogue ? "" : "battle-stage-compact"} ${battle.scope === "city_finale" ? "finale-stage" : ""}`}
       >
         <div className="battle-enemy-info">
           <p className="eyebrow">{battle.titleJa}</p>
@@ -70,7 +76,11 @@ export function BattleScreen({
           <h1>{battle.enemyNameJa}</h1>
           <p className="enemy-detail">{battle.enemyDescriptionJa}</p>
         </div>
-        <EnemyPortrait emotion={frame?.emotion} variant={battle.format} />
+        <EnemyPortrait
+          emotion={frame?.emotion}
+          variant={battle.format}
+          portrait={battle.portrait}
+        />
       </div>
       <section
         className="paper battle-paper"
@@ -113,7 +123,7 @@ export function BattleScreen({
                   perfect: "PERFECT VICTORY",
                   victory: "VICTORY",
                   defeat: "DEFEAT",
-                }[getBattleOutcome(active.score)]
+                }[getBattleOutcome(active.score, quiz.questions.length)]
               }
             </h2>
             <p className="battle-score">
@@ -150,10 +160,32 @@ export function BattleScreen({
             ) : (
               <BattleRewards game={game} onClaim={onClaimRewards} />
             )}
-            <button className="primary" onClick={onLeave}>
+            {onEpilogue && (
+              <button
+                className="primary"
+                data-testid="city-epilogue-start"
+                onClick={onEpilogue}
+              >
+                エピローグへ進む <span aria-hidden="true">→</span>
+              </button>
+            )}
+            <button
+              className={onEpilogue ? "secondary" : "primary"}
+              onClick={onLeave}
+            >
               {isSpecial ? "自由時間へ戻る" : "自由時間へ進む"}{" "}
               <span aria-hidden="true">→</span>
             </button>
+            {onNextEpisode && (
+              <button
+                className="secondary"
+                data-testid="next-tourism"
+                onClick={onNextEpisode}
+              >
+                {nextIsFinale ? "都市ボスに挑む" : "次の観光地へ進む"}{" "}
+                <span aria-hidden="true">→</span>
+              </button>
+            )}
             <button className="secondary" onClick={onReplay}>
               再戦する <span aria-hidden="true">↻</span>
             </button>

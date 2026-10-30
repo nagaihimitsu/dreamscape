@@ -26,8 +26,7 @@ export function romanceProgress(state: GameState) {
 }
 
 export async function startBattleFromEntry(page: Page) {
-  if (await page.getByTestId("episode-start").isVisible()) {
-    await page.getByTestId("episode-start").click();
+  if ((await saved(page)).activeTourism?.landmarkId === "last_supper") {
     await page
       .getByRole("button", { name: "バトルを始める", exact: true })
       .click();

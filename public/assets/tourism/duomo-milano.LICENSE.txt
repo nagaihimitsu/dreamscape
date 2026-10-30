@@ -1,0 +1,17 @@
+Duomo facade photograph
+
+Original: "20110724 Milan Cathedral 5260.jpg"
+Photographer: Jakub Hałun
+Date photographed: 24 July 2011
+Source: https://commons.wikimedia.org/wiki/File:20110724_Milan_Cathedral_5260.jpg
+License selected: Creative Commons Attribution-ShareAlike 4.0 International
+License URL: https://creativecommons.org/licenses/by-sa/4.0/
+License and attribution checked: 2026-10-30 (Commons file page/imageinfo extmetadata)
+
+The original 3140 x 2728 photograph was resized to 2560 x 2224 and encoded
+as WebP for Dreamscape. No crop, mirror, painted additions, or generative AI
+changes were made. The adapted image duomo-milano.webp is distributed under
+the same CC BY-SA 4.0 license. This image license does not change the license
+of the surrounding game code or text.
+
+Attribution: Jakub Hałun / Wikimedia Commons / CC BY-SA 4.0.

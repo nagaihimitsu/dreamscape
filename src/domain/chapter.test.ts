@@ -34,7 +34,9 @@ import { loadGame, SAVE_KEY, saveGame, type StorageLike } from "../persistence";
 
 const episode = episodes[0];
 const rule = (trigger: (typeof rewardRules)[number]["trigger"]) =>
-  rewardRules.find((item) => item.trigger === trigger)!;
+  rewardRules.find(
+    (item) => item.trigger === trigger && item.episodeId === episode.id,
+  )!;
 const pendingTotal = (state: GameState) =>
   state.pendingApRewards.reduce((sum, item) => sum + item.remainingAp, 0);
 function reload(state: GameState): GameState {
@@ -147,7 +149,7 @@ describe("integrated tourism, battle, and free time", () => {
   );
 
   it("skips guide rewards, then permits an actual later read exactly once", () => {
-    let state = startEpisode(createGame());
+    let state = startEpisode({ ...createGame(), legacyTrialAvailable: true });
     state = skipTourismGuide(state, state.revision);
     expect(state.ap).toBe(0);
     expect(state.completedGuideIds).toEqual([]);
@@ -163,17 +165,27 @@ describe("integrated tourism, battle, and free time", () => {
   it("grants a later first high score once and cannot re-earn initial battle or chapter AP", () => {
     let state = startEpisode(createGame());
     state = finishBattle(startTourismBattle(state, state.revision), 0);
-    expect(state.ap).toBe(5);
+    expect(state.ap).toBe(
+      rule("battle_complete").ap + rule("episode_clear").ap,
+    );
     expect(state.completedGuideIds).toEqual([]);
     const firstReceipt = structuredClone(state.battleRewardReceipt);
     expect(reload(state).battleRewardReceipt).toEqual(firstReceipt);
     state = finishBattle(startBattle(state, episode.battleId), 2);
-    expect(state.ap).toBe(6);
+    expect(state.ap).toBe(
+      rule("battle_complete").ap +
+        rule("episode_clear").ap +
+        rule("battle_score").ap,
+    );
     expect(
       state.battleRewardReceipt?.entries.map((entry) => entry.rewardId),
     ).toEqual([rule("battle_score").id]);
     state = finishBattle(startBattle(state, episode.battleId), 3);
-    expect(state.ap).toBe(6);
+    expect(state.ap).toBe(
+      rule("battle_complete").ap +
+        rule("episode_clear").ap +
+        rule("battle_score").ap,
+    );
     expect(state.battleRewardReceipt?.entries).toEqual([]);
     expect(state.battleRecords[0]).toMatchObject({
       attempts: 3,
@@ -187,7 +199,12 @@ describe("integrated tourism, battle, and free time", () => {
     let state = startEpisode({ ...createGame(), ap: 11 });
     state = finishBattle(startTourismBattle(state, state.revision), 2);
     expect(state.ap).toBe(balance.apCap);
-    expect(pendingTotal(state)).toBe(5);
+    expect(pendingTotal(state)).toBe(
+      rule("battle_complete").ap +
+        rule("episode_clear").ap +
+        rule("battle_score").ap -
+        1,
+    );
     expect(
       state.battleRewardReceipt?.entries.reduce(
         (sum, item) => sum + item.creditedAp,
@@ -199,14 +216,17 @@ describe("integrated tourism, battle, and free time", () => {
     state = enterFreeTime(state, state.revision);
     state = startDate(state, "milano_cafe_01");
     expect(state.ap).toBe(balance.apCap);
-    expect(pendingTotal(state)).toBe(3);
+    expect(pendingTotal(state)).toBe(Math.max(0, before - 2 - balance.apCap));
     expect(state.ap + pendingTotal(state)).toBe(before - 2);
     expect(claimPendingRewards(state, state.revision)).toBe(state);
     reload(state);
   });
 
-  it("keeps the low-score route playable through deferred confession and the relationship ending", () => {
-    let state = startEpisode(createGame());
+  it("keeps the legacy low-score route playable through deferred confession and the relationship ending", () => {
+    let state = startEpisode(
+      { ...createGame(), legacyTrialAvailable: true },
+      "milano_last_supper_episode",
+    );
     state = finishBattle(startTourismBattle(state, state.revision), 0);
     state = enterFreeTime(state, state.revision);
     state = playDate(state, "milano_cafe_01", [0, 0]);

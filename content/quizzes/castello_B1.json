@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "id": "milano_castello_b1",
+  "landmarkId": "castello_sforzesco",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "castello_changing_roles",
+      "questionEn": "Which description best fits the history of Castello Sforzesco?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A castle built as a museum, with no earlier military role."
+        },
+        {
+          "id": "B",
+          "textEn": "A fortress and court residence that later became home to museums."
+        },
+        {
+          "id": "C",
+          "textEn": "A castle used only by soldiers, with no place for court life."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "fortress",
+          "meaning": "防御のための要塞"
+        },
+        {
+          "word": "court residence",
+          "meaning": "君主と宮廷の人々の住まい"
+        },
+        {
+          "word": "later",
+          "meaning": "後に"
+        }
+      ],
+      "hintJa": "高い壁は防御を思わせる。でも、この場所で暮らした人や、現在ここへ来る人の目的も考えてみよう。",
+      "correctExplanationJa": "この城は要塞、宮廷の住まい、博物館や図書館を収める文化施設など、時代によって役割を変えてきました。「城だから軍事だけ」と決めると、その壁の内側に積み重なった使われ方を見落とします。",
+      "incorrectExplanationJa": "最初から博物館だったわけでも、軍事だけの場所だったわけでもありません。要塞としての役割に加え、ヴィスコンティ家・スフォルツァ家の宮廷の住まいとなり、現在は公共の文化施設を収めています。",
+      "sources": [
+        {
+          "publisher": "Comune di Milano（ミラノ市公式）",
+          "title": "Carta dei Servizi dei Musei del Castello Sforzesco, p. 3",
+          "url": "https://www.comune.milano.it/documents/20118/3102963/21dicembre2022CARTA%2BDEI%2BSERVIZI%2BDEL%2BSERVIZIO%2BMUSEI%2BCASTELLO_2022.pdf/e05d9e1b-754d-97af-7b5b-5952df8331e4?download=true&t=1763981294913&version=1.0",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "防御のための要塞から宮廷の住まいへ変化し、修復・再建を経て博物館や図書館を収める公共の文化施設となったことを説明している。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "castello_painted_arbor",
+      "questionEn": "How does Leonardo's decoration change the room in the Sala delle Asse?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Painted branches and cords form a leafy shelter across the walls and ceiling."
+        },
+        {
+          "id": "B",
+          "textEn": "Real tree trunks replace the walls and hold up an open wooden roof."
+        },
+        {
+          "id": "C",
+          "textEn": "Painted windows show separate gardens while the rest of the ceiling stays plain."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "decoration",
+          "meaning": "装飾"
+        },
+        {
+          "word": "branches",
+          "meaning": "木の枝"
+        },
+        {
+          "word": "cords",
+          "meaning": "紐"
+        },
+        {
+          "word": "leafy shelter",
+          "meaning": "葉で覆われた、あずまやのような空間"
+        }
+      ],
+      "hintJa": "屋内に本物の木を植えたのではない。描かれた枝が、壁の上からどこまで広がっているかを資料で確かめよう。",
+      "correctExplanationJa": "枝や結び紐が絡み合う樹木の装飾が壁から天井へ広がり、あずまやのような空間を描いています。本物の木が屋根を支える構造ではありません。中庭の写真からは見えないため、ここでは公式資料に基づく資料カードとして扱います。",
+      "incorrectExplanationJa": "本物の木材を柱にした庭でも、独立した窓絵だけの部屋でもありません。レオナルドは枝と金色の結び紐が絡む架空のあずまやを描きました。描いた表面そのものは屋内の壁と天井です。",
+      "sources": [
+        {
+          "publisher": "Art Bonus／Comune di Milano（公式）",
+          "title": "Sala delle Asse di Leonardo al Castello Sforzesco",
+          "url": "https://artbonus.gov.it/la-sala-delle-asse-di-leonardo-da-vinci-al-castello-sforzesco-di-milano.html",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "レオナルドによる樹木のあずまやを表す装飾が、壁から天井全体へ広がる。スフォルツァ家に仕えていたミラノ滞在期の仕事と記されている。"
+        },
+        {
+          "publisher": "Ministero della Cultura（イタリア文化省）",
+          "title": "Castello Sforzesco, Milano: Sala delle Asse. Il restauro",
+          "url": "https://cultura.gov.it/comunicato/castello-sforzesco-milano-sala-delle-asse-il-restauro-1",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "スフォルツァ家が客や大使を迎える重要な部屋だったと説明し、ルドヴィーコに招かれたレオナルドが装飾したこと、枝と結び紐の架空のあずまやを描いたことを記している。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "castello_art_and_court",
+      "questionEn": "What links the decorated Sala delle Asse to the political life of the Sforza court?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "It was a place where merchants displayed paintings for sale to the public."
+        },
+        {
+          "id": "B",
+          "textEn": "It was a place where soldiers stored weapons away from important visitors."
+        },
+        {
+          "id": "C",
+          "textEn": "It was a place where the rulers received important guests and ambassadors."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "political life",
+          "meaning": "政治や外交に関わる活動"
+        },
+        {
+          "word": "rulers",
+          "meaning": "統治者たち"
+        },
+        {
+          "word": "received",
+          "meaning": "ここでは、客として迎えた"
+        },
+        {
+          "word": "ambassadors",
+          "meaning": "大使たち"
+        }
+      ],
+      "hintJa": "装飾の題材だけでなく、その部屋へ誰が招かれたかを考えてみよう。君主の客を迎える場なら、絵と宮廷の活動がつながる。",
+      "correctExplanationJa": "文化省の解説によれば、アッセの間はスフォルツァ家が客や大使を迎えた部屋です。ルドヴィーコに招かれたレオナルドの装飾は、宮廷の実際の活動の場にありました。特定の枝一本がどんな政治的意図を表すかまで、ここから断定はしません。",
+      "incorrectExplanationJa": "この部屋を一般向けの絵画販売所や武器倉庫とする説明は、公式資料の役割と合いません。客や大使を迎える場だったことが、レオナルドの仕事とスフォルツァ家の宮廷生活を結びます。",
+      "sources": [
+        {
+          "publisher": "Ministero della Cultura（イタリア文化省）",
+          "title": "Castello Sforzesco, Milano: Sala delle Asse. Il restauro",
+          "url": "https://cultura.gov.it/comunicato/castello-sforzesco-milano-sala-delle-asse-il-restauro-1",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "スフォルツァ家が客や大使を迎える重要な部屋だったと説明し、ルドヴィーコに招かれたレオナルドが装飾したこと、枝と結び紐の架空のあずまやを描いたことを記している。"
+        },
+        {
+          "publisher": "Comune di Milano（ミラノ市公式）",
+          "title": "Carta dei Servizi dei Musei del Castello Sforzesco, p. 3",
+          "url": "https://www.comune.milano.it/documents/20118/3102963/21dicembre2022CARTA%2BDEI%2BSERVIZI%2BDEL%2BSERVIZIO%2BMUSEI%2BCASTELLO_2022.pdf/e05d9e1b-754d-97af-7b5b-5952df8331e4?download=true&t=1763981294913&version=1.0",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "防御のための要塞から宮廷の住まいへ変化し、修復・再建を経て博物館や図書館を収める公共の文化施設となったことを説明している。"
+        }
+      ],
+      "difficulty": "hard"
+    }
+  ]
+}

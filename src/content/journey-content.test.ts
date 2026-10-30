@@ -31,29 +31,40 @@ async function changeJourney(change: (data: typeof journeyData) => void) {
 }
 
 describe("integrated journey content contract", () => {
-  it("connects the existing tourism and battle as one trial episode with four finite rewards", async () => {
+  it("connects four ordered landmarks and a separate city finale while retaining the legacy reward", async () => {
     const result = await buildContent(fixture, false);
-    expect(result.journey.episodes[0]).toMatchObject({
-      id: result.journey.entryEpisodeId,
-      kind: "trial_episode",
-      landmarkId: result.tourism.landmarks[0].id,
-      battleId: result.battles[0].id,
-      legacyChapterId: cityData.id,
+    expect(result.journey.entryEpisodeId).toBe("milano_duomo_episode");
+    const stops = result.journey.episodes.filter(
+      (episode) => episode.kind !== "city_finale",
+    );
+    expect(stops.map((episode) => episode.landmarkId)).toEqual(
+      cityData.landmarkIdsPlanned,
+    );
+    const finale = result.journey.episodes.find(
+      (episode) => episode.kind === "city_finale",
+    )!;
+    expect(finale.landmarkId).toBeNull();
+    expect(finale.requiredEpisodeIds).toEqual(
+      stops.map((episode) => episode.id),
+    );
+    expect(finale.epilogueStoryId).toBe("milano/city_epilogue");
+    const legacy = result.journey.rewards.find(
+      (rule) => rule.id === cityData.firstClearReward.rewardSourceId,
+    )!;
+    expect(legacy).toMatchObject({
+      episodeId: "milano_last_supper_episode",
+      trigger: "episode_clear",
+      ap: 4,
     });
     expect(
-      result.journey.rewards.map((rule) => [
-        rule.trigger,
-        rule.ap,
-        rule.minScore,
-      ]),
-    ).toEqual([
-      ["guide_read", 1, null],
-      ["battle_complete", 1, null],
-      ["battle_score", 1, 2],
-      ["episode_clear", 4, null],
-    ]);
-    expect(result.routes).toBe(105);
-    expect(result.tourismGuides).toBe(1);
+      result.journey.rewards
+        .filter(
+          (rule) => rule.trigger === "episode_clear" && rule.id !== legacy.id,
+        )
+        .every((rule) => rule.ap === 1),
+    ).toBe(true);
+    expect(result.tourismGuides).toBe(4);
+    expect(result.epilogueScenarios).toBe(8);
   });
 
   it("rejects an unknown entry episode", async () => {
@@ -147,7 +158,7 @@ describe("integrated journey content contract", () => {
 
   it("requires one rule for each supported completion boundary", async () => {
     await changeJourney((data) => {
-      data.rewards.pop();
+      data.rewards.splice(3, 1);
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Episode needs one episode_clear reward",

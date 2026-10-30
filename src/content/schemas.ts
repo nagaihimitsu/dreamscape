@@ -15,6 +15,8 @@ export const dateSchema = z
     minRomanceStage: z.number().int().min(1).max(4),
     storyId: z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/),
     requiredCompletedChapters: z.array(id).min(1),
+    requiredCompletedCityIds: z.array(id).optional(),
+    allowAfterEnding: z.boolean().optional(),
     rewardOnlyOnce: z.boolean(),
     backgroundAssetId: id,
     minAffection: z.number().int().nonnegative(),
@@ -32,6 +34,8 @@ export const dateSchema = z
             romanceStage: z.number().int().min(1).max(4),
             confessionReady: z.boolean(),
             memoryId: id.optional(),
+            endingReached: z.boolean().optional(),
+            hasCafeMemory: z.boolean().optional(),
           })
           .strict(),
       )
@@ -64,7 +68,7 @@ export const citySchema = z
       .object({ rewardSourceId: id, ap: z.number().int().nonnegative() })
       .strict(),
     landmarkIdsPlanned: z.array(id),
-    productionStatus: z.literal("prototype"),
+    productionStatus: z.enum(["prototype", "complete"]),
   })
   .strict();
 export const balanceSchema = z
@@ -241,20 +245,25 @@ export const battleSchema = z
     id,
     titleJa: japaneseText,
     descriptionJa: japaneseText,
-    landmarkId: id,
+    landmarkId: id.nullable(),
+    scope: z.literal("city_finale").optional(),
+    cityId: id.optional(),
     enemyNameJa: japaneseText,
     enemyTitleJa: japaneseText,
     enemyDescriptionJa: japaneseText,
     storyId: z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/),
     quizId: id,
     backgroundAssetId: id,
+    portrait: z
+      .enum(["porter", "fortune", "archivist", "conductor"])
+      .optional(),
     // Deliberately no default: legacy A definitions and their saved fingerprints stay unchanged.
     format: z.enum(["A", "B", "C"]).optional(),
     reasoning: battleReasoningSchema.optional(),
     scenes: z
       .object({
         intro: id,
-        afterRounds: z.array(id).length(2),
+        afterRounds: z.array(id).min(2).max(4),
         outro: id,
       })
       .strict(),
@@ -266,7 +275,19 @@ export const battleSchema = z
       battle.reasoning?.kind ===
       (battle.format === "B" ? "contradiction" : "connection")
     );
-  }, "Battle format and reasoning kind must agree");
+  }, "Battle format and reasoning kind must agree")
+  .refine(
+    (battle) =>
+      battle.scope === "city_finale"
+        ? battle.landmarkId === null &&
+          !!battle.cityId &&
+          battle.scenes.afterRounds.length === 4 &&
+          !battle.reasoning
+        : battle.landmarkId !== null &&
+          battle.cityId === undefined &&
+          battle.scenes.afterRounds.length === 2,
+    "Only a city finale has no landmark and four intermediate scenes",
+  );
 
 export const battleCatalogSchema = z
   .object({
@@ -318,11 +339,24 @@ export const quizSchema = z
   .object({
     schemaVersion: version,
     id,
-    landmarkId: id,
+    landmarkId: id.nullable(),
+    scope: z.literal("city_finale").optional(),
+    cityId: id.optional(),
     englishLevel: z.enum(["A2", "B1", "B2"]),
-    questions: z.array(quizQuestionSchema).length(3),
+    questions: z.array(quizQuestionSchema).min(3).max(5),
   })
-  .strict();
+  .strict()
+  .refine(
+    (quiz) =>
+      quiz.scope === "city_finale"
+        ? quiz.landmarkId === null &&
+          !!quiz.cityId &&
+          quiz.questions.length === 5
+        : quiz.landmarkId !== null &&
+          quiz.cityId === undefined &&
+          quiz.questions.length === 3,
+    "A normal quiz needs three questions; a city finale needs five",
+  );
 
 export type BattleDefinition = z.infer<typeof battleSchema>;
 export type BattleReasoning = z.infer<typeof battleReasoningSchema>;

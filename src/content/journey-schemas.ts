@@ -14,9 +14,14 @@ const japanese = z
 export const episodeSchema = z
   .object({
     id,
-    kind: z.literal("trial_episode"),
+    kind: z.enum(["episode", "trial_episode", "city_finale"]),
     cityId: id,
-    landmarkId: id,
+    landmarkId: id.nullable(),
+    requiredEpisodeIds: z.array(id),
+    epilogueStoryId: z
+      .string()
+      .regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/)
+      .optional(),
     battleId: id,
     legacyChapterId: id,
     titleJa: japanese,
@@ -24,7 +29,14 @@ export const episodeSchema = z
     clearTitleJa: japanese,
     clearDescriptionJa: japanese,
   })
-  .strict();
+  .strict()
+  .refine(
+    (episode) =>
+      episode.kind === "city_finale"
+        ? episode.landmarkId === null && !!episode.epilogueStoryId
+        : episode.landmarkId !== null && episode.epilogueStoryId === undefined,
+    "Only a city finale has an epilogue instead of a landmark",
+  );
 
 export const rewardRuleSchema = z
   .object({
@@ -35,6 +47,7 @@ export const rewardRuleSchema = z
       "battle_complete",
       "battle_score",
       "episode_clear",
+      "city_clear",
     ]),
     ap: z.number().int().positive(),
     minScore: z.number().int().positive().nullable(),

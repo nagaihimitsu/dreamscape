@@ -1,4 +1,4 @@
-import { landmarks, tourismClues } from "../../content";
+import { city, landmarks, tourismClues } from "../../content";
 import { Modal } from "../../components/Modal";
 import { ClueDetails } from "./ClueDetails";
 import { ClueImage } from "./ClueImage";
@@ -16,28 +16,38 @@ export interface NotebookReasoning {
 
 export function ClueNotebook({
   landmarkId,
+  cityId,
   discoveredIds,
   onClose,
   onObserve,
   reasoning,
 }: {
-  landmarkId: string;
+  landmarkId?: string;
+  cityId?: string;
   discoveredIds: string[];
   onClose: () => void;
   onObserve?: () => void;
   reasoning?: NotebookReasoning;
 }) {
-  const landmark = landmarks.find((item) => item.id === landmarkId)!;
+  const landmark = landmarks.find((item) => item.id === landmarkId);
+  const availableLandmarks = cityId
+    ? landmarks.filter((item) => item.cityId === cityId).map((item) => item.id)
+    : [landmarkId];
   const clues = tourismClues.filter(
-    (clue) => clue.landmarkId === landmarkId && (
-      discoveredIds.includes(clue.id) || reasoning?.caseClueIds.includes(clue.id)
-    ),
+    (clue) =>
+      availableLandmarks.includes(clue.landmarkId) &&
+      (discoveredIds.includes(clue.id) ||
+        reasoning?.caseClueIds.includes(clue.id)),
   );
   return (
-    <Modal labelledBy="cluebook-title" onClose={onClose} className={reasoning ? "case-notebook" : ""}>
+    <Modal
+      labelledBy="cluebook-title"
+      onClose={onClose}
+      className={reasoning ? "case-notebook" : ""}
+    >
       <div className="cluebook-header">
         <div>
-          <p className="eyebrow">{landmark.nameJa}</p>
+          <p className="eyebrow">{landmark?.nameJa ?? city.nameJa}</p>
           <h2 id="cluebook-title">手がかり帳</h2>
         </div>
         <button
@@ -50,12 +60,20 @@ export function ClueNotebook({
         </button>
       </div>
       {reasoning && (
-        <aside className="case-context" aria-label="照らし合わせる主張と問題" data-testid="case-context">
-          {reasoning.claimText && <>
-            <p className="case-context-label">敵の主張</p>
-            <blockquote>{reasoning.claimText}</blockquote>
-          </>}
-          <p className="case-question" lang="en">{reasoning.questionEn}</p>
+        <aside
+          className="case-context"
+          aria-label="照らし合わせる主張と問題"
+          data-testid="case-context"
+        >
+          {reasoning.claimText && (
+            <>
+              <p className="case-context-label">敵の主張</p>
+              <blockquote>{reasoning.claimText}</blockquote>
+            </>
+          )}
+          <p className="case-question" lang="en">
+            {reasoning.questionEn}
+          </p>
         </aside>
       )}
       <div className="cluebook-body" data-testid="cluebook">
@@ -75,25 +93,38 @@ export function ClueNotebook({
               data-testid={`notebook-${clue.id}`}
               key={clue.id}
             >
-              {reasoning && <p className="case-provenance">
-                {discoveredIds.includes(clue.id) ? "観察済み" : "ケース資料"}
-              </p>}
+              {reasoning && (
+                <p className="case-provenance">
+                  {discoveredIds.includes(clue.id) ? "観察済み" : "ケース資料"}
+                </p>
+              )}
+              {cityId && (
+                <p className="case-provenance">
+                  {
+                    landmarks.find((item) => item.id === clue.landmarkId)
+                      ?.nameJa
+                  }
+                </p>
+              )}
               <ClueDetails clue={clue} />
-              {reasoning && <ClueImage clue={clue} />}
+              {(reasoning || cityId) && <ClueImage clue={clue} />}
               {reasoning?.caseClueIds.includes(clue.id) && (
                 <button
                   className="case-select"
                   data-testid={`select-evidence-${clue.id}`}
                   aria-pressed={reasoning.selectedIds.includes(clue.id)}
-                  disabled={!reasoning.selectionEnabled || (
-                    reasoning.maxSelections === 2 &&
-                    reasoning.selectedIds.length >= 2 &&
-                    !reasoning.selectedIds.includes(clue.id)
-                  )}
+                  disabled={
+                    !reasoning.selectionEnabled ||
+                    (reasoning.maxSelections === 2 &&
+                      reasoning.selectedIds.length >= 2 &&
+                      !reasoning.selectedIds.includes(clue.id))
+                  }
                   onClick={() => reasoning.onSelect(clue.id)}
                 >
                   {reasoning.selectedIds.includes(clue.id)
-                    ? reasoning.selectionEnabled ? "✓ 選択中 · 外す" : "✓ 提示した証拠"
+                    ? reasoning.selectionEnabled
+                      ? "✓ 選択中 · 外す"
+                      : "✓ 提示した証拠"
                     : "この証拠を選ぶ"}
                 </button>
               )}
@@ -106,16 +137,25 @@ export function ClueNotebook({
           </button>
         )}
       </div>
-      {reasoning && <footer className="case-footer">
-        <p aria-live="polite">
-          {reasoning.selectedIds.length} / {reasoning.maxSelections} 枚を選択
-          {reasoning.selectionEnabled && reasoning.maxSelections === 2 && reasoning.selectedIds.length === 2 &&
-            <span>変更するときは、選択中の証拠を外してください。</span>}
-        </p>
-        <button className="primary" data-testid="case-return" onClick={onClose}>
-          推理に戻る
-        </button>
-      </footer>}
+      {reasoning && (
+        <footer className="case-footer">
+          <p aria-live="polite">
+            {reasoning.selectedIds.length} / {reasoning.maxSelections} 枚を選択
+            {reasoning.selectionEnabled &&
+              reasoning.maxSelections === 2 &&
+              reasoning.selectedIds.length === 2 && (
+                <span>変更するときは、選択中の証拠を外してください。</span>
+              )}
+          </p>
+          <button
+            className="primary"
+            data-testid="case-return"
+            onClick={onClose}
+          >
+            推理に戻る
+          </button>
+        </footer>
+      )}
     </Modal>
   );
 }

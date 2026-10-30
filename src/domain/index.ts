@@ -6,3 +6,5 @@ export * from "./tourism";
 
 export * from "./chapter";
 export * from "./rewards";
+
+export * from "./epilogue";

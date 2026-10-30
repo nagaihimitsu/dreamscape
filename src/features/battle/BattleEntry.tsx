@@ -8,9 +8,16 @@ export function BattleEntry({
   game: GameState;
   onStart: (id: string) => void;
 }) {
+  const availableBattles = battles.filter(
+    (battle) => getBattleAvailability(game, battle.id).available,
+  );
+  const entries = [
+    ...availableBattles.filter((battle) => !battle.reasoning),
+    ...availableBattles.filter((battle) => battle.reasoning),
+  ];
   return (
     <section className="battle-entry" aria-label="クイズバトルの試遊">
-      {battles.map((battle, index) => {
+      {entries.map((battle, index) => {
         const special = !!battle.reasoning;
         const availability = getBattleAvailability(game, battle.id);
         const record = game.battleRecords.find(
@@ -18,11 +25,15 @@ export function BattleEntry({
         );
         return (
           <div key={battle.id}>
-            {special && !battles[index - 1]?.reasoning && (
+            {special && !entries[index - 1]?.reasoning && (
               <h2 className="special-entry-heading">特別対決</h2>
             )}
             <div className="section-meta">
-              <span className="eyebrow">ミラノ · 英語3択バトル</span>
+              <span className="eyebrow">
+                {battle.scope === "city_finale"
+                  ? "都市フィナーレ · 英語5問"
+                  : "旅先の英語3択バトル"}
+              </span>
               <span className="pill">
                 {battle.format === "B"
                   ? "B型 · 矛盾追及"

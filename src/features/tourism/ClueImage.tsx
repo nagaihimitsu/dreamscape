@@ -49,7 +49,7 @@ export function ClueImage({ clue }: { clue: TourismClue }) {
             onClick={() => setZoomed((value) => !value)}
             aria-pressed={zoomed}
           >
-            {zoomed ? "絵の全体を見る" : "囲んだ部分を拡大する"}
+            {zoomed ? "画像の全体を見る" : "囲んだ部分を拡大する"}
           </button>
         ) : (
           <p className="fine-print">
