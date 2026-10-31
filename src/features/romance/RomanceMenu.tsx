@@ -6,6 +6,7 @@ import {
   type GameState,
 } from "../../domain/game";
 import { MemoryList } from "./MemoryList";
+import "./romance-menu.css";
 
 export function withNames(text: string, game: GameState) {
   return text
@@ -53,13 +54,8 @@ export function RomanceMenu({
       </div>
       {game.legacyTrialAvailable && (
         <section className="trial-progress" aria-label="試遊用の旅の進行">
-          <div className="section-meta">
-            <h2>旅をもう一歩</h2>
-            <span className="pill">試遊専用の補助AP</span>
-          </div>
-          <p>
-            以前の試遊から続けている旅の補助APです。各報酬は一度だけ受け取れます。観光を進めてもAPを獲得できます。
-          </p>
+          <h2>試遊用の補助AP</h2>
+          <p>以前の試遊向けの報酬です。観光報酬とは別に、各1回受け取れます。</p>
           {trialMilestones.map((milestone) => {
             const eligibility = getMilestoneAvailability(game, milestone.id);
             const claimed = game.claimedRewardIds.includes(
@@ -67,17 +63,15 @@ export function RomanceMenu({
             );
             return (
               <div className="milestone" key={milestone.id}>
-                <h3>{milestone.titleJa}</h3>
-                <p>{milestone.descriptionJa}</p>
                 <button
-                  className="secondary"
+                  className="milestone-option"
                   data-testid={`milestone-${milestone.id}`}
                   disabled={!eligibility.available}
                   onClick={() => onMilestone(milestone.id)}
+                  aria-label={claimed ? `${milestone.titleJa}：受け取り済み` : `${milestone.titleJa}：${milestone.ap} APを受け取る`}
                 >
-                  {claimed
-                    ? "受け取り済み"
-                    : `${milestone.titleJa}を進める ＋${milestone.ap}AP`}
+                  <span>{milestone.titleJa}</span>
+                  <span>{claimed ? "受け取り済み" : `＋${milestone.ap} AP`}</span>
                 </button>
                 {!claimed && !eligibility.available && (
                   <p className="fine-print">{eligibility.reason}</p>
@@ -109,38 +103,35 @@ export function EventCard({
   const played = game.playedDateIds.includes(date.id);
   return (
     <article
-      className={`date-card ${date.kind !== "normal" ? "invitation-card" : ""}`}
+      className={`date-card${date.kind !== "normal" ? " invitation-card" : ""}${!eligibility.available ? " date-unavailable" : ""}`}
       data-testid={`event-${date.id}`}
     >
-      <div className="section-meta">
-        <span className="pill">
+      {date.kind !== "normal" && (
+        <p className="event-context">
           {date.kind === "special"
             ? `${game.heroineName}からのお誘い`
             : date.kind === "confession"
               ? "大切な話"
-              : date.kind === "reassurance"
-                ? "もう一度、ふたりで"
-                : played
-                  ? "体験済み"
-                  : "未体験"}
-        </span>
-        <span className="cost">
-          {date.apCost ? `${date.apCost} AP` : "AP不要"}
-        </span>
-      </div>
-      <h2>{date.titleJa}</h2>
-      <p>{withNames(date.descriptionJa, game)}</p>
+              : "もう一度、ふたりで"}
+        </p>
+      )}
+      <button
+        className="date-option"
+        disabled={!eligibility.available}
+        onClick={() => onChoose(date.id)}
+        aria-label={`${played && date.kind === "normal" ? "もう一度誘う" : date.actionLabelJa}（${date.titleJa}、${date.apCost ? `${date.apCost} AP` : "AP不要"}）`}
+      >
+        <span className="date-option-title">{date.titleJa}</span>
+        {played && date.kind === "normal" && <span className="date-option-played">体験済み</span>}
+        <span className="date-option-cost">{date.apCost ? `${date.apCost} AP` : "AP不要"}</span>
+        {eligibility.available && <span aria-hidden="true">→</span>}
+      </button>
+      {eligibility.available && (
+        <p className="event-description">{withNames(date.descriptionJa, game)}</p>
+      )}
       {date.invitationJa && (
         <blockquote>{withNames(date.invitationJa, game)}</blockquote>
       )}
-      <button
-        className="primary"
-        disabled={!eligibility.available}
-        onClick={() => onChoose(date.id)}
-      >
-        {played && date.kind === "normal" ? "もう一度誘う" : date.actionLabelJa}
-        <span aria-hidden="true"> →</span>
-      </button>
       {!eligibility.available && (
         <p className="availability" role="status">
           {eligibility.reason}

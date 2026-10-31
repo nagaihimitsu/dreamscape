@@ -222,7 +222,7 @@ export function BattleScreen({
             </button>
           )}
         </div>}
-        {!paused && !isResult && active.answers.length > 0 && (
+        {!paused && !isResult && active.phase !== "reasoning" && active.answers.length > 0 && (
           <button className="text-button" onClick={() => onEnglish()}>
             回答した問題を振り返る
           </button>
@@ -345,18 +345,23 @@ export function BattleScreen({
             </button>
           </>
         ) : active.phase === "reasoning" ? (
-          <ReasoningPanel
-            game={game}
-            onNotebook={onNotebook!}
-            onPress={onPress}
-            onSubmit={onSubmitEvidence}
-          />
+          <>
+            <ReasoningPanel
+              game={game}
+              onPress={onPress}
+              onSubmit={onSubmitEvidence}
+            />
+            {active.answers.length > 0 && (
+              <button className="text-button" onClick={() => onEnglish()}>
+                回答した問題を振り返る
+              </button>
+            )}
+          </>
         ) : (
           <div className="question-area" data-testid="battle-question">
             {showReasoning && (
               <ReasoningPanel
                 game={game}
-                onNotebook={onNotebook!}
                 onPress={onPress}
                 onSubmit={onSubmitEvidence}
               />

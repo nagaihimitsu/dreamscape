@@ -5,12 +5,10 @@ import "./reasoning.css";
 
 export function ReasoningPanel({
   game,
-  onNotebook,
   onPress,
   onSubmit,
 }: {
   game: GameState;
-  onNotebook: () => void;
   onPress: () => void;
   onSubmit: () => void;
 }) {
@@ -58,7 +56,7 @@ export function ReasoningPanel({
         <p className="fine-print">
           選んだ証拠 {selected.length} / {count}枚
         </p>
-        {selected.length ? (
+        {selected.length > 0 && (
           <ul>
             {selected.map((id) => (
               <li key={id}>
@@ -66,8 +64,6 @@ export function ReasoningPanel({
               </li>
             ))}
           </ul>
-        ) : (
-          <p>手がかり帳で、説明や画像を見ながら選べます。</p>
         )}
       </div>
       {selecting ? (
@@ -82,9 +78,6 @@ export function ReasoningPanel({
                 {reasoning?.pressed ? "追及を読み直す" : "追及する"}
               </button>
             )}
-            <button className="secondary" onClick={onNotebook}>
-              手がかり帳で選ぶ
-            </button>
           </div>
           <button
             className="primary"

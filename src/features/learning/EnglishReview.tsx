@@ -51,8 +51,11 @@ export function EnglishReview({
   const entries = markedOnly
     ? allEntries.filter((item) => learning.isMarked(item.question.id))
     : allEntries;
-  const selected = allEntries.find(
+  const selected = entries.find(
     (e) => e.question.id === learning.data.openQuestion,
+  );
+  const selectedIndex = entries.findIndex(
+    (entry) => entry.question.id === selected?.question.id,
   );
   const [story, setStory] = useState<StoryStep | null>(() => {
     if (!selected || !learning.data.openTopic) return null;
@@ -101,8 +104,8 @@ export function EnglishReview({
           閉じる
         </button>
       </div>
-      <p>回答済みの問題を振り返れます。復習しても得点やAPは変わりません。</p>
-      {!entries.length && <p>まだ回答済みの問題はありません。</p>}
+      {!selected && <p>回答済みの問題を振り返れます。復習しても得点やAPは変わりません。</p>}
+      {!allEntries.length && <p>まだ回答済みの問題はありません。</p>}
       {!game.activeBattle &&
         game.battleRecords.some((r) => !recorded.has(r.battleId)) && (
           <p>
@@ -122,22 +125,45 @@ export function EnglishReview({
       {markedOnly && entries.length === 0 && (
         <p>復習に登録した問題はありません。</p>
       )}
-      <details open={!selected}>
-        <summary>回答した問題を選ぶ</summary>
+      {entries.length > 0 && (
         <div className="review-list">
-          {entries.map(({ battle, question }) => (
+          <label htmlFor="review-question-picker">回答した問題を選ぶ</label>
+          <select
+            id="review-question-picker"
+            value={selectedIndex >= 0 ? entries[selectedIndex].question.id : ""}
+            onChange={(event) => {
+              if (event.target.value) select(event.target.value);
+            }}
+          >
+            <option value="">問題を選んでください</option>
+            {entries.map(({ battle, question }) => (
+              <option key={`${battle.id}-${question.id}`} value={question.id}>
+                第{battleQuizzes[battle.quizId].questions.findIndex((q) => q.id === question.id) + 1}問 · {battle.enemyNameJa} · {question.questionEn}
+              </option>
+            ))}
+          </select>
+          <div className="review-navigation">
             <button
               type="button"
-              key={`${battle.id}-${question.id}`}
               className="secondary"
-              aria-pressed={selected?.question.id === question.id}
-              onClick={() => select(question.id)}
+              aria-label="前の問題"
+              disabled={selectedIndex <= 0}
+              onClick={() => select(entries[selectedIndex - 1].question.id)}
             >
-              {battle.enemyNameJa} · {question.questionEn}
+              前へ
             </button>
-          ))}
+            <button
+              type="button"
+              className="secondary"
+              aria-label={selectedIndex < 0 ? "最初の問題" : "次の問題"}
+              disabled={selectedIndex === entries.length - 1}
+              onClick={() => select(entries[selectedIndex + 1].question.id)}
+            >
+              {selectedIndex < 0 ? "最初" : "次へ"}
+            </button>
+          </div>
         </div>
-      </details>
+      )}
       {selected &&
         (() => {
           const { question, answer } = selected;
@@ -156,7 +182,7 @@ export function EnglishReview({
               data-testid="review-question"
             >
               <p className="english-instructions">
-                単語を1回タップで意味、同じ単語を続けて2回タップで文の訳。
+                単語を1回タップで意味、2回で文の訳。
               </p>
               <h3>
                 <InteractiveEnglish
@@ -166,6 +192,21 @@ export function EnglishReview({
                   onDoubleTap={() => toggle("question")}
                 />
               </h3>
+              <button
+                type="button"
+                className="secondary review-mark"
+                aria-pressed={marked}
+                onClick={() =>
+                  learning.update((s) => {
+                    const marks = { ...s.marks };
+                    if (marked) delete marks[question.id];
+                    else marks[question.id] = JSON.stringify(tr.source);
+                    return { ...s, marks };
+                  })
+                }
+              >
+                {marked ? "復習の登録を解除" : "あとで復習する"}
+              </button>
               <button
                 className="text-button review-translation-toggle"
                 type="button"
@@ -177,9 +218,6 @@ export function EnglishReview({
                   : "問題文の訳を見る"}
               </button>
               {showTranslation("question") && <p>{tr.questionJa}</p>}
-              {details && (
-                <p className="learning-summary">{details.summaryJa}</p>
-              )}
               <ul className="review-options">
                 {question.options.map((o) => (
                   <li key={o.id}>
@@ -212,26 +250,14 @@ export function EnglishReview({
                   </li>
                 ))}
               </ul>
+              {details && (
+                <p className="learning-summary">{details.summaryJa}</p>
+              )}
               <p>
                 {answer.correct
                   ? question.correctExplanationJa
                   : question.incorrectExplanationJa}
               </p>
-              <button
-                type="button"
-                className="secondary"
-                aria-pressed={marked}
-                onClick={() =>
-                  learning.update((s) => {
-                    const marks = { ...s.marks };
-                    if (marked) delete marks[question.id];
-                    else marks[question.id] = JSON.stringify(tr.source);
-                    return { ...s, marks };
-                  })
-                }
-              >
-                {marked ? "復習の登録を解除" : "あとで復習する"}
-              </button>
               {details && (
                 <section>
                   <h3>英文を確認する</h3>

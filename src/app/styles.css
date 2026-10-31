@@ -504,6 +504,19 @@ footer span {
   display: block;
   margin-left: auto;
 }
+@media (max-width: 600px) {
+  .app-shell > main > .notice {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px;
+  }
+  .app-shell > main > .notice .text-button {
+    flex: none;
+    min-height: 44px;
+    padding: 8px;
+  }
+}
 .warning {
   background: #f1e7d1;
   margin: 20px 0;
@@ -536,6 +549,47 @@ footer span {
 .modal h2 {
   font-size: 22px;
   margin: 10px 0 20px;
+}
+.modal .translation-setting {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-height: 44px;
+  padding: 10px 0;
+  line-height: 1.5;
+}
+.modal .translation-setting input {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+}
+@media (max-width: 600px) {
+  dialog.modal[aria-labelledby="settings-title"] {
+    padding: 18px 22px;
+  }
+  dialog.modal[aria-labelledby="settings-title"] h2 {
+    margin: 0 0 8px;
+  }
+  dialog.modal[aria-labelledby="settings-title"] .name-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 10px;
+    margin-bottom: 4px;
+  }
+  dialog.modal[aria-labelledby="settings-title"] .name-form .primary {
+    grid-column: 1 / -1;
+    min-height: 44px;
+    margin: 0;
+    padding: 8px 12px;
+  }
+  dialog.modal[aria-labelledby="settings-title"] .delete-entry {
+    min-height: 44px;
+    margin-top: 4px;
+  }
+  dialog.modal[aria-labelledby="settings-title"] > .secondary {
+    min-height: 44px;
+    margin-top: 4px;
+  }
 }
 .confirm-text {
   margin: 20px 0 28px;
@@ -768,7 +822,9 @@ footer span {
 }
 dialog.modal {
   border: 0;
-  color: inherit;
+  /* Dialogs can be mounted inside the dark VN scene. Do not inherit its
+     light text onto the paper-coloured modal surface. */
+  color: #303d36;
   margin: auto;
 }
 dialog.modal::backdrop {

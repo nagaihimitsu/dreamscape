@@ -491,8 +491,8 @@
     flex: 0 0 auto;
   }
   .battle-screen .battle-stage-compact {
-    min-height: 90px;
-    height: 90px;
+    min-height: 64px;
+    height: 64px;
     padding: 4px 16px 0;
   }
   .battle-screen .battle-stage-compact .battle-enemy-info {
@@ -546,7 +546,7 @@
   .battle-screen .quiz-choice,
   .battle-screen .quiz-choice.chosen,
   .battle-screen .quiz-choice.correct {
-    grid-template-columns: 19px minmax(0, 1fr) 70px;
+    grid-template-columns: 19px minmax(0, 1fr) 104px;
     align-items: center;
     gap: 3px 6px;
     padding: 4px 7px;
@@ -559,14 +559,14 @@
   .battle-screen .quiz-choice .translation-actions {
     grid-column: 3;
     grid-row: 1;
-    flex-direction: column;
-    gap: 0;
+    flex-direction: row;
+    gap: 2px;
   }
   .battle-screen .quiz-choice .answer-submit,
   .battle-screen .quiz-choice .translation-toggle {
-    width: 100%;
+    width: auto;
     min-height: 44px;
-    padding: 4px 3px;
+    padding: 4px 2px;
     font-size: 12px;
   }
   .battle-screen .quiz-choice .translation > p {

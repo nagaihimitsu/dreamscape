@@ -62,6 +62,7 @@
   gap: 8px;
   margin-bottom: 10px;
 }
+.reasoning-actions:empty { display: none; }
 .reasoning-actions > button {
   flex: 1 1 130px;
   width: auto;
@@ -87,4 +88,20 @@
   padding: 14px;
   border-radius: 10px;
   background: #edf0e6;
+}
+
+/* Keep the claim and reasoning actions together on a phone. Long claims or
+   enlarged text remain readable in the existing battle reading area. */
+@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
+  .reasoning-panel { margin-bottom: 10px; }
+  .reasoning-panel > .eyebrow { margin: 3px 0; }
+  .reasoning-panel h2 { font-size: 1.1rem; margin: 3px 0 8px; }
+  .reasoning-claim { padding: 7px 10px; }
+  .reasoning-claim blockquote { line-height: 1.5; }
+  .reasoning-help { margin: 7px 0; line-height: 1.5; }
+  .reasoning-press-notes { margin: 4px 0; }
+  .selected-evidence { margin: 7px 0; padding: 7px 10px; }
+  .selected-evidence ul { margin: 2px 0 0; line-height: 1.5; }
+  .reasoning-actions { margin-bottom: 6px; }
+  .reasoning-panel > .fine-print { margin: 5px 0; line-height: 1.45; }
 }

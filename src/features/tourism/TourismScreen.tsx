@@ -20,6 +20,8 @@ import { ObservationViewer } from "./ObservationViewer";
 import { ClueDetails } from "./ClueDetails";
 import "./tourism.css";
 
+const COMPACT_OBSERVATION = "(max-width: 600px) and (min-height: 500px)";
+
 interface Props {
   game: GameState;
   speed: number;
@@ -66,11 +68,15 @@ export function TourismScreen({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [notesOpen, setNotesOpen] = useState(false);
   const [notesView, setNotesView] = useState<"list" | "detail">("list");
+  const [compactObservation, setCompactObservation] = useState(
+    () => window.matchMedia(COMPACT_OBSERVATION).matches,
+  );
   const [focusRequest, setFocusRequest] = useState(0);
   const shouldScrollToSelection = useRef(true);
   const notesCloseRef = useRef<HTMLButtonElement>(null);
   const notesRef = useRef<HTMLDivElement>(null);
   const previousFocus = useRef<HTMLElement | null>(null);
+  const notesCoverObservation = active.phase === "exploring" && compactObservation && notesOpen;
   const selected = clues.find((clue) => clue.id === selectedId);
   const frame = active.frame;
   const speaker =
@@ -100,13 +106,20 @@ export function TourismScreen({
   );
 
   useEffect(() => {
+    const media = window.matchMedia(COMPACT_OBSERVATION);
+    const update = () => setCompactObservation(media.matches);
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
     document
       .getElementById("tourism-screen")
       ?.scrollIntoView({ block: "start" });
   }, [active.landmarkId]);
 
   useEffect(() => {
-    if (!focusRequest || !shouldScrollToSelection.current || window.matchMedia("(max-width: 600px) and (min-height: 500px)").matches) return;
+    if (!focusRequest || !shouldScrollToSelection.current || compactObservation) return;
     const target =
       selected?.kind === "document"
         ? "discovery-detail"
@@ -114,7 +127,7 @@ export function TourismScreen({
     document
       .querySelector(`[data-testid="${target}"]`)
       ?.scrollIntoView({ block: "start" });
-  }, [focusRequest, selected?.kind]);
+  }, [focusRequest, selected?.kind, compactObservation]);
 
   useEffect(() => {
     if (active.phase === "guide") setNotesOpen(false);
@@ -125,32 +138,38 @@ export function TourismScreen({
   }, [notesOpen, notesView, selectedId]);
 
   useEffect(() => {
-    if (!notesOpen || !window.matchMedia("(max-width: 600px) and (min-height: 500px)").matches) return;
-    previousFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    if (!notesOpen || !compactObservation) return;
     notesCloseRef.current?.focus();
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setNotesOpen(false);
+      if (event.key === "Escape" && !document.querySelector("dialog[open]")) setNotesOpen(false);
     };
     window.addEventListener("keydown", closeOnEscape);
     return () => {
       window.removeEventListener("keydown", closeOnEscape);
       previousFocus.current?.focus();
     };
-  }, [notesOpen]);
+  }, [notesOpen, compactObservation]);
+
+  function openNotes(view: "list" | "detail") {
+    if (!notesOpen) {
+      previousFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    }
+    setNotesView(view);
+    setNotesOpen(true);
+  }
 
   function selectClue(id: string, movePage = true) {
     if (onDiscover(id)) {
       // A marker is already in view; centering it must not also jump the page.
       shouldScrollToSelection.current = movePage;
       setSelectedId(id);
-      setNotesView("detail");
-      setNotesOpen(true);
+      openNotes("detail");
       setFocusRequest((value) => value + 1);
     }
   }
 
   const actions = (
-    <div className="tourism-actions">
+    <div className="tourism-actions" inert={notesCoverObservation}>
       <p className="fine-print">
         観察は任意です。バトルの途中でも、ここへ戻れます。
       </p>
@@ -167,7 +186,7 @@ export function TourismScreen({
   );
 
   const toolbar = (
-    <div className="tourism-toolbar">
+    <div className="tourism-toolbar" inert={notesCoverObservation}>
       <span className="fine-print">
         発見 {clues.filter((clue) => game.discoveredClueIds.includes(clue.id)).length} / {clues.length}
       </span>
@@ -183,7 +202,7 @@ export function TourismScreen({
       id="tourism-screen"
       data-testid="tourism-screen"
     >
-      <header className="tourism-heading">
+      <header className="tourism-heading" inert={notesCoverObservation}>
         <p className="eyebrow">観光と観察 · 旅先の発見</p>
         <h1>{landmark.nameJa}</h1>
         <p className="landmark-english" lang="en">
@@ -199,7 +218,7 @@ export function TourismScreen({
       {active.phase === "exploring" && toolbar}
       {active.phase === "exploring" && actions}
       {asset.isPlaceholder && (
-        <p className="image-placeholder-note">
+        <p className="image-placeholder-note" inert={notesCoverObservation}>
           仮画像です。実物の細部を再現した資料ではありません。
         </p>
       )}
@@ -282,9 +301,10 @@ export function TourismScreen({
             discoveredIds={game.discoveredClueIds}
             selectedId={selectedId}
             focusRequest={focusRequest}
+            inert={notesCoverObservation}
             onSelect={(id) => selectClue(id, false)}
           />
-          <button className="observation-notes-open secondary" onClick={() => { setNotesView("list"); setNotesOpen(true); }}>
+          <button className="observation-notes-open secondary" inert={notesCoverObservation} onClick={() => openNotes("list")}>
             発見ポイント・資料を見る
           </button>
           <div ref={notesRef} className="observation-notes" role="region" aria-label="観察ポイントと資料" data-open={notesOpen} data-view={notesView}>

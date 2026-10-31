@@ -27,6 +27,7 @@ interface Props {
   discoveredIds: string[];
   selectedId: string | null;
   focusRequest?: number;
+  inert?: boolean;
   onSelect: (id: string) => void;
 }
 
@@ -42,6 +43,7 @@ export function ObservationViewer({
   discoveredIds,
   selectedId,
   focusRequest = 0,
+  inert = false,
   onSelect,
 }: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -187,7 +189,7 @@ export function ObservationViewer({
 
   const fitted = fittedSize(asset, viewport);
   return (
-    <div className="observation-viewer">
+    <div className="observation-viewer" inert={inert}>
       <div
         ref={viewportRef}
         className="observation-viewport"

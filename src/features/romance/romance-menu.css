@@ -1,0 +1,157 @@
+/* One choice per row: the title is the action, rather than a second button
+   repeating the same destination below a large card. */
+.date-list,
+.free-time-romance .date-list {
+  gap: 0;
+  border-top: 1px solid var(--line);
+}
+
+.date-card,
+.free-time-active .date-list .date-card,
+.free-time-active .invitation-card {
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  padding: 7px 0 9px;
+}
+
+.date-card.invitation-card {
+  margin-bottom: 10px;
+  padding: 10px 0;
+  border-top: 1px solid #a8b4a0;
+}
+
+.date-card .date-option {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 1px solid #829a88;
+  border-radius: 3px;
+  background: #eef2e9;
+  color: #214637;
+  font-size: 15px;
+  line-height: 1.45;
+  text-align: left;
+}
+
+.date-card .date-option:hover:enabled {
+  background: #e1eadc;
+}
+
+.date-card .date-option:disabled {
+  opacity: 1;
+  color: #646b63;
+  border-color: #d5d8cd;
+  background: #efefe9;
+}
+
+.date-option-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.date-option-cost,
+.date-option-played {
+  flex: none;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.date-card .event-description,
+.date-card .availability,
+.date-card .event-context,
+.free-time-active .date-card .event-description,
+.free-time-active .date-card .availability,
+.free-time-active .date-card .event-context {
+  margin: 3px 2px 0;
+  color: #515e53;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.date-card .event-context,
+.free-time-active .date-card .event-context {
+  margin: 0 2px 5px;
+  color: #425741;
+  font-weight: 600;
+}
+
+.date-card.invitation-card blockquote {
+  margin: 7px 2px;
+  line-height: 1.6;
+}
+
+.date-card > .fine-print,
+.free-time-active .date-card > .fine-print {
+  margin: 4px 2px 0;
+  line-height: 1.5;
+}
+
+/* Legacy trial rewards are optional, but remain directly available to old
+   saves: one compact row per reward with any unmet condition alongside it. */
+.free-time-romance .trial-progress {
+  margin: 14px 0;
+  padding: 10px 0 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+}
+
+.free-time-romance .trial-progress h2 {
+  font-size: 15px;
+}
+
+.free-time-romance .trial-progress > p {
+  margin: 3px 0 6px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.free-time-romance .milestone {
+  margin: 0;
+  padding: 6px 0;
+  border-top: 1px solid var(--line);
+}
+
+.milestone .milestone-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 7px 10px;
+  border: 1px solid #829a88;
+  border-radius: 3px;
+  background: #eef2e9;
+  color: #214637;
+  font-size: 13px;
+  line-height: 1.45;
+  text-align: left;
+}
+
+.milestone .milestone-option:disabled {
+  opacity: 1;
+  color: #646b63;
+  border-color: #d5d8cd;
+  background: #efefe9;
+}
+
+.milestone-option span:last-child {
+  flex: none;
+  white-space: nowrap;
+}
+
+.free-time-romance .milestone p {
+  margin: 3px 2px 0;
+  color: #515e53;
+  font-size: 13px;
+  line-height: 1.5;
+}

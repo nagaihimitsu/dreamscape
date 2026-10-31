@@ -110,7 +110,7 @@ test("finished answers remain available in free time without changing rewards", 
   await expect(page.getByTestId("battle-result")).toBeVisible();
   await page.getByRole("button", { name: "回答した問題を振り返る" }).click();
   await expect(
-    page.getByRole("dialog").locator(".review-list button"),
+    page.getByRole("dialog").locator("#review-question-picker option:not([value=''])"),
   ).toHaveCount(3);
   await page
     .getByRole("dialog")
@@ -120,11 +120,11 @@ test("finished answers remain available in free time without changing rewards", 
   const before = await saved(page);
   await page.getByRole("button", { name: "英語ノートを開く" }).click();
   const dialog = page.getByRole("dialog");
-  await expect(dialog.locator(".review-list button")).toHaveCount(3);
-  await dialog.locator(".review-list button").first().click();
+  await expect(dialog.locator("#review-question-picker option:not([value=''])")).toHaveCount(3);
+  await dialog.getByLabel("回答した問題を選ぶ").selectOption({ index: 1 });
   await dialog.getByRole("button", { name: "あとで復習する" }).click();
   await dialog.getByLabel("復習に登録した問題だけ見る").check();
-  await expect(dialog.locator(".review-list button")).toHaveCount(1);
+  await expect(dialog.locator("#review-question-picker option:not([value=''])")).toHaveCount(1);
   await dialog.getByRole("button", { name: "閉じる", exact: true }).click();
   await page.reload();
   await page.getByRole("button", { name: "英語ノートを開く" }).click();
@@ -133,7 +133,7 @@ test("finished answers remain available in free time without changing rewards", 
     .getByLabel("復習に登録した問題だけ見る")
     .check();
   await expect(
-    page.getByRole("dialog").locator(".review-list button"),
+    page.getByRole("dialog").locator("#review-question-picker option:not([value=''])"),
   ).toHaveCount(1);
   await page
     .getByRole("dialog")
@@ -232,10 +232,10 @@ test("an old battle reaction remains playable and can review its actual answer",
   const before = await saved(page);
   await page.getByRole("button", { name: "回答した問題を振り返る" }).click();
   const dialog = page.getByRole("dialog");
-  await expect(dialog.locator(".review-list button")).toHaveCount(
+  await expect(dialog.locator("#review-question-picker option:not([value=''])")).toHaveCount(
     before.activeBattle!.answers.length,
   );
-  await dialog.locator(".review-list button").first().click();
+  await dialog.getByLabel("回答した問題を選ぶ").selectOption({ index: 1 });
   await expect(dialog.getByTestId("review-question")).toContainText(
     "選んだ答え",
   );

@@ -9,39 +9,28 @@ export function TourismEntry({
   game: GameState;
   onStart: (id: string) => void;
 }) {
+  const available = landmarks.filter(
+    (landmark) => getTourismAvailability(game, landmark.id).available,
+  );
+  if (!available.length) return null;
   return (
-    <section className="tourism-entry" aria-label="観光と観察の試遊">
-      {landmarks
-        .filter(
-          (landmark) => getTourismAvailability(game, landmark.id).available,
-        )
-        .map((landmark) => {
-          const availability = getTourismAvailability(game, landmark.id);
-          return (
-            <div key={landmark.id}>
-              <div className="section-meta">
-                <span className="eyebrow">もう一度、立ち止まって</span>
-                <span className="pill">再訪・観察</span>
-              </div>
-              <h2>{landmark.nameJa}</h2>
-              <p>{landmark.descriptionJa}</p>
-              <button
-                className="primary"
-                data-testid={`revisit-tourism-${landmark.id}`}
-                onClick={() => onStart(landmark.id)}
-                disabled={!availability.available}
-              >
-                観光・観察を試す <span aria-hidden="true">→</span>
-              </button>
-              <p className="fine-print">
-                気になる場所を調べたら、英語3択バトルへ。観察は好きなだけ。
-              </p>
-              {!availability.available && (
-                <p className="fine-print">{availability.reason}</p>
-              )}
-            </div>
-          );
-        })}
+    <section className="tourism-entry revisit-group" aria-label="観光と観察の再訪">
+      <h2>観光・観察</h2>
+      <ul className="revisit-list">
+        {available.map((landmark) => (
+          <li key={landmark.id}>
+            <span>{landmark.nameJa}</span>
+            <button
+              className="secondary"
+              data-testid={`revisit-tourism-${landmark.id}`}
+              aria-label={`${landmark.nameJa}を観察する`}
+              onClick={() => onStart(landmark.id)}
+            >
+              観察する <span aria-hidden="true">→</span>
+            </button>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

@@ -492,13 +492,53 @@
     gap: 8px;
     background: var(--paper);
   }
+  .mobile-observation-active .observation-notes[data-view="list"] .observation-notes-header {
+    justify-content: flex-end;
+  }
+  .mobile-observation-active .observation-notes-header button:disabled {
+    display: none;
+  }
+  .mobile-observation-active .observation-list-help {
+    display: none;
+  }
+  .mobile-observation-active .discovery-list {
+    gap: 4px;
+    margin-top: 4px;
+  }
+  .mobile-observation-active .discovery-list button {
+    min-height: 44px;
+    padding: 7px 10px;
+  }
+  .mobile-observation-active .document-cards {
+    margin-top: 12px;
+  }
+  .mobile-observation-active .document-cards h2 {
+    font-size: 16px;
+    margin-bottom: 2px;
+  }
+  .mobile-observation-active .document-cards .fine-print {
+    margin: 0;
+    line-height: 1.4;
+  }
+  .mobile-observation-active .document-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 44px;
+    margin-top: 6px;
+    padding: 8px 10px;
+  }
+  .mobile-observation-active .replay-guide {
+    margin: 8px 0 0;
+  }
   .mobile-observation-active .observation-notes[data-view="list"] .discovery-detail,
   .mobile-observation-active .observation-notes[data-view="detail"] .observation-list-help,
   .mobile-observation-active .observation-notes[data-view="detail"] .discovery-list,
   .mobile-observation-active .observation-notes[data-view="detail"] .document-cards,
   .mobile-observation-active .observation-notes[data-view="detail"] .replay-guide,
   .mobile-observation-active .observation-notes[data-view="detail"] .tourism-credits { display: none; }
-  .mobile-observation-active .observation-notes .tourism-credits { margin: 12px 0 0; }
+  .mobile-observation-active .observation-notes .tourism-credits { margin: 4px 0 0; }
 }
 
 @media (max-width: 600px) and (min-height: 500px) {

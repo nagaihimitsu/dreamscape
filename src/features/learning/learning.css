@@ -23,34 +23,63 @@
   padding: 0;
 }
 .english-review > :not(.english-review-header) {
-  margin-left: 24px;
-  margin-right: 24px;
+  margin-left: 16px;
+  margin-right: 16px;
 }
 .english-review > p {
-  margin: 12px 0;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 1.5;
 }
 .review-list {
   display: grid;
-  gap: 8px;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
 }
-.review-list button {
-  text-align: left;
-  overflow-wrap: anywhere;
+.review-list label {
+  grid-column: 1 / -1;
+  font-size: 14px;
 }
-.review-list button[aria-pressed="true"] {
-  border-color: var(--green);
-  background: #e6eadb;
+.review-list select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 6px 8px;
+  color: var(--green);
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+.review-navigation {
+  display: contents;
+}
+.review-navigation .secondary {
+  width: auto;
+  min-width: 52px;
+  min-height: 44px;
+  padding: 6px;
+  white-space: nowrap;
 }
 .review-question {
-  padding: 16px 0;
+  padding: 8px 0;
 }
 .review-question h3 {
-  margin: 12px 0;
+  margin: 6px 0;
+  font-size: 16px;
+  line-height: 1.5;
   overflow-wrap: anywhere;
+}
+.review-question .review-mark {
+  width: auto;
+  min-height: 44px;
+  padding: 6px 12px;
+  font-size: 13px;
 }
 .review-question p,
 .review-question li {
-  margin: 8px 0;
+  margin: 6px 0;
   overflow-wrap: anywhere;
 }
 .review-question details {
@@ -80,11 +109,12 @@
   gap: 12px;
   background: var(--paper);
   border-bottom: 1px solid var(--line);
-  margin: 0 0 12px;
-  padding: 12px 24px;
+  margin: 0 0 8px;
+  padding: 8px 16px;
 }
 .english-review-header h2 {
   margin: 0;
+  font-size: 20px;
 }
 .english-review-header button {
   flex-shrink: 0;
@@ -107,7 +137,7 @@
 
 .english-instructions {
   font-size: 12px;
-  line-height: 1.7;
+  line-height: 1.5;
   color: #526454;
   margin: 10px 0;
 }

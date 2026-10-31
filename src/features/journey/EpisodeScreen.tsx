@@ -29,11 +29,6 @@ export function EpisodeScreen({
         <p className="eyebrow">ふたりの旅 · 観光エピソード</p>
         <h1>{episode.titleJa}</h1>
         <p className="lead">{episode.descriptionJa}</p>
-        <ol className="episode-route" aria-label="このエピソードの流れ">
-          <li>案内と自由な観察</li>
-          <li>英語3問のクイズバトル</li>
-          <li>APを受け取り、ふたりの自由時間へ</li>
-        </ol>
         <button
           className="primary"
           data-testid="episode-start"
@@ -41,6 +36,11 @@ export function EpisodeScreen({
         >
           このエピソードを始める <span aria-hidden="true">→</span>
         </button>
+        <ol className="episode-route" aria-label="このエピソードの流れ">
+          <li>案内と自由な観察</li>
+          <li>英語3問のクイズバトル</li>
+          <li>APを受け取り、ふたりの自由時間へ</li>
+        </ol>
         <p className="fine-print">
           観察は好きなだけ。クイズは全問不正解でも旅を続けられます。
         </p>
