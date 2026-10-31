@@ -182,7 +182,7 @@
   font-size: 12px;
   white-space: nowrap;
 }
-.battle-dialogue .next:disabled { display: none; }
+.battle-dialogue .next:disabled { visibility: hidden; }
 .battle-dialogue .next { min-height: 44px; padding: 2px 0 2px 12px; }
 .battle-dialogue .reveal { min-height: 44px; margin: 0 0 0 auto; }
 .battle-dialogue .next,

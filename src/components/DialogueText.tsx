@@ -14,6 +14,7 @@ export function DialogueText({
 }) {
   const timerRef = useRef<number | undefined>(undefined);
   const textRef = useRef<HTMLParagraphElement>(null);
+  const revealRef = useRef<HTMLButtonElement>(null);
   const [count, setCount] = useState(0);
   const chars = Array.from(text);
   useEffect(() => {
@@ -37,7 +38,11 @@ export function DialogueText({
       ) return;
       revealed += 1;
       setCount(revealed);
-      if (revealed >= Array.from(text).length) window.clearInterval(timer);
+      if (revealed >= Array.from(text).length) {
+        if (document.activeElement === revealRef.current && textRef.current?.tabIndex === 0)
+          textRef.current.focus({ preventScroll: true });
+        window.clearInterval(timer);
+      }
     }, speed);
     timerRef.current = timer;
     return () => window.clearInterval(timer);
@@ -49,6 +54,10 @@ export function DialogueText({
     if (dialogueObstructed() || textRef.current?.closest("[inert]")) return;
     if (!ready) {
       window.clearInterval(timerRef.current);
+      // The reveal control is about to become unavailable. Keep keyboard
+      // focus on the same line so a later activation can advance it.
+      if (document.activeElement === revealRef.current && onAdvance)
+        textRef.current?.focus({ preventScroll: true });
       setCount(chars.length);
       onReady(true);
     } else {
@@ -83,13 +92,29 @@ export function DialogueText({
           {chars.slice(0, count).join("")}
           <span className="unrevealed">{chars.slice(count).join("")}</span>
         </span>
-        {ready && onAdvance && <span className="dialogue-next-mark" aria-hidden="true"> ▾</span>}
+        {onAdvance && (
+          <span
+            className="dialogue-next-mark"
+            aria-hidden="true"
+            style={{ visibility: ready ? "visible" : "hidden" }}
+          >
+            {" ▾"}
+          </span>
+        )}
       </p>
-      {!ready && (
-        <button className="text-button reveal" onClick={activate}>
-          全文を表示
-        </button>
-      )}
+      {/* Keep the button's space after revealing: the window is anchored at
+          the bottom, so removing a row would move the text the player reads. */}
+      <button
+        ref={revealRef}
+        className="text-button reveal"
+        onClick={activate}
+        disabled={ready}
+        tabIndex={ready ? -1 : undefined}
+        aria-hidden={ready || undefined}
+        style={{ visibility: ready ? "hidden" : "visible" }}
+      >
+        全文を表示
+      </button>
     </>
   );
 }

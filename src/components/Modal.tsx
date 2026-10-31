@@ -15,10 +15,29 @@ export function Modal({
   useEffect(() => {
     const element = dialog.current!;
     const previouslyFocused = document.activeElement as HTMLElement | null;
+    // Opening a modal freezes the underlying scene. Restore its reading
+    // position after close(): native dialog focus restoration may otherwise
+    // scroll the previously focused control back into view.
+    const scrollPositions: { element: HTMLElement; top: number; left: number }[] = [];
+    for (let ancestor = previouslyFocused?.parentElement; ancestor; ancestor = ancestor.parentElement) {
+      scrollPositions.push({ element: ancestor, top: ancestor.scrollTop, left: ancestor.scrollLeft });
+    }
+    const pagePosition = { top: window.scrollY, left: window.scrollX };
     element.showModal();
     return () => {
       element.close();
-      previouslyFocused?.focus();
+      // If the trigger was replaced (for example by starting a date), the
+      // new scene owns its own focus and scroll position.
+      if (!previouslyFocused?.isConnected) return;
+      previouslyFocused.focus({ preventScroll: true });
+      for (const position of scrollPositions) {
+        if (position.element.isConnected) {
+          position.element.scrollTop = position.top;
+          position.element.scrollLeft = position.left;
+        }
+      }
+      if (window.scrollX !== pagePosition.left || window.scrollY !== pagePosition.top)
+        window.scrollTo(pagePosition.left, pagePosition.top);
     };
   }, []);
   return (
