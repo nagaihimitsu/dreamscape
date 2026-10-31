@@ -24,7 +24,14 @@ import {
   startDate,
   type GameState,
 } from "../domain/game";
-import { backupAndCreate, loadGame, saveGame } from "../persistence";
+import {
+  backupAndCreate,
+  deleteSaveData,
+  LEARNING_KEY,
+  SAVE_KEY,
+  loadGame,
+  saveGame,
+} from "../persistence";
 import { CanalScene } from "../components/CanalScene";
 import { DialogueText } from "../components/DialogueText";
 import { Modal } from "../components/Modal";
@@ -80,6 +87,7 @@ const storage = {
   getItem: (key: string) => window.localStorage.getItem(key),
   setItem: (key: string, value: string) =>
     window.localStorage.setItem(key, value),
+  removeItem: (key: string) => window.localStorage.removeItem(key),
 };
 type Confirmation =
   | { kind: "date"; id: string }
@@ -107,6 +115,10 @@ export default function App() {
     loaded.status === "invalid" ? loaded.message : "",
   );
   const [notice, setNotice] = useState("");
+  const [deleteSnapshot, setDeleteSnapshot] = useState<{
+    game: string | null;
+    learning: string | null;
+  } | null>(null);
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
   const [paused, setPaused] = useState(false);
   const [settings, setSettings] = useState(false);
@@ -153,9 +165,46 @@ export default function App() {
     setInvalid("");
     setNotice("");
   }
+  function requestDelete() {
+    try {
+      const current = loadGame(storage);
+      if (gameRef.current) {
+        if (
+          current.status !== "loaded" ||
+          JSON.stringify(current.state) !== JSON.stringify(gameRef.current)
+        ) {
+          setSettings(false);
+          setNotice(
+            "別の画面でセーブが更新されています。再読み込みしてからやり直してください。",
+          );
+          return;
+        }
+      } else if (
+        loaded.status !== "invalid" ||
+        current.status !== "invalid" ||
+        current.raw === null ||
+        current.raw !== loaded.raw
+      ) {
+        setNotice(
+          "保存データを確認できません。再読み込みしてからやり直してください。",
+        );
+        return;
+      }
+      const snapshot = {
+        game: storage.getItem(SAVE_KEY),
+        learning: storage.getItem(LEARNING_KEY),
+      };
+      setSettings(false);
+      setDeleteSnapshot(snapshot);
+    } catch {
+      setNotice(
+        "保存データを読み取れませんでした。ブラウザの保存設定を確認してください。",
+      );
+    }
+  }
   function save() {
     if (!gameRef.current) return;
-    const saved = saveGame(storage, gameRef.current);
+    const saved = saveGame(storage, gameRef.current, gameRef.current);
     setNotice(saved.ok ? "現在の場面を保存しました。" : saved.message);
   }
   function reload() {
@@ -353,6 +402,13 @@ export default function App() {
                   <p>
                     元のデータは残っています。下の操作でバックアップを保存してから、新しい旅を始められます。
                   </p>
+                  <button
+                    className="secondary"
+                    type="button"
+                    onClick={requestDelete}
+                  >
+                    保存データを消去する
+                  </button>
                 </div>
               )}
               <form onSubmit={begin} className="name-form">
@@ -836,6 +892,41 @@ export default function App() {
           </button>
         </Modal>
       )}
+      {deleteSnapshot && (
+        <Modal
+          labelledBy="delete-title"
+          onClose={() => setDeleteSnapshot(null)}
+        >
+          <h2 id="delete-title">保存データを消去しますか？</h2>
+          <p>
+            このブラウザに保存された名前、旅の進行、AP、恋愛・バトルの記録、英語ノートと対訳設定を消去します。元には戻せません。
+          </p>
+          <p className="fine-print">
+            以前に退避したバックアップと、ほかのサイトのデータは消去しません。ほかの端末やブラウザにも影響しません。
+          </p>
+          <button
+            className="secondary"
+            autoFocus
+            onClick={() => setDeleteSnapshot(null)}
+          >
+            消去せず戻る
+          </button>
+          <button
+            className="danger-button"
+            onClick={() => {
+              const result = deleteSaveData(storage, deleteSnapshot);
+              if (!result.ok) {
+                setDeleteSnapshot(null);
+                setNotice(result.message);
+                return;
+              }
+              window.location.reload();
+            }}
+          >
+            保存データを消去する
+          </button>
+        </Modal>
+      )}
       {settings && game && (
         <Modal labelledBy="settings-title" onClose={() => setSettings(false)}>
           <h2 id="settings-title">設定</h2>
@@ -843,6 +934,7 @@ export default function App() {
             <input
               type="checkbox"
               checked={learning.data.alwaysTranslate}
+              disabled={!!learning.error}
               onChange={(event) =>
                 learning.update((s) => ({
                   ...s,
@@ -853,6 +945,7 @@ export default function App() {
             />{" "}
             常に日本語訳を表示する
           </label>
+          {learning.error && <p role="status">{learning.error}</p>}
           <h3>名前の設定</h3>
           {active ||
           game.activeBattle ||
@@ -881,6 +974,9 @@ export default function App() {
               </button>
             </form>
           )}
+          <button className="text-button delete-entry" onClick={requestDelete}>
+            保存データの消去
+          </button>
           <button
             className="secondary"
             autoFocus

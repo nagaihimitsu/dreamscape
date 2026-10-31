@@ -4,7 +4,7 @@ import type { GameState } from "../../domain/game";
 import { battleAnswerSchema, battleFingerprint } from "../../domain/battle";
 import { battles, battleQuizzes, learningTranslations } from "../../content";
 
-const key = "dreamscape.learning.v1";
+import { LEARNING_KEY as key, SAVE_KEY } from "../../persistence";
 const schema = z
   .object({
     schemaVersion: z.literal(1),
@@ -147,7 +147,10 @@ export function useLearning(game: GameState | null) {
   }, [game?.activeBattle, update]);
   useEffect(() => {
     function changed(e: StorageEvent) {
-      if (e.key === key && e.newValue !== rawRef.current) {
+      if (
+        (e.key === key && e.newValue !== rawRef.current) ||
+        (e.key === SAVE_KEY && e.newValue === null)
+      ) {
         setError(
           "別の画面で英語ノートが更新されました。この画面を再読み込みしてください。",
         );

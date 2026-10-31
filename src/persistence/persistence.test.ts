@@ -3,6 +3,8 @@ import { describe, expect, it, vi } from "vitest";
 import { advanceDate, chooseDate, createGame, startDate } from "../domain";
 import {
   backupAndCreate,
+  deleteSaveData,
+  LEARNING_KEY,
   loadGame,
   parseGameState,
   SAVE_KEY,
@@ -17,6 +19,9 @@ class MemoryStorage implements StorageLike {
   }
   setItem(key: string, value: string) {
     this.values.set(key, value);
+  }
+  removeItem(key: string) {
+    this.values.delete(key);
   }
 }
 
@@ -186,5 +191,53 @@ describe("multiple tabs sharing a save slot", () => {
       false,
     );
     expect(loadGame(storage)).toEqual({ status: "empty" });
+  });
+});
+
+describe("explicit save deletion", () => {
+  it("removes only the confirmed game and learning slots", () => {
+    const storage = new MemoryStorage();
+    storage.setItem(SAVE_KEY, "game");
+    storage.setItem(LEARNING_KEY, "notes");
+    storage.setItem(`${SAVE_KEY}.backup.123`, "backup");
+    storage.setItem("unrelated", "keep");
+    expect(
+      deleteSaveData(storage, { game: "game", learning: "notes" }),
+    ).toEqual({ ok: true });
+    expect(storage.getItem(SAVE_KEY)).toBeNull();
+    expect(storage.getItem(LEARNING_KEY)).toBeNull();
+    expect(storage.getItem(`${SAVE_KEY}.backup.123`)).toBe("backup");
+    expect(storage.getItem("unrelated")).toBe("keep");
+  });
+  it.each([SAVE_KEY, LEARNING_KEY])("refuses a changed snapshot: %s", (key) => {
+    const storage = new MemoryStorage();
+    storage.setItem(SAVE_KEY, "game");
+    storage.setItem(LEARNING_KEY, "notes");
+    storage.setItem(key, "changed");
+    expect(
+      deleteSaveData(storage, { game: "game", learning: "notes" }).ok,
+    ).toBe(false);
+    expect(storage.getItem(key)).toBe("changed");
+    expect(
+      storage.getItem(key === SAVE_KEY ? LEARNING_KEY : SAVE_KEY),
+    ).not.toBeNull();
+  });
+  it("restores learning data if deleting the game slot fails", () => {
+    const storage = new MemoryStorage();
+    storage.setItem(SAVE_KEY, "game");
+    storage.setItem(LEARNING_KEY, "notes");
+    const blocked = {
+      getItem: (key: string) => storage.getItem(key),
+      setItem: (key: string, value: string) => storage.setItem(key, value),
+      removeItem: (key: string) => {
+        if (key === SAVE_KEY) throw new Error("blocked");
+        storage.removeItem(key);
+      },
+    };
+    expect(
+      deleteSaveData(blocked, { game: "game", learning: "notes" }).ok,
+    ).toBe(false);
+    expect(storage.getItem(SAVE_KEY)).toBe("game");
+    expect(storage.getItem(LEARNING_KEY)).toBe("notes");
   });
 });

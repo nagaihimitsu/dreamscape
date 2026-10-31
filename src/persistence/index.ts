@@ -2,6 +2,7 @@ import { validateGameState, type GameState } from "../domain";
 
 /** Keep the slot stable; schemaVersion inside the payload controls compatibility. */
 export const SAVE_KEY = "dreamscape.save.v1";
+export const LEARNING_KEY = "dreamscape.learning.v1";
 
 export interface StorageLike {
   getItem(key: string): string | null;
@@ -110,6 +111,39 @@ export function backupAndCreate(
       ok: false,
       message:
         "元のセーブを残して新しく始める処理に失敗しました。保存領域を確認してください。",
+    };
+  }
+}
+
+/** Delete only the two active Dreamscape slots after checking the confirmed snapshot. */
+export function deleteSaveData(
+  storage: StorageLike & { removeItem(key: string): void },
+  expected: { game: string | null; learning: string | null },
+): SaveResult {
+  try {
+    if (
+      storage.getItem(SAVE_KEY) !== expected.game ||
+      storage.getItem(LEARNING_KEY) !== expected.learning
+    )
+      return {
+        ok: false,
+        message:
+          "別の画面で保存データが更新されました。再読み込みしてからやり直してください。",
+      };
+    storage.removeItem(LEARNING_KEY);
+    try {
+      storage.removeItem(SAVE_KEY);
+    } catch {
+      if (expected.learning !== null && storage.getItem(LEARNING_KEY) === null)
+        storage.setItem(LEARNING_KEY, expected.learning);
+      throw new Error("Could not remove game save");
+    }
+    return { ok: true };
+  } catch {
+    return {
+      ok: false,
+      message:
+        "消去できませんでした。保存状態を確認してからやり直してください。一部のデータが消去されている場合があります。",
     };
   }
 }
