@@ -286,6 +286,7 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(totalAp(ended)).toBe(beforeEnding - date.apCost);
     expect(ended.endingReached).toBe(true);
     expect(ended.confessionStatus).toBe("accepted");
+    expect(startDate(ended, date.id)).toBe(ended);
   });
   it("funds the whole low-affection romance route from zero-score city play without trial AP", () => {
     let state = finishEpisode(tour(), finale(), 0);

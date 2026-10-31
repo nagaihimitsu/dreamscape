@@ -147,6 +147,7 @@ test("a new zero-score Milan journey reaches the city epilogue and romance endin
   expect(finished.pendingApRewards).toEqual([]);
   expect(finished.claimedRewardIds).toEqual(boss.state.claimedRewardIds);
   await returnToMenu(page);
+  await expect(page.getByTestId("event-milano_city_date_01")).toHaveCount(0);
   await page.getByTestId("city-epilogue").click();
   const togetherEpilogue = await finishCityEpilogue(page);
   expect(togetherEpilogue).not.toEqual(initialEpilogue);

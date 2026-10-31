@@ -41,17 +41,24 @@ export function RomanceMenu({
       {availableMoments.map((date) => (
         <EventCard key={date.id} game={game} date={date} onChoose={onChoose} />
       ))}
-      <p className="fine-print ap-help">APはデートに使うポイントです。</p>
-      <div className="date-list">
-        {ordinaryDates.map((date) => (
-          <EventCard
-            key={date.id}
-            game={game}
-            date={date}
-            onChoose={onChoose}
-          />
-        ))}
-      </div>
+      {availableMoments.length === 0 && ordinaryDates.length === 0 && (
+        <p className="fine-print">今選べるデートはありません。旅を続けましょう。</p>
+      )}
+      {ordinaryDates.length > 0 && (
+        <>
+          <p className="fine-print ap-help">APはデートに使うポイントです。</p>
+          <div className="date-list">
+            {ordinaryDates.map((date) => (
+              <EventCard
+                key={date.id}
+                game={game}
+                date={date}
+                onChoose={onChoose}
+              />
+            ))}
+          </div>
+        </>
+      )}
       {game.legacyTrialAvailable && (
         <section className="trial-progress" aria-label="試遊用の旅の進行">
           <h2>試遊用の補助AP</h2>
@@ -100,7 +107,6 @@ export function EventCard({
   onChoose: (id: string) => void;
 }) {
   const eligibility = getDateAvailability(game, date.id);
-  const played = game.playedDateIds.includes(date.id);
   return (
     <article
       className={`date-card${date.kind !== "normal" ? " invitation-card" : ""}${!eligibility.available ? " date-unavailable" : ""}`}
@@ -119,10 +125,9 @@ export function EventCard({
         className="date-option"
         disabled={!eligibility.available}
         onClick={() => onChoose(date.id)}
-        aria-label={`${played && date.kind === "normal" ? "もう一度誘う" : date.actionLabelJa}（${date.titleJa}、${date.apCost ? `${date.apCost} AP` : "AP不要"}）`}
+        aria-label={`${date.actionLabelJa}（${date.titleJa}、${date.apCost ? `${date.apCost} AP` : "AP不要"}）`}
       >
         <span className="date-option-title">{date.titleJa}</span>
-        {played && date.kind === "normal" && <span className="date-option-played">体験済み</span>}
         <span className="date-option-cost">{date.apCost ? `${date.apCost} AP` : "AP不要"}</span>
         {eligibility.available && <span aria-hidden="true">→</span>}
       </button>
@@ -135,11 +140,6 @@ export function EventCard({
       {!eligibility.available && (
         <p className="availability" role="status">
           {eligibility.reason}
-        </p>
-      )}
-      {played && date.kind === "normal" && (
-        <p className="fine-print">
-          再鑑賞にもAPを使います。好感度や思い出の追加獲得はありません。
         </p>
       )}
     </article>

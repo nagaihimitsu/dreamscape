@@ -9,6 +9,7 @@ import {
   finishDate,
   getDateAvailability,
   grantRewardOnce,
+  isEventVisible,
   setNames,
   startDate,
   validateGameState,
@@ -110,16 +111,15 @@ describe("AP and date rules", () => {
     const finished = play(initial);
     expect(finishDate(finished, finished.revision)).toBe(finished);
   });
-  it("replay charges its opportunity once but cannot earn affection or new memories", () => {
+  it("hides and refuses a completed normal date without consuming AP", () => {
     const first = play(freshDate(), [0, 0]);
-    const replay = startDate(first, dateId);
-    expect(replay.activeDate?.replay).toBe(true);
-    expect(replay.ap).toBe(0);
-    const second = play(replay, [2, 2]);
-    expect(second.affection).toBe(first.affection);
-    expect(second.memories).toEqual(first.memories);
-    expect(second.playedDateIds).toEqual([dateId]);
-    expect(startDate(second, dateId)).toBe(second);
+    expect(first.ap).toBe(2);
+    expect(isEventVisible(first, dateId)).toBe(false);
+    expect(getDateAvailability(first, dateId).available).toBe(false);
+    expect(startDate(first, dateId)).toBe(first);
+    const restored = validateGameState(JSON.parse(JSON.stringify(first)));
+    expect(startDate(restored, dateId)).toBe(restored);
+    expect(restored).toEqual(first);
   });
 });
 

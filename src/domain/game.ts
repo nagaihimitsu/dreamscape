@@ -27,7 +27,6 @@ import {
   effects,
   progression,
   trialMilestones,
-  rewardRules,
   type DateDefinition,
 } from "../content";
 import {
@@ -360,7 +359,10 @@ export function claimTrialMilestone(
 export function isEventVisible(state: GameState, dateId: string): boolean {
   const date = dates.find((item) => item.id === dateId);
   return Boolean(
-    date && (date.kind === "normal" || state.unlockedEventIds.includes(dateId)),
+    date &&
+      (date.kind === "normal"
+        ? !state.playedDateIds.includes(dateId)
+        : state.unlockedEventIds.includes(dateId)),
   );
 }
 
@@ -385,7 +387,7 @@ export function getDateAvailability(
       available: false,
       reason: "途中の会話・バトルを再開してください。",
     };
-  if (!date.repeatable && state.playedDateIds.includes(dateId))
+  if ((date.kind === "normal" || !date.repeatable) && state.playedDateIds.includes(dateId))
     return {
       available: false,
       reason: "このひとときは、もう思い出になりました。",
@@ -403,68 +405,6 @@ export function getDateAvailability(
     return { available: false, reason: "もう少し、一緒の時間を過ごしてから。" };
   if (state.ap < date.apCost)
     return { available: false, reason: "APが足りません。" };
-  if (date.kind === "normal" && state.playedDateIds.includes(dateId)) {
-    // A replay must never spend the finite budget needed by an unplayed date.
-    const futureAP =
-      trialMilestones
-        .filter(
-          (item) =>
-            state.legacyTrialAvailable &&
-            !state.claimedRewardIds.includes(item.rewardSourceId),
-        )
-        .reduce((sum, item) => sum + item.ap, 0) +
-      state.pendingApRewards.reduce((sum, item) => sum + item.remainingAp, 0) +
-      rewardRules
-        .filter(
-          (rule) =>
-            !state.claimedRewardIds.includes(rule.id) &&
-            rule.trigger !== "guide_read" &&
-            rule.trigger !== "battle_score",
-        )
-        .reduce((sum, rule) => sum + rule.ap, 0);
-    const remainingCost = dates
-      .filter(
-        (item) =>
-          item.kind === "normal" && !state.playedDateIds.includes(item.id),
-      )
-      .reduce((sum, item) => sum + item.apCost, 0);
-    const availableMilestoneAP =
-      trialMilestones
-        .filter(
-          (item) =>
-            state.legacyTrialAvailable &&
-            !state.claimedRewardIds.includes(item.rewardSourceId) &&
-            item.requiredPlayedDateIds.every((id) =>
-              state.playedDateIds.includes(id),
-            ),
-        )
-        .reduce((sum, item) => sum + item.ap, 0) +
-      state.pendingApRewards.reduce((sum, item) => sum + item.remainingAp, 0);
-    const nextNormalDates = dates.filter(
-      (item) =>
-        item.kind === "normal" &&
-        !state.playedDateIds.includes(item.id) &&
-        (item.requiredCompletedCityIds ?? []).every((id) =>
-          state.completedCityIds.includes(id),
-        ) &&
-        item.requiredPlayedDateIds.every(
-          (id) =>
-            state.playedDateIds.includes(id) ||
-            dates.find((previous) => previous.id === id)?.kind !== "normal",
-        ),
-    );
-    const nextCost = nextNormalDates.length
-      ? Math.min(...nextNormalDates.map((item) => item.apCost))
-      : 0;
-    if (
-      state.ap + futureAP - date.apCost < remainingCost ||
-      state.ap + availableMilestoneAP - date.apCost < nextCost
-    )
-      return {
-        available: false,
-        reason: "新しいデートのために、今はAPを残しておこう。",
-      };
-  }
   return { available: true, reason: "" };
 }
 

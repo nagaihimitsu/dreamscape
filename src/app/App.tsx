@@ -599,6 +599,7 @@ export default function App() {
                 .filter(
                   (date) =>
                     date.allowAfterEnding &&
+                    !(date.kind === "normal" && game.playedDateIds.includes(date.id)) &&
                     date.requiredCompletedCityIds?.every((id) =>
                       game.completedCityIds.includes(id),
                     ),

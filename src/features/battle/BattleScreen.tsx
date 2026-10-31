@@ -367,7 +367,7 @@ export function BattleScreen({
               />
             )}
             <p className="english-instructions">
-              単語は1回で意味、続けて2回で文の訳。
+              単語は1回で意味、続けて2回で文の訳。回答はA・B・Cを押します。
             </p>
             <h2 className="question-en">
               <InteractiveEnglish
@@ -398,9 +398,19 @@ export function BattleScreen({
                       data-testid={`option-text-${option.id}`}
                       className={`quiz-choice ${selected ? "chosen" : ""} ${correct ? "correct" : ""}`}
                     >
-                      <span className="option-id" aria-hidden="true">
+                      <button
+                        type="button"
+                        data-testid={`answer-${option.id}`}
+                        className="option-id answer-submit"
+                        aria-label={`選択肢${option.id}「${option.textEn}」を答える`}
+                        disabled={active.phase !== "question"}
+                        onClick={() => {
+                          if (onAnswer(option.id))
+                            setAnimatedAnswer(`${battle.id}:${active.roundIndex}:${option.id}`);
+                        }}
+                      >
                         {option.id}
-                      </span>
+                      </button>
                       <div className="option-body">
                         <InteractiveEnglish
                           text={option.textEn}
@@ -421,21 +431,7 @@ export function BattleScreen({
                         learning={learning}
                         id={question.id}
                         part={option.id}
-                      >
-                        <button
-                          type="button"
-                          data-testid={`answer-${option.id}`}
-                          className="answer-submit"
-                          aria-label={`選択肢${option.id}「${option.textEn}」を答える`}
-                          disabled={active.phase !== "question"}
-                          onClick={() => {
-                            if (onAnswer(option.id))
-                              setAnimatedAnswer(`${battle.id}:${active.roundIndex}:${option.id}`);
-                          }}
-                        >
-                          {option.id}を選ぶ
-                        </button>
-                      </Translation>
+                      />
                     </div>
                   </div>
                 );

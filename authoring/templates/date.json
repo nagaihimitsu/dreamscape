@@ -17,7 +17,7 @@
       "kind": "normal",
       "minAffection": 0,
       "requiredPlayedDateIds": [],
-      "repeatable": true,
+      "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
       "effectCount": 2,

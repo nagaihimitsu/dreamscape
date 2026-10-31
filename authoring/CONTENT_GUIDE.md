@@ -63,7 +63,7 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 
 ## 恋愛とInk
 
-`date.json` の `id`、`chapterId`、`titleJa`、`descriptionJa`、`storyId`、`backgroundAssetId` はイベント、章、表示文、脚本、背景です。`kind` は通常なら `normal`。`apCost`、`minRomanceStage`、`minAffection`、`requiredCompletedChapters`、`requiredPlayedDateIds` は開始条件で、`requiredCompletedCityIds` と `allowAfterEnding` は必要な場合のみ。`repeatable` は再鑑賞可否、`rewardOnlyOnce` は効果の重複防止、`needsDeferred` は告白保留後の条件、`choiceCount` / `effectCount` は各経路の選択・効果回数、`actionLabelJa` と任意の `invitationJa` はボタン・確認文です。`validationContexts` は分岐確認に使う関係段階や思い出等の例で、脚本が使う条件を網羅します。
+`date.json` の `id`、`chapterId`、`titleJa`、`descriptionJa`、`storyId`、`backgroundAssetId` はイベント、章、表示文、脚本、背景です。`kind` は通常なら `normal`。`apCost`、`minRomanceStage`、`minAffection`、`requiredCompletedChapters`、`requiredPlayedDateIds` は開始条件で、`requiredCompletedCityIds` と `allowAfterEnding` は必要な場合のみ。`repeatable` は再挑戦可否で、通常デートは `false`、告白は保留後の再挑戦のため `true` にします。`rewardOnlyOnce` は旧版で再鑑賞を開始済みのセーブを含む効果の重複防止、`needsDeferred` は告白保留後の条件、`choiceCount` / `effectCount` は各経路の選択・効果回数、`actionLabelJa` と任意の `invitationJa` はボタン・確認文です。`validationContexts` は分岐確認に使う関係段階や思い出等の例で、脚本が使う条件を網羅します。
 
 `date_effects.json` の各 `id`、`affectionDelta`、任意の `memoryId` はInkの `# effect:` に対応します。思い出は `presentation.json` の `memories` に同じIDと `titleJa` / `descriptionJa` を登録。背景は `backgrounds` のIDごとに `nameJa` / `captionJa` / 色 `color`、表情は `emotions` に登録します。効果IDは状態を変えるため、単なる表示名と混同しないでください。
 

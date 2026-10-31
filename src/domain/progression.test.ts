@@ -105,15 +105,13 @@ describe("Phase 2 relationship progression", () => {
     const reloaded = validateGameState(JSON.parse(JSON.stringify(awarded)));
     expect(claimTrialMilestone(reloaded, first.id)).toBe(reloaded);
   });
-  it("keeps the next date funded rather than counting inaccessible future milestones", () => {
+  it("keeps the next date funded by refusing an already completed date", () => {
     let state = toWalk();
     expect(state.ap).toBe(6);
-    state = play(state, cafe, [2, 2]);
-    expect(state.ap).toBe(4);
     expect(getDateAvailability(state, cafe).available).toBe(false);
     expect(startDate(state, cafe)).toBe(state);
     state = play(state, walk, [0, 1]);
-    expect(state.ap).toBe(1);
+    expect(state.ap).toBe(3);
     state = claimTrialMilestone(state, trialMilestones[1].id);
     state = play(state, invitation, [0]);
     state = play(state, night, [0, 1]);

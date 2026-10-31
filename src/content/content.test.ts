@@ -124,6 +124,15 @@ describe("content build acceptance", () => {
     );
   });
 
+  it("rejects a normal date configured for replay", async () => {
+    await changeDates((data) => {
+      data.dates[0].repeatable = true;
+    });
+    await expect(buildContent(fixture, false)).rejects.toThrow(
+      "One-time event is repeatable: milano_cafe_01",
+    );
+  });
+
   it("rejects undefined effects even on a non-default branch", async () => {
     await replace(
       storyFile,

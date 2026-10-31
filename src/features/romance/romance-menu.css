@@ -55,8 +55,7 @@
   overflow-wrap: anywhere;
 }
 
-.date-option-cost,
-.date-option-played {
+.date-option-cost {
   flex: none;
   white-space: nowrap;
   font-size: 13px;

@@ -14,7 +14,7 @@ import {
 
 test.use({ reducedMotion: "reduce" });
 
-test("default names and a legacy chapter save keep cafe choices, reload and replay consistent", async ({
+test("default names and a legacy chapter save keep cafe choices and reload consistent without offering a replay", async ({
   page,
 }) => {
   const errors: string[] = [];
@@ -55,22 +55,8 @@ test("default names and a legacy chapter save keep cafe choices, reload and repl
   await page.reload();
   expect(await saved(page)).toEqual(completed);
 
-  await startCafe(page);
-  expect((await saved(page)).ap).toBe(0);
-  await choose(page, 2);
-  await choose(page, 2);
-  await finishCafe(page);
-  const replay = await saved(page);
-  expect(replay.ap).toBe(0);
-  expect(replay.affection).toBe(completed.affection);
-  expect(replay.memories).toEqual(completed.memories);
-  expect(replay.playedDateIds).toEqual(completed.playedDateIds);
-  await page
-    .getByRole("button", { name: "自由時間に戻る", exact: true })
-    .click();
-  await expect(
-    page.getByTestId("event-milano_cafe_01").getByRole("button"),
-  ).toBeDisabled();
+  await expect(page.getByTestId("event-milano_cafe_01")).toHaveCount(0);
+  expect(await saved(page)).toEqual(completed);
   expect(errors).toEqual([]);
 });
 

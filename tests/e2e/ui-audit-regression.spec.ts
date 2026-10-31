@@ -80,7 +80,7 @@ test("playing a date updates the compact choices without losing progression", as
   expect(after.playedDateIds).toContain("milano_cafe_01");
   expect(after.romanceStage).toBeGreaterThanOrEqual(2);
   await expect(page.getByTestId("event-milano_walk_01").getByRole("button")).toBeEnabled();
-  await expect(page.getByTestId("event-milano_cafe_01")).toContainText("体験済み");
+  await expect(page.getByTestId("event-milano_cafe_01")).toHaveCount(0);
   await expectNoOverflow(page);
 });
 

@@ -423,7 +423,7 @@ export async function buildContent(root: string, writeOutput = true) {
     if (date.kind !== "normal" && date.apCost !== 0)
       throw new Error(`Special events must be free: ${date.id}`);
     if (
-      (date.kind === "special" || date.kind === "reassurance") &&
+      (date.kind === "normal" || date.kind === "special" || date.kind === "reassurance") &&
       date.repeatable
     )
       throw new Error(`One-time event is repeatable: ${date.id}`);
