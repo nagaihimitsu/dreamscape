@@ -7,6 +7,10 @@ import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { DialogueText } from "../../components/DialogueText";
 import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
+import { DialogueToolsMenu } from "../../components/DialogueToolsMenu";
+import { AutoAdvanceButton, useAutoAdvance } from "../../components/useAutoAdvance";
+import { dialogueObstructed } from "../../components/dialogueObstructed";
+import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import "./romance-scene.css";
 
 export function RomanceScene({
@@ -45,6 +49,7 @@ export function RomanceScene({
     frame.text,
   );
   const [paused, setPaused] = useState(false);
+  const windowVisibility = useDialogueWindow();
   const dialogueRef = useDialogueScrollReset<HTMLElement>(active.storyState);
   const pendingChoice = useRef<{
     revision: number;
@@ -103,12 +108,18 @@ export function RomanceScene({
     choiceLock.current = false;
   }, [game.revision]);
   function advance() {
-    if (!ready || paused || frame.choices.length) return;
+    if (!ready || paused || frame.choices.length || windowVisibility.hidden || dialogueObstructed()) return;
     if (frame.ended) onFinish();
     else onAdvance();
   }
+  const autoAdvance = useAutoAdvance({
+    ready,
+    canAdvance: !paused && !windowVisibility.hidden && !frame.ended && frame.choices.length === 0,
+    text: frame.text,
+    onAdvance: advance,
+  });
   return (
-    <div className="vn-scene romance-scene" data-testid="romance-scene">
+    <div className="vn-scene romance-scene" data-testid="romance-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-has-choices={frame.choices.length > 0}>
       <div className="vn-background">
         <CanalScene backgroundId={frame.background} />
       </div>
@@ -123,6 +134,9 @@ export function RomanceScene({
         ref={dialogueRef}
         className="vn-dialogue paper story-paper"
         aria-label="デートの会話"
+        data-has-choices={frame.choices.length > 0}
+        inert={windowVisibility.hidden}
+        aria-hidden={windowVisibility.hidden || undefined}
       >
         {exitingChoice && (
           <div
@@ -186,7 +200,7 @@ export function RomanceScene({
                     key={`${game.revision}-${choice.index}`}
                     className="choice"
                     onClick={() => {
-                      if (choiceLock.current) return;
+                      if (choiceLock.current || windowVisibility.hidden || dialogueObstructed()) return;
                       if (!confirmChoices) choiceLock.current = true;
                       pendingChoice.current = {
                         revision: game.revision,
@@ -220,11 +234,14 @@ export function RomanceScene({
               </button>
             )}
             <div className="story-tools">
-              <button className="text-button" onClick={() => setPaused(true)}>
-                中断する
-              </button>
               <DialogueLog entries={entries} />
-              <label>
+              <AutoAdvanceButton state={autoAdvance} />
+              <DialogueToolsMenu>
+                <button className="text-button" onClick={() => setPaused(true)}>
+                  中断する
+                </button>
+                <DialogueWindowHide state={windowVisibility} />
+                <label>
                 文字送り
                 <select
                   aria-label="文字送り"
@@ -235,11 +252,13 @@ export function RomanceScene({
                   <option value={25}>ふつう</option>
                   <option value={0}>一括表示</option>
                 </select>
-              </label>
+                </label>
+              </DialogueToolsMenu>
             </div>
           </>
         )}
       </section>
+      <DialogueWindowRestore state={windowVisibility} />
     </div>
   );
 }

@@ -3,6 +3,9 @@ import { battles, battleQuizzes, presentation } from "../../content";
 import type { GameState } from "../../domain/game";
 import { getBattleOutcome } from "../../domain/battle";
 import { DialogueText } from "../../components/DialogueText";
+import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
+import { AutoAdvanceButton, useAutoAdvance } from "../../components/useAutoAdvance";
+import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
 import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
@@ -66,6 +69,8 @@ export function BattleScreen({
   const answer = active.answers[active.roundIndex];
   const record = game.battleRecords.find((item) => item.battleId === battle.id);
   const [paused, setPaused] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const windowVisibility = useDialogueWindow();
   const readingArea = useRef<HTMLElement>(null);
   const displayedStoryState = active.phase === "dialogue" ? active.storyState : null;
   // Start each new scene at the top of its own reading area, without moving
@@ -121,6 +126,19 @@ export function BattleScreen({
     frame?.text ?? "",
   );
   const isDialogue = active.phase === "dialogue";
+  const advanceSafely = () => {
+    if ((!isDialogue || ready) && !windowVisibility.hidden && !dialogueObstructed()) onAdvance();
+  };
+  const { show } = windowVisibility;
+  useEffect(() => {
+    if (!isDialogue) show();
+  }, [isDialogue, show]);
+  const auto = useAutoAdvance({
+    ready,
+    canAdvance: isDialogue && !paused && !menuOpen && !windowVisibility.hidden && !!frame && !frame.ended,
+    text: frame?.text ?? "",
+    onAdvance: advanceSafely,
+  });
   const isResult = active.phase === "result";
   const isSpecial = !!battle.reasoning;
   const showReasoning =
@@ -131,13 +149,14 @@ export function BattleScreen({
       className={`battle-screen ${answer && animatedAnswer === answerKey ? "answer-animating" : ""}`}
       data-phase={active.phase}
       data-reduce-motion={reduceMotion || undefined}
+      data-dialogue-hidden={isDialogue && windowVisibility.hidden || undefined}
     >
+      <div className="battle-backdrop">
+        <CanalScene backgroundId={frame?.background ?? battle.backgroundAssetId} />
+      </div>
       <div
         className={`battle-stage ${isDialogue ? "" : "battle-stage-compact"} ${battle.scope === "city_finale" ? "finale-stage" : ""}`}
       >
-        <div className="battle-backdrop">
-          <CanalScene backgroundId={frame?.background ?? battle.backgroundAssetId} />
-        </div>
         <div className="battle-enemy-info">
           <p className="eyebrow">{battle.titleJa}</p>
           <p className="enemy-title">{battle.enemyTitleJa}</p>
@@ -170,13 +189,27 @@ export function BattleScreen({
           </div>
         </div>
       </div>
+      {isDialogue && onNotebook && (
+        <button className="notebook-button battle-stage-notebook" onClick={onNotebook}>
+          手がかり帳
+        </button>
+      )}
+      <div className="battle-paper-shell" aria-hidden={isDialogue && windowVisibility.hidden || undefined} inert={isDialogue && windowVisibility.hidden || undefined}>
+      {isDialogue && !paused && frame && (
+        <div className="speaker battle-nameplate">
+          {speaker}
+          {frame.emotion !== "neutral" && (
+            <span className="emotion">{presentation.emotions[frame.emotion]}</span>
+          )}
+        </div>
+      )}
       <section
         ref={readingArea}
-        className="paper battle-paper"
+        className={`paper battle-paper${isDialogue && !paused ? " battle-dialogue" : ""}`}
         id="battle-content"
         aria-label="クイズバトル"
       >
-        <div className="battle-roundbar">
+        {!isDialogue && <div className="battle-roundbar">
           <span>
             {isResult
               ? "決着"
@@ -188,7 +221,7 @@ export function BattleScreen({
               手がかり帳
             </button>
           )}
-        </div>
+        </div>}
         {!paused && !isResult && active.answers.length > 0 && (
           <button className="text-button" onClick={() => onEnglish()}>
             回答した問題を振り返る
@@ -287,30 +320,18 @@ export function BattleScreen({
           </div>
         ) : isDialogue && frame ? (
           <>
-            <div className="speaker">
-              <span
-                className={`speaker-dot ${frame.emotion}`}
-                aria-hidden="true"
-              />
-              {speaker}
-              {frame.emotion !== "neutral" && (
-                <span className="emotion">
-                  {presentation.emotions[frame.emotion]}
-                </span>
-              )}
-            </div>
             <DialogueText
               key={game.revision}
               text={frame.text}
               speed={speed}
               onReady={onReady}
-              onAdvance={onAdvance}
+              onAdvance={advanceSafely}
             />
             <button
               className="next"
               data-testid="battle-advance"
               disabled={!ready}
-              onClick={onAdvance}
+              onClick={advanceSafely}
             >
               {frame.ended
                 ? active.dialogueScene === battle.scenes.outro
@@ -460,7 +481,7 @@ export function BattleScreen({
                 <button
                   className="primary"
                   data-testid="battle-advance"
-                  onClick={onAdvance}
+                  onClick={advanceSafely}
                 >
                   敵の反応を見る <span aria-hidden="true">→</span>
                 </button>
@@ -498,6 +519,11 @@ export function BattleScreen({
         {!isResult && (
           <div className="story-tools">
             {isDialogue && <DialogueLog entries={entries} />}
+            {isDialogue && <AutoAdvanceButton state={auto} />}
+            <details className="battle-tool-menu" open={menuOpen} onToggle={(event) => setMenuOpen(event.currentTarget.open)}>
+              <summary>会話の操作</summary>
+              <div className="battle-tool-menu-content">
+            {isDialogue && <DialogueWindowHide state={windowVisibility} onHide={() => setMenuOpen(false)} />}
             <button
               className="text-button"
               onClick={() => setPaused((value) => !value)}
@@ -516,9 +542,13 @@ export function BattleScreen({
                 <option value={0}>一括表示</option>
               </select>
             </label>
+              </div>
+            </details>
           </div>
         )}
       </section>
+      </div>
+      {isDialogue && <DialogueWindowRestore state={windowVisibility} />}
     </div>
   );
 }

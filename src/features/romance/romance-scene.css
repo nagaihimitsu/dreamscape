@@ -1,168 +1,186 @@
+/* Change these values to retheme every VN dialogue window. */
+:root {
+  --vn-window-bg: rgba(20, 27, 34, .92);
+  --vn-text: #fffaf1;
+  --vn-muted: #e2e6df;
+  --vn-name-bg: #58756c;
+  --vn-window-radius: 24px;
+  --vn-name-radius: 999px;
+  --vn-body-size: 18px;
+  --vn-window-padding: clamp(12px, 2.5vw, 24px);
+  --vn-choice-bg: rgba(255, 255, 255, .08);
+  --vn-choice-border: rgba(255, 255, 255, .42);
+}
 .vn-scene {
   position: relative;
   isolation: isolate;
   display: flex;
   flex-direction: column;
-  min-height: min(720px, 78vh);
+  justify-content: flex-end;
+  min-height: min(720px, 78dvh);
   overflow: hidden;
   background: #5b6258;
 }
 .conversation-active .journey-bar,
-.conversation-active .journey-stage {
-  display: none;
-}
-.vn-background {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-}
-.vn-background .canal-scene {
-  width: 100%;
-  height: 100%;
-}
-.vn-background .scene-stamp {
-  display: none;
-}
+.conversation-active .journey-stage { display: none; }
+.vn-background { position: absolute; inset: 0; z-index: -1; }
+.vn-background .canal-scene { width: 100%; height: 100%; }
+.vn-background .scene-stamp { display: none; }
+/* The portrait and the window are independent layers over the same backdrop. */
 .vn-character-layer {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: clamp(220px, 30vh, 300px);
+  inset: -12% 0 0;
+  height: 112%;
+  transform: translateY(-20%);
   pointer-events: none;
 }
-.reduce-motion .vn-character {
-  transition: none;
-}
+.reduce-motion .vn-character { transition: none; }
 .vn-scene .vn-dialogue {
   position: relative;
   z-index: 2;
-  margin: clamp(190px, 27vh, 275px) auto 0;
-  width: 100%;
-  padding: 16px 20px 18px;
+  flex: 0 1 auto;
+  width: 90%;
+  max-width: 1100px;
+  max-height: calc(100% - clamp(118px, 25dvh, 220px));
   min-height: 0;
-  background: #faf8f0f5;
-  border: 1px solid #e7e0cf;
-  box-shadow: 0 -6px 24px #303d3733;
+  margin: 0 auto clamp(8px, 1.8dvh, 16px);
+  padding: 0 var(--vn-window-padding) var(--vn-window-padding);
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  color: var(--vn-text);
+  /* The name plate straddles the upper edge of the window. The transparent
+     strip is part of the scrollable surface, so long names cannot be clipped. */
+  background:
+    radial-gradient(circle 20px at 100% 100%, var(--vn-window-bg) 98%, transparent 100%) left 14px / 20px 20px no-repeat,
+    radial-gradient(circle 20px at 0 100%, var(--vn-window-bg) 98%, transparent 100%) right 14px / 20px 20px no-repeat,
+    linear-gradient(var(--vn-window-bg), var(--vn-window-bg)) center 14px / calc(100% - 40px) 20px no-repeat,
+    linear-gradient(var(--vn-window-bg), var(--vn-window-bg)) left 34px / 100% calc(100% - 34px) no-repeat;
+  border: 0;
+  border-radius: var(--vn-window-radius);
+  box-shadow: none;
 }
+.vn-dialogue .section-meta { display: none; }
 .vn-dialogue .speaker {
-  margin-top: 12px;
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 8px;
+  padding: 3px 18px;
+  border-radius: var(--vn-name-radius);
+  background: var(--vn-name-bg);
+  color: var(--vn-text);
+  font-size: 14px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
 }
+.vn-dialogue .speaker-dot { display: none; }
+.vn-dialogue .emotion { color: var(--vn-muted); }
 .vn-choice-exit {
   position: absolute;
   z-index: 3;
   right: 12px;
-  top: -54px;
+  top: 8px;
   max-width: min(65%, 260px);
   max-height: 48px;
   overflow: hidden;
   padding: 8px 12px;
-  border: 1px solid #e5dfd1;
-  background: #faf8f0f5;
-  color: #364936;
+  border: 1px solid var(--vn-choice-border);
+  border-radius: 12px;
+  background: var(--vn-window-bg);
+  color: var(--vn-text);
   font-size: 13px;
   pointer-events: none;
   animation: vn-choice-away 220ms ease-in forwards;
 }
 @keyframes vn-choice-away {
-  from {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateX(20px);
-  }
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(20px); }
 }
-@media (prefers-reduced-motion: reduce) {
-  .vn-choice-exit {
-    display: none;
-  }
-}
+@media (prefers-reduced-motion: reduce) { .vn-choice-exit { display: none; } }
 .vn-dialogue .dialogue-text {
-  margin: 10px 0 14px;
-  min-height: 2.8em;
-  font-size: 18px;
-  line-height: 1.85;
+  margin: 6px 0 10px;
+  min-height: 0;
+  color: var(--vn-text);
+  font-size: var(--vn-body-size);
+  line-height: 1.8;
   cursor: pointer;
 }
-.vn-dialogue .choices {
-  padding-top: 10px;
+.vn-dialogue .dialogue-next-mark {
+  color: var(--vn-muted);
+  font-size: 12px;
+  white-space: nowrap;
 }
-.vn-dialogue .choice {
-  min-height: 44px;
-  padding: 9px 14px;
-  margin: 7px 0;
-  line-height: 1.55;
-}
+.vn-dialogue[data-has-choices="true"] .dialogue-next-mark { display: none; }
+.vn-dialogue .next, .vn-dialogue .text-button { color: var(--vn-text); }
+.vn-dialogue .next { min-height: 44px; padding: 2px 0 2px 20px; }
+.vn-dialogue .fine-print, .vn-dialogue .eyebrow, .vn-dialogue .story-tools label { color: var(--vn-muted); }
 .vn-dialogue .story-tools {
   flex-wrap: wrap;
-  gap: 6px 12px;
-  margin-top: 12px;
-  padding-top: 8px;
+  gap: 4px 12px;
+  margin-top: 8px;
+  padding-top: 4px;
+  border-color: rgba(255, 255, 255, .24);
 }
-.vn-dialogue .story-tools .text-button {
+.vn-dialogue .story-tools .text-button { min-height: 44px; }
+.vn-dialogue .story-tools select { color: var(--vn-text); border-color: rgba(255, 255, 255, .45); background: #34443f; }
+.vn-tools-menu { position: relative; }
+.vn-tools-menu summary {
+  display: flex;
+  align-items: center;
   min-height: 44px;
+  padding: 4px 6px;
+  color: var(--vn-text);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-size: 12px;
 }
-@media (min-width: 700px) {
-  .vn-scene .vn-dialogue {
-    width: min(90%, 720px);
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .vn-character-layer {
-    height: clamp(240px, 32vh, 320px);
-  }
+.vn-tools-menu summary::marker { content: ""; }
+.vn-tools-items { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
+.vn-dialogue .choices { margin-top: 4px; padding-top: 6px; border-color: rgba(255, 255, 255, .24); }
+.vn-dialogue .choice-hint, .vn-dialogue .choice-hint span { color: var(--vn-muted); }
+.vn-dialogue .choice-hint { margin-bottom: 4px; }
+.vn-dialogue .choice {
+  min-height: 44px;
+  margin: 5px 0;
+  padding: 7px 14px;
+  line-height: 1.5;
+  color: var(--vn-text);
+  background: var(--vn-choice-bg);
+  border: 1px solid var(--vn-choice-border);
+  border-radius: 10px;
 }
+.vn-dialogue .choice:hover:enabled, .vn-dialogue .choice:focus-visible { background: rgba(255,255,255,.18); }
+.vn-dialogue .choice-number { color: var(--vn-muted); }
+.vn-dialogue .primary { background: #dfe9db; color: #1e382f; }
+.vn-dialogue .paused { color: var(--vn-text); }
+.vn-dialogue h1 { font-size: 18px; margin: 2px 0 8px; color: var(--vn-text); }
 
-/* On phones the surrounding app supplies the available screen height.  Keep
-   the scene stable while letting unusually long dialogue or choices scroll
-   inside their reading surface instead of pushing the entire page around. */
-@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
-  .conversation-active #city-epilogue-screen {
-    height: 100%;
-  }
-  .conversation-active .vn-scene {
-    height: 100%;
-    min-height: 0;
-  }
-  .conversation-active .vn-character-layer {
-    position: relative;
-    flex: 1 1 auto;
-    height: auto;
-    min-height: 0;
-  }
-  .conversation-active .vn-scene .vn-dialogue {
-    margin: auto auto 0;
+/* The app supplies the visible play area; exceptionally long text remains
+   reachable inside the window instead of being clipped. */
+.conversation-active #city-epilogue-screen { height: 100%; }
+.conversation-active .vn-scene { height: 100%; min-height: 0; }
+/* Very short portrait windows use normal document scrolling, rather than
+   collapsing the portrait behind the dialogue. */
+@media (max-width: 700px) and (max-height: 499px) and (orientation: portrait) {
+  .conversation-active #city-epilogue-screen { height: auto; }
+  .conversation-active .vn-scene { height: auto; min-height: 480px; }
+  .conversation-active .vn-scene[data-has-choices="true"] { min-height: 640px; }
+}
+@media (min-width: 701px) {
+  .vn-tools-menu, .vn-tools-items { display: contents; }
+  .vn-tools-menu > summary { display: none; }
+}
+@media (max-width: 700px) and (orientation: portrait) {
+  .vn-scene .vn-dialogue {
+    width: calc(100% - 16px);
+    margin-bottom: 8px;
+    padding: 0 14px 10px;
     max-height: calc(100% - clamp(112px, 22dvh, 175px));
-    padding: 10px 16px 12px;
-    overflow-y: auto;
-    overscroll-behavior-y: contain;
-    -webkit-overflow-scrolling: touch;
+    border-radius: 19px;
   }
-  .conversation-active .vn-dialogue .speaker {
-    margin-top: 6px;
-  }
-  .conversation-active .vn-dialogue .dialogue-text {
-    min-height: 0;
-    margin: 6px 0 8px;
-    font-size: 17px;
-    line-height: 1.65;
-  }
-  .conversation-active .vn-dialogue .choices {
-    margin-top: 4px;
-    padding-top: 6px;
-  }
-  .conversation-active .vn-dialogue .choice-hint {
-    margin-bottom: 4px;
-  }
-  .conversation-active .vn-dialogue .choice {
-    margin: 4px 0;
-    padding: 7px 12px;
-    line-height: 1.45;
-  }
-  .conversation-active .vn-dialogue .story-tools {
-    margin-top: 8px;
-    padding-top: 4px;
-  }
+  .vn-dialogue .dialogue-text { font-size: 17px; line-height: 1.6; }
+  .vn-character-layer { transform: translateY(-27%); }
+  .vn-dialogue .choice { line-height: 1.4; padding: 7px 11px; margin: 4px 0; }
 }

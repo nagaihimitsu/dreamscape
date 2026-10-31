@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { dialogueObstructed } from "./dialogueObstructed";
 export function DialogueText({
   text,
   speed,
@@ -12,6 +13,7 @@ export function DialogueText({
   onAdvance?: () => void;
 }) {
   const timerRef = useRef<number | undefined>(undefined);
+  const textRef = useRef<HTMLParagraphElement>(null);
   const [count, setCount] = useState(0);
   const chars = Array.from(text);
   useEffect(() => {
@@ -27,6 +29,12 @@ export function DialogueText({
     onReady(false);
     let revealed = 0;
     const timer = window.setInterval(() => {
+      // A modal or hidden scene must not keep revealing text behind the
+      // player's back. Keep the counter and resume from the same character.
+      if (
+        dialogueObstructed() ||
+        textRef.current?.closest("[inert]")
+      ) return;
       revealed += 1;
       setCount(revealed);
       if (revealed >= Array.from(text).length) window.clearInterval(timer);
@@ -36,6 +44,9 @@ export function DialogueText({
   }, [text, speed, onReady]);
   const ready = count >= chars.length;
   function activate() {
+    // A compact settings menu is not a native modal, so its open state must
+    // also block taps on the text behind it.
+    if (dialogueObstructed() || textRef.current?.closest("[inert]")) return;
     if (!ready) {
       window.clearInterval(timerRef.current);
       setCount(chars.length);
@@ -50,7 +61,9 @@ export function DialogueText({
   return (
     <>
       <p
+        ref={textRef}
         className="dialogue-text"
+        data-ready={ready}
         role={onAdvance ? "button" : undefined}
         tabIndex={onAdvance ? 0 : undefined}
         onClick={onAdvance ? activate : undefined}
@@ -70,6 +83,7 @@ export function DialogueText({
           {chars.slice(0, count).join("")}
           <span className="unrevealed">{chars.slice(count).join("")}</span>
         </span>
+        {ready && onAdvance && <span className="dialogue-next-mark" aria-hidden="true"> ▾</span>}
       </p>
       {!ready && (
         <button className="text-button reveal" onClick={activate}>

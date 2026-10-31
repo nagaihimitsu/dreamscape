@@ -12,6 +12,10 @@ import { DialogueText } from "../../components/DialogueText";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
+import { DialogueToolsMenu } from "../../components/DialogueToolsMenu";
+import { AutoAdvanceButton, useAutoAdvance } from "../../components/useAutoAdvance";
+import { dialogueObstructed } from "../../components/dialogueObstructed";
+import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { ObservationViewer } from "./ObservationViewer";
 import { ClueDetails } from "./ClueDetails";
 import "./tourism.css";
@@ -42,6 +46,7 @@ export function TourismScreen({
   onReplayGuide,
 }: Props) {
   const active = game.activeTourism!;
+  const windowVisibility = useDialogueWindow();
   const dialogueRef = useDialogueScrollReset<HTMLDivElement>(active.storyState);
   const landmark = landmarks.find((item) => item.id === active.landmarkId)!;
   const asset = tourismAssets.find(
@@ -75,6 +80,15 @@ export function TourismScreen({
     speaker,
     frame?.text ?? "",
   );
+  const advanceSafely = () => {
+    if (ready && !windowVisibility.hidden && !dialogueObstructed()) onAdvance();
+  };
+  const autoAdvance = useAutoAdvance({
+    ready,
+    canAdvance: active.phase === "guide" && !!frame && !frame.ended && !windowVisibility.hidden,
+    text: frame?.text ?? "",
+    onAdvance: advanceSafely,
+  });
   const episode = episodes.find((item) => item.landmarkId === landmark.id);
   const guideReward = rewardRules.find(
     (item) => item.episodeId === episode?.id && item.trigger === "guide_read",
@@ -172,7 +186,7 @@ export function TourismScreen({
         </div>
       )}
       {active.phase === "guide" && frame ? (
-        <div className="vn-scene tourism-guide-scene">
+        <div className="vn-scene tourism-guide-scene" data-dialogue-hidden={windowVisibility.hidden || undefined}>
           <div className="vn-background">
             <img
               className="tourism-arrival-image"
@@ -193,6 +207,8 @@ export function TourismScreen({
             ref={dialogueRef}
             className="tourism-guide paper vn-dialogue"
             data-testid="tourism-guide"
+            inert={windowVisibility.hidden}
+            aria-hidden={windowVisibility.hidden || undefined}
           >
             <div className="speaker">{speaker}</div>
             <DialogueText
@@ -200,13 +216,13 @@ export function TourismScreen({
               text={frame.text}
               speed={speed}
               onReady={onReady}
-              onAdvance={onAdvance}
+              onAdvance={advanceSafely}
             />
             <button
               className="next"
               data-testid="tourism-advance"
               disabled={!ready}
-              onClick={onAdvance}
+              onClick={advanceSafely}
             >
               {frame.ended ? "観察を始める" : "続きを読む"}
               <span aria-hidden="true"> →</span>
@@ -220,7 +236,10 @@ export function TourismScreen({
                 案内を閉じて観察する
               </button>
               <DialogueLog entries={entries} />
-              <label>
+              <AutoAdvanceButton state={autoAdvance} />
+              <DialogueToolsMenu>
+                <DialogueWindowHide state={windowVisibility} />
+                <label>
                 文字送り
                 <select
                   aria-label="文字送り"
@@ -231,9 +250,11 @@ export function TourismScreen({
                   <option value={25}>ふつう</option>
                   <option value={0}>一括表示</option>
                 </select>
-              </label>
+                </label>
+              </DialogueToolsMenu>
             </div>
           </div>
+          <DialogueWindowRestore state={windowVisibility} />
         </div>
       ) : (
         <div className="tourism-observation">

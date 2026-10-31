@@ -647,13 +647,15 @@ footer span {
 
 /* Keep the active scene in the phone's visible area; observation remains a
    normal document so its image gestures and coordinates are unaffected. */
-@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
+@media (min-width: 701px), (max-width: 700px) and (min-height: 500px) and (orientation: portrait), (max-width: 700px) and (orientation: landscape) {
   .app-shell.mobile-play-active {
     height: 100dvh;
     min-height: 0;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    max-width: 1280px;
+    margin: 0 auto;
   }
   .mobile-play-active > .masthead,
   .mobile-play-active > .journey-bar,
@@ -746,6 +748,16 @@ footer span {
   .mobile-play-active .guide-active .tourism-guide-scene {
     flex: 1 1 0;
     min-height: 0;
+  }
+}
+/* An unusually short portrait viewport needs natural page scrolling, while
+   the surrounding site header still stays out of the game scene. */
+@media (max-width: 700px) and (max-height: 499px) and (orientation: portrait) {
+  .mobile-play-active > .masthead,
+  .mobile-play-active > .journey-bar,
+  .mobile-play-active > .journey-stage,
+  .mobile-play-active > footer {
+    display: none;
   }
 }
 @media (prefers-reduced-motion: reduce) {

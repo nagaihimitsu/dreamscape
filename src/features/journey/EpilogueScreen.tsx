@@ -6,6 +6,10 @@ import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
+import { DialogueToolsMenu } from "../../components/DialogueToolsMenu";
+import { AutoAdvanceButton, useAutoAdvance } from "../../components/useAutoAdvance";
+import { dialogueObstructed } from "../../components/dialogueObstructed";
+import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 
 export function EpilogueScreen({
   game,
@@ -19,6 +23,7 @@ export function EpilogueScreen({
   onAdvance: () => void;
 }) {
   const active = game.activeEpilogue!;
+  const windowVisibility = useDialogueWindow();
   const dialogueRef = useDialogueScrollReset<HTMLElement>(active.storyState);
   const frame = active.frame;
   const episode = episodes.find((item) => item.id === active.episodeId)!;
@@ -34,6 +39,15 @@ export function EpilogueScreen({
     speaker,
     frame.text,
   );
+  const advanceSafely = () => {
+    if (ready && !windowVisibility.hidden && !dialogueObstructed()) onAdvance();
+  };
+  const autoAdvance = useAutoAdvance({
+    ready,
+    canAdvance: !frame.ended && !windowVisibility.hidden,
+    text: frame.text,
+    onAdvance: advanceSafely,
+  });
   useEffect(() => {
     document
       .getElementById("city-epilogue-screen")
@@ -41,7 +55,7 @@ export function EpilogueScreen({
   }, []);
   return (
     <div id="city-epilogue-screen" data-testid="city-epilogue-screen">
-      <div className="vn-scene">
+      <div className="vn-scene" data-dialogue-hidden={windowVisibility.hidden || undefined}>
         <div className="vn-background">
           <CanalScene backgroundId={frame.background} />
         </div>
@@ -56,22 +70,24 @@ export function EpilogueScreen({
           ref={dialogueRef}
           className="paper story-paper vn-dialogue"
           aria-label="都市エピローグ"
+          inert={windowVisibility.hidden}
+          aria-hidden={windowVisibility.hidden || undefined}
         >
+          <div className="speaker">{speaker}</div>
           <p className="eyebrow">都市エピローグ</p>
           <h1>{episode.clearTitleJa}</h1>
-          <div className="speaker">{speaker}</div>
           <DialogueText
             key={game.revision}
             text={frame.text}
             speed={speed}
             onReady={onReady}
-            onAdvance={onAdvance}
+            onAdvance={advanceSafely}
           />
           <button
             className="next"
             disabled={!ready}
             data-testid="epilogue-advance"
-            onClick={onAdvance}
+            onClick={advanceSafely}
           >
             {frame.ended ? "ふたりの自由時間へ" : "続きを読む"}{" "}
             <span aria-hidden="true">→</span>
@@ -79,7 +95,10 @@ export function EpilogueScreen({
           <div className="story-tools">
             <span className="fine-print">この場面から再開できます</span>
             <DialogueLog entries={entries} />
-            <label>
+            <AutoAdvanceButton state={autoAdvance} />
+            <DialogueToolsMenu>
+              <DialogueWindowHide state={windowVisibility} />
+              <label>
               文字送り
               <select
                 aria-label="文字送り"
@@ -90,9 +109,11 @@ export function EpilogueScreen({
                 <option value={25}>ふつう</option>
                 <option value={0}>一括表示</option>
               </select>
-            </label>
+              </label>
+            </DialogueToolsMenu>
           </div>
         </section>
+        <DialogueWindowRestore state={windowVisibility} />
       </div>
     </div>
   );

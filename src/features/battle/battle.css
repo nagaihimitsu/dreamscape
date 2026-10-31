@@ -1,6 +1,12 @@
 /* The portrait and dialogue share one scene; the reading surfaces stay opaque. */
 .battle-screen {
   --scene-edge: #263d35;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
   background: radial-gradient(ellipse at 75% 18%, #70816d, #344e42 48%, var(--scene-edge) 100%);
   padding-bottom: 24px;
   overflow: clip;
@@ -13,7 +19,8 @@
 .battle-backdrop {
   position: absolute;
   inset: 0;
-  opacity: .38;
+  z-index: -1;
+  opacity: .7;
   pointer-events: none;
 }
 .battle-backdrop .canal-scene {
@@ -80,9 +87,235 @@
   border-radius: 8px;
   box-shadow: 0 10px 28px #152a2260;
 }
+.battle-screen:not([data-phase="dialogue"]) .battle-paper {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: rgba(250, 248, 244, .96);
+}
+.battle-screen .battle-stage:before {
+  display: none;
+}
+.battle-screen .battle-stage-notebook {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  z-index: 3;
+  background: #f7f5edeb;
+}
 .battle-screen[data-phase="dialogue"] .battle-paper {
   margin-top: -28px;
   background: #fcfaf4;
+}
+
+/* Conversation and quiz share the same background. Only the readable panel
+   changes: the dialogue window floats above the characters and scenery. */
+.battle-screen[data-phase="dialogue"] .battle-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+}
+.battle-screen[data-phase="dialogue"] .battle-enemy-info {
+  display: none;
+}
+.battle-screen[data-phase="dialogue"] .battle-characters {
+  position: absolute;
+  inset: 0;
+  /* Keep faces clear of the dialogue window without changing asset anchors. */
+  bottom: clamp(65px, 22%, 140px);
+  min-height: 0;
+}
+.battle-paper-shell { display: contents; }
+.battle-screen[data-phase="dialogue"] .battle-paper-shell {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  width: min(90%, 1100px);
+  max-height: calc(100% - clamp(110px, 22vh, 190px));
+  margin: auto auto 16px;
+}
+.battle-screen[data-phase="dialogue"] .battle-paper.battle-dialogue {
+  flex: 0 1 auto;
+  width: 100%;
+  max-width: none;
+  max-height: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 24px 24px 12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: var(--vn-window-radius, 26px);
+  border: 1px solid #ffffff26;
+  color: var(--vn-text, #fffaf4);
+  background: var(--vn-window-bg, rgba(25, 30, 42, .91));
+}
+.battle-screen .battle-nameplate {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 24px;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  max-width: calc(100% - 48px);
+  margin: 0;
+  padding: 4px 18px;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--vn-name-bg, #8b5d73);
+  overflow-wrap: anywhere;
+}
+.battle-nameplate .emotion { color: inherit; }
+.battle-dialogue .dialogue-text {
+  margin: 10px 0 8px;
+  min-height: 2.5em;
+  font-size: var(--vn-body-size, 18px);
+  line-height: 1.8;
+}
+.battle-dialogue .dialogue-next-mark {
+  color: var(--vn-muted, #e2e6df);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.battle-dialogue .next:disabled { display: none; }
+.battle-dialogue .next { min-height: 44px; padding: 2px 0 2px 12px; }
+.battle-dialogue .reveal { min-height: 44px; margin: 0 0 0 auto; }
+.battle-dialogue .next,
+.battle-dialogue .text-button,
+.battle-dialogue .story-tools,
+.battle-dialogue .story-tools label {
+  color: var(--vn-text, #fffaf4);
+}
+.battle-dialogue .story-tools {
+  margin-top: 8px;
+  padding-top: 4px;
+  border-color: #ffffff40;
+}
+.battle-dialogue .story-tools select {
+  color: #25332d;
+  background: #f9f6ee;
+}
+.battle-tool-menu { position: relative; }
+.battle-tool-menu summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  cursor: pointer;
+  font-size: 12px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.battle-tool-menu-content {
+  position: absolute;
+  z-index: 8;
+  right: 0;
+  bottom: calc(100% + 4px);
+  display: grid;
+  gap: 4px;
+  width: min(240px, 70vw);
+  padding: 10px;
+  border-radius: 8px;
+  background: #faf8f1;
+  color: #294c40;
+  box-shadow: 0 5px 18px #0006;
+}
+.battle-dialogue .battle-tool-menu-content { background: #26333a; color: #fff; }
+.battle-tool-menu-content label { display: grid; gap: 4px; }
+.battle-tool-menu-content button { text-align: left; min-height: 44px; }
+.battle-tool-menu-content select { min-height: 44px; }
+@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
+  .battle-screen[data-phase="dialogue"] .battle-characters {
+    bottom: 34%;
+  }
+  .battle-screen[data-phase="dialogue"] .battle-character-slot {
+    transform: scale(1.5);
+    transform-origin: center bottom;
+  }
+  .battle-screen[data-phase="dialogue"] .battle-paper-shell {
+    width: calc(100% - 16px);
+    max-height: calc(100% - 140px);
+    margin: auto 8px 8px;
+  }
+  .battle-screen[data-phase="dialogue"] .battle-paper.battle-dialogue {
+    margin: 0;
+    padding: 24px 16px 8px;
+  }
+}
+
+/* Wide, short screens use their horizontal space for the three choices.
+   If a translation or a long option expands, the reading panel still scrolls. */
+@media (orientation: landscape) and (max-height: 900px) {
+  .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact {
+    flex: 0 0 64px;
+    min-height: 64px;
+    height: 64px;
+    padding: 4px 20px 0;
+  }
+  .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact h1 {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.35;
+  }
+  .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact .battle-enemy-info { padding-bottom: 8px; }
+  .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact .eyebrow,
+  .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact .enemy-title,
+  .battle-screen:not([data-phase="dialogue"]) .battle-stage-compact .enemy-detail { display: none; }
+  .battle-screen:not([data-phase="dialogue"]) .battle-paper {
+    width: min(94%, 920px);
+    max-width: none;
+    margin: 0 auto 8px;
+    padding: 8px 18px 16px;
+  }
+  .battle-screen .battle-roundbar { min-height: 44px; padding: 0; }
+  .battle-screen .english-instructions { margin: 2px 0; line-height: 1.35; }
+  .battle-screen .question-en { font-size: 18px; line-height: 1.4; margin: 4px 0 0; }
+  .battle-screen .question-translation-tools > .translation,
+  .battle-screen .question-translation-tools > .translation-all { margin: 0; }
+  .battle-screen .quiz-choices { gap: 4px; }
+  .battle-screen .quiz-choice,
+  .battle-screen .quiz-choice.chosen,
+  .battle-screen .quiz-choice.correct {
+    grid-template-columns: 24px minmax(0, 1fr) 180px;
+    align-items: center;
+    gap: 4px 8px;
+    min-height: 52px;
+    padding: 4px 8px;
+    font-size: 16px;
+    line-height: 1.45;
+  }
+  .battle-screen .quiz-choice > .translation { display: contents; }
+  .battle-screen .quiz-choice .translation-actions { grid-column: 3; grid-row: 1; justify-content: flex-end; }
+  .battle-screen .quiz-choice .answer-submit,
+  .battle-screen .quiz-choice .translation-toggle { min-height: 44px; }
+  .battle-screen .quiz-choice .translation > p { grid-column: 2 / -1; margin: 2px 0 8px; }
+}
+
+/* Below 500px of portrait height the scene cannot fit a readable dialogue
+   and controls in a fixed viewport. Let the document grow instead of
+   collapsing the quiz's reading area to a thin, inaccessible strip. */
+@media (max-width: 700px) and (max-height: 499px) and (orientation: portrait) {
+  .battle-screen {
+    height: auto;
+    min-height: max(500px, 100dvh);
+    overflow: visible;
+  }
+  .battle-screen:not([data-phase="dialogue"]) .battle-paper {
+    flex: 0 0 auto;
+    overflow: visible;
+  }
+  .battle-screen[data-phase="dialogue"] .battle-characters {
+    bottom: 40%;
+  }
+  .battle-screen[data-phase="dialogue"] .battle-character-slot {
+    transform: scale(1.18);
+    transform-origin: center bottom;
+  }
 }
 .battle-screen .battle-roundbar {
   position: sticky;
@@ -207,8 +440,8 @@
     flex: 0 0 auto;
   }
   .battle-screen .battle-stage-compact {
-    min-height: 70px;
-    height: 70px;
+    min-height: 90px;
+    height: 90px;
     padding: 4px 16px 0;
   }
   .battle-screen .battle-stage-compact .battle-enemy-info {
@@ -227,12 +460,12 @@
     flex: 1 1 auto;
     min-height: 0;
     width: auto;
-    margin: 0;
+    margin: 0 8px 8px;
     padding: 8px 12px 16px;
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-gutter: stable;
-    border-radius: 0;
+    border-radius: 14px;
   }
   .battle-screen[data-phase="dialogue"] .battle-paper {
     margin-top: 0;
