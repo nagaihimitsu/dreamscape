@@ -15,7 +15,7 @@ import {
   reloadUnchanged,
 } from "./battle-helpers";
 import { completeEpisode, enterFreeTime } from "./journey-helpers";
-import { openCluebook } from "./tourism-helpers";
+import { openCluebook, showClue } from "./tourism-helpers";
 import {
   nonBattleProgress,
   playSpecialBattle,
@@ -74,8 +74,11 @@ test("B exposes a definite contradiction with readable case evidence, persists r
   const { battle, quiz, reasoning } = specialBattle("B");
   await startSpecialFromEntry(page, "B");
   await openCluebook(page);
-  for (const id of reasoning.caseClueIds)
+  for (const id of reasoning.caseClueIds) {
+    await showClue(page, id);
     await expect(page.getByTestId(`notebook-${id}`)).toBeAttached();
+  }
+  await showClue(page, reasoning.correctClueIds[0]);
   await expect(
     page.getByTestId(`select-evidence-${reasoning.correctClueIds[0]}`),
   ).toBeDisabled();
@@ -100,6 +103,7 @@ test("B exposes a definite contradiction with readable case evidence, persists r
   await expect(page.getByTestId("case-context")).toContainText(
     quiz.questions[reasoning.roundIndex].questionEn,
   );
+  await showClue(page, wrong);
   const wrongCard = page.getByTestId(`notebook-${wrong}`);
   await expect(wrongCard).toContainText(
     tourismClues.find((clue) => clue.id === wrong)!.descriptionJa,
@@ -121,12 +125,14 @@ test("B exposes a definite contradiction with readable case evidence, persists r
   await reloadUnchanged(page);
   for (let count = 0; count < 3; count++) {
     await openCluebook(page);
+    await showClue(page, reasoning.correctClueIds[0]);
     await expect(
       page.getByTestId(`select-evidence-${reasoning.correctClueIds[0]}`),
     ).toHaveAttribute("aria-pressed", "true");
     await closeBookUnchanged(page);
   }
   await openCluebook(page);
+  await showClue(page, reasoning.correctClueIds[0]);
   const evidence = page.getByTestId(`notebook-${reasoning.correctClueIds[0]}`);
   await assertCaseImage(page, reasoning.correctClueIds[0]);
   await evidence.getByText("根拠と解釈を確認する", { exact: true }).click();
@@ -147,6 +153,7 @@ test("B exposes a definite contradiction with readable case evidence, persists r
   expect((await saved(page)).activeBattle!.answers).toHaveLength(1);
   expect((await saved(page)).activeBattle!.phase).toBe("question");
   await openCluebook(page);
+  await showClue(page, reasoning.correctClueIds[0]);
   await expect(
     page.getByTestId(`select-evidence-${reasoning.correctClueIds[0]}`),
   ).toBeDisabled();
@@ -232,12 +239,15 @@ test("C preserves two selected cards through notebook and reload, requires an En
   await expect(page.getByTestId("reasoning-submit")).toBeDisabled();
   await reloadUnchanged(page);
   await openCluebook(page);
+  await showClue(page, reasoning.correctClueIds[1]);
   await expect(
     page.getByTestId(`select-evidence-${reasoning.correctClueIds[1]}`),
   ).toHaveAttribute("aria-pressed", "true");
+  await showClue(page, reasoning.correctClueIds[0]);
   await page
     .getByTestId(`select-evidence-${reasoning.correctClueIds[0]}`)
     .click();
+  await showClue(page, unrelated);
   await expect(page.getByTestId(`select-evidence-${unrelated}`)).toBeDisabled();
   const beforeClose = await saved(page);
   expect(beforeClose.activeBattle!.reasoning!.selectedClueIds).toEqual(
@@ -262,6 +272,7 @@ test("C preserves two selected cards through notebook and reload, requires an En
     quiz.questions[2].questionEn,
   );
   for (const id of reasoning.correctClueIds) {
+    await showClue(page, id);
     await expect(page.getByTestId(`select-evidence-${id}`)).toHaveAttribute(
       "aria-pressed",
       "true",

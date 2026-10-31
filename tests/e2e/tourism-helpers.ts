@@ -44,6 +44,12 @@ export async function openCluebook(page: Page) {
   return page.getByRole("dialog", { name: "手がかり帳", exact: true });
 }
 
+/** Change only the currently displayed page; the selected evidence is saved separately. */
+export async function showClue(page: Page, clueId: string) {
+  await page.getByTestId("clue-picker").selectOption(clueId);
+  await expect(page.getByTestId(`notebook-${clueId}`)).toBeVisible();
+}
+
 /** Send browser-native touch input, exercising the Pointer Events pinch/drag path. */
 export async function touchGesture(
   page: Page,

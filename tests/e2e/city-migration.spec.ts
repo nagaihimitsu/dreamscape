@@ -13,7 +13,7 @@ import {
   specialBattle,
   submitEvidence,
 } from "./reasoning-helpers";
-import { openCluebook, skipTourismGuide } from "./tourism-helpers";
+import { openCluebook, showClue, skipTourismGuide } from "./tourism-helpers";
 import { cityEpisodes } from "./city-helpers";
 
 test.use({ reducedMotion: "reduce", viewport: { width: 360, height: 740 } });
@@ -31,11 +31,13 @@ for (const format of ["B", "C"] as const) {
       old as unknown as Awaited<ReturnType<typeof saved>>,
     );
     await openCluebook(page);
-    for (const id of old.activeBattle.reasoning.selectedClueIds)
+    for (const id of old.activeBattle.reasoning.selectedClueIds) {
+      await showClue(page, id);
       await expect(page.getByTestId(`select-evidence-${id}`)).toHaveAttribute(
         "aria-pressed",
         "true",
       );
+    }
     await page.getByTestId("cluebook-close").click();
     expect(await saved(page)).toEqual(old);
     const { quiz, reasoning } = specialBattle(format);

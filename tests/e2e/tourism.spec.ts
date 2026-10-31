@@ -19,6 +19,7 @@ import {
   expectImageWithinPanBounds,
   finishTourismGuide,
   openCluebook,
+  showClue,
   openTourismFromEntry,
   skipTourismGuide,
   touchGesture,
@@ -110,7 +111,12 @@ test("a named guide resumes, the real image loads, and every discovery persists 
   expect(romanceProgress(await saved(page))).toEqual(before);
   await reloadUnchanged(page);
   const book = await openCluebook(page);
-  for (const clue of clues) await expect(book).toContainText(clue.titleJa);
+  for (const clue of clues) {
+    await showClue(page, clue.id);
+    await expect(book.getByRole("heading", { name: clue.titleJa, exact: true })).toBeVisible();
+    await expect(book).toContainText(clue.descriptionJa);
+  }
+  await showClue(page, document.id);
   await book
     .getByRole("heading", { name: document.titleJa, exact: true })
     .scrollIntoViewIfNeeded();
@@ -225,7 +231,14 @@ test("battle cluebook preserves the question, open hint and locked answer, inclu
   await page.getByRole("button", { name: "ヒントを見る", exact: true }).click();
   const questionState = await saved(page);
   const book = await openCluebook(page);
+  const availableIds = await page.getByTestId("clue-picker").locator("option")
+    .evaluateAll((options) => options.map((option) => (option as HTMLOptionElement).value));
+  // The list itself must not expose undiscovered clues, even if the current
+  // page happens to show a different clue.
+  expect(availableIds.sort()).toEqual([hotspots[0].id, document.id].sort());
+  await showClue(page, hotspots[0].id);
   await expect(book).toContainText(hotspots[0].descriptionJa);
+  await showClue(page, document.id);
   await expect(book).toContainText(document.descriptionJa);
   await expect(book).not.toContainText(hotspots[1].descriptionJa);
   expect(await saved(page)).toEqual(questionState);
@@ -287,6 +300,7 @@ test("observation and the guide can be skipped to complete a battle with no clue
   expect((await saved(page)).activeTourism).toBeNull();
   expect((await saved(page)).discoveredClueIds).toEqual([]);
   await openCluebook(page);
+  await expect(page.getByTestId("clue-picker")).toHaveCount(0);
   for (const clue of clues)
     await expect(page.getByRole("dialog")).not.toContainText(
       clue.descriptionJa,

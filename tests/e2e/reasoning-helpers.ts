@@ -14,7 +14,7 @@ import {
   battleDialogueUntilQuestionOrResult,
   romanceProgress,
 } from "./battle-helpers";
-import { openCluebook } from "./tourism-helpers";
+import { openCluebook, showClue } from "./tourism-helpers";
 
 export function specialBattle(format: "B" | "C") {
   const battle = battles.find((item) => item.format === format);
@@ -55,23 +55,29 @@ export async function setEvidence(page: Page, ids: string[]) {
   await openCluebook(page);
   const before = (await saved(page)).activeBattle!.reasoning!;
   for (const id of before.selectedClueIds) {
-    if (!ids.includes(id))
+    if (!ids.includes(id)) {
+      await showClue(page, id);
       await page.getByTestId(`select-evidence-${id}`).click();
+    }
   }
   for (const id of ids) {
     if (
       !(await saved(page)).activeBattle!.reasoning!.selectedClueIds.includes(id)
-    )
+    ) {
+      await showClue(page, id);
       await page.getByTestId(`select-evidence-${id}`).click();
+    }
   }
   expect(
     (await saved(page)).activeBattle!.reasoning!.selectedClueIds.slice().sort(),
   ).toEqual(ids.slice().sort());
-  for (const id of ids)
+  for (const id of ids) {
+    await showClue(page, id);
     await expect(page.getByTestId(`select-evidence-${id}`)).toHaveAttribute(
       "aria-pressed",
       "true",
     );
+  }
   await page.getByTestId("case-return").click();
 }
 
