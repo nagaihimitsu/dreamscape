@@ -1,9 +1,27 @@
-import { expect, type Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 import type { GameState } from "../../src/domain/game";
 import phase4 from "../fixtures/phase4-saves.json" with { type: "json" };
 import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
 
 export const SAVE_KEY = "dreamscape.save.v1";
+
+/** Secondary scene controls are in a compact menu on narrow screens. */
+export async function revealDialogueControl(page: Page, control: Locator) {
+  if (!(await control.isVisible())) {
+    const menu = page.getByText("会話の操作", { exact: true });
+    await expect(menu).toBeVisible();
+    await menu.click();
+  }
+  await expect(control).toBeVisible();
+}
+
+export async function setDialogueSpeed(page: Page, value: string) {
+  const control = page.getByLabel("文字送り");
+  const openedMenu = !(await control.isVisible());
+  if (openedMenu) await revealDialogueControl(page, control);
+  await control.selectOption(value);
+  if (openedMenu) await page.getByText("会話の操作", { exact: true }).click();
+}
 
 export async function saved(page: Page): Promise<GameState> {
   return page.evaluate(

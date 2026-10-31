@@ -10,6 +10,7 @@ import {
   saved,
   startCafe,
   startNewGame,
+  setDialogueSpeed,
 } from "./helpers";
 
 test("a response is saved before its presentation and cannot be scored again after reload", async ({ page }) => {
@@ -38,7 +39,7 @@ test("date conversation log contains displayed lines and never advances the stor
   await startNewGame(page);
   await loadLegacyFreeTime(page);
   await startCafe(page);
-  await page.getByLabel("文字送り").selectOption("0");
+  await setDialogueSpeed(page, "0");
   const before = await saved(page);
   const first = before.activeDate!.frame.text;
   await page.getByRole("button", { name: "会話ログ", exact: true }).click();
@@ -62,7 +63,7 @@ test("disabling romance choice confirmation keeps choices single-commit", async 
   await startNewGame(page);
   await loadLegacyFreeTime(page);
   await startCafe(page);
-  await page.getByLabel("文字送り").selectOption("0");
+  await setDialogueSpeed(page, "0");
   await page.getByRole("button", { name: "設定", exact: true }).click();
   await page.getByLabel("選択肢を選ぶ前に確認する").uncheck();
   await page.getByRole("dialog").getByRole("button", { name: "閉じる", exact: true }).click();
@@ -84,7 +85,7 @@ test("date and battle stay readable on mobile, desktop and landscape", async ({ 
   await startNewGame(page);
   await loadLegacyFreeTime(page);
   await startCafe(page);
-  await page.getByLabel("文字送り").selectOption("0");
+  await setDialogueSpeed(page, "0");
   for (const size of [
     { width: 360, height: 780 },
     { width: 430, height: 932 },
@@ -126,7 +127,7 @@ test("tapping a line reveals it before a second tap advances", async ({ page }) 
   await startNewGame(page);
   await loadLegacyFreeTime(page);
   await startCafe(page);
-  await page.getByLabel("文字送り").selectOption("45");
+  await setDialogueSpeed(page, "45");
   const before = await saved(page);
   await page.locator(".dialogue-text").click();
   expect(await saved(page)).toEqual(before);
@@ -146,7 +147,7 @@ test("a failed expression image falls back and the date remains playable", async
   await startNewGame(page);
   await loadLegacyFreeTime(page);
   await startCafe(page);
-  await page.getByLabel("文字送り").selectOption("0");
+  await setDialogueSpeed(page, "0");
   await choose(page, 1);
   await expect.poll(() => blocked).toBeGreaterThan(0);
   expect((await saved(page)).activeDate!.frame.emotion).toBe("shy");
@@ -207,7 +208,7 @@ test("canceling a choice leaves the save untouched and plays no exit effect", as
   await startNewGame(page);
   await loadLegacyFreeTime(page);
   await startCafe(page);
-  await page.getByLabel("文字送り").selectOption("0");
+  await setDialogueSpeed(page, "0");
   await advanceToChoiceOrEnd(page);
   await expect(page.locator(".choice").first()).toBeEnabled();
   const before = await saved(page);

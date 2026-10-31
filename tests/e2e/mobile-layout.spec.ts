@@ -1,7 +1,7 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import phase1 from "../fixtures/phase1-saves.json" with { type: "json" };
 import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
-import { loadSnapshot, saved } from "./helpers";
+import { loadSnapshot, saved, setDialogueSpeed } from "./helpers";
 
 test.use({ reducedMotion: "reduce" });
 
@@ -45,7 +45,7 @@ for (const height of [640, 780]) {
   test(`a real saved date fits a 360 × ${height} phone without page scrolling`, async ({ page }) => {
     await page.setViewportSize({ width: 360, height });
     await loadSnapshot(page, phase1.beforeChoice);
-    await page.getByLabel("文字送り").selectOption("0");
+    await setDialogueSpeed(page, "0");
     await expect(page.locator(".choice").first()).toBeEnabled();
     await expectDocumentFits(page);
     await expectFullyInViewport(page, page.locator(".dialogue-text"));
@@ -69,7 +69,7 @@ for (const height of [640, 780]) {
 test("advancing real dialogue keeps the phone page still", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await loadSnapshot(page, phase1.started);
-  await page.getByLabel("文字送り").selectOption("0");
+  await setDialogueSpeed(page, "0");
   for (let index = 0; index < 3; index++) {
     await expectDocumentFits(page);
     const revision = (await saved(page)).revision;
@@ -93,7 +93,7 @@ test("short battle question and all three answer controls fit on a phone", async
 test("enlarged date text remains reachable in the scene's reading area", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await loadSnapshot(page, phase1.beforeChoice);
-  await page.getByLabel("文字送り").selectOption("0");
+  await setDialogueSpeed(page, "0");
   await page.addStyleTag({ content: ".vn-dialogue .dialogue-text, .vn-dialogue .choice { font-size: 25px !important; }" });
   await expect(page.locator(".choice").first()).toBeEnabled();
   const lastChoice = page.locator(".choice").last();
@@ -125,7 +125,7 @@ test("translations can be read and closed without moving the document or answeri
 test("tourism guide navigation and the direct battle entry fit on a small phone", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await loadSnapshot(page, phase6.guide);
-  await page.getByLabel("文字送り").selectOption("0");
+  await setDialogueSpeed(page, "0");
   const advance = page.getByTestId("tourism-advance");
   const skip = page.getByTestId("tourism-skip");
   const battle = page.getByRole("button", { name: "バトルを始める" });
@@ -161,7 +161,7 @@ for (const scenario of [
   test(`${scenario.name} returns to the top on the next line but not when closing the log`, async ({ page }) => {
     await page.setViewportSize({ width: 360, height: 640 });
     await loadSnapshot(page, scenario.snapshot);
-    await page.getByLabel("文字送り").selectOption("0");
+    await setDialogueSpeed(page, "0");
     // Exercise the overflow path with real saved dialogue and enlarged text.
     await page.addStyleTag({ content: `${scenario.area} .dialogue-text { font-size: 44px !important; line-height: 1.8 !important; }` });
     const reading = page.locator(scenario.area);

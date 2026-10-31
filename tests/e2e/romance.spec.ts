@@ -9,6 +9,7 @@ import {
   advanceToChoiceOrEnd,
   choose,
   finishCafe,
+  revealDialogueControl,
 } from "./helpers";
 
 test.use({ reducedMotion: "reduce" });
@@ -154,7 +155,9 @@ test("pause, manual save/load and keyboard confirmation preserve the current lin
     - button "運河沿いの小さなカフェ。"
   `);
   const before = await saved(page);
-  await page.getByRole("button", { name: "中断する", exact: true }).click();
+  const pause = page.getByRole("button", { name: "中断する", exact: true });
+  await revealDialogueControl(page, pause);
+  await pause.click();
   await page.getByRole("button", { name: "セーブ", exact: true }).click();
   await page.getByRole("button", { name: "ロード", exact: true }).click();
   expect(await saved(page)).toEqual(before);
