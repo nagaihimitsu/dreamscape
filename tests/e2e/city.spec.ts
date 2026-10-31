@@ -97,6 +97,13 @@ test("a new zero-score Milan journey reaches the city epilogue and romance endin
       (record) => record.firstScore === 0 && record.attempts === 1,
     ),
   ).toBe(true);
+  await page.setViewportSize({ width: 360, height: 640 });
+  const bossContinue = page.getByTestId("city-epilogue-start");
+  const buttonBounds = await bossContinue.boundingBox();
+  expect(buttonBounds).not.toBeNull();
+  expect(buttonBounds!.y).toBeGreaterThanOrEqual(0);
+  expect(buttonBounds!.y + buttonBounds!.height).toBeLessThanOrEqual(640);
+  await expect(page.locator(".battle-score")).toContainText("/ 5 問正解");
   await page.screenshot({
     path: "artifacts/phase7-mobile-city-result.png",
     fullPage: true,

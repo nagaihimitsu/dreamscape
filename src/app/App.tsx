@@ -235,6 +235,9 @@ export default function App() {
     !game.activeBattle &&
     !game.activeTourism &&
     !game.activeEpilogue;
+  // The transient date aftermath has its own return button. The romance
+  // ending does not, even when finishing the date has set `result`.
+  const showingAftermath = !!(idle && freeTimeAvailable && result && !game?.endingReached);
   const nextEpisode = game ? getNextEpisode(game) : null;
   const frame = active?.frame;
   useEffect(() => {
@@ -287,7 +290,7 @@ export default function App() {
 
   return (
     <div
-      className={`app-shell${displaySettings.value.reduceMotion ? " reduce-motion" : ""}${conversationActive ? " conversation-active" : ""}${mobilePlayActive ? " mobile-play-active" : ""}${mobileObservationActive ? " mobile-observation-active" : ""}`}
+      className={`app-shell${displaySettings.value.reduceMotion ? " reduce-motion" : ""}${conversationActive ? " conversation-active" : ""}${mobilePlayActive ? " mobile-play-active" : ""}${mobileObservationActive ? " mobile-observation-active" : ""}${idle && freeTimeAvailable && !game?.endingReached ? " free-time-active" : ""}`}
     >
       <header className="masthead">
         <a href="#main" className="brand">
@@ -347,8 +350,8 @@ export default function App() {
             {learning.error}
           </div>
         )}
-        {idle && freeTimeAvailable && (
-          <div className="paper">
+        {idle && freeTimeAvailable && !showingAftermath && (
+          <div className="paper free-time-notes">
             <button className="secondary" onClick={() => openEnglish()}>
               英語ノートを開く
             </button>
@@ -362,7 +365,7 @@ export default function App() {
             </button>
           </div>
         )}
-        {idle && (
+        {idle && !showingAftermath && (
           <PendingRewards
             game={game}
             onClaim={() =>
@@ -370,7 +373,7 @@ export default function App() {
             }
           />
         )}
-        {idle && freeTimeAvailable && (
+        {idle && freeTimeAvailable && !showingAftermath && (
           <CityProgress
             game={game}
             onStart={(id) => {
@@ -615,7 +618,7 @@ export default function App() {
         ) : (
           <>
             {result && <CanalScene compact />}
-            <section className="paper">
+            <section className={`paper ${result ? "free-time-aftermath" : "free-time-romance"}`}>
               <p className="eyebrow">
                 {result ? "デートの余韻" : "章末 · 恋愛モード"}
               </p>
@@ -631,10 +634,10 @@ export default function App() {
               </p>
               {result ? (
                 <>
-                  <MemoryList ids={game.memories} />
                   <button className="primary" onClick={() => setResult(false)}>
                     自由時間に戻る <span aria-hidden="true">→</span>
                   </button>
+                  <MemoryList ids={game.memories} />
                 </>
               ) : (
                 <RomanceMenu
@@ -648,7 +651,7 @@ export default function App() {
             </section>
           </>
         )}
-        {idle && freeTimeAvailable && (
+        {idle && freeTimeAvailable && !showingAftermath && (
           <details className="revisit-menu">
             <summary>旅先を再訪する</summary>
             <p className="fine-print">

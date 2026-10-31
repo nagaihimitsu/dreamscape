@@ -242,45 +242,21 @@ export function BattleScreen({
         ) : isResult ? (
           <div className="battle-result" data-testid="battle-result">
             <p className="eyebrow">今回の結果</p>
-            <h2 className="outcome">
-              {
+            <div className="battle-result-heading">
+              <h2 className="outcome">
                 {
-                  perfect: "PERFECT VICTORY",
-                  victory: "VICTORY",
-                  defeat: "DEFEAT",
-                }[getBattleOutcome(active.score, quiz.questions.length)]
-              }
-            </h2>
-            <p className="battle-score">
-              <strong>{active.score}</strong>
-              <span> / {quiz.questions.length} 問正解</span>
-            </p>
-            <ol className="answer-history">
-              {active.answers.map((item, index) => (
-                <li key={item.questionId}>
-                  <span>第{index + 1}問</span>
-                  <span
-                    className={
-                      item.correct ? "correct-label" : "incorrect-label"
-                    }
-                  >
-                    {item.correct ? "正解" : "不正解"}
-                  </span>
-                  {item.hintUsed && (
-                    <span className="fine-print">ヒント使用</span>
-                  )}
-                </li>
-              ))}
-            </ol>
-            <button className="secondary" onClick={() => onEnglish()}>
-              回答した問題を振り返る
-            </button>
-            {record && (
-              <p className="record-summary">
-                挑戦 {record.attempts}回 · 初回 {record.firstScore}問 · 最高{" "}
-                {record.bestScore}問正解
+                  {
+                    perfect: "PERFECT VICTORY",
+                    victory: "VICTORY",
+                    defeat: "DEFEAT",
+                  }[getBattleOutcome(active.score, quiz.questions.length)]
+                }
+              </h2>
+              <p className="battle-score">
+                <strong>{active.score}</strong>
+                <span> / {quiz.questions.length} 問正解</span>
               </p>
-            )}
+            </div>
             {isSpecial ? (
               <p className="special-result-note">
                 特別対決の戦績を記録しました。この対決によるAPや恋愛の進行の変化はありません。
@@ -288,35 +264,60 @@ export function BattleScreen({
             ) : (
               <BattleRewards game={game} onClaim={onClaimRewards} />
             )}
-            {onEpilogue && (
+            <div className="battle-result-actions">
+              {onEpilogue && (
+                <button
+                  className="primary"
+                  data-testid="city-epilogue-start"
+                  onClick={onEpilogue}
+                >
+                  エピローグへ進む <span aria-hidden="true">→</span>
+                </button>
+              )}
               <button
-                className="primary"
-                data-testid="city-epilogue-start"
-                onClick={onEpilogue}
+                className={onEpilogue ? "secondary" : "primary"}
+                onClick={onLeave}
               >
-                エピローグへ進む <span aria-hidden="true">→</span>
-              </button>
-            )}
-            <button
-              className={onEpilogue ? "secondary" : "primary"}
-              onClick={onLeave}
-            >
-              {isSpecial ? "自由時間へ戻る" : "自由時間へ進む"}{" "}
-              <span aria-hidden="true">→</span>
-            </button>
-            {onNextEpisode && (
-              <button
-                className="secondary"
-                data-testid="next-tourism"
-                onClick={onNextEpisode}
-              >
-                {nextIsFinale ? "都市ボスに挑む" : "次の観光地へ進む"}{" "}
+                {isSpecial ? "自由時間へ戻る" : "自由時間へ進む"}{" "}
                 <span aria-hidden="true">→</span>
               </button>
-            )}
-            <button className="secondary" onClick={onReplay}>
-              再戦する <span aria-hidden="true">↻</span>
-            </button>
+              {onNextEpisode && (
+                <button
+                  className="secondary"
+                  data-testid="next-tourism"
+                  onClick={onNextEpisode}
+                >
+                  {nextIsFinale ? "都市ボスに挑む" : "次の観光地へ進む"}{" "}
+                  <span aria-hidden="true">→</span>
+                </button>
+              )}
+              <button className="secondary" onClick={onReplay}>
+                再戦する <span aria-hidden="true">↻</span>
+              </button>
+              <button className="secondary" onClick={() => onEnglish()}>
+                回答した問題を振り返る
+              </button>
+            </div>
+            <details className="battle-result-history">
+              <summary>今回の正誤と戦績</summary>
+              <ol className="answer-history">
+                {active.answers.map((item, index) => (
+                  <li key={item.questionId}>
+                    <span>第{index + 1}問</span>
+                    <span className={item.correct ? "correct-label" : "incorrect-label"}>
+                      {item.correct ? "正解" : "不正解"}
+                    </span>
+                    {item.hintUsed && <span className="fine-print">ヒント使用</span>}
+                  </li>
+                ))}
+              </ol>
+              {record && (
+                <p className="record-summary">
+                  挑戦 {record.attempts}回 · 初回 {record.firstScore}問 · 最高{" "}
+                  {record.bestScore}問正解
+                </p>
+              )}
+            </details>
           </div>
         ) : isDialogue && frame ? (
           <>

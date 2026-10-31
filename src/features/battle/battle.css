@@ -248,6 +248,57 @@
   }
 }
 
+/* A result is a compact summary and a choice of what to do next.  Detailed
+   receipts and history remain available, but do not push those choices away. */
+.battle-result-actions {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+.battle-result-actions .secondary { margin-top: 0; }
+.battle-result-history { margin-top: 12px; }
+.battle-result-history summary,
+.reward-details summary,
+.result-pending summary,
+.battle-result .episode-clear summary {
+  cursor: pointer;
+  color: var(--green);
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 8px 0;
+}
+.result-pending .pending-rewards { margin: 0; }
+
+@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
+  .battle-screen[data-phase="result"] .battle-stage { display: none; }
+  .battle-screen[data-phase="result"] .battle-paper { padding: 6px 12px 12px; }
+  .battle-result { padding-top: 0; }
+  .battle-result-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 12px;
+  }
+  .battle-result .outcome { font-size: 23px; margin: 2px 0; }
+  .battle-result .battle-score { margin: 0; gap: 3px; }
+  .battle-result .battle-score strong { font-size: 28px; }
+  .battle-result .battle-rewards { margin: 4px 0; padding-top: 6px; }
+  .battle-result .reward-total strong { font-size: 23px; }
+  .battle-result .current-ap { margin: 2px 0; }
+  .battle-result .reward-details summary,
+  .battle-result .result-pending summary,
+  .battle-result .battle-result-history summary,
+  .battle-result .episode-clear summary { padding: 4px 0; }
+  .battle-result .episode-clear { margin: 4px 0; padding: 8px 10px; }
+  .battle-result .episode-clear h2 { font-size: 16px; margin: 1px 0; }
+  .battle-result .special-result-note { margin: 4px 0; padding: 8px; line-height: 1.5; }
+  .battle-result-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin-top: 8px; }
+  .battle-result-actions .primary { grid-column: 1 / -1; }
+  .battle-result-actions button { min-height: 44px; padding: 7px 9px; line-height: 1.4; }
+  .battle-result-history { margin-top: 4px; }
+}
+
 /* Wide, short screens use their horizontal space for the three choices.
    If a translation or a long option expands, the reading panel still scrolls. */
 @media (orientation: landscape) and (max-height: 900px) {

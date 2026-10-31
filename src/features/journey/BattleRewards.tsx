@@ -31,46 +31,59 @@ export function BattleRewards({
             <small> AP</small>
           </strong>
         </div>
-        {receipt?.entries.length ? (
-          <ul>
-            {receipt.entries.map((entry) => {
-              const pending =
-                game.pendingApRewards.find(
-                  (item) => item.rewardId === entry.rewardId,
-                )?.remainingAp ?? 0;
-              return (
-                <li key={entry.rewardId}>
-                  <span>
-                    {
-                      rewardRules.find((rule) => rule.id === entry.rewardId)
-                        ?.titleJa
-                    }
-                  </span>
-                  <span>
-                    ＋{entry.earnedAp} AP
-                    {pending > 0 && <small>（残り{pending}APは保管）</small>}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <p className="fine-print">
-            初回報酬は受け取り済み、または下の受け取り待ちに保管されています。
-          </p>
-        )}
         <p className="current-ap">
           現在の所持AP <strong>{game.ap} AP</strong>
         </p>
+        <details className="reward-details">
+          <summary>AP報酬の内訳</summary>
+          {receipt?.entries.length ? (
+            <ul>
+              {receipt.entries.map((entry) => {
+                const pending =
+                  game.pendingApRewards.find(
+                    (item) => item.rewardId === entry.rewardId,
+                  )?.remainingAp ?? 0;
+                return (
+                  <li key={entry.rewardId}>
+                    <span>
+                      {
+                        rewardRules.find((rule) => rule.id === entry.rewardId)
+                          ?.titleJa
+                      }
+                    </span>
+                    <span>
+                      ＋{entry.earnedAp} AP
+                      {pending > 0 && <small>（残り{pending}APは保管）</small>}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p className="fine-print">
+              初回報酬は受け取り済み、または下の受け取り待ちに保管されています。
+            </p>
+          )}
+        </details>
       </section>
-      <PendingRewards game={game} onClaim={onClaim} />
+      {game.pendingApRewards.length > 0 && (
+        <details className="result-pending">
+          <summary>
+            保管中のAP {game.pendingApRewards.reduce((total, item) => total + item.remainingAp, 0)} AP
+          </summary>
+          <PendingRewards game={game} onClaim={onClaim} />
+        </details>
+      )}
       {episode && game.completedEpisodeIds.includes(episode.id) && (
         <section className="episode-clear" data-testid="episode-clear">
           <p className="eyebrow">
             {episode.kind === "city_finale" ? "都市クリア" : "旅の一区切り"}
           </p>
           <h2>{episode.clearTitleJa}</h2>
-          <p>{episode.clearDescriptionJa}</p>
+          <details>
+            <summary>旅の記録を読む</summary>
+            <p>{episode.clearDescriptionJa}</p>
+          </details>
         </section>
       )}
     </>

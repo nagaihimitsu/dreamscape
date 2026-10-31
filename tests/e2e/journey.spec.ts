@@ -124,6 +124,7 @@ test("an existing chapter reward is not repeated and AP overflow waits until a d
     ),
   ).toBe(true);
   expect(romanceProgress(result.state)).toEqual(romance);
+  await page.locator(".result-pending > summary").click();
   await expect(page.getByTestId("pending-rewards")).toContainText("2AP");
   await expect(page.getByTestId("pending-claim")).toBeDisabled();
   await reloadUnchanged(page);
@@ -157,6 +158,7 @@ test("a real Phase 4 completed battle migrates without overwriting AP, then outs
   await page.reload();
   await expect(page.getByTestId("battle-result")).toBeVisible();
   expect(await saved(page)).toEqual(phase4.result);
+  await page.locator(".result-pending > summary").click();
   await expect(page.getByTestId("pending-rewards")).toContainText("6AP");
   await page
     .getByTestId("pending-claim")
