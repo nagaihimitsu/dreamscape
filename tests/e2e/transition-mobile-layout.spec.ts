@@ -102,6 +102,7 @@ test("revisits remain accessible immediately after accepting the confession", as
   await page.getByRole("button", { name: /^(デートを終える|この時間を終える)$/ }).click();
   expect((await saved(page)).endingReached).toBe(true);
   await expect(page.getByTestId("romance-ending")).toBeVisible();
+  await page.getByTestId("romance-ending").getByRole("button", { name: "自由時間へ", exact: true }).click();
   await page.getByText("旅先を再訪する", { exact: true }).click();
   await page.getByTestId("revisit-battle-milano_last_supper_01").click();
   const state = await saved(page);

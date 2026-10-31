@@ -30,22 +30,15 @@ import { CanalScene } from "../components/CanalScene";
 import { usePresentationSettings } from "../components/usePresentationSettings";
 import { RomanceScene } from "../features/romance/RomanceScene";
 import { Modal } from "../components/Modal";
-import {
-  RomanceMenu,
-  EventCard,
-  withNames,
-} from "../features/romance/RomanceMenu";
-import { MemoryList } from "../features/romance/MemoryList";
-import { BattleEntry } from "../features/battle/BattleEntry";
+import { withNames } from "../features/romance/RomanceMenu";
 import { BattleScreen } from "../features/battle/BattleScreen";
-import { TourismEntry } from "../features/tourism/TourismEntry";
 import { TourismScreen } from "../features/tourism/TourismScreen";
 import { ClueNotebook } from "../features/tourism/ClueNotebook";
 import { useLearning } from "../features/learning/useLearning";
 import { EnglishReview } from "../features/learning/EnglishReview";
 import { EpisodeScreen } from "../features/journey/EpisodeScreen";
+import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import { PendingRewards } from "../features/journey/PendingRewards";
-import { CityProgress } from "../features/journey/CityProgress";
 import { EpilogueScreen } from "../features/journey/EpilogueScreen";
 import { startCityEpilogue, advanceCityEpilogue } from "../domain/epilogue";
 import {
@@ -118,7 +111,7 @@ export default function App() {
   const [sceneEpoch, setSceneEpoch] = useState(0);
   const [notebook, setNotebook] = useState(false);
   const [speed, setSpeed] = useState(25);
-  const [result, setResult] = useState(false);
+  const [showRomanceEnding, setShowRomanceEnding] = useState(false);
   const [player, setPlayer] = useState(
     game?.playerName ?? balance.defaultPlayerName,
   );
@@ -204,7 +197,7 @@ export default function App() {
     if (restored.status === "loaded") {
       adopt(restored.state);
       setConfirmation(null);
-      setResult(false);
+      setShowRomanceEnding(false);
       setSceneEpoch((epoch) => epoch + 1);
       setNotebook(false);
       setNotice("保存した場面から再開しました。");
@@ -233,15 +226,12 @@ export default function App() {
     !game.activeBattle &&
     !game.activeTourism &&
     !game.activeEpilogue;
-  // The transient date aftermath has its own return button. The romance
-  // ending does not, even when finishing the date has set `result`.
-  const showingAftermath = !!(idle && freeTimeAvailable && result && !game?.endingReached);
   const nextEpisode = game ? getNextEpisode(game) : null;
   const frame = active?.frame;
   useEffect(() => {
-    if (active?.dateId || result || game?.endingReached)
+    if (active?.dateId || showRomanceEnding)
       document.getElementById("main")?.scrollIntoView({ block: "start" });
-  }, [active?.dateId, result, game?.endingReached]);
+  }, [active?.dateId, showRomanceEnding]);
   const currentDate = dates.find((date) => date.id === active?.dateId);
   const currentBattle = battles.find(
     (battle) => battle.id === game?.activeBattle?.battleId,
@@ -288,7 +278,7 @@ export default function App() {
 
   return (
     <div
-      className={`app-shell${displaySettings.value.reduceMotion ? " reduce-motion" : ""}${conversationActive ? " conversation-active" : ""}${mobilePlayActive ? " mobile-play-active" : ""}${mobileObservationActive ? " mobile-observation-active" : ""}${idle && freeTimeAvailable && !game?.endingReached ? " free-time-active" : ""}`}
+      className={`app-shell${displaySettings.value.reduceMotion ? " reduce-motion" : ""}${conversationActive ? " conversation-active" : ""}${mobilePlayActive ? " mobile-play-active" : ""}${mobileObservationActive ? " mobile-observation-active" : ""}${idle && freeTimeAvailable && !showRomanceEnding ? " free-time-active" : ""}`}
     >
       <header className="masthead">
         <a href="#main" className="brand">
@@ -348,13 +338,6 @@ export default function App() {
             {learning.error}
           </div>
         )}
-        {idle && freeTimeAvailable && !showingAftermath && (
-          <div className="paper free-time-notes">
-            <button className="secondary" onClick={() => openEnglish()}>
-              英語ノートを開く
-            </button>
-          </div>
-        )}
         {notice && (
           <div className="notice" role="status">
             {notice}
@@ -363,25 +346,10 @@ export default function App() {
             </button>
           </div>
         )}
-        {idle && !showingAftermath && (
+        {idle && !freeTimeAvailable && (
           <PendingRewards
             game={game}
-            onClaim={() =>
-              commit((state) => claimPendingRewards(state, game.revision))
-            }
-          />
-        )}
-        {idle && freeTimeAvailable && !showingAftermath && (
-          <CityProgress
-            game={game}
-            onStart={(id) => {
-              if (commit((state) => startEpisode(state, id))) {
-                setResult(false);
-              }
-            }}
-            onEpilogue={(id) =>
-              commit((state) => startCityEpilogue(state, id, game.revision))
-            }
+            onClaim={() => commit((state) => claimPendingRewards(state, game.revision))}
           />
         )}
         {!game ? (
@@ -506,19 +474,14 @@ export default function App() {
             }
             onNextEpisode={
               !reasoningRule && nextEpisode
-                ? () => {
-                    if (
-                      commit((state) => startEpisode(state, nextEpisode.id))
-                    ) {
-                      setResult(false);
-                    }
-                  }
+                ? () => commit((state) => startEpisode(state, nextEpisode.id))
                 : undefined
             }
             nextIsFinale={nextEpisode?.kind === "city_finale"}
             onEpilogue={
               cityNotebook &&
-              game.completedCityIds.includes(currentBattle.cityId!)
+              game.completedCityIds.includes(currentBattle.cityId!) &&
+              !game.viewedEpilogueCityIds.includes(currentBattle.cityId!)
                 ? () =>
                     commit((state) =>
                       startCityEpilogue(
@@ -530,15 +493,11 @@ export default function App() {
                 : undefined
             }
             onLeave={() => {
-              if (
-                commit((state) =>
-                  reasoningRule
-                    ? leaveBattle(state, game.revision)
-                    : enterFreeTime(state, game.revision),
-                )
-              ) {
-                setResult(false);
-              }
+              commit((state) =>
+                reasoningRule
+                  ? leaveBattle(state, game.revision)
+                  : enterFreeTime(state, game.revision),
+              );
             }}
           />
         ) : !freeTimeAvailable ? (
@@ -561,11 +520,15 @@ export default function App() {
               commit((state) => advanceDate(state, game.revision));
             }}
             onFinish={() => {
-              if (commit((state) => finishDate(state, game.revision)))
-                setResult(true);
+              const hadEnding = game.endingReached;
+              if (commit((state) => finishDate(state, game.revision))) {
+                if (!hadEnding && gameRef.current?.endingReached)
+                  setShowRomanceEnding(true);
+                document.getElementById("main")?.scrollIntoView({ block: "start" });
+              }
             }}
           />
-        ) : game.endingReached ? (
+        ) : game.endingReached && showRomanceEnding ? (
           <>
             <CanalScene backgroundId="milano_night" />
             <section className="paper ending" data-testid="romance-ending">
@@ -584,90 +547,23 @@ export default function App() {
                 <br />
                 ここまでの旅は保存されています。
               </p>
-              <details className="memories">
-                <summary>{presentation.ending.buttonJa}</summary>
-                <MemoryList ids={game.memories} />
-              </details>
-              {dates
-                .filter(
-                  (date) =>
-                    date.allowAfterEnding &&
-                    !(date.kind === "normal" && game.playedDateIds.includes(date.id)) &&
-                    date.requiredCompletedCityIds?.every((id) =>
-                      game.completedCityIds.includes(id),
-                    ),
-                )
-                .map((date) => (
-                  <div className="city-after-romance" key={date.id}>
-                    <h2>旅の終わりに、もうひととき</h2>
-                    <EventCard
-                      game={game}
-                      date={date}
-                      onChoose={(id) => setConfirmation({ kind: "date", id })}
-                    />
-                  </div>
-                ))}
+              <button className="primary" onClick={() => setShowRomanceEnding(false)}>
+                自由時間へ <span aria-hidden="true">→</span>
+              </button>
             </section>
           </>
         ) : (
-          <>
-            {result && <CanalScene compact />}
-            <section className={`paper ${result ? "free-time-aftermath" : "free-time-romance"}`}>
-              <p className="eyebrow">
-                {result ? "デートの余韻" : "章末 · 恋愛モード"}
-              </p>
-              <h1>{result ? "今日が、思い出になる。" : "ふたりの自由時間"}</h1>
-              <p className="lead">
-                {result
-                  ? "交わした言葉を、旅のしおりに。"
-                  : "旅の予定は、ここでひと休み。"}
-                <br />
-                {result
-                  ? "残ったAPは、次の機会に持ち越せます。"
-                  : "残った時間を、一緒に過ごしませんか。"}
-              </p>
-              {result ? (
-                <>
-                  <button className="primary" onClick={() => setResult(false)}>
-                    自由時間に戻る <span aria-hidden="true">→</span>
-                  </button>
-                  <MemoryList ids={game.memories} />
-                </>
-              ) : (
-                <RomanceMenu
-                  game={game}
-                  onChoose={(id) => setConfirmation({ kind: "date", id })}
-                  onMilestone={(id) =>
-                    commit((state) => claimTrialMilestone(state, id))
-                  }
-                />
-              )}
-            </section>
-          </>
-        )}
-        {idle && freeTimeAvailable && !showingAftermath && (
-          <details className="revisit-menu">
-            <summary>旅先を再訪する</summary>
-            <p className="fine-print">
-              同じ場所をもう一度訪ねられます。初回報酬の再取得はありません。
-            </p>
-            <TourismEntry
-              game={game}
-              onStart={(id) => {
-                if (commit((state) => openTourism(state, id))) {
-                  setResult(false);
-                }
-              }}
-            />
-            <BattleEntry
-              game={game}
-              onStart={(id) => {
-                if (commit((state) => startBattle(state, id))) {
-                  setResult(false);
-                }
-              }}
-            />
-          </details>
+          <FreeTimeHub
+            game={game}
+            onEnglish={() => openEnglish()}
+            onClaimRewards={() => commit((state) => claimPendingRewards(state, game.revision))}
+            onStartEpisode={(id) => commit((state) => startEpisode(state, id))}
+            onEpilogue={(id) => commit((state) => startCityEpilogue(state, id, game.revision))}
+            onChooseDate={(id) => setConfirmation({ kind: "date", id })}
+            onMilestone={(id) => commit((state) => claimTrialMilestone(state, id))}
+            onTourism={(id) => commit((state) => openTourism(state, id))}
+            onBattle={(id) => commit((state) => startBattle(state, id))}
+          />
         )}
       </main>
       {game && (
@@ -759,7 +655,6 @@ export default function App() {
               const selected = confirmation;
               setConfirmation(null);
               commit((state) => startDate(state, selected.id));
-              setResult(false);
             }}
           >
             {selectedDate?.apCost ? "APを使って始める" : "この時間を過ごす"}

@@ -6,6 +6,7 @@ import {
   availableAp,
   expectNoOverflow,
   loadSnapshot,
+  openRevisits,
   playEvent,
   returnToMenu,
   saved,
@@ -66,9 +67,7 @@ test("a new zero-score Milan journey reaches the city epilogue and romance endin
         0,
       );
       await openCityRecords(page);
-      await expect(
-        page.getByTestId(`city-visit-${cityFinale().id}`),
-      ).toBeDisabled();
+      await expect(page.getByTestId(`city-stop-${cityFinale().id}`)).toContainText("この先");
       await page.getByTestId(`next-episode-${cityEpisodes[1].id}`).click();
     } else await page.getByTestId("next-tourism").click();
   }
@@ -113,7 +112,7 @@ test("a new zero-score Milan journey reaches the city epilogue and romance endin
   expect(initialEpilogue).toMatch(/澪|航|地図|メモ|街/);
   expect((await saved(page)).viewedEpilogueCityIds).toEqual(["milano"]);
   expect((await saved(page)).endingReached).toBe(false);
-  await expect(page.getByTestId("city-complete")).toBeVisible();
+  await expect(page.getByTestId("city-progress")).toContainText("都市クリア");
   await page.screenshot({
     path: "artifacts/phase7-mobile-city-records.png",
     fullPage: true,
@@ -133,7 +132,7 @@ test("a new zero-score Milan journey reaches the city epilogue and romance endin
   await playEvent(page, "milano_confession_01", 0, [0]);
   expect((await saved(page)).endingReached).toBe(true);
   await reloadUnchanged(page);
-  await expect(page.getByTestId("romance-ending")).toBeVisible();
+  await expect(page.getByTestId("free-time-hub")).toBeVisible();
 
   await playEvent(page, "milano_city_date_01", 2, [1, 2]);
   const finished = await saved(page);
@@ -148,9 +147,7 @@ test("a new zero-score Milan journey reaches the city epilogue and romance endin
   expect(finished.claimedRewardIds).toEqual(boss.state.claimedRewardIds);
   await returnToMenu(page);
   await expect(page.getByTestId("event-milano_city_date_01")).toHaveCount(0);
-  await page.getByTestId("city-epilogue").click();
-  const togetherEpilogue = await finishCityEpilogue(page);
-  expect(togetherEpilogue).not.toEqual(initialEpilogue);
+  await expect(page.getByTestId("city-epilogue")).toHaveCount(0);
   expect((await saved(page)).viewedEpilogueCityIds).toEqual(["milano"]);
   await reloadUnchanged(page);
   await expectNoOverflow(page);
@@ -259,8 +256,8 @@ test("all four photographs and discoveries persist, and the five-question boss s
   });
   await page.getByTestId("city-epilogue-start").click();
   await finishCityEpilogue(page);
-  await openCityRecords(page);
-  await page.getByTestId(`city-visit-${cityEpisodes[0].id}`).click();
+  await openRevisits(page);
+  await page.getByTestId(`revisit-tourism-${cityEpisodes[0].landmarkId}`).click();
   expect((await saved(page)).activeTourism!.phase).toBe("exploring");
   await openObservationList(page);
   await page.getByTestId("guide-replay").click();

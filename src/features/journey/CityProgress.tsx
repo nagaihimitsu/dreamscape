@@ -34,7 +34,7 @@ export function CityProgress({
     >
       <div className="section-meta">
         <h2>{city.nameJa}の旅</h2>
-        <span className="pill">
+        <span className="pill" data-testid={cityCompleted ? "city-complete" : undefined}>
           {cityCompleted ? "都市クリア" : `観光 ${completed} / ${stops.length}`}
         </span>
       </div>
@@ -58,19 +58,14 @@ export function CityProgress({
           <p className="fine-print">自由時間は、この下から楽しめます。</p>
         </div>
       )}
-      {cityCompleted && (
-        <div className="city-complete" data-testid="city-complete">
-          <p>
-            四つの場所を巡り、街の最後の対決を終えました。見つけたことも、交わした言葉も、この旅の記録に。
-          </p>
+      {cityCompleted && !game.viewedEpilogueCityIds.includes(city.id) && (
+        <div className="city-complete">
           <button
             className="secondary"
             data-testid="city-epilogue"
             onClick={() => onEpilogue(city.id)}
           >
-            {game.viewedEpilogueCityIds.includes(city.id)
-              ? "エピローグを読み返す"
-              : "エピローグを読む"}
+            エピローグを読む
           </button>
         </div>
       )}
@@ -124,23 +119,6 @@ export function CityProgress({
                     </p>
                   ) : (
                     <p>バトル未完了</p>
-                  )}
-                  <button
-                    className="text-button"
-                    data-testid={`city-visit-${episode.id}`}
-                    disabled={!availability.available}
-                    onClick={() => onStart(episode.id)}
-                  >
-                    {cleared
-                      ? episode.kind === "city_finale"
-                        ? "再戦する"
-                        : "もう一度訪ねる"
-                      : episode.kind === "city_finale"
-                        ? "対決へ進む"
-                        : "訪ねる"}
-                  </button>
-                  {!availability.available && (
-                    <p className="fine-print">{availability.reason}</p>
                   )}
                 </div>
               </li>

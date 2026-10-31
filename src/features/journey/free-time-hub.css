@@ -1,0 +1,161 @@
+.free-time-hub {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.free-time-hub-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.free-time-hub-heading h1 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.4;
+}
+
+.free-time-hub-heading span {
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.free-time-hub .city-progress {
+  max-width: none;
+  margin: 14px 0 0;
+  padding: 0 0 8px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.free-time-hub .next-destination {
+  padding: 6px 0 0;
+}
+
+.free-time-hub .next-destination h3 {
+  margin: 3px 0 6px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.free-time-hub .next-destination > p:not(.eyebrow):not(.fine-print) {
+  margin: 0 0 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.free-time-hub .next-destination .fine-print {
+  display: none;
+}
+
+.free-time-hub .city-records summary {
+  min-height: 44px;
+  padding: 10px 0;
+}
+
+.free-time-hub .free-time-romance {
+  width: 100%;
+  margin: 12px 0 0;
+  padding: 0;
+}
+
+.free-time-hub .free-time-romance > h2 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.free-time-hub .ap-help {
+  display: none;
+}
+
+.free-time-hub .pending-rewards {
+  max-width: none;
+  margin: 14px 0;
+}
+
+.free-time-hub .pending-rewards-compact {
+  padding: 8px 10px;
+}
+
+.pending-rewards-compact .pending-rewards-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pending-rewards-compact .pending-rewards-heading h2 {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.pending-rewards-compact .pending-rewards-heading button {
+  flex: none;
+  width: auto;
+  min-height: 44px;
+  padding: 6px 10px;
+}
+
+.pending-rewards-compact p {
+  margin: 2px 0;
+  line-height: 1.5;
+}
+
+.pending-rewards-compact summary {
+  min-height: 44px;
+  padding: 10px 0;
+}
+
+.free-time-tools {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+  margin-top: 16px;
+  align-items: start;
+}
+
+.free-time-tools > button {
+  min-width: 0;
+  min-height: 44px;
+  margin: 0;
+  padding: 7px;
+  font-size: 13px;
+}
+
+.free-time-tools .revisit-menu {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.free-time-tools .revisit-menu > summary {
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  text-align: center;
+}
+
+.free-time-tools .revisit-menu[open] {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 600px) {
+  .free-time-active .free-time-hub {
+    padding: 14px 16px 20px;
+  }
+
+  .free-time-active .free-time-hub .city-progress {
+    padding: 0 0 8px;
+  }
+
+  .free-time-active .free-time-hub .free-time-romance {
+    padding: 0;
+  }
+}

@@ -75,7 +75,6 @@ test("playing a date updates the compact choices without losing progression", as
   await choose(page, 0);
   await choose(page, 1);
   await finishCafe(page);
-  await page.getByRole("button", { name: "自由時間に戻る", exact: true }).click();
   const after = await saved(page);
   expect(after.playedDateIds).toContain("milano_cafe_01");
   expect(after.romanceStage).toBeGreaterThanOrEqual(2);

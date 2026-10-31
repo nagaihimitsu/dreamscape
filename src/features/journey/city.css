@@ -72,13 +72,6 @@
 .city-complete {
   padding-top: 18px;
 }
-.city-after-romance {
-  margin-top: 22px;
-}
-.city-after-romance > h2 {
-  font-size: 1.1rem;
-  margin-bottom: 14px;
-}
 .finale-stage {
   background: linear-gradient(120deg, #252e35, #605b3f) !important;
 }

@@ -377,7 +377,7 @@ test("a Phase 3 romance ending can visit and leave tourism without changing the 
     { key: SAVE_KEY, value: phase3.ending },
   );
   await page.reload();
-  await expect(page.getByTestId("romance-ending")).toBeVisible();
+  await expect(page.getByTestId("free-time-hub")).toBeVisible();
   const initial = romanceProgress(await saved(page));
   await openTourismFromEntry(page);
   await finishTourismGuide(page);
@@ -386,10 +386,10 @@ test("a Phase 3 romance ending can visit and leave tourism without changing the 
   await page
     .getByRole("button", { name: "自由時間へ戻る", exact: true })
     .click();
-  await expect(page.getByTestId("romance-ending")).toBeVisible();
+  await expect(page.getByTestId("free-time-hub")).toBeVisible();
   expect(romanceProgress(await saved(page))).toEqual(initial);
   await reloadUnchanged(page);
-  await expect(page.getByTestId("romance-ending")).toBeVisible();
+  await expect(page.getByTestId("free-time-hub")).toBeVisible();
   await openTourismFromEntry(page);
   expect((await saved(page)).activeTourism!.phase).toBe("exploring");
   expect((await saved(page)).discoveredClueIds).toEqual([document.id]);

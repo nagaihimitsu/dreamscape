@@ -73,7 +73,7 @@ test("a published Phase 6 romance ending keeps its completed relationship while 
   page,
 }) => {
   await loadSnapshot(page, phase6.ending);
-  await expect(page.getByTestId("romance-ending")).toBeVisible();
+  await expect(page.getByTestId("free-time-hub")).toBeVisible();
   expect(await saved(page)).toEqual(phase6.ending);
   const romance = romanceProgress(
     phase6.ending as unknown as Awaited<ReturnType<typeof saved>>,
@@ -87,7 +87,7 @@ test("a published Phase 6 romance ending keeps its completed relationship while 
   await page
     .getByRole("button", { name: "自由時間へ戻る", exact: true })
     .click();
-  await expect(page.getByTestId("romance-ending")).toBeVisible();
+  await expect(page.getByTestId("free-time-hub")).toBeVisible();
   expect(romanceProgress(await saved(page))).toEqual(romance);
   await expectNoOverflow(page);
 });

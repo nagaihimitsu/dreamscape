@@ -103,9 +103,8 @@ test("a legacy zero-score journey reaches free time and low-affection choices re
   });
   await page.reload();
   expect(await saved(page)).toEqual(ending);
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "旅の続きに、きみと。",
-  );
+  await expect(page.getByTestId("free-time-hub")).toBeVisible();
+  await expect(page.getByTestId("romance-ending")).toHaveCount(0);
   expect(errors).toEqual([]);
 });
 

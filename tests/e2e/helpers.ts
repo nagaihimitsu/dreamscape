@@ -102,11 +102,11 @@ export async function openRevisits(page: Page) {
 }
 
 export async function returnToMenu(page: Page) {
-  const back = page.getByRole("button", {
-    name: "自由時間に戻る",
-    exact: true,
-  });
-  if (await back.isVisible()) await back.click();
+  // Ordinary dates now return directly; only the newly achieved ending has
+  // a one-time screen to dismiss.
+  const ending = page.getByTestId("romance-ending");
+  if (await ending.isVisible())
+    await ending.getByRole("button", { name: "自由時間へ", exact: true }).click();
 }
 
 export async function startEvent(

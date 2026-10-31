@@ -200,7 +200,7 @@ test("a real Phase 2 ending save can play a battle and return to the same ending
     { key: SAVE_KEY, value: phase2.ending },
   );
   await page.reload();
-  await expect(page.getByTestId("romance-ending")).toBeVisible();
+  await expect(page.getByTestId("free-time-hub")).toBeVisible();
   const before = romanceProgress(await saved(page));
   await startBattleFromEntry(page);
   const result = await playBattle(page, quiz.questions, [true, false, true]);
@@ -209,7 +209,7 @@ test("a real Phase 2 ending save can play a battle and return to the same ending
   await page
     .getByRole("button", { name: "自由時間へ進む", exact: true })
     .click();
-  await expect(page.getByTestId("romance-ending")).toBeVisible();
+  await expect(page.getByTestId("free-time-hub")).toBeVisible();
   await reloadUnchanged(page);
   expect(romanceProgress(await saved(page))).toEqual(before);
 });

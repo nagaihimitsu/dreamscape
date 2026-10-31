@@ -210,7 +210,7 @@ test("C preserves two selected cards through notebook and reload, requires an En
   test.setTimeout(120_000);
   await page.setViewportSize({ width: 360, height: 740 });
   await loadSnapshot(page, phase5.ending);
-  await expect(page.getByTestId("romance-ending")).toBeVisible();
+  await expect(page.getByTestId("free-time-hub")).toBeVisible();
   expect(await saved(page)).toEqual(phase5.ending);
   const original = await saved(page);
   const protectedProgress = nonBattleProgress(original);
@@ -294,7 +294,7 @@ test("C preserves two selected cards through notebook and reload, requires an En
   await page
     .getByRole("button", { name: "自由時間へ戻る", exact: true })
     .click();
-  await expect(page.getByTestId("romance-ending")).toBeVisible();
+  await expect(page.getByTestId("free-time-hub")).toBeVisible();
   expect(nonBattleProgress(await saved(page))).toEqual(protectedProgress);
   await expectNoOverflow(page);
 });

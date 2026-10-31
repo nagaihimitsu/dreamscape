@@ -5,7 +5,6 @@ import {
   isEventVisible,
   type GameState,
 } from "../../domain/game";
-import { MemoryList } from "./MemoryList";
 import "./romance-menu.css";
 
 export function withNames(text: string, game: GameState) {
@@ -87,12 +86,6 @@ export function RomanceMenu({
             );
           })}
         </section>
-      )}
-      {!!game.memories.length && (
-        <details className="memories">
-          <summary>旅のしおり · 思い出 {game.memories.length}件</summary>
-          <MemoryList ids={game.memories} />
-        </details>
       )}
     </>
   );
