@@ -6,6 +6,7 @@ import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { DialogueText } from "../../components/DialogueText";
 import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
+import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
 import "./romance-scene.css";
 
 export function RomanceScene({
@@ -44,6 +45,7 @@ export function RomanceScene({
     frame.text,
   );
   const [paused, setPaused] = useState(false);
+  const dialogueRef = useDialogueScrollReset<HTMLElement>(active.storyState);
   const pendingChoice = useRef<{
     revision: number;
     dateId: string;
@@ -118,6 +120,7 @@ export function RomanceScene({
         />
       </div>
       <section
+        ref={dialogueRef}
         className="vn-dialogue paper story-paper"
         aria-label="デートの会話"
       >

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   landmarks,
   tourismAssets,
@@ -11,6 +11,7 @@ import type { GameState } from "../../domain/game";
 import { DialogueText } from "../../components/DialogueText";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
+import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
 import { ObservationViewer } from "./ObservationViewer";
 import { ClueDetails } from "./ClueDetails";
 import "./tourism.css";
@@ -41,6 +42,7 @@ export function TourismScreen({
   onReplayGuide,
 }: Props) {
   const active = game.activeTourism!;
+  const dialogueRef = useDialogueScrollReset<HTMLDivElement>(active.storyState);
   const landmark = landmarks.find((item) => item.id === active.landmarkId)!;
   const asset = tourismAssets.find(
     (item) => item.id === landmark.imageAssetId,
@@ -58,6 +60,7 @@ export function TourismScreen({
   const documents = clues.filter((clue) => clue.kind === "document");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [focusRequest, setFocusRequest] = useState(0);
+  const shouldScrollToSelection = useRef(true);
   const selected = clues.find((clue) => clue.id === selectedId);
   const frame = active.frame;
   const speaker =
@@ -84,7 +87,7 @@ export function TourismScreen({
   }, [active.landmarkId]);
 
   useEffect(() => {
-    if (!focusRequest) return;
+    if (!focusRequest || !shouldScrollToSelection.current) return;
     const target =
       selected?.kind === "document"
         ? "discovery-detail"
@@ -94,8 +97,10 @@ export function TourismScreen({
       ?.scrollIntoView({ block: "start" });
   }, [focusRequest, selected?.kind]);
 
-  function selectClue(id: string) {
+  function selectClue(id: string, movePage = true) {
     if (onDiscover(id)) {
+      // A marker is already in view; centering it must not also jump the page.
+      shouldScrollToSelection.current = movePage;
       setSelectedId(id);
       setFocusRequest((value) => value + 1);
     }
@@ -120,7 +125,7 @@ export function TourismScreen({
 
   return (
     <section
-      className="tourism-screen"
+      className={`tourism-screen${active.phase === "guide" ? " guide-active" : ""}`}
       id="tourism-screen"
       data-testid="tourism-screen"
     >
@@ -185,6 +190,7 @@ export function TourismScreen({
             />
           </div>
           <div
+            ref={dialogueRef}
             className="tourism-guide paper vn-dialogue"
             data-testid="tourism-guide"
           >
@@ -237,7 +243,7 @@ export function TourismScreen({
             discoveredIds={game.discoveredClueIds}
             selectedId={selectedId}
             focusRequest={focusRequest}
-            onSelect={selectClue}
+            onSelect={(id) => selectClue(id, false)}
           />
           <div className="observation-notes">
             {selected && (

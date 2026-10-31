@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { battles, battleQuizzes, presentation } from "../../content";
 import type { GameState } from "../../domain/game";
 import { getBattleOutcome } from "../../domain/battle";
@@ -66,6 +66,13 @@ export function BattleScreen({
   const answer = active.answers[active.roundIndex];
   const record = game.battleRecords.find((item) => item.battleId === battle.id);
   const [paused, setPaused] = useState(false);
+  const readingArea = useRef<HTMLElement>(null);
+  const displayedStoryState = active.phase === "dialogue" ? active.storyState : null;
+  // Start each new scene at the top of its own reading area, without moving
+  // the page or disturbing a question when a notebook or translation opens.
+  useLayoutEffect(() => {
+    if (active.phase !== "feedback") readingArea.current?.scrollTo({ top: 0 });
+  }, [active.phase, active.roundIndex, displayedStoryState]);
   // Only animate an answer saved in this mounted screen. A restored feedback
   // frame is already final and must never be scored or animated again.
   const [animatedAnswer, setAnimatedAnswer] = useState<string | null>(null);
@@ -164,6 +171,7 @@ export function BattleScreen({
         </div>
       </div>
       <section
+        ref={readingArea}
         className="paper battle-paper"
         id="battle-content"
         aria-label="クイズバトル"
@@ -332,9 +340,8 @@ export function BattleScreen({
               />
             )}
             <p className="english-instructions">
-              単語を1回タップで意味、同じ単語を続けて2回タップで文の訳。回答は「選ぶ」を押します。
+              単語は1回で意味、続けて2回で文の訳。
             </p>
-            <TranslationAll learning={learning} id={question.id} />
             <h2 className="question-en">
               <InteractiveEnglish
                 key={question.id}
@@ -346,7 +353,10 @@ export function BattleScreen({
                 }
               />
             </h2>
-            <Translation learning={learning} id={question.id} part="question" />
+            <div className="question-translation-tools">
+              <Translation learning={learning} id={question.id} part="question" />
+              <TranslationAll learning={learning} id={question.id} />
+            </div>
             <div className="quiz-choices" aria-label="英語の3択">
               {question.options.map((option) => {
                 const selected = answer?.optionId === option.id;

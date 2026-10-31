@@ -327,3 +327,71 @@
     background: #e9eadd;
   }
 }
+
+/* Keep the actual observation surface and its controls together on phones.
+   The details and source information remain available below the image. */
+@media (max-width: 600px) {
+  .tourism-screen:not(.guide-active) {
+    display: flex;
+    flex-direction: column;
+  }
+  .tourism-screen:not(.guide-active) > .tourism-heading {
+    order: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 8px;
+    padding: 10px 16px 4px;
+  }
+  .tourism-screen:not(.guide-active) > .tourism-heading .eyebrow {
+    grid-column: 1 / -1;
+  }
+  .tourism-screen:not(.guide-active) > .tourism-heading h1 {
+    grid-column: 1;
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+  .tourism-screen:not(.guide-active) .landmark-english {
+    grid-column: 1;
+    font-size: 12px;
+  }
+  .tourism-screen:not(.guide-active) .tourism-toolbar {
+    grid-column: 2;
+    grid-row: 2 / 4;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0;
+    margin: 0;
+  }
+  .tourism-screen:not(.guide-active) > .tourism-actions {
+    order: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    padding: 4px 16px;
+  }
+  .tourism-screen:not(.guide-active) > .tourism-actions .fine-print {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+  .tourism-screen:not(.guide-active) > .tourism-actions .primary,
+  .tourism-screen:not(.guide-active) > .tourism-actions .secondary {
+    min-height: 48px;
+    margin: 0;
+    padding: 8px 10px;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .tourism-screen:not(.guide-active) > .tourism-actions .primary:last-child {
+    grid-column: 1 / -1;
+  }
+  .tourism-screen:not(.guide-active) > .image-placeholder-note {
+    order: 2;
+    margin: 4px 16px;
+    padding: 6px 8px;
+  }
+  .tourism-screen > .tourism-observation { order: 3; }
+  .tourism-screen:not(.guide-active) > .replay-guide { order: 4; }
+  .tourism-screen:not(.guide-active) > .tourism-credits { order: 5; }
+}

@@ -224,6 +224,10 @@ export default function App() {
     game?.activeTourism?.phase === "guide" ||
     (!game?.activeTourism && game?.activeBattle?.phase === "dialogue")
   );
+  // Observation needs the document's normal scrolling and zoom controls.
+  const mobilePlayActive = !!(
+    conversationActive || (!game?.activeTourism && game?.activeBattle)
+  );
   const freeTimeAvailable = game ? canAccessFreeTime(game) : false;
   const idle =
     game &&
@@ -283,7 +287,7 @@ export default function App() {
 
   return (
     <div
-      className={`app-shell${displaySettings.value.reduceMotion ? " reduce-motion" : ""}${conversationActive ? " conversation-active" : ""}`}
+      className={`app-shell${displaySettings.value.reduceMotion ? " reduce-motion" : ""}${conversationActive ? " conversation-active" : ""}${mobilePlayActive ? " mobile-play-active" : ""}`}
     >
       <header className="masthead">
         <a href="#main" className="brand">

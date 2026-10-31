@@ -5,6 +5,7 @@ import { DialogueText } from "../../components/DialogueText";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
+import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
 
 export function EpilogueScreen({
   game,
@@ -18,6 +19,7 @@ export function EpilogueScreen({
   onAdvance: () => void;
 }) {
   const active = game.activeEpilogue!;
+  const dialogueRef = useDialogueScrollReset<HTMLElement>(active.storyState);
   const frame = active.frame;
   const episode = episodes.find((item) => item.id === active.episodeId)!;
   const speaker =
@@ -51,6 +53,7 @@ export function EpilogueScreen({
           />
         </div>
         <section
+          ref={dialogueRef}
           className="paper story-paper vn-dialogue"
           aria-label="都市エピローグ"
         >

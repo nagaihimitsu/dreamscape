@@ -112,3 +112,36 @@
   border-radius: 3px;
   font-size: 12px;
 }
+
+@media (max-width: 600px) {
+  .observation-viewer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0 6px;
+    margin: 6px 0;
+  }
+  .observation-viewport,
+  .observation-help {
+    grid-column: 1 / -1;
+  }
+  .observation-controls {
+    gap: 4px;
+    padding: 6px 0;
+  }
+  .observation-controls button {
+    min-width: 44px;
+  }
+  .observation-controls output {
+    min-width: 2.8em;
+  }
+  .observation-controls .observation-reset {
+    padding-inline: 8px;
+  }
+  .observation-options {
+    align-items: center;
+    margin: 0;
+  }
+  .observation-marker-toggle {
+    padding-inline: 8px;
+  }
+}

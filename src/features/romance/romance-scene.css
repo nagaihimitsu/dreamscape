@@ -114,3 +114,55 @@
     height: clamp(240px, 32vh, 320px);
   }
 }
+
+/* On phones the surrounding app supplies the available screen height.  Keep
+   the scene stable while letting unusually long dialogue or choices scroll
+   inside their reading surface instead of pushing the entire page around. */
+@media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
+  .conversation-active #city-epilogue-screen {
+    height: 100%;
+  }
+  .conversation-active .vn-scene {
+    height: 100%;
+    min-height: 0;
+  }
+  .conversation-active .vn-character-layer {
+    position: relative;
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0;
+  }
+  .conversation-active .vn-scene .vn-dialogue {
+    margin: auto auto 0;
+    max-height: calc(100% - clamp(112px, 22dvh, 175px));
+    padding: 10px 16px 12px;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .conversation-active .vn-dialogue .speaker {
+    margin-top: 6px;
+  }
+  .conversation-active .vn-dialogue .dialogue-text {
+    min-height: 0;
+    margin: 6px 0 8px;
+    font-size: 17px;
+    line-height: 1.65;
+  }
+  .conversation-active .vn-dialogue .choices {
+    margin-top: 4px;
+    padding-top: 6px;
+  }
+  .conversation-active .vn-dialogue .choice-hint {
+    margin-bottom: 4px;
+  }
+  .conversation-active .vn-dialogue .choice {
+    margin: 4px 0;
+    padding: 7px 12px;
+    line-height: 1.45;
+  }
+  .conversation-active .vn-dialogue .story-tools {
+    margin-top: 8px;
+    padding-top: 4px;
+  }
+}
