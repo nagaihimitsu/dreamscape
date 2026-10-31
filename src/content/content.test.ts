@@ -49,6 +49,20 @@ describe("content build acceptance", () => {
     await writeFile(file, JSON.stringify(data));
     await expect(buildContent(fixture, false)).rejects.toThrow("Missing background image: milano_cafe/assets/missing-background.png");
   });
+  it("accepts a credited shared photo and rejects a missing or ambiguous background asset", async () => {
+    const file = path.join(fixture, "content/romance/presentation.json");
+    const data = JSON.parse(await readFile(file, "utf8"));
+    data.backgrounds.milano_cafe.imageAssetId = "galleria_milano_photo";
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).resolves.toBeDefined();
+    data.backgrounds.milano_cafe.imageAssetId = "missing_background_asset";
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).rejects.toThrow("Unknown background image asset: milano_cafe/missing_background_asset");
+    data.backgrounds.milano_cafe.imageAssetId = "galleria_milano_photo";
+    data.backgrounds.milano_cafe.imagePath = "assets/tourism/galleria-milano.webp";
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).rejects.toThrow("Background cannot specify both imagePath and imageAssetId: milano_cafe");
+  }, 30000);
   it("rejects an undefined character ID and a registered but missing image", async () => {
     const file = path.join(fixture, "content/presentation/characters.json");
     const data = JSON.parse(await readFile(file, "utf8"));

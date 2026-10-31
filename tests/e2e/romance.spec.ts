@@ -137,10 +137,10 @@ test("pause, manual save/load and keyboard choice preserve the current line", as
   await startNewGame(page);
   await loadLegacyFreeTime(page);
   await startCafe(page);
-  await expect(page.locator(".dialogue-text")).toMatchAriaSnapshot(`
-    - button "運河沿いの小さなカフェ。"
-  `);
   const before = await saved(page);
+  await expect(page.locator(".dialogue-text")).toMatchAriaSnapshot(
+    `- button "${before.activeDate!.frame.text}"`,
+  );
   const pause = page.getByRole("button", { name: "中断する", exact: true });
   await revealDialogueControl(page, pause);
   await pause.click();

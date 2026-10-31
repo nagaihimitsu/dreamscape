@@ -498,6 +498,168 @@
       "text": "「一枚減っただけなのに、ずいぶん持ちやすそうになったね」",
       "speaker": "heroine",
       "emotion": "smile"
+    },
+    {
+      "storyId": "milano/cafe_tourism_01",
+      "text": "「でも今は……もう少しだけ、予定がないままでいたいな」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/cafe_tourism_01",
+      "text": "「……迷子を予約する人、初めて見た」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/cafe_tourism_01",
+      "text": "彼女は笑いかけ、ガイドブックに視線を戻す。",
+      "speaker": "narrator",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/cafe_tourism_01",
+      "text": "「……私が決めても、いいの？」",
+      "speaker": "heroine",
+      "emotion": "surprised"
+    },
+    {
+      "storyId": "milano/cafe_tourism_01",
+      "text": "「……自由時間まで予約しちゃった」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/cafe_tourism_01",
+      "text": "「……それ、ものすごく忙しい予定だね」",
+      "speaker": "heroine",
+      "emotion": "teasing"
+    },
+    {
+      "storyId": "milano/cafe_tourism_01",
+      "text": "「……じゃあ、一つだけ。観光案内には載ってない所があるの」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/walk_tourism_01",
+      "text": "「この街灯、ずっと気になってた。なんだか、話を聞こうとしてるみたいで」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/walk_tourism_01",
+      "text": "「……背伸びして秘密を言うの、かなり目立つね」",
+      "speaker": "heroine",
+      "emotion": "teasing"
+    },
+    {
+      "storyId": "milano/walk_tourism_01",
+      "text": "「じゃあ、こっち側から。傾き方がいちばんいいの」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/walk_tourism_01",
+      "text": "「……街灯の趣味を褒められたのは、初めて」",
+      "speaker": "heroine",
+      "emotion": "shy"
+    },
+    {
+      "storyId": "milano/walk_tourism_01",
+      "text": "「……これだと、今にも倒れそう」",
+      "speaker": "heroine",
+      "emotion": "worried"
+    },
+    {
+      "storyId": "milano/walk_tourism_01",
+      "text": "「その人の休憩時間も描いてね」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/walk_tourism_01",
+      "text": "「……そう言われると、消しにくいな」",
+      "speaker": "heroine",
+      "emotion": "shy"
+    },
+    {
+      "storyId": "milano/walk_tourism_01",
+      "text": "「上手だったら、隣は少し考える」",
+      "speaker": "heroine",
+      "emotion": "teasing"
+    },
+    {
+      "storyId": "milano/night_tourism_01",
+      "text": "「強いね。何もしてないのに」",
+      "speaker": "heroine",
+      "emotion": "teasing"
+    },
+    {
+      "storyId": "milano/night_tourism_01",
+      "text": "「……うん。でも、足が冷えたら言って。私、ときどき忘れるから」",
+      "speaker": "heroine",
+      "emotion": "worried"
+    },
+    {
+      "storyId": "milano/night_tourism_01",
+      "text": "「……ただ、帰ってきた人がいたんだね」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/night_tourism_01",
+      "text": "「証人が二人とも、窓を見てただけの人だ」",
+      "speaker": "heroine",
+      "emotion": "teasing"
+    },
+    {
+      "storyId": "milano/night_tourism_01",
+      "text": "「うん。忘れたら……どっちかが覚えてるかもしれないし」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/city_date_tourism_01",
+      "text": "「名所の説明より、変な人の話のほうが長くなっちゃった」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/city_date_tourism_01",
+      "text": "「それだと、息を止めて観光したみたい」",
+      "speaker": "heroine",
+      "emotion": "teasing"
+    },
+    {
+      "storyId": "milano/city_date_tourism_01",
+      "text": "彼女は笑って、一度だけ深呼吸した。ペン先はまだ紙に触れなかった。",
+      "speaker": "narrator",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/city_date_tourism_01",
+      "text": "「……思ってたより、忙しかった。目が。あと、笑うのを我慢するところが」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/city_date_tourism_01",
+      "text": "「余白、無口だからって働かせすぎないでね」",
+      "speaker": "heroine",
+      "emotion": "teasing"
+    },
+    {
+      "storyId": "milano/city_date_tourism_01",
+      "text": "「うん。書かなくても、今日はあったから」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/city_date_tourism_01",
+      "text": "「じゃあ、私が先に書いても消さないでね。ふたりの分だから」",
+      "speaker": "heroine",
+      "emotion": "smile"
     }
   ]
 }

@@ -1360,3 +1360,20 @@ dialog.modal::backdrop {
 #delete-title + p {
   margin: 12px 0;
 }
+
+/* A complete view of the photograph, including details hidden by portraits. */
+dialog.date-background-viewer {
+  width: min(92vw, 700px);
+  padding: 16px;
+}
+dialog.date-background-viewer h2 { margin: 0 0 8px; }
+dialog.date-background-viewer > img {
+  display: block;
+  width: 100%;
+  height: min(45dvh, 430px);
+  object-fit: contain;
+  background: #26342e;
+}
+dialog.date-background-viewer details { margin: 8px 0; }
+dialog.date-background-viewer summary { cursor: pointer; padding: 8px 0; }
+dialog.date-background-viewer > button { min-height: 44px; }

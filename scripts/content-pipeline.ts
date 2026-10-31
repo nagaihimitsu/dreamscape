@@ -356,6 +356,10 @@ export async function buildContent(root: string, writeOutput = true) {
       try { await access(path.join(root, "public", background.imagePath)); }
       catch { throw new Error(`Missing background image: ${backgroundId}/${background.imagePath}`); }
     }
+    if (background.imageAssetId && !tourism.assets.some((asset) => asset.id === background.imageAssetId))
+      throw new Error(`Unknown background image asset: ${backgroundId}/${background.imageAssetId}`);
+    if (background.imagePath && background.imageAssetId)
+      throw new Error(`Background cannot specify both imagePath and imageAssetId: ${backgroundId}`);
   }
   for (const battleId of Object.keys(characters.battleCharacters ?? {})) {
     if (!battles.some((battle) => battle.id === battleId))
@@ -481,6 +485,15 @@ export async function buildContent(root: string, writeOutput = true) {
         throw new Error(`Date destination city mismatch: ${date.id}/${date.destinationId}`);
       if (destination.backgroundAssetId !== date.backgroundAssetId)
         throw new Error(`Date destination background mismatch: ${date.id}/${date.destinationId}`);
+    }
+    if (date.legacyDestinationId) {
+      if (!date.legacyStoryIds?.length)
+        throw new Error(`Legacy date destination needs an earlier story: ${date.id}`);
+      const destination = destinations.find((item) => item.id === date.legacyDestinationId);
+      if (!destination)
+        throw new Error(`Unknown legacy date destination: ${date.id}/${date.legacyDestinationId}`);
+      if (destination.cityId !== date.chapterId)
+        throw new Error(`Legacy date destination city mismatch: ${date.id}/${date.legacyDestinationId}`);
     }
     if (
       date.chapterId !== city.id ||

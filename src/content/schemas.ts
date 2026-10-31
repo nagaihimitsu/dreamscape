@@ -20,6 +20,7 @@ export const dateSchema = z
     requiredCompletedEpisodeIds: z.array(id).optional(),
     forbiddenCompletedEpisodeIds: z.array(id).optional(),
     destinationId: id.optional(),
+    legacyDestinationId: id.optional(),
     allowAfterEnding: z.boolean().optional(),
     rewardOnlyOnce: z.boolean(),
     backgroundAssetId: id,
@@ -117,6 +118,12 @@ export const presentationSchema = z
           color: z.string().regex(/^#[0-9a-fA-F]{6}$/),
           fallback: z.enum(["canal", "neutral"]).optional(),
           imagePath: z.string().regex(/^assets\/(?!.*(?:^|\/)\.\.(?:\/|$))[a-zA-Z0-9_./-]+\.(?:png|webp|svg)$/).nullable().optional(),
+          // Reuse the tourism image ledger, including its source and licence.
+          imageAssetId: id.optional(),
+          imagePosition: z.object({
+            x: z.number().min(0).max(100),
+            y: z.number().min(0).max(100),
+          }).strict().optional(),
         })
         .strict(),
     ),

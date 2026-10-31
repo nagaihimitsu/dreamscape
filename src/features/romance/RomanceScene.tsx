@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { city, dateDestinations, dialogueExpressions, presentation } from "../../content";
+import { city, dateDestinations, dialogueExpressions, presentation, tourismAssets } from "../../content";
 import type { DateDefinition } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import type { GameState } from "../../domain/game";
@@ -12,6 +12,8 @@ import { DialogueToolsMenu } from "../../components/DialogueToolsMenu";
 import { AutoAdvanceButton, useAutoAdvance } from "../../components/useAutoAdvance";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
+import { resolveRomancePresentation } from "./romance-presentation";
+import { Modal } from "../../components/Modal";
 import "./romance-scene.css";
 
 export function RomanceScene({
@@ -35,10 +37,17 @@ export function RomanceScene({
 }) {
   const active = game.activeDate!;
   const frame = active.frame;
-  const destination = date?.destinationId
-    ? dateDestinations.find((item) => item.id === date.destinationId)
+  const backgroundAssetId = presentation.backgrounds[frame.background]?.imageAssetId;
+  const backgroundAsset = backgroundAssetId
+    ? tourismAssets.find((asset) => asset.id === backgroundAssetId)
     : undefined;
-  const emotion = resolveDialogueExpression(dialogueExpressions, date?.storyId ?? "", frame);
+  // A restored save may still be reading the original Ink. Its annotations
+  // and location belong to that script, not necessarily the replacement.
+  const { storyId, destinationId } = resolveRomancePresentation(date, active);
+  const destination = destinationId
+    ? dateDestinations.find((item) => item.id === destinationId)
+    : undefined;
+  const emotion = resolveDialogueExpression(dialogueExpressions, storyId, frame);
   const speaker =
     frame.speaker === "heroine"
       ? game.heroineName
@@ -52,6 +61,7 @@ export function RomanceScene({
     frame.text,
   );
   const [paused, setPaused] = useState(false);
+  const [creditsOpen, setCreditsOpen] = useState(false);
   const windowVisibility = useDialogueWindow();
   const dialogueRef = useDialogueScrollReset<HTMLElement>(active.storyState);
   const pendingChoice = useRef<{
@@ -248,6 +258,11 @@ export function RomanceScene({
                 <button className="text-button" onClick={() => setPaused(true)}>
                   中断する
                 </button>
+                {backgroundAsset && (
+                  <button type="button" className="text-button" onClick={() => setCreditsOpen(true)}>
+                    背景画像を見る
+                  </button>
+                )}
                 <DialogueWindowHide state={windowVisibility} />
                 <label>
                 文字送り
@@ -266,6 +281,24 @@ export function RomanceScene({
           </>
         )}
       </section>
+      {creditsOpen && backgroundAsset && (
+        <Modal labelledBy="date-background-credits-title" className="date-background-viewer" onClose={() => setCreditsOpen(false)}>
+          <h2 id="date-background-credits-title">背景画像</h2>
+          <img src={`${import.meta.env.BASE_URL}${backgroundAsset.path}`} alt={backgroundAsset.altJa} />
+          <details>
+            <summary>画像の説明・出典と利用条件</summary>
+            <p>{backgroundAsset.altJa}</p>
+            <p>{backgroundAsset.creditJa}</p>
+            <p>{backgroundAsset.modificationJa}</p>
+            <p>
+              <a href={backgroundAsset.sourceUrl} target="_blank" rel="noreferrer">画像の出典</a>
+              {" · "}
+              <a href={backgroundAsset.licenseUrl} target="_blank" rel="noreferrer">{backgroundAsset.licenseName}</a>
+            </p>
+          </details>
+          <button type="button" className="secondary" onClick={() => setCreditsOpen(false)}>閉じる</button>
+        </Modal>
+      )}
       <DialogueWindowRestore state={windowVisibility} />
     </div>
   );

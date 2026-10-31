@@ -140,6 +140,94 @@
           "checkedAt": "2026-10-31",
           "claimType": "documented_fact",
           "claimJa": "マウリツィオ・カテランの手の彫刻L.O.V.E.は、アッファーリ広場のミラノ証券取引所前に設置されている。"
+        },
+        {
+          "publisher": "inLombardia（ロンバルディア州観光局）",
+          "title": "L.O.V.E.",
+          "url": "https://www.in-lombardia.it/en/tourism-in-lombardy/tourism-milan/love",
+          "checkedAt": "2026-10-31",
+          "claimType": "documented_fact",
+          "claimJa": "作品は当初2週間の仮設展示の予定だったが、議論を経てその後も広場に残された。"
+        }
+      ]
+    },
+    {
+      "id": "milano_cafe_naviglio",
+      "cityId": "milano",
+      "nameJa": "ナヴィリオ運河のカフェ",
+      "nameEn": "Naviglio Grande",
+      "descriptionJa": "運河沿いで、水路と大聖堂にまつわる小話を聞きながら過ごす。",
+      "backgroundAssetId": "milano_cafe_landmark",
+      "facts": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo di Milano（大聖堂管理財団）",
+          "title": "Techbau joins the Adopt a Statue project",
+          "url": "https://www.duomomilano.it/en/techbau-joins-the-adopt-a-statue-project/",
+          "checkedAt": "2026-10-31",
+          "claimType": "documented_fact",
+          "claimJa": "大聖堂用の石材は水路で運ばれ、AUFの印は関税免除を意味した。"
+        }
+      ]
+    },
+    {
+      "id": "milano_duomo_square_walk",
+      "cityId": "milano",
+      "nameJa": "ドゥオモ広場の散歩",
+      "nameEn": "Piazza del Duomo",
+      "descriptionJa": "大聖堂の尖塔を見上げ、広場を歩く。",
+      "backgroundAssetId": "milano_walk_landmark",
+      "facts": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo di Milano（大聖堂管理財団）",
+          "title": "Madonnina Main Spire",
+          "url": "https://www.duomomilano.it/en/spire/madonnina-main-spire/?id_guglia=135",
+          "checkedAt": "2026-10-31",
+          "claimType": "documented_fact",
+          "claimJa": "聖母像より高いピレッリ・ビルが建設された際、像の写しがその屋上に置かれた。"
+        }
+      ]
+    },
+    {
+      "id": "milano_naviglio_night",
+      "cityId": "milano",
+      "nameJa": "ナヴィリオの夜景",
+      "nameEn": "Naviglio Grande at night",
+      "descriptionJa": "運河の橋から、揺れる灯りと街の暮らしを眺める。",
+      "backgroundAssetId": "milano_night_landmark",
+      "facts": [
+        {
+          "publisher": "inLombardia（ロンバルディア州観光局）",
+          "title": "La Milano dei ballatoi",
+          "url": "https://www.in-lombardia.it/en/tourism-in-lombardy/tourism-milan/la-milano-dei-ballatoi",
+          "checkedAt": "2026-10-31",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノの伝統的なカーザ・ディ・リンギエーラには、住居の入口をつなぐ共同の廊下がある。"
+        }
+      ]
+    },
+    {
+      "id": "milano_galleria_revisit",
+      "cityId": "milano",
+      "nameJa": "ガッレリアの帰り道",
+      "nameEn": "Galleria Vittorio Emanuele II",
+      "descriptionJa": "屋根の下の通りで旅の出来事を振り返る。",
+      "backgroundAssetId": "milano_city_date_landmark",
+      "facts": [
+        {
+          "publisher": "Lombardia Beni Culturali（ロンバルディア州文化財ポータル）",
+          "title": "Galleria Vittorio Emanuele II — SIRBeC LMD80-00142",
+          "url": "https://www.lombardiabeniculturali.it/architetture/schede/LMD80-00142/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "州文化財ポータルは、ドゥオモ広場とスカラ広場をつなぐ屋根付き通路の計画を説明している。"
+        },
+        {
+          "publisher": "inLombardia（ロンバルディア州観光局）",
+          "title": "Vittorio Emanuele Gallery",
+          "url": "https://www.in-lombardia.it/en/tourism-in-lombardy/tourism-milan/monuments-milan/vittorio-emanuele-gallery",
+          "checkedAt": "2026-10-31",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリアは「ミラノの居間」とも呼ばれ、ガラスと鉄の屋根を持つ。"
         }
       ]
     }

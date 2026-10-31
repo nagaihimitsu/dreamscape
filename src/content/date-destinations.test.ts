@@ -9,7 +9,11 @@ type Destination = {
   id: string; cityId: string; backgroundAssetId: string;
   facts: { publisher: string; title: string; url: string; checkedAt: string; claimType: string; claimJa: string }[];
 };
-type DateEntry = { id: string; destinationId?: string; chapterId: string; backgroundAssetId: string; requiredCompletedEpisodeIds?: string[] };
+type DateEntry = {
+  id: string; destinationId?: string; legacyDestinationId?: string; legacyStoryIds?: string[];
+  chapterId: string; backgroundAssetId: string; requiredCompletedChapters: string[];
+  requiredCompletedEpisodeIds?: string[];
+};
 let fixture: string;
 beforeEach(async () => {
   fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-date-destination-"));
@@ -48,6 +52,28 @@ describe("date destination content references", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown date destination");
     await editDates((items) => { scala(items).destinationId = "milano_la_scala"; scala(items).chapterId = "unknown_city"; });
     await expect(buildContent(fixture, false)).rejects.toThrow("Date destination city mismatch");
+  });
+
+  it("validates a legacy location independently of the current story", async () => {
+    await editDates((items) => {
+      scala(items).legacyDestinationId = "milano_la_scala";
+      scala(items).legacyStoryIds = undefined;
+    });
+    await expect(buildContent(fixture, false)).rejects.toThrow("Legacy date destination needs an earlier story");
+    await editDates((items) => {
+      const date = scala(items);
+      date.legacyStoryIds = ["milano/invitation_01"];
+      date.legacyDestinationId = "missing_destination";
+    });
+    await expect(buildContent(fixture, false)).rejects.toThrow("Unknown legacy date destination");
+    await editDates((items) => {
+      const date = scala(items);
+      date.legacyDestinationId = "milano_la_scala";
+      date.destinationId = undefined;
+      date.chapterId = "unknown_city";
+      date.requiredCompletedChapters = ["unknown_city"];
+    });
+    await expect(buildContent(fixture, false)).rejects.toThrow("Legacy date destination city mismatch");
   });
 
   it("rejects an unregistered background and a date/destination background mismatch", async () => {

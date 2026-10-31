@@ -497,7 +497,7 @@ function applyStep(
 }
 
 /** Resolve old in-progress stories by their saved fingerprint; never guess a changed story. */
-function activeDateStoryId(date: DateDefinition, active: ActiveDate): string {
+export function activeDateStoryId(date: DateDefinition, active: Pick<ActiveDate, "storyHash">): string {
   const storyId = [date.storyId, ...(date.legacyStoryIds ?? [])].find((id) => {
     try { return storyFingerprint(id) === active.storyHash; }
     catch { return false; }

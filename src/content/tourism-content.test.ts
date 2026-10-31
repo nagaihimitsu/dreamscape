@@ -8,18 +8,20 @@ import { prepareContentFixture } from "./test-fixtures";
 import catalogData from "../../content/tourism/catalog.json";
 
 let fixture: string;
+let fixtureCatalog: typeof catalogData;
 const catalogPath = "content/tourism/catalog.json";
 const guidePath = "content/stories/tourism/last_supper_guide.ink";
 beforeEach(async () => {
   fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-tourism-content-"));
   await prepareContentFixture(fixture);
+  fixtureCatalog = JSON.parse(await readFile(path.join(fixture, catalogPath), "utf8"));
 });
 afterEach(async () => {
   await rm(fixture, { recursive: true, force: true });
 });
 
 async function changeCatalog(change: (data: typeof catalogData) => void) {
-  const data = structuredClone(catalogData);
+  const data = structuredClone(fixtureCatalog);
   change(data);
   await writeFile(path.join(fixture, catalogPath), JSON.stringify(data));
 }
@@ -78,6 +80,13 @@ describe("tourism content contract", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow();
   });
 
+  it("rejects image dimensions that disagree with the registered file", async () => {
+    await changeCatalog((data) => {
+      data.assets[0].width += 1;
+    });
+    await expect(buildContent(fixture, false)).rejects.toThrow("Tourism image dimensions do not match");
+  });
+
   it("rejects unsafe image paths and missing or non-image assets", async () => {
     await changeCatalog((data) => {
       data.assets[0].path = "../README.md";
@@ -89,7 +98,7 @@ describe("tourism content contract", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow();
     await changeCatalog(() => {});
     await writeFile(
-      path.join(fixture, "public", catalogData.assets[0].path),
+      path.join(fixture, "public", fixtureCatalog.assets[0].path),
       "not an image",
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(

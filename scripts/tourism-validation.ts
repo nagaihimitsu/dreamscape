@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { Story } from "inkjs";
+import sharp from "sharp";
 import type { BattleDefinition, QuizDefinition } from "../src/content/schemas";
 import type { TourismCatalog } from "../src/content/tourism-schemas";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
@@ -50,6 +51,14 @@ export async function validateTourism(
       bytes.toString("ascii", 8, 12) === "WEBP";
     if (!jpeg && !png && !webp)
       throw new Error(`Invalid tourism image: ${asset.path}`);
+    let dimensions: { width?: number; height?: number };
+    try {
+      dimensions = await sharp(bytes).metadata();
+    } catch {
+      throw new Error(`Invalid tourism image: ${asset.path}`);
+    }
+    if (dimensions.width !== asset.width || dimensions.height !== asset.height)
+      throw new Error(`Tourism image dimensions do not match: ${asset.id}/${asset.path}`);
   }
   let guideCount = 0;
   for (const landmark of catalog.landmarks) {

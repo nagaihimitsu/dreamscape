@@ -22,9 +22,9 @@ test("three destination dates work from a completed old save on a phone", async 
   await loadSnapshot(page, phase7.cityClearViewed);
   const initial = await saved(page);
   const places = [
-    { id: "milano_la_scala_date_01", name: "スカラ座", cost: 2 },
-    { id: "milano_brera_date_01", name: "ブレラ絵画館", cost: 2 },
-    { id: "milano_navigli_date_01", name: "ナヴィリオ地区", cost: 1 },
+    { id: "milano_la_scala_date_01", name: "スカラ座", cost: 2, photo: "la_scala.webp" },
+    { id: "milano_brera_date_01", name: "ブレラ絵画館", cost: 2, photo: "brera.webp" },
+    { id: "milano_navigli_date_01", name: "ナヴィリオ地区", cost: 1, photo: "navigli.webp" },
   ];
   for (const place of places) {
     const event = await findDateOption(page, place.id);
@@ -37,10 +37,13 @@ test("three destination dates work from a completed old save on a phone", async 
     expect(availableAp(active)).toBe(availableAp(before) - place.cost);
     const scene = page.getByTestId("romance-scene");
     await expect(scene.getByTestId("date-destination")).toHaveText(`ミラノ ／ ${place.name}`);
-    // These backgrounds are explicitly neutral placeholders, not the old canal illustration.
+    // A licensed photo identifies the place; neutral remains the failure fallback.
     const background = scene.locator(".canal-scene");
     await expect(background).toHaveAttribute("data-fallback", "neutral");
     await expect(background.locator("svg")).toHaveCount(0);
+    const photo = background.locator("img");
+    await expect(photo).toHaveAttribute("src", new RegExp(`${place.photo.replace(".", "\\.")}$`));
+    await expect.poll(() => photo.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBeGreaterThan(0);
     for (const width of [320, 360]) {
       await page.setViewportSize({ width, height: width === 320 ? 568 : 640 });
       await expectNoOverflow(page);

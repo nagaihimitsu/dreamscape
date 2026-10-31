@@ -50,31 +50,36 @@
       "nameJa": "開演前のことば",
       "captionJa": "ミラノ ／ 開演前のことば",
       "color": "#786b65",
-      "fallback": "neutral"
+      "fallback": "neutral",
+      "imageAssetId": "la_scala_date_photo"
     },
     "milano_brera_date": {
       "nameJa": "一枚の絵、違う視線",
       "captionJa": "ミラノ ／ 一枚の絵、違う視線",
       "color": "#777563",
-      "fallback": "neutral"
+      "fallback": "neutral",
+      "imageAssetId": "brera_date_photo"
     },
     "milano_navigli_date": {
       "nameJa": "決めない寄り道",
       "captionJa": "ミラノ ／ 決めない寄り道",
       "color": "#60746b",
-      "fallback": "neutral"
+      "fallback": "neutral",
+      "imageAssetId": "navigli_date_photo"
     },
     "milano_san_satiro_date": {
       "nameJa": "見える距離",
       "captionJa": "ミラノ ／ 見える距離",
       "color": "#77736c",
-      "fallback": "neutral"
+      "fallback": "neutral",
+      "imageAssetId": "san_satiro_date_photo"
     },
     "milano_starbucks_roastery_date": {
       "nameJa": "遠くまで届く香り",
       "captionJa": "ミラノ ／ 遠くまで届く香り",
       "color": "#806b5d",
-      "fallback": "neutral"
+      "fallback": "neutral",
+      "imageAssetId": "roastery_exterior_date_photo"
     },
     "milano_fondazione_prada_date": {
       "nameJa": "古い建物、新しい見方",
@@ -86,13 +91,43 @@
       "nameJa": "手のかたち",
       "captionJa": "ミラノ ／ 手のかたち",
       "color": "#727779",
-      "fallback": "neutral"
+      "fallback": "neutral",
+      "imageAssetId": "love_vicinity_date_photo"
     },
     "milano_rain_pause": {
       "nameJa": "ガッレリアの雨宿り",
       "captionJa": "ミラノ ／ 雨が通り過ぎるまで",
       "color": "#6c7775",
-      "fallback": "neutral"
+      "fallback": "neutral",
+      "imageAssetId": "galleria_milano_photo"
+    },
+    "milano_cafe_landmark": {
+      "nameJa": "ナヴィリオ運河のカフェ",
+      "captionJa": "ミラノ ／ ナヴィリオ・グランデ",
+      "color": "#b87964",
+      "fallback": "neutral",
+      "imageAssetId": "navigli_date_photo"
+    },
+    "milano_walk_landmark": {
+      "nameJa": "ドゥオモ広場",
+      "captionJa": "ミラノ ／ 大聖堂の広場",
+      "color": "#b88b64",
+      "fallback": "neutral",
+      "imageAssetId": "duomo_milano_photo"
+    },
+    "milano_night_landmark": {
+      "nameJa": "ナヴィリオの夜景",
+      "captionJa": "ミラノ ／ 運河の灯り",
+      "color": "#455a68",
+      "fallback": "neutral",
+      "imageAssetId": "navigli_night_date_photo"
+    },
+    "milano_city_date_landmark": {
+      "nameJa": "ガッレリアの帰り道",
+      "captionJa": "ミラノ ／ 屋根の下の通り",
+      "color": "#8c7867",
+      "fallback": "neutral",
+      "imageAssetId": "galleria_milano_photo"
     }
   },
   "emotions": {

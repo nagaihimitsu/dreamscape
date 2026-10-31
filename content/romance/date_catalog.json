@@ -8,12 +8,12 @@
       "descriptionJa": "予定のない午後、二人で話す短いデート。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "milano/cafe_01",
+      "storyId": "milano/cafe_tourism_01",
       "requiredCompletedChapters": [
         "milano"
       ],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_cafe",
+      "backgroundAssetId": "milano_cafe_landmark",
       "kind": "normal",
       "minAffection": 0,
       "requiredPlayedDateIds": [],
@@ -60,7 +60,11 @@
           "hasCafeMemory": false
         }
       ],
-      "allowAfterEnding": true
+      "allowAfterEnding": true,
+      "legacyStoryIds": [
+        "milano/cafe_01"
+      ],
+      "destinationId": "milano_cafe_naviglio"
     },
     {
       "id": "milano_walk_01",
@@ -71,13 +75,13 @@
       "apCost": 3,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/walk_01",
+      "storyId": "milano/walk_tourism_01",
       "requiredCompletedChapters": [
         "milano"
       ],
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_walk",
+      "backgroundAssetId": "milano_walk_landmark",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -121,7 +125,11 @@
           "hasCafeMemory": false
         }
       ],
-      "allowAfterEnding": true
+      "allowAfterEnding": true,
+      "legacyStoryIds": [
+        "milano/walk_01"
+      ],
+      "destinationId": "milano_duomo_square_walk"
     },
     {
       "id": "milano_invitation_01",
@@ -132,13 +140,13 @@
       "apCost": 0,
       "minRomanceStage": 2,
       "minAffection": 0,
-      "storyId": "milano/invitation_open_01",
+      "storyId": "milano/invitation_open_tour_01",
       "requiredCompletedChapters": [
         "milano"
       ],
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_walk",
+      "backgroundAssetId": "milano_city_date_landmark",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 1,
@@ -184,7 +192,8 @@
       ],
       "invitationJa": "「行きたい所があるの。今日は、私についてきて」",
       "legacyStoryIds": [
-        "milano/invitation_01"
+        "milano/invitation_01",
+        "milano/invitation_open_01"
       ]
     },
     {
@@ -196,13 +205,13 @@
       "apCost": 3,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/night_01",
+      "storyId": "milano/night_tourism_01",
       "requiredCompletedChapters": [
         "milano"
       ],
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_night",
+      "backgroundAssetId": "milano_night_landmark",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -246,7 +255,11 @@
           "hasCafeMemory": false
         }
       ],
-      "allowAfterEnding": true
+      "allowAfterEnding": true,
+      "legacyStoryIds": [
+        "milano/night_01"
+      ],
+      "destinationId": "milano_naviglio_night"
     },
     {
       "id": "milano_confession_01",
@@ -391,7 +404,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/city_date_01",
+      "storyId": "milano/city_date_tourism_01",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -401,7 +414,7 @@
       "allowAfterEnding": true,
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_city_date",
+      "backgroundAssetId": "milano_city_date_landmark",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,
@@ -442,7 +455,11 @@
           "hasCafeMemory": true,
           "memoryId": "milano_cafe_future_talk"
         }
-      ]
+      ],
+      "legacyStoryIds": [
+        "milano/city_date_01"
+      ],
+      "destinationId": "milano_galleria_revisit"
     },
     {
       "id": "milano_la_scala_date_01",
@@ -454,7 +471,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/la_scala_date_01",
+      "storyId": "milano/la_scala_date_tour_01",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_galleria_episode"
@@ -505,7 +522,11 @@
           "endingReached": true,
           "hasCafeMemory": false
         }
-      ]
+      ],
+      "legacyStoryIds": [
+        "milano/la_scala_date_01"
+      ],
+      "legacyDestinationId": "milano_la_scala"
     },
     {
       "id": "milano_brera_date_01",
@@ -643,7 +664,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/san_satiro_date_01",
+      "storyId": "milano/san_satiro_date_tour_01",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_duomo_episode"
@@ -694,7 +715,11 @@
           "endingReached": true,
           "hasCafeMemory": false
         }
-      ]
+      ],
+      "legacyStoryIds": [
+        "milano/san_satiro_date_01"
+      ],
+      "legacyDestinationId": "milano_san_satiro"
     },
     {
       "id": "milano_starbucks_roastery_date_01",
@@ -769,7 +794,7 @@
       "apCost": 3,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/fondazione_prada_date_01",
+      "storyId": "milano/fondazione_prada_date_tour_01",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_last_supper_episode"
@@ -832,7 +857,11 @@
             "milano_brera_first_listen"
           ]
         }
-      ]
+      ],
+      "legacyStoryIds": [
+        "milano/fondazione_prada_date_01"
+      ],
+      "legacyDestinationId": "milano_fondazione_prada"
     },
     {
       "id": "milano_love_date_01",
@@ -844,7 +873,7 @@
       "apCost": 1,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/love_date_01",
+      "storyId": "milano/love_date_tour_01",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_duomo_episode"
@@ -895,7 +924,11 @@
           "endingReached": true,
           "hasCafeMemory": false
         }
-      ]
+      ],
+      "legacyStoryIds": [
+        "milano/love_date_01"
+      ],
+      "legacyDestinationId": "milano_love"
     },
     {
       "id": "milano_rain_pause_01",
@@ -906,7 +939,7 @@
       "apCost": 0,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/rain_pause_01",
+      "storyId": "milano/rain_pause_tour_01",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -918,7 +951,7 @@
       ],
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_rain_pause",
+      "backgroundAssetId": "milano_city_date_landmark",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 1,
@@ -947,6 +980,9 @@
           "confessionReady": false,
           "endingReached": true
         }
+      ],
+      "legacyStoryIds": [
+        "milano/rain_pause_01"
       ]
     }
   ]
