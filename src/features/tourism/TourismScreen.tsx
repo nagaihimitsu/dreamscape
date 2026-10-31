@@ -137,6 +137,17 @@ export function TourismScreen({
     </div>
   );
 
+  const toolbar = (
+    <div className="tourism-toolbar">
+      <span className="fine-print">
+        発見 {clues.filter((clue) => game.discoveredClueIds.includes(clue.id)).length} / {clues.length}
+      </span>
+      <button className="notebook-button" onClick={onNotebook}>
+        手がかり帳
+      </button>
+    </div>
+  );
+
   return (
     <section
       className={`tourism-screen${active.phase === "guide" ? " guide-active" : ""}`}
@@ -149,25 +160,14 @@ export function TourismScreen({
         <p className="landmark-english" lang="en">
           {landmark.nameEn}
         </p>
-        <div className="tourism-toolbar">
-          <span className="fine-print">
-            発見{" "}
-            {
-              clues.filter((clue) => game.discoveredClueIds.includes(clue.id))
-                .length
-            }{" "}
-            / {clues.length}
-          </span>
-          <button className="notebook-button" onClick={onNotebook}>
-            手がかり帳
-          </button>
-        </div>
+        {active.phase === "guide" && toolbar}
         {guideReward && game.completedGuideIds.includes(landmark.id) && (
           <p className="guide-reward-note">
             {guideReward.titleJa} · {guideReward.ap}APの報酬を記録しました
           </p>
         )}
       </header>
+      {active.phase === "exploring" && toolbar}
       {active.phase === "exploring" && actions}
       {asset.isPlaceholder && (
         <p className="image-placeholder-note">

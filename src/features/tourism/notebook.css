@@ -1,4 +1,4 @@
-dialog.modal.case-notebook {
+dialog.modal.clue-notebook {
   display: flex;
   flex-direction: column;
   width: min(680px, calc(100vw - 24px));
@@ -8,20 +8,22 @@ dialog.modal.case-notebook {
   padding: 0;
   overflow: hidden;
 }
-.case-notebook .cluebook-header {
+.clue-notebook .cluebook-header {
   position: static;
   flex-shrink: 0;
-  padding: 12px 20px 8px;
+  padding: 6px 20px;
 }
-.case-notebook .cluebook-header h2 {
+.clue-notebook .cluebook-header h2 {
   font-size: 20px;
+  line-height: 1.3;
+  margin: 0;
 }
 .case-context {
   flex-shrink: 0;
-  padding: 10px 20px 12px;
+  padding: 6px 20px;
   background: #e9eddf;
   border-bottom: 1px solid #c4cdb5;
-  max-height: 32dvh;
+  max-height: 28dvh;
   overflow: auto;
   overscroll-behavior: contain;
 }
@@ -34,24 +36,66 @@ dialog.modal.case-notebook {
 .case-context blockquote {
   margin: 0;
   font-size: 13px;
-  line-height: 1.65;
+  line-height: 1.4;
   white-space: pre-line;
   overflow-wrap: anywhere;
 }
 .case-question {
-  margin-top: 7px;
+  margin-top: 3px;
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 600;
 }
-.case-notebook .cluebook-body {
+.clue-notebook .cluebook-body {
   flex: 1;
   min-height: 100px;
-  padding: 14px 20px 22px;
+  padding: 8px 20px 16px;
   overflow: auto;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
 }
+.clue-navigation {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+}
+.clue-picker { flex: 1; min-width: 0; }
+.clue-picker select {
+  width: 100%;
+  min-height: 44px;
+  padding: 6px 8px;
+  border: 1px solid #a8b397;
+  border-radius: 4px;
+  background: #fffdf7;
+  color: var(--green);
+  font-size: 14px;
+}
+.clue-page-button {
+  flex: none;
+  min-height: 44px;
+  padding: 6px 10px;
+  border: 1px solid #bac5ae;
+  border-radius: 4px;
+  background: #eeeee3;
+  color: var(--green);
+  font-size: 13px;
+}
+.clue-notebook .notebook-clue { padding: 0; }
+.clue-notebook .notebook-clue .case-provenance,
+.clue-notebook .notebook-clue .clue-kind { display: inline-block; margin: 0 6px 2px 0; }
+.clue-notebook .notebook-clue h3 { line-height: 1.4; }
+.clue-notebook .claim-types { margin-top: 3px; }
+.clue-notebook .cluebook-body .clue-description { margin: 4px 0 6px; line-height: 1.6; }
+.clue-notebook .clue-sources,
+.clue-notebook .case-image-details { display: inline-block; vertical-align: top; margin: 0 12px 0 0; }
+.clue-notebook .clue-sources[open],
+.clue-notebook .case-image-details[open] { display: block; width: 100%; }
+.clue-notebook .clue-sources > summary,
+.clue-notebook .case-image-details > summary { min-height: 44px; }
 .case-provenance {
   display: inline-block;
   padding: 3px 8px;
@@ -67,7 +111,7 @@ dialog.modal.case-notebook {
 .case-select {
   width: 100%;
   min-height: 48px;
-  margin-top: 14px;
+  margin: 0;
   padding: 10px 12px;
   border: 1px solid #a8b397;
   border-radius: 3px;
@@ -124,14 +168,19 @@ dialog.modal.case-notebook {
 }
 .case-footer {
   flex-shrink: 0;
-  padding: 10px 20px max(12px, env(safe-area-inset-bottom));
+  padding: 6px 20px max(8px, env(safe-area-inset-bottom));
   background: var(--paper);
   border-top: 1px solid var(--line);
 }
+.case-footer-actions { display: flex; gap: 8px; align-items: stretch; }
+.case-footer-actions > button { flex: 1 1 0; min-width: 0; }
+.clue-footer { flex: none; padding: 8px 16px max(8px, env(safe-area-inset-bottom)); border-top: 1px solid var(--line); }
+.clue-footer .secondary { min-height: 44px; margin: 0; }
 .case-footer p {
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   font-size: 12px;
   color: var(--green);
+  line-height: 1.35;
 }
 .case-footer p span {
   display: block;
@@ -144,7 +193,7 @@ dialog.modal.case-notebook {
   padding: 10px 14px;
 }
 @media (max-width: 480px) {
-  dialog.modal.case-notebook {
+  dialog.modal.clue-notebook {
     width: 100%;
     max-width: 100%;
     height: 96dvh;
@@ -152,9 +201,9 @@ dialog.modal.case-notebook {
     margin: auto 0 0;
     border-radius: 14px 14px 0 0;
   }
-  .case-notebook .cluebook-header,
+  .clue-notebook .cluebook-header,
   .case-context,
-  .case-notebook .cluebook-body,
+  .clue-notebook .cluebook-body,
   .case-footer {
     padding-left: 16px;
     padding-right: 16px;
