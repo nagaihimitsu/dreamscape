@@ -126,18 +126,18 @@ B/C戦の戦績と途中状態は保存しますが、追加のAP・章クリア
 
 通常戦では英語や訳を読んでも回答は確定せず、各選択肢の左端にある A・B・C のボタンで答えます。回答の保存後に短い演出を表示します。「設定」の「演出を短縮する」または端末の動きを減らす設定で演出を抑えられます。表示設定はゲーム本体とは別の `dreamscape.presentation.v1` に保存され、破損・未知バージョンや別タブでの更新を検出した場合は勝手に上書きしません。設定や演出は得点・報酬・セーブのシナリオ指紋に影響しません。
 
-人物素材は [`content/presentation/characters.json`](content/presentation/characters.json) で登録します。人物ID `heroine` はプレイヤーが設定する名前とは独立しています。まだ正式な立ち絵は登録しておらず、既存の仮素材で遊べます。
+人物素材は [`content/presentation/characters.json`](content/presentation/characters.json) で登録します。人物ID `heroine` はプレイヤーが設定する名前とは独立しています。地域に属さない基本衣装 `default_01` に、提供された11表情の透過画像を登録しています。
 
-### 地域衣装の画像を追加する
+### 基本衣装・表情の画像を追加する
 
-1. 背景を透過した全身PNGまたはWebPを用意します。白背景の参照画像は正式な立ち絵とは別に管理し、拡張子だけを変えて登録しないでください。初期衣装 `south_europe_01` の `standing_01` は **1024×1536px** を共通キャンバスとして設定しています。同じ衣装・ポーズの差分は、人物の位置とキャンバスを揃え、画像ごとにトリミングしません。
-2. 例えば `public/assets/characters/heroine/south_europe_01/standing_01/neutral.png` に置き、`characters.json` の `heroine` → `costumes` → `south_europe_01` → `poses` → `standing_01` の `expressions` に `"neutral": "assets/characters/heroine/south_europe_01/standing_01/neutral.png"` を追加します。パスは `public/` からの相対パスです。
-3. 差分が届いたら同じ `expressions` に `smile`、`happy`、`shy`、`surprised`、`worried`、`serious`、`teasing` を一枚ずつ追加します。未納品のファイルは登録しません。`neutral` だけでもその衣装が使われ、未登録の表情は同じ衣装・ポーズの `neutral` が表示されます。
+1. 背景を透過した全身PNGまたはWebPを用意します。白背景の参照画像は正式な立ち絵とは別に管理し、拡張子だけを変えて登録しないでください。基本衣装 `default_01` の `standing_01` は **1024×1536px** を共通キャンバスとして設定しています。同じ衣装・ポーズの差分は、人物の位置とキャンバスを揃え、画像ごとにトリミングしません。
+2. 例えば `public/assets/characters/heroine/default_01/standing_01/neutral.png` に置き、`characters.json` の `heroine` → `costumes` → `default_01` → `poses` → `standing_01` の `expressions` に `"neutral": "assets/characters/heroine/default_01/standing_01/neutral.png"` と登録します。パスは `public/` からの相対パスです。
+3. 表情IDは `neutral`、`smile`、`happy`、`shy`、`shy_deep`、`surprised`、`surprised_big`、`worried`、`serious`、`teasing`、`teasing_big` です。差分が届いたら `expressions` に一枚ずつ追加し、未納品のファイルは登録しません。`neutral` だけでもその衣装が使われ、未登録の表情は同じ衣装・ポーズの `neutral` が表示されます。表情の指定にはInkの既存の `emotion` タグを使います。
 4. `npm run content:check` を実行します。登録済みファイルの存在、実際の形式・寸法・透過画素、表情や衣装の参照を検証します。これは背景が適切に切り抜かれたことや透過の縁の品質まで保証するものではないため、下記プレビューで目視確認してください。衣装が未納品の場合は基本素材を使い、画像の読み込みに失敗しても会話は続きます。
 
 人物の配置は各人物の `placement`、衣装・ポーズごとの補正は同じポーズの `placement` で設定します。`x`・`bottom`・`width`・`height`・`scale`・`originX`・`originY` を差分間で共有し、画像を歪めずに表示します。既存の `imagePath`、`variants`、敵の `battleCharacters` の設定も使えます。観察用画像と座標は別管理です。
 
-`wardrobe` の `cities`・`countries`・`regions` で都市から国・地域・標準衣装を指定します。初期設定は `milano` → `IT` → `south_europe` → `south_europe_01` です。個別指定の優先順位は `scenes`、都市、国、地域の標準衣装、基本素材の順です。`scenes` のキーには既存のデートID、バトルID、観光地ID、都市エピローグのエピソードIDを使い、例えば `"milano_cafe_01": { "costume": "south_europe_01", "pose": "standing_01" }` と登録します。未納品の衣装から別の表情だけ別衣装に切り替わることはありません。
+`heroine` の `defaultCostume` と `defaultPose` が地域に属さない基本衣装とポーズです。`wardrobe` の `cities`・`countries`・`regions` では、将来の都市から国・地域・標準衣装を指定できます。既存の `milano` → `IT` → `south_europe` → `south_europe_01` 設定は維持していますが、南欧衣装は未納品のため、現在は基本衣装を表示します。個別指定の優先順位は `scenes`、都市、国、地域の標準衣装、基本衣装、仮素材の順です。`scenes` のキーには既存のデートID、バトルID、観光地ID、都市エピローグのエピソードIDを使い、例えば `"milano_cafe_01": { "costume": "south_europe_01", "pose": "standing_01" }` と登録します。未納品の衣装から別の表情だけ別衣装に切り替わることはありません。
 
 現在のゲームはミラノ単独の都市データを読み込み、デートでは既存の章IDを都市IDとして扱います。将来ほかの都市を追加する際は、都市データの読み込み・検証と、デートの章と都市の対応も拡張する必要があります。
 

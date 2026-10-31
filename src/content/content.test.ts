@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { Story } from "inkjs";
@@ -9,6 +9,7 @@ import dateData from "../../content/romance/date_catalog.json";
 import battleData from "../../content/battles/catalog.json";
 import tourismData from "../../content/tourism/catalog.json";
 import { parseStoryTags } from "./tags";
+import { prepareContentFixture } from "./test-fixtures";
 
 let fixture: string;
 const storyFile = "content/stories/milano/cafe_01.ink";
@@ -16,12 +17,7 @@ const dateFile = "content/romance/date_catalog.json";
 
 beforeEach(async () => {
   fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-content-"));
-  await cp(path.resolve("content"), path.join(fixture, "content"), {
-    recursive: true,
-  });
-  await cp(path.resolve("public"), path.join(fixture, "public"), {
-    recursive: true,
-  });
+  await prepareContentFixture(fixture);
 });
 afterEach(async () => {
   await rm(fixture, { recursive: true, force: true });
@@ -43,6 +39,9 @@ async function changeDates(change: (data: typeof dateData) => void) {
 }
 
 describe("content build acceptance", () => {
+  it("validates the real production catalog and registered artwork", async () => {
+    await expect(buildContent(path.resolve("."), false)).resolves.toBeDefined();
+  }, 30000);
   it("rejects a registered but missing background image", async () => {
     const file = path.join(fixture, "content/romance/presentation.json");
     const data = JSON.parse(await readFile(file, "utf8"));
@@ -73,14 +72,14 @@ describe("content build acceptance", () => {
   it("rejects registered missing costume art without requiring unregistered expressions", async () => {
     const file = path.join(fixture, "content/presentation/characters.json");
     const data = JSON.parse(await readFile(file, "utf8"));
-    data.characters[0].costumes[0].poses[0].expressions.neutral = "assets/characters/heroine/missing.png";
+    data.characters[0].costumes.find((costume: { id: string }) => costume.id === "south_europe_01").poses[0].expressions.neutral = "assets/characters/heroine/missing.png";
     await writeFile(file, JSON.stringify(data));
     await expect(buildContent(fixture, false)).rejects.toThrow("Missing character image: heroine/south_europe_01/standing_01/neutral/assets/characters/heroine/missing.png");
   });
   it("accepts delivered neutral and smile art and enforces the shared canvas", async () => {
     const file = path.join(fixture, "content/presentation/characters.json");
     const data = JSON.parse(await readFile(file, "utf8"));
-    const expressions = data.characters[0].costumes[0].poses[0].expressions;
+    const expressions = data.characters[0].costumes.find((costume: { id: string }) => costume.id === "south_europe_01").poses[0].expressions;
     const dir = "assets/characters/heroine/south_europe_01/standing_01";
     await mkdir(path.join(fixture, "public", dir), { recursive: true });
     const render = (width: number) => sharp({
@@ -96,6 +95,48 @@ describe("content build acceptance", () => {
     await expect(buildContent(fixture, false)).resolves.toBeDefined();
     await writeFile(path.join(fixture, "public", expressions.smile), await render(512));
     await expect(buildContent(fixture, false)).rejects.toThrow("dimensions do not match canvas 1024x1536");
+  });
+  it("checks the basic costume and pose references without requiring finished images", async () => {
+    const file = path.join(fixture, "content/presentation/characters.json");
+    const data = JSON.parse(await readFile(file, "utf8"));
+    const heroine = data.characters.find((character: { id: string }) => character.id === "heroine");
+    expect(heroine.defaultCostume).toBe("default_01");
+    expect(heroine.defaultPose).toBe("standing_01");
+    expect(heroine.costumes.find((costume: { id: string }) => costume.id === "default_01").poses[0].expressions).toEqual({});
+    await expect(buildContent(fixture, false)).resolves.toBeDefined();
+    heroine.defaultCostume = "missing_costume";
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).rejects.toThrow("Unknown default costume: heroine/missing_costume");
+    heroine.defaultCostume = "default_01";
+    heroine.defaultPose = "missing_pose";
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).rejects.toThrow("Unknown default pose: heroine/default_01/missing_pose");
+    delete heroine.defaultCostume;
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).rejects.toThrow("Default pose needs a costume: heroine");
+  });
+  it("accepts all eleven basic expressions and validates every registered image", async () => {
+    const file = path.join(fixture, "content/presentation/characters.json");
+    const data = JSON.parse(await readFile(file, "utf8"));
+    const heroine = data.characters.find((character: { id: string }) => character.id === "heroine");
+    const pose = heroine.costumes.find((costume: { id: string }) => costume.id === "default_01").poses[0];
+    const expressionIds = ["neutral", "smile", "happy", "shy", "shy_deep", "surprised", "surprised_big", "worried", "serious", "teasing", "teasing_big"];
+    expect(data.expressionIds).toEqual(expect.arrayContaining(expressionIds));
+    expect(pose.canvas).toEqual({ width: 1024, height: 1536 });
+    // A tiny canvas keeps this reference/registration test fast. Actual 1024×1536
+    // dimensions and transparency are exercised by the shared-canvas test above.
+    pose.canvas = { width: 8, height: 12 };
+    const dir = "assets/characters/heroine/default_01/standing_01";
+    await mkdir(path.join(fixture, "public", dir), { recursive: true });
+    const imagePath = `${dir}/fixture.png`;
+    const image = await sharp({ create: { width: 8, height: 12, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0.5 } } }).png().toBuffer();
+    await writeFile(path.join(fixture, "public", imagePath), image);
+    for (const id of expressionIds) pose.expressions[id] = imagePath;
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).resolves.toBeDefined();
+    pose.expressions.teasing_big = `${dir}/missing.png`;
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).rejects.toThrow(`Missing character image: heroine/default_01/standing_01/teasing_big/${dir}/missing.png`);
   });
   it("checks the wardrobe city against real city data and its country", async () => {
     const file = path.join(fixture, "content/presentation/characters.json");

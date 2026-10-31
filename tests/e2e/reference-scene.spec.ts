@@ -1,10 +1,32 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import phase1 from "../fixtures/phase1-saves.json" with { type: "json" };
 import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
 import { advanceToChoiceOrEnd, choose, loadSnapshot, saved, setDialogueSpeed, revealDialogueControl } from "./helpers";
 import { battleDialogueUntilQuestionOrResult } from "./battle-helpers";
 
 test.use({ reducedMotion: "reduce" });
+
+/** Visible head bounds for the supplied default_01 portrait, including hat and hair. */
+async function expectPortraitHeadAboveDialogue(page: Page, portraitSelector: string, dialogueSelector: string) {
+  await page.evaluate(() => window.scrollTo(0, 0));
+  const portrait = page.locator(portraitSelector);
+  await expect(portrait).toBeVisible();
+  await expect.poll(() => portrait.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBe(1024);
+  expect(await portrait.evaluate((img: HTMLImageElement) => img.naturalHeight)).toBe(1536);
+  const image = await portrait.boundingBox();
+  const dialogue = await page.locator(dialogueSelector).boundingBox();
+  expect(image).not.toBeNull();
+  expect(dialogue).not.toBeNull();
+  // Translate the actual y=13..310 canvas region through object-fit: contain,
+  // which aligns the image with the bottom of the portrait box.
+  const paintedHeight = Math.min(image!.height, image!.width * 1536 / 1024);
+  const paintedTop = image!.y + image!.height - paintedHeight;
+  const headTop = paintedTop + paintedHeight * 13 / 1536;
+  const headBottom = paintedTop + paintedHeight * 310 / 1536;
+  expect(headTop).toBeGreaterThanOrEqual(0);
+  expect(headBottom).toBeLessThanOrEqual(await page.evaluate(() => window.innerHeight));
+  expect(headBottom).toBeLessThanOrEqual(dialogue!.y + 14);
+}
 
 for (const size of [
   { width: 360, height: 780, label: "portrait" },
@@ -102,16 +124,7 @@ test("short portrait keeps the face clear and the date playable to the end", asy
   async function expectFaceAboveWindow() {
     // On very short screens the page may scroll to reach a control; returning
     // to the top must still reveal the face, with the window below it.
-    await page.evaluate(() => window.scrollTo(0, 0));
-    const face = page.locator('.romance-scene .vn-character svg ellipse[cx="120"][cy="130"]');
-    await expect(face).toBeVisible();
-    const head = await face.boundingBox();
-    const dialogue = await page.locator('.romance-scene .vn-dialogue').boundingBox();
-    expect(head).not.toBeNull();
-    expect(dialogue).not.toBeNull();
-    expect(head!.y).toBeGreaterThanOrEqual(0);
-    expect(head!.y + head!.height).toBeLessThanOrEqual(480);
-    expect(head!.y + head!.height).toBeLessThanOrEqual(dialogue!.y + 14);
+    await expectPortraitHeadAboveDialogue(page, ".romance-scene .vn-character img", ".romance-scene .vn-dialogue");
   }
   await loadSnapshot(page, phase1.started);
   await setDialogueSpeed(page, "0");
@@ -123,6 +136,11 @@ test("short portrait keeps the face clear and the date playable to the end", asy
   expect(text!.y + text!.height).toBeLessThanOrEqual(480);
   expect(next!.y + next!.height).toBeLessThanOrEqual(480);
   await page.screenshot({ path: "artifacts/utage-reference/date-dialogue-360x480.png" });
+  for (const viewport of [{ width: 320, height: 568 }, { width: 360, height: 640 }]) {
+    await page.setViewportSize(viewport);
+    await expectFaceAboveWindow();
+  }
+  await page.setViewportSize({ width: 360, height: 480 });
   await loadSnapshot(page, phase1.beforeChoice);
   await setDialogueSpeed(page, "0");
   await expect(page.locator(".choice").first()).toBeEnabled();
@@ -134,6 +152,14 @@ test("short portrait keeps the face clear and the date playable to the end", asy
   expect(state.activeDate?.frame.ended).toBe(true);
   await page.getByRole("button", { name: "デートを終える", exact: true }).click();
   await expect.poll(async () => (await saved(page)).activeDate).toBeNull();
+});
+
+test("the supplied heroine portrait keeps its head clear of the battle dialogue on phones", async ({ page }) => {
+  for (const viewport of [{ width: 320, height: 568 }, { width: 360, height: 640 }]) {
+    await page.setViewportSize(viewport);
+    await loadSnapshot(page, phase6.battleDialogue);
+    await expectPortraitHeadAboveDialogue(page, ".battle-heroine .vn-character img", ".battle-paper-shell");
+  }
 });
 
 test("short portrait can finish all three battle rounds", async ({ page }) => {

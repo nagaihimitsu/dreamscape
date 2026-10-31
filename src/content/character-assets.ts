@@ -38,6 +38,9 @@ const characterSchema = z.object({
   placeholderColor: z.string().regex(/^#[0-9a-fA-F]{6}$/),
   variants: z.array(variantSchema),
   costumes: z.array(costumeSchema).optional(),
+  // The basic outfit belongs to the character, not to a geographical region.
+  defaultCostume: id.optional(),
+  defaultPose: id.optional(),
 }).strict();
 const wardrobeSchema = z.object({
   regions: z.record(id, z.object({ defaultCostume: id }).strict()),
@@ -75,6 +78,14 @@ export const characterCatalogSchema = z.object({
         }
       }
     }
+    if (character.defaultPose && !character.defaultCostume)
+      context.addIssue({ code: "custom", message: `Default pose needs a costume: ${character.id}` });
+    if (character.defaultCostume) {
+      const base = character.costumes?.find((costume) => costume.id === character.defaultCostume);
+      if (!base) context.addIssue({ code: "custom", message: `Unknown default costume: ${character.id}/${character.defaultCostume}` });
+      else if (character.defaultPose && !base.poses.some((pose) => pose.id === character.defaultPose))
+        context.addIssue({ code: "custom", message: `Unknown default pose: ${character.id}/${character.defaultCostume}/${character.defaultPose}` });
+    }
   }
   if (expressionIds && new Set(expressionIds).size !== expressionIds.length) context.addIssue({ code: "custom", message: "Duplicate expression ID" });
   for (const [battleId, characterId] of Object.entries(battleCharacters ?? {})) {
@@ -107,7 +118,7 @@ export type Wardrobe = z.infer<typeof wardrobeSchema>;
 export type CharacterSelection = { emotion?: string; costume?: string; pose?: string };
 export type CostumeContext = { sceneId?: string; cityId?: string; countryId?: string; regionId?: string; costume?: string; pose?: string };
 
-/** Resolve once when a scene begins. Undelivered outfits use the existing base artwork. */
+/** Resolve once per scene; unavailable outfits use the character's basic outfit. */
 export function resolveCharacterCostume(character: CharacterAsset, wardrobe: Wardrobe | undefined, context: CostumeContext): CharacterSelection {
   if (character.id !== "heroine") return { costume: context.costume, pose: context.pose };
   const scene = context.sceneId ? wardrobe?.scenes[context.sceneId] : undefined;
@@ -118,11 +129,18 @@ export function resolveCharacterCostume(character: CharacterAsset, wardrobe: War
   const region = regionKey ? wardrobe?.regions[regionKey] : undefined;
   const chosen = context.costume ? { costume: context.costume } : scene?.costume ? scene : city?.costume ? city : country?.costume ? country : region ? { costume: region.defaultCostume } : undefined;
   const costumeId = chosen?.costume;
-  if (!costumeId) return {};
   const costume = character.costumes?.find((item) => item.id === costumeId);
-  const poseId = context.pose ?? ("pose" in chosen ? chosen.pose : undefined) ?? costume?.poses[0]?.id;
+  const poseId = context.pose ?? (chosen && "pose" in chosen ? chosen.pose : undefined) ?? costume?.poses[0]?.id;
   const pose = costume?.poses.find((item) => item.id === poseId);
-  return pose?.expressions.neutral ? { costume: costumeId, pose: pose.id } : {};
+  if (costumeId && pose?.expressions.neutral) return { costume: costumeId, pose: pose.id };
+
+  // Do not borrow an expression from another outfit: choose one complete
+  // basic outfit once, or leave the legacy placeholder in place.
+  const base = character.costumes?.find((item) => item.id === character.defaultCostume);
+  const basePose = character.defaultPose
+    ? base?.poses.find((item) => item.id === character.defaultPose)
+    : base?.poses[0];
+  return base && basePose?.expressions.neutral ? { costume: base.id, pose: basePose.id } : {};
 }
 
 /** Unregistered mappings keep the existing battle-specific fallback artwork. */

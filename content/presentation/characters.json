@@ -15,6 +15,8 @@
         "originY": 100
       },
       "placeholderColor": "#6d716c",
+      "defaultCostume": "default_01",
+      "defaultPose": "standing_01",
       "variants": [
         {
           "emotion": "shy",
@@ -22,6 +24,40 @@
         }
       ],
       "costumes": [
+        {
+          "id": "default_01",
+          "poses": [
+            {
+              "id": "standing_01",
+              "canvas": {
+                "width": 1024,
+                "height": 1536
+              },
+              "placement": {
+                "x": 50,
+                "bottom": 0,
+                "width": 80,
+                "height": 62,
+                "scale": 1.4,
+                "originX": 50,
+                "originY": 0
+              },
+              "expressions": {
+                "neutral": "assets/characters/heroine/default_01/standing_01/neutral.png",
+                "smile": "assets/characters/heroine/default_01/standing_01/smile.png",
+                "happy": "assets/characters/heroine/default_01/standing_01/happy.png",
+                "shy": "assets/characters/heroine/default_01/standing_01/shy.png",
+                "shy_deep": "assets/characters/heroine/default_01/standing_01/shy_deep.png",
+                "surprised": "assets/characters/heroine/default_01/standing_01/surprised.png",
+                "surprised_big": "assets/characters/heroine/default_01/standing_01/surprised_big.png",
+                "worried": "assets/characters/heroine/default_01/standing_01/worried.png",
+                "serious": "assets/characters/heroine/default_01/standing_01/serious.png",
+                "teasing": "assets/characters/heroine/default_01/standing_01/teasing.png",
+                "teasing_big": "assets/characters/heroine/default_01/standing_01/teasing_big.png"
+              }
+            }
+          ]
+        },
         {
           "id": "south_europe_01",
           "poses": [
@@ -58,10 +94,13 @@
     "smile",
     "happy",
     "shy",
+    "shy_deep",
     "surprised",
+    "surprised_big",
     "worried",
     "serious",
-    "teasing"
+    "teasing",
+    "teasing_big"
   ],
   "wardrobe": {
     "regions": {

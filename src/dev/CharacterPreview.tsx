@@ -15,20 +15,24 @@ const expressionLabels: Record<string, string> = {
   neutral: "通常",
   smile: "微笑み",
   happy: "喜び",
-  shy: "照れ",
-  surprised: "驚き",
+  shy: "軽い照れ",
+  shy_deep: "強い照れ",
+  surprised: "軽い驚き",
+  surprised_big: "大きな驚き",
   worried: "心配",
   serious: "真剣",
-  teasing: "からかい",
+  teasing: "軽いからかい",
+  teasing_big: "積極的なからかい",
 };
 
 /** A local-only view of the real portrait component; no game state is mounted. */
 export default function CharacterPreview() {
   const costumes = heroine.costumes ?? [];
-  const [costumeId, setCostumeId] = useState(costumes[0]?.id ?? "");
+  const [costumeId, setCostumeId] = useState(heroine.defaultCostume ?? costumes[0]?.id ?? "");
   const costume = costumes.find((item) => item.id === costumeId);
-  const [poseId, setPoseId] = useState(costume?.poses[0]?.id ?? "");
-  const pose = costume?.poses.find((item) => item.id === poseId);
+  const [poseId, setPoseId] = useState(
+    (costumeId === heroine.defaultCostume ? heroine.defaultPose : undefined) ?? costume?.poses[0]?.id ?? "",
+  );
   const [emotion, setEmotion] = useState("neutral");
   const [background, setBackground] = useState("light");
   const [layout, setLayout] = useState("fit");
@@ -38,16 +42,22 @@ export default function CharacterPreview() {
     costume: costumeId || undefined,
     pose: poseId || undefined,
   });
+  const resolvedCostume = costumes.find((item) => item.id === resolved.costume);
+  const resolvedPose = resolvedCostume?.poses.find((item) => item.id === resolved.pose);
   const path = characterImage(heroine, { ...resolved, emotion });
+  const isBasicFallback = !!resolved.costume && (resolved.costume !== costumeId || resolved.pose !== poseId);
+  const outfitNote = isBasicFallback
+    ? `指定した衣装の neutral は未登録。基本衣装 ${resolved.costume} を使用中。`
+    : "";
   const status = failedPath
-    ? resolved.costume && failedPath !== pose?.expressions.neutral
-      ? "登録された画像を読み込めません。同じ衣装・ポーズの neutral を表示中"
+    ? resolved.costume && failedPath !== resolvedPose?.expressions.neutral
+      ? `${outfitNote}登録された画像を読み込めません。同じ衣装・ポーズの neutral を表示中`
       : "登録された画像を読み込めません。仮素材を表示中"
     : resolved.costume
-      ? pose?.expressions[emotion]
-        ? "選択した表情の画像を表示中"
-        : "この表情は未登録。同じ衣装・ポーズの neutral を表示中"
-      : "この衣装の neutral は未登録。基本衣装または仮素材を表示中";
+      ? resolvedPose?.expressions[emotion]
+        ? `${outfitNote}選択した表情の画像を表示中`
+        : `${outfitNote}この表情は未登録。同じ衣装・ポーズの neutral を表示中`
+      : "この衣装の neutral は未登録。仮素材を表示中";
 
   return (
     <main className="character-preview" data-testid="character-preview">
@@ -61,7 +71,9 @@ export default function CharacterPreview() {
           <select data-testid="preview-costume" value={costumeId} onChange={(event) => {
             const next = costumes.find((item) => item.id === event.target.value);
             setCostumeId(event.target.value);
-            setPoseId(next?.poses[0]?.id ?? "");
+            setPoseId(
+              (next?.id === heroine.defaultCostume ? heroine.defaultPose : undefined) ?? next?.poses[0]?.id ?? "",
+            );
             setFailedPath(null);
           }}>
             {!costumes.length && <option value="">未登録</option>}

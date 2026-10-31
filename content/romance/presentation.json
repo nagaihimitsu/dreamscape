@@ -50,12 +50,15 @@
   "emotions": {
     "neutral": "静かなまなざし",
     "shy": "少し、目をそらして",
+    "shy_deep": "強い照れ",
     "smile": "微笑み",
     "happy": "うれしそう",
     "surprised": "驚き",
+    "surprised_big": "大きな驚き",
     "worried": "心配そう",
     "serious": "真剣な表情",
-    "teasing": "いたずらっぽい表情"
+    "teasing": "いたずらっぽい表情",
+    "teasing_big": "楽しげなからかい"
   },
   "memories": {
     "milano_cafe_joke": {

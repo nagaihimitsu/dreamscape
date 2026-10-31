@@ -1,9 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { cp, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { Story } from "inkjs";
 import { buildContent, compileInk } from "../../scripts/content-pipeline";
+import { prepareContentFixture } from "./test-fixtures";
 import { validateEpilogue } from "../../scripts/epilogue-validation";
 import { battleCatalogSchema, battleSchema, quizSchema } from "./schemas";
 import { journeySchema } from "./journey-schemas";
@@ -14,12 +15,7 @@ import cityData from "../../content/cities/milano.json";
 let fixture: string;
 beforeEach(async () => {
   fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-city-content-"));
-  await cp(path.resolve("content"), path.join(fixture, "content"), {
-    recursive: true,
-  });
-  await cp(path.resolve("public"), path.join(fixture, "public"), {
-    recursive: true,
-  });
+  await prepareContentFixture(fixture);
 });
 afterEach(async () => {
   await rm(fixture, { recursive: true, force: true });

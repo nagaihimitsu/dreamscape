@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import characterData from "../../content/presentation/characters.json" with { type: "json" };
 import phase1 from "../fixtures/phase1-saves.json" with { type: "json" };
 import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
 import {
@@ -139,8 +140,13 @@ test("tapping a line reveals it before a second tap advances", async ({ page }) 
 });
 
 test("a failed expression image falls back and the date remains playable", async ({ page }) => {
+  const heroine = characterData.characters.find((item) => item.id === "heroine")!;
+  const basic = heroine.costumes!.find((item) => item.id === "default_01")!;
+  const { neutral, shy } = basic.poses.find((item) => item.id === "standing_01")!.expressions as Record<string, string>;
+  expect(neutral).toBeTruthy();
+  expect(shy).toBeTruthy();
   let blocked = 0;
-  await page.route("**/assets/presentation/heroine_shy_placeholder.svg", async (route) => {
+  await page.route(`**/${shy}`, async (route) => {
     blocked += 1;
     await route.abort();
   });
@@ -149,14 +155,18 @@ test("a failed expression image falls back and the date remains playable", async
   await startNewGame(page);
   await loadLegacyFreeTime(page);
   await startCafe(page);
+  const before = await saved(page);
   await setDialogueSpeed(page, "0");
   await choose(page, 1);
   await expect.poll(() => blocked).toBeGreaterThan(0);
   expect((await saved(page)).activeDate!.frame.emotion).toBe("shy");
-  await expect(page.locator(".romance-scene .vn-character svg")).toBeVisible();
+  const portrait = page.locator(".romance-scene .vn-character img");
+  await expect(portrait).toBeVisible();
+  await expect(portrait).toHaveAttribute("src", new RegExp(`${neutral}$`));
   await choose(page, 0);
   await finishCafe(page);
   expect((await saved(page)).activeDate).toBeNull();
+  expect((await saved(page)).ap).toBe(before.ap);
   expect(errors).toEqual([]);
 });
 

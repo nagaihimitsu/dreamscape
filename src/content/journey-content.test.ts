@@ -1,8 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { cp, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { buildContent } from "../../scripts/content-pipeline";
+import { prepareContentFixture } from "./test-fixtures";
 import journeyData from "../../content/progression/journey.json";
 import cityData from "../../content/cities/milano.json";
 import trialData from "../../content/romance/trial_progression.json";
@@ -10,12 +11,7 @@ import trialData from "../../content/romance/trial_progression.json";
 let fixture: string;
 beforeEach(async () => {
   fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-journey-content-"));
-  await cp(path.resolve("content"), path.join(fixture, "content"), {
-    recursive: true,
-  });
-  await cp(path.resolve("public"), path.join(fixture, "public"), {
-    recursive: true,
-  });
+  await prepareContentFixture(fixture);
 });
 afterEach(async () => {
   await rm(fixture, { recursive: true, force: true });

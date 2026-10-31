@@ -25,6 +25,16 @@
 .vn-scene.preview-stage-light { background: #eeeade; }
 .vn-scene.preview-stage-dark { background: #27332e; }
 .preview-stage-fit .vn-character-layer { inset: 0; height: 100%; transform: none; }
+/* Whole-image inspection must not inherit the in-game zoom or its anchor:
+   the actual game layout remains available in the separate layout mode. */
+.preview-stage-fit .vn-character {
+  left: 50% !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  transform: translateX(-50%) !important;
+  transform-origin: center bottom !important;
+}
 .preview-guides { position: absolute; inset: 0; pointer-events: none; background:
   linear-gradient(to right, transparent calc(50% - .5px), #c38a44 50%, transparent calc(50% + .5px)),
   repeating-linear-gradient(to bottom, transparent 0, transparent calc(25% - 1px), #c38a44 25%); opacity: .55; }
