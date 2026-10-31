@@ -17,6 +17,8 @@ import effectData from "../../content/romance/effect_catalog.json";
 import cityData from "../../content/cities/milano.json";
 import balanceData from "../../content/romance/balance.json";
 import presentationData from "../../content/romance/presentation.json";
+import dialogueExpressionData from "../../content/presentation/dialogue-expressions.json";
+import { dialogueExpressionCatalogSchema } from "./dialogue-expressions";
 import generatedStories from "./generated/stories.json";
 import {
   battleCatalogSchema,
@@ -57,6 +59,7 @@ export const effects = effectCatalogSchema.parse(effectData).effects;
 export const city = citySchema.parse(cityData);
 export const balance = balanceSchema.parse(balanceData);
 export const presentation = presentationSchema.parse(presentationData);
+export const dialogueExpressions = dialogueExpressionCatalogSchema.parse(dialogueExpressionData);
 export const stories: Record<string, string> = generatedStories;
 export const tagContext = {
   effectIds: effects.map((effect) => effect.id),

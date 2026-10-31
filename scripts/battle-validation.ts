@@ -2,6 +2,7 @@ import { Story } from "inkjs";
 import type { BattleDefinition } from "../src/content/schemas";
 import type { TourismClue } from "../src/content/tourism-schemas";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
+import type { DialogueObserver } from "./dialogue-expression-validation";
 
 export function reasoningScenes(battle: BattleDefinition): string[] {
   const reasoning = battle.reasoning;
@@ -32,6 +33,7 @@ export function validateBattleStory(
   compiled: string,
   battle: BattleDefinition,
   context: TagContext,
+  observe?: DialogueObserver,
 ): number {
   const inputs = [{ scene: battle.scenes.intro, correct: false, score: 0 }];
   const afterAnswers = [...battle.scenes.afterRounds, battle.scenes.outro];
@@ -87,15 +89,21 @@ export function validateBattleStory(
     }
     let lines = 0;
     let hasText = false;
+    let speaker: string = "narrator";
+    let explicitEmotion = false;
     while (story.canContinue) {
       if (++lines > 200)
         throw new Error("Battle story contains a loop or too many lines");
       const line = story.Continue()?.trim() ?? "";
       const tags = parseStoryTags(story.currentTags ?? [], context);
+      if (tags.speaker) speaker = tags.speaker;
+      if (tags.emotion !== undefined) explicitEmotion = true;
       if (tags.effects.length)
         throw new Error("Battle story cannot apply effects");
       if (line) {
         hasText = true;
+        observe?.(line, speaker, explicitEmotion);
+        explicitEmotion = false;
         if (
           !/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(line)
         )

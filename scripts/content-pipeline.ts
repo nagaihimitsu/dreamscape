@@ -2,6 +2,8 @@ import { access, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { characterCatalogSchema } from "../src/content/character-assets";
 import { validateCharacterImage } from "./character-image-validation";
+import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
+import { createDialogueExpressionValidator, type DialogueObserver } from "./dialogue-expression-validation";
 import {
   Compiler,
   CompilerOptions,
@@ -138,6 +140,7 @@ export function validateStory(
   },
   variables: Record<string, string | number | boolean> = {},
   effects: EffectDefinition[] = [],
+  observe?: DialogueObserver,
 ): number {
   const initial = new Story(compiled);
   initial.onError = (message) => {
@@ -170,6 +173,8 @@ export function validateStory(
     saved: string,
     choiceCount: number,
     previousEffects: string[],
+    previousSpeaker: string,
+    choiceTags: readonly string[] = [],
   ) => {
     const story = new Story(compiled);
     story.onError = (message) => {
@@ -177,13 +182,22 @@ export function validateStory(
     };
     story.state.LoadJson(saved);
     let seenEffects = [...previousEffects];
+    const choiceMetadata = parseStoryTags(choiceTags, context);
+    let speaker = choiceMetadata.speaker ?? previousSpeaker;
+    let explicitEmotion = choiceMetadata.emotion !== undefined;
     let lineCount = 0;
     while (story.canContinue) {
       if (++lineCount > 200)
         throw new Error("Story contains a loop or too many lines");
-      story.Continue();
+      const text = story.Continue()?.trim() ?? "";
       const tags = parseStoryTags(story.currentTags ?? [], context);
       seenEffects = appendEffects(seenEffects, tags.effects);
+      if (tags.speaker) speaker = tags.speaker;
+      if (tags.emotion !== undefined) explicitEmotion = true;
+      if (text) {
+        observe?.(text, speaker, explicitEmotion);
+        explicitEmotion = false;
+      }
     }
     const choices = story.currentChoices;
     if (choices.length === 0) {
@@ -227,10 +241,12 @@ export function validateStory(
         branch.state.ToJson(),
         choiceCount + 1,
         appendEffects(seenEffects, tags.effects),
+        speaker,
+        choice.tags ?? [],
       );
     }
   };
-  visit(initial.state.ToJson(), 0, []);
+  visit(initial.state.ToJson(), 0, [], "narrator");
   const expectedRoutes = 3 ** contract.choiceCount;
   if (routes !== expectedRoutes)
     throw new Error(`Expected ${expectedRoutes} routes; found ${routes}`);
@@ -406,6 +422,7 @@ export async function buildContent(root: string, writeOutput = true) {
       throw new Error(`Unknown memory: ${effect.memoryId}`);
   }
   const stories: Record<string, string> = {};
+  const storySources: Record<string, string> = {};
   let routes = 0;
   const storyDirectory = path.join(content, "stories");
   for (const file of await filesIn(storyDirectory)) {
@@ -414,9 +431,20 @@ export async function buildContent(root: string, writeOutput = true) {
       .relative(storyDirectory, file)
       .replaceAll(path.sep, "/")
       .slice(0, -4);
-    const compiled = compileInk(await readFile(file, "utf8"), file);
+    const source = await readFile(file, "utf8");
+    const compiled = compileInk(source, file);
     stories[id] = compiled;
+    storySources[id] = source;
   }
+  const expressionCatalog = await parseFile(dialogueExpressionCatalogSchema, path.join(content, "presentation/dialogue-expressions.json"));
+  const expressionValidator = createDialogueExpressionValidator(
+    expressionCatalog,
+    storySources,
+    Object.keys(stories),
+    context.emotionIds.filter((id) => characters.expressionIds?.includes(id) ?? true),
+  );
+  const observeForStory = (storyId: string): DialogueObserver =>
+    (text, speaker, explicitEmotion) => expressionValidator.observe(storyId, text, speaker, explicitEmotion);
   for (const date of dates) {
     if (!Object.hasOwn(stories, date.storyId))
       throw new Error(`Unknown storyId: ${date.storyId}`);
@@ -485,6 +513,7 @@ export async function buildContent(root: string, writeOutput = true) {
               has_cafe_memory: seed.hasCafeMemory ?? false,
             },
             effects,
+            observeForStory(date.storyId),
           ),
       );
     }
@@ -612,7 +641,7 @@ export async function buildContent(root: string, writeOutput = true) {
     );
     battleScenarios += withContext(
       `content/stories/${battle.storyId}.ink (battle ${battle.id})`,
-      () => validateBattleStory(stories[battle.storyId], battle, context),
+      () => validateBattleStory(stories[battle.storyId], battle, context, observeForStory(battle.storyId)),
     );
   }
   const learning = await parseFile(
@@ -670,6 +699,7 @@ export async function buildContent(root: string, writeOutput = true) {
     quizzes,
     stories,
     context,
+    observeForStory,
   );
   for (const battle of battles) validateBattleEvidence(battle, tourism.clues);
   validateJourney(
@@ -689,7 +719,7 @@ export async function buildContent(root: string, writeOutput = true) {
       throw new Error(`Unknown epilogue story: ${episode.epilogueStoryId}`);
     epilogueScenarios += withContext(
       `content/stories/${episode.epilogueStoryId}.ink`,
-      () => validateEpilogue(compiled, context),
+      () => validateEpilogue(compiled, context, observeForStory(episode.epilogueStoryId!)),
     );
   }
   for (const storyId of Object.keys(stories)) {
@@ -704,6 +734,7 @@ export async function buildContent(root: string, writeOutput = true) {
     )
       throw new Error(`Story lacks validation contract: ${storyId}`);
   }
+  expressionValidator.finish();
   if (writeOutput) {
     const directory = path.join(root, "src/content/generated");
     await mkdir(directory, { recursive: true });

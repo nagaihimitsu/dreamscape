@@ -137,6 +137,8 @@ B/C戦の戦績と途中状態は保存しますが、追加のAP・章クリア
 
 人物の配置は各人物の `placement`、衣装・ポーズごとの補正は同じポーズの `placement` で設定します。`x`・`bottom`・`width`・`height`・`scale`・`originX`・`originY` を差分間で共有し、画像を歪めずに表示します。既存の `imagePath`、`variants`、敵の `battleCharacters` の設定も使えます。観察用画像と座標は別管理です。
 
+既存の台詞に表情を付ける場合は [`content/presentation/dialogue-expressions.json`](content/presentation/dialogue-expressions.json) に `storyId`・`speaker`・`text`・`emotion` を指定できます。名前などの変数を含まないInk原文の一行を完全一致で登録してください。台詞に既存の `emotion` タグがある場合はその指定を使い、同じ行への重複指定はしません。`npm run content:check` は登録された検証条件の分岐で、話者・台詞の存在や表情ID・タグとの競合を検証します。脚本を変更した際は、未検証の分岐も含めて編集者が表情とタグの対応を確認してください。表情指定は表示だけに使い、保存した会話位置や好感度を変更しません。Ink自体を編集する場合は、途中セーブの指紋に影響する点に注意してください。
+
 `heroine` の `defaultCostume` と `defaultPose` が地域に属さない基本衣装とポーズです。`wardrobe` の `cities`・`countries`・`regions` では、将来の都市から国・地域・標準衣装を指定できます。既存の `milano` → `IT` → `south_europe` → `south_europe_01` 設定は維持していますが、南欧衣装は未納品のため、現在は基本衣装を表示します。個別指定の優先順位は `scenes`、都市、国、地域の標準衣装、基本衣装、仮素材の順です。`scenes` のキーには既存のデートID、バトルID、観光地ID、都市エピローグのエピソードIDを使い、例えば `"milano_cafe_01": { "costume": "south_europe_01", "pose": "standing_01" }` と登録します。未納品の衣装から別の表情だけ別衣装に切り替わることはありません。
 
 現在のゲームはミラノ単独の都市データを読み込み、デートでは既存の章IDを都市IDとして扱います。将来ほかの都市を追加する際は、都市データの読み込み・検証と、デートの章と都市の対応も拡張する必要があります。

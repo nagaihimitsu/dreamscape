@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { battles, battleQuizzes, landmarks, presentation } from "../../content";
+import { battles, battleQuizzes, dialogueExpressions, landmarks, presentation } from "../../content";
+import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import type { GameState } from "../../domain/game";
 import { getBattleOutcome } from "../../domain/battle";
 import { DialogueText } from "../../components/DialogueText";
@@ -116,6 +117,10 @@ export function BattleScreen({
     };
   }, [active.phase, active.roundIndex, animatedAnswer, answerKey, reduceMotion]);
   const frame = active.frame;
+  // Enemy expressions belong to the enemy portrait, never the heroine.
+  const heroineEmotion = frame && frame.speaker !== "enemy"
+    ? resolveDialogueExpression(dialogueExpressions, battle.storyId, frame)
+    : "neutral";
   const speaker = frame?.speaker === "enemy"
     ? battle.enemyNameJa
     : frame?.speaker === "heroine"
@@ -174,7 +179,7 @@ export function BattleScreen({
                 characterId="heroine"
                 sceneId={battle.id}
                 cityId={battle.cityId ?? landmarks.find((item) => item.id === battle.landmarkId)?.cityId}
-                emotion={frame?.speaker === "heroine" ? frame.emotion : "neutral"}
+                emotion={heroineEmotion}
                 active={frame?.speaker === "heroine"}
               />
             </div>

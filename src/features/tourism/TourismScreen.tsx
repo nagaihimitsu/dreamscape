@@ -5,7 +5,9 @@ import {
   tourismClues,
   episodes,
   rewardRules,
+  dialogueExpressions,
 } from "../../content";
+import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { canAccessFreeTime } from "../../domain/chapter";
 import type { GameState } from "../../domain/game";
 import { DialogueText } from "../../components/DialogueText";
@@ -244,7 +246,7 @@ export function TourismScreen({
               characterId="heroine"
               sceneId={landmark.id}
               cityId={landmark.cityId}
-              emotion={frame.emotion}
+              emotion={resolveDialogueExpression(dialogueExpressions, landmark.guideStoryId, frame)}
               active={frame.speaker === "heroine"}
             />
           </div>

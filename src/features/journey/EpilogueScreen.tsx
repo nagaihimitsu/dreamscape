@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { episodes } from "../../content";
+import { dialogueExpressions, episodes } from "../../content";
+import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import type { GameState } from "../../domain/game";
 import { DialogueText } from "../../components/DialogueText";
 import { CanalScene } from "../../components/CanalScene";
@@ -64,7 +65,7 @@ export function EpilogueScreen({
             characterId="heroine"
             sceneId={episode.id}
             cityId={episode.cityId}
-            emotion={frame.emotion}
+            emotion={resolveDialogueExpression(dialogueExpressions, episode.epilogueStoryId!, frame)}
             active={frame.speaker === "heroine"}
           />
         </div>

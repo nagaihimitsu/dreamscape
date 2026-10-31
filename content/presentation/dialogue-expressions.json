@@ -1,0 +1,503 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "storyId": "milano/cafe_01",
+      "text": "「でも今は……もう少しだけ、予定がないままでいたいな」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/cafe_01",
+      "text": "「……迷子を予約する人、初めて見た」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/cafe_01",
+      "text": "彼女は笑いかけ、ガイドブックに視線を戻す。",
+      "speaker": "narrator",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/cafe_01",
+      "text": "「……私が決めても、いいの？」",
+      "speaker": "heroine",
+      "emotion": "surprised"
+    },
+    {
+      "storyId": "milano/cafe_01",
+      "text": "「……自由時間まで予約しちゃった」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/cafe_01",
+      "text": "「……それ、ものすごく忙しい予定だね」",
+      "speaker": "heroine",
+      "emotion": "teasing"
+    },
+    {
+      "storyId": "milano/cafe_01",
+      "text": "「……じゃあ、一つだけ。観光案内には載ってない所があるの」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/walk_01",
+      "text": "「この街灯、ずっと気になってた。なんだか、話を聞こうとしてるみたいで」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/walk_01",
+      "text": "「……背伸びして秘密を言うの、かなり目立つね」",
+      "speaker": "heroine",
+      "emotion": "teasing"
+    },
+    {
+      "storyId": "milano/walk_01",
+      "text": "「じゃあ、こっち側から。傾き方がいちばんいいの」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/walk_01",
+      "text": "「……街灯の趣味を褒められたのは、初めて」",
+      "speaker": "heroine",
+      "emotion": "shy"
+    },
+    {
+      "storyId": "milano/walk_01",
+      "text": "「……これだと、今にも倒れそう」",
+      "speaker": "heroine",
+      "emotion": "worried"
+    },
+    {
+      "storyId": "milano/walk_01",
+      "text": "「その人の休憩時間も描いてね」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/walk_01",
+      "text": "「……そう言われると、消しにくいな」",
+      "speaker": "heroine",
+      "emotion": "shy"
+    },
+    {
+      "storyId": "milano/walk_01",
+      "text": "「上手だったら、隣は少し考える」",
+      "speaker": "heroine",
+      "emotion": "teasing"
+    },
+    {
+      "storyId": "milano/invitation_01",
+      "text": "「今日は、私が行きたいところに付き合ってほしいの」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/invitation_01",
+      "text": "「有名な場所じゃないよ。でも、好きなの。紙の色を選んでるときの、決まらない時間が」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/invitation_01",
+      "text": "「たぶん最初に、書き忘れを心配される」",
+      "speaker": "heroine",
+      "emotion": "teasing"
+    },
+    {
+      "storyId": "milano/night_01",
+      "text": "「強いね。何もしてないのに」",
+      "speaker": "heroine",
+      "emotion": "teasing"
+    },
+    {
+      "storyId": "milano/night_01",
+      "text": "「……うん。でも、足が冷えたら言って。私、ときどき忘れるから」",
+      "speaker": "heroine",
+      "emotion": "worried"
+    },
+    {
+      "storyId": "milano/night_01",
+      "text": "「……ただ、帰ってきた人がいたんだね」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/night_01",
+      "text": "「証人が二人とも、窓を見てただけの人だ」",
+      "speaker": "heroine",
+      "emotion": "teasing"
+    },
+    {
+      "storyId": "milano/night_01",
+      "text": "「うん。忘れたら……どっちかが覚えてるかもしれないし」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/reassurance_01",
+      "text": "「昨日、返事を最後まで言えなかったけど……待たせるだけで、何も言わないのも違うと思って」",
+      "speaker": "heroine",
+      "emotion": "serious"
+    },
+    {
+      "storyId": "milano/reassurance_01",
+      "text": "「……宛名の前に、これを書いちゃった」",
+      "speaker": "heroine",
+      "emotion": "shy"
+    },
+    {
+      "storyId": "milano/reassurance_01",
+      "text": "「うん。郵便にすると、訂正できないから」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/reassurance_01",
+      "text": "「……でも、訂正はしない」",
+      "speaker": "heroine",
+      "emotion": "serious"
+    },
+    {
+      "storyId": "milano/confession_01",
+      "text": "「……隣の席は、嬉しい。でも、席の話だけで終わらせたくないな」",
+      "speaker": "heroine",
+      "emotion": "serious"
+    },
+    {
+      "storyId": "milano/confession_01",
+      "text": "「もう一度、ちゃんと聞かせて。急がなくていいから」",
+      "speaker": "heroine",
+      "emotion": "serious"
+    },
+    {
+      "storyId": "milano/confession_01",
+      "text": "「誘う方になると、返事を待つのって長いね。……この前、少しわかった」",
+      "speaker": "heroine",
+      "emotion": "shy"
+    },
+    {
+      "storyId": "milano/confession_01",
+      "text": "「帰ってからも、会おうね。予定がある日も、ない日も」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/confession_01",
+      "text": "「……言ってくれて、ありがとう。でも今、勢いでうなずきたくない」",
+      "speaker": "heroine",
+      "emotion": "serious"
+    },
+    {
+      "storyId": "milano/confession_01",
+      "text": "「嬉しくないんじゃないよ。もう少し、私の言葉が追いつくまで待ってほしい」",
+      "speaker": "heroine",
+      "emotion": "worried"
+    },
+    {
+      "storyId": "milano/confession_01",
+      "text": "「今夜で最後、にはしないで。……まだ、話したいことがあるから」",
+      "speaker": "heroine",
+      "emotion": "serious"
+    },
+    {
+      "storyId": "milano/city_date_01",
+      "text": "「名所の説明より、変な人の話のほうが長くなっちゃった」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/city_date_01",
+      "text": "「それだと、息を止めて観光したみたい」",
+      "speaker": "heroine",
+      "emotion": "teasing"
+    },
+    {
+      "storyId": "milano/city_date_01",
+      "text": "彼女は笑って、一度だけ深呼吸した。ペン先はまだ紙に触れなかった。",
+      "speaker": "narrator",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/city_date_01",
+      "text": "「……思ってたより、忙しかった。目が。あと、笑うのを我慢するところが」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/city_date_01",
+      "text": "「余白、無口だからって働かせすぎないでね」",
+      "speaker": "heroine",
+      "emotion": "teasing"
+    },
+    {
+      "storyId": "milano/city_date_01",
+      "text": "「うん。書かなくても、今日はあったから」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/city_date_01",
+      "text": "「じゃあ、私が先に書いても消さないでね。ふたりの分だから」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/city_epilogue",
+      "text": "「帰り道まで、あの指揮者に揃えられなくてよかった」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/city_epilogue",
+      "text": "「恋人になっても、同じものばかり見てるわけじゃないんだね。今日、何が気になったか、あとで聞かせて」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/city_epilogue",
+      "text": "「同じ道を歩いたのに、覚えてるところは違いそう。あとで、交換しない？」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "milano/city_epilogue",
+      "text": "「今日の人たちのこと、帰ったら一緒に説明してね。一人で話すと、作り話だと思われそう」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "tourism/duomo_guide",
+      "text": "「全部は、あとで。今は、上にいる小さな人たちを見たいです」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "tourism/duomo_guide",
+      "text": "「こんな高いところにも誰かいると、建物が少し近く感じます。不思議」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "tourism/galleria_guide",
+      "text": "「……ここだと、待ち合わせに遅れても、待つほうは少し楽しいかもしれません」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "tourism/galleria_guide",
+      "text": "「あ、遅れていい、という意味ではなくて。私、先に着いてみたいなって」",
+      "speaker": "heroine",
+      "emotion": "shy"
+    },
+    {
+      "storyId": "tourism/last_supper_guide",
+      "text": "「……ここで毎日、食事をしていたんですね。この絵の前で、スープをこぼしたら気まずそう」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "tourism/castello_guide",
+      "text": "「……声まで、背すじを伸ばしたくなるね」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "tourism/castello_guide",
+      "text": "「でも、歩く速さはそれぞれなんだ。私は、あの壁の陰を通りたいです」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_duomo",
+      "text": "「……これでは、地図を持って歩けません」",
+      "speaker": "heroine",
+      "emotion": "worried"
+    },
+    {
+      "storyId": "battles/milano_duomo",
+      "text": "「今、石の代わりに誇っていませんか」",
+      "speaker": "heroine",
+      "emotion": "teasing"
+    },
+    {
+      "storyId": "battles/milano_duomo",
+      "text": "「水には、借りていますね」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_galleria",
+      "text": "「……何も見えないのは、減っていない証拠ですか」",
+      "speaker": "heroine",
+      "emotion": "surprised"
+    },
+    {
+      "storyId": "battles/milano_galleria",
+      "text": "「挨拶されて、悪い気はしないと思います。雄牛も」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_galleria",
+      "text": "「……お財布は、ありますか」",
+      "speaker": "heroine",
+      "emotion": "worried"
+    },
+    {
+      "storyId": "battles/milano_galleria",
+      "text": "「椅子は、もう来ていますしね」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_last_supper",
+      "text": "「……最後の一枚は、誰が守るんですか」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_last_supper",
+      "text": "「……手袋をしても、身ぶりはできますよ」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_last_supper",
+      "text": "「その板ばかり、見てしまいそう」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_last_supper",
+      "text": "「消しゴムも、使っていいと思います」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_last_supper",
+      "text": "「あの人、何もしないのを、ひとつやめたね」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_last_supper",
+      "text": "「悔しいね。私は、わかったつもりで見ていたのが、いちばん悔しい」",
+      "speaker": "heroine",
+      "emotion": "serious"
+    },
+    {
+      "storyId": "battles/milano_castello",
+      "text": "「……今、少し驚いてしまいました」",
+      "speaker": "heroine",
+      "emotion": "surprised"
+    },
+    {
+      "storyId": "battles/milano_castello",
+      "text": "「裏は、使わないんですか」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_castello",
+      "text": "「木陰の絵なら、雨の日も葉っぱを片付けなくていいね」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_castello",
+      "text": "「資料を見ても、ちょっと見上げたくなります」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_castello",
+      "text": "「悔しいけど、私も見直したい。覚えた名前より、気になったことが増えました」",
+      "speaker": "heroine",
+      "emotion": "serious"
+    },
+    {
+      "storyId": "battles/milano_city_finale",
+      "text": "「裏返しても、一人分ですね」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_city_finale",
+      "text": "「かなり、渋滞しそうです」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_city_finale",
+      "text": "「座る場所が同じでも、見える場所は変わるんですね」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_city_finale",
+      "text": "「風に飛ばされそうなら、持ちます」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_city_finale",
+      "text": "「私たちも。わからなかったところを残したまま、全部わかったことにはしたくないから」",
+      "speaker": "heroine",
+      "emotion": "serious"
+    },
+    {
+      "storyId": "battles/milano_last_supper_b",
+      "text": "「余白は、ありますよ」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_last_supper_b",
+      "text": "「横に持っているから、だと思います」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_last_supper_b",
+      "text": "「そのほうが、印も落ち着きそう」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_last_supper_b",
+      "text": "「悔しい。でも、わからないところを『同上』にはしたくないね。私も、もう一度読んでみる」",
+      "speaker": "heroine",
+      "emotion": "serious"
+    },
+    {
+      "storyId": "battles/milano_last_supper_c",
+      "text": "「まとまりを見分けるには、隣の人も見るんですね」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_last_supper_c",
+      "text": "「私は、その続いて見える感じが好きです」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    },
+    {
+      "storyId": "battles/milano_last_supper_c",
+      "text": "「おいしかったら、仕切りには内緒ですね」",
+      "speaker": "heroine",
+      "emotion": "teasing"
+    },
+    {
+      "storyId": "battles/milano_last_supper_c",
+      "text": "「一枚減っただけなのに、ずいぶん持ちやすそうになったね」",
+      "speaker": "heroine",
+      "emotion": "smile"
+    }
+  ]
+}

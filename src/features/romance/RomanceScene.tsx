@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { presentation } from "../../content";
+import { dialogueExpressions, presentation } from "../../content";
 import type { DateDefinition } from "../../content";
+import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import type { GameState } from "../../domain/game";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
@@ -34,6 +35,7 @@ export function RomanceScene({
 }) {
   const active = game.activeDate!;
   const frame = active.frame;
+  const emotion = resolveDialogueExpression(dialogueExpressions, date?.storyId ?? "", frame);
   const speaker =
     frame.speaker === "heroine"
       ? game.heroineName
@@ -126,7 +128,7 @@ export function RomanceScene({
           characterId="heroine"
           sceneId={active.dateId}
           cityId={date?.chapterId}
-          emotion={frame.emotion}
+          emotion={emotion}
           active={frame.speaker === "heroine"}
         />
       </div>
