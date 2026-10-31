@@ -1,8 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { battles, battleQuizzes, presentation } from "../../content";
 import type { GameState } from "../../domain/game";
 import { getBattleOutcome } from "../../domain/battle";
 import { DialogueText } from "../../components/DialogueText";
+import { CanalScene } from "../../components/CanalScene";
+import { CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
+import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
 import { EnemyPortrait } from "./EnemyPortrait";
 import { BattleRewards } from "../journey/BattleRewards";
 import { ReasoningPanel } from "./ReasoningPanel";
@@ -13,15 +16,17 @@ import {
 } from "../learning/Translations";
 import { InteractiveEnglish } from "../learning/InteractiveEnglish";
 import type { Learning } from "../learning/useLearning";
+import "./battle.css";
 
 interface Props {
   learning: Learning;
   onEnglish: (questionId?: string) => void;
   game: GameState;
   speed: number;
+  reduceMotion: boolean;
   onSpeed: (speed: number) => void;
   onAdvance: () => void;
-  onAnswer: (id: string) => void;
+  onAnswer: (id: string) => boolean;
   onHint: () => void;
   onReplay: () => void;
   onLeave: () => void;
@@ -39,6 +44,7 @@ export function BattleScreen({
   onEnglish,
   game,
   speed,
+  reduceMotion,
   onSpeed,
   onAdvance,
   onAnswer,
@@ -59,17 +65,54 @@ export function BattleScreen({
   const question = quiz.questions[active.roundIndex];
   const answer = active.answers[active.roundIndex];
   const record = game.battleRecords.find((item) => item.battleId === battle.id);
-  const [ready, setReady] = useState(false);
-  const onReady = useCallback((value: boolean) => setReady(value), []);
   const [paused, setPaused] = useState(false);
+  // Only animate an answer saved in this mounted screen. A restored feedback
+  // frame is already final and must never be scored or animated again.
+  const [animatedAnswer, setAnimatedAnswer] = useState<string | null>(null);
+  const answerKey = `${battle.id}:${active.roundIndex}:${answer?.optionId}`;
   useEffect(() => {
-    const target = document.getElementById(
-      active.phase === "feedback" ? "battle-feedback" : "battle-content",
-    );
-    target?.scrollIntoView({ block: "start" });
-    if (active.phase === "feedback") target?.focus({ preventScroll: true });
-  }, [active.phase, active.roundIndex]);
+    if (active.phase !== "feedback") return;
+    const focusFeedback = () => document.getElementById("battle-feedback")?.focus();
+    // A newly saved answer gets a short, optional visual beat. Restored frames,
+    // hidden tabs and reduced-motion preferences never wait for an animation.
+    if (animatedAnswer !== answerKey || reduceMotion || document.hidden ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      focusFeedback();
+      return;
+    }
+    const timer = window.setTimeout(focusFeedback, 420);
+    const cancel = () => window.clearTimeout(timer);
+    const onVisibility = () => {
+      if (document.hidden) {
+        cancel();
+        focusFeedback();
+      }
+    };
+    // A player who starts interacting should keep their chosen focus.
+    document.addEventListener("pointerdown", cancel, true);
+    document.addEventListener("keydown", cancel, true);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      cancel();
+      document.removeEventListener("pointerdown", cancel, true);
+      document.removeEventListener("keydown", cancel, true);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [active.phase, active.roundIndex, animatedAnswer, answerKey, reduceMotion]);
   const frame = active.frame;
+  const speaker = frame?.speaker === "enemy"
+    ? battle.enemyNameJa
+    : frame?.speaker === "heroine"
+      ? game.heroineName
+      : frame?.speaker === "player"
+        ? game.playerName
+        : "旅の風景";
+  const { ready, onReady, entries } = useDialogueLog(
+    `${battle.id}:${record?.attempts ?? 0}`,
+    game.revision,
+    speaker,
+    frame?.text ?? "",
+  );
   const isDialogue = active.phase === "dialogue";
   const isResult = active.phase === "result";
   const isSpecial = !!battle.reasoning;
@@ -77,21 +120,48 @@ export function BattleScreen({
     !!battle.reasoning && battle.reasoning.roundIndex === active.roundIndex;
 
   return (
-    <div className="battle-screen" data-phase={active.phase}>
+    <div
+      className={`battle-screen ${answer && animatedAnswer === answerKey ? "answer-animating" : ""}`}
+      data-phase={active.phase}
+      data-reduce-motion={reduceMotion || undefined}
+    >
       <div
         className={`battle-stage ${isDialogue ? "" : "battle-stage-compact"} ${battle.scope === "city_finale" ? "finale-stage" : ""}`}
       >
+        <div className="battle-backdrop">
+          <CanalScene backgroundId={frame?.background ?? battle.backgroundAssetId} />
+        </div>
         <div className="battle-enemy-info">
           <p className="eyebrow">{battle.titleJa}</p>
           <p className="enemy-title">{battle.enemyTitleJa}</p>
           <h1>{battle.enemyNameJa}</h1>
           <p className="enemy-detail">{battle.enemyDescriptionJa}</p>
         </div>
-        <EnemyPortrait
-          emotion={frame?.emotion}
-          variant={battle.format}
-          portrait={battle.portrait}
-        />
+        <div className="battle-characters">
+          {isDialogue && (
+            <div className="battle-character-slot battle-heroine">
+              <CharacterPortrait
+                characterId="heroine"
+                emotion={frame?.speaker === "heroine" ? frame.emotion : "neutral"}
+                active={frame?.speaker === "heroine"}
+              />
+            </div>
+          )}
+          <div className="battle-character-slot battle-enemy">
+            <CharacterPortrait
+              characterId={characterForBattle(battle.id)}
+              emotion={frame?.speaker === "enemy" ? frame.emotion : "neutral"}
+              active={frame?.speaker === "enemy"}
+              fallback={
+                <EnemyPortrait
+                  emotion={frame?.speaker === "enemy" ? frame.emotion : "neutral"}
+                  variant={battle.format}
+                  portrait={battle.portrait}
+                />
+              }
+            />
+          </div>
+        </div>
       </div>
       <section
         className="paper battle-paper"
@@ -105,14 +175,12 @@ export function BattleScreen({
               : `第${active.roundIndex + 1}問 / 全${quiz.questions.length}問`}
           </span>
           <span>英語 {quiz.englishLevel}</span>
-        </div>
-        {onNotebook && (
-          <div className="battle-notebook">
+          {onNotebook && (
             <button className="notebook-button" onClick={onNotebook}>
               手がかり帳
             </button>
-          </div>
-        )}
+          )}
+        </div>
         {!paused && !isResult && active.answers.length > 0 && (
           <button className="text-button" onClick={() => onEnglish()}>
             回答した問題を振り返る
@@ -216,13 +284,7 @@ export function BattleScreen({
                 className={`speaker-dot ${frame.emotion}`}
                 aria-hidden="true"
               />
-              {frame.speaker === "enemy"
-                ? battle.enemyNameJa
-                : frame.speaker === "heroine"
-                  ? game.heroineName
-                  : frame.speaker === "player"
-                    ? game.playerName
-                    : "旅の風景"}
+              {speaker}
               {frame.emotion !== "neutral" && (
                 <span className="emotion">
                   {presentation.emotions[frame.emotion]}
@@ -234,6 +296,7 @@ export function BattleScreen({
               text={frame.text}
               speed={speed}
               onReady={onReady}
+              onAdvance={onAdvance}
             />
             <button
               className="next"
@@ -292,7 +355,7 @@ export function BattleScreen({
                 return (
                   <div
                     key={`${question.id}:${option.id}`}
-                    className="quiz-option-wrap"
+                    className={`quiz-option-wrap ${selected ? "selected-panel" : ""} ${answer && !selected ? "other-panel" : ""}`}
                   >
                     <div
                       data-testid={`option-text-${option.id}`}
@@ -328,7 +391,10 @@ export function BattleScreen({
                           className="answer-submit"
                           aria-label={`選択肢${option.id}「${option.textEn}」を答える`}
                           disabled={active.phase !== "question"}
-                          onClick={() => onAnswer(option.id)}
+                          onClick={() => {
+                            if (onAnswer(option.id))
+                              setAnimatedAnswer(`${battle.id}:${active.roundIndex}:${option.id}`);
+                          }}
                         >
                           {option.id}を選ぶ
                         </button>
@@ -338,32 +404,6 @@ export function BattleScreen({
                 );
               })}
             </div>
-            <div className="vocabulary" aria-label="難単語の補足">
-              <h3>ことばの補足</h3>
-              <dl>
-                {question.vocabularyJa.map((word) => (
-                  <div key={word.word}>
-                    <dt lang="en">{word.word}</dt>
-                    <dd>{word.meaning}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-            {active.phase === "question" && (
-              <button
-                className="hint-button"
-                aria-expanded={active.hintOpen}
-                aria-controls="question-hint"
-                onClick={onHint}
-              >
-                {active.hintOpen ? "ヒントを閉じる" : "ヒントを見る"}
-              </button>
-            )}
-            {active.hintOpen && (
-              <p id="question-hint" className="hint-text">
-                {question.hintJa}
-              </p>
-            )}
             {active.phase === "feedback" && answer && (
               <div
                 className={`quiz-feedback ${answer.correct ? "correct-feedback" : ""}`}
@@ -416,10 +456,38 @@ export function BattleScreen({
                 </button>
               </div>
             )}
+            <div className="vocabulary" aria-label="難単語の補足">
+              <h3>ことばの補足</h3>
+              <dl>
+                {question.vocabularyJa.map((word) => (
+                  <div key={word.word}>
+                    <dt lang="en">{word.word}</dt>
+                    <dd>{word.meaning}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+            {active.phase === "question" && (
+              <button
+                className="hint-button"
+                aria-expanded={active.hintOpen}
+                aria-controls="question-hint"
+                onClick={onHint}
+              >
+                {active.hintOpen ? "ヒントを閉じる" : "ヒントを見る"}
+              </button>
+            )}
+            {active.hintOpen && (
+              <p id="question-hint" className="hint-text">
+                {question.hintJa}
+              </p>
+            )}
+
           </div>
         )}
         {!isResult && (
           <div className="story-tools">
+            {isDialogue && <DialogueLog entries={entries} />}
             <button
               className="text-button"
               onClick={() => setPaused((value) => !value)}

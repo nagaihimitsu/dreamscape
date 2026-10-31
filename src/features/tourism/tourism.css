@@ -73,6 +73,11 @@
   height: auto;
   background: #413b32;
 }
+.tourism-guide-scene .vn-background .tourism-arrival-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .tourism-guide.paper {
   padding-top: 25px;
 }

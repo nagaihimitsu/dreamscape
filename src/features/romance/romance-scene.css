@@ -1,0 +1,116 @@
+.vn-scene {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: min(720px, 78vh);
+  overflow: hidden;
+  background: #5b6258;
+}
+.conversation-active .journey-bar,
+.conversation-active .journey-stage {
+  display: none;
+}
+.vn-background {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+.vn-background .canal-scene {
+  width: 100%;
+  height: 100%;
+}
+.vn-background .scene-stamp {
+  display: none;
+}
+.vn-character-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(220px, 30vh, 300px);
+  pointer-events: none;
+}
+.reduce-motion .vn-character {
+  transition: none;
+}
+.vn-scene .vn-dialogue {
+  position: relative;
+  z-index: 2;
+  margin: clamp(190px, 27vh, 275px) auto 0;
+  width: 100%;
+  padding: 16px 20px 18px;
+  min-height: 0;
+  background: #faf8f0f5;
+  border: 1px solid #e7e0cf;
+  box-shadow: 0 -6px 24px #303d3733;
+}
+.vn-dialogue .speaker {
+  margin-top: 12px;
+}
+.vn-choice-exit {
+  position: absolute;
+  z-index: 3;
+  right: 12px;
+  top: -54px;
+  max-width: min(65%, 260px);
+  max-height: 48px;
+  overflow: hidden;
+  padding: 8px 12px;
+  border: 1px solid #e5dfd1;
+  background: #faf8f0f5;
+  color: #364936;
+  font-size: 13px;
+  pointer-events: none;
+  animation: vn-choice-away 220ms ease-in forwards;
+}
+@keyframes vn-choice-away {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vn-choice-exit {
+    display: none;
+  }
+}
+.vn-dialogue .dialogue-text {
+  margin: 10px 0 14px;
+  min-height: 2.8em;
+  font-size: 18px;
+  line-height: 1.85;
+  cursor: pointer;
+}
+.vn-dialogue .choices {
+  padding-top: 10px;
+}
+.vn-dialogue .choice {
+  min-height: 44px;
+  padding: 9px 14px;
+  margin: 7px 0;
+  line-height: 1.55;
+}
+.vn-dialogue .story-tools {
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin-top: 12px;
+  padding-top: 8px;
+}
+.vn-dialogue .story-tools .text-button {
+  min-height: 44px;
+}
+@media (min-width: 700px) {
+  .vn-scene .vn-dialogue {
+    width: min(90%, 720px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .vn-character-layer {
+    height: clamp(240px, 32vh, 320px);
+  }
+}

@@ -1,10 +1,4 @@
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type FormEvent,
-} from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   balance,
   dates,
@@ -33,7 +27,8 @@ import {
   saveGame,
 } from "../persistence";
 import { CanalScene } from "../components/CanalScene";
-import { DialogueText } from "../components/DialogueText";
+import { usePresentationSettings } from "../components/usePresentationSettings";
+import { RomanceScene } from "../features/romance/RomanceScene";
 import { Modal } from "../components/Modal";
 import {
   RomanceMenu,
@@ -99,6 +94,7 @@ export default function App() {
     loaded.status === "loaded" ? loaded.state : null,
   );
   const learning = useLearning(game);
+  const displaySettings = usePresentationSettings();
   const [englishOpen, setEnglishOpen] = useState(
     () => !!learning.data.openQuestion,
   );
@@ -120,12 +116,10 @@ export default function App() {
     learning: string | null;
   } | null>(null);
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
-  const [paused, setPaused] = useState(false);
   const [settings, setSettings] = useState(false);
+  const [sceneEpoch, setSceneEpoch] = useState(0);
   const [notebook, setNotebook] = useState(false);
   const [speed, setSpeed] = useState(25);
-  const [ready, setReady] = useState(false);
-  const onReady = useCallback((value: boolean) => setReady(value), []);
   const [result, setResult] = useState(false);
   const [player, setPlayer] = useState(
     game?.playerName ?? balance.defaultPlayerName,
@@ -213,7 +207,7 @@ export default function App() {
       adopt(restored.state);
       setConfirmation(null);
       setResult(false);
-      setPaused(false);
+      setSceneEpoch((epoch) => epoch + 1);
       setNotebook(false);
       setNotice("保存した場面から再開しました。");
     } else
@@ -224,6 +218,12 @@ export default function App() {
       );
   }
   const active = game?.activeDate;
+  const conversationActive = !!(
+    active ||
+    game?.activeEpilogue ||
+    game?.activeTourism?.phase === "guide" ||
+    (!game?.activeTourism && game?.activeBattle?.phase === "dialogue")
+  );
   const freeTimeAvailable = game ? canAccessFreeTime(game) : false;
   const idle =
     game &&
@@ -282,7 +282,9 @@ export default function App() {
   );
 
   return (
-    <div className="app-shell">
+    <div
+      className={`app-shell${displaySettings.value.reduceMotion ? " reduce-motion" : ""}${conversationActive ? " conversation-active" : ""}`}
+    >
       <header className="masthead">
         <a href="#main" className="brand">
           Dreamscape<span>旅の余白</span>
@@ -370,7 +372,6 @@ export default function App() {
             onStart={(id) => {
               if (commit((state) => startEpisode(state, id))) {
                 setResult(false);
-                setPaused(false);
               }
             }}
             onEpilogue={(id) =>
@@ -468,6 +469,7 @@ export default function App() {
           />
         ) : game.activeBattle ? (
           <BattleScreen
+            reduceMotion={displaySettings.value.reduceMotion}
             learning={learning}
             onEnglish={openEnglish}
             game={game}
@@ -504,7 +506,6 @@ export default function App() {
                       commit((state) => startEpisode(state, nextEpisode.id))
                     ) {
                       setResult(false);
-                      setPaused(false);
                     }
                   }
                 : undefined
@@ -532,7 +533,6 @@ export default function App() {
                 )
               ) {
                 setResult(false);
-                setPaused(false);
               }
             }}
           />
@@ -542,134 +542,29 @@ export default function App() {
             onStart={(id) => commit((state) => startEpisode(state, id))}
           />
         ) : active && frame ? (
-          <>
-            <CanalScene compact backgroundId={frame.background} />
-            <section className="paper story-paper" aria-label="デートの会話">
-              <div className="section-meta">
-                <span className="eyebrow">{currentDate?.titleJa}</span>
-                <span className="fine-print">
-                  会話{" "}
-                  {Math.min(
-                    active.choiceCount + 1,
-                    currentDate?.choiceCount ?? 2,
-                  )}{" "}
-                  / {currentDate?.choiceCount ?? 2}
-                </span>
-              </div>
-              <div className="speaker">
-                <span
-                  className={`speaker-dot ${frame.emotion}`}
-                  aria-hidden="true"
-                />
-                {frame.speaker === "heroine"
-                  ? game.heroineName
-                  : frame.speaker === "player"
-                    ? game.playerName
-                    : "旅の風景"}
-                {frame.speaker === "heroine" && frame.emotion !== "neutral" && (
-                  <span className="emotion">
-                    {presentation.emotions[frame.emotion]}
-                  </span>
-                )}
-              </div>
-              {paused ? (
-                <div className="paused">
-                  <h1>ひと休み</h1>
-                  <p>
-                    ここまでの会話は保存されています。
-                    <br />
-                    同じ場面から続きをどうぞ。
-                  </p>
-                  <button className="primary" onClick={() => setPaused(false)}>
-                    デートを再開する
-                  </button>
-                </div>
-              ) : (
-                <>
-                  <DialogueText
-                    key={game.revision}
-                    text={frame.text}
-                    speed={speed}
-                    onReady={onReady}
-                  />
-                  {frame.choices.length ? (
-                    <div className="choices">
-                      <p className="choice-hint">
-                        あなたは、どう返す？<span>選んでから確定できます</span>
-                      </p>
-                      {frame.choices.map((choice, index) => (
-                        <button
-                          disabled={!ready}
-                          key={`${game.revision}-${choice.index}`}
-                          className="choice"
-                          onClick={() =>
-                            setConfirmation({
-                              kind: "choice",
-                              index: choice.index,
-                              text: choice.text,
-                              revision: game.revision,
-                            })
-                          }
-                        >
-                          <span className="choice-number">
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                          <span>{choice.text}</span>
-                        </button>
-                      ))}
-                    </div>
-                  ) : frame.ended ? (
-                    <button
-                      disabled={!ready}
-                      className="primary"
-                      onClick={() => {
-                        if (commit((state) => finishDate(state, game.revision)))
-                          setResult(true);
-                      }}
-                    >
-                      {currentDate?.kind === "normal"
-                        ? "デートを終える"
-                        : "この時間を終える"}{" "}
-                      <span aria-hidden="true">→</span>
-                    </button>
-                  ) : (
-                    <button
-                      disabled={!ready}
-                      className="next"
-                      onClick={() =>
-                        commit((state) => advanceDate(state, game.revision))
-                      }
-                    >
-                      続きを読む <span aria-hidden="true">→</span>
-                    </button>
-                  )}
-                  <div className="story-tools">
-                    <button
-                      className="text-button"
-                      onClick={() => {
-                        setPaused(true);
-                        setConfirmation(null);
-                      }}
-                    >
-                      中断する
-                    </button>
-                    <label>
-                      文字送り
-                      <select
-                        aria-label="文字送り"
-                        value={speed}
-                        onChange={(e) => setSpeed(Number(e.target.value))}
-                      >
-                        <option value={45}>ゆっくり</option>
-                        <option value={25}>ふつう</option>
-                        <option value={0}>一括表示</option>
-                      </select>
-                    </label>
-                  </div>
-                </>
-              )}
-            </section>
-          </>
+          <RomanceScene
+            key={`${active.dateId}-${sceneEpoch}`}
+            game={game}
+            date={currentDate}
+            speed={speed}
+            onSpeed={setSpeed}
+            confirmChoices={displaySettings.value.confirmChoices}
+            reduceMotion={displaySettings.value.reduceMotion}
+            onSelect={(index, text, revision) => {
+              if (displaySettings.value.confirmChoices) {
+                setConfirmation({ kind: "choice", index, text, revision });
+                return true;
+              }
+              return commit((state) => chooseDate(state, index, revision));
+            }}
+            onAdvance={() => {
+              commit((state) => advanceDate(state, game.revision));
+            }}
+            onFinish={() => {
+              if (commit((state) => finishDate(state, game.revision)))
+                setResult(true);
+            }}
+          />
         ) : game.endingReached ? (
           <>
             <CanalScene backgroundId="milano_night" />
@@ -760,7 +655,6 @@ export default function App() {
               onStart={(id) => {
                 if (commit((state) => openTourism(state, id))) {
                   setResult(false);
-                  setPaused(false);
                 }
               }}
             />
@@ -769,7 +663,6 @@ export default function App() {
               onStart={(id) => {
                 if (commit((state) => startBattle(state, id))) {
                   setResult(false);
-                  setPaused(false);
                 }
               }}
             />
@@ -930,6 +823,31 @@ export default function App() {
       {settings && game && (
         <Modal labelledBy="settings-title" onClose={() => setSettings(false)}>
           <h2 id="settings-title">設定</h2>
+          <label className="translation-setting">
+            <input
+              type="checkbox"
+              checked={displaySettings.value.confirmChoices}
+              disabled={!!displaySettings.error}
+              onChange={(event) =>
+                displaySettings.update({ confirmChoices: event.target.checked })
+              }
+            />{" "}
+            選択肢を選ぶ前に確認する
+          </label>
+          <label className="translation-setting">
+            <input
+              type="checkbox"
+              checked={displaySettings.value.reduceMotion}
+              disabled={!!displaySettings.error}
+              onChange={(event) =>
+                displaySettings.update({ reduceMotion: event.target.checked })
+              }
+            />{" "}
+            演出を短縮する
+          </label>
+          {displaySettings.error && (
+            <p role="status">{displaySettings.error}</p>
+          )}
           <label className="translation-setting">
             <input
               type="checkbox"

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   landmarks,
   tourismAssets,
@@ -9,6 +9,8 @@ import {
 import { canAccessFreeTime } from "../../domain/chapter";
 import type { GameState } from "../../domain/game";
 import { DialogueText } from "../../components/DialogueText";
+import { CharacterPortrait } from "../../components/CharacterPortrait";
+import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
 import { ObservationViewer } from "./ObservationViewer";
 import { ClueDetails } from "./ClueDetails";
 import "./tourism.css";
@@ -57,9 +59,19 @@ export function TourismScreen({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [focusRequest, setFocusRequest] = useState(0);
   const selected = clues.find((clue) => clue.id === selectedId);
-  const [ready, setReady] = useState(false);
-  const onReady = useCallback((value: boolean) => setReady(value), []);
   const frame = active.frame;
+  const speaker =
+    frame?.speaker === "heroine"
+      ? game.heroineName
+      : frame?.speaker === "player"
+        ? game.playerName
+        : "旅の風景";
+  const { ready, onReady, entries } = useDialogueLog(
+    `${active.landmarkId}:${active.phase}`,
+    game.revision,
+    speaker,
+    frame?.text ?? "",
+  );
   const episode = episodes.find((item) => item.landmarkId === landmark.id);
   const guideReward = rewardRules.find(
     (item) => item.episodeId === episode?.id && item.trigger === "guide_read",
@@ -155,27 +167,34 @@ export function TourismScreen({
         </div>
       )}
       {active.phase === "guide" && frame ? (
-        <>
-          <img
-            className="tourism-arrival-image"
-            src={`${import.meta.env.BASE_URL}${asset.path}`}
-            width={asset.width}
-            height={asset.height}
-            alt={asset.altJa}
-          />
-          <div className="tourism-guide paper" data-testid="tourism-guide">
-            <div className="speaker">
-              {frame.speaker === "heroine"
-                ? game.heroineName
-                : frame.speaker === "player"
-                  ? game.playerName
-                  : "旅の風景"}
-            </div>
+        <div className="vn-scene tourism-guide-scene">
+          <div className="vn-background">
+            <img
+              className="tourism-arrival-image"
+              src={`${import.meta.env.BASE_URL}${asset.path}`}
+              width={asset.width}
+              height={asset.height}
+              alt={asset.altJa}
+            />
+          </div>
+          <div className="vn-character-layer">
+            <CharacterPortrait
+              characterId="heroine"
+              emotion={frame.emotion}
+              active={frame.speaker === "heroine"}
+            />
+          </div>
+          <div
+            className="tourism-guide paper vn-dialogue"
+            data-testid="tourism-guide"
+          >
+            <div className="speaker">{speaker}</div>
             <DialogueText
               key={game.revision}
               text={frame.text}
               speed={speed}
               onReady={onReady}
+              onAdvance={onAdvance}
             />
             <button
               className="next"
@@ -194,6 +213,7 @@ export function TourismScreen({
               >
                 案内を閉じて観察する
               </button>
+              <DialogueLog entries={entries} />
               <label>
                 文字送り
                 <select
@@ -208,7 +228,7 @@ export function TourismScreen({
               </label>
             </div>
           </div>
-        </>
+        </div>
       ) : (
         <div className="tourism-observation">
           <ObservationViewer

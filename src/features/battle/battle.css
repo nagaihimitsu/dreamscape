@@ -1,0 +1,177 @@
+/* The portrait and dialogue share one scene; the reading surfaces stay opaque. */
+.battle-screen {
+  --scene-edge: #263d35;
+  background: radial-gradient(ellipse at 75% 18%, #70816d, #344e42 48%, var(--scene-edge) 100%);
+  padding-bottom: 24px;
+  overflow: clip;
+}
+.battle-screen .battle-stage {
+  background: transparent;
+  min-height: clamp(230px, 35dvh, 340px);
+  align-items: flex-end;
+}
+.battle-backdrop {
+  position: absolute;
+  inset: 0;
+  opacity: .38;
+  pointer-events: none;
+}
+.battle-backdrop .canal-scene {
+  height: 100%;
+}
+.battle-characters,
+.battle-character-slot {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.battle-screen[data-phase="dialogue"] .battle-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  padding: 12px 24px 0;
+}
+.battle-screen[data-phase="dialogue"] .battle-enemy-info {
+  flex: none;
+  padding: 0;
+}
+.battle-screen[data-phase="dialogue"] .battle-enemy-info h1 {
+  margin: 0;
+  font-size: 18px;
+}
+.battle-screen[data-phase="dialogue"] .battle-enemy-info .eyebrow,
+.battle-screen[data-phase="dialogue"] .enemy-title,
+.battle-screen[data-phase="dialogue"] .enemy-detail {
+  display: none;
+}
+.battle-screen[data-phase="dialogue"] .battle-characters {
+  position: relative;
+  flex: 1;
+  min-height: 170px;
+}
+.battle-screen[data-phase="dialogue"] .battle-heroine {
+  right: 50%;
+}
+.battle-screen[data-phase="dialogue"] .battle-enemy {
+  left: 50%;
+}
+.battle-screen .battle-stage-compact {
+  min-height: 116px;
+  padding-top: 8px;
+}
+.battle-screen .battle-enemy-info {
+  flex: 0 1 43%;
+  z-index: 2;
+}
+.battle-screen .vn-character .enemy-portrait {
+  width: 100%;
+  height: 100%;
+}
+.battle-screen .battle-paper {
+  position: relative;
+  z-index: 1;
+  margin: -12px auto 0;
+  background: #faf8f4;
+  border: 1px solid #e8e1d2;
+  border-radius: 8px;
+  box-shadow: 0 10px 28px #152a2260;
+}
+.battle-screen[data-phase="dialogue"] .battle-paper {
+  margin-top: -28px;
+  background: #fcfaf4;
+}
+.battle-screen .battle-roundbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 0;
+  background: #faf8f4;
+}
+.battle-screen .battle-roundbar .notebook-button {
+  min-height: 42px;
+  padding: 6px 10px;
+  white-space: nowrap;
+}
+.battle-screen .question-area {
+  min-width: 0;
+}
+.battle-screen .question-en {
+  margin: 14px 0 6px;
+}
+.battle-screen .quiz-choice {
+  border-left: 4px solid #8f9d86;
+  box-shadow: 0 2px 5px #35473816;
+}
+.battle-screen .quiz-choice.chosen {
+  border-color: #7e826a;
+}
+.battle-screen .quiz-choice.correct {
+  border-color: #50704e;
+}
+.battle-screen .quiz-feedback {
+  margin: 18px 0;
+}
+/* Purely presentational: the saved answer is already locked before these play. */
+.battle-screen.answer-animating .selected-panel {
+  animation: counter-forward 420ms ease-out both;
+}
+.battle-screen.answer-animating .other-panel {
+  animation: counter-retreat 420ms ease-out both;
+}
+.battle-screen.answer-animating .quiz-feedback {
+  animation: counter-feedback 340ms 120ms ease-out both;
+}
+@keyframes counter-forward {
+  0% { transform: scale(1); }
+  42% { transform: scale(1.025); }
+  100% { transform: scale(1); }
+}
+@keyframes counter-retreat {
+  0% { opacity: 1; transform: translateX(0); }
+  45% { opacity: .65; transform: translateX(4px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+@keyframes counter-feedback {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.battle-screen[data-reduce-motion="true"] .selected-panel,
+.battle-screen[data-reduce-motion="true"] .other-panel,
+.battle-screen[data-reduce-motion="true"] .quiz-feedback {
+  animation: none;
+}
+.battle-screen[data-reduce-motion="true"] .vn-character {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .battle-screen .selected-panel,
+  .battle-screen .other-panel,
+  .battle-screen .quiz-feedback { animation: none !important; }
+}
+@media (max-width: 600px) {
+  .battle-screen .battle-stage {
+    min-height: clamp(195px, 30dvh, 250px);
+  }
+  .battle-screen .battle-stage-compact {
+    min-height: 96px;
+  }
+  .battle-screen .battle-paper {
+    margin-left: 8px;
+    margin-right: 8px;
+    padding: 18px 16px 24px;
+  }
+  .battle-screen .quiz-choice {
+    padding: 11px 10px;
+    gap: 4px 8px;
+  }
+  .battle-screen .quiz-choice.chosen,
+  .battle-screen .quiz-choice.correct {
+    padding: 10px 9px;
+  }
+  .battle-screen .question-en {
+    margin: 12px 0 6px;
+  }
+}
