@@ -224,7 +224,7 @@ export default function App() {
         <a href="#main" className="brand">
           Dreamscape<span>旅の余白</span>
         </a>
-        <span className="edition">ミラノ編 · Phase 7</span>
+        <span className="edition">ミラノの旅</span>
       </header>
       {game && (
         <div className="journey-bar">
@@ -305,7 +305,9 @@ export default function App() {
         )}
         {!game ? (
           <>
-            <CanalScene />
+            <div className="intro-art">
+              <CanalScene compact />
+            </div>
             <section className="paper intro">
               <p className="eyebrow">旅のはじまり</p>
               <h1>
@@ -629,7 +631,7 @@ export default function App() {
           </>
         ) : (
           <>
-            <CanalScene />
+            {result && <CanalScene compact />}
             <section className="paper">
               <p className="eyebrow">
                 {result ? "デートの余韻" : "章末 · 恋愛モード"}
@@ -703,7 +705,7 @@ export default function App() {
           >
             設定
           </button>
-          <span>進行は自動保存</span>
+          <span>自動保存・前の状態には戻れません</span>
         </nav>
       )}
       <footer>

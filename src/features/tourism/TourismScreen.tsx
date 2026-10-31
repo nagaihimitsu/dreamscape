@@ -43,8 +43,8 @@ export function TourismScreen({
   const asset = tourismAssets.find(
     (item) => item.id === landmark.imageAssetId,
   )!;
-  const clues = landmark.clueIds.map(
-    (id) => tourismClues.find((item) => item.id === id)!,
+  const clues = landmark.clueIds.map((id) =>
+    tourismClues.find((item) => item.id === id)!,
   );
   const points = clues
     .filter((clue) => clue.kind === "hotspot" && clue.region !== null)
@@ -89,6 +89,23 @@ export function TourismScreen({
     }
   }
 
+  const actions = (
+    <div className="tourism-actions">
+      <p className="fine-print">
+        観察は任意です。バトルの途中でも、ここへ戻れます。
+      </p>
+      <button className="primary" onClick={onBattle}>
+        {game.activeBattle ? "バトルに戻る" : "バトルを始める"}
+        <span aria-hidden="true"> →</span>
+      </button>
+      {!game.activeBattle && (
+        <button className="secondary" onClick={onLeave}>
+          {canAccessFreeTime(game) ? "自由時間へ戻る" : "旅の予定に戻る"}
+        </button>
+      )}
+    </div>
+  );
+
   return (
     <section
       className="tourism-screen"
@@ -120,6 +137,7 @@ export function TourismScreen({
           </p>
         )}
       </header>
+      {active.phase === "exploring" && actions}
       {asset.isPlaceholder && (
         <p className="image-placeholder-note">
           仮画像です。実物の細部を再現した資料ではありません。
@@ -273,20 +291,7 @@ export function TourismScreen({
           </a>
         </p>
       </details>
-      <div className="tourism-actions">
-        <p className="fine-print">
-          観察は任意です。バトルの途中でも、ここへ戻れます。
-        </p>
-        <button className="primary" onClick={onBattle}>
-          {game.activeBattle ? "バトルに戻る" : "バトルを始める"}
-          <span aria-hidden="true"> →</span>
-        </button>
-        {!game.activeBattle && (
-          <button className="secondary" onClick={onLeave}>
-            {canAccessFreeTime(game) ? "自由時間へ戻る" : "旅の予定に戻る"}
-          </button>
-        )}
-      </div>
+      {active.phase === "guide" && actions}
     </section>
   );
 }

@@ -292,8 +292,7 @@ h3 {
   margin-top: 15px;
 }
 .ap-help {
-  text-align: center;
-  margin: 22px 0;
+  margin: 12px 0;
 }
 .memory-list {
   list-style: none;
@@ -1161,5 +1160,32 @@ dialog.modal::backdrop {
   }
   .outcome {
     font-size: 31px;
+  }
+}
+
+@media (max-width: 480px) {
+  .intro-art .canal-scene.compact {
+    height: 120px;
+  }
+}
+
+@media (max-width: 480px) and (max-height: 700px) {
+  .intro-art .canal-scene.compact {
+    height: 80px;
+  }
+  .intro {
+    padding-top: 18px;
+  }
+  .intro h1 {
+    margin: 5px 0 10px;
+    font-size: 23px;
+    line-height: 1.4;
+  }
+  .intro .lead {
+    line-height: 1.7;
+    margin-bottom: 15px;
+  }
+  .intro .name-form {
+    gap: 10px;
   }
 }

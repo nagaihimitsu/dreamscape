@@ -314,3 +314,11 @@
     padding-right: 18px;
   }
 }
+
+@media (max-width: 480px) {
+  .tourism-arrival-image {
+    max-height: 160px;
+    object-fit: contain;
+    background: #e9eadd;
+  }
+}

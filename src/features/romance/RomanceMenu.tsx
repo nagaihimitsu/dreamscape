@@ -40,6 +40,17 @@ export function RomanceMenu({
       {availableMoments.map((date) => (
         <EventCard key={date.id} game={game} date={date} onChoose={onChoose} />
       ))}
+      <p className="fine-print ap-help">APはデートに使うポイントです。</p>
+      <div className="date-list">
+        {ordinaryDates.map((date) => (
+          <EventCard
+            key={date.id}
+            game={game}
+            date={date}
+            onChoose={onChoose}
+          />
+        ))}
+      </div>
       {game.legacyTrialAvailable && (
         <section className="trial-progress" aria-label="試遊用の旅の進行">
           <div className="section-meta">
@@ -76,21 +87,6 @@ export function RomanceMenu({
           })}
         </section>
       )}
-      <div className="date-list">
-        {ordinaryDates.map((date) => (
-          <EventCard
-            key={date.id}
-            game={game}
-            date={date}
-            onChoose={onChoose}
-          />
-        ))}
-      </div>
-      <p className="fine-print ap-help">
-        APは一緒に過ごす機会のために。
-        <br />
-        どんな時間になるかは、交わす言葉から。
-      </p>
       {!!game.memories.length && (
         <details className="memories">
           <summary>旅のしおり · 思い出 {game.memories.length}件</summary>
