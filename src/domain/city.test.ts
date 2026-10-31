@@ -24,9 +24,12 @@ import {
   getBattleAvailability,
   getBattleOutcome,
   leaveBattle,
+  selectReasoningClue,
+  submitBattleEvidence,
 } from "./battle";
 import {
   getNextEpisode,
+  getNextStoryBattle,
   getEpisodeAvailability,
   startEpisode,
   enterFreeTime,
@@ -60,7 +63,11 @@ function finishBattle(initial: GameState, score: number): GameState {
   ) {
     state = restore(state);
     const active = state.activeBattle!;
-    if (active.phase === "question") {
+    if (active.phase === "reasoning") {
+      for (const id of battle.reasoning!.correctClueIds)
+        state = selectReasoningClue(state, id, state.revision);
+      state = submitBattleEvidence(state, state.revision);
+    } else if (active.phase === "question") {
       const question = quiz.questions[active.roundIndex];
       // Every option is independently graded from a valid boundary, including the fifth round.
       for (const option of question.options) {
@@ -87,6 +94,28 @@ function finishBattle(initial: GameState, score: number): GameState {
   expect(state.activeBattle?.phase).toBe("result");
   return restore(state);
 }
+
+/** Continue the route through B/C, with no discovery or correct-answer requirement. */
+function finishPendingStory(initial: GameState): GameState {
+  let state = initial;
+  for (let count = 0; getNextStoryBattle(state) && count < 2; count++) {
+    const special = getNextStoryBattle(state)!;
+    const before = state;
+    state = finishBattle(startBattle(state, special.battleId), 0);
+    expect(state.battleRecords.find((record) => record.battleId === special.battleId)?.attempts).toBe(1);
+    expect(state.ap).toBe(before.ap);
+    expect(state.pendingApRewards).toEqual(before.pendingApRewards);
+    expect(state.claimedRewardIds).toEqual(before.claimedRewardIds);
+    expect(state.affection).toBe(before.affection);
+    expect(state.discoveredClueIds).toEqual(before.discoveredClueIds);
+    expect(state.completedEpisodeIds).toEqual(before.completedEpisodeIds);
+    expect(state.completedCityIds).toEqual(before.completedCityIds);
+    state = leaveBattle(state, state.revision);
+    state = restore(state);
+  }
+  expect(getNextStoryBattle(state)).toBeNull();
+  return state;
+}
 function finishEpisode(
   initial: GameState,
   episode: EpisodeDefinition,
@@ -108,6 +137,7 @@ function tour(initial = createGame()): GameState {
     if (state.completedEpisodeIds.includes(episode.id)) continue;
     state = finishEpisode(state, episode);
     state = enterFreeTime(state, state.revision);
+    state = finishPendingStory(state);
   }
   return state;
 }
@@ -169,6 +199,11 @@ describe("Milan's four episodes and distinct city finale", () => {
       state = finishBattle(startBattle(state, episode.battleId), 0);
       expect(totalAp(state)).toBe(totalAp(finished));
       state = enterFreeTime(state, state.revision);
+      if (episode.landmarkId === "last_supper")
+        expect(getNextStoryBattle(state)?.battleId).toBe("milano_last_supper_b01");
+      if (episode.landmarkId === "castello_sforzesco")
+        expect(getNextStoryBattle(state)?.battleId).toBe("milano_last_supper_c01");
+      state = finishPendingStory(state);
     }
     expect(ids).toEqual([
       "duomo_milano",
@@ -201,6 +236,8 @@ describe("Milan's four episodes and distinct city finale", () => {
       state = finishEpisode(state, getNextEpisode(state)!);
       state = enterFreeTime(state, state.revision);
     }
+    expect(getNextStoryBattle(state)?.battleId).toBe("milano_last_supper_b01");
+    state = finishPendingStory(state);
     expect(getNextEpisode(state)?.landmarkId).toBe("castello_sforzesco");
     expect(
       state.claimedRewardIds.filter(

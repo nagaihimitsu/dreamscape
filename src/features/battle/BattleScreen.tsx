@@ -40,6 +40,8 @@ interface Props {
   onNextEpisode?: () => void;
   nextIsFinale?: boolean;
   onEpilogue?: () => void;
+  nextStoryBattle?: { battleId: string; descriptionJa: string; actionLabelJa: string };
+  onNextStoryBattle?: () => void;
 }
 
 export function BattleScreen({
@@ -61,6 +63,8 @@ export function BattleScreen({
   onNextEpisode,
   nextIsFinale,
   onEpilogue,
+  nextStoryBattle,
+  onNextStoryBattle,
 }: Props) {
   const active = game.activeBattle!;
   const battle = battles.find((item) => item.id === active.battleId)!;
@@ -261,12 +265,24 @@ export function BattleScreen({
             </div>
             {isSpecial ? (
               <p className="special-result-note">
-                特別対決の戦績を記録しました。この対決によるAPや恋愛の進行の変化はありません。
+                この対決ではAPを獲得しません。
               </p>
             ) : (
               <BattleRewards game={game} onClaim={onClaimRewards} />
             )}
+            {nextStoryBattle && onNextStoryBattle && (
+              <p className="next-story-battle-note">{nextStoryBattle.descriptionJa}</p>
+            )}
             <div className="battle-result-actions">
+              {nextStoryBattle && onNextStoryBattle && (
+                <button
+                  className="primary"
+                  data-testid={`next-story-battle-${nextStoryBattle.battleId}`}
+                  onClick={onNextStoryBattle}
+                >
+                  {nextStoryBattle.actionLabelJa} <span aria-hidden="true">→</span>
+                </button>
+              )}
               {onEpilogue && (
                 <button
                   className="primary"
@@ -277,7 +293,7 @@ export function BattleScreen({
                 </button>
               )}
               <button
-                className={onEpilogue ? "secondary" : "primary"}
+                className={onEpilogue || onNextStoryBattle ? "secondary" : "primary"}
                 onClick={onLeave}
               >
                 {isSpecial ? "自由時間へ戻る" : "自由時間へ進む"}{" "}

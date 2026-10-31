@@ -44,7 +44,7 @@ export function FreeTimeHub({
         {game.endingReached && <span>交際中</span>}
       </header>
 
-      <CityProgress game={game} onStart={onStartEpisode} onEpilogue={onEpilogue} />
+      <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} />
 
       <div className="free-time-tools">
         <button className="secondary" onClick={onEnglish}>

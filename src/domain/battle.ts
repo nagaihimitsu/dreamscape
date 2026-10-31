@@ -1,8 +1,9 @@
 import { z } from "zod";
-import { finalizeBattleProgress, isEpisodeUnlocked } from "./chapter";
+import { finalizeBattleProgress, isEpisodeBlockedByStoryBattle, isEpisodeUnlocked } from "./chapter";
 import {
   battles,
   episodes,
+  landmarks,
   battleQuizzes,
   progression,
   tourismClues,
@@ -118,6 +119,10 @@ export function getBattleAvailability(
   state: GameState,
   battleId: string,
 ): Availability {
+  return battleAvailability(state, battleId, false);
+}
+
+function battleAvailability(state: GameState, battleId: string, continuingTourism: boolean): Availability {
   if (!battles.some((item) => item.id === battleId))
     return { available: false, reason: "バトルが見つかりません。" };
   if (state.activeTourism)
@@ -135,6 +140,8 @@ export function getBattleAvailability(
       available: false,
       reason: "先の観光エピソードを終えると対決できます。",
     };
+  if (episode && !continuingTourism && isEpisodeBlockedByStoryBattle(state, episode))
+    return { available: false, reason: "先に、旅の途中の対決へ進みましょう。" };
   return { available: true, reason: "" };
 }
 function sceneVariables(active: ActiveBattle) {
@@ -173,7 +180,26 @@ function fromStory(active: ActiveBattle, result: StoryStep): ActiveBattle {
   return { ...active, storyState: result.storyState, frame: result.frame };
 }
 export function startBattle(state: GameState, battleId: string): GameState {
-  if (!getBattleAvailability(state, battleId).available) return state;
+  return startBattleInternal(state, battleId, false);
+}
+
+/** A sightseeing scene already in progress before an update must still finish. */
+export function startBattleFromTourism(state: GameState, battleId: string): GameState {
+  const active = state.activeTourism;
+  const landmark = landmarks.find((item) => item.id === active?.landmarkId);
+  if (!active || !landmark || landmark.battleId !== battleId || state.activeBattle) return state;
+  const next = {
+    ...state,
+    activeTourism: null,
+    visitedLandmarkIds: state.visitedLandmarkIds.includes(landmark.id)
+      ? state.visitedLandmarkIds : [...state.visitedLandmarkIds, landmark.id],
+  };
+  const started = startBattleInternal(next, battleId, true);
+  return started === next ? state : started;
+}
+
+function startBattleInternal(state: GameState, battleId: string, continuingTourism: boolean): GameState {
+  if (!battleAvailability(state, battleId, continuingTourism).available) return state;
   const battle = battles.find((item) => item.id === battleId)!;
   const active: ActiveBattle = {
     battleId,

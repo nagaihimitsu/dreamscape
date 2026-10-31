@@ -255,6 +255,11 @@
   gap: 8px;
   margin-top: 12px;
 }
+.next-story-battle-note {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
 .battle-result-actions .secondary { margin-top: 0; }
 .battle-result-history { margin-top: 12px; }
 .battle-result-history summary,

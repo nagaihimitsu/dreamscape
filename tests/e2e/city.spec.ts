@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 import tourism from "../../content/tourism/catalog.json" with { type: "json" };
 import journey from "../../content/progression/journey.json" with { type: "json" };
 import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
+import phase7 from "../fixtures/phase7-free-time.json" with { type: "json" };
 import {
   availableAp,
   expectNoOverflow,
@@ -27,13 +28,89 @@ import {
   skipTourismGuide,
 } from "./tourism-helpers";
 import { enterFreeTime } from "./journey-helpers";
+import { nonBattleProgress, playSpecialBattle, specialBattle } from "./reasoning-helpers";
+
+/** Continue the ordinary story through a special battle when one is due. */
+async function continueJourney(page: import("@playwright/test").Page, format?: "B" | "C") {
+  if (format) {
+    const { battle } = specialBattle(format);
+    const before = await saved(page);
+    const prior = nonBattleProgress(before);
+    await page.getByTestId(`next-story-battle-${battle.id}`).click();
+    expect((await saved(page)).activeBattle?.battleId).toBe(battle.id);
+    await reloadUnchanged(page);
+    const played = await playSpecialBattle(page, format, [false, false, false]);
+    expect(played.state.activeBattle?.score).toBe(0);
+    expect(nonBattleProgress(played.state)).toEqual(prior);
+    expect(played.state.battleRecords.find((record) => record.battleId === battle.id)?.attempts).toBe(1);
+    await reloadUnchanged(page);
+  }
+  await page.getByTestId("next-tourism").click();
+}
 
 test.use({ reducedMotion: "reduce", viewport: { width: 360, height: 740 } });
+
+test("an old completed city can play B and C from the story without losing its ending or rewards", async ({ page }) => {
+  test.setTimeout(180_000);
+  await loadSnapshot(page, phase7.cityClearViewed);
+  const original = await saved(page);
+  const progress = nonBattleProgress(original);
+  for (const format of ["B", "C"] as const) {
+    const { battle } = specialBattle(format);
+    await expect(page.getByTestId(`next-story-battle-${battle.id}`)).toBeVisible();
+    await page.getByTestId(`next-story-battle-${battle.id}`).click();
+    await reloadUnchanged(page);
+    const result = await playSpecialBattle(page, format, [false, false, false]);
+    expect(result.state.activeBattle?.score).toBe(0);
+    expect(nonBattleProgress(result.state)).toEqual(progress);
+    expect(result.state.battleRecords.find((record) => record.battleId === battle.id)?.attempts).toBe(1);
+    await reloadUnchanged(page);
+    for (const width of [320, 360]) {
+      await page.setViewportSize({ width, height: width === 320 ? 568 : 640 });
+      await expectNoOverflow(page);
+      await expect(page.getByRole("button", { name: "自由時間へ戻る", exact: true })).toBeVisible();
+      if (format === "B")
+        await expect(page.getByTestId(`next-story-battle-${specialBattle("C").battle.id}`)).toBeVisible();
+      await page.screenshot({ path: `/tmp/dreamscape-story-${format.toLowerCase()}-${width}.png` });
+    }
+  }
+  await page.getByRole("button", { name: "自由時間へ戻る", exact: true }).click();
+  const final = await saved(page);
+  expect(nonBattleProgress(final)).toEqual(progress);
+  expect(final.completedCityIds).toEqual(["milano"]);
+  expect(final.endingReached).toBe(true);
+  await expect(page.getByTestId(`next-story-battle-${specialBattle("B").battle.id}`)).toHaveCount(0);
+  await expect(page.getByTestId(`next-story-battle-${specialBattle("C").battle.id}`)).toHaveCount(0);
+  await openRevisits(page);
+  for (const format of ["B", "C"] as const) {
+    await expect(page.getByTestId(`revisit-battle-${specialBattle(format).battle.id}`)).toBeVisible();
+  }
+});
+
+test("previously played special battles stay completed in an old cleared-city save", async ({ page }) => {
+  const completed = {
+    ...phase7.cityClearViewed,
+    battleRecords: [
+      ...phase7.cityClearViewed.battleRecords,
+      ...phase6.B_result.battleRecords,
+      ...phase6.C_result.battleRecords,
+    ],
+  };
+  await loadSnapshot(page, completed);
+  expect(await saved(page)).toEqual(completed);
+  await expect(page.getByTestId("free-time-hub")).toBeVisible();
+  for (const format of ["B", "C"] as const)
+    await expect(page.getByTestId(`next-story-battle-${specialBattle(format).battle.id}`)).toHaveCount(0);
+  await openRevisits(page);
+  for (const format of ["B", "C"] as const)
+    await expect(page.getByTestId(`revisit-battle-${specialBattle(format).battle.id}`)).toBeVisible();
+  expect((await saved(page)).endingReached).toBe(true);
+});
 
 test("a new zero-score Milan journey reaches the city epilogue and romance ending with finite earned AP", async ({
   page,
 }) => {
-  test.setTimeout(240_000);
+  test.setTimeout(360_000);
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await startNewGame(page, ["航", "澪"]);
@@ -69,7 +146,7 @@ test("a new zero-score Milan journey reaches the city epilogue and romance endin
       await openCityRecords(page);
       await expect(page.getByTestId(`city-stop-${cityFinale().id}`)).toContainText("この先");
       await page.getByTestId(`next-episode-${cityEpisodes[1].id}`).click();
-    } else await page.getByTestId("next-tourism").click();
+    } else await continueJourney(page, episode.landmarkId === "last_supper" ? "B" : episode.landmarkId === "castello_sforzesco" ? "C" : undefined);
   }
   expect((await saved(page)).activeTourism).toBeNull();
   expect((await saved(page)).activeBattle?.battleId).toBe(
@@ -90,7 +167,7 @@ test("a new zero-score Milan journey reaches the city epilogue and romance endin
     ),
   ).toBe(3);
   expect(boss.state.endingReached).toBe(false);
-  expect(boss.state.battleRecords).toHaveLength(5);
+  expect(boss.state.battleRecords).toHaveLength(7);
   expect(
     boss.state.battleRecords.every(
       (record) => record.firstScore === 0 && record.attempts === 1,
@@ -157,7 +234,7 @@ test("a new zero-score Milan journey reaches the city epilogue and romance endin
 test("all four photographs and discoveries persist, and the five-question boss supports perfect, victory, defeat and replay without duplicate AP", async ({
   page,
 }) => {
-  test.setTimeout(240_000);
+  test.setTimeout(360_000);
   await startNewGame(page);
   await page.getByTestId("episode-start").click();
   const discovered: string[] = [];
@@ -208,7 +285,7 @@ test("all four photographs and discoveries persist, and the five-question boss s
     await expect(
       page.getByRole("heading", { name: "PERFECT VICTORY", exact: true }),
     ).toBeVisible();
-    await page.getByTestId("next-tourism").click();
+    await continueJourney(page, episode.landmarkId === "last_supper" ? "B" : episode.landmarkId === "castello_sforzesco" ? "C" : undefined);
   }
   const perfect = await playCityBattle(page, cityFinale(), 5, true);
   await expect(
@@ -269,12 +346,11 @@ test("all four photographs and discoveries persist, and the five-question boss s
 test("a published Last Supper completion keeps its reward and resumes at unvisited Duomo, then skips the already completed episode", async ({
   page,
 }) => {
-  test.setTimeout(180_000);
+  test.setTimeout(300_000);
   await loadSnapshot(page, phase6.freeTime);
   expect(await saved(page)).toEqual(phase6.freeTime);
-  await expect(
-    page.getByTestId(`next-episode-${cityEpisodes[0].id}`),
-  ).toBeVisible();
+  await expect(page.getByTestId(`next-story-battle-${specialBattle("B").battle.id}`)).toHaveCount(0);
+  await expect(page.getByTestId(`next-episode-${cityEpisodes[0].id}`)).toBeVisible();
   await page.getByTestId(`next-episode-${cityEpisodes[0].id}`).click();
   const oldRecord = phase6.freeTime.battleRecords;
   for (const episode of cityEpisodes.filter(
@@ -299,7 +375,7 @@ test("a published Last Supper completion keeps its reward and resumes at unvisit
       ),
     ).toHaveLength(1);
     expect(result.state.completedCityIds).toEqual([]);
-    await page.getByTestId("next-tourism").click();
+    await continueJourney(page, episode.landmarkId === "galleria_vittorio_emanuele_ii" ? "B" : episode.landmarkId === "castello_sforzesco" ? "C" : undefined);
   }
   const result = await playCityBattle(page, cityFinale(), 0);
   expect(result.state.completedCityIds).toEqual(["milano"]);

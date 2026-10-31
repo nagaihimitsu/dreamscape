@@ -79,6 +79,7 @@ export type {
 } from "./tourism-schemas";
 export type {
   EpisodeDefinition,
+  StoryBattle,
   RewardRule,
   JourneyConfig,
 } from "./journey-schemas";

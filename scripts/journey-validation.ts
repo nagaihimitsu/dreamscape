@@ -32,6 +32,7 @@ export function validateJourney(
     journey.episodes.map((episode) => episode.battleId),
     "episode battle",
   );
+  unique(journey.storyBattles.map((encounter) => encounter.battleId), "story battle");
   unique(
     journey.rewards.map((rule) => rule.id),
     "journey reward ID",
@@ -60,6 +61,19 @@ export function validateJourney(
     finales.map((episode) => episode.cityId),
     "city finale",
   );
+  let previousStoryPosition = -1;
+  for (const encounter of journey.storyBattles) {
+    const after = journey.episodes.findIndex((episode) => episode.id === encounter.afterEpisodeId);
+    const before = journey.episodes.findIndex((episode) => episode.id === encounter.beforeEpisodeId);
+    const battle = battles.find((item) => item.id === encounter.battleId);
+    if (after < 0 || before !== after + 1 || after < previousStoryPosition ||
+      !journey.episodes[before].requiredEpisodeIds.includes(encounter.afterEpisodeId))
+      throw new Error(`Unknown or unordered story battle position: ${encounter.battleId}`);
+    if (!battle?.reasoning || journey.episodes.some((episode) => episode.battleId === encounter.battleId) ||
+      !landmarks.some((landmark) => landmark.id === battle.landmarkId && landmark.cityId === journey.episodes[after].cityId))
+      throw new Error(`Invalid story battle: ${encounter.battleId}`);
+    previousStoryPosition = after;
+  }
   for (const [index, episode] of journey.episodes.entries()) {
     unique(episode.requiredEpisodeIds, "episode prerequisite");
     for (const required of episode.requiredEpisodeIds) {

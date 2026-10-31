@@ -99,7 +99,8 @@ test("revisit choices are concise and keep tourism and battle routes working", a
   const panel = page.locator(".revisit-menu");
   await expect(panel.getByRole("heading", { name: "観光・観察" })).toBeVisible();
   await expect(panel.getByRole("heading", { name: "クイズバトル" })).toBeVisible();
-  await expect(panel.getByRole("heading", { name: "特別対決" })).toBeVisible();
+  // Unencountered story battles are presented in the route before they can be replayed.
+  await expect(panel.getByRole("heading", { name: "特別対決" })).toHaveCount(0);
   for (const row of await panel.locator(".revisit-list li").all()) {
     const button = row.getByRole("button");
     await expect(button).toBeEnabled();

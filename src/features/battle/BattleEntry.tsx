@@ -10,7 +10,9 @@ export function BattleEntry({
   onStart: (id: string) => void;
 }) {
   const available = battles.filter(
-    (battle) => getBattleAvailability(game, battle.id).available,
+    (battle) =>
+      getBattleAvailability(game, battle.id).available &&
+      (!battle.reasoning || game.battleRecords.some((record) => record.battleId === battle.id && record.attempts > 0)),
   );
   const groups = [
     { title: "クイズバトル", items: available.filter((battle) => !battle.reasoning) },

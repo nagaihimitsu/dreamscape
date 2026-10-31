@@ -45,6 +45,7 @@ import {
   canAccessFreeTime,
   getCurrentEpisode,
   getNextEpisode,
+  getNextStoryBattle,
   startEpisode,
   enterFreeTime,
 } from "../domain/chapter";
@@ -227,6 +228,7 @@ export default function App() {
     !game.activeTourism &&
     !game.activeEpilogue;
   const nextEpisode = game ? getNextEpisode(game) : null;
+  const nextStoryBattle = game ? getNextStoryBattle(game) : null;
   const frame = active?.frame;
   useEffect(() => {
     if (active?.dateId || showRomanceEnding)
@@ -304,6 +306,8 @@ export default function App() {
           <span>
             {reasoningRule
               ? `${landmarks.find((item) => item.id === currentLandmarkId)?.nameJa} · 特別対決`
+              : idle && nextStoryBattle
+                ? nextStoryBattle.titleJa
               : game.completedCityIds.includes(city.id) &&
                   !game.activeBattle &&
                   !game.activeTourism &&
@@ -473,13 +477,19 @@ export default function App() {
               commit((state) => startBattle(state, game.activeBattle!.battleId))
             }
             onNextEpisode={
-              !reasoningRule && nextEpisode
+              !nextStoryBattle && nextEpisode
                 ? () => commit((state) => startEpisode(state, nextEpisode.id))
                 : undefined
             }
             nextIsFinale={nextEpisode?.kind === "city_finale"}
+            nextStoryBattle={nextStoryBattle ?? undefined}
+            onNextStoryBattle={
+              nextStoryBattle
+                ? () => commit((state) => startBattle(state, nextStoryBattle.battleId))
+                : undefined
+            }
             onEpilogue={
-              cityNotebook &&
+              !nextStoryBattle && cityNotebook &&
               game.completedCityIds.includes(currentBattle.cityId!) &&
               !game.viewedEpilogueCityIds.includes(currentBattle.cityId!)
                 ? () =>

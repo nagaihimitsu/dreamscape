@@ -80,6 +80,24 @@
       "clearDescriptionJa": "四つの場所と、そこで交わした言葉。今日の旅にひと区切りをつけて、ふたりの余韻へ。"
     }
   ],
+  "storyBattles": [
+    {
+      "battleId": "milano_last_supper_b01",
+      "afterEpisodeId": "milano_last_supper_episode",
+      "beforeEpisodeId": "milano_castello_episode",
+      "titleJa": "最後の晩餐での対決",
+      "descriptionJa": "最後の晩餐の前で、帳簿を持った男が印を押している。",
+      "actionLabelJa": "帳簿の男と話す"
+    },
+    {
+      "battleId": "milano_last_supper_c01",
+      "afterEpisodeId": "milano_castello_episode",
+      "beforeEpisodeId": "milano_finale",
+      "titleJa": "もう一度、最後の晩餐へ",
+      "descriptionJa": "あの食卓をもう一度見たくなり、絵のある食堂へ戻る。",
+      "actionLabelJa": "最後の晩餐へ戻る"
+    }
+  ],
   "rewards": [
     {
       "id": "guide_last_supper_first_read",

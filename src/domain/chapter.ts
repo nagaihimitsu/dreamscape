@@ -5,6 +5,7 @@ import {
   rewardRules,
   type EpisodeDefinition,
   type RewardRule,
+  type StoryBattle,
 } from "../content";
 import { openTourism } from "./tourism";
 import { startBattle } from "./battle";
@@ -37,7 +38,27 @@ export function isEpisodeUnlocked(
     )
   );
 }
+/** A completed encounter is reused even if it was played before this route existed. */
+export function getNextStoryBattle(state: GameState): StoryBattle | null {
+  return journeyConfig.storyBattles.find((encounter) => {
+    const afterIndex = episodes.findIndex((episode) => episode.id === encounter.afterEpisodeId);
+    return afterIndex >= 0 &&
+      episodes.slice(0, afterIndex + 1).every((episode) => state.completedEpisodeIds.includes(episode.id)) &&
+      !state.battleRecords.some((record) => record.battleId === encounter.battleId && record.attempts > 0);
+  }) ?? null;
+}
+
+/** Completed destinations remain revisitable for older saved games. */
+export function isEpisodeBlockedByStoryBattle(state: GameState, episode: EpisodeDefinition): boolean {
+  const pending = getNextStoryBattle(state);
+  if (!pending || state.completedEpisodeIds.includes(episode.id)) return false;
+  const target = episodes.findIndex((item) => item.id === episode.id);
+  const barrier = episodes.findIndex((item) => item.id === pending.beforeEpisodeId);
+  return target >= 0 && barrier >= 0 && target >= barrier;
+}
+
 export function getNextEpisode(state: GameState): EpisodeDefinition | null {
+  if (getNextStoryBattle(state)) return null;
   return (
     episodes.find(
       (episode) =>
@@ -81,6 +102,8 @@ export function getEpisodeAvailability(
           ? "4つの観光地を巡ると、この対決へ進めます。"
           : "先の観光エピソードを終えると出発できます。",
     };
+  if (isEpisodeBlockedByStoryBattle(state, episode))
+    return { available: false, reason: "先に、旅の途中の対決へ進みましょう。" };
   return { available: true, reason: "" };
 }
 export function canAccessFreeTime(state: GameState): boolean {

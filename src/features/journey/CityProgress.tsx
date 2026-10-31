@@ -5,22 +5,25 @@ import {
   episodes,
   landmarks,
 } from "../../content";
-import { getEpisodeAvailability, getNextEpisode } from "../../domain/chapter";
+import { getEpisodeAvailability, getNextEpisode, getNextStoryBattle } from "../../domain/chapter";
 import type { GameState } from "../../domain/game";
 import "./city.css";
 
 export function CityProgress({
   game,
   onStart,
+  onStoryBattle,
   onEpilogue,
   showNext = true,
 }: {
   game: GameState;
   onStart: (id: string) => void;
+  onStoryBattle: (id: string) => void;
   onEpilogue: (cityId: string) => void;
   showNext?: boolean;
 }) {
   const next = getNextEpisode(game);
+  const nextBattle = getNextStoryBattle(game);
   const stops = episodes.filter((episode) => episode.kind !== "city_finale");
   const completed = stops.filter((episode) =>
     game.completedEpisodeIds.includes(episode.id),
@@ -38,7 +41,21 @@ export function CityProgress({
           {cityCompleted ? "都市クリア" : `観光 ${completed} / ${stops.length}`}
         </span>
       </div>
-      {showNext && next && (
+      {showNext && nextBattle && (
+        <div className="next-destination">
+          <p className="eyebrow">旅の続き</p>
+          <h3>{nextBattle.titleJa}</h3>
+          <p>{nextBattle.descriptionJa}</p>
+          <button
+            className="primary"
+            data-testid={`next-story-battle-${nextBattle.battleId}`}
+            onClick={() => onStoryBattle(nextBattle.battleId)}
+          >
+            {nextBattle.actionLabelJa} <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      )}
+      {showNext && !nextBattle && next && (
         <div className="next-destination">
           <p className="eyebrow">
             {next.kind === "city_finale" ? "旅を結ぶ最後の対決" : "次の目的地"}

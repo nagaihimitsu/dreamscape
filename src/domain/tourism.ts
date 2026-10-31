@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { recordGuideRead, isEpisodeUnlocked } from "./chapter";
+import { isEpisodeBlockedByStoryBattle, recordGuideRead, isEpisodeUnlocked } from "./chapter";
 import {
   battles,
   episodes,
@@ -15,7 +15,7 @@ import {
   validateStorySnapshot,
   type StoryStep,
 } from "../story/runtime";
-import { startBattle } from "./battle";
+import { startBattleFromTourism } from "./battle";
 import type { Availability, GameState } from "./game";
 
 export const activeTourismSchema = z
@@ -76,6 +76,10 @@ export function getTourismAvailability(
       available: false,
       reason: "先の観光エピソードを終えると訪ねられます。",
     };
+  if (
+    episode && !state.activeTourism && !state.activeBattle &&
+    isEpisodeBlockedByStoryBattle(state, episode)
+  ) return { available: false, reason: "先に、旅の途中の対決へ進みましょう。" };
   return { available: true, reason: "" };
 }
 
@@ -253,7 +257,7 @@ export function startTourismBattle(
     visitedLandmarkIds: recordVisit(state, active.landmarkId),
   };
   if (state.activeBattle) return { ...next, revision: state.revision + 1 };
-  return startBattle(next, landmark.battleId);
+  return startBattleFromTourism(state, landmark.battleId);
 }
 
 export function validateTourismState(state: GameState): void {

@@ -3,10 +3,10 @@ import tourism from "../../content/tourism/catalog.json" with { type: "json" };
 const tourismAssets = tourism.assets;
 const tourismClues = tourism.clues;
 import phase5 from "../fixtures/phase5-saves.json" with { type: "json" };
+import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
 import {
   SAVE_KEY,
   saved,
-  startLegacyJourney,
   expectNoOverflow,
 } from "./helpers";
 import {
@@ -14,7 +14,6 @@ import {
   battleDialogueUntilQuestionOrResult,
   reloadUnchanged,
 } from "./battle-helpers";
-import { completeEpisode, enterFreeTime } from "./journey-helpers";
 import { openCluebook, showClue } from "./tourism-helpers";
 import {
   nonBattleProgress,
@@ -65,11 +64,12 @@ test("B exposes a definite contradiction with readable case evidence, persists r
   await page.setViewportSize({ width: 360, height: 740 });
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await startLegacyJourney(page, ["航", "澪"]);
-  await completeEpisode(page, [false, false, false]);
-  await enterFreeTime(page);
+  await loadSnapshot(page, {
+    ...phase6.freeTime,
+    battleRecords: [...phase6.freeTime.battleRecords, ...phase6.B_result.battleRecords],
+  });
   const original = await saved(page);
-  expect(original.discoveredClueIds).toEqual([]);
+  expect(original.discoveredClueIds).not.toContain("last_supper_doorway");
   const protectedProgress = nonBattleProgress(original);
   const { battle, quiz, reasoning } = specialBattle("B");
   await startSpecialFromEntry(page, "B");
@@ -171,7 +171,7 @@ test("B exposes a definite contradiction with readable case evidence, persists r
     result.battleRecords.find((record) => record.battleId === battle.id),
   ).toEqual({
     battleId: battle.id,
-    attempts: 1,
+    attempts: 2,
     firstScore: 3,
     bestScore: 3,
     lastScore: 3,
@@ -194,7 +194,7 @@ test("B exposes a definite contradiction with readable case evidence, persists r
   expect(
     replay.state.battleRecords.find((record) => record.battleId === battle.id)
       ?.attempts,
-  ).toBe(2);
+  ).toBe(3);
   await page
     .getByRole("button", { name: "自由時間へ戻る", exact: true })
     .click();
@@ -209,9 +209,11 @@ test("C preserves two selected cards through notebook and reload, requires an En
 }) => {
   test.setTimeout(120_000);
   await page.setViewportSize({ width: 360, height: 740 });
-  await loadSnapshot(page, phase5.ending);
+  // A previous C attempt remains replayable from a completed romance save.
+  const endingWithAttempt = { ...phase5.ending, battleRecords: phase6.C_result.battleRecords };
+  await loadSnapshot(page, endingWithAttempt);
   await expect(page.getByTestId("free-time-hub")).toBeVisible();
-  expect(await saved(page)).toEqual(phase5.ending);
+  expect(await saved(page)).toEqual(endingWithAttempt);
   const original = await saved(page);
   const protectedProgress = nonBattleProgress(original);
   expect(original.discoveredClueIds).toEqual([]);

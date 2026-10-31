@@ -59,15 +59,28 @@ export const rewardRuleSchema = z
     "Only score rewards require a minimum score",
   );
 
+// Battles placed between existing sightseeing episodes. Their own battle
+// records are the completion history, independently of chapter rewards.
+export const storyBattleSchema = z.object({
+  battleId: id,
+  afterEpisodeId: id,
+  beforeEpisodeId: id,
+  titleJa: japanese,
+  descriptionJa: japanese,
+  actionLabelJa: japanese,
+}).strict();
+
 export const journeySchema = z
   .object({
     schemaVersion: z.literal(1),
     entryEpisodeId: id,
     episodes: z.array(episodeSchema).min(1),
+    storyBattles: z.array(storyBattleSchema).default([]),
     rewards: z.array(rewardRuleSchema).min(1),
   })
   .strict();
 
 export type EpisodeDefinition = z.infer<typeof episodeSchema>;
+export type StoryBattle = z.infer<typeof storyBattleSchema>;
 export type RewardRule = z.infer<typeof rewardRuleSchema>;
 export type JourneyConfig = z.infer<typeof journeySchema>;
