@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "storyId": "learning/english",
+  "questions": {
+    "last_supper_central_triangle": {
+      "summaryJa": "Whichで始まる主語と、動詞matchesの関係を見ます。",
+      "segments": [
+        {
+          "textEn": "Which description",
+          "meaningJa": "どの説明が（主語）"
+        },
+        {
+          "textEn": "matches",
+          "meaningJa": "合う（動詞）"
+        },
+        {
+          "textEn": "Christ's position and shape",
+          "meaningJa": "キリストの位置と形に"
+        }
+      ],
+      "topics": [
+        {
+          "id": "which_subject",
+          "titleJa": "なぜWhichの後にdoがない？",
+          "explanationJa": "Which description全体が主語なので、動詞matchesが直接続きます。",
+          "targetEn": "Which description matches",
+          "exampleEn": "Which description matches the photo?",
+          "exampleJa": "どの説明がその写真に合いますか？",
+          "sourceUrl": "https://dictionary.cambridge.org/grammar/british-grammar/questions-wh-questions",
+          "checkedAt": "2026-10-31",
+          "category": "grammar"
+        }
+      ]
+    },
+    "last_supper_vanishing_point": {
+      "summaryJa": "whereで場所を尋ねる疑問文の語順を見ます。",
+      "segments": [
+        {
+          "textEn": "where",
+          "meaningJa": "どこで"
+        },
+        {
+          "textEn": "do the room's perspective lines meet",
+          "meaningJa": "部屋の遠近法の線が集まるのか"
+        }
+      ],
+      "topics": [
+        {
+          "id": "where_do",
+          "titleJa": "なぜdoの後に主語が来る？",
+          "explanationJa": "場所を尋ねる疑問文では、whereの後に助動詞do、主語、動詞の原形が続きます。",
+          "targetEn": "where do the room's perspective lines meet",
+          "exampleEn": "Where do the two roads meet?",
+          "exampleJa": "二つの道はどこで交わりますか？",
+          "sourceUrl": "https://dictionary.cambridge.org/grammar/british-grammar/questions-wh-questions",
+          "checkedAt": "2026-10-31",
+          "category": "grammar"
+        }
+      ]
+    },
+    "last_supper_dry_tradeoff": {
+      "summaryJa": "Compared withは、比べる相手を示す表現です。",
+      "segments": [
+        {
+          "textEn": "Compared with true fresco on wet plaster",
+          "meaningJa": "濡れた漆喰に描く本来のフレスコ画と比べて"
+        },
+        {
+          "textEn": "what was the main trade-off",
+          "meaningJa": "主な利点と不利な点の組み合わせは何だったか"
+        }
+      ],
+      "topics": [
+        {
+          "id": "compared_with",
+          "titleJa": "Compared withは何を示す？",
+          "explanationJa": "Compared withは比較の相手を示します。ここでは、濡れた漆喰に描く方法と比較しています。",
+          "targetEn": "Compared with true fresco on wet plaster",
+          "exampleEn": "Compared with yesterday, the room is quiet.",
+          "exampleJa": "昨日と比べて、その部屋は静かです。",
+          "sourceUrl": "https://dictionary.cambridge.org/dictionary/english/compare",
+          "checkedAt": "2026-10-31",
+          "category": "expression"
+        }
+      ]
+    }
+  }
+}

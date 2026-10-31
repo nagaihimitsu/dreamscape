@@ -187,13 +187,13 @@ export const trialProgressionSchema = z
   .strict();
 export type TrialMilestone = z.infer<typeof trialMilestoneSchema>;
 
-const englishText = text.refine(
+export const englishText = text.refine(
   (value) =>
     /[A-Za-z]/.test(value) &&
     !/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(value),
   "Quiz questions and options must be English",
 );
-const japaneseText = text.refine(
+export const japaneseText = text.refine(
   (value) =>
     /[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(value),
   "Expected Japanese text",

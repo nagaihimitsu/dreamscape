@@ -6,16 +6,16 @@ Dreamscapeの正式データは `content/` です。文章はInk、クイズ・�
 
 [`templates/`](templates/) は現在のミラノ編から抜き出した**記入例**です。実際に使われているID・文章・出典を含むので、コピーしてそのまま追加するとIDが重複します。新作には各ID、参照先、文章、実際に確認した出典・画像情報を更新してください。実在する記述を雛形として示しているだけで、別の題材の根拠や使用許諾にはなりません。`tourism.json`、`battle_*.json`、`date.json` は対応する既存カタログの配列に**項目を追加するための例**です。既存カタログを例で上書きしないでください。`date_presentation_parts.json` はカタログ全体ではなく、`presentation.json` の各オブジェクトに追加する部品です。
 
-| 作るもの | 例 | 正式な配置先 |
-| --- | --- | --- |
-| 観光地・画像・発見・資料 | `tourism.json` | `content/tourism/catalog.json` の各配列 |
-| 英語3択3問 | `quiz.json` | `content/quizzes/任意名.json` |
-| 敵と通常戦、矛盾追及、証拠連結 | `battle_a.json`, `battle_b.json`, `battle_c.json` | `content/battles/catalog.json` の `battles` |
-| 敵の会話 | `battle_a.ink`, `battle_b.ink`, `battle_c.ink` | `content/stories/battles/` |
-| デート、効果、思い出・背景 | `date.json`, `date_effects.json`, `date_presentation_parts.json` | `content/romance/` の対応するカタログ |
-| デートの会話 | `date.ink` | `content/stories/milano/` |
-| 観光案内 | `guide.ink` | `content/stories/tourism/` |
-| 都市・順路・報酬 | `city.json`, `journey.json` | `content/cities/`, `content/progression/journey.json` |
+| 作るもの                       | 例                                                               | 正式な配置先                                          |
+| ------------------------------ | ---------------------------------------------------------------- | ----------------------------------------------------- |
+| 観光地・画像・発見・資料       | `tourism.json`                                                   | `content/tourism/catalog.json` の各配列               |
+| 英語3択3問                     | `quiz.json`                                                      | `content/quizzes/任意名.json`                         |
+| 敵と通常戦、矛盾追及、証拠連結 | `battle_a.json`, `battle_b.json`, `battle_c.json`                | `content/battles/catalog.json` の `battles`           |
+| 敵の会話                       | `battle_a.ink`, `battle_b.ink`, `battle_c.ink`                   | `content/stories/battles/`                            |
+| デート、効果、思い出・背景     | `date.json`, `date_effects.json`, `date_presentation_parts.json` | `content/romance/` の対応するカタログ                 |
+| デートの会話                   | `date.ink`                                                       | `content/stories/milano/`                             |
+| 観光案内                       | `guide.ink`                                                      | `content/stories/tourism/`                            |
+| 都市・順路・報酬               | `city.json`, `journey.json`                                      | `content/cities/`, `content/progression/journey.json` |
 
 JSONにはコメントを入れず、カンマ、引用符、配列の括弧を保ちます。`schemaVersion` はデータ形式の版で、個々のコンテンツIDとは別です。編集前に対象ファイルを複製し、既存内容を消さずに追加してください。表示名は変更できますが、公開済みIDはセーブ・他データの参照に使うため変更しないでください。新しいIDは英小文字で始め、英小文字・数字・`_` を使います。`storyId` は `tourism/duomo_guide` のように `content/stories/` からの拡張子なしの相対パスです。
 
@@ -40,6 +40,12 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 - `landmarks`：`id` / `cityId` は場所と都市のID、`nameJa` / `nameEn` は表示名、`descriptionJa` は短い案内。`imageAssetId`、`guideStoryId`、`battleId` はそれぞれ画像、案内Ink、通常戦のID、`clueIds` はその場所の発見ID一覧です。
 - `clues`：`id`、`landmarkId`、`titleJa`、`descriptionJa`、`factId`、`relatedQuestionIds`、`sources` は発見と参照、説明、根拠です。`kind: "hotspot"` は写真で見える場所、`kind: "document"` は画像だけでは判断できない資料。後者の `region` は `null` です。hotspotの `region` は画像全体を1とする左上の `x` / `y` と `width` / `height`（各0〜1）で、画像の外には出せません。画像差し替えで構図が変われば座標も見直します。
 - `sources` の `publisher` / `title` / `url` / `checkedAt` / `claimType` / `claimJa` は発行者、資料名、URL、確認日、根拠の区分、その資料が裏付ける主張。`claimType` は `documented_fact`、`interpretation`、`legend` を区別します。
+
+### 対訳・学習説明
+
+公開する問題は `content/learning/translations.json` に問題IDを登録し、`source` に問題文・全選択肢・正解IDの原文をそのまま記録します。`questionJa` と `optionsJa` は正誤の根拠を加えず、選択肢A/B/Cを公平に訳します。原文や正解を変更すると全体検証が不一致を検出するため、訳を確認して `source` を更新してください。既存のバトル保存指紋は学習データを含みません。
+
+詳細が必要な問題だけ `content/learning/details.json` に、原文中の `segments` と `topics`、疑問見出し、説明、実用例文・訳、確認済みの文法資料URLと確認日を追加します。学習会話は `content/stories/learning/english.ink` のtopicに対応し、話者はヒロイン、2〜4行、選択肢やeffectは使いません。現在は『最後の晩餐』の通常戦3問が対象です。意味の自然さ、資料の該当箇所と訳は編集者が確認します。
 
 ### クイズの項目
 

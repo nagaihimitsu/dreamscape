@@ -32,6 +32,14 @@ import { validateTourism } from "./tourism-validation";
 import { journeySchema } from "../src/content/journey-schemas";
 import { validateJourney } from "./journey-validation";
 import { validateEpilogue } from "./epilogue-validation";
+import {
+  learningDetailsSchema,
+  validateLearningDetails,
+} from "../src/content/learning-details";
+import {
+  learningCatalogSchema,
+  validateLearning,
+} from "../src/content/learning-schema";
 
 async function json(file: string): Promise<unknown> {
   try {
@@ -547,6 +555,36 @@ export async function buildContent(root: string, writeOutput = true) {
       () => validateBattleStory(stories[battle.storyId], battle, context),
     );
   }
+  const learning = await parseFile(
+    learningCatalogSchema,
+    path.join(content, "learning/translations.json"),
+  );
+  validateLearning(learning, quizzes, [
+    ...new Set(battles.map((battle) => battle.quizId)),
+  ]);
+  const learningDetails = await parseFile(
+    learningDetailsSchema,
+    path.join(content, "learning/details.json"),
+  );
+  validateLearningDetails(learningDetails, quizzes);
+  if (!stories[learningDetails.storyId])
+    throw new Error(`Unknown learning story: ${learningDetails.storyId}`);
+  for (const detail of Object.values(learningDetails.questions))
+    for (const topic of detail.topics) {
+      const story = new Story(stories[learningDetails.storyId]);
+      story.variablesState.$("topic", topic.id);
+      let lines = 0;
+      while (story.canContinue) {
+        const line = story.Continue()?.trim() ?? "";
+        const tags = parseStoryTags(story.currentTags ?? [], context);
+        if (tags.effects.length || (tags.speaker && tags.speaker !== "heroine"))
+          throw new Error(`Invalid learning story tags: ${topic.id}`);
+        if (line) lines++;
+        if (lines > 4) throw new Error(`Learning story too long: ${topic.id}`);
+      }
+      if (lines < 2 || story.currentChoices.length)
+        throw new Error(`Invalid learning story: ${topic.id}`);
+    }
   const tourismGuides = await validateTourism(
     root,
     tourism,
@@ -580,6 +618,7 @@ export async function buildContent(root: string, writeOutput = true) {
   }
   for (const storyId of Object.keys(stories)) {
     if (
+      storyId !== learningDetails.storyId &&
       !dates.some((date) => date.storyId === storyId) &&
       !battles.some((battle) => battle.storyId === storyId) &&
       !journey.episodes.some(

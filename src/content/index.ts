@@ -1,3 +1,7 @@
+import detailsData from "../../content/learning/details.json";
+import { learningDetailsSchema } from "./learning-details";
+import learningData from "../../content/learning/translations.json";
+import { learningCatalogSchema } from "./learning-schema";
 import battleData from "../../content/battles/catalog.json";
 import journeyData from "../../content/progression/journey.json";
 import { journeySchema } from "./journey-schemas";
@@ -25,6 +29,9 @@ import {
   presentationSchema,
 } from "./schemas";
 
+export const learningDetails = learningDetailsSchema.parse(detailsData);
+export const learningTranslations =
+  learningCatalogSchema.parse(learningData).questions;
 export const battles = battleCatalogSchema.parse(battleData).battles;
 export const journeyConfig = journeySchema.parse(journeyData);
 export const episodes = journeyConfig.episodes;

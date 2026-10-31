@@ -6,8 +6,12 @@ import { DialogueText } from "../../components/DialogueText";
 import { EnemyPortrait } from "./EnemyPortrait";
 import { BattleRewards } from "../journey/BattleRewards";
 import { ReasoningPanel } from "./ReasoningPanel";
+import { Translation, TranslationAll } from "../learning/Translations";
+import type { Learning } from "../learning/useLearning";
 
 interface Props {
+  learning: Learning;
+  onEnglish: (questionId?: string) => void;
   game: GameState;
   speed: number;
   onSpeed: (speed: number) => void;
@@ -26,6 +30,8 @@ interface Props {
 }
 
 export function BattleScreen({
+  learning,
+  onEnglish,
   game,
   speed,
   onSpeed,
@@ -102,6 +108,11 @@ export function BattleScreen({
             </button>
           </div>
         )}
+        {!paused && !isResult && active.answers.length > 0 && (
+          <button className="text-button" onClick={() => onEnglish()}>
+            回答した問題を振り返る
+          </button>
+        )}
         {paused ? (
           <div className="paused">
             <h2>ひと休み</h2>
@@ -147,6 +158,9 @@ export function BattleScreen({
                 </li>
               ))}
             </ol>
+            <button className="secondary" onClick={() => onEnglish()}>
+              回答した問題を振り返る
+            </button>
             {record && (
               <p className="record-summary">
                 挑戦 {record.attempts}回 · 初回 {record.firstScore}問 · 最高{" "}
@@ -249,33 +263,41 @@ export function BattleScreen({
                 onSubmit={onSubmitEvidence}
               />
             )}
+            <TranslationAll learning={learning} id={question.id} />
             <h2 className="question-en" lang="en">
               {question.questionEn}
             </h2>
+            <Translation learning={learning} id={question.id} part="question" />
             <div className="quiz-choices" aria-label="英語の3択">
               {question.options.map((option) => {
                 const selected = answer?.optionId === option.id;
                 const correct =
                   answer && option.id === question.correctOptionId;
                 return (
-                  <button
-                    key={option.id}
-                    data-testid={`answer-${option.id}`}
-                    className={`quiz-choice ${selected ? "chosen" : ""} ${correct ? "correct" : ""}`}
-                    disabled={active.phase !== "question"}
-                    onClick={() => onAnswer(option.id)}
-                  >
-                    <span className="option-id" aria-hidden="true">
-                      {option.id}
-                    </span>
-                    <span lang="en">{option.textEn}</span>
-                    {answer && (
-                      <span className="option-mark">
-                        {selected ? "選んだ答え" : ""}
-                        {correct ? " ✓ 正解" : ""}
+                  <div key={option.id} className="quiz-option-wrap">
+                    <button
+                      data-testid={`answer-${option.id}`}
+                      className={`quiz-choice ${selected ? "chosen" : ""} ${correct ? "correct" : ""}`}
+                      disabled={active.phase !== "question"}
+                      onClick={() => onAnswer(option.id)}
+                    >
+                      <span className="option-id" aria-hidden="true">
+                        {option.id}
                       </span>
-                    )}
-                  </button>
+                      <span lang="en">{option.textEn}</span>
+                      {answer && (
+                        <span className="option-mark">
+                          {selected ? "選んだ答え" : ""}
+                          {correct ? " ✓ 正解" : ""}
+                        </span>
+                      )}
+                    </button>
+                    <Translation
+                      learning={learning}
+                      id={question.id}
+                      part={option.id}
+                    />
+                  </div>
                 );
               })}
             </div>
@@ -330,6 +352,12 @@ export function BattleScreen({
                     ? question.correctExplanationJa
                     : question.incorrectExplanationJa}
                 </p>
+                <button
+                  className="secondary"
+                  onClick={() => onEnglish(question.id)}
+                >
+                  英文を確認する
+                </button>
                 <details className="quiz-sources">
                   <summary>解説の根拠を読む</summary>
                   <ul>

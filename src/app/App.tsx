@@ -39,6 +39,8 @@ import { BattleScreen } from "../features/battle/BattleScreen";
 import { TourismEntry } from "../features/tourism/TourismEntry";
 import { TourismScreen } from "../features/tourism/TourismScreen";
 import { ClueNotebook } from "../features/tourism/ClueNotebook";
+import { useLearning } from "../features/learning/useLearning";
+import { EnglishReview } from "../features/learning/EnglishReview";
 import { EpisodeScreen } from "../features/journey/EpisodeScreen";
 import { PendingRewards } from "../features/journey/PendingRewards";
 import { CityProgress } from "../features/journey/CityProgress";
@@ -88,6 +90,18 @@ export default function App() {
   const [game, setGame] = useState<GameState | null>(
     loaded.status === "loaded" ? loaded.state : null,
   );
+  const learning = useLearning(game);
+  const [englishOpen, setEnglishOpen] = useState(
+    () => !!learning.data.openQuestion,
+  );
+  function openEnglish(questionId?: string) {
+    learning.update((s) => ({
+      ...s,
+      openQuestion: questionId ?? null,
+      openTopic: null,
+    }));
+    setEnglishOpen(true);
+  }
   const gameRef = useRef(game);
   const [invalid, setInvalid] = useState(
     loaded.status === "invalid" ? loaded.message : "",
@@ -273,6 +287,18 @@ export default function App() {
         </div>
       )}
       <main id="main">
+        {learning.error && (
+          <div className="notice" role="status">
+            {learning.error}
+          </div>
+        )}
+        {idle && freeTimeAvailable && (
+          <div className="paper">
+            <button className="secondary" onClick={() => openEnglish()}>
+              英語ノートを開く
+            </button>
+          </div>
+        )}
         {notice && (
           <div className="notice" role="status">
             {notice}
@@ -386,6 +412,8 @@ export default function App() {
           />
         ) : game.activeBattle ? (
           <BattleScreen
+            learning={learning}
+            onEnglish={openEnglish}
             game={game}
             speed={speed}
             onSpeed={setSpeed}
@@ -751,6 +779,20 @@ export default function App() {
           }
         />
       )}
+      {englishOpen && game && (
+        <EnglishReview
+          game={game}
+          learning={learning}
+          onClose={() => {
+            learning.update((s) => ({
+              ...s,
+              openQuestion: null,
+              openTopic: null,
+            }));
+            setEnglishOpen(false);
+          }}
+        />
+      )}
       {confirmation && (
         <Modal labelledBy="confirm-title" onClose={() => setConfirmation(null)}>
           <p className="eyebrow">
@@ -796,7 +838,22 @@ export default function App() {
       )}
       {settings && game && (
         <Modal labelledBy="settings-title" onClose={() => setSettings(false)}>
-          <h2 id="settings-title">名前の設定</h2>
+          <h2 id="settings-title">設定</h2>
+          <label className="translation-setting">
+            <input
+              type="checkbox"
+              checked={learning.data.alwaysTranslate}
+              onChange={(event) =>
+                learning.update((s) => ({
+                  ...s,
+                  alwaysTranslate: event.target.checked,
+                  revealed: {},
+                }))
+              }
+            />{" "}
+            常に日本語訳を表示する
+          </label>
+          <h3>名前の設定</h3>
           {active ||
           game.activeBattle ||
           game.activeTourism ||

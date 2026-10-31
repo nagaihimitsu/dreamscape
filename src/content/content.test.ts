@@ -59,10 +59,13 @@ describe("content build acceptance", () => {
     );
     expect(Object.keys(generated).sort()).toEqual(
       [
+        "learning/english",
         ...dateData.dates.map((date) => date.storyId),
         ...battleData.battles.map((battle) => battle.storyId),
         ...tourismData.landmarks.map((landmark) => landmark.guideStoryId),
-        ...result.journey.episodes.flatMap((episode) => episode.epilogueStoryId ? [episode.epilogueStoryId] : []),
+        ...result.journey.episodes.flatMap((episode) =>
+          episode.epilogueStoryId ? [episode.epilogueStoryId] : [],
+        ),
       ].sort(),
     );
   });

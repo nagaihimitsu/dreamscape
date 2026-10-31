@@ -1,0 +1,603 @@
+{
+  "schemaVersion": 1,
+  "questions": {
+    "castello_changing_roles": {
+      "source": {
+        "questionEn": "Which description best fits the history of Castello Sforzesco?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A castle built as a museum, with no earlier military role."
+          },
+          {
+            "id": "B",
+            "textEn": "A fortress and court residence that later became home to museums."
+          },
+          {
+            "id": "C",
+            "textEn": "A castle used only by soldiers, with no place for court life."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "スフォルツェスコ城の歴史に最も合う説明はどれですか？",
+      "optionsJa": {
+        "A": "軍事上の役割を持たず、博物館として建てられた城。",
+        "B": "要塞と宮廷の住まいを経て、後に博物館が入った城。",
+        "C": "兵士だけが使い、宮廷生活の場がなかった城。"
+      }
+    },
+    "castello_painted_arbor": {
+      "source": {
+        "questionEn": "How does Leonardo's decoration change the room in the Sala delle Asse?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Painted branches and cords form a leafy shelter across the walls and ceiling."
+          },
+          {
+            "id": "B",
+            "textEn": "Real tree trunks replace the walls and hold up an open wooden roof."
+          },
+          {
+            "id": "C",
+            "textEn": "Painted windows show separate gardens while the rest of the ceiling stays plain."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "レオナルドの装飾はアッセの間の印象をどのように変えていますか？",
+      "optionsJa": {
+        "A": "描かれた枝と縄が、壁と天井に葉の茂る覆いを形作っている。",
+        "B": "本物の木の幹が壁の代わりとなり、むき出しの木の屋根を支えている。",
+        "C": "描かれた窓にそれぞれの庭が見え、天井の残りは無地のままになっている。"
+      }
+    },
+    "castello_art_and_court": {
+      "source": {
+        "questionEn": "What links the decorated Sala delle Asse to the political life of the Sforza court?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "It was a place where merchants displayed paintings for sale to the public."
+          },
+          {
+            "id": "B",
+            "textEn": "It was a place where soldiers stored weapons away from important visitors."
+          },
+          {
+            "id": "C",
+            "textEn": "It was a place where the rulers received important guests and ambassadors."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "装飾されたアッセの間は、スフォルツァ家の宮廷の政治生活とどのように関わっていましたか？",
+      "optionsJa": {
+        "A": "商人が一般向けに販売する絵を展示する場所だった。",
+        "B": "兵士が重要な客から離して武器を保管する場所だった。",
+        "C": "支配者たちが重要な客や大使を迎える場所だった。"
+      }
+    },
+    "duomo_candoglia_marble": {
+      "source": {
+        "questionEn": "Which stone gives much of Milan Cathedral its pale, pink-veined surface?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "White Carrara marble from the quarries in Tuscany."
+          },
+          {
+            "id": "B",
+            "textEn": "Local sandstone covered with a pale pink plaster."
+          },
+          {
+            "id": "C",
+            "textEn": "Candoglia marble from the quarries in Piedmont."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ミラノ大聖堂の表面の多くに、淡い色と桃色の筋を与えている石はどれですか？",
+      "optionsJa": {
+        "A": "トスカーナの採石場で採れる白いカッラーラ大理石。",
+        "B": "淡い桃色の漆喰で覆った地元の砂岩。",
+        "C": "ピエモンテの採石場で採れるカンドーリア大理石。"
+      }
+    },
+    "duomo_water_transport": {
+      "source": {
+        "questionEn": "How did heavy marble blocks historically travel most of the way from Candoglia to Milan?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "By boat, using a lake, rivers and canals."
+          },
+          {
+            "id": "B",
+            "textEn": "By wagon, following mountain roads all the way."
+          },
+          {
+            "id": "C",
+            "textEn": "By sea, reaching a harbour beside the cathedral."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "重い大理石の塊は昔、カンドーリアからミラノまでの道のりの大半をどのように運ばれましたか？",
+      "optionsJa": {
+        "A": "湖や川、運河を使い、船で運ばれた。",
+        "B": "ずっと山道を通り、荷車で運ばれた。",
+        "C": "海路で、大聖堂のそばの港まで運ばれた。"
+      }
+    },
+    "duomo_statue_copies": {
+      "source": {
+        "questionEn": "How did conservators protect the damaged St George statue while keeping the spire’s appearance?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "They repaired the original outside and moved a copy indoors."
+          },
+          {
+            "id": "B",
+            "textEn": "They kept the restored original indoors and put a copy outside."
+          },
+          {
+            "id": "C",
+            "textEn": "They rebuilt the original from new stone and displayed its fragments."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "保存担当者は尖塔の外観を保ちながら、損傷した聖ゲオルギウス像をどのように守りましたか？",
+      "optionsJa": {
+        "A": "屋外で元の像を修復し、複製を屋内に移した。",
+        "B": "修復した元の像を屋内に保管し、複製を屋外に置いた。",
+        "C": "元の像を新しい石で作り直し、その破片を展示した。"
+      }
+    },
+    "galleria_bull_city": {
+      "source": {
+        "questionEn": "Which city does the bull in the Galleria floor mosaic represent?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Milan."
+          },
+          {
+            "id": "B",
+            "textEn": "Florence."
+          },
+          {
+            "id": "C",
+            "textEn": "Turin."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ガッレリアの床のモザイクにある雄牛は、どの都市を表していますか？",
+      "optionsJa": {
+        "A": "ミラノ。",
+        "B": "フィレンツェ。",
+        "C": "トリノ。"
+      }
+    },
+    "galleria_roof_materials": {
+      "source": {
+        "questionEn": "Which materials form the frame and covering of the Galleria roof?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "An iron frame with a covering of glass panels."
+          },
+          {
+            "id": "B",
+            "textEn": "A timber frame with a covering of glass panels."
+          },
+          {
+            "id": "C",
+            "textEn": "A stone frame with a covering of wooden panels."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "ガッレリアの屋根の骨組みと覆いには、どの材料が使われていますか？",
+      "optionsJa": {
+        "A": "鉄の骨組みとガラス板の覆い。",
+        "B": "木材の骨組みとガラス板の覆い。",
+        "C": "石の骨組みと木の板の覆い。"
+      }
+    },
+    "galleria_city_passage": {
+      "source": {
+        "questionEn": "Which description best matches the Galleria and its role in the city?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A covered court with shops, entered and left through one main gate."
+          },
+          {
+            "id": "B",
+            "textEn": "A covered link between two squares, with shops and cafés along it."
+          },
+          {
+            "id": "C",
+            "textEn": "A covered market with stalls, set apart from the main city streets."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "ガッレリアと都市でのその役割に最も合う説明はどれですか？",
+      "optionsJa": {
+        "A": "店のある屋根付きの中庭で、一つの主な門から出入りする。",
+        "B": "二つの広場を結ぶ屋根付き通路で、沿道に店やカフェがある。",
+        "C": "露店のある屋根付き市場で、街の主要な通りから離れている。"
+      }
+    },
+    "last_supper_c_apostle_groups": {
+      "source": {
+        "questionEn": "How are the twelve apostles arranged around Christ?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "They form two groups of six, with no smaller groups."
+          },
+          {
+            "id": "B",
+            "textEn": "They form four groups of three, two groups on each side."
+          },
+          {
+            "id": "C",
+            "textEn": "They form three groups of four, with Christ inside one group."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "十二使徒はキリストの周りにどのように配置されていますか？",
+      "optionsJa": {
+        "A": "六人ずつ二つの集団で、さらに小さい集団はない。",
+        "B": "三人ずつ四つの集団で、左右に二組ずついる。",
+        "C": "四人ずつ三つの集団で、キリストはその一組に含まれる。"
+      }
+    },
+    "last_supper_c_room_extension": {
+      "source": {
+        "questionEn": "What effect does the painted room create for people in the refectory?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "It makes the scene look like a small picture inside a painted frame."
+          },
+          {
+            "id": "B",
+            "textEn": "It makes the scene look separate from the real room around them."
+          },
+          {
+            "id": "C",
+            "textEn": "It makes the scene seem to continue the real room around them."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "描かれた部屋は、食堂にいる人にどのような効果を生みますか？",
+      "optionsJa": {
+        "A": "場面が、描かれた額の中の小さな絵に見える。",
+        "B": "場面が、周囲の実際の部屋から切り離されて見える。",
+        "C": "場面が、周囲の実際の部屋の続きをなしているように見える。"
+      }
+    },
+    "last_supper_c_shared_focus": {
+      "source": {
+        "questionEn": "Which conclusion about the composition is best supported by the two pieces of evidence?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Both can draw attention to Christ, though they work in different ways."
+          },
+          {
+            "id": "B",
+            "textEn": "The groups create four equal centers, so the lines cannot guide the eye."
+          },
+          {
+            "id": "C",
+            "textEn": "The lines prove that Leonardo wanted viewers to ignore every apostle."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "構図について、二つの証拠から最もよく裏付けられる結論はどれですか？",
+      "optionsJa": {
+        "A": "どちらも異なる方法でキリストに注意を向けさせることがある。",
+        "B": "集団が四つの等しい中心を作るので、線が視線を導くことはできない。",
+        "C": "線は、レオナルドがすべての使徒を無視してほしかったことを証明する。"
+      }
+    },
+    "milano_finale_materials": {
+      "source": {
+        "questionEn": "Which pair correctly matches the Duomo and the Galleria roof?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The Duomo uses Carrara marble; the Galleria roof uses iron and glass."
+          },
+          {
+            "id": "B",
+            "textEn": "The Duomo uses Candoglia marble; the Galleria roof uses wood and glass."
+          },
+          {
+            "id": "C",
+            "textEn": "The Duomo uses Candoglia marble; the Galleria roof uses iron and glass."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ドゥオモとガッレリアの屋根を正しく組み合わせているのはどれですか？",
+      "optionsJa": {
+        "A": "ドゥオモはカッラーラ大理石、ガッレリアの屋根は鉄とガラス。",
+        "B": "ドゥオモはカンドーリア大理石、ガッレリアの屋根は木とガラス。",
+        "C": "ドゥオモはカンドーリア大理石、ガッレリアの屋根は鉄とガラス。"
+      }
+    },
+    "milano_finale_routes": {
+      "source": {
+        "questionEn": "Which pair describes the use of the old marble route and the Galleria passage?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Waterways brought stone to Milan; the passage links the Duomo and Scala squares."
+          },
+          {
+            "id": "B",
+            "textEn": "Waterways brought stone to Milan; the passage links the castle area and Scala square."
+          },
+          {
+            "id": "C",
+            "textEn": "Carts alone brought stone to Milan; the passage links the Duomo and Scala squares."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "かつての大理石の運搬路とガッレリアの通路の用途を正しく組み合わせたものはどれですか？",
+      "optionsJa": {
+        "A": "水路が石をミラノに運び、通路はドゥオモ広場とスカラ広場を結ぶ。",
+        "B": "水路が石をミラノに運び、通路は城の周辺とスカラ広場を結ぶ。",
+        "C": "荷車だけが石をミラノに運び、通路はドゥオモ広場とスカラ広場を結ぶ。"
+      }
+    },
+    "milano_finale_painted_spaces": {
+      "source": {
+        "questionEn": "What effect can the paintings in the Last Supper refectory and the Sala delle Asse both create?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "They copy the real rooms without changing the sense of space."
+          },
+          {
+            "id": "B",
+            "textEn": "They extend the sense of space through images on real surfaces."
+          },
+          {
+            "id": "C",
+            "textEn": "They separate the painted scenes from the rooms around them."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "『最後の晩餐』の食堂とアッセの間の絵は、どちらもどんな効果を生み出すことがありますか？",
+      "optionsJa": {
+        "A": "空間の感じ方を変えず、実際の部屋をそのまま写す。",
+        "B": "実際の表面に描かれた像によって、空間の広がりを感じさせる。",
+        "C": "描かれた場面を、周囲の部屋から切り離して見せる。"
+      }
+    },
+    "milano_finale_different_care": {
+      "source": {
+        "questionEn": "Which pair matches how the original St. George statue and The Last Supper are protected today?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The statue stays on the spire; the air around the painting is controlled."
+          },
+          {
+            "id": "B",
+            "textEn": "The statue stays in the museum; the wall painting is regularly repainted."
+          },
+          {
+            "id": "C",
+            "textEn": "The statue stays in the museum; the air around the painting is controlled."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "元の聖ゲオルギウス像と『最後の晩餐』が現在どのように守られているか、正しい組み合わせはどれですか？",
+      "optionsJa": {
+        "A": "像は尖塔に置かれ、絵の周囲の空気は管理されている。",
+        "B": "像は博物館に置かれ、壁画は定期的に描き直されている。",
+        "C": "像は博物館に置かれ、絵の周囲の空気は管理されている。"
+      }
+    },
+    "milano_finale_living_city": {
+      "source": {
+        "questionEn": "Which comparison of the Castello and the Galleria today is supported by their uses?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The castle houses public museums; the Galleria is a display-only gallery without shops."
+          },
+          {
+            "id": "B",
+            "textEn": "The castle houses public museums; the Galleria is a passage with shops and cafes."
+          },
+          {
+            "id": "C",
+            "textEn": "The castle houses a private court; the Galleria is a passage with shops and cafes."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "現在の城とガッレリアについて、その用途に照らして裏付けられる比較はどれですか？",
+      "optionsJa": {
+        "A": "城には一般公開の博物館があり、ガッレリアは店のない展示専用の画廊である。",
+        "B": "城には一般公開の博物館があり、ガッレリアは店やカフェのある通路である。",
+        "C": "城には私的な宮廷があり、ガッレリアは店やカフェのある通路である。"
+      }
+    },
+    "last_supper_central_triangle": {
+      "source": {
+        "questionEn": "Which description matches Christ's position and shape in The Last Supper?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "He sits in the center, with both hands raised."
+          },
+          {
+            "id": "B",
+            "textEn": "He sits in the center, forming a calm triangle."
+          },
+          {
+            "id": "C",
+            "textEn": "He leans across the table, joining the others' movements."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "『最後の晩餐』のキリストの位置と形に合う説明はどれですか？",
+      "optionsJa": {
+        "A": "中央に座り、両手を上げている。",
+        "B": "中央に座り、落ち着いた三角形を形作っている。",
+        "C": "テーブルの向こうに身を乗り出し、ほかの人々の動きに加わっている。"
+      }
+    },
+    "last_supper_vanishing_point": {
+      "source": {
+        "questionEn": "In The Last Supper, where do the room's perspective lines meet?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "At the center of the window behind Christ."
+          },
+          {
+            "id": "B",
+            "textEn": "At the center of the table in front of Christ."
+          },
+          {
+            "id": "C",
+            "textEn": "Near Christ's right temple, beside his eye."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "『最後の晩餐』では、部屋の遠近法の線はどこに集まっていますか？",
+      "optionsJa": {
+        "A": "キリストの後ろの窓の中央。",
+        "B": "キリストの前のテーブルの中央。",
+        "C": "キリストの右のこめかみ付近、目のそば。"
+      }
+    },
+    "last_supper_dry_tradeoff": {
+      "source": {
+        "questionEn": "Leonardo painted The Last Supper on dry plaster. Compared with true fresco on wet plaster, what was the main trade-off?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "He could change details slowly, but the paint was less secure."
+          },
+          {
+            "id": "B",
+            "textEn": "He could finish more quickly, but had less time to make changes."
+          },
+          {
+            "id": "C",
+            "textEn": "He could make the paint stronger, but had fewer colors to use."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "レオナルドは乾いた漆喰の上に『最後の晩餐』を描きました。濡れた漆喰に描く本来のフレスコ画と比べ、主な利点と不利な点の組み合わせは何でしたか？",
+      "optionsJa": {
+        "A": "細部を時間をかけて変更できたが、絵の具が定着しにくかった。",
+        "B": "より速く仕上げられたが、変更する時間が少なかった。",
+        "C": "絵の具をより強く定着させられたが、使える色が少なかった。"
+      }
+    },
+    "last_supper_b_slow_revision": {
+      "source": {
+        "questionEn": "Why was painting on dry plaster useful to Leonardo?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "He could work slowly and change details later."
+          },
+          {
+            "id": "B",
+            "textEn": "He could make the paint part of the wet wall."
+          },
+          {
+            "id": "C",
+            "textEn": "He could finish each section before the plaster dried."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "乾いた漆喰に描くことは、レオナルドにとってなぜ役立ちましたか？",
+      "optionsJa": {
+        "A": "ゆっくり作業し、後から細部を変更できたから。",
+        "B": "絵の具を濡れた壁の一部にできたから。",
+        "C": "漆喰が乾く前にそれぞれの部分を仕上げられたから。"
+      }
+    },
+    "last_supper_b_doorway_counterexample": {
+      "source": {
+        "questionEn": "Which reason best challenges the claim that Leonardo's technique caused ALL the damage?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The doorway proves that the paint never became fragile."
+          },
+          {
+            "id": "B",
+            "textEn": "The doorway shows that Leonardo planned to leave a gap."
+          },
+          {
+            "id": "C",
+            "textEn": "The doorway shows damage caused by a later change to the building."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "損傷のすべてがレオナルドの技法によるという主張に最も反論できる理由はどれですか？",
+      "optionsJa": {
+        "A": "出入口は、絵の具が決して傷みやすくならなかったことを示している。",
+        "B": "出入口は、レオナルドが隙間を残す予定だったことを示している。",
+        "C": "出入口は、後の建物の改変による損傷を示している。"
+      }
+    },
+    "last_supper_b_preventive_care": {
+      "source": {
+        "questionEn": "Why does the museum filter the air and limit visitor numbers?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "To keep the painting's surface as hot and dry as possible."
+          },
+          {
+            "id": "B",
+            "textEn": "To reduce moisture and particles that could harm the painting."
+          },
+          {
+            "id": "C",
+            "textEn": "To let fresh layers of paint dry quickly between visits."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "美術館はなぜ空気をろ過し、入場者数を制限しているのですか？",
+      "optionsJa": {
+        "A": "絵の表面をできるだけ高温で乾いた状態に保つため。",
+        "B": "絵に害を与えるおそれのある湿気や粒子を減らすため。",
+        "C": "来館の合間に新しい絵の具の層を速く乾かすため。"
+      }
+    }
+  }
+}

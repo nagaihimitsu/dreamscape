@@ -64,6 +64,22 @@ describe("content authoring workflow", () => {
       fixture,
       "content/quizzes/authoring_practice_B1.json",
     );
+    const learningFile = path.join(
+      fixture,
+      "content/learning/translations.json",
+    );
+    const learning = JSON.parse(await readFile(learningFile, "utf8"));
+    direct.questions.forEach((question, index) => {
+      learning.questions[question.id] = {
+        ...learning.questions[template.questions[index].id],
+        source: {
+          questionEn: question.questionEn,
+          options: question.options,
+          correctOptionId: question.correctOptionId,
+        },
+      };
+    });
+    await writeFile(learningFile, JSON.stringify(learning));
     for (const authoredQuiz of [direct, transcribed]) {
       await writeFile(quizFile, `${JSON.stringify(authoredQuiz, null, 2)}\n`);
       const result = await buildContent(fixture);
@@ -91,6 +107,16 @@ describe("content authoring workflow", () => {
       path.join(fixture, "content/quizzes/duomo_B1.json"),
       `${JSON.stringify(quiz, null, 2)}\n`,
     );
+    await expect(buildContent(fixture, false)).rejects.toThrow(
+      "Translation source changed",
+    );
+    const learningFile = path.join(
+      fixture,
+      "content/learning/translations.json",
+    );
+    const learning = JSON.parse(await readFile(learningFile, "utf8"));
+    learning.questions[quiz.questions[0].id].source.questionEn = editedQuestion;
+    await writeFile(learningFile, JSON.stringify(learning));
     const result = await buildContent(fixture);
     const battle = result.battles.find(
       (item) => item.id === "milano_duomo_01",
