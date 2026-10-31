@@ -94,6 +94,7 @@ export const presentationSchema = z
           nameJa: text,
           captionJa: text,
           color: z.string().regex(/^#[0-9a-fA-F]{6}$/),
+          imagePath: z.string().regex(/^assets\/(?!.*(?:^|\/)\.\.(?:\/|$))[a-zA-Z0-9_./-]+\.(?:png|webp|svg)$/).nullable().optional(),
         })
         .strict(),
     ),

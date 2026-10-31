@@ -42,6 +42,13 @@ async function changeDates(change: (data: typeof dateData) => void) {
 }
 
 describe("content build acceptance", () => {
+  it("rejects a registered but missing background image", async () => {
+    const file = path.join(fixture, "content/romance/presentation.json");
+    const data = JSON.parse(await readFile(file, "utf8"));
+    data.backgrounds.milano_cafe.imagePath = "assets/missing-background.png";
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).rejects.toThrow("Missing background image: milano_cafe/assets/missing-background.png");
+  });
   it("rejects an undefined character ID and a registered but missing image", async () => {
     const file = path.join(fixture, "content/presentation/characters.json");
     const data = JSON.parse(await readFile(file, "utf8"));

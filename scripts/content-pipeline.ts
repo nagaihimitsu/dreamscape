@@ -315,6 +315,12 @@ export async function buildContent(root: string, writeOutput = true) {
     characterCatalogSchema,
     path.join(content, "presentation/characters.json"),
   );
+  for (const [backgroundId, background] of Object.entries(presentation.backgrounds)) {
+    if (background.imagePath) {
+      try { await access(path.join(root, "public", background.imagePath)); }
+      catch { throw new Error(`Missing background image: ${backgroundId}/${background.imagePath}`); }
+    }
+  }
   for (const battleId of Object.keys(characters.battleCharacters ?? {})) {
     if (!battles.some((battle) => battle.id === battleId))
       throw new Error(`Unknown battle ID in character assignment: ${battleId}`);

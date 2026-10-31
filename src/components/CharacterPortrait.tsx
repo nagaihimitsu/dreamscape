@@ -45,6 +45,7 @@ function CharacterImage({ path, color, fallback }: { path: string | null; color:
     <path d="M42 350v-81c0-48 30-73 78-73s78 25 78 73v81" fill={color} />
     <path d="M92 187h56v34H92z" fill={color} />
     <ellipse cx="120" cy="130" rx="48" ry="61" fill={color} />
+    <path d="M102 127v4m36-4v4m-25 20q7 4 14 0" fill="none" stroke="#f3eee3" opacity=".8" strokeWidth="3" strokeLinecap="round" />
     <path d="M86 218l34 31 34-31" fill="none" stroke="#f3eee3" opacity=".4" strokeWidth="3" />
   </svg>;
 }

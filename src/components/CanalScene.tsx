@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { presentation } from "../content";
 /** Original decorative illustration; all game information is also available as text. */
 export function CanalScene({
@@ -98,9 +99,18 @@ export function CanalScene({
         />
         <path fill="#ede2c8" d="m563 410 30-13 28 13-29 14z" />
       </svg>
+      {backdrop?.imagePath && <BackgroundArtwork key={backdrop.imagePath} path={backdrop.imagePath} />}
       <span className="scene-stamp">
         {presentation.backgrounds[backgroundId]?.captionJa}
       </span>
     </div>
   );
+}
+
+/** Decorative backgrounds are optional; the original illustration remains the fallback. */
+function BackgroundArtwork({ path }: { path: string }) {
+  const [failed, setFailed] = useState(false);
+  if (failed) return null;
+  return <img src={`${import.meta.env.BASE_URL}${path}`} alt="" onError={() => setFailed(true)}
+    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />;
 }
