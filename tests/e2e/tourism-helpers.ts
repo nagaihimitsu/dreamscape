@@ -51,9 +51,6 @@ export async function openObservationList(page: Page) {
   const open = page.getByRole("button", { name: "発見ポイント・資料を見る", exact: true });
   if (await open.isVisible()) {
     if (await notes.getAttribute("data-open") !== "true") await open.click();
-    if (await notes.getAttribute("data-view") === "detail") {
-      await notes.getByRole("button", { name: "一覧に戻る", exact: true }).click();
-    }
   }
 }
 

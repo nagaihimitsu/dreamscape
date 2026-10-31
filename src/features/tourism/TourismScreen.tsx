@@ -66,8 +66,8 @@ export function TourismScreen({
     }));
   const documents = clues.filter((clue) => clue.kind === "document");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [detailOpen, setDetailOpen] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false);
-  const [notesView, setNotesView] = useState<"list" | "detail">("list");
   const [compactObservation, setCompactObservation] = useState(
     () => window.matchMedia(COMPACT_OBSERVATION).matches,
   );
@@ -120,12 +120,8 @@ export function TourismScreen({
 
   useEffect(() => {
     if (!focusRequest || !shouldScrollToSelection.current || compactObservation) return;
-    const target =
-      selected?.kind === "document"
-        ? "discovery-detail"
-        : "observation-viewport";
     document
-      .querySelector(`[data-testid="${target}"]`)
+      .querySelector('[data-testid="observation-viewport"]')
       ?.scrollIntoView({ block: "start" });
   }, [focusRequest, selected?.kind, compactObservation]);
 
@@ -135,7 +131,7 @@ export function TourismScreen({
 
   useEffect(() => {
     if (notesOpen && notesRef.current) notesRef.current.scrollTop = 0;
-  }, [notesOpen, notesView, selectedId]);
+  }, [notesOpen, selectedId]);
 
   useEffect(() => {
     if (!notesOpen || !compactObservation) return;
@@ -150,11 +146,20 @@ export function TourismScreen({
     };
   }, [notesOpen, compactObservation]);
 
-  function openNotes(view: "list" | "detail") {
+  useEffect(() => {
+    if (!detailOpen || notesOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && !document.querySelector("dialog[open]"))
+        setDetailOpen(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [detailOpen, notesOpen]);
+
+  function openNotes() {
     if (!notesOpen) {
       previousFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     }
-    setNotesView(view);
     setNotesOpen(true);
   }
 
@@ -163,7 +168,8 @@ export function TourismScreen({
       // A marker is already in view; centering it must not also jump the page.
       shouldScrollToSelection.current = movePage;
       setSelectedId(id);
-      openNotes("detail");
+      setNotesOpen(false);
+      setDetailOpen(true);
       setFocusRequest((value) => value + 1);
     }
   }
@@ -304,24 +310,28 @@ export function TourismScreen({
             inert={notesCoverObservation}
             onSelect={(id) => selectClue(id, false)}
           />
-          <button className="observation-notes-open secondary" inert={notesCoverObservation} onClick={() => openNotes("list")}>
+          {selected && detailOpen && (
+            <article
+              className="discovery-detail observation-detail"
+              data-testid="discovery-detail"
+              aria-live="polite"
+              inert={notesCoverObservation}
+            >
+              <span className="sr-only">手がかり帳に記録しました。</span>
+              <ClueDetails clue={selected} action={
+                <button type="button" className="text-button" onClick={() => setDetailOpen(false)}>
+                  説明を閉じる
+                </button>
+              } />
+            </article>
+          )}
+          <button className="observation-notes-open secondary" inert={notesCoverObservation} onClick={openNotes}>
             発見ポイント・資料を見る
           </button>
-          <div ref={notesRef} className="observation-notes" role="region" aria-label="観察ポイントと資料" data-open={notesOpen} data-view={notesView}>
+          <div ref={notesRef} className="observation-notes" role="region" aria-label="観察ポイントと資料" data-open={notesOpen}>
             <div className="observation-notes-header">
-              <button className="text-button" onClick={() => setNotesView("list")} disabled={notesView === "list"}>一覧に戻る</button>
               <button ref={notesCloseRef} className="text-button" onClick={() => setNotesOpen(false)}>観察に戻る</button>
             </div>
-            {selected && (
-              <article
-                className="discovery-detail"
-                data-testid="discovery-detail"
-                aria-live="polite"
-              >
-                <p className="recorded-label">手がかり帳に記録しました</p>
-                <ClueDetails clue={selected} />
-              </article>
-            )}
             <p className="fine-print observation-list-help">
               印をタップすると、その場所に近づきます。下の一覧からも選べます。
             </p>

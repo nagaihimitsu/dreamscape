@@ -168,12 +168,6 @@ export async function choose(
   const text = state.activeDate!.frame.choices[index].text;
   await expect(page.locator(".choice").nth(index)).toContainText(text);
   await page.locator(".choice").nth(index).click();
-  await page
-    .getByRole("button", { name: "この言葉を伝える", exact: true })
-    .evaluate((button: HTMLButtonElement) => {
-      button.click();
-      button.click();
-    });
   await expect
     .poll(async () => (await saved(page)).activeDate?.choiceCount)
     .toBe(state.activeDate!.choiceCount + 1);

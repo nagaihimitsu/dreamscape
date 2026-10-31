@@ -150,6 +150,16 @@
   margin-bottom: 13px;
   border-bottom: 1px solid #d9d9c7;
 }
+.observation-detail .clue-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.observation-detail .clue-heading button {
+  flex: none;
+  min-height: 44px;
+}
 .clue-kind {
   color: var(--gold);
   font-size: 10px;
@@ -400,6 +410,23 @@
   display: none;
 }
 
+@media (min-width: 601px) {
+  .tourism-observation:has(.observation-detail) {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr);
+    align-items: start;
+    gap: 0 16px;
+  }
+  .tourism-observation:has(.observation-detail) .observation-notes {
+    grid-column: 1 / -1;
+  }
+  .tourism-observation .observation-detail {
+    margin-top: 0;
+    max-height: min(65vh, 600px);
+    overflow-y: auto;
+  }
+}
+
 /* Observation is an interactive game screen, not a long article on phones. */
 @media (max-width: 600px) and (min-height: 500px) {
   .mobile-observation-active .tourism-screen:not(.guide-active) {
@@ -414,6 +441,9 @@
   .mobile-observation-active .tourism-screen:not(.guide-active) > .tourism-heading .eyebrow,
   .mobile-observation-active .tourism-screen:not(.guide-active) > .tourism-heading .landmark-english,
   .mobile-observation-active .tourism-screen:not(.guide-active) > .tourism-actions .fine-print {
+    display: none;
+  }
+  .mobile-observation-active .tourism-screen:has(.observation-detail) > .tourism-heading .guide-reward-note {
     display: none;
   }
   .mobile-observation-active .tourism-screen:not(.guide-active) > .tourism-toolbar {
@@ -461,6 +491,50 @@
     font-size: 11px;
     line-height: 1.35;
   }
+  /* The image and the explanation have separate space: neither covers the
+     selected point, and the picture stays draggable while the clue is open. */
+  .mobile-observation-active .tourism-observation:has(.observation-detail) .observation-help {
+    display: none;
+  }
+  .mobile-observation-active .observation-viewer:has(+ .observation-detail) .observation-viewport {
+    height: calc(100% - 48px);
+  }
+  .mobile-observation-active .observation-viewer:has(+ .observation-detail) .observation-controls {
+    padding-block: 0;
+  }
+  .mobile-observation-active .observation-detail {
+    flex: 0 1 auto;
+    min-height: 0;
+    max-height: min(28dvh, 180px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    margin: 0 0 4px;
+    padding: 0 10px 8px;
+  }
+  .mobile-observation-active .observation-detail .clue-heading {
+    position: sticky;
+    z-index: 1;
+    top: 0;
+    background: #f0eee2;
+  }
+  .mobile-observation-active .observation-detail .clue-kind {
+    margin: 0;
+  }
+  .mobile-observation-active .observation-detail h3 {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+  .mobile-observation-active .observation-detail .claim-types {
+    margin-top: 3px;
+  }
+  .mobile-observation-active .observation-detail .clue-description {
+    margin-top: 5px;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .mobile-observation-active .observation-detail .clue-sources {
+    margin-top: 3px;
+  }
   .mobile-observation-active .observation-notes-open {
     display: block;
     flex: none;
@@ -488,15 +562,9 @@
     z-index: 1;
     top: 0;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: 8px;
     background: var(--paper);
-  }
-  .mobile-observation-active .observation-notes[data-view="list"] .observation-notes-header {
-    justify-content: flex-end;
-  }
-  .mobile-observation-active .observation-notes-header button:disabled {
-    display: none;
   }
   .mobile-observation-active .observation-list-help {
     display: none;
@@ -532,12 +600,6 @@
   .mobile-observation-active .replay-guide {
     margin: 8px 0 0;
   }
-  .mobile-observation-active .observation-notes[data-view="list"] .discovery-detail,
-  .mobile-observation-active .observation-notes[data-view="detail"] .observation-list-help,
-  .mobile-observation-active .observation-notes[data-view="detail"] .discovery-list,
-  .mobile-observation-active .observation-notes[data-view="detail"] .document-cards,
-  .mobile-observation-active .observation-notes[data-view="detail"] .replay-guide,
-  .mobile-observation-active .observation-notes[data-view="detail"] .tourism-credits { display: none; }
   .mobile-observation-active .observation-notes .tourism-credits { margin: 4px 0 0; }
 }
 

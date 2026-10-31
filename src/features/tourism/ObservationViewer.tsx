@@ -36,6 +36,9 @@ const midpoint = (a: Point, b: Point): Point => ({
   x: (a.x + b.x) / 2,
   y: (a.y + b.y) / 2,
 });
+// Keep the surrounding artwork visible when a clue is selected. Players can
+// still zoom closer themselves without the viewer changing their gesture.
+const CLUE_FOCUS_SCALE = 1.2;
 
 export function ObservationViewer({
   asset,
@@ -84,7 +87,7 @@ export function ObservationViewer({
   useEffect(() => {
     const point = pointsRef.current.find((item) => item.id === selectedId);
     if (point)
-      updateView(focusRegion(point.region, asset, viewportSize.current));
+      updateView(focusRegion(point.region, asset, viewportSize.current, CLUE_FOCUS_SCALE));
   }, [selectedId, focusRequest, asset.path, viewport.width, viewport.height]);
 
   function localPoint(event: PointerEvent<HTMLDivElement>): Point {
@@ -152,7 +155,7 @@ export function ObservationViewer({
   function selectPoint(id: string) {
     const point = pointsRef.current.find((item) => item.id === id);
     if (!point) return;
-    updateView(focusRegion(point.region, asset, viewportSize.current));
+    updateView(focusRegion(point.region, asset, viewportSize.current, CLUE_FOCUS_SCALE));
     onSelect(id);
   }
 
@@ -273,7 +276,7 @@ export function ObservationViewer({
                 onFocus={(event) => {
                   if (event.currentTarget.matches(":focus-visible")) {
                     updateView(
-                      focusRegion(point.region, asset, viewportSize.current),
+                      focusRegion(point.region, asset, viewportSize.current, CLUE_FOCUS_SCALE),
                     );
                   }
                 }}

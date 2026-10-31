@@ -3,6 +3,8 @@ import { useRef, useState } from "react";
 const key = "dreamscape.presentation.v1";
 interface Preferences {
   schemaVersion: 1;
+  // Retained in stored v1 settings so existing and older tabs can still read
+  // and safely update them. Dialogue choices now always apply immediately.
   confirmChoices: boolean;
   reduceMotion: boolean;
 }

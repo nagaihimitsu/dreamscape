@@ -123,7 +123,7 @@ test("observation list exposes points, documents and return actions together", a
   }
   await expectOnScreen(page.getByTestId("guide-replay"));
   await expectOnScreen(panel.locator(".tourism-credits summary"));
-  await expect(panel.getByRole("button", { name: "一覧に戻る", exact: true })).toBeHidden();
+  await expect(panel.getByRole("button", { name: "一覧に戻る", exact: true })).toHaveCount(0);
   await page.getByTestId("discovery-last_supper_technique_card").click();
   await expect(page.getByTestId("discovery-detail")).toBeVisible();
   expect((await saved(page)).discoveredClueIds).toContain("last_supper_technique_card");
@@ -147,7 +147,7 @@ test("display settings are separate touchable rows and persist", async ({ page }
   await page.getByRole("button", { name: "設定", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "設定" });
   const rows = dialog.locator(".translation-setting");
-  await expect(rows).toHaveCount(3);
+  await expect(rows).toHaveCount(2);
   let previousBottom = 0;
   for (const row of await rows.all()) {
     await expectOnScreen(row);

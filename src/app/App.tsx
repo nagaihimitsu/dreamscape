@@ -84,9 +84,7 @@ const storage = {
     window.localStorage.setItem(key, value),
   removeItem: (key: string) => window.localStorage.removeItem(key),
 };
-type Confirmation =
-  | { kind: "date"; id: string }
-  | { kind: "choice"; index: number; text: string; revision: number };
+type Confirmation = { kind: "date"; id: string };
 
 export default function App() {
   const [loaded] = useState(() => loadGame(storage));
@@ -555,15 +553,10 @@ export default function App() {
             date={currentDate}
             speed={speed}
             onSpeed={setSpeed}
-            confirmChoices={displaySettings.value.confirmChoices}
             reduceMotion={displaySettings.value.reduceMotion}
-            onSelect={(index, text, revision) => {
-              if (displaySettings.value.confirmChoices) {
-                setConfirmation({ kind: "choice", index, text, revision });
-                return true;
-              }
-              return commit((state) => chooseDate(state, index, revision));
-            }}
+            onSelect={(index, revision) =>
+              commit((state) => chooseDate(state, index, revision))
+            }
             onAdvance={() => {
               commit((state) => advanceDate(state, game.revision));
             }}
@@ -752,20 +745,12 @@ export default function App() {
       )}
       {confirmation && (
         <Modal labelledBy="confirm-title" onClose={() => setConfirmation(null)}>
-          <p className="eyebrow">
-            {confirmation.kind === "date" ? "デートのお誘い" : "言葉を選ぶ"}
-          </p>
-          <h2 id="confirm-title">
-            {confirmation.kind === "date"
-              ? `${selectedDate?.titleJa}を始めますか？`
-              : "この言葉を伝えますか？"}
-          </h2>
+          <p className="eyebrow">デートのお誘い</p>
+          <h2 id="confirm-title">{selectedDate?.titleJa}を始めますか？</h2>
           <p className="confirm-text">
-            {confirmation.kind === "date"
-              ? selectedDate?.apCost
-                ? `${selectedDate.apCost}APを使って、デートを始めます。`
-                : "APは使いません。ふたりの時間を始めます。"
-              : confirmation.text}
+            {selectedDate?.apCost
+              ? `${selectedDate.apCost}APを使って、デートを始めます。`
+              : "APは使いません。ふたりの時間を始めます。"}
           </p>
           <button
             autoFocus
@@ -773,20 +758,11 @@ export default function App() {
             onClick={() => {
               const selected = confirmation;
               setConfirmation(null);
-              if (selected.kind === "date") {
-                commit((state) => startDate(state, selected.id));
-                setResult(false);
-              } else
-                commit((state) =>
-                  chooseDate(state, selected.index, selected.revision),
-                );
+              commit((state) => startDate(state, selected.id));
+              setResult(false);
             }}
           >
-            {confirmation.kind === "date"
-              ? selectedDate?.apCost
-                ? "APを使って始める"
-                : "この時間を過ごす"
-              : "この言葉を伝える"}
+            {selectedDate?.apCost ? "APを使って始める" : "この時間を過ごす"}
           </button>
           <button className="secondary" onClick={() => setConfirmation(null)}>
             選び直す
@@ -831,17 +807,6 @@ export default function App() {
       {settings && game && (
         <Modal labelledBy="settings-title" onClose={() => setSettings(false)}>
           <h2 id="settings-title">設定</h2>
-          <label className="translation-setting">
-            <input
-              type="checkbox"
-              checked={displaySettings.value.confirmChoices}
-              disabled={!!displaySettings.error}
-              onChange={(event) =>
-                displaySettings.update({ confirmChoices: event.target.checked })
-              }
-            />{" "}
-            選択肢を選ぶ前に確認する
-          </label>
           <label className="translation-setting">
             <input
               type="checkbox"

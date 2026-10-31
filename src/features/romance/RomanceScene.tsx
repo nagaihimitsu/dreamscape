@@ -18,7 +18,6 @@ export function RomanceScene({
   date,
   speed,
   onSpeed,
-  confirmChoices,
   reduceMotion,
   onSelect,
   onAdvance,
@@ -28,9 +27,8 @@ export function RomanceScene({
   date: DateDefinition | undefined;
   speed: number;
   onSpeed: (speed: number) => void;
-  confirmChoices: boolean;
   reduceMotion: boolean;
-  onSelect: (index: number, text: string, revision: number) => boolean;
+  onSelect: (index: number, revision: number) => boolean;
   onAdvance: () => void;
   onFinish: () => void;
 }) {
@@ -59,7 +57,7 @@ export function RomanceScene({
   } | null>(null);
   const [exitingChoice, setExitingChoice] = useState<string | null>(null);
   // This is presentation only: the saved frame has already advanced. A
-  // canceled confirmation or failed save never changes revision and cannot
+  // failed save never changes revision and cannot
   // trigger it; a reload has no pending visual state to replay.
   useLayoutEffect(() => {
     const choice = pendingChoice.current;
@@ -188,11 +186,7 @@ export function RomanceScene({
               <div className="choices">
                 <p className="choice-hint">
                   あなたは、どう返す？
-                  <span>
-                    {confirmChoices
-                      ? "選んでから確定できます"
-                      : "返答を選んでください"}
-                  </span>
+                  <span>返答を選んでください</span>
                 </p>
                 {frame.choices.map((choice, index) => (
                   <button
@@ -201,14 +195,14 @@ export function RomanceScene({
                     className="choice"
                     onClick={() => {
                       if (choiceLock.current || windowVisibility.hidden || dialogueObstructed()) return;
-                      if (!confirmChoices) choiceLock.current = true;
+                      choiceLock.current = true;
                       pendingChoice.current = {
                         revision: game.revision,
                         dateId: active.dateId,
                         choiceCount: active.choiceCount,
                         text: choice.text,
                       };
-                      if (!onSelect(choice.index, choice.text, game.revision)) {
+                      if (!onSelect(choice.index, game.revision)) {
                         choiceLock.current = false;
                         pendingChoice.current = null;
                       }

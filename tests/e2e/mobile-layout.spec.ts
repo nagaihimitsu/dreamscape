@@ -100,8 +100,11 @@ test("enlarged date text remains reachable in the scene's reading area", async (
   await lastChoice.evaluate((node) => node.scrollIntoView({ block: "nearest" }));
   await expectFullyInViewport(page, lastChoice);
   await expectDocumentFits(page);
+  const before = await saved(page);
   await lastChoice.click();
-  await expect(page.getByRole("dialog")).toContainText("この言葉を伝えますか？");
+  await expect.poll(async () => (await saved(page)).activeDate?.choiceCount)
+    .toBe(before.activeDate!.choiceCount + 1);
+  await expect(page.getByRole("dialog")).toHaveCount(0);
 });
 
 test("translations can be read and closed without moving the document or answering", async ({ page }) => {

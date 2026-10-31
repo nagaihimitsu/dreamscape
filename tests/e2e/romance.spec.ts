@@ -131,7 +131,7 @@ test("corrupted save is preserved until explicit backup and fresh start", async 
   expect((await saved(page)).ap).toBe(0);
 });
 
-test("pause, manual save/load and keyboard confirmation preserve the current line", async ({
+test("pause, manual save/load and keyboard choice preserve the current line", async ({
   page,
 }) => {
   await startNewGame(page);
@@ -147,19 +147,14 @@ test("pause, manual save/load and keyboard confirmation preserve the current lin
   await page.getByRole("button", { name: "セーブ", exact: true }).click();
   await page.getByRole("button", { name: "ロード", exact: true }).click();
   expect(await saved(page)).toEqual(before);
-  await advanceToChoiceOrEnd(page);
-  await page.locator(".choice").first().click();
-  await expect(page.getByRole("dialog")).toBeVisible();
-  await page.keyboard.press("Tab");
-  await page.keyboard.press("Tab");
-  expect(
-    await page.evaluate(() =>
-      Boolean(document.activeElement?.closest("dialog")),
-    ),
-  ).toBe(true);
-  await page.keyboard.press("Escape");
+  const choiceState = await advanceToChoiceOrEnd(page);
+  const firstChoice = page.locator(".choice").first();
+  await expect(firstChoice).toBeEnabled();
+  await firstChoice.focus();
+  await page.keyboard.press("Enter");
   await expect(page.getByRole("dialog")).toHaveCount(0);
-  expect((await saved(page)).activeDate!.choiceCount).toBe(0);
+  await expect.poll(async () => (await saved(page)).activeDate?.choiceCount)
+    .toBe(choiceState.activeDate!.choiceCount + 1);
 });
 
 test("an older tab cannot overwrite a date started in another tab", async ({

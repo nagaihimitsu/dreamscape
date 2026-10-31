@@ -43,7 +43,7 @@ for (const viewport of [{ width: 360, height: 640 }, { width: 390, height: 844 }
     await page.getByTestId("hotspot-last_supper_perspective").tap();
     await expect.poll(async () => (await saved(page)).discoveredClueIds.includes("last_supper_perspective")).toBe(true);
     await expectOnScreen(page, page.getByTestId("discovery-detail").locator("h3"));
-    await expectOnScreen(page, page.getByRole("button", { name: "観察に戻る", exact: true }));
+    await expectOnScreen(page, page.getByRole("button", { name: "説明を閉じる", exact: true }));
     expect(await page.evaluate(() => window.scrollY)).toBe(initialScroll);
     await page.screenshot({ path: testInfo.outputPath("observation-detail.png") });
     await page.reload();
@@ -63,7 +63,7 @@ test("observation documents are reachable and recorded on a small screen", async
   await document.tap();
   await expectOnScreen(page, page.getByTestId("discovery-detail").locator("h3"));
   await expect.poll(async () => (await saved(page)).discoveredClueIds.includes("last_supper_technique_card")).toBe(true);
-  await page.getByRole("button", { name: "観察に戻る", exact: true }).tap();
+  await page.getByRole("button", { name: "説明を閉じる", exact: true }).tap();
   expect(await page.evaluate(() => window.scrollY)).toBe(initialScroll);
   await expectOnScreen(page, page.getByRole("button", { name: "バトルを始める", exact: true }));
 });

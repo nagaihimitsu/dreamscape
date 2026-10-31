@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import phase1 from "../fixtures/phase1-saves.json" with { type: "json" };
 import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
 import {
   advanceToChoiceOrEnd,
@@ -58,15 +59,16 @@ test("date conversation log contains displayed lines and never advances the stor
   await expectNoOverflow(page);
 });
 
-test("disabling romance choice confirmation keeps choices single-commit", async ({ page }) => {
+test("an old confirmation-on setting still makes choices direct and single-commit", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 780 });
   await startNewGame(page);
   await loadLegacyFreeTime(page);
   await startCafe(page);
+  await page.evaluate(() => localStorage.setItem("dreamscape.presentation.v1", JSON.stringify({
+    schemaVersion: 1, confirmChoices: true, reduceMotion: false,
+  })));
+  await page.reload();
   await setDialogueSpeed(page, "0");
-  await page.getByRole("button", { name: "設定", exact: true }).click();
-  await page.getByLabel("選択肢を選ぶ前に確認する").uncheck();
-  await page.getByRole("dialog").getByRole("button", { name: "閉じる", exact: true }).click();
   const before = await advanceToChoiceOrEnd(page);
   await expect(page.locator(".choice").first()).toBeEnabled();
   await page.locator(".choice").first().evaluate((button: HTMLButtonElement) => {
@@ -203,21 +205,17 @@ test("backgrounding during an answer effect neither rescores nor blocks the next
   expect(next.activeBattle?.score).toBe(after.activeBattle?.score);
 });
 
-test("canceling a choice leaves the save untouched and plays no exit effect", async ({ page }) => {
+test("the reveal input cannot select a new choice immediately", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await startNewGame(page);
-  await loadLegacyFreeTime(page);
-  await startCafe(page);
-  await setDialogueSpeed(page, "0");
-  await advanceToChoiceOrEnd(page);
-  await expect(page.locator(".choice").first()).toBeEnabled();
-  const before = await saved(page);
-  await page.locator(".choice").first().click();
-  await expect(page.getByRole("dialog")).toBeVisible();
-  expect(await saved(page)).toEqual(before);
-  await page.getByRole("dialog").getByRole("button", { name: "選び直す" }).click();
-  await expect(page.getByRole("dialog")).toHaveCount(0);
-  await expect(page.locator(".vn-choice-exit")).toHaveCount(0);
-  expect(await saved(page)).toEqual(before);
-  await expect(page.locator(".choice").first()).toBeEnabled();
+  await page.clock.install();
+  await loadSnapshot(page, phase1.beforeChoice);
+  await page.getByRole("button", { name: "全文を表示", exact: true }).click();
+  const choice = page.locator(".choice").first();
+  await expect(choice).toBeDisabled();
+  const afterReveal = await saved(page);
+  // A synthetic click during the disabled reveal guard must not commit a choice.
+  await choice.evaluate((button: HTMLButtonElement) => button.click());
+  expect(await saved(page)).toEqual(afterReveal);
+  await page.clock.fastForward(500);
+  await expect(choice).toBeEnabled();
 });

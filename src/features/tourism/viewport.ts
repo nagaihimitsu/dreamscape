@@ -80,6 +80,7 @@ export function focusRegion(
   region: ImageRegion,
   image: Size,
   viewport: Size,
+  maxFocusScale = MAX_SCALE,
 ): ViewTransform {
   const fitted = fittedSize(image, viewport);
   if (!fitted.width || !fitted.height) return INITIAL_VIEW;
@@ -89,7 +90,7 @@ export function focusRegion(
       (viewport.height * 0.72) / (region.height * fitted.height),
     ),
     MIN_SCALE,
-    MAX_SCALE,
+    clamp(maxFocusScale, MIN_SCALE, MAX_SCALE),
   );
   return constrainView(
     {

@@ -1,4 +1,5 @@
 import type { TourismClue } from "../../content";
+import type { ReactNode } from "react";
 
 const claimLabels: Record<string, string> = {
   documented_fact: "確認された事実",
@@ -7,13 +8,18 @@ const claimLabels: Record<string, string> = {
   legend: "伝承",
 };
 
-export function ClueDetails({ clue }: { clue: TourismClue }) {
+export function ClueDetails({ clue, action }: { clue: TourismClue; action?: ReactNode }) {
   return (
     <>
-      <p className="clue-kind">
-        {clue.kind === "document" ? "資料カード" : "観察での発見"}
-      </p>
-      <h3>{clue.titleJa}</h3>
+      <div className="clue-heading">
+        <div>
+          <p className="clue-kind">
+            {clue.kind === "document" ? "資料カード" : "観察での発見"}
+          </p>
+          <h3>{clue.titleJa}</h3>
+        </div>
+        {action}
+      </div>
       <div className="claim-types">
         {Array.from(
           new Set(clue.sources.map((source) => source.claimType)),
