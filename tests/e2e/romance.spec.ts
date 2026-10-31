@@ -151,7 +151,7 @@ test("pause, manual save/load and keyboard confirmation preserve the current lin
   await loadLegacyFreeTime(page);
   await startCafe(page);
   await expect(page.locator(".dialogue-text")).toMatchAriaSnapshot(`
-    - paragraph: 運河沿いの小さなカフェ。
+    - button "運河沿いの小さなカフェ。"
   `);
   const before = await saved(page);
   await page.getByRole("button", { name: "中断する", exact: true }).click();
