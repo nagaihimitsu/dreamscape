@@ -63,7 +63,21 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 
 ## 恋愛とInk
 
-`date.json` の `id`、`chapterId`、`titleJa`、`descriptionJa`、`storyId`、`backgroundAssetId` はイベント、章、表示文、脚本、背景です。`kind` は通常なら `normal`。`apCost`、`minRomanceStage`、`minAffection`、`requiredCompletedChapters`、`requiredPlayedDateIds` は開始条件で、`requiredCompletedCityIds` と `allowAfterEnding` は必要な場合のみ。`repeatable` は再挑戦可否で、通常デートは `false`、告白は保留後の再挑戦のため `true` にします。`rewardOnlyOnce` は旧版で再鑑賞を開始済みのセーブを含む効果の重複防止、`needsDeferred` は告白保留後の条件、`choiceCount` / `effectCount` は各経路の選択・効果回数、`actionLabelJa` と任意の `invitationJa` はボタン・確認文です。`validationContexts` は分岐確認に使う関係段階や思い出等の例で、脚本が使う条件を網羅します。
+### デートで訪れる観光地
+
+観光・発見・バトルを持つメイン観光地と、デート中に訪れる行き先は別のデータです。デート先のために敵・クイズ・観光エピソードを作る必要はありません。将来、メイン観光地と同じ場所をデートで再訪する場合も、同じ場所を指すデート先を登録できます。
+
+1. `content/romance/date_destinations.json` の `destinations` に、安定した `id`、`cityId`、日本語・英語の名称、短い `descriptionJa`、`backgroundAssetId`、`facts` を登録します。事実ごとに `publisher`・`title`・`url`・`checkedAt`・`claimType`・`claimJa` を記録し、実際に資料の該当箇所を確認してください。事実・解釈・仮説・伝説は既存の観光資料と同じ区分を使います。
+2. `content/romance/presentation.json` に背景IDを登録します。権利を確認できる画像がない場合は `fallback: "neutral"` で場所を誤認させない中立背景を使います。画像を追加する際は作者・出典・使用条件を確認してください。
+3. `content/romance/date_catalog.json` の通常デートに `destinationId` と必要に応じて `requiredCompletedEpisodeIds` を指定します。デートの `chapterId`、行き先の `cityId`、双方の背景IDを一致させます。訪問後に開放する通常デートでは、必要エピソードを指定したうえで `requiredCompletedChapters` を空配列にできます。交際後も同じ短編を遊べる場合は `allowAfterEnding` を指定します。
+4. Inkに場所固有の会話と3択を2回書き、選択肢ごとの `effect` と対応する `memory` を登録します。必要な表情は `# emotion:` で指定します。既存の恋愛進行に新イベントを必須条件として追加するかは、別途慎重に検討してください。
+5. `npm run content:check` でIDの重複、都市・エピソード・背景の参照、出典形式、全分岐と効果を確認し、スマートフォンの画面と脚本をレビューします。
+
+現在の都市読み込みはミラノ前提です。別都市の実装には、後述の都市選択・進行・セーブなどの対応が必要です。
+
+### 通常デートのデータ
+
+`date.json` の `id`、`chapterId`、`titleJa`、`descriptionJa`、`storyId`、`backgroundAssetId` はイベント、章、表示文、脚本、背景です。`kind` は通常なら `normal`。`apCost`、`minRomanceStage`、`minAffection`、`requiredCompletedChapters`、`requiredPlayedDateIds` は開始条件で、`destinationId`・`requiredCompletedEpisodeIds`・`requiredCompletedCityIds`・`allowAfterEnding` は必要な場合のみ。`repeatable` は再挑戦可否で、通常デートは `false`、告白は保留後の再挑戦のため `true` にします。`rewardOnlyOnce` は旧版で再鑑賞を開始済みのセーブを含む効果の重複防止、`needsDeferred` は告白保留後の条件、`choiceCount` / `effectCount` は各経路の選択・効果回数、`actionLabelJa` と任意の `invitationJa` はボタン・確認文です。`validationContexts` は分岐確認に使う関係段階や思い出等の例で、脚本が使う条件を網羅します。
 
 `date_effects.json` の各 `id`、`affectionDelta`、任意の `memoryId` はInkの `# effect:` に対応します。思い出は `presentation.json` の `memories` に同じIDと `titleJa` / `descriptionJa` を登録。背景は `backgrounds` のIDごとに `nameJa` / `captionJa` / 色 `color`、表情は `emotions` に登録します。効果IDは状態を変えるため、単なる表示名と混同しないでください。
 

@@ -33,7 +33,8 @@ export function FreeTimeHub({
     ? dates.filter((date) =>
         date.allowAfterEnding &&
         !(date.kind === "normal" && game.playedDateIds.includes(date.id)) &&
-        (date.requiredCompletedCityIds ?? []).every((id) => game.completedCityIds.includes(id)),
+        (date.requiredCompletedCityIds ?? []).every((id) => game.completedCityIds.includes(id)) &&
+        (date.requiredCompletedEpisodeIds ?? []).every((id) => game.completedEpisodeIds.includes(id)),
       )
     : [];
 

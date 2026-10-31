@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { dialogueExpressions, presentation } from "../../content";
+import { city, dateDestinations, dialogueExpressions, presentation } from "../../content";
 import type { DateDefinition } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import type { GameState } from "../../domain/game";
@@ -35,6 +35,9 @@ export function RomanceScene({
 }) {
   const active = game.activeDate!;
   const frame = active.frame;
+  const destination = date?.destinationId
+    ? dateDestinations.find((item) => item.id === date.destinationId)
+    : undefined;
   const emotion = resolveDialogueExpression(dialogueExpressions, date?.storyId ?? "", frame);
   const speaker =
     frame.speaker === "heroine"
@@ -156,12 +159,19 @@ export function RomanceScene({
             {date?.choiceCount ?? 2}
           </span>
         </div>
-        <div className="speaker">
-          <span className={`speaker-dot ${frame.emotion}`} aria-hidden="true" />
-          {speaker}
-          {frame.speaker === "heroine" && frame.emotion !== "neutral" && (
-            <span className="emotion">
-              {presentation.emotions[frame.emotion]}
+        <div className={destination ? "dialogue-speaker-row" : undefined}>
+          <div className="speaker">
+            <span className={`speaker-dot ${frame.emotion}`} aria-hidden="true" />
+            {speaker}
+            {frame.speaker === "heroine" && frame.emotion !== "neutral" && (
+              <span className="emotion">
+                {presentation.emotions[frame.emotion]}
+              </span>
+            )}
+          </div>
+          {destination && (
+            <span className="dialogue-destination" data-testid="date-destination">
+              {destination.cityId === city.id ? `${city.nameJa} ／ ` : ""}{destination.nameJa}
             </span>
           )}
         </div>

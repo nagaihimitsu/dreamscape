@@ -1,4 +1,4 @@
-import { dates, presentation, trialMilestones } from "../../content";
+import { dateDestinations, dates, presentation, trialMilestones } from "../../content";
 import {
   getDateAvailability,
   getMilestoneAvailability,
@@ -46,7 +46,7 @@ export function RomanceMenu({
       {ordinaryDates.length > 0 && (
         <>
           <p className="fine-print ap-help">APはデートに使うポイントです。</p>
-          <div className="date-list">
+          <div className={`date-list${ordinaryDates.length > 5 ? " date-list-dense" : ""}`}>
             {ordinaryDates.map((date) => (
               <EventCard
                 key={date.id}
@@ -100,6 +100,9 @@ export function EventCard({
   onChoose: (id: string) => void;
 }) {
   const eligibility = getDateAvailability(game, date.id);
+  const destination = date.destinationId
+    ? dateDestinations.find((item) => item.id === date.destinationId)
+    : undefined;
   return (
     <article
       className={`date-card${date.kind !== "normal" ? " invitation-card" : ""}${!eligibility.available ? " date-unavailable" : ""}`}
@@ -118,9 +121,11 @@ export function EventCard({
         className="date-option"
         disabled={!eligibility.available}
         onClick={() => onChoose(date.id)}
-        aria-label={`${date.actionLabelJa}（${date.titleJa}、${date.apCost ? `${date.apCost} AP` : "AP不要"}）`}
+        aria-label={destination
+          ? `${destination.nameJa}へ（${date.apCost ? `${date.apCost} AP` : "AP不要"}）`
+          : `${date.actionLabelJa}（${date.titleJa}、${date.apCost ? `${date.apCost} AP` : "AP不要"}）`}
       >
-        <span className="date-option-title">{date.titleJa}</span>
+        <span className="date-option-title">{destination?.nameJa ?? date.titleJa}</span>
         <span className="date-option-cost">{date.apCost ? `${date.apCost} AP` : "AP不要"}</span>
         {eligibility.available && <span aria-hidden="true">→</span>}
       </button>

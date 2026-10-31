@@ -14,8 +14,10 @@ export const dateSchema = z
     apCost: z.number().int().nonnegative(),
     minRomanceStage: z.number().int().min(1).max(4),
     storyId: z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/),
-    requiredCompletedChapters: z.array(id).min(1),
+    requiredCompletedChapters: z.array(id),
     requiredCompletedCityIds: z.array(id).optional(),
+    requiredCompletedEpisodeIds: z.array(id).optional(),
+    destinationId: id.optional(),
     allowAfterEnding: z.boolean().optional(),
     rewardOnlyOnce: z.boolean(),
     backgroundAssetId: id,
@@ -41,7 +43,16 @@ export const dateSchema = z
       )
       .min(1),
   })
-  .strict();
+  .strict()
+  .refine(
+    (date) => date.requiredCompletedChapters.length > 0 ||
+      (date.kind === "normal" && !!date.destinationId && !!date.requiredCompletedEpisodeIds?.length),
+    "A date needs a chapter or a destination and completed episode prerequisite",
+  )
+  .refine(
+    (date) => date.kind === "normal" || (!date.destinationId && !date.requiredCompletedEpisodeIds?.length),
+    "Destination and episode prerequisites are for normal dates",
+  );
 
 export const dateCatalogSchema = z
   .object({ schemaVersion: version, dates: z.array(dateSchema).min(1) })
@@ -94,6 +105,7 @@ export const presentationSchema = z
           nameJa: text,
           captionJa: text,
           color: z.string().regex(/^#[0-9a-fA-F]{6}$/),
+          fallback: z.enum(["canal", "neutral"]).optional(),
           imagePath: z.string().regex(/^assets\/(?!.*(?:^|\/)\.\.(?:\/|$))[a-zA-Z0-9_./-]+\.(?:png|webp|svg)$/).nullable().optional(),
         })
         .strict(),

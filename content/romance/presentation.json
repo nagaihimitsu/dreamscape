@@ -45,6 +45,24 @@
       "nameJa": "ガッレリアからの帰り道",
       "captionJa": "ミラノ ／ メモに残した余白",
       "color": "#8c7867"
+    },
+    "milano_la_scala_date": {
+      "nameJa": "開演前のことば",
+      "captionJa": "ミラノ ／ 開演前のことば",
+      "color": "#786b65",
+      "fallback": "neutral"
+    },
+    "milano_brera_date": {
+      "nameJa": "一枚の絵、違う視線",
+      "captionJa": "ミラノ ／ 一枚の絵、違う視線",
+      "color": "#777563",
+      "fallback": "neutral"
+    },
+    "milano_navigli_date": {
+      "nameJa": "決めない寄り道",
+      "captionJa": "ミラノ ／ 決めない寄り道",
+      "color": "#60746b",
+      "fallback": "neutral"
     }
   },
   "emotions": {
@@ -184,6 +202,78 @@
     "milano_city_date_second_honest": {
       "titleJa": "次の一行",
       "descriptionJa": "旅の次の言葉も一緒に考えたい。彼女の指が、空いた端を二度たたいた。"
+    },
+    "milano_la_scala_first_joke": {
+      "titleJa": "客席の助っ人",
+      "descriptionJa": "台詞を叫ぶ役を引き受けたら、先に係の人が来そうだと言われた。"
+    },
+    "milano_la_scala_first_listen": {
+      "titleJa": "帰らないでの役",
+      "descriptionJa": "演じてみたい台詞を聞くと、彼女は案内の角をそろえた。"
+    },
+    "milano_la_scala_first_honest": {
+      "titleJa": "ふたりに届く声",
+      "descriptionJa": "声を落として、彼女は「いいですね」をもう一度言った。"
+    },
+    "milano_la_scala_second_joke": {
+      "titleJa": "長い拍手",
+      "descriptionJa": "一回だけの長い拍手は祈りに見える、と言われた。"
+    },
+    "milano_la_scala_second_listen": {
+      "titleJa": "拍手のあとに",
+      "descriptionJa": "まだ聞いていたいことは、拍手のあとに伝えればいい。"
+    },
+    "milano_la_scala_second_honest": {
+      "titleJa": "急がない帰り道",
+      "descriptionJa": "もう少し一緒にいたいと言うと、彼女も急いではいないと答えた。"
+    },
+    "milano_brera_first_joke": {
+      "titleJa": "階段にかけた足",
+      "descriptionJa": "先を急ぐ足を見て、待たせた側かもしれないと笑った。"
+    },
+    "milano_brera_first_listen": {
+      "titleJa": "足の向き",
+      "descriptionJa": "出ていく足か戻ってきた足か、少し離れてもう一度見た。"
+    },
+    "milano_brera_first_honest": {
+      "titleJa": "二人の間",
+      "descriptionJa": "階段から二人の間へ、彼女の視線が移った。"
+    },
+    "milano_brera_second_joke": {
+      "titleJa": "影の人の足",
+      "descriptionJa": "階段を譲るか待つ影の人も、足がしびれているかもしれない。"
+    },
+    "milano_brera_second_listen": {
+      "titleJa": "影の人の落とし物",
+      "descriptionJa": "離れていった二人の後で、影の人が落とし物を拾う話を聞いた。"
+    },
+    "milano_brera_second_honest": {
+      "titleJa": "覚えておく影",
+      "descriptionJa": "絵の続きを話すため、壁の暗がりも覚えておくことになった。"
+    },
+    "milano_navigli_first_joke": {
+      "titleJa": "洗濯場の靴下",
+      "descriptionJa": "靴下を持ってきたら、片方だけでは帰りが大変と言われた。"
+    },
+    "milano_navigli_first_listen": {
+      "titleJa": "靴を濡らさない場所",
+      "descriptionJa": "昔の洗濯場を眺め、まず足元の置き場所を探す話をした。"
+    },
+    "milano_navigli_first_honest": {
+      "titleJa": "小さな路地",
+      "descriptionJa": "歩きながら見つけた路地を、彼女は通り過ぎかけていた。"
+    },
+    "milano_navigli_second_joke": {
+      "titleJa": "橋の一票",
+      "descriptionJa": "橋にも意見を聞いたが、慎重派なのか黙ったままだった。"
+    },
+    "milano_navigli_second_listen": {
+      "titleJa": "橋の手前",
+      "descriptionJa": "彼女の選んだ道は、もう少し水の色を見られる橋の手前だった。"
+    },
+    "milano_navigli_second_honest": {
+      "titleJa": "岸辺の遠回り",
+      "descriptionJa": "隣を歩く時間が長い方へ。彼女は橋ではなく岸辺を見た。"
     }
   },
   "ending": {

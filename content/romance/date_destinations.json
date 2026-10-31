@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "destinations": [
+    {
+      "id": "milano_la_scala",
+      "cityId": "milano",
+      "nameJa": "スカラ座",
+      "nameEn": "Teatro alla Scala",
+      "descriptionJa": "開演を待つ人の流れを見ながら、舞台に立つことや言葉を交わす。",
+      "backgroundAssetId": "milano_la_scala_date",
+      "facts": [
+        {
+          "publisher": "Teatro alla Scala（公式）",
+          "title": "History — 1776",
+          "url": "https://www.teatroallascala.org/en/the-theater/history.html",
+          "checkedAt": "2026-10-31",
+          "claimType": "documented_fact",
+          "claimJa": "公式年表によれば、旧ドゥカーレ劇場が1776年の火災で失われ、その桟敷席の所有者たちが新劇場の建設費を負担し、スカラ座は1778年に開場した。"
+        }
+      ]
+    },
+    {
+      "id": "milano_brera",
+      "cityId": "milano",
+      "nameJa": "ブレラ絵画館",
+      "nameEn": "Pinacoteca di Brera",
+      "descriptionJa": "ハイエツの『接吻』の前で、違う細部に目を留める。",
+      "backgroundAssetId": "milano_brera_date",
+      "facts": [
+        {
+          "publisher": "Pinacoteca di Brera（公式）",
+          "title": "10 Masterpieces for you — The kiss by Francesco Hayez",
+          "url": "https://pinacotecabrera.org/en/educazione/audio-guide/10-masterpieces-for-you/",
+          "checkedAt": "2026-10-31",
+          "claimType": "interpretation",
+          "claimJa": "公式音声ガイドは、男性が片足を階段にかけているため別れの接吻のように見えると解説し、左側の壁には人物の影が見えると記している。別れであることや影の正体は確定していない。"
+        },
+        {
+          "publisher": "Pinacoteca di Brera（公式）",
+          "title": "The Kiss",
+          "url": "https://pinacotecabrera.org/en/collezioni/collezione-on-line/the-kiss/",
+          "checkedAt": "2026-10-31",
+          "claimType": "documented_fact",
+          "claimJa": "公式作品情報は『接吻』の作者をフランチェスコ・ハイエツ、制作年を1859年と記載している。"
+        }
+      ]
+    },
+    {
+      "id": "milano_navigli",
+      "cityId": "milano",
+      "nameJa": "ナヴィリオ地区",
+      "nameEn": "Navigli District",
+      "descriptionJa": "運河に沿って歩き、洗濯場の残る小さな路地へ寄る。",
+      "backgroundAssetId": "milano_navigli_date",
+      "facts": [
+        {
+          "publisher": "inLOMBARDIA（ロンバルディア州観光情報）",
+          "title": "Vicolo dei Lavandai",
+          "url": "https://www.in-lombardia.it/en/vicolo-dei-lavandai",
+          "checkedAt": "2026-10-31",
+          "claimType": "documented_fact",
+          "claimJa": "州観光情報は、この路地がナヴィリオ・グランデ沿いにあり、洗濯に使われた石が残ると説明する。水路は運河の水を引いていた。"
+        }
+      ]
+    }
+  ]
+}

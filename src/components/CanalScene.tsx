@@ -12,8 +12,11 @@ export function CanalScene({
   return (
     <div
       className={`canal-scene ${compact ? "compact" : ""}`}
+      data-fallback={backdrop?.fallback ?? "canal"}
+      style={backdrop?.fallback === "neutral" ? { backgroundColor: backdrop.color } : undefined}
       aria-hidden="true"
     >
+      {backdrop?.fallback !== "neutral" && (
       <svg viewBox="0 0 800 440" preserveAspectRatio="xMidYMid slice">
         <defs>
           <linearGradient id="sky" x2="0" y2="1">
@@ -99,6 +102,7 @@ export function CanalScene({
         />
         <path fill="#ede2c8" d="m563 410 30-13 28 13-29 14z" />
       </svg>
+      )}
       {backdrop?.imagePath && <BackgroundArtwork key={backdrop.imagePath} path={backdrop.imagePath} />}
       <span className="scene-stamp">
         {presentation.backgrounds[backgroundId]?.captionJa}

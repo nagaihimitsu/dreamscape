@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 7,
+  "revision": 174,
+  "playerName": "なお",
+  "heroineName": "りえ",
+  "ap": 11,
+  "affection": 0,
+  "romanceStage": 1,
+  "completedChapters": [
+    "milano"
+  ],
+  "claimedRewardIds": [
+    "battle_duomo_first",
+    "episode_duomo_first",
+    "battle_galleria_first",
+    "episode_galleria_first",
+    "battle_last_supper_first_complete",
+    "chapter_milano_first_clear",
+    "battle_castello_first",
+    "episode_castello_first"
+  ],
+  "playedDateIds": [],
+  "memories": [],
+  "activeDate": null,
+  "unlockedEventIds": [],
+  "confessionStatus": "none",
+  "endingReached": false,
+  "activeBattle": null,
+  "battleRecords": [
+    {
+      "battleId": "milano_duomo_01",
+      "attempts": 1,
+      "firstScore": 0,
+      "bestScore": 0,
+      "lastScore": 0
+    },
+    {
+      "battleId": "milano_galleria_01",
+      "attempts": 1,
+      "firstScore": 0,
+      "bestScore": 0,
+      "lastScore": 0
+    },
+    {
+      "battleId": "milano_last_supper_01",
+      "attempts": 1,
+      "firstScore": 0,
+      "bestScore": 0,
+      "lastScore": 0
+    },
+    {
+      "battleId": "milano_last_supper_b01",
+      "attempts": 1,
+      "firstScore": 0,
+      "bestScore": 0,
+      "lastScore": 0
+    },
+    {
+      "battleId": "milano_castello_01",
+      "attempts": 1,
+      "firstScore": 0,
+      "bestScore": 0,
+      "lastScore": 0
+    }
+  ],
+  "activeTourism": null,
+  "discoveredClueIds": [],
+  "visitedLandmarkIds": [
+    "duomo_milano",
+    "galleria_vittorio_emanuele_ii",
+    "last_supper",
+    "castello_sforzesco"
+  ],
+  "completedEpisodeIds": [
+    "milano_duomo_episode",
+    "milano_galleria_episode",
+    "milano_last_supper_episode",
+    "milano_castello_episode"
+  ],
+  "completedCityIds": [],
+  "completedGuideIds": [],
+  "pendingApRewards": [],
+  "battleRewardReceipt": null,
+  "activeEpilogue": null,
+  "viewedEpilogueCityIds": [],
+  "legacyTrialAvailable": false
+}

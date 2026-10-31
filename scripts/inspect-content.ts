@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { dateDestinationSchema, dateDestinationsSchema } from "../src/content/date-destinations";
 import {
   balanceSchema,
   battleCatalogSchema,
@@ -40,6 +41,8 @@ const schemas = {
   "battle-catalog": battleCatalogSchema,
   date: dateSchema,
   "date-catalog": dateCatalogSchema,
+  "date-destination": dateDestinationSchema,
+  "date-destinations": dateDestinationsSchema,
   effect: effectSchema,
   "effect-catalog": effectCatalogSchema,
   landmark: landmarkSchema,
@@ -69,6 +72,7 @@ export function inferContentType(file: string): ContentType | undefined {
     "/battles/catalog.json": "battle-catalog",
     "/progression/journey.json": "journey",
     "/romance/date_catalog.json": "date-catalog",
+    "/romance/date_destinations.json": "date-destinations",
     "/romance/effect_catalog.json": "effect-catalog",
     "/romance/balance.json": "balance",
     "/romance/presentation.json": "presentation",

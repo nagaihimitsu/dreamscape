@@ -3,6 +3,7 @@ import path from "node:path";
 import { characterCatalogSchema } from "../src/content/character-assets";
 import { validateCharacterImage } from "./character-image-validation";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
+import { dateDestinationsSchema } from "../src/content/date-destinations";
 import { createDialogueExpressionValidator, type DialogueObserver } from "./dialogue-expression-validation";
 import {
   Compiler,
@@ -310,6 +311,12 @@ export async function buildContent(root: string, writeOutput = true) {
       path.join(content, "romance/date_catalog.json"),
     )
   ).dates;
+  const destinations = (
+    await parseFile(
+      dateDestinationsSchema,
+      path.join(content, "romance/date_destinations.json"),
+    )
+  ).destinations;
   const effects = (
     await parseFile(
       effectCatalogSchema,
@@ -328,6 +335,13 @@ export async function buildContent(root: string, writeOutput = true) {
     presentationSchema,
     path.join(content, "romance/presentation.json"),
   );
+  unique(destinations.map((destination) => destination.id), "date destination ID");
+  for (const destination of destinations) {
+    if (destination.cityId !== city.id)
+      throw new Error(`Unknown date destination city: ${destination.id}/${destination.cityId}`);
+    if (!presentation.backgrounds[destination.backgroundAssetId])
+      throw new Error(`Unknown date destination background: ${destination.id}/${destination.backgroundAssetId}`);
+  }
   const characters = await parseFile(
     characterCatalogSchema,
     path.join(content, "presentation/characters.json"),
@@ -448,6 +462,15 @@ export async function buildContent(root: string, writeOutput = true) {
   for (const date of dates) {
     if (!Object.hasOwn(stories, date.storyId))
       throw new Error(`Unknown storyId: ${date.storyId}`);
+    if (date.destinationId) {
+      const destination = destinations.find((item) => item.id === date.destinationId);
+      if (!destination)
+        throw new Error(`Unknown date destination: ${date.id}/${date.destinationId}`);
+      if (destination.cityId !== date.chapterId)
+        throw new Error(`Date destination city mismatch: ${date.id}/${date.destinationId}`);
+      if (destination.backgroundAssetId !== date.backgroundAssetId)
+        throw new Error(`Date destination background mismatch: ${date.id}/${date.destinationId}`);
+    }
     if (
       date.chapterId !== city.id ||
       date.requiredCompletedChapters.some((id) => id !== city.id) ||
@@ -461,9 +484,16 @@ export async function buildContent(root: string, writeOutput = true) {
       throw new Error(`Date cost exceeds AP cap: ${date.id}`);
     unique(date.requiredPlayedDateIds, "required date ID");
     unique(date.requiredCompletedCityIds ?? [], "required city ID");
+    unique(date.requiredCompletedEpisodeIds ?? [], "required episode ID");
+    for (const episodeId of date.requiredCompletedEpisodeIds ?? []) {
+      const episode = journey.episodes.find((item) => item.id === episodeId);
+      if (!episode || episode.cityId !== date.chapterId)
+        throw new Error(`Unknown date prerequisite episode: ${date.id}/${episodeId}`);
+    }
     if (
       date.allowAfterEnding &&
-      (date.kind !== "normal" || !date.requiredCompletedCityIds?.length)
+      (date.kind !== "normal" || (!date.requiredCompletedCityIds?.length &&
+        !(date.destinationId && date.requiredCompletedEpisodeIds?.length)))
     )
       throw new Error(`After-ending date needs a completed city: ${date.id}`);
     if (
@@ -751,6 +781,7 @@ export async function buildContent(root: string, writeOutput = true) {
     stories,
     routes,
     dates,
+    destinations,
     effects,
     battles,
     quizzes,

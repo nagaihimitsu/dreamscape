@@ -6,6 +6,12 @@
   border-top: 1px solid var(--line);
 }
 
+/* With many destinations, retain names, AP and unavailable reasons while
+   omitting optional summaries so the choices remain easy to compare. */
+.date-list-dense .date-card .event-description {
+  display: none;
+}
+
 .date-card,
 .free-time-active .date-list .date-card,
 .free-time-active .invitation-card {

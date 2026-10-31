@@ -186,6 +186,9 @@ function meetsDateConditions(state: GameState, date: DateDefinition): boolean {
     (date.requiredCompletedCityIds ?? []).every((id) =>
       state.completedCityIds.includes(id),
     ) &&
+    (date.requiredCompletedEpisodeIds ?? []).every((id) =>
+      state.completedEpisodeIds.includes(id),
+    ) &&
     date.requiredPlayedDateIds.every((id) =>
       state.playedDateIds.includes(id),
     ) &&
@@ -361,7 +364,8 @@ export function isEventVisible(state: GameState, dateId: string): boolean {
   return Boolean(
     date &&
       (date.kind === "normal"
-        ? !state.playedDateIds.includes(dateId)
+        ? !state.playedDateIds.includes(dateId) &&
+          (date.requiredCompletedEpisodeIds ?? []).every((id) => state.completedEpisodeIds.includes(id))
         : state.unlockedEventIds.includes(dateId)),
   );
 }
@@ -401,6 +405,8 @@ export function getDateAvailability(
       available: false,
       reason: "都市の旅を終えると、このデートに誘えます。",
     };
+  if (!(date.requiredCompletedEpisodeIds ?? []).every((id) => state.completedEpisodeIds.includes(id)))
+    return { available: false, reason: "旅を進めると、この場所に誘えます。" };
   if (!meetsDateConditions(state, date))
     return { available: false, reason: "もう少し、一緒の時間を過ごしてから。" };
   if (state.ap < date.apCost)
@@ -723,6 +729,9 @@ export function validateGameState(input: unknown): GameState {
       (state.endingReached && !date.allowAfterEnding) ||
       !(date.requiredCompletedCityIds ?? []).every((id) =>
         state.completedCityIds.includes(id),
+      ) ||
+      !(date.requiredCompletedEpisodeIds ?? []).every((id) =>
+        state.completedEpisodeIds.includes(id),
       ) ||
       !date.requiredCompletedChapters.every((id) =>
         state.completedChapters.includes(id),

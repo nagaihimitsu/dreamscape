@@ -1,6 +1,8 @@
 import { expect, test, type Locator } from "@playwright/test";
 import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
 import catalog from "../../content/romance/date_catalog.json" with { type: "json" };
+import destinations from "../../content/romance/date_destinations.json" with { type: "json" };
+import castleCleared from "../fixtures/castle-clear-unplayed.json" with { type: "json" };
 import { choose, expectNoOverflow, finishCafe, loadSnapshot, revealDialogueControl, saved, startCafe, startNewGame } from "./helpers";
 import { setEvidence } from "./reasoning-helpers";
 
@@ -29,12 +31,17 @@ for (const width of [320, 360]) {
     await loadSnapshot(page, phase6.freeTime);
     const list = page.locator(".date-list");
     await list.evaluate((node) => node.scrollIntoView({ block: "start" }));
-    const items = catalog.dates.filter((date) => date.kind === "normal");
+    const normalDates = catalog.dates.filter((date) => date.kind === "normal");
+    const hiddenIds = ["milano_la_scala_date_01", "milano_navigli_date_01"];
+    const items = normalDates.filter((date) => !hiddenIds.includes(date.id));
+    expect(items).toHaveLength(5);
+    for (const id of hiddenIds) await expect(page.getByTestId(`event-${id}`)).toHaveCount(0);
     await expect(list.locator(".date-card")).toHaveCount(items.length);
     for (const date of items) {
       const row = page.getByTestId(`event-${date.id}`);
       const button = row.getByRole("button");
-      await expect(button).toContainText(date.titleJa);
+      const destination = "destinationId" in date ? destinations.destinations.find((item) => item.id === date.destinationId) : undefined;
+      await expect(button).toContainText(destination?.nameJa ?? date.titleJa);
       await expect(button).toContainText(`${date.apCost} AP`);
       const size = await button.boundingBox();
       expect(size!.height).toBeGreaterThanOrEqual(44);
@@ -45,7 +52,8 @@ for (const width of [320, 360]) {
     expect((await list.boundingBox())!.height).toBeLessThanOrEqual(520);
     await expectNoOverflow(page);
     await expect(page.getByTestId("event-milano_cafe_01").getByRole("button")).toBeEnabled();
-    for (const date of items.filter((date) => date.id !== "milano_cafe_01")) {
+    await expect(page.getByTestId("event-milano_brera_date_01").getByRole("button")).toBeEnabled();
+    for (const date of items.filter((date) => !["milano_cafe_01", "milano_brera_date_01"].includes(date.id))) {
       const row = page.getByTestId(`event-${date.id}`);
       await expect(row.getByRole("button")).toBeDisabled();
       await expect(row.getByRole("status")).not.toBeEmpty();
@@ -56,6 +64,29 @@ for (const width of [320, 360]) {
     expect((await saved(page)).ap).toBe(before.ap);
     await page.getByRole("button", { name: "APを使って始める", exact: true }).click();
     expect((await saved(page)).activeDate?.dateId).toBe("milano_cafe_01");
+  });
+
+  test(`all seven unlocked date choices remain compact on a ${width}px screen`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 640 });
+    // Produced by real domain transitions: four episodes, A/B/C battles, no dates.
+    await loadSnapshot(page, castleCleared);
+    const list = page.locator(".date-list");
+    await list.evaluate((node) => node.scrollIntoView({ block: "start" }));
+    const items = catalog.dates.filter((date) => date.kind === "normal");
+    expect(items).toHaveLength(7);
+    await expect(list.locator(".date-card")).toHaveCount(7);
+    for (const date of items) {
+      const button = page.getByTestId(`event-${date.id}`).getByRole("button");
+      const destination = "destinationId" in date ? destinations.destinations.find((item) => item.id === date.destinationId) : undefined;
+      await expect(button).toContainText(destination?.nameJa ?? date.titleJa);
+      await expect(button).toContainText(`${date.apCost} AP`);
+      const size = (await button.boundingBox())!;
+      expect(size.height).toBeGreaterThanOrEqual(44);
+      expect(size.y).toBeGreaterThanOrEqual(0);
+      expect(size.y + size.height).toBeLessThanOrEqual(640);
+    }
+    expect((await list.boundingBox())!.height).toBeLessThanOrEqual(520);
+    await expectNoOverflow(page);
   });
 }
 

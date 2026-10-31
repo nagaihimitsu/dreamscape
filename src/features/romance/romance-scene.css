@@ -76,6 +76,24 @@
 }
 .vn-dialogue .speaker-dot { display: none; }
 .vn-dialogue .emotion { color: var(--vn-muted); }
+.vn-dialogue .dialogue-speaker-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 8px;
+}
+.vn-dialogue .dialogue-destination {
+  color: var(--vn-text);
+  background: var(--vn-window-bg);
+  border-radius: 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  margin-bottom: 8px;
+  padding: 3px 8px;
+}
 .vn-choice-exit {
   position: absolute;
   z-index: 3;

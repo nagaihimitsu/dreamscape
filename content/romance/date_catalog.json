@@ -342,6 +342,195 @@
           "memoryId": "milano_cafe_future_talk"
         }
       ]
+    },
+    {
+      "id": "milano_la_scala_date_01",
+      "kind": "normal",
+      "chapterId": "milano",
+      "destinationId": "milano_la_scala",
+      "titleJa": "開演前のことば",
+      "descriptionJa": "幕を待つひととき、誰かに聞かせる言葉について話す。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "minAffection": 0,
+      "storyId": "milano/la_scala_date_01",
+      "requiredCompletedChapters": [],
+      "requiredCompletedEpisodeIds": [
+        "milano_galleria_episode"
+      ],
+      "allowAfterEnding": true,
+      "requiredPlayedDateIds": [],
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "milano_la_scala_date",
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "この場所へ誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": false
+        }
+      ]
+    },
+    {
+      "id": "milano_brera_date_01",
+      "kind": "normal",
+      "chapterId": "milano",
+      "destinationId": "milano_brera",
+      "titleJa": "一枚の絵、違う視線",
+      "descriptionJa": "一つの絵を前に、それぞれが気づいたことを話す。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "minAffection": 0,
+      "storyId": "milano/brera_date_01",
+      "requiredCompletedChapters": [],
+      "requiredCompletedEpisodeIds": [
+        "milano_last_supper_episode"
+      ],
+      "allowAfterEnding": true,
+      "requiredPlayedDateIds": [],
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "milano_brera_date",
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "この場所へ誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": false
+        }
+      ]
+    },
+    {
+      "id": "milano_navigli_date_01",
+      "kind": "normal",
+      "chapterId": "milano",
+      "destinationId": "milano_navigli",
+      "titleJa": "決めない寄り道",
+      "descriptionJa": "水辺の路地で、次に曲がる角を二人で探す。",
+      "apCost": 1,
+      "minRomanceStage": 1,
+      "minAffection": 0,
+      "storyId": "milano/navigli_date_01",
+      "requiredCompletedChapters": [],
+      "requiredCompletedEpisodeIds": [
+        "milano_castello_episode"
+      ],
+      "allowAfterEnding": true,
+      "requiredPlayedDateIds": [],
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "milano_navigli_date",
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "この場所へ誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": false
+        }
+      ]
     }
   ]
 }

@@ -161,6 +161,96 @@
       "id": "milano_city_date_second_honest",
       "affectionDelta": 3,
       "memoryId": "milano_city_date_second_honest"
+    },
+    {
+      "id": "milano_la_scala_first_joke",
+      "affectionDelta": 1,
+      "memoryId": "milano_la_scala_first_joke"
+    },
+    {
+      "id": "milano_la_scala_first_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_la_scala_first_listen"
+    },
+    {
+      "id": "milano_la_scala_first_honest",
+      "affectionDelta": 2,
+      "memoryId": "milano_la_scala_first_honest"
+    },
+    {
+      "id": "milano_la_scala_second_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_la_scala_second_joke"
+    },
+    {
+      "id": "milano_la_scala_second_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_la_scala_second_listen"
+    },
+    {
+      "id": "milano_la_scala_second_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_la_scala_second_honest"
+    },
+    {
+      "id": "milano_brera_first_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_brera_first_joke"
+    },
+    {
+      "id": "milano_brera_first_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_brera_first_listen"
+    },
+    {
+      "id": "milano_brera_first_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_brera_first_honest"
+    },
+    {
+      "id": "milano_brera_second_joke",
+      "affectionDelta": 1,
+      "memoryId": "milano_brera_second_joke"
+    },
+    {
+      "id": "milano_brera_second_listen",
+      "affectionDelta": 2,
+      "memoryId": "milano_brera_second_listen"
+    },
+    {
+      "id": "milano_brera_second_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_brera_second_honest"
+    },
+    {
+      "id": "milano_navigli_first_joke",
+      "affectionDelta": 1,
+      "memoryId": "milano_navigli_first_joke"
+    },
+    {
+      "id": "milano_navigli_first_listen",
+      "affectionDelta": 2,
+      "memoryId": "milano_navigli_first_listen"
+    },
+    {
+      "id": "milano_navigli_first_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_navigli_first_honest"
+    },
+    {
+      "id": "milano_navigli_second_joke",
+      "affectionDelta": 1,
+      "memoryId": "milano_navigli_second_joke"
+    },
+    {
+      "id": "milano_navigli_second_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_navigli_second_listen"
+    },
+    {
+      "id": "milano_navigli_second_honest",
+      "affectionDelta": 2,
+      "memoryId": "milano_navigli_second_honest"
     }
   ]
 }

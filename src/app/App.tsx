@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   balance,
   dates,
+  dateDestinations,
   presentation,
   battles,
   battleQuizzes,
@@ -251,6 +252,9 @@ export default function App() {
     confirmation?.kind === "date"
       ? dates.find((date) => date.id === confirmation.id)
       : undefined;
+  const selectedDestination = dateDestinations.find(
+    (destination) => destination.id === selectedDate?.destinationId,
+  );
   const nameForm = (
     <>
       <label>
@@ -652,7 +656,11 @@ export default function App() {
       {confirmation && (
         <Modal labelledBy="confirm-title" onClose={() => setConfirmation(null)}>
           <p className="eyebrow">デートのお誘い</p>
-          <h2 id="confirm-title">{selectedDate?.titleJa}を始めますか？</h2>
+          <h2 id="confirm-title">
+            {selectedDestination
+              ? `${selectedDestination.nameJa}のデートを始めますか？`
+              : `${selectedDate?.titleJa}を始めますか？`}
+          </h2>
           <p className="confirm-text">
             {selectedDate?.apCost
               ? `${selectedDate.apCost}APを使って、デートを始めます。`
