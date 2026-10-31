@@ -394,3 +394,149 @@
   .tourism-screen:not(.guide-active) > .replay-guide { order: 4; }
   .tourism-screen:not(.guide-active) > .tourism-credits { order: 5; }
 }
+
+.observation-notes-open,
+.observation-notes-header {
+  display: none;
+}
+
+/* Observation is an interactive game screen, not a long article on phones. */
+@media (max-width: 600px) and (min-height: 500px) {
+  .mobile-observation-active .tourism-screen:not(.guide-active) {
+    position: relative;
+    width: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .mobile-observation-active .tourism-screen:not(.guide-active) > .tourism-heading {
+    padding: 3px 12px 0;
+  }
+  .mobile-observation-active .tourism-screen:not(.guide-active) > .tourism-heading .eyebrow,
+  .mobile-observation-active .tourism-screen:not(.guide-active) > .tourism-heading .landmark-english,
+  .mobile-observation-active .tourism-screen:not(.guide-active) > .tourism-actions .fine-print {
+    display: none;
+  }
+  .mobile-observation-active .tourism-screen:not(.guide-active) > .tourism-toolbar {
+    position: static;
+    flex: none;
+    min-height: 44px;
+    padding: 0 12px;
+  }
+  .mobile-observation-active .tourism-screen:not(.guide-active) > .tourism-actions {
+    flex: none;
+    padding: 4px 12px;
+  }
+  .mobile-observation-active .tourism-screen:not(.guide-active) > .image-placeholder-note {
+    flex: none;
+    margin: 2px 12px;
+    padding: 3px 6px;
+    line-height: 1.4;
+  }
+  .mobile-observation-active .tourism-observation {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    min-height: 0;
+    padding: 0 12px 4px;
+  }
+  .mobile-observation-active .observation-viewer {
+    display: flex;
+    flex: 1 1 0;
+    flex-wrap: wrap;
+    align-content: start;
+    min-height: 0;
+    margin: 2px 0;
+  }
+  .mobile-observation-active .observation-viewport {
+    flex: 1 0 100%;
+    height: calc(100% - 85px);
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+  .mobile-observation-active .observation-controls { flex: 1 1 auto; }
+  .mobile-observation-active .observation-options { flex: none; }
+  .mobile-observation-active .observation-help {
+    display: block;
+    flex: 0 0 100%;
+    font-size: 11px;
+    line-height: 1.35;
+  }
+  .mobile-observation-active .observation-notes-open {
+    display: block;
+    flex: none;
+    min-height: 44px;
+    margin: 0;
+    padding: 5px 10px;
+    font-size: 13px;
+  }
+  .mobile-observation-active .observation-notes {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    inset: 6px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0 16px 18px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--paper);
+    box-shadow: 0 2px 18px #0004;
+  }
+  .mobile-observation-active .observation-notes[data-open="true"] { display: block; }
+  .mobile-observation-active .observation-notes-header {
+    position: sticky;
+    z-index: 1;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    background: var(--paper);
+  }
+  .mobile-observation-active .observation-notes[data-view="list"] .discovery-detail,
+  .mobile-observation-active .observation-notes[data-view="detail"] .observation-list-help,
+  .mobile-observation-active .observation-notes[data-view="detail"] .discovery-list,
+  .mobile-observation-active .observation-notes[data-view="detail"] .document-cards,
+  .mobile-observation-active .observation-notes[data-view="detail"] .replay-guide,
+  .mobile-observation-active .observation-notes[data-view="detail"] .tourism-credits { display: none; }
+  .mobile-observation-active .observation-notes .tourism-credits { margin: 12px 0 0; }
+}
+
+@media (max-width: 600px) and (min-height: 500px) {
+  .app-shell.mobile-observation-active {
+    height: 100dvh;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .mobile-observation-active > .masthead,
+  .mobile-observation-active > .journey-bar,
+  .mobile-observation-active > .journey-stage,
+  .mobile-observation-active > footer { display: none; }
+  .mobile-observation-active > main {
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .mobile-observation-active > main > .tourism-screen {
+    flex: 1 1 0;
+    min-height: 0;
+  }
+  .mobile-observation-active > main > .notice {
+    flex: none;
+    max-height: 25%;
+    overflow-y: auto;
+  }
+  .mobile-observation-active > .save-tools {
+    flex: none;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 8px;
+    margin: 0;
+    padding: 0 8px env(safe-area-inset-bottom);
+  }
+  .mobile-observation-active > .save-tools button { flex: 1; min-height: 44px; }
+  .mobile-observation-active > .save-tools > span { display: none; }
+}

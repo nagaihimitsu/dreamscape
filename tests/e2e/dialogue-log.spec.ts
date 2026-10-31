@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { saved, startLegacyJourney } from "./helpers";
-import { openTourismFromEntry } from "./tourism-helpers";
+import { openObservationList, openTourismFromEntry } from "./tourism-helpers";
 
 test.use({ reducedMotion: "reduce" });
 
@@ -26,6 +26,7 @@ test("guide log contains only displayed lines, leaves the save untouched, and re
   await expect(dialog).toContainText(second);
   await page.keyboard.press("Escape");
   await page.getByTestId("tourism-skip").click();
+  await openObservationList(page);
   await page.getByTestId("guide-replay").click();
   await page.getByTestId("tourism-guide").getByRole("button", { name: "会話ログ" }).click();
   await expect(dialog).toContainText(first);

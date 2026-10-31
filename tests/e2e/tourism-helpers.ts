@@ -44,6 +44,30 @@ export async function openCluebook(page: Page) {
   return page.getByRole("dialog", { name: "手がかり帳", exact: true });
 }
 
+/** On compact observation screens the point list is an overlay; on wider
+ * screens it is already present alongside the image. */
+export async function openObservationList(page: Page) {
+  const notes = page.locator(".observation-notes");
+  const open = page.getByRole("button", { name: "発見ポイント・資料を見る", exact: true });
+  if (await open.isVisible()) {
+    if (await notes.getAttribute("data-open") !== "true") await open.click();
+    if (await notes.getAttribute("data-view") === "detail") {
+      await notes.getByRole("button", { name: "一覧に戻る", exact: true }).click();
+    }
+  }
+}
+
+export async function closeObservationList(page: Page) {
+  const notes = page.locator(".observation-notes");
+  const close = notes.getByRole("button", { name: "観察に戻る", exact: true });
+  if (await close.isVisible()) await close.click();
+}
+
+export async function selectObservationClue(page: Page, id: string) {
+  await openObservationList(page);
+  await page.getByTestId(`discovery-${id}`).click();
+}
+
 /** Change only the currently displayed page; the selected evidence is saved separately. */
 export async function showClue(page: Page, clueId: string) {
   await page.getByTestId("clue-picker").selectOption(clueId);

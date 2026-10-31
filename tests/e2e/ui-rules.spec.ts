@@ -26,11 +26,14 @@ test("mobile start and optional sightseeing keep the next action easy to reach",
     name: "バトルを始める",
     exact: true,
   });
-  const points = page.locator(".discovery-list");
+  const points = page.getByRole("button", { name: "発見ポイント・資料を見る", exact: true });
   await expect(battle).toBeVisible();
-  expect((await battle.boundingBox())!.y).toBeLessThan(
-    (await points.boundingBox())!.y,
-  );
+  await expect(points).toBeVisible();
+  for (const element of [battle, points]) {
+    const box = (await element.boundingBox())!;
+    expect(box.y).toBeGreaterThanOrEqual(0);
+    expect(box.y + box.height).toBeLessThanOrEqual(780);
+  }
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,

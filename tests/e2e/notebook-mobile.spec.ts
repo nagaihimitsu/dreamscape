@@ -51,12 +51,10 @@ for (const height of [640, 780]) {
   });
 }
 
-test("observation keeps the notebook reachable while reading below the image", async ({ page }) => {
+test("observation keeps the notebook reachable and preserves its place", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await loadSnapshot(page, phase6.discovered);
-  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
   const scrollY = await page.evaluate(() => window.scrollY);
-  expect(scrollY).toBeGreaterThan(0);
   const open = page.getByRole("button", { name: "手がかり帳", exact: true });
   await expectFullyVisible(page, open);
   const before = await saved(page);

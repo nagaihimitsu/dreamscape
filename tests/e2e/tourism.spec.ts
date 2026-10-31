@@ -18,7 +18,10 @@ import {
 import {
   expectImageWithinPanBounds,
   finishTourismGuide,
+  closeObservationList,
   openCluebook,
+  openObservationList,
+  selectObservationClue,
   showClue,
   openTourismFromEntry,
   skipTourismGuide,
@@ -68,6 +71,7 @@ test("a named guide resumes, the real image loads, and every discovery persists 
   expect(
     await image.evaluate((element: HTMLImageElement) => element.naturalWidth),
   ).toBe(asset.width);
+  await openObservationList(page);
   await page.getByText("画像の出典と利用条件", { exact: true }).click();
   await expect(page.locator(".tourism-credits a").first()).toHaveAttribute(
     "href",
@@ -78,6 +82,7 @@ test("a named guide resumes, the real image loads, and every discovery persists 
     asset.licenseUrl,
   );
   await page.getByText("画像の出典と利用条件", { exact: true }).click();
+  await closeObservationList(page);
   expect((await saved(page)).discoveredClueIds).toEqual([]);
 
   for (const clue of hotspots) {
@@ -97,17 +102,19 @@ test("a named guide resumes, the real image loads, and every discovery persists 
       .poll(async () => (await saved(page)).discoveredClueIds.includes(clue.id))
       .toBe(true);
     const found = await saved(page);
-    await page.getByTestId(`discovery-${clue.id}`).click();
+    await selectObservationClue(page, clue.id);
     expect((await saved(page)).discoveredClueIds).toEqual(
       found.discoveredClueIds,
     );
     await expectImageWithinPanBounds(page);
+    await closeObservationList(page);
   }
-  await page.getByTestId(`discovery-${document.id}`).click();
+  await selectObservationClue(page, document.id);
   await expect(page.getByTestId("discovery-detail")).toContainText(
     document.descriptionJa,
   );
   expect((await saved(page)).discoveredClueIds).toHaveLength(clues.length);
+  await closeObservationList(page);
   expect(romanceProgress(await saved(page))).toEqual(before);
   await reloadUnchanged(page);
   const book = await openCluebook(page);
@@ -222,8 +229,9 @@ test("battle cluebook preserves the question, open hint and locked answer, inclu
   const romance = romanceProgress(await saved(page));
   await openTourismFromEntry(page);
   await skipTourismGuide(page);
-  await page.getByTestId(`discovery-${hotspots[0].id}`).click();
-  await page.getByTestId(`discovery-${document.id}`).click();
+  await selectObservationClue(page, hotspots[0].id);
+  await selectObservationClue(page, document.id);
+  await closeObservationList(page);
   await page
     .getByRole("button", { name: "バトルを始める", exact: true })
     .click();
@@ -266,7 +274,8 @@ test("battle cluebook preserves the question, open hint and locked answer, inclu
     .click();
   await expect(page.getByTestId("observation-viewport")).toBeVisible();
   expect((await saved(page)).activeBattle).toEqual(answered.activeBattle);
-  await page.getByTestId(`discovery-${hotspots[1].id}`).click();
+  await selectObservationClue(page, hotspots[1].id);
+  await closeObservationList(page);
   await reloadUnchanged(page);
   expect((await saved(page)).activeBattle).toEqual(answered.activeBattle);
   await page.getByRole("button", { name: "バトルに戻る", exact: true }).click();
@@ -334,7 +343,8 @@ test("an authentic Phase 3 answered battle migrates without changing its answer 
     .getByRole("button", { name: "観光に戻って調べる", exact: true })
     .click();
   await skipTourismGuide(page);
-  await page.getByTestId(`discovery-${hotspots[0].id}`).click();
+  await selectObservationClue(page, hotspots[0].id);
+  await closeObservationList(page);
   const migrated = await saved(page);
   expect(migrated.schemaVersion).toBe(7);
   expect(migrated.activeBattle).toEqual({
@@ -371,7 +381,8 @@ test("a Phase 3 romance ending can visit and leave tourism without changing the 
   const initial = romanceProgress(await saved(page));
   await openTourismFromEntry(page);
   await finishTourismGuide(page);
-  await page.getByTestId(`discovery-${document.id}`).click();
+  await selectObservationClue(page, document.id);
+  await closeObservationList(page);
   await page
     .getByRole("button", { name: "自由時間へ戻る", exact: true })
     .click();

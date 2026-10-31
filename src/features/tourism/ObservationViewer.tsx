@@ -322,7 +322,7 @@ export function ObservationViewer({
         </button>
       </div>
       <p id="observation-help" className="observation-help">
-        番号をタップして観察。2本指で拡大し、ドラッグで移動できます。キーボードでは矢印キーで移動できます。
+        番号をタップ。2本指で拡大、ドラッグで移動。キーボードでは矢印キーで移動できます。
       </p>
     </div>
   );

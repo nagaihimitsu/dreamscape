@@ -22,6 +22,7 @@ import {
 import {
   finishTourismGuide,
   expectImageWithinPanBounds,
+  openObservationList,
   skipTourismGuide,
 } from "./tourism-helpers";
 import { enterFreeTime } from "./journey-helpers";
@@ -253,6 +254,7 @@ test("all four photographs and discoveries persist, and the five-question boss s
   await openCityRecords(page);
   await page.getByTestId(`city-visit-${cityEpisodes[0].id}`).click();
   expect((await saved(page)).activeTourism!.phase).toBe("exploring");
+  await openObservationList(page);
   await page.getByTestId("guide-replay").click();
   await finishTourismGuide(page);
   expect(availableAp(await saved(page))).toBe(availableAp(perfect.state));

@@ -14,7 +14,7 @@ import {
   romanceProgress,
   startBattleFromEntry,
 } from "./battle-helpers";
-import { finishTourismGuide, openTourismFromEntry } from "./tourism-helpers";
+import { finishTourismGuide, openObservationList, openTourismFromEntry } from "./tourism-helpers";
 import { enterFreeTime } from "./journey-helpers";
 
 test.use({ reducedMotion: "reduce" });
@@ -43,6 +43,7 @@ test("a full guide and successful battle grant seven AP once and lead directly t
   expect(guide.completedGuideIds).toEqual(["last_supper"]);
   expect(guide.claimedRewardIds).toEqual([rewards[0]]);
   await reloadUnchanged(page);
+  await openObservationList(page);
   await page.getByTestId("guide-replay").click();
   await finishTourismGuide(page);
   expect((await saved(page)).ap).toBe(1);

@@ -64,8 +64,13 @@ export function TourismScreen({
     }));
   const documents = clues.filter((clue) => clue.kind === "document");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [notesOpen, setNotesOpen] = useState(false);
+  const [notesView, setNotesView] = useState<"list" | "detail">("list");
   const [focusRequest, setFocusRequest] = useState(0);
   const shouldScrollToSelection = useRef(true);
+  const notesCloseRef = useRef<HTMLButtonElement>(null);
+  const notesRef = useRef<HTMLDivElement>(null);
+  const previousFocus = useRef<HTMLElement | null>(null);
   const selected = clues.find((clue) => clue.id === selectedId);
   const frame = active.frame;
   const speaker =
@@ -101,7 +106,7 @@ export function TourismScreen({
   }, [active.landmarkId]);
 
   useEffect(() => {
-    if (!focusRequest || !shouldScrollToSelection.current) return;
+    if (!focusRequest || !shouldScrollToSelection.current || window.matchMedia("(max-width: 600px) and (min-height: 500px)").matches) return;
     const target =
       selected?.kind === "document"
         ? "discovery-detail"
@@ -111,11 +116,35 @@ export function TourismScreen({
       ?.scrollIntoView({ block: "start" });
   }, [focusRequest, selected?.kind]);
 
+  useEffect(() => {
+    if (active.phase === "guide") setNotesOpen(false);
+  }, [active.phase]);
+
+  useEffect(() => {
+    if (notesOpen && notesRef.current) notesRef.current.scrollTop = 0;
+  }, [notesOpen, notesView, selectedId]);
+
+  useEffect(() => {
+    if (!notesOpen || !window.matchMedia("(max-width: 600px) and (min-height: 500px)").matches) return;
+    previousFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    notesCloseRef.current?.focus();
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setNotesOpen(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      window.removeEventListener("keydown", closeOnEscape);
+      previousFocus.current?.focus();
+    };
+  }, [notesOpen]);
+
   function selectClue(id: string, movePage = true) {
     if (onDiscover(id)) {
       // A marker is already in view; centering it must not also jump the page.
       shouldScrollToSelection.current = movePage;
       setSelectedId(id);
+      setNotesView("detail");
+      setNotesOpen(true);
       setFocusRequest((value) => value + 1);
     }
   }
@@ -173,17 +202,6 @@ export function TourismScreen({
         <p className="image-placeholder-note">
           仮画像です。実物の細部を再現した資料ではありません。
         </p>
-      )}
-      {active.phase === "exploring" && (
-        <div className="replay-guide">
-          <button
-            className="text-button"
-            data-testid="guide-replay"
-            onClick={onReplayGuide}
-          >
-            観光案内をもう一度読む
-          </button>
-        </div>
       )}
       {active.phase === "guide" && frame ? (
         <div className="vn-scene tourism-guide-scene" data-dialogue-hidden={windowVisibility.hidden || undefined}>
@@ -266,7 +284,14 @@ export function TourismScreen({
             focusRequest={focusRequest}
             onSelect={(id) => selectClue(id, false)}
           />
-          <div className="observation-notes">
+          <button className="observation-notes-open secondary" onClick={() => { setNotesView("list"); setNotesOpen(true); }}>
+            発見ポイント・資料を見る
+          </button>
+          <div ref={notesRef} className="observation-notes" role="region" aria-label="観察ポイントと資料" data-open={notesOpen} data-view={notesView}>
+            <div className="observation-notes-header">
+              <button className="text-button" onClick={() => setNotesView("list")} disabled={notesView === "list"}>一覧に戻る</button>
+              <button ref={notesCloseRef} className="text-button" onClick={() => setNotesOpen(false)}>観察に戻る</button>
+            </div>
             {selected && (
               <article
                 className="discovery-detail"
@@ -277,7 +302,7 @@ export function TourismScreen({
                 <ClueDetails clue={selected} />
               </article>
             )}
-            <p className="fine-print">
+            <p className="fine-print observation-list-help">
               印をタップすると、その場所に近づきます。下の一覧からも選べます。
             </p>
             <div className="discovery-list" aria-label="画像の観察ポイント">
@@ -321,10 +346,21 @@ export function TourismScreen({
                 ))}
               </div>
             )}
+            <div className="replay-guide">
+              <button className="text-button" data-testid="guide-replay" onClick={onReplayGuide}>
+                観光案内をもう一度読む
+              </button>
+            </div>
+            <details className="tourism-credits">
+              <summary>画像の出典と利用条件</summary>
+              <p>{asset.creditJa}</p>
+              <p>{asset.modificationJa}</p>
+              <p><a href={asset.sourceUrl} target="_blank" rel="noreferrer">画像の出典</a> · <a href={asset.licenseUrl} target="_blank" rel="noreferrer">{asset.licenseName}</a></p>
+            </details>
           </div>
         </div>
       )}
-      <details className="tourism-credits">
+      {active.phase === "guide" && <details className="tourism-credits">
         <summary>画像の出典と利用条件</summary>
         <p>{asset.creditJa}</p>
         <p>{asset.modificationJa}</p>
@@ -337,7 +373,7 @@ export function TourismScreen({
             {asset.licenseName}
           </a>
         </p>
-      </details>
+      </details>}
       {active.phase === "guide" && actions}
     </section>
   );
