@@ -66,38 +66,47 @@ export async function validateTourism(
     const compiled = stories[landmark.guideStoryId];
     if (!compiled)
       throw new Error(`Unknown tourism guideStoryId: ${landmark.guideStoryId}`);
-    const story = new Story(compiled);
-    story.onError = (message) => {
-      throw new Error(message);
-    };
-    for (const [name, value] of Object.entries({
-      player_name: "検証主人公",
-      heroine_name: "検証ヒロイン",
-      player_address: "検証主人公さん",
-    })) {
-      if (!story.variablesState.GlobalVariableExistsWithName(name))
-        throw new Error(`Missing tourism guide variable: ${name}`);
-      story.variablesState.$(name, value);
-    }
-    let count = 0;
-    let hasText = false;
-    while (story.canContinue) {
-      if (++count > 40) throw new Error("Tourism guide loops or is too long");
-      const line = story.Continue()?.trim() ?? "";
-      const tags = parseStoryTags(story.currentTags ?? [], context);
-      if (tags.effects.length)
-        throw new Error("Tourism guide cannot grant effects");
-      if (line) {
-        hasText = true;
-        if (
-          !/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(line)
-        )
-          throw new Error("Tourism guide must be Japanese");
+    try {
+      const story = new Story(compiled);
+      story.onError = (message) => {
+        throw new Error(message);
+      };
+      for (const [name, value] of Object.entries({
+        player_name: "検証主人公",
+        heroine_name: "検証ヒロイン",
+        player_address: "検証主人公さん",
+      })) {
+        if (!story.variablesState.GlobalVariableExistsWithName(name))
+          throw new Error(`Missing tourism guide variable: ${name}`);
+        story.variablesState.$(name, value);
       }
+      let count = 0;
+      let hasText = false;
+      while (story.canContinue) {
+        if (++count > 40) throw new Error("Tourism guide loops or is too long");
+        const line = story.Continue()?.trim() ?? "";
+        const tags = parseStoryTags(story.currentTags ?? [], context);
+        if (tags.effects.length)
+          throw new Error("Tourism guide cannot grant effects");
+        if (line) {
+          hasText = true;
+          if (
+            !/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(
+              line,
+            )
+          )
+            throw new Error("Tourism guide must be Japanese");
+        }
+      }
+      if (!hasText) throw new Error("Tourism guide is empty");
+      if (story.currentChoices.length)
+        throw new Error("Tourism guide cannot contain choices");
+    } catch (error) {
+      throw new Error(
+        `content/stories/${landmark.guideStoryId}.ink (landmark ${landmark.id}): ${error instanceof Error ? error.message : String(error)}`,
+        { cause: error },
+      );
     }
-    if (!hasText) throw new Error("Tourism guide is empty");
-    if (story.currentChoices.length)
-      throw new Error("Tourism guide cannot contain choices");
     guideCount++;
   }
   for (const clue of catalog.clues) {

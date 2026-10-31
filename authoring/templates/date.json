@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "dates": [
+    {
+      "id": "milano_cafe_01",
+      "chapterId": "milano",
+      "titleJa": "運河沿いのカフェ",
+      "descriptionJa": "予定のない午後、二人で話す短いデート。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "milano/cafe_01",
+      "requiredCompletedChapters": [
+        "milano"
+      ],
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "milano_cafe",
+      "kind": "normal",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": true,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "カフェデートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ]
+    }
+  ]
+}

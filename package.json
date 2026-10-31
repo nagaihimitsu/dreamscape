@@ -13,7 +13,9 @@
     "preview": "vite preview --host 0.0.0.0",
     "pretest": "npm run content:build",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "content:inspect": "tsx scripts/inspect-content.ts",
+    "content:compat": "npm run content:build && vitest run src/persistence"
   },
   "dependencies": {
     "inkjs": "^2.4.0",

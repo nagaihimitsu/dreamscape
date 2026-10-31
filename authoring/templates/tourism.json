@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "id": "duomo_milano_photo",
+      "path": "assets/tourism/duomo-milano.webp",
+      "width": 2560,
+      "height": 2224,
+      "altJa": "ミラノ大聖堂の正面。淡い大理石の壁、尖塔の上の人物像、中央の大窓と入口が、広場から見える。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:20110724_Milan_Cathedral_5260.jpg",
+      "licenseName": "CC BY-SA 4.0（写真および縮小・WebP変換版）",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Jakub Hałun（2011年7月24日）／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "原画像3140×2728pxを全体の構図を保って2560×2224pxへ縮小しWebP変換。切り抜き、反転、描き足し、生成AI加工なし。変換画像もCC BY-SA 4.0で提供。",
+      "checkedAt": "2026-10-30"
+    }
+  ],
+  "landmarks": [
+    {
+      "id": "duomo_milano",
+      "cityId": "milano",
+      "nameJa": "ミラノ大聖堂（ドゥオモ）",
+      "nameEn": "Milan Cathedral (Duomo di Milano)",
+      "descriptionJa": "空へ伸びる石の尖塔。その石がここへ届き、今も残るまでの旅を見つける。",
+      "imageAssetId": "duomo_milano_photo",
+      "guideStoryId": "tourism/duomo_guide",
+      "battleId": "milano_duomo_01",
+      "clueIds": [
+        "duomo_marble_surface",
+        "duomo_spire_figures",
+        "duomo_marble_waterway",
+        "duomo_original_and_copy"
+      ]
+    }
+  ],
+  "clues": [
+    {
+      "id": "duomo_marble_surface",
+      "landmarkId": "duomo_milano",
+      "kind": "hotspot",
+      "titleJa": "白一色ではない石の肌",
+      "descriptionJa": "正面の石を見比べると、明るい部分にも淡い色や筋があります。公式資料によると、建設に使われたのは桃色の筋をもつカンドーリアの大理石。写真から産地を断定するのではなく、見える表面と採石場の記録を結びつける手がかりです。",
+      "factId": "duomo_candoglia_material",
+      "relatedQuestionIds": [
+        "duomo_candoglia_marble"
+      ],
+      "region": {
+        "x": 0.375,
+        "y": 0.31,
+        "width": 0.09,
+        "height": 0.27
+      },
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+          "title": "The Candoglia Quarry: at the Duomo’s Roots",
+          "url": "https://www.duomomilano.it/en/about-us/the-candoglia-quarry/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "大聖堂に使う大理石はピエモンテ州カンドーリアの採石場に由来し、桃色の筋をもつと説明している。計画当初の煉瓦から大理石へ変更した経緯も記載されている。"
+        }
+      ]
+    },
+    {
+      "id": "duomo_spire_figures",
+      "landmarkId": "duomo_milano",
+      "kind": "hotspot",
+      "titleJa": "尖塔の上にも、人がいる",
+      "descriptionJa": "尖った輪郭の先を拡大すると、人物像が立っています。建物の屋根をただ尖らせただけではなく、一つずつ彫刻が組み込まれた姿です。写真だけで個々の像の制作年代や、原像か写しかまでは判断できません。",
+      "factId": "duomo_spire_sculpture",
+      "relatedQuestionIds": [
+        "duomo_statue_copies"
+      ],
+      "region": {
+        "x": 0.545,
+        "y": 0.04,
+        "width": 0.09,
+        "height": 0.27
+      },
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+          "title": "Adopt a Spire — statues and façade spires",
+          "url": "https://www.duomomilano.it/en/support/adopt-a-spire/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "公式の尖塔一覧は、正面の尖塔上に立つ聖アグリコラや聖ジェネシウスなどの像を紹介している。尖塔と、その頂上の人物像を別の要素として確認できる。"
+        }
+      ]
+    },
+    {
+      "id": "duomo_marble_waterway",
+      "landmarkId": "duomo_milano",
+      "kind": "document",
+      "titleJa": "石の旅は、水の上を通った",
+      "descriptionJa": "大理石は船に載せられ、トーチェ川からマッジョーレ湖へ、ティチーノ川とナヴィリオ・グランデを経て街へ運ばれました。大聖堂近くには石材を降ろす船溜まりもありました。広場の写真に水路は写っていませんが、建物の大きさを支えた道です。",
+      "factId": "duomo_transport_network",
+      "relatedQuestionIds": [
+        "duomo_water_transport"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+          "title": "The Candoglia Quarry: at the Duomo’s Roots — transport route",
+          "url": "https://www.duomomilano.it/en/about-us/the-candoglia-quarry/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "石材はトーチェ川、マッジョーレ湖、ティチーノ川、ナヴィリオ・グランデを通り、閘門を経て大聖堂近くの小さな船溜まりへ運ばれた。水運は1920年まで続いたと記載されている。"
+        }
+      ]
+    },
+    {
+      "id": "duomo_original_and_copy",
+      "landmarkId": "duomo_milano",
+      "kind": "document",
+      "titleJa": "同じ場所を、別の石が受け継ぐ",
+      "descriptionJa": "カレッリ尖塔の聖ゲオルギウス像は、空襲で損傷した原像を守るため、1950年代に写しへ置き換えられました。修復された原像は大聖堂美術館にあります。この尖塔は正面写真では確認できないため、資料として扱います。写しと原像は、屋外の姿を保つ役割と作品を保存する役割を分けています。",
+      "factId": "duomo_carelli_copy_conservation",
+      "relatedQuestionIds": [
+        "duomo_statue_copies"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+          "title": "Adopt a Spire — G6, St. George (Carelli Spire)",
+          "url": "https://www.duomomilano.it/en/support/adopt-a-spire/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "カレッリ尖塔の聖ゲオルギウス像は、1943年の空襲で損傷した1403年の原像を保存するため、1950年代にマリオ・バセッティが制作した写し。修復された原像は大聖堂美術館に展示されていると説明している。"
+        }
+      ]
+    }
+  ]
+}

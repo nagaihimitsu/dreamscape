@@ -103,6 +103,21 @@ Bの争点は、乾式技法による劣化と、後世の出入口拡張によ�
 
 通常デートの再鑑賞にもAPを使い、好感度・思い出は再獲得しません。必須の未体験デートの資金を使い切る再鑑賞は防止します。交際エンディングは保存され、到達後も観光・バトル・都市エピローグ・新しい短編都市デートを楽しめます。
 
+## コンテンツ制作の始め方（Phase 8）
+
+[制作マニュアル](authoring/CONTENT_GUIDE.md) と [テンプレート](authoring/templates/) に、観光地・発見・クイズ・A/B/C戦・デート・案内・都市進行の正規JSONとInkの編集例があります。直接編集しても、AIが提案した文章を転記しても、同じ形式と検証を使います。`authoring/drafts/` は必要に応じて使える任意の下書き置き場で、ゲームに読み込まれません。採用は通常のGitレビューで行います。
+
+```sh
+npm run content:inspect -- content/quizzes/duomo_B1.json
+npm run content:inspect -- --type quiz authoring/templates/quiz.json
+npm run content:inspect -- --all
+npm run content:compat
+```
+
+単体検証はJSON構文・型やInkコンパイルを確認します。ファイル間の参照、実行時タグ、画像、報酬条件は `--all` または `npm run content:check` で検証してください。`content:compat` は同梱の既存セーブ例を使う互換テストであり、すべてのプレイヤーの途中データの互換性を保証するものではありません。公開済みIDの変更や、進行中Ink・問題の改稿は保存データに影響し得ます。文章の面白さ、英文の自然さ、史実と画像使用権は人が確認します。
+
+[将来の都市追加手順](authoring/FUTURE_CITIES.md) には、現在の単一都市前提と後続で必要なコード・セーブ対応を記しています。別の都市ファイルを置くだけで複数都市を遊べる状態にはなりません。
+
 ## 文章・データの編集
 
 会話の編集元は `content/stories/milano/` の各 `.ink` ファイルです。既存 [`cafe_01.ink`](content/stories/milano/cafe_01.ink) はPhase 1から変更していません。台詞と選択肢をReactに埋め込まず、Inkに置いています。

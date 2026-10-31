@@ -41,6 +41,32 @@ async function json(file: string): Promise<unknown> {
   }
 }
 
+async function parseFile<T>(
+  schema: { parse(value: unknown): T },
+  file: string,
+): Promise<T> {
+  const data = await json(file);
+  try {
+    return schema.parse(data);
+  } catch (error) {
+    throw new Error(
+      `Invalid content in ${file}: ${error instanceof Error ? error.message : String(error)}`,
+      { cause: error },
+    );
+  }
+}
+
+function withContext<T>(label: string, action: () => T): T {
+  try {
+    return action();
+  } catch (error) {
+    throw new Error(
+      `${label}: ${error instanceof Error ? error.message : String(error)}`,
+      { cause: error },
+    );
+  }
+}
+
 function unique(values: string[], kind: string) {
   if (new Set(values).size !== values.length)
     throw new Error(`Duplicate ${kind}`);
@@ -196,41 +222,90 @@ export function validateStory(
   return routes;
 }
 
+/** Check facts contained within one quiz; cross-file references are checked by buildContent. */
+export function validateQuizEntries(quiz: {
+  questions: {
+    id: string;
+    options: { id: string; textEn: string }[];
+    correctOptionId: string;
+  }[];
+}): void {
+  unique(
+    quiz.questions.map((question) => question.id),
+    "quiz question ID",
+  );
+  for (const question of quiz.questions) {
+    unique(
+      question.options.map((option) => option.id),
+      "quiz option ID",
+    );
+    unique(
+      question.options.map((option) => option.textEn.toLowerCase()),
+      "quiz option text",
+    );
+    if (
+      question.options.filter(
+        (option) => option.id === question.correctOptionId,
+      ).length !== 1
+    ) {
+      throw new Error(`Invalid correct option: ${question.id}`);
+    }
+  }
+}
+
 export async function buildContent(root: string, writeOutput = true) {
   const content = path.join(root, "content");
-  const journey = journeySchema.parse(
-    await json(path.join(content, "progression/journey.json")),
+  const journey = await parseFile(
+    journeySchema,
+    path.join(content, "progression/journey.json"),
   );
-  const tourism = tourismCatalogSchema.parse(
-    await json(path.join(content, "tourism/catalog.json")),
+  const tourism = await parseFile(
+    tourismCatalogSchema,
+    path.join(content, "tourism/catalog.json"),
   );
-  const battles = battleCatalogSchema.parse(
-    await json(path.join(content, "battles/catalog.json")),
+  const battles = (
+    await parseFile(
+      battleCatalogSchema,
+      path.join(content, "battles/catalog.json"),
+    )
   ).battles;
   unique(
     battles.map((battle) => battle.id),
     "battleId",
   );
-  const dates = dateCatalogSchema.parse(
-    await json(path.join(content, "romance/date_catalog.json")),
+  const dates = (
+    await parseFile(
+      dateCatalogSchema,
+      path.join(content, "romance/date_catalog.json"),
+    )
   ).dates;
-  const effects = effectCatalogSchema.parse(
-    await json(path.join(content, "romance/effect_catalog.json")),
+  const effects = (
+    await parseFile(
+      effectCatalogSchema,
+      path.join(content, "romance/effect_catalog.json"),
+    )
   ).effects;
-  const city = citySchema.parse(
-    await json(path.join(content, "cities/milano.json")),
+  const city = await parseFile(
+    citySchema,
+    path.join(content, "cities/milano.json"),
   );
-  const balance = balanceSchema.parse(
-    await json(path.join(content, "romance/balance.json")),
+  const balance = await parseFile(
+    balanceSchema,
+    path.join(content, "romance/balance.json"),
   );
-  const presentation = presentationSchema.parse(
-    await json(path.join(content, "romance/presentation.json")),
+  const presentation = await parseFile(
+    presentationSchema,
+    path.join(content, "romance/presentation.json"),
   );
-  const progression = progressionSchema.parse(
-    await json(path.join(content, "romance/progression.json")),
+  const progression = await parseFile(
+    progressionSchema,
+    path.join(content, "romance/progression.json"),
   );
-  const milestones = trialProgressionSchema.parse(
-    await json(path.join(content, "romance/trial_progression.json")),
+  const milestones = (
+    await parseFile(
+      trialProgressionSchema,
+      path.join(content, "romance/trial_progression.json"),
+    )
   ).milestones;
   unique(
     dates.map((date) => date.id),
@@ -326,19 +401,23 @@ export async function buildContent(root: string, writeOutput = true) {
         progression.memoryCallbacks.find(
           (callback) => callback.memoryId === seed.memoryId,
         )?.textJa ?? progression.fallbackMemoryCallbackJa;
-      routes += validateStory(
-        stories[date.storyId],
-        context,
-        date,
-        {
-          player_address: `検証主人公${suffix}`,
-          romance_stage: seed.romanceStage,
-          memory_callback: memory,
-          confession_ready: seed.confessionReady,
-          ending_reached: seed.endingReached ?? false,
-          has_cafe_memory: seed.hasCafeMemory ?? false,
-        },
-        effects,
+      routes += withContext(
+        `content/stories/${date.storyId}.ink (date ${date.id})`,
+        () =>
+          validateStory(
+            stories[date.storyId],
+            context,
+            date,
+            {
+              player_address: `検証主人公${suffix}`,
+              romance_stage: seed.romanceStage,
+              memory_callback: memory,
+              confession_ready: seed.confessionReady,
+              ending_reached: seed.endingReached ?? false,
+              has_cafe_memory: seed.hasCafeMemory ?? false,
+            },
+            effects,
+          ),
       );
     }
   }
@@ -402,13 +481,12 @@ export async function buildContent(root: string, writeOutput = true) {
   for (const file of await filesIn(path.join(content, "quizzes"))) {
     if (!file.endsWith(".json")) continue;
     const isSample = file.endsWith(".sample.json");
-    const data = await json(file);
     const quiz = isSample
-      ? quizSampleSchema.parse(data)
-      : quizSchema.parse(data);
+      ? await parseFile(quizSampleSchema, file)
+      : await parseFile(quizSchema, file);
     if (!isSample) {
       if (quizzes[quiz.id]) throw new Error(`Duplicate quizId: ${quiz.id}`);
-      quizzes[quiz.id] = quizSchema.parse(data);
+      quizzes[quiz.id] = quiz as QuizDefinition;
       productionQuestionIds.push(
         ...quiz.questions.map((question) => question.id),
       );
@@ -421,26 +499,13 @@ export async function buildContent(root: string, writeOutput = true) {
       !city.landmarkIdsPlanned.includes(quiz.landmarkId)
     )
       throw new Error(`Unknown landmark: ${quiz.landmarkId}`);
-    unique(
-      quiz.questions.map((question) => question.id),
-      "quiz question ID",
-    );
-    for (const question of quiz.questions) {
-      unique(
-        question.options.map((option) => option.id),
-        "quiz option ID",
+    try {
+      validateQuizEntries(quiz);
+    } catch (error) {
+      throw new Error(
+        `Invalid quiz in ${file}: ${error instanceof Error ? error.message : String(error)}`,
+        { cause: error },
       );
-      unique(
-        question.options.map((option) => option.textEn.toLowerCase()),
-        "quiz option text",
-      );
-      if (
-        question.options.filter(
-          (option) => option.id === question.correctOptionId,
-        ).length !== 1
-      ) {
-        throw new Error(`Invalid correct option: ${question.id}`);
-      }
     }
   }
   unique(productionQuestionIds, "production quiz question ID");
@@ -477,10 +542,9 @@ export async function buildContent(root: string, writeOutput = true) {
       ],
       "battle scene",
     );
-    battleScenarios += validateBattleStory(
-      stories[battle.storyId],
-      battle,
-      context,
+    battleScenarios += withContext(
+      `content/stories/${battle.storyId}.ink (battle ${battle.id})`,
+      () => validateBattleStory(stories[battle.storyId], battle, context),
     );
   }
   const tourismGuides = await validateTourism(
@@ -509,7 +573,10 @@ export async function buildContent(root: string, writeOutput = true) {
     const compiled = stories[episode.epilogueStoryId];
     if (!compiled)
       throw new Error(`Unknown epilogue story: ${episode.epilogueStoryId}`);
-    epilogueScenarios += validateEpilogue(compiled, context);
+    epilogueScenarios += withContext(
+      `content/stories/${episode.epilogueStoryId}.ink`,
+      () => validateEpilogue(compiled, context),
+    );
   }
   for (const storyId of Object.keys(stories)) {
     if (

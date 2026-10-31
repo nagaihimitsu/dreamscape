@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "battles": [
+    {
+      "id": "milano_last_supper_c01",
+      "titleJa": "仕切りの向こうで会いましょう",
+      "descriptionJa": "名前と名字まで別々にしまう男。二枚の資料を結び、絵の中の関係を考える。全3問のうち第3問は証拠連結。",
+      "enemyNameJa": "エットレ・セパラート",
+      "enemyTitleJa": "関係を仕切る分類家",
+      "enemyDescriptionJa": "隣り合うものの間には仕切りを入れる男。パンとチーズにも容赦しない。一つずつ丁寧に見たい気持ちが、いつの間にか孤立の規則になった。",
+      "storyId": "battles/milano_last_supper_c",
+      "quizId": "milano_last_supper_c_reasoning_b1",
+      "format": "C",
+      "landmarkId": "last_supper",
+      "backgroundAssetId": "milano_refectory",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2"
+        ],
+        "outro": "outro"
+      },
+      "reasoning": {
+        "kind": "connection",
+        "roundIndex": 2,
+        "caseClueIds": [
+          "last_supper_perspective",
+          "last_supper_apostle_groups",
+          "last_supper_doorway",
+          "last_supper_technique_card"
+        ],
+        "correctClueIds": [
+          "last_supper_apostle_groups",
+          "last_supper_perspective"
+        ],
+        "claimScene": "claim",
+        "successScene": "evidence_success",
+        "failureScene": "evidence_failure"
+      }
+    }
+  ]
+}

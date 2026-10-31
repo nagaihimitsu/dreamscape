@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "battles": [
+    {
+      "id": "milano_duomo_01",
+      "titleJa": "肩だけで、街は運べない",
+      "descriptionJa": "地図にまで重りを載せる運び屋。石の出身地、旅の道、残し方から、「一人で耐える」誇りをほどく。",
+      "landmarkId": "duomo_milano",
+      "enemyNameJa": "ブルーノ・ザヴォッラ",
+      "enemyTitleJa": "重さを背負う運び屋",
+      "enemyDescriptionJa": "大きな肩当てと、分銅付きの靴。価値ある物は自分の肩で運ぶべきだと信じ、手伝いを頼むのが誰より苦手。",
+      "storyId": "battles/milano_duomo",
+      "quizId": "milano_duomo_b1",
+      "backgroundAssetId": "milano_duomo",
+      "portrait": "porter",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2"
+        ],
+        "outro": "outro"
+      }
+    }
+  ]
+}
