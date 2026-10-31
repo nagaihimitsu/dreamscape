@@ -131,7 +131,6 @@
 
 .learning-summary {
   background: #eef0e6;
-  border-left: 3px solid var(--green);
   padding: 10px 12px;
 }
 
@@ -173,7 +172,6 @@
   letter-spacing: normal;
   color: #294c40;
   background: #e8efe2;
-  border-left: 3px solid #658768;
   padding: 8px 10px;
   margin-top: 8px;
 }

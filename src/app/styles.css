@@ -915,8 +915,7 @@ dialog.modal::backdrop {
 .invitation-card blockquote {
   font-family: "Noto Serif JP", serif;
   margin: 22px 0;
-  padding: 0 0 0 16px;
-  border-left: 2px solid #b4bea5;
+  padding: 0;
   line-height: 2;
   color: #425741;
   overflow-wrap: anywhere;
@@ -963,7 +962,6 @@ dialog.modal::backdrop {
   margin-bottom: 25px;
   padding: 22px 20px;
   background: #eeeadf;
-  border-left: 3px solid #b5a484;
 }
 .deferred-note h2 {
   font-size: 20px;

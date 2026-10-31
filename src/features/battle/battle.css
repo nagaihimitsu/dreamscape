@@ -391,7 +391,6 @@
 .battle-screen .quiz-choice {
   grid-template-columns: 44px minmax(0, 1fr) 64px;
   align-items: center;
-  border-left: 4px solid #8f9d86;
   box-shadow: 0 2px 5px #35473816;
 }
 .battle-screen .quiz-choice.chosen {
