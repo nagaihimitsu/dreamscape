@@ -42,6 +42,17 @@ async function changeDates(change: (data: typeof dateData) => void) {
 }
 
 describe("content build acceptance", () => {
+  it("rejects an undefined character ID and a registered but missing image", async () => {
+    const file = path.join(fixture, "content/presentation/characters.json");
+    const data = JSON.parse(await readFile(file, "utf8"));
+    data.characters[0].id = "unknown";
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).rejects.toThrow("Unknown required character ID: heroine");
+    data.characters[0].id = "heroine";
+    data.characters[0].imagePath = "assets/missing.png";
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).rejects.toThrow("Missing character image: heroine/assets/missing.png");
+  });
   it("compiles every declared scenario context and route", async () => {
     const result = await buildContent(fixture);
     expect(result.routes).toBe(

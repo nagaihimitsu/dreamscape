@@ -1,5 +1,6 @@
-import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { access, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { characterCatalogSchema } from "../src/content/character-assets";
 import {
   Compiler,
   CompilerOptions,
@@ -310,6 +311,26 @@ export async function buildContent(root: string, writeOutput = true) {
     presentationSchema,
     path.join(content, "romance/presentation.json"),
   );
+  const characters = await parseFile(
+    characterCatalogSchema,
+    path.join(content, "presentation/characters.json"),
+  );
+  for (const required of ["heroine", "enemy"]) {
+    if (!characters.characters.some((character) => character.id === required))
+      throw new Error(`Unknown required character ID: ${required}`);
+  }
+  for (const character of characters.characters) {
+    for (const variant of character.variants) {
+      if (variant.emotion && !presentation.emotions[variant.emotion])
+        throw new Error(`Unknown character emotion: ${character.id}/${variant.emotion}`);
+    }
+    for (const image of [character.imagePath, ...character.variants.map((variant) => variant.imagePath)]) {
+      if (image) {
+        try { await access(path.join(root, "public", image)); }
+        catch { throw new Error(`Missing character image: ${character.id}/${image}`); }
+      }
+    }
+  }
   const progression = await parseFile(
     progressionSchema,
     path.join(content, "romance/progression.json"),

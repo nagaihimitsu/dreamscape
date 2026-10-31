@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "characters": [
+    {
+      "id": "heroine",
+      "imagePath": null,
+      "placement": {
+        "x": 50,
+        "bottom": 0,
+        "width": 62,
+        "height": 82,
+        "scale": 1,
+        "originX": 50,
+        "originY": 100
+      },
+      "placeholderColor": "#6d716c",
+      "variants": [
+        {
+          "emotion": "shy",
+          "imagePath": "assets/presentation/heroine_shy_placeholder.svg"
+        }
+      ]
+    },
+    {
+      "id": "enemy",
+      "imagePath": null,
+      "placement": {
+        "x": 68,
+        "bottom": 0,
+        "width": 62,
+        "height": 82,
+        "scale": 1,
+        "originX": 50,
+        "originY": 100
+      },
+      "placeholderColor": "#6f665d",
+      "variants": []
+    }
+  ]
+}
