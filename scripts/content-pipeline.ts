@@ -315,6 +315,10 @@ export async function buildContent(root: string, writeOutput = true) {
     characterCatalogSchema,
     path.join(content, "presentation/characters.json"),
   );
+  for (const battleId of Object.keys(characters.battleCharacters ?? {})) {
+    if (!battles.some((battle) => battle.id === battleId))
+      throw new Error(`Unknown battle ID in character assignment: ${battleId}`);
+  }
   for (const required of ["heroine", "enemy"]) {
     if (!characters.characters.some((character) => character.id === required))
       throw new Error(`Unknown required character ID: ${required}`);

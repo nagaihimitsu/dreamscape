@@ -1,10 +1,16 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
 import characterData from "../../content/presentation/characters.json";
-import { characterCatalogSchema, characterImage } from "../content/character-assets";
+import { battleCharacterId, characterCatalogSchema, characterImage } from "../content/character-assets";
 import "./character-portrait.css";
 
-const characters = characterCatalogSchema.parse(characterData).characters;
+const catalog = characterCatalogSchema.parse(characterData);
+const characters = catalog.characters;
+
+/** Artwork assignment lives outside the battle data and does not affect saves. */
+export function characterForBattle(battleId: string): string {
+  return battleCharacterId(catalog.battleCharacters, battleId);
+}
 
 /** A decorative layer. Position and image are independent of the Ink story. */
 export function CharacterPortrait({ characterId, emotion, costume, pose, active = false, fallback }: {

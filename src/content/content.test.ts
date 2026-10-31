@@ -53,6 +53,13 @@ describe("content build acceptance", () => {
     await writeFile(file, JSON.stringify(data));
     await expect(buildContent(fixture, false)).rejects.toThrow("Missing character image: heroine/assets/missing.png");
   });
+  it("rejects an unknown battle in the artwork assignment", async () => {
+    const file = path.join(fixture, "content/presentation/characters.json");
+    const data = JSON.parse(await readFile(file, "utf8"));
+    data.battleCharacters = { missing_battle: "enemy" };
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).rejects.toThrow("Unknown battle ID in character assignment: missing_battle");
+  });
   it("compiles every declared scenario context and route", async () => {
     const result = await buildContent(fixture);
     expect(result.routes).toBe(

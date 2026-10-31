@@ -27,7 +27,8 @@ const characterSchema = z.object({
 export const characterCatalogSchema = z.object({
   schemaVersion: z.literal(1),
   characters: z.array(characterSchema).min(1),
-}).strict().superRefine(({ characters }, context) => {
+  battleCharacters: z.record(id, id).optional(),
+}).strict().superRefine(({ characters, battleCharacters }, context) => {
   const ids = new Set<string>();
   for (const character of characters) {
     if (ids.has(character.id)) context.addIssue({ code: "custom", message: `Duplicate character ID: ${character.id}` });
@@ -39,9 +40,19 @@ export const characterCatalogSchema = z.object({
       selectors.add(key);
     }
   }
+  for (const [battleId, characterId] of Object.entries(battleCharacters ?? {})) {
+    if (!ids.has(characterId)) context.addIssue({ code: "custom", message: `Unknown character ID for battle ${battleId}: ${characterId}` });
+  }
 });
 export type CharacterAsset = z.infer<typeof characterSchema>;
 export type CharacterSelection = { emotion?: string; costume?: string; pose?: string };
+
+/** Unregistered mappings keep the existing battle-specific fallback artwork. */
+export function battleCharacterId(battleCharacters: Record<string, string> | undefined, battleId: string): string {
+  return battleCharacters && Object.hasOwn(battleCharacters, battleId)
+    ? battleCharacters[battleId]
+    : "enemy";
+}
 
 /** A missing optional expression/costume/pose uses the most specific matching image. */
 export function characterImage(character: CharacterAsset, selection: CharacterSelection): string | null {
