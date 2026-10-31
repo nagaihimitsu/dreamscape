@@ -78,7 +78,9 @@ export async function answerRound(
   );
   for (const candidate of question.options) {
     const button = page.getByTestId(`answer-${candidate.id}`);
-    await expect(button).toContainText(candidate.textEn);
+    await expect(page.getByTestId(`option-text-${candidate.id}`)).toContainText(
+      candidate.textEn,
+    );
     expect((await button.boundingBox())!.height).toBeGreaterThanOrEqual(44);
   }
   if (doubleClick) {

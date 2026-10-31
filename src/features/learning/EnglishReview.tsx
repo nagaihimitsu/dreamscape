@@ -10,6 +10,8 @@ import type { GameState } from "../../domain/game";
 import { beginStory, continueStory, type StoryStep } from "../../story/runtime";
 import { Modal } from "../../components/Modal";
 import type { Learning } from "./useLearning";
+import { InteractiveEnglish } from "./InteractiveEnglish";
+import { toggleTranslation, type Part } from "./Translations";
 import "./learning.css";
 
 export function answeredQuestions(game: GameState, learning: Learning) {
@@ -142,21 +144,65 @@ export function EnglishReview({
           const tr = learningTranslations[question.id];
           if (!tr) return null;
           const marked = learning.isMarked(question.id);
+          const reviewKey = `review:${question.id}`;
+          const showTranslation = (part: Part) =>
+            !(learning.data.revealed[reviewKey] ?? []).includes(part);
+          const toggle = (part: Part) =>
+            toggleTranslation(learning, reviewKey, part);
           return (
-            <article className="review-question" data-testid="review-question">
-              <h3 lang="en">{question.questionEn}</h3>
-              <p>{tr.questionJa}</p>
+            <article
+              key={question.id}
+              className="review-question"
+              data-testid="review-question"
+            >
+              <p className="english-instructions">
+                単語を1回タップで意味、同じ単語を続けて2回タップで文の訳。
+              </p>
+              <h3>
+                <InteractiveEnglish
+                  text={question.questionEn}
+                  vocabulary={question.vocabularyJa}
+                  label="問題文"
+                  onDoubleTap={() => toggle("question")}
+                />
+              </h3>
+              <button
+                className="text-button review-translation-toggle"
+                type="button"
+                aria-expanded={showTranslation("question")}
+                onClick={() => toggle("question")}
+              >
+                {showTranslation("question")
+                  ? "問題文の訳を閉じる"
+                  : "問題文の訳を見る"}
+              </button>
+              {showTranslation("question") && <p>{tr.questionJa}</p>}
               {details && (
                 <p className="learning-summary">{details.summaryJa}</p>
               )}
               <ul className="review-options">
                 {question.options.map((o) => (
                   <li key={o.id}>
-                    <span lang="en">
-                      {o.id}. {o.textEn}
+                    <span>
+                      {o.id}.{" "}
+                      <InteractiveEnglish
+                        text={o.textEn}
+                        vocabulary={question.vocabularyJa}
+                        label={`選択肢${o.id}`}
+                        onDoubleTap={() => toggle(o.id)}
+                      />
                     </span>
                     <br />
-                    {tr.optionsJa[o.id]}{" "}
+                    <button
+                      className="text-button review-translation-toggle"
+                      type="button"
+                      aria-expanded={showTranslation(o.id)}
+                      aria-label={`選択肢${o.id}の訳を${showTranslation(o.id) ? "閉じる" : "見る"}`}
+                      onClick={() => toggle(o.id)}
+                    >
+                      {showTranslation(o.id) ? "訳を閉じる" : "訳を見る"}
+                    </button>
+                    {showTranslation(o.id) && <span>{tr.optionsJa[o.id]}</span>}{" "}
                     {answer.optionId === o.id && (
                       <strong>（選んだ答え）</strong>
                     )}{" "}

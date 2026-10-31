@@ -1,3 +1,5 @@
+import wordData from "../../content/learning/word-meanings.json";
+import { wordMeaningsSchema } from "./word-meanings";
 import detailsData from "../../content/learning/details.json";
 import { learningDetailsSchema } from "./learning-details";
 import learningData from "../../content/learning/translations.json";
@@ -29,6 +31,7 @@ import {
   presentationSchema,
 } from "./schemas";
 
+export const wordMeanings = wordMeaningsSchema.parse(wordData).words;
 export const learningDetails = learningDetailsSchema.parse(detailsData);
 export const learningTranslations =
   learningCatalogSchema.parse(learningData).questions;

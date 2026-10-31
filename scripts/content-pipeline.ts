@@ -33,6 +33,11 @@ import { journeySchema } from "../src/content/journey-schemas";
 import { validateJourney } from "./journey-validation";
 import { validateEpilogue } from "./epilogue-validation";
 import {
+  wordMeaningsSchema,
+  wordPattern,
+  normalizeWord,
+} from "../src/content/word-meanings";
+import {
   learningDetailsSchema,
   validateLearningDetails,
 } from "../src/content/learning-details";
@@ -562,6 +567,22 @@ export async function buildContent(root: string, writeOutput = true) {
   validateLearning(learning, quizzes, [
     ...new Set(battles.map((battle) => battle.quizId)),
   ]);
+  const wordMeanings = await parseFile(
+    wordMeaningsSchema,
+    path.join(content, "learning/word-meanings.json"),
+  );
+  for (const battle of battles)
+    for (const question of quizzes[battle.quizId].questions) {
+      const texts = [
+        question.questionEn,
+        ...question.options.map((option) => option.textEn),
+      ];
+      for (const text of texts)
+        for (const word of text.match(wordPattern) ?? []) {
+          if (!wordMeanings.words[normalizeWord(word)])
+            throw new Error(`Missing word meaning in ${question.id}: ${word}`);
+        }
+    }
   const learningDetails = await parseFile(
     learningDetailsSchema,
     path.join(content, "learning/details.json"),

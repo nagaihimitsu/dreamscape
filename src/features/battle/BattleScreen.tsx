@@ -6,7 +6,12 @@ import { DialogueText } from "../../components/DialogueText";
 import { EnemyPortrait } from "./EnemyPortrait";
 import { BattleRewards } from "../journey/BattleRewards";
 import { ReasoningPanel } from "./ReasoningPanel";
-import { Translation, TranslationAll } from "../learning/Translations";
+import {
+  Translation,
+  TranslationAll,
+  toggleTranslation,
+} from "../learning/Translations";
+import { InteractiveEnglish } from "../learning/InteractiveEnglish";
 import type { Learning } from "../learning/useLearning";
 
 interface Props {
@@ -263,9 +268,20 @@ export function BattleScreen({
                 onSubmit={onSubmitEvidence}
               />
             )}
+            <p className="english-instructions">
+              単語を1回タップで意味、同じ単語を続けて2回タップで文の訳。回答は「選ぶ」を押します。
+            </p>
             <TranslationAll learning={learning} id={question.id} />
-            <h2 className="question-en" lang="en">
-              {question.questionEn}
+            <h2 className="question-en">
+              <InteractiveEnglish
+                key={question.id}
+                text={question.questionEn}
+                vocabulary={question.vocabularyJa}
+                label="問題文"
+                onDoubleTap={() =>
+                  toggleTranslation(learning, question.id, "question")
+                }
+              />
             </h2>
             <Translation learning={learning} id={question.id} part="question" />
             <div className="quiz-choices" aria-label="英語の3択">
@@ -274,29 +290,50 @@ export function BattleScreen({
                 const correct =
                   answer && option.id === question.correctOptionId;
                 return (
-                  <div key={option.id} className="quiz-option-wrap">
-                    <button
-                      data-testid={`answer-${option.id}`}
+                  <div
+                    key={`${question.id}:${option.id}`}
+                    className="quiz-option-wrap"
+                  >
+                    <div
+                      data-testid={`option-text-${option.id}`}
                       className={`quiz-choice ${selected ? "chosen" : ""} ${correct ? "correct" : ""}`}
-                      disabled={active.phase !== "question"}
-                      onClick={() => onAnswer(option.id)}
                     >
                       <span className="option-id" aria-hidden="true">
                         {option.id}
                       </span>
-                      <span lang="en">{option.textEn}</span>
-                      {answer && (
-                        <span className="option-mark">
-                          {selected ? "選んだ答え" : ""}
-                          {correct ? " ✓ 正解" : ""}
-                        </span>
-                      )}
-                    </button>
-                    <Translation
-                      learning={learning}
-                      id={question.id}
-                      part={option.id}
-                    />
+                      <div className="option-body">
+                        <InteractiveEnglish
+                          text={option.textEn}
+                          vocabulary={question.vocabularyJa}
+                          label={`選択肢${option.id}`}
+                          onDoubleTap={() =>
+                            toggleTranslation(learning, question.id, option.id)
+                          }
+                        />
+                        {answer && (
+                          <span className="option-mark">
+                            {selected ? "選んだ答え" : ""}
+                            {correct ? " ✓ 正解" : ""}
+                          </span>
+                        )}
+                      </div>
+                      <Translation
+                        learning={learning}
+                        id={question.id}
+                        part={option.id}
+                      >
+                        <button
+                          type="button"
+                          data-testid={`answer-${option.id}`}
+                          className="answer-submit"
+                          aria-label={`選択肢${option.id}「${option.textEn}」を答える`}
+                          disabled={active.phase !== "question"}
+                          onClick={() => onAnswer(option.id)}
+                        >
+                          {option.id}を選ぶ
+                        </button>
+                      </Translation>
+                    </div>
                   </div>
                 );
               })}

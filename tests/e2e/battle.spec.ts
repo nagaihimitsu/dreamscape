@@ -89,10 +89,14 @@ test("hints, vocabulary, locked answers and saved reactions survive reload, then
   const question = quiz.questions[0];
   for (const vocabulary of question.vocabularyJa) {
     await expect(
-      page.getByText(vocabulary.word, { exact: true }),
+      page
+        .getByLabel("難単語の補足")
+        .getByText(vocabulary.word, { exact: true }),
     ).toBeVisible();
     await expect(
-      page.getByText(vocabulary.meaning, { exact: true }),
+      page
+        .getByLabel("難単語の補足")
+        .getByText(vocabulary.meaning, { exact: true }),
     ).toBeVisible();
   }
   // Explanations and the optional hint are not answer-revealing material shown before an answer.
