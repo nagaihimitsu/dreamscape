@@ -25,6 +25,7 @@ import {
   LEARNING_KEY,
   SAVE_KEY,
   loadGame,
+  sameGameState,
   saveGame,
 } from "../persistence";
 import { CanalScene } from "../components/CanalScene";
@@ -158,7 +159,7 @@ export default function App() {
       if (gameRef.current) {
         if (
           current.status !== "loaded" ||
-          JSON.stringify(current.state) !== JSON.stringify(gameRef.current)
+          !sameGameState(current.state, gameRef.current)
         ) {
           setSettings(false);
           setNotice(
@@ -546,7 +547,7 @@ export default function App() {
           <>
             <CanalScene backgroundId="milano_night" />
             <section className="paper ending" data-testid="romance-ending">
-              <p className="eyebrow">交際開始 · 恋愛ルートクリア</p>
+              <p className="eyebrow">交際開始</p>
               <h1>{presentation.ending.titleJa}</h1>
               <p className="ending-names">
                 {game.playerName}
@@ -557,9 +558,7 @@ export default function App() {
                 {withNames(presentation.ending.descriptionJa, game)}
               </p>
               <p className="fine-print">
-                ふたりの物語は、ここでひと区切り。
-                <br />
-                ここまでの旅は保存されています。
+                これからも、旅先でふたりの時間を過ごせます。
               </p>
               <button className="primary" onClick={() => setShowRomanceEnding(false)}>
                 自由時間へ <span aria-hidden="true">→</span>

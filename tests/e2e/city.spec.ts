@@ -195,17 +195,15 @@ test("a new zero-score Milan journey reaches the city epilogue and romance endin
     fullPage: true,
   });
 
-  await playEvent(page, "milano_cafe_01", 2, [0, 0]);
+  // Three freely chosen real places suffice; the old cafe/walk/invitation
+  // chain is not a prerequisite for the relationship.
+  await playEvent(page, "milano_la_scala_date_01", 2, [0, 0]);
   expect((await saved(page)).romanceStage).toBe(2);
   await reloadUnchanged(page);
-  await playEvent(page, "milano_walk_01", 3, [0, 1]);
+  await playEvent(page, "milano_brera_date_01", 2, [0, 0]);
   expect((await saved(page)).romanceStage).toBe(3);
-  await playEvent(page, "milano_invitation_01", 0, [0]);
-  await playEvent(page, "milano_night_01", 3, [0, 1]);
+  await playEvent(page, "milano_navigli_date_01", 1, [1, 0]);
   expect((await saved(page)).romanceStage).toBe(4);
-  await playEvent(page, "milano_confession_01", 0, [0]);
-  expect((await saved(page)).confessionStatus).toBe("deferred");
-  await playEvent(page, "milano_reassurance_01", 0, [1]);
   await playEvent(page, "milano_confession_01", 0, [0]);
   expect((await saved(page)).endingReached).toBe(true);
   await reloadUnchanged(page);
@@ -219,7 +217,7 @@ test("a new zero-score Milan journey reaches the city epilogue and romance endin
   expect(
     finished.memories.filter((id) => id.startsWith("milano_city_date_")),
   ).toHaveLength(2);
-  expect(availableAp(finished)).toBe(5);
+  expect(availableAp(finished)).toBe(8);
   expect(finished.pendingApRewards).toEqual([]);
   expect(finished.claimedRewardIds).toEqual(boss.state.claimedRewardIds);
   await returnToMenu(page);
@@ -385,6 +383,6 @@ test("a published Last Supper completion keeps its reward and resumes at unvisit
   expect(result.state.completedEpisodeIds[0]).toBe(
     "milano_last_supper_episode",
   );
-  expect(result.state.schemaVersion).toBe(7);
+  expect(result.state.schemaVersion).toBe(8);
   await reloadUnchanged(page);
 });

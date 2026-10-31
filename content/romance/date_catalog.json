@@ -25,9 +25,42 @@
       "validationContexts": [
         {
           "romanceStage": 1,
-          "confessionReady": false
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": false
         }
-      ]
+      ],
+      "allowAfterEnding": true
     },
     {
       "id": "milano_walk_01",
@@ -36,15 +69,13 @@
       "titleJa": "夕暮れの散歩",
       "descriptionJa": "写真に写らない寄り道を、ふたりで見つける。",
       "apCost": 3,
-      "minRomanceStage": 2,
+      "minRomanceStage": 1,
       "minAffection": 0,
       "storyId": "milano/walk_01",
       "requiredCompletedChapters": [
         "milano"
       ],
-      "requiredPlayedDateIds": [
-        "milano_cafe_01"
-      ],
+      "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
       "backgroundAssetId": "milano_walk",
       "repeatable": false,
@@ -54,14 +85,43 @@
       "actionLabelJa": "散歩に誘う",
       "validationContexts": [
         {
+          "romanceStage": 1,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
           "romanceStage": 2,
-          "confessionReady": false
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": true
         },
         {
           "romanceStage": 4,
-          "confessionReady": true
+          "confessionReady": true,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": false
         }
-      ]
+      ],
+      "allowAfterEnding": true
     },
     {
       "id": "milano_invitation_01",
@@ -70,15 +130,13 @@
       "titleJa": "彼女の寄り道",
       "descriptionJa": "今度の行き先は、彼女が決める。",
       "apCost": 0,
-      "minRomanceStage": 3,
+      "minRomanceStage": 2,
       "minAffection": 0,
-      "storyId": "milano/invitation_01",
+      "storyId": "milano/invitation_open_01",
       "requiredCompletedChapters": [
         "milano"
       ],
-      "requiredPlayedDateIds": [
-        "milano_walk_01"
-      ],
+      "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
       "backgroundAssetId": "milano_walk",
       "repeatable": false,
@@ -88,37 +146,46 @@
       "actionLabelJa": "誘いに応える",
       "validationContexts": [
         {
-          "romanceStage": 3,
+          "romanceStage": 1,
           "confessionReady": false,
-          "memoryId": "milano_cafe_joke"
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
         },
         {
           "romanceStage": 3,
           "confessionReady": false,
-          "memoryId": "milano_cafe_flirt"
+          "endingReached": false,
+          "hasCafeMemory": true
         },
         {
-          "romanceStage": 3,
-          "confessionReady": false,
-          "memoryId": "milano_cafe_interest"
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": false,
+          "hasCafeMemory": true
         },
         {
-          "romanceStage": 3,
-          "confessionReady": false,
-          "memoryId": "milano_cafe_free_time_joke"
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": true
         },
         {
-          "romanceStage": 3,
-          "confessionReady": false,
-          "memoryId": "milano_cafe_secret_destination"
-        },
-        {
-          "romanceStage": 3,
-          "confessionReady": false,
-          "memoryId": "milano_cafe_future_talk"
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": false
         }
       ],
-      "invitationJa": "「行きたい所があるの。今日は、私についてきて」"
+      "invitationJa": "「行きたい所があるの。今日は、私についてきて」",
+      "legacyStoryIds": [
+        "milano/invitation_01"
+      ]
     },
     {
       "id": "milano_night_01",
@@ -127,16 +194,13 @@
       "titleJa": "灯りを数える夜",
       "descriptionJa": "有名な夜景より気になる、名もない窓の灯り。",
       "apCost": 3,
-      "minRomanceStage": 3,
+      "minRomanceStage": 1,
       "minAffection": 0,
       "storyId": "milano/night_01",
       "requiredCompletedChapters": [
         "milano"
       ],
-      "requiredPlayedDateIds": [
-        "milano_walk_01",
-        "milano_invitation_01"
-      ],
+      "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
       "backgroundAssetId": "milano_night",
       "repeatable": false,
@@ -146,14 +210,43 @@
       "actionLabelJa": "夜景デートに誘う",
       "validationContexts": [
         {
+          "romanceStage": 1,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
           "romanceStage": 3,
-          "confessionReady": false
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": true
         },
         {
           "romanceStage": 4,
-          "confessionReady": true
+          "confessionReady": true,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": false
         }
-      ]
+      ],
+      "allowAfterEnding": true
     },
     {
       "id": "milano_confession_01",
@@ -162,18 +255,13 @@
       "titleJa": "旅の続きに、きみと",
       "descriptionJa": "思い出をひとつ、これからの言葉につなぐ。",
       "apCost": 0,
-      "minRomanceStage": 4,
+      "minRomanceStage": 2,
       "minAffection": 0,
-      "storyId": "milano/confession_01",
+      "storyId": "milano/confession_open_01",
       "requiredCompletedChapters": [
         "milano"
       ],
-      "requiredPlayedDateIds": [
-        "milano_cafe_01",
-        "milano_walk_01",
-        "milano_invitation_01",
-        "milano_night_01"
-      ],
+      "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
       "backgroundAssetId": "milano_night",
       "repeatable": true,
@@ -183,65 +271,52 @@
       "actionLabelJa": "気持ちを伝える",
       "validationContexts": [
         {
-          "romanceStage": 4,
+          "romanceStage": 2,
           "confessionReady": false,
-          "memoryId": "milano_cafe_joke"
+          "confessionResult": "rejected",
+          "memoryIds": []
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "confessionResult": "deferred",
+          "memoryIds": []
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": true,
+          "confessionResult": "accepted",
+          "memoryIds": [
+            "milano_brera_first_listen"
+          ]
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "confessionResult": "rejected",
+          "memoryIds": [
+            "milano_brera_first_listen"
+          ]
         },
         {
           "romanceStage": 4,
           "confessionReady": false,
-          "memoryId": "milano_cafe_flirt"
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": false,
-          "memoryId": "milano_cafe_interest"
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": false,
-          "memoryId": "milano_cafe_free_time_joke"
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": false,
-          "memoryId": "milano_cafe_secret_destination"
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": false,
-          "memoryId": "milano_cafe_future_talk"
+          "confessionResult": "deferred",
+          "memoryIds": [
+            "milano_cafe_joke"
+          ]
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "memoryId": "milano_cafe_joke"
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "memoryId": "milano_cafe_flirt"
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "memoryId": "milano_cafe_interest"
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "memoryId": "milano_cafe_free_time_joke"
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "memoryId": "milano_cafe_secret_destination"
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "memoryId": "milano_cafe_future_talk"
+          "confessionResult": "accepted",
+          "memoryIds": [
+            "milano_cafe_joke"
+          ]
         }
+      ],
+      "legacyStoryIds": [
+        "milano/confession_01"
       ]
     },
     {
@@ -251,18 +326,13 @@
       "titleJa": "書きかけのポストカード",
       "descriptionJa": "急がずに、自分の言葉を探す短い時間。",
       "apCost": 0,
-      "minRomanceStage": 4,
+      "minRomanceStage": 2,
       "minAffection": 0,
-      "storyId": "milano/reassurance_01",
+      "storyId": "milano/reassurance_open_01",
       "requiredCompletedChapters": [
         "milano"
       ],
-      "requiredPlayedDateIds": [
-        "milano_cafe_01",
-        "milano_walk_01",
-        "milano_invitation_01",
-        "milano_night_01"
-      ],
+      "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
       "backgroundAssetId": "milano_cafe",
       "repeatable": false,
@@ -272,13 +342,44 @@
       "actionLabelJa": "もう少し話す",
       "validationContexts": [
         {
-          "romanceStage": 4,
-          "confessionReady": false
+          "romanceStage": 1,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": true
         },
         {
           "romanceStage": 4,
-          "confessionReady": true
+          "confessionReady": true,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": false
         }
+      ],
+      "legacyStoryIds": [
+        "milano/reassurance_01"
       ]
     },
     {
@@ -529,6 +630,322 @@
           "confessionReady": true,
           "endingReached": true,
           "hasCafeMemory": false
+        }
+      ]
+    },
+    {
+      "id": "milano_san_satiro_date_01",
+      "kind": "normal",
+      "chapterId": "milano",
+      "destinationId": "milano_san_satiro",
+      "titleJa": "見える距離",
+      "descriptionJa": "正面と横から、違う奥行きを確かめる。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "minAffection": 0,
+      "storyId": "milano/san_satiro_date_01",
+      "requiredCompletedChapters": [],
+      "requiredCompletedEpisodeIds": [
+        "milano_duomo_episode"
+      ],
+      "allowAfterEnding": true,
+      "requiredPlayedDateIds": [],
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "milano_san_satiro_date",
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "この場所へ誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": false
+        }
+      ]
+    },
+    {
+      "id": "milano_starbucks_roastery_date_01",
+      "kind": "normal",
+      "chapterId": "milano",
+      "destinationId": "milano_starbucks_roastery",
+      "titleJa": "遠くまで届く香り",
+      "descriptionJa": "旅先で、見慣れた名前の意外な一面を見つける。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "minAffection": 0,
+      "storyId": "milano/starbucks_roastery_date_01",
+      "requiredCompletedChapters": [],
+      "requiredCompletedEpisodeIds": [
+        "milano_galleria_episode"
+      ],
+      "allowAfterEnding": true,
+      "requiredPlayedDateIds": [],
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "milano_starbucks_roastery_date",
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "この場所へ誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": false
+        }
+      ]
+    },
+    {
+      "id": "milano_fondazione_prada_date_01",
+      "kind": "normal",
+      "chapterId": "milano",
+      "destinationId": "milano_fondazione_prada",
+      "titleJa": "古い建物、新しい見方",
+      "descriptionJa": "残された建物で、作品の見方を話す。",
+      "apCost": 3,
+      "minRomanceStage": 1,
+      "minAffection": 0,
+      "storyId": "milano/fondazione_prada_date_01",
+      "requiredCompletedChapters": [],
+      "requiredCompletedEpisodeIds": [
+        "milano_last_supper_episode"
+      ],
+      "allowAfterEnding": true,
+      "requiredPlayedDateIds": [],
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "milano_fondazione_prada_date",
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "この場所へ誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false,
+          "memoryIds": []
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false,
+          "memoryIds": [
+            "milano_brera_first_listen"
+          ]
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": true,
+          "memoryIds": []
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": false,
+          "hasCafeMemory": true,
+          "memoryIds": [
+            "milano_brera_first_listen"
+          ]
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": true,
+          "memoryIds": []
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": false,
+          "memoryIds": [
+            "milano_brera_first_listen"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "milano_love_date_01",
+      "kind": "normal",
+      "chapterId": "milano",
+      "destinationId": "milano_love",
+      "titleJa": "手のかたち",
+      "descriptionJa": "広場の彫刻を前に、それぞれの見方を話す。",
+      "apCost": 1,
+      "minRomanceStage": 1,
+      "minAffection": 0,
+      "storyId": "milano/love_date_01",
+      "requiredCompletedChapters": [],
+      "requiredCompletedEpisodeIds": [
+        "milano_duomo_episode"
+      ],
+      "allowAfterEnding": true,
+      "requiredPlayedDateIds": [],
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "milano_love_date",
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "この場所へ誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": false
+        }
+      ]
+    },
+    {
+      "id": "milano_rain_pause_01",
+      "kind": "special",
+      "chapterId": "milano",
+      "titleJa": "雨が通り過ぎるまで",
+      "descriptionJa": "ガッレリアの出口で、雨の音に足を止める。",
+      "apCost": 0,
+      "minRomanceStage": 1,
+      "minAffection": 0,
+      "storyId": "milano/rain_pause_01",
+      "requiredCompletedChapters": [
+        "milano"
+      ],
+      "requiredCompletedEpisodeIds": [
+        "milano_galleria_episode"
+      ],
+      "forbiddenCompletedEpisodeIds": [
+        "milano_last_supper_episode"
+      ],
+      "requiredPlayedDateIds": [],
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "milano_rain_pause",
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 1,
+      "effectCount": 1,
+      "actionLabelJa": "雨宿りする",
+      "eventLabelJa": "今だけの出来事",
+      "invitationJa": "「もう少し、ここにいてもいいですか」",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false,
+          "endingReached": false
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "endingReached": false
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "endingReached": false
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": false,
+          "endingReached": true
         }
       ]
     }

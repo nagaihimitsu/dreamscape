@@ -3,6 +3,8 @@ import fixtures from "../../tests/fixtures/phase6-saves.json";
 import { validateGameState } from "../domain/game";
 import { battleFingerprint } from "../domain/battle";
 import { getNextEpisode } from "../domain/chapter";
+import { progression } from "../content";
+import { legacyRomanceValues } from "../domain/romance-migration";
 import { loadGame, saveGame, SAVE_KEY, type StorageLike } from ".";
 class MemoryStorage implements StorageLike {
   values = new Map<string, string>();
@@ -26,7 +28,8 @@ describe("published Phase 6 checkpoints migrate to the Milan city route", () => 
         throw new Error("Old Phase 6 checkpoint was rejected");
       expect(loaded.state).toEqual({
         ...raw,
-        schemaVersion: 7,
+        schemaVersion: 8,
+        ...legacyRomanceValues(raw, progression),
         activeEpilogue: null,
         viewedEpilogueCityIds: [],
         legacyTrialAvailable: true,

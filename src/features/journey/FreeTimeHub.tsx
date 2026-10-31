@@ -1,7 +1,6 @@
-import { dates } from "../../content";
 import type { GameState } from "../../domain/game";
 import { BattleEntry } from "../battle/BattleEntry";
-import { EventCard, RomanceMenu } from "../romance/RomanceMenu";
+import { RomanceMenu } from "../romance/RomanceMenu";
 import { TourismEntry } from "../tourism/TourismEntry";
 import { CityProgress } from "./CityProgress";
 import { PendingRewards } from "./PendingRewards";
@@ -29,15 +28,6 @@ export function FreeTimeHub({
   onTourism: (id: string) => void;
   onBattle: (id: string) => void;
 }) {
-  const afterEndingDates = game.endingReached
-    ? dates.filter((date) =>
-        date.allowAfterEnding &&
-        !(date.kind === "normal" && game.playedDateIds.includes(date.id)) &&
-        (date.requiredCompletedCityIds ?? []).every((id) => game.completedCityIds.includes(id)) &&
-        (date.requiredCompletedEpisodeIds ?? []).every((id) => game.completedEpisodeIds.includes(id)),
-      )
-    : [];
-
   return (
     <section className="free-time-hub paper" data-testid="free-time-hub">
       <header className="free-time-hub-heading">
@@ -59,16 +49,10 @@ export function FreeTimeHub({
         </details>
       </div>
 
-      {(!game.endingReached || afterEndingDates.length > 0) && (
-        <section className="free-time-romance" aria-label="デート">
-          <h2>デート</h2>
-          {game.endingReached ? <div className="date-list">{afterEndingDates.map((date) => (
-            <EventCard key={date.id} game={game} date={date} onChoose={onChooseDate} />
-          ))}</div> : (
-            <RomanceMenu game={game} onChoose={onChooseDate} onMilestone={onMilestone} />
-          )}
-        </section>
-      )}
+      <section className="free-time-romance" aria-label="デート">
+        <h2>行き先と出来事</h2>
+        <RomanceMenu game={game} onChoose={onChooseDate} onMilestone={onMilestone} />
+      </section>
 
       <PendingRewards game={game} onClaim={onClaimRewards} compact />
     </section>

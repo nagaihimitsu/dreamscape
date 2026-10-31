@@ -1,6 +1,6 @@
 import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
 import { describe, expect, it } from "vitest";
-import { dates, progression, trialMilestones } from "../content";
+import { dates, effects, progression, trialMilestones } from "../content";
 import {
   advanceDate,
   canConfessSuccessfully,
@@ -57,7 +57,7 @@ function toWalk() {
   );
 }
 function toInvitation() {
-  return play(toWalk(), walk, [0, 1]);
+  return play(toWalk(), walk, [0, 0]);
 }
 function toNight() {
   return claimTrialMilestone(
@@ -110,7 +110,7 @@ describe("Phase 2 relationship progression", () => {
     expect(state.ap).toBe(6);
     expect(getDateAvailability(state, cafe).available).toBe(false);
     expect(startDate(state, cafe)).toBe(state);
-    state = play(state, walk, [0, 1]);
+    state = play(state, walk, [0, 0]);
     expect(state.ap).toBe(3);
     state = claimTrialMilestone(state, trialMilestones[1].id);
     state = play(state, invitation, [0]);
@@ -119,7 +119,7 @@ describe("Phase 2 relationship progression", () => {
   });
   it("unlocks a single heroine invitation for free and recalls earlier choices", () => {
     const initial = toWalk();
-    expect(startDate(initial, invitation)).toBe(initial);
+    expect(getDateAvailability(initial, invitation).available).toBe(true);
     const state = toInvitation();
     expect(state.unlockedEventIds).toContain(invitation);
     expect(
@@ -130,9 +130,9 @@ describe("Phase 2 relationship progression", () => {
     const transcript: string[] = [];
     const completed = play(state, invitation, [0], transcript);
     expect(completed.ap).toBe(state.ap);
-    expect(completed.affection).toBe(state.affection + 1);
+    expect(completed.affection).toBe(state.affection + 2);
     expect(startDate(completed, invitation)).toBe(completed);
-    expect(transcript.join("\n")).toContain(getMemoryCallback(state));
+    expect(transcript.join("\n")).toContain("私の行きたいところ");
     const differentlyChosen = play(
       seedLegacyChapter(createGame()),
       cafe,
@@ -149,7 +149,13 @@ describe("Phase 2 relationship progression", () => {
           const state = id === walk ? toWalk() : toNight();
           const before = state.affection;
           const completed = play(state, id, [first, second]);
-          expect(completed.affection).toBeGreaterThanOrEqual(before + 2);
+          const firstId = `${id.replace("_01", "")}_first_${["joke", "listen", "honest"][first]}`;
+          const secondId = `${id.replace("_01", "")}_second_${["joke", "listen", "honest"][second]}`;
+          const chosen = [firstId, secondId].map((effectId) => effects.find((effect) => effect.id === effectId)!);
+          const deltas = chosen.map((effect) => effect.stageDeltas?.[String(state.romanceStage) as "1" | "2" | "3" | "4"] ?? effect);
+          expect(completed.affection).toBe(before + deltas.reduce((sum, delta) => sum + delta.affectionDelta, 0));
+          expect(completed.trust).toBe(state.trust + deltas.reduce((sum, delta) => sum + (delta.trustDelta ?? 0), 0));
+          expect(completed.spark).toBe(state.spark + deltas.reduce((sum, delta) => sum + (delta.sparkDelta ?? 0), 0));
           expect(completed.memories.length).toBe(state.memories.length + 2);
           expect(completed.ap).toBe(
             state.ap - dates.find((date) => date.id === id)!.apCost,
@@ -160,28 +166,28 @@ describe("Phase 2 relationship progression", () => {
 });
 
 describe("confession and relationship ending", () => {
-  it("keeps confession locked until stage and required events, without charging AP", () => {
-    const incomplete = toInvitation();
-    expect(startDate(incomplete, confession)).toBe(incomplete);
-    const ready = lowPath();
-    expect(getDateAvailability(ready, confession).available).toBe(true);
-    expect(canConfessSuccessfully(ready)).toBe(false);
-    const started = startDate(ready, confession);
-    expect(started.ap).toBe(ready.ap);
+  it("offers confession from stage 2 even before success is guaranteed, without charging AP", () => {
+    const early = toWalk();
+    expect(getDateAvailability(early, confession).available).toBe(true);
+    expect(canConfessSuccessfully(early)).toBe(false);
+    const started = startDate(early, confession);
+    expect(started.ap).toBe(early.ap);
     expect(startDate(started, confession)).toBe(started);
   });
-  it("lets the lowest-affection route recover from deferral and earn the ending exactly once", () => {
-    let state = lowPath();
-    expect(state.affection).toBe(7);
+  it("lets a deferred relationship grow and earn the ending exactly once", () => {
+    let state = toInvitation();
+    expect(canConfessSuccessfully(state)).toBe(false);
     const ap = state.ap;
     state = play(state, confession, [0]);
     expect(state.confessionStatus).toBe("deferred");
     expect(state.endingReached).toBe(false);
     expect(state.unlockedEventIds).toContain(reassurance);
     const before = state.affection;
-    state = play(state, reassurance, [2]);
+    state = play(state, reassurance, [1]);
     expect(state.affection).toBe(before + 1);
     expect(startDate(state, reassurance)).toBe(state);
+    expect(canConfessSuccessfully(state)).toBe(false);
+    state = play(state, night, [0, 2]);
     expect(canConfessSuccessfully(state)).toBe(true);
     state = play(state, confession, [0]);
     expect(state.confessionStatus).toBe("accepted");
@@ -189,23 +195,23 @@ describe("confession and relationship ending", () => {
     expect(
       state.memories.filter((id) => id === "milano_confession_promise"),
     ).toHaveLength(1);
-    expect(state.ap).toBe(ap);
+    expect(state.ap).toBe(ap - dates.find((date) => date.id === night)!.apCost);
     expect(finishDate(state, state.revision)).toBe(state);
     expect(startDate(state, confession)).toBe(state);
     expect(validateGameState(JSON.parse(JSON.stringify(state)))).toEqual(state);
   });
-  it("requires sincere expression even when affection is sufficient, then permits free retry", () => {
-    let state = play(seedLegacyChapter(createGame()), cafe, [2, 1]);
-    state = claimTrialMilestone(state, trialMilestones[0].id);
-    state = play(state, walk, [1, 0]);
-    state = play(state, invitation, [1]);
-    state = claimTrialMilestone(state, trialMilestones[1].id);
-    state = play(state, night, [1, 0]);
-    expect(canConfessSuccessfully(state)).toBe(true);
+  it("requires another shared date after rejection and can eventually accept without the invitation", () => {
+    let state = toWalk();
+    expect(canConfessSuccessfully(state)).toBe(false);
     const transcript: string[] = [];
     state = play(state, confession, [1], transcript);
-    expect(state.confessionStatus).toBe("deferred");
+    expect(state.confessionStatus).toBe("rejected");
     expect(transcript.join("\n")).toContain(getMemoryCallback(state));
+    expect(startDate(state, confession)).toBe(state);
+    state = play(state, walk, [0, 0]);
+    expect(getDateAvailability(state, confession).available).toBe(true);
+    state = play(state, night, [0, 1]);
+    expect(canConfessSuccessfully(state)).toBe(true);
     state = play(state, confession, [2]);
     expect(state.endingReached).toBe(true);
     expect(
@@ -214,8 +220,7 @@ describe("confession and relationship ending", () => {
   });
   it("commits the ending and promise together only after its final line", () => {
     let state = lowPath();
-    state = play(state, confession, [0]);
-    state = play(state, reassurance, [0]);
+    expect(canConfessSuccessfully(state)).toBe(true);
     state = startDate(state, confession);
     while (!state.activeDate!.frame.choices.length)
       state = advanceDate(state, state.revision);

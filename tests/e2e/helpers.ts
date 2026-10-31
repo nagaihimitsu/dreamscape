@@ -109,6 +109,21 @@ export async function returnToMenu(page: Page) {
     await ending.getByRole("button", { name: "自由時間へ", exact: true }).click();
 }
 
+/** Find a date in the paginated free-time pool without assuming its position. */
+export async function findDateOption(page: Page, dateId: string) {
+  const event = page.getByTestId(`event-${dateId}`);
+  if (await event.count()) return event;
+  const previous = page.getByRole("button", { name: "前の候補", exact: true });
+  const next = page.getByRole("button", { name: "次の候補", exact: true });
+  while (await previous.isVisible() && await previous.isEnabled()) await previous.click();
+  for (let index = 0; index < 100; index++) {
+    if (await event.count()) return event;
+    if (!await next.isVisible() || !await next.isEnabled()) break;
+    await next.click();
+  }
+  return event;
+}
+
 export async function startEvent(
   page: Page,
   dateId: string,
@@ -116,7 +131,7 @@ export async function startEvent(
 ) {
   await returnToMenu(page);
   const before = await saved(page);
-  await page.getByTestId(`event-${dateId}`).getByRole("button").click();
+  await (await findDateOption(page, dateId)).getByRole("button").click();
   expect((await saved(page)).ap).toBe(before.ap);
   await page
     .getByRole("button", {

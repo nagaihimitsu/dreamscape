@@ -8,8 +8,9 @@ import { enterFreeTime, getNextStoryBattle, startEpisode } from "./chapter";
 import { advanceBattle, answerBattle, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "./battle";
 import { skipTourismGuide, startTourismBattle } from "./tourism";
 
-const ids = ["milano_la_scala_date_01", "milano_brera_date_01", "milano_navigli_date_01"] as const;
-const milestones = ["milano_galleria_episode", "milano_last_supper_episode", "milano_castello_episode"] as const;
+const ids = ["milano_la_scala_date_01", "milano_brera_date_01", "milano_navigli_date_01", "milano_san_satiro_date_01", "milano_starbucks_roastery_date_01", "milano_fondazione_prada_date_01", "milano_love_date_01"] as const;
+const milestones = ["milano_galleria_episode", "milano_last_supper_episode", "milano_castello_episode", "milano_duomo_episode", "milano_galleria_episode", "milano_last_supper_episode", "milano_duomo_episode"] as const;
+const effectPrefixes = ["milano_la_scala", "milano_brera", "milano_navigli", "milano_san_satiro", "milano_starbucks_roastery", "milano_fondazione_prada", "milano_love"] as const;
 
 /** Exercise the real A/B/C route rather than inventing episode save flags. */
 function finishBattle(initial: GameState): GameState {
@@ -122,8 +123,8 @@ describe("real-place optional dates", () => {
       const before = checkpoints[episodeIndex + 1];
       const after = playDate(before, id, [first, second]);
       const memories = after.memories.filter((memory) => !before.memories.includes(memory));
-      const prefix = ["milano_la_scala", "milano_brera", "milano_navigli"][index];
-      const approach = ["joke", "listen", "honest"];
+      const prefix = effectPrefixes[index];
+      const approach = index < 3 ? ["joke", "listen", "honest"] : ["a", "b", "c"];
       const chosenEffects = [
         effects.find((effect) => effect.id === `${prefix}_first_${approach[first]}`)!,
         effects.find((effect) => effect.id === `${prefix}_second_${approach[second]}`)!,
@@ -132,20 +133,32 @@ describe("real-place optional dates", () => {
       expect(new Set(memories).size).toBe(2);
       expect(memories).toEqual(chosenEffects.map((effect) => effect.memoryId));
       expect(after.playedDateIds).toContain(id);
-      expect(after.affection).toBe(before.affection + chosenEffects.reduce((sum, effect) => sum + effect.affectionDelta, 0));
-      expect(after.romanceStage).toBe(1); // affection alone never skips the required cafe.
+      const deltas = chosenEffects.map((effect) => effect.stageDeltas?.[String(before.romanceStage) as "1" | "2" | "3" | "4"] ?? effect);
+      expect(after.affection).toBe(before.affection + deltas.reduce((sum, delta) => sum + delta.affectionDelta, 0));
+      expect(after.trust).toBe(before.trust + deltas.reduce((sum, delta) => sum + (delta.trustDelta ?? 0), 0));
+      expect(after.spark).toBe(before.spark + deltas.reduce((sum, delta) => sum + (delta.sparkDelta ?? 0), 0));
+      expect(after.romanceStage).toBeGreaterThanOrEqual(before.romanceStage);
+      expect(after.romanceStage).toBeLessThanOrEqual(2); // One date cannot satisfy a two-date stage.
     });
   }
 
   it("does not add these optional dates to stage, confession, existing events or legacy trial requirements", () => {
     const forbidden = new Set<string>(ids);
     for (const stage of progression.stages)
-      expect(stage.requiredPlayedDateIds.some((id) => forbidden.has(id))).toBe(false);
-    expect(progression.confession.requiredPlayedDateIds.some((id) => forbidden.has(id))).toBe(false);
+      expect(stage).not.toHaveProperty("requiredPlayedDateIds");
+    expect(progression.confession).not.toHaveProperty("requiredPlayedDateIds");
     for (const milestone of trialMilestones)
       expect(milestone.requiredPlayedDateIds.some((id) => forbidden.has(id))).toBe(false);
     for (const event of dates.filter((date) => !forbidden.has(date.id)))
       expect(event.requiredPlayedDateIds.some((id) => forbidden.has(id))).toBe(false);
+  });
+
+  it("advances from a destination date without the old cafe, walk or invitation", () => {
+    const before = checkpoints[2];
+    const after = playDate(before, "milano_love_date_01", [2, 0]);
+    expect(after.romanceStage).toBe(2);
+    expect(after.playedDateIds).toEqual(["milano_love_date_01"]);
+    expect(getDateAvailability(after, "milano_cafe_01").available).toBe(true);
   });
 
   it("changes the Navigli callback only when the cafe was actually experienced", () => {
@@ -159,7 +172,83 @@ describe("real-place optional dates", () => {
     expect(returning.join("\n")).toContain("前にも運河の近くで話しましたね");
   });
 
-  it("still reaches a relationship on the 0-score, guide-skipping budget after every optional date", () => {
+  it("recalls the Brera detail at Prada only after that exact memory was made", () => {
+    const before = checkpoints[3];
+    const firstVisit: string[] = [];
+    const afterPrada = playDate(before, "milano_fondazione_prada_date_01", [0, 0], firstVisit);
+    expect(firstVisit.join("\n")).not.toContain("ブレラの絵でも");
+    const pradaThenBrera = playDate(afterPrada, "milano_brera_date_01", [1, 0]);
+    expect(pradaThenBrera.playedDateIds).toEqual(["milano_fondazione_prada_date_01", "milano_brera_date_01"]);
+
+    const afterBrera = playDate(before, "milano_brera_date_01", [1, 0]);
+    expect(afterBrera.memories).toContain("milano_brera_first_listen");
+    const returning: string[] = [];
+    playDate(afterBrera, "milano_fondazione_prada_date_01", [0, 0], returning);
+    expect(returning.join("\n")).toContain("ブレラの絵でも");
+  });
+
+  it("makes the same approach feel different after the relationship has developed", () => {
+    const firstTime: string[] = [];
+    const early = playDate(checkpoints[1], "milano_san_satiro_date_01", [2, 0], firstTime);
+    expect(firstTime.join("\n")).toContain("まずはこの距離で");
+    expect(early.trust).toBe(checkpoints[1].trust + 1); // The early approach costs trust; respecting her view restores it.
+
+    let closer = playDate(checkpoints[3], "milano_la_scala_date_01", [0, 0]);
+    closer = playDate(closer, "milano_brera_date_01", [0, 0]);
+    expect(closer.romanceStage).toBeGreaterThanOrEqual(3);
+    const laterLines: string[] = [];
+    const later = playDate(closer, "milano_san_satiro_date_01", [2, 0], laterLines);
+    expect(laterLines.join("\n")).toContain("絵のほうも見てくださいね");
+    expect(later.trust).toBe(closer.trust + 3);
+  });
+
+  it("can visit all seven places once with finite zero-score travel rewards", () => {
+    // This checkpoint was reached through every real episode and A/B/C battle,
+    // with every guide skipped and every quiz answered incorrectly.
+    let state = checkpoints.at(-1)!;
+    const totalAp = (game: GameState) => game.ap +
+      game.pendingApRewards.reduce((sum, reward) => sum + reward.remainingAp, 0);
+    expect(state.completedEpisodeIds).toEqual(episodes.map((episode) => episode.id));
+    expect(state.completedCityIds).toContain("milano");
+    expect(state.completedGuideIds).toEqual([]);
+    expect(state.playedDateIds).toEqual([]);
+    expect(state.battleRecords.every((record) => record.firstScore === 0)).toBe(true);
+    expect(state.legacyTrialAvailable).toBe(false);
+    const initialAp = totalAp(state);
+    expect(initialAp).toBe(15);
+
+    const route: readonly [string, [number, number]][] = [
+      ["milano_love_date_01", [2, 0]],
+      ["milano_fondazione_prada_date_01", [1, 0]],
+      ["milano_la_scala_date_01", [0, 2]],
+      ["milano_san_satiro_date_01", [2, 1]],
+      ["milano_navigli_date_01", [1, 2]],
+      ["milano_starbucks_roastery_date_01", [0, 1]],
+      ["milano_brera_date_01", [1, 0]],
+    ];
+    let spent = 0;
+    for (const [id, choices] of route) {
+      const date = dates.find((item) => item.id === id)!;
+      expect(getDateAvailability(state, id).available).toBe(true);
+      state = playDate(state, id, choices);
+      spent += date.apCost;
+      expect(totalAp(state)).toBe(initialAp - spent);
+      expect(state.ap).toBeGreaterThanOrEqual(0);
+      expect(state.ap).toBeLessThanOrEqual(12);
+      expect(state.pendingApRewards.every((reward) => reward.remainingAp > 0)).toBe(true);
+      expect(state.playedDateIds.filter((played) => played === id)).toHaveLength(1);
+      expect(startDate(state, id)).toBe(state);
+    }
+    expect(spent).toBe(13);
+    expect(totalAp(state)).toBe(2);
+    expect(state.pendingApRewards).toEqual([]);
+    expect(state.playedDateIds).toEqual(route.map(([id]) => id));
+    expect(state.memories).toHaveLength(14);
+    expect(new Set(state.memories).size).toBe(14);
+    expect(state.endingReached).toBe(false); // No confession is needed to complete the journey.
+  }, 60000);
+
+  it("can reach a relationship via three freely chosen destinations with zero quiz points", () => {
     let state = createGame();
     state = clearEpisode(state, "milano_duomo_episode");
     state = clearEpisode(state, "milano_galleria_episode");
@@ -167,15 +256,10 @@ describe("real-place optional dates", () => {
     state = clearEpisode(state, "milano_last_supper_episode");
     state = playDate(state, ids[1], [0, 0]);
     state = clearEpisode(state, "milano_castello_episode");
-    state = playDate(state, ids[2], [0, 0]);
+    state = playDate(state, ids[2], [1, 0]);
     state = clearEpisode(state, "milano_finale");
-    state = playDate(state, "milano_city_date_01", [0, 0]);
-    state = playDate(state, "milano_cafe_01", [0, 0]);
-    state = playDate(state, "milano_walk_01", [0, 1]);
-    state = playDate(state, "milano_invitation_01", [0]);
-    state = playDate(state, "milano_night_01", [0, 1]);
-    expect(state.ap).toBe(0);
-    expect(state.pendingApRewards).toEqual([]);
+    expect(state.playedDateIds).toEqual([...ids.slice(0, 3)]);
+    expect(state.ap).toBeGreaterThanOrEqual(0);
     expect(state.legacyTrialAvailable).toBe(false);
     expect(getDateAvailability(state, "milano_confession_01").available).toBe(true);
     // The honest confession is free and succeeds once the existing history and affection qualify.

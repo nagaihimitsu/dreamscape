@@ -1,7 +1,8 @@
 import { Story } from "inkjs";
 import { z } from "zod";
-import { stories, tagContext } from "../content";
+import { presentation, stories, tagContext } from "../content";
 import { parseStoryTags } from "../content/tags";
+import { bindMemoryReader } from "./memory";
 
 export type Speaker = "narrator" | "heroine" | "player" | "enemy";
 export interface StoryFrame {
@@ -48,10 +49,11 @@ export function storyFingerprint(storyId: string): string {
   return (hash >>> 0).toString(16);
 }
 
-function runtime(storyId: string, saved?: string): Story {
+function runtime(storyId: string, saved?: string, memoryIds: readonly string[] = []): Story {
   const compiled = stories[storyId];
   if (!compiled) throw new Error("シナリオが見つかりません。");
   const story = new Story(compiled);
+  bindMemoryReader(story, memoryIds, Object.keys(presentation.memories));
   story.onError = (message) => {
     throw new Error(message);
   };
@@ -111,8 +113,9 @@ export function beginStory(
   playerName: string,
   heroineName: string,
   variables: Record<string, string | number | boolean> = {},
+  memoryIds: readonly string[] = [],
 ): StoryStep {
-  const story = runtime(storyId);
+  const story = runtime(storyId, undefined, memoryIds);
   story.variablesState.$("player_name", playerName);
   story.variablesState.$("heroine_name", heroineName);
   for (const [name, value] of Object.entries(variables)) {
@@ -127,8 +130,9 @@ export function continueStory(
   storyId: string,
   saved: string,
   previous: StoryFrame,
+  memoryIds: readonly string[] = [],
 ): StoryStep {
-  const story = runtime(storyId, saved);
+  const story = runtime(storyId, saved, memoryIds);
   if (!story.canContinue) throw new Error("会話を進められません。");
   return readFrame(story, previous);
 }
@@ -138,8 +142,9 @@ export function selectStoryChoice(
   saved: string,
   previous: StoryFrame,
   index: number,
+  memoryIds: readonly string[] = [],
 ): StoryStep {
-  const story = runtime(storyId, saved);
+  const story = runtime(storyId, saved, memoryIds);
   const choice = story.currentChoices.find((item) => item.index === index);
   if (!choice) throw new Error("選択肢が見つかりません。");
   const tags = choice.tags ?? [];
@@ -157,8 +162,9 @@ export function validateStorySnapshot(
     choiceCount: number;
     variables?: Record<string, string | number | boolean>;
   },
+  memoryIds: readonly string[] = [],
 ): void {
-  const story = runtime(storyId, saved);
+  const story = runtime(storyId, saved, memoryIds);
   if (
     !tagContext.backgroundIds.includes(frame.background) ||
     !tagContext.emotionIds.includes(frame.emotion)

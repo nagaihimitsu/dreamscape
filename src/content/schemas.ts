@@ -14,9 +14,11 @@ export const dateSchema = z
     apCost: z.number().int().nonnegative(),
     minRomanceStage: z.number().int().min(1).max(4),
     storyId: z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/),
+    legacyStoryIds: z.array(z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/)).optional(),
     requiredCompletedChapters: z.array(id),
     requiredCompletedCityIds: z.array(id).optional(),
     requiredCompletedEpisodeIds: z.array(id).optional(),
+    forbiddenCompletedEpisodeIds: z.array(id).optional(),
     destinationId: id.optional(),
     allowAfterEnding: z.boolean().optional(),
     rewardOnlyOnce: z.boolean(),
@@ -28,6 +30,7 @@ export const dateSchema = z
     choiceCount: z.number().int().min(0).max(2),
     effectCount: z.number().int().min(0).max(2),
     actionLabelJa: text,
+    eventLabelJa: text.optional(),
     invitationJa: text.optional(),
     validationContexts: z
       .array(
@@ -35,7 +38,9 @@ export const dateSchema = z
           .object({
             romanceStage: z.number().int().min(1).max(4),
             confessionReady: z.boolean(),
+            confessionResult: z.enum(["accepted", "deferred", "rejected"]).optional(),
             memoryId: id.optional(),
+            memoryIds: z.array(id).optional(),
             endingReached: z.boolean().optional(),
             hasCafeMemory: z.boolean().optional(),
           })
@@ -50,8 +55,8 @@ export const dateSchema = z
     "A date needs a chapter or a destination and completed episode prerequisite",
   )
   .refine(
-    (date) => date.kind === "normal" || (!date.destinationId && !date.requiredCompletedEpisodeIds?.length),
-    "Destination and episode prerequisites are for normal dates",
+    (date) => date.kind === "normal" || !date.destinationId,
+    "Destinations are for normal dates",
   );
 
 export const dateCatalogSchema = z
@@ -61,8 +66,13 @@ export const effectSchema = z
   .object({
     id,
     affectionDelta: z.number().int(),
+    trustDelta: z.number().int().optional(),
+    sparkDelta: z.number().int().optional(),
+    stageDeltas: z.partialRecord(z.enum(["1", "2", "3", "4"]), z.object({
+      affectionDelta: z.number().int(), trustDelta: z.number().int(), sparkDelta: z.number().int(),
+    }).strict()).optional(),
     memoryId: id.optional(),
-    outcome: z.enum(["accepted", "deferred"]).optional(),
+    outcome: z.enum(["accepted", "deferred", "rejected"]).optional(),
   })
   .strict();
 export const effectCatalogSchema = z
@@ -167,7 +177,9 @@ export const progressionSchema = z
           .object({
             stage: z.number().int().min(1).max(4),
             minAffection: z.number().int().nonnegative(),
-            requiredPlayedDateIds: z.array(id),
+            minTrust: z.number().int(),
+            minSpark: z.number().int(),
+            minCompletedDates: z.number().int().nonnegative(),
             playerSuffix: z.string(),
           })
           .strict(),
@@ -176,7 +188,9 @@ export const progressionSchema = z
     confession: z
       .object({
         minAffection: z.number().int().nonnegative(),
-        requiredPlayedDateIds: z.array(id),
+        minTrust: z.number().int(),
+        minSpark: z.number().int(),
+        minCompletedDates: z.number().int().nonnegative(),
       })
       .strict(),
     memoryCallbacks: z

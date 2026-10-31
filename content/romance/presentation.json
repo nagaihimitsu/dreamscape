@@ -63,6 +63,36 @@
       "captionJa": "ミラノ ／ 決めない寄り道",
       "color": "#60746b",
       "fallback": "neutral"
+    },
+    "milano_san_satiro_date": {
+      "nameJa": "見える距離",
+      "captionJa": "ミラノ ／ 見える距離",
+      "color": "#77736c",
+      "fallback": "neutral"
+    },
+    "milano_starbucks_roastery_date": {
+      "nameJa": "遠くまで届く香り",
+      "captionJa": "ミラノ ／ 遠くまで届く香り",
+      "color": "#806b5d",
+      "fallback": "neutral"
+    },
+    "milano_fondazione_prada_date": {
+      "nameJa": "古い建物、新しい見方",
+      "captionJa": "ミラノ ／ 古い建物、新しい見方",
+      "color": "#777462",
+      "fallback": "neutral"
+    },
+    "milano_love_date": {
+      "nameJa": "手のかたち",
+      "captionJa": "ミラノ ／ 手のかたち",
+      "color": "#727779",
+      "fallback": "neutral"
+    },
+    "milano_rain_pause": {
+      "nameJa": "ガッレリアの雨宿り",
+      "captionJa": "ミラノ ／ 雨が通り過ぎるまで",
+      "color": "#6c7775",
+      "fallback": "neutral"
     }
   },
   "emotions": {
@@ -274,11 +304,119 @@
     "milano_navigli_second_honest": {
       "titleJa": "岸辺の遠回り",
       "descriptionJa": "隣を歩く時間が長い方へ。彼女は橋ではなく岸辺を見た。"
+    },
+    "milano_san_satiro_first_a": {
+      "titleJa": "通路と壁",
+      "descriptionJa": "正面に見えた通路と横から見た壁、どちらも同じ場所にあった。"
+    },
+    "milano_san_satiro_first_b": {
+      "titleJa": "見る役の交代",
+      "descriptionJa": "祭壇を正面と横から交代で見た。声が響きそうで、歩くのはやめた。"
+    },
+    "milano_san_satiro_first_c": {
+      "titleJa": "教会での距離",
+      "descriptionJa": "教会の祭壇を見ながら、隣へ寄ってよいかを聞いた。"
+    },
+    "milano_san_satiro_second_a": {
+      "titleJa": "二つの見方",
+      "descriptionJa": "通路と壁を、ひとつに決めずに覚えて帰ることにした。"
+    },
+    "milano_san_satiro_second_b": {
+      "titleJa": "横から見た理由",
+      "descriptionJa": "知らないほうがよかったかと尋ねると、彼女は見てよかったと言った。"
+    },
+    "milano_san_satiro_second_c": {
+      "titleJa": "同じ角度",
+      "descriptionJa": "壁の位置を知ったあとで、もう一度二人で角度を探した。"
+    },
+    "milano_starbucks_roastery_first_a": {
+      "titleJa": "いつもの看板",
+      "descriptionJa": "ミラノの店を選んだ理由を聞き、飲んでから決めようと言われた。"
+    },
+    "milano_starbucks_roastery_first_b": {
+      "titleJa": "豆の遊園地",
+      "descriptionJa": "焙煎機を遊園地にたとえると、豆だけ乗れると言って笑った。"
+    },
+    "milano_starbucks_roastery_first_c": {
+      "titleJa": "どこでも、の返事",
+      "descriptionJa": "どこでも行きたいと言うと、一緒に選びたいと返された。"
+    },
+    "milano_starbucks_roastery_second_a": {
+      "titleJa": "一杯のあとに",
+      "descriptionJa": "昔の自分への手紙は、注文を考えてからにした。"
+    },
+    "milano_starbucks_roastery_second_b": {
+      "titleJa": "自分の手紙",
+      "descriptionJa": "彼女は、昔の自分への言葉を自分で考えたいと言った。"
+    },
+    "milano_starbucks_roastery_second_c": {
+      "titleJa": "宛名だけの手紙",
+      "descriptionJa": "まず宛名を決めて、本文は急がず考える話をした。"
+    },
+    "milano_fondazione_prada_first_a": {
+      "titleJa": "触らないでの札",
+      "descriptionJa": "展示した失敗に札を立てても、触る人はいると笑った。"
+    },
+    "milano_fondazione_prada_first_b": {
+      "titleJa": "残すものを選ぶ",
+      "descriptionJa": "古い壁の前で、残す失敗は自分で選びたいと話した。"
+    },
+    "milano_fondazione_prada_first_c": {
+      "titleJa": "忘れたくない失敗",
+      "descriptionJa": "失敗は忘れればいいと言うと、忘れたくないこともあると返された。"
+    },
+    "milano_fondazione_prada_second_a": {
+      "titleJa": "非公開の収蔵品",
+      "descriptionJa": "話したくない失敗には、説明札を出さないことにした。"
+    },
+    "milano_fondazione_prada_second_b": {
+      "titleJa": "まだ聞かない話",
+      "descriptionJa": "彼女の秘密が気になり、もう少しだけ聞こうとした。"
+    },
+    "milano_fondazione_prada_second_c": {
+      "titleJa": "先に話す失敗",
+      "descriptionJa": "自分の失敗を先に話し、彼女の話は無理に聞かなかった。"
+    },
+    "milano_love_first_a": {
+      "titleJa": "怒る顔の練習",
+      "descriptionJa": "広場の彫刻と一緒に怒った顔をする案に、彼女は練習が必要と言った。"
+    },
+    "milano_love_first_b": {
+      "titleJa": "写真のポーズ",
+      "descriptionJa": "同じポーズを頼むと、写真で何をするかは自分で決めたいと言われた。"
+    },
+    "milano_love_first_c": {
+      "titleJa": "手を振る位置",
+      "descriptionJa": "手が建物へ挨拶しているように見える場所を探した。"
+    },
+    "milano_love_second_a": {
+      "titleJa": "玄関での挨拶",
+      "descriptionJa": "手の置物を玄関に置いたら、宅配の人への説明は自分の役になった。"
+    },
+    "milano_love_second_b": {
+      "titleJa": "しまう前の相談",
+      "descriptionJa": "困るものでも見ていたいと、彼女はしまう前に話した。"
+    },
+    "milano_love_second_c": {
+      "titleJa": "置く場所の相談",
+      "descriptionJa": "大きな手の置き場所を二人で決める話になった。"
+    },
+    "milano_rain_pause_music": {
+      "titleJa": "雲の音楽係",
+      "descriptionJa": "雨音を街の音楽にたとえると、傘の音も入れてほしいと言われた。"
+    },
+    "milano_rain_pause_watch": {
+      "titleJa": "屋根の端",
+      "descriptionJa": "雨に濡れずに広場を見られる場所を、二人で探した。"
+    },
+    "milano_rain_pause_hurry": {
+      "titleJa": "もう少し雨宿り",
+      "descriptionJa": "すぐ行こうと誘うと、彼女はもう少し雨の音を聞きたいと言った。"
     }
   },
   "ending": {
     "titleJa": "旅の続きに、きみと。",
-    "descriptionJa": "ふたりは、自分の言葉でこれからを選びました。\n交際が始まり、この恋の物語はひとつの結末を迎えます。",
+    "descriptionJa": "ふたりは、恋人として歩き始めました。\n旅はこの先も続きます。",
     "buttonJa": "旅のしおりを見る"
   },
   "deferred": {

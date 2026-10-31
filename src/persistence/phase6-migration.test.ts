@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import phase5 from "../../tests/fixtures/phase5-saves.json";
-import { battles, battleQuizzes } from "../content";
+import { battles, battleQuizzes, progression } from "../content";
 import { createGame, validateGameState, type GameState } from "../domain/game";
+import { legacyRomanceValues } from "../domain/romance-migration";
 import {
   advanceBattle,
   answerBattle,
@@ -51,7 +52,8 @@ describe("Phase 5 to 6 save migration", () => {
       const state = validateGameState(raw);
       expect(state).toEqual({
         ...raw,
-        schemaVersion: 7,
+        schemaVersion: 8,
+        ...legacyRomanceValues(raw, progression),
         activeEpilogue: null,
         viewedEpilogueCityIds: [],
         legacyTrialAvailable: true,

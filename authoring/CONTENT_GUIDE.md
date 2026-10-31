@@ -77,11 +77,13 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 
 ### 通常デートのデータ
 
-`date.json` の `id`、`chapterId`、`titleJa`、`descriptionJa`、`storyId`、`backgroundAssetId` はイベント、章、表示文、脚本、背景です。`kind` は通常なら `normal`。`apCost`、`minRomanceStage`、`minAffection`、`requiredCompletedChapters`、`requiredPlayedDateIds` は開始条件で、`destinationId`・`requiredCompletedEpisodeIds`・`requiredCompletedCityIds`・`allowAfterEnding` は必要な場合のみ。`repeatable` は再挑戦可否で、通常デートは `false`、告白は保留後の再挑戦のため `true` にします。`rewardOnlyOnce` は旧版で再鑑賞を開始済みのセーブを含む効果の重複防止、`needsDeferred` は告白保留後の条件、`choiceCount` / `effectCount` は各経路の選択・効果回数、`actionLabelJa` と任意の `invitationJa` はボタン・確認文です。`validationContexts` は分岐確認に使う関係段階や思い出等の例で、脚本が使う条件を網羅します。
+`date.json` の `id`、`chapterId`、`titleJa`、`descriptionJa`、`storyId`、`backgroundAssetId` はイベント、章、表示文、脚本、背景です。`kind` は通常なら `normal`。`apCost`、`minRomanceStage`、`minAffection`、`requiredCompletedChapters` は開始条件で、`destinationId`・`requiredCompletedEpisodeIds`・`requiredCompletedCityIds` は必要な場合のみ。通常デートの `requiredPlayedDateIds` は空配列とし、他のデートを必須にしません。期間限定イベントには `forbiddenCompletedEpisodeIds` で終了条件を指定でき、`eventLabelJa` で「今だけの出来事」などの種別を表示できます。`repeatable` は再挑戦可否で、通常デートは `false`、告白は再挑戦のため `true` にします。`rewardOnlyOnce` は旧版で再鑑賞を開始済みのセーブを含む効果の重複防止、`needsDeferred` は告白保留後の条件、`choiceCount` / `effectCount` は各経路の選択・効果回数です。旧途中セーブに使用する `legacyStoryIds` は元のInkを残し、変更しないでください。
 
-`date_effects.json` の各 `id`、`affectionDelta`、任意の `memoryId` はInkの `# effect:` に対応します。思い出は `presentation.json` の `memories` に同じIDと `titleJa` / `descriptionJa` を登録。背景は `backgrounds` のIDごとに `nameJa` / `captionJa` / 色 `color`、表情は `emotions` に登録します。効果IDは状態を変えるため、単なる表示名と混同しないでください。
+`effect_catalog.json` の各 `id`、`affectionDelta`・`trustDelta`・`sparkDelta`、任意の `memoryId` はInkの `# effect:` に対応します。各値は正・ゼロ・負を取れ、`stageDeltas` で関係段階ごとの効果を指定できます。台詞と効果が一致するよう全段階をレビューしてください。思い出は `presentation.json` の `memories` に同じIDと `titleJa` / `descriptionJa` を登録します。Stage・告白条件は `progression.json` で管理し、特定デートIDを条件にしません。
 
 Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受け取ります。`# speaker: narrator` / `heroine` / `player` / `enemy`、`# background: 登録済みID`、`# emotion: 登録済みID` を使い、本文を日本語で書きます。デートの `* [選択肢]` と各分岐直後の `# effect: 登録済みID`、`->` の合流例は `date.ink` を参照。通常デートは3択を2回、各経路で対応する効果を適用します。案内とバトルには恋愛効果を置きません。バトルInkは `battle_scene`、`answer_correct`、`battle_score` で分岐し、各場面を `-> END` で閉じます。特殊戦の主張・追及・証拠成功／失敗の例もB/CのInkにあります。
+
+順不同のデートで過去の出来事を参照する場合、Inkで `EXTERNAL has_memory(memory_id)` を宣言し、`has_memory("登録済みmemoryId")` を使います。引数は固定の登録済みIDだけで、任意コードを実行せず状態も変更しません。基本本文は思い出がなくても成立させ、`validationContexts` の `memoryIds` で思い出あり・なしの両方を検証します。`romance_stage` と `ending_reached` に応じた反応、告白の `confession_result` も各文脈を登録してください。旧 `has_cafe_memory` は互換性のため残しています。
 
 ## 章・都市と報酬
 

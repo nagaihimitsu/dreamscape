@@ -72,19 +72,19 @@ describe("story encounters and existing saves", () => {
     let state = validateGameState(old);
     expect(state.completedEpisodeIds).toEqual([]);
     expect(state.activeBattle?.reasoning?.selectedClueIds).toEqual(old.activeBattle.reasoning.selectedClueIds);
-    const before = { ap: state.ap, affection: state.affection, memories: state.memories, pending: state.pendingApRewards, rewards: state.claimedRewardIds };
+    const before = { ap: state.ap, affection: state.affection, trust: state.trust, spark: state.spark, memories: state.memories, pending: state.pendingApRewards, rewards: state.claimedRewardIds };
     state = finish(state);
     expect(state.activeBattle?.score).toBeLessThanOrEqual(2);
-    expect({ ap: state.ap, affection: state.affection, memories: state.memories, pending: state.pendingApRewards, rewards: state.claimedRewardIds }).toEqual(before);
+    expect({ ap: state.ap, affection: state.affection, trust: state.trust, spark: state.spark, memories: state.memories, pending: state.pendingApRewards, rewards: state.claimedRewardIds }).toEqual(before);
   });
 
   it.each(["milano_last_supper_b01", "milano_last_supper_c01"])("never awards AP or consumes pending AP on %s and its replay", (battleId) => {
     let state = validateGameState(phase7.cityClearViewed);
     expect(state.pendingApRewards.length).toBeGreaterThan(0);
-    const before = { ap: state.ap, affection: state.affection, memories: state.memories, pending: state.pendingApRewards, rewards: state.claimedRewardIds, city: state.completedCityIds };
+    const before = { ap: state.ap, affection: state.affection, trust: state.trust, spark: state.spark, memories: state.memories, pending: state.pendingApRewards, rewards: state.claimedRewardIds, city: state.completedCityIds };
     for (let count = 0; count < 2; count++) {
       state = finish(startBattle(state, battleId));
-      expect({ ap: state.ap, affection: state.affection, memories: state.memories, pending: state.pendingApRewards, rewards: state.claimedRewardIds, city: state.completedCityIds }).toEqual(before);
+      expect({ ap: state.ap, affection: state.affection, trust: state.trust, spark: state.spark, memories: state.memories, pending: state.pendingApRewards, rewards: state.claimedRewardIds, city: state.completedCityIds }).toEqual(before);
       state = leaveBattle(state, state.revision);
     }
     expect(state.battleRecords.find((record) => record.battleId === battleId)?.attempts).toBe(2);

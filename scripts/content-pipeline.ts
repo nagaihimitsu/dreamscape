@@ -4,6 +4,7 @@ import { characterCatalogSchema } from "../src/content/character-assets";
 import { validateCharacterImage } from "./character-image-validation";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
 import { dateDestinationsSchema } from "../src/content/date-destinations";
+import { bindMemoryReader, validateMemoryReferences } from "../src/story/memory";
 import { createDialogueExpressionValidator, type DialogueObserver } from "./dialogue-expression-validation";
 import {
   Compiler,
@@ -142,8 +143,10 @@ export function validateStory(
   variables: Record<string, string | number | boolean> = {},
   effects: EffectDefinition[] = [],
   observe?: DialogueObserver,
+  memories: { available: readonly string[]; known: readonly string[] } = { available: [], known: [] },
 ): number {
   const initial = new Story(compiled);
+  bindMemoryReader(initial, memories.available, memories.known);
   initial.onError = (message) => {
     throw new Error(message);
   };
@@ -178,6 +181,7 @@ export function validateStory(
     choiceTags: readonly string[] = [],
   ) => {
     const story = new Story(compiled);
+    bindMemoryReader(story, memories.available, memories.known);
     story.onError = (message) => {
       throw new Error(message);
     };
@@ -236,6 +240,7 @@ export function validateStory(
       if (!choice.text.trim()) throw new Error("Empty choice text");
       const tags = parseStoryTags(choice.tags ?? [], context);
       const branch = new Story(compiled);
+      bindMemoryReader(branch, memories.available, memories.known);
       branch.state.LoadJson(checkpoint);
       branch.ChooseChoiceIndex(choice.index);
       visit(
@@ -428,8 +433,8 @@ export async function buildContent(root: string, writeOutput = true) {
     emotionIds: Object.keys(presentation.emotions),
   };
   for (const effect of effects) {
-    if (effect.outcome && effect.affectionDelta !== 0)
-      throw new Error("Confession outcome cannot award affection");
+    if (effect.outcome && (effect.affectionDelta !== 0 || (effect.trustDelta ?? 0) !== 0 || (effect.sparkDelta ?? 0) !== 0 || effect.stageDeltas))
+      throw new Error("Confession outcome cannot award relationship points");
     if (!effect.memoryId && !effect.outcome)
       throw new Error(`Effect has neither memory nor outcome: ${effect.id}`);
     if (effect.memoryId && !presentation.memories[effect.memoryId])
@@ -437,6 +442,7 @@ export async function buildContent(root: string, writeOutput = true) {
   }
   const stories: Record<string, string> = {};
   const storySources: Record<string, string> = {};
+  const storyMemoryReferences: Record<string, string[]> = {};
   let routes = 0;
   const storyDirectory = path.join(content, "stories");
   for (const file of await filesIn(storyDirectory)) {
@@ -446,6 +452,7 @@ export async function buildContent(root: string, writeOutput = true) {
       .replaceAll(path.sep, "/")
       .slice(0, -4);
     const source = await readFile(file, "utf8");
+    storyMemoryReferences[id] = withContext(file, () => validateMemoryReferences(source, Object.keys(presentation.memories)));
     const compiled = compileInk(source, file);
     stories[id] = compiled;
     storySources[id] = source;
@@ -462,6 +469,10 @@ export async function buildContent(root: string, writeOutput = true) {
   for (const date of dates) {
     if (!Object.hasOwn(stories, date.storyId))
       throw new Error(`Unknown storyId: ${date.storyId}`);
+    unique([date.storyId, ...(date.legacyStoryIds ?? [])], "date story ID");
+    for (const storyId of date.legacyStoryIds ?? [])
+      if (!Object.hasOwn(stories, storyId))
+        throw new Error(`Unknown legacy storyId: ${date.id}/${storyId}`);
     if (date.destinationId) {
       const destination = destinations.find((item) => item.id === date.destinationId);
       if (!destination)
@@ -485,23 +496,26 @@ export async function buildContent(root: string, writeOutput = true) {
     unique(date.requiredPlayedDateIds, "required date ID");
     unique(date.requiredCompletedCityIds ?? [], "required city ID");
     unique(date.requiredCompletedEpisodeIds ?? [], "required episode ID");
-    for (const episodeId of date.requiredCompletedEpisodeIds ?? []) {
+    unique(date.forbiddenCompletedEpisodeIds ?? [], "forbidden episode ID");
+    if ((date.forbiddenCompletedEpisodeIds ?? []).some((id) => date.requiredCompletedEpisodeIds?.includes(id)))
+      throw new Error(`Episode cannot be both required and forbidden: ${date.id}`);
+    for (const episodeId of [...(date.requiredCompletedEpisodeIds ?? []), ...(date.forbiddenCompletedEpisodeIds ?? [])]) {
       const episode = journey.episodes.find((item) => item.id === episodeId);
       if (!episode || episode.cityId !== date.chapterId)
         throw new Error(`Unknown date prerequisite episode: ${date.id}/${episodeId}`);
     }
     if (
-      date.allowAfterEnding &&
-      (date.kind !== "normal" || (!date.requiredCompletedCityIds?.length &&
-        !(date.destinationId && date.requiredCompletedEpisodeIds?.length)))
+      date.allowAfterEnding && date.kind !== "normal"
     )
-      throw new Error(`After-ending date needs a completed city: ${date.id}`);
+      throw new Error(`After-ending date must be normal: ${date.id}`);
     if (
       date.requiredPlayedDateIds.some(
         (id) => !dates.some((other) => other.id === id),
       )
     )
       throw new Error(`Unknown prerequisite date: ${date.id}`);
+    if (date.kind === "normal" && date.requiredPlayedDateIds.length)
+      throw new Error(`Normal dates cannot require other dates: ${date.id}`);
     if (date.kind !== "normal" && date.apCost !== 0)
       throw new Error(`Special events must be free: ${date.id}`);
     if (
@@ -517,35 +531,52 @@ export async function buildContent(root: string, writeOutput = true) {
         !date.validationContexts.some((c) => !c.confessionReady))
     )
       throw new Error("Confession validation needs both readiness states");
-    for (const seed of date.validationContexts) {
-      if (seed.memoryId && !presentation.memories[seed.memoryId])
-        throw new Error(`Unknown validation memory: ${seed.memoryId}`);
-      const suffix = progression.stages.find(
-        (stage) => stage.stage === seed.romanceStage,
-      )!.playerSuffix;
-      const memory =
-        progression.memoryCallbacks.find(
-          (callback) => callback.memoryId === seed.memoryId,
-        )?.textJa ?? progression.fallbackMemoryCallbackJa;
-      routes += withContext(
-        `content/stories/${date.storyId}.ink (date ${date.id})`,
-        () =>
-          validateStory(
-            stories[date.storyId],
-            context,
-            date,
-            {
-              player_address: `検証主人公${suffix}`,
-              romance_stage: seed.romanceStage,
-              memory_callback: memory,
-              confession_ready: seed.confessionReady,
-              ending_reached: seed.endingReached ?? false,
-              has_cafe_memory: seed.hasCafeMemory ?? false,
-            },
-            effects,
-            observeForStory(date.storyId),
-          ),
-      );
+    if (date.kind === "confession" && ["accepted", "deferred", "rejected"].some((result) =>
+      !date.validationContexts.some((context) => context.confessionResult === result)))
+      throw new Error("Confession validation needs accepted, deferred and rejected contexts");
+    for (const storyId of [date.storyId, ...(date.legacyStoryIds ?? [])]) {
+      for (const reference of storyMemoryReferences[storyId]) {
+        const hasReference = (seed: (typeof date.validationContexts)[number]) =>
+          (seed.memoryIds ?? (seed.memoryId ? [seed.memoryId] : [])).includes(reference);
+        if (!date.validationContexts.some(hasReference) || !date.validationContexts.some((seed) => !hasReference(seed)))
+          throw new Error(`Memory reference needs present and absent validation contexts: ${storyId}/${reference}`);
+      }
+      for (const seed of date.validationContexts) {
+        if (seed.memoryId && !presentation.memories[seed.memoryId])
+          throw new Error(`Unknown validation memory: ${seed.memoryId}`);
+        unique(seed.memoryIds ?? [], "validation memory ID");
+        for (const memoryId of seed.memoryIds ?? [])
+          if (!presentation.memories[memoryId]) throw new Error(`Unknown validation memory: ${memoryId}`);
+        const suffix = progression.stages.find(
+          (stage) => stage.stage === seed.romanceStage,
+        )!.playerSuffix;
+        const memory =
+          progression.memoryCallbacks.find(
+            (callback) => callback.memoryId === seed.memoryId,
+          )?.textJa ?? progression.fallbackMemoryCallbackJa;
+        const checkedRoutes = withContext(
+          `content/stories/${storyId}.ink (date ${date.id})`,
+          () =>
+            validateStory(
+              stories[storyId],
+              context,
+              date,
+              {
+                player_address: `検証主人公${suffix}`,
+                romance_stage: seed.romanceStage,
+                memory_callback: memory,
+                confession_ready: seed.confessionReady,
+                confession_result: seed.confessionResult ?? (seed.confessionReady ? "accepted" : "deferred"),
+                ending_reached: seed.endingReached ?? false,
+                has_cafe_memory: seed.hasCafeMemory ?? false,
+              },
+              effects,
+              observeForStory(storyId),
+              { available: seed.memoryIds ?? (seed.memoryId ? [seed.memoryId] : []), known: Object.keys(presentation.memories) },
+            ),
+        );
+        if (storyId === date.storyId) routes += checkedRoutes;
+      }
     }
   }
   const verifyDateReferences = (ids: string[], label: string) => {
@@ -557,15 +588,13 @@ export async function buildContent(root: string, writeOutput = true) {
     if (
       stage.stage !== index + 1 ||
       (index > 0 &&
-        stage.minAffection < progression.stages[index - 1].minAffection)
+        (stage.minAffection < progression.stages[index - 1].minAffection ||
+          stage.minTrust < progression.stages[index - 1].minTrust ||
+          stage.minSpark < progression.stages[index - 1].minSpark ||
+          stage.minCompletedDates < progression.stages[index - 1].minCompletedDates))
     )
       throw new Error("Stages must be ordered with nondecreasing thresholds");
-    verifyDateReferences(stage.requiredPlayedDateIds, "stage prerequisite");
   });
-  verifyDateReferences(
-    progression.confession.requiredPlayedDateIds,
-    "confession prerequisite",
-  );
   unique(
     progression.memoryCallbacks.map((callback) => callback.memoryId),
     "memory callback",
@@ -755,7 +784,7 @@ export async function buildContent(root: string, writeOutput = true) {
   for (const storyId of Object.keys(stories)) {
     if (
       storyId !== learningDetails.storyId &&
-      !dates.some((date) => date.storyId === storyId) &&
+      !dates.some((date) => date.storyId === storyId || date.legacyStoryIds?.includes(storyId)) &&
       !battles.some((battle) => battle.storyId === storyId) &&
       !journey.episodes.some(
         (episode) => episode.epilogueStoryId === storyId,

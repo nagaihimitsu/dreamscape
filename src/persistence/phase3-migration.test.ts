@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import fixtures from "../../tests/fixtures/phase2-saves.json";
-import { battles } from "../content";
+import { battles, progression } from "../content";
+import { legacyRomanceValues } from "../domain/romance-migration";
 import {
   advanceDate,
   chooseDate,
@@ -63,7 +64,8 @@ describe("Phase 2 saves migrate to the independent battle version", () => {
       const { schemaVersion: _oldVersion, ...oldFields } = fixture;
       expect(loaded.state).toEqual({
         ...oldFields,
-        schemaVersion: 7,
+        schemaVersion: 8,
+        ...legacyRomanceValues(fixture, progression),
         activeEpilogue: null,
         viewedEpilogueCityIds: [],
         legacyTrialAvailable: true,
@@ -89,7 +91,9 @@ describe("Phase 2 saves migrate to the independent battle version", () => {
     const migrated = parseGameState(JSON.stringify(fixtures.activeDate));
     const finished = resumeDate(migrated);
     expect(finished.ap).toBe(fixtures.activeDate.ap);
-    expect(finished.affection).toBe(fixtures.activeDate.affection + 3);
+    // Both selections occur after migration and therefore use the new
+    // individual choice effects without recalculating earlier affection.
+    expect(finished.affection).toBe(fixtures.activeDate.affection + 2);
     expect(finished.memories).toEqual([
       ...fixtures.activeDate.memories,
       "milano_walk_first_listen",
@@ -102,7 +106,10 @@ describe("Phase 2 saves migrate to the independent battle version", () => {
     expect(finished.claimedRewardIds).toEqual(
       fixtures.activeDate.claimedRewardIds,
     );
-    expect(finished.romanceStage).toBe(3);
+    // Trust grows on this route but spark does not yet meet Stage 3.
+    expect(finished.romanceStage).toBe(2);
+    expect(finished.trust).toBe(migrated.trust + 3);
+    expect(finished.spark).toBe(migrated.spark);
     expect(finished.activeBattle).toBeNull();
     expect(finished.battleRecords).toEqual([]);
     expect(finishDate(finished, finished.revision)).toBe(finished);
@@ -152,14 +159,14 @@ describe("Phase 2 saves migrate to the independent battle version", () => {
     },
   );
 
-  it("writes schema 7 on the next action and rejects a stale older tab", () => {
+  it("writes schema 8 on the next action and rejects a stale older tab", () => {
     const storage = new MemoryStorage();
     storage.setItem(SAVE_KEY, JSON.stringify(fixtures.idle));
     const migrated = parseGameState(storage.getItem(SAVE_KEY)!);
     const renamed = setNames(migrated, "空", "紬");
     expect(saveGame(storage, renamed, migrated)).toEqual({ ok: true });
     expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({
-      schemaVersion: 7,
+      schemaVersion: 8,
       playerName: "空",
       heroineName: "紬",
       activeBattle: null,

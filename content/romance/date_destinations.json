@@ -62,6 +62,86 @@
           "claimJa": "州観光情報は、この路地がナヴィリオ・グランデ沿いにあり、洗濯に使われた石が残ると説明する。水路は運河の水を引いていた。"
         }
       ]
+    },
+    {
+      "id": "milano_san_satiro",
+      "cityId": "milano",
+      "nameJa": "サン・サティロ教会",
+      "nameEn": "Santa Maria presso San Satiro",
+      "descriptionJa": "奥行きの不思議な祭壇を、横からも眺める。",
+      "backgroundAssetId": "milano_san_satiro_date",
+      "facts": [
+        {
+          "publisher": "Pinacoteca di Brera（公式）",
+          "title": "Cristo alla colonna",
+          "url": "https://pinacotecabrera.org/collezioni/collezione-on-line/cristo-alla-colonna/",
+          "checkedAt": "2026-10-31",
+          "claimType": "documented_fact",
+          "claimJa": "ブレラ絵画館の作品解説によれば、ブラマンテは聖歌隊席のための空間が足りなかったサン・サティロ教会で、漆喰の偽のヴォールトによって空間が広がるように見せた。"
+        }
+      ]
+    },
+    {
+      "id": "milano_starbucks_roastery",
+      "cityId": "milano",
+      "nameJa": "スターバックス・ロースタリー",
+      "nameEn": "Starbucks Reserve Roastery Milano",
+      "descriptionJa": "かつて郵便局だった建物で、焙煎を眺める。",
+      "backgroundAssetId": "milano_starbucks_roastery_date",
+      "facts": [
+        {
+          "publisher": "Starbucks Stories EMEA",
+          "title": "The historic, weird and wonderful former lives of Starbucks stores across EMEA",
+          "url": "https://stories.starbucks.com/emea/stories/2024/the-historic-weird-and-wonderful-former-lives-of-starbucks-stores-across-emea/",
+          "checkedAt": "2026-10-31",
+          "claimType": "documented_fact",
+          "claimJa": "コルドゥージオ広場にあるミラノのロースタリーは、かつて郵便局として使われた建物に2018年開業した。"
+        },
+        {
+          "publisher": "Starbucks Reserve Roastery Milano（公式）",
+          "title": "Explore by Bar",
+          "url": "https://www.roastery.starbucks.it/explorebybar",
+          "checkedAt": "2026-10-31",
+          "claimType": "documented_fact",
+          "claimJa": "施設公式の案内は、ミラノのロースタリーで焙煎工程を周囲から見られるようにしていると説明する。"
+        }
+      ]
+    },
+    {
+      "id": "milano_fondazione_prada",
+      "cityId": "milano",
+      "nameJa": "プラダ財団",
+      "nameEn": "Fondazione Prada",
+      "descriptionJa": "古い蒸留所と現代美術の空間を歩く。",
+      "backgroundAssetId": "milano_fondazione_prada_date",
+      "facts": [
+        {
+          "publisher": "Fondazione Prada",
+          "title": "Milan",
+          "url": "https://www.fondazioneprada.org/visit/visit-milan/?lang=en",
+          "checkedAt": "2026-10-31",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノの財団施設は1910年代の旧蒸留所を転用し、既存の7棟と新築3棟を組み合わせている。"
+        }
+      ]
+    },
+    {
+      "id": "milano_love",
+      "cityId": "milano",
+      "nameJa": "彫刻《L.O.V.E.》",
+      "nameEn": "L.O.V.E.",
+      "descriptionJa": "証券取引所前に立つ、挑発的な手の彫刻を見る。",
+      "backgroundAssetId": "milano_love_date",
+      "facts": [
+        {
+          "publisher": "inLOMBARDIA（ロンバルディア州公式観光）",
+          "title": "L.O.V.E.",
+          "url": "https://www.in-lombardia.it/en/tourism-in-lombardy/tourism-milan/love",
+          "checkedAt": "2026-10-31",
+          "claimType": "documented_fact",
+          "claimJa": "マウリツィオ・カテランの手の彫刻L.O.V.E.は、アッファーリ広場のミラノ証券取引所前に設置されている。"
+        }
+      ]
     }
   ]
 }

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { legacyPhase1Stage, legacyRomanceValues } from "./romance-migration";
 import { activeEpilogueSchema, validateEpilogueState } from "./epilogue";
 import {
   completeRecordedChapter,
@@ -125,7 +126,7 @@ const phase6StateSchema = phase5StateSchema
     activeBattle: phase6ActiveBattleSchema.nullable(),
   })
   .strict();
-export const gameStateSchema = phase6StateSchema
+const phase7StateSchema = phase6StateSchema
   .extend({
     schemaVersion: z.literal(7),
     activeBattle: activeBattleSchema.nullable(),
@@ -135,6 +136,14 @@ export const gameStateSchema = phase6StateSchema
     legacyTrialAvailable: z.boolean(),
   })
   .strict();
+export const gameStateSchema = phase7StateSchema.extend({
+  schemaVersion: z.literal(8),
+  trust: z.number().int(),
+  spark: z.number().int(),
+  lastRejectedDateCount: z.number().int().nonnegative().nullable(),
+  confessionStatus: z.enum(["none", "deferred", "rejected", "accepted"]),
+  activeDate: activeDateSchema.extend({ pendingOutcome: z.enum(["accepted", "deferred", "rejected"]).nullable() }).nullable(),
+}).strict();
 export type GameState = z.infer<typeof gameStateSchema>;
 export type ActiveDate = NonNullable<GameState["activeDate"]>;
 export interface Availability {
@@ -147,12 +156,15 @@ export function createGame(
   heroineName = balance.defaultHeroineName,
 ): GameState {
   return {
-    schemaVersion: 7,
+    schemaVersion: 8,
     revision: 0,
     playerName: nameSchema.parse(playerName),
     heroineName: nameSchema.parse(heroineName),
     ap: 0,
     affection: 0,
+    trust: 0,
+    spark: 0,
+    lastRejectedDateCount: null,
     romanceStage: 1,
     completedChapters: [],
     claimedRewardIds: [],
@@ -189,13 +201,21 @@ function meetsDateConditions(state: GameState, date: DateDefinition): boolean {
     (date.requiredCompletedEpisodeIds ?? []).every((id) =>
       state.completedEpisodeIds.includes(id),
     ) &&
+    (date.forbiddenCompletedEpisodeIds ?? []).every((id) =>
+      !state.completedEpisodeIds.includes(id),
+    ) &&
     date.requiredPlayedDateIds.every((id) =>
       state.playedDateIds.includes(id),
     ) &&
     state.romanceStage >= date.minRomanceStage &&
-    state.affection >= date.minAffection &&
+    (date.minAffection === 0 || state.affection >= date.minAffection) &&
     (!date.needsDeferred || state.confessionStatus === "deferred")
   );
+}
+
+/** Completed ordinary dates are experiences, not specific mandatory events. */
+export function completedDateCount(state: GameState): number {
+  return state.playedDateIds.filter((id) => dates.some((date) => date.id === id && date.kind === "normal")).length;
 }
 
 /** Re-evaluate only at durable event boundaries. Unlocks remain recorded after their first appearance. */
@@ -204,9 +224,8 @@ export function evaluateProgression(state: GameState): GameState {
   for (const stage of progression.stages) {
     if (
       state.affection >= stage.minAffection &&
-      stage.requiredPlayedDateIds.every((id) =>
-        state.playedDateIds.includes(id),
-      )
+      state.trust >= stage.minTrust && state.spark >= stage.minSpark &&
+      completedDateCount(state) >= stage.minCompletedDates
     ) {
       romanceStage = Math.max(
         romanceStage,
@@ -249,12 +268,17 @@ export function getMemoryCallback(state: GameState): string {
 
 export function canConfessSuccessfully(state: GameState): boolean {
   return (
-    state.romanceStage === 4 &&
     state.affection >= progression.confession.minAffection &&
-    progression.confession.requiredPlayedDateIds.every((id) =>
-      state.playedDateIds.includes(id),
-    )
+    state.trust >= progression.confession.minTrust &&
+    state.spark >= progression.confession.minSpark &&
+    completedDateCount(state) >= progression.confession.minCompletedDates
   );
+}
+
+export function confessionResult(state: GameState): "accepted" | "deferred" | "rejected" {
+  if (canConfessSuccessfully(state)) return "accepted";
+  return state.affection >= progression.stages[2].minAffection && state.trust >= progression.stages[2].minTrust
+    ? "deferred" : "rejected";
 }
 
 export function setNames(
@@ -363,10 +387,12 @@ export function isEventVisible(state: GameState, dateId: string): boolean {
   const date = dates.find((item) => item.id === dateId);
   return Boolean(
     date &&
+      (!state.endingReached || date.kind === "normal" || date.allowAfterEnding) &&
+      (date.forbiddenCompletedEpisodeIds ?? []).every((id) => !state.completedEpisodeIds.includes(id)) &&
       (date.kind === "normal"
         ? !state.playedDateIds.includes(dateId) &&
           (date.requiredCompletedEpisodeIds ?? []).every((id) => state.completedEpisodeIds.includes(id))
-        : state.unlockedEventIds.includes(dateId)),
+        : state.unlockedEventIds.includes(dateId) || meetsDateConditions(state, date)),
   );
 }
 
@@ -376,7 +402,7 @@ export function getDateAvailability(
 ): Availability {
   const date = dates.find((item) => item.id === dateId);
   if (!date) return { available: false, reason: "デートが見つかりません。" };
-  if (state.endingReached && !date.allowAfterEnding)
+  if (state.endingReached && date.kind !== "normal" && !date.allowAfterEnding)
     return {
       available: false,
       reason: "ふたりの物語は、交際エンディングを迎えました。",
@@ -407,6 +433,11 @@ export function getDateAvailability(
     };
   if (!(date.requiredCompletedEpisodeIds ?? []).every((id) => state.completedEpisodeIds.includes(id)))
     return { available: false, reason: "旅を進めると、この場所に誘えます。" };
+  if ((date.forbiddenCompletedEpisodeIds ?? []).some((id) => state.completedEpisodeIds.includes(id)))
+    return { available: false, reason: "この機会は過ぎました。" };
+  if (date.kind === "confession" && state.confessionStatus === "rejected" &&
+      state.lastRejectedDateCount !== null && completedDateCount(state) <= state.lastRejectedDateCount)
+    return { available: false, reason: "まだ行っていないデートを一度してから、もう一度話せます。" };
   if (!meetsDateConditions(state, date))
     return { available: false, reason: "もう少し、一緒の時間を過ごしてから。" };
   if (state.ap < date.apCost)
@@ -420,6 +451,8 @@ function applyStep(
   result: StoryStep,
 ): GameState {
   let affection = state.affection;
+  let trust = state.trust;
+  let spark = state.spark;
   let pendingOutcome = active.pendingOutcome;
   const memories = [...state.memories],
     applied = [...active.appliedEffectIds];
@@ -433,13 +466,16 @@ function applyStep(
     if (effect.outcome) {
       if (date.kind !== "confession")
         throw new Error("告白以外で結果を変更できません。");
-      pendingOutcome =
-        effect.outcome === "accepted" && !canConfessSuccessfully(state)
-          ? "deferred"
-          : effect.outcome;
+      pendingOutcome = effect.outcome === "accepted" && !canConfessSuccessfully(state)
+        && activeDateStoryId(date, active) === date.storyId
+          ? confessionResult(state) : effect.outcome;
     }
     if (!active.replay && !effect.outcome) {
-      affection += effect.affectionDelta;
+      const stage = String(state.romanceStage) as "1" | "2" | "3" | "4";
+      const delta = effect.stageDeltas?.[stage] ?? effect;
+      affection += delta.affectionDelta;
+      trust += delta.trustDelta ?? 0;
+      spark += delta.sparkDelta ?? 0;
       if (effect.memoryId && !memories.includes(effect.memoryId))
         memories.push(effect.memoryId);
     }
@@ -447,6 +483,8 @@ function applyStep(
   return {
     ...state,
     affection,
+    trust,
+    spark,
     memories,
     activeDate: {
       ...active,
@@ -458,6 +496,16 @@ function applyStep(
   };
 }
 
+/** Resolve old in-progress stories by their saved fingerprint; never guess a changed story. */
+function activeDateStoryId(date: DateDefinition, active: ActiveDate): string {
+  const storyId = [date.storyId, ...(date.legacyStoryIds ?? [])].find((id) => {
+    try { return storyFingerprint(id) === active.storyHash; }
+    catch { return false; }
+  });
+  if (!storyId) throw new Error("シナリオが更新されています。以前の途中データはそのまま保管されています。");
+  return storyId;
+}
+
 export function startDate(state: GameState, dateId: string): GameState {
   if (!getDateAvailability(state, dateId).available) return state;
   const date = dates.find((item) => item.id === dateId)!;
@@ -465,12 +513,12 @@ export function startDate(state: GameState, dateId: string): GameState {
     player_address: getPlayerAddress(state),
     romance_stage: state.romanceStage,
     memory_callback: getMemoryCallback(state),
-    has_cafe_memory: progression.memoryCallbacks.some((item) =>
-      state.memories.includes(item.memoryId),
-    ),
+    // Legacy scripts use this variable; only a cafe memory may set it.
+    has_cafe_memory: state.memories.some((id) => id.startsWith("milano_cafe_")),
     ending_reached: state.endingReached,
     confession_ready: canConfessSuccessfully(state),
-  });
+    confession_result: confessionResult(state),
+  }, state.memories);
   const next = {
     ...state,
     revision: state.revision + 1,
@@ -510,7 +558,7 @@ export function advanceDate(
   return applyStep(
     { ...state, revision: state.revision + 1 },
     { ...active, step: active.step + 1 },
-    continueStory(date.storyId, active.storyState, active.frame),
+    continueStory(activeDateStoryId(date, active), active.storyState, active.frame, state.memories),
   );
 }
 
@@ -530,7 +578,7 @@ export function chooseDate(
   return applyStep(
     { ...state, revision: state.revision + 1 },
     { ...active, choiceCount: active.choiceCount + 1, step: active.step + 1 },
-    selectStoryChoice(date.storyId, active.storyState, active.frame, index),
+    selectStoryChoice(activeDateStoryId(date, active), active.storyState, active.frame, index, state.memories),
   );
 }
 
@@ -571,6 +619,9 @@ export function finishDate(
     revision: state.revision + 1,
     activeDate: null,
     confessionStatus,
+    lastRejectedDateCount: date.kind === "confession"
+      ? (confessionStatus === "rejected" ? completedDateCount(state) : null)
+      : state.lastRejectedDateCount,
     endingReached: state.endingReached || confessionStatus === "accepted",
     playedDateIds: state.playedDateIds.includes(active.dateId)
       ? state.playedDateIds
@@ -584,6 +635,10 @@ export function migrateGameState(input: unknown): GameState {
     typeof input === "object" && input !== null && "schemaVersion" in input
       ? input.schemaVersion
       : undefined;
+  if (version === 7) {
+    const parsed = phase7StateSchema.parse(input);
+    return { ...parsed, ...legacyRomanceValues(parsed, progression), schemaVersion: 8 };
+  }
   if (version === 5 || version === 6) {
     const parsed =
       version === 5
@@ -596,7 +651,7 @@ export function migrateGameState(input: unknown): GameState {
       throw new Error("以前の章報酬の記録が一致しません。");
     if (parsed.completedCityIds.length)
       throw new Error("旧版に都市クリアの記録はありません。");
-    return {
+    return migrateGameState({
       ...parsed,
       schemaVersion: 7,
       activeBattle: parsed.activeBattle
@@ -611,7 +666,7 @@ export function migrateGameState(input: unknown): GameState {
       activeEpilogue: null,
       viewedEpilogueCityIds: [],
       legacyTrialAvailable: true,
-    };
+    });
   }
   if (version !== 1 && version !== 2 && version !== 3 && version !== 4)
     return gameStateSchema.parse(input);
@@ -667,9 +722,12 @@ export function migrateGameState(input: unknown): GameState {
       )
   )
     throw new Error("以前のデートの解放条件が一致しません。");
+  const legacyStage = version === 1 ? legacyPhase1Stage(old) : old.romanceStage;
   const next: GameState = {
     ...old,
-    schemaVersion: 7,
+    romanceStage: legacyStage,
+    ...legacyRomanceValues({ ...old, romanceStage: legacyStage }, progression),
+    schemaVersion: 8,
     activeEpilogue: null,
     viewedEpilogueCityIds: [],
     legacyTrialAvailable: true,
@@ -714,6 +772,9 @@ export function validateGameState(input: unknown): GameState {
     throw new Error("章の報酬記録が一致しません。");
   if (state.endingReached !== (state.confessionStatus === "accepted"))
     throw new Error("エンディングの記録が一致しません。");
+  if ((state.confessionStatus === "rejected") !== (state.lastRejectedDateCount !== null) ||
+      (state.lastRejectedDateCount !== null && state.lastRejectedDateCount > completedDateCount(state)))
+    throw new Error("告白後の進行記録が一致しません。");
   if (
     state.confessionStatus !== "none" &&
     !state.playedDateIds.some(
@@ -726,7 +787,7 @@ export function validateGameState(input: unknown): GameState {
     const date = dates.find((item) => item.id === active.dateId);
     if (
       !date ||
-      (state.endingReached && !date.allowAfterEnding) ||
+      (state.endingReached && date.kind !== "normal" && !date.allowAfterEnding) ||
       !(date.requiredCompletedCityIds ?? []).every((id) =>
         state.completedCityIds.includes(id),
       ) ||
@@ -738,10 +799,7 @@ export function validateGameState(input: unknown): GameState {
       )
     )
       throw new Error("デートの保存状態を確認できません。");
-    if (active.storyHash !== storyFingerprint(date.storyId))
-      throw new Error(
-        "シナリオが更新されています。以前の途中データはそのまま保管されています。",
-      );
+    const storyId = activeDateStoryId(date, active);
     if (
       active.replay !==
       (date.rewardOnlyOnce && state.playedDateIds.includes(date.id))
@@ -752,11 +810,11 @@ export function validateGameState(input: unknown): GameState {
       (active.pendingOutcome && date.kind !== "confession")
     )
       throw new Error("会話の進行記録が一致しません。");
-    validateStorySnapshot(date.storyId, active.storyState, active.frame, {
+    validateStorySnapshot(storyId, active.storyState, active.frame, {
       playerName: state.playerName,
       heroineName: state.heroineName,
       choiceCount: active.choiceCount,
-    });
+    }, state.memories);
   }
   return state;
 }

@@ -7,6 +7,7 @@ import {
   LEARNING_KEY,
   loadGame,
   parseGameState,
+  sameGameState,
   SAVE_KEY,
   saveGame,
   type StorageLike,
@@ -195,6 +196,15 @@ describe("multiple tabs sharing a save slot", () => {
 });
 
 describe("explicit save deletion", () => {
+  it("compares the actual game contents independently of property order", () => {
+    const state = createGame("旅人", "小春");
+    const reordered = Object.fromEntries(Object.entries(state).reverse()) as typeof state;
+    expect(JSON.stringify(state)).not.toBe(JSON.stringify(reordered));
+    expect(sameGameState(state, reordered)).toBe(true);
+    expect(sameGameState(state, { ...reordered, revision: state.revision + 1 })).toBe(false);
+    expect(sameGameState(state, { ...reordered, trust: state.trust - 1 })).toBe(false);
+  });
+
   it("removes only the confirmed game and learning slots", () => {
     const storage = new MemoryStorage();
     storage.setItem(SAVE_KEY, "game");

@@ -6,10 +6,40 @@
   border-top: 1px solid var(--line);
 }
 
-/* With many destinations, retain names, AP and unavailable reasons while
-   omitting optional summaries so the choices remain easy to compare. */
-.date-list-dense .date-card .event-description {
-  display: none;
+.romance-status {
+  margin: 4px 0 8px;
+  color: #425741;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.date-pagination {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.date-pagination button {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 6px 8px;
+}
+
+.date-pagination button[aria-disabled="true"] {
+  color: #6b756b;
+  background: #efefe9;
+  border-color: #d5d8cd;
+  cursor: default;
+}
+
+.date-pagination span {
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
 }
 
 .date-card,
@@ -23,9 +53,8 @@
 }
 
 .date-card.invitation-card {
-  margin-bottom: 10px;
-  padding: 10px 0;
-  border-top: 1px solid #a8b4a0;
+  margin: 0;
+  padding: 7px 0 9px;
 }
 
 .date-card .date-option {

@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { Story } from "inkjs";
@@ -202,19 +202,15 @@ describe("Milan city content", () => {
     },
   );
 
-  it("requires city gates for the one short date available after the romance ending", async () => {
-    const file = path.join(fixture, "content/romance/date_catalog.json");
-    const data = JSON.parse(await readFile(file, "utf8"));
-    const date = data.dates.find(
-      (item: { id: string }) => item.id === "milano_city_date_01",
-    );
+  it("keeps the city date gated while allowing every unplayed normal date after the relationship ending", async () => {
+    const result = await buildContent(fixture, false);
+    const date = result.dates.find((item) => item.id === "milano_city_date_01")!;
     expect(date.requiredCompletedCityIds).toEqual(["milano"]);
     expect(date.choiceCount).toBe(2);
-    expect(date.allowAfterEnding).toBe(true);
-    date.requiredCompletedCityIds = [];
-    await writeFile(file, JSON.stringify(data));
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "After-ending date needs a completed city",
-    );
+    const normalDates = result.dates.filter((item) => item.kind === "normal");
+    expect(normalDates.length).toBeGreaterThan(1);
+    expect(normalDates.every((item) => item.allowAfterEnding)).toBe(true);
+    // Unlocking ordinary destinations does not require this city-specific date.
+    expect(normalDates.every((item) => !item.requiredPlayedDateIds.includes(date.id))).toBe(true);
   });
 });

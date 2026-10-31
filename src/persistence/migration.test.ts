@@ -59,7 +59,7 @@ describe("Phase 1 save compatibility", () => {
         throw new Error("Legacy fixture did not load");
       const migrated = loaded.state;
       expect(migrated).toMatchObject({
-        schemaVersion: 7,
+        schemaVersion: 8,
         revision: fixture.revision,
         playerName: fixture.playerName,
         heroineName: fixture.heroineName,
@@ -93,13 +93,18 @@ describe("Phase 1 save compatibility", () => {
       const migrated = parseGameState(JSON.stringify(fixtures[name]));
       const result = finishMigratedDate(migrated);
       expect(result.ap).toBe(fixtures.completed.ap);
-      expect(result.affection).toBe(fixtures.completed.affection);
+      // The already-applied first choice remains untouched. Only choices made
+      // after upgrading use the current effects, so afterChoice starts with the
+      // original +1 and receives the new +1 second-choice effect exactly once.
+      expect(result.affection).toBe(name === "afterChoice" ? 2 : 3);
+      expect(result.trust - migrated.trust).toBe(name === "afterChoice" ? 2 : 3);
+      expect(result.spark - migrated.spark).toBe(name === "afterChoice" ? -1 : 0);
       expect(result.memories).toEqual(fixtures.completed.memories);
       expect(result.playedDateIds).toEqual(fixtures.completed.playedDateIds);
       expect(result.claimedRewardIds).toEqual(
         fixtures.completed.claimedRewardIds,
       );
-      expect(result.romanceStage).toBe(2);
+      expect(result.romanceStage).toBe(name === "afterChoice" ? 1 : 2);
       expect(finishDate(result, result.revision)).toBe(result);
     },
   );
@@ -120,7 +125,7 @@ describe("Phase 1 save compatibility", () => {
     const next = setNames(original, "凪", "澪");
     expect(saveGame(storage, next, original)).toEqual({ ok: true });
     expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({
-      schemaVersion: 7,
+      schemaVersion: 8,
       playerName: "凪",
       heroineName: "澪",
     });

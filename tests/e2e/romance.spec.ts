@@ -127,7 +127,7 @@ test("corrupted save is preserved until explicit backup and fresh start", async 
         key.startsWith(`${SAVE_KEY}.backup.`) && value === "{broken-save",
     ),
   ).toBe(true);
-  expect((await saved(page)).schemaVersion).toBe(7);
+  expect((await saved(page)).schemaVersion).toBe(8);
   expect((await saved(page)).ap).toBe(0);
 });
 

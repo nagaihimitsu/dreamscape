@@ -222,30 +222,45 @@ describe("integrated tourism, battle, and free time", () => {
     reload(state);
   });
 
-  it("keeps the legacy low-score route playable through deferred confession and the relationship ending", () => {
+  it("continues the legacy zero-score journey after rejection, deferral and eventual acceptance", () => {
     let state = startEpisode(
       { ...createGame(), legacyTrialAvailable: true },
       "milano_last_supper_episode",
     );
     state = finishBattle(startTourismBattle(state, state.revision), 0);
     state = enterFreeTime(state, state.revision);
-    state = playDate(state, "milano_cafe_01", [0, 0]);
-    state = claimTrialMilestone(state, "trial_after_cafe");
-    state = playDate(state, "milano_walk_01", [0, 1]);
-    state = playDate(state, "milano_invitation_01", [0]);
-    state = claimTrialMilestone(state, "trial_after_walk");
-    state = playDate(state, "milano_night_01", [0, 1]);
+    // One date opens the conversation, not a guaranteed success.
+    state = playDate(state, "milano_cafe_01", [0, 2]);
+    state = playDate(state, "milano_confession_01", [0]);
+    expect(state.confessionStatus).toBe("rejected");
+    expect(state.endingReached).toBe(false);
+    expect(startDate(state, "milano_confession_01")).toBe(state);
+    expect(canAccessFreeTime(state)).toBe(true);
+
+    // Another independently chosen date permits a retry. A stronger bond can
+    // still require more time: the second attempt is deferred, not accepted.
+    state = playDate(state, "milano_brera_date_01", [0, 0]);
     state = playDate(state, "milano_confession_01", [0]);
     expect(state.confessionStatus).toBe("deferred");
-    state = playDate(state, "milano_reassurance_01", [0]);
+
+    // The old optional trial credit is still redeemable exactly once.
+    const beforeReward = state.ap;
+    state = claimTrialMilestone(state, "trial_after_cafe");
+    expect(state.ap).toBe(beforeReward + 4);
+    expect(claimTrialMilestone(state, "trial_after_cafe")).toBe(state);
+    state = playDate(state, "milano_walk_01", [0, 0]);
     state = playDate(state, "milano_confession_01", [0]);
+    expect(state.confessionStatus).toBe("accepted");
     expect(state.endingReached).toBe(true);
     expect(state.completedCityIds).toEqual([]);
-    expect(state.ap).toBe(5);
+    expect(state.playedDateIds).not.toContain("milano_invitation_01");
+    expect(state.playedDateIds).not.toContain("milano_night_01");
     const ended = state;
     state = finishBattle(startBattle(state, episode.battleId), 2);
     expect(state.endingReached).toBe(true);
     expect(state.affection).toBe(ended.affection);
+    expect(state.trust).toBe(ended.trust);
+    expect(state.spark).toBe(ended.spark);
     expect(state.memories).toEqual(ended.memories);
   });
 });

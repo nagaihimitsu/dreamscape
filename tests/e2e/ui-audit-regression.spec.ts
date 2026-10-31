@@ -1,9 +1,9 @@
-import { expect, test, type Locator } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
 import catalog from "../../content/romance/date_catalog.json" with { type: "json" };
 import destinations from "../../content/romance/date_destinations.json" with { type: "json" };
 import castleCleared from "../fixtures/castle-clear-unplayed.json" with { type: "json" };
-import { choose, expectNoOverflow, finishCafe, loadSnapshot, revealDialogueControl, saved, startCafe, startNewGame } from "./helpers";
+import { choose, expectNoOverflow, findDateOption, finishCafe, loadSnapshot, revealDialogueControl, saved, startCafe, startNewGame } from "./helpers";
 import { setEvidence } from "./reasoning-helpers";
 
 test.use({ reducedMotion: "reduce" });
@@ -25,61 +25,33 @@ async function expectOnScreen(target: Locator) {
   })).toBe(true);
 }
 
-for (const width of [320, 360]) {
-  test(`all date choices are comparable on a ${width}px screen`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 640 });
-    await loadSnapshot(page, phase6.freeTime);
-    const list = page.locator(".date-list");
+async function checkDatePool(page: Page) {
+  const state = await saved(page);
+  const visible = catalog.dates.filter((date) =>
+    (!state.endingReached || date.kind === "normal" || ("allowAfterEnding" in date && date.allowAfterEnding)) &&
+    (!("forbiddenCompletedEpisodeIds" in date) ||
+      (date.forbiddenCompletedEpisodeIds ?? []).every((id) => !state.completedEpisodeIds.includes(id))) &&
+    (date.kind === "normal"
+      ? !state.playedDateIds.includes(date.id) &&
+        (!("requiredCompletedEpisodeIds" in date) ||
+          (date.requiredCompletedEpisodeIds ?? []).every((id) => state.completedEpisodeIds.includes(id)))
+      : state.unlockedEventIds.includes(date.id) && (!state.playedDateIds.includes(date.id) || date.repeatable)));
+  const items = [...visible.filter((date) => date.kind !== "normal"), ...visible.filter((date) => date.kind === "normal")];
+  const count = Math.ceil(items.length / 5);
+  const list = page.locator(".date-list");
+  const nav = page.getByRole("navigation", { name: "デート候補のページ" });
+  for (let pageIndex = 0; pageIndex < count; pageIndex++) {
+    const pageItems = items.slice(pageIndex * 5, pageIndex * 5 + 5);
     await list.evaluate((node) => node.scrollIntoView({ block: "start" }));
-    const normalDates = catalog.dates.filter((date) => date.kind === "normal");
-    const hiddenIds = ["milano_la_scala_date_01", "milano_navigli_date_01"];
-    const items = normalDates.filter((date) => !hiddenIds.includes(date.id));
-    expect(items).toHaveLength(5);
-    for (const id of hiddenIds) await expect(page.getByTestId(`event-${id}`)).toHaveCount(0);
-    await expect(list.locator(".date-card")).toHaveCount(items.length);
-    for (const date of items) {
+    await expect(list.locator(".date-card")).toHaveCount(pageItems.length);
+    for (const date of pageItems) {
       const row = page.getByTestId(`event-${date.id}`);
       const button = row.getByRole("button");
       const destination = "destinationId" in date ? destinations.destinations.find((item) => item.id === date.destinationId) : undefined;
       await expect(button).toContainText(destination?.nameJa ?? date.titleJa);
-      await expect(button).toContainText(`${date.apCost} AP`);
-      const size = await button.boundingBox();
-      expect(size!.height).toBeGreaterThanOrEqual(44);
-      expect(size!.y).toBeGreaterThanOrEqual(0);
-      expect(size!.y + size!.height).toBeLessThanOrEqual(640);
-    }
-    // The entire list matters: a single visible button missed the original issue.
-    expect((await list.boundingBox())!.height).toBeLessThanOrEqual(520);
-    await expectNoOverflow(page);
-    await expect(page.getByTestId("event-milano_cafe_01").getByRole("button")).toBeEnabled();
-    await expect(page.getByTestId("event-milano_brera_date_01").getByRole("button")).toBeEnabled();
-    for (const date of items.filter((date) => !["milano_cafe_01", "milano_brera_date_01"].includes(date.id))) {
-      const row = page.getByTestId(`event-${date.id}`);
-      await expect(row.getByRole("button")).toBeDisabled();
-      await expect(row.getByRole("status")).not.toBeEmpty();
-    }
-    const before = await saved(page);
-    await page.getByTestId("event-milano_cafe_01").getByRole("button").click();
-    await expect(page.getByRole("dialog")).toBeVisible();
-    expect((await saved(page)).ap).toBe(before.ap);
-    await page.getByRole("button", { name: "APを使って始める", exact: true }).click();
-    expect((await saved(page)).activeDate?.dateId).toBe("milano_cafe_01");
-  });
-
-  test(`all seven unlocked date choices remain compact on a ${width}px screen`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 640 });
-    // Produced by real domain transitions: four episodes, A/B/C battles, no dates.
-    await loadSnapshot(page, castleCleared);
-    const list = page.locator(".date-list");
-    await list.evaluate((node) => node.scrollIntoView({ block: "start" }));
-    const items = catalog.dates.filter((date) => date.kind === "normal");
-    expect(items).toHaveLength(7);
-    await expect(list.locator(".date-card")).toHaveCount(7);
-    for (const date of items) {
-      const button = page.getByTestId(`event-${date.id}`).getByRole("button");
-      const destination = "destinationId" in date ? destinations.destinations.find((item) => item.id === date.destinationId) : undefined;
-      await expect(button).toContainText(destination?.nameJa ?? date.titleJa);
-      await expect(button).toContainText(`${date.apCost} AP`);
+      await expect(button).toContainText(date.apCost ? `${date.apCost} AP` : "AP不要");
+      if (await button.isEnabled()) await expect(row.locator(".event-description")).toBeVisible();
+      else await expect(row.getByRole("status")).not.toBeEmpty();
       const size = (await button.boundingBox())!;
       expect(size.height).toBeGreaterThanOrEqual(44);
       expect(size.y).toBeGreaterThanOrEqual(0);
@@ -87,6 +59,47 @@ for (const width of [320, 360]) {
     }
     expect((await list.boundingBox())!.height).toBeLessThanOrEqual(520);
     await expectNoOverflow(page);
+    if (count > 1) {
+      await expectOnScreen(nav);
+      await expect(nav).toContainText(`${pageIndex + 1} / ${count}`);
+      const next = nav.getByRole("button", { name: "次の候補" });
+      if (pageIndex < count - 1) {
+        await next.focus();
+        await page.keyboard.press("Enter");
+        await expect(next).toBeFocused();
+      } else await expect(next).toBeDisabled();
+    }
+  }
+  if (count > 1) {
+    const previous = nav.getByRole("button", { name: "前の候補" });
+    await expect(previous).toBeEnabled();
+    await previous.focus();
+    await page.keyboard.press("Enter");
+    await expect(previous).toBeFocused();
+    await expect(nav).toContainText(`${count - 1} / ${count}`);
+  }
+}
+
+for (const width of [320, 360]) {
+  test(`available date choices are comparable on a ${width}px screen`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 640 });
+    await loadSnapshot(page, phase6.freeTime);
+    await checkDatePool(page);
+    await expect((await findDateOption(page, "milano_cafe_01")).getByRole("button")).toBeEnabled();
+    await expect((await findDateOption(page, "milano_brera_date_01")).getByRole("button")).toBeEnabled();
+    const before = await saved(page);
+    await (await findDateOption(page, "milano_cafe_01")).getByRole("button").click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+    expect((await saved(page)).ap).toBe(before.ap);
+    await page.getByRole("button", { name: "APを使って始める", exact: true }).click();
+    expect((await saved(page)).activeDate?.dateId).toBe("milano_cafe_01");
+  });
+
+  test(`the full destination pool remains compact on a ${width}px screen`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 640 });
+    // Produced by real domain transitions: four episodes, A/B/C battles, no dates.
+    await loadSnapshot(page, castleCleared);
+    await checkDatePool(page);
   });
 }
 
@@ -108,8 +121,7 @@ test("playing a date updates the compact choices without losing progression", as
   await finishCafe(page);
   const after = await saved(page);
   expect(after.playedDateIds).toContain("milano_cafe_01");
-  expect(after.romanceStage).toBeGreaterThanOrEqual(2);
-  await expect(page.getByTestId("event-milano_walk_01").getByRole("button")).toBeEnabled();
+  await expect((await findDateOption(page, "milano_walk_01")).getByRole("button")).toBeEnabled();
   await expect(page.getByTestId("event-milano_cafe_01")).toHaveCount(0);
   await expectNoOverflow(page);
 });

@@ -4,46 +4,41 @@
     {
       "stage": 1,
       "minAffection": 0,
-      "requiredPlayedDateIds": [],
+      "minTrust": 0,
+      "minSpark": 0,
+      "minCompletedDates": 0,
       "playerSuffix": "さん"
     },
     {
       "stage": 2,
       "minAffection": 2,
-      "requiredPlayedDateIds": [
-        "milano_cafe_01"
-      ],
+      "minTrust": 1,
+      "minSpark": 0,
+      "minCompletedDates": 1,
       "playerSuffix": "さん"
     },
     {
       "stage": 3,
       "minAffection": 4,
-      "requiredPlayedDateIds": [
-        "milano_cafe_01",
-        "milano_walk_01"
-      ],
+      "minTrust": 2,
+      "minSpark": 2,
+      "minCompletedDates": 2,
       "playerSuffix": ""
     },
     {
       "stage": 4,
       "minAffection": 6,
-      "requiredPlayedDateIds": [
-        "milano_cafe_01",
-        "milano_walk_01",
-        "milano_invitation_01",
-        "milano_night_01"
-      ],
+      "minTrust": 4,
+      "minSpark": 3,
+      "minCompletedDates": 3,
       "playerSuffix": ""
     }
   ],
   "confession": {
     "minAffection": 8,
-    "requiredPlayedDateIds": [
-      "milano_cafe_01",
-      "milano_walk_01",
-      "milano_invitation_01",
-      "milano_night_01"
-    ]
+    "minTrust": 4,
+    "minSpark": 4,
+    "minCompletedDates": 3
   },
   "memoryCallbacks": [
     {
@@ -69,7 +64,259 @@
     {
       "memoryId": "milano_cafe_future_talk",
       "textJa": "また、こうして話そうという約束"
+    },
+    {
+      "memoryId": "milano_walk_first_joke",
+      "textJa": "背伸びの内緒話"
+    },
+    {
+      "memoryId": "milano_walk_first_listen",
+      "textJa": "街灯の特等席"
+    },
+    {
+      "memoryId": "milano_walk_first_honest",
+      "textJa": "街灯の趣味"
+    },
+    {
+      "memoryId": "milano_walk_second_joke",
+      "textJa": "絵の中の休憩"
+    },
+    {
+      "memoryId": "milano_walk_second_listen",
+      "textJa": "消さなかった線"
+    },
+    {
+      "memoryId": "milano_walk_second_honest",
+      "textJa": "空けてくれた半分"
+    },
+    {
+      "memoryId": "milano_night_first_joke",
+      "textJa": "窓に負けた夜"
+    },
+    {
+      "memoryId": "milano_night_first_listen",
+      "textJa": "待つ時間"
+    },
+    {
+      "memoryId": "milano_night_first_honest",
+      "textJa": "カメラの陰"
+    },
+    {
+      "memoryId": "milano_night_second_joke",
+      "textJa": "二人の証言"
+    },
+    {
+      "memoryId": "milano_night_second_listen",
+      "textJa": "どっちかが覚えてる"
+    },
+    {
+      "memoryId": "milano_night_second_honest",
+      "textJa": "帰ってからの話"
+    },
+    {
+      "memoryId": "milano_city_date_first_joke",
+      "textJa": "許可された深呼吸"
+    },
+    {
+      "memoryId": "milano_city_date_first_listen",
+      "textJa": "目が忙しかった日"
+    },
+    {
+      "memoryId": "milano_city_date_first_honest",
+      "textJa": "隣で見ていた顔"
+    },
+    {
+      "memoryId": "milano_city_date_second_joke",
+      "textJa": "余白の休業日"
+    },
+    {
+      "memoryId": "milano_city_date_second_listen",
+      "textJa": "書かなくてもあった日"
+    },
+    {
+      "memoryId": "milano_city_date_second_honest",
+      "textJa": "次の一行"
+    },
+    {
+      "memoryId": "milano_la_scala_first_joke",
+      "textJa": "客席の助っ人"
+    },
+    {
+      "memoryId": "milano_la_scala_first_listen",
+      "textJa": "帰らないでの役"
+    },
+    {
+      "memoryId": "milano_la_scala_first_honest",
+      "textJa": "ふたりに届く声"
+    },
+    {
+      "memoryId": "milano_la_scala_second_joke",
+      "textJa": "長い拍手"
+    },
+    {
+      "memoryId": "milano_la_scala_second_listen",
+      "textJa": "拍手のあとに"
+    },
+    {
+      "memoryId": "milano_la_scala_second_honest",
+      "textJa": "急がない帰り道"
+    },
+    {
+      "memoryId": "milano_brera_first_joke",
+      "textJa": "階段にかけた足"
+    },
+    {
+      "memoryId": "milano_brera_first_listen",
+      "textJa": "足の向き"
+    },
+    {
+      "memoryId": "milano_brera_first_honest",
+      "textJa": "二人の間"
+    },
+    {
+      "memoryId": "milano_brera_second_joke",
+      "textJa": "影の人の足"
+    },
+    {
+      "memoryId": "milano_brera_second_listen",
+      "textJa": "影の人の落とし物"
+    },
+    {
+      "memoryId": "milano_brera_second_honest",
+      "textJa": "覚えておく影"
+    },
+    {
+      "memoryId": "milano_navigli_first_joke",
+      "textJa": "洗濯場の靴下"
+    },
+    {
+      "memoryId": "milano_navigli_first_listen",
+      "textJa": "靴を濡らさない場所"
+    },
+    {
+      "memoryId": "milano_navigli_first_honest",
+      "textJa": "小さな路地"
+    },
+    {
+      "memoryId": "milano_navigli_second_joke",
+      "textJa": "橋の一票"
+    },
+    {
+      "memoryId": "milano_navigli_second_listen",
+      "textJa": "橋の手前"
+    },
+    {
+      "memoryId": "milano_navigli_second_honest",
+      "textJa": "岸辺の遠回り"
+    },
+    {
+      "memoryId": "milano_san_satiro_first_a",
+      "textJa": "通路と壁"
+    },
+    {
+      "memoryId": "milano_san_satiro_first_b",
+      "textJa": "見る役の交代"
+    },
+    {
+      "memoryId": "milano_san_satiro_first_c",
+      "textJa": "教会での距離"
+    },
+    {
+      "memoryId": "milano_san_satiro_second_a",
+      "textJa": "二つの見方"
+    },
+    {
+      "memoryId": "milano_san_satiro_second_b",
+      "textJa": "横から見た理由"
+    },
+    {
+      "memoryId": "milano_san_satiro_second_c",
+      "textJa": "同じ角度"
+    },
+    {
+      "memoryId": "milano_starbucks_roastery_first_a",
+      "textJa": "いつもの看板"
+    },
+    {
+      "memoryId": "milano_starbucks_roastery_first_b",
+      "textJa": "豆の遊園地"
+    },
+    {
+      "memoryId": "milano_starbucks_roastery_first_c",
+      "textJa": "どこでも、の返事"
+    },
+    {
+      "memoryId": "milano_starbucks_roastery_second_a",
+      "textJa": "一杯のあとに"
+    },
+    {
+      "memoryId": "milano_starbucks_roastery_second_b",
+      "textJa": "自分の手紙"
+    },
+    {
+      "memoryId": "milano_starbucks_roastery_second_c",
+      "textJa": "宛名だけの手紙"
+    },
+    {
+      "memoryId": "milano_fondazione_prada_first_a",
+      "textJa": "触らないでの札"
+    },
+    {
+      "memoryId": "milano_fondazione_prada_first_b",
+      "textJa": "残すものを選ぶ"
+    },
+    {
+      "memoryId": "milano_fondazione_prada_first_c",
+      "textJa": "忘れたくない失敗"
+    },
+    {
+      "memoryId": "milano_fondazione_prada_second_a",
+      "textJa": "非公開の収蔵品"
+    },
+    {
+      "memoryId": "milano_fondazione_prada_second_b",
+      "textJa": "まだ聞かない話"
+    },
+    {
+      "memoryId": "milano_fondazione_prada_second_c",
+      "textJa": "先に話す失敗"
+    },
+    {
+      "memoryId": "milano_love_first_a",
+      "textJa": "怒る顔の練習"
+    },
+    {
+      "memoryId": "milano_love_first_b",
+      "textJa": "写真のポーズ"
+    },
+    {
+      "memoryId": "milano_love_first_c",
+      "textJa": "手を振る位置"
+    },
+    {
+      "memoryId": "milano_love_second_a",
+      "textJa": "玄関での挨拶"
+    },
+    {
+      "memoryId": "milano_love_second_b",
+      "textJa": "しまう前の相談"
+    },
+    {
+      "memoryId": "milano_love_second_c",
+      "textJa": "置く場所の相談"
+    },
+    {
+      "memoryId": "milano_rain_pause_music",
+      "textJa": "雲の音楽係"
+    },
+    {
+      "memoryId": "milano_rain_pause_watch",
+      "textJa": "屋根の端"
+    },
+    {
+      "memoryId": "milano_rain_pause_hurry",
+      "textJa": "もう少し雨宿り"
     }
   ],
-  "fallbackMemoryCallbackJa": "カフェで一緒に過ごした、予定のない時間"
+  "fallbackMemoryCallbackJa": "一緒に歩いて、言葉を交わした時間"
 }

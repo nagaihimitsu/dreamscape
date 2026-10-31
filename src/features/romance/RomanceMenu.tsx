@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { dateDestinations, dates, presentation, trialMilestones } from "../../content";
 import {
   getDateAvailability,
@@ -6,6 +7,8 @@ import {
   type GameState,
 } from "../../domain/game";
 import "./romance-menu.css";
+
+const DATES_PER_PAGE = 5;
 
 export function withNames(text: string, game: GameState) {
   return text
@@ -29,25 +32,38 @@ export function RomanceMenu({
       (!game.playedDateIds.includes(date.id) || date.repeatable),
   );
   const ordinaryDates = visibleDates.filter((date) => date.kind === "normal");
+  const choices = [...availableMoments, ...ordinaryDates];
+  const [datePage, setDatePage] = useState(0);
+  const pageCount = Math.max(1, Math.ceil(choices.length / DATES_PER_PAGE));
+  const currentPage = Math.min(datePage, pageCount - 1);
+  const firstIndex = currentPage * DATES_PER_PAGE;
+  const pageDates = choices.slice(firstIndex, firstIndex + DATES_PER_PAGE);
+
+  // A played event disappears from the pool. Keep the current page in range
+  // if returning to free time reduces the number of pages.
+  useEffect(() => {
+    setDatePage((page) => Math.min(page, pageCount - 1));
+  }, [pageCount]);
   return (
     <>
       {game.confessionStatus === "deferred" && (
-        <aside className="deferred-note">
-          <h2>{presentation.deferred.titleJa}</h2>
-          <p>{withNames(presentation.deferred.descriptionJa, game)}</p>
-        </aside>
+        <p className="romance-status" role="status">
+          {withNames(presentation.deferred.descriptionJa, game)}
+        </p>
       )}
-      {availableMoments.map((date) => (
-        <EventCard key={date.id} game={game} date={date} onChoose={onChoose} />
-      ))}
-      {availableMoments.length === 0 && ordinaryDates.length === 0 && (
+      {game.confessionStatus === "rejected" && (
+        <p className="romance-status" role="status">
+          今は恋人として付き合えない、と返事を受け取りました。旅は続けられます。
+        </p>
+      )}
+      {choices.length === 0 && (
         <p className="fine-print">今選べるデートはありません。旅を続けましょう。</p>
       )}
-      {ordinaryDates.length > 0 && (
+      {choices.length > 0 && (
         <>
           <p className="fine-print ap-help">APはデートに使うポイントです。</p>
-          <div className={`date-list${ordinaryDates.length > 5 ? " date-list-dense" : ""}`}>
-            {ordinaryDates.map((date) => (
+          <div className="date-list" id="date-destinations">
+            {pageDates.map((date) => (
               <EventCard
                 key={date.id}
                 game={game}
@@ -56,6 +72,29 @@ export function RomanceMenu({
               />
             ))}
           </div>
+          {pageCount > 1 && (
+            <nav className="date-pagination" aria-label="デート候補のページ">
+              <button
+                type="button"
+                className="secondary"
+                aria-controls="date-destinations"
+                aria-disabled={currentPage === 0}
+                onClick={() => { if (currentPage > 0) setDatePage(currentPage - 1); }}
+              >
+                前の候補
+              </button>
+              <span aria-live="polite">{currentPage + 1} / {pageCount}</span>
+              <button
+                type="button"
+                className="secondary"
+                aria-controls="date-destinations"
+                aria-disabled={currentPage >= pageCount - 1}
+                onClick={() => { if (currentPage < pageCount - 1) setDatePage(currentPage + 1); }}
+              >
+                次の候補
+              </button>
+            </nav>
+          )}
         </>
       )}
       {game.legacyTrialAvailable && (
@@ -110,7 +149,9 @@ export function EventCard({
     >
       {date.kind !== "normal" && (
         <p className="event-context">
-          {date.kind === "special"
+          {date.eventLabelJa
+            ? withNames(date.eventLabelJa, game)
+            : date.kind === "special"
             ? `${game.heroineName}からのお誘い`
             : date.kind === "confession"
               ? "大切な話"
@@ -131,9 +172,6 @@ export function EventCard({
       </button>
       {eligibility.available && (
         <p className="event-description">{withNames(date.descriptionJa, game)}</p>
-      )}
-      {date.invitationJa && (
-        <blockquote>{withNames(date.invitationJa, game)}</blockquote>
       )}
       {!eligibility.available && (
         <p className="availability" role="status">

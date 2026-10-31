@@ -176,6 +176,7 @@ describe("content build acceptance", () => {
       [
         "learning/english",
         ...dateData.dates.map((date) => date.storyId),
+        ...dateData.dates.flatMap((date) => "legacyStoryIds" in date ? date.legacyStoryIds ?? [] : []),
         ...battleData.battles.map((battle) => battle.storyId),
         ...tourismData.landmarks.map((landmark) => landmark.guideStoryId),
         ...result.journey.episodes.flatMap((episode) =>
@@ -298,16 +299,20 @@ describe("content build acceptance", () => {
     );
   });
 
-  it("rejects affection rewards attached to confession outcomes", async () => {
+  it("rejects relationship rewards attached to confession outcomes", async () => {
     const file = path.join(fixture, "content/romance/effect_catalog.json");
     const data = JSON.parse(await readFile(file, "utf8"));
-    data.effects.find(
+    const outcome = data.effects.find(
       (effect: { id: string }) => effect.id === "milano_confession_accepted",
-    ).affectionDelta = 1;
-    await writeFile(file, JSON.stringify(data));
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Confession outcome cannot award affection",
     );
+    for (const field of ["affectionDelta", "trustDelta", "sparkDelta"]) {
+      outcome[field] = 1;
+      await writeFile(file, JSON.stringify(data));
+      await expect(buildContent(fixture, false)).rejects.toThrow(
+        "Confession outcome cannot award relationship points",
+      );
+      outcome[field] = 0;
+    }
   });
 
   it("validates special events with one choice instead of demanding nine routes", async () => {
@@ -319,23 +324,21 @@ describe("content build acceptance", () => {
     expect(story.currentChoices).toHaveLength(3);
   });
 
-  it("rejects an unknown relationship prerequisite", async () => {
+  it("rejects a stage tied to a specific date", async () => {
     await replace(
       "content/romance/progression.json",
-      '"milano_walk_01"',
-      '"unknown_date"',
+      '"stage": 2,',
+      '"stage": 2, "requiredPlayedDateIds": ["milano_walk_01"],',
     );
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Unknown stage prerequisite",
-    );
+    await expect(buildContent(fixture, false)).rejects.toThrow();
   });
 
-  it("rejects cyclic date prerequisites", async () => {
+  it("rejects a normal date requiring another date", async () => {
     await changeDates((data) => {
-      data.dates[0].requiredPlayedDateIds = ["milano_walk_01"];
+      (data.dates[0].requiredPlayedDateIds as string[]).push("milano_walk_01");
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Cyclic date prerequisites",
+      "Normal dates cannot require other dates",
     );
   });
 

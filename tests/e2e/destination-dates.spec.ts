@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
 import phase7 from "../fixtures/phase7-free-time.json" with { type: "json" };
-import { availableAp, choose, expectNoOverflow, finishEvent, loadSnapshot, saved, setDialogueSpeed, startEvent } from "./helpers";
+import { availableAp, choose, expectNoOverflow, findDateOption, finishEvent, loadSnapshot, saved, setDialogueSpeed, startEvent } from "./helpers";
 
 test.use({ reducedMotion: "reduce" });
 
@@ -27,7 +27,7 @@ test("three destination dates work from a completed old save on a phone", async 
     { id: "milano_navigli_date_01", name: "ナヴィリオ地区", cost: 1 },
   ];
   for (const place of places) {
-    const event = page.getByTestId(`event-${place.id}`);
+    const event = await findDateOption(page, place.id);
     await expect(event.getByRole("button")).toContainText(place.name);
     // The name is the action, not repeated as a large title and another button.
     await expect(event.getByRole("button")).toHaveCount(1);

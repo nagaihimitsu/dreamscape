@@ -306,7 +306,11 @@ describe("Milan's four episodes and distinct city finale", () => {
     const date = dates.find((item) =>
       item.requiredCompletedCityIds?.includes("milano"),
     )!;
-    let state = finishEpisode(tour(), finale(), 0);
+    let state = tour();
+    // All four sightseeing episodes alone do not satisfy the city-date gate.
+    expect(state.completedCityIds).toEqual([]);
+    expect(startDate(state, date.id)).toBe(state);
+    state = finishEpisode(state, finale(), 0);
     state = leaveBattle(state, state.revision);
     expect(startDate(createGame(), date.id).activeDate).toBeNull();
     const before = totalAp(state);
@@ -325,7 +329,7 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(ended.confessionStatus).toBe("accepted");
     expect(startDate(ended, date.id)).toBe(ended);
   });
-  it("funds the whole low-affection romance route from zero-score city play without trial AP", () => {
+  it("funds optional dates and a deferred-then-accepted confession from zero-score city play", () => {
     let state = finishEpisode(tour(), finale(), 0);
     state = enterFreeTime(state, state.revision);
     expect(totalAp(state)).toBe(15);
@@ -336,7 +340,9 @@ describe("Milan's four episodes and distinct city finale", () => {
     state = playDate(state, "milano_night_01", [0, 1]);
     state = playDate(state, "milano_confession_01", [0]);
     expect(state.confessionStatus).toBe("deferred");
-    state = playDate(state, "milano_reassurance_01", [0]);
+    // Respecting her request for time raises trust; a second confession can
+    // then succeed without changing the battle rewards or adding trial AP.
+    state = playDate(state, "milano_reassurance_01", [1]);
     state = playDate(state, "milano_confession_01", [0]);
     expect(state.endingReached).toBe(true);
     expect(totalAp(state)).toBe(7);
@@ -363,9 +369,9 @@ describe("Milan's four episodes and distinct city finale", () => {
       texts.push(lines.join(" "));
     };
     read(state);
-    state = playDate(state, "milano_cafe_01", [1, 2]);
+    state = playDate(state, "milano_cafe_01", [0, 0]);
     read(state);
-    state = playDate(state, "milano_walk_01", [1, 2]);
+    state = playDate(state, "milano_walk_01", [0, 0]);
     read(state);
     state = playDate(state, "milano_invitation_01", [0]);
     state = playDate(state, "milano_night_01", [1, 2]);

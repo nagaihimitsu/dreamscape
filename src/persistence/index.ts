@@ -49,6 +49,11 @@ function serialize(state: GameState): string {
   return JSON.stringify(validateGameState(state));
 }
 
+/** Compare validated snapshots in the same schema order used for saving. */
+export function sameGameState(left: GameState, right: GameState): boolean {
+  return serialize(left) === serialize(right);
+}
+
 /** Compare with the last observed snapshot before writing; the UI commits only after success. */
 export function saveGame(
   storage: StorageLike,
