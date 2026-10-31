@@ -1,8 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { cp, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { Story } from "inkjs";
+import sharp from "sharp";
 import { buildContent } from "../../scripts/content-pipeline";
 import dateData from "../../content/romance/date_catalog.json";
 import battleData from "../../content/battles/catalog.json";
@@ -52,6 +53,8 @@ describe("content build acceptance", () => {
   it("rejects an undefined character ID and a registered but missing image", async () => {
     const file = path.join(fixture, "content/presentation/characters.json");
     const data = JSON.parse(await readFile(file, "utf8"));
+    // Isolate the required-character check from wardrobe's own references.
+    delete data.wardrobe;
     data.characters[0].id = "unknown";
     await writeFile(file, JSON.stringify(data));
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown required character ID: heroine");
@@ -66,6 +69,52 @@ describe("content build acceptance", () => {
     data.battleCharacters = { missing_battle: "enemy" };
     await writeFile(file, JSON.stringify(data));
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown battle ID in character assignment: missing_battle");
+  });
+  it("rejects registered missing costume art without requiring unregistered expressions", async () => {
+    const file = path.join(fixture, "content/presentation/characters.json");
+    const data = JSON.parse(await readFile(file, "utf8"));
+    data.characters[0].costumes[0].poses[0].expressions.neutral = "assets/characters/heroine/missing.png";
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).rejects.toThrow("Missing character image: heroine/south_europe_01/standing_01/neutral/assets/characters/heroine/missing.png");
+  });
+  it("accepts delivered neutral and smile art and enforces the shared canvas", async () => {
+    const file = path.join(fixture, "content/presentation/characters.json");
+    const data = JSON.parse(await readFile(file, "utf8"));
+    const expressions = data.characters[0].costumes[0].poses[0].expressions;
+    const dir = "assets/characters/heroine/south_europe_01/standing_01";
+    await mkdir(path.join(fixture, "public", dir), { recursive: true });
+    const render = (width: number) => sharp({
+      create: { width, height: 1536, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0.5 } },
+    }).png().toBuffer();
+    expressions.neutral = `${dir}/neutral.png`;
+    await writeFile(path.join(fixture, "public", expressions.neutral), await render(1024));
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).resolves.toBeDefined();
+    expressions.smile = `${dir}/smile.png`;
+    await writeFile(path.join(fixture, "public", expressions.smile), await render(1024));
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).resolves.toBeDefined();
+    await writeFile(path.join(fixture, "public", expressions.smile), await render(512));
+    await expect(buildContent(fixture, false)).rejects.toThrow("dimensions do not match canvas 1024x1536");
+  });
+  it("checks the wardrobe city against real city data and its country", async () => {
+    const file = path.join(fixture, "content/presentation/characters.json");
+    const data = JSON.parse(await readFile(file, "utf8"));
+    data.wardrobe.cities.missing_city = { country: "IT" };
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).rejects.toThrow("Unknown city in character wardrobe: missing_city");
+    delete data.wardrobe.cities.missing_city;
+    data.wardrobe.countries.FR = { region: "south_europe" };
+    data.wardrobe.cities.milano.country = "FR";
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).rejects.toThrow("Character wardrobe country mismatch: milano/FR (expected IT)");
+  });
+  it("rejects a wardrobe scene assignment that no playable scene uses", async () => {
+    const file = path.join(fixture, "content/presentation/characters.json");
+    const data = JSON.parse(await readFile(file, "utf8"));
+    data.wardrobe.scenes.missing_scene = { costume: "south_europe_01" };
+    await writeFile(file, JSON.stringify(data));
+    await expect(buildContent(fixture, false)).rejects.toThrow("Unknown scene in character wardrobe: missing_scene");
   });
   it("compiles every declared scenario context and route", async () => {
     const result = await buildContent(fixture);

@@ -124,6 +124,8 @@ export function RomanceScene({
       <div className="vn-character-layer">
         <CharacterPortrait
           characterId="heroine"
+          sceneId={active.dateId}
+          cityId={date?.chapterId}
           emotion={frame.emotion}
           active={frame.speaker === "heroine"}
         />

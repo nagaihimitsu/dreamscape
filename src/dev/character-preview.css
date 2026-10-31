@@ -1,0 +1,36 @@
+.character-preview {
+  width: min(100%, 720px);
+  margin: 0 auto;
+  padding: 12px 16px 20px;
+}
+.character-preview header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.character-preview h1 { font-size: 19px; margin: 0; }
+.character-preview header a { padding: 10px 0; font-size: 14px; }
+.preview-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 10px; }
+.preview-controls label { display: grid; gap: 2px; font-size: 13px; min-width: 0; }
+.preview-controls select { min-height: 40px; width: 100%; min-width: 0; padding: 5px; font-size: 14px; }
+.preview-status, .preview-path, .preview-caption { margin: 6px 0; font-size: 13px; line-height: 1.4; overflow-wrap: anywhere; }
+.preview-path { color: #536258; }
+.preview-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; align-items: end; }
+.preview-layout { display: grid; gap: 2px; font-size: 13px; min-width: 0; }
+.preview-layout select { width: 100%; min-width: 0; min-height: 40px; padding: 5px; font-size: 14px; }
+.preview-dialogue-toggle { display: flex; align-items: center; gap: 8px; min-height: 40px; font-size: 14px; }
+.preview-dialogue-toggle input { width: 20px; height: 20px; }
+.vn-scene.preview-stage { height: max(480px, calc(100dvh - 44px)); min-height: 480px; }
+.vn-scene.preview-stage-light { background: #eeeade; }
+.vn-scene.preview-stage-dark { background: #27332e; }
+.preview-stage-fit .vn-character-layer { inset: 0; height: 100%; transform: none; }
+.preview-guides { position: absolute; inset: 0; pointer-events: none; background:
+  linear-gradient(to right, transparent calc(50% - .5px), #c38a44 50%, transparent calc(50% + .5px)),
+  repeating-linear-gradient(to bottom, transparent 0, transparent calc(25% - 1px), #c38a44 25%); opacity: .55; }
+.vn-scene .preview-dialogue { width: 90%; }
+.preview-dialogue .dialogue-text { cursor: default; }
+@media (max-width: 700px) {
+  /* The game uses the full phone width and reserves 44px for save controls. */
+  .character-preview .preview-stage { width: calc(100% + 32px); margin-inline: -16px; }
+}

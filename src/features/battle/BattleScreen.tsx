@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { battles, battleQuizzes, presentation } from "../../content";
+import { battles, battleQuizzes, landmarks, presentation } from "../../content";
 import type { GameState } from "../../domain/game";
 import { getBattleOutcome } from "../../domain/battle";
 import { DialogueText } from "../../components/DialogueText";
@@ -168,6 +168,8 @@ export function BattleScreen({
             <div className="battle-character-slot battle-heroine">
               <CharacterPortrait
                 characterId="heroine"
+                sceneId={battle.id}
+                cityId={battle.cityId ?? landmarks.find((item) => item.id === battle.landmarkId)?.cityId}
                 emotion={frame?.speaker === "heroine" ? frame.emotion : "neutral"}
                 active={frame?.speaker === "heroine"}
               />

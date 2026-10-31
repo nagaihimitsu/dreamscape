@@ -20,6 +20,21 @@
           "emotion": "shy",
           "imagePath": "assets/presentation/heroine_shy_placeholder.svg"
         }
+      ],
+      "costumes": [
+        {
+          "id": "south_europe_01",
+          "poses": [
+            {
+              "id": "standing_01",
+              "canvas": {
+                "width": 1024,
+                "height": 1536
+              },
+              "expressions": {}
+            }
+          ]
+        }
       ]
     },
     {
@@ -37,5 +52,33 @@
       "placeholderColor": "#6f665d",
       "variants": []
     }
-  ]
+  ],
+  "expressionIds": [
+    "neutral",
+    "smile",
+    "happy",
+    "shy",
+    "surprised",
+    "worried",
+    "serious",
+    "teasing"
+  ],
+  "wardrobe": {
+    "regions": {
+      "south_europe": {
+        "defaultCostume": "south_europe_01"
+      }
+    },
+    "countries": {
+      "IT": {
+        "region": "south_europe"
+      }
+    },
+    "cities": {
+      "milano": {
+        "country": "IT"
+      }
+    },
+    "scenes": {}
+  }
 }

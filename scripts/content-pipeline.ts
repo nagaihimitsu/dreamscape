@@ -1,6 +1,7 @@
 import { access, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { characterCatalogSchema } from "../src/content/character-assets";
+import { validateCharacterImage } from "./character-image-validation";
 import {
   Compiler,
   CompilerOptions,
@@ -329,6 +330,22 @@ export async function buildContent(root: string, writeOutput = true) {
     if (!characters.characters.some((character) => character.id === required))
       throw new Error(`Unknown required character ID: ${required}`);
   }
+  for (const [cityId, mapping] of Object.entries(characters.wardrobe?.cities ?? {})) {
+    if (cityId !== city.id)
+      throw new Error(`Unknown city in character wardrobe: ${cityId}`);
+    if (mapping.country !== city.countryCode)
+      throw new Error(`Character wardrobe country mismatch: ${cityId}/${mapping.country} (expected ${city.countryCode})`);
+  }
+  const wardrobeSceneIds = new Set([
+    ...dates.map((date) => date.id),
+    ...battles.map((battle) => battle.id),
+    ...tourism.landmarks.map((landmark) => landmark.id),
+    ...journey.episodes.filter((episode) => episode.epilogueStoryId).map((episode) => episode.id),
+  ]);
+  for (const sceneId of Object.keys(characters.wardrobe?.scenes ?? {})) {
+    if (!wardrobeSceneIds.has(sceneId))
+      throw new Error(`Unknown scene in character wardrobe: ${sceneId}`);
+  }
   for (const character of characters.characters) {
     for (const variant of character.variants) {
       if (variant.emotion && !presentation.emotions[variant.emotion])
@@ -338,6 +355,13 @@ export async function buildContent(root: string, writeOutput = true) {
       if (image) {
         try { await access(path.join(root, "public", image)); }
         catch { throw new Error(`Missing character image: ${character.id}/${image}`); }
+      }
+    }
+    for (const costume of character.costumes ?? []) {
+      for (const pose of costume.poses) {
+        for (const [expression, image] of Object.entries(pose.expressions)) {
+          await validateCharacterImage(root, image, pose.canvas, `${character.id}/${costume.id}/${pose.id}/${expression}`);
+        }
       }
     }
   }

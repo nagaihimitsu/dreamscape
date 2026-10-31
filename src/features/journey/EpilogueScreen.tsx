@@ -62,6 +62,8 @@ export function EpilogueScreen({
         <div className="vn-character-layer">
           <CharacterPortrait
             characterId="heroine"
+            sceneId={episode.id}
+            cityId={episode.cityId}
             emotion={frame.emotion}
             active={frame.speaker === "heroine"}
           />

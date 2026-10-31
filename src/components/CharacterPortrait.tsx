@@ -1,7 +1,13 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import characterData from "../../content/presentation/characters.json";
-import { battleCharacterId, characterCatalogSchema, characterImage } from "../content/character-assets";
+import {
+  battleCharacterId,
+  characterCatalogSchema,
+  characterImage,
+  characterPlacement,
+  resolveCharacterCostume,
+} from "../content/character-assets";
 import "./character-portrait.css";
 
 const catalog = characterCatalogSchema.parse(characterData);
@@ -13,31 +19,67 @@ export function characterForBattle(battleId: string): string {
 }
 
 /** A decorative layer. Position and image are independent of the Ink story. */
-export function CharacterPortrait({ characterId, emotion, costume, pose, active = false, fallback }: {
+export function CharacterPortrait({
+  characterId, emotion, costume, pose, sceneId, cityId, countryId, regionId,
+  active = false, fallback, onImageError,
+}: {
   characterId: string;
   emotion?: string;
   costume?: string;
   pose?: string;
+  sceneId?: string;
+  cityId?: string;
+  countryId?: string;
+  regionId?: string;
   active?: boolean;
   fallback?: ReactNode;
+  onImageError?: (path: string) => void;
 }) {
   const character = characters.find((item) => item.id === characterId);
+  // Resolve from the scene context only, never from a changing line or its
+  // emotion. Unavailable expressions therefore cannot change the outfit.
+  const selection = useMemo(
+    () => character
+      ? resolveCharacterCostume(character, catalog.wardrobe, { sceneId, cityId, countryId, regionId, costume, pose })
+      : {},
+    [character, sceneId, cityId, countryId, regionId, costume, pose],
+  );
   if (!character) return null;
-  const { placement } = character;
-  const image = characterImage(character, { emotion, costume, pose });
+  const placement = characterPlacement(character, selection);
+  const image = characterImage(character, { ...selection, emotion });
+  const neutral = characterImage(character, { ...selection, emotion: "neutral" });
   return (
     <div className={`vn-character${active ? " is-speaking" : ""}`} aria-hidden="true" style={{
       left: `${placement.x}%`, bottom: `${placement.bottom}%`, width: `${placement.width}%`, height: `${placement.height}%`,
       transform: `translateX(-50%) scale(${placement.scale})`, transformOrigin: `${placement.originX}% ${placement.originY}%`,
     }}>
-      <CharacterImage key={image ?? "placeholder"} path={image} color={character.placeholderColor} fallback={fallback} />
+      <CharacterImage
+        key={image ?? "placeholder"}
+        path={image}
+        neutralPath={neutral}
+        color={character.placeholderColor}
+        fallback={fallback}
+        onImageError={onImageError}
+      />
     </div>
   );
 }
 
-function CharacterImage({ path, color, fallback }: { path: string | null; color: string; fallback?: ReactNode }) {
-  const [failed, setFailed] = useState(false);
-  if (path && !failed) return <img src={`${import.meta.env.BASE_URL}${path}`} alt="" onError={() => setFailed(true)} />;
+function CharacterImage({ path, neutralPath, color, fallback, onImageError }: {
+  path: string | null;
+  neutralPath: string | null;
+  color: string;
+  fallback?: ReactNode;
+  onImageError?: (path: string) => void;
+}) {
+  const [failedPaths, setFailedPaths] = useState<string[]>([]);
+  const candidate = [path, neutralPath].find((item) => item && !failedPaths.includes(item));
+  if (candidate) return (
+    <img src={`${import.meta.env.BASE_URL}${candidate}`} alt="" onError={() => {
+      onImageError?.(candidate);
+      setFailedPaths((failed) => [...failed, candidate]);
+    }} />
+  );
   if (fallback) return fallback;
   // Deliberately abstract placeholder, not a final character design.
   return <svg viewBox="0 0 240 360" role="presentation" focusable="false">

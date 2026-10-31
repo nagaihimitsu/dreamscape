@@ -242,6 +242,8 @@ export function TourismScreen({
           <div className="vn-character-layer">
             <CharacterPortrait
               characterId="heroine"
+              sceneId={landmark.id}
+              cityId={landmark.cityId}
               emotion={frame.emotion}
               active={frame.speaker === "heroine"}
             />
