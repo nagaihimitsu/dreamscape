@@ -22,8 +22,8 @@
 ```
 {
   "schemaVersion": 9,
-  "playerName": "なお",
-  "heroineName": "りえ",
+  "playerName": "たいち",
+  "heroineName": "あゆみ",
   "ap": 2,
   "affection": 3,
   "trust": 1,

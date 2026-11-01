@@ -23,9 +23,10 @@ test("default names and a legacy chapter save keep cafe choices and reload consi
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
-  await expect(page.getByLabel("主人公の名前")).toHaveValue("なお");
-  await expect(page.getByLabel("ヒロインの名前")).toHaveValue("りえ");
+  await expect(page.getByLabel("主人公の名前")).toHaveValue("たいち");
+  await expect(page.getByLabel("ヒロインの名前")).toHaveValue("あゆみ");
   await startNewGame(page);
+  expect(await saved(page)).toMatchObject({ playerName: "たいち", heroineName: "あゆみ" });
   await loadLegacyFreeTime(page);
   await page.reload();
   expect((await saved(page)).ap).toBe(4);

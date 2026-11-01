@@ -1,7 +1,7 @@
 // Dreamscape / Phase 1 のカフェデート。編集後は npm run content:check を実行。
 // プログラム側で player_name, heroine_name を現在の設定値に差し替える。
-VAR player_name = "なお"
-VAR heroine_name = "りえ"
+VAR player_name = "たいち"
+VAR heroine_name = "あゆみ"
 
 VAR romance_result = "neutral"
 VAR affection_delta = 0
