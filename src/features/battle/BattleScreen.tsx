@@ -1,8 +1,9 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { battles, battleQuizzes, dialogueExpressions, landmarks, presentation } from "../../content";
+import { battles, battleQuizzes, dialogueExpressions, landmarks, presentation, reasoningIntroductions } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import type { GameState } from "../../domain/game";
 import { getBattleOutcome } from "../../domain/battle";
+import { beginStory, continueStory, type StoryStep } from "../../story/runtime";
 import { DialogueText } from "../../components/DialogueText";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { AutoAdvanceButton, useAutoAdvance } from "../../components/useAutoAdvance";
@@ -13,6 +14,7 @@ import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
 import { EnemyPortrait } from "./EnemyPortrait";
 import { BattleRewards } from "../journey/BattleRewards";
 import { ReasoningPanel } from "./ReasoningPanel";
+import { ReasoningCutIn } from "./ReasoningCutIn";
 import {
   Translation,
   TranslationAll,
@@ -73,11 +75,43 @@ export function BattleScreen({
   const question = quiz.questions[active.roundIndex];
   const answer = active.answers[active.roundIndex];
   const record = game.battleRecords.find((item) => item.battleId === battle.id);
+  // The claim transition is already saved before these presentation-only
+  // frames appear. Mounting directly in reasoning (reload or old save) never
+  // replays them, and a different run cannot inherit the prior transition.
+  const previousBattle = useRef({
+    runId: active.runId, phase: active.phase, scene: active.dialogueScene,
+    ended: active.frame?.ended ?? false,
+  });
+  const [rebuttal, setRebuttal] = useState<{ storyId: string; step: StoryStep; index: number } | null>(null);
+  const [cutIn, setCutIn] = useState<"contradiction" | "connection" | null>(null);
+  useLayoutEffect(() => {
+    const previous = previousBattle.current;
+    previousBattle.current = {
+      runId: active.runId, phase: active.phase, scene: active.dialogueScene,
+      ended: active.frame?.ended ?? false,
+    };
+    if (previous.runId !== active.runId || active.phase !== "reasoning") {
+      setRebuttal(null);
+      setCutIn(null);
+    }
+    const config = battle.reasoning;
+    if (!config || previous.runId !== active.runId || previous.phase !== "dialogue" ||
+        previous.scene !== config.claimScene || !previous.ended || active.phase !== "reasoning") return;
+    const storyId = reasoningIntroductions[battle.id];
+    if (!storyId) {
+      // New special battles can still use the common transition before an
+      // optional presentation-only rebuttal has been authored.
+      setCutIn(config.kind);
+      return;
+    }
+    const step = beginStory(storyId, game.playerName, game.heroineName);
+    setRebuttal({ storyId, step, index: 0 });
+  }, [active.runId, active.phase, active.dialogueScene, active.frame?.ended, battle, game.playerName, game.heroineName]);
   const [paused, setPaused] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const windowVisibility = useDialogueWindow();
   const readingArea = useRef<HTMLElement>(null);
-  const displayedStoryState = active.phase === "dialogue" ? active.storyState : null;
+  const displayedStoryState = rebuttal?.step.storyState ?? (active.phase === "dialogue" ? active.storyState : null);
   // Start each new scene at the top of its own reading area, without moving
   // the page or disturbing a question when a notebook or translation opens.
   useLayoutEffect(() => {
@@ -142,10 +176,10 @@ export function BattleScreen({
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [active.phase, active.roundIndex, animatedAnswer, answerKey, reduceMotion]);
-  const frame = active.frame;
+  const frame = rebuttal?.step.frame ?? active.frame;
   // Enemy expressions belong to the enemy portrait, never the heroine.
   const heroineEmotion = frame && frame.speaker !== "enemy"
-    ? resolveDialogueExpression(dialogueExpressions, battle.storyId, frame)
+    ? resolveDialogueExpression(dialogueExpressions, rebuttal?.storyId ?? battle.storyId, frame)
     : "neutral";
   const speaker = frame?.speaker === "enemy"
     ? battle.enemyNameJa
@@ -156,13 +190,24 @@ export function BattleScreen({
         : "旅の風景";
   const { ready, onReady, entries } = useDialogueLog(
     `${battle.id}:${record?.attempts ?? 0}`,
-    game.revision,
+    rebuttal ? -rebuttal.index - 1 : game.revision,
     speaker,
     frame?.text ?? "",
   );
-  const isDialogue = active.phase === "dialogue";
+  const isDialogue = active.phase === "dialogue" || !!rebuttal;
   const advanceSafely = () => {
-    if ((!isDialogue || ready) && !windowVisibility.hidden && !dialogueObstructed()) onAdvance();
+    if (cutIn || (isDialogue && !ready) || windowVisibility.hidden || dialogueObstructed()) return;
+    if (rebuttal) {
+      if (rebuttal.step.frame.ended) {
+        setRebuttal(null);
+        setCutIn(battle.reasoning!.kind);
+      } else {
+        const step = continueStory(rebuttal.storyId, rebuttal.step.storyState, rebuttal.step.frame);
+        setRebuttal({ ...rebuttal, step, index: rebuttal.index + 1 });
+      }
+      return;
+    }
+    onAdvance();
   };
   const { show } = windowVisibility;
   useEffect(() => {
@@ -182,7 +227,7 @@ export function BattleScreen({
   return (
     <div
       className={`battle-screen ${answer && animatedAnswer === answerKey ? "answer-animating" : ""}`}
-      data-phase={active.phase}
+      data-phase={isDialogue ? "dialogue" : active.phase}
       data-effect-active={active.phase === "feedback" && effectAnswer === answerKey || undefined}
       data-reduce-motion={reduceMotion || undefined}
       data-dialogue-hidden={isDialogue && windowVisibility.hidden || undefined}
@@ -243,12 +288,12 @@ export function BattleScreen({
           </div>
         </div>
       </div>
-      {isDialogue && onNotebook && (
+      {isDialogue && !rebuttal && onNotebook && (
         <button className="notebook-button battle-stage-notebook" onClick={onNotebook}>
           手がかり帳
         </button>
       )}
-      <div className="battle-paper-shell" aria-hidden={isDialogue && windowVisibility.hidden || undefined} inert={isDialogue && windowVisibility.hidden || undefined}>
+      <div className="battle-paper-shell" aria-hidden={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined} inert={(isDialogue && windowVisibility.hidden) || !!cutIn || undefined}>
       {isDialogue && !paused && frame && (
         <div className="speaker battle-nameplate">
           {speaker}
@@ -262,6 +307,7 @@ export function BattleScreen({
         className={`paper battle-paper${isDialogue && !paused ? " battle-dialogue" : ""}`}
         id="battle-content"
         aria-label="クイズバトル"
+        data-testid={rebuttal ? "reasoning-rebuttal" : undefined}
       >
         {!isDialogue && <div className="battle-roundbar">
           <span>
@@ -278,7 +324,7 @@ export function BattleScreen({
               <b>{answer.correct ? "○" : "×"}</b> {answer.correct ? "正解" : "不正解"}
             </span>
           ) : <span>英語 {quiz.englishLevel}</span>}
-          {onNotebook && (
+          {onNotebook && active.phase !== "reasoning" && (
             <button className="notebook-button" onClick={onNotebook}>
               手がかり帳
             </button>
@@ -396,7 +442,7 @@ export function BattleScreen({
         ) : isDialogue && frame ? (
           <>
             <DialogueText
-              key={game.revision}
+              key={rebuttal ? `rebuttal-${rebuttal.index}` : game.revision}
               text={frame.text}
               speed={speed}
               onReady={onReady}
@@ -404,7 +450,7 @@ export function BattleScreen({
             />
             <button
               className="next"
-              data-testid="battle-advance"
+              data-testid={rebuttal ? "reasoning-rebuttal-advance" : "battle-advance"}
               disabled={!ready}
               onClick={advanceSafely}
             >
@@ -424,6 +470,7 @@ export function BattleScreen({
               game={game}
               onPress={onPress}
               onSubmit={onSubmitEvidence}
+              onNotebook={onNotebook}
             />
             {active.answers.length > 0 && (
               <button className="text-button" onClick={() => onEnglish()}>
@@ -630,6 +677,12 @@ export function BattleScreen({
       </section>
       </div>
       {isDialogue && <DialogueWindowRestore state={windowVisibility} />}
+      {cutIn && <ReasoningCutIn kind={cutIn} reduceMotion={reduceMotion} onComplete={() => {
+        setCutIn(null);
+        window.requestAnimationFrame(() =>
+          readingArea.current?.querySelector<HTMLButtonElement>('[data-testid="reasoning-notebook"]')?.focus({ preventScroll: true }),
+        );
+      }} />}
     </div>
   );
 }

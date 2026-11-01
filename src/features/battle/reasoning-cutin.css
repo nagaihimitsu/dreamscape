@@ -1,0 +1,138 @@
+/* A short visual bridge; the saved reasoning state remains underneath it. */
+.reasoning-cutin {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(8px, 2dvh, 20px);
+  padding: max(18px, env(safe-area-inset-top)) 20px max(18px, env(safe-area-inset-bottom));
+  overflow: auto;
+  overscroll-behavior: contain;
+  color: #fffdf2;
+  text-align: center;
+  background: radial-gradient(ellipse at center, #34584a 0%, #122720 74%);
+}
+.reasoning-cutin-contradiction {
+  background: radial-gradient(ellipse at center, #724a2c 0%, #271913 78%);
+}
+.reasoning-cutin-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: min(76vw, 330px);
+  height: clamp(90px, 22dvh, 160px);
+}
+.reasoning-cutin-impact {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  width: clamp(76px, 17dvh, 124px);
+  aspect-ratio: 1;
+  border: 3px solid #f1c879;
+  transform: rotate(45deg);
+  box-shadow: 0 0 0 12px #f1c8791c, 0 0 36px #f1c87955;
+  animation: reasoning-impact-in 320ms ease-out both;
+}
+/* Fixed, low-contrast rays suggest impact without flashing or shaking. */
+.reasoning-cutin-impact::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -28px;
+  background: repeating-conic-gradient(from 10deg, #f1c87977 0deg 3deg, transparent 3deg 30deg);
+  clip-path: polygon(50% 0, 57% 35%, 85% 15%, 65% 43%, 100% 50%, 65% 57%, 85% 85%, 57% 65%, 50% 100%, 43% 65%, 15% 85%, 35% 57%, 0 50%, 35% 43%, 15% 15%, 43% 35%);
+}
+.reasoning-cutin-impact span {
+  transform: rotate(-45deg);
+  color: #fff5d1;
+  font-size: clamp(46px, 9dvh, 76px);
+  font-weight: 800;
+  line-height: 1;
+}
+.reasoning-cutin-connection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.reasoning-cutin-card {
+  flex: none;
+  width: clamp(62px, 15vw, 86px);
+  height: clamp(78px, 18dvh, 112px);
+  border: 3px solid #c8ead2;
+  border-radius: 5px;
+  background: repeating-linear-gradient(to bottom, #eaf4e5 0 6px, #c8dac9 7px 8px, #eaf4e5 9px 18px);
+  box-shadow: 0 6px 20px #0006;
+}
+.reasoning-cutin-card-left { animation: reasoning-card-left 420ms ease-out both; }
+.reasoning-cutin-card-right { animation: reasoning-card-right 420ms ease-out both; }
+.reasoning-cutin-line {
+  width: clamp(48px, 20vw, 100px);
+  height: 3px;
+  background: #d1fbe0;
+  box-shadow: 0 0 12px #b2f6c7;
+  animation: reasoning-line 400ms 250ms ease-out both;
+}
+.reasoning-cutin-copy { max-width: 100%; }
+.reasoning-cutin-copy strong {
+  display: block;
+  font-size: clamp(34px, 9vw, 64px);
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: .05em;
+  text-shadow: 0 3px 0 #0008;
+  overflow-wrap: anywhere;
+  animation: reasoning-copy-in 400ms ease-out both;
+}
+.reasoning-cutin-copy p {
+  margin: 8px 0 0;
+  font-size: clamp(16px, 4.5vw, 22px);
+  line-height: 1.45;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.reasoning-cutin-skip {
+  flex: none;
+  min-width: 140px;
+  min-height: 44px;
+  margin: 0;
+  padding: 8px 16px;
+  border: 1px solid #e3eee4;
+  border-radius: 4px;
+  color: #fff;
+  background: #12271de6;
+}
+.reasoning-cutin-skip:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+@keyframes reasoning-impact-in {
+  from { opacity: 0; transform: rotate(45deg) scale(.72); }
+  to { opacity: 1; transform: rotate(45deg) scale(1); }
+}
+@keyframes reasoning-card-left {
+  from { opacity: 0; transform: translateX(-26px) rotate(-8deg); }
+  to { opacity: 1; transform: translateX(0) rotate(-5deg); }
+}
+@keyframes reasoning-card-right {
+  from { opacity: 0; transform: translateX(26px) rotate(8deg); }
+  to { opacity: 1; transform: translateX(0) rotate(5deg); }
+}
+@keyframes reasoning-line { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes reasoning-copy-in { from { opacity: 0; transform: scale(.9); } to { opacity: 1; transform: scale(1); } }
+.reasoning-cutin[data-reduce-motion] *,
+.reduce-motion .reasoning-cutin * { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .reasoning-cutin * { animation: none !important; }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .reasoning-cutin { gap: 4px; padding: 8px 18px; }
+  .reasoning-cutin-visual { height: 70px; }
+  .reasoning-cutin-card { height: 58px; width: 48px; }
+  .reasoning-cutin-impact { width: 60px; }
+  .reasoning-cutin-impact span { font-size: 40px; }
+  .reasoning-cutin-copy strong { font-size: clamp(30px, 7dvh, 44px); }
+  .reasoning-cutin-copy p { margin-top: 2px; }
+}

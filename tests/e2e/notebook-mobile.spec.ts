@@ -72,7 +72,7 @@ for (const scenario of [
   test(`${scenario.name}: compare and select case evidence without scrolling, then restore it`, async ({ page }) => {
     await page.setViewportSize({ width: 360, height: 640 });
     await loadSnapshot(page, scenario.snapshot);
-    const open = page.getByRole("button", { name: "手がかり帳", exact: true });
+    const open = page.getByTestId("reasoning-notebook");
     await expectFullyVisible(page, open);
     const before = await saved(page);
     await open.tap();
@@ -103,7 +103,7 @@ for (const scenario of [
     await page.getByTestId("case-return").tap();
     expect(await saved(page)).toEqual(selected);
     await page.reload();
-    await page.getByRole("button", { name: "手がかり帳", exact: true }).tap();
+    await page.getByTestId("reasoning-notebook").tap();
     await page.getByTestId("clue-picker").selectOption(scenario.selected);
     await expect(page.getByTestId(`select-evidence-${scenario.selected}`)).toHaveAttribute("aria-pressed", "true");
     expect((await saved(page)).activeBattle!.reasoning!.selectedClueIds).toEqual(selected.activeBattle!.reasoning!.selectedClueIds);
@@ -113,7 +113,7 @@ for (const scenario of [
 test("enlarged clue descriptions remain readable without moving the game page", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await loadSnapshot(page, phase6.B_reasoning);
-  await page.getByRole("button", { name: "手がかり帳", exact: true }).tap();
+  await page.getByTestId("reasoning-notebook").tap();
   await page.getByTestId("clue-picker").selectOption("last_supper_doorway");
   await page.addStyleTag({ content: ".cluebook-body .clue-description { font-size: 32px !important; line-height: 1.8 !important; }" });
   const content = page.getByTestId("cluebook");
@@ -145,7 +145,7 @@ test("enlarged clue descriptions remain readable without moving the game page", 
 test("320px: case image, description and evidence action fit without scrolling", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 640 });
   await loadSnapshot(page, phase6.B_reasoning);
-  await page.getByRole("button", { name: "手がかり帳", exact: true }).tap();
+  await page.getByTestId("reasoning-notebook").tap();
   await page.getByTestId("clue-picker").selectOption("last_supper_doorway");
   const clue = page.getByTestId("notebook-last_supper_doorway");
   await expectFullyVisible(page, clue.getByTestId("clue-image-last_supper_doorway"));

@@ -66,7 +66,7 @@ for (const size of [
 
     await loadSnapshot(page, phase6.B_selected);
     const selected = await saved(page);
-    await page.getByRole("button", { name: "手がかり帳", exact: true }).first().click();
+    await page.getByTestId("reasoning-notebook").click();
     await expect(page.getByTestId("case-context")).toBeVisible();
     expect(await saved(page)).toEqual(selected);
     await shot("battle-notebook");

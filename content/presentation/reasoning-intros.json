@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "battleId": "milano_last_supper_b01",
+      "storyId": "battles/milano_last_supper_b_rebuttal"
+    },
+    {
+      "battleId": "milano_last_supper_c01",
+      "storyId": "battles/milano_last_supper_c_rebuttal"
+    }
+  ]
+}

@@ -452,6 +452,7 @@ export default function App() {
           />
         ) : game.activeBattle ? (
           <BattleScreen
+            key={`${game.activeBattle.runId}-${sceneEpoch}`}
             reduceMotion={displaySettings.value.reduceMotion}
             learning={learning}
             onEnglish={openEnglish}

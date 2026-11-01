@@ -260,7 +260,7 @@ for (const [format, snapshot, selectedSnapshot] of [["B", phase6.B_reasoning, ph
     await page.setViewportSize({ width: 360, height: 640 });
     await loadSnapshot(page, snapshot);
     await expectOnScreen(page.locator(".reasoning-claim"));
-    await expectOnScreen(page.getByRole("button", { name: "手がかり帳", exact: true }));
+    await expectOnScreen(page.getByTestId("reasoning-notebook"));
     await expectOnScreen(page.getByTestId("reasoning-submit"));
     if (format === "B") await expectOnScreen(page.getByTestId("reasoning-press"));
     await expectNoOverflow(page);

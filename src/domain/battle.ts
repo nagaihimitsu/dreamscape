@@ -255,11 +255,11 @@ export function getReasoningContext(
     answers: priorAnswers,
     score: priorAnswers.filter((answer) => answer.correct).length,
   };
-  const readScene = (scene: string): string => {
+  const readScene = (scene: string, enemyOnly = false): string => {
     let current = withDialogue(state, context, scene);
     const lines: string[] = [];
     for (let count = 0; count < 200; count++) {
-      if (current.frame!.text && current.frame!.text !== lines.at(-1))
+      if ((!enemyOnly || current.frame!.speaker === "enemy") && current.frame!.text && current.frame!.text !== lines.at(-1))
         lines.push(current.frame!.text);
       if (current.frame!.ended) return lines.join("\n");
       current = fromStory(
@@ -270,7 +270,7 @@ export function getReasoningContext(
     throw new Error("推理の主張が長すぎます。");
   };
   return {
-    claimText: readScene(config.claimScene),
+    claimText: readScene(config.claimScene, true),
     pressedText:
       active.reasoning?.pressed && config.kind === "contradiction"
         ? readScene(config.pressScene)

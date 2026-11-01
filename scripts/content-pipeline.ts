@@ -4,6 +4,7 @@ import { characterCatalogSchema } from "../src/content/character-assets";
 import { validateCharacterImage } from "./character-image-validation";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
 import { dateDestinationsSchema } from "../src/content/date-destinations";
+import { reasoningIntroCatalogSchema } from "../src/content/reasoning-intros";
 import { bindMemoryReader, validateMemoryReferences } from "../src/story/memory";
 import { RELATIONSHIP_TONES, type RelationshipTone } from "../src/domain/romance-tone";
 import { createDialogueExpressionValidator, type DialogueObserver } from "./dialogue-expression-validation";
@@ -873,6 +874,44 @@ export async function buildContent(root: string, writeOutput = true) {
       () => validateBattleStory(stories[battle.storyId], battle, context, observeForStory(battle.storyId)),
     );
   }
+  // Dialogue leading into a proof is presentation-only: it is deliberately
+  // kept outside the battle definition and its save-data fingerprint.
+  const reasoningIntros = await parseFile(
+    reasoningIntroCatalogSchema,
+    path.join(content, "presentation/reasoning-intros.json"),
+  );
+  for (const { battleId, storyId } of reasoningIntros.entries) {
+    const battle = battles.find((item) => item.id === battleId);
+    if (!battle?.reasoning) throw new Error(`Unknown special battle introduction: ${battleId}`);
+    if (!stories[storyId]) throw new Error(`Unknown reasoning introduction story: ${battleId}/${storyId}`);
+    withContext(`content/stories/${storyId}.ink (reasoning introduction ${battleId})`, () => {
+      const story = new Story(stories[storyId]);
+      story.onError = (message) => { throw new Error(message); };
+      for (const name of ["player_name", "heroine_name"]) {
+        if (!story.variablesState.GlobalVariableExistsWithName(name))
+          throw new Error(`Missing required introduction variable: ${name}`);
+        story.variablesState.$(name, "検証名");
+      }
+      let speaker: string = "narrator";
+      let lines = 0;
+      let frames = 0;
+      while (story.canContinue) {
+        if (++lines > 100) throw new Error("Reasoning introduction is too long");
+        const text = story.Continue()?.trim() ?? "";
+        const tags = parseStoryTags(story.currentTags ?? [], context);
+        if (tags.speaker) speaker = tags.speaker;
+        if (tags.effects.length) throw new Error("Reasoning introduction cannot apply effects");
+        if (text) {
+          if (speaker !== "heroine") throw new Error("Reasoning introduction must be spoken by the heroine");
+          if (!/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(text))
+            throw new Error("Reasoning introduction must be in Japanese");
+          frames++;
+        }
+      }
+      if (!frames || story.currentChoices.length)
+        throw new Error("Reasoning introduction must have dialogue and no choices");
+    });
+  }
   const learning = await parseFile(
     learningCatalogSchema,
     path.join(content, "learning/translations.json"),
@@ -963,6 +1002,7 @@ export async function buildContent(root: string, writeOutput = true) {
       storyId !== learningDetails.storyId &&
       !dates.some((date) => date.storyId === storyId || date.legacyStoryIds?.includes(storyId)) &&
       !battles.some((battle) => battle.storyId === storyId) &&
+      !reasoningIntros.entries.some((entry) => entry.storyId === storyId) &&
       !journey.episodes.some(
         (episode) => episode.epilogueStoryId === storyId,
       ) &&

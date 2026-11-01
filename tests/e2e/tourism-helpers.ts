@@ -37,7 +37,9 @@ export async function skipTourismGuide(page: Page) {
 }
 
 export async function openCluebook(page: Page) {
-  await page.getByRole("button", { name: "手がかり帳", exact: true }).click();
+  const reasoningEntry = page.getByTestId("reasoning-notebook");
+  if (await reasoningEntry.isVisible()) await reasoningEntry.click();
+  else await page.getByRole("button", { name: "手がかり帳", exact: true }).click();
   await expect(
     page.getByRole("dialog", { name: "手がかり帳", exact: true }),
   ).toBeVisible();

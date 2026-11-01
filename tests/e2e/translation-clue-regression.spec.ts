@@ -83,7 +83,9 @@ for (const scenario of [
   test(`${scenario.name}の手がかり帳は画像を説明より先に表示する`, async ({ page }) => {
     await loadSnapshot(page, scenario.snapshot);
     const before = await saved(page);
-    await page.getByRole("button", { name: "手がかり帳", exact: true }).tap();
+    const entry = page.getByTestId("reasoning-notebook");
+    if (await entry.isVisible()) await entry.tap();
+    else await page.getByRole("button", { name: "手がかり帳", exact: true }).tap();
     const dialog = page.getByRole("dialog", { name: "手がかり帳" });
     const picker = dialog.getByTestId("clue-picker");
     if (await picker.count()) await picker.selectOption(scenario.clue);
@@ -108,7 +110,7 @@ for (const scenario of [
       await expect(select).toHaveAttribute("aria-pressed", "true");
       const selected = await saved(page);
       await dialog.getByTestId("case-return").tap();
-      await page.getByRole("button", { name: "手がかり帳", exact: true }).tap();
+      await page.getByTestId("reasoning-notebook").tap();
       await page.getByTestId("clue-picker").selectOption(scenario.clue);
       await expect(page.getByTestId(`select-evidence-${scenario.clue}`)).toHaveAttribute("aria-pressed", "true");
       expect(await saved(page)).toEqual(selected);
@@ -122,7 +124,7 @@ for (const scenario of [
 test("画像を読み込めなくても説明と証拠選択を利用できる", async ({ page }) => {
   await page.route("**/assets/tourism/last-supper.webp", (route) => route.abort());
   await loadSnapshot(page, phase6.B_reasoning);
-  await page.getByRole("button", { name: "手がかり帳", exact: true }).tap();
+  await page.getByTestId("reasoning-notebook").tap();
   await page.getByTestId("clue-picker").selectOption("last_supper_doorway");
   const card = page.getByTestId("notebook-last_supper_doorway");
   await expect(card.getByRole("status")).toContainText("画像を表示できません");

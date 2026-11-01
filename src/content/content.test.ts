@@ -8,6 +8,7 @@ import { buildContent } from "../../scripts/content-pipeline";
 import dateData from "../../content/romance/date_catalog.json";
 import battleData from "../../content/battles/catalog.json";
 import tourismData from "../../content/tourism/catalog.json";
+import reasoningIntroData from "../../content/presentation/reasoning-intros.json";
 import { parseStoryTags } from "./tags";
 import { prepareContentFixture } from "./test-fixtures";
 
@@ -192,6 +193,7 @@ describe("content build acceptance", () => {
         ...dateData.dates.map((date) => date.storyId),
         ...dateData.dates.flatMap((date) => "legacyStoryIds" in date ? date.legacyStoryIds ?? [] : []),
         ...battleData.battles.map((battle) => battle.storyId),
+        ...reasoningIntroData.entries.map((entry) => entry.storyId),
         ...tourismData.landmarks.map((landmark) => landmark.guideStoryId),
         ...result.journey.episodes.flatMap((episode) =>
           episode.epilogueStoryId ? [episode.epilogueStoryId] : [],

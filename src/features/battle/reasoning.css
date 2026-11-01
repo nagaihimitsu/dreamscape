@@ -67,6 +67,11 @@
   width: auto;
   margin: 0;
 }
+.reasoning-actions .reasoning-notebook {
+  justify-content: center;
+  padding-inline: 10px;
+  text-align: center;
+}
 .reasoning-ready {
   font-size: 0.85rem;
   line-height: 1.8;
@@ -103,4 +108,29 @@
   .selected-evidence ul { margin: 2px 0 0; line-height: 1.5; }
   .reasoning-actions { margin-bottom: 6px; }
   .reasoning-panel > .fine-print { margin: 5px 0; line-height: 1.45; }
+}
+
+/* In a short landscape viewport, put the evidence controls beside the claim
+   so they remain reachable without forcing an initial vertical scroll. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .reasoning-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(210px, .8fr);
+    gap: 4px 12px;
+    align-items: start;
+    margin-bottom: 8px;
+  }
+  .reasoning-prompt { grid-column: 1; grid-row: 1 / span 4; min-width: 0; }
+  .reasoning-panel h2 { font-size: 1rem; margin: 0 0 3px; }
+  .reasoning-help { margin: 0 0 4px; line-height: 1.4; }
+  .reasoning-claim { padding: 7px 10px; }
+  .reasoning-claim blockquote { line-height: 1.45; }
+  .reasoning-press-notes { margin: 0; }
+  .selected-evidence { grid-column: 2; grid-row: 1; margin: 0; padding: 3px 8px; }
+  .selected-evidence p, .selected-evidence ul { margin: 0; line-height: 1.35; }
+  .reasoning-actions { grid-column: 2; grid-row: 2; margin: 0; }
+  .reasoning-actions > button { min-height: 44px; padding-block: 6px; line-height: 1.4; }
+  .reasoning-panel > button { grid-column: 2; grid-row: 3; min-height: 44px; padding: 6px 12px; line-height: 1.4; }
+  .reasoning-panel > .fine-print { grid-column: 2; grid-row: 4; margin: 0; line-height: 1.35; }
+  .reasoning-ready { grid-column: 2; grid-row: 2; }
 }

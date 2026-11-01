@@ -21,6 +21,8 @@ import cityData from "../../content/cities/milano.json";
 import balanceData from "../../content/romance/balance.json";
 import presentationData from "../../content/romance/presentation.json";
 import dialogueExpressionData from "../../content/presentation/dialogue-expressions.json";
+import reasoningIntroData from "../../content/presentation/reasoning-intros.json";
+import { reasoningIntroCatalogSchema } from "./reasoning-intros";
 import { dialogueExpressionCatalogSchema } from "./dialogue-expressions";
 import generatedStories from "./generated/stories.json";
 import {
@@ -66,6 +68,9 @@ export const city = citySchema.parse(cityData);
 export const balance = balanceSchema.parse(balanceData);
 export const presentation = presentationSchema.parse(presentationData);
 export const dialogueExpressions = dialogueExpressionCatalogSchema.parse(dialogueExpressionData);
+export const reasoningIntroductions: Record<string, string> = Object.fromEntries(
+  reasoningIntroCatalogSchema.parse(reasoningIntroData).entries.map(({ battleId, storyId }) => [battleId, storyId]),
+);
 export const stories: Record<string, string> = generatedStories;
 export const tagContext = {
   effectIds: effects.map((effect) => effect.id),

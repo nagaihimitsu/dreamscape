@@ -49,7 +49,20 @@ export async function battleDialogueUntilQuestionOrResult(
     const active = state.activeBattle;
     if (!active) throw new Error("Expected an active battle");
     await expectNoOverflow(page);
-    if (active.phase !== "dialogue") return state;
+    if (active.phase !== "dialogue") {
+      // A special proof may insert presentation-only dialogue after the
+      // saved claim. Existing playthrough helpers must finish it before
+      // interacting with the underlying evidence panel.
+      const rebuttal = page.getByTestId("reasoning-rebuttal");
+      for (let step = 0; step < 20 && await rebuttal.isVisible(); step++) {
+        const advance = page.getByTestId("reasoning-rebuttal-advance");
+        await expect(advance).toBeEnabled();
+        await advance.click();
+      }
+      const cutin = page.getByTestId("reasoning-cutin");
+      if (await cutin.isVisible()) await page.getByTestId("reasoning-cutin-skip").click();
+      return await saved(page);
+    }
     if (active.frame) transcript.push(active.frame.text);
     await page.getByTestId("battle-advance").click();
     await expect
