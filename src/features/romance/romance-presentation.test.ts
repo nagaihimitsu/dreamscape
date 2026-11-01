@@ -42,6 +42,7 @@ describe("presentation of a saved romance script", () => {
     ["milano_san_satiro_date_01", "milano/san_satiro_date_01"],
     ["milano_fondazione_prada_date_01", "milano/fondazione_prada_date_01"],
     ["milano_love_date_01", "milano/love_date_01"],
+    ["milano_love_date_01", "milano/love_date_tour_01_random"],
   ] as const)("keeps the same known destination for a saved earlier %s script", (dateId, previousStoryId) => {
     const configured = dates.find((item) => item.id === dateId)!;
     expect(configured.legacyStoryIds).toContain(previousStoryId);

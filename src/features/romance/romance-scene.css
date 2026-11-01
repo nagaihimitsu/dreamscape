@@ -26,6 +26,34 @@
 .vn-background { position: absolute; inset: 0; z-index: -1; }
 .vn-background .canal-scene { width: 100%; height: 100%; }
 .vn-background .scene-stamp { display: none; }
+.date-reference {
+  position: absolute;
+  z-index: 1;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* Keep the reference in the margin beside the centered character's face.
+     A compact width also leaves room for the lower choice window. */
+  width: min(118px, calc(35% - 8px));
+  padding: 4px 8px;
+  border-radius: 10px;
+  background: rgba(20, 27, 34, .9);
+  color: var(--vn-text);
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.date-reference a {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  color: var(--vn-text);
+  text-underline-offset: 3px;
+}
+.date-reference a:focus-visible { outline: 2px solid white; outline-offset: 2px; }
 /* The portrait and the window are independent layers over the same backdrop. */
 .vn-character-layer {
   position: absolute;
@@ -187,6 +215,7 @@
   .conversation-active .vn-scene[data-has-choices="true"] { min-height: 640px; }
 }
 @media (min-width: 701px) {
+  .date-reference { width: 240px; }
   .vn-tools-menu, .vn-tools-items { display: contents; }
   .vn-tools-menu > summary { display: none; }
 }

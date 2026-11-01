@@ -136,6 +136,14 @@ export function RomanceScene({
       <div className="vn-background">
         <CanalScene backgroundId={frame.background} />
       </div>
+      {destination?.referenceImage && (
+        <aside className="date-reference" aria-label="訪問先の写真">
+          <span data-testid="destination-reference-note">{destination.referenceImage.backgroundNoteJa}</span>
+          <a data-testid="destination-reference-link" href={destination.referenceImage.url} target="_blank" rel="noreferrer">
+            {destination.referenceImage.labelJa} <span aria-hidden="true">↗</span>
+          </a>
+        </aside>
+      )}
       <div className="vn-character-layer">
         <CharacterPortrait
           characterId="heroine"

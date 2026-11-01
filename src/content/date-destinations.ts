@@ -17,6 +17,12 @@ export const dateDestinationSchema = z.object({
   descriptionJa: japanese,
   backgroundAssetId: id,
   facts: z.array(tourismSourceSchema).min(1),
+  /** Optional external reference for a place or artwork not shown in the background. */
+  referenceImage: z.object({
+    url: z.url({ protocol: /^https$/ }),
+    labelJa: japanese,
+    backgroundNoteJa: japanese,
+  }).strict().optional(),
 }).strict();
 
 export const dateDestinationsSchema = z.object({

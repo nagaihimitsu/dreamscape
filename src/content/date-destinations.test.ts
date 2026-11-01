@@ -4,6 +4,8 @@ import path from "node:path";
 import { tmpdir } from "node:os";
 import { buildContent } from "../../scripts/content-pipeline";
 import { prepareContentFixture } from "./test-fixtures";
+import { dateDestinationSchema } from "./date-destinations";
+import destinationData from "../../content/romance/date_destinations.json";
 
 type Destination = {
   id: string; cityId: string; backgroundAssetId: string;
@@ -36,6 +38,16 @@ async function editDates(change: (items: DateEntry[]) => void) {
 const scala = (dates: DateEntry[]) => dates.find((date) => date.id === "milano_la_scala_date_01")!;
 
 describe("date destination content references", () => {
+  it("validates optional, clearly labelled HTTPS references for destination photos", () => {
+    const love = destinationData.destinations.find((item) => item.id === "milano_love")!;
+    expect(dateDestinationSchema.safeParse(love).success).toBe(true);
+    const reference = love.referenceImage!;
+    expect(dateDestinationSchema.safeParse({ ...love, referenceImage: { ...reference, url: "javascript:alert(1)" } }).success).toBe(false);
+    expect(dateDestinationSchema.safeParse({ ...love, referenceImage: { ...reference, url: "http://example.org" } }).success).toBe(false);
+    expect(dateDestinationSchema.safeParse({ ...love, referenceImage: { ...reference, backgroundNoteJa: "" } }).success).toBe(false);
+    expect(dateDestinationSchema.safeParse({ ...love, referenceImage: undefined }).success).toBe(true);
+  });
+
   it("accepts the three places without making them tourism/battle landmarks", async () => {
     const result = await buildContent(fixture, false);
     for (const id of ["milano_la_scala", "milano_brera", "milano_navigli"])

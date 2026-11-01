@@ -56,6 +56,25 @@ describe("tourism in normal dates", () => {
     }
   });
 
+  it("introduces the sculpture itself and distinguishes interpretations", () => {
+    const date = content.dates.find((item) => item.id === "milano_love_date_01")!;
+    const story = new Story(content.stories[date.storyId]);
+    let introduction = "";
+    while (story.canContinue) introduction += story.Continue();
+    expect(introduction).toMatch(/中指/);
+    expect(introduction).toMatch(/四本.*欠け/);
+    expect(introduction).toMatch(/証券取引所/);
+    expect(introduction).toMatch(/自由、憎悪、復讐、永遠/);
+    expect(introduction).toMatch(/二週間/);
+    expect(story.currentChoices).toHaveLength(3);
+    story.variablesState.$("romance_result", "positive");
+    story.ChooseChoiceIndex(0);
+    let nextScene = "";
+    while (story.canContinue) nextScene += story.Continue();
+    expect(nextScene).toMatch(/皮肉.*見方/);
+    expect(nextScene).toMatch(/肯定も否定もしていない/);
+  });
+
   it("preserves the original Ink for dates whose scripts were replaced", () => {
     for (const date of content.dates.filter((entry) => entry.legacyStoryIds?.length)) {
       for (const storyId of date.legacyStoryIds!) {

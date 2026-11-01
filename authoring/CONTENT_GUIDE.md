@@ -69,6 +69,7 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 
 1. `content/romance/date_destinations.json` の `destinations` に、安定した `id`、`cityId`、日本語・英語の名称、短い `descriptionJa`、`backgroundAssetId`、`facts` を登録します。事実ごとに `publisher`・`title`・`url`・`checkedAt`・`claimType`・`claimJa` を記録し、実際に資料の該当箇所を確認してください。事実・解釈・仮説・伝説は既存の観光資料と同じ区分を使います。
 2. 権利を確認した写真を `public/assets/tourism/` に置き、`content/tourism/catalog.json` の `assets` に実寸・作者・出典URL・ライセンス・加工内容を登録します。`content/romance/presentation.json` の背景から `imageAssetId` で参照し、必要なら `imagePosition` の x / y を0〜100で指定します。写真家の権利だけでなく被写体の権利も確認してください。近隣の風景を使う場合は実際の場所を代替テキスト・クレジットに明記します。確認できる画像がない場合は `fallback: "neutral"` を使います。出典は会話中の操作メニューから確認できます。
+   背景に訪問対象が写っていないときは、行き先に任意の `referenceImage`（HTTPSの `url`、リンク名 `labelJa`、背景についての `backgroundNoteJa`）を追加し、実物を確認できる公式資料へ案内できます。外部リンクは写真のゲーム内への転載許諾を意味しません。
 3. `content/romance/date_catalog.json` の通常デートに `destinationId` と必要に応じて `requiredCompletedEpisodeIds` を指定します。デートの `chapterId`、行き先の `cityId`、双方の背景IDを一致させます。訪問後に開放する通常デートでは、必要エピソードを指定したうえで `requiredCompletedChapters` を空配列にできます。交際後も同じ短編を遊べる場合は `allowAfterEnding` を指定します。
 4. Inkには、その場所で見られるものや出典を確認した小話を、ヒロインの関心や会話に自然につなげて書きます。選択にかかわらず観光を楽しめるようにし、既存脚本を更新する際は途中セーブ向けに旧Inkと `legacyStoryIds` を残します。旧脚本に旧行き先があった場合は `legacyDestinationId` または脚本ごとの `legacyStoryDestinationIds` も指定します。3択を2回書き、選択肢ごとの `effect` と対応する `memory` を登録します。必要な表情は `# emotion:` で指定します。既存の恋愛進行に新イベントを必須条件として追加するかは、別途慎重に検討してください。
 5. `npm run content:check` でIDの重複、都市・エピソード・背景の参照、出典形式、全分岐と効果を確認し、スマートフォンの画面と脚本をレビューします。

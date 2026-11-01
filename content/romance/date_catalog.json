@@ -921,7 +921,7 @@
       "apCost": 1,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/love_date_tour_01_random",
+      "storyId": "milano/love_date_tour_02_random",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_duomo_episode"
@@ -975,7 +975,8 @@
       ],
       "legacyStoryIds": [
         "milano/love_date_01",
-        "milano/love_date_tour_01"
+        "milano/love_date_tour_01",
+        "milano/love_date_tour_01_random"
       ],
       "legacyDestinationId": "milano_love",
       "legacyStoryDestinationIds": {

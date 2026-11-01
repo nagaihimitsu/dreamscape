@@ -132,7 +132,28 @@
       "nameEn": "L.O.V.E.",
       "descriptionJa": "証券取引所前に立つ、挑発的な手の彫刻を見る。",
       "backgroundAssetId": "milano_love_date",
+      "referenceImage": {
+        "url": "https://artsandculture.google.com/asset/l-o-v-e-0098/aQFJRsqTBD1p2Q",
+        "labelJa": "彫刻の写真を見る（外部）",
+        "backgroundNoteJa": "背景に彫刻は写っていません"
+      },
       "facts": [
+        {
+          "publisher": "MUDEC（ミラノ市立文化博物館）",
+          "title": "L.O.V.E.",
+          "url": "https://www.mudec.it/en/2022/05/10/l-o-v-e/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "カッラーラ大理石の手は、中指だけが残り、ほかの四本の指を欠いた姿をしている。"
+        },
+        {
+          "publisher": "MUDEC（ミラノ市立文化博物館）",
+          "title": "L.O.V.E.",
+          "url": "https://www.mudec.it/en/2022/05/10/l-o-v-e/",
+          "checkedAt": "2026-11-01",
+          "claimType": "interpretation",
+          "claimJa": "金融界への風刺やファシスト式敬礼への言及という解釈があるが、作者は肯定も否定もしていないと紹介されている。題名はイタリア語の自由、憎悪、復讐、永遠の頭文字として紹介されている。"
+        },
         {
           "publisher": "inLOMBARDIA（ロンバルディア州公式観光）",
           "title": "L.O.V.E.",
