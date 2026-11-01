@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { city, landmarks, tourismClues } from "../../content";
 import { Modal } from "../../components/Modal";
 import { ClueDetails } from "./ClueDetails";
-import { ClueImage } from "./ClueImage";
+import { ClueImage, ClueImageCredits } from "./ClueImage";
 import "./notebook.css";
 
 export interface NotebookReasoning {
@@ -154,8 +154,11 @@ export function ClueNotebook({
                   }
                 </p>
               )}
-              <ClueDetails clue={current} />
-              {(reasoning || cityId) && <ClueImage clue={current} />}
+              <ClueDetails
+                clue={current}
+                image={<ClueImage clue={current} />}
+                imageCredits={<ClueImageCredits clue={current} />}
+              />
             </article>
           )
         )}

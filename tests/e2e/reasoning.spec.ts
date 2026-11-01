@@ -42,8 +42,6 @@ async function closeBookUnchanged(page: Page) {
 }
 
 async function assertCaseImage(page: Page, clueId: string) {
-  const article = page.getByTestId(`notebook-${clueId}`);
-  await article.getByText("画像と場所を確認する", { exact: true }).click();
   const image = page.getByTestId(`clue-image-${clueId}`);
   await expect(image).toBeVisible();
   const href = await image.locator("image").getAttribute("href");

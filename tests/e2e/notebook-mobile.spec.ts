@@ -141,3 +141,16 @@ test("enlarged clue descriptions remain readable without moving the game page", 
   await expectFullyVisible(page, page.getByTestId("cluebook-close"));
   await expectFullyVisible(page, page.getByTestId("case-return"));
 });
+
+test("320px: case image, description and evidence action fit without scrolling", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 640 });
+  await loadSnapshot(page, phase6.B_reasoning);
+  await page.getByRole("button", { name: "手がかり帳", exact: true }).tap();
+  await page.getByTestId("clue-picker").selectOption("last_supper_doorway");
+  const clue = page.getByTestId("notebook-last_supper_doorway");
+  await expectFullyVisible(page, clue.getByTestId("clue-image-last_supper_doorway"));
+  await expectFullyVisible(page, clue.locator(".clue-description"));
+  await expectFullyVisible(page, page.getByTestId("select-evidence-last_supper_doorway"));
+  const size = await page.getByTestId("cluebook").evaluate((node) => ({ content: node.scrollHeight, viewport: node.clientHeight }));
+  expect(size.content).toBeLessThanOrEqual(size.viewport + 1);
+});

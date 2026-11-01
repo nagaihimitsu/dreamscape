@@ -8,7 +8,22 @@ const claimLabels: Record<string, string> = {
   legend: "伝承",
 };
 
-export function ClueDetails({ clue, action }: { clue: TourismClue; action?: ReactNode }) {
+export function ClueDetails({ clue, action, image, imageCredits }: { clue: TourismClue; action?: ReactNode; image?: ReactNode; imageCredits?: ReactNode }) {
+  const sources = (
+    <details className="clue-sources">
+      <summary>根拠と解釈を確認する</summary>
+      {clue.sources.map((source, index) => (
+        <div key={`${source.url}:${index}`}>
+          <span className="pill">{claimLabels[source.claimType]}</span>
+          <p>{source.claimJa}</p>
+          <a href={source.url} target="_blank" rel="noreferrer">
+            {source.publisher} · {source.title}
+          </a>
+        </div>
+      ))}
+      {imageCredits}
+    </details>
+  );
   return (
     <>
       <div className="clue-heading">
@@ -20,28 +35,21 @@ export function ClueDetails({ clue, action }: { clue: TourismClue; action?: Reac
         </div>
         {action}
       </div>
-      <div className="claim-types">
-        {Array.from(
-          new Set(clue.sources.map((source) => source.claimType)),
-        ).map((type) => (
-          <span key={type} className="pill">
-            {claimLabels[type]}
-          </span>
-        ))}
+      <div className={image ? "clue-meta" : undefined}>
+        <div className="claim-types">
+          {Array.from(
+            new Set(clue.sources.map((source) => source.claimType)),
+          ).map((type) => (
+            <span key={type} className="pill">
+              {claimLabels[type]}
+            </span>
+          ))}
+        </div>
+        {image && sources}
       </div>
+      {image}
       <p className="clue-description">{clue.descriptionJa}</p>
-      <details className="clue-sources">
-        <summary>根拠と解釈を確認する</summary>
-        {clue.sources.map((source, index) => (
-          <div key={`${source.url}:${index}`}>
-            <span className="pill">{claimLabels[source.claimType]}</span>
-            <p>{source.claimJa}</p>
-            <a href={source.url} target="_blank" rel="noreferrer">
-              {source.publisher} · {source.title}
-            </a>
-          </div>
-        ))}
-      </details>
+      {!image && sources}
     </>
   );
 }

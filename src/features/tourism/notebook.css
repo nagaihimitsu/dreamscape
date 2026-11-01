@@ -90,12 +90,9 @@ dialog.modal.clue-notebook {
 .clue-notebook .notebook-clue h3 { line-height: 1.4; }
 .clue-notebook .claim-types { margin-top: 3px; }
 .clue-notebook .cluebook-body .clue-description { margin: 4px 0 6px; line-height: 1.6; }
-.clue-notebook .clue-sources,
-.clue-notebook .case-image-details { display: inline-block; vertical-align: top; margin: 0 12px 0 0; }
-.clue-notebook .clue-sources[open],
-.clue-notebook .case-image-details[open] { display: block; width: 100%; }
-.clue-notebook .clue-sources > summary,
-.clue-notebook .case-image-details > summary { min-height: 44px; }
+.clue-notebook .clue-sources { display: inline-block; vertical-align: top; margin: 0; }
+.clue-notebook .clue-sources[open] { display: block; width: 100%; }
+.clue-notebook .clue-sources > summary { min-height: 44px; }
 .case-provenance {
   display: inline-block;
   padding: 3px 8px;
@@ -130,42 +127,48 @@ dialog.modal.clue-notebook {
 .case-select[aria-pressed="true"]:disabled {
   opacity: 1;
 }
-.case-image-details {
-  margin-top: 8px;
-}
-.case-image-details > summary {
-  min-height: 44px;
-  padding: 10px 0;
-  cursor: pointer;
-  color: var(--green);
-  font-size: 12px;
-}
 .case-image {
-  margin: 0;
+  position: relative;
+  margin: 5px 0 0;
+}
+.case-image-placeholder {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: 1;
+  padding: 2px 6px;
+  color: white;
+  background: rgba(24, 36, 30, .92);
+  font-size: 11px;
 }
 .case-image svg {
   display: block;
   width: 100%;
-  max-height: 250px;
+  height: min(78px, 13dvh);
   background: #39372d;
 }
-.case-image .secondary {
+.case-image-toggle {
+  position: relative;
+  display: block;
+  width: 100%;
   min-height: 44px;
-  margin: 8px 0;
+  padding: 0;
+  background: transparent;
 }
-.case-image figcaption {
-  color: var(--muted);
-  margin-top: 8px;
-  font-size: 10px;
-  line-height: 1.6;
-  overflow-wrap: anywhere;
+.case-image-toggle span {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: rgba(24, 36, 30, .92);
+  color: white;
+  font-size: 11px;
 }
-.case-image figcaption a {
-  display: inline-block;
-  min-height: 44px;
-  padding: 12px 8px 8px 0;
-  color: var(--green);
-}
+.case-image .fine-print,
+.clue-image-unavailable { margin: 4px 0 0; font-size: 11px; line-height: 1.4; }
+.case-image-credits { color: var(--muted); font-size: 11px; line-height: 1.6; }
+.case-image-credits a { color: var(--green); min-height: 44px; padding: 12px 8px 8px 0; }
 .case-footer {
   flex-shrink: 0;
   padding: 6px 20px max(8px, env(safe-area-inset-bottom));
@@ -208,4 +211,25 @@ dialog.modal.clue-notebook {
     padding-left: 16px;
     padding-right: 16px;
   }
+  .clue-notebook .cluebook-body { padding-bottom: 4px; }
 }
+/* Keep the picture and the text together on small case sheets. */
+.clue-notebook .clue-meta { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+.clue-notebook .clue-meta .claim-types { margin: 0; }
+.clue-notebook .clue-meta .clue-sources { flex: 0 1 auto; }
+.clue-notebook .clue-meta:has(.clue-sources[open]) { flex-wrap: wrap; }
+.clue-notebook .clue-meta .clue-sources[open] { flex: 1 0 100%; }
+.case-notebook .notebook-clue .clue-kind {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.case-notebook .cluebook-header { padding-top: 2px; padding-bottom: 2px; }
+.case-notebook .clue-navigation { padding-top: 4px; padding-bottom: 4px; }
+.case-image-toggle[aria-pressed="true"] svg { height: min(240px, 35dvh); }
