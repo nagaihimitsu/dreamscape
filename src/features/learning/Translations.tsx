@@ -23,6 +23,23 @@ export function toggleTranslation(learning: Learning, id: string, part: Part) {
     };
   });
 }
+/** Opening by word selection should never hide an already visible translation. */
+export function revealTranslation(learning: Learning, id: string, part: Part) {
+  learning.update((state) => {
+    const entries = state.revealed[id] ?? [];
+    const isOpen = state.alwaysTranslate !== entries.includes(part);
+    if (isOpen) return state;
+    return {
+      ...state,
+      revealed: {
+        ...state.revealed,
+        [id]: state.alwaysTranslate
+          ? entries.filter((entry) => entry !== part)
+          : [...entries, part],
+      },
+    };
+  });
+}
 export function Translation({
   learning,
   id,

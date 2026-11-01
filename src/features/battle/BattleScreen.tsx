@@ -16,7 +16,7 @@ import { ReasoningPanel } from "./ReasoningPanel";
 import {
   Translation,
   TranslationAll,
-  toggleTranslation,
+  revealTranslation,
 } from "../learning/Translations";
 import { InteractiveEnglish } from "../learning/InteractiveEnglish";
 import type { Learning } from "../learning/useLearning";
@@ -441,7 +441,7 @@ export function BattleScreen({
               />
             )}
             <p className="english-instructions">
-              単語は1回で意味、続けて2回で文の訳。回答はA・B・Cを押します。
+              単語を押すと意味、同じ単語をもう一度押すと文の訳。回答はA・B・Cを押します。
             </p>
             <h2 className="question-en">
               <InteractiveEnglish
@@ -450,7 +450,7 @@ export function BattleScreen({
                 vocabulary={question.vocabularyJa}
                 label="問題文"
                 onDoubleTap={() =>
-                  toggleTranslation(learning, question.id, "question")
+                  revealTranslation(learning, question.id, "question")
                 }
               />
             </h2>
@@ -496,7 +496,7 @@ export function BattleScreen({
                           vocabulary={question.vocabularyJa}
                           label={`選択肢${option.id}`}
                           onDoubleTap={() =>
-                            toggleTranslation(learning, question.id, option.id)
+                            revealTranslation(learning, question.id, option.id)
                           }
                         />
                         {answer && (

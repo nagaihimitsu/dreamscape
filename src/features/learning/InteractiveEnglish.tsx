@@ -55,41 +55,41 @@ export function InteractiveEnglish({
   label: string;
 }) {
   const [word, setWord] = useState<Token | null>(null);
-  const pending = useRef<{
-    timer: ReturnType<typeof setTimeout>;
-    index: number;
-  } | null>(null);
-  useEffect(
-    () => () => {
-      if (pending.current) clearTimeout(pending.current.timer);
-    },
-    [],
-  );
-  function tap(token: Token, index: number, keyboard: boolean) {
-    if (keyboard) {
-      if (pending.current) clearTimeout(pending.current.timer);
-      pending.current = null;
-      setWord(token);
-      return;
+  // A second selection of the same word opens the sentence translation even
+  // after the player has spent time reading its meaning. Native click detail
+  // is not a reliable way to distinguish keyboard from touch on all browsers.
+  const lastWordIndex = useRef<number | null>(null);
+  const containerRef = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    lastWordIndex.current = null;
+    setWord(null);
+  }, [text]);
+  useEffect(() => {
+    // An intervening action elsewhere ends the sequence without hiding the
+    // meaning. This also keeps keyboard focus changes predictable.
+    function resetOutside(event: Event) {
+      if (event.target instanceof Node && !containerRef.current?.contains(event.target))
+        lastWordIndex.current = null;
     }
-    if (pending.current?.index === index) {
-      clearTimeout(pending.current.timer);
-      pending.current = null;
+    document.addEventListener("pointerdown", resetOutside, true);
+    document.addEventListener("focusin", resetOutside, true);
+    return () => {
+      document.removeEventListener("pointerdown", resetOutside, true);
+      document.removeEventListener("focusin", resetOutside, true);
+    };
+  }, []);
+  function tap(token: Token, index: number) {
+    if (lastWordIndex.current === index) {
+      lastWordIndex.current = null;
       setWord(null);
       onDoubleTap();
       return;
     }
-    if (pending.current) clearTimeout(pending.current.timer);
+    lastWordIndex.current = index;
     setWord(token);
-    pending.current = {
-      index,
-      timer: setTimeout(() => {
-        pending.current = null;
-      }, 350),
-    };
   }
   return (
-    <span className="interactive-english" lang="en" aria-label={label}>
+    <span ref={containerRef} className="interactive-english" lang="en" aria-label={label}>
       <span>
         {englishTokens(text, vocabulary).map((token, index) =>
           token.meaning ? (
@@ -98,7 +98,7 @@ export function InteractiveEnglish({
               key={`${index}-${token.text}`}
               className="english-word"
               aria-label={`${token.text}の意味`}
-              onClick={(event) => tap(token, index, event.detail === 0)}
+              onClick={() => tap(token, index)}
             >
               {token.text}
             </button>
@@ -116,8 +116,7 @@ export function InteractiveEnglish({
             className="word-close"
             aria-label="単語の意味を閉じる"
             onClick={() => {
-              if (pending.current) clearTimeout(pending.current.timer);
-              pending.current = null;
+              lastWordIndex.current = null;
               setWord(null);
             }}
           >

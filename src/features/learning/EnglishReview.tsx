@@ -175,6 +175,17 @@ export function EnglishReview({
             !(learning.data.revealed[reviewKey] ?? []).includes(part);
           const toggle = (part: Part) =>
             toggleTranslation(learning, reviewKey, part);
+          const reveal = (part: Part) => learning.update((state) => {
+            const entries = state.revealed[reviewKey] ?? [];
+            if (!entries.includes(part)) return state;
+            return {
+              ...state,
+              revealed: {
+                ...state.revealed,
+                [reviewKey]: entries.filter((entry) => entry !== part),
+              },
+            };
+          });
           return (
             <article
               key={question.id}
@@ -182,14 +193,14 @@ export function EnglishReview({
               data-testid="review-question"
             >
               <p className="english-instructions">
-                単語を1回タップで意味、2回で文の訳。
+                単語を押すと意味、同じ単語をもう一度押すと文の訳。
               </p>
               <h3>
                 <InteractiveEnglish
                   text={question.questionEn}
                   vocabulary={question.vocabularyJa}
                   label="問題文"
-                  onDoubleTap={() => toggle("question")}
+                  onDoubleTap={() => reveal("question")}
                 />
               </h3>
               <button
@@ -227,7 +238,7 @@ export function EnglishReview({
                         text={o.textEn}
                         vocabulary={question.vocabularyJa}
                         label={`選択肢${o.id}`}
-                        onDoubleTap={() => toggle(o.id)}
+                        onDoubleTap={() => reveal(o.id)}
                       />
                     </span>
                     <br />
