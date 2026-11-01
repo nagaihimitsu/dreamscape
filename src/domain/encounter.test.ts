@@ -4,7 +4,7 @@ import { encounters } from "../content/encounters";
 import { responseProfiles } from "../content";
 import { loadGame, saveGame, type StorageLike } from "../persistence";
 import galleriaFixture from "../../tests/fixtures/galleria-stage2-pool.json";
-import { startEncounter, chooseEncounter, advanceEncounter, answerEncounterQuiz, finishEncounter, getEncounterOptionAvailability, validateEncounterState } from "./encounter";
+import { startEncounter, chooseEncounter, advanceEncounter, answerEncounterQuiz, finishEncounter, getEncounterAvailability, getEncounterOptionAvailability, validateEncounterState } from "./encounter";
 
 const ready = (): GameState => ({ ...createGame(), completedEpisodeIds: ["milano_duomo_episode"] });
 const restored = (s: GameState): GameState => {
@@ -233,5 +233,98 @@ describe("travel encounters", () => {
     other = finish(choose(startEncounter(other, "galleria_gift", () => 0), 0));
     expect(other.romanceStage).toBe(1);
     expect(completedDateCount(other)).toBe(0);
+  });
+  it("prevents using and gifting an item from a different city without touching money or AP", () => {
+    let state = finish(choose(startEncounter(ready(), "galleria_cafe", () => 0), 2));
+    state = untilChoice(startEncounter(state, "galleria_gift", () => 0));
+    const souvenir = encounters.items.find((item) => item.id === "galleria_souvenir")!;
+    const cityId = souvenir.cityId;
+    try {
+      souvenir.cityId = "roma";
+      expect(getEncounterOptionAvailability(state, 0).available).toBe(false);
+      expect(chooseEncounter(state, 0, state.revision)).toBe(state);
+      expect(state.inventory.galleria_souvenir).toBe("held");
+      expect(() => validateEncounterState(state)).toThrow();
+    } finally { souvenir.cityId = cityId; }
+    const next = finish(chooseEncounter(state, 0, state.revision));
+    expect(next.inventory.galleria_souvenir).toBe("gifted");
+    expect(next.travelBudget).toBe(state.travelBudget);
+    expect(next.ap).toBe(state.ap);
+  });
+  it("rejects both prize and completion awards from a different city before state changes", () => {
+    let cafe = choose(startEncounter(ready(), "galleria_cafe", () => 0), 2);
+    while (!cafe.activeEncounter!.frame.ended) cafe = advanceEncounter(cafe, cafe.revision);
+    const souvenir = encounters.items.find((item) => item.id === "galleria_souvenir")!;
+    const originalSouvenirCity = souvenir.cityId;
+    try {
+      souvenir.cityId = "roma";
+      expect(finishEncounter(cafe, cafe.revision)).toBe(cafe);
+      expect(cafe.inventory.galleria_souvenir).toBeUndefined();
+    } finally { souvenir.cityId = originalSouvenirCity; }
+
+    let quiz = choose(startEncounter(ready(), "galleria_fortune", () => 0), 0);
+    quiz = untilPhase(quiz, "quiz");
+    const ticket = encounters.items.find((item) => item.id === "galleria_ticket")!;
+    const originalTicketCity = ticket.cityId;
+    try {
+      ticket.cityId = "roma";
+      expect(answerEncounterQuiz(quiz, "B", quiz.revision)).toBe(quiz);
+      expect(quiz.inventory.galleria_ticket).toBeUndefined();
+      expect(quiz.encounterRewards.galleria_fortune).toBeUndefined();
+    } finally { ticket.cityId = originalTicketCity; }
+    const winner = answerEncounterQuiz(quiz, "B", quiz.revision);
+    expect(winner.inventory.galleria_ticket).toBe("held");
+    expect(winner.ap).toBe(quiz.ap);
+    expect(winner.travelBudget).toBe(quiz.travelBudget);
+  });
+  it("does not consume an entry ticket from another city", () => {
+    const won = fortune(ready(), "B", 0);
+    const outing = untilChoice(startEncounter(won, "galleria_outing", () => 0));
+    const ticket = encounters.items.find((item) => item.id === "galleria_ticket")!;
+    const original = ticket.cityId;
+    try {
+      ticket.cityId = "roma";
+      expect(getEncounterOptionAvailability(outing, 0).available).toBe(false);
+      expect(chooseEncounter(outing, 0, outing.revision)).toBe(outing);
+      expect(outing.inventory.galleria_ticket).toBe("held");
+      expect(() => validateEncounterState(outing)).toThrow();
+    } finally { ticket.cityId = original; }
+    const used = finish(chooseEncounter(outing, 0, outing.revision));
+    expect(used.inventory.galleria_ticket).toBe("used");
+    expect(used.travelBudget).toBe(outing.travelBudget);
+    expect(used.ap).toBe(outing.ap);
+  });
+  it("keeps foreign-city possessions while allowing local items after city completion", () => {
+    const foreign = { id: "test_roma_item", cityId: "roma", nameJa: "旅の品", descriptionJa: "別の街の品。" };
+    encounters.items.push(foreign);
+    try {
+      const initial = { ...ready(), completedCityIds: ["milano"], inventory: { test_roma_item: "held" as const } };
+      expect(getEncounterAvailability(initial, "galleria_cafe").available).toBe(true);
+      const bought = finish(choose(startEncounter(initial, "galleria_cafe", () => 0), 2));
+      const gifted = finish(choose(startEncounter(bought, "galleria_gift", () => 0), 0));
+      expect(gifted.inventory.test_roma_item).toBe("held");
+      expect(gifted.inventory.galleria_souvenir).toBe("gifted");
+      expect(gifted.ap).toBe(initial.ap);
+      expect(gifted.travelBudget).toBe(initial.travelBudget + 2);
+    } finally { encounters.items.pop(); }
+  });
+  it("resumes a v10 Milan encounter, and refuses to advance an encounter from another city", () => {
+    const initial = validateGameState(galleriaFixture);
+    const started = startEncounter(initial, "galleria_cafe", () => 4321);
+    const reloaded = validateGameState(JSON.parse(JSON.stringify(started)));
+    expect(reloaded.activeEncounter).toEqual(started.activeEncounter);
+    expect(reloaded.inventory).toEqual(initial.inventory);
+    expect(reloaded.ap).toBe(initial.ap);
+    expect(reloaded.travelBudget).toBe(initial.travelBudget);
+    expect(advanceEncounter(reloaded, reloaded.revision)).not.toBe(reloaded);
+
+    const event = encounters.encounters.find((item) => item.id === "galleria_cafe")!;
+    const original = event.cityId;
+    try {
+      event.cityId = "roma";
+      expect(getEncounterAvailability(initial, event.id).available).toBe(false);
+      expect(advanceEncounter(reloaded, reloaded.revision)).toBe(reloaded);
+      expect(() => validateEncounterState(reloaded)).toThrow();
+    } finally { event.cityId = original; }
   });
 });

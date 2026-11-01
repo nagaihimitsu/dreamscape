@@ -67,6 +67,60 @@ describe("encounter content validation", () => {
     expect(() => validateEncounterContent(data)).toThrow("Duplicate encounter item source");
   });
 
+  it("requires a known item city and rejects cross-city grants and choices", () => {
+    const data = input();
+    const missingCity = { ...data.catalog.items[0], cityId: "unregistered_city" };
+    data.catalog.items.push(missingCity);
+    missingCity.id = "unregistered_item";
+    expect(() => validateEncounterContent(data)).toThrow("Unknown item city: unregistered_item/unregistered_city");
+    data.catalog.items.pop();
+
+    // A second city exists only in this test fixture; production still has one.
+    data.journey.episodes.push({ ...data.journey.episodes[0], id: "fixture_episode", cityId: "fixture_city" });
+    data.catalog.items.push({ id: "foreign_item", cityId: "fixture_city", nameJa: "別の街の品", descriptionJa: "別の街で入手する品。" });
+
+    const cafe = data.catalog.encounters.find((event) => event.id === "galleria_cafe")!;
+    const originalCompletion = cafe.completionItemId;
+    cafe.completionItemId = "foreign_item";
+    expect(() => validateEncounterContent(data)).toThrow("Encounter completion item city mismatch");
+    cafe.completionItemId = originalCompletion;
+
+    const gift = data.catalog.encounters.find((event) => event.id === "galleria_gift")!;
+    for (const field of ["requiresItemId", "consumeItemId", "giftItemId"] as const) {
+      const option = gift.options[0];
+      const previous = option[field];
+      option[field] = "foreign_item";
+      expect(() => validateEncounterContent(data)).toThrow("Encounter item city mismatch");
+      option[field] = previous;
+    }
+
+    const fortune = data.catalog.encounters.find((event) => event.id === "galleria_fortune")!;
+    fortune.quiz!.rewardItemId = "foreign_item";
+    expect(() => validateEncounterContent(data)).toThrow("Encounter quiz item city mismatch");
+  });
+
+  it("requires the item city field", () => {
+    const { cityId: _city, ...itemWithoutCity } = catalogData.items[0];
+    const broken = { ...catalogData, items: [itemWithoutCity, ...catalogData.items.slice(1)] };
+    expect(encounterCatalogSchema.safeParse(broken).success).toBe(false);
+  });
+
+  it("requires each item to have a gift or use opportunity in its city", () => {
+    const data = input();
+    const gift = data.catalog.encounters.find((event) => event.id === "galleria_gift")!;
+    delete gift.options[0].giftItemId;
+    delete gift.options[1].giftItemId;
+    expect(() => validateEncounterContent(data)).toThrow("Encounter item has no use in its city: galleria_souvenir/milano");
+    gift.options[0].giftItemId = "galleria_souvenir";
+    expect(() => validateEncounterContent(data)).not.toThrow();
+
+    const outing = data.catalog.encounters.find((event) => event.id === "galleria_outing")!;
+    delete outing.options[0].consumeItemId;
+    expect(() => validateEncounterContent(data)).toThrow("Encounter item has no use in its city: galleria_ticket/milano");
+    outing.options[0].consumeItemId = "galleria_ticket";
+    expect(() => validateEncounterContent(data)).not.toThrow();
+  });
+
   it("rejects wrong city, place, story, AP reward or response profile", () => {
     const data = input();
     const event = data.catalog.encounters.find((item) => item.id === "galleria_fortune")!;

@@ -44,7 +44,7 @@ const encounterSchema = z.object({
 export const encounterCatalogSchema = z.object({
   schemaVersion: z.literal(1),
   initialBudget: euros,
-  items: z.array(z.object({ id, nameJa: japaneseText, descriptionJa: japaneseText }).strict()),
+  items: z.array(z.object({ id, cityId: id, nameJa: japaneseText, descriptionJa: japaneseText }).strict()),
   encounters: z.array(encounterSchema),
 }).strict();
 export type EncounterCatalog = z.infer<typeof encounterCatalogSchema>;

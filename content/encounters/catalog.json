@@ -4,11 +4,13 @@
   "items": [
     {
       "id": "galleria_souvenir",
+      "cityId": "milano",
       "nameJa": "雄牛のしおり",
       "descriptionJa": "ガッレリアのカフェで受け取った、小さな雄牛の絵のしおり。"
     },
     {
       "id": "galleria_ticket",
+      "cityId": "milano",
       "nameJa": "ガッレリアの展示券",
       "descriptionJa": "ガッレリアの小さな紋章展示に使える券。"
     }

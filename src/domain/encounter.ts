@@ -1,6 +1,6 @@
 import { encounters } from "../content/encounters";
 import { responseProfileSchema } from "../content/schemas";
-import { responseProfiles } from "../content";
+import { city, responseProfiles } from "../content";
 import type { EncounterDefinition } from "../content/encounter-schemas";
 import { beginStory, continueStory, selectStoryChoice, storyFingerprint, validateStorySnapshot, type StoryStep } from "../story/runtime";
 import { secureRomanceRoll } from "../random/romance-source";
@@ -16,6 +16,15 @@ const findEncounter = (id: string) => encounters.encounters.find((item) => item.
 const unavailable = (reason: string): Availability => ({ available: false, reason });
 const available: Availability = { available: true, reason: "" };
 
+/** Item IDs remain globally stable, but may only be used by events in their city. */
+function itemBelongsToEncounter(event: EncounterDefinition, itemId: string | undefined): boolean {
+  return itemId === undefined || encounters.items.some((item) => item.id === itemId && item.cityId === event.cityId);
+}
+
+function optionItemsBelongToEncounter(event: EncounterDefinition, option: EncounterDefinition["options"][number]): boolean {
+  return [option.requiresItemId, option.consumeItemId, option.giftItemId].every((itemId) => itemBelongsToEncounter(event, itemId));
+}
+
 function encounterFingerprint(event: EncounterDefinition): string {
   const ids = [event.storyId, ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : [])];
   // Odds have their own stored snapshot; rebalancing must not invalidate an active event.
@@ -29,20 +38,23 @@ function encounterFingerprint(event: EncounterDefinition): string {
 export function getEncounterAvailability(state: GameState, id: string): Availability {
   const event = findEncounter(id);
   if (!event) return unavailable("寄り道が見つかりません。");
+  if (event.cityId !== city.id) return unavailable("この街では出かけられません。");
   if (!canAccessFreeTime(state)) return unavailable("旅を進めると出かけられます。");
   if (state.activeEncounter || state.activeDate || state.activeTourism || state.activeEpilogue || state.activeBattle)
     return unavailable("途中の場面を終えてから出かけられます。");
   if (!event.repeatable && state.completedEncounterIds.includes(id)) return unavailable("この寄り道は終えています。");
   const actionable = event.options.filter((option) => !option.deferCompletion);
-  if (actionable.length && actionable.every((option) => option.requiresItemId && state.inventory[option.requiresItemId] !== "held"))
+  if (actionable.length && actionable.every((option) => !optionItemsBelongToEncounter(event, option) || (option.requiresItemId && state.inventory[option.requiresItemId] !== "held")))
     return unavailable("必要な品物を持っていません。");
   return available;
 }
 
 export function getEncounterOptionAvailability(state: GameState, index: number): Availability {
   const active = state.activeEncounter;
-  const option = active && findEncounter(active.encounterId)?.options[index];
+  const event = active && findEncounter(active.encounterId);
+  const option = event?.options[index];
   if (!active || active.phase !== "story" || active.selectedOptionId !== null || !option || !active.frame.choices.some((choice) => choice.index === index)) return unavailable("この選択肢は使えません。");
+  if (!event || event.cityId !== city.id || !optionItemsBelongToEncounter(event, option)) return unavailable("この街では使えない品物です。");
   if (state.travelBudget < option.costEuro) return unavailable("旅行予算が足りません。");
   if (option.requiresItemId && state.inventory[option.requiresItemId] !== "held") return unavailable("必要な品物を持っていません。");
   return available;
@@ -110,6 +122,7 @@ export function advanceEncounter(state: GameState, expectedRevision: number): Ga
   const active = state.activeEncounter;
   if (state.revision !== expectedRevision || !active) return state;
   const event = findEncounter(active.encounterId)!;
+  if (event.cityId !== city.id) return state;
   if (active.phase === "feedback") {
     const quiz = event.quiz!;
     const correct = active.quizAnswerId === quiz.question.correctOptionId;
@@ -133,6 +146,7 @@ export function answerEncounterQuiz(state: GameState, optionId: string, expected
   const event = findEncounter(active.encounterId)!;
   const quiz = event.quiz;
   if (!quiz) return state;
+  if (event.cityId !== city.id || !itemBelongsToEncounter(event, quiz.rewardItemId)) return state;
   const correct = scoreQuizAnswer(quiz.question, optionId);
   if (correct === null) return state;
   const answer = optionId as "A" | "B" | "C";
@@ -164,6 +178,7 @@ export function finishEncounter(state: GameState, expectedRevision: number): Gam
   const active = state.activeEncounter;
   if (state.revision !== expectedRevision || !active || !active.frame.ended || !active.selectedOptionId || (active.phase !== "outcome" && active.phase !== "story")) return state;
   const event = findEncounter(active.encounterId)!;
+  if (event.cityId !== city.id || !itemBelongsToEncounter(event, event.completionItemId)) return state;
   if (event.quiz && active.phase !== "outcome") return state;
   const option = event.options.find((item) => item.id === active.selectedOptionId)!;
   const first = !state.completedEncounterIds.includes(event.id) && !option.deferCompletion;
@@ -186,36 +201,38 @@ export function validateEncounterState(state: GameState): void {
   const fail = (): never => { throw new Error("道中交流の保存状態が一致しません。"); };
   for (const id of state.completedEncounterIds) {
     const event = findEncounter(id);
-    if (!event || (event.completionItemId && !state.inventory[event.completionItemId])) fail();
+    if (!event || !itemBelongsToEncounter(event, event.completionItemId) || (event.completionItemId && !state.inventory[event.completionItemId])) fail();
   }
   for (const [id, status] of Object.entries(state.inventory)) {
     if (!encounters.items.some((item) => item.id === id)) fail();
     const prizeEvent = encounters.encounters.find((item) => item.quiz?.rewardItemId === id);
     const completionEvent = encounters.encounters.find((item) => item.completionItemId === id);
-    if (prizeEvent && !state.encounterRewards[prizeEvent.id]?.won) fail();
-    if (completionEvent && !state.completedEncounterIds.includes(completionEvent.id)) fail();
+    if (prizeEvent && (!itemBelongsToEncounter(prizeEvent, id) || !state.encounterRewards[prizeEvent.id]?.won)) fail();
+    if (completionEvent && (!itemBelongsToEncounter(completionEvent, id) || !state.completedEncounterIds.includes(completionEvent.id))) fail();
     if (status !== "held") {
       const matching = encounters.encounters.some((item) => item.options.some((option) =>
-        (status === "gifted" ? option.giftItemId === id : option.consumeItemId === id) &&
+        (status === "gifted" ? option.giftItemId === id : option.consumeItemId === id) && optionItemsBelongToEncounter(item, option) &&
         (state.completedEncounterIds.includes(item.id) ||
           (state.activeEncounter?.encounterId === item.id && state.activeEncounter.selectedOptionId === option.id))));
       if (!matching) fail();
     }
   }
   for (const [id, record] of Object.entries(state.encounterRewards)) {
-    const quiz = findEncounter(id)?.quiz;
-    if (!quiz || record.won !== (record.roll < record.chancePercent * 100) || (record.won && !state.inventory[quiz.rewardItemId])) fail();
+    const event = findEncounter(id);
+    const quiz = event?.quiz;
+    if (!event || !quiz || !itemBelongsToEncounter(event, quiz.rewardItemId) || record.won !== (record.roll < record.chancePercent * 100) || (record.won && !state.inventory[quiz.rewardItemId])) fail();
   }
   const active = state.activeEncounter;
   if (!active) return;
   const event = findEncounter(active.encounterId);
-  if (!event || active.contentHash !== encounterFingerprint(event)) fail();
+  if (!event || event.cityId !== city.id || active.contentHash !== encounterFingerprint(event)) fail();
   if (state.activeDate || state.activeTourism || state.activeEpilogue || state.activeBattle) fail();
   if (active.storyHash !== storyFingerprint(active.storyId)) fail();
   const validStories = [event!.storyId, ...(event!.quiz ? [event!.quiz.wonStoryId, event!.quiz.lostStoryId, event!.quiz.alreadyStoryId] : [])];
   if (!validStories.includes(active.storyId)) fail();
   const option = event!.options.find((item) => item.id === active.selectedOptionId);
   if (active.selectedOptionId && !option) fail();
+  if (option && !optionItemsBelongToEncounter(event!, option)) fail();
   if (option?.giftItemId && state.inventory[option.giftItemId] !== "gifted") fail();
   if (option?.consumeItemId && state.inventory[option.consumeItemId] !== "used") fail();
   const resolution = active.romanceResolution;

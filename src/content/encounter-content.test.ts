@@ -35,4 +35,20 @@ describe("encounter build integration", () => {
     await writeFile(file, `${source}\n{has_item_status("galleria_souvenir", "gifted"): 持っています}\n`);
     await expect(buildContent(fixture, false)).rejects.toThrow("Item references are only supported in encounters: milano/cafe_01");
   }, 30000);
+
+  it("rejects an Ink item query belonging to another city", async () => {
+    const catalogFile = path.join(fixture, "content/encounters/catalog.json");
+    const catalog = JSON.parse(await readFile(catalogFile, "utf8"));
+    catalog.items.push({ id: "foreign_item", cityId: "fixture_city", nameJa: "別の街の品", descriptionJa: "別の街で入手する品。" });
+    await writeFile(catalogFile, JSON.stringify(catalog));
+    const journeyFile = path.join(fixture, "content/progression/journey.json");
+    const journey = JSON.parse(await readFile(journeyFile, "utf8"));
+    journey.episodes.push({ ...journey.episodes[0], id: "fixture_episode", cityId: "fixture_city" });
+    await writeFile(journeyFile, JSON.stringify(journey));
+    const storyFile = path.join(fixture, "content/stories/encounters/galleria_outing.ink");
+    const source = await readFile(storyFile, "utf8");
+    expect(source).toContain('has_item_status("galleria_souvenir", "gifted")');
+    await writeFile(storyFile, source.replace('has_item_status("galleria_souvenir", "gifted")', 'has_item_status("foreign_item", "gifted")'));
+    await expect(buildContent(fixture, false)).rejects.toThrow("Encounter story item city mismatch: encounters/galleria_outing/foreign_item");
+  }, 30000);
 });

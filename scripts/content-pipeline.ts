@@ -596,6 +596,15 @@ export async function buildContent(root: string, writeOutput = true) {
     const itemReferences = withContext(file, () => validateItemReferences(source, encounterCatalog.items.map((item) => item.id)));
     if (itemReferences.length && !encounterStoryIds.includes(id))
       throw new Error(`Item references are only supported in encounters: ${id}`);
+    if (itemReferences.length) {
+      const owner = encounterCatalog.encounters.find((event) =>
+        event.storyId === id || (event.quiz && [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId].includes(id)),
+      );
+      for (const itemId of itemReferences) {
+        if (encounterCatalog.items.find((item) => item.id === itemId)?.cityId !== owner?.cityId)
+          throw new Error(`Encounter story item city mismatch: ${id}/${itemId}`);
+      }
+    }
     const compiled = compileInk(source, file);
     stories[id] = compiled;
     storySources[id] = source;

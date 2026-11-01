@@ -111,6 +111,11 @@ export function validateEncounterContent({
   unique(catalog.items.map((item) => item.id), "encounter item ID");
   unique(catalog.encounters.map((event) => event.id), "encounter ID");
   const itemIds = new Set(catalog.items.map((item) => item.id));
+  // The current route has one city; journey data also lets isolated tests
+  // exercise another city without registering new production content.
+  const knownCities = new Set([cityId, ...journey.episodes.map((episode) => episode.cityId)]);
+  for (const item of catalog.items)
+    if (!knownCities.has(item.cityId)) throw new Error(`Unknown item city: ${item.id}/${item.cityId}`);
   const storyIds: string[] = [];
   const questionIds = Object.values(quizzes).flatMap((quiz) => quiz.questions.map((question) => question.id));
   const alternativeRewards: string[] = [];
@@ -127,6 +132,8 @@ export function validateEncounterContent({
     for (const option of event.options) {
       for (const item of [option.requiresItemId, option.consumeItemId, option.giftItemId]) {
         if (item && !itemIds.has(item)) throw new Error(`Unknown encounter item: ${event.id}/${option.id}/${item}`);
+        if (item && catalog.items.find((entry) => entry.id === item)?.cityId !== event.cityId)
+          throw new Error(`Encounter item city mismatch: ${event.id}/${option.id}/${item}`);
       }
       if (option.consumeItemId && option.giftItemId) throw new Error(`Conflicting encounter item action: ${event.id}/${option.id}`);
       const spentItem = option.consumeItemId ?? option.giftItemId;
@@ -139,6 +146,8 @@ export function validateEncounterContent({
     }
     if (event.completionItemId && !itemIds.has(event.completionItemId))
       throw new Error(`Unknown encounter completion item: ${event.id}/${event.completionItemId}`);
+    if (event.completionItemId && catalog.items.find((item) => item.id === event.completionItemId)?.cityId !== event.cityId)
+      throw new Error(`Encounter completion item city mismatch: ${event.id}/${event.completionItemId}`);
     if (event.completionItemId) itemSources.push(event.completionItemId);
     if (event.alternativeApRewardId) {
       alternativeRewards.push(event.alternativeApRewardId);
@@ -150,6 +159,8 @@ export function validateEncounterContent({
     const scenes: Array<{ id: string; options: EncounterDefinition["options"] | null }> = [{ id: event.storyId, options: event.options }];
     if (event.quiz) {
       if (!itemIds.has(event.quiz.rewardItemId)) throw new Error(`Unknown encounter quiz item: ${event.id}/${event.quiz.rewardItemId}`);
+      if (catalog.items.find((item) => item.id === event.quiz!.rewardItemId)?.cityId !== event.cityId)
+        throw new Error(`Encounter quiz item city mismatch: ${event.id}/${event.quiz.rewardItemId}`);
       itemSources.push(event.quiz.rewardItemId);
       validateQuiz({ questions: [event.quiz.question] });
       questionIds.push(event.quiz.question.id);
@@ -159,7 +170,7 @@ export function validateEncounterContent({
       storyIds.push(scene.id);
       const compiled = stories[scene.id];
       if (!compiled) throw new Error(`Unknown encounter story: ${event.id}/${scene.id}`);
-      try { validateEncounterStory(compiled, context, scene.options, [...itemIds], memoryIds); }
+      try { validateEncounterStory(compiled, context, scene.options, catalog.items.filter((item) => item.cityId === event.cityId).map((item) => item.id), memoryIds); }
       catch (error) {
         throw new Error(`Invalid encounter story: ${event.id}/${scene.id}: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
       }
@@ -169,4 +180,12 @@ export function validateEncounterContent({
   unique(questionIds, "production quiz question ID");
   unique(alternativeRewards, "encounter alternative reward");
   unique(itemSources, "encounter item source");
+  for (const item of catalog.items) {
+    const hasUse = catalog.encounters.some((event) =>
+      event.cityId === item.cityId && event.options.some((option) =>
+        option.consumeItemId === item.id || option.giftItemId === item.id,
+      ),
+    );
+    if (!hasUse) throw new Error(`Encounter item has no use in its city: ${item.id}/${item.cityId}`);
+  }
 }

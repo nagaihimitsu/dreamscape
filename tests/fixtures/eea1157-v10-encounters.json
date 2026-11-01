@@ -1,0 +1,287 @@
+{
+  "held": {
+    "schemaVersion": 10,
+    "revision": 94,
+    "playerName": "なお",
+    "heroineName": "りえ",
+    "ap": 2,
+    "affection": 4,
+    "romanceStage": 2,
+    "completedChapters": [
+      "milano"
+    ],
+    "claimedRewardIds": [
+      "battle_duomo_first",
+      "episode_duomo_first",
+      "battle_galleria_first",
+      "episode_galleria_first"
+    ],
+    "playedDateIds": [
+      "milano_cafe_01"
+    ],
+    "memories": [
+      "milano_cafe_joke",
+      "milano_cafe_free_time_joke"
+    ],
+    "activeDate": null,
+    "unlockedEventIds": [
+      "milano_invitation_01",
+      "milano_confession_01",
+      "milano_rain_pause_01"
+    ],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": null,
+    "battleRecords": [
+      {
+        "battleId": "milano_duomo_01",
+        "attempts": 1,
+        "firstScore": 0,
+        "bestScore": 0,
+        "lastScore": 0
+      },
+      {
+        "battleId": "milano_galleria_01",
+        "attempts": 1,
+        "firstScore": 0,
+        "bestScore": 0,
+        "lastScore": 0
+      }
+    ],
+    "activeTourism": null,
+    "discoveredClueIds": [],
+    "visitedLandmarkIds": [
+      "duomo_milano",
+      "galleria_vittorio_emanuele_ii"
+    ],
+    "completedEpisodeIds": [
+      "milano_duomo_episode",
+      "milano_galleria_episode"
+    ],
+    "completedCityIds": [],
+    "completedGuideIds": [],
+    "pendingApRewards": [],
+    "battleRewardReceipt": null,
+    "activeEpilogue": null,
+    "viewedEpilogueCityIds": [],
+    "legacyTrialAvailable": false,
+    "trust": 1,
+    "spark": 2,
+    "lastRejectedDateCount": null,
+    "recoveryAfterRejection": false,
+    "completedRecoveryCount": 0,
+    "travelBudget": 22,
+    "inventory": {
+      "galleria_souvenir": "held"
+    },
+    "completedEncounterIds": [
+      "galleria_cafe"
+    ],
+    "encounterRewards": {},
+    "activeEncounter": null
+  },
+  "giftChoice": {
+    "schemaVersion": 10,
+    "revision": 95,
+    "playerName": "なお",
+    "heroineName": "りえ",
+    "ap": 2,
+    "affection": 4,
+    "romanceStage": 2,
+    "completedChapters": [
+      "milano"
+    ],
+    "claimedRewardIds": [
+      "battle_duomo_first",
+      "episode_duomo_first",
+      "battle_galleria_first",
+      "episode_galleria_first"
+    ],
+    "playedDateIds": [
+      "milano_cafe_01"
+    ],
+    "memories": [
+      "milano_cafe_joke",
+      "milano_cafe_free_time_joke"
+    ],
+    "activeDate": null,
+    "unlockedEventIds": [
+      "milano_invitation_01",
+      "milano_confession_01",
+      "milano_rain_pause_01"
+    ],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": null,
+    "battleRecords": [
+      {
+        "battleId": "milano_duomo_01",
+        "attempts": 1,
+        "firstScore": 0,
+        "bestScore": 0,
+        "lastScore": 0
+      },
+      {
+        "battleId": "milano_galleria_01",
+        "attempts": 1,
+        "firstScore": 0,
+        "bestScore": 0,
+        "lastScore": 0
+      }
+    ],
+    "activeTourism": null,
+    "discoveredClueIds": [],
+    "visitedLandmarkIds": [
+      "duomo_milano",
+      "galleria_vittorio_emanuele_ii"
+    ],
+    "completedEpisodeIds": [
+      "milano_duomo_episode",
+      "milano_galleria_episode"
+    ],
+    "completedCityIds": [],
+    "completedGuideIds": [],
+    "pendingApRewards": [],
+    "battleRewardReceipt": null,
+    "activeEpilogue": null,
+    "viewedEpilogueCityIds": [],
+    "legacyTrialAvailable": false,
+    "trust": 1,
+    "spark": 2,
+    "lastRejectedDateCount": null,
+    "recoveryAfterRejection": false,
+    "completedRecoveryCount": 0,
+    "travelBudget": 22,
+    "inventory": {
+      "galleria_souvenir": "held"
+    },
+    "completedEncounterIds": [
+      "galleria_cafe"
+    ],
+    "encounterRewards": {},
+    "activeEncounter": {
+      "encounterId": "galleria_gift",
+      "runId": "galleria_gift:95",
+      "contentHash": "2b07f8b",
+      "storyId": "encounters/galleria_gift",
+      "storyHash": "d169b60b",
+      "storyState": "{\"flows\":{\"DEFAULT_FLOW\":{\"callstack\":{\"threads\":[{\"callstack\":[{\"exp\":false,\"type\":0}],\"threadIndex\":0,\"previousContentObject\":\"0.25\"}],\"threadCounter\":3},\"outputStream\":[\"#\",\"^background: milano_galleria\",\"/#\",\"#\",\"^speaker: heroine\",\"/#\",\"^「そのしおり、さっきのお店でもらったものだよね。小さな牛の絵がある」\",\"\\n\"],\"choiceThreads\":{\"1\":{\"callstack\":[{\"cPath\":\"0\",\"idx\":13,\"exp\":false,\"type\":0}],\"threadIndex\":1,\"previousContentObject\":\"0.12\"},\"2\":{\"callstack\":[{\"cPath\":\"0\",\"idx\":19,\"exp\":false,\"type\":0}],\"threadIndex\":2,\"previousContentObject\":\"0.18\"},\"3\":{\"callstack\":[{\"cPath\":\"0\",\"idx\":25,\"exp\":false,\"type\":0}],\"threadIndex\":3,\"previousContentObject\":\"0.24\"}},\"currentChoices\":[{\"text\":\"Would you like this bookmark?\",\"index\":0,\"originalChoicePath\":\"0.13\",\"originalThreadIndex\":1,\"targetPath\":\"0.c-0\",\"isInvisibleDefault\":false},{\"text\":\"This bookmark made me think of you.\",\"index\":1,\"originalChoicePath\":\"0.19\",\"originalThreadIndex\":2,\"targetPath\":\"0.c-1\",\"isInvisibleDefault\":false},{\"text\":\"I'll keep it for now.\",\"index\":2,\"originalChoicePath\":\"0.25\",\"originalThreadIndex\":3,\"targetPath\":\"0.c-2\",\"isInvisibleDefault\":false}]}},\"currentFlowName\":\"DEFAULT_FLOW\",\"variablesState\":{\"player_name\":\"^なお\",\"heroine_name\":\"^りえ\"},\"evalStack\":[],\"visitCounts\":{},\"turnIndices\":{},\"turnIdx\":-1,\"storySeed\":56,\"previousRandom\":0,\"inkSaveVersion\":10,\"inkFormatVersion\":21}",
+      "frame": {
+        "text": "「そのしおり、さっきのお店でもらったものだよね。小さな牛の絵がある」",
+        "speaker": "heroine",
+        "background": "milano_galleria",
+        "emotion": "neutral",
+        "choices": [
+          {
+            "index": 0,
+            "text": "Would you like this bookmark?"
+          },
+          {
+            "index": 1,
+            "text": "This bookmark made me think of you."
+          },
+          {
+            "index": 2,
+            "text": "I'll keep it for now."
+          }
+        ],
+        "ended": false
+      },
+      "phase": "story",
+      "selectedOptionId": null,
+      "quizAnswerId": null,
+      "rewardRoll": 5678,
+      "rewardChancePercent": null,
+      "rewardAlreadyDrawn": false,
+      "romanceRoll": {
+        "reaction": 5678,
+        "affection": 5678,
+        "trust": 5678,
+        "spark": 5678
+      },
+      "responseProfiles": [
+        {
+          "id": "attentive",
+          "baseChance": 82,
+          "minChance": 55,
+          "maxChance": 95,
+          "relationshipWeights": {
+            "affection": 0.25,
+            "trust": 0.6,
+            "spark": 0.15
+          },
+          "chancePerRelationshipPoint": 1.2,
+          "positive": {
+            "affection": [
+              1,
+              2
+            ],
+            "trust": [
+              2,
+              3
+            ],
+            "spark": [
+              -1,
+              1
+            ]
+          },
+          "negative": {
+            "affection": [
+              -1,
+              0
+            ],
+            "trust": [
+              -1,
+              0
+            ],
+            "spark": [
+              -1,
+              0
+            ]
+          }
+        },
+        {
+          "id": "honest",
+          "baseChance": 72,
+          "minChance": 45,
+          "maxChance": 93,
+          "relationshipWeights": {
+            "affection": 0.35,
+            "trust": 0.4,
+            "spark": 0.25
+          },
+          "chancePerRelationshipPoint": 1.2,
+          "positive": {
+            "affection": [
+              1,
+              2
+            ],
+            "trust": [
+              0,
+              2
+            ],
+            "spark": [
+              0,
+              2
+            ]
+          },
+          "negative": {
+            "affection": [
+              -1,
+              0
+            ],
+            "trust": [
+              -1,
+              0
+            ],
+            "spark": [
+              0,
+              1
+            ]
+          }
+        }
+      ],
+      "romanceResolution": null
+    }
+  }
+}

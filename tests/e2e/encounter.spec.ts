@@ -1,5 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 import galleria from "../fixtures/galleria-stage2-pool.json" with { type: "json" };
+import phase7 from "../fixtures/phase7-free-time.json" with { type: "json" };
+import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
 import { expectNoOverflow, loadSnapshot, saved, setDialogueSpeed } from "./helpers";
 
 const menu = (page: Page, title: string) => page.getByText(title, { exact: true }).locator("..").locator("..").getByRole("button");
@@ -174,4 +176,64 @@ test("not buying remains available when the travel budget is insufficient", asyn
   expect((await saved(page)).travelBudget).toBe(1);
   await finish(page);
   expect((await saved(page)).travelBudget).toBe(3);
+});
+
+test("a cleared city keeps newly acquired Milan items usable exactly once after reload", async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.addInitScript(() => {
+    const original = crypto.getRandomValues.bind(crypto);
+    crypto.getRandomValues = ((array: Uint32Array) => { array.fill(0); return array; }) as typeof original;
+  });
+  const oldClearedCity = {
+    ...phase7.cityClearViewed,
+    battleRecords: [...phase7.cityClearViewed.battleRecords, ...phase6.B_result.battleRecords, ...phase6.C_result.battleRecords],
+  };
+  await loadSnapshot(page, oldClearedCity);
+  await open(page, "カフェでひと休み");
+  await advanceToChoice(page);
+  await choose(page, "C");
+  await finish(page);
+  expect((await saved(page)).inventory.galleria_souvenir).toBe("held");
+
+  await open(page, "床の牛と小さな占い");
+  await advanceToChoice(page);
+  await choose(page, "C");
+  await toQuiz(page);
+  await choose(page, "B");
+  await finish(page);
+  const acquired = await saved(page);
+  expect(acquired.completedCityIds).toContain("milano");
+  expect(acquired.inventory.galleria_souvenir).toBe("held");
+  expect(acquired.inventory.galleria_ticket).toBe("held");
+  await page.reload();
+  expect(await saved(page)).toEqual(acquired);
+
+  await open(page, "しおりを贈る");
+  await advanceToChoice(page);
+  await choose(page, "A");
+  expect((await saved(page)).inventory.galleria_souvenir).toBe("gifted");
+  await page.reload();
+  expect((await saved(page)).inventory.galleria_souvenir).toBe("gifted");
+  await finish(page);
+  await open(page, "紋章の小さな展示");
+  await advanceToChoice(page);
+  await choose(page, "A");
+  expect((await saved(page)).inventory.galleria_ticket).toBe("used");
+  await page.reload();
+  expect((await saved(page)).inventory.galleria_ticket).toBe("used");
+  await finish(page);
+  const final = await saved(page);
+  expect(final.ap).toBe(acquired.ap);
+  expect(final.pendingApRewards).toEqual(acquired.pendingApRewards);
+  expect(final.travelBudget).toBe(acquired.travelBudget);
+  expect(final.claimedRewardIds).toEqual(acquired.claimedRewardIds);
+  expect(final.completedCityIds).toEqual(acquired.completedCityIds);
+  expect(final.completedEpisodeIds).toEqual(acquired.completedEpisodeIds);
+  expect(final.battleRecords).toEqual(acquired.battleRecords);
+  expect(final.completedEncounterIds).toEqual(expect.arrayContaining([...acquired.completedEncounterIds, "galleria_gift", "galleria_outing"]));
+  await page.reload();
+  expect(await saved(page)).toEqual(final);
+  await page.getByTestId("encounter-menu-toggle").click();
+  await expect(menu(page, "しおりを贈る")).toHaveCount(0);
+  await expect(menu(page, "紋章の小さな展示")).toHaveCount(0);
 });

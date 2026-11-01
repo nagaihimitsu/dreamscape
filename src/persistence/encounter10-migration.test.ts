@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import phase6 from "../../tests/fixtures/phase6-saves.json";
+import eea1157 from "../../tests/fixtures/eea1157-v10-encounters.json";
 import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
 import { encounters } from "../content";
-import { startEncounter } from "../domain/encounter";
+import { startEncounter, chooseEncounter, advanceEncounter, finishEncounter } from "../domain/encounter";
 import { grantRewardOnce, setNames, startDate, validateGameState, type GameState } from "../domain/game";
 import { getBattleAvailability } from "../domain/battle";
 import { getTourismAvailability } from "../domain/tourism";
@@ -23,6 +24,37 @@ function asVersion9(state: GameState) {
 }
 
 describe("v10 encounter save migration", () => {
+  it("loads actual v10 saves from eea1157 and resumes a gift choice", () => {
+    for (const original of [eea1157.held, eea1157.giftChoice]) {
+      const storage = new MemoryStorage();
+      const raw = JSON.stringify(original);
+      storage.setItem(SAVE_KEY, raw);
+      const loaded = loadGame(storage);
+      expect(loaded.status).toBe("loaded");
+      if (loaded.status !== "loaded") throw new Error("v10 save unavailable");
+      expect(loaded.state).toEqual(original);
+      expect(storage.getItem(SAVE_KEY)).toBe(raw);
+      expect(loaded.state.inventory.galleria_souvenir).toBe("held");
+    }
+
+    let state = validateGameState(eea1157.giftChoice);
+    const before = state;
+    state = chooseEncounter(state, 0, state.revision);
+    expect(state.inventory.galleria_souvenir).toBe("gifted");
+    for (let count = 0; state.activeEncounter && count < 100; count++) {
+      const active = state.activeEncounter;
+      state = active.frame.ended
+        ? finishEncounter(state, state.revision)
+        : advanceEncounter(state, state.revision);
+    }
+    expect(state.activeEncounter).toBeNull();
+    expect(state.inventory.galleria_souvenir).toBe("gifted");
+    expect(state.travelBudget).toBe(before.travelBudget);
+    expect(state.ap).toBe(before.ap);
+    expect(state.pendingApRewards).toEqual(before.pendingApRewards);
+    expect(state.memories).toEqual(before.memories);
+    expect(validateGameState(JSON.parse(JSON.stringify(state)))).toEqual(state);
+  });
   it.each(["B_selected", "C_selected", "activeDate", "exploring", "freeTime"] as const)(
     "preserves the complete v9 %s snapshot and its original bytes", (name) => {
       const old = asVersion9(validateGameState(phase6[name]));

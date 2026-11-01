@@ -41,6 +41,8 @@ import {
   getTourismAvailability,
 } from "./tourism";
 import { startCityEpilogue, advanceCityEpilogue } from "./epilogue";
+import { startEncounter, chooseEncounter, advanceEncounter, finishEncounter } from "./encounter";
+import { loadGame, saveGame, type StorageLike } from "../persistence";
 import phase6 from "../../tests/fixtures/phase6-saves.json";
 const restore = (state: GameState) => {
   const next = validateGameState(JSON.parse(JSON.stringify(state)));
@@ -158,7 +160,68 @@ function playDate(initial: GameState, id: string, choices = [0, 0]): GameState {
 }
 const finale = () => episodes.find((item) => item.kind === "city_finale")!;
 
+function collectSouvenir(initial: GameState): GameState {
+  let state = startEncounter(initial, "galleria_cafe", () => 0);
+  expect(state.activeEncounter?.encounterId).toBe("galleria_cafe");
+  for (let count = 0; state.activeEncounter && count < 100; count++) {
+    const active = state.activeEncounter;
+    state = active.frame.choices.length
+      ? chooseEncounter(state, 2, state.revision)
+      : active.frame.ended
+        ? finishEncounter(state, state.revision)
+        : advanceEncounter(state, state.revision);
+  }
+  expect(state.activeEncounter).toBeNull();
+  expect(state.inventory.galleria_souvenir).toBe("held");
+  return state;
+}
+
+function persisted(state: GameState): GameState {
+  const values = new Map<string, string>();
+  const storage: StorageLike = {
+    getItem: (key) => values.get(key) ?? null,
+    setItem: (key, value) => { values.set(key, value); },
+  };
+  expect(saveGame(storage, state)).toEqual({ ok: true });
+  const loaded = loadGame(storage);
+  expect(loaded.status).toBe("loaded");
+  if (loaded.status !== "loaded") throw new Error("save unavailable");
+  expect(loaded.state).toEqual(state);
+  return loaded.state;
+}
+
 describe("Milan's four episodes and distinct city finale", () => {
+  it("keeps a held local item, memories and funds through city completion and a v10 save", () => {
+    let state = collectSouvenir(playDate(tour(), "milano_cafe_01"));
+    expect(state.memories.length).toBeGreaterThan(0);
+    state = restore({ ...state, ap: 12 });
+    const before = persisted(state);
+    state = finishEpisode(before, finale(), 5);
+    expect(state.completedCityIds).toContain("milano");
+    expect(state.inventory).toEqual(before.inventory);
+    expect(state.travelBudget).toBe(before.travelBudget);
+    expect(state.memories).toEqual(before.memories);
+    expect(state.ap).toBe(12);
+    expect(state.pendingApRewards.length).toBeGreaterThan(0);
+    const loaded = persisted(state);
+    expect(loaded.schemaVersion).toBe(10);
+    expect(loaded.inventory.galleria_souvenir).toBe("held");
+    expect(loaded.pendingApRewards).toEqual(state.pendingApRewards);
+  });
+
+  it("retains an unused local item and the existing relationship ending after save and load", () => {
+    const ending = validateGameState(phase6.ending);
+    const state = collectSouvenir(ending);
+    const loaded = persisted(state);
+    expect(loaded.schemaVersion).toBe(10);
+    expect(loaded.endingReached).toBe(true);
+    expect(loaded.confessionStatus).toBe(ending.confessionStatus);
+    expect(loaded.inventory.galleria_souvenir).toBe("held");
+    expect(loaded.memories).toEqual(ending.memories);
+    expect(loaded.ap).toBe(ending.ap);
+    expect(loaded.pendingApRewards).toEqual(ending.pendingApRewards);
+    expect(loaded.travelBudget).toBe(ending.travelBudget + 2);
+  });
   it("starts at Duomo and blocks every future direct tourism and battle shortcut", () => {
     const state = createGame();
     expect(getNextEpisode(state)?.landmarkId).toBe("duomo_milano");
