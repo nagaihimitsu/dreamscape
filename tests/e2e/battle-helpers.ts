@@ -95,9 +95,9 @@ export async function answerRound(
     .poll(async () => (await saved(page)).activeBattle?.phase)
     .toBe("feedback");
   await expect(page.getByTestId("battle-feedback")).toBeFocused();
-  await expect(
-    page.getByTestId("battle-feedback").getByRole("status"),
-  ).toBeInViewport();
+  await expect(page.getByTestId("battle-feedback").getByRole("status"))
+    .toHaveText(correct ? "正解" : "不正解");
+  await expect(page.getByTestId("answer-verdict")).toBeInViewport();
   await expect(
     page.getByRole("button", { name: "手がかり帳", exact: true }),
   ).toBeInViewport();

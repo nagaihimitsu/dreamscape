@@ -86,7 +86,33 @@ export function BattleScreen({
   // Only animate an answer saved in this mounted screen. A restored feedback
   // frame is already final and must never be scored or animated again.
   const [animatedAnswer, setAnimatedAnswer] = useState<string | null>(null);
+  const [effectAnswer, setEffectAnswer] = useState<string | null>(null);
   const answerKey = `${battle.id}:${active.roundIndex}:${answer?.optionId}`;
+  useEffect(() => {
+    if (!effectAnswer) return;
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (active.phase !== "feedback" || effectAnswer !== answerKey || reduceMotion || document.hidden || media.matches) {
+      setEffectAnswer(null);
+      return;
+    }
+    const dismiss = () => setEffectAnswer(null);
+    const timer = window.setTimeout(dismiss, 900);
+    const onVisibility = () => { if (document.hidden) dismiss(); };
+    const onMotionChange = () => { if (media.matches) dismiss(); };
+    document.addEventListener("pointerdown", dismiss, true);
+    document.addEventListener("keydown", dismiss, true);
+    document.addEventListener("visibilitychange", onVisibility);
+    if (media.addEventListener) media.addEventListener("change", onMotionChange);
+    else media.addListener(onMotionChange);
+    return () => {
+      window.clearTimeout(timer);
+      document.removeEventListener("pointerdown", dismiss, true);
+      document.removeEventListener("keydown", dismiss, true);
+      document.removeEventListener("visibilitychange", onVisibility);
+      if (media.removeEventListener) media.removeEventListener("change", onMotionChange);
+      else media.removeListener(onMotionChange);
+    };
+  }, [active.phase, answerKey, effectAnswer, reduceMotion]);
   useEffect(() => {
     if (active.phase !== "feedback") return;
     const focusFeedback = () => document.getElementById("battle-feedback")?.focus();
@@ -157,9 +183,26 @@ export function BattleScreen({
     <div
       className={`battle-screen ${answer && animatedAnswer === answerKey ? "answer-animating" : ""}`}
       data-phase={active.phase}
+      data-effect-active={active.phase === "feedback" && effectAnswer === answerKey || undefined}
       data-reduce-motion={reduceMotion || undefined}
       data-dialogue-hidden={isDialogue && windowVisibility.hidden || undefined}
     >
+      {active.phase === "feedback" && answer && effectAnswer === answerKey && (
+        <div
+          className={`answer-effect ${answer.correct ? "answer-effect-correct" : "answer-effect-incorrect"}`}
+          data-testid="answer-effect"
+          data-result={answer.correct ? "correct" : "incorrect"}
+          aria-hidden="true"
+        >
+          <div className="answer-effect-rays">
+            {Array.from({ length: 8 }, (_, index) => <i key={index} />)}
+          </div>
+          <div className="answer-effect-stamp">
+            <span className="answer-effect-symbol">{answer.correct ? "○" : "×"}</span>
+            <strong>{answer.correct ? "正解！" : "不正解"}</strong>
+          </div>
+        </div>
+      )}
       <div className="battle-backdrop">
         <CanalScene backgroundId={frame?.background ?? battle.backgroundAssetId} />
       </div>
@@ -226,7 +269,15 @@ export function BattleScreen({
               ? "決着"
               : `第${active.roundIndex + 1}問 / 全${quiz.questions.length}問`}
           </span>
-          <span>英語 {quiz.englishLevel}</span>
+          {active.phase === "feedback" && answer ? (
+            <span
+              className={`answer-verdict ${answer.correct ? "answer-verdict-correct" : "answer-verdict-incorrect"}`}
+              data-testid="answer-verdict"
+              aria-hidden="true"
+            >
+              <b>{answer.correct ? "○" : "×"}</b> {answer.correct ? "正解" : "不正解"}
+            </span>
+          ) : <span>英語 {quiz.englishLevel}</span>}
           {onNotebook && (
             <button className="notebook-button" onClick={onNotebook}>
               手がかり帳
@@ -428,8 +479,13 @@ export function BattleScreen({
                         aria-label={`選択肢${option.id}「${option.textEn}」を答える`}
                         disabled={active.phase !== "question"}
                         onClick={() => {
-                          if (onAnswer(option.id))
-                            setAnimatedAnswer(`${battle.id}:${active.roundIndex}:${option.id}`);
+                          if (onAnswer(option.id)) {
+                            const key = `${battle.id}:${active.roundIndex}:${option.id}`;
+                            setAnimatedAnswer(key);
+                            if (!reduceMotion && !document.hidden &&
+                                !window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+                              setEffectAnswer(key);
+                          }
                         }}
                       >
                         {option.id}
@@ -467,7 +523,7 @@ export function BattleScreen({
                 id="battle-feedback"
                 tabIndex={-1}
               >
-                <h3 role="status">{answer.correct ? "正解" : "不正解"}</h3>
+                <h3 className="sr-only" role="status">{answer.correct ? "正解" : "不正解"}</h3>
                 {!answer.correct && (
                   <p className="correct-answer">
                     正しい答え：
