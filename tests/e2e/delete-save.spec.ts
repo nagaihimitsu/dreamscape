@@ -141,7 +141,7 @@ test("confirmation does not delete data changed in another tab", async ({
   expect(
     await page.evaluate(() => localStorage.getItem("dreamscape.learning.v1")),
   ).toBe(latest);
-  expect((await saved(page)).schemaVersion).toBe(9);
+  expect((await saved(page)).schemaVersion).toBe(10);
   await other.close();
 });
 

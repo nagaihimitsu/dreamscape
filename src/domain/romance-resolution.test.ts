@@ -113,9 +113,11 @@ describe("persisted romance choice resolutions", () => {
 
   it("migrates an idle v8 save without fabricating a roll plan", () => {
     const current = createGame();
-    const { recoveryAfterRejection: _flag, completedRecoveryCount: _count, ...old } = current;
+    const { recoveryAfterRejection: _flag, completedRecoveryCount: _count,
+      travelBudget: _budget, inventory: _inventory, completedEncounterIds: _encounters,
+      encounterRewards: _encounterRewards, activeEncounter: _activeEncounter, ...old } = current;
     const migrated = validateGameState({ ...old, schemaVersion: 8 });
-    expect(migrated.schemaVersion).toBe(9);
+    expect(migrated.schemaVersion).toBe(10);
     expect(migrated.activeDate).toBeNull();
     expect(migrated.ap).toBe(current.ap);
     expect(migrated.memories).toEqual(current.memories);
@@ -123,7 +125,7 @@ describe("persisted romance choice resolutions", () => {
 
   it("migrates an old in-progress date to fixed resolution and preserves the old Ink", () => {
     const migrated = validateGameState(phase2.activeDate);
-    expect(migrated.schemaVersion).toBe(9);
+    expect(migrated.schemaVersion).toBe(10);
     expect(migrated.activeDate).toMatchObject({
       resolutionMode: "legacy_fixed", randomPlan: [], resolvedChoices: [], responseSnapshot: null,
       storyHash: phase2.activeDate.activeDate!.storyHash,

@@ -2,6 +2,8 @@ import { z } from "zod";
 import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
 import { deriveRelationshipTone } from "./romance-tone";
 import { secureRomanceRoll } from "../random/romance-source";
+import { activeEncounterSchema } from "./encounter-state";
+import { validateEncounterState } from "./encounter";
 import { responseProfileSchema } from "../content/schemas";
 import { legacyPhase1Stage, legacyRomanceValues } from "./romance-migration";
 import { activeEpilogueSchema, validateEpilogueState } from "./epilogue";
@@ -28,6 +30,7 @@ import {
 import {
   balance,
   city,
+  encounters,
   dates,
   effects,
   responseProfiles,
@@ -180,11 +183,24 @@ const phase9ActiveDateSchema = activeDateSchema.extend({
   resolvedChoices: z.array(resolvedChoiceSchema),
   responseSnapshot: responseSnapshotSchema.nullable(),
 }).strict();
-export const gameStateSchema = phase8StateSchema.extend({
+const phase9StateSchema = phase8StateSchema.extend({
   schemaVersion: z.literal(9),
   recoveryAfterRejection: z.boolean(),
   completedRecoveryCount: z.number().int().min(0).max(3),
   activeDate: phase9ActiveDateSchema.nullable(),
+}).strict();
+const stableContentId = z.string().regex(/^[a-z][a-z0-9_]*$/);
+export const gameStateSchema = phase9StateSchema.extend({
+  schemaVersion: z.literal(10),
+  travelBudget: z.number().int().nonnegative().safe(),
+  inventory: z.record(stableContentId, z.enum(["held", "gifted", "used"])),
+  completedEncounterIds: uniqueStrings,
+  encounterRewards: z.record(stableContentId, z.object({
+    roll: z.number().int().min(0).max(9999),
+    chancePercent: z.number().int().min(0).max(100),
+    won: z.boolean(),
+  }).strict()),
+  activeEncounter: activeEncounterSchema.nullable(),
 }).strict();
 export type GameState = z.infer<typeof gameStateSchema>;
 export type ActiveDate = NonNullable<GameState["activeDate"]>;
@@ -198,7 +214,12 @@ export function createGame(
   heroineName = balance.defaultHeroineName,
 ): GameState {
   return {
-    schemaVersion: 9,
+    schemaVersion: 10,
+    travelBudget: encounters.initialBudget,
+    inventory: {},
+    completedEncounterIds: [],
+    encounterRewards: {},
+    activeEncounter: null,
     revision: 0,
     playerName: nameSchema.parse(playerName),
     heroineName: nameSchema.parse(heroineName),
@@ -335,7 +356,8 @@ export function setNames(
     state.activeDate ||
     state.activeBattle ||
     state.activeTourism ||
-    state.activeEpilogue
+    state.activeEpilogue ||
+    state.activeEncounter
   )
     return state;
   const player = nameSchema.safeParse(playerName),
@@ -362,6 +384,7 @@ export function grantRewardOnce(
   if (
     state.activeTourism ||
     state.activeEpilogue ||
+    state.activeEncounter ||
     !rewardId ||
     state.claimedRewardIds.includes(rewardId) ||
     !Number.isSafeInteger(amount) ||
@@ -398,7 +421,8 @@ export function getMilestoneAvailability(
     state.activeDate ||
     state.activeBattle ||
     state.activeTourism ||
-    state.activeEpilogue
+    state.activeEpilogue ||
+    state.activeEncounter
   )
     return {
       available: false,
@@ -469,7 +493,8 @@ export function getDateAvailability(
     state.activeDate ||
     state.activeBattle ||
     state.activeTourism ||
-    state.activeEpilogue
+    state.activeEpilogue ||
+    state.activeEncounter
   )
     return {
       available: false,
@@ -768,9 +793,21 @@ export function migrateGameState(input: unknown): GameState {
     typeof input === "object" && input !== null && "schemaVersion" in input
       ? input.schemaVersion
       : undefined;
+  if (version === 9) {
+    const parsed = phase9StateSchema.parse(input);
+    return {
+      ...parsed,
+      schemaVersion: 10,
+      travelBudget: encounters.initialBudget,
+      inventory: {},
+      completedEncounterIds: [],
+      encounterRewards: {},
+      activeEncounter: null,
+    };
+  }
   if (version === 8) {
     const parsed = phase8StateSchema.parse(input);
-    return {
+    return migrateGameState({
       ...parsed,
       schemaVersion: 9,
       recoveryAfterRejection: false,
@@ -778,7 +815,7 @@ export function migrateGameState(input: unknown): GameState {
       activeDate: parsed.activeDate ? {
         ...parsed.activeDate, resolutionMode: "legacy_fixed", randomPlan: [], resolvedChoices: [], responseSnapshot: null,
       } : null,
-    };
+    });
   }
   if (version === 7) {
     const parsed = phase7StateSchema.parse(input);
@@ -893,7 +930,10 @@ export function migrateGameState(input: unknown): GameState {
 
 export function validateGameState(input: unknown): GameState {
   const state = migrateGameState(input);
+  if (state.activeEncounter && (state.activeDate || state.activeBattle || state.activeTourism || state.activeEpilogue))
+    throw new Error("道中の交流と他の進行が重複しています。");
   validateBattleState(state);
+  validateEncounterState(state);
   validateTourismState(state);
   validateJourneyState(state);
   validateRewardState(state);

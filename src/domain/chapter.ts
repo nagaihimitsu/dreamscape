@@ -10,6 +10,7 @@ import {
 import { openTourism } from "./tourism";
 import { startBattle } from "./battle";
 import { earnRewards, type RewardCredit } from "./rewards";
+import { encounters } from "../content/encounters";
 import type { GameState, Availability } from "./game";
 
 /** Legacy access applies only to the episode that used the old chapter reward. */
@@ -88,6 +89,7 @@ export function getEpisodeAvailability(
   if (!episode)
     return { available: false, reason: "旅の予定が見つかりません。" };
   if (
+    state.activeEncounter ||
     state.activeDate ||
     state.activeEpilogue ||
     state.activeTourism ||
@@ -131,6 +133,7 @@ export function enterFreeTime(
 ): GameState {
   if (
     state.revision !== expectedRevision ||
+    state.activeEncounter ||
     state.activeTourism ||
     state.activeDate ||
     state.activeEpilogue ||
@@ -152,6 +155,12 @@ function hasCompletedBattle(state: GameState, episode: EpisodeDefinition) {
 }
 export function isRewardEarned(state: GameState, rule: RewardRule): boolean {
   const episode = episodes.find((item) => item.id === rule.episodeId)!;
+  // An optional cultural encounter may earn the very same entitlement as a
+  // score threshold. The shared ID keeps existing claims and overflow intact.
+  if (encounters.encounters.some((encounter) =>
+    encounter.alternativeApRewardId === rule.id &&
+    state.completedEncounterIds.includes(encounter.id)
+  )) return true;
   if (rule.trigger === "guide_read")
     return (
       !!episode.landmarkId &&
@@ -281,6 +290,7 @@ export function completeRecordedChapter(
   chapterId: string,
 ): GameState {
   if (
+    state.activeEncounter ||
     state.activeDate ||
     state.activeTourism ||
     state.activeBattle ||

@@ -4,6 +4,7 @@ import { RomanceMenu } from "../romance/RomanceMenu";
 import { TourismEntry } from "../tourism/TourismEntry";
 import { CityProgress } from "./CityProgress";
 import { PendingRewards } from "./PendingRewards";
+import { EncounterMenu, type EncounterMenuEntry } from "./EncounterMenu";
 import "./free-time-hub.css";
 
 /** The same compact destination for an unfinished or completed romance. */
@@ -17,6 +18,10 @@ export function FreeTimeHub({
   onMilestone,
   onTourism,
   onBattle,
+  encounters,
+  travelBudget,
+  travelItems,
+  onEncounter,
 }: {
   game: GameState;
   onEnglish: () => void;
@@ -27,6 +32,10 @@ export function FreeTimeHub({
   onMilestone: (id: string) => void;
   onTourism: (id: string) => void;
   onBattle: (id: string) => void;
+  encounters: EncounterMenuEntry[];
+  travelBudget: number;
+  travelItems: { id: string; name: string }[];
+  onEncounter: (id: string) => void;
 }) {
   return (
     <section className="free-time-hub paper" data-testid="free-time-hub">
@@ -36,6 +45,8 @@ export function FreeTimeHub({
       </header>
 
       <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} />
+
+      <EncounterMenu entries={encounters} balance={travelBudget} items={travelItems} onStart={onEncounter} />
 
       <div className="free-time-tools">
         <button className="secondary" onClick={onEnglish}>

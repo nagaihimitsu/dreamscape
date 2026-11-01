@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import phase5 from "../../tests/fixtures/phase5-saves.json";
-import { battles, battleQuizzes, progression } from "../content";
+import { battles, battleQuizzes, encounters, progression } from "../content";
 import { createGame, validateGameState, type GameState } from "../domain/game";
 import { legacyRomanceValues } from "../domain/romance-migration";
 import {
@@ -52,7 +52,12 @@ describe("Phase 5 to 6 save migration", () => {
       const state = validateGameState(raw);
       expect(state).toEqual({
         ...raw,
-        schemaVersion: 9,
+        schemaVersion: 10,
+        travelBudget: encounters.initialBudget,
+        inventory: {},
+        completedEncounterIds: [],
+        encounterRewards: {},
+        activeEncounter: null,
         recoveryAfterRejection: false,
         completedRecoveryCount: 0,
         activeDate: raw.activeDate ? { ...raw.activeDate, resolutionMode: "legacy_fixed", randomPlan: [], resolvedChoices: [], responseSnapshot: null } : null,

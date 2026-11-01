@@ -386,6 +386,6 @@ test("a published Last Supper completion keeps its reward and resumes at unvisit
   expect(result.state.completedEpisodeIds[0]).toBe(
     "milano_last_supper_episode",
   );
-  expect(result.state.schemaVersion).toBe(9);
+  expect(result.state.schemaVersion).toBe(10);
   await reloadUnchanged(page);
 });

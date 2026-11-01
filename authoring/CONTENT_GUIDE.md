@@ -96,6 +96,14 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 
 ## 章・都市と報酬
 
+### 道中の交流
+
+現在の小さなミラノの寄り道は `content/encounters/catalog.json` と `content/stories/encounters/` で管理します。カタログには安定した交流・選択・品物ID、都市・観光地、費用、選択肢の英文と訳、実際に確認した出典を記録します。価格や展示・人物はゲーム内の設定です。旅の予算、品物、APは別に扱い、購入しなくてもメインの観光と恋愛を続けられるようにします。
+
+交流Inkは名前変数を宣言し、JSONと同順・同文の英語3択を一度置きます。選択後の日本語の会話はどの枝も完走させ、効果や残高操作をInkに書きません。正誤のない返答と、正解がある任意の文化クイズを区別します。小さな観光クイズは既存の問題スキーマを使い、事実・伝承・創作を混同せず出典の該当箇所を確認してください。クイズの賞品と当落後のInk、アイテムの贈与・使用、既存報酬と共有するAPの条件はカタログで参照します。
+
+交流Inkから以前の品物を参照する場合は `EXTERNAL has_item_status(id, status)` を宣言し、例えば `has_item_status("galleria_souvenir", "gifted")` のように登録済みIDと `held`・`gifted`・`used` の固定文字列を使います。状態の変更はゲーム側だけが行います。この参照は現時点では道中交流のInkで使用できます。`npm run content:check` は重複ID、参照、選択肢と分岐、出典の形式、アイテム参照を検証します。既存の戦闘・デートInkを改稿する場合には、途中セーブとの互換性を別途確認してください。
+
 `city.json` の `id`、`countryCode`、`nameJa`、`themeJa`、`landmarkIdsPlanned`、`productionStatus` は都市と場所の識別、表示、予定と状態。`firstClearReward` は既存セーブ互換の `rewardSourceId` と `ap` です。`journey.json` の `entryEpisodeId` は最初のエピソード、`episodes` は順路、`rewards` は一度限りの報酬です。各エピソードの `id`、`kind`、`cityId`、`landmarkId`、`battleId`、`legacyChapterId`、`requiredEpisodeIds`、`titleJa` / `descriptionJa` / `clearTitleJa` / `clearDescriptionJa` は識別・参照・順序・表示文。都市フィナーレは `kind: "city_finale"`、`landmarkId: null` と `epilogueStoryId` を指定します。
 
 報酬の `id`、`episodeId`、`trigger`、`ap`、`minScore`、`titleJa` は安定ID、対象、発生条件、付与量、得点条件、表示文です。`trigger` は `guide_read` / `battle_complete` / `battle_score` / `episode_clear` / `city_clear`。`minScore` は `battle_score` のみ正の数、それ以外は `null`。AP上限や報酬IDの重複防止はゲームルール側で処理します。

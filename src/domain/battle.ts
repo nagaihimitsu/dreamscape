@@ -18,6 +18,7 @@ import {
   type StoryStep,
 } from "../story/runtime";
 import type { GameState, Availability } from "./game";
+import { scoreQuizAnswer } from "./quiz-answer";
 
 export const battleAnswerSchema = z
   .object({
@@ -125,6 +126,8 @@ export function getBattleAvailability(
 function battleAvailability(state: GameState, battleId: string, continuingTourism: boolean): Availability {
   if (!battles.some((item) => item.id === battleId))
     return { available: false, reason: "バトルが見つかりません。" };
+  if (state.activeEncounter)
+    return { available: false, reason: "途中の交流を終えてから進めます。" };
   if (state.activeTourism)
     return { available: false, reason: "観光画面からバトルへ進んでください。" };
   if (state.activeDate || state.activeEpilogue)
@@ -187,7 +190,7 @@ export function startBattle(state: GameState, battleId: string): GameState {
 export function startBattleFromTourism(state: GameState, battleId: string): GameState {
   const active = state.activeTourism;
   const landmark = landmarks.find((item) => item.id === active?.landmarkId);
-  if (!active || !landmark || landmark.battleId !== battleId || state.activeBattle) return state;
+  if (!active || !landmark || landmark.battleId !== battleId || state.activeBattle || state.activeEncounter) return state;
   const next = {
     ...state,
     activeTourism: null,
@@ -404,8 +407,8 @@ export function answerBattle(
     return state;
   const battle = battles.find((item) => item.id === active.battleId)!;
   const question = battleQuizzes[battle.quizId].questions[active.roundIndex];
-  if (!question.options.some((option) => option.id === optionId)) return state;
-  const correct = question.correctOptionId === optionId;
+  const correct = scoreQuizAnswer(question, optionId);
+  if (correct === null) return state;
   return {
     ...state,
     revision: state.revision + 1,

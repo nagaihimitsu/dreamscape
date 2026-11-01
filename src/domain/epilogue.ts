@@ -46,6 +46,7 @@ export function startCityEpilogue(
     state.activeDate ||
     state.activeTourism ||
     state.activeEpilogue ||
+    state.activeEncounter ||
     (state.activeBattle && state.activeBattle.phase !== "result") ||
     !finale?.epilogueStoryId ||
     !state.completedCityIds.includes(cityId)

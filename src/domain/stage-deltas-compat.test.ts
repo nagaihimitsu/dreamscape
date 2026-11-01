@@ -39,6 +39,8 @@ function oldV8Date(stage: 1 | 4): GameState {
   const { resolutionMode: _mode, randomPlan: _rolls, resolvedChoices: _resolved,
     responseSnapshot: _snapshot, ...v8Active } = started.activeDate!;
   const { recoveryAfterRejection: _recovery, completedRecoveryCount: _count,
+    travelBudget: _budget, inventory: _inventory, completedEncounterIds: _encounters,
+    encounterRewards: _encounterRewards, activeEncounter: _activeEncounter,
     activeDate: _active, ...v8State } = started;
   return validateGameState({
     ...v8State, schemaVersion: 8,

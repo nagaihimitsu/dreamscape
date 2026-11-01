@@ -311,7 +311,7 @@ test("an authentic Phase 5 A question remains intact until the next action migra
   await closeBookUnchanged(page);
   await page.getByRole("button", { name: "ヒントを見る", exact: true }).click();
   const migrated = await saved(page);
-  expect(migrated.schemaVersion).toBe(9);
+  expect(migrated.schemaVersion).toBe(10);
   expect(migrated.activeBattle).toEqual({
     ...phase5.battleQuestion.activeBattle,
     reasoning: null,

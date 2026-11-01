@@ -49,6 +49,8 @@ export function getTourismAvailability(
 ): Availability {
   if (!landmarks.some((item) => item.id === landmarkId))
     return { available: false, reason: "観光地が見つかりません。" };
+  if (state.activeEncounter)
+    return { available: false, reason: "途中の交流を終えてから訪ねられます。" };
   if (state.activeDate || state.activeEpilogue)
     return {
       available: false,

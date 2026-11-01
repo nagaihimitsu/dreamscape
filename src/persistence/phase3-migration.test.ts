@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import fixtures from "../../tests/fixtures/phase2-saves.json";
-import { battles, progression } from "../content";
+import { battles, encounters, progression } from "../content";
 import { legacyRomanceValues } from "../domain/romance-migration";
 import {
   advanceDate,
@@ -64,7 +64,12 @@ describe("Phase 2 saves migrate to the independent battle version", () => {
       const { schemaVersion: _oldVersion, ...oldFields } = fixture;
       expect(loaded.state).toEqual({
         ...oldFields,
-        schemaVersion: 9,
+        schemaVersion: 10,
+        travelBudget: encounters.initialBudget,
+        inventory: {},
+        completedEncounterIds: [],
+        encounterRewards: {},
+        activeEncounter: null,
         recoveryAfterRejection: false,
         completedRecoveryCount: 0,
         activeDate: oldFields.activeDate ? { ...oldFields.activeDate, resolutionMode: "legacy_fixed", randomPlan: [], resolvedChoices: [], responseSnapshot: null } : null,
@@ -169,7 +174,7 @@ describe("Phase 2 saves migrate to the independent battle version", () => {
     const renamed = setNames(migrated, "空", "紬");
     expect(saveGame(storage, renamed, migrated)).toEqual({ ok: true });
     expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({
-      schemaVersion: 9,
+      schemaVersion: 10,
       playerName: "空",
       heroineName: "紬",
       activeBattle: null,

@@ -7,6 +7,7 @@ import {
   battles,
   battleQuizzes,
   landmarks,
+  tourismAssets,
   city,
 } from "../content";
 import {
@@ -41,6 +42,9 @@ import { useLearning } from "../features/learning/useLearning";
 import { EnglishReview } from "../features/learning/EnglishReview";
 import { EpisodeScreen } from "../features/journey/EpisodeScreen";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
+import { EncounterScreen } from "../features/journey/EncounterScreen";
+import { encounters } from "../content/encounters";
+import { startEncounter, advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterAvailability, getEncounterOptionAvailability, getEncounterQuizFeedback } from "../domain/encounter";
 import { PendingRewards } from "../features/journey/PendingRewards";
 import { EpilogueScreen } from "../features/journey/EpilogueScreen";
 import { startCityEpilogue, advanceCityEpilogue } from "../domain/epilogue";
@@ -215,6 +219,7 @@ export default function App() {
   const active = game?.activeDate;
   const conversationActive = !!(
     active ||
+    game?.activeEncounter ||
     game?.activeEpilogue ||
     game?.activeTourism?.phase === "guide" ||
     (!game?.activeTourism && game?.activeBattle?.phase === "dialogue")
@@ -227,6 +232,7 @@ export default function App() {
   const idle =
     game &&
     !game.activeDate &&
+    !game.activeEncounter &&
     !game.activeBattle &&
     !game.activeTourism &&
     !game.activeEpilogue;
@@ -238,6 +244,11 @@ export default function App() {
       document.getElementById("main")?.scrollIntoView({ block: "start" });
   }, [active?.dateId, showRomanceEnding]);
   const currentDate = dates.find((date) => date.id === active?.dateId);
+  const activeEncounter = game?.activeEncounter;
+  const currentEncounter = encounters.encounters.find((event) => event.id === activeEncounter?.encounterId);
+  const encounterLandmark = landmarks.find((landmark) => landmark.id === currentEncounter?.landmarkId);
+  const encounterImage = tourismAssets.find((asset) => asset.id === encounterLandmark?.imageAssetId);
+  const encounterFeedback = game ? getEncounterQuizFeedback(game) : null;
   const currentBattle = battles.find(
     (battle) => battle.id === game?.activeBattle?.battleId,
   );
@@ -414,6 +425,39 @@ export default function App() {
               </p>
             </section>
           </>
+        ) : activeEncounter && currentEncounter ? (
+          <EncounterScreen
+            key={`${activeEncounter.runId}-${sceneEpoch}`}
+            learning={learning}
+            speed={speed}
+            onSpeed={setSpeed}
+            view={{
+              id: `${currentEncounter.id}_${activeEncounter.phase}`,
+              revision: game.revision,
+              background: activeEncounter.frame.background,
+              backgroundImage: encounterImage?.path,
+              balance: game.travelBudget,
+              speaker: activeEncounter.frame.speaker === "heroine" ? game.heroineName : activeEncounter.frame.speaker === "player" ? game.playerName : "旅の風景",
+              text: activeEncounter.frame.text,
+              choices: activeEncounter.frame.choices.map((choice) => {
+                const option = currentEncounter.options[choice.index];
+                const availability = getEncounterOptionAvailability(game, choice.index);
+                return { index: choice.index, textEn: choice.text, translationJa: option.translationJa, costEuro: option.costEuro, unavailableReason: availability.available ? undefined : availability.reason };
+              }),
+              ended: activeEncounter.frame.ended && (activeEncounter.phase === "outcome" || !currentEncounter.quiz),
+              quiz: (activeEncounter.phase === "quiz" || activeEncounter.phase === "feedback") && currentEncounter.quiz ? {
+                id: currentEncounter.quiz.question.id,
+                questionEn: currentEncounter.quiz.question.questionEn,
+                questionJa: currentEncounter.quiz.translations.questionJa,
+                options: currentEncounter.quiz.question.options.map((option, index) => ({ index, textEn: option.textEn, translationJa: currentEncounter.quiz!.translations.options[option.id] })),
+                result: encounterFeedback ? `${encounterFeedback.correct ? "正解" : "不正解"}。${encounterFeedback.explanationJa}` : undefined,
+              } : undefined,
+            }}
+            onChoose={(index) => commit((state) => chooseEncounter(state, index, game.revision))}
+            onAnswer={(index) => commit((state) => answerEncounterQuiz(state, currentEncounter.quiz!.question.options[index].id, game.revision))}
+            onAdvance={() => { commit((state) => advanceEncounter(state, game.revision)); }}
+            onFinish={() => { commit((state) => finishEncounter(state, game.revision)); }}
+          />
         ) : game.activeEpilogue ? (
           <EpilogueScreen
             game={game}
@@ -572,6 +616,13 @@ export default function App() {
         ) : (
           <FreeTimeHub
             game={game}
+            encounters={encounters.encounters.map((event) => {
+              const availability = getEncounterAvailability(game, event.id);
+              return { id: event.id, title: event.titleJa, description: event.descriptionJa, unavailableReason: availability.available ? undefined : availability.reason };
+            }).filter((event) => !event.unavailableReason)}
+            travelBudget={game.travelBudget}
+            travelItems={encounters.items.filter((item) => game.inventory[item.id] === "held").map((item) => ({ id: item.id, name: item.nameJa }))}
+            onEncounter={(id) => { commit((state) => startEncounter(state, id, secureRomanceRoll)); }}
             onEnglish={() => openEnglish()}
             onClaimRewards={() => commit((state) => claimPendingRewards(state, game.revision))}
             onStartEpisode={(id) => commit((state) => startEpisode(state, id))}
@@ -755,6 +806,7 @@ export default function App() {
           {learning.error && <p role="status">{learning.error}</p>}
           <h3>名前の設定</h3>
           {active ||
+          game.activeEncounter ||
           game.activeBattle ||
           game.activeTourism ||
           game.activeEpilogue ? (

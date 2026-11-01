@@ -1,0 +1,253 @@
+import { encounters } from "../content/encounters";
+import { responseProfileSchema } from "../content/schemas";
+import { responseProfiles } from "../content";
+import type { EncounterDefinition } from "../content/encounter-schemas";
+import { beginStory, continueStory, selectStoryChoice, storyFingerprint, validateStorySnapshot, type StoryStep } from "../story/runtime";
+import { secureRomanceRoll } from "../random/romance-source";
+import { canAccessFreeTime } from "./chapter";
+import { evaluateProgression, getPlayerAddress, type Availability, type GameState } from "./game";
+import { earnRewards } from "./rewards";
+import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
+import { deriveRelationshipTone } from "./romance-tone";
+import { scoreQuizAnswer } from "./quiz-answer";
+import type { ActiveEncounter } from "./encounter-state";
+
+const findEncounter = (id: string) => encounters.encounters.find((item) => item.id === id);
+const unavailable = (reason: string): Availability => ({ available: false, reason });
+const available: Availability = { available: true, reason: "" };
+
+function encounterFingerprint(event: EncounterDefinition): string {
+  const ids = [event.storyId, ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : [])];
+  // Odds have their own stored snapshot; rebalancing must not invalidate an active event.
+  const fingerprintData = event.quiz ? { ...event, quiz: { ...event.quiz, chancePercent: 0 } } : event;
+  const text = JSON.stringify(fingerprintData) + ids.map(storyFingerprint).join(":");
+  let hash = 2166136261;
+  for (let i = 0; i < text.length; i++) hash = Math.imul(hash ^ text.charCodeAt(i), 16777619);
+  return (hash >>> 0).toString(16);
+}
+
+export function getEncounterAvailability(state: GameState, id: string): Availability {
+  const event = findEncounter(id);
+  if (!event) return unavailable("寄り道が見つかりません。");
+  if (!canAccessFreeTime(state)) return unavailable("旅を進めると出かけられます。");
+  if (state.activeEncounter || state.activeDate || state.activeTourism || state.activeEpilogue || state.activeBattle)
+    return unavailable("途中の場面を終えてから出かけられます。");
+  if (!event.repeatable && state.completedEncounterIds.includes(id)) return unavailable("この寄り道は終えています。");
+  const actionable = event.options.filter((option) => !option.deferCompletion);
+  if (actionable.length && actionable.every((option) => option.requiresItemId && state.inventory[option.requiresItemId] !== "held"))
+    return unavailable("必要な品物を持っていません。");
+  return available;
+}
+
+export function getEncounterOptionAvailability(state: GameState, index: number): Availability {
+  const active = state.activeEncounter;
+  const option = active && findEncounter(active.encounterId)?.options[index];
+  if (!active || active.phase !== "story" || active.selectedOptionId !== null || !option || !active.frame.choices.some((choice) => choice.index === index)) return unavailable("この選択肢は使えません。");
+  if (state.travelBudget < option.costEuro) return unavailable("旅行予算が足りません。");
+  if (option.requiresItemId && state.inventory[option.requiresItemId] !== "held") return unavailable("必要な品物を持っていません。");
+  return available;
+}
+
+function variables(state: GameState) {
+  return { player_address: getPlayerAddress(state), romance_stage: state.romanceStage, ending_reached: state.endingReached, relationship_tone: deriveRelationshipTone(state) };
+}
+function checkedStep(step: StoryStep): StoryStep {
+  if (step.effects.length) throw new Error("道中交流に未対応の効果があります。");
+  return step;
+}
+function withStep(active: ActiveEncounter, step: StoryStep): ActiveEncounter {
+  checkedStep(step);
+  return { ...active, storyState: step.storyState, frame: step.frame };
+}
+
+/** The tickets are persisted together with the event before any selection. */
+export function startEncounter(state: GameState, id: string, nextRoll: () => number = secureRomanceRoll): GameState {
+  if (!getEncounterAvailability(state, id).available) return state;
+  const event = findEncounter(id)!;
+  const [romanceRoll] = createRomanceRollPlan(1, nextRoll);
+  const [rewardTicket] = createRomanceRollPlan(1, nextRoll);
+  const step = checkedStep(beginStory(event.storyId, state.playerName, state.heroineName, variables(state), state.memories, state.inventory));
+  const next = { ...state, revision: state.revision + 1 };
+  return { ...next, activeEncounter: {
+    encounterId: id, runId: `${id}:${next.revision}`, contentHash: encounterFingerprint(event),
+    storyId: event.storyId, storyHash: storyFingerprint(event.storyId), storyState: step.storyState, frame: step.frame,
+    phase: "story", selectedOptionId: null, quizAnswerId: null, rewardRoll: rewardTicket.reaction,
+    rewardChancePercent: event.quiz?.chancePercent ?? null,
+    rewardAlreadyDrawn: !!state.encounterRewards[id], romanceRoll,
+    responseProfiles: responseProfiles.filter((profile) => event.options.some((option) => option.responseProfileId === profile.id)).map((profile) => responseProfileSchema.parse(profile)),
+    romanceResolution: null,
+  } };
+}
+
+export function chooseEncounter(state: GameState, index: number, expectedRevision: number): GameState {
+  const active = state.activeEncounter;
+  if (state.revision !== expectedRevision || !active || !getEncounterOptionAvailability(state, index).available) return state;
+  const event = findEncounter(active.encounterId)!;
+  const option = event.options[index];
+  if (active.frame.choices[index]?.text !== option.textEn) throw new Error("交流の選択肢が一致しません。");
+  let next = { ...state, travelBudget: state.travelBudget - option.costEuro, inventory: { ...state.inventory } };
+  if (option.consumeItemId) next.inventory[option.consumeItemId] = "used";
+  if (option.giftItemId) next.inventory[option.giftItemId] = "gifted";
+  let result = "positive";
+  let romanceResolution: ActiveEncounter["romanceResolution"] = null;
+  if (option.responseProfileId) {
+    const profile = active.responseProfiles.find((item) => item.id === option.responseProfileId);
+    if (!profile) throw new Error("交流のリアクション設定が見つかりません。");
+    const resolution = resolveRomanceChoice(profile, state, active.romanceRoll);
+    result = resolution.result;
+    // A small one-off gesture must not outweigh a full date.
+    const small = (n: number) => Math.max(-1, Math.min(1, n));
+    const deltas = { affection: small(resolution.deltas.affection), trust: small(resolution.deltas.trust), spark: small(resolution.deltas.spark) };
+    romanceResolution = { profileId: profile.id, before: { affection: state.affection, trust: state.trust, spark: state.spark }, deltas, result: resolution.result };
+    next = { ...next, affection: next.affection + deltas.affection, trust: next.trust + deltas.trust, spark: next.spark + deltas.spark };
+  }
+  const step = selectStoryChoice(active.storyId, active.storyState, active.frame, index, state.memories, {}, { ...variables(next), romance_result: result }, next.inventory);
+  return { ...next, revision: state.revision + 1, activeEncounter: withStep({ ...active, selectedOptionId: option.id, romanceResolution }, step) };
+}
+
+/** Progress dialogue, enter the quiz, or show its recorded outcome. */
+export function advanceEncounter(state: GameState, expectedRevision: number): GameState {
+  const active = state.activeEncounter;
+  if (state.revision !== expectedRevision || !active) return state;
+  const event = findEncounter(active.encounterId)!;
+  if (active.phase === "feedback") {
+    const quiz = event.quiz!;
+    const correct = active.quizAnswerId === quiz.question.correctOptionId;
+    const record = state.encounterRewards[event.id];
+    const storyId = !correct ? quiz.lostStoryId : active.rewardAlreadyDrawn ? quiz.alreadyStoryId : record?.won ? quiz.wonStoryId : quiz.lostStoryId;
+    const step = checkedStep(beginStory(storyId, state.playerName, state.heroineName, variables(state), state.memories, state.inventory));
+    return { ...state, revision: state.revision + 1, activeEncounter: withStep({ ...active, phase: "outcome", storyId, storyHash: storyFingerprint(storyId) }, step) };
+  }
+  if (active.phase === "quiz" || active.frame.choices.length) return state;
+  if (active.frame.ended) {
+    if (active.phase === "story" && event.quiz && active.selectedOptionId)
+      return { ...state, revision: state.revision + 1, activeEncounter: { ...active, phase: "quiz" } };
+    return state;
+  }
+  return { ...state, revision: state.revision + 1, activeEncounter: withStep(active, continueStory(active.storyId, active.storyState, active.frame, state.memories, variables(state), state.inventory)) };
+}
+
+export function answerEncounterQuiz(state: GameState, optionId: string, expectedRevision: number): GameState {
+  const active = state.activeEncounter;
+  if (state.revision !== expectedRevision || !active || active.phase !== "quiz") return state;
+  const event = findEncounter(active.encounterId)!;
+  const quiz = event.quiz;
+  if (!quiz) return state;
+  const correct = scoreQuizAnswer(quiz.question, optionId);
+  if (correct === null) return state;
+  const answer = optionId as "A" | "B" | "C";
+  let inventory = state.inventory;
+  let rewards = state.encounterRewards;
+  if (correct && !rewards[event.id]) {
+    if (active.rewardChancePercent === null) throw new Error("抽選確率が保存されていません。");
+    const won = active.rewardRoll < active.rewardChancePercent * 100;
+    rewards = { ...rewards, [event.id]: { roll: active.rewardRoll, chancePercent: active.rewardChancePercent, won } };
+    if (won) {
+      if (inventory[quiz.rewardItemId]) throw new Error("贈り物の記録が一致しません。");
+      inventory = { ...inventory, [quiz.rewardItemId]: "held" };
+    }
+  }
+  return { ...state, revision: state.revision + 1, inventory, encounterRewards: rewards,
+    activeEncounter: { ...active, phase: "feedback", quizAnswerId: answer } };
+}
+
+export function getEncounterQuizFeedback(state: GameState): { correct: boolean; explanationJa: string } | null {
+  const active = state.activeEncounter;
+  const quiz = active && findEncounter(active.encounterId)?.quiz;
+  if (!active || active.phase !== "feedback" || !quiz || !active.quizAnswerId) return null;
+  const correct = scoreQuizAnswer(quiz.question, active.quizAnswerId);
+  if (correct === null) return null;
+  return { correct, explanationJa: correct ? quiz.question.correctExplanationJa : quiz.question.incorrectExplanationJa };
+}
+
+export function finishEncounter(state: GameState, expectedRevision: number): GameState {
+  const active = state.activeEncounter;
+  if (state.revision !== expectedRevision || !active || !active.frame.ended || !active.selectedOptionId || (active.phase !== "outcome" && active.phase !== "story")) return state;
+  const event = findEncounter(active.encounterId)!;
+  if (event.quiz && active.phase !== "outcome") return state;
+  const option = event.options.find((item) => item.id === active.selectedOptionId)!;
+  const first = !state.completedEncounterIds.includes(event.id) && !option.deferCompletion;
+  let next: GameState = { ...state, revision: state.revision + 1, activeEncounter: null };
+  if (first) {
+    if (event.completionItemId && next.inventory[event.completionItemId]) throw new Error("品物の記録が一致しません。");
+    const total = next.travelBudget + (event.completionMoneyEuro ?? 0);
+    if (!Number.isSafeInteger(total)) throw new Error("旅行予算の上限を超えました。");
+    next = { ...next, travelBudget: total, completedEncounterIds: [...next.completedEncounterIds, event.id],
+      inventory: event.completionItemId ? { ...next.inventory, [event.completionItemId]: "held" } : next.inventory };
+    if (event.alternativeApRewardId) next = earnRewards(next, [event.alternativeApRewardId]).state;
+  }
+  // A gift changes relationship values, but remains distinct from a completed
+  // date. Apply the existing thresholds only after its scene finishes.
+  return active.romanceResolution ? evaluateProgression(next) : next;
+}
+
+/** Reject changed scripts, invalid snapshots, impossible item/reward combinations and stale quiz state. */
+export function validateEncounterState(state: GameState): void {
+  const fail = (): never => { throw new Error("道中交流の保存状態が一致しません。"); };
+  for (const id of state.completedEncounterIds) {
+    const event = findEncounter(id);
+    if (!event || (event.completionItemId && !state.inventory[event.completionItemId])) fail();
+  }
+  for (const [id, status] of Object.entries(state.inventory)) {
+    if (!encounters.items.some((item) => item.id === id)) fail();
+    const prizeEvent = encounters.encounters.find((item) => item.quiz?.rewardItemId === id);
+    const completionEvent = encounters.encounters.find((item) => item.completionItemId === id);
+    if (prizeEvent && !state.encounterRewards[prizeEvent.id]?.won) fail();
+    if (completionEvent && !state.completedEncounterIds.includes(completionEvent.id)) fail();
+    if (status !== "held") {
+      const matching = encounters.encounters.some((item) => item.options.some((option) =>
+        (status === "gifted" ? option.giftItemId === id : option.consumeItemId === id) &&
+        (state.completedEncounterIds.includes(item.id) ||
+          (state.activeEncounter?.encounterId === item.id && state.activeEncounter.selectedOptionId === option.id))));
+      if (!matching) fail();
+    }
+  }
+  for (const [id, record] of Object.entries(state.encounterRewards)) {
+    const quiz = findEncounter(id)?.quiz;
+    if (!quiz || record.won !== (record.roll < record.chancePercent * 100) || (record.won && !state.inventory[quiz.rewardItemId])) fail();
+  }
+  const active = state.activeEncounter;
+  if (!active) return;
+  const event = findEncounter(active.encounterId);
+  if (!event || active.contentHash !== encounterFingerprint(event)) fail();
+  if (state.activeDate || state.activeTourism || state.activeEpilogue || state.activeBattle) fail();
+  if (active.storyHash !== storyFingerprint(active.storyId)) fail();
+  const validStories = [event!.storyId, ...(event!.quiz ? [event!.quiz.wonStoryId, event!.quiz.lostStoryId, event!.quiz.alreadyStoryId] : [])];
+  if (!validStories.includes(active.storyId)) fail();
+  const option = event!.options.find((item) => item.id === active.selectedOptionId);
+  if (active.selectedOptionId && !option) fail();
+  if (option?.giftItemId && state.inventory[option.giftItemId] !== "gifted") fail();
+  if (option?.consumeItemId && state.inventory[option.consumeItemId] !== "used") fail();
+  const resolution = active.romanceResolution;
+  if (!!option?.responseProfileId !== !!resolution) fail();
+  if (resolution) {
+    const profile = active.responseProfiles.find((item) => item.id === resolution.profileId);
+    if (!profile || option?.responseProfileId !== resolution.profileId) fail();
+    const expected = resolveRomanceChoice(profile!, resolution.before, active.romanceRoll);
+    const small = (n: number) => Math.max(-1, Math.min(1, n));
+    if (resolution.result !== expected.result || (["affection", "trust", "spark"] as const).some((key) =>
+      resolution.deltas[key] !== small(expected.deltas[key]) || state[key] !== resolution.before[key] + resolution.deltas[key])) fail();
+  }
+  if (active.phase !== "story" && (!event!.quiz || !active.selectedOptionId)) fail();
+  if ((active.phase === "quiz" || active.phase === "feedback") && (active.storyId !== event!.storyId || !active.frame.ended)) fail();
+  if ((active.phase === "story" || active.phase === "quiz") && active.quizAnswerId !== null) fail();
+  if ((active.phase === "feedback" || active.phase === "outcome") && active.quizAnswerId === null) fail();
+  if (active.phase === "outcome" && active.storyId === event!.storyId) fail();
+  if (active.phase === "story" && active.storyId !== event!.storyId) fail();
+  const quiz = event!.quiz;
+  const record = state.encounterRewards[event!.id];
+  if ((active.rewardChancePercent === null) !== !quiz) fail();
+  if (new Set(active.responseProfiles.map((profile) => profile.id)).size !== active.responseProfiles.length ||
+    active.responseProfiles.some((profile) => !event!.options.some((item) => item.responseProfileId === profile.id)) ||
+    event!.options.some((item) => item.responseProfileId && !active.responseProfiles.some((profile) => profile.id === item.responseProfileId))) fail();
+  if (active.rewardAlreadyDrawn && (!quiz || !record)) fail();
+  if (!active.rewardAlreadyDrawn && record && (active.quizAnswerId !== quiz?.question.correctOptionId || record.roll !== active.rewardRoll || record.chancePercent !== active.rewardChancePercent)) fail();
+  if (quiz && active.quizAnswerId === quiz.question.correctOptionId && !record) fail();
+  if (active.phase === "outcome" && quiz) {
+    const expectedStory = active.quizAnswerId !== quiz.question.correctOptionId ? quiz.lostStoryId :
+      active.rewardAlreadyDrawn ? quiz.alreadyStoryId : record?.won ? quiz.wonStoryId : quiz.lostStoryId;
+    if (active.storyId !== expectedStory) fail();
+  }
+  validateStorySnapshot(active.storyId, active.storyState, active.frame, { playerName: state.playerName, heroineName: state.heroineName, choiceCount: active.storyId === event!.storyId && option ? 1 : 0,
+    ...(resolution ? { variables: { romance_result: resolution.result } } : {}) }, state.memories, state.inventory);
+}

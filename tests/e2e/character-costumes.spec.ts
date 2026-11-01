@@ -62,7 +62,7 @@ test("a basic outfit works in Milan with its regional outfit undelivered, includ
   await expect(portrait.locator("img")).toHaveAttribute("src", new RegExp(`${basicNeutralPath}$`));
 });
 
-test("the preview supports all 11 basic expressions, choosing neutral when a difference is absent", async ({ page }) => {
+test("the preview supports the registered expressions, choosing neutral when a difference is absent", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await installDeliveredImages(page, { basic: true, smile: true });
   await page.goto("/");
@@ -70,7 +70,7 @@ test("the preview supports all 11 basic expressions, choosing neutral when a dif
   await page.goto("/?character-preview");
   await expect(page.getByTestId("preview-costume")).toHaveValue("default_01");
   const selector = page.getByTestId("preview-emotion");
-  const ids = ["neutral", "smile", "happy", "shy", "shy_deep", "surprised", "surprised_big", "worried", "serious", "teasing", "teasing_big"];
+  const ids = characterData.expressionIds;
   expect(await selector.locator("option").evaluateAll((options) => options.map((option) => (option as HTMLOptionElement).value))).toEqual(ids);
   const portrait = page.getByTestId("preview-stage").locator(".vn-character");
   const placement = await portrait.getAttribute("style");

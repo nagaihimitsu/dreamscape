@@ -101,3 +101,5 @@ export type {
   RewardRule,
   JourneyConfig,
 } from "./journey-schemas";
+
+export { encounters } from "./encounters";

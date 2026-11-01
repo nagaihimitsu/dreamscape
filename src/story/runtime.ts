@@ -3,6 +3,8 @@ import { z } from "zod";
 import { presentation, stories, tagContext } from "../content";
 import { parseStoryTags } from "../content/tags";
 import { bindMemoryReader } from "./memory";
+import { bindItemReader, type ItemStatus } from "./items";
+import { encounters } from "../content/encounters";
 
 export type Speaker = "narrator" | "heroine" | "player" | "enemy";
 export interface StoryFrame {
@@ -49,11 +51,12 @@ export function storyFingerprint(storyId: string): string {
   return (hash >>> 0).toString(16);
 }
 
-function runtime(storyId: string, saved?: string, memoryIds: readonly string[] = []): Story {
+function runtime(storyId: string, saved?: string, memoryIds: readonly string[] = [], inventory: Readonly<Record<string, ItemStatus>> = {}): Story {
   const compiled = stories[storyId];
   if (!compiled) throw new Error("シナリオが見つかりません。");
   const story = new Story(compiled);
   bindMemoryReader(story, memoryIds, Object.keys(presentation.memories));
+  bindItemReader(story, inventory, encounters.items.map((item) => item.id));
   story.onError = (message) => {
     throw new Error(message);
   };
@@ -114,8 +117,9 @@ export function beginStory(
   heroineName: string,
   variables: Record<string, string | number | boolean> = {},
   memoryIds: readonly string[] = [],
+  inventory: Readonly<Record<string, ItemStatus>> = {},
 ): StoryStep {
-  const story = runtime(storyId, undefined, memoryIds);
+  const story = runtime(storyId, undefined, memoryIds, inventory);
   story.variablesState.$("player_name", playerName);
   story.variablesState.$("heroine_name", heroineName);
   for (const [name, value] of Object.entries(variables)) {
@@ -132,8 +136,9 @@ export function continueStory(
   previous: StoryFrame,
   memoryIds: readonly string[] = [],
   optionalVariables: Record<string, string | number | boolean> = {},
+  inventory: Readonly<Record<string, ItemStatus>> = {},
 ): StoryStep {
-  const story = runtime(storyId, saved, memoryIds);
+  const story = runtime(storyId, saved, memoryIds, inventory);
   setOptionalVariables(story, optionalVariables);
   if (!story.canContinue) throw new Error("会話を進められません。");
   return readFrame(story, previous);
@@ -155,8 +160,9 @@ export function selectStoryChoice(
   memoryIds: readonly string[] = [],
   variables: Record<string, string | number | boolean> = {},
   optionalVariables: Record<string, string | number | boolean> = {},
+  inventory: Readonly<Record<string, ItemStatus>> = {},
 ): StoryStep {
-  const story = runtime(storyId, saved, memoryIds);
+  const story = runtime(storyId, saved, memoryIds, inventory);
   for (const [name, value] of Object.entries(variables)) {
     if (!story.variablesState.GlobalVariableExistsWithName(name))
       throw new Error(`シナリオの変数が見つかりません: ${name}`);
@@ -181,8 +187,9 @@ export function validateStorySnapshot(
     variables?: Record<string, string | number | boolean>;
   },
   memoryIds: readonly string[] = [],
+  inventory: Readonly<Record<string, ItemStatus>> = {},
 ): void {
-  const story = runtime(storyId, saved, memoryIds);
+  const story = runtime(storyId, saved, memoryIds, inventory);
   if (
     !tagContext.backgroundIds.includes(frame.background) ||
     !tagContext.emotionIds.includes(frame.emotion)

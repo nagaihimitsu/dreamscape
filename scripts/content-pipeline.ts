@@ -1,6 +1,8 @@
 import { access, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { characterCatalogSchema } from "../src/content/character-assets";
+import { encounterCatalogSchema } from "../src/content/encounter-schemas";
+import { validateEncounterContent } from "./encounter-validation";
 import { validateCharacterImage } from "./character-image-validation";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
 import { dialogueReactionCatalogSchema } from "../src/content/dialogue-reactions";
@@ -8,6 +10,7 @@ import { createDialogueReactionValidator } from "./dialogue-reaction-validation"
 import { dateDestinationsSchema } from "../src/content/date-destinations";
 import { reasoningIntroCatalogSchema } from "../src/content/reasoning-intros";
 import { bindMemoryReader, validateMemoryReferences } from "../src/story/memory";
+import { validateItemReferences } from "../src/story/items";
 import { RELATIONSHIP_TONES, type RelationshipTone } from "../src/domain/romance-tone";
 import { createDialogueExpressionValidator, type DialogueObserver } from "./dialogue-expression-validation";
 import {
@@ -414,6 +417,14 @@ export async function buildContent(root: string, writeOutput = true) {
     tourismCatalogSchema,
     path.join(content, "tourism/catalog.json"),
   );
+  const encounterCatalog = await parseFile(
+    encounterCatalogSchema,
+    path.join(content, "encounters/catalog.json"),
+  );
+  const encounterStoryIds = encounterCatalog.encounters.flatMap((event) => [
+    event.storyId,
+    ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : []),
+  ]);
   const battles = (
     await parseFile(
       battleCatalogSchema,
@@ -582,6 +593,9 @@ export async function buildContent(root: string, writeOutput = true) {
       .slice(0, -4);
     const source = await readFile(file, "utf8");
     storyMemoryReferences[id] = withContext(file, () => validateMemoryReferences(source, Object.keys(presentation.memories)));
+    const itemReferences = withContext(file, () => validateItemReferences(source, encounterCatalog.items.map((item) => item.id)));
+    if (itemReferences.length && !encounterStoryIds.includes(id))
+      throw new Error(`Item references are only supported in encounters: ${id}`);
     const compiled = compileInk(source, file);
     stories[id] = compiled;
     storySources[id] = source;
@@ -993,6 +1007,20 @@ export async function buildContent(root: string, writeOutput = true) {
       throw new Error(`Effect has neither memory nor outcome outside recovery: ${effect.id}`);
   }
   for (const battle of battles) validateBattleEvidence(battle, tourism.clues);
+  for (const storyId of encounterStoryIds) {
+    if (dates.some((date) => date.storyId === storyId || date.legacyStoryIds?.includes(storyId)) ||
+        battles.some((battle) => battle.storyId === storyId) ||
+        tourism.landmarks.some((landmark) => landmark.guideStoryId === storyId) ||
+        journey.episodes.some((episode) => episode.epilogueStoryId === storyId) ||
+        reasoningIntros.entries.some((entry) => entry.storyId === storyId) || storyId === learningDetails.storyId)
+      throw new Error(`Encounter story is used by another system: ${storyId}`);
+    if (stories[storyId]) validateNoInkRandom(stories[storyId]);
+  }
+  validateEncounterContent({
+    catalog: encounterCatalog, cityId: city.id, landmarks: tourism.landmarks, journey, stories, quizzes,
+    responseProfileIds: responseProfiles.map((profile) => profile.id), memoryIds: Object.keys(presentation.memories), context,
+    validateQuiz: validateQuizEntries,
+  });
   validateJourney(
     journey,
     city,
@@ -1018,6 +1046,7 @@ export async function buildContent(root: string, writeOutput = true) {
       storyId !== learningDetails.storyId &&
       !dates.some((date) => date.storyId === storyId || date.legacyStoryIds?.includes(storyId)) &&
       !battles.some((battle) => battle.storyId === storyId) &&
+      !encounterStoryIds.includes(storyId) &&
       !reasoningIntros.entries.some((entry) => entry.storyId === storyId) &&
       !journey.episodes.some(
         (episode) => episode.epilogueStoryId === storyId,
