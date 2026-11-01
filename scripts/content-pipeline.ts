@@ -3,6 +3,8 @@ import path from "node:path";
 import { characterCatalogSchema } from "../src/content/character-assets";
 import { validateCharacterImage } from "./character-image-validation";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
+import { dialogueReactionCatalogSchema } from "../src/content/dialogue-reactions";
+import { createDialogueReactionValidator } from "./dialogue-reaction-validation";
 import { dateDestinationsSchema } from "../src/content/date-destinations";
 import { reasoningIntroCatalogSchema } from "../src/content/reasoning-intros";
 import { bindMemoryReader, validateMemoryReferences } from "../src/story/memory";
@@ -591,8 +593,22 @@ export async function buildContent(root: string, writeOutput = true) {
     Object.keys(stories),
     context.emotionIds.filter((id) => characters.expressionIds?.includes(id) ?? true),
   );
+  const learningDetails = await parseFile(
+    learningDetailsSchema,
+    path.join(content, "learning/details.json"),
+  );
+  const reactionCatalog = await parseFile(dialogueReactionCatalogSchema, path.join(content, "presentation/dialogue-reactions.json"));
+  const reactionValidator = createDialogueReactionValidator(
+    reactionCatalog, storySources, Object.keys(stories),
+    context.emotionIds.filter((id) => characters.expressionIds?.includes(id) ?? true),
+    characters.characters.map((character) => character.id),
+    [learningDetails.storyId],
+  );
   const observeForStory = (storyId: string): DialogueObserver =>
-    (text, speaker, explicitEmotion) => expressionValidator.observe(storyId, text, speaker, explicitEmotion);
+    (text, speaker, explicitEmotion) => {
+      expressionValidator.observe(storyId, text, speaker, explicitEmotion);
+      reactionValidator.observe(storyId, text, speaker);
+    };
   const effectDates = new Map<string, Set<string>>();
   const deferredDateValidation: Array<() => void> = [];
   for (const date of dates) {
@@ -893,6 +909,7 @@ export async function buildContent(root: string, writeOutput = true) {
         story.variablesState.$(name, "検証名");
       }
       let speaker: string = "narrator";
+      let explicitEmotion = false;
       let lines = 0;
       let frames = 0;
       while (story.canContinue) {
@@ -900,8 +917,11 @@ export async function buildContent(root: string, writeOutput = true) {
         const text = story.Continue()?.trim() ?? "";
         const tags = parseStoryTags(story.currentTags ?? [], context);
         if (tags.speaker) speaker = tags.speaker;
+        if (tags.emotion !== undefined) explicitEmotion = true;
         if (tags.effects.length) throw new Error("Reasoning introduction cannot apply effects");
         if (text) {
+          observeForStory(storyId)(text, speaker, explicitEmotion);
+          explicitEmotion = false;
           if (speaker !== "heroine") throw new Error("Reasoning introduction must be spoken by the heroine");
           if (!/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(text))
             throw new Error("Reasoning introduction must be in Japanese");
@@ -935,10 +955,6 @@ export async function buildContent(root: string, writeOutput = true) {
             throw new Error(`Missing word meaning in ${question.id}: ${word}`);
         }
     }
-  const learningDetails = await parseFile(
-    learningDetailsSchema,
-    path.join(content, "learning/details.json"),
-  );
   validateLearningDetails(learningDetails, quizzes);
   if (!stories[learningDetails.storyId])
     throw new Error(`Unknown learning story: ${learningDetails.storyId}`);
@@ -1011,6 +1027,7 @@ export async function buildContent(root: string, writeOutput = true) {
       throw new Error(`Story lacks validation contract: ${storyId}`);
   }
   expressionValidator.finish();
+  reactionValidator.finish();
   if (writeOutput) {
     const directory = path.join(root, "src/content/generated");
     await mkdir(directory, { recursive: true });

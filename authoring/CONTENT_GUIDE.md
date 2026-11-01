@@ -88,6 +88,10 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 
 Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受け取ります。`# speaker: narrator` / `heroine` / `player` / `enemy`、`# background: 登録済みID`、`# emotion: 登録済みID` を使い、本文を日本語で書きます。デートの `* [選択肢]` と各分岐直後の `# effect: 登録済みID`、`->` の合流例は `date.ink` を参照。通常デートは3択を2回、各選択直後・最初の発話の前に対応する `# effect:` を1つ置きます。Inkで `romance_result` と `affection_delta`・`trust_delta`・`spark_delta` を宣言し、`romance_result` の positive と negative それぞれで異なる人物らしい反応を書きます。確率計算と乱数はInkに書きません。告白は確定的な別契約です。案内とバトルには恋愛effectを置きません。バトルInkは `battle_scene`、`answer_correct`、`battle_score` で分岐し、各場面を `-> END` で閉じます。特殊戦の主張・追及・証拠成功／失敗の例もB/CのInkにあります。
 
+会話中の無言リアクションは、本文を書き換えず `content/presentation/dialogue-reactions.json` の `entries` に追加できます。各項目に `storyId`、台詞の `speaker` と `text`、反応する人物の `targetCharacterId`（`heroine` または `enemy`）、必要な `expression` と `mark` を指定します。表情と漫符は独立して省略でき、少なくとも一方を指定します。`text` はInk中に一度だけ現れる固定の台詞をそのまま指定し、同じ台詞が別箇所にもある場合や変数を含む場合は曖昧な指定を避けます。名前などの変数を含む台詞にはこの指定は使えません。`npm run content:check` は台詞・話者・対象・表情・漫符の参照を検証します。
+
+漫符IDは `question`、`exclamation`、`interrobang`、`anger`、`sweat`、`blush`、`gloom`、`dizzy`、`music`、`heart`、`sparkle`、`sleep`、`sigh` です。`exasperated` は呆れの表情で、画像が未登録の衣装では同じ衣装の `neutral` を使います。演出は対象人物が表示されている間だけ現れ、ゲームの進行や保存には影響しません。台詞ごとに機械的に付けず、必要な瞬間を選んでください。
+
 順不同のデートで過去の出来事を参照する場合、Inkで `EXTERNAL has_memory(memory_id)` を宣言し、`has_memory("登録済みmemoryId")` を使います。引数は固定の登録済みIDだけで、任意コードを実行せず状態も変更しません。基本本文は思い出がなくても成立させ、`validationContexts` の `memoryIds` で思い出あり・なしの両方を検証します。`romance_stage` と `ending_reached` に応じた反応、告白の `confession_result` も各文脈を登録してください。旧 `has_cafe_memory` は互換性のため残しています。
 
 ## 章・都市と報酬

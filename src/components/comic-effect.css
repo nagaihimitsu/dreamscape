@@ -1,0 +1,32 @@
+/* A cue lives in the character's own box and never receives input. */
+.comic-effect {
+  position: absolute;
+  z-index: 2;
+  /* Anchor near the head, not the edge of the (often much wider) portrait
+     box. Its image uses object-fit: contain and may have wide empty margins. */
+  top: 16%;
+  left: calc(50% + min(17vw, 18dvh, 110px));
+  display: block;
+  width: clamp(24px, 18%, 46px);
+  aspect-ratio: 1;
+  pointer-events: none;
+}
+.vn-character .comic-effect img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  animation: comic-effect-appear 220ms ease-out both;
+}
+@keyframes comic-effect-appear {
+  0% { opacity: 0; transform: scale(.7) translateY(4px); }
+  70% { opacity: 1; transform: scale(1.05) translateY(0); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.vn-character .comic-effect.is-reduced img { animation: none; opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .vn-character .comic-effect img { animation: none; opacity: 1; }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .comic-effect { top: 0; width: min(24px, 7dvh); }
+}

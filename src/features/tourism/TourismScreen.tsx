@@ -6,12 +6,15 @@ import {
   episodes,
   rewardRules,
   dialogueExpressions,
+  dialogueReactions,
 } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
+import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import { canAccessFreeTime } from "../../domain/chapter";
 import type { GameState } from "../../domain/game";
 import { DialogueText } from "../../components/DialogueText";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
+import { ComicEffect } from "../../components/ComicEffect";
 import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
 import { DialogueToolsMenu } from "../../components/DialogueToolsMenu";
@@ -27,6 +30,7 @@ const COMPACT_OBSERVATION = "(max-width: 600px) and (min-height: 500px)";
 interface Props {
   game: GameState;
   speed: number;
+  reduceMotion: boolean;
   onSpeed: (speed: number) => void;
   onAdvance: () => void;
   onSkip: () => void;
@@ -40,6 +44,7 @@ interface Props {
 export function TourismScreen({
   game,
   speed,
+  reduceMotion,
   onSpeed,
   onAdvance,
   onSkip,
@@ -81,6 +86,9 @@ export function TourismScreen({
   const notesCoverObservation = active.phase === "exploring" && compactObservation && notesOpen;
   const selected = clues.find((clue) => clue.id === selectedId);
   const frame = active.frame;
+  const reaction = frame && active.phase === "guide"
+    ? resolveDialogueReaction(dialogueReactions, landmark.guideStoryId, frame, "heroine")
+    : undefined;
   const speaker =
     frame?.speaker === "heroine"
       ? game.heroineName
@@ -246,9 +254,11 @@ export function TourismScreen({
               characterId="heroine"
               sceneId={landmark.id}
               cityId={landmark.cityId}
-              emotion={resolveDialogueExpression(dialogueExpressions, landmark.guideStoryId, frame)}
+              emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, landmark.guideStoryId, frame)}
               active={frame.speaker === "heroine"}
-            />
+            >
+              {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState ?? undefined} />}
+            </CharacterPortrait>
           </div>
           <div
             ref={dialogueRef}

@@ -130,12 +130,12 @@ describe("content build acceptance", () => {
     await writeFile(file, JSON.stringify(data));
     await expect(buildContent(fixture, false)).rejects.toThrow("Default pose needs a costume: heroine");
   });
-  it("accepts all eleven basic expressions and validates every registered image", async () => {
+  it("accepts all expression IDs and validates every registered image", async () => {
     const file = path.join(fixture, "content/presentation/characters.json");
     const data = JSON.parse(await readFile(file, "utf8"));
     const heroine = data.characters.find((character: { id: string }) => character.id === "heroine");
     const pose = heroine.costumes.find((costume: { id: string }) => costume.id === "default_01").poses[0];
-    const expressionIds = ["neutral", "smile", "happy", "shy", "shy_deep", "surprised", "surprised_big", "worried", "serious", "teasing", "teasing_big"];
+    const expressionIds = ["neutral", "smile", "happy", "shy", "shy_deep", "surprised", "surprised_big", "worried", "serious", "teasing", "teasing_big", "exasperated"];
     expect(data.expressionIds).toEqual(expect.arrayContaining(expressionIds));
     expect(pose.canvas).toEqual({ width: 1024, height: 1536 });
     // A tiny canvas keeps this reference/registration test fast. Actual 1024×1536

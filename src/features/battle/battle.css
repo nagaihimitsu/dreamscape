@@ -737,3 +737,37 @@
 .battle-screen .quiz-choice .answer-submit:disabled {
   opacity: .55;
 }
+
+/* Place reaction marks by the painted image, not the often much taller
+   portrait box. Heroine art shares a 2:3 canvas; the fallback enemy is a
+   centered 180:200 SVG. The container units follow the registered placement. */
+.battle-character-slot .vn-character { container-type: size; }
+.battle-heroine .vn-character .comic-effect {
+  top: max(3%, calc(100% - 150cqw));
+  left: auto;
+  right: 4%;
+}
+.battle-enemy .vn-character .comic-effect {
+  top: max(3%, calc((100% - 111.112cqw) / 2));
+  right: auto;
+  left: 3%;
+}
+@media (orientation: landscape) and (max-height: 420px) {
+  /* On a short landscape display the dialogue sits higher; lift each portrait
+     enough to keep its face above the reading window. */
+  .battle-screen[data-phase="dialogue"] .battle-heroine { transform: translateY(-22dvh); }
+  .battle-screen[data-phase="dialogue"] .battle-enemy {
+    transform: translateY(-7dvh) scale(.76);
+    transform-origin: center top;
+  }
+  .battle-heroine .vn-character .comic-effect {
+    top: 0;
+    left: 65%;
+    right: auto;
+    width: clamp(28px, 5vw, 38px);
+  }
+  .battle-enemy .vn-character .comic-effect {
+    top: 0;
+    width: clamp(28px, 5vw, 38px);
+  }
+}

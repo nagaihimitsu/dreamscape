@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { battles, battleQuizzes, dialogueExpressions, landmarks, presentation, reasoningIntroductions } from "../../content";
+import { battles, battleQuizzes, dialogueExpressions, dialogueReactions, landmarks, presentation, reasoningIntroductions } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
+import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
 import { getBattleOutcome } from "../../domain/battle";
 import { beginStory, continueStory, type StoryStep } from "../../story/runtime";
@@ -10,6 +11,7 @@ import { AutoAdvanceButton, useAutoAdvance } from "../../components/useAutoAdvan
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
+import { ComicEffect } from "../../components/ComicEffect";
 import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
 import { EnemyPortrait } from "./EnemyPortrait";
 import { BattleRewards } from "../journey/BattleRewards";
@@ -177,10 +179,20 @@ export function BattleScreen({
     };
   }, [active.phase, active.roundIndex, animatedAnswer, answerKey, reduceMotion]);
   const frame = rebuttal?.step.frame ?? active.frame;
-  // Enemy expressions belong to the enemy portrait, never the heroine.
-  const heroineEmotion = frame && frame.speaker !== "enemy"
-    ? resolveDialogueExpression(dialogueExpressions, rebuttal?.storyId ?? battle.storyId, frame)
-    : "neutral";
+  const isDialogue = active.phase === "dialogue" || !!rebuttal;
+  const storyId = rebuttal?.storyId ?? battle.storyId;
+  // Reactions belong to their target, independently of the current speaker.
+  // Unannotated frames retain the existing Ink and expression behavior.
+  const heroineReaction = isDialogue && frame
+    ? resolveDialogueReaction(dialogueReactions, storyId, frame, "heroine")
+    : undefined;
+  const enemyReaction = isDialogue && frame
+    ? resolveDialogueReaction(dialogueReactions, storyId, frame, "enemy")
+    : undefined;
+  const heroineEmotion = heroineReaction?.expression ?? (frame && frame.speaker !== "enemy"
+    ? resolveDialogueExpression(dialogueExpressions, storyId, frame)
+    : "neutral");
+  const enemyEmotion = enemyReaction?.expression ?? (frame?.speaker === "enemy" ? frame.emotion : "neutral");
   const speaker = frame?.speaker === "enemy"
     ? battle.enemyNameJa
     : frame?.speaker === "heroine"
@@ -194,7 +206,6 @@ export function BattleScreen({
     speaker,
     frame?.text ?? "",
   );
-  const isDialogue = active.phase === "dialogue" || !!rebuttal;
   const advanceSafely = () => {
     if (cutIn || (isDialogue && !ready) || windowVisibility.hidden || dialogueObstructed()) return;
     if (rebuttal) {
@@ -269,22 +280,26 @@ export function BattleScreen({
                 cityId={battle.cityId ?? landmarks.find((item) => item.id === battle.landmarkId)?.cityId}
                 emotion={heroineEmotion}
                 active={frame?.speaker === "heroine"}
-              />
+              >
+                {heroineReaction?.mark && <ComicEffect effect={heroineReaction.mark} reduceMotion={reduceMotion} cueKey={displayedStoryState ?? ""} />}
+              </CharacterPortrait>
             </div>
           )}
           <div className="battle-character-slot battle-enemy">
             <CharacterPortrait
               characterId={characterForBattle(battle.id)}
-              emotion={frame?.speaker === "enemy" ? frame.emotion : "neutral"}
+              emotion={enemyEmotion}
               active={frame?.speaker === "enemy"}
               fallback={
                 <EnemyPortrait
-                  emotion={frame?.speaker === "enemy" ? frame.emotion : "neutral"}
+                  emotion={enemyEmotion}
                   variant={battle.format}
                   portrait={battle.portrait}
                 />
               }
-            />
+            >
+              {enemyReaction?.mark && <ComicEffect effect={enemyReaction.mark} reduceMotion={reduceMotion} cueKey={displayedStoryState ?? ""} />}
+            </CharacterPortrait>
           </div>
         </div>
       </div>

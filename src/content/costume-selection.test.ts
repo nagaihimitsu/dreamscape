@@ -2,12 +2,13 @@ import { describe, expect, it } from "vitest";
 import characterData from "../../content/presentation/characters.json";
 import presentationData from "../../content/romance/presentation.json";
 import { characterCatalogSchema, characterImage, characterPlacement, resolveCharacterCostume } from "./character-assets";
+import { parseStoryTags } from "./tags";
 
 const image = (costume: string, emotion = "neutral") => `assets/test/${costume}/${emotion}.png`;
 const pose = (costume: string, expressions: Record<string, string> = { neutral: image(costume) }) => ({
   id: "standing_01", canvas: { width: 1024, height: 1536 }, expressions,
 });
-const expressionIds = ["neutral", "smile", "happy", "shy", "shy_deep", "surprised", "surprised_big", "worried", "serious", "teasing", "teasing_big"];
+const expressionIds = ["neutral", "smile", "happy", "shy", "shy_deep", "surprised", "surprised_big", "worried", "serious", "teasing", "teasing_big", "exasperated"];
 
 function catalogue() {
   const original = characterCatalogSchema.parse(characterData);
@@ -79,7 +80,7 @@ describe("regional-independent basic costume", () => {
     return { heroine, wardrobe };
   }
 
-  it("registers the 11 specified expressions while keeping the basic outfit outside geographic mappings", () => {
+  it("registers the specified expressions while keeping the basic outfit outside geographic mappings", () => {
     const catalog = characterCatalogSchema.parse(characterData);
     expect(catalog.expressionIds).toEqual(expressionIds);
     expect(Object.keys(presentationData.emotions)).toEqual(expect.arrayContaining(expressionIds));
@@ -119,6 +120,19 @@ describe("regional-independent basic costume", () => {
     expect(characterImage(heroine, { ...selection, emotion: "smile" })).toBe(image("default_01", "smile"));
     expect(characterImage(heroine, { ...selection, emotion: "surprised_big" })).toBe(image("default_01"));
     expect(characterPlacement(heroine, { ...selection, emotion: "smile" })).toEqual(characterPlacement(heroine, { ...selection, emotion: "neutral" }));
+  });
+
+  it("accepts exasperated in Ink and keeps the same outfit before and after its image is delivered", () => {
+    const { heroine, wardrobe } = withBasic();
+    const selection = resolveCharacterCostume(heroine, wardrobe, {});
+    const tags = parseStoryTags(["speaker: heroine", "emotion: exasperated"], {
+      effectIds: [], backgroundIds: [], emotionIds: Object.keys(presentationData.emotions),
+    });
+    expect(tags.emotion).toBe("exasperated");
+    expect(characterImage(heroine, { ...selection, emotion: tags.emotion })).toBe(image("default_01"));
+    heroine.costumes!.find((item) => item.id === "default_01")!.poses[0].expressions.exasperated = image("default_01", "exasperated");
+    expect(characterImage(heroine, { ...selection, emotion: tags.emotion })).toBe(image("default_01", "exasperated"));
+    expect(characterPlacement(heroine, { ...selection, emotion: tags.emotion })).toEqual(characterPlacement(heroine, selection));
   });
 
   it("uses the existing placeholder if neither the requested outfit nor basic neutral is registered", () => {

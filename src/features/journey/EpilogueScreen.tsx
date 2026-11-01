@@ -1,10 +1,12 @@
 import { useEffect } from "react";
-import { dialogueExpressions, episodes } from "../../content";
+import { dialogueExpressions, dialogueReactions, episodes } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
+import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
 import { DialogueText } from "../../components/DialogueText";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
+import { ComicEffect } from "../../components/ComicEffect";
 import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
 import { DialogueToolsMenu } from "../../components/DialogueToolsMenu";
@@ -15,11 +17,13 @@ import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "..
 export function EpilogueScreen({
   game,
   speed,
+  reduceMotion,
   onSpeed,
   onAdvance,
 }: {
   game: GameState;
   speed: number;
+  reduceMotion: boolean;
   onSpeed: (value: number) => void;
   onAdvance: () => void;
 }) {
@@ -28,6 +32,7 @@ export function EpilogueScreen({
   const dialogueRef = useDialogueScrollReset<HTMLElement>(active.storyState);
   const frame = active.frame;
   const episode = episodes.find((item) => item.id === active.episodeId)!;
+  const reaction = resolveDialogueReaction(dialogueReactions, episode.epilogueStoryId!, frame, "heroine");
   const speaker =
     frame.speaker === "heroine"
       ? game.heroineName
@@ -65,9 +70,11 @@ export function EpilogueScreen({
             characterId="heroine"
             sceneId={episode.id}
             cityId={episode.cityId}
-            emotion={resolveDialogueExpression(dialogueExpressions, episode.epilogueStoryId!, frame)}
+            emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, episode.epilogueStoryId!, frame)}
             active={frame.speaker === "heroine"}
-          />
+          >
+            {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
+          </CharacterPortrait>
         </div>
         <section
           ref={dialogueRef}

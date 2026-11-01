@@ -21,7 +21,7 @@ export function characterForBattle(battleId: string): string {
 /** A decorative layer. Position and image are independent of the Ink story. */
 export function CharacterPortrait({
   characterId, emotion, costume, pose, sceneId, cityId, countryId, regionId,
-  active = false, fallback, onImageError,
+  active = false, fallback, onImageError, children,
 }: {
   characterId: string;
   emotion?: string;
@@ -34,6 +34,7 @@ export function CharacterPortrait({
   active?: boolean;
   fallback?: ReactNode;
   onImageError?: (path: string) => void;
+  children?: ReactNode;
 }) {
   const character = characters.find((item) => item.id === characterId);
   // Resolve from the scene context only, never from a changing line or its
@@ -61,6 +62,7 @@ export function CharacterPortrait({
         fallback={fallback}
         onImageError={onImageError}
       />
+      {children}
     </div>
   );
 }

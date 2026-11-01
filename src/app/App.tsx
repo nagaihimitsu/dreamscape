@@ -418,6 +418,7 @@ export default function App() {
           <EpilogueScreen
             game={game}
             speed={speed}
+            reduceMotion={displaySettings.value.reduceMotion}
             onSpeed={setSpeed}
             onAdvance={() =>
               commit((state) => advanceCityEpilogue(state, game.revision))
@@ -428,6 +429,7 @@ export default function App() {
             key={game.activeTourism.landmarkId}
             game={game}
             speed={speed}
+            reduceMotion={displaySettings.value.reduceMotion}
             onSpeed={setSpeed}
             onAdvance={() =>
               commit((state) => advanceTourismGuide(state, game.revision))

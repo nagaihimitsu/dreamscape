@@ -1,10 +1,12 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { city, dateDestinations, dialogueExpressions, presentation, tourismAssets } from "../../content";
+import { city, dateDestinations, dialogueExpressions, dialogueReactions, presentation, tourismAssets } from "../../content";
 import type { DateDefinition } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
+import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
+import { ComicEffect } from "../../components/ComicEffect";
 import { DialogueText } from "../../components/DialogueText";
 import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
@@ -47,7 +49,8 @@ export function RomanceScene({
   const destination = destinationId
     ? dateDestinations.find((item) => item.id === destinationId)
     : undefined;
-  const emotion = resolveDialogueExpression(dialogueExpressions, storyId, frame);
+  const reaction = resolveDialogueReaction(dialogueReactions, storyId, frame, "heroine");
+  const emotion = reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame);
   const speaker =
     frame.speaker === "heroine"
       ? game.heroineName
@@ -151,7 +154,9 @@ export function RomanceScene({
           cityId={date?.chapterId}
           emotion={emotion}
           active={frame.speaker === "heroine"}
-        />
+        >
+          {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}
+        </CharacterPortrait>
       </div>
       <section
         ref={dialogueRef}
