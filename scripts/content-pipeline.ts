@@ -5,6 +5,7 @@ import { validateCharacterImage } from "./character-image-validation";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
 import { dateDestinationsSchema } from "../src/content/date-destinations";
 import { bindMemoryReader, validateMemoryReferences } from "../src/story/memory";
+import { RELATIONSHIP_TONES, type RelationshipTone } from "../src/domain/romance-tone";
 import { createDialogueExpressionValidator, type DialogueObserver } from "./dialogue-expression-validation";
 import {
   Compiler,
@@ -152,6 +153,38 @@ export function validateNoInkRandom(compiled: string): void {
   inspect(JSON.parse(compiled));
 }
 
+/** Ink may compare the derived tone, but its spelling and updates belong to TS. */
+export function validateRelationshipToneSource(source: string): void {
+  // Remove comments before inspecting code so explanatory examples do not
+  // become requirements. Tone conditions use direct comparisons to literals.
+  const code = source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+  const variable = "relationship_tone(?:_before|_after)?";
+  const valid = new Set<string>(RELATIONSHIP_TONES);
+  const comparison = new RegExp(`\\b${variable}\\s*(?:==|!=)\\s*"([^"]*)"`, "g");
+  const reversed = new RegExp(`"([^"]*)"\\s*(?:==|!=)\\s*\\b${variable}\\b`, "g");
+  const declaration = new RegExp(`^\\s*VAR\\s+${variable}\\s*=\\s*"([^"]*)"`, "gm");
+  for (const pattern of [comparison, reversed, declaration]) {
+    for (const match of code.matchAll(pattern))
+      if (!valid.has(match[1])) throw new Error(`Unknown relationship tone: ${match[1]}`);
+  }
+  if (new RegExp(`^\\s*~\\s*${variable}\\s*=`, "m").test(code))
+    throw new Error("Relationship tone is derived by the game and cannot be assigned in Ink");
+  // Reject Ink's alternative switch form and dynamic comparisons: their
+  // labels cannot be checked against the common list by the linter above.
+  for (const line of code.split("\n")) {
+    if (!new RegExp(`\\b${variable}\\b`).test(line)) continue;
+    if (/^\s*VAR\s+/.test(line)) {
+      if (!new RegExp(`^\\s*VAR\\s+${variable}\\s*=\\s*"[^"]*"\\s*$`).test(line))
+        throw new Error("Relationship tone must be declared with a quoted allowed ID");
+      continue;
+    }
+    const stripped = line.replace(new RegExp(comparison.source, "g"), "")
+      .replace(new RegExp(reversed.source, "g"), "");
+    if (new RegExp(`\\b${variable}\\b`).test(stripped))
+      throw new Error("Compare relationship tone to a quoted allowed ID");
+  }
+}
+
 /** Traverse every branch for each declared input context with the official runtime. */
 export function validateStory(
   compiled: string,
@@ -167,6 +200,7 @@ export function validateStory(
   memories: { available: readonly string[]; known: readonly string[] } = { available: [], known: [] },
   randomReactions = false,
   onEffect?: (effectId: string) => void,
+  tone?: RelationshipTone,
 ): number {
   const initial = new Story(compiled);
   bindMemoryReader(initial, memories.available, memories.known);
@@ -181,10 +215,15 @@ export function validateStory(
     if (!initial.variablesState.GlobalVariableExistsWithName(required))
       throw new Error(`Missing required random reaction Ink variable: ${required}`);
   }
+  if (tone) for (const required of ["relationship_tone", "relationship_tone_before", "relationship_tone_after"]) {
+    if (!initial.variablesState.GlobalVariableExistsWithName(required))
+      throw new Error(`Missing required relationship tone Ink variable: ${required}`);
+  }
   const input = {
     player_name: "検証主人公",
     heroine_name: "検証ヒロイン",
     ...variables,
+    ...(tone ? { relationship_tone: tone, relationship_tone_before: tone, relationship_tone_after: tone } : {}),
   };
   for (const [key, value] of Object.entries(input)) {
     if (initial.variablesState.GlobalVariableExistsWithName(key))
@@ -275,6 +314,16 @@ export function validateStory(
         branch.onError = (message) => { throw new Error(message); };
         branch.state.LoadJson(checkpoint);
         if (result) branch.variablesState.$("romance_result", result);
+        if (tone) {
+          // Walk through all tones as choices resolve. Running once for every
+          // starting tone covers every tone at each decision, including a
+          // change between the first and second choice, without 6^N branches.
+          const before = RELATIONSHIP_TONES[(RELATIONSHIP_TONES.indexOf(tone) + choiceCount) % RELATIONSHIP_TONES.length];
+          const after = RELATIONSHIP_TONES[(RELATIONSHIP_TONES.indexOf(tone) + choiceCount + 1) % RELATIONSHIP_TONES.length];
+          branch.variablesState.$("relationship_tone_before", before);
+          branch.variablesState.$("relationship_tone_after", after);
+          branch.variablesState.$("relationship_tone", after);
+        }
         branch.ChooseChoiceIndex(choice.index);
         if (randomReactions) {
           // The game must identify exactly one effect before exposing its
@@ -549,8 +598,10 @@ export async function buildContent(root: string, writeOutput = true) {
     if (!Object.hasOwn(stories, date.storyId))
       throw new Error(`Unknown storyId: ${date.storyId}`);
     if (date.kind !== "confession" && date.choiceCount > 0)
-      withContext(`content/stories/${date.storyId}.ink (date ${date.id})`, () =>
-        validateNoInkRandom(stories[date.storyId]));
+      withContext(`content/stories/${date.storyId}.ink (date ${date.id})`, () => {
+        validateNoInkRandom(stories[date.storyId]);
+        validateRelationshipToneSource(storySources[date.storyId]);
+      });
     unique([date.storyId, ...(date.legacyStoryIds ?? [])], "date story ID");
     for (const storyId of date.legacyStoryIds ?? [])
       if (!Object.hasOwn(stories, storyId))
@@ -644,7 +695,14 @@ export async function buildContent(root: string, writeOutput = true) {
           if (!date.validationContexts.some(hasReference) || !date.validationContexts.some((seed) => !hasReference(seed)))
             throw new Error(`Memory reference needs present and absent validation contexts: ${storyId}/${reference}`);
         }
-        for (const seed of date.validationContexts) {
+        const randomReactions = storyId === date.storyId && date.kind !== "confession" && date.choiceCount > 0;
+        // Reuse existing contexts and add only enough representative contexts
+        // to exercise all tones. All old Ink remains on its original contract.
+        const contextCount = randomReactions
+          ? Math.max(date.validationContexts.length, RELATIONSHIP_TONES.length)
+          : date.validationContexts.length;
+        for (let seedIndex = 0; seedIndex < contextCount; seedIndex++) {
+          const seed = date.validationContexts[seedIndex % date.validationContexts.length];
           if (seed.memoryId && !presentation.memories[seed.memoryId])
             throw new Error(`Unknown validation memory: ${seed.memoryId}`);
           unique(seed.memoryIds ?? [], "validation memory ID");
@@ -676,15 +734,16 @@ export async function buildContent(root: string, writeOutput = true) {
                 effects,
                 observeForStory(storyId),
                 { available: seed.memoryIds ?? (seed.memoryId ? [seed.memoryId] : []), known: Object.keys(presentation.memories) },
-                storyId === date.storyId && date.kind !== "confession" && date.choiceCount > 0,
+                randomReactions,
                 (effectId) => {
                   const users = effectDates.get(effectId) ?? new Set<string>();
                   users.add(date.id);
                   effectDates.set(effectId, users);
                 },
+                randomReactions ? RELATIONSHIP_TONES[seedIndex % RELATIONSHIP_TONES.length] : undefined,
               ),
           );
-          if (storyId === date.storyId) routes += checkedRoutes;
+          if (storyId === date.storyId && seedIndex < date.validationContexts.length) routes += checkedRoutes;
         }
       }
     });

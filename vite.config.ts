@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   test: {
     include: ["src/**/*.test.ts", "scripts/**/*.test.ts"],
-    // Content validation compiles every Ink branch and can take longer on CI.
-    testTimeout: 30_000,
+    // Content validation compiles every Ink branch, including relationship tones.
+    testTimeout: 60_000,
   },
 });

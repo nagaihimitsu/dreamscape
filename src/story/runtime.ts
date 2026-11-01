@@ -131,10 +131,20 @@ export function continueStory(
   saved: string,
   previous: StoryFrame,
   memoryIds: readonly string[] = [],
+  optionalVariables: Record<string, string | number | boolean> = {},
 ): StoryStep {
   const story = runtime(storyId, saved, memoryIds);
+  setOptionalVariables(story, optionalVariables);
   if (!story.canContinue) throw new Error("会話を進められません。");
   return readFrame(story, previous);
+}
+
+// Optional presentation context was not present in earlier published Ink.
+function setOptionalVariables(story: Story, variables: Record<string, string | number | boolean>): void {
+  for (const [name, value] of Object.entries(variables)) {
+    if (story.variablesState.GlobalVariableExistsWithName(name))
+      story.variablesState.$(name, value);
+  }
 }
 
 export function selectStoryChoice(
@@ -144,6 +154,7 @@ export function selectStoryChoice(
   index: number,
   memoryIds: readonly string[] = [],
   variables: Record<string, string | number | boolean> = {},
+  optionalVariables: Record<string, string | number | boolean> = {},
 ): StoryStep {
   const story = runtime(storyId, saved, memoryIds);
   for (const [name, value] of Object.entries(variables)) {
@@ -151,6 +162,7 @@ export function selectStoryChoice(
       throw new Error(`シナリオの変数が見つかりません: ${name}`);
     story.variablesState.$(name, value);
   }
+  setOptionalVariables(story, optionalVariables);
   const choice = story.currentChoices.find((item) => item.index === index);
   if (!choice) throw new Error("選択肢が見つかりません。");
   const tags = choice.tags ?? [];

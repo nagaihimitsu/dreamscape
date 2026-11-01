@@ -8,7 +8,7 @@
       "descriptionJa": "予定のない午後、二人で話す短いデート。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "milano/cafe_tourism_01_random",
+      "storyId": "milano/cafe_tourism_01_random_tone",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -63,11 +63,13 @@
       "allowAfterEnding": true,
       "legacyStoryIds": [
         "milano/cafe_01",
-        "milano/cafe_tourism_01"
+        "milano/cafe_tourism_01",
+        "milano/cafe_tourism_01_random"
       ],
       "destinationId": "milano_cafe_naviglio",
       "legacyStoryDestinationIds": {
-        "milano/cafe_tourism_01": "milano_cafe_naviglio"
+        "milano/cafe_tourism_01": "milano_cafe_naviglio",
+        "milano/cafe_tourism_01_random": "milano_cafe_naviglio"
       }
     },
     {
@@ -79,7 +81,7 @@
       "apCost": 3,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/walk_tourism_01_random",
+      "storyId": "milano/walk_tourism_01_random_tone",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -132,11 +134,13 @@
       "allowAfterEnding": true,
       "legacyStoryIds": [
         "milano/walk_01",
-        "milano/walk_tourism_01"
+        "milano/walk_tourism_01",
+        "milano/walk_tourism_01_random"
       ],
       "destinationId": "milano_duomo_square_walk",
       "legacyStoryDestinationIds": {
-        "milano/walk_tourism_01": "milano_duomo_square_walk"
+        "milano/walk_tourism_01": "milano_duomo_square_walk",
+        "milano/walk_tourism_01_random": "milano_duomo_square_walk"
       }
     },
     {
@@ -148,7 +152,7 @@
       "apCost": 0,
       "minRomanceStage": 2,
       "minAffection": 0,
-      "storyId": "milano/invitation_open_tour_01_random",
+      "storyId": "milano/invitation_open_tour_01_random_tone",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -202,7 +206,8 @@
       "legacyStoryIds": [
         "milano/invitation_01",
         "milano/invitation_open_01",
-        "milano/invitation_open_tour_01"
+        "milano/invitation_open_tour_01",
+        "milano/invitation_open_tour_01_random"
       ]
     },
     {
@@ -214,7 +219,7 @@
       "apCost": 3,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/night_tourism_01_random",
+      "storyId": "milano/night_tourism_01_random_tone",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -267,11 +272,13 @@
       "allowAfterEnding": true,
       "legacyStoryIds": [
         "milano/night_01",
-        "milano/night_tourism_01"
+        "milano/night_tourism_01",
+        "milano/night_tourism_01_random"
       ],
       "destinationId": "milano_naviglio_night",
       "legacyStoryDestinationIds": {
-        "milano/night_tourism_01": "milano_naviglio_night"
+        "milano/night_tourism_01": "milano_naviglio_night",
+        "milano/night_tourism_01_random": "milano_naviglio_night"
       }
     },
     {
@@ -354,7 +361,7 @@
       "apCost": 0,
       "minRomanceStage": 2,
       "minAffection": 0,
-      "storyId": "milano/reassurance_open_01_random",
+      "storyId": "milano/reassurance_open_01_random_tone",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -406,7 +413,8 @@
       ],
       "legacyStoryIds": [
         "milano/reassurance_01",
-        "milano/reassurance_open_01"
+        "milano/reassurance_open_01",
+        "milano/reassurance_open_01_random"
       ]
     },
     {
@@ -418,7 +426,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/city_date_tourism_01_random",
+      "storyId": "milano/city_date_tourism_01_random_tone",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -472,11 +480,13 @@
       ],
       "legacyStoryIds": [
         "milano/city_date_01",
-        "milano/city_date_tourism_01"
+        "milano/city_date_tourism_01",
+        "milano/city_date_tourism_01_random"
       ],
       "destinationId": "milano_galleria_revisit",
       "legacyStoryDestinationIds": {
-        "milano/city_date_tourism_01": "milano_galleria_revisit"
+        "milano/city_date_tourism_01": "milano_galleria_revisit",
+        "milano/city_date_tourism_01_random": "milano_galleria_revisit"
       }
     },
     {
@@ -489,7 +499,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/la_scala_date_tour_01_random",
+      "storyId": "milano/la_scala_date_tour_01_random_tone",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_galleria_episode"
@@ -543,11 +553,13 @@
       ],
       "legacyStoryIds": [
         "milano/la_scala_date_01",
-        "milano/la_scala_date_tour_01"
+        "milano/la_scala_date_tour_01",
+        "milano/la_scala_date_tour_01_random"
       ],
       "legacyDestinationId": "milano_la_scala",
       "legacyStoryDestinationIds": {
-        "milano/la_scala_date_tour_01": "milano_la_scala"
+        "milano/la_scala_date_tour_01": "milano_la_scala",
+        "milano/la_scala_date_tour_01_random": "milano_la_scala"
       }
     },
     {
@@ -560,7 +572,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/brera_date_01_random",
+      "storyId": "milano/brera_date_01_random_tone",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_last_supper_episode"
@@ -613,10 +625,12 @@
         }
       ],
       "legacyStoryIds": [
-        "milano/brera_date_01"
+        "milano/brera_date_01",
+        "milano/brera_date_01_random"
       ],
       "legacyStoryDestinationIds": {
-        "milano/brera_date_01": "milano_brera"
+        "milano/brera_date_01": "milano_brera",
+        "milano/brera_date_01_random": "milano_brera"
       }
     },
     {
@@ -629,7 +643,7 @@
       "apCost": 1,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/navigli_date_01_random",
+      "storyId": "milano/navigli_date_01_random_tone",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_castello_episode"
@@ -682,10 +696,12 @@
         }
       ],
       "legacyStoryIds": [
-        "milano/navigli_date_01"
+        "milano/navigli_date_01",
+        "milano/navigli_date_01_random"
       ],
       "legacyStoryDestinationIds": {
-        "milano/navigli_date_01": "milano_navigli"
+        "milano/navigli_date_01": "milano_navigli",
+        "milano/navigli_date_01_random": "milano_navigli"
       }
     },
     {
@@ -698,7 +714,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/san_satiro_date_tour_01_random",
+      "storyId": "milano/san_satiro_date_tour_01_random_tone",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_duomo_episode"
@@ -752,11 +768,13 @@
       ],
       "legacyStoryIds": [
         "milano/san_satiro_date_01",
-        "milano/san_satiro_date_tour_01"
+        "milano/san_satiro_date_tour_01",
+        "milano/san_satiro_date_tour_01_random"
       ],
       "legacyDestinationId": "milano_san_satiro",
       "legacyStoryDestinationIds": {
-        "milano/san_satiro_date_tour_01": "milano_san_satiro"
+        "milano/san_satiro_date_tour_01": "milano_san_satiro",
+        "milano/san_satiro_date_tour_01_random": "milano_san_satiro"
       }
     },
     {
@@ -769,7 +787,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/starbucks_roastery_date_01_random",
+      "storyId": "milano/starbucks_roastery_date_01_random_tone",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_galleria_episode"
@@ -822,10 +840,12 @@
         }
       ],
       "legacyStoryIds": [
-        "milano/starbucks_roastery_date_01"
+        "milano/starbucks_roastery_date_01",
+        "milano/starbucks_roastery_date_01_random"
       ],
       "legacyStoryDestinationIds": {
-        "milano/starbucks_roastery_date_01": "milano_starbucks_roastery"
+        "milano/starbucks_roastery_date_01": "milano_starbucks_roastery",
+        "milano/starbucks_roastery_date_01_random": "milano_starbucks_roastery"
       }
     },
     {
@@ -838,7 +858,7 @@
       "apCost": 3,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/fondazione_prada_date_tour_01_random",
+      "storyId": "milano/fondazione_prada_date_tour_01_random_tone",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_last_supper_episode"
@@ -904,11 +924,13 @@
       ],
       "legacyStoryIds": [
         "milano/fondazione_prada_date_01",
-        "milano/fondazione_prada_date_tour_01"
+        "milano/fondazione_prada_date_tour_01",
+        "milano/fondazione_prada_date_tour_01_random"
       ],
       "legacyDestinationId": "milano_fondazione_prada",
       "legacyStoryDestinationIds": {
-        "milano/fondazione_prada_date_tour_01": "milano_fondazione_prada"
+        "milano/fondazione_prada_date_tour_01": "milano_fondazione_prada",
+        "milano/fondazione_prada_date_tour_01_random": "milano_fondazione_prada"
       }
     },
     {
@@ -921,7 +943,7 @@
       "apCost": 1,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/love_date_tour_02_random",
+      "storyId": "milano/love_date_tour_02_random_tone",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_duomo_episode"
@@ -976,11 +998,13 @@
       "legacyStoryIds": [
         "milano/love_date_01",
         "milano/love_date_tour_01",
-        "milano/love_date_tour_01_random"
+        "milano/love_date_tour_01_random",
+        "milano/love_date_tour_02_random"
       ],
       "legacyDestinationId": "milano_love",
       "legacyStoryDestinationIds": {
-        "milano/love_date_tour_01": "milano_love"
+        "milano/love_date_tour_01": "milano_love",
+        "milano/love_date_tour_02_random": "milano_love"
       }
     },
     {
@@ -992,7 +1016,7 @@
       "apCost": 0,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/rain_pause_tour_01_random",
+      "storyId": "milano/rain_pause_tour_01_random_tone",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -1036,7 +1060,8 @@
       ],
       "legacyStoryIds": [
         "milano/rain_pause_01",
-        "milano/rain_pause_tour_01"
+        "milano/rain_pause_tour_01",
+        "milano/rain_pause_tour_01_random"
       ]
     },
     {
@@ -1048,7 +1073,7 @@
       "apCost": 0,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/recovery_talk_01",
+      "storyId": "milano/recovery_talk_01_tone",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -1083,6 +1108,9 @@
           "confessionReady": false,
           "endingReached": false
         }
+      ],
+      "legacyStoryIds": [
+        "milano/recovery_talk_01"
       ]
     }
   ]

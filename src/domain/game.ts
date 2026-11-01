@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
+import { deriveRelationshipTone } from "./romance-tone";
 import { secureRomanceRoll } from "../random/romance-source";
 import { responseProfileSchema } from "../content/schemas";
 import { legacyPhase1Stage, legacyRomanceValues } from "./romance-migration";
@@ -572,6 +573,9 @@ export function startDate(state: GameState, dateId: string, nextRoll: () => numb
   if (!getDateAvailability(state, dateId).available) return state;
   const date = dates.find((item) => item.id === dateId)!;
   const result = beginStory(date.storyId, state.playerName, state.heroineName, {
+    relationship_tone: deriveRelationshipTone(state),
+    relationship_tone_before: deriveRelationshipTone(state),
+    relationship_tone_after: deriveRelationshipTone(state),
     player_address: getPlayerAddress(state),
     romance_stage: state.romanceStage,
     memory_callback: getMemoryCallback(state),
@@ -630,7 +634,11 @@ export function advanceDate(
   return applyStep(
     { ...state, revision: state.revision + 1 },
     { ...active, step: active.step + 1 },
-    continueStory(activeDateStoryId(date, active), active.storyState, active.frame, state.memories),
+    continueStory(activeDateStoryId(date, active), active.storyState, active.frame, state.memories, {
+      relationship_tone: deriveRelationshipTone(state),
+      relationship_tone_before: deriveRelationshipTone(active.resolvedChoices.at(-1)?.before ?? state),
+      relationship_tone_after: deriveRelationshipTone(state),
+    }),
   );
 }
 
@@ -648,11 +656,16 @@ export function chooseDate(
     return state;
   const date = dates.find((item) => item.id === active.dateId)!;
   const storyId = activeDateStoryId(date, active);
+  const toneBefore = deriveRelationshipTone(state);
   if (active.resolutionMode === "legacy_fixed") {
     return applyStep(
       { ...state, revision: state.revision + 1 },
       { ...active, choiceCount: active.choiceCount + 1, step: active.step + 1 },
-      selectStoryChoice(storyId, active.storyState, active.frame, index, state.memories),
+      selectStoryChoice(storyId, active.storyState, active.frame, index, state.memories, {}, {
+        relationship_tone: toneBefore,
+        relationship_tone_before: toneBefore,
+        relationship_tone_after: toneBefore,
+      }),
     );
   }
   const ticket = active.randomPlan[active.choiceCount];
@@ -671,11 +684,22 @@ export function chooseDate(
   if (!effect || effect.outcome || !profile) throw new Error("選択肢のリアクション設定が見つかりません。");
   const before = { affection: state.affection, trust: state.trust, spark: state.spark };
   const resolution = resolveRomanceChoice(profile, before, ticket);
+  // applyStep does not apply relationship changes to a saved replay.
+  const after = active.replay ? before : {
+    affection: before.affection + resolution.deltas.affection,
+    trust: before.trust + resolution.deltas.trust,
+    spark: before.spark + resolution.deltas.spark,
+  };
+  const toneAfter = deriveRelationshipTone(after);
   const step = selectStoryChoice(storyId, active.storyState, active.frame, index, state.memories, {
     romance_result: resolution.result,
     affection_delta: resolution.deltas.affection,
     trust_delta: resolution.deltas.trust,
     spark_delta: resolution.deltas.spark,
+  }, {
+    relationship_tone: toneAfter,
+    relationship_tone_before: toneBefore,
+    relationship_tone_after: toneAfter,
   });
   if (step.effects.length !== 1 || step.effects[0] !== effectId)
     throw new Error("選択肢の結果と会話の効果が一致しません。");
