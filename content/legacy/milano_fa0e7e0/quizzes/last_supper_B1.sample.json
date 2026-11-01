@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "id": "milano_last_supper_b1_sample",
+  "landmarkId": "last_supper",
+  "englishLevel": "B1",
+  "productionStatus": "example_not_for_publication_without_review",
+  "source": {
+    "publisher": "Museo del Cenacolo Vinciano (official)",
+    "url": "https://cenacolovinciano.org/en/museum/backstage/"
+  },
+  "questions": [
+    {
+      "id": "last_supper_dry_technique",
+      "questionEn": "Why did Leonardo choose to paint on dry plaster?",
+      "options": [
+        {"id": "A", "textEn": "To give himself time to change details"},
+        {"id": "B", "textEn": "To make the painting easier to move"},
+        {"id": "C", "textEn": "To avoid using any pigments"}
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [{"word": "plaster", "meaning": "漆喰"}, {"word": "details", "meaning": "細部"}],
+      "hintJa": "伝統的なフレスコ画の制作速度と比較しよう。",
+      "explanationJa": "乾いた漆喰を使う方法は、描いた箇所を後から変更しやすくするためだった。",
+      "historicalClaimType": "documented_fact"
+    },
+    {
+      "id": "last_supper_pigment_absorption",
+      "questionEn": "What made Leonardo's painting technique more fragile than traditional fresco?",
+      "options": [
+        {"id": "A", "textEn": "The pigments stayed on the surface instead of being absorbed"},
+        {"id": "B", "textEn": "He used only black and white pigments"},
+        {"id": "C", "textEn": "He painted it on a removable wooden frame"}
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [{"word": "fragile", "meaning": "傷みやすい"}, {"word": "absorbed", "meaning": "吸収された"}],
+      "hintJa": "顔料と壁面との結び付き方に注目。",
+      "explanationJa": "湿った漆喰に吸収されなかった顔料が表面にとどまり、作品は傷みやすくなった。",
+      "historicalClaimType": "documented_fact"
+    },
+    {
+      "id": "last_supper_early_damage",
+      "questionEn": "When did the painting begin to deteriorate?",
+      "options": [
+        {"id": "A", "textEn": "Soon after its completion"},
+        {"id": "B", "textEn": "Only after the 20th century"},
+        {"id": "C", "textEn": "Before Leonardo started painting it"}
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [{"word": "deteriorate", "meaning": "劣化する"}, {"word": "completion", "meaning": "完成"}],
+      "hintJa": "完成からあまり長い年月は経っていない。",
+      "explanationJa": "完成後の比較的早い時期から損傷が報告されている。",
+      "historicalClaimType": "documented_fact"
+    }
+  ]
+}

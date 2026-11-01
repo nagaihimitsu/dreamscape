@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "la_scala_b_reasoning_b1",
+  "landmarkId": "la_scala_case",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "scala_old_theatre_fire",
+      "questionEn": "Why was a new theatre built before La Scala opened?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The previous theatre had been destroyed by fire."
+        },
+        {
+          "id": "B",
+          "textEn": "The existing theatre had been moved to a railway station."
+        },
+        {
+          "id": "C",
+          "textEn": "The public had never had a theatre in Milan."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "previous",
+          "meaning": "前の"
+        },
+        {
+          "word": "destroyed",
+          "meaning": "破壊された"
+        },
+        {
+          "word": "fire",
+          "meaning": "火災"
+        }
+      ],
+      "hintJa": "スカラ座そのものと、その前にあった劇場を分けて考えよう。",
+      "correctExplanationJa": "1776年に焼失したのは先代のドゥカーレ劇場。新たな劇場が建てられ、1778年にスカラ座が完成しました。",
+      "incorrectExplanationJa": "火災で失われた先代劇場の代わりとして新しい劇場が建てられました。ミラノに劇場がなかったわけではありません。",
+      "sources": [
+        {
+          "publisher": "Museo Teatrale alla Scala（公式）",
+          "title": "History of the Theatre",
+          "url": "https://www.museoscala.org/en/history/theatre/history-of-the-theatre.html",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "1776年に先代のドゥカーレ劇場が火災で失われ、1778年にスカラ座が完成。1943年の空襲で大きな被害を受け、再建後1946年に再開した。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "scala_wartime_counterexample",
+      "questionEn": "Which record challenges the claim that La Scala was never damaged by war?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A fire destroyed an earlier theatre before La Scala was built."
+        },
+        {
+          "id": "B",
+          "textEn": "An air raid badly damaged La Scala in 1943."
+        },
+        {
+          "id": "C",
+          "textEn": "A concert marked the theatre reopening in 1946."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "air raid",
+          "meaning": "空襲"
+        },
+        {
+          "word": "damaged",
+          "meaning": "損傷を与えた"
+        },
+        {
+          "word": "claim",
+          "meaning": "主張"
+        }
+      ],
+      "hintJa": "先代劇場の火災と、スカラ座そのものへの戦時中の被害は別の出来事。",
+      "correctExplanationJa": "劇場博物館の記録では、1943年の空襲でスカラ座は大きく損傷しました。「戦争で一度も傷ついていない」という主張への直接の反例です。",
+      "incorrectExplanationJa": "1776年の火災は先代劇場の出来事。再開演奏会の記録だけでは戦争による損傷の原因までは示せません。1943年の空襲の記録を見ましょう。",
+      "sources": [
+        {
+          "publisher": "Museo Teatrale alla Scala（公式）",
+          "title": "History of the Theatre",
+          "url": "https://www.museoscala.org/en/history/theatre/history-of-the-theatre.html",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "1776年に先代のドゥカーレ劇場が火災で失われ、1778年にスカラ座が完成。1943年の空襲で大きな被害を受け、再建後1946年に再開した。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "scala_reopening_community",
+      "questionEn": "After the wartime damage, what happened to La Scala?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "It was rebuilt and reopened with a concert."
+        },
+        {
+          "id": "B",
+          "textEn": "It became a railway station and never reopened."
+        },
+        {
+          "id": "C",
+          "textEn": "It was moved inside the earlier theatre."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "rebuilt",
+          "meaning": "再建された"
+        },
+        {
+          "word": "reopened",
+          "meaning": "再開した"
+        },
+        {
+          "word": "concert",
+          "meaning": "演奏会"
+        }
+      ],
+      "hintJa": "被害の記録のあとに続く、再開の記録を見よう。",
+      "correctExplanationJa": "再建されたスカラ座は1946年に演奏会で再開。被害と再開は矛盾せず、続く二つの出来事です。",
+      "incorrectExplanationJa": "空襲の被害の後、スカラ座は再建され、1946年に演奏会で再開しました。先代劇場と同じ建物に移ったわけではありません。",
+      "sources": [
+        {
+          "publisher": "Museo Teatrale alla Scala（公式）",
+          "title": "History of the Theatre",
+          "url": "https://www.museoscala.org/en/history/theatre/history-of-the-theatre.html",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "1776年に先代のドゥカーレ劇場が火災で失われ、1778年にスカラ座が完成。1943年の空襲で大きな被害を受け、再建後1946年に再開した。"
+        }
+      ],
+      "difficulty": "medium"
+    }
+  ]
+}

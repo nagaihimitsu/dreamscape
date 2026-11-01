@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { legacyStoryId, legacyTourism } from "../content/legacy-milano";
 import { isEpisodeBlockedByStoryBattle, recordGuideRead, isEpisodeUnlocked } from "./chapter";
 import {
   battles,
@@ -41,6 +42,16 @@ export function tourismFingerprint(landmarkId: string): string {
   const landmark = landmarks.find((item) => item.id === landmarkId);
   if (!landmark) throw new Error("観光地が見つかりません。");
   return `${landmark.guideStoryId}:${storyFingerprint(landmark.guideStoryId)}`;
+}
+
+export function activeGuideStoryId(active: ActiveTourism): string | null {
+  const current = landmarks.find((item) => item.id === active.landmarkId);
+  try { if (current && active.contentHash === tourismFingerprint(active.landmarkId)) return current.guideStoryId; }
+  catch { /* The archived guide is checked independently. */ }
+  const old = legacyTourism.landmarks.find((item) => item.id === active.landmarkId);
+  if (!old) return null;
+  const storyId = legacyStoryId(old.guideStoryId);
+  return active.contentHash === `${old.guideStoryId}:${storyFingerprint(storyId)}` ? storyId : null;
 }
 
 export function getTourismAvailability(
@@ -172,13 +183,14 @@ export function advanceTourismGuide(
       active.landmarkId,
     );
   }
-  const landmark = landmarks.find((item) => item.id === active.landmarkId)!;
+  const storyId = activeGuideStoryId(active);
+  if (!storyId) throw new Error("観光案内の旧版が見つかりません。");
   return {
     ...state,
     revision: state.revision + 1,
     activeTourism: fromGuide(
       active,
-      continueStory(landmark.guideStoryId, active.storyState, active.frame),
+      continueStory(storyId, active.storyState, active.frame),
     ),
   };
 }
@@ -288,8 +300,9 @@ export function validateTourismState(state: GameState): void {
   )
     throw new Error("観光地と途中のバトルが一致しません。");
   if (active.phase === "guide") {
+    const storyId = activeGuideStoryId(active);
     if (
-      active.contentHash !== tourismFingerprint(active.landmarkId) ||
+      !storyId ||
       !active.frame ||
       !active.storyState ||
       active.frame.choices.length
@@ -298,7 +311,7 @@ export function validateTourismState(state: GameState): void {
         "観光案内が更新されたか、途中の案内が一致しません。元のデータは保管されています。",
       );
     validateStorySnapshot(
-      landmark.guideStoryId,
+      storyId!,
       active.storyState,
       active.frame,
       {

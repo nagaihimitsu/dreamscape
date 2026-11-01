@@ -33,7 +33,7 @@ function play(state: GameState, id: string, choices: number[], seen: string[] = 
 describe("open romance progression", () => {
   it("offers several independent destinations without the old cafe path", () => {
     const state = initial();
-    for (const id of ["milano_la_scala_date_01", "milano_brera_date_01", "milano_navigli_date_01", "milano_love_date_01"]) {
+    for (const id of ["milano_la_scala_date_01", "milano_brera_date_01", "milano_navigli_date_01", "milano_novecento_date_01"]) {
       expect(isEventVisible(state, id)).toBe(true);
       expect(getDateAvailability(state, id).available).toBe(true);
       expect(dates.find((date) => date.id === id)?.requiredPlayedDateIds).toEqual([]);
@@ -42,7 +42,7 @@ describe("open romance progression", () => {
   });
 
   it("applies negative affection and trust, restores them, and keeps other dates available", () => {
-    let state = startDate(initial(), "milano_love_date_01", negativeRolls());
+    let state = startDate(initial(), "milano_novecento_date_01", negativeRolls());
     state = nextChoice(state);
     state = chooseDate(state, 1, state.revision);
     expect(state.affection).toBe(-1);

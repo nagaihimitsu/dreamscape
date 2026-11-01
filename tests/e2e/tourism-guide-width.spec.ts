@@ -73,8 +73,8 @@ for (const size of [
       await next.click();
       await expect.poll(async () => (await saved(page)).revision).toBeGreaterThan(state.revision);
     }
-    expect(texts[1]).toContain("声まで、背すじを伸ばしたくなるね");
-    expect(texts[2]).toContain("小さく咳払いをしてから");
+    expect(texts[1]).toContain("さっきまで日なたで暑かったのに");
+    expect(texts[2]).toContain("は壁を見上げ、手元の案内を開いた");
     expect(speakers).toEqual(["narrator", "heroine", "narrator", "heroine"]);
     for (const g of readings.slice(1)) {
       for (const item of ["screen", "heading", "scene", "background", "dialogue"] as const) {

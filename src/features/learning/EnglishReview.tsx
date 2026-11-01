@@ -1,11 +1,9 @@
 import { useState } from "react";
 import {
-  battles,
-  battleQuizzes,
   learningDetails,
   learningTranslations,
 } from "../../content";
-import { battleFingerprint } from "../../domain/battle";
+import { getBattleContentByHash } from "../../domain/battle";
 import type { GameState } from "../../domain/game";
 import { beginStory, continueStory, type StoryStep } from "../../story/runtime";
 import { Modal } from "../../components/Modal";
@@ -24,15 +22,15 @@ export function answeredQuestions(game: GameState, learning: Learning) {
       !game.battleRecords.some((item) => item.battleId === id)
     )
       return [];
-    const battle = battles.find((b) => b.id === id);
-    if (!battle || record.contentHash !== battleFingerprint(id)) return [];
-    const quiz = battleQuizzes[battle.quizId];
+    const content = getBattleContentByHash(id, record.contentHash);
+    if (!content) return [];
+    const { battle, quiz } = content;
     return record.answers.flatMap((a) => {
       const question = quiz.questions.find((q) => q.id === a.questionId);
       return question &&
         question.options.some((option) => option.id === a.optionId) &&
         a.correct === (a.optionId === question.correctOptionId)
-        ? [{ battle, question, answer: a }]
+        ? [{ battle, question, answer: a, questionNumber: quiz.questions.findIndex((item) => item.id === question.id) + 1 }]
         : [];
     });
   });
@@ -136,9 +134,9 @@ export function EnglishReview({
             }}
           >
             <option value="">問題を選んでください</option>
-            {entries.map(({ battle, question }) => (
+            {entries.map(({ battle, question, questionNumber }) => (
               <option key={`${battle.id}-${question.id}`} value={question.id}>
-                第{battleQuizzes[battle.quizId].questions.findIndex((q) => q.id === question.id) + 1}問 · {battle.enemyNameJa} · {question.questionEn}
+                第{questionNumber}問 · {battle.enemyNameJa} · {question.questionEn}
               </option>
             ))}
           </select>

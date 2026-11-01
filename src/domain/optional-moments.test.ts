@@ -34,7 +34,7 @@ describe("optional Milan moments", () => {
     expect(startDate(after, id)).toBe(after);
     const finished = playToEnd(during, id).state;
     expect(finished.playedDateIds).toContain(id);
-    expect(finished.memories).toContain("milano_rain_pause_music");
+    expect(finished.memories).toContain("milano_rain_v2_music");
     expect(finished.ap).toBe(during.ap);
     expect(getDateAvailability(finished, id).available).toBe(false);
     expect(startDate(finished, id)).toBe(finished);
@@ -50,7 +50,7 @@ describe("optional Milan moments", () => {
     };
     const { text } = playToEnd(state, "milano_navigli_date_01");
     expect(text).not.toContain("前にも運河の近くで話しましたね");
-    expect(text).toContain("水に映る灯り");
+    expect(text).toContain("ヴィーコロ・デイ・ラヴァンダイ");
   });
 });
 

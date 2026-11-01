@@ -34,7 +34,7 @@ describe("version 8 romance compatibility", () => {
     expect(loaded.status).toBe("loaded");
     if (loaded.status !== "loaded") throw new Error("Published checkpoint was rejected");
     const state = loaded.state;
-    expect(state.schemaVersion).toBe(10);
+    expect(state.schemaVersion).toBe(11);
     expect(state).toMatchObject({
       playerName: raw.playerName,
       heroineName: raw.heroineName,

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { legacyJourney, legacyStoryId } from "../content/legacy-milano";
 import { episodes, progression } from "../content";
 import {
   beginStory,
@@ -18,6 +19,15 @@ export const activeEpilogueSchema = z
     frame: storyFrameSchema,
   })
   .strict();
+function activeEpilogueStoryId(active: z.infer<typeof activeEpilogueSchema>): string | null {
+  const current = episodes.find((episode) => episode.id === active.episodeId)?.epilogueStoryId;
+  try { if (current && storyFingerprint(current) === active.contentHash) return current; }
+  catch { /* The archived epilogue is checked independently. */ }
+  const old = legacyJourney.episodes.find((episode) => episode.id === active.episodeId)?.epilogueStoryId;
+  if (!old) return null;
+  const archived = legacyStoryId(old);
+  return storyFingerprint(archived) === active.contentHash ? archived : null;
+}
 function variables(state: GameState) {
   const suffix = progression.stages.find(
     (item) => item.stage === state.romanceStage,
@@ -94,7 +104,7 @@ export function advanceCityEpilogue(
     activeEpilogue: {
       ...active,
       ...checkedStep(
-        continueStory(finale.epilogueStoryId!, active.storyState, active.frame),
+        continueStory(activeEpilogueStoryId(active)!, active.storyState, active.frame),
       ),
     },
   };
@@ -112,20 +122,21 @@ export function validateEpilogueState(state: GameState): void {
     (episode) =>
       episode.id === active.episodeId && episode.kind === "city_finale",
   );
+  const storyId = activeEpilogueStoryId(active);
   if (
     !finale?.epilogueStoryId ||
     !state.completedCityIds.includes(finale.cityId) ||
     state.activeDate ||
     state.activeTourism ||
     state.activeBattle ||
-    active.contentHash !== storyFingerprint(finale.epilogueStoryId) ||
+    !storyId ||
     active.frame.choices.length
   )
     throw new Error(
       "都市エピローグの途中データを確認できません。元のデータは保管されています。",
     );
   validateStorySnapshot(
-    finale.epilogueStoryId,
+    storyId!,
     active.storyState,
     active.frame,
     {

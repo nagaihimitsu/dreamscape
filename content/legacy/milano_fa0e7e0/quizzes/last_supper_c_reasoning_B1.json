@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "id": "milano_last_supper_c_reasoning_b1",
+  "landmarkId": "last_supper",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "last_supper_c_apostle_groups",
+      "questionEn": "How are the twelve apostles arranged around Christ?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "They form two groups of six, with no smaller groups."
+        },
+        {
+          "id": "B",
+          "textEn": "They form four groups of three, two groups on each side."
+        },
+        {
+          "id": "C",
+          "textEn": "They form three groups of four, with Christ inside one group."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "apostles",
+          "meaning": "使徒たち"
+        },
+        {
+          "word": "arranged",
+          "meaning": "配置された"
+        },
+        {
+          "word": "each side",
+          "meaning": "それぞれの側"
+        }
+      ],
+      "hintJa": "肩や手のやり取りでつながる、小さなまとまりを数えてみよう。キリストは十二使徒とは別に数える。",
+      "correctExplanationJa": "十二使徒は三人ずつ四組で、キリストの左右に二組ずつ配置されています。これは人物配置として確認できる事実です。その配置にどんな働きがあるかは、さらに絵を見て考える段階です。",
+      "incorrectExplanationJa": "左右に六人ずつはいますが、それぞれが三人ずつの二組に分かれています。全体では四組です。中央で少し距離を置くキリストを、使徒の一人に数えないように見てみましょう。",
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano（公式）",
+          "title": "DescriVedendo — Il Cenacolo Vinciano, pp. 2–3",
+          "url": "https://cenacolovinciano.org/wp-content/uploads/2019/07/DescriVedendo-Cenacolo.pdf",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "十二使徒はキリストの左に三人ずつ二組、右に三人ずつ二組と説明されている。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "last_supper_c_room_extension",
+      "questionEn": "What effect does the painted room create for people in the refectory?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "It makes the scene look like a small picture inside a painted frame."
+        },
+        {
+          "id": "B",
+          "textEn": "It makes the scene look separate from the real room around them."
+        },
+        {
+          "id": "C",
+          "textEn": "It makes the scene seem to continue the real room around them."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "refectory",
+          "meaning": "修道院などの食堂"
+        },
+        {
+          "word": "effect",
+          "meaning": "ここでは、見た目の効果"
+        },
+        {
+          "word": "seem",
+          "meaning": "〜のように見える"
+        },
+        {
+          "word": "continue",
+          "meaning": "ここでは、その先へ続く"
+        }
+      ],
+      "hintJa": "実際の食堂と、絵の中の食堂。壁一枚で終わるように見えるか、その向こうへ空間が続くように見えるか。",
+      "correctExplanationJa": "遠近法や光の工夫によって、描かれた空間が実際の食堂の続きのように感じられます。美術館の解説は、見る人が聖書の場面に加わるような効果として説明しています。壁に本当の部屋があるわけではありません。",
+      "incorrectExplanationJa": "この絵は、小さな額の中に場面を閉じ込めるよりも、食堂から空間が続くような効果を生みます。実際の空間と描かれた空間の関係を、美術館の解説は遠近法と光から読み解いています。",
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano（公式）",
+          "title": "Last Supper Museum and Santa Maria delle Grazie — museum leaflet, p. 4",
+          "url": "https://cenacolovinciano.org/wp-content/uploads/2024/11/Depliant-Cenacolo-ENG.pdf",
+          "checkedAt": "2026-10-30",
+          "claimType": "interpretation",
+          "claimJa": "公式リーフレットは、遠近法によって場面を実際の空間の延長として示し、見る者が場面の参加者になる効果を説明している。"
+        },
+        {
+          "publisher": "Museo del Cenacolo Vinciano（公式）",
+          "title": "A powerful theatrical machine — The perspective box",
+          "url": "https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/",
+          "checkedAt": "2026-10-30",
+          "claimType": "interpretation",
+          "claimJa": "公式解説は、遠近法と光によって実際の空間と絵の空間が相互に関係すると説明している。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "last_supper_c_shared_focus",
+      "questionEn": "Which conclusion about the composition is best supported by the two pieces of evidence?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Both can draw attention to Christ, though they work in different ways."
+        },
+        {
+          "id": "B",
+          "textEn": "The groups create four equal centers, so the lines cannot guide the eye."
+        },
+        {
+          "id": "C",
+          "textEn": "The lines prove that Leonardo wanted viewers to ignore every apostle."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "suggest",
+          "meaning": "ここでは、〜という読み取りを支える"
+        },
+        {
+          "word": "composition",
+          "meaning": "絵の構図"
+        },
+        {
+          "word": "draw attention to",
+          "meaning": "〜へ注意を向ける"
+        },
+        {
+          "word": "though",
+          "meaning": "〜ではあるけれど"
+        }
+      ],
+      "hintJa": "人物のまとまりに囲まれるのは誰か。奥行きの線はどこに集まるか。同じ対象に関わる二つの仕組みを探そう。作者の気持ちまで断定する必要はない。",
+      "correctExplanationJa": "使徒の四つのまとまりと、キリストの頭部付近に集まる遠近法の線は、別々の方法で中央への注意を強めると読めます。配置と消失点は確認できる事実、両者の働きを結ぶ説明は構図上の解釈です。「使徒を見せたくなかった」という作者の意図まで証明するものではありません。",
+      "incorrectExplanationJa": "四組に分かれていても、視線が中央へ導かれないとは言えません。人物配置と遠近法が中央への注意を強めるという読み取りなら、両方の証拠に合います。見る人の視線を完全に固定したり、使徒を無視させる作者の意図を証明したりはできません。",
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano（公式）",
+          "title": "DescriVedendo — Il Cenacolo Vinciano, pp. 2–3",
+          "url": "https://cenacolovinciano.org/wp-content/uploads/2019/07/DescriVedendo-Cenacolo.pdf",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "三人ずつ四組の使徒が、中央に離れて座るキリストを左右から囲む配置を説明している。"
+        },
+        {
+          "publisher": "Museo del Cenacolo Vinciano（公式）",
+          "title": "A powerful theatrical machine — The perspective box",
+          "url": "https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "消失点はキリスト本人の右のこめかみ付近と記載されている。"
+        },
+        {
+          "publisher": "Dreamscapeの構図解釈（参照：Museo del Cenacolo Vinciano）",
+          "title": "Composition reading based on the museum descriptions",
+          "url": "https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/",
+          "checkedAt": "2026-10-30",
+          "claimType": "interpretation",
+          "claimJa": "人物のまとまりと消失点が中央への注意を強める、という両資料に基づく構図上の読み取り。レオナルド自身による意図の証言としては扱わない。"
+        }
+      ],
+      "difficulty": "hard"
+    }
+  ]
+}

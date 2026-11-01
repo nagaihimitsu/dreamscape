@@ -26,10 +26,10 @@ describe("relationship tone in the Brera conversation", () => {
     const romantic = breraReaction("romantic_tension", "positive");
     const strained = breraReaction("strained", "negative");
     const guarded = breraReaction("guarded_attraction", "negative");
-    expect(reserved).toContain("そう見えますか");
-    expect(romantic).toContain("そこ、私も気になってました");
-    expect(strained).toContain("絵の話だけ");
-    expect(guarded).toContain("絵の話、ですよね");
+    expect(reserved).toContain("もう一度見てみよう");
+    expect(romantic).toContain("そこ、わたしも気になってた");
+    expect(strained).toContain("今は、そのまま絵を見ていたい");
+    expect(guarded).toContain("絵の話、だよね");
     expect(new Set([reserved, romantic, strained, guarded]).size).toBe(4);
   });
 });

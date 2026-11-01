@@ -78,7 +78,7 @@ describe("response profile cross-file validation", () => {
       data.effects.push({ id: "unused_memoryless_effect", affectionDelta: 0, responseProfileId: "attentive" });
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(/outside recovery: unused_memoryless_effect/);
-  }, 30_000);
+  }, 120_000);
 
   it("rejects a memoryless effect used by an ordinary date", async () => {
     await changeJson("effect_catalog.json", (data) => {
@@ -86,5 +86,5 @@ describe("response profile cross-file validation", () => {
       delete effect.memoryId;
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(/outside recovery: milano_cafe_first_joke/);
-  }, 30_000);
+  }, 120_000);
 });

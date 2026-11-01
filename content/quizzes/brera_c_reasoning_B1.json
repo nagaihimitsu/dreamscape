@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "brera_c_reasoning_b1",
+  "landmarkId": "brera_case",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "brera_camerino_original_place",
+      "questionEn": "Where was the Camerino altarpiece originally placed?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "On an altar in a church in Camerino."
+        },
+        {
+          "id": "B",
+          "textEn": "In a railway waiting room in Milan."
+        },
+        {
+          "id": "C",
+          "textEn": "On the stage of La Scala."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "altarpiece",
+          "meaning": "祭壇画"
+        },
+        {
+          "word": "originally",
+          "meaning": "もともと"
+        },
+        {
+          "word": "altar",
+          "meaning": "祭壇"
+        }
+      ],
+      "hintJa": "絵がブレラに来る前に、何のために置かれていたか。",
+      "correctExplanationJa": "公式解説によると、この祭壇画はカメリーノのサン・ドメニコ教会の主祭壇を飾っていました。",
+      "incorrectExplanationJa": "最初の場所はカメリーノの教会の主祭壇。駅や劇場の舞台ではありません。",
+      "sources": [
+        {
+          "publisher": "Pinacoteca di Brera（公式）",
+          "title": "30 minutes with Carlo Crivelli — The story of this painting",
+          "url": "https://pinacotecabrera.org/en/educazione/audio-guide/30-minutes-with-carlo-crivelli/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "カメリーノのサン・ドメニコ教会の祭壇画は、マルケ地方の教会・修道院から徴発された作品とともに1811年にブレラへ届いた。委員は美術学校の学生が多様な画派を学べる収集を目指した。三つの主要画面はブレラに残り、上部の三点は別々の場所へ移った。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "brera_camerino_separated_panels",
+      "questionEn": "What happened to parts of the Camerino altarpiece?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Every panel stayed in its original church."
+        },
+        {
+          "id": "B",
+          "textEn": "The main panels remained in Brera while some upper panels went elsewhere."
+        },
+        {
+          "id": "C",
+          "textEn": "Every panel was painted again for La Scala."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "panel",
+          "meaning": "板絵"
+        },
+        {
+          "word": "remained",
+          "meaning": "残った"
+        },
+        {
+          "word": "elsewhere",
+          "meaning": "別の場所に"
+        }
+      ],
+      "hintJa": "公式の作品解説は、主な画面と上部の画面を区別している。",
+      "correctExplanationJa": "三つの主要画面はブレラに残りましたが、上部の三点は取引を経て別々の場所へ移りました。",
+      "incorrectExplanationJa": "祭壇画のすべてが同じ教会に残ったわけではありません。ブレラの主要画面と、別の場所へ移った上部の画面があります。",
+      "sources": [
+        {
+          "publisher": "Pinacoteca di Brera（公式）",
+          "title": "30 minutes with Carlo Crivelli — The story of this painting",
+          "url": "https://pinacotecabrera.org/en/educazione/audio-guide/30-minutes-with-carlo-crivelli/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "カメリーノのサン・ドメニコ教会の祭壇画は、マルケ地方の教会・修道院から徴発された作品とともに1811年にブレラへ届いた。委員は美術学校の学生が多様な画派を学べる収集を目指した。三つの主要画面はブレラに残り、上部の三点は別々の場所へ移った。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "brera_camerino_joined_records",
+      "questionEn": "What do the two records together show about the Camerino altarpiece?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "It was made in Milan for a railway station."
+        },
+        {
+          "id": "B",
+          "textEn": "It always stayed on its original church altar."
+        },
+        {
+          "id": "C",
+          "textEn": "It moved from a church altar to an art-study collection in Milan."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "records",
+          "meaning": "記録"
+        },
+        {
+          "word": "collection",
+          "meaning": "収集、コレクション"
+        },
+        {
+          "word": "art study",
+          "meaning": "美術の学習"
+        }
+      ],
+      "hintJa": "最初に置かれた場所と、移送後の収集の目的を結びつけよう。",
+      "correctExplanationJa": "教会の祭壇を飾った作品が、徴発と移送を経てミラノの収集に加わりました。その収集は学生が様々な画派を学ぶためでもありました。",
+      "incorrectExplanationJa": "祭壇で使われたという記録と、学生の学習のための収集に入ったという記録を合わせると、作品の場所と役割の変化が見えます。",
+      "sources": [
+        {
+          "publisher": "Pinacoteca di Brera（公式）",
+          "title": "30 minutes with Carlo Crivelli — The story of this painting",
+          "url": "https://pinacotecabrera.org/en/educazione/audio-guide/30-minutes-with-carlo-crivelli/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "カメリーノのサン・ドメニコ教会の祭壇画は、マルケ地方の教会・修道院から徴発された作品とともに1811年にブレラへ届いた。委員は美術学校の学生が多様な画派を学べる収集を目指した。三つの主要画面はブレラに残り、上部の三点は別々の場所へ移った。"
+        }
+      ],
+      "difficulty": "medium"
+    }
+  ]
+}

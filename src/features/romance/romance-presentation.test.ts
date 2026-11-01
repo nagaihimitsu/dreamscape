@@ -67,8 +67,10 @@ describe("presentation of a saved romance script", () => {
 
   it("keeps the known tourism-version location without inventing one for the older cafe script", () => {
     const cafe = dates.find((item) => item.id === "milano_cafe_01")!;
+    expect(resolveRomancePresentation(cafe, { storyHash: storyFingerprint(cafe.storyId) }).destinationId)
+      .toBe("milano_starbucks_roastery");
     expect(resolveRomancePresentation(cafe, { storyHash: storyFingerprint("milano/cafe_tourism_01") }).destinationId)
-      .toBe(cafe.destinationId);
+      .toBe("milano_cafe_naviglio");
     expect(resolveRomancePresentation(cafe, { storyHash: storyFingerprint("milano/cafe_01") }).destinationId)
       .toBeUndefined();
   });

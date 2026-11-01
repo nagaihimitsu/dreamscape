@@ -14,6 +14,7 @@ export const dateSchema = z
     apCost: z.number().int().nonnegative(),
     minRomanceStage: z.number().int().min(1).max(4),
     storyId: z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/),
+    legacyOnly: z.boolean().optional(),
     legacyStoryIds: z.array(z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/)).optional(),
     requiredCompletedChapters: z.array(id),
     requiredCompletedCityIds: z.array(id).optional(),

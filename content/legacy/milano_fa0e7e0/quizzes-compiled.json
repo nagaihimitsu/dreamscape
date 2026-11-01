@@ -1,0 +1,1309 @@
+{
+  "milano_castello_b1": {
+    "schemaVersion": 1,
+    "id": "milano_castello_b1",
+    "landmarkId": "castello_sforzesco",
+    "englishLevel": "B1",
+    "questions": [
+      {
+        "id": "castello_changing_roles",
+        "questionEn": "Which description best fits the history of Castello Sforzesco?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A castle built as a museum, with no earlier military role."
+          },
+          {
+            "id": "B",
+            "textEn": "A fortress and court residence that later became home to museums."
+          },
+          {
+            "id": "C",
+            "textEn": "A castle used only by soldiers, with no place for court life."
+          }
+        ],
+        "correctOptionId": "B",
+        "vocabularyJa": [
+          {
+            "word": "fortress",
+            "meaning": "防御のための要塞"
+          },
+          {
+            "word": "court residence",
+            "meaning": "君主と宮廷の人々の住まい"
+          },
+          {
+            "word": "later",
+            "meaning": "後に"
+          }
+        ],
+        "hintJa": "高い壁は防御を思わせる。でも、この場所で暮らした人や、現在ここへ来る人の目的も考えてみよう。",
+        "correctExplanationJa": "この城は要塞、宮廷の住まい、博物館や図書館を収める文化施設など、時代によって役割を変えてきました。「城だから軍事だけ」と決めると、その壁の内側に積み重なった使われ方を見落とします。",
+        "incorrectExplanationJa": "最初から博物館だったわけでも、軍事だけの場所だったわけでもありません。要塞としての役割に加え、ヴィスコンティ家・スフォルツァ家の宮廷の住まいとなり、現在は公共の文化施設を収めています。",
+        "sources": [
+          {
+            "publisher": "Comune di Milano（ミラノ市公式）",
+            "title": "Carta dei Servizi dei Musei del Castello Sforzesco, p. 3",
+            "url": "https://www.comune.milano.it/documents/20118/3102963/21dicembre2022CARTA%2BDEI%2BSERVIZI%2BDEL%2BSERVIZIO%2BMUSEI%2BCASTELLO_2022.pdf/e05d9e1b-754d-97af-7b5b-5952df8331e4?download=true&t=1763981294913&version=1.0",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "防御のための要塞から宮廷の住まいへ変化し、修復・再建を経て博物館や図書館を収める公共の文化施設となったことを説明している。"
+          }
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "id": "castello_painted_arbor",
+        "questionEn": "How does Leonardo's decoration change the room in the Sala delle Asse?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Painted branches and cords form a leafy shelter across the walls and ceiling."
+          },
+          {
+            "id": "B",
+            "textEn": "Real tree trunks replace the walls and hold up an open wooden roof."
+          },
+          {
+            "id": "C",
+            "textEn": "Painted windows show separate gardens while the rest of the ceiling stays plain."
+          }
+        ],
+        "correctOptionId": "A",
+        "vocabularyJa": [
+          {
+            "word": "decoration",
+            "meaning": "装飾"
+          },
+          {
+            "word": "branches",
+            "meaning": "木の枝"
+          },
+          {
+            "word": "cords",
+            "meaning": "紐"
+          },
+          {
+            "word": "leafy shelter",
+            "meaning": "葉で覆われた、あずまやのような空間"
+          }
+        ],
+        "hintJa": "屋内に本物の木を植えたのではない。描かれた枝が、壁の上からどこまで広がっているかを資料で確かめよう。",
+        "correctExplanationJa": "枝や結び紐が絡み合う樹木の装飾が壁から天井へ広がり、あずまやのような空間を描いています。本物の木が屋根を支える構造ではありません。中庭の写真からは見えないため、ここでは公式資料に基づく資料カードとして扱います。",
+        "incorrectExplanationJa": "本物の木材を柱にした庭でも、独立した窓絵だけの部屋でもありません。レオナルドは枝と金色の結び紐が絡む架空のあずまやを描きました。描いた表面そのものは屋内の壁と天井です。",
+        "sources": [
+          {
+            "publisher": "Art Bonus／Comune di Milano（公式）",
+            "title": "Sala delle Asse di Leonardo al Castello Sforzesco",
+            "url": "https://artbonus.gov.it/la-sala-delle-asse-di-leonardo-da-vinci-al-castello-sforzesco-di-milano.html",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "レオナルドによる樹木のあずまやを表す装飾が、壁から天井全体へ広がる。スフォルツァ家に仕えていたミラノ滞在期の仕事と記されている。"
+          },
+          {
+            "publisher": "Ministero della Cultura（イタリア文化省）",
+            "title": "Castello Sforzesco, Milano: Sala delle Asse. Il restauro",
+            "url": "https://cultura.gov.it/comunicato/castello-sforzesco-milano-sala-delle-asse-il-restauro-1",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "スフォルツァ家が客や大使を迎える重要な部屋だったと説明し、ルドヴィーコに招かれたレオナルドが装飾したこと、枝と結び紐の架空のあずまやを描いたことを記している。"
+          }
+        ],
+        "difficulty": "medium"
+      },
+      {
+        "id": "castello_art_and_court",
+        "questionEn": "What links the decorated Sala delle Asse to the political life of the Sforza court?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "It was a place where merchants displayed paintings for sale to the public."
+          },
+          {
+            "id": "B",
+            "textEn": "It was a place where soldiers stored weapons away from important visitors."
+          },
+          {
+            "id": "C",
+            "textEn": "It was a place where the rulers received important guests and ambassadors."
+          }
+        ],
+        "correctOptionId": "C",
+        "vocabularyJa": [
+          {
+            "word": "political life",
+            "meaning": "政治や外交に関わる活動"
+          },
+          {
+            "word": "rulers",
+            "meaning": "統治者たち"
+          },
+          {
+            "word": "received",
+            "meaning": "ここでは、客として迎えた"
+          },
+          {
+            "word": "ambassadors",
+            "meaning": "大使たち"
+          }
+        ],
+        "hintJa": "装飾の題材だけでなく、その部屋へ誰が招かれたかを考えてみよう。君主の客を迎える場なら、絵と宮廷の活動がつながる。",
+        "correctExplanationJa": "文化省の解説によれば、アッセの間はスフォルツァ家が客や大使を迎えた部屋です。ルドヴィーコに招かれたレオナルドの装飾は、宮廷の実際の活動の場にありました。特定の枝一本がどんな政治的意図を表すかまで、ここから断定はしません。",
+        "incorrectExplanationJa": "この部屋を一般向けの絵画販売所や武器倉庫とする説明は、公式資料の役割と合いません。客や大使を迎える場だったことが、レオナルドの仕事とスフォルツァ家の宮廷生活を結びます。",
+        "sources": [
+          {
+            "publisher": "Ministero della Cultura（イタリア文化省）",
+            "title": "Castello Sforzesco, Milano: Sala delle Asse. Il restauro",
+            "url": "https://cultura.gov.it/comunicato/castello-sforzesco-milano-sala-delle-asse-il-restauro-1",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "スフォルツァ家が客や大使を迎える重要な部屋だったと説明し、ルドヴィーコに招かれたレオナルドが装飾したこと、枝と結び紐の架空のあずまやを描いたことを記している。"
+          },
+          {
+            "publisher": "Comune di Milano（ミラノ市公式）",
+            "title": "Carta dei Servizi dei Musei del Castello Sforzesco, p. 3",
+            "url": "https://www.comune.milano.it/documents/20118/3102963/21dicembre2022CARTA%2BDEI%2BSERVIZI%2BDEL%2BSERVIZIO%2BMUSEI%2BCASTELLO_2022.pdf/e05d9e1b-754d-97af-7b5b-5952df8331e4?download=true&t=1763981294913&version=1.0",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "防御のための要塞から宮廷の住まいへ変化し、修復・再建を経て博物館や図書館を収める公共の文化施設となったことを説明している。"
+          }
+        ],
+        "difficulty": "hard"
+      }
+    ]
+  },
+  "milano_duomo_b1": {
+    "schemaVersion": 1,
+    "id": "milano_duomo_b1",
+    "landmarkId": "duomo_milano",
+    "englishLevel": "B1",
+    "questions": [
+      {
+        "id": "duomo_candoglia_marble",
+        "questionEn": "Which stone gives much of Milan Cathedral its pale, pink-veined surface?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "White Carrara marble from the quarries in Tuscany."
+          },
+          {
+            "id": "B",
+            "textEn": "Local sandstone covered with a pale pink plaster."
+          },
+          {
+            "id": "C",
+            "textEn": "Candoglia marble from the quarries in Piedmont."
+          }
+        ],
+        "correctOptionId": "C",
+        "vocabularyJa": [
+          {
+            "word": "pink-veined",
+            "meaning": "桃色の筋が入った"
+          },
+          {
+            "word": "surface",
+            "meaning": "表面"
+          },
+          {
+            "word": "quarries",
+            "meaning": "採石場"
+          }
+        ],
+        "hintJa": "色だけでなく、石の出身地を考えよう。大聖堂には、今も維持されている専用の採石場がある。",
+        "correctExplanationJa": "ドゥオモを特徴づけるのは、ピエモンテ州カンドーリアの大理石です。淡い色に桃色の筋が入り、石の選択は構造や装飾にも影響しました。写真で色を眺めることはできますが、産地の特定は公式の記録に基づきます。",
+        "incorrectExplanationJa": "白い石だからすべてカッラーラ産、というわけではありません。ドゥオモのために使われたのは、桃色の筋をもつカンドーリアの大理石です。外壁の印象の背後に、特定の採石場との長い結び付きがあります。",
+        "sources": [
+          {
+            "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+            "title": "The Candoglia Quarry: at the Duomo’s Roots",
+            "url": "https://www.duomomilano.it/en/about-us/the-candoglia-quarry/",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "大聖堂に使う大理石はピエモンテ州カンドーリアの採石場に由来し、桃色の筋をもつと説明している。計画当初の煉瓦から大理石へ変更した経緯も記載されている。"
+          }
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "id": "duomo_water_transport",
+        "questionEn": "How did heavy marble blocks historically travel most of the way from Candoglia to Milan?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "By boat, using a lake, rivers and canals."
+          },
+          {
+            "id": "B",
+            "textEn": "By wagon, following mountain roads all the way."
+          },
+          {
+            "id": "C",
+            "textEn": "By sea, reaching a harbour beside the cathedral."
+          }
+        ],
+        "correctOptionId": "A",
+        "vocabularyJa": [
+          {
+            "word": "blocks",
+            "meaning": "ここでは、切り出した石材"
+          },
+          {
+            "word": "historically",
+            "meaning": "歴史的に、かつて"
+          },
+          {
+            "word": "canals",
+            "meaning": "運河"
+          },
+          {
+            "word": "harbour",
+            "meaning": "港"
+          }
+        ],
+        "hintJa": "ミラノには海はない。湖から川へ、川から街の運河へとつながる道なら、石を載せた何が進めるだろう。",
+        "correctExplanationJa": "石材は船で、トーチェ川、マッジョーレ湖、ティチーノ川、ナヴィリオ・グランデなどを通りました。閘門を使い、大聖堂から数百メートルの船溜まりまで近づけたのです。今の広場だけを見ていると気付きにくい、水路の街の姿が見えてきます。",
+        "incorrectExplanationJa": "山道を荷車だけで運び続けたのではなく、湖・川・運河を結ぶ水運を利用しました。ミラノの大聖堂のそばに海港があったわけでもありません。現在は失われた水路や船溜まりが、建設を支えていました。",
+        "sources": [
+          {
+            "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+            "title": "The Candoglia Quarry: at the Duomo’s Roots — transport route",
+            "url": "https://www.duomomilano.it/en/about-us/the-candoglia-quarry/",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "石材はトーチェ川、マッジョーレ湖、ティチーノ川、ナヴィリオ・グランデを通り、閘門を経て大聖堂近くの小さな船溜まりへ運ばれた。水運は1920年まで続いたと記載されている。"
+          }
+        ],
+        "difficulty": "medium"
+      },
+      {
+        "id": "duomo_statue_copies",
+        "questionEn": "How did conservators protect the damaged St George statue while keeping the spire’s appearance?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "They repaired the original outside and moved a copy indoors."
+          },
+          {
+            "id": "B",
+            "textEn": "They kept the restored original indoors and put a copy outside."
+          },
+          {
+            "id": "C",
+            "textEn": "They rebuilt the original from new stone and displayed its fragments."
+          }
+        ],
+        "correctOptionId": "B",
+        "vocabularyJa": [
+          {
+            "word": "conservators",
+            "meaning": "作品の保存・修復をする専門家"
+          },
+          {
+            "word": "original",
+            "meaning": "ここでは、元の彫像"
+          },
+          {
+            "word": "spire",
+            "meaning": "尖塔"
+          },
+          {
+            "word": "restored",
+            "meaning": "修復された"
+          },
+          {
+            "word": "fragments",
+            "meaning": "破片"
+          }
+        ],
+        "hintJa": "元の像を守ることと、屋外の姿を保つこと。同じ石を外に置き続けずに、両方を続ける方法を考えよう。",
+        "correctExplanationJa": "カレッリ尖塔の聖ゲオルギウス像には、その実例があります。空襲で損傷した原像は修復されて大聖堂美術館へ、尖塔には写しが置かれました。元の作品を守りながら建物の姿を受け継ぐ方法です。すべての像が写しだという意味ではありません。",
+        "incorrectExplanationJa": "原像を屋外に残したのでも、破片を展示して元の像を新しい石で作り直したのでもありません。聖ゲオルギウス像の例では、傷んだ原像を修復して屋内で保存し、尖塔の姿を写しが受け継ぎます。古い建物は、何も交換しないことでしか守れないわけではないのです。",
+        "sources": [
+          {
+            "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+            "title": "Adopt a Spire — G6, St. George (Carelli Spire)",
+            "url": "https://www.duomomilano.it/en/support/adopt-a-spire/",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "カレッリ尖塔の聖ゲオルギウス像は、1943年の空襲で損傷した1403年の原像を保存するため、1950年代にマリオ・バセッティが制作した写し。修復された原像は大聖堂美術館に展示されていると説明している。"
+          }
+        ],
+        "difficulty": "hard"
+      }
+    ]
+  },
+  "milano_galleria_b1": {
+    "schemaVersion": 1,
+    "id": "milano_galleria_b1",
+    "landmarkId": "galleria_vittorio_emanuele_ii",
+    "englishLevel": "B1",
+    "questions": [
+      {
+        "id": "galleria_bull_city",
+        "questionEn": "Which city does the bull in the Galleria floor mosaic represent?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Milan."
+          },
+          {
+            "id": "B",
+            "textEn": "Florence."
+          },
+          {
+            "id": "C",
+            "textEn": "Turin."
+          }
+        ],
+        "correctOptionId": "C",
+        "vocabularyJa": [
+          {
+            "word": "bull",
+            "meaning": "雄牛"
+          },
+          {
+            "word": "floor mosaic",
+            "meaning": "床のモザイク"
+          },
+          {
+            "word": "represent",
+            "meaning": "表す"
+          }
+        ],
+        "hintJa": "ここにある紋章は、ミラノだけのものではない。動物を使った別の都市の紋章も並んでいる。",
+        "correctExplanationJa": "雄牛はトリノの紋章です。床の絵は、他都市との関わりも示しています。雄牛の上で回ると幸運が来るという話は言い伝えであり、紋章が何を表すかとは別の話です。",
+        "incorrectExplanationJa": "雄牛が表すのはトリノです。ミラノの建物の中にあるからといって、すべての紋章がミラノを指すわけではありません。幸運祈願は伝承として区別しましょう。",
+        "sources": [
+          {
+            "publisher": "Comune di Milano（ミラノ市公式）",
+            "title": "Galleria Vittorio Emanuele II. Restoration of the Bull mosaic completed.",
+            "url": "https://www.comune.milano.it/en/w/galleria-vittorio-emanuele-ii.-completato-il-restauro-del-mosaico-del-toro",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "ミラノ市の修復案内は、雄牛をトリノの紋章と説明している。"
+          },
+          {
+            "publisher": "YesMilano（ミラノ公式観光サイト）",
+            "title": "Galleria Vittorio Emanuele II — The Legend of the Bull",
+            "url": "https://www.yesmilano.it/en/see-and-do/venues/galleria-vittorio-emanuele-ii",
+            "checkedAt": "2026-10-30",
+            "claimType": "legend",
+            "claimJa": "雄牛の上で回って幸運を願う行為は言い伝えとして紹介される。幸運が生じるという因果関係が証明された事実ではない。"
+          }
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "id": "galleria_roof_materials",
+        "questionEn": "Which materials form the frame and covering of the Galleria roof?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "An iron frame with a covering of glass panels."
+          },
+          {
+            "id": "B",
+            "textEn": "A timber frame with a covering of glass panels."
+          },
+          {
+            "id": "C",
+            "textEn": "A stone frame with a covering of wooden panels."
+          }
+        ],
+        "correctOptionId": "A",
+        "vocabularyJa": [
+          {
+            "word": "frame",
+            "meaning": "骨組み"
+          },
+          {
+            "word": "covering",
+            "meaning": "覆い"
+          },
+          {
+            "word": "iron",
+            "meaning": "鉄"
+          },
+          {
+            "word": "timber",
+            "meaning": "建築用の木材"
+          }
+        ],
+        "hintJa": "明るい面と、それを細かく区切って支える線を見分けてみよう。屋根全体が厚い石で覆われているわけではない。",
+        "correctExplanationJa": "屋根は鉄の骨組みとガラスを組み合わせています。光を通す面だけでなく、それを支える線も眺めると、華やかな空間を成立させる構造が見えてきます。",
+        "incorrectExplanationJa": "鉄とガラスの組み合わせです。店や装飾のある壁と、頭上の屋根は同じ作りではありません。光を通すガラスを、鉄の骨組みが支えています。",
+        "sources": [
+          {
+            "publisher": "Comune di Milano（ミラノ市公式）",
+            "title": "Galleria Vittorio Emanuele II. Project approved for roof consolidation and restoration work.",
+            "url": "https://www.comune.milano.it/en/w/galleria-vittorio-emanuele-ii.-approvato-il-progetto-per-gli-interventi-di-consolidamento-e-restauro-della-copertura",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "ミラノ市の屋根修復計画は、ガッレリアの屋根を鉄とガラスによる構造と明記している。"
+          }
+        ],
+        "difficulty": "medium"
+      },
+      {
+        "id": "galleria_city_passage",
+        "questionEn": "Which description best matches the Galleria and its role in the city?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A covered court with shops, entered and left through one main gate."
+          },
+          {
+            "id": "B",
+            "textEn": "A covered link between two squares, with shops and cafés along it."
+          },
+          {
+            "id": "C",
+            "textEn": "A covered market with stalls, set apart from the main city streets."
+          }
+        ],
+        "correctOptionId": "B",
+        "vocabularyJa": [
+          {
+            "word": "covered",
+            "meaning": "屋根で覆われた"
+          },
+          {
+            "word": "link",
+            "meaning": "つなぐもの、連絡路"
+          },
+          {
+            "word": "court",
+            "meaning": "中庭"
+          },
+          {
+            "word": "stalls",
+            "meaning": "露店・売店"
+          }
+        ],
+        "hintJa": "入口を一つの店の玄関として見るか、街の先へ続く道として見るか。ドゥオモ広場から入り、向こう側のスカラ広場へ歩く経路を考えよう。",
+        "correctExplanationJa": "ガッレリアはドゥオモ広場とスカラ広場を結ぶ屋根付き通路で、店やカフェが並びます。商品を買う場所というだけでなく、街の中を歩いたり、待ち合わせたりする空間としても見ることができます。",
+        "incorrectExplanationJa": "店の建物の中で行き止まるのではなく、二つの広場をつなぐ道でもあります。ドゥオモ広場とスカラ広場を結ぶ通路に店舗やカフェが並ぶ、という二つの役割を一緒に捉えてみましょう。",
+        "sources": [
+          {
+            "publisher": "Lombardia Beni Culturali（ロンバルディア州文化財ポータル）",
+            "title": "Galleria Vittorio Emanuele II — SIRBeC LMD80-00142",
+            "url": "https://www.lombardiabeniculturali.it/architetture/schede/LMD80-00142/",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "州文化財ポータルは、ドゥオモ広場とスカラ広場をつなぐ屋根付き通路の計画を説明している。"
+          },
+          {
+            "publisher": "YesMilano（ミラノ公式観光サイト）",
+            "title": "Grab a coffee and explore the city neighborhoods",
+            "url": "https://www.yesmilano.it/en/see-and-do/itineraries/grab-coffee-and-explore-city-neighborhoods",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "公式観光案内は、カフェや店舗の並ぶ歴史的な商業アーケードを通ってスカラ広場へ至る経路を紹介している。"
+          }
+        ],
+        "difficulty": "hard"
+      }
+    ]
+  },
+  "milano_last_supper_b1": {
+    "schemaVersion": 1,
+    "id": "milano_last_supper_b1",
+    "landmarkId": "last_supper",
+    "englishLevel": "B1",
+    "questions": [
+      {
+        "id": "last_supper_central_triangle",
+        "questionEn": "Which description matches Christ's position and shape in The Last Supper?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "He sits in the center, with both hands raised."
+          },
+          {
+            "id": "B",
+            "textEn": "He sits in the center, forming a calm triangle."
+          },
+          {
+            "id": "C",
+            "textEn": "He leans across the table, joining the others' movements."
+          }
+        ],
+        "correctOptionId": "B",
+        "vocabularyJa": [
+          {
+            "word": "Christ",
+            "meaning": "キリスト"
+          },
+          {
+            "word": "shape",
+            "meaning": "形、輪郭"
+          },
+          {
+            "word": "triangle",
+            "meaning": "三角形"
+          },
+          {
+            "word": "leans",
+            "meaning": "身を乗り出す、傾く"
+          }
+        ],
+        "hintJa": "腕や顔を大きく動かす周囲の使徒と、キリストの姿勢を比べてみよう。",
+        "correctExplanationJa": "キリストは中央に座り、頭から両腕へ広がる輪郭が安定した三角形をつくります。使徒たちの激しい身振りに囲まれ、その静けさが際立ちます。公式解説が示す構図の読み取りです。",
+        "incorrectExplanationJa": "キリストは両手を高く上げたり、周囲へ身を乗り出したりしていません。中央で三角形の輪郭をつくる落ち着いた姿と、使徒たちの動きが対照になっています。公式解説では、この構図に注目しています。",
+        "sources": [
+          {
+            "publisher": "Museo del Cenacolo Vinciano（公式）",
+            "title": "A powerful theatrical machine — The figures: Christ",
+            "url": "https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/",
+            "checkedAt": "2026-10-30",
+            "claimType": "interpretation",
+            "claimJa": "公式解説は、動きの多い十二使徒の中央で、キリストが三角形の輪郭をなして孤立して見えると分析している。構図上の読み取りであり、作者自身の発言として扱わない。"
+          }
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "id": "last_supper_vanishing_point",
+        "questionEn": "In The Last Supper, where do the room's perspective lines meet?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "At the center of the window behind Christ."
+          },
+          {
+            "id": "B",
+            "textEn": "At the center of the table in front of Christ."
+          },
+          {
+            "id": "C",
+            "textEn": "Near Christ's right temple, beside his eye."
+          }
+        ],
+        "correctOptionId": "C",
+        "vocabularyJa": [
+          {
+            "word": "perspective",
+            "meaning": "遠近法"
+          },
+          {
+            "word": "meet",
+            "meaning": "ここでは、線が一点に集まる"
+          },
+          {
+            "word": "temple",
+            "meaning": "こめかみ（ここでは「寺院」ではない）"
+          }
+        ],
+        "hintJa": "奥へ向かう天井や壁の線を、絵の中で延ばしてみるつもりで考えよう。",
+        "correctExplanationJa": "遠近法の線が集まる消失点は、キリストの右のこめかみ付近にあります。窓や食卓の中央ではありません。人物の配置だけでなく、部屋の奥行きもキリストの頭部と結び付いています。",
+        "incorrectExplanationJa": "窓や食卓も中央にありますが、消失点はその中心ではなく、キリストの右のこめかみ付近です。天井や壁の奥行きの線をたどると、人物の配置とは別の仕組みが見えてきます。",
+        "sources": [
+          {
+            "publisher": "Museo del Cenacolo Vinciano（公式）",
+            "title": "A powerful theatrical machine — The perspective box",
+            "url": "https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "公式解説は、遠近法の消失点がキリストの右のこめかみの位置にあり、床面から約４メートルの高さであると記載している。右はキリスト本人の右側を指す。"
+          }
+        ],
+        "difficulty": "medium"
+      },
+      {
+        "id": "last_supper_dry_tradeoff",
+        "questionEn": "Leonardo painted The Last Supper on dry plaster. Compared with true fresco on wet plaster, what was the main trade-off?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "He could change details slowly, but the paint was less secure."
+          },
+          {
+            "id": "B",
+            "textEn": "He could finish more quickly, but had less time to make changes."
+          },
+          {
+            "id": "C",
+            "textEn": "He could make the paint stronger, but had fewer colors to use."
+          }
+        ],
+        "correctOptionId": "A",
+        "vocabularyJa": [
+          {
+            "word": "plaster",
+            "meaning": "漆喰"
+          },
+          {
+            "word": "true fresco",
+            "meaning": "湿った漆喰に描く、本来のフレスコ技法"
+          },
+          {
+            "word": "trade-off",
+            "meaning": "一方の利点と引き換えに、別の不利が生じること"
+          },
+          {
+            "word": "secure",
+            "meaning": "ここでは、しっかり定着した"
+          }
+        ],
+        "hintJa": "湿った漆喰は乾くまでが勝負。時間の使い方と、顔料が壁に定着する仕組みを分けて考えよう。",
+        "correctExplanationJa": "乾いた下地に描く方法なら、レオナルドは時間をかけて細部を直せました。一方、顔料は湿った漆喰に取り込まれず、表面に重なるため傷みやすくなりました。劣化には室内環境も関わっています。「修正の自由」と「定着の弱さ」が同居したのです。",
+        "incorrectExplanationJa": "この技法の利点は、速さや強さではなく、時間をかけて細部を直せることでした。ただし顔料は湿った漆喰に取り込まれず、表面に重なるため傷みやすくなりました。劣化には室内環境も関係し、技法だけが原因ではありません。",
+        "sources": [
+          {
+            "publisher": "Museo del Cenacolo Vinciano（公式）",
+            "title": "Backstage — The Last Supper: the state of conservation / The painting technique",
+            "url": "https://cenacolovinciano.org/en/museum/backstage/",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "公式解説は、乾いた漆喰を用いる方法が遅い制作や変更・細部の描写を可能にする一方、顔料が吸収されず表面に重なることが脆弱性につながり、不適切な環境条件とともに早期劣化に関与したと説明している。"
+          }
+        ],
+        "difficulty": "hard"
+      }
+    ]
+  },
+  "milano_last_supper_b_reasoning_b1": {
+    "schemaVersion": 1,
+    "id": "milano_last_supper_b_reasoning_b1",
+    "landmarkId": "last_supper",
+    "englishLevel": "B1",
+    "questions": [
+      {
+        "id": "last_supper_b_slow_revision",
+        "questionEn": "Why was painting on dry plaster useful to Leonardo?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "He could work slowly and change details later."
+          },
+          {
+            "id": "B",
+            "textEn": "He could make the paint part of the wet wall."
+          },
+          {
+            "id": "C",
+            "textEn": "He could finish each section before the plaster dried."
+          }
+        ],
+        "correctOptionId": "A",
+        "vocabularyJa": [
+          {
+            "word": "plaster",
+            "meaning": "漆喰"
+          },
+          {
+            "word": "details",
+            "meaning": "細部"
+          },
+          {
+            "word": "section",
+            "meaning": "部分、区画"
+          }
+        ],
+        "hintJa": "レオナルドは細部を何度も考え直す画家だった。壁が乾くまでの時間に追われる方法と比べよう。",
+        "correctExplanationJa": "乾いた下地なら、時間をかけて描き、いったん描いた部分にも手を入れられました。湿った漆喰に顔料を定着させるフレスコとは異なる利点です。傷みやすさだけでは、この選択を説明しきれません。",
+        "incorrectExplanationJa": "湿った壁の一部として顔料を定着させたり、漆喰が乾く前に区画ごとに仕上げたりするのはフレスコの特徴です。乾いた下地を使う利点は、急がず細部を修正できることでした。",
+        "sources": [
+          {
+            "publisher": "Museo del Cenacolo Vinciano（公式）",
+            "title": "Backstage — The painting technique",
+            "url": "https://cenacolovinciano.org/en/museum/backstage/",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "公式解説は、乾いた漆喰への制作が遅い作業、既に描いた箇所の変更、細部への配慮を可能にしたと説明している。"
+          }
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "id": "last_supper_b_doorway_counterexample",
+        "questionEn": "Which reason best challenges the claim that Leonardo's technique caused ALL the damage?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The doorway proves that the paint never became fragile."
+          },
+          {
+            "id": "B",
+            "textEn": "The doorway shows that Leonardo planned to leave a gap."
+          },
+          {
+            "id": "C",
+            "textEn": "The doorway shows damage caused by a later change to the building."
+          }
+        ],
+        "correctOptionId": "C",
+        "vocabularyJa": [
+          {
+            "word": "evidence",
+            "meaning": "証拠、根拠資料"
+          },
+          {
+            "word": "challenge",
+            "meaning": "ここでは、主張に疑問を投げかける"
+          },
+          {
+            "word": "claim",
+            "meaning": "主張"
+          },
+          {
+            "word": "damage",
+            "meaning": "損傷、傷み"
+          }
+        ],
+        "hintJa": "「全部」という主張を崩すには、別の原因で生じた箇所が一つあればよい。制作時の技法と、後の建物の改変を分けてみよう。",
+        "correctExplanationJa": "中央下部の欠損は、十七世紀に厨房への出入口を広げたことによるものです。制作時の技法による劣化とは原因も時期も違います。技法が脆弱性に関わった事実を否定せず、「すべて同じ原因」という主張だけを崩せます。",
+        "incorrectExplanationJa": "扉の資料は、技法が丈夫だったことやレオナルドが欠損を予定していたことを示しません。後世の出入口拡張による損傷があるため、「全部が制作技法のせい」とは言えない、という反例です。",
+        "sources": [
+          {
+            "publisher": "Museo del Cenacolo Vinciano（公式）",
+            "title": "DescriVedendo — Il Cenacolo Vinciano, p. 4, La tavola",
+            "url": "https://cenacolovinciano.org/wp-content/uploads/2019/07/DescriVedendo-Cenacolo.pdf",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "公式掲載資料は、キリストの足元の灰色のアーチ形部分を、十七世紀に厨房への扉を拡張した結果と説明する。"
+          },
+          {
+            "publisher": "Museo del Cenacolo Vinciano（公式）",
+            "title": "Backstage — Conservation",
+            "url": "https://cenacolovinciano.org/en/museum/backstage/",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "顔料の脆弱性と室内環境による劣化も実在する。扉の損傷を示すことは、それらの要因を否定することではない。"
+          }
+        ],
+        "difficulty": "medium"
+      },
+      {
+        "id": "last_supper_b_preventive_care",
+        "questionEn": "Why does the museum filter the air and limit visitor numbers?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "To keep the painting's surface as hot and dry as possible."
+          },
+          {
+            "id": "B",
+            "textEn": "To reduce moisture and particles that could harm the painting."
+          },
+          {
+            "id": "C",
+            "textEn": "To let fresh layers of paint dry quickly between visits."
+          }
+        ],
+        "correctOptionId": "B",
+        "vocabularyJa": [
+          {
+            "word": "filter",
+            "meaning": "ろ過する"
+          },
+          {
+            "word": "limit",
+            "meaning": "制限する"
+          },
+          {
+            "word": "moisture",
+            "meaning": "湿気、水分"
+          },
+          {
+            "word": "particles",
+            "meaning": "微粒子、細かなちり"
+          }
+        ],
+        "hintJa": "絵の具を塗り足す作業ではなく、これからの傷みを防ぐ保存対策。人の出入りで空気の何が変わるだろう。",
+        "correctExplanationJa": "入場者が増えすぎると湿度や微粒子が増え、絵に悪影響を及ぼします。美術館は空気や入場を管理して、その負担を抑えています。最大限に熱く乾かすことでも、見学の合間に新しい絵の具を塗ることでもありません。",
+        "incorrectExplanationJa": "保存は「とにかく乾かす」ことではありません。美術館は湿度や微粒子などを監視し、空気を処理しながら入場を管理します。傷みの原因を分けて理解すると、現在できる対策も具体的になります。",
+        "sources": [
+          {
+            "publisher": "Museo del Cenacolo Vinciano（公式）",
+            "title": "Backstage — Conservation",
+            "url": "https://cenacolovinciano.org/en/museum/backstage/",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "公式解説は、無制限の入場が相対湿度・結露・微粒子の増加を招くため、環境監視、空気の管理、入場制限を行うと説明している。"
+          }
+        ],
+        "difficulty": "medium"
+      }
+    ]
+  },
+  "milano_last_supper_c_reasoning_b1": {
+    "schemaVersion": 1,
+    "id": "milano_last_supper_c_reasoning_b1",
+    "landmarkId": "last_supper",
+    "englishLevel": "B1",
+    "questions": [
+      {
+        "id": "last_supper_c_apostle_groups",
+        "questionEn": "How are the twelve apostles arranged around Christ?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "They form two groups of six, with no smaller groups."
+          },
+          {
+            "id": "B",
+            "textEn": "They form four groups of three, two groups on each side."
+          },
+          {
+            "id": "C",
+            "textEn": "They form three groups of four, with Christ inside one group."
+          }
+        ],
+        "correctOptionId": "B",
+        "vocabularyJa": [
+          {
+            "word": "apostles",
+            "meaning": "使徒たち"
+          },
+          {
+            "word": "arranged",
+            "meaning": "配置された"
+          },
+          {
+            "word": "each side",
+            "meaning": "それぞれの側"
+          }
+        ],
+        "hintJa": "肩や手のやり取りでつながる、小さなまとまりを数えてみよう。キリストは十二使徒とは別に数える。",
+        "correctExplanationJa": "十二使徒は三人ずつ四組で、キリストの左右に二組ずつ配置されています。これは人物配置として確認できる事実です。その配置にどんな働きがあるかは、さらに絵を見て考える段階です。",
+        "incorrectExplanationJa": "左右に六人ずつはいますが、それぞれが三人ずつの二組に分かれています。全体では四組です。中央で少し距離を置くキリストを、使徒の一人に数えないように見てみましょう。",
+        "sources": [
+          {
+            "publisher": "Museo del Cenacolo Vinciano（公式）",
+            "title": "DescriVedendo — Il Cenacolo Vinciano, pp. 2–3",
+            "url": "https://cenacolovinciano.org/wp-content/uploads/2019/07/DescriVedendo-Cenacolo.pdf",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "十二使徒はキリストの左に三人ずつ二組、右に三人ずつ二組と説明されている。"
+          }
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "id": "last_supper_c_room_extension",
+        "questionEn": "What effect does the painted room create for people in the refectory?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "It makes the scene look like a small picture inside a painted frame."
+          },
+          {
+            "id": "B",
+            "textEn": "It makes the scene look separate from the real room around them."
+          },
+          {
+            "id": "C",
+            "textEn": "It makes the scene seem to continue the real room around them."
+          }
+        ],
+        "correctOptionId": "C",
+        "vocabularyJa": [
+          {
+            "word": "refectory",
+            "meaning": "修道院などの食堂"
+          },
+          {
+            "word": "effect",
+            "meaning": "ここでは、見た目の効果"
+          },
+          {
+            "word": "seem",
+            "meaning": "〜のように見える"
+          },
+          {
+            "word": "continue",
+            "meaning": "ここでは、その先へ続く"
+          }
+        ],
+        "hintJa": "実際の食堂と、絵の中の食堂。壁一枚で終わるように見えるか、その向こうへ空間が続くように見えるか。",
+        "correctExplanationJa": "遠近法や光の工夫によって、描かれた空間が実際の食堂の続きのように感じられます。美術館の解説は、見る人が聖書の場面に加わるような効果として説明しています。壁に本当の部屋があるわけではありません。",
+        "incorrectExplanationJa": "この絵は、小さな額の中に場面を閉じ込めるよりも、食堂から空間が続くような効果を生みます。実際の空間と描かれた空間の関係を、美術館の解説は遠近法と光から読み解いています。",
+        "sources": [
+          {
+            "publisher": "Museo del Cenacolo Vinciano（公式）",
+            "title": "Last Supper Museum and Santa Maria delle Grazie — museum leaflet, p. 4",
+            "url": "https://cenacolovinciano.org/wp-content/uploads/2024/11/Depliant-Cenacolo-ENG.pdf",
+            "checkedAt": "2026-10-30",
+            "claimType": "interpretation",
+            "claimJa": "公式リーフレットは、遠近法によって場面を実際の空間の延長として示し、見る者が場面の参加者になる効果を説明している。"
+          },
+          {
+            "publisher": "Museo del Cenacolo Vinciano（公式）",
+            "title": "A powerful theatrical machine — The perspective box",
+            "url": "https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/",
+            "checkedAt": "2026-10-30",
+            "claimType": "interpretation",
+            "claimJa": "公式解説は、遠近法と光によって実際の空間と絵の空間が相互に関係すると説明している。"
+          }
+        ],
+        "difficulty": "medium"
+      },
+      {
+        "id": "last_supper_c_shared_focus",
+        "questionEn": "Which conclusion about the composition is best supported by the two pieces of evidence?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Both can draw attention to Christ, though they work in different ways."
+          },
+          {
+            "id": "B",
+            "textEn": "The groups create four equal centers, so the lines cannot guide the eye."
+          },
+          {
+            "id": "C",
+            "textEn": "The lines prove that Leonardo wanted viewers to ignore every apostle."
+          }
+        ],
+        "correctOptionId": "A",
+        "vocabularyJa": [
+          {
+            "word": "suggest",
+            "meaning": "ここでは、〜という読み取りを支える"
+          },
+          {
+            "word": "composition",
+            "meaning": "絵の構図"
+          },
+          {
+            "word": "draw attention to",
+            "meaning": "〜へ注意を向ける"
+          },
+          {
+            "word": "though",
+            "meaning": "〜ではあるけれど"
+          }
+        ],
+        "hintJa": "人物のまとまりに囲まれるのは誰か。奥行きの線はどこに集まるか。同じ対象に関わる二つの仕組みを探そう。作者の気持ちまで断定する必要はない。",
+        "correctExplanationJa": "使徒の四つのまとまりと、キリストの頭部付近に集まる遠近法の線は、別々の方法で中央への注意を強めると読めます。配置と消失点は確認できる事実、両者の働きを結ぶ説明は構図上の解釈です。「使徒を見せたくなかった」という作者の意図まで証明するものではありません。",
+        "incorrectExplanationJa": "四組に分かれていても、視線が中央へ導かれないとは言えません。人物配置と遠近法が中央への注意を強めるという読み取りなら、両方の証拠に合います。見る人の視線を完全に固定したり、使徒を無視させる作者の意図を証明したりはできません。",
+        "sources": [
+          {
+            "publisher": "Museo del Cenacolo Vinciano（公式）",
+            "title": "DescriVedendo — Il Cenacolo Vinciano, pp. 2–3",
+            "url": "https://cenacolovinciano.org/wp-content/uploads/2019/07/DescriVedendo-Cenacolo.pdf",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "三人ずつ四組の使徒が、中央に離れて座るキリストを左右から囲む配置を説明している。"
+          },
+          {
+            "publisher": "Museo del Cenacolo Vinciano（公式）",
+            "title": "A powerful theatrical machine — The perspective box",
+            "url": "https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "消失点はキリスト本人の右のこめかみ付近と記載されている。"
+          },
+          {
+            "publisher": "Dreamscapeの構図解釈（参照：Museo del Cenacolo Vinciano）",
+            "title": "Composition reading based on the museum descriptions",
+            "url": "https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/",
+            "checkedAt": "2026-10-30",
+            "claimType": "interpretation",
+            "claimJa": "人物のまとまりと消失点が中央への注意を強める、という両資料に基づく構図上の読み取り。レオナルド自身による意図の証言としては扱わない。"
+          }
+        ],
+        "difficulty": "hard"
+      }
+    ]
+  },
+  "milano_city_finale_b1": {
+    "schemaVersion": 1,
+    "id": "milano_city_finale_b1",
+    "landmarkId": null,
+    "scope": "city_finale",
+    "cityId": "milano",
+    "englishLevel": "B1",
+    "questions": [
+      {
+        "id": "milano_finale_materials",
+        "questionEn": "Which pair correctly matches the Duomo and the Galleria roof?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The Duomo uses Carrara marble; the Galleria roof uses iron and glass."
+          },
+          {
+            "id": "B",
+            "textEn": "The Duomo uses Candoglia marble; the Galleria roof uses wood and glass."
+          },
+          {
+            "id": "C",
+            "textEn": "The Duomo uses Candoglia marble; the Galleria roof uses iron and glass."
+          }
+        ],
+        "correctOptionId": "C",
+        "vocabularyJa": [
+          {
+            "word": "matches",
+            "meaning": "ここでは、正しく対応する"
+          },
+          {
+            "word": "roof",
+            "meaning": "屋根"
+          },
+          {
+            "word": "Carrara",
+            "meaning": "カッラーラ。別の大理石の産地"
+          }
+        ],
+        "hintJa": "大聖堂の石肌と、光が入る屋根。形だけでなく、何でできているかを比べよう。",
+        "correctExplanationJa": "ドゥオモはカンドーリア産の大理石、ガッレリアの屋根は鉄とガラスです。同じ街の大きな建築でも、材料と見え方は異なります。すべてを同じ素材で造った街ではありません。",
+        "incorrectExplanationJa": "ドゥオモの石材はカッラーラ産ではなく、カンドーリア産の大理石です。ガッレリアの屋根は木とガラスではなく、鉄とガラス。どちらか一つだけでなく、二つの建築の材料を組にして確かめましょう。",
+        "sources": [
+          {
+            "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+            "title": "The Candoglia Quarry",
+            "url": "https://www.duomomilano.it/en/about-us/the-candoglia-quarry/",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "大聖堂にはカンドーリア産の大理石が使われ、石材はトーチェ川、マッジョーレ湖、ティチーノ川、ナヴィリオ・グランデなどの水路を経てミラノへ運ばれた。"
+          },
+          {
+            "publisher": "Comune di Milano（公式）",
+            "title": "Galleria Vittorio Emanuele II — consolidation and restoration of the roof",
+            "url": "https://www.comune.milano.it/en/w/galleria-vittorio-emanuele-ii.-approvato-il-progetto-per-gli-interventi-di-consolidamento-e-restauro-della-copertura",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "市の屋根修復事業の説明は、ガッレリアの屋根を鉄とガラスの構造としている。"
+          }
+        ],
+        "difficulty": "easy"
+      },
+      {
+        "id": "milano_finale_routes",
+        "questionEn": "Which pair describes the use of the old marble route and the Galleria passage?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Waterways brought stone to Milan; the passage links the Duomo and Scala squares."
+          },
+          {
+            "id": "B",
+            "textEn": "Waterways brought stone to Milan; the passage links the castle area and Scala square."
+          },
+          {
+            "id": "C",
+            "textEn": "Carts alone brought stone to Milan; the passage links the Duomo and Scala squares."
+          }
+        ],
+        "correctOptionId": "A",
+        "vocabularyJa": [
+          {
+            "word": "waterways",
+            "meaning": "川・湖・運河などの水路"
+          },
+          {
+            "word": "passage",
+            "meaning": "通り抜けられる通路"
+          },
+          {
+            "word": "links",
+            "meaning": "〜を結ぶ"
+          }
+        ],
+        "hintJa": "大理石の移動に役立った水路と、二つの広場の間を歩く通路。運ぶものと結ぶ場所を別々に確かめよう。",
+        "correctExplanationJa": "カンドーリアからの石材は湖・川・運河を利用してミラノへ運ばれました。ガッレリアはドゥオモ広場とスカラ広場を結ぶ通路です。物を届ける道と、人が行き交う道。用途は異なっても、どちらも場所をつなぎます。",
+        "incorrectExplanationJa": "水路は大理石運搬の重要な経路でした。ガッレリアが結ぶのはドゥオモ広場とスカラ広場で、城とスカラ広場ではありません。「石も人も同じ道を通る」とひとまとめにしないのが要点です。",
+        "sources": [
+          {
+            "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+            "title": "The Candoglia Quarry",
+            "url": "https://www.duomomilano.it/en/about-us/the-candoglia-quarry/",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "大聖堂にはカンドーリア産の大理石が使われ、石材はトーチェ川、マッジョーレ湖、ティチーノ川、ナヴィリオ・グランデなどの水路を経てミラノへ運ばれた。"
+          },
+          {
+            "publisher": "Regione Lombardia — Lombardia Beni Culturali（公式）",
+            "title": "Galleria Vittorio Emanuele II",
+            "url": "https://www.lombardiabeniculturali.it/architetture/schede/LMD80-00142/",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "ドゥオモ広場とスカラ広場を結ぶ、屋根のある通路として建設されたことを説明している。"
+          }
+        ],
+        "difficulty": "medium"
+      },
+      {
+        "id": "milano_finale_painted_spaces",
+        "questionEn": "What effect can the paintings in the Last Supper refectory and the Sala delle Asse both create?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "They copy the real rooms without changing the sense of space."
+          },
+          {
+            "id": "B",
+            "textEn": "They extend the sense of space through images on real surfaces."
+          },
+          {
+            "id": "C",
+            "textEn": "They separate the painted scenes from the rooms around them."
+          }
+        ],
+        "correctOptionId": "B",
+        "vocabularyJa": [
+          {
+            "word": "refectory",
+            "meaning": "修道院などの食堂"
+          },
+          {
+            "word": "extend",
+            "meaning": "広げる、延長する"
+          },
+          {
+            "word": "sense of space",
+            "meaning": "空間の感じ方"
+          },
+          {
+            "word": "surfaces",
+            "meaning": "ここでは、実際の壁や天井の表面"
+          }
+        ],
+        "hintJa": "本当の壁を壊したのではない。食堂の奥行きと、描かれた木々の天井が、部屋の感じ方に何を加えるか考えよう。",
+        "correctExplanationJa": "『最後の晩餐』では描かれた食堂が実際の部屋の続きのように、アッセの間では描かれた枝が木陰のように感じられます。壁の形が物理的に変わったという意味ではなく、美術館や文化省の解説を踏まえた空間表現の読み取りです。",
+        "incorrectExplanationJa": "絵は本当の壁を取り去りません。しかし、その場所で感じる奥行きや雰囲気を変えられます。食堂の続きのような空間と、描かれた木々の下にいるような空間が、共通する手がかりです。",
+        "sources": [
+          {
+            "publisher": "Museo del Cenacolo Vinciano（公式）",
+            "title": "A powerful theatrical machine — The perspective box",
+            "url": "https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/",
+            "checkedAt": "2026-10-30",
+            "claimType": "interpretation",
+            "claimJa": "遠近法や光の表現によって、絵の中の空間と実際の食堂が関係し、場面が食堂の続きのように感じられる効果を説明している。"
+          },
+          {
+            "publisher": "Ministero della Cultura（公式）",
+            "title": "Castello Sforzesco, Milano: Sala delle Asse, il restauro",
+            "url": "https://cultura.gov.it/comunicato/castello-sforzesco-milano-sala-delle-asse-il-restauro-1",
+            "checkedAt": "2026-10-30",
+            "claimType": "interpretation",
+            "claimJa": "アッセの間は枝や金色の結び紐による、絵の中のあずまや・木陰（falso pergolato）として説明される。絵の効果であり、本物の樹木が室内に生えたという意味ではない。"
+          }
+        ],
+        "difficulty": "medium"
+      },
+      {
+        "id": "milano_finale_different_care",
+        "questionEn": "Which pair matches how the original St. George statue and The Last Supper are protected today?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The statue stays on the spire; the air around the painting is controlled."
+          },
+          {
+            "id": "B",
+            "textEn": "The statue stays in the museum; the wall painting is regularly repainted."
+          },
+          {
+            "id": "C",
+            "textEn": "The statue stays in the museum; the air around the painting is controlled."
+          }
+        ],
+        "correctOptionId": "C",
+        "vocabularyJa": [
+          {
+            "word": "original",
+            "meaning": "複製ではない原作"
+          },
+          {
+            "word": "spire",
+            "meaning": "尖塔"
+          },
+          {
+            "word": "controlled",
+            "meaning": "ここでは、環境が適切に管理されている"
+          },
+          {
+            "word": "repainted",
+            "meaning": "新しく塗り直される"
+          }
+        ],
+        "hintJa": "像の原作は移せても、壁画を同じように扱えるとは限らない。実際に取られている保存方法を、それぞれの作品に合わせよう。",
+        "correctExplanationJa": "尖塔の聖ゲオルギウス像は、損傷した原作を室内で守り、外には複製を置く方法が取られました。『最後の晩餐』は傷みやすい壁画で、空気や入場人数など周囲の環境を管理します。同じ処置を何にでも当てはめることはできません。",
+        "incorrectExplanationJa": "原作の聖ゲオルギウス像はドゥオモ美術館へ移され、尖塔には複製があります。『最後の晩餐』の画面を定期的に新しく塗り直すことが現在の保存方針なのではありません。傷みやすい絵の具を守るため、空気や入場人数などの環境を管理しています。",
+        "sources": [
+          {
+            "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+            "title": "Adopt a Spire — G6 St. George (Carelli Spire)",
+            "url": "https://www.duomomilano.it/en/support/adopt-a-spire/",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "聖ゲオルギウス像は原作を守るため1950年代に制作された複製で、原作は現在ドゥオモ美術館で展示されている。原作は1943年の爆撃で損傷していた。すべての彫像が複製だという一般化はしない。"
+          },
+          {
+            "publisher": "Museo del Cenacolo Vinciano（公式）",
+            "title": "Backstage — The state of conservation",
+            "url": "https://cenacolovinciano.org/en/museum/backstage/",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "乾いた下地の絵の具は脆弱で、室内環境も劣化に関係する。現在は空調や入場人数の管理で湿気・微粒子などの負担を抑える。"
+          }
+        ],
+        "difficulty": "hard"
+      },
+      {
+        "id": "milano_finale_living_city",
+        "questionEn": "Which comparison of the Castello and the Galleria today is supported by their uses?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The castle houses public museums; the Galleria is a display-only gallery without shops."
+          },
+          {
+            "id": "B",
+            "textEn": "The castle houses public museums; the Galleria is a passage with shops and cafes."
+          },
+          {
+            "id": "C",
+            "textEn": "The castle houses a private court; the Galleria is a passage with shops and cafes."
+          }
+        ],
+        "correctOptionId": "B",
+        "vocabularyJa": [
+          {
+            "word": "supported by",
+            "meaning": "〜を根拠に裏付けられる"
+          },
+          {
+            "word": "houses",
+            "meaning": "ここでは、施設などを内部に置く"
+          },
+          {
+            "word": "display-only",
+            "meaning": "展示だけのための"
+          },
+          {
+            "word": "court",
+            "meaning": "ここでは、支配者の宮廷"
+          }
+        ],
+        "hintJa": "城の昔の役割だけで決めないこと。今そこに何があり、ガッレリアでは今どんな日常が続いているかを比べよう。",
+        "correctExplanationJa": "スフォルツェスコ城は現在、博物館など公共の文化施設を担います。ガッレリアは店舗やカフェのある通路として使われています。二つの確認できる現在の用途を比べると、歴史的な場所が今の暮らしにも関わっているとわかります。これは、昔の役割がすべてそのまま続くという意味ではありません。",
+        "incorrectExplanationJa": "城を昔の宮廷の居所だけとして見ると、現在の公共博物館を見落とします。ガッレリアも、店舗をなくした展示専用の画廊ではありません。店やカフェのある通路として使われています。残る建物と現在の用途を、それぞれ確かめましょう。",
+        "sources": [
+          {
+            "publisher": "Comune di Milano（公式）",
+            "title": "Carta dei servizi del Servizio Musei Castello, p. 3",
+            "url": "https://www.comune.milano.it/documents/20118/3102963/21dicembre2022CARTA%2BDEI%2BSERVIZI%2BDEL%2BSERVIZIO%2BMUSEI%2BCASTELLO_2022.pdf/e05d9e1b-754d-97af-7b5b-5952df8331e4?download=true&t=1763981294913&version=1.0",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "城の防衛施設・宮廷の居所という過去と、現在の博物館や図書館などの公共文化機能を説明している。"
+          },
+          {
+            "publisher": "YesMilano — Milano & Partners（公式観光案内）",
+            "title": "Grab a coffee and explore city neighbourhoods",
+            "url": "https://www.yesmilano.it/en/see-and-do/itineraries/grab-coffee-and-explore-city-neighborhoods",
+            "checkedAt": "2026-10-30",
+            "claimType": "documented_fact",
+            "claimJa": "ガッレリアをカフェや店舗のある歴史的な商業通路として紹介し、スカラ広場へ続くことを説明している。"
+          }
+        ],
+        "difficulty": "hard"
+      }
+    ]
+  }
+}

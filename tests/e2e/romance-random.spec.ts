@@ -67,7 +67,8 @@ test("a version 8 in-progress date continues its saved Ink with fixed effects", 
   }, phase1.beforeChoice);
   const { recoveryAfterRejection: _recovery, completedRecoveryCount: _count,
     travelBudget: _budget, inventory: _inventory, completedEncounterIds: _encounters,
-    encounterRewards: _encounterRewards, activeEncounter: _activeEncounter, activeDate, ...base } = current;
+    encounterRewards: _encounterRewards, activeEncounter: _activeEncounter,
+    updatedDateIds: _updatedDateIds, activeDate, ...base } = current;
   if (!activeDate) throw new Error("Expected a legacy in-progress date");
   const { resolutionMode: _mode, randomPlan: _plan, resolvedChoices: _resolved, responseSnapshot: _snapshot, ...oldDate } = activeDate;
   const version8 = { ...base, schemaVersion: 8, activeDate: oldDate };
@@ -76,7 +77,7 @@ test("a version 8 in-progress date continues its saved Ink with fixed effects", 
   // Migration occurs when a transition is saved, without creating a new plan.
   await choose(page, 0);
   const chosen = await saved(page);
-  expect(chosen.schemaVersion).toBe(10);
+  expect(chosen.schemaVersion).toBe(11);
   expect(chosen.activeDate).toMatchObject({
     storyHash: oldDate.storyHash, resolutionMode: "legacy_fixed", randomPlan: [], resolvedChoices: [],
   });

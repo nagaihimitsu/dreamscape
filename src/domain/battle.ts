@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { legacyBattles, legacyBattleQuizzes, legacyStoryId, legacyTourism } from "../content/legacy-milano";
 import { finalizeBattleProgress, isEpisodeBlockedByStoryBattle, isEpisodeUnlocked } from "./chapter";
 import {
   battles,
@@ -94,19 +95,17 @@ export function getBattleOutcome(score: number, total = 3): BattleOutcome {
       : "defeat";
 }
 
-export function battleFingerprint(id: string): string {
-  const battle = battles.find((item) => item.id === id);
-  if (!battle) throw new Error("バトルが見つかりません。");
+function hashBattle(battle: BattleDefinition, quiz: typeof battleQuizzes[string], clues: typeof tourismClues, storyId: string): string {
   const parts: unknown[] = [
     battle,
-    battleQuizzes[battle.quizId],
-    storyFingerprint(battle.storyId),
+    quiz,
+    storyFingerprint(storyId),
   ];
   // Preserve every existing A fingerprint; special proofs also depend on the case evidence.
   if (battle.reasoning)
     parts.push(
       battle.reasoning.caseClueIds.map((clueId) =>
-        tourismClues.find((clue) => clue.id === clueId),
+        clues.find((clue) => clue.id === clueId),
       ),
     );
   const content = JSON.stringify(parts);
@@ -114,6 +113,33 @@ export function battleFingerprint(id: string): string {
   for (let index = 0; index < content.length; index++)
     hash = Math.imul(hash ^ content.charCodeAt(index), 16777619);
   return (hash >>> 0).toString(16);
+}
+
+export function battleFingerprint(id: string): string {
+  const battle = battles.find((item) => item.id === id);
+  if (!battle) throw new Error("バトルが見つかりません。");
+  return hashBattle(battle, battleQuizzes[battle.quizId], tourismClues, battle.storyId);
+}
+
+/** Resolve only a known, exactly matching publication of a battle. */
+export function getBattleContentByHash(battleId: string, contentHash: string) {
+  const current = battles.find((item) => item.id === battleId);
+  try {
+    if (current && contentHash === battleFingerprint(battleId))
+      return { battle: current, quiz: battleQuizzes[current.quizId], clues: tourismClues, legacy: false };
+  } catch { /* The new scene may not yet exist; validate against the archived bundle. */ }
+  const old = legacyBattles.find((item) => item.id === battleId);
+  const quiz = old && legacyBattleQuizzes[old.quizId];
+  if (old && quiz && contentHash === hashBattle(old, quiz, legacyTourism.clues, legacyStoryId(old.storyId)))
+    return { battle: { ...old, storyId: legacyStoryId(old.storyId) }, quiz, clues: legacyTourism.clues, legacy: true };
+  return null;
+}
+
+/** Resolve the exact published definition, quiz, evidence and Ink for an active run. */
+export function getActiveBattleContent(active: ActiveBattle) {
+  const content = getBattleContentByHash(active.battleId, active.contentHash);
+  if (content) return content;
+  throw new Error("バトルが更新されています。以前の途中データは保管されています。");
 }
 
 export function getBattleAvailability(
@@ -159,7 +185,7 @@ function withDialogue(
   active: ActiveBattle,
   scene: string,
 ): ActiveBattle {
-  const battle = battles.find((item) => item.id === active.battleId)!;
+  const { battle } = getActiveBattleContent(active);
   const next = {
     ...active,
     phase: "dialogue" as const,
@@ -248,7 +274,7 @@ export function getReasoningContext(
   state: GameState,
 ): { claimText: string; pressedText: string | null } | null {
   const active = state.activeBattle;
-  const battle = battles.find((item) => item.id === active?.battleId);
+  const battle = active ? getActiveBattleContent(active).battle : undefined;
   const config = battle?.reasoning;
   if (!active || !battle || !config) return null;
   // A later quiz answer must not rewrite the statement that introduced this proof.
@@ -287,9 +313,7 @@ export function selectReasoningClue(
   expectedRevision: number,
 ): GameState {
   const active = state.activeBattle;
-  const config = battles.find(
-    (item) => item.id === active?.battleId,
-  )?.reasoning;
+  const config = active ? getActiveBattleContent(active).battle.reasoning : undefined;
   if (
     state.activeTourism ||
     state.revision !== expectedRevision ||
@@ -328,9 +352,7 @@ export function pressBattleClaim(
   expectedRevision: number,
 ): GameState {
   const active = state.activeBattle;
-  const config = battles.find(
-    (item) => item.id === active?.battleId,
-  )?.reasoning;
+  const config = active ? getActiveBattleContent(active).battle.reasoning : undefined;
   if (
     state.activeTourism ||
     state.revision !== expectedRevision ||
@@ -358,9 +380,7 @@ export function submitBattleEvidence(
   expectedRevision: number,
 ): GameState {
   const active = state.activeBattle;
-  const config = battles.find(
-    (item) => item.id === active?.battleId,
-  )?.reasoning;
+  const config = active ? getActiveBattleContent(active).battle.reasoning : undefined;
   if (
     state.activeTourism ||
     state.revision !== expectedRevision ||
@@ -405,8 +425,8 @@ export function answerBattle(
     active.phase !== "question"
   )
     return state;
-  const battle = battles.find((item) => item.id === active.battleId)!;
-  const question = battleQuizzes[battle.quizId].questions[active.roundIndex];
+  const { quiz } = getActiveBattleContent(active);
+  const question = quiz.questions[active.roundIndex];
   const correct = scoreQuizAnswer(question, optionId);
   if (correct === null) return state;
   return {
@@ -453,10 +473,10 @@ export function advanceBattle(
   const active = state.activeBattle;
   if (state.activeTourism || state.revision !== expectedRevision || !active)
     return state;
-  const battle = battles.find((item) => item.id === active.battleId)!;
+  const { battle, quiz } = getActiveBattleContent(active);
   if (active.phase === "feedback") {
     const scene =
-      active.roundIndex === battleQuizzes[battle.quizId].questions.length - 1
+      active.roundIndex === quiz.questions.length - 1
         ? battle.scenes.outro
         : battle.scenes.afterRounds[active.roundIndex];
     return {
@@ -597,9 +617,13 @@ export function validateBattleState(state: GameState): void {
     throw new Error("バトルの記録が重複しています。");
   for (const record of state.battleRecords) {
     const definition = battles.find((item) => item.id === record.battleId);
-    const total = definition
+    const currentTotal = definition
       ? battleQuizzes[definition.quizId].questions.length
       : 0;
+    const old = legacyBattles.find((item) => item.id === record.battleId);
+    // Records predate content hashes; an older, longer quiz can legitimately
+    // have produced a score above the current version's maximum.
+    const total = Math.max(currentTotal, old ? legacyBattleQuizzes[old.quizId].questions.length : 0);
     if (
       Math.max(record.firstScore, record.bestScore, record.lastScore) > total ||
       !battles.some((item) => item.id === record.battleId) ||
@@ -616,15 +640,10 @@ export function validateBattleState(state: GameState): void {
   if (!active) return;
   if (state.activeDate || state.activeEpilogue)
     throw new Error("恋愛会話とバトルが重複しています。");
-  const battle = battles.find((item) => item.id === active.battleId);
-  if (!battle || active.contentHash !== battleFingerprint(active.battleId))
-    throw new Error(
-      "バトルが更新されています。以前の途中データは保管されています。",
-    );
+  const { battle, quiz } = getActiveBattleContent(active);
   const episode = episodes.find((item) => item.battleId === battle.id);
   if (episode && !isEpisodeUnlocked(state, episode))
     throw new Error("未解放のバトルの途中記録です。");
-  const quiz = battleQuizzes[battle.quizId];
   if (
     active.answers.length > quiz.questions.length ||
     active.roundIndex >= quiz.questions.length ||

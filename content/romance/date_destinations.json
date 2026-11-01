@@ -104,6 +104,14 @@
           "checkedAt": "2026-10-31",
           "claimType": "documented_fact",
           "claimJa": "施設公式の案内は、ミラノのロースタリーで焙煎工程を周囲から見られるようにしていると説明する。"
+        },
+        {
+          "publisher": "Starbucks",
+          "title": "Milan Roastery Factsheet — Design and Experience",
+          "url": "https://stories.starbucks.com/uploads/2018/09/Milan_Roastery_Factsheet_-_Design_and_Experience_ENG-1.pdf",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "豆は透明な管で焙煎機へ、焙煎後は銅管でコーヒーバーへ運ばれる。"
         }
       ]
     },
@@ -249,6 +257,37 @@
           "checkedAt": "2026-10-31",
           "claimType": "documented_fact",
           "claimJa": "ガッレリアは「ミラノの居間」とも呼ばれ、ガラスと鉄の屋根を持つ。"
+        }
+      ]
+    },
+    {
+      "id": "milano_novecento",
+      "cityId": "milano",
+      "nameJa": "ノヴェチェント美術館",
+      "nameEn": "Museo del Novecento",
+      "descriptionJa": "フォンタナのネオンとドゥオモ広場を同じ窓から眺める。",
+      "backgroundAssetId": "milano_novecento_date",
+      "referenceImage": {
+        "url": "https://www.museodelnovecento.org/percorsi/sala-fontana",
+        "labelJa": "作品を公式サイトで見る（外部）",
+        "backgroundNoteJa": "背景写真にネオン作品は写っていません"
+      },
+      "facts": [
+        {
+          "publisher": "Museo del Novecento",
+          "title": "Sala Fontana",
+          "url": "https://www.museodelnovecento.org/percorsi/sala-fontana",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "フォンタナ室にはルーチョ・フォンタナの曲げた管によるネオン作品がある。"
+        },
+        {
+          "publisher": "YesMilano",
+          "title": "Museo del Novecento",
+          "url": "https://www.yesmilano.it/en/see-and-do/venues/museo-del-novecento",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "フォンタナ室からドゥオモを望める。"
         }
       ]
     }

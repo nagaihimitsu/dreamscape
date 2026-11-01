@@ -27,11 +27,27 @@
           "checkedAt": "2026-11-01",
           "claimType": "documented_fact",
           "claimJa": "ミラノのバールではカウンターに立ってエスプレッソを飲む過ごし方がある。"
+        },
+        {
+          "publisher": "Camparino in Galleria",
+          "title": "Camparino in Galleria Milan",
+          "url": "https://www.camparino.com/en/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリアのカンパリーノは1915年から続き、ミラノのアペリティーヴォで知られる。"
+        },
+        {
+          "publisher": "Camparino in Galleria",
+          "title": "Bar di Passo menu",
+          "url": "https://www.camparino.com/our-menu/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "カンパリーノのメニューにはエスプレッソ、カプチーノとクロワッサンがある。"
         }
       ],
-      "titleJa": "カフェでひと休み",
-      "descriptionJa": "注文票を拾い、カウンターでの過ごし方を知る。",
-      "storyId": "encounters/galleria_cafe",
+      "titleJa": "カンパリーノでひと休み",
+      "descriptionJa": "ガッレリアの老舗で休憩する。表示価格はゲーム内の設定。",
+      "storyId": "encounters/galleria_cafe_rewrite",
       "completionMoneyEuro": 2,
       "completionItemId": "galleria_souvenir",
       "options": [
@@ -78,8 +94,8 @@
         }
       ],
       "titleJa": "床の牛と小さな占い",
-      "descriptionJa": "ガッレリアの床で声をかけられる。",
-      "storyId": "encounters/galleria_fortune",
+      "descriptionJa": "ガッレリア中央の雄牛を見に行く。",
+      "storyId": "encounters/galleria_fortune_rewrite",
       "repeatable": true,
       "alternativeApRewardId": "victory_galleria_first",
       "options": [
@@ -156,9 +172,9 @@
         },
         "chancePercent": 25,
         "rewardItemId": "galleria_ticket",
-        "wonStoryId": "encounters/galleria_quiz_won",
-        "lostStoryId": "encounters/galleria_quiz_lost",
-        "alreadyStoryId": "encounters/galleria_quiz_already"
+        "wonStoryId": "encounters/galleria_quiz_won_rewrite",
+        "lostStoryId": "encounters/galleria_quiz_lost_rewrite",
+        "alreadyStoryId": "encounters/galleria_quiz_already_rewrite"
       },
       "landmarkId": "galleria_vittorio_emanuele_ii"
     },
@@ -177,7 +193,7 @@
       ],
       "titleJa": "しおりを贈る",
       "descriptionJa": "手元のしおりを、一緒に旅する相手に渡すか考える。",
-      "storyId": "encounters/galleria_gift",
+      "storyId": "encounters/galleria_gift_rewrite",
       "options": [
         {
           "id": "offer",
@@ -221,8 +237,8 @@
         }
       ],
       "titleJa": "紋章の小さな展示",
-      "descriptionJa": "展示券か入場料で紋章の展示へ。",
-      "storyId": "encounters/galleria_outing",
+      "descriptionJa": "臨時の紋章展示へ、展示券かゲーム内の入場料で入る。",
+      "storyId": "encounters/galleria_outing_rewrite",
       "options": [
         {
           "id": "ticket",

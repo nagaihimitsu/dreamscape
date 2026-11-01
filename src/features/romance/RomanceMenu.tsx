@@ -4,6 +4,7 @@ import {
   getDateAvailability,
   getMilestoneAvailability,
   isEventVisible,
+  isUpdatedDateReplay,
   type GameState,
 } from "../../domain/game";
 import "./romance-menu.css";
@@ -32,7 +33,11 @@ export function RomanceMenu({
       (!game.playedDateIds.includes(date.id) || date.repeatable),
   );
   const ordinaryDates = visibleDates.filter((date) => date.kind === "normal");
-  const choices = [...availableMoments, ...ordinaryDates];
+  // Keep new experiences ahead of optional refreshed versions of previously
+  // completed dates, so returning players can find their next choice first.
+  const unplayedDates = ordinaryDates.filter((date) => !isUpdatedDateReplay(game, date.id));
+  const updatedDates = ordinaryDates.filter((date) => isUpdatedDateReplay(game, date.id));
+  const choices = [...availableMoments, ...unplayedDates, ...updatedDates];
   const [datePage, setDatePage] = useState(0);
   const pageCount = Math.max(1, Math.ceil(choices.length / DATES_PER_PAGE));
   const currentPage = Math.min(datePage, pageCount - 1);
@@ -139,6 +144,8 @@ export function EventCard({
   onChoose: (id: string) => void;
 }) {
   const eligibility = getDateAvailability(game, date.id);
+  const updated = isUpdatedDateReplay(game, date.id);
+  const cost = updated ? 0 : date.apCost;
   const destination = date.destinationId
     ? dateDestinations.find((item) => item.id === date.destinationId)
     : undefined;
@@ -163,15 +170,15 @@ export function EventCard({
         disabled={!eligibility.available}
         onClick={() => onChoose(date.id)}
         aria-label={destination
-          ? `${destination.nameJa}へ（${date.apCost ? `${date.apCost} AP` : "AP不要"}）`
-          : `${date.actionLabelJa}（${date.titleJa}、${date.apCost ? `${date.apCost} AP` : "AP不要"}）`}
+          ? `${destination.nameJa}へ（${cost ? `${cost} AP` : "AP不要"}）`
+          : `${date.actionLabelJa}（${date.titleJa}、${cost ? `${cost} AP` : "AP不要"}）`}
       >
         <span className="date-option-title">{destination?.nameJa ?? date.titleJa}</span>
-        <span className="date-option-cost">{date.apCost ? `${date.apCost} AP` : "AP不要"}</span>
+        <span className="date-option-cost">{cost ? `${cost} AP` : "AP不要"}</span>
         {eligibility.available && <span aria-hidden="true">→</span>}
       </button>
       {eligibility.available && (
-        <p className="event-description">{withNames(date.descriptionJa, game)}</p>
+        <p className="event-description">{updated ? "新しくなった会話を一度楽しめます。" : withNames(date.descriptionJa, game)}</p>
       )}
       {!eligibility.available && (
         <p className="availability" role="status">

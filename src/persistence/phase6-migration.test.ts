@@ -52,7 +52,8 @@ describe("Phase 5 to 6 save migration", () => {
       const state = validateGameState(raw);
       expect(state).toEqual({
         ...raw,
-        schemaVersion: 10,
+        schemaVersion: 11,
+        updatedDateIds: [],
         travelBudget: encounters.initialBudget,
         inventory: {},
         completedEncounterIds: [],

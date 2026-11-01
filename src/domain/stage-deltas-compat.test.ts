@@ -40,7 +40,7 @@ function oldV8Date(stage: 1 | 4): GameState {
     responseSnapshot: _snapshot, ...v8Active } = started.activeDate!;
   const { recoveryAfterRejection: _recovery, completedRecoveryCount: _count,
     travelBudget: _budget, inventory: _inventory, completedEncounterIds: _encounters,
-    encounterRewards: _encounterRewards, activeEncounter: _activeEncounter,
+    encounterRewards: _encounterRewards, activeEncounter: _activeEncounter, updatedDateIds: _updatedDateIds,
     activeDate: _active, ...v8State } = started;
   return validateGameState({
     ...v8State, schemaVersion: 8,
@@ -55,18 +55,20 @@ describe("stage delta compatibility at the same bold choice", () => {
     [1, 0, "positive"], [1, 9999, "negative"],
     [4, 0, "positive"], [4, 9999, "negative"],
   ] as const)("applies only the saved random deltas at stage %i and roll %i", (stage, roll, outcome) => {
-    expect(effect.responseProfileId).toBe("bold");
-    expect(effect.stageDeltas?.["4"]).toBeDefined();
+    const currentId = `${effectId}_refresh`;
+    const currentEffect = effects.find((item) => item.id === currentId)!;
+    expect(currentEffect.responseProfileId).toBe("bold");
+    expect(currentEffect.stageDeltas?.["4"]).toBeDefined();
     const ready = untilChoice(startDate(baseState(stage), dateId, () => roll));
     const after = chooseDate(ready, 1, ready.revision);
     const resolved = after.activeDate!.resolvedChoices[0];
-    expect(resolved.effectId).toBe(effectId);
+    expect(resolved.effectId).toBe(currentId);
     expect(resolved.result).toBe(outcome);
     expect(after.affection - ready.affection).toBe(resolved.deltas.affection);
     expect(after.trust - ready.trust).toBe(resolved.deltas.trust);
     expect(after.spark - ready.spark).toBe(resolved.deltas.spark);
-    expect(after.activeDate!.appliedEffectIds.filter((id) => id.endsWith(`:${effectId}`))).toHaveLength(1);
-    expect(after.memories.filter((id) => id === effect.memoryId)).toHaveLength(1);
+    expect(after.activeDate!.appliedEffectIds.filter((id) => id.endsWith(`:${currentId}`))).toHaveLength(1);
+    expect(after.memories.filter((id) => id === currentEffect.memoryId)).toHaveLength(1);
     expect(chooseDate(after, 1, ready.revision)).toBe(after);
     expect(validateGameState(JSON.parse(JSON.stringify(after)))).toEqual(after);
   });

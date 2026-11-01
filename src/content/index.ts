@@ -27,6 +27,7 @@ import reasoningIntroData from "../../content/presentation/reasoning-intros.json
 import { reasoningIntroCatalogSchema } from "./reasoning-intros";
 import { dialogueExpressionCatalogSchema } from "./dialogue-expressions";
 import generatedStories from "./generated/stories.json";
+import { legacyStories } from "./legacy-milano";
 import {
   battleCatalogSchema,
   quizSchema,
@@ -74,7 +75,7 @@ export const dialogueExpressions = dialogueExpressionCatalogSchema.parse(dialogu
 export const reasoningIntroductions: Record<string, string> = Object.fromEntries(
   reasoningIntroCatalogSchema.parse(reasoningIntroData).entries.map(({ battleId, storyId }) => [battleId, storyId]),
 );
-export const stories: Record<string, string> = generatedStories;
+export const stories: Record<string, string> = { ...generatedStories, ...legacyStories };
 export const tagContext = {
   effectIds: effects.map((effect) => effect.id),
   backgroundIds: Object.keys(presentation.backgrounds),

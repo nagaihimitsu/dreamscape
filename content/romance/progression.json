@@ -316,6 +316,306 @@
     {
       "memoryId": "milano_rain_pause_hurry",
       "textJa": "もう少し雨宿り"
+    },
+    {
+      "memoryId": "milano_novecento_first_a",
+      "textJa": "ネオンの線を迷路に見立てた。"
+    },
+    {
+      "memoryId": "milano_novecento_first_b",
+      "textJa": "展示室から広場を行く人を眺めた。"
+    },
+    {
+      "memoryId": "milano_novecento_first_c",
+      "textJa": "配線と思った彼女の勘違いを話した。"
+    },
+    {
+      "memoryId": "milano_novecento_second_a",
+      "textJa": "下から美術館の窓を探す話をした。"
+    },
+    {
+      "memoryId": "milano_novecento_second_b",
+      "textJa": "広場も作品に見えると話した。"
+    },
+    {
+      "memoryId": "milano_novecento_second_c",
+      "textJa": "違う見え方を一緒に楽しむ話をした。"
+    },
+    {
+      "memoryId": "milano_cafe_first_joke_refresh",
+      "textJa": "豆への宛先"
+    },
+    {
+      "memoryId": "milano_cafe_first_flirt_refresh",
+      "textJa": "管を追う横顔"
+    },
+    {
+      "memoryId": "milano_cafe_first_interest_refresh",
+      "textJa": "管の先"
+    },
+    {
+      "memoryId": "milano_cafe_second_playful_refresh",
+      "textJa": "豆の寄り道"
+    },
+    {
+      "memoryId": "milano_cafe_second_warm_refresh",
+      "textJa": "描き直す紙"
+    },
+    {
+      "memoryId": "milano_cafe_second_honest_refresh",
+      "textJa": "二人で見た道"
+    },
+    {
+      "memoryId": "milano_walk_first_joke_refresh",
+      "textJa": "飛んでいった像"
+    },
+    {
+      "memoryId": "milano_walk_first_listen_refresh",
+      "textJa": "動かない像探し"
+    },
+    {
+      "memoryId": "milano_walk_first_honest_refresh",
+      "textJa": "鳩に気づく目"
+    },
+    {
+      "memoryId": "milano_walk_second_joke_refresh",
+      "textJa": "鳩は外出中"
+    },
+    {
+      "memoryId": "milano_walk_second_listen_refresh",
+      "textJa": "飛んだ方角"
+    },
+    {
+      "memoryId": "milano_walk_second_honest_refresh",
+      "textJa": "ページの端"
+    },
+    {
+      "memoryId": "milano_invitation_chosen_joke_refresh",
+      "textJa": "白紙の葉書"
+    },
+    {
+      "memoryId": "milano_invitation_chosen_listen_refresh",
+      "textJa": "二枚の白"
+    },
+    {
+      "memoryId": "milano_invitation_chosen_honest_refresh",
+      "textJa": "彼女からの誘い"
+    },
+    {
+      "memoryId": "milano_night_first_joke_refresh",
+      "textJa": "水面の灯り"
+    },
+    {
+      "memoryId": "milano_night_first_listen_refresh",
+      "textJa": "橋の端から"
+    },
+    {
+      "memoryId": "milano_night_first_honest_refresh",
+      "textJa": "景色を探す表情"
+    },
+    {
+      "memoryId": "milano_night_second_joke_refresh",
+      "textJa": "逆さまのミラノ"
+    },
+    {
+      "memoryId": "milano_night_second_listen_refresh",
+      "textJa": "写真がなくても"
+    },
+    {
+      "memoryId": "milano_night_second_honest_refresh",
+      "textJa": "次に撮る景色"
+    },
+    {
+      "memoryId": "milano_reassurance_chosen_joke_refresh",
+      "textJa": "返事の予告"
+    },
+    {
+      "memoryId": "milano_reassurance_chosen_listen_refresh",
+      "textJa": "急がない返事"
+    },
+    {
+      "memoryId": "milano_reassurance_chosen_honest_refresh",
+      "textJa": "次に会う約束"
+    },
+    {
+      "memoryId": "milano_city_date_first_joke_refresh",
+      "textJa": "屋根を見る列"
+    },
+    {
+      "memoryId": "milano_city_date_first_listen_refresh",
+      "textJa": "二つの広場"
+    },
+    {
+      "memoryId": "milano_city_date_first_honest_refresh",
+      "textJa": "出口の手前"
+    },
+    {
+      "memoryId": "milano_city_date_second_joke_refresh",
+      "textJa": "往復の矢印"
+    },
+    {
+      "memoryId": "milano_city_date_second_listen_refresh",
+      "textJa": "もう一度見たい広場"
+    },
+    {
+      "memoryId": "milano_city_date_second_honest_refresh",
+      "textJa": "選ぶ道"
+    },
+    {
+      "memoryId": "milano_la_scala_first_joke_refresh",
+      "textJa": "一席を交代で"
+    },
+    {
+      "memoryId": "milano_la_scala_first_listen_refresh",
+      "textJa": "席に招く人"
+    },
+    {
+      "memoryId": "milano_la_scala_first_honest_refresh",
+      "textJa": "劇場への招待"
+    },
+    {
+      "memoryId": "milano_la_scala_second_joke_refresh",
+      "textJa": "平常心の切符"
+    },
+    {
+      "memoryId": "milano_la_scala_second_listen_refresh",
+      "textJa": "緊張する場所"
+    },
+    {
+      "memoryId": "milano_la_scala_second_honest_refresh",
+      "textJa": "二人で入る劇場"
+    },
+    {
+      "memoryId": "milano_brera_v2_first_joke",
+      "textJa": "階段の足元から、転ばないかと話が始まった。"
+    },
+    {
+      "memoryId": "milano_brera_v2_first_listen",
+      "textJa": "絵の奥の影に、一緒に気づいた。"
+    },
+    {
+      "memoryId": "milano_brera_v2_first_honest",
+      "textJa": "抱き合う二人の見え方を話した。"
+    },
+    {
+      "memoryId": "milano_brera_v2_second_joke",
+      "textJa": "階段を待つ影の人を想像して笑った。"
+    },
+    {
+      "memoryId": "milano_brera_v2_second_listen",
+      "textJa": "影の正体を決めず、それぞれの想像を話した。"
+    },
+    {
+      "memoryId": "milano_brera_v2_second_honest",
+      "textJa": "絵をまた見る話をした。"
+    },
+    {
+      "memoryId": "milano_navigli_v2_first_joke",
+      "textJa": "洗濯場の先を探そうとした。"
+    },
+    {
+      "memoryId": "milano_navigli_v2_first_listen",
+      "textJa": "石の角度から昔の作業を想像した。"
+    },
+    {
+      "memoryId": "milano_navigli_v2_first_honest",
+      "textJa": "洗濯場をもう少し見る時間を選んだ。"
+    },
+    {
+      "memoryId": "milano_navigli_v2_second_joke",
+      "textJa": "橋から路地を探そうとした。"
+    },
+    {
+      "memoryId": "milano_navigli_v2_second_listen",
+      "textJa": "橋を渡るか二人の希望を話した。"
+    },
+    {
+      "memoryId": "milano_navigli_v2_second_honest",
+      "textJa": "運河沿いの遠回りを話した。"
+    },
+    {
+      "memoryId": "milano_san_satiro_v2_first_a",
+      "textJa": "奥へ行けると二人で思い込んだ。"
+    },
+    {
+      "memoryId": "milano_san_satiro_v2_first_b",
+      "textJa": "驚く前に教えてほしいか話した。"
+    },
+    {
+      "memoryId": "milano_san_satiro_v2_first_c",
+      "textJa": "彼女に先を越された発見を話した。"
+    },
+    {
+      "memoryId": "milano_san_satiro_v2_second_a",
+      "textJa": "互いの見る場所を交換しようとした。"
+    },
+    {
+      "memoryId": "milano_san_satiro_v2_second_b",
+      "textJa": "立ち位置ごとの見え方を話した。"
+    },
+    {
+      "memoryId": "milano_san_satiro_v2_second_c",
+      "textJa": "見え方の違う二人で眺めた。"
+    },
+    {
+      "memoryId": "milano_prada_v2_first_a",
+      "textJa": "古い建物の前の使い道を探した。"
+    },
+    {
+      "memoryId": "milano_prada_v2_first_b",
+      "textJa": "新しい棟と古い壁を見比べた。"
+    },
+    {
+      "memoryId": "milano_prada_v2_first_c",
+      "textJa": "どちらから見るか話し合った。"
+    },
+    {
+      "memoryId": "milano_prada_v2_second_a",
+      "textJa": "捨てられない服の事情を想像した。"
+    },
+    {
+      "memoryId": "milano_prada_v2_second_b",
+      "textJa": "残すか迷う時間について話した。"
+    },
+    {
+      "memoryId": "milano_prada_v2_second_c",
+      "textJa": "相談しても本人が決めると話した。"
+    },
+    {
+      "memoryId": "milano_rain_v2_music",
+      "textJa": "ガラス屋根の下で傘の色を見た。"
+    },
+    {
+      "memoryId": "milano_rain_v2_watch",
+      "textJa": "柱の近くから広場の雨を眺めた。"
+    },
+    {
+      "memoryId": "milano_rain_v2_hurry",
+      "textJa": "雨を見ていたい気持ちを話した。"
+    },
+    {
+      "memoryId": "milano_roastery_v2_first_a",
+      "textJa": "ミラノで見慣れた看板を見た。"
+    },
+    {
+      "memoryId": "milano_roastery_v2_first_b",
+      "textJa": "焙煎設備に見入った。"
+    },
+    {
+      "memoryId": "milano_roastery_v2_first_c",
+      "textJa": "行きたい場所を互いに話した。"
+    },
+    {
+      "memoryId": "milano_roastery_v2_second_a",
+      "textJa": "初めての飲み物を選ぶか話した。"
+    },
+    {
+      "memoryId": "milano_roastery_v2_second_b",
+      "textJa": "店員に違いを聞くか話した。"
+    },
+    {
+      "memoryId": "milano_roastery_v2_second_c",
+      "textJa": "二人でメニューに迷った。"
     }
   ],
   "fallbackMemoryCallbackJa": "一緒に歩いて、言葉を交わした時間"

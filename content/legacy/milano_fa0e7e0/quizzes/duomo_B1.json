@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "id": "milano_duomo_b1",
+  "landmarkId": "duomo_milano",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "duomo_candoglia_marble",
+      "questionEn": "Which stone gives much of Milan Cathedral its pale, pink-veined surface?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "White Carrara marble from the quarries in Tuscany."
+        },
+        {
+          "id": "B",
+          "textEn": "Local sandstone covered with a pale pink plaster."
+        },
+        {
+          "id": "C",
+          "textEn": "Candoglia marble from the quarries in Piedmont."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "pink-veined",
+          "meaning": "桃色の筋が入った"
+        },
+        {
+          "word": "surface",
+          "meaning": "表面"
+        },
+        {
+          "word": "quarries",
+          "meaning": "採石場"
+        }
+      ],
+      "hintJa": "色だけでなく、石の出身地を考えよう。大聖堂には、今も維持されている専用の採石場がある。",
+      "correctExplanationJa": "ドゥオモを特徴づけるのは、ピエモンテ州カンドーリアの大理石です。淡い色に桃色の筋が入り、石の選択は構造や装飾にも影響しました。写真で色を眺めることはできますが、産地の特定は公式の記録に基づきます。",
+      "incorrectExplanationJa": "白い石だからすべてカッラーラ産、というわけではありません。ドゥオモのために使われたのは、桃色の筋をもつカンドーリアの大理石です。外壁の印象の背後に、特定の採石場との長い結び付きがあります。",
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+          "title": "The Candoglia Quarry: at the Duomo’s Roots",
+          "url": "https://www.duomomilano.it/en/about-us/the-candoglia-quarry/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "大聖堂に使う大理石はピエモンテ州カンドーリアの採石場に由来し、桃色の筋をもつと説明している。計画当初の煉瓦から大理石へ変更した経緯も記載されている。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "duomo_water_transport",
+      "questionEn": "How did heavy marble blocks historically travel most of the way from Candoglia to Milan?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "By boat, using a lake, rivers and canals."
+        },
+        {
+          "id": "B",
+          "textEn": "By wagon, following mountain roads all the way."
+        },
+        {
+          "id": "C",
+          "textEn": "By sea, reaching a harbour beside the cathedral."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "blocks",
+          "meaning": "ここでは、切り出した石材"
+        },
+        {
+          "word": "historically",
+          "meaning": "歴史的に、かつて"
+        },
+        {
+          "word": "canals",
+          "meaning": "運河"
+        },
+        {
+          "word": "harbour",
+          "meaning": "港"
+        }
+      ],
+      "hintJa": "ミラノには海はない。湖から川へ、川から街の運河へとつながる道なら、石を載せた何が進めるだろう。",
+      "correctExplanationJa": "石材は船で、トーチェ川、マッジョーレ湖、ティチーノ川、ナヴィリオ・グランデなどを通りました。閘門を使い、大聖堂から数百メートルの船溜まりまで近づけたのです。今の広場だけを見ていると気付きにくい、水路の街の姿が見えてきます。",
+      "incorrectExplanationJa": "山道を荷車だけで運び続けたのではなく、湖・川・運河を結ぶ水運を利用しました。ミラノの大聖堂のそばに海港があったわけでもありません。現在は失われた水路や船溜まりが、建設を支えていました。",
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+          "title": "The Candoglia Quarry: at the Duomo’s Roots — transport route",
+          "url": "https://www.duomomilano.it/en/about-us/the-candoglia-quarry/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "石材はトーチェ川、マッジョーレ湖、ティチーノ川、ナヴィリオ・グランデを通り、閘門を経て大聖堂近くの小さな船溜まりへ運ばれた。水運は1920年まで続いたと記載されている。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "duomo_statue_copies",
+      "questionEn": "How did conservators protect the damaged St George statue while keeping the spire’s appearance?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "They repaired the original outside and moved a copy indoors."
+        },
+        {
+          "id": "B",
+          "textEn": "They kept the restored original indoors and put a copy outside."
+        },
+        {
+          "id": "C",
+          "textEn": "They rebuilt the original from new stone and displayed its fragments."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "conservators",
+          "meaning": "作品の保存・修復をする専門家"
+        },
+        {
+          "word": "original",
+          "meaning": "ここでは、元の彫像"
+        },
+        {
+          "word": "spire",
+          "meaning": "尖塔"
+        },
+        {
+          "word": "restored",
+          "meaning": "修復された"
+        },
+        {
+          "word": "fragments",
+          "meaning": "破片"
+        }
+      ],
+      "hintJa": "元の像を守ることと、屋外の姿を保つこと。同じ石を外に置き続けずに、両方を続ける方法を考えよう。",
+      "correctExplanationJa": "カレッリ尖塔の聖ゲオルギウス像には、その実例があります。空襲で損傷した原像は修復されて大聖堂美術館へ、尖塔には写しが置かれました。元の作品を守りながら建物の姿を受け継ぐ方法です。すべての像が写しだという意味ではありません。",
+      "incorrectExplanationJa": "原像を屋外に残したのでも、破片を展示して元の像を新しい石で作り直したのでもありません。聖ゲオルギウス像の例では、傷んだ原像を修復して屋内で保存し、尖塔の姿を写しが受け継ぎます。古い建物は、何も交換しないことでしか守れないわけではないのです。",
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo di Milano（公式）",
+          "title": "Adopt a Spire — G6, St. George (Carelli Spire)",
+          "url": "https://www.duomomilano.it/en/support/adopt-a-spire/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "カレッリ尖塔の聖ゲオルギウス像は、1943年の空襲で損傷した1403年の原像を保存するため、1950年代にマリオ・バセッティが制作した写し。修復された原像は大聖堂美術館に展示されていると説明している。"
+        }
+      ],
+      "difficulty": "hard"
+    }
+  ]
+}

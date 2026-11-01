@@ -204,7 +204,7 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(state.ap).toBe(12);
     expect(state.pendingApRewards.length).toBeGreaterThan(0);
     const loaded = persisted(state);
-    expect(loaded.schemaVersion).toBe(10);
+    expect(loaded.schemaVersion).toBe(11);
     expect(loaded.inventory.galleria_souvenir).toBe("held");
     expect(loaded.pendingApRewards).toEqual(state.pendingApRewards);
   });
@@ -213,7 +213,7 @@ describe("Milan's four episodes and distinct city finale", () => {
     const ending = validateGameState(phase6.ending);
     const state = collectSouvenir(ending);
     const loaded = persisted(state);
-    expect(loaded.schemaVersion).toBe(10);
+    expect(loaded.schemaVersion).toBe(11);
     expect(loaded.endingReached).toBe(true);
     expect(loaded.confessionStatus).toBe(ending.confessionStatus);
     expect(loaded.inventory.galleria_souvenir).toBe("held");
@@ -263,9 +263,9 @@ describe("Milan's four episodes and distinct city finale", () => {
       expect(totalAp(state)).toBe(totalAp(finished));
       state = enterFreeTime(state, state.revision);
       if (episode.landmarkId === "last_supper")
-        expect(getNextStoryBattle(state)?.battleId).toBe("milano_last_supper_b01");
+        expect(getNextStoryBattle(state)?.battleId).toBe("milano_la_scala_b01");
       if (episode.landmarkId === "castello_sforzesco")
-        expect(getNextStoryBattle(state)?.battleId).toBe("milano_last_supper_c01");
+        expect(getNextStoryBattle(state)?.battleId).toBe("milano_brera_c01");
       state = finishPendingStory(state);
     }
     expect(ids).toEqual([
@@ -299,7 +299,7 @@ describe("Milan's four episodes and distinct city finale", () => {
       state = finishEpisode(state, getNextEpisode(state)!);
       state = enterFreeTime(state, state.revision);
     }
-    expect(getNextStoryBattle(state)?.battleId).toBe("milano_last_supper_b01");
+    expect(getNextStoryBattle(state)?.battleId).toBe("milano_la_scala_b01");
     state = finishPendingStory(state);
     expect(getNextEpisode(state)?.landmarkId).toBe("castello_sforzesco");
     expect(

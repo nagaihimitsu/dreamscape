@@ -79,13 +79,21 @@ test("custom names remain plain text and fit a 360px screen throughout the date"
     const frame = state.activeDate!.frame;
     observed.push(frame.text);
     await expectNoOverflow(page);
+    if (frame.text.includes(player)) {
+      // Check the actual frame containing markup-like input, not just the
+      // unrelated final line of the date.
+      await expect(page.locator(".dialogue-text")).toContainText(player);
+      await expect(page.locator(".dialogue-text b")).toHaveCount(0);
+    }
     if (frame.choices.length) {
       for (const choice of frame.choices) {
         const button = page.locator(".choice").nth(choice.index);
         const size = await button.boundingBox();
         expect(size!.height).toBeGreaterThanOrEqual(44);
       }
-      await choose(page, 1);
+      // In the refreshed cafe, the third first choice is the route where
+      // the heroine addresses the player by their configured name.
+      await choose(page, state.activeDate!.choiceCount === 0 ? 2 : 1);
     } else if (frame.ended) {
       break;
     } else {
@@ -131,7 +139,7 @@ test("corrupted save is preserved until explicit backup and fresh start", async 
         key.startsWith(`${SAVE_KEY}.backup.`) && value === "{broken-save",
     ),
   ).toBe(true);
-  expect((await saved(page)).schemaVersion).toBe(10);
+  expect((await saved(page)).schemaVersion).toBe(11);
   expect((await saved(page)).ap).toBe(0);
 });
 

@@ -2,6 +2,34 @@
   "schemaVersion": 1,
   "assets": [
     {
+      "id": "darsena_finale_photo",
+      "path": "assets/tourism/dates/darsena.webp",
+      "width": 1600,
+      "height": 1200,
+      "altJa": "ミラノのダルセナの水辺。岸辺の建物と、空や建物を映す水面が見える。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Milano_-_Darsena_-_vista_panoramica.jpg",
+      "licenseName": "CC BY-SA 3.0（写真および縮小・WebP変換版）",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "creditJa": "写真：Jwslubbock／Wikimedia Commons／CC BY-SA 3.0",
+      "modificationJa": "原画像4032×3024pxを構図と縦横比を保って1600×1200pxに縮小しWebP変換。切り抜き、反転、描き足し、生成AI加工なし。変換版もCC BY-SA 3.0で提供。",
+      "checkedAt": "2026-11-01"
+    },
+    {
+      "id": "novecento_window_photo",
+      "path": "assets/tourism/dates/novecento.webp",
+      "width": 1600,
+      "height": 1067,
+      "altJa": "ミラノのノヴェチェント美術館フォンタナ室の窓から見るドゥオモ。手前にピアノがあり、ネオン作品そのものは写っていない。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Milano_-_Museo_del_Novecento_affacciato_sul_Duomo.JPG",
+      "licenseName": "CC BY-SA 4.0（写真および縮小・WebP変換版）",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Monica Rondoni（2024年1月2日）／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "原画像3408×2272pxを構図・縦横比を保って1600×1067pxに縮小しWebP変換。切り抜き、反転、描き足し、生成AI加工なし。変換版もCC BY-SA 4.0で提供。写真にネオン作品は写っていません。",
+      "checkedAt": "2026-11-01"
+    },
+    {
       "id": "last_supper_photo",
       "path": "assets/tourism/last-supper.webp",
       "width": 2560,
@@ -154,6 +182,20 @@
       "creditJa": "写真：Vincenzo Paolella／Wikimedia Commons／CC BY-SA 4.0",
       "modificationJa": "縦横比を維持して縮小・WebP変換。表示時は画面比率により端が切れます。変換画像もCC BY-SA 4.0。",
       "checkedAt": "2026-10-31"
+    },
+    {
+      "id": "brera_courtyard_case_photo",
+      "path": "assets/tourism/brera-courtyard.webp",
+      "width": 1920,
+      "height": 1440,
+      "altJa": "ブレラ宮殿の中庭。回廊と柱、中央に白い像が見える。カメリーノの祭壇画は写っていない。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:La_Brera,_Milan,_courtyard.jpg",
+      "licenseName": "CC0 1.0 Universal",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creditJa": "写真：Gerda Arendt（2025年10月29日）、Wikimedia Commons／CC0 1.0",
+      "modificationJa": "Commonsの1920×1440px縮小版を同寸法のWebPに変換。切り抜き、反転、描き足しなし。",
+      "checkedAt": "2026-11-01"
     }
   ],
   "landmarks": [
@@ -164,7 +206,7 @@
       "nameEn": "The Last Supper",
       "descriptionJa": "サンタ・マリア・デッレ・グラツィエ修道院の旧食堂。壁いっぱいの絵を、少し近くで眺めてみよう。",
       "imageAssetId": "last_supper_photo",
-      "guideStoryId": "tourism/last_supper_guide",
+      "guideStoryId": "tourism/last_supper_guide_rewrite",
       "battleId": "milano_last_supper_01",
       "clueIds": [
         "last_supper_perspective",
@@ -181,7 +223,7 @@
       "nameEn": "Milan Cathedral (Duomo di Milano)",
       "descriptionJa": "空へ伸びる石の尖塔。その石がここへ届き、今も残るまでの旅を見つける。",
       "imageAssetId": "duomo_milano_photo",
-      "guideStoryId": "tourism/duomo_guide",
+      "guideStoryId": "tourism/duomo_guide_rewrite",
       "battleId": "milano_duomo_01",
       "clueIds": [
         "duomo_marble_surface",
@@ -197,7 +239,7 @@
       "nameEn": "Galleria Vittorio Emanuele II",
       "descriptionJa": "見上げる屋根と、歩いていく先。華やかな店の間で、街の道が続いている。",
       "imageAssetId": "galleria_milano_photo",
-      "guideStoryId": "tourism/galleria_guide",
+      "guideStoryId": "tourism/galleria_guide_rewrite",
       "battleId": "milano_galleria_01",
       "clueIds": [
         "galleria_roof_light",
@@ -213,13 +255,45 @@
       "nameEn": "Castello Sforzesco",
       "descriptionJa": "高い城壁の内側で、場所の役割と見る人のまなざしが変わる。中庭の写真と室内の資料を、一緒にひもとく。",
       "imageAssetId": "castello_courtyard_photo",
-      "guideStoryId": "tourism/castello_guide",
+      "guideStoryId": "tourism/castello_guide_rewrite",
       "battleId": "milano_castello_01",
       "clueIds": [
         "castello_bona_tower",
         "castello_public_courtyard",
         "castello_sala_asse",
         "castello_court_reception"
+      ]
+    },
+    {
+      "id": "la_scala_case",
+      "cityId": "milano",
+      "nameJa": "スカラ座",
+      "nameEn": "Teatro alla Scala",
+      "descriptionJa": "劇場と博物館の記録から、火災・空襲・再開の出来事をたどる。",
+      "imageAssetId": "la_scala_date_photo",
+      "guideStoryId": "tourism/la_scala_case_guide",
+      "battleId": "milano_la_scala_b01",
+      "clueIds": [
+        "scala_ducal_fire",
+        "scala_air_raid",
+        "scala_reopening"
+      ]
+    },
+    {
+      "id": "brera_case",
+      "cityId": "milano",
+      "nameJa": "ブレラ絵画館",
+      "nameEn": "Pinacoteca di Brera",
+      "descriptionJa": "ブレラ宮殿の中庭。絵画館の資料から、カメリーノの祭壇画の来歴をたどる。",
+      "imageAssetId": "brera_courtyard_case_photo",
+      "guideStoryId": "tourism/brera_case_guide",
+      "battleId": "milano_brera_c01",
+      "clueIds": [
+        "brera_original_altar",
+        "brera_collection_transfer",
+        "brera_distributed_panels",
+        "brera_collection_origins",
+        "brera_mantegna_purchase"
       ]
     }
   ],
@@ -672,6 +746,179 @@
           "checkedAt": "2026-10-30",
           "claimType": "documented_fact",
           "claimJa": "スフォルツァ家が客や大使を迎える重要な部屋だったと説明し、ルドヴィーコに招かれたレオナルドが装飾したこと、枝と結び紐の架空のあずまやを描いたことを記している。"
+        }
+      ]
+    },
+    {
+      "id": "scala_ducal_fire",
+      "landmarkId": "la_scala_case",
+      "kind": "document",
+      "titleJa": "先代劇場の火災",
+      "descriptionJa": "1776年、火災で失われたのはスカラ座ではなく、その前にあったドゥカーレ劇場。スカラ座はその後に建設された。この写真に火災の様子は写っていない。",
+      "factId": "scala_previous_theatre_fire",
+      "relatedQuestionIds": [
+        "scala_old_theatre_fire"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Museo Teatrale alla Scala（公式）",
+          "title": "History of the Theatre",
+          "url": "https://www.museoscala.org/en/history/theatre/history-of-the-theatre.html",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "1776年に先代のドゥカーレ劇場が火災で失われ、1778年にスカラ座が完成。1943年の空襲で大きな被害を受け、再建後1946年に再開した。"
+        }
+      ]
+    },
+    {
+      "id": "scala_air_raid",
+      "landmarkId": "la_scala_case",
+      "kind": "document",
+      "titleJa": "空襲で傷ついた劇場",
+      "descriptionJa": "公式の劇場史には、1943年8月の空襲でスカラ座が大きな被害を受けたとある。現在の外観の写真は当時の被害を示すものではない。",
+      "factId": "scala_1943_air_raid",
+      "relatedQuestionIds": [
+        "scala_wartime_counterexample"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Museo Teatrale alla Scala（公式）",
+          "title": "History of the Theatre",
+          "url": "https://www.museoscala.org/en/history/theatre/history-of-the-theatre.html",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "1776年に先代のドゥカーレ劇場が火災で失われ、1778年にスカラ座が完成。1943年の空襲で大きな被害を受け、再建後1946年に再開した。"
+        }
+      ]
+    },
+    {
+      "id": "scala_reopening",
+      "landmarkId": "la_scala_case",
+      "kind": "document",
+      "titleJa": "再開の日の演奏会",
+      "descriptionJa": "記録によると、スカラ座は1946年5月に演奏会とともに再開した。再開したという日付だけで、建物が閉じた原因までは特定できない。",
+      "factId": "scala_reopening_concert",
+      "relatedQuestionIds": [
+        "scala_reopening_community"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Museo Teatrale alla Scala（公式）",
+          "title": "History of the Theatre",
+          "url": "https://www.museoscala.org/en/history/theatre/history-of-the-theatre.html",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "1776年に先代のドゥカーレ劇場が火災で失われ、1778年にスカラ座が完成。1943年の空襲で大きな被害を受け、再建後1946年に再開した。"
+        }
+      ]
+    },
+    {
+      "id": "brera_original_altar",
+      "landmarkId": "brera_case",
+      "kind": "document",
+      "titleJa": "記録１：カメリーノの祭壇",
+      "descriptionJa": "クリヴェッリのカメリーノ祭壇画は、もともとカメリーノのサン・ドメニコ教会の主祭壇に置かれていた。ブレラ宮殿中庭の写真に、この絵は写っていない。",
+      "factId": "brera_camerino_original_altar",
+      "relatedQuestionIds": [
+        "brera_camerino_original_place",
+        "brera_camerino_joined_records"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Pinacoteca di Brera（公式）",
+          "title": "30 minutes with Carlo Crivelli — The story of this painting",
+          "url": "https://pinacotecabrera.org/en/educazione/audio-guide/30-minutes-with-carlo-crivelli/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "カメリーノのサン・ドメニコ教会の祭壇画は、マルケ地方の教会・修道院から徴発された作品とともに1811年にブレラへ届いた。委員は美術学校の学生が多様な画派を学べる収集を目指した。三つの主要画面はブレラに残り、上部の三点は別々の場所へ移った。"
+        }
+      ]
+    },
+    {
+      "id": "brera_collection_transfer",
+      "landmarkId": "brera_case",
+      "kind": "document",
+      "titleJa": "記録２：ミラノへ届いた箱",
+      "descriptionJa": "公式の作品解説によると、カメリーノの祭壇画は1811年にブレラへ届いた。ナポレオン政権下、委員は各地の絵を学生が学べる収集を目指し、マルケの教会などから作品を徴発した。",
+      "factId": "brera_camerino_transfer",
+      "relatedQuestionIds": [
+        "brera_camerino_joined_records"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Pinacoteca di Brera（公式）",
+          "title": "30 minutes with Carlo Crivelli — The story of this painting",
+          "url": "https://pinacotecabrera.org/en/educazione/audio-guide/30-minutes-with-carlo-crivelli/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "カメリーノのサン・ドメニコ教会の祭壇画は、マルケ地方の教会・修道院から徴発された作品とともに1811年にブレラへ届いた。委員は美術学校の学生が多様な画派を学べる収集を目指した。三つの主要画面はブレラに残り、上部の三点は別々の場所へ移った。"
+        }
+      ]
+    },
+    {
+      "id": "brera_distributed_panels",
+      "landmarkId": "brera_case",
+      "kind": "document",
+      "titleJa": "別々の場所に残る板絵",
+      "descriptionJa": "作品解説では、三つの主要画面はブレラに残り、上部の三点は取引を経てフランクフルトとベルンに分かれたと説明される。中庭の写真からは板絵の細部を確かめられない。",
+      "factId": "brera_camerino_panels",
+      "relatedQuestionIds": [
+        "brera_camerino_separated_panels"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Pinacoteca di Brera（公式）",
+          "title": "30 minutes with Carlo Crivelli — The story of this painting",
+          "url": "https://pinacotecabrera.org/en/educazione/audio-guide/30-minutes-with-carlo-crivelli/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "カメリーノのサン・ドメニコ教会の祭壇画は、マルケ地方の教会・修道院から徴発された作品とともに1811年にブレラへ届いた。委員は美術学校の学生が多様な画派を学べる収集を目指した。三つの主要画面はブレラに残り、上部の三点は別々の場所へ移った。"
+        }
+      ]
+    },
+    {
+      "id": "brera_collection_origins",
+      "landmarkId": "brera_case",
+      "kind": "document",
+      "titleJa": "別の収集：絵画館の始まり",
+      "descriptionJa": "ブレラ絵画館は1809年に正式に設立された。その前にも、学校の学生が作品を学べるよう収集があった。この一般的な沿革だけでは、個別の作品の元の場所はわからない。",
+      "factId": "brera_collection_history",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Pinacoteca di Brera（公式）",
+          "title": "History",
+          "url": "https://pinacotecabrera.org/en/about-us/history/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "ブレラ絵画館は1809年に正式に設立されたが、それ以前から美術学校の学生のための収集があった。"
+        }
+      ]
+    },
+    {
+      "id": "brera_mantegna_purchase",
+      "landmarkId": "brera_case",
+      "kind": "document",
+      "titleJa": "別の作品：ローマから来た絵",
+      "descriptionJa": "公式解説によると、マンテーニャの《死せるキリスト》はボッシがローマの美術商のもとで見つけ、1824年にブレラに入った。カメリーノの祭壇画とは別の作品。",
+      "factId": "brera_mantegna_route",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Pinacoteca di Brera（公式）",
+          "title": "10 Masterpieces for you — Lamentation over the Dead Christ",
+          "url": "https://pinacotecabrera.org/en/educazione/audio-guide/10-masterpieces-for-you/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "マンテーニャの《死せるキリスト》は、ボッシがローマの美術商のもとで見つけ、1824年にブレラの所蔵となった。"
         }
       ]
     }

@@ -52,7 +52,11 @@ async function assertCaseImage(page: Page, clueId: string) {
     await img.decode();
     return img.naturalWidth;
   }, href);
-  expect(width).toBe(tourismAssets[0].width);
+  const clue = tourismClues.find((item) => item.id === clueId);
+  const landmark = tourism.landmarks.find((item) => item.id === clue?.landmarkId);
+  const asset = tourismAssets.find((item) => item.id === landmark?.imageAssetId);
+  expect(asset).toBeDefined();
+  expect(width).toBe(asset!.width);
 }
 
 test("B exposes a definite contradiction with readable case evidence, persists retries, and grants no rewards", async ({
@@ -311,7 +315,7 @@ test("an authentic Phase 5 A question remains intact until the next action migra
   await closeBookUnchanged(page);
   await page.getByRole("button", { name: "ヒントを見る", exact: true }).click();
   const migrated = await saved(page);
-  expect(migrated.schemaVersion).toBe(10);
+  expect(migrated.schemaVersion).toBe(11);
   expect(migrated.activeBattle).toEqual({
     ...phase5.battleQuestion.activeBattle,
     reasoning: null,

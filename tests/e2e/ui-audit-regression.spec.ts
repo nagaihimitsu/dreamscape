@@ -26,17 +26,27 @@ async function expectOnScreen(target: Locator) {
 }
 
 async function checkDatePool(page: Page) {
-  const state = await saved(page);
+  // Older saves remain in their original format until the first write. The UI
+  // works from the migrated state and may offer a revised scene once.
+  const { state, visibleIds, updatedIds } = await page.evaluate(async ({ snapshot, ids }) => {
+    const modulePath = "/src/domain/game.ts";
+    const domain = await import(/* @vite-ignore */ modulePath);
+    const migrated = domain.validateGameState(snapshot);
+    return {
+      state: migrated,
+      visibleIds: ids.filter((id) => domain.isEventVisible(migrated, id)),
+      updatedIds: ids.filter((id) => domain.isUpdatedDateReplay(migrated, id)),
+    };
+  }, { snapshot: await saved(page), ids: catalog.dates.map((date) => date.id) });
   const visible = catalog.dates.filter((date) =>
-    (!state.endingReached || date.kind === "normal" || ("allowAfterEnding" in date && date.allowAfterEnding)) &&
-    (!("forbiddenCompletedEpisodeIds" in date) ||
-      (date.forbiddenCompletedEpisodeIds ?? []).every((id) => !state.completedEpisodeIds.includes(id))) &&
-    (date.kind === "normal"
-      ? !state.playedDateIds.includes(date.id) &&
-        (!("requiredCompletedEpisodeIds" in date) ||
-          (date.requiredCompletedEpisodeIds ?? []).every((id) => state.completedEpisodeIds.includes(id)))
-      : state.unlockedEventIds.includes(date.id) && (!state.playedDateIds.includes(date.id) || date.repeatable)));
-  const items = [...visible.filter((date) => date.kind !== "normal"), ...visible.filter((date) => date.kind === "normal")];
+    visibleIds.includes(date.id) &&
+    (date.kind === "normal" || !state.playedDateIds.includes(date.id) || date.repeatable));
+  const ordinary = visible.filter((date) => date.kind === "normal");
+  const items = [
+    ...visible.filter((date) => date.kind !== "normal"),
+    ...ordinary.filter((date) => !updatedIds.includes(date.id)),
+    ...ordinary.filter((date) => updatedIds.includes(date.id)),
+  ];
   const count = Math.ceil(items.length / 5);
   const list = page.locator(".date-list");
   const nav = page.getByRole("navigation", { name: "デート候補のページ" });
@@ -49,7 +59,8 @@ async function checkDatePool(page: Page) {
       const button = row.getByRole("button");
       const destination = "destinationId" in date ? destinations.destinations.find((item) => item.id === date.destinationId) : undefined;
       await expect(button).toContainText(destination?.nameJa ?? date.titleJa);
-      await expect(button).toContainText(date.apCost ? `${date.apCost} AP` : "AP不要");
+      const cost = updatedIds.includes(date.id) ? 0 : date.apCost;
+      await expect(button).toContainText(cost ? `${cost} AP` : "AP不要");
       if (await button.isEnabled()) await expect(row.locator(".event-description")).toBeVisible();
       else await expect(row.getByRole("status")).not.toBeEmpty();
       const size = (await button.boundingBox())!;

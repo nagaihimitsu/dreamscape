@@ -598,6 +598,162 @@
         "B": "絵に害を与えるおそれのある湿気や粒子を減らすため。",
         "C": "来館の合間に新しい絵の具の層を速く乾かすため。"
       }
+    },
+    "scala_old_theatre_fire": {
+      "source": {
+        "questionEn": "Why was a new theatre built before La Scala opened?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The previous theatre had been destroyed by fire."
+          },
+          {
+            "id": "B",
+            "textEn": "The existing theatre had been moved to a railway station."
+          },
+          {
+            "id": "C",
+            "textEn": "The public had never had a theatre in Milan."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "スカラ座が開く前、なぜ新しい劇場が建てられたのですか？",
+      "optionsJa": {
+        "A": "前の劇場が火災で失われたから。",
+        "B": "既存の劇場が鉄道駅に移されたから。",
+        "C": "ミラノにはそれまで市民の劇場がなかったから。"
+      }
+    },
+    "scala_wartime_counterexample": {
+      "source": {
+        "questionEn": "Which record challenges the claim that La Scala was never damaged by war?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A fire destroyed an earlier theatre before La Scala was built."
+          },
+          {
+            "id": "B",
+            "textEn": "An air raid badly damaged La Scala in 1943."
+          },
+          {
+            "id": "C",
+            "textEn": "A concert marked the theatre reopening in 1946."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "スカラ座が戦争で損傷したことは一度もないという主張に反する記録はどれですか？",
+      "optionsJa": {
+        "A": "スカラ座建設前に、先代の劇場が火災で失われた。",
+        "B": "1943年の空襲でスカラ座が大きく損傷した。",
+        "C": "1946年の劇場再開を演奏会が飾った。"
+      }
+    },
+    "scala_reopening_community": {
+      "source": {
+        "questionEn": "After the wartime damage, what happened to La Scala?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "It was rebuilt and reopened with a concert."
+          },
+          {
+            "id": "B",
+            "textEn": "It became a railway station and never reopened."
+          },
+          {
+            "id": "C",
+            "textEn": "It was moved inside the earlier theatre."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "戦時中の被害の後、スカラ座はどうなりましたか？",
+      "optionsJa": {
+        "A": "再建され、演奏会とともに再開した。",
+        "B": "鉄道駅となり、二度と再開しなかった。",
+        "C": "先代の劇場の中に移された。"
+      }
+    },
+    "brera_camerino_original_place": {
+      "source": {
+        "questionEn": "Where was the Camerino altarpiece originally placed?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "On an altar in a church in Camerino."
+          },
+          {
+            "id": "B",
+            "textEn": "In a railway waiting room in Milan."
+          },
+          {
+            "id": "C",
+            "textEn": "On the stage of La Scala."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "カメリーノの祭壇画は、もともとどこに置かれていましたか？",
+      "optionsJa": {
+        "A": "カメリーノにある教会の祭壇。",
+        "B": "ミラノにある鉄道駅の待合室。",
+        "C": "スカラ座の舞台。"
+      }
+    },
+    "brera_camerino_separated_panels": {
+      "source": {
+        "questionEn": "What happened to parts of the Camerino altarpiece?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Every panel stayed in its original church."
+          },
+          {
+            "id": "B",
+            "textEn": "The main panels remained in Brera while some upper panels went elsewhere."
+          },
+          {
+            "id": "C",
+            "textEn": "Every panel was painted again for La Scala."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "カメリーノの祭壇画の一部はどうなりましたか？",
+      "optionsJa": {
+        "A": "すべての板絵が、もとの教会に残った。",
+        "B": "主要な板絵はブレラに残り、上部の一部は別の場所へ移った。",
+        "C": "すべての板絵がスカラ座のために描き直された。"
+      }
+    },
+    "brera_camerino_joined_records": {
+      "source": {
+        "questionEn": "What do the two records together show about the Camerino altarpiece?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "It was made in Milan for a railway station."
+          },
+          {
+            "id": "B",
+            "textEn": "It always stayed on its original church altar."
+          },
+          {
+            "id": "C",
+            "textEn": "It moved from a church altar to an art-study collection in Milan."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "二つの記録を合わせると、カメリーノの祭壇画について何がわかりますか？",
+      "optionsJa": {
+        "A": "ミラノで鉄道駅のために制作された。",
+        "B": "ずっと元の教会の祭壇に置かれた。",
+        "C": "教会の祭壇から、ミラノの美術学習のための収集へ移った。"
+      }
     }
   }
 }

@@ -59,7 +59,7 @@ describe("Phase 3 save compatibility", () => {
       } = fixture;
       expect(loaded.state).toMatchObject({
         ...protectedFields,
-        schemaVersion: 10,
+        schemaVersion: 11,
         activeTourism: null,
         discoveredClueIds: [],
         visitedLandmarkIds: [],
@@ -149,7 +149,7 @@ describe("Phase 3 save compatibility", () => {
       exploring.revision,
     );
     expect(saveGame(storage, discovered, exploring)).toEqual({ ok: true });
-    expect(JSON.parse(storage.getItem(SAVE_KEY)!).schemaVersion).toBe(10);
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!).schemaVersion).toBe(11);
     expect(
       saveGame(
         storage,

@@ -133,9 +133,10 @@ describe("encounter content validation", () => {
     event.alternativeApRewardId = "missing_reward";
     expect(() => validateEncounterContent(data)).toThrow("Invalid encounter alternative reward");
     event.alternativeApRewardId = "victory_galleria_first";
+    const originalWonStoryId = event.quiz!.wonStoryId;
     event.quiz!.wonStoryId = "encounters/missing";
     expect(() => validateEncounterContent(data)).toThrow("Unknown encounter story");
-    event.quiz!.wonStoryId = "encounters/galleria_quiz_won";
+    event.quiz!.wonStoryId = originalWonStoryId;
     data.catalog.encounters.find((item) => item.id === "galleria_gift")!.options[0].responseProfileId = "missing_profile";
     expect(() => validateEncounterContent(data)).toThrow("Unknown encounter response profile");
   });

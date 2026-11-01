@@ -53,7 +53,8 @@
                 "worried": "assets/characters/heroine/default_01/standing_01/worried.png",
                 "serious": "assets/characters/heroine/default_01/standing_01/serious.png",
                 "teasing": "assets/characters/heroine/default_01/standing_01/teasing.png",
-                "teasing_big": "assets/characters/heroine/default_01/standing_01/teasing_big.png"
+                "teasing_big": "assets/characters/heroine/default_01/standing_01/teasing_big.png",
+                "exasperated": "assets/characters/heroine/default_01/standing_01/exasperated.png"
               }
             }
           ]

@@ -10,6 +10,8 @@ import {
 } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
+import { presentationStoryId } from "../../content/legacy-milano";
+import { activeGuideStoryId } from "../../domain/tourism";
 import { canAccessFreeTime } from "../../domain/chapter";
 import type { GameState } from "../../domain/game";
 import { DialogueText } from "../../components/DialogueText";
@@ -86,8 +88,9 @@ export function TourismScreen({
   const notesCoverObservation = active.phase === "exploring" && compactObservation && notesOpen;
   const selected = clues.find((clue) => clue.id === selectedId);
   const frame = active.frame;
+  const guideStoryId = presentationStoryId(activeGuideStoryId(active) ?? landmark.guideStoryId);
   const reaction = frame && active.phase === "guide"
-    ? resolveDialogueReaction(dialogueReactions, landmark.guideStoryId, frame, "heroine")
+    ? resolveDialogueReaction(dialogueReactions, guideStoryId, frame, "heroine")
     : undefined;
   const speaker =
     frame?.speaker === "heroine"
@@ -254,7 +257,7 @@ export function TourismScreen({
               characterId="heroine"
               sceneId={landmark.id}
               cityId={landmark.cityId}
-              emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, landmark.guideStoryId, frame)}
+              emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, guideStoryId, frame)}
               active={frame.speaker === "heroine"}
             >
               {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState ?? undefined} />}

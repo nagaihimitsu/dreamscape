@@ -1,5 +1,4 @@
-import { battles, tourismClues } from "../../content";
-import { getReasoningContext } from "../../domain/battle";
+import { getActiveBattleContent, getReasoningContext } from "../../domain/battle";
 import type { GameState } from "../../domain/game";
 import "./reasoning.css";
 
@@ -15,7 +14,7 @@ export function ReasoningPanel({
   onNotebook?: () => void;
 }) {
   const active = game.activeBattle!;
-  const definition = battles.find((item) => item.id === active.battleId)!;
+  const { battle: definition, clues } = getActiveBattleContent(active);
   const rule = definition.reasoning!;
   const reasoning = active.reasoning;
   const context = getReasoningContext(game);
@@ -60,7 +59,7 @@ export function ReasoningPanel({
           <ul>
             {selected.map((id) => (
               <li key={id}>
-                {tourismClues.find((clue) => clue.id === id)?.titleJa}
+                {clues.find((clue) => clue.id === id)?.titleJa}
               </li>
             ))}
           </ul>

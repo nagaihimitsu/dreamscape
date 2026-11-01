@@ -1,0 +1,752 @@
+{
+  "schemaVersion": 1,
+  "effects": [
+    {
+      "id": "milano_cafe_first_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_cafe_joke",
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_cafe_first_flirt",
+      "affectionDelta": 0,
+      "memoryId": "milano_cafe_flirt",
+      "trustDelta": -1,
+      "sparkDelta": 2,
+      "stageDeltas": {
+        "3": {
+          "affectionDelta": 1,
+          "trustDelta": 1,
+          "sparkDelta": 2
+        },
+        "4": {
+          "affectionDelta": 1,
+          "trustDelta": 1,
+          "sparkDelta": 2
+        }
+      },
+      "responseProfileId": "bold"
+    },
+    {
+      "id": "milano_cafe_first_interest",
+      "affectionDelta": 1,
+      "memoryId": "milano_cafe_interest",
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_cafe_second_playful",
+      "affectionDelta": 2,
+      "memoryId": "milano_cafe_free_time_joke",
+      "trustDelta": 0,
+      "sparkDelta": 1,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_cafe_second_warm",
+      "affectionDelta": 1,
+      "memoryId": "milano_cafe_secret_destination",
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_cafe_second_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_cafe_future_talk",
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "responseProfileId": "honest"
+    },
+    {
+      "id": "milano_walk_first_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_walk_first_joke",
+      "trustDelta": 0,
+      "sparkDelta": 1,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_walk_first_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_walk_first_listen",
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_walk_first_honest",
+      "affectionDelta": 0,
+      "memoryId": "milano_walk_first_honest",
+      "trustDelta": 0,
+      "sparkDelta": 2,
+      "stageDeltas": {
+        "3": {
+          "affectionDelta": 1,
+          "trustDelta": 1,
+          "sparkDelta": 2
+        },
+        "4": {
+          "affectionDelta": 1,
+          "trustDelta": 1,
+          "sparkDelta": 2
+        }
+      },
+      "responseProfileId": "bold"
+    },
+    {
+      "id": "milano_walk_second_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_walk_second_joke",
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_walk_second_listen",
+      "affectionDelta": 0,
+      "memoryId": "milano_walk_second_listen",
+      "trustDelta": -1,
+      "sparkDelta": 1,
+      "responseProfileId": "provocative"
+    },
+    {
+      "id": "milano_walk_second_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_walk_second_honest",
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "responseProfileId": "honest"
+    },
+    {
+      "id": "milano_night_first_joke",
+      "affectionDelta": 1,
+      "memoryId": "milano_night_first_joke",
+      "trustDelta": 0,
+      "sparkDelta": 1,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_night_first_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_night_first_listen",
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_night_first_honest",
+      "affectionDelta": 0,
+      "memoryId": "milano_night_first_honest",
+      "trustDelta": 0,
+      "sparkDelta": 2,
+      "stageDeltas": {
+        "3": {
+          "affectionDelta": 1,
+          "trustDelta": 1,
+          "sparkDelta": 2
+        },
+        "4": {
+          "affectionDelta": 1,
+          "trustDelta": 1,
+          "sparkDelta": 2
+        }
+      },
+      "responseProfileId": "bold"
+    },
+    {
+      "id": "milano_night_second_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_night_second_joke",
+      "trustDelta": 1,
+      "sparkDelta": 0,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_night_second_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_night_second_listen",
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_night_second_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_night_second_honest",
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "responseProfileId": "honest"
+    },
+    {
+      "id": "milano_invitation_chosen_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_invitation_chosen_joke",
+      "trustDelta": 0,
+      "sparkDelta": 1,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_invitation_chosen_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_invitation_chosen_listen",
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_invitation_chosen_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_invitation_chosen_honest",
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "responseProfileId": "honest"
+    },
+    {
+      "id": "milano_reassurance_chosen_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_reassurance_chosen_joke",
+      "trustDelta": 0,
+      "sparkDelta": 1,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_reassurance_chosen_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_reassurance_chosen_listen",
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_reassurance_chosen_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_reassurance_chosen_honest",
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "responseProfileId": "honest"
+    },
+    {
+      "id": "milano_confession_accepted",
+      "affectionDelta": 0,
+      "memoryId": "milano_confession_promise",
+      "outcome": "accepted"
+    },
+    {
+      "id": "milano_confession_deferred",
+      "affectionDelta": 0,
+      "outcome": "deferred"
+    },
+    {
+      "id": "milano_city_date_first_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_city_date_first_joke",
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_city_date_first_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_city_date_first_listen",
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_city_date_first_honest",
+      "affectionDelta": 0,
+      "memoryId": "milano_city_date_first_honest",
+      "trustDelta": 0,
+      "sparkDelta": 2,
+      "stageDeltas": {
+        "3": {
+          "affectionDelta": 1,
+          "trustDelta": 1,
+          "sparkDelta": 2
+        },
+        "4": {
+          "affectionDelta": 1,
+          "trustDelta": 1,
+          "sparkDelta": 2
+        }
+      },
+      "responseProfileId": "bold"
+    },
+    {
+      "id": "milano_city_date_second_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_city_date_second_joke",
+      "trustDelta": 0,
+      "sparkDelta": 1,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_city_date_second_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_city_date_second_listen",
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_city_date_second_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_city_date_second_honest",
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "responseProfileId": "honest"
+    },
+    {
+      "id": "milano_la_scala_first_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_la_scala_first_joke",
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_la_scala_first_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_la_scala_first_listen",
+      "trustDelta": 2,
+      "sparkDelta": 0,
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_la_scala_first_honest",
+      "affectionDelta": 0,
+      "memoryId": "milano_la_scala_first_honest",
+      "trustDelta": 0,
+      "sparkDelta": 2,
+      "stageDeltas": {
+        "3": {
+          "affectionDelta": 1,
+          "trustDelta": 1,
+          "sparkDelta": 2
+        },
+        "4": {
+          "affectionDelta": 1,
+          "trustDelta": 1,
+          "sparkDelta": 2
+        }
+      },
+      "responseProfileId": "bold"
+    },
+    {
+      "id": "milano_la_scala_second_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_la_scala_second_joke",
+      "trustDelta": 0,
+      "sparkDelta": 1,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_la_scala_second_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_la_scala_second_listen",
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "responseProfileId": "honest"
+    },
+    {
+      "id": "milano_la_scala_second_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_la_scala_second_honest",
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "responseProfileId": "honest"
+    },
+    {
+      "id": "milano_brera_first_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_brera_first_joke",
+      "trustDelta": 0,
+      "sparkDelta": 1,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_brera_first_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_brera_first_listen",
+      "trustDelta": 2,
+      "sparkDelta": 0,
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_brera_first_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_brera_first_honest",
+      "trustDelta": 0,
+      "sparkDelta": 1,
+      "responseProfileId": "honest"
+    },
+    {
+      "id": "milano_brera_second_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_brera_second_joke",
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_brera_second_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_brera_second_listen",
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_brera_second_honest",
+      "affectionDelta": 1,
+      "memoryId": "milano_brera_second_honest",
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "responseProfileId": "honest"
+    },
+    {
+      "id": "milano_navigli_first_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_navigli_first_joke",
+      "trustDelta": 0,
+      "sparkDelta": 1,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_navigli_first_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_navigli_first_listen",
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_navigli_first_honest",
+      "affectionDelta": 0,
+      "memoryId": "milano_navigli_first_honest",
+      "trustDelta": -1,
+      "sparkDelta": 1,
+      "responseProfileId": "honest"
+    },
+    {
+      "id": "milano_navigli_second_joke",
+      "affectionDelta": 2,
+      "memoryId": "milano_navigli_second_joke",
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_navigli_second_listen",
+      "affectionDelta": 1,
+      "memoryId": "milano_navigli_second_listen",
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_navigli_second_honest",
+      "affectionDelta": 0,
+      "memoryId": "milano_navigli_second_honest",
+      "trustDelta": 0,
+      "sparkDelta": 2,
+      "stageDeltas": {
+        "3": {
+          "affectionDelta": 1,
+          "trustDelta": 1,
+          "sparkDelta": 2
+        },
+        "4": {
+          "affectionDelta": 1,
+          "trustDelta": 1,
+          "sparkDelta": 2
+        }
+      },
+      "responseProfileId": "bold"
+    },
+    {
+      "id": "milano_confession_rejected",
+      "affectionDelta": 0,
+      "trustDelta": 0,
+      "sparkDelta": 0,
+      "outcome": "rejected"
+    },
+    {
+      "id": "milano_san_satiro_first_a",
+      "affectionDelta": 0,
+      "trustDelta": -1,
+      "sparkDelta": 0,
+      "memoryId": "milano_san_satiro_first_a",
+      "responseProfileId": "provocative"
+    },
+    {
+      "id": "milano_san_satiro_first_b",
+      "affectionDelta": 1,
+      "trustDelta": 1,
+      "sparkDelta": 0,
+      "memoryId": "milano_san_satiro_first_b",
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_san_satiro_first_c",
+      "affectionDelta": 0,
+      "trustDelta": -1,
+      "sparkDelta": 2,
+      "memoryId": "milano_san_satiro_first_c",
+      "stageDeltas": {
+        "3": {
+          "affectionDelta": 1,
+          "trustDelta": 1,
+          "sparkDelta": 2
+        },
+        "4": {
+          "affectionDelta": 1,
+          "trustDelta": 1,
+          "sparkDelta": 2
+        }
+      },
+      "responseProfileId": "bold"
+    },
+    {
+      "id": "milano_san_satiro_second_a",
+      "affectionDelta": 1,
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "memoryId": "milano_san_satiro_second_a",
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_san_satiro_second_b",
+      "affectionDelta": 0,
+      "trustDelta": -1,
+      "sparkDelta": 0,
+      "memoryId": "milano_san_satiro_second_b",
+      "responseProfileId": "provocative"
+    },
+    {
+      "id": "milano_san_satiro_second_c",
+      "affectionDelta": 1,
+      "trustDelta": 0,
+      "sparkDelta": 1,
+      "memoryId": "milano_san_satiro_second_c",
+      "responseProfileId": "honest"
+    },
+    {
+      "id": "milano_starbucks_roastery_first_a",
+      "affectionDelta": -1,
+      "trustDelta": -1,
+      "sparkDelta": 0,
+      "memoryId": "milano_starbucks_roastery_first_a",
+      "responseProfileId": "provocative"
+    },
+    {
+      "id": "milano_starbucks_roastery_first_b",
+      "affectionDelta": 2,
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "memoryId": "milano_starbucks_roastery_first_b",
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_starbucks_roastery_first_c",
+      "affectionDelta": 0,
+      "trustDelta": -1,
+      "sparkDelta": 2,
+      "memoryId": "milano_starbucks_roastery_first_c",
+      "stageDeltas": {
+        "3": {
+          "affectionDelta": 1,
+          "trustDelta": 1,
+          "sparkDelta": 2
+        },
+        "4": {
+          "affectionDelta": 1,
+          "trustDelta": 1,
+          "sparkDelta": 2
+        }
+      },
+      "responseProfileId": "bold"
+    },
+    {
+      "id": "milano_starbucks_roastery_second_a",
+      "affectionDelta": 1,
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "memoryId": "milano_starbucks_roastery_second_a",
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_starbucks_roastery_second_b",
+      "affectionDelta": 0,
+      "trustDelta": -2,
+      "sparkDelta": 0,
+      "memoryId": "milano_starbucks_roastery_second_b",
+      "responseProfileId": "provocative"
+    },
+    {
+      "id": "milano_starbucks_roastery_second_c",
+      "affectionDelta": 1,
+      "trustDelta": 0,
+      "sparkDelta": 1,
+      "memoryId": "milano_starbucks_roastery_second_c",
+      "responseProfileId": "honest"
+    },
+    {
+      "id": "milano_fondazione_prada_first_a",
+      "affectionDelta": 2,
+      "trustDelta": 0,
+      "sparkDelta": 1,
+      "memoryId": "milano_fondazione_prada_first_a",
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_fondazione_prada_first_b",
+      "affectionDelta": 1,
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "memoryId": "milano_fondazione_prada_first_b",
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_fondazione_prada_first_c",
+      "affectionDelta": 0,
+      "trustDelta": -1,
+      "sparkDelta": 0,
+      "memoryId": "milano_fondazione_prada_first_c",
+      "responseProfileId": "provocative"
+    },
+    {
+      "id": "milano_fondazione_prada_second_a",
+      "affectionDelta": 1,
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "memoryId": "milano_fondazione_prada_second_a",
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_fondazione_prada_second_b",
+      "affectionDelta": -1,
+      "trustDelta": -2,
+      "sparkDelta": 1,
+      "memoryId": "milano_fondazione_prada_second_b",
+      "stageDeltas": {
+        "3": {
+          "affectionDelta": 0,
+          "trustDelta": -1,
+          "sparkDelta": 1
+        },
+        "4": {
+          "affectionDelta": 0,
+          "trustDelta": -1,
+          "sparkDelta": 1
+        }
+      },
+      "responseProfileId": "provocative"
+    },
+    {
+      "id": "milano_fondazione_prada_second_c",
+      "affectionDelta": 2,
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "memoryId": "milano_fondazione_prada_second_c",
+      "responseProfileId": "honest"
+    },
+    {
+      "id": "milano_love_first_a",
+      "affectionDelta": 1,
+      "trustDelta": 0,
+      "sparkDelta": 1,
+      "memoryId": "milano_love_first_a",
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_love_first_b",
+      "affectionDelta": -1,
+      "trustDelta": -2,
+      "sparkDelta": 0,
+      "memoryId": "milano_love_first_b",
+      "responseProfileId": "provocative"
+    },
+    {
+      "id": "milano_love_first_c",
+      "affectionDelta": 2,
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "memoryId": "milano_love_first_c",
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_love_second_a",
+      "affectionDelta": 2,
+      "trustDelta": 0,
+      "sparkDelta": 1,
+      "memoryId": "milano_love_second_a",
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_love_second_b",
+      "affectionDelta": 0,
+      "trustDelta": -1,
+      "sparkDelta": 0,
+      "memoryId": "milano_love_second_b",
+      "responseProfileId": "provocative"
+    },
+    {
+      "id": "milano_love_second_c",
+      "affectionDelta": 1,
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "memoryId": "milano_love_second_c",
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_rain_pause_music",
+      "affectionDelta": 2,
+      "trustDelta": 0,
+      "sparkDelta": 1,
+      "memoryId": "milano_rain_pause_music",
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_rain_pause_watch",
+      "affectionDelta": 1,
+      "trustDelta": 2,
+      "sparkDelta": 0,
+      "memoryId": "milano_rain_pause_watch",
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_rain_pause_hurry",
+      "affectionDelta": 0,
+      "trustDelta": -1,
+      "sparkDelta": 0,
+      "memoryId": "milano_rain_pause_hurry",
+      "responseProfileId": "provocative"
+    },
+    {
+      "id": "milano_recovery_listen",
+      "affectionDelta": 0,
+      "trustDelta": 0,
+      "sparkDelta": 0,
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "milano_recovery_playful",
+      "affectionDelta": 0,
+      "trustDelta": 0,
+      "sparkDelta": 0,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "milano_recovery_honest",
+      "affectionDelta": 0,
+      "trustDelta": 0,
+      "sparkDelta": 0,
+      "responseProfileId": "honest"
+    }
+  ]
+}

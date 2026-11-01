@@ -2,6 +2,11 @@ import { access, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { characterCatalogSchema } from "../src/content/character-assets";
 import { encounterCatalogSchema } from "../src/content/encounter-schemas";
+import archivedEncounterData from "../content/legacy/milano_fa0e7e0/encounters/catalog.json";
+import archivedBattleData from "../content/legacy/milano_fa0e7e0/battles/catalog.json";
+import archivedTourismData from "../content/legacy/milano_fa0e7e0/tourism/catalog.json";
+import archivedJourneyData from "../content/legacy/milano_fa0e7e0/progression/journey.json";
+import archivedQuizData from "../content/legacy/milano_fa0e7e0/quizzes-compiled.json";
 import { validateEncounterContent } from "./encounter-validation";
 import { validateCharacterImage } from "./character-image-validation";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
@@ -421,16 +426,20 @@ export async function buildContent(root: string, writeOutput = true) {
     encounterCatalogSchema,
     path.join(content, "encounters/catalog.json"),
   );
-  const encounterStoryIds = encounterCatalog.encounters.flatMap((event) => [
+  const archivedEncounters = encounterCatalogSchema.parse(archivedEncounterData).encounters;
+  const encounterStoryIds = [...new Set([...encounterCatalog.encounters, ...archivedEncounters].flatMap((event) => [
     event.storyId,
     ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : []),
-  ]);
+  ]))];
   const battles = (
     await parseFile(
       battleCatalogSchema,
       path.join(content, "battles/catalog.json"),
     )
   ).battles;
+  const archivedBattles = battleCatalogSchema.parse(archivedBattleData).battles;
+  const archivedTourism = tourismCatalogSchema.parse(archivedTourismData);
+  const archivedJourney = journeySchema.parse(archivedJourneyData);
   unique(
     battles.map((battle) => battle.id),
     "battleId",
@@ -597,7 +606,7 @@ export async function buildContent(root: string, writeOutput = true) {
     if (itemReferences.length && !encounterStoryIds.includes(id))
       throw new Error(`Item references are only supported in encounters: ${id}`);
     if (itemReferences.length) {
-      const owner = encounterCatalog.encounters.find((event) =>
+      const owner = [...encounterCatalog.encounters, ...archivedEncounters].find((event) =>
         event.storyId === id || (event.quiz && [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId].includes(id)),
       );
       for (const itemId of itemReferences) {
@@ -913,6 +922,11 @@ export async function buildContent(root: string, writeOutput = true) {
       () => validateBattleStory(stories[battle.storyId], battle, context, observeForStory(battle.storyId)),
     );
   }
+  for (const battle of archivedBattles) {
+    if (!stories[battle.storyId] || battles.some((entry) => entry.storyId === battle.storyId)) continue;
+    withContext(`legacy battle ${battle.id}/${battle.storyId}`, () =>
+      validateBattleStory(stories[battle.storyId], battle, context, observeForStory(battle.storyId)));
+  }
   // Dialogue leading into a proof is presentation-only: it is deliberately
   // kept outside the battle definition and its save-data fingerprint.
   const reasoningIntros = await parseFile(
@@ -1008,6 +1022,11 @@ export async function buildContent(root: string, writeOutput = true) {
     context,
     observeForStory,
   );
+  await validateTourism(
+    root, archivedTourism, city.id, city.landmarkIdsPlanned, archivedBattles,
+    Object.fromEntries(Object.entries(archivedQuizData).map(([id, quiz]) => [id, quizSchema.parse(quiz)])),
+    stories, context, observeForStory,
+  );
   for (const validateDate of deferredDateValidation) validateDate();
   for (const effect of effects) {
     if (effect.memoryId || effect.outcome) continue;
@@ -1050,16 +1069,25 @@ export async function buildContent(root: string, writeOutput = true) {
       () => validateEpilogue(compiled, context, observeForStory(episode.epilogueStoryId!)),
     );
   }
+  for (const episode of archivedJourney.episodes) {
+    const id = episode.epilogueStoryId;
+    if (!id || !stories[id] || journey.episodes.some((entry) => entry.epilogueStoryId === id)) continue;
+    withContext(`legacy epilogue ${episode.id}/${id}`, () =>
+      validateEpilogue(stories[id], context, observeForStory(id)));
+  }
   for (const storyId of Object.keys(stories)) {
     if (
       storyId !== learningDetails.storyId &&
       !dates.some((date) => date.storyId === storyId || date.legacyStoryIds?.includes(storyId)) &&
       !battles.some((battle) => battle.storyId === storyId) &&
+      !archivedBattles.some((battle) => battle.storyId === storyId) &&
       !encounterStoryIds.includes(storyId) &&
       !reasoningIntros.entries.some((entry) => entry.storyId === storyId) &&
       !journey.episodes.some(
         (episode) => episode.epilogueStoryId === storyId,
       ) &&
+      !archivedJourney.episodes.some((episode) => episode.epilogueStoryId === storyId) &&
+      !archivedTourism.landmarks.some((landmark) => landmark.guideStoryId === storyId) &&
       !tourism.landmarks.some((landmark) => landmark.guideStoryId === storyId)
     )
       throw new Error(`Story lacks validation contract: ${storyId}`);

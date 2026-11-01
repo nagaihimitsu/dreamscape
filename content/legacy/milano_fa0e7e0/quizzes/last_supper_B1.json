@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "id": "milano_last_supper_b1",
+  "landmarkId": "last_supper",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "last_supper_central_triangle",
+      "questionEn": "Which description matches Christ's position and shape in The Last Supper?",
+      "options": [
+        {"id": "A", "textEn": "He sits in the center, with both hands raised."},
+        {"id": "B", "textEn": "He sits in the center, forming a calm triangle."},
+        {"id": "C", "textEn": "He leans across the table, joining the others' movements."}
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {"word": "Christ", "meaning": "キリスト"},
+        {"word": "shape", "meaning": "形、輪郭"},
+        {"word": "triangle", "meaning": "三角形"},
+        {"word": "leans", "meaning": "身を乗り出す、傾く"}
+      ],
+      "hintJa": "腕や顔を大きく動かす周囲の使徒と、キリストの姿勢を比べてみよう。",
+      "correctExplanationJa": "キリストは中央に座り、頭から両腕へ広がる輪郭が安定した三角形をつくります。使徒たちの激しい身振りに囲まれ、その静けさが際立ちます。公式解説が示す構図の読み取りです。",
+      "incorrectExplanationJa": "キリストは両手を高く上げたり、周囲へ身を乗り出したりしていません。中央で三角形の輪郭をつくる落ち着いた姿と、使徒たちの動きが対照になっています。公式解説では、この構図に注目しています。",
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano（公式）",
+          "title": "A powerful theatrical machine — The figures: Christ",
+          "url": "https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/",
+          "checkedAt": "2026-10-30",
+          "claimType": "interpretation",
+          "claimJa": "公式解説は、動きの多い十二使徒の中央で、キリストが三角形の輪郭をなして孤立して見えると分析している。構図上の読み取りであり、作者自身の発言として扱わない。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "last_supper_vanishing_point",
+      "questionEn": "In The Last Supper, where do the room's perspective lines meet?",
+      "options": [
+        {"id": "A", "textEn": "At the center of the window behind Christ."},
+        {"id": "B", "textEn": "At the center of the table in front of Christ."},
+        {"id": "C", "textEn": "Near Christ's right temple, beside his eye."}
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {"word": "perspective", "meaning": "遠近法"},
+        {"word": "meet", "meaning": "ここでは、線が一点に集まる"},
+        {"word": "temple", "meaning": "こめかみ（ここでは「寺院」ではない）"}
+      ],
+      "hintJa": "奥へ向かう天井や壁の線を、絵の中で延ばしてみるつもりで考えよう。",
+      "correctExplanationJa": "遠近法の線が集まる消失点は、キリストの右のこめかみ付近にあります。窓や食卓の中央ではありません。人物の配置だけでなく、部屋の奥行きもキリストの頭部と結び付いています。",
+      "incorrectExplanationJa": "窓や食卓も中央にありますが、消失点はその中心ではなく、キリストの右のこめかみ付近です。天井や壁の奥行きの線をたどると、人物の配置とは別の仕組みが見えてきます。",
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano（公式）",
+          "title": "A powerful theatrical machine — The perspective box",
+          "url": "https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "公式解説は、遠近法の消失点がキリストの右のこめかみの位置にあり、床面から約４メートルの高さであると記載している。右はキリスト本人の右側を指す。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "last_supper_dry_tradeoff",
+      "questionEn": "Leonardo painted The Last Supper on dry plaster. Compared with true fresco on wet plaster, what was the main trade-off?",
+      "options": [
+        {"id": "A", "textEn": "He could change details slowly, but the paint was less secure."},
+        {"id": "B", "textEn": "He could finish more quickly, but had less time to make changes."},
+        {"id": "C", "textEn": "He could make the paint stronger, but had fewer colors to use."}
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {"word": "plaster", "meaning": "漆喰"},
+        {"word": "true fresco", "meaning": "湿った漆喰に描く、本来のフレスコ技法"},
+        {"word": "trade-off", "meaning": "一方の利点と引き換えに、別の不利が生じること"},
+        {"word": "secure", "meaning": "ここでは、しっかり定着した"}
+      ],
+      "hintJa": "湿った漆喰は乾くまでが勝負。時間の使い方と、顔料が壁に定着する仕組みを分けて考えよう。",
+      "correctExplanationJa": "乾いた下地に描く方法なら、レオナルドは時間をかけて細部を直せました。一方、顔料は湿った漆喰に取り込まれず、表面に重なるため傷みやすくなりました。劣化には室内環境も関わっています。「修正の自由」と「定着の弱さ」が同居したのです。",
+      "incorrectExplanationJa": "この技法の利点は、速さや強さではなく、時間をかけて細部を直せることでした。ただし顔料は湿った漆喰に取り込まれず、表面に重なるため傷みやすくなりました。劣化には室内環境も関係し、技法だけが原因ではありません。",
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano（公式）",
+          "title": "Backstage — The Last Supper: the state of conservation / The painting technique",
+          "url": "https://cenacolovinciano.org/en/museum/backstage/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "公式解説は、乾いた漆喰を用いる方法が遅い制作や変更・細部の描写を可能にする一方、顔料が吸収されず表面に重なることが脆弱性につながり、不適切な環境条件とともに早期劣化に関与したと説明している。"
+        }
+      ],
+      "difficulty": "hard"
+    }
+  ]
+}

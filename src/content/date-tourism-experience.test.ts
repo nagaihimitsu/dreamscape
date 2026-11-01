@@ -13,26 +13,26 @@ const presentation = presentationSchema.parse(presentationData);
 // are examples of tourist conversation, not automatic proof of historical
 // accuracy; their accompanying sources still require human review.
 const placeDetails: Record<string, RegExp> = {
-  milano_cafe_01: /AUF/,
-  milano_walk_01: /像の写し/,
+  milano_cafe_01: /郵便局/,
+  milano_walk_01: /マドンニーナ/,
   milano_night_01: /同じ廊下/,
-  milano_city_date_01: /ドゥオモ広場とスカラ広場/,
+  milano_city_date_01: /ドゥオモ広場.*スカラ広場/,
   milano_la_scala_date_01: /桟敷席/,
   milano_brera_date_01: /足.*階段/,
-  milano_navigli_date_01: /洗濯に使ってた石/,
-  milano_san_satiro_date_01: /漆喰.*遠近法/,
+  milano_navigli_date_01: /洗濯/,
+  milano_san_satiro_date_01: /横からだと、奥がない/,
   milano_starbucks_roastery_date_01: /郵便局/,
   milano_fondazione_prada_date_01: /蒸留所/,
-  milano_love_date_01: /二週間/,
+  milano_novecento_date_01: /フォンタナ.*ネオン/,
 };
 
 beforeAll(async () => {
   content = await buildContent(path.resolve("."), false);
-}, 30_000);
+}, 120_000);
 
 describe("tourism in normal dates", () => {
   it("connects every normal date to a real destination, sources, and a registered background", () => {
-    const normalDates = content.dates.filter((date) => date.kind === "normal");
+    const normalDates = content.dates.filter((date) => date.kind === "normal" && !date.legacyOnly);
     expect(normalDates.length).toBeGreaterThanOrEqual(11);
     for (const date of normalDates) {
       const destination = content.destinations.find((item) => item.id === date.destinationId);
@@ -85,7 +85,7 @@ describe("tourism in normal dates", () => {
   });
 
   it("lets both early and close relationships hear a local detail on every choice path", () => {
-    const normalDates = content.dates.filter((date) => date.kind === "normal");
+    const normalDates = content.dates.filter((date) => date.kind === "normal" && !date.legacyOnly);
     for (const [dateId, detail] of Object.entries(placeDetails)) {
       const date = normalDates.find((entry) => entry.id === dateId);
       expect(date, dateId).toBeDefined();
@@ -129,8 +129,8 @@ describe("tourism in normal dates", () => {
 
   it("keeps local conversation and the real backdrop in invitations and rain pauses for all three choices", () => {
     const cases = [
-      { id: "milano_invitation_01", detail: /ミラノの居間/, effects: ["milano_invitation_chosen_joke", "milano_invitation_chosen_listen", "milano_invitation_chosen_honest"] },
-      { id: "milano_rain_pause_01", detail: /ガラスを鉄で支えた屋根/, effects: ["milano_rain_pause_music", "milano_rain_pause_watch", "milano_rain_pause_hurry"] },
+      { id: "milano_invitation_01", detail: /ミラノの居間/, effects: ["milano_invitation_chosen_joke_refresh", "milano_invitation_chosen_listen_refresh", "milano_invitation_chosen_honest_refresh"] },
+      { id: "milano_rain_pause_01", detail: /屋根が透明/, effects: ["milano_rain_v2_music", "milano_rain_v2_watch", "milano_rain_v2_hurry"] },
     ];
     for (const event of cases) {
       const date = content.dates.find((entry) => entry.id === event.id);

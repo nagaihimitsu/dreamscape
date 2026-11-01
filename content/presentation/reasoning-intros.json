@@ -8,6 +8,14 @@
     {
       "battleId": "milano_last_supper_c01",
       "storyId": "battles/milano_last_supper_c_rebuttal"
+    },
+    {
+      "battleId": "milano_la_scala_b01",
+      "storyId": "battles/milano_la_scala_b_rebuttal"
+    },
+    {
+      "battleId": "milano_brera_c01",
+      "storyId": "battles/milano_brera_c_rebuttal"
     }
   ]
 }

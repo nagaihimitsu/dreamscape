@@ -4,8 +4,6 @@ import {
   dates,
   dateDestinations,
   presentation,
-  battles,
-  battleQuizzes,
   landmarks,
   tourismAssets,
   city,
@@ -18,6 +16,7 @@ import {
   claimTrialMilestone,
   setNames,
   startDate,
+  isUpdatedDateReplay,
   type GameState,
 } from "../domain/game";
 import {
@@ -44,7 +43,7 @@ import { EpisodeScreen } from "../features/journey/EpisodeScreen";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
 import { encounters } from "../content/encounters";
-import { startEncounter, advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterAvailability, getEncounterOptionAvailability, getEncounterQuizFeedback } from "../domain/encounter";
+import { startEncounter, advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterAvailability, getEncounterOptionAvailability, getEncounterQuizFeedback, getActiveEncounterDefinition } from "../domain/encounter";
 import { PendingRewards } from "../features/journey/PendingRewards";
 import { EpilogueScreen } from "../features/journey/EpilogueScreen";
 import { startCityEpilogue, advanceCityEpilogue } from "../domain/epilogue";
@@ -73,6 +72,7 @@ import {
   answerBattle,
   toggleBattleHint,
   getReasoningContext,
+  getActiveBattleContent,
   selectReasoningClue,
   pressBattleClaim,
   submitBattleEvidence,
@@ -245,13 +245,12 @@ export default function App() {
   }, [active?.dateId, showRomanceEnding]);
   const currentDate = dates.find((date) => date.id === active?.dateId);
   const activeEncounter = game?.activeEncounter;
-  const currentEncounter = encounters.encounters.find((event) => event.id === activeEncounter?.encounterId);
+  const currentEncounter = activeEncounter ? getActiveEncounterDefinition(activeEncounter) : undefined;
   const encounterLandmark = landmarks.find((landmark) => landmark.id === currentEncounter?.landmarkId);
   const encounterImage = tourismAssets.find((asset) => asset.id === encounterLandmark?.imageAssetId);
   const encounterFeedback = game ? getEncounterQuizFeedback(game) : null;
-  const currentBattle = battles.find(
-    (battle) => battle.id === game?.activeBattle?.battleId,
-  );
+  const activeBattleContent = game?.activeBattle ? getActiveBattleContent(game.activeBattle) : undefined;
+  const currentBattle = activeBattleContent?.battle;
   const reasoningRule = currentBattle?.reasoning;
   const reasoningContext =
     game && reasoningRule ? getReasoningContext(game) : null;
@@ -265,6 +264,7 @@ export default function App() {
     confirmation?.kind === "date"
       ? dates.find((date) => date.id === confirmation.id)
       : undefined;
+  const selectedUpdatedDate = !!game && !!selectedDate && isUpdatedDateReplay(game, selectedDate.id);
   const selectedDestination = dateDestinations.find(
     (destination) => destination.id === selectedDate?.destinationId,
   );
@@ -667,9 +667,10 @@ export default function App() {
             !game.activeTourism
               ? {
                   caseClueIds: reasoningRule.caseClueIds,
+                  clues: activeBattleContent!.clues,
                   claimText: reasoningContext.claimText,
                   questionEn:
-                    battleQuizzes[currentBattle.quizId].questions[
+                    activeBattleContent!.quiz.questions[
                       game.activeBattle.roundIndex
                     ].questionEn,
                   selectedIds:
@@ -716,7 +717,9 @@ export default function App() {
               : `${selectedDate?.titleJa}を始めますか？`}
           </h2>
           <p className="confirm-text">
-            {selectedDate?.apCost
+            {selectedUpdatedDate
+              ? "APを使わず、新しくなった会話を一度楽しめます。"
+              : selectedDate?.apCost
               ? `${selectedDate.apCost}APを使って、デートを始めます。`
               : "APは使いません。ふたりの時間を始めます。"}
           </p>
@@ -729,7 +732,7 @@ export default function App() {
               commit((state) => startDate(state, selected.id, secureRomanceRoll));
             }}
           >
-            {selectedDate?.apCost ? "APを使って始める" : "この時間を過ごす"}
+            {!selectedUpdatedDate && selectedDate?.apCost ? "APを使って始める" : "この時間を過ごす"}
           </button>
           <button className="secondary" onClick={() => setConfirmation(null)}>
             選び直す

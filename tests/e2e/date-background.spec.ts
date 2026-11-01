@@ -11,7 +11,7 @@ test("a date background fills the scene and its credit can be read without advan
   await setDialogueSpeed(page, "0");
   const scene = page.getByTestId("romance-scene");
   const image = scene.locator(".vn-background img");
-  await expect(image).toHaveAttribute("src", /assets\/tourism\/dates\/navigli\.webp$/);
+  await expect(image).toHaveAttribute("src", /assets\/tourism\/dates\/palazzo_broggi\.webp$/);
   await expect.poll(() => image.evaluate((item: HTMLImageElement) => item.naturalWidth)).toBe(1600);
   await expect(image).toHaveCSS("object-fit", "cover");
   await expect(image).toHaveCSS("object-position", "50% 50%");
@@ -27,8 +27,8 @@ test("a date background fills the scene and its credit can be read without advan
   await trigger.click();
   const dialog = page.getByRole("dialog", { name: "背景画像" });
   await dialog.getByText("画像の説明・出典と利用条件", { exact: true }).click();
-  await expect(dialog).toContainText("Marco Montagna");
-  await expect(dialog.getByRole("link", { name: /CC BY-SA 3.0/ })).toHaveAttribute("href", /creativecommons\.org/);
+  await expect(dialog).toContainText("Vincenzo Paolella");
+  await expect(dialog.getByRole("link", { name: /CC BY-SA 4.0/ })).toHaveAttribute("href", /creativecommons\.org/);
   await page.clock.fastForward(8000);
   expect(await saved(page)).toEqual(before);
   await dialog.getByRole("button", { name: "閉じる", exact: true }).click();
@@ -41,7 +41,7 @@ test("a broken date background falls back without blocking dialogue", async ({ p
   await page.setViewportSize({ width: 360, height: 640 });
   await startNewGame(page);
   await loadLegacyFreeTime(page);
-  await page.route("**/assets/tourism/dates/navigli.webp", (route) => route.abort());
+  await page.route("**/assets/tourism/dates/palazzo_broggi.webp", (route) => route.abort());
   await startCafe(page);
   await setDialogueSpeed(page, "0");
   const scene = page.getByTestId("romance-scene");
@@ -70,19 +70,19 @@ test("Brera artwork is legible in a mobile date scene", async ({ page }, testInf
   await page.screenshot({ path: testInfo.outputPath("brera-viewer-mobile.png") });
 });
 
-test("L.O.V.E. identifies the background and links to the official artwork without interrupting the date", async ({ page, context }, testInfo) => {
+test("Novecento identifies the background and links to the official artwork without interrupting the date", async ({ page, context }, testInfo) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await loadSnapshot(page, castleCleared);
-  await startEvent(page, "milano_love_date_01", 1);
+  await startEvent(page, "milano_novecento_date_01", 1);
   await setDialogueSpeed(page, "0");
   const scene = page.getByTestId("romance-scene");
   const note = scene.getByTestId("destination-reference-note");
   const link = scene.getByTestId("destination-reference-link");
-  await expect(scene.getByTestId("date-destination")).toContainText("L.O.V.E.");
+  await expect(scene.getByTestId("date-destination")).toContainText("ノヴェチェント");
   await expect(note).toBeVisible();
-  await expect(note).toContainText(/彫刻.*写っていません/);
+  await expect(note).toContainText(/ネオン作品.*写っていません/);
   await expect(link).toBeVisible();
-  await expect(link).toHaveAttribute("href", "https://artsandculture.google.com/asset/l-o-v-e-0098/aQFJRsqTBD1p2Q");
+  await expect(link).toHaveAttribute("href", "https://www.museodelnovecento.org/percorsi/sala-fontana");
   await expect(link).toHaveAttribute("target", "_blank");
   for (const size of [{ width: 320, height: 640 }, { width: 360, height: 640 }, { width: 1280, height: 720 }]) {
     await page.setViewportSize(size);
@@ -96,18 +96,18 @@ test("L.O.V.E. identifies the background and links to the official artwork witho
       expect(box!.y).toBeGreaterThanOrEqual(0);
       expect(box!.y + box!.height).toBeLessThanOrEqual(size.height);
     }
-    await page.screenshot({ path: testInfo.outputPath(`love-date-${size.width}.png`) });
+    await page.screenshot({ path: testInfo.outputPath(`novecento-date-${size.width}.png`) });
   }
   await page.setViewportSize({ width: 360, height: 640 });
   const before = await saved(page);
   // Do not rely on the external site's availability in CI; verify opening the
   // actual link in a new tab without allowing it to leave the current scene.
-  await context.route("https://artsandculture.google.com/asset/l-o-v-e-0098/aQFJRsqTBD1p2Q", (route) => route.fulfill({ status: 200, body: "official reference" }));
+  await context.route("https://www.museodelnovecento.org/percorsi/sala-fontana", (route) => route.fulfill({ status: 200, body: "official reference" }));
   const popupPromise = page.waitForEvent("popup");
   await link.click();
   const popup = await popupPromise;
   await popup.waitForLoadState("domcontentloaded");
-  expect(popup.url()).toBe("https://artsandculture.google.com/asset/l-o-v-e-0098/aQFJRsqTBD1p2Q");
+  expect(popup.url()).toBe("https://www.museodelnovecento.org/percorsi/sala-fontana");
   await popup.close();
   expect(await saved(page)).toEqual(before);
   await expect(scene).toBeVisible();
@@ -119,10 +119,10 @@ test("L.O.V.E. identifies the background and links to the official artwork witho
     const noteBox = await note.boundingBox();
     const choiceBox = await scene.locator(".choice").first().boundingBox();
     expect(noteBox!.y + noteBox!.height).toBeLessThan(choiceBox!.y);
-    await page.screenshot({ path: testInfo.outputPath(`love-choice-${width}.png`) });
+    await page.screenshot({ path: testInfo.outputPath(`novecento-choice-${width}.png`) });
   }
   await choose(page, 0);
   await choose(page, 1);
   await finishEvent(page, 2);
-  expect((await saved(page)).playedDateIds).toContain("milano_love_date_01");
+  expect((await saved(page)).playedDateIds).toContain("milano_novecento_date_01");
 });

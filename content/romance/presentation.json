@@ -128,6 +128,27 @@
       "color": "#8c7867",
       "fallback": "neutral",
       "imageAssetId": "galleria_milano_photo"
+    },
+    "milano_brera_case": {
+      "nameJa": "ブレラ宮殿の中庭",
+      "captionJa": "ミラノ ／ ブレラ絵画館",
+      "color": "#777563",
+      "fallback": "neutral",
+      "imageAssetId": "brera_courtyard_case_photo"
+    },
+    "milano_novecento_date": {
+      "nameJa": "ノヴェチェント美術館",
+      "captionJa": "ミラノ ／ ノヴェチェント美術館",
+      "color": "#64727b",
+      "fallback": "neutral",
+      "imageAssetId": "novecento_window_photo"
+    },
+    "milano_darsena_finale": {
+      "nameJa": "ダルセナ",
+      "captionJa": "ミラノ ／ ナヴィリオ地区・ダルセナ",
+      "color": "#60746b",
+      "fallback": "neutral",
+      "imageAssetId": "darsena_finale_photo"
     }
   },
   "emotions": {
@@ -448,6 +469,306 @@
     "milano_rain_pause_hurry": {
       "titleJa": "もう少し雨宿り",
       "descriptionJa": "すぐ行こうと誘うと、彼女はもう少し雨の音を聞きたいと言った。"
+    },
+    "milano_novecento_first_a": {
+      "titleJa": "窓と光の線",
+      "descriptionJa": "ネオンの線を迷路に見立てた。"
+    },
+    "milano_novecento_first_b": {
+      "titleJa": "窓と光の線",
+      "descriptionJa": "展示室から広場を行く人を眺めた。"
+    },
+    "milano_novecento_first_c": {
+      "titleJa": "窓と光の線",
+      "descriptionJa": "配線と思った彼女の勘違いを話した。"
+    },
+    "milano_novecento_second_a": {
+      "titleJa": "窓と光の線",
+      "descriptionJa": "下から美術館の窓を探す話をした。"
+    },
+    "milano_novecento_second_b": {
+      "titleJa": "窓と光の線",
+      "descriptionJa": "広場も作品に見えると話した。"
+    },
+    "milano_novecento_second_c": {
+      "titleJa": "窓と光の線",
+      "descriptionJa": "違う見え方を一緒に楽しむ話をした。"
+    },
+    "milano_cafe_first_joke_refresh": {
+      "titleJa": "豆への宛先",
+      "descriptionJa": "豆に宛先を書いておけば迷わない、と冗談を言った。"
+    },
+    "milano_cafe_first_flirt_refresh": {
+      "titleJa": "管を追う横顔",
+      "descriptionJa": "豆の管を夢中で追う彼女のほうが気になると伝えた。"
+    },
+    "milano_cafe_first_interest_refresh": {
+      "titleJa": "管の先",
+      "descriptionJa": "透明な管の先を一緒に追ってみようと提案した。"
+    },
+    "milano_cafe_second_playful_refresh": {
+      "titleJa": "豆の寄り道",
+      "descriptionJa": "管の道を描いた紙に、豆の寄り道と書こうと提案した。"
+    },
+    "milano_cafe_second_warm_refresh": {
+      "titleJa": "描き直す紙",
+      "descriptionJa": "豆の道を描き直すなら、自分の紙もあると伝えた。"
+    },
+    "milano_cafe_second_honest_refresh": {
+      "titleJa": "二人で見た道",
+      "descriptionJa": "豆の道の間違えた線も、二人で見た順番として残したいと伝えた。"
+    },
+    "milano_walk_first_joke_refresh": {
+      "titleJa": "飛んでいった像",
+      "descriptionJa": "彼女が彫像と間違えた鳩について冗談を言った。"
+    },
+    "milano_walk_first_listen_refresh": {
+      "titleJa": "動かない像探し",
+      "descriptionJa": "今度は動かない彫像を一緒に探そうと提案した。"
+    },
+    "milano_walk_first_honest_refresh": {
+      "titleJa": "鳩に気づく目",
+      "descriptionJa": "鳩に先に気づくところが彼女らしいと話した。"
+    },
+    "milano_walk_second_joke_refresh": {
+      "titleJa": "鳩は外出中",
+      "descriptionJa": "紙の鳩に「外出中」と書こうと提案した。"
+    },
+    "milano_walk_second_listen_refresh": {
+      "titleJa": "飛んだ方角",
+      "descriptionJa": "紙の鳩から飛び立った方へ矢印をつけようと提案した。"
+    },
+    "milano_walk_second_honest_refresh": {
+      "titleJa": "ページの端",
+      "descriptionJa": "彼女の絵に自分も描き足してよいか尋ねた。"
+    },
+    "milano_invitation_chosen_joke_refresh": {
+      "titleJa": "白紙の葉書",
+      "descriptionJa": "何も書かない葉書に、深い意味があるかもしれないと冗談を言った。"
+    },
+    "milano_invitation_chosen_listen_refresh": {
+      "titleJa": "二枚の白",
+      "descriptionJa": "彼女が葉書のどの色で迷っているのか尋ねた。"
+    },
+    "milano_invitation_chosen_honest_refresh": {
+      "titleJa": "彼女からの誘い",
+      "descriptionJa": "ガッレリアへ誘ってくれたことが嬉しいと伝えた。"
+    },
+    "milano_night_first_joke_refresh": {
+      "titleJa": "水面の灯り",
+      "descriptionJa": "窓の代わりに、水面に映った灯りを撮ってみようと提案した。"
+    },
+    "milano_night_first_listen_refresh": {
+      "titleJa": "橋の端から",
+      "descriptionJa": "橋の端で写真の構図を探そうと提案した。"
+    },
+    "milano_night_first_honest_refresh": {
+      "titleJa": "景色を探す表情",
+      "descriptionJa": "写真を探す彼女の表情がいいと伝えた。"
+    },
+    "milano_night_second_joke_refresh": {
+      "titleJa": "逆さまのミラノ",
+      "descriptionJa": "水面の写真に「逆さまのミラノ」という題名を提案した。"
+    },
+    "milano_night_second_listen_refresh": {
+      "titleJa": "写真がなくても",
+      "descriptionJa": "写真がなくても今日の話を覚えておきたいと伝えた。"
+    },
+    "milano_night_second_honest_refresh": {
+      "titleJa": "次に撮る景色",
+      "descriptionJa": "今度は彼女が撮りたい景色を一緒に探したいと伝えた。"
+    },
+    "milano_reassurance_chosen_joke_refresh": {
+      "titleJa": "返事の予告",
+      "descriptionJa": "彼女の話を、返事の予告にたとえた。"
+    },
+    "milano_reassurance_chosen_listen_refresh": {
+      "titleJa": "急がない返事",
+      "descriptionJa": "話してくれたことに礼を言い、返事を急がなくていいと伝えた。"
+    },
+    "milano_reassurance_chosen_honest_refresh": {
+      "titleJa": "次に会う約束",
+      "descriptionJa": "返事を待ちながら、また会いたいと伝えた。"
+    },
+    "milano_city_date_first_joke_refresh": {
+      "titleJa": "屋根を見る列",
+      "descriptionJa": "屋根を見上げる人の列に、二人も入ろうと提案した。"
+    },
+    "milano_city_date_first_listen_refresh": {
+      "titleJa": "二つの広場",
+      "descriptionJa": "どちらの広場へ向かう人が多いと思うか、彼女に尋ねた。"
+    },
+    "milano_city_date_first_honest_refresh": {
+      "titleJa": "出口の手前",
+      "descriptionJa": "出口を決めずに、もう少し一緒にいたいと伝えた。"
+    },
+    "milano_city_date_second_joke_refresh": {
+      "titleJa": "往復の矢印",
+      "descriptionJa": "二つの広場をいつまでも往復しようと冗談を言った。"
+    },
+    "milano_city_date_second_listen_refresh": {
+      "titleJa": "もう一度見たい広場",
+      "descriptionJa": "どちらの広場をもう一度見たいか彼女に尋ねた。"
+    },
+    "milano_city_date_second_honest_refresh": {
+      "titleJa": "選ぶ道",
+      "descriptionJa": "今度は彼女の選ぶ道を一緒に歩きたいと伝えた。"
+    },
+    "milano_la_scala_first_joke_refresh": {
+      "titleJa": "一席を交代で",
+      "descriptionJa": "一つの席を上演中に交代で使おうと冗談を言った。"
+    },
+    "milano_la_scala_first_listen_refresh": {
+      "titleJa": "席に招く人",
+      "descriptionJa": "桟敷席に誰を呼びたいか、彼女に尋ねた。"
+    },
+    "milano_la_scala_first_honest_refresh": {
+      "titleJa": "劇場への招待",
+      "descriptionJa": "いつか彼女の席に招いてほしいと伝えた。"
+    },
+    "milano_la_scala_second_joke_refresh": {
+      "titleJa": "平常心の切符",
+      "descriptionJa": "窓口で平常心を二枚頼めたらいいのに、と冗談を言った。"
+    },
+    "milano_la_scala_second_listen_refresh": {
+      "titleJa": "緊張する場所",
+      "descriptionJa": "知らない場所のどんなところに緊張するのか尋ねた。"
+    },
+    "milano_la_scala_second_honest_refresh": {
+      "titleJa": "二人で入る劇場",
+      "descriptionJa": "緊張しても一緒に行きたいと伝えた。"
+    },
+    "milano_brera_v2_first_joke": {
+      "titleJa": "ブレラの絵",
+      "descriptionJa": "階段の足元から、転ばないかと話が始まった。"
+    },
+    "milano_brera_v2_first_listen": {
+      "titleJa": "ブレラの絵",
+      "descriptionJa": "絵の奥の影に、一緒に気づいた。"
+    },
+    "milano_brera_v2_first_honest": {
+      "titleJa": "ブレラの絵",
+      "descriptionJa": "抱き合う二人の見え方を話した。"
+    },
+    "milano_brera_v2_second_joke": {
+      "titleJa": "ブレラの絵",
+      "descriptionJa": "階段を待つ影の人を想像して笑った。"
+    },
+    "milano_brera_v2_second_listen": {
+      "titleJa": "ブレラの絵",
+      "descriptionJa": "影の正体を決めず、それぞれの想像を話した。"
+    },
+    "milano_brera_v2_second_honest": {
+      "titleJa": "ブレラの絵",
+      "descriptionJa": "絵をまた見る話をした。"
+    },
+    "milano_navigli_v2_first_joke": {
+      "titleJa": "運河の寄り道",
+      "descriptionJa": "洗濯場の先を探そうとした。"
+    },
+    "milano_navigli_v2_first_listen": {
+      "titleJa": "運河の寄り道",
+      "descriptionJa": "石の角度から昔の作業を想像した。"
+    },
+    "milano_navigli_v2_first_honest": {
+      "titleJa": "運河の寄り道",
+      "descriptionJa": "洗濯場をもう少し見る時間を選んだ。"
+    },
+    "milano_navigli_v2_second_joke": {
+      "titleJa": "運河の寄り道",
+      "descriptionJa": "橋から路地を探そうとした。"
+    },
+    "milano_navigli_v2_second_listen": {
+      "titleJa": "運河の寄り道",
+      "descriptionJa": "橋を渡るか二人の希望を話した。"
+    },
+    "milano_navigli_v2_second_honest": {
+      "titleJa": "運河の寄り道",
+      "descriptionJa": "運河沿いの遠回りを話した。"
+    },
+    "milano_san_satiro_v2_first_a": {
+      "titleJa": "教会の遠近法",
+      "descriptionJa": "奥へ行けると二人で思い込んだ。"
+    },
+    "milano_san_satiro_v2_first_b": {
+      "titleJa": "教会の遠近法",
+      "descriptionJa": "驚く前に教えてほしいか話した。"
+    },
+    "milano_san_satiro_v2_first_c": {
+      "titleJa": "教会の遠近法",
+      "descriptionJa": "彼女に先を越された発見を話した。"
+    },
+    "milano_san_satiro_v2_second_a": {
+      "titleJa": "教会の遠近法",
+      "descriptionJa": "互いの見る場所を交換しようとした。"
+    },
+    "milano_san_satiro_v2_second_b": {
+      "titleJa": "教会の遠近法",
+      "descriptionJa": "立ち位置ごとの見え方を話した。"
+    },
+    "milano_san_satiro_v2_second_c": {
+      "titleJa": "教会の遠近法",
+      "descriptionJa": "見え方の違う二人で眺めた。"
+    },
+    "milano_prada_v2_first_a": {
+      "titleJa": "プラダ財団",
+      "descriptionJa": "古い建物の前の使い道を探した。"
+    },
+    "milano_prada_v2_first_b": {
+      "titleJa": "プラダ財団",
+      "descriptionJa": "新しい棟と古い壁を見比べた。"
+    },
+    "milano_prada_v2_first_c": {
+      "titleJa": "プラダ財団",
+      "descriptionJa": "どちらから見るか話し合った。"
+    },
+    "milano_prada_v2_second_a": {
+      "titleJa": "プラダ財団",
+      "descriptionJa": "捨てられない服の事情を想像した。"
+    },
+    "milano_prada_v2_second_b": {
+      "titleJa": "プラダ財団",
+      "descriptionJa": "残すか迷う時間について話した。"
+    },
+    "milano_prada_v2_second_c": {
+      "titleJa": "プラダ財団",
+      "descriptionJa": "相談しても本人が決めると話した。"
+    },
+    "milano_rain_v2_music": {
+      "titleJa": "雨のガッレリア",
+      "descriptionJa": "ガラス屋根の下で傘の色を見た。"
+    },
+    "milano_rain_v2_watch": {
+      "titleJa": "雨のガッレリア",
+      "descriptionJa": "柱の近くから広場の雨を眺めた。"
+    },
+    "milano_rain_v2_hurry": {
+      "titleJa": "雨のガッレリア",
+      "descriptionJa": "雨を見ていたい気持ちを話した。"
+    },
+    "milano_roastery_v2_first_a": {
+      "titleJa": "ロースタリー",
+      "descriptionJa": "ミラノで見慣れた看板を見た。"
+    },
+    "milano_roastery_v2_first_b": {
+      "titleJa": "ロースタリー",
+      "descriptionJa": "焙煎設備に見入った。"
+    },
+    "milano_roastery_v2_first_c": {
+      "titleJa": "ロースタリー",
+      "descriptionJa": "行きたい場所を互いに話した。"
+    },
+    "milano_roastery_v2_second_a": {
+      "titleJa": "ロースタリー",
+      "descriptionJa": "初めての飲み物を選ぶか話した。"
+    },
+    "milano_roastery_v2_second_b": {
+      "titleJa": "ロースタリー",
+      "descriptionJa": "店員に違いを聞くか話した。"
+    },
+    "milano_roastery_v2_second_c": {
+      "titleJa": "ロースタリー",
+      "descriptionJa": "二人でメニューに迷った。"
     }
   },
   "ending": {

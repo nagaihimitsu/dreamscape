@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import type { GameState } from "../../domain/game";
-import { battleAnswerSchema, battleFingerprint } from "../../domain/battle";
-import { battles, battleQuizzes, learningTranslations } from "../../content";
+import { battleAnswerSchema, getBattleContentByHash } from "../../domain/battle";
+import { battles, learningTranslations } from "../../content";
 
 import { LEARNING_KEY as key, SAVE_KEY } from "../../persistence";
 const schema = z
@@ -44,8 +44,9 @@ function validateRecords(state: LearningState) {
   for (const [id, record] of Object.entries(state.records)) {
     const battle = battles.find((item) => item.id === id);
     if (!battle) throw new Error("Unknown battle in learning record");
-    if (record.contentHash !== battleFingerprint(id)) continue;
-    const questions = battleQuizzes[battle.quizId].questions;
+    const content = getBattleContentByHash(id, record.contentHash);
+    if (!content) continue;
+    const questions = content.quiz.questions;
     if (
       record.answers.length > questions.length ||
       record.answers.some((answer, index) => {

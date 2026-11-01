@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import fixtures from "../../tests/fixtures/phase6-saves.json";
 import { validateGameState } from "../domain/game";
-import { battleFingerprint } from "../domain/battle";
+import { getActiveBattleContent } from "../domain/battle";
 import { getNextEpisode } from "../domain/chapter";
 import { encounters, progression } from "../content";
 import { legacyRomanceValues } from "../domain/romance-migration";
@@ -28,7 +28,8 @@ describe("published Phase 6 checkpoints migrate to the Milan city route", () => 
         throw new Error("Old Phase 6 checkpoint was rejected");
       expect(loaded.state).toEqual({
         ...raw,
-        schemaVersion: 10,
+        schemaVersion: 11,
+        updatedDateIds: [],
         travelBudget: encounters.initialBudget,
         inventory: {},
         completedEncounterIds: [],
@@ -43,10 +44,12 @@ describe("published Phase 6 checkpoints migrate to the Milan city route", () => 
         legacyTrialAvailable: true,
       });
       expect(loaded.state.completedCityIds).toEqual([]);
-      if (raw.activeBattle)
-        expect(battleFingerprint(raw.activeBattle.battleId)).toBe(
-          raw.activeBattle.contentHash,
-        );
+      if (raw.activeBattle) {
+        expect(loaded.state.activeBattle?.contentHash).toBe(raw.activeBattle.contentHash);
+        // A rewritten battle has a new current fingerprint. The active resolver
+        // still requires an exact match with the archived published definition.
+        expect(getActiveBattleContent(loaded.state.activeBattle!).battle.id).toBe(raw.activeBattle.battleId);
+      }
       expect(
         validateGameState(JSON.parse(JSON.stringify(loaded.state))),
       ).toEqual(loaded.state);

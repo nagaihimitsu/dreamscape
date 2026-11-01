@@ -29,7 +29,7 @@ import {
   skipTourismGuide,
 } from "./tourism-helpers";
 import { enterFreeTime } from "./journey-helpers";
-import { nonBattleProgress, playSpecialBattle, specialBattle } from "./reasoning-helpers";
+import { nonBattleProgress, playStoryBattle as playSpecialBattle, storyBattle as specialBattle } from "./reasoning-helpers";
 
 /** Continue the ordinary story through a special battle when one is due. */
 async function continueJourney(page: import("@playwright/test").Page, format?: "B" | "C") {
@@ -90,7 +90,7 @@ test("an old completed city can play B and C from the story without losing its e
   }
 });
 
-test("previously played special battles stay completed in an old cleared-city save", async ({ page }) => {
+test("previously played special battles remain recorded without marking the new cases complete", async ({ page }) => {
   const completed = {
     ...phase7.cityClearViewed,
     battleRecords: [
@@ -102,11 +102,11 @@ test("previously played special battles stay completed in an old cleared-city sa
   await loadSnapshot(page, completed);
   expect(await saved(page)).toEqual(completed);
   await expect(page.getByTestId("free-time-hub")).toBeVisible();
-  for (const format of ["B", "C"] as const)
-    await expect(page.getByTestId(`next-story-battle-${specialBattle(format).battle.id}`)).toHaveCount(0);
+  await expect(page.getByTestId(`next-story-battle-${specialBattle("B").battle.id}`)).toBeVisible();
+  await expect(page.getByTestId(`next-story-battle-${specialBattle("C").battle.id}`)).toHaveCount(0);
   await openRevisits(page);
-  for (const format of ["B", "C"] as const)
-    await expect(page.getByTestId(`revisit-battle-${specialBattle(format).battle.id}`)).toBeVisible();
+  for (const battleId of ["milano_last_supper_b01", "milano_last_supper_c01"])
+    await expect(page.getByTestId(`revisit-battle-${battleId}`)).toBeVisible();
   expect((await saved(page)).endingReached).toBe(true);
 });
 
@@ -386,6 +386,6 @@ test("a published Last Supper completion keeps its reward and resumes at unvisit
   expect(result.state.completedEpisodeIds[0]).toBe(
     "milano_last_supper_episode",
   );
-  expect(result.state.schemaVersion).toBe(10);
+  expect(result.state.schemaVersion).toBe(11);
   await reloadUnchanged(page);
 });

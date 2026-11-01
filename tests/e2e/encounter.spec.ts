@@ -67,7 +67,7 @@ test("cafe, free choice, cultural quiz, gift and ticket use persist across reloa
   });
   await page.setViewportSize({ width: 360, height: 780 });
   await loadSnapshot(page, galleria);
-  await open(page, "カフェでひと休み");
+  await open(page, "カンパリーノでひと休み");
   await advanceToChoice(page);
   await expect(page.getByText("Two coffees, please.")).toBeVisible();
   await expect(page.getByText("€4", { exact: true })).toBeVisible();
@@ -160,7 +160,7 @@ test("an incorrect answer can be retried; a saved lost draw cannot be rerolled",
 
 test("not buying remains available when the travel budget is insufficient", async ({ page }) => {
   await loadSnapshot(page, galleria);
-  await open(page, "カフェでひと休み");
+  await open(page, "カンパリーノでひと休み");
   await page.evaluate(() => {
     const key = "dreamscape.save.v1";
     const snapshot = JSON.parse(localStorage.getItem(key)!);
@@ -189,7 +189,7 @@ test("a cleared city keeps newly acquired Milan items usable exactly once after 
     battleRecords: [...phase7.cityClearViewed.battleRecords, ...phase6.B_result.battleRecords, ...phase6.C_result.battleRecords],
   };
   await loadSnapshot(page, oldClearedCity);
-  await open(page, "カフェでひと休み");
+  await open(page, "カンパリーノでひと休み");
   await advanceToChoice(page);
   await choose(page, "C");
   await finish(page);

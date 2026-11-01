@@ -2,6 +2,12 @@
   "schemaVersion": 1,
   "entries": [
     {
+      "storyId": "milano/cafe_refresh_01",
+      "text": "彼女は紙に点を打ちかけ、途中で数えるのを諦めた。",
+      "speaker": "narrator",
+      "emotion": "smile"
+    },
+    {
       "storyId": "milano/cafe_01",
       "text": "「でも今は……もう少しだけ、予定がないままでいたいな」",
       "speaker": "heroine",

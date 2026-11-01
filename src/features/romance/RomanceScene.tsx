@@ -3,6 +3,7 @@ import { city, dateDestinations, dialogueExpressions, dialogueReactions, present
 import type { DateDefinition } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
+import { presentationStoryId } from "../../content/legacy-milano";
 import type { GameState } from "../../domain/game";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
@@ -15,7 +16,7 @@ import { AutoAdvanceButton, useAutoAdvance } from "../../components/useAutoAdvan
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { resolveRomancePresentation } from "./romance-presentation";
-import { Modal } from "../../components/Modal";
+import { BackgroundCredits } from "../../components/BackgroundCredits";
 import "./romance-scene.css";
 
 export function RomanceScene({
@@ -49,8 +50,8 @@ export function RomanceScene({
   const destination = destinationId
     ? dateDestinations.find((item) => item.id === destinationId)
     : undefined;
-  const reaction = resolveDialogueReaction(dialogueReactions, storyId, frame, "heroine");
-  const emotion = reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame);
+  const reaction = resolveDialogueReaction(dialogueReactions, presentationStoryId(storyId), frame, "heroine");
+  const emotion = reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, presentationStoryId(storyId), frame);
   const speaker =
     frame.speaker === "heroine"
       ? game.heroineName
@@ -295,22 +296,7 @@ export function RomanceScene({
         )}
       </section>
       {creditsOpen && backgroundAsset && (
-        <Modal labelledBy="date-background-credits-title" className="date-background-viewer" onClose={() => setCreditsOpen(false)}>
-          <h2 id="date-background-credits-title">背景画像</h2>
-          <img src={`${import.meta.env.BASE_URL}${backgroundAsset.path}`} alt={backgroundAsset.altJa} />
-          <details>
-            <summary>画像の説明・出典と利用条件</summary>
-            <p>{backgroundAsset.altJa}</p>
-            <p>{backgroundAsset.creditJa}</p>
-            <p>{backgroundAsset.modificationJa}</p>
-            <p>
-              <a href={backgroundAsset.sourceUrl} target="_blank" rel="noreferrer">画像の出典</a>
-              {" · "}
-              <a href={backgroundAsset.licenseUrl} target="_blank" rel="noreferrer">{backgroundAsset.licenseName}</a>
-            </p>
-          </details>
-          <button type="button" className="secondary" onClick={() => setCreditsOpen(false)}>閉じる</button>
-        </Modal>
+        <BackgroundCredits asset={backgroundAsset} onClose={() => setCreditsOpen(false)} />
       )}
       <DialogueWindowRestore state={windowVisibility} />
     </div>

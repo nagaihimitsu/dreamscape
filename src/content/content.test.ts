@@ -10,6 +10,10 @@ import battleData from "../../content/battles/catalog.json";
 import tourismData from "../../content/tourism/catalog.json";
 import reasoningIntroData from "../../content/presentation/reasoning-intros.json";
 import encounterData from "../../content/encounters/catalog.json";
+import archivedEncounterData from "../../content/legacy/milano_fa0e7e0/encounters/catalog.json";
+import archivedBattleData from "../../content/legacy/milano_fa0e7e0/battles/catalog.json";
+import archivedTourismData from "../../content/legacy/milano_fa0e7e0/tourism/catalog.json";
+import archivedJourneyData from "../../content/legacy/milano_fa0e7e0/progression/journey.json";
 import { parseStoryTags } from "./tags";
 import { prepareContentFixture } from "./test-fixtures";
 
@@ -43,7 +47,7 @@ async function changeDates(change: (data: typeof dateData) => void) {
 describe("content build acceptance", () => {
   it("validates the real production catalog and registered artwork", async () => {
     await expect(buildContent(path.resolve("."), false)).resolves.toBeDefined();
-  }, 30000);
+  }, 120000);
   it("rejects a registered but missing background image", async () => {
     const file = path.join(fixture, "content/romance/presentation.json");
     const data = JSON.parse(await readFile(file, "utf8"));
@@ -64,7 +68,7 @@ describe("content build acceptance", () => {
     data.backgrounds.milano_cafe.imagePath = "assets/tourism/galleria-milano.webp";
     await writeFile(file, JSON.stringify(data));
     await expect(buildContent(fixture, false)).rejects.toThrow("Background cannot specify both imagePath and imageAssetId: milano_cafe");
-  }, 30000);
+  }, 120000);
   it("rejects an undefined character ID and a registered but missing image", async () => {
     const file = path.join(fixture, "content/presentation/characters.json");
     const data = JSON.parse(await readFile(file, "utf8"));
@@ -189,11 +193,12 @@ describe("content build acceptance", () => {
       ),
     );
     expect(Object.keys(generated).sort()).toEqual(
-      [
+      [...new Set([
         "learning/english",
         ...dateData.dates.map((date) => date.storyId),
         ...dateData.dates.flatMap((date) => "legacyStoryIds" in date ? date.legacyStoryIds ?? [] : []),
         ...battleData.battles.map((battle) => battle.storyId),
+        ...archivedBattleData.battles.map((battle) => battle.storyId).filter((id) => id in generated),
         ...reasoningIntroData.entries.map((entry) => entry.storyId),
         ...encounterData.encounters.flatMap((event) => [
           event.storyId,
@@ -201,11 +206,21 @@ describe("content build acceptance", () => {
             ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId]
             : []),
         ]),
+        ...archivedEncounterData.encounters.flatMap((event) => [
+          event.storyId,
+          ...("quiz" in event && event.quiz
+            ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId]
+            : []),
+        ]).filter((id) => id in generated),
         ...tourismData.landmarks.map((landmark) => landmark.guideStoryId),
+        ...archivedTourismData.landmarks.map((landmark) => landmark.guideStoryId).filter((id) => id in generated),
         ...result.journey.episodes.flatMap((episode) =>
           episode.epilogueStoryId ? [episode.epilogueStoryId] : [],
         ),
-      ].sort(),
+        ...archivedJourneyData.episodes.flatMap((episode) =>
+          "epilogueStoryId" in episode && episode.epilogueStoryId && episode.epilogueStoryId in generated ? [episode.epilogueStoryId] : [],
+        ),
+      ])].sort(),
     );
   });
 

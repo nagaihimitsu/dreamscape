@@ -8,9 +8,9 @@ import { enterFreeTime, getNextStoryBattle, startEpisode } from "./chapter";
 import { advanceBattle, answerBattle, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "./battle";
 import { skipTourismGuide, startTourismBattle } from "./tourism";
 
-const ids = ["milano_la_scala_date_01", "milano_brera_date_01", "milano_navigli_date_01", "milano_san_satiro_date_01", "milano_starbucks_roastery_date_01", "milano_fondazione_prada_date_01", "milano_love_date_01"] as const;
+const ids = ["milano_la_scala_date_01", "milano_brera_date_01", "milano_navigli_date_01", "milano_san_satiro_date_01", "milano_starbucks_roastery_date_01", "milano_fondazione_prada_date_01", "milano_novecento_date_01"] as const;
 const milestones = ["milano_galleria_episode", "milano_last_supper_episode", "milano_castello_episode", "milano_duomo_episode", "milano_galleria_episode", "milano_last_supper_episode", "milano_duomo_episode"] as const;
-const effectPrefixes = ["milano_la_scala", "milano_brera", "milano_navigli", "milano_san_satiro", "milano_starbucks_roastery", "milano_fondazione_prada", "milano_love"] as const;
+const effectPrefixes = ["milano_la_scala", "milano_brera_v2", "milano_navigli_v2", "milano_san_satiro_v2", "milano_roastery_v2", "milano_prada_v2", "milano_novecento"] as const;
 
 /** Exercise the real A/B/C route rather than inventing episode save flags. */
 function finishBattle(initial: GameState): GameState {
@@ -127,9 +127,10 @@ describe("real-place optional dates", () => {
       const memories = after.memories.filter((memory) => !before.memories.includes(memory));
       const prefix = effectPrefixes[index];
       const approach = index < 3 ? ["joke", "listen", "honest"] : ["a", "b", "c"];
+      const suffix = index === 0 ? "_refresh" : "";
       const chosenEffects = [
-        effects.find((effect) => effect.id === `${prefix}_first_${approach[first]}`)!,
-        effects.find((effect) => effect.id === `${prefix}_second_${approach[second]}`)!,
+        effects.find((effect) => effect.id === `${prefix}_first_${approach[first]}${suffix}`)!,
+        effects.find((effect) => effect.id === `${prefix}_second_${approach[second]}${suffix}`)!,
       ];
       expect(memories).toHaveLength(2);
       expect(new Set(memories).size).toBe(2);
@@ -157,42 +158,42 @@ describe("real-place optional dates", () => {
 
   it("advances from a destination date without the old cafe, walk or invitation", () => {
     const before = checkpoints[2];
-    const after = playDate(before, "milano_love_date_01", [2, 0]);
+    const after = playDate(before, "milano_novecento_date_01", [2, 0]);
     expect(after.romanceStage).toBe(2);
-    expect(after.playedDateIds).toEqual(["milano_love_date_01"]);
+    expect(after.playedDateIds).toEqual(["milano_novecento_date_01"]);
     expect(getDateAvailability(after, "milano_cafe_01").available).toBe(true);
   });
 
-  it("changes the Navigli callback only when the cafe was actually experienced", () => {
+  it("visits Navigli both before and after the cafe without inventing old dialogue", () => {
     const afterCastle = checkpoints[4];
     const firstTime: string[] = [];
     playDate(afterCastle, ids[2], [0, 0], firstTime);
+    expect(firstTime.join("\n")).toContain("洗濯");
     expect(firstTime.join("\n")).not.toContain("前にも運河の近くで話しましたね");
     const afterCafe = playDate(afterCastle, "milano_cafe_01", [0, 0]);
     const returning: string[] = [];
-    playDate(afterCafe, ids[2], [0, 0], returning);
-    expect(returning.join("\n")).toContain("前にも運河の近くで話しましたね");
+    const afterBoth = playDate(afterCafe, ids[2], [0, 0], returning);
+    expect(returning.join("\n")).toContain("洗濯");
+    expect(afterBoth.playedDateIds).toContain("milano_cafe_01");
+    expect(afterBoth.playedDateIds).toContain(ids[2]);
+    expect(afterBoth.memories).toEqual(expect.arrayContaining(afterCafe.memories));
   });
 
-  it("recalls the Brera detail at Prada only after that exact memory was made", () => {
+  it("allows Prada and Brera in either order without losing history", () => {
     const before = checkpoints[3];
-    const firstVisit: string[] = [];
-    const afterPrada = playDate(before, "milano_fondazione_prada_date_01", [0, 0], firstVisit);
-    expect(firstVisit.join("\n")).not.toContain("ブレラの絵でも");
+    const afterPrada = playDate(before, "milano_fondazione_prada_date_01", [0, 0]);
     const pradaThenBrera = playDate(afterPrada, "milano_brera_date_01", [1, 0]);
     expect(pradaThenBrera.playedDateIds).toEqual(["milano_fondazione_prada_date_01", "milano_brera_date_01"]);
-
     const afterBrera = playDate(before, "milano_brera_date_01", [1, 0]);
-    expect(afterBrera.memories).toContain("milano_brera_first_listen");
-    const returning: string[] = [];
-    playDate(afterBrera, "milano_fondazione_prada_date_01", [0, 0], returning);
-    expect(returning.join("\n")).toContain("ブレラの絵でも");
+    const breraThenPrada = playDate(afterBrera, "milano_fondazione_prada_date_01", [0, 0]);
+    expect(breraThenPrada.playedDateIds).toEqual(["milano_brera_date_01", "milano_fondazione_prada_date_01"]);
+    expect(breraThenPrada.memories).toEqual(expect.arrayContaining(afterBrera.memories));
   });
 
   it("makes the same approach feel different after the relationship has developed", () => {
     const firstTime: string[] = [];
     const early = playDate(checkpoints[1], "milano_san_satiro_date_01", [2, 0], firstTime);
-    expect(firstTime.join("\n")).toContain("まずはこの距離で");
+    expect(firstTime.join("\n")).toContain("見間違いを確かめるように");
     expect(early.trust).toBe(checkpoints[1].trust + 4); // Both saved positive rolls apply their configured ranges.
 
     let closer = playDate(checkpoints[3], "milano_la_scala_date_01", [0, 0]);
@@ -200,7 +201,7 @@ describe("real-place optional dates", () => {
     expect(closer.romanceStage).toBeGreaterThanOrEqual(3);
     const laterLines: string[] = [];
     const later = playDate(closer, "milano_san_satiro_date_01", [2, 0], laterLines);
-    expect(laterLines.join("\n")).toContain("絵のほうも見てくださいね");
+    expect(laterLines.join("\n")).not.toContain("見間違いを確かめるように");
     expect(later.trust).toBe(closer.trust + 4);
   });
 
@@ -220,7 +221,7 @@ describe("real-place optional dates", () => {
     expect(initialAp).toBe(15);
 
     const route: readonly [string, [number, number]][] = [
-      ["milano_love_date_01", [2, 0]],
+      ["milano_novecento_date_01", [2, 0]],
       ["milano_fondazione_prada_date_01", [1, 0]],
       ["milano_la_scala_date_01", [0, 2]],
       ["milano_san_satiro_date_01", [2, 1]],

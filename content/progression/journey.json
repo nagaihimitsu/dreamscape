@@ -11,9 +11,9 @@
       "legacyChapterId": "milano",
       "requiredEpisodeIds": [],
       "titleJa": "ミラノ 第1話／ドゥオモ",
-      "descriptionJa": "広場に出ると、白い尖塔が空へ続いていた。見上げるふたりの横で、重たい靴を引きずる男が立ち止まる。",
+      "descriptionJa": "ドゥオモ広場で資料を拾い、大聖堂へ届いた石の道を見つける。",
       "clearTitleJa": "ドゥオモ編 クリア",
-      "clearDescriptionJa": "大聖堂を見上げていた首を、少し休める。次の通りへ歩いても、ふたりの時間を取ってもいい。旅はまだ始まったばかりだ。"
+      "clearDescriptionJa": "大聖堂を見上げていた首を休める。次へ歩いても、二人の時間を取ってもいい。"
     },
     {
       "id": "milano_galleria_episode",
@@ -26,9 +26,9 @@
         "milano_duomo_episode"
       ],
       "titleJa": "ミラノ 第2話／ガッレリア",
-      "descriptionJa": "店先の明かりと、人の足音。その間を、踵を地面につけずに歩く男がいる。今日は何を買わずに帰るつもりだろう。",
+      "descriptionJa": "ガッレリアの店先で、土産売りに床の牛を勧められる。その牛はどこの街の印だろう。",
       "clearTitleJa": "ガッレリア編 クリア",
-      "clearDescriptionJa": "通り抜けるだけのつもりが、いつの間にか足を緩めていた。寄り道にも、ちゃんと使い道がある。"
+      "clearDescriptionJa": "ガラス屋根の下を通り抜ける。見上げた景色と、床の牛をもう一度確かめたくなった。"
     },
     {
       "id": "milano_last_supper_episode",
@@ -38,9 +38,9 @@
       "battleId": "milano_last_supper_01",
       "legacyChapterId": "milano",
       "titleJa": "ミラノ 第3話／最後の晩餐",
-      "descriptionJa": "修道院の旧食堂で、絵の前に立ち止まる。白い手袋の男が守ろうとしているものは、いったい何だろう。",
+      "descriptionJa": "修道院の旧食堂で、孫への便りを書こうとする旅行者と絵の前に立つ。",
       "clearTitleJa": "最後の晩餐編 クリア",
-      "clearDescriptionJa": "修道院を出ると、街にはまだ午後の光が残っていた。絵の中の食卓から、今度はふたりの席へ。空いた時間の使い道を、一緒に決めよう。",
+      "clearDescriptionJa": "旧食堂を出て午後の街へ。絵の中で見つけた表情を、話しながら歩く。",
       "requiredEpisodeIds": [
         "milano_galleria_episode"
       ]
@@ -56,9 +56,9 @@
         "milano_last_supper_episode"
       ],
       "titleJa": "ミラノ 第4話／スフォルツェスコ城",
-      "descriptionJa": "城の入口で、小さな引き出しを抱えた男に呼び止められる。まだ何も見ていないのに、見学終了の準備だけは万全らしい。",
+      "descriptionJa": "城の中庭で、親戚の子に渡す案内を作る来館者に出会う。",
       "clearTitleJa": "スフォルツェスコ城編 クリア",
-      "clearDescriptionJa": "城を出る前に、もう一度だけ振り返る。今日のことは全部しまい込まず、少しだけ続きを開けておこう。"
+      "clearDescriptionJa": "城を出る前に振り返る。案内に書けなかった場所も、まだ気になる。"
     },
     {
       "id": "milano_finale",
@@ -73,29 +73,29 @@
         "milano_last_supper_episode",
         "milano_castello_episode"
       ],
-      "epilogueStoryId": "milano/city_epilogue",
+      "epilogueStoryId": "milano/city_epilogue_rewrite",
       "titleJa": "ミラノ 都市フィナーレ",
-      "descriptionJa": "四つの場所を歩いたふたりを、旅を終わらせたがる男が待っている。ばらばらの発見を、ひとつの答えにして持っていこう。",
+      "descriptionJa": "ダルセナの水辺で、旅行案内の編集者とミラノの旅を振り返る。",
       "clearTitleJa": "ミラノ 都市クリア",
-      "clearDescriptionJa": "四つの場所と、そこで交わした言葉。今日の旅にひと区切りをつけて、ふたりの余韻へ。"
+      "clearDescriptionJa": "水辺で旅のメモを開く。二人が残したい言葉は、まだ増えるかもしれない。"
     }
   ],
   "storyBattles": [
     {
-      "battleId": "milano_last_supper_b01",
+      "battleId": "milano_la_scala_b01",
       "afterEpisodeId": "milano_last_supper_episode",
       "beforeEpisodeId": "milano_castello_episode",
-      "titleJa": "最後の晩餐での対決",
-      "descriptionJa": "最後の晩餐の前で、帳簿を持った男が印を押している。",
-      "actionLabelJa": "帳簿の男と話す"
+      "titleJa": "スカラ座の記録",
+      "descriptionJa": "スカラ座博物館で、見学用の文章を確かめる。",
+      "actionLabelJa": "スカラ座へ行く"
     },
     {
-      "battleId": "milano_last_supper_c01",
+      "battleId": "milano_brera_c01",
       "afterEpisodeId": "milano_castello_episode",
       "beforeEpisodeId": "milano_finale",
-      "titleJa": "もう一度、最後の晩餐へ",
-      "descriptionJa": "あの食卓をもう一度見たくなり、絵のある食堂へ戻る。",
-      "actionLabelJa": "最後の晩餐へ戻る"
+      "titleJa": "ブレラへ届いた絵",
+      "descriptionJa": "ブレラ絵画館で、旅人と祭壇画の記録をつなぐ。",
+      "actionLabelJa": "ブレラ絵画館へ行く"
     }
   ],
   "rewards": [

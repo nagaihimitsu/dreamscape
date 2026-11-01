@@ -4,9 +4,16 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { buildContent } from "../../scripts/content-pipeline";
 import { prepareContentFixture } from "./test-fixtures";
+import { validateJourney } from "../../scripts/journey-validation";
+import { journeySchema } from "./journey-schemas";
+import { battleCatalogSchema, trialProgressionSchema } from "./schemas";
+import { tourismCatalogSchema } from "./tourism-schemas";
+import { balance, battleQuizzes } from ".";
 import journeyData from "../../content/progression/journey.json";
 import cityData from "../../content/cities/milano.json";
 import trialData from "../../content/romance/trial_progression.json";
+import battleData from "../../content/battles/catalog.json";
+import tourismData from "../../content/tourism/catalog.json";
 
 let fixture: string;
 beforeEach(async () => {
@@ -26,6 +33,21 @@ async function changeJourney(change: (data: typeof journeyData) => void) {
   );
 }
 
+/** Reward and route checks do not need to recompile every unrelated Ink file. */
+function checkJourney(change: (data: typeof journeyData) => void): void {
+  const data = structuredClone(journeyData);
+  change(data);
+  validateJourney(
+    journeySchema.parse(data),
+    cityData,
+    balance.apCap,
+    tourismCatalogSchema.parse(tourismData).landmarks,
+    battleCatalogSchema.parse(battleData).battles,
+    battleQuizzes,
+    trialProgressionSchema.parse(trialData).milestones,
+  );
+}
+
 describe("integrated journey content contract", () => {
   it("connects four ordered landmarks and a separate city finale while retaining the legacy reward", async () => {
     const result = await buildContent(fixture, false);
@@ -33,9 +55,12 @@ describe("integrated journey content contract", () => {
     const stops = result.journey.episodes.filter(
       (episode) => episode.kind !== "city_finale",
     );
-    expect(stops.map((episode) => episode.landmarkId)).toEqual(
-      cityData.landmarkIdsPlanned,
-    );
+    expect(stops.map((episode) => episode.landmarkId)).toEqual([
+      "duomo_milano", "galleria_vittorio_emanuele_ii", "last_supper", "castello_sforzesco",
+    ]);
+    expect(result.journey.storyBattles.map((entry) => entry.battleId)).toEqual([
+      "milano_la_scala_b01", "milano_brera_c01",
+    ]);
     const finale = result.journey.episodes.find(
       (episode) => episode.kind === "city_finale",
     )!;
@@ -43,7 +68,7 @@ describe("integrated journey content contract", () => {
     expect(finale.requiredEpisodeIds).toEqual(
       stops.map((episode) => episode.id),
     );
-    expect(finale.epilogueStoryId).toBe("milano/city_epilogue");
+    expect(finale.epilogueStoryId).toBe("milano/city_epilogue_rewrite");
     const legacy = result.journey.rewards.find(
       (rule) => rule.id === cityData.firstClearReward.rewardSourceId,
     )!;
@@ -59,7 +84,7 @@ describe("integrated journey content contract", () => {
         )
         .every((rule) => rule.ap === 1),
     ).toBe(true);
-    expect(result.tourismGuides).toBe(4);
+    expect(result.tourismGuides).toBe(cityData.landmarkIdsPlanned.length);
     expect(result.epilogueScenarios).toBe(8);
   });
 
@@ -72,17 +97,15 @@ describe("integrated journey content contract", () => {
     );
   });
 
-  it("rejects duplicate episodes and ambiguous shared battles", async () => {
-    await changeJourney((data) => {
+  it("rejects duplicate episodes and ambiguous shared battles", () => {
+    expect(() => checkJourney((data) => {
       data.episodes.push({ ...data.episodes[0] });
-    });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
+    })).toThrow(
       "Duplicate episode ID",
     );
-    await changeJourney((data) => {
+    expect(() => checkJourney((data) => {
       data.episodes.push({ ...data.episodes[0], id: "another_episode" });
-    });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
+    })).toThrow(
       "Duplicate episode battle",
     );
   });
@@ -152,44 +175,38 @@ describe("integrated journey content contract", () => {
     );
   });
 
-  it("requires one rule for each supported completion boundary", async () => {
-    await changeJourney((data) => {
+  it("requires one rule for each supported completion boundary", () => {
+    expect(() => checkJourney((data) => {
       data.rewards.splice(3, 1);
-    });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
+    })).toThrow(
       "Episode needs one episode_clear reward",
     );
-    await changeJourney((data) => {
+    expect(() => checkJourney((data) => {
       data.rewards.push({ ...data.rewards[0], id: "another_guide_reward" });
-    });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
+    })).toThrow(
       "Episode needs one guide_read reward",
     );
   });
 
-  it("rejects invalid AP and score thresholds without imposing a winning chapter condition", async () => {
+  it("rejects invalid AP and score thresholds without imposing a winning chapter condition", () => {
     for (const amount of [0, -1, 1.5, 13]) {
-      await changeJourney((data) => {
+      expect(() => checkJourney((data) => {
         data.rewards[0].ap = amount;
-      });
-      await expect(buildContent(fixture, false)).rejects.toThrow();
+      })).toThrow();
     }
-    await changeJourney((data) => {
+    expect(() => checkJourney((data) => {
       data.rewards[2].minScore = 4;
-    });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
+    })).toThrow(
       "Unreachable score reward",
     );
-    await changeJourney((data) => {
+    expect(() => checkJourney((data) => {
       data.rewards[1].minScore = 1;
-    });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
+    })).toThrow(
       "Only score rewards",
     );
-    await changeJourney((data) => {
+    expect(() => checkJourney((data) => {
       data.rewards[2].minScore = null;
-    });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
+    })).toThrow(
       "Only score rewards",
     );
   });

@@ -13,7 +13,12 @@ describe("learning content", () => {
   it("covers every published question and all three choices", () => {
     const catalog = learningCatalogSchema.parse(raw);
     expect(() => validateLearning(catalog, battleQuizzes, ids)).not.toThrow();
-    expect(Object.keys(catalog.questions)).toHaveLength(23);
+    const published = ids.flatMap((id) => battleQuizzes[id].questions.map((question) => question.id));
+    expect(Object.keys(catalog.questions).sort()).toEqual([...new Set(published)].sort());
+    expect(published).toEqual(expect.arrayContaining([
+      "last_supper_b_doorway_counterexample", "last_supper_c_shared_focus",
+      "scala_wartime_counterexample", "brera_camerino_joined_records",
+    ]));
     for (const entry of Object.values(catalog.questions))
       expect(Object.keys(entry.optionsJa).sort()).toEqual(["A", "B", "C"]);
   });

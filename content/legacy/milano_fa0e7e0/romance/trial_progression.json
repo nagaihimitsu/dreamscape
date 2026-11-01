@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "milestones": [
+    {
+      "id": "trial_after_cafe",
+      "rewardSourceId": "trial_after_cafe_reward",
+      "titleJa": "試遊用：翌日の自由時間",
+      "descriptionJa": "告白まで試遊するための補助APです。カフェのあとに一度だけ受け取れます。観光エピソードのクリア報酬とは別の枠です。",
+      "ap": 4,
+      "requiredPlayedDateIds": [
+        "milano_cafe_01"
+      ]
+    },
+    {
+      "id": "trial_after_walk",
+      "rewardSourceId": "trial_after_walk_reward",
+      "titleJa": "試遊用：夜の自由時間",
+      "descriptionJa": "告白まで試遊するための補助APです。散歩のあとに一度だけ受け取れます。今後、次の観光エピソードの報酬に置き換える予定です。",
+      "ap": 4,
+      "requiredPlayedDateIds": [
+        "milano_walk_01"
+      ]
+    }
+  ]
+}

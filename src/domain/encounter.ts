@@ -1,4 +1,5 @@
 import { encounters } from "../content/encounters";
+import { legacyEncounters, legacyStoryId } from "../content/legacy-milano";
 import { responseProfileSchema } from "../content/schemas";
 import { city, responseProfiles } from "../content";
 import type { EncounterDefinition } from "../content/encounter-schemas";
@@ -25,14 +26,30 @@ function optionItemsBelongToEncounter(event: EncounterDefinition, option: Encoun
   return [option.requiresItemId, option.consumeItemId, option.giftItemId].every((itemId) => itemBelongsToEncounter(event, itemId));
 }
 
-function encounterFingerprint(event: EncounterDefinition): string {
+function encounterFingerprint(event: EncounterDefinition, archived = false): string {
   const ids = [event.storyId, ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : [])];
   // Odds have their own stored snapshot; rebalancing must not invalidate an active event.
   const fingerprintData = event.quiz ? { ...event, quiz: { ...event.quiz, chancePercent: 0 } } : event;
-  const text = JSON.stringify(fingerprintData) + ids.map(storyFingerprint).join(":");
+  const text = JSON.stringify(fingerprintData) + ids.map((id) => storyFingerprint(archived ? legacyStoryId(id) : id)).join(":");
   let hash = 2166136261;
   for (let i = 0; i < text.length; i++) hash = Math.imul(hash ^ text.charCodeAt(i), 16777619);
   return (hash >>> 0).toString(16);
+}
+
+export function getActiveEncounterDefinition(active: ActiveEncounter): EncounterDefinition {
+  const current = findEncounter(active.encounterId);
+  try { if (current && encounterFingerprint(current) === active.contentHash) return current; }
+  catch { /* A rewritten current story can be absent while old snapshots remain available. */ }
+  const old = legacyEncounters.encounters.find((event) => event.id === active.encounterId);
+  if (old && encounterFingerprint(old, true) === active.contentHash) return old;
+  throw new Error("道中交流の保存状態が一致しません。");
+}
+
+function activeStoryId(active: ActiveEncounter, id: string): string {
+  const event = findEncounter(active.encounterId);
+  try { if (event && encounterFingerprint(event) === active.contentHash) return id; }
+  catch { /* Resolve against the immutable publication below. */ }
+  return legacyStoryId(id);
 }
 
 export function getEncounterAvailability(state: GameState, id: string): Availability {
@@ -51,7 +68,7 @@ export function getEncounterAvailability(state: GameState, id: string): Availabi
 
 export function getEncounterOptionAvailability(state: GameState, index: number): Availability {
   const active = state.activeEncounter;
-  const event = active && findEncounter(active.encounterId);
+  const event = active && getActiveEncounterDefinition(active);
   const option = event?.options[index];
   if (!active || active.phase !== "story" || active.selectedOptionId !== null || !option || !active.frame.choices.some((choice) => choice.index === index)) return unavailable("この選択肢は使えません。");
   if (!event || event.cityId !== city.id || !optionItemsBelongToEncounter(event, option)) return unavailable("この街では使えない品物です。");
@@ -94,7 +111,7 @@ export function startEncounter(state: GameState, id: string, nextRoll: () => num
 export function chooseEncounter(state: GameState, index: number, expectedRevision: number): GameState {
   const active = state.activeEncounter;
   if (state.revision !== expectedRevision || !active || !getEncounterOptionAvailability(state, index).available) return state;
-  const event = findEncounter(active.encounterId)!;
+  const event = getActiveEncounterDefinition(active);
   const option = event.options[index];
   if (active.frame.choices[index]?.text !== option.textEn) throw new Error("交流の選択肢が一致しません。");
   let next = { ...state, travelBudget: state.travelBudget - option.costEuro, inventory: { ...state.inventory } };
@@ -113,7 +130,7 @@ export function chooseEncounter(state: GameState, index: number, expectedRevisio
     romanceResolution = { profileId: profile.id, before: { affection: state.affection, trust: state.trust, spark: state.spark }, deltas, result: resolution.result };
     next = { ...next, affection: next.affection + deltas.affection, trust: next.trust + deltas.trust, spark: next.spark + deltas.spark };
   }
-  const step = selectStoryChoice(active.storyId, active.storyState, active.frame, index, state.memories, {}, { ...variables(next), romance_result: result }, next.inventory);
+  const step = selectStoryChoice(activeStoryId(active, active.storyId), active.storyState, active.frame, index, state.memories, {}, { ...variables(next), romance_result: result }, next.inventory);
   return { ...next, revision: state.revision + 1, activeEncounter: withStep({ ...active, selectedOptionId: option.id, romanceResolution }, step) };
 }
 
@@ -121,15 +138,18 @@ export function chooseEncounter(state: GameState, index: number, expectedRevisio
 export function advanceEncounter(state: GameState, expectedRevision: number): GameState {
   const active = state.activeEncounter;
   if (state.revision !== expectedRevision || !active) return state;
-  const event = findEncounter(active.encounterId)!;
+  let event: EncounterDefinition;
+  try { event = getActiveEncounterDefinition(active); }
+  catch { return state; }
   if (event.cityId !== city.id) return state;
   if (active.phase === "feedback") {
     const quiz = event.quiz!;
     const correct = active.quizAnswerId === quiz.question.correctOptionId;
     const record = state.encounterRewards[event.id];
     const storyId = !correct ? quiz.lostStoryId : active.rewardAlreadyDrawn ? quiz.alreadyStoryId : record?.won ? quiz.wonStoryId : quiz.lostStoryId;
-    const step = checkedStep(beginStory(storyId, state.playerName, state.heroineName, variables(state), state.memories, state.inventory));
-    return { ...state, revision: state.revision + 1, activeEncounter: withStep({ ...active, phase: "outcome", storyId, storyHash: storyFingerprint(storyId) }, step) };
+    const resolvedStoryId = activeStoryId(active, storyId);
+    const step = checkedStep(beginStory(resolvedStoryId, state.playerName, state.heroineName, variables(state), state.memories, state.inventory));
+    return { ...state, revision: state.revision + 1, activeEncounter: withStep({ ...active, phase: "outcome", storyId, storyHash: storyFingerprint(resolvedStoryId) }, step) };
   }
   if (active.phase === "quiz" || active.frame.choices.length) return state;
   if (active.frame.ended) {
@@ -137,13 +157,13 @@ export function advanceEncounter(state: GameState, expectedRevision: number): Ga
       return { ...state, revision: state.revision + 1, activeEncounter: { ...active, phase: "quiz" } };
     return state;
   }
-  return { ...state, revision: state.revision + 1, activeEncounter: withStep(active, continueStory(active.storyId, active.storyState, active.frame, state.memories, variables(state), state.inventory)) };
+  return { ...state, revision: state.revision + 1, activeEncounter: withStep(active, continueStory(activeStoryId(active, active.storyId), active.storyState, active.frame, state.memories, variables(state), state.inventory)) };
 }
 
 export function answerEncounterQuiz(state: GameState, optionId: string, expectedRevision: number): GameState {
   const active = state.activeEncounter;
   if (state.revision !== expectedRevision || !active || active.phase !== "quiz") return state;
-  const event = findEncounter(active.encounterId)!;
+  const event = getActiveEncounterDefinition(active);
   const quiz = event.quiz;
   if (!quiz) return state;
   if (event.cityId !== city.id || !itemBelongsToEncounter(event, quiz.rewardItemId)) return state;
@@ -167,7 +187,7 @@ export function answerEncounterQuiz(state: GameState, optionId: string, expected
 
 export function getEncounterQuizFeedback(state: GameState): { correct: boolean; explanationJa: string } | null {
   const active = state.activeEncounter;
-  const quiz = active && findEncounter(active.encounterId)?.quiz;
+  const quiz = active && getActiveEncounterDefinition(active).quiz;
   if (!active || active.phase !== "feedback" || !quiz || !active.quizAnswerId) return null;
   const correct = scoreQuizAnswer(quiz.question, active.quizAnswerId);
   if (correct === null) return null;
@@ -177,7 +197,7 @@ export function getEncounterQuizFeedback(state: GameState): { correct: boolean; 
 export function finishEncounter(state: GameState, expectedRevision: number): GameState {
   const active = state.activeEncounter;
   if (state.revision !== expectedRevision || !active || !active.frame.ended || !active.selectedOptionId || (active.phase !== "outcome" && active.phase !== "story")) return state;
-  const event = findEncounter(active.encounterId)!;
+  const event = getActiveEncounterDefinition(active);
   if (event.cityId !== city.id || !itemBelongsToEncounter(event, event.completionItemId)) return state;
   if (event.quiz && active.phase !== "outcome") return state;
   const option = event.options.find((item) => item.id === active.selectedOptionId)!;
@@ -224,10 +244,10 @@ export function validateEncounterState(state: GameState): void {
   }
   const active = state.activeEncounter;
   if (!active) return;
-  const event = findEncounter(active.encounterId);
-  if (!event || event.cityId !== city.id || active.contentHash !== encounterFingerprint(event)) fail();
+  const event = getActiveEncounterDefinition(active);
+  if (event.cityId !== city.id) fail();
   if (state.activeDate || state.activeTourism || state.activeEpilogue || state.activeBattle) fail();
-  if (active.storyHash !== storyFingerprint(active.storyId)) fail();
+  if (active.storyHash !== storyFingerprint(activeStoryId(active, active.storyId))) fail();
   const validStories = [event!.storyId, ...(event!.quiz ? [event!.quiz.wonStoryId, event!.quiz.lostStoryId, event!.quiz.alreadyStoryId] : [])];
   if (!validStories.includes(active.storyId)) fail();
   const option = event!.options.find((item) => item.id === active.selectedOptionId);
@@ -265,6 +285,6 @@ export function validateEncounterState(state: GameState): void {
       active.rewardAlreadyDrawn ? quiz.alreadyStoryId : record?.won ? quiz.wonStoryId : quiz.lostStoryId;
     if (active.storyId !== expectedStory) fail();
   }
-  validateStorySnapshot(active.storyId, active.storyState, active.frame, { playerName: state.playerName, heroineName: state.heroineName, choiceCount: active.storyId === event!.storyId && option ? 1 : 0,
+  validateStorySnapshot(activeStoryId(active, active.storyId), active.storyState, active.frame, { playerName: state.playerName, heroineName: state.heroineName, choiceCount: active.storyId === event!.storyId && option ? 1 : 0,
     ...(resolution ? { variables: { romance_result: resolution.result } } : {}) }, state.memories, state.inventory);
 }

@@ -1,6 +1,6 @@
 import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
 import { describe, expect, it } from "vitest";
-import { balance, city, dates, effects } from "../content";
+import { balance, city, dates } from "../content";
 import {
   advanceDate,
   chooseDate,
@@ -124,6 +124,16 @@ describe("AP and date rules", () => {
 });
 
 describe("Ink choices and reload boundaries", () => {
+  const firstMemories = [
+    "milano_cafe_first_joke_refresh",
+    "milano_cafe_first_flirt_refresh",
+    "milano_cafe_first_interest_refresh",
+  ];
+  const secondMemories = [
+    "milano_cafe_second_playful_refresh",
+    "milano_cafe_second_warm_refresh",
+    "milano_cafe_second_honest_refresh",
+  ];
   for (let first = 0; first < 3; first++) {
     for (let second = 0; second < 3; second++) {
       it(`plays route ${first + 1}/${second + 1}, round-tripping every line and choice`, () => {
@@ -157,13 +167,15 @@ describe("Ink choices and reload boundaries", () => {
         expect(state.ap).toBe(2);
         expect(state.playedDateIds).toEqual([dateId]);
         expect(state.memories).toEqual([
-          effects[first].memoryId,
-          effects[3 + second].memoryId,
+          firstMemories[first],
+          secondMemories[second],
         ]);
         expect(state.affection).toBe(
           resolutions.reduce((sum, resolution) => sum + resolution.deltas.affection, 0),
         );
-        expect(transcript.join("\n")).toContain("主人公試験");
+        // The new cafe script addresses the player on its third first-choice
+        // route; other routes naturally do not need to repeat their name.
+        if (first === 2) expect(transcript.join("\n")).toContain("主人公試験");
         expect(transcript.join("\n")).toContain("ヒロイン試験");
       });
     }

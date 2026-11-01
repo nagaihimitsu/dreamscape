@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "id": "milano_last_supper_b_reasoning_b1",
+  "landmarkId": "last_supper",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "last_supper_b_slow_revision",
+      "questionEn": "Why was painting on dry plaster useful to Leonardo?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "He could work slowly and change details later."
+        },
+        {
+          "id": "B",
+          "textEn": "He could make the paint part of the wet wall."
+        },
+        {
+          "id": "C",
+          "textEn": "He could finish each section before the plaster dried."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "plaster",
+          "meaning": "漆喰"
+        },
+        {
+          "word": "details",
+          "meaning": "細部"
+        },
+        {
+          "word": "section",
+          "meaning": "部分、区画"
+        }
+      ],
+      "hintJa": "レオナルドは細部を何度も考え直す画家だった。壁が乾くまでの時間に追われる方法と比べよう。",
+      "correctExplanationJa": "乾いた下地なら、時間をかけて描き、いったん描いた部分にも手を入れられました。湿った漆喰に顔料を定着させるフレスコとは異なる利点です。傷みやすさだけでは、この選択を説明しきれません。",
+      "incorrectExplanationJa": "湿った壁の一部として顔料を定着させたり、漆喰が乾く前に区画ごとに仕上げたりするのはフレスコの特徴です。乾いた下地を使う利点は、急がず細部を修正できることでした。",
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano（公式）",
+          "title": "Backstage — The painting technique",
+          "url": "https://cenacolovinciano.org/en/museum/backstage/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "公式解説は、乾いた漆喰への制作が遅い作業、既に描いた箇所の変更、細部への配慮を可能にしたと説明している。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "last_supper_b_doorway_counterexample",
+      "questionEn": "Which reason best challenges the claim that Leonardo's technique caused ALL the damage?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The doorway proves that the paint never became fragile."
+        },
+        {
+          "id": "B",
+          "textEn": "The doorway shows that Leonardo planned to leave a gap."
+        },
+        {
+          "id": "C",
+          "textEn": "The doorway shows damage caused by a later change to the building."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "evidence",
+          "meaning": "証拠、根拠資料"
+        },
+        {
+          "word": "challenge",
+          "meaning": "ここでは、主張に疑問を投げかける"
+        },
+        {
+          "word": "claim",
+          "meaning": "主張"
+        },
+        {
+          "word": "damage",
+          "meaning": "損傷、傷み"
+        }
+      ],
+      "hintJa": "「全部」という主張を崩すには、別の原因で生じた箇所が一つあればよい。制作時の技法と、後の建物の改変を分けてみよう。",
+      "correctExplanationJa": "中央下部の欠損は、十七世紀に厨房への出入口を広げたことによるものです。制作時の技法による劣化とは原因も時期も違います。技法が脆弱性に関わった事実を否定せず、「すべて同じ原因」という主張だけを崩せます。",
+      "incorrectExplanationJa": "扉の資料は、技法が丈夫だったことやレオナルドが欠損を予定していたことを示しません。後世の出入口拡張による損傷があるため、「全部が制作技法のせい」とは言えない、という反例です。",
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano（公式）",
+          "title": "DescriVedendo — Il Cenacolo Vinciano, p. 4, La tavola",
+          "url": "https://cenacolovinciano.org/wp-content/uploads/2019/07/DescriVedendo-Cenacolo.pdf",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "公式掲載資料は、キリストの足元の灰色のアーチ形部分を、十七世紀に厨房への扉を拡張した結果と説明する。"
+        },
+        {
+          "publisher": "Museo del Cenacolo Vinciano（公式）",
+          "title": "Backstage — Conservation",
+          "url": "https://cenacolovinciano.org/en/museum/backstage/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "顔料の脆弱性と室内環境による劣化も実在する。扉の損傷を示すことは、それらの要因を否定することではない。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "last_supper_b_preventive_care",
+      "questionEn": "Why does the museum filter the air and limit visitor numbers?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "To keep the painting's surface as hot and dry as possible."
+        },
+        {
+          "id": "B",
+          "textEn": "To reduce moisture and particles that could harm the painting."
+        },
+        {
+          "id": "C",
+          "textEn": "To let fresh layers of paint dry quickly between visits."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "filter",
+          "meaning": "ろ過する"
+        },
+        {
+          "word": "limit",
+          "meaning": "制限する"
+        },
+        {
+          "word": "moisture",
+          "meaning": "湿気、水分"
+        },
+        {
+          "word": "particles",
+          "meaning": "微粒子、細かなちり"
+        }
+      ],
+      "hintJa": "絵の具を塗り足す作業ではなく、これからの傷みを防ぐ保存対策。人の出入りで空気の何が変わるだろう。",
+      "correctExplanationJa": "入場者が増えすぎると湿度や微粒子が増え、絵に悪影響を及ぼします。美術館は空気や入場を管理して、その負担を抑えています。最大限に熱く乾かすことでも、見学の合間に新しい絵の具を塗ることでもありません。",
+      "incorrectExplanationJa": "保存は「とにかく乾かす」ことではありません。美術館は湿度や微粒子などを監視し、空気を処理しながら入場を管理します。傷みの原因を分けて理解すると、現在できる対策も具体的になります。",
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano（公式）",
+          "title": "Backstage — Conservation",
+          "url": "https://cenacolovinciano.org/en/museum/backstage/",
+          "checkedAt": "2026-10-30",
+          "claimType": "documented_fact",
+          "claimJa": "公式解説は、無制限の入場が相対湿度・結露・微粒子の増加を招くため、環境監視、空気の管理、入場制限を行うと説明している。"
+        }
+      ],
+      "difficulty": "medium"
+    }
+  ]
+}

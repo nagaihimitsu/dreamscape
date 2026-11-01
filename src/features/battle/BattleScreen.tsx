@@ -1,15 +1,17 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { battles, battleQuizzes, dialogueExpressions, dialogueReactions, landmarks, presentation, reasoningIntroductions } from "../../content";
+import { dialogueExpressions, dialogueReactions, landmarks, presentation, reasoningIntroductions, tourismAssets } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
+import { presentationStoryId } from "../../content/legacy-milano";
 import type { GameState } from "../../domain/game";
-import { getBattleOutcome } from "../../domain/battle";
+import { getActiveBattleContent, getBattleOutcome } from "../../domain/battle";
 import { beginStory, continueStory, type StoryStep } from "../../story/runtime";
 import { DialogueText } from "../../components/DialogueText";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { AutoAdvanceButton, useAutoAdvance } from "../../components/useAutoAdvance";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { CanalScene } from "../../components/CanalScene";
+import { BackgroundCredits } from "../../components/BackgroundCredits";
 import { CharacterPortrait, characterForBattle } from "../../components/CharacterPortrait";
 import { ComicEffect } from "../../components/ComicEffect";
 import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
@@ -72,8 +74,7 @@ export function BattleScreen({
   onNextStoryBattle,
 }: Props) {
   const active = game.activeBattle!;
-  const battle = battles.find((item) => item.id === active.battleId)!;
-  const quiz = battleQuizzes[battle.quizId];
+  const { battle, quiz } = getActiveBattleContent(active);
   const question = quiz.questions[active.roundIndex];
   const answer = active.answers[active.roundIndex];
   const record = game.battleRecords.find((item) => item.battleId === battle.id);
@@ -111,6 +112,7 @@ export function BattleScreen({
   }, [active.runId, active.phase, active.dialogueScene, active.frame?.ended, battle, game.playerName, game.heroineName]);
   const [paused, setPaused] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [creditsOpen, setCreditsOpen] = useState(false);
   const windowVisibility = useDialogueWindow();
   const readingArea = useRef<HTMLElement>(null);
   const displayedStoryState = rebuttal?.step.storyState ?? (active.phase === "dialogue" ? active.storyState : null);
@@ -180,7 +182,12 @@ export function BattleScreen({
   }, [active.phase, active.roundIndex, animatedAnswer, answerKey, reduceMotion]);
   const frame = rebuttal?.step.frame ?? active.frame;
   const isDialogue = active.phase === "dialogue" || !!rebuttal;
-  const storyId = rebuttal?.storyId ?? battle.storyId;
+  const backgroundId = frame?.background ?? battle.backgroundAssetId;
+  const backgroundAssetId = presentation.backgrounds[backgroundId]?.imageAssetId;
+  const backgroundAsset = backgroundAssetId
+    ? tourismAssets.find((asset) => asset.id === backgroundAssetId)
+    : undefined;
+  const storyId = presentationStoryId(rebuttal?.storyId ?? battle.storyId);
   // Reactions belong to their target, independently of the current speaker.
   // Unannotated frames retain the existing Ink and expression behavior.
   const heroineReaction = isDialogue && frame
@@ -226,7 +233,7 @@ export function BattleScreen({
   }, [isDialogue, show]);
   const auto = useAutoAdvance({
     ready,
-    canAdvance: isDialogue && !paused && !menuOpen && !windowVisibility.hidden && !!frame && !frame.ended,
+    canAdvance: isDialogue && !paused && !menuOpen && !creditsOpen && !windowVisibility.hidden && !!frame && !frame.ended,
     text: frame?.text ?? "",
     onAdvance: advanceSafely,
   });
@@ -260,7 +267,7 @@ export function BattleScreen({
         </div>
       )}
       <div className="battle-backdrop">
-        <CanalScene backgroundId={frame?.background ?? battle.backgroundAssetId} />
+        <CanalScene backgroundId={backgroundId} />
       </div>
       <div
         className={`battle-stage ${isDialogue ? "" : "battle-stage-compact"} ${battle.scope === "city_finale" ? "finale-stage" : ""}`}
@@ -667,6 +674,11 @@ export function BattleScreen({
               <summary>会話の操作</summary>
               <div className="battle-tool-menu-content">
             {isDialogue && <DialogueWindowHide state={windowVisibility} onHide={() => setMenuOpen(false)} />}
+            {backgroundAsset && (
+              <button type="button" className="text-button" onClick={() => setCreditsOpen(true)}>
+                背景画像を見る
+              </button>
+            )}
             <button
               className="text-button"
               onClick={() => setPaused((value) => !value)}
@@ -691,6 +703,9 @@ export function BattleScreen({
         )}
       </section>
       </div>
+      {creditsOpen && backgroundAsset && (
+        <BackgroundCredits asset={backgroundAsset} onClose={() => setCreditsOpen(false)} />
+      )}
       {isDialogue && <DialogueWindowRestore state={windowVisibility} />}
       {cutIn && <ReasoningCutIn kind={cutIn} reduceMotion={reduceMotion} onComplete={() => {
         setCutIn(null);

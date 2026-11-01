@@ -25,9 +25,9 @@ test("three destination dates work from a completed old save on a phone", async 
   await loadSnapshot(page, phase7.cityClearViewed);
   const initial = await saved(page);
   const places = [
-    { id: "milano_la_scala_date_01", name: "スカラ座", cost: 2, photo: "la_scala.webp" },
-    { id: "milano_brera_date_01", name: "ブレラ絵画館", cost: 2, photo: "brera.webp" },
-    { id: "milano_navigli_date_01", name: "ナヴィリオ地区", cost: 1, photo: "navigli.webp" },
+    { id: "milano_la_scala_date_01", name: "スカラ座", cost: 2, photo: "la_scala.webp", emotion: "neutral" },
+    { id: "milano_brera_date_01", name: "ブレラ絵画館", cost: 2, photo: "brera.webp", emotion: "smile" },
+    { id: "milano_navigli_date_01", name: "ナヴィリオ地区", cost: 1, photo: "navigli.webp", emotion: "smile" },
   ];
   for (const place of places) {
     const event = await findDateOption(page, place.id);
@@ -58,13 +58,13 @@ test("three destination dates work from a completed old save on a phone", async 
     await expect(scene.getByTestId("date-destination")).toHaveText(`ミラノ ／ ${place.name}`);
     await setDialogueSpeed(page, "0");
     await choose(page, 0);
-    expect((await saved(page)).activeDate?.frame.emotion).toBe("smile");
+    expect((await saved(page)).activeDate?.frame.emotion).toBe(place.emotion);
     const portrait = scene.locator(".vn-character img");
-    await expect(portrait).toHaveAttribute("src", /\/default_01\/standing_01\/smile\.png$/);
+    await expect(portrait).toHaveAttribute("src", new RegExp(`/default_01/standing_01/${place.emotion}\\.png$`));
     const selected = await saved(page);
     await page.reload();
     expect(await saved(page)).toEqual(selected);
-    await expect(portrait).toHaveAttribute("src", /\/default_01\/standing_01\/smile\.png$/);
+    await expect(portrait).toHaveAttribute("src", new RegExp(`/default_01/standing_01/${place.emotion}\\.png$`));
     await choose(page, 1);
     await finishEvent(page, 2);
     const finished = await saved(page);

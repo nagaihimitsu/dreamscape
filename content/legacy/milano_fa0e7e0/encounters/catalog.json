@@ -1,0 +1,252 @@
+{
+  "schemaVersion": 1,
+  "initialBudget": 20,
+  "items": [
+    {
+      "id": "galleria_souvenir",
+      "cityId": "milano",
+      "nameJa": "雄牛のしおり",
+      "descriptionJa": "ガッレリアのカフェで受け取った、小さな雄牛の絵のしおり。"
+    },
+    {
+      "id": "galleria_ticket",
+      "cityId": "milano",
+      "nameJa": "ガッレリアの展示券",
+      "descriptionJa": "ガッレリアの小さな紋章展示に使える券。"
+    }
+  ],
+  "encounters": [
+    {
+      "id": "galleria_cafe",
+      "cityId": "milano",
+      "sources": [
+        {
+          "publisher": "Reuters",
+          "title": "Milan like a local",
+          "url": "https://www.reuters.com/city-memo/milan-like-local-2026-01-31/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノのバールではカウンターに立ってエスプレッソを飲む過ごし方がある。"
+        }
+      ],
+      "titleJa": "カフェでひと休み",
+      "descriptionJa": "注文票を拾い、カウンターでの過ごし方を知る。",
+      "storyId": "encounters/galleria_cafe",
+      "completionMoneyEuro": 2,
+      "completionItemId": "galleria_souvenir",
+      "options": [
+        {
+          "id": "coffee",
+          "textEn": "Two coffees, please.",
+          "translationJa": "コーヒーを二杯ください。",
+          "costEuro": 4
+        },
+        {
+          "id": "coffee_pastry",
+          "textEn": "A cappuccino and a pastry, please.",
+          "translationJa": "カプチーノとお菓子を一つずつください。",
+          "costEuro": 8
+        },
+        {
+          "id": "nothing",
+          "textEn": "Nothing for now, thank you.",
+          "translationJa": "今は何もいりません、ありがとう。",
+          "costEuro": 0
+        }
+      ],
+      "landmarkId": "galleria_vittorio_emanuele_ii"
+    },
+    {
+      "id": "galleria_fortune",
+      "cityId": "milano",
+      "sources": [
+        {
+          "publisher": "Euronews",
+          "title": "A real bull ache: Milan restores a national treasure’s family jewels",
+          "url": "https://www.euronews.com/2026/05/29/a-real-bull-ache-milan-restores-a-national-treasures-family-jewels",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリア中央の床の雄牛はトリノ市の紋章で、ミラノを表すのは赤い十字。"
+        },
+        {
+          "publisher": "Euronews",
+          "title": "A real bull ache: Milan restores a national treasure’s family jewels",
+          "url": "https://www.euronews.com/2026/05/29/a-real-bull-ache-milan-restores-a-national-treasures-family-jewels",
+          "checkedAt": "2026-11-01",
+          "claimType": "legend",
+          "claimJa": "雄牛のモザイク上でかかとを回すと幸運を呼ぶという風習があり、由来は明らかでない。"
+        }
+      ],
+      "titleJa": "床の牛と小さな占い",
+      "descriptionJa": "ガッレリアの床で声をかけられる。",
+      "storyId": "encounters/galleria_fortune",
+      "repeatable": true,
+      "alternativeApRewardId": "victory_galleria_first",
+      "options": [
+        {
+          "id": "believe",
+          "textEn": "Yes, I do.",
+          "translationJa": "はい、信じます。",
+          "costEuro": 0
+        },
+        {
+          "id": "doubt",
+          "textEn": "Not really.",
+          "translationJa": "あまり信じません。",
+          "costEuro": 0
+        },
+        {
+          "id": "leave",
+          "textEn": "Walk away without answering.",
+          "translationJa": "答えずにその場を離れる。",
+          "costEuro": 0
+        }
+      ],
+      "quiz": {
+        "question": {
+          "id": "galleria_encounter_bull_city",
+          "questionEn": "Which city does the bull mosaic in the Galleria represent?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Milan."
+            },
+            {
+              "id": "B",
+              "textEn": "Turin."
+            },
+            {
+              "id": "C",
+              "textEn": "Venice."
+            }
+          ],
+          "correctOptionId": "B",
+          "vocabularyJa": [
+            {
+              "word": "mosaic",
+              "meaning": "モザイク"
+            },
+            {
+              "word": "represent",
+              "meaning": "表す"
+            }
+          ],
+          "hintJa": "床のそばの案内を思い出そう。",
+          "correctExplanationJa": "雄牛はトリノ市の紋章を表している。ミラノの赤い十字も同じ床にある。",
+          "incorrectExplanationJa": "雄牛はミラノではなく、トリノ市の紋章を表している。",
+          "sources": [
+            {
+              "publisher": "Euronews",
+              "title": "A real bull ache: Milan restores a national treasure’s family jewels",
+              "url": "https://www.euronews.com/2026/05/29/a-real-bull-ache-milan-restores-a-national-treasures-family-jewels",
+              "checkedAt": "2026-11-01",
+              "claimType": "documented_fact",
+              "claimJa": "ガッレリア中央の床の雄牛はトリノ市の紋章で、ミラノを表すのは赤い十字。"
+            }
+          ],
+          "difficulty": "easy"
+        },
+        "translations": {
+          "questionJa": "ガッレリアの雄牛のモザイクが表す都市はどこ？",
+          "options": {
+            "A": "ミラノ。",
+            "B": "トリノ。",
+            "C": "ヴェネツィア。"
+          }
+        },
+        "chancePercent": 25,
+        "rewardItemId": "galleria_ticket",
+        "wonStoryId": "encounters/galleria_quiz_won",
+        "lostStoryId": "encounters/galleria_quiz_lost",
+        "alreadyStoryId": "encounters/galleria_quiz_already"
+      },
+      "landmarkId": "galleria_vittorio_emanuele_ii"
+    },
+    {
+      "id": "galleria_gift",
+      "cityId": "milano",
+      "sources": [
+        {
+          "publisher": "Euronews",
+          "title": "A real bull ache: Milan restores a national treasure’s family jewels",
+          "url": "https://www.euronews.com/2026/05/29/a-real-bull-ache-milan-restores-a-national-treasures-family-jewels",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリア中央の床の雄牛はトリノ市の紋章で、ミラノを表すのは赤い十字。"
+        }
+      ],
+      "titleJa": "しおりを贈る",
+      "descriptionJa": "手元のしおりを、一緒に旅する相手に渡すか考える。",
+      "storyId": "encounters/galleria_gift",
+      "options": [
+        {
+          "id": "offer",
+          "textEn": "Would you like this bookmark?",
+          "translationJa": "このしおり、いりますか？",
+          "costEuro": 0,
+          "requiresItemId": "galleria_souvenir",
+          "giftItemId": "galleria_souvenir",
+          "responseProfileId": "attentive"
+        },
+        {
+          "id": "thought",
+          "textEn": "This bookmark made me think of you.",
+          "translationJa": "このしおりを見て、あなたを思い出しました。",
+          "costEuro": 0,
+          "requiresItemId": "galleria_souvenir",
+          "giftItemId": "galleria_souvenir",
+          "responseProfileId": "honest"
+        },
+        {
+          "id": "later",
+          "textEn": "I'll keep it for now.",
+          "translationJa": "今は自分で持っておく。",
+          "costEuro": 0,
+          "deferCompletion": true
+        }
+      ],
+      "landmarkId": "galleria_vittorio_emanuele_ii"
+    },
+    {
+      "id": "galleria_outing",
+      "cityId": "milano",
+      "sources": [
+        {
+          "publisher": "Euronews",
+          "title": "A real bull ache: Milan restores a national treasure’s family jewels",
+          "url": "https://www.euronews.com/2026/05/29/a-real-bull-ache-milan-restores-a-national-treasures-family-jewels",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリア中央の床の雄牛はトリノ市の紋章で、ミラノを表すのは赤い十字。"
+        }
+      ],
+      "titleJa": "紋章の小さな展示",
+      "descriptionJa": "展示券か入場料で紋章の展示へ。",
+      "storyId": "encounters/galleria_outing",
+      "options": [
+        {
+          "id": "ticket",
+          "textEn": "Use the ticket.",
+          "translationJa": "展示券を使う。",
+          "costEuro": 0,
+          "requiresItemId": "galleria_ticket",
+          "consumeItemId": "galleria_ticket"
+        },
+        {
+          "id": "buy",
+          "textEn": "Buy an entry ticket.",
+          "translationJa": "入場券を買う。",
+          "costEuro": 4
+        },
+        {
+          "id": "later",
+          "textEn": "Not now.",
+          "translationJa": "今はやめておく。",
+          "costEuro": 0,
+          "deferCompletion": true
+        }
+      ],
+      "landmarkId": "galleria_vittorio_emanuele_ii"
+    }
+  ]
+}

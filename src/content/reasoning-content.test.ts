@@ -61,7 +61,9 @@ describe("special battle content contract", () => {
     expect(
       result.battles.slice(0, 3).map((battle) => battle.format ?? "A"),
     ).toEqual(["A", "B", "C"]);
-    expect(result.reasoningBattles).toBe(2);
+    // The two published cases remain available for saved games; the main
+    // journey now uses two distinct cases at Scala and Brera.
+    expect(result.reasoningBattles).toBe(4);
     expect(result.battleScenarios).toBeGreaterThanOrEqual(59);
     const original = result.journey.episodes.find(
       (episode) => episode.id === "milano_last_supper_episode",
@@ -79,10 +81,10 @@ describe("special battle content contract", () => {
       const reasoning = battle.reasoning!;
       const quiz = result.quizzes[battle.quizId];
       expect(quiz.questions).toHaveLength(3);
-      expect(
-        new Set(quiz.questions.map((question) => question.correctOptionId))
-          .size,
-      ).toBe(3);
+      for (const question of quiz.questions) {
+        expect(new Set(question.options.map((option) => option.id)).size).toBe(3);
+        expect(question.options.filter((option) => option.id === question.correctOptionId)).toHaveLength(1);
+      }
       expect(
         reasoning.correctClueIds.every((id) =>
           reasoning.caseClueIds.includes(id),
@@ -101,6 +103,15 @@ describe("special battle content contract", () => {
     expect(new Set(special("C").reasoning!.correctClueIds)).toEqual(
       new Set(["last_supper_apostle_groups", "last_supper_perspective"]),
     );
+    const newB = result.battles.find((battle) => battle.id === "milano_la_scala_b01")!;
+    const newC = result.battles.find((battle) => battle.id === "milano_brera_c01")!;
+    expect(newB.landmarkId).toBe("la_scala_case");
+    expect(newB.reasoning!.correctClueIds).toEqual(["scala_air_raid"]);
+    expect(newC.landmarkId).toBe("brera_case");
+    expect(new Set(newC.reasoning!.correctClueIds)).toEqual(
+      new Set(["brera_original_altar", "brera_collection_transfer"]),
+    );
+    expect(result.journey.storyBattles.map((entry) => entry.battleId)).toEqual([newB.id, newC.id]);
   });
 
   it.each(["B", "C"] as const)(

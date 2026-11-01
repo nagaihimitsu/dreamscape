@@ -124,7 +124,7 @@ describe("Galleria score and cultural encounter share one AP entitlement", () =>
   it.each([2, 12])("preserves an already claimed v9 score reward at %i AP", (ap) => {
     const result = finishGalleriaBattle({ ...validateGameState(galleria), ap }, 2);
     const { travelBudget: _budget, inventory: _inventory, completedEncounterIds: _encounters,
-      encounterRewards: _encounterRewards, activeEncounter: _activeEncounter, ...old } = result;
+      encounterRewards: _encounterRewards, activeEncounter: _activeEncounter, updatedDateIds: _updatedDateIds, ...old } = result;
     const migrated = validateGameState({ ...old, schemaVersion: 9 });
     expect(migrated.ap).toBe(result.ap);
     expect(migrated.claimedRewardIds).toEqual(result.claimedRewardIds);

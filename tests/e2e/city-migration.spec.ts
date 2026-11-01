@@ -44,7 +44,7 @@ for (const format of ["B", "C"] as const) {
     await setEvidence(page, reasoning.correctClueIds);
     await submitEvidence(page, true, true);
     const migrated = await saved(page);
-    expect(migrated.schemaVersion).toBe(10);
+    expect(migrated.schemaVersion).toBe(11);
     expect(migrated.activeBattle!.answers).toEqual(old.activeBattle.answers);
     expect(migrated.activeBattle!.score).toBe(old.activeBattle.score);
     expect(migrated.activeBattle!.reasoning!.pressed).toBe(
@@ -79,7 +79,7 @@ test("a published Phase 6 romance ending keeps its completed relationship while 
     phase6.ending as unknown as Awaited<ReturnType<typeof saved>>,
   );
   await page.getByTestId(`next-episode-${cityEpisodes[0].id}`).click();
-  expect((await saved(page)).schemaVersion).toBe(10);
+  expect((await saved(page)).schemaVersion).toBe(11);
   expect((await saved(page)).activeTourism?.landmarkId).toBe("duomo_milano");
   expect((await saved(page)).completedCityIds).toEqual([]);
   await skipTourismGuide(page);

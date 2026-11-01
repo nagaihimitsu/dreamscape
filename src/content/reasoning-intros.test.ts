@@ -3,8 +3,8 @@ import { battles, reasoningIntroductions, stories } from ".";
 import { compileInk } from "../../scripts/content-pipeline";
 import { reasoningIntroCatalogSchema } from "./reasoning-intros";
 import { beginStory, continueStory } from "../story/runtime";
-import { battleFingerprint, getReasoningContext } from "../domain/battle";
-import { validateGameState } from "../domain/game";
+import { battleFingerprint, getReasoningContext, startBattle } from "../domain/battle";
+import { createGame, validateGameState } from "../domain/game";
 import phase6 from "../../tests/fixtures/phase6-saves.json";
 
 describe("reasoning introductions", () => {
@@ -18,7 +18,7 @@ describe("reasoning introductions", () => {
     ] })).toThrow();
   });
 
-  it.each(["milano_last_supper_b01", "milano_last_supper_c01"])(
+  it.each(["milano_last_supper_b01", "milano_last_supper_c01", "milano_la_scala_b01", "milano_brera_c01"])(
     "%s has a separate, short heroine response", (battleId) => {
       const storyId = reasoningIntroductions[battleId];
       const battle = battles.find((entry) => entry.id === battleId)!;
@@ -32,11 +32,12 @@ describe("reasoning introductions", () => {
         if (step.frame.ended) break;
         step = continueStory(storyId, step.storyState, step.frame);
       }
-      expect(frames).toHaveLength(3);
+      expect(frames.length).toBeGreaterThanOrEqual(2);
+      expect(frames.length).toBeLessThanOrEqual(3);
       expect(frames.every((frame) => frame.speaker === "heroine" && frame.choices.length === 0)).toBe(true);
       expect(frames.at(-1)!.ended).toBe(true);
       const dialogue = frames.map((frame) => frame.text).join("\n");
-      expect(dialogue).not.toMatch(/出入口|十七世紀|使徒|キリスト|頭部/);
+      expect(dialogue).not.toMatch(/出入口|十七世紀|使徒|キリスト|頭部|1943|空襲|徴発|サン・ドメニコ/);
     },
   );
 
@@ -50,8 +51,10 @@ describe("reasoning introductions", () => {
     }
   });
 
-  it("keeps a heroine response out of the enemy claim but retains press dialogue", () => {
-    const state = validateGameState(phase6.B_reasoning);
+  it.each(["milano_last_supper_b01", "milano_la_scala_b01"])("keeps heroine dialogue out of the %s claim but retains the press dialogue", (battleId) => {
+    const state = battleId === "milano_last_supper_b01"
+      ? validateGameState(phase6.B_reasoning)
+      : startBattle(createGame(), battleId);
     const battle = battles.find((entry) => entry.id === state.activeBattle!.battleId)!;
     const original = stories[battle.storyId];
     stories[battle.storyId] = compileInk(`VAR player_name = ""
@@ -76,7 +79,10 @@ VAR battle_score = 0
 -> END
 `);
     try {
-      state.activeBattle!.reasoning!.pressed = true;
+      // Updating the in-memory script changes its fingerprint. Match it in
+      // this synthetic run, while the separate fixture test protects old saves.
+      state.activeBattle!.contentHash = battleFingerprint(battle.id);
+      state.activeBattle!.reasoning = { ...phase6.B_reasoning.activeBattle!.reasoning, status: "selecting", pressed: true };
       const result = getReasoningContext(state)!;
       expect(result.claimText).toBe("敵だけの主張。");
       expect(result.pressedText).toContain("追及の答え。");

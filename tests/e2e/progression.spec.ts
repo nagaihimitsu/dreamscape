@@ -84,8 +84,15 @@ test("a legacy zero-score journey can continue after rejection, deferral and eve
   expect((await saved(page)).romanceStage).toBe(4);
   const apBeforeConfession = (await saved(page)).ap;
   const confessionText = await playEvent(page, CONFESSION, 0, [0]);
-  expect(confessionText).toContain("迷子を予約する約束");
+  expect(confessionText).toContain("ロースタリーで、豆に宛先を書く");
+  // The player saw the new cafe's joke, not the old cafe or Brera's
+  // different-detail memory. Only the experienced scene is recalled.
+  expect(confessionText).not.toContain("予定表に迷子の時間");
+  expect(confessionText).not.toContain("ブレラでは、同じ絵");
+  expect(confessionText).not.toContain("豆の管を一緒に追ってみよう");
   const ending = await saved(page);
+  expect(ending.memories).toContain("milano_cafe_first_joke_refresh");
+  expect(ending.memories).not.toContain("milano_cafe_joke");
   expect(ending.endingReached).toBe(true);
   expect(ending.confessionStatus).toBe("accepted");
   expect(ending.ap).toBe(apBeforeConfession);
@@ -128,14 +135,18 @@ test("warm choices and renamed characters reach a successful first confession wi
   await claimMilestone(page, "trial_after_cafe");
   await setRomanceRolls(page, [0, 5000, 5000, 9999]);
   const walk = await playEvent(page, WALK, 3, [0, 0]);
-  expect(walk).toContain("悠さん");
+  expect(walk).toContain("紬");
   await claimMilestone(page, "trial_after_walk");
   await setRomanceRolls(page, [0, 5000, 5000, 9999]);
   const night = await playEvent(page, NIGHT, 3, [0, 2]);
-  expect(night).toContain("悠");
+  expect(night).toContain("紬");
   const confession = await playEvent(page, CONFESSION, 0, [0]);
-  expect(confession).toContain("私の行きたい場所を聞いてくれたこと");
+  expect(confession).toContain("悠");
+  expect(confession).toContain("豆の管を一緒に追ってみよう");
+  expect(confession).not.toContain("豆に宛先を書く");
   const state = await saved(page);
+  expect(state.memories).toContain("milano_cafe_first_interest_refresh");
+  expect(state.memories).not.toContain("milano_cafe_first_joke_refresh");
   expect(state.endingReached).toBe(true);
   expect(state.confessionStatus).toBe("accepted");
   expect(state.playedDateIds).not.toContain(REASSURANCE);
@@ -166,7 +177,7 @@ for (const fixtureKey of ["beforeChoice", "afterChoice", "replay"] as const) {
       await choose(page, 1);
     await finishEvent(page, 2);
     const current = await saved(page);
-    expect(current.schemaVersion).toBe(10);
+    expect(current.schemaVersion).toBe(11);
     expect(current.ap).toBe(old.ap);
     expect(current.playerName).toBe(old.playerName);
     expect(current.heroineName).toBe(old.heroineName);

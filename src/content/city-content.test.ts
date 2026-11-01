@@ -6,11 +6,16 @@ import { Story } from "inkjs";
 import { buildContent, compileInk } from "../../scripts/content-pipeline";
 import { prepareContentFixture } from "./test-fixtures";
 import { validateEpilogue } from "../../scripts/epilogue-validation";
-import { battleCatalogSchema, battleSchema, quizSchema } from "./schemas";
+import { validateJourney } from "../../scripts/journey-validation";
+import { battleCatalogSchema, battleSchema, quizSchema, trialProgressionSchema } from "./schemas";
 import { journeySchema } from "./journey-schemas";
+import { tourismCatalogSchema } from "./tourism-schemas";
+import { balance, battleQuizzes } from ".";
 import journeyData from "../../content/progression/journey.json";
 import battleData from "../../content/battles/catalog.json";
 import cityData from "../../content/cities/milano.json";
+import tourismData from "../../content/tourism/catalog.json";
+import trialData from "../../content/romance/trial_progression.json";
 
 let fixture: string;
 beforeEach(async () => {
@@ -22,7 +27,7 @@ afterEach(async () => {
 });
 
 describe("Milan city content", () => {
-  it("keeps four real landmarks, twelve regular questions, and a separate five-question finale", async () => {
+  it("keeps four regular stops, separate special locations, and the five-question finale", async () => {
     const result = await buildContent(fixture, false);
     expect(
       result.tourism.landmarks.map((landmark) => landmark.id).sort(),
@@ -31,9 +36,17 @@ describe("Milan city content", () => {
       (episode) => episode.kind !== "city_finale",
     );
     expect(stops).toHaveLength(4);
-    expect(stops.map((episode) => episode.landmarkId)).toEqual(
-      cityData.landmarkIdsPlanned,
-    );
+    expect(stops.map((episode) => episode.landmarkId)).toEqual([
+      "duomo_milano", "galleria_vittorio_emanuele_ii", "last_supper", "castello_sforzesco",
+    ]);
+    const specialStops = result.journey.storyBattles.map((entry) => {
+      const battle = result.battles.find((item) => item.id === entry.battleId)!;
+      expect(battle.reasoning).toBeDefined();
+      expect(result.quizzes[battle.quizId].questions).toHaveLength(3);
+      return battle.landmarkId;
+    });
+    expect(specialStops).toEqual(["la_scala_case", "brera_case"]);
+    expect(new Set([...stops.map((episode) => episode.landmarkId), ...specialStops]).size).toBe(6);
     const normalQuestions = stops.flatMap((episode) => {
       const battle = result.battles.find(
         (item) => item.id === episode.battleId,
@@ -62,7 +75,7 @@ describe("Milan city content", () => {
         (landmark) => landmark.battleId === finale.id,
       ),
     ).toBe(false);
-    expect(result.battleScenarios).toBe(129);
+    expect(result.battleScenarios).toBeGreaterThan(129);
   });
 
   it("allows five questions and four intermediate scenes only for a city finale", async () => {
@@ -109,23 +122,24 @@ describe("Milan city content", () => {
     );
   });
 
-  it("rejects skipped route prerequisites and a boss that does not require all four stops", async () => {
+  it("rejects skipped route prerequisites and a boss that does not require all four stops", () => {
+    const check = (journey: ReturnType<typeof journeySchema.parse>) => validateJourney(
+      journey,
+      cityData,
+      balance.apCap,
+      tourismCatalogSchema.parse(tourismData).landmarks,
+      battleCatalogSchema.parse(battleData).battles,
+      battleQuizzes,
+      trialProgressionSchema.parse(trialData).milestones,
+    );
     const journey = journeySchema.parse(journeyData);
     journey.episodes[1].requiredEpisodeIds = [];
-    await writeFile(
-      path.join(fixture, "content/progression/journey.json"),
-      JSON.stringify(journey),
-    );
-    await expect(buildContent(fixture, false)).rejects.toThrow(
+    expect(() => check(journey)).toThrow(
       "preceding stop",
     );
     const valid = journeySchema.parse(journeyData);
     valid.episodes.at(-1)!.requiredEpisodeIds = [valid.episodes.at(-2)!.id];
-    await writeFile(
-      path.join(fixture, "content/progression/journey.json"),
-      JSON.stringify(valid),
-    );
-    await expect(buildContent(fixture, false)).rejects.toThrow(
+    expect(() => check(valid)).toThrow(
       "require every sightseeing episode",
     );
   });

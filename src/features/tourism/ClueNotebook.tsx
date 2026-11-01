@@ -13,6 +13,7 @@ export interface NotebookReasoning {
   maxSelections: 1 | 2;
   selectionEnabled: boolean;
   onSelect: (id: string) => void;
+  clues?: typeof tourismClues;
 }
 
 export function ClueNotebook({
@@ -34,7 +35,7 @@ export function ClueNotebook({
   const availableLandmarks = cityId
     ? landmarks.filter((item) => item.cityId === cityId).map((item) => item.id)
     : [landmarkId];
-  const clues = tourismClues.filter(
+  const clues = (reasoning?.clues ?? tourismClues).filter(
     (clue) =>
       availableLandmarks.includes(clue.landmarkId) &&
       (discoveredIds.includes(clue.id) ||

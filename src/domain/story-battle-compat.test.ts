@@ -41,12 +41,12 @@ function beforeCastle(): GameState {
 describe("story encounters and existing saves", () => {
   it("continues old sightseeing in progress even if its battle is beyond a new encounter", () => {
     const before = beforeCastle();
-    expect(getNextStoryBattle(before)?.battleId).toBe("milano_last_supper_b01");
+    expect(getNextStoryBattle(before)?.battleId).toBe("milano_la_scala_b01");
     // Simulate the former release, which could start the castle before B existed
     // in the journey, then load that already-running guide in the new release.
-    const old = { ...before, battleRecords: [...before.battleRecords, { battleId: "milano_last_supper_b01", attempts: 1, firstScore: 0, bestScore: 0, lastScore: 0 }] };
+    const old = { ...before, battleRecords: [...before.battleRecords, { battleId: "milano_la_scala_b01", attempts: 1, firstScore: 0, bestScore: 0, lastScore: 0 }] };
     let state = startEpisode(old, "milano_castello_episode");
-    state = { ...state, battleRecords: state.battleRecords.filter((record) => record.battleId !== "milano_last_supper_b01") };
+    state = { ...state, battleRecords: state.battleRecords.filter((record) => record.battleId !== "milano_la_scala_b01") };
     state = validateGameState(JSON.parse(JSON.stringify(state)));
     expect(state.activeTourism?.landmarkId).toBe("castello_sforzesco");
     state = skipTourismGuide(state, state.revision);
@@ -54,17 +54,19 @@ describe("story encounters and existing saves", () => {
     expect(state.activeBattle?.battleId).toBe("milano_castello_01");
     state = finish(state);
     expect(state.completedEpisodeIds).toContain("milano_castello_episode");
-    expect(getNextStoryBattle(state)?.battleId).toBe("milano_last_supper_b01");
+    expect(getNextStoryBattle(state)?.battleId).toBe("milano_la_scala_b01");
   });
 
-  it("recognizes historic zero-score B/C records without undoing an old city ending", () => {
+  it("preserves historic B/C results without treating the new cases as played", () => {
     const records = ["milano_last_supper_b01", "milano_last_supper_c01"].map((battleId) => ({ battleId, attempts: 1, firstScore: 0, bestScore: 0, lastScore: 0 }));
     const old = { ...phase7.cityClearViewed, battleRecords: [...phase7.cityClearViewed.battleRecords, ...records] };
     const state = validateGameState(old);
-    expect(getNextStoryBattle(state)).toBeNull();
+    expect(getNextStoryBattle(state)?.battleId).toBe("milano_la_scala_b01");
     expect(state.completedCityIds).toEqual(["milano"]);
     expect(state.endingReached).toBe(true);
     expect(state.battleRecords.filter((record) => records.some((item) => item.battleId === record.battleId))).toEqual(records);
+    const newB = { battleId: "milano_la_scala_b01", attempts: 1, firstScore: 0, bestScore: 0, lastScore: 0 };
+    expect(getNextStoryBattle({ ...state, battleRecords: [...state.battleRecords, newB] })?.battleId).toBe("milano_brera_c01");
   });
 
   it.each(["B_selected", "C_selected"] as const)("resumes a former %s proof before its new journey prerequisite", (key) => {

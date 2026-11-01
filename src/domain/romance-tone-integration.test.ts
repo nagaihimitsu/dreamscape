@@ -26,7 +26,7 @@ describe("relationship tone in an active date", () => {
   it("starts with current values, updates after the first choice and survives reload through the second", () => {
     const initial = { ...validateGameState(fixture), affection: 0, trust: 0, spark: 2 };
     expect(deriveRelationshipTone(initial)).toBe("reserved");
-    let state = startDate(initial, "milano_love_date_01", () => 0);
+    let state = startDate(initial, "milano_novecento_date_01", () => 0);
     expect(state.activeDate).not.toBeNull();
     expect(storyVariables(state).$("relationship_tone")).toBe("reserved");
     state = nextChoice(state);
@@ -46,7 +46,7 @@ describe("relationship tone in an active date", () => {
   });
 
   it("rederives a previously saved tone from relationship values without rejecting the Ink snapshot", () => {
-    const state = startDate(validateGameState(fixture), "milano_love_date_01", () => 0);
+    const state = startDate(validateGameState(fixture), "milano_novecento_date_01", () => 0);
     const active = state.activeDate!;
     const date = dates.find((item) => item.id === active.dateId)!;
     const story = new Story(stories[date.storyId]);

@@ -44,7 +44,7 @@ describe("published Phase 4 saves migrate without overwriting their checkpoints"
       if (loaded.status !== "loaded")
         throw new Error("Actual Phase 4 save failed to load");
       const next = loaded.state;
-      expect(next.schemaVersion).toBe(10);
+      expect(next.schemaVersion).toBe(11);
       for (const key of [
         "playerName",
         "heroineName",

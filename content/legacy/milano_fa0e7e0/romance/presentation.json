@@ -1,0 +1,462 @@
+{
+  "schemaVersion": 1,
+  "backgrounds": {
+    "milano_cafe": {
+      "nameJa": "運河沿いのカフェ",
+      "captionJa": "ミラノ ／ 予定のない午後",
+      "color": "#b87964"
+    },
+    "milano_walk": {
+      "nameJa": "夕暮れの散歩道",
+      "captionJa": "ミラノ ／ 日暮れの寄り道",
+      "color": "#b88b64"
+    },
+    "milano_night": {
+      "nameJa": "灯りの見える岸辺",
+      "captionJa": "ミラノ ／ 窓に灯りがともる頃",
+      "color": "#455a68"
+    },
+    "milano_refectory": {
+      "nameJa": "『最後の晩餐』のある食堂",
+      "captionJa": "ミラノ ／ サンタ・マリア・デッレ・グラツィエ",
+      "color": "#75665b"
+    },
+    "milano_duomo": {
+      "nameJa": "ドゥオモの広場",
+      "captionJa": "ミラノ ／ 石の輪郭を見上げて",
+      "color": "#877969"
+    },
+    "milano_galleria": {
+      "nameJa": "ガッレリアの通り",
+      "captionJa": "ミラノ ／ 屋根の下の街角",
+      "color": "#9b8061"
+    },
+    "milano_castello": {
+      "nameJa": "スフォルツェスコ城の中庭",
+      "captionJa": "ミラノ ／ 壁の内側に残る時間",
+      "color": "#84634f"
+    },
+    "milano_finale": {
+      "nameJa": "ミラノの街角",
+      "captionJa": "ミラノ ／ 四つの場所を巡ったあと",
+      "color": "#4d615b"
+    },
+    "milano_city_date": {
+      "nameJa": "ガッレリアからの帰り道",
+      "captionJa": "ミラノ ／ メモに残した余白",
+      "color": "#8c7867"
+    },
+    "milano_la_scala_date": {
+      "nameJa": "開演前のことば",
+      "captionJa": "ミラノ ／ 開演前のことば",
+      "color": "#786b65",
+      "fallback": "neutral",
+      "imageAssetId": "la_scala_date_photo"
+    },
+    "milano_brera_date": {
+      "nameJa": "一枚の絵、違う視線",
+      "captionJa": "ミラノ ／ 一枚の絵、違う視線",
+      "color": "#777563",
+      "fallback": "neutral",
+      "imageAssetId": "brera_date_photo"
+    },
+    "milano_navigli_date": {
+      "nameJa": "決めない寄り道",
+      "captionJa": "ミラノ ／ 決めない寄り道",
+      "color": "#60746b",
+      "fallback": "neutral",
+      "imageAssetId": "navigli_date_photo"
+    },
+    "milano_san_satiro_date": {
+      "nameJa": "見える距離",
+      "captionJa": "ミラノ ／ 見える距離",
+      "color": "#77736c",
+      "fallback": "neutral",
+      "imageAssetId": "san_satiro_date_photo"
+    },
+    "milano_starbucks_roastery_date": {
+      "nameJa": "遠くまで届く香り",
+      "captionJa": "ミラノ ／ 遠くまで届く香り",
+      "color": "#806b5d",
+      "fallback": "neutral",
+      "imageAssetId": "roastery_exterior_date_photo"
+    },
+    "milano_fondazione_prada_date": {
+      "nameJa": "古い建物、新しい見方",
+      "captionJa": "ミラノ ／ 古い建物、新しい見方",
+      "color": "#777462",
+      "fallback": "neutral"
+    },
+    "milano_love_date": {
+      "nameJa": "手のかたち",
+      "captionJa": "ミラノ ／ 手のかたち",
+      "color": "#727779",
+      "fallback": "neutral",
+      "imageAssetId": "love_vicinity_date_photo"
+    },
+    "milano_rain_pause": {
+      "nameJa": "ガッレリアの雨宿り",
+      "captionJa": "ミラノ ／ 雨が通り過ぎるまで",
+      "color": "#6c7775",
+      "fallback": "neutral",
+      "imageAssetId": "galleria_milano_photo"
+    },
+    "milano_cafe_landmark": {
+      "nameJa": "ナヴィリオ運河のカフェ",
+      "captionJa": "ミラノ ／ ナヴィリオ・グランデ",
+      "color": "#b87964",
+      "fallback": "neutral",
+      "imageAssetId": "navigli_date_photo"
+    },
+    "milano_walk_landmark": {
+      "nameJa": "ドゥオモ広場",
+      "captionJa": "ミラノ ／ 大聖堂の広場",
+      "color": "#b88b64",
+      "fallback": "neutral",
+      "imageAssetId": "duomo_milano_photo"
+    },
+    "milano_night_landmark": {
+      "nameJa": "ナヴィリオの夜景",
+      "captionJa": "ミラノ ／ 運河の灯り",
+      "color": "#455a68",
+      "fallback": "neutral",
+      "imageAssetId": "navigli_night_date_photo"
+    },
+    "milano_city_date_landmark": {
+      "nameJa": "ガッレリアの帰り道",
+      "captionJa": "ミラノ ／ 屋根の下の通り",
+      "color": "#8c7867",
+      "fallback": "neutral",
+      "imageAssetId": "galleria_milano_photo"
+    }
+  },
+  "emotions": {
+    "neutral": "静かなまなざし",
+    "shy": "少し、目をそらして",
+    "shy_deep": "強い照れ",
+    "smile": "微笑み",
+    "happy": "うれしそう",
+    "surprised": "驚き",
+    "surprised_big": "大きな驚き",
+    "worried": "心配そう",
+    "serious": "真剣な表情",
+    "teasing": "いたずらっぽい表情",
+    "teasing_big": "楽しげなからかい",
+    "exasperated": "呆れた表情"
+  },
+  "memories": {
+    "milano_cafe_joke": {
+      "titleJa": "予約した迷子",
+      "descriptionJa": "明日の予定に、道に迷う時間を。ガイドブックの向こうで、小さく笑った。"
+    },
+    "milano_cafe_flirt": {
+      "titleJa": "飲まなかったコーヒー",
+      "descriptionJa": "時間が短く感じると伝えたら、カップが口元の手前で止まった。"
+    },
+    "milano_cafe_interest": {
+      "titleJa": "明日の行き先",
+      "descriptionJa": "行きたい場所を聞いた。「私が決めても、いいの？」という声が残っている。"
+    },
+    "milano_cafe_free_time_joke": {
+      "titleJa": "何もしない予定",
+      "descriptionJa": "自由時間には、絶対に何もしない。その「絶対に」だけが二重線で囲まれた。"
+    },
+    "milano_cafe_secret_destination": {
+      "titleJa": "まだ秘密の場所",
+      "descriptionJa": "観光案内には載っていない行き先。閉じたメモ帳に、明日の楽しみが一つ増えた。"
+    },
+    "milano_cafe_future_talk": {
+      "titleJa": "また、こうして",
+      "descriptionJa": "何もしないなら、また話そう。窓へ向いた横顔の口元が、少しだけ緩んだ。"
+    },
+    "milano_walk_first_joke": {
+      "titleJa": "背伸びの内緒話",
+      "descriptionJa": "秘密を聞くには背が高すぎる街灯。彼女は一度だけつま先を上げた。"
+    },
+    "milano_walk_first_listen": {
+      "titleJa": "街灯の特等席",
+      "descriptionJa": "彼女が好きな傾き方を、狭い隙間から一緒に眺めた。"
+    },
+    "milano_walk_first_honest": {
+      "titleJa": "街灯の趣味",
+      "descriptionJa": "何気ないものを見つけるところが好きだと伝えた。彼女は鞄の紐を持ち直した。"
+    },
+    "milano_walk_second_joke": {
+      "titleJa": "絵の中の休憩",
+      "descriptionJa": "倒れそうな街灯を支える人。その人が休める小さな椅子が描き足された。"
+    },
+    "milano_walk_second_listen": {
+      "titleJa": "消さなかった線",
+      "descriptionJa": "今日ここで描いた線だから。その言葉で、消しゴムは鞄へ戻った。"
+    },
+    "milano_walk_second_honest": {
+      "titleJa": "空けてくれた半分",
+      "descriptionJa": "上手だったら隣は考える、と言いながら、彼女はページの半分を空けた。"
+    },
+    "milano_night_first_joke": {
+      "titleJa": "窓に負けた夜",
+      "descriptionJa": "何もしないまま勝ち続ける暗い窓。彼女はカメラを下ろして笑った。"
+    },
+    "milano_night_first_listen": {
+      "titleJa": "待つ時間",
+      "descriptionJa": "写真にならなくても、一緒に待っていたい。彼女は半歩こちらへ寄った。"
+    },
+    "milano_night_first_honest": {
+      "titleJa": "カメラの陰",
+      "descriptionJa": "覚えて帰りたい横顔。彼女はカメラに隠れかけて、途中でやめた。"
+    },
+    "milano_night_second_joke": {
+      "titleJa": "二人の証言",
+      "descriptionJa": "窓に灯りがついたことを、二人とも見ていた。写真の代わりに証言が残った。"
+    },
+    "milano_night_second_listen": {
+      "titleJa": "どっちかが覚えてる",
+      "descriptionJa": "全部を持って帰らなくてもいい。忘れたら、どちらかが覚えているかもしれない。"
+    },
+    "milano_night_second_honest": {
+      "titleJa": "帰ってからの話",
+      "descriptionJa": "うまく説明できない話も、帰ってから一緒に。彼女はすぐには歩き出さなかった。"
+    },
+    "milano_invitation_chosen_joke": {
+      "titleJa": "白紙の深い意味",
+      "descriptionJa": "何も書かない葉書は、まず書き忘れを心配される。彼女は裏返して笑った。"
+    },
+    "milano_invitation_chosen_listen": {
+      "titleJa": "二つの白",
+      "descriptionJa": "この白と、もう少し白い方。彼女は真面目な顔で、二枚の葉書を並べた。"
+    },
+    "milano_invitation_chosen_honest": {
+      "titleJa": "彼女の行きたい場所",
+      "descriptionJa": "まだ何も案内してないよ、と彼女は言った。葉書は二人の間に置かれたままだった。"
+    },
+    "milano_reassurance_chosen_joke": {
+      "titleJa": "訂正しない一行",
+      "descriptionJa": "配達される前に読んだ葉書。訂正はしない、と彼女は言った。"
+    },
+    "milano_reassurance_chosen_listen": {
+      "titleJa": "考えているふりをやめて",
+      "descriptionJa": "急がなくていい。でも、考えているふりはしたくない。彼女はこちらを見た。"
+    },
+    "milano_reassurance_chosen_honest": {
+      "titleJa": "次はいつ話せるか",
+      "descriptionJa": "返事を待つ帰り道にも、二人は次に会う時間を考えていた。"
+    },
+    "milano_confession_promise": {
+      "titleJa": "予定表にない約束",
+      "descriptionJa": "恋人として、一緒にいたい。差し出された手に、自分の手を重ねた。"
+    },
+    "milano_city_date_first_joke": {
+      "titleJa": "許可された深呼吸",
+      "descriptionJa": "指揮者の話を思い出して、二人で息を吸った。メモの余白は、まだ埋まらない。"
+    },
+    "milano_city_date_first_listen": {
+      "titleJa": "目が忙しかった日",
+      "descriptionJa": "名所の名前より、彼女が今日どう感じたかを聞いた。笑いを我慢した話が残った。"
+    },
+    "milano_city_date_first_honest": {
+      "titleJa": "隣で見ていた顔",
+      "descriptionJa": "街よりも笑っていた顔を覚えている。彼女はメモをこちらへ傾けた。"
+    },
+    "milano_city_date_second_joke": {
+      "titleJa": "余白の休業日",
+      "descriptionJa": "メモに残業を頼んだら、欄の外に「本日休業」と書かれた。空いた行が少し堂々として見えた。"
+    },
+    "milano_city_date_second_listen": {
+      "titleJa": "書かなくてもあった日",
+      "descriptionJa": "空けたままの最後の行。ペンをしまって、一緒に腰を下ろしていた。"
+    },
+    "milano_city_date_second_honest": {
+      "titleJa": "次の一行",
+      "descriptionJa": "旅の次の言葉も一緒に考えたい。彼女の指が、空いた端を二度たたいた。"
+    },
+    "milano_la_scala_first_joke": {
+      "titleJa": "客席の助っ人",
+      "descriptionJa": "台詞を叫ぶ役を引き受けたら、先に係の人が来そうだと言われた。"
+    },
+    "milano_la_scala_first_listen": {
+      "titleJa": "帰らないでの役",
+      "descriptionJa": "演じてみたい台詞を聞くと、彼女は案内の角をそろえた。"
+    },
+    "milano_la_scala_first_honest": {
+      "titleJa": "ふたりに届く声",
+      "descriptionJa": "声を落として、彼女は「いいですね」をもう一度言った。"
+    },
+    "milano_la_scala_second_joke": {
+      "titleJa": "長い拍手",
+      "descriptionJa": "一回だけの長い拍手は祈りに見える、と言われた。"
+    },
+    "milano_la_scala_second_listen": {
+      "titleJa": "拍手のあとに",
+      "descriptionJa": "まだ聞いていたいことは、拍手のあとに伝えればいい。"
+    },
+    "milano_la_scala_second_honest": {
+      "titleJa": "急がない帰り道",
+      "descriptionJa": "もう少し一緒にいたいと言うと、彼女も急いではいないと答えた。"
+    },
+    "milano_brera_first_joke": {
+      "titleJa": "階段にかけた足",
+      "descriptionJa": "先を急ぐ足を見て、待たせた側かもしれないと笑った。"
+    },
+    "milano_brera_first_listen": {
+      "titleJa": "足の向き",
+      "descriptionJa": "出ていく足か戻ってきた足か、少し離れてもう一度見た。"
+    },
+    "milano_brera_first_honest": {
+      "titleJa": "二人の間",
+      "descriptionJa": "階段から二人の間へ、彼女の視線が移った。"
+    },
+    "milano_brera_second_joke": {
+      "titleJa": "影の人の足",
+      "descriptionJa": "階段を譲るか待つ影の人も、足がしびれているかもしれない。"
+    },
+    "milano_brera_second_listen": {
+      "titleJa": "影の人の落とし物",
+      "descriptionJa": "離れていった二人の後で、影の人が落とし物を拾う話を聞いた。"
+    },
+    "milano_brera_second_honest": {
+      "titleJa": "覚えておく影",
+      "descriptionJa": "絵の続きを話すため、壁の暗がりも覚えておくことになった。"
+    },
+    "milano_navigli_first_joke": {
+      "titleJa": "洗濯場の靴下",
+      "descriptionJa": "靴下を持ってきたら、片方だけでは帰りが大変と言われた。"
+    },
+    "milano_navigli_first_listen": {
+      "titleJa": "靴を濡らさない場所",
+      "descriptionJa": "昔の洗濯場を眺め、まず足元の置き場所を探す話をした。"
+    },
+    "milano_navigli_first_honest": {
+      "titleJa": "小さな路地",
+      "descriptionJa": "歩きながら見つけた路地を、彼女は通り過ぎかけていた。"
+    },
+    "milano_navigli_second_joke": {
+      "titleJa": "橋の一票",
+      "descriptionJa": "橋にも意見を聞いたが、慎重派なのか黙ったままだった。"
+    },
+    "milano_navigli_second_listen": {
+      "titleJa": "橋の手前",
+      "descriptionJa": "彼女の選んだ道は、もう少し水の色を見られる橋の手前だった。"
+    },
+    "milano_navigli_second_honest": {
+      "titleJa": "岸辺の遠回り",
+      "descriptionJa": "隣を歩く時間が長い方へ。彼女は橋ではなく岸辺を見た。"
+    },
+    "milano_san_satiro_first_a": {
+      "titleJa": "通路と壁",
+      "descriptionJa": "正面に見えた通路と横から見た壁、どちらも同じ場所にあった。"
+    },
+    "milano_san_satiro_first_b": {
+      "titleJa": "見る役の交代",
+      "descriptionJa": "祭壇を正面と横から交代で見た。声が響きそうで、歩くのはやめた。"
+    },
+    "milano_san_satiro_first_c": {
+      "titleJa": "教会での距離",
+      "descriptionJa": "教会の祭壇を見ながら、隣へ寄ってよいかを聞いた。"
+    },
+    "milano_san_satiro_second_a": {
+      "titleJa": "二つの見方",
+      "descriptionJa": "通路と壁を、ひとつに決めずに覚えて帰ることにした。"
+    },
+    "milano_san_satiro_second_b": {
+      "titleJa": "横から見た理由",
+      "descriptionJa": "知らないほうがよかったかと尋ねると、彼女は見てよかったと言った。"
+    },
+    "milano_san_satiro_second_c": {
+      "titleJa": "同じ角度",
+      "descriptionJa": "壁の位置を知ったあとで、もう一度二人で角度を探した。"
+    },
+    "milano_starbucks_roastery_first_a": {
+      "titleJa": "いつもの看板",
+      "descriptionJa": "ミラノの店を選んだ理由を聞き、飲んでから決めようと言われた。"
+    },
+    "milano_starbucks_roastery_first_b": {
+      "titleJa": "豆の遊園地",
+      "descriptionJa": "焙煎機を遊園地にたとえると、豆だけ乗れると言って笑った。"
+    },
+    "milano_starbucks_roastery_first_c": {
+      "titleJa": "どこでも、の返事",
+      "descriptionJa": "どこでも行きたいと言うと、一緒に選びたいと返された。"
+    },
+    "milano_starbucks_roastery_second_a": {
+      "titleJa": "一杯のあとに",
+      "descriptionJa": "昔の自分への手紙は、注文を考えてからにした。"
+    },
+    "milano_starbucks_roastery_second_b": {
+      "titleJa": "自分の手紙",
+      "descriptionJa": "彼女は、昔の自分への言葉を自分で考えたいと言った。"
+    },
+    "milano_starbucks_roastery_second_c": {
+      "titleJa": "宛名だけの手紙",
+      "descriptionJa": "まず宛名を決めて、本文は急がず考える話をした。"
+    },
+    "milano_fondazione_prada_first_a": {
+      "titleJa": "触らないでの札",
+      "descriptionJa": "展示した失敗に札を立てても、触る人はいると笑った。"
+    },
+    "milano_fondazione_prada_first_b": {
+      "titleJa": "残すものを選ぶ",
+      "descriptionJa": "古い壁の前で、残す失敗は自分で選びたいと話した。"
+    },
+    "milano_fondazione_prada_first_c": {
+      "titleJa": "忘れたくない失敗",
+      "descriptionJa": "失敗は忘れればいいと言うと、忘れたくないこともあると返された。"
+    },
+    "milano_fondazione_prada_second_a": {
+      "titleJa": "非公開の収蔵品",
+      "descriptionJa": "話したくない失敗には、説明札を出さないことにした。"
+    },
+    "milano_fondazione_prada_second_b": {
+      "titleJa": "まだ聞かない話",
+      "descriptionJa": "彼女の秘密が気になり、もう少しだけ聞こうとした。"
+    },
+    "milano_fondazione_prada_second_c": {
+      "titleJa": "先に話す失敗",
+      "descriptionJa": "自分の失敗を先に話し、彼女の話は無理に聞かなかった。"
+    },
+    "milano_love_first_a": {
+      "titleJa": "怒る顔の練習",
+      "descriptionJa": "広場の彫刻と一緒に怒った顔をする案に、彼女は練習が必要と言った。"
+    },
+    "milano_love_first_b": {
+      "titleJa": "写真のポーズ",
+      "descriptionJa": "同じポーズを頼むと、写真で何をするかは自分で決めたいと言われた。"
+    },
+    "milano_love_first_c": {
+      "titleJa": "手を振る位置",
+      "descriptionJa": "手が建物へ挨拶しているように見える場所を探した。"
+    },
+    "milano_love_second_a": {
+      "titleJa": "玄関での挨拶",
+      "descriptionJa": "手の置物を玄関に置いたら、宅配の人への説明は自分の役になった。"
+    },
+    "milano_love_second_b": {
+      "titleJa": "しまう前の相談",
+      "descriptionJa": "困るものでも見ていたいと、彼女はしまう前に話した。"
+    },
+    "milano_love_second_c": {
+      "titleJa": "置く場所の相談",
+      "descriptionJa": "大きな手の置き場所を二人で決める話になった。"
+    },
+    "milano_rain_pause_music": {
+      "titleJa": "雲の音楽係",
+      "descriptionJa": "雨音を街の音楽にたとえると、傘の音も入れてほしいと言われた。"
+    },
+    "milano_rain_pause_watch": {
+      "titleJa": "屋根の端",
+      "descriptionJa": "雨に濡れずに広場を見られる場所を、二人で探した。"
+    },
+    "milano_rain_pause_hurry": {
+      "titleJa": "もう少し雨宿り",
+      "descriptionJa": "すぐ行こうと誘うと、彼女はもう少し雨の音を聞きたいと言った。"
+    }
+  },
+  "ending": {
+    "titleJa": "旅の続きに、きみと。",
+    "descriptionJa": "ふたりは、恋人として歩き始めました。\n旅はこの先も続きます。",
+    "buttonJa": "旅のしおりを見る"
+  },
+  "deferred": {
+    "titleJa": "まだ、言葉の途中。",
+    "descriptionJa": "返事を急がず、もう少し話す時間を。\n気持ちを伝える機会は、ここに残っています。"
+  }
+}

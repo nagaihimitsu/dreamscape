@@ -16,8 +16,9 @@ import {
 } from "./battle-helpers";
 import { openCluebook, showClue } from "./tourism-helpers";
 
-export function specialBattle(format: "B" | "C") {
-  const battle = battles.find((item) => item.format === format);
+export function specialBattle(format: "B" | "C", source: "legacy" | "story" = "legacy") {
+  const id = source === "story" ? (format === "B" ? "milano_la_scala_b01" : "milano_brera_c01") : (format === "B" ? "milano_last_supper_b01" : "milano_last_supper_c01");
+  const battle = battles.find((item) => item.id === id);
   if (!battle?.reasoning) throw new Error(`Missing ${format} battle`);
   return {
     battle,
@@ -111,8 +112,9 @@ export async function playSpecialBattle(
   page: Page,
   format: "B" | "C",
   correctness: boolean[],
+  source: "legacy" | "story" = "legacy",
 ) {
-  const { quiz, reasoning } = specialBattle(format);
+  const { quiz, reasoning } = specialBattle(format, source);
   const transcript: string[] = [];
   for (let index = 0; index < quiz.questions.length; index++) {
     let state = await battleDialogueUntilQuestionOrResult(page, transcript);
@@ -130,3 +132,8 @@ export async function playSpecialBattle(
   expect(state.activeBattle!.phase).toBe("result");
   return { state, transcript: transcript.join("\n") };
 }
+
+/** New story cases have separate identities from the published special battles. */
+export const storyBattle = (format: "B" | "C") => specialBattle(format, "story");
+export const playStoryBattle = (page: Page, format: "B" | "C", correctness: boolean[]) =>
+  playSpecialBattle(page, format, correctness, "story");

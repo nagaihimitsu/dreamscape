@@ -28,7 +28,10 @@ test("guide log contains only displayed lines, leaves the save untouched, and re
   await page.getByTestId("tourism-skip").click();
   await openObservationList(page);
   await page.getByTestId("guide-replay").click();
+  // A replay starts the current guide; the saved guide above deliberately
+  // resumes its older script. Both must log only their own displayed lines.
+  const replayFirst = (await saved(page)).activeTourism!.frame!.text;
   await page.getByTestId("tourism-guide").getByRole("button", { name: "会話ログ" }).click();
-  await expect(dialog).toContainText(first);
+  await expect(dialog).toContainText(replayFirst);
   await expect(dialog).not.toContainText(second);
 });

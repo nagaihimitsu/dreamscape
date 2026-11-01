@@ -19,7 +19,7 @@ class MemoryStorage implements StorageLike {
 /** Represent a previously valid v9 save, without its v10-only properties. */
 function asVersion9(state: GameState) {
   const { travelBudget: _budget, inventory: _inventory, completedEncounterIds: _completed,
-    encounterRewards: _rewards, activeEncounter: _active, ...previous } = state;
+    encounterRewards: _rewards, activeEncounter: _active, updatedDateIds: _updated, ...previous } = state;
   return { ...previous, schemaVersion: 9 };
 }
 
@@ -32,7 +32,7 @@ describe("v10 encounter save migration", () => {
       const loaded = loadGame(storage);
       expect(loaded.status).toBe("loaded");
       if (loaded.status !== "loaded") throw new Error("v10 save unavailable");
-      expect(loaded.state).toEqual(original);
+      expect(loaded.state).toEqual({ ...original, schemaVersion: 11, updatedDateIds: [] });
       expect(storage.getItem(SAVE_KEY)).toBe(raw);
       expect(loaded.state.inventory.galleria_souvenir).toBe("held");
     }
@@ -64,7 +64,7 @@ describe("v10 encounter save migration", () => {
       const loaded = loadGame(storage);
       expect(loaded.status).toBe("loaded");
       if (loaded.status !== "loaded") return;
-      expect(loaded.state).toEqual({ ...old, schemaVersion: 10,
+      expect(loaded.state).toEqual({ ...old, schemaVersion: 11, updatedDateIds: [],
         travelBudget: encounters.initialBudget, inventory: {}, completedEncounterIds: [],
         encounterRewards: {}, activeEncounter: null });
       expect(storage.getItem(SAVE_KEY)).toBe(raw);
