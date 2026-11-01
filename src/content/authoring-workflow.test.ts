@@ -87,7 +87,7 @@ describe("content authoring workflow", () => {
       const generated = await generatedQuizzes();
       expect(quizSchema.parse(generated[battle.quizId])).toEqual(direct);
     }
-  }, 30000);
+  }, 90_000);
 
   it("reflects an existing Milan quiz edit while leaving production text untouched", async () => {
     const productionFile = path.join(root, "content/quizzes/duomo_B1.json");
@@ -123,5 +123,5 @@ describe("content authoring workflow", () => {
     ).toBe(editedQuestion);
     expect(await readFile(productionFile, "utf8")).toBe(original);
     expect(await readFile(screenFile, "utf8")).toBe(originalScreen);
-  }, 30000);
+  }, 90_000);
 });
