@@ -179,12 +179,15 @@ describe("encounter content validation", () => {
     expect(encounterCatalogSchema.safeParse(reward).success).toBe(false);
   });
 
-  it("rejects mismatched English choices and Ink effects", () => {
+  it("takes English choices from Ink, retaining legacy mismatch checks and rejecting Ink effects", () => {
     const data = input();
     const event = data.catalog.encounters.find((item) => item.id === "galleria_cafe")!;
     const source = sources[event.storyId];
     data.stories[event.storyId] = compileInk(source.replace("Two coffees, please.", "Something else, please."));
+    expect(() => validateEncounterContent(data)).not.toThrow();
+    event.options[0].textEn = "Two coffees, please.";
     expect(() => validateEncounterContent(data)).toThrow("Encounter choice does not match data");
+    delete event.options[0].textEn;
     data.stories[event.storyId] = compileInk(source.replace("# speaker: narrator", `# effect: ${data.context.effectIds[0]}\n# speaker: narrator`));
     expect(() => validateEncounterContent(data)).toThrow("Encounter story cannot apply Ink effects");
   });

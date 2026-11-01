@@ -1,4 +1,310 @@
 {
   "schemaVersion": 1,
-  "entries": []
+  "entries": [
+    {
+      "storyId": "tourism/duomo_guide_rewrite",
+      "speaker": "heroine",
+      "text": "「あ、あの尖ったところにも人がいる。像だよね？」",
+      "targetCharacterId": "heroine",
+      "mark": "exclamation"
+    },
+    {
+      "storyId": "tourism/galleria_guide_rewrite",
+      "speaker": "heroine",
+      "text": "「あっ、雨の日も空が見える。あの屋根、どうやって支えてるんだろう」",
+      "targetCharacterId": "heroine",
+      "expression": "surprised",
+      "mark": "sparkle"
+    },
+    {
+      "storyId": "tourism/brera_case_guide",
+      "speaker": "heroine",
+      "text": "「ブレラ宮殿の中庭だ。絵画館の外なのに、もう立ち止まっちゃった」",
+      "targetCharacterId": "heroine",
+      "mark": "sparkle"
+    },
+    {
+      "storyId": "battles/milano_galleria_rewrite",
+      "speaker": "enemy",
+      "text": "「ミラノの幸運を持ち帰りません？　この牛、ミラノの紋章ですから」",
+      "targetCharacterId": "heroine",
+      "expression": "serious",
+      "mark": "question"
+    },
+    {
+      "storyId": "battles/milano_galleria_rewrite",
+      "speaker": "enemy",
+      "text": "「『ミラノで買えるトリノの牛』。長くなるけど、それなら嘘じゃない」",
+      "targetCharacterId": "heroine",
+      "expression": "exasperated",
+      "mark": "sigh"
+    },
+    {
+      "storyId": "battles/milano_galleria_rewrite",
+      "speaker": "heroine",
+      "text": "「屋根を見上げたら、値札を隠した手も見えました」",
+      "targetCharacterId": "enemy",
+      "mark": "sweat"
+    },
+    {
+      "storyId": "battles/milano_duomo_rewrite",
+      "speaker": "heroine",
+      "text": "「石の写真ですね。こっちは……花柄？」",
+      "targetCharacterId": "heroine",
+      "expression": "surprised",
+      "mark": "question"
+    },
+    {
+      "storyId": "battles/milano_duomo_rewrite",
+      "speaker": "enemy",
+      "text": "「ぜひ。カードより大きいので、今度は落としません」",
+      "targetCharacterId": "heroine",
+      "expression": "smile"
+    },
+    {
+      "storyId": "battles/milano_castello_rewrite",
+      "speaker": "enemy",
+      "text": "「よくない。靴から先を読んでくれなかった」",
+      "targetCharacterId": "heroine",
+      "expression": "smile",
+      "mark": "sweat"
+    },
+    {
+      "storyId": "battles/milano_castello_rewrite",
+      "speaker": "heroine",
+      "text": "「じゃあ靴も描き直します？」",
+      "targetCharacterId": "enemy",
+      "mark": "sweat"
+    },
+    {
+      "storyId": "battles/milano_last_supper_rewrite",
+      "speaker": "enemy",
+      "text": "「困ったわ。孫に絵の話をすると約束したのに、顔を見ているうちに順番を忘れちゃった」",
+      "targetCharacterId": "heroine",
+      "expression": "worried"
+    },
+    {
+      "storyId": "battles/milano_city_finale_rewrite",
+      "speaker": "heroine",
+      "text": "「字を小さくすれば一行です」",
+      "targetCharacterId": "enemy",
+      "mark": "sweat"
+    },
+    {
+      "storyId": "battles/milano_city_finale_rewrite",
+      "speaker": "enemy",
+      "text": "「それは案内じゃなくて視力検査」",
+      "targetCharacterId": "heroine",
+      "expression": "surprised"
+    },
+    {
+      "storyId": "battles/milano_la_scala_b_rebuttal",
+      "speaker": "heroine",
+      "text": "「一度も、ですか？　……その言い方、気になります」",
+      "targetCharacterId": "heroine",
+      "expression": "surprised",
+      "mark": "question"
+    },
+    {
+      "storyId": "battles/milano_la_scala_b",
+      "speaker": "enemy",
+      "text": "「印刷まで九分。インクじゃなくて本当によかった」",
+      "targetCharacterId": "heroine",
+      "expression": "smile"
+    },
+    {
+      "storyId": "battles/milano_brera_c",
+      "speaker": "enemy",
+      "text": "「『今はブレラにある』だけでよくない？　前に何に使われたかと、移された後の目的は別の話でしょ」",
+      "targetCharacterId": "heroine",
+      "expression": "serious",
+      "mark": "question"
+    },
+    {
+      "storyId": "battles/milano_brera_c",
+      "speaker": "heroine",
+      "text": "「私のは両面いっぱいです。まだ宛名を書いてません」",
+      "targetCharacterId": "enemy",
+      "mark": "exclamation"
+    },
+    {
+      "storyId": "battles/milano_last_supper_b",
+      "speaker": "enemy",
+      "text": "「それは将来の『同上』のために確保してある！」",
+      "targetCharacterId": "heroine",
+      "expression": "exasperated",
+      "mark": "sigh"
+    },
+    {
+      "storyId": "battles/milano_last_supper_b",
+      "speaker": "heroine",
+      "text": "「横に持っているから、だと思います」",
+      "targetCharacterId": "enemy",
+      "mark": "sweat"
+    },
+    {
+      "storyId": "battles/milano_last_supper_c",
+      "speaker": "enemy",
+      "text": "「だから困る！　パンとチーズも、隣に置くと勝手にサンドイッチを名乗る。私は仕切りを入れる」",
+      "targetCharacterId": "heroine",
+      "expression": "exasperated",
+      "mark": "sigh"
+    },
+    {
+      "storyId": "battles/milano_last_supper_c",
+      "speaker": "heroine",
+      "text": "「……中央の人は？」",
+      "targetCharacterId": "enemy",
+      "mark": "sweat"
+    },
+    {
+      "storyId": "milano/cafe_refresh_01",
+      "speaker": "heroine",
+      "text": "「わ、今の見た？　上に行ったよね。次はどっち？」",
+      "targetCharacterId": "heroine",
+      "mark": "exclamation"
+    },
+    {
+      "storyId": "milano/cafe_refresh_01",
+      "speaker": "heroine",
+      "text": "「そんなに真剣な顔してた？　……うわ、恥ずかしい」",
+      "targetCharacterId": "heroine",
+      "expression": "shy",
+      "mark": "blush"
+    },
+    {
+      "storyId": "milano/walk_refresh_01",
+      "speaker": "heroine",
+      "text": "「……鳩だった。あんなところに本物が混ざってるなんて」",
+      "targetCharacterId": "heroine",
+      "expression": "surprised",
+      "mark": "sweat"
+    },
+    {
+      "storyId": "milano/walk_refresh_01",
+      "speaker": "heroine",
+      "text": "「もう一回言われると、ちょっと悔しい」",
+      "targetCharacterId": "heroine",
+      "expression": "exasperated"
+    },
+    {
+      "storyId": "milano/night_refresh_01",
+      "speaker": "heroine",
+      "text": "「今は景色の相談をしてたんだけど」",
+      "targetCharacterId": "heroine",
+      "expression": "serious"
+    },
+    {
+      "storyId": "milano/night_refresh_01",
+      "speaker": "heroine",
+      "text": "「勝手に題名つけた。まだ撮るか決めてないよ」",
+      "targetCharacterId": "heroine",
+      "expression": "exasperated"
+    },
+    {
+      "storyId": "milano/confession_refresh_01",
+      "speaker": "heroine",
+      "text": "「さっきから私も言おうとしてたの。先に言われちゃった」",
+      "targetCharacterId": "heroine",
+      "expression": "shy"
+    },
+    {
+      "storyId": "milano/reassurance_refresh_01",
+      "speaker": "heroine",
+      "text": "「配達される前に読まれた葉書みたい。……訂正はしません」",
+      "targetCharacterId": "heroine",
+      "expression": "teasing"
+    },
+    {
+      "storyId": "milano/city_date_refresh_01",
+      "speaker": "heroine",
+      "text": "「……あ、私も後者だった」",
+      "targetCharacterId": "heroine",
+      "expression": "surprised",
+      "mark": "sweat"
+    },
+    {
+      "storyId": "milano/la_scala_refresh_01",
+      "speaker": "heroine",
+      "text": "「窓口で『お一人様一枚までです』って言われたらどうする？」",
+      "targetCharacterId": "heroine",
+      "expression": "teasing"
+    },
+    {
+      "storyId": "milano/brera_date_02_rewrite",
+      "speaker": "heroine",
+      "text": "「え、そこにも人がいる？　気づかなかった」",
+      "targetCharacterId": "heroine",
+      "expression": "surprised",
+      "mark": "exclamation"
+    },
+    {
+      "storyId": "milano/brera_date_02_rewrite",
+      "speaker": "heroine",
+      "text": "「そう見えるんだ。わたしはまだ、別れだと決められなくて」",
+      "targetCharacterId": "heroine",
+      "expression": "serious"
+    },
+    {
+      "storyId": "milano/navigli_date_02_rewrite",
+      "speaker": "heroine",
+      "text": "「ちょっと待って。あの屋根、何だろう」",
+      "targetCharacterId": "heroine",
+      "expression": "neutral",
+      "mark": "question"
+    },
+    {
+      "storyId": "milano/san_satiro_date_02_rewrite",
+      "speaker": "heroine",
+      "text": "「えっ、待って。横からだと、奥がない」",
+      "targetCharacterId": "heroine",
+      "expression": "surprised_big",
+      "mark": "interrobang"
+    },
+    {
+      "storyId": "milano/san_satiro_date_02_rewrite",
+      "speaker": "heroine",
+      "text": "「ふふ、今日はわたしの勝ち」",
+      "targetCharacterId": "heroine",
+      "expression": "teasing"
+    },
+    {
+      "storyId": "milano/starbucks_roastery_date_02_rewrite",
+      "speaker": "heroine",
+      "text": "「わ、豆を焙煎してる。飲む前に、しばらく見ててもいい？」",
+      "targetCharacterId": "heroine",
+      "expression": "happy",
+      "mark": "sparkle"
+    },
+    {
+      "storyId": "milano/starbucks_roastery_date_02_rewrite",
+      "speaker": "heroine",
+      "text": "「それだと香りを見学しただけだね」",
+      "targetCharacterId": "heroine",
+      "expression": "teasing"
+    },
+    {
+      "storyId": "milano/rain_pause_02_rewrite",
+      "speaker": "heroine",
+      "text": "「じゃあ、わたしは黄色！　……あ、黄色い傘の人がそもそもいない」",
+      "targetCharacterId": "heroine",
+      "expression": "surprised",
+      "mark": "sweat"
+    },
+    {
+      "storyId": "milano/recovery_talk_02_rewrite",
+      "speaker": "heroine",
+      "text": "「幸運のお願いならいいけど、話したことは消せないよ」",
+      "targetCharacterId": "heroine",
+      "expression": "serious"
+    },
+    {
+      "storyId": "milano/novecento_date_01_rewrite",
+      "speaker": "heroine",
+      "text": "「わ、窓が大きい。外のドゥオモが、展示室の中まで来たみたい」",
+      "targetCharacterId": "heroine",
+      "expression": "happy",
+      "mark": "sparkle"
+    }
+  ]
 }

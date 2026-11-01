@@ -1,9 +1,10 @@
 import { encounters } from "../content/encounters";
 import { legacyEncounters, legacyStoryId } from "../content/legacy-milano";
+import previousEncounterData from "../../content/legacy/encounters_before_story_refactor.json";
 import { responseProfileSchema } from "../content/schemas";
 import { city, responseProfiles } from "../content";
-import type { EncounterDefinition } from "../content/encounter-schemas";
-import { beginStory, continueStory, selectStoryChoice, storyFingerprint, validateStorySnapshot, type StoryStep } from "../story/runtime";
+import { encounterCatalogSchema, type EncounterDefinition } from "../content/encounter-schemas";
+import { beginStory, continueStory, selectStoryChoice, storyFingerprint, validateStorySnapshot, type StoryFrame, type StoryStep } from "../story/runtime";
 import { secureRomanceRoll } from "../random/romance-source";
 import { canAccessFreeTime } from "./chapter";
 import { evaluateProgression, getPlayerAddress, type Availability, type GameState } from "./game";
@@ -14,8 +15,14 @@ import { scoreQuizAnswer } from "./quiz-answer";
 import type { ActiveEncounter } from "./encounter-state";
 
 const findEncounter = (id: string) => encounters.encounters.find((item) => item.id === id);
+const previousEncounters = encounterCatalogSchema.parse(previousEncounterData).encounters;
 const unavailable = (reason: string): Availability => ({ available: false, reason });
 const available: Availability = { available: true, reason: "" };
+
+/** A tagged choice follows its stable ID; older Ink uses its original order. */
+export function encounterChoiceOption(event: EncounterDefinition, choice: StoryFrame["choices"][number]) {
+  return choice.optionId === undefined ? event.options[choice.index] : event.options.find((option) => option.id === choice.optionId);
+}
 
 /** Item IDs remain globally stable, but may only be used by events in their city. */
 function itemBelongsToEncounter(event: EncounterDefinition, itemId: string | undefined): boolean {
@@ -40,6 +47,9 @@ export function getActiveEncounterDefinition(active: ActiveEncounter): Encounter
   const current = findEncounter(active.encounterId);
   try { if (current && encounterFingerprint(current) === active.contentHash) return current; }
   catch { /* A rewritten current story can be absent while old snapshots remain available. */ }
+  const previous = previousEncounters.find((event) => event.id === active.encounterId);
+  try { if (previous && encounterFingerprint(previous) === active.contentHash) return previous; }
+  catch { /* An older script is resolved against the archived publication below. */ }
   const old = legacyEncounters.encounters.find((event) => event.id === active.encounterId);
   if (old && encounterFingerprint(old, true) === active.contentHash) return old;
   throw new Error("道中交流の保存状態が一致しません。");
@@ -48,6 +58,9 @@ export function getActiveEncounterDefinition(active: ActiveEncounter): Encounter
 function activeStoryId(active: ActiveEncounter, id: string): string {
   const event = findEncounter(active.encounterId);
   try { if (event && encounterFingerprint(event) === active.contentHash) return id; }
+  catch { /* Resolve against the immutable publication below. */ }
+  const previous = previousEncounters.find((item) => item.id === active.encounterId);
+  try { if (previous && encounterFingerprint(previous) === active.contentHash) return id; }
   catch { /* Resolve against the immutable publication below. */ }
   return legacyStoryId(id);
 }
@@ -69,7 +82,8 @@ export function getEncounterAvailability(state: GameState, id: string): Availabi
 export function getEncounterOptionAvailability(state: GameState, index: number): Availability {
   const active = state.activeEncounter;
   const event = active && getActiveEncounterDefinition(active);
-  const option = event?.options[index];
+  const choice = active?.frame.choices.find((item) => item.index === index);
+  const option = event && choice ? encounterChoiceOption(event, choice) : undefined;
   if (!active || active.phase !== "story" || active.selectedOptionId !== null || !option || !active.frame.choices.some((choice) => choice.index === index)) return unavailable("この選択肢は使えません。");
   if (!event || event.cityId !== city.id || !optionItemsBelongToEncounter(event, option)) return unavailable("この街では使えない品物です。");
   if (state.travelBudget < option.costEuro) return unavailable("旅行予算が足りません。");
@@ -112,8 +126,9 @@ export function chooseEncounter(state: GameState, index: number, expectedRevisio
   const active = state.activeEncounter;
   if (state.revision !== expectedRevision || !active || !getEncounterOptionAvailability(state, index).available) return state;
   const event = getActiveEncounterDefinition(active);
-  const option = event.options[index];
-  if (active.frame.choices[index]?.text !== option.textEn) throw new Error("交流の選択肢が一致しません。");
+  const choice = active.frame.choices.find((item) => item.index === index)!;
+  const option = encounterChoiceOption(event, choice)!;
+  if (option.textEn !== undefined && choice.text !== option.textEn) throw new Error("交流の選択肢が一致しません。");
   let next = { ...state, travelBudget: state.travelBudget - option.costEuro, inventory: { ...state.inventory } };
   if (option.consumeItemId) next.inventory[option.consumeItemId] = "used";
   if (option.giftItemId) next.inventory[option.giftItemId] = "gifted";

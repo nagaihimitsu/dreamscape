@@ -5,6 +5,7 @@ import { parseStoryTags } from "../content/tags";
 import { bindMemoryReader } from "./memory";
 import { bindItemReader, type ItemStatus } from "./items";
 import { encounters } from "../content/encounters";
+import { REACTION_MARKS, type DialogueReaction, type ReactionTarget } from "../content/dialogue-reactions";
 
 export type Speaker = "narrator" | "heroine" | "player" | "enemy";
 export interface StoryFrame {
@@ -12,7 +13,10 @@ export interface StoryFrame {
   speaker: Speaker;
   background: string;
   emotion: string;
-  choices: { index: number; text: string }[];
+  /** Optional because frames saved before inline presentation have no flag. */
+  emotionExplicit?: true;
+  reactions?: Partial<Record<ReactionTarget, DialogueReaction>>;
+  choices: { index: number; text: string; optionId?: string; translationJa?: string }[];
   ended: boolean;
 }
 export const storyFrameSchema = z
@@ -21,12 +25,19 @@ export const storyFrameSchema = z
     speaker: z.enum(["narrator", "heroine", "player", "enemy"]),
     background: z.string(),
     emotion: z.string(),
+    emotionExplicit: z.literal(true).optional(),
+    reactions: z.object({
+      heroine: z.object({ expression: z.string().optional(), mark: z.enum(REACTION_MARKS).optional() }).strict().optional(),
+      enemy: z.object({ expression: z.string().optional(), mark: z.enum(REACTION_MARKS).optional() }).strict().optional(),
+    }).strict().optional(),
     choices: z
       .array(
         z
           .object({
             index: z.number().int().nonnegative(),
             text: z.string().min(1),
+            optionId: z.string().regex(/^[a-z][a-z0-9_]*$/u).optional(),
+            translationJa: z.string().min(1).optional(),
           })
           .strict(),
       )
@@ -72,7 +83,16 @@ function readTags(
   const parsed = parseStoryTags(tags, tagContext);
   if (parsed.speaker) frame.speaker = parsed.speaker;
   if (parsed.background) frame.background = parsed.background;
-  if (parsed.emotion) frame.emotion = parsed.emotion;
+  if (parsed.emotion) {
+    frame.emotion = parsed.emotion;
+    frame.emotionExplicit = true;
+  }
+  if (parsed.reactions) {
+    for (const target of ["heroine", "enemy"] as const) {
+      if (parsed.reactions[target] && frame.reactions?.[target]) throw new Error(`Duplicate reaction target: ${target}`);
+    }
+    frame.reactions = { ...frame.reactions, ...parsed.reactions };
+  }
   events.push(...parsed.effects);
 }
 
@@ -103,12 +123,22 @@ function readFrame(
       break;
     }
   }
-  frame.choices = story.currentChoices.map(({ index, text }) => ({
-    index,
-    text: text.trim(),
-  }));
+  frame.choices = storyChoices(story);
   frame.ended = !story.canContinue && frame.choices.length === 0;
   return { storyState: story.state.ToJson(), frame, effects: events };
+}
+
+/** Choice tags are presentation/identity metadata. Old choices keep their original shape. */
+function storyChoices(story: Story): StoryFrame["choices"] {
+  return story.currentChoices.map(({ index, text, tags }) => {
+    const parsed = parseStoryTags(tags ?? [], tagContext);
+    return {
+      index,
+      text: text.trim(),
+      ...(parsed.optionId ? { optionId: parsed.optionId } : {}),
+      ...(parsed.translationJa ? { translationJa: parsed.translationJa } : {}),
+    };
+  });
 }
 
 export function beginStory(
@@ -207,10 +237,7 @@ export function validateStorySnapshot(
   // Ink starts at turn -1 and increments once for each ChooseChoiceIndex call.
   if (story.state.currentTurnIndex + 1 !== expected.choiceCount)
     throw new Error("保存された選択回数が一致しません。");
-  const choices = story.currentChoices.map(({ index, text }) => ({
-    index,
-    text: text.trim(),
-  }));
+  const choices = storyChoices(story);
   if (JSON.stringify(choices) !== JSON.stringify(frame.choices))
     throw new Error("保存された選択肢が一致しません。");
   if (frame.ended !== (!story.canContinue && choices.length === 0))

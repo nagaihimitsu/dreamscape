@@ -2,6 +2,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { CanalScene } from "../../components/CanalScene";
 import { DialogueText } from "../../components/DialogueText";
 import { DialogueToolsMenu } from "../../components/DialogueToolsMenu";
+import { CharacterPortrait } from "../../components/CharacterPortrait";
+import { ComicEffect } from "../../components/ComicEffect";
+import type { ReactionMark } from "../../content/dialogue-reactions";
 import { InteractiveEnglish } from "../learning/InteractiveEnglish";
 import { revealTranslation, toggleTranslation, visible } from "../learning/Translations";
 import type { Learning } from "../learning/useLearning";
@@ -19,6 +22,9 @@ export type EncounterScreenView = {
   text: string;
   choices: EncounterChoiceView[];
   ended: boolean;
+  portraits?: Partial<Record<"heroine" | "enemy", { emotion: string; mark?: ReactionMark; active: boolean }>>;
+  cityId?: string;
+  sceneId?: string;
   quiz?: {
     id: string;
     questionEn: string;
@@ -29,10 +35,11 @@ export type EncounterScreenView = {
 };
 
 /** The view contains no game rules: all changes are committed by the caller. */
-export function EncounterScreen({ view, learning, speed, onSpeed, onAdvance, onChoose, onAnswer, onFinish }: {
+export function EncounterScreen({ view, learning, speed, reduceMotion, onSpeed, onAdvance, onChoose, onAnswer, onFinish }: {
   view: EncounterScreenView;
   learning: Learning;
   speed: number;
+  reduceMotion: boolean;
   onSpeed: (value: number) => void;
   onAdvance: () => void;
   onChoose: (index: number) => boolean;
@@ -67,6 +74,16 @@ export function EncounterScreen({ view, learning, speed, onSpeed, onAdvance, onC
   return (
     <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0}>
       <div className="vn-background">{view.backgroundImage ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundImage}`} alt="" /> : <CanalScene backgroundId={view.background} />}</div>
+      {!quiz && view.portraits && <div className="vn-character-layer encounter-character-layer" data-two-characters={!!view.portraits.heroine && !!view.portraits.enemy}>
+        {(["heroine", "enemy"] as const).map((id) => {
+          const portrait = view.portraits?.[id];
+          return portrait && <div className={`encounter-character-slot encounter-character-${id}`} key={id}>
+            <CharacterPortrait characterId={id} cityId={view.cityId} sceneId={view.sceneId} emotion={portrait.emotion} active={portrait.active}>
+              {portrait.mark && <ComicEffect effect={portrait.mark} reduceMotion={reduceMotion} cueKey={String(view.revision)} />}
+            </CharacterPortrait>
+          </div>;
+        })}
+      </div>}
       <section className="vn-dialogue paper story-paper encounter-dialogue" aria-label="寄り道の会話">
         <div className="encounter-scene-heading">
           <div className="speaker">{view.speaker}</div>

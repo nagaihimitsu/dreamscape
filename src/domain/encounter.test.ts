@@ -4,6 +4,9 @@ import { encounters } from "../content/encounters";
 import { responseProfiles } from "../content";
 import { loadGame, saveGame, type StorageLike } from "../persistence";
 import galleriaFixture from "../../tests/fixtures/galleria-stage2-pool.json";
+import previousEncounterData from "../../content/legacy/encounters_before_story_refactor.json";
+import { encounterCatalogSchema } from "../content/encounter-schemas";
+import { storyFingerprint } from "../story/runtime";
 import { startEncounter, chooseEncounter, advanceEncounter, answerEncounterQuiz, finishEncounter, getEncounterAvailability, getEncounterOptionAvailability, validateEncounterState } from "./encounter";
 
 const ready = (): GameState => ({ ...createGame(), completedEpisodeIds: ["milano_duomo_episode"] });
@@ -61,6 +64,17 @@ function fortune(initial: GameState, answer: "A" | "B", roll: number): GameState
 }
 
 describe("travel encounters", () => {
+  it("resumes a previously published encounter whose catalog included English text", () => {
+    const event = encounterCatalogSchema.parse(previousEncounterData).encounters.find((item) => item.id === "galleria_cafe")!;
+    const fingerprintSource = JSON.stringify(event) + storyFingerprint(event.storyId);
+    let hash = 2166136261;
+    for (let index = 0; index < fingerprintSource.length; index++) hash = Math.imul(hash ^ fingerprintSource.charCodeAt(index), 16777619);
+    const started = startEncounter(ready(), event.id, () => 0);
+    const previous = { ...started, activeEncounter: { ...started.activeEncounter!, contentHash: (hash >>> 0).toString(16) } };
+    const completed = finish(choose(restored(previous), 0));
+    expect(completed.travelBudget).toBe(18);
+    expect(completed.inventory.galleria_souvenir).toBe("held");
+  });
   it("charges the chosen amount once, preserves the completed café reward and rejects insufficient funds", () => {
     let state = untilChoice(startEncounter(ready(), "galleria_cafe", () => 0));
     const poor = { ...state, travelBudget: 3 };

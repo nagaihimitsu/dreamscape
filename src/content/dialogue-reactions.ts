@@ -39,9 +39,14 @@ export type DialogueReaction = Pick<DialogueReactionCatalog["entries"][number], 
 export function resolveDialogueReaction(
   catalog: DialogueReactionCatalog,
   storyId: string,
-  frame: { text: string; speaker: "narrator" | "heroine" | "player" | "enemy" },
+  frame: { text: string; speaker: "narrator" | "heroine" | "player" | "enemy"; emotionExplicit?: boolean; reactions?: Partial<Record<ReactionTarget, DialogueReaction>> },
   targetCharacterId: ReactionTarget,
 ): DialogueReaction | undefined {
   const found = catalog.entries.find((entry) => entry.storyId === storyId && entry.speaker === frame.speaker && entry.text === frame.text && entry.targetCharacterId === targetCharacterId);
-  return found && { expression: found.expression, mark: found.mark };
+  const authored = frame.reactions?.[targetCharacterId];
+  if (!found && !authored) return undefined;
+  // The speaker's explicit Ink emotion outranks old text-keyed expressions;
+  // a reaction tag for that target is still more specific than either.
+  const ownsEmotion = targetCharacterId === "enemy" ? frame.speaker === "enemy" : frame.speaker === "heroine" || frame.speaker === "narrator";
+  return { ...(found ? { expression: frame.emotionExplicit && ownsEmotion ? undefined : found.expression, mark: found.mark } : {}), ...authored };
 }

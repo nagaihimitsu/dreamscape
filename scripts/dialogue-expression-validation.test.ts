@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
 import { compileInk, validateStory } from "./content-pipeline";
 import { createDialogueExpressionValidator } from "./dialogue-expression-validation";
@@ -24,27 +24,33 @@ describe("dialogue expression content validation", () => {
     expect(() => validator.finish()).not.toThrow();
   });
 
-  it("rejects an unknown story or expression", () => {
+  it("warns when a story is removed, but rejects an unknown expression", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     const badStory = catalog();
     badStory.entries[0].storyId = "milano/missing";
-    expect(() => create(badStory)).toThrow("Unknown dialogue expression storyId");
+    expect(() => create(badStory).finish()).not.toThrow();
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining("story no longer exists"));
+    warn.mockRestore();
     const badEmotion = catalog();
     badEmotion.entries[0].emotion = "not_registered";
     expect(() => create(badEmotion)).toThrow("Unknown dialogue expression emotion");
+    badEmotion.entries[0].storyId = "milano/missing";
+    expect(() => create(badEmotion)).toThrow("Unknown dialogue expression emotion");
   });
 
-  it("rejects changed, interpolated and name-dependent source lines", () => {
-    expect(() => create(catalog(), source.replace(text, "「違う言葉」"))).toThrow("not a static Ink line");
+  it("warns when a line is rewritten, while rejecting invalid interpolated annotations", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const changed = create(catalog(), source.replace(text, "「違う言葉」"));
+    expect(() => changed.finish()).not.toThrow();
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining("Stale dialogue expression"));
+    warn.mockRestore();
     const withName = catalog();
     withName.entries[0].text = "「{heroine_name}、こんにちは」";
     expect(() => create(withName, source.replace(text, withName.entries[0].text))).toThrow("not a static Ink line");
-    // A test-time rendered value must not be mistaken for a literal source line.
-    const rendered = catalog();
-    rendered.entries[0].text = "「検証ヒロイン、こんにちは」";
-    expect(() => create(rendered, source.replace(text, "「{heroine_name}、こんにちは」"))).toThrow("not a static Ink line");
   });
 
-  it("rejects a source line that is unreachable or has a different speaker", () => {
+  it("warns if a previously annotated line becomes unreachable or changes speaker", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     const unreachableSource = `VAR player_name = "なお"
 VAR heroine_name = "りえ"
 先に終わります。
@@ -56,20 +62,26 @@ ${text}
     const unreachable = create(catalog(), unreachableSource);
     validateStory(compileInk(unreachableSource), context, { choiceCount: 0, effectCount: 0, kind: "normal" }, {}, [],
       (line, speaker, explicit) => unreachable.observe(storyId, line, speaker, explicit));
-    expect(() => unreachable.finish()).toThrow("Unreachable or mismatched dialogue expression");
+    expect(() => unreachable.finish()).not.toThrow();
     const wrongSpeaker = source.replace("speaker: heroine", "speaker: narrator");
     const mismatch = create(catalog(), wrongSpeaker);
     validateStory(compileInk(wrongSpeaker), context, { choiceCount: 0, effectCount: 0, kind: "normal" }, {}, [],
       (line, speaker, explicit) => mismatch.observe(storyId, line, speaker, explicit));
-    expect(() => mismatch.finish()).toThrow("Unreachable or mismatched dialogue expression");
+    expect(() => mismatch.finish()).not.toThrow();
+    expect(warn).toHaveBeenCalledTimes(2);
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining("unreachable or speaker changed"));
+    warn.mockRestore();
   });
 
-  it("rejects a contiguous explicit emotion before traversing the story", () => {
-    const tagged = source.replace(text, `# emotion: neutral\n\n# speaker: heroine\n${text}`);
-    expect(() => create(catalog(), tagged)).toThrow("Dialogue expression conflicts with Ink emotion");
+  it("allows Ink emotion to replace an external expression", () => {
+    const tagged = source.replace(text, `# emotion: neutral\n${text}`);
+    const validator = create(catalog(), tagged);
+    validateStory(compileInk(tagged), context, { choiceCount: 0, effectCount: 0, kind: "normal" }, {}, [],
+      (line, speaker, explicit) => validator.observe(storyId, line, speaker, explicit));
+    expect(() => validator.finish()).not.toThrow();
   });
 
-  it("rejects an explicit Ink emotion reached through a branch even across a source comment", () => {
+  it("allows explicit Ink emotions on one route of a previously annotated line", () => {
     const branched = `VAR player_name = "なお"
 VAR heroine_name = "りえ"
 # speaker: heroine
@@ -87,7 +99,6 @@ VAR heroine_name = "りえ"
     const validator = create(catalog(), branched);
     expect(() => validateStory(compileInk(branched), context,
       { choiceCount: 1, effectCount: 0, kind: "normal" }, {}, [],
-      (line, speaker, explicit) => validator.observe(storyId, line, speaker, explicit)))
-      .toThrow("Dialogue expression conflicts with Ink emotion");
+      (line, speaker, explicit) => validator.observe(storyId, line, speaker, explicit))).not.toThrow();
   });
 });

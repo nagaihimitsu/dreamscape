@@ -22,11 +22,11 @@ export const dialogueExpressionCatalogSchema = z.object({
 });
 
 export type DialogueExpressionCatalog = z.infer<typeof dialogueExpressionCatalogSchema>;
-export type ExpressionFrame = { text: string; speaker: "narrator" | "heroine" | "player" | "enemy"; emotion: string };
+export type ExpressionFrame = { text: string; speaker: "narrator" | "heroine" | "player" | "enemy"; emotion: string; emotionExplicit?: boolean };
 
 /** A battle enemy's expression is never used for the heroine. Explicit Ink emotions win. */
 export function resolveDialogueExpression(catalog: DialogueExpressionCatalog, storyId: string, frame: ExpressionFrame): string {
   if (frame.speaker === "enemy" || frame.speaker === "player") return "neutral";
-  if (frame.emotion !== "neutral") return frame.emotion;
+  if (frame.emotion !== "neutral" || frame.emotionExplicit) return frame.emotion;
   return catalog.entries.find((entry) => entry.storyId === storyId && entry.speaker === frame.speaker && entry.text === frame.text)?.emotion ?? frame.emotion;
 }

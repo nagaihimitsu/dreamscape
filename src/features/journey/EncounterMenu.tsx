@@ -8,17 +8,14 @@ export type EncounterMenuEntry = {
 };
 
 /** Small, optional detours alongside the existing free-time destinations. */
-export function EncounterMenu({ entries, balance, items, onStart }: {
+export function EncounterMenu({ entries, onStart }: {
   entries: EncounterMenuEntry[];
-  balance: number;
-  items: { id: string; name: string }[];
   onStart: (id: string) => void;
 }) {
   return (
     <details className="encounter-menu" aria-label="寄り道">
       <summary className="encounter-menu-heading" data-testid="encounter-menu-toggle">
         <span>寄り道 <span className="encounter-menu-count">{entries.length}件</span></span>
-        <span aria-label={`旅の予算 ${balance}ユーロ`}>€{balance}</span>
       </summary>
       {entries.length === 0 && <p className="encounter-inventory">今行ける寄り道はありません。</p>}
       {entries.map((entry) => (
@@ -39,9 +36,6 @@ export function EncounterMenu({ entries, balance, items, onStart }: {
           </button>
         </div>
       ))}
-      {items.length > 0 && (
-        <p className="encounter-inventory">持ち物：{items.map((item) => item.name).join("、")}</p>
-      )}
     </details>
   );
 }

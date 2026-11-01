@@ -117,22 +117,33 @@ h3 {
 }
 .journey-bar {
   display: flex;
-  gap: 20px;
+  gap: 8px 16px;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   padding: 12px 42px;
   background: #f1f0e5;
   font-size: 13px;
   border-bottom: 1px solid var(--line);
 }
 .travelers {
+  flex: 1 1 72px;
+  min-width: 0;
   overflow-wrap: anywhere;
+}
+.journey-resources {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  min-width: 0;
 }
 .amp {
   color: var(--muted);
   font-size: 11px;
 }
-.ap {
+.ap, .travel-budget {
   font-family: Georgia, serif;
   font-size: 27px;
   white-space: nowrap;

@@ -1,4 +1,5 @@
 import { Story } from "inkjs";
+import previousEncounterData from "../content/legacy/encounters_before_story_refactor.json";
 import type { EncounterCatalog, EncounterDefinition } from "../src/content/encounter-schemas";
 import type { JourneyConfig } from "../src/content/journey-schemas";
 import type { QuizDefinition, QuizQuestion } from "../src/content/schemas";
@@ -18,6 +19,7 @@ export function validateEncounterStory(
   options: EncounterDefinition["options"] | null,
   itemIds: string[],
   memoryIds: string[],
+  requireChoiceIds = false,
 ): void {
   const positiveResponses = new Map<string, string>();
   const inventoryContexts: Readonly<Record<string, ItemStatus>>[] = [
@@ -62,11 +64,26 @@ export function validateEncounterStory(
     }
     if (choices.length !== options.length)
       throw new Error(`Encounter needs three choices; found ${choices.length}`);
+    unique(choices.map((choice) => choice.text.trim().toLowerCase()), "encounter option text");
+    const taggedChoiceCount = choices.filter((choice) => (choice.tags ?? []).some((tag) => /^option\s*:/u.test(tag))).length;
+    if (taggedChoiceCount !== 0 && taggedChoiceCount !== choices.length)
+      throw new Error("Encounter choice IDs must be specified for every choice");
+    if (requireChoiceIds && taggedChoiceCount !== choices.length)
+      throw new Error("Encounter choice effects require stable option IDs");
     const saved = story.state.ToJson();
-    for (const [index, option] of options.entries()) {
-      const choice = choices[index];
-      if (choice.index !== index || choice.text.trim() !== option.textEn)
+    const choiceOptions = choices.map((choice, index) => {
+      const optionTags = (choice.tags ?? []).filter((tag) => /^option\s*:/u.test(tag));
+      if (optionTags.length > 1) throw new Error("Encounter choice has multiple IDs");
+      const id = optionTags[0]?.slice(optionTags[0].indexOf(":") + 1).trim();
+      const option = id === undefined ? options[index] : options.find((item) => item.id === id);
+      if (!option) throw new Error(`Unknown encounter choice ID: ${id}`);
+      if (choice.index !== index || (option.textEn !== undefined && choice.text.trim() !== option.textEn))
         throw new Error(`Encounter choice does not match data: ${option.id}`);
+      return option;
+    });
+    unique(choiceOptions.map((option) => option.id), "encounter choice ID");
+    for (const [index, option] of choiceOptions.entries()) {
+      const choice = choices[index];
       if (parseStoryTags(choice.tags ?? [], context).effects.length)
         throw new Error("Encounter story cannot apply Ink effects");
       const branch = new Story(compiled);
@@ -128,7 +145,6 @@ export function validateEncounterContent({
       event.options.some((option) => option.costEuro || option.requiresItemId || option.consumeItemId || option.giftItemId || option.responseProfileId || option.deferCompletion)))
       throw new Error(`Repeatable encounter must be a free quiz without choice effects: ${event.id}`);
     unique(event.options.map((option) => option.id), `encounter option ID: ${event.id}`);
-    unique(event.options.map((option) => option.textEn.toLowerCase()), `encounter option text: ${event.id}`);
     for (const option of event.options) {
       for (const item of [option.requiresItemId, option.consumeItemId, option.giftItemId]) {
         if (item && !itemIds.has(item)) throw new Error(`Unknown encounter item: ${event.id}/${option.id}/${item}`);
@@ -170,7 +186,9 @@ export function validateEncounterContent({
       storyIds.push(scene.id);
       const compiled = stories[scene.id];
       if (!compiled) throw new Error(`Unknown encounter story: ${event.id}/${scene.id}`);
-      try { validateEncounterStory(compiled, context, scene.options, catalog.items.filter((item) => item.cityId === event.cityId).map((item) => item.id), memoryIds); }
+      const existingOrderedChoices = previousEncounterData.encounters.some((old) => old.id === event.id && old.storyId === scene.id);
+      const choiceHasRules = !!scene.options?.some((option) => option.costEuro || option.requiresItemId || option.consumeItemId || option.giftItemId || option.responseProfileId || option.deferCompletion);
+      try { validateEncounterStory(compiled, context, scene.options, catalog.items.filter((item) => item.cityId === event.cityId).map((item) => item.id), memoryIds, choiceHasRules && !existingOrderedChoices); }
       catch (error) {
         throw new Error(`Invalid encounter story: ${event.id}/${scene.id}: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
       }

@@ -7,16 +7,16 @@ const version = z.literal(1);
 export const dateSchema = z
   .object({
     id,
-    kind: z.enum(["normal", "special", "confession", "reassurance"]),
+    kind: z.enum(["normal", "special", "confession", "reassurance"]).default("normal"),
     chapterId: id,
     titleJa: text,
-    descriptionJa: text,
-    apCost: z.number().int().nonnegative(),
-    minRomanceStage: z.number().int().min(1).max(4),
+    descriptionJa: text.default("ふたりで旅先を訪ねる。"),
+    apCost: z.number().int().nonnegative().default(2),
+    minRomanceStage: z.number().int().min(1).max(4).default(1),
     storyId: z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/),
     legacyOnly: z.boolean().optional(),
     legacyStoryIds: z.array(z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/)).optional(),
-    requiredCompletedChapters: z.array(id),
+    requiredCompletedChapters: z.array(id).optional(),
     requiredCompletedCityIds: z.array(id).optional(),
     requiredCompletedEpisodeIds: z.array(id).optional(),
     forbiddenCompletedEpisodeIds: z.array(id).optional(),
@@ -24,16 +24,16 @@ export const dateSchema = z
     legacyDestinationId: id.optional(),
     legacyStoryDestinationIds: z.record(z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/), id).optional(),
     allowAfterEnding: z.boolean().optional(),
-    rewardOnlyOnce: z.boolean(),
+    rewardOnlyOnce: z.boolean().default(true),
     backgroundAssetId: id,
-    minAffection: z.number().int().nonnegative(),
-    requiredPlayedDateIds: z.array(id),
-    repeatable: z.boolean(),
+    minAffection: z.number().int().nonnegative().default(0),
+    requiredPlayedDateIds: z.array(id).default([]),
+    repeatable: z.boolean().default(false),
     recovery: z.boolean().optional(),
-    needsDeferred: z.boolean(),
-    choiceCount: z.number().int().min(0).max(2),
-    effectCount: z.number().int().min(0).max(2),
-    actionLabelJa: text,
+    needsDeferred: z.boolean().default(false),
+    choiceCount: z.number().int().min(0).max(2).default(2),
+    effectCount: z.number().int().min(0).max(2).default(2),
+    actionLabelJa: text.default("デートに誘う"),
     eventLabelJa: text.optional(),
     invitationJa: text.optional(),
     validationContexts: z
@@ -50,9 +50,15 @@ export const dateSchema = z
           })
           .strict(),
       )
-      .min(1),
+      .min(1)
+      .default([{ romanceStage: 1, confessionReady: false }]),
   })
   .strict()
+  .transform((date) => ({
+    ...date,
+    requiredCompletedChapters: date.requiredCompletedChapters ?? [date.chapterId],
+    allowAfterEnding: date.allowAfterEnding ?? (date.kind === "normal"),
+  }))
   .refine(
     (date) => date.requiredCompletedChapters.length > 0 ||
       (date.kind === "normal" && !!date.destinationId && !!date.requiredCompletedEpisodeIds?.length),

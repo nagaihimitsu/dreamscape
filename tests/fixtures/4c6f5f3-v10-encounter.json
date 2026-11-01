@@ -1,0 +1,229 @@
+{
+  "before": {
+    "schemaVersion": 11,
+    "revision": 86,
+    "playerName": "なお",
+    "heroineName": "りえ",
+    "ap": 2,
+    "affection": 4,
+    "romanceStage": 2,
+    "completedChapters": [
+      "milano"
+    ],
+    "claimedRewardIds": [
+      "battle_duomo_first",
+      "episode_duomo_first",
+      "battle_galleria_first",
+      "episode_galleria_first"
+    ],
+    "playedDateIds": [
+      "milano_cafe_01"
+    ],
+    "memories": [
+      "milano_cafe_joke",
+      "milano_cafe_free_time_joke"
+    ],
+    "activeDate": null,
+    "unlockedEventIds": [
+      "milano_invitation_01",
+      "milano_confession_01",
+      "milano_rain_pause_01"
+    ],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": null,
+    "battleRecords": [
+      {
+        "battleId": "milano_duomo_01",
+        "attempts": 1,
+        "firstScore": 0,
+        "bestScore": 0,
+        "lastScore": 0
+      },
+      {
+        "battleId": "milano_galleria_01",
+        "attempts": 1,
+        "firstScore": 0,
+        "bestScore": 0,
+        "lastScore": 0
+      }
+    ],
+    "activeTourism": null,
+    "discoveredClueIds": [],
+    "visitedLandmarkIds": [
+      "duomo_milano",
+      "galleria_vittorio_emanuele_ii"
+    ],
+    "completedEpisodeIds": [
+      "milano_duomo_episode",
+      "milano_galleria_episode"
+    ],
+    "completedCityIds": [],
+    "completedGuideIds": [],
+    "pendingApRewards": [],
+    "battleRewardReceipt": null,
+    "activeEpilogue": null,
+    "viewedEpilogueCityIds": [],
+    "legacyTrialAvailable": false,
+    "trust": 1,
+    "spark": 2,
+    "lastRejectedDateCount": null,
+    "recoveryAfterRejection": false,
+    "completedRecoveryCount": 0,
+    "travelBudget": 20,
+    "inventory": {},
+    "completedEncounterIds": [],
+    "encounterRewards": {},
+    "activeEncounter": {
+      "encounterId": "galleria_cafe",
+      "runId": "galleria_cafe:81",
+      "contentHash": "c53cea26",
+      "storyId": "encounters/galleria_cafe_rewrite",
+      "storyHash": "2924cfc2",
+      "storyState": "{\"flows\":{\"DEFAULT_FLOW\":{\"callstack\":{\"threads\":[{\"callstack\":[{\"exp\":false,\"type\":0}],\"threadIndex\":0,\"previousContentObject\":\"0.47\"}],\"threadCounter\":3},\"outputStream\":[\"#\",\"^speaker: narrator\",\"/#\",\"^カウンターの向こうでは、小さなカップを傾け、また街へ戻る人がいる。何を頼もう。\",\"\\n\"],\"choiceThreads\":{\"1\":{\"callstack\":[{\"cPath\":\"0\",\"idx\":35,\"exp\":false,\"type\":0}],\"threadIndex\":1,\"previousContentObject\":\"0.34\"},\"2\":{\"callstack\":[{\"cPath\":\"0\",\"idx\":41,\"exp\":false,\"type\":0}],\"threadIndex\":2,\"previousContentObject\":\"0.40\"},\"3\":{\"callstack\":[{\"cPath\":\"0\",\"idx\":47,\"exp\":false,\"type\":0}],\"threadIndex\":3,\"previousContentObject\":\"0.46\"}},\"currentChoices\":[{\"text\":\"Two coffees, please.\",\"index\":0,\"originalChoicePath\":\"0.35\",\"originalThreadIndex\":1,\"targetPath\":\"0.c-0\",\"isInvisibleDefault\":false},{\"text\":\"A cappuccino and a pastry, please.\",\"index\":1,\"originalChoicePath\":\"0.41\",\"originalThreadIndex\":2,\"targetPath\":\"0.c-1\",\"isInvisibleDefault\":false},{\"text\":\"Nothing for now, thank you.\",\"index\":2,\"originalChoicePath\":\"0.47\",\"originalThreadIndex\":3,\"targetPath\":\"0.c-2\",\"isInvisibleDefault\":false}]}},\"currentFlowName\":\"DEFAULT_FLOW\",\"variablesState\":{\"player_name\":\"^なお\",\"heroine_name\":\"^りえ\"},\"evalStack\":[],\"visitCounts\":{},\"turnIndices\":{},\"turnIdx\":-1,\"storySeed\":73,\"previousRandom\":0,\"inkSaveVersion\":10,\"inkFormatVersion\":21}",
+      "frame": {
+        "text": "カウンターの向こうでは、小さなカップを傾け、また街へ戻る人がいる。何を頼もう。",
+        "speaker": "narrator",
+        "background": "milano_galleria",
+        "emotion": "neutral",
+        "choices": [
+          {
+            "index": 0,
+            "text": "Two coffees, please."
+          },
+          {
+            "index": 1,
+            "text": "A cappuccino and a pastry, please."
+          },
+          {
+            "index": 2,
+            "text": "Nothing for now, thank you."
+          }
+        ],
+        "ended": false
+      },
+      "phase": "story",
+      "selectedOptionId": null,
+      "quizAnswerId": null,
+      "rewardRoll": 1234,
+      "rewardChancePercent": null,
+      "rewardAlreadyDrawn": false,
+      "romanceRoll": {
+        "reaction": 1234,
+        "affection": 1234,
+        "trust": 1234,
+        "spark": 1234
+      },
+      "responseProfiles": [],
+      "romanceResolution": null
+    },
+    "updatedDateIds": []
+  },
+  "after": {
+    "schemaVersion": 11,
+    "revision": 87,
+    "playerName": "なお",
+    "heroineName": "りえ",
+    "ap": 2,
+    "affection": 4,
+    "romanceStage": 2,
+    "completedChapters": [
+      "milano"
+    ],
+    "claimedRewardIds": [
+      "battle_duomo_first",
+      "episode_duomo_first",
+      "battle_galleria_first",
+      "episode_galleria_first"
+    ],
+    "playedDateIds": [
+      "milano_cafe_01"
+    ],
+    "memories": [
+      "milano_cafe_joke",
+      "milano_cafe_free_time_joke"
+    ],
+    "activeDate": null,
+    "unlockedEventIds": [
+      "milano_invitation_01",
+      "milano_confession_01",
+      "milano_rain_pause_01"
+    ],
+    "confessionStatus": "none",
+    "endingReached": false,
+    "activeBattle": null,
+    "battleRecords": [
+      {
+        "battleId": "milano_duomo_01",
+        "attempts": 1,
+        "firstScore": 0,
+        "bestScore": 0,
+        "lastScore": 0
+      },
+      {
+        "battleId": "milano_galleria_01",
+        "attempts": 1,
+        "firstScore": 0,
+        "bestScore": 0,
+        "lastScore": 0
+      }
+    ],
+    "activeTourism": null,
+    "discoveredClueIds": [],
+    "visitedLandmarkIds": [
+      "duomo_milano",
+      "galleria_vittorio_emanuele_ii"
+    ],
+    "completedEpisodeIds": [
+      "milano_duomo_episode",
+      "milano_galleria_episode"
+    ],
+    "completedCityIds": [],
+    "completedGuideIds": [],
+    "pendingApRewards": [],
+    "battleRewardReceipt": null,
+    "activeEpilogue": null,
+    "viewedEpilogueCityIds": [],
+    "legacyTrialAvailable": false,
+    "trust": 1,
+    "spark": 2,
+    "lastRejectedDateCount": null,
+    "recoveryAfterRejection": false,
+    "completedRecoveryCount": 0,
+    "travelBudget": 16,
+    "inventory": {},
+    "completedEncounterIds": [],
+    "encounterRewards": {},
+    "activeEncounter": {
+      "encounterId": "galleria_cafe",
+      "runId": "galleria_cafe:81",
+      "contentHash": "c53cea26",
+      "storyId": "encounters/galleria_cafe_rewrite",
+      "storyHash": "2924cfc2",
+      "storyState": "{\"flows\":{\"DEFAULT_FLOW\":{\"callstack\":{\"threads\":[{\"callstack\":[{\"cPath\":\"0.c-0\",\"idx\":6,\"exp\":false,\"type\":0}],\"threadIndex\":1,\"previousContentObject\":\"0.c-0.5\"}],\"threadCounter\":3},\"outputStream\":[\"#\",\"^speaker: narrator\",\"/#\",\"^店員「エスプレッソを二つですね」\",\"\\n\"],\"currentChoices\":[]}},\"currentFlowName\":\"DEFAULT_FLOW\",\"variablesState\":{\"player_name\":\"^なお\",\"heroine_name\":\"^りえ\"},\"evalStack\":[],\"visitCounts\":{\"0.c-0\":1},\"turnIndices\":{},\"turnIdx\":0,\"storySeed\":73,\"previousRandom\":0,\"inkSaveVersion\":10,\"inkFormatVersion\":21}",
+      "frame": {
+        "text": "店員「エスプレッソを二つですね」",
+        "speaker": "narrator",
+        "background": "milano_galleria",
+        "emotion": "neutral",
+        "choices": [],
+        "ended": false
+      },
+      "phase": "story",
+      "selectedOptionId": "coffee",
+      "quizAnswerId": null,
+      "rewardRoll": 1234,
+      "rewardChancePercent": null,
+      "rewardAlreadyDrawn": false,
+      "romanceRoll": {
+        "reaction": 1234,
+        "affection": 1234,
+        "trust": 1234,
+        "spark": 1234
+      },
+      "responseProfiles": [],
+      "romanceResolution": null
+    },
+    "updatedDateIds": []
+  }
+}

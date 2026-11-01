@@ -1,0 +1,37 @@
+.held-items { position: relative; flex: none; }
+.held-items-icons { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 2px; }
+.held-item-button {
+  width: 40px;
+  height: 40px;
+  padding: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #c9c2ae;
+  border-radius: 7px;
+  background: #faf8ee;
+  cursor: pointer;
+}
+.held-item-button[aria-expanded="true"] { border-color: #365d50; background: #e8eee7; }
+.held-item-button img { display: block; width: 100%; height: 100%; }
+.held-item-button:focus-visible, .held-item-close:focus-visible { outline: 2px solid #265b49; outline-offset: 2px; }
+.held-item-detail {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 8px);
+  right: 0;
+  width: min(260px, calc(100vw - 32px));
+  padding: 12px 14px;
+  color: #2d3b35;
+  background: #faf9f2;
+  border: 1px solid #c9c2ae;
+  border-radius: 8px;
+  box-shadow: 0 5px 18px #1c2c242b;
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.held-item-detail-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.held-item-detail-heading strong { overflow-wrap: anywhere; }
+.held-item-detail p { margin: 5px 0 0; overflow-wrap: anywhere; }
+.held-item-close { flex: none; padding: 0 5px; border: 0; background: transparent; color: #344b40; font-size: 20px; line-height: 1; cursor: pointer; }

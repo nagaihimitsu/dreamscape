@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { dialogueReactionCatalogSchema } from "../src/content/dialogue-reactions";
 import { compileInk, validateStory } from "./content-pipeline";
 import { createDialogueReactionValidator } from "./dialogue-reaction-validation";
@@ -22,15 +22,23 @@ describe("dialogue reaction validation", () => {
     for (let i = 0; i < 2; i++) validateStory(compileInk(source), context, { choiceCount: 0, effectCount: 0, kind: "normal" }, {}, [], observe);
     expect(() => validator.finish()).not.toThrow();
   });
-  it("rejects nonexistent story, expressions and character targets", () => {
-    expect(() => createDialogueReactionValidator(catalog(), {}, [], ["smile"], ["heroine"])).toThrow("Unknown dialogue reaction storyId");
+  it("warns for a removed story but rejects unknown expressions and character targets", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    expect(() => createDialogueReactionValidator(catalog(), {}, [], ["smile"], ["heroine"]).finish()).not.toThrow();
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining("story no longer exists"));
+    warn.mockRestore();
     const bad = catalog();
     bad.entries[0].expression = "missing";
     expect(() => create(bad)).toThrow("Unknown dialogue reaction expression");
+    expect(() => createDialogueReactionValidator(bad, {}, [], ["smile"], ["heroine"])).toThrow("Unknown dialogue reaction expression");
     expect(() => createDialogueReactionValidator(catalog(), { [storyId]: source }, [storyId], ["smile"], [])).toThrow("Unknown dialogue reaction target");
   });
-  it("rejects missing, interpolated or repeated source text", () => {
-    expect(() => create(catalog(), source.replace(text, "ほかの文"))).toThrow("not a static Ink line");
+  it("warns for edited lines but rejects interpolated or ambiguous source text", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const changed = create(catalog(), source.replace(text, "ほかの文"));
+    expect(() => changed.finish()).not.toThrow();
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining("Stale dialogue reaction"));
+    warn.mockRestore();
     const bad = catalog();
     bad.entries[0].text = "「{heroine_name}」";
     expect(() => create(bad, source.replace(text, bad.entries[0].text))).toThrow("not a static Ink line");
@@ -38,10 +46,13 @@ describe("dialogue reaction validation", () => {
     const branches = source.replace(`${text}\n-> END`, `* [一]\n  ${text}\n  -> END\n* [二]\n  ${text}\n  -> END`);
     expect(() => create(catalog(), branches)).toThrow("Ambiguous dialogue reaction line");
   });
-  it("rejects a line reached with the wrong speaker or not reached at all", () => {
+  it("warns when a line changes speaker or becomes unreachable", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     const validator = create();
     validator.observe(storyId, text, "enemy");
-    expect(() => validator.finish()).toThrow("Unreachable or mismatched dialogue reaction");
+    expect(() => validator.finish()).not.toThrow();
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining("unreachable or speaker changed"));
+    warn.mockRestore();
   });
 });
 

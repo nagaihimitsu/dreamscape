@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import phase6 from "../../tests/fixtures/phase6-saves.json";
 import eea1157 from "../../tests/fixtures/eea1157-v10-encounters.json";
+import refactorPrevious from "../../tests/fixtures/4c6f5f3-v10-encounter.json";
 import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
 import { encounters } from "../content";
 import { startEncounter, chooseEncounter, advanceEncounter, finishEncounter } from "../domain/encounter";
@@ -24,6 +25,29 @@ function asVersion9(state: GameState) {
 }
 
 describe("v10 encounter save migration", () => {
+  it("restores and completes actual 4c6f5f3 encounters before and after paying", () => {
+    for (const [position, original] of Object.entries(refactorPrevious)) {
+      const storage = new MemoryStorage();
+      const raw = JSON.stringify(original);
+      storage.setItem(SAVE_KEY, raw);
+      const loaded = loadGame(storage);
+      expect(loaded.status).toBe("loaded");
+      if (loaded.status !== "loaded") throw new Error("Published encounter save unavailable");
+      expect(storage.getItem(SAVE_KEY)).toBe(raw);
+      let state = loaded.state;
+      if (position === "before") state = chooseEncounter(state, 0, state.revision);
+      expect(state.travelBudget).toBe(refactorPrevious.before.travelBudget - 4);
+      for (let count = 0; state.activeEncounter && count < 100; count++) {
+        const active = state.activeEncounter;
+        state = active.frame.ended ? finishEncounter(state, state.revision) : advanceEncounter(state, state.revision);
+      }
+      expect(state.activeEncounter).toBeNull();
+      expect(state.travelBudget).toBe(refactorPrevious.before.travelBudget - 2);
+      expect(state.inventory.galleria_souvenir).toBe("held");
+      expect(state.ap).toBe(original.ap);
+      expect(validateGameState(JSON.parse(JSON.stringify(state)))).toEqual(state);
+    }
+  });
   it("loads actual v10 saves from eea1157 and resumes a gift choice", () => {
     for (const original of [eea1157.held, eea1157.giftChoice]) {
       const storage = new MemoryStorage();

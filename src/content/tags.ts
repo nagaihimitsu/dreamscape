@@ -1,3 +1,5 @@
+import { REACTION_MARKS, type DialogueReaction, type ReactionTarget } from "./dialogue-reactions";
+
 export interface TagContext {
   effectIds: string[];
   backgroundIds: string[];
@@ -8,6 +10,9 @@ export interface StoryTags {
   speaker?: "narrator" | "heroine" | "player" | "enemy";
   background?: string;
   emotion?: string;
+  reactions?: Partial<Record<ReactionTarget, DialogueReaction>>;
+  optionId?: string;
+  translationJa?: string;
   effects: string[];
 }
 
@@ -43,6 +48,34 @@ export function parseStoryTags(
         throw new Error(`Unknown emotion: ${value}`);
       if (result.emotion) throw new Error("Duplicate emotion tag");
       result.emotion = value;
+    } else if (key === "reaction") {
+      // A mark may be used alone: `heroine,sweat`. Both properties can also
+      // be provided: `heroine,exasperated,sigh`.
+      const parts = value.split(",").map((part) => part.trim());
+      const [target, first, second] = parts;
+      if ((target !== "heroine" && target !== "enemy") || parts.length < 2 || parts.length > 3 || !first || (parts.length === 3 && !second))
+        throw new Error(`Invalid reaction tag: ${value}`);
+      let expression: string | undefined;
+      let mark: DialogueReaction["mark"];
+      if (parts.length === 2 && REACTION_MARKS.includes(first as NonNullable<DialogueReaction["mark"]>)) {
+        mark = first as NonNullable<DialogueReaction["mark"]>;
+      } else {
+        if (!context.emotionIds.includes(first)) throw new Error(`Unknown reaction emotion: ${first}`);
+        expression = first;
+        if (second) {
+          if (!REACTION_MARKS.includes(second as NonNullable<DialogueReaction["mark"]>)) throw new Error(`Unknown reaction mark: ${second}`);
+          mark = second as NonNullable<DialogueReaction["mark"]>;
+        }
+      }
+      result.reactions ??= {};
+      if (result.reactions[target]) throw new Error(`Duplicate reaction target: ${target}`);
+      result.reactions[target] = { ...(expression ? { expression } : {}), ...(mark ? { mark } : {}) };
+    } else if (key === "option") {
+      if (!/^[a-z][a-z0-9_]*$/u.test(value) || result.optionId) throw new Error(`Invalid or duplicate option tag: ${value}`);
+      result.optionId = value;
+    } else if (key === "translation") {
+      if (result.translationJa) throw new Error("Duplicate translation tag");
+      result.translationJa = value;
     } else {
       throw new Error(`Unknown story tag: ${key}`);
     }

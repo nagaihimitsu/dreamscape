@@ -53,19 +53,16 @@
       "options": [
         {
           "id": "coffee",
-          "textEn": "Two coffees, please.",
           "translationJa": "コーヒーを二杯ください。",
           "costEuro": 4
         },
         {
           "id": "coffee_pastry",
-          "textEn": "A cappuccino and a pastry, please.",
           "translationJa": "カプチーノとお菓子を一つずつください。",
           "costEuro": 8
         },
         {
           "id": "nothing",
-          "textEn": "Nothing for now, thank you.",
           "translationJa": "今は何もいりません、ありがとう。",
           "costEuro": 0
         }
@@ -101,19 +98,16 @@
       "options": [
         {
           "id": "believe",
-          "textEn": "Yes, I do.",
           "translationJa": "はい、信じます。",
           "costEuro": 0
         },
         {
           "id": "doubt",
-          "textEn": "Not really.",
           "translationJa": "あまり信じません。",
           "costEuro": 0
         },
         {
           "id": "leave",
-          "textEn": "Walk away without answering.",
           "translationJa": "答えずにその場を離れる。",
           "costEuro": 0
         }
@@ -197,7 +191,6 @@
       "options": [
         {
           "id": "offer",
-          "textEn": "Would you like this bookmark?",
           "translationJa": "このしおり、いりますか？",
           "costEuro": 0,
           "requiresItemId": "galleria_souvenir",
@@ -206,7 +199,6 @@
         },
         {
           "id": "thought",
-          "textEn": "This bookmark made me think of you.",
           "translationJa": "このしおりを見て、あなたを思い出しました。",
           "costEuro": 0,
           "requiresItemId": "galleria_souvenir",
@@ -215,7 +207,6 @@
         },
         {
           "id": "later",
-          "textEn": "I'll keep it for now.",
           "translationJa": "今は自分で持っておく。",
           "costEuro": 0,
           "deferCompletion": true
@@ -242,7 +233,6 @@
       "options": [
         {
           "id": "ticket",
-          "textEn": "Use the ticket.",
           "translationJa": "展示券を使う。",
           "costEuro": 0,
           "requiresItemId": "galleria_ticket",
@@ -250,13 +240,11 @@
         },
         {
           "id": "buy",
-          "textEn": "Buy an entry ticket.",
           "translationJa": "入場券を買う。",
           "costEuro": 4
         },
         {
           "id": "later",
-          "textEn": "Not now.",
           "translationJa": "今はやめておく。",
           "costEuro": 0,
           "deferCompletion": true

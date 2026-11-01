@@ -28,7 +28,7 @@ export function EncounterChoices({
   const hasPrices = choices.some((choice) => (choice.costEuro ?? 0) > 0);
   return (
     <div className="encounter-choices" aria-label="返答を選ぶ">
-      <TranslationAll learning={learning} id={id} />
+      {choices.some((choice) => choice.translationJa) && <TranslationAll learning={learning} id={id} />}
       {choices.map((choice, ordinal) => {
         const part = (["A", "B", "C"] as const)[ordinal] as Part;
         const isOpen = visible(learning, id, part);
@@ -49,20 +49,20 @@ export function EncounterChoices({
                 text={choice.textEn}
                 vocabulary={[]}
                 label={`選択肢${part}`}
-                onDoubleTap={() => revealTranslation(learning, id, part)}
+                onDoubleTap={() => { if (choice.translationJa) revealTranslation(learning, id, part); }}
               />
               <div className="encounter-choice-meta">
                 {hasPrices && <span>{choice.costEuro ? `€${choice.costEuro}` : "無料"}</span>}
-                <button
+                {choice.translationJa && <button
                   type="button"
                   className="text-button"
                   aria-expanded={isOpen}
                   onClick={() => toggleTranslation(learning, id, part)}
                 >
                   {isOpen ? "訳を閉じる" : "訳を見る"}
-                </button>
+                </button>}
               </div>
-              {isOpen && <p lang="ja">{choice.translationJa}</p>}
+              {isOpen && choice.translationJa && <p lang="ja">{choice.translationJa}</p>}
               {choice.unavailableReason && <p id={`${id}-${part}-reason`} className="encounter-choice-reason">{choice.unavailableReason}</p>}
             </div>
           </div>

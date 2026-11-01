@@ -107,3 +107,34 @@ describe("random reaction Ink validation", () => {
     expect(() => validate(header + variableEffect)).toThrow(/must not depend/);
   });
 });
+
+describe("shared normal-date choice effects", () => {
+  const first = "common_date_first_attentive";
+  const second = "common_date_second_attentive";
+  const sharedContext = { effectIds: [first, second], backgroundIds: [], emotionIds: [] };
+  const sharedEffects = [first, second].map((id) => ({ id, affectionDelta: 0, responseProfileId: "attentive" }));
+  const source = (id: string) => header + ["a", "b", "c"].map((c) => `* [選択${c}]
+    # effect: ${id}
+    {romance_result == "positive":
+        届いた${c}。
+    - else:
+        届かなかった${c}。
+    }
+    -> END
+`).join("\n");
+  const check = (id: string, kind: "normal" | "special") => validateStory(
+    compileInk(source(id)), sharedContext,
+    { choiceCount: 1, effectCount: 1, kind }, {}, sharedEffects, undefined,
+    { available: [], known: [] }, true,
+  );
+
+  it("permits a shared effect in the first normal-date choice", () => {
+    expect(check(first, "normal")).toBe(6);
+  });
+  it("rejects a second-choice effect in the first choice", () => {
+    expect(() => check(second, "normal")).toThrow(/wrong choice/);
+  });
+  it("rejects shared normal-date effects in special events", () => {
+    expect(() => check(first, "special")).toThrow(/wrong choice/);
+  });
+});

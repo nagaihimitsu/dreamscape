@@ -2,6 +2,74 @@
 
 Dreamscapeの正式データは `content/` です。文章はInk、クイズ・設定はJSON、画像は `public/assets/` に置きます。テキストエディタで直接編集できます。人間の原稿も、どのAIの出力も、同じファイル形式・同じ検証を使います。AIや外部APIは不要です。任意の作業途中原稿は `authoring/drafts/` などに置けますが、必須ではありません。Gitの差分とレビューで採用を決めます。
 
+## Inkで会話と演出を作る
+
+新しい会話の本文、選択肢、話者、背景、表情、漫符はInkに書きます。既存の外部表情・リアクションJSONは旧脚本との互換用に残しますが、新しい行の登録には不要です。`reaction` はその一行だけに適用され、話者とは別の人物にも指定できます。
+
+```ink
+# speaker: enemy
+# reaction: heroine,exasperated,sigh
+「これは絶対に本物です」
+# speaker: heroine
+# emotion: serious
+# reaction: enemy,sweat
+「根拠を見せてください」
+```
+
+`# reaction: heroine,sigh` のように漫符だけ、`# reaction: heroine,smile` のように表情だけも指定できます。対象は現在の表示に対応する `heroine` または `enemy` です。両者に指定する場合は別々のタグにします。明示したInkの表情・リアクションが旧外部指定より優先されます。人物が画面に表示されない場面では、その人物の漫符は表示されません。
+
+## 簡単な道中交流を追加する
+
+`content/stories/encounters/duomo_new_event.ink` を作り、名前用変数、会話、3択と分岐を書きます。英文はInkを正とします。訳を付ける場合は **選択肢の角括弧の中** にタグを置きます。
+
+```ink
+VAR player_name = ""
+VAR heroine_name = ""
+# background: milano_duomo
+# speaker: narrator
+広場で声をかけられた。
+* [Look closer. # translation: 近くで見てみる。]
+    # speaker: heroine
+    # reaction: heroine,smile,sparkle
+    「一緒に見てみよう」
+    -> END
+* [Ask a question. # translation: 質問する。]
+    -> END
+* [Keep walking. # translation: 先へ進む。]
+    -> END
+```
+
+`content/encounters/catalog.json` の `encounters` に、既存の観光地IDを使って次のように追加します。都市は観光地から導かれ、説明はタイトル、各選択肢の費用は0、再プレイ不可が標準です。新しい事実を扱う場合は、確認した出典も `sources` に追加します。
+
+```json
+{
+  "id": "duomo_new_event",
+  "landmarkId": "duomo_milano",
+  "titleJa": "ドゥオモの新しい出会い",
+  "storyId": "encounters/duomo_new_event"
+}
+```
+
+購入やアイテム使用など選択肢ごとのルールがある場合は、カタログに `options` を3件追加し、各選択肢に `* [Tea # option: tea # translation: お茶を頼む。]` のような安定IDを指定します。カタログ側は `{ "id": "tea", "costEuro": 4 }` のようにルールだけを記述し、英文は重複させません。選択肢の順序を変えてもIDで対応します。所持金・アイテムの変更はゲーム側が処理します。
+
+## 簡単な通常デートを追加する
+
+新しいInkに既存の通常デートと同様の変数、2回の3択、結果別の反応を記述します。各分岐では、1回目に `# effect: common_date_first_attentive`、2回目に `# effect: common_date_second_attentive` のような共通効果を使えます。末尾は `attentive`、`playful`、`honest`、`bold`、`provocative` から、その返答に合う既存の確率特性を選びます。結果は `romance_result` の `positive` / `negative` で描き分けます。共通効果は個別の思い出を保存しません。場所固有の思い出が必要な場合は従来どおり固有effectとmemoryを追加します。
+
+`content/romance/date_catalog.json` の `dates` には、例えば次の最小設定を追加できます。都市クリア後に解放、2 AP、一度限り、交際後も利用可能が標準です。旅の途中で解放したい場合は既存の `destinationId` と `requiredCompletedEpisodeIds` などを明示してください。
+
+```json
+{
+  "id": "milano_new_date",
+  "chapterId": "milano",
+  "titleJa": "新しいデート",
+  "storyId": "milano/new_date",
+  "backgroundAssetId": "milano_cafe"
+}
+```
+
+公開済みInkを編集・差し替えると途中セーブの指紋が変わります。新旧の脚本と必要なカタログを旧脚本保存機構で保持し、再開を確認してください。古い外部演出の行や脚本がなくなった場合は警告されます。登録後は `npm run content:check` で参照と分岐を検証します。
+
 ## この雛形について
 
 [`templates/`](templates/) は現在のミラノ編から抜き出した**記入例**です。実際に使われているID・文章・出典を含むので、コピーしてそのまま追加するとIDが重複します。新作には各ID、参照先、文章、実際に確認した出典・画像情報を更新してください。実在する記述を雛形として示しているだけで、別の題材の根拠や使用許諾にはなりません。`tourism.json`、`battle_*.json`、`date.json` は対応する既存カタログの配列に**項目を追加するための例**です。既存カタログを例で上書きしないでください。`date_presentation_parts.json` はカタログ全体ではなく、`presentation.json` の各オブジェクトに追加する部品です。
@@ -71,7 +139,7 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 2. 権利を確認した写真を `public/assets/tourism/` に置き、`content/tourism/catalog.json` の `assets` に実寸・作者・出典URL・ライセンス・加工内容を登録します。`content/romance/presentation.json` の背景から `imageAssetId` で参照し、必要なら `imagePosition` の x / y を0〜100で指定します。写真家の権利だけでなく被写体の権利も確認してください。近隣の風景を使う場合は実際の場所を代替テキスト・クレジットに明記します。確認できる画像がない場合は `fallback: "neutral"` を使います。出典は会話中の操作メニューから確認できます。
    背景に訪問対象が写っていないときは、行き先に任意の `referenceImage`（HTTPSの `url`、リンク名 `labelJa`、背景についての `backgroundNoteJa`）を追加し、実物を確認できる公式資料へ案内できます。外部リンクは写真のゲーム内への転載許諾を意味しません。
 3. `content/romance/date_catalog.json` の通常デートに `destinationId` と必要に応じて `requiredCompletedEpisodeIds` を指定します。デートの `chapterId`、行き先の `cityId`、双方の背景IDを一致させます。訪問後に開放する通常デートでは、必要エピソードを指定したうえで `requiredCompletedChapters` を空配列にできます。交際後も同じ短編を遊べる場合は `allowAfterEnding` を指定します。
-4. Inkには、その場所で見られるものや出典を確認した小話を、ヒロインの関心や会話に自然につなげて書きます。選択にかかわらず観光を楽しめるようにし、既存脚本を更新する際は途中セーブ向けに旧Inkと `legacyStoryIds` を残します。旧脚本に旧行き先があった場合は `legacyDestinationId` または脚本ごとの `legacyStoryDestinationIds` も指定します。3択を2回書き、選択肢ごとの `effect` と対応する `memory` を登録します。必要な表情は `# emotion:` で指定します。既存の恋愛進行に新イベントを必須条件として追加するかは、別途慎重に検討してください。
+4. Inkには、その場所で見られるものや出典を確認した小話を、ヒロインの関心や会話に自然につなげて書きます。選択にかかわらず観光を楽しめるようにし、既存脚本を更新する際は途中セーブ向けに旧Inkと `legacyStoryIds` を残します。旧脚本に旧行き先があった場合は `legacyDestinationId` または脚本ごとの `legacyStoryDestinationIds` も指定します。3択を2回書き、選択肢には共通または固有の `effect` を指定します。固有の思い出を残す場合は対応する `memory` も登録します。必要な表情は `# emotion:`、無言の反応は `# reaction:` で指定します。既存の恋愛進行に新イベントを必須条件として追加するかは、別途慎重に検討してください。
 5. `npm run content:check` でIDの重複、都市・エピソード・背景の参照、出典形式、全分岐と効果を確認し、スマートフォンの画面と脚本をレビューします。
 
 現在の都市読み込みはミラノ前提です。別都市の実装には、後述の都市選択・進行・セーブなどの対応が必要です。
@@ -88,7 +156,7 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 
 Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受け取ります。`# speaker: narrator` / `heroine` / `player` / `enemy`、`# background: 登録済みID`、`# emotion: 登録済みID` を使い、本文を日本語で書きます。デートの `* [選択肢]` と各分岐直後の `# effect: 登録済みID`、`->` の合流例は `date.ink` を参照。通常デートは3択を2回、各選択直後・最初の発話の前に対応する `# effect:` を1つ置きます。Inkで `romance_result` と `affection_delta`・`trust_delta`・`spark_delta` を宣言し、`romance_result` の positive と negative それぞれで異なる人物らしい反応を書きます。確率計算と乱数はInkに書きません。告白は確定的な別契約です。案内とバトルには恋愛effectを置きません。バトルInkは `battle_scene`、`answer_correct`、`battle_score` で分岐し、各場面を `-> END` で閉じます。特殊戦の主張・追及・証拠成功／失敗の例もB/CのInkにあります。
 
-会話中の無言リアクションは、本文を書き換えず `content/presentation/dialogue-reactions.json` の `entries` に追加できます。各項目に `storyId`、台詞の `speaker` と `text`、反応する人物の `targetCharacterId`（`heroine` または `enemy`）、必要な `expression` と `mark` を指定します。表情と漫符は独立して省略でき、少なくとも一方を指定します。`text` はInk中に一度だけ現れる固定の台詞をそのまま指定し、同じ台詞が別箇所にもある場合や変数を含む場合は曖昧な指定を避けます。名前などの変数を含む台詞にはこの指定は使えません。`npm run content:check` は台詞・話者・対象・表情・漫符の参照を検証します。
+会話中の無言リアクションは、通常はInkの `# reaction:` で指定します。既存の `content/presentation/dialogue-reactions.json` は、公開済みの脚本を変えずに演出を付けた旧指定として維持します。外部指定では固定台詞の完全一致が必要で、変数を含む行には指定できません。脚本を更新した場合、参照先の消えた旧指定は検証時に警告されます。
 
 漫符IDは `question`、`exclamation`、`interrobang`、`anger`、`sweat`、`blush`、`gloom`、`dizzy`、`music`、`heart`、`sparkle`、`sleep`、`sigh` です。`exasperated` は呆れの表情で、画像が未登録の衣装では同じ衣装の `neutral` を使います。演出は対象人物が表示されている間だけ現れ、ゲームの進行や保存には影響しません。台詞ごとに機械的に付けず、必要な瞬間を選んでください。
 
@@ -98,7 +166,7 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 
 ### 道中の交流
 
-現在の小さなミラノの寄り道は `content/encounters/catalog.json` と `content/stories/encounters/` で管理します。カタログには安定した交流・選択・品物ID、都市・観光地、費用、選択肢の英文と訳、実際に確認した出典を記録します。各品物にも `cityId` を付け、入手・所持条件・贈与・使用・Inkからの参照を同じ都市の交流に限ります。入手都市のクリア後も使える機会を設けてください。価格や展示・人物はゲーム内の設定です。旅の予算、品物、APは別に扱い、購入しなくてもメインの観光と恋愛を続けられるようにします。
+現在の小さなミラノの寄り道は `content/encounters/catalog.json` と `content/stories/encounters/` で管理します。カタログには安定した交流・選択・品物ID、観光地、必要な費用や条件、実際に確認した出典を記録し、選択肢の英文と任意の訳はInkに書きます。各品物にも `cityId` を付け、入手・所持条件・贈与・使用・Inkからの参照を同じ都市の交流に限ります。入手都市のクリア後も使える機会を設けてください。価格や展示・人物はゲーム内の設定です。旅の予算、品物、APは別に扱い、購入しなくてもメインの観光と恋愛を続けられるようにします。
 
 旅行予算とAP・保留APは都市別に初期化しない共通残高です。将来、都市からの出発を実装する際には、その都市の未使用品を持ち越せないようにし、過去の入手・贈与・使用や交流の履歴、思い出・関係値は保護します。現在は出発処理がないため、都市クリア時に品物を消しません。将来の実装では、保存形式と品物・報酬の整合性検証も合わせて対応してください。
 

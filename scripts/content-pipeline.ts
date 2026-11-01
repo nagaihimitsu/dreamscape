@@ -1,7 +1,7 @@
 import { access, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { characterCatalogSchema } from "../src/content/character-assets";
-import { encounterCatalogSchema } from "../src/content/encounter-schemas";
+import { encounterCatalogInputSchema, encounterCatalogSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
 import archivedEncounterData from "../content/legacy/milano_fa0e7e0/encounters/catalog.json";
 import archivedBattleData from "../content/legacy/milano_fa0e7e0/battles/catalog.json";
 import archivedTourismData from "../content/legacy/milano_fa0e7e0/tourism/catalog.json";
@@ -64,6 +64,8 @@ import {
   learningCatalogSchema,
   validateLearning,
 } from "../src/content/learning-schema";
+
+const commonDateEffect = /^common_date_(first|second)_(attentive|playful|honest|bold|provocative)$/;
 
 async function json(file: string): Promise<unknown> {
   try {
@@ -354,6 +356,9 @@ export function validateStory(
           }
           if (immediate.length !== 1)
             throw new Error("Random choice must expose exactly one effect before its first response");
+          const commonChoice = commonDateEffect.exec(immediate[0]);
+          if (commonChoice && (contract.kind !== "normal" || choiceCount !== (commonChoice[1] === "first" ? 0 : 1)))
+            throw new Error(`Common date effect used at the wrong choice: ${immediate[0]}`);
           const effect = effects.find((item) => item.id === immediate[0]);
           if (!effect?.responseProfileId || effect.outcome)
             throw new Error(`Random choice effect needs a response profile: ${immediate[0]}`);
@@ -422,10 +427,11 @@ export async function buildContent(root: string, writeOutput = true) {
     tourismCatalogSchema,
     path.join(content, "tourism/catalog.json"),
   );
-  const encounterCatalog = await parseFile(
-    encounterCatalogSchema,
+  const encounterInput = await parseFile(
+    encounterCatalogInputSchema,
     path.join(content, "encounters/catalog.json"),
   );
+  const encounterCatalog = normalizeEncounterCatalog(encounterInput, tourism.landmarks);
   const archivedEncounters = encounterCatalogSchema.parse(archivedEncounterData).encounters;
   const encounterStoryIds = [...new Set([...encounterCatalog.encounters, ...archivedEncounters].flatMap((event) => [
     event.storyId,
@@ -1029,6 +1035,20 @@ export async function buildContent(root: string, writeOutput = true) {
   );
   for (const validateDate of deferredDateValidation) validateDate();
   for (const effect of effects) {
+    // These shared, memoryless effects let ordinary dates use the existing
+    // response profiles without inventing a memory for every choice. Their
+    // location-specific counterparts remain available when a scene needs one.
+    const commonChoice = commonDateEffect.exec(effect.id);
+    if (commonChoice) {
+      if (effect.memoryId || effect.outcome || effect.stageDeltas ||
+          effect.affectionDelta !== 0 || (effect.trustDelta ?? 0) !== 0 || (effect.sparkDelta ?? 0) !== 0 ||
+          effect.responseProfileId !== commonChoice[2])
+        throw new Error(`Invalid common date effect: ${effect.id}`);
+      const users = effectDates.get(effect.id);
+      if (users && [...users].some((dateId) => dates.find((date) => date.id === dateId)?.kind !== "normal"))
+        throw new Error(`Common date effect outside a normal date: ${effect.id}`);
+      continue;
+    }
     if (effect.memoryId || effect.outcome) continue;
     const users = effectDates.get(effect.id);
     if (!users?.size || [...users].some((dateId) => !dates.find((date) => date.id === dateId)?.recovery))

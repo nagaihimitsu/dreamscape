@@ -29,6 +29,7 @@ import {
   saveGame,
 } from "../persistence";
 import { CanalScene } from "../components/CanalScene";
+import { HeldItems } from "../components/HeldItems";
 import { secureRomanceRoll } from "../random/romance-source";
 import { usePresentationSettings } from "../components/usePresentationSettings";
 import { RomanceScene } from "../features/romance/RomanceScene";
@@ -43,7 +44,7 @@ import { EpisodeScreen } from "../features/journey/EpisodeScreen";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
 import { encounters } from "../content/encounters";
-import { startEncounter, advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterAvailability, getEncounterOptionAvailability, getEncounterQuizFeedback, getActiveEncounterDefinition } from "../domain/encounter";
+import { startEncounter, advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterAvailability, getEncounterOptionAvailability, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption } from "../domain/encounter";
 import { PendingRewards } from "../features/journey/PendingRewards";
 import { EpilogueScreen } from "../features/journey/EpilogueScreen";
 import { startCityEpilogue, advanceCityEpilogue } from "../domain/epilogue";
@@ -312,10 +313,14 @@ export default function App() {
             <span className="amp"> と </span>
             {game.heroineName}
           </span>
-          <span className="ap" aria-label={`残り${game.ap}AP`}>
-            {game.ap}
-            <small> AP</small>
-          </span>
+          <div className="journey-resources">
+            <span className="travel-budget" aria-label={`旅の予算 ${game.travelBudget}ユーロ`}>€{game.travelBudget}</span>
+            <span className="ap" aria-label={`残り${game.ap}AP`}>
+              {game.ap}
+              <small> AP</small>
+            </span>
+            <HeldItems items={encounters.items.filter((item) => game.inventory[item.id] === "held").map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa }))} />
+          </div>
         </div>
       )}
       {game && (
@@ -430,19 +435,36 @@ export default function App() {
             key={`${activeEncounter.runId}-${sceneEpoch}`}
             learning={learning}
             speed={speed}
+            reduceMotion={displaySettings.value.reduceMotion}
             onSpeed={setSpeed}
             view={{
               id: `${currentEncounter.id}_${activeEncounter.phase}`,
               revision: game.revision,
+              sceneId: currentEncounter.id,
+              cityId: currentEncounter.cityId,
+              portraits: (() => {
+                const frame = activeEncounter.frame;
+                const heroine = frame.reactions?.heroine;
+                const enemy = frame.reactions?.enemy;
+                const hasEmotion = frame.emotion !== "neutral" || frame.emotionExplicit;
+                const heroineSpeaking = frame.speaker === "heroine" || frame.speaker === "narrator";
+                const showHeroine = heroine || (hasEmotion && heroineSpeaking);
+                const showEnemy = enemy || (hasEmotion && frame.speaker === "enemy");
+                if (!showHeroine && !showEnemy) return undefined;
+                return {
+                  ...(showHeroine ? { heroine: { emotion: heroine?.expression ?? (heroineSpeaking ? frame.emotion : "neutral"), mark: heroine?.mark, active: frame.speaker === "heroine" } } : {}),
+                  ...(showEnemy ? { enemy: { emotion: enemy?.expression ?? (frame.speaker === "enemy" ? frame.emotion : "neutral"), mark: enemy?.mark, active: frame.speaker === "enemy" } } : {}),
+                };
+              })(),
               background: activeEncounter.frame.background,
               backgroundImage: encounterImage?.path,
               balance: game.travelBudget,
               speaker: activeEncounter.frame.speaker === "heroine" ? game.heroineName : activeEncounter.frame.speaker === "player" ? game.playerName : "旅の風景",
               text: activeEncounter.frame.text,
               choices: activeEncounter.frame.choices.map((choice) => {
-                const option = currentEncounter.options[choice.index];
+                const option = encounterChoiceOption(currentEncounter, choice);
                 const availability = getEncounterOptionAvailability(game, choice.index);
-                return { index: choice.index, textEn: choice.text, translationJa: option.translationJa, costEuro: option.costEuro, unavailableReason: availability.available ? undefined : availability.reason };
+                return { index: choice.index, textEn: choice.text, translationJa: choice.translationJa ?? option?.translationJa ?? "", costEuro: option?.costEuro, unavailableReason: availability.available ? undefined : availability.reason };
               }),
               ended: activeEncounter.frame.ended && (activeEncounter.phase === "outcome" || !currentEncounter.quiz),
               quiz: (activeEncounter.phase === "quiz" || activeEncounter.phase === "feedback") && currentEncounter.quiz ? {
@@ -620,8 +642,6 @@ export default function App() {
               const availability = getEncounterAvailability(game, event.id);
               return { id: event.id, title: event.titleJa, description: event.descriptionJa, unavailableReason: availability.available ? undefined : availability.reason };
             }).filter((event) => !event.unavailableReason)}
-            travelBudget={game.travelBudget}
-            travelItems={encounters.items.filter((item) => game.inventory[item.id] === "held").map((item) => ({ id: item.id, name: item.nameJa }))}
             onEncounter={(id) => { commit((state) => startEncounter(state, id, secureRomanceRoll)); }}
             onEnglish={() => openEnglish()}
             onClaimRewards={() => commit((state) => claimPendingRewards(state, game.revision))}

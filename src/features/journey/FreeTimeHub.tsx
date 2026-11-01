@@ -19,8 +19,6 @@ export function FreeTimeHub({
   onTourism,
   onBattle,
   encounters,
-  travelBudget,
-  travelItems,
   onEncounter,
 }: {
   game: GameState;
@@ -33,8 +31,6 @@ export function FreeTimeHub({
   onTourism: (id: string) => void;
   onBattle: (id: string) => void;
   encounters: EncounterMenuEntry[];
-  travelBudget: number;
-  travelItems: { id: string; name: string }[];
   onEncounter: (id: string) => void;
 }) {
   return (
@@ -46,7 +42,7 @@ export function FreeTimeHub({
 
       <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} />
 
-      <EncounterMenu entries={encounters} balance={travelBudget} items={travelItems} onStart={onEncounter} />
+      <EncounterMenu entries={encounters} onStart={onEncounter} />
 
       <div className="free-time-tools">
         <button className="secondary" onClick={onEnglish}>

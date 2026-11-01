@@ -81,6 +81,38 @@
 
 .encounter-scene-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .encounter-background { width: 100%; height: 100%; display: block; object-fit: cover; }
+.encounter-character-layer { inset: 0; height: 100%; transform: none; }
+.encounter-character-slot { position: absolute; inset: 0; }
+.encounter-character-layer[data-two-characters="true"] .encounter-character-slot { width: 50%; right: auto; }
+.encounter-character-layer[data-two-characters="true"] .encounter-character-enemy { left: 50%; }
+/* Match the portrait box to the full-body canvas instead of using a tall box
+   with object-fit letterboxing: cues can then stay next to the actual head. */
+.encounter-character-slot .vn-character {
+  left: 50% !important;
+  bottom: clamp(54px, 17%, 155px) !important;
+  width: min(100%, 42dvh) !important;
+  height: auto !important;
+  aspect-ratio: 2 / 3;
+  transform: translateX(-50%) !important;
+  transform-origin: center bottom !important;
+}
+.encounter-character-slot .comic-effect {
+  top: 2%;
+  left: 64%;
+  width: clamp(20px, 18%, 36px);
+}
+/* The existing generic SVG's head starts lower in its canvas than the
+   full-body heroine artwork. Align the visible heads, not the canvas tops. */
+.encounter-character-enemy .vn-character:has(> svg) {
+  transform: translate(-50%, -19%) !important;
+}
+.encounter-character-enemy .vn-character:has(> svg) .comic-effect { top: 21%; }
+/* In the right-hand slot, put the mark on the inner side of the portrait so
+   it stays in the viewport even when the screen is narrow. */
+.encounter-character-layer[data-two-characters="true"] .encounter-character-enemy .comic-effect {
+  left: auto;
+  right: 64%;
+}
 .encounter-scene-heading > span { color: var(--vn-text); background: var(--vn-window-bg); border-radius: 999px; padding: 3px 9px; font-size: 14px; white-space: nowrap; }
 .encounter-dialogue .encounter-quiz-prompt { font-size: 17px; line-height: 1.5; }
 .encounter-dialogue .english-word { color: inherit; }

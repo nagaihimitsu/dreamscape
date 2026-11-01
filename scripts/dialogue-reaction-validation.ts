@@ -13,18 +13,24 @@ export function createDialogueReactionValidator(
   const expected = new Set<string>();
   const seen = new Set<string>();
   for (const entry of catalog.entries) {
-    if (!storyIds.includes(entry.storyId) || !sources[entry.storyId])
-      throw new Error(`Unknown dialogue reaction storyId: ${entry.storyId}`);
     if (unsupportedStoryIds.includes(entry.storyId))
       throw new Error(`Unsupported dialogue reaction story: ${entry.storyId}`);
     if (!characterIds.includes(entry.targetCharacterId))
       throw new Error(`Unknown dialogue reaction target: ${entry.targetCharacterId}`);
     if (entry.expression && !expressionIds.includes(entry.expression))
       throw new Error(`Unknown dialogue reaction expression: ${entry.storyId}/${entry.expression}`);
+    if (/[{}]/u.test(entry.text))
+      throw new Error(`Dialogue reaction is not a static Ink line: ${entry.storyId}/${entry.text}`);
+    if (!storyIds.includes(entry.storyId) || !sources[entry.storyId]) {
+      console.warn(`Stale dialogue reaction (story no longer exists): ${entry.storyId}/${entry.speaker}/${entry.text}`);
+      continue;
+    }
     const lines = sources[entry.storyId].split(/\r?\n/u);
     const matches = lines.filter((line) => line.trim() === entry.text);
-    if (/[{}]/u.test(entry.text) || matches.length === 0)
-      throw new Error(`Dialogue reaction is not a static Ink line: ${entry.storyId}/${entry.text}`);
+    if (matches.length === 0) {
+      console.warn(`Stale dialogue reaction (line no longer exists): ${entry.storyId}/${entry.speaker}/${entry.text}`);
+      continue;
+    }
     // A frame stores its rendered text rather than a source pointer. Requiring
     // a single source occurrence prevents accidentally reacting in another branch.
     if (matches.length > 1)
@@ -38,8 +44,9 @@ export function createDialogueReactionValidator(
     },
     finish() {
       for (const entry of catalog.entries) {
-        if (!seen.has(key(entry.storyId, entry.text, entry.speaker)))
-          throw new Error(`Unreachable or mismatched dialogue reaction: ${entry.storyId}/${entry.speaker}/${entry.text}`);
+        const id = key(entry.storyId, entry.text, entry.speaker);
+        if (expected.has(id) && !seen.has(id))
+          console.warn(`Stale dialogue reaction (unreachable or speaker changed): ${entry.storyId}/${entry.speaker}/${entry.text}`);
       }
     },
   };
