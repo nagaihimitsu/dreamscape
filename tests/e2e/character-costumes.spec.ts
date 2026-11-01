@@ -1,3 +1,4 @@
+import { installRomanceRolls } from "./romance-rolls";
 import { expect, test, type Page } from "@playwright/test";
 import sharp from "sharp";
 import characterData from "../../content/presentation/characters.json" with { type: "json" };
@@ -30,6 +31,8 @@ async function installDeliveredImages(page: Page, options: { basic?: boolean; sm
     return broken ? route.abort("failed") : route.fulfill({ status: 200, contentType: "image/png", body: png });
   });
 }
+
+test.beforeEach(async ({ page }) => { await installRomanceRolls(page); });
 
 test("a basic outfit works in Milan with its regional outfit undelivered, including an old renamed save", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });

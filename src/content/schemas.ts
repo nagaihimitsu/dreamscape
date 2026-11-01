@@ -21,12 +21,14 @@ export const dateSchema = z
     forbiddenCompletedEpisodeIds: z.array(id).optional(),
     destinationId: id.optional(),
     legacyDestinationId: id.optional(),
+    legacyStoryDestinationIds: z.record(z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/), id).optional(),
     allowAfterEnding: z.boolean().optional(),
     rewardOnlyOnce: z.boolean(),
     backgroundAssetId: id,
     minAffection: z.number().int().nonnegative(),
     requiredPlayedDateIds: z.array(id),
     repeatable: z.boolean(),
+    recovery: z.boolean().optional(),
     needsDeferred: z.boolean(),
     choiceCount: z.number().int().min(0).max(2),
     effectCount: z.number().int().min(0).max(2),
@@ -69,6 +71,7 @@ export const effectSchema = z
     affectionDelta: z.number().int(),
     trustDelta: z.number().int().optional(),
     sparkDelta: z.number().int().optional(),
+    responseProfileId: id.optional(),
     stageDeltas: z.partialRecord(z.enum(["1", "2", "3", "4"]), z.object({
       affectionDelta: z.number().int(), trustDelta: z.number().int(), sparkDelta: z.number().int(),
     }).strict()).optional(),
@@ -79,6 +82,34 @@ export const effectSchema = z
 export const effectCatalogSchema = z
   .object({ schemaVersion: version, effects: z.array(effectSchema).min(1) })
   .strict();
+
+const deltaRangeSchema = z.tuple([z.number().int(), z.number().int()])
+  .refine(([min, max]) => min <= max, "Delta range minimum exceeds maximum");
+const deltaRangesSchema = z.object({
+  affection: deltaRangeSchema,
+  trust: deltaRangeSchema,
+  spark: deltaRangeSchema,
+}).strict();
+export const responseProfileSchema = z.object({
+  id,
+  baseChance: z.number().min(0).max(100),
+  minChance: z.number().min(0).max(100),
+  maxChance: z.number().min(0).max(100),
+  relationshipWeights: z.object({
+    affection: z.number().min(0).max(1),
+    trust: z.number().min(0).max(1),
+    spark: z.number().min(0).max(1),
+  }).strict(),
+  chancePerRelationshipPoint: z.number().nonnegative(),
+  positive: deltaRangesSchema,
+  negative: deltaRangesSchema,
+}).strict().refine(({ minChance, baseChance, maxChance }) =>
+  minChance <= baseChance && baseChance <= maxChance,
+  "Expected minChance <= baseChance <= maxChance");
+export const responseProfileCatalogSchema = z.object({
+  schemaVersion: version,
+  profiles: z.array(responseProfileSchema).min(1),
+}).strict();
 export const citySchema = z
   .object({
     schemaVersion: version,

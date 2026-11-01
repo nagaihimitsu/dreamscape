@@ -29,6 +29,7 @@ import {
   saveGame,
 } from "../persistence";
 import { CanalScene } from "../components/CanalScene";
+import { secureRomanceRoll } from "../random/romance-source";
 import { usePresentationSettings } from "../components/usePresentationSettings";
 import { RomanceScene } from "../features/romance/RomanceScene";
 import { Modal } from "../components/Modal";
@@ -671,7 +672,7 @@ export default function App() {
             onClick={() => {
               const selected = confirmation;
               setConfirmation(null);
-              commit((state) => startDate(state, selected.id));
+              commit((state) => startDate(state, selected.id, secureRomanceRoll));
             }}
           >
             {selectedDate?.apCost ? "APを使って始める" : "この時間を過ごす"}

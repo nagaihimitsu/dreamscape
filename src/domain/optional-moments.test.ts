@@ -5,7 +5,7 @@ import {
 } from "./game";
 
 function playToEnd(initial: GameState, dateId: string): { state: GameState; text: string } {
-  let state = startDate(initial, dateId);
+  let state = startDate(initial, dateId, stableRolls());
   expect(state.activeDate?.dateId).toBe(dateId);
   const lines: string[] = [];
   for (let count = 0; state.activeDate && count < 100; count++) {
@@ -53,3 +53,10 @@ describe("optional Milan moments", () => {
     expect(text).toContain("水に映る灯り");
   });
 });
+
+/** Reproducible positive outcomes with varied delta tickets for these progression tests. */
+function stableRolls() {
+  let index = 0;
+  const tickets = [0, 5000, 5000, 0];
+  return () => tickets[index++ % tickets.length];
+}

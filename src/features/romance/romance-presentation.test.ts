@@ -63,4 +63,12 @@ describe("presentation of a saved romance script", () => {
       expect(resolveRomancePresentation(configured, { storyHash: storyFingerprint(previousStoryId) }).destinationId).toBeUndefined();
     },
   );
+
+  it("keeps the known tourism-version location without inventing one for the older cafe script", () => {
+    const cafe = dates.find((item) => item.id === "milano_cafe_01")!;
+    expect(resolveRomancePresentation(cafe, { storyHash: storyFingerprint("milano/cafe_tourism_01") }).destinationId)
+      .toBe(cafe.destinationId);
+    expect(resolveRomancePresentation(cafe, { storyHash: storyFingerprint("milano/cafe_01") }).destinationId)
+      .toBeUndefined();
+  });
 });

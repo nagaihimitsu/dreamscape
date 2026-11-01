@@ -90,8 +90,9 @@ function playDate(
   initial: GameState,
   id: string,
   choices: number[],
+  nextRoll: () => number = stableRolls(),
 ): GameState {
-  let state = startDate(initial, id);
+  let state = startDate(initial, id, nextRoll);
   expect(state.activeDate?.dateId).toBe(id);
   for (let count = 0; state.activeDate && count < 100; count++) {
     state = reload(state);
@@ -230,7 +231,7 @@ describe("integrated tourism, battle, and free time", () => {
     state = finishBattle(startTourismBattle(state, state.revision), 0);
     state = enterFreeTime(state, state.revision);
     // One date opens the conversation, not a guaranteed success.
-    state = playDate(state, "milano_cafe_01", [0, 2]);
+    state = playDate(state, "milano_cafe_01", [0, 2], lowAffectionRolls());
     state = playDate(state, "milano_confession_01", [0]);
     expect(state.confessionStatus).toBe("rejected");
     expect(state.endingReached).toBe(false);
@@ -239,7 +240,7 @@ describe("integrated tourism, battle, and free time", () => {
 
     // Another independently chosen date permits a retry. A stronger bond can
     // still require more time: the second attempt is deferred, not accepted.
-    state = playDate(state, "milano_brera_date_01", [0, 0]);
+    state = playDate(state, "milano_brera_date_01", [0, 0], lowAffectionRolls());
     state = playDate(state, "milano_confession_01", [0]);
     expect(state.confessionStatus).toBe("deferred");
 
@@ -308,3 +309,17 @@ it("retries a failed final save without dropping or duplicating the first reward
   );
   expect(retry.claimedRewardIds).toEqual([...new Set(retry.claimedRewardIds)]);
 });
+
+/** Reproducible positive outcomes with varied delta tickets for these progression tests. */
+function stableRolls() {
+  let index = 0;
+  const tickets = [0, 5000, 5000, 0];
+  return () => tickets[index++ % tickets.length];
+}
+
+/** Keep affection below the confession threshold while retaining trust. */
+function lowAffectionRolls() {
+  let index = 0;
+  const tickets = [0, 0, 5000, 0];
+  return () => tickets[index++ % tickets.length];
+}

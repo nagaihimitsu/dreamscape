@@ -1,3 +1,4 @@
+import { installRomanceRolls } from "./romance-rolls";
 import { expect, test } from "@playwright/test";
 import characterData from "../../content/presentation/characters.json" with { type: "json" };
 import phase1 from "../fixtures/phase1-saves.json" with { type: "json" };
@@ -14,6 +15,8 @@ import {
   startNewGame,
   setDialogueSpeed,
 } from "./helpers";
+
+test.beforeEach(async ({ page }) => { await installRomanceRolls(page); });
 
 test("a response is saved before its presentation and cannot be scored again after reload", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 780 });

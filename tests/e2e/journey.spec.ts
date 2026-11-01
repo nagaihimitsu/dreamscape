@@ -167,7 +167,7 @@ test("a real Phase 4 completed battle migrates without overwriting AP, then outs
       button.click();
     });
   const migrated = await saved(page);
-  expect(migrated.schemaVersion).toBe(8);
+  expect(migrated.schemaVersion).toBe(9);
   expect(migrated.ap).toBe(6);
   expect(migrated.pendingApRewards).toEqual([]);
   expect(migrated.activeBattle).toEqual({

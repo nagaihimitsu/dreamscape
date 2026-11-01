@@ -57,8 +57,8 @@ function clearEpisode(initial: GameState, episodeId: string): GameState {
   return validateGameState(JSON.parse(JSON.stringify(state)));
 }
 
-function playDate(initial: GameState, dateId: string, selections: number[], transcript: string[] = []): GameState {
-  let state = startDate(initial, dateId);
+function playDate(initial: GameState, dateId: string, selections: number[], transcript: string[] = [], resolutions: NonNullable<GameState["activeDate"]>["resolvedChoices"] = []): GameState {
+  let state = startDate(initial, dateId, stableRolls());
   expect(state.activeDate?.dateId).toBe(dateId);
   for (let count = 0; state.activeDate && count < 100; count++) {
     const restored = validateGameState(JSON.parse(JSON.stringify(state)));
@@ -71,6 +71,7 @@ function playDate(initial: GameState, dateId: string, selections: number[], tran
       expect(active.frame.choices).toHaveLength(3);
       const revision = restored.revision;
       state = chooseDate(restored, selections[active.choiceCount], revision);
+      if (state.activeDate!.resolutionMode === "random_v1") resolutions.push(state.activeDate!.resolvedChoices.at(-1)!);
       expect(chooseDate(state, selections[active.choiceCount], revision)).toBe(state);
     } else state = advanceDate(restored, restored.revision);
   }
@@ -121,7 +122,8 @@ describe("real-place optional dates", () => {
     it(`${id} completes the ${first + 1}/${second + 1} route with two distinct effects`, () => {
       const episodeIndex = episodes.findIndex((episode) => episode.id === milestones[index]);
       const before = checkpoints[episodeIndex + 1];
-      const after = playDate(before, id, [first, second]);
+      const resolutions: NonNullable<GameState["activeDate"]>["resolvedChoices"] = [];
+      const after = playDate(before, id, [first, second], [], resolutions);
       const memories = after.memories.filter((memory) => !before.memories.includes(memory));
       const prefix = effectPrefixes[index];
       const approach = index < 3 ? ["joke", "listen", "honest"] : ["a", "b", "c"];
@@ -133,10 +135,10 @@ describe("real-place optional dates", () => {
       expect(new Set(memories).size).toBe(2);
       expect(memories).toEqual(chosenEffects.map((effect) => effect.memoryId));
       expect(after.playedDateIds).toContain(id);
-      const deltas = chosenEffects.map((effect) => effect.stageDeltas?.[String(before.romanceStage) as "1" | "2" | "3" | "4"] ?? effect);
-      expect(after.affection).toBe(before.affection + deltas.reduce((sum, delta) => sum + delta.affectionDelta, 0));
-      expect(after.trust).toBe(before.trust + deltas.reduce((sum, delta) => sum + (delta.trustDelta ?? 0), 0));
-      expect(after.spark).toBe(before.spark + deltas.reduce((sum, delta) => sum + (delta.sparkDelta ?? 0), 0));
+      expect(resolutions.map((entry) => entry.effectId)).toEqual(chosenEffects.map((effect) => effect.id));
+      expect(after.affection).toBe(before.affection + resolutions.reduce((sum, entry) => sum + entry.deltas.affection, 0));
+      expect(after.trust).toBe(before.trust + resolutions.reduce((sum, entry) => sum + entry.deltas.trust, 0));
+      expect(after.spark).toBe(before.spark + resolutions.reduce((sum, entry) => sum + entry.deltas.spark, 0));
       expect(after.romanceStage).toBeGreaterThanOrEqual(before.romanceStage);
       expect(after.romanceStage).toBeLessThanOrEqual(2); // One date cannot satisfy a two-date stage.
     });
@@ -191,7 +193,7 @@ describe("real-place optional dates", () => {
     const firstTime: string[] = [];
     const early = playDate(checkpoints[1], "milano_san_satiro_date_01", [2, 0], firstTime);
     expect(firstTime.join("\n")).toContain("まずはこの距離で");
-    expect(early.trust).toBe(checkpoints[1].trust + 1); // The early approach costs trust; respecting her view restores it.
+    expect(early.trust).toBe(checkpoints[1].trust + 4); // Both saved positive rolls apply their configured ranges.
 
     let closer = playDate(checkpoints[3], "milano_la_scala_date_01", [0, 0]);
     closer = playDate(closer, "milano_brera_date_01", [0, 0]);
@@ -199,7 +201,7 @@ describe("real-place optional dates", () => {
     const laterLines: string[] = [];
     const later = playDate(closer, "milano_san_satiro_date_01", [2, 0], laterLines);
     expect(laterLines.join("\n")).toContain("絵のほうも見てくださいね");
-    expect(later.trust).toBe(closer.trust + 3);
+    expect(later.trust).toBe(closer.trust + 4);
   });
 
   it("can visit all seven places once with finite zero-score travel rewards", () => {
@@ -268,3 +270,10 @@ describe("real-place optional dates", () => {
     expect(state.confessionStatus).toBe("accepted");
   }, 60000);
 });
+
+/** Reproducible positive outcomes with varied delta tickets for these progression tests. */
+function stableRolls() {
+  let index = 0;
+  const tickets = [0, 5000, 5000, 0];
+  return () => tickets[index++ % tickets.length];
+}

@@ -1,3 +1,4 @@
+import { installRomanceRolls, setRomanceRolls } from "./romance-rolls";
 import { expect, test } from "@playwright/test";
 import phase1 from "../fixtures/phase1-saves.json" with { type: "json" };
 import {
@@ -16,6 +17,8 @@ import {
 } from "./helpers";
 
 import { completeEpisode, enterFreeTime } from "./journey-helpers";
+
+test.beforeEach(async ({ page }) => { await installRomanceRolls(page, [0, 0, 5000, 0]); });
 
 test.use({ reducedMotion: "reduce" });
 
@@ -54,7 +57,7 @@ test("a legacy zero-score journey can continue after rejection, deferral and eve
   expect(await saved(page)).toEqual(rejected);
   const confessionOption = page.getByTestId(`event-${CONFESSION}`).getByRole("button");
   await expect(confessionOption).toBeDisabled();
-  await expect(page.getByTestId(`event-${CONFESSION}`)).toContainText("まだ行っていないデート");
+  await expect(page.getByTestId(`event-${CONFESSION}`)).toContainText("新しいひとときを");
 
   await playEvent(page, BRERA, 2, [0, 0]);
   expect((await saved(page)).romanceStage).toBe(3);
@@ -76,6 +79,7 @@ test("a legacy zero-score journey can continue after rejection, deferral and eve
   expect(await saved(page)).toEqual(deferred);
 
   await claimMilestone(page, "trial_after_cafe");
+  await setRomanceRolls(page, [0, 5000, 5000, 0]);
   await playEvent(page, WALK, 3, [0, 0]);
   expect((await saved(page)).romanceStage).toBe(4);
   const apBeforeConfession = (await saved(page)).ap;
@@ -114,6 +118,7 @@ test("warm choices and renamed characters reach a successful first confession wi
   test.setTimeout(90_000);
   await startLegacyJourney(page, ["航", "澪"]);
   await loadLegacyFreeTime(page);
+  await setRomanceRolls(page, [0, 5000, 5000, 9999]);
   await playEvent(page, CAFE, 2, [2, 0]);
   await returnToMenu(page);
   await page.getByRole("button", { name: "設定", exact: true }).click();
@@ -121,9 +126,11 @@ test("warm choices and renamed characters reach a successful first confession wi
   await page.getByLabel("ヒロインの名前").fill("紬");
   await page.getByRole("button", { name: "名前を保存", exact: true }).click();
   await claimMilestone(page, "trial_after_cafe");
+  await setRomanceRolls(page, [0, 5000, 5000, 9999]);
   const walk = await playEvent(page, WALK, 3, [0, 0]);
   expect(walk).toContain("悠さん");
   await claimMilestone(page, "trial_after_walk");
+  await setRomanceRolls(page, [0, 5000, 5000, 9999]);
   const night = await playEvent(page, NIGHT, 3, [0, 2]);
   expect(night).toContain("悠");
   const confession = await playEvent(page, CONFESSION, 0, [0]);
@@ -159,7 +166,7 @@ for (const fixtureKey of ["beforeChoice", "afterChoice", "replay"] as const) {
       await choose(page, 1);
     await finishEvent(page, 2);
     const current = await saved(page);
-    expect(current.schemaVersion).toBe(8);
+    expect(current.schemaVersion).toBe(9);
     expect(current.ap).toBe(old.ap);
     expect(current.playerName).toBe(old.playerName);
     expect(current.heroineName).toBe(old.heroineName);

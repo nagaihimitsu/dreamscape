@@ -1,4 +1,7 @@
 import { z } from "zod";
+import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
+import { secureRomanceRoll } from "../random/romance-source";
+import { responseProfileSchema } from "../content/schemas";
 import { legacyPhase1Stage, legacyRomanceValues } from "./romance-migration";
 import { activeEpilogueSchema, validateEpilogueState } from "./epilogue";
 import {
@@ -26,6 +29,7 @@ import {
   city,
   dates,
   effects,
+  responseProfiles,
   progression,
   trialMilestones,
   type DateDefinition,
@@ -136,13 +140,50 @@ const phase7StateSchema = phase6StateSchema
     legacyTrialAvailable: z.boolean(),
   })
   .strict();
-export const gameStateSchema = phase7StateSchema.extend({
+const phase8StateSchema = phase7StateSchema.extend({
   schemaVersion: z.literal(8),
   trust: z.number().int(),
   spark: z.number().int(),
   lastRejectedDateCount: z.number().int().nonnegative().nullable(),
   confessionStatus: z.enum(["none", "deferred", "rejected", "accepted"]),
   activeDate: activeDateSchema.extend({ pendingOutcome: z.enum(["accepted", "deferred", "rejected"]).nullable() }).nullable(),
+}).strict();
+const relationshipValuesSchema = z.object({
+  affection: z.number().int(), trust: z.number().int(), spark: z.number().int(),
+}).strict();
+const romanceRollTicketSchema = z.object({
+  reaction: z.number().int().min(0).max(9999),
+  affection: z.number().int().min(0).max(9999),
+  trust: z.number().int().min(0).max(9999),
+  spark: z.number().int().min(0).max(9999),
+}).strict();
+const resolvedChoiceSchema = z.object({
+  choiceIndex: z.number().int().min(0).max(2),
+  effectId: z.string().min(1),
+  before: relationshipValuesSchema,
+  result: z.enum(["positive", "negative"]),
+  chance: z.number().min(0).max(100),
+  deltas: relationshipValuesSchema,
+}).strict();
+const responseSnapshotSchema = z.object({
+  profiles: z.array(responseProfileSchema).min(1),
+  effectProfiles: z.record(z.string().regex(/^[a-z][a-z0-9_]*$/), z.string().regex(/^[a-z][a-z0-9_]*$/)),
+}).strict().refine(({ profiles, effectProfiles }) => {
+  const ids = new Set(profiles.map((profile) => profile.id));
+  return ids.size === profiles.length && Object.values(effectProfiles).every((id) => ids.has(id));
+}, "保存された恋愛リアクション設定が不正です。");
+const phase9ActiveDateSchema = activeDateSchema.extend({
+  pendingOutcome: z.enum(["accepted", "deferred", "rejected"]).nullable(),
+  resolutionMode: z.enum(["legacy_fixed", "random_v1"]),
+  randomPlan: z.array(romanceRollTicketSchema),
+  resolvedChoices: z.array(resolvedChoiceSchema),
+  responseSnapshot: responseSnapshotSchema.nullable(),
+}).strict();
+export const gameStateSchema = phase8StateSchema.extend({
+  schemaVersion: z.literal(9),
+  recoveryAfterRejection: z.boolean(),
+  completedRecoveryCount: z.number().int().min(0).max(3),
+  activeDate: phase9ActiveDateSchema.nullable(),
 }).strict();
 export type GameState = z.infer<typeof gameStateSchema>;
 export type ActiveDate = NonNullable<GameState["activeDate"]>;
@@ -156,7 +197,7 @@ export function createGame(
   heroineName = balance.defaultHeroineName,
 ): GameState {
   return {
-    schemaVersion: 8,
+    schemaVersion: 9,
     revision: 0,
     playerName: nameSchema.parse(playerName),
     heroineName: nameSchema.parse(heroineName),
@@ -165,6 +206,8 @@ export function createGame(
     trust: 0,
     spark: 0,
     lastRejectedDateCount: null,
+    recoveryAfterRejection: false,
+    completedRecoveryCount: 0,
     romanceStage: 1,
     completedChapters: [],
     claimedRewardIds: [],
@@ -213,9 +256,10 @@ function meetsDateConditions(state: GameState, date: DateDefinition): boolean {
   );
 }
 
-/** Completed ordinary dates are experiences, not specific mandatory events. */
+/** Count completed ordinary dates and up to three real recovery conversations. */
 export function completedDateCount(state: GameState): number {
-  return state.playedDateIds.filter((id) => dates.some((date) => date.id === id && date.kind === "normal")).length;
+  const ordinary = state.playedDateIds.filter((id) => dates.some((date) => date.id === id && date.kind === "normal")).length;
+  return ordinary + state.completedRecoveryCount;
 }
 
 /** Re-evaluate only at durable event boundaries. Unlocks remain recorded after their first appearance. */
@@ -237,7 +281,7 @@ export function evaluateProgression(state: GameState): GameState {
   const unlockedEventIds = [...state.unlockedEventIds];
   for (const date of dates) {
     if (
-      date.kind !== "normal" &&
+      date.kind !== "normal" && !date.recovery &&
       meetsDateConditions(next, date) &&
       !unlockedEventIds.includes(date.id)
     )
@@ -383,10 +427,21 @@ export function claimTrialMilestone(
   return grantRewardOnce(state, milestone.rewardSourceId, milestone.ap);
 }
 
+/** A repeatable conversation prevents random setbacks from permanently blocking recovery. */
+function canRecoverRelationship(state: GameState): boolean {
+  if (state.endingReached || completedDateCount(state) === 0) return false;
+  const needsRepair = !canConfessSuccessfully(state) ||
+    (state.confessionStatus === "rejected" && !state.recoveryAfterRejection &&
+      state.lastRejectedDateCount !== null && completedDateCount(state) <= state.lastRejectedDateCount);
+  if (!needsRepair) return false;
+  return !dates.some((date) => date.kind === "normal" && getDateAvailability(state, date.id).available);
+}
+
 export function isEventVisible(state: GameState, dateId: string): boolean {
   const date = dates.find((item) => item.id === dateId);
   return Boolean(
     date &&
+      (!date.recovery || canRecoverRelationship(state)) &&
       (!state.endingReached || date.kind === "normal" || date.allowAfterEnding) &&
       (date.forbiddenCompletedEpisodeIds ?? []).every((id) => !state.completedEpisodeIds.includes(id)) &&
       (date.kind === "normal"
@@ -402,6 +457,8 @@ export function getDateAvailability(
 ): Availability {
   const date = dates.find((item) => item.id === dateId);
   if (!date) return { available: false, reason: "デートが見つかりません。" };
+  if (date.recovery && !canRecoverRelationship(state))
+    return { available: false, reason: "今は別のひとときを選べます。" };
   if (state.endingReached && date.kind !== "normal" && !date.allowAfterEnding)
     return {
       available: false,
@@ -436,8 +493,9 @@ export function getDateAvailability(
   if ((date.forbiddenCompletedEpisodeIds ?? []).some((id) => state.completedEpisodeIds.includes(id)))
     return { available: false, reason: "この機会は過ぎました。" };
   if (date.kind === "confession" && state.confessionStatus === "rejected" &&
-      state.lastRejectedDateCount !== null && completedDateCount(state) <= state.lastRejectedDateCount)
-    return { available: false, reason: "まだ行っていないデートを一度してから、もう一度話せます。" };
+      state.lastRejectedDateCount !== null && completedDateCount(state) <= state.lastRejectedDateCount &&
+      !state.recoveryAfterRejection)
+    return { available: false, reason: "新しいひとときを過ごしてから、もう一度話せます。" };
   if (!meetsDateConditions(state, date))
     return { available: false, reason: "もう少し、一緒の時間を過ごしてから。" };
   if (state.ap < date.apCost)
@@ -472,10 +530,14 @@ function applyStep(
     }
     if (!active.replay && !effect.outcome) {
       const stage = String(state.romanceStage) as "1" | "2" | "3" | "4";
-      const delta = effect.stageDeltas?.[stage] ?? effect;
-      affection += delta.affectionDelta;
-      trust += delta.trustDelta ?? 0;
-      spark += delta.sparkDelta ?? 0;
+      const fixed = effect.stageDeltas?.[stage] ?? effect;
+      const resolved = active.resolutionMode === "random_v1"
+        ? active.resolvedChoices[active.choiceCount - 1] : undefined;
+      if (active.resolutionMode === "random_v1" && (!resolved || resolved.effectId !== effectId))
+        throw new Error("選択結果と会話の効果が一致しません。");
+      affection += resolved?.deltas.affection ?? fixed.affectionDelta;
+      trust += resolved?.deltas.trust ?? fixed.trustDelta ?? 0;
+      spark += resolved?.deltas.spark ?? fixed.sparkDelta ?? 0;
       if (effect.memoryId && !memories.includes(effect.memoryId))
         memories.push(effect.memoryId);
     }
@@ -506,7 +568,7 @@ export function activeDateStoryId(date: DateDefinition, active: Pick<ActiveDate,
   return storyId;
 }
 
-export function startDate(state: GameState, dateId: string): GameState {
+export function startDate(state: GameState, dateId: string, nextRoll: () => number = secureRomanceRoll): GameState {
   if (!getDateAvailability(state, dateId).available) return state;
   const date = dates.find((item) => item.id === dateId)!;
   const result = beginStory(date.storyId, state.playerName, state.heroineName, {
@@ -537,6 +599,16 @@ export function startDate(state: GameState, dateId: string): GameState {
       step: 1,
       appliedEffectIds: [],
       pendingOutcome: null,
+      resolutionMode: date.kind === "confession" ? "legacy_fixed" : "random_v1",
+      randomPlan: date.kind === "confession" ? [] : createRomanceRollPlan(date.choiceCount, nextRoll),
+      resolvedChoices: [],
+      // Freeze the data used by every future choice in this event, so an
+      // editorial rebalance cannot change a saved ticket after a reload.
+      responseSnapshot: date.kind === "confession" ? null : {
+        profiles: responseProfiles.map((profile) => responseProfileSchema.parse(profile)),
+        effectProfiles: Object.fromEntries(effects.flatMap((effect) =>
+          effect.responseProfileId ? [[effect.id, effect.responseProfileId]] : [])),
+      },
     },
     result,
   );
@@ -575,10 +647,43 @@ export function chooseDate(
   )
     return state;
   const date = dates.find((item) => item.id === active.dateId)!;
+  const storyId = activeDateStoryId(date, active);
+  if (active.resolutionMode === "legacy_fixed") {
+    return applyStep(
+      { ...state, revision: state.revision + 1 },
+      { ...active, choiceCount: active.choiceCount + 1, step: active.step + 1 },
+      selectStoryChoice(storyId, active.storyState, active.frame, index, state.memories),
+    );
+  }
+  const ticket = active.randomPlan[active.choiceCount];
+  if (!ticket || active.resolvedChoices.length !== active.choiceCount)
+    throw new Error("恋愛リアクションの保存状態が一致しません。");
+  // Probe a separate Ink instance, so the selected effect is known before
+  // setting variables and consuming the choice in the real story.
+  const probe = selectStoryChoice(storyId, active.storyState, active.frame, index, state.memories, {
+    romance_result: "positive", affection_delta: 0, trust_delta: 0, spark_delta: 0,
+  });
+  if (probe.effects.length !== 1) throw new Error("選択肢の効果を確認できません。");
+  const effectId = probe.effects[0];
+  const effect = effects.find((item) => item.id === effectId);
+  const profileId = active.responseSnapshot?.effectProfiles[effectId];
+  const profile = active.responseSnapshot?.profiles.find((item) => item.id === profileId);
+  if (!effect || effect.outcome || !profile) throw new Error("選択肢のリアクション設定が見つかりません。");
+  const before = { affection: state.affection, trust: state.trust, spark: state.spark };
+  const resolution = resolveRomanceChoice(profile, before, ticket);
+  const step = selectStoryChoice(storyId, active.storyState, active.frame, index, state.memories, {
+    romance_result: resolution.result,
+    affection_delta: resolution.deltas.affection,
+    trust_delta: resolution.deltas.trust,
+    spark_delta: resolution.deltas.spark,
+  });
+  if (step.effects.length !== 1 || step.effects[0] !== effectId)
+    throw new Error("選択肢の結果と会話の効果が一致しません。");
   return applyStep(
     { ...state, revision: state.revision + 1 },
-    { ...active, choiceCount: active.choiceCount + 1, step: active.step + 1 },
-    selectStoryChoice(activeDateStoryId(date, active), active.storyState, active.frame, index, state.memories),
+    { ...active, choiceCount: active.choiceCount + 1, step: active.step + 1,
+      resolvedChoices: [...active.resolvedChoices, { choiceIndex: index, effectId, before, ...resolution }] },
+    step,
   );
 }
 
@@ -622,6 +727,10 @@ export function finishDate(
     lastRejectedDateCount: date.kind === "confession"
       ? (confessionStatus === "rejected" ? completedDateCount(state) : null)
       : state.lastRejectedDateCount,
+    recoveryAfterRejection: date.kind === "confession" ? false :
+      (state.confessionStatus === "rejected" && date.recovery ? true : state.recoveryAfterRejection),
+    // Only a completed recovery counts as an experience; keep ordinary date IDs unchanged.
+    completedRecoveryCount: date.recovery ? Math.min(3, state.completedRecoveryCount + 1) : state.completedRecoveryCount,
     endingReached: state.endingReached || confessionStatus === "accepted",
     playedDateIds: state.playedDateIds.includes(active.dateId)
       ? state.playedDateIds
@@ -635,9 +744,21 @@ export function migrateGameState(input: unknown): GameState {
     typeof input === "object" && input !== null && "schemaVersion" in input
       ? input.schemaVersion
       : undefined;
+  if (version === 8) {
+    const parsed = phase8StateSchema.parse(input);
+    return {
+      ...parsed,
+      schemaVersion: 9,
+      recoveryAfterRejection: false,
+      completedRecoveryCount: 0,
+      activeDate: parsed.activeDate ? {
+        ...parsed.activeDate, resolutionMode: "legacy_fixed", randomPlan: [], resolvedChoices: [], responseSnapshot: null,
+      } : null,
+    };
+  }
   if (version === 7) {
     const parsed = phase7StateSchema.parse(input);
-    return { ...parsed, ...legacyRomanceValues(parsed, progression), schemaVersion: 8 };
+    return migrateGameState({ ...parsed, ...legacyRomanceValues(parsed, progression), schemaVersion: 8 });
   }
   if (version === 5 || version === 6) {
     const parsed =
@@ -723,7 +844,7 @@ export function migrateGameState(input: unknown): GameState {
   )
     throw new Error("以前のデートの解放条件が一致しません。");
   const legacyStage = version === 1 ? legacyPhase1Stage(old) : old.romanceStage;
-  const next: GameState = {
+  const next = {
     ...old,
     romanceStage: legacyStage,
     ...legacyRomanceValues({ ...old, romanceStage: legacyStage }, progression),
@@ -740,8 +861,9 @@ export function migrateGameState(input: unknown): GameState {
     pendingApRewards: [],
     battleRewardReceipt: null,
   };
+  const migrated = migrateGameState(next);
   return migrateJourneyProgress(
-    version === 1 ? evaluateProgression(next) : next,
+    version === 1 ? evaluateProgression(migrated) : migrated,
   );
 }
 
@@ -772,6 +894,12 @@ export function validateGameState(input: unknown): GameState {
     throw new Error("章の報酬記録が一致しません。");
   if (state.endingReached !== (state.confessionStatus === "accepted"))
     throw new Error("エンディングの記録が一致しません。");
+  if ((state.completedRecoveryCount > 0) !== state.playedDateIds.some(
+    (id) => dates.some((date) => date.id === id && date.recovery),
+  )) throw new Error("再交流の履歴が一致しません。");
+  if (state.recoveryAfterRejection &&
+      (state.confessionStatus !== "rejected" || state.completedRecoveryCount === 0))
+    throw new Error("告白後の交流記録が一致しません。");
   if ((state.confessionStatus === "rejected") !== (state.lastRejectedDateCount !== null) ||
       (state.lastRejectedDateCount !== null && state.lastRejectedDateCount > completedDateCount(state)))
     throw new Error("告白後の進行記録が一致しません。");
@@ -800,6 +928,29 @@ export function validateGameState(input: unknown): GameState {
     )
       throw new Error("デートの保存状態を確認できません。");
     const storyId = activeDateStoryId(date, active);
+    if (active.resolutionMode === "legacy_fixed") {
+      if (active.randomPlan.length || active.resolvedChoices.length || active.responseSnapshot)
+        throw new Error("旧デートの結果記録が一致しません。");
+    } else {
+      if (date.kind === "confession" || !active.responseSnapshot || active.randomPlan.length !== date.choiceCount ||
+          active.resolvedChoices.length !== active.choiceCount)
+        throw new Error("恋愛リアクションの進行記録が一致しません。");
+      for (const [choiceNumber, saved] of active.resolvedChoices.entries()) {
+        const previous = active.resolvedChoices[choiceNumber - 1];
+        if (previous && (saved.before.affection !== previous.before.affection + previous.deltas.affection ||
+            saved.before.trust !== previous.before.trust + previous.deltas.trust ||
+            saved.before.spark !== previous.before.spark + previous.deltas.spark))
+          throw new Error("保存された関係値の履歴が一致しません。");
+        const effect = effects.find((item) => item.id === saved.effectId);
+        const profileId = active.responseSnapshot.effectProfiles[saved.effectId];
+        const profile = active.responseSnapshot.profiles.find((item) => item.id === profileId);
+        if (!effect || effect.outcome || !profile) throw new Error("保存された選択効果が見つかりません。");
+        const expected = resolveRomanceChoice(profile, saved.before, active.randomPlan[choiceNumber]);
+        if (JSON.stringify(expected) !== JSON.stringify({ result: saved.result, chance: saved.chance, deltas: saved.deltas }) ||
+            !active.appliedEffectIds.some((key) => key.endsWith(`:${saved.effectId}`)))
+          throw new Error("保存された恋愛リアクションが一致しません。");
+      }
+    }
     if (
       active.replay !==
       (date.rewardOnlyOnce && state.playedDateIds.includes(date.id))
@@ -810,10 +961,22 @@ export function validateGameState(input: unknown): GameState {
       (active.pendingOutcome && date.kind !== "confession")
     )
       throw new Error("会話の進行記録が一致しません。");
+    const lastResolution = active.resolvedChoices.at(-1);
+    if (active.resolutionMode === "random_v1" && lastResolution && !active.replay &&
+        (state.affection !== lastResolution.before.affection + lastResolution.deltas.affection ||
+         state.trust !== lastResolution.before.trust + lastResolution.deltas.trust ||
+         state.spark !== lastResolution.before.spark + lastResolution.deltas.spark))
+      throw new Error("保存された関係値と選択結果が一致しません。");
     validateStorySnapshot(storyId, active.storyState, active.frame, {
       playerName: state.playerName,
       heroineName: state.heroineName,
       choiceCount: active.choiceCount,
+      variables: active.resolutionMode === "random_v1" ? {
+        romance_result: lastResolution?.result ?? "neutral",
+        affection_delta: lastResolution?.deltas.affection ?? 0,
+        trust_delta: lastResolution?.deltas.trust ?? 0,
+        spark_delta: lastResolution?.deltas.spark ?? 0,
+      } : undefined,
     }, state.memories);
   }
   return state;

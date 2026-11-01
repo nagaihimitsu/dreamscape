@@ -281,7 +281,7 @@ Inkには `battle_scene`（catalogのシーン名）、`answer_correct`（直前
 - `src/persistence/`: localStorageアダプタ・保存データ検証・バックアップ。
 - `src/content/` / `scripts/`: データ契約・許可タグ・ビルド時検証。
 
-保存キーは旧版と同じ `dreamscape.save.v1`、データ内の `schemaVersion` は **8**。名前・AP・関係状態・思い出・デート履歴・告白と交際状態、進行中のInk、バトル回答と戦績、観光と発見を保持します。旧版にない信頼と恋愛の意識は既存の進行に基づいて移行し、思い出を捏造しません。旧告白・誘いなどの途中データは旧脚本の指紋を検証して再開します。`completedEpisodeIds`、`completedCityIds`、`completedGuideIds`、`pendingApRewards`、`battleRewardReceipt` も維持します。
+保存キーは旧版と同じ `dreamscape.save.v1`、データ内の `schemaVersion` は **9**。名前・AP・関係状態・思い出・デート履歴・告白と交際状態、進行中のInk、バトル回答と戦績、観光と発見を保持します。旧版にない信頼と恋愛の意識は既存の進行に基づいて移行し、思い出を捏造しません。旧デートの途中データは、旧脚本の指紋を検証し、以前どおり固定効果で完走します。新しい恋愛イベントは開始時に保存した乱数から関係状態に応じた反応を決めます。通常デートを選べず関係を築き直す必要がある場合は、AP不要の短い再交流を利用できます。告白の成否は乱数で変わりません。進行中の確率デートは開始時点のプロフィールを保存し、再開後も同じ設定を使います。`completedEpisodeIds`、`completedCityIds`、`completedGuideIds`、`pendingApRewards`、`battleRewardReceipt` も維持します。
 
 Phase 6では `activeBattle.reasoning` に主張のシーンID、選択中・提出済みの証拠、追及済みか、推理の状態を保存します。通常戦では `null`。推理中も同じInkの実行位置を保存し、誤った証拠への反応・追及の途中・英語回答の前後から再開できます。選択と提出はリビジョンを検証し、連打で二重採点しません。特殊戦の指紋には証拠データも含め、資料の意味が変わったセーブを勝手に再判定しません。
 

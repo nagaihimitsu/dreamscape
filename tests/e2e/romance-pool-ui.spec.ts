@@ -1,7 +1,10 @@
+import { installRomanceRolls } from "./romance-rolls";
 import { expect, test } from "@playwright/test";
 import castleCleared from "../fixtures/castle-clear-unplayed.json" with { type: "json" };
 import galleriaStage2 from "../fixtures/galleria-stage2-pool.json" with { type: "json" };
 import { choose, expectNoOverflow, findDateOption, finishEvent, loadSnapshot, saved, setDialogueSpeed, startEvent } from "./helpers";
+
+test.beforeEach(async ({ page }) => { await installRomanceRolls(page, [0, 0, 5000, 0]); });
 
 test.use({ reducedMotion: "reduce", viewport: { width: 360, height: 640 } });
 
@@ -72,7 +75,7 @@ test("a rejected confession leaves the journey open and requires another experie
   await expect(page.getByRole("status").filter({ hasText: "恋人として付き合えない" })).toBeVisible();
   const confession = page.getByTestId("event-milano_confession_01");
   await expect(confession.getByRole("button")).toBeDisabled();
-  await expect(confession.getByRole("status")).toContainText("まだ行っていないデート");
+  await expect(confession.getByRole("status")).toContainText("新しいひとときを");
   await expect(page.getByTestId("free-time-hub")).toBeVisible();
   await startEvent(page, "milano_walk_01", 3);
   await setDialogueSpeed(page, "0");

@@ -13,7 +13,7 @@ function nextChoice(state: GameState): GameState {
   return state;
 }
 function play(state: GameState, id: string, choices: number[], seen: string[] = []): GameState {
-  state = startDate(state, id);
+  state = startDate(state, id, stableRolls());
   expect(state.activeDate?.dateId).toBe(id);
   for (const choice of choices) {
     for (let i = 0; state.activeDate && !state.activeDate.frame.choices.length && !state.activeDate.frame.ended && i < 80; i++) {
@@ -42,11 +42,11 @@ describe("open romance progression", () => {
   });
 
   it("applies negative affection and trust, restores them, and keeps other dates available", () => {
-    let state = startDate(initial(), "milano_love_date_01");
+    let state = startDate(initial(), "milano_love_date_01", negativeRolls());
     state = nextChoice(state);
     state = chooseDate(state, 1, state.revision);
     expect(state.affection).toBe(-1);
-    expect(state.trust).toBe(-2);
+    expect(state.trust).toBe(-1);
     expect(state.spark).toBe(0);
     state = validateGameState(JSON.parse(JSON.stringify(state)));
     state = nextChoice(state);
@@ -100,3 +100,17 @@ describe("open romance progression", () => {
     expect(getDateAvailability(state, "milano_confession_01").available).toBe(true);
   });
 });
+
+/** Reproducible positive outcomes with varied delta tickets for these progression tests. */
+function stableRolls() {
+  let index = 0;
+  const tickets = [0, 5000, 5000, 0];
+  return () => tickets[index++ % tickets.length];
+}
+
+/** Force a failed response and the lower end of each delta range. */
+function negativeRolls() {
+  let index = 0;
+  const tickets = [9999, 0, 0, 0];
+  return () => tickets[index++ % tickets.length];
+}

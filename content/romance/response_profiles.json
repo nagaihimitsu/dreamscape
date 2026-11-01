@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    {
+      "id": "attentive",
+      "baseChance": 82,
+      "minChance": 55,
+      "maxChance": 95,
+      "relationshipWeights": { "affection": 0.25, "trust": 0.6, "spark": 0.15 },
+      "chancePerRelationshipPoint": 1.2,
+      "positive": { "affection": [1, 2], "trust": [2, 3], "spark": [-1, 1] },
+      "negative": { "affection": [-1, 0], "trust": [-1, 0], "spark": [-1, 0] }
+    },
+    {
+      "id": "playful",
+      "baseChance": 70,
+      "minChance": 40,
+      "maxChance": 92,
+      "relationshipWeights": { "affection": 0.35, "trust": 0.2, "spark": 0.45 },
+      "chancePerRelationshipPoint": 1.1,
+      "positive": { "affection": [1, 2], "trust": [0, 1], "spark": [1, 2] },
+      "negative": { "affection": [-1, 0], "trust": [-1, 0], "spark": [0, 1] }
+    },
+    {
+      "id": "honest",
+      "baseChance": 72,
+      "minChance": 45,
+      "maxChance": 93,
+      "relationshipWeights": { "affection": 0.35, "trust": 0.4, "spark": 0.25 },
+      "chancePerRelationshipPoint": 1.2,
+      "positive": { "affection": [1, 2], "trust": [0, 2], "spark": [0, 2] },
+      "negative": { "affection": [-1, 0], "trust": [-1, 0], "spark": [0, 1] }
+    },
+    {
+      "id": "bold",
+      "baseChance": 55,
+      "minChance": 30,
+      "maxChance": 90,
+      "relationshipWeights": { "affection": 0.1, "trust": 0.35, "spark": 0.55 },
+      "chancePerRelationshipPoint": 1.3,
+      "positive": { "affection": [1, 2], "trust": [0, 1], "spark": [2, 3] },
+      "negative": { "affection": [-1, 0], "trust": [-2, -1], "spark": [0, 2] }
+    },
+    {
+      "id": "provocative",
+      "baseChance": 45,
+      "minChance": 25,
+      "maxChance": 85,
+      "relationshipWeights": { "affection": 0.2, "trust": 0.3, "spark": 0.5 },
+      "chancePerRelationshipPoint": 1.2,
+      "positive": { "affection": [1, 3], "trust": [-1, 1], "spark": [1, 3] },
+      "negative": { "affection": [-1, 0], "trust": [-1, 0], "spark": [0, 1] }
+    }
+  ]
+}

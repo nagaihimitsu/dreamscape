@@ -30,11 +30,12 @@ function play(
   dateId: string,
   selections: number[],
   transcript: string[] = [],
+  resolutions: NonNullable<GameState["activeDate"]>["resolvedChoices"] = [],
 ) {
   expect(getDateAvailability(state, dateId), dateId).toMatchObject({
     available: true,
   });
-  state = startDate(state, dateId);
+  state = startDate(state, dateId, stableRolls());
   let steps = 0;
   while (state.activeDate) {
     if (++steps > 100) throw Error("Runaway story");
@@ -44,8 +45,10 @@ function play(
     const active = state.activeDate!;
     transcript.push(active.frame.text);
     if (active.frame.ended) state = finishDate(state, state.revision);
-    else if (active.frame.choices.length)
+    else if (active.frame.choices.length) {
       state = chooseDate(state, selections[active.choiceCount], state.revision);
+      if (state.activeDate!.resolutionMode === "random_v1") resolutions.push(state.activeDate!.resolvedChoices.at(-1)!);
+    }
     else state = advanceDate(state, state.revision);
   }
   return state;
@@ -148,14 +151,15 @@ describe("Phase 2 relationship progression", () => {
         it(`${id}: completes choices ${first}/${second} and preserves each reload boundary`, () => {
           const state = id === walk ? toWalk() : toNight();
           const before = state.affection;
-          const completed = play(state, id, [first, second]);
+          const resolutions: NonNullable<GameState["activeDate"]>["resolvedChoices"] = [];
+          const completed = play(state, id, [first, second], [], resolutions);
           const firstId = `${id.replace("_01", "")}_first_${["joke", "listen", "honest"][first]}`;
           const secondId = `${id.replace("_01", "")}_second_${["joke", "listen", "honest"][second]}`;
           const chosen = [firstId, secondId].map((effectId) => effects.find((effect) => effect.id === effectId)!);
-          const deltas = chosen.map((effect) => effect.stageDeltas?.[String(state.romanceStage) as "1" | "2" | "3" | "4"] ?? effect);
-          expect(completed.affection).toBe(before + deltas.reduce((sum, delta) => sum + delta.affectionDelta, 0));
-          expect(completed.trust).toBe(state.trust + deltas.reduce((sum, delta) => sum + (delta.trustDelta ?? 0), 0));
-          expect(completed.spark).toBe(state.spark + deltas.reduce((sum, delta) => sum + (delta.sparkDelta ?? 0), 0));
+          expect(resolutions.map((entry) => entry.effectId)).toEqual(chosen.map((effect) => effect.id));
+          expect(completed.affection).toBe(before + resolutions.reduce((sum, entry) => sum + entry.deltas.affection, 0));
+          expect(completed.trust).toBe(state.trust + resolutions.reduce((sum, entry) => sum + entry.deltas.trust, 0));
+          expect(completed.spark).toBe(state.spark + resolutions.reduce((sum, entry) => sum + entry.deltas.spark, 0));
           expect(completed.memories.length).toBe(state.memories.length + 2);
           expect(completed.ap).toBe(
             state.ap - dates.find((date) => date.id === id)!.apCost,
@@ -184,7 +188,7 @@ describe("confession and relationship ending", () => {
     expect(state.unlockedEventIds).toContain(reassurance);
     const before = state.affection;
     state = play(state, reassurance, [1]);
-    expect(state.affection).toBe(before + 1);
+    expect(state.affection).toBe(before + 2);
     expect(startDate(state, reassurance)).toBe(state);
     expect(canConfessSuccessfully(state)).toBe(false);
     state = play(state, night, [0, 2]);
@@ -201,7 +205,7 @@ describe("confession and relationship ending", () => {
     expect(validateGameState(JSON.parse(JSON.stringify(state)))).toEqual(state);
   });
   it("requires another shared date after rejection and can eventually accept without the invitation", () => {
-    let state = toWalk();
+    let state = { ...toWalk(), trust: 0 };
     expect(canConfessSuccessfully(state)).toBe(false);
     const transcript: string[] = [];
     state = play(state, confession, [1], transcript);
@@ -241,3 +245,10 @@ describe("confession and relationship ending", () => {
     expect(finishDate(state, finalRevision)).toBe(state);
   });
 });
+
+/** Reproducible positive outcomes with varied delta tickets for these progression tests. */
+function stableRolls() {
+  let index = 0;
+  const tickets = [0, 5000, 5000, 0];
+  return () => tickets[index++ % tickets.length];
+}

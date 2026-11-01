@@ -18,7 +18,7 @@ import {
 
 const dateId = dates[0].id;
 function freshDate() {
-  return startDate(seedLegacyChapter(createGame()), dateId);
+  return startDate(seedLegacyChapter(createGame()), dateId, stableRolls());
 }
 function untilChoice(state: GameState): GameState {
   let steps = 0;
@@ -130,9 +130,11 @@ describe("Ink choices and reload boundaries", () => {
         let state = startDate(
           seedLegacyChapter(createGame("主人公試験", "ヒロイン試験")),
           dateId,
+          stableRolls(),
         );
         const selected = [first, second];
         const transcript: string[] = [];
+        const resolutions: NonNullable<GameState["activeDate"]>["resolvedChoices"] = [];
         let steps = 0;
         while (state.activeDate) {
           if (++steps > 100) throw new Error("Story did not finish");
@@ -149,6 +151,7 @@ describe("Ink choices and reload boundaries", () => {
               selected[active.choiceCount],
               state.revision,
             );
+            resolutions.push(state.activeDate!.resolvedChoices.at(-1)!);
           } else state = advanceDate(state, state.revision);
         }
         expect(state.ap).toBe(2);
@@ -158,7 +161,7 @@ describe("Ink choices and reload boundaries", () => {
           effects[3 + second].memoryId,
         ]);
         expect(state.affection).toBe(
-          effects[first].affectionDelta + effects[3 + second].affectionDelta,
+          resolutions.reduce((sum, resolution) => sum + resolution.deltas.affection, 0),
         );
         expect(transcript.join("\n")).toContain("主人公試験");
         expect(transcript.join("\n")).toContain("ヒロイン試験");
@@ -204,3 +207,10 @@ describe("Ink choices and reload boundaries", () => {
     expect(() => validateGameState({ ...state, ap: -1 })).toThrow();
   });
 });
+
+/** Reproducible positive outcomes with varied delta tickets for these progression tests. */
+function stableRolls() {
+  let index = 0;
+  const tickets = [0, 5000, 5000, 0];
+  return () => tickets[index++ % tickets.length];
+}

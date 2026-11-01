@@ -3,33 +3,63 @@
   "effects": [
     {
       "id": "milano_cafe_first_joke",
-      "affectionDelta": 1,
-      "memoryId": "milano_cafe_joke"
+      "affectionDelta": 2,
+      "memoryId": "milano_cafe_joke",
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "responseProfileId": "playful"
     },
     {
       "id": "milano_cafe_first_flirt",
-      "affectionDelta": 1,
-      "memoryId": "milano_cafe_flirt"
+      "affectionDelta": 0,
+      "memoryId": "milano_cafe_flirt",
+      "trustDelta": -1,
+      "sparkDelta": 2,
+      "stageDeltas": {
+        "3": {
+          "affectionDelta": 1,
+          "trustDelta": 1,
+          "sparkDelta": 2
+        },
+        "4": {
+          "affectionDelta": 1,
+          "trustDelta": 1,
+          "sparkDelta": 2
+        }
+      },
+      "responseProfileId": "bold"
     },
     {
       "id": "milano_cafe_first_interest",
-      "affectionDelta": 2,
-      "memoryId": "milano_cafe_interest"
+      "affectionDelta": 1,
+      "memoryId": "milano_cafe_interest",
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "responseProfileId": "attentive"
     },
     {
       "id": "milano_cafe_second_playful",
-      "affectionDelta": 1,
-      "memoryId": "milano_cafe_free_time_joke"
+      "affectionDelta": 2,
+      "memoryId": "milano_cafe_free_time_joke",
+      "trustDelta": 0,
+      "sparkDelta": 1,
+      "responseProfileId": "playful"
     },
     {
       "id": "milano_cafe_second_warm",
-      "affectionDelta": 2,
-      "memoryId": "milano_cafe_secret_destination"
+      "affectionDelta": 1,
+      "memoryId": "milano_cafe_secret_destination",
+      "trustDelta": 2,
+      "sparkDelta": -1,
+      "responseProfileId": "attentive"
     },
     {
       "id": "milano_cafe_second_honest",
       "affectionDelta": 1,
-      "memoryId": "milano_cafe_future_talk"
+      "memoryId": "milano_cafe_future_talk",
+      "trustDelta": 1,
+      "sparkDelta": 1,
+      "responseProfileId": "honest"
     }
   ]
 }

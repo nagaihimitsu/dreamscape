@@ -346,7 +346,7 @@ test("an authentic Phase 3 answered battle migrates without changing its answer 
   await selectObservationClue(page, hotspots[0].id);
   await closeObservationList(page);
   const migrated = await saved(page);
-  expect(migrated.schemaVersion).toBe(8);
+  expect(migrated.schemaVersion).toBe(9);
   expect(migrated.activeBattle).toEqual({
     ...phase3.feedback.activeBattle,
     reasoning: null,

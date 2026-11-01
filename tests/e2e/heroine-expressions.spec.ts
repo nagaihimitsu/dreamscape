@@ -1,8 +1,11 @@
+import { installRomanceRolls } from "./romance-rolls";
 import { expect, test } from "@playwright/test";
 import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
 import phase7 from "../fixtures/phase7-free-time.json" with { type: "json" };
 import expressionData from "../../content/presentation/dialogue-expressions.json" with { type: "json" };
 import { choose, loadLegacyFreeTime, loadSnapshot, saved, setDialogueSpeed, startCafe, startNewGame } from "./helpers";
+
+test.beforeEach(async ({ page }) => { await installRomanceRolls(page); });
 
 test("a new journey visibly changes expression during the Duomo guide and resumes on the same line", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });

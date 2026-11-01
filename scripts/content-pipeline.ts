@@ -20,6 +20,7 @@ import {
   citySchema,
   dateCatalogSchema,
   effectCatalogSchema,
+  responseProfileCatalogSchema,
   presentationSchema,
   quizSampleSchema,
   progressionSchema,
@@ -131,6 +132,26 @@ export function compileInk(source: string, filename = "story.ink"): string {
   }
 }
 
+/** Reject Ink's own randomness; player-visible reaction rolls belong to the saved game.
+ * Inspect compiled instructions, not raw text: Ink removes comments and encodes
+ * dialogue/string literals separately, so mentioning RANDOM in prose is safe. */
+export function validateNoInkRandom(compiled: string): void {
+  const forbidden = new Map([["rnd", "RANDOM"], ["srnd", "SEED_RANDOM"], ["lrnd", "LIST_RANDOM"]]);
+  const inspect = (value: unknown): void => {
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        const command = typeof item === "string" ? forbidden.get(item) : undefined;
+        if (command)
+          throw new Error(`Ink randomness is forbidden in romance reactions: ${command}`);
+        inspect(item);
+      }
+    } else if (value !== null && typeof value === "object") {
+      for (const child of Object.values(value)) inspect(child);
+    }
+  };
+  inspect(JSON.parse(compiled));
+}
+
 /** Traverse every branch for each declared input context with the official runtime. */
 export function validateStory(
   compiled: string,
@@ -144,6 +165,8 @@ export function validateStory(
   effects: EffectDefinition[] = [],
   observe?: DialogueObserver,
   memories: { available: readonly string[]; known: readonly string[] } = { available: [], known: [] },
+  randomReactions = false,
+  onEffect?: (effectId: string) => void,
 ): number {
   const initial = new Story(compiled);
   bindMemoryReader(initial, memories.available, memories.known);
@@ -153,6 +176,10 @@ export function validateStory(
   for (const required of ["player_name", "heroine_name"]) {
     if (!initial.variablesState.GlobalVariableExistsWithName(required))
       throw new Error(`Missing required Ink variable: ${required}`);
+  }
+  if (randomReactions) for (const required of ["romance_result", "affection_delta", "trust_delta", "spark_delta"]) {
+    if (!initial.variablesState.GlobalVariableExistsWithName(required))
+      throw new Error(`Missing required random reaction Ink variable: ${required}`);
   }
   const input = {
     player_name: "検証主人公",
@@ -169,6 +196,7 @@ export function validateStory(
     for (const effect of added) {
       if (result.includes(effect))
         throw new Error(`Repeated effect in one route: ${effect}`);
+      onEffect?.(effect);
       result.push(effect);
     }
     return result;
@@ -239,21 +267,55 @@ export function validateStory(
     for (const choice of choices) {
       if (!choice.text.trim()) throw new Error("Empty choice text");
       const tags = parseStoryTags(choice.tags ?? [], context);
-      const branch = new Story(compiled);
-      bindMemoryReader(branch, memories.available, memories.known);
-      branch.state.LoadJson(checkpoint);
-      branch.ChooseChoiceIndex(choice.index);
-      visit(
-        branch.state.ToJson(),
-        choiceCount + 1,
-        appendEffects(seenEffects, tags.effects),
-        speaker,
-        choice.tags ?? [],
-      );
+      let choiceEffect: string | undefined;
+      let firstReaction: string | undefined;
+      for (const result of randomReactions ? ["positive", "negative"] : [undefined]) {
+        const branch = new Story(compiled);
+        bindMemoryReader(branch, memories.available, memories.known);
+        branch.onError = (message) => { throw new Error(message); };
+        branch.state.LoadJson(checkpoint);
+        if (result) branch.variablesState.$("romance_result", result);
+        branch.ChooseChoiceIndex(choice.index);
+        if (randomReactions) {
+          // The game must identify exactly one effect before exposing its
+          // first response, without relying on which result was rolled.
+          const probe = new Story(compiled);
+          bindMemoryReader(probe, memories.available, memories.known);
+          probe.onError = (message) => { throw new Error(message); };
+          probe.state.LoadJson(branch.state.ToJson());
+          let immediate = [...tags.effects];
+          let guard = 0;
+          let response = "";
+          while (probe.canContinue) {
+            if (++guard > 200) throw new Error("Story contains a loop or too many lines");
+            const line = probe.Continue()?.trim() ?? "";
+            immediate = appendEffects(immediate, parseStoryTags(probe.currentTags ?? [], context).effects);
+            if (line) { response = line; break; }
+          }
+          if (immediate.length !== 1)
+            throw new Error("Random choice must expose exactly one effect before its first response");
+          const effect = effects.find((item) => item.id === immediate[0]);
+          if (!effect?.responseProfileId || effect.outcome)
+            throw new Error(`Random choice effect needs a response profile: ${immediate[0]}`);
+          if (choiceEffect && choiceEffect !== immediate[0])
+            throw new Error("Random choice effect must not depend on its reaction result");
+          if (!response || (firstReaction !== undefined && firstReaction === response))
+            throw new Error("Random choice must produce different positive and negative reactions");
+          firstReaction = response;
+          choiceEffect = immediate[0];
+        }
+        visit(
+          branch.state.ToJson(),
+          choiceCount + 1,
+          appendEffects(seenEffects, tags.effects),
+          speaker,
+          choice.tags ?? [],
+        );
+      }
     }
   };
   visit(initial.state.ToJson(), 0, [], "narrator");
-  const expectedRoutes = 3 ** contract.choiceCount;
+  const expectedRoutes = (randomReactions ? 6 : 3) ** contract.choiceCount;
   if (routes !== expectedRoutes)
     throw new Error(`Expected ${expectedRoutes} routes; found ${routes}`);
   return routes;
@@ -328,6 +390,13 @@ export async function buildContent(root: string, writeOutput = true) {
       path.join(content, "romance/effect_catalog.json"),
     )
   ).effects;
+  const responseProfiles = (
+    await parseFile(
+      responseProfileCatalogSchema,
+      path.join(content, "romance/response_profiles.json"),
+    )
+  ).profiles;
+  unique(responseProfiles.map((profile) => profile.id), "response profile ID");
   const city = await parseFile(
     citySchema,
     path.join(content, "cities/milano.json"),
@@ -437,9 +506,13 @@ export async function buildContent(root: string, writeOutput = true) {
     emotionIds: Object.keys(presentation.emotions),
   };
   for (const effect of effects) {
+    if (effect.responseProfileId && !responseProfiles.some((profile) => profile.id === effect.responseProfileId))
+      throw new Error(`Unknown response profile: ${effect.id}/${effect.responseProfileId}`);
+    if (effect.outcome && effect.responseProfileId)
+      throw new Error(`Confession outcome cannot use a response profile: ${effect.id}`);
     if (effect.outcome && (effect.affectionDelta !== 0 || (effect.trustDelta ?? 0) !== 0 || (effect.sparkDelta ?? 0) !== 0 || effect.stageDeltas))
       throw new Error("Confession outcome cannot award relationship points");
-    if (!effect.memoryId && !effect.outcome)
+    if (!effect.memoryId && !effect.outcome && !effect.responseProfileId)
       throw new Error(`Effect has neither memory nor outcome: ${effect.id}`);
     if (effect.memoryId && !presentation.memories[effect.memoryId])
       throw new Error(`Unknown memory: ${effect.memoryId}`);
@@ -470,9 +543,14 @@ export async function buildContent(root: string, writeOutput = true) {
   );
   const observeForStory = (storyId: string): DialogueObserver =>
     (text, speaker, explicitEmotion) => expressionValidator.observe(storyId, text, speaker, explicitEmotion);
+  const effectDates = new Map<string, Set<string>>();
+  const deferredDateValidation: Array<() => void> = [];
   for (const date of dates) {
     if (!Object.hasOwn(stories, date.storyId))
       throw new Error(`Unknown storyId: ${date.storyId}`);
+    if (date.kind !== "confession" && date.choiceCount > 0)
+      withContext(`content/stories/${date.storyId}.ink (date ${date.id})`, () =>
+        validateNoInkRandom(stories[date.storyId]));
     unique([date.storyId, ...(date.legacyStoryIds ?? [])], "date story ID");
     for (const storyId of date.legacyStoryIds ?? [])
       if (!Object.hasOwn(stories, storyId))
@@ -494,6 +572,13 @@ export async function buildContent(root: string, writeOutput = true) {
         throw new Error(`Unknown legacy date destination: ${date.id}/${date.legacyDestinationId}`);
       if (destination.cityId !== date.chapterId)
         throw new Error(`Legacy date destination city mismatch: ${date.id}/${date.legacyDestinationId}`);
+    }
+    for (const [storyId, destinationId] of Object.entries(date.legacyStoryDestinationIds ?? {})) {
+      if (!date.legacyStoryIds?.includes(storyId))
+        throw new Error(`Legacy destination must reference a legacy story: ${date.id}/${storyId}`);
+      const destination = destinations.find((item) => item.id === destinationId);
+      if (!destination || destination.cityId !== date.chapterId)
+        throw new Error(`Unknown or mismatched legacy story destination: ${date.id}/${storyId}/${destinationId}`);
     }
     if (
       date.chapterId !== city.id ||
@@ -531,9 +616,12 @@ export async function buildContent(root: string, writeOutput = true) {
       throw new Error(`Normal dates cannot require other dates: ${date.id}`);
     if (date.kind !== "normal" && date.apCost !== 0)
       throw new Error(`Special events must be free: ${date.id}`);
+    if (date.recovery && (date.kind !== "special" || !date.repeatable || date.rewardOnlyOnce ||
+      date.apCost !== 0 || date.choiceCount !== 1 || date.effectCount !== 1))
+      throw new Error(`Recovery event must be a free, repeatable special with one choice and effect: ${date.id}`);
     if (
       (date.kind === "normal" || date.kind === "special" || date.kind === "reassurance") &&
-      date.repeatable
+      date.repeatable && !date.recovery
     )
       throw new Error(`One-time event is repeatable: ${date.id}`);
     if (date.kind === "normal" && date.choiceCount !== 2)
@@ -547,51 +635,61 @@ export async function buildContent(root: string, writeOutput = true) {
     if (date.kind === "confession" && ["accepted", "deferred", "rejected"].some((result) =>
       !date.validationContexts.some((context) => context.confessionResult === result)))
       throw new Error("Confession validation needs accepted, deferred and rejected contexts");
-    for (const storyId of [date.storyId, ...(date.legacyStoryIds ?? [])]) {
-      for (const reference of storyMemoryReferences[storyId]) {
-        const hasReference = (seed: (typeof date.validationContexts)[number]) =>
-          (seed.memoryIds ?? (seed.memoryId ? [seed.memoryId] : [])).includes(reference);
-        if (!date.validationContexts.some(hasReference) || !date.validationContexts.some((seed) => !hasReference(seed)))
-          throw new Error(`Memory reference needs present and absent validation contexts: ${storyId}/${reference}`);
+    // Traverse the complete Ink tree after inexpensive cross-content checks.
+    deferredDateValidation.push(() => {
+      for (const storyId of [date.storyId, ...(date.legacyStoryIds ?? [])]) {
+        for (const reference of storyMemoryReferences[storyId]) {
+          const hasReference = (seed: (typeof date.validationContexts)[number]) =>
+            (seed.memoryIds ?? (seed.memoryId ? [seed.memoryId] : [])).includes(reference);
+          if (!date.validationContexts.some(hasReference) || !date.validationContexts.some((seed) => !hasReference(seed)))
+            throw new Error(`Memory reference needs present and absent validation contexts: ${storyId}/${reference}`);
+        }
+        for (const seed of date.validationContexts) {
+          if (seed.memoryId && !presentation.memories[seed.memoryId])
+            throw new Error(`Unknown validation memory: ${seed.memoryId}`);
+          unique(seed.memoryIds ?? [], "validation memory ID");
+          for (const memoryId of seed.memoryIds ?? [])
+            if (!presentation.memories[memoryId]) throw new Error(`Unknown validation memory: ${memoryId}`);
+          const suffix = progression.stages.find(
+            (stage) => stage.stage === seed.romanceStage,
+          )!.playerSuffix;
+          const memory =
+            progression.memoryCallbacks.find(
+              (callback) => callback.memoryId === seed.memoryId,
+            )?.textJa ?? progression.fallbackMemoryCallbackJa;
+          const checkedRoutes = withContext(
+            `content/stories/${storyId}.ink (date ${date.id})`,
+            () =>
+              validateStory(
+                stories[storyId],
+                context,
+                date,
+                {
+                  player_address: `検証主人公${suffix}`,
+                  romance_stage: seed.romanceStage,
+                  memory_callback: memory,
+                  confession_ready: seed.confessionReady,
+                  confession_result: seed.confessionResult ?? (seed.confessionReady ? "accepted" : "deferred"),
+                  ending_reached: seed.endingReached ?? false,
+                  has_cafe_memory: seed.hasCafeMemory ?? false,
+                },
+                effects,
+                observeForStory(storyId),
+                { available: seed.memoryIds ?? (seed.memoryId ? [seed.memoryId] : []), known: Object.keys(presentation.memories) },
+                storyId === date.storyId && date.kind !== "confession" && date.choiceCount > 0,
+                (effectId) => {
+                  const users = effectDates.get(effectId) ?? new Set<string>();
+                  users.add(date.id);
+                  effectDates.set(effectId, users);
+                },
+              ),
+          );
+          if (storyId === date.storyId) routes += checkedRoutes;
+        }
       }
-      for (const seed of date.validationContexts) {
-        if (seed.memoryId && !presentation.memories[seed.memoryId])
-          throw new Error(`Unknown validation memory: ${seed.memoryId}`);
-        unique(seed.memoryIds ?? [], "validation memory ID");
-        for (const memoryId of seed.memoryIds ?? [])
-          if (!presentation.memories[memoryId]) throw new Error(`Unknown validation memory: ${memoryId}`);
-        const suffix = progression.stages.find(
-          (stage) => stage.stage === seed.romanceStage,
-        )!.playerSuffix;
-        const memory =
-          progression.memoryCallbacks.find(
-            (callback) => callback.memoryId === seed.memoryId,
-          )?.textJa ?? progression.fallbackMemoryCallbackJa;
-        const checkedRoutes = withContext(
-          `content/stories/${storyId}.ink (date ${date.id})`,
-          () =>
-            validateStory(
-              stories[storyId],
-              context,
-              date,
-              {
-                player_address: `検証主人公${suffix}`,
-                romance_stage: seed.romanceStage,
-                memory_callback: memory,
-                confession_ready: seed.confessionReady,
-                confession_result: seed.confessionResult ?? (seed.confessionReady ? "accepted" : "deferred"),
-                ending_reached: seed.endingReached ?? false,
-                has_cafe_memory: seed.hasCafeMemory ?? false,
-              },
-              effects,
-              observeForStory(storyId),
-              { available: seed.memoryIds ?? (seed.memoryId ? [seed.memoryId] : []), known: Object.keys(presentation.memories) },
-            ),
-        );
-        if (storyId === date.storyId) routes += checkedRoutes;
-      }
-    }
+    });
   }
+
   const verifyDateReferences = (ids: string[], label: string) => {
     unique(ids, label);
     if (ids.some((id) => !dates.some((date) => date.id === id)))
@@ -773,6 +871,13 @@ export async function buildContent(root: string, writeOutput = true) {
     context,
     observeForStory,
   );
+  for (const validateDate of deferredDateValidation) validateDate();
+  for (const effect of effects) {
+    if (effect.memoryId || effect.outcome) continue;
+    const users = effectDates.get(effect.id);
+    if (!users?.size || [...users].some((dateId) => !dates.find((date) => date.id === dateId)?.recovery))
+      throw new Error(`Effect has neither memory nor outcome outside recovery: ${effect.id}`);
+  }
   for (const battle of battles) validateBattleEvidence(battle, tourism.clues);
   validateJourney(
     journey,

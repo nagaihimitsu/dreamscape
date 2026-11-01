@@ -10,6 +10,8 @@ export function resolveRomancePresentation(
   const storyId = activeDateStoryId(date, active);
   return {
     storyId,
-    destinationId: storyId === date.storyId ? date.destinationId : date.legacyDestinationId,
+    destinationId: storyId === date.storyId
+      ? date.destinationId
+      : date.legacyStoryDestinationIds?.[storyId] ?? date.legacyDestinationId,
   };
 }

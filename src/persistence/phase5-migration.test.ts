@@ -44,7 +44,7 @@ describe("published Phase 4 saves migrate without overwriting their checkpoints"
       if (loaded.status !== "loaded")
         throw new Error("Actual Phase 4 save failed to load");
       const next = loaded.state;
-      expect(next.schemaVersion).toBe(8);
+      expect(next.schemaVersion).toBe(9);
       for (const key of [
         "playerName",
         "heroineName",
@@ -62,8 +62,11 @@ describe("published Phase 4 saves migrate without overwriting their checkpoints"
         "activeTourism",
         "visitedLandmarkIds",
         "discoveredClueIds",
-      ] as const)
-        expect(next[key], key).toEqual(fixture[key]);
+      ] as const) {
+        if (key === "activeDate" && fixture.activeDate)
+          expect(next.activeDate, key).toMatchObject({ ...fixture.activeDate, resolutionMode: "legacy_fixed", randomPlan: [], resolvedChoices: [], responseSnapshot: null });
+        else expect(next[key], key).toEqual(fixture[key]);
+      }
       expect(next.activeBattle).toEqual(
         fixture.activeBattle
           ? { ...fixture.activeBattle, reasoning: null }

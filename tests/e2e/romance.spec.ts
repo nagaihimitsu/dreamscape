@@ -1,3 +1,4 @@
+import { installRomanceRolls } from "./romance-rolls";
 import { expect, test } from "@playwright/test";
 import {
   SAVE_KEY,
@@ -11,6 +12,8 @@ import {
   finishCafe,
   revealDialogueControl,
 } from "./helpers";
+
+test.beforeEach(async ({ page }) => { await installRomanceRolls(page); });
 
 test.use({ reducedMotion: "reduce" });
 
@@ -127,7 +130,7 @@ test("corrupted save is preserved until explicit backup and fresh start", async 
         key.startsWith(`${SAVE_KEY}.backup.`) && value === "{broken-save",
     ),
   ).toBe(true);
-  expect((await saved(page)).schemaVersion).toBe(8);
+  expect((await saved(page)).schemaVersion).toBe(9);
   expect((await saved(page)).ap).toBe(0);
 });
 

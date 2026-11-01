@@ -1,7 +1,10 @@
+import { installRomanceRolls } from "./romance-rolls";
 import { expect, test } from "@playwright/test";
 import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
 import phase7 from "../fixtures/phase7-free-time.json" with { type: "json" };
 import { availableAp, choose, expectNoOverflow, findDateOption, finishEvent, loadSnapshot, saved, setDialogueSpeed, startEvent } from "./helpers";
+
+test.beforeEach(async ({ page }) => { await installRomanceRolls(page); });
 
 test.use({ reducedMotion: "reduce" });
 

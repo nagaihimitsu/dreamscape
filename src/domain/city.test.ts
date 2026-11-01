@@ -142,7 +142,7 @@ function tour(initial = createGame()): GameState {
   return state;
 }
 function playDate(initial: GameState, id: string, choices = [0, 0]): GameState {
-  let state = startDate(initial, id);
+  let state = startDate(initial, id, stableRolls());
   expect(state.activeDate?.dateId).toBe(id);
   for (let count = 0; state.activeDate && count < 100; count++) {
     state = restore(state);
@@ -337,12 +337,12 @@ describe("Milan's four episodes and distinct city finale", () => {
     state = playDate(state, "milano_cafe_01", [0, 0]);
     state = playDate(state, "milano_walk_01", [0, 1]);
     state = playDate(state, "milano_invitation_01", [0]);
-    state = playDate(state, "milano_night_01", [0, 1]);
     state = playDate(state, "milano_confession_01", [0]);
     expect(state.confessionStatus).toBe("deferred");
     // Respecting her request for time raises trust; a second confession can
     // then succeed without changing the battle rewards or adding trial AP.
     state = playDate(state, "milano_reassurance_01", [1]);
+    state = playDate(state, "milano_night_01", [0, 1]);
     state = playDate(state, "milano_confession_01", [0]);
     expect(state.endingReached).toBe(true);
     expect(totalAp(state)).toBe(7);
@@ -382,3 +382,10 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(new Set(texts).size).toBe(5);
   });
 });
+
+/** Reproducible positive outcomes with varied delta tickets for these progression tests. */
+function stableRolls() {
+  let index = 0;
+  const tickets = [0, 5000, 5000, 0];
+  return () => tickets[index++ % tickets.length];
+}

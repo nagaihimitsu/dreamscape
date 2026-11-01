@@ -176,7 +176,7 @@ describe("content build acceptance", () => {
     expect(result.routes).toBe(
       dateData.dates.reduce(
         (sum, date) =>
-          sum + 3 ** date.choiceCount * date.validationContexts.length,
+          sum + (date.kind === "confession" ? 3 : 6) ** date.choiceCount * date.validationContexts.length,
         0,
       ),
     );

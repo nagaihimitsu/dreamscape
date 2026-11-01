@@ -34,7 +34,7 @@ describe("version 8 romance compatibility", () => {
     expect(loaded.status).toBe("loaded");
     if (loaded.status !== "loaded") throw new Error("Published checkpoint was rejected");
     const state = loaded.state;
-    expect(state.schemaVersion).toBe(8);
+    expect(state.schemaVersion).toBe(9);
     expect(state).toMatchObject({
       playerName: raw.playerName,
       heroineName: raw.heroineName,
@@ -110,7 +110,7 @@ describe("version 8 romance compatibility", () => {
       },
     };
     let state = parseGameState(JSON.stringify(old));
-    expect(state.activeDate).toEqual(old.activeDate);
+    expect(state.activeDate).toMatchObject({ ...old.activeDate, resolutionMode: "legacy_fixed", randomPlan: [], resolvedChoices: [], responseSnapshot: null });
     for (let step = 0; state.activeDate && step < 80; step++) {
       const active = state.activeDate;
       if (active.frame.ended) state = finishDate(state, state.revision);

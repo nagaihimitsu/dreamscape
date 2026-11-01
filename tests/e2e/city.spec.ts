@@ -1,3 +1,4 @@
+import { installRomanceRolls } from "./romance-rolls";
 import { expect, test } from "@playwright/test";
 import tourism from "../../content/tourism/catalog.json" with { type: "json" };
 import journey from "../../content/progression/journey.json" with { type: "json" };
@@ -47,6 +48,8 @@ async function continueJourney(page: import("@playwright/test").Page, format?: "
   }
   await page.getByTestId("next-tourism").click();
 }
+
+test.beforeEach(async ({ page }) => { await installRomanceRolls(page); });
 
 test.use({ reducedMotion: "reduce", viewport: { width: 360, height: 740 } });
 
@@ -383,6 +386,6 @@ test("a published Last Supper completion keeps its reward and resumes at unvisit
   expect(result.state.completedEpisodeIds[0]).toBe(
     "milano_last_supper_episode",
   );
-  expect(result.state.schemaVersion).toBe(8);
+  expect(result.state.schemaVersion).toBe(9);
   await reloadUnchanged(page);
 });

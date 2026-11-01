@@ -52,7 +52,10 @@ describe("Phase 5 to 6 save migration", () => {
       const state = validateGameState(raw);
       expect(state).toEqual({
         ...raw,
-        schemaVersion: 8,
+        schemaVersion: 9,
+        recoveryAfterRejection: false,
+        completedRecoveryCount: 0,
+        activeDate: raw.activeDate ? { ...raw.activeDate, resolutionMode: "legacy_fixed", randomPlan: [], resolvedChoices: [], responseSnapshot: null } : null,
         ...legacyRomanceValues(raw, progression),
         activeEpilogue: null,
         viewedEpilogueCityIds: [],

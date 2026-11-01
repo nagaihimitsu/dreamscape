@@ -143,8 +143,14 @@ export function selectStoryChoice(
   previous: StoryFrame,
   index: number,
   memoryIds: readonly string[] = [],
+  variables: Record<string, string | number | boolean> = {},
 ): StoryStep {
   const story = runtime(storyId, saved, memoryIds);
+  for (const [name, value] of Object.entries(variables)) {
+    if (!story.variablesState.GlobalVariableExistsWithName(name))
+      throw new Error(`シナリオの変数が見つかりません: ${name}`);
+    story.variablesState.$(name, value);
+  }
   const choice = story.currentChoices.find((item) => item.index === index);
   if (!choice) throw new Error("選択肢が見つかりません。");
   const tags = choice.tags ?? [];
