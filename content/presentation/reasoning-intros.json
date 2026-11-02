@@ -11,11 +11,11 @@
     },
     {
       "battleId": "milano_la_scala_b01",
-      "storyId": "battles/milano_la_scala_b_rebuttal"
+      "storyId": "battles/sound_scala_rebuttal"
     },
     {
       "battleId": "milano_brera_c01",
-      "storyId": "battles/milano_brera_c_rebuttal"
+      "storyId": "battles/sound_brera_rebuttal"
     }
   ]
 }

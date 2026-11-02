@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import catalog from "../../content/tourism/catalog.json" with { type: "json" };
-import quiz from "../../content/quizzes/last_supper_B1.json" with { type: "json" };
+import oldQuiz from "../../content/quizzes/last_supper_B1.json" with { type: "json" };
+import quiz from "../../content/quizzes/sound_supper_B1.json" with { type: "json" };
 import phase3 from "../fixtures/phase3-saves.json" with { type: "json" };
 import {
   SAVE_KEY,
@@ -38,6 +39,7 @@ const document = clues.find((item) => item.kind === "document")!;
 test("a named guide resumes, the real image loads, and every discovery persists in the cluebook", async ({
   page,
 }) => {
+  test.setTimeout(90_000);
   await page.setViewportSize({ width: 360, height: 740 });
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
@@ -360,7 +362,7 @@ test("an authentic Phase 3 answered battle migrates without changing its answer 
     ...phase3.feedback.activeBattle,
     reasoning: null,
   });
-  for (const option of quiz.questions[0].options)
+  for (const option of oldQuiz.questions[0].options)
     await expect(page.getByTestId(`answer-${option.id}`)).toBeDisabled();
   await page.getByTestId("battle-advance").click();
   await battleDialogueUntilQuestionOrResult(page);

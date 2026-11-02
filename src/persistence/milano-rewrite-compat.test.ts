@@ -38,14 +38,18 @@ describe("published Milan scenario compatibility", () => {
   });
   it.each(["b", "c"] as const)("resumes %s with its original proof after battle content changes", (fixture) => {
     const original = validateGameState(published[fixture]);
+    const originalContent = getActiveBattleContent(original.activeBattle!);
     const battle = battles.find((entry) => entry.id === original.activeBattle!.battleId)!;
     const oldName = battle.enemyNameJa;
     try {
       battle.enemyNameJa = `${oldName} (revised)`;
       const restored = validateGameState(published[fixture]);
       const content = getActiveBattleContent(restored.activeBattle!);
-      expect(content.legacy).toBe(true);
       expect(content.battle.enemyNameJa).toBe(oldName);
+      expect(content.battle.storyId).toBe(originalContent.battle.storyId);
+      expect(content.quiz).toEqual(originalContent.quiz);
+      const relevant = (item: typeof content) => item.clues.filter((clue) => content.battle.reasoning!.caseClueIds.includes(clue.id));
+      expect(relevant(content)).toEqual(relevant(originalContent));
       const selected = restored.activeBattle!.reasoning!.selectedClueIds[0];
       const next = selectReasoningClue(restored, selected, restored.revision);
       expect(next.activeBattle!.reasoning!.selectedClueIds).not.toContain(selected);

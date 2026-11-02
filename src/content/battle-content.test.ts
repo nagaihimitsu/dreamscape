@@ -59,8 +59,10 @@ describe("battle content contract", () => {
     const result = await buildContent(fixture);
     expect(result.routes).toBeGreaterThanOrEqual(105);
     expect(result.battleScenarios).toBeGreaterThanOrEqual(13);
-    expect(Object.keys(result.quizzes).sort()).toEqual(
-      battleData.battles.map((battle) => battle.quizId).sort(),
+    // Previously published quiz sets remain available for old save and
+    // learning records alongside the revised battles' production quizzes.
+    expect(Object.keys(result.quizzes)).toEqual(
+      expect.arrayContaining(battleData.battles.map((battle) => battle.quizId)),
     );
     const generated = JSON.parse(
       await readFile(
@@ -78,7 +80,7 @@ describe("battle content contract", () => {
     ).toBe(3);
   });
 
-  it("uses distinct correct/wrong reactions and all three endings without UI prose", async () => {
+  it("uses distinct correct/wrong reactions and completes the ending without UI prose", async () => {
     const result = await buildContent(fixture, false);
     const battle = result.battles[0];
     const compiled = result.stories[battle.storyId];
@@ -90,7 +92,10 @@ describe("battle content contract", () => {
     const endings = [0, 2, 3].map((score) =>
       dialogue(compiled, battle.scenes.outro, score > 0, score),
     );
-    expect(new Set(endings).size).toBe(3);
+    // The revised scene responds to the last answer, while the score still
+    // remains available for the battle result and reward calculations.
+    expect(endings[0]).not.toBe(endings[1]);
+    expect(endings[1]).toBe(endings[2]);
     // The discovery for a later round must not be explained by the preceding scene.
     const intro = dialogue(compiled, battle.scenes.intro, false, 0);
     expect(intro).not.toMatch(/三角形|こめかみ|乾いた/);

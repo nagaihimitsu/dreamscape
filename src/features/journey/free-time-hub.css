@@ -146,6 +146,29 @@
   grid-column: 1 / -1;
 }
 
+/* A visit and its optional encounters share the same place row. */
+.revisit-list .revisit-place-row { display: block; }
+.revisit-place-heading { display: flex; align-items: center; gap: 10px; }
+.revisit-place-heading > span, .revisit-place-select { flex: 1; min-width: 0; }
+.revisit-place-select {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 44px;
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  color: var(--green);
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+.revisit-place-select span { text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.revisit-place-select:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+.revisit-menu .revisit-place-heading > .secondary { flex: none; width: auto; min-width: 82px; min-height: 44px; }
+.encounter-place-menu { margin: 4px 0 12px; }
+.encounter-place-menu h3 { margin: 4px 0 0; font-size: 14px; }
+
 @media (max-width: 600px) {
   .free-time-active .free-time-hub {
     padding: 14px 16px 20px;

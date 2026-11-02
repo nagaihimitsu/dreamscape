@@ -57,7 +57,7 @@ describe("dialogue reaction validation", () => {
 });
 
 it("integrates date and battle annotations through the real content pipeline", async () => {
-  const { mkdtemp, rm, writeFile } = await import("node:fs/promises");
+  const { mkdtemp, readFile, rm, writeFile } = await import("node:fs/promises");
   const { tmpdir } = await import("node:os");
   const path = await import("node:path");
   const { prepareContentFixture } = await import("../src/content/test-fixtures");
@@ -74,9 +74,10 @@ it("integrates date and battle annotations through the real content pipeline", a
       ],
     }));
     await expect(buildContent(fixture, false)).resolves.toBeDefined();
+    const learningDetails = JSON.parse(await readFile(path.join(fixture, "content/learning/details.json"), "utf8"));
     await writeFile(path.join(fixture, "content/presentation/dialogue-reactions.json"), JSON.stringify({
       schemaVersion: 1,
-      entries: [{ storyId: "learning/english", speaker: "heroine", text: "「Which descriptionが、この文では主語だね。」", targetCharacterId: "heroine", mark: "question" }],
+      entries: [{ storyId: learningDetails.storyId, speaker: "heroine", text: "「Which descriptionが、この文では主語だね。」", targetCharacterId: "heroine", mark: "question" }],
     }));
     await expect(buildContent(fixture, false)).rejects.toThrow("Unsupported dialogue reaction story");
   } finally {

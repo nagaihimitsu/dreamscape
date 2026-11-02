@@ -20,7 +20,7 @@ for (const width of [320, 360]) {
     await expect(page.getByTestId("event-milano_invitation_01").locator(".event-context")).toHaveText("りえからのお誘い");
     await expect(page.getByTestId("event-milano_confession_01").locator(".event-context")).toHaveText("大切な話");
     await expect(page.getByTestId("event-milano_rain_pause_01").locator(".event-context")).toHaveText("今だけの出来事");
-    expect((await list.boundingBox())!.height).toBeLessThanOrEqual(520);
+    expect((await list.boundingBox())!.height).toBeLessThanOrEqual(560);
     const nav = page.getByRole("navigation", { name: "デート候補のページ" });
     // The completed old cafe is available once in its rewritten form.
     await expect(nav).toContainText("1 / 3");

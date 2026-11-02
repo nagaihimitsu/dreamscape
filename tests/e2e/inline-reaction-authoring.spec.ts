@@ -3,7 +3,7 @@ import galleria from "../fixtures/galleria-stage2-pool.json" with { type: "json"
 import catalog from "../../content/encounters/catalog.json" with { type: "json" };
 import compiledStories from "../../src/content/generated/stories.json" with { type: "json" };
 import { Compiler } from "inkjs/compiler/Compiler";
-import { expectNoOverflow, loadSnapshot, saved, setDialogueSpeed } from "./helpers";
+import { expectNoOverflow, loadSnapshot, openRevisits, saved, setDialogueSpeed } from "./helpers";
 
 test("inline Ink reactions display for both people during a newly registered encounter", async ({ page }, testInfo) => {
   test.setTimeout(90_000);
@@ -40,8 +40,8 @@ VAR heroine_name = ""
 
   await page.setViewportSize({ width: 360, height: 780 });
   await loadSnapshot(page, galleria);
-  const toggle = page.getByTestId("encounter-menu-toggle");
-  if (!(await toggle.locator("..").evaluate((details: HTMLDetailsElement) => details.open))) await toggle.click();
+  await openRevisits(page);
+  await page.getByTestId("revisit-place-galleria_vittorio_emanuele_ii").click();
   await page.getByText("追加した交流", { exact: true }).locator("..").locator("..").getByRole("button").click();
   await expect(page.getByTestId("encounter-screen")).toBeVisible();
   await setDialogueSpeed(page, "0");

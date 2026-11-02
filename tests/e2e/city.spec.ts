@@ -119,7 +119,7 @@ test("a new zero-score Milan journey reaches the city epilogue and romance endin
   await startNewGame(page, ["航", "澪"]);
   expect((await saved(page)).legacyTrialAvailable).toBe(false);
   await expect(page.getByTestId("episode-screen")).toContainText(
-    "ミラノ 第1話／ドゥオモ",
+    "無人の広場、一名追加",
   );
   await page.getByTestId("episode-start").click();
   for (const [index, episode] of cityEpisodes.entries()) {
@@ -189,7 +189,7 @@ test("a new zero-score Milan journey reaches the city epilogue and romance endin
   });
   await page.getByTestId("city-epilogue-start").click();
   const initialEpilogue = await finishCityEpilogue(page, true);
-  expect(initialEpilogue).toMatch(/澪|航|地図|メモ|街/);
+  expect(initialEpilogue).toContain("ダルセナ");
   expect((await saved(page)).viewedEpilogueCityIds).toEqual(["milano"]);
   expect((await saved(page)).endingReached).toBe(false);
   await expect(page.getByTestId("city-progress")).toContainText("都市クリア");
@@ -218,8 +218,8 @@ test("a new zero-score Milan journey reaches the city epilogue and romance endin
   expect(finished.confessionStatus).toBe("accepted");
   expect(finished.playedDateIds).toContain("milano_city_date_01");
   expect(
-    finished.memories.filter((id) => id.startsWith("milano_city_date_")),
-  ).toHaveLength(2);
+    finished.memories.filter((id) => id === "sound_memory_city_date_01"),
+  ).toHaveLength(1);
   expect(availableAp(finished)).toBe(8);
   expect(finished.pendingApRewards).toEqual([]);
   expect(finished.claimedRewardIds).toEqual(boss.state.claimedRewardIds);

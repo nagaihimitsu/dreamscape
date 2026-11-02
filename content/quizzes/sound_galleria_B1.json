@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "id": "sound_galleria_b1",
+  "landmarkId": "galleria_vittorio_emanuele_ii",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "sound_galleria_1",
+      "questionEn": "Which walk does the covered arcade make possible?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "From the castle to the old port."
+        },
+        {
+          "id": "B",
+          "textEn": "From the Duomo to La Scala."
+        },
+        {
+          "id": "C",
+          "textEn": "From Brera to the old refectory."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "arcade",
+          "meaning": "屋根付きの通路"
+        }
+      ],
+      "hintJa": "一方の出口では教会に、もう一方では舞台芸術に出合う。",
+      "correctExplanationJa": "ガッレリアは大聖堂側とスカラ座側をつなぐ。店に用がなくても、人がここを通る理由がある。",
+      "incorrectExplanationJa": "城と港、ブレラと旧食堂はこの通路の両端ではない。 ガッレリアは大聖堂側とスカラ座側をつなぐ。店に用がなくても、人がここを通る理由がある。",
+      "sources": [
+        {
+          "publisher": "YesMilano",
+          "title": "Galleria Vittorio Emanuele II",
+          "url": "https://www.yesmilano.it/en/see-and-do/venues/galleria-vittorio-emanuele-ii",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリアは大聖堂側とスカラ座側をつなぐ。店に用がなくても、人がここを通る理由がある。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "sound_galleria_2",
+      "questionEn": "Why call the Galleria the city's drawing room?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "People meet and spend time there."
+        },
+        {
+          "id": "B",
+          "textEn": "Artists rent it to draw portraits."
+        },
+        {
+          "id": "C",
+          "textEn": "Its shops once sold only furniture."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "drawing room",
+          "meaning": "客間"
+        }
+      ],
+      "hintJa": "drawing room は家の中で人を迎える部屋。",
+      "correctExplanationJa": "立ち話や散策、食事を楽しむ場所として街の暮らしに組み込まれている。",
+      "incorrectExplanationJa": "drawing の一語から画室を連想する読みや、家具販売に限定する説明では、愛称を説明できない。 立ち話や散策、食事を楽しむ場所として街の暮らしに組み込まれている。",
+      "sources": [
+        {
+          "publisher": "YesMilano",
+          "title": "Galleria Vittorio Emanuele II",
+          "url": "https://www.yesmilano.it/en/see-and-do/venues/galleria-vittorio-emanuele-ii",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "立ち話や散策、食事を楽しむ場所として街の暮らしに組み込まれている。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "sound_galleria_3",
+      "questionEn": "What did the Galleria offer people after the opera?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A place to meet the orchestra on stage."
+        },
+        {
+          "id": "B",
+          "textEn": "A place to rehearse the next opera."
+        },
+        {
+          "id": "C",
+          "textEn": "A place to stroll and have dinner."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "stroll",
+          "meaning": "ぶらぶら歩く"
+        }
+      ],
+      "hintJa": "劇場を出た人の夜はどこで続くだろう。",
+      "correctExplanationJa": "ガッレリアは上演後の食事や社交の散策にも使われた。二つの名所の間に、夜の続きがある。",
+      "incorrectExplanationJa": "舞台上の面会や稽古をする施設としての記述ではない。 ガッレリアは上演後の食事や社交の散策にも使われた。二つの名所の間に、夜の続きがある。",
+      "sources": [
+        {
+          "publisher": "YesMilano",
+          "title": "Galleria Vittorio Emanuele II",
+          "url": "https://www.yesmilano.it/en/see-and-do/venues/galleria-vittorio-emanuele-ii",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリアは上演後の食事や社交の散策にも使われた。二つの名所の間に、夜の続きがある。"
+        }
+      ],
+      "difficulty": "easy"
+    }
+  ]
+}

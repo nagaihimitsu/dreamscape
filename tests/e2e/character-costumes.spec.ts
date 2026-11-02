@@ -40,18 +40,18 @@ test("a basic outfit works in Milan with its regional outfit undelivered, includ
   await loadSnapshot(page, phase1.started);
   const before = await saved(page);
   const portrait = page.locator(".romance-scene .vn-character");
-  await expect(portrait.locator("img")).toHaveAttribute("src", new RegExp(`${basicNeutralPath}$`));
+  await expect(portrait.locator(":scope > img")).toHaveAttribute("src", new RegExp(`${basicNeutralPath}$`));
   const placement = await portrait.getAttribute("style");
   await setDialogueSpeed(page, "0");
   await choose(page, 1);
   await expect.poll(async () => (await saved(page)).activeDate?.frame.emotion).toBe("shy");
-  await expect(portrait.locator("img")).toHaveAttribute("src", new RegExp(`${basicNeutralPath}$`));
+  await expect(portrait.locator(":scope > img")).toHaveAttribute("src", new RegExp(`${basicNeutralPath}$`));
   expect(await portrait.getAttribute("style")).toBe(placement);
   const progressed = await saved(page);
   expect(progressed.ap).toBe(before.ap);
   await page.reload();
   expect(await saved(page)).toEqual(progressed);
-  await expect(portrait.locator("img")).toHaveAttribute("src", new RegExp(`${basicNeutralPath}$`));
+  await expect(portrait.locator(":scope > img")).toHaveAttribute("src", new RegExp(`${basicNeutralPath}$`));
   await expectNoOverflow(page);
 
   await page.evaluate(() => localStorage.removeItem("dreamscape.save.v1"));
@@ -59,7 +59,7 @@ test("a basic outfit works in Milan with its regional outfit undelivered, includ
   await loadLegacyFreeTime(page);
   await startCafe(page);
   expect((await saved(page)).heroineName).toBe("花子");
-  await expect(portrait.locator("img")).toHaveAttribute("src", new RegExp(`${basicNeutralPath}$`));
+  await expect(portrait.locator(":scope > img")).toHaveAttribute("src", new RegExp(`${basicNeutralPath}$`));
 });
 
 test("the preview supports the registered expressions, choosing neutral when a difference is absent", async ({ page }) => {
@@ -77,7 +77,7 @@ test("the preview supports the registered expressions, choosing neutral when a d
   for (const emotion of ids) {
     await selector.selectOption(emotion);
     const expected = emotion === "smile" ? basicSmilePath : basicNeutralPath;
-    await expect(portrait.locator("img")).toHaveAttribute("src", new RegExp(`${expected}$`));
+    await expect(portrait.locator(":scope > img")).toHaveAttribute("src", new RegExp(`${expected}$`));
     expect(await portrait.getAttribute("style")).toBe(placement);
   }
   await page.getByTestId("preview-background").selectOption("dark");
@@ -101,11 +101,11 @@ test("the preview distinguishes a broken basic expression from an unfinished one
   await installDeliveredImages(page, { basic: true, smile: true, failSmile: true });
   await page.goto("/?character-preview");
   await page.getByTestId("preview-emotion").selectOption("smile");
-  await expect(page.getByTestId("preview-stage").locator(".vn-character img")).toHaveAttribute("src", new RegExp(`${basicNeutralPath}$`));
+  await expect(page.getByTestId("preview-stage").locator(".vn-character > img")).toHaveAttribute("src", new RegExp(`${basicNeutralPath}$`));
   await expect(page.getByTestId("preview-status")).toContainText("読み込めません");
   await page.getByTestId("preview-emotion").selectOption("shy_deep");
   await expect(page.getByTestId("preview-status")).toContainText("未登録");
-  await expect(page.getByTestId("preview-stage").locator(".vn-character img")).toHaveAttribute("src", new RegExp(`${basicNeutralPath}$`));
+  await expect(page.getByTestId("preview-stage").locator(".vn-character > img")).toHaveAttribute("src", new RegExp(`${basicNeutralPath}$`));
 });
 
 test("the full-figure preview fits the delivered canvas and keeps each expression aligned", async ({ page }) => {
@@ -114,7 +114,7 @@ test("the full-figure preview fits the delivered canvas and keeps each expressio
   await expect(page.getByTestId("preview-layout")).toHaveValue("fit");
   await page.getByLabel("台詞枠を表示").uncheck();
   const stage = page.getByTestId("preview-stage");
-  const portrait = stage.locator(".vn-character img");
+  const portrait = stage.locator(".vn-character > img");
   const heroine = characterData.characters.find((item) => item.id === "heroine")!;
   const expressions = heroine.costumes!.find((item) => item.id === "default_01")!.poses[0].expressions as Record<string, string>;
   const ids = ["neutral", "smile", "happy", "shy", "shy_deep", "surprised", "surprised_big", "worried", "serious", "teasing", "teasing_big"];
@@ -162,16 +162,16 @@ test("a delivered neutral stays on the same outfit during an old date and a rena
   await installDeliveredImages(page);
   await loadSnapshot(page, phase1.started);
   const old = await saved(page);
-  await expect(page.locator(".romance-scene .vn-character img")).toHaveAttribute("src", new RegExp(`${neutralPath}$`));
+  await expect(page.locator(".romance-scene .vn-character > img")).toHaveAttribute("src", new RegExp(`${neutralPath}$`));
   await setDialogueSpeed(page, "0");
-  await choose(page, 1); // This real branch asks for shy, which has not been delivered.
+  await choose(page, 1); // This legacy branch asks for shy, which has not been delivered.
   await expect.poll(async () => (await saved(page)).activeDate?.frame.emotion).toBe("shy");
-  await expect(page.locator(".romance-scene .vn-character img")).toHaveAttribute("src", new RegExp(`${neutralPath}$`));
+  await expect(page.locator(".romance-scene .vn-character > img")).toHaveAttribute("src", new RegExp(`${neutralPath}$`));
   const progressed = await saved(page);
   expect(progressed.ap).toBe(old.ap);
   await page.reload();
   expect(await saved(page)).toEqual(progressed);
-  await expect(page.locator(".romance-scene .vn-character img")).toHaveAttribute("src", new RegExp(`${neutralPath}$`));
+  await expect(page.locator(".romance-scene .vn-character > img")).toHaveAttribute("src", new RegExp(`${neutralPath}$`));
   await expectNoOverflow(page);
 
   // An independently named player and heroine still reference the stable heroine ID.
@@ -180,7 +180,7 @@ test("a delivered neutral stays on the same outfit during an old date and a rena
   await loadLegacyFreeTime(page);
   await startCafe(page);
   expect((await saved(page)).heroineName).toBe("花子");
-  await expect(page.locator(".romance-scene .vn-character img")).toHaveAttribute("src", new RegExp(`${neutralPath}$`));
+  await expect(page.locator(".romance-scene .vn-character > img")).toHaveAttribute("src", new RegExp(`${neutralPath}$`));
 });
 
 test("the development preview shows added expressions and same-pose fallback without touching the save", async ({ page }) => {
@@ -192,13 +192,13 @@ test("the development preview shows added expressions and same-pose fallback wit
   await expect(page.getByTestId("character-preview")).toBeVisible();
   await page.getByTestId("preview-costume").selectOption("south_europe_01");
   const portrait = page.getByTestId("preview-stage").locator(".vn-character");
-  await expect(portrait.locator("img")).toHaveAttribute("src", new RegExp(`${neutralPath}$`));
+  await expect(portrait.locator(":scope > img")).toHaveAttribute("src", new RegExp(`${neutralPath}$`));
   const initialPosition = await portrait.getAttribute("style");
   await page.getByTestId("preview-emotion").selectOption("smile");
-  await expect(portrait.locator("img")).toHaveAttribute("src", new RegExp(`${smilePath}$`));
+  await expect(portrait.locator(":scope > img")).toHaveAttribute("src", new RegExp(`${smilePath}$`));
   expect(await portrait.getAttribute("style")).toBe(initialPosition);
   await page.getByTestId("preview-emotion").selectOption("shy");
-  await expect(portrait.locator("img")).toHaveAttribute("src", new RegExp(`${neutralPath}$`));
+  await expect(portrait.locator(":scope > img")).toHaveAttribute("src", new RegExp(`${neutralPath}$`));
   await expect(page.getByTestId("preview-status")).toContainText("neutral");
   expect(await portrait.getAttribute("style")).toBe(initialPosition);
   await page.getByTestId("preview-background").selectOption("dark");
@@ -224,7 +224,7 @@ test("a broken expression falls back to its own costume neutral in the preview",
   await page.goto("/?character-preview");
   await page.getByTestId("preview-costume").selectOption("south_europe_01");
   await page.getByTestId("preview-emotion").selectOption("smile");
-  await expect(page.getByTestId("preview-stage").locator(".vn-character img")).toHaveAttribute("src", new RegExp(`${neutralPath}$`));
+  await expect(page.getByTestId("preview-stage").locator(".vn-character > img")).toHaveAttribute("src", new RegExp(`${neutralPath}$`));
   await expect(page.getByTestId("preview-status")).toContainText("読み込めません");
 });
 
@@ -234,7 +234,7 @@ test("a full-canvas 2:3 portrait has room for its head above the date dialogue o
   for (const size of [{ width: 320, height: 568 }, { width: 360, height: 640 }]) {
     await page.setViewportSize(size);
     const scene = page.getByTestId("romance-scene");
-    const image = scene.locator(".vn-character img");
+    const image = scene.locator(".vn-character > img");
     await expect(image).toBeVisible();
     const sceneBox = (await scene.boundingBox())!;
     const imageBox = (await image.boundingBox())!;

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import oldFreeTime from "../../tests/fixtures/castle-clear-unplayed.json";
 import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
 import { effects } from "../content";
 import { beginStory, storyFingerprint } from "../story/runtime";
@@ -55,11 +56,39 @@ describe("stage delta compatibility at the same bold choice", () => {
     [1, 0, "positive"], [1, 9999, "negative"],
     [4, 0, "positive"], [4, 9999, "negative"],
   ] as const)("applies only the saved random deltas at stage %i and roll %i", (stage, roll, outcome) => {
+    const currentId = "common_date_first_bold";
+    const currentEffect = effects.find((item) => item.id === currentId)!;
+    expect(currentEffect.responseProfileId).toBe("bold");
+    const base = validateGameState(oldFreeTime);
+    const currentBase = stage === 1 ? base : { ...base, romanceStage: 4 as const, affection: 10, trust: 10, spark: 10 };
+    const ready = untilChoice(startDate(currentBase, "milano_novecento_date_01", () => roll));
+    const after = chooseDate(ready, 2, ready.revision);
+    const resolved = after.activeDate!.resolvedChoices[0];
+    expect(resolved.effectId).toBe(currentId);
+    expect(resolved.result).toBe(outcome);
+    expect(after.affection - ready.affection).toBe(resolved.deltas.affection);
+    expect(after.trust - ready.trust).toBe(resolved.deltas.trust);
+    expect(after.spark - ready.spark).toBe(resolved.deltas.spark);
+    expect(after.activeDate!.appliedEffectIds.filter((id) => id.endsWith(`:${currentId}`))).toHaveLength(1);
+    expect(after.memories).toEqual(ready.memories);
+    expect(chooseDate(after, 2, ready.revision)).toBe(after);
+    expect(validateGameState(JSON.parse(JSON.stringify(after)))).toEqual(after);
+  });
+
+  it.each([
+    [1, 0, "positive"], [1, 9999, "negative"],
+    [4, 0, "positive"], [4, 9999, "negative"],
+  ] as const)("resumes the prior random script without double-applying its stage delta at stage %i and roll %i", (stage, roll, outcome) => {
+    const base = baseState(stage);
+    const started = startDate(base, dateId, () => roll);
+    const storyId = "milano/cafe_refresh_01";
+    const step = beginStory(storyId, base.playerName, base.heroineName, { romance_stage: stage });
+    const activeDate = { ...started.activeDate!, storyState: step.storyState, storyHash: storyFingerprint(storyId), frame: step.frame };
+    const ready = untilChoice(validateGameState({ ...started, activeDate }));
     const currentId = `${effectId}_refresh`;
     const currentEffect = effects.find((item) => item.id === currentId)!;
     expect(currentEffect.responseProfileId).toBe("bold");
     expect(currentEffect.stageDeltas?.["4"]).toBeDefined();
-    const ready = untilChoice(startDate(baseState(stage), dateId, () => roll));
     const after = chooseDate(ready, 1, ready.revision);
     const resolved = after.activeDate!.resolvedChoices[0];
     expect(resolved.effectId).toBe(currentId);

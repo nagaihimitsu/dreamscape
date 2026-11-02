@@ -10,10 +10,10 @@
       "battleId": "milano_duomo_01",
       "legacyChapterId": "milano",
       "requiredEpisodeIds": [],
-      "titleJa": "ミラノ 第1話／ドゥオモ",
-      "descriptionJa": "ドゥオモ広場で資料を拾い、大聖堂へ届いた石の道を見つける。",
+      "titleJa": "無人の広場、一名追加",
+      "descriptionJa": "広場で録音中の男が、小さな布を頭からかぶった。",
       "clearTitleJa": "ドゥオモ編 クリア",
-      "clearDescriptionJa": "大聖堂を見上げていた首を休める。次へ歩いても、二人の時間を取ってもいい。"
+      "clearDescriptionJa": "袖の音を持って、ガラス屋根の下へ。"
     },
     {
       "id": "milano_galleria_episode",
@@ -25,10 +25,10 @@
       "requiredEpisodeIds": [
         "milano_duomo_episode"
       ],
-      "titleJa": "ミラノ 第2話／ガッレリア",
-      "descriptionJa": "ガッレリアの店先で、土産売りに床の牛を勧められる。その牛はどこの街の印だろう。",
+      "titleJa": "そこ、映っています",
+      "descriptionJa": "二人の後ろで、見知らぬ人が同じ動きを繰り返している。",
       "clearTitleJa": "ガッレリア編 クリア",
-      "clearDescriptionJa": "ガラス屋根の下を通り抜ける。見上げた景色と、床の牛をもう一度確かめたくなった。"
+      "clearDescriptionJa": "録音を消した広場に、今度は自分の足で戻れる。"
     },
     {
       "id": "milano_last_supper_episode",
@@ -37,10 +37,10 @@
       "landmarkId": "last_supper",
       "battleId": "milano_last_supper_01",
       "legacyChapterId": "milano",
-      "titleJa": "ミラノ 第3話／最後の晩餐",
-      "descriptionJa": "修道院の旧食堂で、孫への便りを書こうとする旅行者と絵の前に立つ。",
+      "titleJa": "五本の指で話す人",
+      "descriptionJa": "旧食堂で声を出さない兄と、その手を見て席を立つ妹がいる。",
       "clearTitleJa": "最後の晩餐編 クリア",
-      "clearDescriptionJa": "旧食堂を出て午後の街へ。絵の中で見つけた表情を、話しながら歩く。",
+      "clearDescriptionJa": "三秒のままの録音をしまい、旧食堂を出る。",
       "requiredEpisodeIds": [
         "milano_galleria_episode"
       ]
@@ -55,10 +55,10 @@
       "requiredEpisodeIds": [
         "milano_last_supper_episode"
       ],
-      "titleJa": "ミラノ 第4話／スフォルツェスコ城",
-      "descriptionJa": "城の中庭で、親戚の子に渡す案内を作る来館者に出会う。",
+      "titleJa": "鼻がなくなる前に",
+      "descriptionJa": "城の中庭で、父親が自分の鼻をかばっている。",
       "clearTitleJa": "スフォルツェスコ城編 クリア",
-      "clearDescriptionJa": "城を出る前に振り返る。案内に書けなかった場所も、まだ気になる。"
+      "clearDescriptionJa": "笑った顔のまま、中庭に人を残して歩き出す。"
     },
     {
       "id": "milano_finale",
@@ -73,11 +73,11 @@
         "milano_last_supper_episode",
         "milano_castello_episode"
       ],
-      "epilogueStoryId": "milano/city_epilogue_rewrite",
-      "titleJa": "ミラノ 都市フィナーレ",
-      "descriptionJa": "ダルセナの水辺で、旅行案内の編集者とミラノの旅を振り返る。",
+      "epilogueStoryId": "milano/sound_epilogue",
+      "titleJa": "この十秒を誰に渡す",
+      "descriptionJa": "ダルセナで小さなラジオが始まる。旅の音を一つだけ選んでほしいという。",
       "clearTitleJa": "ミラノ 都市クリア",
-      "clearDescriptionJa": "水辺で旅のメモを開く。二人が残したい言葉は、まだ増えるかもしれない。"
+      "clearDescriptionJa": "放送は終わった。水辺を離れる時間は、まだ二人で決められる。"
     }
   ],
   "storyBattles": [
@@ -85,16 +85,16 @@
       "battleId": "milano_la_scala_b01",
       "afterEpisodeId": "milano_last_supper_episode",
       "beforeEpisodeId": "milano_castello_episode",
-      "titleJa": "スカラ座の記録",
-      "descriptionJa": "スカラ座博物館で、見学用の文章を確かめる。",
+      "titleJa": "椅子にも身元がある",
+      "descriptionJa": "スカラ座の前に、売り物でも腰掛けでもない椅子が一脚ある。",
       "actionLabelJa": "スカラ座へ行く"
     },
     {
       "battleId": "milano_brera_c01",
       "afterEpisodeId": "milano_castello_episode",
       "beforeEpisodeId": "milano_finale",
-      "titleJa": "ブレラへ届いた絵",
-      "descriptionJa": "ブレラ絵画館で、旅人と祭壇画の記録をつなぐ。",
+      "titleJa": "青い布をほどくまで",
+      "descriptionJa": "ブレラで衣装係と演出家が、同じ布の端を持っている。",
       "actionLabelJa": "ブレラ絵画館へ行く"
     }
   ],

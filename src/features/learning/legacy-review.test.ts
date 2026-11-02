@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import phase6 from "../../../tests/fixtures/phase6-saves.json";
+import previousDuomo from "../../../qa/old-saves/duomo-round-two.json";
+import { learningTranslations } from "../../content";
 import { validateGameState } from "../../domain/game";
 import { enterFreeTime } from "../../domain/chapter";
 import { answeredQuestions } from "./EnglishReview";
@@ -26,5 +28,13 @@ describe("review of published battle answers", () => {
     expect(answeredQuestions(game, learning)).toHaveLength(3);
     const unknown = { data: { records: { [active.battleId]: { ...record, contentHash: "unknown" } } } } as unknown as Learning;
     expect(answeredQuestions(game, unknown)).toEqual([]);
+  });
+
+  it("keeps a pre-rewrite Duomo answer and its translation available", () => {
+    const game = validateGameState(previousDuomo);
+    const learning = { data: { records: {} } } as unknown as Learning;
+    const answers = answeredQuestions(game, learning);
+    expect(answers.map(({ question }) => question.id)).toEqual(["duomo_candoglia_marble"]);
+    expect(learningTranslations.duomo_candoglia_marble).toBeDefined();
   });
 });

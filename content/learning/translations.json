@@ -754,6 +754,604 @@
         "B": "ずっと元の教会の祭壇に置かれた。",
         "C": "教会の祭壇から、ミラノの美術学習のための収集へ移った。"
       }
+    },
+    "sound_duomo_1": {
+      "source": {
+        "questionEn": "Why were earlier places of worship buried here?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "To protect them from winter floods."
+          },
+          {
+            "id": "B",
+            "textEn": "To make room for the new cathedral."
+          },
+          {
+            "id": "C",
+            "textEn": "To build a square for a weekly market."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "以前この場所にあった礼拝施設は、なぜ埋められましたか。",
+      "optionsJa": {
+        "A": "冬の洪水から守るため。",
+        "B": "新しい大聖堂の場所を確保するため。",
+        "C": "週に一度の市場を開く広場を造るため。"
+      }
+    },
+    "sound_duomo_2": {
+      "source": {
+        "questionEn": "What once happened in the pool below the square?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "People received baptism."
+          },
+          {
+            "id": "B",
+            "textEn": "Visitors washed their clothes."
+          },
+          {
+            "id": "C",
+            "textEn": "Builders tested stone for cracks."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "広場の下に残る水盤では、かつて何が行われましたか。",
+      "optionsJa": {
+        "A": "人々が洗礼を受けた。",
+        "B": "訪れた人が衣服を洗った。",
+        "C": "建設職人が石のひびを調べた。"
+      }
+    },
+    "sound_duomo_3": {
+      "source": {
+        "questionEn": "How can a donor leave a name in the history of the Duomo today?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "By naming a new entrance."
+          },
+          {
+            "id": "B",
+            "textEn": "By signing a roof tile."
+          },
+          {
+            "id": "C",
+            "textEn": "By joining the donor register."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "現在、寄付者がドゥオモの歴史に名前を残せる方法はどれですか。",
+      "optionsJa": {
+        "A": "新しい入口に名を付ける。",
+        "B": "屋根のタイルに署名する。",
+        "C": "寄付者名簿に名前を載せる。"
+      }
+    },
+    "sound_galleria_1": {
+      "source": {
+        "questionEn": "Which walk does the covered arcade make possible?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "From the castle to the old port."
+          },
+          {
+            "id": "B",
+            "textEn": "From the Duomo to La Scala."
+          },
+          {
+            "id": "C",
+            "textEn": "From Brera to the old refectory."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "この屋根付き通路では、どの場所の間を歩けますか。",
+      "optionsJa": {
+        "A": "城から旧港まで。",
+        "B": "ドゥオモからスカラ座まで。",
+        "C": "ブレラから旧食堂まで。"
+      }
+    },
+    "sound_galleria_2": {
+      "source": {
+        "questionEn": "Why call the Galleria the city's drawing room?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "People meet and spend time there."
+          },
+          {
+            "id": "B",
+            "textEn": "Artists rent it to draw portraits."
+          },
+          {
+            "id": "C",
+            "textEn": "Its shops once sold only furniture."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "なぜガッレリアを街の客間と呼ぶのでしょう。",
+      "optionsJa": {
+        "A": "人々がそこで会い、時間を過ごすから。",
+        "B": "画家が肖像を描くために借りるから。",
+        "C": "かつて家具だけを売っていたから。"
+      }
+    },
+    "sound_galleria_3": {
+      "source": {
+        "questionEn": "What did the Galleria offer people after the opera?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A place to meet the orchestra on stage."
+          },
+          {
+            "id": "B",
+            "textEn": "A place to rehearse the next opera."
+          },
+          {
+            "id": "C",
+            "textEn": "A place to stroll and have dinner."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "オペラのあと、この通路は人々にどんな楽しみを提供しましたか。",
+      "optionsJa": {
+        "A": "舞台で楽団と会う場所。",
+        "B": "次のオペラの稽古をする場所。",
+        "C": "散策や夕食を楽しむ場所。"
+      }
+    },
+    "sound_supper_1": {
+      "source": {
+        "questionEn": "Why does the painted room seem to share the friars' light?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Painted lamps match the lamps on the table."
+          },
+          {
+            "id": "B",
+            "textEn": "The wall lets real daylight through the figures."
+          },
+          {
+            "id": "C",
+            "textEn": "Light in the scene matches light from the real windows."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "絵の部屋と修道士の部屋に、同じ光が差すように見えるのはなぜですか。",
+      "optionsJa": {
+        "A": "絵のランプと実物の食卓のランプが対応するから。",
+        "B": "壁が人物像を通して日光を透かすから。",
+        "C": "絵の中の光が実際の窓からの光と対応するから。"
+      }
+    },
+    "sound_supper_2": {
+      "source": {
+        "questionEn": "Matthew reaches toward Jesus but looks away. What does this show?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "He is asking others to notice what Jesus said."
+          },
+          {
+            "id": "B",
+            "textEn": "He is calling a servant to clear the table."
+          },
+          {
+            "id": "C",
+            "textEn": "He is turning to see who entered the room."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "マタイはイエスの方に両腕を伸ばし、別の方を向いています。この動きは何を示しますか。",
+      "optionsJa": {
+        "A": "ほかの人にイエスの言葉へ注意を向けるよう促している。",
+        "B": "食卓を片づけるよう召使いを呼んでいる。",
+        "C": "部屋に入ってきた人を見ようとしている。"
+      }
+    },
+    "sound_supper_3": {
+      "source": {
+        "questionEn": "What freedom did painting on dry plaster give Leonardo?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "He could move the wall after painting."
+          },
+          {
+            "id": "B",
+            "textEn": "He could work slowly and revise his work."
+          },
+          {
+            "id": "C",
+            "textEn": "He could paint the picture without light."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "乾いた漆喰に描く方法は、レオナルドにどんな自由を与えましたか。",
+      "optionsJa": {
+        "A": "描いたあとに壁を移動できた。",
+        "B": "時間をかけて描き直せた。",
+        "C": "明かりがなくても絵を描けた。"
+      }
+    },
+    "sound_scala_1": {
+      "source": {
+        "questionEn": "What could a family do with its theatre box in early La Scala?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Decorate it to suit their taste."
+          },
+          {
+            "id": "B",
+            "textEn": "Choose the conductor for each show."
+          },
+          {
+            "id": "C",
+            "textEn": "Decide who could use the stage door."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "初期のスカラ座で、家族は所有する桟敷席をどう扱えましたか。",
+      "optionsJa": {
+        "A": "好みに合わせて飾る。",
+        "B": "公演ごとに指揮者を選ぶ。",
+        "C": "楽屋口を使える人を決める。"
+      }
+    },
+    "sound_scala_2": {
+      "source": {
+        "questionEn": "Which record challenges the claim that the stalls always had fixed seats?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Families decorated their own boxes."
+          },
+          {
+            "id": "B",
+            "textEn": "Visitors hired movable seats in the stalls."
+          },
+          {
+            "id": "C",
+            "textEn": "Electric light filled the auditorium."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "平土間の席はいつも固定されていた、という主張を疑わせる記録はどれですか。",
+      "optionsJa": {
+        "A": "家族が各自の桟敷を飾った。",
+        "B": "客が平土間で動かせる椅子を借りた。",
+        "C": "電灯が客席全体を照らした。"
+      }
+    },
+    "sound_scala_3": {
+      "source": {
+        "questionEn": "What did people do among the ruins before the theatre fully reopened?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "They sold the boxes at an auction."
+          },
+          {
+            "id": "B",
+            "textEn": "They built a second stage for rehearsals."
+          },
+          {
+            "id": "C",
+            "textEn": "They held a concert with ordinary chairs for the audience."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "劇場が本格的に再開する前、人々は廃墟で何をしましたか。",
+      "optionsJa": {
+        "A": "桟敷を競売にかけた。",
+        "B": "稽古用の第二舞台を建てた。",
+        "C": "普通の椅子を客席にして演奏会を開いた。"
+      }
+    },
+    "sound_castle_1": {
+      "source": {
+        "questionEn": "Who once needed the room that now holds the Rondanini Pietà?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Musicians waiting for a court concert."
+          },
+          {
+            "id": "B",
+            "textEn": "Soldiers who needed care."
+          },
+          {
+            "id": "C",
+            "textEn": "Sculptors learning to carve stone."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "現在《ロンダニーニのピエタ》がある部屋を、かつて必要としたのは誰ですか。",
+      "optionsJa": {
+        "A": "宮廷演奏会を待つ楽師。",
+        "B": "手当てが必要な兵士。",
+        "C": "石の彫り方を学ぶ彫刻家。"
+      }
+    },
+    "sound_castle_2": {
+      "source": {
+        "questionEn": "What marked Michelangelo's work on his last Pietà?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "He kept changing it over years."
+          },
+          {
+            "id": "B",
+            "textEn": "He copied a finished model without changes."
+          },
+          {
+            "id": "C",
+            "textEn": "He cut a new figure for each hospital bed."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "ミケランジェロが最後のピエタを制作する過程には、どんな特徴がありましたか。",
+      "optionsJa": {
+        "A": "何年もかけて形を変え続けた。",
+        "B": "完成模型を変えずに写した。",
+        "C": "病院のベッドごとに新しい像を彫った。"
+      }
+    },
+    "sound_castle_3": {
+      "source": {
+        "questionEn": "What can a visitor do in the present display of the Pietà?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Handle a piece of its original stone."
+          },
+          {
+            "id": "B",
+            "textEn": "Watch the statue turn above the beds."
+          },
+          {
+            "id": "C",
+            "textEn": "See the sculpture from all sides."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "現在のピエタの展示で、来館者にできることはどれですか。",
+      "optionsJa": {
+        "A": "作品本来の石の一部を手に取る。",
+        "B": "ベッドの上で像が回るのを見る。",
+        "C": "さまざまな方向から像を見る。"
+      }
+    },
+    "sound_brera_1": {
+      "source": {
+        "questionEn": "What draws viewers so close to Mantegna's Dead Christ?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A long procession leading into the distance."
+          },
+          {
+            "id": "B",
+            "textEn": "An extreme view along the length of the body."
+          },
+          {
+            "id": "C",
+            "textEn": "A portrait of the viewer beside the mourners."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "マンテーニャの《死せるキリスト》で、見る人を近くへ引き込む表現は何ですか。",
+      "optionsJa": {
+        "A": "遠くまで続く長い行列。",
+        "B": "身体の長さに沿って見通す極端な構図。",
+        "C": "嘆く人々の隣に描かれた鑑賞者の肖像。"
+      }
+    },
+    "sound_brera_2": {
+      "source": {
+        "questionEn": "What did the public show at Brera in 1859 celebrate?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A royal wedding in medieval Milan."
+          },
+          {
+            "id": "B",
+            "textEn": "The opening of the opera season."
+          },
+          {
+            "id": "C",
+            "textEn": "Progress in the struggle for Italian unity."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "1859年のブレラの展覧会は何を祝うものでしたか。",
+      "optionsJa": {
+        "A": "中世ミラノの王家の結婚。",
+        "B": "オペラシーズンの開幕。",
+        "C": "イタリア統一をめぐる闘いの進展。"
+      }
+    },
+    "sound_brera_3": {
+      "source": {
+        "questionEn": "What reading links the clothes in The Kiss with its first public show?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Love between two people also carries a patriotic message."
+          },
+          {
+            "id": "B",
+            "textEn": "The couple are singers wearing costumes from an opera."
+          },
+          {
+            "id": "C",
+            "textEn": "The lovers are showing the uniform of a single army."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "《接吻》の衣装と最初の公開時の事情を結び付けると、どんな読みができますか。",
+      "optionsJa": {
+        "A": "二人の恋に愛国的な意味も重なっている。",
+        "B": "二人はオペラ衣装を着た歌手である。",
+        "C": "恋人たちは一つの軍隊の制服を示している。"
+      }
+    },
+    "sound_finale_1": {
+      "source": {
+        "questionEn": "What did the Darsena offer Milan before it became a meeting place for evening walks?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A stage for outdoor opera."
+          },
+          {
+            "id": "B",
+            "textEn": "A port where canals meet."
+          },
+          {
+            "id": "C",
+            "textEn": "A pool for public baptism."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "夕方の散歩で人々が集まるようになる前、ダルセナは街に何を提供していましたか。",
+      "optionsJa": {
+        "A": "屋外オペラ用の舞台。",
+        "B": "運河が合流する港。",
+        "C": "共同洗礼用の水盤。"
+      }
+    },
+    "sound_finale_2": {
+      "source": {
+        "questionEn": "Which load linked the waterways to the Duomo building site?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Marble for the cathedral."
+          },
+          {
+            "id": "B",
+            "textEn": "Frames for the glass arcade."
+          },
+          {
+            "id": "C",
+            "textEn": "Seats for the theatre boxes."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "運河とドゥオモの建設現場を結んだ積み荷は何ですか。",
+      "optionsJa": {
+        "A": "大聖堂のための大理石。",
+        "B": "ガラスの通路の骨組み。",
+        "C": "劇場の桟敷の椅子。"
+      }
+    },
+    "sound_finale_3": {
+      "source": {
+        "questionEn": "Why limit the number of people in the old refectory?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "To leave room for the friars' meals today."
+          },
+          {
+            "id": "B",
+            "textEn": "To keep the painted figures hidden from the street."
+          },
+          {
+            "id": "C",
+            "textEn": "To help protect a fragile wall painting."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "旧食堂に入る人数を制限するのはなぜですか。",
+      "optionsJa": {
+        "A": "現在の修道士の食事の席を空けるため。",
+        "B": "絵の人物を通りから見えなくするため。",
+        "C": "傷みやすい壁画を守るため。"
+      }
+    },
+    "sound_finale_4": {
+      "source": {
+        "questionEn": "Why could the stalls at early La Scala serve as a dance floor?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The boxes could be lowered onto the stage."
+          },
+          {
+            "id": "B",
+            "textEn": "The seats could be taken away."
+          },
+          {
+            "id": "C",
+            "textEn": "The orchestra played outside the building."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "初期のスカラ座の平土間をダンスの場にできたのはなぜですか。",
+      "optionsJa": {
+        "A": "桟敷を舞台に降ろせたから。",
+        "B": "椅子を取り払えたから。",
+        "C": "楽団が建物の外で演奏したから。"
+      }
+    },
+    "sound_finale_5": {
+      "source": {
+        "questionEn": "Which trace of work can you still find in Vicolo dei Lavandai?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A stone basin for washing clothes."
+          },
+          {
+            "id": "B",
+            "textEn": "A stone table for cutting marble."
+          },
+          {
+            "id": "C",
+            "textEn": "A stone counter for selling tickets."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "洗濯屋小路には今も、どんな仕事の跡が残っていますか。",
+      "optionsJa": {
+        "A": "洗濯に使う石の洗い場。",
+        "B": "大理石を切る石の作業台。",
+        "C": "切符を売る石のカウンター。"
+      }
     }
   }
 }

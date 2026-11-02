@@ -1,0 +1,110 @@
+{
+  "baseCommit": "3f32b60ec1e861040412b3eb8e5f5bc56d681166",
+  "stories": {
+    "battles/milano_last_supper_rewrite": {
+      "kind": "battle",
+      "ownerId": "milano_last_supper_01",
+      "sha256": "50c0f85776e6b4da8f55e597b97e8d4f94195223ac058055219c6721ec3080e3"
+    },
+    "battles/milano_duomo_rewrite": {
+      "kind": "battle",
+      "ownerId": "milano_duomo_01",
+      "sha256": "16b1c56742de6f5f119f7b5b1202e2f34193997d4dba7d39685df8cf3c072111"
+    },
+    "battles/milano_galleria_rewrite": {
+      "kind": "battle",
+      "ownerId": "milano_galleria_01",
+      "sha256": "e9b673179f454d927fd794b1354304fc760266bc2356ab4ae0771fce2a41f366"
+    },
+    "battles/milano_castello_rewrite": {
+      "kind": "battle",
+      "ownerId": "milano_castello_01",
+      "sha256": "819dbeaed924930c802793446a14a4bf610aa6da4305fad5810b7e76c3486fb0"
+    },
+    "battles/milano_city_finale_rewrite": {
+      "kind": "battle",
+      "ownerId": "milano_city_boss_01",
+      "sha256": "d7c6042b94459fb53cb512164f4bafe1d331c4223cf1c7e43d397ba078116795"
+    },
+    "battles/milano_la_scala_b": {
+      "kind": "battle",
+      "ownerId": "milano_la_scala_b01",
+      "sha256": "75761e2392ef352dc19263b7bca79c30f87722a917ca99c5fa35d45a6ff7d1e7"
+    },
+    "battles/milano_brera_c": {
+      "kind": "battle",
+      "ownerId": "milano_brera_c01",
+      "sha256": "731e3a3b99aae0cce0bc18de5269524e0378c4076d7f8fa0146861eaccf884f5"
+    },
+    "tourism/last_supper_guide_rewrite": {
+      "kind": "guide",
+      "ownerId": "last_supper",
+      "sha256": "b3f1b2d53086cde980958b9ffbaf4e980007b2be6c44dccaae655e81bdb75dda"
+    },
+    "tourism/duomo_guide_rewrite": {
+      "kind": "guide",
+      "ownerId": "duomo_milano",
+      "sha256": "59e5a245317b360aeed0bb52d6712bdb437c25079dde60f477ad325e0b1fc468"
+    },
+    "tourism/galleria_guide_rewrite": {
+      "kind": "guide",
+      "ownerId": "galleria_vittorio_emanuele_ii",
+      "sha256": "9bb2a62191bef0160a47340edeb4642282082b2f8d387732cc1cc23bc68030fb"
+    },
+    "tourism/castello_guide_rewrite": {
+      "kind": "guide",
+      "ownerId": "castello_sforzesco",
+      "sha256": "2f166e9c4969b44558a21f32f384b9b51adaf0d1db6e6d05e08461925d46547f"
+    },
+    "tourism/la_scala_case_guide": {
+      "kind": "guide",
+      "ownerId": "la_scala_case",
+      "sha256": "b6cf987558dc2a381599804c2f4f2ee8abbe806725677653db0e0bb2a9ca69ca"
+    },
+    "tourism/brera_case_guide": {
+      "kind": "guide",
+      "ownerId": "brera_case",
+      "sha256": "a74d2387e4f2643504ac266a9df77fb99b95fa48a630149e4935d941e009e283"
+    },
+    "milano/city_epilogue_rewrite": {
+      "kind": "epilogue",
+      "ownerId": "milano_finale",
+      "sha256": "c3526a2ca21b368cea63b2a481842b8912f9c04258d011b663bda0399197da88"
+    },
+    "battles/milano_la_scala_b_rebuttal": {
+      "kind": "rebuttal",
+      "ownerId": "milano_la_scala_b01",
+      "sha256": "20654717fdd628cf38c302c1eb355f7f4eb7d0f008250358f90626dbce35d124"
+    },
+    "battles/milano_brera_c_rebuttal": {
+      "kind": "rebuttal",
+      "ownerId": "milano_brera_c01",
+      "sha256": "98a4f046a46e6b316cfc852fba58ae911da4e8595480ad115e031951af928090"
+    },
+    "encounters/galleria_fortune_rewrite": {
+      "kind": "encounter",
+      "ownerId": "galleria_fortune",
+      "sha256": "24962ed7885b87f1a007d9f4291c46e40759fb7c14dd9259d05619fd97b91e22"
+    },
+    "encounters/galleria_quiz_won_rewrite": {
+      "kind": "encounter_won",
+      "ownerId": "galleria_fortune",
+      "sha256": "529de41c581f9618e8d5d464fb7d01a2a6ca9fb4bc908d64bb59e967676876e8"
+    },
+    "encounters/galleria_quiz_lost_rewrite": {
+      "kind": "encounter_lost",
+      "ownerId": "galleria_fortune",
+      "sha256": "f9778cd9b010e43ce74b2ac23cf57611f78299f862f5854995a24cfae853c0ad"
+    },
+    "encounters/galleria_quiz_already_rewrite": {
+      "kind": "encounter_already",
+      "ownerId": "galleria_fortune",
+      "sha256": "f2340fea773e6070e7a2126a885267101fa3164e08800f39e55f7dd30007bf97"
+    },
+    "learning/english": {
+      "kind": "learning",
+      "ownerId": "learning",
+      "sha256": "5e338f9dcb6ee3b9e56ef6001602b7bc0a73eaf972c6f277cfe50cdac87db661"
+    }
+  }
+}

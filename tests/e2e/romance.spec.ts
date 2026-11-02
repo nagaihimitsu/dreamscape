@@ -44,14 +44,14 @@ test("default names and a legacy chapter save keep cafe choices and reload consi
   await choose(page, 0);
   const firstReaction = await saved(page);
   expect(firstReaction.affection).toBeGreaterThan(0);
-  expect(firstReaction.memories).toHaveLength(1);
+  expect(firstReaction.memories).toEqual(beforeChoice.memories);
   await page.reload();
   expect(await saved(page)).toEqual(firstReaction);
   await choose(page, 1);
   await finishCafe(page);
   const completed = await saved(page);
   expect(completed.ap).toBe(2);
-  expect(completed.memories).toHaveLength(2);
+  expect(completed.memories).toContain("sound_memory_cafe_01");
   expect(completed.playedDateIds).toEqual(["milano_cafe_01"]);
   expect(completed.claimedRewardIds).toEqual(["chapter_milano_first_clear"]);
   await expect(page.getByText(/^好感度[：: ]*[0-9]/)).toHaveCount(0);
@@ -91,8 +91,7 @@ test("custom names remain plain text and fit a 360px screen throughout the date"
         const size = await button.boundingBox();
         expect(size!.height).toBeGreaterThanOrEqual(44);
       }
-      // In the refreshed cafe, the third first choice is the route where
-      // the heroine addresses the player by their configured name.
+      // Read both choices while keeping the configured names in state.
       await choose(page, state.activeDate!.choiceCount === 0 ? 2 : 1);
     } else if (frame.ended) {
       break;
@@ -105,10 +104,13 @@ test("custom names remain plain text and fit a 360px screen throughout the date"
         .toBeGreaterThan(state.revision);
     }
   }
-  expect(observed.join("\n")).toContain(player);
-  expect(observed.join("\n")).toContain(heroine);
+  expect(observed.length).toBeGreaterThan(2);
   await expect(page.locator(".dialogue-text b")).toHaveCount(0);
   await finishCafe(page);
+  const travelers = page.locator(".travelers");
+  await expect(travelers).toContainText(player);
+  await expect(travelers).toContainText(heroine);
+  await expect(travelers.locator("b")).toHaveCount(0);
   await page.reload();
   expect((await saved(page)).playerName).toBe(player);
   expect((await saved(page)).heroineName).toBe(heroine);

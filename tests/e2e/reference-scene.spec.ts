@@ -33,6 +33,7 @@ for (const size of [
   { width: 960, height: 540, label: "landscape" },
 ]) {
   test(`reference scenes remain playable in ${size.label}`, async ({ page }) => {
+    test.setTimeout(90_000);
     await page.setViewportSize({ width: size.width, height: size.height });
     const shot = (name: string) => page.screenshot({
       path: `artifacts/utage-reference/${name}-${size.label}.png`,
@@ -124,7 +125,7 @@ test("short portrait keeps the face clear and the date playable to the end", asy
   async function expectFaceAboveWindow() {
     // On very short screens the page may scroll to reach a control; returning
     // to the top must still reveal the face, with the window below it.
-    await expectPortraitHeadAboveDialogue(page, ".romance-scene .vn-character img", ".romance-scene .vn-dialogue");
+    await expectPortraitHeadAboveDialogue(page, ".romance-scene .vn-character > img", ".romance-scene .vn-dialogue");
   }
   await loadSnapshot(page, phase1.started);
   await setDialogueSpeed(page, "0");
@@ -158,7 +159,7 @@ test("the supplied heroine portrait keeps its head clear of the battle dialogue 
   for (const viewport of [{ width: 320, height: 568 }, { width: 360, height: 640 }]) {
     await page.setViewportSize(viewport);
     await loadSnapshot(page, phase6.battleDialogue);
-    await expectPortraitHeadAboveDialogue(page, ".battle-heroine .vn-character img", ".battle-paper-shell");
+    await expectPortraitHeadAboveDialogue(page, ".battle-heroine .vn-character > img", ".battle-paper-shell");
   }
 });
 

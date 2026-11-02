@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import phase7 from "../fixtures/phase7-free-time.json" with { type: "json" };
-import scalaQuiz from "../../content/quizzes/la_scala_b_reasoning_B1.json" with { type: "json" };
-import breraQuiz from "../../content/quizzes/brera_c_reasoning_B1.json" with { type: "json" };
+import scalaQuiz from "../../content/quizzes/sound_scala_B1.json" with { type: "json" };
+import breraQuiz from "../../content/quizzes/sound_brera_B1.json" with { type: "json" };
 import { expectNoOverflow, loadSnapshot, saved } from "./helpers";
 import { answerRound, battleDialogueUntilQuestionOrResult, reloadUnchanged } from "./battle-helpers";
 import { setEvidence, submitEvidence } from "./reasoning-helpers";
@@ -24,8 +24,8 @@ test("old records stay intact while the new Scala and Brera cases play on the ma
   expect((await saved(page)).schemaVersion).toBe(7);
   expect(initial.schemaVersion).toBe(11);
   const cases = [
-    { id: "milano_la_scala_b01", place: "スカラ座", quiz: scalaQuiz, wrong: ["scala_ducal_fire"], correct: ["scala_air_raid"] },
-    { id: "milano_brera_c01", place: "ブレラ", quiz: breraQuiz, wrong: ["brera_collection_origins", "brera_mantegna_purchase"], correct: ["brera_original_altar", "brera_collection_transfer"] },
+    { id: "milano_la_scala_b01", place: "スカラ座", quiz: scalaQuiz, wrong: ["scala_box"], correct: ["scala_mobile"] },
+    { id: "milano_brera_c01", place: "ブレラ", quiz: breraQuiz, wrong: ["brera_view", "brera_legacy"], correct: ["brera_colours", "brera_show"] },
   ];
   for (const scenario of cases) {
     const entry = page.getByTestId(`next-story-battle-${scenario.id}`);

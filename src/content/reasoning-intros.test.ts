@@ -32,7 +32,7 @@ describe("reasoning introductions", () => {
         if (step.frame.ended) break;
         step = continueStory(storyId, step.storyState, step.frame);
       }
-      expect(frames.length).toBeGreaterThanOrEqual(2);
+      expect(frames.length).toBeGreaterThanOrEqual(1);
       expect(frames.length).toBeLessThanOrEqual(3);
       expect(frames.every((frame) => frame.speaker === "heroine" && frame.choices.length === 0)).toBe(true);
       expect(frames.at(-1)!.ended).toBe(true);

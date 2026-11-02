@@ -15,11 +15,11 @@ function choice(state: GameState): GameState {
     state = advanceDate(state, state.revision);
   return state;
 }
-function finish(state: GameState): GameState {
+function finish(state: GameState, selections: readonly number[] = [0, 0]): GameState {
   for (let n = 0; n < 100 && state.activeDate; n++) {
     const active = state.activeDate;
     if (active.frame.ended) state = finishDate(state, state.revision);
-    else if (active.frame.choices.length) state = chooseDate(state, 0, state.revision);
+    else if (active.frame.choices.length) state = chooseDate(state, selections[active.choiceCount] ?? 0, state.revision);
     else state = advanceDate(state, state.revision);
   }
   expect(state.activeDate).toBeNull();
@@ -51,7 +51,9 @@ describe("persisted romance choice resolutions", () => {
     expect(calls).toBe(8);
     expect(first.activeDate?.resolvedChoices).toHaveLength(1);
     expect(first.activeDate?.resolvedChoices[0].result).toBe("positive");
-    expect(first.memories.length).toBe(1);
+    expect(first.memories).toEqual(ready.memories); // This first-choice effect does not award a memory.
+    const completed = finish(validateGameState(JSON.parse(JSON.stringify(first))));
+    expect(completed.memories).toEqual(["sound_memory_cafe_01"]);
     expect(validateGameState(JSON.parse(JSON.stringify(first)))).toEqual(first);
   });
 
@@ -131,8 +133,12 @@ describe("persisted romance choice resolutions", () => {
       storyHash: phase2.activeDate.activeDate!.storyHash,
       storyState: phase2.activeDate.activeDate!.storyState,
     });
-    const completed = finish(migrated);
+    const completed = finish(migrated, [0, 0]);
+    const alternate = finish(validateGameState(phase2.activeDate), [2, 2]);
     expect(completed.playedDateIds).toContain(migrated.activeDate!.dateId);
+    expect(completed.memories).toEqual(expect.arrayContaining(["milano_walk_first_joke", "milano_walk_second_joke"]));
+    expect(alternate.memories).toEqual(expect.arrayContaining(["milano_walk_first_honest", "milano_walk_second_honest"]));
+    expect(alternate.memories).not.toContain("milano_walk_first_joke");
   });
 
   it("does not draw for confession even when a caller supplies a source", () => {

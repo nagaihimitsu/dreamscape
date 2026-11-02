@@ -1,0 +1,256 @@
+{
+  "schemaVersion": 1,
+  "initialBudget": 20,
+  "items": [
+    {
+      "id": "galleria_souvenir",
+      "cityId": "milano",
+      "nameJa": "雄牛のしおり",
+      "descriptionJa": "ガッレリアのカフェで受け取った、小さな雄牛の絵のしおり。"
+    },
+    {
+      "id": "galleria_ticket",
+      "cityId": "milano",
+      "nameJa": "ガッレリアの展示券",
+      "descriptionJa": "ガッレリアの小さな紋章展示に使える券。"
+    }
+  ],
+  "encounters": [
+    {
+      "id": "galleria_cafe",
+      "cityId": "milano",
+      "sources": [
+        {
+          "publisher": "Reuters",
+          "title": "Milan like a local",
+          "url": "https://www.reuters.com/city-memo/milan-like-local-2026-01-31/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノのバールではカウンターに立ってエスプレッソを飲む過ごし方がある。"
+        },
+        {
+          "publisher": "Camparino in Galleria",
+          "title": "Camparino in Galleria Milan",
+          "url": "https://www.camparino.com/en/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリアのカンパリーノは1915年から続き、ミラノのアペリティーヴォで知られる。"
+        },
+        {
+          "publisher": "Camparino in Galleria",
+          "title": "Bar di Passo menu",
+          "url": "https://www.camparino.com/our-menu/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "カンパリーノのメニューにはエスプレッソ、カプチーノとクロワッサンがある。"
+        }
+      ],
+      "titleJa": "カンパリーノでひと休み",
+      "descriptionJa": "ガッレリアの老舗で休憩する。表示価格はゲーム内の設定。",
+      "storyId": "encounters/galleria_cafe_rewrite",
+      "completionMoneyEuro": 2,
+      "completionItemId": "galleria_souvenir",
+      "options": [
+        {
+          "id": "coffee",
+          "translationJa": "コーヒーを二杯ください。",
+          "costEuro": 4
+        },
+        {
+          "id": "coffee_pastry",
+          "translationJa": "カプチーノとお菓子を一つずつください。",
+          "costEuro": 8
+        },
+        {
+          "id": "nothing",
+          "translationJa": "今は何もいりません、ありがとう。",
+          "costEuro": 0
+        }
+      ],
+      "landmarkId": "galleria_vittorio_emanuele_ii"
+    },
+    {
+      "id": "galleria_fortune",
+      "cityId": "milano",
+      "sources": [
+        {
+          "publisher": "Euronews",
+          "title": "A real bull ache: Milan restores a national treasure’s family jewels",
+          "url": "https://www.euronews.com/2026/05/29/a-real-bull-ache-milan-restores-a-national-treasures-family-jewels",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリア中央の床の雄牛はトリノ市の紋章で、ミラノを表すのは赤い十字。"
+        },
+        {
+          "publisher": "Euronews",
+          "title": "A real bull ache: Milan restores a national treasure’s family jewels",
+          "url": "https://www.euronews.com/2026/05/29/a-real-bull-ache-milan-restores-a-national-treasures-family-jewels",
+          "checkedAt": "2026-11-01",
+          "claimType": "legend",
+          "claimJa": "雄牛のモザイク上でかかとを回すと幸運を呼ぶという風習があり、由来は明らかでない。"
+        }
+      ],
+      "titleJa": "床の牛と小さな占い",
+      "descriptionJa": "ガッレリア中央の雄牛を見に行く。",
+      "storyId": "encounters/galleria_fortune_rewrite",
+      "repeatable": true,
+      "alternativeApRewardId": "victory_galleria_first",
+      "options": [
+        {
+          "id": "believe",
+          "translationJa": "はい、信じます。",
+          "costEuro": 0
+        },
+        {
+          "id": "doubt",
+          "translationJa": "あまり信じません。",
+          "costEuro": 0
+        },
+        {
+          "id": "leave",
+          "translationJa": "答えずにその場を離れる。",
+          "costEuro": 0
+        }
+      ],
+      "quiz": {
+        "question": {
+          "id": "galleria_encounter_bull_city",
+          "questionEn": "Which city does the bull mosaic in the Galleria represent?",
+          "options": [
+            {
+              "id": "A",
+              "textEn": "Milan."
+            },
+            {
+              "id": "B",
+              "textEn": "Turin."
+            },
+            {
+              "id": "C",
+              "textEn": "Venice."
+            }
+          ],
+          "correctOptionId": "B",
+          "vocabularyJa": [
+            {
+              "word": "mosaic",
+              "meaning": "モザイク"
+            },
+            {
+              "word": "represent",
+              "meaning": "表す"
+            }
+          ],
+          "hintJa": "床のそばの案内を思い出そう。",
+          "correctExplanationJa": "雄牛はトリノ市の紋章を表している。ミラノの赤い十字も同じ床にある。",
+          "incorrectExplanationJa": "雄牛はミラノではなく、トリノ市の紋章を表している。",
+          "sources": [
+            {
+              "publisher": "Euronews",
+              "title": "A real bull ache: Milan restores a national treasure’s family jewels",
+              "url": "https://www.euronews.com/2026/05/29/a-real-bull-ache-milan-restores-a-national-treasures-family-jewels",
+              "checkedAt": "2026-11-01",
+              "claimType": "documented_fact",
+              "claimJa": "ガッレリア中央の床の雄牛はトリノ市の紋章で、ミラノを表すのは赤い十字。"
+            }
+          ],
+          "difficulty": "easy"
+        },
+        "translations": {
+          "questionJa": "ガッレリアの雄牛のモザイクが表す都市はどこ？",
+          "options": {
+            "A": "ミラノ。",
+            "B": "トリノ。",
+            "C": "ヴェネツィア。"
+          }
+        },
+        "chancePercent": 25,
+        "rewardItemId": "galleria_ticket",
+        "wonStoryId": "encounters/galleria_quiz_won_rewrite",
+        "lostStoryId": "encounters/galleria_quiz_lost_rewrite",
+        "alreadyStoryId": "encounters/galleria_quiz_already_rewrite"
+      },
+      "landmarkId": "galleria_vittorio_emanuele_ii"
+    },
+    {
+      "id": "galleria_gift",
+      "cityId": "milano",
+      "sources": [
+        {
+          "publisher": "Euronews",
+          "title": "A real bull ache: Milan restores a national treasure’s family jewels",
+          "url": "https://www.euronews.com/2026/05/29/a-real-bull-ache-milan-restores-a-national-treasures-family-jewels",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリア中央の床の雄牛はトリノ市の紋章で、ミラノを表すのは赤い十字。"
+        }
+      ],
+      "titleJa": "しおりを贈る",
+      "descriptionJa": "手元のしおりを、一緒に旅する相手に渡すか考える。",
+      "storyId": "encounters/galleria_gift_rewrite",
+      "options": [
+        {
+          "id": "offer",
+          "translationJa": "このしおり、いりますか？",
+          "costEuro": 0,
+          "requiresItemId": "galleria_souvenir",
+          "giftItemId": "galleria_souvenir",
+          "responseProfileId": "attentive"
+        },
+        {
+          "id": "thought",
+          "translationJa": "このしおりを見て、あなたを思い出しました。",
+          "costEuro": 0,
+          "requiresItemId": "galleria_souvenir",
+          "giftItemId": "galleria_souvenir",
+          "responseProfileId": "honest"
+        },
+        {
+          "id": "later",
+          "translationJa": "今は自分で持っておく。",
+          "costEuro": 0,
+          "deferCompletion": true
+        }
+      ],
+      "landmarkId": "galleria_vittorio_emanuele_ii"
+    },
+    {
+      "id": "galleria_outing",
+      "cityId": "milano",
+      "sources": [
+        {
+          "publisher": "Euronews",
+          "title": "A real bull ache: Milan restores a national treasure’s family jewels",
+          "url": "https://www.euronews.com/2026/05/29/a-real-bull-ache-milan-restores-a-national-treasures-family-jewels",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリア中央の床の雄牛はトリノ市の紋章で、ミラノを表すのは赤い十字。"
+        }
+      ],
+      "titleJa": "紋章の小さな展示",
+      "descriptionJa": "臨時の紋章展示へ、展示券かゲーム内の入場料で入る。",
+      "storyId": "encounters/galleria_outing_rewrite",
+      "options": [
+        {
+          "id": "ticket",
+          "translationJa": "展示券を使う。",
+          "costEuro": 0,
+          "requiresItemId": "galleria_ticket",
+          "consumeItemId": "galleria_ticket"
+        },
+        {
+          "id": "buy",
+          "translationJa": "入場券を買う。",
+          "costEuro": 4
+        },
+        {
+          "id": "later",
+          "translationJa": "今はやめておく。",
+          "costEuro": 0,
+          "deferCompletion": true
+        }
+      ],
+      "landmarkId": "galleria_vittorio_emanuele_ii"
+    }
+  ]
+}

@@ -1,16 +1,56 @@
 {
   "schemaVersion": 1,
   "effects": [
-    { "id": "common_date_first_attentive", "affectionDelta": 0, "responseProfileId": "attentive" },
-    { "id": "common_date_first_playful", "affectionDelta": 0, "responseProfileId": "playful" },
-    { "id": "common_date_first_honest", "affectionDelta": 0, "responseProfileId": "honest" },
-    { "id": "common_date_first_bold", "affectionDelta": 0, "responseProfileId": "bold" },
-    { "id": "common_date_first_provocative", "affectionDelta": 0, "responseProfileId": "provocative" },
-    { "id": "common_date_second_attentive", "affectionDelta": 0, "responseProfileId": "attentive" },
-    { "id": "common_date_second_playful", "affectionDelta": 0, "responseProfileId": "playful" },
-    { "id": "common_date_second_honest", "affectionDelta": 0, "responseProfileId": "honest" },
-    { "id": "common_date_second_bold", "affectionDelta": 0, "responseProfileId": "bold" },
-    { "id": "common_date_second_provocative", "affectionDelta": 0, "responseProfileId": "provocative" },
+    {
+      "id": "common_date_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "common_date_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "common_date_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest"
+    },
+    {
+      "id": "common_date_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold"
+    },
+    {
+      "id": "common_date_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative"
+    },
+    {
+      "id": "common_date_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive"
+    },
+    {
+      "id": "common_date_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful"
+    },
+    {
+      "id": "common_date_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest"
+    },
+    {
+      "id": "common_date_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold"
+    },
+    {
+      "id": "common_date_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative"
+    },
     {
       "id": "milano_cafe_first_joke",
       "affectionDelta": 2,
@@ -1465,6 +1505,276 @@
       "sparkDelta": 1,
       "memoryId": "milano_roastery_v2_second_c",
       "responseProfileId": "honest"
+    },
+    {
+      "id": "sound_cafe_01_2_1",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "sound_memory_cafe_01"
+    },
+    {
+      "id": "sound_cafe_01_2_2",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "sound_memory_cafe_01"
+    },
+    {
+      "id": "sound_cafe_01_2_3",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "sound_memory_cafe_01"
+    },
+    {
+      "id": "sound_walk_01_2_1",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "sound_memory_walk_01"
+    },
+    {
+      "id": "sound_walk_01_2_2",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "sound_memory_walk_01"
+    },
+    {
+      "id": "sound_walk_01_2_3",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "sound_memory_walk_01"
+    },
+    {
+      "id": "sound_night_01_2_1",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "sound_memory_night_01"
+    },
+    {
+      "id": "sound_night_01_2_2",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "sound_memory_night_01"
+    },
+    {
+      "id": "sound_night_01_2_3",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "sound_memory_night_01"
+    },
+    {
+      "id": "sound_city_date_01_2_1",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "sound_memory_city_date_01"
+    },
+    {
+      "id": "sound_city_date_01_2_2",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "sound_memory_city_date_01"
+    },
+    {
+      "id": "sound_city_date_01_2_3",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "sound_memory_city_date_01"
+    },
+    {
+      "id": "sound_la_scala_date_01_2_1",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "sound_memory_la_scala_date_01"
+    },
+    {
+      "id": "sound_la_scala_date_01_2_2",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "sound_memory_la_scala_date_01"
+    },
+    {
+      "id": "sound_la_scala_date_01_2_3",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "sound_memory_la_scala_date_01"
+    },
+    {
+      "id": "sound_brera_date_01_2_1",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "sound_memory_brera_date_01"
+    },
+    {
+      "id": "sound_brera_date_01_2_2",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "sound_memory_brera_date_01"
+    },
+    {
+      "id": "sound_brera_date_01_2_3",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "sound_memory_brera_date_01"
+    },
+    {
+      "id": "sound_navigli_date_01_2_1",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "sound_memory_navigli_date_01"
+    },
+    {
+      "id": "sound_navigli_date_01_2_2",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "sound_memory_navigli_date_01"
+    },
+    {
+      "id": "sound_navigli_date_01_2_3",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "sound_memory_navigli_date_01"
+    },
+    {
+      "id": "sound_san_satiro_date_01_2_1",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "sound_memory_san_satiro_date_01"
+    },
+    {
+      "id": "sound_san_satiro_date_01_2_2",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "sound_memory_san_satiro_date_01"
+    },
+    {
+      "id": "sound_san_satiro_date_01_2_3",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "sound_memory_san_satiro_date_01"
+    },
+    {
+      "id": "sound_starbucks_roastery_date_01_2_1",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "sound_memory_starbucks_roastery_date_01"
+    },
+    {
+      "id": "sound_starbucks_roastery_date_01_2_2",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "sound_memory_starbucks_roastery_date_01"
+    },
+    {
+      "id": "sound_starbucks_roastery_date_01_2_3",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "sound_memory_starbucks_roastery_date_01"
+    },
+    {
+      "id": "sound_fondazione_prada_date_01_2_1",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "sound_memory_fondazione_prada_date_01"
+    },
+    {
+      "id": "sound_fondazione_prada_date_01_2_2",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "sound_memory_fondazione_prada_date_01"
+    },
+    {
+      "id": "sound_fondazione_prada_date_01_2_3",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "sound_memory_fondazione_prada_date_01"
+    },
+    {
+      "id": "sound_novecento_date_01_2_1",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "sound_memory_novecento_date_01"
+    },
+    {
+      "id": "sound_novecento_date_01_2_2",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "sound_memory_novecento_date_01"
+    },
+    {
+      "id": "sound_novecento_date_01_2_3",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "sound_memory_novecento_date_01"
+    },
+    {
+      "id": "sound_maurizio_date_sound_2_1",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "sound_memory_maurizio_date_sound"
+    },
+    {
+      "id": "sound_maurizio_date_sound_2_2",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "sound_memory_maurizio_date_sound"
+    },
+    {
+      "id": "sound_maurizio_date_sound_2_3",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "sound_memory_maurizio_date_sound"
+    },
+    {
+      "id": "sound_invitation_01_1_1",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "sound_memory_invitation_01"
+    },
+    {
+      "id": "sound_invitation_01_1_2",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "sound_memory_invitation_01"
+    },
+    {
+      "id": "sound_invitation_01_1_3",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "sound_memory_invitation_01"
+    },
+    {
+      "id": "sound_rain_pause_01_1_1",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "sound_memory_rain_pause_01"
+    },
+    {
+      "id": "sound_rain_pause_01_1_2",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "sound_memory_rain_pause_01"
+    },
+    {
+      "id": "sound_rain_pause_01_1_3",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "sound_memory_rain_pause_01"
+    },
+    {
+      "id": "sound_reassurance_01_1_1",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "sound_memory_reassurance_01"
+    },
+    {
+      "id": "sound_reassurance_01_1_2",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "sound_memory_reassurance_01"
+    },
+    {
+      "id": "sound_reassurance_01_1_3",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "sound_memory_reassurance_01"
     }
   ]
 }

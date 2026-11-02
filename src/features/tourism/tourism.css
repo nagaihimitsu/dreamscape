@@ -253,6 +253,7 @@
 .tourism-actions > .fine-print {
   margin-bottom: 12px;
 }
+.tourism-encounter { display: block; margin-top: 8px; min-height: 44px; }
 .image-placeholder-note {
   margin: 0 24px 16px;
   padding: 12px;
@@ -384,6 +385,7 @@
     grid-column: 1 / -1;
     margin: 0;
   }
+  .tourism-screen:not(.guide-active) > .tourism-actions .tourism-encounter { grid-column: 1 / -1; margin: 0; text-align: left; }
   .tourism-screen:not(.guide-active) > .tourism-actions .primary,
   .tourism-screen:not(.guide-active) > .tourism-actions .secondary {
     min-height: 48px;

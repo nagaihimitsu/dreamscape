@@ -30,7 +30,7 @@ describe("relationship tone in an active date", () => {
     expect(state.activeDate).not.toBeNull();
     expect(storyVariables(state).$("relationship_tone")).toBe("reserved");
     state = nextChoice(state);
-    state = chooseDate(state, 0, state.revision);
+    state = chooseDate(state, 2, state.revision);
     expect(deriveRelationshipTone(state)).toBe("guarded_attraction");
     expect(storyVariables(state).$("relationship_tone_before")).toBe("reserved");
     expect(storyVariables(state).$("relationship_tone_after")).toBe("guarded_attraction");

@@ -11,9 +11,12 @@ import tourismData from "../../content/tourism/catalog.json";
 import reasoningIntroData from "../../content/presentation/reasoning-intros.json";
 import encounterData from "../../content/encounters/catalog.json";
 import archivedEncounterData from "../../content/legacy/milano_fa0e7e0/encounters/catalog.json";
+import previousGalleriaEncounterData from "../../content/legacy/encounters_before_galleria_integration.json";
+import previousSoundFortuneData from "../../content/legacy/encounters_before_sound_fortune.json";
 import archivedBattleData from "../../content/legacy/milano_fa0e7e0/battles/catalog.json";
 import archivedTourismData from "../../content/legacy/milano_fa0e7e0/tourism/catalog.json";
 import archivedJourneyData from "../../content/legacy/milano_fa0e7e0/progression/journey.json";
+import previousPublication from "../../content/legacy/milano_3f32b60/bindings.json";
 import { parseStoryTags } from "./tags";
 import { prepareContentFixture } from "./test-fixtures";
 
@@ -195,12 +198,14 @@ describe("content build acceptance", () => {
     expect(Object.keys(generated).sort()).toEqual(
       [...new Set([
         "learning/english",
+        "learning/sound_english",
+        ...Object.keys(previousPublication.stories),
         ...dateData.dates.map((date) => date.storyId),
         ...dateData.dates.flatMap((date) => "legacyStoryIds" in date ? date.legacyStoryIds ?? [] : []),
         ...battleData.battles.map((battle) => battle.storyId),
         ...archivedBattleData.battles.map((battle) => battle.storyId).filter((id) => id in generated),
         ...reasoningIntroData.entries.map((entry) => entry.storyId),
-        ...encounterData.encounters.flatMap((event) => [
+        ...[...encounterData.encounters, ...previousGalleriaEncounterData.encounters, ...previousSoundFortuneData.encounters].flatMap((event) => [
           event.storyId,
           ...("quiz" in event && event.quiz
             ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId]

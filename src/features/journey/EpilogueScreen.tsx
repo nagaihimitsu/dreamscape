@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { dialogueExpressions, dialogueReactions, episodes } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
+import { presentationStoryId } from "../../content/legacy-milano";
+import { activeEpilogueStoryId } from "../../domain/epilogue";
 import type { GameState } from "../../domain/game";
 import { DialogueText } from "../../components/DialogueText";
 import { CanalScene } from "../../components/CanalScene";
@@ -32,7 +34,8 @@ export function EpilogueScreen({
   const dialogueRef = useDialogueScrollReset<HTMLElement>(active.storyState);
   const frame = active.frame;
   const episode = episodes.find((item) => item.id === active.episodeId)!;
-  const reaction = resolveDialogueReaction(dialogueReactions, episode.epilogueStoryId!, frame, "heroine");
+  const storyId = presentationStoryId(activeEpilogueStoryId(active) ?? episode.epilogueStoryId!);
+  const reaction = resolveDialogueReaction(dialogueReactions, storyId, frame, "heroine");
   const speaker =
     frame.speaker === "heroine"
       ? game.heroineName
@@ -70,7 +73,7 @@ export function EpilogueScreen({
             characterId="heroine"
             sceneId={episode.id}
             cityId={episode.cityId}
-            emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, episode.epilogueStoryId!, frame)}
+            emotion={reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame)}
             active={frame.speaker === "heroine"}
           >
             {reaction?.mark && <ComicEffect effect={reaction.mark} reduceMotion={reduceMotion} cueKey={active.storyState} />}

@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "id": "sound_brera_b1",
+  "landmarkId": "brera_case",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "sound_brera_1",
+      "questionEn": "What draws viewers so close to Mantegna's Dead Christ?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A long procession leading into the distance."
+        },
+        {
+          "id": "B",
+          "textEn": "An extreme view along the length of the body."
+        },
+        {
+          "id": "C",
+          "textEn": "A portrait of the viewer beside the mourners."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "viewers",
+          "meaning": "鑑賞者"
+        }
+      ],
+      "hintJa": "身体と鑑賞者の立つ場所の関係を考えよう。",
+      "correctExplanationJa": "館は極端な短縮法が見る人を場面の中心へ引き込むと解説する。",
+      "incorrectExplanationJa": "奥へ続く行列でも、鑑賞者を画中に描き込む手法でもない。 館は極端な短縮法が見る人を場面の中心へ引き込むと解説する。",
+      "sources": [
+        {
+          "publisher": "Pinacoteca di Brera",
+          "title": "Lamentation over the Dead Christ",
+          "url": "https://pinacotecabrera.org/en/collezioni/collezione-on-line/lamentation-over-the-dead-christ/",
+          "checkedAt": "2026-11-02",
+          "claimType": "interpretation",
+          "claimJa": "館は極端な短縮法が見る人を場面の中心へ引き込むと解説する。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "sound_brera_2",
+      "questionEn": "What did the public show at Brera in 1859 celebrate?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A royal wedding in medieval Milan."
+        },
+        {
+          "id": "B",
+          "textEn": "The opening of the opera season."
+        },
+        {
+          "id": "C",
+          "textEn": "Progress in the struggle for Italian unity."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "unity",
+          "meaning": "統一"
+        }
+      ],
+      "hintJa": "画中の衣装が属する時代と、絵を見た人々の時代は違う。",
+      "correctExplanationJa": "独立戦争と統一運動の進展を祝う展覧会に《接吻》が出品された。",
+      "incorrectExplanationJa": "中世風の衣装は王家の結婚の証拠ではなく、この展覧会もオペラ行事ではない。 独立戦争と統一運動の進展を祝う展覧会に《接吻》が出品された。",
+      "sources": [
+        {
+          "publisher": "Pinacoteca di Brera",
+          "title": "The Kiss",
+          "url": "https://pinacotecabrera.org/en/collezioni/collezione-on-line/the-kiss/",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "独立戦争と統一運動の進展を祝う展覧会に《接吻》が出品された。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "sound_brera_3",
+      "questionEn": "What reading links the clothes in The Kiss with its first public show?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Love between two people also carries a patriotic message."
+        },
+        {
+          "id": "B",
+          "textEn": "The couple are singers wearing costumes from an opera."
+        },
+        {
+          "id": "C",
+          "textEn": "The lovers are showing the uniform of a single army."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "patriotic",
+          "meaning": "愛国的な"
+        }
+      ],
+      "hintJa": "画面の色と、それを見た人の時代を重ねよう。",
+      "correctExplanationJa": "館の解説では衣装にイタリアとフランスの旗の色が重なり、当時の人は恋とともに愛国的な意味も受け取った。",
+      "incorrectExplanationJa": "衣装を役者の配役や単一の軍の制服と断定する根拠は二資料にない。 館の解説では衣装にイタリアとフランスの旗の色が重なり、当時の人は恋とともに愛国的な意味も受け取った。",
+      "sources": [
+        {
+          "publisher": "Pinacoteca di Brera",
+          "title": "The Kiss",
+          "url": "https://pinacotecabrera.org/en/collezioni/collezione-on-line/the-kiss/",
+          "checkedAt": "2026-11-02",
+          "claimType": "interpretation",
+          "claimJa": "館の解説では衣装にイタリアとフランスの旗の色が重なり、当時の人は恋とともに愛国的な意味も受け取った。"
+        }
+      ],
+      "difficulty": "easy"
+    }
+  ]
+}

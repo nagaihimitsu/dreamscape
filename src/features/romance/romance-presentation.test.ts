@@ -74,4 +74,17 @@ describe("presentation of a saved romance script", () => {
     expect(resolveRomancePresentation(cafe, { storyHash: storyFingerprint("milano/cafe_01") }).destinationId)
       .toBeUndefined();
   });
+
+  it.each([
+    ["milano_cafe_01", "milano/cafe_refresh_01", "milano_starbucks_roastery"],
+    ["milano_walk_01", "milano/walk_refresh_01", "milano_duomo_square_walk"],
+    ["milano_brera_date_01", "milano/brera_date_02_rewrite", "milano_brera"],
+    ["milano_novecento_date_01", "milano/novecento_date_01_rewrite", "milano_novecento"],
+  ] as const)("keeps the saved previous location for %s after the rewrite", (dateId, previousStoryId, destinationId) => {
+    const configured = dates.find((item) => item.id === dateId)!;
+    expect(resolveRomancePresentation(configured, { storyHash: storyFingerprint(previousStoryId) })).toEqual({
+      storyId: previousStoryId,
+      destinationId,
+    });
+  });
 });

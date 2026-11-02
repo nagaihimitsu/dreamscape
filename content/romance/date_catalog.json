@@ -4,11 +4,11 @@
     {
       "id": "milano_cafe_01",
       "chapterId": "milano",
-      "titleJa": "ロースタリーの午後",
-      "descriptionJa": "ロースタリーで豆の通り道を追いかける。",
+      "titleJa": "冷めてからが本番",
+      "descriptionJa": "ロースタリーで彼女の一杯をうらやんだことから、味見の順番を二人で決める。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "milano/cafe_refresh_01",
+      "storyId": "milano/sound_cafe_01",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -65,25 +65,27 @@
         "milano/cafe_01",
         "milano/cafe_tourism_01",
         "milano/cafe_tourism_01_random",
-        "milano/cafe_tourism_01_random_tone"
+        "milano/cafe_tourism_01_random_tone",
+        "milano/cafe_refresh_01"
       ],
       "destinationId": "milano_starbucks_roastery",
       "legacyStoryDestinationIds": {
         "milano/cafe_tourism_01": "milano_cafe_naviglio",
         "milano/cafe_tourism_01_random": "milano_cafe_naviglio",
-        "milano/cafe_tourism_01_random_tone": "milano_cafe_naviglio"
+        "milano/cafe_tourism_01_random_tone": "milano_cafe_naviglio",
+        "milano/cafe_refresh_01": "milano_starbucks_roastery"
       }
     },
     {
       "id": "milano_walk_01",
       "kind": "normal",
       "chapterId": "milano",
-      "titleJa": "夕暮れの散歩",
-      "descriptionJa": "写真に写らない寄り道を、ふたりで見つける。",
+      "titleJa": "私を探す一枚",
+      "descriptionJa": "ドゥオモ広場で、観光写真の隅に自分から写り込む。",
       "apCost": 3,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/walk_refresh_01",
+      "storyId": "milano/sound_walk_01",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -138,24 +140,26 @@
         "milano/walk_01",
         "milano/walk_tourism_01",
         "milano/walk_tourism_01_random",
-        "milano/walk_tourism_01_random_tone"
+        "milano/walk_tourism_01_random_tone",
+        "milano/walk_refresh_01"
       ],
       "destinationId": "milano_duomo_square_walk",
       "legacyStoryDestinationIds": {
         "milano/walk_tourism_01": "milano_duomo_square_walk",
-        "milano/walk_tourism_01_random": "milano_duomo_square_walk"
+        "milano/walk_tourism_01_random": "milano_duomo_square_walk",
+        "milano/walk_refresh_01": "milano_duomo_square_walk"
       }
     },
     {
       "id": "milano_invitation_01",
       "kind": "special",
       "chapterId": "milano",
-      "titleJa": "彼女の寄り道",
-      "descriptionJa": "今度の行き先は、彼女が決める。",
+      "titleJa": "片道だけの先導",
+      "descriptionJa": "ガッレリアで、彼女が先に曲がる。",
       "apCost": 0,
       "minRomanceStage": 2,
       "minAffection": 0,
-      "storyId": "milano/invitation_refresh_01",
+      "storyId": "milano/sound_invitation_01",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -211,19 +215,20 @@
         "milano/invitation_open_01",
         "milano/invitation_open_tour_01",
         "milano/invitation_open_tour_01_random",
-        "milano/invitation_open_tour_01_random_tone"
+        "milano/invitation_open_tour_01_random_tone",
+        "milano/invitation_refresh_01"
       ]
     },
     {
       "id": "milano_night_01",
       "kind": "normal",
       "chapterId": "milano",
-      "titleJa": "灯りを数える夜",
-      "descriptionJa": "有名な夜景より気になる、名もない窓の灯り。",
+      "titleJa": "拍を外して歩く",
+      "descriptionJa": "夜のナヴィリオで歩く速さが合わない。その理由を彼女から話す。",
       "apCost": 3,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/night_refresh_01",
+      "storyId": "milano/sound_night_01",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -278,24 +283,26 @@
         "milano/night_01",
         "milano/night_tourism_01",
         "milano/night_tourism_01_random",
-        "milano/night_tourism_01_random_tone"
+        "milano/night_tourism_01_random_tone",
+        "milano/night_refresh_01"
       ],
       "destinationId": "milano_naviglio_night",
       "legacyStoryDestinationIds": {
         "milano/night_tourism_01": "milano_naviglio_night",
-        "milano/night_tourism_01_random": "milano_naviglio_night"
+        "milano/night_tourism_01_random": "milano_naviglio_night",
+        "milano/night_refresh_01": "milano_naviglio_night"
       }
     },
     {
       "id": "milano_confession_01",
       "kind": "confession",
       "chapterId": "milano",
-      "titleJa": "旅の続きに、きみと",
-      "descriptionJa": "思い出をひとつ、これからの言葉につなぐ。",
+      "titleJa": "橋の途中で、こちらを向く",
+      "descriptionJa": "ナヴィリオの夜。橋を渡る前に、旅のあとも続けたい関係を言葉にする。",
       "apCost": 0,
       "minRomanceStage": 2,
       "minAffection": 0,
-      "storyId": "milano/confession_refresh_01",
+      "storyId": "milano/sound_confession_01",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -369,23 +376,34 @@
           "memoryIds": [
             "milano_cafe_first_interest_refresh"
           ]
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "confessionResult": "accepted",
+          "endingReached": false,
+          "hasCafeMemory": false,
+          "memoryIds": [
+            "sound_memory_maurizio_date_sound"
+          ]
         }
       ],
       "legacyStoryIds": [
         "milano/confession_01",
-        "milano/confession_open_01"
+        "milano/confession_open_01",
+        "milano/confession_refresh_01"
       ]
     },
     {
       "id": "milano_reassurance_01",
       "kind": "reassurance",
       "chapterId": "milano",
-      "titleJa": "書きかけのポストカード",
-      "descriptionJa": "急がずに、自分の言葉を探す短い時間。",
+      "titleJa": "今日は返事をしない日",
+      "descriptionJa": "保留のあと、ガッレリアで普段の話をするには何が要るかを二人で決める。",
       "apCost": 0,
       "minRomanceStage": 2,
       "minAffection": 0,
-      "storyId": "milano/reassurance_refresh_01",
+      "storyId": "milano/sound_reassurance_01",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -439,19 +457,20 @@
         "milano/reassurance_01",
         "milano/reassurance_open_01",
         "milano/reassurance_open_01_random",
-        "milano/reassurance_open_01_random_tone"
+        "milano/reassurance_open_01_random_tone",
+        "milano/reassurance_refresh_01"
       ]
     },
     {
       "id": "milano_city_date_01",
       "kind": "normal",
       "chapterId": "milano",
-      "titleJa": "地図にない帰り道",
-      "descriptionJa": "四つの場所を巡ったあと、旅のメモに一行だけ残った余白。",
+      "titleJa": "帰り道の予約",
+      "descriptionJa": "ガッレリアの合流点で、旅のあとに会う理由を二人で探す。",
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/city_date_refresh_01",
+      "storyId": "milano/sound_city_date_01",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -507,12 +526,14 @@
         "milano/city_date_01",
         "milano/city_date_tourism_01",
         "milano/city_date_tourism_01_random",
-        "milano/city_date_tourism_01_random_tone"
+        "milano/city_date_tourism_01_random_tone",
+        "milano/city_date_refresh_01"
       ],
       "destinationId": "milano_galleria_revisit",
       "legacyStoryDestinationIds": {
         "milano/city_date_tourism_01": "milano_galleria_revisit",
-        "milano/city_date_tourism_01_random": "milano_galleria_revisit"
+        "milano/city_date_tourism_01_random": "milano_galleria_revisit",
+        "milano/city_date_refresh_01": "milano_galleria_revisit"
       }
     },
     {
@@ -520,12 +541,12 @@
       "kind": "normal",
       "chapterId": "milano",
       "destinationId": "milano_la_scala",
-      "titleJa": "開演前のことば",
-      "descriptionJa": "幕を待つひととき、誰かに聞かせる言葉について話す。",
+      "titleJa": "故意のアンコール",
+      "descriptionJa": "スカラ座前で、彼女は子供の頃に言えなかった台詞を練習する。",
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/la_scala_refresh_01",
+      "storyId": "milano/sound_la_scala_date_01",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_galleria_episode"
@@ -581,12 +602,14 @@
         "milano/la_scala_date_01",
         "milano/la_scala_date_tour_01",
         "milano/la_scala_date_tour_01_random",
-        "milano/la_scala_date_tour_01_random_tone"
+        "milano/la_scala_date_tour_01_random_tone",
+        "milano/la_scala_refresh_01"
       ],
       "legacyDestinationId": "milano_la_scala",
       "legacyStoryDestinationIds": {
         "milano/la_scala_date_tour_01": "milano_la_scala",
-        "milano/la_scala_date_tour_01_random": "milano_la_scala"
+        "milano/la_scala_date_tour_01_random": "milano_la_scala",
+        "milano/la_scala_refresh_01": "milano_la_scala"
       }
     },
     {
@@ -594,12 +617,12 @@
       "kind": "normal",
       "chapterId": "milano",
       "destinationId": "milano_brera",
-      "titleJa": "一枚の絵、違う視線",
-      "descriptionJa": "一つの絵を前に、それぞれが気づいたことを話す。",
+      "titleJa": "振り返る前のひとこと",
+      "descriptionJa": "ブレラの《接吻》を前に、彼女は別れる側の台詞を自分で選ぶ。",
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/brera_date_02_rewrite",
+      "storyId": "milano/sound_brera_date_01",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_last_supper_episode"
@@ -654,11 +677,13 @@
       "legacyStoryIds": [
         "milano/brera_date_01",
         "milano/brera_date_01_random",
-        "milano/brera_date_01_random_tone"
+        "milano/brera_date_01_random_tone",
+        "milano/brera_date_02_rewrite"
       ],
       "legacyStoryDestinationIds": {
         "milano/brera_date_01": "milano_brera",
-        "milano/brera_date_01_random": "milano_brera"
+        "milano/brera_date_01_random": "milano_brera",
+        "milano/brera_date_02_rewrite": "milano_brera"
       }
     },
     {
@@ -666,12 +691,12 @@
       "kind": "normal",
       "chapterId": "milano",
       "destinationId": "milano_navigli",
-      "titleJa": "決めない寄り道",
-      "descriptionJa": "水辺の路地で、次に曲がる角を二人で探す。",
+      "titleJa": "片方だけの手袋",
+      "descriptionJa": "洗濯屋小路で、落とし物をどう待つかで意見が割れる。",
       "apCost": 1,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/navigli_date_02_rewrite",
+      "storyId": "milano/sound_navigli_date_01",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_castello_episode"
@@ -726,11 +751,13 @@
       "legacyStoryIds": [
         "milano/navigli_date_01",
         "milano/navigli_date_01_random",
-        "milano/navigli_date_01_random_tone"
+        "milano/navigli_date_01_random_tone",
+        "milano/navigli_date_02_rewrite"
       ],
       "legacyStoryDestinationIds": {
         "milano/navigli_date_01": "milano_navigli",
-        "milano/navigli_date_01_random": "milano_navigli"
+        "milano/navigli_date_01_random": "milano_navigli",
+        "milano/navigli_date_02_rewrite": "milano_navigli"
       }
     },
     {
@@ -738,12 +765,12 @@
       "kind": "normal",
       "chapterId": "milano",
       "destinationId": "milano_san_satiro",
-      "titleJa": "見える距離",
-      "descriptionJa": "正面と横から、違う奥行きを確かめる。",
+      "titleJa": "一歩ぶんの秘密",
+      "descriptionJa": "サン・サティロ教会で、初めて気づく瞬間を誰のものにするか。",
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/san_satiro_date_02_rewrite",
+      "storyId": "milano/sound_san_satiro_date_01",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_duomo_episode"
@@ -799,12 +826,14 @@
         "milano/san_satiro_date_01",
         "milano/san_satiro_date_tour_01",
         "milano/san_satiro_date_tour_01_random",
-        "milano/san_satiro_date_tour_01_random_tone"
+        "milano/san_satiro_date_tour_01_random_tone",
+        "milano/san_satiro_date_02_rewrite"
       ],
       "legacyDestinationId": "milano_san_satiro",
       "legacyStoryDestinationIds": {
         "milano/san_satiro_date_tour_01": "milano_san_satiro",
-        "milano/san_satiro_date_tour_01_random": "milano_san_satiro"
+        "milano/san_satiro_date_tour_01_random": "milano_san_satiro",
+        "milano/san_satiro_date_02_rewrite": "milano_san_satiro"
       }
     },
     {
@@ -812,12 +841,12 @@
       "kind": "normal",
       "chapterId": "milano",
       "destinationId": "milano_starbucks_roastery",
-      "titleJa": "遠くまで届く香り",
-      "descriptionJa": "旅先で、見慣れた名前の意外な一面を見つける。",
+      "titleJa": "買わないおみやげ",
+      "descriptionJa": "ロースタリーで、相手の好みを当てる遊びが予想と違う方向へ進む。",
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/starbucks_roastery_date_02_rewrite",
+      "storyId": "milano/sound_starbucks_roastery_date_01",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_galleria_episode"
@@ -872,11 +901,13 @@
       "legacyStoryIds": [
         "milano/starbucks_roastery_date_01",
         "milano/starbucks_roastery_date_01_random",
-        "milano/starbucks_roastery_date_01_random_tone"
+        "milano/starbucks_roastery_date_01_random_tone",
+        "milano/starbucks_roastery_date_02_rewrite"
       ],
       "legacyStoryDestinationIds": {
         "milano/starbucks_roastery_date_01": "milano_starbucks_roastery",
-        "milano/starbucks_roastery_date_01_random": "milano_starbucks_roastery"
+        "milano/starbucks_roastery_date_01_random": "milano_starbucks_roastery",
+        "milano/starbucks_roastery_date_02_rewrite": "milano_starbucks_roastery"
       }
     },
     {
@@ -884,12 +915,12 @@
       "kind": "normal",
       "chapterId": "milano",
       "destinationId": "milano_fondazione_prada",
-      "titleJa": "古い建物、新しい見方",
-      "descriptionJa": "残された建物で、作品の見方を話す。",
+      "titleJa": "金色のせいにする",
+      "descriptionJa": "プラダ財団の金色の建物を前に、自分で選んだ派手な服の話になる。",
       "apCost": 3,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/fondazione_prada_date_02_rewrite",
+      "storyId": "milano/sound_fondazione_prada_date_01",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_last_supper_episode"
@@ -957,12 +988,14 @@
         "milano/fondazione_prada_date_01",
         "milano/fondazione_prada_date_tour_01",
         "milano/fondazione_prada_date_tour_01_random",
-        "milano/fondazione_prada_date_tour_01_random_tone"
+        "milano/fondazione_prada_date_tour_01_random_tone",
+        "milano/fondazione_prada_date_02_rewrite"
       ],
       "legacyDestinationId": "milano_fondazione_prada",
       "legacyStoryDestinationIds": {
         "milano/fondazione_prada_date_tour_01": "milano_fondazione_prada",
-        "milano/fondazione_prada_date_tour_01_random": "milano_fondazione_prada"
+        "milano/fondazione_prada_date_tour_01_random": "milano_fondazione_prada",
+        "milano/fondazione_prada_date_02_rewrite": "milano_fondazione_prada"
       }
     },
     {
@@ -1044,12 +1077,12 @@
       "id": "milano_rain_pause_01",
       "kind": "special",
       "chapterId": "milano",
-      "titleJa": "雨が通り過ぎるまで",
-      "descriptionJa": "ガッレリアの出口で、雨の音に足を止める。",
+      "titleJa": "雨が決めた相席",
+      "descriptionJa": "ガッレリアの入口で、傘を開くまでのわずかな時間をどう使うか。",
       "apCost": 0,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/rain_pause_02_rewrite",
+      "storyId": "milano/sound_rain_pause_01",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -1095,19 +1128,20 @@
         "milano/rain_pause_01",
         "milano/rain_pause_tour_01",
         "milano/rain_pause_tour_01_random",
-        "milano/rain_pause_tour_01_random_tone"
+        "milano/rain_pause_tour_01_random_tone",
+        "milano/rain_pause_02_rewrite"
       ]
     },
     {
       "id": "milano_recovery_01",
       "kind": "special",
       "chapterId": "milano",
-      "titleJa": "歩幅を合わせて",
-      "descriptionJa": "立ち止まったところから、もう一度話す。",
+      "titleJa": "一言ずつ先に言う",
+      "descriptionJa": "ガッレリアの人波を離れ、今日の希望を一つだけ口にする。",
       "apCost": 0,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/recovery_talk_02_rewrite",
+      "storyId": "milano/sound_recovery_01",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -1145,7 +1179,8 @@
       ],
       "legacyStoryIds": [
         "milano/recovery_talk_01",
-        "milano/recovery_talk_01_tone"
+        "milano/recovery_talk_01_tone",
+        "milano/recovery_talk_02_rewrite"
       ]
     },
     {
@@ -1153,12 +1188,12 @@
       "kind": "normal",
       "chapterId": "milano",
       "destinationId": "milano_novecento",
-      "titleJa": "窓と光の線",
-      "descriptionJa": "ネオン作品とドゥオモの眺めを、一緒に見上げる。",
+      "titleJa": "空中に書いた名前",
+      "descriptionJa": "ノヴェチェント美術館のネオンの前で、文字になる直前の線を二人で描く。",
       "apCost": 1,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/novecento_date_01_rewrite",
+      "storyId": "milano/sound_novecento_date_01",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_duomo_episode"
@@ -1167,6 +1202,75 @@
       "requiredPlayedDateIds": [],
       "rewardOnlyOnce": true,
       "backgroundAssetId": "milano_novecento_date",
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "この場所へ誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 2,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": false
+        },
+        {
+          "romanceStage": 3,
+          "confessionReady": false,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": false,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": true
+        },
+        {
+          "romanceStage": 4,
+          "confessionReady": true,
+          "endingReached": true,
+          "hasCafeMemory": false
+        }
+      ],
+      "legacyStoryIds": [
+        "milano/novecento_date_01_rewrite"
+      ],
+      "legacyStoryDestinationIds": {
+        "milano/novecento_date_01_rewrite": "milano_novecento"
+      }
+    },
+    {
+      "id": "milano_maurizio_date_sound",
+      "kind": "normal",
+      "chapterId": "milano",
+      "destinationId": "milano_san_maurizio",
+      "titleJa": "別々に見て、ここで会う",
+      "descriptionJa": "サン・マウリツィオ教会の仕切りの両側から、一つずつ色を持ち帰る。",
+      "apCost": 1,
+      "minRomanceStage": 1,
+      "minAffection": 0,
+      "storyId": "milano/sound_maurizio_date_sound",
+      "requiredCompletedChapters": [],
+      "requiredCompletedEpisodeIds": [
+        "milano_castello_episode"
+      ],
+      "allowAfterEnding": true,
+      "requiredPlayedDateIds": [],
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "milano_san_maurizio_sound",
       "repeatable": false,
       "needsDeferred": false,
       "choiceCount": 2,

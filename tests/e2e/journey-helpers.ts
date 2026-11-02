@@ -1,5 +1,5 @@
 import { expect, type Page } from "@playwright/test";
-import quiz from "../../content/quizzes/last_supper_B1.json" with { type: "json" };
+import quiz from "../../content/quizzes/sound_supper_B1.json" with { type: "json" };
 import { saved } from "./helpers";
 import { playBattle } from "./battle-helpers";
 import { finishTourismGuide, openTourismFromEntry } from "./tourism-helpers";

@@ -44,7 +44,7 @@ import { EpisodeScreen } from "../features/journey/EpisodeScreen";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
 import { encounters } from "../content/encounters";
-import { startEncounter, advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterAvailability, getEncounterOptionAvailability, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption } from "../domain/encounter";
+import { startEncounter, startTourismEncounter, advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterAvailability, getEncounterOptionAvailability, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption, encounterStoryCanFinish } from "../domain/encounter";
 import { PendingRewards } from "../features/journey/PendingRewards";
 import { EpilogueScreen } from "../features/journey/EpilogueScreen";
 import { startCityEpilogue, advanceCityEpilogue } from "../domain/epilogue";
@@ -121,6 +121,8 @@ export default function App() {
   const [notebook, setNotebook] = useState(false);
   const [speed, setSpeed] = useState(25);
   const [showRomanceEnding, setShowRomanceEnding] = useState(false);
+  const [selectedLandmarkId, setSelectedLandmarkId] = useState<string | null>(null);
+  const [placeFocusRequest, setPlaceFocusRequest] = useState(0);
   const [player, setPlayer] = useState(
     game?.playerName ?? balance.defaultPlayerName,
   );
@@ -131,6 +133,10 @@ export default function App() {
   function adopt(next: GameState) {
     gameRef.current = next;
     setGame(next);
+  }
+  function returnToPlace(landmarkId: string | null | undefined) {
+    setSelectedLandmarkId(landmarkId ?? null);
+    if (landmarkId) setPlaceFocusRequest((value) => value + 1);
   }
   function commit(change: (state: GameState) => GameState) {
     if (!gameRef.current) return false;
@@ -466,7 +472,8 @@ export default function App() {
                 const availability = getEncounterOptionAvailability(game, choice.index);
                 return { index: choice.index, textEn: choice.text, translationJa: choice.translationJa ?? option?.translationJa ?? "", costEuro: option?.costEuro, unavailableReason: availability.available ? undefined : availability.reason };
               }),
-              ended: activeEncounter.frame.ended && (activeEncounter.phase === "outcome" || !currentEncounter.quiz),
+              ended: activeEncounter.frame.ended && (activeEncounter.phase === "outcome" || encounterStoryCanFinish(game)),
+              finishLabel: activeEncounter.returnTourism ? "観光に戻る" : undefined,
               quiz: (activeEncounter.phase === "quiz" || activeEncounter.phase === "feedback") && currentEncounter.quiz ? {
                 id: currentEncounter.quiz.question.id,
                 questionEn: currentEncounter.quiz.question.questionEn,
@@ -475,10 +482,21 @@ export default function App() {
                 result: encounterFeedback ? `${encounterFeedback.correct ? "正解" : "不正解"}。${encounterFeedback.explanationJa}` : undefined,
               } : undefined,
             }}
-            onChoose={(index) => commit((state) => chooseEncounter(state, index, game.revision))}
+            onChoose={(index) => {
+              const changed = commit((state) => chooseEncounter(state, index, game.revision));
+              if (changed && !gameRef.current?.activeEncounter && !gameRef.current?.activeTourism)
+                returnToPlace(currentEncounter.landmarkId);
+              return changed;
+            }}
             onAnswer={(index) => commit((state) => answerEncounterQuiz(state, currentEncounter.quiz!.question.options[index].id, game.revision))}
-            onAdvance={() => { commit((state) => advanceEncounter(state, game.revision)); }}
-            onFinish={() => { commit((state) => finishEncounter(state, game.revision)); }}
+            onAdvance={() => {
+              if (commit((state) => advanceEncounter(state, game.revision)) && !gameRef.current?.activeEncounter && !gameRef.current?.activeTourism)
+                returnToPlace(currentEncounter.landmarkId);
+            }}
+            onFinish={() => {
+              if (commit((state) => finishEncounter(state, game.revision)) && !gameRef.current?.activeTourism)
+                returnToPlace(currentEncounter.landmarkId);
+            }}
           />
         ) : game.activeEpilogue ? (
           <EpilogueScreen
@@ -506,6 +524,9 @@ export default function App() {
             onReplayGuide={() =>
               commit((state) => replayTourismGuide(state, game.revision))
             }
+            onEncounter={() =>
+              commit((state) => startTourismEncounter(state, "galleria_fortune", game.revision, secureRomanceRoll))
+            }
             onDiscover={(id) =>
               game.discoveredClueIds.includes(id) ||
               commit((state) => discoverClue(state, id, game.revision))
@@ -514,9 +535,10 @@ export default function App() {
             onBattle={() =>
               commit((state) => startTourismBattle(state, game.revision))
             }
-            onLeave={() =>
-              commit((state) => closeTourism(state, game.revision))
-            }
+            onLeave={() => {
+              if (commit((state) => closeTourism(state, game.revision)) && !gameRef.current?.activeBattle)
+                returnToPlace(currentLandmarkId);
+            }}
           />
         ) : game.activeBattle ? (
           <BattleScreen
@@ -578,11 +600,11 @@ export default function App() {
                 : undefined
             }
             onLeave={() => {
-              commit((state) =>
+              if (commit((state) =>
                 reasoningRule
                   ? leaveBattle(state, game.revision)
                   : enterFreeTime(state, game.revision),
-              );
+              )) returnToPlace(currentBattle?.landmarkId);
             }}
           />
         ) : !freeTimeAvailable ? (
@@ -640,8 +662,11 @@ export default function App() {
             game={game}
             encounters={encounters.encounters.map((event) => {
               const availability = getEncounterAvailability(game, event.id);
-              return { id: event.id, title: event.titleJa, description: event.descriptionJa, unavailableReason: availability.available ? undefined : availability.reason };
+              return { id: event.id, landmarkId: event.landmarkId, title: event.titleJa, description: event.descriptionJa, unavailableReason: availability.available ? undefined : availability.reason };
             }).filter((event) => !event.unavailableReason)}
+            selectedLandmarkId={selectedLandmarkId}
+            onSelectLandmark={setSelectedLandmarkId}
+            placeFocusRequest={placeFocusRequest}
             onEncounter={(id) => { commit((state) => startEncounter(state, id, secureRomanceRoll)); }}
             onEnglish={() => openEnglish()}
             onClaimRewards={() => commit((state) => claimPendingRewards(state, game.revision))}

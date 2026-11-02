@@ -6,6 +6,7 @@ export type HeldItem = { id: string; name: string; description: string };
 const itemImages: Record<string, string> = {
   galleria_souvenir: "assets/items/galleria-bookmark.svg",
   galleria_ticket: "assets/items/galleria-ticket.svg",
+  blue_pick: "assets/items/blue-pick.svg",
 };
 
 /** Items are read-only here: using them remains part of their events. */

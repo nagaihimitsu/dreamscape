@@ -55,11 +55,9 @@ describe("Milan city content", () => {
       expect(battle.scenes.afterRounds).toHaveLength(2);
       const questions = result.quizzes[battle.quizId].questions;
       expect(questions).toHaveLength(3);
-      expect(questions.map((question) => question.difficulty)).toEqual([
-        "easy",
-        "medium",
-        "hard",
-      ]);
+      // The rewritten quiz set chooses difficulty per question instead of
+      // requiring the previous easy/medium/hard sequence for every stop.
+      expect(new Set(questions.map((question) => question.id)).size).toBe(3);
       return questions;
     });
     expect(normalQuestions).toHaveLength(12);

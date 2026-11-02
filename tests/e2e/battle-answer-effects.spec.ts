@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
 import phase7 from "../fixtures/phase7-free-time.json" with { type: "json" };
-import bossQuiz from "../../content/quizzes/milano_finale_B1.json" with { type: "json" };
+import bossQuiz from "../../content/quizzes/sound_finale_B1.json" with { type: "json" };
 import { expectNoOverflow, loadSnapshot, openRevisits, saved } from "./helpers";
 import { battleDialogueUntilQuestionOrResult } from "./battle-helpers";
 

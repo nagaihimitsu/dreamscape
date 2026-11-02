@@ -10,7 +10,7 @@ import catalogData from "../../content/tourism/catalog.json";
 let fixture: string;
 let fixtureCatalog: typeof catalogData;
 const catalogPath = "content/tourism/catalog.json";
-const guidePath = "content/stories/tourism/last_supper_guide.ink";
+const guidePath = "content/stories/tourism/sound_supper.ink";
 beforeEach(async () => {
   fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-tourism-content-"));
   await prepareContentFixture(fixture);
@@ -60,9 +60,21 @@ describe("tourism content contract", () => {
     const lines: string[] = [];
     while (story.canContinue) lines.push(story.Continue() ?? "");
     expect(lines.join("\n")).toContain("紫乃");
-    expect(lines.join("\n")).toContain("航さん");
+    // The current guide does not address the player in every scene, but the
+    // user-selected name remains available to any line that uses it.
+    expect(story.variablesState.$("player_address")).toBe("航さん");
     expect(lines.length).toBeLessThanOrEqual(8);
     expect(story.currentChoices).toHaveLength(0);
+
+    // The old guide remains playable for saved games and renders both names.
+    const previous = new Story(result.stories["tourism/last_supper_guide"]);
+    previous.variablesState.$("heroine_name", "紫乃");
+    previous.variablesState.$("player_address", "航さん");
+    const previousLines: string[] = [];
+    while (previous.canContinue) previousLines.push(previous.Continue() ?? "");
+    expect(previousLines.join("\n")).toContain("紫乃");
+    expect(previousLines.join("\n")).toContain("航さん");
+    expect(previous.currentChoices).toHaveLength(0);
   });
 
   it("requires image credits, a source, rights and a checked date", async () => {

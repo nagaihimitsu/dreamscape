@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "id": "sound_castle_b1",
+  "landmarkId": "castello_sforzesco",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "sound_castle_1",
+      "questionEn": "Who once needed the room that now holds the Rondanini Pietà?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Musicians waiting for a court concert."
+        },
+        {
+          "id": "B",
+          "textEn": "Soldiers who needed care."
+        },
+        {
+          "id": "C",
+          "textEn": "Sculptors learning to carve stone."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "care",
+          "meaning": "世話・手当て"
+        }
+      ],
+      "hintJa": "今の展示室になる前の用途を考えよう。",
+      "correctExplanationJa": "現在の展示室は旧スペイン病院で、病気の兵士もここで療養した。",
+      "incorrectExplanationJa": "ここで示されるかつての使用者は演奏者や彫刻学生ではない。 現在の展示室は旧スペイン病院で、病気の兵士もここで療養した。",
+      "sources": [
+        {
+          "publisher": "Comune di Milano",
+          "title": "Museo Pietà Rondanini Michelangelo",
+          "url": "https://www.milanocastello.it/i-musei/museo-pieta-rondanini-michelangelo",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "現在の展示室は旧スペイン病院で、病気の兵士もここで療養した。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "sound_castle_2",
+      "questionEn": "What marked Michelangelo's work on his last Pietà?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "He kept changing it over years."
+        },
+        {
+          "id": "B",
+          "textEn": "He copied a finished model without changes."
+        },
+        {
+          "id": "C",
+          "textEn": "He cut a new figure for each hospital bed."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "kept changing",
+          "meaning": "変え続けた"
+        }
+      ],
+      "hintJa": "最終形の前にはどんな時間があっただろう。",
+      "correctExplanationJa": "晩年の約十年間に繰り返し作り変えた彫刻だと城の美術館は説明する。",
+      "incorrectExplanationJa": "固定模型の忠実な複製でも、病床ごとの連作でもない。 晩年の約十年間に繰り返し作り変えた彫刻だと城の美術館は説明する。",
+      "sources": [
+        {
+          "publisher": "Comune di Milano",
+          "title": "Museo Pietà Rondanini Michelangelo",
+          "url": "https://www.milanocastello.it/i-musei/museo-pieta-rondanini-michelangelo",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "晩年の約十年間に繰り返し作り変えた彫刻だと城の美術館は説明する。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "sound_castle_3",
+      "questionEn": "What can a visitor do in the present display of the Pietà?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Handle a piece of its original stone."
+        },
+        {
+          "id": "B",
+          "textEn": "Watch the statue turn above the beds."
+        },
+        {
+          "id": "C",
+          "textEn": "See the sculpture from all sides."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "all sides",
+          "meaning": "あらゆる方向"
+        }
+      ],
+      "hintJa": "展示台の仕掛けより、見る人の位置に注目。",
+      "correctExplanationJa": "現展示では像の周囲から多方向で見られる。正面の写真一枚だけがその姿とは限らない。",
+      "incorrectExplanationJa": "原石に触れたり病床上で回転展示したりする説明はない。 現展示では像の周囲から多方向で見られる。正面の写真一枚だけがその姿とは限らない。",
+      "sources": [
+        {
+          "publisher": "Comune di Milano",
+          "title": "Museo Pietà Rondanini Michelangelo",
+          "url": "https://www.milanocastello.it/i-musei/museo-pieta-rondanini-michelangelo",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "現展示では像の周囲から多方向で見られる。正面の写真一枚だけがその姿とは限らない。"
+        }
+      ],
+      "difficulty": "easy"
+    }
+  ]
+}

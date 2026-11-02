@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "id": "sound_duomo_b1",
+  "landmarkId": "duomo_milano",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "sound_duomo_1",
+      "questionEn": "Why were earlier places of worship buried here?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "To protect them from winter floods."
+        },
+        {
+          "id": "B",
+          "textEn": "To make room for the new cathedral."
+        },
+        {
+          "id": "C",
+          "textEn": "To build a square for a weekly market."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "buried",
+          "meaning": "埋められた"
+        }
+      ],
+      "hintJa": "今見えている建物と、見えない遺跡との順序を考えよう。",
+      "correctExplanationJa": "広場の地下の洗礼堂は、新しい大聖堂を建てるために取り壊され、埋められた。",
+      "incorrectExplanationJa": "治水も定期市も、施設が挙げる解体の目的とは異なる。 広場の地下の洗礼堂は、新しい大聖堂を建てるために取り壊され、埋められた。",
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo",
+          "title": "Archaeological Area",
+          "url": "https://www.duomomilano.it/en/art-and-culture/archaeological-area/",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "広場の地下の洗礼堂は、新しい大聖堂を建てるために取り壊され、埋められた。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "sound_duomo_2",
+      "questionEn": "What once happened in the pool below the square?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "People received baptism."
+        },
+        {
+          "id": "B",
+          "textEn": "Visitors washed their clothes."
+        },
+        {
+          "id": "C",
+          "textEn": "Builders tested stone for cracks."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "baptism",
+          "meaning": "洗礼"
+        }
+      ],
+      "hintJa": "水の形より、建物を訪れた人の用事に注目。",
+      "correctExplanationJa": "サン・ジョヴァンニ・アッレ・フォンティは洗礼堂。アンブロジウスがアウグスティヌスに洗礼を授けた場所でもある。",
+      "incorrectExplanationJa": "洗濯場でも石材の試験設備でもなく、中央に洗礼用の水盤が残る。 サン・ジョヴァンニ・アッレ・フォンティは洗礼堂。アンブロジウスがアウグスティヌスに洗礼を授けた場所でもある。",
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo",
+          "title": "Archaeological Area",
+          "url": "https://www.duomomilano.it/en/art-and-culture/archaeological-area/",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "サン・ジョヴァンニ・アッレ・フォンティは洗礼堂。アンブロジウスがアウグスティヌスに洗礼を授けた場所でもある。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "sound_duomo_3",
+      "questionEn": "How can a donor leave a name in the history of the Duomo today?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "By naming a new entrance."
+        },
+        {
+          "id": "B",
+          "textEn": "By signing a roof tile."
+        },
+        {
+          "id": "C",
+          "textEn": "By joining the donor register."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "donor",
+          "meaning": "寄付者"
+        }
+      ],
+      "hintJa": "残るのは、建物に刻んだ文字とは限らない。",
+      "correctExplanationJa": "寄付者は希望すれば、紙とオンラインの名簿に名前を載せられる。",
+      "incorrectExplanationJa": "入口の命名と屋根への署名は、公式が案内するこの登録方法には含まれない。 寄付者は希望すれば、紙とオンラインの名簿に名前を載せられる。",
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo",
+          "title": "Support us",
+          "url": "https://www.duomomilano.it/en/support/support-us/",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "寄付者は希望すれば、紙とオンラインの名簿に名前を載せられる。"
+        }
+      ],
+      "difficulty": "easy"
+    }
+  ]
+}

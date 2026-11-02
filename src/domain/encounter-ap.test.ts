@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import galleria from "../../tests/fixtures/galleria-stage2-pool.json";
 import { battleQuizzes, battles, rewardRules } from "../content";
 import { createGame, validateGameState, type GameState } from "./game";
@@ -6,6 +6,9 @@ import { advanceBattle, answerBattle, startBattle } from "./battle";
 import { isRewardEarned } from "./chapter";
 import { earnRewards, settlePendingAp } from "./rewards";
 import { advanceEncounter, answerEncounterQuiz, chooseEncounter, finishEncounter, startEncounter } from "./encounter";
+import { encounters } from "../content/encounters";
+import { encounterCatalogSchema } from "../content/encounter-schemas";
+import publishedEncounterData from "../../content/legacy/encounters_before_galleria_integration.json";
 
 const rewardId = "victory_galleria_first";
 const cultureId = "galleria_fortune";
@@ -46,7 +49,12 @@ function finishCulture(initial: GameState, answer = "B", roll = 9999): GameState
   return validateGameState(JSON.parse(JSON.stringify(state)));
 }
 
-describe("Galleria score and cultural encounter share one AP entitlement", () => {
+describe("formerly published Galleria score and cultural encounter AP compatibility", () => {
+  const currentEntries = [...encounters.encounters];
+  beforeEach(() => {
+    encounters.encounters.splice(0, encounters.encounters.length, ...encounterCatalogSchema.parse(publishedEncounterData).encounters);
+  });
+  afterEach(() => { encounters.encounters.splice(0, encounters.encounters.length, ...currentEntries); });
   it("retains the existing ID and permits either score or completed culture", () => {
     expect(scoreRule).toMatchObject({ trigger: "battle_score", ap: 1, minScore: 2 });
     const old = validateGameState(galleria);

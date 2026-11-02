@@ -15,7 +15,7 @@ test("an older cafe save retains its actual script and expression without invent
   const scene = page.getByTestId("romance-scene");
   await expect(scene).toBeVisible();
   await expect(scene.getByTestId("date-destination")).toHaveCount(0);
-  const portrait = scene.locator(".vn-character img");
+  const portrait = scene.locator(".vn-character > img");
   await expect(portrait).toHaveAttribute("src", /\/default_01\/standing_01\/smile\.png$/);
   const ap = (await saved(page)).ap;
   await choose(page, 0);

@@ -53,7 +53,7 @@ describe("Milan date rewrite compatibility", () => {
     expect(completed.activeDate).toBeNull();
     expect(completed.playedDateIds).toContain(newId);
     expect(completed.playedDateIds).not.toContain(oldId);
-    expect(completed.memories.filter((memory) => memory.startsWith("milano_novecento_"))).toHaveLength(2);
+    expect(completed.memories.filter((memory) => memory === "sound_memory_novecento_date_01")).toHaveLength(1);
     expect(restore(completed)).toEqual(completed);
   });
 

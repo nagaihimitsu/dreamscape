@@ -2,14 +2,25 @@ import { expect, test, type Page } from "@playwright/test";
 import galleria from "../fixtures/galleria-stage2-pool.json" with { type: "json" };
 import phase7 from "../fixtures/phase7-free-time.json" with { type: "json" };
 import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
+import publishedEncounters from "../../content/legacy/encounters_before_galleria_integration.json" with { type: "json" };
 import { expectNoOverflow, loadSnapshot, saved, setDialogueSpeed } from "./helpers";
+
+// Keep coverage for the formerly published encounter rules without making
+// those events available to new players in the current catalog.
+test.beforeEach(async ({ page }) => {
+  await page.route(/\/content\/encounters\/catalog\.json(?:\?.*)?$/, (route) =>
+    route.fulfill({ status: 200, contentType: "text/javascript", body: `export default ${JSON.stringify(publishedEncounters)};` }),
+  );
+});
 
 const menu = (page: Page, title: string) => page.getByText(title, { exact: true }).locator("..").locator("..").getByRole("button");
 
 async function open(page: Page, title: string) {
   const before = await saved(page);
-  const toggle = page.getByTestId("encounter-menu-toggle");
-  if (await toggle.count() && !(await toggle.locator("..").evaluate((details: HTMLDetailsElement) => details.open))) await toggle.click();
+  const revisit = page.getByText("旅先を再訪する", { exact: true });
+  if (!(await revisit.locator("..").evaluate((details: HTMLDetailsElement) => details.open))) await revisit.click();
+  const place = page.getByTestId("revisit-place-galleria_vittorio_emanuele_ii");
+  if (await place.getAttribute("aria-expanded") !== "true") await place.click();
   await menu(page, title).click();
   await expect.poll(async () => (await saved(page)).revision).toBeGreaterThan(before.revision);
   await expect(page.getByTestId("encounter-screen")).toBeVisible();
@@ -168,6 +179,7 @@ test("not buying remains available when the travel budget is insufficient", asyn
     localStorage.setItem(key, JSON.stringify(snapshot));
   });
   await page.reload();
+  await setDialogueSpeed(page, "0");
   await advanceToChoice(page);
   await expect(page.getByRole("button", { name: "Aを選ぶ" })).toBeDisabled();
   await expect(page.getByRole("button", { name: "Bを選ぶ" })).toBeDisabled();
@@ -233,7 +245,10 @@ test("a cleared city keeps newly acquired Milan items usable exactly once after 
   expect(final.completedEncounterIds).toEqual(expect.arrayContaining([...acquired.completedEncounterIds, "galleria_gift", "galleria_outing"]));
   await page.reload();
   expect(await saved(page)).toEqual(final);
-  await page.getByTestId("encounter-menu-toggle").click();
+  const revisit = page.getByText("旅先を再訪する", { exact: true });
+  if (!(await revisit.locator("..").evaluate((details: HTMLDetailsElement) => details.open))) await revisit.click();
+  const place = page.getByTestId("revisit-place-galleria_vittorio_emanuele_ii");
+  if (await place.getAttribute("aria-expanded") !== "true") await place.click();
   await expect(menu(page, "しおりを贈る")).toHaveCount(0);
   await expect(menu(page, "紋章の小さな展示")).toHaveCount(0);
 });

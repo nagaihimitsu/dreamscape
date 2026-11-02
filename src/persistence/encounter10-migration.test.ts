@@ -4,7 +4,7 @@ import eea1157 from "../../tests/fixtures/eea1157-v10-encounters.json";
 import refactorPrevious from "../../tests/fixtures/4c6f5f3-v10-encounter.json";
 import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
 import { encounters } from "../content";
-import { startEncounter, chooseEncounter, advanceEncounter, finishEncounter } from "../domain/encounter";
+import { chooseEncounter, advanceEncounter, finishEncounter } from "../domain/encounter";
 import { grantRewardOnce, setNames, startDate, validateGameState, type GameState } from "../domain/game";
 import { getBattleAvailability } from "../domain/battle";
 import { getTourismAvailability } from "../domain/tourism";
@@ -117,11 +117,12 @@ describe("v10 encounter save migration", () => {
 
   it("persists the preselected random tickets and rejects a stale tab", () => {
     const storage = new MemoryStorage();
-    const initial = validateGameState(phase6.freeTime);
+    const initial = validateGameState(refactorPrevious.before);
     expect(saveGame(storage, initial).ok).toBe(true);
-    const first = startEncounter(initial, "galleria_cafe", () => 1234);
-    const other = startEncounter(initial, "galleria_cafe", () => 5678);
+    const first = chooseEncounter(initial, 0, initial.revision);
+    const other = chooseEncounter(initial, 1, initial.revision);
     expect(first.activeEncounter).not.toBeNull();
+    expect(first.activeEncounter?.romanceRoll).toEqual(initial.activeEncounter?.romanceRoll);
     expect(saveGame(storage, first, initial).ok).toBe(true);
     expect(saveGame(storage, other, initial).ok).toBe(false);
     const loaded = loadGame(storage);
@@ -130,8 +131,7 @@ describe("v10 encounter save migration", () => {
   });
 
   it("prevents another activity and reward mutation during an encounter", () => {
-    const initial = validateGameState(phase6.freeTime);
-    const state = startEncounter(initial, "galleria_cafe", () => 1234);
+    const state = validateGameState(refactorPrevious.before);
     expect(state.activeEncounter).not.toBeNull();
     expect(getBattleAvailability(state, phase6.B_selected.activeBattle.battleId).available).toBe(false);
     expect(getTourismAvailability(state, phase6.exploring.activeTourism.landmarkId).available).toBe(false);

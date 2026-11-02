@@ -1,6 +1,7 @@
 import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
 import { describe, expect, it } from "vitest";
 import { dates, effects, progression, trialMilestones } from "../content";
+import { beginStory, continueStory } from "../story/runtime";
 import {
   advanceDate,
   canConfessSuccessfully,
@@ -131,20 +132,14 @@ describe("Phase 2 relationship progression", () => {
       ),
     ).toHaveLength(1);
     const transcript: string[] = [];
-    const completed = play(state, invitation, [0], transcript);
+    const resolutions: NonNullable<GameState["activeDate"]>["resolvedChoices"] = [];
+    const completed = play(state, invitation, [0], transcript, resolutions);
     expect(completed.ap).toBe(state.ap);
-    expect(completed.affection).toBe(state.affection + 2);
+    expect(completed.affection).toBe(state.affection + resolutions[0].deltas.affection);
     expect(startDate(completed, invitation)).toBe(completed);
-    expect(transcript.join("\n")).toContain("ここ、『ミラノの居間』");
-    expect(completed.memories).toContain("milano_invitation_chosen_joke_refresh");
-    const differentlyChosen = play(
-      seedLegacyChapter(createGame()),
-      cafe,
-      [2, 2],
-    );
-    expect(getMemoryCallback(differentlyChosen)).not.toBe(
-      getMemoryCallback(state),
-    );
+    expect(transcript.join("\n")).toContain("ガッレリアの中央");
+    expect(completed.memories).toContain("sound_memory_invitation_01");
+    expect(getMemoryCallback(completed)).not.toBe(getMemoryCallback(createGame()));
   });
   for (const id of [walk, night]) {
     for (let first = 0; first < 3; first++)
@@ -154,15 +149,18 @@ describe("Phase 2 relationship progression", () => {
           const before = state.affection;
           const resolutions: NonNullable<GameState["activeDate"]>["resolvedChoices"] = [];
           const completed = play(state, id, [first, second], [], resolutions);
-          const firstId = `${id.replace("_01", "")}_first_${["joke", "listen", "honest"][first]}_refresh`;
-          const secondId = `${id.replace("_01", "")}_second_${["joke", "listen", "honest"][second]}_refresh`;
-          const chosen = [firstId, secondId].map((effectId) => effects.find((effect) => effect.id === effectId)!);
+          const firstProfiles = id === walk ? ["playful", "attentive", "bold"] : ["playful", "attentive", "honest"];
+          const chosen = [
+            effects.find((effect) => effect.id === `common_date_first_${firstProfiles[first]}`)!,
+            effects.find((effect) => effect.id === `sound_${id.replace("milano_", "")}_2_${second + 1}`)!,
+          ];
+          expect(chosen.every(Boolean)).toBe(true);
           expect(resolutions.map((entry) => entry.effectId)).toEqual(chosen.map((effect) => effect.id));
           expect(completed.affection).toBe(before + resolutions.reduce((sum, entry) => sum + entry.deltas.affection, 0));
           expect(completed.trust).toBe(state.trust + resolutions.reduce((sum, entry) => sum + entry.deltas.trust, 0));
           expect(completed.spark).toBe(state.spark + resolutions.reduce((sum, entry) => sum + entry.deltas.spark, 0));
-          expect(completed.memories.length).toBe(state.memories.length + 2);
-          expect(completed.memories).toEqual(expect.arrayContaining(chosen.map((effect) => effect.memoryId)));
+          expect(completed.memories.length).toBe(state.memories.length + 1);
+          expect(completed.memories).toContain(chosen[1].memoryId);
           expect(completed.ap).toBe(
             state.ap - dates.find((date) => date.id === id)!.apCost,
           );
@@ -172,6 +170,24 @@ describe("Phase 2 relationship progression", () => {
 });
 
 describe("confession and relationship ending", () => {
+  it("recalls the San Maurizio date only when its actual memory is present", () => {
+    const storyId = "milano/sound_confession_01";
+    const opening = (memories: string[]) => {
+      let step = beginStory(storyId, "晴", "灯", {}, memories);
+      const lines: string[] = [];
+      for (let i = 0; !step.frame.choices.length && i < 100; i++) {
+        lines.push(step.frame.text);
+        step = continueStory(storyId, step.storyState, step.frame, memories);
+      }
+      expect(step.frame.choices).toHaveLength(3);
+      lines.push(step.frame.text);
+      return lines.join("\n");
+    };
+    expect(opening(["sound_memory_maurizio_date_sound"]))
+      .toContain("あの教会で、別々に見て戻ったときも思った");
+    expect(opening(["sound_memory_cafe_01"]))
+      .not.toContain("あの教会で、別々に見て戻ったときも思った");
+  });
   it("offers confession from stage 2 even before success is guaranteed, without charging AP", () => {
     const early = toWalk();
     expect(getDateAvailability(early, confession).available).toBe(true);
@@ -189,11 +205,12 @@ describe("confession and relationship ending", () => {
     expect(state.endingReached).toBe(false);
     expect(state.unlockedEventIds).toContain(reassurance);
     const before = state.affection;
-    state = play(state, reassurance, [1]);
-    expect(state.affection).toBe(before + 2);
+    const reassuranceResolutions: NonNullable<GameState["activeDate"]>["resolvedChoices"] = [];
+    state = play(state, reassurance, [1], [], reassuranceResolutions);
+    expect(state.affection).toBe(before + reassuranceResolutions[0].deltas.affection);
     expect(startDate(state, reassurance)).toBe(state);
     expect(canConfessSuccessfully(state)).toBe(false);
-    state = play(state, night, [0, 2]);
+    state = play(state, night, [0, 1]);
     expect(canConfessSuccessfully(state)).toBe(true);
     state = play(state, confession, [0]);
     expect(state.confessionStatus).toBe("accepted");
@@ -212,9 +229,9 @@ describe("confession and relationship ending", () => {
     const transcript: string[] = [];
     state = play(state, confession, [1], transcript);
     expect(state.confessionStatus).toBe("rejected");
-    expect(state.memories).toContain("milano_cafe_first_joke_refresh");
-    expect(transcript.join("\n")).toContain("豆に宛先を書く");
-    expect(transcript.join("\n")).not.toContain("ブレラでは");
+    expect(state.memories).toContain("sound_memory_cafe_01");
+    expect(transcript.join("\n")).toContain("恋人としては、今は会えません");
+    expect(transcript.join("\n")).not.toContain("あの教会で、別々に見て");
     expect(startDate(state, confession)).toBe(state);
     state = play(state, walk, [0, 0]);
     expect(getDateAvailability(state, confession).available).toBe(true);

@@ -1,3 +1,4 @@
+import { previousMilanoJourney } from "../content/milano-3f32b60";
 import { z } from "zod";
 import { legacyJourney, legacyStoryId } from "../content/legacy-milano";
 import { episodes, progression } from "../content";
@@ -19,10 +20,12 @@ export const activeEpilogueSchema = z
     frame: storyFrameSchema,
   })
   .strict();
-function activeEpilogueStoryId(active: z.infer<typeof activeEpilogueSchema>): string | null {
+export function activeEpilogueStoryId(active: z.infer<typeof activeEpilogueSchema>): string | null {
   const current = episodes.find((episode) => episode.id === active.episodeId)?.epilogueStoryId;
   try { if (current && storyFingerprint(current) === active.contentHash) return current; }
   catch { /* The archived epilogue is checked independently. */ }
+  const previous = previousMilanoJourney.episodes.find((item) => item.id === active.episodeId)?.epilogueStoryId;
+  if (previous && storyFingerprint(previous) === active.contentHash) return previous;
   const old = legacyJourney.episodes.find((episode) => episode.id === active.episodeId)?.epilogueStoryId;
   if (!old) return null;
   const archived = legacyStoryId(old);

@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 1,
+  "id": "sound_finale_b1",
+  "landmarkId": null,
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "sound_finale_1",
+      "questionEn": "What did the Darsena offer Milan before it became a meeting place for evening walks?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A stage for outdoor opera."
+        },
+        {
+          "id": "B",
+          "textEn": "A port where canals meet."
+        },
+        {
+          "id": "C",
+          "textEn": "A pool for public baptism."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "port",
+          "meaning": "港"
+        }
+      ],
+      "hintJa": "今の岸辺で、昔なら何を待っただろう。",
+      "correctExplanationJa": "二つの運河が出合うダルセナは旧港。今は夕暮れに人が集う。",
+      "incorrectExplanationJa": "舞台や洗礼用水盤は、この水域本来の役割の説明ではない。 二つの運河が出合うダルセナは旧港。今は夕暮れに人が集う。",
+      "sources": [
+        {
+          "publisher": "YesMilano",
+          "title": "A Walk on the Navigli",
+          "url": "https://www.yesmilano.it/en/neighborhoods/navigli-see-and-do",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "二つの運河が出合うダルセナは旧港。今は夕暮れに人が集う。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "sound_finale_2",
+      "questionEn": "Which load linked the waterways to the Duomo building site?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Marble for the cathedral."
+        },
+        {
+          "id": "B",
+          "textEn": "Frames for the glass arcade."
+        },
+        {
+          "id": "C",
+          "textEn": "Seats for the theatre boxes."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "load",
+          "meaning": "積み荷"
+        }
+      ],
+      "hintJa": "水辺と広場を同じ一日の仕事として結んだ荷物。",
+      "correctExplanationJa": "大聖堂の建設用大理石はこの水路網を通って市中心部へ運ばれた。",
+      "incorrectExplanationJa": "鉄骨や劇場用の椅子を指す資料ではない。 大聖堂の建設用大理石はこの水路網を通って市中心部へ運ばれた。",
+      "sources": [
+        {
+          "publisher": "YesMilano",
+          "title": "The Navigli District",
+          "url": "https://www.yesmilano.it/en/see-and-do/venues/navigli-district",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "大聖堂の建設用大理石はこの水路網を通って市中心部へ運ばれた。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "sound_finale_3",
+      "questionEn": "Why limit the number of people in the old refectory?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "To leave room for the friars' meals today."
+        },
+        {
+          "id": "B",
+          "textEn": "To keep the painted figures hidden from the street."
+        },
+        {
+          "id": "C",
+          "textEn": "To help protect a fragile wall painting."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "fragile",
+          "meaning": "傷みやすい"
+        }
+      ],
+      "hintJa": "鑑賞したあとも、絵と同じ部屋に残るものを考えよう。",
+      "correctExplanationJa": "保存環境と鑑賞を両立するため、人数と滞在時間を制限する。",
+      "incorrectExplanationJa": "現役の食卓の席数や、通りからの視線が理由ではない。 保存環境と鑑賞を両立するため、人数と滞在時間を制限する。",
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano",
+          "title": "Backstage",
+          "url": "https://cenacolovinciano.org/en/museum/backstage/",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "保存環境と鑑賞を両立するため、人数と滞在時間を制限する。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "sound_finale_4",
+      "questionEn": "Why could the stalls at early La Scala serve as a dance floor?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The boxes could be lowered onto the stage."
+        },
+        {
+          "id": "B",
+          "textEn": "The seats could be taken away."
+        },
+        {
+          "id": "C",
+          "textEn": "The orchestra played outside the building."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "taken away",
+          "meaning": "取り除かれる"
+        }
+      ],
+      "hintJa": "立つ、座る、踊る。床の使い方が変わる。",
+      "correctExplanationJa": "平土間の可動席は舞踏会など、上演以外の用途に結びついていた。",
+      "incorrectExplanationJa": "桟敷の上下や屋外演奏による転用とは説明されない。 平土間の可動席は舞踏会など、上演以外の用途に結びついていた。",
+      "sources": [
+        {
+          "publisher": "Museo Teatrale alla Scala",
+          "title": "Curios at La Scala",
+          "url": "https://www.museoscala.org/en/history/theatre/curios-at-la-scala.html",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "平土間の可動席は舞踏会など、上演以外の用途に結びついていた。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "sound_finale_5",
+      "questionEn": "Which trace of work can you still find in Vicolo dei Lavandai?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A stone basin for washing clothes."
+        },
+        {
+          "id": "B",
+          "textEn": "A stone table for cutting marble."
+        },
+        {
+          "id": "C",
+          "textEn": "A stone counter for selling tickets."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "basin",
+          "meaning": "水を受ける槽"
+        }
+      ],
+      "hintJa": "荷を積む人と同じ水辺で、別の人は何をしていたのだろう。",
+      "correctExplanationJa": "洗濯を仕事にしていた人々の石の洗い場が残る。",
+      "incorrectExplanationJa": "石材加工台でも乗船券売り場でもない。 洗濯を仕事にしていた人々の石の洗い場が残る。",
+      "sources": [
+        {
+          "publisher": "YesMilano",
+          "title": "A Walk on the Navigli",
+          "url": "https://www.yesmilano.it/en/neighborhoods/navigli-see-and-do",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "洗濯を仕事にしていた人々の石の洗い場が残る。"
+        }
+      ],
+      "difficulty": "easy"
+    }
+  ],
+  "scope": "city_finale",
+  "cityId": "milano"
+}

@@ -106,10 +106,10 @@ describe("special battle content contract", () => {
     const newB = result.battles.find((battle) => battle.id === "milano_la_scala_b01")!;
     const newC = result.battles.find((battle) => battle.id === "milano_brera_c01")!;
     expect(newB.landmarkId).toBe("la_scala_case");
-    expect(newB.reasoning!.correctClueIds).toEqual(["scala_air_raid"]);
+    expect(newB.reasoning!.correctClueIds).toEqual(["scala_mobile"]);
     expect(newC.landmarkId).toBe("brera_case");
     expect(new Set(newC.reasoning!.correctClueIds)).toEqual(
-      new Set(["brera_original_altar", "brera_collection_transfer"]),
+      new Set(["brera_colours", "brera_show"]),
     );
     expect(result.journey.storyBattles.map((entry) => entry.battleId)).toEqual([newB.id, newC.id]);
   });

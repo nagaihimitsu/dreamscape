@@ -163,7 +163,7 @@ test("a failed expression image falls back and the date remains playable", async
   await choose(page, 1);
   await expect.poll(() => blocked).toBeGreaterThan(0);
   expect((await saved(page)).activeDate!.frame.emotion).toBe("shy");
-  const portrait = page.locator(".romance-scene .vn-character img");
+  const portrait = page.locator(".romance-scene .vn-character > img");
   await expect(portrait).toBeVisible();
   await expect(portrait).toHaveAttribute("src", new RegExp(`${neutral}$`));
   await choose(page, 0);

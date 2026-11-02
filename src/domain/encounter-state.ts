@@ -27,6 +27,8 @@ export const activeEncounterSchema = z.object({
     deltas: z.object({ affection: z.number().int(), trust: z.number().int(), spark: z.number().int() }).strict(),
     result: z.enum(["positive", "negative"]),
   }).strict().nullable(),
+  // An optional return point, not a second active scene. Older saves omit it.
+  returnTourism: z.object({ landmarkId: z.string().min(1), contentHash: z.string().min(1) }).strict().optional(),
 }).strict();
 
 export type ActiveEncounter = z.infer<typeof activeEncounterSchema>;

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import raw from "../../content/learning/translations.json";
 import details from "../../content/learning/details.json";
-import { battles, battleQuizzes } from "./index";
+import { battleQuizzes } from "./index";
 import { learningCatalogSchema, validateLearning } from "./learning-schema";
 import {
   learningDetailsSchema,
@@ -9,7 +9,8 @@ import {
 } from "./learning-details";
 
 describe("learning content", () => {
-  const ids = [...new Set(battles.map((b) => b.quizId))];
+  // Learning records may point to either a current or a published quiz.
+  const ids = Object.keys(battleQuizzes);
   it("covers every published question and all three choices", () => {
     const catalog = learningCatalogSchema.parse(raw);
     expect(() => validateLearning(catalog, battleQuizzes, ids)).not.toThrow();

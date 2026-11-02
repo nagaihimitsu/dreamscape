@@ -616,6 +616,66 @@
     {
       "memoryId": "milano_roastery_v2_second_c",
       "textJa": "二人でメニューに迷った。"
+    },
+    {
+      "memoryId": "sound_memory_cafe_01",
+      "textJa": "焙煎を見ながら、自分が飲みたい一杯を選んだ"
+    },
+    {
+      "memoryId": "sound_memory_walk_01",
+      "textJa": "広場を渡って自分から写真に入った"
+    },
+    {
+      "memoryId": "sound_memory_night_01",
+      "textJa": "橋の手前で足を止め、自分たちの速さを選んだ"
+    },
+    {
+      "memoryId": "sound_memory_city_date_01",
+      "textJa": "帰り道を少し延ばした"
+    },
+    {
+      "memoryId": "sound_memory_la_scala_date_01",
+      "textJa": "自分の番を最後まで待った"
+    },
+    {
+      "memoryId": "sound_memory_brera_date_01",
+      "textJa": "絵の前で別れの挨拶を考えた"
+    },
+    {
+      "memoryId": "sound_memory_navigli_date_01",
+      "textJa": "石の洗い場の前で、持ち主が戻るのを待った"
+    },
+    {
+      "memoryId": "sound_memory_san_satiro_date_01",
+      "textJa": "二人で立ち位置を取り替えた"
+    },
+    {
+      "memoryId": "sound_memory_starbucks_roastery_date_01",
+      "textJa": "持ち帰りたい香りを選んだ"
+    },
+    {
+      "memoryId": "sound_memory_fondazione_prada_date_01",
+      "textJa": "金色の外壁の前で、着たい服の話をした"
+    },
+    {
+      "memoryId": "sound_memory_novecento_date_01",
+      "textJa": "空中で最後の一画を止めた"
+    },
+    {
+      "memoryId": "sound_memory_maurizio_date_sound",
+      "textJa": "仕切りの両側を見て、色を一つずつ持ち寄った"
+    },
+    {
+      "memoryId": "sound_memory_invitation_01",
+      "textJa": "いつもと逆の先導役を選んだ"
+    },
+    {
+      "memoryId": "sound_memory_rain_pause_01",
+      "textJa": "屋根の端で雨を待った"
+    },
+    {
+      "memoryId": "sound_memory_reassurance_01",
+      "textJa": "返事を急がずに過ごす時間を選んだ"
     }
   ],
   "fallbackMemoryCallbackJa": "一緒に歩いて、言葉を交わした時間"

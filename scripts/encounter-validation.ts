@@ -141,9 +141,9 @@ export function validateEncounterContent({
     if (event.cityId !== cityId) throw new Error(`Unknown encounter city: ${event.id}/${event.cityId}`);
     if (!landmarks.some((landmark) => landmark.id === event.landmarkId && landmark.cityId === event.cityId))
       throw new Error(`Unknown encounter landmark: ${event.id}/${event.landmarkId}`);
-    if (event.repeatable && (!event.quiz || event.completionMoneyEuro || event.completionItemId ||
-      event.options.some((option) => option.costEuro || option.requiresItemId || option.consumeItemId || option.giftItemId || option.responseProfileId || option.deferCompletion)))
-      throw new Error(`Repeatable encounter must be a free quiz without choice effects: ${event.id}`);
+    if (event.repeatable && (event.completionMoneyEuro || event.completionItemId ||
+      event.options.some((option) => option.costEuro || option.requiresItemId || option.consumeItemId || option.giftItemId || option.responseProfileId)))
+      throw new Error(`Repeatable encounter must be free and without item, money or choice effects: ${event.id}`);
     unique(event.options.map((option) => option.id), `encounter option ID: ${event.id}`);
     for (const option of event.options) {
       for (const item of [option.requiresItemId, option.consumeItemId, option.giftItemId]) {

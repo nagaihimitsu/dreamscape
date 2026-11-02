@@ -1,3 +1,4 @@
+import { previousMilanoIntroductions } from "../../content/milano-3f32b60";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { dialogueExpressions, dialogueReactions, landmarks, presentation, reasoningIntroductions, tourismAssets } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
@@ -100,7 +101,7 @@ export function BattleScreen({
     const config = battle.reasoning;
     if (!config || previous.runId !== active.runId || previous.phase !== "dialogue" ||
         previous.scene !== config.claimScene || !previous.ended || active.phase !== "reasoning") return;
-    const storyId = reasoningIntroductions[battle.id];
+    const storyId = previousMilanoIntroductions[battle.storyId] ?? reasoningIntroductions[battle.id];
     if (!storyId) {
       // New special battles can still use the common transition before an
       // optional presentation-only rebuttal has been authored.

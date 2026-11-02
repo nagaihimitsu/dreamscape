@@ -204,9 +204,9 @@
       "cityId": "milano",
       "nameJa": "最後の晩餐",
       "nameEn": "The Last Supper",
-      "descriptionJa": "サンタ・マリア・デッレ・グラツィエ修道院の旧食堂。壁いっぱいの絵を、少し近くで眺めてみよう。",
+      "descriptionJa": "旧食堂で声を出さない兄と、その手を見て席を立つ妹がいる。",
       "imageAssetId": "last_supper_photo",
-      "guideStoryId": "tourism/last_supper_guide_rewrite",
+      "guideStoryId": "tourism/sound_supper",
       "battleId": "milano_last_supper_01",
       "clueIds": [
         "last_supper_perspective",
@@ -221,9 +221,9 @@
       "cityId": "milano",
       "nameJa": "ミラノ大聖堂（ドゥオモ）",
       "nameEn": "Milan Cathedral (Duomo di Milano)",
-      "descriptionJa": "空へ伸びる石の尖塔。その石がここへ届き、今も残るまでの旅を見つける。",
+      "descriptionJa": "広場で録音中の男が、小さな布を頭からかぶった。",
       "imageAssetId": "duomo_milano_photo",
-      "guideStoryId": "tourism/duomo_guide_rewrite",
+      "guideStoryId": "tourism/sound_duomo",
       "battleId": "milano_duomo_01",
       "clueIds": [
         "duomo_marble_surface",
@@ -237,9 +237,9 @@
       "cityId": "milano",
       "nameJa": "ヴィットーリオ・エマヌエーレ2世のガッレリア",
       "nameEn": "Galleria Vittorio Emanuele II",
-      "descriptionJa": "見上げる屋根と、歩いていく先。華やかな店の間で、街の道が続いている。",
+      "descriptionJa": "二人の後ろで、見知らぬ人が同じ動きを繰り返している。",
       "imageAssetId": "galleria_milano_photo",
-      "guideStoryId": "tourism/galleria_guide_rewrite",
+      "guideStoryId": "tourism/sound_galleria",
       "battleId": "milano_galleria_01",
       "clueIds": [
         "galleria_roof_light",
@@ -253,9 +253,9 @@
       "cityId": "milano",
       "nameJa": "スフォルツェスコ城",
       "nameEn": "Castello Sforzesco",
-      "descriptionJa": "高い城壁の内側で、場所の役割と見る人のまなざしが変わる。中庭の写真と室内の資料を、一緒にひもとく。",
+      "descriptionJa": "城の中庭で、父親が自分の鼻をかばっている。",
       "imageAssetId": "castello_courtyard_photo",
-      "guideStoryId": "tourism/castello_guide_rewrite",
+      "guideStoryId": "tourism/sound_castle",
       "battleId": "milano_castello_01",
       "clueIds": [
         "castello_bona_tower",
@@ -269,14 +269,17 @@
       "cityId": "milano",
       "nameJa": "スカラ座",
       "nameEn": "Teatro alla Scala",
-      "descriptionJa": "劇場と博物館の記録から、火災・空襲・再開の出来事をたどる。",
+      "descriptionJa": "スカラ座の前に、売り物でも腰掛けでもない椅子が一脚ある。",
       "imageAssetId": "la_scala_date_photo",
-      "guideStoryId": "tourism/la_scala_case_guide",
+      "guideStoryId": "tourism/sound_scala",
       "battleId": "milano_la_scala_b01",
       "clueIds": [
         "scala_ducal_fire",
         "scala_air_raid",
-        "scala_reopening"
+        "scala_reopening",
+        "scala_mobile",
+        "scala_box",
+        "scala_light"
       ]
     },
     {
@@ -284,16 +287,20 @@
       "cityId": "milano",
       "nameJa": "ブレラ絵画館",
       "nameEn": "Pinacoteca di Brera",
-      "descriptionJa": "ブレラ宮殿の中庭。絵画館の資料から、カメリーノの祭壇画の来歴をたどる。",
+      "descriptionJa": "ブレラで衣装係と演出家が、同じ布の端を持っている。",
       "imageAssetId": "brera_courtyard_case_photo",
-      "guideStoryId": "tourism/brera_case_guide",
+      "guideStoryId": "tourism/sound_brera",
       "battleId": "milano_brera_c01",
       "clueIds": [
         "brera_original_altar",
         "brera_collection_transfer",
         "brera_distributed_panels",
         "brera_collection_origins",
-        "brera_mantegna_purchase"
+        "brera_mantegna_purchase",
+        "brera_colours",
+        "brera_show",
+        "brera_view",
+        "brera_legacy"
       ]
     }
   ],
@@ -919,6 +926,161 @@
           "checkedAt": "2026-11-01",
           "claimType": "documented_fact",
           "claimJa": "マンテーニャの《死せるキリスト》は、ボッシがローマの美術商のもとで見つけ、1824年にブレラの所蔵となった。"
+        }
+      ]
+    },
+    {
+      "id": "scala_mobile",
+      "landmarkId": "la_scala_case",
+      "kind": "document",
+      "titleJa": "平土間の椅子",
+      "descriptionJa": "初期には平土間の椅子を動かせた。座りたい客は椅子を借り、床は舞踏会など別の用途にも使われた。",
+      "factId": "scala_mobile_fact",
+      "relatedQuestionIds": [
+        "sound_scala_2"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Museo Teatrale alla Scala",
+          "title": "Curios at La Scala",
+          "url": "https://www.museoscala.org/en/history/theatre/curios-at-la-scala.html",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "初期には平土間の椅子を動かせた。座りたい客は椅子を借り、床は舞踏会など別の用途にも使われた。"
+        }
+      ]
+    },
+    {
+      "id": "scala_box",
+      "landmarkId": "la_scala_case",
+      "kind": "document",
+      "titleJa": "桟敷の内装",
+      "descriptionJa": "桟敷を所有する家族は、各々の好みで内装を選ぶことができた。",
+      "factId": "scala_box_fact",
+      "relatedQuestionIds": [
+        "sound_scala_1"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Museo Teatrale alla Scala",
+          "title": "Curios at La Scala",
+          "url": "https://www.museoscala.org/en/history/theatre/curios-at-la-scala.html",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "桟敷を所有する家族は、各々の好みで内装を選ぶことができた。"
+        }
+      ]
+    },
+    {
+      "id": "scala_light",
+      "landmarkId": "la_scala_case",
+      "kind": "document",
+      "titleJa": "客席を照らす灯り",
+      "descriptionJa": "電灯の導入によって客席は明るく照らされた。資料は椅子の固定方法には触れない。",
+      "factId": "scala_light_fact",
+      "relatedQuestionIds": [
+        "sound_scala_2"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Museo Teatrale alla Scala",
+          "title": "Curios at La Scala",
+          "url": "https://www.museoscala.org/en/history/theatre/curios-at-la-scala.html",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "電灯の導入によって客席は明るく照らされた。資料は椅子の固定方法には触れない。"
+        }
+      ]
+    },
+    {
+      "id": "brera_colours",
+      "landmarkId": "brera_case",
+      "kind": "document",
+      "titleJa": "画面の内側・衣装",
+      "descriptionJa": "美術館は赤と緑、青と白などの衣装の配色を、イタリアとフランスの旗への暗示と解説している。",
+      "factId": "brera_colours_fact",
+      "relatedQuestionIds": [
+        "sound_brera_3"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Pinacoteca di Brera",
+          "title": "The Kiss",
+          "url": "https://pinacotecabrera.org/en/collezioni/collezione-on-line/the-kiss/",
+          "checkedAt": "2026-11-02",
+          "claimType": "interpretation",
+          "claimJa": "美術館は赤と緑、青と白などの衣装の配色を、イタリアとフランスの旗への暗示と解説している。"
+        }
+      ]
+    },
+    {
+      "id": "brera_show",
+      "landmarkId": "brera_case",
+      "kind": "document",
+      "titleJa": "画面の外側・最初の観客",
+      "descriptionJa": "1859年、統一運動の進展を祝うブレラの展覧会で《接吻》が発表された。",
+      "factId": "brera_show_fact",
+      "relatedQuestionIds": [
+        "sound_brera_2",
+        "sound_brera_3"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Pinacoteca di Brera",
+          "title": "The Kiss",
+          "url": "https://pinacotecabrera.org/en/collezioni/collezione-on-line/the-kiss/",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "1859年、統一運動の進展を祝うブレラの展覧会で《接吻》が発表された。"
+        }
+      ]
+    },
+    {
+      "id": "brera_view",
+      "landmarkId": "brera_case",
+      "kind": "document",
+      "titleJa": "別作品の視点",
+      "descriptionJa": "マンテーニャ《死せるキリスト》では身体の短縮表現が鑑賞者を場面に引き込む。",
+      "factId": "brera_view_fact",
+      "relatedQuestionIds": [
+        "sound_brera_1"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Pinacoteca di Brera",
+          "title": "Lamentation over the Dead Christ",
+          "url": "https://pinacotecabrera.org/en/collezioni/collezione-on-line/lamentation-over-the-dead-christ/",
+          "checkedAt": "2026-11-02",
+          "claimType": "interpretation",
+          "claimJa": "マンテーニャ《死せるキリスト》では身体の短縮表現が鑑賞者を場面に引き込む。"
+        }
+      ]
+    },
+    {
+      "id": "brera_legacy",
+      "landmarkId": "brera_case",
+      "kind": "document",
+      "titleJa": "収蔵のきっかけ",
+      "descriptionJa": "《接吻》は発注者の遺贈で1886年に絵画館の所蔵になった。これは公開当時とは別の出来事。",
+      "factId": "brera_legacy_fact",
+      "relatedQuestionIds": [
+        "sound_brera_2"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Pinacoteca di Brera",
+          "title": "The Kiss",
+          "url": "https://pinacotecabrera.org/en/collezioni/collezione-on-line/the-kiss/",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "《接吻》は発注者の遺贈で1886年に絵画館の所蔵になった。これは公開当時とは別の出来事。"
         }
       ]
     }

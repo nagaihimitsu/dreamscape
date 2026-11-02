@@ -149,6 +149,12 @@
       "color": "#60746b",
       "fallback": "neutral",
       "imageAssetId": "darsena_finale_photo"
+    },
+    "milano_san_maurizio_sound": {
+      "nameJa": "サン・マウリツィオ教会",
+      "captionJa": "ミラノ ／ サン・マウリツィオ教会",
+      "color": "#766257",
+      "fallback": "neutral"
     }
   },
   "emotions": {
@@ -769,6 +775,66 @@
     "milano_roastery_v2_second_c": {
       "titleJa": "ロースタリー",
       "descriptionJa": "二人でメニューに迷った。"
+    },
+    "sound_memory_cafe_01": {
+      "titleJa": "冷めてからが本番",
+      "descriptionJa": "焙煎を見ながら、自分が飲みたい一杯を選んだ。"
+    },
+    "sound_memory_walk_01": {
+      "titleJa": "私を探す一枚",
+      "descriptionJa": "広場を渡って自分から写真に入った。"
+    },
+    "sound_memory_night_01": {
+      "titleJa": "拍を外して歩く",
+      "descriptionJa": "橋の手前で足を止め、自分たちの速さを選んだ。"
+    },
+    "sound_memory_city_date_01": {
+      "titleJa": "帰り道の予約",
+      "descriptionJa": "帰り道を少し延ばした。"
+    },
+    "sound_memory_la_scala_date_01": {
+      "titleJa": "故意のアンコール",
+      "descriptionJa": "自分の番を最後まで待った。"
+    },
+    "sound_memory_brera_date_01": {
+      "titleJa": "振り返る前のひとこと",
+      "descriptionJa": "絵の前で別れの挨拶を考えた。"
+    },
+    "sound_memory_navigli_date_01": {
+      "titleJa": "片方だけの手袋",
+      "descriptionJa": "石の洗い場の前で、持ち主が戻るのを待った。"
+    },
+    "sound_memory_san_satiro_date_01": {
+      "titleJa": "一歩ぶんの秘密",
+      "descriptionJa": "二人で立ち位置を取り替えた。"
+    },
+    "sound_memory_starbucks_roastery_date_01": {
+      "titleJa": "買わないおみやげ",
+      "descriptionJa": "持ち帰りたい香りを選んだ。"
+    },
+    "sound_memory_fondazione_prada_date_01": {
+      "titleJa": "金色のせいにする",
+      "descriptionJa": "金色の外壁の前で、着たい服の話をした。"
+    },
+    "sound_memory_novecento_date_01": {
+      "titleJa": "空中に書いた名前",
+      "descriptionJa": "空中で最後の一画を止めた。"
+    },
+    "sound_memory_maurizio_date_sound": {
+      "titleJa": "別々に見て、ここで会う",
+      "descriptionJa": "仕切りの両側を見て、色を一つずつ持ち寄った。"
+    },
+    "sound_memory_invitation_01": {
+      "titleJa": "片道だけの先導",
+      "descriptionJa": "いつもと逆の先導役を選んだ。"
+    },
+    "sound_memory_rain_pause_01": {
+      "titleJa": "雨が決めた相席",
+      "descriptionJa": "屋根の端で雨を待った。"
+    },
+    "sound_memory_reassurance_01": {
+      "titleJa": "今日は返事をしない日",
+      "descriptionJa": "返事を急がずに過ごす時間を選んだ。"
     }
   },
   "ending": {

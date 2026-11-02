@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import quiz from "../../content/quizzes/last_supper_B1.json" with { type: "json" };
+import quiz from "../../content/quizzes/sound_supper_B1.json" with { type: "json" };
 import phase2 from "../fixtures/phase2-saves.json" with { type: "json" };
 import {
   SAVE_KEY,

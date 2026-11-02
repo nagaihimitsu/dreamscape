@@ -1,3 +1,4 @@
+import { previousMilanoTourism } from "../content/milano-3f32b60";
 import { z } from "zod";
 import { legacyStoryId, legacyTourism } from "../content/legacy-milano";
 import { isEpisodeBlockedByStoryBattle, recordGuideRead, isEpisodeUnlocked } from "./chapter";
@@ -48,6 +49,9 @@ export function activeGuideStoryId(active: ActiveTourism): string | null {
   const current = landmarks.find((item) => item.id === active.landmarkId);
   try { if (current && active.contentHash === tourismFingerprint(active.landmarkId)) return current.guideStoryId; }
   catch { /* The archived guide is checked independently. */ }
+  const previous = previousMilanoTourism.landmarks.find((item) => item.id === active.landmarkId);
+  if (previous && active.contentHash === `${previous.guideStoryId}:${storyFingerprint(previous.guideStoryId)}`)
+    return previous.guideStoryId;
   const old = legacyTourism.landmarks.find((item) => item.id === active.landmarkId);
   if (!old) return null;
   const storyId = legacyStoryId(old.guideStoryId);

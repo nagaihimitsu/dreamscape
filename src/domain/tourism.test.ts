@@ -3,7 +3,6 @@ import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
 import { describe, expect, it } from "vitest";
 import {
   battles,
-  battleQuizzes,
   landmarks,
   rewardRules,
   tourismClues,
@@ -20,6 +19,7 @@ import {
 import {
   advanceBattle,
   answerBattle,
+  getActiveBattleContent,
   leaveBattle,
   startBattle,
   toggleBattleHint,
@@ -196,12 +196,12 @@ describe("tourism temporarily suspends the current battle", () => {
     while (state.activeBattle!.phase !== "question")
       state = advanceBattle(state, state.revision);
     expect(state.activeBattle!.roundIndex).toBe(1);
-    const battle = battles.find(
-      (item) => item.id === state.activeBattle!.battleId,
-    )!;
+    // An in-progress legacy battle must continue against its saved quiz,
+    // rather than the quiz currently assigned to that battle ID.
+    const { quiz } = getActiveBattleContent(state.activeBattle!);
     state = answerBattle(
       state,
-      battleQuizzes[battle.quizId].questions[1].correctOptionId,
+      quiz.questions[1].correctOptionId,
       state.revision,
     );
     expect(state.activeBattle!.score).toBe(2);

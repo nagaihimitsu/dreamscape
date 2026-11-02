@@ -90,7 +90,7 @@ describe("content authoring workflow", () => {
   }, 90_000);
 
   it("reflects an existing Milan quiz edit while leaving production text untouched", async () => {
-    const productionFile = path.join(root, "content/quizzes/duomo_B1.json");
+    const productionFile = path.join(root, "content/quizzes/sound_duomo_B1.json");
     const original = await readFile(productionFile, "utf8");
     const screenFile = path.join(root, "src/features/battle/BattleScreen.tsx");
     const originalScreen = await readFile(screenFile, "utf8");
@@ -100,7 +100,7 @@ describe("content authoring workflow", () => {
     expect(quiz.questions[0].questionEn).not.toBe(editedQuestion);
     quiz.questions[0].questionEn = editedQuestion;
     await writeFile(
-      path.join(fixture, "content/quizzes/duomo_B1.json"),
+      path.join(fixture, "content/quizzes/sound_duomo_B1.json"),
       `${JSON.stringify(quiz, null, 2)}\n`,
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(

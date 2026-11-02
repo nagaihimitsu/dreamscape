@@ -1,3 +1,4 @@
+import { previousMilanoBattles, previousMilanoQuizzes, previousMilanoTourism } from "../content/milano-3f32b60";
 import { z } from "zod";
 import { legacyBattles, legacyBattleQuizzes, legacyStoryId, legacyTourism } from "../content/legacy-milano";
 import { finalizeBattleProgress, isEpisodeBlockedByStoryBattle, isEpisodeUnlocked } from "./chapter";
@@ -128,6 +129,12 @@ export function getBattleContentByHash(battleId: string, contentHash: string) {
     if (current && contentHash === battleFingerprint(battleId))
       return { battle: current, quiz: battleQuizzes[current.quizId], clues: tourismClues, legacy: false };
   } catch { /* The new scene may not yet exist; validate against the archived bundle. */ }
+  const previous = previousMilanoBattles.find((item) => item.id === battleId);
+  if (previous) {
+    const previousQuiz = previousMilanoQuizzes[previous.quizId];
+    if (previousQuiz && contentHash === hashBattle(previous, previousQuiz, previousMilanoTourism.clues, previous.storyId))
+      return { battle: previous, quiz: previousQuiz, clues: previousMilanoTourism.clues, legacy: false };
+  }
   const old = legacyBattles.find((item) => item.id === battleId);
   const quiz = old && legacyBattleQuizzes[old.quizId];
   if (old && quiz && contentHash === hashBattle(old, quiz, legacyTourism.clues, legacyStoryId(old.storyId)))

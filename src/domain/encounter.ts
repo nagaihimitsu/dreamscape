@@ -1,6 +1,9 @@
 import { encounters } from "../content/encounters";
+import { previousMilanoEncounters } from "../content/milano-3f32b60";
 import { legacyEncounters, legacyStoryId } from "../content/legacy-milano";
 import previousEncounterData from "../../content/legacy/encounters_before_story_refactor.json";
+import preGalleriaEncounterData from "../../content/legacy/encounters_before_galleria_integration.json";
+import preSoundFortuneData from "../../content/legacy/encounters_before_sound_fortune.json";
 import { responseProfileSchema } from "../content/schemas";
 import { city, responseProfiles } from "../content";
 import { encounterCatalogSchema, type EncounterDefinition } from "../content/encounter-schemas";
@@ -13,9 +16,14 @@ import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
 import { deriveRelationshipTone } from "./romance-tone";
 import { scoreQuizAnswer } from "./quiz-answer";
 import type { ActiveEncounter } from "./encounter-state";
+import placeRuleData from "../../content/encounters/entry-rules.json";
+import { encounterEntryRulesSchema } from "../content/encounter-entry-rules";
 
 const findEncounter = (id: string) => encounters.encounters.find((item) => item.id === id);
 const previousEncounters = encounterCatalogSchema.parse(previousEncounterData).encounters;
+const preGalleriaEncounters = encounterCatalogSchema.parse(preGalleriaEncounterData).encounters;
+const preSoundFortuneEncounters = encounterCatalogSchema.parse(preSoundFortuneData).encounters;
+const placeRules = encounterEntryRulesSchema.parse(placeRuleData);
 const unavailable = (reason: string): Availability => ({ available: false, reason });
 const available: Availability = { available: true, reason: "" };
 
@@ -47,6 +55,15 @@ export function getActiveEncounterDefinition(active: ActiveEncounter): Encounter
   const current = findEncounter(active.encounterId);
   try { if (current && encounterFingerprint(current) === active.contentHash) return current; }
   catch { /* A rewritten current story can be absent while old snapshots remain available. */ }
+  const preSound = preSoundFortuneEncounters.find((event) => event.id === active.encounterId);
+  try { if (preSound && encounterFingerprint(preSound) === active.contentHash) return preSound; }
+  catch { /* An older script is resolved against the archived publications below. */ }
+  const preGalleria = preGalleriaEncounters.find((event) => event.id === active.encounterId);
+  try { if (preGalleria && encounterFingerprint(preGalleria) === active.contentHash) return preGalleria; }
+  catch { /* An older script is resolved against the archived publication below. */ }
+  const soundBase = previousMilanoEncounters.find((event) => event.id === active.encounterId);
+  try { if (soundBase && encounterFingerprint(soundBase) === active.contentHash) return soundBase; }
+  catch { /* An older script is resolved against the archived publication below. */ }
   const previous = previousEncounters.find((event) => event.id === active.encounterId);
   try { if (previous && encounterFingerprint(previous) === active.contentHash) return previous; }
   catch { /* An older script is resolved against the archived publication below. */ }
@@ -59,6 +76,15 @@ function activeStoryId(active: ActiveEncounter, id: string): string {
   const event = findEncounter(active.encounterId);
   try { if (event && encounterFingerprint(event) === active.contentHash) return id; }
   catch { /* Resolve against the immutable publication below. */ }
+  const preSound = preSoundFortuneEncounters.find((item) => item.id === active.encounterId);
+  try { if (preSound && encounterFingerprint(preSound) === active.contentHash) return id; }
+  catch { /* Resolve against the immutable publications below. */ }
+  const preGalleria = preGalleriaEncounters.find((item) => item.id === active.encounterId);
+  try { if (preGalleria && encounterFingerprint(preGalleria) === active.contentHash) return id; }
+  catch { /* Resolve against the immutable publication below. */ }
+  const soundBase = previousMilanoEncounters.find((item) => item.id === active.encounterId);
+  try { if (soundBase && encounterFingerprint(soundBase) === active.contentHash) return id; }
+  catch { /* Resolve against the immutable publication below. */ }
   const previous = previousEncounters.find((item) => item.id === active.encounterId);
   try { if (previous && encounterFingerprint(previous) === active.contentHash) return id; }
   catch { /* Resolve against the immutable publication below. */ }
@@ -68,7 +94,15 @@ function activeStoryId(active: ActiveEncounter, id: string): string {
 export function getEncounterAvailability(state: GameState, id: string): Availability {
   const event = findEncounter(id);
   if (!event) return unavailable("寄り道が見つかりません。");
+  const revisitableFortune = event.id === "galleria_fortune" && event.availability === "tourism" && hasGalleriaBattle(state);
+  if (event.availability === "dormant" || (event.availability === "tourism" && !revisitableFortune))
+    return unavailable("この寄り道は自由時間からは選べません。");
   if (event.cityId !== city.id) return unavailable("この街では出かけられません。");
+  const rule = placeRules.entries.find((entry) => entry.encounterId === id && (!entry.storyId || entry.storyId === event.storyId));
+  if (rule?.completedEpisodeId && !state.completedEpisodeIds.includes(rule.completedEpisodeId))
+    return unavailable("この場所を訪れたあとに出会えます。");
+  if (rule?.completedStoryBattleId && !state.battleRecords.some((record) => record.battleId === rule.completedStoryBattleId && record.attempts > 0))
+    return unavailable("この場所を訪れたあとに出会えます。");
   if (!canAccessFreeTime(state)) return unavailable("旅を進めると出かけられます。");
   if (state.activeEncounter || state.activeDate || state.activeTourism || state.activeEpilogue || state.activeBattle)
     return unavailable("途中の場面を終えてから出かけられます。");
@@ -77,6 +111,22 @@ export function getEncounterAvailability(state: GameState, id: string): Availabi
   if (actionable.length && actionable.every((option) => !optionItemsBelongToEncounter(event, option) || (option.requiresItemId && state.inventory[option.requiresItemId] !== "held")))
     return unavailable("必要な品物を持っていません。");
   return available;
+}
+
+/** Keep the optional cultural quiz after the main battle, so it cannot reveal its answer first. */
+function hasGalleriaBattle(state: GameState): boolean {
+  return state.battleRecords.some((record) => record.battleId === "milano_galleria_01" && record.attempts > 0);
+}
+
+/** The new fortune's leave branch, or its pre-battle visit, ends without a quiz. */
+export function encounterStoryCanFinish(state: GameState): boolean {
+  const active = state.activeEncounter;
+  if (!active || active.phase !== "story" || !active.frame.ended || !active.selectedOptionId) return false;
+  const event = getActiveEncounterDefinition(active);
+  if (!event.quiz) return true;
+  if (event.storyId !== "encounters/sound_galleria_fortune") return false;
+  const option = event.options.find((item) => item.id === active.selectedOptionId);
+  return !!option?.deferCompletion || !hasGalleriaBattle(state);
 }
 
 export function getEncounterOptionAvailability(state: GameState, index: number): Availability {
@@ -104,9 +154,8 @@ function withStep(active: ActiveEncounter, step: StoryStep): ActiveEncounter {
 }
 
 /** The tickets are persisted together with the event before any selection. */
-export function startEncounter(state: GameState, id: string, nextRoll: () => number = secureRomanceRoll): GameState {
-  if (!getEncounterAvailability(state, id).available) return state;
-  const event = findEncounter(id)!;
+function beginEncounter(state: GameState, event: EncounterDefinition, nextRoll: () => number): GameState {
+  const id = event.id;
   const [romanceRoll] = createRomanceRollPlan(1, nextRoll);
   const [rewardTicket] = createRomanceRollPlan(1, nextRoll);
   const step = checkedStep(beginStory(event.storyId, state.playerName, state.heroineName, variables(state), state.memories, state.inventory));
@@ -116,10 +165,40 @@ export function startEncounter(state: GameState, id: string, nextRoll: () => num
     storyId: event.storyId, storyHash: storyFingerprint(event.storyId), storyState: step.storyState, frame: step.frame,
     phase: "story", selectedOptionId: null, quizAnswerId: null, rewardRoll: rewardTicket.reaction,
     rewardChancePercent: event.quiz?.chancePercent ?? null,
-    rewardAlreadyDrawn: !!state.encounterRewards[id], romanceRoll,
+    rewardAlreadyDrawn: !!event.quiz && !!state.encounterRewards[id], romanceRoll,
     responseProfiles: responseProfiles.filter((profile) => event.options.some((option) => option.responseProfileId === profile.id)).map((profile) => responseProfileSchema.parse(profile)),
     romanceResolution: null,
   } };
+}
+
+export function startEncounter(state: GameState, id: string, nextRoll: () => number = secureRomanceRoll): GameState {
+  if (!getEncounterAvailability(state, id).available) return state;
+  return beginEncounter(state, findEncounter(id)!, nextRoll);
+}
+
+/** A single optional encounter can be entered from its own observation screen. */
+export function getTourismEncounterAvailability(state: GameState, id: string): Availability {
+  const event = findEncounter(id);
+  const active = state.activeTourism;
+  if (!event || event.availability !== "tourism" || event.cityId !== city.id ||
+      !active || active.phase !== "exploring" || active.landmarkId !== event.landmarkId ||
+      !state.visitedLandmarkIds.includes(active.landmarkId) ||
+      state.activeBattle || state.activeDate || state.activeEncounter || state.activeEpilogue ||
+      (!event.repeatable && state.completedEncounterIds.includes(id)))
+    return unavailable("今は話しかけられません。");
+  return available;
+}
+
+export function startTourismEncounter(
+  state: GameState,
+  id: string,
+  expectedRevision: number,
+  nextRoll: () => number = secureRomanceRoll,
+): GameState {
+  if (state.revision !== expectedRevision || !getTourismEncounterAvailability(state, id).available) return state;
+  const tourism = state.activeTourism!;
+  const next = beginEncounter({ ...state, activeTourism: null }, findEncounter(id)!, nextRoll);
+  return { ...next, activeEncounter: { ...next.activeEncounter!, returnTourism: { landmarkId: tourism.landmarkId, contentHash: tourism.contentHash } } };
 }
 
 export function chooseEncounter(state: GameState, index: number, expectedRevision: number): GameState {
@@ -168,7 +247,8 @@ export function advanceEncounter(state: GameState, expectedRevision: number): Ga
   }
   if (active.phase === "quiz" || active.frame.choices.length) return state;
   if (active.frame.ended) {
-    if (active.phase === "story" && event.quiz && active.selectedOptionId)
+    if (event.quiz && encounterStoryCanFinish(state)) return finishEncounter(state, expectedRevision);
+    if (active.phase === "story" && event.quiz && active.selectedOptionId && !encounterStoryCanFinish(state))
       return { ...state, revision: state.revision + 1, activeEncounter: { ...active, phase: "quiz" } };
     return state;
   }
@@ -214,7 +294,7 @@ export function finishEncounter(state: GameState, expectedRevision: number): Gam
   if (state.revision !== expectedRevision || !active || !active.frame.ended || !active.selectedOptionId || (active.phase !== "outcome" && active.phase !== "story")) return state;
   const event = getActiveEncounterDefinition(active);
   if (event.cityId !== city.id || !itemBelongsToEncounter(event, event.completionItemId)) return state;
-  if (event.quiz && active.phase !== "outcome") return state;
+  if (event.quiz && active.phase !== "outcome" && !encounterStoryCanFinish(state)) return state;
   const option = event.options.find((item) => item.id === active.selectedOptionId)!;
   const first = !state.completedEncounterIds.includes(event.id) && !option.deferCompletion;
   let next: GameState = { ...state, revision: state.revision + 1, activeEncounter: null };
@@ -226,6 +306,11 @@ export function finishEncounter(state: GameState, expectedRevision: number): Gam
       inventory: event.completionItemId ? { ...next.inventory, [event.completionItemId]: "held" } : next.inventory };
     if (event.alternativeApRewardId) next = earnRewards(next, [event.alternativeApRewardId]).state;
   }
+  if (active.returnTourism) {
+    if (active.returnTourism.landmarkId !== event.landmarkId || !next.visitedLandmarkIds.includes(event.landmarkId))
+      throw new Error("観光への復帰先が一致しません。");
+    next = { ...next, activeTourism: { ...active.returnTourism, phase: "exploring", storyState: null, frame: null } };
+  }
   // A gift changes relationship values, but remains distinct from a completed
   // date. Apply the existing thresholds only after its scene finishes.
   return active.romanceResolution ? evaluateProgression(next) : next;
@@ -234,13 +319,16 @@ export function finishEncounter(state: GameState, expectedRevision: number): Gam
 /** Reject changed scripts, invalid snapshots, impossible item/reward combinations and stale quiz state. */
 export function validateEncounterState(state: GameState): void {
   const fail = (): never => { throw new Error("道中交流の保存状態が一致しません。"); };
+  // Completed historical lotteries and their prizes remain valid even when
+  // the current event no longer offers that lottery.
+  const historicalEncounters = [...encounters.encounters, ...preSoundFortuneEncounters, ...preGalleriaEncounters, ...previousMilanoEncounters, ...previousEncounters, ...legacyEncounters.encounters];
   for (const id of state.completedEncounterIds) {
     const event = findEncounter(id);
     if (!event || !itemBelongsToEncounter(event, event.completionItemId) || (event.completionItemId && !state.inventory[event.completionItemId])) fail();
   }
   for (const [id, status] of Object.entries(state.inventory)) {
     if (!encounters.items.some((item) => item.id === id)) fail();
-    const prizeEvent = encounters.encounters.find((item) => item.quiz?.rewardItemId === id);
+    const prizeEvent = historicalEncounters.find((item) => item.quiz?.rewardItemId === id);
     const completionEvent = encounters.encounters.find((item) => item.completionItemId === id);
     if (prizeEvent && (!itemBelongsToEncounter(prizeEvent, id) || !state.encounterRewards[prizeEvent.id]?.won)) fail();
     if (completionEvent && (!itemBelongsToEncounter(completionEvent, id) || !state.completedEncounterIds.includes(completionEvent.id))) fail();
@@ -253,7 +341,7 @@ export function validateEncounterState(state: GameState): void {
     }
   }
   for (const [id, record] of Object.entries(state.encounterRewards)) {
-    const event = findEncounter(id);
+    const event = historicalEncounters.find((item) => item.id === id && !!item.quiz);
     const quiz = event?.quiz;
     if (!event || !quiz || !itemBelongsToEncounter(event, quiz.rewardItemId) || record.won !== (record.roll < record.chancePercent * 100) || (record.won && !state.inventory[quiz.rewardItemId])) fail();
   }
@@ -262,6 +350,8 @@ export function validateEncounterState(state: GameState): void {
   const event = getActiveEncounterDefinition(active);
   if (event.cityId !== city.id) fail();
   if (state.activeDate || state.activeTourism || state.activeEpilogue || state.activeBattle) fail();
+  if (active.returnTourism && (event.availability !== "tourism" || active.returnTourism.landmarkId !== event.landmarkId ||
+      !state.visitedLandmarkIds.includes(active.returnTourism.landmarkId))) fail();
   if (active.storyHash !== storyFingerprint(activeStoryId(active, active.storyId))) fail();
   const validStories = [event!.storyId, ...(event!.quiz ? [event!.quiz.wonStoryId, event!.quiz.lostStoryId, event!.quiz.alreadyStoryId] : [])];
   if (!validStories.includes(active.storyId)) fail();
@@ -293,7 +383,7 @@ export function validateEncounterState(state: GameState): void {
     active.responseProfiles.some((profile) => !event!.options.some((item) => item.responseProfileId === profile.id)) ||
     event!.options.some((item) => item.responseProfileId && !active.responseProfiles.some((profile) => profile.id === item.responseProfileId))) fail();
   if (active.rewardAlreadyDrawn && (!quiz || !record)) fail();
-  if (!active.rewardAlreadyDrawn && record && (active.quizAnswerId !== quiz?.question.correctOptionId || record.roll !== active.rewardRoll || record.chancePercent !== active.rewardChancePercent)) fail();
+  if (quiz && !active.rewardAlreadyDrawn && record && (active.quizAnswerId !== quiz.question.correctOptionId || record.roll !== active.rewardRoll || record.chancePercent !== active.rewardChancePercent)) fail();
   if (quiz && active.quizAnswerId === quiz.question.correctOptionId && !record) fail();
   if (active.phase === "outcome" && quiz) {
     const expectedStory = active.quizAnswerId !== quiz.question.correctOptionId ? quiz.lostStoryId :

@@ -2,21 +2,21 @@ import "./encounter.css";
 
 export type EncounterMenuEntry = {
   id: string;
+  landmarkId: string;
   title: string;
   description?: string;
   unavailableReason?: string;
 };
 
 /** Small, optional detours alongside the existing free-time destinations. */
-export function EncounterMenu({ entries, onStart }: {
+export function EncounterMenu({ entries, place, onStart }: {
   entries: EncounterMenuEntry[];
+  place: string;
   onStart: (id: string) => void;
 }) {
   return (
-    <details className="encounter-menu" aria-label="寄り道">
-      <summary className="encounter-menu-heading" data-testid="encounter-menu-toggle">
-        <span>寄り道 <span className="encounter-menu-count">{entries.length}件</span></span>
-      </summary>
+    <section className="encounter-place-menu" aria-label={`${place}で過ごす`}>
+      <h3>{place}で過ごす</h3>
       {entries.length === 0 && <p className="encounter-inventory">今行ける寄り道はありません。</p>}
       {entries.map((entry) => (
         <div className="encounter-menu-row" key={entry.id}>
@@ -36,6 +36,6 @@ export function EncounterMenu({ entries, onStart }: {
           </button>
         </div>
       ))}
-    </details>
+    </section>
   );
 }

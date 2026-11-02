@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "storyId": "learning/english",
+  "storyId": "learning/sound_english",
   "questions": {
     "last_supper_central_triangle": {
       "summaryJa": "Whichで始まる主語と、動詞matchesの関係を見ます。",
@@ -81,6 +81,72 @@
           "sourceUrl": "https://dictionary.cambridge.org/dictionary/english/compare",
           "checkedAt": "2026-10-31",
           "category": "expression"
+        }
+      ]
+    },
+    "sound_supper_1": {
+      "summaryJa": "主語は単数のthe painted room。現在の疑問文ではdoesに単数の印が移り、動詞は原形になる。",
+      "segments": [
+        {
+          "textEn": "Why does the painted room seem",
+          "meaningJa": "絵の部屋はなぜ～のように見えるのか"
+        }
+      ],
+      "topics": [
+        {
+          "id": "sound_why",
+          "category": "grammar",
+          "titleJa": "なぜdoesのあとがseem？",
+          "explanationJa": "主語は単数のthe painted room。現在の疑問文ではdoesに単数の印が移り、動詞は原形になる。",
+          "targetEn": "Why does the painted room seem",
+          "exampleEn": "Why does this room feel warm?",
+          "exampleJa": "この部屋はなぜ暖かく感じますか。",
+          "sourceUrl": "https://dictionary.cambridge.org/grammar/british-grammar/questions-wh-questions",
+          "checkedAt": "2026-11-02"
+        }
+      ]
+    },
+    "sound_supper_2": {
+      "summaryJa": "showするのはthis。whatは、何を示すかを尋ねる目的語なのでdoesを置く。",
+      "segments": [
+        {
+          "textEn": "What does this show",
+          "meaningJa": "これは何を示すのか"
+        }
+      ],
+      "topics": [
+        {
+          "id": "sound_show",
+          "category": "grammar",
+          "titleJa": "whatは主語？",
+          "explanationJa": "showするのはthis。whatは、何を示すかを尋ねる目的語なのでdoesを置く。",
+          "targetEn": "What does this show",
+          "exampleEn": "What does this sign mean?",
+          "exampleJa": "この標識はどういう意味ですか。",
+          "sourceUrl": "https://dictionary.cambridge.org/grammar/british-grammar/questions-wh-questions",
+          "checkedAt": "2026-11-02"
+        }
+      ]
+    },
+    "sound_supper_3": {
+      "summaryJa": "didの後のpainting on dry plaster全体が主語。giveは過去の疑問文なので原形。What freedomは与えられたものを尋ねる。",
+      "segments": [
+        {
+          "textEn": "What freedom did painting on dry plaster give Leonardo",
+          "meaningJa": "乾いた漆喰に描くことは彼にどんな自由を与えたか"
+        }
+      ],
+      "topics": [
+        {
+          "id": "sound_freedom",
+          "category": "grammar",
+          "titleJa": "長い主語はどこまで？",
+          "explanationJa": "didの後のpainting on dry plaster全体が主語。giveは過去の疑問文なので原形。What freedomは与えられたものを尋ねる。",
+          "targetEn": "What freedom did painting on dry plaster give Leonardo",
+          "exampleEn": "What choice did the trip give you?",
+          "exampleJa": "その旅はあなたにどんな選択肢を与えましたか。",
+          "sourceUrl": "https://dictionary.cambridge.org/grammar/british-grammar/questions-wh-questions",
+          "checkedAt": "2026-11-02"
         }
       ]
     }

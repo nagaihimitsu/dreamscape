@@ -32,8 +32,7 @@ test("新しい美術館へ自由時間から出かけ、選択を保存して�
   await finishEvent(page, 2);
   const finished = await saved(page);
   expect(finished.playedDateIds).toContain("milano_novecento_date_01");
-  expect(finished.memories).toContain("milano_novecento_first_a");
-  expect(finished.memories).toContain("milano_novecento_second_b");
+  expect(finished.memories).toContain("sound_memory_novecento_date_01");
 });
 
 test("ブレラの刷新会話が既存の観光デート導線から始まる", async ({ page }, testInfo) => {
@@ -43,7 +42,7 @@ test("ブレラの刷新会話が既存の観光デート導線から始まる",
   await startEvent(page, "milano_brera_date_01", 2);
   const scene = page.getByTestId("romance-scene");
   await expect(scene.getByTestId("date-destination")).toHaveText("ミラノ ／ ブレラ絵画館");
-  await expect(scene.locator(".dialogue-text")).toContainText("ハイエツの《接吻》");
+  await expect(scene.locator(".dialogue-text")).toContainText("ブレラの《接吻》");
   await expectNoOverflow(page);
   await page.screenshot({ path: testInfo.outputPath("brera-dialogue-430.png") });
   await setDialogueSpeed(page, "0");
@@ -51,6 +50,5 @@ test("ブレラの刷新会話が既存の観光デート導線から始まる",
   await choose(page, 0);
   await finishEvent(page, 2);
   const finished = await saved(page);
-  expect(finished.memories).toContain("milano_brera_v2_first_listen");
-  expect(finished.memories).toContain("milano_brera_v2_second_joke");
+  expect(finished.memories).toContain("sound_memory_brera_date_01");
 });

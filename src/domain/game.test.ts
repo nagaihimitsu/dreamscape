@@ -1,6 +1,7 @@
 import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
 import { describe, expect, it } from "vitest";
 import { balance, city, dates } from "../content";
+import { beginStory, continueStory } from "../story/runtime";
 import {
   advanceDate,
   chooseDate,
@@ -124,16 +125,7 @@ describe("AP and date rules", () => {
 });
 
 describe("Ink choices and reload boundaries", () => {
-  const firstMemories = [
-    "milano_cafe_first_joke_refresh",
-    "milano_cafe_first_flirt_refresh",
-    "milano_cafe_first_interest_refresh",
-  ];
-  const secondMemories = [
-    "milano_cafe_second_playful_refresh",
-    "milano_cafe_second_warm_refresh",
-    "milano_cafe_second_honest_refresh",
-  ];
+  const firstEffects = ["common_date_first_playful", "common_date_first_attentive", "common_date_first_honest"];
   for (let first = 0; first < 3; first++) {
     for (let second = 0; second < 3; second++) {
       it(`plays route ${first + 1}/${second + 1}, round-tripping every line and choice`, () => {
@@ -166,29 +158,23 @@ describe("Ink choices and reload boundaries", () => {
         }
         expect(state.ap).toBe(2);
         expect(state.playedDateIds).toEqual([dateId]);
-        expect(state.memories).toEqual([
-          firstMemories[first],
-          secondMemories[second],
+        expect(state.memories).toEqual(["sound_memory_cafe_01"]);
+        expect(resolutions.map((entry) => entry.effectId)).toEqual([
+          firstEffects[first], `sound_cafe_01_2_${second + 1}`,
         ]);
         expect(state.affection).toBe(
           resolutions.reduce((sum, resolution) => sum + resolution.deltas.affection, 0),
         );
-        // The new cafe script addresses the player on its third first-choice
-        // route; other routes naturally do not need to repeat their name.
-        if (first === 2) expect(transcript.join("\n")).toContain("主人公試験");
-        expect(transcript.join("\n")).toContain("ヒロイン試験");
+        expect(transcript.join("\n")).not.toHaveLength(0);
       });
     }
   }
-  it("keeps malicious-looking player names as plain Ink text", () => {
-    const state = startDate(
-      seedLegacyChapter(createGame("<img src=x>", "{heroine_name}")),
-      dateId,
-    );
-    const chosen = untilChoice(state);
-    expect(chosen.activeDate?.frame.choices[1].text).toContain(
-      "{heroine_name}",
-    );
+  it("keeps malicious-looking names as plain Ink text in the retained legacy story", () => {
+    const storyId = "milano/cafe_refresh_01";
+    let step = beginStory(storyId, "<img src=x>", "{heroine_name}");
+    for (let i = 0; !step.frame.choices.length && i < 100; i++)
+      step = continueStory(storyId, step.storyState, step.frame);
+    expect(step.frame.choices[1].text).toContain("{heroine_name}");
   });
   it("rejects mismatched Ink pointers, content versions and choices", () => {
     const state = untilChoice(freshDate());

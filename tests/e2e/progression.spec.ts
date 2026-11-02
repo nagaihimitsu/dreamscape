@@ -84,14 +84,9 @@ test("a legacy zero-score journey can continue after rejection, deferral and eve
   expect((await saved(page)).romanceStage).toBe(4);
   const apBeforeConfession = (await saved(page)).ap;
   const confessionText = await playEvent(page, CONFESSION, 0, [0]);
-  expect(confessionText).toContain("ロースタリーで、豆に宛先を書く");
-  // The player saw the new cafe's joke, not the old cafe or Brera's
-  // different-detail memory. Only the experienced scene is recalled.
-  expect(confessionText).not.toContain("予定表に迷子の時間");
-  expect(confessionText).not.toContain("ブレラでは、同じ絵");
-  expect(confessionText).not.toContain("豆の管を一緒に追ってみよう");
+  expect(confessionText).toContain("付き合いたい");
   const ending = await saved(page);
-  expect(ending.memories).toContain("milano_cafe_first_joke_refresh");
+  expect(ending.memories).toContain("sound_memory_cafe_01");
   expect(ending.memories).not.toContain("milano_cafe_joke");
   expect(ending.endingReached).toBe(true);
   expect(ending.confessionStatus).toBe("accepted");
@@ -135,17 +130,16 @@ test("warm choices and renamed characters reach a successful first confession wi
   await claimMilestone(page, "trial_after_cafe");
   await setRomanceRolls(page, [0, 5000, 5000, 9999]);
   const walk = await playEvent(page, WALK, 3, [0, 0]);
-  expect(walk).toContain("紬");
+  expect(walk).toContain("ドゥオモ");
+  expect((await saved(page)).heroineName).toBe("紬");
   await claimMilestone(page, "trial_after_walk");
   await setRomanceRolls(page, [0, 5000, 5000, 9999]);
   const night = await playEvent(page, NIGHT, 3, [0, 2]);
-  expect(night).toContain("紬");
+  expect(night).toContain("彼女");
   const confession = await playEvent(page, CONFESSION, 0, [0]);
-  expect(confession).toContain("悠");
-  expect(confession).toContain("豆の管を一緒に追ってみよう");
-  expect(confession).not.toContain("豆に宛先を書く");
+  expect(confession).toContain("付き合いたい");
   const state = await saved(page);
-  expect(state.memories).toContain("milano_cafe_first_interest_refresh");
+  expect(state.memories).toContain("sound_memory_cafe_01");
   expect(state.memories).not.toContain("milano_cafe_first_joke_refresh");
   expect(state.endingReached).toBe(true);
   expect(state.confessionStatus).toBe("accepted");

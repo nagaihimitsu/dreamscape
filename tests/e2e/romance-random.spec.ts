@@ -39,7 +39,7 @@ test("saved random tickets survive reload; double click applies a single choice"
   expect(after.affection).toBe(ready.affection + resolution.deltas.affection);
   expect(after.trust).toBe(ready.trust + resolution.deltas.trust);
   expect(after.spark).toBe(ready.spark + resolution.deltas.spark);
-  expect(after.memories).toHaveLength(1);
+  expect(after.memories).toEqual(ready.memories); // Shared first-choice profiles carry no memory.
   expect(after.ap).toBe(2);
   await page.reload();
   expect(await saved(page)).toEqual(after);
@@ -50,7 +50,8 @@ test("saved random tickets survive reload; double click applies a single choice"
   expect(second.activeDate!.resolvedChoices[1].before).toEqual({
     affection: after.affection, trust: after.trust, spark: after.spark,
   });
-  expect(second.memories).toHaveLength(2);
+  expect(second.memories).toContain("sound_memory_cafe_01");
+  expect(new Set(second.memories).size).toBe(second.memories.length);
   expect(second.ap).toBe(2);
   await page.reload();
   expect(await saved(page)).toEqual(second);

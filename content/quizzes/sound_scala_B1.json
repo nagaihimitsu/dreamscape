@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "id": "sound_scala_b1",
+  "landmarkId": "la_scala_case",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "sound_scala_1",
+      "questionEn": "What could a family do with its theatre box in early La Scala?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Decorate it to suit their taste."
+        },
+        {
+          "id": "B",
+          "textEn": "Choose the conductor for each show."
+        },
+        {
+          "id": "C",
+          "textEn": "Decide who could use the stage door."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "box",
+          "meaning": "劇場の桟敷席"
+        }
+      ],
+      "hintJa": "客席の一角が家の部屋に近かった時代の話。",
+      "correctExplanationJa": "桟敷を所有する家族は内装を自分好みにでき、貸したり譲ったりもできた。",
+      "incorrectExplanationJa": "内装の自由から公演の指揮者や楽屋の管理権は導けない。 桟敷を所有する家族は内装を自分好みにでき、貸したり譲ったりもできた。",
+      "sources": [
+        {
+          "publisher": "Museo Teatrale alla Scala",
+          "title": "Curios at La Scala",
+          "url": "https://www.museoscala.org/en/history/theatre/curios-at-la-scala.html",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "桟敷を所有する家族は内装を自分好みにでき、貸したり譲ったりもできた。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "sound_scala_2",
+      "questionEn": "Which record challenges the claim that the stalls always had fixed seats?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Families decorated their own boxes."
+        },
+        {
+          "id": "B",
+          "textEn": "Visitors hired movable seats in the stalls."
+        },
+        {
+          "id": "C",
+          "textEn": "Electric light filled the auditorium."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "stalls",
+          "meaning": "劇場の平土間席"
+        }
+      ],
+      "hintJa": "主張と同じ場所・同じ物について述べる証拠を探そう。",
+      "correctExplanationJa": "初期の平土間の椅子は可動式で、座る客が借りた。これだけで「いつも固定」は崩れる。",
+      "incorrectExplanationJa": "桟敷の所有と客席の照明はどちらも史実だが、平土間の椅子を動かせたかは示さない。 初期の平土間の椅子は可動式で、座る客が借りた。これだけで「いつも固定」は崩れる。",
+      "sources": [
+        {
+          "publisher": "Museo Teatrale alla Scala",
+          "title": "Curios at La Scala",
+          "url": "https://www.museoscala.org/en/history/theatre/curios-at-la-scala.html",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "初期の平土間の椅子は可動式で、座る客が借りた。これだけで「いつも固定」は崩れる。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "sound_scala_3",
+      "questionEn": "What did people do among the ruins before the theatre fully reopened?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "They sold the boxes at an auction."
+        },
+        {
+          "id": "B",
+          "textEn": "They built a second stage for rehearsals."
+        },
+        {
+          "id": "C",
+          "textEn": "They held a concert with ordinary chairs for the audience."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "ruins",
+          "meaning": "廃墟"
+        }
+      ],
+      "hintJa": "音楽を再開するのに何が必要だったのか。",
+      "correctExplanationJa": "戦災後、正式再開に先立つ演奏では、観客が普通の椅子に座った。再開記念公演と区別しよう。",
+      "incorrectExplanationJa": "桟敷の競売や別の稽古場の建設は、この演奏に関する記述ではない。 戦災後、正式再開に先立つ演奏では、観客が普通の椅子に座った。再開記念公演と区別しよう。",
+      "sources": [
+        {
+          "publisher": "Museo Teatrale alla Scala",
+          "title": "History of the Theatre",
+          "url": "https://www.museoscala.org/en/history/theatre/history-of-the-theatre.html",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "戦災後、正式再開に先立つ演奏では、観客が普通の椅子に座った。再開記念公演と区別しよう。"
+        }
+      ],
+      "difficulty": "easy"
+    }
+  ]
+}

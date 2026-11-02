@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "id": "sound_supper_b1",
+  "landmarkId": "last_supper",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "sound_supper_1",
+      "questionEn": "Why does the painted room seem to share the friars' light?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Painted lamps match the lamps on the table."
+        },
+        {
+          "id": "B",
+          "textEn": "The wall lets real daylight through the figures."
+        },
+        {
+          "id": "C",
+          "textEn": "Light in the scene matches light from the real windows."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "friars",
+          "meaning": "修道士たち"
+        }
+      ],
+      "hintJa": "明るい場所がどちら側に寄っているかを考えよう。",
+      "correctExplanationJa": "絵の主光源は旧食堂の左側からの採光とそろう。それで絵の食卓と実際の部屋が地続きに見える。",
+      "incorrectExplanationJa": "主光源は卓上のランプでも人物を透かす仕掛けでもない。 絵の主光源は旧食堂の左側からの採光とそろう。それで絵の食卓と実際の部屋が地続きに見える。",
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano",
+          "title": "A powerful theatrical machine",
+          "url": "https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "絵の主光源は旧食堂の左側からの採光とそろう。それで絵の食卓と実際の部屋が地続きに見える。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "sound_supper_2",
+      "questionEn": "Matthew reaches toward Jesus but looks away. What does this show?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "He is asking others to notice what Jesus said."
+        },
+        {
+          "id": "B",
+          "textEn": "He is calling a servant to clear the table."
+        },
+        {
+          "id": "C",
+          "textEn": "He is turning to see who entered the room."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "reaches",
+          "meaning": "手を伸ばす"
+        }
+      ],
+      "hintJa": "人の顔の向きと、腕が指す先を別々に見よう。",
+      "correctExplanationJa": "館はマタイが隣の使徒たちに、いま聞いた言葉への注意を促す姿と解説する。腕と顔が別々の相手を結ぶ。",
+      "incorrectExplanationJa": "配膳の指示や入室者への振り向きとは解説されていない。 館はマタイが隣の使徒たちに、いま聞いた言葉への注意を促す姿と解説する。腕と顔が別々の相手を結ぶ。",
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano",
+          "title": "A powerful theatrical machine",
+          "url": "https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/",
+          "checkedAt": "2026-11-02",
+          "claimType": "interpretation",
+          "claimJa": "館はマタイが隣の使徒たちに、いま聞いた言葉への注意を促す姿と解説する。腕と顔が別々の相手を結ぶ。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "sound_supper_3",
+      "questionEn": "What freedom did painting on dry plaster give Leonardo?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "He could move the wall after painting."
+        },
+        {
+          "id": "B",
+          "textEn": "He could work slowly and revise his work."
+        },
+        {
+          "id": "C",
+          "textEn": "He could paint the picture without light."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "revise",
+          "meaning": "修正する"
+        }
+      ],
+      "hintJa": "制作する人にとっての時間を考えてみよう。",
+      "correctExplanationJa": "乾いた壁に描くことで時間をかけて変更を加えられた。じっくり選んだ一筆には、技法上の理由もある。",
+      "incorrectExplanationJa": "壁を移動したり、光なしで描いたりするための選択ではない。 乾いた壁に描くことで時間をかけて変更を加えられた。じっくり選んだ一筆には、技法上の理由もある。",
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano",
+          "title": "The Last Supper",
+          "url": "https://cenacolovinciano.org/en/museum/the-works/the-last-supper-leonardo-da-vinci-1452-1519/",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "乾いた壁に描くことで時間をかけて変更を加えられた。じっくり選んだ一筆には、技法上の理由もある。"
+        }
+      ],
+      "difficulty": "easy"
+    }
+  ]
+}

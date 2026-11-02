@@ -1,0 +1,484 @@
+{
+  "schemaVersion": 1,
+  "initialBudget": 20,
+  "items": [
+    {
+      "id": "galleria_souvenir",
+      "cityId": "milano",
+      "nameJa": "雄牛のしおり",
+      "descriptionJa": "ガッレリアのカフェで受け取った、小さな雄牛の絵のしおり。"
+    },
+    {
+      "id": "galleria_ticket",
+      "cityId": "milano",
+      "nameJa": "ガッレリアの展示券",
+      "descriptionJa": "ガッレリアの小さな紋章展示に使える券。"
+    },
+    {
+      "id": "blue_pick",
+      "cityId": "milano",
+      "nameJa": "青いピック",
+      "descriptionJa": "ドゥオモ広場の演奏者からもらった予備の一枚。城で弦を弾く人に渡せる。"
+    }
+  ],
+  "encounters": [
+    {
+      "id": "galleria_cafe",
+      "cityId": "milano",
+      "sources": [
+        {
+          "publisher": "Reuters",
+          "title": "Milan like a local",
+          "url": "https://www.reuters.com/city-memo/milan-like-local-2026-01-31/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノのバールではカウンターに立ってエスプレッソを飲む過ごし方がある。"
+        },
+        {
+          "publisher": "Camparino in Galleria",
+          "title": "Camparino in Galleria Milan",
+          "url": "https://www.camparino.com/en/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリアのカンパリーノは1915年から続き、ミラノのアペリティーヴォで知られる。"
+        },
+        {
+          "publisher": "Camparino in Galleria",
+          "title": "Bar di Passo menu",
+          "url": "https://www.camparino.com/our-menu/",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "カンパリーノのメニューにはエスプレッソ、カプチーノとクロワッサンがある。"
+        }
+      ],
+      "titleJa": "カンパリーノでひと休み",
+      "descriptionJa": "ガッレリアの老舗で休憩する。表示価格はゲーム内の設定。",
+      "storyId": "encounters/galleria_cafe_rewrite",
+      "completionMoneyEuro": 2,
+      "completionItemId": "galleria_souvenir",
+      "options": [
+        {
+          "id": "coffee",
+          "translationJa": "コーヒーを二杯ください。",
+          "costEuro": 4
+        },
+        {
+          "id": "coffee_pastry",
+          "translationJa": "カプチーノとお菓子を一つずつください。",
+          "costEuro": 8
+        },
+        {
+          "id": "nothing",
+          "translationJa": "今は何もいりません、ありがとう。",
+          "costEuro": 0
+        }
+      ],
+      "landmarkId": "galleria_vittorio_emanuele_ii",
+      "availability": "dormant"
+    },
+    {
+      "id": "galleria_fortune",
+      "cityId": "milano",
+      "sources": [
+        {
+          "publisher": "Euronews",
+          "title": "A real bull ache: Milan restores a national treasure’s family jewels",
+          "url": "https://www.euronews.com/2026/05/29/a-real-bull-ache-milan-restores-a-national-treasures-family-jewels",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリア中央の床の雄牛はトリノ市の紋章で、ミラノを表すのは赤い十字。"
+        },
+        {
+          "publisher": "Euronews",
+          "title": "A real bull ache: Milan restores a national treasure’s family jewels",
+          "url": "https://www.euronews.com/2026/05/29/a-real-bull-ache-milan-restores-a-national-treasures-family-jewels",
+          "checkedAt": "2026-11-01",
+          "claimType": "legend",
+          "claimJa": "雄牛のモザイク上でかかとを回すと幸運を呼ぶという風習があり、由来は明らかでない。"
+        }
+      ],
+      "titleJa": "床の牛と小さな占い",
+      "descriptionJa": "ガッレリア中央の雄牛を見に行く。",
+      "storyId": "encounters/galleria_fortune_tour",
+      "repeatable": true,
+      "alternativeApRewardId": "victory_galleria_first",
+      "options": [
+        {
+          "id": "believe",
+          "translationJa": "はい、信じます。",
+          "costEuro": 0
+        },
+        {
+          "id": "doubt",
+          "translationJa": "あまり信じません。",
+          "costEuro": 0
+        },
+        {
+          "id": "leave",
+          "translationJa": "答えずにその場を離れる。",
+          "costEuro": 0
+        }
+      ],
+      "landmarkId": "galleria_vittorio_emanuele_ii",
+      "availability": "tourism"
+    },
+    {
+      "id": "galleria_gift",
+      "cityId": "milano",
+      "sources": [
+        {
+          "publisher": "Euronews",
+          "title": "A real bull ache: Milan restores a national treasure’s family jewels",
+          "url": "https://www.euronews.com/2026/05/29/a-real-bull-ache-milan-restores-a-national-treasures-family-jewels",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリア中央の床の雄牛はトリノ市の紋章で、ミラノを表すのは赤い十字。"
+        }
+      ],
+      "titleJa": "しおりを贈る",
+      "descriptionJa": "手元のしおりを、一緒に旅する相手に渡すか考える。",
+      "storyId": "encounters/galleria_gift_rewrite",
+      "options": [
+        {
+          "id": "offer",
+          "translationJa": "このしおり、いりますか？",
+          "costEuro": 0,
+          "requiresItemId": "galleria_souvenir",
+          "giftItemId": "galleria_souvenir",
+          "responseProfileId": "attentive"
+        },
+        {
+          "id": "thought",
+          "translationJa": "このしおりを見て、あなたを思い出しました。",
+          "costEuro": 0,
+          "requiresItemId": "galleria_souvenir",
+          "giftItemId": "galleria_souvenir",
+          "responseProfileId": "honest"
+        },
+        {
+          "id": "later",
+          "translationJa": "今は自分で持っておく。",
+          "costEuro": 0,
+          "deferCompletion": true
+        }
+      ],
+      "landmarkId": "galleria_vittorio_emanuele_ii",
+      "availability": "dormant"
+    },
+    {
+      "id": "galleria_outing",
+      "cityId": "milano",
+      "sources": [
+        {
+          "publisher": "Euronews",
+          "title": "A real bull ache: Milan restores a national treasure’s family jewels",
+          "url": "https://www.euronews.com/2026/05/29/a-real-bull-ache-milan-restores-a-national-treasures-family-jewels",
+          "checkedAt": "2026-11-01",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリア中央の床の雄牛はトリノ市の紋章で、ミラノを表すのは赤い十字。"
+        }
+      ],
+      "titleJa": "紋章の小さな展示",
+      "descriptionJa": "臨時の紋章展示へ、展示券かゲーム内の入場料で入る。",
+      "storyId": "encounters/galleria_outing_rewrite",
+      "options": [
+        {
+          "id": "ticket",
+          "translationJa": "展示券を使う。",
+          "costEuro": 0,
+          "requiresItemId": "galleria_ticket",
+          "consumeItemId": "galleria_ticket"
+        },
+        {
+          "id": "buy",
+          "translationJa": "入場券を買う。",
+          "costEuro": 4
+        },
+        {
+          "id": "later",
+          "translationJa": "今はやめておく。",
+          "costEuro": 0,
+          "deferCompletion": true
+        }
+      ],
+      "landmarkId": "galleria_vittorio_emanuele_ii",
+      "availability": "dormant"
+    },
+    {
+      "id": "duomo_string",
+      "cityId": "milano",
+      "landmarkId": "duomo_milano",
+      "titleJa": "切れた三本目",
+      "descriptionJa": "切れた三本目。この場所で選べる小さな出会い。",
+      "storyId": "encounters/sound_duomo_string",
+      "options": [
+        {
+          "id": "coil",
+          "costEuro": 0
+        },
+        {
+          "id": "case",
+          "costEuro": 0
+        },
+        {
+          "id": "leave",
+          "costEuro": 0,
+          "deferCompletion": true
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Veneranda Fabbrica del Duomo",
+          "title": "Archaeological Area",
+          "url": "https://www.duomomilano.it/en/art-and-culture/archaeological-area/",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "広場の下に旧礼拝施設の遺跡が残る。"
+        }
+      ],
+      "completionItemId": "blue_pick"
+    },
+    {
+      "id": "supper_pantomime",
+      "cityId": "milano",
+      "landmarkId": "last_supper",
+      "titleJa": "広場の無声映画",
+      "descriptionJa": "広場の無声映画。この場所で選べる小さな出会い。",
+      "storyId": "encounters/sound_supper_pantomime",
+      "options": [
+        {
+          "id": "act",
+          "costEuro": 0
+        },
+        {
+          "id": "ask",
+          "costEuro": 0
+        },
+        {
+          "id": "leave",
+          "costEuro": 0,
+          "deferCompletion": true
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Museo del Cenacolo Vinciano",
+          "title": "A powerful theatrical machine",
+          "url": "https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "旧食堂の絵では人物の手や顔の向きが感情を伝える。"
+        }
+      ]
+    },
+    {
+      "id": "galleria_print",
+      "cityId": "milano",
+      "landmarkId": "galleria_vittorio_emanuele_ii",
+      "titleJa": "版の実演、手はポケットに",
+      "descriptionJa": "版の実演、手はポケットに。商品・価格・出店はゲーム内の創作。",
+      "storyId": "encounters/sound_galleria_print",
+      "options": [
+        {
+          "id": "pay",
+          "costEuro": 4
+        },
+        {
+          "id": "sample",
+          "costEuro": 0
+        },
+        {
+          "id": "leave",
+          "costEuro": 0,
+          "deferCompletion": true
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "YesMilano",
+          "title": "Galleria Vittorio Emanuele II",
+          "url": "https://www.yesmilano.it/en/see-and-do/venues/galleria-vittorio-emanuele-ii",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリアは市民が出会い散策する場所。床の雄牛はトリノの紋章。"
+        }
+      ]
+    },
+    {
+      "id": "galleria_ticket_press",
+      "cityId": "milano",
+      "landmarkId": "galleria_vittorio_emanuele_ii",
+      "titleJa": "券を一枚、手の中へ",
+      "descriptionJa": "券を一枚、手の中へ。商品・価格・出店はゲーム内の創作。",
+      "storyId": "encounters/sound_galleria_ticket_press",
+      "options": [
+        {
+          "id": "press",
+          "costEuro": 0,
+          "requiresItemId": "galleria_ticket",
+          "consumeItemId": "galleria_ticket"
+        },
+        {
+          "id": "watch",
+          "costEuro": 0,
+          "requiresItemId": "galleria_ticket",
+          "consumeItemId": "galleria_ticket"
+        },
+        {
+          "id": "later",
+          "costEuro": 0,
+          "deferCompletion": true
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "YesMilano",
+          "title": "Galleria Vittorio Emanuele II",
+          "url": "https://www.yesmilano.it/en/see-and-do/venues/galleria-vittorio-emanuele-ii",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "ガッレリアは市民が出会い散策する場所。床の雄牛はトリノの紋章。"
+        }
+      ]
+    },
+    {
+      "id": "scala_mint",
+      "cityId": "milano",
+      "landmarkId": "la_scala_case",
+      "titleJa": "喉飴を噛む人",
+      "descriptionJa": "喉飴を噛む人。商品・価格・出店はゲーム内の創作。",
+      "storyId": "encounters/sound_scala_mint",
+      "options": [
+        {
+          "id": "buy",
+          "costEuro": 2
+        },
+        {
+          "id": "ask",
+          "costEuro": 0
+        },
+        {
+          "id": "leave",
+          "costEuro": 0,
+          "deferCompletion": true
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Museo Teatrale alla Scala",
+          "title": "Curios at La Scala",
+          "url": "https://www.museoscala.org/en/history/theatre/curios-at-la-scala.html",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "劇場は上演前後にも人が集まる社交の場だった。"
+        }
+      ]
+    },
+    {
+      "id": "castello_pick",
+      "cityId": "milano",
+      "landmarkId": "castello_sforzesco",
+      "titleJa": "弦を一本、余らせて",
+      "descriptionJa": "弦を一本、余らせて。この場所で選べる小さな出会い。",
+      "storyId": "encounters/sound_castello_pick",
+      "options": [
+        {
+          "id": "give",
+          "costEuro": 0,
+          "requiresItemId": "blue_pick",
+          "giftItemId": "blue_pick"
+        },
+        {
+          "id": "ask",
+          "costEuro": 0,
+          "requiresItemId": "blue_pick",
+          "giftItemId": "blue_pick"
+        },
+        {
+          "id": "later",
+          "costEuro": 0,
+          "deferCompletion": true
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Comune di Milano",
+          "title": "Museo Pietà Rondanini Michelangelo",
+          "url": "https://www.milanocastello.it/i-musei/museo-pieta-rondanini-michelangelo",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "スフォルツェスコ城はピエタを所蔵する。"
+        }
+      ]
+    },
+    {
+      "id": "brera_sitter",
+      "cityId": "milano",
+      "landmarkId": "brera_case",
+      "titleJa": "モデルは五秒",
+      "descriptionJa": "モデルは五秒。この場所で選べる小さな出会い。",
+      "storyId": "encounters/sound_brera_sitter",
+      "options": [
+        {
+          "id": "pose",
+          "costEuro": 0
+        },
+        {
+          "id": "count",
+          "costEuro": 0
+        },
+        {
+          "id": "decline",
+          "costEuro": 0
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Pinacoteca di Brera",
+          "title": "Lamentation over the Dead Christ",
+          "url": "https://pinacotecabrera.org/en/collezioni/collezione-on-line/lamentation-over-the-dead-christ/",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "ブレラは身体の見え方を大胆に表現したマンテーニャの作品を所蔵する。"
+        }
+      ]
+    },
+    {
+      "id": "brera_bookmark",
+      "cityId": "milano",
+      "landmarkId": "brera_case",
+      "titleJa": "読みかけの角を守る",
+      "descriptionJa": "読みかけの角を守る。この場所で選べる小さな出会い。",
+      "storyId": "encounters/sound_brera_bookmark",
+      "options": [
+        {
+          "id": "offer",
+          "costEuro": 0,
+          "requiresItemId": "galleria_souvenir",
+          "giftItemId": "galleria_souvenir"
+        },
+        {
+          "id": "gift",
+          "costEuro": 0,
+          "requiresItemId": "galleria_souvenir",
+          "giftItemId": "galleria_souvenir"
+        },
+        {
+          "id": "later",
+          "costEuro": 0,
+          "deferCompletion": true
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Pinacoteca di Brera",
+          "title": "The Kiss",
+          "url": "https://pinacotecabrera.org/en/collezioni/collezione-on-line/the-kiss/",
+          "checkedAt": "2026-11-02",
+          "claimType": "documented_fact",
+          "claimJa": "ブレラはハイエツの《接吻》を所蔵する。"
+        }
+      ]
+    }
+  ]
+}

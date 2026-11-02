@@ -1,8 +1,13 @@
+import { createHash } from "node:crypto";
+import publicationBindings from "../content/legacy/milano_3f32b60/bindings.json";
 import { access, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { characterCatalogSchema } from "../src/content/character-assets";
 import { encounterCatalogInputSchema, encounterCatalogSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
+import { encounterEntryRulesSchema, validateEncounterEntryRules } from "../src/content/encounter-entry-rules";
 import archivedEncounterData from "../content/legacy/milano_fa0e7e0/encounters/catalog.json";
+import previousGalleriaEncounterData from "../content/legacy/encounters_before_galleria_integration.json";
+import previousSoundFortuneData from "../content/legacy/encounters_before_sound_fortune.json";
 import archivedBattleData from "../content/legacy/milano_fa0e7e0/battles/catalog.json";
 import archivedTourismData from "../content/legacy/milano_fa0e7e0/tourism/catalog.json";
 import archivedJourneyData from "../content/legacy/milano_fa0e7e0/progression/journey.json";
@@ -432,8 +437,12 @@ export async function buildContent(root: string, writeOutput = true) {
     path.join(content, "encounters/catalog.json"),
   );
   const encounterCatalog = normalizeEncounterCatalog(encounterInput, tourism.landmarks);
+  const encounterEntryRules = await parseFile(encounterEntryRulesSchema, path.join(content, "encounters/entry-rules.json"));
+  validateEncounterEntryRules(encounterEntryRules, encounterCatalog.encounters, journey);
   const archivedEncounters = encounterCatalogSchema.parse(archivedEncounterData).encounters;
-  const encounterStoryIds = [...new Set([...encounterCatalog.encounters, ...archivedEncounters].flatMap((event) => [
+  const previousGalleriaCatalog = encounterCatalogSchema.parse(previousGalleriaEncounterData);
+  const previousSoundFortuneCatalog = encounterCatalogSchema.parse(previousSoundFortuneData);
+  const encounterStoryIds = [...new Set([...encounterCatalog.encounters, ...previousSoundFortuneCatalog.encounters, ...previousGalleriaCatalog.encounters, ...archivedEncounters].flatMap((event) => [
     event.storyId,
     ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : []),
   ]))];
@@ -612,7 +621,7 @@ export async function buildContent(root: string, writeOutput = true) {
     if (itemReferences.length && !encounterStoryIds.includes(id))
       throw new Error(`Item references are only supported in encounters: ${id}`);
     if (itemReferences.length) {
-      const owner = [...encounterCatalog.encounters, ...archivedEncounters].find((event) =>
+      const owner = [...encounterCatalog.encounters, ...previousSoundFortuneCatalog.encounters, ...previousGalleriaCatalog.encounters, ...archivedEncounters].find((event) =>
         event.storyId === id || (event.quiz && [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId].includes(id)),
       );
       for (const itemId of itemReferences) {
@@ -1069,6 +1078,18 @@ export async function buildContent(root: string, writeOutput = true) {
     responseProfileIds: responseProfiles.map((profile) => profile.id), memoryIds: Object.keys(presentation.memories), context,
     validateQuiz: validateQuizEntries,
   });
+  // Previously published quiz and outcome Ink remains playable for an
+  // already-active save even though it is no longer offered to new players.
+  validateEncounterContent({
+    catalog: previousGalleriaCatalog, cityId: city.id, landmarks: tourism.landmarks, journey, stories, quizzes,
+    responseProfileIds: responseProfiles.map((profile) => profile.id), memoryIds: Object.keys(presentation.memories), context,
+    validateQuiz: validateQuizEntries,
+  });
+  validateEncounterContent({
+    catalog: previousSoundFortuneCatalog, cityId: city.id, landmarks: tourism.landmarks, journey, stories, quizzes,
+    responseProfileIds: responseProfiles.map((profile) => profile.id), memoryIds: Object.keys(presentation.memories), context,
+    validateQuiz: validateQuizEntries,
+  });
   validateJourney(
     journey,
     city,
@@ -1095,8 +1116,17 @@ export async function buildContent(root: string, writeOutput = true) {
     withContext(`legacy epilogue ${episode.id}/${id}`, () =>
       validateEpilogue(stories[id], context, observeForStory(id)));
   }
+  // Already-published source files must stay byte-identical so saved Ink
+  // positions can be resolved against their original content fingerprint.
+  const previousPublicationIds = new Set(Object.keys(publicationBindings.stories));
+  for (const [storyId, binding] of Object.entries(publicationBindings.stories)) {
+    const source = storySources[storyId];
+    if (!source || createHash("sha256").update(source).digest("hex") !== binding.sha256)
+      throw new Error(`Previous Milano story changed: ${storyId}`);
+  }
   for (const storyId of Object.keys(stories)) {
     if (
+      !previousPublicationIds.has(storyId) &&
       storyId !== learningDetails.storyId &&
       !dates.some((date) => date.storyId === storyId || date.legacyStoryIds?.includes(storyId)) &&
       !battles.some((battle) => battle.storyId === storyId) &&

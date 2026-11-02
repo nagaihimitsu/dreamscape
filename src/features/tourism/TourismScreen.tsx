@@ -12,6 +12,7 @@ import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import { presentationStoryId } from "../../content/legacy-milano";
 import { activeGuideStoryId } from "../../domain/tourism";
+import { getTourismEncounterAvailability } from "../../domain/encounter";
 import { canAccessFreeTime } from "../../domain/chapter";
 import type { GameState } from "../../domain/game";
 import { DialogueText } from "../../components/DialogueText";
@@ -41,6 +42,7 @@ interface Props {
   onBattle: () => void;
   onLeave: () => void;
   onReplayGuide: () => void;
+  onEncounter: () => void;
 }
 
 export function TourismScreen({
@@ -55,6 +57,7 @@ export function TourismScreen({
   onBattle,
   onLeave,
   onReplayGuide,
+  onEncounter,
 }: Props) {
   const active = game.activeTourism!;
   const windowVisibility = useDialogueWindow();
@@ -199,6 +202,11 @@ export function TourismScreen({
       {!game.activeBattle && (
         <button className="secondary" onClick={onLeave}>
           {canAccessFreeTime(game) ? "自由時間へ戻る" : "旅の予定に戻る"}
+        </button>
+      )}
+      {getTourismEncounterAvailability(game, "galleria_fortune").available && (
+        <button className="text-button tourism-encounter" onClick={onEncounter}>
+          床の雄牛を見ている親子に話しかける
         </button>
       )}
     </div>

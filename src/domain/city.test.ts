@@ -41,9 +41,10 @@ import {
   getTourismAvailability,
 } from "./tourism";
 import { startCityEpilogue, advanceCityEpilogue } from "./epilogue";
-import { startEncounter, chooseEncounter, advanceEncounter, finishEncounter } from "./encounter";
+import { chooseEncounter, advanceEncounter, finishEncounter } from "./encounter";
 import { loadGame, saveGame, type StorageLike } from "../persistence";
 import phase6 from "../../tests/fixtures/phase6-saves.json";
+import previousEncounter from "../../tests/fixtures/4c6f5f3-v10-encounter.json";
 const restore = (state: GameState) => {
   const next = validateGameState(JSON.parse(JSON.stringify(state)));
   expect(next).toEqual(state);
@@ -161,7 +162,8 @@ function playDate(initial: GameState, id: string, choices = [0, 0]): GameState {
 const finale = () => episodes.find((item) => item.kind === "city_finale")!;
 
 function collectSouvenir(initial: GameState): GameState {
-  let state = startEncounter(initial, "galleria_cafe", () => 0);
+  // Resume a real published save: the café is no longer available to start.
+  let state = validateGameState(previousEncounter.before);
   expect(state.activeEncounter?.encounterId).toBe("galleria_cafe");
   for (let count = 0; state.activeEncounter && count < 100; count++) {
     const active = state.activeEncounter;
@@ -173,7 +175,9 @@ function collectSouvenir(initial: GameState): GameState {
   }
   expect(state.activeEncounter).toBeNull();
   expect(state.inventory.galleria_souvenir).toBe("held");
-  return state;
+  return restore({ ...initial, travelBudget: initial.travelBudget + 2,
+    inventory: { ...initial.inventory, galleria_souvenir: "held" },
+    completedEncounterIds: [...new Set([...initial.completedEncounterIds, "galleria_cafe"])] });
 }
 
 function persisted(state: GameState): GameState {
@@ -431,18 +435,15 @@ describe("Milan's four episodes and distinct city finale", () => {
       expect(totalAp(current)).toBe(totalAp(before));
       texts.push(lines.join(" "));
     };
-    read(state);
-    state = playDate(state, "milano_cafe_01", [0, 0]);
-    read(state);
-    state = playDate(state, "milano_walk_01", [0, 0]);
-    read(state);
-    state = playDate(state, "milano_invitation_01", [0]);
-    state = playDate(state, "milano_night_01", [1, 2]);
-    read(state);
-    state = playDate(state, "milano_confession_01", [0]);
-    expect(state.endingReached).toBe(true);
-    read(state);
-    expect(new Set(texts).size).toBe(5);
+    // The revised epilogue has four intentional contexts: distant, stage 2,
+    // stage 3+, and dating. Inspect those states directly so random date
+    // outcomes do not make this presentation test depend on their scores.
+    read({ ...state, romanceStage: 1 });
+    read({ ...state, romanceStage: 2 });
+    read({ ...state, romanceStage: 3 });
+    read({ ...state, romanceStage: 4, endingReached: true,
+      confessionStatus: "accepted", playedDateIds: [...state.playedDateIds, "milano_confession_01"] });
+    expect(new Set(texts).size).toBe(4);
   });
 });
 
