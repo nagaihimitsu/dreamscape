@@ -16,6 +16,7 @@ import { getTourismEncounterAvailability } from "../../domain/encounter";
 import { canAccessFreeTime } from "../../domain/chapter";
 import type { GameState } from "../../domain/game";
 import { DialogueText } from "../../components/DialogueText";
+import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { ComicEffect } from "../../components/ComicEffect";
 import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
@@ -252,14 +253,9 @@ export function TourismScreen({
       {active.phase === "guide" && frame ? (
         <div className="vn-scene tourism-guide-scene" data-dialogue-hidden={windowVisibility.hidden || undefined}>
           <div className="vn-background">
-            <img
-              className="tourism-arrival-image"
-              src={`${import.meta.env.BASE_URL}${asset.path}`}
-              width={asset.width}
-              height={asset.height}
-              alt={asset.altJa}
-            />
+            <CanalScene backgroundId={frame.background} imageAssetId={landmark.imageAssetId} />
           </div>
+          <span className="sr-only">{asset.altJa}</span>
           <div className="vn-character-layer">
             <CharacterPortrait
               characterId="heroine"

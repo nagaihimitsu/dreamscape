@@ -29,6 +29,22 @@
 .battle-backdrop .scene-stamp {
   display: none;
 }
+.battle-location {
+  position: relative;
+  z-index: 2;
+  align-self: flex-start;
+  flex: 0 0 auto;
+  max-width: calc(100% - 150px);
+  margin: 8px 0 0 10px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  color: #fffaf4;
+  background: rgba(31, 50, 43, .88);
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+}
 .battle-characters,
 .battle-character-slot {
   position: absolute;

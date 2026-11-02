@@ -4,14 +4,20 @@ import { presentation, tourismAssets } from "../content";
 export function CanalScene({
   compact = false,
   backgroundId = "milano_cafe",
+  imageAssetId,
 }: {
   compact?: boolean;
   backgroundId?: string;
+  /** Use a location's registered photograph while keeping this scene's fallback. */
+  imageAssetId?: string;
 }) {
   const backdrop = presentation.backgrounds[backgroundId];
-  const image = backdrop?.imageAssetId
+  const landmarkImage = imageAssetId
+    ? tourismAssets.find((asset) => asset.id === imageAssetId)?.path
+    : undefined;
+  const image = landmarkImage ?? (backdrop?.imageAssetId
     ? tourismAssets.find((asset) => asset.id === backdrop.imageAssetId)?.path
-    : backdrop?.imagePath;
+    : backdrop?.imagePath);
   return (
     <div
       className={`canal-scene ${compact ? "compact" : ""}`}

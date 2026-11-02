@@ -184,10 +184,13 @@ export function BattleScreen({
   const frame = rebuttal?.step.frame ?? active.frame;
   const isDialogue = active.phase === "dialogue" || !!rebuttal;
   const backgroundId = frame?.background ?? battle.backgroundAssetId;
-  const backgroundAssetId = presentation.backgrounds[backgroundId]?.imageAssetId;
-  const backgroundAsset = backgroundAssetId
-    ? tourismAssets.find((asset) => asset.id === backgroundAssetId)
-    : undefined;
+  const landmark = landmarks.find((item) => item.id === battle.landmarkId);
+  // Keep the same registered location photograph across dialogue, questions
+  // and results. A city-wide finale has no landmark and keeps its own scene.
+  const landmarkAsset = tourismAssets.find((asset) => asset.id === landmark?.imageAssetId);
+  const backgroundAsset = landmarkAsset ?? tourismAssets.find(
+    (asset) => asset.id === presentation.backgrounds[backgroundId]?.imageAssetId,
+  );
   const storyId = presentationStoryId(rebuttal?.storyId ?? battle.storyId);
   // Reactions belong to their target, independently of the current speaker.
   // Unannotated frames retain the existing Ink and expression behavior.
@@ -268,8 +271,13 @@ export function BattleScreen({
         </div>
       )}
       <div className="battle-backdrop">
-        <CanalScene backgroundId={backgroundId} />
+        <CanalScene backgroundId={backgroundId} imageAssetId={landmarkAsset?.id} />
       </div>
+      {landmark && (
+        <div className="battle-location" data-testid="battle-location" aria-label={`現在の場所: ${landmark.nameJa}`}>
+          {landmark.nameJa}
+        </div>
+      )}
       <div
         className={`battle-stage ${isDialogue ? "" : "battle-stage-compact"} ${battle.scope === "city_finale" ? "finale-stage" : ""}`}
       >
