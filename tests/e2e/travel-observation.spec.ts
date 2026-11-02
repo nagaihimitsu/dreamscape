@@ -1,0 +1,38 @@
+import { expect, test } from "@playwright/test";
+import { saved, startNewGame } from "./helpers";
+import { skipTourismGuide } from "./tourism-helpers";
+
+test("interrupted sightseeing reserves time again and battle observation resumes the same fight", async ({ page }) => {
+  test.setTimeout(60_000);
+  await page.setViewportSize({ width: 360, height: 780 });
+  await startNewGame(page);
+  await page.getByTestId("travel-destination-milano_duomo_episode").getByRole("button").click();
+  await page.getByRole("region", { name: /への移動$/ }).getByRole("button", { name: /^徒歩 / }).click();
+  await expect.poll(async () => (await saved(page)).activeTourism?.landmarkId).toBe("duomo_milano");
+  await skipTourismGuide(page);
+  const first = await saved(page);
+  expect(first.travel.activeEvent?.eventId).toBe("milano_duomo_episode");
+  const firstEnd = first.travel.activeEvent!.endMinute;
+  await page.getByRole("button", { name: "自由時間へ戻る" }).click();
+  await expect.poll(async () => (await saved(page)).travel.activeEvent).toBeNull();
+  expect((await saved(page)).travel.minute).toBe(firstEnd);
+  await page.getByRole("button", { name: "ミラノ大聖堂（ドゥオモ）を観察する" }).click();
+  await expect.poll(async () => (await saved(page)).travel.activeEvent?.eventId).toBe("milano_duomo_episode");
+  const revisit = await saved(page);
+  expect(revisit.travel.minute).toBe(firstEnd);
+  expect(revisit.travel.activeEvent!.endMinute).toBeGreaterThan(firstEnd);
+  await page.getByRole("button", { name: "バトルを始める", exact: true }).click();
+  const battle = await saved(page);
+  expect(battle.activeBattle?.battleId).toBe("milano_duomo_01");
+  await page.getByRole("button", { name: "手がかり帳", exact: true }).click();
+  await page.getByRole("button", { name: "観光に戻って調べる" }).click();
+  await expect.poll(async () => (await saved(page)).activeTourism?.landmarkId).toBe("duomo_milano");
+  const observing = await saved(page);
+  expect(observing.activeBattle?.runId).toBe(battle.activeBattle?.runId);
+  expect(observing.travel).toEqual(battle.travel);
+  await page.getByRole("button", { name: "バトルに戻る", exact: true }).click();
+  const resumed = await saved(page);
+  expect(resumed.activeTourism).toBeNull();
+  expect(resumed.activeBattle?.runId).toBe(battle.activeBattle?.runId);
+  expect(resumed.travel).toEqual(battle.travel);
+});

@@ -7,7 +7,9 @@ import {
   landmarks,
   tourismAssets,
   city,
+  episodes,
 } from "../content";
+import { beginTravelEvent, finishTravelEventIfComplete, sleepAtHotel, waitForTravel } from "../domain/travel-game";
 import {
   advanceDate,
   chooseDate,
@@ -40,16 +42,13 @@ import { TourismScreen } from "../features/tourism/TourismScreen";
 import { ClueNotebook } from "../features/tourism/ClueNotebook";
 import { useLearning } from "../features/learning/useLearning";
 import { EnglishReview } from "../features/learning/EnglishReview";
-import { EpisodeScreen } from "../features/journey/EpisodeScreen";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
 import { encounters } from "../content/encounters";
 import { startEncounter, startTourismEncounter, advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterAvailability, getEncounterOptionAvailability, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption, encounterStoryCanFinish } from "../domain/encounter";
-import { PendingRewards } from "../features/journey/PendingRewards";
 import { EpilogueScreen } from "../features/journey/EpilogueScreen";
 import { startCityEpilogue, advanceCityEpilogue } from "../domain/epilogue";
 import {
-  canAccessFreeTime,
   getCurrentEpisode,
   getNextEpisode,
   getNextStoryBattle,
@@ -149,7 +148,7 @@ export default function App({
   }
   function commit(change: (state: GameState) => GameState) {
     if (!gameRef.current) return false;
-    const next = change(gameRef.current);
+    const next = finishTravelEventIfComplete(gameRef.current, change(gameRef.current));
     if (next === gameRef.current) return false;
     const saved = saveGame(storage, next, gameRef.current);
     if (!saved.ok) {
@@ -244,7 +243,7 @@ export default function App({
     conversationActive || (!game?.activeTourism && game?.activeBattle)
   );
   const mobileObservationActive = game?.activeTourism?.phase === "exploring";
-  const freeTimeAvailable = game ? canAccessFreeTime(game) : false;
+  const freeTimeAvailable = !!game;
   const idle =
     game &&
     !game.activeDate &&
@@ -386,12 +385,6 @@ export default function App({
               閉じる
             </button>
           </div>
-        )}
-        {idle && !freeTimeAvailable && (
-          <PendingRewards
-            game={game}
-            onClaim={() => commit((state) => claimPendingRewards(state, game.revision))}
-          />
         )}
         {!game ? (
           <>
@@ -582,21 +575,16 @@ export default function App({
             onSubmitEvidence={() =>
               commit((state) => submitBattleEvidence(state, game.revision))
             }
-            onReplay={() =>
-              commit((state) => startBattle(state, game.activeBattle!.battleId))
-            }
-            onNextEpisode={
-              !nextStoryBattle && nextEpisode
-                ? () => commit((state) => startEpisode(state, nextEpisode.id))
-                : undefined
-            }
+            onReplay={() => commit((state) => {
+              const battleId = game.activeBattle!.battleId;
+              const eventId = episodes.find((episode) => episode.battleId === battleId)?.id ?? battleId;
+              return beginTravelEvent(state, eventId, "walk", game.revision, nextRomanceRoll,
+                eventId === battleId ? undefined : battleId);
+            })}
+            onNextEpisode={undefined}
             nextIsFinale={nextEpisode?.kind === "city_finale"}
             nextStoryBattle={nextStoryBattle ?? undefined}
-            onNextStoryBattle={
-              nextStoryBattle
-                ? () => commit((state) => startBattle(state, nextStoryBattle.battleId))
-                : undefined
-            }
+            onNextStoryBattle={undefined}
             onEpilogue={
               !nextStoryBattle && cityNotebook &&
               game.completedCityIds.includes(currentBattle.cityId!) &&
@@ -618,11 +606,6 @@ export default function App({
                   : enterFreeTime(state, game.revision),
               )) returnToPlace(currentBattle?.landmarkId);
             }}
-          />
-        ) : !freeTimeAvailable ? (
-          <EpisodeScreen
-            game={game}
-            onStart={(id) => commit((state) => startEpisode(state, id))}
           />
         ) : active && frame ? (
           <RomanceScene
@@ -686,8 +669,14 @@ export default function App({
             onEpilogue={(id) => commit((state) => startCityEpilogue(state, id, game.revision))}
             onChooseDate={(id) => setConfirmation({ kind: "date", id })}
             onMilestone={(id) => commit((state) => claimTrialMilestone(state, id))}
-            onTourism={(id) => commit((state) => openTourism(state, id))}
+            onTourism={(id) => commit((state) => {
+              const episode = episodes.find((item) => item.landmarkId === id);
+              return episode ? beginTravelEvent(state, episode.id, "walk", game.revision, nextRomanceRoll) : state;
+            })}
             onBattle={(id) => commit((state) => startBattle(state, id))}
+            onTravelEvent={(id, mode) => commit((state) => beginTravelEvent(state, id, mode, game.revision, nextRomanceRoll))}
+            onTravelWait={(minutes) => commit((state) => waitForTravel(state, minutes, game.revision))}
+            onTravelSleep={(mode) => commit((state) => sleepAtHotel(state, mode, game.revision))}
           />
         )}
       </main>

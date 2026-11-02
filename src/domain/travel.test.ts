@@ -61,6 +61,19 @@ describe("travel direction and time", () => {
   });
 
   it.each([
+    [22.499, "北"], [22.501, "北東"], [67.499, "北東"], [67.501, "東"],
+    [337.499, "北西"], [337.501, "北"],
+  ])("rounds geographic bearing %f° to %s at sector boundaries", (bearing, expected) => {
+    const angle = bearing * Math.PI / 180;
+    const distance = Math.PI / 180;
+    const destination = {
+      latitude: Math.asin(Math.cos(angle) * Math.sin(distance)) * 180 / Math.PI,
+      longitude: Math.atan2(Math.sin(angle) * Math.sin(distance), Math.cos(distance)) * 180 / Math.PI,
+    };
+    expect(getDirection({ latitude: 0, longitude: 0 }, destination)).toBe(expected);
+  });
+
+  it.each([
     [8 * 60 + 59, "closed"], [9 * 60, "day"], [17 * 60 + 59, "day"],
     [18 * 60, "night"], [21 * 60 + 59, "night"], [22 * 60, "closed"],
   ])("classifies minute %i as %s", (minute, period) => {
@@ -87,6 +100,11 @@ describe("travel planning", () => {
     expect(planTravel(snapshot, { ...walk, fromPlaceId: "elsewhere" }).ok).toBe(false);
     expect(planTravel(snapshot, { ...walk, mode: "taxi", cost: 11 }).ok).toBe(false);
     expect(snapshot.travelBudget).toBe(10);
+  });
+
+  it("plans an explicitly supplied tram route and deducts its game fare", () => {
+    expect(planTravel(snapshot, { ...walk, mode: "tram", minutes: 35, cost: 5 }))
+      .toEqual({ ok: true, arrivalMinute: 9 * 60 + 35, remainingBudget: 5 });
   });
 
   it("tests the event against arrival time and preserves the input on rejection", () => {
@@ -172,6 +190,14 @@ describe("travel planning", () => {
       ok: true, arrivalMinute: 22 * 60 + 45, nextDay: 2, nextMinute: 9 * 60,
       remainingBudget: 0, remainingAp: 4, usedAssistance: true,
     });
+  });
+
+  it("requires normal returns to arrive by 22:00 while preserving the late-scene rescue", () => {
+    const away = { ...snapshot, currentPlaceId: "gallery" };
+    expect(planOvernight({ ...away, minute: 21 * 60 + 45 }, walkHome, 0).ok).toBe(true);
+    expect(planOvernight({ ...away, minute: 21 * 60 + 46 }, walkHome, 0)).toEqual({ ok: false, reason: "time" });
+    expect(planOvernight({ ...away, minute: 22 * 60 }, walkHome, 0)).toEqual({ ok: false, reason: "time" });
+    expect(planOvernight({ ...away, minute: 22 * 60 + 1 }, walkHome, 0).ok).toBe(true);
   });
 
   it("does not move the clock backwards when a return reaches the following morning", () => {

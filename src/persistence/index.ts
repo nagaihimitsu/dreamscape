@@ -4,7 +4,7 @@ import { isKnownLegacyGameState, validateGameState, type GameState } from "../do
 export const SAVE_KEY = "dreamscape.save.v1";
 export const LEARNING_KEY = "dreamscape.learning.v1";
 /** The current format is validated, not automatically migrated from older versions. */
-export const SUPPORTED_SAVE_VERSION = 11;
+export const SUPPORTED_SAVE_VERSION = 12;
 
 export interface StorageLike {
   getItem(key: string): string | null;

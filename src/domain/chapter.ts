@@ -34,32 +34,43 @@ export function isEpisodeUnlocked(
   return (
     state.completedEpisodeIds.includes(episode.id) ||
     hasLegacyEpisodeAccess(state, episode) ||
-    episode.requiredEpisodeIds.every((id) =>
+    (episode.requiredEpisodeIds.every((id) =>
       state.completedEpisodeIds.includes(id),
-    )
+    ) && (episode.kind !== "city_finale" || allStoryBattlesCompleted(state)))
   );
 }
-/** A completed encounter is reused even if it was played before this route existed. */
+function storyBattleCompleted(state: GameState, battleId: string): boolean {
+  return state.battleRecords.some((record) => record.battleId === battleId && record.attempts > 0);
+}
+
+function allStoryBattlesCompleted(state: GameState): boolean {
+  return journeyConfig.storyBattles.every((battle) => storyBattleCompleted(state, battle.battleId));
+}
+
+export function isStoryBattleUnlocked(state: GameState, battleId: string): boolean {
+  const battle = journeyConfig.storyBattles.find((item) => item.battleId === battleId);
+  return !battle || battle.requiredEpisodeIds.every((id) => state.completedEpisodeIds.includes(id));
+}
+
+/** Eligible special battles can be visited independently in any order. */
+export function getAvailableStoryBattles(state: GameState): StoryBattle[] {
+  return journeyConfig.storyBattles.filter((battle) =>
+    isStoryBattleUnlocked(state, battle.battleId) &&
+    !storyBattleCompleted(state, battle.battleId),
+  );
+}
+
+/** Convenience for callers displaying a single recommendation. */
 export function getNextStoryBattle(state: GameState): StoryBattle | null {
-  return journeyConfig.storyBattles.find((encounter) => {
-    const afterIndex = episodes.findIndex((episode) => episode.id === encounter.afterEpisodeId);
-    return afterIndex >= 0 &&
-      episodes.slice(0, afterIndex + 1).every((episode) => state.completedEpisodeIds.includes(episode.id)) &&
-      !state.battleRecords.some((record) => record.battleId === encounter.battleId && record.attempts > 0);
-  }) ?? null;
+  return getAvailableStoryBattles(state)[0] ?? null;
 }
 
 /** Completed destinations remain revisitable for older saved games. */
 export function isEpisodeBlockedByStoryBattle(state: GameState, episode: EpisodeDefinition): boolean {
-  const pending = getNextStoryBattle(state);
-  if (!pending || state.completedEpisodeIds.includes(episode.id)) return false;
-  const target = episodes.findIndex((item) => item.id === episode.id);
-  const barrier = episodes.findIndex((item) => item.id === pending.beforeEpisodeId);
-  return target >= 0 && barrier >= 0 && target >= barrier;
+  return episode.kind === "city_finale" && !state.completedEpisodeIds.includes(episode.id) && !allStoryBattlesCompleted(state);
 }
 
 export function getNextEpisode(state: GameState): EpisodeDefinition | null {
-  if (getNextStoryBattle(state)) return null;
   return (
     episodes.find(
       (episode) =>
@@ -101,18 +112,16 @@ export function getEpisodeAvailability(
       available: false,
       reason:
         episode.kind === "city_finale"
-          ? "4つの観光地を巡ると、この対決へ進めます。"
+          ? "観光地と旅の途中の対決を巡ると、この対決へ進めます。"
           : "先の観光エピソードを終えると出発できます。",
     };
   if (isEpisodeBlockedByStoryBattle(state, episode))
     return { available: false, reason: "先に、旅の途中の対決へ進みましょう。" };
   return { available: true, reason: "" };
 }
-export function canAccessFreeTime(state: GameState): boolean {
-  return (
-    state.completedEpisodeIds.length > 0 ||
-    state.completedChapters.includes(city.id)
-  );
+export function canAccessFreeTime(_state: GameState): boolean {
+  // The initial destination is a choice too; no sightseeing stop is mandatory first.
+  return true;
 }
 export function startEpisode(
   state: GameState,
@@ -187,9 +196,9 @@ function recordEpisodes(state: GameState): GameState {
     if (!hasCompletedBattle(state, episode)) continue;
     if (
       episode.kind === "city_finale" &&
-      !episode.requiredEpisodeIds.every((id) =>
+      (!allStoryBattlesCompleted(state) || !episode.requiredEpisodeIds.every((id) =>
         completedEpisodeIds.includes(id),
-      )
+      ))
     )
       continue;
     if (!completedEpisodeIds.includes(episode.id))
@@ -295,9 +304,9 @@ export function validateJourneyState(state: GameState): void {
       !hasCompletedBattle(state, episode) ||
       !state.completedChapters.includes(episode.legacyChapterId) ||
       (!hasLegacyEpisodeAccess(state, episode) &&
-        !episode.requiredEpisodeIds.every((required) =>
+        (!episode.requiredEpisodeIds.every((required) =>
           state.completedEpisodeIds.includes(required),
-        ))
+        ) || (episode.kind === "city_finale" && !allStoryBattlesCompleted(state))))
     )
       throw new Error("観光エピソードのクリア記録が一致しません。");
   }

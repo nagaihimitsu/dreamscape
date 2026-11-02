@@ -11,7 +11,7 @@ function unique(values: string[], label: string) {
     throw new Error(`Duplicate ${label}`);
 }
 
-/** Validate the ordered city route while keeping episode and city rewards distinct. */
+/** Validate independent stops and prerequisites while keeping rewards distinct. */
 export function validateJourney(
   journey: JourneyConfig,
   city: {
@@ -61,18 +61,14 @@ export function validateJourney(
     finales.map((episode) => episode.cityId),
     "city finale",
   );
-  let previousStoryPosition = -1;
   for (const encounter of journey.storyBattles) {
-    const after = journey.episodes.findIndex((episode) => episode.id === encounter.afterEpisodeId);
-    const before = journey.episodes.findIndex((episode) => episode.id === encounter.beforeEpisodeId);
     const battle = battles.find((item) => item.id === encounter.battleId);
-    if (after < 0 || before !== after + 1 || after < previousStoryPosition ||
-      !journey.episodes[before].requiredEpisodeIds.includes(encounter.afterEpisodeId))
-      throw new Error(`Unknown or unordered story battle position: ${encounter.battleId}`);
+    unique(encounter.requiredEpisodeIds, "story battle prerequisite");
+    if (encounter.requiredEpisodeIds.some((id) => !journey.episodes.some((episode) => episode.id === id && episode.kind !== "city_finale")))
+      throw new Error(`Unknown story battle prerequisite: ${encounter.battleId}`);
     if (!battle?.reasoning || journey.episodes.some((episode) => episode.battleId === encounter.battleId) ||
-      !landmarks.some((landmark) => landmark.id === battle.landmarkId && landmark.cityId === journey.episodes[after].cityId))
+      !landmarks.some((landmark) => landmark.id === battle.landmarkId && landmark.cityId === city.id))
       throw new Error(`Invalid story battle: ${encounter.battleId}`);
-    previousStoryPosition = after;
   }
   for (const [index, episode] of journey.episodes.entries()) {
     unique(episode.requiredEpisodeIds, "episode prerequisite");
@@ -85,11 +81,6 @@ export function validateJourney(
           `Unknown or unordered episode prerequisite: ${episode.id}`,
         );
     }
-    if (
-      index > 0 &&
-      !episode.requiredEpisodeIds.includes(journey.episodes[index - 1].id)
-    )
-      throw new Error(`Episode must follow the preceding stop: ${episode.id}`);
     const landmark = landmarks.find((item) => item.id === episode.landmarkId);
     const battle = battles.find((item) => item.id === episode.battleId);
     if (episode.cityId !== city.id || episode.legacyChapterId !== city.id) {

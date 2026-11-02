@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { legacyBattles, legacyBattleQuizzes } from "../content/legacy-milano";
-import { finalizeBattleProgress, isEpisodeBlockedByStoryBattle, isEpisodeUnlocked } from "./chapter";
+import { finalizeBattleProgress, isEpisodeBlockedByStoryBattle, isEpisodeUnlocked, isStoryBattleUnlocked } from "./chapter";
 import {
   battles,
   episodes,
@@ -160,6 +160,8 @@ function battleAvailability(state: GameState, battleId: string, continuingTouris
       reason: "途中のクイズバトルを再開してください。",
     };
   const episode = episodes.find((item) => item.battleId === battleId);
+  if (!isStoryBattleUnlocked(state, battleId))
+    return { available: false, reason: "先に必要な観光を終えてから対決できます。" };
   if (episode && !isEpisodeUnlocked(state, episode))
     return {
       available: false,

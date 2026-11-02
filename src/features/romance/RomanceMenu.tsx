@@ -102,7 +102,14 @@ export function RomanceMenu({
           )}
         </>
       )}
-      {game.legacyTrialAvailable && (
+      <TrialMilestones game={game} onMilestone={onMilestone} />
+    </>
+  );
+}
+
+/** Shared legacy reward entry for both destination lists. */
+export function TrialMilestones({ game, onMilestone }: { game: GameState; onMilestone: (id: string) => void }) {
+  return game.legacyTrialAvailable ? (
         <section className="trial-progress" aria-label="試遊用の旅の進行">
           <h2>試遊用の補助AP</h2>
           <p>以前の試遊向けの報酬です。観光報酬とは別に、各1回受け取れます。</p>
@@ -130,9 +137,7 @@ export function RomanceMenu({
             );
           })}
         </section>
-      )}
-    </>
-  );
+      ) : null;
 }
 export function EventCard({
   game,

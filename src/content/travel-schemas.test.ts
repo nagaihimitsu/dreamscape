@@ -38,6 +38,11 @@ describe("future travel data contract", () => {
     expect(travelCatalogSchema.safeParse(data).success).toBe(true);
   });
 
+  it("accepts a separately authored tram route", () => {
+    const data = catalog();
+    expect(travelCatalogSchema.safeParse({ ...data, routes: [{ ...data.routes[0], mode: "tram", cost: 5 }] }).success).toBe(true);
+  });
+
   it("rejects unknown or duplicate places, events and directed routes", () => {
     const unknownPlace = catalog();
     unknownPlace.events[0].placeId = "missing";

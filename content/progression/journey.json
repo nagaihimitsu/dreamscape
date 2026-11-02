@@ -13,7 +13,7 @@
       "titleJa": "無人の広場、一名追加",
       "descriptionJa": "広場で録音中の男が、小さな布を頭からかぶった。",
       "clearTitleJa": "ドゥオモ編 クリア",
-      "clearDescriptionJa": "袖の音を持って、ガラス屋根の下へ。"
+      "clearDescriptionJa": "袖の音を持って、広場を歩き出す。"
     },
     {
       "id": "milano_galleria_episode",
@@ -22,9 +22,7 @@
       "landmarkId": "galleria_vittorio_emanuele_ii",
       "battleId": "milano_galleria_01",
       "legacyChapterId": "milano",
-      "requiredEpisodeIds": [
-        "milano_duomo_episode"
-      ],
+      "requiredEpisodeIds": [],
       "titleJa": "そこ、映っています",
       "descriptionJa": "二人の後ろで、見知らぬ人が同じ動きを繰り返している。",
       "clearTitleJa": "ガッレリア編 クリア",
@@ -41,9 +39,7 @@
       "descriptionJa": "旧食堂で声を出さない兄と、その手を見て席を立つ妹がいる。",
       "clearTitleJa": "最後の晩餐編 クリア",
       "clearDescriptionJa": "三秒のままの録音をしまい、旧食堂を出る。",
-      "requiredEpisodeIds": [
-        "milano_galleria_episode"
-      ]
+      "requiredEpisodeIds": []
     },
     {
       "id": "milano_castello_episode",
@@ -52,9 +48,7 @@
       "landmarkId": "castello_sforzesco",
       "battleId": "milano_castello_01",
       "legacyChapterId": "milano",
-      "requiredEpisodeIds": [
-        "milano_last_supper_episode"
-      ],
+      "requiredEpisodeIds": [],
       "titleJa": "鼻がなくなる前に",
       "descriptionJa": "城の中庭で、父親が自分の鼻をかばっている。",
       "clearTitleJa": "スフォルツェスコ城編 クリア",
@@ -83,16 +77,14 @@
   "storyBattles": [
     {
       "battleId": "milano_la_scala_b01",
-      "afterEpisodeId": "milano_last_supper_episode",
-      "beforeEpisodeId": "milano_castello_episode",
+      "requiredEpisodeIds": [],
       "titleJa": "椅子にも身元がある",
       "descriptionJa": "スカラ座の前に、売り物でも腰掛けでもない椅子が一脚ある。",
       "actionLabelJa": "スカラ座へ行く"
     },
     {
       "battleId": "milano_brera_c01",
-      "afterEpisodeId": "milano_castello_episode",
-      "beforeEpisodeId": "milano_finale",
+      "requiredEpisodeIds": [],
       "titleJa": "青い布をほどくまで",
       "descriptionJa": "ブレラで衣装係と演出家が、同じ布の端を持っている。",
       "actionLabelJa": "ブレラ絵画館へ行く"

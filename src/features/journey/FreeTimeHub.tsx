@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { battles, episodes, landmarks, milanoTravelCatalog } from "../../content";
+import type { TravelRoute } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
-import { BattleEntry } from "../battle/BattleEntry";
-import { RomanceMenu } from "../romance/RomanceMenu";
-import { TourismEntry } from "../tourism/TourismEntry";
+import { getTourismAvailability } from "../../domain/tourism";
+import { TrialMilestones } from "../romance/RomanceMenu";
 import { CityProgress } from "./CityProgress";
+import { EncounterMenu } from "./EncounterMenu";
 import { PendingRewards } from "./PendingRewards";
+import { TravelMenu } from "./TravelMenu";
 import type { EncounterMenuEntry } from "./EncounterMenu";
 import "./free-time-hub.css";
 
@@ -24,6 +26,9 @@ export function FreeTimeHub({
   selectedLandmarkId,
   onSelectLandmark,
   placeFocusRequest,
+  onTravelEvent,
+  onTravelWait,
+  onTravelSleep,
 }: {
   game: GameState;
   onEnglish: () => void;
@@ -39,16 +44,18 @@ export function FreeTimeHub({
   selectedLandmarkId: string | null;
   onSelectLandmark: (id: string | null) => void;
   placeFocusRequest: number;
+  onTravelEvent: (id: string, mode: TravelRoute["mode"]) => void;
+  onTravelWait: (minutes: number) => void;
+  onTravelSleep: (mode: TravelRoute["mode"]) => void;
 }) {
-  const [revisitOpen, setRevisitOpen] = useState(!!selectedLandmarkId);
-  useEffect(() => {
-    if (!placeFocusRequest || !selectedLandmarkId) return;
-    setRevisitOpen(true);
-    const frame = requestAnimationFrame(() => {
-      document.querySelector<HTMLButtonElement>(`[data-testid="revisit-place-${selectedLandmarkId}"]`)?.focus();
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [placeFocusRequest, selectedLandmarkId]);
+  const localLandmarkIds = new Set(milanoTravelCatalog.events.filter((event) => event.placeId === game.travel.currentPlaceId).flatMap((event) => {
+    const landmarkId = episodes.find((episode) => episode.id === event.id)?.landmarkId ?? battles.find((battle) => battle.id === event.id)?.landmarkId;
+    return landmarkId ? [landmarkId] : [];
+  }));
+  const localLandmarks = landmarks.filter((landmark) => localLandmarkIds.has(landmark.id));
+  // Retain the existing callback contract for callers; direct navigation from
+  // these callbacks is deliberately not presented in the destination list.
+  void onChooseDate; void selectedLandmarkId; void onSelectLandmark; void placeFocusRequest;
   return (
     <section className="free-time-hub paper" data-testid="free-time-hub">
       <header className="free-time-hub-heading">
@@ -56,33 +63,27 @@ export function FreeTimeHub({
         {game.endingReached && <span>交際中</span>}
       </header>
 
-      <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} />
+      <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} showNext={false} allowEpilogue={game.travel.currentPlaceId === "p_darsena"} />
+
+      <TravelMenu game={game} onTravelEvent={onTravelEvent} onTravelWait={onTravelWait} onTravelSleep={onTravelSleep} />
 
       <div className="free-time-tools">
         <button className="secondary" onClick={onEnglish}>
           英語ノートを開く
         </button>
-        <details className="revisit-menu" open={revisitOpen} onToggle={(event) => setRevisitOpen(event.currentTarget.open)}>
-          <summary>旅先を再訪する</summary>
-          <p className="fine-print">再戦の初回報酬は再取得できません。</p>
-          <TourismEntry
-            game={game}
-            onStart={onTourism}
-            encounters={encounters}
-            selectedLandmarkId={selectedLandmarkId}
-            onSelectLandmark={onSelectLandmark}
-            onEncounter={onEncounter}
-          />
-          <BattleEntry game={game} onStart={onBattle} />
-        </details>
       </div>
-
-      <section className="free-time-romance" aria-label="デート">
-        <h2>行き先と出来事</h2>
-        <RomanceMenu game={game} onChoose={onChooseDate} onMilestone={onMilestone} />
-      </section>
+      {localLandmarks.map((landmark) => {
+        const localEncounters = encounters.filter((entry) => entry.landmarkId === landmark.id);
+        const canObserve = game.visitedLandmarkIds.includes(landmark.id) && getTourismAvailability(game, landmark.id).available;
+        if (!canObserve && localEncounters.length === 0) return null;
+        return <section key={landmark.id} aria-label={`${landmark.nameJa}で過ごす`}>
+          {canObserve && <button className="secondary" onClick={() => onTourism(landmark.id)}>{landmark.nameJa}を観察する</button>}
+          {localEncounters.length > 0 && <EncounterMenu entries={localEncounters} place={landmark.nameJa} onStart={onEncounter} />}
+        </section>;
+      })}
 
       <PendingRewards game={game} onClaim={onClaimRewards} compact />
+      <TrialMilestones game={game} onMilestone={onMilestone} />
     </section>
   );
 }

@@ -21,14 +21,12 @@ describe("story battle references in the journey", () => {
   });
 
   it.each([
-    ["unknown battle", "battleId", "missing_battle", /Invalid story battle/],
-    ["unknown preceding episode", "afterEpisodeId", "missing_episode", /Unknown or unordered story battle position/],
-    ["unknown following episode", "beforeEpisodeId", "missing_episode", /Unknown or unordered story battle position/],
-    ["normal A battle", "battleId", "milano_last_supper_01", /Invalid story battle/],
-  ] as const)("rejects an %s", (_label, field, value, message) => {
+    ["unknown battle", "missing_battle"],
+    ["normal A battle", "milano_last_supper_01"],
+  ] as const)("rejects an %s", (_label, value) => {
     const journey = structuredClone(journeyConfig);
-    journey.storyBattles[0][field] = value;
-    expect(() => check(journey)).toThrow(message);
+    journey.storyBattles[0].battleId = value;
+    expect(() => check(journey)).toThrow(/Invalid story battle/);
   });
 
   it("rejects the same battle listed twice", () => {
@@ -37,22 +35,21 @@ describe("story battle references in the journey", () => {
     expect(() => check(journey)).toThrow("Duplicate story battle");
   });
 
-  it("rejects a story battle placed after its following episode", () => {
+  it("rejects an unknown story battle prerequisite", () => {
     const journey = structuredClone(journeyConfig);
-    const encounter = journey.storyBattles[0];
-    [encounter.afterEpisodeId, encounter.beforeEpisodeId] = [encounter.beforeEpisodeId, encounter.afterEpisodeId];
-    expect(() => check(journey)).toThrow("Unknown or unordered story battle position");
+    journey.storyBattles[0].requiredEpisodeIds = ["missing_episode"];
+    expect(() => check(journey)).toThrow("Unknown story battle prerequisite");
   });
 
-  it("rejects encounters listed in reverse route order", () => {
+  it("allows encounters listed in either order", () => {
     const journey = structuredClone(journeyConfig);
     journey.storyBattles.reverse();
-    expect(() => check(journey)).toThrow("Unknown or unordered story battle position");
+    expect(() => check(journey)).not.toThrow();
   });
 
-  it("rejects an encounter that skips an episode", () => {
+  it("rejects a finale as special battle prerequisite", () => {
     const journey = structuredClone(journeyConfig);
-    journey.storyBattles[0].beforeEpisodeId = "milano_finale";
-    expect(() => check(journey)).toThrow("Unknown or unordered story battle position");
+    journey.storyBattles[0].requiredEpisodeIds = ["milano_finale"];
+    expect(() => check(journey)).toThrow("Unknown story battle prerequisite");
   });
 });

@@ -49,9 +49,9 @@ function beforeSpecial(kind: "contradiction" | "connection"): GameState {
 }
 
 describe("current journey special battles", () => {
-  it("makes the Scala and Brera encounters available in the intended journey order", () => {
+  it("makes the Scala and Brera encounters available without blocking other sightseeing", () => {
     let state = beforeSpecial("contradiction");
-    expect(getEpisodeAvailability(state, "milano_castello_episode").available).toBe(false);
+    expect(getEpisodeAvailability(state, "milano_castello_episode").available).toBe(true);
     state = finish(startBattle(state, "milano_la_scala_b01"));
     state = enterFreeTime(state, state.revision);
     state = completeEpisode(state, "milano_castello_episode");

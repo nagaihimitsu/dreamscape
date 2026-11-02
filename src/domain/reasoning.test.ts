@@ -260,7 +260,7 @@ describe("small proof steps inside three-round battles", () => {
             },
           }),
         ).toThrow();
-        expect(canAccessFreeTime(state)).toBe(false);
+        expect(canAccessFreeTime(state)).toBe(true);
         const result = state;
         expect(advanceBattle(result, result.revision)).toBe(result);
         state = finish(startBattle(result, battle.id), battle, 3);

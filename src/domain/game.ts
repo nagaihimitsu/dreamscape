@@ -2,6 +2,7 @@ import { z } from "zod";
 import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
 import { deriveRelationshipTone } from "./romance-tone";
 import { secureRomanceRoll } from "../random/romance-source";
+import { minimumHomeFare } from "./travel-routes";
 import { activeEncounterSchema } from "./encounter-state";
 import { validateEncounterState } from "./encounter";
 import { responseProfileSchema } from "../content/schemas";
@@ -35,6 +36,9 @@ import {
   responseProfiles,
   progression,
   trialMilestones,
+  milanoTravelSettings,
+  milanoTravelCatalog,
+  episodes,
   type DateDefinition,
 } from "../content";
 import {
@@ -201,9 +205,24 @@ const phase10StateSchema = phase9StateSchema.extend({
   }).strict()),
   activeEncounter: activeEncounterSchema.nullable(),
 }).strict();
-export const gameStateSchema = phase10StateSchema.extend({
+const phase11StateSchema = phase10StateSchema.extend({
   schemaVersion: z.literal(11),
   updatedDateIds: uniqueStrings,
+}).strict();
+export const gameStateSchema = phase11StateSchema.extend({
+  schemaVersion: z.literal(12),
+  travel: z.object({
+    currentPlaceId: stableContentId,
+    hotelPlaceId: stableContentId,
+    day: z.number().int().positive().safe(),
+    minute: z.number().int().min(540).max(1980),
+    returnReserve: z.number().int().nonnegative().safe(),
+    activeEvent: z.object({
+      eventId: stableContentId,
+      placeId: stableContentId,
+      endMinute: z.number().int().min(540).max(1320),
+    }).strict().nullable(),
+  }).strict(),
 }).strict();
 export type GameState = z.infer<typeof gameStateSchema>;
 export type ActiveDate = NonNullable<GameState["activeDate"]>;
@@ -217,9 +236,10 @@ export function createGame(
   heroineName = balance.defaultHeroineName,
 ): GameState {
   return {
-    schemaVersion: 11,
+    schemaVersion: 12,
+    travel: { currentPlaceId: milanoTravelSettings.hotelPlaceId, hotelPlaceId: milanoTravelSettings.hotelPlaceId, day: 1, minute: 540, returnReserve: 0, activeEvent: null },
     updatedDateIds: [],
-    travelBudget: encounters.initialBudget,
+    travelBudget: milanoTravelSettings.initialBudget,
     inventory: {},
     completedEncounterIds: [],
     encounterRewards: {},
@@ -819,7 +839,7 @@ export function isKnownLegacyGameState(input: unknown): boolean {
   const schemas: Record<number, z.ZodType> = {
     1: oldStateSchema, 2: phase2StateSchema, 3: phase3StateSchema,
     4: phase4StateSchema, 5: phase5StateSchema, 6: phase6StateSchema,
-    7: phase7StateSchema, 8: phase8StateSchema, 9: phase9StateSchema, 10: phase10StateSchema,
+    7: phase7StateSchema, 8: phase8StateSchema, 9: phase9StateSchema, 10: phase10StateSchema, 11: phase11StateSchema,
   };
   const version = input.schemaVersion;
   return typeof version === "number" && !!schemas[version]?.safeParse(input).success;
@@ -827,6 +847,28 @@ export function isKnownLegacyGameState(input: unknown): boolean {
 
 export function validateGameState(input: unknown): GameState {
   const state = gameStateSchema.parse(input);
+  const travel = state.travel;
+  if (travel.hotelPlaceId !== milanoTravelSettings.hotelPlaceId || travel.returnReserve > state.travelBudget ||
+      !milanoTravelCatalog.places.some((place) => place.id === travel.currentPlaceId) ||
+      (travel.activeEvent && (!milanoTravelCatalog.events.some((event) => event.id === travel.activeEvent!.eventId && event.placeId === travel.activeEvent!.placeId) ||
+        travel.activeEvent.placeId !== travel.currentPlaceId || travel.activeEvent.endMinute < travel.minute)))
+    throw new Error("旅行の位置や時間枠が一致しません。");
+  const requiredFare = minimumHomeFare(milanoTravelCatalog.routes, travel.currentPlaceId, travel.hotelPlaceId,
+    travel.activeEvent?.endMinute ?? travel.minute);
+  if (requiredFare === undefined || travel.returnReserve < requiredFare)
+    throw new Error("帰路の交通費を確保できていません。");
+  if (travel.activeEvent) {
+    const id = travel.activeEvent.eventId;
+    const episode = episodes.find((item) => item.id === id);
+    const sceneMatches = dates.some((item) => item.id === id)
+      ? state.activeDate?.dateId === id
+      : episode
+        ? state.activeTourism?.landmarkId === episode.landmarkId ||
+          state.activeEncounter?.returnTourism?.landmarkId === episode.landmarkId ||
+          state.activeBattle?.battleId === episode.battleId
+        : state.activeBattle?.battleId === id;
+    if (!sceneMatches) throw new Error("旅行の時間枠と進行中の場面が一致しません。");
+  }
   if (state.updatedDateIds.some((id) => !dates.some((entry) => entry.id === id) || !state.playedDateIds.includes(id)))
     throw new Error("刷新後のデート記録が一致しません。");
   if (state.activeEncounter && (state.activeDate || state.activeBattle || state.activeTourism || state.activeEpilogue))

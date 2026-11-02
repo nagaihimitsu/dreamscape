@@ -15,7 +15,8 @@ test("letter controls answer independently of word and translation interactions"
     expect(box!.height).toBeGreaterThanOrEqual(44);
   }
   const first = page.getByTestId("option-text-A");
-  await first.getByRole("button", { name: "lampsの意味" }).tap();
+  // This option contains the word twice; either occurrence opens its meaning.
+  await first.getByRole("button", { name: "lampsの意味" }).first().tap();
   await expect(first.locator(".word-meaning")).toBeVisible();
   await first.getByRole("button", { name: "選択肢Aの訳を見る" }).tap();
   await expect(first.getByRole("button", { name: "選択肢Aの訳を閉じる" })).toBeVisible();

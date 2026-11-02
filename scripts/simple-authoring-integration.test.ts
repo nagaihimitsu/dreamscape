@@ -13,7 +13,7 @@ import { advanceDate, chooseDate, finishDate, startDate, validateGameState } fro
 import { buildContent } from "./content-pipeline";
 
 /** The fixture is isolated: no playable dialogue or catalogs are edited. */
-it("builds a new encounter and date with only Ink and small catalog entries", async () => {
+it("builds a new encounter and date with Ink, small catalog entries and a travel location", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "dreamscape-authoring-"));
   const encounterId = "fixture_simple_encounter";
   const paidEncounterId = "fixture_paid_encounter";
@@ -91,6 +91,18 @@ VAR heroine_name = ""
       backgroundAssetId: "milano_la_scala_date",
     });
     await writeFile(datesPath, JSON.stringify(dateCatalog));
+    const travelPath = path.join(root, "content/travel/milano.json");
+    const travelCatalog = JSON.parse(await readFile(travelPath, "utf8"));
+    travelCatalog.events.push({
+      id: dateId,
+      cityId: "milano",
+      placeId: "p_scala",
+      category: "date",
+      titleJa: "追加のデート",
+      activityMinutes: 60,
+      apCost: 2,
+    });
+    await writeFile(travelPath, JSON.stringify(travelCatalog));
     let dateInk = await readFile(path.join(root, "content/stories/milano/sound_cafe_01.ink"), "utf8");
     for (const [index, profile] of [[1, "playful"], [2, "attentive"], [3, "honest"]] as const) {
       dateInk = dateInk.replace(`sound_cafe_01_2_${index}`, `common_date_second_${profile}`);

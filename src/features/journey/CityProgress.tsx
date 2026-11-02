@@ -3,6 +3,7 @@ import {
   battleQuizzes,
   city,
   episodes,
+  journeyConfig,
   landmarks,
 } from "../../content";
 import { getEpisodeAvailability, getNextEpisode, getNextStoryBattle } from "../../domain/chapter";
@@ -15,12 +16,14 @@ export function CityProgress({
   onStoryBattle,
   onEpilogue,
   showNext = true,
+  allowEpilogue = true,
 }: {
   game: GameState;
   onStart: (id: string) => void;
   onStoryBattle: (id: string) => void;
   onEpilogue: (cityId: string) => void;
   showNext?: boolean;
+  allowEpilogue?: boolean;
 }) {
   const next = getNextEpisode(game);
   const nextBattle = getNextStoryBattle(game);
@@ -29,6 +32,7 @@ export function CityProgress({
     game.completedEpisodeIds.includes(episode.id),
   ).length;
   const cityCompleted = game.completedCityIds.includes(city.id);
+  const completedSpecials = journeyConfig.storyBattles.filter((item) => game.battleRecords.some((record) => record.battleId === item.battleId && record.attempts > 0)).length;
   return (
     <section
       className="city-progress paper"
@@ -38,7 +42,7 @@ export function CityProgress({
       <div className="section-meta">
         <h2>{city.nameJa}の旅</h2>
         <span className="pill" data-testid={cityCompleted ? "city-complete" : undefined}>
-          {cityCompleted ? "都市クリア" : `観光 ${completed} / ${stops.length}`}
+          {cityCompleted ? "都市クリア" : `観光 ${completed} / ${stops.length} · 対決 ${completedSpecials} / ${journeyConfig.storyBattles.length}`}
         </span>
       </div>
       {showNext && nextBattle && (
@@ -80,10 +84,12 @@ export function CityProgress({
           <button
             className="secondary"
             data-testid="city-epilogue"
+            disabled={!allowEpilogue}
             onClick={() => onEpilogue(city.id)}
           >
             エピローグを読む
           </button>
+          {!allowEpilogue && <p className="fine-print">ダルセナで続きを読めます。</p>}
         </div>
       )}
       <details className="city-records">

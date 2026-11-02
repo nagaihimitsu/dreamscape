@@ -101,6 +101,7 @@ export function getEncounterOptionAvailability(state: GameState, index: number):
   if (!active || active.phase !== "story" || active.selectedOptionId !== null || !option || !active.frame.choices.some((choice) => choice.index === index)) return unavailable("この選択肢は使えません。");
   if (!event || event.cityId !== city.id || !optionItemsBelongToEncounter(event, option)) return unavailable("この街では使えない品物です。");
   if (state.travelBudget < option.costEuro) return unavailable("旅行予算が足りません。");
+  if (state.travelBudget - option.costEuro < state.travel.returnReserve) return unavailable("帰りの交通費を確保しているため、今は使えません。");
   if (option.requiresItemId && state.inventory[option.requiresItemId] !== "held") return unavailable("必要な品物を持っていません。");
   return available;
 }
@@ -172,6 +173,7 @@ export function chooseEncounter(state: GameState, index: number, expectedRevisio
   const choice = active.frame.choices.find((item) => item.index === index)!;
   const option = encounterChoiceOption(event, choice)!;
   if (option.textEn !== undefined && choice.text !== option.textEn) throw new Error("交流の選択肢が一致しません。");
+  if (state.travelBudget - option.costEuro < state.travel.returnReserve) return state;
   let next = { ...state, travelBudget: state.travelBudget - option.costEuro, inventory: { ...state.inventory } };
   if (option.consumeItemId) next.inventory[option.consumeItemId] = "used";
   if (option.giftItemId) next.inventory[option.giftItemId] = "gifted";

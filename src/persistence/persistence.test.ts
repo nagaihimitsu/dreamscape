@@ -64,7 +64,7 @@ describe("local save persistence", () => {
 
   it("distinguishes a newer version, malformed data, and unavailable storage", () => {
     const storage = new MemoryStorage();
-    const newer = JSON.stringify({ ...createGame(), schemaVersion: 12 });
+    const newer = JSON.stringify({ ...createGame(), schemaVersion: createGame().schemaVersion + 1 });
     storage.setItem(SAVE_KEY, newer);
     expect(loadGame(storage)).toMatchObject({ status: "invalid", kind: "newer", raw: newer });
     expect(saveGame(storage, createGame()).ok).toBe(false);

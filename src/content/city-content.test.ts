@@ -120,7 +120,7 @@ describe("Milan city content", () => {
     );
   });
 
-  it("rejects skipped route prerequisites and a boss that does not require all four stops", () => {
+  it("allows the sightseeing stops in any order while requiring all four for the finale", () => {
     const check = (journey: ReturnType<typeof journeySchema.parse>) => validateJourney(
       journey,
       cityData,
@@ -131,10 +131,10 @@ describe("Milan city content", () => {
       trialProgressionSchema.parse(trialData).milestones,
     );
     const journey = journeySchema.parse(journeyData);
-    journey.episodes[1].requiredEpisodeIds = [];
-    expect(() => check(journey)).toThrow(
-      "preceding stop",
-    );
+    const stops = journey.episodes.filter((episode) => episode.kind !== "city_finale");
+    expect(stops).toHaveLength(4);
+    expect(stops.every((episode) => episode.requiredEpisodeIds.length === 0)).toBe(true);
+    expect(() => check(journey)).not.toThrow();
     const valid = journeySchema.parse(journeyData);
     valid.episodes.at(-1)!.requiredEpisodeIds = [valid.episodes.at(-2)!.id];
     expect(() => check(valid)).toThrow(

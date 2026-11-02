@@ -1,0 +1,17 @@
+﻿place_id,scope,real_weekdays,real_open,real_close,real_last_entry,real_closed,proposed_game,source,checked_at,status
+p_supper,旧食堂,火–日,08:15,19:00,18:45,月,09:00以降; 18:45最終開始・19:00終了（ゲーム毎日簡略化、活動75分を完了できること）,https://cenacolovinciano.org/,2026-11-02,出典別に確認・特別日と入口は再確認
+p_brera,絵画館,火–日,08:30,19:15,18:00,月・1/1・5/1・12/25,09:00–19:15、最終開始18:00（ゲーム毎日簡略化）,https://pinacotecabrera.org/en/visit/orari/,2026-11-02,出典別に確認・特別日と入口は再確認
+p_castello,城の博物館,火–日,10:00,17:30,16:30,月・1/1・5/1・12/25,10:00–17:30、最終開始16:30（ゲーム毎日簡略化、活動完了時間も制約）,https://www.milanocastello.it/visita/orari-biglietti-abbonamenti-e-card,2026-11-02,出典別に確認・特別日と入口は再確認
+p_castello,中庭,毎日,07:00,19:30,未確認,,09:00–19:30,https://www.milanocastello.it/visita/orari-biglietti-abbonamenti-e-card,2026-11-02,出典別に確認・特別日と入口は再確認
+p_novecento,美術館,火–水・金–日,10:00,19:30,18:30,月・1/1・5/1・12/25,10:00–19:30、最終開始18:30（木曜延長は省略・ゲーム毎日簡略化）,https://www.museodelnovecento.org/it/visita/dove-siamo-e-orari,2026-11-02,出典別に確認・特別日と入口は再確認
+p_novecento,美術館 木曜,木,10:00,22:30,21:30,,ゲーム内22:00帰宿優先,https://www.museodelnovecento.org/it/visita/dove-siamo-e-orari,2026-11-02,出典別に確認・特別日と入口は再確認
+p_prada,展示,月・水–日,10:00,19:00,チケット販売は閉館1時間前まで（最終入場時刻自体は未確認）,火,10:00–19:00、最終開始18:00（ゲーム毎日簡略化）,https://www.fondazioneprada.org/servizio-visitatori-en/?lang=en,2026-11-02,出典別に確認・特別日と入口は再確認
+p_scala,劇場博物館（前広場とは別）,毎日,09:30,17:30,17:00,12/7・12/25-26・1/1・復活祭・5/1・8/15、12/24・31短縮,広場イベントは09:00–22:00,https://www.museoscala.org/it/visita/museo-e-teatro/orari-e-biglietti.html,2026-11-02,出典別に確認・特別日と入口は再確認
+p_duomo,大聖堂・観光,毎日,09:00,19:00,公式通常値再確認,,広場は屋外 09:00–22:00,https://www.duomomilano.it/calendario-eventi-visite-celebrazioni/,2026-11-02,出典別に確認・特別日と入口は再確認
+p_galleria,通路,未確認,未確認,未確認,未確認,,09:00–22:00 ゲーム便宜・店舗別,https://www.yesmilano.it/en/see-and-do/venues/galleria-vittorio-emanuele-ii,2026-11-02,出典別に確認・特別日と入口は再確認
+p_roastery,店舗,毎日（公式2ページで閉店時刻に差異）,07:30,22:00 または 22:30（公式ページ間で相違）,未確認,特別日未確認,09:00–22:00（ゲーム用、帰路を22時までに完了）,https://www.roastery.starbucks.it/visit | https://www.roastery.starbucks.it/,2026-11-02,施設公式の2ページが食い違うため未確定
+p_satiro,教会,月〜金 / 土 / 日祝,07:30 / 15:30 / 09:30・15:30,18:00 / 19:00 / 12:00・19:00,未確認,臨時休館・礼拝による変更未確認,10:00–17:00、最終開始16:00（ゲーム毎日簡略化・週末と実際が異なる）,https://www.yesmilano.it/esplora/luoghi/chiesa-di-santa-maria-presso-san-satiro,2026-11-02,公式観光局情報; 土日が平日と異なる
+p_maurizio,教会,火〜日,10:00,17:30,17:00,月、臨時休館あり,10:00–17:30、最終開始17:00（ゲーム毎日簡略化）,https://www.yesmilano.it/esplora/luoghi/chiesa-di-san-maurizio-al-monastero-maggiore,2026-11-02,公式観光局情報; 臨時休館あり
+p_navigli,運河沿い屋外,未確認,屋外,屋外,適用外,,09:00–22:00 夜景18:00以降,https://www.in-lombardia.it/en/visiting-lombardy/navigli/navigli-milanesi-darsena,2026-11-02,出典別に確認・特別日と入口は再確認
+p_darsena,岸辺屋外,未確認,屋外,屋外,適用外,,09:00–22:00,https://www.in-lombardia.it/en/visiting-lombardy/navigli/navigli-milanesi-darsena,2026-11-02,出典別に確認・特別日と入口は再確認
+p_love,広場屋外,未確認,屋外,屋外,適用外,,09:00–22:00,https://www.in-lombardia.it/en/tourism-in-lombardy/tourism-milan/love,2026-11-02,出典別に確認・特別日と入口は再確認

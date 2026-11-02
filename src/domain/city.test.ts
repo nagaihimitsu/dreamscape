@@ -212,7 +212,7 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(state.ap).toBe(12);
     expect(state.pendingApRewards.length).toBeGreaterThan(0);
     const loaded = persisted(state);
-    expect(loaded.schemaVersion).toBe(11);
+    expect(loaded.schemaVersion).toBe(state.schemaVersion);
     expect(loaded.inventory.blue_pick).toBe("held");
     expect(loaded.pendingApRewards).toEqual(state.pendingApRewards);
   });
@@ -221,7 +221,7 @@ describe("Milan's four episodes and distinct city finale", () => {
     const ending = inRelationship(tour());
     const state = collectPick(ending);
     const loaded = persisted(state);
-    expect(loaded.schemaVersion).toBe(11);
+    expect(loaded.schemaVersion).toBe(state.schemaVersion);
     expect(loaded.endingReached).toBe(true);
     expect(loaded.confessionStatus).toBe(ending.confessionStatus);
     expect(loaded.inventory.blue_pick).toBe("held");
@@ -230,24 +230,22 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(loaded.pendingApRewards).toEqual(ending.pendingApRewards);
     expect(loaded.travelBudget).toBe(ending.travelBudget);
   });
-  it("starts at Duomo and blocks every future direct tourism and battle shortcut", () => {
+  it("allows sightseeing in any order while keeping the city finale locked", () => {
     const state = createGame();
     expect(getNextEpisode(state)?.landmarkId).toBe("duomo_milano");
     expect(state.legacyTrialAvailable).toBe(false);
-    for (const episode of episodes.slice(1)) {
-      expect(getEpisodeAvailability(state, episode.id).available).toBe(false);
-      expect(startEpisode(state, episode.id)).toBe(state);
-      expect(getBattleAvailability(state, episode.battleId).available).toBe(
-        false,
-      );
-      expect(startBattle(state, episode.battleId)).toBe(state);
+    for (const episode of episodes.filter((item) => item.kind !== "city_finale")) {
+      expect(getEpisodeAvailability(state, episode.id).available).toBe(true);
+      expect(getBattleAvailability(state, episode.battleId).available).toBe(true);
       if (episode.landmarkId) {
         expect(
           getTourismAvailability(state, episode.landmarkId).available,
-        ).toBe(false);
-        expect(openTourism(state, episode.landmarkId)).toBe(state);
+        ).toBe(true);
       }
     }
+    expect(getEpisodeAvailability(state, finale().id).available).toBe(false);
+    expect(startEpisode(state, finale().id)).toBe(state);
+    expect(getBattleAvailability(state, finale().battleId).available).toBe(false);
     expect(getMilestoneAvailability(state, "trial_after_cafe").available).toBe(
       false,
     );
@@ -270,10 +268,6 @@ describe("Milan's four episodes and distinct city finale", () => {
       state = finishBattle(startBattle(state, episode.battleId), 0);
       expect(totalAp(state)).toBe(totalAp(finished));
       state = enterFreeTime(state, state.revision);
-      if (episode.landmarkId === "last_supper")
-        expect(getNextStoryBattle(state)?.battleId).toBe("milano_la_scala_b01");
-      if (episode.landmarkId === "castello_sforzesco")
-        expect(getNextStoryBattle(state)?.battleId).toBe("milano_brera_c01");
       state = finishPendingStory(state);
     }
     expect(ids).toEqual([

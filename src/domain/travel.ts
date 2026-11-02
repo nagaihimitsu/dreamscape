@@ -81,7 +81,7 @@ function validSnapshot(state: TravelSnapshot): boolean {
 }
 
 function validRoute(route: Route): boolean {
-  return !!route.fromPlaceId && !!route.toPlaceId && ["walk", "rail", "bus", "taxi"].includes(route.mode) &&
+  return !!route.fromPlaceId && !!route.toPlaceId && ["walk", "rail", "tram", "bus", "taxi"].includes(route.mode) &&
     Number.isSafeInteger(route.minutes) && route.minutes >= 0 && Number.isSafeInteger(route.cost) && route.cost >= 0 &&
     (route.fromPlaceId !== route.toPlaceId || (route.minutes === 0 && route.cost === 0)) &&
     (route.fromPlaceId === route.toPlaceId || route.minutes > 0) &&
@@ -135,6 +135,9 @@ export function planOvernight(state: TravelSnapshot, returnRoute: Route, lodging
   if (!validSnapshot(state) || !Number.isSafeInteger(lodgingCost) || lodgingCost < 0 || !Number.isSafeInteger(state.day + 1)) return failure("invalid");
   if (!validRoute(returnRoute) || returnRoute.fromPlaceId !== state.currentPlaceId || returnRoute.toPlaceId !== state.hotelPlaceId) return failure("route");
   if (!Number.isSafeInteger(state.minute + returnRoute.minutes)) return failure("invalid");
+  // Normally the return must finish by closing time. A scene that has already
+  // run past 22:00 can still return rather than trapping the player overnight.
+  if (state.minute <= DAY_END && state.minute + returnRoute.minutes > DAY_END) return failure("time");
   // Do not put the next morning before an unexpectedly late arrival.
   if (state.minute + returnRoute.minutes >= 24 * 60 + DAY_START) return failure("time");
   if (returnRoute.cost > state.travelBudget) return failure("budget");

@@ -138,19 +138,31 @@ describe("travel encounters", () => {
   });
   it("charges the chosen amount once, preserves the completed café reward and rejects insufficient funds", () => {
     let state = untilChoice(startEncounter(ready(), "galleria_cafe", () => 0));
+    const startingBudget = state.travelBudget;
     const poor = { ...state, travelBudget: 3 };
     expect(getEncounterOptionAvailability(poor, 0).available).toBe(false);
     expect(chooseEncounter(poor, 0, poor.revision)).toBe(poor);
     state = chooseEncounter(state, 0, state.revision);
-    expect(state.travelBudget).toBe(16);
+    expect(state.travelBudget).toBe(startingBudget - 4);
     state = finish(state);
-    expect(state.travelBudget).toBe(18);
+    expect(state.travelBudget).toBe(startingBudget - 4 + 2);
     expect(state.inventory.galleria_souvenir).toBe("held");
     expect(startEncounter(state, "galleria_cafe", () => 0)).toBe(state);
   });
+  it("does not allow a purchase to spend money reserved for the return journey", () => {
+    const initial = ready();
+    const reserved = { ...initial, travelBudget: 8, travel: { ...initial.travel, returnReserve: 5 } };
+    const choice = untilChoice(startEncounter(reserved, "galleria_cafe", () => 0));
+    expect(getEncounterOptionAvailability(choice, 0).available).toBe(false);
+    expect(chooseEncounter(choice, 0, choice.revision)).toBe(choice);
+    expect(choice.travelBudget).toBe(8);
+    expect(choice.travel.returnReserve).toBe(5);
+    expect(getEncounterOptionAvailability(choice, 2).available).toBe(true);
+  });
   it("allows the free conversation, the gift to be deferred, and only one transfer", () => {
-    let state = finish(choose(startEncounter(ready(), "galleria_cafe", () => 0), 2));
-    expect(state.travelBudget).toBe(22);
+    const initial = ready();
+    let state = finish(choose(startEncounter(initial, "galleria_cafe", () => 0), 2));
+    expect(state.travelBudget).toBe(initial.travelBudget + 2);
     state = finish(choose(startEncounter(state, "galleria_gift", () => 0), 2));
     expect(state.inventory.galleria_souvenir).toBe("held");
     expect(state.completedEncounterIds).not.toContain("galleria_gift");
@@ -173,12 +185,13 @@ describe("travel encounters", () => {
   });
   it("persists losing rolls and lets players buy the alternative without a ticket", () => {
     let state = fortune(ready(), "B", 9999);
+    const startingBudget = state.travelBudget;
     expect(state.encounterRewards.galleria_fortune).toEqual({ roll: 9999, chancePercent: 25, won: false });
     state = fortune(state, "B", 0);
     expect(state.encounterRewards.galleria_fortune.won).toBe(false);
     expect(state.inventory.galleria_ticket).toBeUndefined();
     state = finish(choose(startEncounter(state, "galleria_outing", () => 0), 1));
-    expect(state.travelBudget).toBe(16);
+    expect(state.travelBudget).toBe(startingBudget - 4);
   });
   it("reconstructs gift reactions from saved tickets and rejects altered outcomes", () => {
     const withItem = finish(choose(startEncounter(ready(), "galleria_cafe", () => 0), 2));

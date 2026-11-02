@@ -44,6 +44,8 @@ import {
 } from "./battle-validation";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { validateTourism } from "./tourism-validation";
+import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
+import { validateTravelContent } from "./travel-validation";
 import { journeySchema } from "../src/content/journey-schemas";
 import { validateJourney } from "./journey-validation";
 import { validateEpilogue } from "./epilogue-validation";
@@ -481,6 +483,8 @@ export async function buildContent(root: string, writeOutput = true) {
     presentationSchema,
     path.join(content, "romance/presentation.json"),
   );
+  const travel = await parseFile(travelCatalogSchema, path.join(content, "travel/milano.json"));
+  const travelSettings = await parseFile(travelSettingsSchema, path.join(content, "travel/milano-settings.json"));
   unique(destinations.map((destination) => destination.id), "date destination ID");
   for (const destination of destinations) {
     if (destination.cityId !== city.id)
@@ -1042,6 +1046,8 @@ export async function buildContent(root: string, writeOutput = true) {
     quizzes,
     milestones,
   );
+  validateTravelContent(travel, travelSettings, city.id, journey, dates, battles,
+    tourism.landmarks.map((landmark) => landmark.id), destinations.map((destination) => destination.id), presentation.backgrounds);
   let epilogueScenarios = 0;
   for (const episode of journey.episodes) {
     if (!episode.epilogueStoryId) continue;

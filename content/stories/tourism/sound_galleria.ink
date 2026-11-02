@@ -9,7 +9,7 @@ VAR player_address = ""
 # emotion: smile
 「そんなに頑張らなくても。息くらい、入っていいですよ。」
 # speaker: player
-「昨日の袖よりは景色になるかな。」
+「じゃあ、息もミラノの音ってことで。」
 # speaker: narrator
 目の前を通った赤い鞄が、引き返してもう一度同じ速さで通った。
 # speaker: heroine

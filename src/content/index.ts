@@ -9,6 +9,9 @@ import journeyData from "../../content/progression/journey.json";
 import { journeySchema } from "./journey-schemas";
 import tourismData from "../../content/tourism/catalog.json";
 import { tourismCatalogSchema } from "./tourism-schemas";
+import milanoTravelData from "../../content/travel/milano.json";
+import milanoTravelSettingsData from "../../content/travel/milano-settings.json";
+import { travelCatalogSchema, travelSettingsSchema } from "./travel-schemas";
 import generatedQuizzes from "./generated/quizzes.json";
 import progressionData from "../../content/romance/progression.json";
 import trialData from "../../content/romance/trial_progression.json";
@@ -53,6 +56,8 @@ const tourism = tourismCatalogSchema.parse(tourismData);
 export const landmarks = tourism.landmarks;
 export const tourismAssets = tourism.assets;
 export const tourismClues = tourism.clues;
+export const milanoTravelCatalog = travelCatalogSchema.parse(milanoTravelData);
+export const milanoTravelSettings = travelSettingsSchema.parse(milanoTravelSettingsData);
 export const battleQuizzes: Record<string, QuizDefinition> = Object.fromEntries(
   Object.entries(generatedQuizzes).map(([id, quiz]) => [
     id,

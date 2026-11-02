@@ -113,7 +113,7 @@ describe("integrated tourism, battle, and free time", () => {
     (score) => {
       let state = createGame("航", "澪");
       expect(getCurrentEpisode(state)).toEqual(episode);
-      expect(canAccessFreeTime(state)).toBe(false);
+      expect(canAccessFreeTime(state)).toBe(true);
       state = readGuide(startEpisode(state));
       expect(state.ap).toBe(rule("guide_read").ap);
       expect(state.completedGuideIds).toEqual([episode.landmarkId]);

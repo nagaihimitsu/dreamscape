@@ -17,6 +17,9 @@ export const travelPlaceSchema = z.object({
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
   backgroundAssetId: id,
+  /** Existing catalogs stay authoritative; these IDs identify the same physical place. */
+  landmarkIds: z.array(id).optional(),
+  destinationIds: z.array(id).optional(),
   openingWindows: z.array(timeWindowSchema).optional(),
   sources: z.array(tourismSourceSchema).min(1),
 }).strict();
@@ -24,7 +27,7 @@ export const travelPlaceSchema = z.object({
 export const travelRouteSchema = z.object({
   fromPlaceId: id,
   toPlaceId: id,
-  mode: z.enum(["walk", "rail", "bus", "taxi"]),
+  mode: z.enum(["walk", "rail", "tram", "bus", "taxi"]),
   minutes: z.number().int().nonnegative(),
   cost: z.number().int().nonnegative(),
   sources: z.array(tourismSourceSchema).min(1),
@@ -80,6 +83,15 @@ export const travelCatalogSchema = z.object({
     routes.add(key);
   }
 });
+
+/** Game-balancing values, not claims about actual hotel prices or fares. */
+export const travelSettingsSchema = z.object({
+  initialBudget: z.number().int().nonnegative(),
+  hotelPlaceId: id,
+  lodgingCost: z.number().int().nonnegative(),
+  retryMinutes: z.number().int().positive(),
+  notes: text,
+}).strict();
 
 export type TravelPlace = z.infer<typeof travelPlaceSchema>;
 export type TravelRoute = z.infer<typeof travelRouteSchema>;
