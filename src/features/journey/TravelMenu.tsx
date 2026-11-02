@@ -6,17 +6,11 @@ import { getDirection, planOvernight, selectNearbyDestinations } from "../../dom
 import { getTravelEventAvailability, getTravelHomeRoutes, waitForTravel } from "../../domain/travel-game";
 import { Modal } from "../../components/Modal";
 import { PlaceMap } from "./PlaceMap";
+import { formatEndingWindows, formatTravelTime as time } from "./travel-time";
 import "./travel-menu.css";
 
 type Mode = TravelRoute["mode"];
 const modes: Record<Mode, string> = { walk: "徒歩", rail: "鉄道・地下鉄", tram: "路面電車", bus: "バス", taxi: "タクシー" };
-const time = (minute: number) => `${String(Math.floor(minute / 60)).padStart(2, "0")}:${String(minute % 60).padStart(2, "0")}`;
-export function formatEndingWindows(windows: NonNullable<TravelEvent["endWindows"]>): string {
-  return windows.length === 1 && windows[0].start === 0
-    ? `${time(windows[0].end)}まで`
-    : windows.map((window) => `${time(window.start)}〜${time(window.end)}`).join("・");
-}
-
 function description(event: TravelEvent): string {
   return episodes.find((item) => item.id === event.id)?.descriptionJa ??
     journeyConfig.storyBattles.find((item) => item.battleId === event.id)?.descriptionJa ??

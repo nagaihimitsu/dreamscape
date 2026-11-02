@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatEndingWindows } from "./TravelMenu";
+import { formatEndingWindows } from "./travel-time";
 
 describe("displaying travel ending windows", () => {
   it("omits the midnight lower bound for a single ending deadline", () => {
