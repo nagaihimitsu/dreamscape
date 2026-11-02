@@ -4,7 +4,7 @@ import path from "node:path";
 import { Story } from "inkjs";
 import { expect, it } from "vitest";
 import { createDebugState } from "../src/dev/debug-state";
-import { dates, landmarks, stories } from "../src/content";
+import { dates, getCityContent, landmarks, stories } from "../src/content";
 import { encounters } from "../src/content/encounters";
 import { normalizeEncounterCatalog } from "../src/content/encounter-schemas";
 import { prepareContentFixture } from "../src/content/test-fixtures";
@@ -137,6 +137,9 @@ VAR heroine_name = ""
     encounters.encounters.push(normalizeEncounterCatalog(encounterCatalog, landmarks).encounters.find((entry) => entry.id === encounterId)!);
     encounters.encounters.push(normalizeEncounterCatalog(encounterCatalog, landmarks).encounters.find((entry) => entry.id === paidEncounterId)!);
     dates.push(result.dates.find((entry) => entry.id === dateId)!);
+    // The destination-less fixture date belongs to Milan via its registered
+    // travel event, just as it does in the isolated content build above.
+    getCityContent("milano").travel.events.push(travelCatalog.events.find((entry: { id: string }) => entry.id === dateId));
     stories[encounterStory] = result.stories[encounterStory];
     stories[paidEncounterStory] = result.stories[paidEncounterStory];
     stories[dateStory] = result.stories[dateStory];
@@ -221,6 +224,9 @@ VAR heroine_name = ""
     if (paidEncounterIndex !== -1) encounters.encounters.splice(paidEncounterIndex, 1);
     const dateIndex = dates.findIndex((entry) => entry.id === dateId);
     if (dateIndex !== -1) dates.splice(dateIndex, 1);
+    const travelEvents = getCityContent("milano").travel.events;
+    const travelIndex = travelEvents.findIndex((entry) => entry.id === dateId);
+    if (travelIndex !== -1) travelEvents.splice(travelIndex, 1);
     delete stories[encounterStory];
     delete stories[paidEncounterStory];
     delete stories[dateStory];

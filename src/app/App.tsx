@@ -7,12 +7,13 @@ import {
   landmarks,
   tourismAssets,
   city,
+  getCityContent,
   battles,
   episodes,
   journeyConfig,
-  milanoTravelCatalog,
 } from "../content";
 import { beginTravelEvent, finishTravelEventIfComplete, sleepAtHotel, waitForTravel } from "../domain/travel-game";
+import { getNextCity, departToNextCity } from "../domain/city-travel";
 import {
   advanceDate,
   chooseDate,
@@ -133,6 +134,7 @@ export default function App({
     learning: string | null;
   } | null>(null);
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
+  const [confirmDeparture, setConfirmDeparture] = useState(false);
   const [settings, setSettings] = useState(false);
   const [recordsOpen, setRecordsOpen] = useState(false);
   const [sceneEpoch, setSceneEpoch] = useState(0);
@@ -342,9 +344,11 @@ export default function App({
   const selectedDestination = dateDestinations.find(
     (destination) => destination.id === selectedDate?.destinationId,
   );
+  const currentCity = game ? getCityContent(game.currentCityId) : undefined;
   const currentTravelPlace = game
-    ? milanoTravelCatalog.places.find((place) => place.id === game.travel.currentPlaceId)
+    ? currentCity!.travel.places.find((place) => place.id === game.travel.currentPlaceId)
     : undefined;
+  const nextCity = game ? getNextCity(game) : undefined;
   const nameForm = (
     <>
       <label>
@@ -380,7 +384,7 @@ export default function App({
         <a href="#main" className="brand">
           Dreamscape<span>旅の余白</span>
         </a>
-        <span className="edition">ミラノの旅</span>
+        <span className="edition">{currentCity?.city.nameJa ?? city.nameJa}の旅</span>
       </header>
       {game && (
         <div className="journey-bar">
@@ -390,7 +394,7 @@ export default function App({
             {game.heroineName}
           </span>
           <div className="journey-context" data-testid="journey-context">
-            <span>現在地：{game.travel.currentPlaceId === game.travel.hotelPlaceId ? "滞在先（架空）" : currentTravelPlace?.nameJa ?? "不明"}</span>
+            <span>現在地：{game.travel.currentPlaceId === game.travel.hotelPlaceId ? `滞在先${currentTravelPlace?.nameJa.includes("架空") ? "（架空）" : ""}` : currentTravelPlace?.nameJa ?? "不明"}</span>
             <strong>{game.travel.day}日目 {String(Math.floor(game.travel.minute / 60)).padStart(2, "0")}:{String(game.travel.minute % 60).padStart(2, "0")}</strong>
           </div>
           <div className="journey-resources">
@@ -399,7 +403,7 @@ export default function App({
               {game.ap}
               <small> AP</small>
             </span>
-            <HeldItems items={encounters.items.filter((item) => game.inventory[item.id] === "held").map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa }))} />
+            <HeldItems items={encounters.items.filter((item) => item.cityId === game.currentCityId && game.inventory[item.id] === "held").map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa }))} />
           </div>
           <div className="journey-controls" data-testid="city-progress">
             <button className="journey-progress-button" type="button" aria-label="観光地・発見・戦績を見る" onClick={() => setRecordsOpen(true)}><CityProgressBadge game={game} /></button>
@@ -427,11 +431,11 @@ export default function App({
               ? `${landmarks.find((item) => item.id === currentLandmarkId)?.nameJa} · 特別対決`
               : idle && nextStoryBattle
                 ? nextStoryBattle.titleJa
-              : game.completedCityIds.includes(city.id) &&
+              : game.completedCityIds.includes(game.currentCityId) &&
                   !game.activeBattle &&
                   !game.activeTourism &&
                   !game.activeEpilogue
-                ? `${city.nameJa} · 都市クリア`
+                ? `${currentCity!.city.nameJa} · 都市クリア`
                 : getCurrentEpisode(game).titleJa}
           </span>
           <span>
@@ -708,7 +712,7 @@ export default function App({
           />
         ) : game.endingReached && showRomanceEnding ? (
           <>
-            <CanalScene backgroundId="milano_night" />
+            <CanalScene backgroundId={currentTravelPlace?.backgroundAssetId} />
             <section className="paper ending" data-testid="romance-ending">
               <p className="eyebrow">交際開始</p>
               <h1>{presentation.ending.titleJa}</h1>
@@ -747,12 +751,22 @@ export default function App({
             })}
             onBattle={(id) => commit((state) => startBattle(state, id))}
             onTravelEvent={(id, mode) => commit((state) => beginTravelEvent(state, id, mode, game.revision, nextRomanceRoll))}
+            nextCityName={nextCity?.city.nameJa}
+            onDepart={() => setConfirmDeparture(true)}
           />
         )}
       </main>
       <footer>
         Dreamscape <span>·</span> 旅の余白に、ふたりの物語。
       </footer>
+      {confirmDeparture && game && nextCity && <Modal labelledBy="departure-title" onClose={() => setConfirmDeparture(false)}>
+        <h2 id="departure-title">{nextCity.city.nameJa}へ出発</h2>
+        <p>次の街へ進みます。今の街の未使用アイテムは持って行けません。</p>
+        <button type="button" className="primary" onClick={() => {
+          if (commit((state) => departToNextCity(state, game.revision))) setConfirmDeparture(false);
+        }}>出発する</button>
+        <button type="button" className="secondary" onClick={() => setConfirmDeparture(false)}>この街に残る</button>
+      </Modal>}
       {recordsOpen && game && <Modal labelledBy="city-records-title" onClose={() => setRecordsOpen(false)}>
         <div className="records-heading"><h2 id="city-records-title">旅の記録</h2><button type="button" className="secondary" onClick={() => setRecordsOpen(false)}>閉じる</button></div>
         <CityRecords game={game} />

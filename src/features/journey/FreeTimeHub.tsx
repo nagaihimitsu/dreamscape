@@ -1,4 +1,4 @@
-import { battles, episodes, landmarks, milanoTravelCatalog } from "../../content";
+import { battles, episodes, landmarks, getCityContent } from "../../content";
 import type { TravelRoute } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
 import { getTourismAvailability } from "../../domain/tourism";
@@ -23,6 +23,8 @@ export function FreeTimeHub({
   onSelectLandmark,
   placeFocusRequest,
   onTravelEvent,
+  nextCityName,
+  onDepart,
 }: {
   game: GameState;
   onClaimRewards: () => void;
@@ -36,8 +38,11 @@ export function FreeTimeHub({
   onSelectLandmark: (id: string | null) => void;
   placeFocusRequest: number;
   onTravelEvent: (id: string, mode: TravelRoute["mode"]) => void;
+  nextCityName?: string;
+  onDepart: () => void;
 }) {
-  const localLandmarkIds = new Set(milanoTravelCatalog.events.filter((event) => event.placeId === game.travel.currentPlaceId && event.category === "main" && showTravelEvent(game, event)).flatMap((event) => {
+  const { city, travel } = getCityContent(game.currentCityId);
+  const localLandmarkIds = new Set(travel.events.filter((event) => event.placeId === game.travel.currentPlaceId && event.category === "main" && showTravelEvent(game, event)).flatMap((event) => {
     const landmarkId = episodes.find((episode) => episode.id === event.id)?.landmarkId ?? battles.find((battle) => battle.id === event.id)?.landmarkId;
     return landmarkId ? [landmarkId] : [];
   }));
@@ -47,10 +52,10 @@ export function FreeTimeHub({
   void onChooseDate; void selectedLandmarkId; void onSelectLandmark; void placeFocusRequest;
   return (
     <section className="free-time-hub paper" data-testid="free-time-hub">
-      <h1 className="sr-only">ミラノの行き先</h1>
+      <h1 className="sr-only">{city.nameJa}の行き先</h1>
       <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} showNext={false} showSummary={false} />
 
-      <TravelMenu game={game} onTravelEvent={onTravelEvent} />
+      <TravelMenu key={game.currentCityId} game={game} onTravelEvent={onTravelEvent} />
 
       {localLandmarks.map((landmark) => {
         const canObserve = game.visitedLandmarkIds.includes(landmark.id) && getTourismAvailability(game, landmark.id).available;
@@ -62,6 +67,7 @@ export function FreeTimeHub({
 
       <PendingRewards game={game} onClaim={onClaimRewards} compact />
       <TrialMilestones game={game} onMilestone={onMilestone} />
+      {nextCityName && <button type="button" className="secondary" onClick={onDepart}>{nextCityName}へ出発</button>}
     </section>
   );
 }

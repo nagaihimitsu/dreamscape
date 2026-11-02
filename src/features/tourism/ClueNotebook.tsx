@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { city, landmarks, tourismClues } from "../../content";
+import { getCityContent, landmarks, tourismClues } from "../../content";
 import { Modal } from "../../components/Modal";
 import { ClueDetails } from "./ClueDetails";
 import { ClueImage, ClueImageCredits } from "./ClueImage";
@@ -64,7 +64,7 @@ export function ClueNotebook({
     >
       <div className="cluebook-header">
         <div>
-          <p className="eyebrow">{landmark?.nameJa ?? city.nameJa}</p>
+          <p className="eyebrow">{landmark?.nameJa ?? (cityId ? getCityContent(cityId).city.nameJa : "旅の記録")}</p>
           <h2 id="cluebook-title">手がかり帳</h2>
         </div>
         <button

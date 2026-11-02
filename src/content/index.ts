@@ -9,8 +9,6 @@ import journeyData from "../../content/progression/journey.json";
 import { journeySchema } from "./journey-schemas";
 import tourismData from "../../content/tourism/catalog.json";
 import { tourismCatalogSchema } from "./tourism-schemas";
-import milanoTravelData from "../../content/travel/milano.json";
-import milanoTravelSettingsData from "../../content/travel/milano-settings.json";
 import { travelCatalogSchema, travelSettingsSchema } from "./travel-schemas";
 import generatedQuizzes from "./generated/quizzes.json";
 import progressionData from "../../content/romance/progression.json";
@@ -20,7 +18,6 @@ import destinationData from "../../content/romance/date_destinations.json";
 import { dateDestinationsSchema } from "./date-destinations";
 import effectData from "../../content/romance/effect_catalog.json";
 import responseProfileData from "../../content/romance/response_profiles.json";
-import cityData from "../../content/cities/milano.json";
 import balanceData from "../../content/romance/balance.json";
 import presentationData from "../../content/romance/presentation.json";
 import dialogueExpressionData from "../../content/presentation/dialogue-expressions.json";
@@ -57,8 +54,44 @@ const tourism = tourismCatalogSchema.parse(tourismData);
 export const landmarks = tourism.landmarks;
 export const tourismAssets = tourism.assets;
 export const tourismClues = tourism.clues;
-export const milanoTravelCatalog = travelCatalogSchema.parse(milanoTravelData);
-export const milanoTravelSettings = travelSettingsSchema.parse(milanoTravelSettingsData);
+// City files and their matching travel files are the single registration source.
+// The same names are read by the content pipeline, so adding a city does not
+// require a separate runtime list.
+const cityFiles = import.meta.glob<unknown>("../../content/cities/*.json", { eager: true, import: "default" });
+const travelFiles = import.meta.glob<unknown>("../../content/travel/*.json", { eager: true, import: "default" });
+export type CityContent = {
+  city: ReturnType<typeof citySchema.parse>;
+  travel: ReturnType<typeof travelCatalogSchema.parse>;
+  travelSettings: ReturnType<typeof travelSettingsSchema.parse>;
+};
+export const cityContents: Record<string, CityContent> = Object.create(null);
+for (const [file, data] of Object.entries(cityFiles)) {
+  const city = citySchema.parse(data);
+  if (!file.endsWith(`/${city.id}.json`) || cityContents[city.id])
+    throw new Error(`Invalid or duplicate city registration: ${file}`);
+  const travel = travelCatalogSchema.parse(travelFiles[`../../content/travel/${city.id}.json`]);
+  const travelSettings = travelSettingsSchema.parse(travelFiles[`../../content/travel/${city.id}-settings.json`]);
+  if (travel.cityId !== city.id || !travel.places.some((place) => place.id === travelSettings.hotelPlaceId))
+    throw new Error(`Invalid city travel registration: ${city.id}`);
+  cityContents[city.id] = { city, travel, travelSettings };
+}
+export function getCities(): CityContent["city"][] {
+  return Object.values(cityContents).map((content) => content.city);
+}
+export function getCityContent(cityId: string): CityContent {
+  const content = cityContents[cityId];
+  if (!content) throw new Error(`Unknown city: ${cityId}`);
+  return content;
+}
+/** Keep existing Milan script defaults; new cities fall back to their own place. */
+export function getCityStoryBackground(cityId: string, placeId: string): string | undefined {
+  if (cityId === "milano") return undefined;
+  const { travel, travelSettings } = getCityContent(cityId);
+  return (travel.places.find((place) => place.id === placeId) ??
+    travel.places.find((place) => place.id === travelSettings.hotelPlaceId))?.backgroundAssetId;
+}
+export const milanoTravelCatalog = getCityContent("milano").travel;
+export const milanoTravelSettings = getCityContent("milano").travelSettings;
 export const battleQuizzes: Record<string, QuizDefinition> = Object.fromEntries(
   Object.entries(generatedQuizzes).map(([id, quiz]) => [
     id,
@@ -72,7 +105,7 @@ export const dates = dateCatalogSchema.parse(dateData).dates;
 export const dateDestinations = dateDestinationsSchema.parse(destinationData).destinations;
 export const effects = effectCatalogSchema.parse(effectData).effects;
 export const responseProfiles = responseProfileCatalogSchema.parse(responseProfileData).profiles;
-export const city = citySchema.parse(cityData);
+export const city = getCityContent("milano").city;
 export const balance = balanceSchema.parse(balanceData);
 export const presentation = presentationSchema.parse(presentationData);
 export const dialogueReactions = dialogueReactionCatalogSchema.parse(dialogueReactionData);

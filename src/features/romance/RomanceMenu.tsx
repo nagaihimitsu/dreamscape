@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { dateDestinations, dates, presentation, trialMilestones } from "../../content";
+import { city, dateDestinations, dates, presentation, trialMilestones } from "../../content";
 import {
   getDateAvailability,
   getMilestoneAvailability,
@@ -109,7 +109,7 @@ export function RomanceMenu({
 
 /** Shared legacy reward entry for both destination lists. */
 export function TrialMilestones({ game, onMilestone }: { game: GameState; onMilestone: (id: string) => void }) {
-  return game.legacyTrialAvailable ? (
+  return game.currentCityId === city.id && game.legacyTrialAvailable ? (
         <section className="trial-progress" aria-label="試遊用の旅の進行">
           <h2>試遊用の補助AP</h2>
           <p>以前の試遊向けの報酬です。観光報酬とは別に、各1回受け取れます。</p>

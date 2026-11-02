@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { dates, episodes, journeyConfig, milanoTravelCatalog } from "../../content";
-import type { TravelEvent, TravelRoute } from "../../content/travel-schemas";
+import { dates, episodes, journeyConfig, getCityContent } from "../../content";
+import type { TravelEvent, TravelPlace, TravelRoute } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
 import { getDirection, groupDestinationEvents, selectNearbyDestinations } from "../../domain/travel";
 import { getTravelEventAvailability, getTravelEventDefinition, isUnclearedMainTravelEvent } from "../../domain/travel-game";
@@ -18,13 +18,14 @@ export function TravelMenu({ game, onTravelEvent }: {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
   const [showOther, setShowOther] = useState(false);
-  const current = milanoTravelCatalog.places.find((place) => place.id === game.travel.currentPlaceId);
+  const { city, travel } = getCityContent(game.currentCityId);
+  const current = travel.places.find((place) => place.id === game.travel.currentPlaceId);
   if (!current) return <p role="alert">現在地を確認できません。保存状態を確認してください。</p>;
-  const events = milanoTravelCatalog.events.filter((event) => showTravelEvent(game, event));
-  const outgoing = milanoTravelCatalog.routes.filter((route) => route.fromPlaceId === current.id);
+  const events = travel.events.filter((event) => showTravelEvent(game, event));
+  const outgoing = travel.routes.filter((route) => route.fromPlaceId === current.id);
   const candidates = events.flatMap((event) => {
     const walk = outgoing.find((route) => route.toPlaceId === event.placeId && route.mode === "walk");
-    const place = milanoTravelCatalog.places.find((item) => item.id === event.placeId);
+    const place = travel.places.find((item) => item.id === event.placeId);
     if (!walk || !place) return [];
     const routes = outgoing.filter((route) => route.toPlaceId === event.placeId);
     const availability = routes.map((route) => getTravelEventAvailability(game, event.id, route.mode));
@@ -48,7 +49,7 @@ export function TravelMenu({ game, onTravelEvent }: {
     if (place.events.length === 1) selectDestination(place.events[0]);
     else setSelectedPlaceId(place.id);
   }
-  return <section className="travel-menu" aria-label="ミラノの行き先" data-testid="travel-menu">
+  return <section className="travel-menu" aria-label={`${city.nameJa}の行き先`} data-testid="travel-menu">
     {game.travel.returnReserve > 0 && <p className="travel-reserve">帰路用に€{game.travel.returnReserve}を確保（所持金に含む）</p>}
     <PlaceMap game={game} events={events} />
     {nearby.length === 0 && <p>今すぐ行ける場所はありません。時間を待つか、滞在先で休めます。</p>}
@@ -79,13 +80,13 @@ export function TravelMenu({ game, onTravelEvent }: {
   </section>;
 }
 
-type Candidate = TravelEvent & { walkMinutes: number; place: (typeof milanoTravelCatalog.places)[number]; routes: TravelRoute[]; available: boolean; unavailableReason?: string; unclearedMain: boolean };
+type Candidate = TravelEvent & { walkMinutes: number; place: TravelPlace; routes: TravelRoute[]; available: boolean; unavailableReason?: string; unclearedMain: boolean };
 type PlaceCandidate = { id: string; walkMinutes: number; events: Candidate[]; available: boolean };
 
 function Destination({ place, game, current, recommended, onSelect }: {
   place: PlaceCandidate;
   game: GameState;
-  current: (typeof milanoTravelCatalog.places)[number];
+  current: TravelPlace;
   recommended?: boolean;
   onSelect: () => void;
 }) {

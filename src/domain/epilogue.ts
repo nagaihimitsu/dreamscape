@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { episodes, progression } from "../content";
+import { episodes, getCityStoryBackground, progression } from "../content";
 import {
   beginStory,
   continueStory,
@@ -49,6 +49,7 @@ export function startCityEpilogue(
   );
   if (
     state.revision !== expectedRevision ||
+    cityId !== state.currentCityId ||
     state.activeDate ||
     state.activeTourism ||
     state.activeEpilogue ||
@@ -73,6 +74,7 @@ export function startCityEpilogue(
           state.playerName,
           state.heroineName,
           variables(state),
+          [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId),
         ),
       ),
     },
@@ -121,6 +123,7 @@ export function validateEpilogueState(state: GameState): void {
   const storyId = activeEpilogueStoryId(active);
   if (
     !finale?.epilogueStoryId ||
+    finale.cityId !== state.currentCityId ||
     !state.completedCityIds.includes(finale.cityId) ||
     state.activeDate ||
     state.activeTourism ||

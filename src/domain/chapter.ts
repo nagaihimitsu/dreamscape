@@ -1,5 +1,7 @@
 import {
   city,
+  battles,
+  landmarks,
   episodes,
   journeyConfig,
   rewardRules,
@@ -19,6 +21,7 @@ function hasLegacyEpisodeAccess(
   episode: EpisodeDefinition,
 ): boolean {
   return (
+    episode.cityId === city.id &&
     state.legacyTrialAvailable &&
     rewardRules.some(
       (rule) =>
@@ -32,29 +35,43 @@ export function isEpisodeUnlocked(
   episode: EpisodeDefinition,
 ): boolean {
   return (
+    episode.cityId === state.currentCityId && (
     state.completedEpisodeIds.includes(episode.id) ||
     hasLegacyEpisodeAccess(state, episode) ||
     (episode.requiredEpisodeIds.every((id) =>
       state.completedEpisodeIds.includes(id),
-    ) && (episode.kind !== "city_finale" || allStoryBattlesCompleted(state)))
+    ) && (episode.kind !== "city_finale" || allStoryBattlesCompleted(state, episode.cityId))))
   );
 }
 function storyBattleCompleted(state: GameState, battleId: string): boolean {
   return state.battleRecords.some((record) => record.battleId === battleId && record.attempts > 0);
 }
 
-function allStoryBattlesCompleted(state: GameState): boolean {
-  return journeyConfig.storyBattles.every((battle) => storyBattleCompleted(state, battle.battleId));
+/** The city finale is explicitly owned; normal and special battles inherit their landmark's city. */
+export function battleCityId(battleId: string): string | undefined {
+  const battle = battles.find((item) => item.id === battleId);
+  return battle?.landmarkId
+    ? landmarks.find((item) => item.id === battle.landmarkId)?.cityId
+    : battle?.cityId;
+}
+
+export function storyBattlesForCity(cityId: string): StoryBattle[] {
+  return journeyConfig.storyBattles.filter((battle) => battleCityId(battle.battleId) === cityId);
+}
+
+function allStoryBattlesCompleted(state: GameState, cityId: string): boolean {
+  return storyBattlesForCity(cityId).every((battle) => storyBattleCompleted(state, battle.battleId));
 }
 
 export function isStoryBattleUnlocked(state: GameState, battleId: string): boolean {
+  if (battleCityId(battleId) !== state.currentCityId) return false;
   const battle = journeyConfig.storyBattles.find((item) => item.battleId === battleId);
   return !battle || battle.requiredEpisodeIds.every((id) => state.completedEpisodeIds.includes(id));
 }
 
 /** Eligible special battles can be visited independently in any order. */
 export function getAvailableStoryBattles(state: GameState): StoryBattle[] {
-  return journeyConfig.storyBattles.filter((battle) =>
+  return storyBattlesForCity(state.currentCityId).filter((battle) =>
     isStoryBattleUnlocked(state, battle.battleId) &&
     !storyBattleCompleted(state, battle.battleId),
   );
@@ -67,7 +84,7 @@ export function getNextStoryBattle(state: GameState): StoryBattle | null {
 
 /** Completed destinations remain revisitable for older saved games. */
 export function isEpisodeBlockedByStoryBattle(state: GameState, episode: EpisodeDefinition): boolean {
-  return episode.kind === "city_finale" && !state.completedEpisodeIds.includes(episode.id) && !allStoryBattlesCompleted(state);
+  return episode.kind === "city_finale" && !state.completedEpisodeIds.includes(episode.id) && !allStoryBattlesCompleted(state, episode.cityId);
 }
 
 export function getNextEpisode(state: GameState): EpisodeDefinition | null {
@@ -89,7 +106,8 @@ export function getCurrentEpisode(state: GameState): EpisodeDefinition {
           : state.activeBattle?.battleId === episode.battleId,
     ) ??
     getNextEpisode(state) ??
-    episodes.find((episode) => episode.id === journeyConfig.entryEpisodeId)!
+    episodes.find((episode) => episode.cityId === state.currentCityId && episode.id === journeyConfig.entryEpisodeId) ??
+    episodes.find((episode) => episode.cityId === state.currentCityId)!
   );
 }
 export function getEpisodeAvailability(
@@ -196,7 +214,7 @@ function recordEpisodes(state: GameState): GameState {
     if (!hasCompletedBattle(state, episode)) continue;
     if (
       episode.kind === "city_finale" &&
-      (!allStoryBattlesCompleted(state) || !episode.requiredEpisodeIds.every((id) =>
+      (!allStoryBattlesCompleted(state, episode.cityId) || !episode.requiredEpisodeIds.every((id) =>
         completedEpisodeIds.includes(id),
       ))
     )
@@ -308,7 +326,7 @@ export function validateJourneyState(state: GameState): void {
       (!hasLegacyEpisodeAccess(state, episode) &&
         (!episode.requiredEpisodeIds.every((required) =>
           state.completedEpisodeIds.includes(required),
-        ) || (episode.kind === "city_finale" && !allStoryBattlesCompleted(state))))
+        ) || (episode.kind === "city_finale" && !allStoryBattlesCompleted(state, episode.cityId))))
     )
       throw new Error("観光エピソードのクリア記録が一致しません。");
   }

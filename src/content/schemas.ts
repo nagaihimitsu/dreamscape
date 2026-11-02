@@ -121,6 +121,7 @@ export const citySchema = z
   .object({
     schemaVersion: version,
     id,
+    nextCityId: id.optional(),
     countryCode: z.string().length(2),
     nameJa: text,
     themeJa: text,

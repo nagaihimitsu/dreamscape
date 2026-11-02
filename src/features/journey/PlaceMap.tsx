@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { milanoTravelCatalog } from "../../content";
-import type { TravelEvent } from "../../content/travel-schemas";
+import { getCityContent } from "../../content";
+import type { TravelEvent, TravelPlace } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
 import { Modal } from "../../components/Modal";
 import "./place-map.css";
 
 type Props = { game: GameState; events: TravelEvent[] };
-type Place = (typeof milanoTravelCatalog.places)[number];
+type Place = TravelPlace;
 type MapView = { center: L.LatLng; zoom: number };
 
 /** Both map sizes use the same tiles, markers and selection behavior. */
@@ -20,6 +20,7 @@ function MapCanvas({ game, events, places, onSelect, mapRef, initialView, expand
   expanded?: boolean;
 }) {
   const [tilesFailed, setTilesFailed] = useState(false);
+  const { city, travel } = getCityContent(game.currentCityId);
   const container = useRef<HTMLDivElement>(null);
   const markersRef = useRef<L.LayerGroup | null>(null);
 
@@ -60,32 +61,33 @@ function MapCanvas({ game, events, places, onSelect, mapRef, initialView, expand
       const categories = new Set(events.filter((event) => event.placeId === place.id).map((event) => event.category));
       // A remaining destination may share a place with a completed event.
       // Keep the place's visit history without showing the completed event's category.
-      const visited = milanoTravelCatalog.events.some((event) => event.placeId === place.id && (game.completedEpisodeIds.includes(event.id) || game.playedDateIds.includes(event.id) || game.battleRecords.some((record) => record.battleId === event.id && record.attempts > 0)));
+      const visited = travel.events.some((event) => event.placeId === place.id && (game.completedEpisodeIds.includes(event.id) || game.playedDateIds.includes(event.id) || game.battleRecords.some((record) => record.battleId === event.id && record.attempts > 0)));
       const label = `${place.nameJa}${here ? "、現在地" : ""}${categories.has("main") ? "、観光" : ""}${categories.has("date") ? "、デート" : ""}${visited ? "、訪問済み" : "、未訪問"}`;
       const symbol = `${categories.has("main") ? "◆" : ""}${categories.has("date") ? "♥" : ""}` || "●";
       const icon = L.divIcon({ className: "travel-map-marker-wrap", html: `<span class="travel-map-marker${here ? " is-here" : ""}${visited ? " is-visited" : ""}">${symbol}</span>`, iconSize: [32, 32], iconAnchor: [16, 16] });
       L.marker([place.latitude, place.longitude], { icon, title: label, alt: label, keyboard: true })
         .on("click", () => onSelect(place.id)).addTo(group);
     }
-  }, [places, events, game.travel.currentPlaceId, game.completedEpisodeIds, game.playedDateIds, game.battleRecords, onSelect]);
+  }, [places, events, travel.events, game.travel.currentPlaceId, game.completedEpisodeIds, game.playedDateIds, game.battleRecords, onSelect]);
 
   return <>
-    <div ref={container} className="travel-map-frame" aria-label="ミラノの地図。ドラッグで移動、ピンチまたはプラス・マイナスで拡大縮小できます。" data-testid={expanded ? "travel-map-expanded-canvas" : "travel-map-canvas"} />
+    <div ref={container} className="travel-map-frame" aria-label={`${city.nameJa}の地図。ドラッグで移動、ピンチまたはプラス・マイナスで拡大縮小できます。`} data-testid={expanded ? "travel-map-expanded-canvas" : "travel-map-canvas"} />
     {tilesFailed && <p role="status">地図の一部を読み込めません。通信を確認してください。行き先一覧は引き続き利用できます。</p>}
   </>;
 }
 
 /** Itinerary selection remains available even if map tiles fail to load. */
 export function PlaceMap({ game, events }: Props) {
+  const { city, travel } = getCityContent(game.currentCityId);
   const [open, setOpen] = useState(true);
   const [expanded, setExpanded] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
   const mapRef = useRef<L.Map | null>(null);
   const expandedMapRef = useRef<L.Map | null>(null);
   const initialView = useRef<MapView | null>(null);
-  const places = useMemo(() => milanoTravelCatalog.places.filter((place) =>
+  const places = useMemo(() => travel.places.filter((place) =>
     place.id === game.travel.hotelPlaceId || place.id === game.travel.currentPlaceId || events.some((event) => event.placeId === place.id)),
-  [game.travel.hotelPlaceId, game.travel.currentPlaceId, events]);
+  [travel.places, game.travel.hotelPlaceId, game.travel.currentPlaceId, events]);
   const selectedPlace = places.find((place) => place.id === selected);
 
   function openExpanded() {
@@ -105,7 +107,7 @@ export function PlaceMap({ game, events }: Props) {
   }
 
   return <details className="travel-map" data-testid="travel-map" open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
-    <summary>ミラノの地図</summary>
+    <summary>{city.nameJa}の地図</summary>
     {open && <>
       <div className="travel-map-preview">
         <MapCanvas game={game} events={events} places={places} onSelect={setSelected} mapRef={mapRef} />
@@ -120,7 +122,7 @@ export function PlaceMap({ game, events }: Props) {
         <p>緑の輪：現在地　◆：観光　♥：デート　白い点：訪問済み</p>
       </details>
       {expanded && <Modal labelledBy="travel-map-expanded-title" className="travel-map-modal" onClose={closeExpanded}>
-        <div className="travel-map-modal-heading"><h2 id="travel-map-expanded-title">ミラノの地図</h2><button type="button" className="secondary" onClick={closeExpanded}>閉じる</button></div>
+        <div className="travel-map-modal-heading"><h2 id="travel-map-expanded-title">{city.nameJa}の地図</h2><button type="button" className="secondary" onClick={closeExpanded}>閉じる</button></div>
         <MapCanvas game={game} events={events} places={places} onSelect={setSelected} mapRef={expandedMapRef} initialView={initialView.current} expanded />
         <label className="travel-map-modal-place">地点 <select value={selected ?? ""} onChange={(event) => choosePlace(event.currentTarget.value, expandedMapRef.current)}>
           <option value="">地点を選択</option>{places.map((place) => <option key={place.id} value={place.id}>{place.nameJa}</option>)}

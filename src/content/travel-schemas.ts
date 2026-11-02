@@ -1,8 +1,7 @@
 import { z } from "zod";
 import { tourismSourceSchema } from "./tourism-schemas";
 
-// Draft input contract for a future travel-enabled city. It is deliberately not
-// part of the current Milan content pipeline or save format.
+// Shared input contract for each registered city's travel data.
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const text = z.string().trim().min(1);
 const minute = z.number().int().min(0).max(1440);

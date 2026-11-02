@@ -1,6 +1,7 @@
 import type { Story } from "inkjs";
 
-export type ItemStatus = "held" | "gifted" | "used";
+/** Items left in an earlier city remain in history but cannot be used. */
+export type ItemStatus = "held" | "gifted" | "used" | "left_behind";
 
 /** Stories can inspect, but never mutate, the inventory. */
 export function bindItemReader(story: Story, inventory: Readonly<Record<string, ItemStatus>>, knownIds: readonly string[]): void {

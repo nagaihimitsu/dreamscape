@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { startNewGame, setDialogueSpeed } from "./helpers";
+import { advanceDialogue, startNewGame, setDialogueSpeed } from "./helpers";
 
 test("debug scenes and reload do not change the ordinary game, learning or settings", async ({ page }, testInfo) => {
   test.setTimeout(60_000);
@@ -12,6 +12,8 @@ test("debug scenes and reload do not change the ordinary game, learning or setti
   const original = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   await page.goto("/?debug");
   await expect(page.getByTestId("debug-panel")).toBeVisible();
+  await expect(page.getByTestId("debug-city")).toHaveValue("milano");
+  await expect(page.getByTestId("debug-city").locator("option")).toHaveCount(1);
   await page.screenshot({ path: testInfo.outputPath("debug-panel.png"), fullPage: true });
   await page.getByTestId("debug-target").selectOption("duomo_milano");
   await page.getByRole("button", { name: "この場面を開く" }).click();
@@ -31,7 +33,7 @@ test("debug scenes and reload do not change the ordinary game, learning or setti
   await page.getByLabel("常に日本語訳を表示する").check();
   await page.getByRole("button", { name: "閉じる", exact: true }).click();
   await setDialogueSpeed(page, "0");
-  await page.getByTestId("battle-advance").click();
+  await advanceDialogue(page);
   await page.getByRole("button", { name: "設定へ戻る" }).click();
   await page.getByTestId("debug-scene").selectOption("encounter");
   await page.getByTestId("debug-target").selectOption("galleria_fortune");
@@ -50,7 +52,7 @@ test("debug scenes and reload do not change the ordinary game, learning or setti
     await setDialogueSpeed(page, "0");
     for (let step = 0; !(await scene.locator(".choice").count()); step++) {
       expect(step).toBeLessThan(50);
-      await scene.getByRole("button", { name: /続きを読む/ }).click();
+      await advanceDialogue(page);
     }
     await scene.locator(".choice").nth(2).click();
     await expect(scene).toContainText(reaction);

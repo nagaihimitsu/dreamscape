@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from "react";
 import App from "../app/App";
-import { battles, dates, dateDestinations, landmarks } from "../content";
+import { battles, city, getCities, dates, dateDestinations, landmarks, getCityContent } from "../content";
 import { encounters } from "../content/encounters";
+import { battleCityId } from "../domain/chapter";
 import { saveGame } from "../persistence";
 import { createDebugState, type DebugScene, type DebugSettings } from "./debug-state";
 import "./debug-mode.css";
@@ -15,15 +16,19 @@ function newStorage(): MemoryStorage {
     removeItem: (key) => { data.delete(key); },
   };
 }
-const options: Record<DebugScene, { id: string; name: string }[]> = {
-  tourism: landmarks.map((item) => ({ id: item.id, name: item.nameJa })),
-  battle: battles.map((item) => ({ id: item.id, name: item.titleJa })),
-  encounter: encounters.encounters.filter((item) => item.availability !== "dormant").map((item) => ({ id: item.id, name: item.titleJa })),
-  date: dates.filter((item) => item.kind === "normal" && !item.legacyOnly).map((item) => ({ id: item.id, name: item.titleJa })),
-};
+function cityOptions(cityId: string): Record<DebugScene, { id: string; name: string }[]> {
+  const { travel } = getCityContent(cityId);
+  return {
+    tourism: landmarks.filter((item) => item.cityId === cityId).map((item) => ({ id: item.id, name: item.nameJa })),
+    battle: battles.filter((item) => battleCityId(item.id) === cityId).map((item) => ({ id: item.id, name: item.titleJa })),
+    encounter: encounters.encounters.filter((item) => item.cityId === cityId && item.availability !== "dormant").map((item) => ({ id: item.id, name: item.titleJa })),
+    date: dates.filter((item) => item.kind === "normal" && !item.legacyOnly && travel.events.some((event) => event.id === item.id)).map((item) => ({ id: item.id, name: item.titleJa })),
+  };
+}
 
 export default function DebugMode() {
-  const [settings, setSettings] = useState<DebugSettings>({ scene: "tourism", id: options.tourism[0].id, progress: "completed", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
+  const [settings, setSettings] = useState<DebugSettings>({ cityId: city.id, scene: "tourism", id: cityOptions(city.id).tourism[0]?.id ?? "", progress: "completed", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
+  const options = cityOptions(settings.cityId ?? city.id);
   const [session, setSession] = useState<{ storage: MemoryStorage; roll: () => number; key: number; location: string } | null>(null);
   const [message, setMessage] = useState("");
   function open(event: FormEvent) {
@@ -39,7 +44,7 @@ export default function DebugMode() {
         : settings.scene === "encounter" ? encounters.encounters.find((item) => item.id === settings.id)?.landmarkId
         : undefined;
       const destinationId = settings.scene === "date" ? dates.find((item) => item.id === settings.id)?.destinationId : undefined;
-      const location = landmarks.find((item) => item.id === landmarkId)?.nameJa ?? dateDestinations.find((item) => item.id === destinationId)?.nameJa ?? "ミラノ";
+      const location = landmarks.find((item) => item.id === landmarkId)?.nameJa ?? dateDestinations.find((item) => item.id === destinationId)?.nameJa ?? getCityContent(state.currentCityId).city.nameJa;
       setSession({ storage, roll: () => ticket, key: Date.now(), location });
       setMessage("");
       window.scrollTo(0, 0);
@@ -58,6 +63,15 @@ export default function DebugMode() {
       <h1>場面の確認</h1>
       <p>開発用の一時データです。通常のセーブ・英語ノート・設定は変更しません。再読み込みや終了で一時データは消えます。</p>
       <form onSubmit={open}>
+        <label>都市
+          <select data-testid="debug-city" value={settings.cityId ?? city.id} onChange={(event) => {
+            const cityId = event.target.value;
+            const next = cityOptions(cityId);
+            setSettings({ ...settings, cityId, id: next[settings.scene][0]?.id ?? "" });
+          }}>
+            {getCities().map((item) => <option key={item.id} value={item.id}>{item.nameJa}</option>)}
+          </select>
+        </label>
         <label>場面
           <select data-testid="debug-scene" value={settings.scene} onChange={(event) => {
             const scene = event.target.value as DebugScene;
@@ -73,7 +87,7 @@ export default function DebugMode() {
         </label>
         <label>旅の進行
           <select data-testid="debug-progress" value={settings.progress} onChange={(event) => setSettings({ ...settings, progress: event.target.value as DebugSettings["progress"] })}>
-            <option value="completed">ミラノクリア後</option><option value="initial">旅の開始時</option>
+            <option value="completed">都市クリア後</option><option value="initial">旅の開始時</option>
           </select>
         </label>
         <div className="debug-values">

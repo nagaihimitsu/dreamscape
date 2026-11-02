@@ -19,10 +19,9 @@ test("the top bar follows time and place while keeping resources visible", async
   await expect(bar).toBeVisible();
   await expect(context).toContainText("現在地：ドゥオモ広場");
   await page.getByTestId("tourism-skip").click();
-  await page.getByRole("button", { name: "自由時間へ戻る" }).click();
   await expect(context).toBeVisible();
   await expect(context).toContainText("現在地：ドゥオモ広場");
-  await expect(context).toContainText("1日目 10:52");
+  await expect(context).toContainText("1日目 09:37");
   await expectNoOverflow(page);
 });
 

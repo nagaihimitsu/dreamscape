@@ -41,10 +41,24 @@ describe("encounter build integration", () => {
     const catalog = JSON.parse(await readFile(catalogFile, "utf8"));
     catalog.items.push({ id: "foreign_item", cityId: "fixture_city", nameJa: "別の街の品", descriptionJa: "別の街で入手する品。" });
     await writeFile(catalogFile, JSON.stringify(catalog));
-    const journeyFile = path.join(fixture, "content/progression/journey.json");
-    const journey = JSON.parse(await readFile(journeyFile, "utf8"));
-    journey.episodes.push({ ...journey.episodes[0], id: "fixture_episode", cityId: "fixture_city" });
-    await writeFile(journeyFile, JSON.stringify(journey));
+    // Register an actual second city, so this exercises a cross-city item
+    // reference rather than merely an unknown-city error.
+    const cityFile = path.join(fixture, "content/cities/milano.json");
+    const city = JSON.parse(await readFile(cityFile, "utf8"));
+    await writeFile(path.join(fixture, "content/cities/fixture_city.json"), JSON.stringify({
+      ...city, id: "fixture_city", nameJa: "試験都市", landmarkIdsPlanned: [],
+      firstClearReward: { rewardSourceId: "fixture_first_clear", ap: 1 },
+    }));
+    const travel = JSON.parse(await readFile(path.join(fixture, "content/travel/milano.json"), "utf8"));
+    const hotel = travel.places.find((place: { id: string }) => place.id === "p_hotel");
+    const samePlaceRoute = travel.routes.find((route: { fromPlaceId: string; toPlaceId: string; mode: string }) =>
+      route.fromPlaceId === "p_hotel" && route.toPlaceId === "p_hotel" && route.mode === "walk");
+    await writeFile(path.join(fixture, "content/travel/fixture_city.json"), JSON.stringify({
+      cityId: "fixture_city", places: [{ ...hotel, id: "fixture_hotel", cityId: "fixture_city", landmarkIds: [], destinationIds: [] }],
+      routes: [{ ...samePlaceRoute, fromPlaceId: "fixture_hotel", toPlaceId: "fixture_hotel" }], events: [],
+    }));
+    const settings = JSON.parse(await readFile(path.join(fixture, "content/travel/milano-settings.json"), "utf8"));
+    await writeFile(path.join(fixture, "content/travel/fixture_city-settings.json"), JSON.stringify({ ...settings, hotelPlaceId: "fixture_hotel" }));
     const storyFile = path.join(fixture, "content/stories/encounters/galleria_outing_rewrite.ink");
     const source = await readFile(storyFile, "utf8");
     expect(source).toContain('has_item_status("galleria_souvenir", "gifted")');

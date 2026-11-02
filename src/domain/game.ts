@@ -32,14 +32,17 @@ import {
   balance,
   battles,
   city,
+  getCities,
   encounters,
   dates,
+  dateDestinations,
   effects,
   responseProfiles,
   progression,
   trialMilestones,
   milanoTravelSettings,
-  milanoTravelCatalog,
+  getCityContent,
+  getCityStoryBackground,
   episodes,
   type DateDefinition,
 } from "../content";
@@ -198,7 +201,7 @@ const stableContentId = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const phase10StateSchema = phase9StateSchema.extend({
   schemaVersion: z.literal(10),
   travelBudget: z.number().int().nonnegative().safe(),
-  inventory: z.record(stableContentId, z.enum(["held", "gifted", "used"])),
+  inventory: z.record(stableContentId, z.enum(["held", "gifted", "used", "left_behind"])),
   completedEncounterIds: uniqueStrings,
   encounterRewards: z.record(stableContentId, z.object({
     roll: z.number().int().min(0).max(9999),
@@ -213,6 +216,7 @@ const phase11StateSchema = phase10StateSchema.extend({
 }).strict();
 export const gameStateSchema = phase11StateSchema.extend({
   schemaVersion: z.literal(12),
+  currentCityId: stableContentId.default("milano"),
   travel: z.object({
     currentPlaceId: stableContentId,
     hotelPlaceId: stableContentId,
@@ -240,6 +244,7 @@ export function createGame(
 ): GameState {
   return {
     schemaVersion: 12,
+    currentCityId: "milano",
     travel: { currentPlaceId: milanoTravelSettings.hotelPlaceId, hotelPlaceId: milanoTravelSettings.hotelPlaceId, day: 1, minute: 540, returnReserve: 0, returnDeadline: DAY_END, activeEvent: null },
     updatedDateIds: [],
     travelBudget: milanoTravelSettings.initialBudget,
@@ -311,10 +316,16 @@ function isConfessionOnCooldown(state: GameState, date: DateDefinition): boolean
     !state.recoveryAfterRejection;
 }
 
+/** Destinations own their city; destination-less events belong to a city's travel catalog. */
+function dateBelongsToCity(state: GameState, date: DateDefinition): boolean {
+  if (date.destinationId) return dateDestinations.some((destination) => destination.id === date.destinationId && destination.cityId === state.currentCityId);
+  return getCityContent(state.currentCityId).travel.events.some((event) => event.id === date.id && event.category === "date");
+}
+
 /** Progress and relationship requirements only; AP and opening hours do not hide a destination. */
 export function isDateUnlockedForTravel(state: GameState, dateId: string): boolean {
   const date = dates.find((item) => item.id === dateId);
-  return !!date && !date.legacyOnly && !isConfessionOnCooldown(state, date) &&
+  return !!date && dateBelongsToCity(state, date) && !date.legacyOnly && !isConfessionOnCooldown(state, date) &&
     (isUpdatedDateReplay(state, dateId) || meetsDateConditions(state, date));
 }
 
@@ -343,7 +354,7 @@ export function evaluateProgression(state: GameState): GameState {
   const unlockedEventIds = [...state.unlockedEventIds];
   for (const date of dates) {
     if (
-      date.kind !== "normal" && !date.recovery &&
+      date.kind !== "normal" && !date.recovery && dateBelongsToCity(state, date) &&
       meetsDateConditions(next, date) &&
       !unlockedEventIds.includes(date.id)
     )
@@ -442,7 +453,7 @@ export function grantRewardOnce(
 /** Compatibility entry point; real battle evidence is required. */
 export function completeChapter(
   state: GameState,
-  chapterId = city.id,
+  chapterId = state.currentCityId,
 ): GameState {
   return completeRecordedChapter(state, chapterId);
 }
@@ -453,7 +464,7 @@ export function getMilestoneAvailability(
   milestoneId: string,
 ): Availability {
   const milestone = trialMilestones.find((item) => item.id === milestoneId);
-  if (!milestone || state.endingReached || !state.legacyTrialAvailable)
+  if (!milestone || state.currentCityId !== city.id || state.endingReached || !state.legacyTrialAvailable)
     return { available: false, reason: "この試遊用の進行は終了しました。" };
   if (state.claimedRewardIds.includes(milestone.rewardSourceId))
     return { available: false, reason: "受け取り済みです。" };
@@ -514,7 +525,7 @@ export function isUpdatedDateReplay(state: GameState, dateId: string): boolean {
 export function isEventVisible(state: GameState, dateId: string): boolean {
   const date = dates.find((item) => item.id === dateId);
   return Boolean(
-    date && !date.legacyOnly &&
+    date && dateBelongsToCity(state, date) && !date.legacyOnly &&
       (!date.recovery || canRecoverRelationship(state)) &&
       (!state.endingReached || date.kind === "normal" || date.allowAfterEnding) &&
       (isUpdatedDateReplay(state, dateId) || (date.forbiddenCompletedEpisodeIds ?? []).every((id) => !state.completedEpisodeIds.includes(id))) &&
@@ -531,6 +542,7 @@ export function getDateAvailability(
 ): Availability {
   const date = dates.find((item) => item.id === dateId);
   if (!date) return { available: false, reason: "デートが見つかりません。" };
+  if (!dateBelongsToCity(state, date)) return { available: false, reason: "この街では出かけられません。" };
   if (date.legacyOnly) return { available: false, reason: "この場面は以前の途中セーブからのみ再開できます。" };
   if (date.recovery && !canRecoverRelationship(state))
     return { available: false, reason: "今は別のひとときを選べます。" };
@@ -644,6 +656,7 @@ export function startDate(state: GameState, dateId: string, nextRoll: () => numb
   if (!getDateAvailability(state, dateId).available) return state;
   const date = dates.find((item) => item.id === dateId)!;
   const updatedReplay = isUpdatedDateReplay(state, dateId);
+  const placeId = getCityContent(state.currentCityId).travel.events.find((item) => item.id === dateId)?.placeId ?? state.travel.currentPlaceId;
   const result = beginStory(date.storyId, state.playerName, state.heroineName, {
     relationship_tone: deriveRelationshipTone(state),
     relationship_tone_before: deriveRelationshipTone(state),
@@ -656,7 +669,7 @@ export function startDate(state: GameState, dateId: string, nextRoll: () => numb
     ending_reached: state.endingReached,
     confession_ready: canConfessSuccessfully(state),
     confession_result: confessionResult(state),
-  }, state.memories);
+  }, state.memories, {}, getCityStoryBackground(state.currentCityId, placeId));
   const next = {
     ...state,
     revision: state.revision + 1,
@@ -862,17 +875,18 @@ export function isKnownLegacyGameState(input: unknown): boolean {
 export function validateGameState(input: unknown): GameState {
   const state = gameStateSchema.parse(input);
   const travel = state.travel;
-  if (travel.hotelPlaceId !== milanoTravelSettings.hotelPlaceId || travel.returnReserve > state.travelBudget ||
-      !milanoTravelCatalog.places.some((place) => place.id === travel.currentPlaceId) ||
-      (travel.activeEvent && (!milanoTravelCatalog.events.some((event) => event.id === travel.activeEvent!.eventId && event.placeId === travel.activeEvent!.placeId) ||
+  const { travel: cityTravel, travelSettings } = getCityContent(state.currentCityId);
+  if (travel.hotelPlaceId !== travelSettings.hotelPlaceId || travel.returnReserve > state.travelBudget ||
+      !cityTravel.places.some((place) => place.id === travel.currentPlaceId) ||
+      (travel.activeEvent && (!cityTravel.events.some((event) => event.id === travel.activeEvent!.eventId && event.placeId === travel.activeEvent!.placeId) ||
         travel.activeEvent.placeId !== travel.currentPlaceId || travel.activeEvent.endMinute < travel.minute)))
     throw new Error("旅行の位置や時間枠が一致しません。");
   const returnMinute = travel.activeEvent?.endMinute ?? travel.minute;
-  let requiredFare = minimumHomeFare(milanoTravelCatalog.routes, travel.currentPlaceId, travel.hotelPlaceId, returnMinute);
+  let requiredFare = minimumHomeFare(cityTravel.routes, travel.currentPlaceId, travel.hotelPlaceId, returnMinute);
   // Existing saves may have reserved an affordable return under the previous
   // 22:00 deadline. Preserve those saves; new plans use the 21:00 deadline.
   if (travel.returnDeadline === undefined && returnMinute < DAY_END && (requiredFare === undefined || travel.returnReserve < requiredFare)) {
-    requiredFare = minimumHomeFare(milanoTravelCatalog.routes, travel.currentPlaceId, travel.hotelPlaceId, returnMinute, 22 * 60);
+    requiredFare = minimumHomeFare(cityTravel.routes, travel.currentPlaceId, travel.hotelPlaceId, returnMinute, 22 * 60);
   }
   if (requiredFare === undefined || travel.returnReserve < requiredFare)
     throw new Error("帰路の交通費を確保できていません。");
@@ -905,7 +919,7 @@ export function validateGameState(input: unknown): GameState {
     effects.flatMap((effect) => (effect.memoryId ? [effect.memoryId] : [])),
   );
   if (
-    state.completedChapters.some((id) => id !== city.id) ||
+    state.completedChapters.some((id) => !getCities().some((entry) => entry.id === id)) ||
     state.playedDateIds.some((id) => !dates.some((date) => date.id === id)) ||
     state.memories.some((id) => !knownMemories.has(id)) ||
     state.unlockedEventIds.some(
@@ -913,12 +927,12 @@ export function validateGameState(input: unknown): GameState {
     )
   )
     throw new Error("保存データの参照先が見つかりません。");
-  if (
-    state.completedChapters.includes(city.id) !==
-    (state.completedEpisodeIds.length > 0 ||
-      state.claimedRewardIds.includes(city.firstClearReward.rewardSourceId))
-  )
-    throw new Error("章の報酬記録が一致しません。");
+  for (const entry of getCities()) {
+    if (state.completedChapters.includes(entry.id) !==
+      (state.completedEpisodeIds.some((id) => episodes.some((episode) => episode.id === id && episode.cityId === entry.id)) ||
+        state.claimedRewardIds.includes(entry.firstClearReward.rewardSourceId)))
+      throw new Error("章の報酬記録が一致しません。");
+  }
   if (state.endingReached !== (state.confessionStatus === "accepted"))
     throw new Error("エンディングの記録が一致しません。");
   if ((state.completedRecoveryCount > 0) !== state.playedDateIds.some(
@@ -941,7 +955,7 @@ export function validateGameState(input: unknown): GameState {
   if (active) {
     const date = dates.find((item) => item.id === active.dateId);
     if (
-      !date ||
+      !date || !dateBelongsToCity(state, date) ||
       (state.endingReached && date.kind !== "normal" && !date.allowAfterEnding) ||
       (!isUpdatedDateReplay(state, active.dateId) && !(date.requiredCompletedCityIds ?? []).every((id) =>
         state.completedCityIds.includes(id),
