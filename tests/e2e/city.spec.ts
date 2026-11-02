@@ -235,45 +235,15 @@ test("all four photographs and discoveries persist, and the five-question boss s
     page.getByRole("heading", { name: "PERFECT VICTORY", exact: true }),
   ).toBeVisible();
   expect(availableAp(perfect.state)).toBe(
-    journey.rewards.reduce((sum, reward) => sum + reward.ap, 0),
+    journey.rewards.reduce((sum, reward) => sum + reward.ap, 0) +
+      journey.storyBattles.reduce((sum, battle) => sum + (battle.completionReward?.ap ?? 0), 0),
   );
   expect(perfect.state.ap).toBe(12);
   const rewards = perfect.state.claimedRewardIds;
   expect(new Set(rewards).size).toBe(rewards.length);
-  for (const [score, title] of [
-    [3, "VICTORY"],
-    [2, "DEFEAT"],
-  ] as const) {
-    await page
-      .getByRole("button", { name: "再戦する", exact: true })
-      .evaluate((button: HTMLButtonElement) => {
-        button.click();
-        button.click();
-      });
-    const result = await playCityBattle(page, cityFinale(), score);
-    await expect(
-      page.getByRole("heading", { name: title, exact: true }),
-    ).toBeVisible();
-    expect(result.state.claimedRewardIds).toEqual(rewards);
-    expect(availableAp(result.state)).toBe(availableAp(perfect.state));
-    expect(result.state.completedCityIds).toEqual(["milano"]);
-    expect(
-      result.state.completedEpisodeIds.filter((id) => id === cityFinale().id),
-    ).toHaveLength(1);
-    expect(result.state.battleRewardReceipt!.entries).toEqual([]);
-    await reloadUnchanged(page);
-  }
-  expect(
-    (await saved(page)).battleRecords.find(
-      (record) => record.battleId === cityFinale().battleId,
-    ),
-  ).toEqual({
-    battleId: cityFinale().battleId,
-    attempts: 3,
-    firstScore: 5,
-    bestScore: 5,
-    lastScore: 2,
-  });
+  await expect(page.getByRole("button", { name: "再戦する", exact: true })).toHaveCount(0);
+  await reloadUnchanged(page);
+  expect((await saved(page)).claimedRewardIds).toEqual(rewards);
   await page.getByTestId("city-epilogue-start").click();
   await finishCityEpilogue(page);
   await openRevisits(page);

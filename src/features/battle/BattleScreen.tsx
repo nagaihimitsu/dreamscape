@@ -40,7 +40,6 @@ interface Props {
   onAdvance: () => void;
   onAnswer: (id: string) => boolean;
   onHint: () => void;
-  onReplay: () => void;
   onLeave: () => void;
   onNotebook?: () => void;
   onClaimRewards: () => void;
@@ -63,7 +62,6 @@ export function BattleScreen({
   onAdvance,
   onAnswer,
   onHint,
-  onReplay,
   onLeave,
   onNotebook,
   onClaimRewards,
@@ -256,7 +254,7 @@ export function BattleScreen({
     >
       {active.phase === "feedback" && answer && effectAnswer === answerKey && (
         <div
-          className={`answer-effect ${answer.correct ? "answer-effect-correct" : "answer-effect-incorrect"}`}
+          className={`answer-effect ${answer.correct ? "answer-effect-correct" : "answer-effect-incorrect"}${!isSpecial ? " answer-effect-subtle" : ""}`}
           data-testid="answer-effect"
           data-result={answer.correct ? "correct" : "incorrect"}
           aria-hidden="true"
@@ -386,13 +384,7 @@ export function BattleScreen({
                 <span> / {quiz.questions.length} 問正解</span>
               </p>
             </div>
-            {isSpecial ? (
-              <p className="special-result-note">
-                この対決ではAPを獲得しません。
-              </p>
-            ) : (
-              <BattleRewards game={game} onClaim={onClaimRewards} />
-            )}
+            <BattleRewards game={game} onClaim={onClaimRewards} />
             {nextStoryBattle && onNextStoryBattle && (
               <p className="next-story-battle-note">{nextStoryBattle.descriptionJa}</p>
             )}
@@ -432,9 +424,6 @@ export function BattleScreen({
                   <span aria-hidden="true">→</span>
                 </button>
               )}
-              <button className="secondary" onClick={onReplay}>
-                再戦する <span aria-hidden="true">↻</span>
-              </button>
               <button className="secondary" onClick={() => onEnglish()}>
                 回答した問題を振り返る
               </button>
@@ -548,7 +537,7 @@ export function BattleScreen({
                           if (onAnswer(option.id)) {
                             const key = `${battle.id}:${active.roundIndex}:${option.id}`;
                             setAnimatedAnswer(key);
-                            if (!reduceMotion && !document.hidden &&
+                            if ((isSpecial || option.id === question.correctOptionId) && !reduceMotion && !document.hidden &&
                                 !window.matchMedia("(prefers-reduced-motion: reduce)").matches)
                               setEffectAnswer(key);
                           }

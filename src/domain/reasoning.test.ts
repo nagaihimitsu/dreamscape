@@ -28,6 +28,9 @@ function unchangedProgress(state: GameState) {
     activeBattle,
     battleRecords,
     battleRewardReceipt,
+    ap,
+    claimedRewardIds,
+    pendingApRewards,
     ...rest
   } = state;
   return rest;
@@ -116,6 +119,7 @@ describe("small proof steps inside three-round battles", () => {
       state = roundTrip(state);
       expect(state.activeBattle?.reasoning?.selectedClueIds).toEqual([clueId]);
       expect(unchangedProgress(state)).toEqual(unchangedProgress(initial));
+      expect(state.ap).toBe(initial.ap);
     },
   );
 
@@ -233,7 +237,7 @@ describe("small proof steps inside three-round battles", () => {
   });
 
   it.each([0, 1, 2, 3])(
-    "finishes/replays both special battles with %i correct and no chapter or AP effects",
+    "awards 1 AP once for either special battle with %i correct",
     (score) => {
       for (const kind of ["contradiction", "connection"] as const) {
         const battle = special(kind);
@@ -250,13 +254,20 @@ describe("small proof steps inside three-round battles", () => {
           },
         ]);
         expect(unchangedProgress(state)).toEqual(unchangedProgress(initial));
-        expect(state.battleRewardReceipt).toBeNull();
+        const rewardId = kind === "contradiction" ? "battle_scala_first" : "battle_brera_first";
+        expect(state.ap).toBe(initial.ap + 1);
+        expect(state.claimedRewardIds).toContain(rewardId);
+        expect(state.battleRewardReceipt?.entries).toEqual([{ rewardId, earnedAp: 1, creditedAp: 1, pendingAp: 0 }]);
+        // A save completed before this reward existed remains readable and is
+        // not silently credited during validation.
+        const previouslyCompleted = { ...state, ap: initial.ap, claimedRewardIds: state.claimedRewardIds.filter((id) => id !== rewardId), battleRewardReceipt: null };
+        expect(roundTrip(previouslyCompleted).ap).toBe(initial.ap);
         expect(() =>
           validateGameState({
             ...state,
             battleRewardReceipt: {
               battleRunId: state.activeBattle!.runId,
-              entries: [],
+              entries: [{ rewardId: "battle_duomo_first", earnedAp: 1, creditedAp: 1, pendingAp: 0 }],
             },
           }),
         ).toThrow();
@@ -267,6 +278,9 @@ describe("small proof steps inside three-round battles", () => {
         expect(state.battleRecords[0].attempts).toBe(2);
         expect(state.battleRecords[0].bestScore).toBe(3);
         expect(unchangedProgress(state)).toEqual(unchangedProgress(initial));
+        expect(state.ap).toBe(initial.ap + 1);
+        expect(state.battleRewardReceipt?.entries).toEqual([]);
+        expect(state.claimedRewardIds.filter((id) => id === rewardId)).toHaveLength(1);
         state = leaveBattle(state, state.revision);
         expect(state.activeBattle).toBeNull();
         roundTrip(state);
@@ -274,7 +288,7 @@ describe("small proof steps inside three-round battles", () => {
     },
   );
 
-  it("keeps current relationship values and pending AP untouched during either special battle", () => {
+  it("preserves relationship values and stores special battle AP when the wallet is full", () => {
     let initial: GameState = { ...createGame(), ap: 12, affection: 2, trust: -1, spark: 3 };
     initial = startEpisode(initial, "milano_duomo_episode");
     initial = skipTourismGuide(initial, initial.revision);
@@ -287,6 +301,10 @@ describe("small proof steps inside three-round battles", () => {
       const battle = special(kind);
       const state = finish(startBattle(initial, battle.id), battle, 3);
       expect(unchangedProgress(state)).toEqual(unchangedProgress(initial));
+      const rewardId = kind === "contradiction" ? "battle_scala_first" : "battle_brera_first";
+      expect(state.ap).toBe(initial.ap);
+      expect(state.pendingApRewards).toContainEqual({ rewardId, earnedAp: 1, remainingAp: 1 });
+      expect(state.battleRewardReceipt?.entries).toEqual([{ rewardId, earnedAp: 1, creditedAp: 0, pendingAp: 1 }]);
     }
   });
 });

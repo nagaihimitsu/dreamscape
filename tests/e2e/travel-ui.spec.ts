@@ -250,6 +250,26 @@ test("events at the same place share one destination and show distinct details",
   await expect(second).toContainText("分");
 });
 
+test("completed events disappear from a shared destination while an unplayed date remains", async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 780 });
+  await loadCurrentScene(page, "freeTime");
+  await page.evaluate(() => {
+    const key = "dreamscape.save.v1";
+    const state = JSON.parse(localStorage.getItem(key)!);
+    state.playedDateIds = [...new Set([...state.playedDateIds, "milano_cafe_01"])];
+    localStorage.setItem(key, JSON.stringify(state));
+  });
+  await page.reload();
+  const other = page.getByText("ほかの行き先を見る", { exact: true });
+  if (await other.isVisible()) await other.click();
+  const roastery = page.getByTestId("travel-place-p_roastery");
+  await expect(roastery).toBeVisible();
+  await roastery.getByRole("button").click();
+  await expect(page.getByTestId("travel-event-milano_cafe_01")).toHaveCount(0);
+  // Only the remaining event may proceed, without a second event picker.
+  await expect(page.getByRole("dialog", { name: /のイベント$/ })).toHaveCount(0);
+});
+
 test("choosing rail in the transport dialog starts the trip once", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 780 });
   await startNewGame(page);

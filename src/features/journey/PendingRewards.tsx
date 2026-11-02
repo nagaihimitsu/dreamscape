@@ -1,4 +1,4 @@
-import { balance, rewardRules } from "../../content";
+import { allRewardRules, balance } from "../../content";
 import type { GameState } from "../../domain/game";
 
 export function PendingRewards({
@@ -38,7 +38,7 @@ export function PendingRewards({
           <ul>
             {game.pendingApRewards.map((item) => (
               <li key={item.rewardId}>
-                {rewardRules.find((rule) => rule.id === item.rewardId)?.titleJa}：
+                {allRewardRules.find((rule) => rule.id === item.rewardId)?.titleJa}：
                 {item.remainingAp}AP
               </li>
             ))}
@@ -59,7 +59,7 @@ export function PendingRewards({
         <ul>
           {game.pendingApRewards.map((item) => (
             <li key={item.rewardId}>
-              {rewardRules.find((rule) => rule.id === item.rewardId)?.titleJa}：
+              {allRewardRules.find((rule) => rule.id === item.rewardId)?.titleJa}：
               {item.remainingAp}AP
             </li>
           ))}

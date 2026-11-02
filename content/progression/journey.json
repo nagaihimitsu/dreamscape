@@ -77,6 +77,7 @@
   "storyBattles": [
     {
       "battleId": "milano_la_scala_b01",
+      "completionReward": { "id": "battle_scala_first", "ap": 1, "titleJa": "スカラ座の対決を初めて完了" },
       "requiredEpisodeIds": [],
       "titleJa": "椅子にも身元がある",
       "descriptionJa": "スカラ座の前に、売り物でも腰掛けでもない椅子が一脚ある。",
@@ -84,6 +85,7 @@
     },
     {
       "battleId": "milano_brera_c01",
+      "completionReward": { "id": "battle_brera_first", "ap": 1, "titleJa": "ブレラの対決を初めて完了" },
       "requiredEpisodeIds": [],
       "titleJa": "青い布をほどくまで",
       "descriptionJa": "ブレラで衣装係と演出家が、同じ布の端を持っている。",

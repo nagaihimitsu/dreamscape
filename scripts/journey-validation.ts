@@ -40,6 +40,7 @@ export function validateJourney(
   unique(
     [
       ...journey.rewards.map((rule) => rule.id),
+      ...journey.storyBattles.flatMap((battle) => battle.completionReward ? [battle.completionReward.id] : []),
       ...trialMilestones.map((rule) => rule.rewardSourceId),
     ],
     "journey/trial reward ID",
@@ -63,6 +64,8 @@ export function validateJourney(
   );
   for (const encounter of journey.storyBattles) {
     const battle = battles.find((item) => item.id === encounter.battleId);
+    if (encounter.completionReward && encounter.completionReward.ap > apCap)
+      throw new Error(`Journey reward exceeds AP cap: ${encounter.completionReward.id}`);
     unique(encounter.requiredEpisodeIds, "story battle prerequisite");
     if (encounter.requiredEpisodeIds.some((id) => !journey.episodes.some((episode) => episode.id === id && episode.kind !== "city_finale")))
       throw new Error(`Unknown story battle prerequisite: ${encounter.battleId}`);

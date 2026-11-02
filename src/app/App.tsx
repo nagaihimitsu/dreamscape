@@ -404,7 +404,7 @@ export default function App({
           <div className="journey-controls" data-testid="city-progress">
             <button className="journey-progress-button" type="button" aria-label="観光地・発見・戦績を見る" onClick={() => setRecordsOpen(true)}><CityProgressBadge game={game} /></button>
             {game.endingReached && <span className="city-relationship">交際中</span>}
-            {idle && !showRomanceEnding && <TravelActions game={game}
+            {idle && !showRomanceEnding && <TravelActions game={game} reduceMotion={displaySettings.value.reduceMotion}
               onTravelWait={(minutes) => commit((state) => waitForTravel(state, minutes, game.revision))}
               onTravelSleep={(mode) => commit((state) => sleepAtHotel(state, mode, game.revision))} />}
           </div>
@@ -656,12 +656,6 @@ export default function App({
             onSubmitEvidence={() =>
               commit((state) => submitBattleEvidence(state, game.revision))
             }
-            onReplay={() => commit((state) => {
-              const battleId = game.activeBattle!.battleId;
-              const eventId = episodes.find((episode) => episode.battleId === battleId)?.id ?? battleId;
-              return beginTravelEvent(state, eventId, "walk", game.revision, nextRomanceRoll,
-                eventId === battleId ? undefined : battleId);
-            })}
             onNextEpisode={undefined}
             nextIsFinale={nextEpisode?.kind === "city_finale"}
             nextStoryBattle={nextStoryBattle ?? undefined}

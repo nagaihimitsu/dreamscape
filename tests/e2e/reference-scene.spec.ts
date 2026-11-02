@@ -179,6 +179,5 @@ test("short portrait can finish all three battle rounds", async ({ page }) => {
   const result = await battleDialogueUntilQuestionOrResult(page);
   expect(result.activeBattle?.phase).toBe("result");
   expect(result.activeBattle?.answers).toHaveLength(3);
-  await page.getByRole("button", { name: "再戦する", exact: true }).click();
-  await expect.poll(async () => (await saved(page)).activeBattle?.phase).toBe("dialogue");
+  await expect(page.getByRole("button", { name: "再戦する", exact: true })).toHaveCount(0);
 });

@@ -9,7 +9,7 @@ import { battleDialogueUntilQuestionOrResult } from "./battle-helpers";
 test.use({ viewport: { width: 360, height: 740 }, reducedMotion: "no-preference" });
 
 for (const [optionId, correct] of [["C", true], ["A", false]] as const) {
-  test(`${correct ? "correct" : "incorrect"} answer has a distinct beat and stays locked after reload`, async ({ page }, testInfo) => {
+  test(`${correct ? "correct" : "incorrect"} answer stays locked after reload`, async ({ page }, testInfo) => {
     await loadCurrentSupperQuestion(page);
     const before = await saved(page);
     await page.getByTestId(`answer-${optionId}`).evaluate((button: HTMLButtonElement) => {
@@ -17,9 +17,12 @@ for (const [optionId, correct] of [["C", true], ["A", false]] as const) {
       button.click();
     });
     const effect = page.getByTestId("answer-effect");
-    await expect(effect).toHaveAttribute("data-result", correct ? "correct" : "incorrect");
-    await expect(effect).toHaveAttribute("aria-hidden", "true");
-    await expect(effect).toHaveCSS("pointer-events", "none");
+    if (correct) {
+      await expect(effect).toHaveAttribute("data-result", "correct");
+      await expect(effect).toHaveClass(/answer-effect-subtle/);
+      await expect(effect).toHaveAttribute("aria-hidden", "true");
+      await expect(effect).toHaveCSS("pointer-events", "none");
+    } else await expect(effect).toHaveCount(0);
     await expect(page.getByTestId("answer-verdict")).toContainText(correct ? "正解" : "不正解");
     const answer = await saved(page);
     expect(answer.activeBattle?.answers).toHaveLength(1);
@@ -64,10 +67,10 @@ for (const method of ["setting", "device"] as const) {
       await page.getByLabel("演出を短縮する").check();
       await page.getByRole("dialog").getByRole("button", { name: "閉じる", exact: true }).click();
     }
-    await page.getByTestId("answer-A").click();
+    await page.getByTestId("answer-C").click();
     const after = await saved(page);
     expect(after.activeBattle?.answers).toHaveLength(1);
-    await expect(page.getByTestId("answer-verdict")).toContainText("不正解");
+    await expect(page.getByTestId("answer-verdict")).toContainText("正解");
     await expect(page.getByTestId("answer-effect")).toHaveCount(0);
     await expect(page.locator(".selected-panel")).toHaveCSS("animation-name", "none");
     await expect(page.getByTestId("battle-advance")).toBeVisible();
@@ -186,7 +189,8 @@ test("the five-question city boss keeps the effect on each round", async ({ page
     const correct = index !== 4;
     const option = question.options.find((item) => (item.id === question.correctOptionId) === correct)!;
     await page.getByTestId(`answer-${option.id}`).click();
-    await expect(page.getByTestId("answer-effect")).toHaveAttribute("data-result", index !== 4 ? "correct" : "incorrect");
+    if (correct) await expect(page.getByTestId("answer-effect")).toHaveAttribute("data-result", "correct");
+    else await expect(page.getByTestId("answer-effect")).toHaveCount(0);
     await expect(page.getByTestId("answer-verdict")).toContainText(index !== 4 ? "正解" : "不正解");
     expect((await saved(page)).activeBattle?.answers).toHaveLength(index + 1);
     await page.getByTestId("battle-advance").click();

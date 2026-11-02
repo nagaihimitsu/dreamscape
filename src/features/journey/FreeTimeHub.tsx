@@ -6,6 +6,7 @@ import { TrialMilestones } from "../romance/RomanceMenu";
 import { CityProgress } from "./CityProgress";
 import { PendingRewards } from "./PendingRewards";
 import { TravelMenu } from "./TravelMenu";
+import { showTravelEvent } from "./travel-visibility";
 import "./free-time-hub.css";
 
 /** The same compact destination for an unfinished or completed romance. */
@@ -36,7 +37,7 @@ export function FreeTimeHub({
   placeFocusRequest: number;
   onTravelEvent: (id: string, mode: TravelRoute["mode"]) => void;
 }) {
-  const localLandmarkIds = new Set(milanoTravelCatalog.events.filter((event) => event.placeId === game.travel.currentPlaceId).flatMap((event) => {
+  const localLandmarkIds = new Set(milanoTravelCatalog.events.filter((event) => event.placeId === game.travel.currentPlaceId && event.category === "main" && showTravelEvent(game, event)).flatMap((event) => {
     const landmarkId = episodes.find((episode) => episode.id === event.id)?.landmarkId ?? battles.find((battle) => battle.id === event.id)?.landmarkId;
     return landmarkId ? [landmarkId] : [];
   }));

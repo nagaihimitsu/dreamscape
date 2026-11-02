@@ -1,4 +1,4 @@
-import { episodes, rewardRules } from "../../content";
+import { allRewardRules, episodes } from "../../content";
 import type { GameState } from "../../domain/game";
 import { PendingRewards } from "./PendingRewards";
 
@@ -47,7 +47,7 @@ export function BattleRewards({
                   <li key={entry.rewardId}>
                     <span>
                       {
-                        rewardRules.find((rule) => rule.id === entry.rewardId)
+                        allRewardRules.find((rule) => rule.id === entry.rewardId)
                           ?.titleJa
                       }
                     </span>

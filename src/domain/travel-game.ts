@@ -60,6 +60,16 @@ export function isUnclearedMainTravelEvent(state: GameState, eventId: string): b
     return !state.completedEpisodeIds.includes(eventId);
   return !state.battleRecords.some((record) => record.battleId === eventId && record.attempts > 0);
 }
+
+/** Ordinary dates and completed main events are not offered for replay.
+ * Retryable confession/recovery conversations retain their existing rules. */
+export function isCompletedTravelEvent(state: GameState, eventId: string): boolean {
+  const event = milanoTravelCatalog.events.find((item) => item.id === eventId);
+  if (!event) return false;
+  if (event.category === "main") return !isUnclearedMainTravelEvent(state, eventId);
+  const date = dates.find((item) => item.id === eventId);
+  return !!date && (date.kind === "normal" || !date.repeatable) && state.playedDateIds.includes(eventId);
+}
 const reasonJa: Record<string, string> = {
   invalid: "旅行の状態を確認できません。", closed: "到着する時間には、この出来事を始められません。",
   time: "今日はホテルへの帰路を含めると時間が足りません。", budget: "移動や帰りのための予算が足りません。",
@@ -70,6 +80,7 @@ const reasonJa: Record<string, string> = {
 export function getTravelEventAvailability(state: GameState, eventId: string, mode: TravelMode): TravelAvailability {
   const event = getTravelEventDefinition(state, eventId);
   if (!event) return { available: false, reason: "行き先が見つかりません。" };
+  if (isCompletedTravelEvent(state, eventId)) return { available: false, reason: "この出来事は終えています。" };
   if (state.travel.activeEvent) return { available: false, reason: "途中の場面を終えてから出発できます。" };
   const existing = normalAvailability(state, eventId);
   if (!existing.available) return existing;

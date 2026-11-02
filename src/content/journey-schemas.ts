@@ -62,6 +62,7 @@ export const rewardRuleSchema = z
 // Special battles have their own independent prerequisites and records.
 export const storyBattleSchema = z.object({
   battleId: id,
+  completionReward: z.object({ id, ap: z.number().int().positive(), titleJa: japanese }).strict().optional(),
   requiredEpisodeIds: z.array(id),
   titleJa: japanese,
   descriptionJa: japanese,

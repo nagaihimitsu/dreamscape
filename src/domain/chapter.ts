@@ -219,10 +219,11 @@ function recordEpisodes(state: GameState): GameState {
 }
 export function finalizeBattleProgress(state: GameState): GameState {
   const active = state.activeBattle;
+  const specialReward = journeyConfig.storyBattles.find((battle) => battle.battleId === active?.battleId)?.completionReward;
   if (
     !active ||
     active.phase !== "result" ||
-    !episodes.some((episode) => episode.battleId === active.battleId)
+    (!specialReward && !episodes.some((episode) => episode.battleId === active.battleId))
   )
     return state;
   const next = recordEpisodes(state);
@@ -236,6 +237,7 @@ export function finalizeBattleProgress(state: GameState): GameState {
       );
     })
     .map((rule) => rule.id);
+  if (specialReward) ids.push(specialReward.id);
   const awarded = earnRewards(next, ids);
   return {
     ...awarded.state,
@@ -347,5 +349,9 @@ export function validateJourneyState(state: GameState): void {
       state.completedChapters.includes(city.id);
     if ((earned && !claimed) || (claimed && !earned && !legacyChapter))
       throw new Error("進行条件と報酬記録が一致しません。");
+  }
+  for (const battle of journeyConfig.storyBattles) {
+    if (battle.completionReward && state.claimedRewardIds.includes(battle.completionReward.id) && !storyBattleCompleted(state, battle.battleId))
+      throw new Error("特殊戦の報酬記録が一致しません。");
   }
 }

@@ -41,8 +41,10 @@ function continueStoryBattles(initial: GameState): GameState {
   let state = initial;
   while (getNextStoryBattle(state)) {
     const before = state;
-    state = finishBattle(startBattle(state, getNextStoryBattle(state)!.battleId));
-    expect(state.ap).toBe(before.ap);
+    const special = getNextStoryBattle(state)!;
+    state = finishBattle(startBattle(state, special.battleId));
+    const total = (game: GameState) => game.ap + game.pendingApRewards.reduce((sum, reward) => sum + reward.remainingAp, 0);
+    expect(total(state)).toBe(total(before) + special.completionReward!.ap);
     state = leaveBattle(state, state.revision);
   }
   return state;
@@ -114,7 +116,8 @@ describe("real-place optional dates", () => {
     expect(getDateAvailability(poor, id).available).toBe(false);
     expect(startDate(poor, id)).toBe(poor);
     const started = startDate(state, id);
-    expect(started.ap).toBe(state.ap - date.apCost);
+    const total = (game: GameState) => game.ap + game.pendingApRewards.reduce((sum, reward) => sum + reward.remainingAp, 0);
+    expect(total(started)).toBe(total(state) - date.apCost);
     expect(startDate(started, id)).toBe(started);
     expect(validateGameState(JSON.parse(JSON.stringify(started)))).toEqual(started);
     const completed = playDate(state, id, [0, 1]);
@@ -221,7 +224,7 @@ describe("real-place optional dates", () => {
     expect(state.battleRecords.every((record) => record.firstScore === 0)).toBe(true);
     expect(state.legacyTrialAvailable).toBe(false);
     const initialAp = totalAp(state);
-    expect(initialAp).toBe(15);
+    expect(initialAp).toBe(17);
 
     const route: readonly [string, [number, number]][] = [
       ["milano_novecento_date_01", [2, 0]],
@@ -246,7 +249,7 @@ describe("real-place optional dates", () => {
       expect(startDate(state, id)).toBe(state);
     }
     expect(spent).toBe(13);
-    expect(totalAp(state)).toBe(2);
+    expect(totalAp(state)).toBe(4);
     expect(state.pendingApRewards).toEqual([]);
     expect(state.playedDateIds).toEqual(route.map(([id]) => id));
     expect(state.memories).toHaveLength(7);

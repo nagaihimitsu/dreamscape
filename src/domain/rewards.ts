@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { balance, episodes, rewardRules } from "../content";
+import { allRewardRules, balance, episodes, journeyConfig, rewardRules } from "../content";
 import type { GameState } from "./game";
 
 export const pendingApRewardSchema = z
@@ -37,7 +37,7 @@ export function earnRewards(
   const entries: RewardCredit[] = [];
   for (const rewardId of rewardIds) {
     if (next.claimedRewardIds.includes(rewardId)) continue;
-    const rule = rewardRules.find((item) => item.id === rewardId);
+    const rule = allRewardRules.find((item) => item.id === rewardId);
     if (!rule) throw new Error("報酬の定義が見つかりません。");
     const creditedAp = creditNow
       ? Math.min(rule.ap, balance.apCap - next.ap)
@@ -98,7 +98,7 @@ export function validateRewardState(state: GameState): void {
     throw new Error("未受取の報酬が重複しています。");
   for (const item of state.pendingApRewards) {
     if (
-      !rewardRules.some((rule) => rule.id === item.rewardId) ||
+      !allRewardRules.some((rule) => rule.id === item.rewardId) ||
       !state.claimedRewardIds.includes(item.rewardId)
     )
       throw new Error("未受取の報酬記録が一致しません。");
@@ -114,7 +114,8 @@ export function validateRewardState(state: GameState): void {
   const episode = episodes.find(
     (item) => item.battleId === state.activeBattle?.battleId,
   );
-  if (!episode) throw new Error("この対決に章報酬はありません。");
+  const storyBattle = journeyConfig.storyBattles.find((item) => item.battleId === state.activeBattle?.battleId);
+  if (!episode && !storyBattle?.completionReward) throw new Error("この対決に報酬はありません。");
   if (
     new Set(receipt.entries.map((item) => item.rewardId)).size !==
     receipt.entries.length
@@ -122,12 +123,12 @@ export function validateRewardState(state: GameState): void {
     throw new Error("バトルの報酬が重複しています。");
   for (const entry of receipt.entries) {
     if (
-      !rewardRules.some(
+      !(rewardRules.some(
         (rule) =>
           rule.id === entry.rewardId &&
           rule.trigger !== "guide_read" &&
-          rule.episodeId === episode.id,
-      ) ||
+          rule.episodeId === episode?.id,
+      ) || storyBattle?.completionReward?.id === entry.rewardId) ||
       !state.claimedRewardIds.includes(entry.rewardId)
     )
       throw new Error("受け取った報酬の定義が一致しません。");

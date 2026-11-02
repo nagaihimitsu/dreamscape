@@ -80,8 +80,9 @@ describe("current journey special battles", () => {
     expect(restored.activeBattle!.reasoning!.selectedClueIds).toEqual(selected);
     expect(() => roundTrip({ ...restored, activeBattle: { ...restored.activeBattle!, contentHash: "changed-content" } })).toThrow();
     const completed = finish(restored);
-    expect(completed.claimedRewardIds).toEqual(initial.claimedRewardIds);
-    expect(completed.pendingApRewards).toEqual(initial.pendingApRewards);
-    expect(completed.ap).toBe(initial.ap);
+    const rewardId = kind === "contradiction" ? "battle_scala_first" : "battle_brera_first";
+    expect(completed.claimedRewardIds).toEqual([...initial.claimedRewardIds, rewardId]);
+    const total = (game: GameState) => game.ap + game.pendingApRewards.reduce((sum, reward) => sum + reward.remainingAp, 0);
+    expect(total(completed)).toBe(total(initial) + 1);
   });
 });

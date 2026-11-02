@@ -52,6 +52,7 @@ export const battles = battleCatalogSchema.parse(battleData).battles;
 export const journeyConfig = journeySchema.parse(journeyData);
 export const episodes = journeyConfig.episodes;
 export const rewardRules = journeyConfig.rewards;
+export const allRewardRules = [...rewardRules, ...journeyConfig.storyBattles.flatMap((battle) => battle.completionReward ? [battle.completionReward] : [])];
 const tourism = tourismCatalogSchema.parse(tourismData);
 export const landmarks = tourism.landmarks;
 export const tourismAssets = tourism.assets;

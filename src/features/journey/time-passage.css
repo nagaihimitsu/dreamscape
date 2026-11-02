@@ -1,0 +1,48 @@
+.time-passage {
+  position: fixed;
+  z-index: 2000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  animation: time-passage-overlay 2.8s ease both;
+}
+.time-passage-sky {
+  position: relative;
+  overflow: hidden;
+  width: min(230px, 68vw);
+  height: 112px;
+  border-radius: 12px;
+  box-shadow: 0 5px 22px #1f302c44;
+  animation: time-passage-sky 2.8s ease both;
+}
+.time-passage-sun, .time-passage-moon {
+  position: absolute;
+  left: calc(50% - 15px);
+  bottom: 37px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+.time-passage-sun { background: #ffd873; box-shadow: 0 0 18px #ffd87388; animation: time-passage-sun 2.8s linear both; }
+.time-passage-moon { background: #fff3c8; box-shadow: 0 0 12px #fff3c855; animation: time-passage-moon 2.8s linear both; }
+.time-passage-moon::after { content: ""; position: absolute; top: -4px; left: 9px; width: 28px; height: 28px; border-radius: 50%; background: #354a65; }
+.time-passage-horizon { position: absolute; inset: auto 0 0; height: 22px; background: #506d5d; }
+@keyframes time-passage-overlay { 0%, 100% { opacity: 0; } 8%, 92% { opacity: 1; } }
+@keyframes time-passage-sky { 0%, 100% { background: #bddbe1; } 34%, 66% { background: #354a65; } }
+@keyframes time-passage-sun {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-90px, 65px); }
+  26% { transform: translate(90px, 65px); }
+  56% { transform: translate(90px, 65px); }
+  100% { transform: translate(0, 0); }
+}
+@keyframes time-passage-moon {
+  0% { transform: translate(90px, 65px); }
+  38% { transform: translate(0, 0); }
+  78%, 100% { transform: translate(-90px, 65px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .time-passage { animation-duration: 1ms; }
+}
+.time-passage.is-reduced { animation-duration: 1ms; }

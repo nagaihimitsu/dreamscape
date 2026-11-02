@@ -48,7 +48,7 @@ async function assertCaseImage(page: Page, clueId: string) {
   expect(width).toBe(asset!.width);
 }
 
-test("B exposes a definite contradiction with readable case evidence, persists retries, and grants no rewards", async ({
+test("B exposes a definite contradiction with readable case evidence and persists retries", async ({
   page,
 }) => {
   test.setTimeout(180_000);
@@ -165,24 +165,12 @@ test("B exposes a definite contradiction with readable case evidence, persists r
     lastScore: 3,
   });
   await expect(page.getByTestId("episode-clear")).toHaveCount(0);
-  await expect(page.getByTestId("battle-rewards")).toHaveCount(0);
+  await expect(page.getByTestId("battle-rewards")).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "PERFECT VICTORY", exact: true }),
   ).toBeVisible();
   await reloadUnchanged(page);
-  await page
-    .getByRole("button", { name: "再戦する", exact: true })
-    .evaluate((button: HTMLButtonElement) => {
-      button.click();
-      button.click();
-    });
-  const replay = await playSpecialBattle(page, "B", [false, false, false], "story");
-  expect(replay.state.activeBattle!.score).toBe(0);
-  expect(nonBattleProgress(replay.state)).toEqual(protectedProgress);
-  expect(
-    replay.state.battleRecords.find((record) => record.battleId === battle.id)
-      ?.attempts,
-  ).toBe(3);
+  await expect(page.getByRole("button", { name: "再戦する", exact: true })).toHaveCount(0);
   await page
     .getByRole("button", { name: "自由時間へ戻る", exact: true })
     .click();

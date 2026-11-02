@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { createGame } from "./game";
-import { getTravelEventAvailability, getTravelEventDefinition, isTravelEventUnlocked, isUnclearedMainTravelEvent } from "./travel-game";
+import { beginTravelEvent, getTravelEventAvailability, isCompletedTravelEvent, isTravelEventUnlocked, isUnclearedMainTravelEvent } from "./travel-game";
 import { groupDestinationEvents, selectNearbyDestinations } from "./travel";
 
 describe("main travel event completion", () => {
-  it("treats completed episodes and special battles as revisitable, not uncleared", () => {
+  it("does not offer or restart completed episodes, special battles or ordinary dates", () => {
     const initial = createGame();
     expect(isUnclearedMainTravelEvent(initial, "milano_duomo_episode")).toBe(true);
     expect(isUnclearedMainTravelEvent(initial, "milano_la_scala_b01")).toBe(true);
@@ -13,12 +13,17 @@ describe("main travel event completion", () => {
       ...initial,
       completedEpisodeIds: ["milano_duomo_episode"],
       battleRecords: [{ battleId: "milano_la_scala_b01", attempts: 1, firstScore: 0, bestScore: 0, lastScore: 0 }],
+      playedDateIds: ["milano_cafe_01"],
     };
     expect(isUnclearedMainTravelEvent(completed, "milano_duomo_episode")).toBe(false);
     expect(isUnclearedMainTravelEvent(completed, "milano_la_scala_b01")).toBe(false);
-    expect(getTravelEventAvailability(completed, "milano_duomo_episode", "walk").available).toBe(true);
-    expect(getTravelEventAvailability(completed, "milano_la_scala_b01", "walk").available).toBe(true);
-    expect(getTravelEventDefinition(completed, "milano_la_scala_b01")?.activityMinutes).toBe(15);
+    for (const id of ["milano_duomo_episode", "milano_la_scala_b01", "milano_cafe_01"]) {
+      expect(isCompletedTravelEvent(completed, id)).toBe(true);
+      expect(getTravelEventAvailability(completed, id, "walk").available).toBe(false);
+      expect(beginTravelEvent(completed, id, "walk", completed.revision)).toBe(completed);
+    }
+    expect(isCompletedTravelEvent({ ...initial, playedDateIds: ["milano_confession_01", "milano_recovery_01"] }, "milano_confession_01")).toBe(false);
+    expect(isCompletedTravelEvent({ ...initial, playedDateIds: ["milano_confession_01", "milano_recovery_01"] }, "milano_recovery_01")).toBe(false);
   });
 
   it("counts an unlocked, uncompleted finale as the guaranteed main event", () => {

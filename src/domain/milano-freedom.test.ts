@@ -4,7 +4,6 @@ import { getEpisodeAvailability, startEpisode } from "./chapter";
 import { skipTourismGuide, startTourismBattle } from "./tourism";
 import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "./battle";
 import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, sleepAtHotel, waitForTravel } from "./travel-game";
-import { advanceEncounter, chooseEncounter, continueTourismEncounters, finishEncounter, getEncounterOptionAvailability, proceedFromTourism } from "./encounter";
 
 const mainEpisodes = ["milano_duomo_episode", "milano_galleria_episode", "milano_last_supper_episode", "milano_castello_episode"];
 const specials = ["milano_la_scala_b01", "milano_brera_c01"];
@@ -86,41 +85,13 @@ describe("Milan real travel itineraries", () => {
   it.each([
     ["milano_la_scala_b01", "la_scala_case", "scala_mint"],
     ["milano_brera_c01", "brera_case", "brera_sitter"],
-  ])("keeps %s reserved while revisiting its pending encounters at %s", (id, landmarkId, encounterId) => {
+  ])("does not revisit completed %s even when %s has a pending %s encounter", (id) => {
     const initial = createGame();
     const first = beginTravelEvent(initial, id, "walk", initial.revision);
     expect(first.activeBattle?.battleId).toBe(id);
     const completed = completeBattle(first);
     const revisit = beginTravelEvent(completed, id, "walk", completed.revision);
-    expect(revisit.activeTourism?.landmarkId).toBe(landmarkId);
-    expect(revisit.activeBattle).toBeNull();
-    expect(revisit.travel.activeEvent?.eventId).toBe(id);
-    expect(revisit.travelBudget).toBe(completed.travelBudget);
-    expect(revisit.ap).toBe(completed.ap);
-    expect(validateGameState(JSON.parse(JSON.stringify(revisit)))).toEqual(revisit);
-    const explored = revisit.activeTourism?.phase === "guide" ? skipTourismGuide(revisit, revisit.revision) : revisit;
-    expect(finishTravelEventIfComplete(revisit, explored).travel.activeEvent?.eventId).toBe(id);
-    expect(validateGameState(JSON.parse(JSON.stringify(explored)))).toEqual(explored);
-    let current = proceedFromTourism(explored, explored.revision, () => 1);
-    expect(current.activeEncounter?.encounterId).toBe(encounterId);
-    expect(validateGameState(JSON.parse(JSON.stringify(current)))).toEqual(current);
-    for (let step = 0; current.activeEncounter; step++) {
-      expect(step).toBeLessThan(100);
-      const frame = current.activeEncounter.frame;
-      const choices = frame.choices.filter((item) => getEncounterOptionAvailability(current, item.index).available);
-      const choice = choices[1] ?? choices[0];
-      const next = frame.ended ? finishEncounter(current, current.revision)
-        : choice ? chooseEncounter(current, choice.index, current.revision)
-        : advanceEncounter(current, current.revision);
-      current = finishTravelEventIfComplete(current, continueTourismEncounters(current, next, () => 1));
-    }
-    expect(current.travel.activeEvent?.eventId).toBe(id);
-    expect(current.travel.minute).toBe(revisit.travel.minute);
-    expect(current.travelBudget).toBe(revisit.travelBudget);
-    expect(validateGameState(JSON.parse(JSON.stringify(current)))).toEqual(current);
-    const battle = proceedFromTourism(current, current.revision, () => 1);
-    expect(battle.activeBattle?.battleId).toBe(id);
-    expect(battle.travel.activeEvent?.eventId).toBe(id);
+    expect(revisit).toBe(completed);
   });
 
   it.each(permutations(mainEpisodes).flatMap((main) => permutations(specials).map((special) => ({ main, special }))))(
