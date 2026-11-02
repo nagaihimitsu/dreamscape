@@ -36,7 +36,7 @@ describe("Milan travel data references", () => {
       const place = travel.places.find((candidate) => candidate.id === event.placeId)!;
       const outbound = travel.routes.find((route) => route.fromPlaceId === settings.hotelPlaceId && route.toPlaceId === event.placeId && route.mode === "walk")!;
       const home = travel.routes.find((route) => route.fromPlaceId === event.placeId && route.toPlaceId === settings.hotelPlaceId && route.mode === "walk")!;
-      const possible = Array.from({ length: 22 * 60 - 9 * 60 }, (_, offset) => 9 * 60 + offset).some((minute) =>
+      const possible = Array.from({ length: 21 * 60 - 9 * 60 }, (_, offset) => 9 * 60 + offset).some((minute) =>
         planTravelEvent({ day: 1, minute, currentPlaceId: settings.hotelPlaceId, hotelPlaceId: settings.hotelPlaceId, ap: 12, travelBudget: 0 }, event, outbound, home, place).ok);
       expect(possible, event.id).toBe(true);
     }

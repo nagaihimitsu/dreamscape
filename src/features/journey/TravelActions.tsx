@@ -3,7 +3,7 @@ import { milanoTravelCatalog, milanoTravelSettings } from "../../content";
 import type { TravelRoute } from "../../content/travel-schemas";
 import { Modal } from "../../components/Modal";
 import type { GameState } from "../../domain/game";
-import { planOvernight } from "../../domain/travel";
+import { DAY_END, canReturnByDayEnd, planOvernight } from "../../domain/travel";
 import { getTravelHomeRoutes, waitForTravel } from "../../domain/travel-game";
 import { formatTravelTime } from "./travel-time";
 import { showTravelEvent, travelModeLabels } from "./travel-visibility";
@@ -25,7 +25,7 @@ export function TravelActions({ game, onTravelWait, onTravelSleep, reduceMotion 
   }
   const events = milanoTravelCatalog.events.filter((event) => showTravelEvent(game, event));
   const nextTimes = [18 * 60, ...events.flatMap((event) => event.startWindows?.map((window) => window.start) ?? []), ...milanoTravelCatalog.places.flatMap((place) => place.openingWindows?.map((window) => window.start) ?? [])]
-    .filter((value) => value > game.travel.minute && value < 22 * 60);
+    .filter((value) => value > game.travel.minute && value < DAY_END);
   const nextTime = nextTimes.length ? Math.min(...nextTimes) : null;
   const homeRoutes = getTravelHomeRoutes(game.travel.currentPlaceId, game.travel.hotelPlaceId);
   const snapshot = { ...game.travel, ap: game.ap, travelBudget: game.travelBudget };
@@ -33,8 +33,8 @@ export function TravelActions({ game, onTravelWait, onTravelSleep, reduceMotion 
     <details className="travel-wait">
       <summary aria-label="時間を進める">待機</summary>
       <div className="travel-wait-actions">
-        <button type="button" className="secondary" disabled={waitForTravel(game, 30, game.revision) === game} onClick={() => { if (onTravelWait(30)) showTimePassage(); }}>30分待つ</button>
-        {nextTime !== null && <button type="button" className="secondary" disabled={waitForTravel(game, nextTime - game.travel.minute, game.revision) === game} onClick={() => { if (onTravelWait(nextTime - game.travel.minute)) showTimePassage(); }}>{formatTravelTime(nextTime)}まで待つ</button>}
+        <button type="button" className="secondary" disabled={waitForTravel(game, 30, game.revision) === game} onClick={() => onTravelWait(30)}>30分待つ</button>
+        {nextTime !== null && <button type="button" className="secondary" disabled={waitForTravel(game, nextTime - game.travel.minute, game.revision) === game} onClick={() => onTravelWait(nextTime - game.travel.minute)}>{formatTravelTime(nextTime)}まで待つ</button>}
       </div>
     </details>
     <button type="button" className="travel-sleep-toggle" aria-label="滞在先で休む" onClick={() => setShowSleep(true)}>休む</button>
@@ -42,7 +42,7 @@ export function TravelActions({ game, onTravelWait, onTravelSleep, reduceMotion 
       <div className="travel-choice-header"><h2 id="travel-sleep-title">滞在先で休む</h2><button type="button" className="secondary" onClick={() => setShowSleep(false)}>閉じる</button></div>
       <p>架空の滞在先へ戻り、翌日9:00に出発します。ゲーム内の宿泊費は€{milanoTravelSettings.lodgingCost}、APは使いません。予算の不足分は補助されます。</p>
       <div className="travel-choice-routes">{homeRoutes.map((route) => {
-        const result = planOvernight(snapshot, route, milanoTravelSettings.lodgingCost);
+        const result = planOvernight(snapshot, route, milanoTravelSettings.lodgingCost, !canReturnByDayEnd(snapshot, homeRoutes));
         const via = route.viaPlaceId ? milanoTravelCatalog.places.find((place) => place.id === route.viaPlaceId)?.nameJa : undefined;
         return <div key={route.mode}><button type="button" className="secondary travel-route" disabled={!result.ok} onClick={() => { if (onTravelSleep(route.mode)) showTimePassage(); setShowSleep(false); }}>{travelModeLabels[route.mode]}{via ? `・${via}から徒歩` : ""} {route.minutes}分 · €{route.cost}{result.ok && result.usedAssistance ? "（宿泊費の不足分は補助）" : ""}</button>{!result.ok && <p className="fine-print">{result.reason === "budget" ? "この移動手段の予算が足りません。" : "この経路では帰れません。"}</p>}</div>;
       })}</div>

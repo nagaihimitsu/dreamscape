@@ -4,7 +4,7 @@ import { getEpisodeAvailability, isEpisodeUnlocked, isStoryBattleUnlocked, start
 import { getDateAvailability, isDateUnlockedForTravel, isUpdatedDateReplay, startDate, type GameState } from "./game";
 import { hasPendingPlaceEncounter } from "./encounter";
 import { openTourism } from "./tourism";
-import { planOvernight, planTravelEvent } from "./travel";
+import { canReturnByDayEnd, DAY_END, planOvernight, planTravelEvent } from "./travel";
 import { findTravelHomeRoutes } from "./travel-routes";
 import type { TravelRoute } from "../content/travel-schemas";
 
@@ -105,7 +105,7 @@ export function beginTravelEvent(state: GameState, eventId: string, mode: Travel
   const event = getTravelEventDefinition(state, eventId);
   if (!availability.available || !availability.plan || !event) return state;
   const moved = { ...state, travelBudget: availability.plan.remainingBudget,
-    travel: { ...state.travel, currentPlaceId: event.placeId, minute: availability.plan.arrivalMinute, returnReserve: availability.plan.returnReserve } };
+    travel: { ...state.travel, currentPlaceId: event.placeId, minute: availability.plan.arrivalMinute, returnReserve: availability.plan.returnReserve, returnDeadline: DAY_END } };
   const episode = episodes.find((item) => item.id === eventId);
   if (replayBattleId && (!episode || episode.battleId !== replayBattleId || !state.battleRecords.some((record) => record.battleId === replayBattleId && record.attempts > 0))) return state;
   const isDate = dates.some((date) => date.id === eventId);
@@ -142,20 +142,22 @@ export function finishTravelEventIfComplete(previous: GameState, next: GameState
 
 export function waitForTravel(state: GameState, minutes: number, expectedRevision: number): GameState {
   if (state.revision !== expectedRevision || state.travel.activeEvent || state.activeDate || state.activeBattle || state.activeTourism || state.activeEncounter || state.activeEpilogue ||
-      !Number.isSafeInteger(minutes) || minutes <= 0 || state.travel.minute + minutes > 1320) return state;
+      !Number.isSafeInteger(minutes) || minutes <= 0 || state.travel.minute + minutes > DAY_END) return state;
   const home = getTravelHomeRoutes(state.travel.currentPlaceId, state.travel.hotelPlaceId)
-    .filter((item) => item.cost <= state.travelBudget && state.travel.minute + minutes + item.minutes <= 1320)
+    .filter((item) => item.cost <= state.travelBudget && state.travel.minute + minutes + item.minutes <= DAY_END)
     .sort((a, b) => a.cost - b.cost || a.minutes - b.minutes)[0];
   if (!home) return state;
-  return { ...state, revision: state.revision + 1, travel: { ...state.travel, minute: state.travel.minute + minutes, returnReserve: home.cost } };
+  return { ...state, revision: state.revision + 1, travel: { ...state.travel, minute: state.travel.minute + minutes, returnReserve: home.cost, returnDeadline: DAY_END } };
 }
 
 export function sleepAtHotel(state: GameState, mode: TravelMode, expectedRevision: number): GameState {
   if (state.revision !== expectedRevision || state.travel.activeEvent || state.activeDate || state.activeBattle || state.activeTourism || state.activeEncounter || state.activeEpilogue) return state;
-  const home = getTravelHomeRoutes(state.travel.currentPlaceId, state.travel.hotelPlaceId).find((item) => item.mode === mode);
+  const homeRoutes = getTravelHomeRoutes(state.travel.currentPlaceId, state.travel.hotelPlaceId);
+  const home = homeRoutes.find((item) => item.mode === mode);
   if (!home) return state;
-  const plan = planOvernight(snapshot(state), home, milanoTravelSettings.lodgingCost);
+  const current = snapshot(state);
+  const plan = planOvernight(current, home, milanoTravelSettings.lodgingCost, !canReturnByDayEnd(current, homeRoutes));
   if (!plan.ok) return state;
   return { ...state, revision: state.revision + 1, travelBudget: plan.remainingBudget,
-    travel: { ...state.travel, currentPlaceId: state.travel.hotelPlaceId, day: plan.nextDay, minute: plan.nextMinute, returnReserve: 0 } };
+    travel: { ...state.travel, currentPlaceId: state.travel.hotelPlaceId, day: plan.nextDay, minute: plan.nextMinute, returnReserve: 0, returnDeadline: DAY_END } };
 }

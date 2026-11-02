@@ -58,7 +58,9 @@ function MapCanvas({ game, events, places, onSelect, mapRef, initialView, expand
     for (const place of places) {
       const here = place.id === game.travel.currentPlaceId;
       const categories = new Set(events.filter((event) => event.placeId === place.id).map((event) => event.category));
-      const visited = events.some((event) => event.placeId === place.id && (game.completedEpisodeIds.includes(event.id) || game.playedDateIds.includes(event.id) || game.battleRecords.some((record) => record.battleId === event.id && record.attempts > 0)));
+      // A remaining destination may share a place with a completed event.
+      // Keep the place's visit history without showing the completed event's category.
+      const visited = milanoTravelCatalog.events.some((event) => event.placeId === place.id && (game.completedEpisodeIds.includes(event.id) || game.playedDateIds.includes(event.id) || game.battleRecords.some((record) => record.battleId === event.id && record.attempts > 0)));
       const label = `${place.nameJa}${here ? "、現在地" : ""}${categories.has("main") ? "、観光" : ""}${categories.has("date") ? "、デート" : ""}${visited ? "、訪問済み" : "、未訪問"}`;
       const symbol = `${categories.has("main") ? "◆" : ""}${categories.has("date") ? "♥" : ""}` || "●";
       const icon = L.divIcon({ className: "travel-map-marker-wrap", html: `<span class="travel-map-marker${here ? " is-here" : ""}${visited ? " is-visited" : ""}">${symbol}</span>`, iconSize: [32, 32], iconAnchor: [16, 16] });

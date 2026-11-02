@@ -21,9 +21,6 @@ export function TravelMenu({ game, onTravelEvent }: {
   const current = milanoTravelCatalog.places.find((place) => place.id === game.travel.currentPlaceId);
   if (!current) return <p role="alert">現在地を確認できません。保存状態を確認してください。</p>;
   const events = milanoTravelCatalog.events.filter((event) => showTravelEvent(game, event));
-  const mapEvents = milanoTravelCatalog.events.filter((event) => showTravelEvent(game, event) ||
-    game.completedEpisodeIds.includes(event.id) || game.playedDateIds.includes(event.id) ||
-    game.battleRecords.some((record) => record.battleId === event.id && record.attempts > 0));
   const outgoing = milanoTravelCatalog.routes.filter((route) => route.fromPlaceId === current.id);
   const candidates = events.flatMap((event) => {
     const walk = outgoing.find((route) => route.toPlaceId === event.placeId && route.mode === "walk");
@@ -53,7 +50,7 @@ export function TravelMenu({ game, onTravelEvent }: {
   }
   return <section className="travel-menu" aria-label="ミラノの行き先" data-testid="travel-menu">
     {game.travel.returnReserve > 0 && <p className="travel-reserve">帰路用に€{game.travel.returnReserve}を確保（所持金に含む）</p>}
-    <PlaceMap game={game} events={mapEvents} />
+    <PlaceMap game={game} events={events} />
     {nearby.length === 0 && <p>今すぐ行ける場所はありません。時間を待つか、滞在先で休めます。</p>}
     <div className="travel-list">{nearby.map((place) => <Destination key={place.id} place={place} game={game} current={current} recommended={place.id === recommendedMainId} onSelect={() => selectPlace(place)} />)}</div>
     {other.length > 0 && <details open={showOther} onToggle={(event) => setShowOther(event.currentTarget.open)}><summary>ほかの行き先を見る</summary><div className="travel-list">{other.map((place) => <Destination key={place.id} place={place} game={game} current={current} onSelect={() => selectPlace(place)} />)}</div></details>}

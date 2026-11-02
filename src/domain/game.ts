@@ -3,6 +3,7 @@ import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
 import { deriveRelationshipTone } from "./romance-tone";
 import { secureRomanceRoll } from "../random/romance-source";
 import { minimumHomeFare } from "./travel-routes";
+import { DAY_END } from "./travel";
 import { activeEncounterSchema } from "./encounter-state";
 import { validateEncounterState } from "./encounter";
 import { responseProfileSchema } from "../content/schemas";
@@ -218,6 +219,7 @@ export const gameStateSchema = phase11StateSchema.extend({
     day: z.number().int().positive().safe(),
     minute: z.number().int().min(540).max(1980),
     returnReserve: z.number().int().nonnegative().safe(),
+    returnDeadline: z.literal(DAY_END).optional(),
     activeEvent: z.object({
       eventId: stableContentId,
       placeId: stableContentId,
@@ -238,7 +240,7 @@ export function createGame(
 ): GameState {
   return {
     schemaVersion: 12,
-    travel: { currentPlaceId: milanoTravelSettings.hotelPlaceId, hotelPlaceId: milanoTravelSettings.hotelPlaceId, day: 1, minute: 540, returnReserve: 0, activeEvent: null },
+    travel: { currentPlaceId: milanoTravelSettings.hotelPlaceId, hotelPlaceId: milanoTravelSettings.hotelPlaceId, day: 1, minute: 540, returnReserve: 0, returnDeadline: DAY_END, activeEvent: null },
     updatedDateIds: [],
     travelBudget: milanoTravelSettings.initialBudget,
     inventory: {},
@@ -865,8 +867,13 @@ export function validateGameState(input: unknown): GameState {
       (travel.activeEvent && (!milanoTravelCatalog.events.some((event) => event.id === travel.activeEvent!.eventId && event.placeId === travel.activeEvent!.placeId) ||
         travel.activeEvent.placeId !== travel.currentPlaceId || travel.activeEvent.endMinute < travel.minute)))
     throw new Error("旅行の位置や時間枠が一致しません。");
-  const requiredFare = minimumHomeFare(milanoTravelCatalog.routes, travel.currentPlaceId, travel.hotelPlaceId,
-    travel.activeEvent?.endMinute ?? travel.minute);
+  const returnMinute = travel.activeEvent?.endMinute ?? travel.minute;
+  let requiredFare = minimumHomeFare(milanoTravelCatalog.routes, travel.currentPlaceId, travel.hotelPlaceId, returnMinute);
+  // Existing saves may have reserved an affordable return under the previous
+  // 22:00 deadline. Preserve those saves; new plans use the 21:00 deadline.
+  if (travel.returnDeadline === undefined && returnMinute < DAY_END && (requiredFare === undefined || travel.returnReserve < requiredFare)) {
+    requiredFare = minimumHomeFare(milanoTravelCatalog.routes, travel.currentPlaceId, travel.hotelPlaceId, returnMinute, 22 * 60);
+  }
   if (requiredFare === undefined || travel.returnReserve < requiredFare)
     throw new Error("帰路の交通費を確保できていません。");
   if (travel.activeEvent) {

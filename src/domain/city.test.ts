@@ -316,6 +316,12 @@ describe("Milan's four episodes and distinct city finale", () => {
   it("finishes the city without automatically starting romance and saves each epilogue boundary", () => {
     let state = finishEpisode(tour(), finale(), 0);
     const initial = state;
+    for (const currentPlaceId of ["p_hotel", "p_galleria", "p_prada"]) {
+      const elsewhere = { ...initial, travel: { ...initial.travel, currentPlaceId } };
+      const started = startCityEpilogue(elsewhere, "milano", elsewhere.revision);
+      expect(started.activeEpilogue).not.toBeNull();
+      expect(restore(started).travel).toEqual(elsewhere.travel);
+    }
     const text: string[] = [];
     state = startCityEpilogue(state, "milano", state.revision);
     expect(startCityEpilogue(state, "milano", initial.revision)).toBe(state);

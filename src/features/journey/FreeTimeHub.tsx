@@ -48,7 +48,7 @@ export function FreeTimeHub({
   return (
     <section className="free-time-hub paper" data-testid="free-time-hub">
       <h1 className="sr-only">ミラノの行き先</h1>
-      <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} showNext={false} showSummary={false} allowEpilogue={game.travel.currentPlaceId === "p_darsena"} />
+      <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} showNext={false} showSummary={false} />
 
       <TravelMenu game={game} onTravelEvent={onTravelEvent} />
 

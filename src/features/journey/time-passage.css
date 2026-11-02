@@ -16,6 +16,19 @@
   box-shadow: 0 5px 22px #1f302c44;
   animation: time-passage-sky 2.8s ease both;
 }
+.time-passage-label {
+  position: absolute;
+  z-index: 1;
+  top: 12px;
+  left: 0;
+  right: 0;
+  color: #fffdf4;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-align: center;
+  text-shadow: 0 1px 5px #172c25cc;
+}
 .time-passage-sun, .time-passage-moon {
   position: absolute;
   left: calc(50% - 15px);
@@ -42,7 +55,15 @@
   38% { transform: translate(0, 0); }
   78%, 100% { transform: translate(-90px, 65px); }
 }
+/* Keep the day transition readable without moving the sun or moon. */
+@keyframes time-passage-still { from, to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
-  .time-passage { animation-duration: 1ms; }
+  .time-passage { animation: time-passage-still 900ms steps(1, end); }
+  .time-passage-sky { animation: none; background: #bddbe1; }
+  .time-passage-sun { animation: none; }
+  .time-passage-moon { display: none; }
 }
-.time-passage.is-reduced { animation-duration: 1ms; }
+.time-passage.is-reduced { animation: time-passage-still 900ms steps(1, end); }
+.time-passage.is-reduced .time-passage-sky { animation: none; background: #bddbe1; }
+.time-passage.is-reduced .time-passage-sun { animation: none; }
+.time-passage.is-reduced .time-passage-moon { display: none; }

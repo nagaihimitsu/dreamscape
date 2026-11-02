@@ -108,7 +108,7 @@ describe("travel direction and time", () => {
 
   it.each([
     [8 * 60 + 59, "closed"], [9 * 60, "day"], [17 * 60 + 59, "day"],
-    [18 * 60, "night"], [21 * 60 + 59, "night"], [22 * 60, "closed"],
+    [18 * 60, "night"], [20 * 60 + 59, "night"], [21 * 60, "closed"],
   ])("classifies minute %i as %s", (minute, period) => {
     expect(getTimePeriod(minute)).toBe(period);
   });
@@ -140,6 +140,12 @@ describe("travel planning", () => {
       .toEqual({ ok: true, arrivalMinute: 9 * 60 + 35, remainingBudget: 5 });
   });
 
+  it("allows arrival at 21:00 but does not start travel at or after closing", () => {
+    const oneMinute = { ...walk, minutes: 1 };
+    expect(planTravel({ ...snapshot, minute: 20 * 60 + 59 }, oneMinute).ok).toBe(true);
+    expect(planTravel({ ...snapshot, minute: 21 * 60 }, oneMinute)).toEqual({ ok: false, reason: "time" });
+  });
+
   it("tests the event against arrival time and preserves the input on rejection", () => {
     const late = { ...snapshot, minute: 17 * 60 + 50 };
     const nightOnly = { ...date, startWindows: [{ start: 18 * 60, end: 22 * 60 }] };
@@ -152,20 +158,20 @@ describe("travel planning", () => {
     expect(late.ap).toBe(4);
   });
 
-  it("refuses an activity when activity and return would exceed 22:00 or AP is insufficient", () => {
-    expect(planTravelEvent({ ...snapshot, minute: 20 * 60 + 31 }, date, walk, walkHome, place).ok).toBe(false);
-    expect(planTravelEvent({ ...snapshot, minute: 20 * 60 + 30 }, date, walk, walkHome, place).ok).toBe(true);
+  it("refuses an activity when activity and return would exceed 21:00 or AP is insufficient", () => {
+    expect(planTravelEvent({ ...snapshot, minute: 19 * 60 + 31 }, date, walk, walkHome, place).ok).toBe(false);
+    expect(planTravelEvent({ ...snapshot, minute: 19 * 60 + 30 }, date, walk, walkHome, place).ok).toBe(true);
     expect(planTravelEvent({ ...snapshot, ap: 1 }, date, walk, walkHome, place).ok).toBe(false);
   });
 
   it("accepts a paid return if it fits the budget after outward travel without charging it yet", () => {
     const outbound = { ...walk, mode: "bus" as const, cost: 3 };
     const railHome = { ...walkHome, mode: "rail" as const, minutes: 5, cost: 4 };
-    const late = { ...snapshot, minute: 20 * 60 + 40 };
+    const late = { ...snapshot, minute: 19 * 60 + 40 };
     expect(planTravelEvent(late, date, outbound, walkHome, place)).toEqual({ ok: false, reason: "time" });
     expect(planTravelEvent(late, date, outbound, railHome, place)).toEqual({
-      ok: true, arrivalMinute: 20 * 60 + 55, endMinute: 21 * 60 + 55,
-      returnMinute: 22 * 60, remainingBudget: 7, remainingAp: 2,
+      ok: true, arrivalMinute: 19 * 60 + 55, endMinute: 20 * 60 + 55,
+      returnMinute: 21 * 60, remainingBudget: 7, remainingAp: 2,
     });
     expect(planTravelEvent({ ...late, travelBudget: 6 }, date, outbound, railHome, place))
       .toEqual({ ok: false, reason: "budget" });
@@ -225,12 +231,12 @@ describe("travel planning", () => {
     });
   });
 
-  it("requires normal returns to arrive by 22:00 while preserving the late-scene rescue", () => {
+  it("requires normal returns to arrive by 21:00 while preserving the late-scene rescue", () => {
     const away = { ...snapshot, currentPlaceId: "gallery" };
-    expect(planOvernight({ ...away, minute: 21 * 60 + 45 }, walkHome, 0).ok).toBe(true);
-    expect(planOvernight({ ...away, minute: 21 * 60 + 46 }, walkHome, 0)).toEqual({ ok: false, reason: "time" });
-    expect(planOvernight({ ...away, minute: 22 * 60 }, walkHome, 0)).toEqual({ ok: false, reason: "time" });
-    expect(planOvernight({ ...away, minute: 22 * 60 + 1 }, walkHome, 0).ok).toBe(true);
+    expect(planOvernight({ ...away, minute: 20 * 60 + 45 }, walkHome, 0).ok).toBe(true);
+    expect(planOvernight({ ...away, minute: 20 * 60 + 46 }, walkHome, 0)).toEqual({ ok: false, reason: "time" });
+    expect(planOvernight({ ...away, minute: 21 * 60 }, walkHome, 0).ok).toBe(true);
+    expect(planOvernight({ ...away, minute: 21 * 60 + 1 }, walkHome, 0).ok).toBe(true);
   });
 
   it("does not move the clock backwards when a return reaches the following morning", () => {

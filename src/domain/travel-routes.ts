@@ -1,4 +1,5 @@
 import type { TravelRoute } from "../content/travel-schemas";
+import { DAY_END } from "./travel";
 
 export type HomeRoute = Pick<TravelRoute, "fromPlaceId" | "toPlaceId" | "mode" | "minutes" | "cost"> & { viaPlaceId?: string };
 
@@ -18,9 +19,9 @@ export function findTravelHomeRoutes(routes: readonly TravelRoute[], fromPlaceId
   return [...byMode.values()];
 }
 
-/** Minimum protected fare for an on-time return; allow emergency return after 22:00. */
-export function minimumHomeFare(routes: readonly TravelRoute[], fromPlaceId: string, hotelPlaceId: string, minute: number): number | undefined {
-  const deadline = minute <= 1320 ? 1320 : 1980 - 1;
+/** Minimum protected fare for an on-time return; allow emergency return at closing. */
+export function minimumHomeFare(routes: readonly TravelRoute[], fromPlaceId: string, hotelPlaceId: string, minute: number, dayEnd = DAY_END): number | undefined {
+  const deadline = minute < dayEnd ? dayEnd : 1980 - 1;
   const candidates = findTravelHomeRoutes(routes, fromPlaceId, hotelPlaceId)
     .filter((item) => minute + item.minutes <= deadline);
   return candidates.length ? Math.min(...candidates.map((item) => item.cost)) : undefined;

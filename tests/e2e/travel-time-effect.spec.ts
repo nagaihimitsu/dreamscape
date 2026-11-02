@@ -3,7 +3,7 @@ import { saved, startNewGame } from "./helpers";
 
 test.use({ reducedMotion: "no-preference" });
 
-test("waiting and lodging show a transient effect only after a successful action", async ({ page }) => {
+test("waiting has no effect; successful lodging shows the next day", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 780 });
   await startNewGame(page);
   const effect = page.getByTestId("time-passage");
@@ -15,14 +15,14 @@ test("waiting and lodging show a transient effect only after a successful action
 
   await page.getByText("待機", { exact: true }).click();
   await page.getByRole("button", { name: "30分待つ" }).click();
-  await expect(effect).toBeVisible();
-  await expect(effect).toHaveCSS("pointer-events", "none");
-  expect((await saved(page)).travel.minute).toBe(570);
   await expect(effect).toHaveCount(0);
+  expect((await saved(page)).travel.minute).toBe(570);
 
   await page.getByRole("button", { name: "滞在先で休む" }).click();
   await page.getByRole("button", { name: /徒歩 0分 · €0/ }).click();
   await expect(effect).toBeVisible();
+  await expect(effect).toContainText("次の日");
+  await expect(effect).toHaveCSS("pointer-events", "none");
   const rested = await saved(page);
   expect(rested.travel).toMatchObject({ day: 2, minute: 540, currentPlaceId: "p_hotel" });
   expect(rested.ap).toBe(0);
@@ -39,28 +39,34 @@ test("a rejected save does not play the effect", async ({ page, context }) => {
   await other.getByRole("button", { name: "30分待つ" }).click();
   await expect.poll(async () => (await saved(other)).travel.minute).toBe(570);
 
-  await page.getByText("待機", { exact: true }).click();
-  await page.getByRole("button", { name: "30分待つ" }).click();
+  await page.getByRole("button", { name: "滞在先で休む" }).click();
+  await page.getByRole("button", { name: /徒歩 0分 · €0/ }).click();
   await expect(page.getByTestId("time-passage")).toHaveCount(0);
   expect((await saved(page)).travel.minute).toBe(570);
 });
 
-test("reduced motion skips the time animation", async ({ page }) => {
+test("reduced motion shows the next-day label without moving the sun", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await startNewGame(page);
-  await page.getByText("待機", { exact: true }).click();
-  await page.getByRole("button", { name: "30分待つ" }).click();
-  await expect.poll(async () => (await saved(page)).travel.minute).toBe(570);
+  await page.getByRole("button", { name: "滞在先で休む" }).click();
+  await page.getByRole("button", { name: /徒歩 0分 · €0/ }).click();
+  await expect.poll(async () => (await saved(page)).travel.day).toBe(2);
+  const effect = page.getByTestId("time-passage");
+  await expect(effect).toContainText("次の日");
+  await expect(effect.locator(".time-passage-sun")).toHaveCSS("animation-name", "none");
   await expect(page.getByTestId("time-passage")).toHaveCount(0);
 });
 
-test("the in-game reduced-motion setting also skips the animation", async ({ page }) => {
+test("the in-game reduced-motion setting also keeps the transition still", async ({ page }) => {
   await startNewGame(page);
   await page.getByRole("button", { name: "設定", exact: true }).click();
   await page.getByLabel("演出を短縮する").check();
   await page.getByRole("dialog", { name: "設定" }).getByRole("button", { name: "閉じる" }).click();
-  await page.getByText("待機", { exact: true }).click();
-  await page.getByRole("button", { name: "30分待つ" }).click();
-  await expect.poll(async () => (await saved(page)).travel.minute).toBe(570);
+  await page.getByRole("button", { name: "滞在先で休む" }).click();
+  await page.getByRole("button", { name: /徒歩 0分 · €0/ }).click();
+  await expect.poll(async () => (await saved(page)).travel.day).toBe(2);
+  const effect = page.getByTestId("time-passage");
+  await expect(effect).toContainText("次の日");
+  await expect(effect.locator(".time-passage-sun")).toHaveCSS("animation-name", "none");
   await expect(page.getByTestId("time-passage")).toHaveCount(0);
 });

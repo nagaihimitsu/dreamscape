@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { loadCurrentScene } from "./current-scenarios";
 import bossQuiz from "../../content/quizzes/sound_finale_B1.json" with { type: "json" };
+import supperQuiz from "../../content/quizzes/sound_supper_B1.json" with { type: "json" };
 import { expectNoOverflow, loadCurrentSupperQuestion, saved } from "./helpers";
 import { battleDialogueUntilQuestionOrResult } from "./battle-helpers";
 
@@ -168,6 +169,8 @@ for (const [format, target] of [
     const correctOption = before.activeBattle!.battleId === "milano_la_scala_b01" ? "B" : "A";
     await page.getByTestId(`answer-${correctOption}`).click();
     await expect(page.getByTestId("answer-effect")).toHaveAttribute("data-result", "correct");
+    if (format === "C") await expect(page.getByTestId("answer-effect")).toHaveAttribute("data-perfect", "true");
+    else await expect(page.getByTestId("answer-effect")).not.toHaveAttribute("data-perfect", "true");
     await expect(page.getByTestId("answer-verdict")).toContainText("正解");
     const after = await saved(page);
     expect(after.activeBattle?.answers).toHaveLength(before.activeBattle!.answers.length + 1);
@@ -178,6 +181,67 @@ for (const [format, target] of [
     await expectNoOverflow(page);
   });
 }
+
+for (const perfect of [true, false]) {
+  test(`${perfect ? "all correct" : "a previous mistake"} uses the right final-answer effect`, async ({ page }, testInfo) => {
+    test.setTimeout(100_000);
+    await loadCurrentSupperQuestion(page);
+    for (const [index, question] of supperQuiz.questions.entries()) {
+      if (index > 0) await battleDialogueUntilQuestionOrResult(page);
+      const correct = perfect || index !== 0;
+      const option = question.options.find((item) => (item.id === question.correctOptionId) === correct)!;
+      await page.getByTestId(`answer-${option.id}`).click();
+      if (index === supperQuiz.questions.length - 1) {
+        const effect = page.getByTestId("answer-effect");
+        await expect(effect).toHaveAttribute("data-result", "correct");
+        if (perfect) {
+          await expect(effect).toHaveAttribute("data-perfect", "true");
+          await expect(effect).toContainText("Perfect");
+          await expect(effect).toContainText("全問正解");
+          await expect(effect).not.toContainText("正解！");
+          await page.screenshot({ path: testInfo.outputPath("perfect-360.png") });
+          // The decorative overlay is dismissible without changing the answer.
+          await page.locator(".battle-roundbar").click();
+          await expect(effect).toHaveCount(0);
+        } else await expect(effect).not.toHaveAttribute("data-perfect", "true");
+        const answered = await saved(page);
+        expect(answered.activeBattle?.score).toBe(perfect ? 3 : 2);
+        await page.reload();
+        expect(await saved(page)).toEqual(answered);
+        await expect(effect).toHaveCount(0);
+      } else await page.getByTestId("battle-advance").click();
+    }
+  });
+}
+
+test("a perfect five-question finale uses the perfect effect on the last answer", async ({ page }) => {
+  test.setTimeout(100_000);
+  await loadCurrentScene(page, "finaleDialogue");
+  for (const [index, question] of bossQuiz.questions.entries()) {
+    await battleDialogueUntilQuestionOrResult(page);
+    await page.getByTestId(`answer-${question.correctOptionId}`).click();
+    const effect = page.getByTestId("answer-effect");
+    if (index === bossQuiz.questions.length - 1) {
+      await expect(effect).toHaveAttribute("data-perfect", "true");
+      await expect(effect).toContainText("全問正解");
+      expect((await saved(page)).activeBattle?.score).toBe(5);
+    } else {
+      await expect(effect).not.toHaveAttribute("data-perfect", "true");
+      await page.getByTestId("battle-advance").click();
+    }
+  }
+});
+
+test("a perfect answer remains clear with reduced motion", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await loadCurrentScene(page, "specialCQuestion");
+  const before = await saved(page);
+  await page.getByTestId("answer-A").click();
+  const after = await saved(page);
+  expect(after.activeBattle?.score).toBe(before.activeBattle!.score + 1);
+  await expect(page.getByTestId("answer-verdict")).toContainText("正解");
+  await expect(page.getByTestId("answer-effect")).toHaveCount(0);
+});
 
 test("the five-question city boss keeps the effect on each round", async ({ page }) => {
   test.setTimeout(100_000);

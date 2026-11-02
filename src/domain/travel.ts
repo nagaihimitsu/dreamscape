@@ -38,9 +38,9 @@ type Failure = { ok: false; reason: FailureReason };
 const failure = (reason: FailureReason): Failure => ({ ok: false, reason });
 const DAY_START = 9 * 60;
 const NIGHT_START = 18 * 60;
-const DAY_END = 22 * 60;
+export const DAY_END = 21 * 60;
 
-/** 18:00 starts the night; 22:00 is no longer a time to start activities. */
+/** 18:00 starts the night; 21:00 is no longer a time to start activities. */
 export function getTimePeriod(minute: number): "day" | "night" | "closed" {
   if (minute >= DAY_START && minute < NIGHT_START) return "day";
   if (minute >= NIGHT_START && minute < DAY_END) return "night";
@@ -164,19 +164,25 @@ export function planTravelEvent(state: TravelSnapshot, event: Event, outbound: R
 }
 
 /** Pay the available lodging cost without debt; no AP is charged and no budget is granted. */
-export function planOvernight(state: TravelSnapshot, returnRoute: Route, lodgingCost: number): Failure | {
+export function planOvernight(state: TravelSnapshot, returnRoute: Route, lodgingCost: number, allowLateReturn = false): Failure | {
   ok: true; arrivalMinute: number; nextDay: number; nextMinute: number; remainingBudget: number; remainingAp: number; usedAssistance: boolean;
 } {
   if (!validSnapshot(state) || !Number.isSafeInteger(lodgingCost) || lodgingCost < 0 || !Number.isSafeInteger(state.day + 1)) return failure("invalid");
   if (!validRoute(returnRoute) || returnRoute.fromPlaceId !== state.currentPlaceId || returnRoute.toPlaceId !== state.hotelPlaceId) return failure("route");
   if (!Number.isSafeInteger(state.minute + returnRoute.minutes)) return failure("invalid");
-  // Normally the return must finish by closing time. A scene that has already
-  // run past 22:00 can still return rather than trapping the player overnight.
-  if (state.minute <= DAY_END && state.minute + returnRoute.minutes > DAY_END) return failure("time");
+  // A saved game that can no longer reach the hotel by the new deadline must
+  // still be able to return rather than getting stuck overnight.
+  if (state.minute < DAY_END && state.minute + returnRoute.minutes > DAY_END && !allowLateReturn) return failure("time");
   // Do not put the next morning before an unexpectedly late arrival.
   if (state.minute + returnRoute.minutes >= 24 * 60 + DAY_START) return failure("time");
   if (returnRoute.cost > state.travelBudget) return failure("budget");
   const available = state.travelBudget - returnRoute.cost;
   return { ok: true, arrivalMinute: state.minute + returnRoute.minutes, nextDay: state.day + 1, nextMinute: DAY_START,
     remainingBudget: Math.max(0, available - lodgingCost), remainingAp: state.ap, usedAssistance: available < lodgingCost };
+}
+
+/** Determine whether an affordable return still fits today's normal deadline. */
+export function canReturnByDayEnd(state: TravelSnapshot, routes: readonly Route[]): boolean {
+  return routes.some((route) => validRoute(route) && route.fromPlaceId === state.currentPlaceId &&
+    route.toPlaceId === state.hotelPlaceId && route.cost <= state.travelBudget && state.minute + route.minutes <= DAY_END);
 }

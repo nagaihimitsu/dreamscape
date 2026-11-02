@@ -77,6 +77,8 @@ export function BattleScreen({
   const { battle, quiz } = getActiveBattleContent(active);
   const question = quiz.questions[active.roundIndex];
   const answer = active.answers[active.roundIndex];
+  const perfectAnswer = active.phase === "feedback" && !!answer?.correct &&
+    active.answers.length === quiz.questions.length && active.score === quiz.questions.length;
   const record = game.battleRecords.find((item) => item.battleId === battle.id);
   // The claim transition is already saved before these presentation-only
   // frames appear. Mounting directly in reasoning (reload or old save) never
@@ -132,7 +134,7 @@ export function BattleScreen({
       return;
     }
     const dismiss = () => setEffectAnswer(null);
-    const timer = window.setTimeout(dismiss, 900);
+    const timer = window.setTimeout(dismiss, perfectAnswer ? 1300 : 900);
     const onVisibility = () => { if (document.hidden) dismiss(); };
     const onMotionChange = () => { if (media.matches) dismiss(); };
     document.addEventListener("pointerdown", dismiss, true);
@@ -148,7 +150,7 @@ export function BattleScreen({
       if (media.removeEventListener) media.removeEventListener("change", onMotionChange);
       else media.removeListener(onMotionChange);
     };
-  }, [active.phase, answerKey, effectAnswer, reduceMotion]);
+  }, [active.phase, answerKey, effectAnswer, perfectAnswer, reduceMotion]);
   useEffect(() => {
     if (active.phase !== "feedback") return;
     const focusFeedback = () => document.getElementById("battle-feedback")?.focus();
@@ -254,17 +256,20 @@ export function BattleScreen({
     >
       {active.phase === "feedback" && answer && effectAnswer === answerKey && (
         <div
-          className={`answer-effect ${answer.correct ? "answer-effect-correct" : "answer-effect-incorrect"}${!isSpecial ? " answer-effect-subtle" : ""}`}
+          className={`answer-effect ${answer.correct ? "answer-effect-correct" : "answer-effect-incorrect"}${perfectAnswer ? " answer-effect-perfect" : !isSpecial ? " answer-effect-subtle" : ""}`}
           data-testid="answer-effect"
           data-result={answer.correct ? "correct" : "incorrect"}
+          data-perfect={perfectAnswer || undefined}
           aria-hidden="true"
         >
           <div className="answer-effect-rays">
             {Array.from({ length: 8 }, (_, index) => <i key={index} />)}
           </div>
           <div className="answer-effect-stamp">
-            <span className="answer-effect-symbol">{answer.correct ? "○" : "×"}</span>
-            <strong>{answer.correct ? "正解！" : "不正解"}</strong>
+            {perfectAnswer ? <><span className="answer-effect-perfect-title">Perfect</span><strong>全問正解</strong></> : <>
+              <span className="answer-effect-symbol">{answer.correct ? "○" : "×"}</span>
+              <strong>{answer.correct ? "正解！" : "不正解"}</strong>
+            </>}
           </div>
         </div>
       )}

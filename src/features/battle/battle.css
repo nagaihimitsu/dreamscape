@@ -547,6 +547,46 @@
   height: 10px;
   transform: rotate(var(--ray-angle)) translateY(-48px);
 }
+.battle-screen .answer-effect-perfect {
+  --effect-ink: #23543e;
+  --effect-bright: #f6d687;
+  background: radial-gradient(circle, #31594133, transparent 65%);
+  animation-duration: 1300ms;
+}
+.battle-screen .answer-effect-perfect .answer-effect-stamp {
+  position: relative;
+  width: min(48vw, 180px);
+  border-width: 4px;
+  background: linear-gradient(145deg, #367559, #194330);
+  box-shadow: 0 0 0 4px #fff7dfd9, 0 0 24px #f2ca7380, 0 8px 24px #16251e66;
+}
+.battle-screen .answer-effect-perfect-title {
+  color: #fff6d7;
+  font-family: Georgia, serif;
+  font-size: clamp(26px, 8vw, 36px);
+  font-style: italic;
+  line-height: 1;
+}
+.battle-screen .answer-effect-perfect .answer-effect-stamp strong {
+  margin-top: 8px;
+  font-size: 17px;
+  letter-spacing: .12em;
+}
+.battle-screen .answer-effect-perfect .answer-effect-stamp::before,
+.battle-screen .answer-effect-perfect .answer-effect-stamp::after {
+  position: absolute;
+  top: 23%;
+  color: #f6d687;
+  content: "✦";
+  font-size: 13px;
+}
+.battle-screen .answer-effect-perfect .answer-effect-stamp::before { left: 18%; }
+.battle-screen .answer-effect-perfect .answer-effect-stamp::after { right: 18%; }
+.battle-screen .answer-effect-perfect .answer-effect-rays i {
+  width: 4px;
+  height: 16px;
+  transform: rotate(var(--ray-angle)) translateY(calc(-1 * min(30vw, 112px)));
+}
 @keyframes answer-effect-visibility {
   0% { opacity: 0; }
   12%, 70% { opacity: 1; }

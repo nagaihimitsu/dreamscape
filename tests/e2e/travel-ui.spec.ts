@@ -205,7 +205,7 @@ test("destinations appear only once their journey conditions are met", async ({ 
   await expect(page.getByRole("combobox", { name: "地点", exact: true }).locator('option[value="p_prada"]')).toHaveCount(1);
 });
 
-test("visited destinations remain on the map after their date is completed", async ({ page }) => {
+test("a completed-only destination disappears from the map, while current location and lodging remain", async ({ page }) => {
   await page.goto("/");
   await page.evaluate(async () => {
     const debugUrl = "/src/dev/debug-state.ts";
@@ -227,9 +227,38 @@ test("visited destinations remain on the map after their date is completed", asy
   await expect(page.getByTestId("travel-map-canvas")).toBeVisible();
   await page.locator(".travel-map-places > summary").click();
   const places = page.getByRole("combobox", { name: "地点", exact: true });
+  await expect(places.locator('option[value="p_prada"]')).toHaveCount(0);
+  await expect(places.locator('option[value="p_hotel"]')).toHaveCount(1);
+  await expect(page.getByTestId("travel-map-canvas").locator('[title^="プラダ財団"]')).toHaveCount(0);
+  await page.evaluate(() => {
+    const key = "dreamscape.save.v1";
+    const state = JSON.parse(localStorage.getItem(key)!);
+    state.travel.currentPlaceId = "p_prada";
+    localStorage.setItem(key, JSON.stringify(state));
+  });
+  await page.reload();
+  await page.locator(".travel-map-places > summary").click();
   await expect(places.locator('option[value="p_prada"]')).toHaveCount(1);
-  await places.selectOption("p_prada");
-  await expect(page.getByTestId("travel-map")).toContainText("プラダ財団");
+  await expect(places.locator('option[value="p_hotel"]')).toHaveCount(1);
+  const current = page.getByTestId("travel-map-canvas").locator('[title^="プラダ財団"]');
+  await expect(current).toHaveAttribute("title", /現在地/);
+  await expect(current).not.toHaveAttribute("title", /デート/);
+  await expect(current.locator(".travel-map-marker")).toHaveClass(/is-here/);
+});
+
+test("a place with a completed visit retains only its remaining event categories", async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 780 });
+  await loadCurrentScene(page, "freeTime");
+  const map = page.getByTestId("travel-map-canvas");
+  const galleria = map.locator('[title^="ガッレリア"]');
+  await expect(galleria).toHaveAttribute("title", /デート/);
+  await expect(galleria).not.toHaveAttribute("title", /観光/);
+  await expect(galleria).toHaveAttribute("title", /訪問済み/);
+  await expect(galleria.locator(".travel-map-marker")).toHaveClass(/is-visited/);
+  await page.getByRole("button", { name: "地図を大きく見る" }).click();
+  const expanded = page.getByTestId("travel-map-expanded-canvas").locator('[title^="ガッレリア"]');
+  await expect(expanded).toHaveAttribute("title", /デート/);
+  await expect(expanded).not.toHaveAttribute("title", /観光/);
 });
 
 test("events at the same place share one destination and show distinct details", async ({ page }) => {

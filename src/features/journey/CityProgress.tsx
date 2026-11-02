@@ -16,7 +16,6 @@ export function CityProgress({
   onStoryBattle,
   onEpilogue,
   showNext = true,
-  allowEpilogue = true,
   showSummary = true,
 }: {
   game: GameState;
@@ -24,7 +23,6 @@ export function CityProgress({
   onStoryBattle: (id: string) => void;
   onEpilogue: (cityId: string) => void;
   showNext?: boolean;
-  allowEpilogue?: boolean;
   showSummary?: boolean;
 }) {
   const next = getNextEpisode(game);
@@ -80,12 +78,10 @@ export function CityProgress({
           <button
             className="secondary"
             data-testid="city-epilogue"
-            disabled={!allowEpilogue}
             onClick={() => onEpilogue(city.id)}
           >
             エピローグを読む
           </button>
-          {!allowEpilogue && <p className="fine-print">ダルセナで続きを読めます。</p>}
         </div>
       )}
     </section>
