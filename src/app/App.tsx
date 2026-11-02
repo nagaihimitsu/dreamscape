@@ -44,6 +44,8 @@ import { ClueNotebook } from "../features/tourism/ClueNotebook";
 import { useLearning } from "../features/learning/useLearning";
 import { EnglishReview } from "../features/learning/EnglishReview";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
+import { CityProgressBadge } from "../features/journey/CityProgress";
+import { TravelActions } from "../features/journey/TravelActions";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
 import { encounters } from "../content/encounters";
 import { startEncounter, startTourismEncounter, advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterAvailability, getEncounterOptionAvailability, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption, encounterStoryCanFinish } from "../domain/encounter";
@@ -342,6 +344,13 @@ export default function App({
           <div className="journey-context" data-testid="journey-context">
             <strong>{game.travel.day}日目 {String(Math.floor(game.travel.minute / 60)).padStart(2, "0")}:{String(game.travel.minute % 60).padStart(2, "0")}</strong>
             <span>現在地：{game.travel.currentPlaceId === game.travel.hotelPlaceId ? "滞在先（架空）" : currentTravelPlace?.nameJa ?? "不明"}</span>
+          </div>
+          <div className="journey-controls" data-testid="city-progress">
+            <CityProgressBadge game={game} />
+            {game.endingReached && <span className="city-relationship">交際中</span>}
+            {idle && !showRomanceEnding && <TravelActions game={game}
+              onTravelWait={(minutes) => commit((state) => waitForTravel(state, minutes, game.revision))}
+              onTravelSleep={(mode) => commit((state) => sleepAtHotel(state, mode, game.revision))} />}
           </div>
         </div>
       )}
@@ -683,8 +692,6 @@ export default function App({
             })}
             onBattle={(id) => commit((state) => startBattle(state, id))}
             onTravelEvent={(id, mode) => commit((state) => beginTravelEvent(state, id, mode, game.revision, nextRomanceRoll))}
-            onTravelWait={(minutes) => commit((state) => waitForTravel(state, minutes, game.revision))}
-            onTravelSleep={(mode) => commit((state) => sleepAtHotel(state, mode, game.revision))}
           />
         )}
       </main>

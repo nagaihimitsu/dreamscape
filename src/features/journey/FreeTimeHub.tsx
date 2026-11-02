@@ -3,7 +3,7 @@ import type { TravelRoute } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
 import { getTourismAvailability } from "../../domain/tourism";
 import { TrialMilestones } from "../romance/RomanceMenu";
-import { CityProgress } from "./CityProgress";
+import { CityProgress, CityRecords } from "./CityProgress";
 import { EncounterMenu } from "./EncounterMenu";
 import { PendingRewards } from "./PendingRewards";
 import { TravelMenu } from "./TravelMenu";
@@ -27,8 +27,6 @@ export function FreeTimeHub({
   onSelectLandmark,
   placeFocusRequest,
   onTravelEvent,
-  onTravelWait,
-  onTravelSleep,
 }: {
   game: GameState;
   onEnglish: () => void;
@@ -45,8 +43,6 @@ export function FreeTimeHub({
   onSelectLandmark: (id: string | null) => void;
   placeFocusRequest: number;
   onTravelEvent: (id: string, mode: TravelRoute["mode"]) => void;
-  onTravelWait: (minutes: number) => void;
-  onTravelSleep: (mode: TravelRoute["mode"]) => void;
 }) {
   const localLandmarkIds = new Set(milanoTravelCatalog.events.filter((event) => event.placeId === game.travel.currentPlaceId).flatMap((event) => {
     const landmarkId = episodes.find((episode) => episode.id === event.id)?.landmarkId ?? battles.find((battle) => battle.id === event.id)?.landmarkId;
@@ -58,14 +54,10 @@ export function FreeTimeHub({
   void onChooseDate; void selectedLandmarkId; void onSelectLandmark; void placeFocusRequest;
   return (
     <section className="free-time-hub paper" data-testid="free-time-hub">
-      <header className="free-time-hub-heading">
-        <h1>ふたりの自由時間</h1>
-        {game.endingReached && <span>交際中</span>}
-      </header>
+      <h1 className="sr-only">ミラノの行き先</h1>
+      <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} showNext={false} showSummary={false} allowEpilogue={game.travel.currentPlaceId === "p_darsena"} />
 
-      <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} showNext={false} allowEpilogue={game.travel.currentPlaceId === "p_darsena"} />
-
-      <TravelMenu game={game} onTravelEvent={onTravelEvent} onTravelWait={onTravelWait} onTravelSleep={onTravelSleep} />
+      <TravelMenu game={game} onTravelEvent={onTravelEvent} />
 
       <div className="free-time-tools">
         <button className="secondary" onClick={onEnglish}>
@@ -84,6 +76,7 @@ export function FreeTimeHub({
 
       <PendingRewards game={game} onClaim={onClaimRewards} compact />
       <TrialMilestones game={game} onMilestone={onMilestone} />
+      <CityRecords game={game} />
     </section>
   );
 }

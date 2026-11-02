@@ -15,8 +15,9 @@ test("the top bar follows time and place while keeping resources visible", async
   await expect(context).toContainText("1日目 09:30");
   await page.getByTestId("travel-destination-milano_duomo_episode").getByRole("button").click();
   await expect.poll(async () => (await saved(page)).travel.currentPlaceId).toBe("p_duomo");
-  // The existing mobile VN hides the bar while the scene is displayed; it
-  // returns with the updated position once the player leaves the scene.
+  // The journey bar remains visible while a scene is in progress.
+  await expect(bar).toBeVisible();
+  await expect(context).toContainText("現在地：ドゥオモ広場");
   await page.getByRole("button", { name: "案内を閉じて観察する" }).click();
   await page.getByRole("button", { name: "自由時間へ戻る" }).click();
   await expect(context).toBeVisible();

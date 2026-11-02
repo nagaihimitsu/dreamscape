@@ -12,10 +12,9 @@ test("a phone map loads actual tile elements, zooms and pans while retaining pla
     await route.fulfill({ status: 200, contentType: "image/png", body: tile });
   });
   await startNewGame(page);
-  expect(requests).toBe(0);
-  await page.getByText("ミラノの地図を見る", { exact: true }).click();
   const canvas = page.getByTestId("travel-map-canvas");
   await expect(canvas.locator(".leaflet-tile-loaded").first()).toBeVisible();
+  expect(requests).toBeGreaterThan(0);
   await expect(canvas.getByRole("link", { name: "OpenStreetMap contributors" })).toBeVisible();
   const initialSrc = await canvas.locator(".leaflet-tile-loaded").first().getAttribute("src");
   const initialZoom = Number(initialSrc?.match(/\.org\/(\d+)\//)?.[1]);
@@ -36,8 +35,9 @@ test("a phone map loads actual tile elements, zooms and pans while retaining pla
   await page.mouse.move(box!.x + box!.width / 2 + 50, box!.y + box!.height / 2 + 25, { steps: 5 });
   await page.mouse.up();
   await expect.poll(async () => (await marker.boundingBox())?.x).not.toBeCloseTo(before!.x, 0);
-  await page.getByLabel("地点を選ぶ").selectOption("p_roastery");
-  await expect(page.getByTestId("travel-map")).toContainText("ロースタリー");
+  await page.locator(".travel-map-places > summary").click();
+  await page.getByRole("combobox", { name: "地点", exact: true }).selectOption("p_duomo");
+  await expect(page.getByTestId("travel-map")).toContainText("ドゥオモ");
   await expect(page.getByRole("button", { name: "地図を大きくする" })).toHaveCount(0);
 });
 
@@ -45,7 +45,6 @@ test("tile failures are explained and do not block destination selection", async
   await page.setViewportSize({ width: 320, height: 740 });
   await page.route("https://tile.openstreetmap.org/**", (route) => route.abort("failed"));
   await startNewGame(page);
-  await page.getByText("ミラノの地図を見る", { exact: true }).click();
   await expect(page.getByRole("status")).toContainText("地図の一部を読み込めません");
   await page.getByTestId("travel-destination-milano_duomo_episode").getByRole("button").click();
   await expect(page.getByRole("button", { name: "バトルを始める", exact: true })).toBeVisible();
@@ -55,7 +54,6 @@ test("a two-finger gesture zooms the map on a touch screen", async ({ page }) =>
   await page.setViewportSize({ width: 360, height: 780 });
   await page.route("https://tile.openstreetmap.org/**", (route) => route.fulfill({ status: 200, contentType: "image/png", body: tile }));
   await startNewGame(page);
-  await page.getByText("ミラノの地図を見る", { exact: true }).click();
   const canvas = page.getByTestId("travel-map-canvas");
   await canvas.scrollIntoViewIfNeeded();
   const loaded = canvas.locator(".leaflet-tile-loaded");

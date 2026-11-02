@@ -4,25 +4,6 @@
   margin: 0 auto;
 }
 
-.free-time-hub-heading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.free-time-hub-heading h1 {
-  margin: 0;
-  font-size: 22px;
-  line-height: 1.4;
-}
-
-.free-time-hub-heading span {
-  color: var(--muted);
-  font-size: 13px;
-  white-space: nowrap;
-}
-
 .free-time-hub .city-progress {
   max-width: none;
   margin: 14px 0 0;

@@ -302,6 +302,19 @@ function meetsDateConditions(state: GameState, date: DateDefinition): boolean {
   );
 }
 
+function isConfessionOnCooldown(state: GameState, date: DateDefinition): boolean {
+  return date.kind === "confession" && state.confessionStatus === "rejected" &&
+    state.lastRejectedDateCount !== null && completedDateCount(state) <= state.lastRejectedDateCount &&
+    !state.recoveryAfterRejection;
+}
+
+/** Progress and relationship requirements only; AP and opening hours do not hide a destination. */
+export function isDateUnlockedForTravel(state: GameState, dateId: string): boolean {
+  const date = dates.find((item) => item.id === dateId);
+  return !!date && !date.legacyOnly && !isConfessionOnCooldown(state, date) &&
+    (isUpdatedDateReplay(state, dateId) || meetsDateConditions(state, date));
+}
+
 /** Count completed ordinary dates and up to three real recovery conversations. */
 export function completedDateCount(state: GameState): number {
   const ordinary = state.playedDateIds.filter((id) => dates.some((date) => date.id === id && date.kind === "normal")).length;
@@ -553,9 +566,7 @@ export function getDateAvailability(
     return { available: false, reason: "旅を進めると、この場所に誘えます。" };
   if ((date.forbiddenCompletedEpisodeIds ?? []).some((id) => state.completedEpisodeIds.includes(id)))
     return { available: false, reason: "この機会は過ぎました。" };
-  if (date.kind === "confession" && state.confessionStatus === "rejected" &&
-      state.lastRejectedDateCount !== null && completedDateCount(state) <= state.lastRejectedDateCount &&
-      !state.recoveryAfterRejection)
+  if (isConfessionOnCooldown(state, date))
     return { available: false, reason: "新しいひとときを過ごしてから、もう一度話せます。" };
   if (!meetsDateConditions(state, date))
     return { available: false, reason: "もう少し、一緒の時間を過ごしてから。" };

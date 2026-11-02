@@ -24,7 +24,7 @@ async function expectSceneCovered(scene: Locator, image: Locator) {
 
 async function beginDuomo(page: Page) {
   await startNewGame(page);
-  await page.getByTestId("episode-start").click();
+  await page.getByTestId("travel-destination-milano_duomo_episode").getByRole("button").click();
   expect((await saved(page)).activeTourism?.landmarkId).toBe("duomo_milano");
 }
 
@@ -64,7 +64,8 @@ test("Duomo photo and place remain visible from guide through observation, battl
   await playCityBattle(page, cityEpisodes[0], 0);
   await expect(page.getByTestId("battle-location")).toContainText("ドゥオモ");
   await expectLoadedPhoto(photo, /duomo-milano\.webp$/);
-  await page.getByTestId("next-tourism").click();
+  await page.getByRole("button", { name: "自由時間へ進む" }).click();
+  await page.getByTestId("travel-destination-milano_galleria_episode").getByRole("button").click();
   expect((await saved(page)).activeTourism?.landmarkId).toBe("galleria_vittorio_emanuele_ii");
   await expectLoadedPhoto(page.locator(".tourism-guide-scene .vn-background img"), /galleria/i);
   await page.getByRole("button", { name: "バトルを始める", exact: true }).click();

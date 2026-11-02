@@ -9,8 +9,8 @@ type Props = { game: GameState; events: TravelEvent[] };
 
 /** A map is only loaded when opened; itinerary selection never depends on tiles. */
 export function PlaceMap({ game, events }: Props) {
-  const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState(game.travel.currentPlaceId);
+  const [open, setOpen] = useState(true);
+  const [selected, setSelected] = useState<string | null>(null);
   const [tilesFailed, setTilesFailed] = useState(false);
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
@@ -19,7 +19,6 @@ export function PlaceMap({ game, events }: Props) {
     place.id === game.travel.hotelPlaceId || place.id === game.travel.currentPlaceId || events.some((event) => event.placeId === place.id)),
   [game.travel.hotelPlaceId, game.travel.currentPlaceId, events]);
   const selectedPlace = places.find((place) => place.id === selected);
-  const atPlace = events.filter((event) => event.placeId === selected);
 
   useEffect(() => {
     if (!open || !container.current) return;
@@ -62,19 +61,22 @@ export function PlaceMap({ game, events }: Props) {
     }
   }, [open, places, events, game.travel.currentPlaceId, game.completedEpisodeIds, game.playedDateIds, game.battleRecords]);
 
-  return <details className="travel-map" data-testid="travel-map" onToggle={(event) => setOpen(event.currentTarget.open)}>
-    <summary>ミラノの地図を見る</summary>
+  return <details className="travel-map" data-testid="travel-map" open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
+    <summary>ミラノの地図</summary>
     {open && <>
       <div ref={container} className="travel-map-frame" aria-label="ミラノの地図。ドラッグで移動、ピンチまたはプラス・マイナスで拡大縮小できます。" data-testid="travel-map-canvas" />
       {tilesFailed && <p role="status">地図の一部を読み込めません。通信を確認してください。行き先一覧は引き続き利用できます。</p>}
-      <p>緑の輪：現在地　◆：観光　♥：デート　白い点：訪問済み</p>
-      <label className="travel-map-places">地点を選ぶ <select value={selected} onChange={(event) => {
-        const id = event.currentTarget.value;
-        setSelected(id);
-        const place = places.find((item) => item.id === id);
-        if (place) mapRef.current?.panTo([place.latitude, place.longitude]);
-      }}>{places.map((place) => <option key={place.id} value={place.id}>{place.nameJa}</option>)}</select></label>
-      <p aria-live="polite"><strong>{selectedPlace?.nameJa ?? "地点"}</strong>{selected === game.travel.currentPlaceId ? "（現在地）" : ""}{atPlace.length > 0 ? `：${atPlace.map((event) => event.titleJa).join("、")}` : ""}</p>
+      {selectedPlace && <p aria-live="polite"><strong>{selectedPlace.nameJa}</strong>{selected === game.travel.currentPlaceId ? "（現在地）" : ""}</p>}
+      <details className="travel-map-places">
+        <summary>地点を選ぶ</summary>
+        <label>地点 <select value={selected ?? ""} onChange={(event) => {
+          const id = event.currentTarget.value;
+          setSelected(id || null);
+          const place = places.find((item) => item.id === id);
+          if (place) mapRef.current?.panTo([place.latitude, place.longitude]);
+        }}><option value="">地点を選択</option>{places.map((place) => <option key={place.id} value={place.id}>{place.nameJa}</option>)}</select></label>
+        <p>緑の輪：現在地　◆：観光　♥：デート　白い点：訪問済み</p>
+      </details>
     </>}
   </details>;
 }

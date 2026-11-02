@@ -17,6 +17,7 @@ export function CityProgress({
   onEpilogue,
   showNext = true,
   allowEpilogue = true,
+  showSummary = true,
 }: {
   game: GameState;
   onStart: (id: string) => void;
@@ -24,27 +25,22 @@ export function CityProgress({
   onEpilogue: (cityId: string) => void;
   showNext?: boolean;
   allowEpilogue?: boolean;
+  showSummary?: boolean;
 }) {
   const next = getNextEpisode(game);
   const nextBattle = getNextStoryBattle(game);
-  const stops = episodes.filter((episode) => episode.kind !== "city_finale");
-  const completed = stops.filter((episode) =>
-    game.completedEpisodeIds.includes(episode.id),
-  ).length;
   const cityCompleted = game.completedCityIds.includes(city.id);
-  const completedSpecials = journeyConfig.storyBattles.filter((item) => game.battleRecords.some((record) => record.battleId === item.battleId && record.attempts > 0)).length;
+  if (!showSummary && !showNext && (!cityCompleted || game.viewedEpilogueCityIds.includes(city.id))) return null;
   return (
     <section
       className="city-progress paper"
-      data-testid="city-progress"
+      data-testid={showSummary ? "city-progress" : undefined}
       aria-label={`${city.nameJa}の旅の記録`}
     >
-      <div className="section-meta">
-        <h2>{city.nameJa}の旅</h2>
-        <span className="pill" data-testid={cityCompleted ? "city-complete" : undefined}>
-          {cityCompleted ? "都市クリア" : `観光 ${completed} / ${stops.length} · 対決 ${completedSpecials} / ${journeyConfig.storyBattles.length}`}
-        </span>
-      </div>
+      {showSummary && <div className="section-meta">
+        <h2>{city.nameJa}の旅{game.endingReached && <small className="city-relationship">交際中</small>}</h2>
+        <CityProgressBadge game={game} />
+      </div>}
       {showNext && nextBattle && (
         <div className="next-destination">
           <p className="eyebrow">旅の続き</p>
@@ -92,63 +88,79 @@ export function CityProgress({
           {!allowEpilogue && <p className="fine-print">ダルセナで続きを読めます。</p>}
         </div>
       )}
-      <details className="city-records">
-        <summary>観光地・発見・戦績を見る</summary>
-        <ol>
-          {episodes.map((episode, index) => {
-            const cleared = game.completedEpisodeIds.includes(episode.id);
-            const availability = getEpisodeAvailability(game, episode.id);
-            const landmark = landmarks.find(
-              (item) => item.id === episode.landmarkId,
-            );
-            const battle = battles.find(
-              (item) => item.id === episode.battleId,
-            )!;
-            const record = game.battleRecords.find(
-              (item) => item.battleId === episode.battleId,
-            );
-            return (
-              <li key={episode.id} data-testid={`city-stop-${episode.id}`}>
-                <span
-                  className={`stop-number ${cleared ? "complete" : ""}`}
-                  aria-hidden="true"
-                >
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <div className="stop-info">
-                  <p className="fine-print">
-                    {cleared
-                      ? "クリア"
-                      : availability.available
-                        ? "訪問できる"
-                        : "この先"}
-                  </p>
-                  <h3>{landmark?.nameJa ?? "都市フィナーレ"}</h3>
-                  {landmark && (
-                    <p>
-                      手がかり{" "}
-                      {
-                        landmark.clueIds.filter((id) =>
-                          game.discoveredClueIds.includes(id),
-                        ).length
-                      }{" "}
-                      / {landmark.clueIds.length}
-                    </p>
-                  )}
-                  {record ? (
-                    <p>
-                      挑戦 {record.attempts}回 · 最高 {record.bestScore} /{" "}
-                      {battleQuizzes[battle.quizId].questions.length}問
-                    </p>
-                  ) : (
-                    <p>バトル未完了</p>
-                  )}
-                </div>
-              </li>
-            );
-          })}
-        </ol>
-      </details>
     </section>
+  );
+}
+
+export function CityProgressBadge({ game }: { game: GameState }) {
+  const stops = episodes.filter((episode) => episode.kind !== "city_finale");
+  const completed = stops.filter((episode) => game.completedEpisodeIds.includes(episode.id)).length;
+  const completedSpecials = journeyConfig.storyBattles.filter((item) => game.battleRecords.some((record) => record.battleId === item.battleId && record.attempts > 0)).length;
+  const cityCompleted = game.completedCityIds.includes(city.id);
+  return <span className="pill" data-testid={cityCompleted ? "city-complete" : undefined}>
+    {cityCompleted ? "都市クリア" : `観光 ${completed} / ${stops.length} · 対決 ${completedSpecials} / ${journeyConfig.storyBattles.length}`}
+  </span>;
+}
+
+/** Journey records can be positioned independently of the progress summary. */
+export function CityRecords({ game }: { game: GameState }) {
+  return (
+    <details className="city-records">
+      <summary>観光地・発見・戦績を見る</summary>
+      <ol>
+        {episodes.map((episode, index) => {
+          const cleared = game.completedEpisodeIds.includes(episode.id);
+          const availability = getEpisodeAvailability(game, episode.id);
+          const landmark = landmarks.find(
+            (item) => item.id === episode.landmarkId,
+          );
+          const battle = battles.find(
+            (item) => item.id === episode.battleId,
+          )!;
+          const record = game.battleRecords.find(
+            (item) => item.battleId === episode.battleId,
+          );
+          return (
+            <li key={episode.id} data-testid={`city-stop-${episode.id}`}>
+              <span
+                className={`stop-number ${cleared ? "complete" : ""}`}
+                aria-hidden="true"
+              >
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div className="stop-info">
+                <p className="fine-print">
+                  {cleared
+                    ? "クリア"
+                    : availability.available
+                      ? "訪問できる"
+                      : "この先"}
+                </p>
+                <h3>{landmark?.nameJa ?? "都市フィナーレ"}</h3>
+                {landmark && (
+                  <p>
+                    手がかり{" "}
+                    {
+                      landmark.clueIds.filter((id) =>
+                        game.discoveredClueIds.includes(id),
+                      ).length
+                    }{" "}
+                    / {landmark.clueIds.length}
+                  </p>
+                )}
+                {record ? (
+                  <p>
+                    挑戦 {record.attempts}回 · 最高 {record.bestScore} /{" "}
+                    {battleQuizzes[battle.quizId].questions.length}問
+                  </p>
+                ) : (
+                  <p>バトル未完了</p>
+                )}
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    </details>
   );
 }

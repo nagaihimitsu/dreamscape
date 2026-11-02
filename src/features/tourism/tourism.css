@@ -595,7 +595,6 @@
     overflow: hidden;
   }
   .mobile-observation-active > .masthead,
-  .mobile-observation-active > .journey-bar,
   .mobile-observation-active > .journey-stage,
   .mobile-observation-active > footer { display: none; }
   .mobile-observation-active > main {

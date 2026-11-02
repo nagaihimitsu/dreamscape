@@ -1,7 +1,7 @@
 import { dates, episodes, milanoTravelCatalog, milanoTravelSettings } from "../content";
 import { getBattleAvailability, startBattle } from "./battle";
-import { getEpisodeAvailability, startEpisode } from "./chapter";
-import { getDateAvailability, isUpdatedDateReplay, startDate, type GameState } from "./game";
+import { getEpisodeAvailability, isEpisodeUnlocked, isStoryBattleUnlocked, startEpisode } from "./chapter";
+import { getDateAvailability, isDateUnlockedForTravel, isUpdatedDateReplay, startDate, type GameState } from "./game";
 import { planOvernight, planTravelEvent } from "./travel";
 import { findTravelHomeRoutes } from "./travel-routes";
 import type { TravelRoute } from "../content/travel-schemas";
@@ -37,6 +37,16 @@ function normalAvailability(state: GameState, eventId: string) {
   if (episodes.some((episode) => episode.id === eventId)) return getEpisodeAvailability(state, eventId);
   if (dates.some((date) => date.id === eventId)) return getDateAvailability(state, eventId);
   return getBattleAvailability(state, eventId);
+}
+
+/** Only permanent progression gates determine whether a destination is revealed. */
+export function isTravelEventUnlocked(state: GameState, eventId: string): boolean {
+  const event = milanoTravelCatalog.events.find((item) => item.id === eventId);
+  if (!event) return false;
+  const episode = episodes.find((item) => item.id === eventId);
+  if (episode) return isEpisodeUnlocked(state, episode);
+  if (dates.some((date) => date.id === eventId)) return isDateUnlockedForTravel(state, eventId);
+  return isStoryBattleUnlocked(state, eventId);
 }
 const reasonJa: Record<string, string> = {
   invalid: "旅行の状態を確認できません。", closed: "到着する時間には、この出来事を始められません。",

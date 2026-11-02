@@ -21,7 +21,6 @@
   overflow: hidden;
   background: #5b6258;
 }
-.conversation-active .journey-bar,
 .conversation-active .journey-stage { display: none; }
 .vn-background { position: absolute; inset: 0; z-index: -1; }
 .vn-background .canal-scene { width: 100%; height: 100%; }
