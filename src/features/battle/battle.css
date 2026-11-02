@@ -760,13 +760,13 @@
 .battle-character-slot .vn-character { container-type: size; }
 .battle-heroine .vn-character .comic-effect {
   top: max(3%, calc(100% - 150cqw));
-  left: auto;
-  right: 4%;
+  left: calc(50% + min(4vw, 5dvh, 15px));
+  right: auto;
 }
 .battle-enemy .vn-character .comic-effect {
   top: max(3%, calc((100% - 111.112cqw) / 2));
   right: auto;
-  left: 3%;
+  left: 25%;
 }
 @media (orientation: landscape) and (max-height: 420px) {
   /* On a short landscape display the dialogue sits higher; lift each portrait
@@ -778,7 +778,7 @@
   }
   .battle-heroine .vn-character .comic-effect {
     top: 0;
-    left: 65%;
+    left: 51%;
     right: auto;
     width: clamp(28px, 5vw, 38px);
   }

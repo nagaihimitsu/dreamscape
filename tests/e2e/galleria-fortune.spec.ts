@@ -24,6 +24,9 @@ test("Galleria encounter interrupts the route and returns to observation before 
     const encounter = state.activeEncounter;
     if (!encounter) break;
     if (encounter.frame.choices.length) {
+      // The balance belongs in the persistent status bar, not over dialogue controls.
+      await expect(page.getByLabel(`旅の予算 ${state.travelBudget}ユーロ`)).toHaveCount(1);
+      await expect(page.getByTestId("encounter-screen").locator(".encounter-dialogue")).not.toContainText(`€${state.travelBudget}`);
       expect(encounter.frame.choices.map((choice) => choice.text)).toEqual([
         "I'll keep count for you.", "I'd rather make my own luck.", "I'll leave the bull in peace.",
       ]);

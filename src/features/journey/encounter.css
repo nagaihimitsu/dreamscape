@@ -113,7 +113,6 @@
   left: auto;
   right: 64%;
 }
-.encounter-scene-heading > span { color: var(--vn-text); background: var(--vn-window-bg); border-radius: 999px; padding: 3px 9px; font-size: 14px; white-space: nowrap; }
 .encounter-dialogue .encounter-quiz-prompt { font-size: 17px; line-height: 1.5; }
 .encounter-dialogue .english-word { color: inherit; }
 .encounter-dialogue .word-meaning { color: #263c32; }

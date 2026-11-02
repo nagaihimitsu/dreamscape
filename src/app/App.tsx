@@ -389,6 +389,10 @@ export default function App({
             <span className="amp"> と </span>
             {game.heroineName}
           </span>
+          <div className="journey-context" data-testid="journey-context">
+            <span>現在地：{game.travel.currentPlaceId === game.travel.hotelPlaceId ? "滞在先（架空）" : currentTravelPlace?.nameJa ?? "不明"}</span>
+            <strong>{game.travel.day}日目 {String(Math.floor(game.travel.minute / 60)).padStart(2, "0")}:{String(game.travel.minute % 60).padStart(2, "0")}</strong>
+          </div>
           <div className="journey-resources">
             <span className="travel-budget" aria-label={`旅の予算 ${game.travelBudget}ユーロ`}>€{game.travelBudget}</span>
             <span className="ap" aria-label={`残り${game.ap}AP`}>
@@ -397,27 +401,23 @@ export default function App({
             </span>
             <HeldItems items={encounters.items.filter((item) => game.inventory[item.id] === "held").map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa }))} />
           </div>
-          <div className="journey-context" data-testid="journey-context">
-            <strong>{game.travel.day}日目 {String(Math.floor(game.travel.minute / 60)).padStart(2, "0")}:{String(game.travel.minute % 60).padStart(2, "0")}</strong>
-            <span>現在地：{game.travel.currentPlaceId === game.travel.hotelPlaceId ? "滞在先（架空）" : currentTravelPlace?.nameJa ?? "不明"}</span>
-          </div>
           <div className="journey-controls" data-testid="city-progress">
             <button className="journey-progress-button" type="button" aria-label="観光地・発見・戦績を見る" onClick={() => setRecordsOpen(true)}><CityProgressBadge game={game} /></button>
             {game.endingReached && <span className="city-relationship">交際中</span>}
             {idle && !showRomanceEnding && <TravelActions game={game}
               onTravelWait={(minutes) => commit((state) => waitForTravel(state, minutes, game.revision))}
               onTravelSleep={(mode) => commit((state) => sleepAtHotel(state, mode, game.revision))} />}
-            <nav className="journey-quick-actions" aria-label="旅の操作">
-              <button type="button" aria-label="英語ノートを開く" onClick={() => openEnglish()}>英語</button>
-              <button type="button" onClick={save}>セーブ</button>
-              <button type="button" onClick={reload}>ロード</button>
-              <button type="button" onClick={() => {
-                setPlayer(game.playerName);
-                setHeroine(game.heroineName);
-                setSettings(true);
-              }}>設定</button>
-            </nav>
           </div>
+          <nav className="journey-quick-actions" aria-label="旅の操作">
+            <button type="button" aria-label="英語ノートを開く" onClick={() => openEnglish()}>英語</button>
+            <button type="button" onClick={save}>セーブ</button>
+            <button type="button" onClick={reload}>ロード</button>
+            <button type="button" onClick={() => {
+              setPlayer(game.playerName);
+              setHeroine(game.heroineName);
+              setSettings(true);
+            }}>設定</button>
+          </nav>
         </div>
       )}
       {game && (
@@ -555,7 +555,6 @@ export default function App({
               })(),
               background: activeEncounter.frame.background,
               backgroundImage: encounterImage?.path,
-              balance: game.travelBudget,
               speaker: activeEncounter.frame.speaker === "heroine" ? game.heroineName : activeEncounter.frame.speaker === "player" ? game.playerName : "旅の風景",
               text: activeEncounter.frame.text,
               choices: activeEncounter.frame.choices.map((choice) => {

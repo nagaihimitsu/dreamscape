@@ -5,7 +5,7 @@
   /* Anchor near the head, not the edge of the (often much wider) portrait
      box. Its image uses object-fit: contain and may have wide empty margins. */
   top: 16%;
-  left: calc(50% + min(17vw, 18dvh, 110px));
+  left: calc(50% + min(5.5vw, 6dvh, 40px));
   display: block;
   width: clamp(24px, 18%, 46px);
   aspect-ratio: 1;

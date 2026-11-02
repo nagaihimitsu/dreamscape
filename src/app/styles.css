@@ -119,37 +119,37 @@ h3 {
   position: sticky;
   top: 0;
   z-index: 4;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, auto);
+  grid-template-areas: "travelers context" "controls resources" "controls actions";
   gap: 0 6px;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
   padding: 4px 12px;
   background: #f1f0e5;
   font-size: 13px;
   border-bottom: 1px solid var(--line);
 }
 .travelers {
-  flex: 0 1 auto;
-  margin-right: auto;
+  grid-area: travelers;
+  align-self: start;
+  padding-top: 2px;
   min-width: 0;
-  max-width: 32%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .journey-resources {
+  grid-area: resources;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  flex: none;
   gap: 4px 6px;
   min-width: 0;
 }
 .journey-context {
+  grid-area: context;
   display: flex;
-  flex: 0 1 40%;
-  max-width: max-content;
+  justify-content: flex-end;
   flex-wrap: nowrap;
   align-items: baseline;
   gap: 4px;
@@ -158,12 +158,14 @@ h3 {
   white-space: nowrap;
 }
 .journey-context span { min-width: 0; overflow: hidden; text-overflow: ellipsis; color: var(--muted); }
+.journey-context strong { flex: none; }
 .journey-controls {
+  grid-area: controls;
   display: flex;
-  flex: 1 0 100%;
+  align-self: end;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 0 3px;
   min-width: 0;
 }
@@ -184,7 +186,7 @@ h3 {
   white-space: nowrap;
 }
 .journey-progress-button .pill { padding: 4px 1px; font-size: 9px; letter-spacing: -0.1px; }
-.journey-quick-actions { display: flex; flex: none; align-items: center; gap: 0; }
+.journey-quick-actions { grid-area: actions; display: flex; justify-content: flex-end; align-items: center; gap: 0; }
 .journey-quick-actions button { min-width: 34px; min-height: 36px; padding: 4px 2px; font-size: 12px; }
 .records-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .records-heading h2 { margin: 0 0 10px; }
@@ -217,10 +219,6 @@ h3 {
 .mobile-observation-active .tourism-screen,
 .mobile-observation-active .observation-viewport {
   scroll-margin-top: 72px;
-}
-.mobile-play-active > .journey-bar .journey-controls,
-.mobile-observation-active > .journey-bar .journey-controls {
-  flex: 1 0 100%;
 }
 @media (max-width: 700px) {
   .mobile-play-active > .journey-bar .travelers,
@@ -723,7 +721,7 @@ footer span {
     letter-spacing: 0.04em;
   }
   .journey-bar {
-    padding: 12px 24px;
+    padding: 4px 12px;
   }
   .canal-scene {
     height: 235px;

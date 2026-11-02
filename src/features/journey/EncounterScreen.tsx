@@ -21,7 +21,6 @@ export type EncounterScreenView = {
   revision: number;
   background: string;
   backgroundImage?: string;
-  balance: number;
   speaker: string;
   text: string;
   choices: EncounterChoiceView[];
@@ -95,7 +94,6 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
       <section className="vn-dialogue paper story-paper encounter-dialogue" aria-label="寄り道の会話" inert={windowVisibility.hidden} aria-hidden={windowVisibility.hidden || undefined}>
         <div className="encounter-scene-heading">
           <div className="speaker">{view.speaker}</div>
-          <span aria-label={`旅の予算 ${view.balance}ユーロ`}>€{view.balance}</span>
         </div>
         <DialogueControls close={<DialogueWindowHide state={windowVisibility} label="閉じる" />} entries={entries} auto={autoAdvance} />
         {quiz ? (
