@@ -48,21 +48,6 @@ describe("response profile cross-file validation", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow(/Ink randomness is forbidden.*RANDOM/);
   }, 30_000);
 
-  it("rejects a legacy location attached to a non-legacy script", async () => {
-    await changeJson("date_catalog.json", (data) => {
-      data.dates[0].legacyStoryDestinationIds = { "milano/not_a_legacy_script": "milano_cafe_naviglio" };
-    });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/Legacy destination must reference a legacy story/);
-  });
-
-  it("rejects an unknown legacy location", async () => {
-    await changeJson("date_catalog.json", (data) => {
-      const date = data.dates[0];
-      date.legacyStoryDestinationIds = { [date.legacyStoryIds[0]]: "unknown_destination" };
-    });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/Unknown or mismatched legacy story destination/);
-  });
-
   it("rejects a recovery event that consumes AP or cannot repeat", async () => {
     await changeJson("date_catalog.json", (data) => {
       const date = data.dates.find((entry: any) => entry.kind === "special");
@@ -82,9 +67,9 @@ describe("response profile cross-file validation", () => {
 
   it("rejects a memoryless effect used by an ordinary date", async () => {
     await changeJson("effect_catalog.json", (data) => {
-      const effect = data.effects.find((item: any) => item.id === "milano_cafe_first_joke");
+      const effect = data.effects.find((item: any) => item.id === "sound_cafe_01_2_1");
       delete effect.memoryId;
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow(/outside recovery: milano_cafe_first_joke/);
+    await expect(buildContent(fixture, false)).rejects.toThrow(/outside recovery: sound_cafe_01_2_1/);
   }, 120_000);
 });

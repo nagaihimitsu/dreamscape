@@ -1,11 +1,10 @@
 import { expect, test, type Page } from "@playwright/test";
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
-import phase1 from "../fixtures/phase1-saves.json" with { type: "json" };
-import { expectNoOverflow, loadSnapshot, saved, setDialogueSpeed } from "./helpers";
+import { expectNoOverflow, saved, setDialogueSpeed } from "./helpers";
+import { loadCurrentScene } from "./current-scenarios";
 
-const storyId = "battles/milano_last_supper";
-const enemyLine = "「一枚目は作品のため。二枚目は一枚目のため。三枚目は――」";
-const heroineLine = "「……最後の一枚は、誰が守るんですか」";
+const storyId = "battles/sound_duomo";
+const enemyLine = "「鳩しかいない朝から。あいつらの羽音を消したら、今度は俺の腹が鳴った。」";
+const heroineLine = "「私、あそこも見てきます。広場って、上だけじゃなさそう。」";
 
 /** Inject only Vite's test response: the shipped reaction catalog stays empty. */
 async function installTestReactions(page: Page) {
@@ -13,7 +12,7 @@ async function installTestReactions(page: Page) {
     { storyId, speaker: "enemy", text: enemyLine, targetCharacterId: "heroine", expression: "surprised", mark: "interrobang" },
     { storyId, speaker: "enemy", text: enemyLine, targetCharacterId: "enemy", expression: "serious", mark: "sweat" },
     { storyId, speaker: "heroine", text: heroineLine, targetCharacterId: "enemy", expression: "worried", mark: "question" },
-    { storyId: "milano/cafe_01", speaker: "narrator", text: "運河沿いの小さなカフェ。", targetCharacterId: "heroine", expression: "smile", mark: "music" },
+    { storyId: "milano/sound_walk_01", speaker: "narrator", text: "ドゥオモ広場でカメラを渡された。彼女はポーズを取らず、広場の人の流れにすっと混じった。", targetCharacterId: "heroine", expression: "smile", mark: "music" },
   ];
   await page.route(/\/content\/presentation\/dialogue-reactions\.json(?:\?.*)?$/, (route) =>
     route.fulfill({ status: 200, contentType: "text/javascript", body: `export default ${JSON.stringify({ schemaVersion: 1, entries })};` }),
@@ -33,7 +32,7 @@ async function advanceTo(page: Page, target: string) {
 
 test("without reaction annotations, the ordinary battle keeps its existing presentation", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 780 });
-  await loadSnapshot(page, phase6.battleDialogue);
+  await loadCurrentScene(page, "battleDialogue");
   await setDialogueSpeed(page, "0");
   const state = await advanceTo(page, enemyLine);
   await expect(page.locator(".battle-screen .comic-effect")).toHaveCount(0);
@@ -47,7 +46,7 @@ test("both characters may react silently; marks track the frame across rerenders
   await page.setViewportSize({ width: 360, height: 780 });
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await installTestReactions(page);
-  await loadSnapshot(page, phase6.battleDialogue);
+  await loadCurrentScene(page, "battleDialogue");
   await setDialogueSpeed(page, "0");
   const state = await advanceTo(page, enemyLine);
   expect(state.activeBattle?.frame?.speaker).toBe("enemy");
@@ -113,7 +112,7 @@ test("reduced motion keeps a reaction visible without animation", async ({ page 
   await page.setViewportSize({ width: 360, height: 780 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await installTestReactions(page);
-  await loadSnapshot(page, phase6.battleDialogue);
+  await loadCurrentScene(page, "battleDialogue");
   await setDialogueSpeed(page, "0");
   const state = await advanceTo(page, enemyLine);
   const mark = page.locator('.battle-heroine .comic-effect[data-effect="interrobang"]');
@@ -130,11 +129,11 @@ test("each registered mark loads as a decorative asset", async ({ page }) => {
       status: 200,
       contentType: "text/javascript",
       body: `export default ${JSON.stringify({ schemaVersion: 1, entries: [
-        { storyId: "milano/cafe_01", speaker: "narrator", text: "運河沿いの小さなカフェ。", targetCharacterId: "heroine", mark },
+        { storyId: "milano/sound_walk_01", speaker: "narrator", text: "ドゥオモ広場でカメラを渡された。彼女はポーズを取らず、広場の人の流れにすっと混じった。", targetCharacterId: "heroine", mark },
       ] })};`,
     }),
   );
-  await loadSnapshot(page, phase1.started);
+  await loadCurrentScene(page, "dateReaction");
   const state = await saved(page);
   for (const candidate of ["question", "exclamation", "interrobang", "anger", "sweat", "blush", "gloom", "dizzy", "music", "heart", "sparkle", "sleep", "sigh"]) {
     mark = candidate;
@@ -146,10 +145,10 @@ test("each registered mark loads as a decorative asset", async ({ page }) => {
   }
 });
 
-test("a heroine can react silently during narration in an old saved date", async ({ page }, testInfo) => {
+test("a heroine can react silently during narration in a current date", async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 360, height: 780 });
   await installTestReactions(page);
-  await loadSnapshot(page, phase1.started);
+  await loadCurrentScene(page, "dateReaction");
   const before = await saved(page);
   const portrait = page.locator(".romance-scene .vn-character");
   await expect(portrait.locator("img").first()).toHaveAttribute("src", /\/default_01\/standing_01\/smile\.png$/);

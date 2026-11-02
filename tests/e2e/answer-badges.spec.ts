@@ -1,11 +1,10 @@
 import { expect, test } from "@playwright/test";
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
-import { loadSnapshot, saved } from "./helpers";
+import { loadCurrentSupperQuestion, saved } from "./helpers";
 
 test.use({ viewport: { width: 360, height: 780 }, reducedMotion: "reduce" });
 
 test("letter controls answer independently of word and translation interactions", async ({ page }) => {
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentSupperQuestion(page);
   const before = await saved(page);
   for (const letter of ["A", "B", "C"]) {
     const button = page.getByTestId(`answer-${letter}`);
@@ -16,7 +15,7 @@ test("letter controls answer independently of word and translation interactions"
     expect(box!.height).toBeGreaterThanOrEqual(44);
   }
   const first = page.getByTestId("option-text-A");
-  await first.getByRole("button", { name: "sitsの意味" }).tap();
+  await first.getByRole("button", { name: "lampsの意味" }).tap();
   await expect(first.locator(".word-meaning")).toBeVisible();
   await first.getByRole("button", { name: "選択肢Aの訳を見る" }).tap();
   await expect(first.getByRole("button", { name: "選択肢Aの訳を閉じる" })).toBeVisible();

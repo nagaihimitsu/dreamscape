@@ -1,17 +1,16 @@
 import { expect, test } from "@playwright/test";
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
-import phase7 from "../fixtures/phase7-free-time.json" with { type: "json" };
+import { loadCurrentScene } from "./current-scenarios";
 import bossQuiz from "../../content/quizzes/sound_finale_B1.json" with { type: "json" };
-import { expectNoOverflow, loadSnapshot, openRevisits, saved } from "./helpers";
+import { expectNoOverflow, loadCurrentSupperQuestion, saved } from "./helpers";
 import { battleDialogueUntilQuestionOrResult } from "./battle-helpers";
 
 // Check the saved result and transient visual beat separately: a reload must
 // never replay or reapply a result, and learning controls remain usable.
 test.use({ viewport: { width: 360, height: 740 }, reducedMotion: "no-preference" });
 
-for (const [optionId, correct] of [["B", true], ["A", false]] as const) {
+for (const [optionId, correct] of [["C", true], ["A", false]] as const) {
   test(`${correct ? "correct" : "incorrect"} answer has a distinct beat and stays locked after reload`, async ({ page }, testInfo) => {
-    await loadSnapshot(page, phase6.battleQuestion);
+    await loadCurrentSupperQuestion(page);
     const before = await saved(page);
     await page.getByTestId(`answer-${optionId}`).evaluate((button: HTMLButtonElement) => {
       button.click();
@@ -59,7 +58,7 @@ for (const [optionId, correct] of [["B", true], ["A", false]] as const) {
 for (const method of ["setting", "device"] as const) {
   test(`answer remains clear when motion is reduced by ${method}`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: method === "device" ? "reduce" : "no-preference" });
-    await loadSnapshot(page, phase6.battleQuestion);
+    await loadCurrentSupperQuestion(page);
     if (method === "setting") {
       await page.getByRole("button", { name: "設定", exact: true }).click();
       await page.getByLabel("演出を短縮する").check();
@@ -91,8 +90,8 @@ for (const method of ["setting", "device"] as const) {
 }
 
 test("the brief effect ends by itself and does not replay after the tab becomes hidden", async ({ page }) => {
-  await loadSnapshot(page, phase6.battleQuestion);
-  await page.getByTestId("answer-B").click();
+  await loadCurrentSupperQuestion(page);
+  await page.getByTestId("answer-C").click();
   const answered = await saved(page);
   await expect(page.getByTestId("answer-effect")).toHaveCount(0, { timeout: 4000 });
   await expect(page.getByTestId("answer-verdict")).toContainText("正解");
@@ -110,8 +109,8 @@ test("the brief effect ends by itself and does not replay after the tab becomes 
 });
 
 test("hiding a tab during the effect clears it without changing the saved answer", async ({ page }) => {
-  await loadSnapshot(page, phase6.battleQuestion);
-  await page.getByTestId("answer-B").click();
+  await loadCurrentSupperQuestion(page);
+  await page.getByTestId("answer-C").click();
   const answered = await saved(page);
   await expect(page.getByTestId("answer-effect")).toHaveAttribute("data-result", "correct");
   await page.evaluate(() => {
@@ -131,11 +130,11 @@ test("hiding a tab during the effect clears it without changing the saved answer
 });
 
 test("a stale tab cannot start an effect for an answer that failed to save", async ({ page, context }) => {
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentSupperQuestion(page);
   const stale = await context.newPage();
   await stale.goto("/");
   await expect(stale.getByTestId("answer-A")).toBeEnabled();
-  await page.getByTestId("answer-B").click();
+  await page.getByTestId("answer-C").click();
   const winner = await saved(page);
   expect(winner.activeBattle?.answers).toHaveLength(1);
   await stale.getByTestId("answer-A").click();
@@ -147,8 +146,8 @@ test("a stale tab cannot start an effect for an answer that failed to save", asy
 
 test("desktop answer effect and controls remain inside the scene", async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 1280, height: 720 });
-  await loadSnapshot(page, phase6.battleQuestion);
-  await page.getByTestId("answer-B").click();
+  await loadCurrentSupperQuestion(page);
+  await page.getByTestId("answer-C").click();
   await expect(page.getByTestId("answer-effect")).toHaveAttribute("data-result", "correct");
   await expect(page.getByTestId("answer-verdict")).toBeInViewport();
   await expect(page.getByRole("button", { name: "手がかり帳", exact: true })).toBeInViewport();
@@ -156,13 +155,14 @@ test("desktop answer effect and controls remain inside the scene", async ({ page
   await page.screenshot({ path: testInfo.outputPath("correct-desktop.png") });
 });
 
-for (const [format, snapshot, correctOption] of [
-  ["B", phase6.B_question, "C"],
-  ["C", phase6.C_question, "A"],
+for (const [format, target] of [
+  ["B", "specialBQuestion"],
+  ["C", "specialCQuestion"],
 ] as const) {
   test(`${format} special battle uses the same saved-answer effect`, async ({ page }) => {
-    await loadSnapshot(page, snapshot);
+    await loadCurrentScene(page, target);
     const before = await saved(page);
+    const correctOption = before.activeBattle!.battleId === "milano_la_scala_b01" ? "B" : "A";
     await page.getByTestId(`answer-${correctOption}`).click();
     await expect(page.getByTestId("answer-effect")).toHaveAttribute("data-result", "correct");
     await expect(page.getByTestId("answer-verdict")).toContainText("正解");
@@ -178,9 +178,7 @@ for (const [format, snapshot, correctOption] of [
 
 test("the five-question city boss keeps the effect on each round", async ({ page }) => {
   test.setTimeout(100_000);
-  await loadSnapshot(page, phase7.cityClearViewed);
-  await openRevisits(page);
-  await page.getByTestId("revisit-battle-milano_city_boss_01").click();
+  await loadCurrentScene(page, "finaleDialogue");
   for (const [index, question] of bossQuiz.questions.entries()) {
     const ready = await battleDialogueUntilQuestionOrResult(page);
     expect(ready.activeBattle?.phase).toBe("question");

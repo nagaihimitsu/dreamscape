@@ -4,24 +4,18 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { Story } from "inkjs";
 import sharp from "sharp";
-import { buildContent } from "../../scripts/content-pipeline";
+import { buildContent, compileInk, validateStory } from "../../scripts/content-pipeline";
+import { effects, presentation } from "./index";
 import dateData from "../../content/romance/date_catalog.json";
 import battleData from "../../content/battles/catalog.json";
 import tourismData from "../../content/tourism/catalog.json";
 import reasoningIntroData from "../../content/presentation/reasoning-intros.json";
 import encounterData from "../../content/encounters/catalog.json";
-import archivedEncounterData from "../../content/legacy/milano_fa0e7e0/encounters/catalog.json";
-import previousGalleriaEncounterData from "../../content/legacy/encounters_before_galleria_integration.json";
-import previousSoundFortuneData from "../../content/legacy/encounters_before_sound_fortune.json";
-import archivedBattleData from "../../content/legacy/milano_fa0e7e0/battles/catalog.json";
-import archivedTourismData from "../../content/legacy/milano_fa0e7e0/tourism/catalog.json";
-import archivedJourneyData from "../../content/legacy/milano_fa0e7e0/progression/journey.json";
-import previousPublication from "../../content/legacy/milano_3f32b60/bindings.json";
 import { parseStoryTags } from "./tags";
 import { prepareContentFixture } from "./test-fixtures";
 
 let fixture: string;
-const storyFile = "content/stories/milano/cafe_01.ink";
+const storyFile = "content/stories/milano/sound_cafe_01.ink";
 const dateFile = "content/romance/date_catalog.json";
 
 beforeEach(async () => {
@@ -197,33 +191,19 @@ describe("content build acceptance", () => {
     );
     expect(Object.keys(generated).sort()).toEqual(
       [...new Set([
-        "learning/english",
         "learning/sound_english",
-        ...Object.keys(previousPublication.stories),
         ...dateData.dates.map((date) => date.storyId),
-        ...dateData.dates.flatMap((date) => "legacyStoryIds" in date ? date.legacyStoryIds ?? [] : []),
         ...battleData.battles.map((battle) => battle.storyId),
-        ...archivedBattleData.battles.map((battle) => battle.storyId).filter((id) => id in generated),
         ...reasoningIntroData.entries.map((entry) => entry.storyId),
-        ...[...encounterData.encounters, ...previousGalleriaEncounterData.encounters, ...previousSoundFortuneData.encounters].flatMap((event) => [
+        ...encounterData.encounters.flatMap((event) => [
           event.storyId,
           ...("quiz" in event && event.quiz
             ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId]
             : []),
         ]),
-        ...archivedEncounterData.encounters.flatMap((event) => [
-          event.storyId,
-          ...("quiz" in event && event.quiz
-            ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId]
-            : []),
-        ]).filter((id) => id in generated),
         ...tourismData.landmarks.map((landmark) => landmark.guideStoryId),
-        ...archivedTourismData.landmarks.map((landmark) => landmark.guideStoryId).filter((id) => id in generated),
         ...result.journey.episodes.flatMap((episode) =>
           episode.epilogueStoryId ? [episode.epilogueStoryId] : [],
-        ),
-        ...archivedJourneyData.episodes.flatMap((episode) =>
-          "epilogueStoryId" in episode && episode.epilogueStoryId && episode.epilogueStoryId in generated ? [episode.epilogueStoryId] : [],
         ),
       ])].sort(),
     );
@@ -232,11 +212,11 @@ describe("content build acceptance", () => {
   it("reflects edited Ink prose in runtime without a UI source change", async () => {
     await replace(
       storyFile,
-      "運河沿いの小さなカフェ。",
+      "ロースタリーの焙煎を見ていたら",
       "窓辺に、二人分のコーヒー。",
     );
     const result = await buildContent(fixture, false);
-    const story = new Story(result.stories["milano/cafe_01"]);
+    const story = new Story(result.stories["milano/sound_cafe_01"]);
     expect(story.Continue()).toContain("窓辺に、二人分のコーヒー。");
   });
 
@@ -270,7 +250,7 @@ describe("content build acceptance", () => {
   it("rejects undefined effects even on a non-default branch", async () => {
     await replace(
       storyFile,
-      "effect: milano_cafe_second_honest",
+      "effect: sound_cafe_01_2_3",
       "effect: undefined_effect",
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(
@@ -279,21 +259,21 @@ describe("content build acceptance", () => {
   });
 
   it("rejects unrecognized tags instead of treating them as code", async () => {
-    await replace(storyFile, "# emotion: shy", "# javascript: alert(1)");
+    await replace(storyFile, "# emotion: teasing", "# javascript: alert(1)");
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Unknown story tag",
     );
   });
 
   it("rejects unknown background IDs", async () => {
-    await replace(storyFile, "background: milano_cafe", "background: nowhere");
+    await replace(storyFile, "background: milano_starbucks_roastery_date", "background: nowhere");
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Unknown background",
     );
   });
 
   it("fails on broken Ink instead of emitting a stale story", async () => {
-    await replace(storyFile, "-> start", "-> missing_knot");
+    await replace(storyFile, "-> join_1", "-> missing_knot");
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Ink compilation failed",
     );
@@ -302,8 +282,8 @@ describe("content build acceptance", () => {
   it("rejects branches with fewer than three choices", async () => {
     await replace(
       storyFile,
-      "* [「明日はどこへ行きたい？」]",
-      "* {false} [「明日はどこへ行きたい？」]",
+      "* [「その一口目、実況しようか」]",
+      "* {false} [「その一口目、実況しようか」]",
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Expected three choices",
@@ -311,7 +291,7 @@ describe("content build acceptance", () => {
   });
 
   it("rejects routes ending before the second choice", async () => {
-    await replace(storyFile, "-> after_first", "-> END");
+    await replace(storyFile, "-> join_1", "-> END");
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Expected 2 choice moments",
     );
@@ -333,7 +313,7 @@ describe("content build acceptance", () => {
 
   it("requires the name variables expected by the runtime", async () => {
     await replace(
-      "content/stories/milano/invitation_01.ink",
+      "content/stories/milano/sound_invitation_01.ink",
       'VAR player_name = ""',
       "// player name accidentally removed",
     );
@@ -396,9 +376,9 @@ describe("content build acceptance", () => {
 
   it("rejects invalid confession readiness branches", async () => {
     await replace(
-      "content/stories/milano/confession_01.ink",
-      "{confession_ready:",
-      "{true:",
+      "content/stories/milano/sound_confession_01.ink",
+      'confession_result == "accepted":',
+      "true:",
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Confession accepts before readiness",
@@ -407,9 +387,9 @@ describe("content build acceptance", () => {
 
   it("rejects missing outcome events in confession", async () => {
     await replace(
-      "content/stories/milano/confession_01.ink",
+      "content/stories/milano/sound_confession_01.ink",
       "# effect: milano_confession_accepted",
-      "# effect: milano_invitation_chosen_joke",
+      "# effect: sound_invitation_01_1_1",
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Confession must resolve exactly one outcome",
@@ -417,14 +397,17 @@ describe("content build acceptance", () => {
   });
 
   it("rejects outcome effects in a normal date", async () => {
-    await replace(
-      storyFile,
-      "# effect: milano_cafe_first_joke",
-      "# effect: milano_confession_deferred",
-    );
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Only confession",
-    );
+    const source = await readFile(path.join(fixture, storyFile), "utf8");
+    const changed = source.replace("# effect: common_date_first_playful", "# effect: milano_confession_deferred");
+    expect(changed).not.toBe(source);
+    const compiled = compileInk(changed);
+    const context = {
+      effectIds: effects.map((effect) => effect.id),
+      backgroundIds: Object.keys(presentation.backgrounds),
+      emotionIds: Object.keys(presentation.emotions),
+    };
+    expect(() => validateStory(compiled, context, { choiceCount: 2, effectCount: 2, kind: "normal" }, {}, effects))
+      .toThrow("Only confession can apply a confession outcome");
   });
 
   it("rejects duplicate milestone reward source IDs", async () => {

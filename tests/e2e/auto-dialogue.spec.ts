@@ -1,7 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
-import phase1 from "../fixtures/phase1-saves.json" with { type: "json" };
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
-import { loadSnapshot, saved, setDialogueSpeed } from "./helpers";
+import { saved, setDialogueSpeed } from "./helpers";
+import { loadCurrentScene } from "./current-scenarios";
 
 async function revealControl(page: Page, name: string) {
   const target = page.getByRole("button", { name, exact: true });
@@ -13,7 +12,7 @@ async function revealControl(page: Page, name: string) {
 }
 
 test("auto advance moves a read line and stops at a choice or question", async ({ page }) => {
-  await loadSnapshot(page, phase1.started);
+  await loadCurrentScene(page, "date");
   await setDialogueSpeed(page, "0");
   const before = await saved(page);
   await page.getByRole("button", { name: "自動送り", exact: true }).click();
@@ -22,19 +21,19 @@ test("auto advance moves a read line and stops at a choice or question", async (
   await page.getByRole("button", { name: "自動送り中" }).click();
   await expect(page.getByRole("button", { name: "自動送り", exact: true })).toHaveAttribute("aria-pressed", "false");
 
-  await loadSnapshot(page, phase1.beforeChoice);
+  await loadCurrentScene(page, "dateChoice");
   await setDialogueSpeed(page, "0");
   await expect(page.getByRole("button", { name: "自動送り", exact: true })).toBeDisabled();
-  expect((await saved(page)).activeDate?.choiceCount).toBe(phase1.beforeChoice.activeDate.choiceCount);
+  expect((await saved(page)).activeDate?.choiceCount).toBe(0);
 
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentScene(page, "battleQuestion");
   await expect(page.getByRole("button", { name: /自動送り/ })).toHaveCount(0);
   expect((await saved(page)).activeBattle?.answers).toHaveLength(0);
 });
 
 for (const panel of ["会話ログ", "設定"] as const) {
   test(`opening ${panel} stops auto without advancing or resuming`, async ({ page }) => {
-    await loadSnapshot(page, phase1.started);
+    await loadCurrentScene(page, "date");
     await setDialogueSpeed(page, "0");
     const before = await saved(page);
     await page.getByRole("button", { name: "自動送り", exact: true }).click();
@@ -50,7 +49,7 @@ for (const panel of ["会話ログ", "設定"] as const) {
 }
 
 test("hiding a scene stops auto and restoring it never advances the line", async ({ page }) => {
-  await loadSnapshot(page, phase1.started);
+  await loadCurrentScene(page, "date");
   await setDialogueSpeed(page, "0");
   const before = await saved(page);
   await page.getByRole("button", { name: "自動送り", exact: true }).click();
@@ -64,7 +63,7 @@ test("hiding a scene stops auto and restoring it never advances the line", async
 
 test("the compact control menu stops auto until the player starts it again", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 780 });
-  await loadSnapshot(page, phase1.started);
+  await loadCurrentScene(page, "date");
   await setDialogueSpeed(page, "0");
   const before = await saved(page);
   await page.getByRole("button", { name: "自動送り", exact: true }).click();
@@ -79,13 +78,13 @@ test("the compact control menu stops auto until the player starts it again", asy
 });
 
 for (const scene of [
-  { name: "date", snapshot: phase1.started, menu: "details.vn-tools-menu > summary", next: ".next" },
-  { name: "tourism guide", snapshot: phase6.guide, menu: "details.vn-tools-menu > summary", next: "[data-testid=tourism-advance]" },
-  { name: "battle dialogue", snapshot: phase6.battleDialogue, menu: "details.battle-tool-menu > summary", next: "[data-testid=battle-advance]" },
+  { name: "date", snapshot: "date", menu: "details.vn-tools-menu > summary", next: ".next" },
+  { name: "tourism guide", snapshot: "guide", menu: "details.vn-tools-menu > summary", next: "[data-testid=tourism-advance]" },
+  { name: "battle dialogue", snapshot: "battleDialogue", menu: "details.battle-tool-menu > summary", next: "[data-testid=battle-advance]" },
 ] as const) {
   test(`${scene.name} cannot advance from the text or next button with the control menu open`, async ({ page }) => {
     await page.setViewportSize({ width: 360, height: 780 });
-    await loadSnapshot(page, scene.snapshot);
+    await loadCurrentScene(page, scene.snapshot);
     await setDialogueSpeed(page, "0");
     const before = await saved(page);
     await page.locator(scene.menu).click();
@@ -102,7 +101,7 @@ for (const scene of [
 
 test("a choice cannot be selected while the compact controls are open", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 780 });
-  await loadSnapshot(page, phase1.beforeChoice);
+  await loadCurrentScene(page, "dateChoice");
   await setDialogueSpeed(page, "0");
   await expect(page.locator(".choice").first()).toBeEnabled();
   const before = await saved(page);
@@ -114,7 +113,7 @@ test("a choice cannot be selected while the compact controls are open", async ({
 
 for (const mode of ["modal", "hidden", "menu"] as const) {
   test(`typing pauses while ${mode} and resumes at the same character`, async ({ page }) => {
-    await loadSnapshot(page, phase1.beforeChoice);
+    await loadCurrentScene(page, "dateChoice");
     await setDialogueSpeed(page, "45");
     await expect(page.locator(".dialogue-text .unrevealed")).not.toHaveText("");
     if (mode === "modal") {

@@ -1,124 +1,39 @@
 import { describe, expect, it } from "vitest";
-import oldFreeTime from "../../tests/fixtures/castle-clear-unplayed.json";
-import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
 import { effects } from "../content";
-import { beginStory, storyFingerprint } from "../story/runtime";
-import { advanceDate, chooseDate, createGame, finishDate, startDate, validateGameState, type GameState } from "./game";
+import { createDebugState, type DebugSettings } from "../dev/debug-state";
+import { advanceDate, chooseDate, validateGameState, type GameState } from "./game";
 
-const dateId = "milano_cafe_01";
-const oldStoryId = "milano/cafe_tourism_01";
-const effectId = "milano_cafe_first_flirt";
+const seed: DebugSettings = { scene: "date", id: "milano_novecento_date_01", progress: "completed", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" };
 
-function baseState(stage: 1 | 4): GameState {
-  const base = seedLegacyChapter(createGame());
-  return stage === 1 ? base : { ...base, romanceStage: 4, affection: 10, trust: 10, spark: 10 };
-}
-
-function untilChoice(state: GameState): GameState {
+function untilChoice(initial: GameState): GameState {
+  let state = initial;
   for (let n = 0; n < 100 && state.activeDate && !state.activeDate.frame.choices.length && !state.activeDate.frame.ended; n++)
     state = advanceDate(state, state.revision);
   expect(state.activeDate?.frame.choices).toHaveLength(3);
   return state;
 }
 
-function finish(state: GameState): GameState {
-  for (let n = 0; n < 100 && state.activeDate; n++) {
-    if (state.activeDate.frame.ended) state = finishDate(state, state.revision);
-    else if (state.activeDate.frame.choices.length) state = chooseDate(state, 0, state.revision);
-    else state = advanceDate(state, state.revision);
-  }
-  expect(state.activeDate).toBeNull();
-  return state;
-}
-
-/** Construct an authentic v8-shaped in-progress snapshot using the retained
- * published Ink and fingerprint, then let the real migration parse it. */
-function oldV8Date(stage: 1 | 4): GameState {
-  const base = baseState(stage);
-  const started = startDate(base, dateId, () => 0);
-  const step = beginStory(oldStoryId, base.playerName, base.heroineName);
-  const { resolutionMode: _mode, randomPlan: _rolls, resolvedChoices: _resolved,
-    responseSnapshot: _snapshot, ...v8Active } = started.activeDate!;
-  const { recoveryAfterRejection: _recovery, completedRecoveryCount: _count,
-    travelBudget: _budget, inventory: _inventory, completedEncounterIds: _encounters,
-    encounterRewards: _encounterRewards, activeEncounter: _activeEncounter, updatedDateIds: _updatedDateIds,
-    activeDate: _active, ...v8State } = started;
-  return validateGameState({
-    ...v8State, schemaVersion: 8,
-    activeDate: { ...v8Active, storyState: step.storyState, storyHash: storyFingerprint(oldStoryId), frame: step.frame },
-  });
-}
-
-describe("stage delta compatibility at the same bold choice", () => {
-  const effect = effects.find((item) => item.id === effectId)!;
-
+describe("current date effect application", () => {
   it.each([
     [1, 0, "positive"], [1, 9999, "negative"],
     [4, 0, "positive"], [4, 9999, "negative"],
-  ] as const)("applies only the saved random deltas at stage %i and roll %i", (stage, roll, outcome) => {
+  ] as const)("applies only saved random deltas at stage %i and roll %i", (stage, roll, outcome) => {
     const currentId = "common_date_first_bold";
-    const currentEffect = effects.find((item) => item.id === currentId)!;
-    expect(currentEffect.responseProfileId).toBe("bold");
-    const base = validateGameState(oldFreeTime);
-    const currentBase = stage === 1 ? base : { ...base, romanceStage: 4 as const, affection: 10, trust: 10, spark: 10 };
-    const ready = untilChoice(startDate(currentBase, "milano_novecento_date_01", () => roll));
-    const after = chooseDate(ready, 2, ready.revision);
+    expect(effects.find((item) => item.id === currentId)?.responseProfileId).toBe("bold");
+    const ready = untilChoice(createDebugState({ ...seed, roll: roll === 0 ? "positive" : "negative", affection: stage === 1 ? 0 : 10, trust: stage === 1 ? 0 : 10, spark: stage === 1 ? 0 : 10 }));
+    // Stage is independent of the current relationship values; use a valid
+    // v11 state to confirm the saved random result isn't applied twice.
+    const prepared = stage === 1 ? ready : validateGameState({ ...ready, romanceStage: 4 });
+    const after = chooseDate(prepared, 2, prepared.revision);
     const resolved = after.activeDate!.resolvedChoices[0];
     expect(resolved.effectId).toBe(currentId);
     expect(resolved.result).toBe(outcome);
-    expect(after.affection - ready.affection).toBe(resolved.deltas.affection);
-    expect(after.trust - ready.trust).toBe(resolved.deltas.trust);
-    expect(after.spark - ready.spark).toBe(resolved.deltas.spark);
+    expect(after.affection - prepared.affection).toBe(resolved.deltas.affection);
+    expect(after.trust - prepared.trust).toBe(resolved.deltas.trust);
+    expect(after.spark - prepared.spark).toBe(resolved.deltas.spark);
     expect(after.activeDate!.appliedEffectIds.filter((id) => id.endsWith(`:${currentId}`))).toHaveLength(1);
-    expect(after.memories).toEqual(ready.memories);
-    expect(chooseDate(after, 2, ready.revision)).toBe(after);
+    expect(after.memories).toEqual(prepared.memories);
+    expect(chooseDate(after, 2, prepared.revision)).toBe(after);
     expect(validateGameState(JSON.parse(JSON.stringify(after)))).toEqual(after);
-  });
-
-  it.each([
-    [1, 0, "positive"], [1, 9999, "negative"],
-    [4, 0, "positive"], [4, 9999, "negative"],
-  ] as const)("resumes the prior random script without double-applying its stage delta at stage %i and roll %i", (stage, roll, outcome) => {
-    const base = baseState(stage);
-    const started = startDate(base, dateId, () => roll);
-    const storyId = "milano/cafe_refresh_01";
-    const step = beginStory(storyId, base.playerName, base.heroineName, { romance_stage: stage });
-    const activeDate = { ...started.activeDate!, storyState: step.storyState, storyHash: storyFingerprint(storyId), frame: step.frame };
-    const ready = untilChoice(validateGameState({ ...started, activeDate }));
-    const currentId = `${effectId}_refresh`;
-    const currentEffect = effects.find((item) => item.id === currentId)!;
-    expect(currentEffect.responseProfileId).toBe("bold");
-    expect(currentEffect.stageDeltas?.["4"]).toBeDefined();
-    const after = chooseDate(ready, 1, ready.revision);
-    const resolved = after.activeDate!.resolvedChoices[0];
-    expect(resolved.effectId).toBe(currentId);
-    expect(resolved.result).toBe(outcome);
-    expect(after.affection - ready.affection).toBe(resolved.deltas.affection);
-    expect(after.trust - ready.trust).toBe(resolved.deltas.trust);
-    expect(after.spark - ready.spark).toBe(resolved.deltas.spark);
-    expect(after.activeDate!.appliedEffectIds.filter((id) => id.endsWith(`:${currentId}`))).toHaveLength(1);
-    expect(after.memories.filter((id) => id === currentEffect.memoryId)).toHaveLength(1);
-    expect(chooseDate(after, 1, ready.revision)).toBe(after);
-    expect(validateGameState(JSON.parse(JSON.stringify(after)))).toEqual(after);
-  });
-
-  it.each([1, 4] as const)("migrates the v8 in-progress stage %i story and applies its fixed stage delta", (stage) => {
-    const migrated = oldV8Date(stage);
-    expect(migrated.activeDate).toMatchObject({ resolutionMode: "legacy_fixed", randomPlan: [], resolvedChoices: [], responseSnapshot: null });
-    const ready = untilChoice(migrated);
-    const after = chooseDate(ready, 1, ready.revision);
-    const fixed = effect.stageDeltas?.[String(stage) as "1" | "4"] ?? effect;
-    expect(after.affection - ready.affection).toBe(fixed.affectionDelta);
-    expect(after.trust - ready.trust).toBe(fixed.trustDelta ?? 0);
-    expect(after.spark - ready.spark).toBe(fixed.sparkDelta ?? 0);
-    expect(after.activeDate!.appliedEffectIds.filter((id) => id.endsWith(`:${effectId}`))).toHaveLength(1);
-    expect(after.activeDate!.resolvedChoices).toEqual([]);
-    expect(after.memories.filter((id) => id === effect.memoryId)).toHaveLength(1);
-    expect(chooseDate(after, 1, ready.revision)).toBe(after);
-    const restored = validateGameState(JSON.parse(JSON.stringify(after)));
-    expect(restored).toEqual(after);
-    const finished = finish(restored);
-    expect(finished.ap).toBe(migrated.ap);
-    expect(finished.memories.filter((id) => id === effect.memoryId)).toHaveLength(1);
   });
 });

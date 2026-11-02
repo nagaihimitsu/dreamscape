@@ -1,8 +1,10 @@
-import { validateGameState, type GameState } from "../domain";
+import { isKnownLegacyGameState, validateGameState, type GameState } from "../domain";
 
 /** Keep the slot stable; schemaVersion inside the payload controls compatibility. */
 export const SAVE_KEY = "dreamscape.save.v1";
 export const LEARNING_KEY = "dreamscape.learning.v1";
+/** The current format is validated, not automatically migrated from older versions. */
+export const SUPPORTED_SAVE_VERSION = 11;
 
 export interface StorageLike {
   getItem(key: string): string | null;
@@ -12,7 +14,7 @@ export interface StorageLike {
 export type LoadResult =
   | { status: "empty" }
   | { status: "loaded"; state: GameState }
-  | { status: "invalid"; message: string; raw: string | null };
+  | { status: "invalid"; kind: "storage" | "newer" | "legacy" | "corrupt"; message: string; raw: string | null };
 
 export type SaveResult = { ok: true } | { ok: false; message: string };
 
@@ -27,21 +29,40 @@ export function loadGame(storage: StorageLike): LoadResult {
   } catch {
     return {
       status: "invalid",
+      kind: "storage",
       message:
         "このブラウザの保存領域を読み取れません。保存の設定を確認してください。",
       raw: null,
     };
   }
   if (raw === null) return { status: "empty" };
+  let value: unknown;
   try {
-    return { status: "loaded", state: parseGameState(raw) };
+    value = JSON.parse(raw) as unknown;
   } catch {
     return {
       status: "invalid",
+      kind: "corrupt",
       message:
-        "セーブを読み込めませんでした。データが壊れているか、このバージョンに対応していません。元のデータは残っています。",
+        "セーブを読み込めませんでした。保存データの形式を確認できません。元のデータは残っています。",
       raw,
     };
+  }
+  const version = typeof value === "object" && value !== null && "schemaVersion" in value
+    ? value.schemaVersion : undefined;
+  if (typeof version === "number" && Number.isInteger(version) && version > SUPPORTED_SAVE_VERSION) {
+    return { status: "invalid", kind: "newer", raw,
+      message: "このセーブは新しいバージョンで作成されています。アプリを更新してください。元のデータは残っています。" };
+  }
+  if (isKnownLegacyGameState(value)) {
+    return { status: "invalid", kind: "legacy", raw,
+      message: `保存データの形式はバージョン${version}です。現在のバージョンでは読み込めません。データの破損によって読み込めない場合もあります。元のデータは残っています。` };
+  }
+  try {
+    return { status: "loaded", state: validateGameState(value) };
+  } catch {
+    return { status: "invalid", kind: "corrupt", raw,
+      message: "セーブを読み込めませんでした。データが壊れているか、このバージョンに対応していません。元のデータは残っています。" };
   }
 }
 
@@ -98,10 +119,13 @@ export function saveGame(
 export function backupAndCreate(
   storage: StorageLike,
   state: GameState,
+  expectedOriginal?: string | null,
 ): SaveResult {
   try {
     const replacement = serialize(state);
     const original = storage.getItem(SAVE_KEY);
+    if (expectedOriginal !== undefined && original !== expectedOriginal)
+      return { ok: false, message: "別の画面でセーブが更新されています。再読み込みしてからやり直してください。" };
     if (original !== null) {
       const prefix = `${SAVE_KEY}.backup.${Date.now()}`;
       let key = prefix;
@@ -109,6 +133,8 @@ export function backupAndCreate(
       while (storage.getItem(key) !== null) key = `${prefix}.${++suffix}`;
       storage.setItem(key, original);
     }
+    if (storage.getItem(SAVE_KEY) !== original)
+      return { ok: false, message: "別の画面でセーブが更新されています。上書きせずに保護しました。" };
     storage.setItem(SAVE_KEY, replacement);
     return { ok: true };
   } catch {

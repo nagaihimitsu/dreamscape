@@ -1,4 +1,3 @@
-import phase1 from "./phase1-saves.json";
 import { city } from "../../src/content";
 import {
   createGame,
@@ -6,30 +5,25 @@ import {
   type GameState,
 } from "../../src/domain/game";
 
-/** Published Phase 1 chapter reward, used only to isolate legacy romance tests. */
+/** Valid current-schema test state retaining the original optional trial. */
 export function seedLegacyChapter(
   initial: GameState = createGame(),
 ): GameState {
   return validateGameState({
-    ...phase1.empty,
+    ...initial,
     revision: initial.revision + 1,
-    playerName: initial.playerName,
-    heroineName: initial.heroineName,
     ap: city.firstClearReward.ap,
-    completedChapters: phase1.started.completedChapters,
-    claimedRewardIds: phase1.started.claimedRewardIds,
+    completedChapters: [city.id],
+    claimedRewardIds: [city.firstClearReward.rewardSourceId],
+    legacyTrialAvailable: true,
   });
 }
 
-/** An authentic pre-city empty save keeps access to the original Last Supper trial. */
+/** Current-schema test state with access to the original Last Supper trial. */
 export function createLegacyJourneyGame(
   playerName?: string,
   heroineName?: string,
 ): GameState {
   const fresh = createGame(playerName, heroineName);
-  return validateGameState({
-    ...phase1.empty,
-    playerName: fresh.playerName,
-    heroineName: fresh.heroineName,
-  });
+  return validateGameState({ ...fresh, legacyTrialAvailable: true });
 }

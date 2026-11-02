@@ -5,9 +5,6 @@ import { startEpisode } from "./chapter";
 import { advanceEncounter, answerEncounterQuiz, chooseEncounter, finishEncounter, getEncounterAvailability, getTourismEncounterAvailability, startEncounter, startTourismEncounter } from "./encounter";
 import { createGame, validateGameState, type GameState } from "./game";
 import { openTourism, skipTourismGuide, startTourismBattle } from "./tourism";
-import { encounters } from "../content/encounters";
-import { encounterCatalogSchema } from "../content/encounter-schemas";
-import preSoundData from "../../content/legacy/encounters_before_sound_fortune.json";
 
 const galleria = "galleria_vittorio_emanuele_ii";
 const encounter = "galleria_fortune";
@@ -172,30 +169,13 @@ describe("the optional Galleria conversation", () => {
     expect(state.encounterRewards[encounter]).toBeUndefined();
   });
 
-  it("resumes an in-progress fortune_tour scene using its original fingerprint", () => {
-    const index = encounters.encounters.findIndex((event) => event.id === encounter);
-    const current = encounters.encounters[index];
-    const previous = encounterCatalogSchema.parse(preSoundData).encounters.find((event) => event.id === encounter)!;
-    let state: GameState;
-    try {
-      encounters.encounters[index] = previous;
-      const exploring = exploreGalleria();
-      state = startTourismEncounter(exploring, encounter, exploring.revision, () => 0);
-      expect(state.activeEncounter?.storyId).toBe("encounters/galleria_fortune_tour");
-    } finally {
-      encounters.encounters[index] = current;
-    }
-    state = restore(state!);
-    for (let step = 0; state.activeEncounter && step < 80; step++) {
-      const active = state.activeEncounter;
-      expect(active.phase).toBe("story");
-      state = active.frame.choices.length ? chooseEncounter(state, 0, state.revision)
-        : active.frame.ended ? finishEncounter(state, state.revision)
-          : advanceEncounter(state, state.revision);
-      state = restore(state);
-    }
-    expect(state.activeEncounter).toBeNull();
-    expect(state.activeTourism?.landmarkId).toBe(galleria);
-    expect(state.encounterRewards[encounter]).toBeUndefined();
+  it("rejects a saved encounter when its definition has changed", () => {
+    const exploring = exploreGalleria();
+    const current = startTourismEncounter(exploring, encounter, exploring.revision, () => 0);
+    expect(current.activeEncounter).not.toBeNull();
+    const state = { ...current, activeEncounter: { ...current.activeEncounter!, contentHash: "changed-definition" } };
+    const before = JSON.stringify(state!);
+    expect(() => restore(state!)).toThrow("道中交流の保存状態が一致しません");
+    expect(JSON.stringify(state!)).toBe(before);
   });
 });

@@ -1,13 +1,10 @@
 import { expect, test } from "@playwright/test";
 import catalog from "../../content/tourism/catalog.json" with { type: "json" };
-import oldQuiz from "../../content/quizzes/last_supper_B1.json" with { type: "json" };
 import quiz from "../../content/quizzes/sound_supper_B1.json" with { type: "json" };
-import phase3 from "../fixtures/phase3-saves.json" with { type: "json" };
 import {
-  SAVE_KEY,
   expectNoOverflow,
   saved,
-  startLegacyJourney,
+  startCurrentSupperJourney,
 } from "./helpers";
 import {
   answerRound,
@@ -43,8 +40,9 @@ test("a named guide resumes, the real image loads, and every discovery persists 
   await page.setViewportSize({ width: 360, height: 740 });
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await startLegacyJourney(page, ["航", "澪"]);
-  const before = romanceProgress(await saved(page));
+  await startCurrentSupperJourney(page, ["航", "澪"]);
+  const initial = await saved(page);
+  const before = romanceProgress(initial);
   await openTourismFromEntry(page);
   expect((await saved(page)).activeTourism!.phase).toBe("guide");
   const guideState = await reloadUnchanged(page);
@@ -53,7 +51,7 @@ test("a named guide resumes, the real image loads, and every discovery persists 
   );
   const transcript = await finishTourismGuide(page);
   expect(transcript.join("\n")).toMatch(/澪|航/);
-  expect((await saved(page)).ap).toBe(1);
+  expect((await saved(page)).ap).toBe(Math.min(12, initial.ap + 1));
   expect((await saved(page)).completedGuideIds).toEqual([landmark.id]);
   await expect(
     page.getByRole("heading", { name: landmark.nameJa, exact: true }),
@@ -167,7 +165,7 @@ test("native touch pinch and drag change the view within bounds without accident
   page,
 }) => {
   await page.setViewportSize({ width: 360, height: 740 });
-  await startLegacyJourney(page);
+  await startCurrentSupperJourney(page);
   await openTourismFromEntry(page);
   await skipTourismGuide(page);
   const viewport = page.getByTestId("observation-viewport");
@@ -227,8 +225,9 @@ test("battle cluebook preserves the question, open hint and locked answer, inclu
 }) => {
   test.setTimeout(90_000);
   await page.setViewportSize({ width: 360, height: 740 });
-  await startLegacyJourney(page);
-  const romance = romanceProgress(await saved(page));
+  await startCurrentSupperJourney(page);
+  const initial = await saved(page);
+  const romance = romanceProgress(initial);
   await openTourismFromEntry(page);
   await skipTourismGuide(page);
   await selectObservationClue(page, hotspots[0].id);
@@ -291,8 +290,8 @@ test("battle cluebook preserves the question, open hint and locked answer, inclu
   }
   const result = await battleDialogueUntilQuestionOrResult(page);
   expect(result.activeBattle!.score).toBe(3);
-  expect(result.ap).toBe(6);
-  expect(result.battleRecords[0].attempts).toBe(1);
+  expect(result.ap).toBe(Math.min(12, initial.ap + 6));
+  expect(result.battleRecords.find((record) => record.battleId === "milano_last_supper_01")!.attempts).toBe(1);
   expect(romanceProgress(result)).toEqual(romance);
   expect(result.discoveredClueIds).toHaveLength(3);
 });
@@ -302,8 +301,9 @@ test("observation and the guide can be skipped to complete a battle with no clue
 }) => {
   test.setTimeout(90_000);
   await page.setViewportSize({ width: 360, height: 740 });
-  await startLegacyJourney(page);
-  const romance = romanceProgress(await saved(page));
+  await startCurrentSupperJourney(page);
+  const initial = await saved(page);
+  const romance = romanceProgress(initial);
   await openTourismFromEntry(page);
   await page
     .getByRole("button", { name: "バトルを始める", exact: true })
@@ -319,80 +319,7 @@ test("observation and the guide can be skipped to complete a battle with no clue
   await page.getByTestId("cluebook-close").click();
   const result = await playBattle(page, quiz.questions, [false, false, false]);
   expect(result.state.activeBattle!.score).toBe(0);
-  expect(result.state.ap).toBe(5);
+  expect(result.state.ap).toBe(Math.min(12, initial.ap + 5));
   expect(romanceProgress(result.state)).toEqual(romance);
   expect(result.state.discoveredClueIds).toEqual([]);
-});
-
-test("an authentic Phase 3 answered battle migrates without changing its answer when visiting tourism", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 360, height: 740 });
-  await page.goto("/");
-  await page.evaluate(
-    ({ key, value }) => localStorage.setItem(key, JSON.stringify(value)),
-    { key: SAVE_KEY, value: phase3.feedback },
-  );
-  await page.reload();
-  await expect(page.getByTestId("battle-feedback")).toBeVisible();
-  // Merely loading or opening a read-only notebook must not overwrite the old slot.
-  expect(await saved(page)).toEqual(phase3.feedback);
-  await openCluebook(page);
-  await page.getByTestId("cluebook-close").click();
-  expect(await saved(page)).toEqual(phase3.feedback);
-  await openCluebook(page);
-  await page
-    .getByRole("button", { name: "観光に戻って調べる", exact: true })
-    .click();
-  await skipTourismGuide(page);
-  await selectObservationClue(page, hotspots[0].id);
-  await closeObservationList(page);
-  const migrated = await saved(page);
-  expect(migrated.schemaVersion).toBe(11);
-  expect(migrated.activeBattle).toEqual({
-    ...phase3.feedback.activeBattle,
-    reasoning: null,
-  });
-  expect(romanceProgress(migrated)).toEqual(
-    romanceProgress(phase3.feedback as unknown as typeof migrated),
-  );
-  await reloadUnchanged(page);
-  await page.getByRole("button", { name: "バトルに戻る", exact: true }).click();
-  expect((await saved(page)).activeBattle).toEqual({
-    ...phase3.feedback.activeBattle,
-    reasoning: null,
-  });
-  for (const option of oldQuiz.questions[0].options)
-    await expect(page.getByTestId(`answer-${option.id}`)).toBeDisabled();
-  await page.getByTestId("battle-advance").click();
-  await battleDialogueUntilQuestionOrResult(page);
-  expect((await saved(page)).activeBattle!.roundIndex).toBe(1);
-});
-
-test("a Phase 3 romance ending can visit and leave tourism without changing the completed route", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 360, height: 740 });
-  await page.goto("/");
-  await page.evaluate(
-    ({ key, value }) => localStorage.setItem(key, JSON.stringify(value)),
-    { key: SAVE_KEY, value: phase3.ending },
-  );
-  await page.reload();
-  await expect(page.getByTestId("free-time-hub")).toBeVisible();
-  const initial = romanceProgress(await saved(page));
-  await openTourismFromEntry(page);
-  await finishTourismGuide(page);
-  await selectObservationClue(page, document.id);
-  await closeObservationList(page);
-  await page
-    .getByRole("button", { name: "自由時間へ戻る", exact: true })
-    .click();
-  await expect(page.getByTestId("free-time-hub")).toBeVisible();
-  expect(romanceProgress(await saved(page))).toEqual(initial);
-  await reloadUnchanged(page);
-  await expect(page.getByTestId("free-time-hub")).toBeVisible();
-  await openTourismFromEntry(page);
-  expect((await saved(page)).activeTourism!.phase).toBe("exploring");
-  expect((await saved(page)).discoveredClueIds).toEqual([document.id]);
 });

@@ -1,18 +1,14 @@
 import { expect, test, type Page } from "@playwright/test";
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
-import { loadSnapshot, saved } from "./helpers";
+import { loadCurrentScene } from "./current-scenarios";
+import { saved, setDialogueSpeed } from "./helpers";
 import { answerRound, battleDialogueUntilQuestionOrResult } from "./battle-helpers";
-import { specialBattle, startSpecialFromEntry } from "./reasoning-helpers";
+import { specialBattle } from "./reasoning-helpers";
 
 /** Use the actual battle transition rather than inventing an in-progress save. */
 async function reachReasoningFromClaim(page: Page, format: "B" | "C") {
-  const prior = format === "B" ? phase6.B_result : phase6.C_result;
-  await loadSnapshot(page, {
-    ...phase6.freeTime,
-    battleRecords: [...phase6.freeTime.battleRecords, ...prior.battleRecords],
-  });
-  await startSpecialFromEntry(page, format);
-  const { quiz, reasoning } = specialBattle(format);
+  await loadCurrentScene(page, format === "B" ? "specialBDialogue" : "specialCDialogue");
+  await setDialogueSpeed(page, "0");
+  const { quiz, reasoning } = specialBattle(format, "story");
   for (let i = 0; i < reasoning.roundIndex; i++) {
     await battleDialogueUntilQuestionOrResult(page);
     await answerRound(page, quiz.questions[i], true);
@@ -22,7 +18,7 @@ async function reachReasoningFromClaim(page: Page, format: "B" | "C") {
   for (let count = 0; count < 80; count++) {
     const state = await saved(page);
     if (state.activeBattle?.phase === "reasoning") {
-      expect(transcript.join("\n")).toContain(format === "B" ? "中央の下部まで、例外はない" : "二つの資料");
+      expect(transcript.join("\n")).toContain(format === "B" ? "昔から全部固定" : "画面の中と外");
       return state;
     }
     expect(state.activeBattle?.phase).toBe("dialogue");
@@ -46,7 +42,8 @@ async function finishRebuttal(page: Page, original: Awaited<ReturnType<typeof sa
     expect(await saved(page)).toEqual(original);
   }
   expect(lines.length).toBeGreaterThanOrEqual(1);
-  expect(lines.join("\n")).not.toContain("食卓の下に残る切れ目");
+  expect(lines.join("\n")).not.toContain("平土間の椅子");
+  expect(lines.join("\n")).not.toContain("画面の内側・衣装");
   return lines.join("\n");
 }
 
@@ -84,25 +81,26 @@ for (const example of [
 }
 
 for (const example of [
-  { name: "B before selection", snapshot: phase6.B_reasoning },
-  { name: "B during questioning", snapshot: phase6.B_press },
-  { name: "B with selected evidence", snapshot: phase6.B_selected },
-  { name: "B after submission", snapshot: phase6.B_accepted },
-  { name: "C before selection", snapshot: phase6.C_reasoning },
-  { name: "C with a selected card", snapshot: phase6.C_selected },
-  { name: "C after submission", snapshot: phase6.C_accepted },
-  { name: "ordinary A question", snapshot: phase6.battleQuestion },
+  { name: "B before selection", snapshot: "specialBReasoning" },
+  { name: "B during questioning", snapshot: "specialBPressed" },
+  { name: "B with selected evidence", snapshot: "specialBSelected" },
+  { name: "B after submission", snapshot: "specialBAccepted" },
+  { name: "C before selection", snapshot: "specialCReasoning" },
+  { name: "C with a selected card", snapshot: "specialCSelected" },
+  { name: "C after submission", snapshot: "specialCAccepted" },
+  { name: "ordinary A question", snapshot: "battleQuestion" },
 ] as const) {
   test(`${example.name}: an existing in-progress save is restored without replaying the introduction`, async ({ page }) => {
     await page.setViewportSize({ width: 360, height: 780 });
-    await loadSnapshot(page, example.snapshot);
+    await loadCurrentScene(page, example.snapshot);
+    const expected = await saved(page);
     await expect(page.getByTestId("reasoning-cutin")).toHaveCount(0);
     await expect(page.getByTestId("reasoning-rebuttal")).toHaveCount(0);
-    expect(await saved(page)).toEqual(example.snapshot);
+    expect(await saved(page)).toEqual(expected);
     await page.reload();
     await expect(page.getByTestId("reasoning-cutin")).toHaveCount(0);
     await expect(page.getByTestId("reasoning-rebuttal")).toHaveCount(0);
-    expect(await saved(page)).toEqual(example.snapshot);
+    expect(await saved(page)).toEqual(expected);
   });
 }
 

@@ -12,7 +12,7 @@ import { parseStoryTags } from "./tags";
 let fixture: string;
 const quizPath = "content/quizzes/last_supper_B1.json";
 const battlePath = "content/battles/catalog.json";
-const inkPath = "content/stories/battles/milano_last_supper.ink";
+const inkPath = "content/stories/battles/sound_supper.ink";
 
 beforeEach(async () => {
   fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-battle-content-"));
@@ -214,7 +214,7 @@ describe("battle content contract", () => {
   });
 
   it("requires the battle variables used for saved dialogue", async () => {
-    await changeInk('VAR player_name = "ユウ"', "// removed variable");
+    await changeInk('VAR player_name = ""', "// removed variable");
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Missing required battle Ink variable: player_name",
     );
@@ -222,8 +222,8 @@ describe("battle content contract", () => {
 
   it("rejects reward effects even in a wrong-answer branch", async () => {
     await changeInk(
-      "「見落としたな。",
-      "# effect: milano_cafe_first_joke\n    「見落としたな。",
+      "「ランプを探してた。",
+      "# effect: milano_cafe_first_joke\n「ランプを探してた。",
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Battle story cannot apply effects",
@@ -232,7 +232,7 @@ describe("battle content contract", () => {
 
   it("rejects Ink choice menus in battle dialogue", async () => {
     await changeInk(
-      "「ならば三つ、確かめよう。君たちが見ているのは絵か、それとも自分の思い込みか」",
+      "「お水、いりますか？」",
       "* [選ぶ]\n    続き",
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(
@@ -242,7 +242,7 @@ describe("battle content contract", () => {
 
   it("requires Japanese dialogue on non-default branches", async () => {
     await changeInk(
-      "「見落としたな。中央のキリストは三角形の安定した姿で、周りの使徒たちとは対照的なのだ」",
+      "「ランプを探してた。こっちの部屋の窓と、絵の光を合わせたんですね。」",
       "You missed it.",
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(

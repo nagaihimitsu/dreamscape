@@ -1,14 +1,13 @@
 import { expect, test } from "@playwright/test";
-import castleCleared from "../fixtures/castle-clear-unplayed.json" with { type: "json" };
-import { choose, expectNoOverflow, finishEvent, loadSnapshot, saved, setDialogueSpeed, startEvent } from "./helpers";
+import { choose, expectNoOverflow, finishEvent, loadCurrentCompletedFreeTime, loadSnapshot, saved, setDialogueSpeed, startEvent, startNewGame } from "./helpers";
 
 test.use({ reducedMotion: "reduce", viewport: { width: 360, height: 640 } });
 
 test("a stranded player can complete a free recovery without losing a saved choice", async ({ page }) => {
-  await loadSnapshot(page, {
-    ...castleCleared, ap: 0, affection: -8,
-    playedDateIds: ["milano_love_date_01"],
-  });
+  await startNewGame(page);
+  await loadCurrentCompletedFreeTime(page);
+  const base = await saved(page);
+  await loadSnapshot(page, { ...base, ap: 0, affection: -8, playedDateIds: ["milano_cafe_01"] });
   const before = await saved(page);
   const option = page.getByTestId("event-milano_recovery_01");
   await expect(option.getByRole("button")).toContainText("AP不要");

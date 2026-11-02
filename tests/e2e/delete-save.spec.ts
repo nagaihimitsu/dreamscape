@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { loadSnapshot, startNewGame, saved } from "./helpers";
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
+import { startNewGame, saved } from "./helpers";
+import phase1 from "../fixtures/phase1-saves.json" with { type: "json" };
 
 test.use({ viewport: { width: 360, height: 780 } });
 
@@ -83,6 +83,56 @@ test("unreadable saves can be explicitly deleted", async ({ page }) => {
   ).toBeNull();
 });
 
+test("incompatible old progress stays untouched until deletion is confirmed", async ({ page }) => {
+  const old = JSON.stringify({ ...phase1.afterChoice, activeDate: {
+    ...phase1.afterChoice.activeDate, storyHash: "unavailable-old-story",
+  } });
+  await page.goto("/");
+  await page.evaluate((raw) => {
+    localStorage.setItem("dreamscape.save.v1", raw);
+    localStorage.setItem("dreamscape.learning.v1", "old notes");
+    localStorage.setItem("dreamscape.presentation.v1", "display preferences");
+    localStorage.setItem("dreamscape.save.v1.backup.123", "backup");
+    localStorage.setItem("other-app", "untouched");
+  }, old);
+  await page.reload();
+  await expect(page.getByRole("alert")).toContainText("バージョン1");
+  await page.getByRole("button", { name: "保存データを消去する", exact: true }).click();
+  await expect(page.getByRole("dialog")).toContainText("英語ノートと対訳設定");
+  await page.getByRole("button", { name: "消去せず戻る" }).click();
+  expect(await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"))).toBe(old);
+  await page.getByRole("button", { name: "保存データを消去する", exact: true }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "保存データを消去する", exact: true }).click();
+  await expect(page.getByRole("button", { name: "旅をはじめる", exact: true })).toBeVisible();
+  expect(await page.evaluate(() => ({
+    game: localStorage.getItem("dreamscape.save.v1"),
+    notes: localStorage.getItem("dreamscape.learning.v1"),
+    settings: localStorage.getItem("dreamscape.presentation.v1"),
+    backup: localStorage.getItem("dreamscape.save.v1.backup.123"),
+    other: localStorage.getItem("other-app"),
+  }))).toEqual({ game: null, notes: null, settings: "display preferences", backup: "backup", other: "untouched" });
+});
+
+test("future versions are identified and never replaced automatically", async ({ page }) => {
+  const raw = JSON.stringify({ schemaVersion: 99, data: "unknown" });
+  await page.goto("/");
+  await page.evaluate((value) => localStorage.setItem("dreamscape.save.v1", value), raw);
+  await page.reload();
+  await expect(page.getByRole("alert")).toContainText("新しいバージョン");
+  expect(await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"))).toBe(raw);
+});
+
+test("recovery cannot replace a save updated since the error was shown", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(() => localStorage.setItem("dreamscape.save.v1", "{broken"));
+  await page.reload();
+  await expect(page.getByRole("alert")).toContainText("読み込めませんでした");
+  await page.evaluate(() => localStorage.setItem("dreamscape.save.v1", "new data in another tab"));
+  await page.getByRole("button", { name: /元のデータを退避して新しく始める/ }).click();
+  await expect(page.getByRole("status")).toContainText("別の画面");
+  expect(await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"))).toBe("new data in another tab");
+});
+
 test("another open tab cannot recreate data after deletion", async ({
   page,
   context,
@@ -145,10 +195,12 @@ test("confirmation does not delete data changed in another tab", async ({
   await other.close();
 });
 
-test("a migrated in-progress save can be deleted from settings", async ({
+test("a current in-progress save can be deleted from settings", async ({
   page,
 }) => {
-  await loadSnapshot(page, phase6.battleReaction);
+  await startNewGame(page);
+  await page.getByTestId("episode-start").click();
+  await page.getByRole("button", { name: "バトルを始める", exact: true }).click();
   await page.getByRole("button", { name: "設定", exact: true }).click();
   await page.getByRole("button", { name: "保存データの消去" }).click();
   await page

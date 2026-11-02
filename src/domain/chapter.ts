@@ -9,7 +9,7 @@ import {
 } from "../content";
 import { openTourism } from "./tourism";
 import { startBattle } from "./battle";
-import { earnRewards, type RewardCredit } from "./rewards";
+import { earnRewards } from "./rewards";
 import { encounters } from "../content/encounters";
 import type { GameState, Availability } from "./game";
 
@@ -254,36 +254,6 @@ export function recordGuideRead(
     )
     .map((rule) => rule.id);
   return earnRewards(next, ids).state;
-}
-/** Old achievements become pending entitlements without changing the saved AP balance. */
-export function migrateJourneyProgress(state: GameState): GameState {
-  const next = recordEpisodes(state);
-  const eligible = rewardRules
-    .filter(
-      (rule) => rule.trigger !== "guide_read" && isRewardEarned(next, rule),
-    )
-    .map((rule) => rule.id);
-  const recorded = earnRewards(next, eligible, false);
-  let entries: RewardCredit[] = recorded.entries;
-  const active = state.activeBattle;
-  if (
-    active?.phase === "result" &&
-    episodes.some((episode) => episode.battleId === active.battleId)
-  ) {
-    entries = entries.filter((entry) =>
-      episodes.some(
-        (episode) =>
-          episode.id ===
-            rewardRules.find((rule) => rule.id === entry.rewardId)!.episodeId &&
-          episode.battleId === active.battleId,
-      ),
-    );
-    return {
-      ...recorded.state,
-      battleRewardReceipt: { battleRunId: active.runId, entries },
-    };
-  }
-  return recorded.state;
 }
 export function completeRecordedChapter(
   state: GameState,

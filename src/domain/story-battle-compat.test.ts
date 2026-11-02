@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
-import phase6 from "../../tests/fixtures/phase6-saves.json";
-import phase7 from "../../tests/fixtures/phase7-free-time.json";
 import { battles, battleQuizzes, episodes } from "../content";
 import { createGame, validateGameState, type GameState } from "./game";
-import { enterFreeTime, getNextStoryBattle, startEpisode } from "./chapter";
+import { enterFreeTime, getEpisodeAvailability, getNextStoryBattle, startEpisode } from "./chapter";
 import { skipTourismGuide, startTourismBattle } from "./tourism";
-import { advanceBattle, answerBattle, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "./battle";
+import { advanceBattle, answerBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "./battle";
+
+const roundTrip = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
 
 function finish(state: GameState): GameState {
   for (let step = 0; state.activeBattle?.phase !== "result" && step < 200; step++) {
@@ -23,72 +23,65 @@ function finish(state: GameState): GameState {
     } else state = advanceBattle(state, state.revision);
   }
   expect(state.activeBattle?.phase).toBe("result");
-  return validateGameState(JSON.parse(JSON.stringify(state)));
+  return roundTrip(state);
 }
 
-function beforeCastle(): GameState {
+function completeEpisode(state: GameState, episodeId: string): GameState {
+  state = startEpisode(state, episodeId);
+  expect(state.activeTourism).not.toBeNull();
+  state = skipTourismGuide(state, state.revision);
+  state = startTourismBattle(state, state.revision);
+  state = finish(state);
+  return enterFreeTime(state, state.revision);
+}
+
+function beforeSpecial(kind: "contradiction" | "connection"): GameState {
   let state = createGame();
-  for (const episode of episodes.slice(0, 3)) {
-    state = startEpisode(state, episode.id);
-    state = skipTourismGuide(state, state.revision);
-    state = startTourismBattle(state, state.revision);
-    state = finish(state);
+  for (const episode of episodes.slice(0, 3)) state = completeEpisode(state, episode.id);
+  expect(getNextStoryBattle(state)?.battleId).toBe("milano_la_scala_b01");
+  if (kind === "connection") {
+    state = finish(startBattle(state, "milano_la_scala_b01"));
     state = enterFreeTime(state, state.revision);
+    state = completeEpisode(state, "milano_castello_episode");
+    expect(getNextStoryBattle(state)?.battleId).toBe("milano_brera_c01");
   }
-  return state;
+  return roundTrip(state);
 }
 
-describe("story encounters and existing saves", () => {
-  it("continues old sightseeing in progress even if its battle is beyond a new encounter", () => {
-    const before = beforeCastle();
-    expect(getNextStoryBattle(before)?.battleId).toBe("milano_la_scala_b01");
-    // Simulate the former release, which could start the castle before B existed
-    // in the journey, then load that already-running guide in the new release.
-    const old = { ...before, battleRecords: [...before.battleRecords, { battleId: "milano_la_scala_b01", attempts: 1, firstScore: 0, bestScore: 0, lastScore: 0 }] };
-    let state = startEpisode(old, "milano_castello_episode");
-    state = { ...state, battleRecords: state.battleRecords.filter((record) => record.battleId !== "milano_la_scala_b01") };
-    state = validateGameState(JSON.parse(JSON.stringify(state)));
-    expect(state.activeTourism?.landmarkId).toBe("castello_sforzesco");
-    state = skipTourismGuide(state, state.revision);
-    state = startTourismBattle(state, state.revision);
-    expect(state.activeBattle?.battleId).toBe("milano_castello_01");
-    state = finish(state);
-    expect(state.completedEpisodeIds).toContain("milano_castello_episode");
-    expect(getNextStoryBattle(state)?.battleId).toBe("milano_la_scala_b01");
+describe("current journey special battles", () => {
+  it("makes the Scala and Brera encounters available in the intended journey order", () => {
+    let state = beforeSpecial("contradiction");
+    expect(getEpisodeAvailability(state, "milano_castello_episode").available).toBe(false);
+    state = finish(startBattle(state, "milano_la_scala_b01"));
+    state = enterFreeTime(state, state.revision);
+    state = completeEpisode(state, "milano_castello_episode");
+    expect(getNextStoryBattle(state)?.battleId).toBe("milano_brera_c01");
+    state = finish(startBattle(state, "milano_brera_c01"));
+    expect(state.battleRecords.find((record) => record.battleId === "milano_la_scala_b01")?.attempts).toBe(1);
+    expect(state.battleRecords.find((record) => record.battleId === "milano_brera_c01")?.attempts).toBe(1);
+    expect(roundTrip(state)).toEqual(state);
   });
 
-  it("preserves historic B/C results without treating the new cases as played", () => {
-    const records = ["milano_last_supper_b01", "milano_last_supper_c01"].map((battleId) => ({ battleId, attempts: 1, firstScore: 0, bestScore: 0, lastScore: 0 }));
-    const old = { ...phase7.cityClearViewed, battleRecords: [...phase7.cityClearViewed.battleRecords, ...records] };
-    const state = validateGameState(old);
-    expect(getNextStoryBattle(state)?.battleId).toBe("milano_la_scala_b01");
-    expect(state.completedCityIds).toEqual(["milano"]);
-    expect(state.endingReached).toBe(true);
-    expect(state.battleRecords.filter((record) => records.some((item) => item.battleId === record.battleId))).toEqual(records);
-    const newB = { battleId: "milano_la_scala_b01", attempts: 1, firstScore: 0, bestScore: 0, lastScore: 0 };
-    expect(getNextStoryBattle({ ...state, battleRecords: [...state.battleRecords, newB] })?.battleId).toBe("milano_brera_c01");
-  });
-
-  it.each(["B_selected", "C_selected"] as const)("resumes a former %s proof before its new journey prerequisite", (key) => {
-    const old = phase6[key];
-    let state = validateGameState(old);
-    expect(state.completedEpisodeIds).toEqual([]);
-    expect(state.activeBattle?.reasoning?.selectedClueIds).toEqual(old.activeBattle.reasoning.selectedClueIds);
-    const before = { ap: state.ap, affection: state.affection, trust: state.trust, spark: state.spark, memories: state.memories, pending: state.pendingApRewards, rewards: state.claimedRewardIds };
-    state = finish(state);
-    expect(state.activeBattle?.score).toBeLessThanOrEqual(2);
-    expect({ ap: state.ap, affection: state.affection, trust: state.trust, spark: state.spark, memories: state.memories, pending: state.pendingApRewards, rewards: state.claimedRewardIds }).toEqual(before);
-  });
-
-  it.each(["milano_last_supper_b01", "milano_last_supper_c01"])("never awards AP or consumes pending AP on %s and its replay", (battleId) => {
-    let state = validateGameState(phase7.cityClearViewed);
-    expect(state.pendingApRewards.length).toBeGreaterThan(0);
-    const before = { ap: state.ap, affection: state.affection, trust: state.trust, spark: state.spark, memories: state.memories, pending: state.pendingApRewards, rewards: state.claimedRewardIds, city: state.completedCityIds };
-    for (let count = 0; count < 2; count++) {
-      state = finish(startBattle(state, battleId));
-      expect({ ap: state.ap, affection: state.affection, trust: state.trust, spark: state.spark, memories: state.memories, pending: state.pendingApRewards, rewards: state.claimedRewardIds, city: state.completedCityIds }).toEqual(before);
-      state = leaveBattle(state, state.revision);
+  it.each(["contradiction", "connection"] as const)("resumes %s evidence from the same version and rejects a mismatched battle", (kind) => {
+    const initial = beforeSpecial(kind);
+    const battleId = kind === "contradiction" ? "milano_la_scala_b01" : "milano_brera_c01";
+    const battle = battles.find((item) => item.id === battleId)!;
+    let state = startBattle(initial, battleId);
+    for (let step = 0; state.activeBattle?.phase !== "reasoning"; step++) {
+      expect(step).toBeLessThan(200);
+      const active = state.activeBattle!;
+      state = active.phase === "question"
+        ? answerBattle(state, battleQuizzes[battle.quizId].questions[active.roundIndex].correctOptionId, state.revision)
+        : advanceBattle(state, state.revision);
     }
-    expect(state.battleRecords.find((record) => record.battleId === battleId)?.attempts).toBe(2);
+    state = selectReasoningClue(state, battle.reasoning!.correctClueIds[0], state.revision);
+    const selected = state.activeBattle!.reasoning!.selectedClueIds;
+    const restored = roundTrip(state);
+    expect(restored.activeBattle!.reasoning!.selectedClueIds).toEqual(selected);
+    expect(() => roundTrip({ ...restored, activeBattle: { ...restored.activeBattle!, contentHash: "changed-content" } })).toThrow();
+    const completed = finish(restored);
+    expect(completed.claimedRewardIds).toEqual(initial.claimedRewardIds);
+    expect(completed.pendingApRewards).toEqual(initial.pendingApRewards);
+    expect(completed.ap).toBe(initial.ap);
   });
 });

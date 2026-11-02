@@ -1,12 +1,19 @@
 import { describe, expect, it } from "vitest";
-import fixture from "../../tests/fixtures/castle-clear-unplayed.json";
+import { createDebugState } from "../dev/debug-state";
 import { dates } from "../content";
 import {
   advanceDate, canConfessSuccessfully, chooseDate, confessionResult, evaluateProgression,
   finishDate, getDateAvailability, isEventVisible, startDate, validateGameState, type GameState,
 } from "./game";
 
-const initial = () => validateGameState(JSON.parse(JSON.stringify(fixture)));
+
+/** Generate a valid v11 history via the current game rules. */
+function currentFreeTime(): GameState {
+  const state = createDebugState({ scene: "tourism", id: "duomo_milano", progress: "completed", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
+  return validateGameState({ ...state, activeTourism: null });
+}
+
+const initial = () => currentFreeTime();
 function nextChoice(state: GameState): GameState {
   for (let i = 0; state.activeDate && !state.activeDate.frame.choices.length && !state.activeDate.frame.ended && i < 80; i++)
     state = advanceDate(state, state.revision);
@@ -67,16 +74,16 @@ describe("open romance progression", () => {
 
   it("advances by the relationship and experience rather than particular event IDs, and never lowers a stage", () => {
     const state = { ...initial(), affection: 10, trust: 5, spark: 5,
-      playedDateIds: ["milano_love_date_01", "milano_brera_date_01", "milano_la_scala_date_01"] };
+      playedDateIds: ["milano_cafe_01", "milano_brera_date_01", "milano_la_scala_date_01"] };
     const advanced = evaluateProgression(state);
     expect(advanced.romanceStage).toBe(4);
     expect(evaluateProgression({ ...advanced, affection: -5, trust: -5, spark: -5 }).romanceStage).toBe(4);
   });
 
   it.each([
-    ["rejected", 20, -2, 10, ["milano_love_date_01"]],
-    ["deferred", 4, 2, 0, ["milano_love_date_01", "milano_la_scala_date_01"]],
-    ["accepted", 8, 4, 4, ["milano_love_date_01", "milano_la_scala_date_01", "milano_brera_date_01"]],
+    ["rejected", 20, -2, 10, ["milano_cafe_01"]],
+    ["deferred", 4, 2, 0, ["milano_cafe_01", "milano_la_scala_date_01"]],
+    ["accepted", 8, 4, 4, ["milano_cafe_01", "milano_la_scala_date_01", "milano_brera_date_01"]],
   ] as const)("actually records %s instead of using affection alone", (outcome, affection, trust, spark, playedDateIds) => {
     const state = { ...initial(), romanceStage: 2 as const, affection, trust, spark, playedDateIds: [...playedDateIds] };
     expect(confessionResult(state)).toBe(outcome);
@@ -89,7 +96,7 @@ describe("open romance progression", () => {
 
   it("requires a new shared date after rejection, while travel and other dates remain available", () => {
     const seed = { ...initial(), romanceStage: 2 as const, affection: 0, trust: 0, spark: 0,
-      playedDateIds: ["milano_love_date_01"] };
+      playedDateIds: ["milano_cafe_01"] };
     let state = play(seed, "milano_confession_01", [0]);
     expect(state.confessionStatus).toBe("rejected");
     expect(getDateAvailability(state, "milano_confession_01").available).toBe(false);

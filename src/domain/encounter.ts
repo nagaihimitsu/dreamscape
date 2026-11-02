@@ -1,12 +1,7 @@
 import { encounters } from "../content/encounters";
-import { previousMilanoEncounters } from "../content/milano-3f32b60";
-import { legacyEncounters, legacyStoryId } from "../content/legacy-milano";
-import previousEncounterData from "../../content/legacy/encounters_before_story_refactor.json";
-import preGalleriaEncounterData from "../../content/legacy/encounters_before_galleria_integration.json";
-import preSoundFortuneData from "../../content/legacy/encounters_before_sound_fortune.json";
 import { responseProfileSchema } from "../content/schemas";
 import { city, responseProfiles } from "../content";
-import { encounterCatalogSchema, type EncounterDefinition } from "../content/encounter-schemas";
+import type { EncounterDefinition } from "../content/encounter-schemas";
 import { beginStory, continueStory, selectStoryChoice, storyFingerprint, validateStorySnapshot, type StoryFrame, type StoryStep } from "../story/runtime";
 import { secureRomanceRoll } from "../random/romance-source";
 import { canAccessFreeTime } from "./chapter";
@@ -20,9 +15,6 @@ import placeRuleData from "../../content/encounters/entry-rules.json";
 import { encounterEntryRulesSchema } from "../content/encounter-entry-rules";
 
 const findEncounter = (id: string) => encounters.encounters.find((item) => item.id === id);
-const previousEncounters = encounterCatalogSchema.parse(previousEncounterData).encounters;
-const preGalleriaEncounters = encounterCatalogSchema.parse(preGalleriaEncounterData).encounters;
-const preSoundFortuneEncounters = encounterCatalogSchema.parse(preSoundFortuneData).encounters;
 const placeRules = encounterEntryRulesSchema.parse(placeRuleData);
 const unavailable = (reason: string): Availability => ({ available: false, reason });
 const available: Availability = { available: true, reason: "" };
@@ -41,11 +33,11 @@ function optionItemsBelongToEncounter(event: EncounterDefinition, option: Encoun
   return [option.requiresItemId, option.consumeItemId, option.giftItemId].every((itemId) => itemBelongsToEncounter(event, itemId));
 }
 
-function encounterFingerprint(event: EncounterDefinition, archived = false): string {
+function encounterFingerprint(event: EncounterDefinition): string {
   const ids = [event.storyId, ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : [])];
   // Odds have their own stored snapshot; rebalancing must not invalidate an active event.
   const fingerprintData = event.quiz ? { ...event, quiz: { ...event.quiz, chancePercent: 0 } } : event;
-  const text = JSON.stringify(fingerprintData) + ids.map((id) => storyFingerprint(archived ? legacyStoryId(id) : id)).join(":");
+  const text = JSON.stringify(fingerprintData) + ids.map((id) => storyFingerprint(id)).join(":");
   let hash = 2166136261;
   for (let i = 0; i < text.length; i++) hash = Math.imul(hash ^ text.charCodeAt(i), 16777619);
   return (hash >>> 0).toString(16);
@@ -54,41 +46,13 @@ function encounterFingerprint(event: EncounterDefinition, archived = false): str
 export function getActiveEncounterDefinition(active: ActiveEncounter): EncounterDefinition {
   const current = findEncounter(active.encounterId);
   try { if (current && encounterFingerprint(current) === active.contentHash) return current; }
-  catch { /* A rewritten current story can be absent while old snapshots remain available. */ }
-  const preSound = preSoundFortuneEncounters.find((event) => event.id === active.encounterId);
-  try { if (preSound && encounterFingerprint(preSound) === active.contentHash) return preSound; }
-  catch { /* An older script is resolved against the archived publications below. */ }
-  const preGalleria = preGalleriaEncounters.find((event) => event.id === active.encounterId);
-  try { if (preGalleria && encounterFingerprint(preGalleria) === active.contentHash) return preGalleria; }
-  catch { /* An older script is resolved against the archived publication below. */ }
-  const soundBase = previousMilanoEncounters.find((event) => event.id === active.encounterId);
-  try { if (soundBase && encounterFingerprint(soundBase) === active.contentHash) return soundBase; }
-  catch { /* An older script is resolved against the archived publication below. */ }
-  const previous = previousEncounters.find((event) => event.id === active.encounterId);
-  try { if (previous && encounterFingerprint(previous) === active.contentHash) return previous; }
-  catch { /* An older script is resolved against the archived publication below. */ }
-  const old = legacyEncounters.encounters.find((event) => event.id === active.encounterId);
-  if (old && encounterFingerprint(old, true) === active.contentHash) return old;
+  catch { /* Missing or changed content must not be resumed. */ }
   throw new Error("道中交流の保存状態が一致しません。");
 }
 
 function activeStoryId(active: ActiveEncounter, id: string): string {
-  const event = findEncounter(active.encounterId);
-  try { if (event && encounterFingerprint(event) === active.contentHash) return id; }
-  catch { /* Resolve against the immutable publication below. */ }
-  const preSound = preSoundFortuneEncounters.find((item) => item.id === active.encounterId);
-  try { if (preSound && encounterFingerprint(preSound) === active.contentHash) return id; }
-  catch { /* Resolve against the immutable publications below. */ }
-  const preGalleria = preGalleriaEncounters.find((item) => item.id === active.encounterId);
-  try { if (preGalleria && encounterFingerprint(preGalleria) === active.contentHash) return id; }
-  catch { /* Resolve against the immutable publication below. */ }
-  const soundBase = previousMilanoEncounters.find((item) => item.id === active.encounterId);
-  try { if (soundBase && encounterFingerprint(soundBase) === active.contentHash) return id; }
-  catch { /* Resolve against the immutable publication below. */ }
-  const previous = previousEncounters.find((item) => item.id === active.encounterId);
-  try { if (previous && encounterFingerprint(previous) === active.contentHash) return id; }
-  catch { /* Resolve against the immutable publication below. */ }
-  return legacyStoryId(id);
+  getActiveEncounterDefinition(active);
+  return id;
 }
 
 export function getEncounterAvailability(state: GameState, id: string): Availability {
@@ -319,16 +283,13 @@ export function finishEncounter(state: GameState, expectedRevision: number): Gam
 /** Reject changed scripts, invalid snapshots, impossible item/reward combinations and stale quiz state. */
 export function validateEncounterState(state: GameState): void {
   const fail = (): never => { throw new Error("道中交流の保存状態が一致しません。"); };
-  // Completed historical lotteries and their prizes remain valid even when
-  // the current event no longer offers that lottery.
-  const historicalEncounters = [...encounters.encounters, ...preSoundFortuneEncounters, ...preGalleriaEncounters, ...previousMilanoEncounters, ...previousEncounters, ...legacyEncounters.encounters];
   for (const id of state.completedEncounterIds) {
     const event = findEncounter(id);
     if (!event || !itemBelongsToEncounter(event, event.completionItemId) || (event.completionItemId && !state.inventory[event.completionItemId])) fail();
   }
   for (const [id, status] of Object.entries(state.inventory)) {
     if (!encounters.items.some((item) => item.id === id)) fail();
-    const prizeEvent = historicalEncounters.find((item) => item.quiz?.rewardItemId === id);
+    const prizeEvent = encounters.encounters.find((item) => item.quiz?.rewardItemId === id);
     const completionEvent = encounters.encounters.find((item) => item.completionItemId === id);
     if (prizeEvent && (!itemBelongsToEncounter(prizeEvent, id) || !state.encounterRewards[prizeEvent.id]?.won)) fail();
     if (completionEvent && (!itemBelongsToEncounter(completionEvent, id) || !state.completedEncounterIds.includes(completionEvent.id))) fail();
@@ -341,7 +302,7 @@ export function validateEncounterState(state: GameState): void {
     }
   }
   for (const [id, record] of Object.entries(state.encounterRewards)) {
-    const event = historicalEncounters.find((item) => item.id === id && !!item.quiz);
+    const event = encounters.encounters.find((item) => item.id === id && !!item.quiz);
     const quiz = event?.quiz;
     if (!event || !quiz || !itemBelongsToEncounter(event, quiz.rewardItemId) || record.won !== (record.roll < record.chancePercent * 100) || (record.won && !state.inventory[quiz.rewardItemId])) fail();
   }

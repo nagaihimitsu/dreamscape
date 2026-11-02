@@ -1,6 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { loadSnapshot, startNewGame } from "./helpers";
-import phase4 from "../fixtures/phase4-saves.json" with { type: "json" };
+import { startNewGame } from "./helpers";
 
 test.use({ viewport: { width: 360, height: 780 } });
 
@@ -39,14 +38,4 @@ test("mobile start and optional sightseeing keep the next action easy to reach",
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
-});
-
-test("available dates come before legacy assistance", async ({ page }) => {
-  await loadSnapshot(page, phase4.legacyChapter);
-  const date = page.getByTestId("event-milano_cafe_01");
-  const assistance = page.locator(".trial-progress");
-  await expect(date.getByRole("button")).toBeEnabled();
-  expect((await date.boundingBox())!.y).toBeLessThan(
-    (await assistance.boundingBox())!.y,
-  );
 });

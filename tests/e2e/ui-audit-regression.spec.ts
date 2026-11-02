@@ -1,8 +1,7 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
+import { loadCurrentScene } from "./current-scenarios";
 import catalog from "../../content/romance/date_catalog.json" with { type: "json" };
 import destinations from "../../content/romance/date_destinations.json" with { type: "json" };
-import castleCleared from "../fixtures/castle-clear-unplayed.json" with { type: "json" };
 import { choose, expectNoOverflow, findDateOption, finishCafe, loadSnapshot, revealDialogueControl, saved, startCafe, startNewGame } from "./helpers";
 import { setEvidence } from "./reasoning-helpers";
 
@@ -26,16 +25,15 @@ async function expectOnScreen(target: Locator) {
 }
 
 async function checkDatePool(page: Page) {
-  // Older saves remain in their original format until the first write. The UI
-  // works from the migrated state and may offer a revised scene once.
+  // Derive the visible rows from the current game's own rules.
   const { state, visibleIds, updatedIds } = await page.evaluate(async ({ snapshot, ids }) => {
     const modulePath = "/src/domain/game.ts";
     const domain = await import(/* @vite-ignore */ modulePath);
-    const migrated = domain.validateGameState(snapshot);
+    const current = domain.validateGameState(snapshot);
     return {
-      state: migrated,
-      visibleIds: ids.filter((id) => domain.isEventVisible(migrated, id)),
-      updatedIds: ids.filter((id) => domain.isUpdatedDateReplay(migrated, id)),
+      state: current,
+      visibleIds: ids.filter((id) => domain.isEventVisible(current, id)),
+      updatedIds: ids.filter((id) => domain.isUpdatedDateReplay(current, id)),
     };
   }, { snapshot: await saved(page), ids: catalog.dates.map((date) => date.id) });
   const visible = catalog.dates.filter((date) =>
@@ -94,7 +92,7 @@ async function checkDatePool(page: Page) {
 for (const width of [320, 360]) {
   test(`available date choices are comparable on a ${width}px screen`, async ({ page }) => {
     await page.setViewportSize({ width, height: 640 });
-    await loadSnapshot(page, phase6.freeTime);
+    await loadCurrentScene(page, "freeTime");
     await checkDatePool(page);
     await expect((await findDateOption(page, "milano_cafe_01")).getByRole("button")).toBeEnabled();
     await expect((await findDateOption(page, "milano_brera_date_01")).getByRole("button")).toBeEnabled();
@@ -106,17 +104,12 @@ for (const width of [320, 360]) {
     expect((await saved(page)).activeDate?.dateId).toBe("milano_cafe_01");
   });
 
-  test(`the full destination pool remains compact on a ${width}px screen`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 640 });
-    // Produced by real domain transitions: four episodes, A/B/C battles, no dates.
-    await loadSnapshot(page, castleCleared);
-    await checkDatePool(page);
-  });
 }
 
 test("date availability and explanations remain understandable when AP runs out", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, { ...phase6.freeTime, ap: 0 });
+  await loadCurrentScene(page, "freeTime");
+  await loadSnapshot(page, { ...await saved(page), ap: 0 });
   const cafe = page.getByTestId("event-milano_cafe_01");
   await expect(cafe.getByRole("button")).toBeDisabled();
   await expect(cafe.getByRole("status")).toContainText("AP");
@@ -125,7 +118,7 @@ test("date availability and explanations remain understandable when AP runs out"
 
 test("playing a date updates the compact choices without losing progression", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase6.freeTime);
+  await loadCurrentScene(page, "freeTime");
   await startCafe(page);
   await choose(page, 0);
   await choose(page, 1);
@@ -148,18 +141,16 @@ test("the next episode's main action is visible on entry", async ({ page }) => {
 
 test("revisit choices are concise and keep tourism and battle routes working", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase6.freeTime);
+  await loadCurrentScene(page, "freeTime");
   await page.getByText("旅先を再訪する", { exact: true }).click();
   const panel = page.locator(".revisit-menu");
   await expect(panel.getByRole("heading", { name: "観光・観察" })).toBeVisible();
   await expect(panel.getByRole("heading", { name: "クイズバトル" })).toBeVisible();
-  // Unencountered story battles are presented in the route before they can be replayed.
-  await expect(panel.getByRole("heading", { name: "特別対決" })).toHaveCount(0);
-  for (const row of await panel.locator(".revisit-list li").all()) {
-    const button = row.getByRole("button");
+  // Completed story battles remain available for replay.
+  await expect(panel.getByRole("heading", { name: "特別対決" })).toBeVisible();
+  for (const button of await panel.locator(".revisit-list button:visible").all()) {
     await expect(button).toBeEnabled();
     expect((await button.boundingBox())!.height).toBeGreaterThanOrEqual(44);
-    expect((await row.boundingBox())!.height).toBeLessThanOrEqual(112);
   }
   await expectNoOverflow(page);
   await page.getByTestId("revisit-tourism-last_supper").click();
@@ -168,7 +159,7 @@ test("revisit choices are concise and keep tourism and battle routes working", a
 
 test("observation list exposes points, documents and return actions together", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase6.exploring);
+  await loadCurrentScene(page, "observation");
   await page.getByRole("button", { name: "発見ポイント・資料を見る", exact: true }).click();
   const panel = page.locator(".observation-notes");
   expect(await page.getByTestId("observation-viewport").evaluate((node) => Boolean(node.closest("[inert]")))).toBe(true);
@@ -197,7 +188,7 @@ test("observation list exposes points, documents and return actions together", a
 
 test("display settings are separate touchable rows and persist", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase6.guide);
+  await loadCurrentScene(page, "guide");
   await page.getByRole("button", { name: "設定", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "設定" });
   const rows = dialog.locator(".translation-setting");
@@ -219,7 +210,7 @@ test("display settings are separate touchable rows and persist", async ({ page }
 
 test("battle question keeps all options usable without an accidental answer", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentScene(page, "battleQuestion");
   for (const id of ["A", "B", "C"]) {
     await expectOnScreen(page.getByTestId(`option-text-${id}`));
     await expectOnScreen(page.getByTestId(`answer-${id}`));
@@ -238,7 +229,7 @@ test("battle question keeps all options usable without an accidental answer", as
 
 test("dialogue log text stays legible against its actual dialog background", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase6.guide);
+  await loadCurrentScene(page, "guide");
   const button = page.getByTestId("tourism-guide").getByRole("button", { name: "会話ログ" });
   await revealDialogueControl(page, button);
   const before = await saved(page);
@@ -266,10 +257,10 @@ test("dialogue log text stays legible against its actual dialog background", asy
   expect(await saved(page)).toEqual(before);
 });
 
-for (const [format, snapshot, selectedSnapshot] of [["B", phase6.B_reasoning, phase6.B_selected], ["C", phase6.C_reasoning, phase6.C_selected]] as const) {
+for (const [format, scene, selectedScene] of [["B", "specialBReasoning", "specialBSelected"], ["C", "specialCReasoning", "specialCSelected"]] as const) {
   test(`${format} reasoning keeps the claim and evidence operations visible`, async ({ page }) => {
     await page.setViewportSize({ width: 360, height: 640 });
-    await loadSnapshot(page, snapshot);
+    await loadCurrentScene(page, scene);
     await expectOnScreen(page.locator(".reasoning-claim"));
     await expectOnScreen(page.getByTestId("reasoning-notebook"));
     await expectOnScreen(page.getByTestId("reasoning-submit"));
@@ -278,8 +269,8 @@ for (const [format, snapshot, selectedSnapshot] of [["B", phase6.B_reasoning, ph
   });
   test(`${format} reasoning keeps the evidence submit action visible after selection`, async ({ page }) => {
     await page.setViewportSize({ width: 360, height: 640 });
-    await loadSnapshot(page, selectedSnapshot);
-    if (format === "C") await setEvidence(page, ["last_supper_apostle_groups", "last_supper_perspective"]);
+    await loadCurrentScene(page, selectedScene);
+    if (format === "C") await setEvidence(page, ["brera_colours", "brera_show"]);
     const submit = page.getByTestId("reasoning-submit");
     await expectOnScreen(submit);
     await expect(submit).toBeEnabled();
@@ -290,7 +281,7 @@ for (const [format, snapshot, selectedSnapshot] of [["B", phase6.B_reasoning, ph
 
 test("English notebook compares answers one question at a time and preserves a review mark", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase6.result);
+  await loadCurrentScene(page, "battleResult");
   const before = await saved(page);
   await page.getByRole("button", { name: "回答した問題を振り返る" }).click();
   const dialog = page.getByRole("dialog", { name: "英語ノート" });

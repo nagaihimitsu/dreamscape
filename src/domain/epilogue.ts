@@ -1,6 +1,4 @@
-import { previousMilanoJourney } from "../content/milano-3f32b60";
 import { z } from "zod";
-import { legacyJourney, legacyStoryId } from "../content/legacy-milano";
 import { episodes, progression } from "../content";
 import {
   beginStory,
@@ -23,13 +21,8 @@ export const activeEpilogueSchema = z
 export function activeEpilogueStoryId(active: z.infer<typeof activeEpilogueSchema>): string | null {
   const current = episodes.find((episode) => episode.id === active.episodeId)?.epilogueStoryId;
   try { if (current && storyFingerprint(current) === active.contentHash) return current; }
-  catch { /* The archived epilogue is checked independently. */ }
-  const previous = previousMilanoJourney.episodes.find((item) => item.id === active.episodeId)?.epilogueStoryId;
-  if (previous && storyFingerprint(previous) === active.contentHash) return previous;
-  const old = legacyJourney.episodes.find((episode) => episode.id === active.episodeId)?.epilogueStoryId;
-  if (!old) return null;
-  const archived = legacyStoryId(old);
-  return storyFingerprint(archived) === active.contentHash ? archived : null;
+  catch { /* Missing or changed content must not be resumed. */ }
+  return null;
 }
 function variables(state: GameState) {
   const suffix = progression.stages.find(

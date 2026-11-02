@@ -1,23 +1,24 @@
 import { test, expect } from "@playwright/test";
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
-import { loadSnapshot, saved } from "./helpers";
+import quiz from "../../content/quizzes/sound_supper_B1.json" with { type: "json" };
+import { loadCurrentSupperQuestion, loadCurrentFreeTime, saved, startNewGame } from "./helpers";
+import { playBattle } from "./battle-helpers";
 
 test.use({ viewport: { width: 360, height: 780 } });
 test("optional translations and post-answer study preserve battle progress", async ({
   page,
 }) => {
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentSupperQuestion(page);
   const before = await saved(page);
   await expect(
-    page.getByText("Which description matches the photo?"),
-  ).toHaveCount(0);
+    page.getByText("Why does the painted room seem to share the friars' light?"),
+  ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "英文を確認する" }),
   ).toHaveCount(0);
   await page.getByRole("button", { name: "問題文の訳を見る" }).click();
   await expect(
     page.getByText(
-      "『最後の晩餐』のキリストの位置と形に合う説明はどれですか？",
+      "絵の部屋と修道士の部屋に、同じ光が差すように見えるのはなぜですか。",
     ),
   ).toBeVisible();
   await page.getByRole("button", { name: "選択肢Aの訳を見る" }).click();
@@ -25,7 +26,7 @@ test("optional translations and post-answer study preserve battle progress", asy
   await page.reload();
   await expect(
     page.getByText(
-      "『最後の晩餐』のキリストの位置と形に合う説明はどれですか？",
+      "絵の部屋と修道士の部屋に、同じ光が差すように見えるのはなぜですか。",
     ),
   ).toBeVisible();
   await page.getByRole("button", { name: "すべての訳を見る" }).click();
@@ -56,12 +57,12 @@ test("optional translations and post-answer study preserve battle progress", asy
     "選んだ答え",
   );
   await dialog.getByRole("button", { name: "あとで復習する" }).click();
-  await dialog.getByText("なぜWhichの後にdoがない？", { exact: false }).click();
+  await dialog.getByText("なぜdoesのあとがseem？", { exact: false }).click();
   await dialog.getByRole("button", { name: /と確認する/ }).click();
   await expect(
-    dialog.getByText("Which descriptionが、この文では主語だね。", {
+    dialog.getByText("主語は単数のthe painted room。", {
       exact: false,
-    }),
+    }).last(),
   ).toBeVisible();
   await page.reload();
   await expect(
@@ -83,10 +84,11 @@ test("optional translations and post-answer study preserve battle progress", asy
   ).toBe(true);
 });
 
-test("old scores do not invent answers, and invalid learning data is preserved", async ({
+test("invalid learning data is preserved", async ({
   page,
 }) => {
-  await loadSnapshot(page, phase6.freeTime);
+  await startNewGame(page);
+  await loadCurrentFreeTime(page);
   await page.evaluate(() =>
     localStorage.setItem("dreamscape.learning.v1", "{broken"),
   );
@@ -95,9 +97,6 @@ test("old scores do not invent answers, and invalid learning data is preserved",
     page.getByText(/英語ノートの保存データを確認できない/),
   ).toBeVisible();
   await page.getByRole("button", { name: "英語ノートを開く" }).click();
-  await expect(
-    page.getByRole("dialog").getByText(/以前の回答内容は未記録/),
-  ).toBeVisible();
   expect(
     await page.evaluate(() => localStorage.getItem("dreamscape.learning.v1")),
   ).toBe("{broken");
@@ -106,7 +105,8 @@ test("old scores do not invent answers, and invalid learning data is preserved",
 test("finished answers remain available in free time without changing rewards", async ({
   page,
 }) => {
-  await loadSnapshot(page, phase6.result);
+  await loadCurrentSupperQuestion(page);
+  await playBattle(page, quiz.questions, [true, true, true]);
   await expect(page.getByTestId("battle-result")).toBeVisible();
   await page.getByRole("button", { name: "回答した問題を振り返る" }).click();
   await expect(
@@ -146,7 +146,7 @@ test("a stale tab cannot overwrite learning settings", async ({
   page,
   context,
 }) => {
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentSupperQuestion(page);
   const older = await context.newPage();
   await older.goto("/");
   const originalGame = await saved(page);
@@ -168,7 +168,7 @@ test("a stale tab cannot overwrite learning settings", async ({
 test("semantically inconsistent learning records stay protected", async ({
   page,
 }) => {
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentSupperQuestion(page);
   const state = await saved(page);
   const active = state.activeBattle!;
   const bad = JSON.stringify({
@@ -209,7 +209,7 @@ test("semantically inconsistent learning records stay protected", async ({
 });
 
 test("unknown learning versions are never overwritten", async ({ page }) => {
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentSupperQuestion(page);
   const raw = JSON.stringify({ schemaVersion: 999, payload: "keep" });
   await page.evaluate(
     (value) => localStorage.setItem("dreamscape.learning.v1", value),
@@ -225,10 +225,12 @@ test("unknown learning versions are never overwritten", async ({ page }) => {
   ).toBe(raw);
 });
 
-test("an old battle reaction remains playable and can review its actual answer", async ({
+test("a current battle reaction remains playable and can review its actual answer", async ({
   page,
 }) => {
-  await loadSnapshot(page, phase6.battleReaction);
+  await loadCurrentSupperQuestion(page);
+  await page.getByTestId("answer-C").click();
+  await page.getByTestId("battle-advance").click();
   const before = await saved(page);
   await page.getByRole("button", { name: "回答した問題を振り返る" }).click();
   const dialog = page.getByRole("dialog");
@@ -247,27 +249,11 @@ test("an old battle reaction remains playable and can review its actual answer",
     .toBeGreaterThan(before.revision);
 });
 
-test("special battles without detailed lessons still show translations and normal feedback", async ({
-  page,
-}) => {
-  await loadSnapshot(page, phase6.B_question);
-  const before = await saved(page);
-  await page.getByRole("button", { name: "すべての訳を見る" }).click();
-  expect(await saved(page)).toEqual(before);
-  await page.getByTestId("answer-C").click();
-  await page.getByRole("button", { name: "英文を確認する" }).click();
-  const dialog = page.getByRole("dialog");
-  await expect(dialog.getByTestId("review-question")).toBeVisible();
-  await expect(dialog.getByText(/この文法が気になる/)).toHaveCount(0);
-  await expect(dialog.getByRole("button", { name: /と確認する/ })).toHaveCount(
-    0,
-  );
-});
-
 test("closing study returns focus and preserves scroll position", async ({
   page,
 }) => {
-  await loadSnapshot(page, phase6.battleFeedback);
+  await loadCurrentSupperQuestion(page);
+  await page.getByTestId("answer-C").click();
   const button = page.getByRole("button", { name: "英文を確認する" });
   await button.scrollIntoViewIfNeeded();
   const before = await page.evaluate(() => window.scrollY);

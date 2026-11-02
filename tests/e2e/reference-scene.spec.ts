@@ -1,7 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
-import phase1 from "../fixtures/phase1-saves.json" with { type: "json" };
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
-import { advanceToChoiceOrEnd, choose, loadSnapshot, saved, setDialogueSpeed, revealDialogueControl } from "./helpers";
+import { loadCurrentScene } from "./current-scenarios";
+import { advanceToChoiceOrEnd, choose, saved, setDialogueSpeed, revealDialogueControl } from "./helpers";
 import { battleDialogueUntilQuestionOrResult } from "./battle-helpers";
 
 test.use({ reducedMotion: "reduce" });
@@ -39,24 +38,24 @@ for (const size of [
       path: `artifacts/utage-reference/${name}-${size.label}.png`,
     });
 
-    await loadSnapshot(page, phase1.started);
+    await loadCurrentScene(page, "date");
     await setDialogueSpeed(page, "0");
     await expect(page.locator(".vn-character").first()).toBeVisible();
     await expect(page.locator(".dialogue-text")).toBeVisible();
     await shot("date-dialogue");
 
-    await loadSnapshot(page, phase1.beforeChoice);
+    await loadCurrentScene(page, "dateChoice");
     await setDialogueSpeed(page, "0");
     await expect(page.locator(".choice")).toHaveCount(3);
     await expect(page.locator(".choice").first()).toBeEnabled();
     await shot("date-choices");
 
-    await loadSnapshot(page, phase6.battleDialogue);
+    await loadCurrentScene(page, "battleDialogue");
     await setDialogueSpeed(page, "0");
     await expect(page.locator(".battle-screen .dialogue-text")).toBeVisible();
     await shot("battle-dialogue");
 
-    await loadSnapshot(page, phase6.battleQuestion);
+    await loadCurrentScene(page, "battleQuestion");
     await expect(page.getByTestId("battle-question")).toBeVisible();
     await shot("battle-question");
     const before = await saved(page);
@@ -65,7 +64,7 @@ for (const size of [
     expect(await saved(page)).toEqual(before);
     await shot("battle-translated");
 
-    await loadSnapshot(page, phase6.B_selected);
+    await loadCurrentScene(page, "specialBSelected");
     const selected = await saved(page);
     await page.getByTestId("reasoning-notebook").click();
     await expect(page.getByTestId("case-context")).toBeVisible();
@@ -78,7 +77,7 @@ for (const size of [
 
 test("hiding and restoring a choice window never advances the saved story", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 780 });
-  await loadSnapshot(page, phase1.beforeChoice);
+  await loadCurrentScene(page, "dateChoice");
   await setDialogueSpeed(page, "0");
   await expect(page.locator(".choice").first()).toBeEnabled();
   const before = await saved(page);
@@ -106,7 +105,7 @@ test("hiding and restoring a choice window never advances the saved story", asyn
 
 test("a restored battle dialogue does not advance until the next input", async ({ page }) => {
   await page.setViewportSize({ width: 960, height: 540 });
-  await loadSnapshot(page, phase6.battleDialogue);
+  await loadCurrentScene(page, "battleDialogue");
   await setDialogueSpeed(page, "0");
   const before = await saved(page);
   const hide = page.getByRole("button", { name: "ウィンドウを隠す", exact: true });
@@ -127,7 +126,7 @@ test("short portrait keeps the face clear and the date playable to the end", asy
     // to the top must still reveal the face, with the window below it.
     await expectPortraitHeadAboveDialogue(page, ".romance-scene .vn-character > img", ".romance-scene .vn-dialogue");
   }
-  await loadSnapshot(page, phase1.started);
+  await loadCurrentScene(page, "date");
   await setDialogueSpeed(page, "0");
   await expectFaceAboveWindow();
   const text = await page.locator(".dialogue-text").boundingBox();
@@ -142,7 +141,7 @@ test("short portrait keeps the face clear and the date playable to the end", asy
     await expectFaceAboveWindow();
   }
   await page.setViewportSize({ width: 360, height: 480 });
-  await loadSnapshot(page, phase1.beforeChoice);
+  await loadCurrentScene(page, "dateChoice");
   await setDialogueSpeed(page, "0");
   await expect(page.locator(".choice").first()).toBeEnabled();
   await expectFaceAboveWindow();
@@ -158,7 +157,7 @@ test("short portrait keeps the face clear and the date playable to the end", asy
 test("the supplied heroine portrait keeps its head clear of the battle dialogue on phones", async ({ page }) => {
   for (const viewport of [{ width: 320, height: 568 }, { width: 360, height: 640 }]) {
     await page.setViewportSize(viewport);
-    await loadSnapshot(page, phase6.battleDialogue);
+    await loadCurrentScene(page, "battleDialogue");
     await expectPortraitHeadAboveDialogue(page, ".battle-heroine .vn-character > img", ".battle-paper-shell");
   }
 });
@@ -166,7 +165,7 @@ test("the supplied heroine portrait keeps its head clear of the battle dialogue 
 test("short portrait can finish all three battle rounds", async ({ page }) => {
   test.setTimeout(90_000);
   await page.setViewportSize({ width: 360, height: 480 });
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentScene(page, "battleQuestion");
   await expect(page.getByTestId("battle-question")).toBeVisible();
   await page.screenshot({ path: "artifacts/utage-reference/battle-question-360x480.png" });
   for (let round = 0; round < 3; round++) {

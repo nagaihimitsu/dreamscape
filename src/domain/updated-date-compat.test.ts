@@ -1,7 +1,5 @@
 import { describe, expect, it } from "vitest";
-import phase6 from "../../tests/fixtures/phase6-saves.json";
-import published from "../../tests/fixtures/fa0e7e0-v10-mid-scene.json";
-import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
+import { createDebugState } from "../dev/debug-state";
 import {
   advanceDate, chooseDate, finishDate, getDateAvailability, isEventVisible,
   isUpdatedDateReplay, startDate, validateGameState, type GameState,
@@ -20,10 +18,19 @@ function finish(state: GameState, onStep?: (state: GameState) => void): GameStat
   expect(state.activeDate).toBeNull();
   return state;
 }
+function currentFreeTime(): GameState {
+  const state = createDebugState({ scene: "tourism", id: "duomo_milano", progress: "completed", ap: 9, affection: 0, trust: 0, spark: 0, roll: "positive" });
+  return validateGameState({ ...state, activeTourism: null });
+}
+/** A current-schema player history that has not yet viewed the rewrite. */
+function priorDateHistory(): GameState {
+  const played = finish(startDate(currentFreeTime(), "milano_cafe_01", () => 4321));
+  return validateGameState({ ...played, updatedDateIds: [] });
+}
 
 describe("rewritten date available once to earlier players", () => {
-  it("migrates v10 and shows a completed old date once, without consuming or awarding anything", () => {
-    const old = validateGameState(phase6.ending);
+  it("shows a rewritten date once to a current-schema player with earlier history, without changing rewards", () => {
+    const old = priorDateHistory();
     const initial = validateGameState({ ...old, ap: 0,
       pendingApRewards: [{ rewardId: "chapter_milano_first_clear", earnedAp: 4, remainingAp: 4 }],
     });
@@ -50,32 +57,22 @@ describe("rewritten date available once to earlier players", () => {
   });
 
   it("does not offer the rewritten scene a second time after its ordinary first completion", () => {
-    const initial = seedLegacyChapter();
+    const initial = currentFreeTime();
     const state = finish(startDate(initial, "milano_cafe_01", () => 4321));
     expect(state.updatedDateIds).toContain("milano_cafe_01");
     expect(isEventVisible(state, "milano_cafe_01")).toBe(false);
     expect(getDateAvailability(state, "milano_cafe_01").available).toBe(false);
   });
 
-  it("lets a published in-progress old scene finish, then offers its rewrite", () => {
-    const initial = validateGameState(published.date);
-    expect(initial.updatedDateIds).toEqual([]);
-    expect(initial.activeDate?.replay).toBe(false);
-    const state = finish(initial);
-    expect(state.playedDateIds).toContain("milano_cafe_01");
-    expect(state.updatedDateIds).not.toContain("milano_cafe_01");
-    expect(isUpdatedDateReplay(state, "milano_cafe_01")).toBe(true);
-  });
-
   it("never reopens LOVE, a confession or recovery as rewritten normal dates", () => {
-    const state = validateGameState(phase6.ending);
+    const state = priorDateHistory();
     for (const id of ["milano_love_date_01", "milano_confession_01", "milano_recovery_01"])
       expect(isUpdatedDateReplay(state, id)).toBe(false);
     expect(isEventVisible(state, "milano_love_date_01")).toBe(false);
   });
 
   it("rejects fabricated updated IDs while preserving the original unparsed data", () => {
-    const state = validateGameState(phase6.ending);
+    const state = priorDateHistory();
     expect(() => validateGameState({ ...state, updatedDateIds: ["unknown"] })).toThrow();
     expect(() => validateGameState({ ...state, updatedDateIds: ["milano_novecento_date_01"] })).toThrow();
   });

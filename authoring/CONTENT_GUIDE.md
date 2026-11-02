@@ -4,7 +4,7 @@ Dreamscapeの正式データは `content/` です。文章はInk、クイズ・�
 
 ## Inkで会話と演出を作る
 
-新しい会話の本文、選択肢、話者、背景、表情、漫符はInkに書きます。既存の外部表情・リアクションJSONは旧脚本との互換用に残しますが、新しい行の登録には不要です。`reaction` はその一行だけに適用され、話者とは別の人物にも指定できます。
+新しい会話の本文、選択肢、話者、背景、表情、漫符はInkに書きます。既存の外部表情・リアクションJSONに指定された現行会話はその設定も参照しますが、新しい行の登録には不要です。`reaction` はその一行だけに適用され、話者とは別の人物にも指定できます。
 
 ```ink
 # speaker: enemy
@@ -68,7 +68,7 @@ VAR heroine_name = ""
 }
 ```
 
-公開済みInkを編集・差し替えると途中セーブの指紋が変わります。新旧の脚本と必要なカタログを旧脚本保存機構で保持し、再開を確認してください。古い外部演出の行や脚本がなくなった場合は警告されます。登録後は `npm run content:check` で参照と分岐を検証します。
+公開済みInkを編集・差し替えると途中セーブの指紋が変わり、過去のセーブや途中の会話が再開できなくなる場合があります。開発中は誤字修正や改稿のたびに旧セーブ再開用の旧稿を保存する必要はありません。現在のゲームが使っている脚本・データは誤って削除しないでください。安全に読めないデータは勝手に消さず、利用者が案内に従って消去し、最初から始められます。古い外部演出の行や脚本がなくなった場合は警告されます。`npm run content:check` は差分だけでなく全コンテンツの参照と分岐を検証し、ゲーム用データを生成します。
 
 ## この雛形について
 
@@ -139,18 +139,18 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 2. 権利を確認した写真を `public/assets/tourism/` に置き、`content/tourism/catalog.json` の `assets` に実寸・作者・出典URL・ライセンス・加工内容を登録します。`content/romance/presentation.json` の背景から `imageAssetId` で参照し、必要なら `imagePosition` の x / y を0〜100で指定します。写真家の権利だけでなく被写体の権利も確認してください。近隣の風景を使う場合は実際の場所を代替テキスト・クレジットに明記します。確認できる画像がない場合は `fallback: "neutral"` を使います。出典は会話中の操作メニューから確認できます。
    背景に訪問対象が写っていないときは、行き先に任意の `referenceImage`（HTTPSの `url`、リンク名 `labelJa`、背景についての `backgroundNoteJa`）を追加し、実物を確認できる公式資料へ案内できます。外部リンクは写真のゲーム内への転載許諾を意味しません。
 3. `content/romance/date_catalog.json` の通常デートに `destinationId` と必要に応じて `requiredCompletedEpisodeIds` を指定します。デートの `chapterId`、行き先の `cityId`、双方の背景IDを一致させます。訪問後に開放する通常デートでは、必要エピソードを指定したうえで `requiredCompletedChapters` を空配列にできます。交際後も同じ短編を遊べる場合は `allowAfterEnding` を指定します。
-4. Inkには、その場所で見られるものや出典を確認した小話を、ヒロインの関心や会話に自然につなげて書きます。選択にかかわらず観光を楽しめるようにし、既存脚本を更新する際は途中セーブ向けに旧Inkと `legacyStoryIds` を残します。旧脚本に旧行き先があった場合は `legacyDestinationId` または脚本ごとの `legacyStoryDestinationIds` も指定します。3択を2回書き、選択肢には共通または固有の `effect` を指定します。固有の思い出を残す場合は対応する `memory` も登録します。必要な表情は `# emotion:`、無言の反応は `# reaction:` で指定します。既存の恋愛進行に新イベントを必須条件として追加するかは、別途慎重に検討してください。
+4. Inkには、その場所で見られるものや出典を確認した小話を、ヒロインの関心や会話に自然につなげて書きます。選択にかかわらず観光を楽しめるようにします。3択を2回書き、選択肢には共通または固有の `effect` を指定します。固有の思い出を残す場合は対応する `memory` も登録します。必要な表情は `# emotion:`、無言の反応は `# reaction:` で指定します。既存の恋愛進行に新イベントを必須条件として追加するかは、別途慎重に検討してください。
 5. `npm run content:check` でIDの重複、都市・エピソード・背景の参照、出典形式、全分岐と効果を確認し、スマートフォンの画面と脚本をレビューします。
 
 現在の都市読み込みはミラノ前提です。別都市の実装には、後述の都市選択・進行・セーブなどの対応が必要です。
 
 ### 関係の空気を会話へ反映する
 
-新しい確率リアクション付き恋愛Inkは `relationship_tone`、`relationship_tone_before`、`relationship_tone_after` を文字列変数として宣言します。使用できる値は `reserved`、`strained`、`comfortable`、`guarded_attraction`、`warm`、`romantic_tension` です。冒頭では `relationship_tone`、選択の反応では `romance_result` と `relationship_tone_after` を使えます。数値や閾値をInkに書かず、共通本文を中心に少数の違いを作ります。旧Inkはそのまま残し、`legacyStoryIds` に登録して進行中セーブの指紋を維持します。内容検証で分岐とIDを確認し、文章と人物らしさは人間がレビューしてください。
+新しい確率リアクション付き恋愛Inkは `relationship_tone`、`relationship_tone_before`、`relationship_tone_after` を文字列変数として宣言します。使用できる値は `reserved`、`strained`、`comfortable`、`guarded_attraction`、`warm`、`romantic_tension` です。冒頭では `relationship_tone`、選択の反応では `romance_result` と `relationship_tone_after` を使えます。数値や閾値をInkに書かず、共通本文を中心に少数の違いを作ります。内容検証で分岐とIDを確認し、文章と人物らしさは人間がレビューしてください。
 
 ### 通常デートのデータ
 
-`date.json` の `id`、`chapterId`、`titleJa`、`descriptionJa`、`storyId`、`backgroundAssetId` はイベント、章、表示文、脚本、背景です。`kind` は通常なら `normal`。`apCost`、`minRomanceStage`、`minAffection`、`requiredCompletedChapters` は開始条件で、`destinationId`・`requiredCompletedEpisodeIds`・`requiredCompletedCityIds` は必要な場合のみ。通常デートの `requiredPlayedDateIds` は空配列とし、他のデートを必須にしません。期間限定イベントには `forbiddenCompletedEpisodeIds` で終了条件を指定でき、`eventLabelJa` で「今だけの出来事」などの種別を表示できます。`repeatable` は再挑戦可否で、通常デートは `false`、告白は再挑戦のため `true` にします。`rewardOnlyOnce` は旧版で再鑑賞を開始済みのセーブを含む効果の重複防止、`needsDeferred` は告白保留後の条件、`choiceCount` / `effectCount` は各経路の選択・効果回数です。旧途中セーブに使用する `legacyStoryIds` は元のInkを残し、変更しないでください。
+`date.json` の `id`、`chapterId`、`titleJa`、`descriptionJa`、`storyId`、`backgroundAssetId` はイベント、章、表示文、脚本、背景です。`kind` は通常なら `normal`。`apCost`、`minRomanceStage`、`minAffection`、`requiredCompletedChapters` は開始条件で、`destinationId`・`requiredCompletedEpisodeIds`・`requiredCompletedCityIds` は必要な場合のみ。通常デートの `requiredPlayedDateIds` は空配列とし、他のデートを必須にしません。期間限定イベントには `forbiddenCompletedEpisodeIds` で終了条件を指定でき、`eventLabelJa` で「今だけの出来事」などの種別を表示できます。`repeatable` は再挑戦可否で、通常デートは `false`、告白は再挑戦のため `true` にします。`rewardOnlyOnce` は効果の重複防止、`needsDeferred` は告白保留後の条件、`choiceCount` / `effectCount` は各経路の選択・効果回数です。
 
 `effect_catalog.json` の各 `id` と任意の `memoryId` はInkの `# effect:` に対応します。告白を除く恋愛選択には `responseProfileId` を指定し、`content/romance/response_profiles.json` のリスク特性から選びます。固定の `affectionDelta`・`trustDelta`・`sparkDelta` と `stageDeltas` は旧途中セーブの互換用であり、新しい確率効果には重ねません。台詞と選択の性格に合うプロフィールを選び、全段階をレビューしてください。思い出は `presentation.json` の `memories` に同じIDと `titleJa` / `descriptionJa` を登録します。Stage・告白条件は `progression.json` で管理し、特定デートIDを条件にしません。
 
@@ -168,19 +168,19 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 
 現在の小さなミラノの寄り道は `content/encounters/catalog.json` と `content/stories/encounters/` で管理します。カタログには安定した交流・選択・品物ID、観光地、必要な費用や条件、実際に確認した出典を記録し、選択肢の英文と任意の訳はInkに書きます。各品物にも `cityId` を付け、入手・所持条件・贈与・使用・Inkからの参照を同じ都市の交流に限ります。入手都市のクリア後も使える機会を設けてください。価格や展示・人物はゲーム内の設定です。旅の予算、品物、APは別に扱い、購入しなくてもメインの観光と恋愛を続けられるようにします。
 
-ガッレリアの親子との会話は観光画面から任意で始め、終了後は観察に戻ります。本戦後は同じ場所の交流から文化クイズと展示券の抽選も楽しめます。`availability: "dormant"` の交流はデータと旧途中セーブを保持し、新規には開始できません。既存の会話や賞品を差し替える際は、旧カタログと旧Inkを残して途中セーブ・獲得済み記録を確認してください。
+ガッレリアの親子との会話は観光画面から任意で始め、終了後は観察に戻ります。本戦後は同じ場所の交流から文化クイズと展示券の抽選も楽しめます。`availability: "dormant"` の交流は新規には開始できません。既存の会話や賞品を差し替える際は、現在のゲームの参照と獲得・使用の整合性を確認してください。
 
 旅行予算とAP・保留APは都市別に初期化しない共通残高です。将来、都市からの出発を実装する際には、その都市の未使用品を持ち越せないようにし、過去の入手・贈与・使用や交流の履歴、思い出・関係値は保護します。現在は出発処理がないため、都市クリア時に品物を消しません。将来の実装では、保存形式と品物・報酬の整合性検証も合わせて対応してください。
 
 交流Inkは名前変数を宣言し、英語3択を一度置きます。選択肢の英文はInkにだけ記述し、費用やアイテム操作がある場合は安定した `option` IDでカタログのルールと結び付けます。選択後の日本語の会話はどの枝も完走させ、効果や残高操作をInkに書きません。正誤のない返答と、正解がある任意の文化クイズを区別します。小さな観光クイズは既存の問題スキーマを使い、事実・伝承・創作を混同せず出典の該当箇所を確認してください。クイズの賞品と当落後のInk、アイテムの贈与・使用、既存報酬と共有するAPの条件はカタログで参照します。
 
-交流Inkから以前の品物を参照する場合は `EXTERNAL has_item_status(id, status)` を宣言し、例えば `has_item_status("galleria_souvenir", "gifted")` のように登録済みIDと `held`・`gifted`・`used` の固定文字列を使います。状態の変更はゲーム側だけが行います。この参照は現時点では道中交流のInkで使用できます。`npm run content:check` は重複ID、参照、選択肢と分岐、出典の形式、アイテム参照を検証します。既存の戦闘・デートInkを改稿する場合には、途中セーブとの互換性を別途確認してください。
+交流Inkから以前の品物を参照する場合は `EXTERNAL has_item_status(id, status)` を宣言し、例えば `has_item_status("galleria_souvenir", "gifted")` のように登録済みIDと `held`・`gifted`・`used` の固定文字列を使います。状態の変更はゲーム側だけが行います。この参照は現時点では道中交流のInkで使用できます。`npm run content:check` は重複ID、参照、選択肢と分岐、出典の形式、アイテム参照を検証します。既存の戦闘・デートInkを改稿した場合、過去の途中セーブを再開できなくなることがあります。
 
 `city.json` の `id`、`countryCode`、`nameJa`、`themeJa`、`landmarkIdsPlanned`、`productionStatus` は都市と場所の識別、表示、予定と状態。`firstClearReward` は既存セーブ互換の `rewardSourceId` と `ap` です。`journey.json` の `entryEpisodeId` は最初のエピソード、`episodes` は順路、`rewards` は一度限りの報酬です。各エピソードの `id`、`kind`、`cityId`、`landmarkId`、`battleId`、`legacyChapterId`、`requiredEpisodeIds`、`titleJa` / `descriptionJa` / `clearTitleJa` / `clearDescriptionJa` は識別・参照・順序・表示文。都市フィナーレは `kind: "city_finale"`、`landmarkId: null` と `epilogueStoryId` を指定します。
 
 報酬の `id`、`episodeId`、`trigger`、`ap`、`minScore`、`titleJa` は安定ID、対象、発生条件、付与量、得点条件、表示文です。`trigger` は `guide_read` / `battle_complete` / `battle_score` / `episode_clear` / `city_clear`。`minScore` は `battle_score` のみ正の数、それ以外は `null`。AP上限や報酬IDの重複防止はゲームルール側で処理します。
 
-現行の読み込み・進行はミラノ1都市を前提としており、都市JSONを増やすだけで第2都市が自動的に遊べるわけではありません。現在の `src/content/` と `scripts/journey-validation.ts` の都市選択・順路検証、進行とセーブ移行、画面の都市選択を将来対応する必要があります。詳細な追加手順と制約は [将来の都市追加](FUTURE_CITIES.md) を参照してください。新都市はPhase 9以降に扱い、この段階では実装しません。
+現行の読み込み・進行はミラノ1都市を前提としており、都市JSONを増やすだけで第2都市が自動的に遊べるわけではありません。現在の `src/content/` と `scripts/journey-validation.ts` の都市選択・順路検証、進行と保存、画面の都市選択を将来対応する必要があります。詳細な追加手順と制約は [将来の都市追加](FUTURE_CITIES.md) を参照してください。新都市はPhase 9以降に扱い、この段階では実装しません。
 
 ## 確認と公開前レビュー
 
@@ -192,9 +192,9 @@ npm run content:inspect -- --type battle-catalog authoring/templates/battle_b.js
 npm run content:inspect -- authoring/templates/date.ink
 ```
 
-単体検証はJSONの構文・指定形式とInkのコンパイルを調べます。参照先、Inkタグ、分岐の全文脈は単体では検証しません。正式データへ登録したら `npm run content:inspect -- --all` で全コンテンツの構造・参照を検査します。このコマンドは生成ファイルを書き換えません。`npm run content:check` も同じ全体検証を行い、ゲーム用のコンテンツを生成します。`npm run content:compat` は既知の旧セーブ例での互換性テストです。あらゆる実ユーザーの途中データとの互換性を保証するものではありません。
+単体検証はJSONの構文・指定形式とInkのコンパイルを調べます。参照先、Inkタグ、分岐の全文脈は単体では検証しません。正式データの変更後に `npm run content:check` を実行すると、全コンテンツの構造・参照を検証し、ゲーム用のデータを生成します。生成ファイルを書き換えずに全体を確認したい場合は、代わりに `npm run content:inspect -- --all` を利用できます。`npm run content:compat` はコンテンツ生成後に保存関連テストを実行します。過去のセーブの更新後の再開を保証するものではありません。
 
-続けて `npm run typecheck`、`npm test`、`npm run build`、必要な `npm run test:e2e` を実行します。検証の詳細はREADMEを参照してください。失敗したらエラーで示されたファイル、ID、フィールドを直して再実行します。Inkやクイズの途中再開は内容の指紋を使うため、公開後の改稿時は既存セーブへの影響を確認し、実データを削除しないでください。
+普段は変更内容と影響範囲に応じて、必要な型検査・対象テスト・実画面確認を選びます。全単体テストと全E2Eを毎回実行する必要はありません。公開前や大きな変更時の全体確認は [開発時の確認](../docs/10_DEVELOPMENT_CHECKS.md) を参照してください。失敗したらエラーで示されたファイル、ID、フィールドを直して再実行します。Inkやクイズの途中再開は内容の指紋を使うため、改稿で読めなくなったデータを勝手に削除しないでください。
 
 自動検証に加え、編集者が次を確認します。
 
@@ -203,6 +203,6 @@ npm run content:inspect -- authoring/templates/date.ink
 - 英文が自然で、選択肢に唯一の正解があり、正解の長さや事前会話で答えが露見しないか。
 - 敵の価値観が会話を通じて動き、ヒロインに自分の意思があるか。短く読みやすいか。
 - スマートフォンで文章・画像・操作が読みやすいか。観察なしでも進めるか。
-- 公開済みID、報酬、セーブ途中のInk・クイズ互換性を不用意に変えていないか。
+- 現在のゲームが使用するID・報酬・Ink・クイズ参照を壊していないか。過去の途中セーブが再開できなくなる場合は、読めないデータを安全に保護できるか。
 
 検証は構造や参照の誤りを見つけますが、面白さ・史実・自然な英語・画像の権利を保証するものではありません。人間が書いた場合もAIが補助した場合も、同じ確認を行います。

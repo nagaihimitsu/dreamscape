@@ -21,7 +21,7 @@ export async function completeEpisode(
   const result = await playBattle(page, quiz.questions, correctness);
   await expect(page.getByTestId("battle-rewards")).toBeVisible();
   expect(result.state.completedEpisodeIds).toEqual([
-    "milano_last_supper_episode",
+    "milano_duomo_episode", "milano_galleria_episode", "milano_last_supper_episode",
   ]);
   expect(result.state.completedCityIds).toEqual([]);
   return result.state;

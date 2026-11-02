@@ -1,6 +1,7 @@
 import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
 import { describe, expect, it, vi } from "vitest";
 import { advanceDate, chooseDate, createGame, startDate } from "../domain";
+import phase1 from "../../tests/fixtures/phase1-saves.json";
 import {
   backupAndCreate,
   deleteSaveData,
@@ -27,6 +28,14 @@ class MemoryStorage implements StorageLike {
 }
 
 describe("local save persistence", () => {
+  it("round-trips negative trust and spark without changing game progress", () => {
+    const storage = new MemoryStorage();
+    const state = { ...createGame(), trust: -3, spark: -2 };
+    expect(saveGame(storage, state).ok).toBe(true);
+    expect(loadGame(storage)).toEqual({ status: "loaded", state });
+    expect(parseGameState(storage.getItem(SAVE_KEY)!)).toEqual(state);
+  });
+
   it("distinguishes an empty slot from an unreadable save and preserves names", () => {
     const storage = new MemoryStorage();
     expect(loadGame(storage)).toEqual({ status: "empty" });
@@ -51,6 +60,52 @@ describe("local save persistence", () => {
     expect(saveGame(storage, createGame()).ok).toBe(false);
     expect(storage.getItem(SAVE_KEY)).toBe(raw);
     expect(storage.getItem("unrelated.application")).toBe("keep me");
+  });
+
+  it("distinguishes a newer version, malformed data, and unavailable storage", () => {
+    const storage = new MemoryStorage();
+    const newer = JSON.stringify({ ...createGame(), schemaVersion: 12 });
+    storage.setItem(SAVE_KEY, newer);
+    expect(loadGame(storage)).toMatchObject({ status: "invalid", kind: "newer", raw: newer });
+    expect(saveGame(storage, createGame()).ok).toBe(false);
+    expect(storage.getItem(SAVE_KEY)).toBe(newer);
+    const malformed = JSON.stringify({ schemaVersion: 1, revision: -1 });
+    storage.setItem(SAVE_KEY, malformed);
+    expect(loadGame(storage)).toMatchObject({ status: "invalid", kind: "corrupt", raw: malformed });
+    expect(loadGame({ getItem: () => { throw new Error("unavailable"); }, setItem: () => {} }))
+      .toMatchObject({ status: "invalid", kind: "storage", raw: null });
+  });
+
+  it("keeps a structurally recognizable old save without automatically migrating or overwriting it", () => {
+    const storage = new MemoryStorage();
+    const raw = JSON.stringify({ ...phase1.afterChoice, activeDate: {
+      ...phase1.afterChoice.activeDate, storyHash: "not-a-published-script",
+    } });
+    storage.setItem(SAVE_KEY, raw);
+    expect(loadGame(storage)).toMatchObject({ status: "invalid", kind: "legacy", raw });
+    expect(saveGame(storage, createGame()).ok).toBe(false);
+    expect(storage.getItem(SAVE_KEY)).toBe(raw);
+  });
+
+  it("does not resume or overwrite a current-format date with a different story fingerprint", () => {
+    const storage = new MemoryStorage();
+    const started = startDate(seedLegacyChapter(createGame()), "milano_cafe_01");
+    expect(started.activeDate).not.toBeNull();
+    const raw = JSON.stringify({ ...started, activeDate: { ...started.activeDate, storyHash: "different-story" } });
+    storage.setItem(SAVE_KEY, raw);
+    expect(loadGame(storage)).toMatchObject({ status: "invalid", kind: "corrupt", raw });
+    expect(saveGame(storage, createGame()).ok).toBe(false);
+    expect(storage.getItem(SAVE_KEY)).toBe(raw);
+  });
+
+  it("does not replace a newer tab's save while backing up a recovery snapshot", () => {
+    const storage = new MemoryStorage();
+    storage.setItem(SAVE_KEY, "initial invalid save");
+    const original = storage.getItem(SAVE_KEY);
+    storage.setItem(SAVE_KEY, "updated in another tab");
+    expect(backupAndCreate(storage, createGame(), original).ok).toBe(false);
+    expect(storage.getItem(SAVE_KEY)).toBe("updated in another tab");
+    expect([...storage.values.keys()].filter((key) => key.startsWith(`${SAVE_KEY}.backup.`))).toHaveLength(0);
   });
 
   it("backs up the exact raw save before explicit recovery, without touching unrelated data", () => {

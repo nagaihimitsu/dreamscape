@@ -1,6 +1,8 @@
 import { useState } from "react";
 import characterData from "../../content/presentation/characters.json";
 import { CharacterPortrait } from "../components/CharacterPortrait";
+import { CanalScene } from "../components/CanalScene";
+import { presentation } from "../content";
 import {
   characterCatalogSchema,
   characterImage,
@@ -63,6 +65,7 @@ export default function CharacterPreview() {
     <main className="character-preview" data-testid="character-preview">
       <header>
         <h1>人物素材の確認</h1>
+        <a href="?debug">Debugへ戻る</a>
         <a href={import.meta.env.BASE_URL}>ゲームへ戻る</a>
       </header>
       <div className="preview-controls">
@@ -106,6 +109,9 @@ export default function CharacterPreview() {
           <select data-testid="preview-background" value={background} onChange={(event) => setBackground(event.target.value)}>
             <option value="light">明るい背景</option>
             <option value="dark">暗い背景</option>
+            {Object.entries(presentation.backgrounds).map(([id, item]) => (
+              <option key={id} value={id}>{item.nameJa} ({id})</option>
+            ))}
           </select>
         </label>
       </div>
@@ -125,6 +131,7 @@ export default function CharacterPreview() {
         </label>
       </div>
       <div className={`vn-scene preview-stage preview-stage-${background}${layout === "fit" ? " preview-stage-fit" : ""}`} data-testid="preview-stage">
+        {background !== "light" && background !== "dark" && <div className="vn-background"><CanalScene backgroundId={background} /></div>}
         <div className="preview-guides" aria-hidden="true" />
         <div className="vn-character-layer">
           <CharacterPortrait key={`${costumeId}/${poseId}/${emotion}`} characterId="heroine" costume={costumeId || undefined} pose={poseId || undefined}

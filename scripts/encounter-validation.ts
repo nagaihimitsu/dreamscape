@@ -1,5 +1,4 @@
 import { Story } from "inkjs";
-import previousEncounterData from "../content/legacy/encounters_before_story_refactor.json";
 import type { EncounterCatalog, EncounterDefinition } from "../src/content/encounter-schemas";
 import type { JourneyConfig } from "../src/content/journey-schemas";
 import type { QuizDefinition, QuizQuestion } from "../src/content/schemas";
@@ -186,7 +185,9 @@ export function validateEncounterContent({
       storyIds.push(scene.id);
       const compiled = stories[scene.id];
       if (!compiled) throw new Error(`Unknown encounter story: ${event.id}/${scene.id}`);
-      const existingOrderedChoices = previousEncounterData.encounters.some((old) => old.id === event.id && old.storyId === scene.id);
+      // Dormant stories are kept for possible future reuse, but are not
+      // startable; require stable choice tags before an event is activated.
+      const existingOrderedChoices = event.availability === "dormant";
       const choiceHasRules = !!scene.options?.some((option) => option.costEuro || option.requiresItemId || option.consumeItemId || option.giftItemId || option.responseProfileId || option.deferCompletion);
       try { validateEncounterStory(compiled, context, scene.options, catalog.items.filter((item) => item.cityId === event.cityId).map((item) => item.id), memoryIds, choiceHasRules && !existingOrderedChoices); }
       catch (error) {

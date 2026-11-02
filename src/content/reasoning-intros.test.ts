@@ -1,11 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { battles, reasoningIntroductions, stories } from ".";
+import { battles, battleQuizzes, reasoningIntroductions, stories } from ".";
 import { compileInk } from "../../scripts/content-pipeline";
 import { reasoningIntroCatalogSchema } from "./reasoning-intros";
 import { beginStory, continueStory } from "../story/runtime";
-import { battleFingerprint, getReasoningContext, startBattle } from "../domain/battle";
+import { advanceBattle, answerBattle, battleFingerprint, getReasoningContext, selectReasoningClue, startBattle } from "../domain/battle";
 import { createGame, validateGameState } from "../domain/game";
-import phase6 from "../../tests/fixtures/phase6-saves.json";
 
 describe("reasoning introductions", () => {
   it("rejects duplicate battle entries and invalid story identifiers", () => {
@@ -18,7 +17,7 @@ describe("reasoning introductions", () => {
     ] })).toThrow();
   });
 
-  it.each(["milano_last_supper_b01", "milano_last_supper_c01", "milano_la_scala_b01", "milano_brera_c01"])(
+  it.each(["milano_la_scala_b01", "milano_brera_c01"])(
     "%s has a separate, short heroine response", (battleId) => {
       const storyId = reasoningIntroductions[battleId];
       const battle = battles.find((entry) => entry.id === battleId)!;
@@ -41,20 +40,25 @@ describe("reasoning introductions", () => {
     },
   );
 
-  it("keeps published special battle hashes and in-progress evidence", () => {
-    for (const fixture of [phase6.B_reasoning, phase6.B_press, phase6.B_selected, phase6.B_accepted,
-      phase6.C_reasoning, phase6.C_selected, phase6.C_accepted]) {
-      expect(battleFingerprint(fixture.activeBattle!.battleId)).toBe(fixture.activeBattle!.contentHash);
-      const restored = validateGameState(fixture);
-      expect(restored.activeBattle!.reasoning).toEqual(fixture.activeBattle!.reasoning);
-      expect(restored.activeBattle!.storyState).toEqual(fixture.activeBattle!.storyState);
+  it.each(["milano_la_scala_b01", "milano_brera_c01"])("reopens %s with selected evidence and rejects a different content hash", (battleId) => {
+    let state = startBattle(createGame(), battleId);
+    const battle = battles.find((entry) => entry.id === battleId)!;
+    for (let i = 0; state.activeBattle?.phase !== "reasoning"; i++) {
+      expect(i).toBeLessThan(200);
+      const active = state.activeBattle!;
+      state = active.phase === "question"
+        ? answerBattle(state, battleQuizzes[battle.quizId].questions[active.roundIndex].correctOptionId, state.revision)
+        : advanceBattle(state, state.revision);
     }
+    state = selectReasoningClue(state, battle.reasoning!.caseClueIds[0], state.revision);
+    const restored = validateGameState(JSON.parse(JSON.stringify(state)));
+    expect(restored.activeBattle!.reasoning).toEqual(state.activeBattle!.reasoning);
+    expect(restored.activeBattle!.storyState).toEqual(state.activeBattle!.storyState);
+    expect(() => validateGameState({ ...restored, activeBattle: { ...restored.activeBattle!, contentHash: "mismatched" } })).toThrow();
   });
 
-  it.each(["milano_last_supper_b01", "milano_la_scala_b01"])("keeps heroine dialogue out of the %s claim but retains the press dialogue", (battleId) => {
-    const state = battleId === "milano_last_supper_b01"
-      ? validateGameState(phase6.B_reasoning)
-      : startBattle(createGame(), battleId);
+  it("keeps heroine dialogue out of the claim but retains the press dialogue", () => {
+    const state = startBattle(createGame(), "milano_la_scala_b01");
     const battle = battles.find((entry) => entry.id === state.activeBattle!.battleId)!;
     const original = stories[battle.storyId];
     stories[battle.storyId] = compileInk(`VAR player_name = ""
@@ -79,10 +83,10 @@ VAR battle_score = 0
 -> END
 `);
     try {
-      // Updating the in-memory script changes its fingerprint. Match it in
-      // this synthetic run, while the separate fixture test protects old saves.
+      // Updating the in-memory script changes its fingerprint. Match the
+      // synthetic run to its current script.
       state.activeBattle!.contentHash = battleFingerprint(battle.id);
-      state.activeBattle!.reasoning = { ...phase6.B_reasoning.activeBattle!.reasoning, status: "selecting", pressed: true };
+      state.activeBattle!.reasoning = { statementId: battle.reasoning!.claimScene, status: "selecting", selectedClueIds: [], pressed: true, submittedClueIds: [] };
       const result = getReasoningContext(state)!;
       expect(result.claimText).toBe("敵だけの主張。");
       expect(result.pressedText).toContain("追及の答え。");

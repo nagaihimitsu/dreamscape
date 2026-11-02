@@ -1,6 +1,5 @@
 import { test, expect } from "@playwright/test";
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
-import { loadSnapshot, saved } from "./helpers";
+import { loadCurrentSupperQuestion, saved } from "./helpers";
 import { battleDialogueUntilQuestionOrResult } from "./battle-helpers";
 
 test.use({ viewport: { width: 360, height: 780 } });
@@ -8,12 +7,12 @@ test.use({ viewport: { width: 360, height: 780 } });
 test("touching words shows meanings and a double tap translates without answering", async ({
   page,
 }) => {
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentSupperQuestion(page);
   const before = await saved(page);
   const question = page.locator(".question-en");
-  const word = question.getByRole("button", { name: "shapeの意味" });
+  const word = question.getByRole("button", { name: "paintedの意味" });
   await word.tap();
-  await expect(question.locator(".word-meaning")).toContainText("形、輪郭");
+  await expect(question.locator(".word-meaning")).toContainText("描かれた");
   expect(await saved(page)).toEqual(before);
   await page.waitForTimeout(500);
   await word.tap();
@@ -22,9 +21,9 @@ test("touching words shows meanings and a double tap translates without answerin
   ).toBeVisible();
   expect(await saved(page)).toEqual(before);
   const option = page.getByTestId("option-text-A");
-  const sits = option.getByRole("button", { name: "sitsの意味" });
+  const sits = option.getByRole("button", { name: "lampsの意味" });
   await sits.tap();
-  await expect(option.locator(".word-meaning")).toContainText("座っている");
+  await expect(option.locator(".word-meaning")).toContainText("ランプ");
   await page.waitForTimeout(500);
   await sits.tap();
   await expect(
@@ -36,9 +35,9 @@ test("touching words shows meanings and a double tap translates without answerin
   expect(answered.activeBattle?.answers).toHaveLength(1);
   await page.getByRole("button", { name: "英文を確認する" }).tap();
   const dialog = page.getByRole("dialog");
-  const reviewWord = dialog.getByRole("button", { name: "shapeの意味" });
+  const reviewWord = dialog.getByRole("button", { name: "paintedの意味" });
   await reviewWord.tap();
-  await expect(dialog.locator(".word-meaning")).toContainText("形、輪郭");
+  await expect(dialog.locator(".word-meaning")).toContainText("描かれた");
   await page.waitForTimeout(500);
   await reviewWord.tap();
   await expect(
@@ -51,12 +50,12 @@ test("touching words shows meanings and a double tap translates without answerin
 });
 
 test("another action ends the tap sequence without answering", async ({ page }) => {
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentSupperQuestion(page);
   const before = await saved(page);
   const question = page.locator(".question-en");
-  const word = question.getByRole("button", { name: "shapeの意味" });
+  const word = question.getByRole("button", { name: "paintedの意味" });
   await word.tap();
-  await page.getByTestId("option-text-A").getByRole("button", { name: "sitsの意味" }).tap();
+  await page.getByTestId("option-text-A").getByRole("button", { name: "lampsの意味" }).tap();
   await word.tap();
   await expect(question.locator(".word-meaning")).toBeVisible();
   await expect(page.getByRole("button", { name: "問題文の訳を見る" })).toBeVisible();
@@ -68,14 +67,14 @@ test("another action ends the tap sequence without answering", async ({ page }) 
 test("keyboard users can inspect a word and open the sentence translation", async ({
   page,
 }) => {
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentSupperQuestion(page);
   const word = page
     .locator(".question-en")
-    .getByRole("button", { name: "Whichの意味" });
+    .getByRole("button", { name: "Whyの意味" });
   await word.focus();
   await page.keyboard.press("Enter");
   await expect(page.locator(".question-en .word-meaning")).toContainText(
-    "どれ",
+    "なぜ",
   );
   await page.keyboard.press("Enter");
   await expect(
@@ -89,10 +88,10 @@ test("keyboard users can inspect a word and open the sentence translation", asyn
 test("a word explanation does not carry over to the next question", async ({
   page,
 }) => {
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentSupperQuestion(page);
   await page
     .locator(".question-en")
-    .getByRole("button", { name: "shapeの意味" })
+    .getByRole("button", { name: "paintedの意味" })
     .tap();
   await expect(page.locator(".question-en .word-meaning")).toBeVisible();
   await page.getByTestId("answer-B").tap();
@@ -100,6 +99,6 @@ test("a word explanation does not carry over to the next question", async ({
   await battleDialogueUntilQuestionOrResult(page);
   await expect(page.locator(".question-en .word-meaning")).toHaveCount(0);
   await expect(page.locator(".question-en")).toContainText(
-    "perspective lines meet",
+    "Matthew reaches toward Jesus",
   );
 });

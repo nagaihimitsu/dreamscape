@@ -2,19 +2,16 @@ import { installRomanceRolls } from "./romance-rolls";
 import { expect, test } from "@playwright/test";
 import tourism from "../../content/tourism/catalog.json" with { type: "json" };
 import journey from "../../content/progression/journey.json" with { type: "json" };
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
-import phase7 from "../fixtures/phase7-free-time.json" with { type: "json" };
 import {
   availableAp,
   expectNoOverflow,
-  loadSnapshot,
   openRevisits,
   playEvent,
   returnToMenu,
   saved,
   startNewGame,
 } from "./helpers";
-import { reloadUnchanged, romanceProgress } from "./battle-helpers";
+import { reloadUnchanged } from "./battle-helpers";
 import {
   cityEpisodes,
   cityFinale,
@@ -52,63 +49,6 @@ async function continueJourney(page: import("@playwright/test").Page, format?: "
 test.beforeEach(async ({ page }) => { await installRomanceRolls(page); });
 
 test.use({ reducedMotion: "reduce", viewport: { width: 360, height: 740 } });
-
-test("an old completed city can play B and C from the story without losing its ending or rewards", async ({ page }) => {
-  test.setTimeout(180_000);
-  await loadSnapshot(page, phase7.cityClearViewed);
-  const original = await saved(page);
-  const progress = nonBattleProgress(original);
-  for (const format of ["B", "C"] as const) {
-    const { battle } = specialBattle(format);
-    await expect(page.getByTestId(`next-story-battle-${battle.id}`)).toBeVisible();
-    await page.getByTestId(`next-story-battle-${battle.id}`).click();
-    await reloadUnchanged(page);
-    const result = await playSpecialBattle(page, format, [false, false, false]);
-    expect(result.state.activeBattle?.score).toBe(0);
-    expect(nonBattleProgress(result.state)).toEqual(progress);
-    expect(result.state.battleRecords.find((record) => record.battleId === battle.id)?.attempts).toBe(1);
-    await reloadUnchanged(page);
-    for (const width of [320, 360]) {
-      await page.setViewportSize({ width, height: width === 320 ? 568 : 640 });
-      await expectNoOverflow(page);
-      await expect(page.getByRole("button", { name: "自由時間へ戻る", exact: true })).toBeVisible();
-      if (format === "B")
-        await expect(page.getByTestId(`next-story-battle-${specialBattle("C").battle.id}`)).toBeVisible();
-      await page.screenshot({ path: `/tmp/dreamscape-story-${format.toLowerCase()}-${width}.png` });
-    }
-  }
-  await page.getByRole("button", { name: "自由時間へ戻る", exact: true }).click();
-  const final = await saved(page);
-  expect(nonBattleProgress(final)).toEqual(progress);
-  expect(final.completedCityIds).toEqual(["milano"]);
-  expect(final.endingReached).toBe(true);
-  await expect(page.getByTestId(`next-story-battle-${specialBattle("B").battle.id}`)).toHaveCount(0);
-  await expect(page.getByTestId(`next-story-battle-${specialBattle("C").battle.id}`)).toHaveCount(0);
-  await openRevisits(page);
-  for (const format of ["B", "C"] as const) {
-    await expect(page.getByTestId(`revisit-battle-${specialBattle(format).battle.id}`)).toBeVisible();
-  }
-});
-
-test("previously played special battles remain recorded without marking the new cases complete", async ({ page }) => {
-  const completed = {
-    ...phase7.cityClearViewed,
-    battleRecords: [
-      ...phase7.cityClearViewed.battleRecords,
-      ...phase6.B_result.battleRecords,
-      ...phase6.C_result.battleRecords,
-    ],
-  };
-  await loadSnapshot(page, completed);
-  expect(await saved(page)).toEqual(completed);
-  await expect(page.getByTestId("free-time-hub")).toBeVisible();
-  await expect(page.getByTestId(`next-story-battle-${specialBattle("B").battle.id}`)).toBeVisible();
-  await expect(page.getByTestId(`next-story-battle-${specialBattle("C").battle.id}`)).toHaveCount(0);
-  await openRevisits(page);
-  for (const battleId of ["milano_last_supper_b01", "milano_last_supper_c01"])
-    await expect(page.getByTestId(`revisit-battle-${battleId}`)).toBeVisible();
-  expect((await saved(page)).endingReached).toBe(true);
-});
 
 test("a new zero-score Milan journey reaches the city epilogue and romance ending with finite earned AP", async ({
   page,
@@ -342,50 +282,4 @@ test("all four photographs and discoveries persist, and the five-question boss s
   await finishTourismGuide(page);
   expect(availableAp(await saved(page))).toBe(availableAp(perfect.state));
   expect((await saved(page)).discoveredClueIds).toEqual(discovered);
-});
-
-test("a published Last Supper completion keeps its reward and resumes at unvisited Duomo, then skips the already completed episode", async ({
-  page,
-}) => {
-  test.setTimeout(300_000);
-  await loadSnapshot(page, phase6.freeTime);
-  expect(await saved(page)).toEqual(phase6.freeTime);
-  await expect(page.getByTestId(`next-story-battle-${specialBattle("B").battle.id}`)).toHaveCount(0);
-  await expect(page.getByTestId(`next-episode-${cityEpisodes[0].id}`)).toBeVisible();
-  await page.getByTestId(`next-episode-${cityEpisodes[0].id}`).click();
-  const oldRecord = phase6.freeTime.battleRecords;
-  for (const episode of cityEpisodes.filter(
-    (item) => item.landmarkId !== "last_supper",
-  )) {
-    expect((await saved(page)).activeTourism!.landmarkId).toBe(
-      episode.landmarkId,
-    );
-    await skipTourismGuide(page);
-    await page
-      .getByRole("button", { name: "バトルを始める", exact: true })
-      .click();
-    const result = await playCityBattle(page, episode, 0);
-    expect(
-      result.state.battleRecords.filter(
-        (item) => item.battleId === "milano_last_supper_01",
-      ),
-    ).toEqual(oldRecord);
-    expect(
-      result.state.claimedRewardIds.filter(
-        (id) => id === "chapter_milano_first_clear",
-      ),
-    ).toHaveLength(1);
-    expect(result.state.completedCityIds).toEqual([]);
-    await continueJourney(page, episode.landmarkId === "galleria_vittorio_emanuele_ii" ? "B" : episode.landmarkId === "castello_sforzesco" ? "C" : undefined);
-  }
-  const result = await playCityBattle(page, cityFinale(), 0);
-  expect(result.state.completedCityIds).toEqual(["milano"]);
-  expect(romanceProgress(result.state)).toEqual(
-    romanceProgress(phase6.freeTime as unknown as typeof result.state),
-  );
-  expect(result.state.completedEpisodeIds[0]).toBe(
-    "milano_last_supper_episode",
-  );
-  expect(result.state.schemaVersion).toBe(11);
-  await reloadUnchanged(page);
 });

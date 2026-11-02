@@ -1,28 +1,27 @@
 import { installRomanceRolls } from "./romance-rolls";
 import { expect, test } from "@playwright/test";
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
-import phase7 from "../fixtures/phase7-free-time.json" with { type: "json" };
-import { availableAp, choose, expectNoOverflow, findDateOption, finishEvent, loadSnapshot, saved, setDialogueSpeed, startEvent } from "./helpers";
+import { availableAp, choose, expectNoOverflow, findDateOption, finishEvent, loadCurrentFreeTime, loadCurrentCompletedFreeTime, saved, setDialogueSpeed, startEvent, startNewGame } from "./helpers";
 
 test.beforeEach(async ({ page }) => { await installRomanceRolls(page); });
 
 test.use({ reducedMotion: "reduce" });
 
-test("old saves expose the places only after their sightseeing episodes", async ({ page }) => {
+test("places appear only after their sightseeing episodes", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase6.ending);
+  await startNewGame(page);
+  await loadCurrentFreeTime(page);
   for (const id of ["milano_la_scala_date_01", "milano_brera_date_01", "milano_navigli_date_01"])
     await expect(page.getByTestId(`event-${id}`)).toHaveCount(0);
-  const old = await saved(page);
-  expect(old.endingReached).toBe(true);
-  expect(old.completedEpisodeIds).toEqual([]);
+  const current = await saved(page);
+  expect(current.completedEpisodeIds).toEqual(["milano_duomo_episode"]);
   await expectNoOverflow(page);
 });
 
-test("three destination dates work from a completed old save on a phone", async ({ page }, testInfo) => {
+test("three destination dates work from a completed current journey on a phone", async ({ page }, testInfo) => {
   test.setTimeout(180_000);
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase7.cityClearViewed);
+  await startNewGame(page);
+  await loadCurrentCompletedFreeTime(page);
   const initial = await saved(page);
   const places = [
     { id: "milano_la_scala_date_01", name: "スカラ座", cost: 2, photo: "la_scala.webp", emotion: "smile" },
@@ -73,7 +72,7 @@ test("three destination dates work from a completed old save on a phone", async 
     // still contributes its own second-choice memory.
     expect(finished.memories.length).toBeGreaterThan(before.memories.length);
     for (const memory of before.memories) expect(finished.memories).toContain(memory);
-    expect(finished.endingReached).toBe(true);
+    expect(finished.endingReached).toBe(initial.endingReached);
     await expect(page.getByTestId(`event-${place.id}`)).toHaveCount(0);
     await page.reload();
     expect(await saved(page)).toEqual(finished);

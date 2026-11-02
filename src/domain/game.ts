@@ -5,12 +5,10 @@ import { secureRomanceRoll } from "../random/romance-source";
 import { activeEncounterSchema } from "./encounter-state";
 import { validateEncounterState } from "./encounter";
 import { responseProfileSchema } from "../content/schemas";
-import { legacyDates, legacyStoryId } from "../content/legacy-milano";
-import { legacyPhase1Stage, legacyRomanceValues } from "./romance-migration";
+import { legacyDates } from "../content/legacy-milano";
 import { activeEpilogueSchema, validateEpilogueState } from "./epilogue";
 import {
   completeRecordedChapter,
-  migrateJourneyProgress,
   validateJourneyState,
 } from "./chapter";
 import {
@@ -601,16 +599,11 @@ function applyStep(
   };
 }
 
-/** Resolve old in-progress stories by their saved fingerprint; never guess a changed story. */
+/** Resume only when the current story exactly matches the saved fingerprint. */
 export function activeDateStoryId(date: DateDefinition, active: Pick<ActiveDate, "storyHash">): string {
-  const old = legacyDates.find((item) => item.id === date.id);
-  const archived = old ? [old.storyId, ...(old.legacyStoryIds ?? [])].map(legacyStoryId) : [];
-  const storyId = [date.storyId, ...(date.legacyStoryIds ?? []), ...archived].find((id) => {
-    try { return storyFingerprint(id) === active.storyHash; }
-    catch { return false; }
-  });
-  if (!storyId) throw new Error("シナリオが更新されています。以前の途中データはそのまま保管されています。");
-  return storyId;
+  if (storyFingerprint(date.storyId) !== active.storyHash)
+    throw new Error("シナリオが更新されています。以前の途中データはそのまま保管されています。");
+  return date.storyId;
 }
 
 export function startDate(state: GameState, dateId: string, nextRoll: () => number = secureRomanceRoll): GameState {
@@ -820,153 +813,20 @@ export function finishDate(
   });
 }
 
-/** Validate the old structure before migrating; never guess when a snapshot is incompatible. */
-export function migrateGameState(input: unknown): GameState {
-  const version =
-    typeof input === "object" && input !== null && "schemaVersion" in input
-      ? input.schemaVersion
-      : undefined;
-  if (version === 10) {
-    const parsed = phase10StateSchema.parse(input);
-    return { ...parsed, schemaVersion: 11, updatedDateIds: [] };
-  }
-  if (version === 9) {
-    const parsed = phase9StateSchema.parse(input);
-    return migrateGameState({
-      ...parsed,
-      schemaVersion: 10,
-      travelBudget: encounters.initialBudget,
-      inventory: {},
-      completedEncounterIds: [],
-      encounterRewards: {},
-      activeEncounter: null,
-    });
-  }
-  if (version === 8) {
-    const parsed = phase8StateSchema.parse(input);
-    return migrateGameState({
-      ...parsed,
-      schemaVersion: 9,
-      recoveryAfterRejection: false,
-      completedRecoveryCount: 0,
-      activeDate: parsed.activeDate ? {
-        ...parsed.activeDate, resolutionMode: "legacy_fixed", randomPlan: [], resolvedChoices: [], responseSnapshot: null,
-      } : null,
-    });
-  }
-  if (version === 7) {
-    const parsed = phase7StateSchema.parse(input);
-    return migrateGameState({ ...parsed, ...legacyRomanceValues(parsed, progression), schemaVersion: 8 });
-  }
-  if (version === 5 || version === 6) {
-    const parsed =
-      version === 5
-        ? phase5StateSchema.parse(input)
-        : phase6StateSchema.parse(input);
-    if (
-      parsed.completedChapters.includes(city.id) !==
-      parsed.claimedRewardIds.includes(city.firstClearReward.rewardSourceId)
-    )
-      throw new Error("以前の章報酬の記録が一致しません。");
-    if (parsed.completedCityIds.length)
-      throw new Error("旧版に都市クリアの記録はありません。");
-    return migrateGameState({
-      ...parsed,
-      schemaVersion: 7,
-      activeBattle: parsed.activeBattle
-        ? {
-            ...parsed.activeBattle,
-            reasoning:
-              "reasoning" in parsed.activeBattle
-                ? parsed.activeBattle.reasoning
-                : null,
-          }
-        : null,
-      activeEpilogue: null,
-      viewedEpilogueCityIds: [],
-      legacyTrialAvailable: true,
-    });
-  }
-  if (version !== 1 && version !== 2 && version !== 3 && version !== 4)
-    return gameStateSchema.parse(input);
-  let old: z.infer<typeof phase4StateSchema>;
-  if (version === 1) {
-    const parsed = oldStateSchema.parse(input);
-    old = {
-      ...parsed,
-      schemaVersion: 4,
-      activeDate: parsed.activeDate
-        ? { ...parsed.activeDate, pendingOutcome: null }
-        : null,
-      endingReached: false,
-      confessionStatus: "none",
-      unlockedEventIds: [],
-      activeBattle: null,
-      battleRecords: [],
-      activeTourism: null,
-      discoveredClueIds: [],
-      visitedLandmarkIds: [],
-    };
-  } else if (version === 2) {
-    old = {
-      ...phase2StateSchema.parse(input),
-      schemaVersion: 4,
-      activeBattle: null,
-      battleRecords: [],
-      activeTourism: null,
-      discoveredClueIds: [],
-      visitedLandmarkIds: [],
-    };
-  } else if (version === 3) {
-    old = {
-      ...phase3StateSchema.parse(input),
-      schemaVersion: 4,
-      activeTourism: null,
-      discoveredClueIds: [],
-      visitedLandmarkIds: [],
-    };
-  } else old = phase4StateSchema.parse(input);
-  // Do not let new completion inference repair an inconsistent legacy reward record.
-  if (
-    old.completedChapters.includes(city.id) !==
-    old.claimedRewardIds.includes(city.firstClearReward.rewardSourceId)
-  )
-    throw new Error("以前の章報酬の記録が一致しません。");
-  if (
-    old.activeDate &&
-    !dates
-      .find((date) => date.id === old.activeDate!.dateId)
-      ?.requiredCompletedChapters.every((id) =>
-        old.completedChapters.includes(id),
-      )
-  )
-    throw new Error("以前のデートの解放条件が一致しません。");
-  const legacyStage = version === 1 ? legacyPhase1Stage(old) : old.romanceStage;
-  const next = {
-    ...old,
-    romanceStage: legacyStage,
-    ...legacyRomanceValues({ ...old, romanceStage: legacyStage }, progression),
-    schemaVersion: 8,
-    activeEpilogue: null,
-    viewedEpilogueCityIds: [],
-    legacyTrialAvailable: true,
-    activeBattle: old.activeBattle
-      ? { ...old.activeBattle, reasoning: null }
-      : null,
-    completedEpisodeIds: [],
-    completedCityIds: [],
-    completedGuideIds: [],
-    pendingApRewards: [],
-    battleRewardReceipt: null,
+/** Recognize only a structurally valid historical format for a non-destructive notice. */
+export function isKnownLegacyGameState(input: unknown): boolean {
+  if (typeof input !== "object" || input === null || !("schemaVersion" in input)) return false;
+  const schemas: Record<number, z.ZodType> = {
+    1: oldStateSchema, 2: phase2StateSchema, 3: phase3StateSchema,
+    4: phase4StateSchema, 5: phase5StateSchema, 6: phase6StateSchema,
+    7: phase7StateSchema, 8: phase8StateSchema, 9: phase9StateSchema, 10: phase10StateSchema,
   };
-  const migrated = migrateGameState(next);
-  return migrateJourneyProgress(
-    version === 1 ? evaluateProgression(migrated) : migrated,
-  );
+  const version = input.schemaVersion;
+  return typeof version === "number" && !!schemas[version]?.safeParse(input).success;
 }
 
 export function validateGameState(input: unknown): GameState {
-  const state = migrateGameState(input);
+  const state = gameStateSchema.parse(input);
   if (state.updatedDateIds.some((id) => !dates.some((entry) => entry.id === id) || !state.playedDateIds.includes(id)))
     throw new Error("刷新後のデート記録が一致しません。");
   if (state.activeEncounter && (state.activeDate || state.activeBattle || state.activeTourism || state.activeEpilogue))

@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { createGame, validateGameState, type GameState } from "./game";
-import previouslyAwarded from "../../qa/old-saves/fortune-awarded.json";
-import { advanceEncounter, chooseEncounter, finishEncounter, getEncounterAvailability, startEncounter, validateEncounterState } from "./encounter";
+import { createDebugState } from "../dev/debug-state";
+import { encounters } from "../content/encounters";
+import { advanceEncounter, answerEncounterQuiz, chooseEncounter, finishEncounter, getEncounterAvailability, startEncounter, validateEncounterState } from "./encounter";
 
 function play(state: GameState, id: string, optionId: string): GameState {
   let next = startEncounter(state, id, () => 0);
@@ -52,12 +53,20 @@ describe("the Milan pick and location encounters", () => {
   });
 
   it("lets a preexisting ticket be used later even after paying for the ordinary print", () => {
-    let state = validateGameState(previouslyAwarded);
-    for (let step = 0; state.activeEncounter && step < 50; step++) {
+    let state = createDebugState({
+      scene: "encounter", id: "galleria_fortune", progress: "completed",
+      ap: 9, affection: 0, trust: 0, spark: 0, roll: "positive",
+    });
+    const answer = encounters.encounters.find((item) => item.id === "galleria_fortune")!.quiz!.question.correctOptionId;
+    for (let step = 0; state.activeEncounter && step < 100; step++) {
       const active = state.activeEncounter;
-      state = active.frame.ended && active.phase === "outcome"
-        ? finishEncounter(state, state.revision)
-        : advanceEncounter(state, state.revision);
+      state = active.phase === "quiz"
+        ? answerEncounterQuiz(state, answer, state.revision)
+        : active.frame.choices.length
+          ? chooseEncounter(state, 0, state.revision)
+          : active.frame.ended && active.phase === "outcome"
+            ? finishEncounter(state, state.revision)
+            : advanceEncounter(state, state.revision);
       state = validateGameState(JSON.parse(JSON.stringify(state)));
     }
     expect(state.activeEncounter).toBeNull();

@@ -1,10 +1,10 @@
 import { installRomanceRolls } from "./romance-rolls";
+import { loadCurrentScene } from "./current-scenarios";
 import { expect, test, type Page } from "@playwright/test";
 import sharp from "sharp";
 import characterData from "../../content/presentation/characters.json" with { type: "json" };
-import phase1 from "../fixtures/phase1-saves.json" with { type: "json" };
 import { characterCatalogSchema } from "../../src/content/character-assets";
-import { choose, expectNoOverflow, loadLegacyFreeTime, loadSnapshot, saved, setDialogueSpeed, startCafe, startNewGame } from "./helpers";
+import { choose, expectNoOverflow, loadCurrentFreeTime, saved, setDialogueSpeed, startCafe, startNewGame } from "./helpers";
 
 const neutralPath = "assets/test-character/south_europe_01/standing_01/neutral.png";
 const smilePath = "assets/test-character/south_europe_01/standing_01/smile.png";
@@ -34,17 +34,17 @@ async function installDeliveredImages(page: Page, options: { basic?: boolean; sm
 
 test.beforeEach(async ({ page }) => { await installRomanceRolls(page); });
 
-test("a basic outfit works in Milan with its regional outfit undelivered, including an old renamed save", async ({ page }) => {
+test("a basic outfit works in Milan with its regional outfit undelivered, including a renamed current save", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await installDeliveredImages(page, { basic: true });
-  await loadSnapshot(page, phase1.started);
+  await loadCurrentScene(page, "date");
   const before = await saved(page);
   const portrait = page.locator(".romance-scene .vn-character");
   await expect(portrait.locator(":scope > img")).toHaveAttribute("src", new RegExp(`${basicNeutralPath}$`));
   const placement = await portrait.getAttribute("style");
   await setDialogueSpeed(page, "0");
-  await choose(page, 1);
-  await expect.poll(async () => (await saved(page)).activeDate?.frame.emotion).toBe("shy");
+  await choose(page, 0);
+  await expect.poll(async () => (await saved(page)).activeDate?.frame.emotion).toBe("teasing");
   await expect(portrait.locator(":scope > img")).toHaveAttribute("src", new RegExp(`${basicNeutralPath}$`));
   expect(await portrait.getAttribute("style")).toBe(placement);
   const progressed = await saved(page);
@@ -56,7 +56,7 @@ test("a basic outfit works in Milan with its regional outfit undelivered, includ
 
   await page.evaluate(() => localStorage.removeItem("dreamscape.save.v1"));
   await startNewGame(page, ["航海者", "花子"]);
-  await loadLegacyFreeTime(page);
+  await loadCurrentFreeTime(page);
   await startCafe(page);
   expect((await saved(page)).heroineName).toBe("花子");
   await expect(portrait.locator(":scope > img")).toHaveAttribute("src", new RegExp(`${basicNeutralPath}$`));
@@ -88,7 +88,7 @@ test("the preview supports the registered expressions, choosing neutral when a d
 
 test("a failed basic image cannot block the in-progress date", async ({ page }) => {
   await installDeliveredImages(page, { basic: true, failNeutral: true });
-  await loadSnapshot(page, phase1.started);
+  await loadCurrentScene(page, "date");
   const before = await saved(page);
   await expect(page.locator(".romance-scene .vn-character svg")).toBeVisible();
   await setDialogueSpeed(page, "0");
@@ -157,15 +157,15 @@ test("the full-figure preview fits the delivered canvas and keeps each expressio
   expect(gameBox.width).not.toBeCloseTo(fitBox.width, 1);
 });
 
-test("a delivered neutral stays on the same outfit during an old date and a renamed date", async ({ page }) => {
+test("a delivered neutral stays on the same outfit during a current date and a renamed date", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await installDeliveredImages(page);
-  await loadSnapshot(page, phase1.started);
+  await loadCurrentScene(page, "date");
   const old = await saved(page);
   await expect(page.locator(".romance-scene .vn-character > img")).toHaveAttribute("src", new RegExp(`${neutralPath}$`));
   await setDialogueSpeed(page, "0");
-  await choose(page, 1); // This legacy branch asks for shy, which has not been delivered.
-  await expect.poll(async () => (await saved(page)).activeDate?.frame.emotion).toBe("shy");
+  await choose(page, 0);
+  await expect.poll(async () => (await saved(page)).activeDate?.frame.emotion).toBe("teasing");
   await expect(page.locator(".romance-scene .vn-character > img")).toHaveAttribute("src", new RegExp(`${neutralPath}$`));
   const progressed = await saved(page);
   expect(progressed.ap).toBe(old.ap);
@@ -177,7 +177,7 @@ test("a delivered neutral stays on the same outfit during an old date and a rena
   // An independently named player and heroine still reference the stable heroine ID.
   await page.evaluate(() => localStorage.removeItem("dreamscape.save.v1"));
   await startNewGame(page, ["航海者", "花子"]);
-  await loadLegacyFreeTime(page);
+  await loadCurrentFreeTime(page);
   await startCafe(page);
   expect((await saved(page)).heroineName).toBe("花子");
   await expect(page.locator(".romance-scene .vn-character > img")).toHaveAttribute("src", new RegExp(`${neutralPath}$`));
@@ -210,7 +210,7 @@ test("the development preview shows added expressions and same-pose fallback wit
 test("a broken registered image cannot block a saved date", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await installDeliveredImages(page, { failNeutral: true });
-  await loadSnapshot(page, phase1.started);
+  await loadCurrentScene(page, "date");
   const before = await saved(page);
   await expect(page.locator(".romance-scene .vn-character svg")).toBeVisible();
   await setDialogueSpeed(page, "0");
@@ -230,7 +230,7 @@ test("a broken expression falls back to its own costume neutral in the preview",
 
 test("a full-canvas 2:3 portrait has room for its head above the date dialogue on phones", async ({ page }, testInfo) => {
   await installDeliveredImages(page);
-  await loadSnapshot(page, phase1.started);
+  await loadCurrentScene(page, "date");
   for (const size of [{ width: 320, height: 568 }, { width: 360, height: 640 }]) {
     await page.setViewportSize(size);
     const scene = page.getByTestId("romance-scene");

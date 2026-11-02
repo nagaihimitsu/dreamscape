@@ -80,7 +80,7 @@ import {
   leaveBattle,
 } from "../domain/battle";
 
-const storage = {
+const browserStorage = {
   getItem: (key: string) => window.localStorage.getItem(key),
   setItem: (key: string, value: string) =>
     window.localStorage.setItem(key, value),
@@ -88,13 +88,22 @@ const storage = {
 };
 type Confirmation = { kind: "date"; id: string };
 
-export default function App() {
+export default function App({
+  storage = browserStorage,
+  nextRomanceRoll = secureRomanceRoll,
+  debug = false,
+}: {
+  storage?: typeof browserStorage;
+  nextRomanceRoll?: () => number;
+  debug?: boolean;
+} = {}) {
+  const isDebug = import.meta.env.DEV && debug;
   const [loaded] = useState(() => loadGame(storage));
   const [game, setGame] = useState<GameState | null>(
     loaded.status === "loaded" ? loaded.state : null,
   );
-  const learning = useLearning(game);
-  const displaySettings = usePresentationSettings();
+  const learning = useLearning(game, storage, !isDebug);
+  const displaySettings = usePresentationSettings(storage);
   const [englishOpen, setEnglishOpen] = useState(
     () => !!learning.data.openQuestion,
   );
@@ -154,8 +163,8 @@ export default function App() {
   function begin(event: FormEvent) {
     event.preventDefault();
     const next = createGame(player.trim(), heroine.trim());
-    const saved = invalid
-      ? backupAndCreate(storage, next)
+    const saved = invalid && loaded.status === "invalid"
+      ? backupAndCreate(storage, next, loaded.raw)
       : saveGame(storage, next);
     if (!saved.ok) {
       setNotice(saved.message);
@@ -403,15 +412,18 @@ export default function App() {
               </p>
               {invalid && (
                 <div className="notice warning" role="alert">
-                  <strong>保存データを読み込めませんでした</strong>
+                  <strong>{loaded.status === "invalid" && loaded.kind === "newer"
+                    ? "新しいバージョンの保存データです"
+                    : "保存データを読み込めませんでした"}</strong>
                   <p>{invalid}</p>
-                  <p>
-                    元のデータは残っています。下の操作でバックアップを保存してから、新しい旅を始められます。
-                  </p>
+                  {loaded.status === "invalid" && loaded.raw !== null && <p>
+                    元のデータは残っています。バックアップを保存してから新しく始めるか、保存データの消去を選べます。
+                  </p>}
                   <button
                     className="secondary"
                     type="button"
                     onClick={requestDelete}
+                    disabled={loaded.status === "invalid" && loaded.raw === null}
                   >
                     保存データを消去する
                   </button>
@@ -421,7 +433,7 @@ export default function App() {
                 {nameForm}
                 <button
                   className="primary"
-                  disabled={!player.trim() || !heroine.trim()}
+                  disabled={!player.trim() || !heroine.trim() || (loaded.status === "invalid" && loaded.raw === null)}
                 >
                   {invalid
                     ? "元のデータを退避して新しく始める"
@@ -525,7 +537,7 @@ export default function App() {
               commit((state) => replayTourismGuide(state, game.revision))
             }
             onEncounter={() =>
-              commit((state) => startTourismEncounter(state, "galleria_fortune", game.revision, secureRomanceRoll))
+              commit((state) => startTourismEncounter(state, "galleria_fortune", game.revision, nextRomanceRoll))
             }
             onDiscover={(id) =>
               game.discoveredClueIds.includes(id) ||
@@ -667,7 +679,7 @@ export default function App() {
             selectedLandmarkId={selectedLandmarkId}
             onSelectLandmark={setSelectedLandmarkId}
             placeFocusRequest={placeFocusRequest}
-            onEncounter={(id) => { commit((state) => startEncounter(state, id, secureRomanceRoll)); }}
+            onEncounter={(id) => { commit((state) => startEncounter(state, id, nextRomanceRoll)); }}
             onEnglish={() => openEnglish()}
             onClaimRewards={() => commit((state) => claimPendingRewards(state, game.revision))}
             onStartEpisode={(id) => commit((state) => startEpisode(state, id))}
@@ -774,7 +786,7 @@ export default function App() {
             onClick={() => {
               const selected = confirmation;
               setConfirmation(null);
-              commit((state) => startDate(state, selected.id, secureRomanceRoll));
+              commit((state) => startDate(state, selected.id, nextRomanceRoll));
             }}
           >
             {!selectedUpdatedDate && selectedDate?.apCost ? "APを使って始める" : "この時間を過ごす"}
@@ -789,13 +801,13 @@ export default function App() {
           labelledBy="delete-title"
           onClose={() => setDeleteSnapshot(null)}
         >
-          <h2 id="delete-title">保存データを消去しますか？</h2>
-          <p>
+          <h2 id="delete-title">{isDebug ? "Debug用の一時データを消去しますか？" : "保存データを消去しますか？"}</h2>
+          {isDebug ? <p>Debug用の進行と英語ノートを消去して設定画面へ戻ります。通常のセーブ・英語ノート・表示設定は消去しません。</p> : <><p>
             このブラウザに保存された名前、旅の進行、AP、恋愛・バトルの記録、英語ノートと対訳設定を消去します。元には戻せません。
           </p>
           <p className="fine-print">
             以前に退避したバックアップと、ほかのサイトのデータは消去しません。ほかの端末やブラウザにも影響しません。
-          </p>
+          </p></>}
           <button
             className="secondary"
             autoFocus
@@ -815,7 +827,7 @@ export default function App() {
               window.location.reload();
             }}
           >
-            保存データを消去する
+            {isDebug ? "Debug用の一時データを消去する" : "保存データを消去する"}
           </button>
         </Modal>
       )}
@@ -882,7 +894,7 @@ export default function App() {
             </form>
           )}
           <button className="text-button delete-entry" onClick={requestDelete}>
-            保存データの消去
+            {isDebug ? "Debug用の一時データの消去" : "保存データの消去"}
           </button>
           <button
             className="secondary"

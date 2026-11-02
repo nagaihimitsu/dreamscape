@@ -12,11 +12,11 @@ import {
   toggleBattleHint,
 } from "./battle";
 import { createGame, validateGameState, type GameState } from "./game";
-import { canAccessFreeTime } from "./chapter";
-import phase5 from "../../tests/fixtures/phase5-saves.json";
+import { canAccessFreeTime, startEpisode } from "./chapter";
+import { skipTourismGuide, startTourismBattle } from "./tourism";
 
 const special = (kind: "contradiction" | "connection") =>
-  battles.find((battle) => battle.reasoning?.kind === kind)!;
+  battles.find((battle) => battle.id === (kind === "contradiction" ? "milano_la_scala_b01" : "milano_brera_c01"))!;
 const roundTrip = (state: GameState) => {
   const restored = validateGameState(JSON.parse(JSON.stringify(state)));
   expect(restored).toEqual(state);
@@ -144,7 +144,7 @@ describe("small proof steps inside three-round battles", () => {
     },
   );
 
-  it("B can press, reject every unrelated clue, then present the door evidence without a penalty", () => {
+  it("B can press, reject unrelated clues, then present the correct evidence without a penalty", () => {
     const battle = special("contradiction");
     let state = reachProof(battle);
     const score = state.activeBattle!.score;
@@ -274,13 +274,19 @@ describe("small proof steps inside three-round battles", () => {
     },
   );
 
-  it("keeps an existing ending and pending AP untouched while either special battle is played", () => {
-    for (const snapshot of [phase5.ending, phase5.pendingResult])
-      for (const kind of ["contradiction", "connection"] as const) {
-        const initial = validateGameState(snapshot);
-        const battle = special(kind);
-        const state = finish(startBattle(initial, battle.id), battle, 3);
-        expect(unchangedProgress(state)).toEqual(unchangedProgress(initial));
-      }
+  it("keeps current relationship values and pending AP untouched during either special battle", () => {
+    let initial: GameState = { ...createGame(), ap: 12, affection: 2, trust: -1, spark: 3 };
+    initial = startEpisode(initial, "milano_duomo_episode");
+    initial = skipTourismGuide(initial, initial.revision);
+    initial = startTourismBattle(initial, initial.revision);
+    initial = finish(initial, battles.find((battle) => battle.id === "milano_duomo_01")!, 3);
+    initial = leaveBattle(initial, initial.revision);
+    expect(initial.pendingApRewards.length).toBeGreaterThan(0);
+    roundTrip(initial);
+    for (const kind of ["contradiction", "connection"] as const) {
+      const battle = special(kind);
+      const state = finish(startBattle(initial, battle.id), battle, 3);
+      expect(unchangedProgress(state)).toEqual(unchangedProgress(initial));
+    }
   });
 });

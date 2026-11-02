@@ -1,12 +1,10 @@
 import { expect, test } from "@playwright/test";
-import phase7 from "../fixtures/phase7-free-time.json" with { type: "json" };
-import { expectNoOverflow, loadSnapshot, openRevisits, saved, setDialogueSpeed } from "./helpers";
+import { loadCurrentScene } from "./current-scenarios";
+import { expectNoOverflow, saved, setDialogueSpeed } from "./helpers";
 
 test("battle background credits remain accessible without advancing the story", async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase7.cityClearViewed);
-  await openRevisits(page);
-  await page.getByTestId("revisit-battle-milano_city_boss_01").click();
+  await loadCurrentScene(page, "finaleDialogue");
   await setDialogueSpeed(page, "0");
   const image = page.locator(".battle-backdrop .canal-scene img");
   await expect(image).toHaveAttribute("src", /darsena\.webp$/);

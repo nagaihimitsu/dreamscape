@@ -1,9 +1,8 @@
 import { expect, test } from "@playwright/test";
-import galleria from "../fixtures/galleria-stage2-pool.json" with { type: "json" };
 import catalog from "../../content/encounters/catalog.json" with { type: "json" };
 import compiledStories from "../../src/content/generated/stories.json" with { type: "json" };
 import { Compiler } from "inkjs/compiler/Compiler";
-import { expectNoOverflow, loadSnapshot, openRevisits, saved, setDialogueSpeed } from "./helpers";
+import { expectNoOverflow, loadCurrentGalleriaFreeTime, openRevisits, saved, setDialogueSpeed, startNewGame } from "./helpers";
 
 test("inline Ink reactions display for both people during a newly registered encounter", async ({ page }, testInfo) => {
   test.setTimeout(90_000);
@@ -39,7 +38,8 @@ VAR heroine_name = ""
     route.fulfill({ status: 200, contentType: "text/javascript", body: `export default ${JSON.stringify({ ...compiledStories, [storyId]: new Compiler(ink).Compile().ToJson() })};` }));
 
   await page.setViewportSize({ width: 360, height: 780 });
-  await loadSnapshot(page, galleria);
+  await startNewGame(page);
+  await loadCurrentGalleriaFreeTime(page);
   await openRevisits(page);
   await page.getByTestId("revisit-place-galleria_vittorio_emanuele_ii").click();
   await page.getByText("追加した交流", { exact: true }).locator("..").locator("..").getByRole("button").click();

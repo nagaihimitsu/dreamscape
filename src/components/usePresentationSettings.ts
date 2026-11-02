@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import type { StorageLike } from "../persistence";
 
 const key = "dreamscape.presentation.v1";
 interface Preferences {
@@ -38,10 +39,10 @@ function read(raw: string | null): Preferences | null {
 }
 
 /** Presentation preferences are independent of game and learning saves. */
-export function usePresentationSettings() {
+export function usePresentationSettings(storage: StorageLike = window.localStorage) {
   const [initial] = useState(() => {
     try {
-      const raw = window.localStorage.getItem(key);
+      const raw = storage.getItem(key);
       return { raw, value: read(raw), error: "" };
     } catch {
       return {
@@ -64,7 +65,7 @@ export function usePresentationSettings() {
   ) {
     if (error) return;
     try {
-      if (window.localStorage.getItem(key) !== raw.current) {
+      if (storage.getItem(key) !== raw.current) {
         setError(
           "別の画面で表示設定が変更されました。再読み込みしてください。",
         );
@@ -72,7 +73,7 @@ export function usePresentationSettings() {
       }
       const next = { ...value, ...change };
       const encoded = JSON.stringify(next);
-      window.localStorage.setItem(key, encoded);
+      storage.setItem(key, encoded);
       raw.current = encoded;
       setValue(next);
     } catch {

@@ -22,7 +22,7 @@ describe("encounter build integration", () => {
   }, 120000);
 
   it("rejects an unknown item referenced in encounter Ink", async () => {
-    const file = path.join(fixture, "content/stories/encounters/galleria_outing.ink");
+    const file = path.join(fixture, "content/stories/encounters/galleria_outing_rewrite.ink");
     const source = await readFile(file, "utf8");
     expect(source).toContain('has_item_status("galleria_souvenir", "gifted")');
     await writeFile(file, source.replace('has_item_status("galleria_souvenir", "gifted")', 'has_item_status("missing_item", "gifted")'));
@@ -30,10 +30,10 @@ describe("encounter build integration", () => {
   }, 120000);
 
   it("rejects item queries in existing stories which do not receive inventory", async () => {
-    const file = path.join(fixture, "content/stories/milano/cafe_01.ink");
+    const file = path.join(fixture, "content/stories/milano/sound_cafe_01.ink");
     const source = await readFile(file, "utf8");
     await writeFile(file, `${source}\n{has_item_status("galleria_souvenir", "gifted"): 持っています}\n`);
-    await expect(buildContent(fixture, false)).rejects.toThrow("Item references are only supported in encounters: milano/cafe_01");
+    await expect(buildContent(fixture, false)).rejects.toThrow("Item references are only supported in encounters: milano/sound_cafe_01");
   }, 120000);
 
   it("rejects an Ink item query belonging to another city", async () => {
@@ -45,10 +45,10 @@ describe("encounter build integration", () => {
     const journey = JSON.parse(await readFile(journeyFile, "utf8"));
     journey.episodes.push({ ...journey.episodes[0], id: "fixture_episode", cityId: "fixture_city" });
     await writeFile(journeyFile, JSON.stringify(journey));
-    const storyFile = path.join(fixture, "content/stories/encounters/galleria_outing.ink");
+    const storyFile = path.join(fixture, "content/stories/encounters/galleria_outing_rewrite.ink");
     const source = await readFile(storyFile, "utf8");
     expect(source).toContain('has_item_status("galleria_souvenir", "gifted")');
     await writeFile(storyFile, source.replace('has_item_status("galleria_souvenir", "gifted")', 'has_item_status("foreign_item", "gifted")'));
-    await expect(buildContent(fixture, false)).rejects.toThrow("Encounter story item city mismatch: encounters/galleria_outing/foreign_item");
+    await expect(buildContent(fixture, false)).rejects.toThrow("Encounter story item city mismatch: encounters/galleria_outing_rewrite/foreign_item");
   }, 120000);
 });

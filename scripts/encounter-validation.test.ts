@@ -1,8 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import productionCatalogData from "../content/encounters/catalog.json";
-import catalogData from "../content/legacy/encounters_before_galleria_integration.json";
+import catalogData from "../content/encounters/catalog.json";
 import journeyData from "../content/progression/journey.json";
 import tourismData from "../content/tourism/catalog.json";
 import quizData from "../content/quizzes/last_supper_B1.json";
@@ -18,8 +17,7 @@ import { compileInk, validateQuizEntries } from "./content-pipeline";
 import { validateEncounterContent } from "./encounter-validation";
 
 const catalog = encounterCatalogSchema.parse(catalogData);
-const currentCatalog = encounterCatalogSchema.parse(productionCatalogData);
-const paths = [...catalog.encounters, ...currentCatalog.encounters].flatMap((event) => [event.storyId, ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : [])]);
+const paths = catalog.encounters.flatMap((event) => [event.storyId, ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : [])]);
 const sources = Object.fromEntries(paths.map((id) => [id, readFileSync(path.resolve(`content/stories/${id}.ink`), "utf8")]));
 const stories = Object.fromEntries(Object.entries(sources).map(([id, source]) => [id, compileInk(source, `${id}.ink`)]));
 
@@ -42,7 +40,6 @@ function input() {
 describe("encounter content validation", () => {
   it("validates every actual dialogue branch, outcome and inventory context", () => {
     expect(() => validateEncounterContent(input())).not.toThrow();
-    expect(() => validateEncounterContent({ ...input(), catalog: currentCatalog })).not.toThrow();
   });
 
   it("rejects duplicate stable event, item and choice IDs", () => {
@@ -110,18 +107,15 @@ describe("encounter content validation", () => {
 
   it("requires each item to have a gift or use opportunity in its city", () => {
     const data = input();
-    const gift = data.catalog.encounters.find((event) => event.id === "galleria_gift")!;
-    delete gift.options[0].giftItemId;
-    delete gift.options[1].giftItemId;
-    expect(() => validateEncounterContent(data)).toThrow("Encounter item has no use in its city: galleria_souvenir/milano");
-    gift.options[0].giftItemId = "galleria_souvenir";
-    expect(() => validateEncounterContent(data)).not.toThrow();
-
-    const outing = data.catalog.encounters.find((event) => event.id === "galleria_outing")!;
-    delete outing.options[0].consumeItemId;
-    expect(() => validateEncounterContent(data)).toThrow("Encounter item has no use in its city: galleria_ticket/milano");
-    outing.options[0].consumeItemId = "galleria_ticket";
-    expect(() => validateEncounterContent(data)).not.toThrow();
+    for (const id of ["galleria_souvenir", "galleria_ticket"]) {
+      const uses = data.catalog.encounters.flatMap((event) => event.options.flatMap((option) =>
+        (["giftItemId", "consumeItemId"] as const).filter((field) => option[field] === id).map((field) => ({ option, field }))));
+      expect(uses.length).toBeGreaterThan(0);
+      for (const { option, field } of uses) delete option[field];
+      expect(() => validateEncounterContent(data)).toThrow(`Encounter item has no use in its city: ${id}/milano`);
+      for (const { option, field } of uses) option[field] = id;
+      expect(() => validateEncounterContent(data)).not.toThrow();
+    }
   });
 
   it("rejects wrong city, place, story, AP reward or response profile", () => {
@@ -159,7 +153,7 @@ describe("encounter content validation", () => {
   });
 
   it("allows a repeatable conversation sharing an AP reward, but rejects item, money and choice effects", () => {
-    const data = { ...input(), catalog: encounterCatalogSchema.parse(structuredClone(productionCatalogData)) };
+    const data = input();
     const event = data.catalog.encounters.find((item) => item.id === "galleria_fortune")!;
     expect(event.repeatable).toBe(true);
     expect(event.quiz?.chancePercent).toBe(25);

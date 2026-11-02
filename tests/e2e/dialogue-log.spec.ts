@@ -1,11 +1,11 @@
 import { expect, test } from "@playwright/test";
-import { saved, startLegacyJourney } from "./helpers";
+import { saved, startCurrentSupperJourney } from "./helpers";
 import { openObservationList, openTourismFromEntry } from "./tourism-helpers";
 
 test.use({ reducedMotion: "reduce" });
 
 test("guide log contains only displayed lines, leaves the save untouched, and resets for a replay", async ({ page }) => {
-  await startLegacyJourney(page);
+  await startCurrentSupperJourney(page);
   await openTourismFromEntry(page);
   const guide = page.getByTestId("tourism-guide");
   const first = (await saved(page)).activeTourism!.frame!.text;

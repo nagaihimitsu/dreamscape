@@ -1,8 +1,6 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
-import phase1 from "../fixtures/phase1-saves.json" with { type: "json" };
-import phase2 from "../fixtures/phase2-saves.json" with { type: "json" };
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
-import { loadSnapshot, saved, setDialogueSpeed } from "./helpers";
+import { saved, setDialogueSpeed } from "./helpers";
+import { loadCurrentScene } from "./current-scenarios";
 
 // Capture the first painted character, not merely the dialogue window: a
 // bottom-anchored window can shrink while its contents all move on screen.
@@ -43,7 +41,7 @@ for (const size of [{ width: 320, height: 640 }, { width: 360, height: 640 }, { 
   test(`revealing a date line does not move its first character at ${size.width}px`, async ({ page }, testInfo) => {
     await page.setViewportSize(size);
     await freezeClock(page);
-    await loadSnapshot(page, phase2.activeDate);
+    await loadCurrentScene(page, "date");
     await page.evaluate(() => document.fonts.ready);
     const state = await saved(page);
     const text = page.locator(".romance-scene .dialogue-text");
@@ -71,14 +69,14 @@ for (const size of [{ width: 320, height: 640 }, { width: 360, height: 640 }, { 
 }
 
 for (const [name, snapshot, selector] of [
-  ["date", phase1.started, ".romance-scene .dialogue-text"],
-  ["guide", phase6.guide, ".tourism-guide .dialogue-text"],
-  ["battle", phase6.battleDialogue, ".battle-dialogue .dialogue-text"],
+  ["date", "date", ".romance-scene .dialogue-text"],
+  ["guide", "guide", ".tourism-guide .dialogue-text"],
+  ["battle", "battleDialogue", ".battle-dialogue .dialogue-text"],
 ] as const) {
   test(`${name} dialogue stays in place as typing finishes naturally`, async ({ page }) => {
     await page.setViewportSize({ width: 360, height: 640 });
     await freezeClock(page);
-    await loadSnapshot(page, snapshot);
+    await loadCurrentScene(page, snapshot);
     await page.evaluate(() => document.fonts.ready);
     const text = page.locator(selector);
     await expect(text).toHaveAttribute("data-ready", "false");
@@ -93,7 +91,7 @@ for (const [name, snapshot, selector] of [
 test("opening the dialogue log does not reveal, advance, or move a line", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await freezeClock(page);
-  await loadSnapshot(page, phase6.guide);
+  await loadCurrentScene(page, "guide");
   await page.evaluate(() => document.fonts.ready);
   await page.clock.runFor(100);
   const text = page.locator(".tourism-guide .dialogue-text");
@@ -115,7 +113,7 @@ test("opening the dialogue log does not reveal, advance, or move a line", async 
 test("enlarged multiline date text stays in place and the next action is reachable", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 640 });
   await freezeClock(page);
-  await loadSnapshot(page, phase2.activeDate);
+  await loadCurrentScene(page, "date");
   await page.evaluate(() => document.fonts.ready);
   await page.addStyleTag({ content: ".romance-scene .dialogue-text { font-size: 32px !important; }" });
   const text = page.locator(".romance-scene .dialogue-text");
@@ -135,7 +133,7 @@ test("enlarged multiline date text stays in place and the next action is reachab
 test("keyboard reveal keeps focus on the line and only a later Enter advances", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await freezeClock(page);
-  await loadSnapshot(page, phase1.started);
+  await loadCurrentScene(page, "date");
   const before = await saved(page);
   const reveal = page.getByRole("button", { name: "全文を表示", exact: true });
   const text = page.locator(".romance-scene .dialogue-text");
@@ -152,7 +150,7 @@ test("keyboard reveal keeps focus on the line and only a later Enter advances", 
 test("natural completion returns focus from the reveal control without advancing", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await freezeClock(page);
-  await loadSnapshot(page, phase1.started);
+  await loadCurrentScene(page, "date");
   const before = await saved(page);
   const reveal = page.getByRole("button", { name: "全文を表示", exact: true });
   const text = page.locator(".romance-scene .dialogue-text");
@@ -166,7 +164,7 @@ test("natural completion returns focus from the reveal control without advancing
 
 test("closing the log restores an offscreen trigger without moving the battle reading position", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase6.battleDialogue);
+  await loadCurrentScene(page, "battleDialogue");
   await setDialogueSpeed(page, "0");
   await page.addStyleTag({ content: ".battle-paper .dialogue-text { font-size: 44px !important; line-height: 1.8 !important; }" });
   const reading = page.locator(".battle-paper");

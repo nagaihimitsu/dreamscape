@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import { battles, battleQuizzes, landmarks, tourismClues } from "../content";
 import { createGame, validateGameState, type GameState } from "./game";
 import { advanceBattle, answerBattle, getReasoningContext, pressBattleClaim, selectReasoningClue, startBattle, submitBattleEvidence } from "./battle";
-import phase6 from "../../tests/fixtures/phase6-saves.json";
 
 const ids = ["milano_la_scala_b01", "milano_brera_c01"] as const;
 const reload = (s: GameState) => validateGameState(JSON.parse(JSON.stringify(s)));
@@ -71,10 +70,13 @@ describe("new Milan reasoning cases", () => {
     expect(state.activeBattle!.score).toBe(before);
     expect(state.activeBattle!.answers.at(-1)!.correct).toBe(false);
   });
-  it.each(["B_selected", "C_selected"] as const)("still restores old %s evidence and its old case", (id) => {
-    const state = validateGameState(phase6[id]);
-    expect(state.activeBattle!.battleId).toBe(`milano_last_supper_${id[0].toLowerCase()}01`);
-    expect(state.activeBattle!.reasoning!.selectedClueIds).toEqual(phase6[id].activeBattle.reasoning.selectedClueIds);
-    expect(reload(state).activeBattle).toEqual(state.activeBattle);
+  it.each(ids)("restores current %s evidence and its case", (id) => {
+    let state = proof(id);
+    const clue = battles.find((item) => item.id === id)!.reasoning!.correctClueIds[0];
+    state = selectReasoningClue(state, clue, state.revision);
+    expect(state.activeBattle!.reasoning!.selectedClueIds).toEqual([clue]);
+    const restored = reload(state);
+    expect(restored.activeBattle).toEqual(state.activeBattle);
+    expect(getReasoningContext(restored)).toEqual(getReasoningContext(state));
   });
 });

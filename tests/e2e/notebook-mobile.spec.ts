@@ -1,6 +1,6 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
-import { loadSnapshot, saved } from "./helpers";
+import { loadCurrentScene } from "./current-scenarios";
+import { saved } from "./helpers";
 
 test.use({ reducedMotion: "reduce" });
 
@@ -32,7 +32,7 @@ async function expectFullyVisible(page: Page, target: Locator) {
 for (const height of [640, 780]) {
   test(`normal battle: the notebook entry and discovered clue fit at 360 × ${height}`, async ({ page }) => {
     await page.setViewportSize({ width: 360, height });
-    await loadSnapshot(page, phase6.battleQuestion);
+    await loadCurrentScene(page, "supperQuestion");
     const button = page.getByRole("button", { name: "手がかり帳", exact: true });
     await expectFullyVisible(page, button);
     const before = await saved(page);
@@ -53,7 +53,7 @@ for (const height of [640, 780]) {
 
 test("observation keeps the notebook reachable and preserves its place", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase6.discovered);
+  await loadCurrentScene(page, "observation");
   const scrollY = await page.evaluate(() => window.scrollY);
   const open = page.getByRole("button", { name: "手がかり帳", exact: true });
   await expectFullyVisible(page, open);
@@ -66,12 +66,12 @@ test("observation keeps the notebook reachable and preserves its place", async (
 });
 
 for (const scenario of [
-  { name: "B", snapshot: phase6.B_reasoning, first: "last_supper_perspective", selected: "last_supper_doorway", count: 1 },
-  { name: "C", snapshot: phase6.C_selected, first: "last_supper_apostle_groups", selected: "last_supper_perspective", count: 2 },
+  { name: "B", snapshot: "specialBReasoning", selected: "scala_mobile", count: 1 },
+  { name: "C", snapshot: "specialCSelected", selected: "brera_show", count: 2 },
 ] as const) {
   test(`${scenario.name}: compare and select case evidence without scrolling, then restore it`, async ({ page }) => {
     await page.setViewportSize({ width: 360, height: 640 });
-    await loadSnapshot(page, scenario.snapshot);
+    await loadCurrentScene(page, scenario.snapshot);
     const open = page.getByTestId("reasoning-notebook");
     await expectFullyVisible(page, open);
     const before = await saved(page);
@@ -112,12 +112,12 @@ for (const scenario of [
 
 test("enlarged clue descriptions remain readable without moving the game page", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase6.B_reasoning);
+  await loadCurrentScene(page, "specialBReasoning");
   await page.getByTestId("reasoning-notebook").tap();
-  await page.getByTestId("clue-picker").selectOption("last_supper_doorway");
+  await page.getByTestId("clue-picker").selectOption("scala_mobile");
   await page.addStyleTag({ content: ".cluebook-body .clue-description { font-size: 32px !important; line-height: 1.8 !important; }" });
   const content = page.getByTestId("cluebook");
-  const description = page.getByTestId("notebook-last_supper_doorway").locator(".clue-description");
+  const description = page.getByTestId("notebook-scala_mobile").locator(".clue-description");
   await expect.poll(() => content.evaluate((node) => node.scrollHeight > node.clientHeight)).toBe(true);
   const before = await saved(page);
   const scrollY = await page.evaluate(() => window.scrollY);
@@ -144,13 +144,13 @@ test("enlarged clue descriptions remain readable without moving the game page", 
 
 test("320px: case image, description and evidence action fit without scrolling", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 640 });
-  await loadSnapshot(page, phase6.B_reasoning);
+  await loadCurrentScene(page, "specialBReasoning");
   await page.getByTestId("reasoning-notebook").tap();
-  await page.getByTestId("clue-picker").selectOption("last_supper_doorway");
-  const clue = page.getByTestId("notebook-last_supper_doorway");
-  await expectFullyVisible(page, clue.getByTestId("clue-image-last_supper_doorway"));
+  await page.getByTestId("clue-picker").selectOption("scala_box");
+  const clue = page.getByTestId("notebook-scala_box");
+  await expectFullyVisible(page, clue.getByTestId("clue-image-scala_box"));
   await expectFullyVisible(page, clue.locator(".clue-description"));
-  await expectFullyVisible(page, page.getByTestId("select-evidence-last_supper_doorway"));
+  await expectFullyVisible(page, page.getByTestId("select-evidence-scala_box"));
   const size = await page.getByTestId("cluebook").evaluate((node) => ({ content: node.scrollHeight, viewport: node.clientHeight }));
   expect(size.content).toBeLessThanOrEqual(size.viewport + 1);
 });

@@ -1,17 +1,36 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { completedDateCount, createGame, validateGameState, type GameState } from "./game";
 import { encounters } from "../content/encounters";
-import { responseProfiles } from "../content";
+import { battles, battleQuizzes, responseProfiles } from "../content";
 import { loadGame, saveGame, type StorageLike } from "../persistence";
-import galleriaFixture from "../../tests/fixtures/galleria-stage2-pool.json";
-import previousEncounterData from "../../content/legacy/encounters_before_story_refactor.json";
-import publishedEncounterData from "../../content/legacy/encounters_before_galleria_integration.json";
-import { encounterCatalogSchema } from "../content/encounter-schemas";
-import { storyFingerprint } from "../story/runtime";
 import { startEncounter, startTourismEncounter, chooseEncounter, advanceEncounter, answerEncounterQuiz, finishEncounter, getEncounterAvailability, getEncounterOptionAvailability, validateEncounterState } from "./encounter";
-import { openTourism } from "./tourism";
+import { openTourism, startTourismBattle } from "./tourism";
+import { startEpisode } from "./chapter";
+import { advanceBattle, answerBattle, leaveBattle } from "./battle";
 
-const ready = (): GameState => ({ ...createGame(), completedEpisodeIds: ["milano_duomo_episode"] });
+const ready = (): GameState => galleriaReady();
+let completedGalleria: GameState | undefined;
+/** Reach Galleria using the current journey rather than a historical save. */
+function galleriaReady(): GameState {
+  if (!completedGalleria) {
+    let state = createGame();
+    for (const id of ["milano_duomo_episode", "milano_galleria_episode"]) {
+      state = startEpisode(state, id);
+      state = startTourismBattle(state, state.revision);
+      for (let step = 0; state.activeBattle?.phase !== "result" && step < 150; step++) {
+        const active = state.activeBattle!;
+        const battle = battles.find((entry) => entry.id === active.battleId)!;
+        state = active.phase === "question"
+          ? answerBattle(state, battleQuizzes[battle.quizId].questions[active.roundIndex].correctOptionId, state.revision)
+          : advanceBattle(state, state.revision);
+      }
+      expect(state.activeBattle?.phase).toBe("result");
+      state = leaveBattle(state, state.revision);
+    }
+    completedGalleria = validateGameState(state);
+  }
+  return structuredClone(completedGalleria);
+}
 const restored = (s: GameState): GameState => {
   const copy = JSON.parse(JSON.stringify(s)) as GameState;
   validateEncounterState(copy);
@@ -66,39 +85,31 @@ function fortune(initial: GameState, answer: "A" | "B", roll: number): GameState
 }
 
 describe("travel encounters", () => {
-  // Exercise the formerly published rules as a compatibility fixture; the
-  // live catalog intentionally no longer offers these events in free time.
+  // Exercise dormant payment/gift rules without offering them in live play.
   const currentEntries = [...encounters.encounters];
   const useCurrentCatalog = () => { encounters.encounters.splice(0, encounters.encounters.length, ...currentEntries); };
   beforeEach(() => {
-    encounters.encounters.splice(0, encounters.encounters.length, ...encounterCatalogSchema.parse(publishedEncounterData).encounters);
+    // Reuse the existing dormant payment/gift examples as domain fixtures,
+    // but exercise the current Fortune scene and its saved lottery.
+    const examples = structuredClone(currentEntries);
+    for (const entry of examples) {
+      if (entry.availability === "dormant") delete entry.availability;
+    }
+    encounters.encounters.splice(0, encounters.encounters.length, ...examples);
   });
   afterEach(useCurrentCatalog);
 
-  it("finishes each formerly published encounter after its catalog becomes dormant", () => {
+  it("does not start dormant encounters and rejects a changed active definition", () => {
     const cafe = untilChoice(startEncounter(ready(), "galleria_cafe", () => 0));
-    const souvenir = finish(choose(cafe, 2));
-    const gift = untilChoice(startEncounter(souvenir, "galleria_gift", () => 0));
-    const winner = fortune(ready(), "B", 0);
-    const outing = untilChoice(startEncounter(winner, "galleria_outing", () => 0));
-    let oldQuiz = choose(startEncounter(ready(), "galleria_fortune", () => 0), 0);
-    oldQuiz = untilPhase(oldQuiz, "quiz");
-
     useCurrentCatalog();
     expect(getEncounterAvailability(ready(), "galleria_cafe").available).toBe(false);
     expect(getEncounterAvailability(ready(), "galleria_gift").available).toBe(false);
     expect(getEncounterAvailability(ready(), "galleria_outing").available).toBe(false);
-    expect(finish(choose(restored(cafe), 0)).inventory.galleria_souvenir).toBe("held");
-    expect(finish(choose(restored(gift), 0)).inventory.galleria_souvenir).toBe("gifted");
-    expect(finish(choose(restored(outing), 0)).inventory.galleria_ticket).toBe("used");
-    const answer = answerEncounterQuiz(restored(oldQuiz), "B", oldQuiz.revision);
-    expect(answer.encounterRewards.galleria_fortune.won).toBe(true);
-    expect(finish(untilPhase(restored(answer), "outcome")).inventory.galleria_ticket).toBe("held");
-    expect(restored(winner).encounterRewards.galleria_fortune.won).toBe(true);
+    expect(() => restored(cafe)).toThrow("道中交流の保存状態が一致しません");
   });
 
   it("allows the revised visit after a previous completion or draw without changing rewards", () => {
-    const original = validateGameState(galleriaFixture);
+    const original = galleriaReady();
     const oldSaves = [fortune(original, "A", 0), fortune(original, "B", 0), fortune(original, "B", 9999)];
     useCurrentCatalog();
     for (const old of oldSaves) {
@@ -120,16 +131,10 @@ describe("travel encounters", () => {
       expect(state.completedEncounterIds.filter((id) => id === "galleria_fortune")).toHaveLength(1);
     }
   });
-  it("resumes a previously published encounter whose catalog included English text", () => {
-    const event = encounterCatalogSchema.parse(previousEncounterData).encounters.find((item) => item.id === "galleria_cafe")!;
-    const fingerprintSource = JSON.stringify(event) + storyFingerprint(event.storyId);
-    let hash = 2166136261;
-    for (let index = 0; index < fingerprintSource.length; index++) hash = Math.imul(hash ^ fingerprintSource.charCodeAt(index), 16777619);
-    const started = startEncounter(ready(), event.id, () => 0);
-    const previous = { ...started, activeEncounter: { ...started.activeEncounter!, contentHash: (hash >>> 0).toString(16) } };
-    const completed = finish(choose(restored(previous), 0));
-    expect(completed.travelBudget).toBe(18);
-    expect(completed.inventory.galleria_souvenir).toBe("held");
+  it("rejects an altered encounter fingerprint instead of resuming it", () => {
+    const started = startEncounter(ready(), "galleria_cafe", () => 0);
+    const changed = { ...started, activeEncounter: { ...started.activeEncounter!, contentHash: "outdated" } };
+    expect(() => restored(changed)).toThrow("道中交流の保存状態が一致しません");
   });
   it("charges the chosen amount once, preserves the completed café reward and rejects insufficient funds", () => {
     let state = untilChoice(startEncounter(ready(), "galleria_cafe", () => 0));
@@ -234,7 +239,7 @@ describe("travel encounters", () => {
       getItem: (key) => values.get(key) ?? null,
       setItem: (key, value) => { values.set(key, value); },
     };
-    let state = validateGameState(galleriaFixture);
+    let state = galleriaReady();
     state = choose(startEncounter(state, "galleria_fortune", () => 0), 0);
     state = untilPhase(state, "quiz");
     expect(saveGame(storage, state)).toEqual({ ok: true });
@@ -264,7 +269,7 @@ describe("travel encounters", () => {
       return result.state;
     }
 
-    const base = validateGameState(galleriaFixture);
+    const base = galleriaReady();
     const payment = untilChoice(startEncounter(base, "galleria_cafe", () => 0));
     const paid = chooseEncounter(payment, 0, payment.revision);
     const otherPayment = chooseEncounter(payment, 1, payment.revision);
@@ -378,8 +383,8 @@ describe("travel encounters", () => {
       expect(gifted.travelBudget).toBe(initial.travelBudget + 2);
     } finally { encounters.items.pop(); }
   });
-  it("resumes a v10 Milan encounter, and refuses to advance an encounter from another city", () => {
-    const initial = validateGameState(galleriaFixture);
+  it("resumes a current Milan encounter, and rejects a changed city", () => {
+    const initial = galleriaReady();
     const started = startEncounter(initial, "galleria_cafe", () => 4321);
     const reloaded = validateGameState(JSON.parse(JSON.stringify(started)));
     expect(reloaded.activeEncounter).toEqual(started.activeEncounter);
@@ -393,10 +398,9 @@ describe("travel encounters", () => {
     try {
       event.cityId = "roma";
       expect(getEncounterAvailability(initial, event.id).available).toBe(false);
-      // The active published encounter resumes against the archived rules,
-      // rather than adopting a subsequently edited city.
-      expect(advanceEncounter(reloaded, reloaded.revision)).not.toBe(reloaded);
-      expect(() => validateEncounterState(reloaded)).not.toThrow();
+      // Do not apply a changed event definition to the saved encounter.
+      expect(advanceEncounter(reloaded, reloaded.revision)).toBe(reloaded);
+      expect(() => validateEncounterState(reloaded)).toThrow();
     } finally { event.cityId = original; }
   });
 });

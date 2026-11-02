@@ -1,6 +1,5 @@
 import { expect, test } from "@playwright/test";
-import castle from "../fixtures/castle-clear-unplayed.json" with { type: "json" };
-import { advanceToChoiceOrEnd, choose, loadSnapshot, saved, setDialogueSpeed, startEvent } from "./helpers";
+import { advanceToChoiceOrEnd, choose, loadCurrentCompletedFreeTime, loadSnapshot, saved, setDialogueSpeed, startEvent, startNewGame } from "./helpers";
 import { installRomanceRolls, setRomanceRolls } from "./romance-rolls";
 
 test.use({ reducedMotion: "reduce" });
@@ -11,7 +10,9 @@ test("the same stage and choice show the current relationship, and a reload keep
   // Tickets are fixed at date start; changing the test source before each
   // start exercises both results without rerolling a saved choice.
   await installRomanceRolls(page);
-  await page.goto("/");
+  await startNewGame(page);
+  await loadCurrentCompletedFreeTime(page);
+  const base = await saved(page);
   const cases = [
     {
       stats: { affection: 0, trust: 0, spark: 0 },
@@ -49,7 +50,7 @@ test("the same stage and choice show the current relationship, and a reload keep
       const domain = await import(/* @vite-ignore */ modulePath);
       const base = domain.validateGameState(fixture);
       return domain.validateGameState({ ...base, ...stats, romanceStage: 2 });
-    }, { fixture: castle, stats: scenario.stats });
+    }, { fixture: base, stats: scenario.stats });
     await loadSnapshot(page, snapshot);
     await setRomanceRolls(page, [scenario.roll, 0, 0, 0]);
     await startEvent(page, "milano_brera_date_01", 2);

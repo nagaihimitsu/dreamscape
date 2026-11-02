@@ -1,28 +1,25 @@
 import { describe, expect, it } from "vitest";
-import oldFreeTime from "../../tests/fixtures/castle-clear-unplayed.json";
-import publishedSaves from "../../tests/fixtures/fa0e7e0-v10-mid-scene.json";
+import { createDebugState } from "../dev/debug-state";
 import { dates } from "../content";
 import {
-  activeDateStoryId, advanceDate, chooseDate, finishDate, getDateAvailability,
+  advanceDate, chooseDate, finishDate, getDateAvailability,
   isEventVisible, startDate, validateGameState, type GameState,
 } from "./game";
 
 const oldId = "milano_love_date_01";
 const newId = "milano_novecento_date_01";
 const restore = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
-const seed = () => validateGameState(JSON.parse(JSON.stringify(oldFreeTime)));
 
-function nextChoiceOrEnd(initial: GameState): GameState {
-  let state = initial;
-  for (let i = 0; i < 100 && state.activeDate && !state.activeDate.frame.ended && !state.activeDate.frame.choices.length; i++)
-    state = advanceDate(state, state.revision);
-  expect(state.activeDate?.frame.ended || state.activeDate?.frame.choices.length).toBeTruthy();
-  return state;
+/** Generate a valid v11 history via the current game rules. */
+function currentFreeTime(): GameState {
+  const state = createDebugState({ scene: "tourism", id: "duomo_milano", progress: "completed", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
+  return validateGameState({ ...state, activeTourism: null });
 }
 
+const seed = () => currentFreeTime();
 
 describe("Milan date rewrite compatibility", () => {
-  it("does not list or start the retired LOVE date for an unplayed old save", () => {
+  it("does not list or start the retired LOVE date for an unplayed current save", () => {
     const state = seed();
     expect(state.playedDateIds).not.toContain(oldId);
     expect(isEventVisible(state, oldId)).toBe(false);
@@ -55,32 +52,6 @@ describe("Milan date rewrite compatibility", () => {
     expect(completed.playedDateIds).not.toContain(oldId);
     expect(completed.memories.filter((memory) => memory === "sound_memory_novecento_date_01")).toHaveLength(1);
     expect(restore(completed)).toEqual(completed);
-  });
-
-  it("resumes and completes an in-progress LOVE date after retirement without charging AP twice", () => {
-    const saved = validateGameState(JSON.parse(JSON.stringify(publishedSaves.love)));
-    const definition = dates.find((entry) => entry.id === oldId)!;
-    expect(definition.legacyOnly).toBe(true);
-    let state = restore(saved);
-    const ap = state.ap;
-    expect(activeDateStoryId(definition, state.activeDate!)).toBe(definition.storyId);
-    state = nextChoiceOrEnd(state);
-    state = chooseDate(state, 0, state.revision);
-    expect(state.activeDate?.choiceCount).toBe(1);
-    state = restore(state);
-    expect(state.ap).toBe(ap);
-    state = nextChoiceOrEnd(state);
-    state = chooseDate(state, 1, state.revision);
-    state = nextChoiceOrEnd(state);
-    expect(state.activeDate?.frame.ended).toBe(true);
-    state = finishDate(state, state.revision);
-    expect(state.activeDate).toBeNull();
-    expect(state.playedDateIds.filter((id) => id === oldId)).toHaveLength(1);
-    expect(state.memories.filter((id) => id.startsWith("milano_love_"))).toHaveLength(2);
-    expect(state.ap).toBe(ap);
-    expect(restore(state)).toEqual(state);
-    expect(isEventVisible(state, oldId)).toBe(false);
-    expect(getDateAvailability(state, newId).available).toBe(true);
   });
 
   it("keeps old completed LOVE history and memories without treating Novecento as played", () => {

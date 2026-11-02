@@ -1,19 +1,16 @@
 import { installRomanceRolls, setRomanceRolls } from "./romance-rolls";
 import { expect, test } from "@playwright/test";
-import phase1 from "../fixtures/phase1-saves.json" with { type: "json" };
 import {
-  SAVE_KEY,
   saved,
   expectNoOverflow,
-  startLegacyJourney,
-  loadLegacyFreeTime,
+  startCurrentSupperJourney,
+  loadCurrentCompletedFreeTime,
   returnToMenu,
   startEvent,
   advanceToChoiceOrEnd,
   choose,
   finishEvent,
   playEvent,
-  claimMilestone,
 } from "./helpers";
 
 import { completeEpisode, enterFreeTime } from "./journey-helpers";
@@ -30,17 +27,17 @@ const BRERA = "milano_brera_date_01";
 const CONFESSION = "milano_confession_01";
 const REASSURANCE = "milano_reassurance_01";
 
-test("a legacy zero-score journey can continue after rejection, deferral and eventual acceptance", async ({
+test("a current journey can continue after rejection, deferral and eventual acceptance", async ({
   page,
 }) => {
   test.setTimeout(150_000);
   await page.setViewportSize({ width: 360, height: 740 });
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await startLegacyJourney(page);
+  await startCurrentSupperJourney(page);
   expect((await saved(page)).romanceStage).toBe(1);
   const episode = await completeEpisode(page, [false, false, false]);
-  expect(episode.ap).toBe(5);
+  expect(episode.ap).toBe(11);
   expect(episode.affection).toBe(0);
   expect(episode.discoveredClueIds).toEqual([]);
   await page.reload();
@@ -78,7 +75,6 @@ test("a legacy zero-score journey can continue after rejection, deferral and eve
   await page.reload();
   expect(await saved(page)).toEqual(deferred);
 
-  await claimMilestone(page, "trial_after_cafe");
   await setRomanceRolls(page, [0, 5000, 5000, 0]);
   await playEvent(page, WALK, 3, [0, 0]);
   expect((await saved(page)).romanceStage).toBe(4);
@@ -118,8 +114,8 @@ test("warm choices and renamed characters reach a successful first confession wi
   page,
 }) => {
   test.setTimeout(90_000);
-  await startLegacyJourney(page, ["航", "澪"]);
-  await loadLegacyFreeTime(page);
+  await startCurrentSupperJourney(page, ["航", "澪"]);
+  await loadCurrentCompletedFreeTime(page);
   await setRomanceRolls(page, [0, 5000, 5000, 9999]);
   await playEvent(page, CAFE, 2, [2, 0]);
   await returnToMenu(page);
@@ -127,12 +123,10 @@ test("warm choices and renamed characters reach a successful first confession wi
   await page.getByLabel("主人公の名前").fill("悠");
   await page.getByLabel("ヒロインの名前").fill("紬");
   await page.getByRole("button", { name: "名前を保存", exact: true }).click();
-  await claimMilestone(page, "trial_after_cafe");
   await setRomanceRolls(page, [0, 5000, 5000, 9999]);
   const walk = await playEvent(page, WALK, 3, [0, 0]);
   expect(walk).toContain("ドゥオモ");
   expect((await saved(page)).heroineName).toBe("紬");
-  await claimMilestone(page, "trial_after_walk");
   await setRomanceRolls(page, [0, 5000, 5000, 9999]);
   const night = await playEvent(page, NIGHT, 3, [0, 2]);
   expect(night).toContain("彼女");
@@ -149,41 +143,3 @@ test("warm choices and renamed characters reach a successful first confession wi
   await page.reload();
   expect(await saved(page)).toEqual(state);
 });
-
-for (const fixtureKey of ["beforeChoice", "afterChoice", "replay"] as const) {
-  test(`Phase 1 ${fixtureKey} save resumes the same cafe branch without losing names or charging again`, async ({
-    page,
-  }) => {
-    const old = phase1[fixtureKey];
-    await page.goto("/");
-    await page.evaluate(
-      ({ key, value }) => localStorage.setItem(key, JSON.stringify(value)),
-      { key: SAVE_KEY, value: old },
-    );
-    await page.reload();
-    await expect(page.locator(".dialogue-text")).toContainText(
-      old.activeDate!.frame.text,
-    );
-    await expect(page.locator(".travelers")).toContainText(old.playerName);
-    await expect(page.locator(".travelers")).toContainText(old.heroineName);
-    expect((await saved(page)).ap).toBe(old.ap);
-    for (let count = old.activeDate!.choiceCount; count < 2; count++)
-      await choose(page, 1);
-    await finishEvent(page, 2);
-    const current = await saved(page);
-    expect(current.schemaVersion).toBe(11);
-    expect(current.ap).toBe(old.ap);
-    expect(current.playerName).toBe(old.playerName);
-    expect(current.heroineName).toBe(old.heroineName);
-    expect(current.playedDateIds).toEqual([CAFE]);
-    if (fixtureKey === "replay") {
-      expect(current.affection).toBe(old.affection);
-      expect(current.memories).toEqual(old.memories);
-    } else {
-      for (const memory of old.memories)
-        expect(current.memories).toContain(memory);
-    }
-    await page.reload();
-    expect(await saved(page)).toEqual(current);
-  });
-}

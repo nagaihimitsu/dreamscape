@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
-import phase2 from "../../tests/fixtures/phase2-saves.json";
-import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
+import { createDebugState } from "../dev/debug-state";
 import { loadGame, saveGame, SAVE_KEY, type StorageLike } from "../persistence";
 import { effects, responseProfiles } from "../content";
 import { advanceDate, chooseDate, createGame, finishDate, startDate, validateGameState, type GameState } from "./game";
@@ -9,6 +8,10 @@ class Storage implements StorageLike {
   value: string | null = null;
   getItem(key: string) { return key === SAVE_KEY ? this.value : null; }
   setItem(key: string, value: string) { if (key === SAVE_KEY) this.value = value; }
+}
+function currentFreeTime(): GameState {
+  const state = createDebugState({ scene: "tourism", id: "duomo_milano", progress: "completed", ap: 9, affection: 0, trust: 0, spark: 0, roll: "positive" });
+  return validateGameState({ ...state, activeTourism: null });
 }
 function choice(state: GameState): GameState {
   for (let n = 0; n < 100 && state.activeDate && !state.activeDate.frame.choices.length && !state.activeDate.frame.ended; n++)
@@ -33,7 +36,7 @@ describe("persisted romance choice resolutions", () => {
     const unavailable = createGame();
     expect(startDate(unavailable, "milano_cafe_01", roll)).toBe(unavailable);
     expect(calls).toBe(0);
-    const initial = seedLegacyChapter();
+    const initial = currentFreeTime();
     const begun = startDate(initial, "milano_cafe_01", roll);
     expect(calls).toBe(8);
     expect(begun.ap).toBe(initial.ap - 2);
@@ -58,7 +61,7 @@ describe("persisted romance choice resolutions", () => {
   });
 
   it("uses pre-saved rolls for a different reaction and prevents a stale tab from overwriting it", () => {
-    const begun = startDate(seedLegacyChapter(), "milano_cafe_01", () => 9999);
+    const begun = startDate(currentFreeTime(), "milano_cafe_01", () => 9999);
     const ready = choice(begun);
     const negative = chooseDate(ready, 0, ready.revision);
     expect(negative.activeDate?.resolvedChoices[0].result).toBe("negative");
@@ -75,7 +78,7 @@ describe("persisted romance choice resolutions", () => {
   });
 
   it("keeps saved profiles and effect mappings when current content is rebalanced", () => {
-    const ready = choice(startDate(seedLegacyChapter(), "milano_cafe_01", () => 6000));
+    const ready = choice(startDate(currentFreeTime(), "milano_cafe_01", () => 6000));
     const saved = JSON.parse(JSON.stringify(ready));
     const baseline = chooseDate(ready, 0, ready.revision);
     const effect = effects.find((item) => item.id === baseline.activeDate!.resolvedChoices[0].effectId)!;
@@ -101,8 +104,8 @@ describe("persisted romance choice resolutions", () => {
       let n = 0;
       return () => numbers[n++];
     };
-    const positive = choice(startDate(seedLegacyChapter(), "milano_cafe_01", source(0)));
-    const negative = choice(startDate(seedLegacyChapter(), "milano_cafe_01", source(9999)));
+    const positive = choice(startDate(currentFreeTime(), "milano_cafe_01", source(0)));
+    const negative = choice(startDate(currentFreeTime(), "milano_cafe_01", source(9999)));
     const p1 = chooseDate(positive, 0, positive.revision);
     const n1 = chooseDate(negative, 0, negative.revision);
     expect(p1.activeDate!.frame.text).not.toBe(n1.activeDate!.frame.text);
@@ -113,39 +116,12 @@ describe("persisted romance choice resolutions", () => {
       .toBeGreaterThan(afterNegative.activeDate!.resolvedChoices[1].chance);
   });
 
-  it("migrates an idle v8 save without fabricating a roll plan", () => {
-    const current = createGame();
-    const { recoveryAfterRejection: _flag, completedRecoveryCount: _count,
-      travelBudget: _budget, inventory: _inventory, completedEncounterIds: _encounters,
-      encounterRewards: _encounterRewards, activeEncounter: _activeEncounter, updatedDateIds: _updatedDateIds, ...old } = current;
-    const migrated = validateGameState({ ...old, schemaVersion: 8 });
-    expect(migrated.schemaVersion).toBe(11);
-    expect(migrated.activeDate).toBeNull();
-    expect(migrated.ap).toBe(current.ap);
-    expect(migrated.memories).toEqual(current.memories);
-  });
-
-  it("migrates an old in-progress date to fixed resolution and preserves the old Ink", () => {
-    const migrated = validateGameState(phase2.activeDate);
-    expect(migrated.schemaVersion).toBe(11);
-    expect(migrated.activeDate).toMatchObject({
-      resolutionMode: "legacy_fixed", randomPlan: [], resolvedChoices: [], responseSnapshot: null,
-      storyHash: phase2.activeDate.activeDate!.storyHash,
-      storyState: phase2.activeDate.activeDate!.storyState,
-    });
-    const completed = finish(migrated, [0, 0]);
-    const alternate = finish(validateGameState(phase2.activeDate), [2, 2]);
-    expect(completed.playedDateIds).toContain(migrated.activeDate!.dateId);
-    expect(completed.memories).toEqual(expect.arrayContaining(["milano_walk_first_joke", "milano_walk_second_joke"]));
-    expect(alternate.memories).toEqual(expect.arrayContaining(["milano_walk_first_honest", "milano_walk_second_honest"]));
-    expect(alternate.memories).not.toContain("milano_walk_first_joke");
-  });
-
   it("does not draw for confession even when a caller supplies a source", () => {
-    const eligible = validateGameState({ ...phase2.confessionPending, activeDate: null, confessionStatus: "none" });
+    const initial = { ...currentFreeTime(), affection: 10, trust: 10, spark: 10 };
+    const eligible = finish(startDate(initial, "milano_cafe_01", () => 0));
     let calls = 0;
-    // If conditions are not met the rule still must not request random data.
-    startDate(eligible, "milano_confession_01", () => { calls++; return 0; });
+    const started = startDate(eligible, "milano_confession_01", () => { calls++; return 0; });
+    expect(started.activeDate?.dateId).toBe("milano_confession_01");
     expect(calls).toBe(0);
   });
 });

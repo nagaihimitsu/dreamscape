@@ -2,10 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 import tourism from "../../content/tourism/catalog.json" with { type: "json" };
 const tourismAssets = tourism.assets;
 const tourismClues = tourism.clues;
-import phase5 from "../fixtures/phase5-saves.json" with { type: "json" };
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
 import {
-  SAVE_KEY,
   saved,
   expectNoOverflow,
 } from "./helpers";
@@ -15,6 +12,7 @@ import {
   reloadUnchanged,
 } from "./battle-helpers";
 import { openCluebook, showClue } from "./tourism-helpers";
+import { loadCurrentScene } from "./current-scenarios";
 import {
   nonBattleProgress,
   playSpecialBattle,
@@ -25,15 +23,6 @@ import {
 } from "./reasoning-helpers";
 
 test.use({ reducedMotion: "reduce" });
-
-async function loadSnapshot(page: Page, value: unknown) {
-  await page.goto("/");
-  await page.evaluate(
-    ({ key, snapshot }) => localStorage.setItem(key, JSON.stringify(snapshot)),
-    { key: SAVE_KEY, snapshot: value },
-  );
-  await page.reload();
-}
 
 async function closeBookUnchanged(page: Page) {
   const before = await saved(page);
@@ -66,15 +55,12 @@ test("B exposes a definite contradiction with readable case evidence, persists r
   await page.setViewportSize({ width: 360, height: 740 });
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await loadSnapshot(page, {
-    ...phase6.freeTime,
-    battleRecords: [...phase6.freeTime.battleRecords, ...phase6.B_result.battleRecords],
-  });
+  await loadCurrentScene(page, "freeTime");
   const original = await saved(page);
-  expect(original.discoveredClueIds).not.toContain("last_supper_doorway");
+  expect(original.discoveredClueIds).not.toContain("scala_mobile");
   const protectedProgress = nonBattleProgress(original);
-  const { battle, quiz, reasoning } = specialBattle("B");
-  await startSpecialFromEntry(page, "B");
+  const { battle, quiz, reasoning } = specialBattle("B", "story");
+  await startSpecialFromEntry(page, "B", "story");
   await openCluebook(page);
   for (const id of reasoning.caseClueIds) {
     await showClue(page, id);
@@ -190,7 +176,7 @@ test("B exposes a definite contradiction with readable case evidence, persists r
       button.click();
       button.click();
     });
-  const replay = await playSpecialBattle(page, "B", [false, false, false]);
+  const replay = await playSpecialBattle(page, "B", [false, false, false], "story");
   expect(replay.state.activeBattle!.score).toBe(0);
   expect(nonBattleProgress(replay.state)).toEqual(protectedProgress);
   expect(
@@ -206,21 +192,19 @@ test("B exposes a definite contradiction with readable case evidence, persists r
   expect(errors).toEqual([]);
 });
 
-test("C preserves two selected cards through notebook and reload, requires an English conclusion, and returns to the saved ending", async ({
+test("C preserves two selected cards through notebook and reload, requires an English conclusion, and returns to free time", async ({
   page,
 }) => {
   test.setTimeout(120_000);
   await page.setViewportSize({ width: 360, height: 740 });
-  // A previous C attempt remains replayable from a completed romance save.
-  const endingWithAttempt = { ...phase5.ending, battleRecords: phase6.C_result.battleRecords };
-  await loadSnapshot(page, endingWithAttempt);
+  // A current completed journey retains its special battle for replay.
+  await loadCurrentScene(page, "freeTime");
   await expect(page.getByTestId("free-time-hub")).toBeVisible();
-  expect(await saved(page)).toEqual(endingWithAttempt);
   const original = await saved(page);
   const protectedProgress = nonBattleProgress(original);
   expect(original.discoveredClueIds).toEqual([]);
-  const { quiz, reasoning } = specialBattle("C");
-  await startSpecialFromEntry(page, "C");
+  const { quiz, reasoning } = specialBattle("C", "story");
+  await startSpecialFromEntry(page, "C", "story");
   for (const question of quiz.questions.slice(0, 2)) {
     await battleDialogueUntilQuestionOrResult(page);
     await answerRound(page, question, false);
@@ -301,29 +285,4 @@ test("C preserves two selected cards through notebook and reload, requires an En
   await expect(page.getByTestId("free-time-hub")).toBeVisible();
   expect(nonBattleProgress(await saved(page))).toEqual(protectedProgress);
   await expectNoOverflow(page);
-});
-
-test("an authentic Phase 5 A question remains intact until the next action migrates its save", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 360, height: 740 });
-  await loadSnapshot(page, phase5.battleQuestion);
-  await expect(page.getByTestId("battle-question")).toBeVisible();
-  expect(await saved(page)).toEqual(phase5.battleQuestion);
-  await openCluebook(page);
-  await expect(page.getByTestId("case-context")).toHaveCount(0);
-  await closeBookUnchanged(page);
-  await page.getByRole("button", { name: "ヒントを見る", exact: true }).click();
-  const migrated = await saved(page);
-  expect(migrated.schemaVersion).toBe(11);
-  expect(migrated.activeBattle).toEqual({
-    ...phase5.battleQuestion.activeBattle,
-    reasoning: null,
-    hintOpen: true,
-    hintUsed: true,
-  });
-  expect(nonBattleProgress(migrated)).toEqual(
-    nonBattleProgress(phase5.battleQuestion as unknown as typeof migrated),
-  );
-  await reloadUnchanged(page);
 });

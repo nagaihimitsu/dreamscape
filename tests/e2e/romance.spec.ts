@@ -5,7 +5,7 @@ import {
   saved,
   expectNoOverflow,
   startNewGame,
-  loadLegacyFreeTime,
+  loadCurrentFreeTime,
   startCafe,
   advanceToChoiceOrEnd,
   choose,
@@ -17,7 +17,7 @@ test.beforeEach(async ({ page }) => { await installRomanceRolls(page); });
 
 test.use({ reducedMotion: "reduce" });
 
-test("default names and a legacy chapter save keep cafe choices and reload consistent without offering a replay", async ({
+test("default names and a current journey keep cafe choices and reload consistent without offering a replay", async ({
   page,
 }) => {
   const errors: string[] = [];
@@ -27,9 +27,10 @@ test("default names and a legacy chapter save keep cafe choices and reload consi
   await expect(page.getByLabel("ヒロインの名前")).toHaveValue("あゆみ");
   await startNewGame(page);
   expect(await saved(page)).toMatchObject({ playerName: "たいち", heroineName: "あゆみ" });
-  await loadLegacyFreeTime(page);
+  await loadCurrentFreeTime(page);
   await page.reload();
   expect((await saved(page)).ap).toBe(4);
+  const rewardsBefore = (await saved(page)).claimedRewardIds;
   await startCafe(page);
   const initialLine = (await saved(page)).activeDate!.frame.text;
   await page.reload();
@@ -53,7 +54,7 @@ test("default names and a legacy chapter save keep cafe choices and reload consi
   expect(completed.ap).toBe(2);
   expect(completed.memories).toContain("sound_memory_cafe_01");
   expect(completed.playedDateIds).toEqual(["milano_cafe_01"]);
-  expect(completed.claimedRewardIds).toEqual(["chapter_milano_first_clear"]);
+  expect(completed.claimedRewardIds).toEqual(rewardsBefore);
   await expect(page.getByText(/^好感度[：: ]*[0-9]/)).toHaveCount(0);
   await expectNoOverflow(page);
   await page.reload();
@@ -71,7 +72,7 @@ test("custom names remain plain text and fit a 360px screen throughout the date"
   const player = "<b>あいうえおかきくけこ</b>";
   const heroine = "あいうえおかきくけこさしすせそたちつてとなにぬね";
   await startNewGame(page, [player, heroine]);
-  await loadLegacyFreeTime(page);
+  await loadCurrentFreeTime(page);
   await startCafe(page);
   const observed: string[] = [];
   for (let step = 0; step < 40; step++) {
@@ -149,7 +150,7 @@ test("pause, manual save/load and keyboard choice preserve the current line", as
   page,
 }) => {
   await startNewGame(page);
-  await loadLegacyFreeTime(page);
+  await loadCurrentFreeTime(page);
   await startCafe(page);
   const before = await saved(page);
   await expect(page.locator(".dialogue-text")).toMatchAriaSnapshot(
@@ -176,7 +177,7 @@ test("an older tab cannot overwrite a date started in another tab", async ({
   context,
 }) => {
   await startNewGame(page);
-  await loadLegacyFreeTime(page);
+  await loadCurrentFreeTime(page);
   const older = await context.newPage();
   await older.goto("/");
   await expect(

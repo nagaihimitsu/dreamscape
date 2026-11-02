@@ -1,6 +1,6 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
-import { loadSnapshot, saved } from "./helpers";
+import { loadCurrentScene } from "./current-scenarios";
+import { saved } from "./helpers";
 
 test.use({ viewport: { width: 360, height: 780 }, reducedMotion: "reduce" });
 
@@ -19,15 +19,15 @@ async function tapSamePointTwice(page: Page, word: Locator, firstMeaning: Locato
 }
 
 test("two actual taps translate the question and option without submitting an answer", async ({ page }) => {
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentScene(page, "supperQuestion");
   const before = await saved(page);
   const question = page.locator(".question-en");
-  await tapSamePointTwice(page, question.getByRole("button", { name: "shapeの意味" }), question.locator(".word-meaning"));
+  await tapSamePointTwice(page, question.getByRole("button", { name: "paintedの意味", exact: true }), question.locator(".word-meaning"));
   await expect(page.getByRole("button", { name: "問題文の訳を閉じる" })).toBeVisible();
   expect(await saved(page)).toEqual(before);
 
   const option = page.getByTestId("option-text-A");
-  await tapSamePointTwice(page, option.getByRole("button", { name: "sitsの意味" }), option.locator(".word-meaning"));
+  await tapSamePointTwice(page, option.getByRole("button", { name: "lampsの意味", exact: true }).first(), option.locator(".word-meaning"));
   await expect(page.getByRole("button", { name: "選択肢Aの訳を閉じる" })).toBeVisible();
   expect(await saved(page)).toEqual(before);
   await page.getByTestId("answer-B").tap();
@@ -36,9 +36,9 @@ test("two actual taps translate the question and option without submitting an an
 
 
 test("touch-style clicks with zero detail also open, and never close an already visible translation", async ({ page }) => {
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentScene(page, "supperQuestion");
   const before = await saved(page);
-  const word = page.locator(".question-en").getByRole("button", { name: "shapeの意味" });
+  const word = page.locator(".question-en").getByRole("button", { name: "paintedの意味", exact: true });
   // Safari may send click events whose detail is 0 for a touch activation.
   await word.dispatchEvent("click", { detail: 0 });
   await expect(page.locator(".question-en .word-meaning")).toBeVisible();
@@ -55,7 +55,7 @@ test("touch-style clicks with zero detail also open, and never close an already 
   await page.getByRole("button", { name: "閉じる", exact: true }).tap();
   await page.reload();
   await expect(page.getByRole("button", { name: "問題文の訳を閉じる" })).toBeVisible();
-  const reloadedWord = page.locator(".question-en").getByRole("button", { name: "shapeの意味" });
+  const reloadedWord = page.locator(".question-en").getByRole("button", { name: "paintedの意味", exact: true });
   await reloadedWord.dispatchEvent("click", { detail: 0 });
   await reloadedWord.dispatchEvent("click", { detail: 0 });
   await expect(page.getByRole("button", { name: "問題文の訳を閉じる" })).toBeVisible();
@@ -63,25 +63,25 @@ test("touch-style clicks with zero detail also open, and never close an already 
 });
 
 test("two taps in the answered-question review keep its translation visible", async ({ page }) => {
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentScene(page, "supperQuestion");
   await page.getByTestId("answer-B").tap();
   const answered = await saved(page);
   await page.getByRole("button", { name: "英文を確認する" }).tap();
   const dialog = page.getByRole("dialog");
   const text = dialog.getByTestId("review-question");
   await expect(dialog.getByRole("button", { name: "問題文の訳を閉じる" })).toBeVisible();
-  await tapSamePointTwice(page, text.getByRole("button", { name: "shapeの意味" }), text.locator(".word-meaning"));
+  await tapSamePointTwice(page, text.getByRole("button", { name: "paintedの意味", exact: true }), text.locator(".word-meaning"));
   await expect(dialog.getByRole("button", { name: "問題文の訳を閉じる" })).toBeVisible();
   expect(await saved(page)).toEqual(answered);
 });
 
 for (const scenario of [
-  { name: "通常戦", snapshot: phase6.battleQuestion, clue: "last_supper_perspective", selectable: false },
-  { name: "矛盾追及", snapshot: phase6.B_reasoning, clue: "last_supper_doorway", selectable: true },
-  { name: "証拠連結", snapshot: phase6.C_selected, clue: "last_supper_perspective", selectable: true },
+  { name: "通常戦", snapshot: "supperQuestion", clue: "last_supper_perspective", selectable: false },
+  { name: "矛盾追及", snapshot: "specialBReasoning", clue: "scala_mobile", selectable: true },
+  { name: "証拠連結", snapshot: "specialCSelected", clue: "brera_show", selectable: true },
 ] as const) {
   test(`${scenario.name}の手がかり帳は画像を説明より先に表示する`, async ({ page }) => {
-    await loadSnapshot(page, scenario.snapshot);
+    await loadCurrentScene(page, scenario.snapshot);
     const before = await saved(page);
     const entry = page.getByTestId("reasoning-notebook");
     if (await entry.isVisible()) await entry.tap();
@@ -122,13 +122,13 @@ for (const scenario of [
 }
 
 test("画像を読み込めなくても説明と証拠選択を利用できる", async ({ page }) => {
-  await page.route("**/assets/tourism/last-supper.webp", (route) => route.abort());
-  await loadSnapshot(page, phase6.B_reasoning);
+  await page.route("**/assets/tourism/dates/la_scala.webp", (route) => route.abort());
+  await loadCurrentScene(page, "specialBReasoning");
   await page.getByTestId("reasoning-notebook").tap();
-  await page.getByTestId("clue-picker").selectOption("last_supper_doorway");
-  const card = page.getByTestId("notebook-last_supper_doorway");
+  await page.getByTestId("clue-picker").selectOption("scala_mobile");
+  const card = page.getByTestId("notebook-scala_mobile");
   await expect(card.getByRole("status")).toContainText("画像を表示できません");
   await expect(card.locator(".clue-description")).toBeVisible();
-  await page.getByTestId("select-evidence-last_supper_doorway").tap();
-  await expect(page.getByTestId("select-evidence-last_supper_doorway")).toHaveAttribute("aria-pressed", "true");
+  await page.getByTestId("select-evidence-scala_mobile").tap();
+  await expect(page.getByTestId("select-evidence-scala_mobile")).toHaveAttribute("aria-pressed", "true");
 });

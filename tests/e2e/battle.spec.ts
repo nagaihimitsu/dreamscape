@@ -1,10 +1,8 @@
 import { expect, test } from "@playwright/test";
 import quiz from "../../content/quizzes/sound_supper_B1.json" with { type: "json" };
-import phase2 from "../fixtures/phase2-saves.json" with { type: "json" };
 import {
-  SAVE_KEY,
   saved,
-  startLegacyJourney,
+  startCurrentSupperJourney,
   expectNoOverflow,
 } from "./helpers";
 import {
@@ -34,13 +32,15 @@ for (const example of cases) {
     await page.setViewportSize({ width: 360, height: 740 });
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
-    await startLegacyJourney(page);
-    const romance = romanceProgress(await saved(page));
+    await startCurrentSupperJourney(page);
+    const before = await saved(page);
+    const romance = romanceProgress(before);
     await startBattleFromEntry(page);
     const result = await playBattle(page, quiz.questions, example.correctness);
     expect(result.state.activeBattle!.score).toBe(example.score);
-    expect(result.state.ap).toBe(example.score >= 2 ? 6 : 5);
+    expect(result.state.ap).toBe(Math.min(12, before.ap + (example.score >= 2 ? 6 : 5)));
     expect(result.state.completedEpisodeIds).toEqual([
+      ...before.completedEpisodeIds,
       "milano_last_supper_episode",
     ]);
     expect(result.state.completedCityIds).toEqual([]);
@@ -50,7 +50,7 @@ for (const example of cases) {
       ),
     ).toHaveLength(1);
     expect(romanceProgress(result.state)).toEqual(romance);
-    expect(result.state.battleRecords).toEqual([
+    expect(result.state.battleRecords.find((record) => record.battleId === battleId)).toEqual(
       {
         battleId,
         attempts: 1,
@@ -58,7 +58,7 @@ for (const example of cases) {
         bestScore: example.score,
         lastScore: example.score,
       },
-    ]);
+    );
     await expect(
       page
         .getByTestId("battle-result")
@@ -81,8 +81,9 @@ test("hints, vocabulary, locked answers and saved reactions survive reload, then
 }) => {
   test.setTimeout(120_000);
   await page.setViewportSize({ width: 360, height: 740 });
-  await startLegacyJourney(page, ["航", "澪"]);
-  const initial = romanceProgress(await saved(page));
+  await startCurrentSupperJourney(page, ["航", "澪"]);
+  const before = await saved(page);
+  const initial = romanceProgress(before);
   await startBattleFromEntry(page);
   await reloadUnchanged(page); // Intro dialogue.
   await battleDialogueUntilQuestionOrResult(page);
@@ -140,7 +141,7 @@ test("hints, vocabulary, locked answers and saved reactions survive reload, then
   const first = await saved(page);
   expect(first.activeBattle!.phase).toBe("result");
   expect(first.activeBattle!.score).toBe(0);
-  expect(first.ap).toBe(5);
+  expect(first.ap).toBe(Math.min(12, before.ap + 5));
   expect(romanceProgress(first)).toEqual(initial);
   await page
     .getByRole("button", { name: "再戦する", exact: true })
@@ -148,7 +149,7 @@ test("hints, vocabulary, locked answers and saved reactions survive reload, then
       button.click();
       button.click();
     });
-  expect((await saved(page)).battleRecords[0].attempts).toBe(1);
+  expect((await saved(page)).battleRecords.find((record) => record.battleId === battleId)!.attempts).toBe(1);
   await battleDialogueUntilQuestionOrResult(page);
   await answerRound(page, question, true, true);
   await expect(
@@ -165,18 +166,18 @@ test("hints, vocabulary, locked answers and saved reactions survive reload, then
   }
   const replay = await saved(page);
   expect(replay.activeBattle!.phase).toBe("result");
-  expect(replay.ap).toBe(6);
-  expect(replay.battleRecords).toEqual([
+  expect(replay.ap).toBe(Math.min(12, before.ap + 6));
+  expect(replay.battleRecords.find((record) => record.battleId === battleId)).toEqual(
     { battleId, attempts: 2, firstScore: 0, bestScore: 3, lastScore: 3 },
-  ]);
+  );
   expect(romanceProgress(replay)).toEqual(initial);
   await reloadUnchanged(page);
-  expect((await saved(page)).battleRecords[0].attempts).toBe(2);
+  expect((await saved(page)).battleRecords.find((record) => record.battleId === battleId)!.attempts).toBe(2);
   await expectNoOverflow(page);
   await page.getByRole("button", { name: "再戦する", exact: true }).click();
   const third = await playBattle(page, quiz.questions, [true, true, false]);
-  expect(third.state.ap).toBe(6);
-  expect(third.state.battleRecords[0]).toEqual({
+  expect(third.state.ap).toBe(Math.min(12, before.ap + 6));
+  expect(third.state.battleRecords.find((record) => record.battleId === battleId)).toEqual({
     battleId,
     attempts: 3,
     firstScore: 0,
@@ -188,59 +189,4 @@ test("hints, vocabulary, locked answers and saved reactions survive reload, then
       (id) => id === "battle_last_supper_first_victory",
     ),
   ).toHaveLength(1);
-});
-
-test("a real Phase 2 ending save can play a battle and return to the same ending", async ({
-  page,
-}) => {
-  test.setTimeout(90_000);
-  await page.goto("/");
-  await page.evaluate(
-    ({ key, value }) => localStorage.setItem(key, JSON.stringify(value)),
-    { key: SAVE_KEY, value: phase2.ending },
-  );
-  await page.reload();
-  await expect(page.getByTestId("free-time-hub")).toBeVisible();
-  const before = romanceProgress(await saved(page));
-  await startBattleFromEntry(page);
-  const result = await playBattle(page, quiz.questions, [true, false, true]);
-  expect(result.state.schemaVersion).toBe(11);
-  expect(romanceProgress(result.state)).toEqual(before);
-  await page
-    .getByRole("button", { name: "自由時間へ進む", exact: true })
-    .click();
-  await expect(page.getByTestId("free-time-hub")).toBeVisible();
-  await reloadUnchanged(page);
-  expect(romanceProgress(await saved(page))).toEqual(before);
-});
-
-test("a real Phase 2 romance conversation resumes safely and blocks battle entry", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await page.evaluate(
-    ({ key, value }) => localStorage.setItem(key, JSON.stringify(value)),
-    { key: SAVE_KEY, value: phase2.activeDate },
-  );
-  await page.reload();
-  await expect(page.locator(".dialogue-text")).toContainText(
-    phase2.activeDate.activeDate!.frame.text,
-  );
-  await expect(
-    page.getByRole("button", { name: "クイズバトルを試す", exact: true }),
-  ).toHaveCount(0);
-  await expect(
-    page.getByRole("button", { name: "観光・観察を試す", exact: true }),
-  ).toHaveCount(0);
-  const before = await saved(page);
-  expect(before.activeDate!.storyState).toBe(
-    phase2.activeDate.activeDate!.storyState,
-  );
-  await page.getByRole("button", { name: "続きを読む", exact: true }).click();
-  await expect
-    .poll(async () => (await saved(page)).revision)
-    .toBeGreaterThan(before.revision);
-  expect((await saved(page)).schemaVersion).toBe(11);
-  expect((await saved(page)).activeBattle).toBeNull();
-  expect((await saved(page)).ap).toBe(before.ap);
 });

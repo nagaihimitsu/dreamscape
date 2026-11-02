@@ -66,28 +66,6 @@ describe("date destination content references", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow("Date destination city mismatch");
   });
 
-  it("validates a legacy location independently of the current story", async () => {
-    await editDates((items) => {
-      scala(items).legacyDestinationId = "milano_la_scala";
-      scala(items).legacyStoryIds = undefined;
-    });
-    await expect(buildContent(fixture, false)).rejects.toThrow("Legacy date destination needs an earlier story");
-    await editDates((items) => {
-      const date = scala(items);
-      date.legacyStoryIds = ["milano/invitation_01"];
-      date.legacyDestinationId = "missing_destination";
-    });
-    await expect(buildContent(fixture, false)).rejects.toThrow("Unknown legacy date destination");
-    await editDates((items) => {
-      const date = scala(items);
-      date.legacyDestinationId = "milano_la_scala";
-      date.destinationId = undefined;
-      date.chapterId = "unknown_city";
-      date.requiredCompletedChapters = ["unknown_city"];
-    });
-    await expect(buildContent(fixture, false)).rejects.toThrow("Legacy date destination city mismatch");
-  });
-
   it("rejects an unregistered background and a date/destination background mismatch", async () => {
     await editDestinations((items) => { items[0].backgroundAssetId = "missing_background"; });
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown date destination background");

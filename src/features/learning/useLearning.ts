@@ -4,7 +4,7 @@ import type { GameState } from "../../domain/game";
 import { battleAnswerSchema, getBattleContentByHash } from "../../domain/battle";
 import { battles, learningTranslations } from "../../content";
 
-import { LEARNING_KEY as key, SAVE_KEY } from "../../persistence";
+import { LEARNING_KEY as key, SAVE_KEY, type StorageLike } from "../../persistence";
 const schema = z
   .object({
     schemaVersion: z.literal(1),
@@ -63,9 +63,9 @@ function validateRecords(state: LearningState) {
   }
   return state;
 }
-function load() {
+function load(storage: StorageLike) {
   try {
-    const raw = localStorage.getItem(key);
+    const raw = storage.getItem(key);
     return {
       raw,
       data:
@@ -81,8 +81,8 @@ function load() {
     };
   }
 }
-export function useLearning(game: GameState | null) {
-  const [initial] = useState(load);
+export function useLearning(game: GameState | null, storage: StorageLike = window.localStorage, listenToStorage = true) {
+  const [initial] = useState(() => load(storage));
   const [data, setData] = useState(initial.data);
   const [error, setError] = useState(initial.error);
   const rawRef = useRef(initial.raw);
@@ -92,7 +92,7 @@ export function useLearning(game: GameState | null) {
     (change: (state: LearningState) => LearningState) => {
       if (blocked.current) return false;
       try {
-        if (localStorage.getItem(key) !== rawRef.current) {
+        if (storage.getItem(key) !== rawRef.current) {
           setError(
             "別の画面で英語ノートが更新されました。この画面を再読み込みしてください。",
           );
@@ -108,7 +108,7 @@ export function useLearning(game: GameState | null) {
           }),
         );
         const raw = JSON.stringify(valid);
-        localStorage.setItem(key, raw);
+        storage.setItem(key, raw);
         rawRef.current = raw;
         dataRef.current = valid;
         setData(valid);
@@ -120,7 +120,7 @@ export function useLearning(game: GameState | null) {
         return false;
       }
     },
-    [],
+    [storage],
   );
   useEffect(() => {
     const active = game?.activeBattle;
@@ -147,6 +147,7 @@ export function useLearning(game: GameState | null) {
     });
   }, [game?.activeBattle, update]);
   useEffect(() => {
+    if (!listenToStorage) return;
     function changed(e: StorageEvent) {
       if (
         (e.key === key && e.newValue !== rawRef.current) ||
@@ -160,7 +161,7 @@ export function useLearning(game: GameState | null) {
     }
     window.addEventListener("storage", changed);
     return () => window.removeEventListener("storage", changed);
-  }, []);
+  }, [listenToStorage]);
   const isMarked = (id: string) =>
     !!learningTranslations[id] &&
     data.marks[id] === JSON.stringify(learningTranslations[id].source);

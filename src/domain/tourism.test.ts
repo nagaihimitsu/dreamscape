@@ -33,8 +33,6 @@ import {
   skipTourismGuide,
   startTourismBattle,
 } from "./tourism";
-import phase2 from "../../tests/fixtures/phase2-saves.json";
-import phase3 from "../../tests/fixtures/phase3-saves.json";
 
 const landmarkId = () => landmarks[0].id;
 const clues = () =>
@@ -43,6 +41,9 @@ function reload(state: GameState) {
   const restored = validateGameState(JSON.parse(JSON.stringify(state)));
   expect(restored).toEqual(state);
   return restored;
+}
+function currentEnding(): GameState {
+  return validateGameState({ ...createGame(), endingReached: true, confessionStatus: "accepted", playedDateIds: ["milano_confession_01"] });
 }
 function romance(state: GameState) {
   return {
@@ -66,6 +67,24 @@ function explore(initial = createGame()) {
   return state.activeTourism?.phase === "guide"
     ? skipTourismGuide(state, state.revision)
     : state;
+}
+
+/** Build current battle checkpoints through the public game operations. */
+function battleCheckpoint(key: "intro" | "question" | "feedback" | "reaction" | "result"): GameState {
+  let state = startBattle(createGame(), landmarks[0].battleId);
+  expect(state.activeBattle).not.toBeNull();
+  if (key === "intro") return state;
+  for (let step = 0; step < 250; step++) {
+    const active = state.activeBattle!;
+    if (key === "question" && active.phase === "question" && active.roundIndex === 0) return state;
+    if (key === "feedback" && active.phase === "feedback" && active.roundIndex === 0) return state;
+    if (key === "reaction" && active.phase === "dialogue" && active.answers.length === 1) return state;
+    if (key === "result" && active.phase === "result") return state;
+    state = active.phase === "question"
+      ? answerBattle(state, getActiveBattleContent(active).quiz.questions[active.roundIndex].correctOptionId, state.revision)
+      : advanceBattle(state, state.revision);
+  }
+  throw new Error(`Could not reach current battle checkpoint: ${key}`);
 }
 
 describe("optional tourism and discoveries", () => {
@@ -110,7 +129,7 @@ describe("optional tourism and discoveries", () => {
   });
 
   it("records hotspots and documentary cards once, survives reload and preserves existing progress", () => {
-    const before = validateGameState(phase2.ending);
+    const before = currentEnding();
     let state = explore(before);
     expect(clues().some((item) => item.kind === "hotspot")).toBe(true);
     expect(clues().some((item) => item.kind === "document")).toBe(true);
@@ -154,10 +173,11 @@ describe("optional tourism and discoveries", () => {
     const state = explore(seedLegacyChapter(createGame()));
     expect(startDate(state, "milano_cafe_01")).toBe(state);
     expect(claimTrialMilestone(state, "trial_after_cafe")).toBe(state);
-    const dating = validateGameState(phase2.activeDate);
+    const dating = startDate(seedLegacyChapter(createGame()), "milano_cafe_01", () => 0);
+    expect(dating.activeDate).not.toBeNull();
     expect(getTourismAvailability(dating, landmarkId()).available).toBe(false);
     expect(openTourism(dating, landmarkId())).toBe(dating);
-    const ended = validateGameState(phase2.ending);
+    const ended = currentEnding();
     expect(getTourismAvailability(ended, landmarkId()).available).toBe(true);
     expect(explore(ended).endingReached).toBe(true);
   });
@@ -165,9 +185,9 @@ describe("optional tourism and discoveries", () => {
 
 describe("tourism temporarily suspends the current battle", () => {
   it.each(["intro", "question", "feedback", "reaction", "result"] as const)(
-    "preserves the exact Phase 3 %s checkpoint through visit, discovery and return",
+    "preserves the current %s checkpoint through visit, discovery and return",
     (key) => {
-      const before = validateGameState(phase3[key]);
+      const before = battleCheckpoint(key);
       const battle = structuredClone(before.activeBattle);
       let state = explore(before);
       expect(advanceBattle(state, state.revision)).toBe(state);
@@ -188,7 +208,7 @@ describe("tourism temporarily suspends the current battle", () => {
   );
 
   it("returning via close keeps the locked answer and a later round scores normally", () => {
-    const before = validateGameState(phase3.feedback);
+    const before = battleCheckpoint("feedback");
     let state = explore(before);
     state = closeTourism(state, state.revision);
     expect(state.activeBattle).toEqual(before.activeBattle);
@@ -196,8 +216,7 @@ describe("tourism temporarily suspends the current battle", () => {
     while (state.activeBattle!.phase !== "question")
       state = advanceBattle(state, state.revision);
     expect(state.activeBattle!.roundIndex).toBe(1);
-    // An in-progress legacy battle must continue against its saved quiz,
-    // rather than the quiz currently assigned to that battle ID.
+    // A current in-progress battle continues against its matching quiz.
     const { quiz } = getActiveBattleContent(state.activeBattle!);
     state = answerBattle(
       state,

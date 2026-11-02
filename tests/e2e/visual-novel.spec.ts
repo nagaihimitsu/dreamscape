@@ -1,15 +1,13 @@
 import { installRomanceRolls } from "./romance-rolls";
+import { loadCurrentScene } from "./current-scenarios";
 import { expect, test } from "@playwright/test";
 import characterData from "../../content/presentation/characters.json" with { type: "json" };
-import phase1 from "../fixtures/phase1-saves.json" with { type: "json" };
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
 import {
   advanceToChoiceOrEnd,
   choose,
   expectNoOverflow,
   finishCafe,
-  loadLegacyFreeTime,
-  loadSnapshot,
+  loadCurrentFreeTime,
   saved,
   startCafe,
   startNewGame,
@@ -20,9 +18,9 @@ test.beforeEach(async ({ page }) => { await installRomanceRolls(page); });
 
 test("a response is saved before its presentation and cannot be scored again after reload", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 780 });
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentScene(page, "battleQuestion");
   const initial = await saved(page);
-  await page.locator(".question-en").getByRole("button", { name: "shapeの意味" }).tap();
+  await page.locator(".question-en").getByRole("button", { name: "buriedの意味" }).tap();
   await page.getByRole("button", { name: "問題文の訳を見る" }).tap();
   expect(await saved(page)).toEqual(initial);
   await page.getByTestId("answer-B").tap();
@@ -42,7 +40,7 @@ test("a response is saved before its presentation and cannot be scored again aft
 test("date conversation log contains displayed lines and never advances the story", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await startNewGame(page);
-  await loadLegacyFreeTime(page);
+  await loadCurrentFreeTime(page);
   await startCafe(page);
   await setDialogueSpeed(page, "0");
   const before = await saved(page);
@@ -66,7 +64,7 @@ test("date conversation log contains displayed lines and never advances the stor
 test("an old confirmation-on setting still makes choices direct and single-commit", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 780 });
   await startNewGame(page);
-  await loadLegacyFreeTime(page);
+  await loadCurrentFreeTime(page);
   await startCafe(page);
   await page.evaluate(() => localStorage.setItem("dreamscape.presentation.v1", JSON.stringify({
     schemaVersion: 1, confirmChoices: true, reduceMotion: false,
@@ -89,7 +87,7 @@ test("an old confirmation-on setting still makes choices direct and single-commi
 
 test("date and battle stay readable on mobile, desktop and landscape", async ({ page }) => {
   await startNewGame(page);
-  await loadLegacyFreeTime(page);
+  await loadCurrentFreeTime(page);
   await startCafe(page);
   await setDialogueSpeed(page, "0");
   for (const size of [
@@ -114,7 +112,7 @@ test("date and battle stay readable on mobile, desktop and landscape", async ({ 
     await expect(page.locator(".choice").first()).toBeVisible();
     await page.screenshot({ path: `artifacts/vn-overhaul/choice-${size.width}x${size.height}.png` });
   }
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentScene(page, "battleQuestion");
   for (const size of [
     { width: 360, height: 780 },
     { width: 430, height: 932 },
@@ -131,7 +129,7 @@ test("date and battle stay readable on mobile, desktop and landscape", async ({ 
 
 test("tapping a line reveals it before a second tap advances", async ({ page }) => {
   await startNewGame(page);
-  await loadLegacyFreeTime(page);
+  await loadCurrentFreeTime(page);
   await startCafe(page);
   await setDialogueSpeed(page, "45");
   const before = await saved(page);
@@ -145,24 +143,24 @@ test("tapping a line reveals it before a second tap advances", async ({ page }) 
 test("a failed expression image falls back and the date remains playable", async ({ page }) => {
   const heroine = characterData.characters.find((item) => item.id === "heroine")!;
   const basic = heroine.costumes!.find((item) => item.id === "default_01")!;
-  const { neutral, shy } = basic.poses.find((item) => item.id === "standing_01")!.expressions as Record<string, string>;
+  const { neutral, teasing } = basic.poses.find((item) => item.id === "standing_01")!.expressions as Record<string, string>;
   expect(neutral).toBeTruthy();
-  expect(shy).toBeTruthy();
+  expect(teasing).toBeTruthy();
   let blocked = 0;
-  await page.route(`**/${shy}`, async (route) => {
+  await page.route(`**/${teasing}`, async (route) => {
     blocked += 1;
     await route.abort();
   });
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await startNewGame(page);
-  await loadLegacyFreeTime(page);
+  await loadCurrentFreeTime(page);
   await startCafe(page);
   const before = await saved(page);
   await setDialogueSpeed(page, "0");
-  await choose(page, 1);
+  await choose(page, 0);
   await expect.poll(() => blocked).toBeGreaterThan(0);
-  expect((await saved(page)).activeDate!.frame.emotion).toBe("shy");
+  expect((await saved(page)).activeDate!.frame.emotion).toBe("teasing");
   const portrait = page.locator(".romance-scene .vn-character > img");
   await expect(portrait).toBeVisible();
   await expect(portrait).toHaveAttribute("src", new RegExp(`${neutral}$`));
@@ -176,7 +174,7 @@ test("a failed expression image falls back and the date remains playable", async
 for (const method of ["setting", "device"] as const) {
   test(`answer animation respects reduced motion from ${method}`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: method === "device" ? "reduce" : "no-preference" });
-    await loadSnapshot(page, phase6.battleQuestion);
+    await loadCurrentScene(page, "battleQuestion");
     if (method === "setting") {
       await page.getByRole("button", { name: "設定", exact: true }).click();
       await page.getByLabel("演出を短縮する").check();
@@ -198,7 +196,7 @@ for (const method of ["setting", "device"] as const) {
 
 test("backgrounding during an answer effect neither rescores nor blocks the next line", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await loadSnapshot(page, phase6.battleQuestion);
+  await loadCurrentScene(page, "battleQuestion");
   await page.getByTestId("answer-B").click();
   const after = await saved(page);
   expect(after.activeBattle?.answers).toHaveLength(1);
@@ -221,7 +219,7 @@ test("backgrounding during an answer effect neither rescores nor blocks the next
 test("the reveal input cannot select a new choice immediately", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.clock.install();
-  await loadSnapshot(page, phase1.beforeChoice);
+  await loadCurrentScene(page, "dateChoice");
   await page.getByRole("button", { name: "全文を表示", exact: true }).click();
   const choice = page.locator(".choice").first();
   await expect(choice).toBeDisabled();

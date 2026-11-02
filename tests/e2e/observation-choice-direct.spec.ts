@@ -1,12 +1,12 @@
 import { expect, test } from "@playwright/test";
-import phase1 from "../fixtures/phase1-saves.json" with { type: "json" };
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
-import { loadSnapshot, saved, SAVE_KEY } from "./helpers";
+import { advanceToChoiceOrEnd, loadCurrentFreeTime, saved, setDialogueSpeed, startCafe, startCurrentSupperJourney, startNewGame } from "./helpers";
+import { skipTourismGuide } from "./tourism-helpers";
 
 test.use({ viewport: { width: 360, height: 640 }, reducedMotion: "reduce" });
 
 test("observation keeps the image and selected location visible beside its explanation", async ({ page }, testInfo) => {
-  await loadSnapshot(page, phase6.exploring);
+  await startCurrentSupperJourney(page);
+  await skipTourismGuide(page);
   const viewport = page.getByTestId("observation-viewport");
   const marker = page.getByTestId("hotspot-last_supper_perspective");
   await marker.tap();
@@ -44,13 +44,16 @@ test("observation keeps the image and selected location visible beside its expla
   expect((await saved(page)).discoveredClueIds).toEqual(expect.arrayContaining(["last_supper_perspective", "last_supper_apostle_groups"]));
 });
 
-test("an old saved choice with confirmation enabled commits once without a dialog", async ({ page }) => {
+test("a current choice with confirmation enabled commits once without a dialog", async ({ page }) => {
   await page.goto("/");
-  await page.evaluate(({ key, snapshot }) => {
-    localStorage.setItem(key, JSON.stringify(snapshot));
+  await page.evaluate(() => {
     localStorage.setItem("dreamscape.presentation.v1", JSON.stringify({ schemaVersion: 1, confirmChoices: true, reduceMotion: true }));
-  }, { key: SAVE_KEY, snapshot: phase1.beforeChoice });
-  await page.reload();
+  });
+  await startNewGame(page);
+  await loadCurrentFreeTime(page);
+  await startCafe(page);
+  await setDialogueSpeed(page, "0");
+  await advanceToChoiceOrEnd(page);
   const before = await saved(page);
   const choice = page.locator(".choice").first();
   await expect(choice).toBeEnabled();
@@ -67,7 +70,8 @@ test("an old saved choice with confirmation enabled commits once without a dialo
 });
 
 test("a document remains alongside the image without inventing an image location", async ({ page }) => {
-  await loadSnapshot(page, phase6.exploring);
+  await startCurrentSupperJourney(page);
+  await skipTourismGuide(page);
   const viewport = page.getByTestId("observation-viewport");
   const initialScale = await viewport.getAttribute("data-scale");
   await page.getByRole("button", { name: "発見ポイント・資料を見る", exact: true }).tap();
@@ -82,7 +86,8 @@ test("a document remains alongside the image without inventing an image location
 });
 
 test("starting a paid date still asks before spending AP", async ({ page }) => {
-  await loadSnapshot(page, phase6.freeTime);
+  await startNewGame(page);
+  await loadCurrentFreeTime(page);
   const before = await saved(page);
   await page.getByTestId("event-milano_cafe_01").getByRole("button").tap();
   await expect(page.getByRole("dialog")).toBeVisible();

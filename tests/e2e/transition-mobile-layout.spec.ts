@@ -1,7 +1,7 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
-import phase2 from "../fixtures/phase2-saves.json" with { type: "json" };
-import { loadSnapshot, saved } from "./helpers";
+import { loadCurrentScene } from "./current-scenarios";
+import { availableAp, choose, finishEvent, playEvent, saved, setDialogueSpeed, startEvent } from "./helpers";
+import { installRomanceRolls } from "./romance-rolls";
 
 // A Playwright click may silently scroll its target into view. Check the actual
 // viewport and clipped ancestors first so the test catches mandatory scrolling.
@@ -26,7 +26,7 @@ test.use({ reducedMotion: "reduce" });
 for (const viewport of [{ width: 360, height: 640 }, { width: 390, height: 844 }]) {
   test(`battle results and main continuation fit at ${viewport.width}×${viewport.height}`, async ({ page }, testInfo) => {
     await page.setViewportSize(viewport);
-    await loadSnapshot(page, phase6.result);
+    await loadCurrentScene(page, "battleResult");
     const result = page.getByTestId("battle-result");
     await expectOnScreen(page, result.getByRole("heading", { name: "PERFECT VICTORY" }));
     await expectOnScreen(page, result.locator(".battle-score"));
@@ -44,23 +44,24 @@ for (const viewport of [{ width: 360, height: 640 }, { width: 390, height: 844 }
 
 test("stored AP and result details remain available without repeat awards", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase6.pendingResult);
+  await loadCurrentScene(page, "pendingResult");
   const before = await saved(page);
   await expectOnScreen(page, page.getByRole("button", { name: "自由時間へ進む", exact: true }));
   await page.locator(".result-pending > summary").click();
-  await expect(page.getByTestId("pending-rewards")).toContainText("6AP");
+  const pending = before.pendingApRewards.reduce((sum, reward) => sum + reward.remainingAp, 0);
+  expect(pending).toBeGreaterThan(0);
+  await expect(page.getByTestId("pending-rewards")).toContainText(`${pending}AP`);
   await page.getByTestId("pending-claim").click();
   const after = await saved(page);
-  expect(after.ap).toBe(before.ap + 6);
-  expect(after.pendingApRewards).toEqual([]);
+  expect(after.ap).toBe(before.ap + Math.min(12 - before.ap, pending));
+  expect(availableAp(after)).toBe(availableAp(before));
   await page.reload();
-  expect((await saved(page)).ap).toBe(after.ap);
-  expect((await saved(page)).pendingApRewards).toEqual([]);
+  expect(await saved(page)).toEqual(after);
 });
 
 test("special battle result retains its score, review and return routes", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase6.B_result);
+  await loadCurrentScene(page, "specialBResult");
   const result = page.getByTestId("battle-result");
   await expectOnScreen(page, result.getByRole("heading", { name: "PERFECT VICTORY" }));
   await expectOnScreen(page, page.getByRole("button", { name: "自由時間へ戻る", exact: true }));
@@ -72,7 +73,7 @@ test("special battle result retains its score, review and return routes", async 
 
 test("free time presents both the next journey and a date without scrolling", async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase6.freeTime);
+  await loadCurrentScene(page, "freeTimeEarly");
   const next = page.getByRole("button", { name: "次の観光地へ進む", exact: true });
   const date = page.getByTestId("event-milano_cafe_01").getByRole("button");
   await expectOnScreen(page, next);
@@ -89,17 +90,26 @@ test("free time presents both the next journey and a date without scrolling", as
 
 test("next destination remains available from free time", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase6.freeTime);
+  await loadCurrentScene(page, "freeTimeEarly");
   const next = page.getByRole("button", { name: "次の観光地へ進む", exact: true });
   await expectOnScreen(page, next);
   await next.click();
-  expect((await saved(page)).activeTourism?.landmarkId).toBe("duomo_milano");
+  expect((await saved(page)).activeTourism?.landmarkId).toBe("galleria_vittorio_emanuele_ii");
 });
 
 test("revisits remain accessible immediately after accepting the confession", async ({ page }) => {
+  test.setTimeout(90_000);
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase2.confessionPending);
-  await page.getByRole("button", { name: /^(デートを終える|この時間を終える)$/ }).click();
+  await installRomanceRolls(page, [0, 5000, 5000, 9999]);
+  await loadCurrentScene(page, "freeTime");
+  await startEvent(page, "milano_cafe_01", 2);
+  await setDialogueSpeed(page, "0");
+  await choose(page, 2);
+  await choose(page, 0);
+  await finishEvent(page, 2);
+  await playEvent(page, "milano_walk_01", 3, [0, 0]);
+  await playEvent(page, "milano_night_01", 3, [0, 2]);
+  await playEvent(page, "milano_confession_01", 0, [0]);
   expect((await saved(page)).endingReached).toBe(true);
   await expect(page.getByTestId("romance-ending")).toBeVisible();
   await page.getByTestId("romance-ending").getByRole("button", { name: "自由時間へ", exact: true }).click();

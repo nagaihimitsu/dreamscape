@@ -1,6 +1,6 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
-import { loadSnapshot, saved } from "./helpers";
+import { startCurrentSupperJourney, saved } from "./helpers";
+import { skipTourismGuide } from "./tourism-helpers";
 
 test.use({ reducedMotion: "reduce" });
 
@@ -27,7 +27,8 @@ async function expectOnScreen(page: Page, target: Locator) {
 for (const viewport of [{ width: 360, height: 640 }, { width: 390, height: 844 }]) {
   test(`observation essentials are usable without page scrolling at ${viewport.width}×${viewport.height}`, async ({ page }, testInfo) => {
     await page.setViewportSize(viewport);
-    await loadSnapshot(page, phase6.exploring);
+    await startCurrentSupperJourney(page);
+    await skipTourismGuide(page);
     const initialScroll = await page.evaluate(() => window.scrollY);
     for (const target of [
       page.getByTestId("observation-viewport"),
@@ -53,7 +54,8 @@ for (const viewport of [{ width: 360, height: 640 }, { width: 390, height: 844 }
 
 test("observation documents are reachable and recorded on a small screen", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase6.exploring);
+  await startCurrentSupperJourney(page);
+  await skipTourismGuide(page);
   const initialScroll = await page.evaluate(() => window.scrollY);
   const open = page.getByRole("button", { name: "発見ポイント・資料を見る", exact: true });
   await expectOnScreen(page, open);
@@ -70,7 +72,8 @@ test("observation documents are reachable and recorded on a small screen", async
 
 test("large observation text leaves controls reachable", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase6.exploring);
+  await startCurrentSupperJourney(page);
+  await skipTourismGuide(page);
   // Simulate a reader overriding text size; scrolling is acceptable here, but
   // no control may be clipped or lost behind the viewport.
   await page.addStyleTag({ content: ".tourism-screen * { font-size: 32px !important; }" });

@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { Story } from "inkjs";
 import { expect, it } from "vitest";
-import freeTime from "../tests/fixtures/phase7-free-time.json";
+import { createDebugState } from "../src/dev/debug-state";
 import { dates, landmarks, stories } from "../src/content";
 import { encounters } from "../src/content/encounters";
 import { normalizeEncounterCatalog } from "../src/content/encounter-schemas";
@@ -91,10 +91,9 @@ VAR heroine_name = ""
       backgroundAssetId: "milano_la_scala_date",
     });
     await writeFile(datesPath, JSON.stringify(dateCatalog));
-    let dateInk = await readFile(path.join(root, "content/stories/milano/la_scala_refresh_01.ink"), "utf8");
-    for (const moment of ["first", "second"]) {
-      for (const [oldName, profile] of [["joke", "playful"], ["listen", "attentive"], ["honest", "honest"]])
-        dateInk = dateInk.replace(`milano_la_scala_${moment}_${oldName}_refresh`, `common_date_${moment}_${profile}`);
+    let dateInk = await readFile(path.join(root, "content/stories/milano/sound_cafe_01.ink"), "utf8");
+    for (const [index, profile] of [[1, "playful"], [2, "attentive"], [3, "honest"]] as const) {
+      dateInk = dateInk.replace(`sound_cafe_01_2_${index}`, `common_date_second_${profile}`);
     }
     await writeFile(path.join(root, "content/stories/milano/fixture_simple_date.ink"), dateInk);
 
@@ -130,9 +129,11 @@ VAR heroine_name = ""
     stories[paidEncounterStory] = result.stories[paidEncounterStory];
     stories[dateStory] = result.stories[dateStory];
     const restore = (state: unknown) => validateGameState(JSON.parse(JSON.stringify(state)));
-    let state = restore(freeTime.cityClearViewed);
+    let state = restore(createDebugState({
+      scene: "encounter", id: encounterId, progress: "completed", ap: 12,
+      affection: 5, trust: 5, spark: 5, roll: "positive",
+    }));
     const initialBudget = state.travelBudget;
-    state = startEncounter(state, encounterId, () => 0);
     expect(state.activeEncounter?.encounterId).toBe(encounterId);
     state = restore(state);
     while (state.activeEncounter && !state.activeEncounter.frame.choices.length && !state.activeEncounter.frame.ended)

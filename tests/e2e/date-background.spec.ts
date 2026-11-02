@@ -1,12 +1,10 @@
 import { expect, test } from "@playwright/test";
-import phase7 from "../fixtures/phase7-free-time.json" with { type: "json" };
-import castleCleared from "../fixtures/castle-clear-unplayed.json" with { type: "json" };
-import { advanceToChoiceOrEnd, choose, expectNoOverflow, finishEvent, loadLegacyFreeTime, loadSnapshot, saved, setDialogueSpeed, startCafe, startEvent, startNewGame } from "./helpers";
+import { advanceToChoiceOrEnd, choose, expectNoOverflow, finishEvent, loadCurrentFreeTime, loadCurrentCompletedFreeTime, saved, setDialogueSpeed, startCafe, startEvent, startNewGame } from "./helpers";
 
 test("a date background fills the scene and its credit can be read without advancing", async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await startNewGame(page);
-  await loadLegacyFreeTime(page);
+  await loadCurrentFreeTime(page);
   await startCafe(page);
   await setDialogueSpeed(page, "0");
   const scene = page.getByTestId("romance-scene");
@@ -40,7 +38,7 @@ test("a date background fills the scene and its credit can be read without advan
 test("a broken date background falls back without blocking dialogue", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await startNewGame(page);
-  await loadLegacyFreeTime(page);
+  await loadCurrentFreeTime(page);
   await page.route("**/assets/tourism/dates/palazzo_broggi.webp", (route) => route.abort());
   await startCafe(page);
   await setDialogueSpeed(page, "0");
@@ -54,7 +52,8 @@ test("a broken date background falls back without blocking dialogue", async ({ p
 
 test("Brera artwork is legible in a mobile date scene", async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, phase7.cityClearViewed);
+  await startNewGame(page);
+  await loadCurrentCompletedFreeTime(page);
   await startEvent(page, "milano_brera_date_01", 2);
   await setDialogueSpeed(page, "0");
   await expect(page.locator(".vn-background img")).toHaveAttribute("src", /brera\.webp$/);
@@ -72,7 +71,8 @@ test("Brera artwork is legible in a mobile date scene", async ({ page }, testInf
 
 test("Novecento identifies the background and links to the official artwork without interrupting the date", async ({ page, context }, testInfo) => {
   await page.setViewportSize({ width: 360, height: 640 });
-  await loadSnapshot(page, castleCleared);
+  await startNewGame(page);
+  await loadCurrentCompletedFreeTime(page);
   await startEvent(page, "milano_novecento_date_01", 1);
   await setDialogueSpeed(page, "0");
   const scene = page.getByTestId("romance-scene");

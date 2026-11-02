@@ -1,8 +1,6 @@
 import { expect, test } from "@playwright/test";
-import phase1 from "../fixtures/phase1-saves.json" with { type: "json" };
-import castle from "../fixtures/castle-clear-unplayed.json" with { type: "json" };
 import {
-  advanceToChoiceOrEnd, choose, finishEvent, loadLegacyFreeTime, loadSnapshot,
+  advanceToChoiceOrEnd, choose, finishEvent, loadCurrentFreeTime, loadSnapshot,
   saved, setDialogueSpeed, startCafe, startEvent, startNewGame,
 } from "./helpers";
 
@@ -11,7 +9,7 @@ test.use({ reducedMotion: "reduce" });
 test("saved random tickets survive reload; double click applies a single choice", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 740 });
   await startNewGame(page);
-  await loadLegacyFreeTime(page);
+  await loadCurrentFreeTime(page);
   await startCafe(page);
   await setDialogueSpeed(page, "0");
   const firstFrame = await saved(page);
@@ -57,40 +55,9 @@ test("saved random tickets survive reload; double click applies a single choice"
   expect(await saved(page)).toEqual(second);
 });
 
-test("a version 8 in-progress date continues its saved Ink with fixed effects", async ({ page }) => {
-  // Build an authentic v8 snapshot from a published Phase 1 in-progress save;
-  // retain the legacy Ink hash, choices and exact story position.
-  await page.goto("/");
-  const current = await page.evaluate(async (fixture) => {
-    const modulePath = "/src/domain/game.ts";
-    const domain = await import(/* @vite-ignore */ modulePath);
-    return domain.validateGameState(fixture);
-  }, phase1.beforeChoice);
-  const { recoveryAfterRejection: _recovery, completedRecoveryCount: _count,
-    travelBudget: _budget, inventory: _inventory, completedEncounterIds: _encounters,
-    encounterRewards: _encounterRewards, activeEncounter: _activeEncounter,
-    updatedDateIds: _updatedDateIds, activeDate, ...base } = current;
-  if (!activeDate) throw new Error("Expected a legacy in-progress date");
-  const { resolutionMode: _mode, randomPlan: _plan, resolvedChoices: _resolved, responseSnapshot: _snapshot, ...oldDate } = activeDate;
-  const version8 = { ...base, schemaVersion: 8, activeDate: oldDate };
-  await loadSnapshot(page, version8);
-  await setDialogueSpeed(page, "0");
-  // Migration occurs when a transition is saved, without creating a new plan.
-  await choose(page, 0);
-  const chosen = await saved(page);
-  expect(chosen.schemaVersion).toBe(11);
-  expect(chosen.activeDate).toMatchObject({
-    storyHash: oldDate.storyHash, resolutionMode: "legacy_fixed", randomPlan: [], resolvedChoices: [],
-  });
-  expect(chosen.activeDate?.frame.text).toBe("「……迷子を予約する人、初めて見た」");
-  expect(chosen.ap).toBe(version8.ap);
-  await page.reload();
-  expect(await saved(page)).toEqual(chosen);
-});
-
 test("a stale tab cannot overwrite the first tab's saved random result", async ({ page, context }) => {
   await startNewGame(page);
-  await loadLegacyFreeTime(page);
+  await loadCurrentFreeTime(page);
   await startCafe(page);
   await setDialogueSpeed(page, "0");
   const ready = await advanceToChoiceOrEnd(page);
@@ -109,16 +76,17 @@ test("a stale tab cannot overwrite the first tab's saved random result", async (
 });
 
 test("zero-AP recovery can finish without producing rewards or duplicate memories", async ({ page }) => {
-  await page.goto("/");
+  await startNewGame(page);
+  await loadCurrentFreeTime(page);
   const stranded = await page.evaluate(async (fixture) => {
     const modulePath = "/src/domain/game.ts";
     const domain = await import(/* @vite-ignore */ modulePath);
     const base = domain.validateGameState(fixture);
     return domain.validateGameState({
       ...base, ap: 0, affection: -8, trust: -8, spark: -8,
-      playedDateIds: ["milano_love_date_01"],
+      playedDateIds: ["milano_cafe_01"],
     });
-  }, castle);
+  }, await saved(page));
   await loadSnapshot(page, stranded);
   await startEvent(page, "milano_recovery_01", 0);
   await setDialogueSpeed(page, "0");
@@ -141,7 +109,9 @@ test("zero-AP recovery can finish without producing rewards or duplicate memorie
 
 test("confession outcome follows the relationship and never draws tickets", async ({ page }) => {
   test.setTimeout(90_000);
-  await page.goto("/");
+  await startNewGame(page);
+  await loadCurrentFreeTime(page);
+  const current = await saved(page);
   for (const scenario of [
     { affection: 8, trust: 4, spark: 4, expected: "accepted" },
     { affection: 4, trust: 2, spark: 0, expected: "deferred" },
@@ -155,7 +125,7 @@ test("confession outcome follows the relationship and never draws tickets", asyn
         ...base, affection: values.affection, trust: values.trust, spark: values.spark,
         romanceStage: 4, playedDateIds: ["milano_cafe_01", "milano_walk_01", "milano_night_01"],
       }));
-    }, { fixture: castle, values: scenario });
+    }, { fixture: current, values: scenario });
     await loadSnapshot(page, snapshot);
     await startEvent(page, "milano_confession_01", 0);
     await setDialogueSpeed(page, "0");

@@ -43,8 +43,8 @@ export function nonBattleProgress(state: GameState) {
   };
 }
 
-export async function startSpecialFromEntry(page: Page, format: "B" | "C") {
-  const { battle } = specialBattle(format);
+export async function startSpecialFromEntry(page: Page, format: "B" | "C", source: "legacy" | "story" = "legacy") {
+  const { battle } = specialBattle(format, source);
   await openRevisits(page);
   await page.getByTestId(`revisit-battle-${battle.id}`).click();
   await expect

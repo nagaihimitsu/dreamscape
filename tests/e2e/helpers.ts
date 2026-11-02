@@ -1,7 +1,5 @@
 import { expect, type Locator, type Page } from "@playwright/test";
 import type { GameState } from "../../src/domain/game";
-import phase4 from "../fixtures/phase4-saves.json" with { type: "json" };
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
 
 export const SAVE_KEY = "dreamscape.save.v1";
 
@@ -48,14 +46,72 @@ export async function startNewGame(page: Page, names?: [string, string]) {
   await expect.poll(async () => (await saved(page)).ap).toBe(0);
 }
 
-/** Resume an authentic Phase 6 guide to isolate the published Last Supper route. */
-export async function startLegacyJourney(page: Page, names?: [string, string]) {
-  await startNewGame(
-    page,
-    names ?? [phase6.guide.playerName, phase6.guide.heroineName],
-  );
-  // Keep the original Ink variables, text and name fields intact as one snapshot.
-  await loadSnapshot(page, phase6.guide);
+/** Prepare a current-version state with real journey rules, not a migrated save. */
+async function prepareCurrentJourney(page: Page, throughGalleria: boolean, startSupper = true) {
+  const names = await saved(page);
+  return page.evaluate(async ({ player, heroine, throughGalleria, startSupper }) => {
+    const gamePath = "/src/domain/game.ts";
+    const chapterPath = "/src/domain/chapter.ts";
+    const tourismPath = "/src/domain/tourism.ts";
+    const battlePath = "/src/domain/battle.ts";
+    const game = await import(/* @vite-ignore */ gamePath);
+    const chapter = await import(/* @vite-ignore */ chapterPath);
+    const tourism = await import(/* @vite-ignore */ tourismPath);
+    const battle = await import(/* @vite-ignore */ battlePath);
+    let state = game.createGame(player, heroine);
+    const episodes = throughGalleria
+      ? ["milano_duomo_episode", "milano_galleria_episode"]
+      : ["milano_duomo_episode"];
+    for (const episode of episodes) {
+      state = chapter.startEpisode(state, episode);
+      if (throughGalleria) {
+        state = tourism.skipTourismGuide(state, state.revision);
+      } else {
+        for (let i = 0; state.activeTourism?.phase === "guide"; i++) {
+          if (i > 100) throw new Error("Could not complete current guide");
+          state = tourism.advanceTourismGuide(state, state.revision);
+        }
+      }
+      state = tourism.startTourismBattle(state, state.revision);
+      for (let i = 0; state.activeBattle?.phase !== "result"; i++) {
+        if (!state.activeBattle || i > 250) throw new Error("Could not complete current battle");
+        const active = state.activeBattle;
+        const { quiz } = battle.getActiveBattleContent(active);
+        state = active.phase === "question"
+          ? battle.answerBattle(state, quiz.questions[active.roundIndex].correctOptionId, state.revision)
+          : battle.advanceBattle(state, state.revision);
+      }
+      state = battle.leaveBattle(state, state.revision);
+    }
+    if (throughGalleria && startSupper) state = chapter.startEpisode(state, "milano_last_supper_episode");
+    return game.validateGameState(state);
+  }, { player: names.playerName, heroine: names.heroineName, throughGalleria, startSupper });
+}
+
+/** Reach Galleria free time through the current Duomo and Galleria battles. */
+export async function loadCurrentGalleriaFreeTime(page: Page) {
+  await loadSnapshot(page, await prepareCurrentJourney(page, true, false));
+}
+
+/** Reach the Last Supper guide through the current Duomo and Galleria route. */
+export async function startCurrentSupperJourney(page: Page, names?: [string, string]) {
+  await startNewGame(page, names ?? ["航", "澪"]);
+  await loadSnapshot(page, await prepareCurrentJourney(page, true));
+}
+
+/** Reach the first current Last Supper question through its actual dialogue. */
+export async function loadCurrentSupperQuestion(page: Page) {
+  await startCurrentSupperJourney(page);
+  await page.getByRole("button", { name: "バトルを始める", exact: true }).click();
+  await setDialogueSpeed(page, "0");
+  for (let i = 0; i < 100; i++) {
+    const state = await saved(page);
+    if (state.activeBattle?.phase === "question") return;
+    if (state.activeBattle?.phase !== "dialogue") throw new Error("Expected current battle dialogue");
+    await page.getByTestId("battle-advance").click();
+    await expect.poll(async () => (await saved(page)).revision).toBeGreaterThan(state.revision);
+  }
+  throw new Error("Current battle did not reach its first question");
 }
 
 export async function loadSnapshot(page: Page, snapshot: unknown) {
@@ -77,21 +133,30 @@ export function availableAp(state: GameState) {
   );
 }
 
-/** Isolate existing romance regressions using a genuine pre-integration chapter save. */
-export async function loadLegacyFreeTime(page: Page) {
-  const current = await saved(page);
-  const legacy = {
-    ...phase4.legacyChapter,
-    playerName: current.playerName,
-    heroineName: current.heroineName,
-  };
-  await page.evaluate(
-    ({ key, value }) => localStorage.setItem(key, JSON.stringify(value)),
-    { key: SAVE_KEY, value: legacy },
-  );
-  await page.reload();
+/** Reach free time using the current Duomo guide and battle rules. */
+export async function loadCurrentFreeTime(page: Page) {
+  await loadSnapshot(page, await prepareCurrentJourney(page, false));
   await expect(page.getByTestId("event-milano_cafe_01")).toBeVisible();
   expect((await saved(page)).ap).toBe(4);
+}
+
+/** Reach free time after the current city route for longer relationship tests. */
+export async function loadCurrentCompletedFreeTime(page: Page) {
+  const names = await saved(page);
+  const state = await page.evaluate(async ({ player, heroine }) => {
+    const debugPath = "/src/dev/debug-state.ts";
+    const gamePath = "/src/domain/game.ts";
+    const tourismPath = "/src/domain/tourism.ts";
+    const { createDebugState } = await import(/* @vite-ignore */ debugPath);
+    const game = await import(/* @vite-ignore */ gamePath);
+    const tourism = await import(/* @vite-ignore */ tourismPath);
+    let next = createDebugState({ scene: "tourism", id: "duomo_milano", progress: "completed", ap: 12,
+      affection: 0, trust: 0, spark: 0, roll: "positive" });
+    next = tourism.closeTourism(next, next.revision);
+    next = game.setNames(next, player, heroine);
+    return game.validateGameState(next);
+  }, { player: names.playerName, heroine: names.heroineName });
+  await loadSnapshot(page, state);
 }
 
 export async function openRevisits(page: Page) {

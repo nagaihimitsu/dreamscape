@@ -169,12 +169,10 @@ describe("Ink choices and reload boundaries", () => {
       });
     }
   }
-  it("keeps malicious-looking names as plain Ink text in the retained legacy story", () => {
-    const storyId = "milano/cafe_refresh_01";
-    let step = beginStory(storyId, "<img src=x>", "{heroine_name}");
-    for (let i = 0; !step.frame.choices.length && i < 100; i++)
-      step = continueStory(storyId, step.storyState, step.frame);
-    expect(step.frame.choices[1].text).toContain("{heroine_name}");
+  it("keeps names as plain Ink text in the current guide", () => {
+    const storyId = "tourism/sound_duomo";
+    expect(beginStory(storyId, "旅人", "{heroine_name}").frame.text).toContain("{heroine_name}");
+    expect(beginStory(storyId, "旅人", "<img src=x>").frame.text).toContain("<img src=x>");
   });
   it("rejects mismatched Ink pointers, content versions and choices", () => {
     const state = untilChoice(freshDate());

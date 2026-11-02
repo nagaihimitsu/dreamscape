@@ -1,19 +1,21 @@
 import { expect, test, type Page } from "@playwright/test";
-import phase6 from "../fixtures/phase6-saves.json" with { type: "json" };
-import { loadSnapshot, openRevisits, saved, setDialogueSpeed } from "./helpers";
+import { loadCurrentScene } from "./current-scenarios";
+import { openRevisits, saved, setDialogueSpeed } from "./helpers";
 
 test.use({ reducedMotion: "reduce" });
 
 async function startCastleGuide(page: Page, longNames = false) {
-  await loadSnapshot(page, phase6.freeTime);
   if (longNames) {
+    await loadCurrentScene(page, "freeTime");
     await page.getByRole("button", { name: "設定", exact: true }).click();
     await page.getByLabel("主人公の名前").fill("ABCDEFGHIJKLMNOPQRSTUVWX");
     await page.getByLabel("ヒロインの名前").fill("あいうえおかきくけこさしすせそたちつてとなにぬね");
     await page.getByRole("button", { name: "名前を保存", exact: true }).click();
-  }
-  await openRevisits(page);
-  await page.getByTestId("revisit-tourism-castello_sforzesco").click();
+    await openRevisits(page);
+    await page.getByTestId("revisit-tourism-castello_sforzesco").click();
+    await page.getByRole("button", { name: "発見ポイント・資料を見る", exact: true }).click();
+    await page.getByTestId("guide-replay").click();
+  } else await loadCurrentScene(page, "castleGuide");
   await expect.poll(async () => (await saved(page)).activeTourism?.landmarkId).toBe("castello_sforzesco");
   await expect(page.locator(".tourism-guide-scene")).toBeVisible();
   await setDialogueSpeed(page, "0");
@@ -73,9 +75,9 @@ for (const size of [
       await next.click();
       await expect.poll(async () => (await saved(page)).revision).toBeGreaterThan(state.revision);
     }
-    expect(texts[1]).toContain("さっきまで日なたで暑かったのに");
-    expect(texts[2]).toContain("は壁を見上げ、手元の案内を開いた");
-    expect(speakers).toEqual(["narrator", "heroine", "narrator", "heroine"]);
+    expect(texts[1]).toContain("絵のモデルかな");
+    expect(texts[2]).toContain("親指ほどの頭");
+    expect(speakers).toEqual(["narrator", "heroine", "narrator", "player"]);
     for (const g of readings.slice(1)) {
       for (const item of ["screen", "heading", "scene", "background", "dialogue"] as const) {
         expect(Math.abs(g[item].left - readings[0][item].left)).toBeLessThanOrEqual(1);
@@ -106,5 +108,6 @@ test("long saved names and enlarged guide text remain within the phone width and
     expect(after.scene.width).toBeCloseTo(initial.scene.width, 0);
     expect(after.dialogue.width).toBeCloseTo(initial.dialogue.width, 0);
   }
-  await expect(page.getByTestId("tourism-guide")).toContainText("あいうえおかきくけこさしすせそたちつてとなにぬね");
+  expect((await saved(page)).heroineName).toBe("あいうえおかきくけこさしすせそたちつてとなにぬね");
+  await expect(page.getByTestId("tourism-guide").locator(".speaker")).toHaveText("ABCDEFGHIJKLMNOPQRSTUVWX");
 });

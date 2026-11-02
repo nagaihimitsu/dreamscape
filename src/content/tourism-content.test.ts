@@ -66,15 +66,6 @@ describe("tourism content contract", () => {
     expect(lines.length).toBeLessThanOrEqual(8);
     expect(story.currentChoices).toHaveLength(0);
 
-    // The old guide remains playable for saved games and renders both names.
-    const previous = new Story(result.stories["tourism/last_supper_guide"]);
-    previous.variablesState.$("heroine_name", "紫乃");
-    previous.variablesState.$("player_address", "航さん");
-    const previousLines: string[] = [];
-    while (previous.canContinue) previousLines.push(previous.Continue() ?? "");
-    expect(previousLines.join("\n")).toContain("紫乃");
-    expect(previousLines.join("\n")).toContain("航さん");
-    expect(previous.currentChoices).toHaveLength(0);
   });
 
   it("requires image credits, a source, rights and a checked date", async () => {

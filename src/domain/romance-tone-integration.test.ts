@@ -1,9 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { Story } from "inkjs";
-import fixture from "../../tests/fixtures/castle-clear-unplayed.json";
+import { createDebugState } from "../dev/debug-state";
 import { dates, stories } from "../content";
 import { advanceDate, chooseDate, startDate, validateGameState, type GameState } from "./game";
 import { deriveRelationshipTone } from "./romance-tone";
+
+
+/** Generate a valid v11 history via the current game rules. */
+function currentFreeTime(): GameState {
+  const state = createDebugState({ scene: "tourism", id: "duomo_milano", progress: "completed", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
+  return validateGameState({ ...state, activeTourism: null });
+}
 
 function storyVariables(state: GameState) {
   const active = state.activeDate!;
@@ -24,7 +31,7 @@ function nextChoice(initial: GameState): GameState {
 
 describe("relationship tone in an active date", () => {
   it("starts with current values, updates after the first choice and survives reload through the second", () => {
-    const initial = { ...validateGameState(fixture), affection: 0, trust: 0, spark: 2 };
+    const initial = { ...currentFreeTime(), affection: 0, trust: 0, spark: 2 };
     expect(deriveRelationshipTone(initial)).toBe("reserved");
     let state = startDate(initial, "milano_novecento_date_01", () => 0);
     expect(state.activeDate).not.toBeNull();
@@ -46,7 +53,7 @@ describe("relationship tone in an active date", () => {
   });
 
   it("rederives a previously saved tone from relationship values without rejecting the Ink snapshot", () => {
-    const state = startDate(validateGameState(fixture), "milano_novecento_date_01", () => 0);
+    const state = startDate(currentFreeTime(), "milano_novecento_date_01", () => 0);
     const active = state.activeDate!;
     const date = dates.find((item) => item.id === active.dateId)!;
     const story = new Story(stories[date.storyId]);

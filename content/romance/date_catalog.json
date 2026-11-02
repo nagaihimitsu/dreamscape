@@ -61,20 +61,7 @@
         }
       ],
       "allowAfterEnding": true,
-      "legacyStoryIds": [
-        "milano/cafe_01",
-        "milano/cafe_tourism_01",
-        "milano/cafe_tourism_01_random",
-        "milano/cafe_tourism_01_random_tone",
-        "milano/cafe_refresh_01"
-      ],
-      "destinationId": "milano_starbucks_roastery",
-      "legacyStoryDestinationIds": {
-        "milano/cafe_tourism_01": "milano_cafe_naviglio",
-        "milano/cafe_tourism_01_random": "milano_cafe_naviglio",
-        "milano/cafe_tourism_01_random_tone": "milano_cafe_naviglio",
-        "milano/cafe_refresh_01": "milano_starbucks_roastery"
-      }
+      "destinationId": "milano_starbucks_roastery"
     },
     {
       "id": "milano_walk_01",
@@ -136,19 +123,7 @@
         }
       ],
       "allowAfterEnding": true,
-      "legacyStoryIds": [
-        "milano/walk_01",
-        "milano/walk_tourism_01",
-        "milano/walk_tourism_01_random",
-        "milano/walk_tourism_01_random_tone",
-        "milano/walk_refresh_01"
-      ],
-      "destinationId": "milano_duomo_square_walk",
-      "legacyStoryDestinationIds": {
-        "milano/walk_tourism_01": "milano_duomo_square_walk",
-        "milano/walk_tourism_01_random": "milano_duomo_square_walk",
-        "milano/walk_refresh_01": "milano_duomo_square_walk"
-      }
+      "destinationId": "milano_duomo_square_walk"
     },
     {
       "id": "milano_invitation_01",
@@ -209,15 +184,7 @@
           "hasCafeMemory": false
         }
       ],
-      "invitationJa": "「行きたい所があるの。今日は、私についてきて」",
-      "legacyStoryIds": [
-        "milano/invitation_01",
-        "milano/invitation_open_01",
-        "milano/invitation_open_tour_01",
-        "milano/invitation_open_tour_01_random",
-        "milano/invitation_open_tour_01_random_tone",
-        "milano/invitation_refresh_01"
-      ]
+      "invitationJa": "「行きたい所があるの。今日は、私についてきて」"
     },
     {
       "id": "milano_night_01",
@@ -279,19 +246,7 @@
         }
       ],
       "allowAfterEnding": true,
-      "legacyStoryIds": [
-        "milano/night_01",
-        "milano/night_tourism_01",
-        "milano/night_tourism_01_random",
-        "milano/night_tourism_01_random_tone",
-        "milano/night_refresh_01"
-      ],
-      "destinationId": "milano_naviglio_night",
-      "legacyStoryDestinationIds": {
-        "milano/night_tourism_01": "milano_naviglio_night",
-        "milano/night_tourism_01_random": "milano_naviglio_night",
-        "milano/night_refresh_01": "milano_naviglio_night"
-      }
+      "destinationId": "milano_naviglio_night"
     },
     {
       "id": "milano_confession_01",
@@ -387,11 +342,6 @@
             "sound_memory_maurizio_date_sound"
           ]
         }
-      ],
-      "legacyStoryIds": [
-        "milano/confession_01",
-        "milano/confession_open_01",
-        "milano/confession_refresh_01"
       ]
     },
     {
@@ -452,13 +402,6 @@
           "endingReached": true,
           "hasCafeMemory": false
         }
-      ],
-      "legacyStoryIds": [
-        "milano/reassurance_01",
-        "milano/reassurance_open_01",
-        "milano/reassurance_open_01_random",
-        "milano/reassurance_open_01_random_tone",
-        "milano/reassurance_refresh_01"
       ]
     },
     {
@@ -522,19 +465,7 @@
           "memoryId": "milano_cafe_future_talk"
         }
       ],
-      "legacyStoryIds": [
-        "milano/city_date_01",
-        "milano/city_date_tourism_01",
-        "milano/city_date_tourism_01_random",
-        "milano/city_date_tourism_01_random_tone",
-        "milano/city_date_refresh_01"
-      ],
-      "destinationId": "milano_galleria_revisit",
-      "legacyStoryDestinationIds": {
-        "milano/city_date_tourism_01": "milano_galleria_revisit",
-        "milano/city_date_tourism_01_random": "milano_galleria_revisit",
-        "milano/city_date_refresh_01": "milano_galleria_revisit"
-      }
+      "destinationId": "milano_galleria_revisit"
     },
     {
       "id": "milano_la_scala_date_01",
@@ -597,20 +528,7 @@
           "endingReached": true,
           "hasCafeMemory": false
         }
-      ],
-      "legacyStoryIds": [
-        "milano/la_scala_date_01",
-        "milano/la_scala_date_tour_01",
-        "milano/la_scala_date_tour_01_random",
-        "milano/la_scala_date_tour_01_random_tone",
-        "milano/la_scala_refresh_01"
-      ],
-      "legacyDestinationId": "milano_la_scala",
-      "legacyStoryDestinationIds": {
-        "milano/la_scala_date_tour_01": "milano_la_scala",
-        "milano/la_scala_date_tour_01_random": "milano_la_scala",
-        "milano/la_scala_refresh_01": "milano_la_scala"
-      }
+      ]
     },
     {
       "id": "milano_brera_date_01",
@@ -673,18 +591,7 @@
           "endingReached": true,
           "hasCafeMemory": false
         }
-      ],
-      "legacyStoryIds": [
-        "milano/brera_date_01",
-        "milano/brera_date_01_random",
-        "milano/brera_date_01_random_tone",
-        "milano/brera_date_02_rewrite"
-      ],
-      "legacyStoryDestinationIds": {
-        "milano/brera_date_01": "milano_brera",
-        "milano/brera_date_01_random": "milano_brera",
-        "milano/brera_date_02_rewrite": "milano_brera"
-      }
+      ]
     },
     {
       "id": "milano_navigli_date_01",
@@ -747,18 +654,7 @@
           "endingReached": true,
           "hasCafeMemory": false
         }
-      ],
-      "legacyStoryIds": [
-        "milano/navigli_date_01",
-        "milano/navigli_date_01_random",
-        "milano/navigli_date_01_random_tone",
-        "milano/navigli_date_02_rewrite"
-      ],
-      "legacyStoryDestinationIds": {
-        "milano/navigli_date_01": "milano_navigli",
-        "milano/navigli_date_01_random": "milano_navigli",
-        "milano/navigli_date_02_rewrite": "milano_navigli"
-      }
+      ]
     },
     {
       "id": "milano_san_satiro_date_01",
@@ -821,20 +717,7 @@
           "endingReached": true,
           "hasCafeMemory": false
         }
-      ],
-      "legacyStoryIds": [
-        "milano/san_satiro_date_01",
-        "milano/san_satiro_date_tour_01",
-        "milano/san_satiro_date_tour_01_random",
-        "milano/san_satiro_date_tour_01_random_tone",
-        "milano/san_satiro_date_02_rewrite"
-      ],
-      "legacyDestinationId": "milano_san_satiro",
-      "legacyStoryDestinationIds": {
-        "milano/san_satiro_date_tour_01": "milano_san_satiro",
-        "milano/san_satiro_date_tour_01_random": "milano_san_satiro",
-        "milano/san_satiro_date_02_rewrite": "milano_san_satiro"
-      }
+      ]
     },
     {
       "id": "milano_starbucks_roastery_date_01",
@@ -897,18 +780,7 @@
           "endingReached": true,
           "hasCafeMemory": false
         }
-      ],
-      "legacyStoryIds": [
-        "milano/starbucks_roastery_date_01",
-        "milano/starbucks_roastery_date_01_random",
-        "milano/starbucks_roastery_date_01_random_tone",
-        "milano/starbucks_roastery_date_02_rewrite"
-      ],
-      "legacyStoryDestinationIds": {
-        "milano/starbucks_roastery_date_01": "milano_starbucks_roastery",
-        "milano/starbucks_roastery_date_01_random": "milano_starbucks_roastery",
-        "milano/starbucks_roastery_date_02_rewrite": "milano_starbucks_roastery"
-      }
+      ]
     },
     {
       "id": "milano_fondazione_prada_date_01",
@@ -983,20 +855,7 @@
             "milano_brera_first_listen"
           ]
         }
-      ],
-      "legacyStoryIds": [
-        "milano/fondazione_prada_date_01",
-        "milano/fondazione_prada_date_tour_01",
-        "milano/fondazione_prada_date_tour_01_random",
-        "milano/fondazione_prada_date_tour_01_random_tone",
-        "milano/fondazione_prada_date_02_rewrite"
-      ],
-      "legacyDestinationId": "milano_fondazione_prada",
-      "legacyStoryDestinationIds": {
-        "milano/fondazione_prada_date_tour_01": "milano_fondazione_prada",
-        "milano/fondazione_prada_date_tour_01_random": "milano_fondazione_prada",
-        "milano/fondazione_prada_date_02_rewrite": "milano_fondazione_prada"
-      }
+      ]
     },
     {
       "id": "milano_love_date_01",
@@ -1060,17 +919,6 @@
           "hasCafeMemory": false
         }
       ],
-      "legacyStoryIds": [
-        "milano/love_date_01",
-        "milano/love_date_tour_01",
-        "milano/love_date_tour_01_random",
-        "milano/love_date_tour_02_random"
-      ],
-      "legacyDestinationId": "milano_love",
-      "legacyStoryDestinationIds": {
-        "milano/love_date_tour_01": "milano_love",
-        "milano/love_date_tour_02_random": "milano_love"
-      },
       "legacyOnly": true
     },
     {
@@ -1123,13 +971,6 @@
           "confessionReady": false,
           "endingReached": true
         }
-      ],
-      "legacyStoryIds": [
-        "milano/rain_pause_01",
-        "milano/rain_pause_tour_01",
-        "milano/rain_pause_tour_01_random",
-        "milano/rain_pause_tour_01_random_tone",
-        "milano/rain_pause_02_rewrite"
       ]
     },
     {
@@ -1176,11 +1017,6 @@
           "confessionReady": false,
           "endingReached": false
         }
-      ],
-      "legacyStoryIds": [
-        "milano/recovery_talk_01",
-        "milano/recovery_talk_01_tone",
-        "milano/recovery_talk_02_rewrite"
       ]
     },
     {
@@ -1244,13 +1080,7 @@
           "endingReached": true,
           "hasCafeMemory": false
         }
-      ],
-      "legacyStoryIds": [
-        "milano/novecento_date_01_rewrite"
-      ],
-      "legacyStoryDestinationIds": {
-        "milano/novecento_date_01_rewrite": "milano_novecento"
-      }
+      ]
     },
     {
       "id": "milano_maurizio_date_sound",

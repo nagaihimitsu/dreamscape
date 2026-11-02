@@ -1,20 +1,27 @@
 import { describe, expect, it } from "vitest";
-import fixture from "../../tests/fixtures/castle-clear-unplayed.json";
+import { createDebugState } from "../dev/debug-state";
 import {
   advanceDate, canConfessSuccessfully, chooseDate, completedDateCount, finishDate,
   getDateAvailability, isEventVisible, startDate, validateGameState, type GameState,
 } from "./game";
 
+
+/** Generate a valid v11 history via the current game rules. */
+function currentFreeTime(): GameState {
+  const state = createDebugState({ scene: "tourism", id: "duomo_milano", progress: "completed", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
+  return validateGameState({ ...state, activeTourism: null });
+}
+
 const recoveryId = "milano_recovery_01";
 const confessionId = "milano_confession_01";
 
 function stranded(): GameState {
-  const base = validateGameState(JSON.parse(JSON.stringify(fixture)));
+  const base = currentFreeTime();
   // One genuine previous normal date; low relationships and no AP model
   // repeated unfortunate choices after the travel rewards have been spent.
   return validateGameState({
     ...base, ap: 0, affection: -8, trust: -8, spark: -8,
-    playedDateIds: ["milano_love_date_01"],
+    playedDateIds: ["milano_cafe_01"], updatedDateIds: ["milano_cafe_01"],
   });
 }
 
@@ -68,7 +75,7 @@ describe("relationship recovery when free time is exhausted", () => {
       expect(state.memories).toEqual(originalMemories);
       expect(state.claimedRewardIds).toEqual(originalRewards);
       expect(state.playedDateIds.filter((id) => id === recoveryId)).toHaveLength(1);
-      expect(state.playedDateIds.filter((id) => id === "milano_love_date_01")).toHaveLength(1);
+      expect(state.playedDateIds.filter((id) => id === "milano_cafe_01")).toHaveLength(1);
       expect(state.completedRecoveryCount).toBe(Math.min(i + 1, 3));
       expect(completedDateCount(state)).toBe(1 + Math.min(i + 1, 3));
       state = validateGameState(JSON.parse(JSON.stringify(state)));

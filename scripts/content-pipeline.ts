@@ -1,17 +1,8 @@
-import { createHash } from "node:crypto";
-import publicationBindings from "../content/legacy/milano_3f32b60/bindings.json";
 import { access, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { characterCatalogSchema } from "../src/content/character-assets";
-import { encounterCatalogInputSchema, encounterCatalogSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
+import { encounterCatalogInputSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
 import { encounterEntryRulesSchema, validateEncounterEntryRules } from "../src/content/encounter-entry-rules";
-import archivedEncounterData from "../content/legacy/milano_fa0e7e0/encounters/catalog.json";
-import previousGalleriaEncounterData from "../content/legacy/encounters_before_galleria_integration.json";
-import previousSoundFortuneData from "../content/legacy/encounters_before_sound_fortune.json";
-import archivedBattleData from "../content/legacy/milano_fa0e7e0/battles/catalog.json";
-import archivedTourismData from "../content/legacy/milano_fa0e7e0/tourism/catalog.json";
-import archivedJourneyData from "../content/legacy/milano_fa0e7e0/progression/journey.json";
-import archivedQuizData from "../content/legacy/milano_fa0e7e0/quizzes-compiled.json";
 import { validateEncounterContent } from "./encounter-validation";
 import { validateCharacterImage } from "./character-image-validation";
 import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
@@ -439,10 +430,7 @@ export async function buildContent(root: string, writeOutput = true) {
   const encounterCatalog = normalizeEncounterCatalog(encounterInput, tourism.landmarks);
   const encounterEntryRules = await parseFile(encounterEntryRulesSchema, path.join(content, "encounters/entry-rules.json"));
   validateEncounterEntryRules(encounterEntryRules, encounterCatalog.encounters, journey);
-  const archivedEncounters = encounterCatalogSchema.parse(archivedEncounterData).encounters;
-  const previousGalleriaCatalog = encounterCatalogSchema.parse(previousGalleriaEncounterData);
-  const previousSoundFortuneCatalog = encounterCatalogSchema.parse(previousSoundFortuneData);
-  const encounterStoryIds = [...new Set([...encounterCatalog.encounters, ...previousSoundFortuneCatalog.encounters, ...previousGalleriaCatalog.encounters, ...archivedEncounters].flatMap((event) => [
+  const encounterStoryIds = [...new Set(encounterCatalog.encounters.flatMap((event) => [
     event.storyId,
     ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : []),
   ]))];
@@ -452,9 +440,6 @@ export async function buildContent(root: string, writeOutput = true) {
       path.join(content, "battles/catalog.json"),
     )
   ).battles;
-  const archivedBattles = battleCatalogSchema.parse(archivedBattleData).battles;
-  const archivedTourism = tourismCatalogSchema.parse(archivedTourismData);
-  const archivedJourney = journeySchema.parse(archivedJourneyData);
   unique(
     battles.map((battle) => battle.id),
     "battleId",
@@ -621,7 +606,7 @@ export async function buildContent(root: string, writeOutput = true) {
     if (itemReferences.length && !encounterStoryIds.includes(id))
       throw new Error(`Item references are only supported in encounters: ${id}`);
     if (itemReferences.length) {
-      const owner = [...encounterCatalog.encounters, ...previousSoundFortuneCatalog.encounters, ...previousGalleriaCatalog.encounters, ...archivedEncounters].find((event) =>
+      const owner = encounterCatalog.encounters.find((event) =>
         event.storyId === id || (event.quiz && [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId].includes(id)),
       );
       for (const itemId of itemReferences) {
@@ -666,10 +651,6 @@ export async function buildContent(root: string, writeOutput = true) {
         validateNoInkRandom(stories[date.storyId]);
         validateRelationshipToneSource(storySources[date.storyId]);
       });
-    unique([date.storyId, ...(date.legacyStoryIds ?? [])], "date story ID");
-    for (const storyId of date.legacyStoryIds ?? [])
-      if (!Object.hasOwn(stories, storyId))
-        throw new Error(`Unknown legacy storyId: ${date.id}/${storyId}`);
     if (date.destinationId) {
       const destination = destinations.find((item) => item.id === date.destinationId);
       if (!destination)
@@ -678,22 +659,6 @@ export async function buildContent(root: string, writeOutput = true) {
         throw new Error(`Date destination city mismatch: ${date.id}/${date.destinationId}`);
       if (destination.backgroundAssetId !== date.backgroundAssetId)
         throw new Error(`Date destination background mismatch: ${date.id}/${date.destinationId}`);
-    }
-    if (date.legacyDestinationId) {
-      if (!date.legacyStoryIds?.length)
-        throw new Error(`Legacy date destination needs an earlier story: ${date.id}`);
-      const destination = destinations.find((item) => item.id === date.legacyDestinationId);
-      if (!destination)
-        throw new Error(`Unknown legacy date destination: ${date.id}/${date.legacyDestinationId}`);
-      if (destination.cityId !== date.chapterId)
-        throw new Error(`Legacy date destination city mismatch: ${date.id}/${date.legacyDestinationId}`);
-    }
-    for (const [storyId, destinationId] of Object.entries(date.legacyStoryDestinationIds ?? {})) {
-      if (!date.legacyStoryIds?.includes(storyId))
-        throw new Error(`Legacy destination must reference a legacy story: ${date.id}/${storyId}`);
-      const destination = destinations.find((item) => item.id === destinationId);
-      if (!destination || destination.cityId !== date.chapterId)
-        throw new Error(`Unknown or mismatched legacy story destination: ${date.id}/${storyId}/${destinationId}`);
     }
     if (
       date.chapterId !== city.id ||
@@ -752,7 +717,7 @@ export async function buildContent(root: string, writeOutput = true) {
       throw new Error("Confession validation needs accepted, deferred and rejected contexts");
     // Traverse the complete Ink tree after inexpensive cross-content checks.
     deferredDateValidation.push(() => {
-      for (const storyId of [date.storyId, ...(date.legacyStoryIds ?? [])]) {
+      for (const storyId of [date.storyId]) {
         for (const reference of storyMemoryReferences[storyId]) {
           const hasReference = (seed: (typeof date.validationContexts)[number]) =>
             (seed.memoryIds ?? (seed.memoryId ? [seed.memoryId] : [])).includes(reference);
@@ -761,7 +726,7 @@ export async function buildContent(root: string, writeOutput = true) {
         }
         const randomReactions = storyId === date.storyId && date.kind !== "confession" && date.choiceCount > 0;
         // Reuse existing contexts and add only enough representative contexts
-        // to exercise all tones. All old Ink remains on its original contract.
+        // to exercise all tones.
         const contextCount = randomReactions
           ? Math.max(date.validationContexts.length, RELATIONSHIP_TONES.length)
           : date.validationContexts.length;
@@ -937,11 +902,6 @@ export async function buildContent(root: string, writeOutput = true) {
       () => validateBattleStory(stories[battle.storyId], battle, context, observeForStory(battle.storyId)),
     );
   }
-  for (const battle of archivedBattles) {
-    if (!stories[battle.storyId] || battles.some((entry) => entry.storyId === battle.storyId)) continue;
-    withContext(`legacy battle ${battle.id}/${battle.storyId}`, () =>
-      validateBattleStory(stories[battle.storyId], battle, context, observeForStory(battle.storyId)));
-  }
   // Dialogue leading into a proof is presentation-only: it is deliberately
   // kept outside the battle definition and its save-data fingerprint.
   const reasoningIntros = await parseFile(
@@ -1037,11 +997,6 @@ export async function buildContent(root: string, writeOutput = true) {
     context,
     observeForStory,
   );
-  await validateTourism(
-    root, archivedTourism, city.id, city.landmarkIdsPlanned, archivedBattles,
-    Object.fromEntries(Object.entries(archivedQuizData).map(([id, quiz]) => [id, quizSchema.parse(quiz)])),
-    stories, context, observeForStory,
-  );
   for (const validateDate of deferredDateValidation) validateDate();
   for (const effect of effects) {
     // These shared, memoryless effects let ordinary dates use the existing
@@ -1065,7 +1020,7 @@ export async function buildContent(root: string, writeOutput = true) {
   }
   for (const battle of battles) validateBattleEvidence(battle, tourism.clues);
   for (const storyId of encounterStoryIds) {
-    if (dates.some((date) => date.storyId === storyId || date.legacyStoryIds?.includes(storyId)) ||
+    if (dates.some((date) => date.storyId === storyId) ||
         battles.some((battle) => battle.storyId === storyId) ||
         tourism.landmarks.some((landmark) => landmark.guideStoryId === storyId) ||
         journey.episodes.some((episode) => episode.epilogueStoryId === storyId) ||
@@ -1075,18 +1030,6 @@ export async function buildContent(root: string, writeOutput = true) {
   }
   validateEncounterContent({
     catalog: encounterCatalog, cityId: city.id, landmarks: tourism.landmarks, journey, stories, quizzes,
-    responseProfileIds: responseProfiles.map((profile) => profile.id), memoryIds: Object.keys(presentation.memories), context,
-    validateQuiz: validateQuizEntries,
-  });
-  // Previously published quiz and outcome Ink remains playable for an
-  // already-active save even though it is no longer offered to new players.
-  validateEncounterContent({
-    catalog: previousGalleriaCatalog, cityId: city.id, landmarks: tourism.landmarks, journey, stories, quizzes,
-    responseProfileIds: responseProfiles.map((profile) => profile.id), memoryIds: Object.keys(presentation.memories), context,
-    validateQuiz: validateQuizEntries,
-  });
-  validateEncounterContent({
-    catalog: previousSoundFortuneCatalog, cityId: city.id, landmarks: tourism.landmarks, journey, stories, quizzes,
     responseProfileIds: responseProfiles.map((profile) => profile.id), memoryIds: Object.keys(presentation.memories), context,
     validateQuiz: validateQuizEntries,
   });
@@ -1110,34 +1053,16 @@ export async function buildContent(root: string, writeOutput = true) {
       () => validateEpilogue(compiled, context, observeForStory(episode.epilogueStoryId!)),
     );
   }
-  for (const episode of archivedJourney.episodes) {
-    const id = episode.epilogueStoryId;
-    if (!id || !stories[id] || journey.episodes.some((entry) => entry.epilogueStoryId === id)) continue;
-    withContext(`legacy epilogue ${episode.id}/${id}`, () =>
-      validateEpilogue(stories[id], context, observeForStory(id)));
-  }
-  // Already-published source files must stay byte-identical so saved Ink
-  // positions can be resolved against their original content fingerprint.
-  const previousPublicationIds = new Set(Object.keys(publicationBindings.stories));
-  for (const [storyId, binding] of Object.entries(publicationBindings.stories)) {
-    const source = storySources[storyId];
-    if (!source || createHash("sha256").update(source).digest("hex") !== binding.sha256)
-      throw new Error(`Previous Milano story changed: ${storyId}`);
-  }
   for (const storyId of Object.keys(stories)) {
     if (
-      !previousPublicationIds.has(storyId) &&
       storyId !== learningDetails.storyId &&
-      !dates.some((date) => date.storyId === storyId || date.legacyStoryIds?.includes(storyId)) &&
+      !dates.some((date) => date.storyId === storyId) &&
       !battles.some((battle) => battle.storyId === storyId) &&
-      !archivedBattles.some((battle) => battle.storyId === storyId) &&
       !encounterStoryIds.includes(storyId) &&
       !reasoningIntros.entries.some((entry) => entry.storyId === storyId) &&
       !journey.episodes.some(
         (episode) => episode.epilogueStoryId === storyId,
       ) &&
-      !archivedJourney.episodes.some((episode) => episode.epilogueStoryId === storyId) &&
-      !archivedTourism.landmarks.some((landmark) => landmark.guideStoryId === storyId) &&
       !tourism.landmarks.some((landmark) => landmark.guideStoryId === storyId)
     )
       throw new Error(`Story lacks validation contract: ${storyId}`);

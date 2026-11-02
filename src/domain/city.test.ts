@@ -41,10 +41,8 @@ import {
   getTourismAvailability,
 } from "./tourism";
 import { startCityEpilogue, advanceCityEpilogue } from "./epilogue";
-import { chooseEncounter, advanceEncounter, finishEncounter } from "./encounter";
+import { startEncounter, chooseEncounter, advanceEncounter, finishEncounter } from "./encounter";
 import { loadGame, saveGame, type StorageLike } from "../persistence";
-import phase6 from "../../tests/fixtures/phase6-saves.json";
-import previousEncounter from "../../tests/fixtures/4c6f5f3-v10-encounter.json";
 const restore = (state: GameState) => {
   const next = validateGameState(JSON.parse(JSON.stringify(state)));
   expect(next).toEqual(state);
@@ -161,23 +159,29 @@ function playDate(initial: GameState, id: string, choices = [0, 0]): GameState {
 }
 const finale = () => episodes.find((item) => item.kind === "city_finale")!;
 
-function collectSouvenir(initial: GameState): GameState {
-  // Resume a real published save: the café is no longer available to start.
-  let state = validateGameState(previousEncounter.before);
-  expect(state.activeEncounter?.encounterId).toBe("galleria_cafe");
+function collectPick(initial: GameState): GameState {
+  let state = startEncounter(initial, "duomo_string", () => 0);
+  expect(state.activeEncounter?.encounterId).toBe("duomo_string");
   for (let count = 0; state.activeEncounter && count < 100; count++) {
     const active = state.activeEncounter;
     state = active.frame.choices.length
-      ? chooseEncounter(state, 2, state.revision)
+      ? chooseEncounter(state, 0, state.revision)
       : active.frame.ended
         ? finishEncounter(state, state.revision)
         : advanceEncounter(state, state.revision);
   }
   expect(state.activeEncounter).toBeNull();
-  expect(state.inventory.galleria_souvenir).toBe("held");
-  return restore({ ...initial, travelBudget: initial.travelBudget + 2,
-    inventory: { ...initial.inventory, galleria_souvenir: "held" },
-    completedEncounterIds: [...new Set([...initial.completedEncounterIds, "galleria_cafe"])] });
+  expect(state.inventory.blue_pick).toBe("held");
+  return restore(state);
+}
+
+/** Build an accepted relationship through current dates and confession. */
+function inRelationship(initial: GameState): GameState {
+  let state = restore({ ...initial, affection: 20, trust: 20, spark: 20 });
+  for (const id of ["milano_cafe_01", "milano_walk_01", "milano_night_01", "milano_confession_01"])
+    state = playDate(state, id);
+  expect(state.confessionStatus).toBe("accepted");
+  return state;
 }
 
 function persisted(state: GameState): GameState {
@@ -195,8 +199,8 @@ function persisted(state: GameState): GameState {
 }
 
 describe("Milan's four episodes and distinct city finale", () => {
-  it("keeps a held local item, memories and funds through city completion and a v10 save", () => {
-    let state = collectSouvenir(playDate(tour(), "milano_cafe_01"));
+  it("keeps a held local item, memories and funds through city completion and a current save", () => {
+    let state = collectPick(playDate(tour(), "milano_cafe_01"));
     expect(state.memories.length).toBeGreaterThan(0);
     state = restore({ ...state, ap: 12 });
     const before = persisted(state);
@@ -209,22 +213,22 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(state.pendingApRewards.length).toBeGreaterThan(0);
     const loaded = persisted(state);
     expect(loaded.schemaVersion).toBe(11);
-    expect(loaded.inventory.galleria_souvenir).toBe("held");
+    expect(loaded.inventory.blue_pick).toBe("held");
     expect(loaded.pendingApRewards).toEqual(state.pendingApRewards);
   });
 
   it("retains an unused local item and the existing relationship ending after save and load", () => {
-    const ending = validateGameState(phase6.ending);
-    const state = collectSouvenir(ending);
+    const ending = inRelationship(tour());
+    const state = collectPick(ending);
     const loaded = persisted(state);
     expect(loaded.schemaVersion).toBe(11);
     expect(loaded.endingReached).toBe(true);
     expect(loaded.confessionStatus).toBe(ending.confessionStatus);
-    expect(loaded.inventory.galleria_souvenir).toBe("held");
+    expect(loaded.inventory.blue_pick).toBe("held");
     expect(loaded.memories).toEqual(ending.memories);
     expect(loaded.ap).toBe(ending.ap);
     expect(loaded.pendingApRewards).toEqual(ending.pendingApRewards);
-    expect(loaded.travelBudget).toBe(ending.travelBudget + 2);
+    expect(loaded.travelBudget).toBe(ending.travelBudget);
   });
   it("starts at Duomo and blocks every future direct tourism and battle shortcut", () => {
     const state = createGame();
@@ -281,38 +285,6 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(getNextEpisode(state)?.kind).toBe("city_finale");
     expect(getEpisodeAvailability(state, finale().id).available).toBe(true);
   });
-  it("does not interpret the old chapter token as all sightseeing or city completion", () => {
-    const state = validateGameState(phase6.ending);
-    expect(state.completedChapters).toContain("milano");
-    expect(state.completedEpisodeIds).toEqual([]);
-    expect(state.completedCityIds).toEqual([]);
-    expect(getNextEpisode(state)?.landmarkId).toBe("duomo_milano");
-    expect(getEpisodeAvailability(state, finale().id).available).toBe(false);
-  });
-  it("keeps the old Last Supper completion and skips it after the two newly available episodes", () => {
-    let state = validateGameState(phase6.result);
-    const oldRewardCount = state.claimedRewardIds.filter(
-      (id) => id === "chapter_milano_first_clear",
-    ).length;
-    state = enterFreeTime(state, state.revision);
-    for (const landmarkId of [
-      "duomo_milano",
-      "galleria_vittorio_emanuele_ii",
-    ]) {
-      expect(getNextEpisode(state)?.landmarkId).toBe(landmarkId);
-      state = finishEpisode(state, getNextEpisode(state)!);
-      state = enterFreeTime(state, state.revision);
-    }
-    expect(getNextStoryBattle(state)?.battleId).toBe("milano_la_scala_b01");
-    state = finishPendingStory(state);
-    expect(getNextEpisode(state)?.landmarkId).toBe("castello_sforzesco");
-    expect(
-      state.claimedRewardIds.filter(
-        (id) => id === "chapter_milano_first_clear",
-      ),
-    ).toHaveLength(oldRewardCount);
-    expect(state.completedCityIds).toEqual([]);
-  });
   it.each([0, 1, 2, 3, 4, 5])(
     "finishes the five-round boss with %i correct, stores one city clear and preserves AP at the cap",
     (score) => {
@@ -354,6 +326,10 @@ describe("Milan's four episodes and distinct city finale", () => {
     const text: string[] = [];
     state = startCityEpilogue(state, "milano", state.revision);
     expect(startCityEpilogue(state, "milano", initial.revision)).toBe(state);
+    // A save from different story content must never resume at an unrelated Ink position.
+    const altered = structuredClone(state);
+    altered.activeEpilogue!.contentHash = "unrecognized";
+    expect(() => validateGameState(altered)).toThrow();
     while (state.activeEpilogue) {
       state = restore(state);
       text.push(state.activeEpilogue!.frame.text);
@@ -385,8 +361,7 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(totalAp(state)).toBe(before - date.apCost);
     expect(state.playedDateIds).toContain(date.id);
     expect(state.endingReached).toBe(false);
-    let ended = validateGameState(phase6.ending);
-    ended = tour(ended);
+    let ended = inRelationship(tour());
     ended = finishEpisode(ended, finale(), 0);
     ended = leaveBattle(ended, ended.revision);
     const beforeEnding = totalAp(ended);

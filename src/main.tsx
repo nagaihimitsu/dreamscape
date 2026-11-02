@@ -8,12 +8,20 @@ import "./app/styles.css";
 const CharacterPreview = import.meta.env.DEV
   ? React.lazy(() => import("./dev/CharacterPreview"))
   : null;
+const DebugMode = import.meta.env.DEV
+  ? React.lazy(() => import("./dev/DebugMode"))
+  : null;
 const showCharacterPreview = new URLSearchParams(window.location.search).has(
   "character-preview",
 );
+const showDebug = new URLSearchParams(window.location.search).has("debug");
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    {CharacterPreview && showCharacterPreview ? (
+    {DebugMode && showDebug ? (
+      <React.Suspense fallback={<p>読み込み中…</p>}>
+        <DebugMode />
+      </React.Suspense>
+    ) : CharacterPreview && showCharacterPreview ? (
       <React.Suspense fallback={<p>読み込み中…</p>}>
         <CharacterPreview />
       </React.Suspense>
