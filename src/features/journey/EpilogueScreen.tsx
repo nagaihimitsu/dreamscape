@@ -9,10 +9,10 @@ import { DialogueText } from "../../components/DialogueText";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { ComicEffect } from "../../components/ComicEffect";
-import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
+import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
-import { DialogueToolsMenu } from "../../components/DialogueToolsMenu";
-import { AutoAdvanceButton, useAutoAdvance } from "../../components/useAutoAdvance";
+import { useAutoAdvance } from "../../components/useAutoAdvance";
+import { DialogueControls } from "../../components/DialogueControls";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 
@@ -20,13 +20,14 @@ export function EpilogueScreen({
   game,
   speed,
   reduceMotion,
-  onSpeed,
+  autoAdvanceEnabled = false,
   onAdvance,
 }: {
   game: GameState;
   speed: number;
   reduceMotion: boolean;
   onSpeed: (value: number) => void;
+  autoAdvanceEnabled?: boolean;
   onAdvance: () => void;
 }) {
   const active = game.activeEpilogue!;
@@ -56,6 +57,7 @@ export function EpilogueScreen({
     canAdvance: !frame.ended && !windowVisibility.hidden,
     text: frame.text,
     onAdvance: advanceSafely,
+    defaultEnabled: autoAdvanceEnabled,
   });
   useEffect(() => {
     document
@@ -87,44 +89,25 @@ export function EpilogueScreen({
           aria-hidden={windowVisibility.hidden || undefined}
         >
           <div className="speaker">{speaker}</div>
+          <DialogueControls close={<DialogueWindowHide state={windowVisibility} label="閉じる" />} entries={entries} auto={autoAdvance} />
           <p className="eyebrow">都市エピローグ</p>
           <h1>{episode.clearTitleJa}</h1>
           <DialogueText
             key={game.revision}
             text={frame.text}
-            speed={speed}
+            speed={autoAdvance.fast ? 0 : speed}
             onReady={onReady}
             onAdvance={advanceSafely}
           />
-          <button
+          {frame.ended && <button
             className="next"
             disabled={!ready}
             data-testid="epilogue-advance"
             onClick={advanceSafely}
           >
-            {frame.ended ? "ふたりの自由時間へ" : "続きを読む"}{" "}
+            ふたりの自由時間へ{" "}
             <span aria-hidden="true">→</span>
-          </button>
-          <div className="story-tools">
-            <span className="fine-print">この場面から再開できます</span>
-            <DialogueLog entries={entries} />
-            <AutoAdvanceButton state={autoAdvance} />
-            <DialogueToolsMenu>
-              <DialogueWindowHide state={windowVisibility} />
-              <label>
-              文字送り
-              <select
-                aria-label="文字送り"
-                value={speed}
-                onChange={(event) => onSpeed(Number(event.target.value))}
-              >
-                <option value={45}>ゆっくり</option>
-                <option value={25}>ふつう</option>
-                <option value={0}>一括表示</option>
-              </select>
-              </label>
-            </DialogueToolsMenu>
-          </div>
+          </button>}
         </section>
         <DialogueWindowRestore state={windowVisibility} />
       </div>

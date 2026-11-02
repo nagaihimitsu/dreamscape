@@ -79,7 +79,7 @@ export function sameGameState(left: GameState, right: GameState): boolean {
 export function saveGame(
   storage: StorageLike,
   state: GameState,
-  expectedPrevious?: GameState,
+  expectedPrevious?: GameState | null,
 ): SaveResult {
   try {
     const raw = serialize(state);
@@ -94,7 +94,7 @@ export function saveGame(
     // Re-saving the exact snapshot is harmless, including a repeated commit.
     if (current === raw) return { ok: true };
     const conflict =
-      expectedPrevious !== undefined && current !== serialize(expectedPrevious);
+      expectedPrevious !== undefined && current !== (expectedPrevious === null ? null : serialize(expectedPrevious));
     const stale =
       saved.status === "loaded" && state.revision <= saved.state.revision;
     if (conflict || stale) {

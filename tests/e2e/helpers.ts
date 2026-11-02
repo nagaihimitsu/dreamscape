@@ -14,11 +14,11 @@ export async function revealDialogueControl(page: Page, control: Locator) {
 }
 
 export async function setDialogueSpeed(page: Page, value: string) {
-  const control = page.getByLabel("文字送り");
-  const openedMenu = !(await control.isVisible());
-  if (openedMenu) await revealDialogueControl(page, control);
-  await control.selectOption(value);
-  if (openedMenu) await page.getByText("会話の操作", { exact: true }).click();
+  const settings = page.getByRole("dialog", { name: "設定" });
+  const openedSettings = !(await settings.isVisible());
+  if (openedSettings) await page.getByRole("button", { name: "設定", exact: true }).click();
+  await settings.getByLabel("文字送り").selectOption(value);
+  if (openedSettings) await settings.getByRole("button", { name: "閉じる", exact: true }).click();
 }
 
 export async function saved(page: Page): Promise<GameState> {
@@ -34,6 +34,25 @@ export async function expectNoOverflow(page: Page) {
       () => document.documentElement.scrollWidth <= window.innerWidth,
     ),
   ).toBe(true);
+}
+
+/** Leave the guide for observation before starting its battle. */
+export async function startGuideBattle(page: Page) {
+  const skip = page.getByTestId("tourism-skip");
+  if (await skip.isVisible()) await skip.click();
+  await page.getByRole("button", { name: "バトルを始める", exact: true }).click();
+}
+
+/** Advance a read line, or its explicit end-of-scene action. */
+export async function advanceDialogue(page: Page, endTestId?: string) {
+  const end = endTestId ? page.getByTestId(endTestId) : null;
+  if (end && await end.isVisible()) {
+    await end.click();
+    return;
+  }
+  const text = page.locator('.dialogue-text[role="button"]').first();
+  await expect(text).toHaveAttribute("data-ready", "true");
+  await text.click();
 }
 
 export async function startNewGame(page: Page, names?: [string, string]) {
@@ -102,13 +121,13 @@ export async function startCurrentSupperJourney(page: Page, names?: [string, str
 /** Reach the first current Last Supper question through its actual dialogue. */
 export async function loadCurrentSupperQuestion(page: Page) {
   await startCurrentSupperJourney(page);
-  await page.getByRole("button", { name: "バトルを始める", exact: true }).click();
+  await startGuideBattle(page);
   await setDialogueSpeed(page, "0");
   for (let i = 0; i < 100; i++) {
     const state = await saved(page);
     if (state.activeBattle?.phase === "question") return;
     if (state.activeBattle?.phase !== "dialogue") throw new Error("Expected current battle dialogue");
-    await page.getByTestId("battle-advance").click();
+    await advanceDialogue(page, "battle-advance");
     await expect.poll(async () => (await saved(page)).revision).toBeGreaterThan(state.revision);
   }
   throw new Error("Current battle did not reach its first question");
@@ -230,7 +249,7 @@ export async function advanceToChoiceOrEnd(
     await expectNoOverflow(page);
     if (state.activeDate.frame.choices.length || state.activeDate.frame.ended)
       return state;
-    await page.getByRole("button", { name: "続きを読む", exact: true }).click();
+    await advanceDialogue(page);
     await expect
       .poll(async () => (await saved(page)).revision)
       .toBeGreaterThan(state.revision);

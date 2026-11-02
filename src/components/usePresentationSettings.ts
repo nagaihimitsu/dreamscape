@@ -8,11 +8,17 @@ interface Preferences {
   // and safely update them. Dialogue choices now always apply immediately.
   confirmChoices: boolean;
   reduceMotion: boolean;
+  autoSave: boolean;
+  dialogueSpeed: number;
+  autoAdvance: boolean;
 }
 const defaults: Preferences = {
   schemaVersion: 1,
   confirmChoices: true,
   reduceMotion: false,
+  autoSave: true,
+  dialogueSpeed: 25,
+  autoAdvance: false,
 };
 
 function read(raw: string | null): Preferences | null {
@@ -25,13 +31,19 @@ function read(raw: string | null): Preferences | null {
       item.schemaVersion !== 1 ||
       typeof item.confirmChoices !== "boolean" ||
       typeof item.reduceMotion !== "boolean" ||
-      Object.keys(item).length !== 3
+      (item.autoSave !== undefined && typeof item.autoSave !== "boolean") ||
+      (item.autoAdvance !== undefined && typeof item.autoAdvance !== "boolean") ||
+      (item.dialogueSpeed !== undefined && ![0, 25, 45].includes(item.dialogueSpeed as number)) ||
+      Object.keys(item).some((name) => !["schemaVersion", "confirmChoices", "reduceMotion", "autoSave", "dialogueSpeed", "autoAdvance"].includes(name))
     )
       return null;
     return {
       schemaVersion: 1,
       confirmChoices: item.confirmChoices,
       reduceMotion: item.reduceMotion,
+      autoSave: item.autoSave === undefined ? true : item.autoSave as boolean,
+      dialogueSpeed: item.dialogueSpeed === undefined ? 25 : item.dialogueSpeed as number,
+      autoAdvance: item.autoAdvance === undefined ? false : item.autoAdvance as boolean,
     };
   } catch {
     return null;
@@ -53,7 +65,8 @@ export function usePresentationSettings(storage: StorageLike = window.localStora
     }
   });
   const raw = useRef(initial.raw);
-  const [value, setValue] = useState(initial.value ?? defaults);
+  // Unknown or unreadable settings must not silently enable automatic writes.
+  const [value, setValue] = useState(initial.value ?? { ...defaults, autoSave: false });
   const [error, setError] = useState(
     initial.error ||
       (initial.value
@@ -61,23 +74,25 @@ export function usePresentationSettings(storage: StorageLike = window.localStora
         : "表示設定を読み込めません。元のデータは保持しています。"),
   );
   function update(
-    change: Partial<Pick<Preferences, "confirmChoices" | "reduceMotion">>,
-  ) {
-    if (error) return;
+    change: Partial<Pick<Preferences, "confirmChoices" | "reduceMotion" | "autoSave" | "dialogueSpeed" | "autoAdvance">>,
+  ): boolean {
+    if (error) return false;
     try {
       if (storage.getItem(key) !== raw.current) {
         setError(
           "別の画面で表示設定が変更されました。再読み込みしてください。",
         );
-        return;
+        return false;
       }
       const next = { ...value, ...change };
       const encoded = JSON.stringify(next);
       storage.setItem(key, encoded);
       raw.current = encoded;
       setValue(next);
+      return true;
     } catch {
       setError("表示設定を保存できませんでした。");
+      return false;
     }
   }
   return { value, error, update };

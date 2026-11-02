@@ -189,6 +189,15 @@ describe("local save persistence", () => {
 });
 
 describe("multiple tabs sharing a save slot", () => {
+  it("protects a newly created save when another tab started from an empty slot", () => {
+    const storage = new MemoryStorage();
+    const otherTab = createGame("先に保存", "あゆみ");
+    const pending = { ...createGame("未保存", "あゆみ"), revision: 1 };
+    expect(saveGame(storage, otherTab, null)).toEqual({ ok: true });
+    expect(saveGame(storage, pending, null).ok).toBe(false);
+    expect(loadGame(storage)).toEqual({ status: "loaded", state: otherTab });
+  });
+
   it("rejects an older manual save without restoring spent AP", () => {
     const storage = new MemoryStorage();
     const menu = seedLegacyChapter(createGame());

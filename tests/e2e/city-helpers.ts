@@ -31,13 +31,10 @@ export function episodeQuiz(episode: EpisodeDefinition) {
 }
 
 export async function openCityRecords(page: Page) {
-  const summary = page.getByText("観光地・発見・戦績を見る", { exact: true });
-  if (
-    !(await summary
-      .locator("..")
-      .evaluate((element: HTMLDetailsElement) => element.open))
-  )
-    await summary.click();
+  const dialog = page.getByRole("dialog", { name: "旅の記録" });
+  if (!(await dialog.isVisible()))
+    await page.getByRole("button", { name: "観光地・発見・戦績を見る" }).click();
+  await expect(dialog).toBeVisible();
 }
 
 export async function playCityBattle(

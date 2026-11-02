@@ -1,7 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CanalScene } from "../../components/CanalScene";
 import { DialogueText } from "../../components/DialogueText";
-import { DialogueToolsMenu } from "../../components/DialogueToolsMenu";
+import { DialogueControls } from "../../components/DialogueControls";
+import { useDialogueLog } from "../../components/DialogueLog";
+import { useAutoAdvance } from "../../components/useAutoAdvance";
+import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
+import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { ComicEffect } from "../../components/ComicEffect";
 import type { ReactionMark } from "../../content/dialogue-reactions";
@@ -36,24 +40,25 @@ export type EncounterScreenView = {
 };
 
 /** The view contains no game rules: all changes are committed by the caller. */
-export function EncounterScreen({ view, learning, speed, reduceMotion, onSpeed, onAdvance, onChoose, onAnswer, onFinish }: {
+export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvanceEnabled = false, onAdvance, onChoose, onAnswer, onFinish }: {
   view: EncounterScreenView;
   learning: Learning;
   speed: number;
   reduceMotion: boolean;
   onSpeed: (value: number) => void;
+  autoAdvanceEnabled?: boolean;
   onAdvance: () => void;
   onChoose: (index: number) => boolean;
   onAnswer: (index: number) => boolean;
   onFinish: () => void;
 }) {
-  const [ready, setReady] = useState(false);
+  const { ready, onReady, entries } = useDialogueLog(view.id, view.revision, view.speaker, view.quiz ? "" : view.text);
+  const windowVisibility = useDialogueWindow();
   const [choiceReady, setChoiceReady] = useState(false);
   const lock = useRef(false);
-  const onReady = useCallback((value: boolean) => setReady(value), []);
   useEffect(() => {
-    if (view.quiz) setReady(true);
-  }, [view.quiz]);
+    if (view.quiz) onReady(true);
+  }, [view.quiz, onReady]);
   useEffect(() => {
     lock.current = false;
     setChoiceReady(false);
@@ -67,13 +72,15 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, onSpeed, 
     if (!action(index)) lock.current = false;
   }
   function advance() {
-    if (!ready || view.choices.length || view.quiz) return;
+    if (!ready || view.choices.length || view.quiz || windowVisibility.hidden || dialogueObstructed()) return;
     if (view.ended) onFinish();
     else onAdvance();
   }
   const quiz = view.quiz;
+  const autoAdvance = useAutoAdvance({ ready, canAdvance: !view.ended && !quiz && view.choices.length === 0 && !windowVisibility.hidden,
+    text: view.text, onAdvance: advance, defaultEnabled: autoAdvanceEnabled });
   return (
-    <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0}>
+    <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined}>
       <div className="vn-background">{view.backgroundImage ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundImage}`} alt="" /> : <CanalScene backgroundId={view.background} />}</div>
       {!quiz && view.portraits && <div className="vn-character-layer encounter-character-layer" data-two-characters={!!view.portraits.heroine && !!view.portraits.enemy}>
         {(["heroine", "enemy"] as const).map((id) => {
@@ -85,11 +92,12 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, onSpeed, 
           </div>;
         })}
       </div>}
-      <section className="vn-dialogue paper story-paper encounter-dialogue" aria-label="寄り道の会話">
+      <section className="vn-dialogue paper story-paper encounter-dialogue" aria-label="寄り道の会話" inert={windowVisibility.hidden} aria-hidden={windowVisibility.hidden || undefined}>
         <div className="encounter-scene-heading">
           <div className="speaker">{view.speaker}</div>
           <span aria-label={`旅の予算 ${view.balance}ユーロ`}>€{view.balance}</span>
         </div>
+        <DialogueControls close={<DialogueWindowHide state={windowVisibility} label="閉じる" />} entries={entries} auto={autoAdvance} />
         {quiz ? (
           <>
             <p className="encounter-quiz-prompt">
@@ -105,22 +113,16 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, onSpeed, 
           </>
         ) : (
           <>
-            <DialogueText key={view.revision} text={view.text} speed={speed} onReady={onReady} onAdvance={advance} />
+            <DialogueText key={view.revision} text={view.text} speed={autoAdvance.fast ? 0 : speed} onReady={onReady} onAdvance={advance} />
             {view.choices.length ? (
               <EncounterChoices id={view.id} choices={view.choices} learning={learning} onChoose={(index) => select(index, onChoose)} disabled={!ready || !choiceReady} />
-            ) : (
+            ) : view.ended ? (
               <button type="button" className="next" disabled={!ready} onClick={advance}>{view.ended ? view.finishLabel ?? "自由時間へ" : "続きを読む"} <span aria-hidden="true">→</span></button>
-            )}
+            ) : null}
           </>
         )}
-        <div className="story-tools">
-          <DialogueToolsMenu>
-            <label>文字送り <select aria-label="文字送り" value={speed} onChange={(event) => onSpeed(Number(event.target.value))}>
-              <option value={45}>ゆっくり</option><option value={25}>ふつう</option><option value={0}>一括表示</option>
-            </select></label>
-          </DialogueToolsMenu>
-        </div>
       </section>
+      <DialogueWindowRestore state={windowVisibility} />
     </div>
   );
 }

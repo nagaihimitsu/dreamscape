@@ -9,10 +9,10 @@ import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { ComicEffect } from "../../components/ComicEffect";
 import { DialogueText } from "../../components/DialogueText";
-import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
+import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
-import { DialogueToolsMenu } from "../../components/DialogueToolsMenu";
-import { AutoAdvanceButton, useAutoAdvance } from "../../components/useAutoAdvance";
+import { useAutoAdvance } from "../../components/useAutoAdvance";
+import { DialogueControls } from "../../components/DialogueControls";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { resolveRomancePresentation } from "./romance-presentation";
@@ -23,7 +23,7 @@ export function RomanceScene({
   game,
   date,
   speed,
-  onSpeed,
+  autoAdvanceEnabled = false,
   reduceMotion,
   onSelect,
   onAdvance,
@@ -33,6 +33,7 @@ export function RomanceScene({
   date: DateDefinition | undefined;
   speed: number;
   onSpeed: (speed: number) => void;
+  autoAdvanceEnabled?: boolean;
   reduceMotion: boolean;
   onSelect: (index: number, revision: number) => boolean;
   onAdvance: () => void;
@@ -64,7 +65,6 @@ export function RomanceScene({
     speaker,
     frame.text,
   );
-  const [paused, setPaused] = useState(false);
   const [creditsOpen, setCreditsOpen] = useState(false);
   const windowVisibility = useDialogueWindow();
   const dialogueRef = useDialogueScrollReset<HTMLElement>(active.storyState);
@@ -125,21 +125,23 @@ export function RomanceScene({
     choiceLock.current = false;
   }, [game.revision]);
   function advance() {
-    if (!ready || paused || frame.choices.length || windowVisibility.hidden || dialogueObstructed()) return;
+    if (!ready || frame.choices.length || windowVisibility.hidden || dialogueObstructed()) return;
     if (frame.ended) onFinish();
     else onAdvance();
   }
   const autoAdvance = useAutoAdvance({
     ready,
-    canAdvance: !paused && !windowVisibility.hidden && !frame.ended && frame.choices.length === 0,
+    canAdvance: !windowVisibility.hidden && !frame.ended && frame.choices.length === 0,
     text: frame.text,
     onAdvance: advance,
+    defaultEnabled: autoAdvanceEnabled,
   });
   return (
     <div className="vn-scene romance-scene" data-testid="romance-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-has-choices={frame.choices.length > 0}>
       <div className="vn-background">
         <CanalScene backgroundId={frame.background} />
       </div>
+      {backgroundAsset && <button type="button" className="vn-credit-link" onClick={() => setCreditsOpen(true)}>画像の出典</button>}
       {destination?.referenceImage && (
         <aside className="date-reference" aria-label="訪問先の写真">
           <span data-testid="destination-reference-note">{destination.referenceImage.backgroundNoteJa}</span>
@@ -176,13 +178,6 @@ export function RomanceScene({
             {exitingChoice}
           </div>
         )}
-        <div className="section-meta">
-          <span className="eyebrow">{date?.titleJa}</span>
-          <span className="fine-print">
-            会話 {Math.min(active.choiceCount + 1, date?.choiceCount ?? 2)} /{" "}
-            {date?.choiceCount ?? 2}
-          </span>
-        </div>
         <div className={destination ? "dialogue-speaker-row" : undefined}>
           <div className="speaker">
             <span className={`speaker-dot ${frame.emotion}`} aria-hidden="true" />
@@ -199,24 +194,12 @@ export function RomanceScene({
             </span>
           )}
         </div>
-        {paused ? (
-          <div className="paused">
-            <h1>ひと休み</h1>
-            <p>
-              ここまでの会話は保存されています。
-              <br />
-              同じ場面から続きをどうぞ。
-            </p>
-            <button className="primary" onClick={() => setPaused(false)}>
-              デートを再開する
-            </button>
-          </div>
-        ) : (
-          <>
+        <DialogueControls close={<DialogueWindowHide state={windowVisibility} label="閉じる" />} entries={entries} auto={autoAdvance} />
+        <>
             <DialogueText
               key={game.revision}
               text={frame.text}
-              speed={speed}
+              speed={autoAdvance.fast ? 0 : speed}
               onReady={onReady}
               onAdvance={advance}
             />
@@ -260,40 +243,8 @@ export function RomanceScene({
                   : "この時間を終える"}{" "}
                 <span aria-hidden="true">→</span>
               </button>
-            ) : (
-              <button disabled={!ready} className="next" onClick={advance}>
-                続きを読む <span aria-hidden="true">→</span>
-              </button>
-            )}
-            <div className="story-tools">
-              <DialogueLog entries={entries} />
-              <AutoAdvanceButton state={autoAdvance} />
-              <DialogueToolsMenu>
-                <button className="text-button" onClick={() => setPaused(true)}>
-                  中断する
-                </button>
-                {backgroundAsset && (
-                  <button type="button" className="text-button" onClick={() => setCreditsOpen(true)}>
-                    背景画像を見る
-                  </button>
-                )}
-                <DialogueWindowHide state={windowVisibility} />
-                <label>
-                文字送り
-                <select
-                  aria-label="文字送り"
-                  value={speed}
-                  onChange={(event) => onSpeed(Number(event.target.value))}
-                >
-                  <option value={45}>ゆっくり</option>
-                  <option value={25}>ふつう</option>
-                  <option value={0}>一括表示</option>
-                </select>
-                </label>
-              </DialogueToolsMenu>
-            </div>
-          </>
-        )}
+            ) : null}
+        </>
       </section>
       {creditsOpen && backgroundAsset && (
         <BackgroundCredits asset={backgroundAsset} onClose={() => setCreditsOpen(false)} />

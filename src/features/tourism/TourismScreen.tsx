@@ -19,12 +19,12 @@ import { DialogueText } from "../../components/DialogueText";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { ComicEffect } from "../../components/ComicEffect";
-import { DialogueLog, useDialogueLog } from "../../components/DialogueLog";
+import { useDialogueLog } from "../../components/DialogueLog";
 import { useDialogueScrollReset } from "../../components/useDialogueScrollReset";
-import { DialogueToolsMenu } from "../../components/DialogueToolsMenu";
-import { AutoAdvanceButton, useAutoAdvance } from "../../components/useAutoAdvance";
+import { useAutoAdvance } from "../../components/useAutoAdvance";
+import { DialogueControls } from "../../components/DialogueControls";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
-import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
+import { DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { ObservationViewer } from "./ObservationViewer";
 import { ClueDetails } from "./ClueDetails";
 import "./tourism.css";
@@ -44,13 +44,14 @@ interface Props {
   onLeave: () => void;
   onReplayGuide: () => void;
   onEncounter: () => void;
+  autoAdvanceEnabled?: boolean;
 }
 
 export function TourismScreen({
   game,
   speed,
   reduceMotion,
-  onSpeed,
+  autoAdvanceEnabled = false,
   onAdvance,
   onSkip,
   onDiscover,
@@ -116,6 +117,7 @@ export function TourismScreen({
     canAdvance: active.phase === "guide" && !!frame && !frame.ended && !windowVisibility.hidden,
     text: frame?.text ?? "",
     onAdvance: advanceSafely,
+    defaultEnabled: autoAdvanceEnabled,
   });
   const episode = episodes.find((item) => item.landmarkId === landmark.id);
   const guideReward = rewardRules.find(
@@ -275,48 +277,23 @@ export function TourismScreen({
             aria-hidden={windowVisibility.hidden || undefined}
           >
             <div className="speaker">{speaker}</div>
+            <DialogueControls close={<button type="button" className="text-button" data-testid="tourism-skip" aria-label="観光案内を閉じる" onClick={onSkip}>閉じる</button>} entries={entries} auto={autoAdvance} />
             <DialogueText
               key={game.revision}
               text={frame.text}
-              speed={speed}
+              speed={autoAdvance.fast ? 0 : speed}
               onReady={onReady}
               onAdvance={advanceSafely}
             />
-            <button
+            {frame.ended && <button
               className="next"
               data-testid="tourism-advance"
               disabled={!ready}
               onClick={advanceSafely}
             >
-              {frame.ended ? "観察を始める" : "続きを読む"}
+              観察を始める
               <span aria-hidden="true"> →</span>
-            </button>
-            <div className="story-tools">
-              <button
-                className="text-button"
-                data-testid="tourism-skip"
-                onClick={onSkip}
-              >
-                案内を閉じて観察する
-              </button>
-              <DialogueLog entries={entries} />
-              <AutoAdvanceButton state={autoAdvance} />
-              <DialogueToolsMenu>
-                <DialogueWindowHide state={windowVisibility} />
-                <label>
-                文字送り
-                <select
-                  aria-label="文字送り"
-                  value={speed}
-                  onChange={(event) => onSpeed(Number(event.target.value))}
-                >
-                  <option value={45}>ゆっくり</option>
-                  <option value={25}>ふつう</option>
-                  <option value={0}>一括表示</option>
-                </select>
-                </label>
-              </DialogueToolsMenu>
-            </div>
+            </button>}
           </div>
           <DialogueWindowRestore state={windowVisibility} />
         </div>
@@ -425,7 +402,6 @@ export function TourismScreen({
           </a>
         </p>
       </details>}
-      {active.phase === "guide" && actions}
     </section>
   );
 }

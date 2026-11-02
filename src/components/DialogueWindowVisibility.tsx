@@ -38,20 +38,23 @@ type DialogueWindow = ReturnType<typeof useDialogueWindow>;
 export function DialogueWindowHide({
   state,
   onHide,
+  label = "ウィンドウを隠す",
 }: {
   state: DialogueWindow;
   onHide?: () => void;
+  label?: string;
 }) {
   return (
     <button
       className="text-button vn-window-hide"
       type="button"
+      aria-label="会話ウィンドウを隠す"
       onClick={(event) => {
         state.hide(event);
         onHide?.();
       }}
     >
-      ウィンドウを隠す
+      {label}
     </button>
   );
 }

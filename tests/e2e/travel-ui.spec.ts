@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import quiz from "../../content/quizzes/sound_duomo_B1.json" with { type: "json" };
 import { playBattle } from "./battle-helpers";
 import { loadCurrentScene } from "./current-scenarios";
-import { choose, expectNoOverflow, finishEvent, loadCurrentGalleriaFreeTime, saved, setDialogueSpeed, startNewGame } from "./helpers";
+import { choose, expectNoOverflow, finishEvent, loadCurrentGalleriaFreeTime, saved, setDialogueSpeed, startGuideBattle, startNewGame } from "./helpers";
 
 test.use({ reducedMotion: "reduce" });
 
@@ -12,7 +12,7 @@ test("map and five destinations fit in the initial phone viewport", async ({ pag
   for (const size of [{ width: 320, height: 740 }, { width: 360, height: 780 }, { width: 430, height: 932 }]) {
     await page.setViewportSize(size);
     await page.evaluate(() => window.scrollTo(0, 0));
-    await expect(page.locator(".journey-bar").getByText("時間を進める", { exact: true })).toBeVisible();
+    await expect(page.locator(".journey-bar").getByText("待機", { exact: true })).toBeVisible();
     await expect(page.locator(".journey-bar").getByRole("button", { name: "滞在先で休む" })).toBeVisible();
     await expect(page.locator(".journey-bar").getByTestId("city-progress")).toContainText("観光 0 / 4");
     const destinations = page.getByTestId("travel-menu").locator(":scope > .travel-list > .travel-destination");
@@ -35,15 +35,11 @@ test("a phone journey saves transport, completes a battle, starts a date and res
   await expect(page.getByRole("heading", { name: "ふたりの自由時間" })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "どこへ行く？" })).toHaveCount(0);
   await expect(page.getByTestId("city-progress")).toContainText("観光 0 / 4");
-  const records = page.getByText("観光地・発見・戦績を見る", { exact: true });
-  expect(await records.evaluate((node) => {
-    const destinations = document.querySelector('[data-testid="travel-menu"]');
-    return !!destinations && !!(destinations.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_FOLLOWING);
-  })).toBe(true);
-  await expect(page.getByTestId("free-time-hub").locator(":scope > details.city-records:last-child")).toHaveCount(1);
+  const records = page.getByRole("button", { name: "観光地・発見・戦績を見る" });
+  await expect(page.locator(".journey-bar")).toContainText("観光 0 / 4");
   await records.click();
   await expect(page.getByTestId("city-stop-milano_duomo_episode")).toBeVisible();
-  await records.click();
+  await page.getByRole("dialog", { name: "旅の記録" }).getByRole("button", { name: "閉じる", exact: true }).click();
   expect((await saved(page)).travel).toMatchObject({ currentPlaceId: "p_hotel", day: 1, minute: 540 });
   await expect(page.getByTestId("travel-map-canvas")).toBeVisible();
   await expect(page.getByTestId("travel-menu").locator(":scope > .travel-list > .travel-destination")).toHaveCount(5);
@@ -59,7 +55,7 @@ test("a phone journey saves transport, completes a battle, starts a date and res
   expect(arrived.travel).toMatchObject({ currentPlaceId: "p_duomo", day: 1, minute: 547 });
   await page.reload();
   expect((await saved(page)).travel).toEqual(arrived.travel);
-  await page.getByRole("button", { name: "バトルを始める", exact: true }).click();
+  await startGuideBattle(page);
   await setDialogueSpeed(page, "0");
   await playBattle(page, quiz.questions, [true, true, true]);
   const completed = await saved(page);
@@ -123,7 +119,7 @@ test("the compact map and free return work on a narrow phone", async ({ page }) 
   await expect(page.getByRole("button", { name: "地図を大きくする" })).toHaveCount(0);
   await expectNoOverflow(page);
   await expect(page.getByRole("button", { name: "30分待つ" })).toBeHidden();
-  await page.getByText("時間を進める", { exact: true }).click();
+  await page.getByText("待機", { exact: true }).click();
   await page.getByRole("button", { name: "30分待つ" }).click();
   expect((await saved(page)).travel.minute).toBe(570);
   await page.getByRole("button", { name: "滞在先で休む" }).click();

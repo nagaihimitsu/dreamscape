@@ -120,53 +120,95 @@ h3 {
   top: 0;
   z-index: 4;
   display: flex;
-  gap: 8px 16px;
+  gap: 0 6px;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  padding: 12px 42px;
+  padding: 4px 12px;
   background: #f1f0e5;
   font-size: 13px;
   border-bottom: 1px solid var(--line);
 }
 .travelers {
-  flex: 1 1 72px;
+  flex: 0 1 auto;
   min-width: 0;
-  overflow-wrap: anywhere;
+  max-width: 28%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .journey-resources {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 4px 12px;
+  flex: none;
+  gap: 4px 6px;
   min-width: 0;
 }
 .journey-context {
   display: flex;
-  flex: 1 0 100%;
-  flex-wrap: wrap;
+  flex: 1 1 0;
+  flex-wrap: nowrap;
   align-items: baseline;
-  gap: 2px 12px;
+  gap: 4px;
   min-width: 0;
-  font-size: 12px;
+  font-size: 10px;
+  white-space: nowrap;
 }
-.journey-context span { color: var(--muted); overflow-wrap: anywhere; }
+.journey-context span { min-width: 0; overflow: hidden; text-overflow: ellipsis; color: var(--muted); }
 .journey-controls {
   display: flex;
   flex: 1 0 100%;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0 10px;
+  justify-content: space-between;
+  gap: 0 3px;
   min-width: 0;
 }
-.journey-controls .travel-utility { margin: 0 0 0 auto; }
+.journey-controls .travel-utility { flex: none; flex-wrap: nowrap; gap: 0; margin: 0; }
+.journey-controls .travel-wait summary,
+.journey-controls .travel-sleep-toggle,
+.journey-quick-actions button,
+.journey-progress-button {
+  width: auto;
+  min-height: 32px;
+  padding: 3px 2px;
+  border: 0;
+  color: var(--green);
+  background: transparent;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.journey-progress-button .pill { padding: 4px 1px; font-size: 9px; letter-spacing: -0.1px; }
+.journey-quick-actions { display: flex; flex: none; align-items: center; gap: 0; }
+.journey-quick-actions button { min-width: 34px; min-height: 36px; padding: 4px 2px; font-size: 12px; }
+.records-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.records-heading h2 { margin: 0 0 10px; }
+.records-heading button { width: auto; min-height: 44px; padding: 8px 12px; }
+.journey-controls .travel-wait { position: relative; }
+.journey-controls .travel-wait-actions {
+  position: absolute;
+  z-index: 5;
+  top: 100%;
+  left: 0;
+  width: max-content;
+  max-width: min(260px, 90vw);
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--paper);
+  box-shadow: 0 8px 24px #11221b33;
+}
+.journey-quick-actions button:focus-visible,
+.journey-progress-button:focus-visible { outline: 2px solid var(--green); outline-offset: 1px; }
 /* The same status stays above an active scene without covering its content. */
 .mobile-play-active > .journey-bar,
 .mobile-observation-active > .journey-bar {
   flex: none;
-  gap: 2px 10px;
-  padding: 5px 12px;
+  gap: 0 6px;
+  padding: 4px 12px;
 }
 .mobile-play-active > main,
 .mobile-observation-active > main,
@@ -176,11 +218,11 @@ h3 {
 }
 .mobile-play-active > .journey-bar .journey-context,
 .mobile-observation-active > .journey-bar .journey-context {
-  flex: 1 1 auto;
+  flex: 1 1 0;
 }
 .mobile-play-active > .journey-bar .journey-controls,
 .mobile-observation-active > .journey-bar .journey-controls {
-  flex: 0 1 auto;
+  flex: 1 0 100%;
 }
 @media (max-width: 700px) {
   .mobile-play-active > .journey-bar .travelers,
@@ -202,7 +244,7 @@ h3 {
 }
 .ap, .travel-budget {
   font-family: Georgia, serif;
-  font-size: 27px;
+  font-size: 19px;
   white-space: nowrap;
   line-height: 1.2;
 }
@@ -875,7 +917,7 @@ dialog.modal::backdrop {
   .free-time-active > .masthead,
   .free-time-active > .journey-stage,
   .free-time-active > footer { display: none; }
-  .free-time-active > .journey-bar { padding: 7px 16px; }
+  .free-time-active > .journey-bar { padding: 4px 10px; }
   .free-time-active > .save-tools { justify-content: space-evenly; }
   .free-time-active > .save-tools button { min-height: 44px; }
 }

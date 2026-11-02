@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { cityEpisodes, cityFinale, playCityBattle } from "./city-helpers";
-import { choose, finishEvent, saved, setDialogueSpeed, startNewGame } from "./helpers";
+import { choose, finishEvent, saved, setDialogueSpeed, startGuideBattle, startNewGame } from "./helpers";
 import { playStoryBattle } from "./reasoning-helpers";
 
 test.use({ reducedMotion: "reduce" });
@@ -25,7 +25,7 @@ async function visitEpisode(page: Page, id: string) {
   const episode = cityEpisodes.find((item) => item.id === id)!;
   await selectDestination(page, id);
   await expect.poll(async () => (await saved(page)).activeTourism?.landmarkId).toBe(episode.landmarkId);
-  await page.getByRole("button", { name: "バトルを始める", exact: true }).click();
+  await startGuideBattle(page);
   if (id === "milano_duomo_episode") await setDialogueSpeed(page, "0");
   await playCityBattle(page, episode, 3);
   await page.getByRole("button", { name: "自由時間へ進む" }).click();

@@ -3,7 +3,7 @@ import type { TravelRoute } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
 import { getTourismAvailability } from "../../domain/tourism";
 import { TrialMilestones } from "../romance/RomanceMenu";
-import { CityProgress, CityRecords } from "./CityProgress";
+import { CityProgress } from "./CityProgress";
 import { EncounterMenu } from "./EncounterMenu";
 import { PendingRewards } from "./PendingRewards";
 import { TravelMenu } from "./TravelMenu";
@@ -13,7 +13,6 @@ import "./free-time-hub.css";
 /** The same compact destination for an unfinished or completed romance. */
 export function FreeTimeHub({
   game,
-  onEnglish,
   onClaimRewards,
   onStartEpisode,
   onEpilogue,
@@ -29,7 +28,6 @@ export function FreeTimeHub({
   onTravelEvent,
 }: {
   game: GameState;
-  onEnglish: () => void;
   onClaimRewards: () => void;
   onStartEpisode: (id: string) => void;
   onEpilogue: (id: string) => void;
@@ -59,11 +57,6 @@ export function FreeTimeHub({
 
       <TravelMenu game={game} onTravelEvent={onTravelEvent} />
 
-      <div className="free-time-tools">
-        <button className="secondary" onClick={onEnglish}>
-          英語ノートを開く
-        </button>
-      </div>
       {localLandmarks.map((landmark) => {
         const localEncounters = encounters.filter((entry) => entry.landmarkId === landmark.id);
         const canObserve = game.visitedLandmarkIds.includes(landmark.id) && getTourismAvailability(game, landmark.id).available;
@@ -76,7 +69,6 @@ export function FreeTimeHub({
 
       <PendingRewards game={game} onClaim={onClaimRewards} compact />
       <TrialMilestones game={game} onMilestone={onMilestone} />
-      <CityRecords game={game} />
     </section>
   );
 }

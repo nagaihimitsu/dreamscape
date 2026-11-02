@@ -105,8 +105,7 @@ export function CityProgressBadge({ game }: { game: GameState }) {
 /** Journey records can be positioned independently of the progress summary. */
 export function CityRecords({ game }: { game: GameState }) {
   return (
-    <details className="city-records">
-      <summary>観光地・発見・戦績を見る</summary>
+    <div className="city-records">
       <ol>
         {episodes.map((episode, index) => {
           const cleared = game.completedEpisodeIds.includes(episode.id);
@@ -161,6 +160,6 @@ export function CityRecords({ game }: { game: GameState }) {
           );
         })}
       </ol>
-    </details>
+    </div>
   );
 }

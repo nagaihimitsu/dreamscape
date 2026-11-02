@@ -14,21 +14,25 @@ export function DialogueText({
 }) {
   const timerRef = useRef<number | undefined>(undefined);
   const textRef = useRef<HTMLParagraphElement>(null);
-  const revealRef = useRef<HTMLButtonElement>(null);
   const [count, setCount] = useState(0);
+  const progressRef = useRef({ text, count: 0 });
   const chars = Array.from(text);
   useEffect(() => {
     const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+    if (progressRef.current.text !== text) progressRef.current = { text, count: 0 };
+    const length = Array.from(text).length;
     if (!speed || reduced) {
-      setCount(Array.from(text).length);
+      progressRef.current.count = length;
+      setCount(length);
       onReady(true);
       return;
     }
-    setCount(0);
+    let revealed = progressRef.current.count;
+    setCount(revealed);
+    if (revealed >= length) { onReady(true); return; }
     onReady(false);
-    let revealed = 0;
     const timer = window.setInterval(() => {
       // A modal or hidden scene must not keep revealing text behind the
       // player's back. Keep the counter and resume from the same character.
@@ -37,10 +41,9 @@ export function DialogueText({
         textRef.current?.closest("[inert]")
       ) return;
       revealed += 1;
+      progressRef.current.count = revealed;
       setCount(revealed);
       if (revealed >= Array.from(text).length) {
-        if (document.activeElement === revealRef.current && textRef.current?.tabIndex === 0)
-          textRef.current.focus({ preventScroll: true });
         window.clearInterval(timer);
       }
     }, speed);
@@ -54,11 +57,8 @@ export function DialogueText({
     if (dialogueObstructed() || textRef.current?.closest("[inert]")) return;
     if (!ready) {
       window.clearInterval(timerRef.current);
-      // The reveal control is about to become unavailable. Keep keyboard
-      // focus on the same line so a later activation can advance it.
-      if (document.activeElement === revealRef.current && onAdvance)
-        textRef.current?.focus({ preventScroll: true });
       setCount(chars.length);
+      progressRef.current.count = chars.length;
       onReady(true);
     } else {
       onAdvance?.();
@@ -102,19 +102,6 @@ export function DialogueText({
           </span>
         )}
       </p>
-      {/* Keep the button's space after revealing: the window is anchored at
-          the bottom, so removing a row would move the text the player reads. */}
-      <button
-        ref={revealRef}
-        className="text-button reveal"
-        onClick={activate}
-        disabled={ready}
-        tabIndex={ready ? -1 : undefined}
-        aria-hidden={ready || undefined}
-        style={{ visibility: ready ? "hidden" : "visible" }}
-      >
-        全文を表示
-      </button>
     </>
   );
 }

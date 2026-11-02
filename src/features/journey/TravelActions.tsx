@@ -23,13 +23,13 @@ export function TravelActions({ game, onTravelWait, onTravelSleep }: {
   const snapshot = { ...game.travel, ap: game.ap, travelBudget: game.travelBudget };
   return <div className="travel-utility">
     <details className="travel-wait">
-      <summary>時間を進める</summary>
+      <summary aria-label="時間を進める">待機</summary>
       <div className="travel-wait-actions">
         <button type="button" className="secondary" disabled={waitForTravel(game, 30, game.revision) === game} onClick={() => onTravelWait(30)}>30分待つ</button>
         {nextTime !== null && <button type="button" className="secondary" disabled={waitForTravel(game, nextTime - game.travel.minute, game.revision) === game} onClick={() => onTravelWait(nextTime - game.travel.minute)}>{formatTravelTime(nextTime)}まで待つ</button>}
       </div>
     </details>
-    <button type="button" className="travel-sleep-toggle" onClick={() => setShowSleep(true)}>滞在先で休む</button>
+    <button type="button" className="travel-sleep-toggle" aria-label="滞在先で休む" onClick={() => setShowSleep(true)}>休む</button>
     {showSleep && <Modal labelledBy="travel-sleep-title" className="travel-choice-modal" onClose={() => setShowSleep(false)}>
       <div className="travel-choice-header"><h2 id="travel-sleep-title">滞在先で休む</h2><button type="button" className="secondary" onClick={() => setShowSleep(false)}>閉じる</button></div>
       <p>架空の滞在先へ戻り、翌日9:00に出発します。ゲーム内の宿泊費は€{milanoTravelSettings.lodgingCost}、APは使いません。予算の不足分は補助されます。</p>

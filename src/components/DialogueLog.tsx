@@ -52,15 +52,17 @@ export function useDialogueLog(
 
 export function DialogueLog({
   entries,
+  label = "会話ログ",
 }: {
   entries: readonly DialogueLogEntry[];
+  label?: string;
 }) {
   const [open, setOpen] = useState(false);
   const titleId = useId();
   return (
     <>
-      <button className="text-button" onClick={() => setOpen(true)}>
-        会話ログ
+      <button className="text-button" aria-label="会話ログ" onClick={() => setOpen(true)}>
+        {label}
       </button>
       {open && (
         <Modal labelledBy={titleId} onClose={() => setOpen(false)}>

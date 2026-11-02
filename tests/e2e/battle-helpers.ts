@@ -1,6 +1,6 @@
 import { expect, type Page } from "@playwright/test";
 import type { GameState } from "../../src/domain/game";
-import { expectNoOverflow, saved, openRevisits } from "./helpers";
+import { advanceDialogue, expectNoOverflow, saved, openRevisits } from "./helpers";
 
 export interface QuizQuestionForTest {
   id: string;
@@ -55,16 +55,14 @@ export async function battleDialogueUntilQuestionOrResult(
       // interacting with the underlying evidence panel.
       const rebuttal = page.getByTestId("reasoning-rebuttal");
       for (let step = 0; step < 20 && await rebuttal.isVisible(); step++) {
-        const advance = page.getByTestId("reasoning-rebuttal-advance");
-        await expect(advance).toBeEnabled();
-        await advance.click();
+        await advanceDialogue(page, "reasoning-rebuttal-advance");
       }
       const cutin = page.getByTestId("reasoning-cutin");
       if (await cutin.isVisible()) await page.getByTestId("reasoning-cutin-skip").click();
       return await saved(page);
     }
     if (active.frame) transcript.push(active.frame.text);
-    await page.getByTestId("battle-advance").click();
+    await advanceDialogue(page, "battle-advance");
     await expect
       .poll(async () => (await saved(page)).revision)
       .toBeGreaterThan(state.revision);

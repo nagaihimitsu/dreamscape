@@ -7,13 +7,15 @@ export function useAutoAdvance({
   canAdvance,
   text,
   onAdvance,
+  defaultEnabled = false,
 }: {
   ready: boolean;
   canAdvance: boolean;
   text: string;
   onAdvance: () => void;
+  defaultEnabled?: boolean;
 }) {
-  const [active, setActive] = useState(false);
+  const [fast, setFast] = useState(false);
   const [blocked, setBlocked] = useState(dialogueObstructed);
   const advanceRef = useRef(onAdvance);
   const canAdvanceRef = useRef(canAdvance);
@@ -21,14 +23,14 @@ export function useAutoAdvance({
   canAdvanceRef.current = canAdvance;
 
   useEffect(() => {
-    if (!canAdvance) setActive(false);
+    if (!canAdvance) setFast(false);
   }, [canAdvance]);
 
   useEffect(() => {
     const stopIfObstructed = () => {
       const obstructed = dialogueObstructed();
       setBlocked(obstructed);
-      if (obstructed) setActive(false);
+      if (obstructed) setFast(false);
     };
     const observer = new MutationObserver(stopIfObstructed);
     observer.observe(document.body, {
@@ -46,26 +48,27 @@ export function useAutoAdvance({
   }, []);
 
   useEffect(() => {
-    if (!active || !ready || !canAdvance) return;
+    if ((!fast && !defaultEnabled) || blocked || !ready || !canAdvance) return;
     // Reading time follows the actual line without delaying unusually long
     // lines indefinitely. A manual tap remains available throughout.
-    const delay = Math.min(7000, Math.max(2000, Array.from(text).length * 90));
+    const delay = fast ? 250 : Math.min(7000, Math.max(2000, Array.from(text).length * 90));
     const timer = window.setTimeout(() => {
       if (!canAdvanceRef.current || dialogueObstructed()) {
-        setActive(false);
+        setFast(false);
         return;
       }
       advanceRef.current();
     }, delay);
     return () => window.clearTimeout(timer);
-  }, [active, ready, canAdvance, text]);
+  }, [fast, defaultEnabled, blocked, ready, canAdvance, text]);
 
   return {
-    active,
+    active: fast,
+    fast,
     canStart: canAdvance && !blocked,
     toggle: () => {
       if (dialogueObstructed()) return;
-      if (canAdvance) setActive((value) => !value);
+      if (canAdvance) setFast((value) => !value);
     },
   };
 }
@@ -83,7 +86,7 @@ export function AutoAdvanceButton({
       disabled={!state.canStart}
       onClick={state.toggle}
     >
-      {state.active ? "自動送り中" : "自動送り"}
+      {state.active ? "高速送り中" : "高速送り"}
     </button>
   );
 }

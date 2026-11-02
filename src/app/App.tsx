@@ -44,7 +44,7 @@ import { ClueNotebook } from "../features/tourism/ClueNotebook";
 import { useLearning } from "../features/learning/useLearning";
 import { EnglishReview } from "../features/learning/EnglishReview";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
-import { CityProgressBadge } from "../features/journey/CityProgress";
+import { CityProgressBadge, CityRecords } from "../features/journey/CityProgress";
 import { TravelActions } from "../features/journey/TravelActions";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
 import { encounters } from "../content/encounters";
@@ -118,6 +118,12 @@ export default function App({
     setEnglishOpen(true);
   }
   const gameRef = useRef(game);
+  // The last snapshot read or written by this tab remains the comparison point
+  // while manual-save mode advances only the in-memory game.
+  const savedGameRef = useRef<GameState | null>(loaded.status === "loaded" ? loaded.state : null);
+  // When the user explicitly starts over in manual mode, keep the unreadable
+  // original in place until an explicit save can back it up safely.
+  const protectedOriginalRef = useRef<string | null>(null);
   const [invalid, setInvalid] = useState(
     loaded.status === "invalid" ? loaded.message : "",
   );
@@ -128,9 +134,12 @@ export default function App({
   } | null>(null);
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
   const [settings, setSettings] = useState(false);
+  const [recordsOpen, setRecordsOpen] = useState(false);
   const [sceneEpoch, setSceneEpoch] = useState(0);
   const [notebook, setNotebook] = useState(false);
-  const [speed, setSpeed] = useState(25);
+  const speed = displaySettings.value.dialogueSpeed;
+  const setSpeed = (next: number) => displaySettings.update({ dialogueSpeed: next });
+  const [confirmLoad, setConfirmLoad] = useState(false);
   const [showRomanceEnding, setShowRomanceEnding] = useState(false);
   const [selectedLandmarkId, setSelectedLandmarkId] = useState<string | null>(null);
   const [placeFocusRequest, setPlaceFocusRequest] = useState(0);
@@ -140,6 +149,17 @@ export default function App({
   const [heroine, setHeroine] = useState(
     game?.heroineName ?? balance.defaultHeroineName,
   );
+
+  useEffect(() => {
+    const warnIfUnsaved = (event: BeforeUnloadEvent) => {
+      if (!gameRef.current || displaySettings.value.autoSave ||
+          (savedGameRef.current && sameGameState(gameRef.current, savedGameRef.current))) return;
+      event.preventDefault();
+      event.returnValue = "";
+    };
+    window.addEventListener("beforeunload", warnIfUnsaved);
+    return () => window.removeEventListener("beforeunload", warnIfUnsaved);
+  }, [displaySettings.value.autoSave]);
 
   function adopt(next: GameState) {
     gameRef.current = next;
@@ -153,10 +173,13 @@ export default function App({
     if (!gameRef.current) return false;
     const next = finishTravelEventIfComplete(gameRef.current, change(gameRef.current));
     if (next === gameRef.current) return false;
-    const saved = saveGame(storage, next, gameRef.current);
-    if (!saved.ok) {
-      setNotice(saved.message);
-      return false;
+    if (displaySettings.value.autoSave) {
+      const saved = saveGame(storage, next, savedGameRef.current);
+      if (!saved.ok) {
+        setNotice(saved.message);
+        return false;
+      }
+      savedGameRef.current = next;
     }
     adopt(next);
     setNotice("");
@@ -165,13 +188,17 @@ export default function App({
   function begin(event: FormEvent) {
     event.preventDefault();
     const next = createGame(player.trim(), heroine.trim());
-    const saved = invalid && loaded.status === "invalid"
+    const unsavedStart = !displaySettings.value.autoSave &&
+      (loaded.status === "empty" || (loaded.status === "invalid" && loaded.raw !== null));
+    const saved = unsavedStart ? { ok: true as const } : invalid && loaded.status === "invalid"
       ? backupAndCreate(storage, next, loaded.raw)
       : saveGame(storage, next);
     if (!saved.ok) {
       setNotice(saved.message);
       return;
     }
+    savedGameRef.current = unsavedStart ? null : next;
+    protectedOriginalRef.current = unsavedStart && loaded.status === "invalid" ? loaded.raw : null;
     adopt(next);
     setInvalid("");
     setNotice("");
@@ -181,8 +208,11 @@ export default function App({
       const current = loadGame(storage);
       if (gameRef.current) {
         if (
-          current.status !== "loaded" ||
-          !sameGameState(current.state, gameRef.current)
+          savedGameRef.current === null
+            ? protectedOriginalRef.current === null
+              ? current.status !== "empty"
+              : current.status !== "invalid" || current.raw !== protectedOriginalRef.current
+            : current.status !== "loaded" || !sameGameState(current.state, savedGameRef.current)
         ) {
           setSettings(false);
           setNotice(
@@ -215,12 +245,24 @@ export default function App({
   }
   function save() {
     if (!gameRef.current) return;
-    const saved = saveGame(storage, gameRef.current, gameRef.current);
+    const saved = protectedOriginalRef.current !== null
+      ? backupAndCreate(storage, gameRef.current, protectedOriginalRef.current)
+      : saveGame(storage, gameRef.current, savedGameRef.current);
+    if (saved.ok) { savedGameRef.current = gameRef.current; protectedOriginalRef.current = null; }
     setNotice(saved.ok ? "現在の場面を保存しました。" : saved.message);
   }
   function reload() {
+    if (gameRef.current && (savedGameRef.current === null || !sameGameState(gameRef.current, savedGameRef.current))) {
+      setConfirmLoad(true);
+      return;
+    }
+    loadSavedGame();
+  }
+  function loadSavedGame() {
     const restored = loadGame(storage);
     if (restored.status === "loaded") {
+      savedGameRef.current = restored.state;
+      protectedOriginalRef.current = null;
       adopt(restored.state);
       setConfirmation(null);
       setShowRomanceEnding(false);
@@ -233,6 +275,20 @@ export default function App({
           ? restored.message
           : "保存データがありません。",
       );
+  }
+  function setAutoSave(enabled: boolean) {
+    if (enabled && gameRef.current) {
+      const result = protectedOriginalRef.current !== null
+        ? backupAndCreate(storage, gameRef.current, protectedOriginalRef.current)
+        : saveGame(storage, gameRef.current, savedGameRef.current);
+      if (!result.ok) {
+        setNotice(result.message);
+        return;
+      }
+      savedGameRef.current = gameRef.current;
+      protectedOriginalRef.current = null;
+    }
+    if (displaySettings.update({ autoSave: enabled })) setNotice("");
   }
   const active = game?.activeDate;
   const conversationActive = !!(
@@ -346,11 +402,21 @@ export default function App({
             <span>現在地：{game.travel.currentPlaceId === game.travel.hotelPlaceId ? "滞在先（架空）" : currentTravelPlace?.nameJa ?? "不明"}</span>
           </div>
           <div className="journey-controls" data-testid="city-progress">
-            <CityProgressBadge game={game} />
+            <button className="journey-progress-button" type="button" aria-label="観光地・発見・戦績を見る" onClick={() => setRecordsOpen(true)}><CityProgressBadge game={game} /></button>
             {game.endingReached && <span className="city-relationship">交際中</span>}
             {idle && !showRomanceEnding && <TravelActions game={game}
               onTravelWait={(minutes) => commit((state) => waitForTravel(state, minutes, game.revision))}
               onTravelSleep={(mode) => commit((state) => sleepAtHotel(state, mode, game.revision))} />}
+            <nav className="journey-quick-actions" aria-label="旅の操作">
+              <button type="button" aria-label="英語ノートを開く" onClick={() => openEnglish()}>英語</button>
+              <button type="button" onClick={save}>セーブ</button>
+              <button type="button" onClick={reload}>ロード</button>
+              <button type="button" onClick={() => {
+                setPlayer(game.playerName);
+                setHeroine(game.heroineName);
+                setSettings(true);
+              }}>設定</button>
+            </nav>
           </div>
         </div>
       )}
@@ -427,7 +493,9 @@ export default function App({
                     : "保存データを読み込めませんでした"}</strong>
                   <p>{invalid}</p>
                   {loaded.status === "invalid" && loaded.raw !== null && <p>
-                    元のデータは残っています。バックアップを保存してから新しく始めるか、保存データの消去を選べます。
+                    {displaySettings.value.autoSave
+                      ? "元のデータは残っています。バックアップを保存してから新しく始めるか、保存データの消去を選べます。"
+                      : "元のデータは残っています。新しく始めた場合、手動セーブ時に元のデータをバックアップします。"}
                   </p>}
                   <button
                     className="secondary"
@@ -446,13 +514,13 @@ export default function App({
                   disabled={!player.trim() || !heroine.trim() || (loaded.status === "invalid" && loaded.raw === null)}
                 >
                   {invalid
-                    ? "元のデータを退避して新しく始める"
+                    ? displaySettings.value.autoSave ? "元のデータを退避して新しく始める" : "元のデータを残して新しく始める"
                     : "旅をはじめる"}
                   <span aria-hidden="true"> →</span>
                 </button>
               </form>
               <p className="fine-print">
-                このブラウザに自動保存されます。
+                {displaySettings.value.autoSave ? "このブラウザに進行を自動保存します。" : "進行は手動でセーブできます。"}
                 <br />
                 名前はあとから設定で変更できます。
               </p>
@@ -460,6 +528,7 @@ export default function App({
           </>
         ) : activeEncounter && currentEncounter ? (
           <EncounterScreen
+            autoAdvanceEnabled={displaySettings.value.autoAdvance}
             key={`${activeEncounter.runId}-${sceneEpoch}`}
             learning={learning}
             speed={speed}
@@ -522,6 +591,7 @@ export default function App({
           />
         ) : game.activeEpilogue ? (
           <EpilogueScreen
+            autoAdvanceEnabled={displaySettings.value.autoAdvance}
             game={game}
             speed={speed}
             reduceMotion={displaySettings.value.reduceMotion}
@@ -532,6 +602,7 @@ export default function App({
           />
         ) : game.activeTourism ? (
           <TourismScreen
+            autoAdvanceEnabled={displaySettings.value.autoAdvance}
             key={game.activeTourism.landmarkId}
             game={game}
             speed={speed}
@@ -564,6 +635,7 @@ export default function App({
           />
         ) : game.activeBattle ? (
           <BattleScreen
+            autoAdvanceEnabled={displaySettings.value.autoAdvance}
             key={`${game.activeBattle.runId}-${sceneEpoch}`}
             reduceMotion={displaySettings.value.reduceMotion}
             learning={learning}
@@ -626,6 +698,7 @@ export default function App({
           />
         ) : active && frame ? (
           <RomanceScene
+            autoAdvanceEnabled={displaySettings.value.autoAdvance}
             key={`${active.dateId}-${sceneEpoch}`}
             game={game}
             date={currentDate}
@@ -680,7 +753,6 @@ export default function App({
             onSelectLandmark={setSelectedLandmarkId}
             placeFocusRequest={placeFocusRequest}
             onEncounter={(id) => { commit((state) => startEncounter(state, id, nextRomanceRoll)); }}
-            onEnglish={() => openEnglish()}
             onClaimRewards={() => commit((state) => claimPendingRewards(state, game.revision))}
             onStartEpisode={(id) => commit((state) => startEpisode(state, id))}
             onEpilogue={(id) => commit((state) => startCityEpilogue(state, id, game.revision))}
@@ -695,25 +767,13 @@ export default function App({
           />
         )}
       </main>
-      {game && (
-        <nav className="save-tools" aria-label="セーブと設定">
-          <button onClick={save}>セーブ</button>
-          <button onClick={reload}>ロード</button>
-          <button
-            onClick={() => {
-              setPlayer(game.playerName);
-              setHeroine(game.heroineName);
-              setSettings(true);
-            }}
-          >
-            設定
-          </button>
-          <span>自動保存・前の状態には戻れません</span>
-        </nav>
-      )}
       <footer>
         Dreamscape <span>·</span> 旅の余白に、ふたりの物語。
       </footer>
+      {recordsOpen && game && <Modal labelledBy="city-records-title" onClose={() => setRecordsOpen(false)}>
+        <div className="records-heading"><h2 id="city-records-title">旅の記録</h2><button type="button" className="secondary" onClick={() => setRecordsOpen(false)}>閉じる</button></div>
+        <CityRecords game={game} />
+      </Modal>}
       {notebook && game && (canObserve || cityNotebook) && (
         <ClueNotebook
           landmarkId={currentLandmarkId ?? undefined}
@@ -800,6 +860,14 @@ export default function App({
           </button>
         </Modal>
       )}
+      {confirmLoad && (
+        <Modal labelledBy="load-title" onClose={() => setConfirmLoad(false)}>
+          <h2 id="load-title">保存した場面を読み込みますか？</h2>
+          <p>まだ保存していない進行は失われます。</p>
+          <button className="secondary" autoFocus onClick={() => setConfirmLoad(false)}>戻る</button>
+          <button className="primary" onClick={() => { setConfirmLoad(false); loadSavedGame(); }}>ロードする</button>
+        </Modal>
+      )}
       {deleteSnapshot && (
         <Modal
           labelledBy="delete-title"
@@ -828,6 +896,8 @@ export default function App({
                 setNotice(result.message);
                 return;
               }
+              // Explicit deletion already confirms that unsaved progress is discarded.
+              gameRef.current = null;
               window.location.reload();
             }}
           >
@@ -838,6 +908,25 @@ export default function App({
       {settings && game && (
         <Modal labelledBy="settings-title" onClose={() => setSettings(false)}>
           <h2 id="settings-title">設定</h2>
+          <label className="translation-setting">
+            <input type="checkbox" checked={displaySettings.value.autoSave} disabled={!!displaySettings.error}
+              onChange={(event) => setAutoSave(event.target.checked)} /> ゲームの進行を自動保存する
+          </label>
+          {!displaySettings.value.autoSave && <p className="fine-print">オフの間は「セーブ」で進行を保存してください。</p>}
+          {notice && <p role="status">{notice}</p>}
+          <label className="translation-setting">
+            文字送り {" "}
+            <select aria-label="文字送り" value={speed} disabled={!!displaySettings.error}
+              onChange={(event) => setSpeed(Number(event.target.value))}>
+              <option value={45}>ゆっくり</option>
+              <option value={25}>ふつう</option>
+              <option value={0}>一括表示</option>
+            </select>
+          </label>
+          <label className="translation-setting">
+            <input type="checkbox" checked={displaySettings.value.autoAdvance} disabled={!!displaySettings.error}
+              onChange={(event) => displaySettings.update({ autoAdvance: event.target.checked })} /> 自動送りする
+          </label>
           <label className="translation-setting">
             <input
               type="checkbox"

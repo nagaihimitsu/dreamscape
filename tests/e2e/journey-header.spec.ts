@@ -10,7 +10,7 @@ test("the top bar follows time and place while keeping resources visible", async
   await expect(context).toContainText("現在地：滞在先（架空）");
   await expect(bar.getByLabel("旅の予算 60ユーロ")).toBeVisible();
   await expect(bar.getByLabel("残り0AP")).toBeVisible();
-  await page.getByText("時間を進める", { exact: true }).click();
+  await page.getByText("待機", { exact: true }).click();
   await page.getByRole("button", { name: "30分待つ" }).click();
   await expect(context).toContainText("1日目 09:30");
   await page.getByTestId("travel-destination-milano_duomo_episode").getByRole("button").click();
@@ -18,7 +18,7 @@ test("the top bar follows time and place while keeping resources visible", async
   // The journey bar remains visible while a scene is in progress.
   await expect(bar).toBeVisible();
   await expect(context).toContainText("現在地：ドゥオモ広場");
-  await page.getByRole("button", { name: "案内を閉じて観察する" }).click();
+  await page.getByTestId("tourism-skip").click();
   await page.getByRole("button", { name: "自由時間へ戻る" }).click();
   await expect(context).toBeVisible();
   await expect(context).toContainText("現在地：ドゥオモ広場");
