@@ -139,6 +139,16 @@ h3 {
   gap: 4px 12px;
   min-width: 0;
 }
+.journey-context {
+  display: flex;
+  flex: 1 0 100%;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 12px;
+  min-width: 0;
+  font-size: 12px;
+}
+.journey-context span { color: var(--muted); overflow-wrap: anywhere; }
 .amp {
   color: var(--muted);
   font-size: 11px;

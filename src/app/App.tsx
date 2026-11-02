@@ -8,6 +8,7 @@ import {
   tourismAssets,
   city,
   episodes,
+  milanoTravelCatalog,
 } from "../content";
 import { beginTravelEvent, finishTravelEventIfComplete, sleepAtHotel, waitForTravel } from "../domain/travel-game";
 import {
@@ -283,6 +284,9 @@ export default function App({
   const selectedDestination = dateDestinations.find(
     (destination) => destination.id === selectedDate?.destinationId,
   );
+  const currentTravelPlace = game
+    ? milanoTravelCatalog.places.find((place) => place.id === game.travel.currentPlaceId)
+    : undefined;
   const nameForm = (
     <>
       <label>
@@ -334,6 +338,10 @@ export default function App({
               <small> AP</small>
             </span>
             <HeldItems items={encounters.items.filter((item) => game.inventory[item.id] === "held").map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa }))} />
+          </div>
+          <div className="journey-context" data-testid="journey-context">
+            <strong>{game.travel.day}日目 {String(Math.floor(game.travel.minute / 60)).padStart(2, "0")}:{String(game.travel.minute % 60).padStart(2, "0")}</strong>
+            <span>現在地：{game.travel.currentPlaceId === game.travel.hotelPlaceId ? "滞在先（架空）" : currentTravelPlace?.nameJa ?? "不明"}</span>
           </div>
         </div>
       )}

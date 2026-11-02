@@ -13,10 +13,12 @@ async function selectDestination(page: Page, id: string) {
   }
   await expect(destination).toBeVisible();
   await destination.getByRole("button").click();
-  const travel = page.getByRole("region", { name: /への移動$/ });
-  const walk = travel.getByRole("button", { name: /^徒歩 / });
-  await expect(walk).toBeEnabled();
-  await walk.click();
+  const travel = page.getByRole("dialog", { name: /へ$/ });
+  if (await travel.isVisible()) {
+    const walk = travel.getByRole("button", { name: /^徒歩 / });
+    await expect(walk).toBeEnabled();
+    await walk.click();
+  }
 }
 
 async function visitEpisode(page: Page, id: string) {

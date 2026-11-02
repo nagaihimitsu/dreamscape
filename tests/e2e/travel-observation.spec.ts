@@ -7,7 +7,6 @@ test("interrupted sightseeing reserves time again and battle observation resumes
   await page.setViewportSize({ width: 360, height: 780 });
   await startNewGame(page);
   await page.getByTestId("travel-destination-milano_duomo_episode").getByRole("button").click();
-  await page.getByRole("region", { name: /への移動$/ }).getByRole("button", { name: /^徒歩 / }).click();
   await expect.poll(async () => (await saved(page)).activeTourism?.landmarkId).toBe("duomo_milano");
   await skipTourismGuide(page);
   const first = await saved(page);
