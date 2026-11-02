@@ -69,20 +69,20 @@ test("a current choice with confirmation enabled commits once without a dialog",
   expect(await saved(page)).toEqual(after);
 });
 
-test("a document remains alongside the image without inventing an image location", async ({ page }) => {
+test("a document is read through the notebook without changing the image view", async ({ page }) => {
   await startCurrentSupperJourney(page);
   await skipTourismGuide(page);
   const viewport = page.getByTestId("observation-viewport");
   const initialScale = await viewport.getAttribute("data-scale");
-  await page.getByRole("button", { name: "発見ポイント・資料を見る", exact: true }).tap();
-  await page.getByTestId("discovery-last_supper_technique_card").tap();
-  await expect(viewport).toBeVisible();
-  await expect(page.getByTestId("discovery-detail")).toContainText("ゆっくり描くための選択");
-  expect(await viewport.getAttribute("data-scale")).toBe(initialScale);
+  await page.getByRole("button", { name: "手がかり帳", exact: true }).tap();
+  const book = page.getByRole("dialog", { name: "手がかり帳" });
+  await page.getByTestId("clue-picker").selectOption("last_supper_technique_card");
+  await page.getByTestId("read-document-last_supper_technique_card").tap();
+  await expect(book).toContainText("ゆっくり描くための選択");
   expect((await saved(page)).discoveredClueIds).toContain("last_supper_technique_card");
-  await page.getByRole("button", { name: "説明を閉じる", exact: true }).tap();
-  await expect(page.getByTestId("discovery-detail")).toHaveCount(0);
+  await page.getByTestId("cluebook-close").tap();
   await expect(viewport).toBeVisible();
+  expect(await viewport.getAttribute("data-scale")).toBe(initialScale);
 });
 
 test("starting a paid date still asks before spending AP", async ({ page }) => {

@@ -54,7 +54,7 @@ test("a named guide resumes, the real image loads, and every discovery persists 
   expect((await saved(page)).ap).toBe(Math.min(12, initial.ap + 1));
   expect((await saved(page)).completedGuideIds).toEqual([landmark.id]);
   await expect(
-    page.getByRole("heading", { name: landmark.nameJa, exact: true }),
+    page.getByText(landmark.nameJa, { exact: true }),
   ).toBeVisible();
   const image = page.getByTestId("observation-viewport").locator("img");
   await expect
@@ -110,9 +110,7 @@ test("a named guide resumes, the real image loads, and every discovery persists 
     await closeObservationList(page);
   }
   await selectObservationClue(page, document.id);
-  await expect(page.getByTestId("discovery-detail")).toContainText(
-    document.descriptionJa,
-  );
+  await expect(page.getByRole("dialog", { name: "手がかり帳" })).toContainText(document.descriptionJa);
   expect((await saved(page)).discoveredClueIds).toHaveLength(clues.length);
   await closeObservationList(page);
   expect(romanceProgress(await saved(page))).toEqual(before);
@@ -234,7 +232,7 @@ test("battle cluebook preserves the question, open hint and locked answer, inclu
   await selectObservationClue(page, document.id);
   await closeObservationList(page);
   await page
-    .getByRole("button", { name: "バトルを始める", exact: true })
+    .getByRole("button", { name: "進む", exact: true })
     .click();
   await battleDialogueUntilQuestionOrResult(page);
   await page.getByRole("button", { name: "ヒントを見る", exact: true }).click();
@@ -279,7 +277,7 @@ test("battle cluebook preserves the question, open hint and locked answer, inclu
   await closeObservationList(page);
   await reloadUnchanged(page);
   expect((await saved(page)).activeBattle).toEqual(answered.activeBattle);
-  await page.getByRole("button", { name: "バトルに戻る", exact: true }).click();
+  await page.getByRole("button", { name: "進む", exact: true }).click();
   await expect(page.getByTestId("battle-feedback")).toBeVisible();
   expect((await saved(page)).activeBattle).toEqual(answered.activeBattle);
   await page.getByTestId("battle-advance").click();
@@ -305,8 +303,9 @@ test("observation and the guide can be skipped to complete a battle with no clue
   const initial = await saved(page);
   const romance = romanceProgress(initial);
   await openTourismFromEntry(page);
+  await skipTourismGuide(page);
   await page
-    .getByRole("button", { name: "バトルを始める", exact: true })
+    .getByRole("button", { name: "進む", exact: true })
     .click();
   expect((await saved(page)).activeTourism).toBeNull();
   expect((await saved(page)).discoveredClueIds).toEqual([]);

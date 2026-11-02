@@ -1,6 +1,6 @@
 import { expect, type Page } from "@playwright/test";
 import quiz from "../../content/quizzes/sound_supper_B1.json" with { type: "json" };
-import { saved } from "./helpers";
+import { saved, startGuideBattle } from "./helpers";
 import { playBattle } from "./battle-helpers";
 import { finishTourismGuide, openTourismFromEntry } from "./tourism-helpers";
 
@@ -15,9 +15,7 @@ export async function completeEpisode(
   ).toHaveCount(0);
   await openTourismFromEntry(page);
   if (readGuide) await finishTourismGuide(page);
-  await page
-    .getByRole("button", { name: "バトルを始める", exact: true })
-    .click();
+  await startGuideBattle(page);
   const result = await playBattle(page, quiz.questions, correctness);
   await expect(page.getByTestId("battle-rewards")).toBeVisible();
   expect(result.state.completedEpisodeIds).toEqual([

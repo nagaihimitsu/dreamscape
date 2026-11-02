@@ -28,6 +28,9 @@ interface Props {
   selectedId: string | null;
   focusRequest?: number;
   inert?: boolean;
+  landmarkName: string;
+  onNotebook: () => void;
+  onProceed: () => void;
   onSelect: (id: string) => void;
 }
 
@@ -47,6 +50,9 @@ export function ObservationViewer({
   selectedId,
   focusRequest = 0,
   inert = false,
+  landmarkName,
+  onNotebook,
+  onProceed,
   onSelect,
 }: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -243,6 +249,10 @@ export function ObservationViewer({
           }
         }}
       >
+        <div className="observation-overlay">
+          <span className="observation-location">{landmarkName}</span>
+          <button type="button" className="notebook-button" onPointerDown={(event) => event.stopPropagation()} onClick={onNotebook}>手がかり帳</button>
+        </div>
         <img
           className="observation-image"
           src={`${import.meta.env.BASE_URL}${asset.path}`}
@@ -310,9 +320,10 @@ export function ObservationViewer({
           type="button"
           data-testid="zoom-reset"
           className="observation-reset"
+          aria-label="画像全体を見る"
           onClick={() => updateView(INITIAL_VIEW)}
         >
-          全体を見る
+          全体
         </button>
       </div>
       <div className="observation-options">
@@ -325,6 +336,7 @@ export function ObservationViewer({
         >
           {markersVisible ? "印を隠す" : "印を表示"}
         </button>
+        <button type="button" className="primary observation-proceed" data-testid="observation-proceed" onClick={onProceed}>進む</button>
       </div>
       <p id="observation-help" className="observation-help">
         番号をタップ。2本指で拡大、ドラッグで移動。キーボードでは矢印キーで移動できます。

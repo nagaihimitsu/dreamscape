@@ -1,6 +1,7 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { loadCurrentScene } from "./current-scenarios";
 import { expectNoOverflow, saved } from "./helpers";
+import { finishAutomaticEncounters } from "./battle-helpers";
 
 test.use({ reducedMotion: "reduce" });
 
@@ -25,10 +26,11 @@ for (const size of [{ width: 360, height: 780 }, { width: 430, height: 932 }]) {
     await loadCurrentScene(page, "guide");
     await expectBarAndScene(page, page.getByTestId("tourism-screen"));
     await expect(page.getByTestId("tourism-guide")).toBeVisible();
-    await page.getByRole("button", { name: "案内を閉じて観察する" }).click();
+    await page.getByTestId("tourism-skip").click();
     await expectBarAndScene(page, page.getByTestId("tourism-screen"));
     await expect(page.getByTestId("observation-viewport")).toBeVisible();
-    await page.getByRole("button", { name: "バトルを始める", exact: true }).click();
+    await page.getByRole("button", { name: "進む", exact: true }).click();
+    await finishAutomaticEncounters(page);
     await expectBarAndScene(page, page.locator(".battle-screen"));
     const location = page.getByTestId("battle-location");
     const notebook = page.getByRole("button", { name: "手がかり帳", exact: true });

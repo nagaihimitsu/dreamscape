@@ -34,14 +34,20 @@ for (const viewport of [{ width: 360, height: 640 }, { width: 390, height: 844 }
       page.getByTestId("observation-viewport"),
       page.getByTestId("zoom-in"),
       page.getByRole("button", { name: "手がかり帳", exact: true }),
-      page.getByRole("button", { name: "バトルを始める", exact: true }),
+      page.getByRole("button", { name: "進む", exact: true }),
     ]) await expectOnScreen(page, target);
     await page.screenshot({ path: testInfo.outputPath("observation-initial.png") });
 
     await page.getByTestId("zoom-in").tap();
     await expect.poll(async () => Number(await page.getByTestId("observation-viewport").getAttribute("data-scale"))).toBeGreaterThan(1);
     await page.getByTestId("zoom-reset").tap();
+    const viewportBefore = await page.getByTestId("observation-viewport").boundingBox();
     await page.getByTestId("hotspot-last_supper_perspective").tap();
+    const viewportAfter = await page.getByTestId("observation-viewport").boundingBox();
+    expect(viewportBefore).not.toBeNull();
+    expect(viewportAfter).not.toBeNull();
+    expect(viewportAfter!.height).toBeCloseTo(viewportBefore!.height, 0);
+    await expect.poll(async () => Number(await page.getByTestId("observation-viewport").getAttribute("data-scale"))).toBeGreaterThan(1);
     await expect.poll(async () => (await saved(page)).discoveredClueIds.includes("last_supper_perspective")).toBe(true);
     await expectOnScreen(page, page.getByTestId("discovery-detail").locator("h3"));
     await expectOnScreen(page, page.getByRole("button", { name: "説明を閉じる", exact: true }));
@@ -57,17 +63,16 @@ test("observation documents are reachable and recorded on a small screen", async
   await startCurrentSupperJourney(page);
   await skipTourismGuide(page);
   const initialScroll = await page.evaluate(() => window.scrollY);
-  const open = page.getByRole("button", { name: "発見ポイント・資料を見る", exact: true });
+  const open = page.getByRole("button", { name: "手がかり帳", exact: true });
   await expectOnScreen(page, open);
   await open.tap();
-  const document = page.getByTestId("discovery-last_supper_technique_card");
-  await expectOnScreen(page, document);
+  await page.getByTestId("clue-picker").selectOption("last_supper_technique_card");
+  const document = page.getByTestId("read-document-last_supper_technique_card");
   await document.tap();
-  await expectOnScreen(page, page.getByTestId("discovery-detail").locator("h3"));
   await expect.poll(async () => (await saved(page)).discoveredClueIds.includes("last_supper_technique_card")).toBe(true);
-  await page.getByRole("button", { name: "説明を閉じる", exact: true }).tap();
+  await page.getByTestId("cluebook-close").tap();
   expect(await page.evaluate(() => window.scrollY)).toBe(initialScroll);
-  await expectOnScreen(page, page.getByRole("button", { name: "バトルを始める", exact: true }));
+  await expectOnScreen(page, page.getByRole("button", { name: "進む", exact: true }));
 });
 
 test("large observation text leaves controls reachable", async ({ page }) => {
@@ -79,9 +84,8 @@ test("large observation text leaves controls reachable", async ({ page }) => {
   await page.addStyleTag({ content: ".tourism-screen * { font-size: 32px !important; }" });
   for (const control of [
     page.getByRole("button", { name: "手がかり帳", exact: true }),
-    page.getByRole("button", { name: "バトルを始める", exact: true }),
+    page.getByRole("button", { name: "進む", exact: true }),
     page.getByTestId("zoom-in"),
-    page.getByRole("button", { name: "発見ポイント・資料を見る", exact: true }),
   ]) {
     await control.scrollIntoViewIfNeeded();
     await expectOnScreen(page, control);

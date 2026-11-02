@@ -5,7 +5,7 @@ import { expectNoOverflow, saved, setDialogueSpeed, startNewGame } from "./helpe
 test("the guide's compact controls lead to observation and the battle", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 780 });
   await startNewGame(page);
-  await page.getByTestId("travel-place-p_galleria").getByRole("button").click();
+  await page.getByTestId("travel-place-p_duomo").getByRole("button").click();
   const guide = page.getByTestId("tourism-guide");
   await expect(guide).toBeVisible();
   const controls = guide.getByLabel("会話の操作");
@@ -13,13 +13,13 @@ test("the guide's compact controls lead to observation and the battle", async ({
   await expect(controls.getByRole("button", { name: "会話ログ", exact: true })).toHaveText("ログ");
   await expect(controls.getByRole("button", { name: "高速送り", exact: true })).toBeVisible();
   await expect(guide.getByText("自動送り", { exact: true })).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "バトルを始める", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "進む", exact: true })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "自由時間へ戻る", exact: true })).toHaveCount(0);
   await expectNoOverflow(page);
   await controls.getByTestId("tourism-skip").click();
-  await expect(page.getByRole("button", { name: "バトルを始める", exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "バトルを始める", exact: true }).click();
-  await expect.poll(async () => (await saved(page)).activeBattle?.battleId).toBe("milano_galleria_01");
+  await expect(page.getByRole("button", { name: "進む", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "進む", exact: true }).click();
+  await expect.poll(async () => (await saved(page)).activeBattle?.battleId).toBe("milano_duomo_01");
 });
 
 test("fast-forward advances dialogue and stops for choices", async ({ page }) => {

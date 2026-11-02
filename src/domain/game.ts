@@ -29,6 +29,7 @@ import {
 } from "./battle";
 import {
   balance,
+  battles,
   city,
   encounters,
   dates,
@@ -877,7 +878,10 @@ export function validateGameState(input: unknown): GameState {
         ? state.activeTourism?.landmarkId === episode.landmarkId ||
           state.activeEncounter?.returnTourism?.landmarkId === episode.landmarkId ||
           state.activeBattle?.battleId === episode.battleId
-        : state.activeBattle?.battleId === id;
+        : state.activeBattle?.battleId === id ||
+          battles.some((battle) => battle.id === id && !!battle.landmarkId &&
+            (state.activeTourism?.landmarkId === battle.landmarkId ||
+              state.activeEncounter?.returnTourism?.landmarkId === battle.landmarkId));
     if (!sceneMatches) throw new Error("旅行の時間枠と進行中の場面が一致しません。");
   }
   if (state.updatedDateIds.some((id) => !dates.some((entry) => entry.id === id) || !state.playedDateIds.includes(id)))

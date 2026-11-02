@@ -145,3 +145,43 @@
     padding-inline: 8px;
   }
 }
+
+.observation-overlay {
+  position: absolute;
+  z-index: 2;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  pointer-events: none;
+}
+.observation-location {
+  padding: 5px 8px;
+  border-radius: 3px;
+  background: #172c25bb;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.observation-overlay .notebook-button { pointer-events: auto; }
+.observation-options { align-items: center; gap: 4px; }
+.observation-marker-toggle { white-space: nowrap; }
+.observation-options .observation-proceed {
+  width: auto;
+  flex: none;
+  min-height: 44px;
+  margin: 0;
+  padding: 6px 12px;
+  font-size: 13px;
+}
+@media (max-width: 600px) {
+  .observation-controls { gap: 2px; min-width: 0; }
+  .observation-controls output { min-width: 2.5em; }
+  .observation-controls .observation-reset { padding-inline: 5px; white-space: nowrap; }
+  .observation-options { gap: 2px; }
+  .observation-marker-toggle { padding-inline: 5px; }
+  .observation-proceed { padding-inline: 8px; }
+}

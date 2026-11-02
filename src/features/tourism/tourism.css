@@ -393,23 +393,6 @@
   display: none;
 }
 
-@media (min-width: 601px) {
-  .tourism-observation:has(.observation-detail) {
-    display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr);
-    align-items: start;
-    gap: 0 16px;
-  }
-  .tourism-observation:has(.observation-detail) .observation-notes {
-    grid-column: 1 / -1;
-  }
-  .tourism-observation .observation-detail {
-    margin-top: 0;
-    max-height: min(65vh, 600px);
-    overflow-y: auto;
-  }
-}
-
 /* Observation is an interactive game screen, not a long article on phones. */
 @media (max-width: 600px) and (min-height: 500px) {
   .mobile-observation-active .tourism-screen:not(.guide-active) {
@@ -466,7 +449,7 @@
     min-height: 0;
     aspect-ratio: auto;
   }
-  .mobile-observation-active .observation-controls { flex: 1 1 auto; }
+  .mobile-observation-active .observation-controls { flex: 1 1 0; }
   .mobile-observation-active .observation-options { flex: none; }
   .mobile-observation-active .observation-help {
     display: block;
@@ -478,12 +461,6 @@
      selected point, and the picture stays draggable while the clue is open. */
   .mobile-observation-active .tourism-observation:has(.observation-detail) .observation-help {
     display: none;
-  }
-  .mobile-observation-active .observation-viewer:has(+ .observation-detail) .observation-viewport {
-    height: calc(100% - 48px);
-  }
-  .mobile-observation-active .observation-viewer:has(+ .observation-detail) .observation-controls {
-    padding-block: 0;
   }
   .mobile-observation-active .observation-detail {
     flex: 0 1 auto;
@@ -623,4 +600,18 @@
   }
   .mobile-observation-active > .save-tools button { flex: 1; min-height: 44px; }
   .mobile-observation-active > .save-tools > span { display: none; }
+}
+
+/* Keep the picture's viewport stable when a discovery description opens. */
+@media (max-width: 600px) and (min-height: 500px) {
+  .mobile-observation-active .tourism-observation {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .mobile-observation-active .observation-viewer { flex: none; }
+  .mobile-observation-active .observation-viewport {
+    height: clamp(250px, 43dvh, 440px);
+  }
+  .mobile-observation-active .observation-help { display: none; }
+  .mobile-observation-active .observation-detail { flex: none; }
 }

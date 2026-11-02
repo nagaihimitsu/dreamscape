@@ -199,8 +199,9 @@ test("a current in-progress save can be deleted from settings", async ({
   page,
 }) => {
   await startNewGame(page);
-  await page.getByTestId("episode-start").click();
-  await page.getByRole("button", { name: "バトルを始める", exact: true }).click();
+  await page.getByTestId("travel-place-p_duomo").getByRole("button").click();
+  await page.getByTestId("tourism-skip").click();
+  await page.getByRole("button", { name: "進む", exact: true }).click();
   await page.getByRole("button", { name: "設定", exact: true }).click();
   await page.getByRole("button", { name: "保存データの消去" }).click();
   await page

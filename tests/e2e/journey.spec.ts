@@ -45,7 +45,7 @@ test("a full guide and successful battle grant seven AP once and lead directly t
   await finishTourismGuide(page);
   expect((await saved(page)).ap).toBe(guide.ap);
   await page
-    .getByRole("button", { name: "バトルを始める", exact: true })
+    .getByRole("button", { name: "進む", exact: true })
     .click();
   const result = await playBattle(page, quiz.questions, [true, true, false]);
   expect(result.state.ap).toBe(12);

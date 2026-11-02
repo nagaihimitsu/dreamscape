@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { storyFrameSchema } from "../story/runtime";
 import { responseProfileSchema } from "../content/schemas";
+import { encounters } from "../content/encounters";
 
 const roll = z.number().int().min(0).max(9999);
 
@@ -28,7 +29,12 @@ export const activeEncounterSchema = z.object({
     result: z.enum(["positive", "negative"]),
   }).strict().nullable(),
   // An optional return point, not a second active scene. Older saves omit it.
-  returnTourism: z.object({ landmarkId: z.string().min(1), contentHash: z.string().min(1) }).strict().optional(),
+  returnTourism: z.object({ landmarkId: z.string().min(1), contentHash: z.string().min(1), encounterIds: z.array(z.string().min(1)).optional() }).strict().optional(),
 }).strict();
 
 export type ActiveEncounter = z.infer<typeof activeEncounterSchema>;
+
+export function validObservationEncounterIds(landmarkId: string, ids?: string[]): boolean {
+  return !ids || (new Set(ids).size === ids.length && ids.every((id) =>
+    encounters.encounters.some((event) => event.id === id && event.landmarkId === landmarkId && event.availability !== "dormant")));
+}

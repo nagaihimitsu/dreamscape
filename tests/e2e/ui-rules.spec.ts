@@ -19,13 +19,13 @@ test("mobile start and optional sightseeing keep the next action easy to reach",
   expect(smallStart!.y + smallStart!.height).toBeLessThanOrEqual(640);
   await page.setViewportSize({ width: 360, height: 780 });
   await startNewGame(page);
-  await page.getByTestId("episode-start").click();
+  await page.getByTestId("travel-place-p_duomo").getByRole("button").click();
   await page.getByTestId("tourism-skip").click();
   const battle = page.getByRole("button", {
-    name: "バトルを始める",
+    name: "進む",
     exact: true,
   });
-  const points = page.getByRole("button", { name: "発見ポイント・資料を見る", exact: true });
+  const points = page.getByRole("button", { name: "手がかり帳", exact: true });
   await expect(battle).toBeVisible();
   await expect(points).toBeVisible();
   for (const element of [battle, points]) {

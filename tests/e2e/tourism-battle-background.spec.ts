@@ -1,6 +1,6 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { cityEpisodes, playCityBattle } from "./city-helpers";
-import { expectNoOverflow, saved, setDialogueSpeed, startNewGame } from "./helpers";
+import { advanceDialogue, expectNoOverflow, saved, setDialogueSpeed, startNewGame } from "./helpers";
 import { openCluebook, skipTourismGuide } from "./tourism-helpers";
 
 test.use({ reducedMotion: "reduce", actionTimeout: 10_000 });
@@ -28,6 +28,20 @@ async function beginDuomo(page: Page) {
   expect((await saved(page)).activeTourism?.landmarkId).toBe("duomo_milano");
 }
 
+async function proceedToBattle(page: Page) {
+  await page.getByRole("button", { name: "進む", exact: true }).click();
+  for (let i = 0; i < 80; i++) {
+    const state = await saved(page);
+    const encounter = state.activeEncounter;
+    if (!encounter) break;
+    if (encounter.frame.choices.length) await page.getByRole("button", { name: "Aを選ぶ", exact: true }).click();
+    else if (encounter.frame.ended) await page.getByRole("button", { name: /観光に戻る/ }).click();
+    else await advanceDialogue(page);
+    await expect.poll(async () => (await saved(page)).revision).toBeGreaterThan(state.revision);
+  }
+  if ((await saved(page)).activeTourism) await page.getByRole("button", { name: "進む", exact: true }).click();
+}
+
 test("Duomo photo and place remain visible from guide through observation, battle and result", async ({ page }, testInfo) => {
   test.setTimeout(120_000);
   await page.setViewportSize({ width: 360, height: 780 });
@@ -47,7 +61,7 @@ test("Duomo photo and place remain visible from guide through observation, battl
   const observationBook = await openCluebook(page);
   await expect(observationBook).toBeVisible();
   await page.getByTestId("cluebook-close").click();
-  await page.getByRole("button", { name: "バトルを始める", exact: true }).click();
+  await proceedToBattle(page);
   const photo = page.locator(".battle-backdrop img");
   await expectLoadedPhoto(photo, /duomo-milano\.webp$/);
   await expect(page.getByTestId("battle-location")).toContainText("ドゥオモ");
@@ -69,7 +83,7 @@ test("Duomo photo and place remain visible from guide through observation, battl
   expect((await saved(page)).activeTourism?.landmarkId).toBe("galleria_vittorio_emanuele_ii");
   await expectLoadedPhoto(page.locator(".tourism-guide-scene .vn-background img"), /galleria/i);
   await skipTourismGuide(page);
-  await page.getByRole("button", { name: "バトルを始める", exact: true }).click();
+  await proceedToBattle(page);
   await expectLoadedPhoto(page.locator(".battle-backdrop img"), /galleria/i);
   await expect(page.getByTestId("battle-location")).toContainText("ガッレリア");
   await expectNoOverflow(page);
@@ -90,7 +104,7 @@ test("the guide fills its scene on desktop and a failed photo keeps a fallback",
   await expect(guide.locator(".canal-scene svg")).toBeVisible();
   await expect(guide.locator(".vn-background img")).toHaveCount(0);
   await skipTourismGuide(page);
-  await page.getByRole("button", { name: "バトルを始める", exact: true }).click();
+  await proceedToBattle(page);
   await expect(page.getByTestId("battle-location")).toContainText("ドゥオモ");
   await expect(page.locator(".battle-backdrop svg")).toBeVisible();
   await expect(page.locator(".battle-backdrop img")).toHaveCount(0);

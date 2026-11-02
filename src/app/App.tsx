@@ -7,7 +7,9 @@ import {
   landmarks,
   tourismAssets,
   city,
+  battles,
   episodes,
+  journeyConfig,
   milanoTravelCatalog,
 } from "../content";
 import { beginTravelEvent, finishTravelEventIfComplete, sleepAtHotel, waitForTravel } from "../domain/travel-game";
@@ -48,7 +50,7 @@ import { CityProgressBadge, CityRecords } from "../features/journey/CityProgress
 import { TravelActions } from "../features/journey/TravelActions";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
 import { encounters } from "../content/encounters";
-import { startEncounter, startTourismEncounter, advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterAvailability, getEncounterOptionAvailability, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption, encounterStoryCanFinish } from "../domain/encounter";
+import { advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterOptionAvailability, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption, encounterStoryCanFinish, proceedFromTourism, continueTourismEncounters } from "../domain/encounter";
 import { EpilogueScreen } from "../features/journey/EpilogueScreen";
 import { startCityEpilogue, advanceCityEpilogue } from "../domain/epilogue";
 import {
@@ -64,9 +66,7 @@ import {
   openTourism,
   advanceTourismGuide,
   skipTourismGuide,
-  closeTourism,
   discoverClue,
-  startTourismBattle,
   replayTourismGuide,
 } from "../domain/tourism";
 import {
@@ -581,11 +581,11 @@ export default function App({
             }}
             onAnswer={(index) => commit((state) => answerEncounterQuiz(state, currentEncounter.quiz!.question.options[index].id, game.revision))}
             onAdvance={() => {
-              if (commit((state) => advanceEncounter(state, game.revision)) && !gameRef.current?.activeEncounter && !gameRef.current?.activeTourism)
+              if (commit((state) => continueTourismEncounters(state, advanceEncounter(state, game.revision), nextRomanceRoll)) && !gameRef.current?.activeEncounter && !gameRef.current?.activeTourism)
                 returnToPlace(currentEncounter.landmarkId);
             }}
             onFinish={() => {
-              if (commit((state) => finishEncounter(state, game.revision)) && !gameRef.current?.activeTourism)
+              if (commit((state) => continueTourismEncounters(state, finishEncounter(state, game.revision), nextRomanceRoll)) && !gameRef.current?.activeEncounter && !gameRef.current?.activeTourism)
                 returnToPlace(currentEncounter.landmarkId);
             }}
           />
@@ -617,21 +617,14 @@ export default function App({
             onReplayGuide={() =>
               commit((state) => replayTourismGuide(state, game.revision))
             }
-            onEncounter={() =>
-              commit((state) => startTourismEncounter(state, "galleria_fortune", game.revision, nextRomanceRoll))
-            }
             onDiscover={(id) =>
               game.discoveredClueIds.includes(id) ||
               commit((state) => discoverClue(state, id, game.revision))
             }
             onNotebook={() => setNotebook(true)}
             onBattle={() =>
-              commit((state) => startTourismBattle(state, game.revision))
+              commit((state) => proceedFromTourism(state, game.revision, nextRomanceRoll))
             }
-            onLeave={() => {
-              if (commit((state) => closeTourism(state, game.revision)) && !gameRef.current?.activeBattle)
-                returnToPlace(currentLandmarkId);
-            }}
           />
         ) : game.activeBattle ? (
           <BattleScreen
@@ -745,14 +738,9 @@ export default function App({
         ) : (
           <FreeTimeHub
             game={game}
-            encounters={encounters.encounters.map((event) => {
-              const availability = getEncounterAvailability(game, event.id);
-              return { id: event.id, landmarkId: event.landmarkId, title: event.titleJa, description: event.descriptionJa, unavailableReason: availability.available ? undefined : availability.reason };
-            }).filter((event) => !event.unavailableReason)}
             selectedLandmarkId={selectedLandmarkId}
             onSelectLandmark={setSelectedLandmarkId}
             placeFocusRequest={placeFocusRequest}
-            onEncounter={(id) => { commit((state) => startEncounter(state, id, nextRomanceRoll)); }}
             onClaimRewards={() => commit((state) => claimPendingRewards(state, game.revision))}
             onStartEpisode={(id) => commit((state) => startEpisode(state, id))}
             onEpilogue={(id) => commit((state) => startCityEpilogue(state, id, game.revision))}
@@ -760,7 +748,9 @@ export default function App({
             onMilestone={(id) => commit((state) => claimTrialMilestone(state, id))}
             onTourism={(id) => commit((state) => {
               const episode = episodes.find((item) => item.landmarkId === id);
-              return episode ? beginTravelEvent(state, episode.id, "walk", game.revision, nextRomanceRoll) : state;
+              const storyBattle = journeyConfig.storyBattles.find((entry) => battles.find((battle) => battle.id === entry.battleId)?.landmarkId === id);
+              const eventId = episode?.id ?? storyBattle?.battleId;
+              return eventId ? beginTravelEvent(state, eventId, "walk", game.revision, nextRomanceRoll) : state;
             })}
             onBattle={(id) => commit((state) => startBattle(state, id))}
             onTravelEvent={(id, mode) => commit((state) => beginTravelEvent(state, id, mode, game.revision, nextRomanceRoll))}
@@ -779,6 +769,7 @@ export default function App({
           landmarkId={currentLandmarkId ?? undefined}
           cityId={cityNotebook ? currentBattle.cityId : undefined}
           discoveredIds={game.discoveredClueIds}
+          onDiscoverDocument={game.activeTourism?.phase === "exploring" ? (id) => commit((state) => discoverClue(state, id, game.revision)) : undefined}
           onClose={() => setNotebook(false)}
           reasoning={
             reasoningRule &&

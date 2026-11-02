@@ -121,7 +121,7 @@ describe("travel encounters", () => {
       state = untilPhase(choose(restored(begin), 0), "quiz");
       state = answerEncounterQuiz(state, "A", state.revision);
       state = finish(untilPhase(restored(state), "outcome"));
-      expect(state.activeTourism).toEqual(oldTourism);
+      expect(state.activeTourism).toEqual({ ...oldTourism, encounterIds: ["galleria_fortune"] });
       expect(state.ap).toBe(old.ap);
       expect(state.pendingApRewards).toEqual(old.pendingApRewards);
       expect(state.claimedRewardIds).toEqual(old.claimedRewardIds);

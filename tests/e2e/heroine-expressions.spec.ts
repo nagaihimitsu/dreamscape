@@ -1,6 +1,6 @@
 import { installRomanceRolls } from "./romance-rolls";
 import { expect, test } from "@playwright/test";
-import { choose, loadCurrentFreeTime, loadCurrentCompletedFreeTime, saved, setDialogueSpeed, startCafe, startCurrentSupperJourney, startNewGame } from "./helpers";
+import { advanceDialogue, choose, loadCurrentFreeTime, loadCurrentCompletedFreeTime, saved, setDialogueSpeed, startCafe, startCurrentSupperJourney, startGuideBattle, startNewGame } from "./helpers";
 
 test.beforeEach(async ({ page }) => { await installRomanceRolls(page); });
 
@@ -55,7 +55,7 @@ test("a real cafe conversation shows explicit reactions and restores them after 
 test("current battle shows a silent reaction and preserves it after reload", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await startCurrentSupperJourney(page);
-  await page.getByRole("button", { name: "バトルを始める", exact: true }).click();
+  await startGuideBattle(page);
   await setDialogueSpeed(page, "0");
   const portrait = page.locator(".battle-heroine .vn-character > img");
   for (let step = 0; step < 12; step++) {
@@ -68,7 +68,7 @@ test("current battle shows a silent reaction and preserves it after reload", asy
       await expect(portrait).toHaveAttribute("src", /\/default_01\/standing_01\/surprised\.png$/);
       return;
     }
-    await page.getByTestId("battle-advance").click();
+    await advanceDialogue(page, "battle-advance");
     await expect.poll(async () => (await saved(page)).revision).toBeGreaterThan(current.revision);
   }
   throw new Error("Current battle did not show the silent surprise");

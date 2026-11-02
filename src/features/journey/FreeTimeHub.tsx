@@ -4,10 +4,8 @@ import type { GameState } from "../../domain/game";
 import { getTourismAvailability } from "../../domain/tourism";
 import { TrialMilestones } from "../romance/RomanceMenu";
 import { CityProgress } from "./CityProgress";
-import { EncounterMenu } from "./EncounterMenu";
 import { PendingRewards } from "./PendingRewards";
 import { TravelMenu } from "./TravelMenu";
-import type { EncounterMenuEntry } from "./EncounterMenu";
 import "./free-time-hub.css";
 
 /** The same compact destination for an unfinished or completed romance. */
@@ -20,8 +18,6 @@ export function FreeTimeHub({
   onMilestone,
   onTourism,
   onBattle,
-  encounters,
-  onEncounter,
   selectedLandmarkId,
   onSelectLandmark,
   placeFocusRequest,
@@ -35,8 +31,6 @@ export function FreeTimeHub({
   onMilestone: (id: string) => void;
   onTourism: (id: string) => void;
   onBattle: (id: string) => void;
-  encounters: EncounterMenuEntry[];
-  onEncounter: (id: string) => void;
   selectedLandmarkId: string | null;
   onSelectLandmark: (id: string | null) => void;
   placeFocusRequest: number;
@@ -58,12 +52,10 @@ export function FreeTimeHub({
       <TravelMenu game={game} onTravelEvent={onTravelEvent} />
 
       {localLandmarks.map((landmark) => {
-        const localEncounters = encounters.filter((entry) => entry.landmarkId === landmark.id);
         const canObserve = game.visitedLandmarkIds.includes(landmark.id) && getTourismAvailability(game, landmark.id).available;
-        if (!canObserve && localEncounters.length === 0) return null;
+        if (!canObserve) return null;
         return <section key={landmark.id} aria-label={`${landmark.nameJa}で過ごす`}>
           {canObserve && <button className="secondary" onClick={() => onTourism(landmark.id)}>{landmark.nameJa}を観察する</button>}
-          {localEncounters.length > 0 && <EncounterMenu entries={localEncounters} place={landmark.nameJa} onStart={onEncounter} />}
         </section>;
       })}
 

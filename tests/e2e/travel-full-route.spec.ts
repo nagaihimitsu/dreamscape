@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { cityEpisodes, cityFinale, playCityBattle } from "./city-helpers";
-import { choose, finishEvent, saved, selectTravelEvent, setDialogueSpeed, startGuideBattle, startNewGame } from "./helpers";
+import { advanceDialogue, choose, finishEvent, saved, selectTravelEvent, setDialogueSpeed, startGuideBattle, startNewGame } from "./helpers";
 import { playStoryBattle } from "./reasoning-helpers";
 
 test.use({ reducedMotion: "reduce" });
@@ -21,6 +21,16 @@ async function visitEpisode(page: Page, id: string) {
   await expect.poll(async () => (await saved(page)).activeTourism?.landmarkId).toBe(episode.landmarkId);
   await startGuideBattle(page);
   if (id === "milano_duomo_episode") await setDialogueSpeed(page, "0");
+  for (let turn = 0; turn < 100; turn++) {
+    const state = await saved(page);
+    const encounter = state.activeEncounter;
+    if (!encounter) break;
+    if (encounter.frame.choices.length) await page.getByRole("button", { name: "Aを選ぶ", exact: true }).click();
+    else if (encounter.frame.ended) await page.getByRole("button", { name: /観光に戻る/ }).click();
+    else await advanceDialogue(page);
+    await expect.poll(async () => (await saved(page)).revision).toBeGreaterThan(state.revision);
+  }
+  if ((await saved(page)).activeTourism) await page.getByRole("button", { name: "進む", exact: true }).click();
   await playCityBattle(page, episode, 3);
   await page.getByRole("button", { name: "自由時間へ進む" }).click();
   await expect(page.getByTestId("travel-menu")).toBeVisible();

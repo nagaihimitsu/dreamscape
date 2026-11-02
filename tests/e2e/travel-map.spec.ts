@@ -87,7 +87,7 @@ test("tile failures are explained and do not block destination selection", async
   await page.getByTestId("travel-place-p_duomo").getByRole("button").click();
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
   await page.getByTestId("tourism-skip").click();
-  await expect(page.getByRole("button", { name: "バトルを始める", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "進む", exact: true })).toBeVisible();
 });
 
 test("a two-finger gesture zooms the map on a touch screen", async ({ page }) => {

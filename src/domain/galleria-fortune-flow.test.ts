@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import { battleQuizzes, battles } from "../content";
 import { advanceBattle, answerBattle, leaveBattle } from "./battle";
 import { startEpisode } from "./chapter";
-import { advanceEncounter, answerEncounterQuiz, chooseEncounter, finishEncounter, getEncounterAvailability, getTourismEncounterAvailability, startEncounter, startTourismEncounter } from "./encounter";
+import { advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, finishEncounter, getEncounterAvailability, getTourismEncounterAvailability, proceedFromTourism, startEncounter, startTourismEncounter } from "./encounter";
 import { createGame, validateGameState, type GameState } from "./game";
-import { openTourism, skipTourismGuide, startTourismBattle } from "./tourism";
+import { closeTourism, openTourism, skipTourismGuide, startTourismBattle } from "./tourism";
 
 const galleria = "galleria_vittorio_emanuele_ii";
 const encounter = "galleria_fortune";
@@ -40,15 +40,31 @@ function exploreGalleria(): GameState {
   return restore(skipTourismGuide(state, state.revision));
 }
 
-describe("the optional Galleria conversation", () => {
-  it("can be skipped entirely on the way to the ordinary three-question battle", () => {
-    let state = enterGalleria();
-    expect(getTourismEncounterAvailability(state, encounter).available).toBe(false);
-    state = restore(startTourismBattle(state, state.revision));
+describe("the Galleria conversation during observation", () => {
+  it("is introduced automatically before the ordinary three-question battle", () => {
+    let state = exploreGalleria();
+    state = restore(proceedFromTourism(state, state.revision, () => 0));
+    expect(state.activeEncounter?.encounterId).toBe(encounter);
+    expect(state.activeBattle).toBeNull();
+    expect(battleQuizzes[battles.find((battle) => battle.id === "milano_galleria_01")!.quizId].questions).toHaveLength(3);
+  });
+
+  it("does not repeat a deferred conversation during the same saved visit", () => {
+    let state = exploreGalleria();
+    state = restore(proceedFromTourism(state, state.revision, () => 0));
+    for (let i = 0; state.activeEncounter && i < 80; i++) {
+      const active = state.activeEncounter;
+      const before = state;
+      const updated = active.frame.choices.length
+        ? chooseEncounter(state, 2, state.revision)
+        : active.frame.ended ? finishEncounter(state, state.revision) : advanceEncounter(state, state.revision);
+      state = restore(continueTourismEncounters(before, updated, () => 0));
+    }
+    expect(state.activeTourism?.encounterIds).toEqual([encounter]);
+    expect(state.completedEncounterIds).not.toContain(encounter);
+    state = restore(proceedFromTourism(state, state.revision, () => 0));
     expect(state.activeEncounter).toBeNull();
     expect(state.activeBattle?.battleId).toBe("milano_galleria_01");
-    expect(battleQuizzes[battles.find((battle) => battle.id === "milano_galleria_01")!.quizId].questions).toHaveLength(3);
-    expect(state.completedEncounterIds).not.toContain(encounter);
   });
 
   it.each([0, 1])("restores exploration after choice %s without revealing the later quiz", (choiceIndex) => {
@@ -80,9 +96,9 @@ describe("the optional Galleria conversation", () => {
           : advanceEncounter(state, state.revision);
     }
     expect(state.activeEncounter).toBeNull();
-    expect(state.activeTourism).toEqual(savedTourism);
+    expect(state.activeTourism).toEqual({ ...savedTourism, encounterIds: [encounter] });
     expect(state.completedEncounterIds).toContain(encounter);
-    expect(getTourismEncounterAvailability(state, encounter).available).toBe(true);
+    expect(getTourismEncounterAvailability(state, encounter).available).toBe(false);
     expect(state.ap).toBe(ap + 1);
     expect(state.claimedRewardIds).toEqual([...rewards, "victory_galleria_first"]);
     expect(state.travelBudget).toBe(budget);
@@ -93,6 +109,8 @@ describe("the optional Galleria conversation", () => {
     expect(transcript.join("\n")).not.toMatch(/トリノ|Turin|鉄|iron|ガラス|glass|ドゥオモ広場|スカラ広場/i);
     // A previous completion, including one from an older save, must not
     // prevent revisiting the conversation or award resources a second time.
+    state = restore(closeTourism(state, state.revision));
+    state = restore(openTourism(state, galleria));
     state = restore(startTourismEncounter(state, encounter, state.revision, () => 0));
     for (let i = 0; state.activeEncounter && i < 80; i++) {
       state = restore(state);
@@ -104,7 +122,7 @@ describe("the optional Galleria conversation", () => {
           : advanceEncounter(state, state.revision);
     }
     expect(state.activeEncounter).toBeNull();
-    expect(state.activeTourism).toEqual(savedTourism);
+    expect(state.activeTourism).toEqual({ ...savedTourism, encounterIds: [encounter] });
     expect(state.completedEncounterIds.filter((id) => id === encounter)).toHaveLength(1);
     expect(state.ap).toBe(ap + 1);
     expect(state.claimedRewardIds).toEqual([...rewards, "victory_galleria_first"]);

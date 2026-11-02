@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { loadCurrentScene } from "./current-scenarios";
-import { openRevisits, saved, setDialogueSpeed } from "./helpers";
+import { advanceDialogue, loadSnapshot, saved, setDialogueSpeed } from "./helpers";
 
 test.use({ reducedMotion: "reduce" });
 
@@ -11,10 +11,14 @@ async function startCastleGuide(page: Page, longNames = false) {
     await page.getByLabel("主人公の名前").fill("ABCDEFGHIJKLMNOPQRSTUVWX");
     await page.getByLabel("ヒロインの名前").fill("あいうえおかきくけこさしすせそたちつてとなにぬね");
     await page.getByRole("button", { name: "名前を保存", exact: true }).click();
-    await openRevisits(page);
-    await page.getByTestId("revisit-tourism-castello_sforzesco").click();
-    await page.getByRole("button", { name: "発見ポイント・資料を見る", exact: true }).click();
-    await page.getByTestId("guide-replay").click();
+    const state = await saved(page);
+    const guide = await page.evaluate(async (current) => {
+      const path = "/src/domain/tourism.ts";
+      const { openTourism, replayTourismGuide } = await import(/* @vite-ignore */ path);
+      const opened = openTourism(current, "castello_sforzesco");
+      return opened.activeTourism?.phase === "exploring" ? replayTourismGuide(opened, opened.revision) : opened;
+    }, state);
+    await loadSnapshot(page, guide);
   } else await loadCurrentScene(page, "castleGuide");
   await expect.poll(async () => (await saved(page)).activeTourism?.landmarkId).toBe("castello_sforzesco");
   await expect(page.locator(".tourism-guide-scene")).toBeVisible();
@@ -51,7 +55,7 @@ for (const size of [
     await page.setViewportSize(size);
     await startCastleGuide(page);
     await page.evaluate(() => document.fonts.ready);
-    const next = page.getByTestId("tourism-advance");
+    const next = page.locator('.tourism-guide .dialogue-text[role="button"]');
     const readings: Awaited<ReturnType<typeof guideGeometry>>[] = [];
     const speakers: string[] = [];
     const texts: string[] = [];
@@ -72,7 +76,7 @@ for (const size of [
       expect(g.scene.left).toBeGreaterThanOrEqual(-1);
       expect(g.scene.right).toBeLessThanOrEqual(size.width + 1);
       if (step === 1 || step === 2) await page.screenshot({ path: testInfo.outputPath(`castle-line-${step}.png`) });
-      await next.click();
+      await advanceDialogue(page, "tourism-advance");
       await expect.poll(async () => (await saved(page)).revision).toBeGreaterThan(state.revision);
     }
     expect(texts[1]).toContain("絵のモデルかな");
@@ -94,7 +98,7 @@ test("long saved names and enlarged guide text remain within the phone width and
   const initial = await guideGeometry(page);
   expect(initial.documentWidth).toBeLessThanOrEqual(320);
   expect(initial.screen.width).toBeCloseTo(320, 0);
-  const next = page.getByTestId("tourism-advance");
+  const next = page.locator('.tourism-guide .dialogue-text[role="button"]');
   for (let step = 0; step < 3; step++) {
     await next.scrollIntoViewIfNeeded();
     await next.focus();

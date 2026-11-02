@@ -9,9 +9,10 @@ import {
   playEvent,
   returnToMenu,
   saved,
+  startGuideBattle,
   startNewGame,
 } from "./helpers";
-import { reloadUnchanged } from "./battle-helpers";
+import { finishAutomaticEncounters, reloadUnchanged } from "./battle-helpers";
 import {
   cityEpisodes,
   cityFinale,
@@ -50,6 +51,11 @@ test.beforeEach(async ({ page }) => { await installRomanceRolls(page); });
 
 test.use({ reducedMotion: "reduce", viewport: { width: 360, height: 740 } });
 
+async function proceedToCityBattle(page: import("@playwright/test").Page) {
+  await startGuideBattle(page);
+  await finishAutomaticEncounters(page);
+}
+
 test("a new zero-score Milan journey reaches the city epilogue and romance ending with finite earned AP", async ({
   page,
 }) => {
@@ -67,9 +73,7 @@ test("a new zero-score Milan journey reaches the city epilogue and romance endin
     expect(before.activeTourism?.landmarkId).toBe(episode.landmarkId);
     if (index === 0) await reloadUnchanged(page);
     // Neither guide completion nor a discovery is required for progression.
-    await page
-      .getByRole("button", { name: "バトルを始める", exact: true })
-      .click();
+    await proceedToCityBattle(page);
     const result = await playCityBattle(page, episode, 0);
     expect(result.state.completedEpisodeIds).toEqual(
       cityEpisodes.slice(0, index + 1).map((item) => item.id),
@@ -219,9 +223,7 @@ test("all four photographs and discoveries persist, and the five-question boss s
     await page.screenshot({
       path: `artifacts/phase7-mobile-${landmark.id}.png`,
     });
-    await page
-      .getByRole("button", { name: "バトルを始める", exact: true })
-      .click();
+    await proceedToCityBattle(page);
     await playCityBattle(page, episode, 3);
     await expect(
       page.getByRole("heading", { name: "PERFECT VICTORY", exact: true }),

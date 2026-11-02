@@ -22,6 +22,7 @@ export function ClueNotebook({
   discoveredIds,
   onClose,
   onObserve,
+  onDiscoverDocument,
   reasoning,
 }: {
   landmarkId?: string;
@@ -29,6 +30,7 @@ export function ClueNotebook({
   discoveredIds: string[];
   onClose: () => void;
   onObserve?: () => void;
+  onDiscoverDocument?: (id: string) => boolean;
   reasoning?: NotebookReasoning;
 }) {
   const landmark = landmarks.find((item) => item.id === landmarkId);
@@ -39,6 +41,7 @@ export function ClueNotebook({
     (clue) =>
       availableLandmarks.includes(clue.landmarkId) &&
       (discoveredIds.includes(clue.id) ||
+        (!!onDiscoverDocument && clue.kind === "document" && clue.landmarkId === landmarkId) ||
         reasoning?.caseClueIds.includes(clue.id)),
   );
   const [currentId, setCurrentId] = useState(
@@ -52,6 +55,7 @@ export function ClueNotebook({
   const current = clues[currentIndex];
   const currentSelected = !!current && !!reasoning?.selectedIds.includes(current.id);
   const canSelectCurrent = !!current && !!reasoning?.caseClueIds.includes(current.id);
+  const unreadDocument = !!current && current.kind === "document" && !discoveredIds.includes(current.id) && !!onDiscoverDocument && !reasoning;
   return (
     <Modal
       labelledBy="cluebook-title"
@@ -66,7 +70,6 @@ export function ClueNotebook({
         <button
           className="text-button"
           data-testid="cluebook-close"
-          autoFocus
           onClick={onClose}
         >
           閉じる
@@ -155,11 +158,14 @@ export function ClueNotebook({
                   }
                 </p>
               )}
-              <ClueDetails
+              {unreadDocument ? <>
+                <h3>{current.titleJa}</h3>
+                <button className="secondary" data-testid={`read-document-${current.id}`} onClick={() => onDiscoverDocument(current.id)}>資料を読む</button>
+              </> : <ClueDetails
                 clue={current}
                 image={<ClueImage clue={current} />}
                 imageCredits={<ClueImageCredits clue={current} />}
-              />
+              />}
             </article>
           )
         )}

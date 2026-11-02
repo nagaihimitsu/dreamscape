@@ -157,33 +157,33 @@ test("revisit choices are concise and keep tourism and battle routes working", a
   expect((await saved(page)).activeTourism?.landmarkId).toBe("last_supper");
 });
 
-test("observation list exposes points, documents and return actions together", async ({ page }) => {
+test("observation exposes points and notebook documents without a separate list", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await loadCurrentScene(page, "observation");
-  await page.getByRole("button", { name: "発見ポイント・資料を見る", exact: true }).click();
-  const panel = page.locator(".observation-notes");
-  expect(await page.getByTestId("observation-viewport").evaluate((node) => Boolean(node.closest("[inert]")))).toBe(true);
-  for (const id of ["last_supper_perspective", "last_supper_apostle_groups", "last_supper_light", "last_supper_doorway", "last_supper_technique_card"]) {
-    await expectOnScreen(page.getByTestId(`discovery-${id}`));
+  const viewport = page.getByTestId("observation-viewport");
+  await expect(viewport).toBeVisible();
+  for (const id of ["last_supper_perspective", "last_supper_apostle_groups", "last_supper_light", "last_supper_doorway"]) {
+    await expect(page.getByTestId(`hotspot-${id}`)).toBeVisible();
   }
-  await expectOnScreen(page.getByTestId("guide-replay"));
-  await expectOnScreen(panel.locator(".tourism-credits summary"));
-  await expect(panel.getByRole("button", { name: "一覧に戻る", exact: true })).toHaveCount(0);
-  await page.getByTestId("discovery-last_supper_technique_card").click();
+  await page.getByTestId("hotspot-last_supper_perspective").click();
   await expect(page.getByTestId("discovery-detail")).toBeVisible();
+  const opener = page.getByRole("button", { name: "手がかり帳", exact: true });
+  await opener.focus();
+  await page.keyboard.press("Enter");
+  const book = page.getByRole("dialog", { name: "手がかり帳" });
+  await expect(book).toBeVisible();
+  await page.getByTestId("clue-picker").selectOption("last_supper_technique_card");
+  await page.getByTestId("read-document-last_supper_technique_card").click();
   expect((await saved(page)).discoveredClueIds).toContain("last_supper_technique_card");
   await page.keyboard.press("Escape");
-  const opener = page.getByRole("button", { name: "発見ポイント・資料を見る", exact: true });
+  await expect(book).toBeHidden();
   await expect(opener).toBeFocused();
-  await opener.click();
   await page.getByRole("button", { name: "設定", exact: true }).click();
   const settings = page.getByRole("dialog", { name: "設定" });
   await expect(settings).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(settings).toBeHidden();
-  await expect(panel).toBeVisible();
-  await page.keyboard.press("Escape");
-  await expect(panel).toBeHidden();
+  await expect(viewport).toBeVisible();
 });
 
 test("display settings are separate touchable rows and persist", async ({ page }) => {

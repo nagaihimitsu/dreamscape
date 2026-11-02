@@ -1,5 +1,5 @@
 import { expect, type Page } from "@playwright/test";
-import { expectNoOverflow, saved, openRevisits } from "./helpers";
+import { advanceDialogue, expectNoOverflow, saved, openRevisits } from "./helpers";
 
 export async function openTourismFromEntry(page: Page) {
   if ((await saved(page)).activeTourism?.landmarkId !== "last_supper") {
@@ -18,7 +18,7 @@ export async function finishTourismGuide(page: Page) {
     if (state.activeTourism?.phase === "exploring") return observed;
     expect(state.activeTourism?.phase).toBe("guide");
     observed.push(state.activeTourism!.frame!.text);
-    await page.getByTestId("tourism-advance").click();
+    await advanceDialogue(page, "tourism-advance");
     await expect
       .poll(async () => (await saved(page)).revision)
       .toBeGreaterThan(state.revision);
@@ -46,25 +46,28 @@ export async function openCluebook(page: Page) {
   return page.getByRole("dialog", { name: "手がかり帳", exact: true });
 }
 
-/** On compact observation screens the point list is an overlay; on wider
- * screens it is already present alongside the image. */
+/** Guide replay remains in the image credits. */
 export async function openObservationList(page: Page) {
-  const notes = page.locator(".observation-notes");
-  const open = page.getByRole("button", { name: "発見ポイント・資料を見る", exact: true });
-  if (await open.isVisible()) {
-    if (await notes.getAttribute("data-open") !== "true") await open.click();
-  }
+  const credits = page.locator(".tourism-credits");
+  if (await credits.getAttribute("open") === null) await credits.locator("summary").click();
 }
 
 export async function closeObservationList(page: Page) {
-  const notes = page.locator(".observation-notes");
-  const close = notes.getByRole("button", { name: "観察に戻る", exact: true });
-  if (await close.isVisible()) await close.click();
+  const book = page.getByRole("dialog", { name: "手がかり帳", exact: true });
+  if (await book.isVisible()) await page.getByTestId("cluebook-close").click();
 }
 
+/** Hotspots are selected on the image; documents are read in the notebook. */
 export async function selectObservationClue(page: Page, id: string) {
-  await openObservationList(page);
-  await page.getByTestId(`discovery-${id}`).click();
+  const hotspot = page.getByTestId(`hotspot-${id}`);
+  if (await hotspot.count()) {
+    await hotspot.click();
+  } else {
+    await openCluebook(page);
+    await page.getByTestId("clue-picker").selectOption(id);
+    const read = page.getByTestId(`read-document-${id}`);
+    if (await read.isVisible()) await read.click();
+  }
 }
 
 /** Change only the currently displayed page; the selected evidence is saved separately. */

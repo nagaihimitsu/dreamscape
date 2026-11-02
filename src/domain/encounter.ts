@@ -10,9 +10,10 @@ import { earnRewards } from "./rewards";
 import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
 import { deriveRelationshipTone } from "./romance-tone";
 import { scoreQuizAnswer } from "./quiz-answer";
-import type { ActiveEncounter } from "./encounter-state";
+import { validObservationEncounterIds, type ActiveEncounter } from "./encounter-state";
 import placeRuleData from "../../content/encounters/entry-rules.json";
 import { encounterEntryRulesSchema } from "../content/encounter-entry-rules";
+import { startTourismBattle } from "./tourism";
 
 const findEncounter = (id: string) => encounters.encounters.find((item) => item.id === id);
 const placeRules = encounterEntryRulesSchema.parse(placeRuleData);
@@ -75,6 +76,11 @@ export function getEncounterAvailability(state: GameState, id: string): Availabi
   if (actionable.length && actionable.every((option) => !optionItemsBelongToEncounter(event, option) || (option.requiresItemId && state.inventory[option.requiresItemId] !== "held")))
     return unavailable("必要な品物を持っていません。");
   return available;
+}
+
+/** Used before entering a special encounter's battle, while still in free time. */
+export function hasPendingPlaceEncounter(state: GameState, landmarkId: string): boolean {
+  return encounters.encounters.some((event) => event.landmarkId === landmarkId && getEncounterAvailability(state, event.id).available);
 }
 
 /** Keep the optional cultural quiz after the main battle, so it cannot reveal its answer first. */
@@ -141,17 +147,21 @@ export function startEncounter(state: GameState, id: string, nextRoll: () => num
   return beginEncounter(state, findEncounter(id)!, nextRoll);
 }
 
-/** A single optional encounter can be entered from its own observation screen. */
+/** A place encounter uses the same unlock and item rules as its existing definition. */
 export function getTourismEncounterAvailability(state: GameState, id: string): Availability {
   const event = findEncounter(id);
   const active = state.activeTourism;
-  if (!event || event.availability !== "tourism" || event.cityId !== city.id ||
+  if (!event || event.availability === "dormant" || event.cityId !== city.id ||
       !active || active.phase !== "exploring" || active.landmarkId !== event.landmarkId ||
       !state.visitedLandmarkIds.includes(active.landmarkId) ||
       state.activeBattle || state.activeDate || state.activeEncounter || state.activeEpilogue ||
+      active.encounterIds?.includes(id) ||
       (!event.repeatable && state.completedEncounterIds.includes(id)))
     return unavailable("今は話しかけられません。");
-  return available;
+  // Fortune is explicitly available during the first observation, before its
+  // separate post-battle quiz becomes available.
+  if (event.availability === "tourism" && event.id === "galleria_fortune") return available;
+  return getEncounterAvailability({ ...state, activeTourism: null }, id);
 }
 
 export function startTourismEncounter(
@@ -163,7 +173,27 @@ export function startTourismEncounter(
   if (state.revision !== expectedRevision || !getTourismEncounterAvailability(state, id).available) return state;
   const tourism = state.activeTourism!;
   const next = beginEncounter({ ...state, activeTourism: null }, findEncounter(id)!, nextRoll);
-  return { ...next, activeEncounter: { ...next.activeEncounter!, returnTourism: { landmarkId: tourism.landmarkId, contentHash: tourism.contentHash } } };
+  return { ...next, activeEncounter: { ...next.activeEncounter!, returnTourism: { landmarkId: tourism.landmarkId, contentHash: tourism.contentHash, encounterIds: [...(tourism.encounterIds ?? []), id] } } };
+}
+
+/** Start each eligible encounter once per observation visit, then continue normally. */
+export function nextTourismEncounter(state: GameState, nextRoll: () => number = secureRomanceRoll): GameState {
+  const active = state.activeTourism;
+  if (!active || active.phase !== "exploring") return state;
+  const event = encounters.encounters.find((item) => getTourismEncounterAvailability(state, item.id).available);
+  return event ? startTourismEncounter(state, event.id, state.revision, nextRoll) : state;
+}
+
+export function proceedFromTourism(state: GameState, expectedRevision: number, nextRoll: () => number = secureRomanceRoll): GameState {
+  if (state.revision !== expectedRevision) return state;
+  const next = nextTourismEncounter(state, nextRoll);
+  return next !== state ? next : startTourismBattle(state, expectedRevision);
+}
+
+/** After a scene finishes, newly eligible encounters at the same location run too. */
+export function continueTourismEncounters(previous: GameState, next: GameState, nextRoll: () => number = secureRomanceRoll): GameState {
+  return previous.activeEncounter?.returnTourism && !next.activeEncounter && next.activeTourism
+    ? nextTourismEncounter(next, nextRoll) : next;
 }
 
 export function chooseEncounter(state: GameState, index: number, expectedRevision: number): GameState {
@@ -313,7 +343,9 @@ export function validateEncounterState(state: GameState): void {
   const event = getActiveEncounterDefinition(active);
   if (event.cityId !== city.id) fail();
   if (state.activeDate || state.activeTourism || state.activeEpilogue || state.activeBattle) fail();
-  if (active.returnTourism && (event.availability !== "tourism" || active.returnTourism.landmarkId !== event.landmarkId ||
+  if (active.returnTourism && (event.availability === "dormant" || active.returnTourism.landmarkId !== event.landmarkId ||
+      !validObservationEncounterIds(active.returnTourism.landmarkId, active.returnTourism.encounterIds) ||
+      (active.returnTourism.encounterIds && !active.returnTourism.encounterIds.includes(event.id)) ||
       !state.visitedLandmarkIds.includes(active.returnTourism.landmarkId))) fail();
   if (active.storyHash !== storyFingerprint(activeStoryId(active, active.storyId))) fail();
   const validStories = [event!.storyId, ...(event!.quiz ? [event!.quiz.wonStoryId, event!.quiz.lostStoryId, event!.quiz.alreadyStoryId] : [])];

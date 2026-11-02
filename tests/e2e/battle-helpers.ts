@@ -1,12 +1,28 @@
 import { expect, type Page } from "@playwright/test";
 import type { GameState } from "../../src/domain/game";
-import { advanceDialogue, expectNoOverflow, saved, openRevisits } from "./helpers";
+import { advanceDialogue, expectNoOverflow, saved, openRevisits, setDialogueSpeed, startGuideBattle } from "./helpers";
 
 export interface QuizQuestionForTest {
   id: string;
   questionEn: string;
   options: { id: string; textEn: string }[];
   correctOptionId: string;
+}
+
+/** An eligible place encounter interrupts observation before the battle. */
+export async function finishAutomaticEncounters(page: Page) {
+  if (!(await saved(page)).activeEncounter) return;
+  await setDialogueSpeed(page, "0");
+  for (let turn = 0; turn < 100; turn++) {
+    const state = await saved(page);
+    const active = state.activeEncounter;
+    if (!active) break;
+    if (active.frame.choices.length) await page.getByRole("button", { name: "Aを選ぶ", exact: true }).click();
+    else if (active.frame.ended) await page.getByRole("button", { name: /観光に戻る/ }).click();
+    else await advanceDialogue(page);
+    await expect.poll(async () => (await saved(page)).revision).toBeGreaterThan(state.revision);
+  }
+  if ((await saved(page)).activeTourism) await page.getByRole("button", { name: "進む", exact: true }).click();
 }
 
 /** Romance state is independent of quiz score. AP and chapter unlocks now change through integration rewards. */
@@ -27,9 +43,7 @@ export function romanceProgress(state: GameState) {
 
 export async function startBattleFromEntry(page: Page) {
   if ((await saved(page)).activeTourism?.landmarkId === "last_supper") {
-    await page
-      .getByRole("button", { name: "バトルを始める", exact: true })
-      .click();
+    await startGuideBattle(page);
   } else {
     await openRevisits(page);
     await page.getByTestId("revisit-battle-milano_last_supper_01").click();

@@ -17,6 +17,7 @@ import {
 } from "../story/runtime";
 import { startBattleFromTourism } from "./battle";
 import type { Availability, GameState } from "./game";
+import { validObservationEncounterIds } from "./encounter-state";
 
 export const activeTourismSchema = z
   .object({
@@ -25,6 +26,8 @@ export const activeTourismSchema = z
     contentHash: z.string().min(1),
     storyState: z.string().nullable(),
     frame: storyFrameSchema.nullable(),
+    /** Encounters already introduced during this observation visit. */
+    encounterIds: z.array(z.string().min(1)).optional(),
   })
   .strict();
 export type ActiveTourism = z.infer<typeof activeTourismSchema>;
@@ -272,6 +275,8 @@ export function startTourismBattle(
 
 export function validateTourismState(state: GameState): void {
   const knownLandmarks = new Set(landmarks.map((item) => item.id));
+  if (state.activeTourism && !validObservationEncounterIds(state.activeTourism.landmarkId, state.activeTourism.encounterIds))
+    throw new Error("観光中の出会いの記録が一致しません。");
   if (state.visitedLandmarkIds.some((id) => !knownLandmarks.has(id)))
     throw new Error("訪問した観光地が見つかりません。");
   for (const id of state.discoveredClueIds) {

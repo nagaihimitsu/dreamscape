@@ -1,7 +1,9 @@
-import { dates, episodes, milanoTravelCatalog, milanoTravelSettings } from "../content";
+import { battles, dates, episodes, milanoTravelCatalog, milanoTravelSettings } from "../content";
 import { getBattleAvailability, startBattle } from "./battle";
 import { getEpisodeAvailability, isEpisodeUnlocked, isStoryBattleUnlocked, startEpisode } from "./chapter";
 import { getDateAvailability, isDateUnlockedForTravel, isUpdatedDateReplay, startDate, type GameState } from "./game";
+import { hasPendingPlaceEncounter } from "./encounter";
+import { openTourism } from "./tourism";
 import { planOvernight, planTravelEvent } from "./travel";
 import { findTravelHomeRoutes } from "./travel-routes";
 import type { TravelRoute } from "../content/travel-schemas";
@@ -95,11 +97,19 @@ export function beginTravelEvent(state: GameState, eventId: string, mode: Travel
     travel: { ...state.travel, currentPlaceId: event.placeId, minute: availability.plan.arrivalMinute, returnReserve: availability.plan.returnReserve } };
   const episode = episodes.find((item) => item.id === eventId);
   if (replayBattleId && (!episode || episode.battleId !== replayBattleId || !state.battleRecords.some((record) => record.battleId === replayBattleId && record.attempts > 0))) return state;
+  const isDate = dates.some((date) => date.id === eventId);
+  const special = !episode && !isDate ? battles.find((battle) => battle.id === eventId && battle.landmarkId) : undefined;
+  // Re-enter a special battle's location through observation only when an
+  // eligible local encounter is pending. Its first battle still starts as before.
+  const sceneState = special && moved.activeBattle?.phase === "result"
+    ? { ...moved, activeBattle: null, battleRewardReceipt: null }
+    : moved;
+  const observeFirst = !!special?.landmarkId && hasPendingPlaceEncounter(sceneState, special.landmarkId);
   const started = replayBattleId ? startBattle(moved, replayBattleId)
     : episode ? startEpisode(moved, eventId)
-    : dates.some((date) => date.id === eventId) ? startDate(moved, eventId, nextRoll)
-      : startBattle(moved, eventId);
-  if (started === moved) return state;
+    : isDate ? startDate(moved, eventId, nextRoll)
+      : observeFirst ? openTourism(sceneState, special!.landmarkId!) : startBattle(moved, eventId);
+  if (started === (observeFirst ? sceneState : moved)) return state;
   return { ...started, travel: { ...started.travel,
     activeEvent: { eventId, placeId: event.placeId, endMinute: availability.plan.endMinute } } };
 }
@@ -113,7 +123,8 @@ export function finishTravelEventIfComplete(previous: GameState, next: GameState
   const finished = isDate ? !next.activeDate
     : episode ? (next.activeBattle?.battleId === episode.battleId && next.activeBattle.phase === "result") ||
       (!next.activeTourism && !next.activeBattle && !next.activeEncounter)
-    : (next.activeBattle?.battleId === active.eventId && next.activeBattle.phase === "result") || !next.activeBattle;
+    : (next.activeBattle?.battleId === active.eventId && next.activeBattle.phase === "result") ||
+      (!next.activeBattle && !next.activeTourism && !next.activeEncounter);
   if (!finished) return next;
   return { ...next, travel: { ...next.travel, minute: active.endMinute, activeEvent: null } };
 }

@@ -56,7 +56,7 @@ export async function expectNoOverflow(page: Page) {
 export async function startGuideBattle(page: Page) {
   const skip = page.getByTestId("tourism-skip");
   if (await skip.isVisible()) await skip.click();
-  await page.getByRole("button", { name: "バトルを始める", exact: true }).click();
+  await page.getByRole("button", { name: "進む", exact: true }).click();
 }
 
 /** Advance a read line, or its explicit end-of-scene action. */

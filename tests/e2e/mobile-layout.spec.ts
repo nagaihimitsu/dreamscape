@@ -1,6 +1,7 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { loadCurrentScene } from "./current-scenarios";
 import { saved, setDialogueSpeed } from "./helpers";
+import { finishAutomaticEncounters } from "./battle-helpers";
 
 test.use({ reducedMotion: "reduce" });
 
@@ -124,16 +125,15 @@ test("translations can be read and closed without moving the document or answeri
   expect(await saved(page)).toEqual(before);
 });
 
-test("tourism guide navigation and the direct battle entry fit on a small phone", async ({ page }) => {
+test("tourism guide and observation controls fit on a small phone", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 });
   await loadCurrentScene(page, "guide");
   await setDialogueSpeed(page, "0");
-  const advance = page.getByTestId("tourism-advance");
+  const advance = page.locator('.dialogue-text[role="button"]').first();
   const skip = page.getByTestId("tourism-skip");
-  const battle = page.getByRole("button", { name: "バトルを始める" });
   await expect(advance).toBeEnabled();
   await expectDocumentFits(page);
-  for (const action of [advance, skip, battle]) await expectFullyInViewport(page, action);
+  for (const action of [advance, skip]) await expectFullyInViewport(page, action);
   await page.screenshot({ path: "artifacts/mobile-layout/guide-360x640.png" });
   const before = await saved(page);
   await advance.click();
@@ -141,8 +141,10 @@ test("tourism guide navigation and the direct battle entry fit on a small phone"
   await expectDocumentFits(page);
   await skip.click();
   await expect.poll(async () => (await saved(page)).activeTourism?.phase).toBe("exploring");
-  await loadCurrentScene(page, "guide");
-  await page.getByRole("button", { name: "バトルを始める" }).click();
+  const proceed = page.getByRole("button", { name: "進む", exact: true });
+  await expectFullyInViewport(page, proceed);
+  await proceed.click();
+  await finishAutomaticEncounters(page);
   await expect.poll(async () => (await saved(page)).activeBattle?.phase).toBe("dialogue");
 });
 
