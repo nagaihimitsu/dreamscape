@@ -10,7 +10,7 @@ test("manual saving preserves the chosen position and reload asks before discard
   const settings = page.getByRole("dialog", { name: "設定" });
   await settings.getByLabel("自動保存する").uncheck();
   await settings.getByRole("button", { name: "閉じる", exact: true }).click();
-  await page.getByTestId("travel-destination-milano_duomo_episode").getByRole("button").click();
+  await page.getByTestId("travel-place-p_duomo").getByRole("button").click();
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
   expect(await saved(page)).toEqual(initial);
 
@@ -45,12 +45,12 @@ test("another tab cannot overwrite a manual-save branch", async ({ page, context
 
   const other = await context.newPage();
   await other.goto("/");
-  await page.getByTestId("travel-destination-milano_duomo_episode").getByRole("button").click();
+  await page.getByTestId("travel-place-p_duomo").getByRole("button").click();
   await other.getByRole("button", { name: "設定", exact: true }).click();
   const otherSettings = other.getByRole("dialog", { name: "設定" });
   await otherSettings.getByLabel("自動保存する").check();
   await otherSettings.getByRole("button", { name: "閉じる", exact: true }).click();
-  await other.getByTestId("travel-destination-milano_galleria_episode").getByRole("button").click();
+  await other.getByTestId("travel-place-p_galleria").getByRole("button").click();
   const winner = await saved(other);
   expect(winner.revision).toBeGreaterThan(initial.revision);
   await page.getByRole("button", { name: "セーブ", exact: true }).click();

@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import quiz from "../../content/quizzes/sound_duomo_B1.json" with { type: "json" };
 import { playBattle } from "./battle-helpers";
 import { loadCurrentScene } from "./current-scenarios";
-import { choose, expectNoOverflow, finishEvent, loadCurrentGalleriaFreeTime, saved, setDialogueSpeed, startGuideBattle, startNewGame } from "./helpers";
+import { choose, expectNoOverflow, finishEvent, loadCurrentGalleriaFreeTime, saved, selectTravelEvent, setDialogueSpeed, startGuideBattle, startNewGame } from "./helpers";
 
 test.use({ reducedMotion: "reduce" });
 
@@ -49,7 +49,9 @@ test("a phone journey saves transport, completes a battle, starts a date and res
   await page.getByRole("combobox", { name: "地点", exact: true }).selectOption("p_duomo");
   await expect(page.getByTestId("travel-map")).toContainText("ドゥオモ");
   await expectNoOverflow(page);
-  await page.getByTestId("travel-destination-milano_duomo_episode").getByRole("button").click();
+  const initialOrder = await page.getByTestId("travel-menu").locator(":scope > .travel-list > .travel-destination").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("data-testid")));
+  await selectTravelEvent(page, "milano_duomo_episode");
+  await expect(page.getByRole("dialog", { name: /のイベント$/ })).toHaveCount(0);
   await expect.poll(async () => (await saved(page)).activeTourism?.landmarkId).toBe("duomo_milano");
   const arrived = await saved(page);
   expect(arrived.travel).toMatchObject({ currentPlaceId: "p_duomo", day: 1, minute: 547 });
@@ -64,10 +66,13 @@ test("a phone journey saves transport, completes a battle, starts a date and res
   expect(completed.ap).toBeGreaterThan(0);
   await page.getByRole("button", { name: "自由時間へ進む" }).click();
   await expect(page.getByTestId("travel-menu")).toBeVisible();
+  const arrivedOrder = await page.getByTestId("travel-menu").locator(":scope > .travel-list > .travel-destination").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("data-testid")));
+  expect(arrivedOrder[0]).toBe("travel-place-p_duomo");
+  expect(arrivedOrder).not.toEqual(initialOrder);
 
   // This destination has both walking and rail. Its transport choices must
   // appear in the viewport immediately, without changing the saved game.
-  const supper = page.getByTestId("travel-destination-milano_last_supper_episode");
+  const supper = page.getByTestId("travel-place-p_supper");
   if (!(await supper.isVisible())) await page.getByText("ほかの行き先を見る", { exact: true }).click();
   await supper.scrollIntoViewIfNeeded();
   const beforeChoice = await saved(page);
@@ -89,13 +94,16 @@ test("a phone journey saves transport, completes a battle, starts a date and res
   await dialog.getByRole("button", { name: "閉じる" }).click();
   expect(await saved(page)).toEqual(beforeChoice);
 
-  await page.getByTestId("travel-destination-milano_walk_01").getByRole("button").click();
+  await selectTravelEvent(page, "milano_walk_01");
   const during = await saved(page);
   expect(during.activeDate?.dateId).toBe("milano_walk_01");
   expect(during.ap).toBe(beforeChoice.ap - 3);
   expect(during.travel.minute).toBe(beforeChoice.travel.minute);
+  expect(during.travelBudget).toBe(beforeChoice.travelBudget);
   await page.reload();
   expect((await saved(page)).travel).toEqual(during.travel);
+  expect((await saved(page)).travelBudget).toBe(beforeChoice.travelBudget);
+  expect((await saved(page)).ap).toBe(during.ap);
   await choose(page, 0);
   await choose(page, 1);
   await finishEvent(page, 2);
@@ -144,13 +152,13 @@ test("an unavailable destination explains why without spending resources", async
   });
   await page.reload();
   await page.getByText("ほかの行き先を見る", { exact: true }).click();
-  const destination = page.getByTestId("travel-destination-milano_walk_01");
+  const destination = page.getByTestId("travel-place-p_duomo");
   await destination.scrollIntoViewIfNeeded();
   const before = await saved(page);
   await destination.getByRole("button").click();
-  const dialog = page.getByRole("dialog", { name: /へ$/ });
+  const dialog = page.getByRole("dialog", { name: /のイベント$/ });
   await expect(dialog).toBeVisible();
-  await expect(dialog.getByRole("button", { name: /^徒歩 / })).toBeDisabled();
+  await expect(dialog.getByTestId("travel-event-milano_walk_01")).toBeDisabled();
   await expect(dialog.locator(".fine-print")).not.toBeEmpty();
   await dialog.getByRole("button", { name: "閉じる" }).click();
   expect(await saved(page)).toEqual(before);
@@ -159,10 +167,9 @@ test("an unavailable destination explains why without spending resources", async
 test("destinations appear only once their journey conditions are met", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 780 });
   await startNewGame(page);
-  const scalaDate = page.getByTestId("travel-destination-milano_la_scala_date_01");
-  const finale = page.getByTestId("travel-destination-milano_finale");
-  const pradaDate = page.getByTestId("travel-destination-milano_fondazione_prada_date_01");
-  await expect(scalaDate).toHaveCount(0);
+  const finale = page.getByTestId("travel-place-p_darsena");
+  const pradaDate = page.getByTestId("travel-place-p_prada");
+  await expect(page.getByTestId("travel-event-milano_la_scala_date_01")).toHaveCount(0);
   await expect(finale).toHaveCount(0);
   await expect(pradaDate).toHaveCount(0);
   await expect(page.getByTestId("travel-map-canvas")).toBeVisible();
@@ -176,7 +183,14 @@ test("destinations appear only once their journey conditions are met", async ({ 
   await loadCurrentGalleriaFreeTime(page);
   const other = page.getByText("ほかの行き先を見る", { exact: true });
   if (await other.isVisible()) await other.click();
-  await expect(scalaDate).toBeVisible();
+  const scala = page.getByTestId("travel-place-p_scala");
+  await expect(scala).toContainText("観光");
+  await expect(scala).toContainText("デート");
+  await scala.getByRole("button").click();
+  const scalaEvents = page.getByRole("dialog", { name: /のイベント$/ });
+  await expect(scalaEvents.getByText("◇ 観光")).toBeVisible();
+  await expect(scalaEvents.getByTestId("travel-event-milano_la_scala_date_01")).toContainText("デート");
+  await scalaEvents.getByRole("button", { name: "閉じる" }).click();
   await expect(finale).toHaveCount(0);
   await expect(pradaDate).toHaveCount(0);
 
@@ -209,7 +223,7 @@ test("visited destinations remain on the map after their date is completed", asy
     localStorage.setItem("dreamscape.save.v1", JSON.stringify(state));
   });
   await page.reload();
-  await expect(page.getByTestId("travel-destination-milano_fondazione_prada_date_01")).toHaveCount(0);
+  await expect(page.getByTestId("travel-place-p_prada")).toHaveCount(0);
   await expect(page.getByTestId("travel-map-canvas")).toBeVisible();
   await page.locator(".travel-map-places > summary").click();
   const places = page.getByRole("combobox", { name: "地点", exact: true });
@@ -218,20 +232,22 @@ test("visited destinations remain on the map after their date is completed", asy
   await expect(page.getByTestId("travel-map")).toContainText("プラダ財団");
 });
 
-test("separate dates at the same place remain distinguishable without story titles", async ({ page }) => {
+test("events at the same place share one destination and show distinct details", async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 780 });
   await loadCurrentScene(page, "freeTime");
   const other = page.getByText("ほかの行き先を見る", { exact: true });
   if (await other.isVisible()) await other.click();
-  const first = page.getByTestId("travel-destination-milano_cafe_01");
-  const second = page.getByTestId("travel-destination-milano_starbucks_roastery_date_01");
+  const roastery = page.getByTestId("travel-place-p_roastery");
+  await expect(roastery).toHaveCount(1);
+  await roastery.getByRole("button").click();
+  const first = page.getByTestId("travel-event-milano_cafe_01");
+  const second = page.getByTestId("travel-event-milano_starbucks_roastery_date_01");
   await expect(first).toBeVisible();
   await expect(second).toBeVisible();
-  await expect(first).toContainText("ロースタリー");
-  await expect(second).toContainText("ロースタリー");
-  await expect(first).toContainText("デート1");
-  await expect(second).toContainText("デート2");
-  await expect(first).not.toContainText("冷めてからが本番");
-  await expect(second).not.toContainText("買わないおみやげ");
+  await expect(first).toContainText("冷めてからが本番");
+  await expect(second).toContainText("買わないおみやげ");
+  await expect(first).toContainText("AP");
+  await expect(second).toContainText("分");
 });
 
 test("choosing rail in the transport dialog starts the trip once", async ({ page }) => {
@@ -246,7 +262,7 @@ test("choosing rail in the transport dialog starts the trip once", async ({ page
     localStorage.setItem(key, JSON.stringify(state));
   });
   await page.reload();
-  const destination = page.getByTestId("travel-destination-milano_last_supper_episode");
+  const destination = page.getByTestId("travel-place-p_supper");
   if (!(await destination.isVisible())) await page.getByText("ほかの行き先を見る", { exact: true }).click();
   await destination.getByRole("button").click();
   const dialog = page.getByRole("dialog", { name: /へ$/ });
@@ -277,7 +293,7 @@ test("all five transport choices fit on a narrow phone", async ({ page }) => {
     localStorage.setItem(key, JSON.stringify(state));
   });
   await page.reload();
-  const destination = page.getByTestId("travel-destination-milano_fondazione_prada_date_01");
+  const destination = page.getByTestId("travel-place-p_prada");
   if (!(await destination.isVisible())) await page.getByText("ほかの行き先を見る", { exact: true }).click();
   await destination.getByRole("button").click();
   const dialog = page.getByRole("dialog", { name: /へ$/ });

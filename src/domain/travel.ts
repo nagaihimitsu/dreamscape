@@ -1,11 +1,23 @@
 /** Pure calculations for a future city. They do not reserve or save an action. */
 import type { TravelEvent, TravelPlace, TravelRoute } from "../content/travel-schemas";
 
-export type DestinationCandidate = {
+export type DestinationEventCandidate = {
   id: string;
+  placeId: string;
   category: "main" | "date";
   /** Actual walking-route duration, before display rounding. */
   walkMinutes: number;
+  available: boolean;
+  /** Whether this main event has not yet been cleared, independent of availability. */
+  unclearedMain: boolean;
+};
+
+export type DestinationPlace<T extends DestinationEventCandidate> = {
+  id: string;
+  walkMinutes: number;
+  events: T[];
+  available: boolean;
+  hasAvailableUnclearedMain: boolean;
 };
 
 export type Coordinate = { id?: string; latitude: number; longitude: number };
@@ -35,24 +47,47 @@ export function getTimePeriod(minute: number): "day" | "night" | "closed" {
   return "closed";
 }
 
-/** Sort eligible events by walking time; reserve only the fifth slot for a main event. */
-export function selectNearbyDestinations<T extends DestinationCandidate>(destinations: readonly T[]): { nearby: T[]; other: T[]; recommendedMainId: string | null } {
+/** Group events at the same physical place without discarding unavailable events. */
+export function groupDestinationEvents<T extends DestinationEventCandidate>(events: readonly T[]): DestinationPlace<T>[] {
+  const places = new Map<string, DestinationPlace<T>>();
+  const ids = new Set<string>();
+  for (const event of events) {
+    if (!event.id || !event.placeId || ids.has(event.id) || !Number.isFinite(event.walkMinutes) || event.walkMinutes < 0)
+      throw new Error("Invalid or duplicate destination event");
+    ids.add(event.id);
+    let place = places.get(event.placeId);
+    if (!place) {
+      place = { id: event.placeId, walkMinutes: event.walkMinutes, events: [], available: false, hasAvailableUnclearedMain: false };
+      places.set(event.placeId, place);
+    } else if (place.walkMinutes !== event.walkMinutes) {
+      throw new Error("Events at the same place have inconsistent walking times");
+    }
+    place.events.push(event);
+    place.available ||= event.available;
+    place.hasAvailableUnclearedMain ||= event.category === "main" && event.unclearedMain && event.available;
+  }
+  return [...places.values()];
+}
+
+/** Sort available places by walking time; ensure the fifth can lead to an uncleared main. */
+export function selectNearbyDestinations<T extends Pick<DestinationPlace<DestinationEventCandidate>, "id" | "walkMinutes" | "available" | "hasAvailableUnclearedMain">>(destinations: readonly T[]): { nearby: T[]; other: T[]; recommendedMainId: string | null } {
   if (destinations.some((item) => !item.id || !Number.isFinite(item.walkMinutes) || item.walkMinutes < 0) ||
       new Set(destinations.map((item) => item.id)).size !== destinations.length) {
     throw new Error("Invalid or duplicate destination");
   }
-  const sorted = [...destinations].sort((a, b) => a.walkMinutes - b.walkMinutes || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  const compare = (a: T, b: T) => a.walkMinutes - b.walkMinutes || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
+  const sorted = destinations.filter((item) => item.available).sort(compare);
   const nearby = sorted.slice(0, 5);
   let recommendedMainId: string | null = null;
-  if (nearby.length === 5 && !nearby.some((item) => item.category === "main")) {
-    const nearestMain = sorted.find((item) => item.category === "main");
+  if (nearby.length === 5 && !nearby.some((item) => item.hasAvailableUnclearedMain)) {
+    const nearestMain = sorted.find((item) => item.hasAvailableUnclearedMain);
     if (nearestMain) {
       nearby[4] = nearestMain;
       recommendedMainId = nearestMain.id;
     }
   }
   const selectedIds = new Set(nearby.map((item) => item.id));
-  return { nearby, other: sorted.filter((item) => !selectedIds.has(item.id)), recommendedMainId };
+  return { nearby, other: [...sorted.filter((item) => !selectedIds.has(item.id)), ...destinations.filter((item) => !item.available).sort(compare)], recommendedMainId };
 }
 
 /** Initial geographic bearing; only an identical place ID establishes the current location. */

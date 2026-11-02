@@ -4,25 +4,27 @@ import "leaflet/dist/leaflet.css";
 import { milanoTravelCatalog } from "../../content";
 import type { TravelEvent } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
+import { Modal } from "../../components/Modal";
+import "./place-map.css";
 
 type Props = { game: GameState; events: TravelEvent[] };
+type Place = (typeof milanoTravelCatalog.places)[number];
+type MapView = { center: L.LatLng; zoom: number };
 
-/** A map is only loaded when opened; itinerary selection never depends on tiles. */
-export function PlaceMap({ game, events }: Props) {
-  const [open, setOpen] = useState(true);
-  const [selected, setSelected] = useState<string | null>(null);
+/** Both map sizes use the same tiles, markers and selection behavior. */
+function MapCanvas({ game, events, places, onSelect, mapRef, initialView, expanded = false }: Props & {
+  places: Place[];
+  onSelect: (id: string) => void;
+  mapRef: { current: L.Map | null };
+  initialView?: MapView | null;
+  expanded?: boolean;
+}) {
   const [tilesFailed, setTilesFailed] = useState(false);
   const container = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<L.Map | null>(null);
   const markersRef = useRef<L.LayerGroup | null>(null);
-  const places = useMemo(() => milanoTravelCatalog.places.filter((place) =>
-    place.id === game.travel.hotelPlaceId || place.id === game.travel.currentPlaceId || events.some((event) => event.placeId === place.id)),
-  [game.travel.hotelPlaceId, game.travel.currentPlaceId, events]);
-  const selectedPlace = places.find((place) => place.id === selected);
 
   useEffect(() => {
-    if (!open || !container.current) return;
-    setTilesFailed(false);
+    if (!container.current) return;
     const map = L.map(container.current, { zoomControl: true, scrollWheelZoom: true });
     mapRef.current = map;
     const zoomIn = map.zoomControl.getContainer()?.querySelector<HTMLElement>(".leaflet-control-zoom-in");
@@ -33,21 +35,25 @@ export function PlaceMap({ game, events }: Props) {
     if (zoomOut) zoomOut.title = "地図を縮小";
     // The public OSM service supplies interactive tiles on demand; do not prefetch.
     let errors = 0;
-    const tiles = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
-    }).on("tileerror", () => { if (++errors >= 2) setTilesFailed(true); });
-    tiles.addTo(map);
+    }).on("tileerror", () => { if (++errors >= 2) setTilesFailed(true); }).addTo(map);
     markersRef.current = L.layerGroup().addTo(map);
-    map.fitBounds(L.latLngBounds(places.map((place) => [place.latitude, place.longitude])), { padding: [24, 24], maxZoom: 15 });
-    return () => { map.remove(); mapRef.current = null; markersRef.current = null; };
-  // Opening creates one map. Place changes update the markers below without resetting zoom or pan.
+    // A modal's children mount before showModal(): wait until it has a visible size.
+    const frame = requestAnimationFrame(() => {
+      map.invalidateSize();
+      if (initialView) map.setView(initialView.center, initialView.zoom, { animate: false });
+      else map.fitBounds(L.latLngBounds(places.map((place) => [place.latitude, place.longitude])), { padding: [24, 24], maxZoom: 15 });
+    });
+    return () => { cancelAnimationFrame(frame); map.remove(); mapRef.current = null; markersRef.current = null; };
+  // A map is initialized once per opening; marker updates do not reset its pan or zoom.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
+  }, []);
 
   useEffect(() => {
     const group = markersRef.current;
-    if (!open || !group) return;
+    if (!group) return;
     group.clearLayers();
     for (const place of places) {
       const here = place.id === game.travel.currentPlaceId;
@@ -57,26 +63,68 @@ export function PlaceMap({ game, events }: Props) {
       const symbol = `${categories.has("main") ? "◆" : ""}${categories.has("date") ? "♥" : ""}` || "●";
       const icon = L.divIcon({ className: "travel-map-marker-wrap", html: `<span class="travel-map-marker${here ? " is-here" : ""}${visited ? " is-visited" : ""}">${symbol}</span>`, iconSize: [32, 32], iconAnchor: [16, 16] });
       L.marker([place.latitude, place.longitude], { icon, title: label, alt: label, keyboard: true })
-        .on("click", () => setSelected(place.id)).addTo(group);
+        .on("click", () => onSelect(place.id)).addTo(group);
     }
-  }, [open, places, events, game.travel.currentPlaceId, game.completedEpisodeIds, game.playedDateIds, game.battleRecords]);
+  }, [places, events, game.travel.currentPlaceId, game.completedEpisodeIds, game.playedDateIds, game.battleRecords, onSelect]);
+
+  return <>
+    <div ref={container} className="travel-map-frame" aria-label="ミラノの地図。ドラッグで移動、ピンチまたはプラス・マイナスで拡大縮小できます。" data-testid={expanded ? "travel-map-expanded-canvas" : "travel-map-canvas"} />
+    {tilesFailed && <p role="status">地図の一部を読み込めません。通信を確認してください。行き先一覧は引き続き利用できます。</p>}
+  </>;
+}
+
+/** Itinerary selection remains available even if map tiles fail to load. */
+export function PlaceMap({ game, events }: Props) {
+  const [open, setOpen] = useState(true);
+  const [expanded, setExpanded] = useState(false);
+  const [selected, setSelected] = useState<string | null>(null);
+  const mapRef = useRef<L.Map | null>(null);
+  const expandedMapRef = useRef<L.Map | null>(null);
+  const initialView = useRef<MapView | null>(null);
+  const places = useMemo(() => milanoTravelCatalog.places.filter((place) =>
+    place.id === game.travel.hotelPlaceId || place.id === game.travel.currentPlaceId || events.some((event) => event.placeId === place.id)),
+  [game.travel.hotelPlaceId, game.travel.currentPlaceId, events]);
+  const selectedPlace = places.find((place) => place.id === selected);
+
+  function openExpanded() {
+    const map = mapRef.current;
+    initialView.current = map && Number.isFinite(map.getZoom()) ? { center: map.getCenter(), zoom: map.getZoom() } : null;
+    setExpanded(true);
+  }
+  function closeExpanded() {
+    const map = expandedMapRef.current;
+    if (map && Number.isFinite(map.getZoom()) && mapRef.current) mapRef.current.setView(map.getCenter(), map.getZoom(), { animate: false });
+    setExpanded(false);
+  }
+  function choosePlace(id: string, map: L.Map | null) {
+    setSelected(id || null);
+    const place = places.find((item) => item.id === id);
+    if (place) map?.panTo([place.latitude, place.longitude]);
+  }
 
   return <details className="travel-map" data-testid="travel-map" open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
     <summary>ミラノの地図</summary>
     {open && <>
-      <div ref={container} className="travel-map-frame" aria-label="ミラノの地図。ドラッグで移動、ピンチまたはプラス・マイナスで拡大縮小できます。" data-testid="travel-map-canvas" />
-      {tilesFailed && <p role="status">地図の一部を読み込めません。通信を確認してください。行き先一覧は引き続き利用できます。</p>}
+      <div className="travel-map-preview">
+        <MapCanvas game={game} events={events} places={places} onSelect={setSelected} mapRef={mapRef} />
+        <button type="button" className="travel-map-expand" onClick={openExpanded}>地図を大きく見る</button>
+      </div>
       {selectedPlace && <p aria-live="polite"><strong>{selectedPlace.nameJa}</strong>{selected === game.travel.currentPlaceId ? "（現在地）" : ""}</p>}
       <details className="travel-map-places">
         <summary>地点を選ぶ</summary>
-        <label>地点 <select value={selected ?? ""} onChange={(event) => {
-          const id = event.currentTarget.value;
-          setSelected(id || null);
-          const place = places.find((item) => item.id === id);
-          if (place) mapRef.current?.panTo([place.latitude, place.longitude]);
-        }}><option value="">地点を選択</option>{places.map((place) => <option key={place.id} value={place.id}>{place.nameJa}</option>)}</select></label>
+        <label>地点 <select value={selected ?? ""} onChange={(event) => choosePlace(event.currentTarget.value, mapRef.current)}>
+          <option value="">地点を選択</option>{places.map((place) => <option key={place.id} value={place.id}>{place.nameJa}</option>)}
+        </select></label>
         <p>緑の輪：現在地　◆：観光　♥：デート　白い点：訪問済み</p>
       </details>
+      {expanded && <Modal labelledBy="travel-map-expanded-title" className="travel-map-modal" onClose={closeExpanded}>
+        <div className="travel-map-modal-heading"><h2 id="travel-map-expanded-title">ミラノの地図</h2><button type="button" className="secondary" onClick={closeExpanded}>閉じる</button></div>
+        <MapCanvas game={game} events={events} places={places} onSelect={setSelected} mapRef={expandedMapRef} initialView={initialView.current} expanded />
+        <label className="travel-map-modal-place">地点 <select value={selected ?? ""} onChange={(event) => choosePlace(event.currentTarget.value, expandedMapRef.current)}>
+          <option value="">地点を選択</option>{places.map((place) => <option key={place.id} value={place.id}>{place.nameJa}</option>)}
+        </select></label>
+        <p className="travel-map-modal-legend">緑の輪：現在地　◆：観光　♥：デート　白い点：訪問済み</p>
+      </Modal>}
     </>}
   </details>;
 }

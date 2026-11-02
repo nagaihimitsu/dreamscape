@@ -1,18 +1,12 @@
 import { expect, test, type Page } from "@playwright/test";
 import { cityEpisodes, cityFinale, playCityBattle } from "./city-helpers";
-import { choose, finishEvent, saved, setDialogueSpeed, startGuideBattle, startNewGame } from "./helpers";
+import { choose, finishEvent, saved, selectTravelEvent, setDialogueSpeed, startGuideBattle, startNewGame } from "./helpers";
 import { playStoryBattle } from "./reasoning-helpers";
 
 test.use({ reducedMotion: "reduce" });
 
 async function selectDestination(page: Page, id: string) {
-  const destination = page.getByTestId(`travel-destination-${id}`);
-  if (!(await destination.isVisible())) {
-    const other = page.getByText("ほかの行き先を見る", { exact: true });
-    if (await other.isVisible()) await other.click();
-  }
-  await expect(destination).toBeVisible();
-  await destination.getByRole("button").click();
+  await selectTravelEvent(page, id);
   const travel = page.getByRole("dialog", { name: /へ$/ });
   if (await travel.isVisible()) {
     const walk = travel.getByRole("button", { name: /^徒歩 / });

@@ -1,0 +1,32 @@
+.travel-map-preview { position: relative; }
+.travel-map-expand {
+  position: absolute;
+  z-index: 500;
+  top: 8px;
+  right: 8px;
+  width: auto;
+  min-height: 44px;
+  padding: 6px 10px;
+  border: 1px solid #aab4aa;
+  border-radius: 4px;
+  background: #fff;
+  color: #273c31;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+dialog.modal.travel-map-modal {
+  width: min(760px, calc(100% - 24px));
+  max-height: calc(100dvh - 24px);
+  padding: 12px;
+}
+.travel-map-modal-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.travel-map-modal-heading h2 { margin: 0; font-size: 18px; }
+.travel-map-modal-heading button { flex: none; width: auto; min-height: 44px; padding: 6px 12px; }
+dialog.modal.travel-map-modal .travel-map-frame { height: min(60dvh, 520px); }
+.travel-map-modal-place { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 13px; }
+.travel-map-modal-place select { flex: 1; min-width: 0; min-height: 44px; font: inherit; }
+.travel-map-modal-legend { margin: 6px 0 0; font-size: 12px; }
+@media (max-height: 500px) and (orientation: landscape) {
+  dialog.modal.travel-map-modal .travel-map-frame { height: 42dvh; }
+}

@@ -13,7 +13,7 @@ test("the top bar follows time and place while keeping resources visible", async
   await page.getByText("待機", { exact: true }).click();
   await page.getByRole("button", { name: "30分待つ" }).click();
   await expect(context).toContainText("1日目 09:30");
-  await page.getByTestId("travel-destination-milano_duomo_episode").getByRole("button").click();
+  await page.getByTestId("travel-place-p_duomo").getByRole("button").click();
   await expect.poll(async () => (await saved(page)).travel.currentPlaceId).toBe("p_duomo");
   // The journey bar remains visible while a scene is in progress.
   await expect(bar).toBeVisible();

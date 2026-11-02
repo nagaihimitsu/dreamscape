@@ -1,13 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { getDirection, getTimePeriod, planOvernight, planTravel, planTravelEvent, selectNearbyDestinations } from "./travel";
+import { getDirection, getTimePeriod, groupDestinationEvents, planOvernight, planTravel, planTravelEvent, selectNearbyDestinations } from "./travel";
 
-const date = (id: string, walkMinutes: number) => ({ id, category: "date" as const, walkMinutes });
-const main = (id: string, walkMinutes: number) => ({ id, category: "main" as const, walkMinutes });
+const date = (id: string, walkMinutes: number) => ({ id, placeId: id, category: "date" as const, walkMinutes, available: true, unclearedMain: false });
+const main = (id: string, walkMinutes: number) => ({ id, placeId: id, category: "main" as const, walkMinutes, available: true, unclearedMain: true });
+const select = (events: Array<ReturnType<typeof date> | ReturnType<typeof main>>) => selectNearbyDestinations(groupDestinationEvents(events));
 
 describe("travel destination selection", () => {
   it("keeps the five nearest when a main destination is already among them", () => {
     const input = [date("a", 1), main("b", 2), date("c", 3), date("d", 4), date("e", 5), main("f", 6)];
-    const result = selectNearbyDestinations([...input].reverse());
+    const result = select([...input].reverse());
     expect(result.nearby.map((x) => x.id)).toEqual(["a", "b", "c", "d", "e"]);
     expect(result.other.map((x) => x.id)).toEqual(["f"]);
   });
@@ -15,7 +16,7 @@ describe("travel destination selection", () => {
   it("replaces only the fifth date with the closest available main and retains the date in other", () => {
     const input = [date("a", 1), date("b", 2), date("c", 3), date("d", 4), date("e", 5), date("f", 6), main("far", 10), main("nearest-main", 8)];
     const original = [...input];
-    const result = selectNearbyDestinations(input);
+    const result = select(input);
     expect(result.nearby.map((x) => x.id)).toEqual(["a", "b", "c", "d", "nearest-main"]);
     expect(result.other.map((x) => x.id)).toEqual(["e", "f", "far"]);
     expect(input).toEqual(original);
@@ -23,18 +24,50 @@ describe("travel destination selection", () => {
   });
 
   it("does not invent entries or require a main when none is available", () => {
-    expect(selectNearbyDestinations([date("c", 3), date("a", 1), date("b", 2)]).nearby.map((x) => x.id)).toEqual(["a", "b", "c"]);
+    expect(select([date("c", 3), date("a", 1), date("b", 2)]).nearby.map((x) => x.id)).toEqual(["a", "b", "c"]);
     const onlyDates = Array.from({ length: 6 }, (_, index) => date(`date-${index}`, index));
-    const result = selectNearbyDestinations(onlyDates);
+    const result = select(onlyDates);
     expect(result.nearby).toHaveLength(5);
     expect(result.other.map((x) => x.id)).toEqual(["date-5"]);
   });
 
   it("orders ties deterministically without rounding away different travel times", () => {
     const a = date("a", 1.04), b = date("b", 1.04), c = date("c", 1.03);
-    const ids = (items: typeof a[]) => selectNearbyDestinations(items).nearby.map((x) => x.id);
+    const ids = (items: typeof a[]) => select(items).nearby.map((x) => x.id);
     expect(ids([b, a, c])).toEqual(["c", "a", "b"]);
     expect(ids([a, c, b])).toEqual(["c", "a", "b"]);
+  });
+
+  it("treats completed main events as revisitable but not as the guarantee", () => {
+    const completed = { ...main("cleared", 1), unclearedMain: false };
+    const result = select([completed, date("b", 2), date("c", 3), date("d", 4), date("e", 5), main("uncleared", 8)]);
+    expect(result.nearby.map((x) => x.id)).toEqual(["cleared", "b", "c", "d", "uncleared"]);
+    expect(result.other.map((x) => x.id)).toEqual(["e"]);
+    expect(result.recommendedMainId).toBe("uncleared");
+  });
+
+  it("groups events at the same place and counts only an available uncleared main", () => {
+    const events = [
+      { ...main("art_main", 2), placeId: "art", available: false },
+      { ...date("art_date", 2), placeId: "art" },
+      date("b", 3), date("c", 4), date("d", 5), date("e", 6), main("far", 10),
+    ];
+    const result = select(events);
+    expect(result.nearby.map((place) => place.id)).toEqual(["art", "b", "c", "d", "far"]);
+    expect(result.nearby[0].events.map((event) => event.id)).toEqual(["art_main", "art_date"]);
+    expect(result.nearby[0].hasAvailableUnclearedMain).toBe(false);
+    expect(result.other.map((place) => place.id)).toEqual(["e"]);
+    const openMain = select([{ ...events[0], available: true }, ...events.slice(1)]);
+    expect(openMain.nearby.map((place) => place.id)).toEqual(["art", "b", "c", "d", "e"]);
+    expect(openMain.recommendedMainId).toBeNull();
+  });
+
+  it("keeps unavailable places in the other list and refuses inconsistent grouped routes", () => {
+    const unavailable = { ...main("closed", 1), available: false };
+    const result = select([unavailable, date("near", 2)]);
+    expect(result.nearby.map((place) => place.id)).toEqual(["near"]);
+    expect(result.other.map((place) => place.id)).toEqual(["closed"]);
+    expect(() => groupDestinationEvents([{ ...date("one", 1), placeId: "shared" }, { ...date("two", 2), placeId: "shared" }])).toThrow();
   });
 });
 

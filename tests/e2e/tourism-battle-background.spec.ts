@@ -1,9 +1,9 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { cityEpisodes, playCityBattle } from "./city-helpers";
 import { expectNoOverflow, saved, setDialogueSpeed, startNewGame } from "./helpers";
-import { finishTourismGuide, openCluebook } from "./tourism-helpers";
+import { openCluebook, skipTourismGuide } from "./tourism-helpers";
 
-test.use({ reducedMotion: "reduce" });
+test.use({ reducedMotion: "reduce", actionTimeout: 10_000 });
 
 async function expectLoadedPhoto(image: Locator, path: RegExp) {
   await expect(image).toHaveAttribute("src", path);
@@ -24,7 +24,7 @@ async function expectSceneCovered(scene: Locator, image: Locator) {
 
 async function beginDuomo(page: Page) {
   await startNewGame(page);
-  await page.getByTestId("travel-destination-milano_duomo_episode").getByRole("button").click();
+  await page.getByTestId("travel-place-p_duomo").getByRole("button").click();
   expect((await saved(page)).activeTourism?.landmarkId).toBe("duomo_milano");
 }
 
@@ -39,7 +39,7 @@ test("Duomo photo and place remain visible from guide through observation, battl
   await expect(page.getByRole("heading", { name: "ミラノ大聖堂（ドゥオモ）", exact: true })).toBeVisible();
   await setDialogueSpeed(page, "0");
   await page.screenshot({ path: testInfo.outputPath("duomo-guide-mobile.png") });
-  await finishTourismGuide(page);
+  await skipTourismGuide(page);
   await expect(page.getByTestId("observation-viewport").locator("img")).toHaveAttribute("src", /duomo-milano\.webp$/);
   await page.getByTestId("zoom-in").click();
   await expect.poll(async () => Number(await page.getByTestId("observation-viewport").getAttribute("data-scale"))).toBeGreaterThan(1);
@@ -65,9 +65,10 @@ test("Duomo photo and place remain visible from guide through observation, battl
   await expect(page.getByTestId("battle-location")).toContainText("ドゥオモ");
   await expectLoadedPhoto(photo, /duomo-milano\.webp$/);
   await page.getByRole("button", { name: "自由時間へ進む" }).click();
-  await page.getByTestId("travel-destination-milano_galleria_episode").getByRole("button").click();
+  await page.getByTestId("travel-place-p_galleria").getByRole("button").click();
   expect((await saved(page)).activeTourism?.landmarkId).toBe("galleria_vittorio_emanuele_ii");
   await expectLoadedPhoto(page.locator(".tourism-guide-scene .vn-background img"), /galleria/i);
+  await skipTourismGuide(page);
   await page.getByRole("button", { name: "バトルを始める", exact: true }).click();
   await expectLoadedPhoto(page.locator(".battle-backdrop img"), /galleria/i);
   await expect(page.getByTestId("battle-location")).toContainText("ガッレリア");
@@ -88,6 +89,7 @@ test("the guide fills its scene on desktop and a failed photo keeps a fallback",
   await page.reload();
   await expect(guide.locator(".canal-scene svg")).toBeVisible();
   await expect(guide.locator(".vn-background img")).toHaveCount(0);
+  await skipTourismGuide(page);
   await page.getByRole("button", { name: "バトルを始める", exact: true }).click();
   await expect(page.getByTestId("battle-location")).toContainText("ドゥオモ");
   await expect(page.locator(".battle-backdrop svg")).toBeVisible();

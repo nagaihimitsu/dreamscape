@@ -20,7 +20,8 @@ function route(from: string, to: string, mode: TravelMode) {
 export function getTravelHomeRoutes(fromPlaceId: string, hotelPlaceId: string): Array<Pick<TravelRoute, "fromPlaceId" | "toPlaceId" | "mode" | "minutes" | "cost"> & { viaPlaceId?: string }> {
   return findTravelHomeRoutes(milanoTravelCatalog.routes, fromPlaceId, hotelPlaceId);
 }
-function eventDefinition(state: GameState, eventId: string) {
+/** Current event cost and duration, including existing replay and retry rules. */
+export function getTravelEventDefinition(state: GameState, eventId: string) {
   const event = milanoTravelCatalog.events.find((item) => item.id === eventId);
   if (!event) return undefined;
   const episode = episodes.find((item) => item.id === event.id);
@@ -48,6 +49,15 @@ export function isTravelEventUnlocked(state: GameState, eventId: string): boolea
   if (dates.some((date) => date.id === eventId)) return isDateUnlockedForTravel(state, eventId);
   return isStoryBattleUnlocked(state, eventId);
 }
+
+/** Match the existing progression rules for episodes, finale and special battles. */
+export function isUnclearedMainTravelEvent(state: GameState, eventId: string): boolean {
+  const event = milanoTravelCatalog.events.find((item) => item.id === eventId);
+  if (!event || event.category !== "main") return false;
+  if (episodes.some((episode) => episode.id === eventId))
+    return !state.completedEpisodeIds.includes(eventId);
+  return !state.battleRecords.some((record) => record.battleId === eventId && record.attempts > 0);
+}
 const reasonJa: Record<string, string> = {
   invalid: "旅行の状態を確認できません。", closed: "到着する時間には、この出来事を始められません。",
   time: "今日はホテルへの帰路を含めると時間が足りません。", budget: "移動や帰りのための予算が足りません。",
@@ -56,7 +66,7 @@ const reasonJa: Record<string, string> = {
 
 /** Existing availability, confirmed directed routes and return feasibility are all checked before spending. */
 export function getTravelEventAvailability(state: GameState, eventId: string, mode: TravelMode): TravelAvailability {
-  const event = eventDefinition(state, eventId);
+  const event = getTravelEventDefinition(state, eventId);
   if (!event) return { available: false, reason: "行き先が見つかりません。" };
   if (state.travel.activeEvent) return { available: false, reason: "途中の場面を終えてから出発できます。" };
   const existing = normalAvailability(state, eventId);
@@ -79,7 +89,7 @@ export function getTravelEventAvailability(state: GameState, eventId: string, mo
 export function beginTravelEvent(state: GameState, eventId: string, mode: TravelMode, expectedRevision: number, nextRoll?: () => number, replayBattleId?: string): GameState {
   if (state.revision !== expectedRevision) return state;
   const availability = getTravelEventAvailability(state, eventId, mode);
-  const event = eventDefinition(state, eventId);
+  const event = getTravelEventDefinition(state, eventId);
   if (!availability.available || !availability.plan || !event) return state;
   const moved = { ...state, travelBudget: availability.plan.remainingBudget,
     travel: { ...state.travel, currentPlaceId: event.placeId, minute: availability.plan.arrivalMinute, returnReserve: availability.plan.returnReserve } };

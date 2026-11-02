@@ -41,12 +41,52 @@ test("a phone map loads actual tile elements, zooms and pans while retaining pla
   await expect(page.getByRole("button", { name: "地図を大きくする" })).toHaveCount(0);
 });
 
+test("the enlarged map retains markers and supports zoom before returning to the compact map", async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 780 });
+  await page.route("https://tile.openstreetmap.org/**", (route) => route.fulfill({ status: 200, contentType: "image/png", body: tile }));
+  await startNewGame(page);
+  const compact = page.getByTestId("travel-map-canvas");
+  await expect(compact.locator(".leaflet-marker-icon").first()).toBeVisible();
+  const markerCount = await compact.locator(".leaflet-marker-icon").count();
+  await page.getByRole("button", { name: "地図を大きく見る" }).click();
+  const dialog = page.getByRole("dialog", { name: "ミラノの地図" });
+  const expanded = page.getByTestId("travel-map-expanded-canvas");
+  await expect(dialog).toBeVisible();
+  await expect(expanded.locator(".leaflet-marker-icon")).toHaveCount(markerCount);
+  const initialSrc = await expanded.locator(".leaflet-tile-loaded").first().getAttribute("src");
+  const initialZoom = Number(initialSrc?.match(/\.org\/(\d+)\//)?.[1]);
+  await expanded.getByRole("button", { name: "地図を拡大" }).click();
+  await expect.poll(async () => (await expanded.locator(".leaflet-tile-loaded").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("src"))))
+    .some((src) => Number(src?.match(/\.org\/(\d+)\//)?.[1]) > initialZoom)).toBe(true);
+  await expanded.getByRole("button", { name: "地図を縮小" }).click();
+  await expanded.getByRole("button", { name: "地図を拡大" }).click();
+  const marker = expanded.locator(".leaflet-marker-icon").first();
+  const beforePan = await marker.boundingBox();
+  const box = await expanded.boundingBox();
+  expect(beforePan).not.toBeNull();
+  expect(box).not.toBeNull();
+  await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(box!.x + box!.width / 2 + 40, box!.y + box!.height / 2 + 20, { steps: 5 });
+  await page.mouse.up();
+  await expect.poll(async () => (await marker.boundingBox())?.x).not.toBeCloseTo(beforePan!.x, 0);
+  await dialog.getByRole("button", { name: "閉じる" }).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(compact.locator(".leaflet-marker-icon")).toHaveCount(markerCount);
+  await expect.poll(async () => (await compact.locator(".leaflet-tile-loaded").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("src"))))
+    .some((src) => Number(src?.match(/\.org\/(\d+)\//)?.[1]) > initialZoom)).toBe(true);
+  await page.getByRole("button", { name: "地図を大きく見る" }).click();
+  await expect(page.getByTestId("travel-map-expanded-canvas").locator(".leaflet-marker-icon")).toHaveCount(markerCount);
+});
+
 test("tile failures are explained and do not block destination selection", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 740 });
   await page.route("https://tile.openstreetmap.org/**", (route) => route.abort("failed"));
   await startNewGame(page);
   await expect(page.getByRole("status")).toContainText("地図の一部を読み込めません");
-  await page.getByTestId("travel-destination-milano_duomo_episode").getByRole("button").click();
+  await page.getByTestId("travel-place-p_duomo").getByRole("button").click();
+  await expect(page.getByTestId("tourism-guide")).toBeVisible();
+  await page.getByTestId("tourism-skip").click();
   await expect(page.getByRole("button", { name: "バトルを始める", exact: true })).toBeVisible();
 });
 

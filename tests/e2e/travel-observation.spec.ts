@@ -1,12 +1,14 @@
 import { expect, test } from "@playwright/test";
-import { saved, startNewGame } from "./helpers";
+import { saved, selectTravelEvent, startNewGame } from "./helpers";
 import { skipTourismGuide } from "./tourism-helpers";
+
+test.use({ actionTimeout: 10_000 });
 
 test("interrupted sightseeing reserves time again and battle observation resumes the same fight", async ({ page }) => {
   test.setTimeout(60_000);
   await page.setViewportSize({ width: 360, height: 780 });
   await startNewGame(page);
-  await page.getByTestId("travel-destination-milano_duomo_episode").getByRole("button").click();
+  await page.getByTestId("travel-place-p_duomo").getByRole("button").click();
   await expect.poll(async () => (await saved(page)).activeTourism?.landmarkId).toBe("duomo_milano");
   await skipTourismGuide(page);
   const first = await saved(page);
@@ -15,7 +17,7 @@ test("interrupted sightseeing reserves time again and battle observation resumes
   await page.getByRole("button", { name: "自由時間へ戻る" }).click();
   await expect.poll(async () => (await saved(page)).travel.activeEvent).toBeNull();
   expect((await saved(page)).travel.minute).toBe(firstEnd);
-  await page.getByRole("button", { name: "ミラノ大聖堂（ドゥオモ）を観察する" }).click();
+  await selectTravelEvent(page, "milano_duomo_episode");
   await expect.poll(async () => (await saved(page)).travel.activeEvent?.eventId).toBe("milano_duomo_episode");
   const revisit = await saved(page);
   expect(revisit.travel.minute).toBe(firstEnd);

@@ -41,3 +41,8 @@ dialog.modal.travel-choice-modal { width: min(400px, calc(100% - 24px)); max-hei
 .travel-choice-modal .travel-choice-header button { flex: 0 0 auto; width: auto; min-height: 44px; padding: 8px 12px; white-space: nowrap; }
 .travel-choice-modal p { margin: 8px 0; font-size: 13px; line-height: 1.45; }
 .travel-choice-routes { display: grid; gap: 3px; }
+.travel-event-list { display: grid; gap: 8px; }
+.travel-event-button { display: flex; width: 100%; min-height: 44px; align-items: baseline; justify-content: space-between; gap: 6px; text-align: left; }
+.travel-event-button span { min-width: 0; overflow-wrap: anywhere; }
+.travel-event-button small { flex: none; color: var(--muted); }
+.travel-event p { margin: 4px 2px; font-size: 13px; }

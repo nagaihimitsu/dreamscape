@@ -1,7 +1,23 @@
 import { expect, type Locator, type Page } from "@playwright/test";
 import type { GameState } from "../../src/domain/game";
+import travelCatalog from "../../content/travel/milano.json" with { type: "json" };
 
 export const SAVE_KEY = "dreamscape.save.v1";
+
+/** Select a destination and, where needed, the event at that place. */
+export async function selectTravelEvent(page: Page, id: string) {
+  const event = travelCatalog.events.find((item) => item.id === id);
+  if (!event) throw new Error(`Unknown travel event: ${id}`);
+  const place = page.getByTestId(`travel-place-${event.placeId}`);
+  if (!(await place.isVisible())) {
+    const more = page.getByText("ほかの行き先を見る", { exact: true });
+    if (await more.isVisible() && await more.locator("..").getAttribute("open") === null) await more.click();
+  }
+  await expect(place).toBeVisible();
+  await place.getByRole("button").click();
+  const choice = page.getByTestId(`travel-event-${id}`);
+  if (await choice.isVisible()) await choice.click();
+}
 
 /** Secondary scene controls are in a compact menu on narrow screens. */
 export async function revealDialogueControl(page: Page, control: Locator) {

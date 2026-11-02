@@ -5,7 +5,7 @@ import { expectNoOverflow, saved, setDialogueSpeed, startNewGame } from "./helpe
 test("the guide's compact controls lead to observation and the battle", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 780 });
   await startNewGame(page);
-  await page.getByTestId("travel-destination-milano_galleria_episode").getByRole("button").click();
+  await page.getByTestId("travel-place-p_galleria").getByRole("button").click();
   const guide = page.getByTestId("tourism-guide");
   await expect(guide).toBeVisible();
   const controls = guide.getByLabel("会話の操作");
