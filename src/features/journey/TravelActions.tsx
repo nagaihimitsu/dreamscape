@@ -9,23 +9,15 @@ import { DAY_END, canReturnByDayEnd, planOvernight } from "../../domain/travel";
 import { getTravelHomeRoutes, waitForTravel } from "../../domain/travel-game";
 import { formatTravelTime } from "./travel-time";
 import { showTravelEvent, travelModeLabels } from "./travel-visibility";
-import { TimePassage } from "./TimePassage";
 
 /** Time and lodging use the same game rules as the destination menu. */
-export function TravelActions({ game, onTravelWait, onTravelSleep, reduceMotion = false }: {
+export function TravelActions({ game, onTravelWait, onTravelSleep }: {
   game: GameState;
-  reduceMotion?: boolean;
   onTravelWait: (minutes: number) => boolean;
   onTravelSleep: (mode: TravelRoute["mode"], viaPlaceId: string | null) => boolean;
 }) {
   const { travel, travelSettings } = getCityContent(game.currentCityId);
   const [showSleep, setShowSleep] = useState(false);
-  const [transition, setTransition] = useState(0);
-  const [transitionVisible, setTransitionVisible] = useState(false);
-  function showTimePassage() {
-    setTransition((current) => current + 1);
-    setTransitionVisible(true);
-  }
   const events = travel.events.filter((event) => showTravelEvent(game, event));
   const nextTimes = [18 * 60, ...events.flatMap((event) => event.startWindows?.map((window) => window.start) ?? []), ...travel.places.flatMap((place) => place.openingWindows?.map((window) => window.start) ?? [])]
     .filter((value) => value > game.travel.minute && value < DAY_END);
@@ -47,10 +39,9 @@ export function TravelActions({ game, onTravelWait, onTravelSleep, reduceMotion 
       <div className="travel-choice-routes">{homeRoutes.map((route) => {
         const result = planOvernight(snapshot, route, travelSettings.lodgingCost, !canReturnByDayEnd(snapshot, homeRoutes));
         const via = route.viaPlaceId ? travel.places.find((place) => place.id === route.viaPlaceId)?.nameJa : undefined;
-        return <div key={JSON.stringify([route.mode, route.viaPlaceId ?? null])}><button type="button" className="secondary travel-route" disabled={!result.ok} onClick={() => { if (onTravelSleep(route.mode, route.viaPlaceId ?? null)) showTimePassage(); setShowSleep(false); }}>{travelModeLabels[route.mode]}{route.transferNote ? `（${route.transferNote}）` : ""}{via ? `・${via}から徒歩` : ""} {route.minutes}分 · {formatMoneyForCity(game.currentCityId, route.cost)}{result.ok && result.usedAssistance ? "（宿泊費の不足分は補助）" : ""}</button>{!result.ok && <p className="fine-print">{result.reason === "budget" ? "この移動手段の予算が足りません。" : "この経路では帰れません。"}</p>}</div>;
+        return <div key={JSON.stringify([route.mode, route.viaPlaceId ?? null])}><button type="button" className="secondary travel-route" disabled={!result.ok} onClick={() => { onTravelSleep(route.mode, route.viaPlaceId ?? null); setShowSleep(false); }}>{travelModeLabels[route.mode]}{route.transferNote ? `（${route.transferNote}）` : ""}{via ? `・${via}から徒歩` : ""} {route.minutes}分 · {formatMoneyForCity(game.currentCityId, route.cost)}{result.ok && result.usedAssistance ? "（宿泊費の不足分は補助）" : ""}</button>{!result.ok && <p className="fine-print">{result.reason === "budget" ? "この移動手段の予算が足りません。" : "この経路では帰れません。"}</p>}</div>;
       })}</div>
       {homeRoutes.length === 0 && <p>滞在先への経路は確認されていません。</p>}
     </Modal>}
-    {transitionVisible && <TimePassage key={transition} reduceMotion={reduceMotion} onEnd={() => setTransitionVisible(false)} />}
   </div>;
 }

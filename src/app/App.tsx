@@ -20,7 +20,7 @@ import { loadJourneyDraft, promoteJourneyDraft } from "../persistence/journey-pr
 import { PreparingJourney } from "../features/journey/PreparingJourney";
 import { UnavailableJourney } from "../features/journey/UnavailableJourney";
 import { JourneySelection } from "../features/journey/JourneySelection";
-import { beginTravelEvent, finishTravelEventIfComplete, sleepAtHotel, waitForTravel } from "../domain/travel-game";
+import { beginTravelEvent, finishTravelEventIfComplete, sleepAtHotel, waitForTravel, type TravelMode } from "../domain/travel-game";
 import { getGameWeekday } from "../domain/travel";
 import { getNextCity, departToNextCity, advanceCompletedIndiaCity } from "../domain/city-travel";
 import {
@@ -58,6 +58,8 @@ import { EnglishReview } from "../features/learning/EnglishReview";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import { CityProgressBadge, CityRecords } from "../features/journey/CityProgress";
 import { TravelActions } from "../features/journey/TravelActions";
+import { TravelTransition } from "../features/journey/TravelTransition";
+import { TimePassage } from "../features/journey/TimePassage";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
 import { encounters } from "../content/encounters";
 import { advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterOptionAvailability, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption, encounterStoryCanFinish, proceedFromTourism, continueTourismEncounters } from "../domain/encounter";
@@ -211,6 +213,10 @@ function GameApp({
   const [showRomanceEnding, setShowRomanceEnding] = useState(false);
   const [selectedLandmarkId, setSelectedLandmarkId] = useState<string | null>(null);
   const [placeFocusRequest, setPlaceFocusRequest] = useState(0);
+  const [travelTransition, setTravelTransition] = useState<{ mode: TravelMode; thenSleep: boolean } | null>(null);
+  const [showTimePassage, setShowTimePassage] = useState(false);
+  // Guard synchronously as a second click can arrive before React renders the overlay.
+  const travelTransitionPending = useRef(false);
   const [player, setPlayer] = useState(
     game?.playerName ?? balance.defaultPlayerName,
   );
@@ -256,6 +262,32 @@ function GameApp({
     if (next.currentCityId !== previous.currentCityId) setSelectedLandmarkId(null);
     setNotice("");
     return true;
+  }
+  function travelToEvent(id: string, mode: TravelMode, revision: number) {
+    if (travelTransitionPending.current) return false;
+    const before = gameRef.current;
+    const succeeded = commit((state) => beginTravelEvent(state, id, mode, revision, nextRomanceRoll));
+    const after = gameRef.current;
+    if (succeeded && before && after && before.currentCityId === after.currentCityId &&
+        before.travel.currentPlaceId !== after.travel.currentPlaceId) {
+      travelTransitionPending.current = true;
+      setTravelTransition({ mode, thenSleep: false });
+    }
+    return succeeded;
+  }
+  function returnToHotel(mode: TravelMode, viaPlaceId: string | null, revision: number) {
+    if (travelTransitionPending.current) return false;
+    const before = gameRef.current;
+    const succeeded = commit((state) => sleepAtHotel(state, mode, revision, viaPlaceId));
+    if (succeeded && before) {
+      travelTransitionPending.current = true;
+      if (before.travel.currentPlaceId !== before.travel.hotelPlaceId) {
+        setTravelTransition({ mode, thenSleep: true });
+      } else {
+        setShowTimePassage(true);
+      }
+    }
+    return succeeded;
   }
   // A previously completed city can gain a published successor later. On
   // resume, use the same guarded save path as any other game action.
@@ -487,9 +519,9 @@ function GameApp({
           <div className="journey-controls" data-testid="city-progress">
             <button className="journey-progress-button" type="button" aria-label="観光地・発見・戦績を見る" onClick={() => setRecordsOpen(true)}><CityProgressBadge game={game} /></button>
             {game.endingReached && <span className="city-relationship">交際中</span>}
-            {idle && !showRomanceEnding && <TravelActions game={game} reduceMotion={displaySettings.value.reduceMotion}
+            {idle && !showRomanceEnding && <TravelActions game={game}
               onTravelWait={(minutes) => commit((state) => waitForTravel(state, minutes, game.revision))}
-              onTravelSleep={(mode, viaPlaceId) => commit((state) => sleepAtHotel(state, mode, game.revision, viaPlaceId))} />}
+              onTravelSleep={(mode, viaPlaceId) => returnToHotel(mode, viaPlaceId, game.revision)} />}
           </div>
           <nav className="journey-quick-actions" aria-label="旅の操作">
             <button type="button" aria-label="英語ノートを開く" onClick={() => openEnglish()}>英語</button>
@@ -832,7 +864,7 @@ function GameApp({
               return eventId ? beginTravelEvent(state, eventId, "walk", game.revision, nextRomanceRoll) : state;
             })}
             onBattle={(id) => commit((state) => startBattle(state, id))}
-            onTravelEvent={(id, mode) => commit((state) => beginTravelEvent(state, id, mode, game.revision, nextRomanceRoll))}
+            onTravelEvent={(id, mode) => travelToEvent(id, mode, game.revision)}
             nextCityName={automaticIndiaJourney ? undefined : nextCity?.city.nameJa}
             onDepart={() => setConfirmDeparture(true)}
           />
@@ -1087,6 +1119,15 @@ function GameApp({
           </button>
         </Modal>
       )}
+      {travelTransition && <TravelTransition mode={travelTransition.mode} reduceMotion={displaySettings.value.reduceMotion} onEnd={() => {
+        setTravelTransition(null);
+        if (travelTransition.thenSleep) setShowTimePassage(true);
+        else travelTransitionPending.current = false;
+      }} />}
+      {showTimePassage && <TimePassage reduceMotion={displaySettings.value.reduceMotion} onEnd={() => {
+        setShowTimePassage(false);
+        travelTransitionPending.current = false;
+      }} />}
     </div>
   );
 }
