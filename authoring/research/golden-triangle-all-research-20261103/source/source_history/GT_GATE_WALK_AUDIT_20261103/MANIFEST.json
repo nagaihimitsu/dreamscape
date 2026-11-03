@@ -1,0 +1,105 @@
+{
+  "artifact": "Dreamscape Golden Triangle gate and pedestrian route audit",
+  "version": "2026-11-03",
+  "sourceGitHub": "https://github.com/nagaihimitsu/dreamscape/tree/feature/golden-triangle-foundation",
+  "sourceCommit": "c816d25f3cb638c5ca08f7a6a5d9c84d939ade62",
+  "scope": "33 entrance/access audits; 147 walking reference slots; OSM re-route script and tests",
+  "importantLimitations": [
+    "No live pedestrian OSM dataset available in artifact execution environment",
+    "No official gate GPS coordinates verified",
+    "No road-network-derived walking time in this artifact",
+    "The included routing script is tested only against synthetic OSM fixture"
+  ],
+  "files": [
+    {
+      "path": "CODEX_INTEGRATION.md",
+      "size_bytes": 2698,
+      "sha256": "896155efe33b5a5dbb02a13239da0b2b71235d779e86511b2b42ed4579417234"
+    },
+    {
+      "path": "README.md",
+      "size_bytes": 5319,
+      "sha256": "b7cb6049b37837d88945885abfef7cf4c246db7fba07b536ca987baa84ccbe6b"
+    },
+    {
+      "path": "data/SUMMARY.json",
+      "size_bytes": 518,
+      "sha256": "ab126bad622ffbfc12856c6de23230d927e1f4e6106e29c998c3ab36fe11784a"
+    },
+    {
+      "path": "data/access_evidence_sources.json",
+      "size_bytes": 4193,
+      "sha256": "219a8fa503ea8a9bc46e5ffa9b8a1d469d139faec1d726f463fb689fda493694"
+    },
+    {
+      "path": "data/bridge_risk_24.csv",
+      "size_bytes": 3821,
+      "sha256": "58bbe1e0a2ae64dc81c53b4feeae3ea94b8071071efd5fc2c49cfc6e048beb06"
+    },
+    {
+      "path": "data/core_routing_points.csv",
+      "size_bytes": 2427,
+      "sha256": "b987ff83453f08f80b9305c84255d3a58508ff14d7972527bcbdd6e14b7aadfb"
+    },
+    {
+      "path": "data/gate_audit_33.csv",
+      "size_bytes": 16731,
+      "sha256": "fabfec7936ea99a1c192eddf7a0ab32c2f00d3c72438c42574b4eaea31b94bb0"
+    },
+    {
+      "path": "data/network_output_template.csv",
+      "size_bytes": 215,
+      "sha256": "5b09b00a19b3d5e4fb3a0e168961b4cc8ec58b7e111fea27b13d6f5f9fd436b6"
+    },
+    {
+      "path": "data/original_anchor_snapshot.csv",
+      "size_bytes": 3702,
+      "sha256": "662833e97aa82b2b5366841f1b01cbc8447b4fa82f910a7626f83a4a85082721"
+    },
+    {
+      "path": "data/points_33_provisional.geojson",
+      "size_bytes": 14502,
+      "sha256": "e7c1d2acacd89c31389fede047b91a060f0cf5c65bd86a62a2ed74e7bed7da22"
+    },
+    {
+      "path": "data/walking_matrix_audit_147.csv",
+      "size_bytes": 33152,
+      "sha256": "333cd6e445f8d5a1eb9931c95b1ffe54b6a0de6064790070f1a259540087efb8"
+    },
+    {
+      "path": "scripts/build_audit.py",
+      "size_bytes": 19894,
+      "sha256": "4bd0e1f0fbd04ca74f27e7f60cb844abd2384485d63e56f1d1b32eb30e8e9cd3"
+    },
+    {
+      "path": "scripts/requirements.txt",
+      "size_bytes": 39,
+      "sha256": "b641984ef533f04c35a4fa64794c478bafa018a20b738e2bb030421492838ea0"
+    },
+    {
+      "path": "scripts/route_on_osm_xml.py",
+      "size_bytes": 10547,
+      "sha256": "03517ce7270b7080d6f59b5817aa3329ad996de56e8493f27f37c2f7be0a21e0"
+    },
+    {
+      "path": "scripts/verify_package.py",
+      "size_bytes": 1827,
+      "sha256": "28ef98538bf01013171c389bc1ce8beead2b026e5757966b2a5ca3433be8959e"
+    },
+    {
+      "path": "sources/GATE_EVIDENCE.md",
+      "size_bytes": 8300,
+      "sha256": "ba3a511337f7ca75a85013f6ddf5dac4e1bb23349ba9515aa3dfa2ea0a9cc0b0"
+    },
+    {
+      "path": "sources/OSM_COMPUTATION_RUNBOOK.md",
+      "size_bytes": 6206,
+      "sha256": "583815318d5c0523f1e970d405fda171b2edb0c47c5360596ba320a682844cf5"
+    },
+    {
+      "path": "tests/test_synthetic_osm.py",
+      "size_bytes": 2110,
+      "sha256": "0e6c472b0cc54106d30122701ec8cf0ab39594322849573e6d676e50b0c2a4ca"
+    }
+  ]
+}

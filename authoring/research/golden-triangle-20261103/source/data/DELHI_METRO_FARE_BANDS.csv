@@ -1,0 +1,7 @@
+﻿cityId,distanceKmMin,distanceKmMax,fareINRPerPerson,partyCostINR2,sourceId,sourceUrl,status,notesJa
+delhi,0,2,11,22,SRC_METRO_DL_NEWS,https://www.ndtv.com/india-news/delhi-metro-fare-hike-dmrc-hikes-ticket-prices-after-8-years-check-details-9152955,SECONDARY_DATE_SPECIFIC_NEEDS_DMRC_FARE_ENGINE,路線距離が確定した時のみ参照。日・祝・カード割引、変更を別確認。
+delhi,2,5,21,42,SRC_METRO_DL_NEWS,https://www.ndtv.com/india-news/delhi-metro-fare-hike-dmrc-hikes-ticket-prices-after-8-years-check-details-9152955,SECONDARY_DATE_SPECIFIC_NEEDS_DMRC_FARE_ENGINE,路線距離が確定した時のみ参照。日・祝・カード割引、変更を別確認。
+delhi,5,12,32,64,SRC_METRO_DL_NEWS,https://www.ndtv.com/india-news/delhi-metro-fare-hike-dmrc-hikes-ticket-prices-after-8-years-check-details-9152955,SECONDARY_DATE_SPECIFIC_NEEDS_DMRC_FARE_ENGINE,路線距離が確定した時のみ参照。日・祝・カード割引、変更を別確認。
+delhi,12,21,43,86,SRC_METRO_DL_NEWS,https://www.ndtv.com/india-news/delhi-metro-fare-hike-dmrc-hikes-ticket-prices-after-8-years-check-details-9152955,SECONDARY_DATE_SPECIFIC_NEEDS_DMRC_FARE_ENGINE,路線距離が確定した時のみ参照。日・祝・カード割引、変更を別確認。
+delhi,21,32,54,108,SRC_METRO_DL_NEWS,https://www.ndtv.com/india-news/delhi-metro-fare-hike-dmrc-hikes-ticket-prices-after-8-years-check-details-9152955,SECONDARY_DATE_SPECIFIC_NEEDS_DMRC_FARE_ENGINE,路線距離が確定した時のみ参照。日・祝・カード割引、変更を別確認。
+delhi,32,,64,128,SRC_METRO_DL_NEWS,https://www.ndtv.com/india-news/delhi-metro-fare-hike-dmrc-hikes-ticket-prices-after-8-years-check-details-9152955,SECONDARY_DATE_SPECIFIC_NEEDS_DMRC_FARE_ENGINE,路線距離が確定した時のみ参照。日・祝・カード割引、変更を別確認。

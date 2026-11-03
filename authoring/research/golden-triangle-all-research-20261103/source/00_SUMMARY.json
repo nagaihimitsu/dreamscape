@@ -1,0 +1,99 @@
+{
+  "project": "Dreamscape Golden Triangle",
+  "date": "2026-11-03",
+  "sourceRepoBranch": "feature/golden-triangle-foundation",
+  "repoCommit": "c816d25f3cb638c5ca08f7a6a5d9c84d939ade62",
+  "sourcePackages": [
+    {
+      "package": "Dreamscape_Golden_Triangle_Gate_Walk_Audit_20261103.zip",
+      "files": 19
+    },
+    {
+      "package": "Dreamscape_Golden_Triangle_NonRoad_Gaps_20261103.zip",
+      "files": 24
+    },
+    {
+      "package": "Dreamscape_Golden_Triangle_Research_Continuation_20261103.zip",
+      "files": 30
+    },
+    {
+      "package": "Dreamscape_Golden_Triangle_Photo_Rights_Completion_20261103.zip",
+      "files": 13
+    }
+  ],
+  "citySequence": [
+    "delhi",
+    "agra",
+    "jaipur"
+  ],
+  "placesAudited": 33,
+  "officialVisitorGateGPSVerified": 0,
+  "walkAuditRows": 147,
+  "walkIdentityRows": 21,
+  "walkHaversineModelRows_NotRoadMeasured": 102,
+  "walkRiverBlockedRows": 24,
+  "realPedestrianRoadMeasuredRows": 0,
+  "foreignFeeRows": 30,
+  "unresolvedOperatorLiveForeignTickets": 6,
+  "openingHoursRows": 30,
+  "transitLastMileRows": 33,
+  "stationODFarePairs": 121,
+  "intercityModePlans": 9,
+  "operationFacts": 16,
+  "transferNodes": 18,
+  "photoPageCandidates": 30,
+  "photoAlternativesDeduped": 10,
+  "photosDownloaded": 0,
+  "imagesVisuallyApproved": 0,
+  "approvedProductionPhotos": 0,
+  "tourismAndNarrativeContentWrittenHere": false,
+  "productionCityTravelCatalogReady": false,
+  "sourcePagesFetchedAgainDuringConsolidation": false,
+  "simulationModelOutcomes": [
+    {
+      "scenario": "main_only",
+      "modelFinalBudgetINR": 3560,
+      "completed": true,
+      "cityResults": [
+        [
+          "delhi",
+          4,
+          4
+        ],
+        [
+          "agra",
+          4,
+          4
+        ],
+        [
+          "jaipur",
+          4,
+          4
+        ]
+      ]
+    },
+    {
+      "scenario": "all_candidates",
+      "modelFinalBudgetINR": 180,
+      "completed": false,
+      "cityResults": [
+        [
+          "delhi",
+          10,
+          10
+        ],
+        [
+          "agra",
+          10,
+          10
+        ],
+        [
+          "jaipur",
+          6,
+          10
+        ]
+      ]
+    }
+  ],
+  "criticalWarning": "This consolidates four research packages and field precedence, NOT confirmed 2026 live routes, admission, reservations or approved art."
+}

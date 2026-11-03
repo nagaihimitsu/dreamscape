@@ -1,0 +1,10 @@
+﻿fromPlaceId,toPlaceId,warningEn,priority
+agra_taj_mahal,agra_mehtab_bagh,Opposite Yamuna banks; direct-line false short-cut,BLOCK_URGENT
+agra_taj_mahal,agra_itimad_tomb,Opposite Yamuna banks; footbridge not established,BLOCK_URGENT
+agra_agra_fort,agra_itimad_tomb,Yamuna bridge required,BLOCK_URGENT
+agra_taj_mahal,agra_ram_bagh,Yamuna bridge required,BLOCK_URGENT
+jaipur_amber_fort,jaipur_jaigarh_fort,"Hill connection public access, grade and operating hours unknown",BLOCK
+jaipur_jal_mahal,jaipur_amber_fort,Jal Mahal map marker is on shore; do not route across lake,BLOCK
+jaipur_hawa_mahal,jaipur_city_palace,Hawa Mahal external facade view vs rear museum entrance,REVIEW
+agra_taj_mahal,agra_hotel_hub,Station vicinity hotel is fictional; original monument center not entry,REVIEW
+delhi_red_fort,delhi_chandni_chowk,Red Fort Lahori Gate vs old-city Lahori Gate are different entities,REVIEW

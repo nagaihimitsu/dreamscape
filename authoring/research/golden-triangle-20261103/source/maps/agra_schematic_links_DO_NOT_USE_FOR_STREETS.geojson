@@ -1,0 +1,424 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            78.01825,
+            27.18225
+          ],
+          [
+            78.04209,
+            27.17501
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "agra_hotel_hub",
+        "toPlaceId": "agra_taj_mahal",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 46,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            78.01825,
+            27.18225
+          ],
+          [
+            78.02192,
+            27.17602
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "agra_hotel_hub",
+        "toPlaceId": "agra_agra_fort",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 15,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            78.04209,
+            27.17501
+          ],
+          [
+            78.01825,
+            27.18225
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "agra_taj_mahal",
+        "toPlaceId": "agra_hotel_hub",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 46,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            78.04209,
+            27.17501
+          ],
+          [
+            78.02192,
+            27.17602
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "agra_taj_mahal",
+        "toPlaceId": "agra_agra_fort",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 37,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            78.02192,
+            27.17602
+          ],
+          [
+            78.01825,
+            27.18225
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "agra_agra_fort",
+        "toPlaceId": "agra_hotel_hub",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 15,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            78.02192,
+            27.17602
+          ],
+          [
+            78.04209,
+            27.17501
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "agra_agra_fort",
+        "toPlaceId": "agra_taj_mahal",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 37,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            78.03143,
+            27.19281
+          ],
+          [
+            78.04204,
+            27.17967
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "agra_itimad_tomb",
+        "toPlaceId": "agra_mehtab_bagh",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 33,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            78.03143,
+            27.19281
+          ],
+          [
+            78.03439,
+            27.20086
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "agra_itimad_tomb",
+        "toPlaceId": "agra_chini_rauza",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 18,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            78.03143,
+            27.19281
+          ],
+          [
+            78.038639,
+            27.205306
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "agra_itimad_tomb",
+        "toPlaceId": "agra_ram_bagh",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 29,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            78.04204,
+            27.17967
+          ],
+          [
+            78.03143,
+            27.19281
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "agra_mehtab_bagh",
+        "toPlaceId": "agra_itimad_tomb",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 33,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            78.04204,
+            27.17967
+          ],
+          [
+            78.03439,
+            27.20086
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "agra_mehtab_bagh",
+        "toPlaceId": "agra_chini_rauza",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 45,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            78.04204,
+            27.17967
+          ],
+          [
+            78.038639,
+            27.205306
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "agra_mehtab_bagh",
+        "toPlaceId": "agra_ram_bagh",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 53,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            78.03439,
+            27.20086
+          ],
+          [
+            78.03143,
+            27.19281
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "agra_chini_rauza",
+        "toPlaceId": "agra_itimad_tomb",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 18,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            78.03439,
+            27.20086
+          ],
+          [
+            78.04204,
+            27.17967
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "agra_chini_rauza",
+        "toPlaceId": "agra_mehtab_bagh",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 45,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            78.03439,
+            27.20086
+          ],
+          [
+            78.038639,
+            27.205306
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "agra_chini_rauza",
+        "toPlaceId": "agra_ram_bagh",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 12,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            78.038639,
+            27.205306
+          ],
+          [
+            78.03143,
+            27.19281
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "agra_ram_bagh",
+        "toPlaceId": "agra_itimad_tomb",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 29,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            78.038639,
+            27.205306
+          ],
+          [
+            78.04204,
+            27.17967
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "agra_ram_bagh",
+        "toPlaceId": "agra_mehtab_bagh",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 53,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            78.038639,
+            27.205306
+          ],
+          [
+            78.03439,
+            27.20086
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "agra_ram_bagh",
+        "toPlaceId": "agra_chini_rauza",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 12,
+        "verifiedOnRoadNetwork": false
+      }
+    }
+  ],
+  "metadata": {
+    "cityId": "agra",
+    "geometryQuality": "SCHEMATIC_ONLY_NOT_WALKABLE_GEOMETRY",
+    "notesJa": "地図UIプロトタイピング用直線。現実の道路・橋・歩道を表すものではない。実道ルートには使用禁止。"
+  }
+}

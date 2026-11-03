@@ -6,6 +6,7 @@ import {
   landmarks,
   progression,
   tourismClues,
+  getCityStoryBackground,
 } from "../content";
 import {
   beginStory,
@@ -57,7 +58,7 @@ export function getTourismAvailability(
   state: GameState,
   landmarkId: string,
 ): Availability {
-  if (!landmarks.some((item) => item.id === landmarkId))
+  if (!landmarks.some((item) => item.id === landmarkId && item.cityId === state.currentCityId))
     return { available: false, reason: "観光地が見つかりません。" };
   if (state.activeEncounter)
     return { available: false, reason: "途中の交流を終えてから訪ねられます。" };
@@ -128,6 +129,7 @@ export function openTourism(state: GameState, landmarkId: string): GameState {
             state.playerName,
             state.heroineName,
             { player_address: playerAddress(state) },
+            [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId),
           ),
         ),
   };
@@ -219,7 +221,7 @@ export function replayTourismGuide(
       next,
       beginStory(landmark.guideStoryId, state.playerName, state.heroineName, {
         player_address: playerAddress(state),
-      }),
+      }, [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId)),
     ),
   };
 }
@@ -287,7 +289,7 @@ export function validateTourismState(state: GameState): void {
   const active = state.activeTourism;
   if (!active) return;
   const landmark = landmarks.find((item) => item.id === active.landmarkId);
-  if (!landmark || state.activeDate || state.activeEpilogue)
+  if (!landmark || landmark.cityId !== state.currentCityId || state.activeDate || state.activeEpilogue)
     throw new Error("観光の進行状態を確認できません。");
   const episode = episodes.find(
     (item) => item.landmarkId === active.landmarkId,

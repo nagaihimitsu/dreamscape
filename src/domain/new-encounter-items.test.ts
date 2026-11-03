@@ -3,6 +3,7 @@ import { createGame, validateGameState, type GameState } from "./game";
 import { createDebugState } from "../dev/debug-state";
 import { encounters } from "../content/encounters";
 import { advanceEncounter, answerEncounterQuiz, chooseEncounter, finishEncounter, getEncounterAvailability, startEncounter, validateEncounterState } from "./encounter";
+import { closeTourism } from "./tourism";
 
 function play(state: GameState, id: string, optionId: string): GameState {
   let next = startEncounter(state, id, () => 0);
@@ -71,6 +72,8 @@ describe("the Milan pick and location encounters", () => {
     }
     expect(state.activeEncounter).toBeNull();
     expect(state.inventory.galleria_ticket).toBe("held");
+    expect(state.activeTourism?.landmarkId).toBe("galleria_vittorio_emanuele_ii");
+    state = closeTourism(state, state.revision);
     const before = state.travelBudget;
     state = play(state, "galleria_print", "pay");
     expect(state.travelBudget).toBe(before - 4);

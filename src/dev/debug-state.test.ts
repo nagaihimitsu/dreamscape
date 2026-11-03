@@ -6,16 +6,17 @@ const base: DebugSettings = { scene: "tourism", id: "duomo_milano", progress: "c
 
 describe("debug scene preparation", () => {
   it.each([
-    ["tourism", "duomo_milano"],
-    ["battle", "milano_duomo_01"],
-    ["encounter", "galleria_fortune"],
-    ["date", "milano_brera_date_01"],
-  ] as const)("opens a valid %s scene using game rules", (scene, id) => {
+    ["tourism", "duomo_milano", "p_duomo"],
+    ["battle", "milano_duomo_01", "p_duomo"],
+    ["encounter", "galleria_fortune", "p_galleria"],
+    ["date", "milano_brera_date_01", "p_brera"],
+  ] as const)("opens a valid %s scene using game rules", (scene, id, placeId) => {
     const game = createDebugState({ ...base, scene, id });
     expect(validateGameState(game)).toEqual(game);
     expect(game.affection).toBe(3);
     expect(game.trust).toBe(2);
     expect(game.spark).toBe(1);
+    expect(game.travel.currentPlaceId).toBe(placeId);
     expect(scene === "tourism" ? game.activeTourism?.landmarkId : scene === "battle" ? game.activeBattle?.battleId : scene === "encounter" ? game.activeEncounter?.encounterId : game.activeDate?.dateId).toBe(id);
     expect(game.ap).toBe(scene === "date" ? 7 : 9);
   });

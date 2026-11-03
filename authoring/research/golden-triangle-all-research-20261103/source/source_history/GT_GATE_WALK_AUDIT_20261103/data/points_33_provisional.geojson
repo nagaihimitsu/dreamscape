@@ -1,0 +1,567 @@
+{
+  "type": "FeatureCollection",
+  "name": "PROVISIONAL POINTS ONLY - NOT ROUTES",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "delhi_red_fort",
+        "cityId": "delhi",
+        "nameJa": "レッド・フォート",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "mapped_Lahori_Gate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.23865,
+          28.65588
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "delhi_qutb_minar",
+        "cityId": "delhi",
+        "nameJa": "クトゥブ・ミナール",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.18545,
+          28.52442
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "delhi_humayun_tomb",
+        "cityId": "delhi",
+        "nameJa": "フマユーン廟",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.25065,
+          28.59329
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "delhi_india_gate",
+        "cityId": "delhi",
+        "nameJa": "インド門",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "public_space_waypoint"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.22949,
+          28.61293
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "delhi_jama_masjid",
+        "cityId": "delhi",
+        "nameJa": "ジャーマー・マスジド",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.2335,
+          28.6507
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "delhi_chandni_chowk",
+        "cityId": "delhi",
+        "nameJa": "チャンドニー・チョーク",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "public_space_waypoint"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.22912,
+          28.65124
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "delhi_lodhi_garden",
+        "cityId": "delhi",
+        "nameJa": "ロディ・ガーデン",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "public_space_waypoint"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.21956,
+          28.59348
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "delhi_agrasen_baoli",
+        "cityId": "delhi",
+        "nameJa": "アグラセン・キ・バオリ",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.22501,
+          28.62609
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "delhi_lotus_temple",
+        "cityId": "delhi",
+        "nameJa": "ロータス寺院",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.25862,
+          28.55336
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "delhi_bangla_sahib",
+        "cityId": "delhi",
+        "nameJa": "グルドワーラ・バングラ・サーヒブ",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.20883,
+          28.62646
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "agra_taj_mahal",
+        "cityId": "agra",
+        "nameJa": "タージ・マハル",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          78.04209,
+          27.17501
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "agra_agra_fort",
+        "cityId": "agra",
+        "nameJa": "アーグラ城",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "mapped_ticket_office"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          78.02192,
+          27.17602
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "agra_itimad_tomb",
+        "cityId": "agra",
+        "nameJa": "イティマード・ウッダウラ廟",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          78.03143,
+          27.19281
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "agra_mehtab_bagh",
+        "cityId": "agra",
+        "nameJa": "メヘターブ・バーグ",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          78.04204,
+          27.17967
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "agra_fatehpur_sikri",
+        "cityId": "agra",
+        "nameJa": "ファテープル・シークリー",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.66473,
+          27.09602
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "agra_akbar_tomb",
+        "cityId": "agra",
+        "nameJa": "アクバル廟",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.9504,
+          27.22042
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "agra_ram_bagh",
+        "cityId": "agra",
+        "nameJa": "ラム・バーグ",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "photographed_entrance_camera_location"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          78.038639,
+          27.205306
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "agra_chini_rauza",
+        "cityId": "agra",
+        "nameJa": "チーニー・カ・ラウザ",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          78.03439,
+          27.20086
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "agra_mariam_tomb",
+        "cityId": "agra",
+        "nameJa": "マリアム・ウッザマーニー廟",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.94272,
+          27.2153
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "agra_guru_ka_taal",
+        "cityId": "agra",
+        "nameJa": "グル・カ・タール",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.96763,
+          27.21162
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "jaipur_amber_fort",
+        "cityId": "jaipur",
+        "nameJa": "アンベール城",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.8507,
+          26.9859
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "jaipur_hawa_mahal",
+        "cityId": "jaipur",
+        "nameJa": "ハワー・マハル",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "mapped_ticket_counter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.82639,
+          26.92413
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "jaipur_city_palace",
+        "cityId": "jaipur",
+        "nameJa": "シティ・パレス",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.82381,
+          26.92624
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "jaipur_jantar_mantar",
+        "cityId": "jaipur",
+        "nameJa": "ジャンタル・マンタル",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.82451,
+          26.92473
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "jaipur_jal_mahal",
+        "cityId": "jaipur",
+        "nameJa": "ジャル・マハル",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "west_bank_exterior_viewpoint"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.84233,
+          26.95367
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "jaipur_nahargarh_fort",
+        "cityId": "jaipur",
+        "nameJa": "ナハルガル城",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.81691,
+          26.94009
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "jaipur_albert_hall",
+        "cityId": "jaipur",
+        "nameJa": "アルバート・ホール博物館",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.8195,
+          26.91171
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "jaipur_jaigarh_fort",
+        "cityId": "jaipur",
+        "nameJa": "ジャイガル城",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.8454,
+          26.98469
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "jaipur_johari_bazaar",
+        "cityId": "jaipur",
+        "nameJa": "ジョーハリー・バザール",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "public_space_waypoint"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.82592,
+          26.91934
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "jaipur_panna_meena_kund",
+        "cityId": "jaipur",
+        "nameJa": "パンナ・ミーナー・クンド",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "representative_point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.85123,
+          26.99121
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "delhi_hotel_hub",
+        "cityId": "delhi",
+        "nameJa": "デリー架空宿",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "fictional_hotel_hub"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.2197,
+          28.63278
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "agra_hotel_hub",
+        "cityId": "agra",
+        "nameJa": "アーグラ架空宿",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "fictional_hotel_hub"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          78.01825,
+          27.18225
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "placeId": "jaipur_hotel_hub",
+        "cityId": "jaipur",
+        "nameJa": "ジャイプール架空宿",
+        "geoStatus": "UNVERIFIED_ROUTING_ANCHOR_NOT_OPERATOR_GATE_GPS",
+        "originalAnchorKind": "fictional_hotel_hub"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.82682,
+          26.92296
+        ]
+      }
+    }
+  ]
+}

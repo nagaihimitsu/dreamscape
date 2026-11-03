@@ -1,0 +1,3085 @@
+{
+  "cityId": "jaipur",
+  "places": [
+    {
+      "id": "jaipur_amber_fort",
+      "cityId": "jaipur",
+      "nameJa": "アンベール城",
+      "nameEn": "Amber Fort and Palace",
+      "latitude": 26.9859,
+      "longitude": 75.8507,
+      "backgroundAssetId": "gt_bg_jaipur_amber_fort",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Amber Fort and Palace mapped representative",
+          "url": "https://mapcarta.com/26952192",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1050
+        }
+      ]
+    },
+    {
+      "id": "jaipur_hawa_mahal",
+      "cityId": "jaipur",
+      "nameJa": "ハワー・マハル",
+      "nameEn": "Hawa Mahal",
+      "latitude": 26.92413,
+      "longitude": 75.82639,
+      "backgroundAssetId": "gt_bg_jaipur_hawa_mahal",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Hawa Mahal mapped representative",
+          "url": "https://mapcarta.com/26952190",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        },
+        {
+          "publisher": "OpenStreetMap via Mapcarta",
+          "title": "Game routing anchor (jaipur_hawa_mahal)",
+          "url": "https://mapcarta.com/N10047925085",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "ゲーム内試作用代表点。実際の入口・通行可能経路を保証しない。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 990
+        }
+      ]
+    },
+    {
+      "id": "jaipur_city_palace",
+      "cityId": "jaipur",
+      "nameJa": "シティ・パレス",
+      "nameEn": "City Palace Jaipur",
+      "latitude": 26.92624,
+      "longitude": 75.82381,
+      "backgroundAssetId": "gt_bg_jaipur_city_palace",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "City Palace Jaipur mapped representative",
+          "url": "https://mapcarta.com/26952188",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 570,
+          "end": 1110
+        }
+      ]
+    },
+    {
+      "id": "jaipur_jantar_mantar",
+      "cityId": "jaipur",
+      "nameJa": "ジャンタル・マンタル",
+      "nameEn": "Jantar Mantar Jaipur",
+      "latitude": 26.92473,
+      "longitude": 75.82451,
+      "backgroundAssetId": "gt_bg_jaipur_jantar_mantar",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Jantar Mantar Jaipur mapped representative",
+          "url": "https://mapcarta.com/W102879535",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ]
+    },
+    {
+      "id": "jaipur_jal_mahal",
+      "cityId": "jaipur",
+      "nameJa": "ジャル・マハル",
+      "nameEn": "Jal Mahal",
+      "latitude": 26.95367,
+      "longitude": 75.84233,
+      "backgroundAssetId": "gt_bg_jaipur_jal_mahal",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OSM",
+          "title": "Jal Mahal bus stop land side",
+          "url": "https://mapcarta.com/N8043890745",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1320
+        }
+      ]
+    },
+    {
+      "id": "jaipur_nahargarh_fort",
+      "cityId": "jaipur",
+      "nameJa": "ナハルガル城",
+      "nameEn": "Nahargarh Fort",
+      "latitude": 26.94009,
+      "longitude": 75.81691,
+      "backgroundAssetId": "gt_bg_jaipur_nahargarh_fort",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Nahargarh Fort mapped representative",
+          "url": "https://mapcarta.com/33816124",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ]
+    },
+    {
+      "id": "jaipur_albert_hall",
+      "cityId": "jaipur",
+      "nameJa": "アルバート・ホール博物館",
+      "nameEn": "Albert Hall Museum",
+      "latitude": 26.91171,
+      "longitude": 75.8195,
+      "backgroundAssetId": "gt_bg_jaipur_albert_hall",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Albert Hall Museum mapped representative",
+          "url": "https://mapcarta.com/26953306",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ]
+    },
+    {
+      "id": "jaipur_jaigarh_fort",
+      "cityId": "jaipur",
+      "nameJa": "ジャイガル城",
+      "nameEn": "Jaigarh Fort",
+      "latitude": 26.98469,
+      "longitude": 75.8454,
+      "backgroundAssetId": "gt_bg_jaipur_jaigarh_fort",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Jaigarh Fort mapped representative",
+          "url": "https://mapcarta.com/33816054",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1110
+        }
+      ]
+    },
+    {
+      "id": "jaipur_johari_bazaar",
+      "cityId": "jaipur",
+      "nameJa": "ジョーハリー・バザール",
+      "nameEn": "Johari Bazaar",
+      "latitude": 26.91934,
+      "longitude": 75.82592,
+      "backgroundAssetId": "gt_bg_jaipur_johari_bazaar",
+      "sources": [
+        {
+          "publisher": "Around Us",
+          "title": "Johari Bazaar location",
+          "url": "https://aroundus.com/p/177489986-johari-bazaar",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1320
+        }
+      ]
+    },
+    {
+      "id": "jaipur_panna_meena_kund",
+      "cityId": "jaipur",
+      "nameJa": "パンナ・ミーナー・クンド",
+      "nameEn": "Panna Meena ka Kund",
+      "latitude": 26.99121,
+      "longitude": 75.85123,
+      "backgroundAssetId": "gt_bg_jaipur_panna_meena_kund",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OSM",
+          "title": "Stepwell Panna Meena",
+          "url": "https://mapcarta.com/W410063780",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ]
+    },
+    {
+      "id": "jaipur_hotel_hub",
+      "cityId": "jaipur",
+      "nameJa": "ジャイプールの架空宿（バディー・チャウパル付近）",
+      "nameEn": "fictional lodging / Badi Chaupar metro",
+      "latitude": 26.92296,
+      "longitude": 75.82682,
+      "backgroundAssetId": "gt_bg_jaipur_hotel_hub",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "fictional lodging / Badi Chaupar metro",
+          "url": "https://mapcarta.com/N8044083223",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 0,
+          "end": 1440
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "taxi",
+      "minutes": 49,
+      "cost": 320,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "taxi",
+      "minutes": 48,
+      "cost": 320,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "taxi",
+      "minutes": 49,
+      "cost": 320,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "taxi",
+      "minutes": 29,
+      "cost": 210,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "taxi",
+      "minutes": 42,
+      "cost": 280,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "taxi",
+      "minutes": 57,
+      "cost": 370,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "taxi",
+      "minutes": 52,
+      "cost": 340,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_amber_fort",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "taxi",
+      "minutes": 49,
+      "cost": 320,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "taxi",
+      "minutes": 49,
+      "cost": 320,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "walk",
+      "minutes": 7,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "walk",
+      "minutes": 4,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "walk",
+      "minutes": 66,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "taxi",
+      "minutes": 29,
+      "cost": 210,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "walk",
+      "minutes": 28,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "taxi",
+      "minutes": 17,
+      "cost": 140,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "taxi",
+      "minutes": 47,
+      "cost": 310,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "walk",
+      "minutes": 12,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "taxi",
+      "minutes": 52,
+      "cost": 340,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "walk",
+      "minutes": 3,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hawa_mahal",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "taxi",
+      "minutes": 48,
+      "cost": 320,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "walk",
+      "minutes": 7,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "walk",
+      "minutes": 4,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "walk",
+      "minutes": 65,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "taxi",
+      "minutes": 28,
+      "cost": 210,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "taxi",
+      "minutes": 18,
+      "cost": 150,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "walk",
+      "minutes": 31,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "taxi",
+      "minutes": 18,
+      "cost": 150,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "taxi",
+      "minutes": 46,
+      "cost": 310,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "walk",
+      "minutes": 17,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 120,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "taxi",
+      "minutes": 51,
+      "cost": 330,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "walk",
+      "minutes": 9,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_city_palace",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "taxi",
+      "minutes": 49,
+      "cost": 320,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "walk",
+      "minutes": 4,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "walk",
+      "minutes": 4,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "walk",
+      "minutes": 67,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "taxi",
+      "minutes": 29,
+      "cost": 210,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "taxi",
+      "minutes": 19,
+      "cost": 150,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "walk",
+      "minutes": 28,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "taxi",
+      "minutes": 17,
+      "cost": 140,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "taxi",
+      "minutes": 47,
+      "cost": 310,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "walk",
+      "minutes": 13,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "taxi",
+      "minutes": 52,
+      "cost": 340,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "walk",
+      "minutes": 6,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jantar_mantar",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "taxi",
+      "minutes": 29,
+      "cost": 210,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "walk",
+      "minutes": 66,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "taxi",
+      "minutes": 29,
+      "cost": 210,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "walk",
+      "minutes": 65,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "taxi",
+      "minutes": 28,
+      "cost": 210,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "walk",
+      "minutes": 67,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "taxi",
+      "minutes": 29,
+      "cost": 210,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 190,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "walk",
+      "minutes": 94,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "taxi",
+      "minutes": 37,
+      "cost": 260,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "taxi",
+      "minutes": 28,
+      "cost": 200,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "walk",
+      "minutes": 86,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "taxi",
+      "minutes": 31,
+      "cost": 220,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "taxi",
+      "minutes": 32,
+      "cost": 230,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "walk",
+      "minutes": 68,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jal_mahal",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "taxi",
+      "minutes": 29,
+      "cost": 210,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "taxi",
+      "minutes": 42,
+      "cost": 280,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "taxi",
+      "minutes": 18,
+      "cost": 150,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "taxi",
+      "minutes": 19,
+      "cost": 150,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 190,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "taxi",
+      "minutes": 26,
+      "cost": 190,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "taxi",
+      "minutes": 40,
+      "cost": 270,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 170,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "taxi",
+      "minutes": 45,
+      "cost": 300,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_nahargarh_fort",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "taxi",
+      "minutes": 57,
+      "cost": 370,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "walk",
+      "minutes": 28,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "taxi",
+      "minutes": 17,
+      "cost": 140,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "walk",
+      "minutes": 31,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "taxi",
+      "minutes": 18,
+      "cost": 150,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "walk",
+      "minutes": 28,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "taxi",
+      "minutes": 17,
+      "cost": 140,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "walk",
+      "minutes": 94,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "taxi",
+      "minutes": 37,
+      "cost": 260,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "taxi",
+      "minutes": 26,
+      "cost": 190,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "taxi",
+      "minutes": 56,
+      "cost": 360,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "walk",
+      "minutes": 22,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 130,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "taxi",
+      "minutes": 60,
+      "cost": 390,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "walk",
+      "minutes": 27,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_albert_hall",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "taxi",
+      "minutes": 17,
+      "cost": 140,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "taxi",
+      "minutes": 47,
+      "cost": 310,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "taxi",
+      "minutes": 46,
+      "cost": 310,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "taxi",
+      "minutes": 47,
+      "cost": 310,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "taxi",
+      "minutes": 28,
+      "cost": 200,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "taxi",
+      "minutes": 40,
+      "cost": 270,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "taxi",
+      "minutes": 56,
+      "cost": 360,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "taxi",
+      "minutes": 50,
+      "cost": 330,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 120,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_jaigarh_fort",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "taxi",
+      "minutes": 48,
+      "cost": 320,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "taxi",
+      "minutes": 52,
+      "cost": 340,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "walk",
+      "minutes": 12,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "walk",
+      "minutes": 17,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 120,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "walk",
+      "minutes": 13,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "walk",
+      "minutes": 86,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "taxi",
+      "minutes": 31,
+      "cost": 220,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 170,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "walk",
+      "minutes": 22,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 130,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "taxi",
+      "minutes": 50,
+      "cost": 330,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "taxi",
+      "minutes": 55,
+      "cost": 350,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "walk",
+      "minutes": 9,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_johari_bazaar",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "taxi",
+      "minutes": 52,
+      "cost": 340,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "taxi",
+      "minutes": 51,
+      "cost": 330,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "taxi",
+      "minutes": 52,
+      "cost": 340,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "taxi",
+      "minutes": 32,
+      "cost": 230,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "taxi",
+      "minutes": 45,
+      "cost": 300,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "taxi",
+      "minutes": 60,
+      "cost": 390,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 120,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "taxi",
+      "minutes": 55,
+      "cost": 350,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_panna_meena_kund",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "taxi",
+      "minutes": 53,
+      "cost": 340,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_amber_fort",
+      "mode": "taxi",
+      "minutes": 49,
+      "cost": 320,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "walk",
+      "minutes": 3,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_hawa_mahal",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "walk",
+      "minutes": 9,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_city_palace",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "walk",
+      "minutes": 6,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_jantar_mantar",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "walk",
+      "minutes": 68,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_jal_mahal",
+      "mode": "taxi",
+      "minutes": 29,
+      "cost": 210,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_nahargarh_fort",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "walk",
+      "minutes": 27,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_albert_hall",
+      "mode": "taxi",
+      "minutes": 17,
+      "cost": 140,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_jaigarh_fort",
+      "mode": "taxi",
+      "minutes": 48,
+      "cost": 320,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "walk",
+      "minutes": 9,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_johari_bazaar",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_panna_meena_kund",
+      "mode": "taxi",
+      "minutes": 53,
+      "cost": 340,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "jaipur_hotel_hub",
+      "toPlaceId": "jaipur_hotel_hub",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "gt_jaipur_main_amber_fort",
+      "cityId": "jaipur",
+      "placeId": "jaipur_amber_fort",
+      "category": "main",
+      "titleJa": "アンベール城を巡る",
+      "activityMinutes": 165,
+      "apCost": 0
+    },
+    {
+      "id": "gt_jaipur_main_hawa_mahal",
+      "cityId": "jaipur",
+      "placeId": "jaipur_hawa_mahal",
+      "category": "main",
+      "titleJa": "ハワー・マハルを巡る",
+      "activityMinutes": 60,
+      "apCost": 0
+    },
+    {
+      "id": "gt_jaipur_main_city_palace",
+      "cityId": "jaipur",
+      "placeId": "jaipur_city_palace",
+      "category": "main",
+      "titleJa": "シティ・パレスを巡る",
+      "activityMinutes": 120,
+      "apCost": 0
+    },
+    {
+      "id": "gt_jaipur_main_jantar_mantar",
+      "cityId": "jaipur",
+      "placeId": "jaipur_jantar_mantar",
+      "category": "main",
+      "titleJa": "ジャンタル・マンタルを巡る",
+      "activityMinutes": 85,
+      "apCost": 0
+    },
+    {
+      "id": "gt_jaipur_date_jal_mahal",
+      "cityId": "jaipur",
+      "placeId": "jaipur_jal_mahal",
+      "category": "date",
+      "titleJa": "ジャル・マハルで過ごす",
+      "activityMinutes": 30,
+      "apCost": 2
+    },
+    {
+      "id": "gt_jaipur_date_nahargarh_fort",
+      "cityId": "jaipur",
+      "placeId": "jaipur_nahargarh_fort",
+      "category": "date",
+      "titleJa": "ナハルガル城で過ごす",
+      "activityMinutes": 90,
+      "apCost": 2
+    },
+    {
+      "id": "gt_jaipur_date_albert_hall",
+      "cityId": "jaipur",
+      "placeId": "jaipur_albert_hall",
+      "category": "date",
+      "titleJa": "アルバート・ホール博物館で過ごす",
+      "activityMinutes": 90,
+      "apCost": 2
+    },
+    {
+      "id": "gt_jaipur_date_jaigarh_fort",
+      "cityId": "jaipur",
+      "placeId": "jaipur_jaigarh_fort",
+      "category": "date",
+      "titleJa": "ジャイガル城で過ごす",
+      "activityMinutes": 90,
+      "apCost": 2
+    },
+    {
+      "id": "gt_jaipur_date_johari_bazaar",
+      "cityId": "jaipur",
+      "placeId": "jaipur_johari_bazaar",
+      "category": "date",
+      "titleJa": "ジョーハリー・バザールで過ごす",
+      "activityMinutes": 70,
+      "apCost": 2
+    },
+    {
+      "id": "gt_jaipur_date_panna_meena_kund",
+      "cityId": "jaipur",
+      "placeId": "jaipur_panna_meena_kund",
+      "category": "date",
+      "titleJa": "パンナ・ミーナー・クンドで過ごす",
+      "activityMinutes": 45,
+      "apCost": 2
+    }
+  ]
+}

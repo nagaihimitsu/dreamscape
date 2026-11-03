@@ -1,0 +1,30 @@
+﻿sourceId,tier,url,claimSummaryJa,checkedAt,liveOperatorAvailabilityChecked
+UP_TAJ_GATE,primary_operator,https://tajmahal.gov.in/visiting-hours.aspx/night-view.aspx,"Taj visitor entry East/West, South exit; opening/tickets",2026-11-03,no
+UP_TAJ_TRANSPORT,primary_operator,https://www.tajmahal.gov.in/dos-and-donts.aspx,"Shilpgram/Amrood ka Teela, free shuttle with foreign admission",2026-11-03,no
+UP_TAJ_FEES,primary_operator,https://www.tajmahal.gov.in/ticketing.aspx/,"Taj & Agra tickets, Friday change; included ADA fee",2026-11-03,no
+UP_AGRA_GOV_TAJ,primary_government,https://agra.nic.in/tourist-place/tajmahal/,Agra district government lists +₹500 ADA once/day; conflicts inclusion wording,2026-11-03,no
+UP_AGRA_FORT,primary_government,https://agra.nic.in/tourist-place/agra-fort/,"Amar Singh gate, site access restrictions and foreign tickets",2026-11-03,no
+UP_FATEHPUR,primary_government,https://agra.nic.in/tourist-place/fatehpur-sikri/,"Parking at base, battery bus to site, opening and tickets",2026-11-03,no
+RAJ_AMBER,primary_government,https://www.tourism.rajasthan.gov.in/amber-palace.html,Suraj Pol walking versus Chand Pol car,2026-11-03,no
+CITY_PALACE,primary_operator,https://citypalace.org/visit,"Gate 2 parking, Badi Chaupar metro; native visitor tariff visible, international tab not fetchable",2026-11-03,no
+JAIPUR_ART,primary_operator,https://www.jaipurcentreforart.com/visit,Gate 1 City Palace entry; gate 2 parking; JCA temporary closure,2026-11-03,no
+JAIGARH,primary_operator,https://www.jaigarh.co/visit,Daily 9-18:30 and last admission 18:00; foreign tab inaccessible,2026-11-03,no
+BAHAI,primary_operator,https://bahaihouseofworship.in/plan-a-visit/,"Lotus Temple Tue-Sun 08:30-17:00, Mon closed",2026-11-03,no
+DELHI_AGRASEN,primary_government,https://www.delhitourism.gov.in/dt/explore_the_city/agrasen_ki_baoli.html,Agrasen Baoli 09-17:30 all days; ticket price not published,2026-11-03,no
+HUMAYUN_600,primary_government,https://www.delhitourism.gov.in/tourist_place/humayun_tomb.html,Humayun foreigners ₹600 sunrise-sunset,2026-11-03,no
+HUMAYUN_550,primary_government,https://delhitourism.gov.in/dt/explore_the_city/humayuns_tomb.html,Humayun foreigners ₹550 sunrise-19:30; contradictory same issuer,2026-11-03,no
+DELHI_FORT_500,government_old_or_uncertain,https://sites.google.com/doe.delhi.gov.in/historical-monumentss/delhi,"School page foreign ₹500, old Monday closure conflicts 2026 reporting",2026-11-03,no
+RED_FORT_2026,secondary_named_report,https://www.business-standard.com/india-news/red-fort-to-remain-open-on-all-days-of-week-asi-126022100547_1.html,PTI reported ASI Monday opening from Feb 2026; actual order not obtained,2026-11-03,no
+CITY_PALACE_1200_A,secondary_2026,https://traveliac.com/india/rajasthan/jaipur/city-palace-jaipur,"International museum entry ₹1,200 adult; secondary, not official current tab",2026-11-03,no
+CITY_PALACE_1200_B,secondary_2026,https://jaipurtourisms.in/places/city-palace,"International museum entry ₹1,200 adult; independent secondary claim",2026-11-03,no
+JAIGARH_700,secondary_nonoperator,https://www.jaipurtourisms.in/places/jaigarh-fort,Claims foreigners ₹700; other published values conflict,2026-11-03,no
+JAIGARH_85,secondary_nonoperator,https://traveliac.com/india/rajasthan/jaipur/jaigarh-fort,"Claims foreigners ₹85, conflicts with other sources; do not adopt as fact",2026-11-03,no
+AGRASEN_FREE,government_archive_pdf_text_only,https://edistrict.delhi.gov.in/Public/ViewUploadScanDocumentTemplate?q=+LU8U28AiW2mtY8wT9SZprcEi8PkaSpflefnD3xyhXk%3D,"Older government Delhi FAQ lists free entry; PDF screenshot unavailable, not a current tariff guarantee",2026-11-03,no
+PANNA_FREE,secondary_nonoperator,https://traveliac.com/india/rajasthan/jaipur/panna-meena-ka-kund,Free public exterior access; not operator confirmation,2026-11-03,no
+RAJ_2026_TARIFF,secondary_2026,https://www.cityofjaipur.com/news/2025/12/visiting-monuments-and-museums-will-become-more-expensive/,"Jan 2026 Rajasthan monument tariffs, composite options",2026-11-03,no
+IR_GATIMAAN_PIB,primary_government_historical,https://www.pib.gov.in/newsite/PrintRelease.aspx?lang=2&reg=48&relid=178275,"Official 2018 12050 timetable, Friday non-service then",2026-11-03,no
+IR_GATIMAAN_2026,secondary_2026,https://erail.in/train-enquiry/12050,"2026 12050 08:10 NZM to 09:50 AGC; Friday excluded, live schedule not verified",2026-11-03,no
+IR_GATIMAAN_CONFLICT,secondary_2026,https://www.confirmtkt.com/train-schedule/12050-GATIMAAN-EXP,"Friday/inconsistency in scraped text, date required",2026-11-03,no
+DMRC,primary_operator,https://new.delhimetrorail.com/en,"Station-wise fare calculator, special holidays fares",2026-11-03,no
+ASI_ONDC,primary_government,https://www.pib.gov.in/PressReleasePage.aspx?PRID=2211862&lang=1&reg=3,ASI tickets on ONDC Jan 2026; online foreign discount ₹50,2026-11-03,no
+INDIA_EDITIONAL,first_party_project_research,https://github.com/nagaihimitsu/dreamscape/tree/feature/golden-triangle-foundation/authoring/research/golden-triangle-20261103,Source research baseline (not independent operator evidence),2026-11-03,no

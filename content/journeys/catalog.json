@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "journeys": [
+    {
+      "id": "milano",
+      "nameJa": "ミラノ編",
+      "status": "available",
+      "cities": [{ "id": "milano", "nameJa": "ミラノ" }],
+      "currency": { "code": "EUR", "symbol": "€", "unitJa": "ユーロ", "unit": "whole" },
+      "intercityModes": []
+    },
+    {
+      "id": "golden_triangle",
+      "nameJa": "インド・ゴールデントライアングル編",
+      "status": "preparing",
+      "cities": [
+        { "id": "delhi", "nameJa": "デリー" },
+        { "id": "agra", "nameJa": "アーグラ" },
+        { "id": "jaipur", "nameJa": "ジャイプール" }
+      ],
+      "currency": { "code": "INR", "symbol": "₹", "unitJa": "ルピー", "unit": "whole" },
+      "initialBudget": 30000,
+      "startWeekday": 0,
+      "initialState": { "ap": 0, "pendingAp": 0, "affection": 0, "trust": 0, "spark": 0, "romanceStage": 1, "confessionStatus": "none" },
+      "cityPlan": { "cityClearAp": 4, "lodgingCost": 0, "mainTourismCount": 4, "dateCount": 6 },
+      "intercityModes": []
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+﻿topic,preferredDataset,prioritySource,strictRule
+place identities / coordinates,01_PLACES_AND_ACCESS_33.csv,01 gate original anchor + 02 enriched access,Never promote unofficial route anchors/camera locations to verified admission gate
+walking route geometry / minutes,02_WALKING_ROUTES_147.csv,01 pedestrian audit + 02 bridge exceptions,Identity 0 only; prototype times are NOT pedestrian network measurements
+ticket prices,06_FOREIGN_ADMISSION_FEES_30.csv,02 ticket lookup + 03 latest price audit,Game model in own field; not an official current ticket quotation
+opening and weekly operations,08_OPENING_HOURS_30.csv,02 hours + 03 schedule updates,Game display time != actual opening hours; handle Monday / Friday exceptions
+transit,11_TRANSIT_LAST_MILE_33.csv;12_JAIPUR_STATION_FARES_121.csv,02 transit study,Fare table is not complete station-to-gate itinerary
+city-to-city transportation,13_INTERCITY_TRANSPORT_9.csv,02 base intercity + 03 train time correction,No dated reservation or live fare claim
+primary photo metadata,14_PHOTO_ASSET_AUDIT_30.csv,"04 latest, 03 30-file-page for cross-check","No image file downloaded, no final rights approval"
+alternative photos,15_PHOTO_ALTERNATIVES_DEDUP.csv,"04 latest seven + 03 extra pages, deduplicated",Candidate not necessarily accurate depiction; human review required
+game budget simulation,17_GAME_ITINERARY_STRESS_TEST_54.csv;19_BUDGET_ENVELOPES_20.csv;20_PRICE_SENSITIVITY_20.csv,02 54 actions; 03 20+20 model comparisons,Different assumptions; never append into one scenario without labels

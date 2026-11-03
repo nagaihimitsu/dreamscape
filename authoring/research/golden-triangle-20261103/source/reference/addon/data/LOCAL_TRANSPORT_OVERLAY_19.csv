@@ -1,0 +1,20 @@
+originalRowNumber,cityId,mode,service,originalFareINR,overrideFixedFareINR,partyCostINR,actualTravelMinutes,fareOrRouteDataStatus,sourceId,sourceUrl,notesJa
+1,delhi,walk,一般徒歩,0,,0,,SEE_SEPARATE_147_ROUTE_PROTOTYPE,map_license,https://www.openstreetmap.org/copyright,実歩行速度は75m/分の仮モデル。各地点間ネットワーク距離が未算出で所要時間不明
+2,delhi,taxi,タクシー/配車アプリ,,,,,OFFICIAL_FORMULA_AVAILABLE_BUT_NO_OD,SRC_DL_AUTO_GAZETTE,https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf,2023デリー政府告示による料金式あり。任意の経路は実走行距離がないため算定不可。配車料金とは別。
+3,delhi,auto_rickshaw,オートリキシャ,,,,,OFFICIAL_FORMULA_AVAILABLE_BUT_NO_OD,SRC_DL_AUTO_GAZETTE,https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf,2023デリー政府告示による料金式あり。任意の経路は実走行距離がないため算定不可。配車料金とは別。
+4,delhi,bus,路線バス,,,,,NO_OD_OR_ROUTE_FARE_UNVERIFIED,map_license,https://www.openstreetmap.org/copyright,路線・運賃・停留所・運行日は現地交通事業者照合要
+5,agra,walk,一般徒歩,0,,0,,SEE_SEPARATE_147_ROUTE_PROTOTYPE,map_license,https://www.openstreetmap.org/copyright,実歩行速度は75m/分の仮モデル。各地点間ネットワーク距離が未算出で所要時間不明
+6,agra,taxi,タクシー/配車アプリ,,,,,NO_OD_OR_ROUTE_FARE_UNVERIFIED,map_license,https://www.openstreetmap.org/copyright,運賃は時刻/アプリ/距離/台数で変動。定額断定しない
+7,agra,auto_rickshaw,オートリキシャ,,,,,NO_OD_OR_ROUTE_FARE_UNVERIFIED,map_license,https://www.openstreetmap.org/copyright,交渉制やメーター・配車サービス有無は街と車両で異なる。現行モードに追加要
+8,agra,bus,路線バス,,,,,NO_OD_OR_ROUTE_FARE_UNVERIFIED,map_license,https://www.openstreetmap.org/copyright,路線・運賃・停留所・運行日は現地交通事業者照合要
+9,jaipur,walk,一般徒歩,0,,0,,SEE_SEPARATE_147_ROUTE_PROTOTYPE,map_license,https://www.openstreetmap.org/copyright,実歩行速度は75m/分の仮モデル。各地点間ネットワーク距離が未算出で所要時間不明
+10,jaipur,taxi,タクシー/配車アプリ,,,,,NO_OD_OR_ROUTE_FARE_UNVERIFIED,map_license,https://www.openstreetmap.org/copyright,運賃は時刻/アプリ/距離/台数で変動。定額断定しない
+11,jaipur,auto_rickshaw,オートリキシャ,,,,,NO_OD_OR_ROUTE_FARE_UNVERIFIED,map_license,https://www.openstreetmap.org/copyright,交渉制やメーター・配車サービス有無は街と車両で異なる。現行モードに追加要
+12,jaipur,bus,路線バス,,,,,NO_OD_OR_ROUTE_FARE_UNVERIFIED,map_license,https://www.openstreetmap.org/copyright,路線・運賃・停留所・運行日は現地交通事業者照合要
+13,delhi,rail,Delhi Metro普通券(0-2km区間),11,,22,,SECONDARY_FARE_BAND_ONLY_NO_OD,SRC_METRO_DL_NEWS,https://www.ndtv.com/india-news/delhi-metro-fare-hike-dmrc-hikes-ticket-prices-after-8-years-check-details-9152955,2025年8月25日改定の報道。日・祝やカードなどで異なる。区間に該当する場合のみ
+14,delhi,rail,Delhi Metro普通券(2-5km区間),21,,42,,SECONDARY_FARE_BAND_ONLY_NO_OD,SRC_METRO_DL_NEWS,https://www.ndtv.com/india-news/delhi-metro-fare-hike-dmrc-hikes-ticket-prices-after-8-years-check-details-9152955,2025年改定報道。旅行距離を算出しない限り特定経路の採用値にはできない
+15,delhi,rail,Delhi Metro普通券(5-12km区間),32,,64,,SECONDARY_FARE_BAND_ONLY_NO_OD,SRC_METRO_DL_NEWS,https://www.ndtv.com/india-news/delhi-metro-fare-hike-dmrc-hikes-ticket-prices-after-8-years-check-details-9152955,2025年改定報道。運賃帯のみ
+16,agra,rail,Agra Metro 現地区間,,,,,OFFICIAL_STOP_FARE_TABLE_AVAILABLE_BUT_NO_OD,SRC_METRO_AG_UPMRC,https://tajmahal.gov.in/pdf/Metro-rail-service-in-Agra.pdf,開業済6駅の全OD料金はAGRA_METRO_OD_FARES.csvを参照。徒歩・待ち時間は未算定。
+17,jaipur,rail,Jaipur Metro 現地区間,,,,,OFFICIAL_STATION_FARE_TABLE_AVAILABLE_BUT_NO_OD,SRC_METRO_JP_2025,https://transport.rajasthan.gov.in/content/dam/transport/metro/Passenger%20Information/MetroFares/Notification%20of%20%20Fare%20Revision%20%20Effective%20from%2031.01.2025.pdf,開業済11駅の全OD料金はJAIPUR_METRO_OD_FARES.csvを参照。
+18,jaipur,tourist_bus,RTDC Jaipur Full Day Tour A/C bus,600,,1200,,OPERATOR_TOUR_FARE_ONLY_NOT_INTERCITY,SRC_JP_RTDCTOUR,https://rtdc.tourism.rajasthan.gov.in/Client/CityTourCheckAvailability.aspx,09:00–18:00/19:30。RTDCの二つのページで構成・料金が異なるため特定便に要確認
+19,jaipur,tourist_bus,RTDC Jaipur→Bhangarh/Abhaneri→Jaipur,700,,1400,,OPERATOR_TOUR_FARE_ONLY_NOT_INTERCITY,SRC_JP_RTDCTOUR,https://rtdc.tourism.rajasthan.gov.in/Client/CityTourCheckAvailability.aspx,09:00–18:00。記載は往復観光でAgra→Jaipurの片道移送に使えない

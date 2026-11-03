@@ -1,0 +1,1153 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-11-03",
+  "purposeJa": "現地情報の研究追補。候補値はゲーム料金・実売額・実経路として自動採用しない。資料の主張と最新性、国籍・支払方法・施設や日付ごとの違いを個別に確認する。",
+  "records": [
+    {
+      "id": "delhi_red_fort_asi_2018_admission",
+      "cityId": "delhi",
+      "placeId": "delhi_red_fort",
+      "field": "admission_candidate",
+      "value": {
+        "currency": "INR",
+        "cashPerAdult": 600,
+        "cashlessPerAdult": 550,
+        "feeScope": "ASI base admission"
+      },
+      "status": "historical_primary",
+      "conditionsJa": "2018年官報のSAARC・BIMSTEC等の対象外の外国人大人の基本入場料。現在の購入画面・改定、アーグラの別機関徴収額や各種追加料金は別途確認する。",
+      "sources": [
+        {
+          "publisher": "Archaeological Survey of India, Guwahati Circle",
+          "title": "Gazette notification: Ancient Monuments Rules amendment 2018",
+          "url": "https://www.asiguwahaticircle.gov.in/Notification/Gazette%20notification.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2018年の官報には、フマユーン廟、クトゥブ、レッド・フォート、タージ群、アーグラ城、ファテープル・シークリーの対象外国人大人向け基本入場料が、現金600ルピー、キャッシュレス550ルピーと掲載されている。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_qutb_minar_asi_2018_admission",
+      "cityId": "delhi",
+      "placeId": "delhi_qutb_minar",
+      "field": "admission_candidate",
+      "value": {
+        "currency": "INR",
+        "cashPerAdult": 600,
+        "cashlessPerAdult": 550,
+        "feeScope": "ASI base admission"
+      },
+      "status": "historical_primary",
+      "conditionsJa": "2018年官報のSAARC・BIMSTEC等の対象外の外国人大人の基本入場料。現在の購入画面・改定、アーグラの別機関徴収額や各種追加料金は別途確認する。",
+      "sources": [
+        {
+          "publisher": "Archaeological Survey of India, Guwahati Circle",
+          "title": "Gazette notification: Ancient Monuments Rules amendment 2018",
+          "url": "https://www.asiguwahaticircle.gov.in/Notification/Gazette%20notification.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2018年の官報には、フマユーン廟、クトゥブ、レッド・フォート、タージ群、アーグラ城、ファテープル・シークリーの対象外国人大人向け基本入場料が、現金600ルピー、キャッシュレス550ルピーと掲載されている。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_humayun_tomb_asi_2018_admission",
+      "cityId": "delhi",
+      "placeId": "delhi_humayun_tomb",
+      "field": "admission_candidate",
+      "value": {
+        "currency": "INR",
+        "cashPerAdult": 600,
+        "cashlessPerAdult": 550,
+        "feeScope": "ASI base admission"
+      },
+      "status": "historical_primary",
+      "conditionsJa": "2018年官報のSAARC・BIMSTEC等の対象外の外国人大人の基本入場料。現在の購入画面・改定、アーグラの別機関徴収額や各種追加料金は別途確認する。",
+      "sources": [
+        {
+          "publisher": "Archaeological Survey of India, Guwahati Circle",
+          "title": "Gazette notification: Ancient Monuments Rules amendment 2018",
+          "url": "https://www.asiguwahaticircle.gov.in/Notification/Gazette%20notification.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2018年の官報には、フマユーン廟、クトゥブ、レッド・フォート、タージ群、アーグラ城、ファテープル・シークリーの対象外国人大人向け基本入場料が、現金600ルピー、キャッシュレス550ルピーと掲載されている。"
+        }
+      ]
+    },
+    {
+      "id": "agra_taj_mahal_asi_2018_admission",
+      "cityId": "agra",
+      "placeId": "agra_taj_mahal",
+      "field": "admission_candidate",
+      "value": {
+        "currency": "INR",
+        "cashPerAdult": 600,
+        "cashlessPerAdult": 550,
+        "feeScope": "ASI base admission"
+      },
+      "status": "historical_primary",
+      "conditionsJa": "2018年官報のSAARC・BIMSTEC等の対象外の外国人大人の基本入場料。現在の購入画面・改定、アーグラの別機関徴収額や各種追加料金は別途確認する。",
+      "sources": [
+        {
+          "publisher": "Archaeological Survey of India, Guwahati Circle",
+          "title": "Gazette notification: Ancient Monuments Rules amendment 2018",
+          "url": "https://www.asiguwahaticircle.gov.in/Notification/Gazette%20notification.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2018年の官報には、フマユーン廟、クトゥブ、レッド・フォート、タージ群、アーグラ城、ファテープル・シークリーの対象外国人大人向け基本入場料が、現金600ルピー、キャッシュレス550ルピーと掲載されている。"
+        }
+      ]
+    },
+    {
+      "id": "agra_agra_fort_asi_2018_admission",
+      "cityId": "agra",
+      "placeId": "agra_agra_fort",
+      "field": "admission_candidate",
+      "value": {
+        "currency": "INR",
+        "cashPerAdult": 600,
+        "cashlessPerAdult": 550,
+        "feeScope": "ASI base admission"
+      },
+      "status": "historical_primary",
+      "conditionsJa": "2018年官報のSAARC・BIMSTEC等の対象外の外国人大人の基本入場料。現在の購入画面・改定、アーグラの別機関徴収額や各種追加料金は別途確認する。",
+      "sources": [
+        {
+          "publisher": "Archaeological Survey of India, Guwahati Circle",
+          "title": "Gazette notification: Ancient Monuments Rules amendment 2018",
+          "url": "https://www.asiguwahaticircle.gov.in/Notification/Gazette%20notification.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2018年の官報には、フマユーン廟、クトゥブ、レッド・フォート、タージ群、アーグラ城、ファテープル・シークリーの対象外国人大人向け基本入場料が、現金600ルピー、キャッシュレス550ルピーと掲載されている。"
+        }
+      ]
+    },
+    {
+      "id": "agra_fatehpur_sikri_asi_2018_admission",
+      "cityId": "agra",
+      "placeId": "agra_fatehpur_sikri",
+      "field": "admission_candidate",
+      "value": {
+        "currency": "INR",
+        "cashPerAdult": 600,
+        "cashlessPerAdult": 550,
+        "feeScope": "ASI base admission"
+      },
+      "status": "historical_primary",
+      "conditionsJa": "2018年官報のSAARC・BIMSTEC等の対象外の外国人大人の基本入場料。現在の購入画面・改定、アーグラの別機関徴収額や各種追加料金は別途確認する。",
+      "sources": [
+        {
+          "publisher": "Archaeological Survey of India, Guwahati Circle",
+          "title": "Gazette notification: Ancient Monuments Rules amendment 2018",
+          "url": "https://www.asiguwahaticircle.gov.in/Notification/Gazette%20notification.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2018年の官報には、フマユーン廟、クトゥブ、レッド・フォート、タージ群、アーグラ城、ファテープル・シークリーの対象外国人大人向け基本入場料が、現金600ルピー、キャッシュレス550ルピーと掲載されている。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_humayun_closing_sources",
+      "cityId": "delhi",
+      "placeId": "delhi_humayun_tomb",
+      "field": "opening_candidates",
+      "value": {
+        "dailyOpen": "sunrise",
+        "closingCandidates": [
+          "sunset",
+          "19:30"
+        ]
+      },
+      "status": "primary_conflict",
+      "conditionsJa": "政府観光局の別ページ間で閉場時刻が一致しない。季節や実際の最終入場も未確認。",
+      "sources": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Humayun’s Tomb: tourist place",
+          "url": "https://www.delhitourism.gov.in/tourist_place/humayun_tomb.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "観光局の一方の案内は毎日の日の出から日没までとし、外国人料金600ルピーを掲載。"
+        },
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Humayun’s Tomb: explore the city",
+          "url": "https://delhitourism.gov.in/dt/explore_the_city/humayuns_tomb.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "別の観光局案内は毎日の日の出から19時30分までとし、外国人大人料金550ルピーを掲載。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_red_fort_weekly",
+      "cityId": "delhi",
+      "placeId": "delhi_red_fort",
+      "field": "weekly_opening_report",
+      "value": {
+        "monday": "open_reported",
+        "effectiveDate": "2026-02-16"
+      },
+      "status": "time_sensitive_secondary",
+      "conditionsJa": "月曜開放をASI担当者への取材として報じている。古い観光案内には月曜休館も残り、臨時休場は別途確認。曜日機能を未実装のゲームへ直接反映しない。",
+      "sources": [
+        {
+          "publisher": "Press Trust of India / Business Standard",
+          "title": "Red Fort to stay open all week, no more closure on Mondays: ASI",
+          "url": "https://www.business-standard.com/india-news/red-fort-to-remain-open-on-all-days-of-week-asi-126022100547_1.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "ASI担当者によれば2026年2月13日の命令で週7日開放し、同月16日にも開いていたと報じる。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_red_fort_structural_access",
+      "cityId": "delhi",
+      "placeId": "delhi_red_fort",
+      "field": "partial_access_report",
+      "value": {
+        "areas": [
+          "Hammam",
+          "Moti Masjid",
+          "Diwan-i-Khas",
+          "Khas Mahal",
+          "Rang Mahal",
+          "Sheesh Mahal"
+        ]
+      },
+      "status": "time_sensitive_secondary",
+      "conditionsJa": "2026年9月の報道時点の一部施設の立入制限。開始日や終了日が明示されておらず、現在の全面閉鎖とも恒久的禁止とも断定しない。",
+      "sources": [
+        {
+          "publisher": "The Times of India / PTI",
+          "title": "Hauz Khas Fort, Jantar Mantar restrict entry as 10 Delhi monuments undergo repairs",
+          "url": "https://timesofindia.indiatimes.com/city/delhi/hauz-khas-fort-jantar-mantar-restrict-entry-as-10-delhi-monuments-undergo-repairs-check-list/articleshow/134120775.cms",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "ASIの情報公開回答に基づき、レッド・フォートの六つの建物に入場制限があると2026年9月12日に報じた。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_agrasen_free",
+      "cityId": "delhi",
+      "placeId": "delhi_agrasen_baoli",
+      "field": "admission_candidate",
+      "value": {
+        "currency": "INR",
+        "perPerson": 0
+      },
+      "status": "historical_primary_with_secondary",
+      "conditionsJa": "政府の古いFAQと二次案内に無料記載。現在の運営者券種は未確認であり有料化報道もあるため最新価格として確定しない。",
+      "sources": [
+        {
+          "publisher": "Government of NCT of Delhi",
+          "title": "DTTDC sightseeing FAQ",
+          "url": "https://edistrict.delhi.gov.in/Public/ViewUploadScanDocumentTemplate?q=+LU8U28AiW2mtY8wT9SZprcEi8PkaSpflefnD3xyhXk%3D",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "観光FAQにはアグラセン・キ・バオリの入場料は無料と掲載。文書の最新性は未確認。"
+        },
+        {
+          "publisher": "Way to India",
+          "title": "Agrasen Ki Baoli Travel Guide",
+          "url": "https://www.waytoindia.com/travel-guide/delhi-nct/agrasen-ki-baoli",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2026年6月更新の案内は無料と説明している。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_agrasen_repair",
+      "cityId": "delhi",
+      "placeId": "delhi_agrasen_baoli",
+      "field": "partial_access_report",
+      "value": {
+        "access": "restricted_parts_reported",
+        "reportedOn": "2026-09-12"
+      },
+      "status": "time_sensitive_secondary",
+      "conditionsJa": "現地の工事範囲・終了日は未確認。2026年9月の記事を現在の全面閉鎖と断定しない。",
+      "sources": [
+        {
+          "publisher": "The Times of India / PTI",
+          "title": "Hauz Khas Fort, Jantar Mantar restrict entry as 10 Delhi monuments undergo repairs",
+          "url": "https://timesofindia.indiatimes.com/city/delhi/hauz-khas-fort-jantar-mantar-restrict-entry-as-10-delhi-monuments-undergo-repairs-check-list/articleshow/134120775.cms",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "ASIの情報公開回答に基づき、アグラセン・キ・バオリ内の訪問者移動を制限したと報道。開始時期は回答に明記されていない。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_lotus_hours",
+      "cityId": "delhi",
+      "placeId": "delhi_lotus_temple",
+      "field": "opening_report",
+      "value": {
+        "weekdays": "Tue-Sun",
+        "open": "09:00",
+        "close": "17:30",
+        "closed": "Monday"
+      },
+      "status": "primary_publication",
+      "conditionsJa": "観光局掲載の通常枠。曜日例外、休日や当日の実施状況は別途確認する。",
+      "sources": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Lotus Temple",
+          "url": "https://www.delhitourism.gov.in/tourist_place/bahai_temple.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "観光局は火曜から日曜の9時から17時30分、月曜休み、入場無料と案内。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_jama_masjid_fee",
+      "cityId": "delhi",
+      "placeId": "delhi_jama_masjid",
+      "field": "admission_report",
+      "value": {
+        "currency": "INR",
+        "foreignTouristPerPerson": 400,
+        "indianTouristPerPerson": 0
+      },
+      "status": "primary_publication",
+      "conditionsJa": "礼拝・年齢・他の料金の扱いは別確認。観光客の入場可能時間は日の入りや宗教行事に依存。",
+      "sources": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Jama Masjid",
+          "url": "https://www.delhitourism.gov.in/tourist_place/jama_masjid.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "観光局は外国人観光客400ルピー、インド人観光客は無料とし、外国人観光客は8時から日没までと掲載。"
+        }
+      ]
+    },
+    {
+      "id": "agra_taj_main_fee",
+      "cityId": "agra",
+      "placeId": "agra_taj_mahal",
+      "field": "admission_report",
+      "value": {
+        "currency": "INR",
+        "foreignGeneral": 1100,
+        "mainMausoleumAdditional": 200
+      },
+      "status": "primary_publication",
+      "conditionsJa": "観光局の掲載額で外国人用。主廟追加200ルピーは任意。支払方法やADA負担、最新券種を別途確認する。",
+      "sources": [
+        {
+          "publisher": "Uttar Pradesh Tourism",
+          "title": "Travel Information: Ticketing & Entry Fee of Monuments in Agra",
+          "url": "https://tajmahal.gov.in/travel-information.aspx",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "観光局の表はタージ・マハル1100ルピー、アーグラ城650、ファテープル・シークリー610、イティマード廟310を外国人の金曜以外の料金として掲載し、金曜・タージ訪問後の別料金も示す。"
+        },
+        {
+          "publisher": "Uttar Pradesh Tourism",
+          "title": "Travel Information: Ticketing and Entry Fee",
+          "url": "https://tajmahal.gov.in/travel-information.aspx",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "観光局は外国人一般券1100ルピーと、主廟訪問には別途200ルピーが必要と掲載している。"
+        }
+      ]
+    },
+    {
+      "id": "agra_taj_weekly",
+      "cityId": "agra",
+      "placeId": "agra_taj_mahal",
+      "field": "weekly_opening_report",
+      "value": {
+        "closed": "Friday",
+        "daylight": "sunrise_to_sunset"
+      },
+      "status": "primary_publication",
+      "conditionsJa": "金曜閉鎖は通常観光。礼拝や夜間観覧の扱い・特別日は別途確認する。",
+      "sources": [
+        {
+          "publisher": "Archaeological Survey of India, Agra Circle",
+          "title": "Taj Mahal",
+          "url": "https://asiagracircle.in/tajmahal.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "ASIのアーグラ管区は通常観覧を日の出から日没、金曜休みと案内。"
+        },
+        {
+          "publisher": "Uttar Pradesh Tourism",
+          "title": "Travel Information",
+          "url": "https://tajmahal.gov.in/travel-information.aspx",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "観光局は金曜日の閉鎖と、窓口の開閉を日の出・日没に関連づけて掲載。"
+        }
+      ]
+    },
+    {
+      "id": "agra_agra_fort_up_tourism_admission",
+      "cityId": "agra",
+      "placeId": "agra_agra_fort",
+      "field": "admission_report",
+      "value": {
+        "currency": "INR",
+        "foreignWeekdayExceptFriday": 650,
+        "foreignFridayOrAfterTaj": 600
+      },
+      "status": "primary_publication",
+      "conditionsJa": "観光局の表における外国人・金曜以外と、金曜またはタージ訪問後の掲載額。上記のASI基本額に機械的に加算しない。券種・当日有効なADA徴収・支払方法は別途確認。",
+      "sources": [
+        {
+          "publisher": "Uttar Pradesh Tourism",
+          "title": "Travel Information: Ticketing & Entry Fee of Monuments in Agra",
+          "url": "https://tajmahal.gov.in/travel-information.aspx",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "観光局の表はタージ・マハル1100ルピー、アーグラ城650、ファテープル・シークリー610、イティマード廟310を外国人の金曜以外の料金として掲載し、金曜・タージ訪問後の別料金も示す。"
+        }
+      ]
+    },
+    {
+      "id": "agra_fatehpur_sikri_up_tourism_admission",
+      "cityId": "agra",
+      "placeId": "agra_fatehpur_sikri",
+      "field": "admission_report",
+      "value": {
+        "currency": "INR",
+        "foreignWeekdayExceptFriday": 610,
+        "foreignFridayOrAfterTaj": 600
+      },
+      "status": "primary_publication",
+      "conditionsJa": "観光局の表における外国人・金曜以外と、金曜またはタージ訪問後の掲載額。上記のASI基本額に機械的に加算しない。券種・当日有効なADA徴収・支払方法は別途確認。",
+      "sources": [
+        {
+          "publisher": "Uttar Pradesh Tourism",
+          "title": "Travel Information: Ticketing & Entry Fee of Monuments in Agra",
+          "url": "https://tajmahal.gov.in/travel-information.aspx",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "観光局の表はタージ・マハル1100ルピー、アーグラ城650、ファテープル・シークリー610、イティマード廟310を外国人の金曜以外の料金として掲載し、金曜・タージ訪問後の別料金も示す。"
+        }
+      ]
+    },
+    {
+      "id": "agra_itimad_tomb_up_tourism_admission",
+      "cityId": "agra",
+      "placeId": "agra_itimad_tomb",
+      "field": "admission_report",
+      "value": {
+        "currency": "INR",
+        "foreignWeekdayExceptFriday": 310,
+        "foreignFridayOrAfterTaj": 300
+      },
+      "status": "primary_publication",
+      "conditionsJa": "観光局の表における外国人・金曜以外と、金曜またはタージ訪問後の掲載額。上記のASI基本額に機械的に加算しない。券種・当日有効なADA徴収・支払方法は別途確認。",
+      "sources": [
+        {
+          "publisher": "Uttar Pradesh Tourism",
+          "title": "Travel Information: Ticketing & Entry Fee of Monuments in Agra",
+          "url": "https://tajmahal.gov.in/travel-information.aspx",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "観光局の表はタージ・マハル1100ルピー、アーグラ城650、ファテープル・シークリー610、イティマード廟310を外国人の金曜以外の料金として掲載し、金曜・タージ訪問後の別料金も示す。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_amber_fort_2026_reported_admission",
+      "cityId": "jaipur",
+      "placeId": "jaipur_amber_fort",
+      "field": "admission_candidate",
+      "value": {
+        "currency": "INR",
+        "foreignAdult": 1000,
+        "effectiveDate": "2026-01-01"
+      },
+      "status": "secondary_report",
+      "conditionsJa": "2025年末の報道に基づく2026年改定額。州観光ページには古い価格のままのものがあり、当日の州予約システムの券種を直接確認していない。",
+      "sources": [
+        {
+          "publisher": "The Times of India",
+          "title": "In 1st hike since 2015, Raj doubles ticket prices at monuments",
+          "url": "https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2025年12月30日の報道では、2026年1月からアンベール城の外国人料金は1000ルピー、ハワー・マハル、ジャンタル・マンタル、ナハルガル城、アルバート・ホールは600ルピーとされている。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_hawa_mahal_2026_reported_admission",
+      "cityId": "jaipur",
+      "placeId": "jaipur_hawa_mahal",
+      "field": "admission_candidate",
+      "value": {
+        "currency": "INR",
+        "foreignAdult": 600,
+        "effectiveDate": "2026-01-01"
+      },
+      "status": "secondary_report",
+      "conditionsJa": "2025年末の報道に基づく2026年改定額。州観光ページには古い価格のままのものがあり、当日の州予約システムの券種を直接確認していない。",
+      "sources": [
+        {
+          "publisher": "The Times of India",
+          "title": "In 1st hike since 2015, Raj doubles ticket prices at monuments",
+          "url": "https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2025年12月30日の報道では、2026年1月からアンベール城の外国人料金は1000ルピー、ハワー・マハル、ジャンタル・マンタル、ナハルガル城、アルバート・ホールは600ルピーとされている。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_jantar_mantar_2026_reported_admission",
+      "cityId": "jaipur",
+      "placeId": "jaipur_jantar_mantar",
+      "field": "admission_candidate",
+      "value": {
+        "currency": "INR",
+        "foreignAdult": 600,
+        "effectiveDate": "2026-01-01"
+      },
+      "status": "secondary_report",
+      "conditionsJa": "2025年末の報道に基づく2026年改定額。州観光ページには古い価格のままのものがあり、当日の州予約システムの券種を直接確認していない。",
+      "sources": [
+        {
+          "publisher": "The Times of India",
+          "title": "In 1st hike since 2015, Raj doubles ticket prices at monuments",
+          "url": "https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2025年12月30日の報道では、2026年1月からアンベール城の外国人料金は1000ルピー、ハワー・マハル、ジャンタル・マンタル、ナハルガル城、アルバート・ホールは600ルピーとされている。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_nahargarh_fort_2026_reported_admission",
+      "cityId": "jaipur",
+      "placeId": "jaipur_nahargarh_fort",
+      "field": "admission_candidate",
+      "value": {
+        "currency": "INR",
+        "foreignAdult": 600,
+        "effectiveDate": "2026-01-01"
+      },
+      "status": "secondary_report",
+      "conditionsJa": "2025年末の報道に基づく2026年改定額。州観光ページには古い価格のままのものがあり、当日の州予約システムの券種を直接確認していない。",
+      "sources": [
+        {
+          "publisher": "The Times of India",
+          "title": "In 1st hike since 2015, Raj doubles ticket prices at monuments",
+          "url": "https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2025年12月30日の報道では、2026年1月からアンベール城の外国人料金は1000ルピー、ハワー・マハル、ジャンタル・マンタル、ナハルガル城、アルバート・ホールは600ルピーとされている。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_albert_hall_2026_reported_admission",
+      "cityId": "jaipur",
+      "placeId": "jaipur_albert_hall",
+      "field": "admission_candidate",
+      "value": {
+        "currency": "INR",
+        "foreignAdult": 600,
+        "effectiveDate": "2026-01-01"
+      },
+      "status": "secondary_report",
+      "conditionsJa": "2025年末の報道に基づく2026年改定額。州観光ページには古い価格のままのものがあり、当日の州予約システムの券種を直接確認していない。",
+      "sources": [
+        {
+          "publisher": "The Times of India",
+          "title": "In 1st hike since 2015, Raj doubles ticket prices at monuments",
+          "url": "https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2025年12月30日の報道では、2026年1月からアンベール城の外国人料金は1000ルピー、ハワー・マハル、ジャンタル・マンタル、ナハルガル城、アルバート・ホールは600ルピーとされている。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_amber_hours",
+      "cityId": "jaipur",
+      "placeId": "jaipur_amber_fort",
+      "field": "opening_report",
+      "value": {
+        "open": "08:00",
+        "close": "17:30"
+      },
+      "status": "primary_publication",
+      "conditionsJa": "州観光局の宮殿通常開館枠。夜間の光と音のショーは別の実施時間。",
+      "sources": [
+        {
+          "publisher": "Rajasthan Tourism",
+          "title": "Jaipur tourism places",
+          "url": "https://www.tourism.rajasthan.gov.in/jaipur.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "州観光局はアンベール宮殿の時間を8時から17時30分と掲載。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_jantar_conflict",
+      "cityId": "jaipur",
+      "placeId": "jaipur_jantar_mantar",
+      "field": "admission_conflict",
+      "value": {
+        "currency": "INR",
+        "foreignAdultCandidates": [
+          200,
+          600
+        ]
+      },
+      "status": "primary_secondary_conflict",
+      "conditionsJa": "州観光局の記事には200ルピーが残る一方、2026年改定の報道は600ルピー。予約画面で最新券種を直接確認するまで価格を確定しない。",
+      "sources": [
+        {
+          "publisher": "Rajasthan Tourism",
+          "title": "Jantar Mantar timings",
+          "url": "https://www.tourism.rajasthan.gov.in/jantar-mantar.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "州観光局の記事は外国人200ルピー、9時から19時、最終券18時30分と掲載。"
+        },
+        {
+          "publisher": "The Times of India",
+          "title": "In 1st hike since 2015, Raj doubles ticket prices at monuments",
+          "url": "https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2025年12月30日の報道では、2026年1月からアンベール城の外国人料金は1000ルピー、ハワー・マハル、ジャンタル・マンタル、ナハルガル城、アルバート・ホールは600ルピーとされている。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_jantar_hours",
+      "cityId": "jaipur",
+      "placeId": "jaipur_jantar_mantar",
+      "field": "opening_report",
+      "value": {
+        "open": "09:00",
+        "close": "19:00",
+        "lastTicket": "18:30"
+      },
+      "status": "primary_publication",
+      "conditionsJa": "州観光局の通常枠。記事内の料金は2026年改定報道と矛盾し、営業時間の最新性も別途確認する。",
+      "sources": [
+        {
+          "publisher": "Rajasthan Tourism",
+          "title": "Jantar Mantar timings",
+          "url": "https://www.tourism.rajasthan.gov.in/jantar-mantar.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "州観光局は入場時間9時から19時、最終券18時30分と掲載。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_city_palace_fee",
+      "cityId": "jaipur",
+      "placeId": "jaipur_city_palace",
+      "field": "admission_candidate",
+      "value": {
+        "currency": "INR",
+        "internationalMuseumAdult": 1200,
+        "internationalCompositeAdult": 1700
+      },
+      "status": "secondary_candidate",
+      "conditionsJa": "二次案内の報告。公式ページのインターナショナル料金タブは今回のテキスト取得では表示できず、現行の公式額として確定しない。",
+      "sources": [
+        {
+          "publisher": "Offbeat Peak",
+          "title": "City Palace, Jaipur: History, Timings & Tickets",
+          "url": "https://offbeatpeak.com/destination/rajasthan/city-palace-jaipur/",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2026年10月21日確認とする案内は国際来訪者の博物館券1200ルピー、共通券1700ルピーと報告。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_city_palace_hours",
+      "cityId": "jaipur",
+      "placeId": "jaipur_city_palace",
+      "field": "opening_report",
+      "value": {
+        "open": "09:30",
+        "close": "18:30",
+        "lastTicket": "18:00",
+        "closed": "Dhulandi"
+      },
+      "status": "primary_publication",
+      "conditionsJa": "博物館ツアーの掲載時間。ホーリー翌日のDhulandi休館、特別行事は別途確認。",
+      "sources": [
+        {
+          "publisher": "The City Palace Museum, Jaipur",
+          "title": "Visit Us",
+          "url": "https://citypalace.org/visit",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "博物館ツアーは9時30分から18時30分、最終券18時、Dhulandiは休館と公式案内。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_city_palace_temporary",
+      "cityId": "jaipur",
+      "placeId": "jaipur_city_palace",
+      "field": "temporary_access_report",
+      "value": {
+        "textileGalleryClosedSince": "2026-03-27",
+        "museumAtNight": "temporarily_closed"
+      },
+      "status": "time_sensitive_primary",
+      "conditionsJa": "観光ルート全体の恒久的閉鎖ではない。閉鎖解除日と最新の利用状況を確認する。",
+      "sources": [
+        {
+          "publisher": "The City Palace Museum, Jaipur",
+          "title": "Visit Us",
+          "url": "https://citypalace.org/visit",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "織物ギャラリーは2026年3月27日から修復のため一時休止、夜間博物館も一時休止と公式ページに表示。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_jaigarh_hours",
+      "cityId": "jaipur",
+      "placeId": "jaipur_jaigarh_fort",
+      "field": "opening_report",
+      "value": {
+        "dailyOpen": "09:00",
+        "dailyClose": "18:30",
+        "lastEntry": "18:00"
+      },
+      "status": "primary_publication",
+      "conditionsJa": "公式サイトに掲載される通常時間。国際来訪者券種の金額はテキスト取得で見えない。",
+      "sources": [
+        {
+          "publisher": "Jaigarh Fort",
+          "title": "Visit Us",
+          "url": "https://www.jaigarh.co/visit",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "ジャイガル城の公式案内は毎日9時から18時30分、最終入場18時と掲載。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_jaigarh_foreign_candidates",
+      "cityId": "jaipur",
+      "placeId": "jaipur_jaigarh_fort",
+      "field": "admission_conflict",
+      "value": {
+        "currency": "INR",
+        "foreignAdultCandidates": [
+          85,
+          200,
+          700
+        ]
+      },
+      "status": "secondary_conflict",
+      "conditionsJa": "公式ページの国際来訪者タブの金額は今回取得できない。二次候補は大きく異なり、いずれも現行額として確定しない。",
+      "sources": [
+        {
+          "publisher": "Jaipur Tourism (non-government)",
+          "title": "Jaigarh Fort",
+          "url": "https://jaipurtourisms.in/places/jaigarh-fort",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "二次案内は外国人700ルピーと記載。"
+        },
+        {
+          "publisher": "TasteYatra",
+          "title": "Jaigarh Fort, Jaipur",
+          "url": "https://www.tasteyatra.com/india/jaipur/jaigarh-fort",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "別の二次案内は外国人約200ルピーと記載。"
+        },
+        {
+          "publisher": "Traveliac",
+          "title": "Jaigarh Fort (Jaivana Cannon), Jaipur",
+          "url": "https://traveliac.com/india/rajasthan/jaipur/jaigarh-fort",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "別の二次案内は外国人85ルピーと記載。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_panna_meena_free",
+      "cityId": "jaipur",
+      "placeId": "jaipur_panna_meena_kund",
+      "field": "admission_candidate",
+      "value": {
+        "currency": "INR",
+        "outsideViewPerPerson": 0
+      },
+      "status": "secondary_candidate",
+      "conditionsJa": "無料という二次情報は周縁からの見学の候補。井戸内部の降下許可を意味しない。",
+      "sources": [
+        {
+          "publisher": "Rajasthan Royal Tourism (private tour operator)",
+          "title": "Panna Meena ka Kund",
+          "url": "https://www.rajasthanroyaltourism.com/blog/panna-meena-ka-kund/",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "民間観光案内は入場料なしと記載。"
+        },
+        {
+          "publisher": "Yatrigo",
+          "title": "Panna Meena Ka Kund",
+          "url": "https://www.yatrigo.com/locations/jaipur/panna-meena-ka-kund",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "別の案内は見学無料、階段降下は許可されていないとしている。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_panna_meena_access",
+      "cityId": "jaipur",
+      "placeId": "jaipur_panna_meena_kund",
+      "field": "access_report",
+      "value": {
+        "interiorAccess": "prohibited_in_2023_report"
+      },
+      "status": "historical_primary",
+      "conditionsJa": "井戸内部のアクセスについて2023年州関連計画資料の記述。周縁見学可否や現在の一時措置を自動的には推定しない。",
+      "sources": [
+        {
+          "publisher": "Government of Rajasthan",
+          "title": "Tourism Masterplan: Nahargarh Eco Sensitive Zone",
+          "url": "https://www.tourism.rajasthan.gov.in/content/dam/environment/Env/PDF_Files_II/Final%20Report%20Tourism%20Matserplan%20Nahargarh%20ESZ%2003-07-2023.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2023年の州関連計画資料は、Panna Meena Ka Kundの井戸への観光客の立入りは禁止と記載。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_india_gate_access",
+      "cityId": "delhi",
+      "placeId": "delhi_india_gate",
+      "field": "access_report",
+      "value": {
+        "admission": "free",
+        "hours": "morning_to_night"
+      },
+      "status": "primary_publication",
+      "conditionsJa": "観光局の紹介は入場無料・休館日なしとする。夜間は一部の区域に立ち入れないとの別案内もあり、全区域が終日利用可能とは限らない。",
+      "sources": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "India Gate",
+          "url": "https://delhitourism.gov.in/tourist_place/india_gate.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "インド門の案内は入場無料、朝から夜まで、定休日なしと掲載。"
+        },
+        {
+          "publisher": "Delhi Tourism",
+          "title": "India Gate: Explore the City",
+          "url": "https://www.delhitourism.gov.in/dt/explore_the_city/india_gate.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "別の案内は毎日24時間とする一方、暗くなってから一部区域に立ち入れないと注意している。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_lodhi_garden_hours",
+      "cityId": "delhi",
+      "placeId": "delhi_lodhi_garden",
+      "field": "opening_report",
+      "value": {
+        "aprilToSeptember": {
+          "open": "05:00",
+          "close": "20:00"
+        },
+        "octoberToMarch": {
+          "open": "06:00",
+          "close": "20:00"
+        },
+        "admission": "free"
+      },
+      "status": "primary_publication",
+      "conditionsJa": "園内の池の案内が示す季節別時間と、園内の墓所に関する無料案内。個別エリアや当日の制限は別途確認。",
+      "sources": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Lodi Gardens Lake",
+          "url": "https://delhitourism.gov.in/dt/explore_the_city/lodi_gardens_lake.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "園内の池の案内は4〜9月5時〜20時、10〜3月6時〜20時、無休と記載。"
+        },
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Lodi Tomb",
+          "url": "https://delhitourism.gov.in/tourist_place/lodi_tomb.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "園内の墓所の案内は毎日、朝から夕方、入場無料と記載。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_chandni_chowk_hours",
+      "cityId": "delhi",
+      "placeId": "delhi_chandni_chowk",
+      "field": "opening_conflict",
+      "value": {
+        "open": "10:30",
+        "close": "21:00",
+        "sunday": "some_shops_closed"
+      },
+      "status": "primary_internal_conflict",
+      "conditionsJa": "市場は独立店舗の集合で、店舗ごとに異なる。観光局の別ページには日曜閉店の記載もあり、市場全体の絶対的休業日として扱わない。",
+      "sources": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Chandni Chowk",
+          "url": "https://delhitourism.gov.in/dt/delhi_delicacies/chandni_chowk.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "市場の飲食案内は10時30分〜21時、一部店舗は日曜休業と掲載。"
+        },
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Old Delhi Shopping",
+          "url": "https://www.delhitourism.gov.in/shopping/chandni_chowk.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "別の市場案内は市場は日曜休業と記載している。"
+        }
+      ]
+    },
+    {
+      "id": "agra_chini_rauza_fee",
+      "cityId": "agra",
+      "placeId": "agra_chini_rauza",
+      "field": "admission_report",
+      "value": {
+        "currency": "INR",
+        "perPerson": 0,
+        "daylight": "sunrise_to_sunset"
+      },
+      "status": "primary_publication",
+      "conditionsJa": "地区政府の2026年7月更新ページが無料と掲載。ページ末尾には他の複数遺跡に関するADA料金の一般注記があり、対象や現在の運用は別途確認する。",
+      "sources": [
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Chini ka Rauza",
+          "url": "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "地区政府はチーニー・カ・ラウザを日の出〜日没、無休、全来訪者無料と掲載し、掲載ページの更新日を2026年7月10日とする。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_bangla_sahib_access",
+      "cityId": "delhi",
+      "placeId": "delhi_bangla_sahib",
+      "field": "visitor_access_report",
+      "value": {
+        "hours": "24_hours_reported",
+        "headCovering": "required",
+        "modestDress": "recommended"
+      },
+      "status": "primary_publication",
+      "conditionsJa": "政府観光案内に掲載された通常案内。礼拝時の立入りや行事は管理者に確認し、営業時間をゲームの行動可能時間にしない。",
+      "sources": [
+        {
+          "publisher": "Ministry of Tourism, Government of India",
+          "title": "Gurudwara Bangla Sahib",
+          "url": "https://www.incredibleindia.gov.in/en/delhi/delhi/gurudwara-bangla-sahib",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "政府観光案内は24時間開放とし、訪問時には頭と肩を覆う控えめな服装を案内している。"
+        }
+      ]
+    },
+    {
+      "id": "agra_guru_ka_taal_access",
+      "cityId": "agra",
+      "placeId": "agra_guru_ka_taal",
+      "field": "visitor_access_report",
+      "value": {
+        "headCovering": "required",
+        "shoes": "deposit_available",
+        "meal": "free_community_meal"
+      },
+      "status": "primary_publication",
+      "conditionsJa": "地域政府の訪問マナー案内。礼拝時のルール、撮影、宿泊・イベント等は別途確認。",
+      "sources": [
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Guru ka Taal Gurudwara",
+          "url": "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "地区政府は頭を覆う必要があり、入口にスカーフ、無料の靴預かりと共同食事があると案内。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_jal_mahal_access",
+      "cityId": "jaipur",
+      "placeId": "jaipur_jal_mahal",
+      "field": "visitor_access_report",
+      "value": {
+        "interior": "not_open_to_most_visitors",
+        "view": "lakefront"
+      },
+      "status": "primary_publication",
+      "conditionsJa": "州観光案内の「現在一般の大部分に公開されていない」という記載。宮殿内への観光可能ルートとして扱わず、特別公開の有無や湖岸の立入は別途確認。",
+      "sources": [
+        {
+          "publisher": "Rajasthan Tourism",
+          "title": "Jal Mahal",
+          "url": "https://www.tourism.rajasthan.gov.in/content/rajasthan-tourism/en/tourist-destinations/jal-mahal.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "州観光局は宮殿が現在一般の大部分に公開されず、観光客が湖岸から眺めると案内している。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_johari_bazaar_hours",
+      "cityId": "jaipur",
+      "placeId": "jaipur_johari_bazaar",
+      "field": "opening_candidates",
+      "value": {
+        "approxOpen": "11:00",
+        "approxClose": "20:00",
+        "sunday": "shop_dependent"
+      },
+      "status": "secondary_conflict",
+      "conditionsJa": "公道と個々の店舗の営業時間は異なる。日曜休みとする二次案内もあれば、一部店舗のみ休みとする案内もあり、全店の一律休業を確定しない。",
+      "sources": [
+        {
+          "publisher": "WordCamp Rajasthan 2026",
+          "title": "Jaipur Markets to Explore",
+          "url": "https://rajasthan.wordcamp.org/2026/shopping-in-jaipur-best-markets-guide/",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街市場は概ね11時〜20時、伝統的な週休は日曜と紹介。"
+        },
+        {
+          "publisher": "TasteYatra",
+          "title": "Johari Bazaar, Jaipur",
+          "url": "https://www.tasteyatra.com/india/jaipur/johari-bazaar",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "別の二次案内は公道には一律休業がなく、店ごとに休日が異なるとしている。"
+        }
+      ]
+    },
+    {
+      "id": "agra_akbar_tomb_up_tourism_admission",
+      "cityId": "agra",
+      "placeId": "agra_akbar_tomb",
+      "field": "admission_report",
+      "value": {
+        "currency": "INR",
+        "foreignWeekdayExceptFriday": 310,
+        "foreignFridayOrAfterTaj": 300
+      },
+      "status": "primary_publication",
+      "conditionsJa": "観光局の表における外国人の掲載額。ASI入場料、ADA負担と支払方法・当日の券種の扱いを別途確認し、記載額へ機械的な加算をしない。",
+      "sources": [
+        {
+          "publisher": "Uttar Pradesh Tourism",
+          "title": "Travel Information: Ticketing & Entry Fee of Monuments in Agra",
+          "url": "https://tajmahal.gov.in/travel-information.aspx",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "観光局の表はタージ・マハル1100ルピー、アーグラ城650、ファテープル・シークリー610、イティマード廟310を外国人の金曜以外の料金として掲載し、金曜・タージ訪問後の別料金も示す。"
+        }
+      ]
+    },
+    {
+      "id": "agra_mehtab_bagh_up_tourism_admission",
+      "cityId": "agra",
+      "placeId": "agra_mehtab_bagh",
+      "field": "admission_report",
+      "value": {
+        "currency": "INR",
+        "foreignWeekdayExceptFriday": 300,
+        "foreignFridayOrAfterTaj": 300
+      },
+      "status": "primary_publication",
+      "conditionsJa": "観光局の表における外国人の掲載額。ASI入場料、ADA負担と支払方法・当日の券種の扱いを別途確認し、記載額へ機械的な加算をしない。",
+      "sources": [
+        {
+          "publisher": "Uttar Pradesh Tourism",
+          "title": "Travel Information: Ticketing & Entry Fee of Monuments in Agra",
+          "url": "https://tajmahal.gov.in/travel-information.aspx",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "観光局の表はタージ・マハル1100ルピー、アーグラ城650、ファテープル・シークリー610、イティマード廟310を外国人の金曜以外の料金として掲載し、金曜・タージ訪問後の別料金も示す。"
+        }
+      ]
+    },
+    {
+      "id": "agra_ram_bagh_up_tourism_admission",
+      "cityId": "agra",
+      "placeId": "agra_ram_bagh",
+      "field": "admission_report",
+      "value": {
+        "currency": "INR",
+        "foreignWeekdayExceptFriday": 300,
+        "foreignFridayOrAfterTaj": 300
+      },
+      "status": "primary_publication",
+      "conditionsJa": "観光局の表における外国人の掲載額。ASI入場料、ADA負担と支払方法・当日の券種の扱いを別途確認し、記載額へ機械的な加算をしない。",
+      "sources": [
+        {
+          "publisher": "Uttar Pradesh Tourism",
+          "title": "Travel Information: Ticketing & Entry Fee of Monuments in Agra",
+          "url": "https://tajmahal.gov.in/travel-information.aspx",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "観光局の表はタージ・マハル1100ルピー、アーグラ城650、ファテープル・シークリー610、イティマード廟310を外国人の金曜以外の料金として掲載し、金曜・タージ訪問後の別料金も示す。"
+        }
+      ]
+    },
+    {
+      "id": "agra_mariam_tomb_up_tourism_admission",
+      "cityId": "agra",
+      "placeId": "agra_mariam_tomb",
+      "field": "admission_report",
+      "value": {
+        "currency": "INR",
+        "foreignWeekdayExceptFriday": 300,
+        "foreignFridayOrAfterTaj": 300
+      },
+      "status": "primary_publication",
+      "conditionsJa": "観光局の表における外国人の掲載額。ASI入場料、ADA負担と支払方法・当日の券種の扱いを別途確認し、記載額へ機械的な加算をしない。",
+      "sources": [
+        {
+          "publisher": "Uttar Pradesh Tourism",
+          "title": "Travel Information: Ticketing & Entry Fee of Monuments in Agra",
+          "url": "https://tajmahal.gov.in/travel-information.aspx",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "観光局の表はタージ・マハル1100ルピー、アーグラ城650、ファテープル・シークリー610、イティマード廟310を外国人の金曜以外の料金として掲載し、金曜・タージ訪問後の別料金も示す。"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "delhi": [
+    "delhi_hotel_hub",
+    "delhi_red_fort",
+    "delhi_jama_masjid",
+    "delhi_chandni_chowk",
+    "delhi_agrasen_baoli",
+    "delhi_india_gate",
+    "delhi_bangla_sahib"
+  ],
+  "agra": [
+    "agra_hotel_hub",
+    "agra_taj_mahal",
+    "agra_agra_fort",
+    "agra_itimad_tomb",
+    "agra_mehtab_bagh",
+    "agra_chini_rauza",
+    "agra_ram_bagh"
+  ],
+  "jaipur": [
+    "jaipur_hotel_hub",
+    "jaipur_hawa_mahal",
+    "jaipur_city_palace",
+    "jaipur_jantar_mantar",
+    "jaipur_johari_bazaar",
+    "jaipur_albert_hall",
+    "jaipur_jal_mahal"
+  ]
+}

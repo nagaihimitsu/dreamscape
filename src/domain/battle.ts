@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { legacyBattles, legacyBattleQuizzes } from "../content/legacy-milano";
-import { finalizeBattleProgress, isEpisodeBlockedByStoryBattle, isEpisodeUnlocked, isStoryBattleUnlocked } from "./chapter";
+import { battleCityId, finalizeBattleProgress, isEpisodeBlockedByStoryBattle, isEpisodeUnlocked, isStoryBattleUnlocked } from "./chapter";
 import {
   battles,
   episodes,
@@ -8,6 +8,7 @@ import {
   battleQuizzes,
   progression,
   tourismClues,
+  getCityStoryBackground,
   type BattleDefinition,
 } from "../content";
 import {
@@ -148,6 +149,8 @@ export function getBattleAvailability(
 function battleAvailability(state: GameState, battleId: string, continuingTourism: boolean): Availability {
   if (!battles.some((item) => item.id === battleId))
     return { available: false, reason: "バトルが見つかりません。" };
+  if (battleCityId(battleId) !== state.currentCityId)
+    return { available: false, reason: "この街の対決ではありません。" };
   if (state.activeEncounter)
     return { available: false, reason: "途中の交流を終えてから進めます。" };
   if (state.activeTourism)
@@ -198,6 +201,7 @@ function withDialogue(
     state.playerName,
     state.heroineName,
     { ...sceneVariables(next), player_address: `${state.playerName}${suffix}` },
+    [], {}, getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId),
   );
   return fromStory(next, result);
 }
@@ -639,6 +643,8 @@ export function validateBattleState(state: GameState): void {
   if (state.activeDate || state.activeEpilogue)
     throw new Error("恋愛会話とバトルが重複しています。");
   const { battle, quiz } = getActiveBattleContent(active);
+  if (battleCityId(battle.id) !== state.currentCityId)
+    throw new Error("対決の都市と現在地が一致しません。");
   const episode = episodes.find((item) => item.battleId === battle.id);
   if (episode && !isEpisodeUnlocked(state, episode))
     throw new Error("未解放のバトルの途中記録です。");

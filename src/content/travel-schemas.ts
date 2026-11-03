@@ -1,8 +1,7 @@
 import { z } from "zod";
 import { tourismSourceSchema } from "./tourism-schemas";
 
-// Draft input contract for a future travel-enabled city. It is deliberately not
-// part of the current Milan content pipeline or save format.
+// Shared input contract for each registered city's travel data.
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const text = z.string().trim().min(1);
 const minute = z.number().int().min(0).max(1440);
@@ -21,6 +20,8 @@ export const travelPlaceSchema = z.object({
   landmarkIds: z.array(id).optional(),
   destinationIds: z.array(id).optional(),
   openingWindows: z.array(timeWindowSchema).optional(),
+  /** Game-calendar weekdays when the place is closed; Monday is 0. */
+  closedWeekdays: z.array(z.number().int().min(0).max(6)).refine((days) => new Set(days).size === days.length, "Duplicate closed weekday").optional(),
   sources: z.array(tourismSourceSchema).min(1),
 }).strict();
 
@@ -30,8 +31,15 @@ export const travelRouteSchema = z.object({
   mode: z.enum(["walk", "rail", "tram", "bus", "taxi"]),
   minutes: z.number().int().nonnegative(),
   cost: z.number().int().nonnegative(),
+  /** Short passenger-facing detail when a route includes a connection. */
+  transferNote: text.max(40).optional(),
+  /** Editorial estimates are not an observation of the actual route or fare. */
+  estimation: z.literal("game_model").optional(),
   sources: z.array(tourismSourceSchema).min(1),
 }).strict().superRefine((route, ctx) => {
+  if (route.estimation === "game_model" && !route.sources.some((source) => source.claimType === "hypothesis")) {
+    ctx.addIssue({ code: "custom", message: "Game-model routes must identify their estimated source", path: ["sources"] });
+  }
   if (route.mode === "walk" && route.cost !== 0) {
     ctx.addIssue({ code: "custom", message: "Walking must be free", path: ["cost"] });
   }
@@ -49,8 +57,12 @@ export const travelEventSchema = z.object({
   placeId: id,
   category: z.enum(["main", "date"]),
   titleJa: text,
+  /** A registered prototype event has no story/quiz implementation yet. */
+  contentStatus: z.literal("pending_content").optional(),
   activityMinutes: z.number().int().positive(),
   apCost: z.number().int().nonnegative(),
+  /** Optional game admission charge for the whole party, in the journey currency. */
+  admissionCost: z.number().int().nonnegative().safe().optional(),
   startWindows: z.array(timeWindowSchema).optional(),
   endWindows: z.array(timeWindowSchema).optional(),
 }).strict();

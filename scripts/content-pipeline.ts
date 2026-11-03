@@ -47,6 +47,7 @@ import { validateTourism } from "./tourism-validation";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { validateTravelContent } from "./travel-validation";
 import { journeySchema } from "../src/content/journey-schemas";
+import { journeyCatalogSchema } from "../src/content/journey-catalog";
 import { validateJourney } from "./journey-validation";
 import { validateEpilogue } from "./epilogue-validation";
 import {
@@ -415,6 +416,34 @@ export function validateQuizEntries(quiz: {
   }
 }
 
+/** Validate authored city links separately from content completion. */
+export function validateCityLinks(cities: Array<ReturnType<typeof citySchema.parse>>, journeyCatalog: ReturnType<typeof journeyCatalogSchema.parse>) {
+  for (const current of cities) {
+    const seen = new Set<string>();
+    let next: typeof current | undefined = current;
+    while (next) {
+      if (seen.has(next.id)) throw new Error(`Cyclic city route: ${next.id}`);
+      seen.add(next.id);
+      if (!next.nextCityId) break;
+      const following = cities.find((item) => item.id === next!.nextCityId);
+      const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === next!.id));
+      const index = owner?.cities.findIndex((planned) => planned.id === next!.id) ?? -1;
+      const plannedNext = following?.productionStatus === "prototype" && owner?.cities[index + 1]?.id === following.id;
+      if (!following || (following.productionStatus !== "complete" && !plannedNext)) throw new Error(`Unknown or incomplete next city: ${next.nextCityId}`);
+      next = following;
+    }
+  }
+  for (const current of cities) {
+    const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id));
+    if (!owner) throw new Error(`City has no journey: ${current.id}`);
+    if (current.nextCityId) {
+      const index = owner.cities.findIndex((planned) => planned.id === current.id);
+      if (owner.cities[index + 1]?.id !== current.nextCityId)
+        throw new Error(`Next city is outside the journey order: ${current.id}/${current.nextCityId}`);
+    }
+  }
+}
+
 export async function buildContent(root: string, writeOutput = true) {
   const content = path.join(root, "content");
   const journey = await parseFile(
@@ -471,23 +500,56 @@ export async function buildContent(root: string, writeOutput = true) {
     )
   ).profiles;
   unique(responseProfiles.map((profile) => profile.id), "response profile ID");
-  const city = await parseFile(
-    citySchema,
-    path.join(content, "cities/milano.json"),
-  );
+  const cityPaths = (await filesIn(path.join(content, "cities"))).filter((file) => file.endsWith(".json"));
+  const cities = await Promise.all(cityPaths.map(async (file) => {
+    const city = await parseFile(citySchema, file);
+    if (path.basename(file) !== `${city.id}.json`) throw new Error(`City file ID mismatch: ${file}/${city.id}`);
+    return city;
+  }));
+  unique(cities.map((city) => city.id), "city ID");
+  const city = cities.find((item) => item.id === "milano");
+  if (!city) throw new Error("Missing initial city: milano");
+  const journeyCatalog = await parseFile(journeyCatalogSchema, path.join(content, "journeys/catalog.json"));
+  // A registered future prototype may be referenced by its predecessor;
+  // getNextCity still hides departures to incomplete cities at runtime.
+  validateCityLinks(cities, journeyCatalog);
+  for (const plannedJourney of journeyCatalog.journeys) {
+    if (plannedJourney.status === "available") {
+      const start = plannedJourney.cities[0];
+      if (!cities.some((item) => item.id === start.id && item.productionStatus === "complete"))
+        throw new Error(`Available journey has unknown or incomplete starting city: ${plannedJourney.id}/${start.id}`);
+      if (plannedJourney.initialBudget === null)
+        throw new Error(`Available journey has no initial budget: ${plannedJourney.id}`);
+    }
+  }
   const balance = await parseFile(
     balanceSchema,
     path.join(content, "romance/balance.json"),
   );
+  for (const plannedJourney of journeyCatalog.journeys) {
+    if (plannedJourney.initialState && plannedJourney.initialState.ap > balance.apCap)
+      throw new Error(`Journey initial AP exceeds cap: ${plannedJourney.id}`);
+    if (plannedJourney.cityPlan && plannedJourney.cityPlan.cityClearAp > balance.apCap)
+      throw new Error(`Journey city clear AP exceeds cap: ${plannedJourney.id}`);
+  }
   const presentation = await parseFile(
     presentationSchema,
     path.join(content, "romance/presentation.json"),
   );
-  const travel = await parseFile(travelCatalogSchema, path.join(content, "travel/milano.json"));
-  const travelSettings = await parseFile(travelSettingsSchema, path.join(content, "travel/milano-settings.json"));
+  const travels = await Promise.all(cities.map(async (item) => ({ city: item,
+    travel: await parseFile(travelCatalogSchema, path.join(content, `travel/${item.id}.json`)),
+    settings: await parseFile(travelSettingsSchema, path.join(content, `travel/${item.id}-settings.json`)),
+  })));
+  for (const { city: registeredCity, settings } of travels) {
+    const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === registeredCity.id));
+    if (owner?.cityPlan && settings.lodgingCost !== owner.cityPlan.lodgingCost)
+      throw new Error(`City lodging cost does not match journey plan: ${registeredCity.id}`);
+  }
+  unique(travels.flatMap(({ travel }) => travel.places.map((place) => place.id)), "travel place ID");
+  unique(travels.flatMap(({ travel }) => travel.events.map((event) => event.id)), "travel event ID");
   unique(destinations.map((destination) => destination.id), "date destination ID");
   for (const destination of destinations) {
-    if (destination.cityId !== city.id)
+    if (!cities.some((item) => item.id === destination.cityId))
       throw new Error(`Unknown date destination city: ${destination.id}/${destination.cityId}`);
     if (!presentation.backgrounds[destination.backgroundAssetId])
       throw new Error(`Unknown date destination background: ${destination.id}/${destination.backgroundAssetId}`);
@@ -515,10 +577,11 @@ export async function buildContent(root: string, writeOutput = true) {
       throw new Error(`Unknown required character ID: ${required}`);
   }
   for (const [cityId, mapping] of Object.entries(characters.wardrobe?.cities ?? {})) {
-    if (cityId !== city.id)
+    const wardrobeCity = cities.find((item) => item.id === cityId);
+    if (!wardrobeCity)
       throw new Error(`Unknown city in character wardrobe: ${cityId}`);
-    if (mapping.country !== city.countryCode)
-      throw new Error(`Character wardrobe country mismatch: ${cityId}/${mapping.country} (expected ${city.countryCode})`);
+    if (mapping.country !== wardrobeCity.countryCode)
+      throw new Error(`Character wardrobe country mismatch: ${cityId}/${mapping.country} (expected ${wardrobeCity.countryCode})`);
   }
   const wardrobeSceneIds = new Set([
     ...dates.map((date) => date.id),
@@ -567,14 +630,33 @@ export async function buildContent(root: string, writeOutput = true) {
     effects.map((effect) => effect.id),
     "effectId",
   );
-  unique(city.landmarkIdsPlanned, "landmarkId");
+  unique(cities.flatMap((item) => item.landmarkIdsPlanned), "landmarkId");
+  unique(tourism.landmarks.map((item) => item.id), "tourism landmark ID");
+  unique(tourism.assets.map((item) => item.id), "tourism asset ID");
+  unique(tourism.clues.map((item) => item.id), "tourism clue ID");
+  unique(tourism.clues.map((item) => item.factId), "tourism fact ID");
+  unique(encounterCatalog.items.map((item) => item.id), "encounter item ID");
+  unique(encounterCatalog.encounters.map((item) => item.id), "encounter ID");
+  if (encounterCatalog.items.some((item) => !cities.some((entry) => entry.id === item.cityId)) ||
+      encounterCatalog.encounters.some((item) => !cities.some((entry) => entry.id === item.cityId)))
+    throw new Error("Unknown encounter/item city");
+  unique(journey.episodes.map((item) => item.id), "episode ID");
+  unique(journey.episodes.map((item) => item.battleId), "episode battle ID");
+  unique(journey.storyBattles.map((item) => item.battleId), "story battle ID");
+  unique([...cities.map((item) => item.firstClearReward.rewardSourceId), ...milestones.map((item) => item.rewardSourceId)], "reward source");
+  unique(journey.rewards.map((item) => item.id), "journey reward ID");
+  unique([...journey.rewards.map((item) => item.id), ...journey.storyBattles.flatMap((item) => item.completionReward ? [item.completionReward.id] : []), ...milestones.map((item) => item.rewardSourceId)], "journey/trial reward ID");
+  if (tourism.clues.some((clue) => !tourism.landmarks.some((landmark) => landmark.id === clue.landmarkId)))
+    throw new Error("Unknown or mismatched tourism clue");
+  if (tourism.landmarks.some((landmark) => !cities.some((entry) => entry.id === landmark.cityId && entry.landmarkIdsPlanned.includes(landmark.id))))
+    throw new Error("Unknown tourism city/landmark");
   if (
     balance.defaultPlayerName.length > balance.maxNameLength ||
     balance.defaultHeroineName.length > balance.maxNameLength
   ) {
     throw new Error("Default name exceeds maxNameLength");
   }
-  if (city.firstClearReward.ap > balance.apCap)
+  if (cities.some((item) => item.firstClearReward.ap > balance.apCap))
     throw new Error("First clear reward exceeds AP cap");
   const context: TagContext = {
     effectIds: effects.map((effect) => effect.id),
@@ -665,9 +747,9 @@ export async function buildContent(root: string, writeOutput = true) {
         throw new Error(`Date destination background mismatch: ${date.id}/${date.destinationId}`);
     }
     if (
-      date.chapterId !== city.id ||
-      date.requiredCompletedChapters.some((id) => id !== city.id) ||
-      date.requiredCompletedCityIds?.some((id) => id !== city.id)
+      !cities.some((item) => item.id === date.chapterId) ||
+      date.requiredCompletedChapters.some((id) => !cities.some((item) => item.id === id)) ||
+      date.requiredCompletedCityIds?.some((id) => !cities.some((item) => item.id === id))
     ) {
       throw new Error(`Unknown chapter reference: ${date.id}`);
     }
@@ -810,13 +892,6 @@ export async function buildContent(root: string, writeOutput = true) {
     milestones.map((item) => item.id),
     "trial milestone",
   );
-  unique(
-    [
-      city.firstClearReward.rewardSourceId,
-      ...milestones.map((item) => item.rewardSourceId),
-    ],
-    "reward source",
-  );
   for (const milestone of milestones) {
     verifyDateReferences(milestone.requiredPlayedDateIds, "trial prerequisite");
     if (milestone.ap > balance.apCap)
@@ -851,11 +926,11 @@ export async function buildContent(root: string, writeOutput = true) {
       );
     }
     if ("scope" in quiz && quiz.scope === "city_finale") {
-      if (quiz.cityId !== city.id)
+      if (!cities.some((item) => item.id === quiz.cityId))
         throw new Error(`Unknown quiz city: ${quiz.id}`);
     } else if (
       quiz.landmarkId === null ||
-      !city.landmarkIdsPlanned.includes(quiz.landmarkId)
+      !cities.some((item) => item.landmarkIdsPlanned.includes(quiz.landmarkId!))
     )
       throw new Error(`Unknown landmark: ${quiz.landmarkId}`);
     try {
@@ -874,14 +949,14 @@ export async function buildContent(root: string, writeOutput = true) {
     if (!quiz) throw new Error(`Unknown battle quizId: ${battle.quizId}`);
     if (battle.scope === "city_finale") {
       if (
-        battle.cityId !== city.id ||
+        !cities.some((item) => item.id === battle.cityId) ||
         quiz.scope !== "city_finale" ||
         quiz.cityId !== battle.cityId
       )
         throw new Error(`City finale quiz mismatch: ${battle.id}`);
     } else if (
       battle.landmarkId === null ||
-      !city.landmarkIdsPlanned.includes(battle.landmarkId) ||
+      !cities.some((item) => item.landmarkIdsPlanned.includes(battle.landmarkId!)) ||
       battle.landmarkId !== quiz.landmarkId ||
       quiz.scope
     )
@@ -990,17 +1065,17 @@ export async function buildContent(root: string, writeOutput = true) {
       if (lines < 2 || story.currentChoices.length)
         throw new Error(`Invalid learning story: ${topic.id}`);
     }
-  const tourismGuides = await validateTourism(
-    root,
-    tourism,
-    city.id,
-    city.landmarkIdsPlanned,
-    battles,
-    quizzes,
-    stories,
-    context,
-    observeForStory,
-  );
+  let tourismGuides = 0;
+  for (const current of cities) {
+    const landmarks = tourism.landmarks.filter((landmark) => landmark.cityId === current.id);
+    const ids = new Set(landmarks.map((landmark) => landmark.id));
+    tourismGuides += await validateTourism(root, {
+      ...tourism,
+      landmarks,
+      assets: tourism.assets,
+      clues: tourism.clues.filter((clue) => ids.has(clue.landmarkId)),
+    }, current.id, current.landmarkIdsPlanned, battles, quizzes, stories, context, observeForStory);
+  }
   for (const validateDate of deferredDateValidation) validateDate();
   for (const effect of effects) {
     // These shared, memoryless effects let ordinary dates use the existing
@@ -1032,22 +1107,68 @@ export async function buildContent(root: string, writeOutput = true) {
       throw new Error(`Encounter story is used by another system: ${storyId}`);
     if (stories[storyId]) validateNoInkRandom(stories[storyId]);
   }
-  validateEncounterContent({
-    catalog: encounterCatalog, cityId: city.id, landmarks: tourism.landmarks, journey, stories, quizzes,
-    responseProfileIds: responseProfiles.map((profile) => profile.id), memoryIds: Object.keys(presentation.memories), context,
-    validateQuiz: validateQuizEntries,
-  });
-  validateJourney(
-    journey,
-    city,
-    balance.apCap,
-    tourism.landmarks,
-    battles,
-    quizzes,
-    milestones,
-  );
-  validateTravelContent(travel, travelSettings, city.id, journey, dates, battles,
-    tourism.landmarks.map((landmark) => landmark.id), destinations.map((destination) => destination.id), presentation.backgrounds);
+  const battleCity = (id: string): string | undefined => {
+    const battle = battles.find((item) => item.id === id);
+    return battle?.cityId ?? tourism.landmarks.find((item) => item.id === battle?.landmarkId)?.cityId;
+  };
+  if (journey.episodes.some((episode) => !cities.some((item) => item.id === episode.cityId)) ||
+      journey.storyBattles.some((battle) => !cities.some((item) => item.id === battleCity(battle.battleId))))
+    throw new Error("Unknown journey city");
+  if (journey.rewards.some((reward) => !journey.episodes.some((episode) => episode.id === reward.episodeId)))
+    throw new Error("Unknown reward episode");
+  for (const rule of encounterEntryRules.entries) {
+    const encounter = encounterCatalog.encounters.find((item) => item.id === rule.encounterId)!;
+    const prerequisiteCity = rule.completedEpisodeId
+      ? journey.episodes.find((episode) => episode.id === rule.completedEpisodeId)?.cityId
+      : rule.completedStoryBattleId ? battleCity(rule.completedStoryBattleId) : undefined;
+    if (prerequisiteCity !== encounter.cityId)
+      throw new Error(`Encounter entry city mismatch: ${encounter.id}`);
+  }
+  unique([...productionQuestionIds, ...encounterCatalog.encounters.flatMap((event) => event.quiz ? [event.quiz.question.id] : [])], "production quiz question ID");
+  for (const { city: current, travel, settings } of travels) {
+    const episodes = journey.episodes.filter((episode) => episode.cityId === current.id);
+    const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id));
+    // A journey may publish its first city while keeping later, pre-registered
+    // cities unfinished. The city status controls the deferred content gate.
+    const isUnpublished = current.productionStatus === "prototype";
+    if (!episodes.length && !isUnpublished) throw new Error(`City has no episodes: ${current.id}`);
+    const plan = owner?.cityPlan;
+    if (plan && episodes.length) {
+      const finale = episodes.find((episode) => episode.kind === "city_finale");
+      const episodeIds = new Set(episodes.map((episode) => episode.id));
+      const clearRewards = journey.rewards.filter((rule) => episodeIds.has(rule.episodeId) && rule.trigger === "city_clear");
+      if (!finale || clearRewards.length !== 1 || clearRewards[0].episodeId !== finale.id || clearRewards[0].ap !== plan.cityClearAp)
+        throw new Error(`City clear reward does not match journey plan: ${current.id}`);
+    }
+    const episodeIds = new Set(episodes.map((episode) => episode.id));
+    const cityJourney = { ...journey, entryEpisodeId: current.id === city.id ? journey.entryEpisodeId : (episodes[0]?.id ?? journey.entryEpisodeId),
+      episodes, storyBattles: journey.storyBattles.filter((battle) => battleCity(battle.battleId) === current.id),
+      rewards: journey.rewards.filter((rule) => episodeIds.has(rule.episodeId)) };
+    const cityLandmarks = tourism.landmarks.filter((landmark) => landmark.cityId === current.id);
+    const cityDates = dates.filter((date) => date.chapterId === current.id);
+    const cityDestinations = destinations.filter((destination) => destination.cityId === current.id);
+    // A pending prototype may defer only its own unwritten story; it may not
+    // reuse an actual event belonging to another city.
+    for (const event of travel.events) {
+      const foreignEpisode = journey.episodes.find((item) => item.id === event.id && item.cityId !== current.id);
+      const foreignDate = dates.find((item) => item.id === event.id && item.chapterId !== current.id);
+      const foreignBattle = battles.find((item) => item.id === event.id && battleCity(item.id) !== current.id);
+      if (foreignEpisode || foreignDate || foreignBattle) throw new Error(`Travel event belongs to another city: ${event.id}`);
+    }
+    validateEncounterContent({
+      catalog: { ...encounterCatalog, items: encounterCatalog.items.filter((item) => item.cityId === current.id),
+        encounters: encounterCatalog.encounters.filter((event) => event.cityId === current.id) },
+      cityId: current.id, currencyCode: journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id))!.currency.code,
+      landmarks: cityLandmarks, journey: cityJourney, stories, quizzes,
+      responseProfileIds: responseProfiles.map((profile) => profile.id), memoryIds: Object.keys(presentation.memories), context,
+      validateQuiz: validateQuizEntries,
+    });
+    if (episodes.length) validateJourney(cityJourney, current, balance.apCap, cityLandmarks, battles, quizzes, milestones);
+    else if (cityJourney.storyBattles.length) throw new Error(`Prototype battle has no city episodes: ${current.id}`);
+    validateTravelContent(travel, settings, current.id, cityJourney, cityDates, battles,
+      cityLandmarks.map((landmark) => landmark.id), cityDestinations.map((destination) => destination.id), presentation.backgrounds,
+      { allowPendingContent: isUnpublished, plannedLandmarkIds: current.landmarkIdsPlanned });
+  }
   let epilogueScenarios = 0;
   for (const episode of journey.episodes) {
     if (!episode.epilogueStoryId) continue;

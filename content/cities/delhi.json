@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "delhi",
+  "nextCityId": "agra",
+  "countryCode": "IN",
+  "nameJa": "デリー",
+  "themeJa": "歴史と日常が重なる街",
+  "firstClearReward": {
+    "rewardSourceId": "delhi_legacy_episode_placeholder",
+    "ap": 0
+  },
+  "landmarkIdsPlanned": [
+    "delhi_red_fort",
+    "delhi_qutb_minar",
+    "delhi_humayun_tomb",
+    "delhi_jama_masjid"
+  ],
+  "productionStatus": "prototype"
+}

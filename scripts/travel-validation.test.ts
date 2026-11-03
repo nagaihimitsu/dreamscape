@@ -42,9 +42,43 @@ describe("Milan travel data references", () => {
     }
   });
 
-  it("does not infer a missing reverse walking route", () => {
+  it("accepts a paid return in place of a missing walk and reserves its fare", () => {
+    const original = travel.routes.find((route) => route.fromPlaceId === "p_duomo" && route.toPlaceId === "p_hotel" && route.mode === "walk")!;
+    const taxi = { ...original, mode: "taxi" as const, cost: 10 };
+    const routes = travel.routes.filter((route) => route !== original).concat(taxi);
+    expect(() => validate({ ...travel, routes })).not.toThrow();
+    const event = travel.events.find((candidate) => candidate.placeId === "p_duomo")!;
+    const place = travel.places.find((candidate) => candidate.id === event.placeId)!;
+    const outbound = routes.find((route) => route.fromPlaceId === "p_hotel" && route.toPlaceId === "p_duomo" && route.mode === "walk")!;
+    const state = { day: 1, minute: 9 * 60, currentPlaceId: "p_hotel", hotelPlaceId: "p_hotel", ap: 12, travelBudget: 9 };
+    expect(planTravelEvent(state, event, outbound, taxi, place)).toEqual({ ok: false, reason: "budget" });
+    expect(planTravelEvent({ ...state, travelBudget: 10 }, event, outbound, taxi, place).ok).toBe(true);
+  });
+
+  it("requires a usable route in each direction without inventing a reverse route", () => {
     const routes = travel.routes.filter((route) => !(route.fromPlaceId === "p_duomo" && route.toPlaceId === "p_hotel" && route.mode === "walk"));
-    expect(() => validate({ ...travel, routes })).toThrow(/Missing directed walking route/);
+    expect(() => validate({ ...travel, routes })).toThrow(/Missing usable directed route: p_duomo\/p_hotel/);
+    const walk = travel.routes.find((route) => route.fromPlaceId === "p_duomo" && route.toPlaceId === "p_hotel" && route.mode === "walk")!;
+    expect(() => validate({ ...travel, routes: [...routes, { ...walk, mode: "taxi", cost: 10, minutes: 12 * 60 }] }))
+      .toThrow(/Missing usable directed route: p_duomo\/p_hotel/);
+  });
+
+  it("requires the free zero-time route for events at the current place", () => {
+    const routes = travel.routes.filter((route) => !(route.fromPlaceId === "p_hotel" && route.toPlaceId === "p_hotel"));
+    expect(() => validate({ ...travel, routes })).toThrow(/Missing same-place route: p_hotel/);
+  });
+
+  it("allows explicitly pending city content only in an unpublished prototype", () => {
+    const original = travel.events.find((event) => event.category === "main")!;
+    const pending = { ...original, id: "prototype_pending_main", contentStatus: "pending_content" as const };
+    const candidate = { ...travel, events: [...travel.events, pending] };
+    expect(() => validate(candidate)).toThrow(/Pending travel event in playable city/);
+    const runPrototype = (placeIds: string[]) => validateTravelContent(candidate, settings, "milano", journey, dates, battles,
+      landmarkIds, destinationIds, backgrounds, { allowPendingContent: true, plannedLandmarkIds: placeIds });
+    expect(() => runPrototype([original.placeId])).not.toThrow();
+    expect(() => runPrototype(["wrong_place"])).toThrow(/Invalid pending main/);
+    expect(() => validate({ ...candidate, events: [...travel.events, { ...pending, contentStatus: undefined }] }))
+      .toThrow(/Unknown or invalid main travel event/);
   });
 
   it("rejects a missing date, wrong AP, background or hotel", () => {

@@ -1,0 +1,111 @@
+﻿cityId,placeId,visitorClass,amountINR,currency,unit,conditionJa,status,sourceId,sourceUrl,checkedAt,note
+agra,agra_taj_mahal,IN_citizen,50,INR,person,通常,official_page,agra_taj,https://agra.nic.in/tourist-place/tajmahal/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_taj_mahal,SAARC_BIMSTEC,540,INR,person,通常,official_page,agra_taj,https://agra.nic.in/tourist-place/tajmahal/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_taj_mahal,other_foreign,1100,INR,person,通常,official_page,agra_taj,https://agra.nic.in/tourist-place/tajmahal/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_agra_fort,IN_citizen,50,INR,person,通常,official_page,agra_agrafort,https://agra.nic.in/tourist-place/agra-fort/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_agra_fort,SAARC_BIMSTEC,90,INR,person,通常,official_page,agra_agrafort,https://agra.nic.in/tourist-place/agra-fort/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_agra_fort,other_foreign,650,INR,person,通常,official_page,agra_agrafort,https://agra.nic.in/tourist-place/agra-fort/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_agra_fort,IN_citizen,40,INR,person,金曜日,official_page,agra_agrafort,https://agra.nic.in/tourist-place/agra-fort/,2026-11-03,
+agra,agra_agra_fort,SAARC_BIMSTEC,40,INR,person,金曜日,official_page,agra_agrafort,https://agra.nic.in/tourist-place/agra-fort/,2026-11-03,
+agra,agra_agra_fort,other_foreign,600,INR,person,金曜日,official_page,agra_agrafort,https://agra.nic.in/tourist-place/agra-fort/,2026-11-03,
+agra,agra_fatehpur_sikri,IN_citizen,50,INR,person,通常,official_page,agra_fatehpur,https://agra.nic.in/tourist-place/fatehpur-sikri/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_fatehpur_sikri,SAARC_BIMSTEC,50,INR,person,通常,official_page,agra_fatehpur,https://agra.nic.in/tourist-place/fatehpur-sikri/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_fatehpur_sikri,other_foreign,610,INR,person,通常,official_page,agra_fatehpur,https://agra.nic.in/tourist-place/fatehpur-sikri/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_fatehpur_sikri,IN_citizen,40,INR,person,金曜日,official_page,agra_fatehpur,https://agra.nic.in/tourist-place/fatehpur-sikri/,2026-11-03,
+agra,agra_fatehpur_sikri,SAARC_BIMSTEC,40,INR,person,金曜日,official_page,agra_fatehpur,https://agra.nic.in/tourist-place/fatehpur-sikri/,2026-11-03,
+agra,agra_fatehpur_sikri,other_foreign,600,INR,person,金曜日,official_page,agra_fatehpur,https://agra.nic.in/tourist-place/fatehpur-sikri/,2026-11-03,
+agra,agra_akbar_tomb,IN_citizen,30,INR,person,通常,official_page,agra_akbar,https://agra.nic.in/tourist-place/akbars-tomb-sikandra/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_akbar_tomb,SAARC_BIMSTEC,30,INR,person,通常,official_page,agra_akbar,https://agra.nic.in/tourist-place/akbars-tomb-sikandra/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_akbar_tomb,other_foreign,310,INR,person,通常,official_page,agra_akbar,https://agra.nic.in/tourist-place/akbars-tomb-sikandra/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_akbar_tomb,IN_citizen,25,INR,person,金曜日,official_page,agra_akbar,https://agra.nic.in/tourist-place/akbars-tomb-sikandra/,2026-11-03,
+agra,agra_akbar_tomb,SAARC_BIMSTEC,25,INR,person,金曜日,official_page,agra_akbar,https://agra.nic.in/tourist-place/akbars-tomb-sikandra/,2026-11-03,
+agra,agra_akbar_tomb,other_foreign,300,INR,person,金曜日,official_page,agra_akbar,https://agra.nic.in/tourist-place/akbars-tomb-sikandra/,2026-11-03,
+agra,agra_itimad_tomb,IN_citizen,30,INR,person,通常,official_page,agra_itimad,https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_itimad_tomb,SAARC_BIMSTEC,30,INR,person,通常,official_page,agra_itimad,https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_itimad_tomb,other_foreign,310,INR,person,通常,official_page,agra_itimad,https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_itimad_tomb,IN_citizen,25,INR,person,金曜日,official_page,agra_itimad,https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/,2026-11-03,
+agra,agra_itimad_tomb,SAARC_BIMSTEC,25,INR,person,金曜日,official_page,agra_itimad,https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/,2026-11-03,
+agra,agra_itimad_tomb,other_foreign,300,INR,person,金曜日,official_page,agra_itimad,https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/,2026-11-03,
+agra,agra_mehtab_bagh,IN_citizen,25,INR,person,通常,official_page,agra_mehtab,https://agra.nic.in/tourist-place/mehtab-bagh/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_mehtab_bagh,SAARC_BIMSTEC,25,INR,person,通常,official_page,agra_mehtab,https://agra.nic.in/tourist-place/mehtab-bagh/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_mehtab_bagh,other_foreign,300,INR,person,通常,official_page,agra_mehtab,https://agra.nic.in/tourist-place/mehtab-bagh/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_mehtab_bagh,IN_citizen,25,INR,person,金曜日,official_page,agra_mehtab,https://agra.nic.in/tourist-place/mehtab-bagh/,2026-11-03,
+agra,agra_mehtab_bagh,SAARC_BIMSTEC,25,INR,person,金曜日,official_page,agra_mehtab,https://agra.nic.in/tourist-place/mehtab-bagh/,2026-11-03,
+agra,agra_mehtab_bagh,other_foreign,300,INR,person,金曜日,official_page,agra_mehtab,https://agra.nic.in/tourist-place/mehtab-bagh/,2026-11-03,
+agra,agra_ram_bagh,IN_citizen,25,INR,person,通常,official_page,agra_rambagh,https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_ram_bagh,SAARC_BIMSTEC,25,INR,person,通常,official_page,agra_rambagh,https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_ram_bagh,other_foreign,300,INR,person,通常,official_page,agra_rambagh,https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_ram_bagh,IN_citizen,25,INR,person,金曜日,official_page,agra_rambagh,https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/,2026-11-03,
+agra,agra_ram_bagh,SAARC_BIMSTEC,25,INR,person,金曜日,official_page,agra_rambagh,https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/,2026-11-03,
+agra,agra_ram_bagh,other_foreign,300,INR,person,金曜日,official_page,agra_rambagh,https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/,2026-11-03,
+agra,agra_mariam_tomb,IN_citizen,25,INR,person,通常,official_page,agra_mariam,https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_mariam_tomb,SAARC_BIMSTEC,25,INR,person,通常,official_page,agra_mariam,https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_mariam_tomb,other_foreign,300,INR,person,通常,official_page,agra_mariam,https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/,2026-11-03,Agra地区政府の施設別掲載基本料金。金曜の個別条件は別行。
+agra,agra_mariam_tomb,IN_citizen,25,INR,person,金曜日,official_page,agra_mariam,https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/,2026-11-03,
+agra,agra_mariam_tomb,SAARC_BIMSTEC,25,INR,person,金曜日,official_page,agra_mariam,https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/,2026-11-03,
+agra,agra_mariam_tomb,other_foreign,300,INR,person,金曜日,official_page,agra_mariam,https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/,2026-11-03,
+agra,agra_taj_mahal,all_paid_entrants,200,INR,person,タージ主廟見学の追加費用; 基本券に加算,official_page,agra_taj,https://agra.nic.in/tourist-place/tajmahal/,2026-11-03,必須ではない。両者が主廟を見学する場合は2人分。
+agra,agra_taj_mahal,child_under_15,0,INR,person,15歳未満無料,official_page,agra_taj,https://agra.nic.in/tourist-place/tajmahal/,2026-11-03,
+agra,agra_taj_mahal,IN_citizen_night_adult,510,INR,person,満月の前後2晩を含む特別夜間観覧のみ,official_night_page,agra_night,https://tajmahal.gov.in/night-view.aspx,2026-11-03,
+agra,agra_taj_mahal,other_foreign_night_adult,750,INR,person,満月の前後2晩を含む特別夜間観覧のみ,official_night_page,agra_night,https://tajmahal.gov.in/night-view.aspx,2026-11-03,
+agra,agra_taj_mahal,child_3_to_15_night,500,INR,person,満月の前後2晩を含む特別夜間観覧のみ,official_night_page,agra_night,https://tajmahal.gov.in/night-view.aspx,2026-11-03,
+agra,agra_chini_rauza,all_visitors,0,INR,person,通常,official_page,agra_chini,https://agra.nic.in/tourist-place/chini-ka-rauza/,2026-11-03,
+agra,agra_guru_ka_taal,all_visitors,0,INR,person,通常,official_page,agra_gurutal,https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/,2026-11-03,
+delhi,delhi_red_fort,IN_citizen,35,INR,person,通常,old_secondary_unconfirmed,delhi_redfee_old,https://sites.google.com/doe.delhi.gov.in/historical-monumentss/delhi,2026-11-03,古い政府教育サイトの料金。2026年の窓口・eTicket値と照合するまで採用禁止
+delhi,delhi_red_fort,other_foreign,500,INR,person,通常,old_secondary_unconfirmed,delhi_redfee_old,https://sites.google.com/doe.delhi.gov.in/historical-monumentss/delhi,2026-11-03,古い政府教育サイトの料金。2026年の窓口・eTicket値と照合するまで採用禁止
+delhi,delhi_qutb_minar,IN_SAARC_BIMSTEC_counter,50,INR,person,通常,official_delhi_tourism,delhi_qutb,https://delhitourism.gov.in/tourist_place/qutab_minar.html,2026-11-03,
+delhi,delhi_qutb_minar,IN_SAARC_BIMSTEC_online,35,INR,person,通常,official_delhi_tourism,delhi_qutb,https://delhitourism.gov.in/tourist_place/qutab_minar.html,2026-11-03,
+delhi,delhi_qutb_minar,other_foreign_counter,600,INR,person,通常,official_delhi_tourism,delhi_qutb,https://delhitourism.gov.in/tourist_place/qutab_minar.html,2026-11-03,
+delhi,delhi_qutb_minar,other_foreign_online,550,INR,person,通常,official_delhi_tourism,delhi_qutb,https://delhitourism.gov.in/tourist_place/qutab_minar.html,2026-11-03,
+delhi,delhi_humayun_tomb,IN_citizen,40,INR,person,通常,source_conflict_unresolved,delhi_humayun_a,https://www.delhitourism.gov.in/tourist_place/humayun_tomb.html,2026-11-03,
+delhi,delhi_humayun_tomb,other_foreign,600,INR,person,通常,source_conflict_unresolved,delhi_humayun_a,https://www.delhitourism.gov.in/tourist_place/humayun_tomb.html,2026-11-03,
+delhi,delhi_humayun_tomb,IN_citizen,35,INR,person,通常,source_conflict_unresolved,delhi_humayun_b,https://www.delhitourism.gov.in/dt/explore_the_city/humayuns_tomb.html,2026-11-03,
+delhi,delhi_humayun_tomb,other_foreign,550,INR,person,通常,source_conflict_unresolved,delhi_humayun_b,https://www.delhitourism.gov.in/dt/explore_the_city/humayuns_tomb.html,2026-11-03,
+delhi,delhi_jama_masjid,other_foreign,400,INR,person,通常,official_page,delhi_jama,https://delhitourism.gov.in/tourist_place/jama_masjid.html,2026-11-03,
+delhi,delhi_jama_masjid,IN_citizen,0,INR,person,通常,official_page,delhi_jama,https://delhitourism.gov.in/tourist_place/jama_masjid.html,2026-11-03,
+delhi,delhi_lodhi_garden,all_visitors,0,INR,person,通常,official_page,delhi_lodhi,https://delhitourism.gov.in/tourist_place/lodi_tomb.html,2026-11-03,
+delhi,delhi_lotus_temple,all_visitors,0,INR,person,通常,official_page,delhi_lotus,https://delhitourism.gov.in/tourist_place/bahai_temple.html,2026-11-03,
+delhi,delhi_india_gate,all_visitors,0,INR,person,通常,official_page,delhi_indiagate,https://delhitourism.gov.in/tourist_place/india_gate.html,2026-11-03,
+jaipur,jaipur_amber_fort,IN_citizen,200,INR,person,通常,2026_secondary_needs_official_notice,jaipur_fare_news1,https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms,2026-11-03,2026-01-01改定報道。政府告示と当日券売を別確認
+jaipur,jaipur_amber_fort,other_foreign,1000,INR,person,通常,2026_secondary_needs_official_notice,jaipur_fare_news1,https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms,2026-11-03,2026-01-01改定報道。政府告示と当日券売を別確認
+jaipur,jaipur_hawa_mahal,IN_citizen,100,INR,person,通常,2026_secondary_needs_official_notice,jaipur_fare_news1,https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms,2026-11-03,2026-01-01改定報道。政府告示と当日券売を別確認
+jaipur,jaipur_hawa_mahal,other_foreign,600,INR,person,通常,2026_secondary_needs_official_notice,jaipur_fare_news1,https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms,2026-11-03,2026-01-01改定報道。政府告示と当日券売を別確認
+jaipur,jaipur_jantar_mantar,IN_citizen,100,INR,person,通常,2026_secondary_needs_official_notice,jaipur_fare_news1,https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms,2026-11-03,2026-01-01改定報道。政府告示と当日券売を別確認
+jaipur,jaipur_jantar_mantar,other_foreign,600,INR,person,通常,2026_secondary_needs_official_notice,jaipur_fare_news1,https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms,2026-11-03,2026-01-01改定報道。政府告示と当日券売を別確認
+jaipur,jaipur_nahargarh_fort,IN_citizen,100,INR,person,通常,2026_secondary_needs_official_notice,jaipur_fare_news1,https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms,2026-11-03,2026-01-01改定報道。政府告示と当日券売を別確認
+jaipur,jaipur_nahargarh_fort,other_foreign,600,INR,person,通常,2026_secondary_needs_official_notice,jaipur_fare_news1,https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms,2026-11-03,2026-01-01改定報道。政府告示と当日券売を別確認
+jaipur,jaipur_albert_hall,IN_citizen,100,INR,person,通常,2026_secondary_needs_official_notice,jaipur_fare_news1,https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms,2026-11-03,2026-01-01改定報道。政府告示と当日券売を別確認
+jaipur,jaipur_albert_hall,other_foreign,600,INR,person,通常,2026_secondary_needs_official_notice,jaipur_fare_news1,https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms,2026-11-03,2026-01-01改定報道。政府告示と当日券売を別確認
+jaipur,jaipur_jantar_mantar,other_foreign,200,INR,person,通常,old_official_conflicts_2026,jaipur_jantar_old,https://www.tourism.rajasthan.gov.in/jantar-mantar.html,2026-11-03,2026改定の報道料金600と矛盾。採用不可
+jaipur,jaipur_jantar_mantar,IN_citizen,50,INR,person,通常,old_official_conflicts_2026,jaipur_jantar_old,https://www.tourism.rajasthan.gov.in/jantar-mantar.html,2026-11-03,2026改定の報道料金100と矛盾。採用不可
+jaipur,jaipur_jal_mahal,exterior_view_from_public_road,0,INR,person,通常,exterior_only_not_interior_ticket,jaipur_city,https://www.tourism.rajasthan.gov.in/jaipur.html,2026-11-03,湖中の建物内に自由に入れる意味ではない
+delhi,delhi_chandni_chowk,GAME_EDITIONAL_PER_FOREIGN_ADULT,0,INR,person,ゲーム内モデルのみ。現地料金の確認値ではない。施設内有料/無料の現行ルール未確定（屋外公共街路を含む）,GAME_MODEL_NOT_REAL_TICKET_PRICE,gt_game_model_20261103,https://www.openstreetmap.org/copyright,2026-11-03,値は脚本・経済バランス用。外国人券の公的料金確認前には実在料金として案内しない。
+delhi,delhi_agrasen_baoli,GAME_EDITIONAL_PER_FOREIGN_ADULT,0,INR,person,ゲーム内モデルのみ。現地料金の確認値ではない。施設内有料/無料の現行ルール未確定（屋外公共街路を含む）,GAME_MODEL_NOT_REAL_TICKET_PRICE,gt_game_model_20261103,https://www.openstreetmap.org/copyright,2026-11-03,値は脚本・経済バランス用。外国人券の公的料金確認前には実在料金として案内しない。
+delhi,delhi_bangla_sahib,GAME_EDITIONAL_PER_FOREIGN_ADULT,0,INR,person,ゲーム内モデルのみ。現地料金の確認値ではない。施設内有料/無料の現行ルール未確定（屋外公共街路を含む）,GAME_MODEL_NOT_REAL_TICKET_PRICE,gt_game_model_20261103,https://www.openstreetmap.org/copyright,2026-11-03,値は脚本・経済バランス用。外国人券の公的料金確認前には実在料金として案内しない。
+jaipur,jaipur_city_palace,GAME_EDITIONAL_PER_FOREIGN_ADULT,1000,INR,person,ゲーム内モデルのみ。現地料金の確認値ではない。施設内有料/無料の現行ルール未確定（屋外公共街路を含む）,GAME_MODEL_NOT_REAL_TICKET_PRICE,gt_game_model_20261103,https://www.openstreetmap.org/copyright,2026-11-03,値は脚本・経済バランス用。外国人券の公的料金確認前には実在料金として案内しない。
+jaipur,jaipur_jaigarh_fort,GAME_EDITIONAL_PER_FOREIGN_ADULT,500,INR,person,ゲーム内モデルのみ。現地料金の確認値ではない。施設内有料/無料の現行ルール未確定（屋外公共街路を含む）,GAME_MODEL_NOT_REAL_TICKET_PRICE,gt_game_model_20261103,https://www.openstreetmap.org/copyright,2026-11-03,値は脚本・経済バランス用。外国人券の公的料金確認前には実在料金として案内しない。
+jaipur,jaipur_johari_bazaar,GAME_EDITIONAL_PER_FOREIGN_ADULT,0,INR,person,ゲーム内モデルのみ。現地料金の確認値ではない。施設内有料/無料の現行ルール未確定（屋外公共街路を含む）,GAME_MODEL_NOT_REAL_TICKET_PRICE,gt_game_model_20261103,https://www.openstreetmap.org/copyright,2026-11-03,値は脚本・経済バランス用。外国人券の公的料金確認前には実在料金として案内しない。
+jaipur,jaipur_panna_meena_kund,GAME_EDITIONAL_PER_FOREIGN_ADULT,0,INR,person,ゲーム内モデルのみ。現地料金の確認値ではない。施設内有料/無料の現行ルール未確定（屋外公共街路を含む）,GAME_MODEL_NOT_REAL_TICKET_PRICE,gt_game_model_20261103,https://www.openstreetmap.org/copyright,2026-11-03,値は脚本・経済バランス用。外国人券の公的料金確認前には実在料金として案内しない。
+delhi,delhi_chandni_chowk,public_street_all_visitors,0,INR,person,追加調査: 公道上の市場。買い物・個別施設・ツアーは有料。,GOVERNMENT_CONFIRMED_NO_STREET_ENTRY,SRC_DL_CHANDNI,https://srdc.delhi.gov.in/en/srdc/1600-1700,2026-11-03,公道上の市場。買い物・個別施設・ツアーは有料。
+delhi,delhi_agrasen_baoli,general_adult,0,INR,person,追加調査: 政府サイトに時間だけ記載。無料の断定不可。,GAME_MODEL_NOT_REAL_TICKET_PRICE,gt_game_model_20261103,https://www.openstreetmap.org/copyright,2026-11-03,政府サイトに時間だけ記載。無料の断定不可。
+delhi,delhi_bangla_sahib,general_worship_visitor,0,INR,person,追加調査: 寄付任意。参拝マナー・撮影許可は別。,SECONDARY_FREE_ADMISSION_RECONFIRM,SRC_DL_BANGLA_SECONDARY,https://www.mapsofindia.com/delhi/places-of-interest/religious-places/bangla-sahib.html,2026-11-03,寄付任意。参拝マナー・撮影許可は別。
+jaipur,jaipur_city_palace,Indian_National_or_Resident_adult_Museum,400,INR,person,追加調査: 中庭・ギャラリー。International Residentタブは価格抽出不可能で外国人に流用不可。,OPERATOR_OFFICIAL_INDIAN_TAB,SRC_JP_CITYPALACE,https://citypalace.org/visit,2026-11-03,中庭・ギャラリー。International Residentタブは価格抽出不可能で外国人に流用不可。
+jaipur,jaipur_city_palace,Indian_National_or_Resident_adult_Composite,500,INR,person,追加調査: コンポジットがJaigarhも含む。複数チケットの二重課金防止。,OPERATOR_OFFICIAL_INDIAN_TAB,SRC_JP_CITYPALACE,https://citypalace.org/visit,2026-11-03,コンポジットがJaigarhも含む。複数チケットの二重課金防止。
+jaipur,jaipur_city_palace,international_visitor_Museum,1000,INR,person,追加調査: 運営公式ページの国際居住者タブ表示値を取得できず。400はインド人向け。,GAME_MODEL_NOT_REAL_TICKET_PRICE,gt_game_model_20261103,https://www.openstreetmap.org/copyright,2026-11-03,運営公式ページの国際居住者タブ表示値を取得できず。400はインド人向け。
+jaipur,jaipur_jaigarh_fort,Indian_National_or_Resident_adult,200,INR,person,追加調査: 個別入場。City Palace composite所持時は重複課金しない。,OPERATOR_OFFICIAL_INDIAN_TAB,SRC_JP_JAIGARH,https://www.jaigarh.co/visit,2026-11-03,個別入場。City Palace composite所持時は重複課金しない。
+jaipur,jaipur_jaigarh_fort,international_visitor_adult,500,INR,person,追加調査: 国際居住者タブ未確認。インド人の200を外国人料金と誤用しない。,GAME_MODEL_NOT_REAL_TICKET_PRICE,gt_game_model_20261103,https://www.openstreetmap.org/copyright,2026-11-03,国際居住者タブ未確認。インド人の200を外国人料金と誤用しない。
+jaipur,jaipur_johari_bazaar,public_street_all_visitors,0,INR,person,追加調査: 店舗は別の費用。公道そのものに入場券はない。,PUBLIC_MARKET_NO_GLOBAL_TICKET_INFERRED,gt_game_model_20261103,https://www.openstreetmap.org/copyright,2026-11-03,店舗は別の費用。公道そのものに入場券はない。
+jaipur,jaipur_panna_meena_kund,outside_view_visitor,0,INR,person,追加調査: 階段への入場・保護規則・管理料金は未確認。無料と固定しない。,GAME_MODEL_NOT_REAL_TICKET_PRICE,gt_game_model_20261103,https://www.openstreetmap.org/copyright,2026-11-03,階段への入場・保護規則・管理料金は未確認。無料と固定しない。
+delhi,delhi_humayun_tomb,IN_citizen_alt,35,INR,person,追加調査: 競合公式情報。優先採用禁止。,OFFICIAL_CONFLICT_ALTERNATIVE,SRC_DL_HUMAYUN_B,https://www.delhitourism.gov.in/dt/explore_the_city/humayuns_tomb.html,2026-11-03,競合公式情報。優先採用禁止。
+delhi,delhi_humayun_tomb,other_foreign_alt,550,INR,person,追加調査: 競合公式情報。優先採用禁止。,OFFICIAL_CONFLICT_ALTERNATIVE,SRC_DL_HUMAYUN_B,https://www.delhitourism.gov.in/dt/explore_the_city/humayuns_tomb.html,2026-11-03,競合公式情報。優先採用禁止。
+agra,agra_taj_mahal,other_foreign_basic,1100,INR,person,追加調査: 金曜閉館。オンライン割引等は別計算、追加200円は主廟に入る場合。,GOVERNMENT_PRIMARY,SRC_AGRA_TAJ_FEES,https://www.tajmahal.gov.in/travel-information.aspx,2026-11-03,金曜閉館。オンライン割引等は別計算、追加200円は主廟に入る場合。
+agra,agra_taj_mahal,all_adults_mausoleum_optional_addon,200,INR,person,追加調査: 基本券とは別。人数ごとに計算。,GOVERNMENT_PRIMARY,SRC_AGRA_TAJ_FEES,https://www.tajmahal.gov.in/travel-information.aspx,2026-11-03,基本券とは別。人数ごとに計算。
+agra,agra_agra_fort,other_foreign_standard,650,INR,person,追加調査: 金曜に料金特例あり、直前日の条件の扱いに注意。,GOVERNMENT_PRIMARY,SRC_AGRA_TAJ_FEES,https://www.tajmahal.gov.in/travel-information.aspx,2026-11-03,金曜に料金特例あり、直前日の条件の扱いに注意。
+agra,agra_fatehpur_sikri,other_foreign_standard,610,INR,person,追加調査: 金曜料金等の例外あり。,GOVERNMENT_PRIMARY,SRC_AGRA_TAJ_FEES,https://www.tajmahal.gov.in/travel-information.aspx,2026-11-03,金曜料金等の例外あり。
+jaipur,jaipur_amber_fort,other_foreign_2026_reported,1000,INR,person,追加調査: 元ZIPの2026改定報道と一致。州の正式料金表示要確認。,SECONDARY_2026_FARE_UNCONFIRMED_PRIMARY,SRC_JP_STATE_FEES_SECONDARY,https://www.cityofjaipur.com/news/2025/12/visiting-monuments-and-museums-will-become-more-expensive/,2026-11-03,元ZIPの2026改定報道と一致。州の正式料金表示要確認。
+jaipur,jaipur_hawa_mahal,other_foreign_2026_reported,600,INR,person,追加調査: 元ZIPに記載の2026改定報道を追認。,SECONDARY_2026_FARE_UNCONFIRMED_PRIMARY,SRC_JP_STATE_FEES_SECONDARY,https://www.cityofjaipur.com/news/2025/12/visiting-monuments-and-museums-will-become-more-expensive/,2026-11-03,元ZIPに記載の2026改定報道を追認。
+jaipur,jaipur_jantar_mantar,other_foreign_2026_reported,600,INR,person,追加調査: 州公式観光ページ200 INRと矛盾。料金改定の版管理要。,SECONDARY_2026_FARE_UNCONFIRMED_PRIMARY,SRC_JP_STATE_FEES_SECONDARY,https://www.cityofjaipur.com/news/2025/12/visiting-monuments-and-museums-will-become-more-expensive/,2026-11-03,州公式観光ページ200 INRと矛盾。料金改定の版管理要。
+jaipur,jaipur_albert_hall,other_foreign_2026_reported,600,INR,person,追加調査: 州政府オンライン予約ポータルを確認したとする第三者報告。,SECONDARY_2026_FARE_UNCONFIRMED_PRIMARY,SRC_JP_ALBERT_PORTAL_SECONDARY,https://traveliac.com/india/rajasthan/jaipur/albert-hall-museum,2026-11-03,州政府オンライン予約ポータルを確認したとする第三者報告。
+jaipur,jaipur_nahargarh_fort,other_foreign_2026_reported,600,INR,person,追加調査: 元ZIP改定報道と一致。,SECONDARY_2026_FARE_UNCONFIRMED_PRIMARY,SRC_JP_STATE_FEES_SECONDARY,https://www.cityofjaipur.com/news/2025/12/visiting-monuments-and-museums-will-become-more-expensive/,2026-11-03,元ZIP改定報道と一致。
+jaipur,jaipur_amber_fort,foreign_combo_2026_reported,1700,INR,person,追加調査: ジャイプール州立複合券の報道額。私有博物館City Palace/Jaigarh除外。,SECONDARY_COMPOSITE_SCOPE_VERIFY,SRC_JP_STATE_FEES_SECONDARY,https://www.cityofjaipur.com/news/2025/12/visiting-monuments-and-museums-will-become-more-expensive/,2026-11-03,ジャイプール州立複合券の報道額。私有博物館City Palace/Jaigarh除外。
+jaipur,jaipur_amber_fort,foreign_10day_2026_reported,5500,INR,person,追加調査: 州立施設10日間券の報道額。私有施設除外。,SECONDARY_PASS_SCOPE_VERIFY,SRC_JP_STATE_FEES_SECONDARY,https://www.cityofjaipur.com/news/2025/12/visiting-monuments-and-museums-will-become-more-expensive/,2026-11-03,州立施設10日間券の報道額。私有施設除外。

@@ -26,6 +26,7 @@ function input() {
   return {
     catalog: encounterCatalogSchema.parse(structuredClone(catalogData)),
     cityId: "milano",
+    currencyCode: "EUR",
     landmarks: tourismCatalogSchema.parse(tourismData).landmarks,
     journey: journeySchema.parse(journeyData),
     stories: { ...stories },
@@ -36,6 +37,45 @@ function input() {
     validateQuiz: validateQuizEntries,
   };
 }
+
+describe("journey currency rules", () => {
+  it("accepts neutral amounts and rejects ambiguous old and new fields", () => {
+    const data = structuredClone(catalogData);
+    const event = data.encounters.find((entry) => entry.id === "galleria_cafe")!;
+    const priced = event.options[0];
+    // Keep the old catalog intact while exercising author-facing fields.
+    const neutral = structuredClone(data) as unknown as { encounters: Array<Record<string, unknown>> };
+    const changed = neutral.encounters.find((entry) => entry.id === "galleria_cafe")!;
+    const options = changed.options as Array<Record<string, unknown>>;
+    options[0].cost = priced.costEuro;
+    delete options[0].costEuro;
+    changed.completionMoney = changed.completionMoneyEuro;
+    delete changed.completionMoneyEuro;
+    expect(encounterCatalogSchema.safeParse(neutral).success).toBe(true);
+    options[0].costEuro = 0;
+    expect(encounterCatalogSchema.safeParse(neutral).success).toBe(false);
+    delete options[0].costEuro;
+    changed.completionMoneyEuro = 0;
+    expect(encounterCatalogSchema.safeParse(neutral).success).toBe(false);
+  });
+
+  it("refuses euro-specific fields in another currency, including zero", () => {
+    const data = input();
+    data.currencyCode = "INR";
+    expect(() => validateEncounterContent(data)).toThrow("Euro-denominated encounter rules in INR city");
+    for (const event of data.catalog.encounters) {
+      event.completionMoney = event.completionMoneyEuro;
+      delete event.completionMoneyEuro;
+      for (const option of event.options) {
+        option.cost = option.costEuro;
+        delete option.costEuro;
+      }
+    }
+    expect(() => validateEncounterContent(data)).not.toThrow();
+    data.catalog.encounters[0].options[0].costEuro = 0;
+    expect(() => validateEncounterContent(data)).toThrow("Euro-denominated encounter rules in INR city");
+  });
+});
 
 describe("encounter content validation", () => {
   it("validates every actual dialogue branch, outcome and inventory context", () => {

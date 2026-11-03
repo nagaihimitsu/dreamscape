@@ -1,0 +1,618 @@
+{
+  "project": "Dreamscape golden_triangle",
+  "edition": "integrated_20261103",
+  "createdAt": "2026-11-03",
+  "inputs": [
+    "Dreamscape_India(3).zip",
+    "India_Addon(1).zip"
+  ],
+  "fileCountExcludingManifest": 121,
+  "caveat": "editorial and modeled values are not verified physical routes or fares; no game code modified",
+  "files": [
+    {
+      "path": "EXECUTIVE_SUMMARY.md",
+      "bytes": 2326,
+      "sha256": "efe1711c3d848d456fcc2a5c42f424861215a0609913c99fa4d45f8e3232a21c"
+    },
+    {
+      "path": "IMPLEMENTATION_GUIDE.md",
+      "bytes": 1720,
+      "sha256": "294722358b4097a9671104b6adc7ef883eed19a78232a38e917f3568b9f7cc66"
+    },
+    {
+      "path": "INTEGRATION_CHANGELOG.md",
+      "bytes": 3043,
+      "sha256": "fbca6d2080a649519197f11f45dbfae9c103a52b92c691b8b5ce70ca35cc6ab0"
+    },
+    {
+      "path": "OPEN_ISSUES.md",
+      "bytes": 2662,
+      "sha256": "8d01c20b486867184b6d3e7cf776aa25d1cb4bc034a788992ff9e3810d656314"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2326,
+      "sha256": "efe1711c3d848d456fcc2a5c42f424861215a0609913c99fa4d45f8e3232a21c"
+    },
+    {
+      "path": "cities/agra.json",
+      "bytes": 414,
+      "sha256": "2cd79b661116859fc9ad5f3c541073d101c46907556185b05db975ce42aad085"
+    },
+    {
+      "path": "cities/delhi.json",
+      "bytes": 410,
+      "sha256": "2f5b16fe8a6bc9120d645a750e8c83888a71bdd1fd45926720da4b3837fb5838"
+    },
+    {
+      "path": "cities/jaipur.json",
+      "bytes": 395,
+      "sha256": "77a469ed191ad3505bdc1a052e93318904f01eab5695e555dc4cc7d6b85b4d2e"
+    },
+    {
+      "path": "codex/IMPLEMENTATION_PROMPT.md",
+      "bytes": 686,
+      "sha256": "89737599fc0be6853267ef1053d32c460a281bc29568c507599d693b5f26ff58"
+    },
+    {
+      "path": "codex/INTEGRATED_HANDOFF.md",
+      "bytes": 3246,
+      "sha256": "3659d550159769b5caf0ef6884c33ce5fe0d39149549c08162c2baee80bf9660"
+    },
+    {
+      "path": "codex/SCHEMA_GAPS.md",
+      "bytes": 865,
+      "sha256": "ea9049c7b08ac97efd0a95fbb6eb6f05a70f4176e9d3774da3fe56bfaea8ed1e"
+    },
+    {
+      "path": "codex/VALIDATION_CHECKLIST.md",
+      "bytes": 947,
+      "sha256": "c6cd1958a30dca0c2e69b0fb7c7819131477cdb0afb12dadad338e4e9fcae99f"
+    },
+    {
+      "path": "data/ACCESS_AND_PHOTO_PLACE_STATUS.csv",
+      "bytes": 8622,
+      "sha256": "630dd7c80e3bbcc9c849e60291b4e764b16324dc01166b1538605140369ebd35"
+    },
+    {
+      "path": "data/ACCESS_AND_PHOTO_RESTRICTIONS.csv",
+      "bytes": 14255,
+      "sha256": "80b72ba147ce4892d2e48b027443871d09e4e4804f4fa6e5d43977959b88bd9e"
+    },
+    {
+      "path": "data/ACCOMMODATION_PRICE_EXAMPLES.csv",
+      "bytes": 3703,
+      "sha256": "0b7d2ee3ac095e5c245283fea7fdf82a1f2f9b3b4945d969ff057a53197ae78b"
+    },
+    {
+      "path": "data/AGRA_LOCATIONS.csv",
+      "bytes": 9292,
+      "sha256": "89e45e042748f55219e4bf86b46cfa486c03bdab62a668c3d723af6f2988a60a"
+    },
+    {
+      "path": "data/AGRA_METRO_OD_FARES.csv",
+      "bytes": 12302,
+      "sha256": "73c433896ca4c0e0a312b333faec09211a683a50c73a60544c5eac312eaffa33"
+    },
+    {
+      "path": "data/ALL_LOCATIONS.json",
+      "bytes": 61967,
+      "sha256": "aff809befe42a769b66c618903c627525b7f9b137084c307593797cc812ff9be"
+    },
+    {
+      "path": "data/BACKGROUND_ASSET_PLAN.csv",
+      "bytes": 8465,
+      "sha256": "75a0557d2e860665df6e7aa5923a3af3b8e8277484d1c68860f03fd9b6312dc3"
+    },
+    {
+      "path": "data/BUDGET_PROPOSALS.json",
+      "bytes": 1372,
+      "sha256": "44567e5945b887c80d0b1e7d5fda0b1993e2cf028d8596d51ec2f7522c6244b9"
+    },
+    {
+      "path": "data/DELHI_LOCATIONS.csv",
+      "bytes": 9159,
+      "sha256": "4f0f288481331898e76a365e3ccb7b45e2f9169ca925352f3695e6b249e56087"
+    },
+    {
+      "path": "data/DELHI_METERED_FARE_FORMULAS.csv",
+      "bytes": 712,
+      "sha256": "92d0686a278f1a003ad006d3e37384682658d211ffeb95b377b3dd30f1c90493"
+    },
+    {
+      "path": "data/DELHI_METRO_FARE_BANDS.csv",
+      "bytes": 1875,
+      "sha256": "9133d97f629b93bef20809004651dab22ec84594748da048241f5a7e871363a4"
+    },
+    {
+      "path": "data/ENTRANCE_FEES.csv",
+      "bytes": 28105,
+      "sha256": "216095ab24bf513918af855ea2150b5d7e97a3956441d1e850bcd6f82b3c6c1b"
+    },
+    {
+      "path": "data/ENTRY_ANCHORS.csv",
+      "bytes": 10997,
+      "sha256": "a67ecf57ea9a532f69a3c5d72e9fb09ef4d74306608e0fa601fd2530fa9385a5"
+    },
+    {
+      "path": "data/EVENT_BLUEPRINTS.csv",
+      "bytes": 6450,
+      "sha256": "03150c3c48b507aa6478ca41a02b412fac8f23b24d3d56b6a412f8281482e68a"
+    },
+    {
+      "path": "data/GAME_ENTRANCE_COSTS.csv",
+      "bytes": 7619,
+      "sha256": "ad484562e76844b1e8108a6d27a7ea87f1c89f376dae6abceeb09cb7fffdc9da"
+    },
+    {
+      "path": "data/GAME_POLICY.json",
+      "bytes": 1513,
+      "sha256": "da434e3979e19e3ff25cc796f5e77b150ac77b6bf863796581433b9c37f7b0b8"
+    },
+    {
+      "path": "data/GATE_CANDIDATES.csv",
+      "bytes": 4041,
+      "sha256": "27db79ba04bee07d0c4d23f5395e551f0790e08b5cc370c7241935581514c810"
+    },
+    {
+      "path": "data/GEOGRAPHIC_ROUTING_WARNINGS.csv",
+      "bytes": 908,
+      "sha256": "96265c832939db81d00effd51f32e6d08ff7ea6835b8a37f50ad9b60843b5a4e"
+    },
+    {
+      "path": "data/IMAGE_ASSETS.csv",
+      "bytes": 23983,
+      "sha256": "cde90550b51ebc7e8f4387c004b8a109283e5ba7f7dd7f40b6bf69f98d660f48"
+    },
+    {
+      "path": "data/IMAGE_DOWNLOAD_MANIFEST.csv",
+      "bytes": 14992,
+      "sha256": "7c8f8435167203591dde912c34fcce0c13484eb4f453587ec4543494f01ced92"
+    },
+    {
+      "path": "data/INTERCITY_TRANSPORT.csv",
+      "bytes": 5663,
+      "sha256": "f364770f5fea9d1efa34eb115c192d1150fe62c2a2e1812d297f0afe6e563800"
+    },
+    {
+      "path": "data/JAIPUR_LOCATIONS.csv",
+      "bytes": 9098,
+      "sha256": "7f7fdfb732234229debfd7410dd6eb81fd6041d991b18630d1540c785b3a4bf5"
+    },
+    {
+      "path": "data/JAIPUR_METRO_OD_FARES.csv",
+      "bytes": 46205,
+      "sha256": "2ee80ba6de968d7ab207d5d5aeacaf617ef4725f261bf9f12561745d657c5c00"
+    },
+    {
+      "path": "data/LOCAL_FARE_PRODUCTS.csv",
+      "bytes": 4675,
+      "sha256": "205672adf4a8b01a971cced45f13a70e30e5306c5d5d7ffa26e3d24487262afa"
+    },
+    {
+      "path": "data/LOCAL_TRANSPORT.csv",
+      "bytes": 9271,
+      "sha256": "9a55bd8db5ba9653b3f2dad63b47ef5345565f4bd056170870a7bd2166a2accb"
+    },
+    {
+      "path": "data/LODGING_SCENARIOS_REAL_WORLD_NOT_GAME.csv",
+      "bytes": 1031,
+      "sha256": "b1441a28fb81ead33c108f72bbddf9460a41c3ec71fdd22fc10ff5dcfadca30d"
+    },
+    {
+      "path": "data/OPENING_HOURS.csv",
+      "bytes": 14608,
+      "sha256": "639156916f2d75e5f4e0fa88b40c5feca184879c95621327bc21913a891ea42c"
+    },
+    {
+      "path": "data/OPENING_HOURS_HISTORICAL_AND_CONFLICTS.csv",
+      "bytes": 7789,
+      "sha256": "5834bff606a00761772df07e295ef1fb3fb8b6d26389fc00c240c8759b5e1270"
+    },
+    {
+      "path": "data/SOURCES.json",
+      "bytes": 54741,
+      "sha256": "b90ee20e0e711ae19e9eb5fa9bebaa96d8e3d4e3434e42320c35cb8c139df99f"
+    },
+    {
+      "path": "data/SPECIAL_OPENING_EVENTS.csv",
+      "bytes": 318,
+      "sha256": "5281c3cb55ce3737e22298f07e0b96c098278355da465734ac14a19081d2efe5"
+    },
+    {
+      "path": "data/TAXI_ROUTES_GAME_MODEL.csv",
+      "bytes": 74178,
+      "sha256": "76f65d02910b4e54de643c4b20dbf7ec6699f8ecb78fd5d57c4a6d7d05d3346c"
+    },
+    {
+      "path": "data/TOURISM_FACTS.json",
+      "bytes": 60367,
+      "sha256": "9be259a0eb60793a224b566d47f10c228fc3633213a21b4d8306457aae4bbd46"
+    },
+    {
+      "path": "data/TRANSIT_STATION_OD_EXAMPLES.csv",
+      "bytes": 767,
+      "sha256": "f3acb38504451d7a13f04d4ab60d028d07746d95781fe9f78449400169426d7c"
+    },
+    {
+      "path": "data/WALK_PRIORITY_MATRIX.json",
+      "bytes": 568,
+      "sha256": "484c72f37bbf7d62a42bed9b7b30a22b1bf78109e3cf4bdb17b9734debdd914a"
+    },
+    {
+      "path": "data/WALK_ROUTES.csv",
+      "bytes": 36545,
+      "sha256": "1529c813aba81de8ad20dc2b42b8566d8b79d006b1f4b50807a7fe17eaf2d2d9"
+    },
+    {
+      "path": "data/WALK_ROUTES_PROTOTYPE.csv",
+      "bytes": 37959,
+      "sha256": "cd484d473b7ce807b3ad35aee91744994c1c5730a1170ae941832114f0162ea2"
+    },
+    {
+      "path": "data/WAYPOINTS.json",
+      "bytes": 557,
+      "sha256": "a503bc1b04b5c56eea07747d8e5ca1916b890c06e34815dddf81315dea10b21b"
+    },
+    {
+      "path": "maps/ROUTE_METHOD.md",
+      "bytes": 2572,
+      "sha256": "dae0ed9c3404590d76a79fe762e38a9514c8c977396709c6cfe7346142695200"
+    },
+    {
+      "path": "maps/agra_routes.geojson",
+      "bytes": 305,
+      "sha256": "96e410a24959d1cabc39342f53b781fbcaef8d2050611f0b2790f7e6ae79a3ea"
+    },
+    {
+      "path": "maps/agra_schematic_links_DO_NOT_USE_FOR_STREETS.geojson",
+      "bytes": 9558,
+      "sha256": "f529f1881a656a702612b73afe2388b20131fc3cb8a1d2a3d98bc4d5b9c2d626"
+    },
+    {
+      "path": "maps/delhi_routes.geojson",
+      "bytes": 306,
+      "sha256": "36df4d4453558ceb6d6e6a44238d074e5902572b134216af448de4fe5bf4b241"
+    },
+    {
+      "path": "maps/delhi_schematic_links_DO_NOT_USE_FOR_STREETS.geojson",
+      "bytes": 21983,
+      "sha256": "43eae79e5f5edf5305ba9cbee864ec04a6078d1760585c18bf9a8b41fff3706b"
+    },
+    {
+      "path": "maps/jaipur_routes.geojson",
+      "bytes": 307,
+      "sha256": "bc681c1059a6118467b751fe53c6652c8893224f6a3e55f53c4ed4bc317c8b9e"
+    },
+    {
+      "path": "maps/jaipur_schematic_links_DO_NOT_USE_FOR_STREETS.geojson",
+      "bytes": 22080,
+      "sha256": "f9bf81a5a8a803513f8ec493f95b5c5dadb15fce31193d5cd3f5700af106b01f"
+    },
+    {
+      "path": "reference/RESEARCH_PROVENANCE.md",
+      "bytes": 1308,
+      "sha256": "9a6b3c60d8f87ed32c4cffc67e48800ea3c30f1e663316da9efadf2ad9248fa0"
+    },
+    {
+      "path": "reference/addon/ADDON_MANIFEST.json",
+      "bytes": 1574,
+      "sha256": "7a648df64a09e192e37596787d3a006e89856b74e682be325e383e0e8092c23c"
+    },
+    {
+      "path": "reference/addon/CODEX_HANDOFF.md",
+      "bytes": 2429,
+      "sha256": "4b1e01cf0e7dadc4c7d929f53d798ef9aebcec966fc44755571eb5f343329f78"
+    },
+    {
+      "path": "reference/addon/OPEN_ISSUES_AFTER_ADDON.md",
+      "bytes": 4504,
+      "sha256": "4f8eb2771ceb5ce2ffb7963a953c4f765820bc6e711efa244ec4b85b8020f7dc"
+    },
+    {
+      "path": "reference/addon/README.md",
+      "bytes": 5669,
+      "sha256": "e3833f5f978ee9920392e173536d62f219883fa1aee842e162e0889ef17a83b9"
+    },
+    {
+      "path": "reference/addon/assets/README.md",
+      "bytes": 1289,
+      "sha256": "474b83237538372fcc9fb54daad3ba0d6de599d3c5461dcd015e4a9dc820ae8f"
+    },
+    {
+      "path": "reference/addon/data/ACCESS_AND_PHOTO_OVERLAY_33.csv",
+      "bytes": 8619,
+      "sha256": "7640f0b9323b522ea1ffac7c3b01a9c9acc9c5e640e08eb2f8cbd6d1bbdfed7e"
+    },
+    {
+      "path": "reference/addon/data/ACCOMMODATION_PRICE_EXAMPLES.csv",
+      "bytes": 3700,
+      "sha256": "cd8ea9eae52222a2ba6f086d9d87c235c1c95651d9d1b25f2bbd8ef40153743d"
+    },
+    {
+      "path": "reference/addon/data/AGRA_METRO_OD_FARES.csv",
+      "bytes": 12299,
+      "sha256": "e335d09291064dc394e743c847a88b26b616a87def821b97f9dc9ff05059ee14"
+    },
+    {
+      "path": "reference/addon/data/DELHI_METERED_FARE_FORMULAS.csv",
+      "bytes": 709,
+      "sha256": "377dcab30707c62be55c0a1db2a3059f8cfd865d8e3fad3acaae1dcd63788efa"
+    },
+    {
+      "path": "reference/addon/data/DELHI_METRO_FARE_BANDS.csv",
+      "bytes": 1872,
+      "sha256": "52c35ee91ea201f29e5237f8272046dd79e4ee4f26c7d343210eee88f9c139a6"
+    },
+    {
+      "path": "reference/addon/data/ENTRANCE_FEES_OVERLAY.csv",
+      "bytes": 6763,
+      "sha256": "4c3be6b0451a97b5fc9d081d2ef9e1f8201b68308f0f81065c45e68141bf6202"
+    },
+    {
+      "path": "reference/addon/data/ENTRY_ANCHORS.csv",
+      "bytes": 10994,
+      "sha256": "7ea9760b52557228ce016532b3ef9265521df25bb4c15e8d6055ee713343edff"
+    },
+    {
+      "path": "reference/addon/data/GAME_LODGING_SCENARIOS_NOT_DECIDED.csv",
+      "bytes": 1028,
+      "sha256": "723a795dfa70884ba93fdfa10b8f60f039858ce54f1220b8a6a63ea0c810cf1d"
+    },
+    {
+      "path": "reference/addon/data/GATE_CANDIDATES.csv",
+      "bytes": 4038,
+      "sha256": "2a815790fc45ca851edd9bf60bb2ec9152768ff7a0aebab7f314e0cfe4fdc728"
+    },
+    {
+      "path": "reference/addon/data/GEOGRAPHIC_ROUTING_WARNINGS.csv",
+      "bytes": 905,
+      "sha256": "8157844de765c60420d3d3bbfcfccae42b98f22863df37e4c5adf5ea6ffcc217"
+    },
+    {
+      "path": "reference/addon/data/INTERCITY_TRANSPORT_OVERLAY_9.csv",
+      "bytes": 3206,
+      "sha256": "fb238b06ae79ec875741dbdc38f4e53488444d0522ad748560e6f218e694779f"
+    },
+    {
+      "path": "reference/addon/data/JAIPUR_METRO_OD_FARES.csv",
+      "bytes": 46202,
+      "sha256": "00ff2ac803630dff32a0f7cf74fbe7ebe472534a1dee1c7aceef202e5e3f43ff"
+    },
+    {
+      "path": "reference/addon/data/LOCAL_FARE_PRODUCTS.csv",
+      "bytes": 4672,
+      "sha256": "9a8071134492ec3b8197a696b6f4ca946bb8e7bddf757e652c48e1469bbd3137"
+    },
+    {
+      "path": "reference/addon/data/LOCAL_TRANSPORT_OVERLAY_19.csv",
+      "bytes": 5097,
+      "sha256": "d335757075fac7edd27623fb57ef364dfa680a5a50d4780e45c807601e221fa3"
+    },
+    {
+      "path": "reference/addon/data/OPENING_HOURS_OVERLAY_33.csv",
+      "bytes": 10887,
+      "sha256": "9cb55713c5523c9b8c85c771f52baf156d2a81fd0921f26f9cbd574b372de4c9"
+    },
+    {
+      "path": "reference/addon/data/SOURCE_REGISTER.csv",
+      "bytes": 10269,
+      "sha256": "eb70863ef29a97b5725f5a227cd4f26c95a79fc891f27de9739f7cf0e0a39635"
+    },
+    {
+      "path": "reference/addon/data/TRANSIT_STATION_OD_EXAMPLES.csv",
+      "bytes": 764,
+      "sha256": "d5d05ebd83f4bc32170161c79a35e727bde9a013d3b92b69e3e3c11d6f237c3e"
+    },
+    {
+      "path": "reference/addon/data/WALK_ROUTES_PROTOTYPE.csv",
+      "bytes": 37956,
+      "sha256": "931ae48a4b4324ffef56b89a8bcde50486de7f534bdb38030bff50e369f3cfb4"
+    },
+    {
+      "path": "reference/addon/data/WIKIMEDIA_ASSET_DOWNLOAD_MANIFEST.csv",
+      "bytes": 14989,
+      "sha256": "bcfedf56ba97c52a0ca097762c2a235787dc6946805202103f264fb10eadbbb8"
+    },
+    {
+      "path": "reference/addon/scripts/download_commons_images.py",
+      "bytes": 5067,
+      "sha256": "72978c3098ce6f6c3ccd2de2cce86b6d9ba609cc3717f86146e6aaf6c17837a3"
+    },
+    {
+      "path": "reference/addon/scripts/validate_addon.py",
+      "bytes": 2182,
+      "sha256": "ecfedaf2e5c10358bcf8622a08dfe1bda4b0254630599bca3f07136d574aec4a"
+    },
+    {
+      "path": "reference/original_data/ACCESS_AND_PHOTO_RESTRICTIONS.csv",
+      "bytes": 11054,
+      "sha256": "027baf11e5ad5f7caa54f7744caec959bc660f1c77749f7ca35a782fa85c868e"
+    },
+    {
+      "path": "reference/original_data/AGRA_LOCATIONS.csv",
+      "bytes": 7601,
+      "sha256": "0e02c2a3737db2aaa313947f412a30573ef648c1fd1a7d2cfad5b70c2a2b215a"
+    },
+    {
+      "path": "reference/original_data/ALL_LOCATIONS.json",
+      "bytes": 47299,
+      "sha256": "8ecc9e450dc3a5f8f33d94b2b31a8351da5432a96e1767cee033c087473a0d78"
+    },
+    {
+      "path": "reference/original_data/BUDGET_PROPOSALS.json",
+      "bytes": 1112,
+      "sha256": "5f58cb6035a56d23f8925a1509ecdf2f74fc2f469c1d6f6e2a2f5c213d026f0a"
+    },
+    {
+      "path": "reference/original_data/DELHI_LOCATIONS.csv",
+      "bytes": 7534,
+      "sha256": "aa1f98cfe367107fda7108fa8a7e0811ef35aacf4da700fabf577a6332478f50"
+    },
+    {
+      "path": "reference/original_data/ENTRANCE_FEES.csv",
+      "bytes": 19042,
+      "sha256": "7401c99a1176034dcbfc14afd9645be135a06b931dab3697eb4199d01b6de57b"
+    },
+    {
+      "path": "reference/original_data/IMAGE_ASSETS.csv",
+      "bytes": 15143,
+      "sha256": "dae3f414711a1e76adfb8f1adb3aff3a70d0e692a401fd60798a66e2938fefb7"
+    },
+    {
+      "path": "reference/original_data/INTERCITY_TRANSPORT.csv",
+      "bytes": 4076,
+      "sha256": "a0f73af9a9d552dc1ec8c61b6e8b64e3552b7d7d6b005ee75cee674c16b173c5"
+    },
+    {
+      "path": "reference/original_data/JAIPUR_LOCATIONS.csv",
+      "bytes": 7467,
+      "sha256": "178804e8bfb073b99bd0a0e86c57ef2207370e1059d0e086a1e2e1f0eafd8a8a"
+    },
+    {
+      "path": "reference/original_data/LOCAL_TRANSPORT.csv",
+      "bytes": 5665,
+      "sha256": "eb529b2f7a880a6b236bf07d7a9fa7dd006ce7e9302bead6e5ea5a724d0c0cbb"
+    },
+    {
+      "path": "reference/original_data/OPENING_HOURS.csv",
+      "bytes": 7789,
+      "sha256": "5834bff606a00761772df07e295ef1fb3fb8b6d26389fc00c240c8759b5e1270"
+    },
+    {
+      "path": "reference/original_data/SOURCES.json",
+      "bytes": 36580,
+      "sha256": "125804260d8d905bac9e70ac0bb45bc3ccdad38fc5a6e91761ffba21f4ff5ac4"
+    },
+    {
+      "path": "reference/original_data/TOURISM_FACTS.json",
+      "bytes": 60367,
+      "sha256": "9be259a0eb60793a224b566d47f10c228fc3633213a21b4d8306457aae4bbd46"
+    },
+    {
+      "path": "reference/original_data/WALK_PRIORITY_MATRIX.json",
+      "bytes": 568,
+      "sha256": "484c72f37bbf7d62a42bed9b7b30a22b1bf78109e3cf4bdb17b9734debdd914a"
+    },
+    {
+      "path": "reference/original_data/WALK_ROUTES.csv",
+      "bytes": 22951,
+      "sha256": "00a703ae48d311f5891ca867461b79f436dec1d3e5a2f1d55626eb66c2c8f02b"
+    },
+    {
+      "path": "reference/original_data/WAYPOINTS.json",
+      "bytes": 557,
+      "sha256": "a503bc1b04b5c56eea07747d8e5ca1916b890c06e34815dddf81315dea10b21b"
+    },
+    {
+      "path": "reference/original_docs/EXECUTIVE_SUMMARY.md",
+      "bytes": 2092,
+      "sha256": "3c40d473d4f215948c621ad529d9c604cfe2f616473752c5ae39f87aee07c83c"
+    },
+    {
+      "path": "reference/original_docs/IMPLEMENTATION_GUIDE.md",
+      "bytes": 5075,
+      "sha256": "a2faab25464d49d975216d218b1f27ea228146a601d324d02642788c3e710519"
+    },
+    {
+      "path": "reference/original_docs/OPEN_ISSUES.md",
+      "bytes": 2758,
+      "sha256": "29dc7188625c620665722ff68c2f171a9d7128f24fbf30261fc5324f21112335"
+    },
+    {
+      "path": "reference/original_docs/README.md",
+      "bytes": 3304,
+      "sha256": "2389bf9ee62e50e003b19c7926e63cf2e381ba6e6e8a52ae5c922ff85883e55a"
+    },
+    {
+      "path": "research/ACCESS_AND_PHOTOGRAPHY.md",
+      "bytes": 2088,
+      "sha256": "c9d421c19674c08c65400f7ceac1358c698a975406994506561537fe23a5b375"
+    },
+    {
+      "path": "research/AGRA_GUIDE.md",
+      "bytes": 15959,
+      "sha256": "08c22c1f971fe0f48a5e030e43ceea319586f90b50814078a14215fee80ff6bc"
+    },
+    {
+      "path": "research/BUDGET_AND_CURRENCY.md",
+      "bytes": 2425,
+      "sha256": "b00da4d661bcd347071310c8c95743490bdf18127688cc5f61b0a75adfccdcb8"
+    },
+    {
+      "path": "research/CULTURE_AND_HISTORY.md",
+      "bytes": 1569,
+      "sha256": "9fa8909e73906a5c4a774de1edd5c3e5a5da79c0d02ff2f19fa8b3c76f6f0341"
+    },
+    {
+      "path": "research/DELHI_GUIDE.md",
+      "bytes": 15852,
+      "sha256": "f7a1e7eca6aee2bda84a9c6ac6bce0a10a39fbdf05514d86cecd8a6a38b17524"
+    },
+    {
+      "path": "research/GOLDEN_TRIANGLE_TRANSPORT.md",
+      "bytes": 3701,
+      "sha256": "8bbd3b1c65e10b7387d0a6b0c4ba1ac59292294ef59392809ebc6ed2199e5d18"
+    },
+    {
+      "path": "research/JAIPUR_GUIDE.md",
+      "bytes": 15424,
+      "sha256": "6842c0adc26b73c886e9ce5cfaa4209ee0af984754e42bd1729bfb6e49e6b0e5"
+    },
+    {
+      "path": "research/OPENING_HOURS.md",
+      "bytes": 3616,
+      "sha256": "d9a307ef51809116491f30948b616ea8f12606ed59c076ec99cc13ab73890508"
+    },
+    {
+      "path": "research/SOURCES.md",
+      "bytes": 23319,
+      "sha256": "3af116f3300acb98a852b0166c0601cfcadcf2bb4496f99869ddc5f11eb5cf9a"
+    },
+    {
+      "path": "scripts/recompute_walk_routes.py",
+      "bytes": 10943,
+      "sha256": "4fde06bb647b75177672a96150609b1c8ab7b37fcfd0760c5c09523b39b70469"
+    },
+    {
+      "path": "scripts/validate_integrated.py",
+      "bytes": 4685,
+      "sha256": "4764ddc2514e75c788182b5670aad71f784db9ff24c3e6041b4292dd7f848b0b"
+    },
+    {
+      "path": "scripts/validate_research.py",
+      "bytes": 112,
+      "sha256": "379dfa5c970909189e288608e8db7629030602bd8565f583a088e186f58780ef"
+    },
+    {
+      "path": "travel/agra-settings.json",
+      "bytes": 581,
+      "sha256": "122bf9439805423a7e8c0659418ffbf6f12753940a8e359b1afd69e018bb573d"
+    },
+    {
+      "path": "travel/agra.json",
+      "bytes": 91453,
+      "sha256": "a48a2d2ccb1f695372ef9496dbeaaeff68db18cab44572065ec5d870079e76a0"
+    },
+    {
+      "path": "travel/delhi-settings.json",
+      "bytes": 586,
+      "sha256": "4373fa00a3c886d6c7688f204d59fa9188f7c69af0e07bd2535f8468aecf97dc"
+    },
+    {
+      "path": "travel/delhi.json",
+      "bytes": 112252,
+      "sha256": "14a456c1a08efb2694ad15aac8b7a4ac12b07c2e4ad1f14fc0bfe256104cdc55"
+    },
+    {
+      "path": "travel/jaipur-settings.json",
+      "bytes": 583,
+      "sha256": "aaedd9336a0c1a416b7d9cea83f50a439ed33bdfa51abc197cd576cdf4a14ce1"
+    },
+    {
+      "path": "travel/jaipur.json",
+      "bytes": 107372,
+      "sha256": "81a1730042526a09b1f42b0ca1a8dce40f4815a840a2562f618206a05a37bfc7"
+    }
+  ]
+}

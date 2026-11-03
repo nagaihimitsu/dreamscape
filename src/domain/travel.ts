@@ -5,8 +5,8 @@ export type DestinationEventCandidate = {
   id: string;
   placeId: string;
   category: "main" | "date";
-  /** Actual walking-route duration, before display rounding. */
-  walkMinutes: number;
+  /** Walking-route duration, or null when no walking route is registered. */
+  walkMinutes: number | null;
   available: boolean;
   /** Whether this main event has not yet been cleared, independent of availability. */
   unclearedMain: boolean;
@@ -14,7 +14,7 @@ export type DestinationEventCandidate = {
 
 export type DestinationPlace<T extends DestinationEventCandidate> = {
   id: string;
-  walkMinutes: number;
+  walkMinutes: number | null;
   events: T[];
   available: boolean;
   hasAvailableUnclearedMain: boolean;
@@ -23,7 +23,7 @@ export type DestinationPlace<T extends DestinationEventCandidate> = {
 export type Coordinate = { id?: string; latitude: number; longitude: number };
 export type Direction = "現在地" | "方角不明" | "北" | "北東" | "東" | "南東" | "南" | "南西" | "西" | "北西";
 export type Route = Pick<TravelRoute, "fromPlaceId" | "toPlaceId" | "mode" | "minutes" | "cost">;
-export type Event = Pick<TravelEvent, "id" | "placeId" | "activityMinutes" | "apCost" | "startWindows" | "endWindows">;
+export type Event = Pick<TravelEvent, "id" | "placeId" | "activityMinutes" | "apCost" | "admissionCost" | "startWindows" | "endWindows">;
 
 export type TravelSnapshot = {
   currentPlaceId: string;
@@ -32,13 +32,22 @@ export type TravelSnapshot = {
   minute: number;
   ap: number;
   travelBudget: number;
+  /** Fictional journey weekday if a game calendar is configured; Monday is 0. */
+  weekday?: number;
 };
-type FailureReason = "invalid" | "closed" | "time" | "budget" | "ap" | "route";
+type FailureReason = "invalid" | "closed" | "closed_day" | "time" | "budget" | "ap" | "route";
 type Failure = { ok: false; reason: FailureReason };
 const failure = (reason: FailureReason): Failure => ({ ok: false, reason });
-const DAY_START = 9 * 60;
+export const DAY_START = 9 * 60;
 const NIGHT_START = 18 * 60;
 export const DAY_END = 21 * 60;
+
+/** Weekday comes from the saved in-game calendar, never the device clock. */
+export function getGameWeekday(calendar: { journeyDay: number; startWeekday: number } | undefined): number | undefined {
+  if (!calendar || !Number.isSafeInteger(calendar.journeyDay) || calendar.journeyDay < 1 ||
+      !Number.isInteger(calendar.startWeekday) || calendar.startWeekday < 0 || calendar.startWeekday > 6) return undefined;
+  return (calendar.startWeekday + (calendar.journeyDay - 1) % 7) % 7;
+}
 
 /** 18:00 starts the night; 21:00 is no longer a time to start activities. */
 export function getTimePeriod(minute: number): "day" | "night" | "closed" {
@@ -52,7 +61,7 @@ export function groupDestinationEvents<T extends DestinationEventCandidate>(even
   const places = new Map<string, DestinationPlace<T>>();
   const ids = new Set<string>();
   for (const event of events) {
-    if (!event.id || !event.placeId || ids.has(event.id) || !Number.isFinite(event.walkMinutes) || event.walkMinutes < 0)
+    if (!event.id || !event.placeId || ids.has(event.id) || (event.walkMinutes !== null && (!Number.isFinite(event.walkMinutes) || event.walkMinutes < 0)))
       throw new Error("Invalid or duplicate destination event");
     ids.add(event.id);
     let place = places.get(event.placeId);
@@ -69,13 +78,17 @@ export function groupDestinationEvents<T extends DestinationEventCandidate>(even
   return [...places.values()];
 }
 
-/** Sort available places by walking time; ensure the fifth can lead to an uncleared main. */
+/** Sort known walking times first, leaving places without a walking route in the list. */
 export function selectNearbyDestinations<T extends Pick<DestinationPlace<DestinationEventCandidate>, "id" | "walkMinutes" | "available" | "hasAvailableUnclearedMain">>(destinations: readonly T[]): { nearby: T[]; other: T[]; recommendedMainId: string | null } {
-  if (destinations.some((item) => !item.id || !Number.isFinite(item.walkMinutes) || item.walkMinutes < 0) ||
+  if (destinations.some((item) => !item.id || (item.walkMinutes !== null && (!Number.isFinite(item.walkMinutes) || item.walkMinutes < 0))) ||
       new Set(destinations.map((item) => item.id)).size !== destinations.length) {
     throw new Error("Invalid or duplicate destination");
   }
-  const compare = (a: T, b: T) => a.walkMinutes - b.walkMinutes || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
+  const compare = (a: T, b: T) => {
+    if (a.walkMinutes === null && b.walkMinutes !== null) return 1;
+    if (a.walkMinutes !== null && b.walkMinutes === null) return -1;
+    return (a.walkMinutes === null || b.walkMinutes === null ? 0 : a.walkMinutes - b.walkMinutes) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
+  };
   const sorted = destinations.filter((item) => item.available).sort(compare);
   const nearby = sorted.slice(0, 5);
   let recommendedMainId: string | null = null;
@@ -112,7 +125,8 @@ export function getDirection(from: Coordinate, to: Coordinate): Direction {
 function validSnapshot(state: TravelSnapshot): boolean {
   return !!state.currentPlaceId && !!state.hotelPlaceId && Number.isSafeInteger(state.day) && state.day >= 1 &&
     Number.isSafeInteger(state.minute) && state.minute >= DAY_START && Number.isSafeInteger(state.ap) && state.ap >= 0 &&
-    Number.isSafeInteger(state.travelBudget) && state.travelBudget >= 0;
+    Number.isSafeInteger(state.travelBudget) && state.travelBudget >= 0 &&
+    (state.weekday === undefined || (Number.isInteger(state.weekday) && state.weekday >= 0 && state.weekday <= 6));
 }
 
 function validRoute(route: Route): boolean {
@@ -138,21 +152,28 @@ export function planTravel(state: TravelSnapshot, route: Route): Failure | { ok:
  * impose any completion deadline. None of these calculations commits the action.
  */
 export function planTravelEvent(state: TravelSnapshot, event: Event, outbound: Route, returnRoute: Route,
-  place: Pick<TravelPlace, "id" | "openingWindows">): Failure | {
+  place: Pick<TravelPlace, "id" | "openingWindows" | "closedWeekdays">): Failure | {
   ok: true; arrivalMinute: number; endMinute: number; returnMinute: number; remainingBudget: number; remainingAp: number;
 } {
+  const admissionCost = event.admissionCost ?? 0;
   if (!validSnapshot(state) || !event.id || !event.placeId || !Number.isSafeInteger(event.activityMinutes) || event.activityMinutes <= 0 ||
-      !Number.isSafeInteger(event.apCost) || event.apCost < 0) return failure("invalid");
+      !Number.isSafeInteger(event.apCost) || event.apCost < 0 || !Number.isSafeInteger(admissionCost) || admissionCost < 0) return failure("invalid");
   if (place.id !== event.placeId || outbound.toPlaceId !== event.placeId || !validRoute(returnRoute) || returnRoute.fromPlaceId !== event.placeId ||
       returnRoute.toPlaceId !== state.hotelPlaceId) return failure("route");
   const travel = planTravel(state, outbound);
   if (!travel.ok) return travel;
-  if (travel.remainingBudget < returnRoute.cost) return failure("budget");
+  // Charge admission for both travelers once the scene actually starts, and
+  // keep enough for the independently selected return route.
+  if (travel.remainingBudget < admissionCost || travel.remainingBudget - admissionCost < returnRoute.cost) return failure("budget");
   if (state.ap < event.apCost) return failure("ap");
   const endMinute = travel.arrivalMinute + event.activityMinutes;
   const windowsValid = (windows: Event["startWindows"]) => !windows || windows.every((window) =>
     Number.isSafeInteger(window.start) && Number.isSafeInteger(window.end) && window.start >= 0 && window.start < window.end && window.end <= 24 * 60);
   if (!windowsValid(event.startWindows) || !windowsValid(event.endWindows) || !windowsValid(place.openingWindows)) return failure("invalid");
+  if (place.closedWeekdays?.length) {
+    if (place.closedWeekdays.some((day) => !Number.isInteger(day) || day < 0 || day > 6) || state.weekday === undefined) return failure("invalid");
+    if (place.closedWeekdays.includes(state.weekday)) return failure("closed_day");
+  }
   if (travel.arrivalMinute >= DAY_END ||
       (place.openingWindows && !place.openingWindows.some((window) => travel.arrivalMinute >= window.start && travel.arrivalMinute < window.end)) ||
       (event.startWindows && !event.startWindows.some((window) => travel.arrivalMinute >= window.start && travel.arrivalMinute < window.end)) ||
@@ -160,7 +181,7 @@ export function planTravelEvent(state: TravelSnapshot, event: Event, outbound: R
   const returnMinute = endMinute + returnRoute.minutes;
   if (returnMinute > DAY_END) return failure("time");
   return { ok: true, arrivalMinute: travel.arrivalMinute, endMinute, returnMinute,
-    remainingBudget: travel.remainingBudget, remainingAp: state.ap - event.apCost };
+    remainingBudget: travel.remainingBudget - admissionCost, remainingAp: state.ap - event.apCost };
 }
 
 /** Pay the available lodging cost without debt; no AP is charged and no budget is granted. */

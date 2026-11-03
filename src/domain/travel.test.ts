@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getDirection, getTimePeriod, groupDestinationEvents, planOvernight, planTravel, planTravelEvent, selectNearbyDestinations } from "./travel";
+import { getDirection, getGameWeekday, getTimePeriod, groupDestinationEvents, planOvernight, planTravel, planTravelEvent, selectNearbyDestinations } from "./travel";
 
 const date = (id: string, walkMinutes: number) => ({ id, placeId: id, category: "date" as const, walkMinutes, available: true, unclearedMain: false });
 const main = (id: string, walkMinutes: number) => ({ id, placeId: id, category: "main" as const, walkMinutes, available: true, unclearedMain: true });
@@ -68,6 +68,15 @@ describe("travel destination selection", () => {
     expect(result.nearby.map((place) => place.id)).toEqual(["near"]);
     expect(result.other.map((place) => place.id)).toEqual(["closed"]);
     expect(() => groupDestinationEvents([{ ...date("one", 1), placeId: "shared" }, { ...date("two", 2), placeId: "shared" }])).toThrow();
+  });
+
+  it("keeps destinations without an authored walking route without inventing walking times", () => {
+    const otherMode = { ...date("taxi_only", 0), walkMinutes: null };
+    const busOnly = { ...date("bus_only", 0), walkMinutes: null };
+    const result = selectNearbyDestinations(groupDestinationEvents([otherMode, date("walk", 12), busOnly]));
+    expect(result.nearby.map((place) => place.id)).toEqual(["walk", "bus_only", "taxi_only"]);
+    expect(result.nearby[1].walkMinutes).toBeNull();
+    expect(() => groupDestinationEvents([{ ...otherMode, placeId: "shared" }, { ...date("walk2", 2), placeId: "shared" }])).toThrow();
   });
 });
 
@@ -178,6 +187,17 @@ describe("travel planning", () => {
     expect(late.travelBudget).toBe(10);
   });
 
+  it("charges the two-person admission once while retaining the return fare", () => {
+    const outward = { ...walk, mode: "taxi" as const, cost: 3 };
+    const home = { ...walkHome, mode: "taxi" as const, cost: 4 };
+    const ticketed = { ...date, admissionCost: 5 };
+    expect(planTravelEvent({ ...snapshot, travelBudget: 11 }, ticketed, outward, home, place)).toEqual({ ok: false, reason: "budget" });
+    expect(planTravelEvent({ ...snapshot, travelBudget: 12 }, ticketed, outward, home, place)).toMatchObject({ ok: true, remainingBudget: 4, remainingAp: 2 });
+    expect(planTravelEvent(snapshot, { ...date, admissionCost: -1 }, walk, walkHome, place)).toEqual({ ok: false, reason: "invalid" });
+    expect(planTravelEvent(snapshot, { ...date, admissionCost: Number.MAX_SAFE_INTEGER + 1 }, walk, walkHome, place)).toEqual({ ok: false, reason: "invalid" });
+    expect(snapshot.travelBudget).toBe(10);
+  });
+
   it("allows a basic overnight stay with no budget or AP loss", () => {
     const zero = { ...snapshot, currentPlaceId: "gallery", travelBudget: 0 };
     const before = structuredClone(zero);
@@ -213,6 +233,19 @@ describe("travel planning", () => {
     expect(planTravelEvent({ ...snapshot, minute: 9 * 60 + 45 }, date, walk, walkHome, venue).ok).toBe(true);
     expect(planTravelEvent({ ...snapshot, minute: 17 * 60 + 45 }, date, walk, walkHome, venue)).toEqual({ ok: false, reason: "closed" });
     expect(planTravelEvent(snapshot, date, walk, walkHome, { id: "another" }).ok).toBe(false);
+  });
+
+  it("uses fictional journey weekdays for Monday and Friday closures", () => {
+    expect(getGameWeekday({ journeyDay: 1, startWeekday: 0 })).toBe(0);
+    expect(getGameWeekday({ journeyDay: 5, startWeekday: 0 })).toBe(4);
+    expect(getGameWeekday({ journeyDay: 8, startWeekday: 0 })).toBe(0);
+    const lotus = { ...place, closedWeekdays: [0] };
+    const taj = { ...place, closedWeekdays: [4] };
+    expect(planTravelEvent({ ...snapshot, weekday: 0 }, date, walk, walkHome, lotus)).toEqual({ ok: false, reason: "closed_day" });
+    expect(planTravelEvent({ ...snapshot, weekday: 1 }, date, walk, walkHome, lotus).ok).toBe(true);
+    expect(planTravelEvent({ ...snapshot, weekday: 4 }, date, walk, walkHome, taj)).toEqual({ ok: false, reason: "closed_day" });
+    expect(planTravelEvent({ ...snapshot, weekday: 5 }, date, walk, walkHome, taj).ok).toBe(true);
+    expect(planTravelEvent(snapshot, date, walk, walkHome, taj)).toEqual({ ok: false, reason: "invalid" });
   });
 
   it("rejects fractional clock, route, event and opening-window minutes", () => {

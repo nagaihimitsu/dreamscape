@@ -1,0 +1,42 @@
+{
+  "currency": "INR",
+  "partySize": 2,
+  "continuousAcrossCities": true,
+  "initialBudgetINR": 30000,
+  "minimumNightStayINR": 0,
+  "confirmedEntranceExamplesTwoForeignAdults": {
+    "tajBasic": 2200,
+    "tajOptionalMausoleumAdditional": 400,
+    "agraFort": 1300,
+    "fatehpurSikri": 1220
+  },
+  "foreignADAPathkar": {
+    "amountINR": 500,
+    "per": "foreign_person_or_transaction_uncertain",
+    "sameDayScope": "major_agra_monuments",
+    "status": "clarification_required",
+    "sourceId": "agra_taj"
+  },
+  "approaches": [
+    {
+      "id": "realistic",
+      "descriptionJa": "現実旅行費見積例。現地宿泊は有料で料金・予約可否は日付ごとに変動する。ゲームでは採用しない。",
+      "initialBudgetINR": null
+    },
+    {
+      "id": "arcade",
+      "descriptionJa": "採用：2人旅行のゲーム予算30000ルピー、宿泊無料、交通・入場費を消費。現実旅行の見積ではない。",
+      "initialBudgetINR": 30000
+    }
+  ],
+  "sourceIds": [
+    "agra_fee",
+    "jaipur_fare_news1",
+    "delhi_fare_secondary"
+  ],
+  "adoptionStatus": "ADOPTED_GAME_BASELINE_NOT_REAL_COST",
+  "initialBudgetScope": "two_people_entire_india_trip_no_daily_replenishment",
+  "hotelChargeIsIntentionallyZero": true,
+  "hotelRealWorldCostsStoredSeparately": true,
+  "selectedGamePolicyFile": "data/GAME_POLICY.json"
+}

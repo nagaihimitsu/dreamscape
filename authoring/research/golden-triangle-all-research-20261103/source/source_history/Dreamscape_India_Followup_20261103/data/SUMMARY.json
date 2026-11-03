@@ -1,0 +1,145 @@
+{
+  "date": "2026-11-03",
+  "githubBranch": "feature/golden-triangle-foundation",
+  "githubCommit": "c816d25f3cb638c5ca08f7a6a5d9c84d939ade62",
+  "poiAccessRecords": 33,
+  "multiGateNodes": 18,
+  "foreignFeeReviewCount": 30,
+  "publishedForeignPricesRetrieved": 24,
+  "feesUnknownReal": 6,
+  "operatorHoursRecords": 30,
+  "stationLinksReviewed": 33,
+  "jaipurMetroOfficialFarePairs": 121,
+  "intercityScenariosReviewed": 9,
+  "photosCandidateRecords": 30,
+  "photoBinariesDownloaded": 0,
+  "verifiedExactGateGPS": 0,
+  "roadNetworkNewMeasures": 0,
+  "riverWalkingUnconfirmed": 24,
+  "simResults": [
+    {
+      "scenario": "main_only",
+      "initialBudgetINR": 30000,
+      "finalBudgetINR": 3560,
+      "cityResults": [
+        {
+          "city": "delhi",
+          "completeCount": 4,
+          "targetCount": 4,
+          "daysSpent": 2,
+          "failed": null,
+          "remaining": [],
+          "exitBudget": 24540,
+          "transportINR": 1260,
+          "entranceINR": 4200
+        },
+        {
+          "city": "agra",
+          "completeCount": 4,
+          "targetCount": 4,
+          "daysSpent": 2,
+          "failed": null,
+          "remaining": [],
+          "exitBudget": 14230,
+          "transportINR": 2270,
+          "entranceINR": 5340
+        },
+        {
+          "city": "jaipur",
+          "completeCount": 4,
+          "targetCount": 4,
+          "daysSpent": 1,
+          "failed": null,
+          "remaining": [],
+          "exitBudget": 3560,
+          "transportINR": 470,
+          "entranceINR": 6400
+        }
+      ],
+      "transfers": [
+        {
+          "from": "delhi",
+          "to": "agra",
+          "mode": "car_PROTOTYPE",
+          "costINR": 2700,
+          "note": "not a supplier quote nor a verified train, no station timings",
+          "balanceINR": 21840
+        },
+        {
+          "from": "agra",
+          "to": "jaipur",
+          "mode": "car_PROTOTYPE",
+          "costINR": 3800,
+          "note": "not a supplier quote nor a verified train, no station timings",
+          "balanceINR": 10430
+        }
+      ],
+      "completedAll": true
+    },
+    {
+      "scenario": "all_candidates",
+      "initialBudgetINR": 30000,
+      "finalBudgetINR": 180,
+      "cityResults": [
+        {
+          "city": "delhi",
+          "completeCount": 10,
+          "targetCount": 10,
+          "daysSpent": 3,
+          "failed": null,
+          "remaining": [],
+          "exitBudget": 23500,
+          "transportINR": 2300,
+          "entranceINR": 4200
+        },
+        {
+          "city": "agra",
+          "completeCount": 10,
+          "targetCount": 10,
+          "daysSpent": 3,
+          "failed": null,
+          "remaining": [],
+          "exitBudget": 9990,
+          "transportINR": 3050,
+          "entranceINR": 7760
+        },
+        {
+          "city": "jaipur",
+          "completeCount": 6,
+          "targetCount": 10,
+          "daysSpent": 2,
+          "failed": "UNAFFORDABLE_OR_NO_TIME_FEASIBLE_EVENT_FROM_HOTEL",
+          "remaining": [
+            "jaipur_amber_fort",
+            "jaipur_nahargarh_fort",
+            "jaipur_jaigarh_fort",
+            "jaipur_panna_meena_kund"
+          ],
+          "exitBudget": 180,
+          "transportINR": 410,
+          "entranceINR": 5600
+        }
+      ],
+      "transfers": [
+        {
+          "from": "delhi",
+          "to": "agra",
+          "mode": "car_PROTOTYPE",
+          "costINR": 2700,
+          "note": "not a supplier quote nor a verified train, no station timings",
+          "balanceINR": 20800
+        },
+        {
+          "from": "agra",
+          "to": "jaipur",
+          "mode": "car_PROTOTYPE",
+          "costINR": 3800,
+          "note": "not a supplier quote nor a verified train, no station timings",
+          "balanceINR": 6190
+        }
+      ],
+      "completedAll": false
+    }
+  ],
+  "warning": "Do not promote any unverified coordinate/footpath or game fare to an observed fact."
+}

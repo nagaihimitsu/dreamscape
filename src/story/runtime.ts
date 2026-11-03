@@ -100,11 +100,12 @@ function readFrame(
   story: Story,
   previous?: StoryFrame,
   choiceTags: readonly string[] = [],
+  initialBackground = "milano_cafe",
 ): StoryStep {
   const frame: StoryFrame = {
     text: previous?.text ?? "",
     speaker: previous?.speaker ?? "narrator",
-    background: previous?.background ?? "milano_cafe",
+    background: previous?.background ?? initialBackground,
     emotion: "neutral",
     choices: [],
     ended: false,
@@ -148,6 +149,7 @@ export function beginStory(
   variables: Record<string, string | number | boolean> = {},
   memoryIds: readonly string[] = [],
   inventory: Readonly<Record<string, ItemStatus>> = {},
+  initialBackground = "milano_cafe",
 ): StoryStep {
   const story = runtime(storyId, undefined, memoryIds, inventory);
   story.variablesState.$("player_name", playerName);
@@ -157,7 +159,7 @@ export function beginStory(
     if (story.variablesState.GlobalVariableExistsWithName(name))
       story.variablesState.$(name, value);
   }
-  return readFrame(story);
+  return readFrame(story, undefined, [], initialBackground);
 }
 
 export function continueStory(

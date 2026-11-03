@@ -156,10 +156,12 @@ test("an unavailable destination explains why without spending resources", async
   await destination.scrollIntoViewIfNeeded();
   const before = await saved(page);
   await destination.getByRole("button").click();
-  const dialog = page.getByRole("dialog", { name: /のイベント$/ });
+  // The cleared Duomo sightseeing event is hidden. The remaining date goes
+  // directly to its route dialog, where its AP restriction is explained.
+  const dialog = page.getByRole("dialog", { name: /へ$/ });
   await expect(dialog).toBeVisible();
-  await expect(dialog.getByTestId("travel-event-milano_walk_01")).toBeDisabled();
-  await expect(dialog.locator(".fine-print")).not.toBeEmpty();
+  await expect(dialog.getByRole("button", { name: /^徒歩 / })).toBeDisabled();
+  await expect(dialog.locator(".fine-print")).toContainText("APが足りません");
   await dialog.getByRole("button", { name: "閉じる" }).click();
   expect(await saved(page)).toEqual(before);
 });
@@ -194,11 +196,13 @@ test("destinations appear only once their journey conditions are met", async ({ 
   await expect(finale).toHaveCount(0);
   await expect(pradaDate).toHaveCount(0);
 
-  // The completed-journey fixture unlocks both the finale and the Prada date.
+  // The completed-journey fixture unlocks the Prada date but must no longer
+  // offer the completed finale as a destination.
   await loadCurrentScene(page, "freeTime");
   const finalOther = page.getByText("ほかの行き先を見る", { exact: true });
   if (await finalOther.isVisible()) await finalOther.click();
-  await expect(finale).toBeVisible();
+  await expect(finale).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "エピローグを読む" })).toBeVisible();
   await expect(pradaDate).toBeVisible();
   await expect(page.getByTestId("travel-map-canvas")).toBeVisible();
   await page.locator(".travel-map-places > summary").click();
@@ -220,6 +224,9 @@ test("a completed-only destination disappears from the map, while current locati
         : frame.choices.length ? chooseDate(state, 0, state.revision)
           : advanceDate(state, state.revision);
     }
+    // Start away from the completed destination, then visit it separately
+    // below to check the current-location exception.
+    state = { ...state, travel: { ...state.travel, currentPlaceId: state.travel.hotelPlaceId, returnReserve: 0 } };
     localStorage.setItem("dreamscape.save.v1", JSON.stringify(state));
   });
   await page.reload();

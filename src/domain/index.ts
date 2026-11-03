@@ -8,3 +8,4 @@ export * from "./chapter";
 export * from "./rewards";
 
 export * from "./epilogue";
+export * from "./city-travel";

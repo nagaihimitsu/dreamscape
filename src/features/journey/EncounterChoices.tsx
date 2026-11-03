@@ -8,7 +8,7 @@ export type EncounterChoiceView = {
   index: number;
   textEn: string;
   translationJa: string;
-  costEuro?: number;
+  cost?: number;
   unavailableReason?: string;
 };
 
@@ -16,16 +16,18 @@ export function EncounterChoices({
   id,
   choices,
   learning,
+  currencySymbol,
   disabled,
   onChoose,
 }: {
   id: string;
   choices: EncounterChoiceView[];
   learning: Learning;
+  currencySymbol: string;
   disabled?: boolean;
   onChoose: (index: number) => void;
 }) {
-  const hasPrices = choices.some((choice) => (choice.costEuro ?? 0) > 0);
+  const hasPrices = choices.some((choice) => (choice.cost ?? 0) > 0);
   return (
     <div className="encounter-choices" aria-label="返答を選ぶ">
       {choices.some((choice) => choice.translationJa) && <TranslationAll learning={learning} id={id} />}
@@ -52,7 +54,7 @@ export function EncounterChoices({
                 onDoubleTap={() => { if (choice.translationJa) revealTranslation(learning, id, part); }}
               />
               <div className="encounter-choice-meta">
-                {hasPrices && <span>{choice.costEuro ? `€${choice.costEuro}` : "無料"}</span>}
+                {hasPrices && <span>{choice.cost ? `${currencySymbol}${choice.cost}` : "無料"}</span>}
                 {choice.translationJa && <button
                   type="button"
                   className="text-button"

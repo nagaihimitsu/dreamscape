@@ -1,0 +1,20 @@
+{
+  "city": "agra",
+  "osmSha256": "22d91e77cc0a6fbadc6f7f181ff55d9a1b79192a8ad92cb503d470863f8cdffc",
+  "maxSnapMeters": 60,
+  "graph": {
+    "nodes": 39313,
+    "pedestrianWays": 7253,
+    "segments": 42729,
+    "snapMeters": {
+      "agra_hotel_hub": 22.1,
+      "agra_taj_mahal": 7.4,
+      "agra_agra_fort": 9.3,
+      "agra_itimad_tomb": 5.4,
+      "agra_mehtab_bagh": 1.9,
+      "agra_chini_rauza": 14.2,
+      "agra_ram_bagh": 1.8
+    }
+  },
+  "warning": "Exploratory graph: trunk/primary/secondary/tertiary roads without a pedestrian prohibition are included even when foot access is not documented. Neither access, safety, barriers, entrances nor bridge crossings were verified. Not production ready."
+}

@@ -1,0 +1,132 @@
+{
+  "package": "Dreamscape Golden Triangle non-road gaps research overlay",
+  "date": "2026-11-03",
+  "baseGitHubBranch": "feature/golden-triangle-foundation",
+  "baseGitHubCommit": "c816d25f3cb638c5ca08f7a6a5d9c84d939ade62",
+  "scope": "Additional access, hours, fees, public transport, image-license candidate information and synthetic itinerary audit. No road network calculation.",
+  "fileCountExcludingManifest": 23,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 6654,
+      "sha256": "d4df0eac57308674895ef5b565b079555fce6ef719f08ac6ae4408bc4f777a07"
+    },
+    {
+      "path": "data/ACCESS_POINTS_33_ENRICHED.csv",
+      "bytes": 13170,
+      "sha256": "1e4d8951f95908fc90c137d716ed5780df21f501ca07af35417f053290d3be89"
+    },
+    {
+      "path": "data/AGRA_BRIDGE_CROSSINGS_24_OPEN.csv",
+      "bytes": 6896,
+      "sha256": "b452edec7e16625e3f1ab6533d7e863f0ded451e8148487e60455c5c092963a0"
+    },
+    {
+      "path": "data/FOREIGNER_FEES_30_REVIEW.csv",
+      "bytes": 6618,
+      "sha256": "99cc5bc9b6c55e6f5cb2247e5f2d3be5df54c53aa019b490bbeb168445914a3b"
+    },
+    {
+      "path": "data/IMAGE_DOWNLOAD_REPORT.json",
+      "bytes": 6127,
+      "sha256": "9ee7eeab08b76c05d70ea995e978409b2ea352bab4d8555836a1b57d11e8d84e"
+    },
+    {
+      "path": "data/IMAGE_RIGHTS_CANDIDATES_30.csv",
+      "bytes": 10024,
+      "sha256": "4454c4fea50c01a50b8bd16b1c752352b52982b675f8bacfa256a89c1f6cf954"
+    },
+    {
+      "path": "data/INTERCITY_9_REVIEW.csv",
+      "bytes": 2636,
+      "sha256": "0f6c76dc3a9a92c5b5a7d87a886f7f0221bc7ac4e92c613b9dfcb8ce809759a4"
+    },
+    {
+      "path": "data/ITINERARY_GAME_MODEL.csv",
+      "bytes": 5584,
+      "sha256": "17bd11f6518c5ca0441ea5b6b0ebd17da0f35318d537f0fdfb3466ac1b0d678f"
+    },
+    {
+      "path": "data/ITINERARY_VALIDATION.json",
+      "bytes": 4297,
+      "sha256": "f480dedad296d89a383eda4f55d53882084240cfbd27e1606aedbf98b3c67999"
+    },
+    {
+      "path": "data/JAIPUR_OFFICIAL_OD_FARES_121.csv",
+      "bytes": 29522,
+      "sha256": "d2a0f1cf6af90cbfc33f39d1f8dc0773daa759af77a6ca64bd99ff06ed0557a2"
+    },
+    {
+      "path": "data/MULTI_GATE_TRANSFER_NODES_18.csv",
+      "bytes": 3382,
+      "sha256": "261c3f099e8e59087efc6b95d4d695fcf0029b98bd14d2133abf87d61eda2e6c"
+    },
+    {
+      "path": "data/OPENING_HOURS_30_REVIEW.csv",
+      "bytes": 7303,
+      "sha256": "d9a460b1e5feea2e5a08d5792528d6dfe3fbeb43d4c695edb68a79b1f789c683"
+    },
+    {
+      "path": "data/SOURCE_REGISTER.csv",
+      "bytes": 7195,
+      "sha256": "6bcf6dfd26a0de41063ab61fcd61e81da2be2d7444a191fc628c57c49a9c35cc"
+    },
+    {
+      "path": "data/SUMMARY.json",
+      "bytes": 3954,
+      "sha256": "dc62bdf5636f06493ea7a90fcb55d008d40a875bc646882a391e2f96fce42f73"
+    },
+    {
+      "path": "data/TRANSIT_LAST_MILE_33.csv",
+      "bytes": 9636,
+      "sha256": "8d45ca6faee4496d1ffef2174e12f8bb9e0b9f498fc4470b960cd30a3f13432d"
+    },
+    {
+      "path": "data/TRANSIT_OPERATOR_FACTS.csv",
+      "bytes": 2215,
+      "sha256": "0d3427871a06675eac54c205f31e286df46d8b0c809e5ed4007462de33b5a757"
+    },
+    {
+      "path": "data/VISITOR_RULES_30.csv",
+      "bytes": 7570,
+      "sha256": "973e3ec6514072536e75c4f497f2b30648ef17733e1d88dc694dd66cb7f59f28"
+    },
+    {
+      "path": "docs/CODEX_INTEGRATION.md",
+      "bytes": 3603,
+      "sha256": "46bffd1e13a7aa7c0595fa0df7918fe1911a118a537ae0c5aa1ea170c41a1efb"
+    },
+    {
+      "path": "docs/UNRESOLVED_MATERIAL.md",
+      "bytes": 3052,
+      "sha256": "81aef4b69d150f682453509f7e9a9becb43e99b1310932d6ac7177263144a5f7"
+    },
+    {
+      "path": "reference/Previous_Gate_Walk_Audit.zip",
+      "bytes": 41352,
+      "sha256": "6c6a57b8a532dbdc3d3d4c52732395e2df7ed682d28182eae929fc66ce6ded5f"
+    },
+    {
+      "path": "scripts/build_data.py",
+      "bytes": 56056,
+      "sha256": "386063b476db13972e0b7b78991a97c8f87b951f9d6fd883106bf0e285ea2d7d"
+    },
+    {
+      "path": "scripts/download_wikimedia_assets.py",
+      "bytes": 4355,
+      "sha256": "d0932daf83b6fae7abdb794983213081f29d45bbb7e3294cfcf3b1a32d064fad"
+    },
+    {
+      "path": "scripts/validate_pack.py",
+      "bytes": 4950,
+      "sha256": "b14e55c26fbe8636cbbcfe0ffcf67ab6205e9855b9e9cef41c71d9b69add0444"
+    }
+  ],
+  "limitations": [
+    "no verified precise entrance GPS",
+    "no Wikimedia binary image files downloaded",
+    "no newly verified pedestrian road network measures",
+    "six foreign admission prices still unknown",
+    "selected-date intercity train fares or schedules not verified"
+  ]
+}

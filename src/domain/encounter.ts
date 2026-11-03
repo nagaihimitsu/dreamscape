@@ -1,6 +1,6 @@
 import { encounters } from "../content/encounters";
 import { responseProfileSchema } from "../content/schemas";
-import { city, responseProfiles } from "../content";
+import { getCityStoryBackground, landmarks, responseProfiles } from "../content";
 import type { EncounterDefinition } from "../content/encounter-schemas";
 import { beginStory, continueStory, selectStoryChoice, storyFingerprint, validateStorySnapshot, type StoryFrame, type StoryStep } from "../story/runtime";
 import { secureRomanceRoll } from "../random/romance-source";
@@ -59,11 +59,16 @@ function activeStoryId(active: ActiveEncounter, id: string): string {
 export function getEncounterAvailability(state: GameState, id: string): Availability {
   const event = findEncounter(id);
   if (!event) return unavailable("寄り道が見つかりません。");
-  const revisitableFortune = event.id === "galleria_fortune" && event.availability === "tourism" && hasGalleriaBattle(state);
+  const revisitableFortune = event.id === "galleria_fortune" && event.availability === "tourism" && hasLandmarkBattle(state, event);
   if (event.availability === "dormant" || (event.availability === "tourism" && !revisitableFortune))
     return unavailable("この寄り道は自由時間からは選べません。");
-  if (event.cityId !== city.id) return unavailable("この街では出かけられません。");
-  const rule = placeRules.entries.find((entry) => entry.encounterId === id && (!entry.storyId || entry.storyId === event.storyId));
+  return getEncounterEntryAvailability(state, event);
+}
+
+/** Shared rules apply regardless of whether an encounter starts at an observation screen. */
+function getEncounterEntryAvailability(state: GameState, event: EncounterDefinition): Availability {
+  if (event.cityId !== state.currentCityId) return unavailable("この街では出かけられません。");
+  const rule = placeRules.entries.find((entry) => entry.encounterId === event.id && (!entry.storyId || entry.storyId === event.storyId));
   if (rule?.completedEpisodeId && !state.completedEpisodeIds.includes(rule.completedEpisodeId))
     return unavailable("この場所を訪れたあとに出会えます。");
   if (rule?.completedStoryBattleId && !state.battleRecords.some((record) => record.battleId === rule.completedStoryBattleId && record.attempts > 0))
@@ -71,7 +76,7 @@ export function getEncounterAvailability(state: GameState, id: string): Availabi
   if (!canAccessFreeTime(state)) return unavailable("旅を進めると出かけられます。");
   if (state.activeEncounter || state.activeDate || state.activeTourism || state.activeEpilogue || state.activeBattle)
     return unavailable("途中の場面を終えてから出かけられます。");
-  if (!event.repeatable && state.completedEncounterIds.includes(id)) return unavailable("この寄り道は終えています。");
+  if (!event.repeatable && state.completedEncounterIds.includes(event.id)) return unavailable("この寄り道は終えています。");
   const actionable = event.options.filter((option) => !option.deferCompletion);
   if (actionable.length && actionable.every((option) => !optionItemsBelongToEncounter(event, option) || (option.requiresItemId && state.inventory[option.requiresItemId] !== "held")))
     return unavailable("必要な品物を持っていません。");
@@ -80,12 +85,13 @@ export function getEncounterAvailability(state: GameState, id: string): Availabi
 
 /** Used before entering a special encounter's battle, while still in free time. */
 export function hasPendingPlaceEncounter(state: GameState, landmarkId: string): boolean {
-  return encounters.encounters.some((event) => event.landmarkId === landmarkId && getEncounterAvailability(state, event.id).available);
+  return encounters.encounters.some((event) => event.landmarkId === landmarkId && event.availability !== "dormant" && getEncounterEntryAvailability(state, event).available);
 }
 
 /** Keep the optional cultural quiz after the main battle, so it cannot reveal its answer first. */
-function hasGalleriaBattle(state: GameState): boolean {
-  return state.battleRecords.some((record) => record.battleId === "milano_galleria_01" && record.attempts > 0);
+function hasLandmarkBattle(state: GameState, event: EncounterDefinition): boolean {
+  const battleId = landmarks.find((landmark) => landmark.id === event.landmarkId)?.battleId;
+  return state.battleRecords.some((record) => record.battleId === battleId && record.attempts > 0);
 }
 
 /** The new fortune's leave branch, or its pre-battle visit, ends without a quiz. */
@@ -96,7 +102,7 @@ export function encounterStoryCanFinish(state: GameState): boolean {
   if (!event.quiz) return true;
   if (event.storyId !== "encounters/sound_galleria_fortune") return false;
   const option = event.options.find((item) => item.id === active.selectedOptionId);
-  return !!option?.deferCompletion || !hasGalleriaBattle(state);
+  return !!option?.deferCompletion || !hasLandmarkBattle(state, event);
 }
 
 export function getEncounterOptionAvailability(state: GameState, index: number): Availability {
@@ -105,9 +111,10 @@ export function getEncounterOptionAvailability(state: GameState, index: number):
   const choice = active?.frame.choices.find((item) => item.index === index);
   const option = event && choice ? encounterChoiceOption(event, choice) : undefined;
   if (!active || active.phase !== "story" || active.selectedOptionId !== null || !option || !active.frame.choices.some((choice) => choice.index === index)) return unavailable("この選択肢は使えません。");
-  if (!event || event.cityId !== city.id || !optionItemsBelongToEncounter(event, option)) return unavailable("この街では使えない品物です。");
-  if (state.travelBudget < option.costEuro) return unavailable("旅行予算が足りません。");
-  if (state.travelBudget - option.costEuro < state.travel.returnReserve) return unavailable("帰りの交通費を確保しているため、今は使えません。");
+  if (!event || event.cityId !== state.currentCityId || !optionItemsBelongToEncounter(event, option)) return unavailable("この街では使えない品物です。");
+  const cost = option.cost ?? option.costEuro ?? 0;
+  if (state.travelBudget < cost) return unavailable("旅行予算が足りません。");
+  if (state.travelBudget - cost < state.travel.returnReserve) return unavailable("帰りの交通費を確保しているため、今は使えません。");
   if (option.requiresItemId && state.inventory[option.requiresItemId] !== "held") return unavailable("必要な品物を持っていません。");
   return available;
 }
@@ -129,7 +136,8 @@ function beginEncounter(state: GameState, event: EncounterDefinition, nextRoll: 
   const id = event.id;
   const [romanceRoll] = createRomanceRollPlan(1, nextRoll);
   const [rewardTicket] = createRomanceRollPlan(1, nextRoll);
-  const step = checkedStep(beginStory(event.storyId, state.playerName, state.heroineName, variables(state), state.memories, state.inventory));
+  const step = checkedStep(beginStory(event.storyId, state.playerName, state.heroineName, variables(state), state.memories, state.inventory,
+    getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId)));
   const next = { ...state, revision: state.revision + 1 };
   return { ...next, activeEncounter: {
     encounterId: id, runId: `${id}:${next.revision}`, contentHash: encounterFingerprint(event),
@@ -151,7 +159,7 @@ export function startEncounter(state: GameState, id: string, nextRoll: () => num
 export function getTourismEncounterAvailability(state: GameState, id: string): Availability {
   const event = findEncounter(id);
   const active = state.activeTourism;
-  if (!event || event.availability === "dormant" || event.cityId !== city.id ||
+  if (!event || event.availability === "dormant" || event.cityId !== state.currentCityId ||
       !active || active.phase !== "exploring" || active.landmarkId !== event.landmarkId ||
       !state.visitedLandmarkIds.includes(active.landmarkId) ||
       state.activeBattle || state.activeDate || state.activeEncounter || state.activeEpilogue ||
@@ -161,7 +169,7 @@ export function getTourismEncounterAvailability(state: GameState, id: string): A
   // Fortune is explicitly available during the first observation, before its
   // separate post-battle quiz becomes available.
   if (event.availability === "tourism" && event.id === "galleria_fortune") return available;
-  return getEncounterAvailability({ ...state, activeTourism: null }, id);
+  return getEncounterEntryAvailability({ ...state, activeTourism: null }, event);
 }
 
 export function startTourismEncounter(
@@ -203,8 +211,9 @@ export function chooseEncounter(state: GameState, index: number, expectedRevisio
   const choice = active.frame.choices.find((item) => item.index === index)!;
   const option = encounterChoiceOption(event, choice)!;
   if (option.textEn !== undefined && choice.text !== option.textEn) throw new Error("交流の選択肢が一致しません。");
-  if (state.travelBudget - option.costEuro < state.travel.returnReserve) return state;
-  let next = { ...state, travelBudget: state.travelBudget - option.costEuro, inventory: { ...state.inventory } };
+  const cost = option.cost ?? option.costEuro ?? 0;
+  if (state.travelBudget - cost < state.travel.returnReserve) return state;
+  let next = { ...state, travelBudget: state.travelBudget - cost, inventory: { ...state.inventory } };
   if (option.consumeItemId) next.inventory[option.consumeItemId] = "used";
   if (option.giftItemId) next.inventory[option.giftItemId] = "gifted";
   let result = "positive";
@@ -231,14 +240,15 @@ export function advanceEncounter(state: GameState, expectedRevision: number): Ga
   let event: EncounterDefinition;
   try { event = getActiveEncounterDefinition(active); }
   catch { return state; }
-  if (event.cityId !== city.id) return state;
+  if (event.cityId !== state.currentCityId) return state;
   if (active.phase === "feedback") {
     const quiz = event.quiz!;
     const correct = active.quizAnswerId === quiz.question.correctOptionId;
     const record = state.encounterRewards[event.id];
     const storyId = !correct ? quiz.lostStoryId : active.rewardAlreadyDrawn ? quiz.alreadyStoryId : record?.won ? quiz.wonStoryId : quiz.lostStoryId;
     const resolvedStoryId = activeStoryId(active, storyId);
-    const step = checkedStep(beginStory(resolvedStoryId, state.playerName, state.heroineName, variables(state), state.memories, state.inventory));
+    const step = checkedStep(beginStory(resolvedStoryId, state.playerName, state.heroineName, variables(state), state.memories, state.inventory,
+      getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId)));
     return { ...state, revision: state.revision + 1, activeEncounter: withStep({ ...active, phase: "outcome", storyId, storyHash: storyFingerprint(resolvedStoryId) }, step) };
   }
   if (active.phase === "quiz" || active.frame.choices.length) return state;
@@ -257,7 +267,7 @@ export function answerEncounterQuiz(state: GameState, optionId: string, expected
   const event = getActiveEncounterDefinition(active);
   const quiz = event.quiz;
   if (!quiz) return state;
-  if (event.cityId !== city.id || !itemBelongsToEncounter(event, quiz.rewardItemId)) return state;
+  if (event.cityId !== state.currentCityId || !itemBelongsToEncounter(event, quiz.rewardItemId)) return state;
   const correct = scoreQuizAnswer(quiz.question, optionId);
   if (correct === null) return state;
   const answer = optionId as "A" | "B" | "C";
@@ -289,14 +299,14 @@ export function finishEncounter(state: GameState, expectedRevision: number): Gam
   const active = state.activeEncounter;
   if (state.revision !== expectedRevision || !active || !active.frame.ended || !active.selectedOptionId || (active.phase !== "outcome" && active.phase !== "story")) return state;
   const event = getActiveEncounterDefinition(active);
-  if (event.cityId !== city.id || !itemBelongsToEncounter(event, event.completionItemId)) return state;
+  if (event.cityId !== state.currentCityId || !itemBelongsToEncounter(event, event.completionItemId)) return state;
   if (event.quiz && active.phase !== "outcome" && !encounterStoryCanFinish(state)) return state;
   const option = event.options.find((item) => item.id === active.selectedOptionId)!;
   const first = !state.completedEncounterIds.includes(event.id) && !option.deferCompletion;
   let next: GameState = { ...state, revision: state.revision + 1, activeEncounter: null };
   if (first) {
     if (event.completionItemId && next.inventory[event.completionItemId]) throw new Error("品物の記録が一致しません。");
-    const total = next.travelBudget + (event.completionMoneyEuro ?? 0);
+    const total = next.travelBudget + (event.completionMoney ?? event.completionMoneyEuro ?? 0);
     if (!Number.isSafeInteger(total)) throw new Error("旅行予算の上限を超えました。");
     next = { ...next, travelBudget: total, completedEncounterIds: [...next.completedEncounterIds, event.id],
       inventory: event.completionItemId ? { ...next.inventory, [event.completionItemId]: "held" } : next.inventory };
@@ -320,12 +330,14 @@ export function validateEncounterState(state: GameState): void {
     if (!event || !itemBelongsToEncounter(event, event.completionItemId) || (event.completionItemId && !state.inventory[event.completionItemId])) fail();
   }
   for (const [id, status] of Object.entries(state.inventory)) {
-    if (!encounters.items.some((item) => item.id === id)) fail();
+    const definition = encounters.items.find((item) => item.id === id);
+    if (!definition || (status === "held" && definition.cityId !== state.currentCityId) ||
+        (status === "left_behind" && (definition.cityId === state.currentCityId || !state.completedCityIds.includes(definition.cityId)))) fail();
     const prizeEvent = encounters.encounters.find((item) => item.quiz?.rewardItemId === id);
     const completionEvent = encounters.encounters.find((item) => item.completionItemId === id);
     if (prizeEvent && (!itemBelongsToEncounter(prizeEvent, id) || !state.encounterRewards[prizeEvent.id]?.won)) fail();
     if (completionEvent && (!itemBelongsToEncounter(completionEvent, id) || !state.completedEncounterIds.includes(completionEvent.id))) fail();
-    if (status !== "held") {
+    if (status === "gifted" || status === "used") {
       const matching = encounters.encounters.some((item) => item.options.some((option) =>
         (status === "gifted" ? option.giftItemId === id : option.consumeItemId === id) && optionItemsBelongToEncounter(item, option) &&
         (state.completedEncounterIds.includes(item.id) ||
@@ -341,7 +353,7 @@ export function validateEncounterState(state: GameState): void {
   const active = state.activeEncounter;
   if (!active) return;
   const event = getActiveEncounterDefinition(active);
-  if (event.cityId !== city.id) fail();
+  if (event.cityId !== state.currentCityId) fail();
   if (state.activeDate || state.activeTourism || state.activeEpilogue || state.activeBattle) fail();
   if (active.returnTourism && (event.availability === "dormant" || active.returnTourism.landmarkId !== event.landmarkId ||
       !validObservationEncounterIds(active.returnTourism.landmarkId, active.returnTourism.encounterIds) ||

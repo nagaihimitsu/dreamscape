@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-03",
+  "repository": "nagaihimitsu/dreamscape",
+  "branch": "feature/golden-triangle-foundation",
+  "gitCommit": "c816d25f3cb638c5ca08f7a6a5d9c84d939ade62",
+  "candidateFilePagesReviewed": 30,
+  "newlyReviewedInThisContinuation": 18,
+  "previouslyReviewed": 12,
+  "actualImagesDownloaded": 0,
+  "productionImagesReady": 0,
+  "candidateAlternativesAdded": 7,
+  "candidateMetadataReviewStatus": "WEB_FILE_PAGE_TEXT_ONLY",
+  "riskCounts": {
+    "P0": 3,
+    "P1": 7,
+    "P2": 20
+  },
+  "actualOfficialEntranceGPSConfirmed": 0,
+  "actualRoadRoutedLegs": 0,
+  "foreignFeeOperatorUnverifiedFromPriorPass": 6,
+  "scope": "Photo candidate rights, metadata, depiction and usability completion; no images have been licensed as downloaded derivatives"
+}

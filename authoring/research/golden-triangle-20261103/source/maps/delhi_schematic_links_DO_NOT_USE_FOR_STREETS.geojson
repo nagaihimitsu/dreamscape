@@ -1,0 +1,976 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.2197,
+            28.63278
+          ],
+          [
+            77.23865,
+            28.65588
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_hotel_hub",
+        "toPlaceId": "delhi_red_fort",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 58,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.2197,
+            28.63278
+          ],
+          [
+            77.2335,
+            28.6507
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_hotel_hub",
+        "toPlaceId": "delhi_jama_masjid",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 50,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.2197,
+            28.63278
+          ],
+          [
+            77.22912,
+            28.65124
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_hotel_hub",
+        "toPlaceId": "delhi_chandni_chowk",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 47,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.2197,
+            28.63278
+          ],
+          [
+            77.22501,
+            28.62609
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_hotel_hub",
+        "toPlaceId": "delhi_agrasen_baoli",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 17,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.2197,
+            28.63278
+          ],
+          [
+            77.22949,
+            28.61293
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_hotel_hub",
+        "toPlaceId": "delhi_india_gate",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 44,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.2197,
+            28.63278
+          ],
+          [
+            77.20883,
+            28.62646
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_hotel_hub",
+        "toPlaceId": "delhi_bangla_sahib",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 24,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.23865,
+            28.65588
+          ],
+          [
+            77.2197,
+            28.63278
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_red_fort",
+        "toPlaceId": "delhi_hotel_hub",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 58,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.23865,
+            28.65588
+          ],
+          [
+            77.2335,
+            28.6507
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_red_fort",
+        "toPlaceId": "delhi_jama_masjid",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 16,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.23865,
+            28.65588
+          ],
+          [
+            77.22912,
+            28.65124
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_red_fort",
+        "toPlaceId": "delhi_chandni_chowk",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 22,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.23865,
+            28.65588
+          ],
+          [
+            77.22501,
+            28.62609
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_red_fort",
+        "toPlaceId": "delhi_agrasen_baoli",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 66,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.23865,
+            28.65588
+          ],
+          [
+            77.22949,
+            28.61293
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_red_fort",
+        "toPlaceId": "delhi_india_gate",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 89,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.23865,
+            28.65588
+          ],
+          [
+            77.20883,
+            28.62646
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_red_fort",
+        "toPlaceId": "delhi_bangla_sahib",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 80,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.2335,
+            28.6507
+          ],
+          [
+            77.2197,
+            28.63278
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_jama_masjid",
+        "toPlaceId": "delhi_hotel_hub",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 50,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.2335,
+            28.6507
+          ],
+          [
+            77.23865,
+            28.65588
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_jama_masjid",
+        "toPlaceId": "delhi_red_fort",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 16,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.2335,
+            28.6507
+          ],
+          [
+            77.22912,
+            28.65124
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_jama_masjid",
+        "toPlaceId": "delhi_chandni_chowk",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 9,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.2335,
+            28.6507
+          ],
+          [
+            77.22501,
+            28.62609
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_jama_masjid",
+        "toPlaceId": "delhi_agrasen_baoli",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 60,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.2335,
+            28.6507
+          ],
+          [
+            77.22949,
+            28.61293
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_jama_masjid",
+        "toPlaceId": "delhi_india_gate",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 88,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.2335,
+            28.6507
+          ],
+          [
+            77.20883,
+            28.62646
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_jama_masjid",
+        "toPlaceId": "delhi_bangla_sahib",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 75,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.22912,
+            28.65124
+          ],
+          [
+            77.2197,
+            28.63278
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_chandni_chowk",
+        "toPlaceId": "delhi_hotel_hub",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 47,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.22912,
+            28.65124
+          ],
+          [
+            77.23865,
+            28.65588
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_chandni_chowk",
+        "toPlaceId": "delhi_red_fort",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 22,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.22912,
+            28.65124
+          ],
+          [
+            77.2335,
+            28.6507
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_chandni_chowk",
+        "toPlaceId": "delhi_jama_masjid",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 9,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.22912,
+            28.65124
+          ],
+          [
+            77.22501,
+            28.62609
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_chandni_chowk",
+        "toPlaceId": "delhi_agrasen_baoli",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 59,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.22912,
+            28.65124
+          ],
+          [
+            77.22949,
+            28.61293
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_chandni_chowk",
+        "toPlaceId": "delhi_india_gate",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 89,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.22912,
+            28.65124
+          ],
+          [
+            77.20883,
+            28.62646
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_chandni_chowk",
+        "toPlaceId": "delhi_bangla_sahib",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 71,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.22501,
+            28.62609
+          ],
+          [
+            77.2197,
+            28.63278
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_agrasen_baoli",
+        "toPlaceId": "delhi_hotel_hub",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 17,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.22501,
+            28.62609
+          ],
+          [
+            77.23865,
+            28.65588
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_agrasen_baoli",
+        "toPlaceId": "delhi_red_fort",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 66,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.22501,
+            28.62609
+          ],
+          [
+            77.2335,
+            28.6507
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_agrasen_baoli",
+        "toPlaceId": "delhi_jama_masjid",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 60,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.22501,
+            28.62609
+          ],
+          [
+            77.22912,
+            28.65124
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_agrasen_baoli",
+        "toPlaceId": "delhi_chandni_chowk",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 59,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.22501,
+            28.62609
+          ],
+          [
+            77.22949,
+            28.61293
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_agrasen_baoli",
+        "toPlaceId": "delhi_india_gate",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 28,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.22501,
+            28.62609
+          ],
+          [
+            77.20883,
+            28.62646
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_agrasen_baoli",
+        "toPlaceId": "delhi_bangla_sahib",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 29,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.22949,
+            28.61293
+          ],
+          [
+            77.2197,
+            28.63278
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_india_gate",
+        "toPlaceId": "delhi_hotel_hub",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 44,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.22949,
+            28.61293
+          ],
+          [
+            77.23865,
+            28.65588
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_india_gate",
+        "toPlaceId": "delhi_red_fort",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 89,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.22949,
+            28.61293
+          ],
+          [
+            77.2335,
+            28.6507
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_india_gate",
+        "toPlaceId": "delhi_jama_masjid",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 88,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.22949,
+            28.61293
+          ],
+          [
+            77.22912,
+            28.65124
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_india_gate",
+        "toPlaceId": "delhi_chandni_chowk",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 89,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.22949,
+            28.61293
+          ],
+          [
+            77.22501,
+            28.62609
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_india_gate",
+        "toPlaceId": "delhi_agrasen_baoli",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 28,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.22949,
+            28.61293
+          ],
+          [
+            77.20883,
+            28.62646
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_india_gate",
+        "toPlaceId": "delhi_bangla_sahib",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 46,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.20883,
+            28.62646
+          ],
+          [
+            77.2197,
+            28.63278
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_bangla_sahib",
+        "toPlaceId": "delhi_hotel_hub",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 24,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.20883,
+            28.62646
+          ],
+          [
+            77.23865,
+            28.65588
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_bangla_sahib",
+        "toPlaceId": "delhi_red_fort",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 80,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.20883,
+            28.62646
+          ],
+          [
+            77.2335,
+            28.6507
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_bangla_sahib",
+        "toPlaceId": "delhi_jama_masjid",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 75,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.20883,
+            28.62646
+          ],
+          [
+            77.22912,
+            28.65124
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_bangla_sahib",
+        "toPlaceId": "delhi_chandni_chowk",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 71,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.20883,
+            28.62646
+          ],
+          [
+            77.22501,
+            28.62609
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_bangla_sahib",
+        "toPlaceId": "delhi_agrasen_baoli",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 29,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.20883,
+            28.62646
+          ],
+          [
+            77.22949,
+            28.61293
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "delhi_bangla_sahib",
+        "toPlaceId": "delhi_india_gate",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 46,
+        "verifiedOnRoadNetwork": false
+      }
+    }
+  ],
+  "metadata": {
+    "cityId": "delhi",
+    "geometryQuality": "SCHEMATIC_ONLY_NOT_WALKABLE_GEOMETRY",
+    "notesJa": "地図UIプロトタイピング用直線。現実の道路・橋・歩道を表すものではない。実道ルートには使用禁止。"
+  }
+}

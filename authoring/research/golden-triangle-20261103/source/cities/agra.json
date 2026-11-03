@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "agra",
+  "countryCode": "IN",
+  "nameJa": "アーグラ",
+  "themeJa": "建築に刻まれた記憶の街",
+  "firstClearReward": {
+    "rewardSourceId": "gt_agra_first_clear",
+    "ap": 4
+  },
+  "landmarkIdsPlanned": [
+    "agra_taj_mahal",
+    "agra_agra_fort",
+    "agra_fatehpur_sikri",
+    "agra_itimad_tomb"
+  ],
+  "productionStatus": "prototype",
+  "nextCityId": "jaipur"
+}

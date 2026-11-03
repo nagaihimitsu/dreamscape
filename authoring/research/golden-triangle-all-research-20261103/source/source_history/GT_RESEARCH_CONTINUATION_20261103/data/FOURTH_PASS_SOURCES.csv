@@ -1,0 +1,27 @@
+﻿sourceKind,sourceUrl,checkScope,placeId,checkedAt,claimsCurrentOperationalAdmission
+WIKIMEDIA_FILE_PAGE,https://commons.wikimedia.org/wiki/File:The_Tomb_of_Akbar.jpg,Author / page licence / pixel dimensions / depicted subject from page text,agra_akbar_tomb,2026-11-03,false
+WIKIMEDIA_FILE_PAGE,"https://commons.wikimedia.org/wiki/File:Chini_ka_Rauza,_Agra.jpg",Author / page licence / pixel dimensions / depicted subject from page text,agra_chini_rauza,2026-11-03,false
+WIKIMEDIA_FILE_PAGE,https://commons.wikimedia.org/wiki/File:Guru_ka_taal.jpg,Author / page licence / pixel dimensions / depicted subject from page text,agra_guru_ka_taal,2026-11-03,false
+WIKIMEDIA_FILE_PAGE,"https://commons.wikimedia.org/wiki/File:Mariam%27s_Tomb,_Sikandra,_Agra.JPG",Author / page licence / pixel dimensions / depicted subject from page text,agra_mariam_tomb,2026-11-03,false
+WIKIMEDIA_FILE_PAGE,https://commons.wikimedia.org/wiki/File:Mehtab_Bagh_1.jpg,Author / page licence / pixel dimensions / depicted subject from page text,agra_mehtab_bagh,2026-11-03,false
+WIKIMEDIA_FILE_PAGE,https://commons.wikimedia.org/wiki/File:Entry_gate_of_Aram_Bagh.jpg,Author / page licence / pixel dimensions / depicted subject from page text,agra_ram_bagh,2026-11-03,false
+WIKIMEDIA_FILE_PAGE,https://commons.wikimedia.org/wiki/File:Agrasena_ki_Baoli.jpg,Author / page licence / pixel dimensions / depicted subject from page text,delhi_agrasen_baoli,2026-11-03,false
+WIKIMEDIA_FILE_PAGE,https://commons.wikimedia.org/wiki/File:Bangla_Sahib.jpg,Author / page licence / pixel dimensions / depicted subject from page text,delhi_bangla_sahib,2026-11-03,false
+WIKIMEDIA_FILE_PAGE,"https://commons.wikimedia.org/wiki/File:Chandni_Chowk,_Delhi.JPG",Author / page licence / pixel dimensions / depicted subject from page text,delhi_chandni_chowk,2026-11-03,false
+WIKIMEDIA_FILE_PAGE,"https://commons.wikimedia.org/wiki/File:IndiaGate,_delhi.jpg",Author / page licence / pixel dimensions / depicted subject from page text,delhi_india_gate,2026-11-03,false
+WIKIMEDIA_FILE_PAGE,https://commons.wikimedia.org/wiki/File:LODHI_GARDENS.jpg,Author / page licence / pixel dimensions / depicted subject from page text,delhi_lodhi_garden,2026-11-03,false
+WIKIMEDIA_FILE_PAGE,https://commons.wikimedia.org/wiki/File:The_lotus_temple.jpg,Author / page licence / pixel dimensions / depicted subject from page text,delhi_lotus_temple,2026-11-03,false
+WIKIMEDIA_FILE_PAGE,https://commons.wikimedia.org/wiki/File:Albert_Hall_Museum.jpg,Author / page licence / pixel dimensions / depicted subject from page text,jaipur_albert_hall,2026-11-03,false
+WIKIMEDIA_FILE_PAGE,https://commons.wikimedia.org/wiki/File:Jaigarh_Fort_Jaipur.jpg,Author / page licence / pixel dimensions / depicted subject from page text,jaipur_jaigarh_fort,2026-11-03,false
+WIKIMEDIA_FILE_PAGE,https://commons.wikimedia.org/wiki/File:Jal_Mahal_at_Jaipur_Rajasthan.jpg,Author / page licence / pixel dimensions / depicted subject from page text,jaipur_jal_mahal,2026-11-03,false
+WIKIMEDIA_FILE_PAGE,https://commons.wikimedia.org/wiki/File:Johari_Bazar.jpg,Author / page licence / pixel dimensions / depicted subject from page text,jaipur_johari_bazaar,2026-11-03,false
+WIKIMEDIA_FILE_PAGE,https://commons.wikimedia.org/wiki/File:Nahargarh_Fort.jpg,Author / page licence / pixel dimensions / depicted subject from page text,jaipur_nahargarh_fort,2026-11-03,false
+WIKIMEDIA_FILE_PAGE,https://commons.wikimedia.org/wiki/File:Panna_Meena_Kund.jpg,Author / page licence / pixel dimensions / depicted subject from page text,jaipur_panna_meena_kund,2026-11-03,false
+WIKIMEDIA_ALTERNATIVE_FILE_PAGE,"https://commons.wikimedia.org/wiki/File:Nahargarh_Fort,_india.jpg","Creator, licence, dimensions and depicted subject from file page; actual pixels NOT checked",jaipur_nahargarh_fort,2026-11-03,false
+WIKIMEDIA_ALTERNATIVE_FILE_PAGE,https://commons.wikimedia.org/wiki/File:Jaigarh_Fort_Rajasthan.jpg,"Creator, licence, dimensions and depicted subject from file page; actual pixels NOT checked",jaipur_jaigarh_fort,2026-11-03,false
+INDIA_GOV_PIB,https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=2211862&lang=2&reg=48,ASI online tickets via ONDC can retain ₹50 discount for foreign nationals and ₹5 for Indian visitors; 6 January 2026 PIB release,asi_online_discount_2026,2026-11-03,false
+OFFICIAL_DELHI_TOURISM_CONFLICT,https://www.delhitourism.gov.in/tourist_place/humayun_tomb.html,One official page says ₹600; another Delhi Tourism page says ₹550,humayun_fee_counter_vs_online,2026-11-03,false
+PRIMARY_UI_NOT_EXTRACTABLE,https://citypalace.org/visit,Official HTML default Indian adult ₹400; International Resident tab is not available as scraped concrete number,city_palace_international_fee,2026-11-03,false
+PRIMARY_UI_NOT_EXTRACTABLE,https://www.jaigarh.co/visit,Official HTML Indian National/Resident ₹200; International Resident tab amount not visible in static public page,jaigarh_international_fee,2026-11-03,false
+OPERATOR,https://citypalace.org/visit,Museum 9:30–18:30; textile gallery temporary closed from 27 Mar 2026; Museum at Night temporarily closed,city_palace_operational_rule,2026-11-03,false
+OPERATOR,https://www.jaipurcentreforart.com/visit,Site says temporarily closed till 19 November 2026,jaipur_centre_for_art_closure,2026-11-03,false

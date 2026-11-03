@@ -1,0 +1,10 @@
+{
+  "type": "FeatureCollection",
+  "features": [],
+  "metadata": {
+    "cityId": "agra",
+    "status": "NOT_GENERATED_NO_PEDESTRIAN_NETWORK",
+    "sourceDate": "2026-11-03",
+    "commentJa": "ルート図形が検証できないため空です。直線を歩道として生成していません。"
+  }
+}

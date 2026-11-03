@@ -1,0 +1,1007 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-11-03",
+  "methodJa": "各方向の地点名を指定したバス・地下鉄・停留所検索を４件以下ずつまとめて実行。応答は同一バッチ内のクエリ結果を統合するため、foundUrls はいずれかの検索で返った候補であり、個別クエリとの対応や全候補を保証しない。各ページの本文・既存公的資料を照合し、経路に採用するもの以外は接続未確定とした。架空宿はモデル地点のアーグラ城鉄道駅を検索語とした。",
+  "groups": [
+    {
+      "direction": "forward",
+      "batch": 0,
+      "queries": [
+        {
+          "id": "taj_mahal--agra_fort",
+          "q": "Taj Mahal to Agra Fort Agra city bus route stop metro"
+        },
+        {
+          "id": "taj_mahal--itimad_tomb",
+          "q": "Taj Mahal to Itimad ud Daulah Agra city bus route stop metro"
+        },
+        {
+          "id": "taj_mahal--mehtab_bagh",
+          "q": "Taj Mahal to Mehtab Bagh Agra city bus route stop metro"
+        },
+        {
+          "id": "taj_mahal--fatehpur_sikri",
+          "q": "Taj Mahal to Fatehpur Sikri Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://agra.nic.in/tourist-place/fatehpur-sikri/",
+        "https://yometro.com/from-taj-mahal-metro-station-agra-to-agra-fort-metro-station-agra",
+        "https://agra.nic.in/tourist-place/mehtab-bagh/",
+        "https://agra.nic.in/tourist-place/tajmahal/",
+        "https://metrodost.com/agra/places/itimad-ud-daulah/",
+        "https://agra.nic.in/how-to-reach/",
+        "https://agrametro.org/agra-fort-metro.php",
+        "https://www.metroagra.com/taj-mahal-to-agra-fort-metro",
+        "https://metrodost.com/agra/places/mehtab-bagh/",
+        "https://tajmahal.gov.in/fatehpur-sikri.aspx",
+        "https://agra.metro.org.in/"
+      ]
+    },
+    {
+      "direction": "forward",
+      "batch": 1,
+      "queries": [
+        {
+          "id": "taj_mahal--akbar_tomb",
+          "q": "Taj Mahal to Akbar Tomb Sikandra Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "taj_mahal--ram_bagh",
+          "q": "Taj Mahal to Ram Bagh Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "taj_mahal--chini_rauza",
+          "q": "Taj Mahal to Chini Ka Rauza Agra city bus route stop metro"
+        },
+        {
+          "id": "taj_mahal--mariam_tomb",
+          "q": "Taj Mahal to Mariam Tomb Sikandra Agra Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://railmetro.com/agra/taj-mahal-to-sikandra-metro-station",
+        "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://agra.nic.in/how-to-reach/",
+        "https://agrametro.org/stations/sikandra.php",
+        "https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/",
+        "https://agra.nic.in/hi/tourist-place/%E0%A4%85%E0%A4%95%E0%A4%AC%E0%A4%B0-%E0%A4%95%E0%A4%BE-%E0%A4%AE%E0%A4%95%E0%A4%AC%E0%A4%B0%E0%A4%BE-%E0%A4%B8%E0%A4%BF%E0%A4%95%E0%A4%82%E0%A4%A6%E0%A4%B0%E0%A4%BE/",
+        "https://audiala.com/en/india/agra/akbars-tomb",
+        "https://lmrcl.com/pdf/Agra_DPR_December_2017.pdf"
+      ]
+    },
+    {
+      "direction": "forward",
+      "batch": 2,
+      "queries": [
+        {
+          "id": "taj_mahal--guru_ka_taal",
+          "q": "Taj Mahal to Guru Ka Taal Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "taj_mahal--hotel_hub",
+          "q": "Taj Mahal to Agra Fort railway station Agra city bus route stop metro"
+        },
+        {
+          "id": "agra_fort--itimad_tomb",
+          "q": "Agra Fort to Itimad ud Daulah Agra city bus route stop metro"
+        },
+        {
+          "id": "agra_fort--mehtab_bagh",
+          "q": "Agra Fort to Mehtab Bagh Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://agra.nic.in/how-to-reach/",
+        "https://agra.nic.in/tourist-place/mehtab-bagh/",
+        "https://tajmahal.gov.in/pdf/Metro-rail-service-in-Agra.pdf",
+        "https://metrodost.com/agra/places/itimad-ud-daulah/",
+        "https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/",
+        "https://yometro.com/from-taj-mahal-metro-station-agra-to-agra-fort-metro-station-agra",
+        "https://agrametro.org/agra-fort-metro.php",
+        "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+        "https://agra.metro.org.in/",
+        "https://www.metroagra.com/taj-mahal-to-agra-fort-metro",
+        "https://metrodost.com/agra/places/mehtab-bagh/"
+      ]
+    },
+    {
+      "direction": "forward",
+      "batch": 3,
+      "queries": [
+        {
+          "id": "agra_fort--fatehpur_sikri",
+          "q": "Agra Fort to Fatehpur Sikri Agra city bus route stop metro"
+        },
+        {
+          "id": "agra_fort--akbar_tomb",
+          "q": "Agra Fort to Akbar Tomb Sikandra Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "agra_fort--ram_bagh",
+          "q": "Agra Fort to Ram Bagh Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "agra_fort--chini_rauza",
+          "q": "Agra Fort to Chini Ka Rauza Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://railmetro.com/agra/agra-fort-to-ram-bagh-metro-station",
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://agra.nic.in/tourist-place/fatehpur-sikri/",
+        "https://www.rome2rio.com/s/Agra-Fort-Uttar-Pradesh-India/Fatehpur-S%C4%ABkri",
+        "https://agra.nic.in/hi/tourist-place/%E0%A4%85%E0%A4%95%E0%A4%AC%E0%A4%B0-%E0%A4%95%E0%A4%BE-%E0%A4%AE%E0%A4%95%E0%A4%AC%E0%A4%B0%E0%A4%BE-%E0%A4%B8%E0%A4%BF%E0%A4%95%E0%A4%82%E0%A4%A6%E0%A4%B0%E0%A4%BE/",
+        "https://www.rome2rio.com/s/Agra-Fort-Rakabganj-Agra-Uttar-Pradesh-India/Fatehpur-S%C4%ABkri",
+        "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+        "https://agrametro.org/stations/sikandra.php",
+        "https://static.r2r.io/s/Moti-Masjid-Agra-Fort/Fatehpur-S%C4%ABkri",
+        "https://www.agraguides.com/areas/sikandra"
+      ]
+    },
+    {
+      "direction": "forward",
+      "batch": 4,
+      "queries": [
+        {
+          "id": "agra_fort--mariam_tomb",
+          "q": "Agra Fort to Mariam Tomb Sikandra Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "agra_fort--guru_ka_taal",
+          "q": "Agra Fort to Guru Ka Taal Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "agra_fort--hotel_hub",
+          "q": "Agra Fort to Agra Fort railway station Agra city bus route stop metro"
+        },
+        {
+          "id": "itimad_tomb--mehtab_bagh",
+          "q": "Itimad ud Daulah to Mehtab Bagh Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+        "https://www.upstdc.co.in/Booking/TourPackage?Type=1",
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://railmetro.com/agra/agra-fort-to-guru-ka-tal-metro-station",
+        "https://agra.nic.in/how-to-reach/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://agra.nic.in/tourist-place/mehtab-bagh/",
+        "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://agrametro.org/stations/sikandra.php",
+        "https://agrametro.org/agra-fort-metro.php"
+      ]
+    },
+    {
+      "direction": "forward",
+      "batch": 5,
+      "queries": [
+        {
+          "id": "itimad_tomb--fatehpur_sikri",
+          "q": "Itimad ud Daulah to Fatehpur Sikri Agra city bus route stop metro"
+        },
+        {
+          "id": "itimad_tomb--akbar_tomb",
+          "q": "Itimad ud Daulah to Akbar Tomb Sikandra Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "itimad_tomb--ram_bagh",
+          "q": "Itimad ud Daulah to Ram Bagh Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "itimad_tomb--chini_rauza",
+          "q": "Itimad ud Daulah to Chini Ka Rauza Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/",
+        "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+        "https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/",
+        "https://agra.nic.in/tourist-place/fatehpur-sikri/",
+        "https://metrodost.com/agra/places/itimad-ud-daulah/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://agrametro.org/stations/sikandra.php",
+        "https://www.rome2rio.com/s/Fatehpur-S%C4%ABkri/Tomb-of-I-tim%C4%81d-ud-Daulah",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://www.rome2rio.com/s/Tomb-of-I-tim%C4%81d-ud-Daulah/Fatehpur-S%C4%ABkri",
+        "https://www.traveloka.com/en-sg/hotel/india/landmark/tomb-of-itimd-ud-daulah-900000002409"
+      ]
+    },
+    {
+      "direction": "forward",
+      "batch": 6,
+      "queries": [
+        {
+          "id": "itimad_tomb--mariam_tomb",
+          "q": "Itimad ud Daulah to Mariam Tomb Sikandra Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "itimad_tomb--guru_ka_taal",
+          "q": "Itimad ud Daulah to Guru Ka Taal Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "itimad_tomb--hotel_hub",
+          "q": "Itimad ud Daulah to Agra Fort railway station Agra city bus route stop metro"
+        },
+        {
+          "id": "mehtab_bagh--fatehpur_sikri",
+          "q": "Mehtab Bagh to Fatehpur Sikri Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/",
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://www.rome2rio.com/s/Mehtab-Bagh/Fatehpur-S%C4%ABkri",
+        "https://metrodost.com/agra/places/itimad-ud-daulah/",
+        "https://agra.nic.in/tourist-place/mehtab-bagh/",
+        "https://agra.nic.in/how-to-reach/",
+        "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+        "https://agra.nic.in/tourist-place/fatehpur-sikri/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://www.agraguides.com/areas/sikandra"
+      ]
+    },
+    {
+      "direction": "forward",
+      "batch": 7,
+      "queries": [
+        {
+          "id": "mehtab_bagh--akbar_tomb",
+          "q": "Mehtab Bagh to Akbar Tomb Sikandra Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "mehtab_bagh--ram_bagh",
+          "q": "Mehtab Bagh to Ram Bagh Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "mehtab_bagh--chini_rauza",
+          "q": "Mehtab Bagh to Chini Ka Rauza Agra city bus route stop metro"
+        },
+        {
+          "id": "mehtab_bagh--mariam_tomb",
+          "q": "Mehtab Bagh to Mariam Tomb Sikandra Agra Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+        "https://agra.nic.in/tourist-place/mehtab-bagh/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://agra.nic.in/hi/tourist-place/%E0%A4%85%E0%A4%95%E0%A4%AC%E0%A4%B0-%E0%A4%95%E0%A4%BE-%E0%A4%AE%E0%A4%95%E0%A4%AC%E0%A4%B0%E0%A4%BE-%E0%A4%B8%E0%A4%BF%E0%A4%95%E0%A4%82%E0%A4%A6%E0%A4%B0%E0%A4%BE/",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://www.traveloka.com/en-sg/hotel/india/landmark/mehtab-bagh-900000002410/31",
+        "https://agrametro.org/stations/sikandra.php",
+        "https://mapa-metro.com/en/india/agra/agra-metro-map.htm",
+        "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+        "https://metrodost.com/agra/places/mehtab-bagh/",
+        "https://agra.nic.in/hi/tourist-place/%E0%A4%AE%E0%A4%B0%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%89%E0%A4%9C%E0%A4%BC-%E0%A4%9C%E0%A4%BC%E0%A4%AE%E0%A4%BE%E0%A4%A8%E0%A5%80-%E0%A4%95%E0%A4%BE-%E0%A4%AE%E0%A4%95%E0%A4%AC%E0%A4%B0%E0%A4%BE/"
+      ]
+    },
+    {
+      "direction": "forward",
+      "batch": 8,
+      "queries": [
+        {
+          "id": "mehtab_bagh--guru_ka_taal",
+          "q": "Mehtab Bagh to Guru Ka Taal Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "mehtab_bagh--hotel_hub",
+          "q": "Mehtab Bagh to Agra Fort railway station Agra city bus route stop metro"
+        },
+        {
+          "id": "fatehpur_sikri--akbar_tomb",
+          "q": "Fatehpur Sikri to Akbar Tomb Sikandra Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "fatehpur_sikri--ram_bagh",
+          "q": "Fatehpur Sikri to Ram Bagh Agra Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://agra.nic.in/tourist-place/fatehpur-sikri/",
+        "https://agra.nic.in/tourist-place/mehtab-bagh/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://altitudeagra.com/blog/fatehpur-sikri-to-agra",
+        "https://agra.nic.in/hi/tourist-place/%E0%A4%85%E0%A4%95%E0%A4%AC%E0%A4%B0-%E0%A4%95%E0%A4%BE-%E0%A4%AE%E0%A4%95%E0%A4%AC%E0%A4%B0%E0%A4%BE-%E0%A4%B8%E0%A4%BF%E0%A4%95%E0%A4%82%E0%A4%A6%E0%A4%B0%E0%A4%BE/",
+        "https://agra.nic.in/how-to-reach/",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://agrametro.org/stations/sikandra.php",
+        "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+        "https://city-rails.com/en/agra-metro-map/"
+      ]
+    },
+    {
+      "direction": "forward",
+      "batch": 9,
+      "queries": [
+        {
+          "id": "fatehpur_sikri--chini_rauza",
+          "q": "Fatehpur Sikri to Chini Ka Rauza Agra city bus route stop metro"
+        },
+        {
+          "id": "fatehpur_sikri--mariam_tomb",
+          "q": "Fatehpur Sikri to Mariam Tomb Sikandra Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "fatehpur_sikri--guru_ka_taal",
+          "q": "Fatehpur Sikri to Guru Ka Taal Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "fatehpur_sikri--hotel_hub",
+          "q": "Fatehpur Sikri to Agra Fort railway station Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+        "https://altitudeagra.com/blog/fatehpur-sikri-to-agra",
+        "https://agra.nic.in/tourist-place/fatehpur-sikri/",
+        "https://www.rome2rio.com/s/Fatehpur-S%C4%ABkri/Agra-Fort-Uttar-Pradesh-India",
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+        "https://agra.nic.in/how-to-reach/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://www.abhibus.com/bus-booking/ac-buses-from-fatehpursikri-agra-ticket-booking",
+        "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+        "https://www.agraguides.com/areas/sikandra"
+      ]
+    },
+    {
+      "direction": "forward",
+      "batch": 10,
+      "queries": [
+        {
+          "id": "akbar_tomb--ram_bagh",
+          "q": "Akbar Tomb Sikandra Agra to Ram Bagh Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "akbar_tomb--chini_rauza",
+          "q": "Akbar Tomb Sikandra Agra to Chini Ka Rauza Agra city bus route stop metro"
+        },
+        {
+          "id": "akbar_tomb--mariam_tomb",
+          "q": "Akbar Tomb Sikandra Agra to Mariam Tomb Sikandra Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "akbar_tomb--guru_ka_taal",
+          "q": "Akbar Tomb Sikandra Agra to Guru Ka Taal Agra Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+        "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://agra.nic.in/hi/tourist-place/%E0%A4%85%E0%A4%95%E0%A4%AC%E0%A4%B0-%E0%A4%95%E0%A4%BE-%E0%A4%AE%E0%A4%95%E0%A4%AC%E0%A4%B0%E0%A4%BE-%E0%A4%B8%E0%A4%BF%E0%A4%95%E0%A4%82%E0%A4%A6%E0%A4%B0%E0%A4%BE/",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+        "https://agrametro.org/stations/sikandra.php",
+        "https://agra.nic.in/hi/tourist-place/%E0%A4%AE%E0%A4%B0%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%89%E0%A4%9C%E0%A4%BC-%E0%A4%9C%E0%A4%BC%E0%A4%AE%E0%A4%BE%E0%A4%A8%E0%A5%80-%E0%A4%95%E0%A4%BE-%E0%A4%AE%E0%A4%95%E0%A4%AC%E0%A4%B0%E0%A4%BE/",
+        "https://agrametro.org/isbt-metro.php",
+        "https://ignca.gov.in/Asi_data/19333.pdf",
+        "https://www.nomadzine.com/agra/sikandra"
+      ]
+    },
+    {
+      "direction": "forward",
+      "batch": 11,
+      "queries": [
+        {
+          "id": "akbar_tomb--hotel_hub",
+          "q": "Akbar Tomb Sikandra Agra to Agra Fort railway station Agra city bus route stop metro"
+        },
+        {
+          "id": "ram_bagh--chini_rauza",
+          "q": "Ram Bagh Agra to Chini Ka Rauza Agra city bus route stop metro"
+        },
+        {
+          "id": "ram_bagh--mariam_tomb",
+          "q": "Ram Bagh Agra to Mariam Tomb Sikandra Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "ram_bagh--guru_ka_taal",
+          "q": "Ram Bagh Agra to Guru Ka Taal Agra Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://railmetro.com/agra/ram-bagh-to-guru-ka-tal-metro-station",
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+        "https://agra.nic.in/how-to-reach/",
+        "https://agrametro.org/stations/sikandra.php",
+        "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+        "https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/",
+        "https://lmrcl.com/pdf/Agra_DPR_December_2017.pdf"
+      ]
+    },
+    {
+      "direction": "forward",
+      "batch": 12,
+      "queries": [
+        {
+          "id": "ram_bagh--hotel_hub",
+          "q": "Ram Bagh Agra to Agra Fort railway station Agra city bus route stop metro"
+        },
+        {
+          "id": "chini_rauza--mariam_tomb",
+          "q": "Chini Ka Rauza to Mariam Tomb Sikandra Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "chini_rauza--guru_ka_taal",
+          "q": "Chini Ka Rauza to Guru Ka Taal Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "chini_rauza--hotel_hub",
+          "q": "Chini Ka Rauza to Agra Fort railway station Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://agra.nic.in/how-to-reach/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://agra.nic.in/hi/tourist-place/%E0%A4%AE%E0%A4%B0%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%89%E0%A4%9C%E0%A4%BC-%E0%A4%9C%E0%A4%BC%E0%A4%AE%E0%A4%BE%E0%A4%A8%E0%A5%80-%E0%A4%95%E0%A4%BE-%E0%A4%AE%E0%A4%95%E0%A4%AC%E0%A4%B0%E0%A4%BE/",
+        "https://www.aai.aero/en/node/2961",
+        "https://metrodost.com/agra/places/agra-fort-railway-station/",
+        "https://tajmahal.gov.in/about-agra.aspx",
+        "https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/"
+      ]
+    },
+    {
+      "direction": "forward",
+      "batch": 13,
+      "queries": [
+        {
+          "id": "mariam_tomb--guru_ka_taal",
+          "q": "Mariam Tomb Sikandra Agra to Guru Ka Taal Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "mariam_tomb--hotel_hub",
+          "q": "Mariam Tomb Sikandra Agra to Agra Fort railway station Agra city bus route stop metro"
+        },
+        {
+          "id": "guru_ka_taal--hotel_hub",
+          "q": "Guru Ka Taal Agra to Agra Fort railway station Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://railmetro.com/agra/guru-ka-tal-to-agra-fort-metro-station",
+        "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://agra.nic.in/how-to-reach/",
+        "https://railmetro.com/agra/agra-cantt-to-sikandra-metro-station",
+        "https://asiagracircle.in/marium-tomb-sikandra.html",
+        "https://agrametro.info/stations?id=2",
+        "https://www.nomadzine.com/agra/sikandra"
+      ]
+    },
+    {
+      "direction": "reverse",
+      "batch": 0,
+      "queries": [
+        {
+          "id": "agra_fort--taj_mahal",
+          "q": "Agra Fort to Taj Mahal Agra city bus route stop metro"
+        },
+        {
+          "id": "itimad_tomb--taj_mahal",
+          "q": "Itimad ud Daulah to Taj Mahal Agra city bus route stop metro"
+        },
+        {
+          "id": "mehtab_bagh--taj_mahal",
+          "q": "Mehtab Bagh to Taj Mahal Agra city bus route stop metro"
+        },
+        {
+          "id": "fatehpur_sikri--taj_mahal",
+          "q": "Fatehpur Sikri to Taj Mahal Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://agra.nic.in/tourist-place/fatehpur-sikri/",
+        "https://agra.nic.in/tourist-place/mehtab-bagh/",
+        "https://www.rome2rio.com/s/Fatehpur-S%C4%ABkri/T%C4%81j-Mahal",
+        "https://agra.nic.in/tourist-place/tajmahal/",
+        "https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/",
+        "https://agra.nic.in/how-to-reach/",
+        "https://metrodost.com/agra/places/itimad-ud-daulah/",
+        "https://www.metroagra.com/station/agra-fort-metro-station",
+        "https://agra.metro.org.in/",
+        "https://metrodost.com/agra/places/mehtab-bagh/",
+        "https://yometro.com/from-agra-fort-metro-station-agra-to-taj-mahal-metro-station-agra"
+      ]
+    },
+    {
+      "direction": "reverse",
+      "batch": 1,
+      "queries": [
+        {
+          "id": "akbar_tomb--taj_mahal",
+          "q": "Akbar Tomb Sikandra Agra to Taj Mahal Agra city bus route stop metro"
+        },
+        {
+          "id": "ram_bagh--taj_mahal",
+          "q": "Ram Bagh Agra to Taj Mahal Agra city bus route stop metro"
+        },
+        {
+          "id": "chini_rauza--taj_mahal",
+          "q": "Chini Ka Rauza to Taj Mahal Agra city bus route stop metro"
+        },
+        {
+          "id": "mariam_tomb--taj_mahal",
+          "q": "Mariam Tomb Sikandra Agra to Taj Mahal Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+        "https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/",
+        "https://agrametro.org/stations/sikandra.php",
+        "https://agra.nic.in/tourist-place/tajmahal/",
+        "https://railmetro.com/agra/ram-bagh-to-taj-east-gate-metro-station",
+        "https://agra.nic.in/how-to-reach/",
+        "https://lmrcl.com/pdf/Agra_DPR_December_2017.pdf",
+        "https://audiala.com/en/india/agra/akbars-tomb"
+      ]
+    },
+    {
+      "direction": "reverse",
+      "batch": 2,
+      "queries": [
+        {
+          "id": "guru_ka_taal--taj_mahal",
+          "q": "Guru Ka Taal Agra to Taj Mahal Agra city bus route stop metro"
+        },
+        {
+          "id": "hotel_hub--taj_mahal",
+          "q": "Agra Fort railway station to Taj Mahal Agra city bus route stop metro"
+        },
+        {
+          "id": "itimad_tomb--agra_fort",
+          "q": "Itimad ud Daulah to Agra Fort Agra city bus route stop metro"
+        },
+        {
+          "id": "mehtab_bagh--agra_fort",
+          "q": "Mehtab Bagh to Agra Fort Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://agra.nic.in/how-to-reach/",
+        "https://railmetro.com/agra/guru-ka-tal-to-taj-mahal-metro-station",
+        "https://agra.nic.in/tourist-place/mehtab-bagh/",
+        "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+        "https://www.metroagra.com/station/agra-fort-metro-station",
+        "https://tajmahal.gov.in/pdf/Metro-rail-service-in-Agra.pdf",
+        "https://yometro.com/from-agra-fort-metro-station-agra-to-taj-mahal-metro-station-agra",
+        "https://agra.metro.org.in/",
+        "https://agrametro.org/agra-fort-metro.php",
+        "https://railmetro.com/agra/guru-ka-tal-to-taj-east-gate-metro-station",
+        "https://metrodost.com/agra/places/itimad-ud-daulah/"
+      ]
+    },
+    {
+      "direction": "reverse",
+      "batch": 3,
+      "queries": [
+        {
+          "id": "fatehpur_sikri--agra_fort",
+          "q": "Fatehpur Sikri to Agra Fort Agra city bus route stop metro"
+        },
+        {
+          "id": "akbar_tomb--agra_fort",
+          "q": "Akbar Tomb Sikandra Agra to Agra Fort Agra city bus route stop metro"
+        },
+        {
+          "id": "ram_bagh--agra_fort",
+          "q": "Ram Bagh Agra to Agra Fort Agra city bus route stop metro"
+        },
+        {
+          "id": "chini_rauza--agra_fort",
+          "q": "Chini Ka Rauza to Agra Fort Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://agra.nic.in/tourist-place/fatehpur-sikri/",
+        "https://altitudeagra.com/blog/fatehpur-sikri-to-agra",
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://www.rome2rio.com/s/Fatehpur-S%C4%ABkri/Agra-Fort-Uttar-Pradesh-India",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://agrametro.org/stations/sikandra.php",
+        "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+        "https://www.abhibus.com/bus-booking/ac-buses-from-fatehpursikri-agra-ticket-booking",
+        "https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/",
+        "https://static.r2r.io/s/Fatehpur-S%C4%ABkri/Agra"
+      ]
+    },
+    {
+      "direction": "reverse",
+      "batch": 4,
+      "queries": [
+        {
+          "id": "mariam_tomb--agra_fort",
+          "q": "Mariam Tomb Sikandra Agra to Agra Fort Agra city bus route stop metro"
+        },
+        {
+          "id": "guru_ka_taal--agra_fort",
+          "q": "Guru Ka Taal Agra to Agra Fort Agra city bus route stop metro"
+        },
+        {
+          "id": "hotel_hub--agra_fort",
+          "q": "Agra Fort railway station to Agra Fort Agra city bus route stop metro"
+        },
+        {
+          "id": "mehtab_bagh--itimad_tomb",
+          "q": "Mehtab Bagh to Itimad ud Daulah Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://railmetro.com/agra/guru-ka-tal-to-agra-fort-metro-station",
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://agra.nic.in/how-to-reach/",
+        "https://www.upstdc.co.in/Booking/TourPackage?Type=1",
+        "https://agra.nic.in/tourist-place/mehtab-bagh/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://metrodost.com/agra/places/itimad-ud-daulah/",
+        "https://metrodost.com/agra/places/agra-fort-railway-station/"
+      ]
+    },
+    {
+      "direction": "reverse",
+      "batch": 5,
+      "queries": [
+        {
+          "id": "fatehpur_sikri--itimad_tomb",
+          "q": "Fatehpur Sikri to Itimad ud Daulah Agra city bus route stop metro"
+        },
+        {
+          "id": "akbar_tomb--itimad_tomb",
+          "q": "Akbar Tomb Sikandra Agra to Itimad ud Daulah Agra city bus route stop metro"
+        },
+        {
+          "id": "ram_bagh--itimad_tomb",
+          "q": "Ram Bagh Agra to Itimad ud Daulah Agra city bus route stop metro"
+        },
+        {
+          "id": "chini_rauza--itimad_tomb",
+          "q": "Chini Ka Rauza to Itimad ud Daulah Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+        "https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/",
+        "https://www.rome2rio.com/s/Fatehpur-S%C4%ABkri/Tomb-of-I-tim%C4%81d-ud-Daulah",
+        "https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/",
+        "https://agra.nic.in/tourist-place/fatehpur-sikri/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://metrodost.com/agra/places/itimad-ud-daulah/",
+        "https://agrametro.org/stations/sikandra.php",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://www.upstdc.co.in/Booking/TourPackage?Type=1",
+        "https://mapa-metro.com/en/india/agra/agra-metro-map.htm"
+      ]
+    },
+    {
+      "direction": "reverse",
+      "batch": 6,
+      "queries": [
+        {
+          "id": "mariam_tomb--itimad_tomb",
+          "q": "Mariam Tomb Sikandra Agra to Itimad ud Daulah Agra city bus route stop metro"
+        },
+        {
+          "id": "guru_ka_taal--itimad_tomb",
+          "q": "Guru Ka Taal Agra to Itimad ud Daulah Agra city bus route stop metro"
+        },
+        {
+          "id": "hotel_hub--itimad_tomb",
+          "q": "Agra Fort railway station to Itimad ud Daulah Agra city bus route stop metro"
+        },
+        {
+          "id": "fatehpur_sikri--mehtab_bagh",
+          "q": "Fatehpur Sikri to Mehtab Bagh Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/",
+        "https://www.rome2rio.com/s/Fatehpur-S%C4%ABkri/Mehtab-Bagh",
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://agra.nic.in/tourist-place/fatehpur-sikri/",
+        "https://metrodost.com/agra/places/itimad-ud-daulah/",
+        "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+        "https://agra.nic.in/tourist-place/mehtab-bagh/",
+        "https://www.asiagracircle.in/marium-tomb-sikandra.html",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb"
+      ]
+    },
+    {
+      "direction": "reverse",
+      "batch": 7,
+      "queries": [
+        {
+          "id": "akbar_tomb--mehtab_bagh",
+          "q": "Akbar Tomb Sikandra Agra to Mehtab Bagh Agra city bus route stop metro"
+        },
+        {
+          "id": "ram_bagh--mehtab_bagh",
+          "q": "Ram Bagh Agra to Mehtab Bagh Agra city bus route stop metro"
+        },
+        {
+          "id": "chini_rauza--mehtab_bagh",
+          "q": "Chini Ka Rauza to Mehtab Bagh Agra city bus route stop metro"
+        },
+        {
+          "id": "mariam_tomb--mehtab_bagh",
+          "q": "Mariam Tomb Sikandra Agra to Mehtab Bagh Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://agra.nic.in/tourist-place/mehtab-bagh/",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://agrametro.org/stations/sikandra.php",
+        "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+        "https://mapa-metro.com/en/india/agra/agra-metro-map.htm",
+        "https://www.asiagracircle.in/marium-tomb-sikandra.html",
+        "https://city-rails.com/en/agra-metro-map/",
+        "https://metrodost.com/agra/places/mehtab-bagh/",
+        "https://lmrcl.com/pdf/Agra_DPR_December_2017.pdf"
+      ]
+    },
+    {
+      "direction": "reverse",
+      "batch": 8,
+      "queries": [
+        {
+          "id": "guru_ka_taal--mehtab_bagh",
+          "q": "Guru Ka Taal Agra to Mehtab Bagh Agra city bus route stop metro"
+        },
+        {
+          "id": "hotel_hub--mehtab_bagh",
+          "q": "Agra Fort railway station to Mehtab Bagh Agra city bus route stop metro"
+        },
+        {
+          "id": "akbar_tomb--fatehpur_sikri",
+          "q": "Akbar Tomb Sikandra Agra to Fatehpur Sikri Agra city bus route stop metro"
+        },
+        {
+          "id": "ram_bagh--fatehpur_sikri",
+          "q": "Ram Bagh Agra to Fatehpur Sikri Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://agra.nic.in/tourist-place/fatehpur-sikri/",
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://agra.nic.in/tourist-place/mehtab-bagh/",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://agra.nic.in/how-to-reach/",
+        "https://agrametro.org/stations/sikandra.php",
+        "https://agrametro.org/isbt-metro.php",
+        "https://metrodost.com/agra/places/mehtab-bagh/",
+        "https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/",
+        "https://www.rome2rio.com/s/Sikandra-Rao/Fatehpur-S%C4%ABkri"
+      ]
+    },
+    {
+      "direction": "reverse",
+      "batch": 9,
+      "queries": [
+        {
+          "id": "chini_rauza--fatehpur_sikri",
+          "q": "Chini Ka Rauza to Fatehpur Sikri Agra city bus route stop metro"
+        },
+        {
+          "id": "mariam_tomb--fatehpur_sikri",
+          "q": "Mariam Tomb Sikandra Agra to Fatehpur Sikri Agra city bus route stop metro"
+        },
+        {
+          "id": "guru_ka_taal--fatehpur_sikri",
+          "q": "Guru Ka Taal Agra to Fatehpur Sikri Agra city bus route stop metro"
+        },
+        {
+          "id": "hotel_hub--fatehpur_sikri",
+          "q": "Agra Fort railway station to Fatehpur Sikri Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+        "https://agra.nic.in/tourist-place/fatehpur-sikri/",
+        "https://www.rome2rio.com/s/Agra-Fort-Uttar-Pradesh-India/Fatehpur-S%C4%ABkri",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+        "https://www.rome2rio.com/s/Agra-Fort-Rakabganj-Agra-Uttar-Pradesh-India/Fatehpur-S%C4%ABkri",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://www.makemytrip.com/bus-tickets/ac-buses-from-agra-to-fatehpur_sikri-online-ticket-booking.html",
+        "https://agra.nic.in/how-to-reach/"
+      ]
+    },
+    {
+      "direction": "reverse",
+      "batch": 10,
+      "queries": [
+        {
+          "id": "ram_bagh--akbar_tomb",
+          "q": "Ram Bagh Agra to Akbar Tomb Sikandra Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "chini_rauza--akbar_tomb",
+          "q": "Chini Ka Rauza to Akbar Tomb Sikandra Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "mariam_tomb--akbar_tomb",
+          "q": "Mariam Tomb Sikandra Agra to Akbar Tomb Sikandra Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "guru_ka_taal--akbar_tomb",
+          "q": "Guru Ka Taal Agra to Akbar Tomb Sikandra Agra Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+        "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+        "https://agra.nic.in/hi/tourist-place/%E0%A4%85%E0%A4%95%E0%A4%AC%E0%A4%B0-%E0%A4%95%E0%A4%BE-%E0%A4%AE%E0%A4%95%E0%A4%AC%E0%A4%B0%E0%A4%BE-%E0%A4%B8%E0%A4%BF%E0%A4%95%E0%A4%82%E0%A4%A6%E0%A4%B0%E0%A4%BE/",
+        "https://www.asiagracircle.in/marium-tomb-sikandra.html",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://agrametro.org/stations/sikandra.php",
+        "https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/",
+        "https://railmetro.com/agra/agra-cantt-to-sikandra-metro-station",
+        "https://agrametro.org/isbt-metro.php"
+      ]
+    },
+    {
+      "direction": "reverse",
+      "batch": 11,
+      "queries": [
+        {
+          "id": "hotel_hub--akbar_tomb",
+          "q": "Agra Fort railway station to Akbar Tomb Sikandra Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "chini_rauza--ram_bagh",
+          "q": "Chini Ka Rauza to Ram Bagh Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "mariam_tomb--ram_bagh",
+          "q": "Mariam Tomb Sikandra Agra to Ram Bagh Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "guru_ka_taal--ram_bagh",
+          "q": "Guru Ka Taal Agra to Ram Bagh Agra Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://railmetro.com/agra/guru-ka-tal-to-ram-bagh-metro-station",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+        "https://agra.nic.in/how-to-reach/",
+        "https://agra.nic.in/hi/tourist-place/%E0%A4%85%E0%A4%95%E0%A4%AC%E0%A4%B0-%E0%A4%95%E0%A4%BE-%E0%A4%AE%E0%A4%95%E0%A4%AC%E0%A4%B0%E0%A4%BE-%E0%A4%B8%E0%A4%BF%E0%A4%95%E0%A4%82%E0%A4%A6%E0%A4%B0%E0%A4%BE/",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://agrametro.org/stations/sikandra.php",
+        "https://lmrcl.com/pdf/Agra_DPR_December_2017.pdf",
+        "https://agrametro.org/isbt-metro.php"
+      ]
+    },
+    {
+      "direction": "reverse",
+      "batch": 12,
+      "queries": [
+        {
+          "id": "hotel_hub--ram_bagh",
+          "q": "Agra Fort railway station to Ram Bagh Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "mariam_tomb--chini_rauza",
+          "q": "Mariam Tomb Sikandra Agra to Chini Ka Rauza Agra city bus route stop metro"
+        },
+        {
+          "id": "guru_ka_taal--chini_rauza",
+          "q": "Guru Ka Taal Agra to Chini Ka Rauza Agra city bus route stop metro"
+        },
+        {
+          "id": "hotel_hub--chini_rauza",
+          "q": "Agra Fort railway station to Chini Ka Rauza Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://railmetro.com/agra/agra-fort-to-ram-bagh-metro-station",
+        "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://agra.nic.in/how-to-reach/",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://www.metroagra.com/station/agra-fort-metro-station",
+        "https://www.aai.aero/en/node/2961",
+        "https://agra.nic.in/hi/tourist-place/%E0%A4%AE%E0%A4%B0%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%89%E0%A4%9C%E0%A4%BC-%E0%A4%9C%E0%A4%BC%E0%A4%AE%E0%A4%BE%E0%A4%A8%E0%A5%80-%E0%A4%95%E0%A4%BE-%E0%A4%AE%E0%A4%95%E0%A4%AC%E0%A4%B0%E0%A4%BE/",
+        "https://asiagracircle.in/marium-tomb-sikandra.html"
+      ]
+    },
+    {
+      "direction": "reverse",
+      "batch": 13,
+      "queries": [
+        {
+          "id": "guru_ka_taal--mariam_tomb",
+          "q": "Guru Ka Taal Agra to Mariam Tomb Sikandra Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "hotel_hub--mariam_tomb",
+          "q": "Agra Fort railway station to Mariam Tomb Sikandra Agra Agra city bus route stop metro"
+        },
+        {
+          "id": "hotel_hub--guru_ka_taal",
+          "q": "Agra Fort railway station to Guru Ka Taal Agra Agra city bus route stop metro"
+        }
+      ],
+      "foundUrls": [
+        "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+        "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+        "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+        "https://railmetro.com/agra/agra-fort-to-guru-ka-tal-metro-station",
+        "https://agra.nic.in/tourist-place/agra-fort/",
+        "https://www.metroagra.com/places/monument/sikandra-akbars-tomb",
+        "https://www.agraguides.com/areas/sikandra",
+        "https://agra.nic.in/how-to-reach/",
+        "https://railmetro.com/agra/agra-cantt-to-sikandra-metro-station",
+        "https://agrametro.org/agra-fort-metro.php",
+        "https://railmetro.com/agra/guru-ka-tal-to-agra-fort-metro-station",
+        "https://www.metroagra.com/station/agra-fort-metro-station"
+      ]
+    }
+  ]
+}

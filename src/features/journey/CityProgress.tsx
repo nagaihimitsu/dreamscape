@@ -1,12 +1,11 @@
 import {
   battles,
   battleQuizzes,
-  city,
+  getCityContent,
   episodes,
-  journeyConfig,
   landmarks,
 } from "../../content";
-import { getEpisodeAvailability, getNextEpisode, getNextStoryBattle } from "../../domain/chapter";
+import { getEpisodeAvailability, getNextEpisode, getNextStoryBattle, storyBattlesForCity } from "../../domain/chapter";
 import type { GameState } from "../../domain/game";
 import "./city.css";
 
@@ -25,6 +24,7 @@ export function CityProgress({
   showNext?: boolean;
   showSummary?: boolean;
 }) {
+  const { city } = getCityContent(game.currentCityId);
   const next = getNextEpisode(game);
   const nextBattle = getNextStoryBattle(game);
   const cityCompleted = game.completedCityIds.includes(city.id);
@@ -89,12 +89,14 @@ export function CityProgress({
 }
 
 export function CityProgressBadge({ game }: { game: GameState }) {
-  const stops = episodes.filter((episode) => episode.kind !== "city_finale");
+  const { city } = getCityContent(game.currentCityId);
+  const stops = episodes.filter((episode) => episode.cityId === city.id && episode.kind !== "city_finale");
+  const storyBattles = storyBattlesForCity(city.id);
   const completed = stops.filter((episode) => game.completedEpisodeIds.includes(episode.id)).length;
-  const completedSpecials = journeyConfig.storyBattles.filter((item) => game.battleRecords.some((record) => record.battleId === item.battleId && record.attempts > 0)).length;
+  const completedSpecials = storyBattles.filter((item) => game.battleRecords.some((record) => record.battleId === item.battleId && record.attempts > 0)).length;
   const cityCompleted = game.completedCityIds.includes(city.id);
   return <span className="pill" data-testid={cityCompleted ? "city-complete" : undefined}>
-    {cityCompleted ? "都市クリア" : `観光 ${completed} / ${stops.length} · 対決 ${completedSpecials} / ${journeyConfig.storyBattles.length}`}
+    {cityCompleted ? "都市クリア" : `観光 ${completed} / ${stops.length} · 対決 ${completedSpecials} / ${storyBattles.length}`}
   </span>;
 }
 
@@ -103,7 +105,7 @@ export function CityRecords({ game }: { game: GameState }) {
   return (
     <div className="city-records">
       <ol>
-        {episodes.map((episode, index) => {
+        {episodes.filter((episode) => episode.cityId === game.currentCityId).map((episode, index) => {
           const cleared = game.completedEpisodeIds.includes(episode.id);
           const availability = getEpisodeAvailability(game, episode.id);
           const landmark = landmarks.find(

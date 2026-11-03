@@ -99,6 +99,21 @@ describe("travel encounters", () => {
   });
   afterEach(useCurrentCatalog);
 
+  it("charges and rewards currency-neutral amounts once", () => {
+    const cafe = encounters.encounters.find((event) => event.id === "galleria_cafe")!;
+    const option = cafe.options[0];
+    option.cost = 7;
+    delete option.costEuro;
+    cafe.completionMoney = 3;
+    delete cafe.completionMoneyEuro;
+    const initial = ready();
+    const chosen = choose(startEncounter(initial, cafe.id, () => 0), 0);
+    expect(chosen.travelBudget).toBe(initial.travelBudget - 7);
+    const completed = finish(chosen);
+    expect(completed.travelBudget).toBe(initial.travelBudget - 7 + 3);
+    expect(finishEncounter(completed, completed.revision)).toBe(completed);
+  });
+
   it("does not start dormant encounters and rejects a changed active definition", () => {
     const cafe = untilChoice(startEncounter(ready(), "galleria_cafe", () => 0));
     useCurrentCatalog();
@@ -382,15 +397,17 @@ describe("travel encounters", () => {
     expect(used.travelBudget).toBe(outing.travelBudget);
     expect(used.ap).toBe(outing.ap);
   });
-  it("keeps foreign-city possessions while allowing local items after city completion", () => {
+  it("keeps foreign-city item history while allowing local items after city completion", () => {
     const foreign = { id: "test_roma_item", cityId: "roma", nameJa: "旅の品", descriptionJa: "別の街の品。" };
     encounters.items.push(foreign);
     try {
-      const initial = { ...ready(), completedCityIds: ["milano"], inventory: { test_roma_item: "held" as const } };
+      const initial = { ...ready(), completedCityIds: ["milano", "roma"], inventory: { test_roma_item: "left_behind" as const } };
+      expect(() => validateEncounterState({ ...initial, inventory: { test_roma_item: "held" } })).toThrow();
+      expect(() => validateEncounterState({ ...initial, completedCityIds: ["milano"] })).toThrow();
       expect(getEncounterAvailability(initial, "galleria_cafe").available).toBe(true);
       const bought = finish(choose(startEncounter(initial, "galleria_cafe", () => 0), 2));
       const gifted = finish(choose(startEncounter(bought, "galleria_gift", () => 0), 0));
-      expect(gifted.inventory.test_roma_item).toBe("held");
+      expect(gifted.inventory.test_roma_item).toBe("left_behind");
       expect(gifted.inventory.galleria_souvenir).toBe("gifted");
       expect(gifted.ap).toBe(initial.ap);
       expect(gifted.travelBudget).toBe(initial.travelBudget + 2);

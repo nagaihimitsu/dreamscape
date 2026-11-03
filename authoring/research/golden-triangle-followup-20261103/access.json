@@ -1,0 +1,367 @@
+{
+  "schemaVersion": 1,
+  "status": "research_only",
+  "checkedAt": "2026-11-03",
+  "notesJa": "OSMの利用者編集データは現地確認や正式な入場可能性を保証しない。座標は候補として保持し、道路実測・実入口・本番徒歩経路として自動採用しない。OpenStreetMap contributors / ODbL。",
+  "records": [
+    {
+      "placeId": "delhi_red_fort",
+      "category": "osm_gate_candidate",
+      "status": "mapped_candidate_not_verified_visitor_entrance",
+      "observationJa": "OSMのwayにLahori Gateという地物が記録されている。形状上の記念門と券売・保安検査地点の同一性は未確認。代表点を公式入口として確定しない。",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap way 80429907",
+          "url": "https://www.openstreetmap.org/way/80429907",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "OSMのway 80429907はLahori Gateとhistoric=city_gateのタグを持つ。"
+        }
+      ]
+    },
+    {
+      "placeId": "delhi_qutb_minar",
+      "category": "osm_gate_candidate",
+      "status": "mapped_candidate_not_verified_visitor_entrance",
+      "observationJa": "施設周辺のOSMノードにentrance=mainがある。訪問者券売・現在の正規入口との一致は未確認。",
+      "candidatePosition": {
+        "latitude": 28.5253673,
+        "longitude": 77.1865349,
+        "osmNodeId": "939328496"
+      },
+      "sources": [
+        {
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap node 939328496",
+          "url": "https://www.openstreetmap.org/node/939328496",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "OpenStreetMapのnode 939328496 はentrance=mainとして記録されている。現地の公開状況・入場権限や正式な門の座標を確認したものではない。"
+        }
+      ]
+    },
+    {
+      "placeId": "delhi_qutb_minar",
+      "category": "osm_gate_candidate",
+      "status": "mapped_candidate_not_verified_visitor_entrance",
+      "observationJa": "OSMにはQutub Minar Ticketsの名称のノードがある。券売位置の候補であり施設入口そのものとは限らない。",
+      "candidatePosition": {
+        "latitude": 28.5254199,
+        "longitude": 77.1877269,
+        "osmNodeId": "1486856990"
+      },
+      "sources": [
+        {
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap node 1486856990",
+          "url": "https://www.openstreetmap.org/node/1486856990",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "OpenStreetMapのnode 1486856990 はQutub Minar Ticketsとして記録されている。現地の公開状況・入場権限や正式な門の座標を確認したものではない。"
+        }
+      ]
+    },
+    {
+      "placeId": "delhi_jama_masjid",
+      "category": "osm_gate_candidate",
+      "status": "mapped_candidate_not_verified_visitor_entrance",
+      "observationJa": "OSM上のGate 1。旅行者が現在利用できるか、入場の規則は未確認。",
+      "candidatePosition": {
+        "latitude": 28.6498209,
+        "longitude": 77.2335262,
+        "osmNodeId": "2592537221"
+      },
+      "sources": [
+        {
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap node 2592537221",
+          "url": "https://www.openstreetmap.org/node/2592537221",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "OpenStreetMapのnode 2592537221 はGate 1として記録されている。現地の公開状況・入場権限や正式な門の座標を確認したものではない。"
+        }
+      ]
+    },
+    {
+      "placeId": "delhi_jama_masjid",
+      "category": "osm_gate_candidate",
+      "status": "mapped_candidate_not_verified_visitor_entrance",
+      "observationJa": "OSM上のGate 3。旅行者が現在利用できるか、入場の規則は未確認。",
+      "candidatePosition": {
+        "latitude": 28.651455,
+        "longitude": 77.2334043,
+        "osmNodeId": "2657888917"
+      },
+      "sources": [
+        {
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap node 2657888917",
+          "url": "https://www.openstreetmap.org/node/2657888917",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "OpenStreetMapのnode 2657888917 はGate 3として記録されている。現地の公開状況・入場権限や正式な門の座標を確認したものではない。"
+        }
+      ]
+    },
+    {
+      "placeId": "delhi_jama_masjid",
+      "category": "osm_gate_candidate",
+      "status": "mapped_candidate_not_verified_visitor_entrance",
+      "observationJa": "OSM上のGate 2。旅行者が現在利用できるか、入場の規則は未確認。",
+      "candidatePosition": {
+        "latitude": 28.6507716,
+        "longitude": 77.2344698,
+        "osmNodeId": "2990363760"
+      },
+      "sources": [
+        {
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap node 2990363760",
+          "url": "https://www.openstreetmap.org/node/2990363760",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "OpenStreetMapのnode 2990363760 はGate 2として記録されている。現地の公開状況・入場権限や正式な門の座標を確認したものではない。"
+        }
+      ]
+    },
+    {
+      "placeId": "agra_agra_fort",
+      "category": "osm_gate_candidate",
+      "status": "mapped_candidate_not_verified_visitor_entrance",
+      "observationJa": "OSM上のAmar Singh Gate。地図上の候補であり入口運用や券売所位置の現地確認は別途必要。",
+      "candidatePosition": {
+        "latitude": 27.1763839,
+        "longitude": 78.0219891,
+        "osmNodeId": "1753920456"
+      },
+      "sources": [
+        {
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap node 1753920456",
+          "url": "https://www.openstreetmap.org/node/1753920456",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "OpenStreetMapのnode 1753920456 はAmar Singh Gateとして記録されている。現地の公開状況・入場権限や正式な門の座標を確認したものではない。"
+        }
+      ]
+    },
+    {
+      "placeId": "jaipur_amber_fort",
+      "category": "osm_gate_candidate",
+      "status": "mapped_candidate_not_verified_visitor_entrance",
+      "observationJa": "OSM上のSuraj Pol。門自体の記録であり、現在の歩行者入場可否はこの地図だけでは確定しない。",
+      "candidatePosition": {
+        "latitude": 26.9867232,
+        "longitude": 75.8513569,
+        "osmNodeId": "5079237889"
+      },
+      "sources": [
+        {
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap node 5079237889",
+          "url": "https://www.openstreetmap.org/node/5079237889",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "OpenStreetMapのnode 5079237889 はSuraj Polとして記録されている。現地の公開状況・入場権限や正式な門の座標を確認したものではない。"
+        }
+      ]
+    },
+    {
+      "placeId": "jaipur_amber_fort",
+      "category": "osm_gate_candidate",
+      "status": "mapped_candidate_not_verified_visitor_entrance",
+      "observationJa": "OSM上のChand Pol。門自体の記録であり、現在の車両・歩行者入場可否はこの地図だけでは確定しない。",
+      "candidatePosition": {
+        "latitude": 26.987223,
+        "longitude": 75.8508634,
+        "osmNodeId": "5079243358"
+      },
+      "sources": [
+        {
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap node 5079243358",
+          "url": "https://www.openstreetmap.org/node/5079243358",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "OpenStreetMapのnode 5079243358 はChand Polとして記録されている。現地の公開状況・入場権限や正式な門の座標を確認したものではない。"
+        }
+      ]
+    },
+    {
+      "placeId": "jaipur_city_palace",
+      "category": "osm_gate_candidate",
+      "status": "mapped_candidate_not_verified_visitor_entrance",
+      "observationJa": "OSM上のUday Pol／Gate 2。博物館の入場位置・開閉を確定するものではない。",
+      "candidatePosition": {
+        "latitude": 26.9266336,
+        "longitude": 75.8249839,
+        "osmNodeId": "11556748705"
+      },
+      "sources": [
+        {
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap node 11556748705",
+          "url": "https://www.openstreetmap.org/node/11556748705",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "OpenStreetMapのnode 11556748705 はUday Pol / Gate 2として記録されている。現地の公開状況・入場権限や正式な門の座標を確認したものではない。"
+        }
+      ]
+    },
+    {
+      "placeId": "jaipur_city_palace",
+      "category": "osm_gate_candidate",
+      "status": "mapped_candidate_not_verified_visitor_entrance",
+      "observationJa": "OSM上のVirendra Pol／Gate 1。博物館の入場位置・開閉を確定するものではない。",
+      "candidatePosition": {
+        "latitude": 26.9256022,
+        "longitude": 75.8242467,
+        "osmNodeId": "11556748707"
+      },
+      "sources": [
+        {
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap node 11556748707",
+          "url": "https://www.openstreetmap.org/node/11556748707",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "OpenStreetMapのnode 11556748707 はVirendra Pol / Gate 1として記録されている。現地の公開状況・入場権限や正式な門の座標を確認したものではない。"
+        }
+      ]
+    },
+    {
+      "placeId": "jaipur_hawa_mahal",
+      "category": "osm_gate_candidate",
+      "status": "mapped_candidate_not_verified_visitor_entrance",
+      "observationJa": "OSM上のHawa Mahal tickets。券売地点候補であり入場口との一致・位置精度は未確認。",
+      "candidatePosition": {
+        "latitude": 26.9241294,
+        "longitude": 75.8263893,
+        "osmNodeId": "10047925085"
+      },
+      "sources": [
+        {
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap node 10047925085",
+          "url": "https://www.openstreetmap.org/node/10047925085",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "OpenStreetMapのnode 10047925085 はHawa Mahal ticketsとして記録されている。現地の公開状況・入場権限や正式な門の座標を確認したものではない。"
+        }
+      ]
+    },
+    {
+      "placeId": "agra_taj_mahal",
+      "category": "visitor_access",
+      "status": "published_operator_information_no_gate_gps",
+      "observationJa": "運営情報では東門側Shilpgram、西門側Amrood ka Teelaに駐車場があり、駐車場と門の間に電動バス・カートがある。時刻・料金・歩行動線は別途確認。",
+      "sources": [
+        {
+          "publisher": "Uttar Pradesh Tourism",
+          "title": "Taj Mahal: Dos and Donts",
+          "url": "https://www.tajmahal.gov.in/dos-and-donts.aspx/getting-around-taj-mahal.aspx",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "タージ周囲500mの公害車両規制、東西の駐車場所、門までの電動交通の利用可能性が案内されている。"
+        }
+      ]
+    },
+    {
+      "placeId": "agra_mehtab_bagh",
+      "category": "river_crossing",
+      "status": "published_road_approach_foot_access_unverified",
+      "observationJa": "アーグラ県は城からAmbedkar橋を経由し約8kmと記す。これは道路アクセスの参考で、橋の歩道や安全な徒歩可否の証拠にはならない。",
+      "sources": [
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Mehtab Bagh",
+          "url": "https://agra.nic.in/tourist-place/mehtab-bagh/",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "公式案内はアーグラ城からAmbedkar橋経由約8kmのアクセスを記載する。"
+        }
+      ]
+    },
+    {
+      "placeId": "agra_itimad_tomb",
+      "category": "river_crossing",
+      "status": "published_road_approach_foot_access_unverified",
+      "observationJa": "アーグラ県は城から川を越えて約4km、オートリキシャ・タクシーでアクセス可能とする。橋の歩行条件・所要時間は確認できない。",
+      "sources": [
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Tomb of Itimad-ud-Daulah",
+          "url": "https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "案内は川向こう、アーグラ城から約4km、オートリキシャまたはタクシーによるアクセスを記載する。"
+        }
+      ]
+    },
+    {
+      "placeId": "delhi_red_fort",
+      "category": "station_candidate",
+      "status": "published_station_attraction_not_last_mile",
+      "observationJa": "デリー観光局の地下鉄案内はChandni Chowk駅から行ける場所にRed Fortを挙げる。最寄りと断定せず、出口から門までの徒歩時間・距離は登録しない。",
+      "sources": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Metro Itinerary",
+          "url": "https://delhitourism.gov.in/itinerary/metro_itinerary.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "Chandni Chowk駅の周辺観光地としてRed Fortを挙げる。"
+        }
+      ]
+    },
+    {
+      "placeId": "delhi_jama_masjid",
+      "category": "station_candidate",
+      "status": "published_station_attraction_not_last_mile",
+      "observationJa": "デリー観光局はChandni Chowk駅から行ける場所にJama Masjidを挙げる。最寄り・出口・徒歩所要時間の確定ではない。",
+      "sources": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Metro Itinerary",
+          "url": "https://delhitourism.gov.in/itinerary/metro_itinerary.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "Chandni Chowk駅の周辺観光地としてJama Masjidを挙げる。"
+        }
+      ]
+    },
+    {
+      "placeId": "delhi_qutb_minar",
+      "category": "station_candidate",
+      "status": "published_station_attraction_not_last_mile",
+      "observationJa": "デリー観光局はQutab Minar駅から行ける場所にQutab Minarを挙げる。施設入口との移動距離・時間は未確認。",
+      "sources": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Metro Itinerary",
+          "url": "https://delhitourism.gov.in/itinerary/metro_itinerary.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "Qutab Minar駅の周辺観光地としてQutab Minarを挙げる。"
+        }
+      ]
+    },
+    {
+      "placeId": "agra_mehtab_bagh",
+      "category": "river_crossing",
+      "status": "historical_media_report_not_current_access",
+      "observationJa": "2026年5月26日の現地報道はAmbedkar橋の修繕提案に言及している。現在の工事・通行状態や歩行者の通行可否はこの記事では確認できないため、歩行経路を解禁しない。",
+      "sources": [
+        {
+          "publisher": "Dainik Jagran",
+          "title": "Agra Yamuna bridge work and Ambedkar bridge repair",
+          "url": "https://www.jagran.com/uttar-pradesh/agra-city-agra-yamuna-dayalbagh-to-khandauli-bridge-work-start-soon-ambedkar-bridge-repairing-setu-nigam-40252393.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2026年5月26日の記事はAmbedkar橋の修繕案を当局に提出したと報じた。現在の通行状況を示すものではない。"
+        }
+      ]
+    }
+  ]
+}

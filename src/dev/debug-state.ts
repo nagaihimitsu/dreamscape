@@ -1,12 +1,16 @@
-import { balance, city } from "../content";
+import { balance, battles, city, episodes, getCities, getCityContent } from "../content";
 import { createGame, startDate, validateGameState, type GameState } from "../domain/game";
 import { getNextEpisode, getNextStoryBattle, startEpisode } from "../domain/chapter";
 import { openTourism, replayTourismGuide, skipTourismGuide, startTourismBattle } from "../domain/tourism";
 import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "../domain/battle";
-import { startEncounter } from "../domain/encounter";
+import { startEncounter, startTourismEncounter } from "../domain/encounter";
+import { departToNextCity } from "../domain/city-travel";
+import { encounters } from "../content/encounters";
+import { minimumHomeFare } from "../domain/travel-routes";
 
 export type DebugScene = "tourism" | "battle" | "encounter" | "date";
 export type DebugSettings = {
+  cityId?: string;
   scene: DebugScene;
   id: string;
   progress: "initial" | "completed";
@@ -17,10 +21,32 @@ export type DebugSettings = {
   roll: "positive" | "negative";
 };
 
+const completedByCity = new Map<string, GameState>();
+
+/** Prepare linked earlier cities through the same progress and departure rules. */
+function startingCity(cityId: string, visited = new Set<string>()): GameState {
+  if (visited.has(cityId)) throw new Error("都市の出発先が循環しています。");
+  const chain = new Set(visited).add(cityId);
+  const previous = getCities().find((item) => item.nextCityId === cityId && item.productionStatus === "complete");
+  if (previous) {
+    const completed = completedJourney(previous.id, chain);
+    const departed = departToNextCity(completed, completed.revision);
+    if (departed.currentCityId !== cityId) throw new Error("前の街から出発できませんでした。");
+    return departed;
+  }
+  const base = createGame();
+  const { travelSettings } = getCityContent(cityId);
+  return { ...base, currentCityId: cityId, travel: { ...base.travel,
+    currentPlaceId: travelSettings.hotelPlaceId, hotelPlaceId: travelSettings.hotelPlaceId } };
+}
+
 /** Generate a consistent completed journey using the actual game rules. */
-function completedJourney(): GameState {
-  let state = createGame();
-  for (let count = 0; !state.completedCityIds.includes(city.id); count++) {
+function completedJourney(cityId: string, visited = new Set<string>()): GameState {
+  if (visited.has(cityId)) throw new Error("都市の出発先が循環しています。");
+  const cached = completedByCity.get(cityId);
+  if (cached) return cached;
+  let state = startingCity(cityId, visited);
+  for (let count = 0; !state.completedCityIds.includes(cityId); count++) {
     if (count > 30) throw new Error("旅の準備を完了できませんでした。");
     const special = getNextStoryBattle(state);
     const episode = getNextEpisode(state);
@@ -41,13 +67,15 @@ function completedJourney(): GameState {
     }
     state = leaveBattle(state, state.revision);
   }
-  return validateGameState(state);
+  const complete = validateGameState(state);
+  completedByCity.set(cityId, complete);
+  return complete;
 }
-let complete: GameState | undefined;
 
 /** Build only states the real game functions can start; never alter player data. */
 export function createDebugState(settings: DebugSettings): GameState {
-  const base = settings.progress === "initial" ? createGame() : (complete ??= completedJourney());
+  const cityId = settings.cityId ?? city.id;
+  const base = settings.progress === "initial" ? startingCity(cityId) : completedJourney(cityId);
   let state: GameState = {
     ...base,
     // The requested AP value is the whole debug balance; retained pending
@@ -58,6 +86,22 @@ export function createDebugState(settings: DebugSettings): GameState {
     trust: settings.trust,
     spark: settings.spark,
   };
+  const { travel } = getCityContent(cityId);
+  const landmarkId = settings.scene === "tourism" ? settings.id
+    : settings.scene === "battle" ? battles.find((item) => item.id === settings.id)?.landmarkId
+      : settings.scene === "encounter" ? encounters.encounters.find((item) => item.id === settings.id)?.landmarkId
+        : undefined;
+  const eventId = settings.scene === "battle"
+    ? episodes.find((item) => item.cityId === cityId && item.battleId === settings.id)?.id ?? settings.id
+    : settings.scene === "date" ? settings.id : undefined;
+  const event = travel.events.find((item) => item.id === eventId);
+  const place = travel.places.find((item) => item.id === event?.placeId) ??
+    travel.places.find((item) => landmarkId && item.landmarkIds?.includes(landmarkId));
+  if (!place) throw new Error("この街に場面の地点が見つかりません。");
+  const returnReserve = minimumHomeFare(travel.routes, place.id, state.travel.hotelPlaceId, state.travel.minute);
+  if (returnReserve === undefined || returnReserve > state.travelBudget)
+    throw new Error("この地点から滞在先への帰路を確認できません。");
+  state = { ...state, travel: { ...state.travel, currentPlaceId: place.id, returnReserve } };
   const nextRoll = () => settings.roll === "positive" ? 0 : 9999;
   switch (settings.scene) {
     case "tourism":
@@ -69,10 +113,16 @@ export function createDebugState(settings: DebugSettings): GameState {
       state = startBattle(state, settings.id);
       if (!state.activeBattle) throw new Error("この進行状態ではバトルを始められません。");
       break;
-    case "encounter":
-      state = startEncounter(state, settings.id, nextRoll);
+    case "encounter": {
+      const encounter = encounters.encounters.find((item) => item.id === settings.id && item.cityId === cityId);
+      if (encounter?.availability === "tourism") {
+        state = openTourism(state, encounter.landmarkId);
+        if (state.activeTourism?.phase === "guide") state = skipTourismGuide(state, state.revision);
+        state = startTourismEncounter(state, settings.id, state.revision, nextRoll);
+      } else state = startEncounter(state, settings.id, nextRoll);
       if (!state.activeEncounter) throw new Error("この進行状態では交流を始められません。必要な進行や品物を確認してください。");
       break;
+    }
     case "date":
       state = startDate(state, settings.id, nextRoll);
       if (!state.activeDate) throw new Error("この進行状態ではデートを始められません。APや解放条件を確認してください。");

@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { city, dateDestinations, dialogueExpressions, dialogueReactions, presentation, tourismAssets } from "../../content";
+import { getCityContent, dateDestinations, dialogueExpressions, dialogueReactions, presentation, tourismAssets } from "../../content";
 import type { DateDefinition } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
@@ -154,7 +154,7 @@ export function RomanceScene({
         <CharacterPortrait
           characterId="heroine"
           sceneId={active.dateId}
-          cityId={date?.chapterId}
+          cityId={game.currentCityId}
           emotion={emotion}
           active={frame.speaker === "heroine"}
         >
@@ -190,7 +190,7 @@ export function RomanceScene({
           </div>
           {destination && (
             <span className="dialogue-destination" data-testid="date-destination">
-              {destination.cityId === city.id ? `${city.nameJa} ／ ` : ""}{destination.nameJa}
+              {`${getCityContent(destination.cityId).city.nameJa} ／ `}{destination.nameJa}
             </span>
           )}
         </div>

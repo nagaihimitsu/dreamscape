@@ -1,6 +1,7 @@
 import type { TravelCatalog } from "../src/content/travel-schemas";
 import type { JourneyConfig } from "../src/content/journey-schemas";
 import type { BattleDefinition, DateDefinition } from "../src/content/schemas";
+import { DAY_END, DAY_START } from "../src/domain/travel";
 
 /** Check the city's authored destinations against the existing game catalogs. */
 export function validateTravelContent(
@@ -13,6 +14,7 @@ export function validateTravelContent(
   landmarkIds: readonly string[],
   destinationIds: readonly string[],
   backgrounds: Record<string, unknown>,
+  options: { allowPendingContent?: boolean; plannedLandmarkIds?: readonly string[] } = {},
 ): void {
   if (travel.cityId !== cityId) throw new Error(`Unknown travel city: ${travel.cityId}`);
   if (!travel.places.some((place) => place.id === settings.hotelPlaceId))
@@ -29,9 +31,15 @@ export function validateTravelContent(
       if (!destinationIds.includes(destinationId) || assignedDestinations.has(destinationId)) throw new Error(`Unknown or duplicate travel destination: ${place.id}/${destinationId}`);
       assignedDestinations.add(destinationId);
     }
+    // Events at the current place and returning from the hotel require an
+    // explicit zero-time self route. A different place can be reached by any
+    // authored transport: never infer a walking route from its coordinates.
+    if (!travel.routes.some((route) => route.fromPlaceId === place.id && route.toPlaceId === place.id && route.mode === "walk"))
+      throw new Error(`Missing same-place route: ${place.id}`);
     for (const destination of travel.places) {
-      if (!travel.routes.some((route) => route.fromPlaceId === place.id && route.toPlaceId === destination.id && route.mode === "walk"))
-        throw new Error(`Missing directed walking route: ${place.id}/${destination.id}`);
+      if (place.id === destination.id) continue;
+      if (!travel.routes.some((route) => route.fromPlaceId === place.id && route.toPlaceId === destination.id && route.minutes < DAY_END - DAY_START))
+        throw new Error(`Missing usable directed route: ${place.id}/${destination.id}`);
     }
   }
   const mainIds = new Set([...journey.episodes.map((episode) => episode.id), ...journey.storyBattles.map((battle) => battle.battleId)]);
@@ -43,6 +51,18 @@ export function validateTravelContent(
   for (const event of travel.events) {
     const date = datesById.get(event.id);
     const place = travel.places.find((candidate) => candidate.id === event.placeId)!;
+    if (event.contentStatus === "pending_content" && !options.allowPendingContent)
+      throw new Error(`Pending travel event in playable city: ${event.id}`);
+    if (event.contentStatus === "pending_content" && !date && !mainIds.has(event.id)) {
+      if (event.category === "main") {
+        if (event.apCost !== 0 || !options.plannedLandmarkIds?.includes(place.id))
+          throw new Error(`Invalid pending main travel event: ${event.id}`);
+      } else if (event.category === "date") {
+        if (!place.destinationIds?.some((id) => destinationIds.includes(id)))
+          throw new Error(`Pending date lacks its city destination: ${event.id}`);
+      } else throw new Error(`Invalid pending travel event: ${event.id}`);
+      continue;
+    }
     if (date) {
       if (event.category !== "date" || event.apCost !== date.apCost)
         throw new Error(`Travel date category or AP mismatch: ${event.id}`);

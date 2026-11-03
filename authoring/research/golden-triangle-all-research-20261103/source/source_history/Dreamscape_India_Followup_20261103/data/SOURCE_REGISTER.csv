@@ -1,0 +1,41 @@
+﻿sourceId,publisher,url,evidenceLevel,supportedClaim,checkedAt
+TAJ,Government of Uttar Pradesh Taj Mahal official,https://tajmahal.gov.in/visiting-hours.aspx,official,entry/foreign-price/south-exit,2026-11-03
+TAJ_DIST,District Agra Government of Uttar Pradesh,https://agra.nic.in/tourist-place/tajmahal/,government,ADA toll and shuttles,2026-11-03
+TAJ_FEES,Government Uttar Pradesh Agra monument ticket table,https://tajmahal.gov.in/travel-information.aspx,official,Agra monument prices and weekly differences,2026-11-03
+AGRAFORT,District Agra Government of Uttar Pradesh,https://agra.nic.in/tourist-place/agra-fort/,government,Amar Singh gate foreign ₹650,2026-11-03
+SIKRI,District Agra Government of Uttar Pradesh,https://agra.nic.in/tourist-place/fatehpur-sikri/,government,"parking, battery bus, 610 INR",2026-11-03
+ITIMAD,District Agra Government of Uttar Pradesh,https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/,government,entry fee/left bank,2026-11-03
+MEHTAB,District Agra Government of Uttar Pradesh,https://agra.nic.in/tourist-place/mehtab-bagh/,government,"Ambedkar road bridge, 300 INR",2026-11-03
+AKBAR,District Agra Government of Uttar Pradesh,https://agra.nic.in/tourist-place/akbars-tomb-sikandra/,government,"310 INR, ticket gate",2026-11-03
+RAMBAGH,District Agra Government of Uttar Pradesh,https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/,government,"300 INR, gate",2026-11-03
+CHINI,District Agra Government of Uttar Pradesh,https://agra.nic.in/tourist-place/chini-ka-rauza/,government,free general entry,2026-11-03
+GURUTAAL,District Agra Government of Uttar Pradesh,https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/,government,free/head covering,2026-11-03
+DELHI_QUTB,District North Delhi Government,https://dmnorth.delhi.gov.in/tourist-place/rameshwar/,government,600 cash/550 online for foreigners,2026-11-03
+DELHI_JAMA,Delhi Tourism Government,https://delhitourism.gov.in/tourist_place/jama_masjid.html,government,"400 foreign entry, tourist hours",2026-11-03
+DELHI_AGRASEN,Delhi Tourism Government,https://www.delhitourism.gov.in/dt/explore_the_city/agrasen_ki_baoli.html,government,9am-5:30pm,2026-11-03
+DELHI_HUM_A,Delhi Tourism Government variant A,https://www.delhitourism.gov.in/tourist_place/humayun_tomb.html,government_conflict,600 and sunrise-sunset,2026-11-03
+DELHI_HUM_B,Delhi Tourism Government variant B,https://delhitourism.gov.in/dt/explore_the_city/humayuns_tomb.html,government_conflict,550 and sunrise-19:30,2026-11-03
+DELHI_RED,Press Trust of India on ASI 2026 order,https://www.business-standard.com/india-news/red-fort-to-remain-open-on-all-days-of-week-asi-126022100547_1.html,secondary_reporting,Red Fort now open Mondays 2026-02-13 notice reported,2026-11-03
+DELHI_INDIA_GATE,Delhi Tourism Government,https://delhitourism.gov.in/tourist_place/india_gate.html,government,public/free,2026-11-03
+DELHI_LODHI,Delhi Tourism Government,https://delhitourism.gov.in/tourist_place/lodi_tomb.html,government,free/park daylight,2026-11-03
+DELHI_LOTUS,Bahai House of Worship operator,https://bahaihouseofworship.in/plan-a-visit/,official_operator,"Tue-Sun 08:30-17:00, Monday closed, photography restrictions",2026-11-03
+JAIPUR_AMBER,Rajasthan Tourism Government,https://www.tourism.rajasthan.gov.in/content/rajasthan-tourism/en/tourist-destinations/amber-palace.html,government,"Suraj Pol walk, Chand Pol by car",2026-11-03
+JAIPUR_HAWA,Ministry of Tourism India,https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal,government,rear entrance and 09-16:30,2026-11-03
+JAIPUR_JANT_A,Rajasthan Tourism Government,https://www.tourism.rajasthan.gov.in/jantar-mantar.html,government_conflict,"09-19:00 tickets till 18:30, old foreign fee",2026-11-03
+JAIPUR_JANT_B,Ministry of Tourism India,https://www.incredibleindia.gov.in/en/rajasthan/jaipur/jantar-mantar,government_conflict,09-17:00,2026-11-03
+JAIPUR_2026,Times of India citing Jan 2026 state revisions,https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms,secondary_reporting,2026 foreign Amber ₹1000; other state monuments ₹600,2026-11-03
+CITY_PALACE,City Palace Museum operator,https://citypalace.org/visit,official_operator,"09:30-18:30; Gate 2 parking, foreign rate selector not retrieved; night temporarily closed",2026-11-03
+JAIGARH,Jaigarh Fort operator,https://www.jaigarh.co/visit,official_operator,"09:00-18:30, last entry 18:00; 200 shown for Indian resident not foreigners",2026-11-03
+JAIPUR_NAHAR,Rajasthan Tourism Government,https://www.tourism.rajasthan.gov.in/nahargarh-fort.html,government,"No public transport to fort, taxi recommended",2026-11-03
+JAIPUR_MAHAL,Rajasthan Tourism Government,https://www.tourism.rajasthan.gov.in/content/rajasthan-tourism/en/tourist-destinations/jal-mahal.html,government,shore-only viewing,2026-11-03
+JAIPUR_METRO,Jaipur Metro Rail Corp official 2025 fare matrix,https://transport.rajasthan.gov.in/content/dam/transport/metro/Passenger%20Information/MetroFares/Notification%20of%20%20Fare%20Revision%20%20Effective%20from%2031.01.2025.pdf,official_pdf,"11x11 official station OD matrix, base fares",2026-11-03
+JAIPUR_METRO_TIME,Jaipur Metro Rail Corp public timetable effective Aug 2023,https://transport.rajasthan.gov.in/content/dam/transport/metro/Passenger%20Information/Metro%20time%20Table/current%20time%20table.pdf,official_pdf,05:20 to 22:21 endpoint departures; 10min headways daytime as published 2023,2026-11-03
+DELHI_METRO,Delhi Metro Rail Corp official planner,https://new.delhimetrorail.com/en,official_operator,"interactive station OD fare, Sunday holiday differences",2026-11-03
+DELHI_AUTO,Delhi Government 2023 fare notification,https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf,official_pdf,"auto 30 first 1.5km, 11/km thereafter; taxi 40 first km, 17 or 20/km",2026-11-03
+INDIAN_RAIL,Indian Railways live schedule inquiry,https://www.indianrail.gov.in/enquiry/SCHEDULE/TrainSchedule.jsp,official_operator,needs interactive train/date query; no selected-date proof,2026-11-03
+GT_TRAIN,Rail journey schedule third-party crosscheck 12050,https://erail.in/train-enquiry/12050,third_party,"NZM 08:10 -> AGC 09:50, Friday excluded per third-party",2026-11-03
+AJ_TRAIN,Rail journey AF to JP 22988 third party,https://erail.in/trains/agra-fort-AF/jaipur-JP,third_party,"22988 approx 14:35 ->18:45, service date must be verified",2026-11-03
+AGRA_METRO,Agra Metro non-official service summary,https://www.metroagra.com/faqs,third_party,six station priority corridor; exact operating date verification required,2026-11-03
+COMMONS,Wikimedia Commons MediaWiki API,https://commons.wikimedia.org/w/api.php,provider_api,imageinfo metadata licenses and URLs; asset download script,2026-11-03
+WIKIMEDIA_TERMS,Wikimedia Commons licensing policy,https://commons.wikimedia.org/wiki/Commons:Licensing,provider_policy,"CC attribution, attribution text and derivative terms",2026-11-03
+OSM,OpenStreetMap Foundation credit,https://www.openstreetmap.org/copyright,provider_policy,"derived map attribution, not road network measurement",2026-11-03

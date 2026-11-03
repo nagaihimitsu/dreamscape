@@ -1,0 +1,31 @@
+﻿placeId,cityId,gameINRPerAdult,gameINRTwoAdults,priorOfficialOrCitedINRPerAdult,newPublishedCandidateINRPerAdult,twoAdultDifferenceVsGameINR,evidenceTier,sourceIDs,operatorLiveTicketVerified,definitelySafeToAdoptAutomatically,notesJa,checkedAt
+delhi_red_fort,delhi,500,1000,,500,0,SECONDARY_GOV_EDUCATION_OLD,DELHI_FORT_500,false,false,Delhi education page says ₹500; old Monday closure contradicts 2026 notice; tariff must be confirmed by ASI ticket portal.,2026-11-03
+delhi_qutb_minar,delhi,600,1200,600,600,0,DISTRICT_GOV_PAGE,DELHI_QUTB,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+delhi_humayun_tomb,delhi,600,1200,,,,PRIMARY_OFFICIAL_CONFLICT,HUMAYUN_600|HUMAYUN_550,false,false,"Two Delhi Tourism pages contradict: foreign ₹600 vs ₹550; game ₹600 conservative, NOT current verified.",2026-11-03
+delhi_india_gate,delhi,0,0,0,0,0,GOV_PUBLIC_FREE,DELHI_INDIA_GATE,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+delhi_jama_masjid,delhi,400,800,400,400,0,GOV_PAGE_NEEDS_REVALIDATION,DELHI_JAMA,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+delhi_chandni_chowk,delhi,0,0,0,0,0,PUBLIC_STREET_NO_ENTRY_TICKET,DELHI_METRO,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+delhi_lodhi_garden,delhi,0,0,0,0,0,GOV_PUBLIC_FREE,DELHI_LODHI,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+delhi_agrasen_baoli,delhi,0,0,,0,0,GOVERNMENT_ARCHIVE_FREE_NOT_LIVE,DELHI_AGRASEN|AGRASEN_FREE,false,false,Official Delhi Tourism publishes 09:00–17:30; an older government FAQ PDF states free admission. Publication is stale and could not be visually confirmed by PDF screenshot; check current counter if necessary.,2026-11-03
+delhi_lotus_temple,delhi,0,0,0,0,0,OPERATOR_FREE_WORSHIP,DELHI_LOTUS,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+delhi_bangla_sahib,delhi,0,0,0,0,0,ASSUMED_FREE_WORSHIP_RECHECK,DELHI_LODHI,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+agra_taj_mahal,agra,1100,2200,1100,1100,0,GOV_CURRENT_DISPLAY,TAJ,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+agra_agra_fort,agra,650,1300,650,650,0,GOV_CURRENT_DISPLAY,AGRAFORT,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+agra_itimad_tomb,agra,310,620,310,310,0,GOV_CURRENT_DISPLAY,ITIMAD,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+agra_mehtab_bagh,agra,300,600,300,300,0,GOV_CURRENT_DISPLAY,MEHTAB,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+agra_fatehpur_sikri,agra,610,1220,610,610,0,GOV_CURRENT_DISPLAY,SIKRI,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+agra_akbar_tomb,agra,310,620,310,310,0,GOV_CURRENT_DISPLAY,AKBAR,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+agra_ram_bagh,agra,300,600,300,300,0,GOV_CURRENT_DISPLAY,RAMBAGH,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+agra_chini_rauza,agra,0,0,0,0,0,DISTRICT_GOV_FREE,CHINI,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+agra_mariam_tomb,agra,300,600,300,300,0,GOV_CURRENT_DISPLAY,TAJ_FEES,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+agra_guru_ka_taal,agra,0,0,0,0,0,DISTRICT_GOV_FREE,GURUTAAL,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+jaipur_amber_fort,jaipur,1000,2000,1000,1000,0,2026_SECONDARY_PRICE_REPORT,JAIPUR_2026,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+jaipur_hawa_mahal,jaipur,600,1200,600,600,0,2026_SECONDARY_PRICE_REPORT,JAIPUR_2026,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+jaipur_city_palace,jaipur,1000,2000,,1200,400,MULTISOURCE_SECONDARY_2026,CITY_PALACE_1200_A|CITY_PALACE_1200_B|CITY_PALACE,false,false,"₹1,200 international adult reported by 2026 sources. Operator foreign selector did not render in public scrape; game ₹1,000 is a distinct estimate.",2026-11-03
+jaipur_jantar_mantar,jaipur,600,1200,600,600,0,2026_SECONDARY_PRICE_REPORT_OLD_GOV_CONFLICT,JAIPUR_2026,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+jaipur_jal_mahal,jaipur,0,0,0,0,0,PUBLIC_SHORE_VIEW_ONLY,JAIPUR_MAHAL,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+jaipur_nahargarh_fort,jaipur,600,1200,600,600,0,2026_SECONDARY_PRICE_REPORT,JAIPUR_2026,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+jaipur_albert_hall,jaipur,600,1200,600,600,0,2026_SECONDARY_PRICE_REPORT,JAIPUR_2026,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+jaipur_jaigarh_fort,jaipur,500,1000,,,,SECONDARY_CONFLICT_700_V_85,JAIGARH_700|JAIGARH_85|JAIGARH,false,false,Foreign operator tab not retrieved. Secondary prices ₹700 and ₹85 disagree; domestic ₹200 is not foreign price.,2026-11-03
+jaipur_johari_bazaar,jaipur,0,0,0,0,0,PUBLIC_STREET_NO_ENTRY_TICKET,JAIPUR_HAWA,false,false,Prior audit value retained; not reverified via live booking in this addendum.,2026-11-03
+jaipur_panna_meena_kund,jaipur,0,0,,0,0,SECONDARY_FREE_VIEW_ONLY,PANNA_FREE,false,false,Multiple recent visitor guides report free street-side viewing; no official ticket/step access rule confirmed.,2026-11-03
