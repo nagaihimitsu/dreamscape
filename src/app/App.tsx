@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import {
   balance,
   dates,
@@ -12,6 +12,13 @@ import {
   episodes,
   journeyConfig,
 } from "../content";
+import { getJourney } from "../content/journeys";
+import { currencyForCity, formatMoneyForCity } from "../content/currency";
+import { journeyStorage } from "../persistence/journey-storage";
+import { useJourneyLock } from "../persistence/useJourneyLock";
+import { loadJourneyDraft, promoteJourneyDraft } from "../persistence/journey-preparation";
+import { PreparingJourney } from "../features/journey/PreparingJourney";
+import { JourneySelection } from "../features/journey/JourneySelection";
 import { beginTravelEvent, finishTravelEventIfComplete, sleepAtHotel, waitForTravel } from "../domain/travel-game";
 import { getNextCity, departToNextCity } from "../domain/city-travel";
 import {
@@ -91,15 +98,56 @@ const browserStorage = {
 };
 type Confirmation = { kind: "date"; id: string };
 
-export default function App({
-  storage = browserStorage,
-  nextRomanceRoll = secureRomanceRoll,
-  debug = false,
-}: {
+type AppProps = {
   storage?: typeof browserStorage;
   nextRomanceRoll?: () => number;
   debug?: boolean;
-} = {}) {
+};
+
+export default function App(props: AppProps = {}) {
+  const [journeyId, setJourneyId] = useState("milano");
+  const baseStorage = props.storage ?? browserStorage;
+  const scopedStorage = useMemo(() => journeyStorage(baseStorage, journeyId), [baseStorage, journeyId]);
+  const [lockAttempt, setLockAttempt] = useState(0);
+  const lockStatus = useJourneyLock(props.debug ? "milano" : journeyId, scopedStorage, lockAttempt);
+  // Debug supplies an isolated, pre-populated game; do not alter its storage.
+  if (props.debug) return <GameApp {...props} />;
+  if (lockStatus !== "ready") return <div className="app-shell"><main id="main"><section className="paper intro">
+    <JourneySelection value={journeyId} onChange={setJourneyId} />
+    <p role={lockStatus === "loading" ? "status" : "alert"}>{lockStatus === "loading"
+      ? "保存データを確認しています。"
+      : lockStatus === "busy" ? "この旅行編は別のタブで開いています。そちらを閉じてから再試行してください。"
+      : "このブラウザでは別タブとの保存競合を防げないため、この旅行編を開けません。対応ブラウザをご利用ください。"}</p>
+    {lockStatus === "busy" && <button type="button" className="secondary" onClick={() => setLockAttempt((value) => value + 1)}>再試行</button>}
+  </section></main></div>;
+  const journey = getJourney(journeyId);
+  if (journey?.status === "preparing") return <PreparingJourney key={journeyId} storage={scopedStorage} onSwitchJourney={setJourneyId} />;
+  if (journeyId === "golden_triangle") return <PlayableJourney key={journeyId} {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={setJourneyId} />;
+  return <GameApp key={journeyId} {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={setJourneyId} />;
+}
+
+function PlayableJourney(props: AppProps & { storage: typeof browserStorage; journeyId: string; onSwitchJourney: (id: string) => void }) {
+  const [status, setStatus] = useState<"loading" | "ready" | string>("loading");
+  useEffect(() => {
+    const draft = loadJourneyDraft(props.storage);
+    if (draft.status !== "loaded") { setStatus("ready"); return; }
+    const result = promoteJourneyDraft(props.storage, draft.raw);
+    setStatus(result.ok ? "ready" : result.message);
+  }, [props.storage]);
+  if (status === "ready") return <GameApp {...props} />;
+  return <div className="app-shell"><main id="main"><section className="paper intro">
+    <JourneySelection value={props.journeyId} onChange={props.onSwitchJourney} />
+    <p role={status === "loading" ? "status" : "alert"}>{status === "loading" ? "保存データを確認しています。" : status}</p>
+  </section></main></div>;
+}
+
+function GameApp({
+  storage = browserStorage,
+  nextRomanceRoll = secureRomanceRoll,
+  debug = false,
+  journeyId = "milano",
+  onSwitchJourney,
+}: AppProps & { journeyId?: string; onSwitchJourney?: (id: string) => void }) {
   const isDebug = import.meta.env.DEV && debug;
   const [loaded] = useState(() => loadGame(storage));
   const [game, setGame] = useState<GameState | null>(
@@ -136,6 +184,16 @@ export default function App({
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
   const [confirmDeparture, setConfirmDeparture] = useState(false);
   const [settings, setSettings] = useState(false);
+  const [switchJourneyTo, setSwitchJourneyTo] = useState<string | null>(null);
+  function requestJourneySwitch(id: string) {
+    if (id === journeyId || !onSwitchJourney) return;
+    if (gameRef.current && (!savedGameRef.current || !sameGameState(gameRef.current, savedGameRef.current))) {
+      setSettings(false);
+      setSwitchJourneyTo(id);
+      return;
+    }
+    onSwitchJourney(id);
+  }
   const [recordsOpen, setRecordsOpen] = useState(false);
   const [sceneEpoch, setSceneEpoch] = useState(0);
   const [notebook, setNotebook] = useState(false);
@@ -189,7 +247,7 @@ export default function App({
   }
   function begin(event: FormEvent) {
     event.preventDefault();
-    const next = createGame(player.trim(), heroine.trim());
+    const next = createGame(player.trim(), heroine.trim(), { journeyId });
     const unsavedStart = !displaySettings.value.autoSave &&
       (loaded.status === "empty" || (loaded.status === "invalid" && loaded.raw !== null));
     const saved = unsavedStart ? { ok: true as const } : invalid && loaded.status === "invalid"
@@ -398,7 +456,7 @@ export default function App({
             <strong>{game.travel.day}日目 {String(Math.floor(game.travel.minute / 60)).padStart(2, "0")}:{String(game.travel.minute % 60).padStart(2, "0")}</strong>
           </div>
           <div className="journey-resources">
-            <span className="travel-budget" aria-label={`旅の予算 ${game.travelBudget}ユーロ`}>€{game.travelBudget}</span>
+            <span className="travel-budget" aria-label={`旅の予算 ${game.travelBudget}${currencyForCity(game.currentCityId).unitJa}`}>{formatMoneyForCity(game.currentCityId, game.travelBudget)}</span>
             <span className="ap" aria-label={`残り${game.ap}AP`}>
               {game.ap}
               <small> AP</small>
@@ -511,6 +569,7 @@ export default function App({
                   </button>
                 </div>
               )}
+              {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} />}
               <form onSubmit={begin} className="name-form">
                 {nameForm}
                 <button
@@ -564,7 +623,7 @@ export default function App({
               choices: activeEncounter.frame.choices.map((choice) => {
                 const option = encounterChoiceOption(currentEncounter, choice);
                 const availability = getEncounterOptionAvailability(game, choice.index);
-                return { index: choice.index, textEn: choice.text, translationJa: choice.translationJa ?? option?.translationJa ?? "", costEuro: option?.costEuro, unavailableReason: availability.available ? undefined : availability.reason };
+                return { index: choice.index, textEn: choice.text, translationJa: choice.translationJa ?? option?.translationJa ?? "", cost: option?.cost ?? option?.costEuro, unavailableReason: availability.available ? undefined : availability.reason };
               }),
               ended: activeEncounter.frame.ended && (activeEncounter.phase === "outcome" || encounterStoryCanFinish(game)),
               finishLabel: activeEncounter.returnTourism ? "観光に戻る" : undefined,
@@ -903,9 +962,18 @@ export default function App({
           </button>
         </Modal>
       )}
+      {switchJourneyTo && (
+        <Modal labelledBy="switch-journey-title" onClose={() => setSwitchJourneyTo(null)}>
+          <h2 id="switch-journey-title">旅行編を切り替える</h2>
+          <p>手動セーブしていない進行は失われます。切り替えますか？</p>
+          <button className="primary" onClick={() => onSwitchJourney?.(switchJourneyTo)}>切り替える</button>
+          <button className="secondary" autoFocus onClick={() => setSwitchJourneyTo(null)}>戻る</button>
+        </Modal>
+      )}
       {settings && game && (
         <Modal labelledBy="settings-title" onClose={() => setSettings(false)}>
           <h2 id="settings-title">設定</h2>
+          {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} />}
           <label className="translation-setting">
             <input type="checkbox" checked={displaySettings.value.autoSave} disabled={!!displaySettings.error}
               onChange={(event) => setAutoSave(event.target.checked)} /> ゲームの進行を自動保存する

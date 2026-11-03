@@ -5,8 +5,8 @@ export type DestinationEventCandidate = {
   id: string;
   placeId: string;
   category: "main" | "date";
-  /** Actual walking-route duration, before display rounding. */
-  walkMinutes: number;
+  /** Walking-route duration, or null when no walking route is registered. */
+  walkMinutes: number | null;
   available: boolean;
   /** Whether this main event has not yet been cleared, independent of availability. */
   unclearedMain: boolean;
@@ -14,7 +14,7 @@ export type DestinationEventCandidate = {
 
 export type DestinationPlace<T extends DestinationEventCandidate> = {
   id: string;
-  walkMinutes: number;
+  walkMinutes: number | null;
   events: T[];
   available: boolean;
   hasAvailableUnclearedMain: boolean;
@@ -36,7 +36,7 @@ export type TravelSnapshot = {
 type FailureReason = "invalid" | "closed" | "time" | "budget" | "ap" | "route";
 type Failure = { ok: false; reason: FailureReason };
 const failure = (reason: FailureReason): Failure => ({ ok: false, reason });
-const DAY_START = 9 * 60;
+export const DAY_START = 9 * 60;
 const NIGHT_START = 18 * 60;
 export const DAY_END = 21 * 60;
 
@@ -52,7 +52,7 @@ export function groupDestinationEvents<T extends DestinationEventCandidate>(even
   const places = new Map<string, DestinationPlace<T>>();
   const ids = new Set<string>();
   for (const event of events) {
-    if (!event.id || !event.placeId || ids.has(event.id) || !Number.isFinite(event.walkMinutes) || event.walkMinutes < 0)
+    if (!event.id || !event.placeId || ids.has(event.id) || (event.walkMinutes !== null && (!Number.isFinite(event.walkMinutes) || event.walkMinutes < 0)))
       throw new Error("Invalid or duplicate destination event");
     ids.add(event.id);
     let place = places.get(event.placeId);
@@ -69,13 +69,17 @@ export function groupDestinationEvents<T extends DestinationEventCandidate>(even
   return [...places.values()];
 }
 
-/** Sort available places by walking time; ensure the fifth can lead to an uncleared main. */
+/** Sort known walking times first, leaving places without a walking route in the list. */
 export function selectNearbyDestinations<T extends Pick<DestinationPlace<DestinationEventCandidate>, "id" | "walkMinutes" | "available" | "hasAvailableUnclearedMain">>(destinations: readonly T[]): { nearby: T[]; other: T[]; recommendedMainId: string | null } {
-  if (destinations.some((item) => !item.id || !Number.isFinite(item.walkMinutes) || item.walkMinutes < 0) ||
+  if (destinations.some((item) => !item.id || (item.walkMinutes !== null && (!Number.isFinite(item.walkMinutes) || item.walkMinutes < 0))) ||
       new Set(destinations.map((item) => item.id)).size !== destinations.length) {
     throw new Error("Invalid or duplicate destination");
   }
-  const compare = (a: T, b: T) => a.walkMinutes - b.walkMinutes || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
+  const compare = (a: T, b: T) => {
+    if (a.walkMinutes === null && b.walkMinutes !== null) return 1;
+    if (a.walkMinutes !== null && b.walkMinutes === null) return -1;
+    return (a.walkMinutes === null || b.walkMinutes === null ? 0 : a.walkMinutes - b.walkMinutes) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
+  };
   const sorted = destinations.filter((item) => item.available).sort(compare);
   const nearby = sorted.slice(0, 5);
   let recommendedMainId: string | null = null;

@@ -23,6 +23,9 @@ async function addSecondCity() {
   milan.nextCityId = second.id;
   await write("cities/milano.json", milan);
   await write("cities/test_city.json", second);
+  const catalog = await read("journeys/catalog.json");
+  catalog.journeys.find((item: any) => item.id === "milano").cities.push({ id: second.id, nameJa: second.nameJa });
+  await write("journeys/catalog.json", catalog);
 
   const journey = await read("progression/journey.json");
   const chosenEpisodes = journey.episodes.filter((episode: any) => ["milano_duomo_episode", "milano_finale"].includes(episode.id));
@@ -84,6 +87,9 @@ afterEach(async () => { await rm(root, { recursive: true, force: true }); });
 describe("multi-city content build", () => {
   it("builds two registered cities with independent content and travel", async () => {
     await addSecondCity();
+    const catalog = await read("journeys/catalog.json");
+    catalog.journeys.find((item: any) => item.id === "milano").cities.push({ id: "future_city", nameJa: "予定都市" });
+    await write("journeys/catalog.json", catalog);
     const result = await buildContent(root, false);
     expect(result.journey.episodes.some((episode) => episode.cityId === "test_city")).toBe(true);
     expect(result.tourism.landmarks.some((landmark) => landmark.cityId === "test_city")).toBe(true);
@@ -98,6 +104,52 @@ describe("multi-city content build", () => {
     await write("cities/milano.json", city);
     await expect(buildContent(root, false)).rejects.toThrow(/Cyclic city route/);
   });
+
+  it("rejects a departure to a city belonging to another journey", async () => {
+    await addSecondCity();
+    const catalog = await read("journeys/catalog.json");
+    const milano = catalog.journeys.find((item: any) => item.id === "milano");
+    const india = catalog.journeys.find((item: any) => item.id === "golden_triangle");
+    india.cities.push(milano.cities.pop());
+    await write("journeys/catalog.json", catalog);
+    await expect(buildContent(root, false)).rejects.toThrow(/Next city is outside the journey order/);
+  }, 60000);
+
+  it("rejects a departure that skips a planned city", async () => {
+    await addSecondCity();
+    const catalog = await read("journeys/catalog.json");
+    catalog.journeys.find((item: any) => item.id === "milano").cities.splice(1, 0, { id: "planned_city", nameJa: "予定都市" });
+    catalog.journeys.find((item: any) => item.id === "milano").status = "preparing";
+    await write("journeys/catalog.json", catalog);
+    await expect(buildContent(root, false)).rejects.toThrow(/Next city is outside the journey order/);
+  }, 60000);
+
+  it("rejects journey initial AP above the configured cap", async () => {
+    const catalog = await read("journeys/catalog.json");
+    const balance = await read("romance/balance.json");
+    catalog.journeys.find((item: any) => item.id === "golden_triangle").initialState.ap = balance.apCap + 1;
+    await write("journeys/catalog.json", catalog);
+    await expect(buildContent(root, false)).rejects.toThrow(/Journey initial AP exceeds cap/);
+  }, 60000);
+
+  it("checks the city's actual finale reward against the journey plan", async () => {
+    const catalog = await read("journeys/catalog.json");
+    catalog.journeys.find((item: any) => item.id === "milano").cityPlan = {
+      cityClearAp: 4, lodgingCost: 10, mainTourismCount: 4, dateCount: 6,
+    };
+    await write("journeys/catalog.json", catalog);
+    // Milan has a 4 AP legacy first-episode reward, but its city-clear reward is 3 AP.
+    await expect(buildContent(root, false)).rejects.toThrow(/City clear reward does not match journey plan: milano/);
+  }, 60000);
+
+  it("checks the city's lodging setting against the journey plan", async () => {
+    const catalog = await read("journeys/catalog.json");
+    catalog.journeys.find((item: any) => item.id === "milano").cityPlan = {
+      cityClearAp: 3, lodgingCost: 0, mainTourismCount: 4, dateCount: 6,
+    };
+    await write("journeys/catalog.json", catalog);
+    await expect(buildContent(root, false)).rejects.toThrow(/City lodging cost does not match journey plan: milano/);
+  }, 60000);
 
   it("rejects duplicate place IDs across cities", async () => {
     await addSecondCity();

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "jaipur",
+  "countryCode": "IN",
+  "nameJa": "ジャイプール",
+  "themeJa": "色彩と知恵の都",
+  "firstClearReward": {
+    "rewardSourceId": "gt_jaipur_first_clear",
+    "ap": 4
+  },
+  "landmarkIdsPlanned": [
+    "jaipur_amber_fort",
+    "jaipur_jantar_mantar",
+    "jaipur_hawa_mahal",
+    "jaipur_city_palace"
+  ],
+  "productionStatus": "prototype"
+}

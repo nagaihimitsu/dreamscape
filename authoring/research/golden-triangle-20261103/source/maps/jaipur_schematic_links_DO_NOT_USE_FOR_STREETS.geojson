@@ -1,0 +1,976 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82682,
+            26.92296
+          ],
+          [
+            75.82639,
+            26.92413
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_hotel_hub",
+        "toPlaceId": "jaipur_hawa_mahal",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 3,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82682,
+            26.92296
+          ],
+          [
+            75.82381,
+            26.92624
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_hotel_hub",
+        "toPlaceId": "jaipur_city_palace",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 9,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82682,
+            26.92296
+          ],
+          [
+            75.82451,
+            26.92473
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_hotel_hub",
+        "toPlaceId": "jaipur_jantar_mantar",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 6,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82682,
+            26.92296
+          ],
+          [
+            75.82592,
+            26.91934
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_hotel_hub",
+        "toPlaceId": "jaipur_johari_bazaar",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 9,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82682,
+            26.92296
+          ],
+          [
+            75.8195,
+            26.91171
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_hotel_hub",
+        "toPlaceId": "jaipur_albert_hall",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 27,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82682,
+            26.92296
+          ],
+          [
+            75.84233,
+            26.95367
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_hotel_hub",
+        "toPlaceId": "jaipur_jal_mahal",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 68,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82639,
+            26.92413
+          ],
+          [
+            75.82682,
+            26.92296
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_hawa_mahal",
+        "toPlaceId": "jaipur_hotel_hub",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 3,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82639,
+            26.92413
+          ],
+          [
+            75.82381,
+            26.92624
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_hawa_mahal",
+        "toPlaceId": "jaipur_city_palace",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 7,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82639,
+            26.92413
+          ],
+          [
+            75.82451,
+            26.92473
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_hawa_mahal",
+        "toPlaceId": "jaipur_jantar_mantar",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 4,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82639,
+            26.92413
+          ],
+          [
+            75.82592,
+            26.91934
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_hawa_mahal",
+        "toPlaceId": "jaipur_johari_bazaar",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 12,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82639,
+            26.92413
+          ],
+          [
+            75.8195,
+            26.91171
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_hawa_mahal",
+        "toPlaceId": "jaipur_albert_hall",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 28,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82639,
+            26.92413
+          ],
+          [
+            75.84233,
+            26.95367
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_hawa_mahal",
+        "toPlaceId": "jaipur_jal_mahal",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 66,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82381,
+            26.92624
+          ],
+          [
+            75.82682,
+            26.92296
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_city_palace",
+        "toPlaceId": "jaipur_hotel_hub",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 9,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82381,
+            26.92624
+          ],
+          [
+            75.82639,
+            26.92413
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_city_palace",
+        "toPlaceId": "jaipur_hawa_mahal",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 7,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82381,
+            26.92624
+          ],
+          [
+            75.82451,
+            26.92473
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_city_palace",
+        "toPlaceId": "jaipur_jantar_mantar",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 4,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82381,
+            26.92624
+          ],
+          [
+            75.82592,
+            26.91934
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_city_palace",
+        "toPlaceId": "jaipur_johari_bazaar",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 17,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82381,
+            26.92624
+          ],
+          [
+            75.8195,
+            26.91171
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_city_palace",
+        "toPlaceId": "jaipur_albert_hall",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 31,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82381,
+            26.92624
+          ],
+          [
+            75.84233,
+            26.95367
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_city_palace",
+        "toPlaceId": "jaipur_jal_mahal",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 65,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82451,
+            26.92473
+          ],
+          [
+            75.82682,
+            26.92296
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_jantar_mantar",
+        "toPlaceId": "jaipur_hotel_hub",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 6,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82451,
+            26.92473
+          ],
+          [
+            75.82639,
+            26.92413
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_jantar_mantar",
+        "toPlaceId": "jaipur_hawa_mahal",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 4,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82451,
+            26.92473
+          ],
+          [
+            75.82381,
+            26.92624
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_jantar_mantar",
+        "toPlaceId": "jaipur_city_palace",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 4,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82451,
+            26.92473
+          ],
+          [
+            75.82592,
+            26.91934
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_jantar_mantar",
+        "toPlaceId": "jaipur_johari_bazaar",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 13,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82451,
+            26.92473
+          ],
+          [
+            75.8195,
+            26.91171
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_jantar_mantar",
+        "toPlaceId": "jaipur_albert_hall",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 28,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82451,
+            26.92473
+          ],
+          [
+            75.84233,
+            26.95367
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_jantar_mantar",
+        "toPlaceId": "jaipur_jal_mahal",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 67,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82592,
+            26.91934
+          ],
+          [
+            75.82682,
+            26.92296
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_johari_bazaar",
+        "toPlaceId": "jaipur_hotel_hub",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 9,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82592,
+            26.91934
+          ],
+          [
+            75.82639,
+            26.92413
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_johari_bazaar",
+        "toPlaceId": "jaipur_hawa_mahal",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 12,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82592,
+            26.91934
+          ],
+          [
+            75.82381,
+            26.92624
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_johari_bazaar",
+        "toPlaceId": "jaipur_city_palace",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 17,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82592,
+            26.91934
+          ],
+          [
+            75.82451,
+            26.92473
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_johari_bazaar",
+        "toPlaceId": "jaipur_jantar_mantar",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 13,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82592,
+            26.91934
+          ],
+          [
+            75.8195,
+            26.91171
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_johari_bazaar",
+        "toPlaceId": "jaipur_albert_hall",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 22,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.82592,
+            26.91934
+          ],
+          [
+            75.84233,
+            26.95367
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_johari_bazaar",
+        "toPlaceId": "jaipur_jal_mahal",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 86,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.8195,
+            26.91171
+          ],
+          [
+            75.82682,
+            26.92296
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_albert_hall",
+        "toPlaceId": "jaipur_hotel_hub",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 27,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.8195,
+            26.91171
+          ],
+          [
+            75.82639,
+            26.92413
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_albert_hall",
+        "toPlaceId": "jaipur_hawa_mahal",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 28,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.8195,
+            26.91171
+          ],
+          [
+            75.82381,
+            26.92624
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_albert_hall",
+        "toPlaceId": "jaipur_city_palace",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 31,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.8195,
+            26.91171
+          ],
+          [
+            75.82451,
+            26.92473
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_albert_hall",
+        "toPlaceId": "jaipur_jantar_mantar",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 28,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.8195,
+            26.91171
+          ],
+          [
+            75.82592,
+            26.91934
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_albert_hall",
+        "toPlaceId": "jaipur_johari_bazaar",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 22,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.8195,
+            26.91171
+          ],
+          [
+            75.84233,
+            26.95367
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_albert_hall",
+        "toPlaceId": "jaipur_jal_mahal",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 94,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.84233,
+            26.95367
+          ],
+          [
+            75.82682,
+            26.92296
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_jal_mahal",
+        "toPlaceId": "jaipur_hotel_hub",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 68,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.84233,
+            26.95367
+          ],
+          [
+            75.82639,
+            26.92413
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_jal_mahal",
+        "toPlaceId": "jaipur_hawa_mahal",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 66,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.84233,
+            26.95367
+          ],
+          [
+            75.82381,
+            26.92624
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_jal_mahal",
+        "toPlaceId": "jaipur_city_palace",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 65,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.84233,
+            26.95367
+          ],
+          [
+            75.82451,
+            26.92473
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_jal_mahal",
+        "toPlaceId": "jaipur_jantar_mantar",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 67,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.84233,
+            26.95367
+          ],
+          [
+            75.82592,
+            26.91934
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_jal_mahal",
+        "toPlaceId": "jaipur_johari_bazaar",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 86,
+        "verifiedOnRoadNetwork": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            75.84233,
+            26.95367
+          ],
+          [
+            75.8195,
+            26.91171
+          ]
+        ]
+      },
+      "properties": {
+        "fromPlaceId": "jaipur_jal_mahal",
+        "toPlaceId": "jaipur_albert_hall",
+        "routeType": "SCHEMATIC_STRAIGHT_LINE_NOT_STREET",
+        "approxWalkingMinutes": 94,
+        "verifiedOnRoadNetwork": false
+      }
+    }
+  ],
+  "metadata": {
+    "cityId": "jaipur",
+    "geometryQuality": "SCHEMATIC_ONLY_NOT_WALKABLE_GEOMETRY",
+    "notesJa": "地図UIプロトタイピング用直線。現実の道路・橋・歩道を表すものではない。実道ルートには使用禁止。"
+  }
+}

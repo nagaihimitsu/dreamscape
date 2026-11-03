@@ -9,6 +9,7 @@ export const SUPPORTED_SAVE_VERSION = 12;
 export interface StorageLike {
   getItem(key: string): string | null;
   setItem(key: string, value: string): void;
+  physicalKey?(key: string): string;
 }
 
 export type LoadResult =
@@ -115,6 +116,13 @@ export function saveGame(
   }
 }
 
+/** Write only while the observed slot still contains the expected snapshot. */
+export function writeIfUnchanged(storage: StorageLike, key: string, expected: string | null, next: string): boolean {
+  if (storage.getItem(key) !== expected) return false;
+  storage.setItem(key, next);
+  return true;
+}
+
 /** Explicit recovery only: retain the exact original before creating a new game. */
 export function backupAndCreate(
   storage: StorageLike,
@@ -133,9 +141,8 @@ export function backupAndCreate(
       while (storage.getItem(key) !== null) key = `${prefix}.${++suffix}`;
       storage.setItem(key, original);
     }
-    if (storage.getItem(SAVE_KEY) !== original)
+    if (!writeIfUnchanged(storage, SAVE_KEY, original, replacement))
       return { ok: false, message: "別の画面でセーブが更新されています。上書きせずに保護しました。" };
-    storage.setItem(SAVE_KEY, replacement);
     return { ok: true };
   } catch {
     return {

@@ -260,3 +260,9 @@
     max-height: 230px;
   }
 }
+
+.journey-selection { display: grid; gap: 7px; margin: 16px 0; font-size: 12px; }
+.journey-selection select { width: 100%; min-height: 48px; padding: 10px; border: 1px solid #c9cebf; border-radius: 3px; background: #fffdf7; color: #303d36; font-size: 16px; }
+.journey-preparation h1 { margin-top: 24px; }
+.journey-preparation > p:not(.eyebrow) { line-height: 1.8; }
+.journey-preparation-saved { margin-top: 24px; padding: 18px; background: #f1f0e6; }

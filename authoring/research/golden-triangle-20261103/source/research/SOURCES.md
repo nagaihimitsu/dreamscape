@@ -1,0 +1,121 @@
+# 出典台帳
+URLを個別に確認した日: 2026-11-03
+
+**注記**：出典の掲載が現時点の運営を保証するわけではない。歴史・料金・開館・地図の各値に優先資料を結び付けた。URL自体は参照確認したが、一部のページは内容の一部分のみ取得。
+
+- `unesco_red` | **UNESCO** — [Red Fort Complex](https://whc.unesco.org/en/list/231) | official | 
+- `unesco_qutb` | **UNESCO** — [Qutb complex](https://whc.unesco.org/en/list/233) | official | 
+- `unesco_humayun` | **UNESCO** — [Humayun Tomb](https://whc.unesco.org/en/list/232) | official | 
+- `unesco_taj` | **UNESCO** — [Taj Mahal](https://whc.unesco.org/en/list/252) | official | 
+- `unesco_agrafort` | **UNESCO** — [Agra Fort](https://whc.unesco.org/en/list/251) | official | 
+- `unesco_fatehpur` | **UNESCO** — [Fatehpur Sikri](https://whc.unesco.org/en/list/255) | official | 
+- `unesco_jantar` | **UNESCO** — [Jantar Mantar Jaipur](https://whc.unesco.org/en/list/1338) | official | 
+- `unesco_jaipur` | **UNESCO** — [Jaipur City](https://whc.unesco.org/en/list/1605) | official | 登録番号は要照合。個別事実の根拠には用いない
+- `delhi_qutb` | **Delhi Tourism** — [Qutab Minar](https://delhitourism.gov.in/tourist_place/qutab_minar.html) | official | 
+- `delhi_humayun_a` | **Delhi Tourism** — [Humayun Tomb tourist_place](https://www.delhitourism.gov.in/tourist_place/humayun_tomb.html) | official | 料金・営業時間が別Delhi Tourism掲載頁と異なる
+- `delhi_humayun_b` | **Delhi Tourism** — [Humayun Tomb explore](https://www.delhitourism.gov.in/dt/explore_the_city/humayuns_tomb.html) | official | 料金・営業時間が別Delhi Tourism掲載頁と異なる
+- `delhi_jama` | **Delhi Tourism** — [Jama Masjid](https://delhitourism.gov.in/tourist_place/jama_masjid.html) | official | 
+- `delhi_chandni` | **Delhi Tourism** — [Chandni Chowk](https://delhitourism.gov.in/dt/delhi_delicacies/chandni_chowk.html) | official | 
+- `delhi_lodhi` | **Delhi Tourism** — [Lodi Tomb](https://delhitourism.gov.in/tourist_place/lodi_tomb.html) | official | 
+- `delhi_lodhi_lake` | **Delhi Tourism** — [Lodi Gardens Lake](https://delhitourism.gov.in/dt/explore_the_city/lodi_gardens_lake.html) | official | 
+- `delhi_agrassen` | **Delhi Tourism** — [Agrasen ki Baoli](https://www.delhitourism.gov.in/dt/explore_the_city/agrasen_ki_baoli.html) | official | Mahabharata由来の記述は史実の確証にならない
+- `delhi_lotus` | **Delhi Tourism** — [Lotus Temple](https://delhitourism.gov.in/tourist_place/bahai_temple.html) | official | 
+- `delhi_bangla` | **Delhi Tourism** — [Spiritual Delhi: Bangla Sahib](https://delhitourism.gov.in/tourist_place/spritual_delhi.html) | official | 
+- `delhi_indiagate` | **Delhi Tourism** — [India Gate](https://delhitourism.gov.in/tourist_place/india_gate.html) | official | 
+- `delhi_redfee_old` | **Delhi Department of Education** — [Historical monuments (Delhi)](https://sites.google.com/doe.delhi.gov.in/historical-monumentss/delhi) | government_secondary | 2026-02の月曜開門に反する古い料金と休館日。現行確定に使わない
+- `delhi_red_2026` | **Press Trust of India / Business Standard** — [Red Fort now open Mondays (ASI order dated 2026-02-13)](https://www.business-standard.com/india-news/red-fort-to-remain-open-on-all-days-of-week-asi-126022100547_1.html) | secondary_current | 2026-02-21。ASIの2026-02-13発令を報道。現行公式時刻/料金の照合ではない
+- `delhi_red_tourism_old` | **Incredible India / Ministry of Tourism** — [Red Fort Visitor Timings (obsolete weekly closure)](https://www.incredibleindia.gov.in/en/delhi/delhi/red-fort) | official_conflicting | 営業時間9:30-16:30を掲載するが月曜休館は2026-02のASI変更と矛盾
+- `agra_taj` | **Agra District Government** — [TajMahal](https://agra.nic.in/tourist-place/tajmahal/) | official | 
+- `agra_agrafort` | **Agra District Government** — [Agra Fort](https://agra.nic.in/tourist-place/agra-fort/) | official | 
+- `agra_fatehpur` | **Agra District Government** — [Fatehpur Sikri](https://agra.nic.in/tourist-place/fatehpur-sikri/) | official | 
+- `agra_itimad` | **Agra District Government** — [Itimad-ud-Daulah](https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/) | official | 
+- `agra_mehtab` | **Agra District Government** — [Mehtab Bagh](https://agra.nic.in/tourist-place/mehtab-bagh/) | official | 
+- `agra_akbar` | **Agra District Government** — [Akbar Tomb](https://agra.nic.in/tourist-place/akbars-tomb-sikandra/) | official | 
+- `agra_rambagh` | **Agra District Government** — [Ram Bagh](https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/) | official | 
+- `agra_chini` | **Agra District Government** — [Chini ka Rauza](https://agra.nic.in/tourist-place/chini-ka-rauza/) | official | 
+- `agra_mariam` | **Agra District Government** — [Tomb of Mariam-uz-Zamani](https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/) | official | 
+- `agra_gurutal` | **Agra District Government** — [Guru ka Taal](https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/) | official | 
+- `agra_fee` | **Taj Mahal official / UP Government** — [Official Agra fee comparison](https://www.tajmahal.gov.in/) | official | 
+- `agra_night` | **Taj Mahal official** — [Night Viewing Taj Mahal](https://tajmahal.gov.in/night-view.aspx) | official | 公式サイト20:00–23:59、Agra district20:30–00:30との記載差あり。実際の夜間券を照合
+- `agra_taj_dos` | **Government of Uttar Pradesh (Taj Mahal official)** — [Taj Mahal Do and Donts](https://www.tajmahal.gov.in/dos-and-donts.aspx) | official | 主廟内部撮影は禁止、三脚/ドローン禁止、夜間写真規制あり
+- `agra_taj_visiting` | **Government of Uttar Pradesh (Taj Mahal official)** — [Visiting hours, gates and tickets](https://www.tajmahal.gov.in/visiting-hours.aspx) | official | 東門・西門入場、南門は現時点で出口のみ。券のASI/ADA包含が表記される
+- `jaipur_city` | **Rajasthan Tourism** — [Jaipur attractions](https://www.tourism.rajasthan.gov.in/jaipur.html) | official | 
+- `jaipur_amber` | **Rajasthan Tourism** — [Amber Palace](https://www.tourism.rajasthan.gov.in/amber-palace.html) | official | 
+- `jaipur_fare_news1` | **Times of India** — [Rajasthan Jan 2026 ticket hike](https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms) | secondary_current | 政府告示の直接照合前; Rajasthan Tourismの旧料金掲載と不一致
+- `jaipur_fare_news2` | **City of Jaipur** — [2026 monument fee hike details](https://www.cityofjaipur.com/news/2025/12/visiting-monuments-and-museums-will-become-more-expensive/) | secondary_current | 
+- `jaipur_jantar_old` | **Rajasthan Tourism** — [Jantar Mantar old fee page](https://www.tourism.rajasthan.gov.in/jantar-mantar.html) | official | 2026-01-01改定以前の料金が残る可能性
+- `rt_dc` | **Rajasthan Tourism Development Corporation** — [City Tours tariff](https://rtdc.tourism.rajasthan.gov.in/Client/CityTour.aspx) | official | 
+- `rt_dc_avail` | **Rajasthan Tourism Development Corporation** — [City Tour availability](https://rtdc.tourism.rajasthan.gov.in/Client/CityTourCheckAvailability.aspx) | official | 同社の2ページでフルデイツアー料金500/600、日程等差あり
+- `jaipur_metro` | **Jaipur Metro Rail Corporation** — [Metro Fare official notice index](https://transport.rajasthan.gov.in/content/transportportal/en/metro-portal/passanger-information/metro-fares.html) | official | 2025-01-30告示へのリンク。PDF本文の画像検証未了
+- `delhi_metro` | **Delhi Metro Rail Corporation** — [DMRC ticket info](https://new.delhimetrorail.com/en/ticket) | official | 運賃ページのリアルタイム駅間照合は未実施
+- `delhi_fare_secondary` | **Times of India** — [Delhi Metro fare revisions 2025](https://timesofindia.indiatimes.com/city/delhi/delhi-metro-announces-first-fare-hike-since-2017-minimum-ticket-now-rs-11-maximum-rs-64-airport-express-fares-up-by-rs-5/articleshow/123492444.cms) | secondary_current | 
+- `rail_official` | **Indian Railways** — [Passenger reservation train schedule](https://www.indianrail.gov.in/enquiry/SCHEDULE/TrainSchedule.jsp) | official | 
+- `rail_12050` | **ConfirmTkt** — [12050 Gatimaan schedule snapshot](https://www.confirmtkt.com/train-schedule/12050) | secondary_snapshot | 列車運行曜日の欄に同一ページ内の矛盾あり、日時未確定
+- `rail_22988` | **ConfirmTkt** — [22988 Agra Jaipur snapshot](https://www.confirmtkt.com/train-schedule/22988-AF-AII-SF--to--AF-AII-SF-EXP) | secondary_snapshot | 運賃と運行日は公式鉄道照合未了
+- `bus_official` | **RSRTC** — [Bus ticket booking service](https://www.rsrtconline.rajasthan.gov.in/) | official | 旅行日未設定、日付別便数料金なし
+- `bus_secondary` | **Independent RTC directory** — [Agra to Jaipur bus estimates](https://rtc.shivrajsinh.in/rajasthan/routes/agra-to-jaipur-bus-time-table) | secondary_estimate | 公式RSRTC運行表ではない; 運賃・頻度を確定しない
+- `asi_pib` | **Indian Ministry of Culture / PIB** — [Online ticket Booking ONDC, Jan 2026](https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=2211862&lang=2&reg=48) | official | 
+- `map_license` | **OpenStreetMap Foundation** — [OSM data copyright and ODbL](https://www.openstreetmap.org/copyright) | license_document | 
+- `commons_license` | **Wikimedia Commons** — [Licensing overview](https://commons.wikimedia.org/wiki/Commons:Licensing) | license_document | 
+- `jaipur_johari` | **Jaipur Municipal Corporation** — [Main Market: Johari Bazaar](https://jaipurmc.org/Presentation/Aboutjaipur/MainMarket.aspx) | official | 
+- `jaipur_johari_coord` | **Around Us** — [Johari Bazaar location](https://aroundus.com/p/177489986-johari-bazaar) | secondary_geodata | 地区代表点の地理座標
+- `jaipur_panna` | **Mapcarta / OSM** — [Stepwell Panna Meena](https://mapcarta.com/W410063780) | osm_secondary | 
+- `jaipur_chandbaori` | **Wikimedia Commons** — [Chand Baori photographed location](https://commons.wikimedia.org/wiki/File:Chand_Baori_Stepwell,_Abhaneri_07.jpg) | commons_geo | 
+- `jaipur_jalmahal_view` | **Mapcarta / OSM** — [Jal Mahal bus stop land side](https://mapcarta.com/N8043890745) | osm_secondary | 
+- `geo_delhi_red_fort` | **Mapcarta / OpenStreetMap** — [Red Fort mapped representative](https://mapcarta.com/14862200) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_delhi_qutb_minar` | **Mapcarta / OpenStreetMap** — [Qutb Minar mapped representative](https://mapcarta.com/25584468) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_delhi_humayun_tomb` | **Mapcarta / OpenStreetMap** — [Humayun’s Tomb mapped representative](https://mapcarta.com/W220385654) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_delhi_india_gate` | **Mapcarta / OpenStreetMap** — [India Gate mapped representative](https://mapcarta.com/24996704) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_delhi_jama_masjid` | **Mapcarta / OpenStreetMap** — [Jama Masjid mapped representative](https://mapcarta.com/14884416) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_delhi_chandni_chowk` | **Mapcarta / OpenStreetMap** — [Chandni Chowk mapped representative](https://mapcarta.com/25584486) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_delhi_lodhi_garden` | **Mapcarta / OpenStreetMap** — [Lodhi Gardens mapped representative](https://mapcarta.com/25584404) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_delhi_agrasen_baoli` | **Mapcarta / OpenStreetMap** — [Agrasen ki Baoli mapped representative](https://mapcarta.com/W500411689) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_delhi_lotus_temple` | **Mapcarta / OpenStreetMap** — [Lotus Temple mapped representative](https://mapcarta.com/27811382) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_delhi_bangla_sahib` | **Mapcarta / OpenStreetMap** — [Gurdwara Bangla Sahib mapped representative](https://mapcarta.com/W839844482) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_agra_taj_mahal` | **Mapcarta / OpenStreetMap** — [Taj Mahal mapped representative](https://mapcarta.com/Agra/Taj_Mahal) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_agra_agra_fort` | **Mapcarta / OpenStreetMap** — [Agra Fort mapped representative](https://mapcarta.com/37724110) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_agra_itimad_tomb` | **Mapcarta / OpenStreetMap** — [Itimad-ud-Daulah’s Tomb mapped representative](https://mapcarta.com/W50284165) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_agra_mehtab_bagh` | **Mapcarta / OpenStreetMap** — [Mehtab Bagh mapped representative](https://mapcarta.com/39706072) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_agra_fatehpur_sikri` | **Mapcarta / OpenStreetMap** — [Fatehpur Sikri mapped representative](https://mapcarta.com/W356394936) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_agra_akbar_tomb` | **Mapcarta / OpenStreetMap** — [Akbar’s Tomb, Sikandra mapped representative](https://mapcarta.com/W175509938) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_agra_ram_bagh` | **Mapcarta / OpenStreetMap** — [Ram Bagh mapped representative](https://mapcarta.com/33249070) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_agra_chini_rauza` | **Mapcarta / OpenStreetMap** — [Chini ka Rauza mapped representative](https://mapcarta.com/W256911883) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_agra_mariam_tomb` | **Mapcarta / OpenStreetMap** — [Tomb of Mariam-uz-Zamani mapped representative](https://mapcarta.com/W175659413) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_agra_guru_ka_taal` | **Mapcarta / OpenStreetMap** — [Guru ka Taal Gurdwara mapped representative](https://mapcarta.com/W304965623) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_jaipur_amber_fort` | **Mapcarta / OpenStreetMap** — [Amber Fort and Palace mapped representative](https://mapcarta.com/26952192) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_jaipur_hawa_mahal` | **Mapcarta / OpenStreetMap** — [Hawa Mahal mapped representative](https://mapcarta.com/26952190) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_jaipur_city_palace` | **Mapcarta / OpenStreetMap** — [City Palace Jaipur mapped representative](https://mapcarta.com/26952188) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_jaipur_jantar_mantar` | **Mapcarta / OpenStreetMap** — [Jantar Mantar Jaipur mapped representative](https://mapcarta.com/W102879535) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_jaipur_jal_mahal` | **Mapcarta / OpenStreetMap** — [Jal Mahal mapped representative](https://mapcarta.com/26952194) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_jaipur_nahargarh_fort` | **Mapcarta / OpenStreetMap** — [Nahargarh Fort mapped representative](https://mapcarta.com/33816124) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_jaipur_albert_hall` | **Mapcarta / OpenStreetMap** — [Albert Hall Museum mapped representative](https://mapcarta.com/26953306) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_jaipur_jaigarh_fort` | **Mapcarta / OpenStreetMap** — [Jaigarh Fort mapped representative](https://mapcarta.com/33816054) | osm_secondary | 施設敷地の代表点。実際の出入口は別途確認すること
+- `geo_delhi_hotel_hub` | **Mapcarta / OpenStreetMap** — [fictional lodging / Rajiv Chowk anchor](https://mapcarta.com/N8018558072) | osm_secondary | 公的交通施設の代表座標を架空宿のアンカーに使用。現実のホテルではない
+- `geo_agra_hotel_hub` | **Mapcarta / OpenStreetMap** — [fictional lodging / Agra Fort rail station](https://mapcarta.com/W307766787) | osm_secondary | 公的交通施設の代表座標を架空宿のアンカーに使用。現実のホテルではない
+- `geo_jaipur_hotel_hub` | **Mapcarta / OpenStreetMap** — [fictional lodging / Badi Chaupar metro](https://mapcarta.com/N8044083223) | osm_secondary | 公的交通施設の代表座標を架空宿のアンカーに使用。現実のホテルではない
+- `asset_1` | **Wikimedia Commons** — [Commons file page for agra_taj_mahal](https://commons.wikimedia.org/wiki/File:Taj-Mahal.jpg) | license_document | Author Joel Godwin; CC BY-SA 4.0; media not downloaded
+- `asset_2` | **Wikimedia Commons** — [Commons file page for delhi_red_fort](https://commons.wikimedia.org/wiki/File:Red-Fort,Delhi.JPG) | license_document | Author Mahesh Bhanupanth; CC BY-SA 3.0; media not downloaded
+- `asset_3` | **Wikimedia Commons** — [Commons file page for delhi_qutb_minar](https://commons.wikimedia.org/wiki/File:The_Qutb_Minar.jpg) | license_document | Author Shagil Kannur; CC BY-SA 3.0; media not downloaded
+- `asset_4` | **Wikimedia Commons** — [Commons file page for jaipur_hawa_mahal](https://commons.wikimedia.org/wiki/File:Hawa_mahal,Jaipur.jpg) | license_document | Author Utsav pal; CC BY-SA 4.0; media not downloaded
+- `asset_5` | **Wikimedia Commons** — [Commons file page for jaipur_hawa_mahal](https://commons.wikimedia.org/wiki/File:Hawa_Mahal_-_Jaipur.jpg) | license_document | Author Karppanta; CC BY-SA 3.0; media not downloaded
+- `asset_6` | **Wikimedia Commons** — [Commons file page for jaipur_amber_fort](https://commons.wikimedia.org/wiki/File:Amer-fort.JPG) | license_document | Author Sameer Goyal; CC BY-SA 2.0; media not downloaded
+- `asset_7` | **Wikimedia Commons** — [Commons file page for delhi_qutb_minar](https://commons.wikimedia.org/wiki/File:QuTuB_Minar.jpg) | license_document | Author AravindGP; CC BY-SA 4.0; media not downloaded
+- `asset_8` | **Wikimedia Commons** — [Commons file page for delhi_humayun_tomb](https://commons.wikimedia.org/wiki/File:Humanyun_Tomb_Image.jpg) | license_document | Author Yashrastogivlogs; CC BY-SA 4.0; media not downloaded
+- `asset_9` | **Wikimedia Commons** — [Commons file page for delhi_india_gate](https://commons.wikimedia.org/wiki/File:IndiaGate,_delhi.jpg) | license_document | Author HussainNellikkal; CC BY-SA 4.0; media not downloaded
+- `asset_10` | **Wikimedia Commons** — [Commons file page for delhi_jama_masjid](https://commons.wikimedia.org/wiki/File:Jama_Masjid,_Delhi,_India.jpg) | license_document | Author Vyacheslav Argenberg; CC BY 4.0; media not downloaded
+- `asset_11` | **Wikimedia Commons** — [Commons file page for delhi_agrasen_baoli](https://commons.wikimedia.org/wiki/File:Agrasena_ki_Baoli.jpg) | license_document | Author Spark.sonam; CC BY-SA 3.0; media not downloaded
+- `asset_12` | **Wikimedia Commons** — [Commons file page for delhi_chandni_chowk](https://commons.wikimedia.org/wiki/File:Chandni_Chowk,_Delhi.JPG) | license_document | Author Deeporaj; CC BY-SA 4.0; media not downloaded
+- `asset_13` | **Wikimedia Commons** — [Commons file page for delhi_lodhi_garden](https://commons.wikimedia.org/wiki/File:LODHI_GARDENS.jpg) | license_document | Author Solomon Donald Singh; CC BY-SA 4.0; media not downloaded
+- `asset_14` | **Wikimedia Commons** — [Commons file page for delhi_lotus_temple](https://commons.wikimedia.org/wiki/File:The_lotus_temple.jpg) | license_document | Author Akashpatel3011; CC BY-SA 4.0; media not downloaded
+- `asset_15` | **Wikimedia Commons** — [Commons file page for agra_agra_fort](https://commons.wikimedia.org/wiki/File:Agra_fort_.jpg) | license_document | Author बृहस्पति; CC BY-SA 3.0; media not downloaded
+- `asset_16` | **Wikimedia Commons** — [Commons file page for agra_itimad_tomb](https://commons.wikimedia.org/wiki/File:ITIMAD_UD_DAULAH.jpg) | license_document | Author Ajaykumarkatnauri; CC BY-SA 4.0; media not downloaded
+- `asset_17` | **Wikimedia Commons** — [Commons file page for agra_mehtab_bagh](https://commons.wikimedia.org/wiki/File:Mehtab_Bagh_1.jpg) | license_document | Author Vipinyadav3011; CC BY-SA 3.0; media not downloaded
+- `asset_18` | **Wikimedia Commons** — [Commons file page for agra_fatehpur_sikri](https://commons.wikimedia.org/wiki/File:Fatehpur_Sikri.jpg) | license_document | Author Luisvassy; CC BY-SA 3.0; media not downloaded
+- `asset_19` | **Wikimedia Commons** — [Commons file page for agra_akbar_tomb](https://commons.wikimedia.org/wiki/File:The_Tomb_of_Akbar.jpg) | license_document | Author Sharvarism; CC BY-SA 4.0; media not downloaded
+- `asset_20` | **Wikimedia Commons** — [Commons file page for jaipur_city_palace](https://commons.wikimedia.org/wiki/File:City_Palace,_jaipur.jpg) | license_document | Author Shubh77901; CC BY-SA 4.0; media not downloaded
+- `asset_21` | **Wikimedia Commons** — [Commons file page for jaipur_jantar_mantar](https://commons.wikimedia.org/wiki/File:Jantar_mantar_,_jaipur.jpg) | license_document | Author LilyPlant; CC BY-SA 4.0; media not downloaded
+- `asset_22` | **Wikimedia Commons** — [Commons file page for jaipur_jal_mahal](https://commons.wikimedia.org/wiki/File:Jal_Mahal_at_Jaipur_Rajasthan.jpg) | license_document | Author SPD2025; CC0 1.0; media not downloaded
+- `asset_23` | **Wikimedia Commons** — [Commons file page for jaipur_nahargarh_fort](https://commons.wikimedia.org/wiki/File:Nahargarh_Fort.jpg) | license_document | Author Tharakan; Public Domain; media not downloaded
+- `asset_24` | **Wikimedia Commons** — [Commons file page for jaipur_albert_hall](https://commons.wikimedia.org/wiki/File:Albert_Hall_Museum.jpg) | license_document | Author Srilakshmi1991; CC BY 4.0; media not downloaded
+- `asset_25` | **Wikimedia Commons** — [Commons file page for jaipur_jaigarh_fort](https://commons.wikimedia.org/wiki/File:Jaigarh_Fort_Jaipur.jpg) | license_document | Author Viraj Mulki; CC0 1.0; media not downloaded
+- `asset_26` | **Wikimedia Commons** — [Commons file page for jaipur_panna_meena_kund](https://commons.wikimedia.org/wiki/File:Panna_Meena_Kund.jpg) | license_document | Author Manojmeena; CC BY-SA 4.0; media not downloaded

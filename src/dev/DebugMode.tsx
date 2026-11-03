@@ -4,8 +4,13 @@ import { battles, city, getCities, dates, dateDestinations, landmarks, getCityCo
 import { encounters } from "../content/encounters";
 import { battleCityId } from "../domain/chapter";
 import { saveGame } from "../persistence";
+import { installIndiaTestCities } from "../domain/multi-city-test-fixture";
 import { createDebugState, type DebugScene, type DebugSettings } from "./debug-state";
 import "./debug-mode.css";
+
+// DebugMode is dynamically imported only by the development server.
+// These fictional fixtures exist only in its in-memory content registry.
+installIndiaTestCities();
 
 type MemoryStorage = { getItem(key: string): string | null; setItem(key: string, value: string): void; removeItem(key: string): void };
 function newStorage(): MemoryStorage {
@@ -61,7 +66,7 @@ export default function DebugMode() {
   return (
     <main className="debug-panel" data-testid="debug-panel">
       <h1>場面の確認</h1>
-      <p>開発用の一時データです。通常のセーブ・英語ノート・設定は変更しません。再読み込みや終了で一時データは消えます。</p>
+      <p>開発用の一時データです。インドの都市は仮データであり実際の観光地・物語ではありません。通常のセーブ・英語ノート・設定は変更しません。再読み込みや終了で一時データは消えます。</p>
       <form onSubmit={open}>
         <label>都市
           <select data-testid="debug-city" value={settings.cityId ?? city.id} onChange={(event) => {

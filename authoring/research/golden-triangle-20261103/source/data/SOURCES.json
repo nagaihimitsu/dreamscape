@@ -1,0 +1,1460 @@
+[
+  {
+    "id": "unesco_red",
+    "publisher": "UNESCO",
+    "title": "Red Fort Complex",
+    "url": "https://whc.unesco.org/en/list/231",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "unesco_qutb",
+    "publisher": "UNESCO",
+    "title": "Qutb complex",
+    "url": "https://whc.unesco.org/en/list/233",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "unesco_humayun",
+    "publisher": "UNESCO",
+    "title": "Humayun Tomb",
+    "url": "https://whc.unesco.org/en/list/232",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "unesco_taj",
+    "publisher": "UNESCO",
+    "title": "Taj Mahal",
+    "url": "https://whc.unesco.org/en/list/252",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "unesco_agrafort",
+    "publisher": "UNESCO",
+    "title": "Agra Fort",
+    "url": "https://whc.unesco.org/en/list/251",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "unesco_fatehpur",
+    "publisher": "UNESCO",
+    "title": "Fatehpur Sikri",
+    "url": "https://whc.unesco.org/en/list/255",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "unesco_jantar",
+    "publisher": "UNESCO",
+    "title": "Jantar Mantar Jaipur",
+    "url": "https://whc.unesco.org/en/list/1338",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "unesco_jaipur",
+    "publisher": "UNESCO",
+    "title": "Jaipur City",
+    "url": "https://whc.unesco.org/en/list/1605",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "登録番号は要照合。個別事実の根拠には用いない"
+  },
+  {
+    "id": "delhi_qutb",
+    "publisher": "Delhi Tourism",
+    "title": "Qutab Minar",
+    "url": "https://delhitourism.gov.in/tourist_place/qutab_minar.html",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "delhi_humayun_a",
+    "publisher": "Delhi Tourism",
+    "title": "Humayun Tomb tourist_place",
+    "url": "https://www.delhitourism.gov.in/tourist_place/humayun_tomb.html",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "料金・営業時間が別Delhi Tourism掲載頁と異なる"
+  },
+  {
+    "id": "delhi_humayun_b",
+    "publisher": "Delhi Tourism",
+    "title": "Humayun Tomb explore",
+    "url": "https://www.delhitourism.gov.in/dt/explore_the_city/humayuns_tomb.html",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "料金・営業時間が別Delhi Tourism掲載頁と異なる"
+  },
+  {
+    "id": "delhi_jama",
+    "publisher": "Delhi Tourism",
+    "title": "Jama Masjid",
+    "url": "https://delhitourism.gov.in/tourist_place/jama_masjid.html",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "delhi_chandni",
+    "publisher": "Delhi Tourism",
+    "title": "Chandni Chowk",
+    "url": "https://delhitourism.gov.in/dt/delhi_delicacies/chandni_chowk.html",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "delhi_lodhi",
+    "publisher": "Delhi Tourism",
+    "title": "Lodi Tomb",
+    "url": "https://delhitourism.gov.in/tourist_place/lodi_tomb.html",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "delhi_lodhi_lake",
+    "publisher": "Delhi Tourism",
+    "title": "Lodi Gardens Lake",
+    "url": "https://delhitourism.gov.in/dt/explore_the_city/lodi_gardens_lake.html",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "delhi_agrassen",
+    "publisher": "Delhi Tourism",
+    "title": "Agrasen ki Baoli",
+    "url": "https://www.delhitourism.gov.in/dt/explore_the_city/agrasen_ki_baoli.html",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "Mahabharata由来の記述は史実の確証にならない"
+  },
+  {
+    "id": "delhi_lotus",
+    "publisher": "Delhi Tourism",
+    "title": "Lotus Temple",
+    "url": "https://delhitourism.gov.in/tourist_place/bahai_temple.html",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "delhi_bangla",
+    "publisher": "Delhi Tourism",
+    "title": "Spiritual Delhi: Bangla Sahib",
+    "url": "https://delhitourism.gov.in/tourist_place/spritual_delhi.html",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "delhi_indiagate",
+    "publisher": "Delhi Tourism",
+    "title": "India Gate",
+    "url": "https://delhitourism.gov.in/tourist_place/india_gate.html",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "delhi_redfee_old",
+    "publisher": "Delhi Department of Education",
+    "title": "Historical monuments (Delhi)",
+    "url": "https://sites.google.com/doe.delhi.gov.in/historical-monumentss/delhi",
+    "authority": "government_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "2026-02の月曜開門に反する古い料金と休館日。現行確定に使わない"
+  },
+  {
+    "id": "delhi_red_2026",
+    "publisher": "Press Trust of India / Business Standard",
+    "title": "Red Fort now open Mondays (ASI order dated 2026-02-13)",
+    "url": "https://www.business-standard.com/india-news/red-fort-to-remain-open-on-all-days-of-week-asi-126022100547_1.html",
+    "authority": "secondary_current",
+    "checkedAt": "2026-11-03",
+    "notes": "2026-02-21。ASIの2026-02-13発令を報道。現行公式時刻/料金の照合ではない"
+  },
+  {
+    "id": "delhi_red_tourism_old",
+    "publisher": "Incredible India / Ministry of Tourism",
+    "title": "Red Fort Visitor Timings (obsolete weekly closure)",
+    "url": "https://www.incredibleindia.gov.in/en/delhi/delhi/red-fort",
+    "authority": "official_conflicting",
+    "checkedAt": "2026-11-03",
+    "notes": "営業時間9:30-16:30を掲載するが月曜休館は2026-02のASI変更と矛盾"
+  },
+  {
+    "id": "agra_taj",
+    "publisher": "Agra District Government",
+    "title": "TajMahal",
+    "url": "https://agra.nic.in/tourist-place/tajmahal/",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "agra_agrafort",
+    "publisher": "Agra District Government",
+    "title": "Agra Fort",
+    "url": "https://agra.nic.in/tourist-place/agra-fort/",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "agra_fatehpur",
+    "publisher": "Agra District Government",
+    "title": "Fatehpur Sikri",
+    "url": "https://agra.nic.in/tourist-place/fatehpur-sikri/",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "agra_itimad",
+    "publisher": "Agra District Government",
+    "title": "Itimad-ud-Daulah",
+    "url": "https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "agra_mehtab",
+    "publisher": "Agra District Government",
+    "title": "Mehtab Bagh",
+    "url": "https://agra.nic.in/tourist-place/mehtab-bagh/",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "agra_akbar",
+    "publisher": "Agra District Government",
+    "title": "Akbar Tomb",
+    "url": "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "agra_rambagh",
+    "publisher": "Agra District Government",
+    "title": "Ram Bagh",
+    "url": "https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "agra_chini",
+    "publisher": "Agra District Government",
+    "title": "Chini ka Rauza",
+    "url": "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "agra_mariam",
+    "publisher": "Agra District Government",
+    "title": "Tomb of Mariam-uz-Zamani",
+    "url": "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "agra_gurutal",
+    "publisher": "Agra District Government",
+    "title": "Guru ka Taal",
+    "url": "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "agra_fee",
+    "publisher": "Taj Mahal official / UP Government",
+    "title": "Official Agra fee comparison",
+    "url": "https://www.tajmahal.gov.in/",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "agra_night",
+    "publisher": "Taj Mahal official",
+    "title": "Night Viewing Taj Mahal",
+    "url": "https://tajmahal.gov.in/night-view.aspx",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "公式サイト20:00–23:59、Agra district20:30–00:30との記載差あり。実際の夜間券を照合"
+  },
+  {
+    "id": "agra_taj_dos",
+    "publisher": "Government of Uttar Pradesh (Taj Mahal official)",
+    "title": "Taj Mahal Do and Donts",
+    "url": "https://www.tajmahal.gov.in/dos-and-donts.aspx",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "主廟内部撮影は禁止、三脚/ドローン禁止、夜間写真規制あり"
+  },
+  {
+    "id": "agra_taj_visiting",
+    "publisher": "Government of Uttar Pradesh (Taj Mahal official)",
+    "title": "Visiting hours, gates and tickets",
+    "url": "https://www.tajmahal.gov.in/visiting-hours.aspx",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "東門・西門入場、南門は現時点で出口のみ。券のASI/ADA包含が表記される"
+  },
+  {
+    "id": "jaipur_city",
+    "publisher": "Rajasthan Tourism",
+    "title": "Jaipur attractions",
+    "url": "https://www.tourism.rajasthan.gov.in/jaipur.html",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "jaipur_amber",
+    "publisher": "Rajasthan Tourism",
+    "title": "Amber Palace",
+    "url": "https://www.tourism.rajasthan.gov.in/amber-palace.html",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "jaipur_fare_news1",
+    "publisher": "Times of India",
+    "title": "Rajasthan Jan 2026 ticket hike",
+    "url": "https://timesofindia.indiatimes.com/city/jaipur/in-1st-hike-since-2015-raj-doubles-tkt-prices-at-monuments/articleshow/126239329.cms",
+    "authority": "secondary_current",
+    "checkedAt": "2026-11-03",
+    "notes": "政府告示の直接照合前; Rajasthan Tourismの旧料金掲載と不一致"
+  },
+  {
+    "id": "jaipur_fare_news2",
+    "publisher": "City of Jaipur",
+    "title": "2026 monument fee hike details",
+    "url": "https://www.cityofjaipur.com/news/2025/12/visiting-monuments-and-museums-will-become-more-expensive/",
+    "authority": "secondary_current",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "jaipur_jantar_old",
+    "publisher": "Rajasthan Tourism",
+    "title": "Jantar Mantar old fee page",
+    "url": "https://www.tourism.rajasthan.gov.in/jantar-mantar.html",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "2026-01-01改定以前の料金が残る可能性"
+  },
+  {
+    "id": "rt_dc",
+    "publisher": "Rajasthan Tourism Development Corporation",
+    "title": "City Tours tariff",
+    "url": "https://rtdc.tourism.rajasthan.gov.in/Client/CityTour.aspx",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "rt_dc_avail",
+    "publisher": "Rajasthan Tourism Development Corporation",
+    "title": "City Tour availability",
+    "url": "https://rtdc.tourism.rajasthan.gov.in/Client/CityTourCheckAvailability.aspx",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "同社の2ページでフルデイツアー料金500/600、日程等差あり"
+  },
+  {
+    "id": "jaipur_metro",
+    "publisher": "Jaipur Metro Rail Corporation",
+    "title": "Metro Fare official notice index",
+    "url": "https://transport.rajasthan.gov.in/content/transportportal/en/metro-portal/passanger-information/metro-fares.html",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "2025-01-30告示へのリンク。PDF本文の画像検証未了"
+  },
+  {
+    "id": "delhi_metro",
+    "publisher": "Delhi Metro Rail Corporation",
+    "title": "DMRC ticket info",
+    "url": "https://new.delhimetrorail.com/en/ticket",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "運賃ページのリアルタイム駅間照合は未実施"
+  },
+  {
+    "id": "delhi_fare_secondary",
+    "publisher": "Times of India",
+    "title": "Delhi Metro fare revisions 2025",
+    "url": "https://timesofindia.indiatimes.com/city/delhi/delhi-metro-announces-first-fare-hike-since-2017-minimum-ticket-now-rs-11-maximum-rs-64-airport-express-fares-up-by-rs-5/articleshow/123492444.cms",
+    "authority": "secondary_current",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "rail_official",
+    "publisher": "Indian Railways",
+    "title": "Passenger reservation train schedule",
+    "url": "https://www.indianrail.gov.in/enquiry/SCHEDULE/TrainSchedule.jsp",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "rail_12050",
+    "publisher": "ConfirmTkt",
+    "title": "12050 Gatimaan schedule snapshot",
+    "url": "https://www.confirmtkt.com/train-schedule/12050",
+    "authority": "secondary_snapshot",
+    "checkedAt": "2026-11-03",
+    "notes": "列車運行曜日の欄に同一ページ内の矛盾あり、日時未確定"
+  },
+  {
+    "id": "rail_22988",
+    "publisher": "ConfirmTkt",
+    "title": "22988 Agra Jaipur snapshot",
+    "url": "https://www.confirmtkt.com/train-schedule/22988-AF-AII-SF--to--AF-AII-SF-EXP",
+    "authority": "secondary_snapshot",
+    "checkedAt": "2026-11-03",
+    "notes": "運賃と運行日は公式鉄道照合未了"
+  },
+  {
+    "id": "bus_official",
+    "publisher": "RSRTC",
+    "title": "Bus ticket booking service",
+    "url": "https://www.rsrtconline.rajasthan.gov.in/",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "旅行日未設定、日付別便数料金なし"
+  },
+  {
+    "id": "bus_secondary",
+    "publisher": "Independent RTC directory",
+    "title": "Agra to Jaipur bus estimates",
+    "url": "https://rtc.shivrajsinh.in/rajasthan/routes/agra-to-jaipur-bus-time-table",
+    "authority": "secondary_estimate",
+    "checkedAt": "2026-11-03",
+    "notes": "公式RSRTC運行表ではない; 運賃・頻度を確定しない"
+  },
+  {
+    "id": "asi_pib",
+    "publisher": "Indian Ministry of Culture / PIB",
+    "title": "Online ticket Booking ONDC, Jan 2026",
+    "url": "https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=2211862&lang=2&reg=48",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "map_license",
+    "publisher": "OpenStreetMap Foundation",
+    "title": "OSM data copyright and ODbL",
+    "url": "https://www.openstreetmap.org/copyright",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "commons_license",
+    "publisher": "Wikimedia Commons",
+    "title": "Licensing overview",
+    "url": "https://commons.wikimedia.org/wiki/Commons:Licensing",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "jaipur_johari",
+    "publisher": "Jaipur Municipal Corporation",
+    "title": "Main Market: Johari Bazaar",
+    "url": "https://jaipurmc.org/Presentation/Aboutjaipur/MainMarket.aspx",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "jaipur_johari_coord",
+    "publisher": "Around Us",
+    "title": "Johari Bazaar location",
+    "url": "https://aroundus.com/p/177489986-johari-bazaar",
+    "authority": "secondary_geodata",
+    "checkedAt": "2026-11-03",
+    "notes": "地区代表点の地理座標"
+  },
+  {
+    "id": "jaipur_panna",
+    "publisher": "Mapcarta / OSM",
+    "title": "Stepwell Panna Meena",
+    "url": "https://mapcarta.com/W410063780",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "jaipur_chandbaori",
+    "publisher": "Wikimedia Commons",
+    "title": "Chand Baori photographed location",
+    "url": "https://commons.wikimedia.org/wiki/File:Chand_Baori_Stepwell,_Abhaneri_07.jpg",
+    "authority": "commons_geo",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "jaipur_jalmahal_view",
+    "publisher": "Mapcarta / OSM",
+    "title": "Jal Mahal bus stop land side",
+    "url": "https://mapcarta.com/N8043890745",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": ""
+  },
+  {
+    "id": "geo_delhi_red_fort",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Red Fort mapped representative",
+    "url": "https://mapcarta.com/14862200",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_delhi_qutb_minar",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Qutb Minar mapped representative",
+    "url": "https://mapcarta.com/25584468",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_delhi_humayun_tomb",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Humayun’s Tomb mapped representative",
+    "url": "https://mapcarta.com/W220385654",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_delhi_india_gate",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "India Gate mapped representative",
+    "url": "https://mapcarta.com/24996704",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_delhi_jama_masjid",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Jama Masjid mapped representative",
+    "url": "https://mapcarta.com/14884416",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_delhi_chandni_chowk",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Chandni Chowk mapped representative",
+    "url": "https://mapcarta.com/25584486",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_delhi_lodhi_garden",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Lodhi Gardens mapped representative",
+    "url": "https://mapcarta.com/25584404",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_delhi_agrasen_baoli",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Agrasen ki Baoli mapped representative",
+    "url": "https://mapcarta.com/W500411689",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_delhi_lotus_temple",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Lotus Temple mapped representative",
+    "url": "https://mapcarta.com/27811382",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_delhi_bangla_sahib",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Gurdwara Bangla Sahib mapped representative",
+    "url": "https://mapcarta.com/W839844482",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_agra_taj_mahal",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Taj Mahal mapped representative",
+    "url": "https://mapcarta.com/Agra/Taj_Mahal",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_agra_agra_fort",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Agra Fort mapped representative",
+    "url": "https://mapcarta.com/37724110",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_agra_itimad_tomb",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Itimad-ud-Daulah’s Tomb mapped representative",
+    "url": "https://mapcarta.com/W50284165",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_agra_mehtab_bagh",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Mehtab Bagh mapped representative",
+    "url": "https://mapcarta.com/39706072",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_agra_fatehpur_sikri",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Fatehpur Sikri mapped representative",
+    "url": "https://mapcarta.com/W356394936",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_agra_akbar_tomb",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Akbar’s Tomb, Sikandra mapped representative",
+    "url": "https://mapcarta.com/W175509938",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_agra_ram_bagh",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Ram Bagh mapped representative",
+    "url": "https://mapcarta.com/33249070",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_agra_chini_rauza",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Chini ka Rauza mapped representative",
+    "url": "https://mapcarta.com/W256911883",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_agra_mariam_tomb",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Tomb of Mariam-uz-Zamani mapped representative",
+    "url": "https://mapcarta.com/W175659413",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_agra_guru_ka_taal",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Guru ka Taal Gurdwara mapped representative",
+    "url": "https://mapcarta.com/W304965623",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_jaipur_amber_fort",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Amber Fort and Palace mapped representative",
+    "url": "https://mapcarta.com/26952192",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_jaipur_hawa_mahal",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Hawa Mahal mapped representative",
+    "url": "https://mapcarta.com/26952190",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_jaipur_city_palace",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "City Palace Jaipur mapped representative",
+    "url": "https://mapcarta.com/26952188",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_jaipur_jantar_mantar",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Jantar Mantar Jaipur mapped representative",
+    "url": "https://mapcarta.com/W102879535",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_jaipur_jal_mahal",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Jal Mahal mapped representative",
+    "url": "https://mapcarta.com/26952194",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_jaipur_nahargarh_fort",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Nahargarh Fort mapped representative",
+    "url": "https://mapcarta.com/33816124",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_jaipur_albert_hall",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Albert Hall Museum mapped representative",
+    "url": "https://mapcarta.com/26953306",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_jaipur_jaigarh_fort",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "Jaigarh Fort mapped representative",
+    "url": "https://mapcarta.com/33816054",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "施設敷地の代表点。実際の出入口は別途確認すること"
+  },
+  {
+    "id": "geo_delhi_hotel_hub",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "fictional lodging / Rajiv Chowk anchor",
+    "url": "https://mapcarta.com/N8018558072",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "公的交通施設の代表座標を架空宿のアンカーに使用。現実のホテルではない"
+  },
+  {
+    "id": "geo_agra_hotel_hub",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "fictional lodging / Agra Fort rail station",
+    "url": "https://mapcarta.com/W307766787",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "公的交通施設の代表座標を架空宿のアンカーに使用。現実のホテルではない"
+  },
+  {
+    "id": "geo_jaipur_hotel_hub",
+    "publisher": "Mapcarta / OpenStreetMap",
+    "title": "fictional lodging / Badi Chaupar metro",
+    "url": "https://mapcarta.com/N8044083223",
+    "authority": "osm_secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "公的交通施設の代表座標を架空宿のアンカーに使用。現実のホテルではない"
+  },
+  {
+    "id": "asset_1",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for agra_taj_mahal",
+    "url": "https://commons.wikimedia.org/wiki/File:Taj-Mahal.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Joel Godwin; CC BY-SA 4.0; media not downloaded"
+  },
+  {
+    "id": "asset_2",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for delhi_red_fort",
+    "url": "https://commons.wikimedia.org/wiki/File:Red-Fort,Delhi.JPG",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Mahesh Bhanupanth; CC BY-SA 3.0; media not downloaded"
+  },
+  {
+    "id": "asset_3",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for delhi_qutb_minar",
+    "url": "https://commons.wikimedia.org/wiki/File:The_Qutb_Minar.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Shagil Kannur; CC BY-SA 3.0; media not downloaded"
+  },
+  {
+    "id": "asset_4",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for jaipur_hawa_mahal",
+    "url": "https://commons.wikimedia.org/wiki/File:Hawa_mahal,Jaipur.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Utsav pal; CC BY-SA 4.0; media not downloaded"
+  },
+  {
+    "id": "asset_5",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for jaipur_hawa_mahal",
+    "url": "https://commons.wikimedia.org/wiki/File:Hawa_Mahal_-_Jaipur.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Karppanta; CC BY-SA 3.0; media not downloaded"
+  },
+  {
+    "id": "asset_6",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for jaipur_amber_fort",
+    "url": "https://commons.wikimedia.org/wiki/File:Amer-fort.JPG",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Sameer Goyal; CC BY-SA 2.0; media not downloaded"
+  },
+  {
+    "id": "asset_7",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for delhi_qutb_minar",
+    "url": "https://commons.wikimedia.org/wiki/File:QuTuB_Minar.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author AravindGP; CC BY-SA 4.0; media not downloaded"
+  },
+  {
+    "id": "asset_8",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for delhi_humayun_tomb",
+    "url": "https://commons.wikimedia.org/wiki/File:Humanyun_Tomb_Image.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Yashrastogivlogs; CC BY-SA 4.0; media not downloaded"
+  },
+  {
+    "id": "asset_9",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for delhi_india_gate",
+    "url": "https://commons.wikimedia.org/wiki/File:IndiaGate,_delhi.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author HussainNellikkal; CC BY-SA 4.0; media not downloaded"
+  },
+  {
+    "id": "asset_10",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for delhi_jama_masjid",
+    "url": "https://commons.wikimedia.org/wiki/File:Jama_Masjid,_Delhi,_India.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Vyacheslav Argenberg; CC BY 4.0; media not downloaded"
+  },
+  {
+    "id": "asset_11",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for delhi_agrasen_baoli",
+    "url": "https://commons.wikimedia.org/wiki/File:Agrasena_ki_Baoli.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Spark.sonam; CC BY-SA 3.0; media not downloaded"
+  },
+  {
+    "id": "asset_12",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for delhi_chandni_chowk",
+    "url": "https://commons.wikimedia.org/wiki/File:Chandni_Chowk,_Delhi.JPG",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Deeporaj; CC BY-SA 4.0; media not downloaded"
+  },
+  {
+    "id": "asset_13",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for delhi_lodhi_garden",
+    "url": "https://commons.wikimedia.org/wiki/File:LODHI_GARDENS.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Solomon Donald Singh; CC BY-SA 4.0; media not downloaded"
+  },
+  {
+    "id": "asset_14",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for delhi_lotus_temple",
+    "url": "https://commons.wikimedia.org/wiki/File:The_lotus_temple.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Akashpatel3011; CC BY-SA 4.0; media not downloaded"
+  },
+  {
+    "id": "asset_15",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for agra_agra_fort",
+    "url": "https://commons.wikimedia.org/wiki/File:Agra_fort_.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author बृहस्पति; CC BY-SA 3.0; media not downloaded"
+  },
+  {
+    "id": "asset_16",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for agra_itimad_tomb",
+    "url": "https://commons.wikimedia.org/wiki/File:ITIMAD_UD_DAULAH.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Ajaykumarkatnauri; CC BY-SA 4.0; media not downloaded"
+  },
+  {
+    "id": "asset_17",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for agra_mehtab_bagh",
+    "url": "https://commons.wikimedia.org/wiki/File:Mehtab_Bagh_1.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Vipinyadav3011; CC BY-SA 3.0; media not downloaded"
+  },
+  {
+    "id": "asset_18",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for agra_fatehpur_sikri",
+    "url": "https://commons.wikimedia.org/wiki/File:Fatehpur_Sikri.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Luisvassy; CC BY-SA 3.0; media not downloaded"
+  },
+  {
+    "id": "asset_19",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for agra_akbar_tomb",
+    "url": "https://commons.wikimedia.org/wiki/File:The_Tomb_of_Akbar.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Sharvarism; CC BY-SA 4.0; media not downloaded"
+  },
+  {
+    "id": "asset_20",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for jaipur_city_palace",
+    "url": "https://commons.wikimedia.org/wiki/File:City_Palace,_jaipur.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Shubh77901; CC BY-SA 4.0; media not downloaded"
+  },
+  {
+    "id": "asset_21",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for jaipur_jantar_mantar",
+    "url": "https://commons.wikimedia.org/wiki/File:Jantar_mantar_,_jaipur.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author LilyPlant; CC BY-SA 4.0; media not downloaded"
+  },
+  {
+    "id": "asset_22",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for jaipur_jal_mahal",
+    "url": "https://commons.wikimedia.org/wiki/File:Jal_Mahal_at_Jaipur_Rajasthan.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author SPD2025; CC0 1.0; media not downloaded"
+  },
+  {
+    "id": "asset_23",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for jaipur_nahargarh_fort",
+    "url": "https://commons.wikimedia.org/wiki/File:Nahargarh_Fort.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Tharakan; Public Domain; media not downloaded"
+  },
+  {
+    "id": "asset_24",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for jaipur_albert_hall",
+    "url": "https://commons.wikimedia.org/wiki/File:Albert_Hall_Museum.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Srilakshmi1991; CC BY 4.0; media not downloaded"
+  },
+  {
+    "id": "asset_25",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for jaipur_jaigarh_fort",
+    "url": "https://commons.wikimedia.org/wiki/File:Jaigarh_Fort_Jaipur.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Viraj Mulki; CC0 1.0; media not downloaded"
+  },
+  {
+    "id": "asset_26",
+    "publisher": "Wikimedia Commons",
+    "title": "Commons file page for jaipur_panna_meena_kund",
+    "url": "https://commons.wikimedia.org/wiki/File:Panna_Meena_Kund.jpg",
+    "authority": "license_document",
+    "checkedAt": "2026-11-03",
+    "notes": "Author Manojmeena; CC BY-SA 4.0; media not downloaded"
+  },
+  {
+    "id": "SRC_METRO_JP_2025",
+    "publisher": "Jaipur Metro Rail Corporation",
+    "title": "Jaipur Metro revised fare notification Jan 2025",
+    "url": "https://transport.rajasthan.gov.in/content/dam/transport/metro/Passenger%20Information/MetroFares/Notification%20of%20%20Fare%20Revision%20%20Effective%20from%2031.01.2025.pdf",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "JMRC 11-station fare matrix | addon evidence grade: operator_primary"
+  },
+  {
+    "id": "SRC_METRO_AG_UPMRC",
+    "publisher": "UPMRC via Taj Mahal UP Govt",
+    "title": "Agra Metro priority corridor pamphlet and fare table",
+    "url": "https://tajmahal.gov.in/pdf/Metro-rail-service-in-Agra.pdf",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "6 station corridor;1 stop 10;2 stop 15;3-6 stop 20 INR | addon evidence grade: operator_primary"
+  },
+  {
+    "id": "SRC_METRO_AG_STATUS",
+    "publisher": "UP Metro Rail Corp",
+    "title": "UPMRC 2024-25 Annual report",
+    "url": "https://portal.upmetrorail.com/documents/374/UPMRC_Annual_Report_2024-25_English.pdf",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "six operational stops; future corridors do not assume open | addon evidence grade: operator_primary_2025"
+  },
+  {
+    "id": "SRC_METRO_DL_NEWS",
+    "publisher": "NDTV",
+    "title": "Delhi Metro Aug 2025 revised fare bands",
+    "url": "https://www.ndtv.com/india-news/delhi-metro-fare-hike-dmrc-hikes-ticket-prices-after-8-years-check-details-9152955",
+    "authority": "secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "0-2km 11,2-5 21,5-12 32,12-21 43,21-32 54,32+ 64 | addon evidence grade: secondary_report"
+  },
+  {
+    "id": "SRC_DL_AUTO_GAZETTE",
+    "publisher": "Government of NCT Delhi",
+    "title": "Delhi auto rickshaw and taxi tariff Gazette 2023",
+    "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "auto 30 first 1.5km+11/km; taxi 40 first1km +17 nonAC /20AC per km | addon evidence grade: government_primary"
+  },
+  {
+    "id": "SRC_AGRA_TAJ_FEES",
+    "publisher": "Taj Mahal UP Government",
+    "title": "Taj Mahal government official ticket information",
+    "url": "https://www.tajmahal.gov.in/travel-information.aspx",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "base fees, Fri closed, mausoleum add-on, other Agra monuments | addon evidence grade: government_primary"
+  },
+  {
+    "id": "SRC_AGRA_TAJ_GATES",
+    "publisher": "Taj Mahal UP Government",
+    "title": "Taj Mahal government visiting hours and gate restrictions",
+    "url": "https://www.tajmahal.gov.in/visiting-hours.aspx",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "east/west admission; south exit only; sunrise rules | addon evidence grade: government_primary"
+  },
+  {
+    "id": "SRC_AGRA_TAJ_PHOTO",
+    "publisher": "Taj Mahal UP Government",
+    "title": "Taj Mahal dos and donts",
+    "url": "https://www.tajmahal.gov.in/dos-and-donts.aspx",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "restricted equipment and interior photography | addon evidence grade: government_primary"
+  },
+  {
+    "id": "SRC_AGRA_TAJ_HOTELS",
+    "publisher": "Taj Mahal UP Government",
+    "title": "Agra accommodation directory indicative legacy rates",
+    "url": "https://tajmahal.gov.in/accomodation.aspx",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "Agra ranges NOT verified Nov2026 rates | addon evidence grade: government_directory_undated"
+  },
+  {
+    "id": "SRC_UP_TOURISM_HOTELS",
+    "publisher": "UP State Tourism Development Corporation",
+    "title": "UP tourist hotel booking directory",
+    "url": "https://www.guesthouse.uppwd.gov.in/Web/HotelBooking",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "Tajkhema and UP Tourism lodgings existence; dynamic fares unknown | addon evidence grade: operator_primary"
+  },
+  {
+    "id": "SRC_JP_CITYPALACE",
+    "publisher": "City Palace Museum Jaipur",
+    "title": "Jaipur City Palace operator visitor pages",
+    "url": "https://citypalace.org/visit",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "museum hours 9:30-18:30; resident tariffs; gates; night museum temporarily closed | addon evidence grade: operator_primary"
+  },
+  {
+    "id": "SRC_JP_JAIGARH",
+    "publisher": "Jaigarh Public Charitable Trust",
+    "title": "Jaigarh Fort operator visitor pages",
+    "url": "https://www.jaigarh.co/visit",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "admission 9-18:30; domestic fare 200; video tripod 200 | addon evidence grade: operator_primary"
+  },
+  {
+    "id": "SRC_JP_STATE_FEES_SECONDARY",
+    "publisher": "City of Jaipur",
+    "title": "2026 state museum revised entrance fees news",
+    "url": "https://www.cityofjaipur.com/news/2025/12/visiting-monuments-and-museums-will-become-more-expensive/",
+    "authority": "secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "2026 Jan state site price increases not confirmed in gov gazette | addon evidence grade: secondary_report"
+  },
+  {
+    "id": "SRC_DL_HUMAYUN_A",
+    "publisher": "Delhi Tourism",
+    "title": "Humayun tomb first official Delhi tourism page",
+    "url": "https://www.delhitourism.gov.in/tourist_place/humayun_tomb.html",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "foreigner INR600 and Indian INR40 sunrise to sunset | addon evidence grade: government_conflicting"
+  },
+  {
+    "id": "SRC_DL_HUMAYUN_B",
+    "publisher": "Delhi Tourism",
+    "title": "Humayun tomb second official Delhi tourism page",
+    "url": "https://www.delhitourism.gov.in/dt/explore_the_city/humayuns_tomb.html",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "foreigner INR550 and Indian INR35 sunrise to 19:30 | addon evidence grade: government_conflicting"
+  },
+  {
+    "id": "SRC_DL_LOTUS",
+    "publisher": "Delhi Tourism",
+    "title": "Lotus temple Delhi tourism visitor page",
+    "url": "https://delhitourism.gov.in/tourist_place/bahai_temple.html",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "Tue-Sun 9-17:30 Monday closed; free; photography permission | addon evidence grade: government_primary"
+  },
+  {
+    "id": "SRC_DL_CHANDNI",
+    "publisher": "Shahjahanabad Redevelopment Corporation Delhi",
+    "title": "Chandni Chowk government street page",
+    "url": "https://srdc.delhi.gov.in/en/srdc/1600-1700",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "public market street free to enter; no global admission ticket | addon evidence grade: government_primary"
+  },
+  {
+    "id": "SRC_DL_CHANDNI_TIME",
+    "publisher": "Delhi Tourism",
+    "title": "Chandni Chowk tourist trading hours",
+    "url": "https://delhitourism.gov.in/dt/delhi_delicacies/chandni_chowk.html",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "shop hours illustrative; some Sunday close | addon evidence grade: government_primary"
+  },
+  {
+    "id": "SRC_DL_BAOLI",
+    "publisher": "Delhi Tourism",
+    "title": "Agrasen Baoli Delhi tourism",
+    "url": "https://www.delhitourism.gov.in/dt/explore_the_city/agrasen_ki_baoli.html",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "hours 9-17:30; no fee statement | addon evidence grade: government_primary"
+  },
+  {
+    "id": "SRC_DL_BANGLA_SECONDARY",
+    "publisher": "Maps of India",
+    "title": "Bangla Sahib visitor information",
+    "url": "https://www.mapsofindia.com/delhi/places-of-interest/religious-places/bangla-sahib.html",
+    "authority": "secondary",
+    "checkedAt": "2026-11-03",
+    "notes": "entry free, religious site etiquette, photographic rules source limited | addon evidence grade: secondary_report"
+  },
+  {
+    "id": "SRC_JP_RTDCTOUR",
+    "publisher": "Rajasthan Tourism Development Corporation",
+    "title": "RTDC City tour schedule fares",
+    "url": "https://rtdc.tourism.rajasthan.gov.in/Client/CityTourCheckAvailability.aspx",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "Jaipur day trip 600; Abhaneri tour 700; not intercity transfer | addon evidence grade: operator_primary"
+  },
+  {
+    "id": "SRC_JP_TEEJ",
+    "publisher": "Rajasthan Tourism Development Corporation",
+    "title": "RTDC Hotel Teej tariff 2026/10–2027/03",
+    "url": "https://www.rtdc.tourism.rajasthan.gov.in/Client/HotelDetails.aspx?HotelID=JaipurTeej",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "two-person room 1600/1800/2000 before GST | addon evidence grade: operator_primary"
+  },
+  {
+    "id": "SRC_JP_GANGAUR",
+    "publisher": "Rajasthan Tourism Development Corporation",
+    "title": "RTDC Hotel Gangaur tariff 2026/10–2027/03",
+    "url": "https://rtdc.tourism.rajasthan.gov.in/Client/HotelDetails.aspx?HotelID=JaipurGangaur",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "two-person room 1600 to 3000 before GST | addon evidence grade: operator_primary"
+  },
+  {
+    "id": "SRC_JP_SWAGATAM",
+    "publisher": "Rajasthan Tourism Development Corporation",
+    "title": "RTDC Hotel Swagatam tariff 2026/04–2027/03",
+    "url": "https://www.rtdc.tourism.rajasthan.gov.in/Client/HotelDetails.aspx?HotelID=JaipurSwagatam",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "double AC room 1400 before GST | addon evidence grade: operator_primary"
+  },
+  {
+    "id": "SRC_DELHI_YMCA",
+    "publisher": "New Delhi YMCA",
+    "title": "YMCA tourist hostel published rates from Apr 2026",
+    "url": "https://www.newdelhiymca.in/hostel/book-now",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "2-person executive room 5615 tax-included | addon evidence grade: operator_primary"
+  },
+  {
+    "id": "SRC_RAIL_DA_PRICE",
+    "publisher": "redBus",
+    "title": "Delhi-Agra rail third party schedule search",
+    "url": "https://www.redbus.in/train-tickets/hazrat-nizamuddin-jn-to-agra-cantt-trains",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "dated fares not bookings, revalidate | addon evidence grade: third_party_dynamic"
+  },
+  {
+    "id": "SRC_RAIL_AJ_PRICE",
+    "publisher": "redBus",
+    "title": "Agra-Jaipur rail third party schedule search",
+    "url": "https://www.redbus.in/train-tickets/agra-fort-to-jaipur-trains",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "dated fares not bookings, revalidate | addon evidence grade: third_party_dynamic"
+  },
+  {
+    "id": "SRC_RAIL_OFFICIAL",
+    "publisher": "Indian Railways",
+    "title": "Indian Railways timetable query",
+    "url": "https://www.indianrail.gov.in/enquiry/SCHEDULE/TrainSchedule.jsp",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "departure and availability require selected date | addon evidence grade: government_operator"
+  },
+  {
+    "id": "SRC_CAR_DA_1",
+    "publisher": "Taxi Partner",
+    "title": "Example commercial Delhi-Agra cab quote",
+    "url": "https://taxipartner.in/route/delhi-to-agra",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "variable cab fare; not booked | addon evidence grade: third_party_undated"
+  },
+  {
+    "id": "SRC_CAR_AJ_1",
+    "publisher": "Triveni Cabs",
+    "title": "Example commercial Agra-Jaipur cab quote",
+    "url": "https://www.trivenicabs.in/one-way-cab/agra-to-jaipur",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "variable cab fare; not booked | addon evidence grade: third_party_undated"
+  },
+  {
+    "id": "SRC_RSRTC",
+    "publisher": "Rajasthan State Road Transport Corporation",
+    "title": "Rajasthan bus online booking search",
+    "url": "https://www.rsrtconline.rajasthan.gov.in/",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "bus times and fares requires date/route selection | addon evidence grade: government_operator_dynamic"
+  },
+  {
+    "id": "SRC_MAP_REDFORT_LAHORE",
+    "publisher": "OpenStreetMap via Mapcarta",
+    "title": "Mapped Red Fort Lahori Gate (check before importing)",
+    "url": "https://mapcarta.com/W80429907",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "Lahori Gate anchor only not operational certification | addon evidence grade: third_party_map"
+  },
+  {
+    "id": "SRC_MAP_AGRAFORT_TICKET",
+    "publisher": "OpenStreetMap via Mapcarta",
+    "title": "Mapped Agra Fort ticket office (check before importing)",
+    "url": "https://mapcarta.com/W546292478",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "ticket booth marker not verified official entrance coordinate | addon evidence grade: third_party_map"
+  },
+  {
+    "id": "SRC_MAP_HAWA_TICKET",
+    "publisher": "OpenStreetMap via Mapcarta",
+    "title": "Mapped Hawa Mahal ticket counter (check before importing)",
+    "url": "https://mapcarta.com/N10047925085",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "ticket counter coordinate not verified operational gate | addon evidence grade: third_party_map"
+  },
+  {
+    "id": "SRC_OSM_ATTRIBUTION",
+    "publisher": "OpenStreetMap contributors",
+    "title": "OSM attribution / ODbL",
+    "url": "https://www.openstreetmap.org/copyright",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "OSM map database license | addon evidence grade: licensing"
+  },
+  {
+    "id": "SRC_COMMONS",
+    "publisher": "Wikimedia Commons",
+    "title": "Wikimedia Commons file pages and reuse licenses",
+    "url": "https://commons.wikimedia.org/",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "license check per file before use | addon evidence grade: file_per_license"
+  },
+  {
+    "id": "SRC_JP_JANTAR_CENTRAL",
+    "publisher": "Incredible India (Ministry of Tourism)",
+    "title": "Jantar Mantar visiting hours (central govt)",
+    "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/jantar-mantar",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "9-17 vs state website 9-19 | addon evidence grade: government_primary_conflicts_with_state"
+  },
+  {
+    "id": "SRC_JP_ALBERT_CENTRAL",
+    "publisher": "Incredible India (Ministry of Tourism)",
+    "title": "Albert Hall timings day and night",
+    "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/albert-hall-museum",
+    "authority": "official",
+    "checkedAt": "2026-11-03",
+    "notes": "9-17 and 19-21:30; night fee unverified | addon evidence grade: government_primary"
+  },
+  {
+    "id": "SRC_JP_JANTAR_STATE",
+    "publisher": "Rajasthan Tourism",
+    "title": "Jantar Mantar Rajasthan tourism site",
+    "url": "https://www.tourism.rajasthan.gov.in/jantar-mantar.html",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "9-19 last admission 18:30 but price older than 2026 | addon evidence grade: government_primary_conflicts_with_central"
+  },
+  {
+    "id": "SRC_RED_FORT_FEB26",
+    "publisher": "Press Trust of India via Business Standard",
+    "title": "Red Fort weekly open schedule ASI announcement 2026-02-21",
+    "url": "https://www.business-standard.com/india-news/red-fort-to-remain-open-on-all-days-of-week-asi-126022100547_1.html",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "Feb13 ASI order opens Mondays; request official order copy | addon evidence grade: secondary_quotes_asi_official"
+  },
+  {
+    "id": "SRC_HAWA_STATE",
+    "publisher": "Rajasthan Tourism",
+    "title": "Rajasthan Hawa Mahal overview",
+    "url": "https://www.tourism.rajasthan.gov.in/content/rajasthan-tourism/en/tourist-destinations/hawa-mahal.html",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "attraction guide not conclusive hours | addon evidence grade: government_overview"
+  },
+  {
+    "id": "SRC_JP_ALBERT_PORTAL_SECONDARY",
+    "publisher": "TravelIAC",
+    "title": "2026 Albert Hall entrance price report checked at govt portal",
+    "url": "https://traveliac.com/india/rajasthan/jaipur/albert-hall-museum",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "foreign adult 600; Indian 100; photo fees reported | addon evidence grade: secondary_claims_2026_booking_portal"
+  },
+  {
+    "id": "SRC_JP_JANTAR_PORTAL_SECONDARY",
+    "publisher": "TravelIAC",
+    "title": "2026 Jantar entrance price report checked at govt portal",
+    "url": "https://traveliac.com/india/rajasthan/jaipur/jantar-mantar",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "foreign 600, Indian100; photo fee reported | addon evidence grade: secondary_claims_2026_booking_portal"
+  },
+  {
+    "id": "SRC_JP_HAWA_SECONDARY",
+    "publisher": "Hawa-mahal.com unofficial",
+    "title": "Hawa Mahal hours public unofficial guide",
+    "url": "https://www.hawa-mahal.com/hawa-mahal-opening-hours/",
+    "authority": "research_support",
+    "checkedAt": "2026-11-03",
+    "notes": "9-16:30; fares obsolete | addon evidence grade: secondary_older_fare"
+  },
+  {
+    "id": "gt_game_model_20261103",
+    "publisher": "Dreamscape editorial model",
+    "title": "Golden Triangle gameplay modeling assumptions",
+    "url": "https://www.openstreetmap.org/copyright",
+    "authority": "editorial_game_model",
+    "checkedAt": "2026-11-03",
+    "notes": "URL is for underlying map attribution only. All modeled route times and costs are game estimates, NOT OSM measurements or supplier prices."
+  },
+  {
+    "id": "gt_opacity_20261103",
+    "publisher": "Dreamscape research integration",
+    "title": "Explicitly unverified on-site conditions",
+    "url": "https://www.incredibleindia.gov.in/",
+    "authority": "research_classification",
+    "checkedAt": "2026-11-03",
+    "notes": "The URL gives general tourism context; no operational permission is claimed."
+  }
+]

@@ -1,0 +1,46 @@
+{
+  "project": "Dreamscape_CODEX",
+  "dataset": "Gold Triangle India Research Supplement",
+  "createdAt": "2026-11-03",
+  "targetCities": [
+    "delhi",
+    "agra",
+    "jaipur"
+  ],
+  "partySize": 2,
+  "timezone": "Asia/Kolkata",
+  "baseZipFileName": "Dreamscape_India(2).zip",
+  "baseZipSHA256": "240645ae91d5a8f743ad5c3accef0e622b80ea5430cd7b430b835eed496b4b5b",
+  "type": "supplement_not_replacement",
+  "gameRepositoryModified": false,
+  "notes": "All simulated or unverifiable fields are tagged. Asset binaries absent.",
+  "coverage": {
+    "places": 33,
+    "tourismPlaces": 30,
+    "walkRouteRows": 147,
+    "walkRoutePairs": 126,
+    "walkPrototypeModeledPairs": 102,
+    "walkBridgeUnresolvedPairs": 24,
+    "realPedestrianNetworkMeasuredPairs": 0,
+    "verifiedOperationalEntryGateCoordinates": 0,
+    "jaipurMetroODs": 121,
+    "agraMetroODs": 36,
+    "localTransportOriginalRowsCovered": 19,
+    "intercityRowsCovered": 9,
+    "imagesWithCommonsFilePage": 30,
+    "downloadedPhotoBinaryCount": 0
+  },
+  "usableProductionRules": [
+    "Official Jaipur metro fare matrix",
+    "Official Agra priority corridor fare band",
+    "Official Delhi metered taxi/auto formula; road distance prerequisite",
+    "Selected official venue opening/fee schedules with classification"
+  ],
+  "caveats": [
+    "No real walking route certified",
+    "Coordinates represent gates only when confirmed; none confirmed",
+    "Foreign national fares missing for private Jaipur venues",
+    "Many fees and timetables are time sensitive",
+    "Visual game asset files not bundled"
+  ]
+}

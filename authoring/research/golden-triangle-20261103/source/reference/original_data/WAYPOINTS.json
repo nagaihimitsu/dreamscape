@@ -1,0 +1,15 @@
+[
+  {
+    "id": "via_chand_baori",
+    "nameJa": "チャンド・バオリ（アバネリ）",
+    "nameEn": "Chand Baori, Abhaneri",
+    "latitude": 27.007292,
+    "longitude": 76.606392,
+    "sourceId": "jaipur_chandbaori",
+    "type": "route_waypoint_candidate",
+    "cityId": null,
+    "routeLeg": "agra_to_jaipur",
+    "access": "アーグラ→ジャイプール道路ルートの立ち寄り候補。迂回時間は道路網未計算。",
+    "note": "階段井戸の深さや段数等、数値は一次資料照合できないため未確定"
+  }
+]

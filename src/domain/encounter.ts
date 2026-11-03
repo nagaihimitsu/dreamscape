@@ -112,8 +112,9 @@ export function getEncounterOptionAvailability(state: GameState, index: number):
   const option = event && choice ? encounterChoiceOption(event, choice) : undefined;
   if (!active || active.phase !== "story" || active.selectedOptionId !== null || !option || !active.frame.choices.some((choice) => choice.index === index)) return unavailable("この選択肢は使えません。");
   if (!event || event.cityId !== state.currentCityId || !optionItemsBelongToEncounter(event, option)) return unavailable("この街では使えない品物です。");
-  if (state.travelBudget < option.costEuro) return unavailable("旅行予算が足りません。");
-  if (state.travelBudget - option.costEuro < state.travel.returnReserve) return unavailable("帰りの交通費を確保しているため、今は使えません。");
+  const cost = option.cost ?? option.costEuro ?? 0;
+  if (state.travelBudget < cost) return unavailable("旅行予算が足りません。");
+  if (state.travelBudget - cost < state.travel.returnReserve) return unavailable("帰りの交通費を確保しているため、今は使えません。");
   if (option.requiresItemId && state.inventory[option.requiresItemId] !== "held") return unavailable("必要な品物を持っていません。");
   return available;
 }
@@ -210,8 +211,9 @@ export function chooseEncounter(state: GameState, index: number, expectedRevisio
   const choice = active.frame.choices.find((item) => item.index === index)!;
   const option = encounterChoiceOption(event, choice)!;
   if (option.textEn !== undefined && choice.text !== option.textEn) throw new Error("交流の選択肢が一致しません。");
-  if (state.travelBudget - option.costEuro < state.travel.returnReserve) return state;
-  let next = { ...state, travelBudget: state.travelBudget - option.costEuro, inventory: { ...state.inventory } };
+  const cost = option.cost ?? option.costEuro ?? 0;
+  if (state.travelBudget - cost < state.travel.returnReserve) return state;
+  let next = { ...state, travelBudget: state.travelBudget - cost, inventory: { ...state.inventory } };
   if (option.consumeItemId) next.inventory[option.consumeItemId] = "used";
   if (option.giftItemId) next.inventory[option.giftItemId] = "gifted";
   let result = "positive";
@@ -304,7 +306,7 @@ export function finishEncounter(state: GameState, expectedRevision: number): Gam
   let next: GameState = { ...state, revision: state.revision + 1, activeEncounter: null };
   if (first) {
     if (event.completionItemId && next.inventory[event.completionItemId]) throw new Error("品物の記録が一致しません。");
-    const total = next.travelBudget + (event.completionMoneyEuro ?? 0);
+    const total = next.travelBudget + (event.completionMoney ?? event.completionMoneyEuro ?? 0);
     if (!Number.isSafeInteger(total)) throw new Error("旅行予算の上限を超えました。");
     next = { ...next, travelBudget: total, completedEncounterIds: [...next.completedEncounterIds, event.id],
       inventory: event.completionItemId ? { ...next.inventory, [event.completionItemId]: "held" } : next.inventory };

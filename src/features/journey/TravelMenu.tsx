@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { dates, episodes, journeyConfig, getCityContent } from "../../content";
+import { formatMoneyForCity } from "../../content/currency";
 import type { TravelEvent, TravelPlace, TravelRoute } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
 import { getDirection, groupDestinationEvents, selectNearbyDestinations } from "../../domain/travel";
@@ -26,11 +27,12 @@ export function TravelMenu({ game, onTravelEvent }: {
   const candidates = events.flatMap((event) => {
     const walk = outgoing.find((route) => route.toPlaceId === event.placeId && route.mode === "walk");
     const place = travel.places.find((item) => item.id === event.placeId);
-    if (!walk || !place) return [];
+    if (!place) return [];
     const routes = outgoing.filter((route) => route.toPlaceId === event.placeId);
+    if (routes.length === 0) return [];
     const availability = routes.map((route) => getTravelEventAvailability(game, event.id, route.mode));
     const available = availability.some((result) => result.available);
-    return [{ ...event, walkMinutes: walk.minutes, place, routes, available, unavailableReason: availability[0]?.reason,
+    return [{ ...event, walkMinutes: walk?.minutes ?? null, place, routes, available, unavailableReason: availability[0]?.reason,
       unclearedMain: isUnclearedMainTravelEvent(game, event.id) }];
   });
   const places = groupDestinationEvents(candidates);
@@ -50,8 +52,8 @@ export function TravelMenu({ game, onTravelEvent }: {
     else setSelectedPlaceId(place.id);
   }
   return <section className="travel-menu" aria-label={`${city.nameJa}の行き先`} data-testid="travel-menu">
-    {game.travel.returnReserve > 0 && <p className="travel-reserve">帰路用に€{game.travel.returnReserve}を確保（所持金に含む）</p>}
-    <PlaceMap game={game} events={events} />
+    {game.travel.returnReserve > 0 && <p className="travel-reserve">帰路用に{formatMoneyForCity(game.currentCityId, game.travel.returnReserve)}を確保（所持金に含む）</p>}
+    <PlaceMap game={game} events={candidates} />
     {nearby.length === 0 && <p>今すぐ行ける場所はありません。時間を待つか、滞在先で休めます。</p>}
     <div className="travel-list">{nearby.map((place) => <Destination key={place.id} place={place} game={game} current={current} recommended={place.id === recommendedMainId} onSelect={() => selectPlace(place)} />)}</div>
     {other.length > 0 && <details open={showOther} onToggle={(event) => setShowOther(event.currentTarget.open)}><summary>ほかの行き先を見る</summary><div className="travel-list">{other.map((place) => <Destination key={place.id} place={place} game={game} current={current} onSelect={() => selectPlace(place)} />)}</div></details>}
@@ -75,13 +77,13 @@ export function TravelMenu({ game, onTravelEvent }: {
     </Modal>}
     {selected && <Modal labelledBy="travel-choice-title" className="travel-choice-modal" onClose={() => setSelectedId(null)}><div className="travel-choice-header"><h2 id="travel-choice-title">{selected.place.nameJa}へ</h2><button type="button" className="secondary" onClick={() => setSelectedId(null)}>閉じる</button></div><p>移動手段を選んでください。時間・料金はゲーム内の目安です。</p><div className="travel-choice-routes">{selected.routes.map((route) => {
       const availability = getTravelEventAvailability(game, selected.id, route.mode);
-      return <div key={route.mode}><button type="button" className="secondary travel-route" disabled={!availability.available} onClick={() => { onTravelEvent(selected.id, route.mode); setSelectedId(null); }}>{modes[route.mode]} {route.minutes}分 · €{route.cost}</button>{!availability.available && <p className="fine-print">{availability.reason}</p>}</div>;
+      return <div key={route.mode}><button type="button" className="secondary travel-route" disabled={!availability.available} onClick={() => { onTravelEvent(selected.id, route.mode); setSelectedId(null); }}>{modes[route.mode]} {route.minutes}分 · {formatMoneyForCity(game.currentCityId, route.cost)}</button>{!availability.available && <p className="fine-print">{availability.reason}</p>}</div>;
     })}</div></Modal>}
   </section>;
 }
 
-type Candidate = TravelEvent & { walkMinutes: number; place: TravelPlace; routes: TravelRoute[]; available: boolean; unavailableReason?: string; unclearedMain: boolean };
-type PlaceCandidate = { id: string; walkMinutes: number; events: Candidate[]; available: boolean };
+type Candidate = TravelEvent & { walkMinutes: number | null; place: TravelPlace; routes: TravelRoute[]; available: boolean; unavailableReason?: string; unclearedMain: boolean };
+type PlaceCandidate = { id: string; walkMinutes: number | null; events: Candidate[]; available: boolean };
 
 function Destination({ place, game, current, recommended, onSelect }: {
   place: PlaceCandidate;
@@ -95,11 +97,12 @@ function Destination({ place, game, current, recommended, onSelect }: {
   const apCost = getTravelEventDefinition(game, event.id)?.apCost ?? event.apCost;
   const categories = new Set(place.events.map((item) => item.category));
   const onlyRoute = event.routes.length === 1 ? event.routes[0] : undefined;
+  const fastestRoute = event.walkMinutes === null ? [...event.routes].sort((a, b) => a.minutes - b.minutes || a.cost - b.cost)[0] : undefined;
   return <article className="travel-destination" data-testid={`travel-place-${place.id}`}>
     <button type="button" className="travel-destination-button" onClick={onSelect}>
       <span className="travel-category">{categories.has("main") && "◇ 観光"}{categories.size > 1 && " · "}{categories.has("date") && "♡ デート"}</span>
       <span className="travel-destination-title">{event.place.nameJa}</span>
-      <span className="travel-destination-meta">{onlyRoute ? `${modes[onlyRoute.mode]}約${onlyRoute.minutes}分 · €${onlyRoute.cost}` : `徒歩約${event.walkMinutes}分`}（{direction}）{place.events.length === 1 && apCost ? ` · ${apCost} AP` : ""}</span>
+      <span className="travel-destination-meta">{onlyRoute ? `${modes[onlyRoute.mode]}約${onlyRoute.minutes}分 · ${formatMoneyForCity(game.currentCityId, onlyRoute.cost)}` : fastestRoute ? `${modes[fastestRoute.mode]}約${fastestRoute.minutes}分` : `徒歩約${event.walkMinutes}分`}{event.walkMinutes === null && " · 徒歩の所要時間不明"}（{direction}）{place.events.length === 1 && apCost ? ` · ${apCost} AP` : ""}</span>
       {recommended && <small>おすすめ</small>}
       {!place.available && <small>{event.unavailableReason || "今は行けません。"}</small>}
     </button>

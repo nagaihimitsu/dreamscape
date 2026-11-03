@@ -5,6 +5,7 @@ import { battleAnswerSchema, getBattleContentByHash } from "../../domain/battle"
 import { battles, learningTranslations } from "../../content";
 
 import { LEARNING_KEY as key, SAVE_KEY, type StorageLike } from "../../persistence";
+import { storagePhysicalKey } from "../../persistence/journey-storage";
 const schema = z
   .object({
     schemaVersion: z.literal(1),
@@ -150,8 +151,8 @@ export function useLearning(game: GameState | null, storage: StorageLike = windo
     if (!listenToStorage) return;
     function changed(e: StorageEvent) {
       if (
-        (e.key === key && e.newValue !== rawRef.current) ||
-        (e.key === SAVE_KEY && e.newValue === null)
+        (e.key === storagePhysicalKey(storage, key) && e.newValue !== rawRef.current) ||
+        (e.key === storagePhysicalKey(storage, SAVE_KEY) && e.newValue === null)
       ) {
         setError(
           "別の画面で英語ノートが更新されました。この画面を再読み込みしてください。",
@@ -161,7 +162,7 @@ export function useLearning(game: GameState | null, storage: StorageLike = windo
     }
     window.addEventListener("storage", changed);
     return () => window.removeEventListener("storage", changed);
-  }, [listenToStorage]);
+  }, [listenToStorage, storage]);
   const isMarked = (id: string) =>
     !!learningTranslations[id] &&
     data.marks[id] === JSON.stringify(learningTranslations[id].source);

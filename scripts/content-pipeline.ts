@@ -47,6 +47,7 @@ import { validateTourism } from "./tourism-validation";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { validateTravelContent } from "./travel-validation";
 import { journeySchema } from "../src/content/journey-schemas";
+import { journeyCatalogSchema } from "../src/content/journey-catalog";
 import { validateJourney } from "./journey-validation";
 import { validateEpilogue } from "./epilogue-validation";
 import {
@@ -492,10 +493,35 @@ export async function buildContent(root: string, writeOutput = true) {
       next = following;
     }
   }
+  const journeyCatalog = await parseFile(journeyCatalogSchema, path.join(content, "journeys/catalog.json"));
+  for (const current of cities) {
+    const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id));
+    if (!owner) throw new Error(`City has no journey: ${current.id}`);
+    if (current.nextCityId) {
+      const index = owner.cities.findIndex((planned) => planned.id === current.id);
+      if (owner.cities[index + 1]?.id !== current.nextCityId)
+        throw new Error(`Next city is outside the journey order: ${current.id}/${current.nextCityId}`);
+    }
+  }
+  for (const plannedJourney of journeyCatalog.journeys) {
+    if (plannedJourney.status === "available") {
+      const start = plannedJourney.cities[0];
+      if (!cities.some((item) => item.id === start.id && item.productionStatus === "complete"))
+        throw new Error(`Available journey has unknown or incomplete starting city: ${plannedJourney.id}/${start.id}`);
+      if (plannedJourney.initialBudget === null)
+        throw new Error(`Available journey has no initial budget: ${plannedJourney.id}`);
+    }
+  }
   const balance = await parseFile(
     balanceSchema,
     path.join(content, "romance/balance.json"),
   );
+  for (const plannedJourney of journeyCatalog.journeys) {
+    if (plannedJourney.initialState && plannedJourney.initialState.ap > balance.apCap)
+      throw new Error(`Journey initial AP exceeds cap: ${plannedJourney.id}`);
+    if (plannedJourney.cityPlan && plannedJourney.cityPlan.cityClearAp > balance.apCap)
+      throw new Error(`Journey city clear AP exceeds cap: ${plannedJourney.id}`);
+  }
   const presentation = await parseFile(
     presentationSchema,
     path.join(content, "romance/presentation.json"),
@@ -504,6 +530,11 @@ export async function buildContent(root: string, writeOutput = true) {
     travel: await parseFile(travelCatalogSchema, path.join(content, `travel/${item.id}.json`)),
     settings: await parseFile(travelSettingsSchema, path.join(content, `travel/${item.id}-settings.json`)),
   })));
+  for (const { city: registeredCity, settings } of travels) {
+    const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === registeredCity.id));
+    if (owner?.cityPlan && settings.lodgingCost !== owner.cityPlan.lodgingCost)
+      throw new Error(`City lodging cost does not match journey plan: ${registeredCity.id}`);
+  }
   unique(travels.flatMap(({ travel }) => travel.places.map((place) => place.id)), "travel place ID");
   unique(travels.flatMap(({ travel }) => travel.events.map((event) => event.id)), "travel event ID");
   unique(destinations.map((destination) => destination.id), "date destination ID");
@@ -1087,6 +1118,14 @@ export async function buildContent(root: string, writeOutput = true) {
   for (const { city: current, travel, settings } of travels) {
     const episodes = journey.episodes.filter((episode) => episode.cityId === current.id);
     if (!episodes.length) throw new Error(`City has no episodes: ${current.id}`);
+    const plan = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id))?.cityPlan;
+    if (plan) {
+      const finale = episodes.find((episode) => episode.kind === "city_finale");
+      const episodeIds = new Set(episodes.map((episode) => episode.id));
+      const clearRewards = journey.rewards.filter((rule) => episodeIds.has(rule.episodeId) && rule.trigger === "city_clear");
+      if (!finale || clearRewards.length !== 1 || clearRewards[0].episodeId !== finale.id || clearRewards[0].ap !== plan.cityClearAp)
+        throw new Error(`City clear reward does not match journey plan: ${current.id}`);
+    }
     const episodeIds = new Set(episodes.map((episode) => episode.id));
     const cityJourney = { ...journey, entryEpisodeId: current.id === city.id ? journey.entryEpisodeId : episodes[0].id,
       episodes, storyBattles: journey.storyBattles.filter((battle) => battleCity(battle.battleId) === current.id),
@@ -1097,7 +1136,8 @@ export async function buildContent(root: string, writeOutput = true) {
     validateEncounterContent({
       catalog: { ...encounterCatalog, items: encounterCatalog.items.filter((item) => item.cityId === current.id),
         encounters: encounterCatalog.encounters.filter((event) => event.cityId === current.id) },
-      cityId: current.id, landmarks: cityLandmarks, journey: cityJourney, stories, quizzes,
+      cityId: current.id, currencyCode: journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id))!.currency.code,
+      landmarks: cityLandmarks, journey: cityJourney, stories, quizzes,
       responseProfileIds: responseProfiles.map((profile) => profile.id), memoryIds: Object.keys(presentation.memories), context,
       validateQuiz: validateQuizEntries,
     });

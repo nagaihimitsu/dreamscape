@@ -1,0 +1,2677 @@
+{
+  "cityId": "agra",
+  "places": [
+    {
+      "id": "agra_taj_mahal",
+      "cityId": "agra",
+      "nameJa": "タージ・マハル",
+      "nameEn": "Taj Mahal",
+      "latitude": 27.17501,
+      "longitude": 78.04209,
+      "backgroundAssetId": "gt_bg_agra_taj_mahal",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Taj Mahal mapped representative",
+          "url": "https://mapcarta.com/Agra/Taj_Mahal",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ]
+    },
+    {
+      "id": "agra_agra_fort",
+      "cityId": "agra",
+      "nameJa": "アーグラ城",
+      "nameEn": "Agra Fort",
+      "latitude": 27.17602,
+      "longitude": 78.02192,
+      "backgroundAssetId": "gt_bg_agra_agra_fort",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Agra Fort mapped representative",
+          "url": "https://mapcarta.com/37724110",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        },
+        {
+          "publisher": "OpenStreetMap via Mapcarta",
+          "title": "Game routing anchor (agra_agra_fort)",
+          "url": "https://mapcarta.com/W546292478",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "ゲーム内試作用代表点。実際の入口・通行可能経路を保証しない。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ]
+    },
+    {
+      "id": "agra_itimad_tomb",
+      "cityId": "agra",
+      "nameJa": "イティマード・ウッダウラ廟",
+      "nameEn": "Itimad-ud-Daulah’s Tomb",
+      "latitude": 27.19281,
+      "longitude": 78.03143,
+      "backgroundAssetId": "gt_bg_agra_itimad_tomb",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Itimad-ud-Daulah’s Tomb mapped representative",
+          "url": "https://mapcarta.com/W50284165",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ]
+    },
+    {
+      "id": "agra_mehtab_bagh",
+      "cityId": "agra",
+      "nameJa": "メヘターブ・バーグ",
+      "nameEn": "Mehtab Bagh",
+      "latitude": 27.17967,
+      "longitude": 78.04204,
+      "backgroundAssetId": "gt_bg_agra_mehtab_bagh",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Mehtab Bagh mapped representative",
+          "url": "https://mapcarta.com/39706072",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ]
+    },
+    {
+      "id": "agra_fatehpur_sikri",
+      "cityId": "agra",
+      "nameJa": "ファテープル・シークリー",
+      "nameEn": "Fatehpur Sikri",
+      "latitude": 27.09602,
+      "longitude": 77.66473,
+      "backgroundAssetId": "gt_bg_agra_fatehpur_sikri",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Fatehpur Sikri mapped representative",
+          "url": "https://mapcarta.com/W356394936",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ]
+    },
+    {
+      "id": "agra_akbar_tomb",
+      "cityId": "agra",
+      "nameJa": "アクバル廟",
+      "nameEn": "Akbar’s Tomb, Sikandra",
+      "latitude": 27.22042,
+      "longitude": 77.9504,
+      "backgroundAssetId": "gt_bg_agra_akbar_tomb",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Akbar’s Tomb, Sikandra mapped representative",
+          "url": "https://mapcarta.com/W175509938",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ]
+    },
+    {
+      "id": "agra_ram_bagh",
+      "cityId": "agra",
+      "nameJa": "ラム・バーグ",
+      "nameEn": "Ram Bagh",
+      "latitude": 27.205306,
+      "longitude": 78.038639,
+      "backgroundAssetId": "gt_bg_agra_ram_bagh",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Ram Bagh mapped representative",
+          "url": "https://mapcarta.com/33249070",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ]
+    },
+    {
+      "id": "agra_chini_rauza",
+      "cityId": "agra",
+      "nameJa": "チーニー・カ・ラウザ",
+      "nameEn": "Chini ka Rauza",
+      "latitude": 27.20086,
+      "longitude": 78.03439,
+      "backgroundAssetId": "gt_bg_agra_chini_rauza",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Chini ka Rauza mapped representative",
+          "url": "https://mapcarta.com/W256911883",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ]
+    },
+    {
+      "id": "agra_mariam_tomb",
+      "cityId": "agra",
+      "nameJa": "マリアム・ウッザマーニー廟",
+      "nameEn": "Tomb of Mariam-uz-Zamani",
+      "latitude": 27.2153,
+      "longitude": 77.94272,
+      "backgroundAssetId": "gt_bg_agra_mariam_tomb",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Tomb of Mariam-uz-Zamani mapped representative",
+          "url": "https://mapcarta.com/W175659413",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ]
+    },
+    {
+      "id": "agra_guru_ka_taal",
+      "cityId": "agra",
+      "nameJa": "グル・カ・タール",
+      "nameEn": "Guru ka Taal Gurdwara",
+      "latitude": 27.21162,
+      "longitude": 77.96763,
+      "backgroundAssetId": "gt_bg_agra_guru_ka_taal",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Guru ka Taal Gurdwara mapped representative",
+          "url": "https://mapcarta.com/W304965623",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ]
+    },
+    {
+      "id": "agra_hotel_hub",
+      "cityId": "agra",
+      "nameJa": "アーグラの架空宿（アーグラ・フォート駅付近）",
+      "nameEn": "fictional lodging / Agra Fort rail station",
+      "latitude": 27.18225,
+      "longitude": 78.01825,
+      "backgroundAssetId": "gt_bg_agra_hotel_hub",
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "fictional lodging / Agra Fort rail station",
+          "url": "https://mapcarta.com/W307766787",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        }
+      ],
+      "openingWindows": [
+        {
+          "start": 0,
+          "end": 1440
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "fromPlaceId": "agra_taj_mahal",
+      "toPlaceId": "agra_taj_mahal",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_taj_mahal",
+      "toPlaceId": "agra_agra_fort",
+      "mode": "walk",
+      "minutes": 37,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_taj_mahal",
+      "toPlaceId": "agra_agra_fort",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 150,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_taj_mahal",
+      "toPlaceId": "agra_itimad_tomb",
+      "mode": "taxi",
+      "minutes": 21,
+      "cost": 150,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_taj_mahal",
+      "toPlaceId": "agra_mehtab_bagh",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_taj_mahal",
+      "toPlaceId": "agra_fatehpur_sikri",
+      "mode": "taxi",
+      "minutes": 221,
+      "cost": 1270,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_taj_mahal",
+      "toPlaceId": "agra_akbar_tomb",
+      "mode": "taxi",
+      "minutes": 66,
+      "cost": 410,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_taj_mahal",
+      "toPlaceId": "agra_ram_bagh",
+      "mode": "taxi",
+      "minutes": 27,
+      "cost": 190,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_taj_mahal",
+      "toPlaceId": "agra_chini_rauza",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 180,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_taj_mahal",
+      "toPlaceId": "agra_mariam_tomb",
+      "mode": "taxi",
+      "minutes": 68,
+      "cost": 420,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_taj_mahal",
+      "toPlaceId": "agra_guru_ka_taal",
+      "mode": "taxi",
+      "minutes": 55,
+      "cost": 350,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_taj_mahal",
+      "toPlaceId": "agra_hotel_hub",
+      "mode": "walk",
+      "minutes": 46,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_taj_mahal",
+      "toPlaceId": "agra_hotel_hub",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_agra_fort",
+      "toPlaceId": "agra_taj_mahal",
+      "mode": "walk",
+      "minutes": 37,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_agra_fort",
+      "toPlaceId": "agra_taj_mahal",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 150,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_agra_fort",
+      "toPlaceId": "agra_agra_fort",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_agra_fort",
+      "toPlaceId": "agra_itimad_tomb",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 150,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_agra_fort",
+      "toPlaceId": "agra_mehtab_bagh",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 150,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_agra_fort",
+      "toPlaceId": "agra_fatehpur_sikri",
+      "mode": "taxi",
+      "minutes": 210,
+      "cost": 1210,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_agra_fort",
+      "toPlaceId": "agra_akbar_tomb",
+      "mode": "taxi",
+      "minutes": 56,
+      "cost": 350,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_agra_fort",
+      "toPlaceId": "agra_ram_bagh",
+      "mode": "taxi",
+      "minutes": 29,
+      "cost": 200,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_agra_fort",
+      "toPlaceId": "agra_chini_rauza",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 180,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_agra_fort",
+      "toPlaceId": "agra_mariam_tomb",
+      "mode": "taxi",
+      "minutes": 58,
+      "cost": 360,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_agra_fort",
+      "toPlaceId": "agra_guru_ka_taal",
+      "mode": "taxi",
+      "minutes": 45,
+      "cost": 290,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_agra_fort",
+      "toPlaceId": "agra_hotel_hub",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_agra_fort",
+      "toPlaceId": "agra_hotel_hub",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_itimad_tomb",
+      "toPlaceId": "agra_taj_mahal",
+      "mode": "taxi",
+      "minutes": 21,
+      "cost": 150,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_itimad_tomb",
+      "toPlaceId": "agra_agra_fort",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 150,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_itimad_tomb",
+      "toPlaceId": "agra_itimad_tomb",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_itimad_tomb",
+      "toPlaceId": "agra_mehtab_bagh",
+      "mode": "walk",
+      "minutes": 33,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_itimad_tomb",
+      "toPlaceId": "agra_mehtab_bagh",
+      "mode": "taxi",
+      "minutes": 18,
+      "cost": 140,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_itimad_tomb",
+      "toPlaceId": "agra_fatehpur_sikri",
+      "mode": "taxi",
+      "minutes": 218,
+      "cost": 1260,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_itimad_tomb",
+      "toPlaceId": "agra_akbar_tomb",
+      "mode": "taxi",
+      "minutes": 56,
+      "cost": 350,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_itimad_tomb",
+      "toPlaceId": "agra_ram_bagh",
+      "mode": "walk",
+      "minutes": 29,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_itimad_tomb",
+      "toPlaceId": "agra_ram_bagh",
+      "mode": "taxi",
+      "minutes": 17,
+      "cost": 130,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_itimad_tomb",
+      "toPlaceId": "agra_chini_rauza",
+      "mode": "walk",
+      "minutes": 18,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_itimad_tomb",
+      "toPlaceId": "agra_chini_rauza",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_itimad_tomb",
+      "toPlaceId": "agra_mariam_tomb",
+      "mode": "taxi",
+      "minutes": 59,
+      "cost": 370,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_itimad_tomb",
+      "toPlaceId": "agra_guru_ka_taal",
+      "mode": "taxi",
+      "minutes": 45,
+      "cost": 290,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_itimad_tomb",
+      "toPlaceId": "agra_hotel_hub",
+      "mode": "taxi",
+      "minutes": 18,
+      "cost": 140,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mehtab_bagh",
+      "toPlaceId": "agra_taj_mahal",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mehtab_bagh",
+      "toPlaceId": "agra_agra_fort",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 150,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mehtab_bagh",
+      "toPlaceId": "agra_itimad_tomb",
+      "mode": "walk",
+      "minutes": 33,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mehtab_bagh",
+      "toPlaceId": "agra_itimad_tomb",
+      "mode": "taxi",
+      "minutes": 18,
+      "cost": 140,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mehtab_bagh",
+      "toPlaceId": "agra_mehtab_bagh",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mehtab_bagh",
+      "toPlaceId": "agra_fatehpur_sikri",
+      "mode": "taxi",
+      "minutes": 221,
+      "cost": 1280,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mehtab_bagh",
+      "toPlaceId": "agra_akbar_tomb",
+      "mode": "taxi",
+      "minutes": 65,
+      "cost": 400,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mehtab_bagh",
+      "toPlaceId": "agra_ram_bagh",
+      "mode": "walk",
+      "minutes": 53,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mehtab_bagh",
+      "toPlaceId": "agra_ram_bagh",
+      "mode": "taxi",
+      "minutes": 24,
+      "cost": 170,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mehtab_bagh",
+      "toPlaceId": "agra_chini_rauza",
+      "mode": "walk",
+      "minutes": 45,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mehtab_bagh",
+      "toPlaceId": "agra_chini_rauza",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mehtab_bagh",
+      "toPlaceId": "agra_mariam_tomb",
+      "mode": "taxi",
+      "minutes": 67,
+      "cost": 410,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mehtab_bagh",
+      "toPlaceId": "agra_guru_ka_taal",
+      "mode": "taxi",
+      "minutes": 54,
+      "cost": 340,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mehtab_bagh",
+      "toPlaceId": "agra_hotel_hub",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_fatehpur_sikri",
+      "toPlaceId": "agra_taj_mahal",
+      "mode": "taxi",
+      "minutes": 221,
+      "cost": 1270,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_fatehpur_sikri",
+      "toPlaceId": "agra_agra_fort",
+      "mode": "taxi",
+      "minutes": 210,
+      "cost": 1210,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_fatehpur_sikri",
+      "toPlaceId": "agra_itimad_tomb",
+      "mode": "taxi",
+      "minutes": 218,
+      "cost": 1260,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_fatehpur_sikri",
+      "toPlaceId": "agra_mehtab_bagh",
+      "mode": "taxi",
+      "minutes": 221,
+      "cost": 1280,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_fatehpur_sikri",
+      "toPlaceId": "agra_akbar_tomb",
+      "mode": "taxi",
+      "minutes": 183,
+      "cost": 1060,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_fatehpur_sikri",
+      "toPlaceId": "agra_ram_bagh",
+      "mode": "taxi",
+      "minutes": 224,
+      "cost": 1290,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_fatehpur_sikri",
+      "toPlaceId": "agra_chini_rauza",
+      "mode": "taxi",
+      "minutes": 221,
+      "cost": 1280,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_fatehpur_sikri",
+      "toPlaceId": "agra_mariam_tomb",
+      "mode": "taxi",
+      "minutes": 178,
+      "cost": 1030,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_fatehpur_sikri",
+      "toPlaceId": "agra_guru_ka_taal",
+      "mode": "taxi",
+      "minutes": 189,
+      "cost": 1100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_fatehpur_sikri",
+      "toPlaceId": "agra_hotel_hub",
+      "mode": "taxi",
+      "minutes": 209,
+      "cost": 1210,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_akbar_tomb",
+      "toPlaceId": "agra_taj_mahal",
+      "mode": "taxi",
+      "minutes": 66,
+      "cost": 410,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_akbar_tomb",
+      "toPlaceId": "agra_agra_fort",
+      "mode": "taxi",
+      "minutes": 56,
+      "cost": 350,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_akbar_tomb",
+      "toPlaceId": "agra_itimad_tomb",
+      "mode": "taxi",
+      "minutes": 56,
+      "cost": 350,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_akbar_tomb",
+      "toPlaceId": "agra_mehtab_bagh",
+      "mode": "taxi",
+      "minutes": 65,
+      "cost": 400,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_akbar_tomb",
+      "toPlaceId": "agra_fatehpur_sikri",
+      "mode": "taxi",
+      "minutes": 183,
+      "cost": 1060,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_akbar_tomb",
+      "toPlaceId": "agra_ram_bagh",
+      "mode": "taxi",
+      "minutes": 58,
+      "cost": 360,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_akbar_tomb",
+      "toPlaceId": "agra_chini_rauza",
+      "mode": "taxi",
+      "minutes": 56,
+      "cost": 350,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_akbar_tomb",
+      "toPlaceId": "agra_mariam_tomb",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_akbar_tomb",
+      "toPlaceId": "agra_guru_ka_taal",
+      "mode": "taxi",
+      "minutes": 19,
+      "cost": 150,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_akbar_tomb",
+      "toPlaceId": "agra_hotel_hub",
+      "mode": "taxi",
+      "minutes": 52,
+      "cost": 330,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_ram_bagh",
+      "toPlaceId": "agra_taj_mahal",
+      "mode": "taxi",
+      "minutes": 27,
+      "cost": 190,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_ram_bagh",
+      "toPlaceId": "agra_agra_fort",
+      "mode": "taxi",
+      "minutes": 29,
+      "cost": 200,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_ram_bagh",
+      "toPlaceId": "agra_itimad_tomb",
+      "mode": "walk",
+      "minutes": 29,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_ram_bagh",
+      "toPlaceId": "agra_itimad_tomb",
+      "mode": "taxi",
+      "minutes": 17,
+      "cost": 130,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_ram_bagh",
+      "toPlaceId": "agra_mehtab_bagh",
+      "mode": "walk",
+      "minutes": 53,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_ram_bagh",
+      "toPlaceId": "agra_mehtab_bagh",
+      "mode": "taxi",
+      "minutes": 24,
+      "cost": 170,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_ram_bagh",
+      "toPlaceId": "agra_fatehpur_sikri",
+      "mode": "taxi",
+      "minutes": 224,
+      "cost": 1290,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_ram_bagh",
+      "toPlaceId": "agra_akbar_tomb",
+      "mode": "taxi",
+      "minutes": 58,
+      "cost": 360,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_ram_bagh",
+      "toPlaceId": "agra_ram_bagh",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_ram_bagh",
+      "toPlaceId": "agra_chini_rauza",
+      "mode": "walk",
+      "minutes": 12,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_ram_bagh",
+      "toPlaceId": "agra_chini_rauza",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_ram_bagh",
+      "toPlaceId": "agra_mariam_tomb",
+      "mode": "taxi",
+      "minutes": 61,
+      "cost": 380,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_ram_bagh",
+      "toPlaceId": "agra_guru_ka_taal",
+      "mode": "taxi",
+      "minutes": 48,
+      "cost": 300,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_ram_bagh",
+      "toPlaceId": "agra_hotel_hub",
+      "mode": "taxi",
+      "minutes": 27,
+      "cost": 190,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_chini_rauza",
+      "toPlaceId": "agra_taj_mahal",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 180,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_chini_rauza",
+      "toPlaceId": "agra_agra_fort",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 180,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_chini_rauza",
+      "toPlaceId": "agra_itimad_tomb",
+      "mode": "walk",
+      "minutes": 18,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_chini_rauza",
+      "toPlaceId": "agra_itimad_tomb",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_chini_rauza",
+      "toPlaceId": "agra_mehtab_bagh",
+      "mode": "walk",
+      "minutes": 45,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_chini_rauza",
+      "toPlaceId": "agra_mehtab_bagh",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_chini_rauza",
+      "toPlaceId": "agra_fatehpur_sikri",
+      "mode": "taxi",
+      "minutes": 221,
+      "cost": 1280,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_chini_rauza",
+      "toPlaceId": "agra_akbar_tomb",
+      "mode": "taxi",
+      "minutes": 56,
+      "cost": 350,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_chini_rauza",
+      "toPlaceId": "agra_ram_bagh",
+      "mode": "walk",
+      "minutes": 12,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_chini_rauza",
+      "toPlaceId": "agra_ram_bagh",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_chini_rauza",
+      "toPlaceId": "agra_chini_rauza",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_chini_rauza",
+      "toPlaceId": "agra_mariam_tomb",
+      "mode": "taxi",
+      "minutes": 59,
+      "cost": 370,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_chini_rauza",
+      "toPlaceId": "agra_guru_ka_taal",
+      "mode": "taxi",
+      "minutes": 46,
+      "cost": 290,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_chini_rauza",
+      "toPlaceId": "agra_hotel_hub",
+      "mode": "taxi",
+      "minutes": 23,
+      "cost": 170,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mariam_tomb",
+      "toPlaceId": "agra_taj_mahal",
+      "mode": "taxi",
+      "minutes": 68,
+      "cost": 420,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mariam_tomb",
+      "toPlaceId": "agra_agra_fort",
+      "mode": "taxi",
+      "minutes": 58,
+      "cost": 360,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mariam_tomb",
+      "toPlaceId": "agra_itimad_tomb",
+      "mode": "taxi",
+      "minutes": 59,
+      "cost": 370,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mariam_tomb",
+      "toPlaceId": "agra_mehtab_bagh",
+      "mode": "taxi",
+      "minutes": 67,
+      "cost": 410,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mariam_tomb",
+      "toPlaceId": "agra_fatehpur_sikri",
+      "mode": "taxi",
+      "minutes": 178,
+      "cost": 1030,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mariam_tomb",
+      "toPlaceId": "agra_akbar_tomb",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mariam_tomb",
+      "toPlaceId": "agra_ram_bagh",
+      "mode": "taxi",
+      "minutes": 61,
+      "cost": 380,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mariam_tomb",
+      "toPlaceId": "agra_chini_rauza",
+      "mode": "taxi",
+      "minutes": 59,
+      "cost": 370,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mariam_tomb",
+      "toPlaceId": "agra_guru_ka_taal",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_mariam_tomb",
+      "toPlaceId": "agra_hotel_hub",
+      "mode": "taxi",
+      "minutes": 55,
+      "cost": 340,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_guru_ka_taal",
+      "toPlaceId": "agra_taj_mahal",
+      "mode": "taxi",
+      "minutes": 55,
+      "cost": 350,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_guru_ka_taal",
+      "toPlaceId": "agra_agra_fort",
+      "mode": "taxi",
+      "minutes": 45,
+      "cost": 290,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_guru_ka_taal",
+      "toPlaceId": "agra_itimad_tomb",
+      "mode": "taxi",
+      "minutes": 45,
+      "cost": 290,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_guru_ka_taal",
+      "toPlaceId": "agra_mehtab_bagh",
+      "mode": "taxi",
+      "minutes": 54,
+      "cost": 340,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_guru_ka_taal",
+      "toPlaceId": "agra_fatehpur_sikri",
+      "mode": "taxi",
+      "minutes": 189,
+      "cost": 1100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_guru_ka_taal",
+      "toPlaceId": "agra_akbar_tomb",
+      "mode": "taxi",
+      "minutes": 19,
+      "cost": 150,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_guru_ka_taal",
+      "toPlaceId": "agra_ram_bagh",
+      "mode": "taxi",
+      "minutes": 48,
+      "cost": 300,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_guru_ka_taal",
+      "toPlaceId": "agra_chini_rauza",
+      "mode": "taxi",
+      "minutes": 46,
+      "cost": 290,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_guru_ka_taal",
+      "toPlaceId": "agra_mariam_tomb",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_guru_ka_taal",
+      "toPlaceId": "agra_hotel_hub",
+      "mode": "taxi",
+      "minutes": 42,
+      "cost": 270,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_taj_mahal",
+      "mode": "walk",
+      "minutes": 46,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_taj_mahal",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_agra_fort",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_agra_fort",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_itimad_tomb",
+      "mode": "taxi",
+      "minutes": 18,
+      "cost": 140,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_mehtab_bagh",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_fatehpur_sikri",
+      "mode": "taxi",
+      "minutes": 209,
+      "cost": 1210,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_akbar_tomb",
+      "mode": "taxi",
+      "minutes": 52,
+      "cost": 330,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_ram_bagh",
+      "mode": "taxi",
+      "minutes": 27,
+      "cost": 190,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_chini_rauza",
+      "mode": "taxi",
+      "minutes": 23,
+      "cost": 170,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_mariam_tomb",
+      "mode": "taxi",
+      "minutes": 55,
+      "cost": 340,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_guru_ka_taal",
+      "mode": "taxi",
+      "minutes": 42,
+      "cost": 270,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "agra_hotel_hub",
+      "toPlaceId": "agra_hotel_hub",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "Prototype pedestrian movement, not measured OSM walking road",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "直線距離に迂回係数を乗じたゲーム用暫定歩行時間。現地の歩道通行可否を保証しない。"
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "gt_agra_main_taj_mahal",
+      "cityId": "agra",
+      "placeId": "agra_taj_mahal",
+      "category": "main",
+      "titleJa": "タージ・マハルを巡る",
+      "activityMinutes": 150,
+      "apCost": 0
+    },
+    {
+      "id": "gt_agra_main_agra_fort",
+      "cityId": "agra",
+      "placeId": "agra_agra_fort",
+      "category": "main",
+      "titleJa": "アーグラ城を巡る",
+      "activityMinutes": 120,
+      "apCost": 0
+    },
+    {
+      "id": "gt_agra_main_itimad_tomb",
+      "cityId": "agra",
+      "placeId": "agra_itimad_tomb",
+      "category": "main",
+      "titleJa": "イティマード・ウッダウラ廟を巡る",
+      "activityMinutes": 70,
+      "apCost": 0
+    },
+    {
+      "id": "gt_agra_date_mehtab_bagh",
+      "cityId": "agra",
+      "placeId": "agra_mehtab_bagh",
+      "category": "date",
+      "titleJa": "メヘターブ・バーグで過ごす",
+      "activityMinutes": 60,
+      "apCost": 2
+    },
+    {
+      "id": "gt_agra_main_fatehpur_sikri",
+      "cityId": "agra",
+      "placeId": "agra_fatehpur_sikri",
+      "category": "main",
+      "titleJa": "ファテープル・シークリーを巡る",
+      "activityMinutes": 180,
+      "apCost": 0
+    },
+    {
+      "id": "gt_agra_date_akbar_tomb",
+      "cityId": "agra",
+      "placeId": "agra_akbar_tomb",
+      "category": "date",
+      "titleJa": "アクバル廟で過ごす",
+      "activityMinutes": 80,
+      "apCost": 2
+    },
+    {
+      "id": "gt_agra_date_ram_bagh",
+      "cityId": "agra",
+      "placeId": "agra_ram_bagh",
+      "category": "date",
+      "titleJa": "ラム・バーグで過ごす",
+      "activityMinutes": 60,
+      "apCost": 2
+    },
+    {
+      "id": "gt_agra_date_chini_rauza",
+      "cityId": "agra",
+      "placeId": "agra_chini_rauza",
+      "category": "date",
+      "titleJa": "チーニー・カ・ラウザで過ごす",
+      "activityMinutes": 45,
+      "apCost": 2
+    },
+    {
+      "id": "gt_agra_date_mariam_tomb",
+      "cityId": "agra",
+      "placeId": "agra_mariam_tomb",
+      "category": "date",
+      "titleJa": "マリアム・ウッザマーニー廟で過ごす",
+      "activityMinutes": 50,
+      "apCost": 2
+    },
+    {
+      "id": "gt_agra_date_guru_ka_taal",
+      "cityId": "agra",
+      "placeId": "agra_guru_ka_taal",
+      "category": "date",
+      "titleJa": "グル・カ・タールで過ごす",
+      "activityMinutes": 55,
+      "apCost": 2
+    }
+  ]
+}

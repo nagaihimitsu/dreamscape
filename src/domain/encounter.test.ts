@@ -99,6 +99,21 @@ describe("travel encounters", () => {
   });
   afterEach(useCurrentCatalog);
 
+  it("charges and rewards currency-neutral amounts once", () => {
+    const cafe = encounters.encounters.find((event) => event.id === "galleria_cafe")!;
+    const option = cafe.options[0];
+    option.cost = 7;
+    delete option.costEuro;
+    cafe.completionMoney = 3;
+    delete cafe.completionMoneyEuro;
+    const initial = ready();
+    const chosen = choose(startEncounter(initial, cafe.id, () => 0), 0);
+    expect(chosen.travelBudget).toBe(initial.travelBudget - 7);
+    const completed = finish(chosen);
+    expect(completed.travelBudget).toBe(initial.travelBudget - 7 + 3);
+    expect(finishEncounter(completed, completed.revision)).toBe(completed);
+  });
+
   it("does not start dormant encounters and rejects a changed active definition", () => {
     const cafe = untilChoice(startEncounter(ready(), "galleria_cafe", () => 0));
     useCurrentCatalog();

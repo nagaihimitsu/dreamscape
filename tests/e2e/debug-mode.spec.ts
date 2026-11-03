@@ -13,7 +13,7 @@ test("debug scenes and reload do not change the ordinary game, learning or setti
   await page.goto("/?debug");
   await expect(page.getByTestId("debug-panel")).toBeVisible();
   await expect(page.getByTestId("debug-city")).toHaveValue("milano");
-  await expect(page.getByTestId("debug-city").locator("option")).toHaveCount(1);
+  await expect(page.getByTestId("debug-city").locator("option")).toHaveCount(4);
   await page.screenshot({ path: testInfo.outputPath("debug-panel.png"), fullPage: true });
   await page.getByTestId("debug-target").selectOption("duomo_milano");
   await page.getByRole("button", { name: "この場面を開く" }).click();

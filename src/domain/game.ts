@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { getJourney, type Journey } from "../content/journeys";
 import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
 import { deriveRelationshipTone } from "./romance-tone";
 import { secureRomanceRoll } from "../random/romance-source";
@@ -40,7 +41,6 @@ import {
   responseProfiles,
   progression,
   trialMilestones,
-  milanoTravelSettings,
   getCityContent,
   getCityStoryBackground,
   episodes,
@@ -241,13 +241,21 @@ export interface Availability {
 export function createGame(
   playerName = balance.defaultPlayerName,
   heroineName = balance.defaultHeroineName,
+  options: { journeyId: string; initialState?: NonNullable<Journey["initialState"]> } = { journeyId: "milano" },
 ): GameState {
+  const journey = getJourney(options.journeyId);
+  if (!journey || journey.status !== "available" || journey.initialBudget === null)
+    throw new Error(`Journey is not ready: ${options.journeyId}`);
+  const cityId = journey.cities[0].id;
+  const { travelSettings } = getCityContent(cityId);
+  const initial = options.initialState ?? journey.initialState;
+  if (initial && initial.pendingAp !== 0) throw new Error("Pending AP requires a reward record");
   return {
     schemaVersion: 12,
-    currentCityId: "milano",
-    travel: { currentPlaceId: milanoTravelSettings.hotelPlaceId, hotelPlaceId: milanoTravelSettings.hotelPlaceId, day: 1, minute: 540, returnReserve: 0, returnDeadline: DAY_END, activeEvent: null },
+    currentCityId: cityId,
+    travel: { currentPlaceId: travelSettings.hotelPlaceId, hotelPlaceId: travelSettings.hotelPlaceId, day: 1, minute: 540, returnReserve: 0, returnDeadline: DAY_END, activeEvent: null },
     updatedDateIds: [],
-    travelBudget: milanoTravelSettings.initialBudget,
+    travelBudget: journey.initialBudget ?? travelSettings.initialBudget,
     inventory: {},
     completedEncounterIds: [],
     encounterRewards: {},
@@ -255,21 +263,21 @@ export function createGame(
     revision: 0,
     playerName: nameSchema.parse(playerName),
     heroineName: nameSchema.parse(heroineName),
-    ap: 0,
-    affection: 0,
-    trust: 0,
-    spark: 0,
+    ap: initial?.ap ?? 0,
+    affection: initial?.affection ?? 0,
+    trust: initial?.trust ?? 0,
+    spark: initial?.spark ?? 0,
     lastRejectedDateCount: null,
     recoveryAfterRejection: false,
     completedRecoveryCount: 0,
-    romanceStage: 1,
+    romanceStage: initial?.romanceStage ?? 1,
     completedChapters: [],
     claimedRewardIds: [],
     playedDateIds: [],
     memories: [],
     activeDate: null,
     unlockedEventIds: [],
-    confessionStatus: "none",
+    confessionStatus: initial?.confessionStatus ?? "none",
     endingReached: false,
     activeBattle: null,
     battleRecords: [],

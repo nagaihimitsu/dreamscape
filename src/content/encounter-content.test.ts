@@ -49,6 +49,10 @@ describe("encounter build integration", () => {
       ...city, id: "fixture_city", nameJa: "試験都市", landmarkIdsPlanned: [],
       firstClearReward: { rewardSourceId: "fixture_first_clear", ap: 1 },
     }));
+    const journeyFile = path.join(fixture, "content/journeys/catalog.json");
+    const journeyCatalog = JSON.parse(await readFile(journeyFile, "utf8"));
+    journeyCatalog.journeys.find((entry: { id: string }) => entry.id === "milano").cities.push({ id: "fixture_city", nameJa: "試験都市" });
+    await writeFile(journeyFile, JSON.stringify(journeyCatalog));
     const travel = JSON.parse(await readFile(path.join(fixture, "content/travel/milano.json"), "utf8"));
     const hotel = travel.places.find((place: { id: string }) => place.id === "p_hotel");
     const samePlaceRoute = travel.routes.find((route: { fromPlaceId: string; toPlaceId: string; mode: string }) =>

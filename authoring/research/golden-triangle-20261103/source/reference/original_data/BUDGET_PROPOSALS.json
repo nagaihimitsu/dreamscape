@@ -1,0 +1,38 @@
+{
+  "currency": "INR",
+  "partySize": 2,
+  "continuousAcrossCities": true,
+  "initialBudgetINR": null,
+  "minimumNightStayINR": null,
+  "confirmedEntranceExamplesTwoForeignAdults": {
+    "tajBasic": 2200,
+    "tajOptionalMausoleumAdditional": 400,
+    "agraFort": 1300,
+    "fatehpurSikri": 1220
+  },
+  "foreignADAPathkar": {
+    "amountINR": 500,
+    "per": "foreign_person_or_transaction_uncertain",
+    "sameDayScope": "major_agra_monuments",
+    "status": "clarification_required",
+    "sourceId": "agra_taj"
+  },
+  "approaches": [
+    {
+      "id": "realistic",
+      "descriptionJa": "宿代・都市間移動・移動の待ち・観光料を原単位から積算。未知費用があるため総予算は未確定。",
+      "initialBudgetINR": null
+    },
+    {
+      "id": "arcade",
+      "descriptionJa": "2名分を一括丸め、泊まれない詰みを禁止し、交通/入場料を軸に調整。正式金額は後決定。",
+      "initialBudgetINR": null
+    }
+  ],
+  "sourceIds": [
+    "agra_fee",
+    "jaipur_fare_news1",
+    "delhi_fare_secondary"
+  ],
+  "adoptionStatus": "proposals_only"
+}

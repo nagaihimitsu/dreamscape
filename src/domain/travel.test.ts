@@ -69,6 +69,15 @@ describe("travel destination selection", () => {
     expect(result.other.map((place) => place.id)).toEqual(["closed"]);
     expect(() => groupDestinationEvents([{ ...date("one", 1), placeId: "shared" }, { ...date("two", 2), placeId: "shared" }])).toThrow();
   });
+
+  it("keeps destinations without an authored walking route without inventing walking times", () => {
+    const otherMode = { ...date("taxi_only", 0), walkMinutes: null };
+    const busOnly = { ...date("bus_only", 0), walkMinutes: null };
+    const result = selectNearbyDestinations(groupDestinationEvents([otherMode, date("walk", 12), busOnly]));
+    expect(result.nearby.map((place) => place.id)).toEqual(["walk", "bus_only", "taxi_only"]);
+    expect(result.nearby[1].walkMinutes).toBeNull();
+    expect(() => groupDestinationEvents([{ ...otherMode, placeId: "shared" }, { ...date("walk2", 2), placeId: "shared" }])).toThrow();
+  });
 });
 
 describe("travel direction and time", () => {

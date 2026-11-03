@@ -1,0 +1,34 @@
+﻿cityId,placeId,rule,openLocal,closeLocal,closedWeekdays,conditionsJa,sourceId,sourceUrl,checkedAt,status,timeZone
+agra,agra_taj_mahal,sunrise_minus_30_to_sunset_minus_30,,,friday,日の出・日没は季節で変動。具体的な時刻に固定しない。,agra_taj,https://agra.nic.in/tourist-place/tajmahal/,2026-11-03,source_verified_operational_claim,Asia/Kolkata
+agra,agra_agra_fort,sunrise_to_sunset,,,none,日の出・日没は季節で変動。具体的な時刻に固定しない。,agra_agrafort,https://agra.nic.in/tourist-place/agra-fort/,2026-11-03,source_verified_operational_claim,Asia/Kolkata
+agra,agra_fatehpur_sikri,sunrise_to_sunset,,,none,日の出・日没は季節で変動。具体的な時刻に固定しない。,agra_fatehpur,https://agra.nic.in/tourist-place/fatehpur-sikri/,2026-11-03,source_verified_operational_claim,Asia/Kolkata
+agra,agra_akbar_tomb,sunrise_to_sunset,,,none,日の出・日没は季節で変動。具体的な時刻に固定しない。,agra_akbar,https://agra.nic.in/tourist-place/akbars-tomb-sikandra/,2026-11-03,source_verified_operational_claim,Asia/Kolkata
+agra,agra_itimad_tomb,sunrise_to_sunset,,,none,日の出・日没は季節で変動。具体的な時刻に固定しない。,agra_itimad,https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/,2026-11-03,source_verified_operational_claim,Asia/Kolkata
+agra,agra_mehtab_bagh,sunrise_to_sunset,,,none,日の出・日没は季節で変動。具体的な時刻に固定しない。,agra_mehtab,https://agra.nic.in/tourist-place/mehtab-bagh/,2026-11-03,source_verified_operational_claim,Asia/Kolkata
+agra,agra_ram_bagh,sunrise_to_sunset,,,none,日の出・日没は季節で変動。具体的な時刻に固定しない。,agra_rambagh,https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/,2026-11-03,source_verified_operational_claim,Asia/Kolkata
+agra,agra_mariam_tomb,sunrise_to_sunset,,,none,日の出・日没は季節で変動。具体的な時刻に固定しない。,agra_mariam,https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/,2026-11-03,source_verified_operational_claim,Asia/Kolkata
+agra,agra_taj_mahal,full_moon_plus_minus_two_nights,20:00,23:59,friday;Ramzan,夜間券は別売; 30分枠8回（最大50名/枠）。別の地区政府頁では20:30–00:30と案内,agra_night,https://tajmahal.gov.in/night-view.aspx,2026-11-03,official_pages_time_conflict_special_event,Asia/Kolkata
+agra,agra_chini_rauza,sunrise_to_sunset,,,none,夜間の正確な開閉時刻は未確認,agra_chini,https://agra.nic.in/tourist-place/chini-ka-rauza/,2026-11-03,source_verified_operational_claim,Asia/Kolkata
+agra,agra_guru_ka_taal,early_morning_to_evening,,,none,夜間の正確な開閉時刻は未確認,agra_gurutal,https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/,2026-11-03,source_verified_operational_claim,Asia/Kolkata
+delhi,delhi_red_fort,fixed,09:30,16:30,none,09:30–16:30は観光省サイトの掲載。月曜休館の記述は2026-02 ASI変更で失効。曜日について2026-02-13 ASI指示を優先,delhi_red_tourism_old,https://www.incredibleindia.gov.in/en/delhi/delhi/red-fort,2026-11-03,hours_need_revalidation_weekdays_updated_2026,Asia/Kolkata
+delhi,delhi_red_fort,day_of_week_update,,,none,ASIは2026-02-13から月曜日を含め毎日開門（報道）。臨時休館は別,delhi_red_2026,https://www.business-standard.com/india-news/red-fort-to-remain-open-on-all-days-of-week-asi-126022100547_1.html,2026-11-03,2026_secondary_weekday_update,Asia/Kolkata
+delhi,delhi_qutb_minar,sunrise_to_20:00,,20:00,none,,delhi_qutb,https://delhitourism.gov.in/tourist_place/qutab_minar.html,2026-11-03,source_verified_operational_claim,Asia/Kolkata
+delhi,delhi_humayun_tomb,sunrise_to_sunset,,,none,Delhi政府関連ページ間で営業時間と料金が矛盾,delhi_humayun_a,https://www.delhitourism.gov.in/tourist_place/humayun_tomb.html,2026-11-03,source_conflict_unresolved,Asia/Kolkata
+delhi,delhi_humayun_tomb,sunrise_to_19:30,,,none,Delhi政府関連ページ間で営業時間と料金が矛盾,delhi_humayun_b,https://www.delhitourism.gov.in/dt/explore_the_city/humayuns_tomb.html,2026-11-03,source_conflict_unresolved,Asia/Kolkata
+delhi,delhi_jama_masjid,foreign_08_sunset_indian_11_sunset,,,none,礼拝時は入場制限される場合。金曜の礼拝時刻に留意,delhi_jama,https://delhitourism.gov.in/tourist_place/jama_masjid.html,2026-11-03,source_verified_operational_claim,Asia/Kolkata
+delhi,delhi_chandni_chowk,market_general,10:30,21:00,none,店舗によって日曜休・開閉が異なる。街路そのものの閉門時刻ではない,delhi_chandni,https://delhitourism.gov.in/dt/delhi_delicacies/chandni_chowk.html,2026-11-03,source_verified_operational_claim,Asia/Kolkata
+delhi,delhi_lodhi_garden,park_seasonal,,,none,公園内の湖に関する掲載: 4–9月05:00–20:00、10–3月06:00–20:00。公園全体の全ゲートで保証しない,delhi_lodhi_lake,https://delhitourism.gov.in/dt/explore_the_city/lodi_gardens_lake.html,2026-11-03,source_verified_operational_claim,Asia/Kolkata
+delhi,delhi_agrasen_baoli,fixed,09:00,17:30,none,,delhi_agrassen,https://www.delhitourism.gov.in/dt/explore_the_city/agrasen_ki_baoli.html,2026-11-03,source_verified_operational_claim,Asia/Kolkata
+delhi,delhi_lotus_temple,fixed,09:00,17:30,monday,,delhi_lotus,https://delhitourism.gov.in/tourist_place/bahai_temple.html,2026-11-03,source_verified_operational_claim,Asia/Kolkata
+jaipur,jaipur_amber_fort,fixed,08:00,17:30,none,,jaipur_city,https://www.tourism.rajasthan.gov.in/jaipur.html,2026-11-03,source_verified_operational_claim,Asia/Kolkata
+jaipur,jaipur_jantar_mantar,fixed,09:00,19:00,none,,jaipur_jantar_old,https://www.tourism.rajasthan.gov.in/jantar-mantar.html,2026-11-03,old_official_needs_revalidation,Asia/Kolkata
+delhi,delhi_india_gate,UNVERIFIED,,,,開館/街路開放の時刻は未確定,delhi_indiagate,https://delhitourism.gov.in/tourist_place/india_gate.html,2026-11-03,UNVERIFIED_DO_NOT_IMPORT,Asia/Kolkata
+delhi,delhi_bangla_sahib,UNVERIFIED,,,,開館/街路開放の時刻は未確定,delhi_bangla,https://delhitourism.gov.in/tourist_place/spritual_delhi.html,2026-11-03,UNVERIFIED_DO_NOT_IMPORT,Asia/Kolkata
+jaipur,jaipur_hawa_mahal,UNVERIFIED,,,,開館/街路開放の時刻は未確定,jaipur_city,https://www.tourism.rajasthan.gov.in/jaipur.html,2026-11-03,UNVERIFIED_DO_NOT_IMPORT,Asia/Kolkata
+jaipur,jaipur_city_palace,UNVERIFIED,,,,開館/街路開放の時刻は未確定,jaipur_city,https://www.tourism.rajasthan.gov.in/jaipur.html,2026-11-03,UNVERIFIED_DO_NOT_IMPORT,Asia/Kolkata
+jaipur,jaipur_jal_mahal,UNVERIFIED,,,,開館/街路開放の時刻は未確定,jaipur_city,https://www.tourism.rajasthan.gov.in/jaipur.html,2026-11-03,UNVERIFIED_DO_NOT_IMPORT,Asia/Kolkata
+jaipur,jaipur_nahargarh_fort,UNVERIFIED,,,,開館/街路開放の時刻は未確定,jaipur_city,https://www.tourism.rajasthan.gov.in/jaipur.html,2026-11-03,UNVERIFIED_DO_NOT_IMPORT,Asia/Kolkata
+jaipur,jaipur_albert_hall,UNVERIFIED,,,,開館/街路開放の時刻は未確定,jaipur_city,https://www.tourism.rajasthan.gov.in/jaipur.html,2026-11-03,UNVERIFIED_DO_NOT_IMPORT,Asia/Kolkata
+jaipur,jaipur_jaigarh_fort,UNVERIFIED,,,,開館/街路開放の時刻は未確定,jaipur_city,https://www.tourism.rajasthan.gov.in/jaipur.html,2026-11-03,UNVERIFIED_DO_NOT_IMPORT,Asia/Kolkata
+jaipur,jaipur_johari_bazaar,UNVERIFIED,,,,開館/街路開放の時刻は未確定,jaipur_johari,https://jaipurmc.org/Presentation/Aboutjaipur/MainMarket.aspx,2026-11-03,UNVERIFIED_DO_NOT_IMPORT,Asia/Kolkata
+jaipur,jaipur_panna_meena_kund,UNVERIFIED,,,,開館/街路開放の時刻は未確定,jaipur_panna,https://mapcarta.com/W410063780,2026-11-03,UNVERIFIED_DO_NOT_IMPORT,Asia/Kolkata

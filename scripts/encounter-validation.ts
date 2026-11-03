@@ -110,11 +110,12 @@ export function validateEncounterStory(
 
 /** Validate stable IDs and references independently of the runtime game rules. */
 export function validateEncounterContent({
-  catalog, cityId, landmarks, journey, stories, quizzes, responseProfileIds, memoryIds, context,
+  catalog, cityId, currencyCode, landmarks, journey, stories, quizzes, responseProfileIds, memoryIds, context,
   validateQuiz,
 }: {
   catalog: EncounterCatalog;
   cityId: string;
+  currencyCode: string;
   landmarks: LandmarkDefinition[];
   journey: JourneyConfig;
   stories: Record<string, string>;
@@ -140,8 +141,10 @@ export function validateEncounterContent({
     if (event.cityId !== cityId) throw new Error(`Unknown encounter city: ${event.id}/${event.cityId}`);
     if (!landmarks.some((landmark) => landmark.id === event.landmarkId && landmark.cityId === event.cityId))
       throw new Error(`Unknown encounter landmark: ${event.id}/${event.landmarkId}`);
-    if (event.repeatable && (event.completionMoneyEuro || event.completionItemId ||
-      event.options.some((option) => option.costEuro || option.requiresItemId || option.consumeItemId || option.giftItemId || option.responseProfileId)))
+    if (currencyCode !== "EUR" && (event.completionMoneyEuro !== undefined || event.options.some((option) => option.costEuro !== undefined)))
+      throw new Error(`Euro-denominated encounter rules in ${currencyCode} city: ${event.id}`);
+    if (event.repeatable && (event.completionMoney || event.completionMoneyEuro || event.completionItemId ||
+      event.options.some((option) => (option.cost ?? option.costEuro) || option.requiresItemId || option.consumeItemId || option.giftItemId || option.responseProfileId)))
       throw new Error(`Repeatable encounter must be free and without item, money or choice effects: ${event.id}`);
     unique(event.options.map((option) => option.id), `encounter option ID: ${event.id}`);
     for (const option of event.options) {
@@ -154,7 +157,7 @@ export function validateEncounterContent({
       const spentItem = option.consumeItemId ?? option.giftItemId;
       if (spentItem && option.requiresItemId !== spentItem)
         throw new Error(`Encounter item action needs matching requirement: ${event.id}/${option.id}`);
-      if (option.deferCompletion && (option.costEuro || option.requiresItemId || spentItem || option.responseProfileId))
+      if (option.deferCompletion && ((option.cost ?? option.costEuro) || option.requiresItemId || spentItem || option.responseProfileId))
         throw new Error(`Deferred encounter choice must have no cost or effects: ${event.id}/${option.id}`);
       if (option.responseProfileId && !responseProfileIds.includes(option.responseProfileId))
         throw new Error(`Unknown encounter response profile: ${event.id}/${option.id}/${option.responseProfileId}`);
@@ -188,7 +191,7 @@ export function validateEncounterContent({
       // Dormant stories are kept for possible future reuse, but are not
       // startable; require stable choice tags before an event is activated.
       const existingOrderedChoices = event.availability === "dormant";
-      const choiceHasRules = !!scene.options?.some((option) => option.costEuro || option.requiresItemId || option.consumeItemId || option.giftItemId || option.responseProfileId || option.deferCompletion);
+      const choiceHasRules = !!scene.options?.some((option) => (option.cost ?? option.costEuro) || option.requiresItemId || option.consumeItemId || option.giftItemId || option.responseProfileId || option.deferCompletion);
       try { validateEncounterStory(compiled, context, scene.options, catalog.items.filter((item) => item.cityId === event.cityId).map((item) => item.id), memoryIds, choiceHasRules && !existingOrderedChoices); }
       catch (error) {
         throw new Error(`Invalid encounter story: ${event.id}/${scene.id}: ${error instanceof Error ? error.message : String(error)}`, { cause: error });

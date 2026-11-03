@@ -1,0 +1,16 @@
+placeId,gateName,purpose,latitude,longitude,coordinateStatus,operationsStatus,sourceId,sourceUrl,productionReady,notesJa
+delhi_red_fort,Lahori Gate,main gate candidate,28.65588,77.23865,THIRD_PARTY_MAPPED_NOT_OPERATION_VERIFIED,operator_source,SRC_MAP_REDFORT_LAHORE,https://mapcarta.com/W80429907,false,座標がない場合は元の施設代表点を入口に偽装しないこと。
+agra_agra_fort,Agra Fort ticket office / Amar Singh Gate path,ticketing vicinity,27.17602,78.02192,THIRD_PARTY_MAPPED_TICKET_POINT_NOT_GATE_VERIFIED,operator_source,SRC_MAP_AGRAFORT_TICKET,https://mapcarta.com/W546292478,false,座標がない場合は元の施設代表点を入口に偽装しないこと。
+jaipur_hawa_mahal,Hawa Mahal rear-side ticket counter,ticketing candidate,26.92413,75.82639,THIRD_PARTY_MAPPED_NOT_OPERATION_VERIFIED,operator_source,SRC_MAP_HAWA_TICKET,https://mapcarta.com/N10047925085,false,座標がない場合は元の施設代表点を入口に偽装しないこと。
+agra_taj_mahal,East Gate,visitors entering,,,OPERATIONAL_DESCRIPTION_ONLY_COORDINATE_UNKNOWN,operator_source,SRC_AGRA_TAJ_GATES,https://www.tajmahal.gov.in/visiting-hours.aspx,false,座標がない場合は元の施設代表点を入口に偽装しないこと。
+agra_taj_mahal,West Gate,visitors entering,,,OPERATIONAL_DESCRIPTION_ONLY_COORDINATE_UNKNOWN,operator_source,SRC_AGRA_TAJ_GATES,https://www.tajmahal.gov.in/visiting-hours.aspx,false,座標がない場合は元の施設代表点を入口に偽装しないこと。
+agra_taj_mahal,South Gate,exit ONLY (do not route entrance),,,OPERATOR_CONFIRMED_EXIT_ONLY,operator_source,SRC_AGRA_TAJ_GATES,https://www.tajmahal.gov.in/visiting-hours.aspx,false,座標がない場合は元の施設代表点を入口に偽装しないこと。
+jaipur_city_palace,Gate 1 / Virendra Pol,pedestrian entry near Jantar Mantar,,,OPERATIONAL_DESCRIPTION_ONLY_COORDINATE_UNKNOWN,operator_source,SRC_JP_CITYPALACE,https://citypalace.org/visit,false,座標がない場合は元の施設代表点を入口に偽装しないこと。
+jaipur_city_palace,Gate 2 / Uday Pol,parking and access by Jaleb Chowk,,,OPERATIONAL_DESCRIPTION_ONLY_COORDINATE_UNKNOWN,operator_source,SRC_JP_CITYPALACE,https://citypalace.org/visit,false,座標がない場合は元の施設代表点を入口に偽装しないこと。
+jaipur_jal_mahal,west shore observation point,view palace only no palace entry,26.95367,75.84233,LANDSIDE_VIEWPOINT_NOT_PALACE_ENTRANCE,needs_reconfirmation,,,false,座標がない場合は元の施設代表点を入口に偽装しないこと。
+delhi_humayun_tomb,visitor gate to be identified,operator-confirmed ticket entry needed,,,OPERATIONAL_DESCRIPTION_ONLY_COORDINATE_UNKNOWN,needs_reconfirmation,,,false,座標がない場合は元の施設代表点を入口に偽装しないこと。
+jaipur_amber_fort,Suraj Pol / Chand Pol,public accessibility of chosen gate requires verification,,,OPERATIONAL_DESCRIPTION_ONLY_COORDINATE_UNKNOWN,needs_reconfirmation,,,false,座標がない場合は元の施設代表点を入口に偽装しないこと。
+delhi_lodhi_garden,multiple garden gates,no single global entry,,,OPERATIONAL_DESCRIPTION_ONLY_COORDINATE_UNKNOWN,needs_reconfirmation,,,false,座標がない場合は元の施設代表点を入口に偽装しないこと。
+delhi_chandni_chowk,public market street,no single global entry,,,OPERATIONAL_DESCRIPTION_ONLY_COORDINATE_UNKNOWN,needs_reconfirmation,,,false,座標がない場合は元の施設代表点を入口に偽装しないこと。
+jaipur_johari_bazaar,public market street,no single global entry,,,OPERATIONAL_DESCRIPTION_ONLY_COORDINATE_UNKNOWN,needs_reconfirmation,,,false,座標がない場合は元の施設代表点を入口に偽装しないこと。
+agra_ram_bagh,Aram Bagh entrance pictured (camera geotag),entry vicinity camera position,27.205306,78.038639,PHOTO_EXIF_CAMERA_COORDINATE_NOT_EXACT_GATE,needs_reconfirmation,,,false,座標がない場合は元の施設代表点を入口に偽装しないこと。

@@ -1,0 +1,5 @@
+cityId,fromStationCode,toStationCode,representativeFromPlaceId,representativeToPlaceId,trainFarePerPersonINR,estimatedFullRouteMinutes,notesJa
+jaipur,BICP,CDPE,jaipur_hotel_hub,jaipur_city_palace,10,,Badi Chaupar→Chandpoleの駅間2駅。City Palaceからの徒歩アクセス/出口位置は別。
+jaipur,BICP,SICP,jaipur_hotel_hub,jaipur_city_palace,15,,Badi Chaupar→Sindhi Campの駅間3駅。ODの場所IDは説明用で、会場直接アクセスを意味しない。
+agra,FORT,TAJ,agra_agra_fort,agra_taj_mahal,10,,Agra Fort→Taj Mahal Metroの駅間1駅。タージの西門までの徒歩時間を含まない。
+agra,MANKA,TAJ,agra_hotel_hub,agra_taj_mahal,15,,Mankameshwar→Taj Mahal Metro 2駅。元の架空宿は駅の実宿ではない。

@@ -1,6 +1,7 @@
 import type { TravelCatalog } from "../src/content/travel-schemas";
 import type { JourneyConfig } from "../src/content/journey-schemas";
 import type { BattleDefinition, DateDefinition } from "../src/content/schemas";
+import { DAY_END, DAY_START } from "../src/domain/travel";
 
 /** Check the city's authored destinations against the existing game catalogs. */
 export function validateTravelContent(
@@ -29,9 +30,15 @@ export function validateTravelContent(
       if (!destinationIds.includes(destinationId) || assignedDestinations.has(destinationId)) throw new Error(`Unknown or duplicate travel destination: ${place.id}/${destinationId}`);
       assignedDestinations.add(destinationId);
     }
+    // Events at the current place and returning from the hotel require an
+    // explicit zero-time self route. A different place can be reached by any
+    // authored transport: never infer a walking route from its coordinates.
+    if (!travel.routes.some((route) => route.fromPlaceId === place.id && route.toPlaceId === place.id && route.mode === "walk"))
+      throw new Error(`Missing same-place route: ${place.id}`);
     for (const destination of travel.places) {
-      if (!travel.routes.some((route) => route.fromPlaceId === place.id && route.toPlaceId === destination.id && route.mode === "walk"))
-        throw new Error(`Missing directed walking route: ${place.id}/${destination.id}`);
+      if (place.id === destination.id) continue;
+      if (!travel.routes.some((route) => route.fromPlaceId === place.id && route.toPlaceId === destination.id && route.minutes < DAY_END - DAY_START))
+        throw new Error(`Missing usable directed route: ${place.id}/${destination.id}`);
     }
   }
   const mainIds = new Set([...journey.episodes.map((episode) => episode.id), ...journey.storyBattles.map((battle) => battle.battleId)]);

@@ -1,0 +1,4 @@
+﻿cityId,mode,validFrom,baseDistanceKm,basePriceINR,additionalINRPerKm,lateNightMultiplier,lateNightStart,lateNightEnd,waitINRPerMinute,perVehicle,sourceId,url
+delhi,auto_rickshaw,2023-01-09,1.5,30,11,1.25,23:00,05:00,0.75,true,SRC_DL_AUTO_GAZETTE,https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf
+delhi,taxi_non_ac_black_yellow,2023-01-09,1.0,40,17,1.25,23:00,05:00,1.0,true,SRC_DL_AUTO_GAZETTE,https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf
+delhi,taxi_ac_black_yellow,2023-01-09,1.0,40,20,1.25,23:00,05:00,1.0,true,SRC_DL_AUTO_GAZETTE,https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf
