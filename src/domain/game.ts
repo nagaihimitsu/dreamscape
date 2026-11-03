@@ -221,6 +221,13 @@ export const gameStateSchema = phase11StateSchema.extend({
     currentPlaceId: stableContentId,
     hotelPlaceId: stableContentId,
     day: z.number().int().positive().safe(),
+    // Optional for existing v12 saves. Day one of the journey is fictional;
+    // it is not the device's real-world date.
+    calendar: z.object({
+      journeyDay: z.number().int().positive().safe(),
+      cityStartJourneyDay: z.number().int().positive().safe(),
+      startWeekday: z.number().int().min(0).max(6),
+    }).strict().optional(),
     minute: z.number().int().min(540).max(1980),
     returnReserve: z.number().int().nonnegative().safe(),
     returnDeadline: z.literal(DAY_END).optional(),
@@ -229,7 +236,10 @@ export const gameStateSchema = phase11StateSchema.extend({
       placeId: stableContentId,
       endMinute: z.number().int().min(540).max(1320),
     }).strict().nullable(),
-  }).strict(),
+  }).strict().superRefine((travel, context) => {
+    if (travel.calendar && travel.calendar.journeyDay - travel.calendar.cityStartJourneyDay + 1 !== travel.day)
+      context.addIssue({ code: "custom", message: "Travel day and journey calendar disagree", path: ["calendar"] });
+  }),
 }).strict();
 export type GameState = z.infer<typeof gameStateSchema>;
 export type ActiveDate = NonNullable<GameState["activeDate"]>;
@@ -253,7 +263,8 @@ export function createGame(
   return {
     schemaVersion: 12,
     currentCityId: cityId,
-    travel: { currentPlaceId: travelSettings.hotelPlaceId, hotelPlaceId: travelSettings.hotelPlaceId, day: 1, minute: 540, returnReserve: 0, returnDeadline: DAY_END, activeEvent: null },
+    travel: { currentPlaceId: travelSettings.hotelPlaceId, hotelPlaceId: travelSettings.hotelPlaceId, day: 1, minute: 540, returnReserve: 0, returnDeadline: DAY_END, activeEvent: null,
+      ...(journey.startWeekday === undefined ? {} : { calendar: { journeyDay: 1, cityStartJourneyDay: 1, startWeekday: journey.startWeekday } }) },
     updatedDateIds: [],
     travelBudget: journey.initialBudget ?? travelSettings.initialBudget,
     inventory: {},

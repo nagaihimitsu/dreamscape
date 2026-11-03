@@ -20,9 +20,10 @@
       ],
       "currency": { "code": "INR", "symbol": "₹", "unitJa": "ルピー", "unit": "whole" },
       "initialBudget": 30000,
+      "startWeekday": 0,
       "initialState": { "ap": 0, "pendingAp": 0, "affection": 0, "trust": 0, "spark": 0, "romanceStage": 1, "confessionStatus": "none" },
       "cityPlan": { "cityClearAp": 4, "lodgingCost": 0, "mainTourismCount": 4, "dateCount": 6 },
-      "intercityModes": ["train", "car"]
+      "intercityModes": []
     }
   ]
 }

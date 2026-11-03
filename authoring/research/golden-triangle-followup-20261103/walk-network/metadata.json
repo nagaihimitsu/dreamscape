@@ -1,0 +1,34 @@
+{
+  "cityId": "agra",
+  "createdAt": "2026-11-03",
+  "status": "research_only_not_production_ready",
+  "coveredPlaceIds": [
+    "agra_hotel_hub", "agra_taj_mahal", "agra_agra_fort", "agra_itimad_tomb",
+    "agra_mehtab_bagh", "agra_chini_rauza", "agra_ram_bagh"
+  ],
+  "notComputedPlaceIds": [
+    "agra_fatehpur_sikri", "agra_akbar_tomb", "agra_mariam_tomb", "agra_guru_ka_taal"
+  ],
+  "scopeNoteJa": "元研究の7地点に限定してアーグラ市街を試算。残り4地点は計算範囲外であり、徒歩経路がないことや到達不能を意味しない。デリーとジャイプールも未計算。",
+  "sourcePbf": "https://download.geofabrik.de/asia/india/central-zone-261102.osm.pbf",
+  "sourcePbfSha256": "8667a6155c8cf1def5d0be913a0e78d263ab8c8b2335f1ac3a9c73d16ef4519a",
+  "localFilteredOsmSha256": "22d91e77cc0a6fbadc6f7f181ff55d9a1b79192a8ad92cb503d470863f8cdffc",
+  "boundsWestSouthEastNorth": [77.99325, 27.15001, 78.06709, 27.230306],
+  "marginDegrees": 0.025,
+  "conservative": { "identity": 7, "candidate": 0, "unresolved": 42 },
+  "exploratory": { "identity": 7, "candidate": 30, "unresolved": 12, "candidateCrossingBridgeReview": 16 },
+  "networkIsMeasuredOnTheGround": false,
+  "entranceCoordinatesVerified": false,
+  "pedestrianAccessOrSafetyVerified": false,
+  "productionReady": false,
+  "sources": [
+    {
+      "publisher": "Geofabrik and OpenStreetMap contributors",
+      "title": "India Central Zone OpenStreetMap data, 2026-11-02 snapshot",
+      "url": "https://download.geofabrik.de/asia/india/central-zone-261102.osm.pbf",
+      "checkedAt": "2026-11-03",
+      "claimType": "hypothesis",
+      "claimJa": "公開地図の道路データと未検証の代表点を使った編集用推算。現地の歩行実測、通行許可や安全の検証ではない。"
+    }
+  ]
+}

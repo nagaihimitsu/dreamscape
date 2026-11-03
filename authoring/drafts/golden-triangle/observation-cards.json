@@ -1,0 +1,891 @@
+{
+  "schemaVersion": 1,
+  "status": "authoring_only",
+  "images": {
+    "agra_agra_fort": {
+      "path": "assets/tourism/india/agra_agra_fort.jpg",
+      "sha256": "c1fa6502806ec9e9aa47f3d447ab8b78e80ed1dece9a07c4caa30ac587c0ecf8"
+    },
+    "agra_fatehpur_sikri": {
+      "path": "assets/tourism/india/agra_fatehpur_sikri.jpg",
+      "sha256": "c431d55371f025c793480562495cb7909f45294342c0e4c3b3cfce800c1f7fe7"
+    },
+    "agra_itimad_tomb": {
+      "path": "assets/tourism/india/agra_itimad_tomb.jpg",
+      "sha256": "fcf9801a95d6869000ef80e80e0f9d7625581c86e68f6504013445a1ee48c03b"
+    },
+    "agra_taj_mahal": {
+      "path": "assets/tourism/india/agra_taj_mahal.jpg",
+      "sha256": "d6b1904519b06bb5eb599806803bc66699e1f4a9a349e797c7903205a58ed8dd"
+    },
+    "delhi_humayun_tomb": {
+      "path": "assets/tourism/india/delhi_humayun_tomb.jpg",
+      "sha256": "8ff15fedc01a574f0a1724e76aa543dfe92e47c2541a72f3109256b1dafcaf97"
+    },
+    "delhi_jama_masjid": {
+      "path": "assets/tourism/india/delhi_jama_masjid.jpg",
+      "sha256": "c9d1bffdd99fdc557b29883fdd20f9fa990a2440afd3a86cd33234e0e4945b4a"
+    },
+    "delhi_qutb_minar": {
+      "path": "assets/tourism/india/delhi_qutb_minar.jpg",
+      "sha256": "b6b658180e18d6fdb7a0bc38fea5e31a591840e2a1d9b065e079f368ce8aeabe"
+    },
+    "delhi_red_fort": {
+      "path": "assets/tourism/india/delhi_red_fort.jpg",
+      "sha256": "8072643da48a45c5b46b95bbaa95921ddce223b1c126cb8220fa11f879bdc862"
+    },
+    "jaipur_amber_fort": {
+      "path": "assets/tourism/india/jaipur_amber_fort.jpg",
+      "sha256": "4748e829a950c5e6db76dc50640756f996224a4407f8b0f7b606539507c1d5fe"
+    },
+    "jaipur_city_palace": {
+      "path": "assets/tourism/india/jaipur_city_palace.jpg",
+      "sha256": "8d72c4bd9f5cbbc33d6df393fb01c602e17c149dc3ae55285b9917695a6c592b"
+    },
+    "jaipur_hawa_mahal": {
+      "path": "assets/tourism/india/jaipur_hawa_mahal.jpg",
+      "sha256": "757f576c4c29af245def0bcb2599b9226d1d8add894b09cc3c8e6d684dccccda"
+    },
+    "jaipur_jantar_mantar": {
+      "path": "assets/tourism/india/jaipur_jantar_mantar.jpg",
+      "sha256": "ae3158ac6ccbc5c1eb7a892d0809c36f893237f2dbaff8ca1c9141c5f5930d5d"
+    }
+  },
+  "provenance": {
+    "gt_obs_fact_agra_agra_fort_01": {
+      "cityId": "agra",
+      "sourceFactId": "fact_agra_agra_fort_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "赤砂岩の城壁と門"
+    },
+    "gt_obs_fact_agra_agra_fort_02": {
+      "cityId": "agra",
+      "sourceFactId": "fact_agra_agra_fort_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    },
+    "gt_obs_fact_agra_fatehpur_sikri_01": {
+      "cityId": "agra",
+      "sourceFactId": "fact_agra_fatehpur_sikri_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "旧都に残る赤砂岩の建物"
+    },
+    "gt_obs_fact_agra_fatehpur_sikri_02": {
+      "cityId": "agra",
+      "sourceFactId": "fact_agra_fatehpur_sikri_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    },
+    "gt_obs_fact_agra_itimad_tomb_01": {
+      "cityId": "agra",
+      "sourceFactId": "fact_agra_itimad_tomb_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    },
+    "gt_obs_fact_agra_itimad_tomb_02": {
+      "cityId": "agra",
+      "sourceFactId": "fact_agra_itimad_tomb_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "白大理石の墓廟"
+    },
+    "gt_obs_fact_agra_itimad_tomb_03": {
+      "cityId": "agra",
+      "sourceFactId": "fact_agra_itimad_tomb_03",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    },
+    "gt_obs_fact_agra_taj_mahal_01": {
+      "cityId": "agra",
+      "sourceFactId": "fact_agra_taj_mahal_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "庭園の奥に見える白い廟"
+    },
+    "gt_obs_fact_agra_taj_mahal_02": {
+      "cityId": "agra",
+      "sourceFactId": "fact_agra_taj_mahal_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    },
+    "gt_obs_fact_agra_taj_mahal_03": {
+      "cityId": "agra",
+      "sourceFactId": "fact_agra_taj_mahal_03",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    },
+    "gt_obs_fact_delhi_humayun_tomb_01": {
+      "cityId": "delhi",
+      "sourceFactId": "fact_delhi_humayun_tomb_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "庭園の奥にあるフマユーン廟"
+    },
+    "gt_obs_fact_delhi_humayun_tomb_02": {
+      "cityId": "delhi",
+      "sourceFactId": "fact_delhi_humayun_tomb_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    },
+    "gt_obs_fact_delhi_humayun_tomb_03": {
+      "cityId": "delhi",
+      "sourceFactId": "fact_delhi_humayun_tomb_03",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    },
+    "gt_obs_fact_delhi_jama_masjid_01": {
+      "cityId": "delhi",
+      "sourceFactId": "fact_delhi_jama_masjid_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    },
+    "gt_obs_fact_delhi_jama_masjid_02": {
+      "cityId": "delhi",
+      "sourceFactId": "fact_delhi_jama_masjid_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "赤と白の帯が見える塔"
+    },
+    "gt_obs_fact_delhi_qutb_minar_01": {
+      "cityId": "delhi",
+      "sourceFactId": "fact_delhi_qutb_minar_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    },
+    "gt_obs_fact_delhi_qutb_minar_02": {
+      "cityId": "delhi",
+      "sourceFactId": "fact_delhi_qutb_minar_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    },
+    "gt_obs_fact_delhi_red_fort_01": {
+      "cityId": "delhi",
+      "sourceFactId": "fact_delhi_red_fort_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "赤い要塞門と城壁"
+    },
+    "gt_obs_fact_delhi_red_fort_02": {
+      "cityId": "delhi",
+      "sourceFactId": "fact_delhi_red_fort_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    },
+    "gt_obs_fact_delhi_red_fort_03": {
+      "cityId": "delhi",
+      "sourceFactId": "fact_delhi_red_fort_03",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    },
+    "gt_obs_fact_jaipur_amber_fort_01": {
+      "cityId": "jaipur",
+      "sourceFactId": "fact_jaipur_amber_fort_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    },
+    "gt_obs_fact_jaipur_amber_fort_02": {
+      "cityId": "jaipur",
+      "sourceFactId": "fact_jaipur_amber_fort_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    },
+    "gt_obs_fact_jaipur_city_palace_01": {
+      "cityId": "jaipur",
+      "sourceFactId": "fact_jaipur_city_palace_01",
+      "reliability": "medium",
+      "needsFurtherResearch": false,
+      "visualEvidence": "シティ・パレスの中庭から見た建物"
+    },
+    "gt_obs_fact_jaipur_city_palace_02": {
+      "cityId": "jaipur",
+      "sourceFactId": "fact_jaipur_city_palace_02",
+      "reliability": "medium",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    },
+    "gt_obs_fact_jaipur_hawa_mahal_01": {
+      "cityId": "jaipur",
+      "sourceFactId": "fact_jaipur_hawa_mahal_01",
+      "reliability": "medium",
+      "needsFurtherResearch": false,
+      "visualEvidence": "街路に面した多数の小窓"
+    },
+    "gt_obs_fact_jaipur_hawa_mahal_02": {
+      "cityId": "jaipur",
+      "sourceFactId": "fact_jaipur_hawa_mahal_02",
+      "reliability": "medium",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    },
+    "gt_obs_fact_jaipur_jantar_mantar_01": {
+      "cityId": "jaipur",
+      "sourceFactId": "fact_jaipur_jantar_mantar_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    },
+    "gt_obs_fact_jaipur_jantar_mantar_02": {
+      "cityId": "jaipur",
+      "sourceFactId": "fact_jaipur_jantar_mantar_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "屋外に設置された大きな観測装置"
+    },
+    "gt_obs_fact_jaipur_jantar_mantar_03": {
+      "cityId": "jaipur",
+      "sourceFactId": "fact_jaipur_jantar_mantar_03",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": null
+    }
+  },
+  "clues": [
+    {
+      "id": "gt_obs_fact_delhi_red_fort_01",
+      "landmarkId": "delhi_red_fort",
+      "kind": "hotspot",
+      "titleJa": "新都の宮殿要塞",
+      "descriptionJa": "シャー・ジャハーンは新しい都シャージャハーナーバードの中心として宮殿要塞を築いた。",
+      "factId": "fact_delhi_red_fort_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.23,
+        "y": 0.19,
+        "width": 0.48,
+        "height": 0.53
+      },
+      "sources": [
+        {
+          "publisher": "UNESCO",
+          "title": "Red Fort Complex",
+          "url": "https://whc.unesco.org/en/list/231",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "シャー・ジャハーンは新しい都シャージャハーナーバードの中心として宮殿要塞を築いた。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_delhi_red_fort_02",
+      "landmarkId": "delhi_red_fort",
+      "kind": "document",
+      "titleJa": "楽園の水路",
+      "descriptionJa": "宮殿の私的居室を水路「ナフル・イ・ベヒシュト」がつないでいた。",
+      "factId": "fact_delhi_red_fort_02",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "UNESCO",
+          "title": "Red Fort Complex",
+          "url": "https://whc.unesco.org/en/list/231",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "宮殿の私的居室を水路「ナフル・イ・ベヒシュト」がつないでいた。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_delhi_red_fort_03",
+      "landmarkId": "delhi_red_fort",
+      "kind": "document",
+      "titleJa": "支配者が変わっても残る象徴",
+      "descriptionJa": "ムガル宮殿から英軍の施設へと用途が変化し、独立を祝う場所になった。",
+      "factId": "fact_delhi_red_fort_03",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "UNESCO",
+          "title": "Red Fort Complex",
+          "url": "https://whc.unesco.org/en/list/231",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "ムガル宮殿から英軍の施設へと用途が変化し、独立を祝う場所になった。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_delhi_qutb_minar_01",
+      "landmarkId": "delhi_qutb_minar",
+      "kind": "document",
+      "titleJa": "完成しなかった野望",
+      "descriptionJa": "アラーイー・ミナールは旧塔の二倍を目指したが第一層だけで終わった。",
+      "factId": "fact_delhi_qutb_minar_01",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Qutab Minar",
+          "url": "https://delhitourism.gov.in/tourist_place/qutab_minar.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "アラーイー・ミナールは旧塔の二倍を目指したが第一層だけで終わった。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_delhi_qutb_minar_02",
+      "landmarkId": "delhi_qutb_minar",
+      "kind": "document",
+      "titleJa": "石に刻まれた1311年",
+      "descriptionJa": "アラーイー門の碑文には1311年の完成記録がある。",
+      "factId": "fact_delhi_qutb_minar_02",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Qutab Minar",
+          "url": "https://delhitourism.gov.in/tourist_place/qutab_minar.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "アラーイー門の碑文には1311年の完成記録がある。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_delhi_humayun_tomb_01",
+      "landmarkId": "delhi_humayun_tomb",
+      "kind": "hotspot",
+      "titleJa": "墓廟と次の時代",
+      "descriptionJa": "1570年完成の庭園墓は後のタージ・マハルの設計に影響した。",
+      "factId": "fact_delhi_humayun_tomb_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.36,
+        "y": 0.38,
+        "width": 0.4,
+        "height": 0.26
+      },
+      "sources": [
+        {
+          "publisher": "UNESCO",
+          "title": "Humayun Tomb",
+          "url": "https://whc.unesco.org/en/list/232",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "1570年完成の庭園墓は後のタージ・マハルの設計に影響した。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_delhi_humayun_tomb_02",
+      "landmarkId": "delhi_humayun_tomb",
+      "kind": "document",
+      "titleJa": "150人以上の眠る建物",
+      "descriptionJa": "庭園墓群には150以上のムガル皇族の墓があるとUNESCOは述べる。",
+      "factId": "fact_delhi_humayun_tomb_02",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "UNESCO",
+          "title": "Humayun Tomb",
+          "url": "https://whc.unesco.org/en/list/232",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "庭園墓群には150以上のムガル皇族の墓があるとUNESCOは述べる。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_delhi_humayun_tomb_03",
+      "landmarkId": "delhi_humayun_tomb",
+      "kind": "document",
+      "titleJa": "庭の水に込めた天国像",
+      "descriptionJa": "チャハルバーグの水路は楽園の川を表す構成と結び付く。",
+      "factId": "fact_delhi_humayun_tomb_03",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "UNESCO",
+          "title": "Humayun Tomb",
+          "url": "https://whc.unesco.org/en/list/232",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "チャハルバーグの水路は楽園の川を表す構成と結び付く。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_delhi_jama_masjid_01",
+      "landmarkId": "delhi_jama_masjid",
+      "kind": "document",
+      "titleJa": "皇帝の別の作品",
+      "descriptionJa": "タージ・マハルとレッド・フォートを造ったシャー・ジャハーンによるモスク。",
+      "factId": "fact_delhi_jama_masjid_01",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Jama Masjid",
+          "url": "https://delhitourism.gov.in/tourist_place/jama_masjid.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "タージ・マハルとレッド・フォートを造ったシャー・ジャハーンによるモスク。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_delhi_jama_masjid_02",
+      "landmarkId": "delhi_jama_masjid",
+      "kind": "hotspot",
+      "titleJa": "赤と白の対照",
+      "descriptionJa": "赤砂岩と白大理石の帯が塔と正面に使われる。",
+      "factId": "fact_delhi_jama_masjid_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.59,
+        "y": 0.02,
+        "width": 0.14,
+        "height": 0.54
+      },
+      "sources": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Jama Masjid",
+          "url": "https://delhitourism.gov.in/tourist_place/jama_masjid.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "赤砂岩と白大理石の帯が塔と正面に使われる。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_agra_taj_mahal_01",
+      "landmarkId": "agra_taj_mahal",
+      "kind": "hotspot",
+      "titleJa": "庭の真ん中ではない墓",
+      "descriptionJa": "四分庭園の中央ではなく一端に廟を置くことで遠近感を生んだ。",
+      "factId": "fact_agra_taj_mahal_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.36,
+        "y": 0.04,
+        "width": 0.3,
+        "height": 0.45
+      },
+      "sources": [
+        {
+          "publisher": "UNESCO",
+          "title": "Taj Mahal",
+          "url": "https://whc.unesco.org/en/list/252",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "四分庭園の中央ではなく一端に廟を置くことで遠近感を生んだ。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_agra_taj_mahal_02",
+      "landmarkId": "agra_taj_mahal",
+      "kind": "document",
+      "titleJa": "見えている棺は本当の墓ではない",
+      "descriptionJa": "地上階の石棺は模したもの、実際の墓は下階の地下室にある。",
+      "factId": "fact_agra_taj_mahal_02",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "UNESCO",
+          "title": "Taj Mahal",
+          "url": "https://whc.unesco.org/en/list/252",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "地上階の石棺は模したもの、実際の墓は下階の地下室にある。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_agra_taj_mahal_03",
+      "landmarkId": "agra_taj_mahal",
+      "kind": "document",
+      "titleJa": "完全な左右対称への例外",
+      "descriptionJa": "ムムターズとシャー・ジャハーンの模造石棺の配置は完全な対称ではない。",
+      "factId": "fact_agra_taj_mahal_03",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "UNESCO",
+          "title": "Taj Mahal",
+          "url": "https://whc.unesco.org/en/list/252",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "ムムターズとシャー・ジャハーンの模造石棺の配置は完全な対称ではない。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_agra_agra_fort_01",
+      "landmarkId": "agra_agra_fort",
+      "kind": "hotspot",
+      "titleJa": "赤砂岩と白大理石の二人の皇帝",
+      "descriptionJa": "アクバルの赤砂岩再建を後のシャー・ジャハーンが大理石で飾った。",
+      "factId": "fact_agra_agra_fort_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.14,
+        "y": 0.13,
+        "width": 0.72,
+        "height": 0.63
+      },
+      "sources": [
+        {
+          "publisher": "Agra District Government",
+          "title": "Agra Fort",
+          "url": "https://agra.nic.in/tourist-place/agra-fort/",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "アクバルの赤砂岩再建を後のシャー・ジャハーンが大理石で飾った。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_agra_agra_fort_02",
+      "landmarkId": "agra_agra_fort",
+      "kind": "document",
+      "titleJa": "幽閉中に見たはずの風景",
+      "descriptionJa": "ムサンマン・ブルジュはシャー・ジャハーン晩年の幽閉と結び付く。",
+      "factId": "fact_agra_agra_fort_02",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Agra District Government",
+          "title": "Agra Fort",
+          "url": "https://agra.nic.in/tourist-place/agra-fort/",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "ムサンマン・ブルジュはシャー・ジャハーン晩年の幽閉と結び付く。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_agra_itimad_tomb_01",
+      "landmarkId": "agra_itimad_tomb",
+      "kind": "document",
+      "titleJa": "娘が父のために建てた廟",
+      "descriptionJa": "皇妃ヌール・ジャハーンが父ギヤース・ベグのために造営した。",
+      "factId": "fact_agra_itimad_tomb_01",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Agra District Government",
+          "title": "Itimad-ud-Daulah",
+          "url": "https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "皇妃ヌール・ジャハーンが父ギヤース・ベグのために造営した。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_agra_itimad_tomb_02",
+      "landmarkId": "agra_itimad_tomb",
+      "kind": "hotspot",
+      "titleJa": "白大理石の先駆",
+      "descriptionJa": "アーグラ地方のムガル建築として早期に全面白大理石を採用した。",
+      "factId": "fact_agra_itimad_tomb_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.36,
+        "y": 0.28,
+        "width": 0.44,
+        "height": 0.54
+      },
+      "sources": [
+        {
+          "publisher": "Agra District Government",
+          "title": "Itimad-ud-Daulah",
+          "url": "https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "アーグラ地方のムガル建築として早期に全面白大理石を採用した。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_agra_itimad_tomb_03",
+      "landmarkId": "agra_itimad_tomb",
+      "kind": "document",
+      "titleJa": "石なのに花のよう",
+      "descriptionJa": "象嵌細工と透かし彫りの石格子に職人の技巧が表れる。",
+      "factId": "fact_agra_itimad_tomb_03",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Agra District Government",
+          "title": "Itimad-ud-Daulah",
+          "url": "https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "象嵌細工と透かし彫りの石格子に職人の技巧が表れる。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_agra_fatehpur_sikri_01",
+      "landmarkId": "agra_fatehpur_sikri",
+      "kind": "hotspot",
+      "titleJa": "皇帝が移した首都",
+      "descriptionJa": "アクバルの計画都市は1571–85年頃に首都の役割を担い、その後ラホールへ移った。",
+      "factId": "fact_agra_fatehpur_sikri_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.03,
+        "y": 0.17,
+        "width": 0.41,
+        "height": 0.48
+      },
+      "sources": [
+        {
+          "publisher": "UNESCO",
+          "title": "Fatehpur Sikri",
+          "url": "https://whc.unesco.org/en/list/255",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "アクバルの計画都市は1571–85年頃に首都の役割を担い、その後ラホールへ移った。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_agra_fatehpur_sikri_02",
+      "landmarkId": "agra_fatehpur_sikri",
+      "kind": "document",
+      "titleJa": "宗教と住まいが同居した都市",
+      "descriptionJa": "宮殿・役所・市民施設とジャーマー・マスジドが都市として連なる。",
+      "factId": "fact_agra_fatehpur_sikri_02",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "UNESCO",
+          "title": "Fatehpur Sikri",
+          "url": "https://whc.unesco.org/en/list/255",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "宮殿・役所・市民施設とジャーマー・マスジドが都市として連なる。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_jaipur_amber_fort_01",
+      "landmarkId": "jaipur_amber_fort",
+      "kind": "document",
+      "titleJa": "城は四つの部分に分かれる",
+      "descriptionJa": "アンベール宮殿はそれぞれ中庭を備えた四区画で構成される。",
+      "factId": "fact_jaipur_amber_fort_01",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Rajasthan Tourism",
+          "title": "Amber Palace",
+          "url": "https://www.tourism.rajasthan.gov.in/amber-palace.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "アンベール宮殿はそれぞれ中庭を備えた四区画で構成される。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_jaipur_amber_fort_02",
+      "landmarkId": "jaipur_amber_fort",
+      "kind": "document",
+      "titleJa": "兵が戦利品を並べた中庭",
+      "descriptionJa": "ジャレーブ・チョークは戦場から戻る軍隊の儀礼に結び付く。",
+      "factId": "fact_jaipur_amber_fort_02",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Rajasthan Tourism",
+          "title": "Amber Palace",
+          "url": "https://www.tourism.rajasthan.gov.in/amber-palace.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "ジャレーブ・チョークは戦場から戻る軍隊の儀礼に結び付く。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_jaipur_hawa_mahal_01",
+      "landmarkId": "jaipur_hawa_mahal",
+      "kind": "hotspot",
+      "titleJa": "王宮から町を覗く",
+      "descriptionJa": "多窓のファサードが王宮と街路の視線の関係を考える題材となる。",
+      "factId": "fact_jaipur_hawa_mahal_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.14,
+        "y": 0.13,
+        "width": 0.57,
+        "height": 0.48
+      },
+      "sources": [
+        {
+          "publisher": "India Ministry of Tourism",
+          "title": "Discovering Hawa Mahal's Architectural Splendor",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal",
+          "checkedAt": "2026-11-03",
+          "claimType": "interpretation",
+          "claimJa": "多窓のファサードが王宮と街路の視線の関係を考える題材となる。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_jaipur_hawa_mahal_02",
+      "landmarkId": "jaipur_hawa_mahal",
+      "kind": "document",
+      "titleJa": "風の通り道を示す造形",
+      "descriptionJa": "小窓の密集と通風が建物の通称に結び付くと解説される。",
+      "factId": "fact_jaipur_hawa_mahal_02",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "India Ministry of Tourism",
+          "title": "Discovering Hawa Mahal's Architectural Splendor",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal",
+          "checkedAt": "2026-11-03",
+          "claimType": "interpretation",
+          "claimJa": "小窓の密集と通風が建物の通称に結び付くと解説される。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_jaipur_city_palace_01",
+      "landmarkId": "jaipur_city_palace",
+      "kind": "hotspot",
+      "titleJa": "いまも続く宮殿文化",
+      "descriptionJa": "宮廷の歴史と現代の公開博物館の用途が重なっている。",
+      "factId": "fact_jaipur_city_palace_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.23,
+        "y": 0.18,
+        "width": 0.66,
+        "height": 0.48
+      },
+      "sources": [
+        {
+          "publisher": "The City Palace Museum Jaipur",
+          "title": "The City Palace Museum Jaipur",
+          "url": "https://citypalace.org/",
+          "checkedAt": "2026-11-03",
+          "claimType": "interpretation",
+          "claimJa": "宮廷の歴史と現代の公開博物館の用途が重なっている。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_jaipur_city_palace_02",
+      "landmarkId": "jaipur_city_palace",
+      "kind": "document",
+      "titleJa": "門が語る作り手の技",
+      "descriptionJa": "プリタム・ニワス中庭には、装飾を施した四つの門がある。この写真には写っていない。",
+      "factId": "fact_jaipur_city_palace_02",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Maharaja Sawai Man Singh II Museum Trust",
+          "title": "The City Palace Jaipur: Museum brochure",
+          "url": "https://citypalace.org/pdfs/Brochure.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "interpretation",
+          "claimJa": "プリタム・ニワス中庭には、装飾を施した四つの門がある。この写真には写っていない。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_jaipur_jantar_mantar_01",
+      "landmarkId": "jaipur_jantar_mantar",
+      "kind": "document",
+      "titleJa": "研究者でもある君主",
+      "descriptionJa": "ジャイ・シング2世は王国運営と天文観測を結び付けた。",
+      "factId": "fact_jaipur_jantar_mantar_01",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "UNESCO",
+          "title": "Jantar Mantar Jaipur",
+          "url": "https://whc.unesco.org/en/list/1338",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "ジャイ・シング2世は王国運営と天文観測を結び付けた。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_jaipur_jantar_mantar_02",
+      "landmarkId": "jaipur_jantar_mantar",
+      "kind": "hotspot",
+      "titleJa": "望遠鏡がなくても天体を測る",
+      "descriptionJa": "施設には肉眼で位置を観測する約20の固定式巨大装置がある。",
+      "factId": "fact_jaipur_jantar_mantar_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.4,
+        "y": 0.2,
+        "width": 0.5,
+        "height": 0.48
+      },
+      "sources": [
+        {
+          "publisher": "UNESCO",
+          "title": "Jantar Mantar Jaipur",
+          "url": "https://whc.unesco.org/en/list/1338",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "施設には肉眼で位置を観測する約20の固定式巨大装置がある。"
+        }
+      ]
+    },
+    {
+      "id": "gt_obs_fact_jaipur_jantar_mantar_03",
+      "landmarkId": "jaipur_jantar_mantar",
+      "kind": "document",
+      "titleJa": "科学は文化の交差点",
+      "descriptionJa": "UNESCOは複数文明の天文学的伝統の交流の場だったと評価する。",
+      "factId": "fact_jaipur_jantar_mantar_03",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "UNESCO",
+          "title": "Jantar Mantar Jaipur",
+          "url": "https://whc.unesco.org/en/list/1338",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "UNESCOは複数文明の天文学的伝統の交流の場だったと評価する。"
+        }
+      ]
+    }
+  ]
+}

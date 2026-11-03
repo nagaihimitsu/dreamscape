@@ -20,6 +20,7 @@ export function journeyStorage(
     return key;
   };
   return {
+    journeyId,
     physicalKey: mapKey,
     getItem: (key) => base.getItem(mapKey(key)),
     setItem: (key, value) => base.setItem(mapKey(key), value),

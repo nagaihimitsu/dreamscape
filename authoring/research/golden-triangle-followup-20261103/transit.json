@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-11-03",
+  "records": [
+    {
+      "id": "gt_delhi_agra_gatimaan_service",
+      "cityId": null,
+      "field": "intercity_train_example",
+      "value": "Gatimaan Express 12050：Hazrat Nizamuddin（デリー）→Agra Cantt。二次資料は08:10発・09:50着、金曜運休と案内する。",
+      "status": "secondary_report",
+      "conditionsJa": "2016年開業当時の政府発表にも同区間・金曜運休の記載があるが、現在の運行を保証しない。便・曜日・時刻・座席は日付指定で鉄道事業者に再確認する。08:10発はゲームの09:00開始前であり、都市間移動を市内時計にそのまま代入しない。",
+      "sources": [
+        { "publisher": "Perfect Agra Tours", "title": "Gatimaan Express Delhi to Agra: Timings, Fares & Tips 2026", "url": "https://tajmahaldaytours.com/gatimaan-express-delhi-to-agra/", "checkedAt": "2026-11-03", "claimType": "documented_fact", "claimJa": "2026年の旅行案内は12050便をHazrat Nizamuddin 08:10発、Agra Cantt 09:50着、金曜運休と記載し、鉄道の最新時刻確認を促している。" },
+        { "publisher": "Ministry of Railways, Press Information Bureau", "title": "Flags off First New Semi High-Speed Train Gatimaan Express", "url": "https://www.pib.gov.in/newsite/erelcontent.aspx?lang=2&reg=3&relid=138590", "checkedAt": "2026-11-03", "claimType": "documented_fact", "claimJa": "2016年4月の開業時発表はHazrat NizamuddinとAgra Canttを結び、金曜を除く運行を予定したと記す。" }
+      ]
+    },
+    {
+      "id": "gt_agra_jaipur_intercity_example",
+      "cityId": null,
+      "field": "intercity_train_example",
+      "value": "2026-11-03確認時、予約サイトは12195便をAgra Fort 06:00発→Jaipur Junction 10:15着、22988便を14:35発→18:45着の例として掲載。",
+      "status": "secondary_report",
+      "conditionsJa": "予約サイトの表示例であり、恒常的な運行・席・運賃ではない。便・運行日・出発駅を実際の旅行日で再確認する。Agra CanttとAgra Fortは別駅で、駅への市内移動も別途必要。06:00発はゲーム開始時刻前。",
+      "sources": [
+        { "publisher": "ConfirmTkt", "title": "Agra to Jaipur Trains: Check Fares and Timetable", "url": "https://www.confirmtkt.com/trains/agra-to-jaipur-train-tickets", "checkedAt": "2026-11-03", "claimType": "documented_fact", "claimJa": "予約サイトは12195と22988のAgra Fort発・Jaipur Junction着の時刻例を掲載する。日付や条件により表示は変わりうる。" },
+        { "publisher": "Agra District Administration", "title": "How to Reach Agra", "url": "https://agra.nic.in/how-to-reach/", "checkedAt": "2026-11-03", "claimType": "documented_fact", "claimJa": "アーグラ県の案内はAgra CanttとAgra Fortを別の鉄道駅として列挙している。" }
+      ]
+    },
+    {
+      "id": "gt_agra_jaipur_fare_variation",
+      "cityId": null,
+      "field": "intercity_train_fare_reference",
+      "value": "2026-11-03確認時の予約サイトはアーグラ→ジャイプール列車の一人片道価格帯の例を₹140〜₹1,480と表示。",
+      "status": "secondary_report",
+      "conditionsJa": "便、座席クラス、日付、予約条件等で変動する掲載例。二人分の料金は予約条件の確認後に算出し、確定運賃やゲーム内料金には使わない。",
+      "sources": [
+        { "publisher": "ConfirmTkt", "title": "Agra to Jaipur Train Ticket Price", "url": "https://www.confirmtkt.com/trains/agra-to-jaipur-train-tickets", "checkedAt": "2026-11-03", "claimType": "documented_fact", "claimJa": "予約サイトは運賃が日付や車両クラスなどで変わると説明し、₹140〜₹1,480の例を掲載する。" }
+      ]
+    },
+    {
+      "id": "agra_rail_station_distinction",
+      "cityId": "agra",
+      "field": "rail_station_access",
+      "value": "Agra CanttとAgra Fortは別の鉄道駅。デリーからの到着駅とジャイプールへの乗車駅が異なる場合がある。",
+      "status": "official_document",
+      "conditionsJa": "アーグラ県案内に両駅の記載がある。乗車便がどちらの駅を使うかと駅間の経路・時間・運賃は別途確認し、直通乗換を仮定しない。",
+      "sources": [
+        { "publisher": "Agra District Administration", "title": "How to Reach Agra", "url": "https://agra.nic.in/how-to-reach/", "checkedAt": "2026-11-03", "claimType": "documented_fact", "claimJa": "県の交通案内はAgra CanttとAgra Fortを別の鉄道駅として挙げている。" },
+        { "publisher": "Agra Guides", "title": "Agra to Jaipur by Train, Bus or Car in 2026", "url": "https://www.agraguides.com/city/agra/articles/agra-to-jaipur-by-train-or-road-for-a-smoother-golden-triangle-trip", "checkedAt": "2026-11-03", "claimType": "documented_fact", "claimJa": "旅行案内はAgra CanttとAgra Fortを取り違えないよう注意し、ジャイプール行きにAgra Fort発着の例を示す。" }
+      ]
+    },
+    {
+      "id": "agra_metro_corridor_and_cantt",
+      "cityId": "agra",
+      "field": "metro_network",
+      "value": "2024〜25年度の運営会社年次報告はTaj East Gate〜Mankameshwarの優先区間を運行中とし、Agra Canttを通る第2回廊を別計画として記載。",
+      "status": "official_document",
+      "conditionsJa": "運営会社の過去の年次報告と2026年10月の報道を参照。工事・供用状況は変わるため、Agra Canttまで既存地下鉄が直通すると扱わず、旅程の日付で最新情報を確認する。駅出口から観光地・入口までの接続時間は別途必要。",
+      "sources": [
+        { "publisher": "Uttar Pradesh Metro Rail Corporation", "title": "Annual Report 2024–25", "url": "https://portal.upmetrorail.com/documents/374/UPMRC_Annual_Report_2024-25_English.pdf", "checkedAt": "2026-11-03", "claimType": "documented_fact", "claimJa": "運営会社年次報告は2024年3月開業のTaj East Gate〜Mankameshwar優先区間と、Agra Canttを含む別の第2回廊計画を記す。" },
+        { "publisher": "The Financial Express", "title": "Agra Metro: Blue Line train runs through Mall Road for the first time", "url": "https://www.financialexpress.com/business/infrastructure-agra-metro-blue-line-train-runs-through-mall-road-for-the-first-time-route-update-4363319/", "checkedAt": "2026-11-03", "claimType": "documented_fact", "claimJa": "2026年10月の報道はAgra Canttを含む第2回廊を建設中の計画として述べ、既存の優先区間とは区別する。" }
+      ]
+    },
+    {
+      "id": "agra_fort_metro_last_mile",
+      "cityId": "agra",
+      "field": "metro_access_candidate",
+      "value": "アーグラ県はAgra Fortの鉄道駅・地下鉄駅が城の近くにあり、一般の入口はAmar Singh Gateと案内する。",
+      "status": "official_document",
+      "conditionsJa": "駅と施設の関係の候補。出口番号、歩道、徒歩所要時間、運賃および入口のGPSはこの資料から確定しない。Agra Fort駅とAgra Cantt駅を混同しない。",
+      "sources": [
+        { "publisher": "Agra District Administration", "title": "Agra Fort", "url": "https://agra.nic.in/tourist-place/agra-fort/", "checkedAt": "2026-11-03", "claimType": "documented_fact", "claimJa": "県の案内はAgra Fort鉄道駅・地下鉄駅と城の位置関係、および入場口をAmar Singh Gateと記載する。" }
+      ]
+    },
+    {
+      "id": "jaipur_pink_line_station_candidates",
+      "cityId": "jaipur",
+      "field": "metro_network",
+      "value": "ジャイプール地下鉄の東西回廊にはRailway Station、Sindhi Camp、Chandpole、Choti Chaupar、Badi Chauparが含まれる。",
+      "status": "official_document",
+      "conditionsJa": "都市開発省資料の路線図と独立案内の観光地最寄り候補を参照。駅間運賃は出口から各施設までの時間を含まない。運行状況・乗継ぎ・経路は実際の旅行日で再確認する。",
+      "sources": [
+        { "publisher": "Ministry of Housing and Urban Affairs", "title": "Jaipur Metro Phase I", "url": "https://www.mohua.gov.in/upload/uploadfiles/files/Jaipur_Metro_PPT.pdf", "checkedAt": "2026-11-03", "claimType": "documented_fact", "claimJa": "都市開発省の資料は東西回廊の駅としてRailway Station、Sindhi Camp、Chandpole、Choti Chaupar、Badi Chauparを掲載する。" },
+        { "publisher": "Jaipur Metro independent guide", "title": "Jaipur attractions near the metro", "url": "https://jaipurmetro.org/jaipur-attractions-near-the-metro/", "checkedAt": "2026-11-03", "claimType": "documented_fact", "claimJa": "独立系案内はBadi Chauparを旧市街の観光地への候補駅とし、アンベール城は地下鉄後にバス等が必要と案内する。" }
+      ]
+    },
+    {
+      "id": "delhi_red_fort_metro_candidate",
+      "cityId": "delhi",
+      "field": "metro_access_candidate",
+      "value": "赤い城へ向かう地下鉄候補としてViolet LineのLal Qila駅が案内されている。",
+      "status": "secondary_report",
+      "conditionsJa": "独立した案内の候補であり、駅から訪問口までの徒歩可能性、出口、距離や時間を実測したものではない。最寄り候補の順位は入口と乗車経路により変わる。",
+      "sources": [
+        { "publisher": "My Metro", "title": "Nearest Metro Station to Red Fort", "url": "https://mymetro.in/guides/red-fort-nearest-metro/", "checkedAt": "2026-11-03", "claimType": "documented_fact", "claimJa": "独立した交通案内は赤い城の候補駅としてViolet LineのLal Qila駅を挙げる。" }
+      ]
+    },
+    {
+      "id": "delhi_qutub_metro_candidate",
+      "cityId": "delhi",
+      "field": "metro_access_candidate",
+      "value": "クトゥブ・ミナールへの地下鉄候補としてYellow LineのQutab Minar駅が案内される。",
+      "status": "conflicting_sources",
+      "conditionsJa": "同じ独立案内内でも駅からの距離が1.3 kmと500 mで一致しないため、駅出口から訪問口までの距離・徒歩時間は未確定とし、ゲームの実測経路に使わない。",
+      "sources": [
+        { "publisher": "DTC Bus Routes", "title": "Nearest Metro Station to Qutub Minar", "url": "https://www.dtcbusroutes.in/delhi/metro/near/qutub-minar/", "checkedAt": "2026-11-03", "claimType": "documented_fact", "claimJa": "独立系案内はYellow LineのQutab Minarを候補とする一方、同一ページ内に駅から1.3 kmと約500 mという異なる距離を記載する。" }
+      ]
+    },
+    {
+      "id": "delhi_humayun_metro_candidates",
+      "cityId": "delhi",
+      "field": "metro_access_candidate",
+      "value": "フマーユーン廟の地下鉄候補にはViolet LineのJLN Stadium・JangpuraとPink LineのSarai Kale Khan–Nizamuddinが挙げられる。",
+      "status": "conflicting_sources",
+      "conditionsJa": "独立案内間で最寄り駅・距離・徒歩分数が一致せず、対象が施設中心点か実際の入口かも不明。各駅は候補として保持し、最寄りの断定や徒歩経路の自動生成をしない。",
+      "sources": [
+        { "publisher": "My Metro", "title": "Humayun Tomb Nearest Metro Station", "url": "https://mymetro.in/guides/humayun-tomb-nearest-metro/", "checkedAt": "2026-11-03", "claimType": "documented_fact", "claimJa": "独立系案内はPink LineのSarai Kale Khan–NizamuddinとViolet LineのJangpura、JLN Stadiumを駅候補に挙げるが、距離と時間の表示には整合しない箇所がある。" },
+        { "publisher": "DTC Bus Routes", "title": "Nearest Metro Station to Humayun's Tomb", "url": "https://www.dtcbusroutes.in/delhi/metro/near/humayuns-tomb/", "checkedAt": "2026-11-03", "claimType": "documented_fact", "claimJa": "別の独立系案内はPink LineとViolet Lineの候補駅について異なる距離を掲載する。" }
+      ]
+    }
+  ]
+}

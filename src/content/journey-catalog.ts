@@ -16,6 +16,8 @@ export const journeyCatalogSchema = z.object({
     // An omitted value uses the starting city's existing setting. Null means
     // not yet determined and must never silently become real-world pricing.
     initialBudget: z.number().int().nonnegative().nullable().optional(),
+    /** Fictional game-calendar weekday on day one; Monday is 0. */
+    startWeekday: z.number().int().min(0).max(6).optional(),
     // Optional for existing journeys that already have an initial state.
     initialState: z.object({
       ap: z.number().int().nonnegative(), pendingAp: z.literal(0),

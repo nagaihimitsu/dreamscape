@@ -14,6 +14,7 @@ export function validateTravelContent(
   landmarkIds: readonly string[],
   destinationIds: readonly string[],
   backgrounds: Record<string, unknown>,
+  options: { allowPendingContent?: boolean; plannedLandmarkIds?: readonly string[] } = {},
 ): void {
   if (travel.cityId !== cityId) throw new Error(`Unknown travel city: ${travel.cityId}`);
   if (!travel.places.some((place) => place.id === settings.hotelPlaceId))
@@ -50,6 +51,18 @@ export function validateTravelContent(
   for (const event of travel.events) {
     const date = datesById.get(event.id);
     const place = travel.places.find((candidate) => candidate.id === event.placeId)!;
+    if (event.contentStatus === "pending_content" && !options.allowPendingContent)
+      throw new Error(`Pending travel event in playable city: ${event.id}`);
+    if (event.contentStatus === "pending_content" && !date && !mainIds.has(event.id)) {
+      if (event.category === "main") {
+        if (event.apCost !== 0 || !options.plannedLandmarkIds?.includes(place.id))
+          throw new Error(`Invalid pending main travel event: ${event.id}`);
+      } else if (event.category === "date") {
+        if (!place.destinationIds?.some((id) => destinationIds.includes(id)))
+          throw new Error(`Pending date lacks its city destination: ${event.id}`);
+      } else throw new Error(`Invalid pending travel event: ${event.id}`);
+      continue;
+    }
     if (date) {
       if (event.category !== "date" || event.apCost !== date.apCost)
         throw new Error(`Travel date category or AP mismatch: ${event.id}`);

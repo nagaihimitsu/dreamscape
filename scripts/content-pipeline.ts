@@ -416,6 +416,34 @@ export function validateQuizEntries(quiz: {
   }
 }
 
+/** Validate authored city links separately from content completion. */
+export function validateCityLinks(cities: Array<ReturnType<typeof citySchema.parse>>, journeyCatalog: ReturnType<typeof journeyCatalogSchema.parse>) {
+  for (const current of cities) {
+    const seen = new Set<string>();
+    let next: typeof current | undefined = current;
+    while (next) {
+      if (seen.has(next.id)) throw new Error(`Cyclic city route: ${next.id}`);
+      seen.add(next.id);
+      if (!next.nextCityId) break;
+      const following = cities.find((item) => item.id === next!.nextCityId);
+      const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === next!.id));
+      const index = owner?.cities.findIndex((planned) => planned.id === next!.id) ?? -1;
+      const plannedNext = following?.productionStatus === "prototype" && owner?.cities[index + 1]?.id === following.id;
+      if (!following || (following.productionStatus !== "complete" && !plannedNext)) throw new Error(`Unknown or incomplete next city: ${next.nextCityId}`);
+      next = following;
+    }
+  }
+  for (const current of cities) {
+    const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id));
+    if (!owner) throw new Error(`City has no journey: ${current.id}`);
+    if (current.nextCityId) {
+      const index = owner.cities.findIndex((planned) => planned.id === current.id);
+      if (owner.cities[index + 1]?.id !== current.nextCityId)
+        throw new Error(`Next city is outside the journey order: ${current.id}/${current.nextCityId}`);
+    }
+  }
+}
+
 export async function buildContent(root: string, writeOutput = true) {
   const content = path.join(root, "content");
   const journey = await parseFile(
@@ -481,28 +509,10 @@ export async function buildContent(root: string, writeOutput = true) {
   unique(cities.map((city) => city.id), "city ID");
   const city = cities.find((item) => item.id === "milano");
   if (!city) throw new Error("Missing initial city: milano");
-  for (const current of cities) {
-    const seen = new Set<string>();
-    let next: typeof current | undefined = current;
-    while (next) {
-      if (seen.has(next.id)) throw new Error(`Cyclic city route: ${next.id}`);
-      seen.add(next.id);
-      if (!next.nextCityId) break;
-      const following = cities.find((item) => item.id === next!.nextCityId);
-      if (!following || following.productionStatus !== "complete") throw new Error(`Unknown or incomplete next city: ${next.nextCityId}`);
-      next = following;
-    }
-  }
   const journeyCatalog = await parseFile(journeyCatalogSchema, path.join(content, "journeys/catalog.json"));
-  for (const current of cities) {
-    const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id));
-    if (!owner) throw new Error(`City has no journey: ${current.id}`);
-    if (current.nextCityId) {
-      const index = owner.cities.findIndex((planned) => planned.id === current.id);
-      if (owner.cities[index + 1]?.id !== current.nextCityId)
-        throw new Error(`Next city is outside the journey order: ${current.id}/${current.nextCityId}`);
-    }
-  }
+  // A registered future prototype may be referenced by its predecessor;
+  // getNextCity still hides departures to incomplete cities at runtime.
+  validateCityLinks(cities, journeyCatalog);
   for (const plannedJourney of journeyCatalog.journeys) {
     if (plannedJourney.status === "available") {
       const start = plannedJourney.cities[0];
@@ -1117,9 +1127,13 @@ export async function buildContent(root: string, writeOutput = true) {
   unique([...productionQuestionIds, ...encounterCatalog.encounters.flatMap((event) => event.quiz ? [event.quiz.question.id] : [])], "production quiz question ID");
   for (const { city: current, travel, settings } of travels) {
     const episodes = journey.episodes.filter((episode) => episode.cityId === current.id);
-    if (!episodes.length) throw new Error(`City has no episodes: ${current.id}`);
-    const plan = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id))?.cityPlan;
-    if (plan) {
+    const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id));
+    // A journey may publish its first city while keeping later, pre-registered
+    // cities unfinished. The city status controls the deferred content gate.
+    const isUnpublished = current.productionStatus === "prototype";
+    if (!episodes.length && !isUnpublished) throw new Error(`City has no episodes: ${current.id}`);
+    const plan = owner?.cityPlan;
+    if (plan && episodes.length) {
       const finale = episodes.find((episode) => episode.kind === "city_finale");
       const episodeIds = new Set(episodes.map((episode) => episode.id));
       const clearRewards = journey.rewards.filter((rule) => episodeIds.has(rule.episodeId) && rule.trigger === "city_clear");
@@ -1127,12 +1141,20 @@ export async function buildContent(root: string, writeOutput = true) {
         throw new Error(`City clear reward does not match journey plan: ${current.id}`);
     }
     const episodeIds = new Set(episodes.map((episode) => episode.id));
-    const cityJourney = { ...journey, entryEpisodeId: current.id === city.id ? journey.entryEpisodeId : episodes[0].id,
+    const cityJourney = { ...journey, entryEpisodeId: current.id === city.id ? journey.entryEpisodeId : (episodes[0]?.id ?? journey.entryEpisodeId),
       episodes, storyBattles: journey.storyBattles.filter((battle) => battleCity(battle.battleId) === current.id),
       rewards: journey.rewards.filter((rule) => episodeIds.has(rule.episodeId)) };
     const cityLandmarks = tourism.landmarks.filter((landmark) => landmark.cityId === current.id);
     const cityDates = dates.filter((date) => date.chapterId === current.id);
     const cityDestinations = destinations.filter((destination) => destination.cityId === current.id);
+    // A pending prototype may defer only its own unwritten story; it may not
+    // reuse an actual event belonging to another city.
+    for (const event of travel.events) {
+      const foreignEpisode = journey.episodes.find((item) => item.id === event.id && item.cityId !== current.id);
+      const foreignDate = dates.find((item) => item.id === event.id && item.chapterId !== current.id);
+      const foreignBattle = battles.find((item) => item.id === event.id && battleCity(item.id) !== current.id);
+      if (foreignEpisode || foreignDate || foreignBattle) throw new Error(`Travel event belongs to another city: ${event.id}`);
+    }
     validateEncounterContent({
       catalog: { ...encounterCatalog, items: encounterCatalog.items.filter((item) => item.cityId === current.id),
         encounters: encounterCatalog.encounters.filter((event) => event.cityId === current.id) },
@@ -1141,9 +1163,11 @@ export async function buildContent(root: string, writeOutput = true) {
       responseProfileIds: responseProfiles.map((profile) => profile.id), memoryIds: Object.keys(presentation.memories), context,
       validateQuiz: validateQuizEntries,
     });
-    validateJourney(cityJourney, current, balance.apCap, cityLandmarks, battles, quizzes, milestones);
+    if (episodes.length) validateJourney(cityJourney, current, balance.apCap, cityLandmarks, battles, quizzes, milestones);
+    else if (cityJourney.storyBattles.length) throw new Error(`Prototype battle has no city episodes: ${current.id}`);
     validateTravelContent(travel, settings, current.id, cityJourney, cityDates, battles,
-      cityLandmarks.map((landmark) => landmark.id), cityDestinations.map((destination) => destination.id), presentation.backgrounds);
+      cityLandmarks.map((landmark) => landmark.id), cityDestinations.map((destination) => destination.id), presentation.backgrounds,
+      { allowPendingContent: isUnpublished, plannedLandmarkIds: current.landmarkIdsPlanned });
   }
   let epilogueScenarios = 0;
   for (const episode of journey.episodes) {

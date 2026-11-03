@@ -1,0 +1,2831 @@
+{
+  "cityId": "delhi",
+  "places": [
+    {
+      "id": "delhi_red_fort",
+      "cityId": "delhi",
+      "nameJa": "レッド・フォート",
+      "nameEn": "Red Fort",
+      "latitude": 28.65588,
+      "longitude": 77.23865,
+      "backgroundAssetId": "gt_bg_delhi_red_fort",
+      "openingWindows": [
+        {
+          "start": 570,
+          "end": 990
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Red Fort mapped representative",
+          "url": "https://mapcarta.com/14862200",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        },
+        {
+          "publisher": "OpenStreetMap via Mapcarta",
+          "title": "Game routing anchor (delhi_red_fort)",
+          "url": "https://mapcarta.com/W80429907",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "ゲーム内試作用代表点。実際の入口・通行可能経路を保証しない。"
+        },
+        {
+          "publisher": "Dreamscape 統合調査",
+          "title": "レッド・フォート ゲーム用代表点",
+          "url": "https://www.incredibleindia.gov.in/en/delhi/delhi/red-fort",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "統合調査台帳に記載されたゲーム用の代表点であり、実際の入口・通行経路・宿泊施設を保証しない。"
+        },
+        {
+          "publisher": "Archaeological Survey of India, Guwahati Circle",
+          "title": "Gazette notification: Ancient Monuments Rules amendment 2018",
+          "url": "https://www.asiguwahaticircle.gov.in/Notification/Gazette%20notification.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2018年の官報には、フマユーン廟、クトゥブ、レッド・フォート、タージ群、アーグラ城、ファテープル・シークリーの対象外国人大人向け基本入場料が、現金600ルピー、キャッシュレス550ルピーと掲載されている。"
+        },
+        {
+          "publisher": "Press Trust of India / Business Standard",
+          "title": "Red Fort to stay open all week, no more closure on Mondays: ASI",
+          "url": "https://www.business-standard.com/india-news/red-fort-to-remain-open-on-all-days-of-week-asi-126022100547_1.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "ASI担当者によれば2026年2月13日の命令で週7日開放し、同月16日にも開いていたと報じる。"
+        },
+        {
+          "publisher": "The Times of India / PTI",
+          "title": "Hauz Khas Fort, Jantar Mantar restrict entry as 10 Delhi monuments undergo repairs",
+          "url": "https://timesofindia.indiatimes.com/city/delhi/hauz-khas-fort-jantar-mantar-restrict-entry-as-10-delhi-monuments-undergo-repairs-check-list/articleshow/134120775.cms",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "ASIの情報公開回答に基づき、レッド・フォートの六つの建物に入場制限があると2026年9月12日に報じた。"
+        },
+        {
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap way 80429907",
+          "url": "https://www.openstreetmap.org/way/80429907",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "OSMのway 80429907はLahori Gateとhistoric=city_gateのタグを持つ。"
+        },
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Metro Itinerary",
+          "url": "https://delhitourism.gov.in/itinerary/metro_itinerary.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "Chandni Chowk駅の周辺観光地としてRed Fortを挙げる。"
+        },
+        {
+          "publisher": "Dreamscape 調査資料",
+          "title": "レッド・フォート ゲーム用時間枠の候補",
+          "url": "https://www.business-standard.com/india-news/red-fort-to-remain-open-on-all-days-of-week-asi-126022100547_1.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_qutb_minar",
+      "cityId": "delhi",
+      "nameJa": "クトゥブ・ミナール",
+      "nameEn": "Qutb Minar",
+      "latitude": 28.52442,
+      "longitude": 77.18545,
+      "backgroundAssetId": "gt_bg_delhi_qutb_minar",
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Qutb Minar mapped representative",
+          "url": "https://mapcarta.com/25584468",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        },
+        {
+          "publisher": "Dreamscape 統合調査",
+          "title": "クトゥブ・ミナール ゲーム用代表点",
+          "url": "https://dmnorth.delhi.gov.in/tourist-place/rameshwar/",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "統合調査台帳に記載されたゲーム用の代表点であり、実際の入口・通行経路・宿泊施設を保証しない。"
+        },
+        {
+          "publisher": "Archaeological Survey of India, Guwahati Circle",
+          "title": "Gazette notification: Ancient Monuments Rules amendment 2018",
+          "url": "https://www.asiguwahaticircle.gov.in/Notification/Gazette%20notification.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2018年の官報には、フマユーン廟、クトゥブ、レッド・フォート、タージ群、アーグラ城、ファテープル・シークリーの対象外国人大人向け基本入場料が、現金600ルピー、キャッシュレス550ルピーと掲載されている。"
+        },
+        {
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap node 939328496",
+          "url": "https://www.openstreetmap.org/node/939328496",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "OpenStreetMapのnode 939328496 はentrance=mainとして記録されている。現地の公開状況・入場権限や正式な門の座標を確認したものではない。"
+        },
+        {
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap node 1486856990",
+          "url": "https://www.openstreetmap.org/node/1486856990",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "OpenStreetMapのnode 1486856990 はQutub Minar Ticketsとして記録されている。現地の公開状況・入場権限や正式な門の座標を確認したものではない。"
+        },
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Metro Itinerary",
+          "url": "https://delhitourism.gov.in/itinerary/metro_itinerary.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "Qutab Minar駅の周辺観光地としてQutab Minarを挙げる。"
+        },
+        {
+          "publisher": "Dreamscape 調査資料",
+          "title": "クトゥブ・ミナール ゲーム用時間枠の候補",
+          "url": "https://dmnorth.delhi.gov.in/tourist-place/rameshwar/",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_humayun_tomb",
+      "cityId": "delhi",
+      "nameJa": "フマユーン廟",
+      "nameEn": "Humayun’s Tomb",
+      "latitude": 28.59329,
+      "longitude": 77.25065,
+      "backgroundAssetId": "gt_bg_delhi_humayun_tomb",
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Humayun’s Tomb mapped representative",
+          "url": "https://mapcarta.com/W220385654",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        },
+        {
+          "publisher": "Dreamscape 統合調査",
+          "title": "フマユーン廟 ゲーム用代表点",
+          "url": "https://dmsoutheast.delhi.gov.in/tourist-place/humayun-tomb/",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "統合調査台帳に記載されたゲーム用の代表点であり、実際の入口・通行経路・宿泊施設を保証しない。"
+        },
+        {
+          "publisher": "Archaeological Survey of India, Guwahati Circle",
+          "title": "Gazette notification: Ancient Monuments Rules amendment 2018",
+          "url": "https://www.asiguwahaticircle.gov.in/Notification/Gazette%20notification.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2018年の官報には、フマユーン廟、クトゥブ、レッド・フォート、タージ群、アーグラ城、ファテープル・シークリーの対象外国人大人向け基本入場料が、現金600ルピー、キャッシュレス550ルピーと掲載されている。"
+        },
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Humayun’s Tomb: tourist place",
+          "url": "https://www.delhitourism.gov.in/tourist_place/humayun_tomb.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "観光局の一方の案内は毎日の日の出から日没までとし、外国人料金600ルピーを掲載。"
+        },
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Humayun’s Tomb: explore the city",
+          "url": "https://delhitourism.gov.in/dt/explore_the_city/humayuns_tomb.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "別の観光局案内は毎日の日の出から19時30分までとし、外国人大人料金550ルピーを掲載。"
+        },
+        {
+          "publisher": "Dreamscape 調査資料",
+          "title": "フマユーン廟 ゲーム用時間枠の候補",
+          "url": "https://www.delhitourism.gov.in/tourist_place/humayun_tomb.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_india_gate",
+      "cityId": "delhi",
+      "nameJa": "インド門",
+      "nameEn": "India Gate",
+      "latitude": 28.61293,
+      "longitude": 77.22949,
+      "backgroundAssetId": "gt_bg_delhi_india_gate",
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1260
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "India Gate mapped representative",
+          "url": "https://mapcarta.com/24996704",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        },
+        {
+          "publisher": "Dreamscape 統合調査",
+          "title": "インド門 ゲーム用代表点",
+          "url": "https://delhitourism.gov.in/tourist_place/india_gate.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "統合調査台帳に記載されたゲーム用の代表点であり、実際の入口・通行経路・宿泊施設を保証しない。"
+        },
+        {
+          "publisher": "Delhi Tourism",
+          "title": "India Gate",
+          "url": "https://delhitourism.gov.in/tourist_place/india_gate.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "インド門の案内は入場無料、朝から夜まで、定休日なしと掲載。"
+        },
+        {
+          "publisher": "Delhi Tourism",
+          "title": "India Gate: Explore the City",
+          "url": "https://www.delhitourism.gov.in/dt/explore_the_city/india_gate.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "別の案内は毎日24時間とする一方、暗くなってから一部区域に立ち入れないと注意している。"
+        },
+        {
+          "publisher": "Dreamscape 調査資料",
+          "title": "インド門 ゲーム用時間枠の候補",
+          "url": "https://delhitourism.gov.in/tourist_place/india_gate.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_jama_masjid",
+      "cityId": "delhi",
+      "nameJa": "ジャーマー・マスジド",
+      "nameEn": "Jama Masjid",
+      "latitude": 28.6507,
+      "longitude": 77.2335,
+      "backgroundAssetId": "gt_bg_delhi_jama_masjid",
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Jama Masjid mapped representative",
+          "url": "https://mapcarta.com/14884416",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        },
+        {
+          "publisher": "Dreamscape 統合調査",
+          "title": "ジャーマー・マスジド ゲーム用代表点",
+          "url": "https://delhitourism.gov.in/tourist_place/jama_masjid.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "統合調査台帳に記載されたゲーム用の代表点であり、実際の入口・通行経路・宿泊施設を保証しない。"
+        },
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Jama Masjid",
+          "url": "https://www.delhitourism.gov.in/tourist_place/jama_masjid.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "観光局は外国人観光客400ルピー、インド人観光客は無料とし、外国人観光客は8時から日没までと掲載。"
+        },
+        {
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap node 2592537221",
+          "url": "https://www.openstreetmap.org/node/2592537221",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "OpenStreetMapのnode 2592537221 はGate 1として記録されている。現地の公開状況・入場権限や正式な門の座標を確認したものではない。"
+        },
+        {
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap node 2657888917",
+          "url": "https://www.openstreetmap.org/node/2657888917",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "OpenStreetMapのnode 2657888917 はGate 3として記録されている。現地の公開状況・入場権限や正式な門の座標を確認したものではない。"
+        },
+        {
+          "publisher": "OpenStreetMap contributors",
+          "title": "OpenStreetMap node 2990363760",
+          "url": "https://www.openstreetmap.org/node/2990363760",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "OpenStreetMapのnode 2990363760 はGate 2として記録されている。現地の公開状況・入場権限や正式な門の座標を確認したものではない。"
+        },
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Metro Itinerary",
+          "url": "https://delhitourism.gov.in/itinerary/metro_itinerary.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "Chandni Chowk駅の周辺観光地としてJama Masjidを挙げる。"
+        },
+        {
+          "publisher": "Dreamscape 調査資料",
+          "title": "ジャーマー・マスジド ゲーム用時間枠の候補",
+          "url": "https://delhitourism.gov.in/tourist_place/jama_masjid.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_chandni_chowk",
+      "cityId": "delhi",
+      "nameJa": "チャンドニー・チョーク",
+      "nameEn": "Chandni Chowk",
+      "latitude": 28.65124,
+      "longitude": 77.22912,
+      "backgroundAssetId": "gt_bg_delhi_chandni_chowk",
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1260
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Chandni Chowk mapped representative",
+          "url": "https://mapcarta.com/25584486",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        },
+        {
+          "publisher": "Dreamscape 統合調査",
+          "title": "チャンドニー・チョーク ゲーム用代表点",
+          "url": "https://new.delhimetrorail.com/en",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "統合調査台帳に記載されたゲーム用の代表点であり、実際の入口・通行経路・宿泊施設を保証しない。"
+        },
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Chandni Chowk",
+          "url": "https://delhitourism.gov.in/dt/delhi_delicacies/chandni_chowk.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "市場の飲食案内は10時30分〜21時、一部店舗は日曜休業と掲載。"
+        },
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Old Delhi Shopping",
+          "url": "https://www.delhitourism.gov.in/shopping/chandni_chowk.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "別の市場案内は市場は日曜休業と記載している。"
+        },
+        {
+          "publisher": "Dreamscape 調査資料",
+          "title": "チャンドニー・チョーク ゲーム用時間枠の候補",
+          "url": "https://new.delhimetrorail.com/en",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_lodhi_garden",
+      "cityId": "delhi",
+      "nameJa": "ロディ・ガーデン",
+      "nameEn": "Lodhi Gardens",
+      "latitude": 28.59348,
+      "longitude": 77.21956,
+      "backgroundAssetId": "gt_bg_delhi_lodhi_garden",
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Lodhi Gardens mapped representative",
+          "url": "https://mapcarta.com/25584404",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        },
+        {
+          "publisher": "Dreamscape 統合調査",
+          "title": "ロディ・ガーデン ゲーム用代表点",
+          "url": "https://www.delhitourism.gov.in/entertainment/lodhi_garden.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "統合調査台帳に記載されたゲーム用の代表点であり、実際の入口・通行経路・宿泊施設を保証しない。"
+        },
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Lodi Gardens Lake",
+          "url": "https://delhitourism.gov.in/dt/explore_the_city/lodi_gardens_lake.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "園内の池の案内は4〜9月5時〜20時、10〜3月6時〜20時、無休と記載。"
+        },
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Lodi Tomb",
+          "url": "https://delhitourism.gov.in/tourist_place/lodi_tomb.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "園内の墓所の案内は毎日、朝から夕方、入場無料と記載。"
+        },
+        {
+          "publisher": "Dreamscape 調査資料",
+          "title": "ロディ・ガーデン ゲーム用時間枠の候補",
+          "url": "https://delhitourism.gov.in/tourist_place/lodi_tomb.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_agrasen_baoli",
+      "cityId": "delhi",
+      "nameJa": "アグラセン・キ・バオリ",
+      "nameEn": "Agrasen ki Baoli",
+      "latitude": 28.62609,
+      "longitude": 77.22501,
+      "backgroundAssetId": "gt_bg_delhi_agrasen_baoli",
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1050
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Agrasen ki Baoli mapped representative",
+          "url": "https://mapcarta.com/W500411689",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        },
+        {
+          "publisher": "Dreamscape 統合調査",
+          "title": "アグラセン・キ・バオリ ゲーム用代表点",
+          "url": "https://delhitourism.gov.in/itinerary/one_day_itinerary.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "統合調査台帳に記載されたゲーム用の代表点であり、実際の入口・通行経路・宿泊施設を保証しない。"
+        },
+        {
+          "publisher": "Government of NCT of Delhi",
+          "title": "DTTDC sightseeing FAQ",
+          "url": "https://edistrict.delhi.gov.in/Public/ViewUploadScanDocumentTemplate?q=+LU8U28AiW2mtY8wT9SZprcEi8PkaSpflefnD3xyhXk%3D",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "観光FAQにはアグラセン・キ・バオリの入場料は無料と掲載。文書の最新性は未確認。"
+        },
+        {
+          "publisher": "Way to India",
+          "title": "Agrasen Ki Baoli Travel Guide",
+          "url": "https://www.waytoindia.com/travel-guide/delhi-nct/agrasen-ki-baoli",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "2026年6月更新の案内は無料と説明している。"
+        },
+        {
+          "publisher": "The Times of India / PTI",
+          "title": "Hauz Khas Fort, Jantar Mantar restrict entry as 10 Delhi monuments undergo repairs",
+          "url": "https://timesofindia.indiatimes.com/city/delhi/hauz-khas-fort-jantar-mantar-restrict-entry-as-10-delhi-monuments-undergo-repairs-check-list/articleshow/134120775.cms",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "ASIの情報公開回答に基づき、アグラセン・キ・バオリ内の訪問者移動を制限したと報道。開始時期は回答に明記されていない。"
+        },
+        {
+          "publisher": "Dreamscape 調査資料",
+          "title": "アグラセン・キ・バオリ ゲーム用時間枠の候補",
+          "url": "https://www.delhitourism.gov.in/dt/explore_the_city/agrasen_ki_baoli.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_lotus_temple",
+      "cityId": "delhi",
+      "nameJa": "ロータス寺院",
+      "nameEn": "Lotus Temple",
+      "latitude": 28.55336,
+      "longitude": 77.25862,
+      "backgroundAssetId": "gt_bg_delhi_lotus_temple",
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Lotus Temple mapped representative",
+          "url": "https://mapcarta.com/27811382",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        },
+        {
+          "publisher": "Dreamscape 統合調査",
+          "title": "ロータス寺院 ゲーム用代表点",
+          "url": "https://bahaihouseofworship.in/plan-a-visit/",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "統合調査台帳に記載されたゲーム用の代表点であり、実際の入口・通行経路・宿泊施設を保証しない。"
+        },
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Lotus Temple",
+          "url": "https://www.delhitourism.gov.in/tourist_place/bahai_temple.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "観光局は火曜から日曜の9時から17時30分、月曜休み、入場無料と案内。"
+        },
+        {
+          "publisher": "Dreamscape 調査資料",
+          "title": "ロータス寺院 ゲーム用時間枠の候補",
+          "url": "https://bahaihouseofworship.in/plan-a-visit/",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_bangla_sahib",
+      "cityId": "delhi",
+      "nameJa": "グルドワーラ・バングラ・サーヒブ",
+      "nameEn": "Gurdwara Bangla Sahib",
+      "latitude": 28.62646,
+      "longitude": 77.20883,
+      "backgroundAssetId": "gt_bg_delhi_bangla_sahib",
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1260
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "Gurdwara Bangla Sahib mapped representative",
+          "url": "https://mapcarta.com/W839844482",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        },
+        {
+          "publisher": "Dreamscape 統合調査",
+          "title": "グルドワーラ・バングラ・サーヒブ ゲーム用代表点",
+          "url": "https://delhitourism.gov.in/tourist_place/lodi_tomb.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "統合調査台帳に記載されたゲーム用の代表点であり、実際の入口・通行経路・宿泊施設を保証しない。"
+        },
+        {
+          "publisher": "Ministry of Tourism, Government of India",
+          "title": "Gurudwara Bangla Sahib",
+          "url": "https://www.incredibleindia.gov.in/en/delhi/delhi/gurudwara-bangla-sahib",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "政府観光案内は24時間開放とし、訪問時には頭と肩を覆う控えめな服装を案内している。"
+        },
+        {
+          "publisher": "Dreamscape 調査資料",
+          "title": "グルドワーラ・バングラ・サーヒブ ゲーム用時間枠の候補",
+          "url": "https://delhitourism.gov.in/tourist_place/lodi_tomb.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "制作資料に基づくゲーム用時間枠の候補で、現地の営業時間を保証しない。曜日や特別日の扱いは未実装。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_hotel_hub",
+      "cityId": "delhi",
+      "nameJa": "デリーの架空宿（ラジーヴ・チョーク付近）",
+      "nameEn": "fictional lodging / Rajiv Chowk anchor",
+      "latitude": 28.63278,
+      "longitude": 77.2197,
+      "backgroundAssetId": "gt_bg_delhi_hotel_hub",
+      "openingWindows": [
+        {
+          "start": 0,
+          "end": 1440
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Mapcarta / OpenStreetMap",
+          "title": "fictional lodging / Rajiv Chowk anchor",
+          "url": "https://mapcarta.com/N8018558072",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "座標は地物の代表点であり、入場口の座標や徒歩経路の検証は未完了です。"
+        },
+        {
+          "publisher": "Dreamscape 統合調査",
+          "title": "デリーの架空宿（ラジーヴ・チョーク付近） ゲーム用代表点",
+          "url": "https://new.delhimetrorail.com/en",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "統合調査台帳に記載されたゲーム用の代表点であり、実際の入口・通行経路・宿泊施設を保証しない。"
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "同一地点での移動なし",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "同一地点での移動を伴わないゲーム内操作。実際の施設内の距離や所要時間ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "taxi",
+      "minutes": 94,
+      "cost": 510,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "taxi",
+      "minutes": 48,
+      "cost": 240,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "taxi",
+      "minutes": 35,
+      "cost": 180,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 50,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 60,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "taxi",
+      "minutes": 48,
+      "cost": 250,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "taxi",
+      "minutes": 28,
+      "cost": 140,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "taxi",
+      "minutes": 73,
+      "cost": 380,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "taxi",
+      "minutes": 33,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_red_fort",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "taxi",
+      "minutes": 26,
+      "cost": 120,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "taxi",
+      "minutes": 94,
+      "cost": 510,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "taxi",
+      "minutes": 64,
+      "cost": 330,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "taxi",
+      "minutes": 68,
+      "cost": 360,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "taxi",
+      "minutes": 90,
+      "cost": 480,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "taxi",
+      "minutes": 90,
+      "cost": 480,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "taxi",
+      "minutes": 55,
+      "cost": 280,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "taxi",
+      "minutes": 75,
+      "cost": 400,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "taxi",
+      "minutes": 52,
+      "cost": 270,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "taxi",
+      "minutes": 73,
+      "cost": 380,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "taxi",
+      "minutes": 78,
+      "cost": 410,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "taxi",
+      "minutes": 48,
+      "cost": 240,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "taxi",
+      "minutes": 64,
+      "cost": 330,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 120,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "taxi",
+      "minutes": 45,
+      "cost": 230,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "taxi",
+      "minutes": 46,
+      "cost": 240,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 120,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "taxi",
+      "minutes": 33,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "taxi",
+      "minutes": 33,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "taxi",
+      "minutes": 39,
+      "cost": 200,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "taxi",
+      "minutes": 38,
+      "cost": 190,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "taxi",
+      "minutes": 35,
+      "cost": 180,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "taxi",
+      "minutes": 68,
+      "cost": 360,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 120,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "同一地点での移動なし",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "同一地点での移動を伴わないゲーム内操作。実際の施設内の距離や所要時間ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "taxi",
+      "minutes": 32,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "taxi",
+      "minutes": 32,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "taxi",
+      "minutes": 17,
+      "cost": 70,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "taxi",
+      "minutes": 48,
+      "cost": 250,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_india_gate",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 50,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "taxi",
+      "minutes": 90,
+      "cost": 480,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "taxi",
+      "minutes": 45,
+      "cost": 230,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "taxi",
+      "minutes": 32,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "同一地点での移動なし",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "同一地点での移動を伴わないゲーム内操作。実際の施設内の距離や所要時間ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 40,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "taxi",
+      "minutes": 45,
+      "cost": 230,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "taxi",
+      "minutes": 24,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "taxi",
+      "minutes": 70,
+      "cost": 370,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "taxi",
+      "minutes": 29,
+      "cost": 140,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_jama_masjid",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 60,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "taxi",
+      "minutes": 90,
+      "cost": 480,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "taxi",
+      "minutes": 46,
+      "cost": 240,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "taxi",
+      "minutes": 32,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 40,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "同一地点での移動なし",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "同一地点での移動を伴わないゲーム内操作。実際の施設内の距離や所要時間ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "taxi",
+      "minutes": 44,
+      "cost": 230,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "taxi",
+      "minutes": 24,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "taxi",
+      "minutes": 71,
+      "cost": 370,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "taxi",
+      "minutes": 27,
+      "cost": 130,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_chandni_chowk",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "taxi",
+      "minutes": 21,
+      "cost": 90,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "taxi",
+      "minutes": 48,
+      "cost": 250,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "taxi",
+      "minutes": 55,
+      "cost": 280,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 120,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "taxi",
+      "minutes": 45,
+      "cost": 230,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "taxi",
+      "minutes": 44,
+      "cost": 230,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "taxi",
+      "minutes": 29,
+      "cost": 140,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "taxi",
+      "minutes": 41,
+      "cost": 210,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "taxi",
+      "minutes": 30,
+      "cost": 140,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "taxi",
+      "minutes": 33,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "taxi",
+      "minutes": 28,
+      "cost": 140,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "taxi",
+      "minutes": 75,
+      "cost": 400,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "taxi",
+      "minutes": 33,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "taxi",
+      "minutes": 17,
+      "cost": 70,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "taxi",
+      "minutes": 24,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "taxi",
+      "minutes": 24,
+      "cost": 110,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "taxi",
+      "minutes": 29,
+      "cost": 140,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "同一地点での移動なし",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "同一地点での移動を伴わないゲーム内操作。実際の施設内の距離や所要時間ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "taxi",
+      "minutes": 57,
+      "cost": 300,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "taxi",
+      "minutes": 17,
+      "cost": 70,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_agrasen_baoli",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 50,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "taxi",
+      "minutes": 73,
+      "cost": 380,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "taxi",
+      "minutes": 52,
+      "cost": 270,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "taxi",
+      "minutes": 33,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "taxi",
+      "minutes": 48,
+      "cost": 250,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "taxi",
+      "minutes": 70,
+      "cost": 370,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "taxi",
+      "minutes": 71,
+      "cost": 370,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "taxi",
+      "minutes": 41,
+      "cost": 210,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "taxi",
+      "minutes": 57,
+      "cost": 300,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "taxi",
+      "minutes": 61,
+      "cost": 320,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "taxi",
+      "minutes": 62,
+      "cost": 320,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "taxi",
+      "minutes": 33,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "taxi",
+      "minutes": 73,
+      "cost": 380,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "taxi",
+      "minutes": 39,
+      "cost": 200,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "taxi",
+      "minutes": 29,
+      "cost": 140,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "taxi",
+      "minutes": 27,
+      "cost": 130,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "taxi",
+      "minutes": 30,
+      "cost": 140,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "taxi",
+      "minutes": 17,
+      "cost": 70,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "taxi",
+      "minutes": 61,
+      "cost": 320,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "同一地点での移動なし",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "同一地点での移動を伴わないゲーム内操作。実際の施設内の距離や所要時間ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_bangla_sahib",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "taxi",
+      "minutes": 16,
+      "cost": 60,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_red_fort",
+      "mode": "taxi",
+      "minutes": 26,
+      "cost": 120,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "taxi",
+      "minutes": 78,
+      "cost": 410,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "taxi",
+      "minutes": 38,
+      "cost": 190,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_india_gate",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_jama_masjid",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 100,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_chandni_chowk",
+      "mode": "taxi",
+      "minutes": 21,
+      "cost": 90,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "taxi",
+      "minutes": 33,
+      "cost": 160,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_agrasen_baoli",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 50,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "taxi",
+      "minutes": 62,
+      "cost": 320,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_bangla_sahib",
+      "mode": "taxi",
+      "minutes": 16,
+      "cost": 60,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial fare model",
+          "title": "Prototype taxi time and whole-party fare",
+          "url": "https://transport.delhi.gov.in/sites/default/files/Transport/circulars-orders/output.pdf",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "乗車時間と2人分の運賃はゲーム用推定値。実在サービスの見積料金ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_hotel_hub",
+      "toPlaceId": "delhi_hotel_hub",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "同一地点での移動なし",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "同一地点での移動を伴わないゲーム内操作。実際の施設内の距離や所要時間ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_qutb_minar",
+      "toPlaceId": "delhi_qutb_minar",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "同一地点での移動なし",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "同一地点での移動を伴わないゲーム内操作。実際の施設内の距離や所要時間ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_humayun_tomb",
+      "toPlaceId": "delhi_humayun_tomb",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "同一地点での移動なし",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "同一地点での移動を伴わないゲーム内操作。実際の施設内の距離や所要時間ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lodhi_garden",
+      "toPlaceId": "delhi_lodhi_garden",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "同一地点での移動なし",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "同一地点での移動を伴わないゲーム内操作。実際の施設内の距離や所要時間ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "delhi_lotus_temple",
+      "toPlaceId": "delhi_lotus_temple",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial distance model",
+          "title": "同一地点での移動なし",
+          "url": "https://www.openstreetmap.org/copyright",
+          "checkedAt": "2026-11-03",
+          "claimType": "hypothesis",
+          "claimJa": "同一地点での移動を伴わないゲーム内操作。実際の施設内の距離や所要時間ではない。"
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "gt_delhi_main_red_fort",
+      "cityId": "delhi",
+      "placeId": "delhi_red_fort",
+      "category": "main",
+      "titleJa": "レッド・フォートを巡る",
+      "activityMinutes": 120,
+      "apCost": 0
+    },
+    {
+      "id": "gt_delhi_main_qutb_minar",
+      "cityId": "delhi",
+      "placeId": "delhi_qutb_minar",
+      "category": "main",
+      "titleJa": "クトゥブ・ミナールを巡る",
+      "activityMinutes": 105,
+      "apCost": 0
+    },
+    {
+      "id": "gt_delhi_main_humayun_tomb",
+      "cityId": "delhi",
+      "placeId": "delhi_humayun_tomb",
+      "category": "main",
+      "titleJa": "フマユーン廟を巡る",
+      "activityMinutes": 120,
+      "apCost": 0
+    },
+    {
+      "id": "gt_delhi_date_india_gate",
+      "cityId": "delhi",
+      "placeId": "delhi_india_gate",
+      "category": "date",
+      "titleJa": "インド門で過ごす",
+      "activityMinutes": 45,
+      "apCost": 2
+    },
+    {
+      "id": "gt_delhi_main_jama_masjid",
+      "cityId": "delhi",
+      "placeId": "delhi_jama_masjid",
+      "category": "main",
+      "titleJa": "ジャーマー・マスジドを巡る",
+      "activityMinutes": 60,
+      "apCost": 0
+    },
+    {
+      "id": "gt_delhi_date_chandni_chowk",
+      "cityId": "delhi",
+      "placeId": "delhi_chandni_chowk",
+      "category": "date",
+      "titleJa": "チャンドニー・チョークで過ごす",
+      "activityMinutes": 80,
+      "apCost": 2
+    },
+    {
+      "id": "gt_delhi_date_lodhi_garden",
+      "cityId": "delhi",
+      "placeId": "delhi_lodhi_garden",
+      "category": "date",
+      "titleJa": "ロディ・ガーデンで過ごす",
+      "activityMinutes": 70,
+      "apCost": 2
+    },
+    {
+      "id": "gt_delhi_date_agrasen_baoli",
+      "cityId": "delhi",
+      "placeId": "delhi_agrasen_baoli",
+      "category": "date",
+      "titleJa": "アグラセン・キ・バオリで過ごす",
+      "activityMinutes": 40,
+      "apCost": 2
+    },
+    {
+      "id": "gt_delhi_date_lotus_temple",
+      "cityId": "delhi",
+      "placeId": "delhi_lotus_temple",
+      "category": "date",
+      "titleJa": "ロータス寺院で過ごす",
+      "activityMinutes": 70,
+      "apCost": 2
+    },
+    {
+      "id": "gt_delhi_date_bangla_sahib",
+      "cityId": "delhi",
+      "placeId": "delhi_bangla_sahib",
+      "category": "date",
+      "titleJa": "グルドワーラ・バングラ・サーヒブで過ごす",
+      "activityMinutes": 60,
+      "apCost": 2
+    }
+  ]
+}

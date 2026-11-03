@@ -5,8 +5,8 @@ import { createGame, validateGameState } from "../domain/game";
 import { SAVE_KEY, writeIfUnchanged, type SaveResult, type StorageLike } from "./index";
 import { storagePhysicalKey } from "./journey-storage";
 
-// This is a preparation snapshot, not a playable GameState. The hotel has not
-// been authored and the configured starting budget is issued only on start.
+// This is a preparation snapshot, not a playable GameState. Story and quiz
+// content are unfinished and the configured budget is issued only on start.
 const draftSchema = z.object({
   kind: z.literal("journey_preparation"),
   schemaVersion: z.literal(1),

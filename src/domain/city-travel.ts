@@ -1,4 +1,6 @@
 import { encounters, getCities, getCityContent } from "../content";
+import { getJourneyForCity } from "../content/journeys";
+import { startCityEpilogue } from "./epilogue";
 import { DAY_END } from "./travel";
 import type { GameState } from "./game";
 
@@ -33,6 +35,20 @@ export function departToNextCity(state: GameState, expectedRevision: number): Ga
     currentCityId: next.city.id,
     inventory,
     travel: { currentPlaceId: hotel, hotelPlaceId: hotel, day: 1, minute: 9 * 60,
-      returnReserve: 0, returnDeadline: DAY_END, activeEvent: null },
+      returnReserve: 0, returnDeadline: DAY_END, activeEvent: null,
+      ...(state.travel.calendar ? { calendar: { ...state.travel.calendar, cityStartJourneyDay: state.travel.calendar.journeyDay } } : {}) },
   };
+}
+
+/** Advance the India journey only after the current city's result and epilogue.
+ * A later city must be complete; an unfinished or last city remains playable.
+ * Callers persist the returned snapshot together with the action that produced it.
+ */
+export function advanceCompletedIndiaCity(state: GameState, expectedRevision: number): GameState {
+  if (state.revision !== expectedRevision || getJourneyForCity(state.currentCityId)?.id !== "golden_triangle" ||
+      !getNextCity(state) || state.activeDate || state.activeBattle || state.activeTourism ||
+      state.activeEncounter || state.activeEpilogue || state.travel.activeEvent) return state;
+  if (!state.viewedEpilogueCityIds.includes(state.currentCityId))
+    return startCityEpilogue(state, state.currentCityId, expectedRevision);
+  return departToNextCity(state, expectedRevision);
 }

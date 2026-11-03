@@ -4,8 +4,8 @@ import { getEpisodeAvailability, isEpisodeUnlocked, isStoryBattleUnlocked, start
 import { getDateAvailability, isDateUnlockedForTravel, isUpdatedDateReplay, startDate, type GameState } from "./game";
 import { hasPendingPlaceEncounter } from "./encounter";
 import { openTourism } from "./tourism";
-import { canReturnByDayEnd, DAY_END, planOvernight, planTravelEvent } from "./travel";
-import { findTravelHomeRoutes } from "./travel-routes";
+import { canReturnByDayEnd, DAY_END, getGameWeekday, planOvernight, planTravelEvent } from "./travel";
+import { findTravelHomeRoutes, type HomeRoute } from "./travel-routes";
 import type { TravelRoute } from "../content/travel-schemas";
 
 export type TravelMode = TravelRoute["mode"];
@@ -13,13 +13,13 @@ type Plan = Extract<ReturnType<typeof planTravelEvent>, { ok: true }> & { return
 export type TravelAvailability = { available: boolean; reason: string; plan?: Plan };
 
 function snapshot(state: GameState) {
-  return { ...state.travel, ap: state.ap, travelBudget: state.travelBudget };
+  return { ...state.travel, weekday: getGameWeekday(state.travel.calendar), ap: state.ap, travelBudget: state.travelBudget };
 }
 function route(state: GameState, from: string, to: string, mode: TravelMode) {
   return getCityContent(state.currentCityId).travel.routes.find((item) => item.fromPlaceId === from && item.toPlaceId === to && item.mode === mode);
 }
 /** Return routes consist only of registered directed legs; the second leg is walking. */
-export function getTravelHomeRoutes(fromPlaceId: string, hotelPlaceId: string, cityId = "milano"): Array<Pick<TravelRoute, "fromPlaceId" | "toPlaceId" | "mode" | "minutes" | "cost"> & { viaPlaceId?: string }> {
+export function getTravelHomeRoutes(fromPlaceId: string, hotelPlaceId: string, cityId = "milano"): HomeRoute[] {
   return findTravelHomeRoutes(getCityContent(cityId).travel.routes, fromPlaceId, hotelPlaceId);
 }
 /** Current event cost and duration, including existing replay and retry rules. */
@@ -46,7 +46,7 @@ function normalAvailability(state: GameState, eventId: string) {
 /** Only permanent progression gates determine whether a destination is revealed. */
 export function isTravelEventUnlocked(state: GameState, eventId: string): boolean {
   const event = getCityContent(state.currentCityId).travel.events.find((item) => item.id === eventId);
-  if (!event) return false;
+  if (!event || event.contentStatus === "pending_content") return false;
   const episode = episodes.find((item) => item.id === eventId);
   if (episode) return isEpisodeUnlocked(state, episode);
   if (dates.some((date) => date.id === eventId)) return isDateUnlockedForTravel(state, eventId);
@@ -73,6 +73,7 @@ export function isCompletedTravelEvent(state: GameState, eventId: string): boole
 }
 const reasonJa: Record<string, string> = {
   invalid: "旅行の状態を確認できません。", closed: "到着する時間には、この出来事を始められません。",
+  closed_day: "今日は休館日です。",
   time: "今日はホテルへの帰路を含めると時間が足りません。", budget: "移動や帰りのための予算が足りません。",
   ap: "APが足りません。", route: "この移動経路はまだ利用できません。",
 };
@@ -81,6 +82,7 @@ const reasonJa: Record<string, string> = {
 export function getTravelEventAvailability(state: GameState, eventId: string, mode: TravelMode): TravelAvailability {
   const event = getTravelEventDefinition(state, eventId);
   if (!event) return { available: false, reason: "行き先が見つかりません。" };
+  if (event.contentStatus === "pending_content") return { available: false, reason: "この出来事は制作中です。" };
   if (isCompletedTravelEvent(state, eventId)) return { available: false, reason: "この出来事は終えています。" };
   if (state.travel.activeEvent) return { available: false, reason: "途中の場面を終えてから出発できます。" };
   const existing = normalAvailability(state, eventId);
@@ -94,7 +96,9 @@ export function getTravelEventAvailability(state: GameState, eventId: string, mo
   for (const returnRoute of returns) {
     const plan = planTravelEvent(snapshot(state), event, outbound, returnRoute, place);
     if (plan.ok) return { available: true, reason: "", plan: { ...plan, returnReserve: returnRoute.cost } };
-    reason = reasonJa[plan.reason];
+    reason = plan.reason === "budget" && (event.admissionCost ?? 0) > 0
+      ? "移動・入場や帰りのための予算が足りません。"
+      : reasonJa[plan.reason];
   }
   return { available: false, reason };
 }
@@ -151,15 +155,21 @@ export function waitForTravel(state: GameState, minutes: number, expectedRevisio
   return { ...state, revision: state.revision + 1, travel: { ...state.travel, minute: state.travel.minute + minutes, returnReserve: home.cost, returnDeadline: DAY_END } };
 }
 
-export function sleepAtHotel(state: GameState, mode: TravelMode, expectedRevision: number): GameState {
+/** `viaPlaceId`: undefined selects a feasible route for legacy callers; null
+ * selects the direct route; a place ID selects that exact connection. */
+export function sleepAtHotel(state: GameState, mode: TravelMode, expectedRevision: number, viaPlaceId?: string | null): GameState {
   if (state.revision !== expectedRevision || state.travel.activeEvent || state.activeDate || state.activeBattle || state.activeTourism || state.activeEncounter || state.activeEpilogue) return state;
   const { travelSettings } = getCityContent(state.currentCityId);
   const homeRoutes = getTravelHomeRoutes(state.travel.currentPlaceId, state.travel.hotelPlaceId, state.currentCityId);
-  const home = homeRoutes.find((item) => item.mode === mode);
-  if (!home) return state;
   const current = snapshot(state);
-  const plan = planOvernight(current, home, travelSettings.lodgingCost, !canReturnByDayEnd(current, homeRoutes));
-  if (!plan.ok) return state;
+  const allowLateReturn = !canReturnByDayEnd(current, homeRoutes);
+  const candidates = homeRoutes.filter((item) => item.mode === mode &&
+    (viaPlaceId === undefined || (item.viaPlaceId ?? null) === viaPlaceId));
+  const plan = candidates.map((item) => planOvernight(current, item, travelSettings.lodgingCost, allowLateReturn))
+    .find((item) => item.ok);
+  if (!plan || !plan.ok) return state;
+  if (state.travel.calendar && !Number.isSafeInteger(state.travel.calendar.journeyDay + 1)) return state;
   return { ...state, revision: state.revision + 1, travelBudget: plan.remainingBudget,
-    travel: { ...state.travel, currentPlaceId: state.travel.hotelPlaceId, day: plan.nextDay, minute: plan.nextMinute, returnReserve: 0, returnDeadline: DAY_END } };
+    travel: { ...state.travel, currentPlaceId: state.travel.hotelPlaceId, day: plan.nextDay, minute: plan.nextMinute, returnReserve: 0, returnDeadline: DAY_END,
+      ...(state.travel.calendar ? { calendar: { ...state.travel.calendar, journeyDay: state.travel.calendar.journeyDay + 1 } } : {}) } };
 }

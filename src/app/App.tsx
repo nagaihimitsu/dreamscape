@@ -12,7 +12,7 @@ import {
   episodes,
   journeyConfig,
 } from "../content";
-import { getJourney } from "../content/journeys";
+import { getJourney, getJourneyForCity } from "../content/journeys";
 import { currencyForCity, formatMoneyForCity } from "../content/currency";
 import { journeyStorage } from "../persistence/journey-storage";
 import { useJourneyLock } from "../persistence/useJourneyLock";
@@ -20,7 +20,8 @@ import { loadJourneyDraft, promoteJourneyDraft } from "../persistence/journey-pr
 import { PreparingJourney } from "../features/journey/PreparingJourney";
 import { JourneySelection } from "../features/journey/JourneySelection";
 import { beginTravelEvent, finishTravelEventIfComplete, sleepAtHotel, waitForTravel } from "../domain/travel-game";
-import { getNextCity, departToNextCity } from "../domain/city-travel";
+import { getGameWeekday } from "../domain/travel";
+import { getNextCity, departToNextCity, advanceCompletedIndiaCity } from "../domain/city-travel";
 import {
   advanceDate,
   chooseDate,
@@ -231,8 +232,11 @@ function GameApp({
   }
   function commit(change: (state: GameState) => GameState) {
     if (!gameRef.current) return false;
-    const next = finishTravelEventIfComplete(gameRef.current, change(gameRef.current));
-    if (next === gameRef.current) return false;
+    const previous = gameRef.current;
+    const changed = finishTravelEventIfComplete(previous, change(previous));
+    if (changed === previous) return false;
+    // Settle the current action and any India city transition as one snapshot.
+    const next = advanceCompletedIndiaCity(changed, changed.revision);
     if (displaySettings.value.autoSave) {
       const saved = saveGame(storage, next, savedGameRef.current);
       if (!saved.ok) {
@@ -242,11 +246,19 @@ function GameApp({
       savedGameRef.current = next;
     }
     adopt(next);
+    if (next.currentCityId !== previous.currentCityId) setSelectedLandmarkId(null);
     setNotice("");
     return true;
   }
+  // A previously completed city can gain a published successor later. On
+  // resume, use the same guarded save path as any other game action.
+  useEffect(() => {
+    if (!game) return;
+    commit((state) => advanceCompletedIndiaCity(state, state.revision));
+  }, [game]);
   function begin(event: FormEvent) {
     event.preventDefault();
+    if (loaded.status === "invalid" && loaded.kind === "journey") return;
     const next = createGame(player.trim(), heroine.trim(), { journeyId });
     const unsavedStart = !displaySettings.value.autoSave &&
       (loaded.status === "empty" || (loaded.status === "invalid" && loaded.raw !== null));
@@ -406,7 +418,9 @@ function GameApp({
   const currentTravelPlace = game
     ? currentCity!.travel.places.find((place) => place.id === game.travel.currentPlaceId)
     : undefined;
+  const weekday = getGameWeekday(game?.travel.calendar);
   const nextCity = game ? getNextCity(game) : undefined;
+  const automaticIndiaJourney = !!game && getJourneyForCity(game.currentCityId)?.id === "golden_triangle";
   const nameForm = (
     <>
       <label>
@@ -453,7 +467,7 @@ function GameApp({
           </span>
           <div className="journey-context" data-testid="journey-context">
             <span>現在地：{game.travel.currentPlaceId === game.travel.hotelPlaceId ? `滞在先${currentTravelPlace?.nameJa.includes("架空") ? "（架空）" : ""}` : currentTravelPlace?.nameJa ?? "不明"}</span>
-            <strong>{game.travel.day}日目 {String(Math.floor(game.travel.minute / 60)).padStart(2, "0")}:{String(game.travel.minute % 60).padStart(2, "0")}</strong>
+            <strong>{game.travel.day}日目{weekday === undefined ? null : <span aria-label={`ゲーム内の${["月", "火", "水", "木", "金", "土", "日"][weekday]}曜日`}>（{["月", "火", "水", "木", "金", "土", "日"][weekday]}）</span>} {String(Math.floor(game.travel.minute / 60)).padStart(2, "0")}:{String(game.travel.minute % 60).padStart(2, "0")}</strong>
           </div>
           <div className="journey-resources">
             <span className="travel-budget" aria-label={`旅の予算 ${game.travelBudget}${currencyForCity(game.currentCityId).unitJa}`}>{formatMoneyForCity(game.currentCityId, game.travelBudget)}</span>
@@ -468,7 +482,7 @@ function GameApp({
             {game.endingReached && <span className="city-relationship">交際中</span>}
             {idle && !showRomanceEnding && <TravelActions game={game} reduceMotion={displaySettings.value.reduceMotion}
               onTravelWait={(minutes) => commit((state) => waitForTravel(state, minutes, game.revision))}
-              onTravelSleep={(mode) => commit((state) => sleepAtHotel(state, mode, game.revision))} />}
+              onTravelSleep={(mode, viaPlaceId) => commit((state) => sleepAtHotel(state, mode, game.revision, viaPlaceId))} />}
           </div>
           <nav className="journey-quick-actions" aria-label="旅の操作">
             <button type="button" aria-label="英語ノートを開く" onClick={() => openEnglish()}>英語</button>
@@ -554,34 +568,36 @@ function GameApp({
                     ? "新しいバージョンの保存データです"
                     : "保存データを読み込めませんでした"}</strong>
                   <p>{invalid}</p>
-                  {loaded.status === "invalid" && loaded.raw !== null && <p>
+                  {loaded.status === "invalid" && loaded.kind === "journey" ? <p>
+                    旅行編を切り替え、元の編のデータを確認してください。
+                  </p> : loaded.status === "invalid" && loaded.raw !== null && <p>
                     {displaySettings.value.autoSave
                       ? "元のデータは残っています。バックアップを保存してから新しく始めるか、保存データの消去を選べます。"
                       : "元のデータは残っています。新しく始めた場合、手動セーブ時に元のデータをバックアップします。"}
                   </p>}
-                  <button
+                  {!(loaded.status === "invalid" && loaded.kind === "journey") && <button
                     className="secondary"
                     type="button"
                     onClick={requestDelete}
                     disabled={loaded.status === "invalid" && loaded.raw === null}
                   >
                     保存データを消去する
-                  </button>
+                  </button>}
                 </div>
               )}
               {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} />}
-              <form onSubmit={begin} className="name-form">
+              {!(loaded.status === "invalid" && loaded.kind === "journey") && <form onSubmit={begin} className="name-form">
                 {nameForm}
                 <button
                   className="primary"
-                  disabled={!player.trim() || !heroine.trim() || (loaded.status === "invalid" && loaded.raw === null)}
+                  disabled={!player.trim() || !heroine.trim() || (loaded.status === "invalid" && (loaded.raw === null || loaded.kind === "journey"))}
                 >
                   {invalid
                     ? displaySettings.value.autoSave ? "元のデータを退避して新しく始める" : "元のデータを残して新しく始める"
                     : "旅をはじめる"}
                   <span aria-hidden="true"> →</span>
                 </button>
-              </form>
+              </form>}
               <p className="fine-print">
                 {displaySettings.value.autoSave ? "このブラウザに進行を自動保存します。" : "進行は手動でセーブできます。"}
                 <br />
@@ -810,7 +826,7 @@ function GameApp({
             })}
             onBattle={(id) => commit((state) => startBattle(state, id))}
             onTravelEvent={(id, mode) => commit((state) => beginTravelEvent(state, id, mode, game.revision, nextRomanceRoll))}
-            nextCityName={nextCity?.city.nameJa}
+            nextCityName={automaticIndiaJourney ? undefined : nextCity?.city.nameJa}
             onDepart={() => setConfirmDeparture(true)}
           />
         )}
@@ -818,7 +834,7 @@ function GameApp({
       <footer>
         Dreamscape <span>·</span> 旅の余白に、ふたりの物語。
       </footer>
-      {confirmDeparture && game && nextCity && <Modal labelledBy="departure-title" onClose={() => setConfirmDeparture(false)}>
+      {confirmDeparture && game && nextCity && !automaticIndiaJourney && <Modal labelledBy="departure-title" onClose={() => setConfirmDeparture(false)}>
         <h2 id="departure-title">{nextCity.city.nameJa}へ出発</h2>
         <p>次の街へ進みます。今の街の未使用アイテムは持って行けません。</p>
         <button type="button" className="primary" onClick={() => {

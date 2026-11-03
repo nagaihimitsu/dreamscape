@@ -54,7 +54,7 @@ const tourism = tourismCatalogSchema.parse(tourismData);
 export const landmarks = tourism.landmarks;
 export const tourismAssets = tourism.assets;
 export const tourismClues = tourism.clues;
-// City files and their matching travel files are the single registration source.
+// City files, including unpublished prototypes, are the single registration source.
 // The same names are read by the content pipeline, so adding a city does not
 // require a separate runtime list.
 const cityFiles = import.meta.glob<unknown>("../../content/cities/*.json", { eager: true, import: "default" });

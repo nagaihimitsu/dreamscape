@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { effects, getCityContent, rewardRules } from "../content";
 import { loadGame, saveGame, type StorageLike } from "../persistence";
+import { journeyStorage } from "../persistence/journey-storage";
 import { createDebugState } from "../dev/debug-state";
 import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "./battle";
 import { departToNextCity, getNextCity } from "./city-travel";
@@ -14,6 +15,7 @@ class MemoryStorage implements StorageLike {
   private readonly values = new Map<string, string>();
   getItem(key: string) { return this.values.get(key) ?? null; }
   setItem(key: string, value: string) { this.values.set(key, value); }
+  removeItem(key: string) { this.values.delete(key); }
 }
 
 // The fixture is wholly in memory: amounts, places, stories, and routes are not production data.
@@ -69,7 +71,7 @@ describe("three-city journey using development-only fixtures", () => {
     delhi = validateGameState({ ...delhi, playerName: "主人公", heroineName: "ヒロイン", affection: 3, trust: 2, spark: 1,
       memories: [memory], completedEncounterIds: [...delhi.completedEncounterIds, "delhi_encounter"], inventory: { delhi_item: "held" } });
     expect(getNextCity(delhi)?.city.id).toBe("agra");
-    const storage = new MemoryStorage();
+    const storage = journeyStorage(new MemoryStorage(), "golden_triangle");
     expect(saveGame(storage, delhi).ok).toBe(true);
     expect(loadGame(storage)).toEqual({ status: "loaded", state: delhi });
     const agra = departToNextCity(delhi, delhi.revision);
@@ -86,7 +88,7 @@ describe("three-city journey using development-only fixtures", () => {
     expect(getNextCity(agraComplete)?.city.id).toBe("jaipur");
     expect(saveGame(storage, agraComplete, agra).ok).toBe(true);
     expect(loadGame(storage)).toEqual({ status: "loaded", state: agraComplete });
-    const concurrent = new MemoryStorage();
+    const concurrent = journeyStorage(new MemoryStorage(), "golden_triangle");
     expect(saveGame(concurrent, agraComplete).ok).toBe(true);
     const otherTab = waitForTravel(agraComplete, 30, agraComplete.revision);
     expect(otherTab).not.toBe(agraComplete);
@@ -100,6 +102,20 @@ describe("three-city journey using development-only fixtures", () => {
     expect(saveGame(storage, jaipur, agraComplete).ok).toBe(true);
     expect(loadGame(storage)).toEqual({ status: "loaded", state: jaipur });
     expect(getNextCity(finishCity(jaipur))).toBeUndefined();
+  }, 120_000);
+
+  it("preserves the game weekday when the local day resets on departure", () => {
+    let delhi = finishCity(initialDelhi());
+    delhi = validateGameState({ ...delhi, travel: { ...delhi.travel, day: 4,
+      calendar: { journeyDay: 4, cityStartJourneyDay: 1, startWeekday: 0 } } });
+    const agra = departToNextCity(delhi, delhi.revision);
+    expect(agra.currentCityId).toBe("agra");
+    expect(agra.travel.day).toBe(1);
+    expect(agra.travel.calendar).toEqual({ journeyDay: 4, cityStartJourneyDay: 4, startWeekday: 0 });
+    expect(validateGameState(agra)).toEqual(agra);
+    const storage = new MemoryStorage();
+    expect(saveGame(storage, agra).ok).toBe(true);
+    expect(loadGame(storage)).toEqual({ status: "loaded", state: agra });
   }, 120_000);
 
   it("awards 4 AP once for an actual city finale and preserves it after loading", () => {

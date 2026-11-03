@@ -4,6 +4,8 @@ import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import { presentationStoryId } from "../../content/legacy-milano";
 import { activeEpilogueStoryId } from "../../domain/epilogue";
+import { getNextCity } from "../../domain/city-travel";
+import { getJourneyForCity } from "../../content/journeys";
 import type { GameState } from "../../domain/game";
 import { DialogueText } from "../../components/DialogueText";
 import { CanalScene } from "../../components/CanalScene";
@@ -31,6 +33,7 @@ export function EpilogueScreen({
   onAdvance: () => void;
 }) {
   const active = game.activeEpilogue!;
+  const nextCity = getJourneyForCity(game.currentCityId)?.id === "golden_triangle" ? getNextCity(game) : undefined;
   const windowVisibility = useDialogueWindow();
   const dialogueRef = useDialogueScrollReset<HTMLElement>(active.storyState);
   const frame = active.frame;
@@ -105,7 +108,7 @@ export function EpilogueScreen({
             data-testid="epilogue-advance"
             onClick={advanceSafely}
           >
-            ふたりの自由時間へ{" "}
+            {nextCity ? `${nextCity.city.nameJa}へ進む` : "ふたりの自由時間へ"}{" "}
             <span aria-hidden="true">→</span>
           </button>}
         </section>

@@ -3,41 +3,11 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { cityContents } from "../src/content";
 import { getJourney } from "../src/content/journeys";
+import { readResearchCsv as csv } from "./india-research-csv";
 
 const research = path.resolve("authoring/research/golden-triangle-all-research-20261103/source");
 const earlier = path.resolve("authoring/research/golden-triangle-20261103/source");
 const json = (base: string, file: string) => JSON.parse(readFileSync(path.join(base, file), "utf8"));
-
-// CSV fields may contain quoted commas, newlines and doubled quotes. The source
-// is kept byte-for-byte; parse it without changing its BOM or line endings.
-function csv(base: string, file: string): Record<string, string>[] {
-  const input = readFileSync(path.join(base, file), "utf8").replace(/^\uFEFF/, "");
-  const rows: string[][] = [];
-  let row: string[] = [];
-  let field = "";
-  let quoted = false;
-  for (let i = 0; i < input.length; i++) {
-    const char = input[i];
-    if (quoted) {
-      if (char === '"' && input[i + 1] === '"') { field += '"'; i++; }
-      else if (char === '"') quoted = false;
-      else field += char;
-    } else if (char === '"') quoted = true;
-    else if (char === ",") { row.push(field); field = ""; }
-    else if (char === "\n" || char === "\r") {
-      if (char === "\r" && input[i + 1] === "\n") i++;
-      row.push(field); rows.push(row); row = []; field = "";
-    } else field += char;
-  }
-  if (quoted) throw new Error(`Unterminated CSV field: ${file}`);
-  if (row.length || field) { row.push(field); rows.push(row); }
-  const header = rows.shift();
-  if (!header || new Set(header).size !== header.length) throw new Error(`Invalid CSV header: ${file}`);
-  return rows.map((values) => {
-    if (values.length !== header.length) throw new Error(`Invalid CSV row in ${file}`);
-    return Object.fromEntries(header.map((name, index) => [name, values[index]]));
-  });
-}
 
 describe("India research integration boundaries", () => {
   it("keeps the independent journey's order and research models historically consistent", () => {
@@ -91,7 +61,8 @@ describe("India research integration boundaries", () => {
       expect(bridge.productionWalkingAllowed).toBe("False");
       const route = byKey.get(key(bridge));
       expect(route).toMatchObject({ bridgeFootAccessUnverified: "True", offerPedestrianModeInProduction: "False" });
-      // This archival flag is not a substitute for reviewing any new evidence.
+      const city = cityContents[bridge.cityId];
+      expect(city?.travel.routes.some((item) => item.mode === "walk" && item.fromPlaceId === bridge.fromPlaceId && item.toPlaceId === bridge.toPlaceId) ?? false).toBe(false);
     }
     // A missing or incomplete starting city must not make the journey playable.
     if (cityContents[india.cities[0].id]?.city.productionStatus !== "complete")

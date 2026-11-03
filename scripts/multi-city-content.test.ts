@@ -85,6 +85,28 @@ beforeEach(async () => {
 afterEach(async () => { await rm(root, { recursive: true, force: true }); });
 
 describe("multi-city content build", () => {
+  it("accepts a published city with an unfinished registered successor", async () => {
+    const milano = await read("cities/milano.json");
+    const successor = { ...milano, id: "future_city", nameJa: "準備中の都市", productionStatus: "prototype",
+      firstClearReward: { rewardSourceId: "future_placeholder", ap: 0 }, landmarkIdsPlanned: [] };
+    milano.nextCityId = successor.id;
+    await write("cities/milano.json", milano);
+    await write("cities/future_city.json", successor);
+    const catalog = await read("journeys/catalog.json");
+    catalog.journeys.find((item: any) => item.id === "milano").cities.push({ id: successor.id, nameJa: successor.nameJa });
+    await write("journeys/catalog.json", catalog);
+    const travel = await read("travel/milano.json");
+    travel.cityId = successor.id;
+    travel.places = travel.places.map((place: any) => ({ ...place, id: `future_${place.id}`, cityId: successor.id, landmarkIds: [], destinationIds: [] }));
+    travel.routes = travel.routes.map((route: any) => ({ ...route, fromPlaceId: `future_${route.fromPlaceId}`, toPlaceId: `future_${route.toPlaceId}` }));
+    travel.events = [];
+    await write("travel/future_city.json", travel);
+    const settings = await read("travel/milano-settings.json");
+    settings.hotelPlaceId = `future_${settings.hotelPlaceId}`;
+    await write("travel/future_city-settings.json", settings);
+    await expect(buildContent(root, false)).resolves.toBeDefined();
+  }, 120000);
+
   it("builds two registered cities with independent content and travel", async () => {
     await addSecondCity();
     const catalog = await read("journeys/catalog.json");

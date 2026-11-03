@@ -14,6 +14,34 @@ function memoryStorage() {
 }
 
 describe("independent journey saves", () => {
+  it("rejects wrong-journey or unknown-city saves in either slot without replacing or deleting them", () => {
+    const base = memoryStorage();
+    const milan = journeyStorage(base, "milano");
+    const india = journeyStorage(base, "golden_triangle");
+    const milanState = createGame("ミラノ", "あゆみ");
+    const hotel = getCityContent("delhi").travelSettings.hotelPlaceId;
+    const indiaState = { ...createGame("旅人", "小春"), currentCityId: "delhi", travelBudget: 30_000,
+      travel: { ...milanState.travel, currentPlaceId: hotel, hotelPlaceId: hotel } };
+    for (const [slot, wrong, right] of [[india, milanState, indiaState], [milan, indiaState, milanState]] as const) {
+      const raw = JSON.stringify(wrong);
+      slot.setItem(SAVE_KEY, raw);
+      slot.setItem(LEARNING_KEY, "notes");
+      expect(loadGame(slot)).toMatchObject({ status: "invalid", kind: "journey", raw });
+      expect(saveGame(slot, wrong).ok).toBe(false);
+      expect(saveGame(slot, right).ok).toBe(false);
+      expect(backupAndCreate(slot, right, raw).ok).toBe(false);
+      expect(deleteSaveData(slot, { game: raw, learning: "notes" }).ok).toBe(false);
+      expect(slot.getItem(SAVE_KEY)).toBe(raw);
+      expect(slot.getItem(LEARNING_KEY)).toBe("notes");
+    }
+    const unknown = JSON.stringify({ ...indiaState, currentCityId: "unknown_city" });
+    india.setItem(SAVE_KEY, unknown);
+    expect(loadGame(india)).toMatchObject({ status: "invalid", kind: "journey", raw: unknown });
+    expect(saveGame(india, { ...indiaState, currentCityId: "unknown_city" }).ok).toBe(false);
+    expect(backupAndCreate(india, indiaState, unknown).ok).toBe(false);
+    expect(india.getItem(SAVE_KEY)).toBe(unknown);
+  });
+
   it("preserves the original Milan save and learning keys while creating the India preparation", () => {
     const base = memoryStorage();
     const milan = journeyStorage(base, "milano");
@@ -84,6 +112,7 @@ describe("independent journey saves", () => {
     const previousStatus = journey.status;
     const previousBudget = journey.initialBudget;
     const previousInitial = journey.initialState;
+    const previousDelhi = cityContents.delhi;
     try {
       expect(saveJourneyDraft(india, "旅人", "小春").ok).toBe(true);
       const draft = loadJourneyDraft(india);
@@ -103,9 +132,11 @@ describe("independent journey saves", () => {
       if (result.status !== "loaded") throw new Error("Expected a game");
       expect(result.state).toMatchObject({ currentCityId: "delhi", playerName: "旅人", heroineName: "小春",
         travelBudget: 30_000, ap: 0, memories: [], claimedRewardIds: [], completedCityIds: [] });
+      expect(result.state.travel.calendar).toEqual({ journeyDay: 1, cityStartJourneyDay: 1, startWeekday: 0 });
       expect(promoteJourneyDraft(india, draft.raw).ok).toBe(false);
     } finally {
-      delete cityContents.delhi;
+      if (previousDelhi) cityContents.delhi = previousDelhi;
+      else delete cityContents.delhi;
       journey.status = previousStatus;
       journey.initialBudget = previousBudget;
       journey.initialState = previousInitial;

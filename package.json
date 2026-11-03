@@ -6,6 +6,12 @@
   "scripts": {
     "content:build": "tsx scripts/build-content.ts",
     "content:check": "npm run content:build",
+    "india:draft": "tsx scripts/prepare-india-draft.ts --write",
+    "india:check": "tsx scripts/prepare-india-draft.ts --check && tsx scripts/check-india-followup.ts && tsx scripts/prepare-india-observations.ts --check && tsx scripts/inspect-india-transit.ts",
+    "india:transit": "tsx scripts/inspect-india-transit.ts",
+    "india:readiness": "tsx scripts/inspect-india-readiness.ts",
+    "india:scaffold": "tsx scripts/inspect-india-scaffold.ts",
+    "india:release": "tsx scripts/release-india.ts",
     "predev": "npm run content:build",
     "dev": "vite --host 0.0.0.0",
     "typecheck": "tsc --noEmit",

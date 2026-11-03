@@ -1,4 +1,5 @@
 import { isKnownLegacyGameState, validateGameState, type GameState } from "../domain";
+import { getJourneyForCity } from "../content/journeys";
 
 /** Keep the slot stable; schemaVersion inside the payload controls compatibility. */
 export const SAVE_KEY = "dreamscape.save.v1";
@@ -10,17 +11,32 @@ export interface StorageLike {
   getItem(key: string): string | null;
   setItem(key: string, value: string): void;
   physicalKey?(key: string): string;
+  /** Absent for isolated debug/test storage; browser journey slots always set it. */
+  journeyId?: string;
 }
 
 export type LoadResult =
   | { status: "empty" }
   | { status: "loaded"; state: GameState }
-  | { status: "invalid"; kind: "storage" | "newer" | "legacy" | "corrupt"; message: string; raw: string | null };
+  | { status: "invalid"; kind: "storage" | "newer" | "legacy" | "corrupt" | "journey"; message: string; raw: string | null };
 
 export type SaveResult = { ok: true } | { ok: false; message: string };
 
 export function parseGameState(raw: string): GameState {
   return validateGameState(JSON.parse(raw) as unknown);
+}
+
+const wrongJourneyMessage = "保存先の旅行編と現在地の旅行編が一致しないか、現在地を確認できません。元のデータは変更せず保護しています。";
+
+/** Check ownership without imposing a journey on isolated in-memory Debug storage. */
+function belongsToSlot(storage: StorageLike, cityId: string): boolean {
+  return !storage.journeyId || getJourneyForCity(cityId)?.id === storage.journeyId;
+}
+
+function foreignSnapshot(storage: StorageLike, value: unknown): boolean {
+  if (!storage.journeyId || !value || typeof value !== "object") return false;
+  if (!("schemaVersion" in value) || value.schemaVersion !== SUPPORTED_SAVE_VERSION || !("currentCityId" in value)) return false;
+  return typeof value.currentCityId === "string" && !belongsToSlot(storage, value.currentCityId);
 }
 
 export function loadGame(storage: StorageLike): LoadResult {
@@ -59,6 +75,7 @@ export function loadGame(storage: StorageLike): LoadResult {
     return { status: "invalid", kind: "legacy", raw,
       message: `保存データの形式はバージョン${version}です。現在のバージョンでは読み込めません。データの破損によって読み込めない場合もあります。元のデータは残っています。` };
   }
+  if (foreignSnapshot(storage, value)) return { status: "invalid", kind: "journey", raw, message: wrongJourneyMessage };
   try {
     return { status: "loaded", state: validateGameState(value) };
   } catch {
@@ -83,6 +100,7 @@ export function saveGame(
   expectedPrevious?: GameState | null,
 ): SaveResult {
   try {
+    if (!belongsToSlot(storage, state.currentCityId)) return { ok: false, message: wrongJourneyMessage };
     const raw = serialize(state);
     const saved = loadGame(storage);
     if (saved.status === "invalid") {
@@ -130,8 +148,11 @@ export function backupAndCreate(
   expectedOriginal?: string | null,
 ): SaveResult {
   try {
+    if (!belongsToSlot(storage, state.currentCityId)) return { ok: false, message: wrongJourneyMessage };
     const replacement = serialize(state);
     const original = storage.getItem(SAVE_KEY);
+    const current = loadGame(storage);
+    if (current.status === "invalid" && current.kind === "journey") return { ok: false, message: wrongJourneyMessage };
     if (expectedOriginal !== undefined && original !== expectedOriginal)
       return { ok: false, message: "別の画面でセーブが更新されています。再読み込みしてからやり直してください。" };
     if (original !== null) {
@@ -168,6 +189,8 @@ export function deleteSaveData(
         message:
           "別の画面で保存データが更新されました。再読み込みしてからやり直してください。",
       };
+    const current = loadGame(storage);
+    if (current.status === "invalid" && current.kind === "journey") return { ok: false, message: wrongJourneyMessage };
     storage.removeItem(LEARNING_KEY);
     try {
       storage.removeItem(SAVE_KEY);

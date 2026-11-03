@@ -126,7 +126,11 @@ export function validateJourney(
     if (rules.some((rule) => !triggers.includes(rule.trigger)))
       throw new Error(`Reward trigger does not fit the episode: ${episode.id}`);
     for (const trigger of triggers) {
-      if (rules.filter((rule) => rule.trigger === trigger).length !== 1) {
+      const count = rules.filter((rule) => rule.trigger === trigger).length;
+      // New cities can leave the old chapter-clear AP unspecified. Milan's
+      // positive legacy alias retains its original mandatory reward.
+      const optionalEpisodeReward = trigger === "episode_clear" && city.id !== "milano" && city.firstClearReward.ap === 0;
+      if (optionalEpisodeReward ? count > 1 : count !== 1) {
         throw new Error(`Episode needs one ${trigger} reward: ${episode.id}`);
       }
     }
@@ -156,11 +160,9 @@ export function validateJourney(
     }
   }
   // Exactly one trial episode inherits the Phase 1–4 reward ID. It is not a new city-clear reward.
-  if (
-    journey.rewards.filter(
-      (rule) => rule.id === city.firstClearReward.rewardSourceId,
-    ).length !== 1
-  ) {
+  const legacyAliases = journey.rewards.filter((rule) => rule.id === city.firstClearReward.rewardSourceId);
+  const noLegacyReward = city.id !== "milano" && city.firstClearReward.ap === 0;
+  if (noLegacyReward ? legacyAliases.length !== 0 : legacyAliases.length !== 1) {
     throw new Error("Missing legacy chapter reward alias");
   }
 }

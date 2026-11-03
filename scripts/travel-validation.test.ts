@@ -68,6 +68,19 @@ describe("Milan travel data references", () => {
     expect(() => validate({ ...travel, routes })).toThrow(/Missing same-place route: p_hotel/);
   });
 
+  it("allows explicitly pending city content only in an unpublished prototype", () => {
+    const original = travel.events.find((event) => event.category === "main")!;
+    const pending = { ...original, id: "prototype_pending_main", contentStatus: "pending_content" as const };
+    const candidate = { ...travel, events: [...travel.events, pending] };
+    expect(() => validate(candidate)).toThrow(/Pending travel event in playable city/);
+    const runPrototype = (placeIds: string[]) => validateTravelContent(candidate, settings, "milano", journey, dates, battles,
+      landmarkIds, destinationIds, backgrounds, { allowPendingContent: true, plannedLandmarkIds: placeIds });
+    expect(() => runPrototype([original.placeId])).not.toThrow();
+    expect(() => runPrototype(["wrong_place"])).toThrow(/Invalid pending main/);
+    expect(() => validate({ ...candidate, events: [...travel.events, { ...pending, contentStatus: undefined }] }))
+      .toThrow(/Unknown or invalid main travel event/);
+  });
+
   it("rejects a missing date, wrong AP, background or hotel", () => {
     expect(() => validate({ ...travel, events: travel.events.filter((event) => event.id !== dates[0].id) })).toThrow(/Missing travel event/);
     const events = travel.events.map((event) => event.id === dates[0].id ? { ...event, apCost: event.apCost + 1 } : event);

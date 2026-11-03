@@ -14,6 +14,9 @@ export function installTestCity(options: {
   nextCityId?: string;
 } = {}): () => void {
   const cityId = options.cityId ?? "test_city";
+  // Real prototype cities may already be registered. Preserve the exact
+  // original content object when installing a temporary debug fixture.
+  const originalCity = cityContents[cityId];
   const prefix = cityId === "test_city" ? "test" : cityId;
   const id = (suffix: string) => `${prefix}_${suffix}`;
   const milan = cityContents.milano;
@@ -130,7 +133,8 @@ export function installTestCity(options: {
       if (previousNext === undefined) delete previous.city.nextCityId;
       else previous.city.nextCityId = previousNext;
     }
-    delete cityContents[cityId];
+    if (originalCity) cityContents[cityId] = originalCity;
+    else delete cityContents[cityId];
     episodes.splice(sizes.episodes); battles.splice(sizes.battles); landmarks.splice(sizes.landmarks);
     dates.splice(sizes.dates); dateDestinations.splice(sizes.destinations); tourismClues.splice(sizes.clues);
     journeyConfig.storyBattles.splice(sizes.specials); rewardRules.splice(sizes.rewards); allRewardRules.splice(sizes.allRewards);
@@ -147,7 +151,12 @@ export function installIndiaTestCities(): () => void {
     { cityId: "agra", nameJa: "アーグラ（仮データ）", nextCityId: "jaipur" },
     { cityId: "jaipur", nameJa: "ジャイプール（仮データ）" },
   ];
-  const cleanups = fixtures.filter(({ cityId }) => !cityContents[cityId]).map((fixture) =>
-    installTestCity({ ...fixture, previousCityId: null }));
+  // Never merge fictional scenes into real authored story content. The
+  // temporary replacement is limited to empty prototypes and test fixtures.
+  for (const fixture of fixtures) {
+    if (episodes.some((episode) => episode.cityId === fixture.cityId))
+      throw new Error(`実際のシナリオがある都市を仮データで置換できません: ${fixture.cityId}`);
+  }
+  const cleanups = fixtures.map((fixture) => installTestCity({ ...fixture, previousCityId: null }));
   return () => { for (const cleanup of cleanups.reverse()) cleanup(); };
 }

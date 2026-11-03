@@ -23,7 +23,7 @@ export type DestinationPlace<T extends DestinationEventCandidate> = {
 export type Coordinate = { id?: string; latitude: number; longitude: number };
 export type Direction = "現在地" | "方角不明" | "北" | "北東" | "東" | "南東" | "南" | "南西" | "西" | "北西";
 export type Route = Pick<TravelRoute, "fromPlaceId" | "toPlaceId" | "mode" | "minutes" | "cost">;
-export type Event = Pick<TravelEvent, "id" | "placeId" | "activityMinutes" | "apCost" | "startWindows" | "endWindows">;
+export type Event = Pick<TravelEvent, "id" | "placeId" | "activityMinutes" | "apCost" | "admissionCost" | "startWindows" | "endWindows">;
 
 export type TravelSnapshot = {
   currentPlaceId: string;
@@ -32,13 +32,22 @@ export type TravelSnapshot = {
   minute: number;
   ap: number;
   travelBudget: number;
+  /** Fictional journey weekday if a game calendar is configured; Monday is 0. */
+  weekday?: number;
 };
-type FailureReason = "invalid" | "closed" | "time" | "budget" | "ap" | "route";
+type FailureReason = "invalid" | "closed" | "closed_day" | "time" | "budget" | "ap" | "route";
 type Failure = { ok: false; reason: FailureReason };
 const failure = (reason: FailureReason): Failure => ({ ok: false, reason });
 export const DAY_START = 9 * 60;
 const NIGHT_START = 18 * 60;
 export const DAY_END = 21 * 60;
+
+/** Weekday comes from the saved in-game calendar, never the device clock. */
+export function getGameWeekday(calendar: { journeyDay: number; startWeekday: number } | undefined): number | undefined {
+  if (!calendar || !Number.isSafeInteger(calendar.journeyDay) || calendar.journeyDay < 1 ||
+      !Number.isInteger(calendar.startWeekday) || calendar.startWeekday < 0 || calendar.startWeekday > 6) return undefined;
+  return (calendar.startWeekday + (calendar.journeyDay - 1) % 7) % 7;
+}
 
 /** 18:00 starts the night; 21:00 is no longer a time to start activities. */
 export function getTimePeriod(minute: number): "day" | "night" | "closed" {
@@ -116,7 +125,8 @@ export function getDirection(from: Coordinate, to: Coordinate): Direction {
 function validSnapshot(state: TravelSnapshot): boolean {
   return !!state.currentPlaceId && !!state.hotelPlaceId && Number.isSafeInteger(state.day) && state.day >= 1 &&
     Number.isSafeInteger(state.minute) && state.minute >= DAY_START && Number.isSafeInteger(state.ap) && state.ap >= 0 &&
-    Number.isSafeInteger(state.travelBudget) && state.travelBudget >= 0;
+    Number.isSafeInteger(state.travelBudget) && state.travelBudget >= 0 &&
+    (state.weekday === undefined || (Number.isInteger(state.weekday) && state.weekday >= 0 && state.weekday <= 6));
 }
 
 function validRoute(route: Route): boolean {
@@ -142,21 +152,28 @@ export function planTravel(state: TravelSnapshot, route: Route): Failure | { ok:
  * impose any completion deadline. None of these calculations commits the action.
  */
 export function planTravelEvent(state: TravelSnapshot, event: Event, outbound: Route, returnRoute: Route,
-  place: Pick<TravelPlace, "id" | "openingWindows">): Failure | {
+  place: Pick<TravelPlace, "id" | "openingWindows" | "closedWeekdays">): Failure | {
   ok: true; arrivalMinute: number; endMinute: number; returnMinute: number; remainingBudget: number; remainingAp: number;
 } {
+  const admissionCost = event.admissionCost ?? 0;
   if (!validSnapshot(state) || !event.id || !event.placeId || !Number.isSafeInteger(event.activityMinutes) || event.activityMinutes <= 0 ||
-      !Number.isSafeInteger(event.apCost) || event.apCost < 0) return failure("invalid");
+      !Number.isSafeInteger(event.apCost) || event.apCost < 0 || !Number.isSafeInteger(admissionCost) || admissionCost < 0) return failure("invalid");
   if (place.id !== event.placeId || outbound.toPlaceId !== event.placeId || !validRoute(returnRoute) || returnRoute.fromPlaceId !== event.placeId ||
       returnRoute.toPlaceId !== state.hotelPlaceId) return failure("route");
   const travel = planTravel(state, outbound);
   if (!travel.ok) return travel;
-  if (travel.remainingBudget < returnRoute.cost) return failure("budget");
+  // Charge admission for both travelers once the scene actually starts, and
+  // keep enough for the independently selected return route.
+  if (travel.remainingBudget < admissionCost || travel.remainingBudget - admissionCost < returnRoute.cost) return failure("budget");
   if (state.ap < event.apCost) return failure("ap");
   const endMinute = travel.arrivalMinute + event.activityMinutes;
   const windowsValid = (windows: Event["startWindows"]) => !windows || windows.every((window) =>
     Number.isSafeInteger(window.start) && Number.isSafeInteger(window.end) && window.start >= 0 && window.start < window.end && window.end <= 24 * 60);
   if (!windowsValid(event.startWindows) || !windowsValid(event.endWindows) || !windowsValid(place.openingWindows)) return failure("invalid");
+  if (place.closedWeekdays?.length) {
+    if (place.closedWeekdays.some((day) => !Number.isInteger(day) || day < 0 || day > 6) || state.weekday === undefined) return failure("invalid");
+    if (place.closedWeekdays.includes(state.weekday)) return failure("closed_day");
+  }
   if (travel.arrivalMinute >= DAY_END ||
       (place.openingWindows && !place.openingWindows.some((window) => travel.arrivalMinute >= window.start && travel.arrivalMinute < window.end)) ||
       (event.startWindows && !event.startWindows.some((window) => travel.arrivalMinute >= window.start && travel.arrivalMinute < window.end)) ||
@@ -164,7 +181,7 @@ export function planTravelEvent(state: TravelSnapshot, event: Event, outbound: R
   const returnMinute = endMinute + returnRoute.minutes;
   if (returnMinute > DAY_END) return failure("time");
   return { ok: true, arrivalMinute: travel.arrivalMinute, endMinute, returnMinute,
-    remainingBudget: travel.remainingBudget, remainingAp: state.ap - event.apCost };
+    remainingBudget: travel.remainingBudget - admissionCost, remainingAp: state.ap - event.apCost };
 }
 
 /** Pay the available lodging cost without debt; no AP is charged and no budget is granted. */
