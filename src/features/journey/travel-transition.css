@@ -1,0 +1,72 @@
+.travel-transition {
+  position: fixed;
+  z-index: 1990;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  animation: travel-transition-overlay 1.8s ease both;
+}
+.travel-transition-scene {
+  position: relative;
+  overflow: hidden;
+  width: min(230px, 68vw);
+  height: 112px;
+  border-radius: 12px;
+  background: linear-gradient(#c7e0dd, #eef1df 78%);
+  box-shadow: 0 5px 22px #1f302c44;
+}
+.travel-transition-label {
+  position: absolute;
+  z-index: 3;
+  top: 10px;
+  inset-inline: 4px;
+  color: #294f41;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-align: center;
+}
+.travel-transition-hill {
+  position: absolute;
+  bottom: 17px;
+  width: 180px;
+  height: 34px;
+  border-radius: 50% 50% 0 0;
+}
+.travel-transition-hill-back { right: -42px; background: #b2c9b0; }
+.travel-transition-hill-front { left: -56px; bottom: 15px; background: #a2bfa9; }
+.travel-transition-wire { position: absolute; left: 0; right: 0; bottom: 77px; border-top: 1px solid #57796b88; }
+.travel-transition-ground {
+  position: absolute;
+  inset: auto 0 0;
+  height: 20px;
+  background: #637c68;
+}
+.travel-transition-ground::before { content: ""; position: absolute; inset: 6px 0 auto; border-top: 1px dashed #e8e6cf99; }
+.travel-transition-ground.is-rail::before { inset: 4px 0 auto; border-top: 2px solid #e8e6cfaa; }
+.travel-transition-vehicle {
+  position: absolute;
+  z-index: 2;
+  left: calc(50% - 51px);
+  bottom: 12px;
+  width: 102px;
+  height: 58px;
+  animation: travel-transition-crossing 1.8s ease-in-out both;
+}
+.travel-transition-vehicle svg { display: block; width: 100%; height: 100%; }
+.travel-transition-vehicle.is-walk { bottom: 11px; }
+.travel-transition-leg { transform-box: fill-box; transform-origin: 50% 0; animation: travel-transition-step .38s ease-in-out infinite alternate; }
+.travel-transition-leg.is-second { animation-direction: alternate-reverse; }
+.travel-transition-arm { transform-box: fill-box; transform-origin: 50% 0; animation: travel-transition-step .38s ease-in-out infinite alternate-reverse; }
+.travel-transition-arm.is-second { animation-direction: alternate; }
+@keyframes travel-transition-overlay { 0%, 100% { opacity: 0; } 10%, 88% { opacity: 1; } }
+@keyframes travel-transition-crossing { 0% { transform: translateX(-105px); } 50% { transform: translateX(0); } 100% { transform: translateX(105px); } }
+@keyframes travel-transition-step { from { transform: rotate(-19deg); } to { transform: rotate(19deg); } }
+@keyframes travel-transition-still { from, to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .travel-transition { animation: travel-transition-still .45s steps(1, end); }
+  .travel-transition-vehicle, .travel-transition-leg, .travel-transition-arm { animation: none; }
+}
+.travel-transition.is-reduced { animation: travel-transition-still .45s steps(1, end); }
+.travel-transition.is-reduced .travel-transition-vehicle, .travel-transition.is-reduced .travel-transition-leg, .travel-transition.is-reduced .travel-transition-arm { animation: none; }
