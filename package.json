@@ -12,6 +12,7 @@
     "india:readiness": "tsx scripts/inspect-india-readiness.ts",
     "india:scaffold": "tsx scripts/inspect-india-scaffold.ts",
     "india:release": "tsx scripts/release-india.ts",
+    "city:bundle": "tsx scripts/city-bundle-cli.ts",
     "predev": "npm run content:build",
     "dev": "vite --host 0.0.0.0",
     "typecheck": "tsc --noEmit",

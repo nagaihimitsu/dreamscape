@@ -171,7 +171,7 @@ export function availableAp(state: GameState) {
 /** Reach free time using the current Duomo guide and battle rules. */
 export async function loadCurrentFreeTime(page: Page) {
   await loadSnapshot(page, await prepareCurrentJourney(page, false));
-  await expect(page.getByTestId("event-milano_cafe_01")).toBeVisible();
+  await expect(page.getByTestId("travel-menu")).toBeVisible();
   expect((await saved(page)).ap).toBe(4);
 }
 

@@ -18,6 +18,7 @@ import { journeyStorage } from "../persistence/journey-storage";
 import { useJourneyLock } from "../persistence/useJourneyLock";
 import { loadJourneyDraft, promoteJourneyDraft } from "../persistence/journey-preparation";
 import { PreparingJourney } from "../features/journey/PreparingJourney";
+import { UnavailableJourney } from "../features/journey/UnavailableJourney";
 import { JourneySelection } from "../features/journey/JourneySelection";
 import { beginTravelEvent, finishTravelEventIfComplete, sleepAtHotel, waitForTravel } from "../domain/travel-game";
 import { getGameWeekday } from "../domain/travel";
@@ -110,7 +111,10 @@ export default function App(props: AppProps = {}) {
   const baseStorage = props.storage ?? browserStorage;
   const scopedStorage = useMemo(() => journeyStorage(baseStorage, journeyId), [baseStorage, journeyId]);
   const [lockAttempt, setLockAttempt] = useState(0);
-  const lockStatus = useJourneyLock(props.debug ? "milano" : journeyId, scopedStorage, lockAttempt);
+  const journey = getJourney(journeyId);
+  const readOnlyPreparation = journey?.status === "preparing" && journey.id !== "golden_triangle";
+  // A read-only preparation has no save to edit, so it needs no storage lock.
+  const lockStatus = useJourneyLock(props.debug || readOnlyPreparation ? "milano" : journeyId, scopedStorage, lockAttempt);
   // Debug supplies an isolated, pre-populated game; do not alter its storage.
   if (props.debug) return <GameApp {...props} />;
   if (lockStatus !== "ready") return <div className="app-shell"><main id="main"><section className="paper intro">
@@ -121,8 +125,11 @@ export default function App(props: AppProps = {}) {
       : "このブラウザでは別タブとの保存競合を防げないため、この旅行編を開けません。対応ブラウザをご利用ください。"}</p>
     {lockStatus === "busy" && <button type="button" className="secondary" onClick={() => setLockAttempt((value) => value + 1)}>再試行</button>}
   </section></main></div>;
-  const journey = getJourney(journeyId);
-  if (journey?.status === "preparing") return <PreparingJourney key={journeyId} storage={scopedStorage} onSwitchJourney={setJourneyId} />;
+  if (journey?.status === "preparing") {
+    return journey.id === "golden_triangle"
+      ? <PreparingJourney key={journeyId} storage={scopedStorage} onSwitchJourney={setJourneyId} />
+      : <UnavailableJourney journey={journey} onSwitchJourney={setJourneyId} />;
+  }
   if (journeyId === "golden_triangle") return <PlayableJourney key={journeyId} {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={setJourneyId} />;
   return <GameApp key={journeyId} {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={setJourneyId} />;
 }

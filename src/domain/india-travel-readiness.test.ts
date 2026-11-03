@@ -7,12 +7,13 @@ import { findTravelHomeRoutes } from "./travel-routes";
 const cities = ["delhi", "agra", "jaipur"] as const;
 
 describe("India city travel data", () => {
-  it("records a review status for every public-transport direction", () => {
+  it("records a game decision for every public-transport direction", () => {
     const review = buildIndiaTransitReview(readIndiaTransitReview(process.cwd()));
     for (const cityId of cities) {
-      // An inconclusive review is allowed; it must never masquerade as proof
-      // that a service does not exist or as an unreviewed empty entry.
+      // A decision to omit a game route does not establish whether a real
+      // service exists; its sources must retain any factual uncertainty.
       expect(review.counts[cityId].unresearched, cityId).toBe(0);
+      expect(review.counts[cityId].inconclusive, cityId).toBe(0);
     }
   });
 
