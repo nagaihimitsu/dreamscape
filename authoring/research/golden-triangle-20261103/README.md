@@ -2,7 +2,9 @@
 
 `source/` は提供された `Dreamscape_India_Integrated_20261103.zip` の資料を原本のまま保存したものです。出典、統合前データ、変更履歴、検証スクリプトと `MANIFEST.json` を含みます。ここは制作資料であり、ゲームの本番コンテンツや実際の旅行案内ではありません。
 
-統合後の参照元は `source/data/`、`source/cities/`、`source/travel/` です。`source/reference/` は統合前資料の監査用です。都市・イベント・地点・経路の JSON は未制作の脚本や背景を参照する試作で、直接本番カタログにコピーしないでください。詳しくは `source/INTEGRATION_CHANGELOG.md` と `source/codex/INTEGRATED_HANDOFF.md` を参照してください。
+この資料内での統合後の参照元は `source/data/`、`source/cities/`、`source/travel/` です。`source/reference/` は統合前資料の監査用です。都市・イベント・地点・経路の JSON は未制作の脚本や背景を参照する試作で、直接本番カタログにコピーしないでください。詳しくは `source/INTEGRATION_CHANGELOG.md` と `source/codex/INTEGRATED_HANDOFF.md` を参照してください。
+
+後から提供された４件の追加調査を統合した台帳は、[全調査統合版](../golden-triangle-all-research-20261103/README.md) を参照してください。入口・徒歩・料金・営業時間・交通・画像・予算試算の照合には全調査統合版の `canonical/` と出典優先順位を用い、この資料は以前の試作仕様と来歴の記録として保持します。両方とも本番データではありません。
 
 ## 原本の説明と現状の読み分け
 

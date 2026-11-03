@@ -1,0 +1,25 @@
+﻿cityId,fromPlaceId,toPlaceId,risk,requiredEvidence,safeToOfferWalk
+agra,agra_hotel_hub,agra_itimad_tomb,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_hotel_hub,agra_mehtab_bagh,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_hotel_hub,agra_chini_rauza,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_hotel_hub,agra_ram_bagh,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_taj_mahal,agra_itimad_tomb,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_taj_mahal,agra_mehtab_bagh,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_taj_mahal,agra_chini_rauza,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_taj_mahal,agra_ram_bagh,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_agra_fort,agra_itimad_tomb,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_agra_fort,agra_mehtab_bagh,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_agra_fort,agra_chini_rauza,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_agra_fort,agra_ram_bagh,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_itimad_tomb,agra_hotel_hub,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_itimad_tomb,agra_taj_mahal,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_itimad_tomb,agra_agra_fort,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_mehtab_bagh,agra_hotel_hub,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_mehtab_bagh,agra_taj_mahal,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_mehtab_bagh,agra_agra_fort,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_chini_rauza,agra_hotel_hub,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_chini_rauza,agra_taj_mahal,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_chini_rauza,agra_agra_fort,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_ram_bagh,agra_hotel_hub,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_ram_bagh,agra_taj_mahal,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false
+agra,agra_ram_bagh,agra_agra_fort,YAMUNA_RIVER_PED_CROSSING_UNCONFIRMED,OSM bridge foot tag + road graph connectivity + manual bridge access check,false

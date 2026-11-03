@@ -1,0 +1,67 @@
+{
+  "package": "Dreamscape Golden Triangle photo/rights completion addendum",
+  "createdOn": "2026-11-03",
+  "repoSha": "c816d25f3cb638c5ca08f7a6a5d9c84d939ade62",
+  "files": [
+    {
+      "path": "README.md",
+      "size": 3336,
+      "sha256": "73506fe02e4d15a876c92464ea13a3268a7e84a403be245469b8ba327df5a821"
+    },
+    {
+      "path": "data/BETTER_IMAGE_ALTERNATIVES_7.csv",
+      "size": 2560,
+      "sha256": "239c311084b54ad4df42c3870d1daaf6dcea5bd7965849bafb7c36b090ea1c50"
+    },
+    {
+      "path": "data/CAMERA_AND_OBJECT_GEOTAGS_NOT_ENTRANCES_10.csv",
+      "size": 2681,
+      "sha256": "b0bca38b16844169e961458655d76cc20c06213c9babb8031b1bb927939a6fb4"
+    },
+    {
+      "path": "data/COMMONS_STAGING_MANIFEST.json",
+      "size": 11383,
+      "sha256": "832b274384359ca4558ea0376eefe8564f50e899a7e3fe7f8313e1270d2b4f7f"
+    },
+    {
+      "path": "data/PHOTO_RIGHTS_AUDIT_30.csv",
+      "size": 11476,
+      "sha256": "a99dea2d21650c5647a56addfdfad454ab2c3ab499681bf6c7ce2c6e22294924"
+    },
+    {
+      "path": "docs/CODEX_HANDOFF.md",
+      "size": 2034,
+      "sha256": "5d75bd8617ef4a941201de8c698c61d86c16a86f992ae6919c06618f23afdc95"
+    },
+    {
+      "path": "docs/IMAGE_RIGHTS_RULES.md",
+      "size": 1614,
+      "sha256": "dc6740fe87cd5e3ac30749480ffc6faac41c4a783016b1e8a13794ddfb064110"
+    },
+    {
+      "path": "docs/REMAINING_NONROAD_GAPS.md",
+      "size": 1144,
+      "sha256": "519cfa040cd8d09f76529d225d16a97d35e0d1df87364aa14db37cc4462e3f54"
+    },
+    {
+      "path": "docs/SOURCE_LINKS.md",
+      "size": 3298,
+      "sha256": "0d30933559ef65a3af42b4516cbc63e085132019cacfa2abcf990121faa17977"
+    },
+    {
+      "path": "qa/STATUS.json",
+      "size": 764,
+      "sha256": "ee04d08a43cc3aa214f67ce8219b5e664fad40a8e46c6dcc89b297c6e856b6ac"
+    },
+    {
+      "path": "scripts/download_commons_staging.py",
+      "size": 6194,
+      "sha256": "95b5bc45a3c135a5eb0504d51eb2980a74d126c9edc480c58150fecd57fe712c"
+    },
+    {
+      "path": "scripts/validate_pack.py",
+      "size": 1648,
+      "sha256": "1edbdd0061180db489b16b89e69c9eba76b7f6f30aa5abc4c00c0459e5a48f17"
+    }
+  ]
+}

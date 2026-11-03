@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 2,
+  "surveyDate": "2026-11-03",
+  "repositoryRef": "nagaihimitsu/dreamscape@c816d25f3cb638c5ca08f7a6a5d9c84d939ade62",
+  "releaseStage": "followup research only; no game assets or true GPS certified",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 8762,
+      "sha256": "06f744f48f1818b59937a35901167b12e5314a3afc4b571d0d3b842db40e29d2"
+    },
+    {
+      "path": "data/ACCESS_AND_OPERATIONS_16.csv",
+      "bytes": 3177,
+      "sha256": "b695d107183fc173e92092397df446d0f4326fd5bf8c0d45febfdf856c623b28"
+    },
+    {
+      "path": "data/AUDIT_SUMMARY.json",
+      "bytes": 861,
+      "sha256": "e2456345b1c9b2026fd86004e22f828e31334af8c3c7573dab88a19a2cfec492"
+    },
+    {
+      "path": "data/BETTER_PHOTO_ALTERNATIVES_2.csv",
+      "bytes": 578,
+      "sha256": "f2287d543323170306eaf3f9627609f0d6d7b82c4dde16916bb1dfe4672df47a"
+    },
+    {
+      "path": "data/BUDGET_ENVELOPES_20.csv",
+      "bytes": 4419,
+      "sha256": "3dd3602401399fc77bd180dfe54b2e65498035be4ecf66d3c1d6b8ab02a25e4b"
+    },
+    {
+      "path": "data/COMMONS_30_FILE_PAGE_AUDIT.csv",
+      "bytes": 12647,
+      "sha256": "e5f477ce4352694da2a5ae38fcf14c85620d5d2523fe573edd26d92c3e2d71df"
+    },
+    {
+      "path": "data/FOURTH_PASS_SOURCES.csv",
+      "bytes": 5315,
+      "sha256": "6a67e3b204d8a72338c24cf5944d04e685f74f7e4519c69e3bbeb27a37da73a7"
+    },
+    {
+      "path": "data/FOURTH_PASS_SUMMARY.json",
+      "bytes": 786,
+      "sha256": "251bd960a9b208099bae83a6d6086a3a95d703008fb190058933c1a4d5100019"
+    },
+    {
+      "path": "data/HIGH_RES_ALTERNATIVES_2.csv",
+      "bytes": 962,
+      "sha256": "4dc5430915a79e759679363e52c6211624cdb22ddb2ada400517f56291268c03"
+    },
+    {
+      "path": "data/OPEN_ISSUES_PRIORITIZED.csv",
+      "bytes": 2949,
+      "sha256": "6c3491e0d5ea390a6934b70eedff08448df152364c6df90a7bcd22d54769d3db"
+    },
+    {
+      "path": "data/OPERATOR_WEB_FACTS_ADDENDUM.csv",
+      "bytes": 1974,
+      "sha256": "42978dd488e68b3f7d18f3a6cf836d493dfee1d8df54ad37285ef5afc5217f42"
+    },
+    {
+      "path": "data/PHOTO_AUDIT_ALL_30.csv",
+      "bytes": 8678,
+      "sha256": "d296203fcc3801528987b8e55a86dd6f47e24a65ea79b2119ad328e9596e07fa"
+    },
+    {
+      "path": "data/PHOTO_PRODUCTION_REVIEW_FLAGS.csv",
+      "bytes": 5922,
+      "sha256": "a07605f3ebb0b50669c9acb2204b60ffe2a9cbc57757ef807887a889c7b032a5"
+    },
+    {
+      "path": "data/PRICE_AUDIT_ALL_30.csv",
+      "bytes": 5985,
+      "sha256": "183e7583e29be2093d1dfad297e4f3fcceff1daeebd6a9dee45d0419c3061b65"
+    },
+    {
+      "path": "data/PRICE_SENSITIVITY_ENVELOPES_20.csv",
+      "bytes": 3566,
+      "sha256": "7d6253d65041b05f2656ded097b90d7d24a02f9b7719cf0dd425caa97e66cc71"
+    },
+    {
+      "path": "data/PRIORITY_COMMONS_12_FILE_VERIFIED.csv",
+      "bytes": 3404,
+      "sha256": "dd11708e6c2ef3af3285f1929e33b23d5111aa80361e598b778fdb91276f7c81"
+    },
+    {
+      "path": "data/SIX_FOREIGN_PRICES_OUTSTANDING.csv",
+      "bytes": 1493,
+      "sha256": "04954d4b6ba76c70d303376c7c31ac5b56f4db415ba0e7f36f26a787aa3d4a8a"
+    },
+    {
+      "path": "data/SOURCE_REGISTER_ADDENDUM.csv",
+      "bytes": 5141,
+      "sha256": "9038f3f7ec816d73624b2bbea1392df5d9b89f2d520765b1bc8466e05e4fdea7"
+    },
+    {
+      "path": "data/TRAIN_TRANSFER_DELTA.csv",
+      "bytes": 705,
+      "sha256": "72d1bdda098960947f0fbcbae8ce9877bb44d5859bb3936b5cedc2d623d6d64f"
+    },
+    {
+      "path": "data/WEEKDAYS_AND_LATEST_HOURS.csv",
+      "bytes": 886,
+      "sha256": "6a52c9503b22397f0e66f08b60a03b4ef92d62a864bf6bcda13235f0b49f0ce8"
+    },
+    {
+      "path": "docs/CODEX_HANDOFF.md",
+      "bytes": 4101,
+      "sha256": "6d88298b37116e9e394e07a2cd799c30de8318f3ee4649b4d5897db88364f9cd"
+    },
+    {
+      "path": "docs/EVIDENCE_LIMITATIONS.md",
+      "bytes": 2848,
+      "sha256": "1ff96034e8003c63e83ef70e781a00967df264ff22b2f84d65fcc9ff5d0ce089"
+    },
+    {
+      "path": "docs/FOURTH_PASS_FINDINGS.md",
+      "bytes": 5269,
+      "sha256": "1cb92dcdd8f1c693f66eea90c284e1792ed71ac406d1ff5dcf49c315c7184eb4"
+    },
+    {
+      "path": "qa/build_summary.json",
+      "bytes": 861,
+      "sha256": "e2456345b1c9b2026fd86004e22f828e31334af8c3c7573dab88a19a2cfec492"
+    },
+    {
+      "path": "scripts/build_addendum.py",
+      "bytes": 24535,
+      "sha256": "08167b5fa10805bd9b6e4d614442145b3bb1180def59552ec5e51a39d99dda11"
+    },
+    {
+      "path": "scripts/download_all30_commons.py",
+      "bytes": 4897,
+      "sha256": "00192e3fcb5918a8753dc73b56725c8f2596243883e01e76b84dddad12d930dd"
+    },
+    {
+      "path": "scripts/download_verified_commons.py",
+      "bytes": 4295,
+      "sha256": "22eb3fd43eb563814b35e10c0df9d69e693fae120aacca36cbc693cd48bd0a18"
+    },
+    {
+      "path": "scripts/validate_addendum.py",
+      "bytes": 2623,
+      "sha256": "70fffbf6fa1fd84021bbae29bf5b619f75536e9669222dc3761a42e5ace63046"
+    },
+    {
+      "path": "scripts/validate_fourth_pass.py",
+      "bytes": 2177,
+      "sha256": "db4e734cb57b7d0665ab6cfb50ec9ddeddb503a0d135920a774ee89a3da471d4"
+    }
+  ]
+}

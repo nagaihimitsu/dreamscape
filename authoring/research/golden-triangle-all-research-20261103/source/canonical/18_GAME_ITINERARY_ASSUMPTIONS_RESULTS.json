@@ -1,0 +1,148 @@
+{
+  "model": "NON_PRODUCTION_GAME_STRESS_TEST",
+  "assumptions": {
+    "dayStartMinute": 540,
+    "dayEndMinute": 1260,
+    "gameCurrency": "INR",
+    "partySize": 2,
+    "travel": "Existing provisional walking <=24m when present (unverified) else taxi via haversine*1.55 at 24kmh +8m",
+    "taxiFare": "editorial INR 60 + 15*modeled road km rounded up to 10 INR",
+    "lodgingChargeINR": 0,
+    "intercityCarCostsINR": [
+      2700,
+      3800
+    ],
+    "intercityDuration": "not timed in city-day clock; next city resets at 09:00",
+    "eventDurations": "Original EVENT_BLUEPRINTS.csv, not production Ink play times",
+    "entryPrices": "Previously selected GAME_ENTRANCE_COSTS.csv model; not necessarily official prices",
+    "AP": "Not simulated as real battle/romance completion/content unbuilt",
+    "weekdays": "Not simulated; season/Friday closure differs",
+    "routeNetworkVerified": false,
+    "conclusionScope": "Only checks synthetic scheduling/cost feasibility; not actual gameplay or real-world transport"
+  },
+  "results": [
+    {
+      "scenario": "main_only",
+      "initialBudgetINR": 30000,
+      "finalBudgetINR": 3560,
+      "cityResults": [
+        {
+          "city": "delhi",
+          "completeCount": 4,
+          "targetCount": 4,
+          "daysSpent": 2,
+          "failed": null,
+          "remaining": [],
+          "exitBudget": 24540,
+          "transportINR": 1260,
+          "entranceINR": 4200
+        },
+        {
+          "city": "agra",
+          "completeCount": 4,
+          "targetCount": 4,
+          "daysSpent": 2,
+          "failed": null,
+          "remaining": [],
+          "exitBudget": 14230,
+          "transportINR": 2270,
+          "entranceINR": 5340
+        },
+        {
+          "city": "jaipur",
+          "completeCount": 4,
+          "targetCount": 4,
+          "daysSpent": 1,
+          "failed": null,
+          "remaining": [],
+          "exitBudget": 3560,
+          "transportINR": 470,
+          "entranceINR": 6400
+        }
+      ],
+      "transfers": [
+        {
+          "from": "delhi",
+          "to": "agra",
+          "mode": "car_PROTOTYPE",
+          "costINR": 2700,
+          "note": "not a supplier quote nor a verified train, no station timings",
+          "balanceINR": 21840
+        },
+        {
+          "from": "agra",
+          "to": "jaipur",
+          "mode": "car_PROTOTYPE",
+          "costINR": 3800,
+          "note": "not a supplier quote nor a verified train, no station timings",
+          "balanceINR": 10430
+        }
+      ],
+      "completedAll": true
+    },
+    {
+      "scenario": "all_candidates",
+      "initialBudgetINR": 30000,
+      "finalBudgetINR": 180,
+      "cityResults": [
+        {
+          "city": "delhi",
+          "completeCount": 10,
+          "targetCount": 10,
+          "daysSpent": 3,
+          "failed": null,
+          "remaining": [],
+          "exitBudget": 23500,
+          "transportINR": 2300,
+          "entranceINR": 4200
+        },
+        {
+          "city": "agra",
+          "completeCount": 10,
+          "targetCount": 10,
+          "daysSpent": 3,
+          "failed": null,
+          "remaining": [],
+          "exitBudget": 9990,
+          "transportINR": 3050,
+          "entranceINR": 7760
+        },
+        {
+          "city": "jaipur",
+          "completeCount": 6,
+          "targetCount": 10,
+          "daysSpent": 2,
+          "failed": "UNAFFORDABLE_OR_NO_TIME_FEASIBLE_EVENT_FROM_HOTEL",
+          "remaining": [
+            "jaipur_amber_fort",
+            "jaipur_nahargarh_fort",
+            "jaipur_jaigarh_fort",
+            "jaipur_panna_meena_kund"
+          ],
+          "exitBudget": 180,
+          "transportINR": 410,
+          "entranceINR": 5600
+        }
+      ],
+      "transfers": [
+        {
+          "from": "delhi",
+          "to": "agra",
+          "mode": "car_PROTOTYPE",
+          "costINR": 2700,
+          "note": "not a supplier quote nor a verified train, no station timings",
+          "balanceINR": 20800
+        },
+        {
+          "from": "agra",
+          "to": "jaipur",
+          "mode": "car_PROTOTYPE",
+          "costINR": 3800,
+          "note": "not a supplier quote nor a verified train, no station timings",
+          "balanceINR": 6190
+        }
+      ],
+      "completedAll": false
+    }
+  ]
+}

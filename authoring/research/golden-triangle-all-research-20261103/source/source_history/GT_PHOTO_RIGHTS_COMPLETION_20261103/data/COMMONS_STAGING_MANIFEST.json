@@ -1,0 +1,307 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-11-03",
+  "fetchPolicy": "DRAFT_ONLY_NOT_FOR_PRODUCTION",
+  "files": [
+    {
+      "placeId": "agra_agra_fort",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Agra_fort_.jpg",
+      "expectedAuthor": "बृहस्पति",
+      "expectedLicense": "CC BY-SA 3.0",
+      "expectedWidth": 4160,
+      "expectedHeight": 2080,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "agra_agra_fort.jpg"
+    },
+    {
+      "placeId": "agra_akbar_tomb",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:The_Tomb_of_Akbar.jpg",
+      "expectedAuthor": "Sharvarism",
+      "expectedLicense": "CC BY-SA 4.0",
+      "expectedWidth": 5400,
+      "expectedHeight": 3600,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "agra_akbar_tomb.jpg"
+    },
+    {
+      "placeId": "agra_chini_rauza",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Chini_ka_Rauza,_Agra.jpg",
+      "expectedAuthor": "Varun Shiv Kapur",
+      "expectedLicense": "CC BY 2.0",
+      "expectedWidth": 2048,
+      "expectedHeight": 1536,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "agra_chini_rauza.jpg"
+    },
+    {
+      "placeId": "agra_fatehpur_sikri",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Fatehpur_Sikri.jpg",
+      "expectedAuthor": "Luisvassy",
+      "expectedLicense": "CC BY-SA 3.0",
+      "expectedWidth": 2048,
+      "expectedHeight": 1536,
+      "editorialRiskCode": "SUBJECT_NOT_WHOLE_SITE",
+      "suggestedFileName": "agra_fatehpur_sikri.jpg"
+    },
+    {
+      "placeId": "agra_guru_ka_taal",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Guru_ka_taal.jpg",
+      "expectedAuthor": "Millenium Singh",
+      "expectedLicense": "CC BY-SA 4.0",
+      "expectedWidth": 4160,
+      "expectedHeight": 3120,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "agra_guru_ka_taal.jpg"
+    },
+    {
+      "placeId": "agra_itimad_tomb",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:ITIMAD_UD_DAULAH.jpg",
+      "expectedAuthor": "Ajaykumarkatnauri",
+      "expectedLicense": "CC BY-SA 4.0",
+      "expectedWidth": 4160,
+      "expectedHeight": 3120,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "agra_itimad_tomb.jpg"
+    },
+    {
+      "placeId": "agra_mariam_tomb",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Mariam%27s_Tomb,_Sikandra,_Agra.JPG",
+      "expectedAuthor": "Sauravmitra",
+      "expectedLicense": "CC BY-SA 3.0",
+      "expectedWidth": 2779,
+      "expectedHeight": 1537,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "agra_mariam_tomb.jpg"
+    },
+    {
+      "placeId": "agra_mehtab_bagh",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Mehtab_Bagh_1.jpg",
+      "expectedAuthor": "Vipinyadav3011",
+      "expectedLicense": "CC BY-SA 3.0",
+      "expectedWidth": 4913,
+      "expectedHeight": 3117,
+      "editorialRiskCode": "VISUAL_CONTEXT_CHECK",
+      "suggestedFileName": "agra_mehtab_bagh.jpg"
+    },
+    {
+      "placeId": "agra_ram_bagh",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Entry_gate_of_Aram_Bagh.jpg",
+      "expectedAuthor": "Rangan Datta Wiki",
+      "expectedLicense": "CC BY-SA 4.0",
+      "expectedWidth": 4928,
+      "expectedHeight": 3264,
+      "editorialRiskCode": "GATE_NOT_GARDEN",
+      "suggestedFileName": "agra_ram_bagh.jpg"
+    },
+    {
+      "placeId": "agra_taj_mahal",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Taj-Mahal.jpg",
+      "expectedAuthor": "Joel Godwin",
+      "expectedLicense": "CC BY-SA 4.0",
+      "expectedWidth": 2500,
+      "expectedHeight": 1666,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "agra_taj_mahal.jpg"
+    },
+    {
+      "placeId": "delhi_agrasen_baoli",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Agrasena_ki_Baoli.jpg",
+      "expectedAuthor": "Spark.sonam",
+      "expectedLicense": "CC BY-SA 3.0",
+      "expectedWidth": 4608,
+      "expectedHeight": 3072,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "delhi_agrasen_baoli.jpg"
+    },
+    {
+      "placeId": "delhi_bangla_sahib",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Bangla_Sahib.jpg",
+      "expectedAuthor": "Arpan Mahajan",
+      "expectedLicense": "CC BY-SA 4.0",
+      "expectedWidth": 1280,
+      "expectedHeight": 960,
+      "editorialRiskCode": "LOW_RESOLUTION",
+      "suggestedFileName": "delhi_bangla_sahib.jpg"
+    },
+    {
+      "placeId": "delhi_chandni_chowk",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Chandni_Chowk,_Delhi.JPG",
+      "expectedAuthor": "Deeporaj",
+      "expectedLicense": "CC BY-SA 4.0",
+      "expectedWidth": 5184,
+      "expectedHeight": 3456,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "delhi_chandni_chowk.jpg"
+    },
+    {
+      "placeId": "delhi_humayun_tomb",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Humanyun_Tomb_Image.jpg",
+      "expectedAuthor": "Yashrastogivlogs",
+      "expectedLicense": "CC BY-SA 4.0",
+      "expectedWidth": 6000,
+      "expectedHeight": 3856,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "delhi_humayun_tomb.jpg"
+    },
+    {
+      "placeId": "delhi_india_gate",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:IndiaGate,_delhi.jpg",
+      "expectedAuthor": "HussainNellikkal",
+      "expectedLicense": "CC BY-SA 4.0",
+      "expectedWidth": 6000,
+      "expectedHeight": 3376,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "delhi_india_gate.jpg"
+    },
+    {
+      "placeId": "delhi_jama_masjid",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Jama_Masjid,_Delhi,_India.jpg",
+      "expectedAuthor": "Vyacheslav Argenberg",
+      "expectedLicense": "CC BY 4.0",
+      "expectedWidth": 3072,
+      "expectedHeight": 2048,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "delhi_jama_masjid.jpg"
+    },
+    {
+      "placeId": "delhi_lodhi_garden",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:LODHI_GARDENS.jpg",
+      "expectedAuthor": "Solomon Donald Singh",
+      "expectedLicense": "CC BY-SA 4.0",
+      "expectedWidth": 2289,
+      "expectedHeight": 2289,
+      "editorialRiskCode": "SQUARE_CROP_RISK",
+      "suggestedFileName": "delhi_lodhi_garden.jpg"
+    },
+    {
+      "placeId": "delhi_lotus_temple",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:The_lotus_temple.jpg",
+      "expectedAuthor": "Akashpatel3011",
+      "expectedLicense": "CC BY-SA 4.0",
+      "expectedWidth": 4160,
+      "expectedHeight": 2340,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "delhi_lotus_temple.jpg"
+    },
+    {
+      "placeId": "delhi_qutb_minar",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:The_Qutb_Minar.jpg",
+      "expectedAuthor": "Shagil Kannur",
+      "expectedLicense": "CC BY-SA 3.0",
+      "expectedWidth": 4176,
+      "expectedHeight": 2784,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "delhi_qutb_minar.jpg"
+    },
+    {
+      "placeId": "delhi_red_fort",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Red-Fort,Delhi.JPG",
+      "expectedAuthor": "Mahesh Bhanupanth",
+      "expectedLicense": "CC BY-SA 3.0",
+      "expectedWidth": 5071,
+      "expectedHeight": 3235,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "delhi_red_fort.jpg"
+    },
+    {
+      "placeId": "jaipur_albert_hall",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Albert_Hall_Museum.jpg",
+      "expectedAuthor": "Srilakshmi1991",
+      "expectedLicense": "CC BY 4.0",
+      "expectedWidth": 3264,
+      "expectedHeight": 2448,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "jaipur_albert_hall.jpg"
+    },
+    {
+      "placeId": "jaipur_amber_fort",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Amer-fort.JPG",
+      "expectedAuthor": "Sameer Goyal",
+      "expectedLicense": "CC BY-SA 2.0",
+      "expectedWidth": 3072,
+      "expectedHeight": 2304,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "jaipur_amber_fort.jpg"
+    },
+    {
+      "placeId": "jaipur_city_palace",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:City_Palace,_jaipur.jpg",
+      "expectedAuthor": "Shubh77901",
+      "expectedLicense": "CC BY-SA 4.0",
+      "expectedWidth": 4608,
+      "expectedHeight": 3456,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "jaipur_city_palace.jpg"
+    },
+    {
+      "placeId": "jaipur_hawa_mahal",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Hawa_mahal,Jaipur.jpg",
+      "expectedAuthor": "Utsav pal",
+      "expectedLicense": "CC BY-SA 4.0",
+      "expectedWidth": 4320,
+      "expectedHeight": 3240,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "jaipur_hawa_mahal.jpg"
+    },
+    {
+      "placeId": "jaipur_jaigarh_fort",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Jaigarh_Fort_Jaipur.jpg",
+      "expectedAuthor": "Viraj Mulki",
+      "expectedLicense": "CC0 1.0",
+      "expectedWidth": 3266,
+      "expectedHeight": 2186,
+      "editorialRiskCode": "COMMONS_WATERMARK_FLAG",
+      "suggestedFileName": "jaipur_jaigarh_fort.jpg"
+    },
+    {
+      "placeId": "jaipur_jal_mahal",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Jal_Mahal_at_Jaipur_Rajasthan.jpg",
+      "expectedAuthor": "SPD2025",
+      "expectedLicense": "CC0 1.0",
+      "expectedWidth": 3888,
+      "expectedHeight": 2592,
+      "editorialRiskCode": "NONE_IDENTIFIED",
+      "suggestedFileName": "jaipur_jal_mahal.jpg"
+    },
+    {
+      "placeId": "jaipur_jantar_mantar",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Jantar_mantar_,_jaipur.jpg",
+      "expectedAuthor": "LilyPlant",
+      "expectedLicense": "CC BY-SA 4.0",
+      "expectedWidth": 4000,
+      "expectedHeight": 1800,
+      "editorialRiskCode": "SPECIFIC_INSTRUMENT",
+      "suggestedFileName": "jaipur_jantar_mantar.jpg"
+    },
+    {
+      "placeId": "jaipur_johari_bazaar",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Johari_Bazar.jpg",
+      "expectedAuthor": "Ramesh Lalwani",
+      "expectedLicense": "CC BY 2.0",
+      "expectedWidth": 800,
+      "expectedHeight": 600,
+      "editorialRiskCode": "ORIGINAL_TOO_SMALL",
+      "suggestedFileName": "jaipur_johari_bazaar.jpg"
+    },
+    {
+      "placeId": "jaipur_nahargarh_fort",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Nahargarh_Fort.jpg",
+      "expectedAuthor": "Tharakan",
+      "expectedLicense": "Public domain (author release)",
+      "expectedWidth": 640,
+      "expectedHeight": 399,
+      "editorialRiskCode": "ORIGINAL_TOO_SMALL",
+      "suggestedFileName": "jaipur_nahargarh_fort.jpg"
+    },
+    {
+      "placeId": "jaipur_panna_meena_kund",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Panna_Meena_Kund.jpg",
+      "expectedAuthor": "Manojmeena",
+      "expectedLicense": "CC BY-SA 4.0",
+      "expectedWidth": 10480,
+      "expectedHeight": 3776,
+      "editorialRiskCode": "ULTRAWIDE_CROP_RISK",
+      "suggestedFileName": "jaipur_panna_meena_kund.jpg"
+    }
+  ]
+}

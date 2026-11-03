@@ -1,0 +1,7 @@
+﻿placeId,cityId,oldGameINRPerAdult,sourced2026OrAlternateINR,candidateShouldReplaceGame,sourceIDs,confidence,reasonJa
+delhi_red_fort,delhi,500,500,no,DELHI_FORT_500,SECONDARY_GOV_EDUCATION_OLD,Delhi education page says ₹500; old Monday closure contradicts 2026 notice; tariff must be confirmed by ASI ticket portal.
+delhi_humayun_tomb,delhi,600,,no,HUMAYUN_600|HUMAYUN_550,PRIMARY_OFFICIAL_CONFLICT,"Two Delhi Tourism pages contradict: foreign ₹600 vs ₹550; game ₹600 conservative, NOT current verified."
+delhi_agrasen_baoli,delhi,0,0,no,DELHI_AGRASEN|AGRASEN_FREE,GOVERNMENT_ARCHIVE_FREE_NOT_LIVE,Official Delhi Tourism publishes 09:00–17:30; an older government FAQ PDF states free admission. Publication is stale and could not be visually confirmed by PDF screenshot; check current counter if necessary.
+jaipur_city_palace,jaipur,1000,1200,no,CITY_PALACE_1200_A|CITY_PALACE_1200_B|CITY_PALACE,MULTISOURCE_SECONDARY_2026,"₹1,200 international adult reported by 2026 sources. Operator foreign selector did not render in public scrape; game ₹1,000 is a distinct estimate."
+jaipur_jaigarh_fort,jaipur,500,,no,JAIGARH_700|JAIGARH_85|JAIGARH,SECONDARY_CONFLICT_700_V_85,Foreign operator tab not retrieved. Secondary prices ₹700 and ₹85 disagree; domestic ₹200 is not foreign price.
+jaipur_panna_meena_kund,jaipur,0,0,no,PANNA_FREE,SECONDARY_FREE_VIEW_ONLY,Multiple recent visitor guides report free street-side viewing; no official ticket/step access rule confirmed.

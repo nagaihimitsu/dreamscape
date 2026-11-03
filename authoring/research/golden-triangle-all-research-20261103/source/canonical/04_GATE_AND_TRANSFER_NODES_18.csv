@@ -1,0 +1,19 @@
+﻿placeId,nodeId,nodeRole,description,latitudeVerified,longitudeVerified,verification,sourceId,sourceUrl,checkedAt
+agra_taj_mahal,taj_east_parking,VEHICLE_DROPOFF,Shilpgram / east parking; local transfer required,,,NOT_GPS_VERIFIED,TAJ_DIST,https://agra.nic.in/tourist-place/tajmahal/,2026-11-03
+agra_taj_mahal,taj_east_gate,ENTRY,"East Gate; authorised entry, ticket/security",,,NOT_GPS_VERIFIED,TAJ,https://tajmahal.gov.in/visiting-hours.aspx,2026-11-03
+agra_taj_mahal,taj_west_parking,VEHICLE_DROPOFF,West parking; walk/cart to gate,,,NOT_GPS_VERIFIED,TAJ_DIST,https://agra.nic.in/tourist-place/tajmahal/,2026-11-03
+agra_taj_mahal,taj_west_gate,ENTRY,"West Gate; authorised entry, ticket/security",,,NOT_GPS_VERIFIED,TAJ,https://tajmahal.gov.in/visiting-hours.aspx,2026-11-03
+agra_taj_mahal,taj_south_gate,EXIT_ONLY,South Gate currently exit only,,,NOT_GPS_VERIFIED,TAJ,https://tajmahal.gov.in/visiting-hours.aspx,2026-11-03
+agra_agra_fort,agra_amar_singh_gate,ENTRY,Only ordinary tourist gate,,,NOT_GPS_VERIFIED,AGRAFORT,https://agra.nic.in/tourist-place/agra-fort/,2026-11-03
+agra_agra_fort,agra_delhi_gate,NO_GENERAL_ENTRY,Do not permit standard tourist arrival,,,NOT_GPS_VERIFIED,AGRAFORT,https://agra.nic.in/tourist-place/agra-fort/,2026-11-03
+agra_fatehpur_sikri,sikri_lower_parking,VEHICLE_DROPOFF,Lower parking and battery shuttle connection,,,NOT_GPS_VERIFIED,SIKRI,https://agra.nic.in/tourist-place/fatehpur-sikri/,2026-11-03
+agra_fatehpur_sikri,sikri_palace_entry,ENTRY,"Ticket near Diwan-i-Aam, authorised shuttle",,,NOT_GPS_VERIFIED,SIKRI,https://agra.nic.in/tourist-place/fatehpur-sikri/,2026-11-03
+jaipur_amber_fort,amber_suraj_pol,WALK_ENTRY,Pedestrian approach,,,NOT_GPS_VERIFIED,JAIPUR_AMBER,https://www.tourism.rajasthan.gov.in/content/rajasthan-tourism/en/tourist-destinations/amber-palace.html,2026-11-03
+jaipur_amber_fort,amber_chand_pol,VEHICLE_ENTRY,Car approach to Jaleb Chowk,,,NOT_GPS_VERIFIED,JAIPUR_AMBER,https://www.tourism.rajasthan.gov.in/content/rajasthan-tourism/en/tourist-destinations/amber-palace.html,2026-11-03
+jaipur_hawa_mahal,hawa_road_facade,VIEWPOINT,Exterior front facade photo only,,,NOT_GPS_VERIFIED,JAIPUR_HAWA,https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal,2026-11-03
+jaipur_hawa_mahal,hawa_rear_entrance,ENTRY,Rear-side visitor admission; not front wall,,,NOT_GPS_VERIFIED,JAIPUR_HAWA,https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal,2026-11-03
+jaipur_city_palace,citypalace_gate2,PARKING,Operator parking only at Gate 2 Jaleb Chowk,,,NOT_GPS_VERIFIED,CITY_PALACE,https://citypalace.org/visit,2026-11-03
+jaipur_city_palace,citypalace_museum_entry,ENTRY,"Museum ticket entrance, subject to same-day staff instructions",,,NOT_GPS_VERIFIED,CITY_PALACE,https://citypalace.org/visit,2026-11-03
+jaipur_jal_mahal,jal_mahal_shore,VIEWPOINT,Only publicly reachable lakeshore exterior,,,NOT_GPS_VERIFIED,JAIPUR_MAHAL,https://www.tourism.rajasthan.gov.in/content/rajasthan-tourism/en/tourist-destinations/jal-mahal.html,2026-11-03
+delhi_lotus_temple,lotus_main_gate,ENTRY,Main gate facing DDA parking,,,NOT_GPS_VERIFIED,DELHI_LOTUS,https://bahaihouseofworship.in/plan-a-visit/,2026-11-03
+delhi_humayun_tomb,humayun_west_gate,ENTRY,Main west entrance; exact entry GPS unverified,,,NOT_GPS_VERIFIED,DELHI_HUM_A,https://www.delhitourism.gov.in/tourist_place/humayun_tomb.html,2026-11-03

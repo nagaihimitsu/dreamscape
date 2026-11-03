@@ -1,0 +1,21 @@
+﻿caseId,scope,intercityModel,initialBudgetINR,baselineEntryCostINR,additionalEntryCostINR,entryCostScenarioINR,intercityGameModelINR,remainingBeforeLocalTravelAndMealsINR,includesLocalTravel,includesMeals,includesCityDatesAP,notCurrentOfficialTravelQuote,notes
+baseline,main12,car_game_model,30000,15940,0,15940,6500,7560,false,false,false,true,Original fee model; NOT a current real-world price quotation
+baseline,main12,rail_game_model,30000,15940,0,15940,2430,11630,false,false,false,true,Original fee model; NOT a current real-world price quotation
+baseline,all30,car_game_model,30000,21760,0,21760,6500,1740,false,false,false,true,Original fee model; NOT a current real-world price quotation
+baseline,all30,rail_game_model,30000,21760,0,21760,2430,5810,false,false,false,true,Original fee model; NOT a current real-world price quotation
+city_palace_1200_foreign_candidate,main12,car_game_model,30000,15940,400,16340,6500,7160,false,false,false,true,₹1200 vs game ₹1000 per adult; secondary 2026 only
+city_palace_1200_foreign_candidate,main12,rail_game_model,30000,15940,400,16340,2430,11230,false,false,false,true,₹1200 vs game ₹1000 per adult; secondary 2026 only
+city_palace_1200_foreign_candidate,all30,car_game_model,30000,21760,400,22160,6500,1340,false,false,false,true,₹1200 vs game ₹1000 per adult; secondary 2026 only
+city_palace_1200_foreign_candidate,all30,rail_game_model,30000,21760,400,22160,2430,5410,false,false,false,true,₹1200 vs game ₹1000 per adult; secondary 2026 only
+red_fort_600_foreign_candidate,main12,car_game_model,30000,15940,200,16140,6500,7360,false,false,false,true,Red Fort ₹600 vs game ₹500 per adult; official 2026 booking not checked
+red_fort_600_foreign_candidate,main12,rail_game_model,30000,15940,200,16140,2430,11430,false,false,false,true,Red Fort ₹600 vs game ₹500 per adult; official 2026 booking not checked
+red_fort_600_foreign_candidate,all30,car_game_model,30000,21760,200,21960,6500,1540,false,false,false,true,Red Fort ₹600 vs game ₹500 per adult; official 2026 booking not checked
+red_fort_600_foreign_candidate,all30,rail_game_model,30000,21760,200,21960,2430,5610,false,false,false,true,Red Fort ₹600 vs game ₹500 per adult; official 2026 booking not checked
+both_city_palace_red_fort,main12,car_game_model,30000,15940,600,16540,6500,6960,false,false,false,true,Combination of secondary candidates
+both_city_palace_red_fort,main12,rail_game_model,30000,15940,600,16540,2430,11030,false,false,false,true,Combination of secondary candidates
+both_city_palace_red_fort,all30,car_game_model,30000,21760,600,22360,6500,1140,false,false,false,true,Combination of secondary candidates
+both_city_palace_red_fort,all30,rail_game_model,30000,21760,600,22360,2430,5210,false,false,false,true,Combination of secondary candidates
+plus_jaigarh_700_hypothesis,main12,car_game_model,30000,15940,600,16540,6500,6960,false,false,false,true,Jaigarh ₹700 vs game ₹500 per adult; conflict with ₹85 secondary listing
+plus_jaigarh_700_hypothesis,main12,rail_game_model,30000,15940,600,16540,2430,11030,false,false,false,true,Jaigarh ₹700 vs game ₹500 per adult; conflict with ₹85 secondary listing
+plus_jaigarh_700_hypothesis,all30,car_game_model,30000,21760,1000,22760,6500,740,false,false,false,true,Jaigarh ₹700 vs game ₹500 per adult; conflict with ₹85 secondary listing
+plus_jaigarh_700_hypothesis,all30,rail_game_model,30000,21760,1000,22760,2430,4810,false,false,false,true,Jaigarh ₹700 vs game ₹500 per adult; conflict with ₹85 secondary listing

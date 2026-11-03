@@ -1,0 +1,3 @@
+﻿id,service,fromStation,toStation,departureCandidateLocal,arrivalCandidateLocal,rideMinutes,sourceIDs,confirmedLiveDateSchedule,confirmedOperatingDays,gameIssue,status
+ic_delhi_to_agra_rail_01,Gatimaan Express 12050,Hazrat Nizamuddin NZM,Agra Cantt AGC,08:10,09:50,100,IR_GATIMAAN_PIB|IR_GATIMAAN_2026|IR_GATIMAAN_CONFLICT,false,false,Departs 08:10 before existing game 09:00 start; cannot select for same-day 09:00 departure unless time scheme adapts.,OFFICIAL_HISTORICAL_TIME_CORROBORATED_2026_SECONDARY_NOT_LIVE
+ic_agra_to_jaipur_rail_01,Unspecified Agra-Jaipur service,,,,,,INDIA_EDITIONAL,false,false,"No particular route/service/date confirmed, keep nonbookable and game model only",UNVERIFIED

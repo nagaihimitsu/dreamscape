@@ -1,0 +1,11 @@
+﻿placeId,evidenceType,latitude,longitude,sourceUrl,verifiedVisitorEntrance,noteJa
+delhi_qutb_minar,original photo camera location,28.523100,77.184618,https://commons.wikimedia.org/wiki/File:The_Qutb_Minar.jpg,false,写真に記録された撮影場所または被写体位置。施設の入場門・券売所座標ではない。
+delhi_lotus_temple,original photo camera location,28.554952,77.265120,https://commons.wikimedia.org/wiki/File:The_lotus_temple.jpg,false,写真に記録された撮影場所または被写体位置。施設の入場門・券売所座標ではない。
+delhi_agrasen_baoli,original photo camera location,28.626111,77.225000,https://commons.wikimedia.org/wiki/File:Agrasena_ki_Baoli.jpg,false,写真に記録された撮影場所または被写体位置。施設の入場門・券売所座標ではない。
+agra_akbar_tomb,original photo object location,27.220556,77.950556,https://commons.wikimedia.org/wiki/File:The_Tomb_of_Akbar.jpg,false,写真に記録された撮影場所または被写体位置。施設の入場門・券売所座標ではない。
+agra_ram_bagh,original photo object location,27.205306,78.038639,https://commons.wikimedia.org/wiki/File:Entry_gate_of_Aram_Bagh.jpg,false,写真に記録された撮影場所または被写体位置。施設の入場門・券売所座標ではない。
+jaipur_albert_hall,original photo camera location,26.911892,75.819687,https://commons.wikimedia.org/wiki/File:Albert_Hall_Museum.jpg,false,写真に記録された撮影場所または被写体位置。施設の入場門・券売所座標ではない。
+jaipur_panna_meena_kund,original photo object location,26.991167,75.851222,https://commons.wikimedia.org/wiki/File:Panna_Meena_Kund.jpg,false,写真に記録された撮影場所または被写体位置。施設の入場門・券売所座標ではない。
+jaipur_jaigarh_fort,alternative photo camera location,26.979994,75.844094,https://commons.wikimedia.org/wiki/File:Heritage_view_of_Jaigarh_Fort.jpg,false,写真に記録された撮影場所または被写体位置。施設の入場門・券売所座標ではない。
+jaipur_nahargarh_fort,alternative photo camera location,26.939669,75.816654,"https://commons.wikimedia.org/wiki/File:Nahargarh_Fort,_Jaipur,_20191218_1529_9314.jpg",false,写真に記録された撮影場所または被写体位置。施設の入場門・券売所座標ではない。
+jaipur_johari_bazaar,generic alternative photo camera location,26.924667,75.827170,https://commons.wikimedia.org/wiki/File:Jaipur_Market.jpg,false,写真に記録された撮影場所または被写体位置。施設の入場門・券売所座標ではない。

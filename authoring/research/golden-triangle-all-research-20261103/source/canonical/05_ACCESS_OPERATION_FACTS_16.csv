@@ -1,0 +1,17 @@
+﻿placeId,nodeId,ruleKind,statementJaOrEn,sourceIDs,quality,verifiedGateLatitude,verifiedGateLongitude,verifiedGPS,checkedAt
+agra_taj_mahal,east_gate,admit,Eastern gate is available for admission; East ticket window; Shilpgram parking and authorized battery carts.,UP_TAJ_GATE|UP_TAJ_TRANSPORT,operator_confirmed_rule,,,false,2026-11-03
+agra_taj_mahal,west_gate,admit,Western gate is available for admission; West ticket window near Saheli Burj; Amrood ka Teela parking.,UP_TAJ_GATE|UP_TAJ_TRANSPORT,operator_confirmed_rule,,,false,2026-11-03
+agra_taj_mahal,south_gate,exit_only,South gate is not an admission gate; exit only per current operator notice.,UP_TAJ_GATE,operator_confirmed_rule,,,false,2026-11-03
+agra_taj_mahal,east_west_shuttle,included_in_foreign_base,Battery bus or golf cart fee INCLUDED in foreign entry ticket; do not bill twice in game.,UP_TAJ_TRANSPORT,operator_confirmed_rule,,,false,2026-11-03
+agra_agra_fort,amar_singh_gate,admit,District govt states visitor entrance is Amar Singh Gate; parts closed because of Army use.,UP_AGRA_FORT,government_confirmed_rule,,,false,2026-11-03
+agra_fatehpur_sikri,base_parking_battery_bus,transfer,Private vehicles park at base; authorized battery buses to monument gate. Station/boarding stop GPS not verified.,UP_FATEHPUR,government_confirmed_rule,,,false,2026-11-03
+jaipur_amber_fort,suraj_pol,pedestrian,Rajasthan Tourism: pedestrians/elephants approach through Suraj Pol to Jaleb Chowk.,RAJ_AMBER,government_confirmed_rule,,,false,2026-11-03
+jaipur_amber_fort,chand_pol,vehicle,Rajasthan Tourism: car approaches through Chand Pol to Jaleb Chowk.,RAJ_AMBER,government_confirmed_rule,,,false,2026-11-03
+jaipur_city_palace,gate_2,parking,City Palace official: vehicle parking is ONLY at Gate No.2 near Jaleb Chowk.,CITY_PALACE,operator_confirmed_rule,,,false,2026-11-03
+jaipur_city_palace,gate_1,pedestrian_alternative,JCA official: closest gallery entrance is City Palace Gate No.1; museum tickets still required.,JAIPUR_ART,operator_confirmed_rule_for_JCA,,,false,2026-11-03
+jaipur_jaigarh_fort,parking,parking,"Jaigarh operator: parking available outside fort, GPS not given.",JAIGARH,operator_confirmed_rule,,,false,2026-11-03
+delhi_lotus_temple,visitor_hours,open_hours,Tuesday-Sunday 08:30-17:00; Monday closed; operator warns hall may close for large crowds or heavy rain.,BAHAI,operator_confirmed_rule,,,false,2026-11-03
+delhi_red_fort,monday,weekday_claim,February 2026 PTI report cites ASI changed to all-days opening; underlying ASI order not retrieved.,RED_FORT_2026,secondary_named_authority,,,false,2026-11-03
+delhi_humayun_tomb,foreign_fee_and_hours,conflict,Two Delhi government pages differ on foreign fee (₹600 vs ₹550) and closing time; no certainty.,HUMAYUN_600|HUMAYUN_550,primary_same_operator_conflict,,,false,2026-11-03
+jaipur_city_palace,museum_last_ticket,hours,"Museum 09:30-18:30, last ticket 18:00; night museum temporarily closed; Textile Gallery renovation from Mar 27 2026.",CITY_PALACE,operator_confirmed_rule,,,false,2026-11-03
+jaipur_jaigarh_fort,last_entry,hours,Open daily 09:00-18:30; last entry 18:00.,JAIGARH,operator_confirmed_rule,,,false,2026-11-03

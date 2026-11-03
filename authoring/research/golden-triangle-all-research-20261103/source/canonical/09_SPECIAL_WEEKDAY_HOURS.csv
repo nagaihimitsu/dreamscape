@@ -1,0 +1,6 @@
+﻿placeId,weekday,restriction,officialHours,lastTicket,sourceID,status,gameRule
+delhi_lotus_temple,Monday,closed,Tue-Sun 08:30-17:00,,BAHAI,CONFIRMED_OPERATOR,"Weekday not modelled, retain simplified 09-17 only if disclosed"
+agra_taj_mahal,Friday,general_visits_closed,30min before sunrise through 30min before sunset,Gate ticket windows close 45min before sunset,UP_TAJ_GATE,CONFIRMED_OPERATOR,Cannot represent Friday closure under no-weekday design; no real-world claim
+jaipur_city_palace,Dhulandi,closed_day,09:30-18:30,18:00,CITY_PALACE,CONFIRMED_OPERATOR,Night museum temporarily closed; do not enable
+jaipur_jaigarh_fort,daily,last_entry,09:00-18:30,18:00,JAIGARH,CONFIRMED_OPERATOR,End window must not create arrival at 18:20
+delhi_red_fort,Monday,now_reported_open,Unknown new hours,,RED_FORT_2026,PTI_REPORT_ASI_ORDER_UNOBTAINED,Do not force Monday closed by stale page
