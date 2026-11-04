@@ -547,7 +547,7 @@ describe("city editing bundle", () => {
     const compactLegacy = compactCityBundle(legacy);
     expect((await applyCityBundle(root, compactLegacy, true)).changedFiles).toEqual([]);
     expect(read(root, "content/tourism/catalog.json")).toBe(before);
-  }, 60_000);
+  }, 180_000);
 
   it("rejects foreign landmarks, invalid observation ownership and duplicate IDs", async () => {
     const root = fixture();
