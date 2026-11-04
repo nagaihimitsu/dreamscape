@@ -700,13 +700,6 @@
       "color": "#67836d",
       "fallback": "neutral"
     },
-    "lpb_bg_kuang_si": {
-      "nameJa": "クァンシーの滝",
-      "captionJa": "ルアンパパーン郊外 ／ クァンシーの滝",
-      "color": "#50776c",
-      "fallback": "neutral",
-      "imageAssetId": "lpb_image_kuang_si"
-    },
     "lpb_bg_xieng_thong": {
       "nameJa": "ワット・シェントーン",
       "captionJa": "ルアンパパーン ／ ワット・シェントーン",
