@@ -7,6 +7,7 @@ import { startEncounter, startTourismEncounter } from "../domain/encounter";
 import { departToNextCity } from "../domain/city-travel";
 import { encounters } from "../content/encounters";
 import { minimumHomeFare } from "../domain/travel-routes";
+import { getJourneyForCity } from "../content/journeys";
 
 export type DebugScene = "tourism" | "battle" | "encounter" | "date";
 export type DebugSettings = {
@@ -36,8 +37,14 @@ function startingCity(cityId: string, visited = new Set<string>()): GameState {
   }
   const base = createGame();
   const { travelSettings } = getCityContent(cityId);
-  return { ...base, currentCityId: cityId, travel: { ...base.travel,
-    currentPlaceId: travelSettings.hotelPlaceId, hotelPlaceId: travelSettings.hotelPlaceId } };
+  const journey = getJourneyForCity(cityId);
+  const initial = journey?.initialState;
+  return { ...base, currentCityId: cityId, travelBudget: journey?.initialBudget ?? travelSettings.initialBudget,
+    ap: initial?.ap ?? base.ap, affection: initial?.affection ?? base.affection,
+    trust: initial?.trust ?? base.trust, spark: initial?.spark ?? base.spark,
+    romanceStage: initial?.romanceStage ?? base.romanceStage, confessionStatus: initial?.confessionStatus ?? base.confessionStatus,
+    travel: { ...base.travel, currentPlaceId: travelSettings.hotelPlaceId, hotelPlaceId: travelSettings.hotelPlaceId,
+      ...(journey?.startWeekday === undefined ? {} : { calendar: { journeyDay: 1, cityStartJourneyDay: 1, startWeekday: journey.startWeekday } }) } };
 }
 
 /** Generate a consistent completed journey using the actual game rules. */

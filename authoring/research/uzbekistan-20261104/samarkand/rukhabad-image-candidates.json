@@ -1,0 +1,547 @@
+{
+  "batchcomplete": "",
+  "continue": {
+    "gsroffset": 5,
+    "continue": "gsroffset||"
+  },
+  "query": {
+    "pages": {
+      "29241420": {
+        "pageid": 29241420,
+        "ns": 6,
+        "title": "File:Ak Serai Mausoleum, Samarkand (489666).jpg",
+        "index": 4,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 602298,
+            "width": 1024,
+            "height": 1536,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/1/18/Ak_Serai_Mausoleum%2C_Samarkand_%28489666%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+            "thumbwidth": 1600,
+            "thumbheight": 2400,
+            "thumbattribs": {
+              "src": "https://upload.wikimedia.org/wikipedia/commons/1/18/Ak_Serai_Mausoleum%2C_Samarkand_%28489666%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+              "decoding": "async",
+              "loading": "lazy",
+              "width": 1600,
+              "height": 2400
+            },
+            "url": "https://upload.wikimedia.org/wikipedia/commons/1/18/Ak_Serai_Mausoleum%2C_Samarkand_%28489666%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Ak_Serai_Mausoleum,_Samarkand_(489666).jpg",
+            "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=29241420",
+            "extmetadata": {
+              "DateTime": {
+                "value": "2014-01-12 00:29:23",
+                "source": "mediawiki-metadata",
+                "hidden": ""
+              },
+              "ObjectName": {
+                "value": "Ak Serai Mausoleum, Samarkand (489666)",
+                "source": "mediawiki-metadata"
+              },
+              "CommonsMetadataExtension": {
+                "value": 1.2,
+                "source": "extension",
+                "hidden": ""
+              },
+              "Categories": {
+                "value": "Rukhabad Mausoleum|Flickr images reviewed by File Upload Bot (Magnus Manske)|Photographs by upyernoz|Uploaded by user AlbertHerring|Domes in Samarkand",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "Assessments": {
+                "value": "",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "ImageDescription": {
+                "value": "i was asked not to take photos inside so this is all i got of this particular building",
+                "source": "commons-desc-page"
+              },
+              "DateTimeOriginal": {
+                "value": "2004-09-19 06:52",
+                "source": "commons-desc-page"
+              },
+              "Credit": {
+                "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/upyernoz/489666/\">Ak Serai Mausoleum, Samarkand</a>",
+                "source": "commons-desc-page"
+              },
+              "Artist": {
+                "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/48600082269@N01\">upyernoz</a> from Haverford, USA",
+                "source": "commons-desc-page"
+              },
+              "LicenseShortName": {
+                "value": "CC BY 2.0",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "UsageTerms": {
+                "value": "Creative Commons Attribution 2.0",
+                "source": "commons-desc-page"
+              },
+              "AttributionRequired": {
+                "value": "true",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "LicenseUrl": {
+                "value": "https://creativecommons.org/licenses/by/2.0",
+                "source": "commons-desc-page"
+              },
+              "Copyrighted": {
+                "value": "True",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "Restrictions": {
+                "value": "",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "License": {
+                "value": "cc-by-2.0",
+                "source": "commons-templates",
+                "hidden": ""
+              }
+            }
+          }
+        ]
+      },
+      "31407343": {
+        "pageid": 31407343,
+        "ns": 6,
+        "title": "File:Antiquities of Samarkand. Mausoleum of Sheikh Burkhaneddin Kilich. Rukhabad. General View WDL3736.png",
+        "index": 1,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 1949348,
+            "width": 1284,
+            "height": 1024,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Antiquities_of_Samarkand._Mausoleum_of_Sheikh_Burkhaneddin_Kilich._Rukhabad._General_View_WDL3736.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+            "thumbwidth": 1600,
+            "thumbheight": 1276,
+            "thumbattribs": {
+              "src": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Antiquities_of_Samarkand._Mausoleum_of_Sheikh_Burkhaneddin_Kilich._Rukhabad._General_View_WDL3736.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+              "decoding": "async",
+              "loading": "lazy",
+              "width": 1600,
+              "height": 1276
+            },
+            "url": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Antiquities_of_Samarkand._Mausoleum_of_Sheikh_Burkhaneddin_Kilich._Rukhabad._General_View_WDL3736.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Antiquities_of_Samarkand._Mausoleum_of_Sheikh_Burkhaneddin_Kilich._Rukhabad._General_View_WDL3736.png",
+            "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=31407343",
+            "extmetadata": {
+              "DateTime": {
+                "value": "2014-03-02 10:33:55",
+                "source": "mediawiki-metadata",
+                "hidden": ""
+              },
+              "ObjectName": {
+                "value": "Antiquities of Samarkand. Mausoleum of Sheikh Burkhaneddin Kilich. Rukhabad. General View",
+                "source": "commons-desc-page"
+              },
+              "CommonsMetadataExtension": {
+                "value": 1.2,
+                "source": "extension",
+                "hidden": ""
+              },
+              "Categories": {
+                "value": "Images from the Library of Congress|Images uploaded by Fæ|Artworks without Wikidata item|Rukhabad Mausoleum|PD-Art (PD-old-100)|Images from the World Digital Library|CC-PD-Mark|Samarkand in the Turkestan Album",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "Assessments": {
+                "value": "",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "Artist": {
+                "value": "Bogaevskii, Nikolai V., 1843-1912",
+                "source": "commons-desc-page"
+              },
+              "ImageDescription": {
+                "value": "This photograph of the Rukhabad mausoleum in Samarkand (Uzbekistan) is from the archeological part of <em>Turkestan Album</em>. The six-volume photographic survey was produced in 1871-72 under the patronage of General Konstantin P. von Kaufman, the first governor-general (1867-82) of Turkestan, as the Russian Empire’s Central Asian territories were called. The album devotes special attention to Samarkand’s Islamic architectural heritage. In the center of this view is the mausoleum known as Rukhabad (“dwelling of the soul”), a centralized domed structure probably built in the 1380s for the sage and mystic Sheikh Burkhaneddin Sagardzhi, a prominent Islamic figure in Beijing, where he died. He had requested of his son that his body be returned to Samarkand for burial at the <em>mazar</em> (mausoleum) of Sheikh Basir, another sage. A monumental structure was subsequently erected at the site by Timur (Tamerlane), who revered Sheikh Sagardzhi. The Rukhabad ensemble included a large courtyard enclosed by a cloister, as well as a summer mosque (visible on the left). The entrance to the ensemble is marked by a gate with a pointed portal arch (<em>peshtak</em>) flanked by two domed towers. One of the remarkable features of this photograph is its comprehensive view of an urban neighborhood with courtyards and houses of sun-dried (adobe) brick walls surfaced with clay. In the background is a portion of the city walls.\n<br>Cemeteries; Islamic architecture; Photographic surveys; Sepulchral monuments; Tombs",
+                "source": "commons-desc-page"
+              },
+              "DateTimeOriginal": {
+                "value": "between 1868 and 1872<div style=\"display: none;\">date QS:P571,+1850-00-00T00:00:00Z/7,P1319,+1868-00-00T00:00:00Z/9,P1326,+1872-00-00T00:00:00Z/9</div>",
+                "source": "commons-desc-page"
+              },
+              "Credit": {
+                "value": "<p><a rel=\"nofollow\" class=\"external free\" href=\"http://dl.wdl.org/3736.png\">http://dl.wdl.org/3736.png</a>\n</p>\n<ul><li>Gallery: <a rel=\"nofollow\" class=\"external free\" href=\"http://www.wdl.org/en/item/3736/\">http://www.wdl.org/en/item/3736/</a></li></ul>",
+                "source": "commons-desc-page"
+              },
+              "LicenseShortName": {
+                "value": "Public domain",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "UsageTerms": {
+                "value": "Public domain",
+                "source": "commons-desc-page"
+              },
+              "AttributionRequired": {
+                "value": "false",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "Copyrighted": {
+                "value": "False",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "Restrictions": {
+                "value": "",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "License": {
+                "value": "pd",
+                "source": "commons-templates",
+                "hidden": ""
+              }
+            }
+          }
+        ]
+      },
+      "31399427": {
+        "pageid": 31399427,
+        "ns": 6,
+        "title": "File:Antiquities of Samarkand. Mausoleums of Rukhabad and Ak Sarai. Plans, Facades, and Sections WDL3579.png",
+        "index": 2,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 1475255,
+            "width": 1187,
+            "height": 1024,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Antiquities_of_Samarkand._Mausoleums_of_Rukhabad_and_Ak_Sarai._Plans%2C_Facades%2C_and_Sections_WDL3579.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+            "thumbwidth": 1600,
+            "thumbheight": 1380,
+            "thumbattribs": {
+              "src": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Antiquities_of_Samarkand._Mausoleums_of_Rukhabad_and_Ak_Sarai._Plans%2C_Facades%2C_and_Sections_WDL3579.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+              "decoding": "async",
+              "loading": "lazy",
+              "width": 1600,
+              "height": 1380
+            },
+            "url": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Antiquities_of_Samarkand._Mausoleums_of_Rukhabad_and_Ak_Sarai._Plans%2C_Facades%2C_and_Sections_WDL3579.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Antiquities_of_Samarkand._Mausoleums_of_Rukhabad_and_Ak_Sarai._Plans,_Facades,_and_Sections_WDL3579.png",
+            "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=31399427",
+            "extmetadata": {
+              "DateTime": {
+                "value": "2014-03-01 20:04:54",
+                "source": "mediawiki-metadata",
+                "hidden": ""
+              },
+              "ObjectName": {
+                "value": "Antiquities of Samarkand. Mausoleums of Rukhabad and Ak Sarai. Plans, Facades, and Sections",
+                "source": "commons-desc-page"
+              },
+              "CommonsMetadataExtension": {
+                "value": 1.2,
+                "source": "extension",
+                "hidden": ""
+              },
+              "Categories": {
+                "value": "Images from the Library of Congress|Graphical projection|Images uploaded by Fæ|Artworks without Wikidata item|Ak Sarai Mausoleum, Samarkand|Rukhabad Mausoleum|PD-Art (PD-old-100)|Images from the World Digital Library|CC-PD-Mark|Architectural drawing sheets from Russia|Samarkand in the Turkestan Album",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "Assessments": {
+                "value": "",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "Artist": {
+                "value": "Bogaevskii, Nikolai V., 1843-1912",
+                "source": "commons-desc-page"
+              },
+              "ImageDescription": {
+                "value": "These plans, elevations and sections of two mausoleums in Samarkand (Uzbekistan) are from the archeological part of <em>Turkestan Album</em>. The six-volume photographic survey was produced in 1871-72 under the patronage of General Konstantin P. von Kaufman, the first governor-general (1867-82) of Turkestan, as the Russian Empire’s Central Asian territories were called. The album devotes special attention to Samarkand’s Islamic architectural heritage. On the left is the site plan of the mausoleum known as Rukhabad (“dwelling of the soul”), a centralized domed structure located near the Timurid mausoleum Gur-Emir and probably built in the 1380s for the sage and mystic Sheikh Burkhaneddin Sagardzhi, who was revered by Timur (Tamerlane). The main entrance of Rukhabad faced a large courtyard enclosed by a cloister. The plan also indicates two square pools. Below the plan are an elevation and section, with primary masonry walls marked in red. On the right is the more modest Ak Sarai mausoleum, built in the 1470s at the command of the Timurid ruler Abu Said to supplement Gur-Emir as a burial place for the dynasty’s male line. (Abu Said died around 1469 in battle with Turkmen forces in Azerbaijan.) Also a centralized structure, the partially damaged Ak Sarai lacked the imposing dome of Rukhabad. Nonetheless, its association with the Timurid dynasty endowed it with great significance.\n<br>Architectural drawings; Islamic architecture; Projections; Sepulchral monuments; Timur, 1336-1405; Tombs",
+                "source": "commons-desc-page"
+              },
+              "DateTimeOriginal": {
+                "value": "between 1868 and 1872<div style=\"display: none;\">date QS:P571,+1850-00-00T00:00:00Z/7,P1319,+1868-00-00T00:00:00Z/9,P1326,+1872-00-00T00:00:00Z/9</div>",
+                "source": "commons-desc-page"
+              },
+              "Credit": {
+                "value": "<p><a rel=\"nofollow\" class=\"external free\" href=\"http://dl.wdl.org/3579.png\">http://dl.wdl.org/3579.png</a>\n</p>\n<ul><li>Gallery: <a rel=\"nofollow\" class=\"external free\" href=\"http://www.wdl.org/en/item/3579/\">http://www.wdl.org/en/item/3579/</a></li></ul>",
+                "source": "commons-desc-page"
+              },
+              "LicenseShortName": {
+                "value": "Public domain",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "UsageTerms": {
+                "value": "Public domain",
+                "source": "commons-desc-page"
+              },
+              "AttributionRequired": {
+                "value": "false",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "Copyrighted": {
+                "value": "False",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "Restrictions": {
+                "value": "",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "License": {
+                "value": "pd",
+                "source": "commons-templates",
+                "hidden": ""
+              }
+            }
+          }
+        ]
+      },
+      "25708263": {
+        "pageid": 25708263,
+        "ns": 6,
+        "title": "File:Hotel \"Samarkand\" and mausoleum Ruhabad.jpg",
+        "index": 5,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 2831279,
+            "width": 3884,
+            "height": 2600,
+            "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/Hotel_%22Samarkand%22_and_mausoleum_Ruhabad.jpg/1920px-Hotel_%22Samarkand%22_and_mausoleum_Ruhabad.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+            "thumbwidth": 1600,
+            "thumbheight": 1071,
+            "responsiveUrls": {
+              "2": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/Hotel_%22Samarkand%22_and_mausoleum_Ruhabad.jpg/3840px-Hotel_%22Samarkand%22_and_mausoleum_Ruhabad.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+            },
+            "thumbattribs": {
+              "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/Hotel_%22Samarkand%22_and_mausoleum_Ruhabad.jpg/1920px-Hotel_%22Samarkand%22_and_mausoleum_Ruhabad.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+              "decoding": "async",
+              "loading": "lazy",
+              "width": 1600,
+              "height": 1071,
+              "srcset": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/Hotel_%22Samarkand%22_and_mausoleum_Ruhabad.jpg/3840px-Hotel_%22Samarkand%22_and_mausoleum_Ruhabad.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 2x"
+            },
+            "url": "https://upload.wikimedia.org/wikipedia/commons/f/f8/Hotel_%22Samarkand%22_and_mausoleum_Ruhabad.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Hotel_%22Samarkand%22_and_mausoleum_Ruhabad.jpg",
+            "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=25708263",
+            "extmetadata": {
+              "DateTime": {
+                "value": "2013-04-22 11:01:33",
+                "source": "mediawiki-metadata",
+                "hidden": ""
+              },
+              "ObjectName": {
+                "value": "Hotel \"Samarkand\" and mausoleum Ruhabad",
+                "source": "mediawiki-metadata"
+              },
+              "CommonsMetadataExtension": {
+                "value": 1.2,
+                "source": "extension",
+                "hidden": ""
+              },
+              "Categories": {
+                "value": "Taken with Nikon D200|Rukhabad Mausoleum|Samarkand Hotel|Flickr images reviewed by File Upload Bot (Magnus Manske)|Files with coordinates missing SDC location of creation|Files from Dave Proffer Flickr stream",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "Assessments": {
+                "value": "",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "GPSLatitude": {
+                "value": "39.651358",
+                "source": "commons-desc-page"
+              },
+              "GPSLongitude": {
+                "value": "66.969780",
+                "source": "commons-desc-page"
+              },
+              "GPSMapDatum": {
+                "value": "WGS-84",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "ImageDescription": {
+                "value": "stans08-261",
+                "source": "commons-desc-page"
+              },
+              "DateTimeOriginal": {
+                "value": "2008-09-26 09:04",
+                "source": "commons-desc-page"
+              },
+              "Credit": {
+                "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/deepphoto/3135020310/\">stans08-261</a>",
+                "source": "commons-desc-page"
+              },
+              "Artist": {
+                "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/23442653@N00\">Dave Proffer</a>",
+                "source": "commons-desc-page"
+              },
+              "LicenseShortName": {
+                "value": "CC BY 2.0",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "UsageTerms": {
+                "value": "Creative Commons Attribution 2.0",
+                "source": "commons-desc-page"
+              },
+              "AttributionRequired": {
+                "value": "true",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "LicenseUrl": {
+                "value": "https://creativecommons.org/licenses/by/2.0",
+                "source": "commons-desc-page"
+              },
+              "Copyrighted": {
+                "value": "True",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "Restrictions": {
+                "value": "",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "License": {
+                "value": "cc-by-2.0",
+                "source": "commons-templates",
+                "hidden": ""
+              }
+            }
+          }
+        ]
+      },
+      "2005942": {
+        "pageid": 2005942,
+        "ns": 6,
+        "title": "File:Ruhabad.JPG",
+        "index": 3,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 633528,
+            "width": 2288,
+            "height": 1712,
+            "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/05/Ruhabad.JPG/1920px-Ruhabad.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+            "thumbwidth": 1600,
+            "thumbheight": 1197,
+            "responsiveUrls": {
+              "2": "https://upload.wikimedia.org/wikipedia/commons/0/05/Ruhabad.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+            },
+            "thumbattribs": {
+              "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/05/Ruhabad.JPG/1920px-Ruhabad.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+              "decoding": "async",
+              "loading": "lazy",
+              "width": 1600,
+              "height": 1197,
+              "srcset": "https://upload.wikimedia.org/wikipedia/commons/0/05/Ruhabad.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled 2x"
+            },
+            "url": "https://upload.wikimedia.org/wikipedia/commons/0/05/Ruhabad.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Ruhabad.JPG",
+            "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=2005942",
+            "extmetadata": {
+              "DateTime": {
+                "value": "2007-04-27 07:27:34",
+                "source": "mediawiki-metadata",
+                "hidden": ""
+              },
+              "ObjectName": {
+                "value": "Ruhabad",
+                "source": "mediawiki-metadata"
+              },
+              "CommonsMetadataExtension": {
+                "value": 1.2,
+                "source": "extension",
+                "hidden": ""
+              },
+              "Categories": {
+                "value": "Taken with Olympus C-4100Z / C-4000Z|Rukhabad Mausoleum|Self-published work|Brick buildings in Uzbekistan|Files with coordinates missing SDC location of creation|Domes in Samarkand",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "Assessments": {
+                "value": "",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "GPSLatitude": {
+                "value": "39.650821",
+                "source": "commons-desc-page"
+              },
+              "GPSLongitude": {
+                "value": "66.967983",
+                "source": "commons-desc-page"
+              },
+              "GPSMapDatum": {
+                "value": "WGS-84",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "ImageDescription": {
+                "value": "<b><a href=\"//commons.wikimedia.org/wiki/Category:Rukhabad_Mausoleum\" title=\"Category:Rukhabad Mausoleum\">Ruhabad Mausoleum</a></b> — near Guri Amir in Samarqand, Uzbekistan.",
+                "source": "commons-desc-page"
+              },
+              "DateTimeOriginal": {
+                "value": "2006-08",
+                "source": "commons-desc-page"
+              },
+              "Credit": {
+                "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                "source": "commons-desc-page"
+              },
+              "Artist": {
+                "value": "<a href=\"//commons.wikimedia.org/wiki/User:Alaexis\" title=\"User:Alaexis\">Alaexis</a>",
+                "source": "commons-desc-page"
+              },
+              "LicenseShortName": {
+                "value": "CC BY-SA 2.5",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "UsageTerms": {
+                "value": "Creative Commons Attribution-Share Alike 2.5",
+                "source": "commons-desc-page"
+              },
+              "AttributionRequired": {
+                "value": "true",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "LicenseUrl": {
+                "value": "https://creativecommons.org/licenses/by-sa/2.5",
+                "source": "commons-desc-page"
+              },
+              "Copyrighted": {
+                "value": "True",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "Restrictions": {
+                "value": "",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "License": {
+                "value": "cc-by-sa-2.5",
+                "source": "commons-templates",
+                "hidden": ""
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

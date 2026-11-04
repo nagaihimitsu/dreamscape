@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createGame, type GameState } from "../domain/game";
-import { advanceCompletedIndiaCity } from "../domain/city-travel";
+import { advanceCompletedJourneyCity } from "../domain/city-travel";
 import { finishTravelEventIfComplete } from "../domain/travel-game";
 import {
   backupAndCreate, deleteSaveData, LEARNING_KEY, SAVE_KEY, loadGame,
@@ -37,7 +37,7 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCityCh
     const changed = finishTravelEventIfComplete(previous, change(previous));
     if (changed === previous) return false;
     // The action and any automatic city departure form one saved snapshot.
-    const next = advanceCompletedIndiaCity(changed, changed.revision);
+    const next = advanceCompletedJourneyCity(changed, changed.revision);
     if (autoSave) {
       const saved = saveGame(storage, next, savedGameRef.current);
       if (!saved.ok) { setNotice(saved.message); return false; }
@@ -59,7 +59,7 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCityCh
   }, [autoSave]);
   // A completed city may gain a published successor after the last save.
   useEffect(() => {
-    if (game) commit((state) => advanceCompletedIndiaCity(state, state.revision));
+    if (game) commit((state) => advanceCompletedJourneyCity(state, state.revision));
   }, [game]);
 
   function begin(player: string, heroine: string, journeyId: string) {

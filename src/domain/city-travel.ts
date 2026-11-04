@@ -40,15 +40,17 @@ export function departToNextCity(state: GameState, expectedRevision: number): Ga
   };
 }
 
-/** Advance the India journey only after the current city's result and epilogue.
+/** Advance a configured journey only after the current city's result and epilogue.
  * A later city must be complete; an unfinished or last city remains playable.
  * Callers persist the returned snapshot together with the action that produced it.
  */
-export function advanceCompletedIndiaCity(state: GameState, expectedRevision: number): GameState {
-  if (state.revision !== expectedRevision || getJourneyForCity(state.currentCityId)?.id !== "golden_triangle" ||
+export function advanceCompletedJourneyCity(state: GameState, expectedRevision: number): GameState {
+  if (state.revision !== expectedRevision || getJourneyForCity(state.currentCityId)?.cityTransition !== "after_epilogue" ||
       !getNextCity(state) || state.activeDate || state.activeBattle || state.activeTourism ||
       state.activeEncounter || state.activeEpilogue || state.travel.activeEvent) return state;
   if (!state.viewedEpilogueCityIds.includes(state.currentCityId))
     return startCityEpilogue(state, state.currentCityId, expectedRevision);
   return departToNextCity(state, expectedRevision);
 }
+
+export const advanceCompletedIndiaCity = advanceCompletedJourneyCity;

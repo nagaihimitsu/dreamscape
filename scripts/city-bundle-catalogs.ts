@@ -10,8 +10,8 @@ import { dateDestinationSchema, dateDestinationsSchema } from "../src/content/da
 import { journeyCatalogSchema } from "../src/content/journey-catalog";
 import type { CityBundle } from "./city-bundle-schema";
 import { catalogFiles, cityFiles, decisionFile, existing, read } from "./city-bundle-files";
-
-const observationsFile = "authoring/drafts/golden-triangle/observation-cards.json";
+import { journeyAuthoringProfiles } from "./journey-authoring";
+import { cityTransitFile, readTransitLedger, replaceTransitDecisions } from "./journey-transit-review";
 
 export const assertUniqueIds = <T>(items: readonly T[], get: (v: T) => string, label: string) => {
   const ids = items.map(get);
@@ -34,24 +34,26 @@ function replaceOwnedEntries<T extends { id: string }>(current: readonly T[], re
   return [...merged, ...pending.values()];
 }
 
-/** Ensure India observation regions stay tied to their reviewed image bytes. */
+/** Ensure observation regions stay tied to their reviewed image bytes. */
 function checkObservationImages(root: string, bundle: CityBundle, baseline: CityBundle | null) {
-  const file = path.join(root, observationsFile);
-  if (!existsSync(file)) return;
-  const observations = read(root, observationsFile);
-  for (const previous of baseline?.travel.places ?? []) {
-    if (observations.images?.[previous.id] && !bundle.travel.places.some((place) => place.id === previous.id))
-      throw new Error(`Observation place removed: ${previous.id}; review observations first`);
-  }
-  for (const place of bundle.travel.places) {
-    const expected = observations.images?.[place.id];
-    if (!expected) continue;
-    const bg = bundle.backgrounds[place.backgroundAssetId];
-    const asset = bundle.assets.find((entry) => entry.id === bg?.imageAssetId);
-    if (!asset || asset.path !== expected.path) throw new Error(`Observation image changed for ${place.id}; review observations first`);
-    const absolute = path.join(root, "public", asset.path);
-    if (!existsSync(absolute) || createHash("sha256").update(readFileSync(absolute)).digest("hex") !== expected.sha256)
-      throw new Error(`Observation image hash changed for ${place.id}; review observations first`);
+  for (const { observationFile: observationsFile } of Object.values(journeyAuthoringProfiles)) {
+    const file = path.join(root, observationsFile);
+    if (!existsSync(file)) continue;
+    const observations = read(root, observationsFile);
+    for (const previous of baseline?.travel.places ?? []) {
+      if (observations.images?.[previous.id] && !bundle.travel.places.some((place) => place.id === previous.id))
+        throw new Error(`Observation place removed: ${previous.id}; review observations first`);
+    }
+    for (const place of bundle.travel.places) {
+      const expected = observations.images?.[place.id];
+      if (!expected) continue;
+      const bg = bundle.backgrounds[place.backgroundAssetId];
+      const asset = bundle.assets.find((entry) => entry.id === bg?.imageAssetId);
+      if (!asset || asset.path !== expected.path) throw new Error(`Observation image changed for ${place.id}; review observations first`);
+      const absolute = path.join(root, "public", asset.path);
+      if (!existsSync(absolute) || createHash("sha256").update(readFileSync(absolute)).digest("hex") !== expected.sha256)
+        throw new Error(`Observation image hash changed for ${place.id}; review observations first`);
+    }
   }
 }
 
@@ -130,6 +132,11 @@ export function mergeCityCatalogs(root: string, bundle: CityBundle, baseline: Ci
   const values: Record<string, unknown> = { [cityPath]: bundle.city, [travelPath]: bundle.travel, [settingsPath]: bundle.travelSettings,
     [catalogFiles[0]]: presentation, [catalogFiles[1]]: tourism, [catalogFiles[2]]: destinationCatalog };
   if (bundle.transitDecisions) {
+    const ownFile = cityTransitFile(root, cityId);
+    if (ownFile) {
+      values[ownFile] = replaceTransitDecisions(readTransitLedger(root, ownFile), bundle.transitDecisions);
+      return values;
+    }
     const ledger = read(root, decisionFile);
     if (!isDeepStrictEqual(baseline?.transitDecisions, bundle.transitDecisions)) {
       // Keep every other city's records in their original order.

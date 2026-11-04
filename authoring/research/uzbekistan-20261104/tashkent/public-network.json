@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "cityId": "tashkent",
+  "metroLines": {
+    "Uzbekiston": [
+      "Chorsu",
+      "Gafur Gulom",
+      "Alisher Navoiy",
+      "Ozbekiston",
+      "Kosmonavtlar",
+      "Oybek"
+    ],
+    "Chilonzor": [
+      "Milliy Bog",
+      "Xalqlar Dostligi",
+      "Paxtakor",
+      "Mustaqillik Maydoni",
+      "Amir Temur Xiyoboni"
+    ],
+    "Yunusobod": [
+      "Ming Orik",
+      "Yunus Rajabiy",
+      "Abdulla Qodiriy",
+      "Minor",
+      "Bodomzor"
+    ]
+  },
+  "metroAccess": {
+    "khast_imam": [
+      "Chorsu",
+      24
+    ],
+    "chorsu_bazaar": [
+      "Chorsu",
+      3
+    ],
+    "kukeldash": [
+      "Chorsu",
+      7
+    ],
+    "amir_temur_square": [
+      "Amir Temur Xiyoboni",
+      3
+    ],
+    "anhor_canal": [
+      "Bodomzor",
+      18
+    ],
+    "japanese_garden": [
+      "Bodomzor",
+      10
+    ],
+    "navoi_theatre": [
+      "Kosmonavtlar",
+      12
+    ],
+    "independence_square": [
+      "Mustaqillik Maydoni",
+      5
+    ],
+    "abulkasym": [
+      "Milliy Bog",
+      7
+    ],
+    "navoi_park": [
+      "Milliy Bog",
+      12
+    ],
+    "hotel_hub": [
+      "Amir Temur Xiyoboni",
+      6
+    ]
+  },
+  "busCorridors": [
+    {
+      "fromStop": "Imam Khazrat",
+      "toStop": "Chorsu centre/market",
+      "outwardMinutes": 12,
+      "returnMinutes": 12,
+      "line": "42"
+    },
+    {
+      "fromStop": "Chorsu centre/market",
+      "toStop": "Mustaqillik square",
+      "outwardMinutes": 20,
+      "returnMinutes": 20,
+      "line": "28"
+    },
+    {
+      "fromStop": "Mustaqillik square",
+      "toStop": "Amir Temur square",
+      "outwardMinutes": 15,
+      "returnMinutes": 15,
+      "line": "walk"
+    },
+    {
+      "fromStop": "Amir Temur square",
+      "toStop": "TsUM",
+      "outwardMinutes": 6,
+      "returnMinutes": 6,
+      "line": "51"
+    },
+    {
+      "fromStop": "TsUM",
+      "toStop": "Ozbekiston metro",
+      "outwardMinutes": 10,
+      "returnMinutes": 12,
+      "line": "51"
+    },
+    {
+      "fromStop": "Ozbekiston metro",
+      "toStop": "Beshyogoch square",
+      "outwardMinutes": 12,
+      "returnMinutes": 16,
+      "line": "51"
+    },
+    {
+      "fromStop": "Amir Temur square",
+      "toStop": "Geologorazvedka",
+      "outwardMinutes": 18,
+      "returnMinutes": 18,
+      "line": "51"
+    },
+    {
+      "fromStop": "Geologorazvedka",
+      "toStop": "Akvapark",
+      "outwardMinutes": 5,
+      "returnMinutes": 5,
+      "line": "51"
+    }
+  ],
+  "busAccess": {
+    "khast_imam": [
+      "khast",
+      4
+    ],
+    "chorsu_bazaar": [
+      "chorsu",
+      3
+    ],
+    "kukeldash": [
+      "chorsu",
+      5
+    ],
+    "amir_temur_square": [
+      "amir",
+      3
+    ],
+    "anhor_canal": [
+      "geologo",
+      15
+    ],
+    "japanese_garden": [
+      "akvapark",
+      8
+    ],
+    "navoi_theatre": [
+      "tsum",
+      3
+    ],
+    "independence_square": [
+      "mustaqillik",
+      5
+    ],
+    "abulkasym": [
+      "beshyogoch",
+      20
+    ],
+    "navoi_park": [
+      "beshyogoch",
+      15
+    ],
+    "hotel_hub": [
+      "amir",
+      6
+    ]
+  },
+  "notesJa": "路線・停留所を資料で確認。接続の分数・徒歩アクセス・待機はゲーム推定値。バス51番は南側の往復経路差を別の分数として保持。"
+}

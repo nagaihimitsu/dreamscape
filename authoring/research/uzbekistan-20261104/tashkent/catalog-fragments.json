@@ -1,0 +1,634 @@
+{
+  "assets": [
+    {
+      "id": "uz_img_tashkent_khast_imam",
+      "path": "assets/tourism/uzbekistan/tashkent_khast_imam.jpg",
+      "width": 1600,
+      "height": 978,
+      "altJa": "ハスト・イマーム内のバラク・ハン・マドラサ。中央の装飾門と左右の青いドーム。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Barak-Khan_Madrasa.jpg",
+      "licenseName": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creditJa": "写真：Bgag／Wikimedia Commons／CC0 1.0",
+      "modificationJa": "原本のEXIF方向を正し、横1600px以内へ縮小・JPEG再圧縮。描き足し・AI生成なし。画面表示では端が切れる場合がある。縮小版も原本と同じライセンスで提供。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_tashkent_chorsu_bazaar",
+      "path": "assets/tourism/uzbekistan/tashkent_chorsu_bazaar.jpg",
+      "width": 1600,
+      "height": 1595,
+      "altJa": "チョルスー市場の乾物売り場。ナッツや乾燥果実が袋ごと並ぶ。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Quritilgan_mevalar_va_gazaklar.jpg",
+      "licenseName": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creditJa": "写真：Xkmvch／Wikimedia Commons／CC0 1.0",
+      "modificationJa": "原本のEXIF方向を正し、横1600px以内へ縮小・JPEG再圧縮。描き足し・AI生成なし。画面表示では端が切れる場合がある。縮小版も原本と同じライセンスで提供。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_tashkent_kukeldash",
+      "path": "assets/tourism/uzbekistan/tashkent_kukeldash.jpg",
+      "width": 1600,
+      "height": 1066,
+      "altJa": "クカルダシュ・マドラサの中庭。正面の装飾門と両側の部屋が並ぶ。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kukeldash_Madrasah_in_Tashkent.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Adam Harangozó／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "原本のEXIF方向を正し、横1600px以内へ縮小・JPEG再圧縮。描き足し・AI生成なし。画面表示では端が切れる場合がある。縮小版も原本と同じライセンスで提供。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_tashkent_amir_temur_square",
+      "path": "assets/tourism/uzbekistan/tashkent_amir_temur_square.jpg",
+      "width": 1600,
+      "height": 1200,
+      "altJa": "樹木と散策路が広がるアミール・ティムール広場の全景。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:A._Temur_xiyoboni.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Diloromkhan／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "原本のEXIF方向を正し、横1600px以内へ縮小・JPEG再圧縮。描き足し・AI生成なし。画面表示では端が切れる場合がある。縮小版も原本と同じライセンスで提供。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_tashkent_anhor_canal",
+      "path": "assets/tourism/uzbekistan/tashkent_anhor_canal.jpg",
+      "width": 1600,
+      "height": 1067,
+      "altJa": "アンホール運河の水面と川沿いの散策路。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Anhor_River.JPG",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Bekhruzbek Ochilov／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "原本のEXIF方向を正し、横1600px以内へ縮小・JPEG再圧縮。描き足し・AI生成なし。画面表示では端が切れる場合がある。縮小版も原本と同じライセンスで提供。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_tashkent_japanese_garden",
+      "path": "assets/tourism/uzbekistan/tashkent_japanese_garden.jpg",
+      "width": 1600,
+      "height": 1200,
+      "altJa": "日本庭園の池と石、木々。左奥に小さな東屋が見える。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Japanese_garden_Tashkent_01.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Davide Mauro／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "原本のEXIF方向を正し、横1600px以内へ縮小・JPEG再圧縮。描き足し・AI生成なし。画面表示では端が切れる場合がある。縮小版も原本と同じライセンスで提供。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_tashkent_navoi_theatre",
+      "path": "assets/tourism/uzbekistan/tashkent_navoi_theatre.jpg",
+      "width": 1600,
+      "height": 1200,
+      "altJa": "ナヴォイ劇場のアーチが並ぶ正面外観。手前には木の葉がかかる。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Navoi_Theater_-_Tashkent.jpg",
+      "licenseName": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "creditJa": "写真：Atilin／Wikimedia Commons／CC BY-SA 3.0／Bogomolov.PL（Commons原本の色調整）",
+      "modificationJa": "原本のEXIF方向を正し、横1600px以内へ縮小・JPEG再圧縮。描き足し・AI生成なし。画面表示では端が切れる場合がある。縮小版も原本と同じライセンスで提供。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_tashkent_independence_square",
+      "path": "assets/tourism/uzbekistan/tashkent_independence_square.jpg",
+      "width": 960,
+      "height": 640,
+      "altJa": "独立広場の噴水と水面、その脇を歩く人々。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Independence_square_in_Tashkent.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Yunuskhuja Tuygunkhujaev／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "原本のEXIF方向を正し、横1600px以内へ縮小・JPEG再圧縮。描き足し・AI生成なし。画面表示では端が切れる場合がある。縮小版も原本と同じライセンスで提供。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_tashkent_abulkasym",
+      "path": "assets/tourism/uzbekistan/tashkent_abulkasym.jpg",
+      "width": 1440,
+      "height": 1920,
+      "altJa": "アブルカシム・マドラサにある工房の入口。木製の格子とガラスを組み合わせた扉の部分写真。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Abulkasym_Madrasseh.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Zolfeqar Fatihzadeh／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "原本のEXIF方向を正し、横1600px以内へ縮小・JPEG再圧縮。描き足し・AI生成なし。画面表示では端が切れる場合がある。縮小版も原本と同じライセンスで提供。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_tashkent_navoi_park",
+      "path": "assets/tourism/uzbekistan/tashkent_navoi_park.jpg",
+      "width": 1600,
+      "height": 1200,
+      "altJa": "ナヴォイ公園の湖と、対岸の木々。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Water_reservoir_in_National_park_of_Uzbekistan.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Carpodacus／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "原本のEXIF方向を正し、横1600px以内へ縮小・JPEG再圧縮。描き足し・AI生成なし。画面表示では端が切れる場合がある。縮小版も原本と同じライセンスで提供。",
+      "checkedAt": "2026-11-04"
+    }
+  ],
+  "backgrounds": {
+    "uz_bg_tashkent_khast_imam": {
+      "nameJa": "ハスト・イマーム複合体",
+      "captionJa": "タシュケント ／ ハスト・イマーム複合体（バラク・ハン／2023年の写真）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_khast_imam"
+    },
+    "uz_bg_tashkent_chorsu_bazaar": {
+      "nameJa": "チョルスー・バザール",
+      "captionJa": "タシュケント ／ チョルスー・バザール（乾物売り場／2024年の写真）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_chorsu_bazaar"
+    },
+    "uz_bg_tashkent_kukeldash": {
+      "nameJa": "クカルダシュ・マドラサ",
+      "captionJa": "タシュケント ／ クカルダシュ・マドラサ（2018年の写真）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_kukeldash"
+    },
+    "uz_bg_tashkent_amir_temur_square": {
+      "nameJa": "アミール・ティムール広場",
+      "captionJa": "タシュケント ／ アミール・ティムール広場（公園全景／2023年の写真）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_amir_temur_square"
+    },
+    "uz_bg_tashkent_anhor_canal": {
+      "nameJa": "ミノール周辺のアンホール運河",
+      "captionJa": "タシュケント ／ ミノール周辺のアンホール運河（運河の参考写真／2015年夕景）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_anhor_canal"
+    },
+    "uz_bg_tashkent_japanese_garden": {
+      "nameJa": "日本庭園",
+      "captionJa": "タシュケント ／ 日本庭園（2017年の写真）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_japanese_garden"
+    },
+    "uz_bg_tashkent_navoi_theatre": {
+      "nameJa": "ナヴォイ劇場（外観）",
+      "captionJa": "タシュケント ／ ナヴォイ劇場（外観）（2005年の外観写真）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_navoi_theatre"
+    },
+    "uz_bg_tashkent_independence_square": {
+      "nameJa": "独立広場の庭園",
+      "captionJa": "タシュケント ／ 独立広場の庭園（噴水広場／2016年の写真）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_independence_square"
+    },
+    "uz_bg_tashkent_abulkasym": {
+      "nameJa": "アブルカシム・マドラサ",
+      "captionJa": "タシュケント ／ アブルカシム・マドラサ（工房入口の細部／2026年の写真）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_abulkasym"
+    },
+    "uz_bg_tashkent_navoi_park": {
+      "nameJa": "アリシェル・ナヴォイ公園",
+      "captionJa": "タシュケント ／ アリシェル・ナヴォイ公園（湖の参考写真／2016年）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_navoi_park"
+    },
+    "uz_bg_tashkent_hotel_hub": {
+      "nameJa": "タシュケントの滞在先",
+      "captionJa": "タシュケント ／ 架空の滞在先",
+      "color": "#67836d",
+      "fallback": "neutral"
+    }
+  },
+  "dateDestinations": [
+    {
+      "id": "tashkent_anhor_canal",
+      "cityId": "tashkent",
+      "nameJa": "ミノール周辺のアンホール運河",
+      "nameEn": "Anhor Canal near Minor",
+      "descriptionJa": "ミノール周辺で、タシュケントの街を流れるアンホール運河沿いを歩く候補。背景は同じ運河の参考写真で、代表点そのものの撮影位置と断定しない。",
+      "backgroundAssetId": "uz_bg_tashkent_anhor_canal",
+      "facts": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "The Minor Mosque",
+          "url": "https://uzbekistan.travel/en/o/the-minor-mosque/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ミノール・モスクはAnkhor運河の岸辺にある。2014年に開かれた白い大理石のモスク。"
+        }
+      ]
+    },
+    {
+      "id": "tashkent_japanese_garden",
+      "cityId": "tashkent",
+      "nameJa": "日本庭園",
+      "nameEn": "Japanese Garden",
+      "descriptionJa": "池、石、木々を組み合わせたタシュケントの日本庭園。入場料は二人分のゲーム設定。",
+      "backgroundAssetId": "uz_bg_tashkent_japanese_garden",
+      "facts": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Japanese garden",
+          "url": "https://uzbekistan.travel/en/o/japanese-garden/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "タシュケントの日本庭園は自然を小さな景観にまとめた庭園で、Amir Temur通りのUzexpocentre付近に位置する。"
+        }
+      ]
+    },
+    {
+      "id": "tashkent_navoi_theatre",
+      "cityId": "tashkent",
+      "nameJa": "ナヴォイ劇場（外観）",
+      "nameEn": "Navoi Theatre exterior",
+      "descriptionJa": "オペラとバレエの劇場を、外観と前庭から眺める場所。公演鑑賞は含まない。",
+      "backgroundAssetId": "uz_bg_tashkent_navoi_theatre",
+      "facts": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Grand theatre named after Alisher Navoi",
+          "url": "https://uzbekistan.travel/en/o/grand-theatre-named-after-alisher-navoi/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "タシュケントのオペラ・バレエ劇場。ゲーム候補は外観と前庭のみで、公演の鑑賞・有料入場は含まない。"
+        }
+      ]
+    },
+    {
+      "id": "tashkent_independence_square",
+      "cityId": "tashkent",
+      "nameJa": "独立広場の庭園",
+      "nameEn": "Independence Square gardens",
+      "descriptionJa": "タシュケント中心部の独立広場で、噴水や緑のある公共空間を歩く候補。政府施設の内部には入らない。",
+      "backgroundAssetId": "uz_bg_tashkent_independence_square",
+      "facts": [
+        {
+          "publisher": "Wikipedia",
+          "title": "Mustaqillik Maydoni",
+          "url": "https://en.wikipedia.org/wiki/Mustaqillik_Maydoni",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "タシュケント中心部の独立広場。公共の庭園・散策空間を候補とし、記念彫刻の拡大複製や政府施設への立入りを含まない。"
+        }
+      ]
+    },
+    {
+      "id": "tashkent_abulkasym",
+      "cityId": "tashkent",
+      "nameJa": "アブルカシム・マドラサ",
+      "nameEn": "Abulkasym Madrasah",
+      "descriptionJa": "19世紀のマドラサにある工芸の作業空間。背景は工房入口の部分写真で、建物全景や扉の建造年代を示すものではない。",
+      "backgroundAssetId": "uz_bg_tashkent_abulkasym",
+      "facts": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Abulkasym Sheikh Madrasah",
+          "url": "https://uzbekistan.travel/en/o/tourist-route-through-the-main-zierat-objects-of-tashkent/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アブルカシム・シェイフのマドラサは19世紀に建てられた旧市街の建築。候補は外観と工芸の作業空間で、公演や礼拝への参加を含まない。"
+        }
+      ]
+    },
+    {
+      "id": "tashkent_navoi_park",
+      "cityId": "tashkent",
+      "nameJa": "アリシェル・ナヴォイ公園",
+      "nameEn": "Alisher Navoi National Park",
+      "descriptionJa": "湖と緑の散策空間を持つ公園。背景は改修前の2016年の参考写真で、現在の施設配置を示すものではない。",
+      "backgroundAssetId": "uz_bg_tashkent_navoi_park",
+      "facts": [
+        {
+          "publisher": "Wikipedia",
+          "title": "Alisher Navoi National Park",
+          "url": "https://en.wikipedia.org/wiki/Alisher_Navoi_National_Park",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "タシュケントの国立公園はMilliy Bog駅付近にあり、湖を含む。2017年からの改修後2022年に再開したと記載される。古い写真は現在の景観を保証しない。"
+        }
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "id": "uz_obs_tashkent_amir_temur_square_01",
+      "landmarkId": "tashkent_amir_temur_square",
+      "kind": "hotspot",
+      "titleJa": "木々の間を通る道",
+      "descriptionJa": "手前の木々の間を、細い散策路が曲がっている。広場は一枚の舗装面ではなく、緑の区画を歩いて巡れる空間として見える。",
+      "factId": "uz_fact_tashkent_amir_temur_square_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.38,
+        "y": 0.68,
+        "width": 0.36,
+        "height": 0.18
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "A._Temur_xiyoboni.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:A._Temur_xiyoboni.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "同梱写真を目視し、記載した形・配置・色の見える範囲を確認。写真から各部の年代や現在の営業状態を断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_tashkent_amir_temur_square_02",
+      "landmarkId": "tashkent_amir_temur_square",
+      "kind": "hotspot",
+      "titleJa": "街路から緑へ",
+      "descriptionJa": "下端の車道と歩道の向こうに、柵と木々のある広場が続く。写真では、通りと散策空間の境目を見比べられる。",
+      "factId": "uz_fact_tashkent_amir_temur_square_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.03,
+        "y": 0.77,
+        "width": 0.56,
+        "height": 0.22
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "A._Temur_xiyoboni.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:A._Temur_xiyoboni.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "同梱写真を目視し、記載した形・配置・色の見える範囲を確認。写真から各部の年代や現在の営業状態を断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_tashkent_chorsu_bazaar_01",
+      "landmarkId": "tashkent_chorsu_bazaar",
+      "kind": "hotspot",
+      "titleJa": "袋のまま並ぶ品物",
+      "descriptionJa": "口を広げた袋に、形や色の異なる乾物が山のように入っている。市場では、建物だけでなく並べ方にも目を向けられる。",
+      "factId": "uz_fact_tashkent_chorsu_bazaar_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.01,
+        "y": 0.02,
+        "width": 0.6,
+        "height": 0.57
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Quritilgan_mevalar_va_gazaklar.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Quritilgan_mevalar_va_gazaklar.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "同梱写真を目視し、記載した形・配置・色の見える範囲を確認。写真から各部の年代や現在の営業状態を断定しない。"
+        },
+        {
+          "publisher": "Visit Tashkent",
+          "title": "Chorsu bazaar",
+          "url": "https://visit.tashkent.uz/en/attraction/27",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "チョルスーは旧市街Eski Shaharにある市場。生鮮品や日用品などの売買が行われる。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_tashkent_chorsu_bazaar_02",
+      "landmarkId": "tashkent_chorsu_bazaar",
+      "kind": "hotspot",
+      "titleJa": "同じ色にも違いがある",
+      "descriptionJa": "下段には、橙色から褐色まで、乾燥した果実が袋ごとに並んでいる。写真だけでは品種や産地、売値までは分からない。",
+      "factId": "uz_fact_tashkent_chorsu_bazaar_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.06,
+        "y": 0.64,
+        "width": 0.91,
+        "height": 0.3
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Quritilgan_mevalar_va_gazaklar.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Quritilgan_mevalar_va_gazaklar.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "同梱写真を目視し、記載した形・配置・色の見える範囲を確認。写真から各部の年代や現在の営業状態を断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_tashkent_khast_imam_01",
+      "landmarkId": "tashkent_khast_imam",
+      "kind": "hotspot",
+      "titleJa": "門の周りに重なる模様",
+      "descriptionJa": "中央の大きな門には、縦長の幾何学模様と、アーチを囲む曲線の装飾が重なっている。写真は複合体内のバラク・ハン・マドラサを正面から見たもの。",
+      "factId": "uz_fact_tashkent_khast_imam_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.36,
+        "y": 0.27,
+        "width": 0.28,
+        "height": 0.44
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Barak-Khan_Madrasa.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Barak-Khan_Madrasa.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "同梱写真を目視し、記載した形・配置・色の見える範囲を確認。写真から各部の年代や現在の営業状態を断定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Hazrati Imam complex",
+          "url": "https://app.uzbekistan.travel/ru/o/kompleks-hazrati-imam/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の宗教建築群で、バラク・ハンのマドラサなどを含む。現代建築や宝物展示の入場を本イベントに含めない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_tashkent_khast_imam_02",
+      "landmarkId": "tashkent_khast_imam",
+      "kind": "hotspot",
+      "titleJa": "左右の低い棟とドーム",
+      "descriptionJa": "中央の高い門の左右には低い棟が続き、その上に青みがかったドームが見える。左右に広がる形は、中央の入口の高さを際立たせている。",
+      "factId": "uz_fact_tashkent_khast_imam_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.66,
+        "y": 0.36,
+        "width": 0.2,
+        "height": 0.4
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Barak-Khan_Madrasa.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Barak-Khan_Madrasa.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "同梱写真を目視し、記載した形・配置・色の見える範囲を確認。写真から各部の年代や現在の営業状態を断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_tashkent_kukeldash_01",
+      "landmarkId": "tashkent_kukeldash",
+      "kind": "hotspot",
+      "titleJa": "中庭の正面に向く門",
+      "descriptionJa": "中庭の奥に、大きなアーチを囲む装飾が見える。外壁の入口とは別に、内部にも正面をつくる門がある。",
+      "factId": "uz_fact_tashkent_kukeldash_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.35,
+        "y": 0.02,
+        "width": 0.3,
+        "height": 0.6
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Kukeldash Madrasah in Tashkent.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Kukeldash_Madrasah_in_Tashkent.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "同梱写真を目視し、装飾門と左右に並ぶ部屋を確認。見える形だけを記し、各部の年代・復元時期を写真だけから断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_tashkent_kukeldash_02",
+      "landmarkId": "tashkent_kukeldash",
+      "kind": "hotspot",
+      "titleJa": "中庭を囲む小さな部屋",
+      "descriptionJa": "正面の左右には、同じような大きさの入口が続いている。資料では、マドラサには学生のための部屋が設けられたと説明される。",
+      "factId": "uz_fact_tashkent_kukeldash_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.86,
+        "y": 0.14,
+        "width": 0.14,
+        "height": 0.47
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Kukeldash Madrasah in Tashkent.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Kukeldash_Madrasah_in_Tashkent.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "同梱写真を目視し、装飾門と左右に並ぶ部屋を確認。見える形だけを記し、各部の年代・復元時期を写真だけから断定しない。"
+        },
+        {
+          "publisher": "CAREC / Visit Silk Road",
+          "title": "Tashkent Kulkedash Medressa",
+          "url": "https://visitsilkroad.org/destination/tashkent-kulkedash-medressa/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "16世紀のマドラサで、中庭を囲む学生用の部屋を持つ。後世には隊商宿などにも転用されたと紹介されている。"
+        }
+      ]
+    }
+  ],
+  "images": {
+    "tashkent_khast_imam": {
+      "path": "assets/tourism/uzbekistan/tashkent_khast_imam.jpg",
+      "sha256": "8dc160d4be899224cafef58006a5342e51cb49d2e89d848d62c49ec898bcaa7a"
+    },
+    "tashkent_chorsu_bazaar": {
+      "path": "assets/tourism/uzbekistan/tashkent_chorsu_bazaar.jpg",
+      "sha256": "6be67c0a866bf467cfd267f83f74c7486fde71e168b2c29f0a589d8b0387d30b"
+    },
+    "tashkent_kukeldash": {
+      "path": "assets/tourism/uzbekistan/tashkent_kukeldash.jpg",
+      "sha256": "4382b47c3fe3e7ff3f3585c6ff64542a412cc2389e6808a673fde384f024df06"
+    },
+    "tashkent_amir_temur_square": {
+      "path": "assets/tourism/uzbekistan/tashkent_amir_temur_square.jpg",
+      "sha256": "a963f085d397789140960d93bf5d3f273da954c2cac2a755b41377de96da437f"
+    }
+  },
+  "provenance": {
+    "uz_obs_tashkent_amir_temur_square_01": {
+      "cityId": "tashkent",
+      "sourceFactId": "uz_fact_tashkent_amir_temur_square_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "木々の間を通る道。同梱写真を目視し、対応する領域へ固定。"
+    },
+    "uz_obs_tashkent_amir_temur_square_02": {
+      "cityId": "tashkent",
+      "sourceFactId": "uz_fact_tashkent_amir_temur_square_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "街路から緑へ。同梱写真を目視し、対応する領域へ固定。"
+    },
+    "uz_obs_tashkent_chorsu_bazaar_01": {
+      "cityId": "tashkent",
+      "sourceFactId": "uz_fact_tashkent_chorsu_bazaar_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "袋のまま並ぶ品物。同梱写真を目視し、対応する領域へ固定。"
+    },
+    "uz_obs_tashkent_chorsu_bazaar_02": {
+      "cityId": "tashkent",
+      "sourceFactId": "uz_fact_tashkent_chorsu_bazaar_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "同じ色にも違いがある。同梱写真を目視し、対応する領域へ固定。"
+    },
+    "uz_obs_tashkent_khast_imam_01": {
+      "cityId": "tashkent",
+      "sourceFactId": "uz_fact_tashkent_khast_imam_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "門の周りに重なる模様。同梱写真を目視し、対応する領域へ固定。"
+    },
+    "uz_obs_tashkent_khast_imam_02": {
+      "cityId": "tashkent",
+      "sourceFactId": "uz_fact_tashkent_khast_imam_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "左右の低い棟とドーム。同梱写真を目視し、対応する領域へ固定。"
+    },
+    "uz_obs_tashkent_kukeldash_01": {
+      "cityId": "tashkent",
+      "sourceFactId": "uz_fact_tashkent_kukeldash_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "中庭の正面に向く門。同梱写真を目視し、対応する領域へ固定。"
+    },
+    "uz_obs_tashkent_kukeldash_02": {
+      "cityId": "tashkent",
+      "sourceFactId": "uz_fact_tashkent_kukeldash_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "中庭を囲む小さな部屋。同梱写真を目視し、対応する領域へ固定。"
+    }
+  }
+}

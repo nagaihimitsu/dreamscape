@@ -1,0 +1,4872 @@
+{
+  "schemaVersion": 1,
+  "cityId": "khiva",
+  "sourceRefs": {
+    "historic_core": {
+      "publisher": "UNESCO World Heritage Centre",
+      "title": "Itchan Kala",
+      "url": "https://whc.unesco.org/en/list/543/",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "イチャン・カラは城壁に囲まれたヒヴァの内城で、歴史的な建築群と住宅が残る世界遺産。"
+    },
+    "gate_access": {
+      "publisher": "Advantour",
+      "title": "Khiva: city transport",
+      "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+    },
+    "local_walks": {
+      "publisher": "Khiva Guide",
+      "title": "Getting Around Khiva",
+      "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "現地旅行ガイドは旧市街が小さく車の進入が大部分で制限されると案内。徒歩で東西の門を結ぶ例を紹介し、市街地外への移動と区別している。"
+    }
+  },
+  "decisions": [
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "rail",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群はイチャン・カラと西門外の徒歩圏。対象地点間を結ぶ都市鉄道区間として採用するものはない。ヒヴァ駅からの長距離列車や都市間移動を混ぜない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "tram",
+      "status": "not_applicable",
+      "reasonJa": "この登録地点群を結ぶトラム区間は採用しない。資料にあるウルゲンチ方面のトロリーバスはトラムではなく、本編の都市外移動に当たる。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "旧市街の短い徒歩区間。乗降場への徒歩を増やす市外方面のバス・トロリーバスはこの地点間の移動に適さないため不採用。ヒヴァ市全域にバスがないという意味ではない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "城門付近での乗降と歩き直しが必要な徒歩圏の区間のため、ゲームの移動候補として採用しない。旧市街の各施設へ車で直接到着できるとは扱わない。",
+      "sourceRefs": [
+        "gate_access",
+        "local_walks"
+      ]
+    }
+  ]
+}

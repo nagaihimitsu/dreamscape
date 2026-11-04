@@ -1,0 +1,1462 @@
+{
+  "schemaVersion": 1,
+  "cityId": "bukhara",
+  "estimation": "game_model",
+  "notesJa": "地物の隣接関係を手作業でつないだ編集用モデル。辺は双方同じ分数。座標直線距離や歩道路線の実測ではない。telpak_junctionは通過用でイベント地点には登録しない。",
+  "sourceRefs": {
+    "itinerary": {
+      "publisher": "Uzbekistan Travel",
+      "title": "Bukhara: 4-Day Travel Itinerary",
+      "url": "https://uzbekistan.travel/en/o/bukhara-4-day-travel-itinerary/",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "観光局はサーマーン朝廟、ボロ・ハウズ、アルク城、ポイ・カリヤン、交易ドーム、リャビ・ハウズ、チョル・ミノルなどを旧市街の観光行程に含めている。道路の実測時間を示す資料ではない。"
+    },
+    "old_town": {
+      "publisher": "Wikivoyage",
+      "title": "Bukhara — Get around",
+      "url": "https://en.wikivoyage.org/wiki/Bukhara",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+    },
+    "walk_model": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "ブハラ旧市街の徒歩回廊モデル",
+      "url": "https://uzbekistan.travel/en/o/bukhara-4-day-travel-itinerary/",
+      "checkedAt": "2026-11-04",
+      "claimType": "hypothesis",
+      "claimJa": "公式観光行程と地図上の隣接関係を参考に、広場・市場通り・公園の接続を手作業で定義。歩道の実測ではなくゲーム用推定分数を辺に置き、最短の辺列を合計した。座標の直線距離から実測所要時間を生成していない。"
+    }
+  },
+  "edges": [
+    {
+      "from": "ark",
+      "to": "bolo_hauz",
+      "minutes": 4,
+      "corridorJa": "レギスタン広場の西側横断"
+    },
+    {
+      "from": "bolo_hauz",
+      "to": "samanid_mausoleum",
+      "minutes": 12,
+      "corridorJa": "チャシュマ・アユーブ側から公園内通路"
+    },
+    {
+      "from": "ark",
+      "to": "poi_kalyan",
+      "minutes": 9,
+      "corridorJa": "アルク南側・ホジャ・ヌラバード通り側の回廊"
+    },
+    {
+      "from": "poi_kalyan",
+      "to": "toki_zargaron",
+      "minutes": 4,
+      "corridorJa": "ポイ・カリヤンから市場の広場へ"
+    },
+    {
+      "from": "toki_zargaron",
+      "to": "ulugh_beg",
+      "minutes": 2,
+      "corridorJa": "交易ドーム東側からマドラサ前へ"
+    },
+    {
+      "from": "ulugh_beg",
+      "to": "abdulaziz_khan",
+      "minutes": 2,
+      "corridorJa": "二つのマドラサの間の広場"
+    },
+    {
+      "from": "abdulaziz_khan",
+      "to": "telpak_junction",
+      "minutes": 5,
+      "corridorJa": "ハキカット通りから交易ドーム回廊"
+    },
+    {
+      "from": "telpak_junction",
+      "to": "magoki_attori",
+      "minutes": 3,
+      "corridorJa": "テルパク・フルション側の歩行回廊"
+    },
+    {
+      "from": "magoki_attori",
+      "to": "lyabi_hauz",
+      "minutes": 3,
+      "corridorJa": "リャビ・ハウズ西側の公共通路"
+    },
+    {
+      "from": "lyabi_hauz",
+      "to": "chor_minor",
+      "minutes": 12,
+      "corridorJa": "メフタル・アンバル通りとチョル・ミノルへの小道"
+    },
+    {
+      "from": "lyabi_hauz",
+      "to": "hotel_hub",
+      "minutes": 3,
+      "corridorJa": "池の東側から架空の宿泊代表点"
+    }
+  ],
+  "directedPaths": [
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "minutes": 9,
+      "via": [
+        "ark",
+        "poi_kalyan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "minutes": 16,
+      "via": [
+        "ark",
+        "bolo_hauz",
+        "samanid_mausoleum"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "minutes": 28,
+      "via": [
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_chor_minor",
+      "minutes": 40,
+      "via": [
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz",
+        "chor_minor"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "minutes": 4,
+      "via": [
+        "ark",
+        "bolo_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "minutes": 13,
+      "via": [
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "minutes": 17,
+      "via": [
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "minutes": 15,
+      "via": [
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_magoki_attori",
+      "minutes": 25,
+      "via": [
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_hotel_hub",
+      "minutes": 31,
+      "via": [
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz",
+        "hotel_hub"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_ark",
+      "minutes": 9,
+      "via": [
+        "poi_kalyan",
+        "ark"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "minutes": 25,
+      "via": [
+        "poi_kalyan",
+        "ark",
+        "bolo_hauz",
+        "samanid_mausoleum"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "minutes": 19,
+      "via": [
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_chor_minor",
+      "minutes": 31,
+      "via": [
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz",
+        "chor_minor"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "minutes": 13,
+      "via": [
+        "poi_kalyan",
+        "ark",
+        "bolo_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "minutes": 4,
+      "via": [
+        "poi_kalyan",
+        "toki_zargaron"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "minutes": 8,
+      "via": [
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "minutes": 6,
+      "via": [
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_magoki_attori",
+      "minutes": 16,
+      "via": [
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_hotel_hub",
+      "minutes": 22,
+      "via": [
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz",
+        "hotel_hub"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_ark",
+      "minutes": 16,
+      "via": [
+        "samanid_mausoleum",
+        "bolo_hauz",
+        "ark"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "minutes": 25,
+      "via": [
+        "samanid_mausoleum",
+        "bolo_hauz",
+        "ark",
+        "poi_kalyan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "minutes": 44,
+      "via": [
+        "samanid_mausoleum",
+        "bolo_hauz",
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_chor_minor",
+      "minutes": 56,
+      "via": [
+        "samanid_mausoleum",
+        "bolo_hauz",
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz",
+        "chor_minor"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "minutes": 12,
+      "via": [
+        "samanid_mausoleum",
+        "bolo_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "minutes": 29,
+      "via": [
+        "samanid_mausoleum",
+        "bolo_hauz",
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "minutes": 33,
+      "via": [
+        "samanid_mausoleum",
+        "bolo_hauz",
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "minutes": 31,
+      "via": [
+        "samanid_mausoleum",
+        "bolo_hauz",
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_magoki_attori",
+      "minutes": 41,
+      "via": [
+        "samanid_mausoleum",
+        "bolo_hauz",
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_hotel_hub",
+      "minutes": 47,
+      "via": [
+        "samanid_mausoleum",
+        "bolo_hauz",
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz",
+        "hotel_hub"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_ark",
+      "minutes": 28,
+      "via": [
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "minutes": 19,
+      "via": [
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "minutes": 44,
+      "via": [
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark",
+        "bolo_hauz",
+        "samanid_mausoleum"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_chor_minor",
+      "minutes": 12,
+      "via": [
+        "lyabi_hauz",
+        "chor_minor"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "minutes": 32,
+      "via": [
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark",
+        "bolo_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "minutes": 15,
+      "via": [
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "minutes": 11,
+      "via": [
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "minutes": 13,
+      "via": [
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_magoki_attori",
+      "minutes": 3,
+      "via": [
+        "lyabi_hauz",
+        "magoki_attori"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_hotel_hub",
+      "minutes": 3,
+      "via": [
+        "lyabi_hauz",
+        "hotel_hub"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_ark",
+      "minutes": 40,
+      "via": [
+        "chor_minor",
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "minutes": 31,
+      "via": [
+        "chor_minor",
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "minutes": 56,
+      "via": [
+        "chor_minor",
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark",
+        "bolo_hauz",
+        "samanid_mausoleum"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "minutes": 12,
+      "via": [
+        "chor_minor",
+        "lyabi_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "minutes": 44,
+      "via": [
+        "chor_minor",
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark",
+        "bolo_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "minutes": 27,
+      "via": [
+        "chor_minor",
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "minutes": 23,
+      "via": [
+        "chor_minor",
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "minutes": 25,
+      "via": [
+        "chor_minor",
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_magoki_attori",
+      "minutes": 15,
+      "via": [
+        "chor_minor",
+        "lyabi_hauz",
+        "magoki_attori"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_hotel_hub",
+      "minutes": 15,
+      "via": [
+        "chor_minor",
+        "lyabi_hauz",
+        "hotel_hub"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_ark",
+      "minutes": 4,
+      "via": [
+        "bolo_hauz",
+        "ark"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "minutes": 13,
+      "via": [
+        "bolo_hauz",
+        "ark",
+        "poi_kalyan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "minutes": 12,
+      "via": [
+        "bolo_hauz",
+        "samanid_mausoleum"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "minutes": 32,
+      "via": [
+        "bolo_hauz",
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_chor_minor",
+      "minutes": 44,
+      "via": [
+        "bolo_hauz",
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz",
+        "chor_minor"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "minutes": 17,
+      "via": [
+        "bolo_hauz",
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "minutes": 21,
+      "via": [
+        "bolo_hauz",
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "minutes": 19,
+      "via": [
+        "bolo_hauz",
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_magoki_attori",
+      "minutes": 29,
+      "via": [
+        "bolo_hauz",
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_hotel_hub",
+      "minutes": 35,
+      "via": [
+        "bolo_hauz",
+        "ark",
+        "poi_kalyan",
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz",
+        "hotel_hub"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_ark",
+      "minutes": 13,
+      "via": [
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "minutes": 4,
+      "via": [
+        "toki_zargaron",
+        "poi_kalyan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "minutes": 29,
+      "via": [
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark",
+        "bolo_hauz",
+        "samanid_mausoleum"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "minutes": 15,
+      "via": [
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_chor_minor",
+      "minutes": 27,
+      "via": [
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz",
+        "chor_minor"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "minutes": 17,
+      "via": [
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark",
+        "bolo_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "minutes": 4,
+      "via": [
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "minutes": 2,
+      "via": [
+        "toki_zargaron",
+        "ulugh_beg"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_magoki_attori",
+      "minutes": 12,
+      "via": [
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_hotel_hub",
+      "minutes": 18,
+      "via": [
+        "toki_zargaron",
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz",
+        "hotel_hub"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_ark",
+      "minutes": 17,
+      "via": [
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "minutes": 8,
+      "via": [
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "minutes": 33,
+      "via": [
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark",
+        "bolo_hauz",
+        "samanid_mausoleum"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "minutes": 11,
+      "via": [
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_chor_minor",
+      "minutes": 23,
+      "via": [
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz",
+        "chor_minor"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "minutes": 21,
+      "via": [
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark",
+        "bolo_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "minutes": 4,
+      "via": [
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "minutes": 2,
+      "via": [
+        "abdulaziz_khan",
+        "ulugh_beg"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_magoki_attori",
+      "minutes": 8,
+      "via": [
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_hotel_hub",
+      "minutes": 14,
+      "via": [
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz",
+        "hotel_hub"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_ark",
+      "minutes": 15,
+      "via": [
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "minutes": 6,
+      "via": [
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "minutes": 31,
+      "via": [
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark",
+        "bolo_hauz",
+        "samanid_mausoleum"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "minutes": 13,
+      "via": [
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_chor_minor",
+      "minutes": 25,
+      "via": [
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz",
+        "chor_minor"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "minutes": 19,
+      "via": [
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark",
+        "bolo_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "minutes": 2,
+      "via": [
+        "ulugh_beg",
+        "toki_zargaron"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "minutes": 2,
+      "via": [
+        "ulugh_beg",
+        "abdulaziz_khan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_magoki_attori",
+      "minutes": 10,
+      "via": [
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_hotel_hub",
+      "minutes": 16,
+      "via": [
+        "ulugh_beg",
+        "abdulaziz_khan",
+        "telpak_junction",
+        "magoki_attori",
+        "lyabi_hauz",
+        "hotel_hub"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_ark",
+      "minutes": 25,
+      "via": [
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "minutes": 16,
+      "via": [
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "minutes": 41,
+      "via": [
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark",
+        "bolo_hauz",
+        "samanid_mausoleum"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "minutes": 3,
+      "via": [
+        "magoki_attori",
+        "lyabi_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_chor_minor",
+      "minutes": 15,
+      "via": [
+        "magoki_attori",
+        "lyabi_hauz",
+        "chor_minor"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "minutes": 29,
+      "via": [
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark",
+        "bolo_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "minutes": 12,
+      "via": [
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "minutes": 8,
+      "via": [
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "minutes": 10,
+      "via": [
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_hotel_hub",
+      "minutes": 6,
+      "via": [
+        "magoki_attori",
+        "lyabi_hauz",
+        "hotel_hub"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_ark",
+      "minutes": 31,
+      "via": [
+        "hotel_hub",
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "minutes": 22,
+      "via": [
+        "hotel_hub",
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "minutes": 47,
+      "via": [
+        "hotel_hub",
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark",
+        "bolo_hauz",
+        "samanid_mausoleum"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "minutes": 3,
+      "via": [
+        "hotel_hub",
+        "lyabi_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_chor_minor",
+      "minutes": 15,
+      "via": [
+        "hotel_hub",
+        "lyabi_hauz",
+        "chor_minor"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "minutes": 35,
+      "via": [
+        "hotel_hub",
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron",
+        "poi_kalyan",
+        "ark",
+        "bolo_hauz"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "minutes": 18,
+      "via": [
+        "hotel_hub",
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg",
+        "toki_zargaron"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "minutes": 14,
+      "via": [
+        "hotel_hub",
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "minutes": 16,
+      "via": [
+        "hotel_hub",
+        "lyabi_hauz",
+        "magoki_attori",
+        "telpak_junction",
+        "abdulaziz_khan",
+        "ulugh_beg"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_magoki_attori",
+      "minutes": 6,
+      "via": [
+        "hotel_hub",
+        "lyabi_hauz",
+        "magoki_attori"
+      ]
+    }
+  ]
+}

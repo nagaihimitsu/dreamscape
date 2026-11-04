@@ -49,7 +49,9 @@ test("other preparing journeys display their own read-only page without touching
     const { journeys } = await import(/* @vite-ignore */ journeyPath);
     const india = journeys.find((item: { id: string }) => item.id === "golden_triangle");
     if (!india) throw new Error("Missing India journey fixture");
-    journeys.push({ ...india, id: "test_preparing", nameJa: "試作の旅",
+    // Only journeys with an initial state support preparation saves. This
+    // unconfigured future journey must remain a read-only announcement.
+    journeys.push({ ...india, initialState: undefined, id: "test_preparing", nameJa: "試作の旅",
       cities: [{ id: "test_city", nameJa: "試作都市" }] });
     const indiaSave = "unchanged-india-save";
     const otherSave = "unchanged-other-save";

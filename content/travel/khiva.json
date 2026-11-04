@@ -1,0 +1,3744 @@
+{
+  "cityId": "khiva",
+  "places": [
+    {
+      "id": "khiva_kunya_ark",
+      "cityId": "khiva",
+      "nameJa": "クフナ・アルク",
+      "nameEn": "Kunya Ark",
+      "latitude": 41.37889,
+      "longitude": 60.35806,
+      "backgroundAssetId": "uz_bg_khiva_kunya_ark",
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1080
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Kunya Ark",
+          "url": "https://uzbekistan.travel/en/o/kunya-ark-fortress/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "城壁の内側にさらに囲いを持つ、ヒヴァのハンの旧居城。"
+        },
+        {
+          "publisher": "Dreamscape / published place references",
+          "title": "Kunya Ark representative location",
+          "url": "https://en.wikipedia.org/wiki/Konya_Ark",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図や施設紹介の位置を基に置いたゲーム用代表点。現地測量した入口座標ではなく、写真の撮影点や経路の実測を表さない。"
+        },
+        {
+          "publisher": "Dreamscape game design",
+          "title": "Kunya Ark game visit window",
+          "url": "https://uzbekistan.travel/en/o/kunya-ark-fortress/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "開館・訪問枠は主観光09:00〜18:00、外観訪問06:00〜21:00として設定したゲーム仕様。実施設の営業時間・礼拝・臨時閉館は再現しない。"
+        },
+        {
+          "publisher": "Khiva Guide / Dreamscape",
+          "title": "Ichan-Kala ticket references and game allocation",
+          "url": "https://khivaguide.uz/places/ichan-kala/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "旅行ガイドの外国人大人向け共通券約250,000スムという参考記載を基に、二人分500,000スムを主観光4件に125,000ずつ配分したゲーム専用値。実際の単館料金ではなく、共通券の購入・有効期間を再現しない。ミナレット登頂や別券施設内部は対象外。"
+        }
+      ]
+    },
+    {
+      "id": "khiva_juma_mosque",
+      "cityId": "khiva",
+      "nameJa": "ジュマ・モスク",
+      "nameEn": "Juma Mosque",
+      "latitude": 41.3775,
+      "longitude": 60.3599,
+      "backgroundAssetId": "uz_bg_khiva_juma_mosque",
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1080
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Juma Mosque",
+          "url": "https://uzbekistan.travel/en/o/reasons-celebrate-ramadan-uzbekistan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "多数の彫刻された木柱が並ぶ礼拝堂で知られる、イチャン・カラのモスク。"
+        },
+        {
+          "publisher": "Dreamscape / published place references",
+          "title": "Juma Mosque representative location",
+          "url": "https://en.wikipedia.org/wiki/Juma_Mosque%2C_Khiva",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図や施設紹介の位置を基に置いたゲーム用代表点。現地測量した入口座標ではなく、写真の撮影点や経路の実測を表さない。"
+        },
+        {
+          "publisher": "Dreamscape game design",
+          "title": "Juma Mosque game visit window",
+          "url": "https://uzbekistan.travel/en/o/reasons-celebrate-ramadan-uzbekistan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "開館・訪問枠は主観光09:00〜18:00、外観訪問06:00〜21:00として設定したゲーム仕様。実施設の営業時間・礼拝・臨時閉館は再現しない。"
+        },
+        {
+          "publisher": "Khiva Guide / Dreamscape",
+          "title": "Ichan-Kala ticket references and game allocation",
+          "url": "https://khivaguide.uz/places/ichan-kala/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "旅行ガイドの外国人大人向け共通券約250,000スムという参考記載を基に、二人分500,000スムを主観光4件に125,000ずつ配分したゲーム専用値。実際の単館料金ではなく、共通券の購入・有効期間を再現しない。ミナレット登頂や別券施設内部は対象外。"
+        }
+      ]
+    },
+    {
+      "id": "khiva_tash_hauli",
+      "cityId": "khiva",
+      "nameJa": "タシュ・ハウリ宮殿",
+      "nameEn": "Tash Hauli Palace",
+      "latitude": 41.37838,
+      "longitude": 60.36165,
+      "backgroundAssetId": "uz_bg_khiva_tash_hauli",
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1080
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Tash Hauli Palace",
+          "url": "https://uzbekistan.travel/en/o/tash-houli/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アラクリ・ハンの時代に造られ、複数の中庭と精緻な装飾を持つ宮殿。"
+        },
+        {
+          "publisher": "Dreamscape / published place references",
+          "title": "Tash Hauli Palace representative location",
+          "url": "https://www.islamicarchitecturalheritage.com/listings/tash-khauli-palace",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図や施設紹介の位置を基に置いたゲーム用代表点。現地測量した入口座標ではなく、写真の撮影点や経路の実測を表さない。"
+        },
+        {
+          "publisher": "Dreamscape game design",
+          "title": "Tash Hauli Palace game visit window",
+          "url": "https://uzbekistan.travel/en/o/tash-houli/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "開館・訪問枠は主観光09:00〜18:00、外観訪問06:00〜21:00として設定したゲーム仕様。実施設の営業時間・礼拝・臨時閉館は再現しない。"
+        },
+        {
+          "publisher": "Khiva Guide / Dreamscape",
+          "title": "Ichan-Kala ticket references and game allocation",
+          "url": "https://khivaguide.uz/places/ichan-kala/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "旅行ガイドの外国人大人向け共通券約250,000スムという参考記載を基に、二人分500,000スムを主観光4件に125,000ずつ配分したゲーム専用値。実際の単館料金ではなく、共通券の購入・有効期間を再現しない。ミナレット登頂や別券施設内部は対象外。"
+        }
+      ]
+    },
+    {
+      "id": "khiva_islam_khoja",
+      "cityId": "khiva",
+      "nameJa": "イスラム・ホジャ複合体",
+      "nameEn": "Islam Khoja Complex",
+      "latitude": 41.3766,
+      "longitude": 60.3605,
+      "backgroundAssetId": "uz_bg_khiva_islam_khoja",
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1080
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Islam Khoja Complex",
+          "url": "https://uzbekistan.travel/en/o/islam-khoja-minaret-khiva/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "細く高いミナレット、マドラサ、モスクからなる複合体。"
+        },
+        {
+          "publisher": "Dreamscape / published place references",
+          "title": "Islam Khoja Complex representative location",
+          "url": "https://en.wikipedia.org/wiki/Islamkhodja_Madrasah",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図や施設紹介の位置を基に置いたゲーム用代表点。現地測量した入口座標ではなく、写真の撮影点や経路の実測を表さない。"
+        },
+        {
+          "publisher": "Dreamscape game design",
+          "title": "Islam Khoja Complex game visit window",
+          "url": "https://uzbekistan.travel/en/o/islam-khoja-minaret-khiva/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "開館・訪問枠は主観光09:00〜18:00、外観訪問06:00〜21:00として設定したゲーム仕様。実施設の営業時間・礼拝・臨時閉館は再現しない。"
+        },
+        {
+          "publisher": "Khiva Guide / Dreamscape",
+          "title": "Ichan-Kala ticket references and game allocation",
+          "url": "https://khivaguide.uz/places/ichan-kala/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "旅行ガイドの外国人大人向け共通券約250,000スムという参考記載を基に、二人分500,000スムを主観光4件に125,000ずつ配分したゲーム専用値。実際の単館料金ではなく、共通券の購入・有効期間を再現しない。ミナレット登頂や別券施設内部は対象外。"
+        }
+      ]
+    },
+    {
+      "id": "khiva_kalta_minor",
+      "cityId": "khiva",
+      "nameJa": "カルタ・ミノル外観",
+      "nameEn": "Kalta Minor exterior",
+      "latitude": 41.3783,
+      "longitude": 60.35797,
+      "backgroundAssetId": "uz_bg_khiva_kalta_minor",
+      "openingWindows": [
+        {
+          "start": 360,
+          "end": 1260
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Kalta Minor exterior",
+          "url": "https://uzbekistan.travel/en/o/kalta-minor-khiva/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "青緑のタイルに覆われた、未完のミナレットを外から眺める場所。"
+        },
+        {
+          "publisher": "Dreamscape / published place references",
+          "title": "Kalta Minor exterior representative location",
+          "url": "https://en.wikipedia.org/wiki/Kaltaminor",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図や施設紹介の位置を基に置いたゲーム用代表点。現地測量した入口座標ではなく、写真の撮影点や経路の実測を表さない。"
+        },
+        {
+          "publisher": "Dreamscape game design",
+          "title": "Kalta Minor exterior game visit window",
+          "url": "https://uzbekistan.travel/en/o/kalta-minor-khiva/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "開館・訪問枠は主観光09:00〜18:00、外観訪問06:00〜21:00として設定したゲーム仕様。実施設の営業時間・礼拝・臨時閉館は再現しない。"
+        }
+      ],
+      "destinationIds": [
+        "khiva_kalta_minor"
+      ]
+    },
+    {
+      "id": "khiva_pahlavan_mahmud",
+      "cityId": "khiva",
+      "nameJa": "パフラヴァン・マフムド廟前",
+      "nameEn": "Pahlavan Mahmud Mausoleum exterior",
+      "latitude": 41.37688,
+      "longitude": 60.35938,
+      "backgroundAssetId": "uz_bg_khiva_pahlavan_mahmud",
+      "openingWindows": [
+        {
+          "start": 360,
+          "end": 1260
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Advantour",
+          "title": "Pahlavan Mahmud Mausoleum exterior",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "詩人・力士として知られる人物をまつる廟。ここでは路地からドームを見上げる外観の訪問を扱う。"
+        },
+        {
+          "publisher": "Dreamscape / published place references",
+          "title": "Pahlavan Mahmud Mausoleum exterior representative location",
+          "url": "https://evendo.com/locations/uzbekistan/khiva/itchan-kala/attraction/pahlavan-mahmoud-mausoleum",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図や施設紹介の位置を基に置いたゲーム用代表点。現地測量した入口座標ではなく、写真の撮影点や経路の実測を表さない。"
+        },
+        {
+          "publisher": "Dreamscape game design",
+          "title": "Pahlavan Mahmud Mausoleum exterior game visit window",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "開館・訪問枠は主観光09:00〜18:00、外観訪問06:00〜21:00として設定したゲーム仕様。実施設の営業時間・礼拝・臨時閉館は再現しない。"
+        }
+      ],
+      "destinationIds": [
+        "khiva_pahlavan_mahmud"
+      ]
+    },
+    {
+      "id": "khiva_muhammad_amin_khan",
+      "cityId": "khiva",
+      "nameJa": "ムハンマド・アミン・ハン・マドラサ外観",
+      "nameEn": "Muhammad Amin Khan Madrasa exterior",
+      "latitude": 41.37801,
+      "longitude": 60.35773,
+      "backgroundAssetId": "uz_bg_khiva_muhammad_amin_khan",
+      "openingWindows": [
+        {
+          "start": 360,
+          "end": 1260
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Muhammad Amin Khan Madrasa exterior",
+          "url": "https://uzbekistan.travel/en/o/the-madrasah-of-muhammad-amin-khan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "カルタ・ミノルに隣接するマドラサ。二階の居室や装飾された正面を外から見る。"
+        },
+        {
+          "publisher": "Dreamscape / published place references",
+          "title": "Muhammad Amin Khan Madrasa exterior representative location",
+          "url": "https://www.islamicarchitecturalheritage.com/listings/muhammad-amin-khan-madrasa",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図や施設紹介の位置を基に置いたゲーム用代表点。現地測量した入口座標ではなく、写真の撮影点や経路の実測を表さない。"
+        },
+        {
+          "publisher": "Dreamscape game design",
+          "title": "Muhammad Amin Khan Madrasa exterior game visit window",
+          "url": "https://uzbekistan.travel/en/o/the-madrasah-of-muhammad-amin-khan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "開館・訪問枠は主観光09:00〜18:00、外観訪問06:00〜21:00として設定したゲーム仕様。実施設の営業時間・礼拝・臨時閉館は再現しない。"
+        }
+      ],
+      "destinationIds": [
+        "khiva_muhammad_amin_khan"
+      ]
+    },
+    {
+      "id": "khiva_ota_darvoza",
+      "cityId": "khiva",
+      "nameJa": "オタ門",
+      "nameEn": "Ota Darvoza (West Gate)",
+      "latitude": 41.37823,
+      "longitude": 60.35725,
+      "backgroundAssetId": "uz_bg_khiva_ota_darvoza",
+      "openingWindows": [
+        {
+          "start": 360,
+          "end": 1260
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Khiva Guide",
+          "title": "Ota Darvoza (West Gate)",
+          "url": "https://khivaguide.uz/places/ota-darvoza",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "イチャン・カラの西門。旧市街と城壁の外をつなぐ入口。"
+        },
+        {
+          "publisher": "Dreamscape / published place references",
+          "title": "Ota Darvoza (West Gate) representative location",
+          "url": "https://commons.wikimedia.org/wiki/Category:Itchan_Kala_west_gate",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図や施設紹介の位置を基に置いたゲーム用代表点。現地測量した入口座標ではなく、写真の撮影点や経路の実測を表さない。"
+        },
+        {
+          "publisher": "Dreamscape game design",
+          "title": "Ota Darvoza (West Gate) game visit window",
+          "url": "https://khivaguide.uz/places/ota-darvoza",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "開館・訪問枠は主観光09:00〜18:00、外観訪問06:00〜21:00として設定したゲーム仕様。実施設の営業時間・礼拝・臨時閉館は再現しない。"
+        }
+      ],
+      "destinationIds": [
+        "khiva_ota_darvoza"
+      ]
+    },
+    {
+      "id": "khiva_palvan_darvoza",
+      "cityId": "khiva",
+      "nameJa": "パルヴァン門",
+      "nameEn": "Palvan Darvoza (East Gate)",
+      "latitude": 41.37718,
+      "longitude": 60.36217,
+      "backgroundAssetId": "uz_bg_khiva_palvan_darvoza",
+      "openingWindows": [
+        {
+          "start": 360,
+          "end": 1260
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Khiva Guide",
+          "title": "Palvan Darvoza (East Gate)",
+          "url": "https://khivaguide.uz/places/polvon-gate",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "イチャン・カラの東門。通路を抜けると城壁の厚みを感じられる。"
+        },
+        {
+          "publisher": "Dreamscape / published place references",
+          "title": "Palvan Darvoza (East Gate) representative location",
+          "url": "https://mapcarta.com/W185230693",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図や施設紹介の位置を基に置いたゲーム用代表点。現地測量した入口座標ではなく、写真の撮影点や経路の実測を表さない。"
+        },
+        {
+          "publisher": "Dreamscape game design",
+          "title": "Palvan Darvoza (East Gate) game visit window",
+          "url": "https://khivaguide.uz/places/polvon-gate",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "開館・訪問枠は主観光09:00〜18:00、外観訪問06:00〜21:00として設定したゲーム仕様。実施設の営業時間・礼拝・臨時閉館は再現しない。"
+        }
+      ],
+      "destinationIds": [
+        "khiva_palvan_darvoza"
+      ]
+    },
+    {
+      "id": "khiva_bogcha_darvoza",
+      "cityId": "khiva",
+      "nameJa": "バグチャ門・北側城壁",
+      "nameEn": "Bogcha Darvoza (North Gate)",
+      "latitude": 41.38162,
+      "longitude": 60.36119,
+      "backgroundAssetId": "uz_bg_khiva_bogcha_darvoza",
+      "openingWindows": [
+        {
+          "start": 360,
+          "end": 1260
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Wikimedia Commons",
+          "title": "Bogcha Darvoza (North Gate)",
+          "url": "https://commons.wikimedia.org/wiki/Category:Itchan_Kala_north_gate",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "イチャン・カラ北側の城門。城壁の外から内城の囲いを見渡す。"
+        },
+        {
+          "publisher": "Dreamscape / published place references",
+          "title": "Bogcha Darvoza (North Gate) representative location",
+          "url": "https://commons.wikimedia.org/wiki/Category:Itchan_Kala_north_gate",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図や施設紹介の位置を基に置いたゲーム用代表点。現地測量した入口座標ではなく、写真の撮影点や経路の実測を表さない。"
+        },
+        {
+          "publisher": "Dreamscape game design",
+          "title": "Bogcha Darvoza (North Gate) game visit window",
+          "url": "https://commons.wikimedia.org/wiki/Category:Itchan_Kala_north_gate",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "開館・訪問枠は主観光09:00〜18:00、外観訪問06:00〜21:00として設定したゲーム仕様。実施設の営業時間・礼拝・臨時閉館は再現しない。"
+        }
+      ],
+      "destinationIds": [
+        "khiva_bogcha_darvoza"
+      ]
+    },
+    {
+      "id": "khiva_hotel_hub",
+      "cityId": "khiva",
+      "nameJa": "ヒヴァの架空宿（西門外）",
+      "nameEn": "Fictional Khiva hotel outside the West Gate",
+      "latitude": 41.3782,
+      "longitude": 60.3562,
+      "backgroundAssetId": "uz_bg_khiva_hotel_hub",
+      "sources": [
+        {
+          "publisher": "Dreamscape game design",
+          "title": "Fictional Khiva lodging hub",
+          "url": "https://khivaguide.uz/places/ota-darvoza",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "オタ門の西側に置いた架空宿の代表点。実在宿の所在地や営業・宿泊料金を示さない。"
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "同じ地点での移動を伴わないゲーム内操作。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "walk",
+      "minutes": 12,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "walk",
+      "minutes": 16,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "walk",
+      "minutes": 13,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "walk",
+      "minutes": 11,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "walk",
+      "minutes": 6,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "walk",
+      "minutes": 3,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "walk",
+      "minutes": 18,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "walk",
+      "minutes": 9,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "walk",
+      "minutes": 6,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "walk",
+      "minutes": 12,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "同じ地点での移動を伴わないゲーム内操作。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "walk",
+      "minutes": 4,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "walk",
+      "minutes": 3,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "walk",
+      "minutes": 7,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "walk",
+      "minutes": 8,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "walk",
+      "minutes": 9,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "walk",
+      "minutes": 6,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "walk",
+      "minutes": 12,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "walk",
+      "minutes": 12,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "walk",
+      "minutes": 16,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "walk",
+      "minutes": 4,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "同じ地点での移動を伴わないゲーム内操作。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "walk",
+      "minutes": 7,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "walk",
+      "minutes": 11,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "walk",
+      "minutes": 9,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "walk",
+      "minutes": 12,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "walk",
+      "minutes": 13,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "walk",
+      "minutes": 3,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "walk",
+      "minutes": 8,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "walk",
+      "minutes": 16,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "walk",
+      "minutes": 13,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "walk",
+      "minutes": 3,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "walk",
+      "minutes": 7,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "同じ地点での移動を伴わないゲーム内操作。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "walk",
+      "minutes": 8,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "walk",
+      "minutes": 2,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "walk",
+      "minutes": 9,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "walk",
+      "minutes": 9,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "walk",
+      "minutes": 13,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "walk",
+      "minutes": 7,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "walk",
+      "minutes": 11,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "walk",
+      "minutes": 8,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "同じ地点での移動を伴わないゲーム内操作。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "walk",
+      "minutes": 6,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "walk",
+      "minutes": 1,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "walk",
+      "minutes": 2,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "walk",
+      "minutes": 13,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "walk",
+      "minutes": 14,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "walk",
+      "minutes": 11,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "walk",
+      "minutes": 9,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "walk",
+      "minutes": 2,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "walk",
+      "minutes": 6,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "同じ地点での移動を伴わないゲーム内操作。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "walk",
+      "minutes": 7,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "walk",
+      "minutes": 8,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "walk",
+      "minutes": 11,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "walk",
+      "minutes": 17,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "walk",
+      "minutes": 11,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "walk",
+      "minutes": 6,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "walk",
+      "minutes": 8,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "walk",
+      "minutes": 12,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "walk",
+      "minutes": 9,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "walk",
+      "minutes": 1,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "walk",
+      "minutes": 7,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "同じ地点での移動を伴わないゲーム内操作。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "walk",
+      "minutes": 3,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "walk",
+      "minutes": 14,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "walk",
+      "minutes": 6,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "walk",
+      "minutes": 3,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "walk",
+      "minutes": 9,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "walk",
+      "minutes": 13,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "walk",
+      "minutes": 2,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "walk",
+      "minutes": 8,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "walk",
+      "minutes": 3,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "同じ地点での移動を伴わないゲーム内操作。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "walk",
+      "minutes": 12,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "walk",
+      "minutes": 3,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "walk",
+      "minutes": 18,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "walk",
+      "minutes": 6,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "walk",
+      "minutes": 3,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "walk",
+      "minutes": 9,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "walk",
+      "minutes": 13,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "walk",
+      "minutes": 11,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "walk",
+      "minutes": 14,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "同じ地点での移動を伴わないゲーム内操作。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "walk",
+      "minutes": 11,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "walk",
+      "minutes": 18,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "walk",
+      "minutes": 9,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "walk",
+      "minutes": 12,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "walk",
+      "minutes": 8,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "walk",
+      "minutes": 14,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "walk",
+      "minutes": 17,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "walk",
+      "minutes": 12,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "walk",
+      "minutes": 11,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "同じ地点での移動を伴わないゲーム内操作。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_kunya_ark",
+      "mode": "walk",
+      "minutes": 6,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_juma_mosque",
+      "mode": "walk",
+      "minutes": 12,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_tash_hauli",
+      "mode": "walk",
+      "minutes": 16,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_islam_khoja",
+      "mode": "walk",
+      "minutes": 13,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_kalta_minor",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "mode": "walk",
+      "minutes": 11,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "mode": "walk",
+      "minutes": 6,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_ota_darvoza",
+      "mode": "walk",
+      "minutes": 3,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "mode": "walk",
+      "minutes": 18,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "徒歩時間は旧市街の門と街区を結ぶ編集用ネットワークの所要分を合算したゲーム用推定。観光客の休止や入場待ちを含む実測時間ではない。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_hotel_hub",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape editorial walking network",
+          "title": "Khiva walking game model",
+          "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "同じ地点での移動を伴わないゲーム内操作。"
+        },
+        {
+          "publisher": "Advantour",
+          "title": "Khiva: city transport",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の移動は徒歩が基本で、タクシーは歴史地区内部を走らず城門付近で乗降する、と旅行会社が案内している。"
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "uz_khiva_main_kunya_ark",
+      "cityId": "khiva",
+      "placeId": "khiva_kunya_ark",
+      "category": "main",
+      "titleJa": "クフナ・アルクを巡る",
+      "activityMinutes": 60,
+      "apCost": 0,
+      "contentStatus": "pending_content",
+      "admissionCost": 125000
+    },
+    {
+      "id": "uz_khiva_main_juma_mosque",
+      "cityId": "khiva",
+      "placeId": "khiva_juma_mosque",
+      "category": "main",
+      "titleJa": "ジュマ・モスクを巡る",
+      "activityMinutes": 60,
+      "apCost": 0,
+      "contentStatus": "pending_content",
+      "admissionCost": 125000
+    },
+    {
+      "id": "uz_khiva_main_tash_hauli",
+      "cityId": "khiva",
+      "placeId": "khiva_tash_hauli",
+      "category": "main",
+      "titleJa": "タシュ・ハウリ宮殿を巡る",
+      "activityMinutes": 75,
+      "apCost": 0,
+      "contentStatus": "pending_content",
+      "admissionCost": 125000
+    },
+    {
+      "id": "uz_khiva_main_islam_khoja",
+      "cityId": "khiva",
+      "placeId": "khiva_islam_khoja",
+      "category": "main",
+      "titleJa": "イスラム・ホジャ複合体を巡る",
+      "activityMinutes": 45,
+      "apCost": 0,
+      "contentStatus": "pending_content",
+      "admissionCost": 125000
+    },
+    {
+      "id": "uz_khiva_date_kalta_minor",
+      "cityId": "khiva",
+      "placeId": "khiva_kalta_minor",
+      "category": "date",
+      "titleJa": "カルタ・ミノル外観を訪ねる",
+      "activityMinutes": 45,
+      "apCost": 2,
+      "contentStatus": "pending_content",
+      "admissionCost": 0
+    },
+    {
+      "id": "uz_khiva_date_pahlavan_mahmud",
+      "cityId": "khiva",
+      "placeId": "khiva_pahlavan_mahmud",
+      "category": "date",
+      "titleJa": "パフラヴァン・マフムド廟前を訪ねる",
+      "activityMinutes": 40,
+      "apCost": 2,
+      "contentStatus": "pending_content",
+      "admissionCost": 0
+    },
+    {
+      "id": "uz_khiva_date_muhammad_amin_khan",
+      "cityId": "khiva",
+      "placeId": "khiva_muhammad_amin_khan",
+      "category": "date",
+      "titleJa": "ムハンマド・アミン・ハン・マドラサ外観を訪ねる",
+      "activityMinutes": 30,
+      "apCost": 2,
+      "contentStatus": "pending_content",
+      "admissionCost": 0
+    },
+    {
+      "id": "uz_khiva_date_ota_darvoza",
+      "cityId": "khiva",
+      "placeId": "khiva_ota_darvoza",
+      "category": "date",
+      "titleJa": "オタ門を訪ねる",
+      "activityMinutes": 30,
+      "apCost": 2,
+      "contentStatus": "pending_content",
+      "admissionCost": 0
+    },
+    {
+      "id": "uz_khiva_date_palvan_darvoza",
+      "cityId": "khiva",
+      "placeId": "khiva_palvan_darvoza",
+      "category": "date",
+      "titleJa": "パルヴァン門を訪ねる",
+      "activityMinutes": 30,
+      "apCost": 2,
+      "contentStatus": "pending_content",
+      "admissionCost": 0
+    },
+    {
+      "id": "uz_khiva_date_bogcha_darvoza",
+      "cityId": "khiva",
+      "placeId": "khiva_bogcha_darvoza",
+      "category": "date",
+      "titleJa": "バグチャ門・北側城壁を訪ねる",
+      "activityMinutes": 30,
+      "apCost": 2,
+      "contentStatus": "pending_content",
+      "admissionCost": 0
+    }
+  ]
+}

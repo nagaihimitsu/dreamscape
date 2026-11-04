@@ -1,0 +1,7800 @@
+[
+  {
+    "fromPlaceId": "tashkent_khast_imam",
+    "toPlaceId": "tashkent_chorsu_bazaar",
+    "walk": {
+      "minutes": 25,
+      "placePath": [
+        "khast_imam",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "Zarqaynar・Karasaray側の旧市街回廊"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 8,
+      "placePath": [
+        "khast_imam",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "Zarqaynar・Karasaray側の旧市街回廊"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu"
+      ],
+      "lines": [],
+      "accessMinutes": [
+        24,
+        3
+      ],
+      "gameMinutes": 32
+    },
+    "bus": {
+      "stopPath": [
+        "Imam Khazrat",
+        "Chorsu centre/market"
+      ],
+      "lines": [
+        "42"
+      ],
+      "boardings": [
+        "42"
+      ],
+      "accessMinutes": [
+        4,
+        3
+      ],
+      "gameMinutes": 27
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_khast_imam",
+    "toPlaceId": "tashkent_kukeldash",
+    "walk": {
+      "minutes": 31,
+      "placePath": [
+        "khast_imam",
+        "chorsu_bazaar",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 13,
+      "placePath": [
+        "khast_imam",
+        "chorsu_bazaar",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu"
+      ],
+      "lines": [],
+      "accessMinutes": [
+        24,
+        7
+      ],
+      "gameMinutes": 36
+    },
+    "bus": {
+      "stopPath": [
+        "Imam Khazrat",
+        "Chorsu centre/market"
+      ],
+      "lines": [
+        "42"
+      ],
+      "boardings": [
+        "42"
+      ],
+      "accessMinutes": [
+        4,
+        5
+      ],
+      "gameMinutes": 29
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_khast_imam",
+    "toPlaceId": "tashkent_amir_temur_square",
+    "walk": {
+      "minutes": 95,
+      "placePath": [
+        "khast_imam",
+        "anhor_canal",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Amir Temur・Minor通り方面"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 32,
+      "placePath": [
+        "khast_imam",
+        "anhor_canal",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Amir Temur・Minor通り方面"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        24,
+        3
+      ],
+      "gameMinutes": 49
+    },
+    "bus": {
+      "stopPath": [
+        "Imam Khazrat",
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square"
+      ],
+      "lines": [
+        "42",
+        "28",
+        "walk"
+      ],
+      "boardings": [
+        "42",
+        "28"
+      ],
+      "accessMinutes": [
+        4,
+        3
+      ],
+      "gameMinutes": 70
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_khast_imam",
+    "toPlaceId": "tashkent_anhor_canal",
+    "walk": {
+      "minutes": 50,
+      "placePath": [
+        "khast_imam",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "Karasaray・Nurafshon・Labzak側の回廊"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 17,
+      "placePath": [
+        "khast_imam",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "Karasaray・Nurafshon・Labzak側の回廊"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni",
+        "Yunus Rajabiy",
+        "Abdulla Qodiriy",
+        "Minor",
+        "Bodomzor"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod"
+      ],
+      "accessMinutes": [
+        24,
+        18
+      ],
+      "gameMinutes": 78
+    },
+    "bus": {
+      "stopPath": [
+        "Imam Khazrat",
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square",
+        "Geologorazvedka"
+      ],
+      "lines": [
+        "42",
+        "28",
+        "walk",
+        "51"
+      ],
+      "boardings": [
+        "42",
+        "28",
+        "51"
+      ],
+      "accessMinutes": [
+        4,
+        15
+      ],
+      "gameMinutes": 108
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_khast_imam",
+    "toPlaceId": "tashkent_japanese_garden",
+    "walk": {
+      "minutes": 66,
+      "placePath": [
+        "khast_imam",
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 24,
+      "placePath": [
+        "khast_imam",
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni",
+        "Yunus Rajabiy",
+        "Abdulla Qodiriy",
+        "Minor",
+        "Bodomzor"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod"
+      ],
+      "accessMinutes": [
+        24,
+        10
+      ],
+      "gameMinutes": 70
+    },
+    "bus": {
+      "stopPath": [
+        "Imam Khazrat",
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square",
+        "Geologorazvedka",
+        "Akvapark"
+      ],
+      "lines": [
+        "42",
+        "28",
+        "walk",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "42",
+        "28",
+        "51"
+      ],
+      "accessMinutes": [
+        4,
+        8
+      ],
+      "gameMinutes": 106
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_khast_imam",
+    "toPlaceId": "tashkent_navoi_theatre",
+    "walk": {
+      "minutes": 101,
+      "placePath": [
+        "khast_imam",
+        "chorsu_bazaar",
+        "kukeldash",
+        "independence_square",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Navoiy通りからSharof Rashidov通り",
+        "Sharof Rashidov・Zarafshon通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 38,
+      "placePath": [
+        "khast_imam",
+        "anhor_canal",
+        "independence_square",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Sharof Rashidov・Zarafshon通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Ozbekiston",
+        "Kosmonavtlar"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        24,
+        12
+      ],
+      "gameMinutes": 53
+    },
+    "bus": {
+      "stopPath": [
+        "Imam Khazrat",
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square",
+        "TsUM"
+      ],
+      "lines": [
+        "42",
+        "28",
+        "walk",
+        "51"
+      ],
+      "boardings": [
+        "42",
+        "28",
+        "51"
+      ],
+      "accessMinutes": [
+        4,
+        3
+      ],
+      "gameMinutes": 84
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_khast_imam",
+    "toPlaceId": "tashkent_independence_square",
+    "walk": {
+      "minutes": 86,
+      "placePath": [
+        "khast_imam",
+        "chorsu_bazaar",
+        "kukeldash",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Navoiy通りからSharof Rashidov通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 31,
+      "placePath": [
+        "khast_imam",
+        "anhor_canal",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Sharof Rashidov通り・Anhorの公道橋側"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Mustaqillik Maydoni"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        24,
+        5
+      ],
+      "gameMinutes": 48
+    },
+    "bus": {
+      "stopPath": [
+        "Imam Khazrat",
+        "Chorsu centre/market",
+        "Mustaqillik square"
+      ],
+      "lines": [
+        "42",
+        "28"
+      ],
+      "boardings": [
+        "42",
+        "28"
+      ],
+      "accessMinutes": [
+        4,
+        5
+      ],
+      "gameMinutes": 57
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_khast_imam",
+    "toPlaceId": "tashkent_abulkasym",
+    "walk": {
+      "minutes": 67,
+      "placePath": [
+        "khast_imam",
+        "chorsu_bazaar",
+        "kukeldash",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Furqat通り方面"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 26,
+      "placePath": [
+        "khast_imam",
+        "chorsu_bazaar",
+        "kukeldash",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Furqat通り方面"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Xalqlar Dostligi",
+        "Milliy Bog"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        24,
+        7
+      ],
+      "gameMinutes": 53
+    },
+    "bus": {
+      "stopPath": [
+        "Imam Khazrat",
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square",
+        "TsUM",
+        "Ozbekiston metro",
+        "Beshyogoch square"
+      ],
+      "lines": [
+        "42",
+        "28",
+        "walk",
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "42",
+        "28",
+        "51"
+      ],
+      "accessMinutes": [
+        4,
+        20
+      ],
+      "gameMinutes": 123
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_khast_imam",
+    "toPlaceId": "tashkent_navoi_park",
+    "walk": {
+      "minutes": 77,
+      "placePath": [
+        "khast_imam",
+        "chorsu_bazaar",
+        "kukeldash",
+        "abulkasym",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Furqat通り方面",
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 29,
+      "placePath": [
+        "khast_imam",
+        "chorsu_bazaar",
+        "kukeldash",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Furqat・Beshyogoch通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Xalqlar Dostligi",
+        "Milliy Bog"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        24,
+        12
+      ],
+      "gameMinutes": 58
+    },
+    "bus": {
+      "stopPath": [
+        "Imam Khazrat",
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square",
+        "TsUM",
+        "Ozbekiston metro",
+        "Beshyogoch square"
+      ],
+      "lines": [
+        "42",
+        "28",
+        "walk",
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "42",
+        "28",
+        "51"
+      ],
+      "accessMinutes": [
+        4,
+        15
+      ],
+      "gameMinutes": 118
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_khast_imam",
+    "toPlaceId": "tashkent_hotel_hub",
+    "walk": {
+      "minutes": 100,
+      "placePath": [
+        "khast_imam",
+        "anhor_canal",
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Amir Temur・Minor通り方面",
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 37,
+      "placePath": [
+        "khast_imam",
+        "anhor_canal",
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Amir Temur・Minor通り方面",
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        24,
+        6
+      ],
+      "gameMinutes": 52
+    },
+    "bus": {
+      "stopPath": [
+        "Imam Khazrat",
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square"
+      ],
+      "lines": [
+        "42",
+        "28",
+        "walk"
+      ],
+      "boardings": [
+        "42",
+        "28"
+      ],
+      "accessMinutes": [
+        4,
+        6
+      ],
+      "gameMinutes": 73
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_chorsu_bazaar",
+    "toPlaceId": "tashkent_khast_imam",
+    "walk": {
+      "minutes": 25,
+      "placePath": [
+        "chorsu_bazaar",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "Zarqaynar・Karasaray側の旧市街回廊"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 8,
+      "placePath": [
+        "chorsu_bazaar",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "Zarqaynar・Karasaray側の旧市街回廊"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu"
+      ],
+      "lines": [],
+      "accessMinutes": [
+        3,
+        24
+      ],
+      "gameMinutes": 32
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market",
+        "Imam Khazrat"
+      ],
+      "lines": [
+        "42"
+      ],
+      "boardings": [
+        "42"
+      ],
+      "accessMinutes": [
+        3,
+        4
+      ],
+      "gameMinutes": 27
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_chorsu_bazaar",
+    "toPlaceId": "tashkent_kukeldash",
+    "walk": {
+      "minutes": 6,
+      "placePath": [
+        "chorsu_bazaar",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 5,
+      "placePath": [
+        "chorsu_bazaar",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu"
+      ],
+      "lines": [],
+      "accessMinutes": [
+        3,
+        7
+      ],
+      "gameMinutes": 15
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market"
+      ],
+      "lines": [],
+      "boardings": [],
+      "accessMinutes": [
+        3,
+        5
+      ],
+      "gameMinutes": 8
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_chorsu_bazaar",
+    "toPlaceId": "tashkent_amir_temur_square",
+    "walk": {
+      "minutes": 79,
+      "placePath": [
+        "chorsu_bazaar",
+        "kukeldash",
+        "independence_square",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Navoiy通りからSharof Rashidov通り",
+        "徒歩はSayilgoh側、車はIslam Karimov通り側"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 31,
+      "placePath": [
+        "chorsu_bazaar",
+        "kukeldash",
+        "independence_square",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Navoiy通りからSharof Rashidov通り",
+        "徒歩はSayilgoh側、車はIslam Karimov通り側"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        3,
+        3
+      ],
+      "gameMinutes": 28
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square"
+      ],
+      "lines": [
+        "28",
+        "walk"
+      ],
+      "boardings": [
+        "28"
+      ],
+      "accessMinutes": [
+        3,
+        3
+      ],
+      "gameMinutes": 49
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_chorsu_bazaar",
+    "toPlaceId": "tashkent_anhor_canal",
+    "walk": {
+      "minutes": 75,
+      "placePath": [
+        "chorsu_bazaar",
+        "khast_imam",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Karasaray・Nurafshon・Labzak側の回廊"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 25,
+      "placePath": [
+        "chorsu_bazaar",
+        "khast_imam",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Karasaray・Nurafshon・Labzak側の回廊"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni",
+        "Yunus Rajabiy",
+        "Abdulla Qodiriy",
+        "Minor",
+        "Bodomzor"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod"
+      ],
+      "accessMinutes": [
+        3,
+        18
+      ],
+      "gameMinutes": 57
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square",
+        "Geologorazvedka"
+      ],
+      "lines": [
+        "28",
+        "walk",
+        "51"
+      ],
+      "boardings": [
+        "28",
+        "51"
+      ],
+      "accessMinutes": [
+        3,
+        15
+      ],
+      "gameMinutes": 87
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_chorsu_bazaar",
+    "toPlaceId": "tashkent_japanese_garden",
+    "walk": {
+      "minutes": 91,
+      "placePath": [
+        "chorsu_bazaar",
+        "khast_imam",
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 32,
+      "placePath": [
+        "chorsu_bazaar",
+        "khast_imam",
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni",
+        "Yunus Rajabiy",
+        "Abdulla Qodiriy",
+        "Minor",
+        "Bodomzor"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod"
+      ],
+      "accessMinutes": [
+        3,
+        10
+      ],
+      "gameMinutes": 49
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square",
+        "Geologorazvedka",
+        "Akvapark"
+      ],
+      "lines": [
+        "28",
+        "walk",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "28",
+        "51"
+      ],
+      "accessMinutes": [
+        3,
+        8
+      ],
+      "gameMinutes": 85
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_chorsu_bazaar",
+    "toPlaceId": "tashkent_navoi_theatre",
+    "walk": {
+      "minutes": 76,
+      "placePath": [
+        "chorsu_bazaar",
+        "kukeldash",
+        "independence_square",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Navoiy通りからSharof Rashidov通り",
+        "Sharof Rashidov・Zarafshon通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 30,
+      "placePath": [
+        "chorsu_bazaar",
+        "kukeldash",
+        "independence_square",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Navoiy通りからSharof Rashidov通り",
+        "Sharof Rashidov・Zarafshon通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Ozbekiston",
+        "Kosmonavtlar"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        3,
+        12
+      ],
+      "gameMinutes": 32
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square",
+        "TsUM"
+      ],
+      "lines": [
+        "28",
+        "walk",
+        "51"
+      ],
+      "boardings": [
+        "28",
+        "51"
+      ],
+      "accessMinutes": [
+        3,
+        3
+      ],
+      "gameMinutes": 63
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_chorsu_bazaar",
+    "toPlaceId": "tashkent_independence_square",
+    "walk": {
+      "minutes": 61,
+      "placePath": [
+        "chorsu_bazaar",
+        "kukeldash",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Navoiy通りからSharof Rashidov通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 23,
+      "placePath": [
+        "chorsu_bazaar",
+        "kukeldash",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Navoiy通りからSharof Rashidov通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Mustaqillik Maydoni"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        3,
+        5
+      ],
+      "gameMinutes": 27
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market",
+        "Mustaqillik square"
+      ],
+      "lines": [
+        "28"
+      ],
+      "boardings": [
+        "28"
+      ],
+      "accessMinutes": [
+        3,
+        5
+      ],
+      "gameMinutes": 36
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_chorsu_bazaar",
+    "toPlaceId": "tashkent_abulkasym",
+    "walk": {
+      "minutes": 42,
+      "placePath": [
+        "chorsu_bazaar",
+        "kukeldash",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Furqat通り方面"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 18,
+      "placePath": [
+        "chorsu_bazaar",
+        "kukeldash",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Furqat通り方面"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Xalqlar Dostligi",
+        "Milliy Bog"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        3,
+        7
+      ],
+      "gameMinutes": 32
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square",
+        "TsUM",
+        "Ozbekiston metro",
+        "Beshyogoch square"
+      ],
+      "lines": [
+        "28",
+        "walk",
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "28",
+        "51"
+      ],
+      "accessMinutes": [
+        3,
+        20
+      ],
+      "gameMinutes": 102
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_chorsu_bazaar",
+    "toPlaceId": "tashkent_navoi_park",
+    "walk": {
+      "minutes": 52,
+      "placePath": [
+        "chorsu_bazaar",
+        "kukeldash",
+        "abulkasym",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Furqat通り方面",
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 21,
+      "placePath": [
+        "chorsu_bazaar",
+        "kukeldash",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Furqat・Beshyogoch通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Xalqlar Dostligi",
+        "Milliy Bog"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        3,
+        12
+      ],
+      "gameMinutes": 37
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square",
+        "TsUM",
+        "Ozbekiston metro",
+        "Beshyogoch square"
+      ],
+      "lines": [
+        "28",
+        "walk",
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "28",
+        "51"
+      ],
+      "accessMinutes": [
+        3,
+        15
+      ],
+      "gameMinutes": 97
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_chorsu_bazaar",
+    "toPlaceId": "tashkent_hotel_hub",
+    "walk": {
+      "minutes": 84,
+      "placePath": [
+        "chorsu_bazaar",
+        "kukeldash",
+        "independence_square",
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Navoiy通りからSharof Rashidov通り",
+        "徒歩はSayilgoh側、車はIslam Karimov通り側",
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 36,
+      "placePath": [
+        "chorsu_bazaar",
+        "kukeldash",
+        "independence_square",
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Navoiy通りからSharof Rashidov通り",
+        "徒歩はSayilgoh側、車はIslam Karimov通り側",
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        3,
+        6
+      ],
+      "gameMinutes": 31
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square"
+      ],
+      "lines": [
+        "28",
+        "walk"
+      ],
+      "boardings": [
+        "28"
+      ],
+      "accessMinutes": [
+        3,
+        6
+      ],
+      "gameMinutes": 52
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_kukeldash",
+    "toPlaceId": "tashkent_khast_imam",
+    "walk": {
+      "minutes": 31,
+      "placePath": [
+        "kukeldash",
+        "chorsu_bazaar",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Zarqaynar・Karasaray側の旧市街回廊"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 13,
+      "placePath": [
+        "kukeldash",
+        "chorsu_bazaar",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Zarqaynar・Karasaray側の旧市街回廊"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu"
+      ],
+      "lines": [],
+      "accessMinutes": [
+        7,
+        24
+      ],
+      "gameMinutes": 36
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market",
+        "Imam Khazrat"
+      ],
+      "lines": [
+        "42"
+      ],
+      "boardings": [
+        "42"
+      ],
+      "accessMinutes": [
+        5,
+        4
+      ],
+      "gameMinutes": 29
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_kukeldash",
+    "toPlaceId": "tashkent_chorsu_bazaar",
+    "walk": {
+      "minutes": 6,
+      "placePath": [
+        "kukeldash",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 5,
+      "placePath": [
+        "kukeldash",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu"
+      ],
+      "lines": [],
+      "accessMinutes": [
+        7,
+        3
+      ],
+      "gameMinutes": 15
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market"
+      ],
+      "lines": [],
+      "boardings": [],
+      "accessMinutes": [
+        5,
+        3
+      ],
+      "gameMinutes": 8
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_kukeldash",
+    "toPlaceId": "tashkent_amir_temur_square",
+    "walk": {
+      "minutes": 73,
+      "placePath": [
+        "kukeldash",
+        "independence_square",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "Navoiy通りからSharof Rashidov通り",
+        "徒歩はSayilgoh側、車はIslam Karimov通り側"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 26,
+      "placePath": [
+        "kukeldash",
+        "independence_square",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "Navoiy通りからSharof Rashidov通り",
+        "徒歩はSayilgoh側、車はIslam Karimov通り側"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        7,
+        3
+      ],
+      "gameMinutes": 32
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square"
+      ],
+      "lines": [
+        "28",
+        "walk"
+      ],
+      "boardings": [
+        "28"
+      ],
+      "accessMinutes": [
+        5,
+        3
+      ],
+      "gameMinutes": 51
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_kukeldash",
+    "toPlaceId": "tashkent_anhor_canal",
+    "walk": {
+      "minutes": 81,
+      "placePath": [
+        "kukeldash",
+        "chorsu_bazaar",
+        "khast_imam",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Karasaray・Nurafshon・Labzak側の回廊"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 30,
+      "placePath": [
+        "kukeldash",
+        "chorsu_bazaar",
+        "khast_imam",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Karasaray・Nurafshon・Labzak側の回廊"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni",
+        "Yunus Rajabiy",
+        "Abdulla Qodiriy",
+        "Minor",
+        "Bodomzor"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod"
+      ],
+      "accessMinutes": [
+        7,
+        18
+      ],
+      "gameMinutes": 61
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square",
+        "Geologorazvedka"
+      ],
+      "lines": [
+        "28",
+        "walk",
+        "51"
+      ],
+      "boardings": [
+        "28",
+        "51"
+      ],
+      "accessMinutes": [
+        5,
+        15
+      ],
+      "gameMinutes": 89
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_kukeldash",
+    "toPlaceId": "tashkent_japanese_garden",
+    "walk": {
+      "minutes": 97,
+      "placePath": [
+        "kukeldash",
+        "chorsu_bazaar",
+        "khast_imam",
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 37,
+      "placePath": [
+        "kukeldash",
+        "chorsu_bazaar",
+        "khast_imam",
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni",
+        "Yunus Rajabiy",
+        "Abdulla Qodiriy",
+        "Minor",
+        "Bodomzor"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod"
+      ],
+      "accessMinutes": [
+        7,
+        10
+      ],
+      "gameMinutes": 53
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square",
+        "Geologorazvedka",
+        "Akvapark"
+      ],
+      "lines": [
+        "28",
+        "walk",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "28",
+        "51"
+      ],
+      "accessMinutes": [
+        5,
+        8
+      ],
+      "gameMinutes": 87
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_kukeldash",
+    "toPlaceId": "tashkent_navoi_theatre",
+    "walk": {
+      "minutes": 70,
+      "placePath": [
+        "kukeldash",
+        "independence_square",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "Navoiy通りからSharof Rashidov通り",
+        "Sharof Rashidov・Zarafshon通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 25,
+      "placePath": [
+        "kukeldash",
+        "independence_square",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "Navoiy通りからSharof Rashidov通り",
+        "Sharof Rashidov・Zarafshon通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Ozbekiston",
+        "Kosmonavtlar"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        7,
+        12
+      ],
+      "gameMinutes": 36
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square",
+        "TsUM"
+      ],
+      "lines": [
+        "28",
+        "walk",
+        "51"
+      ],
+      "boardings": [
+        "28",
+        "51"
+      ],
+      "accessMinutes": [
+        5,
+        3
+      ],
+      "gameMinutes": 65
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_kukeldash",
+    "toPlaceId": "tashkent_independence_square",
+    "walk": {
+      "minutes": 55,
+      "placePath": [
+        "kukeldash",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "Navoiy通りからSharof Rashidov通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 18,
+      "placePath": [
+        "kukeldash",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "Navoiy通りからSharof Rashidov通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Mustaqillik Maydoni"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        7,
+        5
+      ],
+      "gameMinutes": 31
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market",
+        "Mustaqillik square"
+      ],
+      "lines": [
+        "28"
+      ],
+      "boardings": [
+        "28"
+      ],
+      "accessMinutes": [
+        5,
+        5
+      ],
+      "gameMinutes": 38
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_kukeldash",
+    "toPlaceId": "tashkent_abulkasym",
+    "walk": {
+      "minutes": 36,
+      "placePath": [
+        "kukeldash",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "Furqat通り方面"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 13,
+      "placePath": [
+        "kukeldash",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "Furqat通り方面"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Xalqlar Dostligi",
+        "Milliy Bog"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        7,
+        7
+      ],
+      "gameMinutes": 36
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square",
+        "TsUM",
+        "Ozbekiston metro",
+        "Beshyogoch square"
+      ],
+      "lines": [
+        "28",
+        "walk",
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "28",
+        "51"
+      ],
+      "accessMinutes": [
+        5,
+        20
+      ],
+      "gameMinutes": 104
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_kukeldash",
+    "toPlaceId": "tashkent_navoi_park",
+    "walk": {
+      "minutes": 46,
+      "placePath": [
+        "kukeldash",
+        "abulkasym",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "Furqat通り方面",
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 16,
+      "placePath": [
+        "kukeldash",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "Furqat・Beshyogoch通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Xalqlar Dostligi",
+        "Milliy Bog"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        7,
+        12
+      ],
+      "gameMinutes": 41
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square",
+        "TsUM",
+        "Ozbekiston metro",
+        "Beshyogoch square"
+      ],
+      "lines": [
+        "28",
+        "walk",
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "28",
+        "51"
+      ],
+      "accessMinutes": [
+        5,
+        15
+      ],
+      "gameMinutes": 99
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_kukeldash",
+    "toPlaceId": "tashkent_hotel_hub",
+    "walk": {
+      "minutes": 78,
+      "placePath": [
+        "kukeldash",
+        "independence_square",
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "Navoiy通りからSharof Rashidov通り",
+        "徒歩はSayilgoh側、車はIslam Karimov通り側",
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 31,
+      "placePath": [
+        "kukeldash",
+        "independence_square",
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "Navoiy通りからSharof Rashidov通り",
+        "徒歩はSayilgoh側、車はIslam Karimov通り側",
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Chorsu",
+        "Gafur Gulom",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        7,
+        6
+      ],
+      "gameMinutes": 35
+    },
+    "bus": {
+      "stopPath": [
+        "Chorsu centre/market",
+        "Mustaqillik square",
+        "Amir Temur square"
+      ],
+      "lines": [
+        "28",
+        "walk"
+      ],
+      "boardings": [
+        "28"
+      ],
+      "accessMinutes": [
+        5,
+        6
+      ],
+      "gameMinutes": 54
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_amir_temur_square",
+    "toPlaceId": "tashkent_khast_imam",
+    "walk": {
+      "minutes": 95,
+      "placePath": [
+        "amir_temur_square",
+        "anhor_canal",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "Amir Temur・Minor通り方面",
+        "Karasaray・Nurafshon・Labzak側の回廊"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 32,
+      "placePath": [
+        "amir_temur_square",
+        "anhor_canal",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "Amir Temur・Minor通り方面",
+        "Karasaray・Nurafshon・Labzak側の回廊"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        3,
+        24
+      ],
+      "gameMinutes": 49
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market",
+        "Imam Khazrat"
+      ],
+      "lines": [
+        "walk",
+        "28",
+        "42"
+      ],
+      "boardings": [
+        "28",
+        "42"
+      ],
+      "accessMinutes": [
+        3,
+        4
+      ],
+      "gameMinutes": 70
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_amir_temur_square",
+    "toPlaceId": "tashkent_chorsu_bazaar",
+    "walk": {
+      "minutes": 79,
+      "placePath": [
+        "amir_temur_square",
+        "independence_square",
+        "kukeldash",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "徒歩はSayilgoh側、車はIslam Karimov通り側",
+        "Navoiy通りからSharof Rashidov通り",
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 31,
+      "placePath": [
+        "amir_temur_square",
+        "independence_square",
+        "kukeldash",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "徒歩はSayilgoh側、車はIslam Karimov通り側",
+        "Navoiy通りからSharof Rashidov通り",
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        3,
+        3
+      ],
+      "gameMinutes": 28
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market"
+      ],
+      "lines": [
+        "walk",
+        "28"
+      ],
+      "boardings": [
+        "28"
+      ],
+      "accessMinutes": [
+        3,
+        3
+      ],
+      "gameMinutes": 49
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_amir_temur_square",
+    "toPlaceId": "tashkent_kukeldash",
+    "walk": {
+      "minutes": 73,
+      "placePath": [
+        "amir_temur_square",
+        "independence_square",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "徒歩はSayilgoh側、車はIslam Karimov通り側",
+        "Navoiy通りからSharof Rashidov通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 26,
+      "placePath": [
+        "amir_temur_square",
+        "independence_square",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "徒歩はSayilgoh側、車はIslam Karimov通り側",
+        "Navoiy通りからSharof Rashidov通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        3,
+        7
+      ],
+      "gameMinutes": 32
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market"
+      ],
+      "lines": [
+        "walk",
+        "28"
+      ],
+      "boardings": [
+        "28"
+      ],
+      "accessMinutes": [
+        3,
+        5
+      ],
+      "gameMinutes": 51
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_amir_temur_square",
+    "toPlaceId": "tashkent_anhor_canal",
+    "walk": {
+      "minutes": 45,
+      "placePath": [
+        "amir_temur_square",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "Amir Temur・Minor通り方面"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 15,
+      "placePath": [
+        "amir_temur_square",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "Amir Temur・Minor通り方面"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni",
+        "Yunus Rajabiy",
+        "Abdulla Qodiriy",
+        "Minor",
+        "Bodomzor"
+      ],
+      "lines": [
+        "transfer",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod"
+      ],
+      "accessMinutes": [
+        3,
+        18
+      ],
+      "gameMinutes": 40
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square",
+        "Geologorazvedka"
+      ],
+      "lines": [
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        3,
+        15
+      ],
+      "gameMinutes": 44
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_amir_temur_square",
+    "toPlaceId": "tashkent_japanese_garden",
+    "walk": {
+      "minutes": 61,
+      "placePath": [
+        "amir_temur_square",
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "Amir Temur・Minor通り方面",
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 22,
+      "placePath": [
+        "amir_temur_square",
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "Amir Temur・Minor通り方面",
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni",
+        "Yunus Rajabiy",
+        "Abdulla Qodiriy",
+        "Minor",
+        "Bodomzor"
+      ],
+      "lines": [
+        "transfer",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod"
+      ],
+      "accessMinutes": [
+        3,
+        10
+      ],
+      "gameMinutes": 32
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square",
+        "Geologorazvedka",
+        "Akvapark"
+      ],
+      "lines": [
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        3,
+        8
+      ],
+      "gameMinutes": 42
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_amir_temur_square",
+    "toPlaceId": "tashkent_navoi_theatre",
+    "walk": {
+      "minutes": 14,
+      "placePath": [
+        "amir_temur_square",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "Zarafshon・Amir Temur通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 7,
+      "placePath": [
+        "amir_temur_square",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "Zarafshon・Amir Temur通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni",
+        "Yunus Rajabiy",
+        "Ming Orik",
+        "Oybek",
+        "Kosmonavtlar"
+      ],
+      "lines": [
+        "transfer",
+        "Yunusobod",
+        "transfer",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        3,
+        12
+      ],
+      "gameMinutes": 36
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square",
+        "TsUM"
+      ],
+      "lines": [
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        3,
+        3
+      ],
+      "gameMinutes": 20
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_amir_temur_square",
+    "toPlaceId": "tashkent_independence_square",
+    "walk": {
+      "minutes": 18,
+      "placePath": [
+        "amir_temur_square",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "徒歩はSayilgoh側、車はIslam Karimov通り側"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 8,
+      "placePath": [
+        "amir_temur_square",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "徒歩はSayilgoh側、車はIslam Karimov通り側"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni"
+      ],
+      "lines": [
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        3,
+        5
+      ],
+      "gameMinutes": 16
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square",
+        "Mustaqillik square"
+      ],
+      "lines": [
+        "walk"
+      ],
+      "boardings": [],
+      "accessMinutes": [
+        3,
+        5
+      ],
+      "gameMinutes": 23
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_amir_temur_square",
+    "toPlaceId": "tashkent_abulkasym",
+    "walk": {
+      "minutes": 56,
+      "placePath": [
+        "amir_temur_square",
+        "navoi_theatre",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "Zarafshon・Amir Temur通り",
+        "Afrosiyob・Beshyogoch・Furqat通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 22,
+      "placePath": [
+        "amir_temur_square",
+        "navoi_theatre",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "Zarafshon・Amir Temur通り",
+        "Afrosiyob・Beshyogoch・Furqat通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Xalqlar Dostligi",
+        "Milliy Bog"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        3,
+        7
+      ],
+      "gameMinutes": 27
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square",
+        "TsUM",
+        "Ozbekiston metro",
+        "Beshyogoch square"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        3,
+        20
+      ],
+      "gameMinutes": 59
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_amir_temur_square",
+    "toPlaceId": "tashkent_navoi_park",
+    "walk": {
+      "minutes": 66,
+      "placePath": [
+        "amir_temur_square",
+        "navoi_theatre",
+        "abulkasym",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "Zarafshon・Amir Temur通り",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 27,
+      "placePath": [
+        "amir_temur_square",
+        "navoi_theatre",
+        "abulkasym",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "Zarafshon・Amir Temur通り",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Xalqlar Dostligi",
+        "Milliy Bog"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        3,
+        12
+      ],
+      "gameMinutes": 32
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square",
+        "TsUM",
+        "Ozbekiston metro",
+        "Beshyogoch square"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        3,
+        15
+      ],
+      "gameMinutes": 54
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_amir_temur_square",
+    "toPlaceId": "tashkent_hotel_hub",
+    "walk": {
+      "minutes": 5,
+      "placePath": [
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 5,
+      "placePath": [
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [],
+      "accessMinutes": [
+        3,
+        6
+      ],
+      "gameMinutes": 14
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square"
+      ],
+      "lines": [],
+      "boardings": [],
+      "accessMinutes": [
+        3,
+        6
+      ],
+      "gameMinutes": 9
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_anhor_canal",
+    "toPlaceId": "tashkent_khast_imam",
+    "walk": {
+      "minutes": 50,
+      "placePath": [
+        "anhor_canal",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "Karasaray・Nurafshon・Labzak側の回廊"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 17,
+      "placePath": [
+        "anhor_canal",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "Karasaray・Nurafshon・Labzak側の回廊"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor",
+        "Minor",
+        "Abdulla Qodiriy",
+        "Yunus Rajabiy",
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        18,
+        24
+      ],
+      "gameMinutes": 78
+    },
+    "bus": {
+      "stopPath": [
+        "Geologorazvedka",
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market",
+        "Imam Khazrat"
+      ],
+      "lines": [
+        "51",
+        "walk",
+        "28",
+        "42"
+      ],
+      "boardings": [
+        "51",
+        "28",
+        "42"
+      ],
+      "accessMinutes": [
+        15,
+        4
+      ],
+      "gameMinutes": 108
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_anhor_canal",
+    "toPlaceId": "tashkent_chorsu_bazaar",
+    "walk": {
+      "minutes": 75,
+      "placePath": [
+        "anhor_canal",
+        "khast_imam",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Zarqaynar・Karasaray側の旧市街回廊"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 25,
+      "placePath": [
+        "anhor_canal",
+        "khast_imam",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Zarqaynar・Karasaray側の旧市街回廊"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor",
+        "Minor",
+        "Abdulla Qodiriy",
+        "Yunus Rajabiy",
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        18,
+        3
+      ],
+      "gameMinutes": 57
+    },
+    "bus": {
+      "stopPath": [
+        "Geologorazvedka",
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market"
+      ],
+      "lines": [
+        "51",
+        "walk",
+        "28"
+      ],
+      "boardings": [
+        "51",
+        "28"
+      ],
+      "accessMinutes": [
+        15,
+        3
+      ],
+      "gameMinutes": 87
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_anhor_canal",
+    "toPlaceId": "tashkent_kukeldash",
+    "walk": {
+      "minutes": 81,
+      "placePath": [
+        "anhor_canal",
+        "khast_imam",
+        "chorsu_bazaar",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 30,
+      "placePath": [
+        "anhor_canal",
+        "khast_imam",
+        "chorsu_bazaar",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor",
+        "Minor",
+        "Abdulla Qodiriy",
+        "Yunus Rajabiy",
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        18,
+        7
+      ],
+      "gameMinutes": 61
+    },
+    "bus": {
+      "stopPath": [
+        "Geologorazvedka",
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market"
+      ],
+      "lines": [
+        "51",
+        "walk",
+        "28"
+      ],
+      "boardings": [
+        "51",
+        "28"
+      ],
+      "accessMinutes": [
+        15,
+        5
+      ],
+      "gameMinutes": 89
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_anhor_canal",
+    "toPlaceId": "tashkent_amir_temur_square",
+    "walk": {
+      "minutes": 45,
+      "placePath": [
+        "anhor_canal",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "Amir Temur・Minor通り方面"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 15,
+      "placePath": [
+        "anhor_canal",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "Amir Temur・Minor通り方面"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor",
+        "Minor",
+        "Abdulla Qodiriy",
+        "Yunus Rajabiy",
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "transfer"
+      ],
+      "accessMinutes": [
+        18,
+        3
+      ],
+      "gameMinutes": 40
+    },
+    "bus": {
+      "stopPath": [
+        "Geologorazvedka",
+        "Amir Temur square"
+      ],
+      "lines": [
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        15,
+        3
+      ],
+      "gameMinutes": 44
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_anhor_canal",
+    "toPlaceId": "tashkent_japanese_garden",
+    "walk": {
+      "minutes": 16,
+      "placePath": [
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 7,
+      "placePath": [
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor"
+      ],
+      "lines": [],
+      "accessMinutes": [
+        18,
+        10
+      ],
+      "gameMinutes": 33
+    },
+    "bus": {
+      "stopPath": [
+        "Geologorazvedka",
+        "Akvapark"
+      ],
+      "lines": [
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        15,
+        8
+      ],
+      "gameMinutes": 36
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_anhor_canal",
+    "toPlaceId": "tashkent_navoi_theatre",
+    "walk": {
+      "minutes": 55,
+      "placePath": [
+        "anhor_canal",
+        "independence_square",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Sharof Rashidov・Zarafshon通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 21,
+      "placePath": [
+        "anhor_canal",
+        "independence_square",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Sharof Rashidov・Zarafshon通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor",
+        "Minor",
+        "Abdulla Qodiriy",
+        "Yunus Rajabiy",
+        "Ming Orik",
+        "Oybek",
+        "Kosmonavtlar"
+      ],
+      "lines": [
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "transfer",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        18,
+        12
+      ],
+      "gameMinutes": 55
+    },
+    "bus": {
+      "stopPath": [
+        "Geologorazvedka",
+        "Amir Temur square",
+        "TsUM"
+      ],
+      "lines": [
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        15,
+        3
+      ],
+      "gameMinutes": 50
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_anhor_canal",
+    "toPlaceId": "tashkent_independence_square",
+    "walk": {
+      "minutes": 40,
+      "placePath": [
+        "anhor_canal",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov通り・Anhorの公道橋側"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 14,
+      "placePath": [
+        "anhor_canal",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov通り・Anhorの公道橋側"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor",
+        "Minor",
+        "Abdulla Qodiriy",
+        "Yunus Rajabiy",
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni"
+      ],
+      "lines": [
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "transfer",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        18,
+        5
+      ],
+      "gameMinutes": 45
+    },
+    "bus": {
+      "stopPath": [
+        "Geologorazvedka",
+        "Amir Temur square",
+        "Mustaqillik square"
+      ],
+      "lines": [
+        "51",
+        "walk"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        15,
+        5
+      ],
+      "gameMinutes": 61
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_anhor_canal",
+    "toPlaceId": "tashkent_abulkasym",
+    "walk": {
+      "minutes": 97,
+      "placePath": [
+        "anhor_canal",
+        "independence_square",
+        "navoi_theatre",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Sharof Rashidov・Zarafshon通り",
+        "Afrosiyob・Beshyogoch・Furqat通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 36,
+      "placePath": [
+        "anhor_canal",
+        "independence_square",
+        "navoi_theatre",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Sharof Rashidov・Zarafshon通り",
+        "Afrosiyob・Beshyogoch・Furqat通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor",
+        "Minor",
+        "Abdulla Qodiriy",
+        "Yunus Rajabiy",
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Xalqlar Dostligi",
+        "Milliy Bog"
+      ],
+      "lines": [
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        18,
+        7
+      ],
+      "gameMinutes": 56
+    },
+    "bus": {
+      "stopPath": [
+        "Geologorazvedka",
+        "Amir Temur square",
+        "TsUM",
+        "Ozbekiston metro",
+        "Beshyogoch square"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        15,
+        20
+      ],
+      "gameMinutes": 89
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_anhor_canal",
+    "toPlaceId": "tashkent_navoi_park",
+    "walk": {
+      "minutes": 107,
+      "placePath": [
+        "anhor_canal",
+        "independence_square",
+        "navoi_theatre",
+        "abulkasym",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Sharof Rashidov・Zarafshon通り",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 41,
+      "placePath": [
+        "anhor_canal",
+        "independence_square",
+        "navoi_theatre",
+        "abulkasym",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Sharof Rashidov・Zarafshon通り",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor",
+        "Minor",
+        "Abdulla Qodiriy",
+        "Yunus Rajabiy",
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Xalqlar Dostligi",
+        "Milliy Bog"
+      ],
+      "lines": [
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        18,
+        12
+      ],
+      "gameMinutes": 61
+    },
+    "bus": {
+      "stopPath": [
+        "Geologorazvedka",
+        "Amir Temur square",
+        "TsUM",
+        "Ozbekiston metro",
+        "Beshyogoch square"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        15,
+        15
+      ],
+      "gameMinutes": 84
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_anhor_canal",
+    "toPlaceId": "tashkent_hotel_hub",
+    "walk": {
+      "minutes": 50,
+      "placePath": [
+        "anhor_canal",
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "Amir Temur・Minor通り方面",
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 20,
+      "placePath": [
+        "anhor_canal",
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "Amir Temur・Minor通り方面",
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor",
+        "Minor",
+        "Abdulla Qodiriy",
+        "Yunus Rajabiy",
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "transfer"
+      ],
+      "accessMinutes": [
+        18,
+        6
+      ],
+      "gameMinutes": 43
+    },
+    "bus": {
+      "stopPath": [
+        "Geologorazvedka",
+        "Amir Temur square"
+      ],
+      "lines": [
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        15,
+        6
+      ],
+      "gameMinutes": 47
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_japanese_garden",
+    "toPlaceId": "tashkent_khast_imam",
+    "walk": {
+      "minutes": 66,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+        "Karasaray・Nurafshon・Labzak側の回廊"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 24,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+        "Karasaray・Nurafshon・Labzak側の回廊"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor",
+        "Minor",
+        "Abdulla Qodiriy",
+        "Yunus Rajabiy",
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        10,
+        24
+      ],
+      "gameMinutes": 70
+    },
+    "bus": {
+      "stopPath": [
+        "Akvapark",
+        "Geologorazvedka",
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market",
+        "Imam Khazrat"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "walk",
+        "28",
+        "42"
+      ],
+      "boardings": [
+        "51",
+        "28",
+        "42"
+      ],
+      "accessMinutes": [
+        8,
+        4
+      ],
+      "gameMinutes": 106
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_japanese_garden",
+    "toPlaceId": "tashkent_chorsu_bazaar",
+    "walk": {
+      "minutes": 91,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal",
+        "khast_imam",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Zarqaynar・Karasaray側の旧市街回廊"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 32,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal",
+        "khast_imam",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Zarqaynar・Karasaray側の旧市街回廊"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor",
+        "Minor",
+        "Abdulla Qodiriy",
+        "Yunus Rajabiy",
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        10,
+        3
+      ],
+      "gameMinutes": 49
+    },
+    "bus": {
+      "stopPath": [
+        "Akvapark",
+        "Geologorazvedka",
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "walk",
+        "28"
+      ],
+      "boardings": [
+        "51",
+        "28"
+      ],
+      "accessMinutes": [
+        8,
+        3
+      ],
+      "gameMinutes": 85
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_japanese_garden",
+    "toPlaceId": "tashkent_kukeldash",
+    "walk": {
+      "minutes": 97,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal",
+        "khast_imam",
+        "chorsu_bazaar",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 37,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal",
+        "khast_imam",
+        "chorsu_bazaar",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+        "Karasaray・Nurafshon・Labzak側の回廊",
+        "Zarqaynar・Karasaray側の旧市街回廊",
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor",
+        "Minor",
+        "Abdulla Qodiriy",
+        "Yunus Rajabiy",
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        10,
+        7
+      ],
+      "gameMinutes": 53
+    },
+    "bus": {
+      "stopPath": [
+        "Akvapark",
+        "Geologorazvedka",
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "walk",
+        "28"
+      ],
+      "boardings": [
+        "51",
+        "28"
+      ],
+      "accessMinutes": [
+        8,
+        5
+      ],
+      "gameMinutes": 87
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_japanese_garden",
+    "toPlaceId": "tashkent_amir_temur_square",
+    "walk": {
+      "minutes": 61,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+        "Amir Temur・Minor通り方面"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 22,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+        "Amir Temur・Minor通り方面"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor",
+        "Minor",
+        "Abdulla Qodiriy",
+        "Yunus Rajabiy",
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "transfer"
+      ],
+      "accessMinutes": [
+        10,
+        3
+      ],
+      "gameMinutes": 32
+    },
+    "bus": {
+      "stopPath": [
+        "Akvapark",
+        "Geologorazvedka",
+        "Amir Temur square"
+      ],
+      "lines": [
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        8,
+        3
+      ],
+      "gameMinutes": 42
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_japanese_garden",
+    "toPlaceId": "tashkent_anhor_canal",
+    "walk": {
+      "minutes": 16,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 7,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor"
+      ],
+      "lines": [],
+      "accessMinutes": [
+        10,
+        18
+      ],
+      "gameMinutes": 33
+    },
+    "bus": {
+      "stopPath": [
+        "Akvapark",
+        "Geologorazvedka"
+      ],
+      "lines": [
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        8,
+        15
+      ],
+      "gameMinutes": 36
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_japanese_garden",
+    "toPlaceId": "tashkent_navoi_theatre",
+    "walk": {
+      "minutes": 71,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal",
+        "independence_square",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Sharof Rashidov・Zarafshon通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 28,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal",
+        "independence_square",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Sharof Rashidov・Zarafshon通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor",
+        "Minor",
+        "Abdulla Qodiriy",
+        "Yunus Rajabiy",
+        "Ming Orik",
+        "Oybek",
+        "Kosmonavtlar"
+      ],
+      "lines": [
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "transfer",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        10,
+        12
+      ],
+      "gameMinutes": 47
+    },
+    "bus": {
+      "stopPath": [
+        "Akvapark",
+        "Geologorazvedka",
+        "Amir Temur square",
+        "TsUM"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        8,
+        3
+      ],
+      "gameMinutes": 48
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_japanese_garden",
+    "toPlaceId": "tashkent_independence_square",
+    "walk": {
+      "minutes": 56,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+        "Sharof Rashidov通り・Anhorの公道橋側"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 21,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+        "Sharof Rashidov通り・Anhorの公道橋側"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor",
+        "Minor",
+        "Abdulla Qodiriy",
+        "Yunus Rajabiy",
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni"
+      ],
+      "lines": [
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "transfer",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        10,
+        5
+      ],
+      "gameMinutes": 37
+    },
+    "bus": {
+      "stopPath": [
+        "Akvapark",
+        "Geologorazvedka",
+        "Amir Temur square",
+        "Mustaqillik square"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "walk"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        8,
+        5
+      ],
+      "gameMinutes": 59
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_japanese_garden",
+    "toPlaceId": "tashkent_abulkasym",
+    "walk": {
+      "minutes": 113,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal",
+        "independence_square",
+        "navoi_theatre",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Sharof Rashidov・Zarafshon通り",
+        "Afrosiyob・Beshyogoch・Furqat通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 43,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal",
+        "independence_square",
+        "navoi_theatre",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Sharof Rashidov・Zarafshon通り",
+        "Afrosiyob・Beshyogoch・Furqat通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor",
+        "Minor",
+        "Abdulla Qodiriy",
+        "Yunus Rajabiy",
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Xalqlar Dostligi",
+        "Milliy Bog"
+      ],
+      "lines": [
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        10,
+        7
+      ],
+      "gameMinutes": 48
+    },
+    "bus": {
+      "stopPath": [
+        "Akvapark",
+        "Geologorazvedka",
+        "Amir Temur square",
+        "TsUM",
+        "Ozbekiston metro",
+        "Beshyogoch square"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        8,
+        20
+      ],
+      "gameMinutes": 87
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_japanese_garden",
+    "toPlaceId": "tashkent_navoi_park",
+    "walk": {
+      "minutes": 123,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal",
+        "independence_square",
+        "navoi_theatre",
+        "abulkasym",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Sharof Rashidov・Zarafshon通り",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 48,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal",
+        "independence_square",
+        "navoi_theatre",
+        "abulkasym",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Sharof Rashidov・Zarafshon通り",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor",
+        "Minor",
+        "Abdulla Qodiriy",
+        "Yunus Rajabiy",
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Xalqlar Dostligi",
+        "Milliy Bog"
+      ],
+      "lines": [
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        10,
+        12
+      ],
+      "gameMinutes": 53
+    },
+    "bus": {
+      "stopPath": [
+        "Akvapark",
+        "Geologorazvedka",
+        "Amir Temur square",
+        "TsUM",
+        "Ozbekiston metro",
+        "Beshyogoch square"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        8,
+        15
+      ],
+      "gameMinutes": 82
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_japanese_garden",
+    "toPlaceId": "tashkent_hotel_hub",
+    "walk": {
+      "minutes": 66,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal",
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+        "Amir Temur・Minor通り方面",
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 27,
+      "placePath": [
+        "japanese_garden",
+        "anhor_canal",
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+        "Amir Temur・Minor通り方面",
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Bodomzor",
+        "Minor",
+        "Abdulla Qodiriy",
+        "Yunus Rajabiy",
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "transfer"
+      ],
+      "accessMinutes": [
+        10,
+        6
+      ],
+      "gameMinutes": 35
+    },
+    "bus": {
+      "stopPath": [
+        "Akvapark",
+        "Geologorazvedka",
+        "Amir Temur square"
+      ],
+      "lines": [
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        8,
+        6
+      ],
+      "gameMinutes": 45
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_theatre",
+    "toPlaceId": "tashkent_khast_imam",
+    "walk": {
+      "minutes": 101,
+      "placePath": [
+        "navoi_theatre",
+        "independence_square",
+        "kukeldash",
+        "chorsu_bazaar",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov・Zarafshon通り",
+        "Navoiy通りからSharof Rashidov通り",
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Zarqaynar・Karasaray側の旧市街回廊"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 38,
+      "placePath": [
+        "navoi_theatre",
+        "independence_square",
+        "anhor_canal",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov・Zarafshon通り",
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Karasaray・Nurafshon・Labzak側の回廊"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Kosmonavtlar",
+        "Ozbekiston",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        12,
+        24
+      ],
+      "gameMinutes": 53
+    },
+    "bus": {
+      "stopPath": [
+        "TsUM",
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market",
+        "Imam Khazrat"
+      ],
+      "lines": [
+        "51",
+        "walk",
+        "28",
+        "42"
+      ],
+      "boardings": [
+        "51",
+        "28",
+        "42"
+      ],
+      "accessMinutes": [
+        3,
+        4
+      ],
+      "gameMinutes": 84
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_theatre",
+    "toPlaceId": "tashkent_chorsu_bazaar",
+    "walk": {
+      "minutes": 76,
+      "placePath": [
+        "navoi_theatre",
+        "independence_square",
+        "kukeldash",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov・Zarafshon通り",
+        "Navoiy通りからSharof Rashidov通り",
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 30,
+      "placePath": [
+        "navoi_theatre",
+        "independence_square",
+        "kukeldash",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov・Zarafshon通り",
+        "Navoiy通りからSharof Rashidov通り",
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Kosmonavtlar",
+        "Ozbekiston",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        12,
+        3
+      ],
+      "gameMinutes": 32
+    },
+    "bus": {
+      "stopPath": [
+        "TsUM",
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market"
+      ],
+      "lines": [
+        "51",
+        "walk",
+        "28"
+      ],
+      "boardings": [
+        "51",
+        "28"
+      ],
+      "accessMinutes": [
+        3,
+        3
+      ],
+      "gameMinutes": 63
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_theatre",
+    "toPlaceId": "tashkent_kukeldash",
+    "walk": {
+      "minutes": 70,
+      "placePath": [
+        "navoi_theatre",
+        "independence_square",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov・Zarafshon通り",
+        "Navoiy通りからSharof Rashidov通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 25,
+      "placePath": [
+        "navoi_theatre",
+        "independence_square",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov・Zarafshon通り",
+        "Navoiy通りからSharof Rashidov通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Kosmonavtlar",
+        "Ozbekiston",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        12,
+        7
+      ],
+      "gameMinutes": 36
+    },
+    "bus": {
+      "stopPath": [
+        "TsUM",
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market"
+      ],
+      "lines": [
+        "51",
+        "walk",
+        "28"
+      ],
+      "boardings": [
+        "51",
+        "28"
+      ],
+      "accessMinutes": [
+        3,
+        5
+      ],
+      "gameMinutes": 65
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_theatre",
+    "toPlaceId": "tashkent_amir_temur_square",
+    "walk": {
+      "minutes": 14,
+      "placePath": [
+        "navoi_theatre",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "Zarafshon・Amir Temur通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 7,
+      "placePath": [
+        "navoi_theatre",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "Zarafshon・Amir Temur通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Kosmonavtlar",
+        "Oybek",
+        "Ming Orik",
+        "Yunus Rajabiy",
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "transfer",
+        "Yunusobod",
+        "transfer"
+      ],
+      "accessMinutes": [
+        12,
+        3
+      ],
+      "gameMinutes": 36
+    },
+    "bus": {
+      "stopPath": [
+        "TsUM",
+        "Amir Temur square"
+      ],
+      "lines": [
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        3,
+        3
+      ],
+      "gameMinutes": 20
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_theatre",
+    "toPlaceId": "tashkent_anhor_canal",
+    "walk": {
+      "minutes": 55,
+      "placePath": [
+        "navoi_theatre",
+        "independence_square",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov・Zarafshon通り",
+        "Sharof Rashidov通り・Anhorの公道橋側"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 21,
+      "placePath": [
+        "navoi_theatre",
+        "independence_square",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov・Zarafshon通り",
+        "Sharof Rashidov通り・Anhorの公道橋側"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Kosmonavtlar",
+        "Oybek",
+        "Ming Orik",
+        "Yunus Rajabiy",
+        "Abdulla Qodiriy",
+        "Minor",
+        "Bodomzor"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "transfer",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod"
+      ],
+      "accessMinutes": [
+        12,
+        18
+      ],
+      "gameMinutes": 55
+    },
+    "bus": {
+      "stopPath": [
+        "TsUM",
+        "Amir Temur square",
+        "Geologorazvedka"
+      ],
+      "lines": [
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        3,
+        15
+      ],
+      "gameMinutes": 50
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_theatre",
+    "toPlaceId": "tashkent_japanese_garden",
+    "walk": {
+      "minutes": 71,
+      "placePath": [
+        "navoi_theatre",
+        "independence_square",
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov・Zarafshon通り",
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 28,
+      "placePath": [
+        "navoi_theatre",
+        "independence_square",
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov・Zarafshon通り",
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Kosmonavtlar",
+        "Oybek",
+        "Ming Orik",
+        "Yunus Rajabiy",
+        "Abdulla Qodiriy",
+        "Minor",
+        "Bodomzor"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "transfer",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod"
+      ],
+      "accessMinutes": [
+        12,
+        10
+      ],
+      "gameMinutes": 47
+    },
+    "bus": {
+      "stopPath": [
+        "TsUM",
+        "Amir Temur square",
+        "Geologorazvedka",
+        "Akvapark"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        3,
+        8
+      ],
+      "gameMinutes": 48
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_theatre",
+    "toPlaceId": "tashkent_independence_square",
+    "walk": {
+      "minutes": 15,
+      "placePath": [
+        "navoi_theatre",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov・Zarafshon通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 7,
+      "placePath": [
+        "navoi_theatre",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov・Zarafshon通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Kosmonavtlar",
+        "Ozbekiston",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Mustaqillik Maydoni"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        12,
+        5
+      ],
+      "gameMinutes": 36
+    },
+    "bus": {
+      "stopPath": [
+        "TsUM",
+        "Amir Temur square",
+        "Mustaqillik square"
+      ],
+      "lines": [
+        "51",
+        "walk"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        3,
+        5
+      ],
+      "gameMinutes": 37
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_theatre",
+    "toPlaceId": "tashkent_abulkasym",
+    "walk": {
+      "minutes": 42,
+      "placePath": [
+        "navoi_theatre",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "Afrosiyob・Beshyogoch・Furqat通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 15,
+      "placePath": [
+        "navoi_theatre",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "Afrosiyob・Beshyogoch・Furqat通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Kosmonavtlar",
+        "Ozbekiston",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Xalqlar Dostligi",
+        "Milliy Bog"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        12,
+        7
+      ],
+      "gameMinutes": 41
+    },
+    "bus": {
+      "stopPath": [
+        "TsUM",
+        "Ozbekiston metro",
+        "Beshyogoch square"
+      ],
+      "lines": [
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        3,
+        20
+      ],
+      "gameMinutes": 53
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_theatre",
+    "toPlaceId": "tashkent_navoi_park",
+    "walk": {
+      "minutes": 52,
+      "placePath": [
+        "navoi_theatre",
+        "abulkasym",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 20,
+      "placePath": [
+        "navoi_theatre",
+        "abulkasym",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Kosmonavtlar",
+        "Ozbekiston",
+        "Alisher Navoiy",
+        "Paxtakor",
+        "Xalqlar Dostligi",
+        "Milliy Bog"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "Uzbekiston",
+        "transfer",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        12,
+        12
+      ],
+      "gameMinutes": 46
+    },
+    "bus": {
+      "stopPath": [
+        "TsUM",
+        "Ozbekiston metro",
+        "Beshyogoch square"
+      ],
+      "lines": [
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        3,
+        15
+      ],
+      "gameMinutes": 48
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_theatre",
+    "toPlaceId": "tashkent_hotel_hub",
+    "walk": {
+      "minutes": 19,
+      "placePath": [
+        "navoi_theatre",
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "Zarafshon・Amir Temur通り",
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 12,
+      "placePath": [
+        "navoi_theatre",
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "Zarafshon・Amir Temur通り",
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Kosmonavtlar",
+        "Oybek",
+        "Ming Orik",
+        "Yunus Rajabiy",
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [
+        "Uzbekiston",
+        "transfer",
+        "Yunusobod",
+        "transfer"
+      ],
+      "accessMinutes": [
+        12,
+        6
+      ],
+      "gameMinutes": 39
+    },
+    "bus": {
+      "stopPath": [
+        "TsUM",
+        "Amir Temur square"
+      ],
+      "lines": [
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        3,
+        6
+      ],
+      "gameMinutes": 23
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_independence_square",
+    "toPlaceId": "tashkent_khast_imam",
+    "walk": {
+      "minutes": 86,
+      "placePath": [
+        "independence_square",
+        "kukeldash",
+        "chorsu_bazaar",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "Navoiy通りからSharof Rashidov通り",
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Zarqaynar・Karasaray側の旧市街回廊"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 31,
+      "placePath": [
+        "independence_square",
+        "anhor_canal",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Karasaray・Nurafshon・Labzak側の回廊"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        5,
+        24
+      ],
+      "gameMinutes": 48
+    },
+    "bus": {
+      "stopPath": [
+        "Mustaqillik square",
+        "Chorsu centre/market",
+        "Imam Khazrat"
+      ],
+      "lines": [
+        "28",
+        "42"
+      ],
+      "boardings": [
+        "28",
+        "42"
+      ],
+      "accessMinutes": [
+        5,
+        4
+      ],
+      "gameMinutes": 57
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_independence_square",
+    "toPlaceId": "tashkent_chorsu_bazaar",
+    "walk": {
+      "minutes": 61,
+      "placePath": [
+        "independence_square",
+        "kukeldash",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "Navoiy通りからSharof Rashidov通り",
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 23,
+      "placePath": [
+        "independence_square",
+        "kukeldash",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "Navoiy通りからSharof Rashidov通り",
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        5,
+        3
+      ],
+      "gameMinutes": 27
+    },
+    "bus": {
+      "stopPath": [
+        "Mustaqillik square",
+        "Chorsu centre/market"
+      ],
+      "lines": [
+        "28"
+      ],
+      "boardings": [
+        "28"
+      ],
+      "accessMinutes": [
+        5,
+        3
+      ],
+      "gameMinutes": 36
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_independence_square",
+    "toPlaceId": "tashkent_kukeldash",
+    "walk": {
+      "minutes": 55,
+      "placePath": [
+        "independence_square",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "Navoiy通りからSharof Rashidov通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 18,
+      "placePath": [
+        "independence_square",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "Navoiy通りからSharof Rashidov通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        5,
+        7
+      ],
+      "gameMinutes": 31
+    },
+    "bus": {
+      "stopPath": [
+        "Mustaqillik square",
+        "Chorsu centre/market"
+      ],
+      "lines": [
+        "28"
+      ],
+      "boardings": [
+        "28"
+      ],
+      "accessMinutes": [
+        5,
+        5
+      ],
+      "gameMinutes": 38
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_independence_square",
+    "toPlaceId": "tashkent_amir_temur_square",
+    "walk": {
+      "minutes": 18,
+      "placePath": [
+        "independence_square",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "徒歩はSayilgoh側、車はIslam Karimov通り側"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 8,
+      "placePath": [
+        "independence_square",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "徒歩はSayilgoh側、車はIslam Karimov通り側"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        5,
+        3
+      ],
+      "gameMinutes": 16
+    },
+    "bus": {
+      "stopPath": [
+        "Mustaqillik square",
+        "Amir Temur square"
+      ],
+      "lines": [
+        "walk"
+      ],
+      "boardings": [],
+      "accessMinutes": [
+        5,
+        3
+      ],
+      "gameMinutes": 23
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_independence_square",
+    "toPlaceId": "tashkent_anhor_canal",
+    "walk": {
+      "minutes": 40,
+      "placePath": [
+        "independence_square",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov通り・Anhorの公道橋側"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 14,
+      "placePath": [
+        "independence_square",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov通り・Anhorの公道橋側"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni",
+        "Yunus Rajabiy",
+        "Abdulla Qodiriy",
+        "Minor",
+        "Bodomzor"
+      ],
+      "lines": [
+        "Chilonzor",
+        "transfer",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod"
+      ],
+      "accessMinutes": [
+        5,
+        18
+      ],
+      "gameMinutes": 45
+    },
+    "bus": {
+      "stopPath": [
+        "Mustaqillik square",
+        "Amir Temur square",
+        "Geologorazvedka"
+      ],
+      "lines": [
+        "walk",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        5,
+        15
+      ],
+      "gameMinutes": 61
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_independence_square",
+    "toPlaceId": "tashkent_japanese_garden",
+    "walk": {
+      "minutes": 56,
+      "placePath": [
+        "independence_square",
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 21,
+      "placePath": [
+        "independence_square",
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni",
+        "Yunus Rajabiy",
+        "Abdulla Qodiriy",
+        "Minor",
+        "Bodomzor"
+      ],
+      "lines": [
+        "Chilonzor",
+        "transfer",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod"
+      ],
+      "accessMinutes": [
+        5,
+        10
+      ],
+      "gameMinutes": 37
+    },
+    "bus": {
+      "stopPath": [
+        "Mustaqillik square",
+        "Amir Temur square",
+        "Geologorazvedka",
+        "Akvapark"
+      ],
+      "lines": [
+        "walk",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        5,
+        8
+      ],
+      "gameMinutes": 59
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_independence_square",
+    "toPlaceId": "tashkent_navoi_theatre",
+    "walk": {
+      "minutes": 15,
+      "placePath": [
+        "independence_square",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov・Zarafshon通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 7,
+      "placePath": [
+        "independence_square",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov・Zarafshon通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Ozbekiston",
+        "Kosmonavtlar"
+      ],
+      "lines": [
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        5,
+        12
+      ],
+      "gameMinutes": 36
+    },
+    "bus": {
+      "stopPath": [
+        "Mustaqillik square",
+        "Amir Temur square",
+        "TsUM"
+      ],
+      "lines": [
+        "walk",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        5,
+        3
+      ],
+      "gameMinutes": 37
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_independence_square",
+    "toPlaceId": "tashkent_abulkasym",
+    "walk": {
+      "minutes": 57,
+      "placePath": [
+        "independence_square",
+        "navoi_theatre",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov・Zarafshon通り",
+        "Afrosiyob・Beshyogoch・Furqat通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 22,
+      "placePath": [
+        "independence_square",
+        "navoi_theatre",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov・Zarafshon通り",
+        "Afrosiyob・Beshyogoch・Furqat通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Xalqlar Dostligi",
+        "Milliy Bog"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        5,
+        7
+      ],
+      "gameMinutes": 26
+    },
+    "bus": {
+      "stopPath": [
+        "Mustaqillik square",
+        "Amir Temur square",
+        "TsUM",
+        "Ozbekiston metro",
+        "Beshyogoch square"
+      ],
+      "lines": [
+        "walk",
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        5,
+        20
+      ],
+      "gameMinutes": 76
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_independence_square",
+    "toPlaceId": "tashkent_navoi_park",
+    "walk": {
+      "minutes": 67,
+      "placePath": [
+        "independence_square",
+        "navoi_theatre",
+        "abulkasym",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov・Zarafshon通り",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 27,
+      "placePath": [
+        "independence_square",
+        "navoi_theatre",
+        "abulkasym",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "Sharof Rashidov・Zarafshon通り",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Xalqlar Dostligi",
+        "Milliy Bog"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        5,
+        12
+      ],
+      "gameMinutes": 31
+    },
+    "bus": {
+      "stopPath": [
+        "Mustaqillik square",
+        "Amir Temur square",
+        "TsUM",
+        "Ozbekiston metro",
+        "Beshyogoch square"
+      ],
+      "lines": [
+        "walk",
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        5,
+        15
+      ],
+      "gameMinutes": 71
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_independence_square",
+    "toPlaceId": "tashkent_hotel_hub",
+    "walk": {
+      "minutes": 23,
+      "placePath": [
+        "independence_square",
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "徒歩はSayilgoh側、車はIslam Karimov通り側",
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 13,
+      "placePath": [
+        "independence_square",
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "徒歩はSayilgoh側、車はIslam Karimov通り側",
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        5,
+        6
+      ],
+      "gameMinutes": 19
+    },
+    "bus": {
+      "stopPath": [
+        "Mustaqillik square",
+        "Amir Temur square"
+      ],
+      "lines": [
+        "walk"
+      ],
+      "boardings": [],
+      "accessMinutes": [
+        5,
+        6
+      ],
+      "gameMinutes": 26
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_abulkasym",
+    "toPlaceId": "tashkent_khast_imam",
+    "walk": {
+      "minutes": 67,
+      "placePath": [
+        "abulkasym",
+        "kukeldash",
+        "chorsu_bazaar",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "Furqat通り方面",
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Zarqaynar・Karasaray側の旧市街回廊"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 26,
+      "placePath": [
+        "abulkasym",
+        "kukeldash",
+        "chorsu_bazaar",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "Furqat通り方面",
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Zarqaynar・Karasaray側の旧市街回廊"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog",
+        "Xalqlar Dostligi",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        7,
+        24
+      ],
+      "gameMinutes": 53
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square",
+        "Ozbekiston metro",
+        "TsUM",
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market",
+        "Imam Khazrat"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51",
+        "walk",
+        "28",
+        "42"
+      ],
+      "boardings": [
+        "51",
+        "28",
+        "42"
+      ],
+      "accessMinutes": [
+        20,
+        4
+      ],
+      "gameMinutes": 129
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_abulkasym",
+    "toPlaceId": "tashkent_chorsu_bazaar",
+    "walk": {
+      "minutes": 42,
+      "placePath": [
+        "abulkasym",
+        "kukeldash",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "Furqat通り方面",
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 18,
+      "placePath": [
+        "abulkasym",
+        "kukeldash",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "Furqat通り方面",
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog",
+        "Xalqlar Dostligi",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        7,
+        3
+      ],
+      "gameMinutes": 32
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square",
+        "Ozbekiston metro",
+        "TsUM",
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51",
+        "walk",
+        "28"
+      ],
+      "boardings": [
+        "51",
+        "28"
+      ],
+      "accessMinutes": [
+        20,
+        3
+      ],
+      "gameMinutes": 108
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_abulkasym",
+    "toPlaceId": "tashkent_kukeldash",
+    "walk": {
+      "minutes": 36,
+      "placePath": [
+        "abulkasym",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "Furqat通り方面"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 13,
+      "placePath": [
+        "abulkasym",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "Furqat通り方面"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog",
+        "Xalqlar Dostligi",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        7,
+        7
+      ],
+      "gameMinutes": 36
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square",
+        "Ozbekiston metro",
+        "TsUM",
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51",
+        "walk",
+        "28"
+      ],
+      "boardings": [
+        "51",
+        "28"
+      ],
+      "accessMinutes": [
+        20,
+        5
+      ],
+      "gameMinutes": 110
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_abulkasym",
+    "toPlaceId": "tashkent_amir_temur_square",
+    "walk": {
+      "minutes": 56,
+      "placePath": [
+        "abulkasym",
+        "navoi_theatre",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Zarafshon・Amir Temur通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 22,
+      "placePath": [
+        "abulkasym",
+        "navoi_theatre",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Zarafshon・Amir Temur通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog",
+        "Xalqlar Dostligi",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        7,
+        3
+      ],
+      "gameMinutes": 27
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square",
+        "Ozbekiston metro",
+        "TsUM",
+        "Amir Temur square"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        20,
+        3
+      ],
+      "gameMinutes": 65
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_abulkasym",
+    "toPlaceId": "tashkent_anhor_canal",
+    "walk": {
+      "minutes": 97,
+      "placePath": [
+        "abulkasym",
+        "navoi_theatre",
+        "independence_square",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Sharof Rashidov・Zarafshon通り",
+        "Sharof Rashidov通り・Anhorの公道橋側"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 36,
+      "placePath": [
+        "abulkasym",
+        "navoi_theatre",
+        "independence_square",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Sharof Rashidov・Zarafshon通り",
+        "Sharof Rashidov通り・Anhorの公道橋側"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog",
+        "Xalqlar Dostligi",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni",
+        "Yunus Rajabiy",
+        "Abdulla Qodiriy",
+        "Minor",
+        "Bodomzor"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod"
+      ],
+      "accessMinutes": [
+        7,
+        18
+      ],
+      "gameMinutes": 56
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square",
+        "Ozbekiston metro",
+        "TsUM",
+        "Amir Temur square",
+        "Geologorazvedka"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        20,
+        15
+      ],
+      "gameMinutes": 95
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_abulkasym",
+    "toPlaceId": "tashkent_japanese_garden",
+    "walk": {
+      "minutes": 113,
+      "placePath": [
+        "abulkasym",
+        "navoi_theatre",
+        "independence_square",
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Sharof Rashidov・Zarafshon通り",
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 43,
+      "placePath": [
+        "abulkasym",
+        "navoi_theatre",
+        "independence_square",
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Sharof Rashidov・Zarafshon通り",
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog",
+        "Xalqlar Dostligi",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni",
+        "Yunus Rajabiy",
+        "Abdulla Qodiriy",
+        "Minor",
+        "Bodomzor"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod"
+      ],
+      "accessMinutes": [
+        7,
+        10
+      ],
+      "gameMinutes": 48
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square",
+        "Ozbekiston metro",
+        "TsUM",
+        "Amir Temur square",
+        "Geologorazvedka",
+        "Akvapark"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        20,
+        8
+      ],
+      "gameMinutes": 93
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_abulkasym",
+    "toPlaceId": "tashkent_navoi_theatre",
+    "walk": {
+      "minutes": 42,
+      "placePath": [
+        "abulkasym",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "Afrosiyob・Beshyogoch・Furqat通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 15,
+      "placePath": [
+        "abulkasym",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "Afrosiyob・Beshyogoch・Furqat通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog",
+        "Xalqlar Dostligi",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Ozbekiston",
+        "Kosmonavtlar"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        7,
+        12
+      ],
+      "gameMinutes": 41
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square",
+        "Ozbekiston metro",
+        "TsUM"
+      ],
+      "lines": [
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        20,
+        3
+      ],
+      "gameMinutes": 59
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_abulkasym",
+    "toPlaceId": "tashkent_independence_square",
+    "walk": {
+      "minutes": 57,
+      "placePath": [
+        "abulkasym",
+        "navoi_theatre",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Sharof Rashidov・Zarafshon通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 22,
+      "placePath": [
+        "abulkasym",
+        "navoi_theatre",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Sharof Rashidov・Zarafshon通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog",
+        "Xalqlar Dostligi",
+        "Paxtakor",
+        "Mustaqillik Maydoni"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        7,
+        5
+      ],
+      "gameMinutes": 26
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square",
+        "Ozbekiston metro",
+        "TsUM",
+        "Amir Temur square",
+        "Mustaqillik square"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51",
+        "walk"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        20,
+        5
+      ],
+      "gameMinutes": 82
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_abulkasym",
+    "toPlaceId": "tashkent_navoi_park",
+    "walk": {
+      "minutes": 10,
+      "placePath": [
+        "abulkasym",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 5,
+      "placePath": [
+        "abulkasym",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog"
+      ],
+      "lines": [],
+      "accessMinutes": [
+        7,
+        12
+      ],
+      "gameMinutes": 24
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square"
+      ],
+      "lines": [],
+      "boardings": [],
+      "accessMinutes": [
+        20,
+        15
+      ],
+      "gameMinutes": 35
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_abulkasym",
+    "toPlaceId": "tashkent_hotel_hub",
+    "walk": {
+      "minutes": 61,
+      "placePath": [
+        "abulkasym",
+        "navoi_theatre",
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Zarafshon・Amir Temur通り",
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 27,
+      "placePath": [
+        "abulkasym",
+        "navoi_theatre",
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Zarafshon・Amir Temur通り",
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog",
+        "Xalqlar Dostligi",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        7,
+        6
+      ],
+      "gameMinutes": 30
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square",
+        "Ozbekiston metro",
+        "TsUM",
+        "Amir Temur square"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        20,
+        6
+      ],
+      "gameMinutes": 68
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_park",
+    "toPlaceId": "tashkent_khast_imam",
+    "walk": {
+      "minutes": 77,
+      "placePath": [
+        "navoi_park",
+        "abulkasym",
+        "kukeldash",
+        "chorsu_bazaar",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口",
+        "Furqat通り方面",
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Zarqaynar・Karasaray側の旧市街回廊"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 29,
+      "placePath": [
+        "navoi_park",
+        "kukeldash",
+        "chorsu_bazaar",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "Furqat・Beshyogoch通り",
+        "Chorsu広場・Navoi通り沿いの周辺道路",
+        "Zarqaynar・Karasaray側の旧市街回廊"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog",
+        "Xalqlar Dostligi",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        12,
+        24
+      ],
+      "gameMinutes": 58
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square",
+        "Ozbekiston metro",
+        "TsUM",
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market",
+        "Imam Khazrat"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51",
+        "walk",
+        "28",
+        "42"
+      ],
+      "boardings": [
+        "51",
+        "28",
+        "42"
+      ],
+      "accessMinutes": [
+        15,
+        4
+      ],
+      "gameMinutes": 124
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_park",
+    "toPlaceId": "tashkent_chorsu_bazaar",
+    "walk": {
+      "minutes": 52,
+      "placePath": [
+        "navoi_park",
+        "abulkasym",
+        "kukeldash",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口",
+        "Furqat通り方面",
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 21,
+      "placePath": [
+        "navoi_park",
+        "kukeldash",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "Furqat・Beshyogoch通り",
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog",
+        "Xalqlar Dostligi",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        12,
+        3
+      ],
+      "gameMinutes": 37
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square",
+        "Ozbekiston metro",
+        "TsUM",
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51",
+        "walk",
+        "28"
+      ],
+      "boardings": [
+        "51",
+        "28"
+      ],
+      "accessMinutes": [
+        15,
+        3
+      ],
+      "gameMinutes": 103
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_park",
+    "toPlaceId": "tashkent_kukeldash",
+    "walk": {
+      "minutes": 46,
+      "placePath": [
+        "navoi_park",
+        "abulkasym",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口",
+        "Furqat通り方面"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 16,
+      "placePath": [
+        "navoi_park",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "Furqat・Beshyogoch通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog",
+        "Xalqlar Dostligi",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        12,
+        7
+      ],
+      "gameMinutes": 41
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square",
+        "Ozbekiston metro",
+        "TsUM",
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51",
+        "walk",
+        "28"
+      ],
+      "boardings": [
+        "51",
+        "28"
+      ],
+      "accessMinutes": [
+        15,
+        5
+      ],
+      "gameMinutes": 105
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_park",
+    "toPlaceId": "tashkent_amir_temur_square",
+    "walk": {
+      "minutes": 66,
+      "placePath": [
+        "navoi_park",
+        "abulkasym",
+        "navoi_theatre",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Zarafshon・Amir Temur通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 27,
+      "placePath": [
+        "navoi_park",
+        "abulkasym",
+        "navoi_theatre",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Zarafshon・Amir Temur通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog",
+        "Xalqlar Dostligi",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        12,
+        3
+      ],
+      "gameMinutes": 32
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square",
+        "Ozbekiston metro",
+        "TsUM",
+        "Amir Temur square"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        15,
+        3
+      ],
+      "gameMinutes": 60
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_park",
+    "toPlaceId": "tashkent_anhor_canal",
+    "walk": {
+      "minutes": 107,
+      "placePath": [
+        "navoi_park",
+        "abulkasym",
+        "navoi_theatre",
+        "independence_square",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Sharof Rashidov・Zarafshon通り",
+        "Sharof Rashidov通り・Anhorの公道橋側"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 41,
+      "placePath": [
+        "navoi_park",
+        "abulkasym",
+        "navoi_theatre",
+        "independence_square",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Sharof Rashidov・Zarafshon通り",
+        "Sharof Rashidov通り・Anhorの公道橋側"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog",
+        "Xalqlar Dostligi",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni",
+        "Yunus Rajabiy",
+        "Abdulla Qodiriy",
+        "Minor",
+        "Bodomzor"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod"
+      ],
+      "accessMinutes": [
+        12,
+        18
+      ],
+      "gameMinutes": 61
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square",
+        "Ozbekiston metro",
+        "TsUM",
+        "Amir Temur square",
+        "Geologorazvedka"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        15,
+        15
+      ],
+      "gameMinutes": 90
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_park",
+    "toPlaceId": "tashkent_japanese_garden",
+    "walk": {
+      "minutes": 123,
+      "placePath": [
+        "navoi_park",
+        "abulkasym",
+        "navoi_theatre",
+        "independence_square",
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Sharof Rashidov・Zarafshon通り",
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 48,
+      "placePath": [
+        "navoi_park",
+        "abulkasym",
+        "navoi_theatre",
+        "independence_square",
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Sharof Rashidov・Zarafshon通り",
+        "Sharof Rashidov通り・Anhorの公道橋側",
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog",
+        "Xalqlar Dostligi",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni",
+        "Yunus Rajabiy",
+        "Abdulla Qodiriy",
+        "Minor",
+        "Bodomzor"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod"
+      ],
+      "accessMinutes": [
+        12,
+        10
+      ],
+      "gameMinutes": 53
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square",
+        "Ozbekiston metro",
+        "TsUM",
+        "Amir Temur square",
+        "Geologorazvedka",
+        "Akvapark"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        15,
+        8
+      ],
+      "gameMinutes": 88
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_park",
+    "toPlaceId": "tashkent_navoi_theatre",
+    "walk": {
+      "minutes": 52,
+      "placePath": [
+        "navoi_park",
+        "abulkasym",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口",
+        "Afrosiyob・Beshyogoch・Furqat通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 20,
+      "placePath": [
+        "navoi_park",
+        "abulkasym",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口",
+        "Afrosiyob・Beshyogoch・Furqat通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog",
+        "Xalqlar Dostligi",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Ozbekiston",
+        "Kosmonavtlar"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        12,
+        12
+      ],
+      "gameMinutes": 46
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square",
+        "Ozbekiston metro",
+        "TsUM"
+      ],
+      "lines": [
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        15,
+        3
+      ],
+      "gameMinutes": 54
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_park",
+    "toPlaceId": "tashkent_independence_square",
+    "walk": {
+      "minutes": 67,
+      "placePath": [
+        "navoi_park",
+        "abulkasym",
+        "navoi_theatre",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Sharof Rashidov・Zarafshon通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 27,
+      "placePath": [
+        "navoi_park",
+        "abulkasym",
+        "navoi_theatre",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Sharof Rashidov・Zarafshon通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog",
+        "Xalqlar Dostligi",
+        "Paxtakor",
+        "Mustaqillik Maydoni"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        12,
+        5
+      ],
+      "gameMinutes": 31
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square",
+        "Ozbekiston metro",
+        "TsUM",
+        "Amir Temur square",
+        "Mustaqillik square"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51",
+        "walk"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        15,
+        5
+      ],
+      "gameMinutes": 77
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_park",
+    "toPlaceId": "tashkent_abulkasym",
+    "walk": {
+      "minutes": 10,
+      "placePath": [
+        "navoi_park",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 5,
+      "placePath": [
+        "navoi_park",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog"
+      ],
+      "lines": [],
+      "accessMinutes": [
+        12,
+        7
+      ],
+      "gameMinutes": 24
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square"
+      ],
+      "lines": [],
+      "boardings": [],
+      "accessMinutes": [
+        15,
+        20
+      ],
+      "gameMinutes": 35
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_navoi_park",
+    "toPlaceId": "tashkent_hotel_hub",
+    "walk": {
+      "minutes": 71,
+      "placePath": [
+        "navoi_park",
+        "abulkasym",
+        "navoi_theatre",
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Zarafshon・Amir Temur通り",
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 32,
+      "placePath": [
+        "navoi_park",
+        "abulkasym",
+        "navoi_theatre",
+        "amir_temur_square",
+        "hotel_hub"
+      ],
+      "streetCorridors": [
+        "Furqat通り沿い・公園北側の入口",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Zarafshon・Amir Temur通り",
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Milliy Bog",
+        "Xalqlar Dostligi",
+        "Paxtakor",
+        "Mustaqillik Maydoni",
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        12,
+        6
+      ],
+      "gameMinutes": 35
+    },
+    "bus": {
+      "stopPath": [
+        "Beshyogoch square",
+        "Ozbekiston metro",
+        "TsUM",
+        "Amir Temur square"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        15,
+        6
+      ],
+      "gameMinutes": 63
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_hotel_hub",
+    "toPlaceId": "tashkent_khast_imam",
+    "walk": {
+      "minutes": 100,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square",
+        "anhor_canal",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス",
+        "Amir Temur・Minor通り方面",
+        "Karasaray・Nurafshon・Labzak側の回廊"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 37,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square",
+        "anhor_canal",
+        "khast_imam"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス",
+        "Amir Temur・Minor通り方面",
+        "Karasaray・Nurafshon・Labzak側の回廊"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        6,
+        24
+      ],
+      "gameMinutes": 52
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market",
+        "Imam Khazrat"
+      ],
+      "lines": [
+        "walk",
+        "28",
+        "42"
+      ],
+      "boardings": [
+        "28",
+        "42"
+      ],
+      "accessMinutes": [
+        6,
+        4
+      ],
+      "gameMinutes": 73
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_hotel_hub",
+    "toPlaceId": "tashkent_chorsu_bazaar",
+    "walk": {
+      "minutes": 84,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square",
+        "independence_square",
+        "kukeldash",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス",
+        "徒歩はSayilgoh側、車はIslam Karimov通り側",
+        "Navoiy通りからSharof Rashidov通り",
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 36,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square",
+        "independence_square",
+        "kukeldash",
+        "chorsu_bazaar"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス",
+        "徒歩はSayilgoh側、車はIslam Karimov通り側",
+        "Navoiy通りからSharof Rashidov通り",
+        "Chorsu広場・Navoi通り沿いの周辺道路"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        6,
+        3
+      ],
+      "gameMinutes": 31
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market"
+      ],
+      "lines": [
+        "walk",
+        "28"
+      ],
+      "boardings": [
+        "28"
+      ],
+      "accessMinutes": [
+        6,
+        3
+      ],
+      "gameMinutes": 52
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_hotel_hub",
+    "toPlaceId": "tashkent_kukeldash",
+    "walk": {
+      "minutes": 78,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square",
+        "independence_square",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス",
+        "徒歩はSayilgoh側、車はIslam Karimov通り側",
+        "Navoiy通りからSharof Rashidov通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 31,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square",
+        "independence_square",
+        "kukeldash"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス",
+        "徒歩はSayilgoh側、車はIslam Karimov通り側",
+        "Navoiy通りからSharof Rashidov通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Alisher Navoiy",
+        "Gafur Gulom",
+        "Chorsu"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "transfer",
+        "Uzbekiston",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        6,
+        7
+      ],
+      "gameMinutes": 35
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square",
+        "Mustaqillik square",
+        "Chorsu centre/market"
+      ],
+      "lines": [
+        "walk",
+        "28"
+      ],
+      "boardings": [
+        "28"
+      ],
+      "accessMinutes": [
+        6,
+        5
+      ],
+      "gameMinutes": 54
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_hotel_hub",
+    "toPlaceId": "tashkent_amir_temur_square",
+    "walk": {
+      "minutes": 5,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 5,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni"
+      ],
+      "lines": [],
+      "accessMinutes": [
+        6,
+        3
+      ],
+      "gameMinutes": 14
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square"
+      ],
+      "lines": [],
+      "boardings": [],
+      "accessMinutes": [
+        6,
+        3
+      ],
+      "gameMinutes": 9
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_hotel_hub",
+    "toPlaceId": "tashkent_anhor_canal",
+    "walk": {
+      "minutes": 50,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス",
+        "Amir Temur・Minor通り方面"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 20,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square",
+        "anhor_canal"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス",
+        "Amir Temur・Minor通り方面"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni",
+        "Yunus Rajabiy",
+        "Abdulla Qodiriy",
+        "Minor",
+        "Bodomzor"
+      ],
+      "lines": [
+        "transfer",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod"
+      ],
+      "accessMinutes": [
+        6,
+        18
+      ],
+      "gameMinutes": 43
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square",
+        "Geologorazvedka"
+      ],
+      "lines": [
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        6,
+        15
+      ],
+      "gameMinutes": 47
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_hotel_hub",
+    "toPlaceId": "tashkent_japanese_garden",
+    "walk": {
+      "minutes": 66,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square",
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス",
+        "Amir Temur・Minor通り方面",
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 27,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square",
+        "anhor_canal",
+        "japanese_garden"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス",
+        "Amir Temur・Minor通り方面",
+        "Minor・Olchazorの公道回廊、庭園内を通り抜けない"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni",
+        "Yunus Rajabiy",
+        "Abdulla Qodiriy",
+        "Minor",
+        "Bodomzor"
+      ],
+      "lines": [
+        "transfer",
+        "Yunusobod",
+        "Yunusobod",
+        "Yunusobod"
+      ],
+      "accessMinutes": [
+        6,
+        10
+      ],
+      "gameMinutes": 35
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square",
+        "Geologorazvedka",
+        "Akvapark"
+      ],
+      "lines": [
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        6,
+        8
+      ],
+      "gameMinutes": 45
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_hotel_hub",
+    "toPlaceId": "tashkent_navoi_theatre",
+    "walk": {
+      "minutes": 19,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス",
+        "Zarafshon・Amir Temur通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 12,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square",
+        "navoi_theatre"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス",
+        "Zarafshon・Amir Temur通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni",
+        "Yunus Rajabiy",
+        "Ming Orik",
+        "Oybek",
+        "Kosmonavtlar"
+      ],
+      "lines": [
+        "transfer",
+        "Yunusobod",
+        "transfer",
+        "Uzbekiston"
+      ],
+      "accessMinutes": [
+        6,
+        12
+      ],
+      "gameMinutes": 39
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square",
+        "TsUM"
+      ],
+      "lines": [
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        6,
+        3
+      ],
+      "gameMinutes": 23
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_hotel_hub",
+    "toPlaceId": "tashkent_independence_square",
+    "walk": {
+      "minutes": 23,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス",
+        "徒歩はSayilgoh側、車はIslam Karimov通り側"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 13,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square",
+        "independence_square"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス",
+        "徒歩はSayilgoh側、車はIslam Karimov通り側"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni"
+      ],
+      "lines": [
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        6,
+        5
+      ],
+      "gameMinutes": 19
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square",
+        "Mustaqillik square"
+      ],
+      "lines": [
+        "walk"
+      ],
+      "boardings": [],
+      "accessMinutes": [
+        6,
+        5
+      ],
+      "gameMinutes": 26
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_hotel_hub",
+    "toPlaceId": "tashkent_abulkasym",
+    "walk": {
+      "minutes": 61,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square",
+        "navoi_theatre",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス",
+        "Zarafshon・Amir Temur通り",
+        "Afrosiyob・Beshyogoch・Furqat通り"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 27,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square",
+        "navoi_theatre",
+        "abulkasym"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス",
+        "Zarafshon・Amir Temur通り",
+        "Afrosiyob・Beshyogoch・Furqat通り"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Xalqlar Dostligi",
+        "Milliy Bog"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        6,
+        7
+      ],
+      "gameMinutes": 30
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square",
+        "TsUM",
+        "Ozbekiston metro",
+        "Beshyogoch square"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        6,
+        20
+      ],
+      "gameMinutes": 62
+    }
+  },
+  {
+    "fromPlaceId": "tashkent_hotel_hub",
+    "toPlaceId": "tashkent_navoi_park",
+    "walk": {
+      "minutes": 71,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square",
+        "navoi_theatre",
+        "abulkasym",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス",
+        "Zarafshon・Amir Temur通り",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "taxi": {
+      "rideMinutes": 32,
+      "placePath": [
+        "hotel_hub",
+        "amir_temur_square",
+        "navoi_theatre",
+        "abulkasym",
+        "navoi_park"
+      ],
+      "streetCorridors": [
+        "広場周辺の公道、架空宿のアクセス",
+        "Zarafshon・Amir Temur通り",
+        "Afrosiyob・Beshyogoch・Furqat通り",
+        "Furqat通り沿い・公園北側の入口"
+      ]
+    },
+    "rail": {
+      "stationPath": [
+        "Amir Temur Xiyoboni",
+        "Mustaqillik Maydoni",
+        "Paxtakor",
+        "Xalqlar Dostligi",
+        "Milliy Bog"
+      ],
+      "lines": [
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor",
+        "Chilonzor"
+      ],
+      "accessMinutes": [
+        6,
+        12
+      ],
+      "gameMinutes": 35
+    },
+    "bus": {
+      "stopPath": [
+        "Amir Temur square",
+        "TsUM",
+        "Ozbekiston metro",
+        "Beshyogoch square"
+      ],
+      "lines": [
+        "51",
+        "51",
+        "51"
+      ],
+      "boardings": [
+        "51"
+      ],
+      "accessMinutes": [
+        6,
+        15
+      ],
+      "gameMinutes": 57
+    }
+  }
+]

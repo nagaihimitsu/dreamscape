@@ -1,0 +1,1413 @@
+{
+  "schemaVersion": 1,
+  "clues": [
+    {
+      "id": "uz_obs_tashkent_amir_temur_square_01",
+      "landmarkId": "tashkent_amir_temur_square",
+      "kind": "hotspot",
+      "titleJa": "木々の間を通る道",
+      "descriptionJa": "手前の木々の間を、細い散策路が曲がっている。広場は一枚の舗装面ではなく、緑の区画を歩いて巡れる空間として見える。",
+      "factId": "uz_fact_tashkent_amir_temur_square_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.38,
+        "y": 0.68,
+        "width": 0.36,
+        "height": 0.18
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "A._Temur_xiyoboni.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:A._Temur_xiyoboni.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "同梱写真を目視し、記載した形・配置・色の見える範囲を確認。写真から各部の年代や現在の営業状態を断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_tashkent_amir_temur_square_02",
+      "landmarkId": "tashkent_amir_temur_square",
+      "kind": "hotspot",
+      "titleJa": "街路から緑へ",
+      "descriptionJa": "下端の車道と歩道の向こうに、柵と木々のある広場が続く。写真では、通りと散策空間の境目を見比べられる。",
+      "factId": "uz_fact_tashkent_amir_temur_square_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.03,
+        "y": 0.77,
+        "width": 0.56,
+        "height": 0.22
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "A._Temur_xiyoboni.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:A._Temur_xiyoboni.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "同梱写真を目視し、記載した形・配置・色の見える範囲を確認。写真から各部の年代や現在の営業状態を断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_tashkent_chorsu_bazaar_01",
+      "landmarkId": "tashkent_chorsu_bazaar",
+      "kind": "hotspot",
+      "titleJa": "袋のまま並ぶ品物",
+      "descriptionJa": "口を広げた袋に、形や色の異なる乾物が山のように入っている。市場では、建物だけでなく並べ方にも目を向けられる。",
+      "factId": "uz_fact_tashkent_chorsu_bazaar_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.01,
+        "y": 0.02,
+        "width": 0.6,
+        "height": 0.57
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Quritilgan_mevalar_va_gazaklar.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Quritilgan_mevalar_va_gazaklar.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "同梱写真を目視し、記載した形・配置・色の見える範囲を確認。写真から各部の年代や現在の営業状態を断定しない。"
+        },
+        {
+          "publisher": "Visit Tashkent",
+          "title": "Chorsu bazaar",
+          "url": "https://visit.tashkent.uz/en/attraction/27",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "チョルスーは旧市街Eski Shaharにある市場。生鮮品や日用品などの売買が行われる。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_tashkent_chorsu_bazaar_02",
+      "landmarkId": "tashkent_chorsu_bazaar",
+      "kind": "hotspot",
+      "titleJa": "同じ色にも違いがある",
+      "descriptionJa": "下段には、橙色から褐色まで、乾燥した果実が袋ごとに並んでいる。写真だけでは品種や産地、売値までは分からない。",
+      "factId": "uz_fact_tashkent_chorsu_bazaar_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.06,
+        "y": 0.64,
+        "width": 0.91,
+        "height": 0.3
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Quritilgan_mevalar_va_gazaklar.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Quritilgan_mevalar_va_gazaklar.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "同梱写真を目視し、記載した形・配置・色の見える範囲を確認。写真から各部の年代や現在の営業状態を断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_tashkent_khast_imam_01",
+      "landmarkId": "tashkent_khast_imam",
+      "kind": "hotspot",
+      "titleJa": "門の周りに重なる模様",
+      "descriptionJa": "中央の大きな門には、縦長の幾何学模様と、アーチを囲む曲線の装飾が重なっている。写真は複合体内のバラク・ハン・マドラサを正面から見たもの。",
+      "factId": "uz_fact_tashkent_khast_imam_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.36,
+        "y": 0.27,
+        "width": 0.28,
+        "height": 0.44
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Barak-Khan_Madrasa.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Barak-Khan_Madrasa.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "同梱写真を目視し、記載した形・配置・色の見える範囲を確認。写真から各部の年代や現在の営業状態を断定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Hazrati Imam complex",
+          "url": "https://app.uzbekistan.travel/ru/o/kompleks-hazrati-imam/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の宗教建築群で、バラク・ハンのマドラサなどを含む。現代建築や宝物展示の入場を本イベントに含めない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_tashkent_khast_imam_02",
+      "landmarkId": "tashkent_khast_imam",
+      "kind": "hotspot",
+      "titleJa": "左右の低い棟とドーム",
+      "descriptionJa": "中央の高い門の左右には低い棟が続き、その上に青みがかったドームが見える。左右に広がる形は、中央の入口の高さを際立たせている。",
+      "factId": "uz_fact_tashkent_khast_imam_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.66,
+        "y": 0.36,
+        "width": 0.2,
+        "height": 0.4
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Barak-Khan_Madrasa.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Barak-Khan_Madrasa.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "同梱写真を目視し、記載した形・配置・色の見える範囲を確認。写真から各部の年代や現在の営業状態を断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_tashkent_kukeldash_01",
+      "landmarkId": "tashkent_kukeldash",
+      "kind": "hotspot",
+      "titleJa": "中庭の正面に向く門",
+      "descriptionJa": "中庭の奥に、大きなアーチを囲む装飾が見える。外壁の入口とは別に、内部にも正面をつくる門がある。",
+      "factId": "uz_fact_tashkent_kukeldash_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.35,
+        "y": 0.02,
+        "width": 0.3,
+        "height": 0.6
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Kukeldash Madrasah in Tashkent.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Kukeldash_Madrasah_in_Tashkent.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "同梱写真を目視し、装飾門と左右に並ぶ部屋を確認。見える形だけを記し、各部の年代・復元時期を写真だけから断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_tashkent_kukeldash_02",
+      "landmarkId": "tashkent_kukeldash",
+      "kind": "hotspot",
+      "titleJa": "中庭を囲む小さな部屋",
+      "descriptionJa": "正面の左右には、同じような大きさの入口が続いている。資料では、マドラサには学生のための部屋が設けられたと説明される。",
+      "factId": "uz_fact_tashkent_kukeldash_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.86,
+        "y": 0.14,
+        "width": 0.14,
+        "height": 0.47
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Kukeldash Madrasah in Tashkent.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Kukeldash_Madrasah_in_Tashkent.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "同梱写真を目視し、装飾門と左右に並ぶ部屋を確認。見える形だけを記し、各部の年代・復元時期を写真だけから断定しない。"
+        },
+        {
+          "publisher": "CAREC / Visit Silk Road",
+          "title": "Tashkent Kulkedash Medressa",
+          "url": "https://visitsilkroad.org/destination/tashkent-kulkedash-medressa/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "16世紀のマドラサで、中庭を囲む学生用の部屋を持つ。後世には隊商宿などにも転用されたと紹介されている。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_registan_three_sides",
+      "landmarkId": "samarkand_registan",
+      "kind": "hotspot",
+      "titleJa": "広場を囲む三つの正面",
+      "descriptionJa": "広場の左・奥・右に、大きな門構えの建物が向き合っている。",
+      "factId": "uz_fact_samarkand_registan_three_sides",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.12,
+        "y": 0.36,
+        "width": 0.71,
+        "height": 0.4
+      },
+      "sources": [
+        {
+          "publisher": "Wikimedia Commons／Dreamscape画像観察",
+          "title": "File:Registan - Gusjer.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Registan_-_Gusjer.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "画像で確認できる建物の配置。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_registan_public_square",
+      "landmarkId": "samarkand_registan",
+      "kind": "document",
+      "titleJa": "交易と公的な場所",
+      "descriptionJa": "レギスタンはティムール期の交易の広場から、ウルグベク期に公的な中心としての性格を強めた。",
+      "factId": "uz_fact_samarkand_registan_public_square",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Registan Square",
+          "url": "https://uzbekistan.travel/en/o/registan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ティムールの時代には交易の広場であり、ウルグベクの時代に公的な中心としての性格が強まった。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_registan_layers",
+      "landmarkId": "samarkand_registan",
+      "kind": "document",
+      "titleJa": "一度に造られた風景ではない",
+      "descriptionJa": "ウルグベク・マドラサと、後世のシェルドル、ティラカリが向き合う。現在のまとまりは異なる時代の建築が重なったもの。",
+      "factId": "uz_fact_samarkand_registan_layers",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "sam.uz（独立都市ガイド）",
+          "title": "registan",
+          "url": "https://sam.uz/en/places/registon",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "15世紀のウルグベクと17世紀のシェルドル・ティラカリという年代差がある。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_shah_i_zinda_tiles",
+      "landmarkId": "samarkand_shah_i_zinda",
+      "kind": "hotspot",
+      "titleJa": "路地に向く青い壁",
+      "descriptionJa": "細い通路の両側に、青と白の幾何学模様や曲線模様を施した壁が並ぶ。",
+      "factId": "uz_fact_samarkand_shah_i_zinda_tiles",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.03,
+        "y": 0.07,
+        "width": 0.49,
+        "height": 0.71
+      },
+      "sources": [
+        {
+          "publisher": "Wikimedia Commons／Dreamscape画像観察",
+          "title": "File:Shah-i-Zinda (Avenue of Mausoleums) - Samarkand - Uzbekistan (7488684498).jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Shah-i-Zinda_(Avenue_of_Mausoleums)_-_Samarkand_-_Uzbekistan_(7488684498).jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "画像で確認できる通路と青い装飾壁。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_shah_i_zinda_pilgrimage",
+      "landmarkId": "samarkand_shah_i_zinda",
+      "kind": "document",
+      "titleJa": "今も訪ねる人がいる廟群",
+      "descriptionJa": "墓廟の集まりであると同時に、イスラムの巡礼地として大切にされている。",
+      "factId": "uz_fact_samarkand_shah_i_zinda_pilgrimage",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "The memorial ensemble Shakhi-Zinda",
+          "url": "https://uzbekistan.travel/en/o/the-memorial-ensemble-shahi-zinda/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "青やトルコ石色のタイルで飾られた墓廟が集まり、現在も巡礼の場所として扱われている。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_shah_i_zinda_living_king",
+      "landmarkId": "samarkand_shah_i_zinda",
+      "kind": "document",
+      "titleJa": "生きる王という伝承",
+      "descriptionJa": "クサム・イブン・アッバースが井戸に身を隠し、生きたまま天へ昇ったという伝承が、この場所の名と結び付けられている。",
+      "factId": "uz_fact_samarkand_shah_i_zinda_living_king",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "The memorial ensemble Shakhi-Zinda",
+          "url": "https://uzbekistan.travel/en/o/the-memorial-ensemble-shahi-zinda/",
+          "checkedAt": "2026-11-04",
+          "claimType": "legend",
+          "claimJa": "観光局はこの出来事を伝説として紹介している。史実の断定ではない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_gur_e_amir_dome",
+      "landmarkId": "samarkand_gur_e_amir",
+      "kind": "hotspot",
+      "titleJa": "縦筋のある青いドーム",
+      "descriptionJa": "青いドームには縦方向の細かな起伏があり、その下に円筒状の部分が続く。",
+      "factId": "uz_fact_samarkand_gur_e_amir_dome",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.52,
+        "y": 0.22,
+        "width": 0.17,
+        "height": 0.29
+      },
+      "sources": [
+        {
+          "publisher": "Wikimedia Commons／Dreamscape画像観察",
+          "title": "File:Mausoleum of Amir Temur (1).JPG",
+          "url": "https://commons.wikimedia.org/wiki/File:Mausoleum_of_Amir_Temur_(1).JPG",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "画像に見えるドーム表面と下の円筒部分。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_gur_e_amir_family",
+      "landmarkId": "samarkand_gur_e_amir",
+      "kind": "document",
+      "titleJa": "一人だけの墓ではない",
+      "descriptionJa": "ティムールの霊廟として知られるが、一族を納める王家の墓所でもある。",
+      "factId": "uz_fact_samarkand_gur_e_amir_family",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "The Jade Gravestone of Amir Temur in Gur-Emir",
+          "url": "https://uzbekistan.travel/en/o/gur-emir/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ティムールとその一族の霊廟で、ティムールの墓を示す翡翠の墓石がある。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_gur_e_amir_jade",
+      "landmarkId": "samarkand_gur_e_amir",
+      "kind": "document",
+      "titleJa": "建物の内側の目印",
+      "descriptionJa": "内部にある翡翠の墓石はティムールの墓を示す。外観写真だけから墓石の色や配置は判断しない。",
+      "factId": "uz_fact_samarkand_gur_e_amir_jade",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "The Jade Gravestone of Amir Temur in Gur-Emir",
+          "url": "https://uzbekistan.travel/en/o/gur-emir/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "観光局は内部の翡翠の墓石について説明している。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_bibi_khanym_portal",
+      "landmarkId": "samarkand_bibi_khanym",
+      "kind": "hotspot",
+      "titleJa": "壁より高い門構え",
+      "descriptionJa": "大きなアーチの正面と高いドームが、手前の低い壁の上へ伸びている。",
+      "factId": "uz_fact_samarkand_bibi_khanym_portal",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.1,
+        "y": 0.3,
+        "width": 0.41,
+        "height": 0.37
+      },
+      "sources": [
+        {
+          "publisher": "Wikimedia Commons／Dreamscape画像観察",
+          "title": "File:Bibi-Khanym mosque complex 186.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Bibi-Khanym_mosque_complex_186.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "写真で確認できるアーチと低い外壁の高低差。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_bibi_khanym_craft",
+      "landmarkId": "samarkand_bibi_khanym",
+      "kind": "document",
+      "titleJa": "各地から集まった職人",
+      "descriptionJa": "巨大なモスクを飾るため、複数の地域の職人が建築と装飾に関わった。",
+      "factId": "uz_fact_samarkand_bibi_khanym_craft",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Bibi-Khanym Mosque",
+          "url": "https://uzbekistan.travel/en/o/bibi-khanym/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ティムールの命で建てられ、複数地域の職人が装飾に関わった大規模なモスク。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_bibi_khanym_rebuilt",
+      "landmarkId": "samarkand_bibi_khanym",
+      "kind": "document",
+      "titleJa": "完成を急がせた門",
+      "descriptionJa": "観光局の説明では、帰還したティムールは入口が望んだ規模でないとして、門を造り直すよう命じた。",
+      "factId": "uz_fact_samarkand_bibi_khanym_rebuilt",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Bibi-Khanym Mosque",
+          "url": "https://uzbekistan.travel/en/o/bibi-khanym/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ティムールは1404年の帰還後、入口の門の造り直しを命じたと観光局が説明している。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_ark_01",
+      "landmarkId": "bukhara_ark",
+      "kind": "hotspot",
+      "titleJa": "外へ張り出す城壁",
+      "descriptionJa": "城壁は平らな一枚の面ではなく、大きく丸く張り出す部分が連なっている。写真ではその壁の高さと厚みを見比べられる。",
+      "factId": "uz_fact_bukhara_ark_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.04,
+        "y": 0.19,
+        "width": 0.69,
+        "height": 0.64
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "Ark fortress in Bukhara.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Ark_fortress_in_Bukhara.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "保存した写真を目視し、説明にある壁・柱・水面などの可視要素を確認。年代や現在の営業状態は写真だけから判定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Ark Citadel",
+          "url": "https://uzbekistan.travel/en/o/ark-citadel/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アルクはブハラの支配者が暮らした城塞で、都市の権力の中心を担った。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_ark_02",
+      "landmarkId": "bukhara_ark",
+      "kind": "hotspot",
+      "titleJa": "壁の上の凹凸",
+      "descriptionJa": "城壁の上端には凹凸が続く。下の大きな曲面と、上の細かな輪郭が違う形を作っている。",
+      "factId": "uz_fact_bukhara_ark_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.03,
+        "y": 0.03,
+        "width": 0.65,
+        "height": 0.22
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "Ark fortress in Bukhara.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Ark_fortress_in_Bukhara.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "保存した写真を目視し、説明にある壁・柱・水面などの可視要素を確認。年代や現在の営業状態は写真だけから判定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Ark Citadel",
+          "url": "https://uzbekistan.travel/en/o/ark-citadel/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アルクはブハラの支配者が暮らした城塞で、都市の権力の中心を担った。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_ark_03",
+      "landmarkId": "bukhara_ark",
+      "kind": "document",
+      "titleJa": "街の中の支配者の居城",
+      "descriptionJa": "アルクはブハラの支配者が暮らし、政治の中心を担った城塞。外から見える壁の内側には、その暮らしと統治のための空間があった。",
+      "factId": "uz_fact_bukhara_ark_03",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Ark Citadel",
+          "url": "https://uzbekistan.travel/en/o/ark-citadel/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アルクはブハラの支配者が暮らした城塞で、都市の権力の中心を担った。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_poi_kalyan_01",
+      "landmarkId": "bukhara_poi_kalyan",
+      "kind": "hotspot",
+      "titleJa": "中庭から見える塔",
+      "descriptionJa": "中庭の右奥に、周りの建物より高いミナレットが見える。塔の外側には横向きの装飾帯が重なっている。",
+      "factId": "uz_fact_bukhara_poi_kalyan_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.8,
+        "y": 0.08,
+        "width": 0.12,
+        "height": 0.57
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "Po-i-Kalyan in Bukhara.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Po-i-Kalyan_in_Bukhara.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "保存した写真を目視し、説明にある壁・柱・水面などの可視要素を確認。年代や現在の営業状態は写真だけから判定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Ensemble architectural Poi-Kalyan",
+          "url": "https://uzbekistan.travel/fr/o/ensemble-architectural-poi-kalyan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ポイ・カリヤンはミナレット、モスク、マドラサが集まる建築群。現在のカリヤン・ミナレットは1127年に建てられ、建築群は後世にも造り直された。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_poi_kalyan_02",
+      "landmarkId": "bukhara_poi_kalyan",
+      "kind": "hotspot",
+      "titleJa": "中庭を囲むアーチ",
+      "descriptionJa": "写真の左側にはアーチ状の開口が横に並ぶ。中庭の開いた空間と、その周囲の建物を分けて観察できる。",
+      "factId": "uz_fact_bukhara_poi_kalyan_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.01,
+        "y": 0.59,
+        "width": 0.33,
+        "height": 0.28
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "Po-i-Kalyan in Bukhara.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Po-i-Kalyan_in_Bukhara.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "保存した写真を目視し、説明にある壁・柱・水面などの可視要素を確認。年代や現在の営業状態は写真だけから判定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Ensemble architectural Poi-Kalyan",
+          "url": "https://uzbekistan.travel/fr/o/ensemble-architectural-poi-kalyan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ポイ・カリヤンはミナレット、モスク、マドラサが集まる建築群。現在のカリヤン・ミナレットは1127年に建てられ、建築群は後世にも造り直された。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_poi_kalyan_03",
+      "landmarkId": "bukhara_poi_kalyan",
+      "kind": "document",
+      "titleJa": "一棟ではなく建築群",
+      "descriptionJa": "ポイ・カリヤンはモスク、ミナレット、マドラサを含む建築群。撮影場所の中庭だけが、その全体ではない。",
+      "factId": "uz_fact_bukhara_poi_kalyan_03",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Ensemble architectural Poi-Kalyan",
+          "url": "https://uzbekistan.travel/fr/o/ensemble-architectural-poi-kalyan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ポイ・カリヤンはミナレット、モスク、マドラサが集まる建築群。現在のカリヤン・ミナレットは1127年に建てられ、建築群は後世にも造り直された。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_samanid_mausoleum_01",
+      "landmarkId": "bukhara_samanid_mausoleum",
+      "kind": "hotspot",
+      "titleJa": "煉瓦で作る模様",
+      "descriptionJa": "壁面には煉瓦の向きや積み方による細かな模様が見える。色鮮やかなタイルだけが建物を飾る方法ではない。",
+      "factId": "uz_fact_bukhara_samanid_mausoleum_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.37,
+        "y": 0.48,
+        "width": 0.27,
+        "height": 0.29
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "Samanid Mausoleum and surroundings.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Samanid_Mausoleum_and_surroundings.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "保存した写真を目視し、説明にある壁・柱・水面などの可視要素を確認。年代や現在の営業状態は写真だけから判定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "10 amazing facts about Samanid Mausoleum",
+          "url": "https://uzbekistan.travel/en/o/10-amazing-facts-about-samanid-mausoleum/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "サーマーン朝の家族廟は焼成煉瓦の立方体と半球状のドームを組み合わせ、煉瓦の積み方で外壁を装飾している。上部には小さなアーチが並ぶ回廊がある。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_samanid_mausoleum_02",
+      "landmarkId": "bukhara_samanid_mausoleum",
+      "kind": "hotspot",
+      "titleJa": "四角い壁と丸い屋根",
+      "descriptionJa": "四角い建物の上に丸いドームが載り、その下には小さなアーチが並ぶ。直線と曲線の組み合わせを見比べられる。",
+      "factId": "uz_fact_bukhara_samanid_mausoleum_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.35,
+        "y": 0.25,
+        "width": 0.31,
+        "height": 0.25
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "Samanid Mausoleum and surroundings.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Samanid_Mausoleum_and_surroundings.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "保存した写真を目視し、説明にある壁・柱・水面などの可視要素を確認。年代や現在の営業状態は写真だけから判定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "10 amazing facts about Samanid Mausoleum",
+          "url": "https://uzbekistan.travel/en/o/10-amazing-facts-about-samanid-mausoleum/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "サーマーン朝の家族廟は焼成煉瓦の立方体と半球状のドームを組み合わせ、煉瓦の積み方で外壁を装飾している。上部には小さなアーチが並ぶ回廊がある。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_samanid_mausoleum_03",
+      "landmarkId": "bukhara_samanid_mausoleum",
+      "kind": "document",
+      "titleJa": "家族のための廟",
+      "descriptionJa": "この建物はサーマーン朝の家族廟として紹介される。外壁の装飾と、亡くなった人を記念する建物としての役割を分けて読む。",
+      "factId": "uz_fact_bukhara_samanid_mausoleum_03",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "10 amazing facts about Samanid Mausoleum",
+          "url": "https://uzbekistan.travel/en/o/10-amazing-facts-about-samanid-mausoleum/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "サーマーン朝の家族廟は焼成煉瓦の立方体と半球状のドームを組み合わせ、煉瓦の積み方で外壁を装飾している。上部には小さなアーチが並ぶ回廊がある。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_lyabi_hauz_01",
+      "landmarkId": "bukhara_lyabi_hauz",
+      "kind": "hotspot",
+      "titleJa": "建物の間の水面",
+      "descriptionJa": "写真の手前には大きな池があり、周囲の建物とは違う水平な面を作っている。リャビ・ハウズという名は、池のそばを意味する。",
+      "factId": "uz_fact_bukhara_lyabi_hauz_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.03,
+        "y": 0.68,
+        "width": 0.94,
+        "height": 0.29
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "Lyabi-Hovuz and Nadir Divanbegi Khanqah.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Lyabi-Hovuz_and_Nadir_Divanbegi_Khanqah.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "保存した写真を目視し、説明にある壁・柱・水面などの可視要素を確認。年代や現在の営業状態は写真だけから判定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Lyabi Hauz Ensemble",
+          "url": "https://uzbekistan.travel/en/o/lyabi-hauz-ensemble/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "リャビ・ハウズの名は池のそばを意味する。池の周囲にクケルダシュ・マドラサ、ディヴァンベギのマドラサとハーナカーが集まる。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_lyabi_hauz_02",
+      "landmarkId": "bukhara_lyabi_hauz",
+      "kind": "hotspot",
+      "titleJa": "水辺の木陰",
+      "descriptionJa": "池の縁に木が立ち、水面と建物の間に緑が重なっている。写真から木の正確な樹齢や撮影日の気温までは分からない。",
+      "factId": "uz_fact_bukhara_lyabi_hauz_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.25,
+        "y": 0.29,
+        "width": 0.48,
+        "height": 0.31
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "Lyabi-Hovuz and Nadir Divanbegi Khanqah.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Lyabi-Hovuz_and_Nadir_Divanbegi_Khanqah.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "保存した写真を目視し、説明にある壁・柱・水面などの可視要素を確認。年代や現在の営業状態は写真だけから判定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Lyabi Hauz Ensemble",
+          "url": "https://uzbekistan.travel/en/o/lyabi-hauz-ensemble/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "リャビ・ハウズの名は池のそばを意味する。池の周囲にクケルダシュ・マドラサ、ディヴァンベギのマドラサとハーナカーが集まる。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_lyabi_hauz_03",
+      "landmarkId": "bukhara_lyabi_hauz",
+      "kind": "document",
+      "titleJa": "池を囲む学びと滞在の建物",
+      "descriptionJa": "池の周囲にはクケルダシュ・マドラサと、ディヴァンベギのマドラサ、ハーナカーが集まる。写真の範囲だけですべての建物が見えているとは限らない。",
+      "factId": "uz_fact_bukhara_lyabi_hauz_03",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Lyabi Hauz Ensemble",
+          "url": "https://uzbekistan.travel/en/o/lyabi-hauz-ensemble/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "リャビ・ハウズの名は池のそばを意味する。池の周囲にクケルダシュ・マドラサ、ディヴァンベギのマドラサとハーナカーが集まる。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_khiva_kunya_ark_01",
+      "landmarkId": "khiva_kunya_ark",
+      "kind": "hotspot",
+      "titleJa": "囲いの中の居城",
+      "descriptionJa": "右側の装飾された門と、その横へ続く高い壁が見える。クフナ・アルクは内城の中でも独自の囲いを持つハンの居城だった。",
+      "factId": "uz_fact_khiva_kunya_ark_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.58,
+        "y": 0.28,
+        "width": 0.27,
+        "height": 0.45
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Konya Ark gate.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Konya_Ark_gate.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "掲載写真を確認し、記載した柱・壁・通りなどの見える要素を観察。写真から年代・営業状態・見えない部分を断定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Kunya Ark",
+          "url": "https://uzbekistan.travel/en/o/kunya-ark-fortress/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "城壁の内側にさらに囲いを持つ、ヒヴァのハンの旧居城。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_khiva_kunya_ark_02",
+      "landmarkId": "khiva_kunya_ark",
+      "kind": "hotspot",
+      "titleJa": "広場へ開く門",
+      "descriptionJa": "門の前には建物との間に広い空間があり、歩いている人の姿が見える。写真は夜の撮影で、現在時刻や夜間の入場可否を示すものではない。",
+      "factId": "uz_fact_khiva_kunya_ark_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.1,
+        "y": 0.7,
+        "width": 0.7,
+        "height": 0.24
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Konya Ark gate.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Konya_Ark_gate.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "掲載写真を確認し、記載した柱・壁・通りなどの見える要素を観察。写真から年代・営業状態・見えない部分を断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_khiva_juma_mosque_01",
+      "landmarkId": "khiva_juma_mosque",
+      "kind": "hotspot",
+      "titleJa": "並ぶ木の柱",
+      "descriptionJa": "礼拝堂の奥へ何列もの木柱が続く。多数の彫刻柱を持つ空間が、このモスクの特徴として紹介されている。",
+      "factId": "uz_fact_khiva_juma_mosque_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.04,
+        "y": 0.08,
+        "width": 0.76,
+        "height": 0.7
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Juma Masjid Khiva.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Juma_Masjid_Khiva.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "掲載写真を確認し、記載した柱・壁・通りなどの見える要素を観察。写真から年代・営業状態・見えない部分を断定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Juma Mosque",
+          "url": "https://uzbekistan.travel/en/o/reasons-celebrate-ramadan-uzbekistan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "多数の彫刻された木柱が並ぶ礼拝堂で知られる、イチャン・カラのモスク。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_khiva_juma_mosque_02",
+      "landmarkId": "khiva_juma_mosque",
+      "kind": "hotspot",
+      "titleJa": "近くで見る彫り",
+      "descriptionJa": "写真右端の柱には、植物を思わせる曲線と帯状の文様が見える。写真だけからこの柱の年代や由来を決めることはできない。",
+      "factId": "uz_fact_khiva_juma_mosque_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.88,
+        "y": 0.06,
+        "width": 0.12,
+        "height": 0.88
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Juma Masjid Khiva.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Juma_Masjid_Khiva.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "掲載写真を確認し、記載した柱・壁・通りなどの見える要素を観察。写真から年代・営業状態・見えない部分を断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_khiva_tash_hauli_01",
+      "landmarkId": "khiva_tash_hauli",
+      "kind": "hotspot",
+      "titleJa": "中庭を囲む部屋",
+      "descriptionJa": "青と白の装飾を持つ壁と、奥へくぼんだ高い屋根付き空間が見える。宮殿は複数の中庭と、その周囲の部屋から構成される。",
+      "factId": "uz_fact_khiva_tash_hauli_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.05,
+        "y": 0.17,
+        "width": 0.9,
+        "height": 0.7
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Court of Justice in Tach Khaouli 01.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Court_of_Justice_in_Tach_Khaouli_01.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "掲載写真を確認し、記載した柱・壁・通りなどの見える要素を観察。写真から年代・営業状態・見えない部分を断定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Tash Hauli Palace",
+          "url": "https://uzbekistan.travel/en/o/tash-houli/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アラクリ・ハンの時代に造られ、複数の中庭と精緻な装飾を持つ宮殿。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_khiva_tash_hauli_02",
+      "landmarkId": "khiva_tash_hauli",
+      "kind": "hotspot",
+      "titleJa": "屋根を支える一本",
+      "descriptionJa": "正面の高い空間では、彫刻された細い柱が屋根を支えている。壁面の文様と木の彫刻を一つの画面で見比べられる。",
+      "factId": "uz_fact_khiva_tash_hauli_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.46,
+        "y": 0.26,
+        "width": 0.08,
+        "height": 0.47
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Court of Justice in Tach Khaouli 01.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Court_of_Justice_in_Tach_Khaouli_01.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "掲載写真を確認し、記載した柱・壁・通りなどの見える要素を観察。写真から年代・営業状態・見えない部分を断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_khiva_islam_khoja_01",
+      "landmarkId": "khiva_islam_khoja",
+      "kind": "hotspot",
+      "titleJa": "空へ細くなる塔",
+      "descriptionJa": "通りの奥に、上へ向かって細くなるミナレットが見える。焼成レンガと青い装飾の帯が交互に並んでいる。",
+      "factId": "uz_fact_khiva_islam_khoja_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.33,
+        "y": 0.13,
+        "width": 0.11,
+        "height": 0.61
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Islam Khodja Minaret, Khiva.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Islam_Khodja_Minaret,_Khiva.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "掲載写真を確認し、記載した柱・壁・通りなどの見える要素を観察。写真から年代・営業状態・見えない部分を断定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Islam Khoja Complex",
+          "url": "https://uzbekistan.travel/en/o/islam-khoja-minaret-khiva/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "細く高いミナレット、マドラサ、モスクからなる複合体。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_khiva_islam_khoja_02",
+      "landmarkId": "khiva_islam_khoja",
+      "kind": "hotspot",
+      "titleJa": "塔の足元へ続く道",
+      "descriptionJa": "塔を見上げる通りには、歩く人と布製品を並べた店先が写る。高い建造物の足元にも日常の往来があることが読み取れる。",
+      "factId": "uz_fact_khiva_islam_khoja_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.24,
+        "y": 0.73,
+        "width": 0.76,
+        "height": 0.25
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Islam Khodja Minaret, Khiva.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Islam_Khodja_Minaret,_Khiva.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "掲載写真を確認し、記載した柱・壁・通りなどの見える要素を観察。写真から年代・営業状態・見えない部分を断定しない。"
+        }
+      ]
+    }
+  ],
+  "images": {
+    "tashkent_khast_imam": {
+      "path": "assets/tourism/uzbekistan/tashkent_khast_imam.jpg",
+      "sha256": "8dc160d4be899224cafef58006a5342e51cb49d2e89d848d62c49ec898bcaa7a"
+    },
+    "tashkent_chorsu_bazaar": {
+      "path": "assets/tourism/uzbekistan/tashkent_chorsu_bazaar.jpg",
+      "sha256": "6be67c0a866bf467cfd267f83f74c7486fde71e168b2c29f0a589d8b0387d30b"
+    },
+    "tashkent_kukeldash": {
+      "path": "assets/tourism/uzbekistan/tashkent_kukeldash.jpg",
+      "sha256": "4382b47c3fe3e7ff3f3585c6ff64542a412cc2389e6808a673fde384f024df06"
+    },
+    "tashkent_amir_temur_square": {
+      "path": "assets/tourism/uzbekistan/tashkent_amir_temur_square.jpg",
+      "sha256": "a963f085d397789140960d93bf5d3f273da954c2cac2a755b41377de96da437f"
+    },
+    "samarkand_registan": {
+      "path": "assets/tourism/uzbekistan/samarkand_registan.jpg",
+      "sha256": "8c5d515a4786ef02d1d28adeee42ded05bf64a0804794337761a5881bcbf4017"
+    },
+    "samarkand_shah_i_zinda": {
+      "path": "assets/tourism/uzbekistan/samarkand_shah_i_zinda.jpg",
+      "sha256": "93ea90f2d9df4319f117cc7e1ce8a7edf8aaed718b7d153f4fe0837960f6ce1c"
+    },
+    "samarkand_gur_e_amir": {
+      "path": "assets/tourism/uzbekistan/samarkand_gur_e_amir.jpg",
+      "sha256": "41e7fd94e825df4487936137c627a69f2157b262695a42ecd835805dfc68acb5"
+    },
+    "samarkand_bibi_khanym": {
+      "path": "assets/tourism/uzbekistan/samarkand_bibi_khanym.jpg",
+      "sha256": "c1b1a02d5553cf84d415329c0bbd599a5d31cbcff80c37d6cdde1015c9a4c655"
+    },
+    "bukhara_ark": {
+      "path": "assets/tourism/uzbekistan/bukhara_ark.jpg",
+      "sha256": "d35723386ad7b428c84ebfaa3bfe1616682cbb70c73486aa6c9668036204ac2d"
+    },
+    "bukhara_poi_kalyan": {
+      "path": "assets/tourism/uzbekistan/bukhara_poi_kalyan.jpg",
+      "sha256": "8ef423a75a802464c3e57cec8d13fe70869cace24c73cdd4b81f99c9c63c647a"
+    },
+    "bukhara_samanid_mausoleum": {
+      "path": "assets/tourism/uzbekistan/bukhara_samanid_mausoleum.jpg",
+      "sha256": "1a153bb3474f10f5b3b3342236f594ac68e242e2cf4c1508c2b198c82936654c"
+    },
+    "bukhara_lyabi_hauz": {
+      "path": "assets/tourism/uzbekistan/bukhara_lyabi_hauz.jpg",
+      "sha256": "cec57225e6deb0d45d05079876ea94ed9b364c06ae4ef3de24f96eea4de9a293"
+    },
+    "khiva_kunya_ark": {
+      "path": "assets/tourism/uzbekistan/khiva_kunya_ark.jpg",
+      "sha256": "d571f14e47207d7e747604607843e97b7fff88a17e90f9c08127f00399ef783b"
+    },
+    "khiva_juma_mosque": {
+      "path": "assets/tourism/uzbekistan/khiva_juma_mosque.jpg",
+      "sha256": "9a44716a32635f971ddcb38aaa12e37958bf25a3ca9e6272af4478ce7e3c2973"
+    },
+    "khiva_tash_hauli": {
+      "path": "assets/tourism/uzbekistan/khiva_tash_hauli.jpg",
+      "sha256": "08d5c14a4452118213534559306f5dee3aeedb9ee5d777dd29265e482b4a8b1a"
+    },
+    "khiva_islam_khoja": {
+      "path": "assets/tourism/uzbekistan/khiva_islam_khoja.jpg",
+      "sha256": "80f2665c655a2a89a660aaef95f1a7b2490060a16c860ba985467b687d4622a3"
+    }
+  },
+  "provenance": {
+    "uz_obs_tashkent_amir_temur_square_01": {
+      "cityId": "tashkent",
+      "sourceFactId": "uz_fact_tashkent_amir_temur_square_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "木々の間を通る道。同梱写真を目視し、対応する領域へ固定。"
+    },
+    "uz_obs_tashkent_amir_temur_square_02": {
+      "cityId": "tashkent",
+      "sourceFactId": "uz_fact_tashkent_amir_temur_square_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "街路から緑へ。同梱写真を目視し、対応する領域へ固定。"
+    },
+    "uz_obs_tashkent_chorsu_bazaar_01": {
+      "cityId": "tashkent",
+      "sourceFactId": "uz_fact_tashkent_chorsu_bazaar_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "袋のまま並ぶ品物。同梱写真を目視し、対応する領域へ固定。"
+    },
+    "uz_obs_tashkent_chorsu_bazaar_02": {
+      "cityId": "tashkent",
+      "sourceFactId": "uz_fact_tashkent_chorsu_bazaar_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "同じ色にも違いがある。同梱写真を目視し、対応する領域へ固定。"
+    },
+    "uz_obs_tashkent_khast_imam_01": {
+      "cityId": "tashkent",
+      "sourceFactId": "uz_fact_tashkent_khast_imam_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "門の周りに重なる模様。同梱写真を目視し、対応する領域へ固定。"
+    },
+    "uz_obs_tashkent_khast_imam_02": {
+      "cityId": "tashkent",
+      "sourceFactId": "uz_fact_tashkent_khast_imam_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "左右の低い棟とドーム。同梱写真を目視し、対応する領域へ固定。"
+    },
+    "uz_obs_tashkent_kukeldash_01": {
+      "cityId": "tashkent",
+      "sourceFactId": "uz_fact_tashkent_kukeldash_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "中庭の正面に向く門。同梱写真を目視し、対応する領域へ固定。"
+    },
+    "uz_obs_tashkent_kukeldash_02": {
+      "cityId": "tashkent",
+      "sourceFactId": "uz_fact_tashkent_kukeldash_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "中庭を囲む小さな部屋。同梱写真を目視し、対応する領域へ固定。"
+    },
+    "uz_obs_samarkand_registan_three_sides": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_registan_three_sides",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "画像で確認できる建物の配置。"
+    },
+    "uz_obs_samarkand_registan_public_square": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_registan_public_square",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真に写っていない事実を画像上の発見として扱わない。"
+    },
+    "uz_obs_samarkand_registan_layers": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_registan_layers",
+      "reliability": "medium",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真に写っていない事実を画像上の発見として扱わない。"
+    },
+    "uz_obs_samarkand_shah_i_zinda_tiles": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_shah_i_zinda_tiles",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "画像で確認できる通路と青い装飾壁。"
+    },
+    "uz_obs_samarkand_shah_i_zinda_pilgrimage": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_shah_i_zinda_pilgrimage",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真に写っていない事実を画像上の発見として扱わない。"
+    },
+    "uz_obs_samarkand_shah_i_zinda_living_king": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_shah_i_zinda_living_king",
+      "reliability": "medium",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真に写っていない事実を画像上の発見として扱わない。"
+    },
+    "uz_obs_samarkand_gur_e_amir_dome": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_gur_e_amir_dome",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "画像に見えるドーム表面と下の円筒部分。"
+    },
+    "uz_obs_samarkand_gur_e_amir_family": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_gur_e_amir_family",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真に写っていない事実を画像上の発見として扱わない。"
+    },
+    "uz_obs_samarkand_gur_e_amir_jade": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_gur_e_amir_jade",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真に写っていない事実を画像上の発見として扱わない。"
+    },
+    "uz_obs_samarkand_bibi_khanym_portal": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_bibi_khanym_portal",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "写真で確認できるアーチと低い外壁の高低差。"
+    },
+    "uz_obs_samarkand_bibi_khanym_craft": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_bibi_khanym_craft",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真に写っていない事実を画像上の発見として扱わない。"
+    },
+    "uz_obs_samarkand_bibi_khanym_rebuilt": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_bibi_khanym_rebuilt",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真に写っていない事実を画像上の発見として扱わない。"
+    },
+    "uz_obs_bukhara_ark_01": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_ark_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "外へ張り出す城壁。保存した写真を目視し、対応範囲を指定。"
+    },
+    "uz_obs_bukhara_ark_02": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_ark_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "壁の上の凹凸。保存した写真を目視し、対応範囲を指定。"
+    },
+    "uz_obs_bukhara_ark_03": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_ark_03",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真内に見えない歴史説明を区別。"
+    },
+    "uz_obs_bukhara_poi_kalyan_01": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_poi_kalyan_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "中庭から見える塔。保存した写真を目視し、対応範囲を指定。"
+    },
+    "uz_obs_bukhara_poi_kalyan_02": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_poi_kalyan_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "中庭を囲むアーチ。保存した写真を目視し、対応範囲を指定。"
+    },
+    "uz_obs_bukhara_poi_kalyan_03": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_poi_kalyan_03",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真内に見えない歴史説明を区別。"
+    },
+    "uz_obs_bukhara_samanid_mausoleum_01": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_samanid_mausoleum_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "煉瓦で作る模様。保存した写真を目視し、対応範囲を指定。"
+    },
+    "uz_obs_bukhara_samanid_mausoleum_02": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_samanid_mausoleum_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "四角い壁と丸い屋根。保存した写真を目視し、対応範囲を指定。"
+    },
+    "uz_obs_bukhara_samanid_mausoleum_03": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_samanid_mausoleum_03",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真内に見えない歴史説明を区別。"
+    },
+    "uz_obs_bukhara_lyabi_hauz_01": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_lyabi_hauz_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "建物の間の水面。保存した写真を目視し、対応範囲を指定。"
+    },
+    "uz_obs_bukhara_lyabi_hauz_02": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_lyabi_hauz_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "水辺の木陰。保存した写真を目視し、対応範囲を指定。"
+    },
+    "uz_obs_bukhara_lyabi_hauz_03": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_lyabi_hauz_03",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真内に見えない歴史説明を区別。"
+    },
+    "uz_obs_khiva_kunya_ark_01": {
+      "cityId": "khiva",
+      "sourceFactId": "uz_fact_khiva_kunya_ark_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "囲いの中の居城。保存した画像を目視し、対応領域を指定。"
+    },
+    "uz_obs_khiva_kunya_ark_02": {
+      "cityId": "khiva",
+      "sourceFactId": "uz_fact_khiva_kunya_ark_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "広場へ開く門。保存した画像を目視し、対応領域を指定。"
+    },
+    "uz_obs_khiva_juma_mosque_01": {
+      "cityId": "khiva",
+      "sourceFactId": "uz_fact_khiva_juma_mosque_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "並ぶ木の柱。保存した画像を目視し、対応領域を指定。"
+    },
+    "uz_obs_khiva_juma_mosque_02": {
+      "cityId": "khiva",
+      "sourceFactId": "uz_fact_khiva_juma_mosque_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "近くで見る彫り。保存した画像を目視し、対応領域を指定。"
+    },
+    "uz_obs_khiva_tash_hauli_01": {
+      "cityId": "khiva",
+      "sourceFactId": "uz_fact_khiva_tash_hauli_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "中庭を囲む部屋。保存した画像を目視し、対応領域を指定。"
+    },
+    "uz_obs_khiva_tash_hauli_02": {
+      "cityId": "khiva",
+      "sourceFactId": "uz_fact_khiva_tash_hauli_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "屋根を支える一本。保存した画像を目視し、対応領域を指定。"
+    },
+    "uz_obs_khiva_islam_khoja_01": {
+      "cityId": "khiva",
+      "sourceFactId": "uz_fact_khiva_islam_khoja_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "空へ細くなる塔。保存した画像を目視し、対応領域を指定。"
+    },
+    "uz_obs_khiva_islam_khoja_02": {
+      "cityId": "khiva",
+      "sourceFactId": "uz_fact_khiva_islam_khoja_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "塔の足元へ続く道。保存した画像を目視し、対応領域を指定。"
+    }
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "checkedAt": "2026-11-04",
+  "adopted": [
+    {
+      "placeId": "tashkent_kukeldash",
+      "filename": "Kukeldash_Madrasah_in_Tashkent.jpg",
+      "photographer": "Adam Harangozó",
+      "photoDate": "2018-07-28",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "subjectReviewJa": "16世紀起源のマドラサ。中庭と古建築の形態が主題で、現代彫刻や壁画の主体複製を含まない。現状・年代・復元部分を画像だけから断定しない。"
+    },
+    {
+      "placeId": "tashkent_japanese_garden",
+      "filename": "Japanese_garden_Tashkent_01.jpg",
+      "photographer": "Davide Mauro",
+      "photoDate": "2017-05-20",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "subjectReviewJa": "写真を目視。樹木、水面、石などの自然物が主体。小さな伝統的東屋が付随する。背景は2017年の写真で、現在の開園条件や景観を保証しない。"
+    },
+    {
+      "placeId": "tashkent_navoi_theatre",
+      "filename": "Navoi_Theater_-_Tashkent.jpg",
+      "photographer": "Atilin",
+      "photoDate": "2005-12-14",
+      "licenseName": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "subjectReviewJa": "古い劇場の建築外観。MITの建築資料は設計者Aleksey Shchusevを1873–1949と記載し、著作者没後70年を経過している。劇場内の現代美術・舞台作品は含めない。"
+    },
+    {
+      "placeId": "tashkent_khast_imam",
+      "filename": "Barak-Khan_Madrasa.jpg",
+      "photographer": "Bgag",
+      "photoDate": "2023-09-28",
+      "licenseName": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "subjectReviewJa": "古建築の正面が主体。現代モスクの大きな木製ベランダは含まない。"
+    },
+    {
+      "placeId": "tashkent_chorsu_bazaar",
+      "filename": "Quritilgan_mevalar_va_gazaklar.jpg",
+      "photographer": "Xkmvch",
+      "photoDate": "2024-06-13",
+      "licenseName": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "subjectReviewJa": "商品の自然物が主体で、現代ドーム建築や人物を主題にしない。"
+    },
+    {
+      "placeId": "tashkent_amir_temur_square",
+      "filename": "A._Temur_xiyoboni.jpg",
+      "photographer": "Diloromkhan",
+      "photoDate": "2023-11-08",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "subjectReviewJa": "植栽と散策空間が主体の遠景写真。現代の像や個別建築を拡大する観察領域を置かない。"
+    },
+    {
+      "placeId": "tashkent_anhor_canal",
+      "filename": "Anhor_River.JPG",
+      "photographer": "Bekhruzbek Ochilov",
+      "photoDate": "2015-01-08",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "subjectReviewJa": "水面と散策路を主体にした写真。背景の施設を観察や拡大の対象にしない。"
+    },
+    {
+      "placeId": "tashkent_navoi_park",
+      "filename": "Water_reservoir_in_National_park_of_Uzbekistan.jpg",
+      "photographer": "Carpodacus",
+      "photoDate": "2016-07-19",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "subjectReviewJa": "湖と木々の自然景観が主体。現代テーマパークの建築を含む写真とは区別する。"
+    },
+    {
+      "placeId": "tashkent_independence_square",
+      "filename": "Independence_square_in_Tashkent.jpg",
+      "photographer": "Yunuskhuja Tuygunkhujaev",
+      "photoDate": "2016-03-16",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "subjectReviewJa": "噴水と水面、公共の散策空間を主体にした写真。背景の官庁建物や現代彫刻を観察・拡大の対象にしない。"
+    },
+    {
+      "placeId": "tashkent_abulkasym",
+      "filename": "Abulkasym_Madrasseh.jpg",
+      "photographer": "Zolfeqar Fatihzadeh",
+      "photoDate": "2026-10-25",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "subjectReviewJa": "古建築の工房入口で、木製格子とガラスの扉が主体。扉の年代や作者を建物の年代と同一視しない。ガラス越しの品物は鑑賞・拡大対象にしない。"
+    }
+  ],
+  "rejected": [
+    {
+      "file": "Chorsu_Bazaar_in_Tashkent.jpg",
+      "reasonJa": "現代ドーム建築が主体。撮影者のCC許諾と建築の権利を混同しないため不採用。"
+    },
+    {
+      "file": "Amir_Temur_Square.jpg",
+      "reasonJa": "現代の騎馬像と周辺現代建築が主体のため不採用。"
+    },
+    {
+      "file": "Minor_Mosque_Tashkent.jpg",
+      "reasonJa": "2014年のモスクが主体。撮影者CC0だけでは建築の条件を解決できないため不採用。"
+    },
+    {
+      "file": "Kosmonavtlar_Station_of_Tashkent_Metro_6.jpg",
+      "reasonJa": "現代の駅装飾・壁画が主体のため不採用。"
+    },
+    {
+      "file": "Hazrat_Imam_01.jpg",
+      "reasonJa": "新しい木製ベランダを前景に大きく含むため、古いバラク・ハン建築を主体とする写真へ変更。"
+    },
+    {
+      "file": "Milliy_bog.jpg",
+      "reasonJa": "現代テーマパーク建築が主体で、CommonsにもNoFoP注意がある。自然景観の公園写真として流用しない。"
+    },
+    {
+      "file": "Mustaqillik_maydoni_01.05.2024.jpg",
+      "reasonJa": "鳥の記念物が主題として大きく残るため、噴水と散策空間の写真へ変更。"
+    }
+  ],
+  "reviewNotesJa": "採用10枚はすべて目視。古建築、商品、自然景観、公共散策空間または入口の細部を主題とする。公園全景に付随する現代建築や像を拡大観察に使わない。Navoi劇場の設計者Shchusev(1949没)はMIT建築資料で確認。",
+  "theatreSubjectSourceUrl": "https://dome.mit.edu/entities/picture/279587c6-e64a-4198-b1de-df670ca1b2fc"
+}

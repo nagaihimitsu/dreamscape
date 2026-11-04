@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "bukhara",
+  "nextCityId": "khiva",
+  "countryCode": "UZ",
+  "nameJa": "ブハラ",
+  "themeJa": "池と交易ドームを歩く街",
+  "firstClearReward": {
+    "rewardSourceId": "bukhara_legacy_episode_placeholder",
+    "ap": 0
+  },
+  "landmarkIdsPlanned": [
+    "bukhara_ark",
+    "bukhara_poi_kalyan",
+    "bukhara_samanid_mausoleum",
+    "bukhara_lyabi_hauz"
+  ],
+  "productionStatus": "prototype"
+}

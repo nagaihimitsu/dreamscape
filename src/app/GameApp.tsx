@@ -227,7 +227,7 @@ export function GameApp({
     : undefined;
   const weekday = getGameWeekday(game?.travel.calendar);
   const nextCity = game ? getNextCity(game) : undefined;
-  const automaticIndiaJourney = !!game && getJourneyForCity(game.currentCityId)?.id === "golden_triangle";
+  const automaticCityJourney = !!game && getJourneyForCity(game.currentCityId)?.cityTransition === "after_epilogue";
   const nameForm = (
     <>
       <label>
@@ -633,7 +633,7 @@ export function GameApp({
             })}
             onBattle={(id) => commit((state) => startBattle(state, id))}
             onTravelEvent={(id, mode) => travelToEvent(id, mode, game.revision)}
-            nextCityName={automaticIndiaJourney ? undefined : nextCity?.city.nameJa}
+            nextCityName={automaticCityJourney ? undefined : nextCity?.city.nameJa}
             onDepart={() => setConfirmDeparture(true)}
           />
         )}
@@ -641,7 +641,7 @@ export function GameApp({
       <footer>
         Dreamscape <span>·</span> 旅の余白に、ふたりの物語。
       </footer>
-      {confirmDeparture && game && nextCity && !automaticIndiaJourney && <Modal labelledBy="departure-title" onClose={() => setConfirmDeparture(false)}>
+      {confirmDeparture && game && nextCity && !automaticCityJourney && <Modal labelledBy="departure-title" onClose={() => setConfirmDeparture(false)}>
         <h2 id="departure-title">{nextCity.city.nameJa}へ出発</h2>
         <p>次の街へ進みます。今の街の未使用アイテムは持って行けません。</p>
         <button type="button" className="primary" onClick={() => {

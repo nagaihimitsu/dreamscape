@@ -1,4 +1,3 @@
-import { createHash } from "node:crypto";
 import { cpSync, existsSync, linkSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -6,18 +5,25 @@ import { afterEach, describe, expect, it } from "vitest";
 import { applyCityBundle, compactCityBundle, exportCityBundle, exportEditableCityBundle, newCityBundle, writeCityBundleFiles } from "./city-bundle";
 import { compactTravel, expandTravel, type CompactTravel } from "./city-bundle-routes";
 import { travelCatalogSchema } from "../src/content/travel-schemas";
-import { indiaInputFingerprint } from "./promote-india";
+import { inputFingerprint } from "./city-bundle-files";
+import { journeyAuthoringProfiles } from "./journey-authoring";
+import { cityTransitFile, inspectCityTransit, readTransitLedger } from "./journey-transit-review";
 import { inspectIndiaReadiness, loadIndiaReadiness } from "./india-readiness";
 import { buildIndiaTransitReview, readIndiaTransitReview } from "./india-transit-review";
 
 const roots: string[] = [];
+const allCities = ["milano", "delhi", "agra", "jaipur", "tashkent", "samarkand", "bukhara", "khiva"];
 function fixture(): string {
   const root = mkdtempSync(path.join(tmpdir(), "dreamscape-city-bundle-"));
   roots.push(root);
   for (const directory of ["content", "public"]) {
     cpSync(path.join(process.cwd(), directory), path.join(root, directory), { recursive: true });
   }
-  for (const file of ["authoring/drafts/golden-triangle/observation-cards.json", "authoring/research/golden-triangle-transit-20261103/decisions.json"]) {
+  const extraFiles = [...Object.values(journeyAuthoringProfiles).map((profile) => profile.observationFile),
+    "authoring/research/golden-triangle-transit-20261103/decisions.json",
+    ...allCities.map((cityId) => cityTransitFile(process.cwd(), cityId)).filter((file): file is string => !!file)];
+  for (const file of extraFiles) {
+    if (!existsSync(path.join(process.cwd(), file))) continue;
     mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
     cpSync(path.join(process.cwd(), file), path.join(root, file));
   }
@@ -27,8 +33,7 @@ const read = (root: string, file: string) => readFileSync(path.join(root, file),
 const readJson = (root: string, file: string) => JSON.parse(read(root, file));
 const writeJson = (root: string, file: string, value: unknown) =>
   writeFileSync(path.join(root, file), `${JSON.stringify(value, null, 2)}\n`);
-const fingerprint = (root: string) => createHash("sha256").update(indiaInputFingerprint(root))
-  .update(read(root, "authoring/research/golden-triangle-transit-20261103/decisions.json")).digest("hex");
+const fingerprint = inputFingerprint;
 afterEach(() => { for (const root of roots.splice(0)) rmSync(root, { recursive: true, force: true }); });
 
 describe("city editing bundle", () => {
@@ -83,7 +88,7 @@ describe("city editing bundle", () => {
     const before = fingerprint(root);
     const decisionFile = "authoring/research/golden-triangle-transit-20261103/decisions.json";
     const decisions = read(root, decisionFile);
-    for (const cityId of ["milano", "delhi", "agra", "jaipur"]) {
+    for (const cityId of allCities) {
       const file = `content/travel/${cityId}.json`;
       const original = read(root, file);
       const bundle = exportEditableCityBundle(root, cityId);
@@ -97,7 +102,7 @@ describe("city editing bundle", () => {
       expect(read(root, decisionFile), cityId).toBe(decisions);
     }
     expect(fingerprint(root)).toBe(before);
-  }, 180_000);
+  }, 360_000);
 
   it("applies an explicitly bidirectional edit to exactly those two directed routes", async () => {
     const root = fixture();
@@ -145,7 +150,7 @@ describe("city editing bundle", () => {
     const root = fixture();
     const before = fingerprint(root);
     const tourism = readJson(root, "content/tourism/catalog.json");
-    for (const cityId of ["milano", "delhi", "agra", "jaipur"]) {
+    for (const cityId of allCities) {
       const bundle = exportCityBundle(root, cityId);
       expect(bundle.cityId).toBe(cityId);
       expect(bundle.city).toEqual(readJson(root, `content/cities/${cityId}.json`));
@@ -278,6 +283,50 @@ describe("city editing bundle", () => {
     expect(report.counts.delhi.inconclusive).toBe(0);
     expect(report.counts.delhi.available).toBeGreaterThan(0);
   }, 60_000);
+
+  it("edits the selected Uzbek transit ledger while rejecting unknown directions and image changes", async () => {
+    const root = fixture();
+    const cityId = "tashkent";
+    const ledgerFile = cityTransitFile(root, cityId)!;
+    const otherLedger = cityTransitFile(root, "khiva")!;
+    const otherBefore = read(root, otherLedger);
+    const bundle = exportEditableCityBundle(root, cityId);
+    const decisions = bundle.transitDecisions as Array<{ status: string; reasonJa: string; sources: unknown[] }>;
+    expect(decisions).toHaveLength(bundle.travel.places.length * (bundle.travel.places.length - 1) * 4);
+    expect(decisions.every((decision) => decision.sources.length > 0)).toBe(true);
+    decisions[0].reasonJa += " 編集テストの注記。";
+    const changed = await applyCityBundle(root, bundle, true);
+    expect(changed.changedFiles).toEqual([ledgerFile]);
+    expect(read(root, otherLedger)).toBe(otherBefore);
+    const travel = travelCatalogSchema.parse(readJson(root, `content/travel/${cityId}.json`));
+    expect(inspectCityTransit(travel, readTransitLedger(root, ledgerFile)).ready).toBe(true);
+
+    const missing = exportCityBundle(root, cityId);
+    missing.transitDecisions!.pop();
+    const before = fingerprint(root);
+    await expect(applyCityBundle(root, missing, true)).rejects.toThrow(/Unreviewed transit direction/);
+    const unknown = exportCityBundle(root, cityId);
+    const absent = (unknown.transitDecisions as typeof decisions).find((decision) => decision.status !== "available")!;
+    absent.status = "unconfirmed";
+    await expect(applyCityBundle(root, unknown, true)).rejects.toThrow(/undecided directions/);
+    expect(fingerprint(root)).toBe(before);
+
+    const observations = readJson(root, journeyAuthoringProfiles.uzbekistan.observationFile);
+    const mainId = Object.keys(observations.images).find((id) => id.startsWith(`${cityId}_`))!;
+    const imagePath = observations.images[mainId].path;
+    const changedImage = exportCityBundle(root, cityId);
+    const image = changedImage.assets.find((asset) => asset.path === imagePath)!;
+    image.path = changedImage.assets.find((asset) => asset.id !== image.id)!.path;
+    await expect(applyCityBundle(root, changedImage, true)).rejects.toThrow(/Observation image changed/);
+    expect(fingerprint(root)).toBe(before);
+
+    const absolute = path.join(root, "public", imagePath);
+    writeFileSync(absolute, Buffer.concat([readFileSync(absolute), Buffer.from("test changed image")]));
+    // Re-exporting after a binary edit must still require observation review.
+    const changedBytes = exportCityBundle(root, cityId);
+    await expect(applyCityBundle(root, changedBytes, true)).rejects.toThrow(/Observation image hash changed/);
+    expect(read(root, otherLedger)).toBe(otherBefore);
+  }, 90_000);
 
   it("protects missing images, reviewed observation photographs and the release gate", async () => {
     const root = fixture();
@@ -416,9 +465,9 @@ describe("city editing bundle", () => {
     expect(existsSync(path.join(root, ".city-bundle.lock"))).toBe(false);
   }, 60_000);
 
-  it("applies edits to each of the four cities without changing other cities", async () => {
+  it("applies edits to all eight cities without changing other cities", async () => {
     const root = fixture();
-    const cities = ["milano", "delhi", "agra", "jaipur"];
+    const cities = allCities;
     for (const cityId of cities) {
       const untouched = cities.filter((id) => id !== cityId).flatMap((id) =>
         [`content/cities/${id}.json`, `content/travel/${id}.json`, `content/travel/${id}-settings.json`]);
@@ -434,7 +483,7 @@ describe("city editing bundle", () => {
       for (const file of untouched) expect(read(root, file), `${cityId}: ${file}`).toBe(before[file]);
       for (const file of sharedFiles) expect(read(root, file), `${cityId}: ${file}`).toBe(sharedBefore[file]);
     }
-  }, 180_000);
+  }, 360_000);
 
   it("edits Milan's observations and image attribution without changing unrelated content", async () => {
     const root = fixture();

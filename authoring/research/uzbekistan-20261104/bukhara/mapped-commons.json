@@ -1,0 +1,74 @@
+{
+  "batchcomplete": "",
+  "query": {
+    "pages": {
+      "-1": {
+        "ns": 14,
+        "title": "Category:Abdulaziz Khan madrasa",
+        "missing": ""
+      },
+      "15275429": {
+        "pageid": 15275429,
+        "ns": 14,
+        "title": "Category:Chor Minor",
+        "coordinates": [
+          {
+            "lat": 39.77482706,
+            "lon": 64.42736864,
+            "primary": "",
+            "globe": "earth"
+          }
+        ]
+      },
+      "53239088": {
+        "pageid": 53239088,
+        "ns": 14,
+        "title": "Category:Tok-i-Zargoron",
+        "coordinates": [
+          {
+            "lat": 39.776391,
+            "lon": 64.416639,
+            "primary": "",
+            "globe": "earth"
+          }
+        ]
+      },
+      "20641055": {
+        "pageid": 20641055,
+        "ns": 14,
+        "title": "Category:Ulugh Beg madrasa (Bukhara)",
+        "coordinates": [
+          {
+            "lat": 39.77667906,
+            "lon": 64.41753077,
+            "primary": "",
+            "globe": "earth"
+          }
+        ]
+      }
+    }
+  },
+  "abdulaziz_khan": {
+    "batchcomplete": "",
+    "query": {
+      "pages": {
+        "20222102": {
+          "pageid": 20222102,
+          "ns": 14,
+          "title": "Category:Madrasa of 'Abd al-'Aziz Khan",
+          "coordinates": [
+            {
+              "lat": 39.77583333,
+              "lon": 64.41777778,
+              "primary": "",
+              "globe": "earth"
+            }
+          ]
+        }
+      }
+    },
+    "limits": {
+      "coordinates": 500
+    }
+  }
+}

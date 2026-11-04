@@ -1,0 +1,362 @@
+[
+  {
+    "placeId": "tashkent_khast_imam",
+    "visitScopeJa": "外観・公共散策空間。展示・公演・塔の登上を含まない。",
+    "openingStatus": "game_estimate",
+    "admissionStatus": "game_estimate",
+    "sources": [
+      {
+        "publisher": "Uzbekistan Travel",
+        "title": "Hazrati Imam complex",
+        "url": "https://app.uzbekistan.travel/ru/o/kompleks-hazrati-imam/",
+        "checkedAt": "2026-11-04",
+        "claimType": "documented_fact",
+        "claimJa": "旧市街の宗教建築群で、バラク・ハンのマドラサなどを含む。現代建築や宝物展示の入場を本イベントに含めない。"
+      },
+      {
+        "publisher": "Dreamscape / mapped public information",
+        "title": "ハスト・イマーム複合体 代表点",
+        "url": "https://mapcarta.com/N13352406883",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "地図資料を参照したゲーム用の代表点。実際の入口・徒歩導線の測量値ではない。"
+      },
+      {
+        "publisher": "Dreamscape ゲーム編集",
+        "title": "ハスト・イマーム複合体 訪問枠・入場費",
+        "url": "https://app.uzbekistan.travel/ru/o/kompleks-hazrati-imam/",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "ゲームの訪問枠は09:00〜18:00、所要60分、二人分の入場費0スム。現地の営業時間・チケット価格を示すものではない。"
+      }
+    ]
+  },
+  {
+    "placeId": "tashkent_chorsu_bazaar",
+    "visitScopeJa": "外観・公共散策空間。展示・公演・塔の登上を含まない。",
+    "openingStatus": "game_estimate",
+    "admissionStatus": "game_estimate",
+    "sources": [
+      {
+        "publisher": "Visit Tashkent",
+        "title": "Chorsu bazaar",
+        "url": "https://visit.tashkent.uz/en/attraction/27",
+        "checkedAt": "2026-11-04",
+        "claimType": "documented_fact",
+        "claimJa": "チョルスーは旧市街Eski Shaharにある市場。生鮮品や日用品などの売買が行われる。"
+      },
+      {
+        "publisher": "Dreamscape / mapped public information",
+        "title": "チョルスー・バザール 代表点",
+        "url": "https://mapcarta.com/W174498975",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "地図資料を参照したゲーム用の代表点。実際の入口・徒歩導線の測量値ではない。"
+      },
+      {
+        "publisher": "Dreamscape ゲーム編集",
+        "title": "チョルスー・バザール 訪問枠・入場費",
+        "url": "https://visit.tashkent.uz/en/attraction/27",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "ゲームの訪問枠は09:00〜18:00、所要60分、二人分の入場費0スム。現地の営業時間・チケット価格を示すものではない。"
+      }
+    ]
+  },
+  {
+    "placeId": "tashkent_kukeldash",
+    "visitScopeJa": "施設内散策。料金は二人分のゲーム設定。",
+    "openingStatus": "game_estimate",
+    "admissionStatus": "game_estimate",
+    "sources": [
+      {
+        "publisher": "CAREC / Visit Silk Road",
+        "title": "Tashkent Kulkedash Medressa",
+        "url": "https://visitsilkroad.org/destination/tashkent-kulkedash-medressa/",
+        "checkedAt": "2026-11-04",
+        "claimType": "documented_fact",
+        "claimJa": "16世紀のマドラサで、中庭を囲む学生用の部屋を持つ。後世には隊商宿などにも転用されたと紹介されている。"
+      },
+      {
+        "publisher": "Dreamscape / mapped public information",
+        "title": "クカルダシュ・マドラサ 代表点",
+        "url": "https://www.worldofroads.com/?lang=en&p=445",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "地図資料を参照したゲーム用の代表点。実際の入口・徒歩導線の測量値ではない。"
+      },
+      {
+        "publisher": "Dreamscape ゲーム編集",
+        "title": "クカルダシュ・マドラサ 訪問枠・入場費",
+        "url": "https://visitsilkroad.org/destination/tashkent-kulkedash-medressa/",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "ゲームの訪問枠は09:00〜18:00、所要50分、二人分の入場費40000スム。現地の営業時間・チケット価格を示すものではない。"
+      }
+    ]
+  },
+  {
+    "placeId": "tashkent_amir_temur_square",
+    "visitScopeJa": "外観・公共散策空間。展示・公演・塔の登上を含まない。",
+    "openingStatus": "game_estimate",
+    "admissionStatus": "game_estimate",
+    "sources": [
+      {
+        "publisher": "Uzbekistan Travel",
+        "title": "Square of Amir Temur",
+        "url": "https://uzbekistan.travel/en/o/sqvare-of-amir-temur/",
+        "checkedAt": "2026-11-04",
+        "claimType": "documented_fact",
+        "claimJa": "アミール・ティムールを記念する都市中心部の広場。背景には広場の公共空間を用い、現代の騎馬像の複製を主題としない。"
+      },
+      {
+        "publisher": "Dreamscape / mapped public information",
+        "title": "アミール・ティムール広場 代表点",
+        "url": "https://commons.wikimedia.org/wiki/Category:Amir_Temur_Square",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "地図資料を参照したゲーム用の代表点。実際の入口・徒歩導線の測量値ではない。"
+      },
+      {
+        "publisher": "Dreamscape ゲーム編集",
+        "title": "アミール・ティムール広場 訪問枠・入場費",
+        "url": "https://uzbekistan.travel/en/o/sqvare-of-amir-temur/",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "ゲームの訪問枠は09:00〜21:00、所要45分、二人分の入場費0スム。現地の営業時間・チケット価格を示すものではない。"
+      }
+    ]
+  },
+  {
+    "placeId": "tashkent_anhor_canal",
+    "visitScopeJa": "外観・公共散策空間。展示・公演・塔の登上を含まない。",
+    "openingStatus": "game_estimate",
+    "admissionStatus": "game_estimate",
+    "sources": [
+      {
+        "publisher": "Uzbekistan Travel",
+        "title": "The Minor Mosque",
+        "url": "https://uzbekistan.travel/en/o/the-minor-mosque/",
+        "checkedAt": "2026-11-04",
+        "claimType": "documented_fact",
+        "claimJa": "ミノール・モスクはAnkhor運河の岸辺にある。2014年に開かれた白い大理石のモスク。"
+      },
+      {
+        "publisher": "Dreamscape / mapped public information",
+        "title": "ミノール周辺のアンホール運河 代表点",
+        "url": "https://pray.zone/tashkent/mosques/minor-mosque",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "地図資料を参照したゲーム用の代表点。実際の入口・徒歩導線の測量値ではない。"
+      },
+      {
+        "publisher": "Dreamscape ゲーム編集",
+        "title": "ミノール周辺のアンホール運河 訪問枠・入場費",
+        "url": "https://uzbekistan.travel/en/o/the-minor-mosque/",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "ゲームの訪問枠は09:00〜20:00、所要45分、二人分の入場費0スム。現地の営業時間・チケット価格を示すものではない。"
+      }
+    ]
+  },
+  {
+    "placeId": "tashkent_japanese_garden",
+    "visitScopeJa": "施設内散策。料金は二人分のゲーム設定。",
+    "openingStatus": "game_estimate",
+    "admissionStatus": "game_estimate",
+    "sources": [
+      {
+        "publisher": "Uzbekistan Travel",
+        "title": "Japanese garden",
+        "url": "https://uzbekistan.travel/en/o/japanese-garden/",
+        "checkedAt": "2026-11-04",
+        "claimType": "documented_fact",
+        "claimJa": "タシュケントの日本庭園は自然を小さな景観にまとめた庭園で、Amir Temur通りのUzexpocentre付近に位置する。"
+      },
+      {
+        "publisher": "Dreamscape / mapped public information",
+        "title": "日本庭園 代表点",
+        "url": "https://mapcarta.com/N11081335412",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "地図資料を参照したゲーム用の代表点。実際の入口・徒歩導線の測量値ではない。"
+      },
+      {
+        "publisher": "Dreamscape ゲーム編集",
+        "title": "日本庭園 訪問枠・入場費",
+        "url": "https://uzbekistan.travel/en/o/japanese-garden/",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "ゲームの訪問枠は10:00〜19:00、所要60分、二人分の入場費60000スム。現地の営業時間・チケット価格を示すものではない。"
+      },
+      {
+        "publisher": "Uzexpocentre",
+        "title": "Rules for visiting the Japanese Garden (2026-04-30)",
+        "url": "https://www.uzexpocentre.uz/en/menu/pravila-poseschenija-japonskogo-sada",
+        "checkedAt": "2026-11-04",
+        "claimType": "documented_fact",
+        "claimJa": "入場にはチケットが必要。現行の開園時間と価格は入口に掲示され変更される。商業撮影等には書面許可が必要と記載する。オンライン上で金額を確定できないためゲーム額と区別する。"
+      }
+    ]
+  },
+  {
+    "placeId": "tashkent_navoi_theatre",
+    "visitScopeJa": "外観・公共散策空間。展示・公演・塔の登上を含まない。",
+    "openingStatus": "game_estimate",
+    "admissionStatus": "game_estimate",
+    "sources": [
+      {
+        "publisher": "Uzbekistan Travel",
+        "title": "Grand theatre named after Alisher Navoi",
+        "url": "https://uzbekistan.travel/en/o/grand-theatre-named-after-alisher-navoi/",
+        "checkedAt": "2026-11-04",
+        "claimType": "documented_fact",
+        "claimJa": "タシュケントのオペラ・バレエ劇場。ゲーム候補は外観と前庭のみで、公演の鑑賞・有料入場は含まない。"
+      },
+      {
+        "publisher": "Dreamscape / mapped public information",
+        "title": "ナヴォイ劇場（外観） 代表点",
+        "url": "https://mapcarta.com/W31962395",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "地図資料を参照したゲーム用の代表点。実際の入口・徒歩導線の測量値ではない。"
+      },
+      {
+        "publisher": "Dreamscape ゲーム編集",
+        "title": "ナヴォイ劇場（外観） 訪問枠・入場費",
+        "url": "https://uzbekistan.travel/en/o/grand-theatre-named-after-alisher-navoi/",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "ゲームの訪問枠は09:00〜21:00、所要45分、二人分の入場費0スム。現地の営業時間・チケット価格を示すものではない。"
+      }
+    ]
+  },
+  {
+    "placeId": "tashkent_independence_square",
+    "visitScopeJa": "外観・公共散策空間。展示・公演・塔の登上を含まない。",
+    "openingStatus": "game_estimate",
+    "admissionStatus": "game_estimate",
+    "sources": [
+      {
+        "publisher": "Wikipedia",
+        "title": "Mustaqillik Maydoni",
+        "url": "https://en.wikipedia.org/wiki/Mustaqillik_Maydoni",
+        "checkedAt": "2026-11-04",
+        "claimType": "documented_fact",
+        "claimJa": "タシュケント中心部の独立広場。公共の庭園・散策空間を候補とし、記念彫刻の拡大複製や政府施設への立入りを含まない。"
+      },
+      {
+        "publisher": "Dreamscape / mapped public information",
+        "title": "独立広場の庭園 代表点",
+        "url": "https://commons.wikimedia.org/wiki/Category:Independence_Square,_Tashkent",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "地図資料を参照したゲーム用の代表点。実際の入口・徒歩導線の測量値ではない。"
+      },
+      {
+        "publisher": "Dreamscape ゲーム編集",
+        "title": "独立広場の庭園 訪問枠・入場費",
+        "url": "https://en.wikipedia.org/wiki/Mustaqillik_Maydoni",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "ゲームの訪問枠は09:00〜21:00、所要45分、二人分の入場費0スム。現地の営業時間・チケット価格を示すものではない。"
+      }
+    ]
+  },
+  {
+    "placeId": "tashkent_abulkasym",
+    "visitScopeJa": "外観・公共散策空間。展示・公演・塔の登上を含まない。",
+    "openingStatus": "game_estimate",
+    "admissionStatus": "game_estimate",
+    "sources": [
+      {
+        "publisher": "Uzbekistan Travel",
+        "title": "Abulkasym Sheikh Madrasah",
+        "url": "https://uzbekistan.travel/en/o/tourist-route-through-the-main-zierat-objects-of-tashkent/",
+        "checkedAt": "2026-11-04",
+        "claimType": "documented_fact",
+        "claimJa": "アブルカシム・シェイフのマドラサは19世紀に建てられた旧市街の建築。候補は外観と工芸の作業空間で、公演や礼拝への参加を含まない。"
+      },
+      {
+        "publisher": "Dreamscape / mapped public information",
+        "title": "アブルカシム・マドラサ 代表点",
+        "url": "https://yandex.com/maps/10335/tashkent/house/YkAYdANgS0IDQFprfX9xd3thZQ%3D%3D/",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "地図資料を参照したゲーム用の代表点。実際の入口・徒歩導線の測量値ではない。"
+      },
+      {
+        "publisher": "Dreamscape ゲーム編集",
+        "title": "アブルカシム・マドラサ 訪問枠・入場費",
+        "url": "https://uzbekistan.travel/en/o/tourist-route-through-the-main-zierat-objects-of-tashkent/",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "ゲームの訪問枠は09:00〜21:00、所要45分、二人分の入場費0スム。現地の営業時間・チケット価格を示すものではない。"
+      }
+    ]
+  },
+  {
+    "placeId": "tashkent_navoi_park",
+    "visitScopeJa": "外観・公共散策空間。展示・公演・塔の登上を含まない。",
+    "openingStatus": "game_estimate",
+    "admissionStatus": "game_estimate",
+    "sources": [
+      {
+        "publisher": "Wikipedia",
+        "title": "Alisher Navoi National Park",
+        "url": "https://en.wikipedia.org/wiki/Alisher_Navoi_National_Park",
+        "checkedAt": "2026-11-04",
+        "claimType": "documented_fact",
+        "claimJa": "タシュケントの国立公園はMilliy Bog駅付近にあり、湖を含む。2017年からの改修後2022年に再開したと記載される。古い写真は現在の景観を保証しない。"
+      },
+      {
+        "publisher": "Dreamscape / mapped public information",
+        "title": "アリシェル・ナヴォイ公園 代表点",
+        "url": "https://mapcarta.com/W32003705",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "地図資料を参照したゲーム用の代表点。実際の入口・徒歩導線の測量値ではない。"
+      },
+      {
+        "publisher": "Dreamscape ゲーム編集",
+        "title": "アリシェル・ナヴォイ公園 訪問枠・入場費",
+        "url": "https://en.wikipedia.org/wiki/Alisher_Navoi_National_Park",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "ゲームの訪問枠は09:00〜20:00、所要60分、二人分の入場費0スム。現地の営業時間・チケット価格を示すものではない。"
+      }
+    ]
+  },
+  {
+    "placeId": "tashkent_hotel_hub",
+    "visitScopeJa": "架空の滞在先",
+    "openingStatus": "game_estimate",
+    "admissionStatus": "game_estimate",
+    "sources": [
+      {
+        "publisher": "Uzbekistan Travel",
+        "title": "Square of Amir Temur",
+        "url": "https://uzbekistan.travel/en/o/sqvare-of-amir-temur/",
+        "checkedAt": "2026-11-04",
+        "claimType": "documented_fact",
+        "claimJa": "アミール・ティムールを記念する都市中心部の広場。背景には広場の公共空間を用い、現代の騎馬像の複製を主題としない。"
+      },
+      {
+        "publisher": "Dreamscape / mapped public information",
+        "title": "タシュケントの滞在先 代表点",
+        "url": "https://www.openstreetmap.org/#map=17/41.3120/69.2774",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "地図資料の代表点をゲーム用に採用。入口・歩道・現地の通行条件の測量値ではない。宿は実在施設ではなく架空の拠点。"
+      },
+      {
+        "publisher": "Dreamscape ゲーム編集",
+        "title": "タシュケントの滞在先 訪問枠・入場費",
+        "url": "https://uzbekistan.travel/en/o/sqvare-of-amir-temur/",
+        "checkedAt": "2026-11-04",
+        "claimType": "hypothesis",
+        "claimJa": "ゲームの訪問枠は00:00〜24:00、所要0分、二人分の入場費0スム。現地の営業時間・チケット価格を示すものではない。"
+      }
+    ]
+  }
+]

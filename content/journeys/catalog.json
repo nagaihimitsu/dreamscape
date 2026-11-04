@@ -5,8 +5,18 @@
       "id": "milano",
       "nameJa": "ミラノ編",
       "status": "available",
-      "cities": [{ "id": "milano", "nameJa": "ミラノ" }],
-      "currency": { "code": "EUR", "symbol": "€", "unitJa": "ユーロ", "unit": "whole" },
+      "cities": [
+        {
+          "id": "milano",
+          "nameJa": "ミラノ"
+        }
+      ],
+      "currency": {
+        "code": "EUR",
+        "symbol": "€",
+        "unitJa": "ユーロ",
+        "unit": "whole"
+      },
       "intercityModes": []
     },
     {
@@ -14,15 +24,93 @@
       "nameJa": "インド・ゴールデントライアングル編",
       "status": "preparing",
       "cities": [
-        { "id": "delhi", "nameJa": "デリー" },
-        { "id": "agra", "nameJa": "アーグラ" },
-        { "id": "jaipur", "nameJa": "ジャイプール" }
+        {
+          "id": "delhi",
+          "nameJa": "デリー"
+        },
+        {
+          "id": "agra",
+          "nameJa": "アーグラ"
+        },
+        {
+          "id": "jaipur",
+          "nameJa": "ジャイプール"
+        }
       ],
-      "currency": { "code": "INR", "symbol": "₹", "unitJa": "ルピー", "unit": "whole" },
+      "currency": {
+        "code": "INR",
+        "symbol": "₹",
+        "unitJa": "ルピー",
+        "unit": "whole"
+      },
       "initialBudget": 30000,
       "startWeekday": 0,
-      "initialState": { "ap": 0, "pendingAp": 0, "affection": 0, "trust": 0, "spark": 0, "romanceStage": 1, "confessionStatus": "none" },
-      "cityPlan": { "cityClearAp": 4, "lodgingCost": 0, "mainTourismCount": 4, "dateCount": 6 },
+      "initialState": {
+        "ap": 0,
+        "pendingAp": 0,
+        "affection": 0,
+        "trust": 0,
+        "spark": 0,
+        "romanceStage": 1,
+        "confessionStatus": "none"
+      },
+      "cityPlan": {
+        "cityClearAp": 4,
+        "lodgingCost": 0,
+        "mainTourismCount": 4,
+        "dateCount": 6
+      },
+      "intercityModes": [],
+      "cityTransition": "after_epilogue",
+      "farePartySize": 2
+    },
+    {
+      "id": "uzbekistan",
+      "nameJa": "ウズベキスタン編",
+      "status": "preparing",
+      "cities": [
+        {
+          "id": "tashkent",
+          "nameJa": "タシュケント"
+        },
+        {
+          "id": "samarkand",
+          "nameJa": "サマルカンド"
+        },
+        {
+          "id": "bukhara",
+          "nameJa": "ブハラ"
+        },
+        {
+          "id": "khiva",
+          "nameJa": "ヒヴァ"
+        }
+      ],
+      "currency": {
+        "code": "UZS",
+        "symbol": "soʻm ",
+        "unitJa": "スム",
+        "unit": "whole"
+      },
+      "initialBudget": 4000000,
+      "startWeekday": 0,
+      "initialState": {
+        "ap": 0,
+        "pendingAp": 0,
+        "affection": 0,
+        "trust": 0,
+        "spark": 0,
+        "romanceStage": 1,
+        "confessionStatus": "none"
+      },
+      "cityPlan": {
+        "cityClearAp": 4,
+        "lodgingCost": 0,
+        "mainTourismCount": 4,
+        "dateCount": 6
+      },
+      "cityTransition": "after_epilogue",
+      "farePartySize": 2,
       "intercityModes": []
     }
   ]

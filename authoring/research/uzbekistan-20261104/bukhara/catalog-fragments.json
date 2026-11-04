@@ -1,0 +1,782 @@
+{
+  "assets": [
+    {
+      "id": "uz_img_bukhara_ark",
+      "path": "assets/tourism/uzbekistan/bukhara_ark.jpg",
+      "width": 1920,
+      "height": 1280,
+      "altJa": "アルク城の大きく張り出した城壁と上部の凹凸。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ark_fortress_in_Bukhara.jpg",
+      "licenseName": "CC BY-SA 2.0 fr",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/fr/deed.en",
+      "creditJa": "写真：Stomac／Wikimedia Commons／CC BY-SA 2.0 fr",
+      "modificationJa": "Wikimedia提供の縮小版（1920×1280px）を取得。切抜き・描き足しなし。画面上では端が切れる場合がある。ライセンスは元画像と同じ。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_bukhara_poi_kalyan",
+      "path": "assets/tourism/uzbekistan/bukhara_poi_kalyan.jpg",
+      "width": 1920,
+      "height": 1273,
+      "altJa": "カリヤン・モスクの中庭、門状の正面と奥に立つミナレット。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Po-i-Kalyan_in_Bukhara.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Maksimsokolov／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia提供の縮小版（1920×1273px）を取得。切抜き・描き足しなし。画面上では端が切れる場合がある。ライセンスは元画像と同じ。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_bukhara_samanid_mausoleum",
+      "path": "assets/tourism/uzbekistan/bukhara_samanid_mausoleum.jpg",
+      "width": 1920,
+      "height": 1280,
+      "altJa": "公園の中に建つ、煉瓦の壁と丸いドームを持つサーマーン朝廟。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Samanid_Mausoleum_and_surroundings.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Adam Harangozó／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia提供の縮小版（1920×1280px）を取得。切抜き・描き足しなし。画面上では端が切れる場合がある。ライセンスは元画像と同じ。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_bukhara_lyabi_hauz",
+      "path": "assets/tourism/uzbekistan/bukhara_lyabi_hauz.jpg",
+      "width": 1920,
+      "height": 1440,
+      "altJa": "リャビ・ハウズの池と樹木、対岸の建物。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lyabi-Hovuz_and_Nadir_Divanbegi_Khanqah.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Ymblanter／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia提供の縮小版（1920×1440px）を取得。切抜き・描き足しなし。画面上では端が切れる場合がある。ライセンスは元画像と同じ。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_bukhara_chor_minor",
+      "path": "assets/tourism/uzbekistan/bukhara_chor_minor.jpg",
+      "width": 1920,
+      "height": 2560,
+      "altJa": "青いドームを持つ四隅の塔と、チョル・ミノルの門の建物。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chor_minor_from_southwest.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Ymblanter／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia提供の縮小版（1920×2560px）を取得。切抜き・描き足しなし。画面上では端が切れる場合がある。ライセンスは元画像と同じ。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_bukhara_bolo_hauz",
+      "path": "assets/tourism/uzbekistan/bukhara_bolo_hauz.jpg",
+      "width": 1920,
+      "height": 1397,
+      "altJa": "池越しに見たボロ・ハウズの木の列柱と装飾された軒。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bujar%C3%A1,_Bolo_Hauz_1.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：LBM1948／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia提供の縮小版（1920×1397px）を取得。切抜き・描き足しなし。画面上では端が切れる場合がある。ライセンスは元画像と同じ。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_bukhara_toki_zargaron",
+      "path": "assets/tourism/uzbekistan/bukhara_toki_zargaron.jpg",
+      "width": 1920,
+      "height": 2560,
+      "altJa": "トキ・ザルガロンの大きなドームと市場の入口、手前の歩行広場。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Toqi_Zargaron.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Viaggiamocela／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia提供の縮小版（1920×2560px）を取得。切抜き・描き足しなし。画面上では端が切れる場合がある。ライセンスは元画像と同じ。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_bukhara_abdulaziz_khan",
+      "path": "assets/tourism/uzbekistan/bukhara_abdulaziz_khan.jpg",
+      "width": 1920,
+      "height": 2560,
+      "altJa": "アブドゥルアジズ・ハン・マドラサの彩色装飾と段状の門の天井。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Madrasah_of_Abdulaziz_Khan.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Umid1108／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia提供の縮小版（1920×2560px）を取得。切抜き・描き足しなし。画面上では端が切れる場合がある。ライセンスは元画像と同じ。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_bukhara_ulugh_beg",
+      "path": "assets/tourism/uzbekistan/bukhara_ulugh_beg.jpg",
+      "width": 1920,
+      "height": 1280,
+      "altJa": "ウルグ・ベク・マドラサ正面の大きな門と左右に並ぶアーチ。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ulugh_Beg_madrasa_(Bukhara).jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Adam Harangozó／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia提供の縮小版（1920×1280px）を取得。切抜き・描き足しなし。画面上では端が切れる場合がある。ライセンスは元画像と同じ。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_bukhara_magoki_attori",
+      "path": "assets/tourism/uzbekistan/bukhara_magoki_attori.jpg",
+      "width": 1920,
+      "height": 1440,
+      "altJa": "地面を掘り下げた広場から見るマゴキ・アッタリの南側正面。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Magoki-Attari.JPG",
+      "licenseName": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "creditJa": "写真：Stanislav Kozlovskiy／Wikimedia Commons／CC BY 3.0",
+      "modificationJa": "Wikimedia提供の縮小版（1920×1440px）を取得。切抜き・描き足しなし。画面上では端が切れる場合がある。ライセンスは元画像と同じ。",
+      "checkedAt": "2026-11-04"
+    }
+  ],
+  "backgrounds": {
+    "uz_bg_bukhara_ark": {
+      "nameJa": "アルク城",
+      "captionJa": "ブハラ ／ アルク城",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_ark"
+    },
+    "uz_bg_bukhara_poi_kalyan": {
+      "nameJa": "ポイ・カリヤン",
+      "captionJa": "ブハラ ／ ポイ・カリヤン（モスク中庭）",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_poi_kalyan"
+    },
+    "uz_bg_bukhara_samanid_mausoleum": {
+      "nameJa": "サーマーン朝廟",
+      "captionJa": "ブハラ ／ サーマーン朝廟",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_samanid_mausoleum"
+    },
+    "uz_bg_bukhara_lyabi_hauz": {
+      "nameJa": "リャビ・ハウズ",
+      "captionJa": "ブハラ ／ リャビ・ハウズ",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_lyabi_hauz"
+    },
+    "uz_bg_bukhara_chor_minor": {
+      "nameJa": "チョル・ミノル外観",
+      "captionJa": "ブハラ ／ チョル・ミノル外観",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_chor_minor"
+    },
+    "uz_bg_bukhara_bolo_hauz": {
+      "nameJa": "ボロ・ハウズ外観",
+      "captionJa": "ブハラ ／ ボロ・ハウズ外観",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_bolo_hauz"
+    },
+    "uz_bg_bukhara_toki_zargaron": {
+      "nameJa": "トキ・ザルガロン",
+      "captionJa": "ブハラ ／ トキ・ザルガロン",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_toki_zargaron"
+    },
+    "uz_bg_bukhara_abdulaziz_khan": {
+      "nameJa": "アブドゥルアジズ・ハン・マドラサ",
+      "captionJa": "ブハラ ／ アブドゥルアジズ・ハン・マドラサ",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_abdulaziz_khan"
+    },
+    "uz_bg_bukhara_ulugh_beg": {
+      "nameJa": "ウルグ・ベク・マドラサ",
+      "captionJa": "ブハラ ／ ウルグ・ベク・マドラサ",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_ulugh_beg"
+    },
+    "uz_bg_bukhara_magoki_attori": {
+      "nameJa": "マゴキ・アッタリ",
+      "captionJa": "ブハラ ／ マゴキ・アッタリ",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_magoki_attori"
+    },
+    "uz_bg_bukhara_hotel_hub": {
+      "nameJa": "ブハラの滞在先",
+      "captionJa": "ブハラ ／ 滞在先（架空の拠点）",
+      "color": "#b89563",
+      "fallback": "neutral"
+    }
+  },
+  "dateDestinations": [
+    {
+      "id": "bukhara_chor_minor",
+      "cityId": "bukhara",
+      "nameJa": "チョル・ミノル外観",
+      "nameEn": "Chor Minor exterior",
+      "descriptionJa": "チョル・ミノルは1807年に建てられたマドラサの門の建物。四隅の塔には青いドームがあり、単純に礼拝を呼びかける四本のミナレットと断定しない。",
+      "backgroundAssetId": "uz_bg_bukhara_chor_minor",
+      "facts": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Chor Minor",
+          "url": "https://uzbekistan.travel/en/o/chor-minor/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "チョル・ミノルは1807年に建てられたマドラサの門の建物。四隅の塔には青いドームがあり、単純に礼拝を呼びかける四本のミナレットと断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "bukhara_bolo_hauz",
+      "cityId": "bukhara",
+      "nameJa": "ボロ・ハウズ外観",
+      "nameEn": "Bolo Hauz exterior",
+      "descriptionJa": "ボロ・ハウズは池と木の柱が並ぶイーワーンを持つモスクで、アルク城近くに位置する。礼拝空間への無条件の立入りを想定せず外観と列柱を対象とする。",
+      "backgroundAssetId": "uz_bg_bukhara_bolo_hauz",
+      "facts": [
+        {
+          "publisher": "Nomadays",
+          "title": "Bolo Haouz Mosque Bukhara: practical guide",
+          "url": "https://www.uzbekistan-travel.com/guide-uzbekistan/attraction/bolo-haouz-mosque",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ボロ・ハウズは池と木の柱が並ぶイーワーンを持つモスクで、アルク城近くに位置する。礼拝空間への無条件の立入りを想定せず外観と列柱を対象とする。"
+        }
+      ]
+    },
+    {
+      "id": "bukhara_toki_zargaron",
+      "cityId": "bukhara",
+      "nameJa": "トキ・ザルガロン",
+      "nameEn": "Toki Zargaron",
+      "descriptionJa": "リャビ・ハウズからミリ・アラブ方面には交易ドームが続く。トキ・ザルガロンの名は金細工師に由来し、装身具を扱う店が集まっていた。",
+      "backgroundAssetId": "uz_bg_bukhara_toki_zargaron",
+      "facts": [
+        {
+          "publisher": "Advantour",
+          "title": "Trading Domes, Bukhara",
+          "url": "https://www.advantour.com/uzbekistan/bukhara/trading-domes.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "リャビ・ハウズからミリ・アラブ方面には交易ドームが続く。トキ・ザルガロンの名は金細工師に由来し、装身具を扱う店が集まっていた。"
+        }
+      ]
+    },
+    {
+      "id": "bukhara_abdulaziz_khan",
+      "cityId": "bukhara",
+      "nameJa": "アブドゥルアジズ・ハン・マドラサ",
+      "nameEn": "Abdulaziz Khan Madrasa",
+      "descriptionJa": "アブドゥルアジズ・ハン・マドラサは1652年、近くのウルグ・ベク・マドラサは1417年の建築として案内される。向かい合う建物が同時期の作とは限らない。",
+      "backgroundAssetId": "uz_bg_bukhara_abdulaziz_khan",
+      "facts": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Abdulaziz Khan Madrasah in Bukhara",
+          "url": "https://uzbekistan.travel/en/o/abdulaziz-khan-madrasah-bukhara/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アブドゥルアジズ・ハン・マドラサは1652年、近くのウルグ・ベク・マドラサは1417年の建築として案内される。向かい合う建物が同時期の作とは限らない。"
+        }
+      ]
+    },
+    {
+      "id": "bukhara_ulugh_beg",
+      "cityId": "bukhara",
+      "nameJa": "ウルグ・ベク・マドラサ",
+      "nameEn": "Ulugh Beg Madrasa",
+      "descriptionJa": "ウルグ・ベクはブハラにもマドラサを建てた。大学の解説は、その建物に知識の探求を勧める碑文があると紹介している。写真から碑文全文が読めるという主張はしない。",
+      "backgroundAssetId": "uz_bg_bukhara_ulugh_beg",
+      "facts": [
+        {
+          "publisher": "Bukhara State University",
+          "title": "Mirzo Ulugbek",
+          "url": "https://buxdu.uz/en/114-scholars/4517/4517-mirzo-ulugbek/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ウルグ・ベクはブハラにもマドラサを建てた。大学の解説は、その建物に知識の探求を勧める碑文があると紹介している。写真から碑文全文が読めるという主張はしない。"
+        }
+      ]
+    },
+    {
+      "id": "bukhara_magoki_attori",
+      "cityId": "bukhara",
+      "nameJa": "マゴキ・アッタリ",
+      "nameEn": "Magoki Attori",
+      "descriptionJa": "マゴキ・アッタリはリャビ・ハウズの西に位置する。公式解説は繰り返しの再建と、1930年代の発掘で地中に埋もれた装飾や南側門が現れたことを紹介する。",
+      "backgroundAssetId": "uz_bg_bukhara_magoki_attori",
+      "facts": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Magoki Attori mosque – an ancient mosque of Bukhara",
+          "url": "https://uzbekistan.travel/en/o/magoki-attori-mosque/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "マゴキ・アッタリはリャビ・ハウズの西に位置する。公式解説は繰り返しの再建と、1930年代の発掘で地中に埋もれた装飾や南側門が現れたことを紹介する。"
+        }
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "id": "uz_obs_bukhara_ark_01",
+      "landmarkId": "bukhara_ark",
+      "kind": "hotspot",
+      "titleJa": "外へ張り出す城壁",
+      "descriptionJa": "城壁は平らな一枚の面ではなく、大きく丸く張り出す部分が連なっている。写真ではその壁の高さと厚みを見比べられる。",
+      "factId": "uz_fact_bukhara_ark_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.04,
+        "y": 0.19,
+        "width": 0.69,
+        "height": 0.64
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "Ark fortress in Bukhara.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Ark_fortress_in_Bukhara.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "保存した写真を目視し、説明にある壁・柱・水面などの可視要素を確認。年代や現在の営業状態は写真だけから判定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Ark Citadel",
+          "url": "https://uzbekistan.travel/en/o/ark-citadel/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アルクはブハラの支配者が暮らした城塞で、都市の権力の中心を担った。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_ark_02",
+      "landmarkId": "bukhara_ark",
+      "kind": "hotspot",
+      "titleJa": "壁の上の凹凸",
+      "descriptionJa": "城壁の上端には凹凸が続く。下の大きな曲面と、上の細かな輪郭が違う形を作っている。",
+      "factId": "uz_fact_bukhara_ark_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.03,
+        "y": 0.03,
+        "width": 0.65,
+        "height": 0.22
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "Ark fortress in Bukhara.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Ark_fortress_in_Bukhara.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "保存した写真を目視し、説明にある壁・柱・水面などの可視要素を確認。年代や現在の営業状態は写真だけから判定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Ark Citadel",
+          "url": "https://uzbekistan.travel/en/o/ark-citadel/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アルクはブハラの支配者が暮らした城塞で、都市の権力の中心を担った。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_ark_03",
+      "landmarkId": "bukhara_ark",
+      "kind": "document",
+      "titleJa": "街の中の支配者の居城",
+      "descriptionJa": "アルクはブハラの支配者が暮らし、政治の中心を担った城塞。外から見える壁の内側には、その暮らしと統治のための空間があった。",
+      "factId": "uz_fact_bukhara_ark_03",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Ark Citadel",
+          "url": "https://uzbekistan.travel/en/o/ark-citadel/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アルクはブハラの支配者が暮らした城塞で、都市の権力の中心を担った。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_poi_kalyan_01",
+      "landmarkId": "bukhara_poi_kalyan",
+      "kind": "hotspot",
+      "titleJa": "中庭から見える塔",
+      "descriptionJa": "中庭の右奥に、周りの建物より高いミナレットが見える。塔の外側には横向きの装飾帯が重なっている。",
+      "factId": "uz_fact_bukhara_poi_kalyan_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.8,
+        "y": 0.08,
+        "width": 0.12,
+        "height": 0.57
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "Po-i-Kalyan in Bukhara.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Po-i-Kalyan_in_Bukhara.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "保存した写真を目視し、説明にある壁・柱・水面などの可視要素を確認。年代や現在の営業状態は写真だけから判定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Ensemble architectural Poi-Kalyan",
+          "url": "https://uzbekistan.travel/fr/o/ensemble-architectural-poi-kalyan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ポイ・カリヤンはミナレット、モスク、マドラサが集まる建築群。現在のカリヤン・ミナレットは1127年に建てられ、建築群は後世にも造り直された。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_poi_kalyan_02",
+      "landmarkId": "bukhara_poi_kalyan",
+      "kind": "hotspot",
+      "titleJa": "中庭を囲むアーチ",
+      "descriptionJa": "写真の左側にはアーチ状の開口が横に並ぶ。中庭の開いた空間と、その周囲の建物を分けて観察できる。",
+      "factId": "uz_fact_bukhara_poi_kalyan_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.01,
+        "y": 0.59,
+        "width": 0.33,
+        "height": 0.28
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "Po-i-Kalyan in Bukhara.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Po-i-Kalyan_in_Bukhara.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "保存した写真を目視し、説明にある壁・柱・水面などの可視要素を確認。年代や現在の営業状態は写真だけから判定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Ensemble architectural Poi-Kalyan",
+          "url": "https://uzbekistan.travel/fr/o/ensemble-architectural-poi-kalyan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ポイ・カリヤンはミナレット、モスク、マドラサが集まる建築群。現在のカリヤン・ミナレットは1127年に建てられ、建築群は後世にも造り直された。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_poi_kalyan_03",
+      "landmarkId": "bukhara_poi_kalyan",
+      "kind": "document",
+      "titleJa": "一棟ではなく建築群",
+      "descriptionJa": "ポイ・カリヤンはモスク、ミナレット、マドラサを含む建築群。撮影場所の中庭だけが、その全体ではない。",
+      "factId": "uz_fact_bukhara_poi_kalyan_03",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Ensemble architectural Poi-Kalyan",
+          "url": "https://uzbekistan.travel/fr/o/ensemble-architectural-poi-kalyan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ポイ・カリヤンはミナレット、モスク、マドラサが集まる建築群。現在のカリヤン・ミナレットは1127年に建てられ、建築群は後世にも造り直された。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_samanid_mausoleum_01",
+      "landmarkId": "bukhara_samanid_mausoleum",
+      "kind": "hotspot",
+      "titleJa": "煉瓦で作る模様",
+      "descriptionJa": "壁面には煉瓦の向きや積み方による細かな模様が見える。色鮮やかなタイルだけが建物を飾る方法ではない。",
+      "factId": "uz_fact_bukhara_samanid_mausoleum_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.37,
+        "y": 0.48,
+        "width": 0.27,
+        "height": 0.29
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "Samanid Mausoleum and surroundings.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Samanid_Mausoleum_and_surroundings.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "保存した写真を目視し、説明にある壁・柱・水面などの可視要素を確認。年代や現在の営業状態は写真だけから判定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "10 amazing facts about Samanid Mausoleum",
+          "url": "https://uzbekistan.travel/en/o/10-amazing-facts-about-samanid-mausoleum/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "サーマーン朝の家族廟は焼成煉瓦の立方体と半球状のドームを組み合わせ、煉瓦の積み方で外壁を装飾している。上部には小さなアーチが並ぶ回廊がある。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_samanid_mausoleum_02",
+      "landmarkId": "bukhara_samanid_mausoleum",
+      "kind": "hotspot",
+      "titleJa": "四角い壁と丸い屋根",
+      "descriptionJa": "四角い建物の上に丸いドームが載り、その下には小さなアーチが並ぶ。直線と曲線の組み合わせを見比べられる。",
+      "factId": "uz_fact_bukhara_samanid_mausoleum_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.35,
+        "y": 0.25,
+        "width": 0.31,
+        "height": 0.25
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "Samanid Mausoleum and surroundings.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Samanid_Mausoleum_and_surroundings.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "保存した写真を目視し、説明にある壁・柱・水面などの可視要素を確認。年代や現在の営業状態は写真だけから判定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "10 amazing facts about Samanid Mausoleum",
+          "url": "https://uzbekistan.travel/en/o/10-amazing-facts-about-samanid-mausoleum/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "サーマーン朝の家族廟は焼成煉瓦の立方体と半球状のドームを組み合わせ、煉瓦の積み方で外壁を装飾している。上部には小さなアーチが並ぶ回廊がある。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_samanid_mausoleum_03",
+      "landmarkId": "bukhara_samanid_mausoleum",
+      "kind": "document",
+      "titleJa": "家族のための廟",
+      "descriptionJa": "この建物はサーマーン朝の家族廟として紹介される。外壁の装飾と、亡くなった人を記念する建物としての役割を分けて読む。",
+      "factId": "uz_fact_bukhara_samanid_mausoleum_03",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "10 amazing facts about Samanid Mausoleum",
+          "url": "https://uzbekistan.travel/en/o/10-amazing-facts-about-samanid-mausoleum/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "サーマーン朝の家族廟は焼成煉瓦の立方体と半球状のドームを組み合わせ、煉瓦の積み方で外壁を装飾している。上部には小さなアーチが並ぶ回廊がある。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_lyabi_hauz_01",
+      "landmarkId": "bukhara_lyabi_hauz",
+      "kind": "hotspot",
+      "titleJa": "建物の間の水面",
+      "descriptionJa": "写真の手前には大きな池があり、周囲の建物とは違う水平な面を作っている。リャビ・ハウズという名は、池のそばを意味する。",
+      "factId": "uz_fact_bukhara_lyabi_hauz_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.03,
+        "y": 0.68,
+        "width": 0.94,
+        "height": 0.29
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "Lyabi-Hovuz and Nadir Divanbegi Khanqah.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Lyabi-Hovuz_and_Nadir_Divanbegi_Khanqah.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "保存した写真を目視し、説明にある壁・柱・水面などの可視要素を確認。年代や現在の営業状態は写真だけから判定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Lyabi Hauz Ensemble",
+          "url": "https://uzbekistan.travel/en/o/lyabi-hauz-ensemble/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "リャビ・ハウズの名は池のそばを意味する。池の周囲にクケルダシュ・マドラサ、ディヴァンベギのマドラサとハーナカーが集まる。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_lyabi_hauz_02",
+      "landmarkId": "bukhara_lyabi_hauz",
+      "kind": "hotspot",
+      "titleJa": "水辺の木陰",
+      "descriptionJa": "池の縁に木が立ち、水面と建物の間に緑が重なっている。写真から木の正確な樹齢や撮影日の気温までは分からない。",
+      "factId": "uz_fact_bukhara_lyabi_hauz_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.25,
+        "y": 0.29,
+        "width": 0.48,
+        "height": 0.31
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "Lyabi-Hovuz and Nadir Divanbegi Khanqah.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Lyabi-Hovuz_and_Nadir_Divanbegi_Khanqah.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "保存した写真を目視し、説明にある壁・柱・水面などの可視要素を確認。年代や現在の営業状態は写真だけから判定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Lyabi Hauz Ensemble",
+          "url": "https://uzbekistan.travel/en/o/lyabi-hauz-ensemble/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "リャビ・ハウズの名は池のそばを意味する。池の周囲にクケルダシュ・マドラサ、ディヴァンベギのマドラサとハーナカーが集まる。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_bukhara_lyabi_hauz_03",
+      "landmarkId": "bukhara_lyabi_hauz",
+      "kind": "document",
+      "titleJa": "池を囲む学びと滞在の建物",
+      "descriptionJa": "池の周囲にはクケルダシュ・マドラサと、ディヴァンベギのマドラサ、ハーナカーが集まる。写真の範囲だけですべての建物が見えているとは限らない。",
+      "factId": "uz_fact_bukhara_lyabi_hauz_03",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Lyabi Hauz Ensemble",
+          "url": "https://uzbekistan.travel/en/o/lyabi-hauz-ensemble/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "リャビ・ハウズの名は池のそばを意味する。池の周囲にクケルダシュ・マドラサ、ディヴァンベギのマドラサとハーナカーが集まる。"
+        }
+      ]
+    }
+  ],
+  "images": {
+    "bukhara_ark": {
+      "path": "assets/tourism/uzbekistan/bukhara_ark.jpg",
+      "sha256": "d35723386ad7b428c84ebfaa3bfe1616682cbb70c73486aa6c9668036204ac2d"
+    },
+    "bukhara_poi_kalyan": {
+      "path": "assets/tourism/uzbekistan/bukhara_poi_kalyan.jpg",
+      "sha256": "8ef423a75a802464c3e57cec8d13fe70869cace24c73cdd4b81f99c9c63c647a"
+    },
+    "bukhara_samanid_mausoleum": {
+      "path": "assets/tourism/uzbekistan/bukhara_samanid_mausoleum.jpg",
+      "sha256": "1a153bb3474f10f5b3b3342236f594ac68e242e2cf4c1508c2b198c82936654c"
+    },
+    "bukhara_lyabi_hauz": {
+      "path": "assets/tourism/uzbekistan/bukhara_lyabi_hauz.jpg",
+      "sha256": "cec57225e6deb0d45d05079876ea94ed9b364c06ae4ef3de24f96eea4de9a293"
+    }
+  },
+  "provenance": {
+    "uz_obs_bukhara_ark_01": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_ark_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "外へ張り出す城壁。保存した写真を目視し、対応範囲を指定。"
+    },
+    "uz_obs_bukhara_ark_02": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_ark_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "壁の上の凹凸。保存した写真を目視し、対応範囲を指定。"
+    },
+    "uz_obs_bukhara_ark_03": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_ark_03",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真内に見えない歴史説明を区別。"
+    },
+    "uz_obs_bukhara_poi_kalyan_01": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_poi_kalyan_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "中庭から見える塔。保存した写真を目視し、対応範囲を指定。"
+    },
+    "uz_obs_bukhara_poi_kalyan_02": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_poi_kalyan_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "中庭を囲むアーチ。保存した写真を目視し、対応範囲を指定。"
+    },
+    "uz_obs_bukhara_poi_kalyan_03": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_poi_kalyan_03",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真内に見えない歴史説明を区別。"
+    },
+    "uz_obs_bukhara_samanid_mausoleum_01": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_samanid_mausoleum_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "煉瓦で作る模様。保存した写真を目視し、対応範囲を指定。"
+    },
+    "uz_obs_bukhara_samanid_mausoleum_02": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_samanid_mausoleum_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "四角い壁と丸い屋根。保存した写真を目視し、対応範囲を指定。"
+    },
+    "uz_obs_bukhara_samanid_mausoleum_03": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_samanid_mausoleum_03",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真内に見えない歴史説明を区別。"
+    },
+    "uz_obs_bukhara_lyabi_hauz_01": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_lyabi_hauz_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "建物の間の水面。保存した写真を目視し、対応範囲を指定。"
+    },
+    "uz_obs_bukhara_lyabi_hauz_02": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_lyabi_hauz_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "水辺の木陰。保存した写真を目視し、対応範囲を指定。"
+    },
+    "uz_obs_bukhara_lyabi_hauz_03": {
+      "cityId": "bukhara",
+      "sourceFactId": "uz_fact_bukhara_lyabi_hauz_03",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真内に見えない歴史説明を区別。"
+    }
+  }
+}

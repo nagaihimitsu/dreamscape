@@ -1,0 +1,397 @@
+{
+  "schemaVersion": 1,
+  "cityId": "bukhara",
+  "checkedAt": "2026-11-04",
+  "currency": "UZS",
+  "partySize": 2,
+  "venues": [
+    {
+      "placeId": "bukhara_ark",
+      "eventId": "uz_bukhara_main_ark",
+      "scopeJa": "ゲーム内入場費は外国人大人2名で120000スム。",
+      "gameDurationMinutes": 45,
+      "gameAdmissionForTwo": 120000,
+      "openingPolicyJa": "9時からの保守的なゲーム時間枠。公休日・季節・礼拝の特別制限を保証しない。",
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Ark Citadel",
+          "url": "https://uzbekistan.travel/en/o/ark-citadel/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アルクはブハラの支配者が暮らした城塞で、都市の権力の中心を担った。"
+        },
+        {
+          "publisher": "Wikipedia / Wikimedia Commons",
+          "title": "Mapped representative: Ark Citadel",
+          "url": "https://en.wikipedia.org/wiki/Ark_of_Bukhara",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地物の代表座標を地図表示に使用。入口や乗降地点の実測ではない。チョル・ミノルは不整合な英語版座標を採用せずCommonsのブハラ市内の代表点を使用。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アルク城の活動枠",
+          "url": "https://uzbekistan.travel/en/o/ark-citadel/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "ゲーム用の活動は45分、受付時間は9:00〜17:00。実営業時間・最終入場の保証ではない。ゲーム内入場費は外国人大人2名で120000スム。"
+        },
+        {
+          "publisher": "ブハラ国立博物館保護区",
+          "title": "Стоимость билета — 2025年1月1日からの料金",
+          "url": "https://www.bukharamuseums.uz/ru/o-muzee/stoimost-bileta",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "掲載外国人大人料金はアルク城60000スム、マゴキ・アッタリ絨毯博物館、アブドゥルアジズ・ハン木彫博物館、ウルグ・ベク書道史博物館が各20000スム。ページには一般9〜18時と曜日・季節別の別時間もある。"
+        }
+      ]
+    },
+    {
+      "placeId": "bukhara_poi_kalyan",
+      "eventId": "uz_bukhara_main_poi_kalyan",
+      "scopeJa": "ゲーム内入場費は外国人大人2名で50000スム。",
+      "gameDurationMinutes": 45,
+      "gameAdmissionForTwo": 50000,
+      "openingPolicyJa": "9時からの保守的なゲーム時間枠。公休日・季節・礼拝の特別制限を保証しない。",
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Ensemble architectural Poi-Kalyan",
+          "url": "https://uzbekistan.travel/fr/o/ensemble-architectural-poi-kalyan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ポイ・カリヤンはミナレット、モスク、マドラサが集まる建築群。現在のカリヤン・ミナレットは1127年に建てられ、建築群は後世にも造り直された。"
+        },
+        {
+          "publisher": "Wikipedia / Wikimedia Commons",
+          "title": "Mapped representative: Poi Kalyan",
+          "url": "https://en.wikipedia.org/wiki/Po-i-Kalyan",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地物の代表座標を地図表示に使用。入口や乗降地点の実測ではない。チョル・ミノルは不整合な英語版座標を採用せずCommonsのブハラ市内の代表点を使用。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "ポイ・カリヤンの活動枠",
+          "url": "https://uzbekistan.travel/fr/o/ensemble-architectural-poi-kalyan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "ゲーム用の活動は45分、受付時間は9:00〜17:00。実営業時間・最終入場の保証ではない。ゲーム内入場費は外国人大人2名で50000スム。"
+        },
+        {
+          "publisher": "Travel Cost Calculator",
+          "title": "Historic Centre of Bukhara UNESCO Guide (2026)",
+          "url": "https://travelcostcalculator.org/unesco/historic-centre-of-bukhara",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "二次資料の推定表はカリヤン・モスクの入場を1人25000スムとしている。現地の確定料金ではなく、ゲームでは2人50000スムの予算枠を採用。広場の外観を見るだけの料金ではない。"
+        }
+      ]
+    },
+    {
+      "placeId": "bukhara_samanid_mausoleum",
+      "eventId": "uz_bukhara_main_samanid_mausoleum",
+      "scopeJa": "ゲーム内入場費は外国人大人2名で50000スム。",
+      "gameDurationMinutes": 40,
+      "gameAdmissionForTwo": 50000,
+      "openingPolicyJa": "9時からの保守的なゲーム時間枠。公休日・季節・礼拝の特別制限を保証しない。",
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "10 amazing facts about Samanid Mausoleum",
+          "url": "https://uzbekistan.travel/en/o/10-amazing-facts-about-samanid-mausoleum/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "サーマーン朝の家族廟は焼成煉瓦の立方体と半球状のドームを組み合わせ、煉瓦の積み方で外壁を装飾している。上部には小さなアーチが並ぶ回廊がある。"
+        },
+        {
+          "publisher": "Wikipedia / Wikimedia Commons",
+          "title": "Mapped representative: Samanid Mausoleum",
+          "url": "https://en.wikipedia.org/wiki/Samanid_Mausoleum",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地物の代表座標を地図表示に使用。入口や乗降地点の実測ではない。チョル・ミノルは不整合な英語版座標を採用せずCommonsのブハラ市内の代表点を使用。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "サーマーン朝廟の活動枠",
+          "url": "https://uzbekistan.travel/en/o/10-amazing-facts-about-samanid-mausoleum/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "ゲーム用の活動は40分、受付時間は9:00〜17:00。実営業時間・最終入場の保証ではない。ゲーム内入場費は外国人大人2名で50000スム。"
+        },
+        {
+          "publisher": "Uzbekistan Wanderer / Dreamscape ゲーム編集",
+          "title": "Ismail Samani Mausoleum: Bukhara’s Oldest Treasure",
+          "url": "https://uzbekistanwanderer.com/ismail-samani-mausoleum/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "二次案内は入場徴収が20000〜30000スム程度で変動するとしている。ゲームでは1人25000、2人50000スムを暫定採用し、現地の確定料金と扱わない。"
+        }
+      ]
+    },
+    {
+      "placeId": "bukhara_lyabi_hauz",
+      "eventId": "uz_bukhara_main_lyabi_hauz",
+      "scopeJa": "外観・公共空間の散策を対象とし、屋上・博物館内部・商品購入を含めずゲーム内入場費は0スム。",
+      "gameDurationMinutes": 30,
+      "gameAdmissionForTwo": 0,
+      "openingPolicyJa": "9時からの保守的なゲーム時間枠。公休日・季節・礼拝の特別制限を保証しない。",
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Lyabi Hauz Ensemble",
+          "url": "https://uzbekistan.travel/en/o/lyabi-hauz-ensemble/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "リャビ・ハウズの名は池のそばを意味する。池の周囲にクケルダシュ・マドラサ、ディヴァンベギのマドラサとハーナカーが集まる。"
+        },
+        {
+          "publisher": "Wikipedia / Wikimedia Commons",
+          "title": "Mapped representative: Lyabi Hauz",
+          "url": "https://en.wikipedia.org/wiki/Lab-i_Hauz",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地物の代表座標を地図表示に使用。入口や乗降地点の実測ではない。チョル・ミノルは不整合な英語版座標を採用せずCommonsのブハラ市内の代表点を使用。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "リャビ・ハウズの活動枠",
+          "url": "https://uzbekistan.travel/en/o/lyabi-hauz-ensemble/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "ゲーム用の活動は30分、受付時間は9:00〜21:00。実営業時間・最終入場の保証ではない。外観・公共空間の散策を対象とし、屋上・博物館内部・商品購入を含めずゲーム内入場費は0スム。"
+        }
+      ]
+    },
+    {
+      "placeId": "bukhara_chor_minor",
+      "eventId": "uz_bukhara_date_chor_minor",
+      "scopeJa": "外観・公共空間の散策を対象とし、屋上・博物館内部・商品購入を含めずゲーム内入場費は0スム。",
+      "gameDurationMinutes": 35,
+      "gameAdmissionForTwo": 0,
+      "openingPolicyJa": "9時からの保守的なゲーム時間枠。公休日・季節・礼拝の特別制限を保証しない。",
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Chor Minor",
+          "url": "https://uzbekistan.travel/en/o/chor-minor/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "チョル・ミノルは1807年に建てられたマドラサの門の建物。四隅の塔には青いドームがあり、単純に礼拝を呼びかける四本のミナレットと断定しない。"
+        },
+        {
+          "publisher": "Wikipedia / Wikimedia Commons",
+          "title": "Mapped representative: Chor Minor exterior",
+          "url": "https://commons.wikimedia.org/wiki/Category:Chor_Minor",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地物の代表座標を地図表示に使用。入口や乗降地点の実測ではない。チョル・ミノルは不整合な英語版座標を採用せずCommonsのブハラ市内の代表点を使用。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "チョル・ミノル外観の活動枠",
+          "url": "https://uzbekistan.travel/en/o/chor-minor/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "ゲーム用の活動は35分、受付時間は9:00〜18:00。実営業時間・最終入場の保証ではない。外観・公共空間の散策を対象とし、屋上・博物館内部・商品購入を含めずゲーム内入場費は0スム。"
+        }
+      ]
+    },
+    {
+      "placeId": "bukhara_bolo_hauz",
+      "eventId": "uz_bukhara_date_bolo_hauz",
+      "scopeJa": "外観・公共空間の散策を対象とし、屋上・博物館内部・商品購入を含めずゲーム内入場費は0スム。",
+      "gameDurationMinutes": 30,
+      "gameAdmissionForTwo": 0,
+      "openingPolicyJa": "9時からの保守的なゲーム時間枠。公休日・季節・礼拝の特別制限を保証しない。",
+      "sources": [
+        {
+          "publisher": "Nomadays",
+          "title": "Bolo Haouz Mosque Bukhara: practical guide",
+          "url": "https://www.uzbekistan-travel.com/guide-uzbekistan/attraction/bolo-haouz-mosque",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ボロ・ハウズは池と木の柱が並ぶイーワーンを持つモスクで、アルク城近くに位置する。礼拝空間への無条件の立入りを想定せず外観と列柱を対象とする。"
+        },
+        {
+          "publisher": "Wikipedia / Wikimedia Commons",
+          "title": "Mapped representative: Bolo Hauz exterior",
+          "url": "https://en.wikipedia.org/wiki/Bolo_Haouz_Mosque",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地物の代表座標を地図表示に使用。入口や乗降地点の実測ではない。チョル・ミノルは不整合な英語版座標を採用せずCommonsのブハラ市内の代表点を使用。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "ボロ・ハウズ外観の活動枠",
+          "url": "https://www.uzbekistan-travel.com/guide-uzbekistan/attraction/bolo-haouz-mosque",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "ゲーム用の活動は30分、受付時間は9:00〜18:00。実営業時間・最終入場の保証ではない。外観・公共空間の散策を対象とし、屋上・博物館内部・商品購入を含めずゲーム内入場費は0スム。"
+        }
+      ]
+    },
+    {
+      "placeId": "bukhara_toki_zargaron",
+      "eventId": "uz_bukhara_date_toki_zargaron",
+      "scopeJa": "外観・公共空間の散策を対象とし、屋上・博物館内部・商品購入を含めずゲーム内入場費は0スム。",
+      "gameDurationMinutes": 35,
+      "gameAdmissionForTwo": 0,
+      "openingPolicyJa": "9時からの保守的なゲーム時間枠。公休日・季節・礼拝の特別制限を保証しない。",
+      "sources": [
+        {
+          "publisher": "Advantour",
+          "title": "Trading Domes, Bukhara",
+          "url": "https://www.advantour.com/uzbekistan/bukhara/trading-domes.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "リャビ・ハウズからミリ・アラブ方面には交易ドームが続く。トキ・ザルガロンの名は金細工師に由来し、装身具を扱う店が集まっていた。"
+        },
+        {
+          "publisher": "Wikipedia / Wikimedia Commons",
+          "title": "Mapped representative: Toki Zargaron",
+          "url": "https://commons.wikimedia.org/wiki/Category:Tok-i-Zargoron",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地物の代表座標を地図表示に使用。入口や乗降地点の実測ではない。チョル・ミノルは不整合な英語版座標を採用せずCommonsのブハラ市内の代表点を使用。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "トキ・ザルガロンの活動枠",
+          "url": "https://www.advantour.com/uzbekistan/bukhara/trading-domes.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "ゲーム用の活動は35分、受付時間は9:00〜18:00。実営業時間・最終入場の保証ではない。外観・公共空間の散策を対象とし、屋上・博物館内部・商品購入を含めずゲーム内入場費は0スム。"
+        }
+      ]
+    },
+    {
+      "placeId": "bukhara_abdulaziz_khan",
+      "eventId": "uz_bukhara_date_abdulaziz_khan",
+      "scopeJa": "ゲーム内入場費は外国人大人2名で40000スム。",
+      "gameDurationMinutes": 40,
+      "gameAdmissionForTwo": 40000,
+      "openingPolicyJa": "9時からの保守的なゲーム時間枠。公休日・季節・礼拝の特別制限を保証しない。",
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Abdulaziz Khan Madrasah in Bukhara",
+          "url": "https://uzbekistan.travel/en/o/abdulaziz-khan-madrasah-bukhara/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アブドゥルアジズ・ハン・マドラサは1652年、近くのウルグ・ベク・マドラサは1417年の建築として案内される。向かい合う建物が同時期の作とは限らない。"
+        },
+        {
+          "publisher": "Wikipedia / Wikimedia Commons",
+          "title": "Mapped representative: Abdulaziz Khan Madrasa",
+          "url": "https://commons.wikimedia.org/wiki/Category:Madrasa_of_'Abd_al-'Aziz_Khan",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地物の代表座標を地図表示に使用。入口や乗降地点の実測ではない。チョル・ミノルは不整合な英語版座標を採用せずCommonsのブハラ市内の代表点を使用。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "アブドゥルアジズ・ハン・マドラサの活動枠",
+          "url": "https://uzbekistan.travel/en/o/abdulaziz-khan-madrasah-bukhara/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "ゲーム用の活動は40分、受付時間は9:00〜17:00。実営業時間・最終入場の保証ではない。ゲーム内入場費は外国人大人2名で40000スム。"
+        },
+        {
+          "publisher": "ブハラ国立博物館保護区",
+          "title": "Стоимость билета — 2025年1月1日からの料金",
+          "url": "https://www.bukharamuseums.uz/ru/o-muzee/stoimost-bileta",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "掲載外国人大人料金はアルク城60000スム、マゴキ・アッタリ絨毯博物館、アブドゥルアジズ・ハン木彫博物館、ウルグ・ベク書道史博物館が各20000スム。ページには一般9〜18時と曜日・季節別の別時間もある。"
+        }
+      ]
+    },
+    {
+      "placeId": "bukhara_ulugh_beg",
+      "eventId": "uz_bukhara_date_ulugh_beg",
+      "scopeJa": "ゲーム内入場費は外国人大人2名で40000スム。",
+      "gameDurationMinutes": 40,
+      "gameAdmissionForTwo": 40000,
+      "openingPolicyJa": "9時からの保守的なゲーム時間枠。公休日・季節・礼拝の特別制限を保証しない。",
+      "sources": [
+        {
+          "publisher": "Bukhara State University",
+          "title": "Mirzo Ulugbek",
+          "url": "https://buxdu.uz/en/114-scholars/4517/4517-mirzo-ulugbek/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ウルグ・ベクはブハラにもマドラサを建てた。大学の解説は、その建物に知識の探求を勧める碑文があると紹介している。写真から碑文全文が読めるという主張はしない。"
+        },
+        {
+          "publisher": "Wikipedia / Wikimedia Commons",
+          "title": "Mapped representative: Ulugh Beg Madrasa",
+          "url": "https://commons.wikimedia.org/wiki/Category:Ulugh_Beg_madrasa_(Bukhara)",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地物の代表座標を地図表示に使用。入口や乗降地点の実測ではない。チョル・ミノルは不整合な英語版座標を採用せずCommonsのブハラ市内の代表点を使用。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "ウルグ・ベク・マドラサの活動枠",
+          "url": "https://buxdu.uz/en/114-scholars/4517/4517-mirzo-ulugbek/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "ゲーム用の活動は40分、受付時間は9:00〜17:00。実営業時間・最終入場の保証ではない。ゲーム内入場費は外国人大人2名で40000スム。"
+        },
+        {
+          "publisher": "ブハラ国立博物館保護区",
+          "title": "Стоимость билета — 2025年1月1日からの料金",
+          "url": "https://www.bukharamuseums.uz/ru/o-muzee/stoimost-bileta",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "掲載外国人大人料金はアルク城60000スム、マゴキ・アッタリ絨毯博物館、アブドゥルアジズ・ハン木彫博物館、ウルグ・ベク書道史博物館が各20000スム。ページには一般9〜18時と曜日・季節別の別時間もある。"
+        }
+      ]
+    },
+    {
+      "placeId": "bukhara_magoki_attori",
+      "eventId": "uz_bukhara_date_magoki_attori",
+      "scopeJa": "ゲーム内入場費は外国人大人2名で40000スム。",
+      "gameDurationMinutes": 35,
+      "gameAdmissionForTwo": 40000,
+      "openingPolicyJa": "9時からの保守的なゲーム時間枠。公休日・季節・礼拝の特別制限を保証しない。",
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Magoki Attori mosque – an ancient mosque of Bukhara",
+          "url": "https://uzbekistan.travel/en/o/magoki-attori-mosque/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "マゴキ・アッタリはリャビ・ハウズの西に位置する。公式解説は繰り返しの再建と、1930年代の発掘で地中に埋もれた装飾や南側門が現れたことを紹介する。"
+        },
+        {
+          "publisher": "Wikipedia / Wikimedia Commons",
+          "title": "Mapped representative: Magoki Attori",
+          "url": "https://en.wikipedia.org/wiki/Magok-i-Attari_Mosque",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地物の代表座標を地図表示に使用。入口や乗降地点の実測ではない。チョル・ミノルは不整合な英語版座標を採用せずCommonsのブハラ市内の代表点を使用。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "マゴキ・アッタリの活動枠",
+          "url": "https://uzbekistan.travel/en/o/magoki-attori-mosque/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "ゲーム用の活動は35分、受付時間は9:00〜17:00。実営業時間・最終入場の保証ではない。ゲーム内入場費は外国人大人2名で40000スム。"
+        },
+        {
+          "publisher": "ブハラ国立博物館保護区",
+          "title": "Стоимость билета — 2025年1月1日からの料金",
+          "url": "https://www.bukharamuseums.uz/ru/o-muzee/stoimost-bileta",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "掲載外国人大人料金はアルク城60000スム、マゴキ・アッタリ絨毯博物館、アブドゥルアジズ・ハン木彫博物館、ウルグ・ベク書道史博物館が各20000スム。ページには一般9〜18時と曜日・季節別の別時間もある。"
+        }
+      ]
+    }
+  ]
+}

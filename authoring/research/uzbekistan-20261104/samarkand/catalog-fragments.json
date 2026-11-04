@@ -1,0 +1,698 @@
+{
+  "assets": [
+    {
+      "id": "uz_img_samarkand_registan",
+      "path": "assets/tourism/uzbekistan/samarkand_registan.jpg",
+      "width": 1600,
+      "height": 1200,
+      "altJa": "レギスタン広場の現地写真。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Registan_-_Gusjer.jpg",
+      "licenseName": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "creditJa": "写真：Gustavo Jeronimo from Aranjuez, Spain／Wikimedia Commons／CC BY 2.0",
+      "modificationJa": "Wikimedia Commons配信の1600×1200px画像を保存。原画像は1600×1200px。描き足し・AI生成・色変更なし。画面表示では端が切れる場合がある。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_samarkand_shah_i_zinda",
+      "path": "assets/tourism/uzbekistan/samarkand_shah_i_zinda.jpg",
+      "width": 1920,
+      "height": 1440,
+      "altJa": "シャーヒ・ズィンダ廟群の現地写真。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shah-i-Zinda_(Avenue_of_Mausoleums)_-_Samarkand_-_Uzbekistan_(7488684498).jpg",
+      "licenseName": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "creditJa": "写真：Adam Jones from Kelowna, BC, Canada／Wikimedia Commons／CC BY-SA 2.0",
+      "modificationJa": "Wikimedia Commons配信の1920×1440px画像を保存。原画像は3648×2736px。描き足し・AI生成・色変更なし。画面表示では端が切れる場合がある。この縮小版もCC BY-SA 2.0で提供する。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_samarkand_gur_e_amir",
+      "path": "assets/tourism/uzbekistan/samarkand_gur_e_amir.jpg",
+      "width": 1920,
+      "height": 1440,
+      "altJa": "グーリ・アミール廟の現地写真。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mausoleum_of_Amir_Temur_(1).JPG",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Bobyrr／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commons配信の1920×1440px画像を保存。原画像は2048×1536px。描き足し・AI生成・色変更なし。画面表示では端が切れる場合がある。この縮小版もCC BY-SA 4.0で提供する。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_samarkand_bibi_khanym",
+      "path": "assets/tourism/uzbekistan/samarkand_bibi_khanym.jpg",
+      "width": 1920,
+      "height": 1440,
+      "altJa": "ビビハニム・モスクの現地写真。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bibi-Khanym_mosque_complex_186.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：BeshevI／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commons配信の1920×1440px画像を保存。原画像は4608×3456px。描き足し・AI生成・色変更なし。画面表示では端が切れる場合がある。この縮小版もCC BY-SA 4.0で提供する。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_samarkand_siyob_bazaar",
+      "path": "assets/tourism/uzbekistan/samarkand_siyob_bazaar.jpg",
+      "width": 1920,
+      "height": 1280,
+      "altJa": "シヨブ・バザールの現地写真。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Siyob_Bazaar_in_Samarkand_4.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Adam Harangozó／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commons配信の1920×1280px画像を保存。原画像は5892×3929px。描き足し・AI生成・色変更なし。画面表示では端が切れる場合がある。この縮小版もCC BY-SA 4.0で提供する。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_samarkand_ulugh_beg_observatory",
+      "path": "assets/tourism/uzbekistan/samarkand_ulugh_beg_observatory.jpg",
+      "width": 1920,
+      "height": 1437,
+      "altJa": "ウルグベク天文台に残る観測装置の遺構。地下へ続く二本の曲線状の石造物と、その両側の階段が見える。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ulugh_Beg_observatory.JPG",
+      "licenseName": "CC BY-SA 2.5",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5/",
+      "creditJa": "写真：Alaexis／Wikimedia Commons／CC BY-SA 2.5",
+      "modificationJa": "原画像2288×1712pxからEXIF方向を反映し、長辺1920px、JPEG品質89で1920×1437pxへ縮小保存。切り抜き・描き足し・AI生成・色変更なし。画面表示では端が切れる場合がある。この縮小版もCC BY-SA 2.5で提供する。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_samarkand_afrasiab_museum",
+      "path": "assets/tourism/uzbekistan/samarkand_afrasiab_museum.jpg",
+      "width": 1920,
+      "height": 1280,
+      "altJa": "アフラシャブ博物館に保存された7世紀の壁画。色の残る人物像と欠損部分が見える。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Afrasiab_murals_Afrasiab_Museum_Samarkand_Uzbekistan_May_2026_Ph_Khusen_Rustamov-_07.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Khusen Rustamov (Koshkinhome)／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "原画像7008×4672pxからEXIF方向を反映し、長辺1920px、JPEG品質89で1920×1280pxへ縮小保存。切り抜き・描き足し・AI生成・色変更なし。画面表示では端が切れる場合がある。この縮小版もCC BY-SA 4.0で提供する。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_samarkand_hazrat_khizr",
+      "path": "assets/tourism/uzbekistan/samarkand_hazrat_khizr.jpg",
+      "width": 1920,
+      "height": 1083,
+      "altJa": "ハズラティ・ヒズル・モスク前の現地写真。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hazret-Khizr_Mosque_top.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：MiklyxoMaklai／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commons配信の1920×1083px画像を保存。原画像は4000×2256px。描き足し・AI生成・色変更なし。画面表示では端が切れる場合がある。この縮小版もCC BY-SA 4.0で提供する。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_samarkand_rukhabad",
+      "path": "assets/tourism/uzbekistan/samarkand_rukhabad.jpg",
+      "width": 1920,
+      "height": 1437,
+      "altJa": "ルハバード廟前の現地写真。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ruhabad.JPG",
+      "licenseName": "CC BY-SA 2.5",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+      "creditJa": "写真：Alaexis／Wikimedia Commons／CC BY-SA 2.5",
+      "modificationJa": "Wikimedia Commons配信の1920×1437px画像を保存。原画像は2288×1712px。描き足し・AI生成・色変更なし。画面表示では端が切れる場合がある。この縮小版もCC BY-SA 2.5で提供する。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_samarkand_university_boulevard",
+      "path": "assets/tourism/uzbekistan/samarkand_university_boulevard.jpg",
+      "width": 1920,
+      "height": 1440,
+      "altJa": "大学大通りの現地写真。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:%D0%A1%D0%B0%D0%BC%D0%B0%D1%80%D0%BA%D0%B0%D0%BD%D0%B4,_%D0%A3%D0%BD%D0%B8%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D1%82%D0%B5%D1%82%D1%81%D0%BA%D0%B8%D0%B9_%D0%B1%D1%83%D0%BB%D1%8C%D0%B2%D0%B0%D1%80.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "creditJa": "写真：Nikolai Bulykin／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "Wikimedia Commons配信の1920×1440px画像を保存。原画像は4608×3456px。描き足し・AI生成・色変更なし。画面表示では端が切れる場合がある。この縮小版もCC BY-SA 4.0で提供する。",
+      "checkedAt": "2026-11-04"
+    }
+  ],
+  "backgrounds": {
+    "uz_bg_samarkand_registan": {
+      "nameJa": "レギスタン広場",
+      "captionJa": "サマルカンド ／ レギスタン広場",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_registan"
+    },
+    "uz_bg_samarkand_shah_i_zinda": {
+      "nameJa": "シャーヒ・ズィンダ廟群",
+      "captionJa": "サマルカンド ／ シャーヒ・ズィンダ廟群",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_shah_i_zinda"
+    },
+    "uz_bg_samarkand_gur_e_amir": {
+      "nameJa": "グーリ・アミール廟",
+      "captionJa": "サマルカンド ／ グーリ・アミール廟",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_gur_e_amir"
+    },
+    "uz_bg_samarkand_bibi_khanym": {
+      "nameJa": "ビビハニム・モスク",
+      "captionJa": "サマルカンド ／ ビビハニム・モスク",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_bibi_khanym"
+    },
+    "uz_bg_samarkand_siyob_bazaar": {
+      "nameJa": "シヨブ・バザール",
+      "captionJa": "サマルカンド ／ シヨブ・バザール",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_siyob_bazaar"
+    },
+    "uz_bg_samarkand_ulugh_beg_observatory": {
+      "nameJa": "ウルグベク天文台",
+      "captionJa": "サマルカンド ／ ウルグベク天文台の観測遺構",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_ulugh_beg_observatory"
+    },
+    "uz_bg_samarkand_afrasiab_museum": {
+      "nameJa": "アフラシャブ博物館",
+      "captionJa": "サマルカンド ／ アフラシャブ博物館の所蔵壁画",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_afrasiab_museum"
+    },
+    "uz_bg_samarkand_hazrat_khizr": {
+      "nameJa": "ハズラティ・ヒズル・モスク前",
+      "captionJa": "サマルカンド ／ ハズラティ・ヒズル・モスク前",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_hazrat_khizr"
+    },
+    "uz_bg_samarkand_rukhabad": {
+      "nameJa": "ルハバード廟前",
+      "captionJa": "サマルカンド ／ ルハバード廟前",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_rukhabad"
+    },
+    "uz_bg_samarkand_university_boulevard": {
+      "nameJa": "大学大通り",
+      "captionJa": "サマルカンド ／ 大学大通り",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_university_boulevard"
+    },
+    "uz_bg_samarkand_hotel_hub": {
+      "nameJa": "サマルカンドの滞在先",
+      "captionJa": "サマルカンド ／ 架空の滞在先",
+      "color": "#748990",
+      "fallback": "neutral"
+    }
+  },
+  "dateDestinations": [
+    {
+      "id": "samarkand_siyob_bazaar",
+      "cityId": "samarkand",
+      "nameJa": "シヨブ・バザール",
+      "nameEn": "Siyob Bazaar",
+      "descriptionJa": "ビビハニム・モスクに隣接する市場で、パン、ドライフルーツ、香辛料などを扱う。",
+      "backgroundAssetId": "uz_bg_samarkand_siyob_bazaar",
+      "facts": [
+        {
+          "publisher": "sam.uz（独立都市ガイド）",
+          "title": "Siyob Bazaar",
+          "url": "https://sam.uz/en/places/siyob-bozori",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ビビハニム・モスクに隣接する市場で、パン、ドライフルーツ、香辛料などを扱う。"
+        }
+      ]
+    },
+    {
+      "id": "samarkand_ulugh_beg_observatory",
+      "cityId": "samarkand",
+      "nameJa": "ウルグベク天文台",
+      "nameEn": "Ulugh Beg Observatory",
+      "descriptionJa": "ウルグベクの天文台では、岩盤を掘った大型観測器の地下部分が残っている。",
+      "backgroundAssetId": "uz_bg_samarkand_ulugh_beg_observatory",
+      "facts": [
+        {
+          "publisher": "sam.uz（独立都市ガイド）",
+          "title": "Ulugh Beg Observatory",
+          "url": "https://sam.uz/en/places/ulugbek-rasadxonasi",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ウルグベクの天文台では、岩盤を掘った大型観測器の地下部分が残っている。"
+        }
+      ]
+    },
+    {
+      "id": "samarkand_afrasiab_museum",
+      "cityId": "samarkand",
+      "nameJa": "アフラシャブ博物館",
+      "nameEn": "Afrasiyab Museum",
+      "descriptionJa": "古代サマルカンドの遺跡に隣接し、7世紀の使節を描いた壁画などを収蔵する博物館。",
+      "backgroundAssetId": "uz_bg_samarkand_afrasiab_museum",
+      "facts": [
+        {
+          "publisher": "sam.uz（独立都市ガイド）",
+          "title": "Afrasiyab Museum",
+          "url": "https://sam.uz/en/places/afrosiyob-muzeyi",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "古代サマルカンドの遺跡に隣接し、7世紀の使節を描いた壁画などを収蔵する博物館。"
+        }
+      ]
+    },
+    {
+      "id": "samarkand_hazrat_khizr",
+      "cityId": "samarkand",
+      "nameJa": "ハズラティ・ヒズル・モスク前",
+      "nameEn": "Hazrat Khizr Mosque Exterior",
+      "descriptionJa": "アフラシャブの南端の丘にあるモスク。現在の建物には19世紀以降の増改築が重なる。",
+      "backgroundAssetId": "uz_bg_samarkand_hazrat_khizr",
+      "facts": [
+        {
+          "publisher": "sam.uz（独立都市ガイド）",
+          "title": "Hazrat Khizr Mosque Exterior",
+          "url": "https://sam.uz/en/places/hazrati-xizr",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アフラシャブの南端の丘にあるモスク。現在の建物には19世紀以降の増改築が重なる。"
+        }
+      ]
+    },
+    {
+      "id": "samarkand_rukhabad",
+      "cityId": "samarkand",
+      "nameJa": "ルハバード廟前",
+      "nameEn": "Rukhabad Mausoleum Exterior",
+      "descriptionJa": "グーリ・アミールの近くにある、華やかな門構えを持たない煉瓦造の霊廟。",
+      "backgroundAssetId": "uz_bg_samarkand_rukhabad",
+      "facts": [
+        {
+          "publisher": "sam.uz（独立都市ガイド）",
+          "title": "Rukhabad Mausoleum Exterior",
+          "url": "https://sam.uz/en/places/ruhobod",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "グーリ・アミールの近くにある、華やかな門構えを持たない煉瓦造の霊廟。"
+        }
+      ]
+    },
+    {
+      "id": "samarkand_university_boulevard",
+      "cityId": "samarkand",
+      "nameJa": "大学大通り",
+      "nameEn": "University Boulevard",
+      "descriptionJa": "旧市街と19世紀以降に発展した市街の間を結ぶ、並木のある大通り。",
+      "backgroundAssetId": "uz_bg_samarkand_university_boulevard",
+      "facts": [
+        {
+          "publisher": "sam.uz（独立都市ガイド）",
+          "title": "University Boulevard",
+          "url": "https://sam.uz/en/places/universitet-xiyoboni",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街と19世紀以降に発展した市街の間を結ぶ、並木のある大通り。"
+        }
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "id": "uz_obs_samarkand_registan_three_sides",
+      "landmarkId": "samarkand_registan",
+      "kind": "hotspot",
+      "titleJa": "広場を囲む三つの正面",
+      "descriptionJa": "広場の左・奥・右に、大きな門構えの建物が向き合っている。",
+      "factId": "uz_fact_samarkand_registan_three_sides",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.12,
+        "y": 0.36,
+        "width": 0.71,
+        "height": 0.4
+      },
+      "sources": [
+        {
+          "publisher": "Wikimedia Commons／Dreamscape画像観察",
+          "title": "File:Registan - Gusjer.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Registan_-_Gusjer.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "画像で確認できる建物の配置。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_registan_public_square",
+      "landmarkId": "samarkand_registan",
+      "kind": "document",
+      "titleJa": "交易と公的な場所",
+      "descriptionJa": "レギスタンはティムール期の交易の広場から、ウルグベク期に公的な中心としての性格を強めた。",
+      "factId": "uz_fact_samarkand_registan_public_square",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Registan Square",
+          "url": "https://uzbekistan.travel/en/o/registan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ティムールの時代には交易の広場であり、ウルグベクの時代に公的な中心としての性格が強まった。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_registan_layers",
+      "landmarkId": "samarkand_registan",
+      "kind": "document",
+      "titleJa": "一度に造られた風景ではない",
+      "descriptionJa": "ウルグベク・マドラサと、後世のシェルドル、ティラカリが向き合う。現在のまとまりは異なる時代の建築が重なったもの。",
+      "factId": "uz_fact_samarkand_registan_layers",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "sam.uz（独立都市ガイド）",
+          "title": "registan",
+          "url": "https://sam.uz/en/places/registon",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "15世紀のウルグベクと17世紀のシェルドル・ティラカリという年代差がある。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_shah_i_zinda_tiles",
+      "landmarkId": "samarkand_shah_i_zinda",
+      "kind": "hotspot",
+      "titleJa": "路地に向く青い壁",
+      "descriptionJa": "細い通路の両側に、青と白の幾何学模様や曲線模様を施した壁が並ぶ。",
+      "factId": "uz_fact_samarkand_shah_i_zinda_tiles",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.03,
+        "y": 0.07,
+        "width": 0.49,
+        "height": 0.71
+      },
+      "sources": [
+        {
+          "publisher": "Wikimedia Commons／Dreamscape画像観察",
+          "title": "File:Shah-i-Zinda (Avenue of Mausoleums) - Samarkand - Uzbekistan (7488684498).jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Shah-i-Zinda_(Avenue_of_Mausoleums)_-_Samarkand_-_Uzbekistan_(7488684498).jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "画像で確認できる通路と青い装飾壁。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_shah_i_zinda_pilgrimage",
+      "landmarkId": "samarkand_shah_i_zinda",
+      "kind": "document",
+      "titleJa": "今も訪ねる人がいる廟群",
+      "descriptionJa": "墓廟の集まりであると同時に、イスラムの巡礼地として大切にされている。",
+      "factId": "uz_fact_samarkand_shah_i_zinda_pilgrimage",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "The memorial ensemble Shakhi-Zinda",
+          "url": "https://uzbekistan.travel/en/o/the-memorial-ensemble-shahi-zinda/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "青やトルコ石色のタイルで飾られた墓廟が集まり、現在も巡礼の場所として扱われている。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_shah_i_zinda_living_king",
+      "landmarkId": "samarkand_shah_i_zinda",
+      "kind": "document",
+      "titleJa": "生きる王という伝承",
+      "descriptionJa": "クサム・イブン・アッバースが井戸に身を隠し、生きたまま天へ昇ったという伝承が、この場所の名と結び付けられている。",
+      "factId": "uz_fact_samarkand_shah_i_zinda_living_king",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "The memorial ensemble Shakhi-Zinda",
+          "url": "https://uzbekistan.travel/en/o/the-memorial-ensemble-shahi-zinda/",
+          "checkedAt": "2026-11-04",
+          "claimType": "legend",
+          "claimJa": "観光局はこの出来事を伝説として紹介している。史実の断定ではない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_gur_e_amir_dome",
+      "landmarkId": "samarkand_gur_e_amir",
+      "kind": "hotspot",
+      "titleJa": "縦筋のある青いドーム",
+      "descriptionJa": "青いドームには縦方向の細かな起伏があり、その下に円筒状の部分が続く。",
+      "factId": "uz_fact_samarkand_gur_e_amir_dome",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.52,
+        "y": 0.22,
+        "width": 0.17,
+        "height": 0.29
+      },
+      "sources": [
+        {
+          "publisher": "Wikimedia Commons／Dreamscape画像観察",
+          "title": "File:Mausoleum of Amir Temur (1).JPG",
+          "url": "https://commons.wikimedia.org/wiki/File:Mausoleum_of_Amir_Temur_(1).JPG",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "画像に見えるドーム表面と下の円筒部分。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_gur_e_amir_family",
+      "landmarkId": "samarkand_gur_e_amir",
+      "kind": "document",
+      "titleJa": "一人だけの墓ではない",
+      "descriptionJa": "ティムールの霊廟として知られるが、一族を納める王家の墓所でもある。",
+      "factId": "uz_fact_samarkand_gur_e_amir_family",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "The Jade Gravestone of Amir Temur in Gur-Emir",
+          "url": "https://uzbekistan.travel/en/o/gur-emir/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ティムールとその一族の霊廟で、ティムールの墓を示す翡翠の墓石がある。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_gur_e_amir_jade",
+      "landmarkId": "samarkand_gur_e_amir",
+      "kind": "document",
+      "titleJa": "建物の内側の目印",
+      "descriptionJa": "内部にある翡翠の墓石はティムールの墓を示す。外観写真だけから墓石の色や配置は判断しない。",
+      "factId": "uz_fact_samarkand_gur_e_amir_jade",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "The Jade Gravestone of Amir Temur in Gur-Emir",
+          "url": "https://uzbekistan.travel/en/o/gur-emir/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "観光局は内部の翡翠の墓石について説明している。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_bibi_khanym_portal",
+      "landmarkId": "samarkand_bibi_khanym",
+      "kind": "hotspot",
+      "titleJa": "壁より高い門構え",
+      "descriptionJa": "大きなアーチの正面と高いドームが、手前の低い壁の上へ伸びている。",
+      "factId": "uz_fact_samarkand_bibi_khanym_portal",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.1,
+        "y": 0.3,
+        "width": 0.41,
+        "height": 0.37
+      },
+      "sources": [
+        {
+          "publisher": "Wikimedia Commons／Dreamscape画像観察",
+          "title": "File:Bibi-Khanym mosque complex 186.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Bibi-Khanym_mosque_complex_186.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "写真で確認できるアーチと低い外壁の高低差。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_bibi_khanym_craft",
+      "landmarkId": "samarkand_bibi_khanym",
+      "kind": "document",
+      "titleJa": "各地から集まった職人",
+      "descriptionJa": "巨大なモスクを飾るため、複数の地域の職人が建築と装飾に関わった。",
+      "factId": "uz_fact_samarkand_bibi_khanym_craft",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Bibi-Khanym Mosque",
+          "url": "https://uzbekistan.travel/en/o/bibi-khanym/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ティムールの命で建てられ、複数地域の職人が装飾に関わった大規模なモスク。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_samarkand_bibi_khanym_rebuilt",
+      "landmarkId": "samarkand_bibi_khanym",
+      "kind": "document",
+      "titleJa": "完成を急がせた門",
+      "descriptionJa": "観光局の説明では、帰還したティムールは入口が望んだ規模でないとして、門を造り直すよう命じた。",
+      "factId": "uz_fact_samarkand_bibi_khanym_rebuilt",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Bibi-Khanym Mosque",
+          "url": "https://uzbekistan.travel/en/o/bibi-khanym/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ティムールは1404年の帰還後、入口の門の造り直しを命じたと観光局が説明している。"
+        }
+      ]
+    }
+  ],
+  "images": {
+    "samarkand_registan": {
+      "path": "assets/tourism/uzbekistan/samarkand_registan.jpg",
+      "sha256": "8c5d515a4786ef02d1d28adeee42ded05bf64a0804794337761a5881bcbf4017"
+    },
+    "samarkand_shah_i_zinda": {
+      "path": "assets/tourism/uzbekistan/samarkand_shah_i_zinda.jpg",
+      "sha256": "93ea90f2d9df4319f117cc7e1ce8a7edf8aaed718b7d153f4fe0837960f6ce1c"
+    },
+    "samarkand_gur_e_amir": {
+      "path": "assets/tourism/uzbekistan/samarkand_gur_e_amir.jpg",
+      "sha256": "41e7fd94e825df4487936137c627a69f2157b262695a42ecd835805dfc68acb5"
+    },
+    "samarkand_bibi_khanym": {
+      "path": "assets/tourism/uzbekistan/samarkand_bibi_khanym.jpg",
+      "sha256": "c1b1a02d5553cf84d415329c0bbd599a5d31cbcff80c37d6cdde1015c9a4c655"
+    }
+  },
+  "provenance": {
+    "uz_obs_samarkand_registan_three_sides": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_registan_three_sides",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "画像で確認できる建物の配置。"
+    },
+    "uz_obs_samarkand_registan_public_square": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_registan_public_square",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真に写っていない事実を画像上の発見として扱わない。"
+    },
+    "uz_obs_samarkand_registan_layers": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_registan_layers",
+      "reliability": "medium",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真に写っていない事実を画像上の発見として扱わない。"
+    },
+    "uz_obs_samarkand_shah_i_zinda_tiles": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_shah_i_zinda_tiles",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "画像で確認できる通路と青い装飾壁。"
+    },
+    "uz_obs_samarkand_shah_i_zinda_pilgrimage": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_shah_i_zinda_pilgrimage",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真に写っていない事実を画像上の発見として扱わない。"
+    },
+    "uz_obs_samarkand_shah_i_zinda_living_king": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_shah_i_zinda_living_king",
+      "reliability": "medium",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真に写っていない事実を画像上の発見として扱わない。"
+    },
+    "uz_obs_samarkand_gur_e_amir_dome": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_gur_e_amir_dome",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "画像に見えるドーム表面と下の円筒部分。"
+    },
+    "uz_obs_samarkand_gur_e_amir_family": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_gur_e_amir_family",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真に写っていない事実を画像上の発見として扱わない。"
+    },
+    "uz_obs_samarkand_gur_e_amir_jade": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_gur_e_amir_jade",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真に写っていない事実を画像上の発見として扱わない。"
+    },
+    "uz_obs_samarkand_bibi_khanym_portal": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_bibi_khanym_portal",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "写真で確認できるアーチと低い外壁の高低差。"
+    },
+    "uz_obs_samarkand_bibi_khanym_craft": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_bibi_khanym_craft",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真に写っていない事実を画像上の発見として扱わない。"
+    },
+    "uz_obs_samarkand_bibi_khanym_rebuilt": {
+      "cityId": "samarkand",
+      "sourceFactId": "uz_fact_samarkand_bibi_khanym_rebuilt",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "資料カード。写真に写っていない事実を画像上の発見として扱わない。"
+    }
+  }
+}

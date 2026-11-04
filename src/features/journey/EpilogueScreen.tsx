@@ -33,7 +33,7 @@ export function EpilogueScreen({
   onAdvance: () => void;
 }) {
   const active = game.activeEpilogue!;
-  const nextCity = getJourneyForCity(game.currentCityId)?.id === "golden_triangle" ? getNextCity(game) : undefined;
+  const nextCity = getJourneyForCity(game.currentCityId)?.cityTransition === "after_epilogue" ? getNextCity(game) : undefined;
   const windowVisibility = useDialogueWindow();
   const dialogueRef = useDialogueScrollReset<HTMLElement>(active.storyState);
   const frame = active.frame;

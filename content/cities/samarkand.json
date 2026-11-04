@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "samarkand",
+  "nextCityId": "bukhara",
+  "countryCode": "UZ",
+  "nameJa": "サマルカンド",
+  "themeJa": "青い建築と日常が交わる街",
+  "firstClearReward": {
+    "rewardSourceId": "samarkand_legacy_episode_placeholder",
+    "ap": 0
+  },
+  "landmarkIdsPlanned": [
+    "samarkand_registan",
+    "samarkand_shah_i_zinda",
+    "samarkand_gur_e_amir",
+    "samarkand_bibi_khanym"
+  ],
+  "productionStatus": "prototype"
+}

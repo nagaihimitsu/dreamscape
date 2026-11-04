@@ -1,0 +1,563 @@
+{
+  "batchcomplete": "",
+  "continue": {
+    "gsroffset": 5,
+    "continue": "gsroffset||"
+  },
+  "query": {
+    "pages": {
+      "64145419": {
+        "pageid": 64145419,
+        "ns": 6,
+        "title": "File:Interior of Shodi Mulk Oko Mausoleum - Shah-i-Zinda (Avenue of Mausoleums) - Samarkand - Uzbekistan (7488378048).jpg",
+        "index": 3,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 3175357,
+            "width": 3648,
+            "height": 2736,
+            "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9a/Interior_of_Shodi_Mulk_Oko_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488378048%29.jpg/1920px-Interior_of_Shodi_Mulk_Oko_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488378048%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+            "thumbwidth": 1600,
+            "thumbheight": 1200,
+            "responsiveUrls": {
+              "2": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Interior_of_Shodi_Mulk_Oko_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488378048%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+            },
+            "thumbattribs": {
+              "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9a/Interior_of_Shodi_Mulk_Oko_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488378048%29.jpg/1920px-Interior_of_Shodi_Mulk_Oko_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488378048%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+              "decoding": "async",
+              "loading": "lazy",
+              "width": 1600,
+              "height": 1200,
+              "srcset": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Interior_of_Shodi_Mulk_Oko_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488378048%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled 2x"
+            },
+            "url": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Interior_of_Shodi_Mulk_Oko_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488378048%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Interior_of_Shodi_Mulk_Oko_Mausoleum_-_Shah-i-Zinda_(Avenue_of_Mausoleums)_-_Samarkand_-_Uzbekistan_(7488378048).jpg",
+            "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=64145419",
+            "extmetadata": {
+              "DateTime": {
+                "value": "2017-11-18 07:33:59",
+                "source": "mediawiki-metadata",
+                "hidden": ""
+              },
+              "ObjectName": {
+                "value": "Interior of Shodi Mulk Oko Mausoleum - Shah-i-Zinda (Avenue of Mausoleums) - Samarkand - Uzbekistan (7488378048)",
+                "source": "mediawiki-metadata"
+              },
+              "CommonsMetadataExtension": {
+                "value": 1.2,
+                "source": "extension",
+                "hidden": ""
+              },
+              "Categories": {
+                "value": "Shadi Mulk Aga Mausoleum (Shah-i-Zinda)|Photographs by Adam Jones|2012 in Samarkand|Flickr images reviewed by FlickreviewR 2|Uzbekistan photographs taken on 2012-07-02|Majolica tiles in Shah-i-Zinda|Cupolas in Shah-i-Zinda",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "Assessments": {
+                "value": "",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "ImageDescription": {
+                "value": "Interior of Shodi Mulk Oko Mausoleum - Shah-i-Zinda (Avenue of Mausoleums) - Samarkand - Uzbekistan",
+                "source": "commons-desc-page"
+              },
+              "DateTimeOriginal": {
+                "value": "2012-07-02 01:03",
+                "source": "commons-desc-page"
+              },
+              "Credit": {
+                "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/adam_jones/7488378048/\">Interior of Shodi Mulk Oko Mausoleum - Shah-i-Zinda (Avenue of Mausoleums) - Samarkand - Uzbekistan</a>",
+                "source": "commons-desc-page"
+              },
+              "Artist": {
+                "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/41000732@N04\">Adam Jones</a> from Kelowna, BC, Canada",
+                "source": "commons-desc-page"
+              },
+              "LicenseShortName": {
+                "value": "CC BY-SA 2.0",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "UsageTerms": {
+                "value": "Creative Commons Attribution-Share Alike 2.0",
+                "source": "commons-desc-page"
+              },
+              "AttributionRequired": {
+                "value": "true",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "LicenseUrl": {
+                "value": "https://creativecommons.org/licenses/by-sa/2.0",
+                "source": "commons-desc-page"
+              },
+              "Copyrighted": {
+                "value": "True",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "Restrictions": {
+                "value": "",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "License": {
+                "value": "cc-by-sa-2.0",
+                "source": "commons-templates",
+                "hidden": ""
+              }
+            }
+          }
+        ]
+      },
+      "64145417": {
+        "pageid": 64145417,
+        "ns": 6,
+        "title": "File:Interior of Usto Ali Nesefi Mausoleum - Shah-i-Zinda (Avenue of Mausoleums) - Samarkand - Uzbekistan - 02 (7488388586).jpg",
+        "index": 2,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 3896815,
+            "width": 3648,
+            "height": 2736,
+            "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/Interior_of_Usto_Ali_Nesefi_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_-_02_%287488388586%29.jpg/1920px-Interior_of_Usto_Ali_Nesefi_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_-_02_%287488388586%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+            "thumbwidth": 1600,
+            "thumbheight": 1200,
+            "responsiveUrls": {
+              "2": "https://upload.wikimedia.org/wikipedia/commons/4/43/Interior_of_Usto_Ali_Nesefi_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_-_02_%287488388586%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+            },
+            "thumbattribs": {
+              "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/Interior_of_Usto_Ali_Nesefi_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_-_02_%287488388586%29.jpg/1920px-Interior_of_Usto_Ali_Nesefi_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_-_02_%287488388586%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+              "decoding": "async",
+              "loading": "lazy",
+              "width": 1600,
+              "height": 1200,
+              "srcset": "https://upload.wikimedia.org/wikipedia/commons/4/43/Interior_of_Usto_Ali_Nesefi_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_-_02_%287488388586%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled 2x"
+            },
+            "url": "https://upload.wikimedia.org/wikipedia/commons/4/43/Interior_of_Usto_Ali_Nesefi_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_-_02_%287488388586%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Interior_of_Usto_Ali_Nesefi_Mausoleum_-_Shah-i-Zinda_(Avenue_of_Mausoleums)_-_Samarkand_-_Uzbekistan_-_02_(7488388586).jpg",
+            "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=64145417",
+            "extmetadata": {
+              "DateTime": {
+                "value": "2017-11-18 07:33:53",
+                "source": "mediawiki-metadata",
+                "hidden": ""
+              },
+              "ObjectName": {
+                "value": "Interior of Usto Ali Nesefi Mausoleum - Shah-i-Zinda (Avenue of Mausoleums) - Samarkand - Uzbekistan - 02 (7488388586)",
+                "source": "mediawiki-metadata"
+              },
+              "CommonsMetadataExtension": {
+                "value": 1.2,
+                "source": "extension",
+                "hidden": ""
+              },
+              "Categories": {
+                "value": "Shadi Mulk Aga Mausoleum (Shah-i-Zinda)|Interiors of mausoleums|Photographs by Adam Jones|2002 in Samarkand|Shirin-Bika-Aga Mausoleum (Shah-i-Zinda)|Flickr images reviewed by FlickreviewR 2|Majolica tiles in Shah-i-Zinda|Arabic inscriptions in Shah-i-Zinda",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "Assessments": {
+                "value": "",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "ImageDescription": {
+                "value": "A view from Shadi Mulk Aga mausoleum to Shirin-Bika-Aga mausoleum. Shah-i-Zinda, Samarkand, Uzbekistan, 2002",
+                "source": "commons-desc-page"
+              },
+              "DateTimeOriginal": {
+                "value": "2002",
+                "source": "commons-desc-page"
+              },
+              "Credit": {
+                "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/adam_jones/7488388586/\">Interior of Usto Ali Nesefi Mausoleum - Shah-i-Zinda (Avenue of Mausoleums) - Samarkand - Uzbekistan - 02</a>",
+                "source": "commons-desc-page"
+              },
+              "Artist": {
+                "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/41000732@N04\">Adam Jones</a> from Kelowna, BC, Canada",
+                "source": "commons-desc-page"
+              },
+              "LicenseShortName": {
+                "value": "CC BY-SA 2.0",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "UsageTerms": {
+                "value": "Creative Commons Attribution-Share Alike 2.0",
+                "source": "commons-desc-page"
+              },
+              "AttributionRequired": {
+                "value": "true",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "LicenseUrl": {
+                "value": "https://creativecommons.org/licenses/by-sa/2.0",
+                "source": "commons-desc-page"
+              },
+              "Copyrighted": {
+                "value": "True",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "Restrictions": {
+                "value": "",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "License": {
+                "value": "cc-by-sa-2.0",
+                "source": "commons-templates",
+                "hidden": ""
+              }
+            }
+          }
+        ]
+      },
+      "24200006": {
+        "pageid": 24200006,
+        "ns": 6,
+        "title": "File:Shah-i-Zinda (8145369659).jpg",
+        "index": 5,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 147450,
+            "width": 1024,
+            "height": 768,
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/7/74/Shah-i-Zinda_%288145369659%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+            "thumbwidth": 1600,
+            "thumbheight": 1200,
+            "thumbattribs": {
+              "src": "https://upload.wikimedia.org/wikipedia/commons/7/74/Shah-i-Zinda_%288145369659%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+              "decoding": "async",
+              "loading": "lazy",
+              "width": 1600,
+              "height": 1200
+            },
+            "url": "https://upload.wikimedia.org/wikipedia/commons/7/74/Shah-i-Zinda_%288145369659%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Shah-i-Zinda_(8145369659).jpg",
+            "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=24200006",
+            "extmetadata": {
+              "DateTime": {
+                "value": "2013-01-26 02:52:00",
+                "source": "mediawiki-metadata",
+                "hidden": ""
+              },
+              "ObjectName": {
+                "value": "Shah-i-Zinda (8145369659)",
+                "source": "mediawiki-metadata"
+              },
+              "CommonsMetadataExtension": {
+                "value": 1.2,
+                "source": "extension",
+                "hidden": ""
+              },
+              "Categories": {
+                "value": "Flickr images reviewed by File Upload Bot (Magnus Manske)|Photographs by David Stanley|2012 in Samarkand|Files with coordinates missing SDC location of creation|Uzbekistan photographs taken on 2012-11-01|Samarkand Shah-i-Zinda general views",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "Assessments": {
+                "value": "",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "GPSLatitude": {
+                "value": "39.661486",
+                "source": "commons-desc-page"
+              },
+              "GPSLongitude": {
+                "value": "66.988223",
+                "source": "commons-desc-page"
+              },
+              "GPSMapDatum": {
+                "value": "WGS-84",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "ImageDescription": {
+                "value": "The Avenue of Mausoleums at Shah-i-Zinda in Samarkand, Uzbekistan. Among the notables interred here is Qusam ibn-Abbas, a cousin of the Prophet Mohammed.",
+                "source": "commons-desc-page"
+              },
+              "DateTimeOriginal": {
+                "value": "2012-11-01 11:17",
+                "source": "commons-desc-page"
+              },
+              "Credit": {
+                "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/davidstanleytravel/8145369659/\">Shah-i-Zinda</a>",
+                "source": "commons-desc-page"
+              },
+              "Artist": {
+                "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/79721788@N00\">David Stanley</a> from Nanaimo, Canada",
+                "source": "commons-desc-page"
+              },
+              "LicenseShortName": {
+                "value": "CC BY 2.0",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "UsageTerms": {
+                "value": "Creative Commons Attribution 2.0",
+                "source": "commons-desc-page"
+              },
+              "AttributionRequired": {
+                "value": "true",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "LicenseUrl": {
+                "value": "https://creativecommons.org/licenses/by/2.0",
+                "source": "commons-desc-page"
+              },
+              "Copyrighted": {
+                "value": "True",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "Restrictions": {
+                "value": "",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "License": {
+                "value": "cc-by-2.0",
+                "source": "commons-templates",
+                "hidden": ""
+              }
+            }
+          }
+        ]
+      },
+      "64145415": {
+        "pageid": 64145415,
+        "ns": 6,
+        "title": "File:Shah-i-Zinda (Avenue of Mausoleums) - Samarkand - Uzbekistan (7488684498).jpg",
+        "index": 1,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 3863082,
+            "width": 3648,
+            "height": 2736,
+            "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488684498%29.jpg/1920px-Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488684498%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+            "thumbwidth": 1600,
+            "thumbheight": 1200,
+            "responsiveUrls": {
+              "2": "https://upload.wikimedia.org/wikipedia/commons/0/08/Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488684498%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+            },
+            "thumbattribs": {
+              "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488684498%29.jpg/1920px-Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488684498%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+              "decoding": "async",
+              "loading": "lazy",
+              "width": 1600,
+              "height": 1200,
+              "srcset": "https://upload.wikimedia.org/wikipedia/commons/0/08/Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488684498%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled 2x"
+            },
+            "url": "https://upload.wikimedia.org/wikipedia/commons/0/08/Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488684498%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Shah-i-Zinda_(Avenue_of_Mausoleums)_-_Samarkand_-_Uzbekistan_(7488684498).jpg",
+            "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=64145415",
+            "extmetadata": {
+              "DateTime": {
+                "value": "2017-11-18 07:33:46",
+                "source": "mediawiki-metadata",
+                "hidden": ""
+              },
+              "ObjectName": {
+                "value": "Shah-i-Zinda (Avenue of Mausoleums) - Samarkand - Uzbekistan (7488684498)",
+                "source": "mediawiki-metadata"
+              },
+              "CommonsMetadataExtension": {
+                "value": 1.2,
+                "source": "extension",
+                "hidden": ""
+              },
+              "Categories": {
+                "value": "Amirzoda Mausoleum (Shah-i-Zinda)|Shadi Mulk Aga Mausoleum (Shah-i-Zinda)|Photographs by Adam Jones|2012 in Samarkand|Flickr images reviewed by FlickreviewR 2|Uzbekistan photographs taken on 2012-07-02|Main Street of Shah-i-Zinda",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "Assessments": {
+                "value": "",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "ImageDescription": {
+                "value": "Shah-i-Zinda (Avenue of Mausoleums) - Samarkand - Uzbekistan",
+                "source": "commons-desc-page"
+              },
+              "DateTimeOriginal": {
+                "value": "2012-07-02 01:00",
+                "source": "commons-desc-page"
+              },
+              "Credit": {
+                "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/adam_jones/7488684498/\">Shah-i-Zinda (Avenue of Mausoleums) - Samarkand - Uzbekistan</a>",
+                "source": "commons-desc-page"
+              },
+              "Artist": {
+                "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/41000732@N04\">Adam Jones</a> from Kelowna, BC, Canada",
+                "source": "commons-desc-page"
+              },
+              "LicenseShortName": {
+                "value": "CC BY-SA 2.0",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "UsageTerms": {
+                "value": "Creative Commons Attribution-Share Alike 2.0",
+                "source": "commons-desc-page"
+              },
+              "AttributionRequired": {
+                "value": "true",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "LicenseUrl": {
+                "value": "https://creativecommons.org/licenses/by-sa/2.0",
+                "source": "commons-desc-page"
+              },
+              "Copyrighted": {
+                "value": "True",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "Restrictions": {
+                "value": "",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "License": {
+                "value": "cc-by-sa-2.0",
+                "source": "commons-templates",
+                "hidden": ""
+              }
+            }
+          }
+        ]
+      },
+      "64145418": {
+        "pageid": 64145418,
+        "ns": 6,
+        "title": "File:Tilework on Facade of Usto Ali Nesefi Mausoleum - Shah-i-Zinda (Avenue of Mausoleums) - Samarkand - Uzbekistan (7488711066).jpg",
+        "index": 4,
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 4181837,
+            "width": 3648,
+            "height": 2736,
+            "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Tilework_on_Facade_of_Usto_Ali_Nesefi_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488711066%29.jpg/1920px-Tilework_on_Facade_of_Usto_Ali_Nesefi_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488711066%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+            "thumbwidth": 1600,
+            "thumbheight": 1200,
+            "responsiveUrls": {
+              "2": "https://upload.wikimedia.org/wikipedia/commons/9/9c/Tilework_on_Facade_of_Usto_Ali_Nesefi_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488711066%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+            },
+            "thumbattribs": {
+              "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Tilework_on_Facade_of_Usto_Ali_Nesefi_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488711066%29.jpg/1920px-Tilework_on_Facade_of_Usto_Ali_Nesefi_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488711066%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+              "decoding": "async",
+              "loading": "lazy",
+              "width": 1600,
+              "height": 1200,
+              "srcset": "https://upload.wikimedia.org/wikipedia/commons/9/9c/Tilework_on_Facade_of_Usto_Ali_Nesefi_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488711066%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled 2x"
+            },
+            "url": "https://upload.wikimedia.org/wikipedia/commons/9/9c/Tilework_on_Facade_of_Usto_Ali_Nesefi_Mausoleum_-_Shah-i-Zinda_%28Avenue_of_Mausoleums%29_-_Samarkand_-_Uzbekistan_%287488711066%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Tilework_on_Facade_of_Usto_Ali_Nesefi_Mausoleum_-_Shah-i-Zinda_(Avenue_of_Mausoleums)_-_Samarkand_-_Uzbekistan_(7488711066).jpg",
+            "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=64145418",
+            "extmetadata": {
+              "DateTime": {
+                "value": "2017-11-18 07:33:58",
+                "source": "mediawiki-metadata",
+                "hidden": ""
+              },
+              "ObjectName": {
+                "value": "Tilework on Facade of Usto Ali Nesefi Mausoleum - Shah-i-Zinda (Avenue of Mausoleums) - Samarkand - Uzbekistan (7488711066)",
+                "source": "mediawiki-metadata"
+              },
+              "CommonsMetadataExtension": {
+                "value": 1.2,
+                "source": "extension",
+                "hidden": ""
+              },
+              "Categories": {
+                "value": "Shadi Mulk Aga Mausoleum (Shah-i-Zinda)|Cyan tiles|Photographs by Adam Jones|2012 in Samarkand|Files with coordinates missing SDC location of creation|Flickr images reviewed by FlickreviewR 2|Uzbekistan photographs taken on 2012-07-02|Majolica tiles in Shah-i-Zinda|Arabic inscriptions in Shah-i-Zinda",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "Assessments": {
+                "value": "",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "GPSLatitude": {
+                "value": "39.662340",
+                "source": "commons-desc-page"
+              },
+              "GPSLongitude": {
+                "value": "66.987759",
+                "source": "commons-desc-page"
+              },
+              "GPSMapDatum": {
+                "value": "WGS-84",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "ImageDescription": {
+                "value": "Tilework on Facade of Mulk Aga Mausoleum - Shah-i-Zinda (Avenue of Mausoleums) - Samarkand - Uzbekistan.",
+                "source": "commons-desc-page"
+              },
+              "DateTimeOriginal": {
+                "value": "2012-07-02 01:05",
+                "source": "commons-desc-page"
+              },
+              "Credit": {
+                "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/adam_jones/7488711066/\">Tilework on Facade of Usto Ali Nesefi Mausoleum - Shah-i-Zinda (Avenue of Mausoleums) - Samarkand - Uzbekistan</a>",
+                "source": "commons-desc-page"
+              },
+              "Artist": {
+                "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/41000732@N04\">Adam Jones</a> from Kelowna, BC, Canada",
+                "source": "commons-desc-page"
+              },
+              "LicenseShortName": {
+                "value": "CC BY-SA 2.0",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "UsageTerms": {
+                "value": "Creative Commons Attribution-Share Alike 2.0",
+                "source": "commons-desc-page"
+              },
+              "AttributionRequired": {
+                "value": "true",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "LicenseUrl": {
+                "value": "https://creativecommons.org/licenses/by-sa/2.0",
+                "source": "commons-desc-page"
+              },
+              "Copyrighted": {
+                "value": "True",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "Restrictions": {
+                "value": "",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "License": {
+                "value": "cc-by-sa-2.0",
+                "source": "commons-templates",
+                "hidden": ""
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

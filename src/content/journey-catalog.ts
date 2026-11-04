@@ -18,6 +18,10 @@ export const journeyCatalogSchema = z.object({
     initialBudget: z.number().int().nonnegative().nullable().optional(),
     /** Fictional game-calendar weekday on day one; Monday is 0. */
     startWeekday: z.number().int().min(0).max(6).optional(),
+    /** Whether completing the epilogue advances to the next released city. */
+    cityTransition: z.enum(["manual", "after_epilogue"]).optional(),
+    /** Number of travellers included in the authored transport fares. */
+    farePartySize: z.number().int().positive().optional(),
     // Optional for existing journeys that already have an initial state.
     initialState: z.object({
       ap: z.number().int().nonnegative(), pendingAp: z.literal(0),

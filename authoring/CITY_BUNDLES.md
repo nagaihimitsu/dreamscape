@@ -28,7 +28,7 @@ npm run city:bundle -- apply artifacts/city-work/india-delhi.json
 
 書き出し先には `content/` と `public/` の外を指定してください。既存のファイルは上書きされないため、再度書き出すときは別のファイル名を指定します。
 
-現在の４都市のIDは `milano`、`delhi`、`agra`、`jaipur` です。例えばミラノは `npm run city:bundle -- export milano artifacts/city-work/italy-milano.json` のように書き出します。ミラノには既存の観光地と観察ポイントも含まれ、インド３都市は今後制作する分の欄が空になっています。
+現在の8都市のIDは `milano`、`delhi`、`agra`、`jaipur`、`tashkent`、`samarkand`、`bukhara`、`khiva` です。例えばミラノは `npm run city:bundle -- export milano artifacts/city-work/italy-milano.json` のように書き出します。ミラノには既存の観光地と観察ポイントも含まれ、インド３都市は今後制作する分の欄が空になっています。
 
 書き出してから `content/` や `public/` のいずれか、インド編の観察カードや公共交通の調査台帳が変更された場合、他都市の変更や画像の追加も含め、古い作業コピーの反映は拒否されます。その場合は、画像・元データを準備したうえで、別名へ再度 `export` し、編集した項目を新しいコピーへ移してください。新しいコピーの `baseFingerprint` は移し替えず、そのまま残します。`baseFingerprint` は競合検出に使うため、手で変更しないでください。都市IDや公開状態もこの操作では変更できません。
 
@@ -117,3 +117,7 @@ npm run city:bundle -- apply artifacts/city-work/sample-city.json
 - 都市や旅行編を公開可能にする判断と検証は、この編集操作とは別です。未完成の都市が本番でプレイ可能と表示されないよう、制作状態を維持します。
 
 調査資料として残すファイルと、現在のゲームに反映済みの値は一致しないことがあります。特に `authoring/drafts/golden-triangle/` は古い研究由来の生成ドラフトで、現在の交通や入場料の正本ではありません。編集用コピーの代わりにそのドラフトを本番データへ上書きしないでください。
+
+## ウズベキスタン4都市
+
+同じコマンドで、例えば `npm run city:bundle -- export tashkent artifacts/city-work/uzbekistan-tashkent.json` と書き出せます。写真・料金・地点・全方向の交通判断も含まれます。`transitDecisions` の `available` と実際の経路が一致しない場合、出典が欠ける場合、未確認の判断が残る場合は反映を拒否します。`not_suitable` はこの地点間のゲーム用移動として採用しない意味で、市全域のサービス不存在を示しません。写真の差替え時は観察資料の確認も必要です。シナリオの追加は [旅行編共通の手順](JOURNEY_AUTHORING.md) を参照してください。

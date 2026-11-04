@@ -1,0 +1,202 @@
+{
+  "batchcomplete": "",
+  "query": {
+    "pages": {
+      "201711965": {
+        "pageid": 201711965,
+        "ns": 6,
+        "title": "File:Afrasiab murals Afrasiab Museum Samarkand Uzbekistan May 2026 Ph Khusen Rustamov- 07.jpg",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 14120502,
+            "width": 7008,
+            "height": 4672,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/9/9b/Afrasiab_murals_Afrasiab_Museum_Samarkand_Uzbekistan_May_2026_Ph_Khusen_Rustamov-_07.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Afrasiab_murals_Afrasiab_Museum_Samarkand_Uzbekistan_May_2026_Ph_Khusen_Rustamov-_07.jpg",
+            "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=201711965",
+            "extmetadata": {
+              "DateTime": {
+                "value": "2026-10-14 00:44:17",
+                "source": "mediawiki-metadata",
+                "hidden": ""
+              },
+              "ObjectName": {
+                "value": "Afrasiab murals Afrasiab Museum Samarkand Uzbekistan May 2026 Ph Khusen Rustamov- 07",
+                "source": "mediawiki-metadata"
+              },
+              "CommonsMetadataExtension": {
+                "value": 1.2,
+                "source": "extension",
+                "hidden": ""
+              },
+              "Categories": {
+                "value": "Paintings of the Ambassadors (Samarkand)|Self-published work|Files with coordinates missing SDC location of creation|Wiki Loves Peace|Uploaded via Campaign:Wiki Loves Peace",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "Assessments": {
+                "value": "",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "GPSLatitude": {
+                "value": "39.669425",
+                "source": "commons-desc-page"
+              },
+              "GPSLongitude": {
+                "value": "66.993328",
+                "source": "commons-desc-page"
+              },
+              "GPSMapDatum": {
+                "value": "WGS-84",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "ImageDescription": {
+                "value": "Afrasiab murals at the Afrasiab Museum in Samarkand, Uzbekistan, May 2026. Dating to the 7th century, these ancient wall paintings depict diplomatic encounters and aspects of Sogdian court life, reflecting the cultural connections of Central Asia along the Silk Road.\nPhoto by Khusen Rustamov",
+                "source": "commons-desc-page"
+              },
+              "DateTimeOriginal": {
+                "value": "2026-05-15 13:11:20",
+                "source": "commons-desc-page"
+              },
+              "Credit": {
+                "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                "source": "commons-desc-page"
+              },
+              "Artist": {
+                "value": "<a href=\"//commons.wikimedia.org/wiki/User:Koshkinhome\" title=\"User:Koshkinhome\">Koshkinhome</a>",
+                "source": "commons-desc-page"
+              },
+              "LicenseShortName": {
+                "value": "CC BY-SA 4.0",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "UsageTerms": {
+                "value": "Creative Commons Attribution-Share Alike 4.0",
+                "source": "commons-desc-page"
+              },
+              "AttributionRequired": {
+                "value": "true",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "LicenseUrl": {
+                "value": "https://creativecommons.org/licenses/by-sa/4.0",
+                "source": "commons-desc-page"
+              },
+              "Copyrighted": {
+                "value": "True",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "Restrictions": {
+                "value": "",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "License": {
+                "value": "cc-by-sa-4.0",
+                "source": "commons-templates",
+                "hidden": ""
+              }
+            }
+          }
+        ]
+      },
+      "2055826": {
+        "pageid": 2055826,
+        "ns": 6,
+        "title": "File:Ulugh Beg observatory.JPG",
+        "imagerepository": "local",
+        "imageinfo": [
+          {
+            "size": 728449,
+            "width": 2288,
+            "height": 1712,
+            "url": "https://upload.wikimedia.org/wikipedia/commons/4/43/Ulugh_Beg_observatory.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Ulugh_Beg_observatory.JPG",
+            "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=2055826",
+            "extmetadata": {
+              "DateTime": {
+                "value": "2007-05-04 13:41:17",
+                "source": "mediawiki-metadata",
+                "hidden": ""
+              },
+              "ObjectName": {
+                "value": "Ulugh Beg observatory",
+                "source": "mediawiki-metadata"
+              },
+              "CommonsMetadataExtension": {
+                "value": 1.2,
+                "source": "extension",
+                "hidden": ""
+              },
+              "Categories": {
+                "value": "Taken with Olympus C-4100Z / C-4000Z|Ulugh Beg Observatory|Self-published work|2006 in Samarkand",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "Assessments": {
+                "value": "",
+                "source": "commons-categories",
+                "hidden": ""
+              },
+              "ImageDescription": {
+                "value": "Observatory built by Ulugh Beg in Samarkand, the <a href=\"//commons.wikimedia.org/wiki/Category:Timurid_Empire\" title=\"Category:Timurid Empire\">Timurid Empire</a> (15th century) — present day Uzbekistan.",
+                "source": "commons-desc-page"
+              },
+              "DateTimeOriginal": {
+                "value": "2006-08",
+                "source": "commons-desc-page"
+              },
+              "Credit": {
+                "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                "source": "commons-desc-page"
+              },
+              "Artist": {
+                "value": "<a href=\"//commons.wikimedia.org/wiki/User:Alaexis\" title=\"User:Alaexis\">Alaexis</a>",
+                "source": "commons-desc-page"
+              },
+              "LicenseShortName": {
+                "value": "CC BY-SA 2.5",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "UsageTerms": {
+                "value": "Creative Commons Attribution-Share Alike 2.5",
+                "source": "commons-desc-page"
+              },
+              "AttributionRequired": {
+                "value": "true",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "LicenseUrl": {
+                "value": "https://creativecommons.org/licenses/by-sa/2.5",
+                "source": "commons-desc-page"
+              },
+              "Copyrighted": {
+                "value": "True",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "Restrictions": {
+                "value": "",
+                "source": "commons-desc-page",
+                "hidden": ""
+              },
+              "License": {
+                "value": "cc-by-sa-2.5",
+                "source": "commons-templates",
+                "hidden": ""
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
