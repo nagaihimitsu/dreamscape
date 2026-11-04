@@ -13,117 +13,136 @@ VAR spark_delta = 0
 
 # background: gt_bg_agra_guru_ka_taal
 # speaker: narrator
-グル・カ・タールの入口で、二人は案内に従って靴を預け、頭を覆った。{heroine_name}は身支度を確かめてから、砂岩の塔に目を止める。
+グル・カ・タールで、二人は案内に従って靴を預け、頭を覆った。{heroine_name}は身支度を確かめてから、砂岩の塔を指す。
 # speaker: heroine
-# emotion: surprised
-「あそこにも塔がある。今見てた建物と、少し感じが違うね」
+# reaction: heroine,surprised,sparkle
+「あそこ、形が違う。わたしは、先に塔の方を見たいな」
 # speaker: narrator
-ほかの人が進む方へ一歩踏み出しかけ、彼女は止まった。見学できる範囲を案内で確かめ、こちらへ顔を向ける。
+彼女が目で合図する。こちらが出口の方を見ると、彼女は慌てて手を振った。
 # speaker: heroine
-# emotion: smile
-「みんなについていこうとしてた。わたし、先にあの塔のことを知りたいな」
-{ relationship_tone == "warm" || relationship_tone == "comfortable":
+# reaction: heroine,exasperated,sweat
+「帰ろう、じゃないです。今、来たところです」
+{ relationship_tone == "reserved" || relationship_tone == "strained":
 # speaker: heroine
-# emotion: teasing
-「今日は、わたしが先に見つけました。見学の順番も、提案していい？」
+「言わなくても伝わると思ったの、少し早かったかな」
 - else:
 # speaker: heroine
-「{player_address}は、どこを見てた？　お互いに見たいところ、先に確かめよう」
+# emotion: teasing
+「気持ちが通じる相手でも、方向は通じないみたい」
 }
 
-* [「見たい方を、先に案内して」]
-    # effect: gt_agra_date_guru_ka_taal_first_attentive
-    { romance_result == "negative":
-        # speaker: heroine
-        「案内できるほどは、まだ分からないよ。一緒に説明を見てほしいな」
-    - else:
-        # speaker: heroine
-        「うん。じゃあ、あの案内から見よう。何の塔なのか気になる」
-    }
-    -> after_first
-* [「今日は発見係が早いね」]
+* [「右目が塔で、左目が出口だった？」]
     # effect: gt_agra_date_guru_ka_taal_first_playful
     { romance_result == "negative":
         # speaker: heroine
-        「早い方が勝ち、ではないんだけどね。そっちが気付いたものも聞きたいよ」
+        # reaction: heroine,exasperated,anger
+        「わたしの顔、案内図じゃないよ。混ぜないで、ちゃんと聞いて」
     - else:
         # speaker: heroine
-        # emotion: smile
-        「今なら、もう一つくらい見つけられそう。足元も見て歩きます」
+        # reaction: heroine,happy,music
+        「どっちも塔です。……もう、次から指と声も使います」
     }
     -> after_first
-* [「自分は、今の建物の方を見ていた」]
-    # effect: gt_agra_date_guru_ka_taal_first_honest
+* [「先に、塔のことを一緒に確かめよう」]
+    # effect: gt_agra_date_guru_ka_taal_first_attentive
     { romance_result == "negative":
         # speaker: heroine
-        「そっちを先に見たかった？　わたし、一人で決めかけちゃったね。順番は相談しよう」
+        # emotion: worried
+        「うん。でも、そっちが見たかった所も教えてね。全部任せられると、少し緊張する」
     - else:
         # speaker: heroine
         # emotion: smile
-        「じゃあ、あとでそこも見よう。同じところにいても、最初に目に入るものが違うんだね」
+        「うん。今度は、伝わった。何の塔なのか、あの説明を見たい」
+    }
+    -> after_first
+* [「君に見つめられて、方向が分からなくなった」]
+    # effect: gt_agra_date_guru_ka_taal_first_bold
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,serious,sweat
+        「格好つけるのはあと。わたし、今はちゃんと見学したい」
+    - else:
+        { ending_reached:
+        # speaker: heroine
+        # reaction: heroine,teasing,heart
+        「はいはい。じゃあ、こちらを向きすぎないように。足元も、塔もあります」
+        - else:
+        # speaker: heroine
+        # reaction: heroine,shy,blush
+        「えっ。……わたしも、どっちを見るか忘れちゃった。まず塔。二人とも、塔です」
+        }
     }
     -> after_first
 
 === after_first ===
 # speaker: narrator
-礼拝する人の妨げにならないよう、二人は案内を確かめながら見学した。説明には、かつての貯水施設と砂岩の塔について記されている。
-# speaker: heroine
-「ここ、昔の水をためる場所ともつながってるんだね。塔を見ただけじゃ、分からなかった」
-# speaker: narrator
-建物の説明を読んだあと、彼女はスマートフォンをしまう。撮るものを探さず、その場の人の動きに合わせて立ち止まった。
+案内を読むと、砂岩の塔は、かつての貯水施設ともつながるものだと分かった。見学できる範囲を確かめ、二人は塔と建物を眺めた。
 # speaker: heroine
 # emotion: neutral
-「もう少し、静かにここにいたいな。何か話さなきゃって、考えないで」
+「水をためる場所の話が、ここにも残ってるんだね。今の建物だけだと思ってた」
+# speaker: narrator
+礼拝する人の流れに合わせて、二人は静かに見学した。出る時、彼女は指を使って出口を示す。今度は、間違えなかった。
+# speaker: narrator
+靴を受け取り、身支度を整える。彼女は入口を離れてから、こちらの顔をじっと見た。
+# speaker: heroine
+# reaction: heroine,teasing,question
+「今の顔は、どういう意味でしょう。場所の案内ではありません」
 
-* [「話したくなるまで、ここにいよう」]
-    # effect: gt_agra_date_guru_ka_taal_second_attentive
-    { romance_result == "negative":
-        # speaker: heroine
-        「うん。でも、話すまで待たれてるって思うと、気になっちゃう。景色も見てて」
-    - else:
-        # speaker: heroine
-        # emotion: smile
-        「ありがとう。わたしの顔を見て待たなくても、大丈夫だからね」
-    }
-    -> ending
-* [「一緒なら、黙っている時間も好きだ」]
-    # effect: gt_agra_date_guru_ka_taal_second_bold
-    { romance_result == "negative":
-        # speaker: heroine
-        「今は、そういう返事を考える時間にもしたくないな。少しだけ、何も言わずにいたい」
-    - else:
-        # speaker: heroine
-        # emotion: shy
-        「うん。わたしも、今はこうしていたい。返事は、それだけでいい？」
-    }
-    -> ending
-* [「自分も、少し落ち着いていたい」]
+* [「分からないから、言葉でも聞きたい」]
     # effect: gt_agra_date_guru_ka_taal_second_honest
     { romance_result == "negative":
         # speaker: heroine
-        「何か気になってる？　……聞かなくていいか。話したいときに聞くね」
+        # emotion: exasperated
+        「そうだよね。ちょっとだけ、当ててもらいたかったんだけど。顔の問題は、難しかった」
     - else:
         # speaker: heroine
-        「そっか。じゃあ、二人ともそうしよう。出るときは、目で合図して」
+        # emotion: smile
+        「正直でよろしい。『付き合ってくれて、ありがとう』でした。言葉で言った方が、わたしも照れるね」
+    }
+    -> ending
+* [「もう少し一緒にいたい、だったらうれしい」]
+    # effect: gt_agra_date_guru_ka_taal_second_bold
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,serious,blush
+        「わたしの台詞を、そっちの希望にしないで。……今は、ありがとうって顔だったの」
+    - else:
+        { relationship_tone_after == "reserved" || relationship_tone_after == "strained":
+        # speaker: heroine
+        # reaction: heroine,shy,blush
+        「答えは違ったけど、そう言ってくれたのはうれしい。もう少し歩くくらいなら、うん」
+        - else:
+        # speaker: heroine
+        # reaction: heroine,teasing,heart
+        「惜しい。『ありがとう』だった。でも、その続きとしては、採用したいです」
+        }
+    }
+    -> ending
+* [「次からは字幕を付けてください」]
+    # effect: gt_agra_date_guru_ka_taal_second_playful
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,exasperated,anger
+        「全部説明するの、わたしだけ？　そっちも、たまには先に言ってね」
+    - else:
+        # speaker: heroine
+        # reaction: heroine,happy,music
+        「では字幕。『塔を見たかった人は、満足しています』。これで伝わりましたか」
     }
     -> ending
 
 === ending ===
 # speaker: narrator
-しばらくして彼女がこちらを見る。目が合って、二人は静かに出口へ向かった。
-# speaker: narrator
-預けていた靴を受け取ると、彼女は片方を履く前に中を確かめた。身支度を整えてから、もう一度塔の方を振り向く。
+彼女はもう一度塔を振り返った。次にこちらを向いた時は、顔だけで伝えようとしなかった。
 # speaker: heroine
 # emotion: smile
-「最初に見つけた塔、帰りも気になっちゃうね。次に思い出すときも、あそこから始まりそう」
+「今日は、見たい方に付き合ってくれてありがとう。帰りは、そっちが気になったものも教えてね」
 { relationship_tone_after == "warm" || relationship_tone_after == "comfortable":
 # speaker: heroine
-# emotion: teasing
-「帰り道では、そっちが見つけたものも教えてね。わたし、一つ見始めると長いから」
+# reaction: heroine,teasing,music
+「目だけで言うと、今度はわたしが違う方へ行くからね」
 - else:
-# speaker: heroine
-「このあと、少し休んでから行こう。次の行き先も、そこで決めたいな」
-}
 # speaker: narrator
-返すものを返し終え、二人は入口を離れる。彼女は今度はこちらが歩き出すのを待ち、隣へ並んだ。
+こちらがうなずくのを確かめ、彼女は隣へ並んだ。出発の合図は、それで通じた。
+}
 -> END

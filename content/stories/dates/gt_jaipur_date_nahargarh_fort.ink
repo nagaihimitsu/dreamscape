@@ -13,132 +13,125 @@ VAR spark_delta = 0
 
 # background: gt_bg_jaipur_nahargarh_fort
 # speaker: narrator
-アラヴァリ丘陵の尾根に立つナハルガル城から、ジャイプールの町が広がっていた。{heroine_name}は安全な見学路の内側で足を止める。
+ナハルガル城から、ジャイプールの屋根が広がっていた。彼女が見学路を進み、遠くの通りを指す。こちらは足元を確かめたまま、一歩が遅れた。
 # speaker: heroine
-# emotion: happy
-「わあ。屋根って、こんなにあったんだ」
+# reaction: heroine,happy,sparkle
+「わあ。あの中を歩いていたんだね。こっちから、もっと――」
 # speaker: narrator
-視線だけが先へ進む。もう一歩は出さずに、彼女は足元を確かめた。
+彼女の声が途中で止まる。こちらの足が動いていないことに気づき、自分が来た道を戻ってきた。
 # speaker: heroine
-「高いところから見るのは好き。でも、端に近づくのは別。ここで十分見えるね」
+# emotion: worried
+「ごめん。見せたい方へ先に行っちゃった。高さ、気になる？」
 # speaker: narrator
-隣に並ぶと、彼女は手をひさしにした。建物が重なり、その間を道が細く通っている。
+小さくうなずくと、彼女は景色ではなく、落ち着いて立てる位置を探した。
 # speaker: heroine
-「地図を見たときは、すぐ分かった気になったのに。実物だと、どこから目で追えばいいんだろう」
-{
-- relationship_tone == "strained":
-    # speaker: heroine
-    「少し、自分で探してみるね。分からなくなったら聞いてもいい？」
-- relationship_tone == "warm" || relationship_tone == "romantic_tension":
-    # speaker: heroine
-    # emotion: teasing
-    「先に分かっても、三秒くらい待ってて。今、すごく得意そうな顔を準備してるから」
-- else:
-    # speaker: heroine
-    「あの大きい道をたどってみようかな。地図、こっちにも見せてもらっていい？」
-}
+「じゃあ、今度はわたしがゆっくり歩く係ね。端まで行かなくても、町は見えるよ」
 
-* [「一つずつ、道をたどろう」]
+* [「手を借りてもいい？」]
     # effect: gt_jaipur_date_nahargarh_fort_first_attentive
     { romance_result == "negative":
         # speaker: heroine
-        「うん。でも、指が先に行くと追えなくなる。もう少しゆっくりお願い」
+        # emotion: worried
+        「待って。わたし、支え方まで分かるわけじゃないよ。少し奥へ戻って、落ち着いてからにしよう」
     - else:
         # speaker: heroine
-        # emotion: smile
-        「お願い。あ、そこまでなら見える。曲がった先は、あの屋根の後ろかな」
+        # reaction: heroine,smile,heart
+        { ending_reached:
+            「うん。今日はわたしが貸す方。しっかり、ここにいて」
+        - else:
+            「わたしでよければ。怖い方が一人で頑張る決まり、ないもんね」
+        }
+        # speaker: narrator
+        差し出された手を、見学路の内側でそっと握る。彼女は急に引かず、こちらが動き出すのを待った。
     }
     -> city
-
-* [「得意そうな顔だけなら、もうできてる」]
+* [「景色には強いけど、高さには弱かった」]
     # effect: gt_jaipur_date_nahargarh_fort_first_playful
     { romance_result == "negative":
         # speaker: heroine
-        「今、結構真剣だったんだけど。笑うのは、見つかってからにして」
+        # reaction: heroine,exasperated,sweat
+        「ふざけて平気な顔にしなくてもいいよ。わたし、今はちょっと心配してるんだから」
     - else:
         # speaker: heroine
-        # emotion: teasing
-        「顔だけ先に到着しました。中身が追いつくまで、もう少々お待ちください」
+        # reaction: heroine,teasing,music
+        「担当が分かれてたんだ。じゃあ、景色に強い方と一緒に、ゆっくり歩きます」
     }
     -> city
-
-* [「自分も、地図と結びつかなくなった」]
+* [「怖い。今日は無理せず、ここから見たい」]
     # effect: gt_jaipur_date_nahargarh_fort_first_honest
     { romance_result == "negative":
         # speaker: heroine
-        「二人で分からなくなると心細いね。一度、地図の向きから確かめよう」
+        「ここだと落ち着けない顔に見えるよ。もう半歩、奥へ戻るのはどう？」
     - else:
         # speaker: heroine
-        「よかった、わたしだけじゃなかった。じゃあ、同じ道を見てるかから始めよっか」
+        # emotion: smile
+        「うん。そう言ってもらえたら、待つ方も困らない。今日はここからにしよう」
     }
     -> city
 
 === city ===
 # speaker: narrator
-二人の指が、ようやく同じ道を指した。彼女は地図を下げ、もう一度、町全体を見渡す。
+二人は、落ち着いて立てる位置を選んだ。屋根の列は、そこからでも遠くへ続いている。
 # speaker: heroine
-# emotion: smile
-「分かった。たぶん、あれ。……ううん、たぶんのままにしておこう。帰って確かめたい」
+# emotion: neutral
+「ちゃんと見える。見せたい場所へ連れていくことばかり考えてたな、わたし」
 # speaker: narrator
-地図を閉じると、細かい屋根の列がまた目に入る。彼女は息を吐き、首を左右へゆっくり動かした。
+地図を開くと、彼女の指が一本の道をたどる。今度は足を動かさず、遠くの景色とゆっくり照らし合わせた。
 # speaker: heroine
-「小さく見えるのに、一軒ずつに階段があって、部屋があるんだよね。誰かが今、探し物してたりするのかな」
-「わたしなら、この眺めの中で自分の洗濯物を探すのは無理。目立つ色にしないと」
+「地図では小さい四角でも、あそこに階段があって、誰かの部屋があるんだね」
 # speaker: narrator
-笑った彼女は、しまいかけた地図をもう一度開く。それから少し迷って、鞄へ戻した。
+一軒を見つめたまま、彼女がふっと笑った。
 # speaker: heroine
-「全部の場所が分かるまで頑張るつもりだったけど、今日は、眺める方がいいな」
+「いつも、わたしがびっくりする方だと思ってた。今日は、こっちが待つ番だったね」
+「怖い顔も、見せてくれる方がいいな。見栄を張るの、交代で休もう」
 
-* [「少し、何も探さずに見よう」]
-    # effect: gt_jaipur_date_nahargarh_fort_second_attentive
-    { romance_result == "negative":
-        # speaker: heroine
-        「うん。でも『何も探さない』って思うと、逆に探しちゃう。気にせず見よう」
-    - else:
-        # speaker: heroine
-        # emotion: smile
-        「賛成。分からない建物にも、順番に目を止めてみたい」
-    }
-    -> rest
-
-* [「探し物が見つからない人を応援しよう」]
-    # effect: gt_jaipur_date_nahargarh_fort_second_playful
-    { romance_result == "negative":
-        # speaker: heroine
-        「本当に困ってたら、遠くから応援だけじゃ足りないね。勝手な想像だったかな」
-    - else:
-        # speaker: heroine
-        # emotion: happy
-        「じゃあ、洗濯物係はわたし。鍵係をお願いします。無事に出かけられますように」
-    }
-    -> rest
-
-* [「ここからの町を、一緒に見られてよかった」]
+* [「次の旅でも、格好悪い顔を君に見せたい」]
     # effect: gt_jaipur_date_nahargarh_fort_second_honest
     { romance_result == "negative":
         # speaker: heroine
-        「まだ終わりみたいに言わないで。もう少し見たいんだから」
+        # reaction: heroine,teasing,question
+        「格好悪い顔の予約？　次の行き先を決める時は、楽しい顔も見せてね」
     - else:
         # speaker: heroine
-        # emotion: shy
-        「うん。一人だったら、地図とにらめっこしたままだったかもしれない」
+        # reaction: heroine,shy,heart
+        「うん。次にわたしが怖がってたら、今日みたいにゆっくり歩いて。その時は、交代で」
+    }
+    -> rest
+* [「今、頼もしかった。ありがとう」]
+    # effect: gt_jaipur_date_nahargarh_fort_second_attentive
+    { romance_result == "negative":
+        # speaker: heroine
+        「頼もしい役、ずっとはできないかも。今日も、最初は気づかずに先へ行ったし」
+    - else:
+        # speaker: heroine
+        # reaction: heroine,happy,sparkle
+        「ほんと？　……ふふ。わたしも役に立てたなら、ここへ来た甲斐がもう一つ増えた」
+    }
+    -> rest
+* [「勇敢な二人、帰り道は慎重に撤退します」]
+    # effect: gt_jaipur_date_nahargarh_fort_second_playful
+    { romance_result == "negative":
+        # speaker: heroine
+        # emotion: exasperated
+        「もう平気なふりしてる？　勇敢じゃなくても、ちゃんと一緒に帰るよ」
+    - else:
+        # speaker: heroine
+        # reaction: heroine,teasing,music
+        「まずは景色を見届けてからね。勇敢なふりはしなくていいから、足元は見てください」
     }
     -> rest
 
 === rest ===
-{ relationship_tone_after == "guarded_attraction" || relationship_tone_after == "romantic_tension":
+{ relationship_tone_after == "strained" || relationship_tone_after == "reserved":
     # speaker: narrator
-    彼女がこちらを見た。目が合うと、照れ隠しのようにまた町を指す。
-    # speaker: heroine
-    # emotion: teasing
-    「あ、そっちは見なくていいの。せっかくここまで来たんだから」
+    彼女は帰る前に、気になる道をもう一つ指した。見えているか尋ね、こちらのうなずきを待つ。
 - else:
     # speaker: narrator
-    しばらく、二人とも地図を出さなかった。彼女は気になる屋根を見つけるたび、小さく指を差した。
+    彼女は目が合うと笑い、それから町を眺め直した。こちらが町へ目を向けられたのを見ると、さっきの通りをもう一度指した。
 }
-# speaker: narrator
-帰り道の方へ身体を向けてから、{heroine_name}は肩越しにもう一度町を眺めた。
 # speaker: heroine
 # emotion: smile
-「次はあの中を歩くんだね。上から見たのを覚えてるうちに、いつもの大きさでも見てみたい」
+「下に戻ったら、今見えた道を見つけたいな。その時は、いつもの高さに強い人に案内をお願いします」
+# speaker: narrator
+二人はゆっくり見学路を戻った。彼女が一度だけ振り返り、景色の方へ小さく手を上げた。
 -> END

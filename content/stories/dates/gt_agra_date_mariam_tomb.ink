@@ -13,114 +13,126 @@ VAR spark_delta = 0
 
 # background: gt_bg_agra_mariam_tomb
 # speaker: narrator
-マリアム・ウッザマーニー廟の案内を、{heroine_name}がゆっくり読んでいる。読み終えると、砂岩の建物を見上げた。
+マリアム・ウッザマーニー廟の案内には、アクバルの王妃、ジャハーンギールの母、と記されていた。{heroine_name}は読み終えてからも、しばらくそこに立っている。
 # speaker: heroine
 # emotion: neutral
-「皇帝の母、王妃。関係を聞くと、誰のことかは分かりやすくなるね」
+「関係を聞くと、誰かは分かる。でも、どんなことが好きだったかは、ここには書いてないんだね」
 # speaker: narrator
-マリアム・ウッザマーニーは、アクバルの王妃で、ジャハーンギールの母として紹介されている。
-# speaker: heroine
-「どんなものが好きだったのかな。それは、ここにある説明だけじゃ分からないんだ」
-# speaker: narrator
-彼女は分からないところを想像で埋めず、案内から目を離した。歩き始めてから、ふと思いついたようにこちらを見る。
+こちらが左の園路へ顔を向けると、彼女も一度ついてくる。二歩目で止まり、右側の建物の見え方を振り返った。
 # speaker: heroine
 # emotion: smile
-「わたしを一行で紹介するなら、どうなるんだろう。旅の同行者、だけだと少し寂しいかも」
-{ relationship_tone == "warm" || relationship_tone == "comfortable":
-# speaker: heroine
-# emotion: teasing
-「でも、今から欠点の一覧は出さないでね。一行だから」
-}
+「わたしを誰かに紹介するなら、どう言う？　旅行の同行者、以外で聞いてみたい」
 
-* [「気になるものを、よく見つける人」]
+* [「俺を振り回す、なかなか手強い人」]
+    # effect: gt_agra_date_mariam_tomb_first_provocative
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,serious,anger
+        「振り回してるつもりはないよ。そう言われると、行きたい所まで言いにくくなる」
+    - else:
+        # speaker: heroine
+        # reaction: heroine,teasing,music
+        「手強い、は少しうれしい。いつも合わせてくれる人、よりは、わたしに近いかも」
+    }
+    -> after_first
+* [「今、世界で一番気になっている人」]
+    # effect: gt_agra_date_mariam_tomb_first_bold
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,exasperated,blush
+        「それ、わたしの紹介というより、そっちの気持ちだよね。……気持ちの方は、ちゃんと聞いたけど」
+    - else:
+        { ending_reached:
+        # speaker: heroine
+        # reaction: heroine,teasing,heart
+        「恋人です、より困る紹介。うれしい顔をしたまま、挨拶することになっちゃう」
+        - else:
+        # speaker: heroine
+        # reaction: heroine,shy,blush
+        「待って。わたし、自分の紹介を聞いてたんだけど。……その続きも、少し気になる」
+        }
+    }
+    -> after_first
+* [「人の話を、ちゃんと聞こうとする人」]
     # effect: gt_agra_date_mariam_tomb_first_attentive
     { romance_result == "negative":
         # speaker: heroine
-        「そう見えてるんだ。見つけたのに、声をかけそびれることも多いんだけどね」
+        # emotion: worried
+        「うん。でも、聞いてるうちに自分の番を逃すこともある。いいところだけだと、少し窮屈だな」
     - else:
         # speaker: heroine
-        # emotion: happy
-        「それ、うれしい。見つけたあと、一緒に見てもらえるのも好きなんだ」
-    }
-    -> after_first
-* [「寄り道の理由を、すぐ思いつく人」]
-    # effect: gt_agra_date_mariam_tomb_first_playful
-    { romance_result == "negative":
-        # speaker: heroine
-        「それだと、予定を遅らせる人みたい。行きたいところがある、って言ってほしいな」
-    - else:
-        # speaker: heroine
-        # emotion: teasing
-        「理由だけじゃないよ。本当に気になってるんです。……説得は、ちょっと頑張るけど」
-    }
-    -> after_first
-* [「まだ、一行では言い切れない人」]
-    # effect: gt_agra_date_mariam_tomb_first_honest
-    { romance_result == "negative":
-        # speaker: heroine
-        「まだ、か。ひとつくらい聞けると思ってたから、少し残念」
-    - else:
-        # speaker: heroine
-        # emotion: shy
-        「それなら、続きを知ってもらえるといいな。一行より、少し長く」
+        # emotion: smile
+        「そう見てくれたのは、うれしい。でも、今日は聞くだけじゃない方も、知ってほしい」
     }
     -> after_first
 
 === after_first ===
 # speaker: narrator
-彼女は返事を頭の中で繰り返すように、少し黙って歩いた。それから、片手を小さく上げる。
+彼女は今来た道を、右へ指し直した。
 # speaker: heroine
-# emotion: smile
-「わたしからも一つ足していい？　気を遣ってるように見えて、けっこう頑固なときがある人」
+# emotion: serious
+「本当は、あっちから見たかった。最初に言えばよかったのに、なんとなく合わせちゃった」
 # speaker: narrator
-本人がそう言うと、妙に言い切った紹介になった。こちらが笑うと、彼女も口元をゆるめる。
+こちらがすぐ向きを変えると、彼女は慌てて手を下ろす。
 # speaker: heroine
-「何でもいい、って言ってから、やっぱりこっちがよかったって思うこともある。先に言えばいいのにね」
+# reaction: heroine,worried,sweat
+「違う、急いで直してほしいわけじゃなくて。左を見たかったなら、それも聞きたい。わたしだけが決めたいんじゃないから」
 
-* [「言い直してくれたら、聞きたい」]
-    # effect: gt_agra_date_mariam_tomb_second_attentive
-    { romance_result == "negative":
-        # speaker: heroine
-        「ありがとう。でも、いつでも言えるわけじゃないから。今は、それだけ知っててほしい」
-    - else:
-        # speaker: heroine
-        # emotion: smile
-        「うん。言い直すまで時間がかかっても、聞いてくれるとうれしい」
-    }
-    -> ending
-* [「そういうところも、もっと知りたい」]
-    # effect: gt_agra_date_mariam_tomb_second_bold
-    { romance_result == "negative":
-        # speaker: heroine
-        「全部まとめて見せるのは、ちょっと難しいな。話したくなったときでいい？」
-    - else:
-        # speaker: heroine
-        # emotion: shy
-        「面倒だと思う日もあるかもしれないよ。……それでも、知りたいって言ってくれるのはうれしい」
-    }
-    -> ending
-* [「自分にも、言いそびれることがある」]
+* [「左も気になる。右のあとで見たい」]
     # effect: gt_agra_date_mariam_tomb_second_honest
     { romance_result == "negative":
         # speaker: heroine
-        「そっか。今、わたしの話も、もう少し聞いてほしかったけど。その話もあとで聞きたい」
+        # emotion: serious
+        「うん。それを先に聞けたらよかった。わたしも、先に言うから」
     - else:
         # speaker: heroine
-        「そうなんだ。じゃあ、わたしも聞けるようになりたい。自分のことばっかり気にしないで」
+        # reaction: heroine,smile,sparkle
+        「じゃあ、両方。こんなに短い相談で済んだのに、頭の中ではずっと迷ってた」
+    }
+    -> ending
+* [「遠慮していない君にも、会いに来た」]
+    # effect: gt_agra_date_mariam_tomb_second_bold
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,exasperated,sweat
+        「そんなに立派な理由にしないで。今は、右か左かの話をしたい」
+    - else:
+        { relationship_tone_after == "guarded_attraction" || relationship_tone_after == "strained":
+        # speaker: heroine
+        # emotion: shy
+        「うれしい。でも、急に全部は見せられないよ。まず、右を見たいわたしからでいい？」
+        - else:
+        # speaker: heroine
+        # reaction: heroine,teasing,heart
+        「じゃあ、遠慮しない。右を見たいし、そのあと、そっちの話も聞きたい。両方付き合って」
+        }
+    }
+    -> ending
+* [「紹介文に『たまに頑固』を追加します」]
+    # effect: gt_agra_date_mariam_tomb_second_playful
+    { romance_result == "negative":
+        # speaker: heroine
+        # emotion: serious
+        「たまに、じゃないかも。だから、笑って終わらせずに聞いてね」
+    - else:
+        # speaker: heroine
+        # reaction: heroine,teasing,music
+        「はい、本人確認済み。あと『言い直すまで、少し時間がかかる』も、小さく入れておいて」
     }
     -> ending
 
 === ending ===
 # speaker: narrator
-道が分かれるところで、彼女は先に行きたい方を指した。少しだけ迷い、それでも手は引っ込めない。
-# speaker: heroine
-# emotion: smile
-「こっちから、もう一度建物を見たいな。よかったら、付き合って」
+右から建物を見る。それから、二人で左へ回った。どちらから見るのが正しいか、という話にはならなかった。
 { relationship_tone_after == "warm" || relationship_tone_after == "romantic_tension":
 # speaker: heroine
-# emotion: teasing
-「ほら。紹介文の続き、さっそく出てきた」
+# emotion: smile
+「紹介文、長くなったね。次に誰かへ話す時は、わたしも横にいて続きを言おうかな」
+- else:
+# speaker: heroine
+# emotion: smile
+「さっきの紹介、一行だけで決めなくてよかった。わたしの方にも、まだ訂正がありそう」
 }
 # speaker: narrator
-二人は彼女の選んだ方へ歩いた。帰り道の相談は、その景色を見てからにした。
+彼女はもう一度、見たい所を指した。今度は、こちらの返事を待つ顔をしていた。
 -> END

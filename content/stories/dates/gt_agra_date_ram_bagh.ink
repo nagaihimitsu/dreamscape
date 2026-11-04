@@ -13,119 +13,133 @@ VAR spark_delta = 0
 
 # background: gt_bg_agra_ram_bagh
 # speaker: narrator
-ラム・バーグの園路に入ると、{heroine_name}は歩く速さを落とした。地図を開きかけ、そのまま鞄へ戻す。
+ラム・バーグの園路を歩いていた{heroine_name}が、急に歩く速さを落とした。こちらが合わせると、彼女は少しだけ唇を尖らせる。
 # speaker: heroine
 # emotion: neutral
-「今日はここで、少し休みたいな。来て早々なんだけど」
+「疲れた、とはまだ言ってません」
 # speaker: narrator
-彼女が選んだのは、通路から少し離れた休める場所だった。腰を下ろして、両足をそろえ直す。
+立ち止まって見返すと、彼女が先に笑った。
 # speaker: heroine
-「庭を歩きに来たのにって、ちょっと思った。でも、今は座った方が楽しめそう」
-{ relationship_tone == "strained" || relationship_tone == "reserved":
+# reaction: heroine,exasperated,sweat
+「ごめん。見栄です。ゆっくり歩きたいです」
+# speaker: narrator
+初期のムガル庭園の一つとされる、バーブル期の庭。園路と水路の並ぶ眺めは、急がずとも先へ続いている。
 # speaker: heroine
-「{player_address}は、見たいところある？　無理に合わせなくていいからね」
-- else:
-# speaker: heroine
-# emotion: teasing
-「次々行きたい気持ちと、足の意見が割れました。今は足に一票」
-}
+# reaction: heroine,teasing,music
+「せっかくだから、今日は一番遅く歩いた人が勝ち、ってどう？　立ち止まるのもあり」
 
-* [「ここで一緒に休もう」]
-    # effect: gt_agra_date_ram_bagh_first_attentive
-    { romance_result == "negative":
-        # speaker: heroine
-        「ありがとう。でも、わたしに合わせて長く休まなくても大丈夫。行きたくなったら教えてね」
-    - else:
-        # speaker: heroine
-        # emotion: smile
-        「うん。座る場所を探すだけで、ちょっと元気になった。変なの」
-    }
-    -> after_first
-* [「足の代表として賛成します」]
-    # effect: gt_agra_date_ram_bagh_first_playful
-    { romance_result == "negative":
-        # speaker: heroine
-        「ふふ。でも今は、議論より水がほしいかも。鞄を取らせて」
-    - else:
-        # speaker: heroine
-        # emotion: happy
-        「可決。では、地図を閉じてください。これより休憩に入ります」
-    }
-    -> after_first
-* [「自分も、座りたかった」]
+* [「自分も疲れた。競争より、休みたい」]
     # effect: gt_agra_date_ram_bagh_first_honest
     { romance_result == "negative":
         # speaker: heroine
-        「それなら、もう少し早く言ってくれてよかったのに。わたしだけ我慢してないか気になってた」
+        # emotion: worried
+        「そうだったんだ。わたし、遊びにしたら言いやすいと思ってた。先に座る？」
     - else:
         # speaker: heroine
-        「そうなの？　じゃあ、わたしが先に言えてよかった。二人とも待ってたんだね」
+        # emotion: smile
+        「うん、そうしよう。……わたし、負けず嫌いの方向を間違えてたね」
+    }
+    -> after_first
+* [「一歩目で昼寝に入れば優勝できる」]
+    # effect: gt_agra_date_ram_bagh_first_playful
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,exasperated,anger
+        「寝るのはホテルにして。わたし、庭まで来て寝顔の番はしたくない」
+    - else:
+        # speaker: heroine
+        # reaction: heroine,happy,music
+        「審判として却下。起きている方にも、勝つ機会をください」
+    }
+    -> after_first
+* [「遅い方を、お姫様抱っこするのは？」]
+    # effect: gt_agra_date_ram_bagh_first_bold
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,serious,anger
+        「しません。抱えられるより、わたしの速さに付き合ってほしい」
+    - else:
+        { ending_reached:
+        # speaker: heroine
+        # reaction: heroine,teasing,blush
+        「わたしが勝ったら、そっちを抱えるの？　ルール、今のうちに直した方がいいよ」
+        - else:
+        # speaker: heroine
+        # reaction: heroine,surprised,blush
+        「何を言い出すの。……勝負は中止。変な想像をさせた人は、隣をゆっくり歩いてください」
+        }
     }
     -> after_first
 
 === after_first ===
 # speaker: narrator
-水を飲み、しばらく園路を行く人を眺める。彼女は手元の案内だけを開いた。
+一度休んでから、二人で園路へ戻った。彼女は思いついた遅い歩き方を一歩だけ試し、かえって歩きにくくなった自分に笑う。
 # speaker: heroine
-「この庭、バーブルの時代に造られたんだって。初期のムガル庭園の一つ。歩く道や水路が、ここにもあるんだね」
+# reaction: heroine,exasperated,sweat
+「やっぱり、普通に歩く方が楽。競争にしようと思ったのが、間違いだったね」
 # speaker: narrator
-先へ進む人を見送ったあと、彼女はこちらの足元を見た。片方の靴紐が、ゆるんでいる。
+水路の曲がる先が気になり、彼女はそちらへ顔を向けた。しかし、足はまだ動かさない。
 # speaker: heroine
 # emotion: smile
-「そこ、結び直しておこう。休んでる間に、わたしは次に見るところを一つだけ探す」
-# speaker: narrator
-彼女は地図ではなく、目の前の園路を見回した。
-# speaker: heroine
-「このまま、もう少しここにいる？　それとも、あの道を少しだけ歩く？」
+「あそこまでは、見たい。本当に。元気なふりじゃなくて」
 
-* [「今の場所から見えるものを探そう」]
+* [「では、最下位の二人で出発します」]
+    # effect: gt_agra_date_ram_bagh_second_playful
+    { romance_result == "negative":
+        # speaker: heroine
+        # emotion: serious
+        「もう順位はいいよ。遅いことをずっと話されると、気になっちゃう」
+    - else:
+        # speaker: heroine
+        # reaction: heroine,happy,music
+        「同率最下位。いいね、誰も先に着いて待たなくていい」
+    }
+    -> ending
+* [「途中で戻りたくなったら、一緒に戻ろう」]
     # effect: gt_agra_date_ram_bagh_second_attentive
     { romance_result == "negative":
         # speaker: heroine
-        「探すって決めると、ちょっと忙しいかも。わたしは、もう少しぼんやり見てたい」
-    - else:
-        # speaker: heroine
-        「いいね。さっきから同じところを見てるのに、人が通ると違って見える」
-    }
-    -> ending
-* [「歩くなら、ゆっくり並んで行こう」]
-    # effect: gt_agra_date_ram_bagh_second_bold
-    { romance_result == "negative":
-        # speaker: heroine
-        「うん。でも今すぐは、まだ。わたしが立つまで、少し待ってて」
-    - else:
-        # speaker: heroine
-        # emotion: shy
-        「うん。急がない約束なら。わたしが立ち止まっても、置いていかないでね」
-    }
-    -> ending
-* [「あと少し、何もしないでいたい」]
-    # effect: gt_agra_date_ram_bagh_second_honest
-    { romance_result == "negative":
-        # speaker: heroine
-        「わたしは少し歩きたくなってきた。でも、急がなくて大丈夫。ここから見てる」
+        # emotion: serious
+        「うん。でも、今は行きたいって方も信じてね。もう一回歩ける」
     - else:
         # speaker: heroine
         # emotion: smile
-        「賛成。何もしないって、わざわざ言うと少し楽しいね」
+        「ありがとう。それなら、行きたいって言いやすい。戻る時も、ちゃんと言うね」
+    }
+    -> ending
+* [「君となら、一番ゆっくりの旅もしたい」]
+    # effect: gt_agra_date_ram_bagh_second_bold
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,exasperated,question
+        「わたし、速く歩きたい日もあるよ。今日のわたしだけで、全部決めないで」
+    - else:
+        { relationship_tone_after == "guarded_attraction" || relationship_tone_after == "strained":
+        # speaker: heroine
+        # reaction: heroine,shy,blush
+        「今日は、そう言ってくれると安心する。ほかの日は、その日に聞いてね」
+        - else:
+        # speaker: heroine
+        # reaction: heroine,smile,heart
+        「じゃあ、わたしも。元気な時だけ一緒にいたい、とは思わないから」
+        }
     }
     -> ending
 
 === ending ===
 # speaker: narrator
-二人が立ち上がったのは、どちらからともなく鞄を持ったときだった。彼女が先に靴紐を確かめ、こちらへ目配せする。
+水路の先へ着いた時、彼女は勝ち負けを宣言しなかった。見たかった所を見て、自分から折り返す。
 # speaker: heroine
-# emotion: teasing
-「今度は大丈夫。足の意見も一致したみたい」
+# emotion: smile
+「今日は、ここまで。まだ歩けるけど、ここまでにしたい」
 { relationship_tone_after == "warm" || relationship_tone_after == "comfortable":
 # speaker: heroine
-# emotion: smile
-「休みたいって、また先に言うかも。そっちから言ってくれるのも、待ってるね」
+# reaction: heroine,teasing,music
+「帰りは普通に歩きます。遅く歩く才能がないことが判明したので」
 - else:
 # speaker: heroine
-# emotion: smile
-「あの道を見てから出よう。今なら、ゆっくり歩けそう」
+「また見栄を張ったら、自分で取り消すね。さっきみたいに」
 }
 # speaker: narrator
-地図は開かず、見えるところまで歩いてみる。先ほどより、二人の歩幅がそろっていた。
+二人は競わず、元の園路へ戻った。
 -> END

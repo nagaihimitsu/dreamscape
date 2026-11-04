@@ -13,130 +13,155 @@ VAR spark_delta = 0
 
 # background: gt_bg_delhi_lotus_temple
 # speaker: narrator
-ロータス寺院の白い輪郭を見て、{heroine_name}が足を止めた。近づく道の先に、花びらのような形が重なっている。
+ロータス寺院の白い花びらのような輪郭を見て、{heroine_name}が足を止める。信仰を問わず祈りや瞑想のために訪ねられる、バハイの礼拝堂だ。
 # speaker: heroine
-# emotion: happy
-「ほんとに、咲きかけの花みたい。近くで見ると、曲がってるところが大きいね」
+# reaction: heroine,happy,sparkle
+「写真より、花びらの間が広い。中に入ったら、どんな感じなんだろう」
 # speaker: narrator
-入口の案内を読み、二人は声を落とした。信仰を問わず、祈りや瞑想のために訪ねられるバハイの礼拝堂だという。
+二人は入口の案内を読み、会話を終える前に少し離れた場所で立ち止まった。
 # speaker: heroine
-「わたし、静かにしていると、何か立派なことを考えなきゃって焦る時がある」
+「出てきたら、何を考えたか聞く？　わたし、たぶん、立派な感想は出てこない」
 { relationship_tone == "reserved" || relationship_tone == "strained":
     # speaker: narrator
-    彼女は言い過ぎたか確かめるように、こちらの顔を見た。
+    答えを期待しているようにも、聞かれたくないようにも見える。彼女自身、まだ決めていないらしい。
 - else:
     # speaker: heroine
-    # emotion: teasing
-    「考えた結果が『あとで水を飲もう』でも、先に言っておけば驚かないでしょ」
+    # reaction: heroine,teasing,question
+    「頭の中まで答え合わせするの、ちょっと大変そうでしょ」
 }
 
-* [「何を考えたか、話さなくてもいいと思う」]
-    # effect: gt_delhi_date_lotus_temple_first_attentive
-    { romance_result == "negative":
-        # speaker: heroine
-        「話したくなった時は聞いてね。今はまだ、どっちか分からないから」
-    - else:
-        # speaker: heroine
-        # emotion: smile
-        「うん。感想を用意しなくていいなら、気が楽になった」
-    }
-    -> after_first
-
-* [「水のことは、二人で覚えておこう」]
-    # effect: gt_delhi_date_lotus_temple_first_playful
-    { romance_result == "negative":
-        # speaker: heroine
-        「忘れないように、って話じゃなかったんだけど。……でも、出たら飲もうね」
-    - else:
-        # speaker: heroine
-        # emotion: smile
-        「大事な共同作業になった。じゃあ、今はそれも少し置いておきます」
-    }
-    -> after_first
-
-* [「自分も、うまい感想は浮かばないかもしれない」]
+* [「自分は、君に話したいことが出てきそう」]
     # effect: gt_delhi_date_lotus_temple_first_honest
     { romance_result == "negative":
         # speaker: heroine
-        「先に決めなくてもいいよ。何か浮かんだら、わたしは聞きたい」
+        # reaction: heroine,worried,sweat
+        「先に言われると、聞く準備をしたまま座っちゃいそう。出てから、もう一度にしない？」
     - else:
         # speaker: heroine
-        「そっか。じゃあ二人とも、いいことを言う準備はしないで入ろう」
+        # reaction: heroine,smile,blush
+        「じゃあ、話したくなった分だけ。わたしも同じ量を返す約束は、まだしないよ」
         # speaker: narrator
-        彼女は案内をしまい、背中を少し伸ばした。
+        彼女は少し笑い、言い残すことがなくなったように入口を見る。
+    }
+    -> after_first
+
+* [「感想の提出なし。気が向いたら話そう」]
+    # effect: gt_delhi_date_lotus_temple_first_attentive
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,exasperated,question
+        「提出しないって決めるのも、ちょっと寂しいな。自分でも面倒なこと言ってるね」
+        # speaker: narrator
+        彼女は苦笑し、出てから決めることにした。
+    - else:
+        # speaker: heroine
+        # emotion: smile
+        「うん。何かを思いつくために座らなくてもいいんだね」
+        # speaker: narrator
+        彼女の手が、握っていた鞄の紐から離れた。
+    }
+    -> after_first
+
+* [「頭の中まで隣同士にしなくてもいいよね」]
+    # effect: gt_delhi_date_lotus_temple_first_playful
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,serious,gloom
+        「そうだけど。離れたいって聞こえる言い方は、今はちょっと嫌だな」
+        # speaker: narrator
+        こちらが隣の位置を示すと、彼女も、そこまで拒まれたわけではないと確かめた。
+    - else:
+        # speaker: heroine
+        # reaction: heroine,teasing,music
+        「うん。隣の頭から、突然お昼ごはんの話が流れてきても困るし」
+        # speaker: narrator
+        笑いを収めてから、二人は静かに入口へ向かった。
     }
     -> after_first
 
 === after_first ===
 # speaker: narrator
-二人は案内に従って入る。互いを急かさず、静かに過ごした。口を開きかけることもあったが、言葉にしないまま座っていられた。
+案内に従って中へ入り、二人は言葉を交わさず過ごす。相手の顔を読むことも、急いで答えを探すことも、しばらくやめていた。
 # speaker: narrator
-外に出てからも、彼女はすぐには話さなかった。人の流れから離れ、水を一口飲んで、ようやく笑う。
+外へ出て人の流れから離れても、彼女はすぐに感想を話さなかった。鞄を持ち直し、歩きながら一度だけこちらを見る。
 # speaker: heroine
-# emotion: smile
-「水のことは、覚えてました」
+# emotion: neutral
+「話せることもあるんだけど。今は、まだ言いたくないこともあった」
 # speaker: narrator
-彼女は白い建物を振り返る。入る前よりも、少しゆっくり目で追った。
+その言葉の後だけは、彼女は先を急がなかった。
 # speaker: heroine
-「あの中で、帰ったら誰に連絡しようかなって考えてた。何を見たか、話したくなった人がいて」
-# speaker: heroine
-「その後は、何もまとまらなかった。そっちは？　話しても、話さなくてもいいけど」
+# emotion: serious
+「隠し事、って名前をつけないで置いておいてもいい？」
 
-* [「今は、もう少し言葉にしないでいたい」]
-    # effect: gt_delhi_date_lotus_temple_second_honest
-    { romance_result == "negative":
-        # speaker: heroine
-        「そっか。聞きたい気持ちが先に出ちゃった。でも、急がせないよ」
-        # speaker: narrator
-        彼女は少しだけ残念そうにし、それでも次の問いを重ねなかった。
-    - else:
-        # speaker: heroine
-        「うん。そのまま持っていこう。後で話したくなったら、その時に」
-        # speaker: narrator
-        彼女も無理に話題を足さず、隣で歩き出した。
-    }
-    -> ending
-
-* [「隣にいるのを確かめたら、落ち着いた」]
+* [「黙って隣にいる時間も、君とほしい」]
     # effect: gt_delhi_date_lotus_temple_second_bold
     { romance_result == "negative":
         # speaker: heroine
-        # emotion: worried
-        「それはうれしいけど、わたしがいるかずっと気にしなくても大丈夫だよ。自分の時間も持ってね」
+        # reaction: heroine,worried,sweat
+        「うれしい言葉なのは分かる。でも今は、何か返せる顔をしてないから」
+        # speaker: narrator
+        彼女は視線を前へ戻す。こちらも言葉を重ねず、同じ速さで歩いた。
     - else:
         # speaker: heroine
-        # emotion: shy
-        「わたしも、一度だけ横を見た。邪魔しないで一緒にいられるの、いいね」
-        # speaker: narrator
-        彼女は今度は逃げずに、こちらの顔を見た。
+        # reaction: heroine,shy,blush
+        「それを言われたら、また黙る時間が必要になるんだけど」
+        { ending_reached:
+            # speaker: heroine
+            # emotion: smile
+            「……うん。今日は、その時間も一緒に帰ろう」
+        - else:
+            # speaker: heroine
+            「じゃあ、少しだけ。この先まで、何か言わなきゃって思わずに歩きたい」
+        }
     }
     -> ending
 
-* [「連絡したい人には、何を話すの？」]
+* [「自分も、今すぐ話せないことがあった」]
+    # effect: gt_delhi_date_lotus_temple_second_honest
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,worried,question
+        「それ、わたしに合わせて言ってない？　話したかったことまで、しまわないでね」
+        # speaker: narrator
+        こちらが首を振ると、彼女は自分の分だけでなく、相手の沈黙も受け取った。
+    - else:
+        # speaker: heroine
+        # emotion: smile
+        「そっか。じゃあ、お互いに持って帰ろう。いつか話す予約も、しないで」
+        # speaker: narrator
+        彼女の歩幅が、ようやく普段の長さへ戻る。
+    }
+    -> ending
+
+* [「今、話せる方だけ聞いてもいい？」]
     # effect: gt_delhi_date_lotus_temple_second_attentive
     { romance_result == "negative":
         # speaker: heroine
-        「そこは、まだ自分の中で考えておきたいな。誰に何を言うかも、旅の間に決めたい」
+        # emotion: serious
+        「聞きたいのは分かる。でも、どこから話せるか選ぶのにも、少し時間がほしい」
+        # speaker: narrator
+        彼女は断った後も、歩く場所を離さなかった。
     - else:
         # speaker: heroine
-        「ここで静かにしてた、って。それと、ちゃんと自分から寄り道を選んでるよって話す」
-        # speaker: narrator
-        彼女は少し照れくさそうに言い、その後は普段どおりの顔に戻った。
+        # reaction: heroine,smile,sparkle
+        「うん。一つだけ。静かにしてたら、帰ったら連絡したい人を思い出した」
+        # speaker: heroine
+        「心配させたくなくて、楽しい話だけ送ってたんだ。今日は、迷った話も少し送ろうかな」
     }
     -> ending
 
 === ending ===
 # speaker: narrator
-白い花の形が、歩くごとに少しずつ重なりを変える。二人は出口へ向かい、時々だけ振り返った。
+白い花の形が、歩くたびに重なりを変える。彼女は振り返り、さっきまでいた静かな場所を見た。
 { relationship_tone_after == "warm" || relationship_tone_after == "romantic_tension":
     # speaker: heroine
     # emotion: smile
-    「今日、同じことを考えてなくても一緒に来てよかったって思った。そういう時間もあるんだね」
+    「出てからも、隣にいてくれてありがとう。……これは、言いたかった方」
 - else:
     # speaker: heroine
-    # emotion: smile
-    「静かな所に来たら、全部静かになるわけじゃないんだね。頭の中、案外忙しかった」
+    # emotion: neutral
+    「さっきのこと、すぐ分かったふりをしないで聞いてくれて、ありがとう」
 }
 # speaker: narrator
-彼女は残りの水を確かめてから、鞄を閉じた。次の話は、歩き始めてしばらくしてからだった。
+その先は、二人とも何も付け足さずに歩いた。沈黙は礼拝堂に置いてくるものではなかった。
 -> END

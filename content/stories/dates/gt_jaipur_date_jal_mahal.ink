@@ -13,126 +13,127 @@ VAR spark_delta = 0
 
 # background: gt_bg_jaipur_jal_mahal
 # speaker: narrator
-マン・サーガル湖の岸で、{heroine_name}は歩みを止めた。水の向こうに、ジャル・マハルの黄色い壁と小さな屋根が並んでいる。
+マン・サーガル湖の岸に立つ。ジャル・マハルの姿は水に映り、波紋のたびに小さな屋根がほどけていた。
 # speaker: heroine
-# emotion: surprised
-「あ、本当に湖の真ん中にある。写真だと、岸の続きに見えてた」
+# reaction: heroine,happy,sparkle
+「宮殿が二つ。下の方だけ、ずっと引っ越ししてる」
 # speaker: narrator
-彼女は案内を確かめた。今回は宮殿の中へ入るのではなく、湖岸から眺める。
+宮殿の中には入らず、湖岸で眺める。彼女は反射の揃う瞬間を知らせようとして、こちらへ向いた。その隙に、屋根がまた崩れた。
 # speaker: heroine
-「ちょっと残念。窓の近くまで行けるかなって、楽しみにしてたから」
-「でも、ここなら水に映った方も見えるね。あ、今きれいに――あー、揺れた」
-# speaker: narrator
-波紋に切れた屋根が、少し離れたところでまたつながる。彼女は視線で追いかけた。
-{
-- relationship_tone == "strained" || relationship_tone == "reserved":
-    # speaker: heroine
-    「もう少し見ていてもいい？　きれいにつながるところ、一度見たいな」
-- else:
+# reaction: heroine,exasperated,sweat
+「あー。教えようとすると、わたしが見逃す」
+# speaker: heroine
+「決めた。しばらく二人とも黙って、湖を見る。揃っても、しゃべらない」
+{ relationship_tone == "warm" || relationship_tone == "romantic_tension":
     # speaker: heroine
     # emotion: teasing
-    「宮殿にはもう会えたけど、下の宮殿が落ち着かない。こっちも待ってあげようよ」
+    「そっちを見たくなっても、わたしが我慢します。……何、その顔。もう始めるよ」
+- else:
+    # speaker: narrator
+    彼女は唇の前へ指を立て、すぐに自分で照れたように手を下ろした。
 }
 
-* [「どの屋根を待ってる？」]
-    # effect: gt_jaipur_date_jal_mahal_first_attentive
+* [「黙って君を好きになっててもいい？」]
+    # effect: gt_jaipur_date_jal_mahal_first_bold
     { romance_result == "negative":
         # speaker: heroine
-        「指で示そうとすると見失うね。ちょっとだけ、目で追わせて」
+        # reaction: heroine,surprised,interrobang
+        「黙る話をしてたのに、一番黙れなくなること言ったね。今は返事、求めないで」
     - else:
         # speaker: heroine
-        # emotion: smile
-        「真ん中から少し右の、小さいの。いちばん先に揺れるのに、いつも見ちゃう」
+        # reaction: heroine,shy,blush
+        { ending_reached:
+            「もっと、ってこと？　……それなら止めない。湖、ちゃんと見えるかな」
+        - else:
+            「そんな許可、急に……。だめとは言ってないけど。今、顔は見ないで」
+        }
     }
     -> water
-
-* [「水の方が、落ち着きがないね」]
+* [「先に笑った方が、宮殿を掃除する」]
     # effect: gt_jaipur_date_jal_mahal_first_playful
     { romance_result == "negative":
         # speaker: heroine
-        「わたしも今、そわそわしてる。そこまで一緒にしないでね」
+        # reaction: heroine,exasperated,sigh
+        「入れない宮殿を罰ゲームにしないで。わたし、ほんとに静かに見たいんだよ」
     - else:
         # speaker: heroine
-        # emotion: teasing
-        「うん。きれいに並んだところで、すぐ配置替え。忙しい宮殿です」
+        # reaction: heroine,happy,music
+        「届くほうきがありません。……あっ、もう笑っちゃった。始める前だから無効！」
     }
     -> water
-
-* [「待ってる間の景色も好きだな」]
-    # effect: gt_jaipur_date_jal_mahal_first_honest
+* [「揃ったら、声を出さずに指で知らせよう」]
+    # effect: gt_jaipur_date_jal_mahal_first_attentive
     { romance_result == "negative":
         # speaker: heroine
-        「わたしは、まだつながったところが見たい。欲張りかな。でも、もう少し」
+        「合図を見ようとして、またそっちを見ちゃいそう。今度は自分で見つけたいな」
     - else:
         # speaker: heroine
-        「そっか。わたしは屋根ばっかり見てた。手前にも、細かい光がいっぱいあるね」
+        # emotion: smile
+        「それなら、見逃さないね。わたしも見つけたら、同じところを指す」
     }
     -> water
 
 === water ===
 # speaker: narrator
-しばらく待つと、屋根の形が水の上にそろった。{heroine_name}がこちらを向いた、その間にまた崩れる。
-# speaker: heroine
-# emotion: surprised
-「今！　……今、だった」
+二人とも湖へ顔を向けた。話す言葉を探さずにいると、遠くの屋根より、足元近くの水の音がはっきりする。
 # speaker: narrator
-彼女は湖とこちらを交互に見て、とうとう笑った。
+水面に、宮殿の形がひとつにつながった。彼女の指が上がる。こちらの指も、ほとんど同時に動いた。
 # speaker: heroine
-# emotion: happy
-「知らせる方を見ると、景色を見逃すんだ。なかなか難しい」
-「でも、そっちも見えてたならいいか。わたしだけが見たと思うと、話したくなるから」
+# reaction: heroine,surprised,exclamation
+「今！」
 # speaker: narrator
-宮殿の実物は少しも揺れていない。彼女はようやく水面から視線を上げ、遠くの窓を一つずつたどった。
+言った本人が口を覆う。それから声を殺そうとして、余計に肩が揺れた。
 # speaker: heroine
-「ここに来る前は、中に入れないなら短い寄り道かなって思ってた。もう少しいたい、に変わっちゃった」
+# reaction: heroine,happy,music
+「わたしが一番しゃべるんだ。景色より、見えたって言いたかった」
+「黙っていられるのもいいけど。今日のわたしは、だめみたい」
 
-* [「次は、声だけで知らせて」]
+* [「じゃあ次は、思う存分実況して」]
     # effect: gt_jaipur_date_jal_mahal_second_playful
     { romance_result == "negative":
         # speaker: heroine
-        「実況係になると、また見逃しそう。次はわたしも、ただ見てたいな」
+        「役をもらうと、逆に黙っちゃう。今のは、勝手に出た声だから」
     - else:
         # speaker: heroine
-        # emotion: teasing
-        「了解。合図は『今』。ただし、空振りが多いです」
+        # reaction: heroine,teasing,music
+        「こちら湖岸です。宮殿、ただいま崩れました。現場のわたしは、だいぶ楽しんでいます」
     }
     -> leaving
-
-* [「まだ、ここにいよう」]
-    # effect: gt_jaipur_date_jal_mahal_second_attentive
-    { romance_result == "negative":
-        # speaker: heroine
-        「うれしい。でも、ずっと待たせるのも気になる。あと少しだけにしよう」
-    - else:
-        # speaker: heroine
-        # emotion: smile
-        「うん。今度は完成するまで待つ、って決めないで見ようかな」
-    }
-    -> leaving
-
-* [「もう少しいたいって、言ってくれてうれしい」]
+* [「その『今』を、隣で聞けてうれしかった」]
     # effect: gt_jaipur_date_jal_mahal_second_honest
     { romance_result == "negative":
         # speaker: heroine
-        「そこを改めて言われると、ちょっと照れる。そんな大げさな希望じゃないよ」
+        # emotion: shy
+        「そこまで大切な声にされると、次が出しにくいよ。普通に、うっかり言ったんです」
     - else:
         # speaker: heroine
-        # emotion: shy
-        「そっか。じゃあ、遠慮しない。もう少し、付き合ってください」
+        # reaction: heroine,shy,heart
+        「……そっか。じゃあ、次もここにいて。聞いてほしい人がいると、声が出ちゃうから」
+    }
+    -> leaving
+* [「もう少し、ここにいよう」]
+    # effect: gt_jaipur_date_jal_mahal_second_attentive
+    { romance_result == "negative":
+        # speaker: heroine
+        「もう十分待ってもらった気もする。でも、あと一回だけ、揃うのを見たい」
+    - else:
+        # speaker: heroine
+        # emotion: smile
+        「うん。今度は、何も我慢する決まりなしで」
     }
     -> leaving
 
 === leaving ===
-{ relationship_tone_after == "warm" || relationship_tone_after == "romantic_tension":
+{ relationship_tone_after == "strained" || relationship_tone_after == "reserved":
     # speaker: narrator
-    彼女は肩の力を抜いて、同じ方向を向いた。次に屋根がそろったとき、こちらを振り返らず、小さく「今」と言った。
+    少し間を空けて、二人で水面を見る。彼女は何か言いかけたが、今度は一緒に見えるのを待ってから指を上げた。
 - else:
     # speaker: narrator
-    次に屋根がそろったとき、彼女は静かに指を差した。二人で水面を見たまま、うなずき合った。
+    彼女は同じ方向を向いたまま、こちらへほんの少し肩を寄せた。声を出す前から、笑っているのが分かった。
 }
 # speaker: heroine
 # emotion: smile
-「見えた。今度はちゃんと、二人とも」
+「今。……今度は、二人とも見えたね」
 # speaker: narrator
-岸を歩き始めてからも、彼女は一度だけ振り返った。水に映る宮殿は、まだ忙しく形を変えていた。
+湖岸を離れる時、彼女は宮殿より先にこちらを振り返った。沈黙の規則は、いつの間にか二人とも忘れていた。
 -> END

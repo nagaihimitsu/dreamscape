@@ -12,97 +12,108 @@ VAR battle_score = 0
 
 === introduction ===
 # background: gt_bg_agra_fatehpur_sikri
+# speaker: enemy
+「出発します。忘れ物は……私の仕事だった」
 # speaker: narrator
-ファテープル・シークリーで、二人が道を譲った女性は、折り畳んだ紙を落としかけた。{heroine_name}が端を押さえ、紙を渡す。
-# speaker: enemy
-「ありがとう。これをなくすと、来週の家族会議に負けるところでした」
+ファテープル・シークリーの広場で、年配の女性が自分の声に笑っていた。{heroine_name}も、つられて足を止める。
 # speaker: heroine
-# emotion: surprised
-「家族会議？」
+# reaction: heroine,surprised,question
+「出発、しないんですか？」
 # speaker: enemy
-「妹が子どもを連れて来るの。私が案内役。十か所回れると言ったら、『休憩を数に入れてないでしょう』って」
+「しない。長いことバスの車掌だったから、誰かが集まると口が勝手に。キランよ。今日は乗客一名、私だけ」
 # speaker: narrator
-キランというその女性は、見どころを調べに来たらしい。紙のあちこちに丸があり、その間に何度も『休む』と書き加えられている。
-# speaker: heroine
-# emotion: teasing
-「妹さん、もう会議に参加してますね」
+退職した今も、家族で出かけると案内を任されるという。今日は下見のつもりで来て、途中でそれをやめた。
 # speaker: enemy
-「これが一番重要な指摘でした。私は見始めると、つい全部回りたくなるので」
+「妹に『楽しんでおいで』と言われたのに、来週の順路を考えてた。賃金の出ない車掌まで続けるところだったわ」
+# speaker: heroine
+# reaction: heroine,teasing,music
+「運行を終了したんですね」
+# speaker: enemy
+「私の分だけ、まだ走ります」
 # speaker: narrator
-キランは立ち止まり、赤い建物の連なりを見た。子どもたちに、この場所を何と紹介するかでも迷っているという。
+キランは赤い建物の列を見渡す。{heroine_name}も、その先の広場を探すように顔を上げた。
 # speaker: enemy
-「大きなお城、とだけ言うと違う気がして。三つ、見立てを試してもいい？」
-# speaker: heroine
-# emotion: smile
-「わたしたちでよければ。わたしも、来るまで一つの建物だと思ってました」
-# speaker: enemy
-「では最初。こんなに立派な街は、ずっと帝国の中心だったのでしょうか」
+「これだけ大きな街にしたのね。どのくらい首都だったのかしら。建物の大きさだけで、長く使ったとは決められないけど」
 -> END
 
 === after_first ===
 # background: gt_bg_agra_fatehpur_sikri
 { answer_correct:
 # speaker: enemy
-「そう、首都としての期間は短かった。大きさからは想像しにくいでしょう」
+「そう、短い首都の時代。建物の大きさで、長く使ったと思い込んじゃ駄目ね」
 - else:
 # speaker: enemy
-「実は、首都だった期間は長くありません。建物が大きいから長続きした、とは言えないのね」
+「首都だった期間は長くないの。大きく造ったら、ずっとそこにいるとも限らない」
 }
 # speaker: heroine
-「造るのにも時間がかかったはずなのに。人が使い方を変えていく方が、早いこともあるんだ」
-# speaker: narrator
-キランは紙の冒頭に『首都だった街』と書く。思いついた飾り言葉は、いったん後回しにした。
+「キランさんは、同じ路線に長くいたんですか？」
 # speaker: enemy
-「次は、ここでどんなことが行われていたか。建物を一つだけ見て、街全部を決めないでください」
+「いくつも変わった。路線を覚えると、人も覚える。最後まで降りる場所を間違える人もいた」
+# speaker: heroine
+「それは、困りますね」
+# speaker: enemy
+# reaction: enemy,music
+「私が」
+# speaker: narrator
+彼女の即答に、{heroine_name}は声を抑えて笑った。目の前の都市にも、違う用事で通った人たちがいたはずだ。
+# speaker: enemy
+「王様の住まいだけなら、こんなにいろんな建物はいらないでしょう。どんな用事が集まった街だったのかしら」
 -> END
 
 === after_second ===
 # background: gt_bg_agra_fatehpur_sikri
 { answer_correct:
 # speaker: heroine
-# emotion: smile
-「宮殿だけじゃなくて、役所も、礼拝するところも。用事の違う人が来てたんだね」
+「政治も、礼拝も、暮らしも。一つの宮殿の大きさで考えると、足りないんだ」
 - else:
 # speaker: heroine
-「ひとつの用途だけじゃなかった。暮らす場所、政治の場所、宗教の場所が、つながってるんだ」
+「宮殿だけじゃなかった。役所や、礼拝の場所や、そこで暮らす人の空間もある都市なんだね」
 }
 # speaker: enemy
-「だったら、案内する順番も一つじゃなくていいのね。子どもたちに選んでもらおうかな」
+「なら、全員同じ順番に案内する必要もないわね。私の家族だって、見たいものが違う」
 # speaker: narrator
-キランは紙に二本の線を引き、すぐに交わらせた。別行動ではなく、最初の行き先を選べるようにするらしい。
+キランは折った案内図を鞄へしまう。{heroine_name}は、まだ見えていない方の広場へ視線を向けた。
+# speaker: heroine
+「都が移ると、こういう道も全部使われなくなるんでしょうか」
 # speaker: enemy
-「最後。首都が移った後、この場所の話をどう続けるか。『誰も来なくなりました』で終わっていい？」
+「『終点、全員降りて』みたいに？　その先がないと思うと、急に寂しいわね。確かめてみましょう」
 -> END
 
 === conclusion ===
 # background: gt_bg_agra_fatehpur_sikri
 { answer_correct:
 # speaker: enemy
-「そう。ラホールへ首都が移った後も、皇帝たちが一時的に訪れる場所として使われました」
+「皇帝たちの一時的な訪問は続いた。首都でなくなっても、帰ってくる人はいたのね」
 - else:
 # speaker: enemy
-「首都がラホールへ移っても、皇帝たちの一時的な滞在は続いたの。首都でなくなることと、誰も来なくなることは別ね」
+「首都がラホールへ移った後も、皇帝たちが訪れていたの。誰も来なくなった、と閉じる話ではないわ」
 }
-# speaker: heroine
-# emotion: neutral
-「空っぽになった街、って思い込むところだった。言葉ひとつで、ずいぶん違っちゃうね」
 { battle_score == 3:
-# speaker: enemy
-「三つともぴったり。来週もいてほしいくらいだけど、旅行の続きを邪魔しちゃうわね」
-- else:
-# speaker: enemy
-「付き合ってくれてありがとう。間違えやすいところ、私も説明を直しておく」
-}
-# speaker: narrator
-キランは最後に、紙へ大きな休憩の丸をひとつ増やした。それは建物の丸より、少し大きい。
 # speaker: heroine
-# emotion: teasing
-「ついに、一番の見どころになりましたね」
-# speaker: enemy
-「妹に見せたら、そこだけ丸を付けられそう」
-# speaker: narrator
-笑いながら紙を畳むキランに手を振る。彼女の案内図は、最初より行き先が少なく、書き込みが増えていた。
+# reaction: heroine,happy,sparkle
+「三つとも分かった。わたし、今度はあっちの広場へ行ってみたいです」
+- else:
 # speaker: heroine
 # emotion: smile
-「わたしたちも、水を飲もう。次、ちゃんと楽しむために」
+「思い込み、途中で降りられてよかった。今度はあっちの広場へ行ってみたいです」
+}
+# speaker: enemy
+「私はもう少しここ。案内はしませんよ」
+# speaker: heroine
+# reaction: heroine,teasing,music
+「はい。乗客一名ですもんね」
+# speaker: narrator
+キランに手を振り、二人は広場へ続く道を確かめた。{heroine_name}が、スマートフォンをこちらへ差し出す。
+# speaker: heroine
+「向こうが見えるところまで、少し撮ってもらえる？　建物だけだと、どうつながっていたか忘れそう」
+# speaker: narrator
+歩ける道で画面を向ける。彼女は一歩出て、案内を確かめるために戻り、それから広場へ進んだ。こちらは立ち止まったまま、その足取りを数秒だけ撮った。
+# speaker: heroine
+# reaction: heroine,exasperated,sweat
+「戻ったところまで入ってる。『こちらです！』って顔で、逆だったね」
+# speaker: narrator
+彼女は消去の印に指を近づけたが、触れずに引っ込めた。
+# speaker: heroine
+# emotion: smile
+「残そう。次は何が見えるんだろうって、迷ったところも面白かったから」
 -> END

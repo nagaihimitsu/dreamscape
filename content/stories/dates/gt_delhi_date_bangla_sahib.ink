@@ -13,140 +13,167 @@ VAR spark_delta = 0
 
 # background: gt_bg_delhi_bangla_sahib
 # speaker: narrator
-グルドワーラ・バングラ・サーヒブの入口で、二人は訪問の作法を確かめた。靴を脱ぎ、頭を覆う布を整える。
+グルドワーラ・バングラ・サーヒブの入口で、二人は靴を脱ぎ、頭を覆う布を整えた。{heroine_name}は教わった形にしたつもりで、手を離す。
 # speaker: heroine
-「できた……と思ったのに。片方が長い」
+# reaction: heroine,worried,question
+「できた？　……その顔だと、できてない？」
 # speaker: narrator
-{heroine_name}が布の端を引くと、反対側が短くなる。引き直し、少し考え、最初の形に戻った。
+片方を引くと、反対側が短くなる。もう一度直して、彼女は同じ形へ戻した。
 # speaker: heroine
-# emotion: exasperated
-「ここだけ、三周してる。分かった顔でうなずいちゃったから、もう一度聞きにくいな」
-# speaker: narrator
-こちらが案内してくれた人の方を見ると、彼女は布を押さえたまま、小さくうなずいた。
+# reaction: heroine,exasperated,dizzy
+「三周した。分かりましたって、さっき元気よく言っちゃったのに」
 { relationship_tone == "reserved" || relationship_tone == "strained":
     # speaker: heroine
-    「変なところ、笑わずに教えてくれる？」
+    「変なところ、教えて。笑うのは、直ってからにしてね」
 - else:
     # speaker: heroine
     # emotion: teasing
-    「失敗した所は、あとで自分で話します。先に助けてください」
+    「自信ありそうな顔だけ、上手になってきた。そっちは上達しなくていいのに」
 }
 
-* [「もう一度、結び方を聞こう」]
-    # effect: gt_delhi_date_bangla_sahib_first_attentive
-    { romance_result == "negative":
-        # speaker: heroine
-        「うん。今度はわたしが聞くね。どこで分からなくなったか、自分で説明したい」
-    - else:
-        # speaker: heroine
-        # emotion: smile
-        「ありがとう。二回目はちゃんと、途中でも止めて聞く」
-    }
-    -> after_first
-
-* [「自分のも見て。お互い後ろが見えないから」]
+* [「自分のも見て。後ろは見えていないから」]
     # effect: gt_delhi_date_bangla_sahib_first_honest
     { romance_result == "negative":
         # speaker: heroine
-        「見たいけど、今は両手がふさがってる。まず自分のを終わらせてからでもいい？」
+        # reaction: heroine,exasperated,sweat
+        「今、わたしの両手はここから動かせません。順番を待ってください」
+        # speaker: narrator
+        彼女は頭の布を押さえたまま、先に自分が聞き直す方へ向いた。
     - else:
         # speaker: heroine
-        「ほんとだ。じゃあ順番に。そっち、端が少し折れてるよ」
+        # reaction: heroine,surprised,question
+        「あ、そっちも少し折れてる。完成した人の顔してたから、見てなかった」
         # speaker: narrator
-        彼女は触れる前に、折れた場所を指で示した。
+        二人ともまだ途中だと分かると、彼女は気負わずに案内の人を呼べた。
     }
     -> after_first
 
-* [「片方だけ長い流行、今はやめておこう」]
+* [「一人で四周するより、もう一度聞こう」]
+    # effect: gt_delhi_date_bangla_sahib_first_attentive
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,serious,anger
+        「数えなくていいよ。自分で、どこが分からなかったか言うから」
+        # speaker: narrator
+        彼女の声は小さいが、はっきりしていた。こちらは口を挟まず待つ。
+    - else:
+        # speaker: heroine
+        # emotion: serious
+        「うん。今度は途中で止めて聞く。うなずくのを、ちょっと遅くする」
+        # speaker: narrator
+        彼女は自分で声をかけ、どちらの端を動かすのか確かめた。
+    }
+    -> after_first
+
+* [「完成するまで、応援団が一名ついています」]
     # effect: gt_delhi_date_bangla_sahib_first_playful
     { romance_result == "negative":
         # speaker: heroine
-        # emotion: serious
-        「今はちょっと困ってるから、冗談は後にしてほしい」
+        # reaction: heroine,exasperated,sigh
+        「応援より、間違ってる所を教えてほしい。今は、ちょっと困ってるの」
         # speaker: narrator
-        こちらがうなずくのを見て、彼女は助けを求める方へ向き直った。
+        こちらが具体的に折れた場所を示すと、彼女はそこを押さえて聞き直した。
     - else:
         # speaker: heroine
-        # emotion: teasing
-        「わたし発の流行、だいぶ短命でした。ちゃんと直します」
+        # reaction: heroine,teasing,music
+        「声は出さずにお願いします。失敗のたびに拍手もしなくていいです」
         # speaker: narrator
-        彼女は笑ってから、入口の人へもう一度声をかけた。
+        笑えたところで、彼女は案内の人へ手を上げた。自分でやるのと、聞くのは別のことだった。
     }
     -> after_first
 
 === after_first ===
 # speaker: narrator
-案内の人は手順をゆっくり示してくれた。彼女は途中で確かめ、今度は頭をきちんと覆えたことを確認する。
-# speaker: heroine
-# emotion: smile
-「ありがとうございました。聞いてよかった」
+二人とも覆い方を確かめてから、中へ入った。礼拝の場では会話をやめ、案内に従って静かに過ごす。
 # speaker: narrator
-二人は案内に従い、静かに礼拝所を訪ねる。言葉を交わすのは、見学を終えて落ち着ける場所に出てからだった。
+見学を終えて落ち着ける場所に出ると、彼女は入口でもらった説明を読み返した。第八代のシク教のグルが滞在した屋敷が、この礼拝所の由来とされている。
 # speaker: heroine
-「第八代のシク教のグルが滞在した屋敷が、この礼拝所の由来とされているんだって」
+# emotion: neutral
+「昔ここにいた人の話を読んでたのに、今日は、教え直してくれた人の手も覚えてる」
 # speaker: narrator
-彼女は説明を閉じ、先ほど教わった入口の方を見た。うまく覆えた布には、もう触らない。
+靴を履き直す。今度はこちらの鞄の紐がねじれ、肩にうまく収まらない。
 # speaker: heroine
-「分からないって言ったら、嫌な顔をされる気がしてた。自分ができないだけなのにね」
+# reaction: heroine,teasing,exclamation
+「あ。完成した人の顔をしてるのに、後ろが途中です」
 # speaker: narrator
-靴を履き直す時、今度はこちらの鞄の紐がねじれていた。彼女が先に気づく。
+彼女は少し得意そうに近づき、触る直前で手を止めた。
 # speaker: heroine
-「後ろ、引っかかってる。直す？　それとも、いったん下ろす方が楽？」
+「直していい？　それとも、一度下ろす？　今度は、先に聞けます」
 
-* [「一度下ろすから、少し持っていて」]
+* [「その距離で見られると、好きが顔に出る」]
+    # effect: gt_delhi_date_bangla_sahib_second_bold
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,surprised,interrobang
+        「いま鞄の紐を見てた！　顔は、こっちに向けなくて大丈夫！」
+        # speaker: heroine
+        # emotion: serious
+        「……あとで聞くから、先に直そう。今だと、わたしまで手元が分からなくなる」
+        # speaker: narrator
+        彼女は鞄を下ろすように示し、距離を戻してねじれを解いた。
+    - else:
+        # speaker: heroine
+        # reaction: heroine,shy,blush
+        「もう。直す人が困ることを言わないで」
+        { ending_reached:
+            # speaker: heroine
+            # emotion: teasing
+            「顔に出てるのは知ってます。今日は、鞄の不具合も分かるようになりました」
+        - else:
+            # speaker: heroine
+            「聞こえたよ。……でも今は、わたしが助けるところ、最後まで見てて」
+        }
+        # speaker: narrator
+        彼女は鞄を一度下ろしてもらい、自分の手で紐をまっすぐにした。
+    }
+    -> ending
+
+* [「今度は、そっちに任せたい」]
     # effect: gt_delhi_date_bangla_sahib_second_honest
     { romance_result == "negative":
         # speaker: heroine
-        「今、自分の荷物で手がいっぱい。空けるから、ちょっとだけ待って」
+        # reaction: heroine,exasperated,sweat
+        「全部任されると、また『分かりました』って言いそう。下ろすのは、そっちでお願い」
         # speaker: narrator
-        彼女は無理に抱え込まず、自分の鞄を安定させてから手を差し出した。
+        役割を分け、二人で紐のねじれをほどいた。
     - else:
         # speaker: heroine
-        「はい。今度はこちらの番ですね」
+        # reaction: heroine,happy,sparkle
+        「はい。では、鞄をこちらへ。さっきの見本をちゃんと見ておいてよかった」
         # speaker: narrator
-        彼女は重さを確かめて受け取り、紐を直す間、両手で持っていた。
+        彼女は重さを確かめて鞄を支えた。こちらが頼んだことが、少しうれしそうだった。
     }
     -> ending
 
-* [「どこがねじれてるか、教えてくれる？」]
+* [「下ろすから、ねじれている場所を教えて」]
     # effect: gt_delhi_date_bangla_sahib_second_attentive
     { romance_result == "negative":
         # speaker: heroine
-        「言葉だけだと、わたしも説明が難しいな。一度下ろしたら、指で示せるよ」
+        # reaction: heroine,worried,question
+        「言葉で説明する方が難しいかも。ちょっと見せて。指で示すなら、できる」
+        # speaker: narrator
+        彼女は説明を急がず、見える位置まで鞄を動かしてから教えた。
     - else:
         # speaker: heroine
-        「右の肩の、少し下。そう、そこ。わたしも、こう聞けばよかったんだね」
+        # reaction: heroine,smile,sparkle
+        「ここ。一回ひっくり返ってる。そう、その向き。……やった、直った」
         # speaker: narrator
-        彼女は手を出さず、直ったところで小さくうなずいた。
-    }
-    -> ending
-
-* [「今度はこっちが、三周する番かな」]
-    # effect: gt_delhi_date_bangla_sahib_second_playful
-    { romance_result == "negative":
-        # speaker: heroine
-        「三周しなくていいよ。さっき困ったから、同じ所で困ってほしくないの」
-    - else:
-        # speaker: heroine
-        # emotion: teasing
-        「二周目で止めます。経験者が隣にいるので」
-        # speaker: narrator
-        彼女は一度下ろすように手で示し、こちらが従うと嬉しそうに笑った。
+        彼女は自分で触って直すよりも、言葉が通じたことを喜んだ。
     }
     -> ending
 
 === ending ===
 # speaker: narrator
-紐がまっすぐになる。彼女は自分の荷物を持ち直し、入口で教えてくれた人へ会釈した。
-{ relationship_tone_after == "romantic_tension" || relationship_tone_after == "warm":
+肩に鞄が収まり、二人は歩き出す。彼女は少し先へ進んでから、わざわざ戻って後ろを確認した。
+{ relationship_tone_after == "warm" || relationship_tone_after == "romantic_tension":
     # speaker: heroine
-    # emotion: smile
-    「次、分からなくなったら聞くね。頼まれる方も、そんなに困るばかりじゃないって分かったから」
+    # reaction: heroine,teasing,music
+    「よし。今度は本当に完成。格好いい顔をしても大丈夫です」
 - else:
     # speaker: heroine
     # emotion: smile
-    「知らないこと、まだいっぱいあるね。分かった顔で通り過ぎるのは、少し減らしたいな」
+    「直ってる。よかった。今日はもう、分かった顔だけで終わらなくて済んだね」
 }
 # speaker: narrator
-歩き出す前に、彼女は一度こちらの肩を見る。今度は何も引っかかっていない。確かめた顔が、少し得意そうだった。
+自分の布を直せなかった時より、彼女は少し胸を張っていた。助けた方として並ぶ足取りは、軽かった。
 -> END

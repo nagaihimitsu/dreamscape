@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { dialogueExpressions, dialogueReactions, episodes, getCityContent } from "../../content";
+import { battles, dialogueExpressions, dialogueReactions, episodes, getCityContent } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import { presentationStoryId } from "../../content/legacy-milano";
@@ -51,7 +51,9 @@ export function EpilogueScreen({
       ? game.heroineName
       : frame.speaker === "player"
         ? game.playerName
-        : "旅の風景";
+        : frame.speaker === "enemy"
+          ? battles.find((battle) => battle.id === episode.battleId)?.enemyNameJa ?? "旅の風景"
+          : "旅の風景";
   const { ready, onReady, entries } = useDialogueLog(
     active.episodeId,
     game.revision,

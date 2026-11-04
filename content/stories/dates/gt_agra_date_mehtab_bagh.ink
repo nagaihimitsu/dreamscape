@@ -13,116 +13,138 @@ VAR spark_delta = 0
 
 # background: gt_bg_agra_mehtab_bagh
 # speaker: narrator
-メヘターブ・バーグの園路で、{heroine_name}が足を止める。ヤムナー川の向こうに、タージ・マハルが見えた。
+メヘターブ・バーグの園路で、{heroine_name}が足を止めた。ヤムナー川の向こうに、タージ・マハルが見える。
 # speaker: heroine
-# emotion: surprised
-「川の反対側からだと、こんなふうに見えるんだ。こっちにも庭があったんだね」
+# reaction: heroine,surprised,sparkle
+「こっちからだと、川も一緒に見えるんだ。……写真、一枚だけにする。あとは、このまま見たい」
 # speaker: narrator
-彼女は少し右へ移り、また戻った。二人の立つ場所を比べて、眉を寄せる。
+撮った一枚を確かめて鞄へしまう。しばらく眺めていた彼女が、ふいにこちらを向いた。
 # speaker: heroine
-# emotion: teasing
-「そっち、いい位置じゃない？　わたしが見つけたと思ったのに、先にいた」
+# emotion: neutral
+「ここを離れたら、今日の立ち位置って、もう正確には分からなくなるんだね」
 { relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
-彼女は肩が触れないところで止まり、見える範囲を確かめた。
+彼女は言いすぎたかという顔をして、川へ視線を戻した。
 - else:
-# speaker: narrator
-彼女はこちらの立つ場所をのぞき、園路の上で半歩ずつ位置を変えた。
+# speaker: heroine
+# reaction: heroine,teasing,music
+「だからって、地面に印は付けません。覚える係、二名でお願いします」
 }
 
-* [「交代して、比べてみよう」]
+* [「景色より、今は君の横顔を覚えたい」]
+    # effect: gt_agra_date_mehtab_bagh_first_bold
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,exasperated,blush
+        「その言い方は、ずるい。わたしは川を見てたのに、顔をどうしていいか分からなくなる」
+    - else:
+        { ending_reached:
+        # speaker: heroine
+        # reaction: heroine,teasing,heart
+        「じゃあ、横顔だけじゃなくて。ちゃんとこっちを見るね」
+        - else:
+        # speaker: heroine
+        # reaction: heroine,shy,blush
+        「急に、そんなこと言うんだ。……覚えるなら、笑ってる方にして。今なら、たぶんそうなる」
+        }
+    }
+    -> after_first
+* [「もう少し、ここにいよう」]
     # effect: gt_agra_date_mehtab_bagh_first_attentive
     { romance_result == "negative":
         # speaker: heroine
-        「ごめん、せかしたわけじゃないよ。もう少しそっちから見てて」
+        # emotion: worried
+        「うん。でも、わたしが寂しそうだったからって、帰りにくくならないでね」
     - else:
         # speaker: heroine
         # emotion: smile
-        「うん。……あ、ほんとだ。木のかかり方が、ちょっと違う」
+        「うん。何をするか決めなくていいの、今はすごくうれしい」
     }
     -> after_first
-* [「いい場所を見つける才能がある」]
+* [「この眺め、二人で半分ずつ暗記しよう」]
     # effect: gt_agra_date_mehtab_bagh_first_playful
     { romance_result == "negative":
         # speaker: heroine
-        「今は場所を貸してほしかったんだけど。才能の話は、あとで聞くね」
+        # reaction: heroine,exasperated,sweat
+        「試験にしないで。もう、覚えたいことが増えすぎてるんだから」
     - else:
         # speaker: heroine
-        # emotion: teasing
-        「へえ。じゃあ、次の休憩場所も任せちゃおうかな。才能、忙しいね」
-    }
-    -> after_first
-* [「ここから、一緒に見たい」]
-    # effect: gt_agra_date_mehtab_bagh_first_honest
-    { romance_result == "negative":
-        # speaker: heroine
-        「一緒には見たいけど、もう少し離れても見えるよ。ここ、歩く人もいるから」
-    - else:
-        # speaker: heroine
-        # emotion: shy
-        「うん。じゃあ、半分だけ空けて。わたしの分も」
+        # reaction: heroine,happy,music
+        「じゃあ川はわたし、タージはそっち。あとで合わせたら、建物が川に浮いてたりして」
     }
     -> after_first
 
 === after_first ===
 # speaker: narrator
-二人で通行の邪魔にならない位置へ寄る。川越しの姿を見ていた彼女が、庭の方へ振り向いた。
+二人は園路の少し先まで歩いて、振り向いた。川を隔てて墓廟を望む庭。その距離が、こちら側にいる時間も作っている。
 # speaker: heroine
-「ここって、向こうを見るためだけの場所じゃないんだよね。こっちにも道があって、木がある」
+「近くまで行けない眺めって、落ち着くね。もっと寄らなきゃって、思わずに済む」
 # speaker: narrator
-メヘターブ・バーグは、川を隔ててタージ・マハルを望む庭園だ。彼女は案内を見てから、園路の先を指した。
+彼女は戻る道を見て、それから、こちらを見た。
 # speaker: heroine
 # emotion: smile
-「少し歩いて戻ってみない？　わたし、今の場所、ちゃんと覚えてるかな」
+「次の旅って、まだ何も決まってないのに。こういう時間は、またほしいな」
 
-* [「目印を一つ決めておこう」]
-    # effect: gt_agra_date_mehtab_bagh_second_attentive
-    { romance_result == "negative":
-        # speaker: heroine
-        「うーん、覚えなくてもいいかも。また探すのも楽しそうだから」
-    - else:
-        # speaker: heroine
-        「あの道の曲がり角にしよう。木の葉の形だと、全部気になっちゃいそう」
-    }
-    -> ending
-* [「戻ったら、同じところに立とう」]
-    # effect: gt_agra_date_mehtab_bagh_second_bold
-    { romance_result == "negative":
-        # speaker: heroine
-        「そこは戻ってから決めたいな。別のところが好きになるかもしれないし」
-    - else:
-        # speaker: heroine
-        # emotion: shy
-        「いいよ。今度はわたしが先に立つから、ちゃんと見つけてね」
-    }
-    -> ending
-* [「たぶん、もう分からなくなってる」]
+* [「自分も、今日が終わるのは少し惜しい」]
     # effect: gt_agra_date_mehtab_bagh_second_honest
     { romance_result == "negative":
         # speaker: heroine
-        「歩く前から？　じゃあ今だけ、ちょっと待って。わたしが覚える」
+        # emotion: worried
+        「うん。惜しいって言うと、もう帰るみたいになるね。まだ、ここにいたい」
     - else:
         # speaker: heroine
-        # emotion: happy
-        「早いなあ。わたしも怪しい。違う場所で、二人とも『ここだ』って言いそう」
+        # emotion: smile
+        「一人だけ惜しんでるんじゃなくて、よかった。じゃあ、もう少しだけ今日の話をしよう」
+    }
+    -> ending
+* [「次の旅も、その次も、君を誘いたい」]
+    # effect: gt_agra_date_mehtab_bagh_second_bold
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,serious,blush
+        「先の予定を全部押さえないで。うれしいけど、わたしが誘う番も取っておいて」
+    - else:
+        { relationship_tone_after == "strained" || relationship_tone_after == "guarded_attraction":
+        # speaker: heroine
+        # reaction: heroine,shy,blush
+        「そう思ってくれたことは、覚えておく。でも、次も一緒かは、その時に二人で決めたい」
+        - else:
+        # speaker: heroine
+        # reaction: heroine,teasing,heart
+        「一つ先は、わたしが誘う。それでもいい？　誘われるだけだと、悔しくなりそう」
+        }
+    }
+    -> ending
+* [「次回の集合場所は『だいたいこのへん』で」]
+    # effect: gt_agra_date_mehtab_bagh_second_playful
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,exasperated,sweat
+        「それ、絶対に見つからないやつ。今のわたしにも、もう怪しいもん」
+    - else:
+        # speaker: heroine
+        # reaction: heroine,happy,music
+        「はい。じゃあ、違う所で二人とも手を振ってたら、先に気付いた方が迎えに行くこと」
     }
     -> ending
 
 === ending ===
 # speaker: narrator
-園路を少し歩いて戻ると、彼女は迷わず一か所を指し、すぐに首をかしげた。
+戻ってみると、彼女は迷わず一か所を指し、すぐ首をかしげた。
 # speaker: heroine
-# emotion: teasing
+# reaction: heroine,teasing,question
 「ここ。……の、一歩隣だったかも」
 { relationship_tone_after == "warm" || relationship_tone_after == "romantic_tension":
+# speaker: narrator
+こちらが隣へ並ぶと、彼女は今度は川を見る前に、こちらの顔を確かめた。
 # speaker: heroine
 # emotion: smile
-「まあ、また並べたからいいか。今は、ここが好き」
+「うん。今日の分は、これで覚えた」
 - else:
 # speaker: heroine
 # emotion: smile
-「でも、ここもいいね。さっきより、庭がよく見える」
+「違ってても、今の場所は分かるね。もう一回、ここから見よう」
 }
 # speaker: narrator
-今度は立つ場所を取り替えず、それぞれの位置から川の向こうを眺めた。
+地面には印を付けず、写真も増やさなかった。二人はそれぞれの位置から、川の向こうを眺めた。
 -> END

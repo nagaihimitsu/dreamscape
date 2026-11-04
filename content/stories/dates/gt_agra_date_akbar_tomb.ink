@@ -13,108 +13,130 @@ VAR spark_delta = 0
 
 # background: gt_bg_agra_akbar_tomb
 # speaker: narrator
-アクバル廟の門を見上げ、{heroine_name}はスマートフォンに短いメモを打った。打ち終わると、なぜか一人で笑う。
+アクバル廟の門を見上げた{heroine_name}が、スマートフォンへ短いメモを打つ。画面には『門、すごい』の四文字だけが並んだ。
 # speaker: heroine
-# emotion: smile
-「『門、すごい』。これだけ。あとで見ても、何のことか分からないね」
+# reaction: heroine,exasperated,sweat
+「こんなに細かい模様を見て、出てくる言葉がこれ。建物に申し訳ない気がしてきた」
 # speaker: narrator
-画面には、まだ題名のない旅のメモが並んでいる。『模様』『思ったより遠い』といった、本人にしか分からない断片もあった。
+彼女はもう一度門を見て、急に澄ました顔を作った。
 # speaker: heroine
-「ちゃんと書こうと思うと、止まっちゃう。何から書いたらいいと思う？」
-{ relationship_tone == "warm" || relationship_tone == "comfortable":
+# emotion: serious
+「こちらにご覧いただけますのは、とても、かなり……門です」
+# speaker: narrator
+最後の二文字で、自分が先に吹き出す。こちらが笑うと、彼女は空いた手を差し出した。
 # speaker: heroine
-# emotion: teasing
-「笑うのはいいけど、『すごい』だけ借りるのはなしね。もう使ったから」
-}
+# reaction: heroine,teasing,music
+「では、お客様。続きをお願いします。詳しいふりをして、知らないことを足すのは禁止です」
 
-* [「今、いちばん見ていたところから」]
-    # effect: gt_agra_date_akbar_tomb_first_attentive
-    { romance_result == "negative":
-        # speaker: heroine
-        「それが、あっちもこっちも見てたんだよね。少しだけ整理させて」
-    - else:
-        # speaker: heroine
-        「門の細かい模様かな。遠くからも目に入るのに、近くでも見たくなる」
-    }
-    -> after_first
-* [「『門、かなりすごい』にしよう」]
+* [「結論としては、門、すごいです」]
     # effect: gt_agra_date_akbar_tomb_first_playful
     { romance_result == "negative":
         # speaker: heroine
-        「一文字ずつ増やす相談じゃないんだけどな。今日は、少しは覚えて帰りたい」
+        # reaction: heroine,exasperated,sweat
+        「戻ってきた！　いや、お願いしたわたしが悪かった。説明係、二人とも解任です」
     - else:
         # speaker: heroine
-        # emotion: teasing
-        「情報、ほとんど増えてないよ。帰るころには『とてもかなりすごい』になるね」
+        # reaction: heroine,happy,music
+        「ありがとうございました。すばらしく短い解説でした。……だめ、もう一回言わないで。笑っちゃう」
     }
     -> after_first
-* [「その短いメモも、好きだよ」]
+* [「自分も、最初はそれしか言えなかった」]
     # effect: gt_agra_date_akbar_tomb_first_honest
     { romance_result == "negative":
         # speaker: heroine
-        「ありがとう。でも、わたしはもう少し書きたいんだ。あとで忘れると悔しいから」
+        # emotion: exasperated
+        「うん。でも、今のはちょっと格好つけたかったの。正直に戻すの、早いよ」
     - else:
         # speaker: heroine
-        # emotion: shy
-        「そんなところまで見るんだ。じゃあ消さずに、その下へ足そうかな」
+        # emotion: smile
+        「同じか。よかった。じゃあ最初の一行は、二人の連名にしよう」
+    }
+    -> after_first
+* [「門より、笑ってる君に見とれていました」]
+    # effect: gt_agra_date_akbar_tomb_first_bold
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,exasperated,blush
+        「観光の説明をお願いします！　……今はそれ以上言わないで。笑ってた顔、戻せなくなる」
+    - else:
+        { ending_reached:
+        # speaker: heroine
+        # reaction: heroine,teasing,heart
+        「お客様、よそ見です。あとで個別に感想を伺います」
+        - else:
+        # speaker: heroine
+        # reaction: heroine,shy,blush
+        「わたしの解説、そんな方向へ進むと思わなかった。……じゃあ、今のは書かないで、覚えておく」
+        }
     }
     -> after_first
 
 === after_first ===
 # speaker: narrator
-案内には、アクバル自身が着工し、息子ジャハーンギールが完成させた墓廟だとある。彼女は読んでから、建物をもう一度見た。
+二人で案内を読む。この墓廟は、アクバル自身が着工し、息子ジャハーンギールが完成させたとある。
 # speaker: heroine
-「一人が始めて、別の人が仕上げることもあるんだね。わたしのメモは、わたしがやらないとだけど」
+「一人で最後まで仕上げたわけじゃないんだ。始めた人と、続けた人がいる」
 # speaker: narrator
-彼女は『門、すごい』の下に、色と形を短く書き足した。そこで手を止め、こちらへ画面を向ける。
+彼女はメモに二人の名前を書き加えた。最初の四文字は、消していない。
 # speaker: heroine
 # emotion: smile
-「一行だけ、{player_address}が見たものも入れていい？　同じところ見てたのか、知りたい」
+「じゃあ、わたしが感想を始めるから、続きを一行だけ。……『今日ここへ来て、よかったのは』」
 
-* [「二人分だと、後で読むのが楽しそう」]
+* [「遠くと近くで、別の模様が見つかったこと」]
     # effect: gt_agra_date_akbar_tomb_second_attentive
     { romance_result == "negative":
         # speaker: heroine
-        「うん。でも今は一行決めたい。先に楽しみにされると、完成させなきゃってなる」
+        # emotion: smile
+        「うん、そうなんだけど。今は、もう少しくだらないことが出てくるかと思って身構えてた」
     - else:
         # speaker: heroine
-        「うん。どっちが書いたか、名前も小さく入れておこう。忘れてしまわないように」
+        # reaction: heroine,happy,sparkle
+        「それ、わたしも書きたい。大きい、で終わらない門だったね」
     }
     -> ending
-* [「メモを直している顔が、楽しそうだった」]
+* [「君と来たから。次も、理由は同じでいい」]
     # effect: gt_agra_date_akbar_tomb_second_bold
     { romance_result == "negative":
         # speaker: heroine
-        「わたしの顔じゃなくて、今日は建物のことを聞きたかったな。こっちも見て」
+        # reaction: heroine,serious,blush
+        「それだけにしないで。わたしがいなくても、この門はすごいよ。……一緒に来たいってところは、聞いたけど」
     - else:
+        { relationship_tone_after == "reserved" || relationship_tone_after == "strained":
         # speaker: heroine
-        # emotion: shy
-        「それをここに書くの？　……わたしがあとで読むんだけど。ちょっと困るな」
+        # reaction: heroine,shy,blush
+        「びっくりした。今すぐ同じ返事はできないけど、今日、言ってくれたことはうれしい」
+        - else:
+        # speaker: heroine
+        # reaction: heroine,teasing,heart
+        「では、わたしの続き。『次は、わたしが誘いたくなったこと』。一行、ちゃんと使いました」
+        }
     }
     -> ending
-* [「自分も、まず『門、すごい』だった」]
-    # effect: gt_agra_date_akbar_tomb_second_honest
+* [「偉大な門の前で、二人とも語彙を失ったこと」]
+    # effect: gt_agra_date_akbar_tomb_second_playful
     { romance_result == "negative":
         # speaker: heroine
-        「ほんとに？　わたしに合わせなくていいよ。違う感想も聞きたいから」
+        # reaction: heroine,exasperated,anger
+        「一応、名前は覚えたよ。全部なくしたことにはしないでください」
     - else:
         # speaker: heroine
-        # emotion: happy
-        「同じだ。じゃあ、最初の一行は二人分。次からは別々に書こう」
+        # reaction: heroine,happy,music
+        「語彙の捜索は打ち切ります。実物がすごかったので、仕方ありません」
     }
     -> ending
 
 === ending ===
 # speaker: narrator
-画面に増えた数行を、彼女はすぐには読み直さなかった。スマートフォンをしまい、まだ見ていない方へ顔を向ける。
+書き足そうとした彼女は、画面を閉じた。まだ見ていない方へ、自分から歩き出す。
 # speaker: heroine
 # emotion: smile
-「続きは、出るときに書こう。書くためだけに歩いてたら、もったいないから」
-{ relationship_tone_after == "romantic_tension" || relationship_tone_after == "warm":
+「続きは、出る時に。次の感想が『建物、すごい』でも、笑わない……いや、少しは笑っていいよ」
+{ relationship_tone_after == "comfortable" || relationship_tone_after == "warm":
 # speaker: heroine
-# emotion: teasing
-「あとで、一行お願いするかもしれないよ。ちゃんと見ててね」
-}
+# reaction: heroine,teasing,music
+「ただし、わたしより先に笑うのは禁止。自分でも気付いてるから」
+- else:
 # speaker: narrator
-二人は門の前を離れた。彼女のメモには、最初に打った短い感想も、そのまま残っていた。
+二人は同じ所を見上げ、今度は言葉を足さずに門をくぐった。
+}
 -> END

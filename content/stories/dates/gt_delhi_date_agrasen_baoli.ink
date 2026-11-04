@@ -13,136 +13,167 @@ VAR spark_delta = 0
 
 # background: gt_bg_delhi_agrasen_baoli
 # speaker: narrator
-アグラセン・キ・バオリの入口で、二人は見学できる範囲を確かめた。視線の先に、地面の下へ続く階段がある。
+アグラセン・キ・バオリの入口で、二人は見学できる範囲を確かめた。街路からは想像しなかった奥行きが、地面の下へ開いている。
 # speaker: heroine
-# emotion: surprised
-「わ、下に建物がある。近づくまで、こんな奥行きだと思わなかった」
+# reaction: heroine,surprised,exclamation
+「わ、こんなに下まで。ここ、入ってみたい」
 # speaker: narrator
-{heroine_name}は許可された通路の、広く安定した場所で立ち止まる。目線だけが、一段ずつ下へ降りていった。
+そう言った{heroine_name}の足が、広い見学路の途中で止まった。何でもないような顔で、案内を読み始める。
 # speaker: heroine
-「十、十一……あ、どこまで数えたっけ」
+「階段井戸。百三段……へえ、百三段なんだね」
 # speaker: narrator
-案内には百三段とある。彼女は数字を読んでから、もう一度、今見えている段を数えようとした。
+同じ数字をもう一度読んだところで、彼女はこちらを見た。
+# speaker: heroine
+# reaction: heroine,worried,sweat
+「ごめん。怖くないふりをしてた。下が見えたら、膝が変な感じになっちゃって」
 { relationship_tone == "reserved" || relationship_tone == "strained":
-    # speaker: heroine
-    # emotion: smile
-    「わざわざ数えなくても書いてあるのにね。始めると、途中でやめにくい」
+    # speaker: narrator
+    彼女は急いで笑おうとしたが、途中でやめた。
 - else:
     # speaker: heroine
-    # emotion: teasing
-    「今、話しかけたら一からだよ。……って、わたしの方がしゃべっちゃった」
+    # emotion: exasperated
+    「入口のわたし、返事が早すぎたね」
 }
 
-* [「途中まで数えた景色も、ちゃんと見たよ」]
-    # effect: gt_delhi_date_agrasen_baoli_first_honest
-    { romance_result == "negative":
-        # speaker: heroine
-        「うん。でも、一度くらい自分でも数え切りたかったな。ちょっと悔しい」
-        # speaker: narrator
-        彼女は笑い飛ばさず、もう少し段の並びを目で追った。
-    - else:
-        # speaker: heroine
-        「そうだね。数に気を取られて、横のアーチを見てなかった」
-        # speaker: narrator
-        目線が左右へ広がる。彼女は、そこで初めて小さく息を吐いた。
-    }
-    -> after_first
-
-* [「ここからは二人で数える？」]
-    # effect: gt_delhi_date_agrasen_baoli_first_attentive
-    { romance_result == "negative":
-        # speaker: heroine
-        「二人だと、どこが一段目かで相談が始まりそう。今日は案内の数字を信じようかな」
-    - else:
-        # speaker: heroine
-        「お願い。あ、同じところを二回数えないでね。わたしは今、それをやりました」
-        # speaker: narrator
-        互いに目で示す位置を確かめ、少しだけ続きを追った。
-    }
-    -> after_first
-
-* [「百四段あったら、どちらかが増やしたね」]
+* [「探検隊長、撤退の判断もお仕事です」]
     # effect: gt_delhi_date_agrasen_baoli_first_playful
     { romance_result == "negative":
         # speaker: heroine
-        「それは今、言わないで。ほんとに分からなくなるから」
+        # reaction: heroine,serious,anger
+        「笑う前に、今ほんとに怖いって聞いてほしかった」
         # speaker: narrator
-        彼女は指を一度止め、それから困ったように笑った。
+        こちらが姿勢を戻すと、彼女は手に力が入っていたことに気づき、指を開いた。
     - else:
         # speaker: heroine
-        # emotion: teasing
-        「では、増やした人がもう一度数えます。……二人とも黙るの、怪しいね」
+        # reaction: heroine,exasperated,sweat
+        「隊長、就任してすぐ撤退かあ。……でも、その仕事はできそう」
         # speaker: narrator
-        笑い声を小さくして、彼女は数える指を下ろした。
+        息を吐いた彼女は、下ではなく、今立っている足元から確かめた。
+    }
+    -> after_first
+
+* [「自分も、底を見たら膝にきた」]
+    # effect: gt_delhi_date_agrasen_baoli_first_honest
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,worried,question
+        「それ、本当？　わたしを安心させるために言ってるなら、そうしなくていいよ」
+        # speaker: narrator
+        こちらがゆっくり腰を引くと、彼女もようやく、相手の足を見た。
+    - else:
+        # speaker: heroine
+        # reaction: heroine,surprised,sweat
+        「二人とも平気な顔してたの？　じゃあ、先へ行こうって言い合うところだったね」
+        # speaker: narrator
+        彼女は困った顔のまま笑った。無理に進む人がいなくなり、二人の足は落ち着く。
+    }
+    -> after_first
+
+* [「ここから眺めよう。進むかは後で決めよう」]
+    # effect: gt_delhi_date_agrasen_baoli_first_attentive
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,serious,question
+        「待って。戻りたいって決めたわけでもないの。少しだけ、わたしに決めさせて」
+        # speaker: narrator
+        こちらは足を止め、彼女が目を上げるのを待った。
+    - else:
+        # speaker: heroine
+        # emotion: smile
+        「うん。それなら、見ていたい。怖いけど、嫌いになったわけじゃないから」
+        # speaker: narrator
+        彼女は呼吸を整え、顔だけを奥へ向けた。
     }
     -> after_first
 
 === after_first ===
 # speaker: narrator
-段を数えるのをやめると、繰り返すアーチと、奥へ続く線が目に残った。彼女は案内の「階段井戸」という言葉を指でなぞる。
+二人は幅のある通路に留まる。下へ続く階段の両側に、幾重にもアーチが重なっていた。
 # speaker: heroine
-「水のための場所なんだね。上へ登る階段はすぐ分かるのに、下へ続くと、ちょっと探検みたい」
+# emotion: serious
+「水に届くために、下へ行く階段なんだね。わたし、今まで階段って、上に何かあるものだと思ってた」
 # speaker: narrator
-足は動かさず、先の方を見る。入れない場所へ降りなくても、見えてくる線はまだあった。
+彼女は一歩だけ、同じ高さの通路を横へ動く。重なっていた線が離れ、奥が少し見えた。
 # speaker: heroine
-「わたし、全部行かないと見たことにならない気がしてた。今は、この辺りで眺めていたいな」
+# reaction: heroine,happy,sparkle
+「あ、ここなら見られる。下へ行かなくても、こっちに動けばよかった」
 # speaker: narrator
-こちらが立ち位置を変えると、彼女も同じ高さで景色を確かめた。
+勇ましい顔には戻らない。怖さを抱えたまま、彼女は自分で選んだ場所から、しばらく眺めていた。
 # speaker: heroine
-# emotion: smile
-「一歩ずれただけで、重なってたものが離れる。どっちが好き？」
+「帰る時は、ちょっと手を借りようかな。足元より、目が勝手に下を見ちゃう」
 
-* [「今、君が見つけた方」]
+* [「戻ってからも、手をつないでいたい」]
     # effect: gt_delhi_date_agrasen_baoli_second_bold
     { romance_result == "negative":
         # speaker: heroine
-        「合わせなくていいよ。違う方でも、教えてくれたら見てみたい」
+        # reaction: heroine,surprised,interrobang
+        「帰り道の続きまで？　今は、ここの出口まででお願いします」
+        # speaker: narrator
+        彼女は範囲を確かめてから、差し出された手を取った。こちらも、その先を勝手に決めなかった。
     - else:
         # speaker: heroine
-        # emotion: shy
-        「じゃあ、もう少しだけこっちにいて。自分の見つけた場所、覚えておきたい」
+        # reaction: heroine,shy,blush
+        「怖いから、っていう口実を使ってたのに。先に言わないでよ」
+        { ending_reached:
+            # speaker: heroine
+            「うん。外まで。外に出たら、今度はわたしが決めるね」
+        - else:
+            # speaker: heroine
+            「……外に出てから、もう一度聞いて。その時、ちゃんと答える」
+        }
         # speaker: narrator
-        彼女は隣の安全な足場を確かめてから、こちらへ場所を示した。
+        彼女は自分から手を重ねた。先を引かれるのでなく、隣にいるための重さだった。
     }
     -> ending
 
-* [「二つとも。見比べると好きな所が増える」]
+* [「怖いって言ってくれて、ほっとした」]
     # effect: gt_delhi_date_agrasen_baoli_second_honest
     { romance_result == "negative":
         # speaker: heroine
-        「今日は一つ選んでみたかったな。わたしは、アーチが少し離れて見える方」
+        # reaction: heroine,exasperated,sweat
+        「わたしは、言うまで全然ほっとしてなかったよ。頼みたいのに、言いにくい時もあるんだから」
+        # speaker: narrator
+        彼女は少し唇を尖らせながら、隣を歩ける位置に手を差し出した。
     - else:
         # speaker: heroine
-        「欲張りだ。……わたしも、戻ったら別の方がよく見えてきそう」
+        # emotion: smile
+        「わたしも。平気なふり、帰りまで続けなくて済んだ」
         # speaker: narrator
-        彼女は二つの景色を見比べ、最初の一つを選ぶのをやめた。
+        彼女は手を借り、握る強さを自分で加減した。
     }
     -> ending
 
-* [「数えなくていい方」]
+* [「隊長、手を貸す部隊が一名、待機中です」]
     # effect: gt_delhi_date_agrasen_baoli_second_playful
     { romance_result == "negative":
         # speaker: heroine
-        「もう数えてないよ。今はちゃんと、好きな景色の話をしてます」
+        # reaction: heroine,exasperated,sigh
+        「肩書きはもう外して。普通に隣で歩いてくれたらいいの」
+        # speaker: narrator
+        こちらが手を下げると、彼女は引き止めた。手は借りる。ただ、芝居はいらないらしい。
     - else:
         # speaker: heroine
-        # emotion: happy
-        「両方だね。じゃあ今日は、百三って数字だけ案内に預けていこう」
+        # reaction: heroine,teasing,music
+        「では任務です。わたしより先に、すたすた歩いて行かないこと」
         # speaker: narrator
-        彼女は自分の指を一度開いてみせ、それから手を下ろした。
+        彼女がこちらの手を取り、自分の歩幅で向きを変える。隊長の指示は、今度ははっきりしていた。
     }
     -> ending
 
 === ending ===
 # speaker: narrator
-帰りも同じ見学路をたどる。二人が最後に振り向いた時、彼女の口元は数字を刻んでいなかった。
+同じ見学路を戻り、足元が落ち着くところで二人は立ち止まった。彼女は一度手を離し、井戸の方を振り返る。
 { relationship_tone_after == "warm" || relationship_tone_after == "romantic_tension":
     # speaker: heroine
-    # emotion: smile
-    「今日ここで話したこと、段数より先に思い出しそう。ちょっと笑われたことも、込みで」
+    # reaction: heroine,smile,blush
+    「もう、ここなら平気。……今度は、怖くない方の手を貸してもらっていい？」
+    # speaker: narrator
+    彼女は返事を待ってから、もう一度、隣の手を取った。
 - else:
     # speaker: heroine
     # emotion: smile
-    「途中でやめても、面白いままだったね。最後まで数えた時とは、違う見方ができた」
+    「ありがとう。ここからは自分で歩ける。あの横の一歩、戻る前に見つけてよかった」
 }
+# speaker: narrator
+百三という数字を数え切らなくても、彼女は自分が立った場所を、きちんと覚えていた。
 -> END

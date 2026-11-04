@@ -1,29 +1,29 @@
 VAR player_name = ""
 VAR heroine_name = ""
 VAR player_address = ""
-
 # background: gt_bg_agra_fatehpur_sikri
 # speaker: narrator
-ファテープル・シークリーでは、赤い建物の間に、また別の広場が現れる。{heroine_name}は案内図を開いたまま、目の前の道を確かめた。
+ファテープル・シークリーでは、赤い建物の先に、また別の広場が開ける。{heroine_name}が地図を縮めると、細かな文字が一斉に小さくなった。
 # speaker: heroine
-# emotion: surprised
-「ひとつの宮殿かと思ってた。これ、街を見に来たんだね」
+# reaction: heroine,surprised,interrobang
+「待って。一つの建物の名前じゃなかったの？」
 # speaker: narrator
-皇帝アクバルが造営した計画都市には、宮殿、行政のための建物、礼拝の場所などが集まっていた。
-# speaker: heroine
-「偉い人が座る場所だけじゃないんだ。ここに来る人にも、毎日用事があったんだろうな」
-# speaker: narrator
-かつて首都だったこの都市から、宮廷は後にラホールへ移った。帝国の中心だった期間は、建物の壮大さから想像するほど長くない。
-# speaker: heroine
-# emotion: worried
-「こんなに造っても、ずっと同じ使い方をするとは限らないのか」
-# speaker: narrator
-彼女は何か言いかけ、案内図の端を押さえた。風で折れた紙を、こちらと二人で広げ直す。
+皇帝アクバルが造営した都市。彼女は画面を拡大し直して、門と広場をひとつずつ確かめた。
 # speaker: heroine
 # emotion: smile
-「まず、今のわたしたちが迷わないことだね。見たいところを、ちゃんと見よう」
+「来るまで、赤い宮殿を一つ見るつもりだった。地図を閉じても、収まらないね」
 # speaker: narrator
-彼女が最初に指したのは、建物の名前ではなく、その間を通る道だった。
+建物へカメラを向け、止める。もう一度向ける前に、建物と建物をつなぐ道に目が止まった。
 # speaker: heroine
-「ここからなら、つながりが分かりそう。あ、礼拝の場所では案内に合わせて、静かにね」
+「きれいな所だけ撮ると、全部すぐ隣にあったみたいになる。間を歩いた感じも、何か残したいな」
+# speaker: narrator
+スマートフォンをしまい、目の前の道を選ぶ。彼女は自信ありげに一歩出てから、案内図へ視線を戻した。
+# speaker: heroine
+# reaction: heroine,teasing,music
+「いま、案内できる顔をしたけど、確認中です。顔は信用しないで」
+# speaker: narrator
+二人で位置を確かめる。風に浮いた図の端を押さえると、その向こうに赤い広場が見えた。
+# speaker: heroine
+# reaction: heroine,happy,sparkle
+「よし、あそこを見たい。全部回る順番は、まだ決めなくていいよね」
 -> END

@@ -13,113 +13,131 @@ VAR spark_delta = 0
 
 # background: gt_bg_agra_chini_rauza
 # speaker: narrator
-チーニー・カ・ラウザの外壁に、青いタイルが残っている。{heroine_name}は近づきすぎない位置で立ち止まり、色の違う部分を見比べた。
+チーニー・カ・ラウザの外壁に、青い釉薬タイルが残っている。{heroine_name}は色の違う部分を見比べ、何か言いかけて口を閉じた。
 # speaker: heroine
-# emotion: smile
-「こっちは青。あっちは、緑にも見える。青って言うだけじゃ、足りないね」
+# emotion: neutral
+「今、すごく気取ったことを言いそうになった」
 # speaker: narrator
-この廟に葬られたアフザル・ハーンは、シャー・ジャハーンに仕えた高官で、学者・詩人でもあった。外壁の釉薬タイルが、この場所の特色だ。
+ここに葬られたアフザル・ハーンは、高官であり学者・詩人でもあった。案内を読んだ彼女は、もう一度青へ目を向ける。
 # speaker: heroine
-「詩人の人なら、もっといい言い方が出てきたのかな。わたしは今、『きれいな青』で止まってる」
-{ relationship_tone == "strained" || relationship_tone == "reserved":
+# emotion: serious
+「遠い水を、焼きつけたような……」
+# speaker: narrator
+自分で言って、自分で照れた。顔をそらし、こちらの反応を片目だけでうかがう。
 # speaker: heroine
-「{player_address}には、何色に見える？」
-- else:
-# speaker: heroine
-# emotion: teasing
-「何か一つ、言ってみて。難しい言葉だったら、説明も付けてもらいます」
-}
+# reaction: heroine,shy,blush
+「忘れて。いや、今すぐ忘れた顔をするのもやめて。どっちも恥ずかしい」
 
-* [「緑に近いところも、見ていたい」]
-    # effect: gt_agra_date_chini_rauza_first_attentive
+* [「その声で、もう一度だけ聞きたい」]
+    # effect: gt_agra_date_chini_rauza_first_bold
     { romance_result == "negative":
         # speaker: heroine
-        「うん。わたしは、隣の濃いところも気になる。まだ一つに決められないな」
+        # reaction: heroine,exasperated,blush
+        「アンコールは受け付けません。今は本当に恥ずかしいから、少し待って」
     - else:
+        { ending_reached:
         # speaker: heroine
-        「分かる。目がそっちに戻るんだよね。わたしも、今そこを見てた」
+        # reaction: heroine,teasing,heart
+        「恋人だからって、再生ボタンはありません。……あとでなら、一回だけ」
+        - else:
+        # speaker: heroine
+        # reaction: heroine,shy,blush
+        「そういうふうに聞きたがるの、反則。……でも、笑わないで聞いたことは、覚えておく」
+        }
     }
     -> after_first
-* [「『きれいな青、少し緑』でどう？」]
+* [「こちらも一句。青い。大変、青い」]
     # effect: gt_agra_date_chini_rauza_first_playful
     { romance_result == "negative":
         # speaker: heroine
-        「うーん。伝わるけど、少しだけでも、もっと考えてみたいな」
+        # emotion: serious
+        「わたしのやつを笑わせて薄めようとしてる？　今は、まじめに失敗したかったの」
     - else:
         # speaker: heroine
-        # emotion: happy
-        「説明としては正直だね。詩の題名としては、少し長いかも」
+        # reaction: heroine,happy,music
+        「短いのに、二回言った！　……だめ。わたしの詩より、そっちを覚えて帰っちゃいそう」
     }
     -> after_first
-* [「まだ、うまく言えない」]
-    # effect: gt_agra_date_chini_rauza_first_honest
+* [「今の言葉のまま、聞いていたい」]
+    # effect: gt_agra_date_chini_rauza_first_attentive
     { romance_result == "negative":
         # speaker: heroine
-        「そうか。わたしもだけど、何か聞けたらって思ってた。もう少し見てみよう」
+        # emotion: worried
+        「止められると、直せなくなるよ。まだ、自分でも好きか分からないんだ」
     - else:
         # speaker: heroine
         # emotion: smile
-        「わたしも。すぐ答えが出るより、ちょっと安心した」
+        「そう？　じゃあ、いったん消さない。続きが出るまで、そのままにしておく」
     }
     -> after_first
 
 === after_first ===
 # speaker: narrator
-彼女は腕を組み、壁を見たまま小さく口を動かした。何か思いついたようにこちらを向く。
+彼女は続きの言葉を探した。けれど青の隣にも青があり、名前を考えるたびに、目が別の色へ移ってしまう。
 # speaker: heroine
-# emotion: serious
-「遠い水を、焼きつけたような……」
+# emotion: smile
+「詩人の廟に来たからって、急に詩人にはなれないね。好きな色なら、指せるんだけど」
 # speaker: narrator
-そこまで言って、彼女は自分で吹き出した。声を抑え、もう一度壁へ顔を戻す。
+彼女が一か所を指す。こちらが同じ場所を見つけると、満足そうに手を下ろした。
 # speaker: heroine
-# emotion: exasperated
-「だめ。言ってみたら、急に恥ずかしくなった。今の、どうしよう」
+# reaction: heroine,teasing,question
+「ところで、さっきの詩。帰ってから急に読まれたりしないよね？」
 
-* [「そのまま覚えておいていいと思う」]
-    # effect: gt_agra_date_chini_rauza_second_attentive
-    { romance_result == "negative":
-        # speaker: heroine
-        「わたしは、まだ直したいな。きれいに言おうとしすぎた気がする」
-    - else:
-        # speaker: heroine
-        # emotion: shy
-        「笑わずに聞いてくれたんだ。じゃあ、消さずにおこうかな」
-    }
-    -> ending
-* [「今の言い方、けっこう好きだよ」]
-    # effect: gt_agra_date_chini_rauza_second_bold
-    { romance_result == "negative":
-        # speaker: heroine
-        「うれしいけど、すぐ褒められると、言い直せなくなるよ。少し考えさせて」
-    - else:
-        # speaker: heroine
-        # emotion: shy
-        「ほんとに？　……じゃあ、今のは{player_address}にだけ聞いてもらったことにする」
-    }
-    -> ending
-* [「自分なら、きれいな青に戻る」]
+* [「自分は、忘れたくないと思った」]
     # effect: gt_agra_date_chini_rauza_second_honest
     { romance_result == "negative":
         # speaker: heroine
-        「戻るのもいいけど、わたしはもう一回だけ試したいな。せっかく考えたから」
+        # reaction: heroine,shy,blush
+        「それはうれしい。でも、わたしが恥ずかしい時は、口に出さずにいてね」
     - else:
         # speaker: heroine
         # emotion: smile
-        「それもいいね。目の前で言えば、ちゃんと同じ色を見られるし」
+        「じゃあ、覚えてて。失敗作って決めたの、わたしだけだったんだね」
+    }
+    -> ending
+* [「秘密の作品として、厳重に保管します」]
+    # effect: gt_agra_date_chini_rauza_second_playful
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,exasperated,sweat
+        「作品って呼ばれると、急に立派になるから困る。保管庫は、小さめでお願いします」
+    - else:
+        # speaker: heroine
+        # reaction: heroine,teasing,music
+        「持ち出し禁止、無断朗読禁止。……作者が直したくなった時だけ、開けてください」
+    }
+    -> ending
+* [「君の声ごと、俺だけが覚えて帰りたい」]
+    # effect: gt_agra_date_chini_rauza_second_bold
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,serious,blush
+        「わたしの言葉を、全部ひとり占めするのはなし。でも、今の一行だけなら……いいよ」
+    - else:
+        { relationship_tone_after == "strained" || relationship_tone_after == "reserved":
+        # speaker: heroine
+        # reaction: heroine,shy,blush
+        「そんな言い方をされたら、照れる。今の一行だけね。次は、誰に話すか、わたしが決めます」
+        - else:
+        # speaker: heroine
+        # reaction: heroine,teasing,heart
+        「じゃあ、ちゃんと覚えて。次にわたしが忘れてたら、二人きりの時に教えてね」
+        }
     }
     -> ending
 
 === ending ===
 # speaker: narrator
-しばらくして、彼女は説明をやめた。ただ、青の残るところを一つ指し、こちらが同じところを見るまで待つ。
-# speaker: heroine
-# emotion: smile
-「ここ。わたしは、ここの色が好き」
+帰る前に、彼女はもう一度、好きな青を指した。詩の続きを足す代わりに、その位置を二人で確かめる。
 { relationship_tone_after == "warm" || relationship_tone_after == "romantic_tension":
 # speaker: heroine
-# emotion: teasing
-「さっきの詩は、次に会ったとき、急に読み上げたりしないでね。まだ制作中だから」
+# emotion: smile
+「今日は、聞いてもらったからいいか。うまく言えたかどうかは、あとで考える」
+- else:
+# speaker: heroine
+# emotion: smile
+「続きができても、最初から全部直すかもしれないよ。それも、わたしの権利です」
 }
 # speaker: narrator
-その色にぴったりの名前は、最後まで決まらなかった。帰る前に、二人でもう一度、同じ場所を確かめた。
+彼女は先に歩き出した。数歩先で口元が動いたが、今度の一行は、まだ聞こえなかった。
 -> END

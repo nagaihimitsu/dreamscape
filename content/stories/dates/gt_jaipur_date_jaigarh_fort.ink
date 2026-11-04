@@ -13,110 +13,131 @@ VAR spark_delta = 0
 
 # background: gt_bg_jaipur_jaigarh_fort
 # speaker: narrator
-ジャイガル城の見学路で、彼女が足を止めた。城壁の向こうには丘の起伏が続いている。
+ジャイガル城の城壁を眺めていると、彼女が案内図の二つの城を指した。丘の向こうのアンベールとは、地下通路でもつながっていたという。
 # speaker: heroine
-「景色が開けるたび、あっちも見たくなる。さっきまで、もう十分歩いたと思ってたのに」
+# reaction: heroine,surprised,question
+「壁で守って、その裏ではつながってる。正面だけ見て、安心してる場合じゃないね」
 # speaker: narrator
-一歩進みかけて、彼女はふくらはぎをさする。景色を見たい気持ちに、足が追いついていないらしい。
-# speaker: heroine
-# emotion: exasperated
-「だめだ。先に休もう。足の方から、はっきり返事が来た」
-{ relationship_tone == "reserved" || relationship_tone == "strained":
-# speaker: heroine
-「少し待ってもらってもいい？　急いでついていくと、かえって遅くなりそう」
-- else:
+通路へは行かず、見学路で図を眺める。彼女は急に背を伸ばし、こちらへ手のひらを向けた。
 # speaker: heroine
 # emotion: teasing
-「ここはわたしが足を休める係。そっちは、よさそうな眺めを探す係でお願い」
+「では、わたしがこっちの城主。そちらの申し出を聞きます。物騒なのは、却下です」
+{ relationship_tone == "strained" || relationship_tone == "reserved":
+    # speaker: heroine
+    「……急に始めちゃった。困ったら、ただ景色を見る旅人に戻っていいからね」
+- else:
+    # speaker: heroine
+    # reaction: heroine,teasing,sparkle
+    「案内図の上だけだから、だいぶ強気です。さあ、どうぞ」
 }
 
-* [「水を飲んでから決めよう」]
+* [「まず、そちらの希望を聞きたい」]
     # effect: gt_jaipur_date_jaigarh_fort_first_attentive
     { romance_result == "negative":
         # speaker: heroine
-        「水はさっき飲んだから大丈夫。今は、ただ止まっていたいな」
+        # reaction: heroine,exasperated,question
+        「こっちが聞く番だったのに。じゃあ希望は、先に何か申し出てほしい、です」
     - else:
         # speaker: heroine
         # emotion: smile
-        「うん。飲みながら見る景色も、ちゃんと景色だもんね」
+        「こちらは、景色を見ながら歩く同盟を希望します。急かさないことが条件」
     }
     -> after_first
-* [「足の返事には逆らえないね」]
+* [「一生、君に降参します」]
     # effect: gt_jaipur_date_jaigarh_fort_first_playful
     { romance_result == "negative":
         # speaker: heroine
-        「笑い話にするには、まだ少し疲れてる。もうちょっと待って」
+        # reaction: heroine,exasperated,sweat
+        「一生だと、こっちの責任も重い！　今日は、普通に歩いてくれる人を募集してます」
     - else:
         # speaker: heroine
-        # emotion: teasing
-        「かなり強い口調でした。景色の方にも待ってもらいます」
+        # reaction: heroine,shy,blush
+        { ending_reached:
+            「急に期限を延ばしたね。……とりあえず、今日の残りは預かります」
+        - else:
+            「城の話だったよね？　そこだけ、ずるく現実に聞こえたんだけど」
+        }
     }
     -> after_first
-* [「こちらも少し休みたかった」]
+* [「降参より、対等に隣を歩きたい」]
     # effect: gt_jaipur_date_jaigarh_fort_first_honest
     { romance_result == "negative":
         # speaker: heroine
-        「合わせてくれてるなら、無理しなくていいよ。わたしはわたしで休むから」
+        「分かるけど、今はちょっとふざけたかった。わたし、そんなに偉そうだったかな」
     - else:
         # speaker: heroine
-        「じゃあ、ちょうどよかった。二人とも、景色に引っ張られてたんだね」
+        # reaction: heroine,smile,heart
+        「うん。それなら、城主はここでおしまい。隣、空いてます」
     }
     -> after_first
 
 === after_first ===
 # speaker: narrator
-通行の邪魔にならない場所で、二人並んで立つ。足を動かさずに目だけを動かすと、城壁が丘をたどって延びているのがよく見えた。
+二人で城壁の続きを眺める。彼女は現在地を確かめようとして、案内図の向きを逆に持っていたことに気づいた。
 # speaker: heroine
-「ここも、アンベールの宮殿と地下通路でつながっていたんだって。別々に名前がついていると、別々の場所に見えちゃうね」
+# reaction: heroine,exasperated,sweat
+「……今のは見なかったことに。国の向きが逆でした」
 # speaker: narrator
-彼女は案内の図をたどる。通路へ向かうのではなく、今いる城が周囲とどうつながるかを確かめている。
+裏返す手元を見ていると、彼女は図を胸へ引き寄せた。それから笑って、こちらに開き直す。
 # speaker: heroine
-「もう少しここから見たいな。歩いてる間は、足元ばっかり見てたから」
+「秘密の通路があると、城主同士で相談する時は便利そうだね。これは勝手な想像だけど」
+「でも、二人の相談まで全部こっそりだったら嫌だな。嫌なことは、表で言ってほしい」
 
-* [「同じ場所から、違う方を見てみよう」]
-    # effect: gt_jaipur_date_jaigarh_fort_second_attentive
-    { romance_result == "negative":
-        # speaker: heroine
-        「今は、この壁の続きが気になってる。もう少し同じ方を見ていたい」
-    - else:
-        # speaker: heroine
-        # emotion: smile
-        「いいね。あ、こっちにも尾根が続いてる。歩かなくても、見つかるものはあるね」
-    }
-    -> ending
-* [「ここから、いい眺めを探してみる」]
-    # effect: gt_jaipur_date_jaigarh_fort_second_playful
-    { romance_result == "negative":
-        # speaker: heroine
-        「今は探すより、同じ方を一緒に見てほしいな」
-    - else:
-        # speaker: heroine
-        # emotion: teasing
-        「報酬は、わたしが見つけた景色の情報です。けっこう役に立つかも」
-    }
-    -> ending
-* [「ここからの眺めが、一番気に入った」]
+* [「じゃあ正面から。今日、君がすごく楽しそうでうれしい」]
     # effect: gt_jaipur_date_jaigarh_fort_second_honest
     { romance_result == "negative":
         # speaker: heroine
-        「わたしは、まだ一番は決められない。でも、ここがよく見えるのは賛成」
+        # emotion: shy
+        「褒める方から来た。……返事の準備ができてないよ。さっきの城主の勢い、返して」
     - else:
         # speaker: heroine
-        「そっか。じゃあ、足にお礼を言わないと。止まってよかったね」
+        # reaction: heroine,happy,heart
+        「うん、楽しい。今、もっと。正面から言ってくれるの、やっぱりいいね」
+    }
+    -> ending
+* [「図が逆の時も、正直に言うね」]
+    # effect: gt_jaipur_date_jaigarh_fort_second_playful
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,exasperated,anger
+        「それは、もう言わなくていいです。自分で気づいたから。ひとつの失敗を何回も使わないで」
+    - else:
+        # speaker: heroine
+        # reaction: heroine,teasing,music
+        「その際は、王国を救った功労者として表彰します。記念品は、わたしの拍手」
+    }
+    -> ending
+* [「言いにくい時も、急がせずに聞きたい」]
+    # effect: gt_jaipur_date_jaigarh_fort_second_attentive
+    { romance_result == "negative":
+        # speaker: heroine
+        「今は、そんなに深刻な相談じゃなかったんだけど。でも、覚えておくね」
+    - else:
+        # speaker: heroine
+        # emotion: smile
+        「ありがとう。たぶん一回、平気なふりする日もある。あとから言い直しても、聞いてね」
     }
     -> ending
 
 === ending ===
-{ relationship_tone_after == "warm" || relationship_tone_after == "romantic_tension":
-# speaker: narrator
-彼女が図をこちらへ寄せる。二人の指が、違う城壁を同時にたどっていた。
+{ romance_result == "negative":
+    # speaker: narrator
+    彼女は図を畳む前に、言葉を探した。こちらが先を急がずにいると、今度は落ち着いた声になる。
+    # speaker: heroine
+    「ちゃんと話すの、図の向きを直すより難しいね。でも、言ったからね、今のは」
 - else:
-# speaker: narrator
-彼女は図を開いたまま、城壁と見比べる。さっきよりゆっくりした動きだった。
+    # speaker: narrator
+    彼女は案内図を丁寧に畳んだ。今度は、二人とも同じ向きを向いている。
 }
-# speaker: heroine
-# emotion: smile
-「よし、もう少し歩けそう。でも次も、気になったら止まろうね。疲れる前でも」
+{ relationship_tone_after == "warm" || relationship_tone_after == "romantic_tension":
+    # speaker: heroine
+    # reaction: heroine,teasing,music
+    「城主より旅人がいいな。そっちの隣を歩くのに、申し出が要らないから」
+- else:
+    # speaker: heroine
+    # emotion: smile
+    「では、旅人に戻ります。次の角は、一緒に図を見てから行こう」
+}
 # speaker: narrator
-彼女が足を踏み出す。今度は地面を確かめたあと、顔を上げて城壁の先を見た。
+城壁の線は丘へ続いている。二人は秘密の近道を使わず、同じ見学路を歩き始めた。
 -> END

@@ -700,6 +700,13 @@
       "color": "#67836d",
       "fallback": "neutral"
     },
+    "lpb_bg_kuang_si": {
+      "nameJa": "クァンシーの滝",
+      "captionJa": "ルアンパパーン郊外 ／ クァンシーの滝",
+      "color": "#50776c",
+      "fallback": "neutral",
+      "imageAssetId": "lpb_image_kuang_si"
+    },
     "lpb_bg_xieng_thong": {
       "nameJa": "ワット・シェントーン",
       "captionJa": "ルアンパパーン ／ ワット・シェントーン",
@@ -1457,76 +1464,76 @@
       "descriptionJa": "返事を急がずに過ごす時間を選んだ。"
     },
     "gt_delhi_date_india_gate_memory": {
-      "titleJa": "撮る人も写る日",
-      "descriptionJa": "撮る側と写る側を交代し、見た景色とその時の顔を残した。"
+      "titleJa": "シャッターより早い言葉",
+      "descriptionJa": "インド門を背に、落ち着かない顔と閉じかけた目を残した。写真の前に交わした言葉も一緒に。"
     },
     "gt_delhi_date_chandni_chowk_memory": {
-      "titleJa": "見たいものを一つずつ",
-      "descriptionJa": "互いの気になるものを、急がず順に見て回った。"
+      "titleJa": "見るだけ、を言えた日",
+      "descriptionJa": "気に入った布にも、隣の人にも、自分の希望を伝えた。買い物袋は増えず、言えることが増えた。"
     },
     "gt_delhi_date_lodhi_garden_memory": {
-      "titleJa": "歩かない時間",
-      "descriptionJa": "見たいもののある庭で、休みたい気持ちも言葉にした。"
+      "titleJa": "ベンチからお伝えします",
+      "descriptionJa": "廟の見えるベンチで、録音も観客もいない実況をした。休む顔と、格好をつける顔を見比べた。"
     },
     "gt_delhi_date_agrasen_baoli_memory": {
-      "titleJa": "数えるのをやめた段",
-      "descriptionJa": "全段を数えるより、今見える奥行きに見入った。"
+      "titleJa": "横へ一歩の探検",
+      "descriptionJa": "階段井戸を、下へ進まず横の見学路から眺めた。帰り道は、隣の手を借りた。"
     },
     "gt_delhi_date_lotus_temple_memory": {
-      "titleJa": "話さないでいた時間",
-      "descriptionJa": "同じ静けさの中で、別々のことを考えていられた。"
+      "titleJa": "言わずに持って帰るもの",
+      "descriptionJa": "静かな礼拝堂を訪ね、感想をすべて言葉にしないまま並んで歩いた。"
     },
     "gt_delhi_date_bangla_sahib_memory": {
-      "titleJa": "頼みごとを一つ",
-      "descriptionJa": "慣れないことを確かめ、互いに頼れるところを一つ見つけた。"
+      "titleJa": "後ろまで完成",
+      "descriptionJa": "頭を覆う布を確かめ直し、帰りには鞄のねじれを二人で直した。分かった顔だけでは終わらせなかった。"
     },
     "gt_agra_date_mehtab_bagh_memory": {
-      "titleJa": "一歩隣の眺め",
-      "descriptionJa": "メヘターブ・バーグで、立つ位置を少しずつ比べた。正確に同じ場所でなくても、また並んで眺めることができた。"
+      "titleJa": "印を付けなかった場所",
+      "descriptionJa": "川向こうのタージを眺め、戻ると立ち位置が一歩違う気もした。地面に印を付けず、今日ここにいたことを覚えて帰る。"
     },
     "gt_agra_date_akbar_tomb_memory": {
-      "titleJa": "消さなかった一行",
-      "descriptionJa": "アクバル廟で、短い感想の下に少しだけ書き足した。最初の『門、すごい』も、旅のメモに残しておいた。"
+      "titleJa": "門、すごい。の続き",
+      "descriptionJa": "アクバル廟で、知らないことを足さない解説に挑戦した。書き足したメモにも、最初の短い感想は残した。"
     },
     "gt_agra_date_ram_bagh_memory": {
-      "titleJa": "足に一票",
-      "descriptionJa": "ラム・バーグでは、次の見どころより先に休憩を選んだ。靴紐を結び直して歩き出すと、二人の歩幅がそろった。"
+      "titleJa": "競争をやめた園路",
+      "descriptionJa": "ラム・バーグを遅く歩こうとして、普通に歩く方が楽だと笑った。見たい水路の先まで行き、競わず二人で戻った。"
     },
     "gt_agra_date_chini_rauza_memory": {
-      "titleJa": "名前の決まらない青",
-      "descriptionJa": "チーニー・カ・ラウザで見つけた色に、名前は付かなかった。それでも、どの色が好きかは二人で確かめられた。"
+      "titleJa": "まだ続きのある一行",
+      "descriptionJa": "詩人の廟で、気取った一行が思いがけない会話になった。好きな青の位置を確かめ、詩の続きは決めずに帰った。"
     },
     "gt_agra_date_mariam_tomb_memory": {
-      "titleJa": "紹介文の続き",
-      "descriptionJa": "マリアム・ウッザマーニー廟で、一行の紹介を考えた。帰る前には、彼女自身がもう一度見たい場所を指した。"
+      "titleJa": "右も左も、二人で",
+      "descriptionJa": "紹介文だけでは言い切れない希望を聞いた。右から見たかった建物も、左からの眺めも、二人で確かめた。"
     },
     "gt_agra_date_guru_ka_taal_memory": {
-      "titleJa": "先に見つけた塔",
-      "descriptionJa": "グル・カ・タールで、彼女が先に砂岩の塔を見つけた。古い貯水施設のことを知り、二人は静かに並ぶ時間を過ごした。"
+      "titleJa": "言葉で伝えた合図",
+      "descriptionJa": "貯水施設の歴史につながる砂岩の塔を見た。目配せだけでは伝わらなかったことを、帰りには言葉で確かめた。"
     },
     "gt_jaipur_date_jal_mahal_memory": {
-      "titleJa": "今、と知らせた湖岸",
-      "descriptionJa": "マン・サーガル湖で、ジャル・マハルの映り込みを眺めた。見えた瞬間を知らせようとすると、つい相手の方を見てしまった。"
+      "titleJa": "我慢できなかった「今」",
+      "descriptionJa": "湖面の宮殿が揃う瞬間を待った。黙って眺めるより、見えたことを隣へ伝えたくなる時間だった。"
     },
     "gt_jaipur_date_nahargarh_fort_memory": {
-      "titleJa": "地図を閉じた眺め",
-      "descriptionJa": "ナハルガル城で、道を探す手を止めて町を眺めた。小さな屋根が並ぶ景色を、今度は通りから見てみたくなった。"
+      "titleJa": "いつもの高さへ戻るまで",
+      "descriptionJa": "ナハルガル城で高さに足が止まった時、彼女が戻ってきてくれた。落ち着ける位置から町を眺め、帰り道はゆっくり歩いた。"
     },
     "gt_jaipur_date_albert_hall_memory": {
-      "titleJa": "細い線と大きな屋根",
-      "descriptionJa": "アルバート・ホールで細密画を見てから、ラームニワース庭園で休んだ。全部を覚えるよりも、立ち止まった一つの話が長く続いた。"
+      "titleJa": "予想の外に残ったもの",
+      "descriptionJa": "細密画や金工を見て回り、庭園で感想を話した。相手の好みを分かった顔で決めず、続きを聞きたいと思った。"
     },
     "gt_jaipur_date_jaigarh_fort_memory": {
-      "titleJa": "止まって見つけた眺め",
-      "descriptionJa": "ジャイガル城で足を休め、立ち止まった場所から城壁の続きを見つけた。"
+      "titleJa": "国の向きを直して",
+      "descriptionJa": "ジャイガル城で案内図を逆に持った城主は、旅人へ戻った。冗談も本音も、相手に聞こえる所から伝えた。"
     },
     "gt_jaipur_date_johari_bazaar_memory": {
-      "titleJa": "買わなかった色の話",
-      "descriptionJa": "ジョーハリー・バザールの店先で、二人の気になる色を話した。荷物は増えず、話題が増えた。"
+      "titleJa": "売買はしなかった店先",
+      "descriptionJa": "腕飾りを買わずに店を出た。似合うと言われたい気持ちと、自分で選びたい気持ちを話した。"
     },
     "gt_jaipur_date_panna_meena_kund_memory": {
-      "titleJa": "見分けられる角が一つ",
-      "descriptionJa": "階段井戸へ降りずに段の線をたどり、二人で同じ角を見つけた。"
+      "titleJa": "悔しい顔も一緒に",
+      "descriptionJa": "階段井戸の周縁で線をたどり、見間違いに悔しがった。勝ちたい気持ちと、一緒に楽しみたい気持ちを話した。"
     }
   }
 }

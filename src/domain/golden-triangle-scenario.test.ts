@@ -134,3 +134,78 @@ describe("authored Golden Triangle journey", () => {
     expect(getNextCity(state)).toBeUndefined();
   }, 120_000);
 });
+
+
+it("finishes the three-city story without any date or optional memory, in alternating sightseeing orders", () => {
+  let state = createGame("航", "澪", { journeyId: "golden_triangle" });
+  const journey = getJourney("golden_triangle")!;
+  const roundtrip = (current: GameState) => {
+    const values = new Map<string, string>();
+    const storage: StorageLike = { getItem: (key) => values.get(key) ?? null,
+      setItem: (key, value) => { values.set(key, value); } };
+    expect(saveGame(storage, current).ok).toBe(true);
+    const restored = loadGame(storage);
+    expect(restored).toEqual({ status: "loaded", state: current });
+    if (restored.status !== "loaded") throw new Error("Expected a current-version save");
+    return restored.state;
+  };
+  for (const [cityIndex, city] of journey.cities.entries()) {
+    expect(state.currentCityId).toBe(city.id);
+    state = startCityArrival(state, state.revision);
+    state = completeArrivalLogo(state, state.revision);
+    for (let step = 0; state.activeEpilogue; step++) {
+      expect(step).toBeLessThan(40);
+      state = advanceCityEpilogue(state, state.revision);
+    }
+    const main = episodes.filter((episode) => episode.cityId === city.id && episode.kind === "episode");
+    const order = [[1, 3, 0, 2], [2, 0, 3, 1], [3, 1, 2, 0]][cityIndex];
+    const finale = episodes.find((episode) => episode.cityId === city.id && episode.kind === "city_finale")!;
+    for (const [position, episode] of [...order.map((index) => main[index]), finale].entries()) {
+      state = startEpisode(state, episode.id);
+      if (episode.kind === "episode") {
+        for (let step = 0; state.activeTourism?.phase === "guide"; step++) {
+          expect(step).toBeLessThan(100);
+          state = advanceTourismGuide(state, state.revision);
+        }
+        state = startTourismBattle(state, state.revision);
+      }
+      let score = 0;
+      for (let step = 0; state.activeBattle?.phase !== "result"; step++) {
+        expect(step).toBeLessThan(300);
+        const active = state.activeBattle!;
+        expect(active).toBeTruthy();
+        if (active.phase === "question") {
+          const question = getActiveBattleContent(active).quiz.questions[active.roundIndex];
+          // Include completely wrong, mixed and perfect ordinary battles.
+          const correct = position === 2 || (position > 0 && active.roundIndex % 2 === 0);
+          const option = correct ? question.correctOptionId : question.options.find((answer) => answer.id !== question.correctOptionId)!.id;
+          const beforeAnswer = state;
+          state = answerBattle(state, option, beforeAnswer.revision);
+          expect(answerBattle(state, option, beforeAnswer.revision)).toBe(state);
+          state = roundtrip(state);
+          if (correct) score++;
+        } else state = advanceBattle(state, state.revision);
+      }
+      expect(state.activeBattle?.score).toBe(score);
+      const rewarded = state;
+      state = leaveBattle(state, state.revision);
+      expect(leaveBattle(state, rewarded.revision)).toBe(state);
+      state = roundtrip(state);
+      expect(state.playedDateIds).toEqual([]);
+      expect(state.memories).toEqual([]);
+      expect(state.endingReached).toBe(false);
+    }
+    state = advanceCompletedJourneyCity(state, state.revision);
+    for (let step = 0; state.activeEpilogue; step++) {
+      expect(step).toBeLessThan(120);
+      expect(state.activeEpilogue.frame.speaker).not.toBe("player");
+      state = roundtrip(advanceCityEpilogue(state, state.revision));
+    }
+    state = advanceCompletedJourneyCity(state, state.revision);
+    expect(state.currentCityId).toBe(journey.cities[cityIndex + 1]?.id ?? city.id);
+  }
+  expect(state.viewedEpilogueCityIds).toEqual(["delhi", "agra", "jaipur"]);
+  expect(state.playedDateIds).toEqual([]);
+  expect(state.memories).toEqual([]);
+  expect(new Set(state.claimedRewardIds).size).toBe(state.claimedRewardIds.length);
+}, 120_000);

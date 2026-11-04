@@ -3,8 +3,8 @@ import quiz from "../../content/quizzes/sound_supper_B1.json" with { type: "json
 import {
   saved,
   startCurrentSupperJourney,
-  startCafe,
   expectNoOverflow,
+  availableAp,
 } from "./helpers";
 import {
   playBattle,
@@ -64,7 +64,10 @@ test("a full guide and successful battle grant seven AP once and lead directly t
       0,
     ),
   ).toBe(5);
-  await expect(page.getByTestId("battle-rewards")).toContainText("7 AP");
+  // The guide's 1 AP was credited earlier. The result lists only this
+  // battle's 1 + 1 + 4 AP, while the complete visit still earns 7 AP once.
+  expect(availableAp(result.state) - availableAp(initial)).toBe(7);
+  await expect(page.getByTestId("battle-rewards")).toContainText("＋6 AP");
   await expect(page.getByTestId("episode-clear")).toBeVisible();
   await page.getByTestId("battle-rewards").scrollIntoViewIfNeeded();
   await page.screenshot({
@@ -73,10 +76,27 @@ test("a full guide and successful battle grant seven AP once and lead directly t
   });
   await reloadUnchanged(page);
   await enterFreeTime(page);
-  await expect(page.getByTestId("event-milano_cafe_01")).toBeVisible();
+  await expect(page.getByTestId("travel-menu")).toBeVisible();
   expect((await saved(page)).ap).toBe(12);
-  await startCafe(page);
+  await page.getByTestId("travel-place-p_roastery").getByRole("button").click();
+  expect((await saved(page)).ap).toBe(12);
+  const beforeDate = await saved(page);
+  // A destination with one available mode starts directly; otherwise choose
+  // walking in the route dialog. Both entry paths protect repeated clicks.
+  await page.getByTestId("travel-event-milano_cafe_01").evaluate((button: HTMLButtonElement) => {
+    button.click();
+    button.click();
+  });
+  if (!(await saved(page)).activeDate) {
+    await page.getByRole("dialog").getByRole("button", { name: /^徒歩 / }).evaluate((button: HTMLButtonElement) => {
+      button.click();
+      button.click();
+    });
+  }
+  await expect.poll(async () => (await saved(page)).activeDate?.dateId).toBe("milano_cafe_01");
+  await expect(page.getByTestId("travel-transition")).toHaveCount(0);
   expect((await saved(page)).ap).toBe(11);
+  expect(availableAp(beforeDate) - availableAp(await saved(page))).toBe(2);
   expect((await saved(page)).pendingApRewards).toEqual([]);
   await reloadUnchanged(page);
   await expect(page.locator(".dialogue-text")).toBeVisible();

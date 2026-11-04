@@ -82,9 +82,9 @@
       "battleId": "gt_delhi_main_red_fort_battle",
       "legacyChapterId": "delhi",
       "titleJa": "広場ばかりの城",
-      "descriptionJa": "レッド・フォートで、友達と遊ぶ盤面を作るターラーに出会う。",
-      "clearTitleJa": "城の中で暮らす人",
-      "clearDescriptionJa": "赤い壁の内側に、住まいと水路と、その後の時代が見えてきた。"
+      "descriptionJa": "レッド・フォートで、負けず嫌いのターラーが作る盤面に巻き込まれる。",
+      "clearTitleJa": "おやつ休憩は攻撃禁止",
+      "clearDescriptionJa": "城の中身は直ったけれど、ターラーの仕返しのルールは残った。"
     },
     {
       "id": "gt_delhi_main_qutb_minar",
@@ -94,10 +94,10 @@
       "requiredEpisodeIds": [],
       "battleId": "gt_delhi_main_qutb_minar_battle",
       "legacyChapterId": "delhi",
-      "titleJa": "空まで撮れた",
-      "descriptionJa": "クトゥブ・ミナールの撮影失敗をきっかけに、描きかけの絵と未完の塔を見る。",
+      "titleJa": "空は返品できません",
+      "descriptionJa": "クトゥブ・ミナールを撮り損ねた動画に、電器店員デーヴが故障ではないと口を挟む。",
       "clearTitleJa": "消さなかった一カット",
-      "clearDescriptionJa": "塔が画面から消えた後にも、二人で笑った声が残った。"
+      "clearDescriptionJa": "塔の映った一本も、空と二人の笑い声だけの一本も残した。"
     },
     {
       "id": "gt_delhi_main_humayun_tomb",
@@ -107,10 +107,10 @@
       "requiredEpisodeIds": [],
       "battleId": "gt_delhi_main_humayun_tomb_battle",
       "legacyChapterId": "delhi",
-      "titleJa": "写真の向こうへ歩く",
-      "descriptionJa": "フマユーン廟で、祖母へ写真を見せたいサイラと庭の話を探す。",
-      "clearTitleJa": "大きい、の続き",
-      "clearDescriptionJa": "庭を歩いて見つけたことが、写真に添える言葉になった。"
+      "titleJa": "座っているのも観光です",
+      "descriptionJa": "フマユーン廟の庭で、一人で座るサイラを気遣ったつもりが、ぴしゃりと言い返される。",
+      "clearTitleJa": "座る方の観光",
+      "clearDescriptionJa": "先を急ぐ息子と座りたいサイラ。面白いことを全部教えるかどうかは、意見が違ったまま。"
     },
     {
       "id": "gt_delhi_main_jama_masjid",
@@ -120,10 +120,10 @@
       "requiredEpisodeIds": [],
       "battleId": "gt_delhi_main_jama_masjid_battle",
       "legacyChapterId": "delhi",
-      "titleJa": "一枚貸して、三枚話す",
-      "descriptionJa": "ジャーマー・マスジドで、弟に貸す写真を選んでいるイムランの練習に付き合う。",
-      "clearTitleJa": "写真を撮った理由",
-      "clearDescriptionJa": "昔の建物と、今そこへ来る人を知り、写真に自分の見た話を添えた。"
+      "titleJa": "昔の、を先に言って",
+      "descriptionJa": "ジャーマー・マスジドの見学出口で、イムランの曖昧な道案内にヒロインまで慌てる。",
+      "clearTitleJa": "王様より仕込みの時間",
+      "clearDescriptionJa": "門の昔と今を確かめたあと、説明していた本人が店の当番へ大急ぎで帰った。"
     },
     {
       "id": "gt_delhi_finale",
@@ -140,9 +140,9 @@
       "battleId": "gt_delhi_finale_battle",
       "legacyChapterId": "delhi",
       "titleJa": "三分間の旅への招待",
-      "descriptionJa": "レッド・フォートで、映像好きのニールと五枚の写真をめくる。",
-      "clearTitleJa": "わたしも、撮ってみたい",
-      "clearDescriptionJa": "自分たちの旅を三分間にして、ジャイプールの小さな上映会へ持っていく。"
+      "descriptionJa": "レッド・フォートで映像好きのニールと仮編集。空のカットを切る指を、ヒロインが止める。",
+      "clearTitleJa": "この続きを、自分で",
+      "clearDescriptionJa": "自分たちの素材だけに戻し、空から始める三分の旅を作ると決めた。"
     },
     {
       "id": "gt_agra_main_taj_mahal",
@@ -152,10 +152,10 @@
       "requiredEpisodeIds": [],
       "battleId": "gt_agra_main_taj_mahal_battle",
       "legacyChapterId": "agra",
-      "titleJa": "タージ・マハル――一枚に入らないもの",
-      "descriptionJa": "母に送る写真を選べない図案家ファリド。整った眺めの奥にある配置と、お墓の仕組みを確かめる。",
-      "clearTitleJa": "切り抜かずに送った一枚",
-      "clearDescriptionJa": "ファリドが最後に選んだのは、自分も写った写真だった。白い建物の見え方にも、新しい奥行きが増えた。"
+      "titleJa": "中央集合、の行き先",
+      "descriptionJa": "タージ・マハルで母と待ち合わせた菓子店主ファリド。「真ん中」がどこか分からず、案内図を開き直す。",
+      "clearTitleJa": "中央ではない待ち合わせ",
+      "clearDescriptionJa": "庭の配置と記念棺を確かめているうちに、母が到着した。今日は店の電話をしまい、二人で歩いていく。"
     },
     {
       "id": "gt_agra_main_agra_fort",
@@ -165,10 +165,10 @@
       "requiredEpisodeIds": [],
       "battleId": "gt_agra_main_agra_fort_battle",
       "legacyChapterId": "agra",
-      "titleJa": "アーグラ城――四コマでは足りない",
-      "descriptionJa": "甥に見せる四コマ漫画を描くアディ。赤と白の建物や、城の仕事、窓の先の眺めを描くうち、予定の枠からはみ出していく。",
-      "clearTitleJa": "城を歩く六コマ",
-      "clearDescriptionJa": "異なる皇帝の建物、政治と暮らし、窓からの眺め。アディのノートには、水を忘れた自分の話も含めて、城を歩く六コマが並んだ。"
+      "titleJa": "聞いていたのは誰？",
+      "descriptionJa": "アーグラ城で家族へ熱弁する建築学生アディ。振り返ると、聞いている相手が二人の旅行者に変わっていた。",
+      "clearTitleJa": "案内板には勝てない",
+      "clearDescriptionJa": "防御と暮らし、城の赤と白、窓の先の墓廟。熱弁を終えた学生には、家族の水を配る大事な出番が残っていた。"
     },
     {
       "id": "gt_agra_main_itimad_tomb",
@@ -178,10 +178,10 @@
       "requiredEpisodeIds": [],
       "battleId": "gt_agra_main_itimad_tomb_battle",
       "legacyChapterId": "agra",
-      "titleJa": "イティマード・ウッダウラ廟――少し太った花",
-      "descriptionJa": "服の仕立てを仕事にするアミナは、白い廟の花模様を描いている。造営した娘の思いと、石が作る色や光を見つめる。",
-      "clearTitleJa": "自分の服のための模様",
-      "clearDescriptionJa": "アミナは少し太った花びらを消さずに残した。壁の表だけでなく、格子の向こうへ入る光にも目が向いた。"
+      "titleJa": "袖は明日、花は今日",
+      "descriptionJa": "イティマード・ウッダウラ廟で、父からの袖直しを断る仕立て屋アミナ。気遣ったつもりの言葉が、かえって彼女の休みを急かしてしまう。",
+      "clearTitleJa": "返事は明日読む",
+      "clearDescriptionJa": "娘による造営と石の花、格子の光を見た。アミナは父へ花の名前を尋ね、袖の話は明日に残す。"
     },
     {
       "id": "gt_agra_main_fatehpur_sikri",
@@ -191,10 +191,10 @@
       "requiredEpisodeIds": [],
       "battleId": "gt_agra_main_fatehpur_sikri_battle",
       "legacyChapterId": "agra",
-      "titleJa": "ファテープル・シークリー――休憩もある案内図",
-      "descriptionJa": "家族を案内する下見に来たキラン。大きなお城という説明から、さまざまな営みのある街へと、案内を作り直す。",
-      "clearTitleJa": "行き先が減り、楽しみが増えた地図",
-      "clearDescriptionJa": "首都だった頃も、その後も続いた場所の話を確かめた。キランの案内図には、子どもたちが選ぶ道と大きな休憩の丸が残った。"
+      "titleJa": "乗客は私、一名",
+      "descriptionJa": "ファテープル・シークリーで、退職した車掌キランが自分だけの見学へ。家族の案内を考える手を止め、街の続きを探す。",
+      "clearTitleJa": "戻った一歩も残す",
+      "clearDescriptionJa": "首都のその後を確かめ、キランとは別の見たい場所へ。広場を探して一度戻った足取りを、短い映像に残した。"
     },
     {
       "id": "gt_agra_finale",
@@ -210,10 +210,10 @@
       "epilogueStoryId": "epilogues/agra",
       "battleId": "gt_agra_finale_battle",
       "legacyChapterId": "agra",
-      "titleJa": "アーグラ・フィナーレ――ここは残したい",
-      "descriptionJa": "写真好きのサナが、三分の映像に編集案を出す。滑らかな仕上がりにうなずいた彼女は、消しかけた数秒で指を止めた。",
-      "clearTitleJa": "自分で選び直した数秒",
-      "clearDescriptionJa": "史実の説明を確かめたあと、彼女は残したい場面を言葉にした。好みが違う相手とも映像を見せ合う約束をして、ジャイプールへ向かう。"
+      "titleJa": "ここは、切りたくない",
+      "descriptionJa": "サナの短く滑らかな編集案を前に、消せない歩行の数秒がある。説明の正確さと、自分が残したいものを分けて選ぶ。",
+      "clearTitleJa": "歩く版を送った",
+      "clearDescriptionJa": "短い版の良さも認めながら、迷って戻った数秒を残した。サナと好みは違うまま、三分に向けた編集を続ける。"
     },
     {
       "id": "gt_jaipur_main_amber_fort",
@@ -223,10 +223,10 @@
       "requiredEpisodeIds": [],
       "battleId": "gt_jaipur_main_amber_fort_battle",
       "legacyChapterId": "jaipur",
-      "titleJa": "大きな城の、小さな案内役",
-      "descriptionJa": "アンベール城で、甥に送る写真を選びかねている元運転手に出会う。",
-      "clearTitleJa": "三枚では足りない城",
-      "clearDescriptionJa": "中庭から奥の暮らしへ。ハリッシュの写真選びに、二人の見方も加わった。"
+      "titleJa": "近道を勧める人",
+      "descriptionJa": "アンベール城で、最短経路を勧める元運転手と、立ち止まりたい二人の用事が食い違う。",
+      "clearTitleJa": "急がない方の中庭",
+      "clearDescriptionJa": "広場の使われ方を確かめ、自分で省く所を決めたいハリッシュと、違う道を選んだ。"
     },
     {
       "id": "gt_jaipur_main_hawa_mahal",
@@ -236,10 +236,10 @@
       "requiredEpisodeIds": [],
       "battleId": "gt_jaipur_main_hawa_mahal_battle",
       "legacyChapterId": "jaipur",
-      "titleJa": "描きたいのは、窓の向こう",
-      "descriptionJa": "ハワー・マハルを描く学生のスケッチには、窓だけがまだ描かれていない。",
-      "clearTitleJa": "向こう側からも見てみよう",
-      "clearDescriptionJa": "外観の美しさに、内側から街を眺めた人の目線が加わった。"
+      "titleJa": "顔のない一場面",
+      "descriptionJa": "ハワー・マハルを見ていた病院受付のイーシャは、動画に写ることをきっぱり断る。",
+      "clearTitleJa": "撮らなかった人の言葉",
+      "clearDescriptionJa": "イーシャの姿や声を録らず、本人が許した一文を残した。窓の内外と、今日の彼女の希望を混同しない。"
     },
     {
       "id": "gt_jaipur_main_city_palace",
@@ -249,10 +249,10 @@
       "requiredEpisodeIds": [],
       "battleId": "gt_jaipur_main_city_palace_battle",
       "legacyChapterId": "jaipur",
-      "titleJa": "父の説明、娘の発見",
-      "descriptionJa": "シティ・パレスで、仕立て屋の父娘がそれぞれ別のものに見入っている。",
-      "clearTitleJa": "続きを聞くのは帰り道",
-      "clearDescriptionJa": "宮殿を支えた仕事を知り、同じ場所を違う速さで楽しむ父娘を見送った。"
+      "titleJa": "迷子なのはお父さん",
+      "descriptionJa": "シティ・パレスで木工職人の話が止まらない。娘がいう「お父さんが迷子」の意味を、ヒロインも取り違える。",
+      "clearTitleJa": "説明役が二人になった日",
+      "clearDescriptionJa": "作る仕事の話に引き込まれ、娘を助けるつもりが自分も説明を長くしてしまった。今度は娘の案内で進む。"
     },
     {
       "id": "gt_jaipur_main_jantar_mantar",
@@ -262,10 +262,10 @@
       "requiredEpisodeIds": [],
       "battleId": "gt_jaipur_main_jantar_mantar_battle",
       "legacyChapterId": "jaipur",
-      "titleJa": "時計屋の、時計を見ない時間",
-      "descriptionJa": "ジャンタル・マンタルで出会った時計修理屋は、今日は腕時計を止めてきたという。",
-      "clearTitleJa": "空まで広がる仕事場",
-      "clearDescriptionJa": "巨大な観測器と、小さな時計。同じ時間を扱う二つの仕事から空を見上げた。"
+      "titleJa": "止めた時計、動く約束",
+      "descriptionJa": "ジャンタル・マンタルへ時計を止めて来たディーペン。休日の自由には、忘れていた約束があった。",
+      "clearTitleJa": "時計より先に謝る",
+      "clearDescriptionJa": "時刻を忘れて観測器を楽しんだ時計屋は、待っている姉に連絡した。二人はその後、装置から空へ続く映像を撮った。"
     },
     {
       "id": "gt_jaipur_finale",
@@ -281,10 +281,10 @@
       "epilogueStoryId": "epilogues/jaipur",
       "battleId": "gt_jaipur_finale_battle",
       "legacyChapterId": "jaipur",
-      "titleJa": "上映前、最後の五問",
-      "descriptionJa": "ジャンタル・マンタルで上映役のラヴィと合流。三分間の旅を人に見せる前に、街の話を確かめる。",
-      "clearTitleJa": "最初の言葉は、わたしから",
-      "clearDescriptionJa": "旅の映像が完成した。紹介の一言は、自分で話すと決めた。"
+      "titleJa": "三分の最後に、何を残す",
+      "descriptionJa": "ジャンタル・マンタルでラヴィと合流。字幕を確かめ、映像を削り、最後に自分の声を入れる。",
+      "clearTitleJa": "もう一度見たい、その先へ",
+      "clearDescriptionJa": "三分に収まる映像を仕上げた。失敗した空も歩く数秒も残し、最初の紹介と最後の声を自分で決めた。"
     }
   ],
   "storyBattles": [

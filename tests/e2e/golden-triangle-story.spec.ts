@@ -3,6 +3,7 @@ import path from "node:path";
 import { expect, test, type Page } from "@playwright/test";
 import type { GameState } from "../../src/domain/game";
 import type { QuizDefinition } from "../../src/content/schemas";
+import battles from "../../content/battles/catalog.json" with { type: "json" };
 import type { TravelCatalog } from "../../src/content/travel-schemas";
 import { advanceDialogue, expectNoOverflow, setDialogueSpeed } from "./helpers";
 import { finishCityArrival } from "./city-arrival-helpers";
@@ -129,6 +130,7 @@ async function playDate(page: Page) {
     expect(active!.frame.speaker).not.toBe("player");
     if (active!.frame.choices.length) {
       await expect(page.locator(".choice")).toHaveCount(3);
+      await expect(page.locator(".choice").first()).toBeEnabled();
       if (choices === 0) {
         await page.setViewportSize({ width: 320, height: 740 });
         await expectNoOverflow(page);
@@ -137,6 +139,13 @@ async function playDate(page: Page) {
       }
       await page.locator(".choice").nth(choices % 3).click();
       choices++;
+      if (choices === 1) {
+        await expect.poll(async () => (await state(page)).activeDate?.choiceCount).toBe(1);
+        const chosen = await state(page);
+        await reloadIndia(page);
+        expect((await state(page)).activeDate?.frame).toEqual(chosen.activeDate?.frame);
+        expect((await state(page)).ap).toBe(chosen.ap);
+      }
     } else if (active!.frame.ended) {
       await page.getByRole("button", { name: "デートを終える", exact: true }).click();
       expect(choices).toBe(2);
@@ -149,9 +158,25 @@ async function playDate(page: Page) {
 }
 
 async function readEnding(page: Page) {
-  for (let step = 0; step < 55; step++) {
+  let sawLocalSpeaker = false;
+  const cityId = (await state(page)).currentCityId;
+  for (let step = 0; step < 120; step++) {
     const before = await state(page);
-    if (!before.activeEpilogue || before.activeEpilogue.kind === "arrival") return;
+    if (!before.activeEpilogue || before.activeEpilogue.kind === "arrival") {
+      if (cityId === "agra" || cityId === "jaipur") expect(sawLocalSpeaker).toBe(true);
+      return;
+    }
+    if (before.activeEpilogue.frame.speaker === "enemy") {
+      const name = battles.battles.find((battle) => battle.id === `gt_${cityId}_finale_battle`)!.enemyNameJa;
+      await expect(page.getByTestId("city-epilogue-screen").locator(".speaker")).toHaveText(name);
+      if (!sawLocalSpeaker) {
+        await page.setViewportSize({ width: 320, height: 740 });
+        await expectNoOverflow(page);
+        await page.screenshot({ path: `artifacts/golden-triangle-review/${cityId}-epilogue-speaker-320.png`, fullPage: true });
+        await page.setViewportSize({ width: 360, height: 780 });
+      }
+      sawLocalSpeaker = true;
+    }
     expect(before.activeEpilogue.frame.speaker).not.toBe("player");
     if (step === 2) {
       await expectNoOverflow(page);

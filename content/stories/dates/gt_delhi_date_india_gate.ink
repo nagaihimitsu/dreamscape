@@ -13,138 +13,184 @@ VAR spark_delta = 0
 
 # background: gt_bg_delhi_india_gate
 # speaker: narrator
-インド門の見える広場で、家族連れの女性が二人にカメラを差し出した。自分も一緒に写りたいのだという。
+インド門の見える広場で、家族連れの女性がカメラを差し出した。いつも撮る側で、自分だけ写真にいないのだという。
 # speaker: heroine
-# emotion: smile
-「もちろん。みなさんが入るようにしますね」
+# reaction: heroine,smile,sparkle
+「じゃあ、真ん中へどうぞ。今日は撮る係、お休みです」
 # speaker: narrator
-{heroine_name}は人の流れを避けて立ち、全員がこちらを向くのを待った。一枚撮り、画面を見せる。
-# speaker: narrator
-女性は家族を指し、それから自分を指して笑った。礼を言うと、今度は二人の写真も撮ろうかと申し出る。
+{heroine_name}が一枚撮ると、女性は画面の自分を見て笑った。今度は二人を撮ってくれるという。
 # speaker: heroine
-「あ、わたしたちも……どうしよう。まだ門しか撮ってなかった」
+「わたしたちも？　あ、はい。……どのくらい並ぶ？」
 { relationship_tone == "reserved" || relationship_tone == "strained":
     # speaker: narrator
-    彼女はこちらを見て、スマートフォンを渡す前に一度待った。
+    彼女は隣を空けたまま、こちらが立つのを待っている。カメラを渡す手だけが、先に伸びた。
 - else:
-    # speaker: narrator
-    彼女はすぐ隣の空きを指し、そこに並んだ姿を想像して笑った。
+    # speaker: heroine
+    # reaction: heroine,teasing,music
+    「さっきまで撮る側だと、偉そうに指示できたのにね。急に手の置き場がない」
 }
 
-* [「一緒に一枚、お願いしよう」]
-    # effect: gt_delhi_date_india_gate_first_honest
+* [「今、君のこと好きだなって思った」]
+    # effect: gt_delhi_date_india_gate_first_bold
     { romance_result == "negative":
         # speaker: heroine
-        「今日は別々に撮るのでもいい？　並ぶと、どういう顔をしたらいいか急に分からなくなっちゃった」
+        # reaction: heroine,surprised,interrobang
+        「今？　今それを言うの？　写真の顔、もう何も作れないよ」
+        { ending_reached:
+            # speaker: heroine
+            「うれしいのと、困るのは、同時に来るんだからね」
+        - else:
+            # speaker: heroine
+            # emotion: serious
+            「ちゃんと聞いた。でも、ここで返事を急がせないで」
+        }
         # speaker: narrator
-        こちらがうなずくと、彼女も女性にその希望を伝えた。
+        こちらがうなずくと、彼女は大きく一度息を吸い、カメラへ向き直った。
     - else:
         # speaker: heroine
-        # emotion: happy
-        「うん。二人とも写るの、一枚は欲しかった」
+        # reaction: heroine,shy,blush
+        「……写真を撮る前に言うんだ。それ」
+        { ending_reached:
+            # speaker: heroine
+            # emotion: teasing
+            「じゃあ今日の分、顔にも出して。わたしばっかり赤くなるのは困る」
+        - else:
+            # speaker: heroine
+            「変な顔になってても、消さないでね。今、たぶん隠せないから」
+        }
         # speaker: narrator
-        彼女は自分で立つ位置を選び、空けた隣をこちらへ示した。
+        彼女は逃げずに隣へ並んだ。笑い方を決める前に、シャッターが切られる。
     }
     -> after_first
 
-* [「門に負けない大きな顔で」]
+* [「新婚旅行ってことにする？　……冗談」]
     # effect: gt_delhi_date_india_gate_first_playful
     { romance_result == "negative":
         # speaker: heroine
-        「それ、わたしには難易度が高いな。普通の顔を一枚、先に残させて」
+        # reaction: heroine,exasperated,sweat
+        「冗談の前に、人生がすごい速度で進んだんだけど」
+        # speaker: heroine
+        # emotion: serious
+        「その設定は、わたしに聞かずに人へ言わないでね」
         # speaker: narrator
-        彼女は一度息を吐き、肩を楽にした。
+        冗談は二人の間だけで止める。彼女は肩の力を抜き、いつもの距離に立った。
     - else:
         # speaker: heroine
-        # emotion: teasing
-        「その勝負、顔の大きさじゃ勝てないよ。表情で頑張って」
+        # reaction: heroine,surprised,interrobang
+        「し、新婚！　荷物より先に設定が増えた！」
+        { ending_reached:
+            # speaker: heroine
+            # emotion: teasing
+            「婚約の相談を飛ばした罰で、写真の変な顔はそっちの担当ね」
+        - else:
+            # speaker: heroine
+            # emotion: teasing
+            「まずは旅の連れから。飛び級は受け付けてません。……笑わせないで、撮られるから」
+        }
         # speaker: narrator
-        先に吹き出したのは彼女だった。女性は、その瞬間にシャッターを切った。
+        二人の事情を知らない女性も、つられて笑う。写真には、笑いを止め損ねた顔が残った。
     }
     -> after_first
 
-* [「どんな写真にしたい？」]
+* [「一緒の写真がほしい。嫌でなければ」]
     # effect: gt_delhi_date_india_gate_first_attentive
     { romance_result == "negative":
         # speaker: heroine
-        「急に聞かれると、欲張っちゃう。まず一枚、普通に撮ろう」
+        # reaction: heroine,worried,question
+        「嫌かどうかって聞かれると、急に緊張する。普通に『並ぼう』でよかったのに」
         # speaker: narrator
-        彼女は迷っていた手を下ろし、二人の間に小さく隙間を空けた。
+        彼女は少し距離を空け、自分で立つ位置を決めた。
     - else:
         # speaker: heroine
-        「門も、足元も入れたい。ちゃんとここまで歩いたって分かるのがいい」
+        # reaction: heroine,happy,sparkle
+        「わたしもほしい。門だけじゃ、一緒に来た人が分からないもんね」
         # speaker: narrator
-        希望を伝える声は、撮る側だった時より少し明るかった。
+        彼女はカメラへ顔を向け、目だけで一度こちらを確かめた。
     }
     -> after_first
 
 === after_first ===
 # speaker: narrator
-撮った写真を確認し、女性に礼を言う。家族が去った後、二人は門の説明に目を通した。
+女性に礼を言って別れ、二人は門の説明に目を通した。戦争で亡くなった人々を記憶する場所だと知り、しばらく実物を見上げる。
 # speaker: heroine
 # emotion: serious
-「戦争で亡くなった人たちを記憶するための場所なんだね」
+「写真の背景にするだけで、通り過ぎなくてよかった」
 # speaker: narrator
-彼女はしばらく、画面ではなく実物を見ていた。それから少し離れた場所へ歩き、写真をもう一度開く。
+少し歩いてから、彼女が撮ってもらった画面を開く。こちらの目は、見事に閉じかけていた。
 # speaker: heroine
-「ここに来た写真、ちゃんと残しておきたいな。門のことも、一緒に覚えていたい」
+# reaction: heroine,teasing,music
+「門は立派。わたしは落ち着かない顔。そして、そちらは……寝てる？」
 # speaker: narrator
-画面を見せる指が、一枚の端で止まった。こちらの目が少し閉じかけている。
+もう一枚を見ても、目の開き具合はよく似ている。彼女の肩が震えた。
 # speaker: heroine
-# emotion: teasing
-「ただ、この一枚は……うとうとしてる人も記録されてます」
+「待って、消さないで。この顔を見たら、さっきの会話まで思い出せる」
 
-* [「それも残して。撮り直しは別にしよう」]
-    # effect: gt_delhi_date_india_gate_second_honest
-    { romance_result == "negative":
-        # speaker: heroine
-        「覚えておくのはできるけど、全部残すと選べなくなりそう。これは二人で見る分にしようね」
-    - else:
-        # speaker: heroine
-        「いいの？　後で消してって言っても、もう一度見てから消します」
-        # speaker: narrator
-        彼女はそう言って、画面をこちらにも寄せた。
-    }
-    -> ending
-
-* [「次は撮る側を交代しよう」]
-    # effect: gt_delhi_date_india_gate_second_attentive
-    { romance_result == "negative":
-        # speaker: heroine
-        「もう少しだけ、撮らずに歩きたいな。写真の顔をしてると、肩が疲れちゃう」
-    - else:
-        # speaker: heroine
-        「じゃあ、わたしも一枚撮ってもらおうかな。足元まで入れてね」
-        # speaker: narrator
-        彼女はポーズを決めず、門の方を見てからこちらへ振り返った。
-    }
-    -> ending
-
-* [「この顔、見せるのは君だけにしたい」]
+* [「この顔を見せる相手、君だけでいい」]
     # effect: gt_delhi_date_india_gate_second_bold
     { romance_result == "negative":
         # speaker: heroine
-        # emotion: worried
-        「分かった。誰かに見せる時は先に聞くね。でも、その言い方はちょっと照れる」
+        # reaction: heroine,exasperated,sweat
+        「秘密を預かる話にしなくても、勝手には見せないよ。今は、もう少し笑わせて」
     - else:
         # speaker: heroine
-        # emotion: shy
-        「目を閉じかけた写真で、そんなこと言うんだ。……じゃあ、大事に保管します」
+        # reaction: heroine,shy,heart
+        「その顔で、そんなに格好いいことを言わないで。保存する指が止まる」
+        { ending_reached || relationship_tone_after == "romantic_tension":
+            # speaker: heroine
+            「……分かった。わたし専用。嫌になったらちゃんと言ってね」
+        - else:
+            # speaker: heroine
+            「では、厳重に保管します。たまに笑う許可だけ、ください」
+        }
+    }
+    -> ending
+
+* [「それも残して。自分の顔に責任を持つ」]
+    # effect: gt_delhi_date_india_gate_second_honest
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,exasperated,sigh
+        「急に立派なこと言わないでよ。笑ってたわたしが悪者みたいになる」
         # speaker: narrator
-        笑いながら言った後、彼女はもう一度その写真を見た。
+        彼女は画面を伏せる。それでも、まだ口元だけは緩んでいた。
+    - else:
+        # speaker: heroine
+        # reaction: heroine,happy,music
+        「潔い。じゃあ、わたしの落ち着かない顔も逃がさないでおく」
+        # speaker: narrator
+        彼女は写真を拡大し、二人の顔を同じ大きさで並べてみせた。
+    }
+    -> ending
+
+* [「今度は撮るよ。好きな顔をして」]
+    # effect: gt_delhi_date_india_gate_second_attentive
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,worried,sweat
+        「『好きな顔』が一番難しい！　もう写真用の顔は品切れです」
+        # speaker: narrator
+        彼女はスマートフォンを鞄へしまい、歩き出す方を指した。
+    - else:
+        # speaker: heroine
+        # reaction: heroine,teasing,sparkle
+        「じゃあ、かっこつけない顔。準備するから待って――って、準備したら違うね」
+        # speaker: narrator
+        笑った瞬間を撮る。確認した彼女は、その一枚にも小さくうなずいた。
     }
     -> ending
 
 === ending ===
 # speaker: narrator
-スマートフォンをしまい、二人は広場を歩く。門を振り返る時には、同じところで足が止まった。
+写真を閉じて、広場を歩く。二人で門を振り返った時には、もうカメラを構えていなかった。
 { relationship_tone_after == "warm" || relationship_tone_after == "romantic_tension":
     # speaker: heroine
     # emotion: smile
-    「撮ってる人が写らないって、少し寂しかったんだ。一緒に来たって、わたしの方からも分かる写真ができてよかった」
+    「さっきの人、写れた自分を見てうれしそうだったね。今、ちょっと分かる」
 - else:
     # speaker: heroine
     # emotion: smile
-    「次に誰かの写真を撮る時も、撮ってた人がちゃんと入ってるか見よう。さっき、うれしそうだったね」
+    「今日は、普通の顔で写るのが一番難しかった。門はずっと落ち着いてたのに」
 }
+# speaker: narrator
+彼女はもう一度だけ画面を見たが、消す方の印には触れなかった。
 -> END

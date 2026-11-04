@@ -13,139 +13,166 @@ VAR spark_delta = 0
 
 # background: gt_bg_delhi_chandni_chowk
 # speaker: narrator
-チャンドニー・チョークで、{heroine_name}が急に歩幅を縮めた。こちらが見ていた店とは、反対側を見ている。
+チャンドニー・チョークの店先で、{heroine_name}が布の縁に目を留めた。店主が一枚を広げる。彼女が感心すると、二枚目が出てきた。
 # speaker: heroine
-# emotion: happy
-「あっ、あそこの布。端だけ違う色になってる」
+# reaction: heroine,happy,sparkle
+「あ、こちらもきれい。……えっ、まだあるんですか」
 # speaker: narrator
-彼女が半歩寄りかけ、こちらへ戻る。こちらの視線の先にも、気になる店先があった。
+三枚目が開きかけたところで、彼女はこちらへ助けを求める目を向ける。布は好きだが、買うつもりで立ち止まったわけではなかった。
 # speaker: heroine
-「そっちを見たかった？　わたしは……いや、あとでも」
-{ relationship_tone == "strained" || relationship_tone == "reserved":
+# reaction: heroine,worried,sweat
+「こんなに見せてもらって、買わないって言いにくくなっちゃった」
+{ relationship_tone == "reserved" || relationship_tone == "strained":
     # speaker: narrator
-    彼女は遠慮したまま、布の方をもう一度見た。
+    彼女の指が鞄の紐を握る。店主は決断を待つように、布の端を持ったままだ。
 - else:
     # speaker: heroine
-    # emotion: teasing
-    「待って。あとでって言ったけど、帰りに忘れそう。わたし、あっちを見たいです」
+    # emotion: exasperated
+    「わたしの『きれい』が、どんどん布を増やしてる」
 }
-# speaker: narrator
-通り過ぎる人の邪魔にならない所へ寄る。二人の行きたい方向だけが、そこで分かれた。
 
-* [「先に布を見よう。次はこっちに付き合って」]
-    # effect: gt_delhi_date_chandni_chowk_first_attentive
-    { romance_result == "negative":
-        # speaker: heroine
-        「順番を決めると急いじゃいそう。短く見るから、時計は見ないでね」
-        # speaker: narrator
-        彼女は小さく笑って、自分で店先へ歩き出した。
-    - else:
-        # speaker: heroine
-        「うん、それがいい。次の店で、何が気になったかも聞きたい」
-        # speaker: narrator
-        彼女は迷っていた方向を、今度はまっすぐ指した。
-    }
-    -> after_first
-
-* [「目だけ先に買い物を始めてるね」]
-    # effect: gt_delhi_date_chandni_chowk_first_playful
-    { romance_result == "negative":
-        # speaker: heroine
-        「笑うほど見てた？　でも、ほんとに気になったんだよ」
-        # speaker: narrator
-        こちらが布の方へ向き直ると、彼女も表情を緩めた。
-    - else:
-        # speaker: heroine
-        # emotion: teasing
-        「うん。目だけなら、もう三軒寄ってます。足が遅いんです」
-        # speaker: narrator
-        彼女は一度だけ大きく踏み出し、あとは人の流れに合わせて歩いた。
-    }
-    -> after_first
-
-* [「気になってる顔も見ていたい」]
+* [「君をさらって帰る役、今なら空いてる？」]
     # effect: gt_delhi_date_chandni_chowk_first_bold
     { romance_result == "negative":
         # speaker: heroine
-        「顔を見られると思うと、普通に見られなくなるよ。今日は布も見てほしいな」
+        # reaction: heroine,serious,anger
+        「帰るのはわたしが決める。困ってるのは、断る言い方なの」
         # speaker: narrator
-        彼女は照れるより先に、店先をきちんと指した。
+        こちらが一歩引くと、彼女は自分の方から店主へ向き直った。
     - else:
         # speaker: heroine
-        # emotion: shy
-        「それ、寄り道していいって意味にしちゃうからね」
+        # reaction: heroine,teasing,blush
+        「空いてるけど、さらう前にお礼を言わせてください」
         # speaker: narrator
-        彼女は返事を待つようにこちらを見て、うなずきを受け取ってから歩いた。
+        冗談で少し肩が緩んだ彼女は、自分で店主に声をかけた。帰る足は、誰にも引かせない。
+    }
+    -> after_first
+
+* [「見せてくれたお礼と、今日は買わないことを」]
+    # effect: gt_delhi_date_chandni_chowk_first_attentive
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,exasperated,sigh
+        「うん。分かってる。頭では、とてもよく分かってます」
+        # speaker: narrator
+        彼女は少しむっとした顔で息を吐き、店主へ向き直る。言うまでが難しいのだった。
+    - else:
+        # speaker: heroine
+        # emotion: serious
+        「二つとも言っていいんだね。きれいだったのは、ほんとうだし」
+        # speaker: narrator
+        彼女は買わない理由を長く並べず、顔を上げた。
+    }
+    -> after_first
+
+* [「そのうち布の方から、採用面接が始まりそう」]
+    # effect: gt_delhi_date_chandni_chowk_first_playful
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,exasperated,anger
+        「笑い話にするのは、わたしがここを出てからにして」
+        # speaker: narrator
+        こちらが黙ると、彼女も自分の言葉を探す方へ戻った。
+    - else:
+        # speaker: heroine
+        # reaction: heroine,happy,music
+        「『うちの赤をどう着こなすおつもりで？』って？　だめ、笑うとまた増える」
+        # speaker: narrator
+        彼女は口元を押さえる。そのままでは言えないと気づき、手を下ろした。
     }
     -> after_first
 
 === after_first ===
-# speaker: narrator
-店先で許可を取り、彼女は布の端を近くから見る。店の人は別の色も広げたが、彼女が今日は見ているだけだと伝えると、そのまま見比べさせてくれた。
 # speaker: heroine
-「近くで見ると、こっちの色が好き。遠くからは派手な方が目に入ったのに」
+# emotion: serious
+「見せてくださって、ありがとうございます。今日は買いません。縁の色が気になって、見てみたかったんです」
 # speaker: narrator
-礼を言って通りへ戻る。彼女は案内を開き、この市場の始まりが十七世紀のシャージャハーナーバードにさかのぼると読む。
-# speaker: heroine
-「昔から買い物をする場所だったんだね。何が欲しいか迷う人も、ずっといたのかな」
+店主は一度だけ別の布を示したが、彼女が首を振ると畳み始めた。愛想のよい引き止めが終わり、店には次の客が来る。
 # speaker: narrator
-次は、こちらが気になった店の前へ行く。彼女はすぐ説明を求めず、同じ方向を覗き込んだ。
+通りへ戻った彼女は、鞄の中を確かめもせず、深く息を吐いた。
 # speaker: heroine
-# emotion: smile
-「どこを見てたのか、当てていい？　これかな。違ったら、もう一回」
+# reaction: heroine,exasperated,sigh
+「何も買ってないのに、買い物を終えた気がする」
+# speaker: narrator
+十七世紀のシャージャハーナーバードに始まる市場だと、手元の案内にある。今も店先から呼びかけが続き、荷を持つ人が通り抜けていく。
+# speaker: heroine
+「ここでお店を続ける人は、わたしみたいに毎回こんな顔をしないんだろうな」
+# speaker: narrator
+彼女はさっきの自分の顔を大げさに再現し、今度はこちらの前に立った。
+# speaker: heroine
+# reaction: heroine,teasing,question
+「練習してもいい？　もしわたしが『そのお店は、今日は一人で見たい』って言ったら？」
 
-* [「今度は先に教えず、見つけてもらおう」]
-    # effect: gt_delhi_date_chandni_chowk_second_playful
+* [「断られても、次の誘いは諦めないよ」]
+    # effect: gt_delhi_date_chandni_chowk_second_bold
     { romance_result == "negative":
         # speaker: heroine
-        「じゃあ、一回だけね。分からなくても答えを隠し続けないで」
+        # reaction: heroine,serious,anger
+        「今日の話は、今日のうちに受け取って。次の約束で薄めないでほしい」
+        # speaker: narrator
+        彼女はまっすぐこちらを見る。小さな練習が、ちゃんと聞いてほしい話になった。
     - else:
         # speaker: heroine
-        「挑戦します。……その顔、正解に近づいた時の顔でしょ」
-        # speaker: narrator
-        彼女は商品の並びより、こちらの目の動きを追っていた。
+        # reaction: heroine,shy,blush
+        「……それ、帰りを待ってる人より、ずっと気になる言い方」
+        # speaker: heroine
+        # emotion: teasing
+        「でも、今日断ったお店には入ってこないでね。次は、わたしから誘うかもしれないし」
     }
     -> ending
 
-* [「違うものを見てるのも、面白いね」]
-    # effect: gt_delhi_date_chandni_chowk_second_honest
-    { romance_result == "negative":
-        # speaker: heroine
-        「面白いだけで終わらずに、教えてね。知らないまま別々なのは、少し寂しい」
-    - else:
-        # speaker: heroine
-        「うん。自分だけだったら、ここで止まらなかったと思う」
-        # speaker: narrator
-        彼女は一つ目の予想を外し、それでも楽しそうに二つ目を指した。
-    }
-    -> ending
-
-* [「もう一軒、君の気になる方へ行こう」]
+* [「店の前で待つ？　別々に見て後で合流する？」]
     # effect: gt_delhi_date_chandni_chowk_second_attentive
     { romance_result == "negative":
         # speaker: heroine
-        「今はそっちの番。わたしの行きたい所ばっかりだと、連れ回してるみたいになっちゃう」
+        # reaction: heroine,worried,sweat
+        「もう段取りが決まっちゃう。まだ、そう言ってもいいか確かめたかっただけ」
+        # speaker: narrator
+        彼女は練習だったことを指で示し、こちらの隣へ戻った。
     - else:
         # speaker: heroine
-        「一軒だけなら。さっきから気になっていた店があるの」
+        # reaction: heroine,smile,sparkle
+        「ちゃんと選べるんだ。じゃあ、今は一緒。いつか一人で見たい時も、そう言うね」
         # speaker: narrator
-        彼女は遠慮なく方向を示した後、まず目の前の店を最後まで一緒に見た。
+        彼女は先ほどより軽い足取りで、こちらに並んだ。
+    }
+    -> ending
+
+* [「残された自分を、次の店へ売り込む」]
+    # effect: gt_delhi_date_chandni_chowk_second_playful
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,exasperated,sigh
+        「寂しいって言われるより、困る。今はふざけずに聞いて」
+        # speaker: narrator
+        こちらがうなずくと、彼女は練習の断り文句を、今度は短くもう一度言った。
+    - else:
+        # speaker: heroine
+        # reaction: heroine,happy,music
+        「売り文句は？　よく歩きます、たまに迷います、返品は――あ、返品はだめか」
+        { ending_reached || relationship_tone_after == "romantic_tension":
+            # speaker: heroine
+            # emotion: teasing
+            「勝手に出品しないで。わたしが迎えに来るんだから」
+        - else:
+            # speaker: heroine
+            「じゃあ、売れる前に戻ります。勝手な競争が始まっちゃった」
+        }
     }
     -> ending
 
 === ending ===
 # speaker: narrator
-歩き出す前に、彼女は二人の鞄を確認した。何も買っていない。なのに、随分歩き回った気がした。
-# speaker: heroine
-# emotion: happy
-「見るだけ、って言ったけど、ちゃんと忙しかったね」
-{ relationship_tone_after == "romantic_tension" || relationship_tone_after == "warm":
+次の店先で、また鮮やかな布が揺れた。彼女は足を止めてから、今度は先に自分の希望を言う。
+{ relationship_tone_after == "strained" || relationship_tone_after == "reserved":
     # speaker: heroine
-    「次、わたしが黙って通り過ぎそうになったら、目がどこを見てるか確認してください」
+    # emotion: serious
+    「今は買わずに、もう少し見たい。急がず付き合ってくれる？」
 - else:
     # speaker: heroine
-    「次は最初から、見たいって言おう。忘れる前に」
+    # reaction: heroine,teasing,music
+    「見るだけです。布にも、隣の人にも、先に宣言しておきます」
 }
 # speaker: narrator
-彼女がまた足を緩める。今度は戻らず、こちらへ見たいものを指さした。
+何も増えていない鞄を肩に、彼女は自分で店の方へ向きを変えた。
 -> END

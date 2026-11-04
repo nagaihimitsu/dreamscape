@@ -13,110 +13,132 @@ VAR spark_delta = 0
 
 # background: gt_bg_jaipur_panna_meena_kund
 # speaker: narrator
-アンベールの階段井戸、パンナ・ミーナー・クンド。見学できる周縁から、幾何学模様のように折れ曲がる段を眺める。
+パンナ・ミーナー・クンドの周縁で、折れ曲がる階段を眺める。下へは降りず、見える線を目でたどっていた彼女が、急に得意そうな顔をした。
 # speaker: heroine
-# emotion: surprised
-「これ、全部階段なんだ。写真だと模様に見えたけど、ここから見ると深さがあるね」
+# reaction: heroine,happy,sparkle
+「分かった。あの角から、こっちを回って……ここ。同じ所までたどれる？」
 # speaker: narrator
-彼女は井戸の中へ降りず、空中に指を伸ばした。段の線を目でたどり、途中で小さく首をかしげる。
+こちらが指すと、彼女は別の角を指した。もう一度確かめる。違うのは、彼女が戻ったつもりの場所だった。
 # speaker: heroine
-「今、こっちへ行ったつもりなのに、違う道を見てた。足は動かしてないのに迷ったよ」
-{ relationship_tone == "reserved" || relationship_tone == "strained":
+# reaction: heroine,surprised,interrobang
+「え。待って、わたしの方？　……あ、ほんとだ」
 # speaker: narrator
-彼女はいったん手を下ろし、こちらの見ている場所を確かめた。
-- else:
+彼女は指を引っ込めた。笑って済ませようとしたが、少しだけ唇がとがっている。
 # speaker: heroine
-# emotion: teasing
-「見てるだけなら上手に進めると思った？　わたしもそう思ってた」
-}
+「こういうの、見つけるのは得意なつもりだった。自分から勝負みたいにしたのに」
 
-* [「分かれたところから、もう一度見よう」]
+* [「君の得意そうな顔、かなり好きだった」]
+    # effect: gt_jaipur_date_panna_meena_kund_first_bold
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,exasperated,anger
+        「失敗した顔まで、面白がらないで。今は、ちょっと本気で悔しいんです」
+    - else:
+        # speaker: heroine
+        # reaction: heroine,shy,blush
+        「顔に点をつける勝負じゃないのに。……それ言われたら、悔しがり続けにくいよ」
+    }
+    -> after_first
+* [「勝負はやめて、二人で一本の道を見よう」]
     # effect: gt_jaipur_date_panna_meena_kund_first_attentive
     { romance_result == "negative":
         # speaker: heroine
-        「同じところを探すと、ますます分からなくなりそう。最初からがいいな」
+        # emotion: serious
+        「負けたから終わりにしてもらうのも嫌だな。もう一回だけ、自分で確かめたい」
     - else:
         # speaker: heroine
         # emotion: smile
-        「あ、ここだ。そっちを見てたんだね。わたしは、一段向こうに飛んでた」
+        「うん。今度は、分かった顔をする前に、ちゃんと最後まで見る」
     }
     -> after_first
-* [「指だけ、先に着いてしまったね」]
+* [「一歩も動かない遭難を発明したね」]
     # effect: gt_jaipur_date_panna_meena_kund_first_playful
     { romance_result == "negative":
         # speaker: heroine
-        「着いた先も分からないんだけど。今は、一緒に探してくれると助かる」
+        # reaction: heroine,serious,anger
+        「今は笑えない。あとでなら、笑えるかもしれないけど。今はやめて」
     - else:
         # speaker: heroine
-        # emotion: teasing
-        「そう。目が追いつくのを待ってもらっています。ずいぶん気の早い指で」
-    }
-    -> after_first
-* [「別の段を見ていたかもしれない」]
-    # effect: gt_jaipur_date_panna_meena_kund_first_honest
-    { romance_result == "negative":
-        # speaker: heroine
-        「え、じゃあ合ってたかも分からないね。今度は、場所を言いながら見よう」
-    - else:
-        # speaker: heroine
-        # emotion: happy
-        「二人とも別のところへ行ってたんだ。じゃあ、どっちも戻ってこよう」
+        # reaction: heroine,happy,music
+        「救助も目だけでお願いします。……ふふっ、ずっとここに立ってるのにね」
     }
     -> after_first
 
 === after_first ===
 # speaker: narrator
-今度は動かす指を止め、見えている段を一つずつ確かめる。線の反復が、壁を下りる道の形に変わっていく。
+彼女は同じ角へ視線を戻した。今度は指を先へ走らせず、段の折り返しを一つずつ追う。
 # speaker: heroine
-「階段井戸って、水のところまで行くための場所なんだよね。きれいな形だけど、使う時は重さも深さもあったんだ」
+# emotion: neutral
+「こっちだった。わたし、一段飛ばして見てたんだ」
 # speaker: narrator
-彼女は覗き込みすぎない位置へ半歩戻った。上から見るだけでも、下までの隔たりが感じられる。
+模様のような線は、水のある所へ近づくための階段でもある。彼女は深さを見てから、ゆっくり息を吐いた。
 # speaker: heroine
-「今度は全体を見たい。道を一本追いかけてたら、周りの形をすっかり忘れてた」
+「見てるだけで間違えるのに、水を運ぶ人には、本当の段も重さもあったんだね」
+{ romance_result == "negative":
+    # speaker: heroine
+    # emotion: serious
+    「さっきの、まだちょっと引っかかってる。でも、悔しかったのは、そっちのせいだけじゃないよ」
+- else:
+    # speaker: heroine
+    # emotion: neutral
+    「わたし、さっき一瞬、本気で悔しかった。軽い遊びにしたつもりだったのに」
+}
+# speaker: heroine
+「一緒に来て楽しいのと、勝ちたいのが同時にあるんだね。……そっちは、ない？」
 
-* [「少し離れて見ると、つながって見えるね」]
-    # effect: gt_jaipur_date_panna_meena_kund_second_attentive
-    { romance_result == "negative":
-        # speaker: heroine
-        「そうかも。でも、もう少しこの位置で見たいな。やっと目が慣れてきた」
-    - else:
-        # speaker: heroine
-        # emotion: smile
-        「ほんとだ。さっき迷ったところも、一つの模様になってる」
-    }
-    -> ending
-* [「指の案内役は、いったん休憩だ」]
-    # effect: gt_jaipur_date_panna_meena_kund_second_playful
-    { romance_result == "negative":
-        # speaker: heroine
-        「休ませてもいいけど、わたしまで引退させないでね。まだ見たいところがある」
-    - else:
-        # speaker: heroine
-        # emotion: teasing
-        「はい、お疲れさまでした。次は、目だけでのんびり見ます」
-    }
-    -> ending
-* [「細かく見たあとだと、全体も違って見える」]
+* [「ある。好きな人には、格好いいところも見せたい」]
     # effect: gt_jaipur_date_panna_meena_kund_second_honest
     { romance_result == "negative":
         # speaker: heroine
-        「わたしは、まだ細かいところが気になるかも。同じ速さで切り替えなくてもいいよね」
+        # reaction: heroine,shy,sweat
+        「好きな人、って、急にそこを混ぜる？　わたし、悔しい顔のまま返事することになるよ」
     - else:
         # speaker: heroine
-        「うん。さっきは見分けられなかった角が、今なら分かる。ちょっと嬉しい」
+        # reaction: heroine,shy,heart
+        { ending_reached:
+            「うん。わたしも、好きな人に格好つけたかった。……見事に失敗したけどね」
+        - else:
+            「それ、わたしのことだと思っていいの？　……だったら、今の失敗も取り消さずに置いておく」
+        }
+    }
+    -> ending
+* [「悔しい時は、笑うのを少し待つね」]
+    # effect: gt_jaipur_date_panna_meena_kund_second_attentive
+    { romance_result == "negative":
+        # speaker: heroine
+        # emotion: neutral
+        「顔を見張るみたいには、しないでね。わたしも、嫌ならちゃんと言うから」
+    - else:
+        # speaker: heroine
+        # emotion: smile
+        「ありがとう。ずっと笑わないで、じゃないよ。わたしも笑える時に、一緒がいい」
+    }
+    -> ending
+* [「では次は、どっちが先に負けを認めるか勝負」]
+    # effect: gt_jaipur_date_panna_meena_kund_second_playful
+    { romance_result == "negative":
+        # speaker: heroine
+        # reaction: heroine,exasperated,sigh
+        「もう競わせないで。今日は、勝ち負けのないところで終わりたい」
+    - else:
+        # speaker: heroine
+        # reaction: heroine,teasing,music
+        「負けました。……あっ、先に言ったから勝ち？　待って、どっち？」
     }
     -> ending
 
 === ending ===
-{ relationship_tone_after == "warm" || relationship_tone_after == "romantic_tension":
 # speaker: narrator
-彼女はもう一度だけ指を上げた。こちらが同じ箇所を見たと分かると、声を出さずに笑う。
+二人は線をたどるのをやめ、井戸全体を眺めた。階段は相変わらず、目を迷わせるほど細かく折り重なっている。
+{ relationship_tone_after == "strained" || relationship_tone_after == "reserved":
+    # speaker: heroine
+    # emotion: neutral
+    「今日は、わたしの負けず嫌いも見つかったね。すぐ笑って終われなくても、少し待ってもらえると助かる」
 - else:
-# speaker: narrator
-彼女は最後に気になった箇所を指さし、場所が伝わるまでゆっくり待った。
+    # speaker: heroine
+    # reaction: heroine,teasing,music
+    「次に得意なものを見つけたら、また見せると思う。格好つけるの、完全にはやめられそうにないので」
 }
-# speaker: heroine
-「ここ。今日は、この角を覚えて帰る。全部じゃなくても、分かる場所が一つできたから」
 # speaker: narrator
-手を下ろしたあとも、彼女の視線はしばらくそこに残っていた。二人は井戸の周縁から、見学路へ戻る。
+見学路へ戻る時、彼女は一度だけあの角を指した。今度は答えを求めず、自分で見つけ直したことを知らせる指だった。
 -> END

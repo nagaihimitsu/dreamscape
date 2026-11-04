@@ -6,15 +6,23 @@ VAR ending_reached = false
 
 # background: gt_bg_jaipur_hotel_hub
 # speaker: narrator
-滞在先で荷物を置き、三つ目の街の地図を広げる。{heroine_name}が、紙の端を手で押さえた。
+荷物を置くなり、{heroine_name}が地図とスマートフォンを並べた。地図にはジャイプール。画面には、三分に収まらない旅の途中。
 # speaker: heroine
-# emotion: smile
-「ここが、今回の旅の最後の目的地。ジャイプールだね」
-「最後って言うと、もう帰るみたいだね。……違う違う。まだ、ここをぜんぜん見てない」
+# reaction: heroine,happy,sparkle
+「着いた！　ここが最後の目的地、ジャイプール。……最後なのに、動画の空きがもうない」
 # speaker: narrator
-彼女は地図に描かれた窓の多い建物と、大きな観測の道具の絵を見比べる。
+アーグラで残した歩く数秒を、彼女は一度だけ再生する。削除の印には触れず、画面を伏せた。
 # speaker: heroine
-# emotion: happy
-「あの窓も、空を見る道具も、ちゃんと自分の目で確かめたい。見たいもの、最後まで増やしたいな」
-「上映会のことも楽しみだけど、まずは街へ。どこから行こうか」
+「先に何を撮るか決めたら、収まると思ったんだけど。それだと、決めたものしか探さなくなりそう」
+# speaker: narrator
+ニールから紹介されたラヴィの連絡が届く。会う場所の説明に続いて、『長くなったら、面白い方を三分だけ見せて』とある。
+# speaker: heroine
+# reaction: heroine,exasperated,sweat
+「それを選べなくて困ってるんです。……って、まだ会ってない人に言い返しちゃった」
+# speaker: narrator
+送信はせず、彼女は返事を打ち直した。街を歩いてから連絡する、と。
+# speaker: heroine
+# reaction: heroine,smile,music
+「窓がいっぱいの宮殿も、空を測る道具も見たい。入りきらなかったら、その時に困ろう」
+「まずは街へ行こう。まだ撮ってもいないものを、ここで切りたくないな」
 -> END
