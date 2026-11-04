@@ -5,7 +5,7 @@ import path from "node:path";
 import { buildContent } from "../../scripts/content-pipeline";
 import { prepareContentFixture } from "./test-fixtures";
 import { validateJourney } from "../../scripts/journey-validation";
-import { journeySchema } from "./journey-schemas";
+import { journeySchema, type JourneyConfig } from "./journey-schemas";
 import { battleCatalogSchema, trialProgressionSchema } from "./schemas";
 import { tourismCatalogSchema } from "./tourism-schemas";
 import { balance, battleQuizzes } from ".";
@@ -24,8 +24,13 @@ afterEach(async () => {
   await rm(fixture, { recursive: true, force: true });
 });
 
-async function changeJourney(change: (data: typeof journeyData) => void) {
-  const data = structuredClone(journeyData);
+type JourneyTestData = Omit<typeof journeyData, "rewards"> & Pick<JourneyConfig, "rewards">;
+const copyJourney = (): JourneyTestData => ({
+  ...structuredClone(journeyData), rewards: journeySchema.parse(journeyData).rewards,
+});
+
+async function changeJourney(change: (data: JourneyTestData) => void) {
+  const data = copyJourney();
   change(data);
   await writeFile(
     path.join(fixture, "content/progression/journey.json"),
@@ -34,8 +39,8 @@ async function changeJourney(change: (data: typeof journeyData) => void) {
 }
 
 /** Reward and route checks do not need to recompile every unrelated Ink file. */
-function checkJourney(change: (data: typeof journeyData) => void): void {
-  const data = structuredClone(journeyData);
+function checkJourney(change: (data: JourneyTestData) => void): void {
+  const data = copyJourney();
   change(data);
   validateJourney(
     journeySchema.parse(data),
@@ -120,7 +125,7 @@ describe("integrated journey content contract", () => {
     },
   );
 
-  it("requires every reward to reference a registered episode", async () => {
+  it("requires episode rewards to reference a registered episode", async () => {
     await changeJourney((data) => {
       data.rewards.push({
         ...data.rewards[0],
@@ -131,6 +136,14 @@ describe("integrated journey content contract", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Unknown reward episode",
     );
+  });
+
+  it("requires special rewards to reference a registered special battle", async () => {
+    await changeJourney((data) => {
+      const rule = data.rewards.find((reward) => reward.battleId !== undefined)!;
+      rule.battleId = "missing_special_battle";
+    });
+    await expect(buildContent(fixture, false)).rejects.toThrow("Unknown reward story battle");
   });
 
   it("rejects duplicate reward IDs and collisions with supplemental trial rewards", async () => {

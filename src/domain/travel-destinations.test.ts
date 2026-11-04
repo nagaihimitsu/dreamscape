@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createGame } from "./game";
-import { beginTravelEvent, getTravelEventAvailability, isCompletedTravelEvent, isTravelEventUnlocked, isUnclearedMainTravelEvent } from "./travel-game";
+import { beginTravelEvent, getTravelEventAvailability, isCompletedTravelEvent, isTravelEventUnlocked, isUnclearedMainTravelEvent, getTravelSleepOptions, sleepAtHotel } from "./travel-game";
+import { getNextTravelWaitTime, getTravelDestinations } from "./travel-destinations";
 import { groupDestinationEvents, selectNearbyDestinations } from "./travel";
 
 describe("main travel event completion", () => {
@@ -43,5 +44,40 @@ describe("main travel event completion", () => {
     expect(result.nearby[4].id).toBe("p_darsena");
     expect(result.recommendedMainId).toBe("p_darsena");
     expect(isUnclearedMainTravelEvent({ ...ready, completedEpisodeIds: [...ready.completedEpisodeIds, "milano_finale"] }, "milano_finale")).toBe(false);
+  });
+});
+
+
+describe("travel menu planning", () => {
+  it("keeps an unvisited destination and its route while hiding a completed event", () => {
+    const initial = createGame();
+    const state = { ...initial, completedEpisodeIds: ["milano_galleria_episode"] };
+    const before = structuredClone(state);
+    const menu = getTravelDestinations(state);
+    expect(menu.current?.id).toBe("p_hotel");
+    expect(menu.candidates.some((event) => event.id === "milano_galleria_episode")).toBe(false);
+    const duomo = menu.candidates.find((event) => event.id === "milano_duomo_episode");
+    expect(duomo).toMatchObject({ placeId: "p_duomo", walkMinutes: 7, available: true });
+    expect(duomo?.routes).toContainEqual(expect.objectContaining({ fromPlaceId: "p_hotel", toPlaceId: "p_duomo", mode: "walk", minutes: 7, cost: 0 }));
+    expect(menu.places.find((place) => place.id === "p_duomo")?.events).toContain(duomo);
+    expect(state).toEqual(before);
+  });
+
+  it("offers the evening wait shortcut but no shortcut past closing time", () => {
+    const initial = createGame();
+    expect(getNextTravelWaitTime({ ...initial, travel: { ...initial.travel, minute: 18 * 60 - 1 } })).toBe(18 * 60);
+    expect(getNextTravelWaitTime({ ...initial, travel: { ...initial.travel, minute: 21 * 60 } })).toBeNull();
+  });
+
+  it("uses the displayed overnight plan when returning too late for ordinary travel", () => {
+    const initial = createGame();
+    const state = { ...initial, travel: { ...initial.travel, currentPlaceId: "p_duomo", minute: 21 * 60 - 1 } };
+    const option = getTravelSleepOptions(state).find(({ route }) => route.mode === "walk" && !route.viaPlaceId)!;
+    expect(option.plan.ok).toBe(true);
+    if (!option.plan.ok) throw new Error("Expected an emergency return plan");
+    const rested = sleepAtHotel(state, option.route.mode, state.revision, null);
+    expect(rested.travelBudget).toBe(option.plan.remainingBudget);
+    expect(rested.travel).toMatchObject({ currentPlaceId: "p_hotel", day: option.plan.nextDay, minute: option.plan.nextMinute });
+    expect(rested.revision).toBe(state.revision + 1);
   });
 });

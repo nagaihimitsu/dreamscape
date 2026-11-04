@@ -3,7 +3,9 @@ import { cpSync, existsSync, linkSync, mkdirSync, mkdtempSync, readFileSync, ren
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { applyCityBundle, exportCityBundle, newCityBundle, writeCityBundleFiles } from "./city-bundle";
+import { applyCityBundle, compactCityBundle, exportCityBundle, exportEditableCityBundle, newCityBundle, writeCityBundleFiles } from "./city-bundle";
+import { compactTravel, expandTravel, type CompactTravel } from "./city-bundle-routes";
+import { travelCatalogSchema } from "../src/content/travel-schemas";
 import { indiaInputFingerprint } from "./promote-india";
 import { inspectIndiaReadiness, loadIndiaReadiness } from "./india-readiness";
 import { buildIndiaTransitReview, readIndiaTransitReview } from "./india-transit-review";
@@ -30,6 +32,115 @@ const fingerprint = (root: string) => createHash("sha256").update(indiaInputFing
 afterEach(() => { for (const root of roots.splice(0)) rmSync(root, { recursive: true, force: true }); });
 
 describe("city editing bundle", () => {
+  it("creates zero-time walking routes for new places from the shared source", () => {
+    const original = readJson(process.cwd(), "content/travel/milano.json");
+    const compact = compactTravel(original) as CompactTravel;
+    expect(compact.samePlaceRoute).toBeDefined();
+    const place = { ...compact.places[0], id: "milano_test_place" };
+    compact.places.push(place);
+    const expanded = travelCatalogSchema.parse(expandTravel(compact, original.routes));
+    const identity = expanded.routes.filter((route) => route.fromPlaceId === place.id && route.toPlaceId === place.id);
+    expect(identity).toHaveLength(1);
+    expect(identity[0]).toMatchObject({ mode: "walk", minutes: 0, cost: 0,
+      sources: compact.routeSources[compact.samePlaceRoute!.sourceRef] });
+    expect(expanded.routes.filter((route) => route.fromPlaceId !== place.id && route.toPlaceId !== place.id)).toEqual(original.routes);
+  });
+
+  it("reuses an edited shared source while leaving unrelated sources intact", () => {
+    const original = readJson(process.cwd(), "content/travel/milano.json");
+    const compact = compactTravel(original) as CompactTravel;
+    const first = compact.routes.find((route) => route.mode === "walk")!;
+    const affected = compact.routes.filter((route) => route.sourceRef === first.sourceRef);
+    expect(affected.length).toBeGreaterThan(1);
+    const prior = compact.routeSources[first.sourceRef][0].claimJa;
+    compact.routeSources[first.sourceRef][0].claimJa += " 試験用の追記。";
+    const expanded = travelCatalogSchema.parse(expandTravel(compact, original.routes));
+    for (const reference of affected) {
+      const route = expanded.routes.find((item) => item.fromPlaceId === reference.fromPlaceId && item.toPlaceId === reference.toPlaceId && item.mode === reference.mode)!;
+      expect(route.sources[0].claimJa).toBe(`${prior} 試験用の追記。`);
+      if (reference.bothDirections) {
+        const reverse = expanded.routes.find((item) => item.fromPlaceId === reference.toPlaceId && item.toPlaceId === reference.fromPlaceId && item.mode === reference.mode)!;
+        expect(reverse.sources[0].claimJa).toBe(route.sources[0].claimJa);
+      }
+    }
+    const other = compact.routes.find((item) => item.sourceRef !== first.sourceRef)!;
+    const unrelated = expanded.routes.find((item) => item.fromPlaceId === other.fromPlaceId && item.toPlaceId === other.toPlaceId && item.mode === other.mode)!;
+    expect(unrelated.sources).toEqual(compact.routeSources[other.sourceRef]);
+  });
+
+  it("does not invent the reverse of Milan's one-way tram route", () => {
+    const original = readJson(process.cwd(), "content/travel/milano.json");
+    const compact = compactTravel(original) as CompactTravel;
+    const tram = compact.routes.find((route) => route.mode === "tram")!;
+    expect(tram).toBeDefined();
+    expect(tram.bothDirections).toBeUndefined();
+    const expanded = travelCatalogSchema.parse(expandTravel(compact, original.routes));
+    expect(expanded.routes.filter((route) => route.mode === "tram")).toEqual(original.routes.filter((route: { mode: string }) => route.mode === "tram"));
+  });
+
+  it("round-trips compact city routes without changing direction, order, sources or transit reviews", async () => {
+    const root = fixture();
+    const before = fingerprint(root);
+    const decisionFile = "authoring/research/golden-triangle-transit-20261103/decisions.json";
+    const decisions = read(root, decisionFile);
+    for (const cityId of ["milano", "delhi", "agra", "jaipur"]) {
+      const file = `content/travel/${cityId}.json`;
+      const original = read(root, file);
+      const bundle = exportEditableCityBundle(root, cityId);
+      expect(bundle.schemaVersion).toBe(2);
+      expect(compactCityBundle(exportCityBundle(root, cityId))).toEqual(bundle);
+      expect(bundle.travel.routes.length).toBeLessThan(readJson(root, file).routes.length);
+      expect((await applyCityBundle(root, bundle, true)).changedFiles, cityId).toEqual([]);
+      // Compare the full file, not just times and fares: array order, all
+      // direction-specific evidence, transfer notes and estimates matter.
+      expect(read(root, file), cityId).toBe(original);
+      expect(read(root, decisionFile), cityId).toBe(decisions);
+    }
+    expect(fingerprint(root)).toBe(before);
+  }, 180_000);
+
+  it("applies an explicitly bidirectional edit to exactly those two directed routes", async () => {
+    const root = fixture();
+    const before = readJson(root, "content/travel/milano.json");
+    const bundle = exportEditableCityBundle(root, "milano");
+    const route = bundle.travel.routes.find((item) => item.bothDirections && item.mode === "walk")!;
+    expect(route).toBeDefined();
+    const { fromPlaceId, toPlaceId, mode } = route;
+    route.minutes += 1;
+    expect((await applyCityBundle(root, bundle, true)).changedFiles).toEqual(["content/travel/milano.json"]);
+    const after = readJson(root, "content/travel/milano.json");
+    expect(after.routes).toHaveLength(before.routes.length);
+    for (let index = 0; index < before.routes.length; index++) {
+      const previous = before.routes[index];
+      const selected = previous.mode === mode &&
+        ((previous.fromPlaceId === fromPlaceId && previous.toPlaceId === toPlaceId) ||
+          (previous.fromPlaceId === toPlaceId && previous.toPlaceId === fromPlaceId));
+      expect(after.routes[index]).toEqual(selected ? { ...previous, minutes: previous.minutes + 1 } : previous);
+    }
+  }, 60_000);
+
+  it("rejects missing source references, duplicate directed routes and unknown places without writing", async () => {
+    const root = fixture();
+    const before = fingerprint(root);
+    const brokenSource = exportEditableCityBundle(root, "milano");
+    brokenSource.travel.routes[0].sourceRef = "missing_source";
+    await expect(applyCityBundle(root, brokenSource, true)).rejects.toThrow();
+    expect(fingerprint(root)).toBe(before);
+
+    const duplicate = exportEditableCityBundle(root, "milano");
+    const shared = duplicate.travel.routes.find((route) => route.bothDirections)!;
+    const reverse = { ...shared, fromPlaceId: shared.toPlaceId, toPlaceId: shared.fromPlaceId };
+    delete reverse.bothDirections;
+    duplicate.travel.routes.push(reverse);
+    await expect(applyCityBundle(root, duplicate, true)).rejects.toThrow();
+    expect(fingerprint(root)).toBe(before);
+
+    const missingPlace = exportEditableCityBundle(root, "milano");
+    missingPlace.travel.routes[0].toPlaceId = "missing_place";
+    await expect(applyCityBundle(root, missingPlace, true)).rejects.toThrow();
+    expect(fingerprint(root)).toBe(before);
+  }, 60_000);
+
   it("exports every existing city accurately and checks an unchanged bundle without writing", async () => {
     const root = fixture();
     const before = fingerprint(root);
@@ -143,6 +254,16 @@ describe("city editing bundle", () => {
     bundle.travel.routes.push({ ...structuredClone(template), fromPlaceId: decision.fromPlaceId, toPlaceId: decision.toPlaceId });
     const before = fingerprint(root);
     await expect(applyCityBundle(root, bundle, true)).rejects.toThrow();
+    expect(fingerprint(root)).toBe(before);
+    // Compacting the same edit must still reject a route that was recorded as
+    // unsuitable; an absent route is not equivalent to a confirmed service.
+    await expect(applyCityBundle(root, compactCityBundle(bundle), true)).rejects.toThrow();
+    expect(fingerprint(root)).toBe(before);
+    const unreviewed = exportEditableCityBundle(root, "delhi");
+    const index = unreviewed.travel.routes.findIndex((route) => route.mode === "bus");
+    expect(index).toBeGreaterThanOrEqual(0);
+    unreviewed.travel.routes.splice(index, 1);
+    await expect(applyCityBundle(root, unreviewed, true)).rejects.toThrow(/undecided/i);
     expect(fingerprint(root)).toBe(before);
     bundle.transitDecisions = decisions.filter((item) => item !== decision);
     const original = readJson(root, "authoring/research/golden-triangle-transit-20261103/decisions.json");
@@ -361,6 +482,9 @@ describe("city editing bundle", () => {
     expect(preview.changedFiles).toEqual([]);
     await applyCityBundle(root, legacy, true);
     expect(read(root, "content/tourism/catalog.json")).toBe(before);
+    const compactLegacy = compactCityBundle(legacy);
+    expect((await applyCityBundle(root, compactLegacy, true)).changedFiles).toEqual([]);
+    expect(read(root, "content/tourism/catalog.json")).toBe(before);
   }, 60_000);
 
   it("rejects foreign landmarks, invalid observation ownership and duplicate IDs", async () => {
@@ -401,6 +525,12 @@ describe("city editing bundle", () => {
     const before = fingerprint(root);
     const newFiles = ["content/cities/testcity.json", "content/travel/testcity.json", "content/travel/testcity-settings.json"];
     const template = newCityBundle(root, "testcity") as ReturnType<typeof exportCityBundle>;
+    const compactTemplate = compactCityBundle(template) as { schemaVersion: number; travel: { places: unknown[]; routes: unknown[]; routeSources: unknown; samePlaceRoute?: unknown } };
+    expect(compactTemplate.schemaVersion).toBe(2);
+    expect(compactTemplate.travel.places).toEqual(template.travel.places);
+    expect(compactTemplate.travel.routes).toEqual([]);
+    expect(compactTemplate.travel.routeSources).toEqual({});
+    expect(compactTemplate.travel.samePlaceRoute).toBeUndefined();
     await expect(applyCityBundle(root, template, true)).rejects.toThrow();
     expect(fingerprint(root)).toBe(before);
     expect(newFiles.every((file) => !existsSync(path.join(root, file)))).toBe(true);

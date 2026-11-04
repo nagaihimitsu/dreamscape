@@ -46,6 +46,18 @@ public/assets/         # 画像・音声
 - `romance` が `battle` のUIコードを直接呼ばない。クイズ結果は `GameEvent` 経由でAP付与処理へ。
 - 初期から巨大なイベントバスやプラグイン基盤は作らない。
 
+## 実装の責務分担
+
+既存の入口を保ちながら、次の単位で処理を分担する。
+
+- `src/app/App.tsx` は旅行編の選択と保存領域のロック、`GameApp.tsx` はゲーム画面と画面間の操作を担当する。`useGameSession.ts` が状態更新・保存・復元・削除時の競合確認をまとめ、`useTravelEffects.tsx` が成功した移動の演出を扱う。
+- `src/domain/game.ts` はゲームの状態遷移を扱う。保存形式の定義は `game-state-schema.ts`、デートの条件判定は `date-rules.ts`、保存された進行の整合確認は `game-state-validation.ts` に分ける。既存の公開関数と型は `game.ts` から引き続き利用できる。
+- `src/domain/travel-destinations.ts` は行き先候補と待機時刻を計算する。帰宿候補と宿泊計画は `travel-game.ts` を画面表示と実際の操作で共用し、画面内に同じルールを重複実装しない。
+- `scripts/content-pipeline.ts` はコンテンツ検証・生成の実行順を管理する。Inkのコンパイルと会話経路の検証は `ink-validation.ts`、背景画像とキャラクターの参照検証は `presentation-validation.ts` が担当する。
+- `scripts/city-bundle.ts` は都市編集の公開APIと検証手順を担当する。編集形式は `city-bundle-schema.ts`、経路の圧縮・展開は `city-bundle-routes.ts`、共有カタログの統合は `city-bundle-catalogs.ts`、競合確認と原子的なファイル更新は `city-bundle-files.ts` が担当する。
+
+機能を追加するときは該当する責務へ実装し、画面や入口のファイルへ個別の保存・進行・検証ルールを戻さない。分離したモジュール間で型だけが必要な場合は `import type` を使い、実行時の循環参照を避ける。
+
 ## 開発中の保存とシナリオ更新
 
 開発中は、更新後に以前のセーブを利用できることや、自動移行を保証しない。現在のゲームセーブはv12で、v1〜v11の自動移行は行わず読み込み対象外とする。v12は旅行の日数・時刻・現在地と活動中の時間枠を保持する。`schemaVersion` と保存された場面の指紋・状態を検証し、内容が異なる脚本や問題を無理に復元しない。誤字修正や改稿のたびに旧セーブ再開用のInk・定義を残すことは必須ではない。一方、読み込めるデータを更新のたびに無条件で無効化しない。

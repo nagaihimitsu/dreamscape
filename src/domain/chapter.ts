@@ -5,6 +5,7 @@ import {
   episodes,
   journeyConfig,
   rewardRules,
+  allRewardRules,
   type EpisodeDefinition,
   type RewardRule,
   type StoryBattle,
@@ -12,6 +13,7 @@ import {
 import { openTourism } from "./tourism";
 import { startBattle } from "./battle";
 import { earnRewards } from "./rewards";
+import { rewardBattleId, rewardLandmarkId } from "./reward-rules";
 import { encounters } from "../content/encounters";
 import type { GameState, Availability } from "./game";
 
@@ -181,24 +183,24 @@ function hasCompletedBattle(state: GameState, episode: EpisodeDefinition) {
   );
 }
 export function isRewardEarned(state: GameState, rule: RewardRule): boolean {
-  const episode = episodes.find((item) => item.id === rule.episodeId)!;
+  const episode = episodes.find((item) => item.id === rule.episodeId);
   // An optional cultural encounter may earn the very same entitlement as a
   // score threshold. The shared ID keeps existing claims and overflow intact.
   if (encounters.encounters.some((encounter) =>
     encounter.alternativeApRewardId === rule.id &&
     state.completedEncounterIds.includes(encounter.id)
   )) return true;
-  if (rule.trigger === "guide_read")
-    return (
-      !!episode.landmarkId &&
-      state.completedGuideIds.includes(episode.landmarkId)
-    );
+  if (rule.trigger === "guide_read") {
+    const landmarkId = rewardLandmarkId(rule);
+    return !!landmarkId && state.completedGuideIds.includes(landmarkId);
+  }
   if (rule.trigger === "episode_clear")
-    return state.completedEpisodeIds.includes(episode.id);
+    return episode ? state.completedEpisodeIds.includes(episode.id)
+      : !!rule.battleId && storyBattleCompleted(state, rule.battleId);
   if (rule.trigger === "city_clear")
-    return state.completedCityIds.includes(episode.cityId);
+    return !!episode && state.completedCityIds.includes(episode.cityId);
   const record = state.battleRecords.find(
-    (item) => item.battleId === episode.battleId,
+    (item) => item.battleId === rewardBattleId(rule),
   );
   return (
     !!record &&
@@ -237,25 +239,23 @@ function recordEpisodes(state: GameState): GameState {
 }
 export function finalizeBattleProgress(state: GameState): GameState {
   const active = state.activeBattle;
-  const specialReward = journeyConfig.storyBattles.find((battle) => battle.battleId === active?.battleId)?.completionReward;
   if (
     !active ||
     active.phase !== "result" ||
-    (!specialReward && !episodes.some((episode) => episode.battleId === active.battleId))
+    (!allRewardRules.some((rule) => rewardBattleId(rule) === active.battleId) &&
+      !episodes.some((episode) => episode.battleId === active.battleId))
   )
     return state;
   const next = recordEpisodes(state);
-  const ids = rewardRules
+  const ids = allRewardRules
     .filter((rule) => {
-      const episode = episodes.find((item) => item.id === rule.episodeId)!;
       return (
-        episode.battleId === active.battleId &&
+        rewardBattleId(rule) === active.battleId &&
         rule.trigger !== "guide_read" &&
         isRewardEarned(next, rule)
       );
     })
     .map((rule) => rule.id);
-  if (specialReward) ids.push(specialReward.id);
   const awarded = earnRewards(next, ids);
   return {
     ...awarded.state,
@@ -272,14 +272,11 @@ export function recordGuideRead(
   const next = state.completedGuideIds.includes(landmarkId)
     ? state
     : { ...state, completedGuideIds: [...state.completedGuideIds, landmarkId] };
-  const ids = rewardRules
+  const ids = allRewardRules
     .filter(
       (rule) =>
         rule.trigger === "guide_read" &&
-        episodes.some(
-          (episode) =>
-            episode.id === rule.episodeId && episode.landmarkId === landmarkId,
-        ),
+        rewardLandmarkId(rule) === landmarkId,
     )
     .map((rule) => rule.id);
   return earnRewards(next, ids).state;
@@ -354,22 +351,22 @@ export function validateJourneyState(state: GameState): void {
     throw new Error("都市の記録が見つかりません。");
   for (const id of state.completedGuideIds)
     if (
-      !episodes.some((episode) => episode.landmarkId === id) ||
+      (!episodes.some((episode) => episode.landmarkId === id) &&
+        !journeyConfig.storyBattles.some((battle) => battles.some((definition) =>
+          definition.id === battle.battleId && definition.landmarkId === id))) ||
       !state.visitedLandmarkIds.includes(id)
     )
       throw new Error("案内の読了記録が一致しません。");
-  for (const rule of rewardRules) {
+  for (const rule of allRewardRules) {
     const earned = isRewardEarned(state, rule);
     const claimed = state.claimedRewardIds.includes(rule.id);
     const legacyChapter =
       rule.id === city.firstClearReward.rewardSourceId &&
       state.legacyTrialAvailable &&
       state.completedChapters.includes(city.id);
-    if ((earned && !claimed) || (claimed && !earned && !legacyChapter))
+    // Added special-battle milestones do not invalidate saves made before the
+    // milestones existed; recorded claims must still satisfy their conditions.
+    if ((rule.episodeId !== undefined && earned && !claimed) || (claimed && !earned && !legacyChapter))
       throw new Error("進行条件と報酬記録が一致しません。");
-  }
-  for (const battle of journeyConfig.storyBattles) {
-    if (battle.completionReward && state.claimedRewardIds.includes(battle.completionReward.id) && !storyBattleCompleted(state, battle.battleId))
-      throw new Error("特殊戦の報酬記録が一致しません。");
   }
 }

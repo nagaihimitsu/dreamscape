@@ -10,14 +10,75 @@ import {
   type JourneyConfig,
 } from "../src/content";
 import { validateJourney } from "./journey-validation";
+import { journeySchema, type RewardRule } from "../src/content/journey-schemas";
 
 function check(journey: JourneyConfig) {
   validateJourney(journey, city, balance.apCap, landmarks, battles, battleQuizzes, trialMilestones);
 }
 
+function withSpecialReward(trigger: RewardRule["trigger"] = "battle_score") {
+  const journey = structuredClone(journeyConfig);
+  const battleId = journey.storyBattles[0].battleId;
+  journey.rewards = journey.rewards.filter((rule) => rule.battleId !== battleId);
+  const reward: RewardRule = { id: "special_test_reward", battleId, trigger, ap: 1,
+    minScore: trigger === "battle_score" ? 2 : null, titleJa: "特殊戦の報酬" };
+  journey.rewards.push(reward);
+  return { journey, reward };
+}
+
 describe("story battle references in the journey", () => {
   it("accepts the published route", () => {
     expect(() => check(journeyConfig)).not.toThrow();
+  });
+
+  it.each(["guide_read", "battle_score", "episode_clear"] as const)("accepts a special battle %s reward", (trigger) => {
+    expect(() => check(withSpecialReward(trigger).journey)).not.toThrow();
+  });
+
+  it("requires exactly one reward target", () => {
+    const { journey, reward } = withSpecialReward();
+    reward.episodeId = journey.episodes[0].id;
+    expect(journeySchema.safeParse(journey).success).toBe(false);
+    delete reward.episodeId;
+    delete reward.battleId;
+    expect(journeySchema.safeParse(journey).success).toBe(false);
+  });
+
+  it.each(["missing_battle", "milano_duomo_01"])("rejects special rewards targeting %s", (battleId) => {
+    const { journey, reward } = withSpecialReward();
+    reward.battleId = battleId;
+    expect(() => check(journey)).toThrow(/Unknown reward story battle/);
+  });
+
+  it("rejects unreachable scores and rewards over the AP cap for a special battle", () => {
+    const { journey, reward } = withSpecialReward();
+    const battle = battles.find((item) => item.id === reward.battleId)!;
+    reward.minScore = battleQuizzes[battle.quizId].questions.length + 1;
+    expect(() => check(journey)).toThrow(/Unreachable score reward/);
+    reward.minScore = 2;
+    reward.ap = balance.apCap + 1;
+    expect(() => check(journey)).toThrow(/Journey reward exceeds AP cap/);
+  });
+
+  it("rejects completion rewards that duplicate the existing special entitlement", () => {
+    const { journey, reward } = withSpecialReward("battle_complete");
+    expect(() => check(journey)).toThrow(/Duplicate story battle reward trigger/);
+    reward.id = journey.storyBattles[0].completionReward!.id;
+    expect(() => check(journey)).toThrow(/Duplicate journey\/trial reward ID/);
+  });
+
+  it("does not allow a special battle to grant the city-clear reward", () => {
+    const { journey } = withSpecialReward("city_clear");
+    expect(() => check(journey)).toThrow(/Reward trigger does not fit the story battle/);
+  });
+
+  it("does not accept a special battle with a landmark belonging to another city", () => {
+    const { journey, reward } = withSpecialReward();
+    const battle = battles.find((item) => item.id === reward.battleId)!;
+    const otherCityLandmarks = landmarks.map((landmark) => landmark.id === battle.landmarkId
+      ? { ...landmark, cityId: "other_city" } : landmark);
+    expect(() => validateJourney(journey, city, balance.apCap, otherCityLandmarks, battles, battleQuizzes, trialMilestones))
+      .toThrow(/Invalid story battle/);
   });
 
   it.each([

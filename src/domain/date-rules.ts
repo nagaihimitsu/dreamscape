@@ -1,0 +1,212 @@
+import { dates, dateDestinations, getCityContent, progression, type DateDefinition } from "../content";
+import { legacyDates } from "../content/legacy-milano";
+import type { GameState, ActiveDate } from "./game-state-schema";
+import { storyFingerprint } from "../story/runtime";
+import type { Availability } from "./game";
+
+function meetsDateConditions(state: GameState, date: DateDefinition): boolean {
+  return (
+    date.requiredCompletedChapters.every((id) =>
+      state.completedChapters.includes(id),
+    ) &&
+    (date.requiredCompletedCityIds ?? []).every((id) =>
+      state.completedCityIds.includes(id),
+    ) &&
+    (date.requiredCompletedEpisodeIds ?? []).every((id) =>
+      state.completedEpisodeIds.includes(id),
+    ) &&
+    (date.forbiddenCompletedEpisodeIds ?? []).every((id) =>
+      !state.completedEpisodeIds.includes(id),
+    ) &&
+    date.requiredPlayedDateIds.every((id) =>
+      state.playedDateIds.includes(id),
+    ) &&
+    state.romanceStage >= date.minRomanceStage &&
+    (date.minAffection === 0 || state.affection >= date.minAffection) &&
+    (!date.needsDeferred || state.confessionStatus === "deferred")
+  );
+}
+
+function isConfessionOnCooldown(state: GameState, date: DateDefinition): boolean {
+  return date.kind === "confession" && state.confessionStatus === "rejected" &&
+    state.lastRejectedDateCount !== null && completedDateCount(state) <= state.lastRejectedDateCount &&
+    !state.recoveryAfterRejection;
+}
+
+/** Destinations own their city; destination-less events belong to a city's travel catalog. */
+export function dateBelongsToCity(state: GameState, date: DateDefinition): boolean {
+  if (date.destinationId) return dateDestinations.some((destination) => destination.id === date.destinationId && destination.cityId === state.currentCityId);
+  return getCityContent(state.currentCityId).travel.events.some((event) => event.id === date.id && event.category === "date");
+}
+
+/** Progress and relationship requirements only; AP and opening hours do not hide a destination. */
+export function isDateUnlockedForTravel(state: GameState, dateId: string): boolean {
+  const date = dates.find((item) => item.id === dateId);
+  return !!date && dateBelongsToCity(state, date) && !date.legacyOnly && !isConfessionOnCooldown(state, date) &&
+    (isUpdatedDateReplay(state, dateId) || meetsDateConditions(state, date));
+}
+
+/** Count completed ordinary dates and up to three real recovery conversations. */
+export function completedDateCount(state: GameState): number {
+  const ordinary = state.playedDateIds.filter((id) => dates.some((date) => date.id === id && date.kind === "normal")).length;
+  return ordinary + state.completedRecoveryCount;
+}
+
+/** Re-evaluate only at durable event boundaries. Unlocks remain recorded after their first appearance. */
+export function evaluateProgression(state: GameState): GameState {
+  let romanceStage = state.romanceStage;
+  for (const stage of progression.stages) {
+    if (
+      state.affection >= stage.minAffection &&
+      state.trust >= stage.minTrust && state.spark >= stage.minSpark &&
+      completedDateCount(state) >= stage.minCompletedDates
+    ) {
+      romanceStage = Math.max(
+        romanceStage,
+        stage.stage,
+      ) as GameState["romanceStage"];
+    }
+  }
+  const next = { ...state, romanceStage };
+  const unlockedEventIds = [...state.unlockedEventIds];
+  for (const date of dates) {
+    if (
+      date.kind !== "normal" && !date.recovery && dateBelongsToCity(state, date) &&
+      meetsDateConditions(next, date) &&
+      !unlockedEventIds.includes(date.id)
+    )
+      unlockedEventIds.push(date.id);
+  }
+  if (
+    romanceStage === state.romanceStage &&
+    unlockedEventIds.length === state.unlockedEventIds.length
+  )
+    return state;
+  return { ...next, unlockedEventIds };
+}
+
+export function getPlayerAddress(state: GameState): string {
+  const stage = progression.stages.find(
+    (item) => item.stage === state.romanceStage,
+  )!;
+  return `${state.playerName}${stage.playerSuffix}`;
+}
+
+export function getMemoryCallback(state: GameState): string {
+  return (
+    progression.memoryCallbacks.find((item) =>
+      state.memories.includes(item.memoryId),
+    )?.textJa ?? progression.fallbackMemoryCallbackJa
+  );
+}
+
+export function canConfessSuccessfully(state: GameState): boolean {
+  return (
+    state.affection >= progression.confession.minAffection &&
+    state.trust >= progression.confession.minTrust &&
+    state.spark >= progression.confession.minSpark &&
+    completedDateCount(state) >= progression.confession.minCompletedDates
+  );
+}
+
+export function confessionResult(state: GameState): "accepted" | "deferred" | "rejected" {
+  if (canConfessSuccessfully(state)) return "accepted";
+  return state.affection >= progression.stages[2].minAffection && state.trust >= progression.stages[2].minTrust
+    ? "deferred" : "rejected";
+}
+
+/** A repeatable conversation prevents random setbacks from permanently blocking recovery. */
+function canRecoverRelationship(state: GameState): boolean {
+  if (state.endingReached || completedDateCount(state) === 0) return false;
+  const needsRepair = !canConfessSuccessfully(state) ||
+    (state.confessionStatus === "rejected" && !state.recoveryAfterRejection &&
+      state.lastRejectedDateCount !== null && completedDateCount(state) <= state.lastRejectedDateCount);
+  if (!needsRepair) return false;
+  return !dates.some((date) => date.kind === "normal" && !isUpdatedDateReplay(state, date.id) && getDateAvailability(state, date.id).available);
+}
+
+/** A completed old normal date may show its rewritten scene once without rewards. */
+export function isUpdatedDateReplay(state: GameState, dateId: string): boolean {
+  const date = dates.find((item) => item.id === dateId);
+  const old = legacyDates.find((item) => item.id === dateId);
+  return !!date && !!old && date.kind === "normal" && old.kind === "normal" &&
+    date.rewardOnlyOnce && !date.legacyOnly && date.storyId !== old.storyId &&
+    state.playedDateIds.includes(dateId) && !state.updatedDateIds.includes(dateId);
+}
+
+export function isEventVisible(state: GameState, dateId: string): boolean {
+  const date = dates.find((item) => item.id === dateId);
+  return Boolean(
+    date && dateBelongsToCity(state, date) && !date.legacyOnly &&
+      (!date.recovery || canRecoverRelationship(state)) &&
+      (!state.endingReached || date.kind === "normal" || date.allowAfterEnding) &&
+      (isUpdatedDateReplay(state, dateId) || (date.forbiddenCompletedEpisodeIds ?? []).every((id) => !state.completedEpisodeIds.includes(id))) &&
+      (date.kind === "normal"
+        ? (!state.playedDateIds.includes(dateId) || isUpdatedDateReplay(state, dateId)) &&
+          (isUpdatedDateReplay(state, dateId) || (date.requiredCompletedEpisodeIds ?? []).every((id) => state.completedEpisodeIds.includes(id)))
+        : state.unlockedEventIds.includes(dateId) || meetsDateConditions(state, date)),
+  );
+}
+
+export function getDateAvailability(
+  state: GameState,
+  dateId: string,
+): Availability {
+  const date = dates.find((item) => item.id === dateId);
+  if (!date) return { available: false, reason: "デートが見つかりません。" };
+  if (!dateBelongsToCity(state, date)) return { available: false, reason: "この街では出かけられません。" };
+  if (date.legacyOnly) return { available: false, reason: "この場面は以前の途中セーブからのみ再開できます。" };
+  if (date.recovery && !canRecoverRelationship(state))
+    return { available: false, reason: "今は別のひとときを選べます。" };
+  if (state.endingReached && date.kind !== "normal" && !date.allowAfterEnding)
+    return {
+      available: false,
+      reason: "ふたりの物語は、交際エンディングを迎えました。",
+    };
+  if (
+    state.activeDate ||
+    state.activeBattle ||
+    state.activeTourism ||
+    state.activeEpilogue ||
+    state.activeEncounter
+  )
+    return {
+      available: false,
+      reason: "途中の会話・バトルを再開してください。",
+    };
+  if (isUpdatedDateReplay(state, dateId)) return { available: true, reason: "" };
+  if ((date.kind === "normal" || !date.repeatable) && state.playedDateIds.includes(dateId))
+    return {
+      available: false,
+      reason: "このひとときは、もう思い出になりました。",
+    };
+  if (
+    !(date.requiredCompletedCityIds ?? []).every((id) =>
+      state.completedCityIds.includes(id),
+    )
+  )
+    return {
+      available: false,
+      reason: "都市の旅を終えると、このデートに誘えます。",
+    };
+  if (!(date.requiredCompletedEpisodeIds ?? []).every((id) => state.completedEpisodeIds.includes(id)))
+    return { available: false, reason: "旅を進めると、この場所に誘えます。" };
+  if ((date.forbiddenCompletedEpisodeIds ?? []).some((id) => state.completedEpisodeIds.includes(id)))
+    return { available: false, reason: "この機会は過ぎました。" };
+  if (isConfessionOnCooldown(state, date))
+    return { available: false, reason: "新しいひとときを過ごしてから、もう一度話せます。" };
+  if (!meetsDateConditions(state, date))
+    return { available: false, reason: "もう少し、一緒の時間を過ごしてから。" };
+  if (state.ap < date.apCost)
+    return { available: false, reason: "APが足りません。" };
+  return { available: true, reason: "" };
+}
+
+
+/** Resume only when the current story exactly matches the saved fingerprint. */
+export function activeDateStoryId(date: DateDefinition, active: Pick<ActiveDate, "storyHash">): string {
+  if (storyFingerprint(date.storyId) !== active.storyHash)
+    throw new Error("シナリオが更新されています。以前の途中データはそのまま保管されています。");
+  return date.storyId;
+}
+

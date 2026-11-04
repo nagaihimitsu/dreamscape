@@ -237,7 +237,7 @@ describe("small proof steps inside three-round battles", () => {
   });
 
   it.each([0, 1, 2, 3])(
-    "awards 1 AP once for either special battle with %i correct",
+    "awards completion, clear, and eligible score AP once for either special battle with %i correct",
     (score) => {
       for (const kind of ["contradiction", "connection"] as const) {
         const battle = special(kind);
@@ -254,13 +254,17 @@ describe("small proof steps inside three-round battles", () => {
           },
         ]);
         expect(unchangedProgress(state)).toEqual(unchangedProgress(initial));
-        const rewardId = kind === "contradiction" ? "battle_scala_first" : "battle_brera_first";
-        expect(state.ap).toBe(initial.ap + 1);
-        expect(state.claimedRewardIds).toContain(rewardId);
-        expect(state.battleRewardReceipt?.entries).toEqual([{ rewardId, earnedAp: 1, creditedAp: 1, pendingAp: 0 }]);
-        // A save completed before this reward existed remains readable and is
+        const suffix = kind === "contradiction" ? "scala" : "brera";
+        const completionRewardId = `battle_${suffix}_first`;
+        const scoreRewardId = `victory_${suffix}_first`;
+        const clearRewardId = `episode_${suffix}_first`;
+        const rewardIds = [completionRewardId, ...(score >= 2 ? [scoreRewardId] : []), clearRewardId];
+        expect(state.ap).toBe(initial.ap + rewardIds.length);
+        expect(state.claimedRewardIds).toEqual([...initial.claimedRewardIds, ...rewardIds]);
+        expect(state.battleRewardReceipt?.entries).toEqual(rewardIds.map((rewardId) => ({ rewardId, earnedAp: 1, creditedAp: 1, pendingAp: 0 })));
+        // A save completed before these rewards existed remains readable and is
         // not silently credited during validation.
-        const previouslyCompleted = { ...state, ap: initial.ap, claimedRewardIds: state.claimedRewardIds.filter((id) => id !== rewardId), battleRewardReceipt: null };
+        const previouslyCompleted = { ...state, ap: initial.ap, claimedRewardIds: initial.claimedRewardIds, battleRewardReceipt: null };
         expect(roundTrip(previouslyCompleted).ap).toBe(initial.ap);
         expect(() =>
           validateGameState({
@@ -278,9 +282,12 @@ describe("small proof steps inside three-round battles", () => {
         expect(state.battleRecords[0].attempts).toBe(2);
         expect(state.battleRecords[0].bestScore).toBe(3);
         expect(unchangedProgress(state)).toEqual(unchangedProgress(initial));
-        expect(state.ap).toBe(initial.ap + 1);
-        expect(state.battleRewardReceipt?.entries).toEqual([]);
-        expect(state.claimedRewardIds.filter((id) => id === rewardId)).toHaveLength(1);
+        expect(state.ap).toBe(initial.ap + 3);
+        expect(state.battleRewardReceipt?.entries).toEqual(score < 2 ? [{ rewardId: scoreRewardId, earnedAp: 1, creditedAp: 1, pendingAp: 0 }] : []);
+        for (const rewardId of [completionRewardId, scoreRewardId, clearRewardId]) {
+          expect(state.claimedRewardIds.filter((id) => id === rewardId)).toHaveLength(1);
+        }
+        expect(state.claimedRewardIds).not.toContain(`guide_${suffix}_first`);
         state = leaveBattle(state, state.revision);
         expect(state.activeBattle).toBeNull();
         roundTrip(state);
@@ -301,10 +308,14 @@ describe("small proof steps inside three-round battles", () => {
       const battle = special(kind);
       const state = finish(startBattle(initial, battle.id), battle, 3);
       expect(unchangedProgress(state)).toEqual(unchangedProgress(initial));
-      const rewardId = kind === "contradiction" ? "battle_scala_first" : "battle_brera_first";
+      const suffix = kind === "contradiction" ? "scala" : "brera";
+      const rewardIds = [`battle_${suffix}_first`, `victory_${suffix}_first`, `episode_${suffix}_first`];
       expect(state.ap).toBe(initial.ap);
-      expect(state.pendingApRewards).toContainEqual({ rewardId, earnedAp: 1, remainingAp: 1 });
-      expect(state.battleRewardReceipt?.entries).toEqual([{ rewardId, earnedAp: 1, creditedAp: 0, pendingAp: 1 }]);
+      expect(state.pendingApRewards).toEqual([
+        ...initial.pendingApRewards,
+        ...rewardIds.map((rewardId) => ({ rewardId, earnedAp: 1, remainingAp: 1 })),
+      ]);
+      expect(state.battleRewardReceipt?.entries).toEqual(rewardIds.map((rewardId) => ({ rewardId, earnedAp: 1, creditedAp: 0, pendingAp: 1 })));
     }
   });
 });

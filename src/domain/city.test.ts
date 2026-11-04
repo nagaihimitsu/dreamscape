@@ -5,6 +5,7 @@ import {
   dates,
   episodes,
   rewardRules,
+  allRewardRules,
   type EpisodeDefinition,
 } from "../content";
 import {
@@ -104,8 +105,10 @@ function finishPendingStory(initial: GameState): GameState {
     const before = state;
     state = finishBattle(startBattle(state, special.battleId), 0);
     expect(state.battleRecords.find((record) => record.battleId === special.battleId)?.attempts).toBe(1);
-    expect(totalAp(state)).toBe(totalAp(before) + special.completionReward!.ap);
-    expect(state.claimedRewardIds).toEqual([...before.claimedRewardIds, special.completionReward!.id]);
+    const earned = allRewardRules.filter((rule) => rule.battleId === special.battleId &&
+      (rule.trigger === "battle_complete" || rule.trigger === "episode_clear"));
+    expect(totalAp(state)).toBe(totalAp(before) + earned.reduce((sum, rule) => sum + rule.ap, 0));
+    expect(state.claimedRewardIds).toEqual([...before.claimedRewardIds, ...earned.map((rule) => rule.id)]);
     expect(state.affection).toBe(before.affection);
     expect(state.discoveredClueIds).toEqual(before.discoveredClueIds);
     expect(state.completedEpisodeIds).toEqual(before.completedEpisodeIds);
@@ -373,7 +376,7 @@ describe("Milan's four episodes and distinct city finale", () => {
   it("funds optional dates and a deferred-then-accepted confession from zero-score city play", () => {
     let state = finishEpisode(tour(), finale(), 0);
     state = enterFreeTime(state, state.revision);
-    expect(totalAp(state)).toBe(17);
+    expect(totalAp(state)).toBe(19);
     expect(state.legacyTrialAvailable).toBe(false);
     state = playDate(state, "milano_cafe_01", [0, 0]);
     state = playDate(state, "milano_walk_01", [0, 1]);
@@ -386,7 +389,7 @@ describe("Milan's four episodes and distinct city finale", () => {
     state = playDate(state, "milano_night_01", [0, 1]);
     state = playDate(state, "milano_confession_01", [0]);
     expect(state.endingReached).toBe(true);
-    expect(totalAp(state)).toBe(9);
+    expect(totalAp(state)).toBe(11);
     expect(state.claimedRewardIds.some((id) => id.startsWith("trial_"))).toBe(
       false,
     );

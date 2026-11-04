@@ -87,9 +87,10 @@ describe("Milan real travel itineraries", () => {
     ["milano_brera_c01", "brera_case", "brera_sitter"],
   ])("does not revisit completed %s even when %s has a pending %s encounter", (id) => {
     const initial = createGame();
-    const first = beginTravelEvent(initial, id, "walk", initial.revision);
-    expect(first.activeBattle?.battleId).toBe(id);
-    const completed = completeBattle(first);
+    let first = beginTravelEvent(initial, id, "walk", initial.revision);
+    expect(first.activeTourism?.phase).toBe("guide");
+    first = skipTourismGuide(first, first.revision);
+    const completed = completeBattle(startTourismBattle(first, first.revision));
     const revisit = beginTravelEvent(completed, id, "walk", completed.revision);
     expect(revisit).toBe(completed);
   });

@@ -1,4 +1,4 @@
-import type { JourneyConfig } from "../src/content/journey-schemas";
+import { getAllRewardRules, type JourneyConfig, type RewardRule } from "../src/content/journey-schemas";
 import type {
   BattleDefinition,
   QuizDefinition,
@@ -9,6 +9,13 @@ import type { LandmarkDefinition } from "../src/content/tourism-schemas";
 function unique(values: string[], label: string) {
   if (new Set(values).size !== values.length)
     throw new Error(`Duplicate ${label}`);
+}
+
+function validateRewardAmount(rule: RewardRule, quiz: QuizDefinition | undefined, apCap: number) {
+  if (rule.ap > apCap)
+    throw new Error(`Journey reward exceeds AP cap: ${rule.id}`);
+  if (rule.minScore !== null && (!quiz || rule.minScore > quiz.questions.length))
+    throw new Error(`Unreachable score reward: ${rule.id}`);
 }
 
 /** Validate independent stops and prerequisites while keeping rewards distinct. */
@@ -72,6 +79,13 @@ export function validateJourney(
     if (!battle?.reasoning || journey.episodes.some((episode) => episode.battleId === encounter.battleId) ||
       !landmarks.some((landmark) => landmark.id === battle.landmarkId && landmark.cityId === city.id))
       throw new Error(`Invalid story battle: ${encounter.battleId}`);
+    const rules = getAllRewardRules(journey).filter((rule) => rule.battleId === encounter.battleId);
+    unique(rules.map((rule) => rule.trigger), "story battle reward trigger");
+    for (const rule of rules) {
+      if (rule.trigger === "city_clear")
+        throw new Error(`Reward trigger does not fit the story battle: ${encounter.battleId}`);
+      validateRewardAmount(rule, quizzes[battle.quizId], apCap);
+    }
   }
   for (const [index, episode] of journey.episodes.entries()) {
     unique(episode.requiredEpisodeIds, "episode prerequisite");
@@ -135,24 +149,17 @@ export function validateJourney(
       }
     }
     const quiz = battle ? quizzes[battle.quizId] : undefined;
-    for (const rule of rules) {
-      if (rule.ap > apCap)
-        throw new Error(`Journey reward exceeds AP cap: ${rule.id}`);
-      if (
-        rule.minScore !== null &&
-        (!quiz || rule.minScore > quiz.questions.length)
-      ) {
-        throw new Error(`Unreachable score reward: ${rule.id}`);
-      }
-    }
+    for (const rule of rules) validateRewardAmount(rule, quiz, apCap);
   }
   for (const rule of journey.rewards) {
-    if (!journey.episodes.some((episode) => episode.id === rule.episodeId)) {
+    if (rule.episodeId !== undefined && !journey.episodes.some((episode) => episode.id === rule.episodeId)) {
       throw new Error(`Unknown reward episode: ${rule.id}`);
     }
+    if (rule.battleId !== undefined && !journey.storyBattles.some((battle) => battle.battleId === rule.battleId))
+      throw new Error(`Unknown reward story battle: ${rule.id}`);
     if (
       rule.id === city.firstClearReward.rewardSourceId &&
-      (rule.trigger !== "episode_clear" || rule.ap !== city.firstClearReward.ap)
+      (rule.episodeId === undefined || rule.trigger !== "episode_clear" || rule.ap !== city.firstClearReward.ap)
     ) {
       throw new Error(
         "Legacy chapter reward must keep its ID, trigger and amount",

@@ -244,6 +244,54 @@
       "ap": 3,
       "minScore": null,
       "titleJa": "ミラノ都市を初めてクリア"
+    },
+    {
+      "id": "guide_scala_first",
+      "battleId": "milano_la_scala_b01",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "victory_scala_first",
+      "battleId": "milano_la_scala_b01",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて2問以上正解"
+    },
+    {
+      "id": "episode_scala_first",
+      "battleId": "milano_la_scala_b01",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "スカラ座の対決を初めてクリア"
+    },
+    {
+      "id": "guide_brera_first",
+      "battleId": "milano_brera_c01",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "victory_brera_first",
+      "battleId": "milano_brera_c01",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて2問以上正解"
+    },
+    {
+      "id": "episode_brera_first",
+      "battleId": "milano_brera_c01",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "ブレラの対決を初めてクリア"
     }
   ]
 }

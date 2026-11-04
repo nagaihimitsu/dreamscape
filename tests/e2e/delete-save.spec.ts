@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { startNewGame, saved } from "./helpers";
+import { startNewGame, saved, selectTravelEvent } from "./helpers";
 import phase1 from "../fixtures/phase1-saves.json" with { type: "json" };
 
 test.use({ viewport: { width: 360, height: 780 } });
@@ -49,8 +49,10 @@ test("a stale tab cannot delete or recreate a newer save", async ({
   await startNewGame(page);
   const older = await context.newPage();
   await older.goto("/");
-  await page.getByTestId("episode-start").click();
+  const previous = await saved(page);
+  await selectTravelEvent(page, "milano_duomo_episode");
   const current = await saved(page);
+  expect(current.revision).toBeGreaterThan(previous.revision);
   await older.getByRole("button", { name: "設定", exact: true }).click();
   await older.getByRole("button", { name: "保存データの消去" }).click();
   await expect(older.getByRole("status")).toContainText("別の画面");
@@ -158,7 +160,7 @@ test("another open tab cannot recreate data after deletion", async ({
   ).toBeNull();
   await older.getByRole("button", { name: "設定", exact: true }).click();
   await expect(older.getByLabel("常に日本語訳を表示する")).toBeDisabled();
-  await expect(older.getByRole("dialog").getByRole("status")).toContainText(
+  await expect(older.getByRole("dialog").getByRole("status").filter({ hasText: "英語ノート" })).toContainText(
     "別の画面",
   );
   expect(
@@ -172,6 +174,7 @@ test("confirmation does not delete data changed in another tab", async ({
   context,
 }) => {
   await startNewGame(page);
+  const originalGame = await saved(page);
   const other = await context.newPage();
   await other.goto("/");
   await page.getByRole("button", { name: "設定", exact: true }).click();
@@ -191,7 +194,7 @@ test("confirmation does not delete data changed in another tab", async ({
   expect(
     await page.evaluate(() => localStorage.getItem("dreamscape.learning.v1")),
   ).toBe(latest);
-  expect((await saved(page)).schemaVersion).toBe(11);
+  expect(await saved(page)).toEqual(originalGame);
   await other.close();
 });
 

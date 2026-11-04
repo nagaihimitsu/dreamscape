@@ -2,14 +2,16 @@ import { useState } from "react";
 import { dates, episodes, journeyConfig, getCityContent } from "../../content";
 import { formatMoneyForCity } from "../../content/currency";
 import { getJourneyForCity } from "../../content/journeys";
-import type { TravelEvent, TravelPlace, TravelRoute } from "../../content/travel-schemas";
+import type { TravelPlace, TravelRoute } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
-import { getDirection, groupDestinationEvents, selectNearbyDestinations } from "../../domain/travel";
-import { getTravelEventAvailability, getTravelEventDefinition, isUnclearedMainTravelEvent } from "../../domain/travel-game";
+import { getDirection } from "../../domain/travel";
+import { getTravelEventAvailability, getTravelEventDefinition } from "../../domain/travel-game";
+import { getTravelDestinations, type TravelDestinationPlace } from "../../domain/travel-destinations";
+import { compareRouteTime } from "../../domain/travel-routes";
 import { Modal } from "../../components/Modal";
 import { withNames } from "../romance/RomanceMenu";
 import { PlaceMap } from "./PlaceMap";
-import { showTravelEvent, travelModeLabels as modes } from "./travel-visibility";
+import { travelModeLabels as modes } from "./travel-visibility";
 import "./travel-menu.css";
 
 type Mode = TravelRoute["mode"];
@@ -20,24 +22,9 @@ export function TravelMenu({ game, onTravelEvent }: {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
   const [showOther, setShowOther] = useState(false);
-  const { city, travel } = getCityContent(game.currentCityId);
-  const current = travel.places.find((place) => place.id === game.travel.currentPlaceId);
+  const { city } = getCityContent(game.currentCityId);
+  const { current, candidates, places, nearby, other, recommendedMainId } = getTravelDestinations(game);
   if (!current) return <p role="alert">現在地を確認できません。保存状態を確認してください。</p>;
-  const events = travel.events.filter((event) => showTravelEvent(game, event));
-  const outgoing = travel.routes.filter((route) => route.fromPlaceId === current.id);
-  const candidates = events.flatMap((event) => {
-    const walk = outgoing.find((route) => route.toPlaceId === event.placeId && route.mode === "walk");
-    const place = travel.places.find((item) => item.id === event.placeId);
-    if (!place) return [];
-    const routes = outgoing.filter((route) => route.toPlaceId === event.placeId);
-    if (routes.length === 0) return [];
-    const availability = routes.map((route) => getTravelEventAvailability(game, event.id, route.mode));
-    const available = availability.some((result) => result.available);
-    return [{ ...event, walkMinutes: walk?.minutes ?? null, place, routes, available, unavailableReason: availability[0]?.reason,
-      unclearedMain: isUnclearedMainTravelEvent(game, event.id) }];
-  });
-  const places = groupDestinationEvents(candidates);
-  const { nearby, other, recommendedMainId } = selectNearbyDestinations(places);
   const selected = candidates.find((event) => event.id === selectedId);
   const selectedPlace = places.find((place) => place.id === selectedPlaceId);
   function selectDestination(event: (typeof candidates)[number]) {
@@ -83,11 +70,8 @@ export function TravelMenu({ game, onTravelEvent }: {
   </section>;
 }
 
-type Candidate = TravelEvent & { walkMinutes: number | null; place: TravelPlace; routes: TravelRoute[]; available: boolean; unavailableReason?: string; unclearedMain: boolean };
-type PlaceCandidate = { id: string; walkMinutes: number | null; events: Candidate[]; available: boolean };
-
 function Destination({ place, game, current, recommended, onSelect }: {
-  place: PlaceCandidate;
+  place: TravelDestinationPlace;
   game: GameState;
   current: TravelPlace;
   recommended?: boolean;
@@ -98,7 +82,7 @@ function Destination({ place, game, current, recommended, onSelect }: {
   const apCost = getTravelEventDefinition(game, event.id)?.apCost ?? event.apCost;
   const categories = new Set(place.events.map((item) => item.category));
   const onlyRoute = event.routes.length === 1 ? event.routes[0] : undefined;
-  const fastestRoute = event.walkMinutes === null ? [...event.routes].sort((a, b) => a.minutes - b.minutes || a.cost - b.cost)[0] : undefined;
+  const fastestRoute = event.walkMinutes === null ? [...event.routes].sort(compareRouteTime)[0] : undefined;
   const shownRoute = onlyRoute ?? fastestRoute ?? event.routes.find((route) => route.mode === "walk");
   return <article className="travel-destination" data-testid={`travel-place-${place.id}`}>
     <button type="button" className="travel-destination-button" onClick={onSelect}>

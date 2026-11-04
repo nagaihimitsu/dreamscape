@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { allRewardRules, balance, episodes, journeyConfig, rewardRules } from "../content";
+import { allRewardRules, balance, episodes } from "../content";
 import type { GameState } from "./game";
+import { rewardBattleId } from "./reward-rules";
 
 export const pendingApRewardSchema = z
   .object({
@@ -114,8 +115,8 @@ export function validateRewardState(state: GameState): void {
   const episode = episodes.find(
     (item) => item.battleId === state.activeBattle?.battleId,
   );
-  const storyBattle = journeyConfig.storyBattles.find((item) => item.battleId === state.activeBattle?.battleId);
-  if (!episode && !storyBattle?.completionReward) throw new Error("この対決に報酬はありません。");
+  const battleRules = allRewardRules.filter((rule) => rewardBattleId(rule) === state.activeBattle?.battleId);
+  if (!episode && !battleRules.length) throw new Error("この対決に報酬はありません。");
   if (
     new Set(receipt.entries.map((item) => item.rewardId)).size !==
     receipt.entries.length
@@ -123,12 +124,11 @@ export function validateRewardState(state: GameState): void {
     throw new Error("バトルの報酬が重複しています。");
   for (const entry of receipt.entries) {
     if (
-      !(rewardRules.some(
+      !battleRules.some(
         (rule) =>
           rule.id === entry.rewardId &&
-          rule.trigger !== "guide_read" &&
-          rule.episodeId === episode?.id,
-      ) || storyBattle?.completionReward?.id === entry.rewardId) ||
+          rule.trigger !== "guide_read",
+      ) ||
       !state.claimedRewardIds.includes(entry.rewardId)
     )
       throw new Error("受け取った報酬の定義が一致しません。");

@@ -1,12 +1,12 @@
 import { battles, dates, episodes, getCityContent } from "../content";
 import { getBattleAvailability, startBattle } from "./battle";
 import { getEpisodeAvailability, isEpisodeUnlocked, isStoryBattleUnlocked, startEpisode } from "./chapter";
-import { getDateAvailability, isDateUnlockedForTravel, isUpdatedDateReplay, startDate, type GameState } from "./game";
+import { getDateAvailability, isDateUnlockedForTravel, isUpdatedDateReplay, isEventVisible, startDate, type GameState } from "./game";
 import { hasPendingPlaceEncounter } from "./encounter";
 import { openTourism } from "./tourism";
 import { canReturnByDayEnd, DAY_END, getGameWeekday, planOvernight, planTravelEvent } from "./travel";
-import { findTravelHomeRoutes, type HomeRoute } from "./travel-routes";
-import type { TravelRoute } from "../content/travel-schemas";
+import { compareRouteCost, findTravelHomeRoutes, type HomeRoute } from "./travel-routes";
+import type { TravelEvent, TravelRoute } from "../content/travel-schemas";
 
 export type TravelMode = TravelRoute["mode"];
 type Plan = Extract<ReturnType<typeof planTravelEvent>, { ok: true }> & { returnReserve: number };
@@ -71,6 +71,28 @@ export function isCompletedTravelEvent(state: GameState, eventId: string): boole
   const date = dates.find((item) => item.id === eventId);
   return !!date && (date.kind === "normal" || !date.repeatable) && state.playedDateIds.includes(eventId);
 }
+/** Visibility is shared by destination selection, map markers and wait shortcuts. */
+export function isTravelEventVisible(state: GameState, event: TravelEvent): boolean {
+  if (isCompletedTravelEvent(state, event.id) || !isTravelEventUnlocked(state, event.id)) return false;
+  const date = dates.find((item) => item.id === event.id);
+  if (!date) return true;
+  if (date.legacyOnly) return false;
+  return date.kind === "normal" ? !state.playedDateIds.includes(date.id) || isEventVisible(state, date.id) : isEventVisible(state, date.id);
+}
+
+/** Preview and commit use the same return candidates and late-return policy. */
+export function getTravelSleepOptions(state: GameState) {
+  const { travelSettings } = getCityContent(state.currentCityId);
+  const routes = getTravelHomeRoutes(state.travel.currentPlaceId, state.travel.hotelPlaceId, state.currentCityId);
+  const current = snapshot(state);
+  const allowLateReturn = !canReturnByDayEnd(current, routes);
+  return routes.map((route) => ({ route, plan: planOvernight(current, route, travelSettings.lodgingCost, allowLateReturn) }));
+}
+
+function hasActiveTravelScene(state: GameState): boolean {
+  return !!(state.travel.activeEvent || state.activeDate || state.activeBattle || state.activeTourism || state.activeEncounter || state.activeEpilogue);
+}
+
 const reasonJa: Record<string, string> = {
   invalid: "旅行の状態を確認できません。", closed: "到着する時間には、この出来事を始められません。",
   closed_day: "今日は休館日です。",
@@ -91,7 +113,7 @@ export function getTravelEventAvailability(state: GameState, eventId: string, mo
   const place = getCityContent(state.currentCityId).travel.places.find((item) => item.id === event.placeId);
   if (!outbound || !place) return { available: false, reason: reasonJa.route };
   const returns = getTravelHomeRoutes(event.placeId, state.travel.hotelPlaceId, state.currentCityId)
-    .sort((a, b) => a.cost - b.cost || a.minutes - b.minutes);
+    .sort(compareRouteCost);
   let reason = reasonJa.route;
   for (const returnRoute of returns) {
     const plan = planTravelEvent(snapshot(state), event, outbound, returnRoute, place);
@@ -115,12 +137,14 @@ export function beginTravelEvent(state: GameState, eventId: string, mode: Travel
   if (replayBattleId && (!episode || episode.battleId !== replayBattleId || !state.battleRecords.some((record) => record.battleId === replayBattleId && record.attempts > 0))) return state;
   const isDate = dates.some((date) => date.id === eventId);
   const special = !episode && !isDate ? battles.find((battle) => battle.id === eventId && battle.landmarkId) : undefined;
-  // Re-enter a special battle's location through observation only when an
-  // eligible local encounter is pending. Its first battle still starts as before.
+  // First visits include the same optional guide/observation as normal tourism.
+  // Later visits may still open observation for an eligible local encounter.
   const sceneState = special && moved.activeBattle?.phase === "result"
     ? { ...moved, activeBattle: null, battleRewardReceipt: null }
     : moved;
-  const observeFirst = !!special?.landmarkId && hasPendingPlaceEncounter(sceneState, special.landmarkId);
+  const observeFirst = !!special?.landmarkId &&
+    (!state.battleRecords.some((record) => record.battleId === special.id && record.attempts > 0) ||
+      hasPendingPlaceEncounter(sceneState, special.landmarkId));
   const started = replayBattleId ? startBattle(moved, replayBattleId)
     : episode ? startEpisode(moved, eventId)
     : isDate ? startDate(moved, eventId, nextRoll)
@@ -146,11 +170,11 @@ export function finishTravelEventIfComplete(previous: GameState, next: GameState
 }
 
 export function waitForTravel(state: GameState, minutes: number, expectedRevision: number): GameState {
-  if (state.revision !== expectedRevision || state.travel.activeEvent || state.activeDate || state.activeBattle || state.activeTourism || state.activeEncounter || state.activeEpilogue ||
+  if (state.revision !== expectedRevision || hasActiveTravelScene(state) ||
       !Number.isSafeInteger(minutes) || minutes <= 0 || state.travel.minute + minutes > DAY_END) return state;
   const home = getTravelHomeRoutes(state.travel.currentPlaceId, state.travel.hotelPlaceId, state.currentCityId)
     .filter((item) => item.cost <= state.travelBudget && state.travel.minute + minutes + item.minutes <= DAY_END)
-    .sort((a, b) => a.cost - b.cost || a.minutes - b.minutes)[0];
+    .sort(compareRouteCost)[0];
   if (!home) return state;
   return { ...state, revision: state.revision + 1, travel: { ...state.travel, minute: state.travel.minute + minutes, returnReserve: home.cost, returnDeadline: DAY_END } };
 }
@@ -158,15 +182,10 @@ export function waitForTravel(state: GameState, minutes: number, expectedRevisio
 /** `viaPlaceId`: undefined selects a feasible route for legacy callers; null
  * selects the direct route; a place ID selects that exact connection. */
 export function sleepAtHotel(state: GameState, mode: TravelMode, expectedRevision: number, viaPlaceId?: string | null): GameState {
-  if (state.revision !== expectedRevision || state.travel.activeEvent || state.activeDate || state.activeBattle || state.activeTourism || state.activeEncounter || state.activeEpilogue) return state;
-  const { travelSettings } = getCityContent(state.currentCityId);
-  const homeRoutes = getTravelHomeRoutes(state.travel.currentPlaceId, state.travel.hotelPlaceId, state.currentCityId);
-  const current = snapshot(state);
-  const allowLateReturn = !canReturnByDayEnd(current, homeRoutes);
-  const candidates = homeRoutes.filter((item) => item.mode === mode &&
-    (viaPlaceId === undefined || (item.viaPlaceId ?? null) === viaPlaceId));
-  const plan = candidates.map((item) => planOvernight(current, item, travelSettings.lodgingCost, allowLateReturn))
-    .find((item) => item.ok);
+  if (state.revision !== expectedRevision || hasActiveTravelScene(state)) return state;
+  const plan = getTravelSleepOptions(state)
+    .filter(({ route }) => route.mode === mode && (viaPlaceId === undefined || (route.viaPlaceId ?? null) === viaPlaceId))
+    .map((option) => option.plan).find((item) => item.ok);
   if (!plan || !plan.ok) return state;
   if (state.travel.calendar && !Number.isSafeInteger(state.travel.calendar.journeyDay + 1)) return state;
   return { ...state, revision: state.revision + 1, travelBudget: plan.remainingBudget,
