@@ -1,0 +1,249 @@
+{
+  "schemaVersion": 1,
+  "clues": [
+    {
+      "id": "lpb_obs_xieng_thong_01",
+      "landmarkId": "luang_prabang_xieng_thong",
+      "kind": "hotspot",
+      "titleJa": "重なる屋根",
+      "descriptionJa": "屋根が何層にも重なり、軒が低い位置まで延びている。",
+      "factId": "lpb_fact_xieng_thong_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.27,
+        "y": 0.23,
+        "width": 0.5,
+        "height": 0.35
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "File:Temple Wat Xieng Thong - Luang Prabang - Laos.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Temple_Wat_Xieng_Thong_-_Luang_Prabang_-_Laos.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "写真を目視し、写っている配置や形を記述した。撮影時点や現地の現在の状態は別途確認する。"
+        }
+      ]
+    },
+    {
+      "id": "lpb_obs_xieng_thong_02",
+      "landmarkId": "luang_prabang_xieng_thong",
+      "kind": "hotspot",
+      "titleJa": "寺院前の広場",
+      "descriptionJa": "建物の手前に舗装された開けた空間が広がる。",
+      "factId": "lpb_fact_xieng_thong_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.05,
+        "y": 0.72,
+        "width": 0.86,
+        "height": 0.2
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "File:Temple Wat Xieng Thong - Luang Prabang - Laos.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Temple_Wat_Xieng_Thong_-_Luang_Prabang_-_Laos.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "写真を目視し、写っている配置や形を記述した。撮影時点や現地の現在の状態は別途確認する。"
+        }
+      ]
+    },
+    {
+      "id": "lpb_obs_royal_palace_01",
+      "landmarkId": "luang_prabang_royal_palace",
+      "kind": "hotspot",
+      "titleJa": "正面の階段",
+      "descriptionJa": "手前から幅の広い階段が建物の入口へ続く。",
+      "factId": "lpb_fact_royal_palace_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.08,
+        "y": 0.63,
+        "width": 0.82,
+        "height": 0.3
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "File:Haw Kham palace (August 2009).jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Haw_Kham_palace_(August_2009).jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "写真を目視し、写っている配置や形を記述した。撮影時点や現地の現在の状態は別途確認する。"
+        }
+      ]
+    },
+    {
+      "id": "lpb_obs_royal_palace_02",
+      "landmarkId": "luang_prabang_royal_palace",
+      "kind": "hotspot",
+      "titleJa": "屋根と中央入口",
+      "descriptionJa": "中央の入口の上に、装飾のある屋根が見える。",
+      "factId": "lpb_fact_royal_palace_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.36,
+        "y": 0.26,
+        "width": 0.3,
+        "height": 0.4
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "File:Haw Kham palace (August 2009).jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Haw_Kham_palace_(August_2009).jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "写真を目視し、写っている配置や形を記述した。撮影時点や現地の現在の状態は別途確認する。"
+        }
+      ]
+    },
+    {
+      "id": "lpb_obs_phousi_01",
+      "landmarkId": "luang_prabang_phousi",
+      "kind": "hotspot",
+      "titleJa": "川を渡る橋",
+      "descriptionJa": "画面下側の川には橋が架かっている。",
+      "factId": "lpb_fact_phousi_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.25,
+        "y": 0.68,
+        "width": 0.38,
+        "height": 0.2
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "File:View from Mount Phou Si with the old French bridge over the Nam Khan river in Luang Prabang Laos.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:View_from_Mount_Phou_Si_with_the_old_French_bridge_over_the_Nam_Khan_river_in_Luang_Prabang_Laos.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "写真を目視し、写っている配置や形を記述した。撮影時点や現地の現在の状態は別途確認する。"
+        }
+      ]
+    },
+    {
+      "id": "lpb_obs_phousi_02",
+      "landmarkId": "luang_prabang_phousi",
+      "kind": "hotspot",
+      "titleJa": "川沿いの街と山",
+      "descriptionJa": "街並みの向こうに緑の山が続く。",
+      "factId": "lpb_fact_phousi_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.04,
+        "y": 0.17,
+        "width": 0.9,
+        "height": 0.53
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "File:View from Mount Phou Si with the old French bridge over the Nam Khan river in Luang Prabang Laos.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:View_from_Mount_Phou_Si_with_the_old_French_bridge_over_the_Nam_Khan_river_in_Luang_Prabang_Laos.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "写真を目視し、写っている配置や形を記述した。撮影時点や現地の現在の状態は別途確認する。"
+        }
+      ]
+    },
+    {
+      "id": "lpb_obs_wat_mai_01",
+      "landmarkId": "luang_prabang_wat_mai",
+      "kind": "hotspot",
+      "titleJa": "金色の正面",
+      "descriptionJa": "建物の正面には暖かな色の装飾と明かりが見える。",
+      "factId": "lpb_fact_wat_mai_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.18,
+        "y": 0.4,
+        "width": 0.64,
+        "height": 0.34
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "File:Front view of Wat Mai Suwannaphumaham Buddhist temple at blue hour in Luang Prabang Laos.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Front_view_of_Wat_Mai_Suwannaphumaham_Buddhist_temple_at_blue_hour_in_Luang_Prabang_Laos.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "写真を目視し、写っている配置や形を記述した。撮影時点や現地の現在の状態は別途確認する。"
+        }
+      ]
+    },
+    {
+      "id": "lpb_obs_wat_mai_02",
+      "landmarkId": "luang_prabang_wat_mai",
+      "kind": "hotspot",
+      "titleJa": "暗くなった空と屋根",
+      "descriptionJa": "青みのある空を背景に屋根の輪郭が浮かぶ。",
+      "factId": "lpb_fact_wat_mai_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.08,
+        "y": 0.04,
+        "width": 0.8,
+        "height": 0.4
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 写真確認 / Wikimedia Commons",
+          "title": "File:Front view of Wat Mai Suwannaphumaham Buddhist temple at blue hour in Luang Prabang Laos.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Front_view_of_Wat_Mai_Suwannaphumaham_Buddhist_temple_at_blue_hour_in_Luang_Prabang_Laos.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "写真を目視し、写っている配置や形を記述した。撮影時点や現地の現在の状態は別途確認する。"
+        }
+      ]
+    }
+  ],
+  "images": {
+    "luang_prabang_xieng_thong": {
+      "path": "assets/tourism/luang_prabang/lpb_xieng_thong.jpg",
+      "sha256": "762cc9677760cb67d0e2652e1e3804d20276fdd36179771b21573e93070c6b9a"
+    },
+    "luang_prabang_royal_palace": {
+      "path": "assets/tourism/luang_prabang/lpb_royal_palace.jpg",
+      "sha256": "9deecebd9d2cfc84a28320975cd955e29de92fbc37b18daeddd6b0369f482bbc"
+    },
+    "luang_prabang_phousi": {
+      "path": "assets/tourism/luang_prabang/lpb_phousi.jpg",
+      "sha256": "9023413b2e81b83a7ca6247c1ec1517e368c81ec5a23ebd4143ecf5c1eb8f6a8"
+    },
+    "luang_prabang_wat_mai": {
+      "path": "assets/tourism/luang_prabang/lpb_wat_mai.jpg",
+      "sha256": "8225b51aa95b8e80f86fa0c5dcd309e0a3e37df9e5dc595912bdd32bda9d728e"
+    }
+  },
+  "provenance": {
+    "lpb_obs_xieng_thong_01": {
+      "needsFurtherResearch": false
+    },
+    "lpb_obs_xieng_thong_02": {
+      "needsFurtherResearch": false
+    },
+    "lpb_obs_royal_palace_01": {
+      "needsFurtherResearch": false
+    },
+    "lpb_obs_royal_palace_02": {
+      "needsFurtherResearch": false
+    },
+    "lpb_obs_phousi_01": {
+      "needsFurtherResearch": false
+    },
+    "lpb_obs_phousi_02": {
+      "needsFurtherResearch": false
+    },
+    "lpb_obs_wat_mai_01": {
+      "needsFurtherResearch": false
+    },
+    "lpb_obs_wat_mai_02": {
+      "needsFurtherResearch": false
+    }
+  }
+}

@@ -1,0 +1,2934 @@
+{
+  "checkedAt": "2026-11-04",
+  "provider": "OSRM OpenStreetMap",
+  "routes": {
+    "xieng_thong>royal_palace": {
+      "duration": 186.3,
+      "distance": 1177,
+      "roads": [
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          56.2
+        ],
+        [
+          "",
+          159.9
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          594.9
+        ],
+        [
+          "Sisavangvong Road",
+          265.7
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          100.3
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          0
+        ]
+      ]
+    },
+    "xieng_thong>phousi": {
+      "duration": 181.9,
+      "distance": 1165.3,
+      "roads": [
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          56.2
+        ],
+        [
+          "",
+          159.9
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          594.9
+        ],
+        [
+          "Sisavangvong Road",
+          354.4
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "xieng_thong>wat_mai": {
+      "duration": 202.7,
+      "distance": 1303.8,
+      "roads": [
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          56.2
+        ],
+        [
+          "",
+          159.9
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          594.9
+        ],
+        [
+          "Sisavangvong Road",
+          492.9
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "xieng_thong>ethnology": {
+      "duration": 291.5,
+      "distance": 1855.9,
+      "roads": [
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          703.6
+        ],
+        [
+          "Chunkham Road",
+          660.2
+        ],
+        [
+          "Inthasome Road",
+          199.6
+        ],
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          4.9
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          194
+        ],
+        [
+          "",
+          32.6
+        ],
+        [
+          "",
+          61
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "xieng_thong>heuan_chan": {
+      "duration": 173.7,
+      "distance": 1093.5,
+      "roads": [
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          56.2
+        ],
+        [
+          "",
+          159.9
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          594.9
+        ],
+        [
+          "Sisavangvong Road",
+          174.1
+        ],
+        [
+          "",
+          108.5
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "xieng_thong>wat_sen": {
+      "duration": 72.2,
+      "distance": 431.9,
+      "roads": [
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          56.2
+        ],
+        [
+          "",
+          159.9
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          215.8
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          0
+        ]
+      ]
+    },
+    "xieng_thong>wat_phol_phao": {
+      "duration": 531.1,
+      "distance": 4084.7,
+      "roads": [
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          703.6
+        ],
+        [
+          "Chunkham Road",
+          660.2
+        ],
+        [
+          "Inthasome Road",
+          199.6
+        ],
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          4.9
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          290.7
+        ],
+        [
+          "Ratsavong Road",
+          342.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "",
+          149.6
+        ],
+        [
+          "",
+          114.2
+        ],
+        [
+          "",
+          169.6
+        ],
+        [
+          "",
+          128.8
+        ],
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "xieng_thong>haw_pha_bang": {
+      "duration": 172.8,
+      "distance": 1104.5,
+      "roads": [
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          56.2
+        ],
+        [
+          "",
+          159.9
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          594.9
+        ],
+        [
+          "Sisavangvong Road",
+          293.5
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "xieng_thong>night_market": {
+      "duration": 177,
+      "distance": 1132.4,
+      "roads": [
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          56.2
+        ],
+        [
+          "",
+          159.9
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          594.9
+        ],
+        [
+          "Sisavangvong Road",
+          321.5
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "xieng_thong>hotel": {
+      "duration": 235.8,
+      "distance": 1616.9,
+      "roads": [
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          703.6
+        ],
+        [
+          "Chunkham Road",
+          660.2
+        ],
+        [
+          "Inthasome Road",
+          199.6
+        ],
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          53.5
+        ],
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          0
+        ]
+      ]
+    },
+    "royal_palace>xieng_thong": {
+      "duration": 231.3,
+      "distance": 1453.2,
+      "roads": [
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          64.3
+        ],
+        [
+          "ຖະໜົນ ໂຊຕິກຸມມານ",
+          250
+        ],
+        [
+          "ຖະໜົນ ຂຸນຊວາ",
+          593.8
+        ],
+        [
+          "",
+          98.4
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          204.9
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          241.8
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          0
+        ]
+      ]
+    },
+    "royal_palace>phousi": {
+      "duration": 169,
+      "distance": 797.3,
+      "roads": [
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          106.1
+        ],
+        [
+          "Chunkham Road",
+          267.2
+        ],
+        [
+          "",
+          84.5
+        ],
+        [
+          "",
+          27.5
+        ],
+        [
+          "",
+          134.7
+        ],
+        [
+          "Sisavangvong Road",
+          177.1
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "royal_palace>wat_mai": {
+      "duration": 148.2,
+      "distance": 658.8,
+      "roads": [
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          106.1
+        ],
+        [
+          "Chunkham Road",
+          267.2
+        ],
+        [
+          "",
+          84.5
+        ],
+        [
+          "",
+          27.5
+        ],
+        [
+          "",
+          134.7
+        ],
+        [
+          "Sisavangvong Road",
+          38.6
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "royal_palace>ethnology": {
+      "duration": 177.6,
+      "distance": 1057.7,
+      "roads": [
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          106.1
+        ],
+        [
+          "Chunkham Road",
+          459.4
+        ],
+        [
+          "Inthasome Road",
+          199.6
+        ],
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          4.9
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          194
+        ],
+        [
+          "",
+          32.6
+        ],
+        [
+          "",
+          61
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "royal_palace>heuan_chan": {
+      "duration": 173,
+      "distance": 1100.6,
+      "roads": [
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          64.3
+        ],
+        [
+          "ຖະໜົນ ໂຊຕິກຸມມານ",
+          250
+        ],
+        [
+          "ຖະໜົນ ຂຸນຊວາ",
+          185.7
+        ],
+        [
+          "Sathouyaithao Road",
+          131.8
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          186.3
+        ],
+        [
+          "Sisavangvong Road",
+          174.1
+        ],
+        [
+          "",
+          108.5
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "royal_palace>wat_sen": {
+      "duration": 131,
+      "distance": 815.8,
+      "roads": [
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          64.3
+        ],
+        [
+          "ຖະໜົນ ໂຊຕິກຸມມານ",
+          250
+        ],
+        [
+          "ຖະໜົນ ຂຸນຊວາ",
+          294.1
+        ],
+        [
+          "Phayameungchan Road",
+          121.2
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          86.2
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          0
+        ]
+      ]
+    },
+    "royal_palace>wat_phol_phao": {
+      "duration": 417.2,
+      "distance": 3286.5,
+      "roads": [
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          106.1
+        ],
+        [
+          "Chunkham Road",
+          459.4
+        ],
+        [
+          "Inthasome Road",
+          199.6
+        ],
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          4.9
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          290.7
+        ],
+        [
+          "Ratsavong Road",
+          342.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "",
+          149.6
+        ],
+        [
+          "",
+          114.2
+        ],
+        [
+          "",
+          169.6
+        ],
+        [
+          "",
+          128.8
+        ],
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "royal_palace>haw_pha_bang": {
+      "duration": 172.1,
+      "distance": 1111.6,
+      "roads": [
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          64.3
+        ],
+        [
+          "ຖະໜົນ ໂຊຕິກຸມມານ",
+          250
+        ],
+        [
+          "ຖະໜົນ ຂຸນຊວາ",
+          185.7
+        ],
+        [
+          "Sathouyaithao Road",
+          131.8
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          186.3
+        ],
+        [
+          "Sisavangvong Road",
+          293.5
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "royal_palace>night_market": {
+      "duration": 173.9,
+      "distance": 830.2,
+      "roads": [
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          106.1
+        ],
+        [
+          "Chunkham Road",
+          267.2
+        ],
+        [
+          "",
+          84.5
+        ],
+        [
+          "",
+          27.5
+        ],
+        [
+          "",
+          134.7
+        ],
+        [
+          "Sisavangvong Road",
+          210.1
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "royal_palace>hotel": {
+      "duration": 121.9,
+      "distance": 818.7,
+      "roads": [
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          106.1
+        ],
+        [
+          "Chunkham Road",
+          459.4
+        ],
+        [
+          "Inthasome Road",
+          199.6
+        ],
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          53.5
+        ],
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          0
+        ]
+      ]
+    },
+    "phousi>xieng_thong": {
+      "duration": 214.3,
+      "distance": 1396,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          354.4
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          799.7
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          241.8
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          0
+        ]
+      ]
+    },
+    "phousi>royal_palace": {
+      "duration": 32.5,
+      "distance": 189,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          88.7
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          100.3
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          0
+        ]
+      ]
+    },
+    "phousi>wat_mai": {
+      "duration": 20.8,
+      "distance": 138.5,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          138.5
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "phousi>ethnology": {
+      "duration": 117.1,
+      "distance": 649.5,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          361.9
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          194
+        ],
+        [
+          "",
+          32.6
+        ],
+        [
+          "",
+          61
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "phousi>heuan_chan": {
+      "duration": 46.6,
+      "distance": 288.8,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          180.3
+        ],
+        [
+          "",
+          108.5
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "phousi>wat_sen": {
+      "duration": 109.7,
+      "distance": 733.4,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          354.4
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          379
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          0
+        ]
+      ]
+    },
+    "phousi>wat_phol_phao": {
+      "duration": 356.7,
+      "distance": 2878.3,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          361.9
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          290.7
+        ],
+        [
+          "Ratsavong Road",
+          342.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "",
+          149.6
+        ],
+        [
+          "",
+          114.2
+        ],
+        [
+          "",
+          169.6
+        ],
+        [
+          "",
+          128.8
+        ],
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "phousi>haw_pha_bang": {
+      "duration": 9.1,
+      "distance": 60.9,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          60.9
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "phousi>night_market": {
+      "duration": 4.9,
+      "distance": 32.9,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          32.9
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "phousi>hotel": {
+      "duration": 61.4,
+      "distance": 410.5,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          410.5
+        ],
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          0
+        ]
+      ]
+    },
+    "wat_mai>xieng_thong": {
+      "duration": 235.1,
+      "distance": 1534.5,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          492.9
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          799.7
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          241.8
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          0
+        ]
+      ]
+    },
+    "wat_mai>royal_palace": {
+      "duration": 53.3,
+      "distance": 327.5,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          227.2
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          100.3
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          0
+        ]
+      ]
+    },
+    "wat_mai>phousi": {
+      "duration": 20.8,
+      "distance": 138.5,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          138.5
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "wat_mai>ethnology": {
+      "duration": 96.3,
+      "distance": 511,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          223.4
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          194
+        ],
+        [
+          "",
+          32.6
+        ],
+        [
+          "",
+          61
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "wat_mai>heuan_chan": {
+      "duration": 67.4,
+      "distance": 427.3,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          318.9
+        ],
+        [
+          "",
+          108.5
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "wat_mai>wat_sen": {
+      "duration": 130.5,
+      "distance": 872,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          492.9
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          379
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          0
+        ]
+      ]
+    },
+    "wat_mai>wat_phol_phao": {
+      "duration": 335.9,
+      "distance": 2739.8,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          223.4
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          290.7
+        ],
+        [
+          "Ratsavong Road",
+          342.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "",
+          149.6
+        ],
+        [
+          "",
+          114.2
+        ],
+        [
+          "",
+          169.6
+        ],
+        [
+          "",
+          128.8
+        ],
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "wat_mai>haw_pha_bang": {
+      "duration": 29.9,
+      "distance": 199.4,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          199.4
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "wat_mai>night_market": {
+      "duration": 25.7,
+      "distance": 171.4,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          171.4
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "wat_mai>hotel": {
+      "duration": 40.6,
+      "distance": 272,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          272
+        ],
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          0
+        ]
+      ]
+    },
+    "ethnology>xieng_thong": {
+      "duration": 299.9,
+      "distance": 2066.1,
+      "roads": [
+        [
+          "",
+          93.6
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          96.8
+        ],
+        [
+          "Ratsavong Road",
+          398.3
+        ],
+        [
+          "Phousi Road",
+          95.4
+        ],
+        [
+          "Kingkitsarath Road",
+          1140.2
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          241.8
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          0
+        ]
+      ]
+    },
+    "ethnology>royal_palace": {
+      "duration": 139.5,
+      "distance": 828.3,
+      "roads": [
+        [
+          "",
+          93.6
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          194.1
+        ],
+        [
+          "Sisavangvong Road",
+          440.3
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          100.3
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          0
+        ]
+      ]
+    },
+    "ethnology>phousi": {
+      "duration": 107,
+      "distance": 639.3,
+      "roads": [
+        [
+          "",
+          93.6
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          194.1
+        ],
+        [
+          "Sisavangvong Road",
+          351.6
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "ethnology>wat_mai": {
+      "duration": 86.2,
+      "distance": 500.8,
+      "roads": [
+        [
+          "",
+          93.6
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          194.1
+        ],
+        [
+          "Sisavangvong Road",
+          213.1
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "ethnology>heuan_chan": {
+      "duration": 153.6,
+      "distance": 928.1,
+      "roads": [
+        [
+          "",
+          93.6
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          194.1
+        ],
+        [
+          "Sisavangvong Road",
+          531.9
+        ],
+        [
+          "",
+          108.5
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "ethnology>wat_sen": {
+      "duration": 206.7,
+      "distance": 1395.4,
+      "roads": [
+        [
+          "",
+          93.6
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          96.8
+        ],
+        [
+          "Ratsavong Road",
+          398.3
+        ],
+        [
+          "Phousi Road",
+          95.4
+        ],
+        [
+          "Kingkitsarath Road",
+          571.6
+        ],
+        [
+          "",
+          53.6
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          86.2
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          0
+        ]
+      ]
+    },
+    "ethnology>wat_phol_phao": {
+      "duration": 295.5,
+      "distance": 2416.1,
+      "roads": [
+        [
+          "",
+          93.6
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          96.8
+        ],
+        [
+          "Ratsavong Road",
+          342.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "",
+          149.6
+        ],
+        [
+          "",
+          114.2
+        ],
+        [
+          "",
+          169.6
+        ],
+        [
+          "",
+          128.8
+        ],
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "ethnology>haw_pha_bang": {
+      "duration": 116.1,
+      "distance": 700.1,
+      "roads": [
+        [
+          "",
+          93.6
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          194.1
+        ],
+        [
+          "Sisavangvong Road",
+          412.4
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "ethnology>night_market": {
+      "duration": 111.9,
+      "distance": 672.2,
+      "roads": [
+        [
+          "",
+          93.6
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          194.1
+        ],
+        [
+          "Sisavangvong Road",
+          384.5
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "ethnology>hotel": {
+      "duration": 68,
+      "distance": 346.7,
+      "roads": [
+        [
+          "",
+          93.6
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          194.1
+        ],
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          58.9
+        ],
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          0
+        ]
+      ]
+    },
+    "heuan_chan>xieng_thong": {
+      "duration": 209.2,
+      "distance": 1324.1,
+      "roads": [
+        [
+          "",
+          108.5
+        ],
+        [
+          "Sisavangvong Road",
+          174.1
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          799.7
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          241.8
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          0
+        ]
+      ]
+    },
+    "heuan_chan>royal_palace": {
+      "duration": 48.2,
+      "distance": 300.4,
+      "roads": [
+        [
+          "",
+          108.5
+        ],
+        [
+          "Sisavangvong Road",
+          91.6
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          100.3
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          0
+        ]
+      ]
+    },
+    "heuan_chan>phousi": {
+      "duration": 43.8,
+      "distance": 288.8,
+      "roads": [
+        [
+          "",
+          108.5
+        ],
+        [
+          "Sisavangvong Road",
+          180.3
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "heuan_chan>wat_mai": {
+      "duration": 64.6,
+      "distance": 427.3,
+      "roads": [
+        [
+          "",
+          108.5
+        ],
+        [
+          "Sisavangvong Road",
+          318.9
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "heuan_chan>ethnology": {
+      "duration": 160.9,
+      "distance": 938.3,
+      "roads": [
+        [
+          "",
+          108.5
+        ],
+        [
+          "Sisavangvong Road",
+          542.2
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          194
+        ],
+        [
+          "",
+          32.6
+        ],
+        [
+          "",
+          61
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "heuan_chan>wat_sen": {
+      "duration": 104.6,
+      "distance": 661.6,
+      "roads": [
+        [
+          "",
+          108.5
+        ],
+        [
+          "Sisavangvong Road",
+          174.1
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          379
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          0
+        ]
+      ]
+    },
+    "heuan_chan>wat_phol_phao": {
+      "duration": 400.5,
+      "distance": 3167.1,
+      "roads": [
+        [
+          "",
+          108.5
+        ],
+        [
+          "Sisavangvong Road",
+          542.2
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          290.7
+        ],
+        [
+          "Ratsavong Road",
+          342.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "",
+          149.6
+        ],
+        [
+          "",
+          114.2
+        ],
+        [
+          "",
+          169.6
+        ],
+        [
+          "",
+          128.8
+        ],
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "heuan_chan>haw_pha_bang": {
+      "duration": 34.7,
+      "distance": 228,
+      "roads": [
+        [
+          "",
+          108.5
+        ],
+        [
+          "Sisavangvong Road",
+          119.5
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "heuan_chan>night_market": {
+      "duration": 38.9,
+      "distance": 255.9,
+      "roads": [
+        [
+          "",
+          108.5
+        ],
+        [
+          "Sisavangvong Road",
+          147.4
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "heuan_chan>hotel": {
+      "duration": 105.2,
+      "distance": 699.3,
+      "roads": [
+        [
+          "",
+          108.5
+        ],
+        [
+          "Sisavangvong Road",
+          590.8
+        ],
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          0
+        ]
+      ]
+    },
+    "wat_sen>xieng_thong": {
+      "duration": 104.6,
+      "distance": 662.5,
+      "roads": [
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          420.7
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          241.8
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          0
+        ]
+      ]
+    },
+    "wat_sen>royal_palace": {
+      "duration": 114.1,
+      "distance": 745.1,
+      "roads": [
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          379
+        ],
+        [
+          "Sisavangvong Road",
+          265.7
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          100.3
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          0
+        ]
+      ]
+    },
+    "wat_sen>phousi": {
+      "duration": 109.7,
+      "distance": 733.4,
+      "roads": [
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          379
+        ],
+        [
+          "Sisavangvong Road",
+          354.4
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "wat_sen>wat_mai": {
+      "duration": 130.5,
+      "distance": 872,
+      "roads": [
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          379
+        ],
+        [
+          "Sisavangvong Road",
+          492.9
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "wat_sen>ethnology": {
+      "duration": 226.8,
+      "distance": 1382.9,
+      "roads": [
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          379
+        ],
+        [
+          "Sisavangvong Road",
+          716.3
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          194
+        ],
+        [
+          "",
+          32.6
+        ],
+        [
+          "",
+          61
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "wat_sen>heuan_chan": {
+      "duration": 101.5,
+      "distance": 661.6,
+      "roads": [
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          379
+        ],
+        [
+          "Sisavangvong Road",
+          174.1
+        ],
+        [
+          "",
+          108.5
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "wat_sen>wat_phol_phao": {
+      "duration": 466.4,
+      "distance": 3611.7,
+      "roads": [
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          379
+        ],
+        [
+          "Sisavangvong Road",
+          716.3
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          290.7
+        ],
+        [
+          "Ratsavong Road",
+          342.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "",
+          149.6
+        ],
+        [
+          "",
+          114.2
+        ],
+        [
+          "",
+          169.6
+        ],
+        [
+          "",
+          128.8
+        ],
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "wat_sen>haw_pha_bang": {
+      "duration": 100.6,
+      "distance": 672.6,
+      "roads": [
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          379
+        ],
+        [
+          "Sisavangvong Road",
+          293.5
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "wat_sen>night_market": {
+      "duration": 104.8,
+      "distance": 700.5,
+      "roads": [
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          379
+        ],
+        [
+          "Sisavangvong Road",
+          321.5
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "wat_sen>hotel": {
+      "duration": 171.1,
+      "distance": 1143.9,
+      "roads": [
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          379
+        ],
+        [
+          "Sisavangvong Road",
+          764.9
+        ],
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          0
+        ]
+      ]
+    },
+    "wat_phol_phao>xieng_thong": {
+      "duration": 439.2,
+      "distance": 3415.9,
+      "roads": [
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          298.4
+        ],
+        [
+          "",
+          263.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "Phousi Road",
+          55.5
+        ],
+        [
+          "Phousi Road",
+          95.4
+        ],
+        [
+          "Kingkitsarath Road",
+          1140.2
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          241.8
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          0
+        ]
+      ]
+    },
+    "wat_phol_phao>royal_palace": {
+      "duration": 350.6,
+      "distance": 2767.4,
+      "roads": [
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          298.4
+        ],
+        [
+          "",
+          263.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "Phousi Road",
+          55.5
+        ],
+        [
+          "Phousi Road",
+          95.4
+        ],
+        [
+          "Kingkitsarath Road",
+          286.5
+        ],
+        [
+          "Soukkhaseum Road",
+          81
+        ],
+        [
+          "Sisavangvong Road",
+          265.7
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          100.3
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          0
+        ]
+      ]
+    },
+    "wat_phol_phao>phousi": {
+      "duration": 346.2,
+      "distance": 2755.8,
+      "roads": [
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          298.4
+        ],
+        [
+          "",
+          263.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "Phousi Road",
+          55.5
+        ],
+        [
+          "Phousi Road",
+          95.4
+        ],
+        [
+          "Kingkitsarath Road",
+          286.5
+        ],
+        [
+          "Soukkhaseum Road",
+          81
+        ],
+        [
+          "Sisavangvong Road",
+          354.4
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "wat_phol_phao>wat_mai": {
+      "duration": 340.1,
+      "distance": 2662.1,
+      "roads": [
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          298.4
+        ],
+        [
+          "",
+          263.8
+        ],
+        [
+          "Phommathat Road",
+          602.9
+        ],
+        [
+          "",
+          332.8
+        ],
+        [
+          "ຖະໜົນ ອຸປະຫຼາດຊຽງກົງ",
+          311.5
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          543.1
+        ],
+        [
+          "Sisavangvong Road",
+          213.1
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "wat_phol_phao>ethnology": {
+      "duration": 303.5,
+      "distance": 2348.6,
+      "roads": [
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          298.4
+        ],
+        [
+          "",
+          263.8
+        ],
+        [
+          "Phommathat Road",
+          602.9
+        ],
+        [
+          "",
+          332.8
+        ],
+        [
+          "ຖະໜົນ ອຸປະຫຼາດຊຽງກົງ",
+          311.5
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          349
+        ],
+        [
+          "",
+          32.6
+        ],
+        [
+          "",
+          61
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "wat_phol_phao>heuan_chan": {
+      "duration": 338,
+      "distance": 2683.9,
+      "roads": [
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          298.4
+        ],
+        [
+          "",
+          263.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "Phousi Road",
+          55.5
+        ],
+        [
+          "Phousi Road",
+          95.4
+        ],
+        [
+          "Kingkitsarath Road",
+          286.5
+        ],
+        [
+          "Soukkhaseum Road",
+          81
+        ],
+        [
+          "Sisavangvong Road",
+          174.1
+        ],
+        [
+          "",
+          108.5
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "wat_phol_phao>wat_sen": {
+      "duration": 346,
+      "distance": 2745.2,
+      "roads": [
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          298.4
+        ],
+        [
+          "",
+          263.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "Phousi Road",
+          55.5
+        ],
+        [
+          "Phousi Road",
+          95.4
+        ],
+        [
+          "Kingkitsarath Road",
+          571.6
+        ],
+        [
+          "",
+          53.6
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          86.2
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          0
+        ]
+      ]
+    },
+    "wat_phol_phao>haw_pha_bang": {
+      "duration": 337.1,
+      "distance": 2694.9,
+      "roads": [
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          298.4
+        ],
+        [
+          "",
+          263.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "Phousi Road",
+          55.5
+        ],
+        [
+          "Phousi Road",
+          95.4
+        ],
+        [
+          "Kingkitsarath Road",
+          286.5
+        ],
+        [
+          "Soukkhaseum Road",
+          81
+        ],
+        [
+          "Sisavangvong Road",
+          293.5
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "wat_phol_phao>night_market": {
+      "duration": 341.3,
+      "distance": 2722.9,
+      "roads": [
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          298.4
+        ],
+        [
+          "",
+          263.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "Phousi Road",
+          55.5
+        ],
+        [
+          "Phousi Road",
+          95.4
+        ],
+        [
+          "Kingkitsarath Road",
+          286.5
+        ],
+        [
+          "Soukkhaseum Road",
+          81
+        ],
+        [
+          "Sisavangvong Road",
+          321.5
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "wat_phol_phao>hotel": {
+      "duration": 321.9,
+      "distance": 2508,
+      "roads": [
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          298.4
+        ],
+        [
+          "",
+          263.8
+        ],
+        [
+          "Phommathat Road",
+          602.9
+        ],
+        [
+          "",
+          332.8
+        ],
+        [
+          "ຖະໜົນ ອຸປະຫຼາດຊຽງກົງ",
+          311.5
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          543.1
+        ],
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          58.9
+        ],
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          0
+        ]
+      ]
+    },
+    "haw_pha_bang>xieng_thong": {
+      "duration": 205.2,
+      "distance": 1335.1,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          293.5
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          799.7
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          241.8
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          0
+        ]
+      ]
+    },
+    "haw_pha_bang>royal_palace": {
+      "duration": 23.4,
+      "distance": 128.2,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          27.8
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          100.3
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          0
+        ]
+      ]
+    },
+    "haw_pha_bang>phousi": {
+      "duration": 9.1,
+      "distance": 60.9,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          60.9
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "haw_pha_bang>wat_mai": {
+      "duration": 29.9,
+      "distance": 199.4,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          199.4
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "haw_pha_bang>ethnology": {
+      "duration": 126.2,
+      "distance": 710.3,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          422.7
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          194
+        ],
+        [
+          "",
+          32.6
+        ],
+        [
+          "",
+          61
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "haw_pha_bang>heuan_chan": {
+      "duration": 37.5,
+      "distance": 228,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          119.5
+        ],
+        [
+          "",
+          108.5
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "haw_pha_bang>wat_sen": {
+      "duration": 100.6,
+      "distance": 672.6,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          293.5
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          379
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          0
+        ]
+      ]
+    },
+    "haw_pha_bang>wat_phol_phao": {
+      "duration": 365.8,
+      "distance": 2939.2,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          422.7
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          290.7
+        ],
+        [
+          "Ratsavong Road",
+          342.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "",
+          149.6
+        ],
+        [
+          "",
+          114.2
+        ],
+        [
+          "",
+          169.6
+        ],
+        [
+          "",
+          128.8
+        ],
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "haw_pha_bang>night_market": {
+      "duration": 4.2,
+      "distance": 28,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          28
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "haw_pha_bang>hotel": {
+      "duration": 70.5,
+      "distance": 471.4,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          471.4
+        ],
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          0
+        ]
+      ]
+    },
+    "night_market>xieng_thong": {
+      "duration": 209.4,
+      "distance": 1363,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          321.5
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          799.7
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          241.8
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          0
+        ]
+      ]
+    },
+    "night_market>royal_palace": {
+      "duration": 27.6,
+      "distance": 156.1,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          55.8
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          100.3
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          0
+        ]
+      ]
+    },
+    "night_market>phousi": {
+      "duration": 4.9,
+      "distance": 32.9,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          32.9
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "night_market>wat_mai": {
+      "duration": 25.7,
+      "distance": 171.4,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          171.4
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "night_market>ethnology": {
+      "duration": 122,
+      "distance": 682.4,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          394.8
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          194
+        ],
+        [
+          "",
+          32.6
+        ],
+        [
+          "",
+          61
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "night_market>heuan_chan": {
+      "duration": 41.7,
+      "distance": 255.9,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          147.4
+        ],
+        [
+          "",
+          108.5
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "night_market>wat_sen": {
+      "duration": 104.8,
+      "distance": 700.5,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          321.5
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          379
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          0
+        ]
+      ]
+    },
+    "night_market>wat_phol_phao": {
+      "duration": 361.6,
+      "distance": 2911.2,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          394.8
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          290.7
+        ],
+        [
+          "Ratsavong Road",
+          342.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "",
+          149.6
+        ],
+        [
+          "",
+          114.2
+        ],
+        [
+          "",
+          169.6
+        ],
+        [
+          "",
+          128.8
+        ],
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "night_market>haw_pha_bang": {
+      "duration": 4.2,
+      "distance": 28,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          28
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "night_market>hotel": {
+      "duration": 66.3,
+      "distance": 443.4,
+      "roads": [
+        [
+          "Sisavangvong Road",
+          443.4
+        ],
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          0
+        ]
+      ]
+    },
+    "hotel>xieng_thong": {
+      "duration": 275.7,
+      "distance": 1806.5,
+      "roads": [
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          48.6
+        ],
+        [
+          "Sisavangvong Road",
+          716.3
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          799.7
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          241.8
+        ],
+        [
+          "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+          0
+        ]
+      ]
+    },
+    "hotel>royal_palace": {
+      "duration": 93.9,
+      "distance": 599.5,
+      "roads": [
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          48.6
+        ],
+        [
+          "Sisavangvong Road",
+          450.6
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          100.3
+        ],
+        [
+          "ຖະໜົນ ອຸ່ນເຮືອນ",
+          0
+        ]
+      ]
+    },
+    "hotel>phousi": {
+      "duration": 61.4,
+      "distance": 410.5,
+      "roads": [
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          48.6
+        ],
+        [
+          "Sisavangvong Road",
+          361.9
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "hotel>wat_mai": {
+      "duration": 40.6,
+      "distance": 272,
+      "roads": [
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          48.6
+        ],
+        [
+          "Sisavangvong Road",
+          223.4
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "hotel>ethnology": {
+      "duration": 65.2,
+      "distance": 336.2,
+      "roads": [
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          48.6
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          194
+        ],
+        [
+          "",
+          32.6
+        ],
+        [
+          "",
+          61
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "hotel>heuan_chan": {
+      "duration": 108,
+      "distance": 699.3,
+      "roads": [
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          48.6
+        ],
+        [
+          "Sisavangvong Road",
+          542.2
+        ],
+        [
+          "",
+          108.5
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "hotel>wat_sen": {
+      "duration": 171.1,
+      "distance": 1143.9,
+      "roads": [
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          48.6
+        ],
+        [
+          "Sisavangvong Road",
+          716.3
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          379
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          0
+        ]
+      ]
+    },
+    "hotel>wat_phol_phao": {
+      "duration": 304.8,
+      "distance": 2565.1,
+      "roads": [
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          48.6
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          290.7
+        ],
+        [
+          "Ratsavong Road",
+          342.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "",
+          149.6
+        ],
+        [
+          "",
+          114.2
+        ],
+        [
+          "",
+          169.6
+        ],
+        [
+          "",
+          128.8
+        ],
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          0
+        ]
+      ]
+    },
+    "hotel>haw_pha_bang": {
+      "duration": 70.5,
+      "distance": 471.4,
+      "roads": [
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          48.6
+        ],
+        [
+          "Sisavangvong Road",
+          422.7
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    },
+    "hotel>night_market": {
+      "duration": 66.3,
+      "distance": 443.4,
+      "roads": [
+        [
+          "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+          48.6
+        ],
+        [
+          "Sisavangvong Road",
+          394.8
+        ],
+        [
+          "Sisavangvong Road",
+          0
+        ]
+      ]
+    }
+  }
+}

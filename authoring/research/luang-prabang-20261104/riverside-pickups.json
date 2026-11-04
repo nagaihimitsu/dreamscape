@@ -1,0 +1,1315 @@
+{
+  "checkedAt": "2026-11-04",
+  "placeIds": [
+    "xieng_thong",
+    "royal_palace",
+    "phousi",
+    "wat_mai",
+    "ethnology",
+    "heuan_chan",
+    "wat_sen",
+    "wat_phol_phao",
+    "haw_pha_bang",
+    "night_market",
+    "hotel"
+  ],
+  "anchors": {
+    "south": [
+      102.138,
+      19.8876
+    ],
+    "central": [
+      102.139,
+      19.891
+    ],
+    "north": [
+      102.142,
+      19.896
+    ],
+    "phol": [
+      102.145833,
+      19.878889
+    ]
+  },
+  "footTable": {
+    "code": "Ok",
+    "distances": [
+      [
+        0,
+        1328.9,
+        1336,
+        1430.8,
+        1608.5,
+        976.5,
+        435.9,
+        3140.4,
+        1270.7,
+        1219.2,
+        1662.6,
+        1552.8,
+        1027.6,
+        370.4,
+        3140.4
+      ],
+      [
+        1328.9,
+        0,
+        331,
+        262.8,
+        691.7,
+        352.4,
+        884.1,
+        2656,
+        89,
+        109.7,
+        565.4,
+        1068.4,
+        684.9,
+        916.2,
+        2656
+      ],
+      [
+        1336,
+        331,
+        0,
+        417.3,
+        759.2,
+        469.4,
+        995.9,
+        2363.7,
+        272.9,
+        249,
+        649.1,
+        776.1,
+        392.6,
+        1028,
+        2363.7
+      ],
+      [
+        1430.8,
+        262.8,
+        417.3,
+        0,
+        566.8,
+        454.3,
+        986.1,
+        2690.6,
+        235.6,
+        211.6,
+        400.6,
+        1101.9,
+        810,
+        1018.2,
+        2690.6
+      ],
+      [
+        1608.5,
+        691.7,
+        759.2,
+        566.8,
+        0,
+        852.3,
+        1268.4,
+        2229,
+        633.6,
+        609.6,
+        358.7,
+        640.3,
+        665.2,
+        1300.5,
+        2229
+      ],
+      [
+        976.5,
+        352.4,
+        469.4,
+        454.3,
+        852.3,
+        0,
+        751.5,
+        2586.6,
+        294.2,
+        242.7,
+        686.1,
+        999,
+        615.5,
+        732.9,
+        2586.6
+      ],
+      [
+        435.9,
+        884.1,
+        995.9,
+        986.1,
+        1268.4,
+        751.5,
+        0,
+        2800.6,
+        826,
+        774.5,
+        1217.9,
+        1213.1,
+        687.9,
+        127.8,
+        2800.6
+      ],
+      [
+        3140.4,
+        2656,
+        2363.7,
+        2690.6,
+        2229,
+        2586.6,
+        2800.6,
+        0,
+        2597.8,
+        2546.3,
+        2420.8,
+        1810.1,
+        2112.8,
+        2832.8,
+        0
+      ],
+      [
+        1270.7,
+        89,
+        272.9,
+        235.6,
+        633.6,
+        294.2,
+        826,
+        2597.8,
+        0,
+        51.5,
+        467.3,
+        1010.2,
+        626.7,
+        858.1,
+        2597.8
+      ],
+      [
+        1219.2,
+        109.7,
+        249,
+        211.6,
+        609.6,
+        242.7,
+        774.5,
+        2546.3,
+        51.5,
+        0,
+        443.4,
+        958.7,
+        575.2,
+        806.6,
+        2546.3
+      ],
+      [
+        1662.6,
+        565.4,
+        649.1,
+        400.6,
+        358.7,
+        686.1,
+        1217.9,
+        2420.8,
+        467.3,
+        443.4,
+        0,
+        905.1,
+        921,
+        1250,
+        2420.8
+      ],
+      [
+        1552.8,
+        1068.4,
+        776.1,
+        1101.9,
+        640.3,
+        999,
+        1213.1,
+        1810.1,
+        1010.2,
+        958.7,
+        905.1,
+        0,
+        525.2,
+        1245.2,
+        1810.1
+      ],
+      [
+        1027.6,
+        684.9,
+        392.6,
+        810,
+        665.2,
+        615.5,
+        687.9,
+        2112.8,
+        626.7,
+        575.2,
+        921,
+        525.2,
+        0,
+        720,
+        2112.8
+      ],
+      [
+        370.4,
+        916.2,
+        1028,
+        1018.2,
+        1300.5,
+        732.9,
+        127.8,
+        2832.8,
+        858.1,
+        806.6,
+        1250,
+        1245.2,
+        720,
+        0,
+        2832.8
+      ],
+      [
+        3140.4,
+        2656,
+        2363.7,
+        2690.6,
+        2229,
+        2586.6,
+        2800.6,
+        0,
+        2597.8,
+        2546.3,
+        2420.8,
+        1810.1,
+        2112.8,
+        2832.8,
+        0
+      ]
+    ],
+    "destinations": [
+      {
+        "hint": "rd4ZiZ8gvZajAAAAPAAAAJIDAAAAAAAAcZ2cQaD_40AeRttCAAAAAJwAAAA6AAAAbQMAAAAAAABJFwAAmpQWBnWdLwGalBYGdZ0vAQQA_xEAAAAA",
+        "location": [
+          102.14313,
+          19.897717
+        ],
+        "name": "",
+        "distance": 0
+      },
+      {
+        "hint": "TQ-ngq2zuouLAAAAJAAAAAAAAAAAAAAAr46GQeuuhkAAAAAAAAAAAIYAAAAiAAAAAAAAAAAAAABJFwAApHcWBveGLwGkdxYG94YvAQAATwMAAAAA",
+        "location": [
+          102.135716,
+          19.891959
+        ],
+        "name": "",
+        "distance": 0
+      },
+      {
+        "hint": "inOCn5lzgp8FAAAANgAAAPQEAABKAgAAub0eP9Mmu0BXnQtDEfyBQgQAAAAwAAAAXAQAAAYCAABJFwAAP3wWBumALwE_fBYG6YAvAR4AvwMAAAAA",
+        "location": [
+          102.136895,
+          19.890409
+        ],
+        "name": "",
+        "distance": 0
+      },
+      {
+        "hint": "OP4Ynzr-GJ_FAAAAqQAAAAAAAAA8AQAAkNa9QbMcoUEAAAAAgdEXQr0AAACiAAAAAAAAADABAABJFwAAcXQWBv-BLwFxdBYG_4EvAQAAbw4AAAAA",
+        "location": [
+          102.134897,
+          19.890687
+        ],
+        "name": "",
+        "distance": 0
+      },
+      {
+        "hint": "SWtqgU1raoFcAAAAfwAAAEcAAAAMAwAATKgwQSrxckFV4QhBk0G7QlgAAAB6AAAARAAAAO0CAABJFwAAOHYWBpZ5LwE4dhYGlnkvAQIAXwMAAAAA",
+        "location": [
+          102.135352,
+          19.888534
+        ],
+        "name": "",
+        "distance": 0
+      },
+      {
+        "hint": "Z7yMgMz2GJ_IAAAAPAAAALEAAACAAQAAzejAQexv40CtqalBaDQ4QsEAAAA5AAAAqgAAAHABAABJFwAAGXsWBtaKLwEZexYG1oovAQIALw8AAAAA",
+        "location": [
+          102.136601,
+          19.89295
+        ],
+        "name": "",
+        "distance": 0
+      },
+      {
+        "hint": "_0QdmwBFHZvDAAAAWQAAAAAAAAAAAAAArUK7QZI2KkEAAAAAAAAAALsAAABVAAAAAAAAAAAAAABJFwAAdI4WBqKULwF0jhYGopQvAQAADw8AAAAA",
+        "location": [
+          102.141556,
+          19.895458
+        ],
+        "name": "",
+        "distance": 0
+      },
+      {
+        "hint": "nz2DjxG8fJ-1AAAAAAAAABEDAAAAAAAA9xaRQQAAAAAH2ZxCAAAAAJEAAAAAAAAAcwIAAAAAAABJFwAA1J8WBk5VLwHUnxYGTlUvAQ4Azw4AAAAA",
+        "location": [
+          102.146004,
+          19.879246
+        ],
+        "name": "",
+        "distance": 0
+      },
+      {
+        "hint": "Cm1JnDVxSZwAAAAAgQAAAAAAAAAAAAAAAAAAAFC9dkEAAAAAAAAAAAAAAAB7AAAAAAAAAAAAAABJFwAA0XkWBnmFLwHReRYGeYUvAQAAfw4AAAAA",
+        "location": [
+          102.136273,
+          19.891577
+        ],
+        "name": "",
+        "distance": 0
+      },
+      {
+        "hint": "SQ-ngnTDa4cLAAAACQEAAI0AAAAAAAAA-9qIPy4KvkFIoUtBAAAAAAgAAAC_AAAAZgAAAAAAAABJFwAAR3oWBtSELwFHehYG1IQvAQIAPwMAAAAA",
+        "location": [
+          102.136391,
+          19.891412
+        ],
+        "name": "Sisavangvong Road",
+        "distance": 0
+      },
+      {
+        "hint": "2vDFggYlpYMcAgAA-AEAAAAAAAAAAAAAs4JCQpJmNUIAAAAAAAAAAIUBAABrAQAAAAAAAAAAAABJFwAArm0WBrF6LwGubRYGsXovAQAAbw4AAAAA",
+        "location": [
+          102.133166,
+          19.888817
+        ],
+        "name": "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+        "distance": 0
+      },
+      {
+        "hint": "mWgYn7R1GJ9gAAAAQQAAAAAAAAA9AgAAW_YZQXLrz0AAAAAArGdlQk0AAAA0AAAAAAAAAMsBAABJFwAAwoAWBrV1LwGQgBYG8HUvAQAAfw4AAAAA",
+        "location": [
+          102.13805,
+          19.887541
+        ],
+        "name": "",
+        "distance": 8.371417182
+      },
+      {
+        "hint": "5tMRjCbDx5odAAAAdgMAAEMBAAAAAAAAZmk_QPoUsULmWgFCAAAAABcAAADFAgAAAwEAAAAAAABJFwAAyIQWBjuDLwF4hBYGOIMvAQYAHwsAAAAA",
+        "location": [
+          102.13908,
+          19.891003
+        ],
+        "name": "",
+        "distance": 8.384935012
+      },
+      {
+        "hint": "nmpqgfF1vYLWAQAAewIAAAAAAAAAAAAA3ak8Qnl8fUIAAAAAAAAAAHgBAAD8AQAAAAAAAAAAAABJFwAAuo8WBm6WLwEwkBYGwJYvAQAAPxQAAAAA",
+        "location": [
+          102.141882,
+          19.895918
+        ],
+        "name": "ຖະໜົນ ສີສະເຫຼີມສັກ",
+        "distance": 15.33379459
+      },
+      {
+        "hint": "nz2DjxG8fJ-1AAAAAAAAABEDAAAAAAAA9xaRQQAAAAAH2ZxCAAAAAJEAAAAAAAAAcwIAAAAAAABJFwAA1J8WBk5VLwEpnxYG6VMvAQ4Azw4AAAAA",
+        "location": [
+          102.146004,
+          19.879246
+        ],
+        "name": "",
+        "distance": 43.38919642
+      }
+    ],
+    "durations": [
+      [
+        0,
+        1063.1,
+        1068.8,
+        1144.7,
+        1287,
+        781.3,
+        348.7,
+        2512.3,
+        1016.5,
+        975.4,
+        1330.1,
+        1242,
+        821.8,
+        296.6,
+        2512.3
+      ],
+      [
+        1063.1,
+        0,
+        264.7,
+        210.2,
+        553.4,
+        281.8,
+        707.5,
+        2125.1,
+        71.2,
+        87.7,
+        452.1,
+        854.8,
+        548.1,
+        733.1,
+        2125.1
+      ],
+      [
+        1068.8,
+        264.7,
+        0,
+        333.7,
+        607,
+        375.1,
+        796.7,
+        1890.8,
+        218.1,
+        199,
+        519.1,
+        620.5,
+        313.8,
+        822.3,
+        1890.8
+      ],
+      [
+        1144.7,
+        210.2,
+        333.7,
+        0,
+        453.4,
+        363.4,
+        789.1,
+        2152.5,
+        188.4,
+        169.3,
+        320.4,
+        881.4,
+        647.5,
+        814.7,
+        2152.5
+      ],
+      [
+        1287,
+        553.4,
+        607,
+        453.4,
+        0,
+        681.8,
+        1014.9,
+        1783.4,
+        506.8,
+        487.7,
+        286.9,
+        512.3,
+        532,
+        1040.5,
+        1783.4
+      ],
+      [
+        781.3,
+        281.8,
+        375.1,
+        363.4,
+        681.8,
+        0,
+        601,
+        2069.5,
+        235.2,
+        194.1,
+        548.8,
+        799.2,
+        492.5,
+        586.3,
+        2069.5
+      ],
+      [
+        348.7,
+        707.5,
+        796.7,
+        789.1,
+        1014.9,
+        601,
+        0,
+        2240.7,
+        660.9,
+        619.8,
+        974.5,
+        970.4,
+        550.2,
+        102.2,
+        2240.7
+      ],
+      [
+        2512.3,
+        2125.1,
+        1890.8,
+        2152.5,
+        1783.4,
+        2069.5,
+        2240.7,
+        0,
+        2078.5,
+        2037.4,
+        1936.4,
+        1448.1,
+        1690.5,
+        2266.3,
+        0
+      ],
+      [
+        1016.5,
+        71.2,
+        218.1,
+        188.4,
+        506.8,
+        235.2,
+        660.9,
+        2078.5,
+        0,
+        41.1,
+        373.8,
+        808.2,
+        501.5,
+        686.5,
+        2078.5
+      ],
+      [
+        975.4,
+        87.7,
+        199,
+        169.3,
+        487.7,
+        194.1,
+        619.8,
+        2037.4,
+        41.1,
+        0,
+        354.7,
+        767.1,
+        460.4,
+        645.4,
+        2037.4
+      ],
+      [
+        1330.1,
+        452.1,
+        519.1,
+        320.4,
+        286.9,
+        548.8,
+        974.5,
+        1936.4,
+        373.8,
+        354.7,
+        0,
+        724.1,
+        736.6,
+        1000.1,
+        1936.4
+      ],
+      [
+        1242,
+        854.8,
+        620.5,
+        881.4,
+        512.3,
+        799.2,
+        970.4,
+        1448.1,
+        808.2,
+        767.1,
+        724.1,
+        0,
+        420.2,
+        996,
+        1448.1
+      ],
+      [
+        821.8,
+        548.1,
+        313.8,
+        647.5,
+        532,
+        492.5,
+        550.2,
+        1690.5,
+        501.5,
+        460.4,
+        736.6,
+        420.2,
+        0,
+        575.8,
+        1690.5
+      ],
+      [
+        296.6,
+        733.1,
+        822.3,
+        814.7,
+        1040.5,
+        586.3,
+        102.2,
+        2266.3,
+        686.5,
+        645.4,
+        1000.1,
+        996,
+        575.8,
+        0,
+        2266.3
+      ],
+      [
+        2512.3,
+        2125.1,
+        1890.8,
+        2152.5,
+        1783.4,
+        2069.5,
+        2240.7,
+        0,
+        2078.5,
+        2037.4,
+        1936.4,
+        1448.1,
+        1690.5,
+        2266.3,
+        0
+      ]
+    ],
+    "sources": [
+      {
+        "hint": "rd4ZiZ8gvZajAAAAPAAAAJIDAAAAAAAAcZ2cQaD_40AeRttCAAAAAJwAAAA6AAAAbQMAAAAAAABJFwAAmpQWBnWdLwGalBYGdZ0vAQQA_xEAAAAA",
+        "location": [
+          102.14313,
+          19.897717
+        ],
+        "name": "",
+        "distance": 0
+      },
+      {
+        "hint": "TQ-ngq2zuouLAAAAJAAAAAAAAAAAAAAAr46GQeuuhkAAAAAAAAAAAIYAAAAiAAAAAAAAAAAAAABJFwAApHcWBveGLwGkdxYG94YvAQAATwMAAAAA",
+        "location": [
+          102.135716,
+          19.891959
+        ],
+        "name": "",
+        "distance": 0
+      },
+      {
+        "hint": "inOCn5lzgp8FAAAANgAAAPQEAABKAgAAub0eP9Mmu0BXnQtDEfyBQgQAAAAwAAAAXAQAAAYCAABJFwAAP3wWBumALwE_fBYG6YAvAR4AvwMAAAAA",
+        "location": [
+          102.136895,
+          19.890409
+        ],
+        "name": "",
+        "distance": 0
+      },
+      {
+        "hint": "OP4Ynzr-GJ_FAAAAqQAAAAAAAAA8AQAAkNa9QbMcoUEAAAAAgdEXQr0AAACiAAAAAAAAADABAABJFwAAcXQWBv-BLwFxdBYG_4EvAQAAbw4AAAAA",
+        "location": [
+          102.134897,
+          19.890687
+        ],
+        "name": "",
+        "distance": 0
+      },
+      {
+        "hint": "SWtqgU1raoFcAAAAfwAAAEcAAAAMAwAATKgwQSrxckFV4QhBk0G7QlgAAAB6AAAARAAAAO0CAABJFwAAOHYWBpZ5LwE4dhYGlnkvAQIAXwMAAAAA",
+        "location": [
+          102.135352,
+          19.888534
+        ],
+        "name": "",
+        "distance": 0
+      },
+      {
+        "hint": "Z7yMgMz2GJ_IAAAAPAAAALEAAACAAQAAzejAQexv40CtqalBaDQ4QsEAAAA5AAAAqgAAAHABAABJFwAAGXsWBtaKLwEZexYG1oovAQIALw8AAAAA",
+        "location": [
+          102.136601,
+          19.89295
+        ],
+        "name": "",
+        "distance": 0
+      },
+      {
+        "hint": "_0QdmwBFHZvDAAAAWQAAAAAAAAAAAAAArUK7QZI2KkEAAAAAAAAAALsAAABVAAAAAAAAAAAAAABJFwAAdI4WBqKULwF0jhYGopQvAQAADw8AAAAA",
+        "location": [
+          102.141556,
+          19.895458
+        ],
+        "name": "",
+        "distance": 0
+      },
+      {
+        "hint": "nz2DjxG8fJ-1AAAAAAAAABEDAAAAAAAA9xaRQQAAAAAH2ZxCAAAAAJEAAAAAAAAAcwIAAAAAAABJFwAA1J8WBk5VLwHUnxYGTlUvAQ4Azw4AAAAA",
+        "location": [
+          102.146004,
+          19.879246
+        ],
+        "name": "",
+        "distance": 0
+      },
+      {
+        "hint": "Cm1JnDVxSZwAAAAAgQAAAAAAAAAAAAAAAAAAAFC9dkEAAAAAAAAAAAAAAAB7AAAAAAAAAAAAAABJFwAA0XkWBnmFLwHReRYGeYUvAQAAfw4AAAAA",
+        "location": [
+          102.136273,
+          19.891577
+        ],
+        "name": "",
+        "distance": 0
+      },
+      {
+        "hint": "SQ-ngnTDa4cLAAAACQEAAI0AAAAAAAAA-9qIPy4KvkFIoUtBAAAAAAgAAAC_AAAAZgAAAAAAAABJFwAAR3oWBtSELwFHehYG1IQvAQIAPwMAAAAA",
+        "location": [
+          102.136391,
+          19.891412
+        ],
+        "name": "Sisavangvong Road",
+        "distance": 0
+      },
+      {
+        "hint": "2vDFggYlpYMcAgAA-AEAAAAAAAAAAAAAs4JCQpJmNUIAAAAAAAAAAIUBAABrAQAAAAAAAAAAAABJFwAArm0WBrF6LwGubRYGsXovAQAAbw4AAAAA",
+        "location": [
+          102.133166,
+          19.888817
+        ],
+        "name": "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+        "distance": 0
+      },
+      {
+        "hint": "mWgYn7R1GJ9gAAAAQQAAAAAAAAA9AgAAW_YZQXLrz0AAAAAArGdlQk0AAAA0AAAAAAAAAMsBAABJFwAAwoAWBrV1LwGQgBYG8HUvAQAAfw4AAAAA",
+        "location": [
+          102.13805,
+          19.887541
+        ],
+        "name": "",
+        "distance": 8.371417182
+      },
+      {
+        "hint": "5tMRjCbDx5odAAAAdgMAAEMBAAAAAAAAZmk_QPoUsULmWgFCAAAAABcAAADFAgAAAwEAAAAAAABJFwAAyIQWBjuDLwF4hBYGOIMvAQYAHwsAAAAA",
+        "location": [
+          102.13908,
+          19.891003
+        ],
+        "name": "",
+        "distance": 8.384935012
+      },
+      {
+        "hint": "nmpqgfF1vYLWAQAAewIAAAAAAAAAAAAA3ak8Qnl8fUIAAAAAAAAAAHgBAAD8AQAAAAAAAAAAAABJFwAAuo8WBm6WLwEwkBYGwJYvAQAAPxQAAAAA",
+        "location": [
+          102.141882,
+          19.895918
+        ],
+        "name": "ຖະໜົນ ສີສະເຫຼີມສັກ",
+        "distance": 15.33379459
+      },
+      {
+        "hint": "nz2DjxG8fJ-1AAAAAAAAABEDAAAAAAAA9xaRQQAAAAAH2ZxCAAAAAJEAAAAAAAAAcwIAAAAAAABJFwAA1J8WBk5VLwEpnxYG6VMvAQ4Azw4AAAAA",
+        "location": [
+          102.146004,
+          19.879246
+        ],
+        "name": "",
+        "distance": 43.38919642
+      }
+    ]
+  },
+  "carRoutes": {
+    "south>central": {
+      "duration": 84,
+      "distance": 539.5,
+      "roads": [
+        [
+          "",
+          88.6
+        ],
+        [
+          "Phommathat Road",
+          136.9
+        ],
+        [
+          "Phousi Road",
+          55.5
+        ],
+        [
+          "Phousi Road",
+          95.4
+        ],
+        [
+          "Kingkitsarath Road",
+          127.7
+        ],
+        [
+          "",
+          35.3
+        ],
+        [
+          "",
+          0
+        ]
+      ],
+      "blockedForModel": false
+    },
+    "south>north": {
+      "duration": 182.3,
+      "distance": 1201.3,
+      "roads": [
+        [
+          "",
+          88.6
+        ],
+        [
+          "Phommathat Road",
+          136.9
+        ],
+        [
+          "Phousi Road",
+          55.5
+        ],
+        [
+          "Phousi Road",
+          95.4
+        ],
+        [
+          "Kingkitsarath Road",
+          716
+        ],
+        [
+          "",
+          108.7
+        ],
+        [
+          "ຖະໜົນ ສີສະເຫຼີມສັກ",
+          0
+        ]
+      ],
+      "blockedForModel": false
+    },
+    "south>phol": {
+      "duration": 225.9,
+      "distance": 1834.6,
+      "roads": [
+        [
+          "",
+          88.6
+        ],
+        [
+          "Phommathat Road",
+          1087.3
+        ],
+        [
+          "",
+          149.6
+        ],
+        [
+          "",
+          114.2
+        ],
+        [
+          "",
+          169.6
+        ],
+        [
+          "",
+          128.8
+        ],
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          0
+        ]
+      ],
+      "blockedForModel": false
+    },
+    "central>south": {
+      "duration": 277.8,
+      "distance": 1850.5,
+      "roads": [
+        [
+          "",
+          35.3
+        ],
+        [
+          "Kingkitsarath Road",
+          158.8
+        ],
+        [
+          "Soukkhaseum Road",
+          81
+        ],
+        [
+          "Sisavangvong Road",
+          716.3
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          290.7
+        ],
+        [
+          "Ratsavong Road",
+          342.8
+        ],
+        [
+          "Phommathat Road",
+          136.9
+        ],
+        [
+          "",
+          88.6
+        ],
+        [
+          "",
+          0
+        ]
+      ],
+      "blockedForModel": true
+    },
+    "central>north": {
+      "duration": 114.8,
+      "distance": 732.4,
+      "roads": [
+        [
+          "",
+          35.3
+        ],
+        [
+          "Kingkitsarath Road",
+          588.3
+        ],
+        [
+          "",
+          108.7
+        ],
+        [
+          "ຖະໜົນ ສີສະເຫຼີມສັກ",
+          0
+        ]
+      ],
+      "blockedForModel": false
+    },
+    "central>phol": {
+      "duration": 456.8,
+      "distance": 3507.8,
+      "roads": [
+        [
+          "",
+          35.3
+        ],
+        [
+          "Kingkitsarath Road",
+          158.8
+        ],
+        [
+          "Soukkhaseum Road",
+          81
+        ],
+        [
+          "Sisavangvong Road",
+          716.3
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          290.7
+        ],
+        [
+          "Ratsavong Road",
+          342.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "",
+          149.6
+        ],
+        [
+          "",
+          114.2
+        ],
+        [
+          "",
+          169.6
+        ],
+        [
+          "",
+          128.8
+        ],
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          0
+        ]
+      ],
+      "blockedForModel": true
+    },
+    "north>south": {
+      "duration": 305.3,
+      "distance": 2060.4,
+      "roads": [
+        [
+          "ຖະໜົນ ສີສະເຫຼີມສັກ",
+          47.2
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          437.9
+        ],
+        [
+          "Sisavangvong Road",
+          716.3
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          290.7
+        ],
+        [
+          "Ratsavong Road",
+          342.8
+        ],
+        [
+          "Phommathat Road",
+          136.9
+        ],
+        [
+          "",
+          88.6
+        ],
+        [
+          "",
+          0
+        ]
+      ],
+      "blockedForModel": true
+    },
+    "north>central": {
+      "duration": 312.1,
+      "distance": 2148.8,
+      "roads": [
+        [
+          "ຖະໜົນ ສີສະເຫຼີມສັກ",
+          47.2
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          437.9
+        ],
+        [
+          "Sisavangvong Road",
+          716.3
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          290.7
+        ],
+        [
+          "Ratsavong Road",
+          398.3
+        ],
+        [
+          "Phousi Road",
+          95.4
+        ],
+        [
+          "Kingkitsarath Road",
+          127.7
+        ],
+        [
+          "",
+          35.3
+        ],
+        [
+          "",
+          0
+        ]
+      ],
+      "blockedForModel": true
+    },
+    "north>phol": {
+      "duration": 484.3,
+      "distance": 3717.8,
+      "roads": [
+        [
+          "ຖະໜົນ ສີສະເຫຼີມສັກ",
+          47.2
+        ],
+        [
+          "ຖະຫນົນ ສັກກະລິນ",
+          437.9
+        ],
+        [
+          "Sisavangvong Road",
+          716.3
+        ],
+        [
+          "ຖະໜົນ ກິງກິດສະລາດ",
+          290.7
+        ],
+        [
+          "Ratsavong Road",
+          342.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "",
+          149.6
+        ],
+        [
+          "",
+          114.2
+        ],
+        [
+          "",
+          169.6
+        ],
+        [
+          "",
+          128.8
+        ],
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          0
+        ]
+      ],
+      "blockedForModel": true
+    },
+    "phol>south": {
+      "duration": 231.7,
+      "distance": 1834.6,
+      "roads": [
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          298.4
+        ],
+        [
+          "",
+          263.8
+        ],
+        [
+          "Phommathat Road",
+          1087.3
+        ],
+        [
+          "",
+          88.6
+        ],
+        [
+          "",
+          0
+        ]
+      ],
+      "blockedForModel": false
+    },
+    "phol>central": {
+      "duration": 262.6,
+      "distance": 2196.9,
+      "roads": [
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          298.4
+        ],
+        [
+          "",
+          263.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "Phousi Road",
+          55.5
+        ],
+        [
+          "Phousi Road",
+          95.4
+        ],
+        [
+          "Kingkitsarath Road",
+          127.7
+        ],
+        [
+          "",
+          35.3
+        ],
+        [
+          "",
+          0
+        ]
+      ],
+      "blockedForModel": false
+    },
+    "phol>north": {
+      "duration": 360.9,
+      "distance": 2858.7,
+      "roads": [
+        [
+          "",
+          96.6
+        ],
+        [
+          "",
+          298.4
+        ],
+        [
+          "",
+          263.8
+        ],
+        [
+          "Phommathat Road",
+          1224.2
+        ],
+        [
+          "Phousi Road",
+          55.5
+        ],
+        [
+          "Phousi Road",
+          95.4
+        ],
+        [
+          "Kingkitsarath Road",
+          716
+        ],
+        [
+          "",
+          108.7
+        ],
+        [
+          "ຖະໜົນ ສີສະເຫຼີມສັກ",
+          0
+        ]
+      ],
+      "blockedForModel": false
+    }
+  }
+}

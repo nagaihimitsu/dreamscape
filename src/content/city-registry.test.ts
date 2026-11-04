@@ -4,11 +4,11 @@ import { createGame } from "../domain/game";
 import { departToNextCity, getNextCity } from "../domain/city-travel";
 
 it("registers authored cities without making prototypes playable", () => {
-  expect(getCities().map((city) => city.id).sort()).toEqual(["agra", "bukhara", "delhi", "jaipur", "khiva", "milano", "samarkand", "tashkent"]);
+  expect(getCities().map((city) => city.id).sort()).toEqual(["agra", "bukhara", "delhi", "jaipur", "khiva", "luang_prabang", "milano", "samarkand", "tashkent"]);
   expect(getCityContent("milano").travel.cityId).toBe("milano");
   for (const id of ["milano", "delhi", "agra", "jaipur"])
     expect(getCityContent(id).city.productionStatus).toBe("complete");
-  for (const id of ["tashkent", "samarkand", "bukhara", "khiva"]) {
+  for (const id of ["tashkent", "samarkand", "bukhara", "khiva", "luang_prabang"]) {
     expect(getCityContent(id).city.productionStatus).toBe("prototype");
     expect(getCityContent(id).travel.cityId).toBe(id);
   }

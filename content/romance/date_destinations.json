@@ -188,11 +188,6 @@
       "nameEn": "L.O.V.E.",
       "descriptionJa": "証券取引所前に立つ、挑発的な手の彫刻を見る。",
       "backgroundAssetId": "milano_love_date",
-      "referenceImage": {
-        "url": "https://artsandculture.google.com/asset/l-o-v-e-0098/aQFJRsqTBD1p2Q",
-        "labelJa": "彫刻の写真を見る（外部）",
-        "backgroundNoteJa": "背景に彫刻は写っていません"
-      },
       "facts": [
         {
           "publisher": "MUDEC（ミラノ市立文化博物館）",
@@ -226,7 +221,12 @@
           "claimType": "documented_fact",
           "claimJa": "作品は当初2週間の仮設展示の予定だったが、議論を経てその後も広場に残された。"
         }
-      ]
+      ],
+      "referenceImage": {
+        "url": "https://artsandculture.google.com/asset/l-o-v-e-0098/aQFJRsqTBD1p2Q",
+        "labelJa": "彫刻の写真を見る（外部）",
+        "backgroundNoteJa": "背景に彫刻は写っていません"
+      }
     },
     {
       "id": "milano_cafe_naviglio",
@@ -339,11 +339,6 @@
       "nameEn": "Museo del Novecento",
       "descriptionJa": "フォンタナのネオンとドゥオモ広場を同じ窓から眺める。",
       "backgroundAssetId": "milano_novecento_date",
-      "referenceImage": {
-        "url": "https://www.museodelnovecento.org/percorsi/sala-fontana",
-        "labelJa": "作品を公式サイトで見る（外部）",
-        "backgroundNoteJa": "背景写真にネオン作品は写っていません"
-      },
       "facts": [
         {
           "publisher": "Museo del Novecento",
@@ -369,15 +364,20 @@
           "claimType": "documented_fact",
           "claimJa": "フォンタナのネオン作品は手で曲げた管から成る。"
         }
-      ]
+      ],
+      "referenceImage": {
+        "url": "https://www.museodelnovecento.org/percorsi/sala-fontana",
+        "labelJa": "作品を公式サイトで見る（外部）",
+        "backgroundNoteJa": "背景写真にネオン作品は写っていません"
+      }
     },
     {
       "id": "milano_san_maurizio",
+      "cityId": "milano",
       "nameJa": "サン・マウリツィオ教会",
       "nameEn": "San Maurizio al Monastero Maggiore",
-      "cityId": "milano",
-      "backgroundAssetId": "milano_san_maurizio_sound",
       "descriptionJa": "仕切りの両側に描かれた壁画を別々に見て、色を持ち寄る。",
+      "backgroundAssetId": "milano_san_maurizio_sound",
       "facts": [
         {
           "publisher": "YesMilano",
@@ -1166,6 +1166,114 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "イチャン・カラ北側の城門。城壁の外から内城の囲いを見渡す。"
+        }
+      ]
+    },
+    {
+      "id": "luang_prabang_ethnology",
+      "cityId": "luang_prabang",
+      "nameJa": "民族学センター",
+      "nameEn": "Traditional Arts and Ethnology Centre",
+      "descriptionJa": "ラオスの民族文化を扱う博物館。展示替えなどで休館する場合がある。",
+      "backgroundAssetId": "lpb_bg_ethnology",
+      "facts": [
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Luang Prabang: Traditional Arts and Ethnology Centre",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ラオスの民族文化を扱う博物館。展示替えなどで休館する場合がある。"
+        }
+      ]
+    },
+    {
+      "id": "luang_prabang_heuan_chan",
+      "cityId": "luang_prabang",
+      "nameJa": "ヘウアン・チャン文化遺産の家",
+      "nameEn": "Heuan Chan Heritage House",
+      "descriptionJa": "伝統的な家屋や手仕事を紹介する施設。",
+      "backgroundAssetId": "lpb_bg_heuan_chan",
+      "facts": [
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Luang Prabang: Heuan Chan Heritage House",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "伝統的な家屋や手仕事を紹介する施設。"
+        }
+      ]
+    },
+    {
+      "id": "luang_prabang_wat_sen",
+      "cityId": "luang_prabang",
+      "nameJa": "ワット・セーン",
+      "nameEn": "Wat Sensoukharam",
+      "descriptionJa": "旧市街の通り沿いにある寺院。",
+      "backgroundAssetId": "lpb_bg_wat_sen",
+      "facts": [
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Luang Prabang: Wat Sensoukharam",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の通り沿いにある寺院。"
+        }
+      ]
+    },
+    {
+      "id": "luang_prabang_wat_phol_phao",
+      "cityId": "luang_prabang",
+      "nameJa": "ワット・ポンパオ",
+      "nameEn": "Wat Phol Phao",
+      "descriptionJa": "ナムカーン川の東側にある寺院。高台へ向かう道路を経由する。",
+      "backgroundAssetId": "lpb_bg_wat_phol_phao",
+      "facts": [
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Luang Prabang: Wat Phol Phao",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ナムカーン川の東側にある寺院。高台へ向かう道路を経由する。"
+        }
+      ]
+    },
+    {
+      "id": "luang_prabang_haw_pha_bang",
+      "cityId": "luang_prabang",
+      "nameJa": "ホー・パバーン",
+      "nameEn": "Haw Pha Bang",
+      "descriptionJa": "旧王宮の敷地にある礼拝堂。",
+      "backgroundAssetId": "lpb_bg_haw_pha_bang",
+      "facts": [
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Luang Prabang: Haw Pha Bang",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧王宮の敷地にある礼拝堂。"
+        }
+      ]
+    },
+    {
+      "id": "luang_prabang_night_market",
+      "cityId": "luang_prabang",
+      "nameJa": "ルアンパパーン夜市",
+      "nameEn": "Luang Prabang Night Market",
+      "descriptionJa": "シーサワーンウォン通り周辺で開かれる夜市。時間帯により歩行者で混雑する。",
+      "backgroundAssetId": "lpb_bg_night_market",
+      "facts": [
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Luang Prabang: Luang Prabang Night Market",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "シーサワーンウォン通り周辺で開かれる夜市。時間帯により歩行者で混雑する。"
         }
       ]
     }

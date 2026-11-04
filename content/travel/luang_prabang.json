@@ -1,0 +1,3776 @@
+{
+  "cityId": "luang_prabang",
+  "places": [
+    {
+      "id": "luang_prabang_xieng_thong",
+      "cityId": "luang_prabang",
+      "nameJa": "ワット・シェントーン",
+      "nameEn": "Wat Xieng Thong",
+      "latitude": 19.8975,
+      "longitude": 102.143056,
+      "backgroundAssetId": "lpb_bg_xieng_thong",
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Luang Prabang: Wat Xieng Thong",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "半島北端にある寺院。写真には重なる屋根と金色の正面装飾が写る。"
+        },
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Wat Xieng Thong 代表点",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図資料のゲーム用代表点。入口、乗降位置、現地の利用可否を保証しない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "ゲーム内の利用設定",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "営業時間、所要時間、入場料、宿泊、移動費はゲーム用の暫定設定。現地の現行料金や営業を保証しない。"
+        }
+      ]
+    },
+    {
+      "id": "luang_prabang_royal_palace",
+      "cityId": "luang_prabang",
+      "nameJa": "旧王宮・国立博物館",
+      "nameEn": "Royal Palace National Museum",
+      "latitude": 19.8921,
+      "longitude": 102.1356,
+      "backgroundAssetId": "lpb_bg_royal_palace",
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Luang Prabang: Royal Palace National Museum",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧王宮を利用した博物館。館内の撮影・服装に制限があると旅行資料は案内している。"
+        },
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Royal Palace National Museum 代表点",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図資料のゲーム用代表点。入口、乗降位置、現地の利用可否を保証しない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "ゲーム内の利用設定",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "営業時間、所要時間、入場料、宿泊、移動費はゲーム用の暫定設定。現地の現行料金や営業を保証しない。"
+        }
+      ]
+    },
+    {
+      "id": "luang_prabang_phousi",
+      "cityId": "luang_prabang",
+      "nameJa": "プーシーの丘",
+      "nameEn": "Phou Si Hill",
+      "latitude": 19.8904,
+      "longitude": 102.1369,
+      "backgroundAssetId": "lpb_bg_phousi",
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Luang Prabang: Phou Si Hill",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "街を見渡す丘で、王宮側を含む複数の階段がある。"
+        },
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Phou Si Hill 代表点",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図資料のゲーム用代表点。入口、乗降位置、現地の利用可否を保証しない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "ゲーム内の利用設定",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "営業時間、所要時間、入場料、宿泊、移動費はゲーム用の暫定設定。現地の現行料金や営業を保証しない。"
+        }
+      ]
+    },
+    {
+      "id": "luang_prabang_wat_mai",
+      "cityId": "luang_prabang",
+      "nameJa": "ワット・マイ",
+      "nameEn": "Wat Mai Suwannaphumaham",
+      "latitude": 19.8905738,
+      "longitude": 102.1349947,
+      "backgroundAssetId": "lpb_bg_wat_mai",
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Luang Prabang: Wat Mai Suwannaphumaham",
+          "url": "https://www.openstreetmap.org/way/374233712",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧王宮の近く、シーサワーンウォン通りにある寺院。"
+        },
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Wat Mai Suwannaphumaham 代表点",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図資料のゲーム用代表点。入口、乗降位置、現地の利用可否を保証しない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "ゲーム内の利用設定",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "営業時間、所要時間、入場料、宿泊、移動費はゲーム用の暫定設定。現地の現行料金や営業を保証しない。"
+        }
+      ]
+    },
+    {
+      "id": "luang_prabang_ethnology",
+      "cityId": "luang_prabang",
+      "nameJa": "民族学センター",
+      "nameEn": "Traditional Arts and Ethnology Centre",
+      "latitude": 19.8886,
+      "longitude": 102.1353,
+      "backgroundAssetId": "lpb_bg_ethnology",
+      "destinationIds": [
+        "luang_prabang_ethnology"
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Luang Prabang: Traditional Arts and Ethnology Centre",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ラオスの民族文化を扱う博物館。展示替えなどで休館する場合がある。"
+        },
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Traditional Arts and Ethnology Centre 代表点",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図資料のゲーム用代表点。入口、乗降位置、現地の利用可否を保証しない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "ゲーム内の利用設定",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "営業時間、所要時間、入場料、宿泊、移動費はゲーム用の暫定設定。現地の現行料金や営業を保証しない。"
+        }
+      ]
+    },
+    {
+      "id": "luang_prabang_heuan_chan",
+      "cityId": "luang_prabang",
+      "nameJa": "ヘウアン・チャン文化遺産の家",
+      "nameEn": "Heuan Chan Heritage House",
+      "latitude": 19.89288,
+      "longitude": 102.13664,
+      "backgroundAssetId": "lpb_bg_heuan_chan",
+      "destinationIds": [
+        "luang_prabang_heuan_chan"
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Luang Prabang: Heuan Chan Heritage House",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "伝統的な家屋や手仕事を紹介する施設。"
+        },
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Heuan Chan Heritage House 代表点",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図資料のゲーム用代表点。入口、乗降位置、現地の利用可否を保証しない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "ゲーム内の利用設定",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "営業時間、所要時間、入場料、宿泊、移動費はゲーム用の暫定設定。現地の現行料金や営業を保証しない。"
+        }
+      ]
+    },
+    {
+      "id": "luang_prabang_wat_sen",
+      "cityId": "luang_prabang",
+      "nameJa": "ワット・セーン",
+      "nameEn": "Wat Sensoukharam",
+      "latitude": 19.89537,
+      "longitude": 102.14161,
+      "backgroundAssetId": "lpb_bg_wat_sen",
+      "destinationIds": [
+        "luang_prabang_wat_sen"
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Luang Prabang: Wat Sensoukharam",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の通り沿いにある寺院。"
+        },
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Wat Sensoukharam 代表点",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図資料のゲーム用代表点。入口、乗降位置、現地の利用可否を保証しない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "ゲーム内の利用設定",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "営業時間、所要時間、入場料、宿泊、移動費はゲーム用の暫定設定。現地の現行料金や営業を保証しない。"
+        }
+      ]
+    },
+    {
+      "id": "luang_prabang_wat_phol_phao",
+      "cityId": "luang_prabang",
+      "nameJa": "ワット・ポンパオ",
+      "nameEn": "Wat Phol Phao",
+      "latitude": 19.878889,
+      "longitude": 102.145833,
+      "backgroundAssetId": "lpb_bg_wat_phol_phao",
+      "destinationIds": [
+        "luang_prabang_wat_phol_phao"
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Luang Prabang: Wat Phol Phao",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ナムカーン川の東側にある寺院。高台へ向かう道路を経由する。"
+        },
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Wat Phol Phao 代表点",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図資料のゲーム用代表点。入口、乗降位置、現地の利用可否を保証しない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "ゲーム内の利用設定",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "営業時間、所要時間、入場料、宿泊、移動費はゲーム用の暫定設定。現地の現行料金や営業を保証しない。"
+        }
+      ]
+    },
+    {
+      "id": "luang_prabang_haw_pha_bang",
+      "cityId": "luang_prabang",
+      "nameJa": "ホー・パバーン",
+      "nameEn": "Haw Pha Bang",
+      "latitude": 19.89175,
+      "longitude": 102.13644,
+      "backgroundAssetId": "lpb_bg_haw_pha_bang",
+      "destinationIds": [
+        "luang_prabang_haw_pha_bang"
+      ],
+      "openingWindows": [
+        {
+          "start": 540,
+          "end": 1020
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Luang Prabang: Haw Pha Bang",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧王宮の敷地にある礼拝堂。"
+        },
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Haw Pha Bang 代表点",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図資料のゲーム用代表点。入口、乗降位置、現地の利用可否を保証しない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "ゲーム内の利用設定",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "営業時間、所要時間、入場料、宿泊、移動費はゲーム用の暫定設定。現地の現行料金や営業を保証しない。"
+        }
+      ]
+    },
+    {
+      "id": "luang_prabang_night_market",
+      "cityId": "luang_prabang",
+      "nameJa": "ルアンパパーン夜市",
+      "nameEn": "Luang Prabang Night Market",
+      "latitude": 19.8913699,
+      "longitude": 102.1364268,
+      "backgroundAssetId": "lpb_bg_night_market",
+      "destinationIds": [
+        "luang_prabang_night_market"
+      ],
+      "openingWindows": [
+        {
+          "start": 1020,
+          "end": 1230
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Luang Prabang: Luang Prabang Night Market",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "シーサワーンウォン通り周辺で開かれる夜市。時間帯により歩行者で混雑する。"
+        },
+        {
+          "publisher": "Wikivoyage / OpenStreetMap",
+          "title": "Luang Prabang Night Market 代表点",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地図資料のゲーム用代表点。入口、乗降位置、現地の利用可否を保証しない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "ゲーム内の利用設定",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "営業時間、所要時間、入場料、宿泊、移動費はゲーム用の暫定設定。現地の現行料金や営業を保証しない。"
+        }
+      ]
+    },
+    {
+      "id": "luang_prabang_hotel",
+      "cityId": "luang_prabang",
+      "nameJa": "ルアンパパーンの架空の滞在先",
+      "nameEn": "Fictional Luang Prabang lodging",
+      "latitude": 19.88888,
+      "longitude": 102.13311,
+      "backgroundAssetId": "luang_prabang_hotel_bg",
+      "openingWindows": [
+        {
+          "start": 0,
+          "end": 1440
+        }
+      ],
+      "sources": [
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "架空の宿",
+          "url": "https://en.wikivoyage.org/wiki/Luang_Prabang",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "市街地内に設けた架空の宿。実在施設を示さず、宿泊無料はゲーム用設定。"
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "walk",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "walk",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "walk",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "walk",
+      "minutes": 25,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "walk",
+      "minutes": 45,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "walk",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "walk",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "walk",
+      "minutes": 25,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "walk",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "walk",
+      "minutes": 40,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "walk",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "walk",
+      "minutes": 35,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "walk",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "walk",
+      "minutes": 40,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "walk",
+      "minutes": 25,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "walk",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "walk",
+      "minutes": 30,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "walk",
+      "minutes": 35,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "walk",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "walk",
+      "minutes": 40,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "walk",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "walk",
+      "minutes": 45,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "walk",
+      "minutes": 40,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "walk",
+      "minutes": 35,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "walk",
+      "minutes": 40,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "walk",
+      "minutes": 30,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "walk",
+      "minutes": 35,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "walk",
+      "minutes": 40,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "walk",
+      "minutes": 35,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "walk",
+      "minutes": 35,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "walk",
+      "minutes": 35,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "walk",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "walk",
+      "minutes": 35,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "walk",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "walk",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "walk",
+      "minutes": 35,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "walk",
+      "minutes": 25,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "walk",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "walk",
+      "minutes": 35,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "walk",
+      "minutes": 10,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "OpenStreetMap routing.openstreetmap.de",
+          "title": "歩行ネットワークの経路表",
+          "url": "https://routing.openstreetmap.de/routed-foot/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "OpenStreetMapの歩行経路計算を出発点にしたゲーム用推定。代表点と道路への接続、階段、現地の通行・閉鎖は実測していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "minutes": 30,
+      "cost": 30000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 25000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 25000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 30000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 25000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 25000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 30000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 25000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 25000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 30000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 25000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 25000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 25000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 25000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 30000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 25000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 25000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 30000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 30000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 35000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 35000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 35000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 35000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 30000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 35000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "minutes": 15,
+      "cost": 35000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 35000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 35000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 30000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 25000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 25000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 30000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 25000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "minutes": 20,
+      "cost": 25000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 30000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 25000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 25000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 30000,
+      "transferNote": "車道側で乗降・前後に徒歩",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "KPL Lao News Agency",
+          "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+        },
+        {
+          "publisher": "Dreamscape / OpenStreetMap",
+          "title": "車道側の候補乗降点を経由するゲーム用モデル",
+          "url": "https://www.openstreetmap.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "lpb_luang_prabang_main_xieng_thong",
+      "cityId": "luang_prabang",
+      "placeId": "luang_prabang_xieng_thong",
+      "category": "main",
+      "titleJa": "ワット・シェントーンを訪ねる",
+      "contentStatus": "pending_content",
+      "activityMinutes": 60,
+      "apCost": 0,
+      "admissionCost": 40000
+    },
+    {
+      "id": "lpb_luang_prabang_main_royal_palace",
+      "cityId": "luang_prabang",
+      "placeId": "luang_prabang_royal_palace",
+      "category": "main",
+      "titleJa": "旧王宮・国立博物館を訪ねる",
+      "contentStatus": "pending_content",
+      "activityMinutes": 60,
+      "apCost": 0,
+      "admissionCost": 40000
+    },
+    {
+      "id": "lpb_luang_prabang_main_phousi",
+      "cityId": "luang_prabang",
+      "placeId": "luang_prabang_phousi",
+      "category": "main",
+      "titleJa": "プーシーの丘を訪ねる",
+      "contentStatus": "pending_content",
+      "activityMinutes": 60,
+      "apCost": 0,
+      "admissionCost": 40000
+    },
+    {
+      "id": "lpb_luang_prabang_main_wat_mai",
+      "cityId": "luang_prabang",
+      "placeId": "luang_prabang_wat_mai",
+      "category": "main",
+      "titleJa": "ワット・マイを訪ねる",
+      "contentStatus": "pending_content",
+      "activityMinutes": 60,
+      "apCost": 0,
+      "admissionCost": 40000
+    },
+    {
+      "id": "lpb_luang_prabang_date_ethnology",
+      "cityId": "luang_prabang",
+      "placeId": "luang_prabang_ethnology",
+      "category": "date",
+      "titleJa": "民族学センターを訪ねる",
+      "contentStatus": "pending_content",
+      "activityMinutes": 45,
+      "apCost": 2,
+      "admissionCost": 0
+    },
+    {
+      "id": "lpb_luang_prabang_date_heuan_chan",
+      "cityId": "luang_prabang",
+      "placeId": "luang_prabang_heuan_chan",
+      "category": "date",
+      "titleJa": "ヘウアン・チャン文化遺産の家を訪ねる",
+      "contentStatus": "pending_content",
+      "activityMinutes": 45,
+      "apCost": 2,
+      "admissionCost": 0
+    },
+    {
+      "id": "lpb_luang_prabang_date_wat_sen",
+      "cityId": "luang_prabang",
+      "placeId": "luang_prabang_wat_sen",
+      "category": "date",
+      "titleJa": "ワット・セーンを訪ねる",
+      "contentStatus": "pending_content",
+      "activityMinutes": 45,
+      "apCost": 2,
+      "admissionCost": 0
+    },
+    {
+      "id": "lpb_luang_prabang_date_wat_phol_phao",
+      "cityId": "luang_prabang",
+      "placeId": "luang_prabang_wat_phol_phao",
+      "category": "date",
+      "titleJa": "ワット・ポンパオを訪ねる",
+      "contentStatus": "pending_content",
+      "activityMinutes": 45,
+      "apCost": 2,
+      "admissionCost": 0
+    },
+    {
+      "id": "lpb_luang_prabang_date_haw_pha_bang",
+      "cityId": "luang_prabang",
+      "placeId": "luang_prabang_haw_pha_bang",
+      "category": "date",
+      "titleJa": "ホー・パバーンを訪ねる",
+      "contentStatus": "pending_content",
+      "activityMinutes": 45,
+      "apCost": 2,
+      "admissionCost": 0
+    },
+    {
+      "id": "lpb_luang_prabang_date_night_market",
+      "cityId": "luang_prabang",
+      "placeId": "luang_prabang_night_market",
+      "category": "date",
+      "titleJa": "ルアンパパーン夜市を訪ねる",
+      "contentStatus": "pending_content",
+      "activityMinutes": 45,
+      "apCost": 2,
+      "admissionCost": 0
+    }
+  ]
+}

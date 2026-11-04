@@ -1,5 +1,14 @@
 {
   "schemaVersion": 1,
+  "deferred": {
+    "titleJa": "まだ、言葉の途中。",
+    "descriptionJa": "返事を急がず、もう少し話す時間を。\n気持ちを伝える機会は、ここに残っています。"
+  },
+  "ending": {
+    "titleJa": "旅の続きに、きみと。",
+    "descriptionJa": "ふたりは、恋人として歩き始めました。\n旅はこの先も続きます。",
+    "buttonJa": "旅のしおりを見る"
+  },
   "backgrounds": {
     "milano_cafe": {
       "nameJa": "運河沿いのカフェ",
@@ -689,6 +698,82 @@
       "nameJa": "タシュケントの滞在先",
       "captionJa": "タシュケント ／ 架空の滞在先",
       "color": "#67836d",
+      "fallback": "neutral"
+    },
+    "lpb_bg_xieng_thong": {
+      "nameJa": "ワット・シェントーン",
+      "captionJa": "ルアンパパーン ／ ワット・シェントーン",
+      "color": "#82766a",
+      "fallback": "neutral",
+      "imageAssetId": "lpb_image_xieng_thong"
+    },
+    "lpb_bg_royal_palace": {
+      "nameJa": "旧王宮・国立博物館",
+      "captionJa": "ルアンパパーン ／ 旧王宮・国立博物館",
+      "color": "#82766a",
+      "fallback": "neutral",
+      "imageAssetId": "lpb_image_royal_palace"
+    },
+    "lpb_bg_phousi": {
+      "nameJa": "プーシーの丘",
+      "captionJa": "ルアンパパーン ／ プーシーの丘",
+      "color": "#82766a",
+      "fallback": "neutral",
+      "imageAssetId": "lpb_image_phousi"
+    },
+    "lpb_bg_wat_mai": {
+      "nameJa": "ワット・マイ",
+      "captionJa": "ルアンパパーン ／ ワット・マイ",
+      "color": "#82766a",
+      "fallback": "neutral",
+      "imageAssetId": "lpb_image_wat_mai"
+    },
+    "lpb_bg_ethnology": {
+      "nameJa": "民族学センター",
+      "captionJa": "ルアンパパーン ／ 民族学センター",
+      "color": "#82766a",
+      "fallback": "neutral",
+      "imageAssetId": "lpb_image_ethnology"
+    },
+    "lpb_bg_heuan_chan": {
+      "nameJa": "ヘウアン・チャン文化遺産の家",
+      "captionJa": "ルアンパパーン ／ ヘウアン・チャン文化遺産の家",
+      "color": "#82766a",
+      "fallback": "neutral",
+      "imageAssetId": "lpb_image_heuan_chan"
+    },
+    "lpb_bg_wat_sen": {
+      "nameJa": "ワット・セーン",
+      "captionJa": "ルアンパパーン ／ ワット・セーン",
+      "color": "#82766a",
+      "fallback": "neutral",
+      "imageAssetId": "lpb_image_wat_sen"
+    },
+    "lpb_bg_wat_phol_phao": {
+      "nameJa": "ワット・ポンパオ",
+      "captionJa": "ルアンパパーン ／ ワット・ポンパオ",
+      "color": "#82766a",
+      "fallback": "neutral",
+      "imageAssetId": "lpb_image_wat_phol_phao"
+    },
+    "lpb_bg_haw_pha_bang": {
+      "nameJa": "ホー・パバーン",
+      "captionJa": "ルアンパパーン ／ ホー・パバーン",
+      "color": "#82766a",
+      "fallback": "neutral",
+      "imageAssetId": "lpb_image_haw_pha_bang"
+    },
+    "lpb_bg_night_market": {
+      "nameJa": "ルアンパパーン夜市",
+      "captionJa": "ルアンパパーン ／ ルアンパパーン夜市",
+      "color": "#82766a",
+      "fallback": "neutral",
+      "imageAssetId": "lpb_image_night_market"
+    },
+    "luang_prabang_hotel_bg": {
+      "nameJa": "ルアンパパーンの滞在先",
+      "captionJa": "ルアンパパーン ／ 架空の宿",
+      "color": "#817569",
       "fallback": "neutral"
     }
   },
@@ -1443,14 +1528,5 @@
       "titleJa": "見分けられる角が一つ",
       "descriptionJa": "階段井戸へ降りずに段の線をたどり、二人で同じ角を見つけた。"
     }
-  },
-  "ending": {
-    "titleJa": "旅の続きに、きみと。",
-    "descriptionJa": "ふたりは、恋人として歩き始めました。\n旅はこの先も続きます。",
-    "buttonJa": "旅のしおりを見る"
-  },
-  "deferred": {
-    "titleJa": "まだ、言葉の途中。",
-    "descriptionJa": "返事を急がず、もう少し話す時間を。\n気持ちを伝える機会は、ここに残っています。"
   }
 }

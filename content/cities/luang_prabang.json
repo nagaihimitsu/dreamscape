@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "luang_prabang",
+  "countryCode": "LA",
+  "nameJa": "ルアンパパーン",
+  "themeJa": "川と寺院と手仕事の街",
+  "firstClearReward": {
+    "rewardSourceId": "luang_prabang_legacy_episode_placeholder",
+    "ap": 0
+  },
+  "landmarkIdsPlanned": [
+    "luang_prabang_xieng_thong",
+    "luang_prabang_royal_palace",
+    "luang_prabang_phousi",
+    "luang_prabang_wat_mai"
+  ],
+  "productionStatus": "prototype"
+}

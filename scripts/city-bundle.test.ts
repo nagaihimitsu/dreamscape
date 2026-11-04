@@ -12,7 +12,8 @@ import { inspectIndiaReadiness, loadIndiaReadiness } from "./india-readiness";
 import { buildIndiaTransitReview, readIndiaTransitReview } from "./india-transit-review";
 
 const roots: string[] = [];
-const allCities = ["milano", "delhi", "agra", "jaipur", "tashkent", "samarkand", "bukhara", "khiva"];
+const allCities = JSON.parse(readFileSync("content/journeys/catalog.json", "utf8")).journeys
+  .flatMap((journey: { cities: { id: string }[] }) => journey.cities.map((city) => city.id)) as string[];
 function fixture(): string {
   const root = mkdtempSync(path.join(tmpdir(), "dreamscape-city-bundle-"));
   roots.push(root);
@@ -110,7 +111,7 @@ describe("city editing bundle", () => {
       expect(read(root, decisionFile), cityId).toBe(decisions);
     }
     expect(fingerprint(root)).toBe(before);
-  }, 360_000);
+  }, 480_000);
 
   it("applies an explicitly bidirectional edit to exactly those two directed routes", async () => {
     const root = fixture();
@@ -496,7 +497,7 @@ describe("city editing bundle", () => {
       for (const file of untouched) expect(read(root, file), `${cityId}: ${file}`).toBe(before[file]);
       for (const file of sharedFiles) expect(read(root, file), `${cityId}: ${file}`).toBe(sharedBefore[file]);
     }
-  }, 360_000);
+  }, 480_000);
 
   it("edits Milan's observations and image attribution without changing unrelated content", async () => {
     const root = fixture();

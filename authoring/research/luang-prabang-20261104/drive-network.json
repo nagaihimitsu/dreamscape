@@ -1,0 +1,512 @@
+{
+  "sourceUrl": "https://router.project-osrm.org/table/v1/driving/102.143056,19.8975;102.1356,19.8921;102.1369,19.8904;102.1349947,19.8905738;102.1353,19.8886;102.13664,19.89288;102.14161,19.89537;102.145833,19.878889;102.13644,19.89175;102.1364268,19.8913699;102.13311,19.88888?annotations=duration,distance",
+  "checkedAt": "2026-11-04",
+  "points": [
+    "xieng_thong",
+    "royal_palace",
+    "phousi",
+    "wat_mai",
+    "ethnology",
+    "heuan_chan",
+    "wat_sen",
+    "wat_phol_phao",
+    "haw_pha_bang",
+    "night_market",
+    "hotel"
+  ],
+  "data": {
+    "code": "Ok",
+    "distances": [
+      [
+        0,
+        1177,
+        1165.3,
+        1303.8,
+        1855.9,
+        1093.5,
+        431.9,
+        4084.7,
+        1104.5,
+        1132.4,
+        1616.9
+      ],
+      [
+        1453.2,
+        0,
+        797.3,
+        658.8,
+        1057.7,
+        1100.6,
+        815.8,
+        3286.5,
+        1111.6,
+        830.2,
+        818.7
+      ],
+      [
+        1396,
+        189,
+        0,
+        138.5,
+        649.5,
+        288.8,
+        733.4,
+        2878.3,
+        60.9,
+        32.9,
+        410.5
+      ],
+      [
+        1534.5,
+        327.5,
+        138.5,
+        0,
+        511,
+        427.3,
+        872,
+        2739.8,
+        199.4,
+        171.4,
+        272
+      ],
+      [
+        2066.1,
+        828.3,
+        639.3,
+        500.8,
+        0,
+        928.1,
+        1395.4,
+        2416.1,
+        700.1,
+        672.2,
+        346.7
+      ],
+      [
+        1324.1,
+        300.4,
+        288.8,
+        427.3,
+        938.3,
+        0,
+        661.6,
+        3167.1,
+        228,
+        255.9,
+        699.3
+      ],
+      [
+        662.5,
+        745.1,
+        733.4,
+        872,
+        1382.9,
+        661.6,
+        0,
+        3611.7,
+        672.6,
+        700.5,
+        1143.9
+      ],
+      [
+        3415.9,
+        2767.4,
+        2755.8,
+        2662.1,
+        2348.6,
+        2683.9,
+        2745.2,
+        0,
+        2694.9,
+        2722.9,
+        2508
+      ],
+      [
+        1335.1,
+        128.2,
+        60.9,
+        199.4,
+        710.3,
+        228,
+        672.6,
+        2939.2,
+        0,
+        28,
+        471.4
+      ],
+      [
+        1363,
+        156.1,
+        32.9,
+        171.4,
+        682.4,
+        255.9,
+        700.5,
+        2911.2,
+        28,
+        0,
+        443.4
+      ],
+      [
+        1806.5,
+        599.5,
+        410.5,
+        272,
+        336.2,
+        699.3,
+        1143.9,
+        2565.1,
+        471.4,
+        443.4,
+        0
+      ]
+    ],
+    "destinations": [
+      {
+        "hint": "1ECggP___38PAAAAZAAAAFsBAAAAAAAAJRkpQcujYEK9QWdDAAAAAA8AAABkAAAAWwEAAAAAAADmKQEAmpMWBtqdLwFQlBYGnJwvARIAHw8AAAAA",
+        "location": [
+          102.142874,
+          19.897818
+        ],
+        "name": "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+        "distance": 40.03244598
+      },
+      {
+        "hint": "FFJblf___399AAAAkwAAAAAAAABKAAAAv5anQqEvaEEAAAAAFERHQn0AAACTAAAAAAAAAEoAAADmKQEA8XkWBhaJLwEwdxYGhIcvAQAAjxQAAAAA",
+        "location": [
+          102.136305,
+          19.892502
+        ],
+        "name": "ຖະໜົນ ອຸ່ນເຮືອນ",
+        "distance": 86.20887345
+      },
+      {
+        "hint": "GUGggLkFTogQAAAAjgAAAHQAAAAAAAAA4Gc0QYKevELn2ZpCAAAAABAAAACOAAAAdAAAAAAAAADmKQEAV3kWBhSELwFEfBYG4IAvAQgAXw4AAAAA",
+        "location": [
+          102.136151,
+          19.89122
+        ],
+        "name": "Sisavangvong Road",
+        "distance": 119.9730322
+      },
+      {
+        "hint": "ugVOiPXkVYoWAAAAOgAAACwAAAAAAAAASvhuQR2KGkLrH-pBAAAAABYAAAA6AAAALAAAAAAAAADmKQEAZ3UWBuqALwHTdBYGjoEvAQIAXw4AAAAA",
+        "location": [
+          102.135143,
+          19.89041
+        ],
+        "name": "Sisavangvong Road",
+        "distance": 23.87177653
+      },
+      {
+        "hint": "qYZ4hBPKboZUAAAAswAAAD0AAAD7AAAAVXENQkYglEKd6sxBVmDRQlQAAACzAAAAPQAAAPsAAADmKQEAhnQWBll5LwEEdhYG2HkvAQIATxUAAAAA",
+        "location": [
+          102.134918,
+          19.888473
+        ],
+        "name": "",
+        "distance": 42.40512038
+      },
+      {
+        "hint": "jKZsgI2mbIArAAAADAAAAHEAAAAAAAAA0L_xQRDZAkHggJxCAAAAACsAAAAMAAAAcQAAAAAAAADmKQEAunwWBl2LLwFAexYGkIovAQIAnxQAAAAA",
+        "location": [
+          102.137018,
+          19.893085
+        ],
+        "name": "",
+        "distance": 45.63122475
+      },
+      {
+        "hint": "lqZsgIBICIEVAAAAKAAAAGsAAAAxAAAAxX5oQQKV0EFyTo9C_EYDQhUAAAAoAAAAawAAADEAAADmKQEACo8WBtWTLwGqjhYGSpQvAQYATwMAAAAA",
+        "location": [
+          102.141706,
+          19.895253
+        ],
+        "name": "ຖະຫນົນ ສັກກະລິນ",
+        "distance": 16.39644603
+      },
+      {
+        "hint": "j9Lvit96kJUsAAAAAAAAALwAAAAAAAAA9xaRQQAAAAAH2ZxCAAAAACwAAAAAAAAAvAAAAAAAAADmKQEA1J8WBk5VLwEpnxYG6VMvAQ4Azw4AAAAA",
+        "location": [
+          102.146004,
+          19.879246
+        ],
+        "name": "",
+        "distance": 43.38919642
+      },
+      {
+        "hint": "GUGggLkFTogpAAAABwAAAAAAAADiAAAA0qneQdA-hkAAAAAAg_sWQykAAAAHAAAAAAAAAOIAAADmKQEAGHsWBnGFLwF4ehYGJoYvAQAAbw4AAAAA",
+        "location": [
+          102.1366,
+          19.891569
+        ],
+        "name": "Sisavangvong Road",
+        "distance": 26.12042344
+      },
+      {
+        "hint": "GUGggLkFTogjAAAAAgAAADAAAAC9AAAALgq-QfvaiD-7HABCD1H8QiMAAAACAAAAMAAAAL0AAADmKQEAR3oWBtSELwFrehYGqoQvAQIAfw4AAAAA",
+        "location": [
+          102.136391,
+          19.891412
+        ],
+        "name": "Sisavangvong Road",
+        "distance": 5.986054404
+      },
+      {
+        "hint": "6rjxgUhOi4JIAAAARQAAAAAAAAAAAAAAs4JCQpJmNUIAAAAAAAAAAEgAAABFAAAAAAAAAAAAAADmKQEArm0WBrF6LwF2bRYG8HovAQAAbw4AAAAA",
+        "location": [
+          102.133166,
+          19.888817
+        ],
+        "name": "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+        "distance": 9.112459758
+      }
+    ],
+    "durations": [
+      [
+        0,
+        186.3,
+        181.9,
+        202.7,
+        291.5,
+        173.7,
+        72.2,
+        531.1,
+        172.8,
+        177,
+        235.8
+      ],
+      [
+        231.3,
+        0,
+        169,
+        148.2,
+        177.6,
+        173,
+        131,
+        417.2,
+        172.1,
+        173.9,
+        121.9
+      ],
+      [
+        214.3,
+        32.5,
+        0,
+        20.8,
+        117.1,
+        46.6,
+        109.7,
+        356.7,
+        9.1,
+        4.9,
+        61.4
+      ],
+      [
+        235.1,
+        53.3,
+        20.8,
+        0,
+        96.3,
+        67.4,
+        130.5,
+        335.9,
+        29.9,
+        25.7,
+        40.6
+      ],
+      [
+        299.9,
+        139.5,
+        107,
+        86.2,
+        0,
+        153.6,
+        206.7,
+        295.5,
+        116.1,
+        111.9,
+        68
+      ],
+      [
+        209.2,
+        48.2,
+        43.8,
+        64.6,
+        160.9,
+        0,
+        104.6,
+        400.5,
+        34.7,
+        38.9,
+        105.2
+      ],
+      [
+        104.6,
+        114.1,
+        109.7,
+        130.5,
+        226.8,
+        101.5,
+        0,
+        466.4,
+        100.6,
+        104.8,
+        171.1
+      ],
+      [
+        439.2,
+        350.6,
+        346.2,
+        340.1,
+        303.5,
+        338,
+        346,
+        0,
+        337.1,
+        341.3,
+        321.9
+      ],
+      [
+        205.2,
+        23.4,
+        9.1,
+        29.9,
+        126.2,
+        37.5,
+        100.6,
+        365.8,
+        0,
+        4.2,
+        70.5
+      ],
+      [
+        209.4,
+        27.6,
+        4.9,
+        25.7,
+        122,
+        41.7,
+        104.8,
+        361.6,
+        4.2,
+        0,
+        66.3
+      ],
+      [
+        275.7,
+        93.9,
+        61.4,
+        40.6,
+        65.2,
+        108,
+        171.1,
+        304.8,
+        70.5,
+        66.3,
+        0
+      ]
+    ],
+    "sources": [
+      {
+        "hint": "1ECggP___38PAAAAZAAAAFsBAAAAAAAAJRkpQcujYEK9QWdDAAAAAA8AAABkAAAAWwEAAAAAAADmKQEAmpMWBtqdLwFQlBYGnJwvARIAHw8AAAAA",
+        "location": [
+          102.142874,
+          19.897818
+        ],
+        "name": "ຖະໜົນ ສຸວັນນະຄໍາຜົງ",
+        "distance": 40.03244598
+      },
+      {
+        "hint": "FFJblf___399AAAAkwAAAAAAAABKAAAAv5anQqEvaEEAAAAAFERHQn0AAACTAAAAAAAAAEoAAADmKQEA8XkWBhaJLwEwdxYGhIcvAQAAjxQAAAAA",
+        "location": [
+          102.136305,
+          19.892502
+        ],
+        "name": "ຖະໜົນ ອຸ່ນເຮືອນ",
+        "distance": 86.20887345
+      },
+      {
+        "hint": "GUGggLkFTogQAAAAjgAAAHQAAAAAAAAA4Gc0QYKevELn2ZpCAAAAABAAAACOAAAAdAAAAAAAAADmKQEAV3kWBhSELwFEfBYG4IAvAQgAXw4AAAAA",
+        "location": [
+          102.136151,
+          19.89122
+        ],
+        "name": "Sisavangvong Road",
+        "distance": 119.9730322
+      },
+      {
+        "hint": "ugVOiPXkVYoWAAAAOgAAACwAAAAAAAAASvhuQR2KGkLrH-pBAAAAABYAAAA6AAAALAAAAAAAAADmKQEAZ3UWBuqALwHTdBYGjoEvAQIAXw4AAAAA",
+        "location": [
+          102.135143,
+          19.89041
+        ],
+        "name": "Sisavangvong Road",
+        "distance": 23.87177653
+      },
+      {
+        "hint": "qYZ4hBPKboZUAAAAswAAAD0AAAD7AAAAVXENQkYglEKd6sxBVmDRQlQAAACzAAAAPQAAAPsAAADmKQEAhnQWBll5LwEEdhYG2HkvAQIATxUAAAAA",
+        "location": [
+          102.134918,
+          19.888473
+        ],
+        "name": "",
+        "distance": 42.40512038
+      },
+      {
+        "hint": "jKZsgI2mbIArAAAADAAAAHEAAAAAAAAA0L_xQRDZAkHggJxCAAAAACsAAAAMAAAAcQAAAAAAAADmKQEAunwWBl2LLwFAexYGkIovAQIAnxQAAAAA",
+        "location": [
+          102.137018,
+          19.893085
+        ],
+        "name": "",
+        "distance": 45.63122475
+      },
+      {
+        "hint": "lqZsgIBICIEVAAAAKAAAAGsAAAAxAAAAxX5oQQKV0EFyTo9C_EYDQhUAAAAoAAAAawAAADEAAADmKQEACo8WBtWTLwGqjhYGSpQvAQYATwMAAAAA",
+        "location": [
+          102.141706,
+          19.895253
+        ],
+        "name": "ຖະຫນົນ ສັກກະລິນ",
+        "distance": 16.39644603
+      },
+      {
+        "hint": "j9Lvit96kJUsAAAAAAAAALwAAAAAAAAA9xaRQQAAAAAH2ZxCAAAAACwAAAAAAAAAvAAAAAAAAADmKQEA1J8WBk5VLwEpnxYG6VMvAQ4Azw4AAAAA",
+        "location": [
+          102.146004,
+          19.879246
+        ],
+        "name": "",
+        "distance": 43.38919642
+      },
+      {
+        "hint": "GUGggLkFTogpAAAABwAAAAAAAADiAAAA0qneQdA-hkAAAAAAg_sWQykAAAAHAAAAAAAAAOIAAADmKQEAGHsWBnGFLwF4ehYGJoYvAQAAbw4AAAAA",
+        "location": [
+          102.1366,
+          19.891569
+        ],
+        "name": "Sisavangvong Road",
+        "distance": 26.12042344
+      },
+      {
+        "hint": "GUGggLkFTogjAAAAAgAAADAAAAC9AAAALgq-QfvaiD-7HABCD1H8QiMAAAACAAAAMAAAAL0AAADmKQEAR3oWBtSELwFrehYGqoQvAQIAfw4AAAAA",
+        "location": [
+          102.136391,
+          19.891412
+        ],
+        "name": "Sisavangvong Road",
+        "distance": 5.986054404
+      },
+      {
+        "hint": "6rjxgUhOi4JIAAAARQAAAAAAAAAAAAAAs4JCQpJmNUIAAAAAAAAAAEgAAABFAAAAAAAAAAAAAADmKQEArm0WBrF6LwF2bRYG8HovAQAAbw4AAAAA",
+        "location": [
+          102.133166,
+          19.888817
+        ],
+        "name": "ຖະໜົນ ເຈົ້າຟ້າງຸ່ມ",
+        "distance": 9.112459758
+      }
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "initialBudget": 2000000,
+  "hotelPlaceId": "luang_prabang_hotel",
+  "lodgingCost": 0,
+  "retryMinutes": 15,
+  "notes": "初期200万キープと無料宿泊はゲーム用暫定値。徒歩・車道経路はOpenStreetMapの経路計算を参考にした推定値。車は乗降と待ち時間込み、料金は2人分のゲーム設定。現地の運行・運賃・通行を保証しない。"
+}

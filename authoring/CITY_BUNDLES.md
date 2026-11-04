@@ -28,7 +28,7 @@ npm run city:bundle -- apply artifacts/city-work/india-delhi.json
 
 書き出し先には `content/` と `public/` の外を指定してください。既存のファイルは上書きされないため、再度書き出すときは別のファイル名を指定します。
 
-現在の8都市のIDは `milano`、`delhi`、`agra`、`jaipur`、`tashkent`、`samarkand`、`bukhara`、`khiva` です。例えばミラノは `npm run city:bundle -- export milano artifacts/city-work/italy-milano.json` のように書き出します。ミラノとインド3都市には登録済みの観光地と観察ポイントも含まれます。ウズベキスタン4都市は制作基盤の状態で、脚本やクイズの登録は別途必要です。
+現在の9都市のIDは `milano`、`delhi`、`agra`、`jaipur`、`tashkent`、`samarkand`、`bukhara`、`khiva`、`luang_prabang` です。例えばミラノは `npm run city:bundle -- export milano artifacts/city-work/italy-milano.json` のように書き出します。ミラノとインド3都市には登録済みの観光地と観察ポイントも含まれます。ウズベキスタン4都市は制作基盤の状態で、脚本やクイズの登録は別途必要です。
 
 書き出してから `content/` や `public/` のいずれか、インド編の観察カードや公共交通の調査台帳が変更された場合、他都市の変更や画像の追加も含め、古い作業コピーの反映は拒否されます。その場合は、画像・元データを準備したうえで、別名へ再度 `export` し、編集した項目を新しいコピーへ移してください。新しいコピーの `baseFingerprint` は移し替えず、そのまま残します。`baseFingerprint` は競合検出に使うため、手で変更しないでください。都市IDや公開状態もこの操作では変更できません。
 
@@ -123,3 +123,7 @@ npm run city:bundle -- apply artifacts/city-work/sample-city.json
 ## ウズベキスタン4都市
 
 同じコマンドで、例えば `npm run city:bundle -- export tashkent artifacts/city-work/uzbekistan-tashkent.json` と書き出せます。写真・料金・地点・全方向の交通判断も含まれます。`transitDecisions` の `available` と実際の経路が一致しない場合、出典が欠ける場合、未確認の判断が残る場合は反映を拒否します。`not_suitable` はこの地点間のゲーム用移動として採用しない意味で、市全域のサービス不存在を示しません。写真の差替え時は観察資料の確認も必要です。シナリオの追加は [旅行編共通の手順](JOURNEY_AUTHORING.md) を参照してください。
+
+## ルアンパパーン
+
+`npm run city:bundle -- export luang_prabang artifacts/city-work/laos-luang-prabang.json` で編集できます。市街地の観光候補・写真・徒歩と車の推定経路を登録し、旅行編は制作中です。根拠・交通の採否・未制作項目は[調査記録](research/luang-prabang-20261104/README.md)を参照してください。クァンシーの滝と将来のツアー機能は含まれていません。

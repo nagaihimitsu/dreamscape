@@ -1,0 +1,287 @@
+{
+  "checkedAt": "2026-11-04",
+  "regulation": {
+    "publisher": "KPL Lao News Agency",
+    "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+    "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+    "checkedAt": "2026-11-04",
+    "claimType": "documented_fact",
+    "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+  },
+  "model": {
+    "publisher": "Dreamscape / OpenStreetMap",
+    "title": "車道側の候補乗降点を経由するゲーム用モデル",
+    "url": "https://www.openstreetmap.org/",
+    "checkedAt": "2026-11-04",
+    "claimType": "hypothesis",
+    "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+  },
+  "directions": {
+    "luang_prabang_xieng_thong>luang_prabang_wat_phol_phao": {
+      "pickup": "south",
+      "dropoff": "phol",
+      "walkToSeconds": 1242,
+      "carSeconds": 225.9,
+      "walkFromSeconds": 0
+    },
+    "luang_prabang_royal_palace>luang_prabang_xieng_thong": {
+      "pickup": "central",
+      "dropoff": "north",
+      "walkToSeconds": 548.1,
+      "carSeconds": 114.8,
+      "walkFromSeconds": 296.6
+    },
+    "luang_prabang_royal_palace>luang_prabang_wat_sen": {
+      "pickup": "central",
+      "dropoff": "north",
+      "walkToSeconds": 548.1,
+      "carSeconds": 114.8,
+      "walkFromSeconds": 102.2
+    },
+    "luang_prabang_royal_palace>luang_prabang_wat_phol_phao": {
+      "pickup": "south",
+      "dropoff": "phol",
+      "walkToSeconds": 854.8,
+      "carSeconds": 225.9,
+      "walkFromSeconds": 0
+    },
+    "luang_prabang_phousi>luang_prabang_xieng_thong": {
+      "pickup": "central",
+      "dropoff": "north",
+      "walkToSeconds": 313.8,
+      "carSeconds": 114.8,
+      "walkFromSeconds": 296.6
+    },
+    "luang_prabang_phousi>luang_prabang_wat_sen": {
+      "pickup": "central",
+      "dropoff": "north",
+      "walkToSeconds": 313.8,
+      "carSeconds": 114.8,
+      "walkFromSeconds": 102.2
+    },
+    "luang_prabang_phousi>luang_prabang_wat_phol_phao": {
+      "pickup": "south",
+      "dropoff": "phol",
+      "walkToSeconds": 620.5,
+      "carSeconds": 225.9,
+      "walkFromSeconds": 0
+    },
+    "luang_prabang_wat_mai>luang_prabang_xieng_thong": {
+      "pickup": "central",
+      "dropoff": "north",
+      "walkToSeconds": 647.5,
+      "carSeconds": 114.8,
+      "walkFromSeconds": 296.6
+    },
+    "luang_prabang_wat_mai>luang_prabang_wat_sen": {
+      "pickup": "central",
+      "dropoff": "north",
+      "walkToSeconds": 647.5,
+      "carSeconds": 114.8,
+      "walkFromSeconds": 102.2
+    },
+    "luang_prabang_wat_mai>luang_prabang_wat_phol_phao": {
+      "pickup": "south",
+      "dropoff": "phol",
+      "walkToSeconds": 881.4,
+      "carSeconds": 225.9,
+      "walkFromSeconds": 0
+    },
+    "luang_prabang_ethnology>luang_prabang_xieng_thong": {
+      "pickup": "central",
+      "dropoff": "north",
+      "walkToSeconds": 532,
+      "carSeconds": 114.8,
+      "walkFromSeconds": 296.6
+    },
+    "luang_prabang_ethnology>luang_prabang_phousi": {
+      "pickup": "south",
+      "dropoff": "central",
+      "walkToSeconds": 512.3,
+      "carSeconds": 84,
+      "walkFromSeconds": 313.8
+    },
+    "luang_prabang_ethnology>luang_prabang_heuan_chan": {
+      "pickup": "south",
+      "dropoff": "central",
+      "walkToSeconds": 512.3,
+      "carSeconds": 84,
+      "walkFromSeconds": 492.5
+    },
+    "luang_prabang_ethnology>luang_prabang_wat_sen": {
+      "pickup": "central",
+      "dropoff": "north",
+      "walkToSeconds": 532,
+      "carSeconds": 114.8,
+      "walkFromSeconds": 102.2
+    },
+    "luang_prabang_ethnology>luang_prabang_wat_phol_phao": {
+      "pickup": "south",
+      "dropoff": "phol",
+      "walkToSeconds": 512.3,
+      "carSeconds": 225.9,
+      "walkFromSeconds": 0
+    },
+    "luang_prabang_heuan_chan>luang_prabang_xieng_thong": {
+      "pickup": "central",
+      "dropoff": "north",
+      "walkToSeconds": 492.5,
+      "carSeconds": 114.8,
+      "walkFromSeconds": 296.6
+    },
+    "luang_prabang_heuan_chan>luang_prabang_wat_sen": {
+      "pickup": "central",
+      "dropoff": "north",
+      "walkToSeconds": 492.5,
+      "carSeconds": 114.8,
+      "walkFromSeconds": 102.2
+    },
+    "luang_prabang_heuan_chan>luang_prabang_wat_phol_phao": {
+      "pickup": "south",
+      "dropoff": "phol",
+      "walkToSeconds": 799.2,
+      "carSeconds": 225.9,
+      "walkFromSeconds": 0
+    },
+    "luang_prabang_wat_sen>luang_prabang_wat_phol_phao": {
+      "pickup": "south",
+      "dropoff": "phol",
+      "walkToSeconds": 970.4,
+      "carSeconds": 225.9,
+      "walkFromSeconds": 0
+    },
+    "luang_prabang_wat_phol_phao>luang_prabang_xieng_thong": {
+      "pickup": "phol",
+      "dropoff": "north",
+      "walkToSeconds": 0,
+      "carSeconds": 360.9,
+      "walkFromSeconds": 296.6
+    },
+    "luang_prabang_wat_phol_phao>luang_prabang_royal_palace": {
+      "pickup": "phol",
+      "dropoff": "central",
+      "walkToSeconds": 0,
+      "carSeconds": 262.6,
+      "walkFromSeconds": 548.1
+    },
+    "luang_prabang_wat_phol_phao>luang_prabang_phousi": {
+      "pickup": "phol",
+      "dropoff": "central",
+      "walkToSeconds": 0,
+      "carSeconds": 262.6,
+      "walkFromSeconds": 313.8
+    },
+    "luang_prabang_wat_phol_phao>luang_prabang_wat_mai": {
+      "pickup": "phol",
+      "dropoff": "central",
+      "walkToSeconds": 0,
+      "carSeconds": 262.6,
+      "walkFromSeconds": 647.5
+    },
+    "luang_prabang_wat_phol_phao>luang_prabang_ethnology": {
+      "pickup": "phol",
+      "dropoff": "south",
+      "walkToSeconds": 0,
+      "carSeconds": 231.7,
+      "walkFromSeconds": 512.3
+    },
+    "luang_prabang_wat_phol_phao>luang_prabang_heuan_chan": {
+      "pickup": "phol",
+      "dropoff": "central",
+      "walkToSeconds": 0,
+      "carSeconds": 262.6,
+      "walkFromSeconds": 492.5
+    },
+    "luang_prabang_wat_phol_phao>luang_prabang_wat_sen": {
+      "pickup": "phol",
+      "dropoff": "north",
+      "walkToSeconds": 0,
+      "carSeconds": 360.9,
+      "walkFromSeconds": 102.2
+    },
+    "luang_prabang_wat_phol_phao>luang_prabang_haw_pha_bang": {
+      "pickup": "phol",
+      "dropoff": "central",
+      "walkToSeconds": 0,
+      "carSeconds": 262.6,
+      "walkFromSeconds": 501.5
+    },
+    "luang_prabang_wat_phol_phao>luang_prabang_night_market": {
+      "pickup": "phol",
+      "dropoff": "central",
+      "walkToSeconds": 0,
+      "carSeconds": 262.6,
+      "walkFromSeconds": 460.4
+    },
+    "luang_prabang_wat_phol_phao>luang_prabang_hotel": {
+      "pickup": "phol",
+      "dropoff": "south",
+      "walkToSeconds": 0,
+      "carSeconds": 231.7,
+      "walkFromSeconds": 724.1
+    },
+    "luang_prabang_haw_pha_bang>luang_prabang_xieng_thong": {
+      "pickup": "central",
+      "dropoff": "north",
+      "walkToSeconds": 501.5,
+      "carSeconds": 114.8,
+      "walkFromSeconds": 296.6
+    },
+    "luang_prabang_haw_pha_bang>luang_prabang_wat_sen": {
+      "pickup": "central",
+      "dropoff": "north",
+      "walkToSeconds": 501.5,
+      "carSeconds": 114.8,
+      "walkFromSeconds": 102.2
+    },
+    "luang_prabang_haw_pha_bang>luang_prabang_wat_phol_phao": {
+      "pickup": "south",
+      "dropoff": "phol",
+      "walkToSeconds": 808.2,
+      "carSeconds": 225.9,
+      "walkFromSeconds": 0
+    },
+    "luang_prabang_night_market>luang_prabang_xieng_thong": {
+      "pickup": "central",
+      "dropoff": "north",
+      "walkToSeconds": 460.4,
+      "carSeconds": 114.8,
+      "walkFromSeconds": 296.6
+    },
+    "luang_prabang_night_market>luang_prabang_wat_sen": {
+      "pickup": "central",
+      "dropoff": "north",
+      "walkToSeconds": 460.4,
+      "carSeconds": 114.8,
+      "walkFromSeconds": 102.2
+    },
+    "luang_prabang_night_market>luang_prabang_wat_phol_phao": {
+      "pickup": "south",
+      "dropoff": "phol",
+      "walkToSeconds": 767.1,
+      "carSeconds": 225.9,
+      "walkFromSeconds": 0
+    },
+    "luang_prabang_hotel>luang_prabang_xieng_thong": {
+      "pickup": "central",
+      "dropoff": "north",
+      "walkToSeconds": 736.6,
+      "carSeconds": 114.8,
+      "walkFromSeconds": 296.6
+    },
+    "luang_prabang_hotel>luang_prabang_wat_sen": {
+      "pickup": "central",
+      "dropoff": "north",
+      "walkToSeconds": 736.6,
+      "carSeconds": 114.8,
+      "walkFromSeconds": 102.2
+    },
+    "luang_prabang_hotel>luang_prabang_wat_phol_phao": {
+      "pickup": "south",
+      "dropoff": "phol",
+      "walkToSeconds": 724.1,
+      "carSeconds": 225.9,
+      "walkFromSeconds": 0
+    }
+  }
+}

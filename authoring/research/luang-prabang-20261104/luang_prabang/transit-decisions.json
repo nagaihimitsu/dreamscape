@@ -1,0 +1,4998 @@
+{
+  "schemaVersion": 1,
+  "cityId": "luang_prabang",
+  "sourceRefs": {
+    "wikivoyage": {
+      "publisher": "Wikivoyage",
+      "title": "Luang Prabang: Get around",
+      "url": "https://en.wikivoyage.org/wiki/Luang_Prabang#Get_around",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "旧市街は徒歩で巡れる規模で、移動手段としてトゥクトゥクや配車を紹介。地点間の市内バス、鉄道、トラムの運行経路をこの資料から確定できない。"
+    },
+    "model": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "市内移動の採用方針",
+      "url": "https://en.wikivoyage.org/wiki/Luang_Prabang#Get_around",
+      "checkedAt": "2026-11-04",
+      "claimType": "hypothesis",
+      "claimJa": "ゲームでは徒歩と車を採用。市内定期交通の各地点間の接続・運賃を確認できないため今回採用せず、実際に運行していないと断定しない。車の所要時間・料金はゲーム用推定。"
+    },
+    "restriction": {
+      "publisher": "KPL Lao News Agency",
+      "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+      "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+    },
+    "bus_2026": {
+      "publisher": "JICA",
+      "title": "Luang Prabang urban transport study (p. 2-22)",
+      "url": "https://openjicareport.jica.go.jp/pdf/12395885.pdf",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "調査報告は2020年の路線バス停止後、都市内交通をトゥクトゥク等と説明し、後続の実証運行にも触れる。調査時点以後の運行は別途確認が必要。"
+    },
+    "ebus": {
+      "publisher": "We Are Lao",
+      "title": "Getting around Luang Prabang",
+      "url": "https://wearelao.com/standard-page/getting-around-luang-prabang/",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "旧市街の緑・黄など電動車両の路線を紹介するが、現行の各地点間停留所・運賃は確認できず、JICAの記述と時期に差がある。"
+    }
+  },
+  "decisions": [
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bus",
+      "status": "not_suitable",
+      "reasonJa": "過去の電動交通の記載と停止・実証運行の報告があるが、現行の各地点間の乗降地点と運賃を確認できないため今回は不採用。運行していないと断定しない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "bus_2026",
+        "ebus"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "rail",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "tram",
+      "status": "not_suitable",
+      "reasonJa": "この地点間の定期交通としての接続・運賃を確認できず、今回は採用しない。運行不存在を示さない。",
+      "sourceRefs": [
+        "wikivoyage",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    }
+  ]
+}
