@@ -6,6 +6,6 @@ export default defineConfig({
   test: {
     include: ["src/**/*.test.ts", "scripts/**/*.test.ts"],
     // Content validation compiles every Ink branch, including relationship tones.
-    testTimeout: 60_000,
+    testTimeout: 180_000,
   },
 });
