@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { dialogueExpressions, dialogueReactions, episodes } from "../../content";
+import { dialogueExpressions, dialogueReactions, episodes, getCityContent } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import { presentationStoryId } from "../../content/legacy-milano";
@@ -17,6 +17,7 @@ import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { DialogueControls } from "../../components/DialogueControls";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
+import { CityArrivalLogo } from "./CityArrivalLogo";
 
 export function EpilogueScreen({
   game,
@@ -24,6 +25,7 @@ export function EpilogueScreen({
   reduceMotion,
   autoAdvanceEnabled = false,
   onAdvance,
+  onLogoComplete,
 }: {
   game: GameState;
   speed: number;
@@ -31,9 +33,13 @@ export function EpilogueScreen({
   onSpeed: (value: number) => void;
   autoAdvanceEnabled?: boolean;
   onAdvance: () => void;
+  onLogoComplete?: () => void;
 }) {
   const active = game.activeEpilogue!;
-  const nextCity = getJourneyForCity(game.currentCityId)?.id === "golden_triangle" ? getNextCity(game) : undefined;
+  const arrival = active.kind === "arrival";
+  const showLogo = arrival && !active.logoComplete;
+  const city = getCityContent(game.currentCityId).city;
+  const nextCity = getJourneyForCity(game.currentCityId)?.cityTransition === "after_epilogue" ? getNextCity(game) : undefined;
   const windowVisibility = useDialogueWindow();
   const dialogueRef = useDialogueScrollReset<HTMLElement>(active.storyState);
   const frame = active.frame;
@@ -53,11 +59,11 @@ export function EpilogueScreen({
     frame.text,
   );
   const advanceSafely = () => {
-    if (ready && !windowVisibility.hidden && !dialogueObstructed()) onAdvance();
+    if (ready && !showLogo && !windowVisibility.hidden && !dialogueObstructed()) onAdvance();
   };
   const autoAdvance = useAutoAdvance({
     ready,
-    canAdvance: !frame.ended && !windowVisibility.hidden,
+    canAdvance: !frame.ended && !showLogo && !windowVisibility.hidden,
     text: frame.text,
     onAdvance: advanceSafely,
     defaultEnabled: autoAdvanceEnabled,
@@ -68,7 +74,8 @@ export function EpilogueScreen({
       ?.scrollIntoView({ block: "start" });
   }, []);
   return (
-    <div id="city-epilogue-screen" data-testid="city-epilogue-screen">
+    <div id="city-epilogue-screen" data-testid={arrival ? "city-arrival-screen" : "city-epilogue-screen"}>
+      {showLogo && <CityArrivalLogo nameJa={city.nameJa} reduceMotion={reduceMotion} onEnd={onLogoComplete ?? (() => undefined)} />}
       <div className="vn-scene" data-dialogue-hidden={windowVisibility.hidden || undefined}>
         <div className="vn-background">
           <CanalScene backgroundId={frame.background} />
@@ -87,14 +94,14 @@ export function EpilogueScreen({
         <section
           ref={dialogueRef}
           className="paper story-paper vn-dialogue"
-          aria-label="都市エピローグ"
-          inert={windowVisibility.hidden}
-          aria-hidden={windowVisibility.hidden || undefined}
+          aria-label={arrival ? "到着の会話" : "都市エピローグ"}
+          inert={windowVisibility.hidden || showLogo}
+          aria-hidden={windowVisibility.hidden || showLogo || undefined}
         >
           <div className="speaker">{speaker}</div>
           <DialogueControls close={<DialogueWindowHide state={windowVisibility} label="閉じる" />} entries={entries} auto={autoAdvance} />
-          <p className="eyebrow">都市エピローグ</p>
-          <h1>{episode.clearTitleJa}</h1>
+          <p className="eyebrow">{arrival ? "旅のはじまり" : "都市エピローグ"}</p>
+          <h1>{arrival ? `${city.nameJa}に到着` : episode.clearTitleJa}</h1>
           <DialogueText
             key={game.revision}
             text={frame.text}
@@ -105,10 +112,10 @@ export function EpilogueScreen({
           {frame.ended && <button
             className="next"
             disabled={!ready}
-            data-testid="epilogue-advance"
+            data-testid={arrival ? "arrival-advance" : "epilogue-advance"}
             onClick={advanceSafely}
           >
-            {nextCity ? `${nextCity.city.nameJa}へ進む` : "ふたりの自由時間へ"}{" "}
+            {arrival ? "街を見に行く" : nextCity ? `${nextCity.city.nameJa}へ進む` : "ふたりの自由時間へ"}{" "}
             <span aria-hidden="true">→</span>
           </button>}
         </section>

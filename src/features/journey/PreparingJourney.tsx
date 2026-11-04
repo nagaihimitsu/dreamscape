@@ -1,13 +1,12 @@
 import { useState, type FormEvent } from "react";
 import { balance } from "../../content";
-import { getJourney } from "../../content/journeys";
+import type { Journey } from "../../content/journeys";
 import { loadJourneyDraft, saveJourneyDraft } from "../../persistence/journey-preparation";
 import type { StorageLike } from "../../persistence";
 import { JourneySelection } from "./JourneySelection";
 
 /** A saved preparation is not a playable city: no fictional hotel or budget is introduced. */
-export function PreparingJourney({ storage, onSwitchJourney }: { storage: StorageLike; onSwitchJourney: (id: string) => void }) {
-  const journey = getJourney("golden_triangle")!;
+export function PreparingJourney({ journey, storage, onSwitchJourney }: { journey: Journey; storage: StorageLike; onSwitchJourney: (id: string) => void }) {
   const [loaded, setLoaded] = useState(() => loadJourneyDraft(storage));
   const [player, setPlayer] = useState(balance.defaultPlayerName);
   const [heroine, setHeroine] = useState(balance.defaultHeroineName);
@@ -32,9 +31,9 @@ export function PreparingJourney({ storage, onSwitchJourney }: { storage: Storag
         <p className="eyebrow">旅のはじまり</p>
         <JourneySelection value={journey.id} onChange={onSwitchJourney} />
         <h1>{journey.nameJa}</h1>
-        <p className="lead">{journey.cities.map((city) => city.nameJa).join(" → ")}</p>
+        <p className="lead">{journey.cities.map((city, index) => <span key={city.id} className="journey-route-stop">{index ? " → " : ""}{city.nameJa}</span>)}</p>
         <p>この旅行編は制作中です。観光やイベントはまだ遊べません。</p>
-        <p>名前を保存して、旅の準備をしておくことができます。ミラノ編の記録は引き継がれず、それぞれ別に保存されます。</p>
+        <p>名前を保存して、旅の準備をしておくことができます。他の旅行編の記録は引き継がれず、それぞれ別に保存されます。</p>
         {loaded.status === "invalid" && <div className="notice warning" role="alert">{loaded.message}</div>}
         {loaded.status === "loaded" ? <div className="journey-preparation-saved" role="status">
           <strong>旅の準備を保存しています</strong>

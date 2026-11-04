@@ -4,13 +4,25 @@ import {
   battleQuizzes,
   battles,
   city,
-  journeyConfig,
+  journeyConfig as allJourneyConfig,
   landmarks,
   trialMilestones,
   type JourneyConfig,
 } from "../src/content";
 import { validateJourney } from "./journey-validation";
 import { journeySchema, type RewardRule } from "../src/content/journey-schemas";
+
+// The validator receives one city at a time, as it does in content-pipeline.
+const episodes = allJourneyConfig.episodes.filter((episode) => episode.cityId === city.id);
+const episodeIds = new Set(episodes.map((episode) => episode.id));
+const storyBattles = allJourneyConfig.storyBattles.filter((entry) => {
+  const battle = battles.find((battle) => battle.id === entry.battleId);
+  return landmarks.some((landmark) => landmark.id === battle?.landmarkId && landmark.cityId === city.id);
+});
+const storyBattleIds = new Set(storyBattles.map((entry) => entry.battleId));
+const journeyConfig: JourneyConfig = { ...allJourneyConfig, episodes, storyBattles,
+  rewards: allJourneyConfig.rewards.filter((rule) => rule.episodeId !== undefined
+    ? episodeIds.has(rule.episodeId) : rule.battleId !== undefined && storyBattleIds.has(rule.battleId)) };
 
 function check(journey: JourneyConfig) {
   validateJourney(journey, city, balance.apCap, landmarks, battles, battleQuizzes, trialMilestones);

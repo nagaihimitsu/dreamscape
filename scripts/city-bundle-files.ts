@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { closeSync, existsSync, linkSync, lstatSync, openSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { indiaInputFingerprint } from "./promote-india";
+import { cityTransitFile } from "./journey-transit-review";
 
 export const decisionFile = "authoring/research/golden-triangle-transit-20261103/decisions.json";
 export const catalogFiles = ["content/romance/presentation.json", "content/tourism/catalog.json", "content/romance/date_destinations.json"] as const;
@@ -16,6 +17,17 @@ export function inputFingerprint(root: string, ignored: ReadonlySet<string> = ne
     if (lstatSync(file).isSymbolicLink()) throw new Error("Transit decisions must not be a symlink");
     h.update("transit\0").update(readFileSync(file));
   } else h.update("missing-transit\0");
+  const catalog = read(root, "content/journeys/catalog.json");
+  for (const city of catalog.journeys.flatMap((journey: { cities: { id: string }[] }) => journey.cities)) {
+    const ledger = cityTransitFile(root, city.id);
+    if (!ledger) continue;
+    const absolute = path.join(root, ledger);
+    h.update(ledger).update("\0");
+    if (existsSync(absolute)) {
+      if (lstatSync(absolute).isSymbolicLink()) throw new Error("Transit decisions must not be a symlink");
+      h.update(readFileSync(absolute));
+    } else h.update("missing");
+  }
   return h.digest("hex");
 }
 export function existing(root: string, id: string): boolean {
@@ -29,7 +41,9 @@ export function writeCityBundleFiles(root: string, original: Record<string, stri
   move: typeof renameSync = renameSync, createLink: typeof linkSync = linkSync) {
   const files = Object.keys(next);
   const allowed = /^content\/(?:cities\/[a-z][a-z0-9_]*\.json|travel\/[a-z][a-z0-9_]*(?:-settings)?\.json|romance\/(?:presentation|date_destinations)\.json|tourism\/catalog\.json)$/;
-  if (files.some((file) => (!allowed.test(file) && file !== decisionFile) || !Object.hasOwn(original, file) || typeof next[file] !== "string"))
+  const extraLedgers = new Set(read(root, "content/journeys/catalog.json").journeys.flatMap((journey: { cities: { id: string }[] }) => journey.cities)
+    .map((city: { id: string }) => cityTransitFile(root, city.id)).filter(Boolean));
+  if (files.some((file) => (!allowed.test(file) && file !== decisionFile && !extraLedgers.has(file)) || !Object.hasOwn(original, file) || typeof next[file] !== "string"))
     throw new Error("Invalid city bundle file set");
   const token = `${process.pid}-${Date.now()}-${Math.random().toString(36).slice(2)}`;
   const staged: string[] = [], changed: string[] = [];

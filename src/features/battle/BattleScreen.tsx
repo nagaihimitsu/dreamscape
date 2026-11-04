@@ -40,7 +40,7 @@ interface Props {
   onAdvance: () => void;
   onAnswer: (id: string) => boolean;
   onHint: () => void;
-  onLeave: () => void;
+  onLeave?: () => void;
   onNotebook?: () => void;
   onClaimRewards: () => void;
   onPress: () => void;
@@ -310,7 +310,7 @@ export function BattleScreen({
               characterId={characterForBattle(battle.id)}
               emotion={enemyEmotion}
               active={frame?.speaker === "enemy"}
-              fallback={
+              fallback={battle.portrait === "abstract" ? undefined :
                 <EnemyPortrait
                   emotion={enemyEmotion}
                   variant={battle.format}
@@ -412,13 +412,13 @@ export function BattleScreen({
                   エピローグへ進む <span aria-hidden="true">→</span>
                 </button>
               )}
-              <button
+              {onLeave && <button
                 className={onEpilogue || onNextStoryBattle ? "secondary" : "primary"}
                 onClick={onLeave}
               >
                 {isSpecial ? "自由時間へ戻る" : "自由時間へ進む"}{" "}
                 <span aria-hidden="true">→</span>
-              </button>
+              </button>}
               {onNextEpisode && (
                 <button
                   className="secondary"

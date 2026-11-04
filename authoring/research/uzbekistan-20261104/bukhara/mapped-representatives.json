@@ -1,0 +1,113 @@
+{
+  "batchcomplete": "",
+  "query": {
+    "pages": {
+      "-1": {
+        "ns": 0,
+        "title": "Tok-i-Zargaron",
+        "missing": ""
+      },
+      "-2": {
+        "ns": 0,
+        "title": "Abdulaziz Khan Madrasa",
+        "missing": ""
+      },
+      "-3": {
+        "ns": 0,
+        "title": "Ulugh Beg Madrasa (Bukhara)",
+        "missing": ""
+      },
+      "6106917": {
+        "pageid": 6106917,
+        "ns": 0,
+        "title": "Ark of Bukhara",
+        "coordinates": [
+          {
+            "lat": 39.77777778,
+            "lon": 64.41027778,
+            "primary": "",
+            "globe": "earth"
+          }
+        ]
+      },
+      "54598060": {
+        "pageid": 54598060,
+        "ns": 0,
+        "title": "Bolo Haouz Mosque",
+        "coordinates": [
+          {
+            "lat": 39.77777778,
+            "lon": 64.4075,
+            "primary": "",
+            "globe": "earth"
+          }
+        ]
+      },
+      "50991225": {
+        "pageid": 50991225,
+        "ns": 0,
+        "title": "Chor Minor",
+        "coordinates": [
+          {
+            "lat": 40.38583333,
+            "lon": 49.83777778,
+            "primary": "",
+            "globe": "earth"
+          }
+        ]
+      },
+      "4543039": {
+        "pageid": 4543039,
+        "ns": 0,
+        "title": "Lab-i Hauz",
+        "coordinates": [
+          {
+            "lat": 39.77305556,
+            "lon": 64.42027778,
+            "primary": "",
+            "globe": "earth"
+          }
+        ]
+      },
+      "54685350": {
+        "pageid": 54685350,
+        "ns": 0,
+        "title": "Magok-i-Attari Mosque",
+        "coordinates": [
+          {
+            "lat": 39.7732,
+            "lon": 64.4183,
+            "primary": "",
+            "globe": "earth"
+          }
+        ]
+      },
+      "4731919": {
+        "pageid": 4731919,
+        "ns": 0,
+        "title": "Po-i-Kalyan",
+        "coordinates": [
+          {
+            "lat": 39.77583333,
+            "lon": 64.41416667,
+            "primary": "",
+            "globe": "earth"
+          }
+        ]
+      },
+      "4531751": {
+        "pageid": 4531751,
+        "ns": 0,
+        "title": "Samanid Mausoleum",
+        "coordinates": [
+          {
+            "lat": 39.77694444,
+            "lon": 64.40055556,
+            "primary": "",
+            "globe": "earth"
+          }
+        ]
+      }
+    }
+  }
+}

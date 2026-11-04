@@ -43,7 +43,7 @@ describe("India city travel data", () => {
 
   it.each(cities)("can schedule each proposed event from each location in %s", (cityId) => {
     const { travel, travelSettings } = getCityContent(cityId);
-    // This only tests travel feasibility: the unfinished stories remain locked.
+    // This tests travel feasibility separately from story progress requirements.
     // Waiting is in 30-minute steps and the game week is independent of the real clock.
     for (const origin of travel.places) for (const event of travel.events) {
       const place = travel.places.find((item) => item.id === event.placeId)!;

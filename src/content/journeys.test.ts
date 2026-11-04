@@ -4,9 +4,9 @@ import { journeyCatalogSchema } from "./journey-catalog";
 import { getJourney, getJourneyForCity } from "./journeys";
 
 describe("journey catalog", () => {
-  it("keeps the planned Indian cities ordered and separate from Milan", () => {
+  it("keeps the playable Indian cities ordered and separate from Milan", () => {
     const india = getJourney("golden_triangle")!;
-    expect(india.status).toBe("preparing");
+    expect(india.status).toBe("available");
     expect(india.cities.map((city) => city.id)).toEqual(["delhi", "agra", "jaipur"]);
     expect(india.currency.code).toBe("INR");
     expect(india.initialBudget).toBe(30_000);

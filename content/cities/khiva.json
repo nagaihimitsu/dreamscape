@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "khiva",
+  "countryCode": "UZ",
+  "nameJa": "ヒヴァ",
+  "themeJa": "城壁の内側に息づく街",
+  "firstClearReward": {
+    "rewardSourceId": "khiva_legacy_episode_placeholder",
+    "ap": 0
+  },
+  "landmarkIdsPlanned": [
+    "khiva_kunya_ark",
+    "khiva_juma_mosque",
+    "khiva_tash_hauli",
+    "khiva_islam_khoja"
+  ],
+  "productionStatus": "prototype"
+}

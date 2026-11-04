@@ -15,7 +15,7 @@ export default function App(props: AppProps = {}) {
   const scopedStorage = useMemo(() => journeyStorage(baseStorage, journeyId), [baseStorage, journeyId]);
   const [lockAttempt, setLockAttempt] = useState(0);
   const journey = getJourney(journeyId);
-  const readOnlyPreparation = journey?.status === "preparing" && journey.id !== "golden_triangle";
+  const readOnlyPreparation = journey?.status === "preparing" && !journey.initialState;
   // A read-only preparation has no save to edit, so it needs no storage lock.
   const lockStatus = useJourneyLock(props.debug || readOnlyPreparation ? "milano" : journeyId, scopedStorage, lockAttempt);
   // Debug supplies an isolated, pre-populated game; do not alter its storage.
@@ -29,11 +29,11 @@ export default function App(props: AppProps = {}) {
     {lockStatus === "busy" && <button type="button" className="secondary" onClick={() => setLockAttempt((value) => value + 1)}>再試行</button>}
   </section></main></div>;
   if (journey?.status === "preparing") {
-    return journey.id === "golden_triangle"
-      ? <PreparingJourney key={journeyId} storage={scopedStorage} onSwitchJourney={setJourneyId} />
+    return journey.initialState
+      ? <PreparingJourney key={journeyId} journey={journey} storage={scopedStorage} onSwitchJourney={setJourneyId} />
       : <UnavailableJourney journey={journey} onSwitchJourney={setJourneyId} />;
   }
-  if (journeyId === "golden_triangle") return <PlayableJourney key={journeyId} {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={setJourneyId} />;
+  if (journey?.initialState) return <PlayableJourney key={journeyId} {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={setJourneyId} />;
   return <GameApp key={journeyId} {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={setJourneyId} />;
 }
 

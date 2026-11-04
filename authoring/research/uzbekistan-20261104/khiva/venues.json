@@ -1,0 +1,257 @@
+{
+  "schemaVersion": 1,
+  "cityId": "khiva",
+  "checkedAt": "2026-11-04",
+  "venues": [
+    {
+      "placeId": "khiva_kunya_ark",
+      "visitScopeJa": "内部と外観。追加料金の展望台・塔の登頂は含めない。",
+      "activityMinutes": 60,
+      "admissionCost": 125000,
+      "admissionPolicy": "game_allocation",
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Kunya Ark",
+          "url": "https://uzbekistan.travel/en/o/kunya-ark-fortress/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "城壁の内側にさらに囲いを持つ、ヒヴァのハンの旧居城。"
+        },
+        {
+          "publisher": "Khiva Guide / Dreamscape",
+          "title": "Ichan-Kala ticket references and game allocation",
+          "url": "https://khivaguide.uz/places/ichan-kala/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "旅行ガイドの外国人大人向け共通券約250,000スムという参考記載を基に、二人分500,000スムを主観光4件に125,000ずつ配分したゲーム専用値。実際の単館料金ではなく、共通券の購入・有効期間を再現しない。ミナレット登頂や別券施設内部は対象外。"
+        }
+      ]
+    },
+    {
+      "placeId": "khiva_juma_mosque",
+      "visitScopeJa": "内部と外観。追加料金の展望台・塔の登頂は含めない。",
+      "activityMinutes": 60,
+      "admissionCost": 125000,
+      "admissionPolicy": "game_allocation",
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Juma Mosque",
+          "url": "https://uzbekistan.travel/en/o/reasons-celebrate-ramadan-uzbekistan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "多数の彫刻された木柱が並ぶ礼拝堂で知られる、イチャン・カラのモスク。"
+        },
+        {
+          "publisher": "Khiva Guide / Dreamscape",
+          "title": "Ichan-Kala ticket references and game allocation",
+          "url": "https://khivaguide.uz/places/ichan-kala/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "旅行ガイドの外国人大人向け共通券約250,000スムという参考記載を基に、二人分500,000スムを主観光4件に125,000ずつ配分したゲーム専用値。実際の単館料金ではなく、共通券の購入・有効期間を再現しない。ミナレット登頂や別券施設内部は対象外。"
+        }
+      ]
+    },
+    {
+      "placeId": "khiva_tash_hauli",
+      "visitScopeJa": "内部と外観。追加料金の展望台・塔の登頂は含めない。",
+      "activityMinutes": 75,
+      "admissionCost": 125000,
+      "admissionPolicy": "game_allocation",
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Tash Hauli Palace",
+          "url": "https://uzbekistan.travel/en/o/tash-houli/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アラクリ・ハンの時代に造られ、複数の中庭と精緻な装飾を持つ宮殿。"
+        },
+        {
+          "publisher": "Khiva Guide / Dreamscape",
+          "title": "Ichan-Kala ticket references and game allocation",
+          "url": "https://khivaguide.uz/places/ichan-kala/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "旅行ガイドの外国人大人向け共通券約250,000スムという参考記載を基に、二人分500,000スムを主観光4件に125,000ずつ配分したゲーム専用値。実際の単館料金ではなく、共通券の購入・有効期間を再現しない。ミナレット登頂や別券施設内部は対象外。"
+        }
+      ]
+    },
+    {
+      "placeId": "khiva_islam_khoja",
+      "visitScopeJa": "内部と外観。追加料金の展望台・塔の登頂は含めない。",
+      "activityMinutes": 45,
+      "admissionCost": 125000,
+      "admissionPolicy": "game_allocation",
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Islam Khoja Complex",
+          "url": "https://uzbekistan.travel/en/o/islam-khoja-minaret-khiva/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "細く高いミナレット、マドラサ、モスクからなる複合体。"
+        },
+        {
+          "publisher": "Khiva Guide / Dreamscape",
+          "title": "Ichan-Kala ticket references and game allocation",
+          "url": "https://khivaguide.uz/places/ichan-kala/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "旅行ガイドの外国人大人向け共通券約250,000スムという参考記載を基に、二人分500,000スムを主観光4件に125,000ずつ配分したゲーム専用値。実際の単館料金ではなく、共通券の購入・有効期間を再現しない。ミナレット登頂や別券施設内部は対象外。"
+        }
+      ]
+    },
+    {
+      "placeId": "khiva_kalta_minor",
+      "visitScopeJa": "外観・路地・城門周辺のみ。施設内部や城壁登上は含めない。",
+      "activityMinutes": 45,
+      "admissionCost": 0,
+      "admissionPolicy": "exterior_only",
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Kalta Minor exterior",
+          "url": "https://uzbekistan.travel/en/o/kalta-minor-khiva/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "青緑のタイルに覆われた、未完のミナレットを外から眺める場所。"
+        },
+        {
+          "publisher": "Dreamscape game design",
+          "title": "Exterior visit policy",
+          "url": "https://uzbekistan.travel/en/o/kalta-minor-khiva/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "外観・路地の訪問を無料とするゲーム設定。現地の有料区域や通行条件を保証しない。"
+        }
+      ]
+    },
+    {
+      "placeId": "khiva_pahlavan_mahmud",
+      "visitScopeJa": "外観・路地・城門周辺のみ。施設内部や城壁登上は含めない。",
+      "activityMinutes": 40,
+      "admissionCost": 0,
+      "admissionPolicy": "exterior_only",
+      "sources": [
+        {
+          "publisher": "Advantour",
+          "title": "Pahlavan Mahmud Mausoleum exterior",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "詩人・力士として知られる人物をまつる廟。ここでは路地からドームを見上げる外観の訪問を扱う。"
+        },
+        {
+          "publisher": "Dreamscape game design",
+          "title": "Exterior visit policy",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "外観・路地の訪問を無料とするゲーム設定。現地の有料区域や通行条件を保証しない。"
+        }
+      ]
+    },
+    {
+      "placeId": "khiva_muhammad_amin_khan",
+      "visitScopeJa": "外観・路地・城門周辺のみ。施設内部や城壁登上は含めない。",
+      "activityMinutes": 30,
+      "admissionCost": 0,
+      "admissionPolicy": "exterior_only",
+      "sources": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Muhammad Amin Khan Madrasa exterior",
+          "url": "https://uzbekistan.travel/en/o/the-madrasah-of-muhammad-amin-khan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "カルタ・ミノルに隣接するマドラサ。二階の居室や装飾された正面を外から見る。"
+        },
+        {
+          "publisher": "Dreamscape game design",
+          "title": "Exterior visit policy",
+          "url": "https://uzbekistan.travel/en/o/the-madrasah-of-muhammad-amin-khan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "外観・路地の訪問を無料とするゲーム設定。現地の有料区域や通行条件を保証しない。"
+        }
+      ]
+    },
+    {
+      "placeId": "khiva_ota_darvoza",
+      "visitScopeJa": "外観・路地・城門周辺のみ。施設内部や城壁登上は含めない。",
+      "activityMinutes": 30,
+      "admissionCost": 0,
+      "admissionPolicy": "exterior_only",
+      "sources": [
+        {
+          "publisher": "Khiva Guide",
+          "title": "Ota Darvoza (West Gate)",
+          "url": "https://khivaguide.uz/places/ota-darvoza",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "イチャン・カラの西門。旧市街と城壁の外をつなぐ入口。"
+        },
+        {
+          "publisher": "Dreamscape game design",
+          "title": "Exterior visit policy",
+          "url": "https://khivaguide.uz/places/ota-darvoza",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "外観・路地の訪問を無料とするゲーム設定。現地の有料区域や通行条件を保証しない。"
+        }
+      ]
+    },
+    {
+      "placeId": "khiva_palvan_darvoza",
+      "visitScopeJa": "外観・路地・城門周辺のみ。施設内部や城壁登上は含めない。",
+      "activityMinutes": 30,
+      "admissionCost": 0,
+      "admissionPolicy": "exterior_only",
+      "sources": [
+        {
+          "publisher": "Khiva Guide",
+          "title": "Palvan Darvoza (East Gate)",
+          "url": "https://khivaguide.uz/places/polvon-gate",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "イチャン・カラの東門。通路を抜けると城壁の厚みを感じられる。"
+        },
+        {
+          "publisher": "Dreamscape game design",
+          "title": "Exterior visit policy",
+          "url": "https://khivaguide.uz/places/polvon-gate",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "外観・路地の訪問を無料とするゲーム設定。現地の有料区域や通行条件を保証しない。"
+        }
+      ]
+    },
+    {
+      "placeId": "khiva_bogcha_darvoza",
+      "visitScopeJa": "外観・路地・城門周辺のみ。施設内部や城壁登上は含めない。",
+      "activityMinutes": 30,
+      "admissionCost": 0,
+      "admissionPolicy": "exterior_only",
+      "sources": [
+        {
+          "publisher": "Wikimedia Commons",
+          "title": "Bogcha Darvoza (North Gate)",
+          "url": "https://commons.wikimedia.org/wiki/Category:Itchan_Kala_north_gate",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "イチャン・カラ北側の城門。城壁の外から内城の囲いを見渡す。"
+        },
+        {
+          "publisher": "Dreamscape game design",
+          "title": "Exterior visit policy",
+          "url": "https://commons.wikimedia.org/wiki/Category:Itchan_Kala_north_gate",
+          "checkedAt": "2026-11-04",
+          "claimType": "hypothesis",
+          "claimJa": "外観・路地の訪問を無料とするゲーム設定。現地の有料区域や通行条件を保証しない。"
+        }
+      ]
+    }
+  ]
+}

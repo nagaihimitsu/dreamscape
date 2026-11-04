@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "cityId": "bukhara",
+  "estimation": "game_model",
+  "zones": {
+    "ark": "west",
+    "bolo_hauz": "west",
+    "samanid_mausoleum": "west",
+    "poi_kalyan": "north",
+    "toki_zargaron": "north",
+    "ulugh_beg": "north",
+    "abdulaziz_khan": "north",
+    "magoki_attori": "south",
+    "lyabi_hauz": "south",
+    "hotel_hub": "south",
+    "chor_minor": "east"
+  },
+  "walkingAccessMinutes": {
+    "ark": 2,
+    "bolo_hauz": 1,
+    "samanid_mausoleum": 5,
+    "poi_kalyan": 4,
+    "toki_zargaron": 2,
+    "ulugh_beg": 2,
+    "abdulaziz_khan": 2,
+    "magoki_attori": 3,
+    "lyabi_hauz": 2,
+    "hotel_hub": 1,
+    "chor_minor": 7
+  },
+  "waitMinutes": 4,
+  "perimeterDrivingMinutes": [
+    {
+      "zones": [
+        "north",
+        "west"
+      ],
+      "minutes": 5
+    },
+    {
+      "zones": [
+        "south",
+        "west"
+      ],
+      "minutes": 7
+    },
+    {
+      "zones": [
+        "east",
+        "west"
+      ],
+      "minutes": 9
+    },
+    {
+      "zones": [
+        "north",
+        "south"
+      ],
+      "minutes": 6
+    },
+    {
+      "zones": [
+        "east",
+        "north"
+      ],
+      "minutes": 7
+    },
+    {
+      "zones": [
+        "east",
+        "south"
+      ],
+      "minutes": 4
+    }
+  ],
+  "costFormulaJa": "1台2名分15000スム＋外周走行の推定分数×1000スム。実運賃ではない。",
+  "adoptionRuleJa": "異なる外周ゾーン間かつ徒歩モデル15分以上のみ採用。建物や歩行者専用路内への進入は含まない。",
+  "sourceRefs": [
+    {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "ブハラ旧市街外周のタクシーモデル",
+      "url": "https://en.wikivoyage.org/wiki/Bukhara",
+      "checkedAt": "2026-11-04",
+      "claimType": "hypothesis",
+      "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+    },
+    {
+      "publisher": "Wikivoyage",
+      "title": "Bukhara — Get around",
+      "url": "https://en.wikivoyage.org/wiki/Bukhara",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+    }
+  ]
+}

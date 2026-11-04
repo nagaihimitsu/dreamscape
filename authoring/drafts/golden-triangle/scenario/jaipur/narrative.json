@@ -1,0 +1,91 @@
+{
+  "main": {
+    "gt_jaipur_main_amber_fort": {
+      "titleJa": "大きな城の、小さな案内役",
+      "descriptionJa": "アンベール城で、甥に送る写真を選びかねている元運転手に出会う。",
+      "clearTitleJa": "三枚では足りない城",
+      "clearDescriptionJa": "中庭から奥の暮らしへ。ハリッシュの写真選びに、二人の見方も加わった。",
+      "enemyNameJa": "ハリッシュ",
+      "enemyTitleJa": "甥への便りを選ぶ元運転手",
+      "enemyDescriptionJa": "荷物の準備は周到なのに、写真を選ぶのは苦手。地元の城へ来ると、つい歩く距離が延びる。架空の人物。"
+    },
+    "gt_jaipur_main_hawa_mahal": {
+      "titleJa": "描きたいのは、窓の向こう",
+      "descriptionJa": "ハワー・マハルを描く学生のスケッチには、窓だけがまだ描かれていない。",
+      "clearTitleJa": "向こう側からも見てみよう",
+      "clearDescriptionJa": "外観の美しさに、内側から街を眺めた人の目線が加わった。",
+      "enemyNameJa": "イーシャ",
+      "enemyTitleJa": "窓を後回しにする美術学生",
+      "enemyDescriptionJa": "大きい紙を持ち歩くのに、描き始めはいつも小さい。見えていないものまで断言するのは嫌い。架空の人物。"
+    },
+    "gt_jaipur_main_city_palace": {
+      "titleJa": "父の説明、娘の発見",
+      "descriptionJa": "シティ・パレスで、仕立て屋の父娘がそれぞれ別のものに見入っている。",
+      "clearTitleJa": "続きを聞くのは帰り道",
+      "clearDescriptionJa": "宮殿を支えた仕事を知り、同じ場所を違う速さで楽しむ父娘を見送った。",
+      "enemyNameJa": "ヴィクラム",
+      "enemyTitleJa": "話し出すと手も動く仕立て屋",
+      "enemyDescriptionJa": "娘と休日の博物館へ来た。作り手の話になると長いが、自分の知らないことは娘にも教わる。架空の人物。"
+    },
+    "gt_jaipur_main_jantar_mantar": {
+      "titleJa": "時計屋の、時計を見ない時間",
+      "descriptionJa": "ジャンタル・マンタルで出会った時計修理屋は、今日は腕時計を止めてきたという。",
+      "clearTitleJa": "空まで広がる仕事場",
+      "clearDescriptionJa": "巨大な観測器と、小さな時計。同じ時間を扱う二つの仕事から空を見上げた。",
+      "enemyNameJa": "ディーペン",
+      "enemyTitleJa": "休日の時計修理屋",
+      "enemyDescriptionJa": "話しながら無意識に腕時計を確かめる。自分の仕事よりはるかに大きい観測器を前に、子どものように楽しむ。架空の人物。"
+    }
+  },
+  "dates": {
+    "gt_jaipur_date_jal_mahal": {
+      "titleJa": "水に映る方の宮殿",
+      "descriptionJa": "ジャル・マハルを湖岸から眺める。揺れる屋根がそろう瞬間を、二人で待つ。",
+      "memoryTitleJa": "今、と知らせた湖岸",
+      "memoryDescriptionJa": "マン・サーガル湖で、ジャル・マハルの映り込みを眺めた。見えた瞬間を知らせようとすると、つい相手の方を見てしまった。"
+    },
+    "gt_jaipur_date_nahargarh_fort": {
+      "titleJa": "屋根の数だけ",
+      "descriptionJa": "ナハルガル城から見渡すジャイプール。地図と町を見比べていたはずが、見知らぬ家の暮らしを想像し始める。",
+      "memoryTitleJa": "地図を閉じた眺め",
+      "memoryDescriptionJa": "ナハルガル城で、道を探す手を止めて町を眺めた。小さな屋根が並ぶ景色を、今度は通りから見てみたくなった。"
+    },
+    "gt_jaipur_date_albert_hall": {
+      "titleJa": "最初の一つを選ぶまで",
+      "descriptionJa": "アルバート・ホール博物館の入口で、見たいものが決まらない。細密画の前で止まる足と、庭園で話す時間。",
+      "memoryTitleJa": "細い線と大きな屋根",
+      "memoryDescriptionJa": "アルバート・ホールで細密画を見てから、ラームニワース庭園で休んだ。全部を覚えるよりも、立ち止まった一つの話が長く続いた。"
+    },
+    "gt_jaipur_date_jaigarh_fort": {
+      "titleJa": "足からの返事",
+      "descriptionJa": "ジャイガル城で少し休みながら、城壁と丘のつながりを眺める。",
+      "memoryTitleJa": "止まって見つけた眺め",
+      "memoryDescriptionJa": "ジャイガル城で足を休め、立ち止まった場所から城壁の続きを見つけた。"
+    },
+    "gt_jaipur_date_johari_bazaar": {
+      "titleJa": "好きな色が忙しい",
+      "descriptionJa": "ジョーハリー・バザールで、品物を買う前の色選びを楽しむ。",
+      "memoryTitleJa": "買わなかった色の話",
+      "memoryDescriptionJa": "ジョーハリー・バザールの店先で、二人の気になる色を話した。荷物は増えず、話題が増えた。"
+    },
+    "gt_jaipur_date_panna_meena_kund": {
+      "titleJa": "指だけの散歩",
+      "descriptionJa": "パンナ・ミーナー・クンドの周縁から、階段の線を目で追いかける。",
+      "memoryTitleJa": "見分けられる角が一つ",
+      "memoryDescriptionJa": "階段井戸へ降りずに段の線をたどり、二人で同じ角を見つけた。"
+    }
+  },
+  "finales": {
+    "jaipur": {
+      "titleJa": "上映前、最後の五問",
+      "descriptionJa": "ジャンタル・マンタルで上映役のラヴィと合流。三分間の旅を人に見せる前に、街の話を確かめる。",
+      "clearTitleJa": "最初の言葉は、わたしから",
+      "clearDescriptionJa": "旅の映像が完成した。紹介の一言は、自分で話すと決めた。",
+      "enemyNameJa": "ラヴィ",
+      "enemyTitleJa": "時計に細かい、小さな上映会の世話役",
+      "enemyDescriptionJa": "ニールの友人。人の話を聞くのが好きで、自分が話すと少し大げさ。仲間内の旅行映像の会を開く。架空の人物・企画。",
+      "placeId": "jaipur_jantar_mantar",
+      "activityMinutes": 45
+    }
+  }
+}

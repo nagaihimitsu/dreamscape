@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { balance } from "../content";
-import { getJourney } from "../content/journeys";
+import { getJourney, journeys } from "../content/journeys";
 import { createGame, validateGameState } from "../domain/game";
 import { SAVE_KEY, writeIfUnchanged, type SaveResult, type StorageLike } from "./index";
 import { storagePhysicalKey } from "./journey-storage";
@@ -10,8 +10,8 @@ import { storagePhysicalKey } from "./journey-storage";
 const draftSchema = z.object({
   kind: z.literal("journey_preparation"),
   schemaVersion: z.literal(1),
-  journeyId: z.literal("golden_triangle"),
-  currentCityId: z.literal("delhi"),
+  journeyId: z.string().regex(/^[a-z][a-z0-9_]*$/),
+  currentCityId: z.string().regex(/^[a-z][a-z0-9_]*$/),
   playerName: z.string().trim().min(1).max(balance.maxNameLength),
   heroineName: z.string().trim().min(1).max(balance.maxNameLength),
   ap: z.number().int().min(0).max(balance.apCap),
@@ -32,7 +32,10 @@ const draftSchema = z.object({
   battleRecords: z.tuple([]),
   inventory: z.object({}).strict(),
   travel: z.object({ day: z.literal(1), minute: z.literal(540), currentPlaceId: z.null(), hotelPlaceId: z.null() }).strict(),
-}).strict();
+}).strict().refine((draft) => {
+  const journey = getJourney(draft.journeyId);
+  return !!journey?.initialState && journey.cities[0]?.id === draft.currentCityId;
+}, "Unknown preparation journey or starting city");
 export type JourneyDraft = z.infer<typeof draftSchema>;
 export type JourneyDraftLoadResult =
   | { status: "empty" }
@@ -40,17 +43,23 @@ export type JourneyDraftLoadResult =
   | { status: "invalid"; message: string; raw: string | null };
 
 const invalidMessage = "準備中のセーブを読み込めませんでした。元のデータは残っています。";
-function isIndiaSlot(storage: StorageLike): boolean {
-  return storagePhysicalKey(storage, SAVE_KEY) === "dreamscape.journey.golden_triangle.save.v1";
+function preparationJourney(storage: StorageLike) {
+  return journeys.find((journey) => journey.initialState && journey.id !== "milano" &&
+    storagePhysicalKey(storage, SAVE_KEY) === `dreamscape.journey.${journey.id}.save.v1`);
 }
 
 export function loadJourneyDraft(storage: StorageLike): JourneyDraftLoadResult {
-  if (!isIndiaSlot(storage)) return { status: "invalid", message: invalidMessage, raw: null };
+  const journey = preparationJourney(storage);
+  if (!journey) return { status: "invalid", message: invalidMessage, raw: null };
   let raw: string | null;
   try { raw = storage.getItem(SAVE_KEY); }
   catch { return { status: "invalid", message: invalidMessage, raw: null }; }
   if (raw === null) return { status: "empty" };
-  try { return { status: "loaded", draft: draftSchema.parse(JSON.parse(raw)), raw }; }
+  try {
+    const draft = draftSchema.parse(JSON.parse(raw));
+    if (draft.journeyId !== journey.id) return { status: "invalid", message: invalidMessage, raw };
+    return { status: "loaded", draft, raw };
+  }
   catch { return { status: "invalid", message: invalidMessage, raw }; }
 }
 
@@ -65,11 +74,12 @@ export function journeyDraftStartParameters(draft: JourneyDraft) {
 /** Only initialize an empty slot; an unreadable or concurrently-created save is never replaced. */
 export function saveJourneyDraft(storage: StorageLike, playerName: string, heroineName: string): SaveResult {
   try {
-    if (!isIndiaSlot(storage)) return { ok: false, message: "旅行編の保存先を確認できません。" };
-    const initial = getJourney("golden_triangle")?.initialState;
+    const journey = preparationJourney(storage);
+    if (!journey || journey.status !== "preparing") return { ok: false, message: "旅行編の保存先を確認できません。" };
+    const initial = journey.initialState;
     if (!initial) return { ok: false, message: "旅行編の初期設定を確認できません。" };
     const draft = draftSchema.parse({
-      kind: "journey_preparation", schemaVersion: 1, journeyId: "golden_triangle", currentCityId: "delhi",
+      kind: "journey_preparation", schemaVersion: 1, journeyId: journey.id, currentCityId: journey.cities[0].id,
       playerName, heroineName, ap: initial.ap, affection: initial.affection, trust: initial.trust, spark: initial.spark,
       romanceStage: initial.romanceStage, confessionStatus: initial.confessionStatus, pendingApRewards: [], travelBudget: null,
       memories: [], claimedRewardIds: [], completedCityIds: [], completedEpisodeIds: [],

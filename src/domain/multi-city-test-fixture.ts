@@ -4,7 +4,7 @@ import {
   episodes, journeyConfig, landmarks, rewardRules, stories, tourismClues,
 } from "../content";
 import { encounters } from "../content/encounters";
-import { getJourneyForCity } from "../content/journeys";
+import { getJourney, getJourneyForCity } from "../content/journeys";
 import { getAllRewardRules } from "../content/journey-schemas";
 
 /** Reuse real executable scripts/assets while giving every owned entity a distinct ID. */
@@ -151,12 +151,12 @@ export function installTestCity(options: {
 }
 
 /** Development/tests only. These are fictional copies, never real city data. */
-export function installIndiaTestCities(): () => void {
-  const fixtures = [
-    { cityId: "delhi", nameJa: "デリー（仮データ）", nextCityId: "agra" },
-    { cityId: "agra", nameJa: "アーグラ（仮データ）", nextCityId: "jaipur" },
-    { cityId: "jaipur", nameJa: "ジャイプール（仮データ）" },
-  ];
+export function installJourneyTestCities(journeyId: string): () => void {
+  const journey = getJourney(journeyId);
+  if (!journey || journey.status !== "preparing")
+    throw new Error(`制作中の旅行編ではありません: ${journeyId}`);
+  const fixtures = journey.cities.map((city, index) => ({ cityId: city.id,
+    nameJa: `${city.nameJa}（仮データ）`, nextCityId: journey.cities[index + 1]?.id }));
   // Never merge fictional scenes into real authored story content. The
   // temporary replacement is limited to empty prototypes and test fixtures.
   for (const fixture of fixtures) {
@@ -165,4 +165,9 @@ export function installIndiaTestCities(): () => void {
   }
   const cleanups = fixtures.map((fixture) => installTestCity({ ...fixture, previousCityId: null }));
   return () => { for (const cleanup of cleanups.reverse()) cleanup(); };
+}
+
+/** Existing India tests and developer commands keep their stable entry point. */
+export function installIndiaTestCities(): () => void {
+  return installJourneyTestCities("golden_triangle");
 }

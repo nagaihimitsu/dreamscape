@@ -1,0 +1,257 @@
+{
+  "main": {
+    "gt_delhi_main_red_fort": {
+      "titleJa": "広場ばかりの城",
+      "descriptionJa": "レッド・フォートで、友達と遊ぶ盤面を作るターラーに出会う。",
+      "clearTitleJa": "城の中で暮らす人",
+      "clearDescriptionJa": "赤い壁の内側に、住まいと水路と、その後の時代が見えてきた。",
+      "enemyNameJa": "ターラー",
+      "enemyTitleJa": "盤面を作る旅行好き",
+      "enemyDescriptionJa": "友人と遊ぶゲームを考えている。守る壁は描けたが、中身を全部広場にしてしまった。"
+    },
+    "gt_delhi_main_qutb_minar": {
+      "titleJa": "空まで撮れた",
+      "descriptionJa": "クトゥブ・ミナールの撮影失敗をきっかけに、描きかけの絵と未完の塔を見る。",
+      "clearTitleJa": "消さなかった一カット",
+      "clearDescriptionJa": "塔が画面から消えた後にも、二人で笑った声が残った。",
+      "enemyNameJa": "デーヴ",
+      "enemyTitleJa": "描きかけを持つ青年",
+      "enemyDescriptionJa": "塔を紙に収め損ねた絵描き。完成だけでなく、途中で残ったものも面白がる。"
+    },
+    "gt_delhi_main_humayun_tomb": {
+      "titleJa": "写真の向こうへ歩く",
+      "descriptionJa": "フマユーン廟で、祖母へ写真を見せたいサイラと庭の話を探す。",
+      "clearTitleJa": "大きい、の続き",
+      "clearDescriptionJa": "庭を歩いて見つけたことが、写真に添える言葉になった。",
+      "enemyNameJa": "サイラ",
+      "enemyTitleJa": "祖母へ写真を届ける人",
+      "enemyDescriptionJa": "見たものを大切な人へ伝えたい。説明を借りるだけでなく、自分の感想も添えたいと思っている。"
+    },
+    "gt_delhi_main_jama_masjid": {
+      "titleJa": "一枚貸して、三枚話す",
+      "descriptionJa": "ジャーマー・マスジドで、弟に貸す写真を選んでいるイムランの練習に付き合う。",
+      "clearTitleJa": "写真を撮った理由",
+      "clearDescriptionJa": "昔の建物と、今そこへ来る人を知り、写真に自分の見た話を添えた。",
+      "enemyNameJa": "イムラン",
+      "enemyTitleJa": "弟に試される兄",
+      "enemyDescriptionJa": "自分の写真を弟の宿題に貸す。以前花の名前を全部ごまかしたことを、まだ弟に覚えられている。"
+    },
+    "gt_agra_main_taj_mahal": {
+      "titleJa": "タージ・マハル――一枚に入らないもの",
+      "descriptionJa": "母に送る写真を選べない図案家ファリド。整った眺めの奥にある配置と、お墓の仕組みを確かめる。",
+      "clearTitleJa": "切り抜かずに送った一枚",
+      "clearDescriptionJa": "ファリドが最後に選んだのは、自分も写った写真だった。白い建物の見え方にも、新しい奥行きが増えた。",
+      "enemyNameJa": "ファリド",
+      "enemyTitleJa": "休みの日も端をそろえる図案家",
+      "enemyDescriptionJa": "母に送る写真の切り取り位置で悩む、アーグラの図案家。自分の細かさを笑えるが、最後の一枚がなかなか決まらない。"
+    },
+    "gt_agra_main_agra_fort": {
+      "titleJa": "アーグラ城――四コマでは足りない",
+      "descriptionJa": "甥に見せる四コマ漫画を描くアディ。赤と白の建物や、城の仕事、窓の先の眺めを描くうち、予定の枠からはみ出していく。",
+      "clearTitleJa": "城を歩く六コマ",
+      "clearDescriptionJa": "異なる皇帝の建物、政治と暮らし、窓からの眺め。アディのノートには、水を忘れた自分の話も含めて、城を歩く六コマが並んだ。",
+      "enemyNameJa": "アディ",
+      "enemyTitleJa": "水休憩の一コマを譲らない建築学生",
+      "enemyDescriptionJa": "アーグラで建築を学ぶ青年。甥へ見学の話を伝える四コマ漫画を描いているが、見せたい場面が増え、予定の枠には収まらなくなる。"
+    },
+    "gt_agra_main_itimad_tomb": {
+      "titleJa": "イティマード・ウッダウラ廟――少し太った花",
+      "descriptionJa": "服の仕立てを仕事にするアミナは、白い廟の花模様を描いている。造営した娘の思いと、石が作る色や光を見つめる。",
+      "clearTitleJa": "自分の服のための模様",
+      "clearDescriptionJa": "アミナは少し太った花びらを消さずに残した。壁の表だけでなく、格子の向こうへ入る光にも目が向いた。",
+      "enemyNameJa": "アミナ",
+      "enemyTitleJa": "自分の服の模様を描く仕立て屋",
+      "enemyDescriptionJa": "仕事を離れた日は、自分の好きな意匠を描いている女性。率直で乾いた冗談を言い、自分用の服を作る時間も大切にする。"
+    },
+    "gt_agra_main_fatehpur_sikri": {
+      "titleJa": "ファテープル・シークリー――休憩もある案内図",
+      "descriptionJa": "家族を案内する下見に来たキラン。大きなお城という説明から、さまざまな営みのある街へと、案内を作り直す。",
+      "clearTitleJa": "行き先が減り、楽しみが増えた地図",
+      "clearDescriptionJa": "首都だった頃も、その後も続いた場所の話を確かめた。キランの案内図には、子どもたちが選ぶ道と大きな休憩の丸が残った。",
+      "enemyNameJa": "キラン",
+      "enemyTitleJa": "見どころを詰め込みがちな案内役",
+      "enemyDescriptionJa": "家族を案内するため、地元の名所を下見する女性。興味が広く予定を詰め込みがちだが、妹の率直な指摘も笑って受け止める。"
+    },
+    "gt_jaipur_main_amber_fort": {
+      "titleJa": "大きな城の、小さな案内役",
+      "descriptionJa": "アンベール城で、甥に送る写真を選びかねている元運転手に出会う。",
+      "clearTitleJa": "三枚では足りない城",
+      "clearDescriptionJa": "中庭から奥の暮らしへ。ハリッシュの写真選びに、二人の見方も加わった。",
+      "enemyNameJa": "ハリッシュ",
+      "enemyTitleJa": "甥への便りを選ぶ元運転手",
+      "enemyDescriptionJa": "荷物の準備は周到なのに、写真を選ぶのは苦手。地元の城へ来ると、つい歩く距離が延びる。架空の人物。"
+    },
+    "gt_jaipur_main_hawa_mahal": {
+      "titleJa": "描きたいのは、窓の向こう",
+      "descriptionJa": "ハワー・マハルを描く学生のスケッチには、窓だけがまだ描かれていない。",
+      "clearTitleJa": "向こう側からも見てみよう",
+      "clearDescriptionJa": "外観の美しさに、内側から街を眺めた人の目線が加わった。",
+      "enemyNameJa": "イーシャ",
+      "enemyTitleJa": "窓を後回しにする美術学生",
+      "enemyDescriptionJa": "大きい紙を持ち歩くのに、描き始めはいつも小さい。見えていないものまで断言するのは嫌い。架空の人物。"
+    },
+    "gt_jaipur_main_city_palace": {
+      "titleJa": "父の説明、娘の発見",
+      "descriptionJa": "シティ・パレスで、仕立て屋の父娘がそれぞれ別のものに見入っている。",
+      "clearTitleJa": "続きを聞くのは帰り道",
+      "clearDescriptionJa": "宮殿を支えた仕事を知り、同じ場所を違う速さで楽しむ父娘を見送った。",
+      "enemyNameJa": "ヴィクラム",
+      "enemyTitleJa": "話し出すと手も動く仕立て屋",
+      "enemyDescriptionJa": "娘と休日の博物館へ来た。作り手の話になると長いが、自分の知らないことは娘にも教わる。架空の人物。"
+    },
+    "gt_jaipur_main_jantar_mantar": {
+      "titleJa": "時計屋の、時計を見ない時間",
+      "descriptionJa": "ジャンタル・マンタルで出会った時計修理屋は、今日は腕時計を止めてきたという。",
+      "clearTitleJa": "空まで広がる仕事場",
+      "clearDescriptionJa": "巨大な観測器と、小さな時計。同じ時間を扱う二つの仕事から空を見上げた。",
+      "enemyNameJa": "ディーペン",
+      "enemyTitleJa": "休日の時計修理屋",
+      "enemyDescriptionJa": "話しながら無意識に腕時計を確かめる。自分の仕事よりはるかに大きい観測器を前に、子どものように楽しむ。架空の人物。"
+    }
+  },
+  "dates": {
+    "gt_delhi_date_india_gate": {
+      "titleJa": "撮る人も写る日",
+      "descriptionJa": "インド門を訪ね、写真を撮る人も写真に入れる方法を考える。",
+      "memoryTitleJa": "撮る人も写る日",
+      "memoryDescriptionJa": "撮る側と写る側を交代し、見た景色とその時の顔を残した。"
+    },
+    "gt_delhi_date_chandni_chowk": {
+      "titleJa": "目が先に曲がる",
+      "descriptionJa": "チャンドニー・チョークで、気になる店先が別々の方向に見つかる。",
+      "memoryTitleJa": "見たいものを一つずつ",
+      "memoryDescriptionJa": "互いの気になるものを、急がず順に見て回った。"
+    },
+    "gt_delhi_date_lodhi_garden": {
+      "titleJa": "五分だけ座るつもり",
+      "descriptionJa": "ロディ・ガーデンで、廟の輪郭を眺めながら一息つく。",
+      "memoryTitleJa": "歩かない時間",
+      "memoryDescriptionJa": "見たいもののある庭で、休みたい気持ちも言葉にした。"
+    },
+    "gt_delhi_date_agrasen_baoli": {
+      "titleJa": "数えるのをやめた段",
+      "descriptionJa": "アグラセン・キ・バオリの段を、安全な見学範囲から眺める。",
+      "memoryTitleJa": "数えるのをやめた段",
+      "memoryDescriptionJa": "全段を数えるより、今見える奥行きに見入った。"
+    },
+    "gt_delhi_date_lotus_temple": {
+      "titleJa": "話さないでいた時間",
+      "descriptionJa": "ロータス寺院を訪ね、静かな時間の後に互いの過ごし方を聞く。",
+      "memoryTitleJa": "話さないでいた時間",
+      "memoryDescriptionJa": "同じ静けさの中で、別々のことを考えていられた。"
+    },
+    "gt_delhi_date_bangla_sahib": {
+      "titleJa": "うまく結べない日でも",
+      "descriptionJa": "バングラ・サーヒブで、訪問の作法を確かめながら小さな助けを頼む。",
+      "memoryTitleJa": "頼みごとを一つ",
+      "memoryDescriptionJa": "慣れないことを確かめ、互いに頼れるところを一つ見つけた。"
+    },
+    "gt_agra_date_mehtab_bagh": {
+      "titleJa": "メヘターブ・バーグ――一歩隣の眺め",
+      "descriptionJa": "川向こうのタージを眺める庭で、二人の立つ場所を取り替えてみる。戻ってきたとき、同じ景色を見つけられるだろうか。",
+      "memoryTitleJa": "一歩隣の眺め",
+      "memoryDescriptionJa": "メヘターブ・バーグで、立つ位置を少しずつ比べた。正確に同じ場所でなくても、また並んで眺めることができた。"
+    },
+    "gt_agra_date_akbar_tomb": {
+      "titleJa": "アクバル廟――門、すごい",
+      "descriptionJa": "旅のメモに残ったのは、短すぎる感想だった。立派な文章に直す前に、二人が何を見ていたかを聞いてみる。",
+      "memoryTitleJa": "消さなかった一行",
+      "memoryDescriptionJa": "アクバル廟で、短い感想の下に少しだけ書き足した。最初の『門、すごい』も、旅のメモに残しておいた。"
+    },
+    "gt_agra_date_ram_bagh": {
+      "titleJa": "ラム・バーグ――足に一票",
+      "descriptionJa": "庭を歩きに来たのに、まずは座っていたい。小さな疲れを言葉にし、二人の歩く速さを合わせる時間。",
+      "memoryTitleJa": "足に一票",
+      "memoryDescriptionJa": "ラム・バーグでは、次の見どころより先に休憩を選んだ。靴紐を結び直して歩き出すと、二人の歩幅がそろった。"
+    },
+    "gt_agra_date_chini_rauza": {
+      "titleJa": "チーニー・カ・ラウザ――名前の決まらない青",
+      "descriptionJa": "詩人の廟に残る青いタイルを前に、ぴったりの言葉を探す。少し気取った言い方を試したら、自分で照れてしまった。",
+      "memoryTitleJa": "名前の決まらない青",
+      "memoryDescriptionJa": "チーニー・カ・ラウザで見つけた色に、名前は付かなかった。それでも、どの色が好きかは二人で確かめられた。"
+    },
+    "gt_agra_date_mariam_tomb": {
+      "titleJa": "マリアム・ウッザマーニー廟――紹介文の続き",
+      "descriptionJa": "王妃、皇帝の母。その紹介から、自分ならどう紹介されたいかを考える。相手の言葉と、自分で加えたい一行。",
+      "memoryTitleJa": "紹介文の続き",
+      "memoryDescriptionJa": "マリアム・ウッザマーニー廟で、一行の紹介を考えた。帰る前には、彼女自身がもう一度見たい場所を指した。"
+    },
+    "gt_agra_date_guru_ka_taal": {
+      "titleJa": "グル・カ・タール――先に見つけた塔",
+      "descriptionJa": "みんなと同じ方へ進みかけて、砂岩の塔に目が止まる。自分が見たい場所を提案し、互いの歩く速さを確かめる。",
+      "memoryTitleJa": "先に見つけた塔",
+      "memoryDescriptionJa": "グル・カ・タールで、彼女が先に砂岩の塔を見つけた。古い貯水施設のことを知り、二人は静かに並ぶ時間を過ごした。"
+    },
+    "gt_jaipur_date_jal_mahal": {
+      "titleJa": "水に映る方の宮殿",
+      "descriptionJa": "ジャル・マハルを湖岸から眺める。揺れる屋根がそろう瞬間を、二人で待つ。",
+      "memoryTitleJa": "今、と知らせた湖岸",
+      "memoryDescriptionJa": "マン・サーガル湖で、ジャル・マハルの映り込みを眺めた。見えた瞬間を知らせようとすると、つい相手の方を見てしまった。"
+    },
+    "gt_jaipur_date_nahargarh_fort": {
+      "titleJa": "屋根の数だけ",
+      "descriptionJa": "ナハルガル城から見渡すジャイプール。地図と町を見比べていたはずが、見知らぬ家の暮らしを想像し始める。",
+      "memoryTitleJa": "地図を閉じた眺め",
+      "memoryDescriptionJa": "ナハルガル城で、道を探す手を止めて町を眺めた。小さな屋根が並ぶ景色を、今度は通りから見てみたくなった。"
+    },
+    "gt_jaipur_date_albert_hall": {
+      "titleJa": "最初の一つを選ぶまで",
+      "descriptionJa": "アルバート・ホール博物館の入口で、見たいものが決まらない。細密画の前で止まる足と、庭園で話す時間。",
+      "memoryTitleJa": "細い線と大きな屋根",
+      "memoryDescriptionJa": "アルバート・ホールで細密画を見てから、ラームニワース庭園で休んだ。全部を覚えるよりも、立ち止まった一つの話が長く続いた。"
+    },
+    "gt_jaipur_date_jaigarh_fort": {
+      "titleJa": "足からの返事",
+      "descriptionJa": "ジャイガル城で少し休みながら、城壁と丘のつながりを眺める。",
+      "memoryTitleJa": "止まって見つけた眺め",
+      "memoryDescriptionJa": "ジャイガル城で足を休め、立ち止まった場所から城壁の続きを見つけた。"
+    },
+    "gt_jaipur_date_johari_bazaar": {
+      "titleJa": "好きな色が忙しい",
+      "descriptionJa": "ジョーハリー・バザールで、品物を買う前の色選びを楽しむ。",
+      "memoryTitleJa": "買わなかった色の話",
+      "memoryDescriptionJa": "ジョーハリー・バザールの店先で、二人の気になる色を話した。荷物は増えず、話題が増えた。"
+    },
+    "gt_jaipur_date_panna_meena_kund": {
+      "titleJa": "指だけの散歩",
+      "descriptionJa": "パンナ・ミーナー・クンドの周縁から、階段の線を目で追いかける。",
+      "memoryTitleJa": "見分けられる角が一つ",
+      "memoryDescriptionJa": "階段井戸へ降りずに段の線をたどり、二人で同じ角を見つけた。"
+    }
+  },
+  "finales": {
+    "delhi": {
+      "titleJa": "三分間の旅への招待",
+      "descriptionJa": "レッド・フォートで、映像好きのニールと五枚の写真をめくる。",
+      "clearTitleJa": "わたしも、撮ってみたい",
+      "clearDescriptionJa": "自分たちの旅を三分間にして、ジャイプールの小さな上映会へ持っていく。",
+      "enemyNameJa": "ニール",
+      "enemyTitleJa": "旅の映像を集める人",
+      "enemyDescriptionJa": "人を誘うのが好きで、編集は少しせっかち。旅先で撮った映像を持ち寄る、仲間内の小さな上映会へ二人を誘う。",
+      "placeId": "delhi_red_fort",
+      "activityMinutes": 45
+    },
+    "agra": {
+      "titleJa": "アーグラ・フィナーレ――ここは残したい",
+      "descriptionJa": "写真好きのサナが、三分の映像に編集案を出す。滑らかな仕上がりにうなずいた彼女は、消しかけた数秒で指を止めた。",
+      "clearTitleJa": "自分で選び直した数秒",
+      "clearDescriptionJa": "史実の説明を確かめたあと、彼女は残したい場面を言葉にした。好みが違う相手とも映像を見せ合う約束をして、ジャイプールへ向かう。",
+      "enemyNameJa": "サナ",
+      "enemyTitleJa": "構図には厳しく、好みは押しつけない写真好き",
+      "enemyDescriptionJa": "ニールの知人で、アーグラを撮り歩く女性。編集の提案は速く率直だが、相手が自分で決めることを大切にする。",
+      "placeId": "agra_agra_fort",
+      "activityMinutes": 30
+    },
+    "jaipur": {
+      "titleJa": "上映前、最後の五問",
+      "descriptionJa": "ジャンタル・マンタルで上映役のラヴィと合流。三分間の旅を人に見せる前に、街の話を確かめる。",
+      "clearTitleJa": "最初の言葉は、わたしから",
+      "clearDescriptionJa": "旅の映像が完成した。紹介の一言は、自分で話すと決めた。",
+      "enemyNameJa": "ラヴィ",
+      "enemyTitleJa": "時計に細かい、小さな上映会の世話役",
+      "enemyDescriptionJa": "ニールの友人。人の話を聞くのが好きで、自分が話すと少し大げさ。仲間内の旅行映像の会を開く。架空の人物・企画。",
+      "placeId": "jaipur_jantar_mantar",
+      "activityMinutes": 45
+    }
+  }
+}

@@ -125,6 +125,7 @@ export const citySchema = z
     countryCode: z.string().length(2),
     nameJa: text,
     themeJa: text,
+    arrivalStoryId: z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/).optional(),
     firstClearReward: z
       .object({ rewardSourceId: id, ap: z.number().int().nonnegative() })
       .strict(),
@@ -328,7 +329,7 @@ export const battleSchema = z
     quizId: id,
     backgroundAssetId: id,
     portrait: z
-      .enum(["porter", "fortune", "archivist", "conductor"])
+      .enum(["porter", "fortune", "archivist", "conductor", "abstract"])
       .optional(),
     // Deliberately no default: legacy A definitions and their saved fingerprints stay unchanged.
     format: z.enum(["A", "B", "C"]).optional(),

@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "cityId": "khiva",
+  "estimation": "game_model",
+  "noteJa": "街区と門の位置を参照した編集用徒歩ネットワーク。線の接続・分数はゲーム用仮定で現地測量・通行保証ではない。直線距離から実測経路を生成していない。",
+  "sources": [
+    {
+      "publisher": "UNESCO World Heritage Centre",
+      "title": "Itchan Kala",
+      "url": "https://whc.unesco.org/en/list/543/",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "イチャン・カラは城壁に囲まれたヒヴァの内城で、歴史的な建築群と住宅が残る世界遺産。"
+    },
+    {
+      "publisher": "Khiva Guide",
+      "title": "Getting Around Khiva",
+      "url": "https://khivaguide.uz/blog/khiva-transport-guide/",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "現地旅行ガイドは旧市街が小さく車の進入が大部分で制限されると案内。徒歩で東西の門を結ぶ例を紹介し、市街地外への移動と区別している。"
+    }
+  ],
+  "edges": [
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_ota_darvoza",
+      "minutes": 3,
+      "bothDirections": true,
+      "corridorJa": "西門外の滞在先からオタ門へのアプローチ"
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "minutes": 2,
+      "bothDirections": true,
+      "corridorJa": "西門内側の通り"
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "minutes": 3,
+      "bothDirections": true,
+      "corridorJa": "西門から居城前広場への通り"
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "minutes": 1,
+      "bothDirections": true,
+      "corridorJa": "隣接する広場"
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_juma_mosque",
+      "minutes": 7,
+      "bothDirections": true,
+      "corridorJa": "旧市街西側から中央部への通り"
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_islam_khoja",
+      "minutes": 3,
+      "bothDirections": true,
+      "corridorJa": "礼拝堂から南側のミナレットへ"
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "minutes": 2,
+      "bothDirections": true,
+      "corridorJa": "中央南側の路地"
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_kalta_minor",
+      "minutes": 6,
+      "bothDirections": true,
+      "corridorJa": "廟前から西側の路地"
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "minutes": 6,
+      "bothDirections": true,
+      "corridorJa": "中央部から東門への通り"
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "minutes": 3,
+      "bothDirections": true,
+      "corridorJa": "東門から宮殿へのアプローチ"
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_juma_mosque",
+      "minutes": 4,
+      "bothDirections": true,
+      "corridorJa": "宮殿前から中央部の通り"
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "minutes": 9,
+      "bothDirections": true,
+      "corridorJa": "居城前から北側城門への路地"
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "minutes": 8,
+      "bothDirections": true,
+      "corridorJa": "北門から宮殿周辺への路地"
+    }
+  ]
+}

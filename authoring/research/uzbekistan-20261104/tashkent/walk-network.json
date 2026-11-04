@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "cityId": "tashkent",
+  "estimation": "game_model",
+  "edges": [
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_chorsu_bazaar",
+      "walkMinutes": 25,
+      "taxiRideMinutes": 8,
+      "corridorJa": "Zarqaynar・Karasaray側の旧市街回廊",
+      "bidirectional": true
+    },
+    {
+      "fromPlaceId": "tashkent_chorsu_bazaar",
+      "toPlaceId": "tashkent_kukeldash",
+      "walkMinutes": 6,
+      "taxiRideMinutes": 5,
+      "corridorJa": "Chorsu広場・Navoi通り沿いの周辺道路",
+      "bidirectional": true
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_independence_square",
+      "walkMinutes": 55,
+      "taxiRideMinutes": 18,
+      "corridorJa": "Navoiy通りからSharof Rashidov通り",
+      "bidirectional": true
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_navoi_park",
+      "walkMinutes": 48,
+      "taxiRideMinutes": 16,
+      "corridorJa": "Furqat・Beshyogoch通り",
+      "bidirectional": true
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "walkMinutes": 18,
+      "taxiRideMinutes": 8,
+      "corridorJa": "徒歩はSayilgoh側、車はIslam Karimov通り側",
+      "bidirectional": true
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_navoi_theatre",
+      "walkMinutes": 15,
+      "taxiRideMinutes": 7,
+      "corridorJa": "Sharof Rashidov・Zarafshon通り",
+      "bidirectional": true
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_amir_temur_square",
+      "walkMinutes": 14,
+      "taxiRideMinutes": 7,
+      "corridorJa": "Zarafshon・Amir Temur通り",
+      "bidirectional": true
+    },
+    {
+      "fromPlaceId": "tashkent_navoi_theatre",
+      "toPlaceId": "tashkent_abulkasym",
+      "walkMinutes": 42,
+      "taxiRideMinutes": 15,
+      "corridorJa": "Afrosiyob・Beshyogoch・Furqat通り",
+      "bidirectional": true
+    },
+    {
+      "fromPlaceId": "tashkent_abulkasym",
+      "toPlaceId": "tashkent_navoi_park",
+      "walkMinutes": 10,
+      "taxiRideMinutes": 5,
+      "corridorJa": "Furqat通り沿い・公園北側の入口",
+      "bidirectional": true
+    },
+    {
+      "fromPlaceId": "tashkent_kukeldash",
+      "toPlaceId": "tashkent_abulkasym",
+      "walkMinutes": 36,
+      "taxiRideMinutes": 13,
+      "corridorJa": "Furqat通り方面",
+      "bidirectional": true
+    },
+    {
+      "fromPlaceId": "tashkent_independence_square",
+      "toPlaceId": "tashkent_anhor_canal",
+      "walkMinutes": 40,
+      "taxiRideMinutes": 14,
+      "corridorJa": "Sharof Rashidov通り・Anhorの公道橋側",
+      "bidirectional": true
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_anhor_canal",
+      "walkMinutes": 45,
+      "taxiRideMinutes": 15,
+      "corridorJa": "Amir Temur・Minor通り方面",
+      "bidirectional": true
+    },
+    {
+      "fromPlaceId": "tashkent_anhor_canal",
+      "toPlaceId": "tashkent_japanese_garden",
+      "walkMinutes": 16,
+      "taxiRideMinutes": 7,
+      "corridorJa": "Minor・Olchazorの公道回廊、庭園内を通り抜けない",
+      "bidirectional": true
+    },
+    {
+      "fromPlaceId": "tashkent_amir_temur_square",
+      "toPlaceId": "tashkent_hotel_hub",
+      "walkMinutes": 5,
+      "taxiRideMinutes": 5,
+      "corridorJa": "広場周辺の公道、架空宿のアクセス",
+      "bidirectional": true
+    },
+    {
+      "fromPlaceId": "tashkent_khast_imam",
+      "toPlaceId": "tashkent_anhor_canal",
+      "walkMinutes": 50,
+      "taxiRideMinutes": 17,
+      "corridorJa": "Karasaray・Nurafshon・Labzak側の回廊",
+      "bidirectional": true
+    }
+  ],
+  "sources": [
+    {
+      "publisher": "OpenStreetMap contributors",
+      "title": "Tashkent street map",
+      "url": "https://www.openstreetmap.org/#map=14/41.3210/69.2590",
+      "checkedAt": "2026-11-04",
+      "claimType": "hypothesis",
+      "claimJa": "都市内の街路・水路・公園の配置を参照。代表点や編集用の接続は、調査済み入口・歩道・道路閉鎖を保証するものではない。"
+    },
+    {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "Street-corridor walking model",
+      "url": "https://www.openstreetmap.org/#map=14/41.3210/69.2590",
+      "checkedAt": "2026-11-04",
+      "claimType": "hypothesis",
+      "claimJa": "walk-network.jsonの街路回廊を結んで各方向を設定する。辺の所要時間はゲーム用推定であり、座標の直線距離から実測値を生成していない。現地の信号待ち・橋・入口・閉鎖を保証しない。"
+    },
+    {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "Taxi party budget and access model",
+      "url": "https://www.openstreetmap.org/#map=14/41.3210/69.2590",
+      "checkedAt": "2026-11-04",
+      "claimType": "hypothesis",
+      "claimJa": "タクシーは街路回廊のゲーム用乗車分数に乗降待ち5分を加え、二人一台10000スム＋乗車1分1000スムで会計する暫定モデル。実車運賃・配車見積りではない。歩行者空間は周辺道路で乗降する。"
+    }
+  ]
+}

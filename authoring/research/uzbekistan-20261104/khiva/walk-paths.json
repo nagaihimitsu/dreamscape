@@ -1,0 +1,1234 @@
+{
+  "schemaVersion": 1,
+  "cityId": "khiva",
+  "paths": [
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_kunya_ark",
+      "viaPlaceIds": [
+        "khiva_kunya_ark"
+      ],
+      "minutes": 0
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_juma_mosque",
+      "viaPlaceIds": [
+        "khiva_kunya_ark",
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_juma_mosque"
+      ],
+      "minutes": 12
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_tash_hauli",
+      "viaPlaceIds": [
+        "khiva_kunya_ark",
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_juma_mosque",
+        "khiva_tash_hauli"
+      ],
+      "minutes": 16
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_islam_khoja",
+      "viaPlaceIds": [
+        "khiva_kunya_ark",
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_pahlavan_mahmud",
+        "khiva_islam_khoja"
+      ],
+      "minutes": 13
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_kalta_minor",
+      "viaPlaceIds": [
+        "khiva_kunya_ark",
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor"
+      ],
+      "minutes": 5
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "viaPlaceIds": [
+        "khiva_kunya_ark",
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_pahlavan_mahmud"
+      ],
+      "minutes": 11
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "viaPlaceIds": [
+        "khiva_kunya_ark",
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_muhammad_amin_khan"
+      ],
+      "minutes": 6
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_ota_darvoza",
+      "viaPlaceIds": [
+        "khiva_kunya_ark",
+        "khiva_ota_darvoza"
+      ],
+      "minutes": 3
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "viaPlaceIds": [
+        "khiva_kunya_ark",
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_juma_mosque",
+        "khiva_palvan_darvoza"
+      ],
+      "minutes": 18
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "viaPlaceIds": [
+        "khiva_kunya_ark",
+        "khiva_bogcha_darvoza"
+      ],
+      "minutes": 9
+    },
+    {
+      "fromPlaceId": "khiva_kunya_ark",
+      "toPlaceId": "khiva_hotel_hub",
+      "viaPlaceIds": [
+        "khiva_kunya_ark",
+        "khiva_ota_darvoza",
+        "khiva_hotel_hub"
+      ],
+      "minutes": 6
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_kunya_ark",
+      "viaPlaceIds": [
+        "khiva_juma_mosque",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza",
+        "khiva_kunya_ark"
+      ],
+      "minutes": 12
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_juma_mosque",
+      "viaPlaceIds": [
+        "khiva_juma_mosque"
+      ],
+      "minutes": 0
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_tash_hauli",
+      "viaPlaceIds": [
+        "khiva_juma_mosque",
+        "khiva_tash_hauli"
+      ],
+      "minutes": 4
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_islam_khoja",
+      "viaPlaceIds": [
+        "khiva_juma_mosque",
+        "khiva_islam_khoja"
+      ],
+      "minutes": 3
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_kalta_minor",
+      "viaPlaceIds": [
+        "khiva_juma_mosque",
+        "khiva_kalta_minor"
+      ],
+      "minutes": 7
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "viaPlaceIds": [
+        "khiva_juma_mosque",
+        "khiva_islam_khoja",
+        "khiva_pahlavan_mahmud"
+      ],
+      "minutes": 5
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "viaPlaceIds": [
+        "khiva_juma_mosque",
+        "khiva_kalta_minor",
+        "khiva_muhammad_amin_khan"
+      ],
+      "minutes": 8
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_ota_darvoza",
+      "viaPlaceIds": [
+        "khiva_juma_mosque",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza"
+      ],
+      "minutes": 9
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "viaPlaceIds": [
+        "khiva_juma_mosque",
+        "khiva_palvan_darvoza"
+      ],
+      "minutes": 6
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "viaPlaceIds": [
+        "khiva_juma_mosque",
+        "khiva_tash_hauli",
+        "khiva_bogcha_darvoza"
+      ],
+      "minutes": 12
+    },
+    {
+      "fromPlaceId": "khiva_juma_mosque",
+      "toPlaceId": "khiva_hotel_hub",
+      "viaPlaceIds": [
+        "khiva_juma_mosque",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza",
+        "khiva_hotel_hub"
+      ],
+      "minutes": 12
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_kunya_ark",
+      "viaPlaceIds": [
+        "khiva_tash_hauli",
+        "khiva_juma_mosque",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza",
+        "khiva_kunya_ark"
+      ],
+      "minutes": 16
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_juma_mosque",
+      "viaPlaceIds": [
+        "khiva_tash_hauli",
+        "khiva_juma_mosque"
+      ],
+      "minutes": 4
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_tash_hauli",
+      "viaPlaceIds": [
+        "khiva_tash_hauli"
+      ],
+      "minutes": 0
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_islam_khoja",
+      "viaPlaceIds": [
+        "khiva_tash_hauli",
+        "khiva_juma_mosque",
+        "khiva_islam_khoja"
+      ],
+      "minutes": 7
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_kalta_minor",
+      "viaPlaceIds": [
+        "khiva_tash_hauli",
+        "khiva_juma_mosque",
+        "khiva_kalta_minor"
+      ],
+      "minutes": 11
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "viaPlaceIds": [
+        "khiva_tash_hauli",
+        "khiva_juma_mosque",
+        "khiva_islam_khoja",
+        "khiva_pahlavan_mahmud"
+      ],
+      "minutes": 9
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "viaPlaceIds": [
+        "khiva_tash_hauli",
+        "khiva_juma_mosque",
+        "khiva_kalta_minor",
+        "khiva_muhammad_amin_khan"
+      ],
+      "minutes": 12
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_ota_darvoza",
+      "viaPlaceIds": [
+        "khiva_tash_hauli",
+        "khiva_juma_mosque",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza"
+      ],
+      "minutes": 13
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "viaPlaceIds": [
+        "khiva_tash_hauli",
+        "khiva_palvan_darvoza"
+      ],
+      "minutes": 3
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "viaPlaceIds": [
+        "khiva_tash_hauli",
+        "khiva_bogcha_darvoza"
+      ],
+      "minutes": 8
+    },
+    {
+      "fromPlaceId": "khiva_tash_hauli",
+      "toPlaceId": "khiva_hotel_hub",
+      "viaPlaceIds": [
+        "khiva_tash_hauli",
+        "khiva_juma_mosque",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza",
+        "khiva_hotel_hub"
+      ],
+      "minutes": 16
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_kunya_ark",
+      "viaPlaceIds": [
+        "khiva_islam_khoja",
+        "khiva_pahlavan_mahmud",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza",
+        "khiva_kunya_ark"
+      ],
+      "minutes": 13
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_juma_mosque",
+      "viaPlaceIds": [
+        "khiva_islam_khoja",
+        "khiva_juma_mosque"
+      ],
+      "minutes": 3
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_tash_hauli",
+      "viaPlaceIds": [
+        "khiva_islam_khoja",
+        "khiva_juma_mosque",
+        "khiva_tash_hauli"
+      ],
+      "minutes": 7
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_islam_khoja",
+      "viaPlaceIds": [
+        "khiva_islam_khoja"
+      ],
+      "minutes": 0
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_kalta_minor",
+      "viaPlaceIds": [
+        "khiva_islam_khoja",
+        "khiva_pahlavan_mahmud",
+        "khiva_kalta_minor"
+      ],
+      "minutes": 8
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "viaPlaceIds": [
+        "khiva_islam_khoja",
+        "khiva_pahlavan_mahmud"
+      ],
+      "minutes": 2
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "viaPlaceIds": [
+        "khiva_islam_khoja",
+        "khiva_pahlavan_mahmud",
+        "khiva_kalta_minor",
+        "khiva_muhammad_amin_khan"
+      ],
+      "minutes": 9
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_ota_darvoza",
+      "viaPlaceIds": [
+        "khiva_islam_khoja",
+        "khiva_pahlavan_mahmud",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza"
+      ],
+      "minutes": 10
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "viaPlaceIds": [
+        "khiva_islam_khoja",
+        "khiva_juma_mosque",
+        "khiva_palvan_darvoza"
+      ],
+      "minutes": 9
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "viaPlaceIds": [
+        "khiva_islam_khoja",
+        "khiva_juma_mosque",
+        "khiva_tash_hauli",
+        "khiva_bogcha_darvoza"
+      ],
+      "minutes": 15
+    },
+    {
+      "fromPlaceId": "khiva_islam_khoja",
+      "toPlaceId": "khiva_hotel_hub",
+      "viaPlaceIds": [
+        "khiva_islam_khoja",
+        "khiva_pahlavan_mahmud",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza",
+        "khiva_hotel_hub"
+      ],
+      "minutes": 13
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_kunya_ark",
+      "viaPlaceIds": [
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza",
+        "khiva_kunya_ark"
+      ],
+      "minutes": 5
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_juma_mosque",
+      "viaPlaceIds": [
+        "khiva_kalta_minor",
+        "khiva_juma_mosque"
+      ],
+      "minutes": 7
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_tash_hauli",
+      "viaPlaceIds": [
+        "khiva_kalta_minor",
+        "khiva_juma_mosque",
+        "khiva_tash_hauli"
+      ],
+      "minutes": 11
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_islam_khoja",
+      "viaPlaceIds": [
+        "khiva_kalta_minor",
+        "khiva_pahlavan_mahmud",
+        "khiva_islam_khoja"
+      ],
+      "minutes": 8
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_kalta_minor",
+      "viaPlaceIds": [
+        "khiva_kalta_minor"
+      ],
+      "minutes": 0
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "viaPlaceIds": [
+        "khiva_kalta_minor",
+        "khiva_pahlavan_mahmud"
+      ],
+      "minutes": 6
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "viaPlaceIds": [
+        "khiva_kalta_minor",
+        "khiva_muhammad_amin_khan"
+      ],
+      "minutes": 1
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_ota_darvoza",
+      "viaPlaceIds": [
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza"
+      ],
+      "minutes": 2
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "viaPlaceIds": [
+        "khiva_kalta_minor",
+        "khiva_juma_mosque",
+        "khiva_palvan_darvoza"
+      ],
+      "minutes": 13
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "viaPlaceIds": [
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza",
+        "khiva_kunya_ark",
+        "khiva_bogcha_darvoza"
+      ],
+      "minutes": 14
+    },
+    {
+      "fromPlaceId": "khiva_kalta_minor",
+      "toPlaceId": "khiva_hotel_hub",
+      "viaPlaceIds": [
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza",
+        "khiva_hotel_hub"
+      ],
+      "minutes": 5
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_kunya_ark",
+      "viaPlaceIds": [
+        "khiva_pahlavan_mahmud",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza",
+        "khiva_kunya_ark"
+      ],
+      "minutes": 11
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_juma_mosque",
+      "viaPlaceIds": [
+        "khiva_pahlavan_mahmud",
+        "khiva_islam_khoja",
+        "khiva_juma_mosque"
+      ],
+      "minutes": 5
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_tash_hauli",
+      "viaPlaceIds": [
+        "khiva_pahlavan_mahmud",
+        "khiva_islam_khoja",
+        "khiva_juma_mosque",
+        "khiva_tash_hauli"
+      ],
+      "minutes": 9
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_islam_khoja",
+      "viaPlaceIds": [
+        "khiva_pahlavan_mahmud",
+        "khiva_islam_khoja"
+      ],
+      "minutes": 2
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_kalta_minor",
+      "viaPlaceIds": [
+        "khiva_pahlavan_mahmud",
+        "khiva_kalta_minor"
+      ],
+      "minutes": 6
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "viaPlaceIds": [
+        "khiva_pahlavan_mahmud"
+      ],
+      "minutes": 0
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "viaPlaceIds": [
+        "khiva_pahlavan_mahmud",
+        "khiva_kalta_minor",
+        "khiva_muhammad_amin_khan"
+      ],
+      "minutes": 7
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_ota_darvoza",
+      "viaPlaceIds": [
+        "khiva_pahlavan_mahmud",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza"
+      ],
+      "minutes": 8
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "viaPlaceIds": [
+        "khiva_pahlavan_mahmud",
+        "khiva_islam_khoja",
+        "khiva_juma_mosque",
+        "khiva_palvan_darvoza"
+      ],
+      "minutes": 11
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "viaPlaceIds": [
+        "khiva_pahlavan_mahmud",
+        "khiva_islam_khoja",
+        "khiva_juma_mosque",
+        "khiva_tash_hauli",
+        "khiva_bogcha_darvoza"
+      ],
+      "minutes": 17
+    },
+    {
+      "fromPlaceId": "khiva_pahlavan_mahmud",
+      "toPlaceId": "khiva_hotel_hub",
+      "viaPlaceIds": [
+        "khiva_pahlavan_mahmud",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza",
+        "khiva_hotel_hub"
+      ],
+      "minutes": 11
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_kunya_ark",
+      "viaPlaceIds": [
+        "khiva_muhammad_amin_khan",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza",
+        "khiva_kunya_ark"
+      ],
+      "minutes": 6
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_juma_mosque",
+      "viaPlaceIds": [
+        "khiva_muhammad_amin_khan",
+        "khiva_kalta_minor",
+        "khiva_juma_mosque"
+      ],
+      "minutes": 8
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_tash_hauli",
+      "viaPlaceIds": [
+        "khiva_muhammad_amin_khan",
+        "khiva_kalta_minor",
+        "khiva_juma_mosque",
+        "khiva_tash_hauli"
+      ],
+      "minutes": 12
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_islam_khoja",
+      "viaPlaceIds": [
+        "khiva_muhammad_amin_khan",
+        "khiva_kalta_minor",
+        "khiva_pahlavan_mahmud",
+        "khiva_islam_khoja"
+      ],
+      "minutes": 9
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_kalta_minor",
+      "viaPlaceIds": [
+        "khiva_muhammad_amin_khan",
+        "khiva_kalta_minor"
+      ],
+      "minutes": 1
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "viaPlaceIds": [
+        "khiva_muhammad_amin_khan",
+        "khiva_kalta_minor",
+        "khiva_pahlavan_mahmud"
+      ],
+      "minutes": 7
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "viaPlaceIds": [
+        "khiva_muhammad_amin_khan"
+      ],
+      "minutes": 0
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_ota_darvoza",
+      "viaPlaceIds": [
+        "khiva_muhammad_amin_khan",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza"
+      ],
+      "minutes": 3
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "viaPlaceIds": [
+        "khiva_muhammad_amin_khan",
+        "khiva_kalta_minor",
+        "khiva_juma_mosque",
+        "khiva_palvan_darvoza"
+      ],
+      "minutes": 14
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "viaPlaceIds": [
+        "khiva_muhammad_amin_khan",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza",
+        "khiva_kunya_ark",
+        "khiva_bogcha_darvoza"
+      ],
+      "minutes": 15
+    },
+    {
+      "fromPlaceId": "khiva_muhammad_amin_khan",
+      "toPlaceId": "khiva_hotel_hub",
+      "viaPlaceIds": [
+        "khiva_muhammad_amin_khan",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza",
+        "khiva_hotel_hub"
+      ],
+      "minutes": 6
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "viaPlaceIds": [
+        "khiva_ota_darvoza",
+        "khiva_kunya_ark"
+      ],
+      "minutes": 3
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_juma_mosque",
+      "viaPlaceIds": [
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_juma_mosque"
+      ],
+      "minutes": 9
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "viaPlaceIds": [
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_juma_mosque",
+        "khiva_tash_hauli"
+      ],
+      "minutes": 13
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_islam_khoja",
+      "viaPlaceIds": [
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_pahlavan_mahmud",
+        "khiva_islam_khoja"
+      ],
+      "minutes": 10
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "viaPlaceIds": [
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor"
+      ],
+      "minutes": 2
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "viaPlaceIds": [
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_pahlavan_mahmud"
+      ],
+      "minutes": 8
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "viaPlaceIds": [
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_muhammad_amin_khan"
+      ],
+      "minutes": 3
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_ota_darvoza",
+      "viaPlaceIds": [
+        "khiva_ota_darvoza"
+      ],
+      "minutes": 0
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "viaPlaceIds": [
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_juma_mosque",
+        "khiva_palvan_darvoza"
+      ],
+      "minutes": 15
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "viaPlaceIds": [
+        "khiva_ota_darvoza",
+        "khiva_kunya_ark",
+        "khiva_bogcha_darvoza"
+      ],
+      "minutes": 12
+    },
+    {
+      "fromPlaceId": "khiva_ota_darvoza",
+      "toPlaceId": "khiva_hotel_hub",
+      "viaPlaceIds": [
+        "khiva_ota_darvoza",
+        "khiva_hotel_hub"
+      ],
+      "minutes": 3
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "viaPlaceIds": [
+        "khiva_palvan_darvoza",
+        "khiva_juma_mosque",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza",
+        "khiva_kunya_ark"
+      ],
+      "minutes": 18
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_juma_mosque",
+      "viaPlaceIds": [
+        "khiva_palvan_darvoza",
+        "khiva_juma_mosque"
+      ],
+      "minutes": 6
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "viaPlaceIds": [
+        "khiva_palvan_darvoza",
+        "khiva_tash_hauli"
+      ],
+      "minutes": 3
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_islam_khoja",
+      "viaPlaceIds": [
+        "khiva_palvan_darvoza",
+        "khiva_juma_mosque",
+        "khiva_islam_khoja"
+      ],
+      "minutes": 9
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "viaPlaceIds": [
+        "khiva_palvan_darvoza",
+        "khiva_juma_mosque",
+        "khiva_kalta_minor"
+      ],
+      "minutes": 13
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "viaPlaceIds": [
+        "khiva_palvan_darvoza",
+        "khiva_juma_mosque",
+        "khiva_islam_khoja",
+        "khiva_pahlavan_mahmud"
+      ],
+      "minutes": 11
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "viaPlaceIds": [
+        "khiva_palvan_darvoza",
+        "khiva_juma_mosque",
+        "khiva_kalta_minor",
+        "khiva_muhammad_amin_khan"
+      ],
+      "minutes": 14
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_ota_darvoza",
+      "viaPlaceIds": [
+        "khiva_palvan_darvoza",
+        "khiva_juma_mosque",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza"
+      ],
+      "minutes": 15
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "viaPlaceIds": [
+        "khiva_palvan_darvoza"
+      ],
+      "minutes": 0
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "viaPlaceIds": [
+        "khiva_palvan_darvoza",
+        "khiva_tash_hauli",
+        "khiva_bogcha_darvoza"
+      ],
+      "minutes": 11
+    },
+    {
+      "fromPlaceId": "khiva_palvan_darvoza",
+      "toPlaceId": "khiva_hotel_hub",
+      "viaPlaceIds": [
+        "khiva_palvan_darvoza",
+        "khiva_juma_mosque",
+        "khiva_kalta_minor",
+        "khiva_ota_darvoza",
+        "khiva_hotel_hub"
+      ],
+      "minutes": 18
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_kunya_ark",
+      "viaPlaceIds": [
+        "khiva_bogcha_darvoza",
+        "khiva_kunya_ark"
+      ],
+      "minutes": 9
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_juma_mosque",
+      "viaPlaceIds": [
+        "khiva_bogcha_darvoza",
+        "khiva_tash_hauli",
+        "khiva_juma_mosque"
+      ],
+      "minutes": 12
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_tash_hauli",
+      "viaPlaceIds": [
+        "khiva_bogcha_darvoza",
+        "khiva_tash_hauli"
+      ],
+      "minutes": 8
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_islam_khoja",
+      "viaPlaceIds": [
+        "khiva_bogcha_darvoza",
+        "khiva_tash_hauli",
+        "khiva_juma_mosque",
+        "khiva_islam_khoja"
+      ],
+      "minutes": 15
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_kalta_minor",
+      "viaPlaceIds": [
+        "khiva_bogcha_darvoza",
+        "khiva_kunya_ark",
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor"
+      ],
+      "minutes": 14
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "viaPlaceIds": [
+        "khiva_bogcha_darvoza",
+        "khiva_tash_hauli",
+        "khiva_juma_mosque",
+        "khiva_islam_khoja",
+        "khiva_pahlavan_mahmud"
+      ],
+      "minutes": 17
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "viaPlaceIds": [
+        "khiva_bogcha_darvoza",
+        "khiva_kunya_ark",
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_muhammad_amin_khan"
+      ],
+      "minutes": 15
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_ota_darvoza",
+      "viaPlaceIds": [
+        "khiva_bogcha_darvoza",
+        "khiva_kunya_ark",
+        "khiva_ota_darvoza"
+      ],
+      "minutes": 12
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "viaPlaceIds": [
+        "khiva_bogcha_darvoza",
+        "khiva_tash_hauli",
+        "khiva_palvan_darvoza"
+      ],
+      "minutes": 11
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "viaPlaceIds": [
+        "khiva_bogcha_darvoza"
+      ],
+      "minutes": 0
+    },
+    {
+      "fromPlaceId": "khiva_bogcha_darvoza",
+      "toPlaceId": "khiva_hotel_hub",
+      "viaPlaceIds": [
+        "khiva_bogcha_darvoza",
+        "khiva_kunya_ark",
+        "khiva_ota_darvoza",
+        "khiva_hotel_hub"
+      ],
+      "minutes": 15
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_kunya_ark",
+      "viaPlaceIds": [
+        "khiva_hotel_hub",
+        "khiva_ota_darvoza",
+        "khiva_kunya_ark"
+      ],
+      "minutes": 6
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_juma_mosque",
+      "viaPlaceIds": [
+        "khiva_hotel_hub",
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_juma_mosque"
+      ],
+      "minutes": 12
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_tash_hauli",
+      "viaPlaceIds": [
+        "khiva_hotel_hub",
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_juma_mosque",
+        "khiva_tash_hauli"
+      ],
+      "minutes": 16
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_islam_khoja",
+      "viaPlaceIds": [
+        "khiva_hotel_hub",
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_pahlavan_mahmud",
+        "khiva_islam_khoja"
+      ],
+      "minutes": 13
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_kalta_minor",
+      "viaPlaceIds": [
+        "khiva_hotel_hub",
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor"
+      ],
+      "minutes": 5
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_pahlavan_mahmud",
+      "viaPlaceIds": [
+        "khiva_hotel_hub",
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_pahlavan_mahmud"
+      ],
+      "minutes": 11
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_muhammad_amin_khan",
+      "viaPlaceIds": [
+        "khiva_hotel_hub",
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_muhammad_amin_khan"
+      ],
+      "minutes": 6
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_ota_darvoza",
+      "viaPlaceIds": [
+        "khiva_hotel_hub",
+        "khiva_ota_darvoza"
+      ],
+      "minutes": 3
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_palvan_darvoza",
+      "viaPlaceIds": [
+        "khiva_hotel_hub",
+        "khiva_ota_darvoza",
+        "khiva_kalta_minor",
+        "khiva_juma_mosque",
+        "khiva_palvan_darvoza"
+      ],
+      "minutes": 18
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_bogcha_darvoza",
+      "viaPlaceIds": [
+        "khiva_hotel_hub",
+        "khiva_ota_darvoza",
+        "khiva_kunya_ark",
+        "khiva_bogcha_darvoza"
+      ],
+      "minutes": 15
+    },
+    {
+      "fromPlaceId": "khiva_hotel_hub",
+      "toPlaceId": "khiva_hotel_hub",
+      "viaPlaceIds": [
+        "khiva_hotel_hub"
+      ],
+      "minutes": 0
+    }
+  ]
+}

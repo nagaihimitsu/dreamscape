@@ -1,0 +1,226 @@
+[
+  {
+    "id": "uz_obs_tashkent_amir_temur_square_01",
+    "landmarkId": "tashkent_amir_temur_square",
+    "kind": "hotspot",
+    "titleJa": "木々の間を通る道",
+    "descriptionJa": "手前の木々の間を、細い散策路が曲がっている。広場は一枚の舗装面ではなく、緑の区画を歩いて巡れる空間として見える。",
+    "factId": "uz_fact_tashkent_amir_temur_square_01",
+    "relatedQuestionIds": [],
+    "region": {
+      "x": 0.38,
+      "y": 0.68,
+      "width": 0.36,
+      "height": 0.18
+    },
+    "sources": [
+      {
+        "publisher": "Dreamscape photo review / Wikimedia Commons",
+        "title": "A._Temur_xiyoboni.jpg",
+        "url": "https://commons.wikimedia.org/wiki/File:A._Temur_xiyoboni.jpg",
+        "checkedAt": "2026-11-04",
+        "claimType": "interpretation",
+        "claimJa": "同梱写真を目視し、記載した形・配置・色の見える範囲を確認。写真から各部の年代や現在の営業状態を断定しない。"
+      }
+    ]
+  },
+  {
+    "id": "uz_obs_tashkent_amir_temur_square_02",
+    "landmarkId": "tashkent_amir_temur_square",
+    "kind": "hotspot",
+    "titleJa": "街路から緑へ",
+    "descriptionJa": "下端の車道と歩道の向こうに、柵と木々のある広場が続く。写真では、通りと散策空間の境目を見比べられる。",
+    "factId": "uz_fact_tashkent_amir_temur_square_02",
+    "relatedQuestionIds": [],
+    "region": {
+      "x": 0.03,
+      "y": 0.77,
+      "width": 0.56,
+      "height": 0.22
+    },
+    "sources": [
+      {
+        "publisher": "Dreamscape photo review / Wikimedia Commons",
+        "title": "A._Temur_xiyoboni.jpg",
+        "url": "https://commons.wikimedia.org/wiki/File:A._Temur_xiyoboni.jpg",
+        "checkedAt": "2026-11-04",
+        "claimType": "interpretation",
+        "claimJa": "同梱写真を目視し、記載した形・配置・色の見える範囲を確認。写真から各部の年代や現在の営業状態を断定しない。"
+      }
+    ]
+  },
+  {
+    "id": "uz_obs_tashkent_chorsu_bazaar_01",
+    "landmarkId": "tashkent_chorsu_bazaar",
+    "kind": "hotspot",
+    "titleJa": "袋のまま並ぶ品物",
+    "descriptionJa": "口を広げた袋に、形や色の異なる乾物が山のように入っている。市場では、建物だけでなく並べ方にも目を向けられる。",
+    "factId": "uz_fact_tashkent_chorsu_bazaar_01",
+    "relatedQuestionIds": [],
+    "region": {
+      "x": 0.01,
+      "y": 0.02,
+      "width": 0.6,
+      "height": 0.57
+    },
+    "sources": [
+      {
+        "publisher": "Dreamscape photo review / Wikimedia Commons",
+        "title": "Quritilgan_mevalar_va_gazaklar.jpg",
+        "url": "https://commons.wikimedia.org/wiki/File:Quritilgan_mevalar_va_gazaklar.jpg",
+        "checkedAt": "2026-11-04",
+        "claimType": "interpretation",
+        "claimJa": "同梱写真を目視し、記載した形・配置・色の見える範囲を確認。写真から各部の年代や現在の営業状態を断定しない。"
+      },
+      {
+        "publisher": "Visit Tashkent",
+        "title": "Chorsu bazaar",
+        "url": "https://visit.tashkent.uz/en/attraction/27",
+        "checkedAt": "2026-11-04",
+        "claimType": "documented_fact",
+        "claimJa": "チョルスーは旧市街Eski Shaharにある市場。生鮮品や日用品などの売買が行われる。"
+      }
+    ]
+  },
+  {
+    "id": "uz_obs_tashkent_chorsu_bazaar_02",
+    "landmarkId": "tashkent_chorsu_bazaar",
+    "kind": "hotspot",
+    "titleJa": "同じ色にも違いがある",
+    "descriptionJa": "下段には、橙色から褐色まで、乾燥した果実が袋ごとに並んでいる。写真だけでは品種や産地、売値までは分からない。",
+    "factId": "uz_fact_tashkent_chorsu_bazaar_02",
+    "relatedQuestionIds": [],
+    "region": {
+      "x": 0.06,
+      "y": 0.64,
+      "width": 0.91,
+      "height": 0.3
+    },
+    "sources": [
+      {
+        "publisher": "Dreamscape photo review / Wikimedia Commons",
+        "title": "Quritilgan_mevalar_va_gazaklar.jpg",
+        "url": "https://commons.wikimedia.org/wiki/File:Quritilgan_mevalar_va_gazaklar.jpg",
+        "checkedAt": "2026-11-04",
+        "claimType": "interpretation",
+        "claimJa": "同梱写真を目視し、記載した形・配置・色の見える範囲を確認。写真から各部の年代や現在の営業状態を断定しない。"
+      }
+    ]
+  },
+  {
+    "id": "uz_obs_tashkent_khast_imam_01",
+    "landmarkId": "tashkent_khast_imam",
+    "kind": "hotspot",
+    "titleJa": "門の周りに重なる模様",
+    "descriptionJa": "中央の大きな門には、縦長の幾何学模様と、アーチを囲む曲線の装飾が重なっている。写真は複合体内のバラク・ハン・マドラサを正面から見たもの。",
+    "factId": "uz_fact_tashkent_khast_imam_01",
+    "relatedQuestionIds": [],
+    "region": {
+      "x": 0.36,
+      "y": 0.27,
+      "width": 0.28,
+      "height": 0.44
+    },
+    "sources": [
+      {
+        "publisher": "Dreamscape photo review / Wikimedia Commons",
+        "title": "Barak-Khan_Madrasa.jpg",
+        "url": "https://commons.wikimedia.org/wiki/File:Barak-Khan_Madrasa.jpg",
+        "checkedAt": "2026-11-04",
+        "claimType": "interpretation",
+        "claimJa": "同梱写真を目視し、記載した形・配置・色の見える範囲を確認。写真から各部の年代や現在の営業状態を断定しない。"
+      },
+      {
+        "publisher": "Uzbekistan Travel",
+        "title": "Hazrati Imam complex",
+        "url": "https://app.uzbekistan.travel/ru/o/kompleks-hazrati-imam/",
+        "checkedAt": "2026-11-04",
+        "claimType": "documented_fact",
+        "claimJa": "旧市街の宗教建築群で、バラク・ハンのマドラサなどを含む。現代建築や宝物展示の入場を本イベントに含めない。"
+      }
+    ]
+  },
+  {
+    "id": "uz_obs_tashkent_khast_imam_02",
+    "landmarkId": "tashkent_khast_imam",
+    "kind": "hotspot",
+    "titleJa": "左右の低い棟とドーム",
+    "descriptionJa": "中央の高い門の左右には低い棟が続き、その上に青みがかったドームが見える。左右に広がる形は、中央の入口の高さを際立たせている。",
+    "factId": "uz_fact_tashkent_khast_imam_02",
+    "relatedQuestionIds": [],
+    "region": {
+      "x": 0.66,
+      "y": 0.36,
+      "width": 0.2,
+      "height": 0.4
+    },
+    "sources": [
+      {
+        "publisher": "Dreamscape photo review / Wikimedia Commons",
+        "title": "Barak-Khan_Madrasa.jpg",
+        "url": "https://commons.wikimedia.org/wiki/File:Barak-Khan_Madrasa.jpg",
+        "checkedAt": "2026-11-04",
+        "claimType": "interpretation",
+        "claimJa": "同梱写真を目視し、記載した形・配置・色の見える範囲を確認。写真から各部の年代や現在の営業状態を断定しない。"
+      }
+    ]
+  },
+  {
+    "id": "uz_obs_tashkent_kukeldash_01",
+    "landmarkId": "tashkent_kukeldash",
+    "kind": "hotspot",
+    "titleJa": "中庭の正面に向く門",
+    "descriptionJa": "中庭の奥に、大きなアーチを囲む装飾が見える。外壁の入口とは別に、内部にも正面をつくる門がある。",
+    "factId": "uz_fact_tashkent_kukeldash_01",
+    "relatedQuestionIds": [],
+    "region": {
+      "x": 0.35,
+      "y": 0.02,
+      "width": 0.3,
+      "height": 0.6
+    },
+    "sources": [
+      {
+        "publisher": "Dreamscape photo review / Wikimedia Commons",
+        "title": "Kukeldash Madrasah in Tashkent.jpg",
+        "url": "https://commons.wikimedia.org/wiki/File:Kukeldash_Madrasah_in_Tashkent.jpg",
+        "checkedAt": "2026-11-04",
+        "claimType": "interpretation",
+        "claimJa": "同梱写真を目視し、装飾門と左右に並ぶ部屋を確認。見える形だけを記し、各部の年代・復元時期を写真だけから断定しない。"
+      }
+    ]
+  },
+  {
+    "id": "uz_obs_tashkent_kukeldash_02",
+    "landmarkId": "tashkent_kukeldash",
+    "kind": "hotspot",
+    "titleJa": "中庭を囲む小さな部屋",
+    "descriptionJa": "正面の左右には、同じような大きさの入口が続いている。資料では、マドラサには学生のための部屋が設けられたと説明される。",
+    "factId": "uz_fact_tashkent_kukeldash_02",
+    "relatedQuestionIds": [],
+    "region": {
+      "x": 0.86,
+      "y": 0.14,
+      "width": 0.14,
+      "height": 0.47
+    },
+    "sources": [
+      {
+        "publisher": "Dreamscape photo review / Wikimedia Commons",
+        "title": "Kukeldash Madrasah in Tashkent.jpg",
+        "url": "https://commons.wikimedia.org/wiki/File:Kukeldash_Madrasah_in_Tashkent.jpg",
+        "checkedAt": "2026-11-04",
+        "claimType": "interpretation",
+        "claimJa": "同梱写真を目視し、装飾門と左右に並ぶ部屋を確認。見える形だけを記し、各部の年代・復元時期を写真だけから断定しない。"
+      },
+      {
+        "publisher": "CAREC / Visit Silk Road",
+        "title": "Tashkent Kulkedash Medressa",
+        "url": "https://visitsilkroad.org/destination/tashkent-kulkedash-medressa/",
+        "checkedAt": "2026-11-04",
+        "claimType": "documented_fact",
+        "claimJa": "16世紀のマドラサで、中庭を囲む学生用の部屋を持つ。後世には隊商宿などにも転用されたと紹介されている。"
+      }
+    ]
+  }
+]

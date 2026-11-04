@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "tashkent",
+  "nextCityId": "samarkand",
+  "countryCode": "UZ",
+  "nameJa": "タシュケント",
+  "themeJa": "市場と緑の道がつなぐ都市",
+  "firstClearReward": {
+    "rewardSourceId": "tashkent_legacy_episode_placeholder",
+    "ap": 0
+  },
+  "landmarkIdsPlanned": [
+    "tashkent_khast_imam",
+    "tashkent_chorsu_bazaar",
+    "tashkent_kukeldash",
+    "tashkent_amir_temur_square"
+  ],
+  "productionStatus": "prototype"
+}

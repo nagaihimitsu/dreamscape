@@ -4,7 +4,8 @@ import { battles, city, getCities, dates, dateDestinations, landmarks, getCityCo
 import { encounters } from "../content/encounters";
 import { battleCityId } from "../domain/chapter";
 import { saveGame } from "../persistence";
-import { installIndiaTestCities } from "../domain/multi-city-test-fixture";
+import { journeys } from "../content/journeys";
+import { installJourneyTestCities } from "../domain/multi-city-test-fixture";
 import { createDebugState, type DebugScene, type DebugSettings } from "./debug-state";
 import { PrototypePreview } from "./PrototypePreview";
 import "./debug-mode.css";
@@ -37,11 +38,21 @@ export default function DebugMode() {
   const [session, setSession] = useState<{ storage: MemoryStorage; roll: () => number; key: number; location: string } | null>(null);
   const [prototypeCity, setPrototypeCity] = useState<string | null>(null);
   const [message, setMessage] = useState("");
-  const isPrototype = dataMode === "real" && getCityContent(settings.cityId ?? city.id).city.productionStatus === "prototype";
+  const isPrototype = getCityContent(settings.cityId ?? city.id).city.productionStatus === "prototype";
   function selectDataMode(next: "real" | "fixture") {
     if (next === dataMode) return;
     try {
-      if (next === "fixture") fixtureCleanup.current = installIndiaTestCities();
+      if (next === "fixture") {
+        const cleanups: Array<() => void> = [];
+        try {
+          for (const journey of journeys.filter((item) => item.status === "preparing"))
+            cleanups.push(installJourneyTestCities(journey.id));
+        } catch (error) {
+          for (const cleanup of cleanups.reverse()) cleanup();
+          throw error;
+        }
+        fixtureCleanup.current = () => { for (const cleanup of cleanups.reverse()) cleanup(); };
+      }
       else { fixtureCleanup.current?.(); fixtureCleanup.current = null; }
       const target = settings.cityId ?? city.id;
       const nextOptions = cityOptions(target);
@@ -97,7 +108,7 @@ export default function DebugMode() {
             const next = cityOptions(cityId);
             setSettings({ ...settings, cityId, id: next[settings.scene][0]?.id ?? "" });
           }}>
-            {getCities().map((item) => <option key={item.id} value={item.id}>{item.nameJa}{dataMode === "real" && item.productionStatus === "prototype" ? "（制作中）" : ""}</option>)}
+            {getCities().map((item) => <option key={item.id} value={item.id}>{item.nameJa}{item.productionStatus === "prototype" ? "（制作中）" : ""}</option>)}
           </select>
         </label>
         {isPrototype ? <p>物語・クイズは未制作です。候補地点と登録された交通手段を確認できます。</p> : <>

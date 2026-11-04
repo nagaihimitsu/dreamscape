@@ -1,0 +1,39 @@
+{
+  "cityId": "agra",
+  "noteJa": "問題本文ではなく、Ink各ラウンドとクイズを接続する編集用契約。通常3問・都市ボス5問。各sceneのanswer_correctは直前問題、outroのbattle_scoreは総得点。",
+  "battles": {
+    "gt_agra_main_taj_mahal": [
+      { "round": 1, "afterScene": "after_1", "topicJa": "墓廟は四分庭園の一端に置かれ、奥行きを生む。中央ではない。" },
+      { "round": 2, "afterScene": "after_2", "topicJa": "地上の記念棺と、下階にある実際の墓の区別。" },
+      { "round": 3, "afterScene": "outro", "topicJa": "夫の記念棺が妃の隣に加わるため、完全な左右対称の例外になる。" }
+    ],
+    "gt_agra_main_agra_fort": [
+      { "round": 1, "afterScene": "after_1", "topicJa": "アクバルの赤砂岩再建と、後のシャー・ジャハーンの白大理石の建築。異なる世代の仕事。" },
+      { "round": 2, "afterScene": "after_2", "topicJa": "城は防衛だけでなく、宮殿と謁見の間を含み、暮らしや政治にも使われた。" },
+      { "round": 3, "afterScene": "outro", "topicJa": "シャー・ジャハーンが晩年を過ごしたムサンマン・ブルジュからタージを望める。本人の心情を史実として決めない。" }
+    ],
+    "gt_agra_main_itimad_tomb": [
+      { "round": 1, "afterScene": "after_1", "topicJa": "ヌール・ジャハーンが父ギヤース・ベグのために造営した廟。" },
+      { "round": 2, "afterScene": "after_2", "topicJa": "白大理石に色石をはめ込む象嵌。仕立て屋アミナの模様づくりとの関心の接点。" },
+      { "round": 3, "afterScene": "outro", "topicJa": "石の透かし格子を通して室内へ光が入る。装飾だけでなく、内側の見え方に関わる。" }
+    ],
+    "gt_agra_main_fatehpur_sikri": [
+      { "round": 1, "afterScene": "after_1", "topicJa": "壮大な建物でも首都だった期間は短い。具体的年号の暗記にはしない。" },
+      { "round": 2, "afterScene": "after_2", "topicJa": "宮殿・行政・礼拝・居住などが同居する都市。ひとつの宮殿とは説明しない。" },
+      { "round": 3, "afterScene": "outro", "topicJa": "ラホールへの首都移転後も皇帝の一時訪問に使われた。完全無人化とは言えない。" }
+    ],
+    "gt_agra_finale": [
+      { "round": 1, "afterScene": "after_1", "topicJa": "タージ写真の説明: 妃ムムターズ・マハルをしのぶ墓廟。凱旋宮殿ではない。" },
+      { "round": 2, "afterScene": "after_2", "topicJa": "アーグラ城写真の説明: 異なる皇帝の時代の建設。一人が全てを一度に造ったという説明を避ける。" },
+      { "round": 3, "afterScene": "after_3", "topicJa": "Baby Tajという愛称でも、イティマード・ウッダウラ廟がタージより先に造られた。" },
+      { "round": 4, "afterScene": "after_4", "topicJa": "ファテープル・シークリー写真の説明: 宮殿だけでなく、暮らしと行政と礼拝を含む都市。" },
+      { "round": 5, "afterScene": "outro", "topicJa": "タージの地上記念棺を、実際の墓そのものとして紹介しない。" }
+    ]
+  },
+  "sources": [
+    { "url": "https://whc.unesco.org/en/list/252/", "checkedAt": "2026-11-04", "scopeJa": "タージの配置、建立目的、記念棺と実墓、非対称" },
+    { "url": "https://agra.nic.in/tourist-place/agra-fort/", "checkedAt": "2026-11-04", "scopeJa": "城の皇帝別建築、用途、ムサンマン・ブルジュからの眺め" },
+    { "url": "https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/", "checkedAt": "2026-11-04", "scopeJa": "造営者と父、先行時期、象嵌と石格子" },
+    { "url": "https://whc.unesco.org/en/list/255/", "checkedAt": "2026-11-04", "scopeJa": "計画都市の用途、首都の時期、移転後の一時訪問" }
+  ]
+}

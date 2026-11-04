@@ -25,11 +25,7 @@ test("protects a Milan save accidentally placed in the India slot after release"
   await page.goto("/");
   const raw = await page.evaluate(async () => {
     const gamePath = "/src/domain/game.ts";
-    const journeyPath = "/src/content/journeys.ts";
     const { createGame } = await import(/* @vite-ignore */ gamePath);
-    const { getJourney } = await import(/* @vite-ignore */ journeyPath);
-    // Exercise the future playable entry without changing published data.
-    getJourney("golden_triangle").status = "available";
     const data = JSON.stringify(createGame());
     localStorage.setItem("dreamscape.journey.golden_triangle.save.v1", data);
     return data;
@@ -49,7 +45,9 @@ test("other preparing journeys display their own read-only page without touching
     const { journeys } = await import(/* @vite-ignore */ journeyPath);
     const india = journeys.find((item: { id: string }) => item.id === "golden_triangle");
     if (!india) throw new Error("Missing India journey fixture");
-    journeys.push({ ...india, id: "test_preparing", nameJa: "試作の旅",
+    // Only journeys with an initial state support preparation saves. This
+    // unconfigured future journey must remain a read-only announcement.
+    journeys.push({ ...india, status: "preparing", initialState: undefined, id: "test_preparing", nameJa: "試作の旅",
       cities: [{ id: "test_city", nameJa: "試作都市" }] });
     const indiaSave = "unchanged-india-save";
     const otherSave = "unchanged-other-save";
@@ -57,9 +55,11 @@ test("other preparing journeys display their own read-only page without touching
     localStorage.setItem("dreamscape.journey.test_preparing.save.v1", otherSave);
     return { indiaSave, otherSave };
   });
-  // Selecting India causes the existing selector to render the test journey.
+  // Switching the now-playable India journey rerenders the selector. Its
+  // deliberately unreadable save is protected before the read-only fixture opens.
   await page.getByLabel("旅行編").selectOption("golden_triangle");
-  await expect(page.getByRole("heading", { name: "インド・ゴールデントライアングル編" })).toBeVisible();
+  await expect(page.getByRole("alert")).toBeVisible();
+  await expect(page.getByLabel("旅行編").locator('option[value="test_preparing"]')).toHaveCount(1);
   // The read-only screen must remain accessible even without Web Locks.
   await page.evaluate(() => Object.defineProperty(navigator, "locks", { value: undefined, configurable: true }));
   await page.getByLabel("旅行編").selectOption("test_preparing");

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { episodes, getCityStoryBackground, progression } from "../content";
+import { episodes, getCityContent, getCityStoryBackground, progression } from "../content";
 import {
   beginStory,
   continueStory,
@@ -13,13 +13,18 @@ import type { GameState } from "./game";
 export const activeEpilogueSchema = z
   .object({
     episodeId: z.string().min(1),
+    // Arrivals share the saved, effect-free city conversation contract.
+    kind: z.literal("arrival").optional(),
+    logoComplete: z.boolean().optional(),
     contentHash: z.string().min(1),
     storyState: z.string().min(1),
     frame: storyFrameSchema,
   })
   .strict();
 export function activeEpilogueStoryId(active: z.infer<typeof activeEpilogueSchema>): string | null {
-  const current = episodes.find((episode) => episode.id === active.episodeId)?.epilogueStoryId;
+  const episode = episodes.find((episode) => episode.id === active.episodeId);
+  const current = active.kind === "arrival" && episode
+    ? getCityContent(episode.cityId).city.arrivalStoryId : episode?.epilogueStoryId;
   try { if (current && storyFingerprint(current) === active.contentHash) return current; }
   catch { /* Missing or changed content must not be resumed. */ }
   return null;
@@ -34,10 +39,32 @@ function variables(state: GameState) {
     ending_reached: state.endingReached,
   };
 }
-function checkedStep(step: StoryStep) {
+function checkedStep(step: StoryStep, arrival = false) {
   if (step.effects.length || step.frame.choices.length)
     throw new Error("都市エピローグに恋愛効果や選択肢は含められません。");
+  if (arrival && !["heroine", "narrator"].includes(step.frame.speaker))
+    throw new Error("到着の会話はヒロインとナレーションだけで進みます。");
   return { storyState: step.storyState, frame: step.frame };
+}
+
+/** Called only at a new journey or a successful city departure, never on load. */
+export function startCityArrival(state: GameState, expectedRevision: number): GameState {
+  const storyId = getCityContent(state.currentCityId).city.arrivalStoryId;
+  const finale = episodes.find((episode) => episode.cityId === state.currentCityId && episode.kind === "city_finale");
+  if (state.revision !== expectedRevision || !storyId || !finale || state.completedCityIds.includes(state.currentCityId) || state.activeDate || state.activeBattle ||
+      state.activeTourism || state.activeEncounter || state.activeEpilogue || state.travel.activeEvent) return state;
+  return { ...state, revision: state.revision + 1, activeEpilogue: {
+    episodeId: finale.id, kind: "arrival", logoComplete: false, contentHash: storyFingerprint(storyId),
+    ...checkedStep(beginStory(storyId, state.playerName, state.heroineName, variables(state), [], {},
+      getCityStoryBackground(state.currentCityId, state.travel.currentPlaceId)), true),
+  } };
+}
+
+/** Persist the decorative logo boundary so reload continues with the conversation. */
+export function completeArrivalLogo(state: GameState, expectedRevision: number): GameState {
+  const active = state.activeEpilogue;
+  if (state.revision !== expectedRevision || active?.kind !== "arrival" || active.logoComplete) return state;
+  return { ...state, revision: state.revision + 1, activeEpilogue: { ...active, logoComplete: true } };
 }
 export function startCityEpilogue(
   state: GameState,
@@ -86,13 +113,15 @@ export function advanceCityEpilogue(
 ): GameState {
   const active = state.activeEpilogue;
   if (state.revision !== expectedRevision || !active) return state;
+  const arrival = active.kind === "arrival";
+  if (arrival && !active.logoComplete) return state;
   const finale = episodes.find((episode) => episode.id === active.episodeId)!;
   if (active.frame.ended)
     return {
       ...state,
       revision: state.revision + 1,
       activeEpilogue: null,
-      viewedEpilogueCityIds: state.viewedEpilogueCityIds.includes(finale.cityId)
+      viewedEpilogueCityIds: arrival || state.viewedEpilogueCityIds.includes(finale.cityId)
         ? state.viewedEpilogueCityIds
         : [...state.viewedEpilogueCityIds, finale.cityId],
     };
@@ -102,7 +131,7 @@ export function advanceCityEpilogue(
     activeEpilogue: {
       ...active,
       ...checkedStep(
-        continueStory(activeEpilogueStoryId(active)!, active.storyState, active.frame),
+        continueStory(activeEpilogueStoryId(active)!, active.storyState, active.frame), arrival,
       ),
     },
   };
@@ -121,15 +150,18 @@ export function validateEpilogueState(state: GameState): void {
       episode.id === active.episodeId && episode.kind === "city_finale",
   );
   const storyId = activeEpilogueStoryId(active);
+  const arrival = active.kind === "arrival";
   if (
-    !finale?.epilogueStoryId ||
+    !finale || (!arrival && !finale.epilogueStoryId) ||
     finale.cityId !== state.currentCityId ||
-    !state.completedCityIds.includes(finale.cityId) ||
+    (!arrival && !state.completedCityIds.includes(finale.cityId)) ||
+    (arrival && (typeof active.logoComplete !== "boolean" || state.completedCityIds.includes(finale.cityId))) ||
+    (!arrival && active.logoComplete !== undefined) ||
     state.activeDate ||
     state.activeTourism ||
     state.activeBattle ||
     !storyId ||
-    active.frame.choices.length
+    active.frame.choices.length || (arrival && !["heroine", "narrator"].includes(active.frame.speaker))
   )
     throw new Error(
       "都市エピローグの途中データを確認できません。元のデータは保管されています。",

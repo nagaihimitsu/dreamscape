@@ -14,6 +14,7 @@ import { compactTravel, expandTravel } from "./city-bundle-routes";
 import { idSchema, bundleSchema, completeBundleSchema, editableBundleSchema, completeEditableBundleSchema, type CityBundle, type EditableCityBundle } from "./city-bundle-schema";
 import { catalogFiles, cityFiles, decisionFile, existing, inputFingerprint, read, writeCityBundleFiles } from "./city-bundle-files";
 import { assertUniqueIds, mergeCityCatalogs, referencedBackgrounds } from "./city-bundle-catalogs";
+import { cityTransitFile, readTransitLedger, exportTransitDecisions, inspectCityTransit } from "./journey-transit-review";
 
 export type { CityBundle, EditableCityBundle } from "./city-bundle-schema";
 export { writeCityBundleFiles } from "./city-bundle-files";
@@ -75,6 +76,9 @@ export function exportCityBundle(root: string, cityId: string): CityBundle {
     const ledger = read(root, decisionFile);
     if (!Array.isArray(ledger.decisions)) throw new Error("Invalid transit decision ledger");
     transitDecisions = ledger.decisions.filter((item: { cityId?: string }) => item.cityId === cityId);
+  } else {
+    const file = cityTransitFile(root, cityId);
+    if (file) transitDecisions = exportTransitDecisions(readTransitLedger(root, file));
   }
   if (inputFingerprint(root) !== fingerprint) throw new Error("Content or assets changed during export; retry");
   return completeBundleSchema.parse({ schemaVersion: 1, cityId, baseFingerprint: fingerprint, city, travel, travelSettings, backgrounds, assets, dateDestinations, landmarks, clues, transitDecisions });
@@ -116,7 +120,8 @@ export async function applyCityBundle(root: string, raw: unknown, apply = false)
   if (bundle.city.id !== cityId || bundle.travel.cityId !== cityId || bundle.travel.places.some((place) => place.cityId !== cityId) || bundle.travel.events.some((event) => event.cityId !== cityId) || bundle.dateDestinations.some((item) => item.cityId !== cityId) || bundle.landmarks.some((item) => item.cityId !== cityId))
     throw new Error(`City ownership mismatch: ${cityId}`);
   if (bundle.city.productionStatus !== (baseline?.city.productionStatus ?? "prototype")) throw new Error("City release status cannot be changed with a bundle");
-  if (indiaCity(cityId) !== (bundle.transitDecisions !== null)) throw new Error("Transit decision ledger does not match city");
+  const ownDecisionFile = cityTransitFile(root, cityId);
+  if ((indiaCity(cityId) || !!ownDecisionFile) !== (bundle.transitDecisions !== null)) throw new Error("Transit decision ledger does not match city");
   if (baseline) for (const event of bundle.travel.events) {
     const previous = baseline.travel.events.find((entry) => entry.id === event.id);
     if (previous && previous.contentStatus !== event.contentStatus) throw new Error(`Event release status cannot be changed with a bundle: ${event.id}`);
@@ -142,10 +147,13 @@ export async function applyCityBundle(root: string, raw: unknown, apply = false)
     cpSync(path.join(root, "public"), path.join(stage, "public"), { recursive: true });
     for (const [file, value] of Object.entries(next)) {
       const target = path.join(stage, file);
-      if (file === decisionFile) continue;
+      if (file === decisionFile || file === ownDecisionFile) continue;
       writeFileSync(target, value);
     }
-    if (bundle.transitDecisions) {
+    if (bundle.transitDecisions && ownDecisionFile) {
+      if (!inspectCityTransit(bundle.travel, JSON.parse(next[ownDecisionFile])).ready)
+        throw new Error(`Transit has undecided directions: ${cityId}`);
+    } else if (bundle.transitDecisions) {
       const transit = readIndiaTransitReview(root);
       const check = buildIndiaTransitReview({ catalogs: { ...transit.catalogs, [cityId]: bundle.travel }, decisions: JSON.parse(next[decisionFile]) });
       const counts = check.counts[cityId as keyof typeof check.counts];

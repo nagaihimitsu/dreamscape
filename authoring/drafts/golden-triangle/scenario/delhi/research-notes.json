@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-11-04",
+  "noteJa": "脚本の場面、人物、会話、私的な上映会は創作。追加した事実のみ以下で根拠を確認。既存観光の史実はobservation-cards.json、デート地の由来はdate_destinations.jsonの出典を再利用。人物を国民性の代表として描かない。",
+  "additionalFacts": [
+    {
+      "storyId": "dates/gt_delhi_date_bangla_sahib",
+      "destinationId": "delhi_bangla_sahib",
+      "sources": [
+        {
+          "publisher": "Incredible India / Ministry of Tourism",
+          "title": "Gurudwara Bangla Sahib: Make the most of your visit",
+          "url": "https://www.incredibleindia.gov.in/en/delhi/delhi/gurudwara-bangla-sahib",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "訪問者は頭と肩を覆い、慎みある服装をするよう案内される。"
+        },
+        {
+          "publisher": "Global Sikh Council",
+          "title": "Things to follow while visiting a Gurudwara",
+          "url": "https://globalsikhcouncil.org/wp-content/uploads/2023/05/English.pdf",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "グルドワーラを訪ねる際は頭を覆い、靴を脱ぐ。会衆の中では会話などの妨げを避ける。"
+        }
+      ]
+    }
+  ],
+  "stagingNotesJa": [
+    "ロータス寺院とバングラ・サーヒブの会話選択は静かに礼拝する時間の前後に置き、内部の私語・撮影・他者の無断撮影を描かない。",
+    "ジャーマー・マスジド通常戦は見学を終えた出口側で実施。",
+    "レッド・フォートの特定の制限区域へ立ち入る描写や、水路に現在水が流れていると断定する描写はしない。",
+    "アグラセン・キ・バオリは当日の見学可能範囲を確かめ、底まで下りる前提にしない。百三段は案内の記載としてのみ使用。",
+    "時刻に関係なく利用できるイベントで、朝夕や日没の時刻を固定しない。",
+    "デリーのフィナーレは全四観光後。クトゥブ通常戦で自分のスマートフォンに残した空のカットのみ、後のアークへ引き継ぐ。これはインベントリアイテムを新設する意味ではない。"
+  ]
+}

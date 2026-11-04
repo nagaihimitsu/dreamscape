@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "gt_delhi_main_jama_masjid_quiz",
+  "landmarkId": "delhi_jama_masjid",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "gt_delhi_jama_shared_patron",
+      "questionEn": "What connects the Jama Masjid in Delhi with the Red Fort and the Taj Mahal?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "They were all built as tombs for the same family."
+        },
+        {
+          "id": "B",
+          "textEn": "They were all ordered by the Mughal emperor Shah Jahan."
+        },
+        {
+          "id": "C",
+          "textEn": "They were all parts of one palace within the same walls."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "connects",
+          "meaning": "つなぐ"
+        },
+        {
+          "word": "ordered",
+          "meaning": "命じた"
+        },
+        {
+          "word": "emperor",
+          "meaning": "皇帝"
+        }
+      ],
+      "hintJa": "礼拝の場、宮殿、墓。用途や場所が違っても、造営を命じた人からつながる。",
+      "correctExplanationJa": "いずれもシャー・ジャハーンの造営です。同じ皇帝が関わりながら、祈り、暮らし、追悼という異なる目的を持つ建物が残っています。",
+      "incorrectExplanationJa": "同じ建物の一部でも、すべて墓でもありません。異なる目的の建物をつなぐのは、造営を命じた皇帝シャー・ジャハーンです。",
+      "sources": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Jama Masjid",
+          "url": "https://delhitourism.gov.in/tourist_place/jama_masjid.html",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ジャーマー・マスジドの造営者シャー・ジャハーンは、レッド・フォートとタージ・マハルの造営者でもある。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_delhi_jama_royal_gate",
+      "questionEn": "Why was the eastern entrance of the Jama Masjid larger and more prominent than the northern and southern entrances?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "It was originally reserved for the king and his court."
+        },
+        {
+          "id": "B",
+          "textEn": "It was designed as a private entrance for gardeners."
+        },
+        {
+          "id": "C",
+          "textEn": "It was the main entrance reserved for foreign merchants."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "entrance",
+          "meaning": "入口"
+        },
+        {
+          "word": "prominent",
+          "meaning": "目立つ"
+        },
+        {
+          "word": "reserved for",
+          "meaning": "〜のために取っておかれた"
+        }
+      ],
+      "hintJa": "同じ建物への入口でも、通る人の立場が造りに表れることがある。",
+      "correctExplanationJa": "東側はもともと王と宮廷の人々のための入口でした。華やかさを眺めるだけでなく、誰がそこを通ったかという見方ができます。",
+      "incorrectExplanationJa": "王と宮廷の人々のために用いられた入口です。北・南側との規模の違いは、かつての人の立場とも関わります。",
+      "sources": [
+        {
+          "publisher": "Archnet",
+          "title": "Jama Masjid (Delhi)",
+          "url": "https://www.archnet.org/sites/1571",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "東の入口は王と宮廷用に設けられた三層の入口で、北・南の二層の入口より目立つ。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_delhi_jama_living_mosque",
+      "questionEn": "Why is it incomplete to describe the Jama Masjid only as a monument from the past?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Only royal ceremonies take place there today."
+        },
+        {
+          "id": "B",
+          "textEn": "Its only role today is to display Mughal stonework."
+        },
+        {
+          "id": "C",
+          "textEn": "People still come here to pray."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "incomplete",
+          "meaning": "不十分な"
+        },
+        {
+          "word": "monument",
+          "meaning": "記念建造物"
+        },
+        {
+          "word": "pray",
+          "meaning": "祈る"
+        }
+      ],
+      "hintJa": "見学の案内とは別に、礼拝者のための入場も案内されている。",
+      "correctExplanationJa": "現在も礼拝の場です。昔の造りを知る楽しさと、今ここを使う人々への配慮を一緒に持って訪ねられます。具体的な見学条件は現地案内で確認します。",
+      "incorrectExplanationJa": "今も祈りに訪れる人がいるモスクです。過去の建築だけを見るのではなく、現在の使われ方も含めて理解できます。",
+      "sources": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Jama Masjid",
+          "url": "https://delhitourism.gov.in/tourist_place/jama_masjid.html",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "観光客と礼拝者の入場を別々に案内しており、現在も礼拝の場として使われる。"
+        }
+      ],
+      "difficulty": "medium"
+    }
+  ]
+}

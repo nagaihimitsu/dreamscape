@@ -1144,6 +1144,546 @@
           "hasCafeMemory": false
         }
       ]
+    },
+    {
+      "id": "gt_delhi_date_india_gate",
+      "kind": "normal",
+      "chapterId": "delhi",
+      "titleJa": "撮る人も写る日",
+      "descriptionJa": "インド門を訪ね、写真を撮る人も写真に入れる方法を考える。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "dates/gt_delhi_date_india_gate",
+      "requiredCompletedChapters": [
+        "delhi"
+      ],
+      "destinationId": "delhi_india_gate",
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "gt_bg_delhi_india_gate",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "デートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ],
+      "allowAfterEnding": true
+    },
+    {
+      "id": "gt_delhi_date_chandni_chowk",
+      "kind": "normal",
+      "chapterId": "delhi",
+      "titleJa": "目が先に曲がる",
+      "descriptionJa": "チャンドニー・チョークで、気になる店先が別々の方向に見つかる。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "dates/gt_delhi_date_chandni_chowk",
+      "requiredCompletedChapters": [
+        "delhi"
+      ],
+      "destinationId": "delhi_chandni_chowk",
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "gt_bg_delhi_chandni_chowk",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "デートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ],
+      "allowAfterEnding": true
+    },
+    {
+      "id": "gt_delhi_date_lodhi_garden",
+      "kind": "normal",
+      "chapterId": "delhi",
+      "titleJa": "五分だけ座るつもり",
+      "descriptionJa": "ロディ・ガーデンで、廟の輪郭を眺めながら一息つく。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "dates/gt_delhi_date_lodhi_garden",
+      "requiredCompletedChapters": [
+        "delhi"
+      ],
+      "destinationId": "delhi_lodhi_garden",
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "gt_bg_delhi_lodhi_garden",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "デートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ],
+      "allowAfterEnding": true
+    },
+    {
+      "id": "gt_delhi_date_agrasen_baoli",
+      "kind": "normal",
+      "chapterId": "delhi",
+      "titleJa": "数えるのをやめた段",
+      "descriptionJa": "アグラセン・キ・バオリの段を、安全な見学範囲から眺める。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "dates/gt_delhi_date_agrasen_baoli",
+      "requiredCompletedChapters": [
+        "delhi"
+      ],
+      "destinationId": "delhi_agrasen_baoli",
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "gt_bg_delhi_agrasen_baoli",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "デートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ],
+      "allowAfterEnding": true
+    },
+    {
+      "id": "gt_delhi_date_lotus_temple",
+      "kind": "normal",
+      "chapterId": "delhi",
+      "titleJa": "話さないでいた時間",
+      "descriptionJa": "ロータス寺院を訪ね、静かな時間の後に互いの過ごし方を聞く。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "dates/gt_delhi_date_lotus_temple",
+      "requiredCompletedChapters": [
+        "delhi"
+      ],
+      "destinationId": "delhi_lotus_temple",
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "gt_bg_delhi_lotus_temple",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "デートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ],
+      "allowAfterEnding": true
+    },
+    {
+      "id": "gt_delhi_date_bangla_sahib",
+      "kind": "normal",
+      "chapterId": "delhi",
+      "titleJa": "うまく結べない日でも",
+      "descriptionJa": "バングラ・サーヒブで、訪問の作法を確かめながら小さな助けを頼む。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "dates/gt_delhi_date_bangla_sahib",
+      "requiredCompletedChapters": [
+        "delhi"
+      ],
+      "destinationId": "delhi_bangla_sahib",
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "gt_bg_delhi_bangla_sahib",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "デートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ],
+      "allowAfterEnding": true
+    },
+    {
+      "id": "gt_agra_date_mehtab_bagh",
+      "kind": "normal",
+      "chapterId": "agra",
+      "titleJa": "メヘターブ・バーグ――一歩隣の眺め",
+      "descriptionJa": "川向こうのタージを眺める庭で、二人の立つ場所を取り替えてみる。戻ってきたとき、同じ景色を見つけられるだろうか。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "dates/gt_agra_date_mehtab_bagh",
+      "requiredCompletedChapters": [
+        "agra"
+      ],
+      "destinationId": "agra_mehtab_bagh",
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "gt_bg_agra_mehtab_bagh",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "デートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ],
+      "allowAfterEnding": true
+    },
+    {
+      "id": "gt_agra_date_akbar_tomb",
+      "kind": "normal",
+      "chapterId": "agra",
+      "titleJa": "アクバル廟――門、すごい",
+      "descriptionJa": "旅のメモに残ったのは、短すぎる感想だった。立派な文章に直す前に、二人が何を見ていたかを聞いてみる。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "dates/gt_agra_date_akbar_tomb",
+      "requiredCompletedChapters": [
+        "agra"
+      ],
+      "destinationId": "agra_akbar_tomb",
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "gt_bg_agra_akbar_tomb",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "デートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ],
+      "allowAfterEnding": true
+    },
+    {
+      "id": "gt_agra_date_ram_bagh",
+      "kind": "normal",
+      "chapterId": "agra",
+      "titleJa": "ラム・バーグ――足に一票",
+      "descriptionJa": "庭を歩きに来たのに、まずは座っていたい。小さな疲れを言葉にし、二人の歩く速さを合わせる時間。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "dates/gt_agra_date_ram_bagh",
+      "requiredCompletedChapters": [
+        "agra"
+      ],
+      "destinationId": "agra_ram_bagh",
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "gt_bg_agra_ram_bagh",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "デートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ],
+      "allowAfterEnding": true
+    },
+    {
+      "id": "gt_agra_date_chini_rauza",
+      "kind": "normal",
+      "chapterId": "agra",
+      "titleJa": "チーニー・カ・ラウザ――名前の決まらない青",
+      "descriptionJa": "詩人の廟に残る青いタイルを前に、ぴったりの言葉を探す。少し気取った言い方を試したら、自分で照れてしまった。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "dates/gt_agra_date_chini_rauza",
+      "requiredCompletedChapters": [
+        "agra"
+      ],
+      "destinationId": "agra_chini_rauza",
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "gt_bg_agra_chini_rauza",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "デートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ],
+      "allowAfterEnding": true
+    },
+    {
+      "id": "gt_agra_date_mariam_tomb",
+      "kind": "normal",
+      "chapterId": "agra",
+      "titleJa": "マリアム・ウッザマーニー廟――紹介文の続き",
+      "descriptionJa": "王妃、皇帝の母。その紹介から、自分ならどう紹介されたいかを考える。相手の言葉と、自分で加えたい一行。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "dates/gt_agra_date_mariam_tomb",
+      "requiredCompletedChapters": [
+        "agra"
+      ],
+      "destinationId": "agra_mariam_tomb",
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "gt_bg_agra_mariam_tomb",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "デートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ],
+      "allowAfterEnding": true
+    },
+    {
+      "id": "gt_agra_date_guru_ka_taal",
+      "kind": "normal",
+      "chapterId": "agra",
+      "titleJa": "グル・カ・タール――先に見つけた塔",
+      "descriptionJa": "みんなと同じ方へ進みかけて、砂岩の塔に目が止まる。自分が見たい場所を提案し、互いの歩く速さを確かめる。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "dates/gt_agra_date_guru_ka_taal",
+      "requiredCompletedChapters": [
+        "agra"
+      ],
+      "destinationId": "agra_guru_ka_taal",
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "gt_bg_agra_guru_ka_taal",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "デートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ],
+      "allowAfterEnding": true
+    },
+    {
+      "id": "gt_jaipur_date_jal_mahal",
+      "kind": "normal",
+      "chapterId": "jaipur",
+      "titleJa": "水に映る方の宮殿",
+      "descriptionJa": "ジャル・マハルを湖岸から眺める。揺れる屋根がそろう瞬間を、二人で待つ。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "dates/gt_jaipur_date_jal_mahal",
+      "requiredCompletedChapters": [
+        "jaipur"
+      ],
+      "destinationId": "jaipur_jal_mahal",
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "gt_bg_jaipur_jal_mahal",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "デートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ],
+      "allowAfterEnding": true
+    },
+    {
+      "id": "gt_jaipur_date_nahargarh_fort",
+      "kind": "normal",
+      "chapterId": "jaipur",
+      "titleJa": "屋根の数だけ",
+      "descriptionJa": "ナハルガル城から見渡すジャイプール。地図と町を見比べていたはずが、見知らぬ家の暮らしを想像し始める。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "dates/gt_jaipur_date_nahargarh_fort",
+      "requiredCompletedChapters": [
+        "jaipur"
+      ],
+      "destinationId": "jaipur_nahargarh_fort",
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "gt_bg_jaipur_nahargarh_fort",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "デートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ],
+      "allowAfterEnding": true
+    },
+    {
+      "id": "gt_jaipur_date_albert_hall",
+      "kind": "normal",
+      "chapterId": "jaipur",
+      "titleJa": "最初の一つを選ぶまで",
+      "descriptionJa": "アルバート・ホール博物館の入口で、見たいものが決まらない。細密画の前で止まる足と、庭園で話す時間。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "dates/gt_jaipur_date_albert_hall",
+      "requiredCompletedChapters": [
+        "jaipur"
+      ],
+      "destinationId": "jaipur_albert_hall",
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "gt_bg_jaipur_albert_hall",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "デートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ],
+      "allowAfterEnding": true
+    },
+    {
+      "id": "gt_jaipur_date_jaigarh_fort",
+      "kind": "normal",
+      "chapterId": "jaipur",
+      "titleJa": "足からの返事",
+      "descriptionJa": "ジャイガル城で少し休みながら、城壁と丘のつながりを眺める。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "dates/gt_jaipur_date_jaigarh_fort",
+      "requiredCompletedChapters": [
+        "jaipur"
+      ],
+      "destinationId": "jaipur_jaigarh_fort",
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "gt_bg_jaipur_jaigarh_fort",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "デートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ],
+      "allowAfterEnding": true
+    },
+    {
+      "id": "gt_jaipur_date_johari_bazaar",
+      "kind": "normal",
+      "chapterId": "jaipur",
+      "titleJa": "好きな色が忙しい",
+      "descriptionJa": "ジョーハリー・バザールで、品物を買う前の色選びを楽しむ。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "dates/gt_jaipur_date_johari_bazaar",
+      "requiredCompletedChapters": [
+        "jaipur"
+      ],
+      "destinationId": "jaipur_johari_bazaar",
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "gt_bg_jaipur_johari_bazaar",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "デートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ],
+      "allowAfterEnding": true
+    },
+    {
+      "id": "gt_jaipur_date_panna_meena_kund",
+      "kind": "normal",
+      "chapterId": "jaipur",
+      "titleJa": "指だけの散歩",
+      "descriptionJa": "パンナ・ミーナー・クンドの周縁から、階段の線を目で追いかける。",
+      "apCost": 2,
+      "minRomanceStage": 1,
+      "storyId": "dates/gt_jaipur_date_panna_meena_kund",
+      "requiredCompletedChapters": [
+        "jaipur"
+      ],
+      "destinationId": "jaipur_panna_meena_kund",
+      "rewardOnlyOnce": true,
+      "backgroundAssetId": "gt_bg_jaipur_panna_meena_kund",
+      "minAffection": 0,
+      "requiredPlayedDateIds": [],
+      "repeatable": false,
+      "needsDeferred": false,
+      "choiceCount": 2,
+      "effectCount": 2,
+      "actionLabelJa": "デートに誘う",
+      "validationContexts": [
+        {
+          "romanceStage": 1,
+          "confessionReady": false
+        }
+      ],
+      "allowAfterEnding": true
     }
   ]
 }

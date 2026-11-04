@@ -1,0 +1,72 @@
+{
+  "registan": {
+    "url": "https://sam.uz/en/places/registon",
+    "latitude": 39.65469,
+    "longitude": 66.97587,
+    "checkedAt": "2026-11-04",
+    "scope": "公開資料の地物代表点。入口や現地踏査の座標ではない。"
+  },
+  "shah_i_zinda": {
+    "url": "https://sam.uz/en/places/shohi-zinda",
+    "latitude": 39.66248,
+    "longitude": 66.98781,
+    "checkedAt": "2026-11-04",
+    "scope": "公開資料の地物代表点。入口や現地踏査の座標ではない。"
+  },
+  "gur_e_amir": {
+    "url": "https://sam.uz/en/places/gori-amir",
+    "latitude": 39.64861,
+    "longitude": 66.96932,
+    "checkedAt": "2026-11-04",
+    "scope": "公開資料の地物代表点。入口や現地踏査の座標ではない。"
+  },
+  "bibi_khanym": {
+    "url": "https://sam.uz/en/places/bibixonim-masjidi",
+    "latitude": 39.66069,
+    "longitude": 66.98006,
+    "checkedAt": "2026-11-04",
+    "scope": "公開資料の地物代表点。入口や現地踏査の座標ではない。"
+  },
+  "siyob_bazaar": {
+    "url": "https://sam.uz/en/places/siyob-bozori",
+    "latitude": 39.66279,
+    "longitude": 66.98053,
+    "checkedAt": "2026-11-04",
+    "scope": "公開資料の地物代表点。入口や現地踏査の座標ではない。"
+  },
+  "ulugh_beg_observatory": {
+    "url": "https://sam.uz/en/places/ulugbek-rasadxonasi",
+    "latitude": 39.67506,
+    "longitude": 67.00534,
+    "checkedAt": "2026-11-04",
+    "scope": "公開資料の地物代表点。入口や現地踏査の座標ではない。"
+  },
+  "afrasiab_museum": {
+    "url": "https://sam.uz/en/places/afrosiyob-muzeyi",
+    "latitude": 39.66934,
+    "longitude": 66.99335,
+    "checkedAt": "2026-11-04",
+    "scope": "公開資料の地物代表点。入口や現地踏査の座標ではない。"
+  },
+  "hazrat_khizr": {
+    "url": "https://sam.uz/en/places/hazrati-xizr",
+    "latitude": 39.66343,
+    "longitude": 66.98332,
+    "checkedAt": "2026-11-04",
+    "scope": "公開資料の地物代表点。入口や現地踏査の座標ではない。"
+  },
+  "rukhabad": {
+    "url": "https://sam.uz/en/places/ruhobod",
+    "latitude": 39.65085,
+    "longitude": 66.96819,
+    "checkedAt": "2026-11-04",
+    "scope": "公開資料の地物代表点。入口や現地踏査の座標ではない。"
+  },
+  "university_boulevard": {
+    "url": "https://sam.uz/en/places/universitet-xiyoboni",
+    "latitude": 39.64694,
+    "longitude": 66.96194,
+    "checkedAt": "2026-11-04",
+    "scope": "公開資料の地物代表点。入口や現地踏査の座標ではない。"
+  }
+}

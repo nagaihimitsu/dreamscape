@@ -1,0 +1,2421 @@
+{
+  "schemaVersion": 1,
+  "cityId": "samarkand",
+  "checkedAt": "2026-11-04",
+  "scopeJa": "街路・歩行者動線の接続を使うゲームモデル。辺の数値は制作上の推定分数であり、地理座標の直線距離や実測所要時間ではない。現実の経路最短保証・通行権限の保証はない。",
+  "walkEdges": [
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_rukhabad",
+      "minutes": 4,
+      "viaJa": "ルハバード周辺の街路と広場"
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_university_boulevard",
+      "minutes": 12,
+      "viaJa": "大学大通り北側の歩道"
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "minutes": 5,
+      "viaJa": "ルハバードとグーリ・アミールを結ぶ歩行路"
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "minutes": 12,
+      "viaJa": "大学大通り・アミールティムール記念碑側の歩道"
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_registan",
+      "minutes": 15,
+      "viaJa": "レギスタン通り沿いの歩道と広場への接続"
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "minutes": 15,
+      "viaJa": "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間"
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "minutes": 5,
+      "viaJa": "モスク外周から市場入口への歩行路"
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "minutes": 8,
+      "viaJa": "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段"
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "minutes": 10,
+      "viaJa": "ショヒズィンダ通りと廟群入口への接続"
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "minutes": 22,
+      "viaJa": "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない"
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "minutes": 24,
+      "viaJa": "廟群入口から道路へ戻りアフラシャブ東側を回る"
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "minutes": 22,
+      "viaJa": "イスラムカリモフ通り・天文台の坂への接続"
+    }
+  ],
+  "roadEdges": [
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_rukhabad",
+      "minutes": 2,
+      "viaJa": "ルハバード周辺の車道"
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_university_boulevard",
+      "minutes": 3,
+      "viaJa": "大学大通り北側"
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "minutes": 2,
+      "viaJa": "グーリ・アミール外周の乗降可能な車道"
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "minutes": 3,
+      "viaJa": "大学大通りから外周車道"
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_registan",
+      "minutes": 4,
+      "viaJa": "レギスタン通り"
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "minutes": 8,
+      "viaJa": "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）"
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "minutes": 2,
+      "viaJa": "市場西側の車道"
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "minutes": 3,
+      "viaJa": "ショヒズィンダ通り"
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "minutes": 3,
+      "viaJa": "ショヒズィンダ通り・廟群前車道"
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "minutes": 5,
+      "viaJa": "イスラムカリモフ通り"
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "minutes": 5,
+      "viaJa": "イスラムカリモフ通り・天文台アクセス道路"
+    }
+  ],
+  "taxiModel": {
+    "pickupMinutes": 8,
+    "lastMileWalkMinutes": 4,
+    "baseCost": 15000,
+    "costPerDriveMinute": 2000,
+    "partySize": 2
+  },
+  "routes": [
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "walkMinutes": 38,
+      "walkVia": [
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "ショヒズィンダ通りと廟群入口への接続"
+      ],
+      "taxiMinutes": 28,
+      "taxiDriveVia": [
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り",
+        "ショヒズィンダ通り・廟群前車道"
+      ],
+      "taxiCost": 47000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "walkMinutes": 20,
+      "walkVia": [
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバードとグーリ・アミールを結ぶ歩行路"
+      ],
+      "taxiMinutes": 18,
+      "taxiDriveVia": [
+        "レギスタン通り",
+        "グーリ・アミール外周の乗降可能な車道"
+      ],
+      "taxiCost": 27000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "walkMinutes": 15,
+      "walkVia": [
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間"
+      ],
+      "taxiMinutes": 20,
+      "taxiDriveVia": [
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）"
+      ],
+      "taxiCost": 31000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "walkMinutes": 20,
+      "walkVia": [
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路"
+      ],
+      "taxiMinutes": 22,
+      "taxiDriveVia": [
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道"
+      ],
+      "taxiCost": 35000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "walkMinutes": 72,
+      "walkVia": [
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "イスラムカリモフ通り・天文台の坂への接続"
+      ],
+      "taxiMinutes": 35,
+      "taxiDriveVia": [
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り",
+        "イスラムカリモフ通り",
+        "イスラムカリモフ通り・天文台アクセス道路"
+      ],
+      "taxiCost": 61000,
+      "bus": {
+        "minutes": 65,
+        "cost": 4000,
+        "note": "17番・シャーヒズィンダで徒歩接続"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "walkMinutes": 50,
+      "walkVia": [
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない"
+      ],
+      "taxiMinutes": 30,
+      "taxiDriveVia": [
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り",
+        "イスラムカリモフ通り"
+      ],
+      "taxiCost": 51000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "walkMinutes": 28,
+      "walkVia": [
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段"
+      ],
+      "taxiMinutes": 25,
+      "taxiDriveVia": [
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り"
+      ],
+      "taxiCost": 41000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_rukhabad",
+      "walkMinutes": 15,
+      "walkVia": [
+        "レギスタン通り沿いの歩道と広場への接続"
+      ],
+      "taxiMinutes": 16,
+      "taxiDriveVia": [
+        "レギスタン通り"
+      ],
+      "taxiCost": 23000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_university_boulevard",
+      "walkMinutes": 31,
+      "walkVia": [
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバード周辺の街路と広場",
+        "大学大通り北側の歩道"
+      ],
+      "taxiMinutes": 21,
+      "taxiDriveVia": [
+        "レギスタン通り",
+        "グーリ・アミール外周の乗降可能な車道",
+        "大学大通りから外周車道"
+      ],
+      "taxiCost": 33000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_registan",
+      "toPlaceId": "samarkand_hotel_hub",
+      "walkMinutes": 19,
+      "walkVia": [
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバード周辺の街路と広場"
+      ],
+      "taxiMinutes": 18,
+      "taxiDriveVia": [
+        "レギスタン通り",
+        "ルハバード周辺の車道"
+      ],
+      "taxiCost": 27000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_registan",
+      "walkMinutes": 38,
+      "walkVia": [
+        "ショヒズィンダ通りと廟群入口への接続",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間"
+      ],
+      "taxiMinutes": 28,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り・廟群前車道",
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）"
+      ],
+      "taxiCost": 47000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "walkMinutes": 58,
+      "walkVia": [
+        "ショヒズィンダ通りと廟群入口への接続",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバードとグーリ・アミールを結ぶ歩行路"
+      ],
+      "taxiMinutes": 34,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り・廟群前車道",
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り",
+        "グーリ・アミール外周の乗降可能な車道"
+      ],
+      "taxiCost": 59000,
+      "bus": {
+        "minutes": 37,
+        "cost": 4000,
+        "note": "31番・復路は南側停留所が異なる"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "walkMinutes": 23,
+      "walkVia": [
+        "ショヒズィンダ通りと廟群入口への接続",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路"
+      ],
+      "taxiMinutes": 20,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り・廟群前車道",
+        "ショヒズィンダ通り",
+        "市場西側の車道"
+      ],
+      "taxiCost": 31000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "walkMinutes": 18,
+      "walkVia": [
+        "ショヒズィンダ通りと廟群入口への接続",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段"
+      ],
+      "taxiMinutes": 18,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り・廟群前車道",
+        "ショヒズィンダ通り"
+      ],
+      "taxiCost": 27000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "walkMinutes": 46,
+      "walkVia": [
+        "廟群入口から道路へ戻りアフラシャブ東側を回る",
+        "イスラムカリモフ通り・天文台の坂への接続"
+      ],
+      "taxiMinutes": 25,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り・廟群前車道",
+        "イスラムカリモフ通り",
+        "イスラムカリモフ通り・天文台アクセス道路"
+      ],
+      "taxiCost": 41000,
+      "bus": {
+        "minutes": 27,
+        "cost": 4000,
+        "note": "17番・シャーヒズィンダで徒歩接続"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "walkMinutes": 24,
+      "walkVia": [
+        "廟群入口から道路へ戻りアフラシャブ東側を回る"
+      ],
+      "taxiMinutes": 20,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り・廟群前車道",
+        "イスラムカリモフ通り"
+      ],
+      "taxiCost": 31000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "walkMinutes": 10,
+      "walkVia": [
+        "ショヒズィンダ通りと廟群入口への接続"
+      ],
+      "taxiMinutes": 15,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り・廟群前車道"
+      ],
+      "taxiCost": 21000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_rukhabad",
+      "walkMinutes": 53,
+      "walkVia": [
+        "ショヒズィンダ通りと廟群入口への接続",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続"
+      ],
+      "taxiMinutes": 32,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り・廟群前車道",
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り"
+      ],
+      "taxiCost": 55000,
+      "bus": {
+        "minutes": 36,
+        "cost": 4000,
+        "note": "31番・復路は南側停留所が異なる"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_university_boulevard",
+      "walkMinutes": 69,
+      "walkVia": [
+        "ショヒズィンダ通りと廟群入口への接続",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバード周辺の街路と広場",
+        "大学大通り北側の歩道"
+      ],
+      "taxiMinutes": 37,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り・廟群前車道",
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り",
+        "グーリ・アミール外周の乗降可能な車道",
+        "大学大通りから外周車道"
+      ],
+      "taxiCost": 65000,
+      "bus": {
+        "minutes": 31,
+        "cost": 4000,
+        "note": "31番・復路は南側停留所が異なる"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_shah_i_zinda",
+      "toPlaceId": "samarkand_hotel_hub",
+      "walkMinutes": 57,
+      "walkVia": [
+        "ショヒズィンダ通りと廟群入口への接続",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバード周辺の街路と広場"
+      ],
+      "taxiMinutes": 34,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り・廟群前車道",
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り",
+        "ルハバード周辺の車道"
+      ],
+      "taxiCost": 59000,
+      "bus": {
+        "minutes": 33,
+        "cost": 4000,
+        "note": "31番・復路は南側停留所が異なる"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_registan",
+      "walkMinutes": 20,
+      "walkVia": [
+        "ルハバードとグーリ・アミールを結ぶ歩行路",
+        "レギスタン通り沿いの歩道と広場への接続"
+      ],
+      "taxiMinutes": 18,
+      "taxiDriveVia": [
+        "グーリ・アミール外周の乗降可能な車道",
+        "レギスタン通り"
+      ],
+      "taxiCost": 27000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "walkMinutes": 58,
+      "walkVia": [
+        "ルハバードとグーリ・アミールを結ぶ歩行路",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "ショヒズィンダ通りと廟群入口への接続"
+      ],
+      "taxiMinutes": 34,
+      "taxiDriveVia": [
+        "グーリ・アミール外周の乗降可能な車道",
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り",
+        "ショヒズィンダ通り・廟群前車道"
+      ],
+      "taxiCost": 59000,
+      "bus": {
+        "minutes": 39,
+        "cost": 4000,
+        "note": "31番・停留所までの徒歩を含む"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "walkMinutes": 35,
+      "walkVia": [
+        "ルハバードとグーリ・アミールを結ぶ歩行路",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間"
+      ],
+      "taxiMinutes": 26,
+      "taxiDriveVia": [
+        "グーリ・アミール外周の乗降可能な車道",
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）"
+      ],
+      "taxiCost": 43000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "walkMinutes": 40,
+      "walkVia": [
+        "ルハバードとグーリ・アミールを結ぶ歩行路",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路"
+      ],
+      "taxiMinutes": 28,
+      "taxiDriveVia": [
+        "グーリ・アミール外周の乗降可能な車道",
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道"
+      ],
+      "taxiCost": 47000,
+      "bus": {
+        "minutes": 33,
+        "cost": 4000,
+        "note": "31番・停留所までの徒歩を含む"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "walkMinutes": 92,
+      "walkVia": [
+        "ルハバードとグーリ・アミールを結ぶ歩行路",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "イスラムカリモフ通り・天文台の坂への接続"
+      ],
+      "taxiMinutes": 41,
+      "taxiDriveVia": [
+        "グーリ・アミール外周の乗降可能な車道",
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り",
+        "イスラムカリモフ通り",
+        "イスラムカリモフ通り・天文台アクセス道路"
+      ],
+      "taxiCost": 73000,
+      "bus": {
+        "minutes": 64,
+        "cost": 8000,
+        "note": "31→17番・徒歩乗換／割引を含まない"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "walkMinutes": 70,
+      "walkVia": [
+        "ルハバードとグーリ・アミールを結ぶ歩行路",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない"
+      ],
+      "taxiMinutes": 36,
+      "taxiDriveVia": [
+        "グーリ・アミール外周の乗降可能な車道",
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り",
+        "イスラムカリモフ通り"
+      ],
+      "taxiCost": 63000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "walkMinutes": 48,
+      "walkVia": [
+        "ルハバードとグーリ・アミールを結ぶ歩行路",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段"
+      ],
+      "taxiMinutes": 31,
+      "taxiDriveVia": [
+        "グーリ・アミール外周の乗降可能な車道",
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り"
+      ],
+      "taxiCost": 53000,
+      "bus": {
+        "minutes": 35,
+        "cost": 4000,
+        "note": "31番・停留所までの徒歩を含む"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_rukhabad",
+      "walkMinutes": 5,
+      "walkVia": [
+        "ルハバードとグーリ・アミールを結ぶ歩行路"
+      ],
+      "taxiMinutes": 14,
+      "taxiDriveVia": [
+        "グーリ・アミール外周の乗降可能な車道"
+      ],
+      "taxiCost": 19000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_university_boulevard",
+      "walkMinutes": 12,
+      "walkVia": [
+        "大学大通り・アミールティムール記念碑側の歩道"
+      ],
+      "taxiMinutes": 15,
+      "taxiDriveVia": [
+        "大学大通りから外周車道"
+      ],
+      "taxiCost": 21000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_gur_e_amir",
+      "toPlaceId": "samarkand_hotel_hub",
+      "walkMinutes": 9,
+      "walkVia": [
+        "ルハバードとグーリ・アミールを結ぶ歩行路",
+        "ルハバード周辺の街路と広場"
+      ],
+      "taxiMinutes": 16,
+      "taxiDriveVia": [
+        "グーリ・アミール外周の乗降可能な車道",
+        "ルハバード周辺の車道"
+      ],
+      "taxiCost": 23000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_registan",
+      "walkMinutes": 15,
+      "walkVia": [
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間"
+      ],
+      "taxiMinutes": 20,
+      "taxiDriveVia": [
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）"
+      ],
+      "taxiCost": 31000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "walkMinutes": 23,
+      "walkVia": [
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "ショヒズィンダ通りと廟群入口への接続"
+      ],
+      "taxiMinutes": 20,
+      "taxiDriveVia": [
+        "市場西側の車道",
+        "ショヒズィンダ通り",
+        "ショヒズィンダ通り・廟群前車道"
+      ],
+      "taxiCost": 31000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "walkMinutes": 35,
+      "walkVia": [
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバードとグーリ・アミールを結ぶ歩行路"
+      ],
+      "taxiMinutes": 26,
+      "taxiDriveVia": [
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り",
+        "グーリ・アミール外周の乗降可能な車道"
+      ],
+      "taxiCost": 43000,
+      "bus": {
+        "minutes": 33,
+        "cost": 4000,
+        "note": "31番・復路は南側停留所が異なる"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "walkMinutes": 5,
+      "walkVia": [
+        "モスク外周から市場入口への歩行路"
+      ],
+      "taxiMinutes": 14,
+      "taxiDriveVia": [
+        "市場西側の車道"
+      ],
+      "taxiCost": 19000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "walkMinutes": 57,
+      "walkVia": [
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "イスラムカリモフ通り・天文台の坂への接続"
+      ],
+      "taxiMinutes": 27,
+      "taxiDriveVia": [
+        "市場西側の車道",
+        "ショヒズィンダ通り",
+        "イスラムカリモフ通り",
+        "イスラムカリモフ通り・天文台アクセス道路"
+      ],
+      "taxiCost": 45000,
+      "bus": {
+        "minutes": 50,
+        "cost": 4000,
+        "note": "17番・シャーヒズィンダで徒歩接続"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "walkMinutes": 35,
+      "walkVia": [
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない"
+      ],
+      "taxiMinutes": 22,
+      "taxiDriveVia": [
+        "市場西側の車道",
+        "ショヒズィンダ通り",
+        "イスラムカリモフ通り"
+      ],
+      "taxiCost": 35000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "walkMinutes": 13,
+      "walkVia": [
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段"
+      ],
+      "taxiMinutes": 17,
+      "taxiDriveVia": [
+        "市場西側の車道",
+        "ショヒズィンダ通り"
+      ],
+      "taxiCost": 25000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_rukhabad",
+      "walkMinutes": 30,
+      "walkVia": [
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続"
+      ],
+      "taxiMinutes": 24,
+      "taxiDriveVia": [
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り"
+      ],
+      "taxiCost": 39000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_university_boulevard",
+      "walkMinutes": 46,
+      "walkVia": [
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバード周辺の街路と広場",
+        "大学大通り北側の歩道"
+      ],
+      "taxiMinutes": 29,
+      "taxiDriveVia": [
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り",
+        "グーリ・アミール外周の乗降可能な車道",
+        "大学大通りから外周車道"
+      ],
+      "taxiCost": 49000,
+      "bus": {
+        "minutes": 27,
+        "cost": 4000,
+        "note": "31番・復路は南側停留所が異なる"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_bibi_khanym",
+      "toPlaceId": "samarkand_hotel_hub",
+      "walkMinutes": 34,
+      "walkVia": [
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバード周辺の街路と広場"
+      ],
+      "taxiMinutes": 26,
+      "taxiDriveVia": [
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り",
+        "ルハバード周辺の車道"
+      ],
+      "taxiCost": 43000,
+      "bus": {
+        "minutes": 29,
+        "cost": 4000,
+        "note": "31番・復路は南側停留所が異なる"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_registan",
+      "walkMinutes": 20,
+      "walkVia": [
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間"
+      ],
+      "taxiMinutes": 22,
+      "taxiDriveVia": [
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）"
+      ],
+      "taxiCost": 35000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "walkMinutes": 18,
+      "walkVia": [
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "ショヒズィンダ通りと廟群入口への接続"
+      ],
+      "taxiMinutes": 18,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り",
+        "ショヒズィンダ通り・廟群前車道"
+      ],
+      "taxiCost": 27000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "walkMinutes": 40,
+      "walkVia": [
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバードとグーリ・アミールを結ぶ歩行路"
+      ],
+      "taxiMinutes": 28,
+      "taxiDriveVia": [
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り",
+        "グーリ・アミール外周の乗降可能な車道"
+      ],
+      "taxiCost": 47000,
+      "bus": {
+        "minutes": 31,
+        "cost": 4000,
+        "note": "31番・復路は南側停留所が異なる"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "walkMinutes": 5,
+      "walkVia": [
+        "モスク外周から市場入口への歩行路"
+      ],
+      "taxiMinutes": 14,
+      "taxiDriveVia": [
+        "市場西側の車道"
+      ],
+      "taxiCost": 19000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "walkMinutes": 52,
+      "walkVia": [
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "イスラムカリモフ通り・天文台の坂への接続"
+      ],
+      "taxiMinutes": 25,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り",
+        "イスラムカリモフ通り",
+        "イスラムカリモフ通り・天文台アクセス道路"
+      ],
+      "taxiCost": 41000,
+      "bus": {
+        "minutes": 45,
+        "cost": 4000,
+        "note": "17番・シャーヒズィンダで徒歩接続"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "walkMinutes": 30,
+      "walkVia": [
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない"
+      ],
+      "taxiMinutes": 20,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り",
+        "イスラムカリモフ通り"
+      ],
+      "taxiCost": 31000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "walkMinutes": 8,
+      "walkVia": [
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段"
+      ],
+      "taxiMinutes": 15,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り"
+      ],
+      "taxiCost": 21000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_rukhabad",
+      "walkMinutes": 35,
+      "walkVia": [
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続"
+      ],
+      "taxiMinutes": 26,
+      "taxiDriveVia": [
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り"
+      ],
+      "taxiCost": 43000,
+      "bus": {
+        "minutes": 30,
+        "cost": 4000,
+        "note": "31番・復路は南側停留所が異なる"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_university_boulevard",
+      "walkMinutes": 51,
+      "walkVia": [
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバード周辺の街路と広場",
+        "大学大通り北側の歩道"
+      ],
+      "taxiMinutes": 31,
+      "taxiDriveVia": [
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り",
+        "グーリ・アミール外周の乗降可能な車道",
+        "大学大通りから外周車道"
+      ],
+      "taxiCost": 53000,
+      "bus": {
+        "minutes": 25,
+        "cost": 4000,
+        "note": "31番・復路は南側停留所が異なる"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_siyob_bazaar",
+      "toPlaceId": "samarkand_hotel_hub",
+      "walkMinutes": 39,
+      "walkVia": [
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバード周辺の街路と広場"
+      ],
+      "taxiMinutes": 28,
+      "taxiDriveVia": [
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り",
+        "ルハバード周辺の車道"
+      ],
+      "taxiCost": 47000,
+      "bus": {
+        "minutes": 27,
+        "cost": 4000,
+        "note": "31番・復路は南側停留所が異なる"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_registan",
+      "walkMinutes": 72,
+      "walkVia": [
+        "イスラムカリモフ通り・天文台の坂への接続",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間"
+      ],
+      "taxiMinutes": 35,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り・天文台アクセス道路",
+        "イスラムカリモフ通り",
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）"
+      ],
+      "taxiCost": 61000,
+      "bus": {
+        "minutes": 64,
+        "cost": 8000,
+        "note": "17→31番・徒歩乗換／割引を含まない"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "walkMinutes": 46,
+      "walkVia": [
+        "イスラムカリモフ通り・天文台の坂への接続",
+        "廟群入口から道路へ戻りアフラシャブ東側を回る"
+      ],
+      "taxiMinutes": 25,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り・天文台アクセス道路",
+        "イスラムカリモフ通り",
+        "ショヒズィンダ通り・廟群前車道"
+      ],
+      "taxiCost": 41000,
+      "bus": {
+        "minutes": 27,
+        "cost": 4000,
+        "note": "17番・シャーヒズィンダで徒歩接続"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "walkMinutes": 92,
+      "walkVia": [
+        "イスラムカリモフ通り・天文台の坂への接続",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバードとグーリ・アミールを結ぶ歩行路"
+      ],
+      "taxiMinutes": 41,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り・天文台アクセス道路",
+        "イスラムカリモフ通り",
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り",
+        "グーリ・アミール外周の乗降可能な車道"
+      ],
+      "taxiCost": 73000,
+      "bus": {
+        "minutes": 62,
+        "cost": 8000,
+        "note": "17→31番・徒歩乗換／割引を含まない"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "walkMinutes": 57,
+      "walkVia": [
+        "イスラムカリモフ通り・天文台の坂への接続",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路"
+      ],
+      "taxiMinutes": 27,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り・天文台アクセス道路",
+        "イスラムカリモフ通り",
+        "ショヒズィンダ通り",
+        "市場西側の車道"
+      ],
+      "taxiCost": 45000,
+      "bus": {
+        "minutes": 50,
+        "cost": 4000,
+        "note": "17番・シャーヒズィンダで徒歩接続"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "walkMinutes": 52,
+      "walkVia": [
+        "イスラムカリモフ通り・天文台の坂への接続",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段"
+      ],
+      "taxiMinutes": 25,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り・天文台アクセス道路",
+        "イスラムカリモフ通り",
+        "ショヒズィンダ通り"
+      ],
+      "taxiCost": 41000,
+      "bus": {
+        "minutes": 45,
+        "cost": 4000,
+        "note": "17番・シャーヒズィンダで徒歩接続"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "walkMinutes": 22,
+      "walkVia": [
+        "イスラムカリモフ通り・天文台の坂への接続"
+      ],
+      "taxiMinutes": 17,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り・天文台アクセス道路"
+      ],
+      "taxiCost": 25000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "walkMinutes": 44,
+      "walkVia": [
+        "イスラムカリモフ通り・天文台の坂への接続",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない"
+      ],
+      "taxiMinutes": 22,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り・天文台アクセス道路",
+        "イスラムカリモフ通り"
+      ],
+      "taxiCost": 35000,
+      "bus": {
+        "minutes": 37,
+        "cost": 4000,
+        "note": "17番・シャーヒズィンダで徒歩接続"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_rukhabad",
+      "walkMinutes": 87,
+      "walkVia": [
+        "イスラムカリモフ通り・天文台の坂への接続",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続"
+      ],
+      "taxiMinutes": 39,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り・天文台アクセス道路",
+        "イスラムカリモフ通り",
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り"
+      ],
+      "taxiCost": 69000,
+      "bus": {
+        "minutes": 61,
+        "cost": 8000,
+        "note": "17→31番・徒歩乗換／割引を含まない"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_university_boulevard",
+      "walkMinutes": 103,
+      "walkVia": [
+        "イスラムカリモフ通り・天文台の坂への接続",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバード周辺の街路と広場",
+        "大学大通り北側の歩道"
+      ],
+      "taxiMinutes": 44,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り・天文台アクセス道路",
+        "イスラムカリモフ通り",
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り",
+        "グーリ・アミール外周の乗降可能な車道",
+        "大学大通りから外周車道"
+      ],
+      "taxiCost": 79000,
+      "bus": {
+        "minutes": 56,
+        "cost": 8000,
+        "note": "17→31番・徒歩乗換／割引を含まない"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_ulugh_beg_observatory",
+      "toPlaceId": "samarkand_hotel_hub",
+      "walkMinutes": 91,
+      "walkVia": [
+        "イスラムカリモフ通り・天文台の坂への接続",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバード周辺の街路と広場"
+      ],
+      "taxiMinutes": 41,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り・天文台アクセス道路",
+        "イスラムカリモフ通り",
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り",
+        "ルハバード周辺の車道"
+      ],
+      "taxiCost": 73000,
+      "bus": {
+        "minutes": 58,
+        "cost": 8000,
+        "note": "17→31番・徒歩乗換／割引を含まない"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_registan",
+      "walkMinutes": 50,
+      "walkVia": [
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間"
+      ],
+      "taxiMinutes": 30,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り",
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）"
+      ],
+      "taxiCost": 51000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "walkMinutes": 24,
+      "walkVia": [
+        "廟群入口から道路へ戻りアフラシャブ東側を回る"
+      ],
+      "taxiMinutes": 20,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り",
+        "ショヒズィンダ通り・廟群前車道"
+      ],
+      "taxiCost": 31000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "walkMinutes": 70,
+      "walkVia": [
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバードとグーリ・アミールを結ぶ歩行路"
+      ],
+      "taxiMinutes": 36,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り",
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り",
+        "グーリ・アミール外周の乗降可能な車道"
+      ],
+      "taxiCost": 63000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "walkMinutes": 35,
+      "walkVia": [
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路"
+      ],
+      "taxiMinutes": 22,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り",
+        "ショヒズィンダ通り",
+        "市場西側の車道"
+      ],
+      "taxiCost": 35000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "walkMinutes": 30,
+      "walkVia": [
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段"
+      ],
+      "taxiMinutes": 20,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り",
+        "ショヒズィンダ通り"
+      ],
+      "taxiCost": 31000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "walkMinutes": 22,
+      "walkVia": [
+        "イスラムカリモフ通り・天文台の坂への接続"
+      ],
+      "taxiMinutes": 17,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り・天文台アクセス道路"
+      ],
+      "taxiCost": 25000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "walkMinutes": 22,
+      "walkVia": [
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない"
+      ],
+      "taxiMinutes": 17,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り"
+      ],
+      "taxiCost": 25000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_rukhabad",
+      "walkMinutes": 65,
+      "walkVia": [
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続"
+      ],
+      "taxiMinutes": 34,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り",
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り"
+      ],
+      "taxiCost": 59000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_university_boulevard",
+      "walkMinutes": 81,
+      "walkVia": [
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバード周辺の街路と広場",
+        "大学大通り北側の歩道"
+      ],
+      "taxiMinutes": 39,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り",
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り",
+        "グーリ・アミール外周の乗降可能な車道",
+        "大学大通りから外周車道"
+      ],
+      "taxiCost": 69000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_afrasiab_museum",
+      "toPlaceId": "samarkand_hotel_hub",
+      "walkMinutes": 69,
+      "walkVia": [
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバード周辺の街路と広場"
+      ],
+      "taxiMinutes": 36,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り",
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り",
+        "ルハバード周辺の車道"
+      ],
+      "taxiCost": 63000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_registan",
+      "walkMinutes": 28,
+      "walkVia": [
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間"
+      ],
+      "taxiMinutes": 25,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）"
+      ],
+      "taxiCost": 41000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "walkMinutes": 10,
+      "walkVia": [
+        "ショヒズィンダ通りと廟群入口への接続"
+      ],
+      "taxiMinutes": 15,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り・廟群前車道"
+      ],
+      "taxiCost": 21000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "walkMinutes": 48,
+      "walkVia": [
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバードとグーリ・アミールを結ぶ歩行路"
+      ],
+      "taxiMinutes": 31,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り",
+        "グーリ・アミール外周の乗降可能な車道"
+      ],
+      "taxiCost": 53000,
+      "bus": {
+        "minutes": 33,
+        "cost": 4000,
+        "note": "31番・復路は南側停留所が異なる"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "walkMinutes": 13,
+      "walkVia": [
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路"
+      ],
+      "taxiMinutes": 17,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り",
+        "市場西側の車道"
+      ],
+      "taxiCost": 25000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "walkMinutes": 8,
+      "walkVia": [
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段"
+      ],
+      "taxiMinutes": 15,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り"
+      ],
+      "taxiCost": 21000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "walkMinutes": 44,
+      "walkVia": [
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "イスラムカリモフ通り・天文台の坂への接続"
+      ],
+      "taxiMinutes": 22,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り",
+        "イスラムカリモフ通り・天文台アクセス道路"
+      ],
+      "taxiCost": 35000,
+      "bus": {
+        "minutes": 37,
+        "cost": 4000,
+        "note": "17番・シャーヒズィンダで徒歩接続"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "walkMinutes": 22,
+      "walkVia": [
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない"
+      ],
+      "taxiMinutes": 17,
+      "taxiDriveVia": [
+        "イスラムカリモフ通り"
+      ],
+      "taxiCost": 25000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_rukhabad",
+      "walkMinutes": 43,
+      "walkVia": [
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続"
+      ],
+      "taxiMinutes": 29,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り"
+      ],
+      "taxiCost": 49000,
+      "bus": {
+        "minutes": 32,
+        "cost": 4000,
+        "note": "31番・復路は南側停留所が異なる"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_university_boulevard",
+      "walkMinutes": 59,
+      "walkVia": [
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバード周辺の街路と広場",
+        "大学大通り北側の歩道"
+      ],
+      "taxiMinutes": 34,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り",
+        "グーリ・アミール外周の乗降可能な車道",
+        "大学大通りから外周車道"
+      ],
+      "taxiCost": 59000,
+      "bus": {
+        "minutes": 27,
+        "cost": 4000,
+        "note": "31番・復路は南側停留所が異なる"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_hazrat_khizr",
+      "toPlaceId": "samarkand_hotel_hub",
+      "walkMinutes": 47,
+      "walkVia": [
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "モスク外周から市場入口への歩行路",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "ルハバード周辺の街路と広場"
+      ],
+      "taxiMinutes": 31,
+      "taxiDriveVia": [
+        "ショヒズィンダ通り",
+        "市場西側の車道",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "レギスタン通り",
+        "ルハバード周辺の車道"
+      ],
+      "taxiCost": 53000,
+      "bus": {
+        "minutes": 29,
+        "cost": 4000,
+        "note": "31番・復路は南側停留所が異なる"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_registan",
+      "walkMinutes": 15,
+      "walkVia": [
+        "レギスタン通り沿いの歩道と広場への接続"
+      ],
+      "taxiMinutes": 16,
+      "taxiDriveVia": [
+        "レギスタン通り"
+      ],
+      "taxiCost": 23000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "walkMinutes": 53,
+      "walkVia": [
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "ショヒズィンダ通りと廟群入口への接続"
+      ],
+      "taxiMinutes": 32,
+      "taxiDriveVia": [
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り",
+        "ショヒズィンダ通り・廟群前車道"
+      ],
+      "taxiCost": 55000,
+      "bus": {
+        "minutes": 38,
+        "cost": 4000,
+        "note": "31番・停留所までの徒歩を含む"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "walkMinutes": 5,
+      "walkVia": [
+        "ルハバードとグーリ・アミールを結ぶ歩行路"
+      ],
+      "taxiMinutes": 14,
+      "taxiDriveVia": [
+        "グーリ・アミール外周の乗降可能な車道"
+      ],
+      "taxiCost": 19000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "walkMinutes": 30,
+      "walkVia": [
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間"
+      ],
+      "taxiMinutes": 24,
+      "taxiDriveVia": [
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）"
+      ],
+      "taxiCost": 39000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "walkMinutes": 35,
+      "walkVia": [
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路"
+      ],
+      "taxiMinutes": 26,
+      "taxiDriveVia": [
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道"
+      ],
+      "taxiCost": 43000,
+      "bus": {
+        "minutes": 32,
+        "cost": 4000,
+        "note": "31番・停留所までの徒歩を含む"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "walkMinutes": 87,
+      "walkVia": [
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "イスラムカリモフ通り・天文台の坂への接続"
+      ],
+      "taxiMinutes": 39,
+      "taxiDriveVia": [
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り",
+        "イスラムカリモフ通り",
+        "イスラムカリモフ通り・天文台アクセス道路"
+      ],
+      "taxiCost": 69000,
+      "bus": {
+        "minutes": 63,
+        "cost": 8000,
+        "note": "31→17番・徒歩乗換／割引を含まない"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "walkMinutes": 65,
+      "walkVia": [
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない"
+      ],
+      "taxiMinutes": 34,
+      "taxiDriveVia": [
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り",
+        "イスラムカリモフ通り"
+      ],
+      "taxiCost": 59000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "walkMinutes": 43,
+      "walkVia": [
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段"
+      ],
+      "taxiMinutes": 29,
+      "taxiDriveVia": [
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り"
+      ],
+      "taxiCost": 49000,
+      "bus": {
+        "minutes": 34,
+        "cost": 4000,
+        "note": "31番・停留所までの徒歩を含む"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_university_boulevard",
+      "walkMinutes": 16,
+      "walkVia": [
+        "ルハバード周辺の街路と広場",
+        "大学大通り北側の歩道"
+      ],
+      "taxiMinutes": 17,
+      "taxiDriveVia": [
+        "グーリ・アミール外周の乗降可能な車道",
+        "大学大通りから外周車道"
+      ],
+      "taxiCost": 25000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_rukhabad",
+      "toPlaceId": "samarkand_hotel_hub",
+      "walkMinutes": 4,
+      "walkVia": [
+        "ルハバード周辺の街路と広場"
+      ],
+      "taxiMinutes": 14,
+      "taxiDriveVia": [
+        "ルハバード周辺の車道"
+      ],
+      "taxiCost": 19000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_registan",
+      "walkMinutes": 31,
+      "walkVia": [
+        "大学大通り北側の歩道",
+        "ルハバード周辺の街路と広場",
+        "レギスタン通り沿いの歩道と広場への接続"
+      ],
+      "taxiMinutes": 21,
+      "taxiDriveVia": [
+        "大学大通りから外周車道",
+        "グーリ・アミール外周の乗降可能な車道",
+        "レギスタン通り"
+      ],
+      "taxiCost": 33000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "walkMinutes": 69,
+      "walkVia": [
+        "大学大通り北側の歩道",
+        "ルハバード周辺の街路と広場",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "ショヒズィンダ通りと廟群入口への接続"
+      ],
+      "taxiMinutes": 37,
+      "taxiDriveVia": [
+        "大学大通りから外周車道",
+        "グーリ・アミール外周の乗降可能な車道",
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り",
+        "ショヒズィンダ通り・廟群前車道"
+      ],
+      "taxiCost": 65000,
+      "bus": {
+        "minutes": 33,
+        "cost": 4000,
+        "note": "31番・停留所までの徒歩を含む"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "walkMinutes": 12,
+      "walkVia": [
+        "大学大通り・アミールティムール記念碑側の歩道"
+      ],
+      "taxiMinutes": 15,
+      "taxiDriveVia": [
+        "大学大通りから外周車道"
+      ],
+      "taxiCost": 21000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "walkMinutes": 46,
+      "walkVia": [
+        "大学大通り北側の歩道",
+        "ルハバード周辺の街路と広場",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間"
+      ],
+      "taxiMinutes": 29,
+      "taxiDriveVia": [
+        "大学大通りから外周車道",
+        "グーリ・アミール外周の乗降可能な車道",
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）"
+      ],
+      "taxiCost": 49000,
+      "bus": {
+        "minutes": 29,
+        "cost": 4000,
+        "note": "31番・停留所までの徒歩を含む"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "walkMinutes": 51,
+      "walkVia": [
+        "大学大通り北側の歩道",
+        "ルハバード周辺の街路と広場",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路"
+      ],
+      "taxiMinutes": 31,
+      "taxiDriveVia": [
+        "大学大通りから外周車道",
+        "グーリ・アミール外周の乗降可能な車道",
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道"
+      ],
+      "taxiCost": 53000,
+      "bus": {
+        "minutes": 27,
+        "cost": 4000,
+        "note": "31番・停留所までの徒歩を含む"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "walkMinutes": 103,
+      "walkVia": [
+        "大学大通り北側の歩道",
+        "ルハバード周辺の街路と広場",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "イスラムカリモフ通り・天文台の坂への接続"
+      ],
+      "taxiMinutes": 44,
+      "taxiDriveVia": [
+        "大学大通りから外周車道",
+        "グーリ・アミール外周の乗降可能な車道",
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り",
+        "イスラムカリモフ通り",
+        "イスラムカリモフ通り・天文台アクセス道路"
+      ],
+      "taxiCost": 79000,
+      "bus": {
+        "minutes": 58,
+        "cost": 8000,
+        "note": "31→17番・徒歩乗換／割引を含まない"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "walkMinutes": 81,
+      "walkVia": [
+        "大学大通り北側の歩道",
+        "ルハバード周辺の街路と広場",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない"
+      ],
+      "taxiMinutes": 39,
+      "taxiDriveVia": [
+        "大学大通りから外周車道",
+        "グーリ・アミール外周の乗降可能な車道",
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り",
+        "イスラムカリモフ通り"
+      ],
+      "taxiCost": 69000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "walkMinutes": 59,
+      "walkVia": [
+        "大学大通り北側の歩道",
+        "ルハバード周辺の街路と広場",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段"
+      ],
+      "taxiMinutes": 34,
+      "taxiDriveVia": [
+        "大学大通りから外周車道",
+        "グーリ・アミール外周の乗降可能な車道",
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り"
+      ],
+      "taxiCost": 59000,
+      "bus": {
+        "minutes": 29,
+        "cost": 4000,
+        "note": "31番・停留所までの徒歩を含む"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_rukhabad",
+      "walkMinutes": 16,
+      "walkVia": [
+        "大学大通り北側の歩道",
+        "ルハバード周辺の街路と広場"
+      ],
+      "taxiMinutes": 17,
+      "taxiDriveVia": [
+        "大学大通りから外周車道",
+        "グーリ・アミール外周の乗降可能な車道"
+      ],
+      "taxiCost": 25000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_university_boulevard",
+      "toPlaceId": "samarkand_hotel_hub",
+      "walkMinutes": 12,
+      "walkVia": [
+        "大学大通り北側の歩道"
+      ],
+      "taxiMinutes": 15,
+      "taxiDriveVia": [
+        "大学大通り北側"
+      ],
+      "taxiCost": 21000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_registan",
+      "walkMinutes": 19,
+      "walkVia": [
+        "ルハバード周辺の街路と広場",
+        "レギスタン通り沿いの歩道と広場への接続"
+      ],
+      "taxiMinutes": 18,
+      "taxiDriveVia": [
+        "ルハバード周辺の車道",
+        "レギスタン通り"
+      ],
+      "taxiCost": 27000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_shah_i_zinda",
+      "walkMinutes": 57,
+      "walkVia": [
+        "ルハバード周辺の街路と広場",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "ショヒズィンダ通りと廟群入口への接続"
+      ],
+      "taxiMinutes": 34,
+      "taxiDriveVia": [
+        "ルハバード周辺の車道",
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り",
+        "ショヒズィンダ通り・廟群前車道"
+      ],
+      "taxiCost": 59000,
+      "bus": {
+        "minutes": 35,
+        "cost": 4000,
+        "note": "31番・停留所までの徒歩を含む"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_gur_e_amir",
+      "walkMinutes": 9,
+      "walkVia": [
+        "ルハバード周辺の街路と広場",
+        "ルハバードとグーリ・アミールを結ぶ歩行路"
+      ],
+      "taxiMinutes": 16,
+      "taxiDriveVia": [
+        "ルハバード周辺の車道",
+        "グーリ・アミール外周の乗降可能な車道"
+      ],
+      "taxiCost": 23000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_bibi_khanym",
+      "walkMinutes": 34,
+      "walkVia": [
+        "ルハバード周辺の街路と広場",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間"
+      ],
+      "taxiMinutes": 26,
+      "taxiDriveVia": [
+        "ルハバード周辺の車道",
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）"
+      ],
+      "taxiCost": 43000,
+      "bus": {
+        "minutes": 31,
+        "cost": 4000,
+        "note": "31番・停留所までの徒歩を含む"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_siyob_bazaar",
+      "walkMinutes": 39,
+      "walkVia": [
+        "ルハバード周辺の街路と広場",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路"
+      ],
+      "taxiMinutes": 28,
+      "taxiDriveVia": [
+        "ルハバード周辺の車道",
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道"
+      ],
+      "taxiCost": 47000,
+      "bus": {
+        "minutes": 29,
+        "cost": 4000,
+        "note": "31番・停留所までの徒歩を含む"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_ulugh_beg_observatory",
+      "walkMinutes": 91,
+      "walkVia": [
+        "ルハバード周辺の街路と広場",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない",
+        "イスラムカリモフ通り・天文台の坂への接続"
+      ],
+      "taxiMinutes": 41,
+      "taxiDriveVia": [
+        "ルハバード周辺の車道",
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り",
+        "イスラムカリモフ通り",
+        "イスラムカリモフ通り・天文台アクセス道路"
+      ],
+      "taxiCost": 73000,
+      "bus": {
+        "minutes": 60,
+        "cost": 8000,
+        "note": "31→17番・徒歩乗換／割引を含まない"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_afrasiab_museum",
+      "walkMinutes": 69,
+      "walkVia": [
+        "ルハバード周辺の街路と広場",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段",
+        "アフラシャブ南東縁のイスラムカリモフ通り側。遺跡内部の近道は使わない"
+      ],
+      "taxiMinutes": 36,
+      "taxiDriveVia": [
+        "ルハバード周辺の車道",
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り",
+        "イスラムカリモフ通り"
+      ],
+      "taxiCost": 63000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_hazrat_khizr",
+      "walkMinutes": 47,
+      "walkVia": [
+        "ルハバード周辺の街路と広場",
+        "レギスタン通り沿いの歩道と広場への接続",
+        "旧タシュケント通り（イスラムカリモフ通り）の歩行者区間",
+        "モスク外周から市場入口への歩行路",
+        "シヨブ市場北側・ショヒズィンダ通りの横断と丘への階段"
+      ],
+      "taxiMinutes": 31,
+      "taxiDriveVia": [
+        "ルハバード周辺の車道",
+        "レギスタン通り",
+        "ダグビツカヤ・イモムブハリ通り側へ迂回（歩行者通りは走行しない）",
+        "市場西側の車道",
+        "ショヒズィンダ通り"
+      ],
+      "taxiCost": 53000,
+      "bus": {
+        "minutes": 31,
+        "cost": 4000,
+        "note": "31番・停留所までの徒歩を含む"
+      }
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_rukhabad",
+      "walkMinutes": 4,
+      "walkVia": [
+        "ルハバード周辺の街路と広場"
+      ],
+      "taxiMinutes": 14,
+      "taxiDriveVia": [
+        "ルハバード周辺の車道"
+      ],
+      "taxiCost": 19000,
+      "bus": null
+    },
+    {
+      "fromPlaceId": "samarkand_hotel_hub",
+      "toPlaceId": "samarkand_university_boulevard",
+      "walkMinutes": 12,
+      "walkVia": [
+        "大学大通り北側の歩道"
+      ],
+      "taxiMinutes": 15,
+      "taxiDriveVia": [
+        "大学大通り北側"
+      ],
+      "taxiCost": 21000,
+      "bus": null
+    }
+  ]
+}

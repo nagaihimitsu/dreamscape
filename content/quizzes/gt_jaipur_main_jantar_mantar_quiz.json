@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "gt_jaipur_main_jantar_mantar_quiz",
+  "landmarkId": "jaipur_jantar_mantar",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "gt_jaipur_jantar_naked_eye",
+      "questionEn": "The huge stone instruments at Jantar Mantar look like buildings. What were they designed to help people do?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Magnify distant stars through lenses built into the stone."
+        },
+        {
+          "id": "B",
+          "textEn": "Track the water level inside the stone structures."
+        },
+        {
+          "id": "C",
+          "textEn": "Observe positions in the sky with the naked eye."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "instruments",
+          "meaning": "観測用の装置、器具"
+        },
+        {
+          "word": "observe",
+          "meaning": "観察する、観測する"
+        },
+        {
+          "word": "naked eye",
+          "meaning": "肉眼"
+        }
+      ],
+      "hintJa": "望遠鏡が見当たらなくても、観測のための工夫はできます。目で空を見上げる人と、大きな装置の関係を考えましょう。",
+      "correctExplanationJa": "肉眼で天体の位置を観測するための装置です。UNESCOは、固定された大きな石造装置に建築と観測器具の工夫が組み合わされていると説明します。大きいから飾り、というわけではありません。",
+      "incorrectExplanationJa": "主要な石造装置は、星をレンズで拡大したり、水位を追跡したりするためのものではありません。肉眼で天体の位置を観測するために設計されました。建物のように見える形そのものが、観測の道具なのです。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "The Jantar Mantar, Jaipur — Outstanding Universal Value",
+          "url": "https://whc.unesco.org/en/list/1338",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "固定された石造の主要装置群が、肉眼で天体の位置を観測するために設計されたとUNESCOが説明する。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_jaipur_jantar_shared_knowledge",
+      "questionEn": "How does UNESCO describe the scientific knowledge behind Jantar Mantar?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "It grew from traditions shared across different cultures."
+        },
+        {
+          "id": "B",
+          "textEn": "It belonged to one family with no outside influences."
+        },
+        {
+          "id": "C",
+          "textEn": "It began with no connection to earlier astronomy."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "traditions",
+          "meaning": "受け継がれた伝統、知識の系統"
+        },
+        {
+          "word": "influences",
+          "meaning": "影響"
+        },
+        {
+          "word": "astronomy",
+          "meaning": "天文学"
+        }
+      ],
+      "hintJa": "一つの都市にある施設でも、そこで使う知識の旅は、その都市の境界で終わるとは限りません。",
+      "correctExplanationJa": "複数の文明に共有された天文学の伝統が背景にあります。UNESCOはここを、異なる科学文化が出会った場所として評価しています。一つの王の興味だけでなく、長い知識の受け渡しも建物に結び付いています。",
+      "incorrectExplanationJa": "一族だけの秘密や、過去と無関係な発明としては説明されていません。異なる地域や文化が受け継いだ天文学の伝統が、この観測所でも生かされました。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "The Jantar Mantar, Jaipur — Outstanding Universal Value",
+          "url": "https://whc.unesco.org/en/list/1338",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "UNESCOは多くの文明に共有された位置天文学の伝統と、ジャイ・シング2世のもとで異なる科学文化が出会ったことを説明する。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_jaipur_jantar_royal_authority",
+      "questionEn": "Why was Jantar Mantar more than a place for studying the sky?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "It kept scientific work separate from the court's political decisions."
+        },
+        {
+          "id": "B",
+          "textEn": "It connected sky observations with royal power and social beliefs."
+        },
+        {
+          "id": "C",
+          "textEn": "It supplied the court with decorative models of instruments used elsewhere."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "royal power",
+          "meaning": "王の権力"
+        },
+        {
+          "word": "beliefs",
+          "meaning": "信仰、信念"
+        },
+        {
+          "word": "decorative models",
+          "meaning": "装飾用の模型"
+        }
+      ],
+      "hintJa": "時刻を定めたり、天体から先を予測したりする知識は、宮廷や社会にどんな影響を持ったかを考えましょう。",
+      "correctExplanationJa": "UNESCOは、観測所が王権の象徴でもあり、政治・科学・宗教の必要が重なっていたと説明します。時の把握や予測は、ただ空を見るだけの私的な楽しみには収まりませんでした。",
+      "incorrectExplanationJa": "科学を宮廷の政治から切り離した場所でも、ほかで使う装置の装飾用模型を並べただけの場所でもありません。UNESCOは、実際の観測と、王の権威、社会の慣習、信仰が重なる場所として評価しています。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "The Jantar Mantar, Jaipur — Outstanding Universal Value",
+          "url": "https://whc.unesco.org/en/list/1338",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "UNESCOのOutstanding Universal Valueは、時の制御や予測能力を通じた王権の象徴であり、政治・科学・宗教の必要が一体化した施設と説明する。"
+        }
+      ],
+      "difficulty": "hard"
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "main": {
+    "gt_delhi_main_red_fort": {
+      "titleJa": "広場ばかりの城",
+      "descriptionJa": "レッド・フォートで、友達と遊ぶ盤面を作るターラーに出会う。",
+      "clearTitleJa": "城の中で暮らす人",
+      "clearDescriptionJa": "赤い壁の内側に、住まいと水路と、その後の時代が見えてきた。",
+      "enemyNameJa": "ターラー",
+      "enemyTitleJa": "盤面を作る旅行好き",
+      "enemyDescriptionJa": "友人と遊ぶゲームを考えている。守る壁は描けたが、中身を全部広場にしてしまった。"
+    },
+    "gt_delhi_main_qutb_minar": {
+      "titleJa": "空まで撮れた",
+      "descriptionJa": "クトゥブ・ミナールの撮影失敗をきっかけに、描きかけの絵と未完の塔を見る。",
+      "clearTitleJa": "消さなかった一カット",
+      "clearDescriptionJa": "塔が画面から消えた後にも、二人で笑った声が残った。",
+      "enemyNameJa": "デーヴ",
+      "enemyTitleJa": "描きかけを持つ青年",
+      "enemyDescriptionJa": "塔を紙に収め損ねた絵描き。完成だけでなく、途中で残ったものも面白がる。"
+    },
+    "gt_delhi_main_humayun_tomb": {
+      "titleJa": "写真の向こうへ歩く",
+      "descriptionJa": "フマユーン廟で、祖母へ写真を見せたいサイラと庭の話を探す。",
+      "clearTitleJa": "大きい、の続き",
+      "clearDescriptionJa": "庭を歩いて見つけたことが、写真に添える言葉になった。",
+      "enemyNameJa": "サイラ",
+      "enemyTitleJa": "祖母へ写真を届ける人",
+      "enemyDescriptionJa": "見たものを大切な人へ伝えたい。説明を借りるだけでなく、自分の感想も添えたいと思っている。"
+    },
+    "gt_delhi_main_jama_masjid": {
+      "titleJa": "一枚貸して、三枚話す",
+      "descriptionJa": "ジャーマー・マスジドで、弟に貸す写真を選んでいるイムランの練習に付き合う。",
+      "clearTitleJa": "写真を撮った理由",
+      "clearDescriptionJa": "昔の建物と、今そこへ来る人を知り、写真に自分の見た話を添えた。",
+      "enemyNameJa": "イムラン",
+      "enemyTitleJa": "弟に試される兄",
+      "enemyDescriptionJa": "自分の写真を弟の宿題に貸す。以前花の名前を全部ごまかしたことを、まだ弟に覚えられている。"
+    }
+  },
+  "dates": {
+    "gt_delhi_date_india_gate": {
+      "titleJa": "撮る人も写る日",
+      "descriptionJa": "インド門を訪ね、写真を撮る人も写真に入れる方法を考える。",
+      "memoryTitleJa": "撮る人も写る日",
+      "memoryDescriptionJa": "撮る側と写る側を交代し、見た景色とその時の顔を残した。"
+    },
+    "gt_delhi_date_chandni_chowk": {
+      "titleJa": "目が先に曲がる",
+      "descriptionJa": "チャンドニー・チョークで、気になる店先が別々の方向に見つかる。",
+      "memoryTitleJa": "見たいものを一つずつ",
+      "memoryDescriptionJa": "互いの気になるものを、急がず順に見て回った。"
+    },
+    "gt_delhi_date_lodhi_garden": {
+      "titleJa": "五分だけ座るつもり",
+      "descriptionJa": "ロディ・ガーデンで、廟の輪郭を眺めながら一息つく。",
+      "memoryTitleJa": "歩かない時間",
+      "memoryDescriptionJa": "見たいもののある庭で、休みたい気持ちも言葉にした。"
+    },
+    "gt_delhi_date_agrasen_baoli": {
+      "titleJa": "数えるのをやめた段",
+      "descriptionJa": "アグラセン・キ・バオリの段を、安全な見学範囲から眺める。",
+      "memoryTitleJa": "数えるのをやめた段",
+      "memoryDescriptionJa": "全段を数えるより、今見える奥行きに見入った。"
+    },
+    "gt_delhi_date_lotus_temple": {
+      "titleJa": "話さないでいた時間",
+      "descriptionJa": "ロータス寺院を訪ね、静かな時間の後に互いの過ごし方を聞く。",
+      "memoryTitleJa": "話さないでいた時間",
+      "memoryDescriptionJa": "同じ静けさの中で、別々のことを考えていられた。"
+    },
+    "gt_delhi_date_bangla_sahib": {
+      "titleJa": "うまく結べない日でも",
+      "descriptionJa": "バングラ・サーヒブで、訪問の作法を確かめながら小さな助けを頼む。",
+      "memoryTitleJa": "頼みごとを一つ",
+      "memoryDescriptionJa": "慣れないことを確かめ、互いに頼れるところを一つ見つけた。"
+    }
+  },
+  "finales": {
+    "delhi": {
+      "titleJa": "三分間の旅への招待",
+      "descriptionJa": "レッド・フォートで、映像好きのニールと五枚の写真をめくる。",
+      "clearTitleJa": "わたしも、撮ってみたい",
+      "clearDescriptionJa": "自分たちの旅を三分間にして、ジャイプールの小さな上映会へ持っていく。",
+      "enemyNameJa": "ニール",
+      "enemyTitleJa": "旅の映像を集める人",
+      "enemyDescriptionJa": "人を誘うのが好きで、編集は少しせっかち。旅先で撮った映像を持ち寄る、仲間内の小さな上映会へ二人を誘う。",
+      "placeId": "delhi_red_fort",
+      "activityMinutes": 45
+    }
+  }
+}

@@ -23,7 +23,12 @@
     "verify": "npm run content:build && npm run test --ignore-scripts && npm run typecheck && vite build",
     "test:e2e": "playwright test",
     "content:inspect": "tsx scripts/inspect-content.ts",
-    "content:compat": "npm run content:build && vitest run src/persistence"
+    "content:compat": "npm run content:build && vitest run src/persistence",
+    "journey:scaffold": "tsx scripts/inspect-journey-scaffold.ts",
+    "journey:readiness": "tsx scripts/inspect-journey-readiness.ts",
+    "journey:release": "tsx scripts/release-journey.ts",
+    "journey:transit": "tsx scripts/inspect-journey-transit.ts",
+    "journey:scenario": "tsx scripts/check-journey-scenario.ts"
   },
   "dependencies": {
     "inkjs": "^2.4.0",

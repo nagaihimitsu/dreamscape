@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { allRewardRules, battles, battleQuizzes, dates, effects, episodes, progression, trialMilestones } from "../content";
+import { allRewardRules, battles, battleQuizzes, dates, effects, episodes as allEpisodes, progression, trialMilestones } from "../content";
 import {
   advanceDate, chooseDate, createGame, finishDate, getDateAvailability,
   isEventVisible, startDate, validateGameState, type GameState,
@@ -8,6 +8,7 @@ import { enterFreeTime, getNextStoryBattle, startEpisode } from "./chapter";
 import { advanceBattle, answerBattle, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "./battle";
 import { skipTourismGuide, startTourismBattle } from "./tourism";
 
+const episodes = allEpisodes.filter((episode) => episode.cityId === "milano");
 const ids = ["milano_la_scala_date_01", "milano_brera_date_01", "milano_navigli_date_01", "milano_san_satiro_date_01", "milano_starbucks_roastery_date_01", "milano_fondazione_prada_date_01", "milano_novecento_date_01"] as const;
 const milestones = ["milano_galleria_episode", "milano_last_supper_episode", "milano_castello_episode", "milano_duomo_episode", "milano_galleria_episode", "milano_last_supper_episode", "milano_duomo_episode"] as const;
 const firstProfiles = [

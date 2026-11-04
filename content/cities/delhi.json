@@ -15,5 +15,6 @@
     "delhi_humayun_tomb",
     "delhi_jama_masjid"
   ],
-  "productionStatus": "prototype"
+  "productionStatus": "complete",
+  "arrivalStoryId": "arrivals/delhi"
 }

@@ -386,6 +386,310 @@
       "color": "#817569",
       "fallback": "neutral",
       "imageAssetId": "gt_img_hotel_illustration"
+    },
+    "uz_bg_samarkand_registan": {
+      "nameJa": "レギスタン広場",
+      "captionJa": "サマルカンド ／ レギスタン広場",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_registan"
+    },
+    "uz_bg_samarkand_shah_i_zinda": {
+      "nameJa": "シャーヒ・ズィンダ廟群",
+      "captionJa": "サマルカンド ／ シャーヒ・ズィンダ廟群",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_shah_i_zinda"
+    },
+    "uz_bg_samarkand_gur_e_amir": {
+      "nameJa": "グーリ・アミール廟",
+      "captionJa": "サマルカンド ／ グーリ・アミール廟",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_gur_e_amir"
+    },
+    "uz_bg_samarkand_bibi_khanym": {
+      "nameJa": "ビビハニム・モスク",
+      "captionJa": "サマルカンド ／ ビビハニム・モスク",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_bibi_khanym"
+    },
+    "uz_bg_samarkand_siyob_bazaar": {
+      "nameJa": "シヨブ・バザール",
+      "captionJa": "サマルカンド ／ シヨブ・バザール",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_siyob_bazaar"
+    },
+    "uz_bg_samarkand_ulugh_beg_observatory": {
+      "nameJa": "ウルグベク天文台",
+      "captionJa": "サマルカンド ／ ウルグベク天文台の観測遺構",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_ulugh_beg_observatory"
+    },
+    "uz_bg_samarkand_afrasiab_museum": {
+      "nameJa": "アフラシャブ博物館",
+      "captionJa": "サマルカンド ／ アフラシャブ博物館の所蔵壁画",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_afrasiab_museum"
+    },
+    "uz_bg_samarkand_hazrat_khizr": {
+      "nameJa": "ハズラティ・ヒズル・モスク前",
+      "captionJa": "サマルカンド ／ ハズラティ・ヒズル・モスク前",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_hazrat_khizr"
+    },
+    "uz_bg_samarkand_rukhabad": {
+      "nameJa": "ルハバード廟前",
+      "captionJa": "サマルカンド ／ ルハバード廟前",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_rukhabad"
+    },
+    "uz_bg_samarkand_university_boulevard": {
+      "nameJa": "大学大通り",
+      "captionJa": "サマルカンド ／ 大学大通り",
+      "color": "#748990",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_samarkand_university_boulevard"
+    },
+    "uz_bg_samarkand_hotel_hub": {
+      "nameJa": "サマルカンドの滞在先",
+      "captionJa": "サマルカンド ／ 架空の滞在先",
+      "color": "#748990",
+      "fallback": "neutral"
+    },
+    "uz_bg_khiva_kunya_ark": {
+      "nameJa": "クフナ・アルク",
+      "captionJa": "ヒヴァ ／ クフナ・アルク（夜景の参考写真）",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_kunya_ark"
+    },
+    "uz_bg_khiva_juma_mosque": {
+      "nameJa": "ジュマ・モスク",
+      "captionJa": "ヒヴァ ／ ジュマ・モスク",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_juma_mosque"
+    },
+    "uz_bg_khiva_tash_hauli": {
+      "nameJa": "タシュ・ハウリ宮殿",
+      "captionJa": "ヒヴァ ／ タシュ・ハウリ宮殿",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_tash_hauli"
+    },
+    "uz_bg_khiva_islam_khoja": {
+      "nameJa": "イスラム・ホジャ複合体",
+      "captionJa": "ヒヴァ ／ イスラム・ホジャ複合体",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_islam_khoja"
+    },
+    "uz_bg_khiva_kalta_minor": {
+      "nameJa": "カルタ・ミノル外観",
+      "captionJa": "ヒヴァ ／ カルタ・ミノル外観",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_kalta_minor"
+    },
+    "uz_bg_khiva_pahlavan_mahmud": {
+      "nameJa": "パフラヴァン・マフムド廟前",
+      "captionJa": "ヒヴァ ／ パフラヴァン・マフムド廟前",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_pahlavan_mahmud"
+    },
+    "uz_bg_khiva_muhammad_amin_khan": {
+      "nameJa": "ムハンマド・アミン・ハン・マドラサ外観",
+      "captionJa": "ヒヴァ ／ ムハンマド・アミン・ハン・マドラサ外観",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_muhammad_amin_khan"
+    },
+    "uz_bg_khiva_ota_darvoza": {
+      "nameJa": "オタ門",
+      "captionJa": "ヒヴァ ／ オタ門",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_ota_darvoza"
+    },
+    "uz_bg_khiva_palvan_darvoza": {
+      "nameJa": "パルヴァン門",
+      "captionJa": "ヒヴァ ／ パルヴァン門",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_palvan_darvoza"
+    },
+    "uz_bg_khiva_bogcha_darvoza": {
+      "nameJa": "バグチャ門・北側城壁",
+      "captionJa": "ヒヴァ ／ バグチャ門・北側城壁",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_bogcha_darvoza"
+    },
+    "uz_bg_khiva_hotel_hub": {
+      "nameJa": "ヒヴァの滞在先",
+      "captionJa": "ヒヴァ ／ 西門外の架空宿",
+      "color": "#a38a65",
+      "fallback": "neutral"
+    },
+    "uz_bg_bukhara_ark": {
+      "nameJa": "アルク城",
+      "captionJa": "ブハラ ／ アルク城",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_ark"
+    },
+    "uz_bg_bukhara_poi_kalyan": {
+      "nameJa": "ポイ・カリヤン",
+      "captionJa": "ブハラ ／ ポイ・カリヤン（モスク中庭）",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_poi_kalyan"
+    },
+    "uz_bg_bukhara_samanid_mausoleum": {
+      "nameJa": "サーマーン朝廟",
+      "captionJa": "ブハラ ／ サーマーン朝廟",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_samanid_mausoleum"
+    },
+    "uz_bg_bukhara_lyabi_hauz": {
+      "nameJa": "リャビ・ハウズ",
+      "captionJa": "ブハラ ／ リャビ・ハウズ",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_lyabi_hauz"
+    },
+    "uz_bg_bukhara_chor_minor": {
+      "nameJa": "チョル・ミノル外観",
+      "captionJa": "ブハラ ／ チョル・ミノル外観",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_chor_minor"
+    },
+    "uz_bg_bukhara_bolo_hauz": {
+      "nameJa": "ボロ・ハウズ外観",
+      "captionJa": "ブハラ ／ ボロ・ハウズ外観",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_bolo_hauz"
+    },
+    "uz_bg_bukhara_toki_zargaron": {
+      "nameJa": "トキ・ザルガロン",
+      "captionJa": "ブハラ ／ トキ・ザルガロン",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_toki_zargaron"
+    },
+    "uz_bg_bukhara_abdulaziz_khan": {
+      "nameJa": "アブドゥルアジズ・ハン・マドラサ",
+      "captionJa": "ブハラ ／ アブドゥルアジズ・ハン・マドラサ",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_abdulaziz_khan"
+    },
+    "uz_bg_bukhara_ulugh_beg": {
+      "nameJa": "ウルグ・ベク・マドラサ",
+      "captionJa": "ブハラ ／ ウルグ・ベク・マドラサ",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_ulugh_beg"
+    },
+    "uz_bg_bukhara_magoki_attori": {
+      "nameJa": "マゴキ・アッタリ",
+      "captionJa": "ブハラ ／ マゴキ・アッタリ",
+      "color": "#b89563",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_bukhara_magoki_attori"
+    },
+    "uz_bg_bukhara_hotel_hub": {
+      "nameJa": "ブハラの滞在先",
+      "captionJa": "ブハラ ／ 滞在先（架空の拠点）",
+      "color": "#b89563",
+      "fallback": "neutral"
+    },
+    "uz_bg_tashkent_khast_imam": {
+      "nameJa": "ハスト・イマーム複合体",
+      "captionJa": "タシュケント ／ ハスト・イマーム複合体（バラク・ハン／2023年の写真）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_khast_imam"
+    },
+    "uz_bg_tashkent_chorsu_bazaar": {
+      "nameJa": "チョルスー・バザール",
+      "captionJa": "タシュケント ／ チョルスー・バザール（乾物売り場／2024年の写真）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_chorsu_bazaar"
+    },
+    "uz_bg_tashkent_kukeldash": {
+      "nameJa": "クカルダシュ・マドラサ",
+      "captionJa": "タシュケント ／ クカルダシュ・マドラサ（2018年の写真）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_kukeldash"
+    },
+    "uz_bg_tashkent_amir_temur_square": {
+      "nameJa": "アミール・ティムール広場",
+      "captionJa": "タシュケント ／ アミール・ティムール広場（公園全景／2023年の写真）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_amir_temur_square"
+    },
+    "uz_bg_tashkent_anhor_canal": {
+      "nameJa": "ミノール周辺のアンホール運河",
+      "captionJa": "タシュケント ／ ミノール周辺のアンホール運河（運河の参考写真／2015年夕景）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_anhor_canal"
+    },
+    "uz_bg_tashkent_japanese_garden": {
+      "nameJa": "日本庭園",
+      "captionJa": "タシュケント ／ 日本庭園（2017年の写真）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_japanese_garden"
+    },
+    "uz_bg_tashkent_navoi_theatre": {
+      "nameJa": "ナヴォイ劇場（外観）",
+      "captionJa": "タシュケント ／ ナヴォイ劇場（外観）（2005年の外観写真）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_navoi_theatre"
+    },
+    "uz_bg_tashkent_independence_square": {
+      "nameJa": "独立広場の庭園",
+      "captionJa": "タシュケント ／ 独立広場の庭園（噴水広場／2016年の写真）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_independence_square"
+    },
+    "uz_bg_tashkent_abulkasym": {
+      "nameJa": "アブルカシム・マドラサ",
+      "captionJa": "タシュケント ／ アブルカシム・マドラサ（工房入口の細部／2026年の写真）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_abulkasym"
+    },
+    "uz_bg_tashkent_navoi_park": {
+      "nameJa": "アリシェル・ナヴォイ公園",
+      "captionJa": "タシュケント ／ アリシェル・ナヴォイ公園（湖の参考写真／2016年）",
+      "color": "#67836d",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_tashkent_navoi_park"
+    },
+    "uz_bg_tashkent_hotel_hub": {
+      "nameJa": "タシュケントの滞在先",
+      "captionJa": "タシュケント ／ 架空の滞在先",
+      "color": "#67836d",
+      "fallback": "neutral"
     }
   },
   "emotions": {
@@ -1066,6 +1370,78 @@
     "sound_memory_reassurance_01": {
       "titleJa": "今日は返事をしない日",
       "descriptionJa": "返事を急がずに過ごす時間を選んだ。"
+    },
+    "gt_delhi_date_india_gate_memory": {
+      "titleJa": "撮る人も写る日",
+      "descriptionJa": "撮る側と写る側を交代し、見た景色とその時の顔を残した。"
+    },
+    "gt_delhi_date_chandni_chowk_memory": {
+      "titleJa": "見たいものを一つずつ",
+      "descriptionJa": "互いの気になるものを、急がず順に見て回った。"
+    },
+    "gt_delhi_date_lodhi_garden_memory": {
+      "titleJa": "歩かない時間",
+      "descriptionJa": "見たいもののある庭で、休みたい気持ちも言葉にした。"
+    },
+    "gt_delhi_date_agrasen_baoli_memory": {
+      "titleJa": "数えるのをやめた段",
+      "descriptionJa": "全段を数えるより、今見える奥行きに見入った。"
+    },
+    "gt_delhi_date_lotus_temple_memory": {
+      "titleJa": "話さないでいた時間",
+      "descriptionJa": "同じ静けさの中で、別々のことを考えていられた。"
+    },
+    "gt_delhi_date_bangla_sahib_memory": {
+      "titleJa": "頼みごとを一つ",
+      "descriptionJa": "慣れないことを確かめ、互いに頼れるところを一つ見つけた。"
+    },
+    "gt_agra_date_mehtab_bagh_memory": {
+      "titleJa": "一歩隣の眺め",
+      "descriptionJa": "メヘターブ・バーグで、立つ位置を少しずつ比べた。正確に同じ場所でなくても、また並んで眺めることができた。"
+    },
+    "gt_agra_date_akbar_tomb_memory": {
+      "titleJa": "消さなかった一行",
+      "descriptionJa": "アクバル廟で、短い感想の下に少しだけ書き足した。最初の『門、すごい』も、旅のメモに残しておいた。"
+    },
+    "gt_agra_date_ram_bagh_memory": {
+      "titleJa": "足に一票",
+      "descriptionJa": "ラム・バーグでは、次の見どころより先に休憩を選んだ。靴紐を結び直して歩き出すと、二人の歩幅がそろった。"
+    },
+    "gt_agra_date_chini_rauza_memory": {
+      "titleJa": "名前の決まらない青",
+      "descriptionJa": "チーニー・カ・ラウザで見つけた色に、名前は付かなかった。それでも、どの色が好きかは二人で確かめられた。"
+    },
+    "gt_agra_date_mariam_tomb_memory": {
+      "titleJa": "紹介文の続き",
+      "descriptionJa": "マリアム・ウッザマーニー廟で、一行の紹介を考えた。帰る前には、彼女自身がもう一度見たい場所を指した。"
+    },
+    "gt_agra_date_guru_ka_taal_memory": {
+      "titleJa": "先に見つけた塔",
+      "descriptionJa": "グル・カ・タールで、彼女が先に砂岩の塔を見つけた。古い貯水施設のことを知り、二人は静かに並ぶ時間を過ごした。"
+    },
+    "gt_jaipur_date_jal_mahal_memory": {
+      "titleJa": "今、と知らせた湖岸",
+      "descriptionJa": "マン・サーガル湖で、ジャル・マハルの映り込みを眺めた。見えた瞬間を知らせようとすると、つい相手の方を見てしまった。"
+    },
+    "gt_jaipur_date_nahargarh_fort_memory": {
+      "titleJa": "地図を閉じた眺め",
+      "descriptionJa": "ナハルガル城で、道を探す手を止めて町を眺めた。小さな屋根が並ぶ景色を、今度は通りから見てみたくなった。"
+    },
+    "gt_jaipur_date_albert_hall_memory": {
+      "titleJa": "細い線と大きな屋根",
+      "descriptionJa": "アルバート・ホールで細密画を見てから、ラームニワース庭園で休んだ。全部を覚えるよりも、立ち止まった一つの話が長く続いた。"
+    },
+    "gt_jaipur_date_jaigarh_fort_memory": {
+      "titleJa": "止まって見つけた眺め",
+      "descriptionJa": "ジャイガル城で足を休め、立ち止まった場所から城壁の続きを見つけた。"
+    },
+    "gt_jaipur_date_johari_bazaar_memory": {
+      "titleJa": "買わなかった色の話",
+      "descriptionJa": "ジョーハリー・バザールの店先で、二人の気になる色を話した。荷物は増えず、話題が増えた。"
+    },
+    "gt_jaipur_date_panna_meena_kund_memory": {
+      "titleJa": "見分けられる角が一つ",
+      "descriptionJa": "階段井戸へ降りずに段の線をたどり、二人で同じ角を見つけた。"
     }
   },
   "ending": {

@@ -1,0 +1,642 @@
+{
+  "assets": [
+    {
+      "id": "uz_img_khiva_kunya_ark",
+      "path": "assets/tourism/uzbekistan/khiva_kunya_ark.jpg",
+      "width": 1920,
+      "height": 1209,
+      "altJa": "クフナ・アルクの写真。夜間にライトアップされた居城の門と周辺の建物。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Konya_Ark_gate.jpg",
+      "licenseName": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creditJa": "写真：Bgag／Wikimedia Commons／CC0 1.0",
+      "modificationJa": "原画像3601×2268pxを縦横比を保って1920×1209pxへ縮小しJPEG再圧縮。描き足し・AI生成なし。表示時は端が切れる場合があります。縮小版もCC0 1.0で提供します。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_khiva_juma_mosque",
+      "path": "assets/tourism/uzbekistan/khiva_juma_mosque.jpg",
+      "width": 1920,
+      "height": 1280,
+      "altJa": "ジュマ・モスクの写真。現地の建築と周辺の様子。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Juma_Masjid_Khiva.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Nassima Chahboun／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "原画像5184×3456pxを縦横比を保って1920×1280pxへ縮小しJPEG再圧縮。描き足し・AI生成なし。表示時は端が切れる場合があります。縮小版もCC BY-SA 4.0で提供します。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_khiva_tash_hauli",
+      "path": "assets/tourism/uzbekistan/khiva_tash_hauli.jpg",
+      "width": 1920,
+      "height": 1149,
+      "altJa": "タシュ・ハウリ宮殿の写真。現地の建築と周辺の様子。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Court_of_Justice_in_Tach_Khaouli_01.jpg",
+      "licenseName": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creditJa": "写真：Bgag／Wikimedia Commons／CC0 1.0",
+      "modificationJa": "原画像3666×2194pxを縦横比を保って1920×1149pxへ縮小しJPEG再圧縮。描き足し・AI生成なし。表示時は端が切れる場合があります。縮小版もCC0 1.0で提供します。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_khiva_islam_khoja",
+      "path": "assets/tourism/uzbekistan/khiva_islam_khoja.jpg",
+      "width": 1920,
+      "height": 1280,
+      "altJa": "イスラム・ホジャ複合体の写真。現地の建築と周辺の様子。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Islam_Khodja_Minaret,_Khiva.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Adam Harangozó／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "原画像5700×3800pxを縦横比を保って1920×1280pxへ縮小しJPEG再圧縮。描き足し・AI生成なし。表示時は端が切れる場合があります。縮小版もCC BY-SA 4.0で提供します。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_khiva_kalta_minor",
+      "path": "assets/tourism/uzbekistan/khiva_kalta_minor.jpg",
+      "width": 1280,
+      "height": 1920,
+      "altJa": "カルタ・ミノル外観の写真。現地の建築と周辺の様子。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kalta_Minor,_Khiva.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Adam Harangozó／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "原画像3932×5898pxを縦横比を保って1280×1920pxへ縮小しJPEG再圧縮。描き足し・AI生成なし。表示時は端が切れる場合があります。縮小版もCC BY-SA 4.0で提供します。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_khiva_pahlavan_mahmud",
+      "path": "assets/tourism/uzbekistan/khiva_pahlavan_mahmud.jpg",
+      "width": 1920,
+      "height": 1280,
+      "altJa": "パフラヴァン・マフムド廟前の写真。現地の建築と周辺の様子。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pahlavan_Mahmud_mausoleum.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Nassima Chahboun／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "原画像5184×3456pxを縦横比を保って1920×1280pxへ縮小しJPEG再圧縮。描き足し・AI生成なし。表示時は端が切れる場合があります。縮小版もCC BY-SA 4.0で提供します。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_khiva_muhammad_amin_khan",
+      "path": "assets/tourism/uzbekistan/khiva_muhammad_amin_khan.jpg",
+      "width": 1920,
+      "height": 1182,
+      "altJa": "ムハンマド・アミン・ハン・マドラサ外観の写真。現地の建築と周辺の様子。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Muhammad_Aminkhan_Madrasa_01.jpg",
+      "licenseName": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creditJa": "写真：Bernard Gagnon／Wikimedia Commons／CC0 1.0",
+      "modificationJa": "原画像4381×2698pxを縦横比を保って1920×1182pxへ縮小しJPEG再圧縮。描き足し・AI生成なし。表示時は端が切れる場合があります。縮小版もCC0 1.0で提供します。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_khiva_ota_darvoza",
+      "path": "assets/tourism/uzbekistan/khiva_ota_darvoza.jpg",
+      "width": 1280,
+      "height": 1920,
+      "altJa": "オタ門の写真。現地の建築と周辺の様子。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ota_Darvaza_1.jpg",
+      "licenseName": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "creditJa": "写真：Nassima Chahboun／Wikimedia Commons／CC BY-SA 4.0",
+      "modificationJa": "原画像3456×5184pxを縦横比を保って1280×1920pxへ縮小しJPEG再圧縮。描き足し・AI生成なし。表示時は端が切れる場合があります。縮小版もCC BY-SA 4.0で提供します。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_khiva_palvan_darvoza",
+      "path": "assets/tourism/uzbekistan/khiva_palvan_darvoza.jpg",
+      "width": 1920,
+      "height": 1147,
+      "altJa": "パルヴァン門の写真。現地の建築と周辺の様子。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Palvan_Darvoza_01.jpg",
+      "licenseName": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creditJa": "写真：Bgag／Wikimedia Commons／CC0 1.0",
+      "modificationJa": "原画像3680×2198pxを縦横比を保って1920×1147pxへ縮小しJPEG再圧縮。描き足し・AI生成なし。表示時は端が切れる場合があります。縮小版もCC0 1.0で提供します。",
+      "checkedAt": "2026-11-04"
+    },
+    {
+      "id": "uz_img_khiva_bogcha_darvoza",
+      "path": "assets/tourism/uzbekistan/khiva_bogcha_darvoza.jpg",
+      "width": 1920,
+      "height": 1280,
+      "altJa": "バグチャ門・北側城壁の写真。現地の建築と周辺の様子。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Porte_Nord_Baktcha_Darvoza_Khiva.JPG",
+      "licenseName": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "creditJa": "写真：Faqscl／Wikimedia Commons／CC BY-SA 3.0",
+      "modificationJa": "原画像4752×3168pxを縦横比を保って1920×1280pxへ縮小しJPEG再圧縮。描き足し・AI生成なし。表示時は端が切れる場合があります。縮小版もCC BY-SA 3.0で提供します。",
+      "checkedAt": "2026-11-04"
+    }
+  ],
+  "backgrounds": {
+    "uz_bg_khiva_kunya_ark": {
+      "nameJa": "クフナ・アルク",
+      "captionJa": "ヒヴァ ／ クフナ・アルク（夜景の参考写真）",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_kunya_ark"
+    },
+    "uz_bg_khiva_juma_mosque": {
+      "nameJa": "ジュマ・モスク",
+      "captionJa": "ヒヴァ ／ ジュマ・モスク",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_juma_mosque"
+    },
+    "uz_bg_khiva_tash_hauli": {
+      "nameJa": "タシュ・ハウリ宮殿",
+      "captionJa": "ヒヴァ ／ タシュ・ハウリ宮殿",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_tash_hauli"
+    },
+    "uz_bg_khiva_islam_khoja": {
+      "nameJa": "イスラム・ホジャ複合体",
+      "captionJa": "ヒヴァ ／ イスラム・ホジャ複合体",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_islam_khoja"
+    },
+    "uz_bg_khiva_kalta_minor": {
+      "nameJa": "カルタ・ミノル外観",
+      "captionJa": "ヒヴァ ／ カルタ・ミノル外観",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_kalta_minor"
+    },
+    "uz_bg_khiva_pahlavan_mahmud": {
+      "nameJa": "パフラヴァン・マフムド廟前",
+      "captionJa": "ヒヴァ ／ パフラヴァン・マフムド廟前",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_pahlavan_mahmud"
+    },
+    "uz_bg_khiva_muhammad_amin_khan": {
+      "nameJa": "ムハンマド・アミン・ハン・マドラサ外観",
+      "captionJa": "ヒヴァ ／ ムハンマド・アミン・ハン・マドラサ外観",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_muhammad_amin_khan"
+    },
+    "uz_bg_khiva_ota_darvoza": {
+      "nameJa": "オタ門",
+      "captionJa": "ヒヴァ ／ オタ門",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_ota_darvoza"
+    },
+    "uz_bg_khiva_palvan_darvoza": {
+      "nameJa": "パルヴァン門",
+      "captionJa": "ヒヴァ ／ パルヴァン門",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_palvan_darvoza"
+    },
+    "uz_bg_khiva_bogcha_darvoza": {
+      "nameJa": "バグチャ門・北側城壁",
+      "captionJa": "ヒヴァ ／ バグチャ門・北側城壁",
+      "color": "#a38a65",
+      "fallback": "neutral",
+      "imageAssetId": "uz_img_khiva_bogcha_darvoza"
+    },
+    "uz_bg_khiva_hotel_hub": {
+      "nameJa": "ヒヴァの滞在先",
+      "captionJa": "ヒヴァ ／ 西門外の架空宿",
+      "color": "#a38a65",
+      "fallback": "neutral"
+    }
+  },
+  "dateDestinations": [
+    {
+      "id": "khiva_kalta_minor",
+      "cityId": "khiva",
+      "nameJa": "カルタ・ミノル外観",
+      "nameEn": "Kalta Minor exterior",
+      "descriptionJa": "青緑のタイルに覆われた、未完のミナレットを外から眺める場所。",
+      "backgroundAssetId": "uz_bg_khiva_kalta_minor",
+      "facts": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Kalta Minor exterior",
+          "url": "https://uzbekistan.travel/en/o/kalta-minor-khiva/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "青緑のタイルに覆われた、未完のミナレットを外から眺める場所。"
+        }
+      ]
+    },
+    {
+      "id": "khiva_pahlavan_mahmud",
+      "cityId": "khiva",
+      "nameJa": "パフラヴァン・マフムド廟前",
+      "nameEn": "Pahlavan Mahmud Mausoleum exterior",
+      "descriptionJa": "詩人・力士として知られる人物をまつる廟。ここでは路地からドームを見上げる外観の訪問を扱う。",
+      "backgroundAssetId": "uz_bg_khiva_pahlavan_mahmud",
+      "facts": [
+        {
+          "publisher": "Advantour",
+          "title": "Pahlavan Mahmud Mausoleum exterior",
+          "url": "https://www.advantour.com/uzbekistan/khiva.htm",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "詩人・力士として知られる人物をまつる廟。ここでは路地からドームを見上げる外観の訪問を扱う。"
+        }
+      ]
+    },
+    {
+      "id": "khiva_muhammad_amin_khan",
+      "cityId": "khiva",
+      "nameJa": "ムハンマド・アミン・ハン・マドラサ外観",
+      "nameEn": "Muhammad Amin Khan Madrasa exterior",
+      "descriptionJa": "カルタ・ミノルに隣接するマドラサ。二階の居室や装飾された正面を外から見る。",
+      "backgroundAssetId": "uz_bg_khiva_muhammad_amin_khan",
+      "facts": [
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Muhammad Amin Khan Madrasa exterior",
+          "url": "https://uzbekistan.travel/en/o/the-madrasah-of-muhammad-amin-khan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "カルタ・ミノルに隣接するマドラサ。二階の居室や装飾された正面を外から見る。"
+        }
+      ]
+    },
+    {
+      "id": "khiva_ota_darvoza",
+      "cityId": "khiva",
+      "nameJa": "オタ門",
+      "nameEn": "Ota Darvoza (West Gate)",
+      "descriptionJa": "イチャン・カラの西門。旧市街と城壁の外をつなぐ入口。",
+      "backgroundAssetId": "uz_bg_khiva_ota_darvoza",
+      "facts": [
+        {
+          "publisher": "Khiva Guide",
+          "title": "Ota Darvoza (West Gate)",
+          "url": "https://khivaguide.uz/places/ota-darvoza",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "イチャン・カラの西門。旧市街と城壁の外をつなぐ入口。"
+        }
+      ]
+    },
+    {
+      "id": "khiva_palvan_darvoza",
+      "cityId": "khiva",
+      "nameJa": "パルヴァン門",
+      "nameEn": "Palvan Darvoza (East Gate)",
+      "descriptionJa": "イチャン・カラの東門。通路を抜けると城壁の厚みを感じられる。",
+      "backgroundAssetId": "uz_bg_khiva_palvan_darvoza",
+      "facts": [
+        {
+          "publisher": "Khiva Guide",
+          "title": "Palvan Darvoza (East Gate)",
+          "url": "https://khivaguide.uz/places/polvon-gate",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "イチャン・カラの東門。通路を抜けると城壁の厚みを感じられる。"
+        }
+      ]
+    },
+    {
+      "id": "khiva_bogcha_darvoza",
+      "cityId": "khiva",
+      "nameJa": "バグチャ門・北側城壁",
+      "nameEn": "Bogcha Darvoza (North Gate)",
+      "descriptionJa": "イチャン・カラ北側の城門。城壁の外から内城の囲いを見渡す。",
+      "backgroundAssetId": "uz_bg_khiva_bogcha_darvoza",
+      "facts": [
+        {
+          "publisher": "Wikimedia Commons",
+          "title": "Bogcha Darvoza (North Gate)",
+          "url": "https://commons.wikimedia.org/wiki/Category:Itchan_Kala_north_gate",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "イチャン・カラ北側の城門。城壁の外から内城の囲いを見渡す。"
+        }
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "id": "uz_obs_khiva_kunya_ark_01",
+      "landmarkId": "khiva_kunya_ark",
+      "kind": "hotspot",
+      "titleJa": "囲いの中の居城",
+      "descriptionJa": "右側の装飾された門と、その横へ続く高い壁が見える。クフナ・アルクは内城の中でも独自の囲いを持つハンの居城だった。",
+      "factId": "uz_fact_khiva_kunya_ark_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.58,
+        "y": 0.28,
+        "width": 0.27,
+        "height": 0.45
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Konya Ark gate.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Konya_Ark_gate.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "掲載写真を確認し、記載した柱・壁・通りなどの見える要素を観察。写真から年代・営業状態・見えない部分を断定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Kunya Ark",
+          "url": "https://uzbekistan.travel/en/o/kunya-ark-fortress/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "城壁の内側にさらに囲いを持つ、ヒヴァのハンの旧居城。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_khiva_kunya_ark_02",
+      "landmarkId": "khiva_kunya_ark",
+      "kind": "hotspot",
+      "titleJa": "広場へ開く門",
+      "descriptionJa": "門の前には建物との間に広い空間があり、歩いている人の姿が見える。写真は夜の撮影で、現在時刻や夜間の入場可否を示すものではない。",
+      "factId": "uz_fact_khiva_kunya_ark_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.1,
+        "y": 0.7,
+        "width": 0.7,
+        "height": 0.24
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Konya Ark gate.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Konya_Ark_gate.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "掲載写真を確認し、記載した柱・壁・通りなどの見える要素を観察。写真から年代・営業状態・見えない部分を断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_khiva_juma_mosque_01",
+      "landmarkId": "khiva_juma_mosque",
+      "kind": "hotspot",
+      "titleJa": "並ぶ木の柱",
+      "descriptionJa": "礼拝堂の奥へ何列もの木柱が続く。多数の彫刻柱を持つ空間が、このモスクの特徴として紹介されている。",
+      "factId": "uz_fact_khiva_juma_mosque_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.04,
+        "y": 0.08,
+        "width": 0.76,
+        "height": 0.7
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Juma Masjid Khiva.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Juma_Masjid_Khiva.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "掲載写真を確認し、記載した柱・壁・通りなどの見える要素を観察。写真から年代・営業状態・見えない部分を断定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Juma Mosque",
+          "url": "https://uzbekistan.travel/en/o/reasons-celebrate-ramadan-uzbekistan/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "多数の彫刻された木柱が並ぶ礼拝堂で知られる、イチャン・カラのモスク。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_khiva_juma_mosque_02",
+      "landmarkId": "khiva_juma_mosque",
+      "kind": "hotspot",
+      "titleJa": "近くで見る彫り",
+      "descriptionJa": "写真右端の柱には、植物を思わせる曲線と帯状の文様が見える。写真だけからこの柱の年代や由来を決めることはできない。",
+      "factId": "uz_fact_khiva_juma_mosque_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.88,
+        "y": 0.06,
+        "width": 0.12,
+        "height": 0.88
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Juma Masjid Khiva.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Juma_Masjid_Khiva.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "掲載写真を確認し、記載した柱・壁・通りなどの見える要素を観察。写真から年代・営業状態・見えない部分を断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_khiva_tash_hauli_01",
+      "landmarkId": "khiva_tash_hauli",
+      "kind": "hotspot",
+      "titleJa": "中庭を囲む部屋",
+      "descriptionJa": "青と白の装飾を持つ壁と、奥へくぼんだ高い屋根付き空間が見える。宮殿は複数の中庭と、その周囲の部屋から構成される。",
+      "factId": "uz_fact_khiva_tash_hauli_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.05,
+        "y": 0.17,
+        "width": 0.9,
+        "height": 0.7
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Court of Justice in Tach Khaouli 01.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Court_of_Justice_in_Tach_Khaouli_01.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "掲載写真を確認し、記載した柱・壁・通りなどの見える要素を観察。写真から年代・営業状態・見えない部分を断定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Tash Hauli Palace",
+          "url": "https://uzbekistan.travel/en/o/tash-houli/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アラクリ・ハンの時代に造られ、複数の中庭と精緻な装飾を持つ宮殿。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_khiva_tash_hauli_02",
+      "landmarkId": "khiva_tash_hauli",
+      "kind": "hotspot",
+      "titleJa": "屋根を支える一本",
+      "descriptionJa": "正面の高い空間では、彫刻された細い柱が屋根を支えている。壁面の文様と木の彫刻を一つの画面で見比べられる。",
+      "factId": "uz_fact_khiva_tash_hauli_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.46,
+        "y": 0.26,
+        "width": 0.08,
+        "height": 0.47
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Court of Justice in Tach Khaouli 01.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Court_of_Justice_in_Tach_Khaouli_01.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "掲載写真を確認し、記載した柱・壁・通りなどの見える要素を観察。写真から年代・営業状態・見えない部分を断定しない。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_khiva_islam_khoja_01",
+      "landmarkId": "khiva_islam_khoja",
+      "kind": "hotspot",
+      "titleJa": "空へ細くなる塔",
+      "descriptionJa": "通りの奥に、上へ向かって細くなるミナレットが見える。焼成レンガと青い装飾の帯が交互に並んでいる。",
+      "factId": "uz_fact_khiva_islam_khoja_01",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.33,
+        "y": 0.13,
+        "width": 0.11,
+        "height": 0.61
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Islam Khodja Minaret, Khiva.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Islam_Khodja_Minaret,_Khiva.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "掲載写真を確認し、記載した柱・壁・通りなどの見える要素を観察。写真から年代・営業状態・見えない部分を断定しない。"
+        },
+        {
+          "publisher": "Uzbekistan Travel",
+          "title": "Islam Khoja Complex",
+          "url": "https://uzbekistan.travel/en/o/islam-khoja-minaret-khiva/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "細く高いミナレット、マドラサ、モスクからなる複合体。"
+        }
+      ]
+    },
+    {
+      "id": "uz_obs_khiva_islam_khoja_02",
+      "landmarkId": "khiva_islam_khoja",
+      "kind": "hotspot",
+      "titleJa": "塔の足元へ続く道",
+      "descriptionJa": "塔を見上げる通りには、歩く人と布製品を並べた店先が写る。高い建造物の足元にも日常の往来があることが読み取れる。",
+      "factId": "uz_fact_khiva_islam_khoja_02",
+      "relatedQuestionIds": [],
+      "region": {
+        "x": 0.24,
+        "y": 0.73,
+        "width": 0.76,
+        "height": 0.25
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape photo review / Wikimedia Commons",
+          "title": "Islam Khodja Minaret, Khiva.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Islam_Khodja_Minaret,_Khiva.jpg",
+          "checkedAt": "2026-11-04",
+          "claimType": "interpretation",
+          "claimJa": "掲載写真を確認し、記載した柱・壁・通りなどの見える要素を観察。写真から年代・営業状態・見えない部分を断定しない。"
+        }
+      ]
+    }
+  ],
+  "images": {
+    "khiva_kunya_ark": {
+      "path": "assets/tourism/uzbekistan/khiva_kunya_ark.jpg",
+      "sha256": "d571f14e47207d7e747604607843e97b7fff88a17e90f9c08127f00399ef783b"
+    },
+    "khiva_juma_mosque": {
+      "path": "assets/tourism/uzbekistan/khiva_juma_mosque.jpg",
+      "sha256": "9a44716a32635f971ddcb38aaa12e37958bf25a3ca9e6272af4478ce7e3c2973"
+    },
+    "khiva_tash_hauli": {
+      "path": "assets/tourism/uzbekistan/khiva_tash_hauli.jpg",
+      "sha256": "08d5c14a4452118213534559306f5dee3aeedb9ee5d777dd29265e482b4a8b1a"
+    },
+    "khiva_islam_khoja": {
+      "path": "assets/tourism/uzbekistan/khiva_islam_khoja.jpg",
+      "sha256": "80f2665c655a2a89a660aaef95f1a7b2490060a16c860ba985467b687d4622a3"
+    }
+  },
+  "provenance": {
+    "uz_obs_khiva_kunya_ark_01": {
+      "cityId": "khiva",
+      "sourceFactId": "uz_fact_khiva_kunya_ark_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "囲いの中の居城。保存した画像を目視し、対応領域を指定。"
+    },
+    "uz_obs_khiva_kunya_ark_02": {
+      "cityId": "khiva",
+      "sourceFactId": "uz_fact_khiva_kunya_ark_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "広場へ開く門。保存した画像を目視し、対応領域を指定。"
+    },
+    "uz_obs_khiva_juma_mosque_01": {
+      "cityId": "khiva",
+      "sourceFactId": "uz_fact_khiva_juma_mosque_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "並ぶ木の柱。保存した画像を目視し、対応領域を指定。"
+    },
+    "uz_obs_khiva_juma_mosque_02": {
+      "cityId": "khiva",
+      "sourceFactId": "uz_fact_khiva_juma_mosque_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "近くで見る彫り。保存した画像を目視し、対応領域を指定。"
+    },
+    "uz_obs_khiva_tash_hauli_01": {
+      "cityId": "khiva",
+      "sourceFactId": "uz_fact_khiva_tash_hauli_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "中庭を囲む部屋。保存した画像を目視し、対応領域を指定。"
+    },
+    "uz_obs_khiva_tash_hauli_02": {
+      "cityId": "khiva",
+      "sourceFactId": "uz_fact_khiva_tash_hauli_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "屋根を支える一本。保存した画像を目視し、対応領域を指定。"
+    },
+    "uz_obs_khiva_islam_khoja_01": {
+      "cityId": "khiva",
+      "sourceFactId": "uz_fact_khiva_islam_khoja_01",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "空へ細くなる塔。保存した画像を目視し、対応領域を指定。"
+    },
+    "uz_obs_khiva_islam_khoja_02": {
+      "cityId": "khiva",
+      "sourceFactId": "uz_fact_khiva_islam_khoja_02",
+      "reliability": "high",
+      "needsFurtherResearch": false,
+      "visualEvidence": "塔の足元へ続く道。保存した画像を目視し、対応領域を指定。"
+    }
+  }
+}

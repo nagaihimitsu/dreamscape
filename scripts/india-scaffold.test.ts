@@ -18,6 +18,7 @@ describe("India authoring scaffold", () => {
     const fragments = buildIndiaFragments(input, narrative("delhi"), ["delhi"]);
     expect([plan.main.length, plan.dates.length]).toEqual([4, 6]);
     expect([fragments.episodes.length, fragments.battles.length, fragments.landmarks.length, fragments.dates.length]).toEqual([5, 5, 4, 6]);
+    expect(fragments.battles.every((battle) => battle.portrait === "abstract")).toBe(true);
     expect(fragments.effects).toHaveLength(60);
     expect(new Set(fragments.effects.map((effect) => effect.id)).size).toBe(60);
     expect(Object.keys(fragments.memories)).toHaveLength(6);

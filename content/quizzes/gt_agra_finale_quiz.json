@@ -1,0 +1,249 @@
+{
+  "schemaVersion": 1,
+  "id": "gt_agra_finale_quiz",
+  "scope": "city_finale",
+  "cityId": "agra",
+  "landmarkId": null,
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "gt_agra_finale_taj_memorial",
+      "questionEn": "Which caption correctly explains why the Taj Mahal was commissioned?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A palace built to celebrate a military victory."
+        },
+        {
+          "id": "B",
+          "textEn": "A mausoleum commissioned by Shah Jahan in memory of Mumtaz Mahal."
+        },
+        {
+          "id": "C",
+          "textEn": "A hall built for the coronation of Shah Jahan."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "caption",
+          "meaning": "写真や映像に添える説明文"
+        },
+        {
+          "word": "coronation",
+          "meaning": "戴冠式"
+        },
+        {
+          "word": "in memory of",
+          "meaning": "〜をしのんで"
+        }
+      ],
+      "hintJa": "外観が宮殿のように華やかでも、建てた目的を確かめよう。皇帝と妃の関係が手掛かりになる。",
+      "correctExplanationJa": "妃ムムターズ・マハルを記念するための墓廟です。見た目の華やかさから、勝利を祝う宮殿や戴冠の広間と紹介しないようにします。",
+      "incorrectExplanationJa": "正しい説明は、妃をしのんで造営された墓廟です。写真の印象と、資料で確認できる造営の目的を分けて考えましょう。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "Taj Mahal — Outstanding Universal Value",
+          "url": "https://whc.unesco.org/en/list/252/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "シャー・ジャハーンが妃ムムターズ・マハルを記念して造営したと記載。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_agra_finale_fort_layers",
+      "questionEn": "Which caption best explains the different royal buildings in Agra Fort?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A fort shaped by building projects under different emperors."
+        },
+        {
+          "id": "B",
+          "textEn": "A fort built entirely by one emperor in a single project."
+        },
+        {
+          "id": "C",
+          "textEn": "A fort made by gathering old palaces moved from other cities."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "shaped by",
+          "meaning": "〜によって形作られた"
+        },
+        {
+          "word": "projects",
+          "meaning": "計画・事業"
+        },
+        {
+          "word": "entirely",
+          "meaning": "すべて・完全に"
+        }
+      ],
+      "hintJa": "赤砂岩の再建と白大理石の宮殿の追加には、同じ皇帝の名前が付いていただろうか。",
+      "correctExplanationJa": "代々の皇帝が使い、造営や変更を重ねた城です。いま一緒に見える建物が、すべて同じ時に造られたとは限りません。",
+      "incorrectExplanationJa": "一人の一度きりの計画でも、各地の宮殿を移設した集合でもありません。アクバルやシャー・ジャハーンらの異なる造営が残っています。",
+      "sources": [
+        {
+          "publisher": "Archaeological Survey of India, Agra Circle",
+          "title": "Agra Fort",
+          "url": "https://www.asiagracircle.in/agra-fort.html",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アクバルによる赤砂岩での再建と、シャー・ジャハーンが一部建築を取り壊して白大理石の宮殿を造った経緯を記載。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_agra_finale_baby_taj",
+      "questionEn": "Which caption avoids a mistake about the tomb nicknamed the 'Baby Taj'?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A small copy made after the Taj Mahal was finished."
+        },
+        {
+          "id": "B",
+          "textEn": "A model that was later rebuilt as the Taj Mahal itself."
+        },
+        {
+          "id": "C",
+          "textEn": "An earlier tomb with its own patrons and family history."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "nicknamed",
+          "meaning": "愛称で呼ばれる"
+        },
+        {
+          "word": "earlier",
+          "meaning": "より前の"
+        },
+        {
+          "word": "patrons",
+          "meaning": "制作・造営を支えた人たち"
+        }
+      ],
+      "hintJa": "愛称にタージと入っていても、後から小さくまねたとは限らない。二つの建物の前後関係を思い出そう。",
+      "correctExplanationJa": "イティマード・ウッダウラ廟はタージに先行します。皇妃が家族のために造営した場所であり、小型の複製として始まった建物ではありません。",
+      "incorrectExplanationJa": "タージ完成後の複製でも、後でタージに建て替えた模型でもありません。先に造られた、別の家族の記憶を持つ墓廟です。",
+      "sources": [
+        {
+          "publisher": "District Agra, Government of Uttar Pradesh",
+          "title": "Tomb of Itimad-ud-Daulah",
+          "url": "https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "廟を1622〜1628年の造営で、タージ・マハルに先行するものと説明。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_agra_finale_working_city",
+      "questionEn": "Which caption gives a fuller account of Fatehpur Sikri than \"a large palace\"?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A private garden with no buildings for public affairs."
+        },
+        {
+          "id": "B",
+          "textEn": "A city with spaces for government, worship and everyday life."
+        },
+        {
+          "id": "C",
+          "textEn": "A single royal home built apart from all other activities."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "account",
+          "meaning": "ここでは、説明・記述"
+        },
+        {
+          "word": "worship",
+          "meaning": "礼拝"
+        },
+        {
+          "word": "everyday",
+          "meaning": "日常の"
+        }
+      ],
+      "hintJa": "宮殿のほかに、働く人や礼拝する人のための空間もあった。建物を一つだけとして説明してよいだろうか。",
+      "correctExplanationJa": "行政、礼拝、居住などを含む都市でした。宮殿だけを映していても、画面の外にあった人々の働きや生活まで消してしまわない説明ができます。",
+      "incorrectExplanationJa": "私庭や一軒の王家の住まいに限られる場所ではありません。政治や礼拝、さまざまな人の生活を含む都市として説明できます。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "Fatehpur Sikri — Outstanding Universal Value",
+          "url": "https://whc.unesco.org/en/list/255/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "宮殿、公共建築、モスク、宮廷・軍・使用人の生活空間を含む計画都市と説明。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_agra_finale_visible_memorials",
+      "questionEn": "Which caption fits a diagram of the decorated cenotaphs in the Taj Mahal’s main hall?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Memorials above the actual burial chamber."
+        },
+        {
+          "id": "B",
+          "textEn": "The actual graves in an open garden."
+        },
+        {
+          "id": "C",
+          "textEn": "Royal seats used for meetings with visitors."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "memorials",
+          "meaning": "故人などを記念するもの"
+        },
+        {
+          "word": "above",
+          "meaning": "〜の上に"
+        },
+        {
+          "word": "seats",
+          "meaning": "座席"
+        },
+        {
+          "word": "diagram",
+          "meaning": "説明図"
+        }
+      ],
+      "hintJa": "見えているものをそのまま紹介しよう。上の記念棺と、下の実際の埋葬の場所は区別されていた。",
+      "correctExplanationJa": "図が示すのは、実際の埋葬室の上にある記念棺です。資料に添える言葉を、確かめた範囲に合わせます。",
+      "incorrectExplanationJa": "庭の墓や謁見用の席ではありません。主室にある記念棺と、下の埋葬室との関係を伝える説明が合っています。",
+      "sources": [
+        {
+          "publisher": "Uttar Pradesh Tourism",
+          "title": "The Taj Interiors — The Tomb; The Screen and the Cenotaphs",
+          "url": "https://www.tajmahal.gov.in/the-taj-interiors.aspx",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "主室にある記念棺と、その下の埋葬室にある実際の墓を区別。"
+        }
+      ],
+      "difficulty": "medium"
+    }
+  ]
+}
