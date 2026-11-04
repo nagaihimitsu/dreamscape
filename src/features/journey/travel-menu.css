@@ -24,11 +24,11 @@
 .travel-map small { color: var(--muted); font-size: 11px; }
 .travel-list { display: grid; }
 .travel-destination { border-bottom: 1px solid var(--line); }
-.travel-destination-button { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 2px 8px; width: 100%; min-height: 44px; padding: 5px 0; color: inherit; border: 0; background: none; text-align: left; cursor: pointer; font: inherit; }
+.travel-destination-button { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 2px 8px; width: 100%; min-height: 44px; padding: 5px 0; color: inherit; border: 0; background: none; text-align: left; cursor: pointer; font: inherit; }
 .travel-destination-button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
 .travel-category { align-self: baseline; color: var(--green); font-size: 12px; white-space: nowrap; }
 .travel-destination-title { font-weight: 700; overflow-wrap: anywhere; }
-.travel-destination-meta { color: var(--muted); font-size: 12px; text-align: right; }
+.travel-destination-meta { grid-column: 2; min-width: 0; overflow-wrap: anywhere; color: var(--muted); font-size: 12px; text-align: left; }
 .travel-destination-button small { grid-column: 2 / -1; color: var(--muted); font-size: 12px; }
 .travel-choices { padding: 10px; margin: 10px 0; border: 1px solid var(--line); border-radius: 8px; }
 .travel-choices p { margin: 4px 0 8px; font-size: 13px; }
