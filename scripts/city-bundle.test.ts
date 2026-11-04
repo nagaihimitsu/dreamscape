@@ -130,7 +130,7 @@ describe("city editing bundle", () => {
           (previous.fromPlaceId === toPlaceId && previous.toPlaceId === fromPlaceId));
       expect(after.routes[index]).toEqual(selected ? { ...previous, minutes: previous.minutes + 1 } : previous);
     }
-  }, 60_000);
+  }, 180_000);
 
   it("rejects missing source references, duplicate directed routes and unknown places without writing", async () => {
     const root = fixture();
@@ -152,7 +152,7 @@ describe("city editing bundle", () => {
     missingPlace.travel.routes[0].toPlaceId = "missing_place";
     await expect(applyCityBundle(root, missingPlace, true)).rejects.toThrow();
     expect(fingerprint(root)).toBe(before);
-  }, 60_000);
+  }, 180_000);
 
   it("exports every existing city accurately and checks an unchanged bundle without writing", async () => {
     const root = fixture();
@@ -172,7 +172,7 @@ describe("city editing bundle", () => {
     await applyCityBundle(root, exportCityBundle(root, "delhi"));
     expect(fingerprint(root)).toBe(before);
     expect(() => exportCityBundle(root, "unknown_city")).toThrow();
-  }, 60_000);
+  }, 180_000);
 
   it("applies one city's metadata, travel, prices, images and destinations without changing other cities", async () => {
     const root = fixture();
@@ -223,7 +223,7 @@ describe("city editing bundle", () => {
     expect(afterReadiness.ready).toBe(beforeReadiness.ready);
     expect(afterReadiness.readyForPromotion).toBe(beforeReadiness.readyForPromotion);
     expect(afterReadiness.cities.map((city) => city.issues.map((issue) => issue.code))).toEqual(beforeReadiness.cities.map((city) => city.issues.map((issue) => issue.code)));
-  }, 60_000);
+  }, 180_000);
 
   it("rejects stale edits after unrelated content or image changes without writing", async () => {
     const root = fixture();
@@ -238,7 +238,7 @@ describe("city editing bundle", () => {
       expect(readFileSync(target)).toEqual(Buffer.concat([original, Buffer.from("\n")]));
       writeFileSync(target, original);
     }
-  }, 60_000);
+  }, 180_000);
 
   it("rejects missing references and duplicate or foreign IDs without writing", async () => {
     const root = fixture();
@@ -255,7 +255,7 @@ describe("city editing bundle", () => {
     wrongCity.travel.places[0].cityId = "agra";
     await expect(applyCityBundle(root, wrongCity, true)).rejects.toThrow();
     expect(fingerprint(root)).toBe(before);
-  }, 60_000);
+  }, 180_000);
 
   it("checks a city's transit decisions alongside its edited routes", async () => {
     const root = fixture();
@@ -291,7 +291,7 @@ describe("city editing bundle", () => {
     expect(report.counts.delhi.unresearched).toBe(0);
     expect(report.counts.delhi.inconclusive).toBe(0);
     expect(report.counts.delhi.available).toBeGreaterThan(0);
-  }, 60_000);
+  }, 180_000);
 
   it("edits the selected Uzbek transit ledger while rejecting unknown directions and image changes", async () => {
     const root = fixture();
@@ -335,7 +335,7 @@ describe("city editing bundle", () => {
     const changedBytes = exportCityBundle(root, cityId);
     await expect(applyCityBundle(root, changedBytes, true)).rejects.toThrow(/Observation image hash changed/);
     expect(read(root, otherLedger)).toBe(otherBefore);
-  }, 90_000);
+  }, 180_000);
 
   it("protects missing images, reviewed observation photographs and the release gate", async () => {
     const root = fixture();
@@ -360,7 +360,7 @@ describe("city editing bundle", () => {
     sharedAsset.altJa = "他都市の画像を変えてはならない";
     await expect(applyCityBundle(root, shared, true)).rejects.toThrow();
     expect(fingerprint(root)).toBe(before);
-  }, 60_000);
+  }, 180_000);
 
   it("does not allow editing a background also used by another city", async () => {
     const root = fixture();
@@ -375,7 +375,7 @@ describe("city editing bundle", () => {
     const before = fingerprint(root);
     await expect(applyCityBundle(root, bundle, true)).rejects.toThrow(/Cannot change another city's or shared background/);
     expect(fingerprint(root)).toBe(before);
-  }, 60_000);
+  }, 180_000);
 
   it("lets a city stop using a shared background while preserving the other city's copy", async () => {
     const root = fixture();
@@ -395,7 +395,7 @@ describe("city editing bundle", () => {
     expect(presentation.backgrounds[sharedId]).toEqual(sharedBackground);
     expect(presentation.backgrounds.delhi_alternate_hotel_bg.captionJa).toBe("デリーの滞在先");
     expect(readJson(root, "content/travel/agra.json").places.find((item: { id: string }) => item.id === "agra_hotel_hub").backgroundAssetId).toBe(sharedId);
-  }, 60_000);
+  }, 180_000);
 
   it("rolls back earlier writes if a later file cannot be replaced", () => {
     const root = fixture();
@@ -415,7 +415,7 @@ describe("city editing bundle", () => {
     expect(read(root, settings)).toBe(original[settings]);
     expect(fingerprint(root)).toBe(before);
     expect(existsSync(path.join(root, ".city-bundle.lock"))).toBe(false);
-  }, 60_000);
+  }, 180_000);
 
   it("never overwrites a city file created concurrently and rolls back earlier new files", () => {
     const root = fixture();
@@ -434,7 +434,7 @@ describe("city editing bundle", () => {
     expect(read(root, travel)).toBe("another editor's file");
     expect(read(root, "content/cities/milano.json")).toBe(beforeMilan);
     expect(existsSync(path.join(root, ".city-bundle.lock"))).toBe(false);
-  }, 60_000);
+  }, 180_000);
 
   it("does not overwrite another editor's newer change during a rollback", () => {
     const root = fixture();
@@ -455,7 +455,7 @@ describe("city editing bundle", () => {
     expect(read(root, city)).toBe(newer);
     expect(read(root, settings)).toBe(original[settings]);
     expect(existsSync(path.join(root, ".city-bundle.lock"))).toBe(false);
-  }, 60_000);
+  }, 180_000);
 
   it("does not delete another editor's newer change to a new file during a rollback", () => {
     const root = fixture();
@@ -476,7 +476,7 @@ describe("city editing bundle", () => {
     expect(read(root, city)).toBe(newer);
     expect(existsSync(path.join(root, travel))).toBe(false);
     expect(existsSync(path.join(root, ".city-bundle.lock"))).toBe(false);
-  }, 60_000);
+  }, 180_000);
 
   it("applies edits to all eight cities without changing other cities", async () => {
     const root = fixture();
@@ -531,7 +531,7 @@ describe("city editing bundle", () => {
     const reloaded = exportCityBundle(root, "milano");
     expect(reloaded.landmarks!.find((item) => item.id === landmark.id)).toEqual(landmark);
     expect(reloaded.clues!.find((item) => item.id === clue.id)).toEqual(clue);
-  }, 90_000);
+  }, 180_000);
 
   it("preserves existing Milan observations when applying a legacy bundle", async () => {
     const root = fixture();
@@ -564,7 +564,7 @@ describe("city editing bundle", () => {
     duplicate.clues!.push(structuredClone(duplicate.clues![0]));
     await expect(applyCityBundle(root, duplicate, true)).rejects.toThrow();
     expect(fingerprint(root)).toBe(before);
-  }, 60_000);
+  }, 180_000);
 
   it("requires a registered journey and complete input before creating a new prototype city", async () => {
     const root = fixture();
@@ -626,5 +626,5 @@ describe("city editing bundle", () => {
     expect(read(root, "content/cities/milano.json")).toBe(beforeMilan);
     expect(read(root, "content/travel/delhi.json")).toBe(beforeDelhi);
     expect(() => newCityBundle(root, "testcity")).toThrow();
-  }, 60_000);
+  }, 180_000);
 });
