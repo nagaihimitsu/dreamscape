@@ -96,6 +96,9 @@
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額1000ルピー。現地の実際の券種や料金を保証しない。"
         }
+      ],
+      "landmarkIds": [
+        "delhi_red_fort"
       ]
     },
     {
@@ -177,6 +180,9 @@
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額1200ルピー。現地の実際の券種や料金を保証しない。"
         }
+      ],
+      "landmarkIds": [
+        "delhi_qutb_minar"
       ]
     },
     {
@@ -250,6 +256,9 @@
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額1200ルピー。現地の実際の券種や料金を保証しない。"
         }
+      ],
+      "landmarkIds": [
+        "delhi_humayun_tomb"
       ]
     },
     {
@@ -407,6 +416,9 @@
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額800ルピー。現地の実際の券種や料金を保証しない。"
         }
+      ],
+      "landmarkIds": [
+        "delhi_jama_masjid"
       ]
     },
     {
@@ -13282,7 +13294,6 @@
       "titleJa": "レッド・フォートを巡る",
       "activityMinutes": 120,
       "apCost": 0,
-      "contentStatus": "pending_content",
       "admissionCost": 1000
     },
     {
@@ -13293,7 +13304,6 @@
       "titleJa": "クトゥブ・ミナールを巡る",
       "activityMinutes": 105,
       "apCost": 0,
-      "contentStatus": "pending_content",
       "admissionCost": 1200
     },
     {
@@ -13304,7 +13314,6 @@
       "titleJa": "フマユーン廟を巡る",
       "activityMinutes": 120,
       "apCost": 0,
-      "contentStatus": "pending_content",
       "admissionCost": 1200
     },
     {
@@ -13315,7 +13324,6 @@
       "titleJa": "インド門で過ごす",
       "activityMinutes": 45,
       "apCost": 2,
-      "contentStatus": "pending_content",
       "admissionCost": 0
     },
     {
@@ -13326,7 +13334,6 @@
       "titleJa": "ジャーマー・マスジドを巡る",
       "activityMinutes": 60,
       "apCost": 0,
-      "contentStatus": "pending_content",
       "admissionCost": 800
     },
     {
@@ -13337,7 +13344,6 @@
       "titleJa": "チャンドニー・チョークで過ごす",
       "activityMinutes": 80,
       "apCost": 2,
-      "contentStatus": "pending_content",
       "admissionCost": 0
     },
     {
@@ -13348,7 +13354,6 @@
       "titleJa": "ロディ・ガーデンで過ごす",
       "activityMinutes": 70,
       "apCost": 2,
-      "contentStatus": "pending_content",
       "admissionCost": 0
     },
     {
@@ -13359,7 +13364,6 @@
       "titleJa": "アグラセン・キ・バオリで過ごす",
       "activityMinutes": 40,
       "apCost": 2,
-      "contentStatus": "pending_content",
       "admissionCost": 0
     },
     {
@@ -13370,7 +13374,6 @@
       "titleJa": "ロータス寺院で過ごす",
       "activityMinutes": 70,
       "apCost": 2,
-      "contentStatus": "pending_content",
       "admissionCost": 0
     },
     {
@@ -13381,8 +13384,17 @@
       "titleJa": "グルドワーラ・バングラ・サーヒブで過ごす",
       "activityMinutes": 60,
       "apCost": 2,
-      "contentStatus": "pending_content",
       "admissionCost": 0
+    },
+    {
+      "id": "gt_delhi_finale",
+      "cityId": "delhi",
+      "placeId": "delhi_red_fort",
+      "category": "main",
+      "titleJa": "三分間の旅への招待",
+      "activityMinutes": 45,
+      "apCost": 0,
+      "admissionCost": 1000
     }
   ]
 }

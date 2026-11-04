@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "id": "gt_jaipur_main_amber_fort_quiz",
+  "landmarkId": "jaipur_amber_fort",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "gt_jaipur_amber_returning_army",
+      "questionEn": "A crowd gathers in Jaleb Chowk as soldiers return. What did returning armies historically display there?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Gifts prepared by the crowd for the soldiers."
+        },
+        {
+          "id": "B",
+          "textEn": "Goods taken during their military campaigns."
+        },
+        {
+          "id": "C",
+          "textEn": "Plans for gardens that the soldiers would build."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "crowd",
+          "meaning": "集まった人々、群衆"
+        },
+        {
+          "word": "display",
+          "meaning": "展示する、見せる"
+        },
+        {
+          "word": "campaigns",
+          "meaning": "ここでは、軍事作戦・軍事行動"
+        }
+      ],
+      "hintJa": "この中庭では、戻ってきた軍の成果を人々に見せる場面がありました。品物がどちらから運ばれてきたかを考えましょう。",
+      "correctExplanationJa": "帰還した軍は、戦利品を人々に見せました。今は広く見える中庭も、当時は軍の力を示す舞台の一つだったと分かります。華やかな凱旋には、品物を奪われた側もいたことを忘れずに読みます。",
+      "incorrectExplanationJa": "人々から兵士への贈り物や庭園の設計図ではなく、軍が持ち帰った戦利品です。政府観光案内は、その品々を公衆に示した場所としてジャレーブ・チョークを紹介しています。",
+      "sources": [
+        {
+          "publisher": "Ministry of Tourism, Government of India",
+          "title": "Explore the Amber Fort in Jaipur",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/amber-fort",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ジャレーブ・チョークは軍のパレードの場で、兵士が勝利で得た戦利品を人々に示したと説明されている。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_jaipur_amber_life_inside",
+      "questionEn": "Amber has royal quarters, gardens and temples. What does this combination tell us about the fort?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "It was a place to live and worship as well as a fort."
+        },
+        {
+          "id": "B",
+          "textEn": "It was a temporary camp without permanent homes."
+        },
+        {
+          "id": "C",
+          "textEn": "It was a single temple with no royal living space."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "quarters",
+          "meaning": "ここでは、居住区"
+        },
+        {
+          "word": "worship",
+          "meaning": "礼拝する、信仰を実践する"
+        },
+        {
+          "word": "permanent",
+          "meaning": "恒久的な、常設の"
+        }
+      ],
+      "hintJa": "城壁の内側にあるものを、戦いの道具だけで説明できるでしょうか。そこで過ごした人の日常にも目を向けます。",
+      "correctExplanationJa": "アンベールは防御の城という一面だけでなく、王族が暮らす宮殿でもありました。居住区や庭園、寺院を合わせて見ると、生活や信仰が城の中に組み込まれていたことが見えてきます。",
+      "incorrectExplanationJa": "一時的な野営地でも、居住区のない一つの寺院でもありません。王族の住まい、庭園、礼拝の場などを含む複合的な場所です。城壁だけでなく、その内側の暮らしにも役割がありました。",
+      "sources": [
+        {
+          "publisher": "Ministry of Tourism, Government of India",
+          "title": "Explore the Amber Fort in Jaipur",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/amber-fort",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "政府観光案内は王族の住まい、女性たちの居住区、王の庭園、各宮殿を挙げる。州観光局の同城紹介でも王の居住区、庭園、寺院を含む複数区画を説明する。"
+        },
+        {
+          "publisher": "Rajasthan Tourism",
+          "title": "Amber Palace",
+          "url": "https://www.tourism.rajasthan.gov.in/amber-palace.html",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "城内の区画として王の居住区、女性の居住区、庭園、寺院などを列挙する。今回は検索サービス取得の該当節で確認した。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_jaipur_amber_tunnel_link",
+      "questionEn": "A historic underground passage connected Amber with another fort. Which one?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Nahargarh Fort, above the city of Jaipur."
+        },
+        {
+          "id": "B",
+          "textEn": "Agra Fort, beside the Yamuna River."
+        },
+        {
+          "id": "C",
+          "textEn": "Jaigarh Fort, on the hill near Amber."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "underground",
+          "meaning": "地下の"
+        },
+        {
+          "word": "passage",
+          "meaning": "通路"
+        },
+        {
+          "word": "connected",
+          "meaning": "結んだ、つないでいた"
+        }
+      ],
+      "hintJa": "遠くの都市まで延びる道ではありません。アンベール近くで、もう一つの城と結び付いていた通路です。",
+      "correctExplanationJa": "結ばれていたのはジャイガル城です。別々の名所に見える二つの城には、地下通路によるつながりがありました。この歴史上の接続は、現在その通路を自由に通れるという案内ではありません。",
+      "incorrectExplanationJa": "ナハルガル城やアーグラ城ではなく、近くのジャイガル城です。地上の眺めだけでは見つけにくい、城同士のつながりがあります。現行の通行可否や移動経路とは区別します。",
+      "sources": [
+        {
+          "publisher": "Ministry of Tourism, Government of India",
+          "title": "Explore the Amber Fort in Jaipur",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/amber-fort",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "城の地下通路がジャイガル城に結び付くと政府観光案内が説明する。現在の全区間通行可能性はこの問題では扱わない。"
+        }
+      ],
+      "difficulty": "medium"
+    }
+  ]
+}

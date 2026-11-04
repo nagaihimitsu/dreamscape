@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "gt_jaipur_main_city_palace_quiz",
+  "landmarkId": "jaipur_city_palace",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "gt_jaipur_palace_public_roles",
+      "questionEn": "Jaipur's City Palace was more than a royal home. Which other activities belonged there?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Government work, religious rituals and community entertainment."
+        },
+        {
+          "id": "B",
+          "textEn": "Public markets and workshops, with government work kept outside the palace."
+        },
+        {
+          "id": "C",
+          "textEn": "Private holidays, with government and ceremonies kept elsewhere."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "rituals",
+          "meaning": "儀礼"
+        },
+        {
+          "word": "community",
+          "meaning": "地域の人々、共同体"
+        },
+        {
+          "word": "entertainment",
+          "meaning": "娯楽、催し"
+        }
+      ],
+      "hintJa": "王族が眠る部屋だけで、宮廷の仕事がすべて済むでしょうか。人々が集まる用途も考えます。",
+      "correctExplanationJa": "行政や宗教儀礼、地域の娯楽の場という役割がありました。博物館の公式説明は、王族の住まいを越える複数の用途を挙げています。ここを一つの豪華な住宅とだけ見ると、集まっていた人々の仕事が見えなくなります。",
+      "incorrectExplanationJa": "王族の私的な休暇だけを支える場所でも、行政の仕事を外へ切り離した市場でもありません。公式説明は行政・宗教儀礼・地域の娯楽を挙げています。住まいだけでなく、多様な人の活動を支えた場所です。",
+      "sources": [
+        {
+          "publisher": "The City Palace Museum Jaipur",
+          "title": "The City Palace Museum Jaipur",
+          "url": "https://citypalace.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "公式サイトは王族の住居に加えて、宗教儀礼、community entertainment、政治行政の中心としての機能を挙げる。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_jaipur_palace_supported_makers",
+      "questionEn": "Why are painters and other skilled makers part of the City Palace's history?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The palace first supported artists when it became a museum."
+        },
+        {
+          "id": "B",
+          "textEn": "Earlier rulers collected finished objects but did not order new work."
+        },
+        {
+          "id": "C",
+          "textEn": "The court supported many arts and commissioned objects."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "skilled",
+          "meaning": "熟練した"
+        },
+        {
+          "word": "commissioned",
+          "meaning": "制作を依頼した"
+        },
+        {
+          "word": "order",
+          "meaning": "ここでは、制作を注文する・依頼する"
+        }
+      ],
+      "hintJa": "豪華な品の持ち主と、それを作った人は同じとは限りません。制作を支える仕組みに注目します。",
+      "correctExplanationJa": "宮廷は多くの芸術・工芸を支援し、作品を収集するだけでなく制作も依頼しました。王の名前だけを追うのではなく、注文を受けて働いた作り手の存在にも目を向けられます。",
+      "incorrectExplanationJa": "芸術への支援が博物館になって初めて始まったのでも、支配者たちが完成品を集めるだけだったのでもありません。公式サイトは、宮廷の芸術支援と、歴代の支配者による収集・制作依頼を説明しています。",
+      "sources": [
+        {
+          "publisher": "The City Palace Museum Jaipur",
+          "title": "The City Palace Museum Jaipur",
+          "url": "https://citypalace.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "公式サイトは宮廷が36を超える芸術形態を支援したとし、歴代の支配者が品々を収集・制作依頼したことを説明する。問題では数の暗記は求めない。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_jaipur_palace_museum_purpose",
+      "questionEn": "According to the museum's description, why does it display objects collected and commissioned by earlier rulers?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "To show royal wealth without exploring the cultural setting of the objects."
+        },
+        {
+          "id": "B",
+          "textEn": "To share the region's culture and traditions through its collections."
+        },
+        {
+          "id": "C",
+          "textEn": "To document royal family life without showing the region's wider traditions."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "collections",
+          "meaning": "所蔵品、収集品"
+        },
+        {
+          "word": "region",
+          "meaning": "地域"
+        },
+        {
+          "word": "cultural setting",
+          "meaning": "文化的な背景"
+        }
+      ],
+      "hintJa": "品物が作られ、集められた背景を知ると、誰の暮らしや技術が見えてくるでしょうか。",
+      "correctExplanationJa": "博物館は、所蔵品を通じて地域の文化や伝統を伝えます。かつて特定の人のために作られたものが、今は来訪者の学びの入口になっています。個々の品の来歴は、それぞれの資料で確認する必要があります。",
+      "incorrectExplanationJa": "富の大きさだけを見せたり、王家の暮らしを地域の伝統から切り離したりする説明ではありません。博物館は、所蔵品が地域の文化と伝統を映し出すものだと紹介しています。",
+      "sources": [
+        {
+          "publisher": "The City Palace Museum Jaipur",
+          "title": "The City Palace Museum Jaipur",
+          "url": "https://citypalace.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "公式サイト冒頭は、歴代の支配者が収集・制作依頼した建築や収蔵品が地域の文化的・伝統的な根を反映すると説明する。"
+        }
+      ],
+      "difficulty": "medium"
+    }
+  ]
+}

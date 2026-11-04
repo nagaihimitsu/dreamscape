@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 1,
+  "id": "gt_delhi_finale_quiz",
+  "landmarkId": null,
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "gt_delhi_finale_inside_the_walls",
+      "questionEn": "A film shows only the walls of the Red Fort. Which detail would reveal something about life inside?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The channel connecting the private palace rooms."
+        },
+        {
+          "id": "B",
+          "textEn": "The height of the outer defensive walls."
+        },
+        {
+          "id": "C",
+          "textEn": "The positions of the gates through the outer wall."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "reveal",
+          "meaning": "明らかにする"
+        },
+        {
+          "word": "detail",
+          "meaning": "細部"
+        },
+        {
+          "word": "life inside",
+          "meaning": "内側での暮らし"
+        }
+      ],
+      "hintJa": "外壁の大きさや門の位置から離れ、宮殿の居室をつないだものを思い出そう。",
+      "correctExplanationJa": "居室を結ぶ水路を加えると、要塞の内側にあった宮廷の暮らしへ視点が移ります。守る壁だけが、この場所の特徴ではありません。",
+      "incorrectExplanationJa": "手がかりは宮殿の水路です。城壁だけの映像に、内側で過ごす場所の構成を加えられます。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "Red Fort Complex",
+          "url": "https://whc.unesco.org/en/list/231/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "Nahr-i-Behishtが宮殿の私的な居室をつなぐ。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_delhi_finale_low_tower",
+      "questionEn": "Which caption avoids mistaking the unfinished Alai Minar for a deliberately small tower?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A small tower completed exactly as its builder planned."
+        },
+        {
+          "id": "B",
+          "textEn": "The first storey of a tower intended to be much larger."
+        },
+        {
+          "id": "C",
+          "textEn": "The base left after a completed tower was damaged."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "caption",
+          "meaning": "写真などの説明文"
+        },
+        {
+          "word": "deliberately",
+          "meaning": "意図して"
+        },
+        {
+          "word": "intended",
+          "meaning": "予定された"
+        }
+      ],
+      "hintJa": "完成したものの高さと、計画していた高さは別々に考えよう。",
+      "correctExplanationJa": "大きな計画の第一層が残っています。現在の姿を撮った映像に、未完という背景を添えると、小さい塔に見えたものの印象が変わります。",
+      "incorrectExplanationJa": "完成した小さな塔ではなく、もっと大きく造る計画の第一層です。見えない上部を勝手に復元せず、計画と現状を分けて説明できます。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "Qutb Minar and its Monuments, Delhi",
+          "url": "https://whc.unesco.org/en/list/233/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "二倍の規模を目指したアラーイー・ミナールは第一層までで未完に終わった。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_delhi_finale_garden_meaning",
+      "questionEn": "Which caption adds the historical meaning of the water channels in Humayun's garden-tomb?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The channels divided the ground for rival armies."
+        },
+        {
+          "id": "B",
+          "textEn": "The channels marked the borders of four trading cities."
+        },
+        {
+          "id": "C",
+          "textEn": "The garden design recalls the rivers of paradise."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "historical",
+          "meaning": "歴史的な"
+        },
+        {
+          "word": "recalls",
+          "meaning": "思い起こさせる"
+        },
+        {
+          "word": "borders",
+          "meaning": "境界"
+        }
+      ],
+      "hintJa": "この場所では、庭の水の流れが宗教的なイメージにもつながっている。",
+      "correctExplanationJa": "楽園の川のイメージが庭の構成に重なります。「きれいな庭」に一言添えることで、なぜ墓の周りにこの形が選ばれたかも伝えられます。",
+      "incorrectExplanationJa": "四分庭園と水路は楽園の川に結び付けられます。軍隊や交易都市の境界を表したものではありません。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "Humayun’s Tomb, Delhi",
+          "url": "https://whc.unesco.org/en/list/232/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "庭園の四分構成と水路はクルアーンに描かれる楽園の川を表す。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_delhi_finale_mosque_today",
+      "questionEn": "Which caption correctly describes the Jama Masjid today?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A historic mosque where people still worship."
+        },
+        {
+          "id": "B",
+          "textEn": "A former mosque now used only for royal ceremonies."
+        },
+        {
+          "id": "C",
+          "textEn": "A royal residence later turned into a museum."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "worship",
+          "meaning": "礼拝する"
+        },
+        {
+          "word": "permanently",
+          "meaning": "永久に"
+        },
+        {
+          "word": "historic",
+          "meaning": "歴史ある"
+        }
+      ],
+      "hintJa": "昔の姿を伝える建物であり、今を生きる人の場所でもある。",
+      "correctExplanationJa": "歴史的なモスクであり、現在も人々が祈る場所です。映像で紹介するときも、見学者以外の人々が使う場だと伝えられます。",
+      "incorrectExplanationJa": "礼拝が続くモスクです。過去の皇帝の話と、現在の人々による使い方の両方が、この場所の説明になります。",
+      "sources": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Jama Masjid",
+          "url": "https://delhitourism.gov.in/tourist_place/jama_masjid.html",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "現在も礼拝者向けの入場が案内され、礼拝に使用されている。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_delhi_finale_next_city",
+      "questionEn": "Which link can help visitors compare Humayun's Tomb with the Taj Mahal in Agra?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The same emperor commissioned both monuments."
+        },
+        {
+          "id": "B",
+          "textEn": "The earlier garden-tomb helped shape the tradition of the later monument."
+        },
+        {
+          "id": "C",
+          "textEn": "The same team completed both monuments in one building project."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "compare",
+          "meaning": "比べる"
+        },
+        {
+          "word": "earlier",
+          "meaning": "より早い時期の"
+        },
+        {
+          "word": "helped shape",
+          "meaning": "形作る一助となった"
+        }
+      ],
+      "hintJa": "デリーで見た庭園墓から、後のアーグラへ。影響が伝わる時間の向きを考えよう。",
+      "correctExplanationJa": "フマユーン廟の庭園墓の伝統は、後のタージ・マハルへとつながります。次の街で何を比べたいか、一つ持って出発できます。",
+      "incorrectExplanationJa": "先にできたフマユーン廟から、後のタージ・マハルへ影響が続きます。そっくりな建物だと決めつけず、庭と廟の関わりを見比べる手がかりにしましょう。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "Humayun’s Tomb, Delhi",
+          "url": "https://whc.unesco.org/en/list/232/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "フマユーン廟は後のタージ・マハルへと至る建築的革新の出発点となった。"
+        }
+      ],
+      "difficulty": "hard"
+    }
+  ],
+  "scope": "city_finale",
+  "cityId": "delhi"
+}

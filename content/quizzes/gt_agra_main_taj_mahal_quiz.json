@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "gt_agra_main_taj_mahal_quiz",
+  "landmarkId": "agra_taj_mahal",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "gt_agra_taj_garden_position",
+      "questionEn": "Where did the designers place the Taj Mahal mausoleum within its main garden?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "At the exact centre, with equal garden space on every side."
+        },
+        {
+          "id": "B",
+          "textEn": "At one end, with the garden stretching out in front of it."
+        },
+        {
+          "id": "C",
+          "textEn": "Beside the entrance gate, with the garden hidden behind it."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "designers",
+          "meaning": "設計者たち"
+        },
+        {
+          "word": "mausoleum",
+          "meaning": "墓廟"
+        },
+        {
+          "word": "stretching out",
+          "meaning": "広がっている"
+        }
+      ],
+      "hintJa": "正面の門から建物まで歩く場面を思い浮かべよう。建物の手前には、どのくらい庭が広がっているだろう。",
+      "correctExplanationJa": "墓廟は主庭園の中央ではなく、一端に置かれています。手前に長く広がる庭が、近づいていく眺めに奥行きを生みます。",
+      "incorrectExplanationJa": "中央に見える正面写真でも、庭の中央に建っているとは限りません。タージの墓廟は主庭園の一端にあり、庭がその前に広がります。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "Taj Mahal — Outstanding Universal Value",
+          "url": "https://whc.unesco.org/en/list/252/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "墓廟を四分庭園の中央ではなく一端に配置し、遠くからの眺めに奥行きを加えたと説明。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_agra_taj_cenotaphs",
+      "questionEn": "The decorated cenotaphs stand in the main hall. Where are the actual graves?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "In the garden beside the main entrance."
+        },
+        {
+          "id": "B",
+          "textEn": "Inside the bases of the four minarets."
+        },
+        {
+          "id": "C",
+          "textEn": "In a lower burial chamber."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "cenotaphs",
+          "meaning": "遺体を納めない記念棺"
+        },
+        {
+          "word": "actual",
+          "meaning": "実際の"
+        },
+        {
+          "word": "burial chamber",
+          "meaning": "埋葬室"
+        }
+      ],
+      "hintJa": "見える記念碑と、実際に埋葬されている場所は同じとは限らない。建物には上下の空間がある。",
+      "correctExplanationJa": "上の主室にあるのは記念棺で、実際の埋葬場所はその下です。写真に写るものと、そこが記念しているものを分けて見ると、内部の意味が変わります。",
+      "incorrectExplanationJa": "庭や塔の下ではなく、下の埋葬室です。上で目にする装飾された記念棺を、遺体を納めた墓そのものと取り違えないようにします。",
+      "sources": [
+        {
+          "publisher": "Uttar Pradesh Tourism",
+          "title": "The Taj Interiors — The Tomb; The Screen and the Cenotaphs",
+          "url": "https://www.tajmahal.gov.in/the-taj-interiors.aspx",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "主室の記念棺と下階の実際の埋葬を区別している。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_agra_taj_later_cenotaph",
+      "questionEn": "Why does Shah Jahan's cenotaph stand beside the central cenotaph of Mumtaz Mahal?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "His cenotaph was added later beside hers."
+        },
+        {
+          "id": "B",
+          "textEn": "Her cenotaph was moved there from a garden pavilion."
+        },
+        {
+          "id": "C",
+          "textEn": "Both cenotaphs were originally placed outside the hall."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "beside",
+          "meaning": "〜の隣に"
+        },
+        {
+          "word": "added",
+          "meaning": "加えられた"
+        },
+        {
+          "word": "originally",
+          "meaning": "もともとは"
+        }
+      ],
+      "hintJa": "最初から二人分を同時に置いたのか、それぞれの生涯の終わりを経て増えたのかを考えよう。",
+      "correctExplanationJa": "中央の妃の記念棺に対し、皇帝の記念棺は後から隣に加えられました。整った配置の中にも、異なる時に亡くなった二人の時間が残っています。",
+      "incorrectExplanationJa": "妃の記念棺を移したという説明ではありません。中央にある妃のものの隣に、後年、皇帝の記念棺が加えられました。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "Taj Mahal — Outstanding Universal Value",
+          "url": "https://whc.unesco.org/en/list/252/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ムムターズの記念棺は主室中央、シャー・ジャハーンのものは三十年以上後にその西側へ追加された。"
+        }
+      ],
+      "difficulty": "medium"
+    }
+  ]
+}

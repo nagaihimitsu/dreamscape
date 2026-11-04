@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import destinationsData from "../../content/romance/date_destinations.json";
 import { dateDestinationsSchema } from "./date-destinations";
-import { getCityContent, presentation } from "./index";
+import { dates, getCityContent, presentation, stories } from "./index";
 
-describe("Indian date destinations awaiting story content", () => {
+describe("authored Indian date destinations", () => {
   it.each(["delhi", "agra", "jaipur"])("registers six independently sourced locations in %s", (cityId) => {
     const destinations = dateDestinationsSchema.parse(destinationsData).destinations.filter((item) => item.cityId === cityId);
     const { travel } = getCityContent(cityId);
@@ -15,7 +15,13 @@ describe("Indian date destinations awaiting story content", () => {
       expect(place?.backgroundAssetId).toBe(destination.backgroundAssetId);
       expect(presentation.backgrounds[destination.backgroundAssetId]).toBeDefined();
       expect(destination.facts.length).toBeGreaterThan(0);
-      expect(travel.events.some((event) => event.placeId === place?.id && event.category === "date" && event.contentStatus === "pending_content")).toBe(true);
+      const event = travel.events.find((event) => event.placeId === place?.id && event.category === "date");
+      expect(event).toBeDefined();
+      expect(event?.contentStatus).toBeUndefined();
+      const date = dates.find((date) => date.id === event?.id);
+      expect(date?.destinationId).toBe(destination.id);
+      expect(date?.chapterId).toBe(cityId);
+      expect(date && stories[date.storyId]).toBeDefined();
     }
   });
 });

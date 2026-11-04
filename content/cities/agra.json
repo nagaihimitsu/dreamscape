@@ -15,5 +15,6 @@
     "agra_fatehpur_sikri",
     "agra_itimad_tomb"
   ],
-  "productionStatus": "prototype"
+  "productionStatus": "complete",
+  "arrivalStoryId": "arrivals/agra"
 }

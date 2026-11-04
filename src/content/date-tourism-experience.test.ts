@@ -78,8 +78,8 @@ describe("tourism in normal dates", () => {
     expect(nextScene).toMatch(/肯定も否定もしていない/);
   });
 
-  it("includes a local observation in spoken dialogue on every path in the new scripts", () => {
-    const normalDates = content.dates.filter((date) => date.kind === "normal" && !date.legacyOnly);
+  it("includes a local observation in spoken dialogue on every path in the Milan scripts", () => {
+    const normalDates = content.dates.filter((date) => date.chapterId === "milano" && date.kind === "normal" && !date.legacyOnly);
     expect(Object.keys(currentPlaceDetails)).toHaveLength(normalDates.length);
     const tones = ["reserved", "strained", "comfortable", "guarded_attraction", "warm", "romantic_tension"];
     for (const [dateId, detail] of Object.entries(currentPlaceDetails)) {

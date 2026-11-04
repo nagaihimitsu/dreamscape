@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 1,
+  "id": "gt_jaipur_finale_quiz",
+  "landmarkId": null,
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "gt_jaipur_finale_amber_courtyards",
+      "questionEn": "A film shows Amber's courtyards one after another. Which caption best describes the palace layout?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A single open camp with no separate living areas."
+        },
+        {
+          "id": "B",
+          "textEn": "Four identical rooms used only for storing weapons."
+        },
+        {
+          "id": "C",
+          "textEn": "Several courtyard sections containing different parts of palace life."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "caption",
+          "meaning": "字幕、説明文"
+        },
+        {
+          "word": "layout",
+          "meaning": "配置、構成"
+        },
+        {
+          "word": "sections",
+          "meaning": "区画、部分"
+        }
+      ],
+      "hintJa": "中庭を一つ見たら、すべてを見たことになるでしょうか。各区画を、そこで行われたことと結び付けます。",
+      "correctExplanationJa": "アンベールは、それぞれ中庭を持つ複数の区画から構成されます。宮殿内には居住区や庭園などがあり、一つの広場や武器庫だけでは説明できません。映像でも区画を切り替えると、違う使われ方を見せられます。",
+      "incorrectExplanationJa": "一つの野営地や、四つの同じ武器庫ではありません。中庭を持つ区画がつながり、その中に宮殿の暮らしの異なる部分が含まれています。",
+      "sources": [
+        {
+          "publisher": "Ministry of Tourism, Government of India",
+          "title": "Explore the Amber Fort in Jaipur",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/amber-fort",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "政府観光案内は中庭を持つ四つの主要区画と、居住区や王の庭園などの構成を説明する。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_jaipur_finale_hawa_two_views",
+      "questionEn": "A film cuts from Hawa Mahal's street to a view through its screens. What difference should the caption explain?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Women inside could watch the street while remaining hidden from view."
+        },
+        {
+          "id": "B",
+          "textEn": "People in the street could watch every room without obstruction."
+        },
+        {
+          "id": "C",
+          "textEn": "The screens stopped people inside from seeing any street activity."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "screens",
+          "meaning": "ここでは、格子"
+        },
+        {
+          "word": "remaining",
+          "meaning": "ある状態のままでいること"
+        },
+        {
+          "word": "obstruction",
+          "meaning": "視界などを遮るもの"
+        }
+      ],
+      "hintJa": "同じ窓でも、通りから見る場合と、内側から見る場合では、誰の姿が見えるかが変わります。",
+      "correctExplanationJa": "内側の女性は、街路から姿を見られずに外の様子を見られました。外観の美しさに加えて、この視線の違いを説明すると、そこで暮らした人の立場が伝わります。",
+      "incorrectExplanationJa": "どの部屋も丸見えにしたのでも、内側から外を一切見えなくしたのでもありません。格子は、姿を隠して外を眺めるという目的を助けました。",
+      "sources": [
+        {
+          "publisher": "Ministry of Tourism, Government of India",
+          "title": "Discovering Hawa Mahal's Architectural Splendor",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "宮廷女性が格子越しに街路の様子を見ながら、外からは姿を見られずにいられる構成だったと説明する。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_jaipur_finale_palace_makers",
+      "questionEn": "A film about the City Palace's historic collections has introduced the rulers who ordered new works. Whose role should it show next to explain how those works were produced?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The officials who valued the finished objects for the rulers."
+        },
+        {
+          "id": "B",
+          "textEn": "The artists and skilled makers supported by the court."
+        },
+        {
+          "id": "C",
+          "textEn": "The modern museum staff who arranged the original objects for display."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "historic collections",
+          "meaning": "歴史ある所蔵品"
+        },
+        {
+          "word": "supported",
+          "meaning": "支援された"
+        },
+        {
+          "word": "makers",
+          "meaning": "作り手"
+        }
+      ],
+      "hintJa": "品を集める人や制作を依頼する人がいたなら、その依頼に技で応えた人もいたはずです。",
+      "correctExplanationJa": "宮廷に支えられた芸術家や作り手です。公式サイトは、多様な芸術への支援と歴代の収集・制作依頼を示しています。支配者だけでなく、品々を作る仕事も宮殿の歴史を形作りました。",
+      "incorrectExplanationJa": "完成品の価値を評価する仕事や、後世に展示する仕事だけでは、当時の作品がどう生まれたかを説明できません。宮廷に支えられた芸術家や熟練した作り手の仕事が、その制作に関わっています。",
+      "sources": [
+        {
+          "publisher": "The City Palace Museum Jaipur",
+          "title": "The City Palace Museum Jaipur",
+          "url": "https://citypalace.org/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "宮廷の芸術支援と、支配者による収集・制作依頼を公式サイトが説明する。これは作り手の仕事も含めるという解説の根拠となる。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_jaipur_finale_jantar_stone_tool",
+      "questionEn": "A fixed stone structure fills the screen at Jantar Mantar. Which caption identifies its purpose?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A stage built to display goods brought back by an army."
+        },
+        {
+          "id": "B",
+          "textEn": "A closed storehouse built to keep the royal grain supply."
+        },
+        {
+          "id": "C",
+          "textEn": "An instrument for observing positions in the sky without a telescope."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "fixed",
+          "meaning": "固定された"
+        },
+        {
+          "word": "structure",
+          "meaning": "構造物"
+        },
+        {
+          "word": "telescope",
+          "meaning": "望遠鏡"
+        }
+      ],
+      "hintJa": "ここは観測所です。建築物ほど大きくても、その形が人の目による観測を助けます。",
+      "correctExplanationJa": "肉眼で天体の位置を観測する装置です。UNESCOが説明する固定式の大きな器具は、単なる背景の建物ではありません。用途を添えると、同じ映像の形が観測の道具として見えてきます。",
+      "incorrectExplanationJa": "戦利品の展示台や穀物庫ではありません。ジャンタル・マンタルの主要な石造装置は、肉眼による天体位置の観測のために設計されました。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "The Jantar Mantar, Jaipur — Outstanding Universal Value",
+          "url": "https://whc.unesco.org/en/list/1338",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "UNESCOは固定式の石造装置群を、肉眼で天体の位置を観測するための器具として説明する。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_jaipur_finale_shared_sky",
+      "questionEn": "The final shot returns to Jaipur's observatory. Which historical idea fits this place?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Different scientific traditions met here while studying the same sky."
+        },
+        {
+          "id": "B",
+          "textEn": "The study of the sky began here without any earlier knowledge."
+        },
+        {
+          "id": "C",
+          "textEn": "Its observations had no connection with ideas from other cultures."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "observatory",
+          "meaning": "観測所、天文台"
+        },
+        {
+          "word": "scientific",
+          "meaning": "科学の"
+        },
+        {
+          "word": "earlier",
+          "meaning": "それ以前の"
+        }
+      ],
+      "hintJa": "この観測所は、長く受け継がれた天文学の中にあります。知識がどのように届いたかを思い出しましょう。",
+      "correctExplanationJa": "UNESCOは、異なる科学文化が交わった場所と評価しています。これが天文学の始まりだという意味ではありません。空を見上げる映像に、その空を調べてきた多くの人々の知識を重ねられます。",
+      "incorrectExplanationJa": "天文学が何もないところからここで始まったのでも、ほかの文化と無関係だったのでもありません。複数の文明に受け継がれた知識が、この観測所につながっています。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "The Jantar Mantar, Jaipur — Outstanding Universal Value",
+          "url": "https://whc.unesco.org/en/list/1338",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "UNESCOは複数文明に共有された天文学の伝統と、異なる科学文化の出会いの場であった点を評価する。"
+        }
+      ],
+      "difficulty": "medium"
+    }
+  ],
+  "scope": "city_finale",
+  "cityId": "jaipur"
+}

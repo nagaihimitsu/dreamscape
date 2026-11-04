@@ -102,6 +102,13 @@ describe("four-city Uzbekistan handoff with test-only scenarios", () => {
       expect(state.completedCityIds).toEqual(cityIds.slice(0, index + 1));
       if (index === cityIds.length - 1) {
         expect(getNextCity(state)).toBeUndefined();
+        state = advanceCompletedJourneyCity(state, state.revision);
+        expect(state.activeEpilogue).not.toBeNull();
+        for (let step = 0; state.activeEpilogue; step++) {
+          expect(step).toBeLessThan(100);
+          state = advanceCityEpilogue(state, state.revision);
+        }
+        expect(state.viewedEpilogueCityIds).toContain(cityId);
         expect(advanceCompletedJourneyCity(state, state.revision)).toBe(state);
         expect(departToNextCity(state, state.revision)).toBe(state);
         expect(saveGame(slot, state, saved).ok).toBe(true);
@@ -155,11 +162,18 @@ describe("four-city Uzbekistan handoff with test-only scenarios", () => {
     expect(validateGameState(state)).toEqual(state);
   }, 120_000);
 
-  it("stays in the completed city while its successor is unfinished", () => {
-    const state = completeCity(createGame("旅人", "相手", { journeyId: "uzbekistan" }));
+  it("reads the ending and stays in the completed city while its successor is unfinished", () => {
+    let state = completeCity(createGame("旅人", "相手", { journeyId: "uzbekistan" }));
     getCityContent("samarkand").city.productionStatus = "prototype";
     expect(getNextCity(state)).toBeUndefined();
+    state = advanceCompletedJourneyCity(state, state.revision);
+    expect(state.activeEpilogue).not.toBeNull();
+    for (let step = 0; state.activeEpilogue; step++) {
+      expect(step).toBeLessThan(100);
+      state = advanceCityEpilogue(state, state.revision);
+    }
     expect(advanceCompletedJourneyCity(state, state.revision)).toBe(state);
+    expect(state.currentCityId).toBe("tashkent");
   }, 120_000);
 
   it.each(cityIds)("opens each test scene in %s Debug with its own currency balance", (cityId) => {

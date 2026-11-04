@@ -74,7 +74,8 @@ describe("Uzbekistan scenario-ready foundation", () => {
     const uzbekistan = journeyStorage(base, "uzbekistan");
     const milanState = createGame("ミラノ", "ミラノの相手");
     expect(saveGame(milan, milanState).ok).toBe(true);
-    expect(saveJourneyDraft(india, "インド", "インドの相手").ok).toBe(true);
+    const indiaState = createGame("インド", "インドの相手", { journeyId: "golden_triangle" });
+    expect(saveGame(india, indiaState).ok).toBe(true);
     const originalMilan = milan.getItem(SAVE_KEY);
     const originalIndia = india.getItem(SAVE_KEY);
     expect(saveJourneyDraft(uzbekistan, "ウズベキスタン", "新しい相手").ok).toBe(true);
@@ -90,12 +91,14 @@ describe("Uzbekistan scenario-ready foundation", () => {
     expect(milan.getItem(SAVE_KEY)).toBe(originalMilan);
     expect(india.getItem(SAVE_KEY)).toBe(originalIndia);
     expect(loadGame(milan)).toEqual({ status: "loaded", state: milanState });
+    expect(loadGame(india)).toEqual({ status: "loaded", state: indiaState });
     for (const [slot, note] of [[milan, "milan"], [india, "india"], [uzbekistan, "uzbekistan"]] as const) slot.setItem(LEARNING_KEY, note);
     expect([milan, india, uzbekistan].map((slot) => slot.getItem(LEARNING_KEY))).toEqual(["milan", "india", "uzbekistan"]);
     // A valid preparation copied into a different journey slot is still invalid.
     india.setItem(SAVE_KEY, loaded.raw);
     expect(loadJourneyDraft(india)).toMatchObject({ status: "invalid", raw: loaded.raw });
     expect(saveJourneyDraft(india, "再作成", "禁止").ok).toBe(false);
+    expect(saveGame(india, indiaState).ok).toBe(false);
     expect(india.getItem(SAVE_KEY)).toBe(loaded.raw);
     uzbekistan.setItem(SAVE_KEY, "{broken");
     expect(loadJourneyDraft(uzbekistan)).toMatchObject({ status: "invalid", raw: "{broken" });

@@ -1,0 +1,68 @@
+{
+  "checkedAt": "2026-11-04",
+  "sources": [
+    {
+      "publisher": "Rajasthan Tourism",
+      "title": "Amber Palace",
+      "url": "https://www.tourism.rajasthan.gov.in/amber-palace.html",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "中庭を持つ四区画、ジャレーブ・チョークで帰還軍が戦利品を示したこと、居住区・庭・寺院、ジャイガル城との地下通路の存在。現行の通行可否は物語の行動に使わない。"
+    },
+    {
+      "publisher": "India Ministry of Tourism",
+      "title": "Discovering Hawa Mahal’s Architectural Splendor",
+      "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "宮廷女性が姿を見られずに街路を眺めるための格子、小窓による通風、背後側の入口という記述のみ採用。同ページの無基礎世界一・王族訪問の記述は採用しない。"
+    },
+    {
+      "publisher": "The City Palace Museum Jaipur",
+      "title": "City Palace Museum Jaipur",
+      "url": "https://citypalace.org/",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "住まい、行政、儀礼、共同の娯楽、芸術への支援という複数の用途。歴代の収集・制作依頼品を博物館が紹介している。"
+    },
+    {
+      "publisher": "UNESCO",
+      "title": "The Jantar Mantar, Jaipur",
+      "url": "https://whc.unesco.org/en/list/1338",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "18世紀前半の天文観測所。約20の固定式装置と肉眼による天体位置観測。複数文化の知識が交わり、科学、王権、社会・宗教との関連も評価される。"
+    },
+    {
+      "publisher": "Jaipur Municipal Corporation",
+      "title": "Main Markets in Jaipur: Johari Bazaar",
+      "url": "https://jaipurmc.org/Presentation/Aboutjaipur/MainMarket.aspx",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "ジョーハリー・バザールは宝飾品や工芸品を扱う市場。店舗の人物・商品・会話は創作。"
+    },
+    {
+      "publisher": "India Ministry of Tourism",
+      "title": "Discovering Panna Meena ka Kund’s Hidden Oasis",
+      "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/panna-meena-ka-kund",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "アンベールにある階段井戸と幾何学的な段の構成。脚本では周縁見学だけを行い、内部へ降りない。"
+    },
+    {
+      "publisher": "Rajasthan Tourism",
+      "title": "Jaipur: Albert Hall Museum (Central Museum)",
+      "url": "https://www.tourism.rajasthan.gov.in/jaipur.html",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "州観光局のアルバート・ホール紹介は、金属工芸、木工、絨毯、複数の流派による細密画の収蔵展示を案内している。脚本ではこの分類のみを用い、特定作品の名前や描かれた人物・歴史は創作していない。"
+    }
+  ],
+  "existingSources": [
+    "authoring/drafts/golden-triangle/observation-cards.json: Jaipur全観察カード(2026-11-03確認記録を保持)",
+    "content/romance/date_destinations.json: Jaipur全6行き先のfacts",
+    "authoring/research/golden-triangle-followup-20261103/venues.json: JalMahal湖岸見学/PannaMeena内部制限"
+  ],
+  "fictionJa": "人物、個別の会話、当日の動作・天候・見え方、小さな旅行映像上映会は創作。映像は文章内の物語上の行為で、実際の動画アセットや公的催事を指さない。所持金を伴う買い物や実地での通行許可の保証はしない。",
+  "albertHallAccessNoteJa": "2026-11-04、検索サービスが返した州観光局ページの該当節全文で収蔵分類を確認。直接openはタイムアウト、HTTP取得は503で、ページ全体の直接閲覧はできなかった。現地での個別作品の展示状況は確認していない。"
+}

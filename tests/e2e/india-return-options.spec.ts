@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { saved, startNewGame } from "./helpers";
+import { installIndiaTransportPreview } from "./india-preview-helpers";
 
 test("the real Agra map offers both direct and cheaper connected taxi returns", async ({ page }, testInfo) => {
   test.setTimeout(120_000);
@@ -7,6 +8,7 @@ test("the real Agra map offers both direct and cheaper connected taxi returns", 
   await startNewGame(page);
   const original = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   await page.goto("/?debug");
+  await installIndiaTransportPreview(page);
   const options = await page.evaluate(async () => {
     const contentPath = "/src/content/index.ts";
     const routePath = "/src/domain/travel-routes.ts";
@@ -68,7 +70,10 @@ test("the ordinary return dialog charges the selected direct or connected route"
     return JSON.stringify(state);
   });
   const install = () => page.evaluate(async () => {
-    const contentPath = "/src/content/index.ts";
+    // Keep route edits in the page's Vite module instance after a hot update.
+    const contentPath = performance.getEntriesByType("resource").map((entry) => entry.name)
+      .filter((url) => new URL(url).pathname === "/src/content/index.ts").at(-1);
+    if (!contentPath) throw new Error("The page's city registry has not loaded.");
     const { getCityContent } = await import(/* @vite-ignore */ contentPath);
     const routes = getCityContent("milano").travel.routes;
     const saved = [...routes];
@@ -109,24 +114,18 @@ test("the ordinary return dialog charges the selected direct or connected route"
   expect((await saved(page)).travelBudget).toBe(0);
 });
 
-// The actual India story is not yet playable; use a fictional in-memory
-// city to exercise the shared production dialogs without touching saves.
+// Render the real India game in memory so ordinary dialogs are verified
+// independently of the player's persistent journey slots.
 test("India travel and overnight dialogs identify the game fare as the total for two", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 740 });
   await page.goto("/?debug");
   const original = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   await page.evaluate(async () => {
-    const fixturePath = "/src/domain/multi-city-test-fixture.ts";
-    const journeyPath = "/src/content/journeys.ts";
-    const contentPath = "/src/content/index.ts";
     const gamePath = "/src/domain/game.ts";
     const persistencePath = "/src/persistence/index.ts";
     const reactPath = "/node_modules/.vite/deps/react.js";
     const domPath = "/node_modules/.vite/deps/react-dom_client.js";
     const appPath = "/src/app/App.tsx";
-    const { installIndiaTestCities } = await import(/* @vite-ignore */ fixturePath);
-    const { journeys } = await import(/* @vite-ignore */ journeyPath);
-    const { getCityContent } = await import(/* @vite-ignore */ contentPath);
     const { createGame } = await import(/* @vite-ignore */ gamePath);
     const { saveGame } = await import(/* @vite-ignore */ persistencePath);
     const reactModule = await import(/* @vite-ignore */ reactPath);
@@ -134,19 +133,12 @@ test("India travel and overnight dialogs identify the game fare as the total for
     const React = reactModule.default ?? reactModule;
     const createRoot = domModule.createRoot ?? domModule.default?.createRoot;
     const { default: App } = await import(/* @vite-ignore */ appPath);
-    installIndiaTestCities();
-    journeys.find((item: { id: string }) => item.id === "golden_triangle")!.status = "available";
-    const routes = getCityContent("delhi").travel.routes;
-    const walk = routes.find((r: { fromPlaceId: string; toPlaceId: string; mode: string }) =>
-      r.fromPlaceId === "delhi_hotel" && r.toPlaceId === "delhi_place" && r.mode === "walk");
-    if (!walk) throw new Error("Missing fixture route");
-    routes.push({ ...walk, mode: "taxi", cost: 10 });
     const state = createGame("主人公", "ヒロイン", { journeyId: "golden_triangle" });
     const values = new Map<string, string>();
     const storage = { getItem: (key: string) => values.get(key) ?? null,
       setItem: (key: string, value: string) => { values.set(key, value); },
       removeItem: (key: string) => { values.delete(key); } };
-    if (!saveGame(storage, state).ok) throw new Error("Could not save fictional India state");
+    if (!saveGame(storage, state).ok) throw new Error("Could not save real India state");
     const host = document.createElement("div");
     document.getElementById("root")!.style.display = "none";
     document.body.append(host);
@@ -156,8 +148,8 @@ test("India travel and overnight dialogs identify the game fare as the total for
   const sleep = page.getByRole("dialog", { name: "滞在先で休む" });
   await expect(sleep).toContainText("移動料金は2人分のゲーム内の目安です。");
   await sleep.getByRole("button", { name: "閉じる", exact: true }).click();
-  await page.getByTestId("travel-place-delhi_place").getByRole("button").click();
-  const episode = page.getByTestId("travel-event-delhi_episode");
+  await page.getByTestId("travel-place-delhi_red_fort").getByRole("button").click();
+  const episode = page.getByTestId("travel-event-gt_delhi_main_red_fort");
   if (await episode.isVisible()) await episode.click();
   const travel = page.getByRole("dialog", { name: /へ$/ });
   await expect(travel).toContainText("料金は2人分です。");

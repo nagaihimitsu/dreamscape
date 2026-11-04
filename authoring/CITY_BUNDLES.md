@@ -28,9 +28,11 @@ npm run city:bundle -- apply artifacts/city-work/india-delhi.json
 
 書き出し先には `content/` と `public/` の外を指定してください。既存のファイルは上書きされないため、再度書き出すときは別のファイル名を指定します。
 
-現在の8都市のIDは `milano`、`delhi`、`agra`、`jaipur`、`tashkent`、`samarkand`、`bukhara`、`khiva` です。例えばミラノは `npm run city:bundle -- export milano artifacts/city-work/italy-milano.json` のように書き出します。ミラノには既存の観光地と観察ポイントも含まれ、インド３都市は今後制作する分の欄が空になっています。
+現在の8都市のIDは `milano`、`delhi`、`agra`、`jaipur`、`tashkent`、`samarkand`、`bukhara`、`khiva` です。例えばミラノは `npm run city:bundle -- export milano artifacts/city-work/italy-milano.json` のように書き出します。ミラノとインド3都市には登録済みの観光地と観察ポイントも含まれます。ウズベキスタン4都市は制作基盤の状態で、脚本やクイズの登録は別途必要です。
 
 書き出してから `content/` や `public/` のいずれか、インド編の観察カードや公共交通の調査台帳が変更された場合、他都市の変更や画像の追加も含め、古い作業コピーの反映は拒否されます。その場合は、画像・元データを準備したうえで、別名へ再度 `export` し、編集した項目を新しいコピーへ移してください。新しいコピーの `baseFingerprint` は移し替えず、そのまま残します。`baseFingerprint` は競合検出に使うため、手で変更しないでください。都市IDや公開状態もこの操作では変更できません。
+
+都市の到着会話を付ける場合は、都市定義の `arrivalStoryId` に登録済みInkのIDを指定します。ロゴに使う都市名も同じ都市定義から表示します。本文の作り方は [旅行編の制作手順](JOURNEY_AUTHORING.md#都市に到着したときの会話) を参照してください。
 
 ## 新しい都市を作る
 
@@ -116,7 +118,7 @@ npm run city:bundle -- apply artifacts/city-work/sample-city.json
 - インド編には既存の[制作補助](india-scaffold/README.md)と[完成確認・公開手順](drafts/golden-triangle/RELEASE_GATE.md)があります。シナリオ・クイズとそのメタデータ・訳を用意したうえで、生成・検証できます。特殊戦B・Cは現行の制作補助では自動設定されず、別途制作・登録が必要です。
 - 都市や旅行編を公開可能にする判断と検証は、この編集操作とは別です。未完成の都市が本番でプレイ可能と表示されないよう、制作状態を維持します。
 
-調査資料として残すファイルと、現在のゲームに反映済みの値は一致しないことがあります。特に `authoring/drafts/golden-triangle/` は古い研究由来の生成ドラフトで、現在の交通や入場料の正本ではありません。編集用コピーの代わりにそのドラフトを本番データへ上書きしないでください。
+調査資料として残すファイルと、現在のゲームに反映済みの値は一致しないことがあります。特に `authoring/drafts/golden-triangle/cities/` と `travel/` は古い研究由来の生成ドラフトで、現在の交通や入場料の正本ではありません。編集用コピーの代わりにそのドラフトを本番データへ上書きしないでください。同じ旅行編の `scenario/` には今回の脚本・クイズの制作記録を置き、実行用Inkの正本は `content/stories/` にまとめています。
 
 ## ウズベキスタン4都市
 

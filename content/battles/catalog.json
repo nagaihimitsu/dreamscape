@@ -254,6 +254,333 @@
         "successScene": "evidence_success",
         "failureScene": "evidence_failure"
       }
+    },
+    {
+      "id": "gt_delhi_main_red_fort_battle",
+      "titleJa": "広場ばかりの城",
+      "descriptionJa": "レッド・フォートで、友達と遊ぶ盤面を作るターラーに出会う。",
+      "landmarkId": "delhi_red_fort",
+      "enemyNameJa": "ターラー",
+      "enemyTitleJa": "盤面を作る旅行好き",
+      "enemyDescriptionJa": "友人と遊ぶゲームを考えている。守る壁は描けたが、中身を全部広場にしてしまった。",
+      "storyId": "battles/gt_delhi_main_red_fort",
+      "quizId": "gt_delhi_main_red_fort_quiz",
+      "backgroundAssetId": "gt_bg_delhi_red_fort",
+      "portrait": "abstract",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2"
+        ],
+        "outro": "outro"
+      }
+    },
+    {
+      "id": "gt_delhi_main_qutb_minar_battle",
+      "titleJa": "空まで撮れた",
+      "descriptionJa": "クトゥブ・ミナールの撮影失敗をきっかけに、描きかけの絵と未完の塔を見る。",
+      "landmarkId": "delhi_qutb_minar",
+      "enemyNameJa": "デーヴ",
+      "enemyTitleJa": "描きかけを持つ青年",
+      "enemyDescriptionJa": "塔を紙に収め損ねた絵描き。完成だけでなく、途中で残ったものも面白がる。",
+      "storyId": "battles/gt_delhi_main_qutb_minar",
+      "quizId": "gt_delhi_main_qutb_minar_quiz",
+      "backgroundAssetId": "gt_bg_delhi_qutb_minar",
+      "portrait": "abstract",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2"
+        ],
+        "outro": "outro"
+      }
+    },
+    {
+      "id": "gt_delhi_main_humayun_tomb_battle",
+      "titleJa": "写真の向こうへ歩く",
+      "descriptionJa": "フマユーン廟で、祖母へ写真を見せたいサイラと庭の話を探す。",
+      "landmarkId": "delhi_humayun_tomb",
+      "enemyNameJa": "サイラ",
+      "enemyTitleJa": "祖母へ写真を届ける人",
+      "enemyDescriptionJa": "見たものを大切な人へ伝えたい。説明を借りるだけでなく、自分の感想も添えたいと思っている。",
+      "storyId": "battles/gt_delhi_main_humayun_tomb",
+      "quizId": "gt_delhi_main_humayun_tomb_quiz",
+      "backgroundAssetId": "gt_bg_delhi_humayun_tomb",
+      "portrait": "abstract",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2"
+        ],
+        "outro": "outro"
+      }
+    },
+    {
+      "id": "gt_delhi_main_jama_masjid_battle",
+      "titleJa": "一枚貸して、三枚話す",
+      "descriptionJa": "ジャーマー・マスジドで、弟に貸す写真を選んでいるイムランの練習に付き合う。",
+      "landmarkId": "delhi_jama_masjid",
+      "enemyNameJa": "イムラン",
+      "enemyTitleJa": "弟に試される兄",
+      "enemyDescriptionJa": "自分の写真を弟の宿題に貸す。以前花の名前を全部ごまかしたことを、まだ弟に覚えられている。",
+      "storyId": "battles/gt_delhi_main_jama_masjid",
+      "quizId": "gt_delhi_main_jama_masjid_quiz",
+      "backgroundAssetId": "gt_bg_delhi_jama_masjid",
+      "portrait": "abstract",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2"
+        ],
+        "outro": "outro"
+      }
+    },
+    {
+      "id": "gt_delhi_finale_battle",
+      "titleJa": "三分間の旅への招待",
+      "descriptionJa": "レッド・フォートで、映像好きのニールと五枚の写真をめくる。",
+      "landmarkId": null,
+      "scope": "city_finale",
+      "cityId": "delhi",
+      "enemyNameJa": "ニール",
+      "enemyTitleJa": "旅の映像を集める人",
+      "enemyDescriptionJa": "人を誘うのが好きで、編集は少しせっかち。旅先で撮った映像を持ち寄る、仲間内の小さな上映会へ二人を誘う。",
+      "storyId": "battles/gt_delhi_finale",
+      "quizId": "gt_delhi_finale_quiz",
+      "backgroundAssetId": "gt_bg_delhi_red_fort",
+      "portrait": "abstract",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2",
+          "after_3",
+          "after_4"
+        ],
+        "outro": "outro"
+      }
+    },
+    {
+      "id": "gt_agra_main_taj_mahal_battle",
+      "titleJa": "タージ・マハル――一枚に入らないもの",
+      "descriptionJa": "母に送る写真を選べない図案家ファリド。整った眺めの奥にある配置と、お墓の仕組みを確かめる。",
+      "landmarkId": "agra_taj_mahal",
+      "enemyNameJa": "ファリド",
+      "enemyTitleJa": "休みの日も端をそろえる図案家",
+      "enemyDescriptionJa": "母に送る写真の切り取り位置で悩む、アーグラの図案家。自分の細かさを笑えるが、最後の一枚がなかなか決まらない。",
+      "storyId": "battles/gt_agra_main_taj_mahal",
+      "quizId": "gt_agra_main_taj_mahal_quiz",
+      "backgroundAssetId": "gt_bg_agra_taj_mahal",
+      "portrait": "abstract",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2"
+        ],
+        "outro": "outro"
+      }
+    },
+    {
+      "id": "gt_agra_main_agra_fort_battle",
+      "titleJa": "アーグラ城――四コマでは足りない",
+      "descriptionJa": "甥に見せる四コマ漫画を描くアディ。赤と白の建物や、城の仕事、窓の先の眺めを描くうち、予定の枠からはみ出していく。",
+      "landmarkId": "agra_agra_fort",
+      "enemyNameJa": "アディ",
+      "enemyTitleJa": "水休憩の一コマを譲らない建築学生",
+      "enemyDescriptionJa": "アーグラで建築を学ぶ青年。甥へ見学の話を伝える四コマ漫画を描いているが、見せたい場面が増え、予定の枠には収まらなくなる。",
+      "storyId": "battles/gt_agra_main_agra_fort",
+      "quizId": "gt_agra_main_agra_fort_quiz",
+      "backgroundAssetId": "gt_bg_agra_agra_fort",
+      "portrait": "abstract",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2"
+        ],
+        "outro": "outro"
+      }
+    },
+    {
+      "id": "gt_agra_main_itimad_tomb_battle",
+      "titleJa": "イティマード・ウッダウラ廟――少し太った花",
+      "descriptionJa": "服の仕立てを仕事にするアミナは、白い廟の花模様を描いている。造営した娘の思いと、石が作る色や光を見つめる。",
+      "landmarkId": "agra_itimad_tomb",
+      "enemyNameJa": "アミナ",
+      "enemyTitleJa": "自分の服の模様を描く仕立て屋",
+      "enemyDescriptionJa": "仕事を離れた日は、自分の好きな意匠を描いている女性。率直で乾いた冗談を言い、自分用の服を作る時間も大切にする。",
+      "storyId": "battles/gt_agra_main_itimad_tomb",
+      "quizId": "gt_agra_main_itimad_tomb_quiz",
+      "backgroundAssetId": "gt_bg_agra_itimad_tomb",
+      "portrait": "abstract",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2"
+        ],
+        "outro": "outro"
+      }
+    },
+    {
+      "id": "gt_agra_main_fatehpur_sikri_battle",
+      "titleJa": "ファテープル・シークリー――休憩もある案内図",
+      "descriptionJa": "家族を案内する下見に来たキラン。大きなお城という説明から、さまざまな営みのある街へと、案内を作り直す。",
+      "landmarkId": "agra_fatehpur_sikri",
+      "enemyNameJa": "キラン",
+      "enemyTitleJa": "見どころを詰め込みがちな案内役",
+      "enemyDescriptionJa": "家族を案内するため、地元の名所を下見する女性。興味が広く予定を詰め込みがちだが、妹の率直な指摘も笑って受け止める。",
+      "storyId": "battles/gt_agra_main_fatehpur_sikri",
+      "quizId": "gt_agra_main_fatehpur_sikri_quiz",
+      "backgroundAssetId": "gt_bg_agra_fatehpur_sikri",
+      "portrait": "abstract",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2"
+        ],
+        "outro": "outro"
+      }
+    },
+    {
+      "id": "gt_agra_finale_battle",
+      "titleJa": "アーグラ・フィナーレ――ここは残したい",
+      "descriptionJa": "写真好きのサナが、三分の映像に編集案を出す。滑らかな仕上がりにうなずいた彼女は、消しかけた数秒で指を止めた。",
+      "landmarkId": null,
+      "scope": "city_finale",
+      "cityId": "agra",
+      "enemyNameJa": "サナ",
+      "enemyTitleJa": "構図には厳しく、好みは押しつけない写真好き",
+      "enemyDescriptionJa": "ニールの知人で、アーグラを撮り歩く女性。編集の提案は速く率直だが、相手が自分で決めることを大切にする。",
+      "storyId": "battles/gt_agra_finale",
+      "quizId": "gt_agra_finale_quiz",
+      "backgroundAssetId": "gt_bg_agra_agra_fort",
+      "portrait": "abstract",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2",
+          "after_3",
+          "after_4"
+        ],
+        "outro": "outro"
+      }
+    },
+    {
+      "id": "gt_jaipur_main_amber_fort_battle",
+      "titleJa": "大きな城の、小さな案内役",
+      "descriptionJa": "アンベール城で、甥に送る写真を選びかねている元運転手に出会う。",
+      "landmarkId": "jaipur_amber_fort",
+      "enemyNameJa": "ハリッシュ",
+      "enemyTitleJa": "甥への便りを選ぶ元運転手",
+      "enemyDescriptionJa": "荷物の準備は周到なのに、写真を選ぶのは苦手。地元の城へ来ると、つい歩く距離が延びる。架空の人物。",
+      "storyId": "battles/gt_jaipur_main_amber_fort",
+      "quizId": "gt_jaipur_main_amber_fort_quiz",
+      "backgroundAssetId": "gt_bg_jaipur_amber_fort",
+      "portrait": "abstract",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2"
+        ],
+        "outro": "outro"
+      }
+    },
+    {
+      "id": "gt_jaipur_main_hawa_mahal_battle",
+      "titleJa": "描きたいのは、窓の向こう",
+      "descriptionJa": "ハワー・マハルを描く学生のスケッチには、窓だけがまだ描かれていない。",
+      "landmarkId": "jaipur_hawa_mahal",
+      "enemyNameJa": "イーシャ",
+      "enemyTitleJa": "窓を後回しにする美術学生",
+      "enemyDescriptionJa": "大きい紙を持ち歩くのに、描き始めはいつも小さい。見えていないものまで断言するのは嫌い。架空の人物。",
+      "storyId": "battles/gt_jaipur_main_hawa_mahal",
+      "quizId": "gt_jaipur_main_hawa_mahal_quiz",
+      "backgroundAssetId": "gt_bg_jaipur_hawa_mahal",
+      "portrait": "abstract",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2"
+        ],
+        "outro": "outro"
+      }
+    },
+    {
+      "id": "gt_jaipur_main_city_palace_battle",
+      "titleJa": "父の説明、娘の発見",
+      "descriptionJa": "シティ・パレスで、仕立て屋の父娘がそれぞれ別のものに見入っている。",
+      "landmarkId": "jaipur_city_palace",
+      "enemyNameJa": "ヴィクラム",
+      "enemyTitleJa": "話し出すと手も動く仕立て屋",
+      "enemyDescriptionJa": "娘と休日の博物館へ来た。作り手の話になると長いが、自分の知らないことは娘にも教わる。架空の人物。",
+      "storyId": "battles/gt_jaipur_main_city_palace",
+      "quizId": "gt_jaipur_main_city_palace_quiz",
+      "backgroundAssetId": "gt_bg_jaipur_city_palace",
+      "portrait": "abstract",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2"
+        ],
+        "outro": "outro"
+      }
+    },
+    {
+      "id": "gt_jaipur_main_jantar_mantar_battle",
+      "titleJa": "時計屋の、時計を見ない時間",
+      "descriptionJa": "ジャンタル・マンタルで出会った時計修理屋は、今日は腕時計を止めてきたという。",
+      "landmarkId": "jaipur_jantar_mantar",
+      "enemyNameJa": "ディーペン",
+      "enemyTitleJa": "休日の時計修理屋",
+      "enemyDescriptionJa": "話しながら無意識に腕時計を確かめる。自分の仕事よりはるかに大きい観測器を前に、子どものように楽しむ。架空の人物。",
+      "storyId": "battles/gt_jaipur_main_jantar_mantar",
+      "quizId": "gt_jaipur_main_jantar_mantar_quiz",
+      "backgroundAssetId": "gt_bg_jaipur_jantar_mantar",
+      "portrait": "abstract",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2"
+        ],
+        "outro": "outro"
+      }
+    },
+    {
+      "id": "gt_jaipur_finale_battle",
+      "titleJa": "上映前、最後の五問",
+      "descriptionJa": "ジャンタル・マンタルで上映役のラヴィと合流。三分間の旅を人に見せる前に、街の話を確かめる。",
+      "landmarkId": null,
+      "scope": "city_finale",
+      "cityId": "jaipur",
+      "enemyNameJa": "ラヴィ",
+      "enemyTitleJa": "時計に細かい、小さな上映会の世話役",
+      "enemyDescriptionJa": "ニールの友人。人の話を聞くのが好きで、自分が話すと少し大げさ。仲間内の旅行映像の会を開く。架空の人物・企画。",
+      "storyId": "battles/gt_jaipur_finale",
+      "quizId": "gt_jaipur_finale_quiz",
+      "backgroundAssetId": "gt_bg_jaipur_jantar_mantar",
+      "portrait": "abstract",
+      "scenes": {
+        "intro": "intro",
+        "afterRounds": [
+          "after_1",
+          "after_2",
+          "after_3",
+          "after_4"
+        ],
+        "outro": "outro"
+      }
     }
   ]
 }

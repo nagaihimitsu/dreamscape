@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "gt_agra_main_fatehpur_sikri_quiz",
+  "landmarkId": "agra_fatehpur_sikri",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "gt_agra_fatehpur_short_capital",
+      "questionEn": "What is surprising about Fatehpur Sikri despite the size of its royal buildings?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "It served as the Mughal capital for only a short period."
+        },
+        {
+          "id": "B",
+          "textEn": "It remained the Mughal capital until the empire ended."
+        },
+        {
+          "id": "C",
+          "textEn": "It was built as a palace but never used by an emperor."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "despite",
+          "meaning": "〜にもかかわらず"
+        },
+        {
+          "word": "served as",
+          "meaning": "〜として使われた"
+        },
+        {
+          "word": "period",
+          "meaning": "期間"
+        }
+      ],
+      "hintJa": "大きな建物を残すことと、その場所で長く統治を続けることは別。宮廷は後にラホールへ移った。",
+      "correctExplanationJa": "壮大な街ですが、首都だったのは十数年ほどです。建物の大きさだけで、そこで政治が行われた期間の長さは決められません。",
+      "incorrectExplanationJa": "実際に皇帝と宮廷が暮らした首都でしたが、その役割は長く続きませんでした。見事な建物が残ることと、首都であり続けることは別です。",
+      "sources": [
+        {
+          "publisher": "Archaeological Survey of India, Agra Circle",
+          "title": "Fatehpur Sikri",
+          "url": "https://www.asiagracircle.in/fateh-pur.html",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アクバルが居住地と宮廷をアーグラからシークリーに移し、1572年から1585年まで滞在したと記載。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_agra_fatehpur_working_city",
+      "questionEn": "Which description best shows who lived and worked in Fatehpur Sikri?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Only the emperor and his family lived inside the city."
+        },
+        {
+          "id": "B",
+          "textEn": "The court, soldiers and servants had living and working spaces there."
+        },
+        {
+          "id": "C",
+          "textEn": "Only visiting pilgrims stayed there; no one worked for the court."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "servants",
+          "meaning": "使用人たち"
+        },
+        {
+          "word": "court",
+          "meaning": "ここでは、宮廷とそこに属する人々"
+        },
+        {
+          "word": "pilgrims",
+          "meaning": "巡礼者たち"
+        }
+      ],
+      "hintJa": "一つの宮殿だけでは、街として暮らせない。行政や礼拝、働く人の住まいを含めて見てみよう。",
+      "correctExplanationJa": "宮殿だけでなく、行政や礼拝の建物、宮廷・兵士・使用人たちの生活空間がありました。皇帝一人の舞台ではなく、多くの仕事が支える都市です。",
+      "incorrectExplanationJa": "皇帝の家族だけの住まいではありません。行政、礼拝、居住などの空間があり、さまざまな役割の人が暮らしていました。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "Fatehpur Sikri — Outstanding Universal Value",
+          "url": "https://whc.unesco.org/en/list/255/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "行政・居住・宗教の建物と、宮廷、軍、皇帝の使用人のための生活空間を持つ計画都市と説明。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_agra_fatehpur_after_move",
+      "questionEn": "What happened after the Mughal court moved from Fatehpur Sikri to Lahore?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Every royal building was immediately taken apart."
+        },
+        {
+          "id": "B",
+          "textEn": "All later emperors were forbidden to enter the city."
+        },
+        {
+          "id": "C",
+          "textEn": "Mughal emperors still used the city for temporary visits."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "temporary",
+          "meaning": "一時的な"
+        },
+        {
+          "word": "forbidden",
+          "meaning": "禁じられた"
+        },
+        {
+          "word": "taken apart",
+          "meaning": "解体された"
+        }
+      ],
+      "hintJa": "首都の役割が移ることは、その街との関係がすべて切れることと同じだろうか。",
+      "correctExplanationJa": "首都移転後も、皇帝の一時的な訪問先として使われました。「首都でなくなった」からといって、その日から誰も来なかったと決めることはできません。",
+      "incorrectExplanationJa": "直ちに全建物が解体されたわけでも、皇帝の入場が禁止されたわけでもありません。首都の役割を終えてからも、皇帝たちの訪問はありました。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "Fatehpur Sikri — Outstanding Universal Value",
+          "url": "https://whc.unesco.org/en/list/255/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ラホール遷都後もムガール皇帝たちが一時的に訪れる場所として残ったと記載。"
+        }
+      ],
+      "difficulty": "medium"
+    }
+  ]
+}

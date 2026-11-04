@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "cityId": "delhi",
+  "status": "scenario_contract",
+  "notesJa": [
+    "通常戦は3問、フィナーレは5問。各after_Nはその番号の回答結果直後。outroは最終問直後。",
+    "設問の具体的な英文・選択肢は別ファイルで制作。史実自体を問うが下記の丸暗記を必須にせず、資料から推理できる問題にする。"
+  ],
+  "normal": {
+    "gt_delhi_main_red_fort": [
+      {
+        "round": 1,
+        "correctFactJa": "レッド・フォートは新都シャージャハーナーバードの中心となる皇帝の宮殿要塞。防衛施設だけではなく居住の場。",
+        "factIds": [
+          "fact_delhi_red_fort_01"
+        ]
+      },
+      {
+        "round": 2,
+        "correctFactJa": "ナフル・イ・ベヒシュトは宮殿の私的居室をつないでいた水路。",
+        "factIds": [
+          "fact_delhi_red_fort_02"
+        ]
+      },
+      {
+        "round": 3,
+        "correctFactJa": "ムガル宮殿から英軍の施設へ、そして独立を祝う場所へと役割が変化した。",
+        "factIds": [
+          "fact_delhi_red_fort_03"
+        ]
+      }
+    ],
+    "gt_delhi_main_qutb_minar": [
+      {
+        "round": 1,
+        "correctFactJa": "未完のアラーイー・ミナールはクトゥブ・ミナールの二倍の規模を目指した。",
+        "factIds": [
+          "fact_delhi_qutb_minar_01"
+        ]
+      },
+      {
+        "round": 2,
+        "correctFactJa": "アラーイー門に刻まれた碑文から完成年代1311年が分かる。問う主眼は年号暗記ではなく記録が証拠になること。",
+        "factIds": [
+          "fact_delhi_qutb_minar_02"
+        ]
+      },
+      {
+        "round": 3,
+        "correctFactJa": "クトゥブ・ミナールは一人が完成させて以後一切変わっていない塔ではなく、後代の増築や修理の記録がある。",
+        "sources": [
+          {
+            "publisher": "Delhi Tourism",
+            "title": "Qutab Minar",
+            "url": "https://delhitourism.gov.in/tourist_place/qutab_minar.html",
+            "checkedAt": "2026-11-04",
+            "claimType": "documented_fact",
+            "claimJa": "塔に記された碑文から後代の修理が分かり、アイバクが建て始めた塔には後継者による増築もある。"
+          }
+        ]
+      }
+    ],
+    "gt_delhi_main_humayun_tomb": [
+      {
+        "round": 1,
+        "correctFactJa": "チャハルバーグの水路は楽園の川を表す構成に結び付く。",
+        "factIds": [
+          "fact_delhi_humayun_tomb_03"
+        ]
+      },
+      {
+        "round": 2,
+        "correctFactJa": "庭園墓群には皇帝一人だけでなく多くのムガル皇族の墓がある。人数暗記を主眼にしない。",
+        "factIds": [
+          "fact_delhi_humayun_tomb_02"
+        ]
+      },
+      {
+        "round": 3,
+        "correctFactJa": "フマユーン廟の庭園墓は後のタージ・マハルに影響した。",
+        "factIds": [
+          "fact_delhi_humayun_tomb_01"
+        ]
+      }
+    ],
+    "gt_delhi_main_jama_masjid": [
+      {
+        "round": 1,
+        "correctFactJa": "シャー・ジャハーンはジャーマー・マスジド、レッド・フォート、タージ・マハルを造った皇帝。",
+        "factIds": [
+          "fact_delhi_jama_masjid_01"
+        ]
+      },
+      {
+        "round": 2,
+        "correctFactJa": "東の入口はもともと王と宮廷の人々のために用いられ、北・南の入口より大きい。門の造りから人の立場を読む。",
+        "sources": [
+          {
+            "publisher": "Archnet",
+            "title": "Jami Masjid, Delhi",
+            "url": "https://www.archnet.org/sites/1571",
+            "checkedAt": "2026-11-04",
+            "claimType": "documented_fact",
+            "claimJa": "東側の入口は王と宮廷の人々のための入口で、三層。北・南の入口は二層。"
+          }
+        ]
+      },
+      {
+        "round": 3,
+        "correctFactJa": "今も礼拝に訪れる人がおり、観光客の入場時間と礼拝者の時間が別に案内されている。過去だけの展示物ではない。",
+        "sources": [
+          {
+            "publisher": "Delhi Tourism",
+            "title": "Jama Masjid",
+            "url": "https://delhitourism.gov.in/tourist_place/jama_masjid.html",
+            "checkedAt": "2026-11-04",
+            "claimType": "documented_fact",
+            "claimJa": "観光客の入場時間と礼拝者の入場時間が別に案内され、現在も礼拝が営まれるモスク。"
+          }
+        ]
+      }
+    ]
+  },
+  "finale": {
+    "id": "gt_delhi_finale",
+    "placeId": "delhi_red_fort",
+    "questions": [
+      {
+        "round": 1,
+        "correctFactJa": "レッド・フォート内部の宮殿の居室を水路がつないだ。外壁の防御だけでは語れない。",
+        "factIds": [
+          "fact_delhi_red_fort_02"
+        ]
+      },
+      {
+        "round": 2,
+        "correctFactJa": "アラーイー・ミナールは巨大化を目指したが第一層までで終わった。現在の低さだけでは計画を判断できない。",
+        "factIds": [
+          "fact_delhi_qutb_minar_01"
+        ]
+      },
+      {
+        "round": 3,
+        "correctFactJa": "フマユーン廟の庭は楽園の川のイメージと結び付く。庭は単に墓へ至る余白ではない。",
+        "factIds": [
+          "fact_delhi_humayun_tomb_03"
+        ]
+      },
+      {
+        "round": 4,
+        "correctFactJa": "ジャーマー・マスジドは現在も礼拝に訪れる人のいる場所。撮影では礼拝や人の動線を尊重する。",
+        "sources": [
+          {
+            "publisher": "Delhi Tourism",
+            "title": "Jama Masjid",
+            "url": "https://delhitourism.gov.in/tourist_place/jama_masjid.html",
+            "checkedAt": "2026-11-04",
+            "claimType": "documented_fact",
+            "claimJa": "観光客の入場時間と礼拝者の入場時間が別に案内され、現在も礼拝が営まれるモスク。"
+          }
+        ]
+      },
+      {
+        "round": 5,
+        "correctFactJa": "フマユーン廟が後のタージ・マハルへ影響し、デリーで見た建築がアーグラを訪ねる視点につながる。",
+        "factIds": [
+          "fact_delhi_humayun_tomb_01"
+        ]
+      }
+    ]
+  }
+}

@@ -33,6 +33,14 @@ const read = (root: string, file: string) => readFileSync(path.join(root, file),
 const readJson = (root: string, file: string) => JSON.parse(read(root, file));
 const writeJson = (root: string, file: string, value: unknown) =>
   writeFileSync(path.join(root, file), `${JSON.stringify(value, null, 2)}\n`);
+// Shared-art fixtures use the current location background for arrivals. An
+// explicit story reference would correctly prevent replacing the hotel's art.
+function useArrivalLocationBackground(root: string, cityId: string) {
+  const city = readJson(root, `content/cities/${cityId}.json`);
+  if (!city.arrivalStoryId) return;
+  const file = `content/stories/${city.arrivalStoryId}.ink`;
+  writeFileSync(path.join(root, file), read(root, file).replace(/^# background:.*\n/gm, ""));
+}
 const fingerprint = inputFingerprint;
 afterEach(() => { for (const root of roots.splice(0)) rmSync(root, { recursive: true, force: true }); });
 
@@ -211,8 +219,9 @@ describe("city editing bundle", () => {
     expect(["content/cities/agra.json", "content/travel/agra.json", "content/travel/agra-settings.json"].map((file) => read(root, file))).toEqual(agraBefore);
     expect(["content/cities/milano.json", "content/travel/milano.json", "content/travel/milano-settings.json"].map((file) => read(root, file))).toEqual(milanBefore);
     const afterReadiness = inspectIndiaReadiness(loadIndiaReadiness(root));
-    expect(afterReadiness.ready).toBe(false);
-    expect(afterReadiness.readyForPromotion).toBe(false);
+    expect(beforeReadiness.ready).toBe(true);
+    expect(afterReadiness.ready).toBe(beforeReadiness.ready);
+    expect(afterReadiness.readyForPromotion).toBe(beforeReadiness.readyForPromotion);
     expect(afterReadiness.cities.map((city) => city.issues.map((issue) => issue.code))).toEqual(beforeReadiness.cities.map((city) => city.issues.map((issue) => issue.code)));
   }, 60_000);
 
@@ -340,7 +349,9 @@ describe("city editing bundle", () => {
       changedPhoto.assets.find((item) => item.id === "gt_img_delhi_qutb_minar")!.path;
     await expect(applyCityBundle(root, changedPhoto, true)).rejects.toThrow();
     expect(fingerprint(root)).toBe(before);
-    const prematureRelease = exportCityBundle(root, "delhi");
+    // The release gate is tested with an actually unfinished journey. India
+    // already has authored stories and must permit ordinary no-op edits.
+    const prematureRelease = exportCityBundle(root, "tashkent");
     prematureRelease.city.productionStatus = "complete";
     await expect(applyCityBundle(root, prematureRelease, true)).rejects.toThrow();
     expect(fingerprint(root)).toBe(before);
@@ -353,6 +364,7 @@ describe("city editing bundle", () => {
 
   it("does not allow editing a background also used by another city", async () => {
     const root = fixture();
+    for (const cityId of ["delhi", "agra"]) useArrivalLocationBackground(root, cityId);
     const agra = readJson(root, "content/travel/agra.json");
     const delhi = readJson(root, "content/travel/delhi.json");
     const sharedId = delhi.places.find((item: { id: string }) => item.id === "delhi_hotel_hub").backgroundAssetId;
@@ -361,12 +373,13 @@ describe("city editing bundle", () => {
     const bundle = exportCityBundle(root, "delhi");
     bundle.backgrounds[sharedId].captionJa = "他都市の共有背景を変更してはならない";
     const before = fingerprint(root);
-    await expect(applyCityBundle(root, bundle, true)).rejects.toThrow();
+    await expect(applyCityBundle(root, bundle, true)).rejects.toThrow(/Cannot change another city's or shared background/);
     expect(fingerprint(root)).toBe(before);
   }, 60_000);
 
   it("lets a city stop using a shared background while preserving the other city's copy", async () => {
     const root = fixture();
+    for (const cityId of ["delhi", "agra"]) useArrivalLocationBackground(root, cityId);
     const agra = readJson(root, "content/travel/agra.json");
     const delhi = readJson(root, "content/travel/delhi.json");
     const sharedId = delhi.places.find((item: { id: string }) => item.id === "delhi_hotel_hub").backgroundAssetId;

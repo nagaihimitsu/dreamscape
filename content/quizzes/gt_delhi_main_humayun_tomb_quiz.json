@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "gt_delhi_main_humayun_tomb_quiz",
+  "landmarkId": "delhi_humayun_tomb",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "gt_delhi_humayun_garden_hope",
+      "questionEn": "What idea is expressed by the garden's four-part layout and water channels at Humayun's Tomb?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A map of the emperor’s four military camps."
+        },
+        {
+          "id": "B",
+          "textEn": "A plan for four separate trading markets."
+        },
+        {
+          "id": "C",
+          "textEn": "The rivers of paradise described in the Quran."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "layout",
+          "meaning": "配置・構成"
+        },
+        {
+          "word": "expressed",
+          "meaning": "表されている"
+        },
+        {
+          "word": "paradise",
+          "meaning": "楽園"
+        }
+      ],
+      "hintJa": "この庭は墓を囲んでいる。ここに眠る人へ向けた願いにも目を向けよう。",
+      "correctExplanationJa": "四分庭園と水路は、クルアーンに描かれる楽園の川のイメージと結び付いています。庭は建物へ歩くための空間であると同時に、意味を持つ構成です。",
+      "incorrectExplanationJa": "軍営や市場の区画ではなく、楽園の川のイメージにつながる庭園です。水路が区切る形そのものにも意味があります。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "Humayun’s Tomb, Delhi",
+          "url": "https://whc.unesco.org/en/list/232/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "チャハルバーグの四分庭園と水路はクルアーンの楽園の四河を表す。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_delhi_humayun_more_than_one",
+      "questionEn": "What would be missing from a description that mentions only Humayun as buried here?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Many other members of the Mughal family are also buried here."
+        },
+        {
+          "id": "B",
+          "textEn": "The building commemorates the emperor, but contains no graves."
+        },
+        {
+          "id": "C",
+          "textEn": "The other graves belong only to people who built the tomb."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "buried",
+          "meaning": "葬られた"
+        },
+        {
+          "word": "mentions",
+          "meaning": "言及する"
+        },
+        {
+          "word": "members",
+          "meaning": "一員・人々"
+        }
+      ],
+      "hintJa": "廟の名前は一人の皇帝を指していても、そこに眠る人が一人とは限らない。",
+      "correctExplanationJa": "フマユーン廟には多くのムガル皇族も葬られています。有名な一人の名から、周囲に重なる人々の歴史へと目を広げられます。",
+      "incorrectExplanationJa": "ここにはフマユーン以外のムガル皇族も葬られています。建物の呼び名と、そこに眠るすべての人々は同じ範囲ではありません。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "Humayun’s Tomb, Delhi",
+          "url": "https://whc.unesco.org/en/list/232/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "フマユーンの庭園墓には150人を超えるムガル皇族が葬られている。人数自体は設問にしない。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_delhi_humayun_future_taj",
+      "questionEn": "Which later monument was influenced by the garden-tomb tradition represented by Humayun's Tomb?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The Qutb Minar in Delhi."
+        },
+        {
+          "id": "B",
+          "textEn": "The Taj Mahal in Agra."
+        },
+        {
+          "id": "C",
+          "textEn": "The Alai Minar in Delhi."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "influenced",
+          "meaning": "影響した"
+        },
+        {
+          "word": "tradition",
+          "meaning": "伝統"
+        },
+        {
+          "word": "represented",
+          "meaning": "表された"
+        }
+      ],
+      "hintJa": "次に訪れるアーグラの、有名な庭園墓へつながる。",
+      "correctExplanationJa": "後のタージ・マハルへとつながります。次の街で白い廟を見るとき、ここで歩いた庭や建物への近づき方を思い出して比べられます。",
+      "incorrectExplanationJa": "タージ・マハルです。デリーで見た庭園墓の工夫が、後のアーグラの建築を眺める手がかりになります。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "Humayun’s Tomb, Delhi",
+          "url": "https://whc.unesco.org/en/list/232/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "フマユーン廟の庭園墓に見られる建築的革新は、後のタージ・マハルに影響した。"
+        }
+      ],
+      "difficulty": "medium"
+    }
+  ]
+}

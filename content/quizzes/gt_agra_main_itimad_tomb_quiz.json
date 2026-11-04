@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "gt_agra_main_itimad_tomb_quiz",
+  "landmarkId": "agra_itimad_tomb",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "gt_agra_itimad_daughters_memorial",
+      "questionEn": "Why did Nur Jahan commission the tomb of Itimad-ud-Daulah?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "To celebrate her husband's coronation."
+        },
+        {
+          "id": "B",
+          "textEn": "To honour her father after his death."
+        },
+        {
+          "id": "C",
+          "textEn": "To prepare a tomb only for herself."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "commission",
+          "meaning": "制作・造営を依頼する"
+        },
+        {
+          "word": "honour",
+          "meaning": "敬意を表する・しのぶ"
+        },
+        {
+          "word": "herself",
+          "meaning": "彼女自身"
+        }
+      ],
+      "hintJa": "皇帝が妃のために建てたタージとは、造営した人の立場が違う。この場所では、皇妃自身が造営主になっている。",
+      "correctExplanationJa": "造営したのは皇妃ヌール・ジャハーンです。父のための墓廟として知られ、父母が葬られています。大きな建築を依頼する側にも、女性の姿があります。",
+      "incorrectExplanationJa": "ここで造営主となったのはヌール・ジャハーンです。タージの妃ムムターズと混同しないようにしましょう。父母を弔う、娘の造営でした。",
+      "sources": [
+        {
+          "publisher": "Archaeological Survey of India, Agra Circle",
+          "title": "Itimad-ud-Daula’s Tomb",
+          "url": "https://www.asiagracircle.in/itmad-ud-daula-tomb.html",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ヌール・ジャハーンが父の墓廟を造営し、中央室に父とその妻の墓があると説明。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_agra_itimad_inlay",
+      "questionEn": "How were the coloured stone patterns on the white marble surface of the tomb made?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "By painting all the colours onto plain marble."
+        },
+        {
+          "id": "B",
+          "textEn": "By hanging coloured cloth over the marble walls."
+        },
+        {
+          "id": "C",
+          "textEn": "By fitting pieces of coloured stone into the marble."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "coloured",
+          "meaning": "色のついた"
+        },
+        {
+          "word": "surface",
+          "meaning": "表面"
+        },
+        {
+          "word": "fitting",
+          "meaning": "ぴったりはめ込むこと"
+        }
+      ],
+      "hintJa": "仕立ての図案のように見えても、布ではない。白い面と色の部分が、別々の石でできていることに注目しよう。",
+      "correctExplanationJa": "色の違う石をはめ込む象嵌です。同じ花でも、絵の具の線ではなく小さな石の組み合わせで輪郭を作ります。廟の内部には絵画装飾もあり、すべてが同じ技法ではありません。",
+      "incorrectExplanationJa": "この問題で取り上げた色石の模様は、絵の具や掛け布ではなく象嵌です。廟に絵画装飾がないという意味ではなく、いま見ている模様の技法を区別します。",
+      "sources": [
+        {
+          "publisher": "Sahapedia / Mehreen Chida-Razvi",
+          "title": "The Mausoleum of Itimad-ud-Daula",
+          "url": "https://www.sahapedia.org/the-mausoleum-of-itimad-ud-daula",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "白大理石の外面に色石をはめ込んだ花や幾何学模様を記載。内部には絵画装飾もあるため、全装飾を象嵌としない。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_agra_itimad_light",
+      "questionEn": "What do the carved openings in the tomb’s stone screens allow into the rooms?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Soft natural light."
+        },
+        {
+          "id": "B",
+          "textEn": "Water from the garden channels."
+        },
+        {
+          "id": "C",
+          "textEn": "Smoke from lamps hidden in the walls."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "carved",
+          "meaning": "彫られた"
+        },
+        {
+          "word": "openings",
+          "meaning": "開口部・穴"
+        },
+        {
+          "word": "screens",
+          "meaning": "ここでは、透かし彫りの仕切り"
+        }
+      ],
+      "hintJa": "厚い壁に何も穴がなかった場合と比べてみよう。昼の外から、穴の形を通って入るものは何だろう。",
+      "correctExplanationJa": "石の格子は、柔らかな自然光を内部に取り込みます。壁をただ閉じるのでなく、彫った模様を光の入口にもしています。",
+      "incorrectExplanationJa": "水や煙を導く穴ではなく、外の光を通す透かしです。石で区切りながら室内へ光を入れられることが、格子の働きの一つです。",
+      "sources": [
+        {
+          "publisher": "Sahapedia / Mehreen Chida-Razvi",
+          "title": "The Mausoleum of Itimad-ud-Daula",
+          "url": "https://www.sahapedia.org/the-mausoleum-of-itimad-ud-daula",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "廟の開口部を覆う彫刻されたjaliと、それが柔らかな自然光を室内に入れる働きを説明。"
+        }
+      ],
+      "difficulty": "medium"
+    }
+  ]
+}

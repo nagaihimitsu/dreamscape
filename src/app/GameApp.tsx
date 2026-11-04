@@ -48,7 +48,7 @@ import { EncounterScreen } from "../features/journey/EncounterScreen";
 import { encounters } from "../content/encounters";
 import { advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterOptionAvailability, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption, encounterStoryCanFinish, proceedFromTourism, continueTourismEncounters } from "../domain/encounter";
 import { EpilogueScreen } from "../features/journey/EpilogueScreen";
-import { startCityEpilogue, advanceCityEpilogue } from "../domain/epilogue";
+import { startCityEpilogue, advanceCityEpilogue, completeArrivalLogo } from "../domain/epilogue";
 import {
   getCurrentEpisode,
   getNextEpisode,
@@ -228,6 +228,8 @@ export function GameApp({
   const weekday = getGameWeekday(game?.travel.calendar);
   const nextCity = game ? getNextCity(game) : undefined;
   const automaticCityJourney = !!game && getJourneyForCity(game.currentCityId)?.cityTransition === "after_epilogue";
+  const canStartCityEpilogue = !!game && !!currentBattle?.cityId && cityNotebook && !nextStoryBattle &&
+    game.completedCityIds.includes(currentBattle.cityId) && !game.viewedEpilogueCityIds.includes(currentBattle.cityId);
   const nameForm = (
     <>
       <label>
@@ -306,7 +308,7 @@ export function GameApp({
       {game && (
         <div className="journey-stage" aria-label="旅の進行">
           <span>
-            {reasoningRule
+            {game.activeEpilogue?.kind === "arrival" ? `${currentCity!.city.nameJa}に到着` : reasoningRule
               ? `${landmarks.find((item) => item.id === currentLandmarkId)?.nameJa} · 特別対決`
               : idle && nextStoryBattle
                 ? nextStoryBattle.titleJa
@@ -319,7 +321,7 @@ export function GameApp({
           </span>
           <span>
             {game.activeEpilogue
-              ? "都市エピローグ"
+              ? game.activeEpilogue.kind === "arrival" ? "旅のはじまり" : "都市エピローグ"
               : game.activeTourism
                 ? game.activeTourism.phase === "guide"
                   ? "観光案内"
@@ -476,11 +478,13 @@ export function GameApp({
           />
         ) : game.activeEpilogue ? (
           <EpilogueScreen
+            key={`${game.currentCityId}:${game.activeEpilogue.kind ?? "ending"}`}
             autoAdvanceEnabled={displaySettings.value.autoAdvance}
             game={game}
             speed={speed}
             reduceMotion={displaySettings.value.reduceMotion}
             onSpeed={setSpeed}
+            onLogoComplete={() => commit((state) => completeArrivalLogo(state, game.revision))}
             onAdvance={() =>
               commit((state) => advanceCityEpilogue(state, game.revision))
             }
@@ -547,9 +551,7 @@ export function GameApp({
             nextStoryBattle={nextStoryBattle ?? undefined}
             onNextStoryBattle={undefined}
             onEpilogue={
-              !nextStoryBattle && cityNotebook &&
-              game.completedCityIds.includes(currentBattle.cityId!) &&
-              !game.viewedEpilogueCityIds.includes(currentBattle.cityId!)
+              canStartCityEpilogue
                 ? () =>
                     commit((state) =>
                       startCityEpilogue(
@@ -560,7 +562,7 @@ export function GameApp({
                     )
                 : undefined
             }
-            onLeave={() => {
+            onLeave={automaticCityJourney && canStartCityEpilogue ? undefined : () => {
               if (commit((state) =>
                 reasoningRule
                   ? leaveBattle(state, game.revision)

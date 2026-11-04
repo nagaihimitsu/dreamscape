@@ -1,14 +1,16 @@
 import { expect, test } from "@playwright/test";
 import { saved, startNewGame } from "./helpers";
+import { installIndiaTransportPreview } from "./india-preview-helpers";
 
-// These are the actual authored city routes, inspected without unlocking an
-// unfinished India story or modifying either journey's persistent save.
-test("India prototype public transport displays and charges the selected party fare", async ({ page }, testInfo) => {
+// Exercise the actual authored routes in a test-only prototype preview.
+// India remains playable in production; this isolates travel from its stories.
+test("India public transport preview displays and charges the selected party fare", async ({ page }, testInfo) => {
   test.setTimeout(120_000);
   await page.setViewportSize({ width: 320, height: 740 });
   await startNewGame(page);
   const originalStorage = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   await page.goto("/?debug");
+  await installIndiaTransportPreview(page);
 
   const cases: ReadonlyArray<{ cityId: string; placeId: string; mode: "rail" | "bus"; label: string; transferNote?: string; returnNote?: string }> = [
     { cityId: "delhi", placeId: "delhi_red_fort", mode: "rail", label: "鉄道・地下鉄" },
@@ -74,6 +76,7 @@ test("Jaipur's car and metro connection charges both travelers and permits a saf
   await startNewGame(page);
   const originalStorage = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   await page.goto("/?debug");
+  await installIndiaTransportPreview(page);
   const routes = await page.evaluate(async () => {
     const path = "/src/content/index.ts";
     const { getCityContent } = await import(/* @vite-ignore */ path);
@@ -138,6 +141,7 @@ test("Agra's metro and car connection charges both travelers and permits a safe 
   await startNewGame(page);
   const originalStorage = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   await page.goto("/?debug");
+  await installIndiaTransportPreview(page);
   const routes = await page.evaluate(async () => {
     const path = "/src/content/index.ts";
     const { getCityContent } = await import(/* @vite-ignore */ path);
@@ -202,6 +206,7 @@ test("Agra's west-to-north bus and car connection charges both travelers and per
   await startNewGame(page);
   const originalStorage = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   await page.goto("/?debug");
+  await installIndiaTransportPreview(page);
   const routes = await page.evaluate(async () => {
     const contentPath = "/src/content/index.ts";
     const routePath = "/src/domain/travel-routes.ts";
@@ -280,6 +285,7 @@ test("Agra Fort to Ram Bagh uses the walk and AG-11 model without changing the n
   await startNewGame(page);
   const originalStorage = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   await page.goto("/?debug");
+  await installIndiaTransportPreview(page);
   const routes = await page.evaluate(async () => {
     const path = "/src/content/index.ts";
     const { getCityContent } = await import(/* @vite-ignore */ path);
@@ -329,13 +335,15 @@ test("Agra Fort to Ram Bagh uses the walk and AG-11 model without changing the n
   expect(await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)))).toEqual(originalStorage);
 });
 
-// India scenes are unfinished; use a Milan test route solely to exercise the
-// shared production dialogs and avoid claiming an India story was played.
+// Use a Milan test route solely to exercise the shared production dialogs.
 test("connection notes appear and can be selected in the shared travel and lodging dialogs", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 740 });
   await startNewGame(page);
   const installTestRoutes = () => page.evaluate(async () => {
-    const contentPath = "/src/content/index.ts";
+    // Keep route edits in the page's Vite module instance after a hot update.
+    const contentPath = performance.getEntriesByType("resource").map((entry) => entry.name)
+      .filter((url) => new URL(url).pathname === "/src/content/index.ts").at(-1);
+    if (!contentPath) throw new Error("The page's city registry has not loaded.");
     const { getCityContent } = await import(/* @vite-ignore */ contentPath);
     const { routes } = getCityContent("milano").travel;
     for (const [fromPlaceId, toPlaceId] of [["p_hotel", "p_duomo"], ["p_duomo", "p_hotel"]]) {
@@ -395,6 +403,7 @@ test("Agra Taj and Ram Bagh connections preserve the party fare and preview save
   await startNewGame(page);
   const originalStorage = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   await page.goto("/?debug");
+  await installIndiaTransportPreview(page);
   const routes = await page.evaluate(async () => {
     const path = "/src/content/index.ts";
     const { getCityContent } = await import(/* @vite-ignore */ path);
@@ -461,6 +470,7 @@ test("Agra Ram Bagh to Guru Ka Taal uses the city bus model and returns safely",
   await startNewGame(page);
   const originalStorage = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   await page.goto("/?debug");
+  await installIndiaTransportPreview(page);
   const routes = await page.evaluate(async () => {
     const path = "/src/content/index.ts";
     const { getCityContent } = await import(/* @vite-ignore */ path);

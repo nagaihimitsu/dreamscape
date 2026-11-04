@@ -1,9 +1,66 @@
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { indiaRequirements, loadIndiaScaffold } from "./india-scaffold";
 import { prepareIndiaRelease } from "./promote-india";
+
+/** Explicit unpublished fixture; this test must not depend on India's release date. */
+function prepareUnpublishedFixture(root: string) {
+  const plans = indiaRequirements(loadIndiaScaffold(root));
+  const cityIds = new Set(plans.map((city) => city.cityId));
+  const eventIds = new Set(plans.flatMap((city) => [...city.main.map((event) => event.eventId), city.finale.eventId]));
+  const dateIds = new Set(plans.flatMap((city) => city.dates.map((event) => event.eventId)));
+  const landmarkIds = new Set(plans.flatMap((city) => city.main.map((event) => event.landmarkId)));
+  const battleIds = new Set(plans.flatMap((city) => [...city.main.map((event) => event.battleId), city.finale.battleId]));
+  const quizIds = new Set(plans.flatMap((city) => [...city.main.map((event) => event.quizId), city.finale.quizId]));
+  const memoryIds = new Set(plans.flatMap((city) => city.dates.map((event) => event.memoryId)));
+  const storyIds = new Set(plans.flatMap((city) => [...city.main.flatMap((event) => [event.guideStoryId, event.battleStoryId]),
+    ...city.dates.map((event) => event.storyId), city.finale.battleStoryId, city.finale.epilogueStoryId]));
+  const edit = (file: string, change: (data: any) => void) => {
+    const target = path.join(root, file);
+    const data = JSON.parse(readFileSync(target, "utf8"));
+    change(data);
+    writeFileSync(target, JSON.stringify(data));
+  };
+  edit("content/journeys/catalog.json", (data) => { data.journeys.find((entry: any) => entry.id === "golden_triangle").status = "preparing"; });
+  for (const city of plans) {
+    edit(`content/cities/${city.cityId}.json`, (data) => {
+      data.productionStatus = "prototype";
+      if (data.arrivalStoryId) storyIds.add(data.arrivalStoryId);
+      delete data.arrivalStoryId;
+    });
+    edit(`content/travel/${city.cityId}.json`, (data) => {
+      data.events = data.events.filter((event: any) => event.id !== city.finale.eventId).map((event: any) => ({ ...event, contentStatus: "pending_content" }));
+      for (const place of data.places) if (place.landmarkIds) place.landmarkIds = place.landmarkIds.filter((id: string) => !landmarkIds.has(id));
+    });
+  }
+  edit("content/progression/journey.json", (data) => {
+    data.episodes = data.episodes.filter((entry: any) => !cityIds.has(entry.cityId));
+    data.rewards = data.rewards.filter((entry: any) => !eventIds.has(entry.episodeId));
+  });
+  edit("content/battles/catalog.json", (data) => { data.battles = data.battles.filter((entry: any) => !battleIds.has(entry.id)); });
+  edit("content/romance/date_catalog.json", (data) => { data.dates = data.dates.filter((entry: any) => !dateIds.has(entry.id)); });
+  edit("content/tourism/catalog.json", (data) => {
+    data.landmarks = data.landmarks.filter((entry: any) => !cityIds.has(entry.cityId));
+    data.clues = data.clues.filter((entry: any) => !landmarkIds.has(entry.landmarkId));
+  });
+  edit("content/romance/effect_catalog.json", (data) => { data.effects = data.effects.filter((entry: any) => !memoryIds.has(entry.memoryId)); });
+  edit("content/romance/presentation.json", (data) => { for (const id of memoryIds) delete data.memories[id]; });
+  for (const file of ["content/presentation/dialogue-expressions.json", "content/presentation/dialogue-reactions.json"])
+    edit(file, (data) => { data.entries = data.entries.filter((entry: any) => !storyIds.has(entry.storyId)); });
+  for (const id of storyIds) rmSync(path.join(root, "content/stories", `${id}.ink`), { force: true });
+  const questionIds = new Set<string>();
+  for (const file of readdirSync(path.join(root, "content/quizzes"))) {
+    if (!file.endsWith(".json")) continue;
+    const target = path.join(root, "content/quizzes", file);
+    const quiz = JSON.parse(readFileSync(target, "utf8"));
+    if (!quizIds.has(quiz.id)) continue;
+    for (const question of quiz.questions) questionIds.add(question.id);
+    rmSync(target);
+  }
+  edit("content/learning/translations.json", (data) => { for (const id of questionIds) delete data.questions[id]; });
+}
 
 // Test-only scripts and questions are copied into a temporary project. They
 // never become production India content and do not claim to describe India.
@@ -17,6 +74,7 @@ describe("India release pipeline", () => {
       const observation = "authoring/drafts/golden-triangle/observation-cards.json";
       mkdirSync(path.dirname(path.join(root, observation)), { recursive: true });
       cpSync(path.join(source, observation), path.join(root, observation));
+      prepareUnpublishedFixture(root);
       const input = loadIndiaScaffold(root);
       const plan = indiaRequirements(input, ["delhi"])[0];
       const read = (file: string) => readFileSync(path.join(source, file), "utf8");

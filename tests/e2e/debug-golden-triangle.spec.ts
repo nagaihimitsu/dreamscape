@@ -1,62 +1,52 @@
 import { expect, test } from "@playwright/test";
 import { startNewGame } from "./helpers";
+import { installIndiaTransportPreview, saveIndependentIndiaGame } from "./india-preview-helpers";
 
-test("the three unfinished cities can be inspected only in Debug without changing either save", async ({ page }) => {
+test("the three authored India cities open real stories in Debug without changing either save", async ({ page }) => {
   test.setTimeout(120_000);
   await page.setViewportSize({ width: 360, height: 780 });
   await startNewGame(page);
   // Give both journeys real, independently created saves before opening Debug.
-  const result = await page.evaluate(async () => {
-    const draftPath = "/src/persistence/journey-preparation.ts";
-    const storagePath = "/src/persistence/journey-storage.ts";
-    const { saveJourneyDraft } = await import(/* @vite-ignore */ draftPath);
-    const { journeyStorage } = await import(/* @vite-ignore */ storagePath);
-    return saveJourneyDraft(journeyStorage(localStorage, "golden_triangle"), "インドの主人公", "インドの相手");
-  });
+  const result = await saveIndependentIndiaGame(page);
   expect(result.ok).toBe(true);
   const original = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   await page.goto("/?debug");
   await expect(page.getByTestId("debug-panel")).toContainText("仮の場面");
-  await page.getByTestId("debug-data-mode").selectOption("fixture");
-  for (const [cityId, cityName] of [["delhi", "デリー"], ["agra", "アーグラ"], ["jaipur", "ジャイプール"]] as const) {
+  for (const [cityId, cityName, landmarkId] of [["delhi", "デリー", "delhi_red_fort"], ["agra", "アーグラ", "agra_taj_mahal"], ["jaipur", "ジャイプール", "jaipur_amber_fort"]] as const) {
     const selector = page.getByTestId("debug-city");
-    await expect(selector.locator(`option[value="${cityId}"]`)).toContainText(`${cityName}（仮データ）`);
+    await expect(selector.locator(`option[value="${cityId}"]`)).toHaveText(cityName);
     await selector.selectOption(cityId);
     await page.getByTestId("debug-scene").selectOption("tourism");
-    await page.getByTestId("debug-target").selectOption(`${cityId}_landmark`);
+    await page.getByTestId("debug-target").selectOption(landmarkId);
     await page.getByRole("button", { name: "この場面を開く" }).click();
     await expect(page.getByTestId("debug-session")).toBeVisible();
     await expect(page.getByTestId("tourism-guide")).toBeVisible();
     await page.getByRole("button", { name: "設定へ戻る" }).click();
     expect(await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)))).toEqual(original);
   }
-  // Returning to real data must restore the actual registered cities, not
-  // leave the fictional Milan-derived registry installed.
-  await page.getByTestId("debug-data-mode").selectOption("real");
+  // Fixture mode only replaces unfinished journeys. India keeps its real
+  // registry while the still-unfinished Uzbekistan journey is inspected.
+  await page.getByTestId("debug-data-mode").selectOption("fixture");
   await page.getByTestId("debug-city").selectOption("delhi");
-  await page.getByRole("button", { name: "地図・交通を確認" }).click();
-  await expect(page.getByTestId("debug-prototype-destination").locator('option[value="delhi_red_fort"]')).toHaveCount(1);
-  await page.getByRole("button", { name: "設定へ戻る" }).click();
+  await expect(page.getByTestId("debug-target").locator('option[value="delhi_red_fort"]')).toHaveCount(1);
+  await expect(page.getByTestId("debug-target").locator('option[value="delhi_landmark"]')).toHaveCount(0);
+  await page.getByTestId("debug-data-mode").selectOption("real");
+  await expect(page.getByTestId("debug-target").locator('option[value="delhi_red_fort"]')).toHaveCount(1);
   expect(await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)))).toEqual(original);
   await page.reload();
   await expect(page.getByTestId("debug-panel")).toBeVisible();
   expect(await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)))).toEqual(original);
 });
 
-test("prototype city maps and transport use actual data in an isolated debug session", async ({ page }) => {
+test("test-only prototype city maps use actual India routes in an isolated debug session", async ({ page }) => {
   test.setTimeout(120_000);
   await page.setViewportSize({ width: 320, height: 740 });
   await startNewGame(page);
-  const result = await page.evaluate(async () => {
-    const draftPath = "/src/persistence/journey-preparation.ts";
-    const storagePath = "/src/persistence/journey-storage.ts";
-    const { saveJourneyDraft } = await import(/* @vite-ignore */ draftPath);
-    const { journeyStorage } = await import(/* @vite-ignore */ storagePath);
-    return saveJourneyDraft(journeyStorage(localStorage, "golden_triangle"), "インドの主人公", "インドの相手");
-  });
+  const result = await saveIndependentIndiaGame(page);
   expect(result.ok).toBe(true);
   const original = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   await page.goto("/?debug");
+  await installIndiaTransportPreview(page);
   for (const [cityId, cityName, placeId] of [
     ["delhi", "デリー", "delhi_red_fort"],
     ["agra", "アーグラ", "agra_taj_mahal"],

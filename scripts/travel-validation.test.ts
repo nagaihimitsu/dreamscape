@@ -17,8 +17,18 @@ import { planTravelEvent } from "../src/domain/travel";
 
 const travel = travelCatalogSchema.parse(travelData);
 const settings = travelSettingsSchema.parse(settingsData);
-const journey = journeySchema.parse(journeyData);
-const dates = dateCatalogSchema.parse(dateData).dates;
+const allJourney = journeySchema.parse(journeyData);
+const episodes = allJourney.episodes.filter((episode) => episode.cityId === travel.cityId);
+const localLandmarks = tourismCatalogSchema.parse(tourismData).landmarks.filter((landmark) => landmark.cityId === travel.cityId);
+const storyBattles = allJourney.storyBattles.filter((entry) => {
+  const battle = battleData.battles.find((battle) => battle.id === entry.battleId);
+  return localLandmarks.some((landmark) => landmark.id === battle?.landmarkId);
+});
+const journey = { ...allJourney, episodes, storyBattles,
+  rewards: allJourney.rewards.filter((rule) => rule.episodeId !== undefined
+    ? episodes.some((episode) => episode.id === rule.episodeId)
+    : storyBattles.some((battle) => battle.battleId === rule.battleId)) };
+const dates = dateCatalogSchema.parse(dateData).dates.filter((date) => date.chapterId === travel.cityId);
 const backgrounds = presentationSchema.parse(presentationData).backgrounds;
 const battles = battleCatalogSchema.parse(battleData).battles;
 const landmarkIds = tourismCatalogSchema.parse(tourismData).landmarks.map((landmark) => landmark.id);

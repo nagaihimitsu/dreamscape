@@ -8,6 +8,7 @@ import { departToNextCity } from "../domain/city-travel";
 import { encounters } from "../content/encounters";
 import { minimumHomeFare } from "../domain/travel-routes";
 import { getJourneyForCity } from "../content/journeys";
+import { advanceCityEpilogue, completeArrivalLogo } from "../domain/epilogue";
 
 export type DebugScene = "tourism" | "battle" | "encounter" | "date";
 export type DebugSettings = {
@@ -33,7 +34,14 @@ function startingCity(cityId: string, visited = new Set<string>()): GameState {
     const completed = completedJourney(previous.id, chain);
     const departed = departToNextCity(completed, completed.revision);
     if (departed.currentCityId !== cityId) throw new Error("前の街から出発できませんでした。");
-    return departed;
+    // Debug opens the requested scene directly, but still settles the welcome
+    // through its real, effect-free transitions rather than deleting a snapshot.
+    let ready = completeArrivalLogo(departed, departed.revision);
+    for (let line = 0; ready.activeEpilogue?.kind === "arrival"; line++) {
+      if (line > 50) throw new Error("到着の会話を完了できませんでした。");
+      ready = advanceCityEpilogue(ready, ready.revision);
+    }
+    return ready;
   }
   const base = createGame();
   const { travelSettings } = getCityContent(cityId);

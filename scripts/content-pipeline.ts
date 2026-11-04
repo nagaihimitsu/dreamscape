@@ -744,6 +744,7 @@ export async function buildContent(root: string, writeOutput = true) {
         battles.some((battle) => battle.storyId === storyId) ||
         tourism.landmarks.some((landmark) => landmark.guideStoryId === storyId) ||
         journey.episodes.some((episode) => episode.epilogueStoryId === storyId) ||
+        cities.some((city) => city.arrivalStoryId === storyId) ||
         reasoningIntros.entries.some((entry) => entry.storyId === storyId) || storyId === learningDetails.storyId)
       throw new Error(`Encounter story is used by another system: ${storyId}`);
     if (stories[storyId]) validateNoInkRandom(stories[storyId]);
@@ -815,6 +816,26 @@ export async function buildContent(root: string, writeOutput = true) {
       { allowPendingContent: isUnpublished, plannedLandmarkIds: current.landmarkIdsPlanned });
   }
   let epilogueScenarios = 0;
+  unique(cities.flatMap((city) => city.arrivalStoryId ? [city.arrivalStoryId] : []), "city arrival story ID");
+  for (const current of cities) {
+    const storyId = current.arrivalStoryId;
+    if (!storyId) continue;
+    if (!journey.episodes.some((episode) => episode.cityId === current.id && episode.kind === "city_finale"))
+      throw new Error(`Arrival city has no finale: ${current.id}`);
+    if (journey.episodes.some((episode) => episode.epilogueStoryId === storyId) ||
+        dates.some((date) => date.storyId === storyId) || battles.some((battle) => battle.storyId === storyId) ||
+        tourism.landmarks.some((landmark) => landmark.guideStoryId === storyId))
+      throw new Error(`Arrival story is used by another system: ${storyId}`);
+    const compiled = stories[storyId];
+    if (!compiled) throw new Error(`Unknown arrival story: ${storyId}`);
+    validateNoInkRandom(compiled);
+    const backgrounds = travels.find(({ city }) => city.id === current.id)!.travel.places.map((place) => place.backgroundAssetId);
+    epilogueScenarios += withContext(`content/stories/${storyId}.ink`, () =>
+      validateEpilogue(compiled, { ...context, backgroundIds: backgrounds }, (text, speaker, explicitEmotion) => {
+        if (!["heroine", "narrator"].includes(speaker)) throw new Error("City arrival cannot speak for the player");
+        observeForStory(storyId)(text, speaker, explicitEmotion);
+      }));
+  }
   for (const episode of journey.episodes) {
     if (!episode.epilogueStoryId) continue;
     const compiled = stories[episode.epilogueStoryId];
@@ -832,6 +853,7 @@ export async function buildContent(root: string, writeOutput = true) {
       !battles.some((battle) => battle.storyId === storyId) &&
       !encounterStoryIds.includes(storyId) &&
       !reasoningIntros.entries.some((entry) => entry.storyId === storyId) &&
+      !cities.some((city) => city.arrivalStoryId === storyId) &&
       !journey.episodes.some(
         (episode) => episode.epilogueStoryId === storyId,
       ) &&

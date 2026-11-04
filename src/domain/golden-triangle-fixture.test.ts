@@ -7,7 +7,7 @@ import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle, selec
 import { departToNextCity, getNextCity } from "./city-travel";
 import { completeRecordedChapter, getNextEpisode, getNextStoryBattle, startEpisode } from "./chapter";
 import { createGame, validateGameState, type GameState } from "./game";
-import { installIndiaTestCities } from "./multi-city-test-fixture";
+import { installTestGoldenTriangle } from "./golden-triangle-test-fixture";
 import { skipTourismGuide, startTourismBattle } from "./tourism";
 import { getTravelEventDefinition, sleepAtHotel, waitForTravel } from "./travel-game";
 
@@ -21,8 +21,8 @@ class MemoryStorage implements StorageLike {
 // The fixture is wholly in memory: amounts, places, stories, and routes are not production data.
 function initialDelhi(): GameState {
   const base = createGame();
-  const hotel = getCityContent("delhi").travelSettings.hotelPlaceId;
-  return validateGameState({ ...base, currentCityId: "delhi", travelBudget: 123,
+  const hotel = getCityContent("test_delhi").travelSettings.hotelPlaceId;
+  return validateGameState({ ...base, currentCityId: "test_delhi", travelBudget: 123,
     travel: { ...base.travel, currentPlaceId: hotel, hotelPlaceId: hotel } });
 }
 
@@ -55,77 +55,77 @@ function finishCity(initial: GameState, onResult?: (state: GameState) => void): 
 
 describe("three-city journey using development-only fixtures", () => {
   let cleanup: () => void;
-  beforeEach(() => { cleanup = installIndiaTestCities(); });
+  beforeEach(() => { cleanup = installTestGoldenTriangle(); });
   afterEach(() => cleanup());
 
   it("starts independently, progresses Delhi → Agra → Jaipur and preserves saved history", () => {
     const initial = initialDelhi();
     expect(initial.completedCityIds).not.toContain("milano");
     expect(getNextCity(initial)).toBeUndefined();
-    expect(getTravelEventDefinition(initial, "delhi_episode")).toBeDefined();
-    expect(getTravelEventDefinition(initial, "agra_episode")).toBeUndefined();
+    expect(getTravelEventDefinition(initial, "test_delhi_episode")).toBeDefined();
+    expect(getTravelEventDefinition(initial, "test_agra_episode")).toBeUndefined();
     expect(getTravelEventDefinition(initial, "milano_duomo_episode")).toBeUndefined();
-    let delhi = finishCity(initial);
+    let test_delhi = finishCity(initial);
     const memory = effects.find((entry) => entry.memoryId)?.memoryId;
     if (!memory) throw new Error("Expected a memory fixture");
-    delhi = validateGameState({ ...delhi, playerName: "主人公", heroineName: "ヒロイン", affection: 3, trust: 2, spark: 1,
-      memories: [memory], completedEncounterIds: [...delhi.completedEncounterIds, "delhi_encounter"], inventory: { delhi_item: "held" } });
-    expect(getNextCity(delhi)?.city.id).toBe("agra");
-    const storage = journeyStorage(new MemoryStorage(), "golden_triangle");
-    expect(saveGame(storage, delhi).ok).toBe(true);
-    expect(loadGame(storage)).toEqual({ status: "loaded", state: delhi });
-    const agra = departToNextCity(delhi, delhi.revision);
-    expect(agra.currentCityId).toBe("agra");
-    expect(agra.travel).toMatchObject({ hotelPlaceId: "agra_hotel", currentPlaceId: "agra_hotel", day: 1, minute: 540 });
-    expect(agra.inventory.delhi_item).toBe("left_behind");
-    expect(agra.completedEncounterIds).toContain("delhi_encounter");
+    test_delhi = validateGameState({ ...test_delhi, playerName: "主人公", heroineName: "ヒロイン", affection: 3, trust: 2, spark: 1,
+      memories: [memory], completedEncounterIds: [...test_delhi.completedEncounterIds, "test_delhi_encounter"], inventory: { test_delhi_item: "held" } });
+    expect(getNextCity(test_delhi)?.city.id).toBe("test_agra");
+    const storage = journeyStorage(new MemoryStorage(), "test_golden_triangle");
+    expect(saveGame(storage, test_delhi).ok).toBe(true);
+    expect(loadGame(storage)).toEqual({ status: "loaded", state: test_delhi });
+    const test_agra = departToNextCity(test_delhi, test_delhi.revision);
+    expect(test_agra.currentCityId).toBe("test_agra");
+    expect(test_agra.travel).toMatchObject({ hotelPlaceId: "test_agra_hotel", currentPlaceId: "test_agra_hotel", day: 1, minute: 540 });
+    expect(test_agra.inventory.test_delhi_item).toBe("left_behind");
+    expect(test_agra.completedEncounterIds).toContain("test_delhi_encounter");
     for (const field of ["playerName", "heroineName", "ap", "pendingApRewards", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds"] as const)
-      expect(agra[field]).toEqual(delhi[field]);
-    expect(departToNextCity(agra, delhi.revision)).toBe(agra);
-    expect(saveGame(storage, agra, delhi).ok).toBe(true);
-    expect(loadGame(storage)).toEqual({ status: "loaded", state: agra });
-    const agraComplete = finishCity(agra);
-    expect(getNextCity(agraComplete)?.city.id).toBe("jaipur");
-    expect(saveGame(storage, agraComplete, agra).ok).toBe(true);
-    expect(loadGame(storage)).toEqual({ status: "loaded", state: agraComplete });
-    const concurrent = journeyStorage(new MemoryStorage(), "golden_triangle");
-    expect(saveGame(concurrent, agraComplete).ok).toBe(true);
-    const otherTab = waitForTravel(agraComplete, 30, agraComplete.revision);
-    expect(otherTab).not.toBe(agraComplete);
-    expect(saveGame(concurrent, otherTab, agraComplete).ok).toBe(true);
-    const jaipur = departToNextCity(agraComplete, agraComplete.revision);
-    expect(saveGame(concurrent, jaipur, agraComplete).ok).toBe(false);
+      expect(test_agra[field]).toEqual(test_delhi[field]);
+    expect(departToNextCity(test_agra, test_delhi.revision)).toBe(test_agra);
+    expect(saveGame(storage, test_agra, test_delhi).ok).toBe(true);
+    expect(loadGame(storage)).toEqual({ status: "loaded", state: test_agra });
+    const test_agraComplete = finishCity(test_agra);
+    expect(getNextCity(test_agraComplete)?.city.id).toBe("test_jaipur");
+    expect(saveGame(storage, test_agraComplete, test_agra).ok).toBe(true);
+    expect(loadGame(storage)).toEqual({ status: "loaded", state: test_agraComplete });
+    const concurrent = journeyStorage(new MemoryStorage(), "test_golden_triangle");
+    expect(saveGame(concurrent, test_agraComplete).ok).toBe(true);
+    const otherTab = waitForTravel(test_agraComplete, 30, test_agraComplete.revision);
+    expect(otherTab).not.toBe(test_agraComplete);
+    expect(saveGame(concurrent, otherTab, test_agraComplete).ok).toBe(true);
+    const test_jaipur = departToNextCity(test_agraComplete, test_agraComplete.revision);
+    expect(saveGame(concurrent, test_jaipur, test_agraComplete).ok).toBe(false);
     expect(loadGame(concurrent)).toEqual({ status: "loaded", state: otherTab });
-    expect(jaipur.currentCityId).toBe("jaipur");
-    expect(jaipur.inventory.delhi_item).toBe("left_behind");
-    expect(jaipur.completedCityIds).toEqual(["delhi", "agra"]);
-    expect(saveGame(storage, jaipur, agraComplete).ok).toBe(true);
-    expect(loadGame(storage)).toEqual({ status: "loaded", state: jaipur });
-    expect(getNextCity(finishCity(jaipur))).toBeUndefined();
+    expect(test_jaipur.currentCityId).toBe("test_jaipur");
+    expect(test_jaipur.inventory.test_delhi_item).toBe("left_behind");
+    expect(test_jaipur.completedCityIds).toEqual(["test_delhi", "test_agra"]);
+    expect(saveGame(storage, test_jaipur, test_agraComplete).ok).toBe(true);
+    expect(loadGame(storage)).toEqual({ status: "loaded", state: test_jaipur });
+    expect(getNextCity(finishCity(test_jaipur))).toBeUndefined();
   }, 120_000);
 
   it("preserves the game weekday when the local day resets on departure", () => {
-    let delhi = finishCity(initialDelhi());
-    delhi = validateGameState({ ...delhi, travel: { ...delhi.travel, day: 4,
+    let test_delhi = finishCity(initialDelhi());
+    test_delhi = validateGameState({ ...test_delhi, travel: { ...test_delhi.travel, day: 4,
       calendar: { journeyDay: 4, cityStartJourneyDay: 1, startWeekday: 0 } } });
-    const agra = departToNextCity(delhi, delhi.revision);
-    expect(agra.currentCityId).toBe("agra");
-    expect(agra.travel.day).toBe(1);
-    expect(agra.travel.calendar).toEqual({ journeyDay: 4, cityStartJourneyDay: 4, startWeekday: 0 });
-    expect(validateGameState(agra)).toEqual(agra);
+    const test_agra = departToNextCity(test_delhi, test_delhi.revision);
+    expect(test_agra.currentCityId).toBe("test_agra");
+    expect(test_agra.travel.day).toBe(1);
+    expect(test_agra.travel.calendar).toEqual({ journeyDay: 4, cityStartJourneyDay: 4, startWeekday: 0 });
+    expect(validateGameState(test_agra)).toEqual(test_agra);
     const storage = new MemoryStorage();
-    expect(saveGame(storage, agra).ok).toBe(true);
-    expect(loadGame(storage)).toEqual({ status: "loaded", state: agra });
+    expect(saveGame(storage, test_agra).ok).toBe(true);
+    expect(loadGame(storage)).toEqual({ status: "loaded", state: test_agra });
   }, 120_000);
 
   it("awards 4 AP once for an actual city finale and preserves it after loading", () => {
-    const clearReward = rewardRules.find((rule) => rule.episodeId === "delhi_finale" && rule.trigger === "city_clear");
+    const clearReward = rewardRules.find((rule) => rule.episodeId === "test_delhi_finale" && rule.trigger === "city_clear");
     if (!clearReward) throw new Error("Expected fixture city-clear reward");
     clearReward.ap = 4;
     let sawFinale = false;
     const completed = finishCity(initialDelhi(), (result) => {
       const entry = result.battleRewardReceipt?.entries.find((item) => item.rewardId === clearReward.id);
-      if (!result.completedCityIds.includes("delhi")) {
+      if (!result.completedCityIds.includes("test_delhi")) {
         expect(entry).toBeUndefined();
         expect(result.claimedRewardIds).not.toContain(clearReward.id);
       } else {
@@ -140,14 +140,14 @@ describe("three-city journey using development-only fixtures", () => {
     expect(saveGame(storage, completed).ok).toBe(true);
     const reloaded = loadGame(storage);
     if (reloaded.status !== "loaded") throw new Error("Expected completed city to load");
-    const repeated = completeRecordedChapter(reloaded.state, "delhi");
+    const repeated = completeRecordedChapter(reloaded.state, "test_delhi");
     expect(repeated.ap).toBe(completed.ap);
     expect(repeated.pendingApRewards).toEqual(completed.pendingApRewards);
     expect(repeated.claimedRewardIds.filter((id) => id === clearReward.id)).toHaveLength(1);
   }, 120_000);
 
   it("uses a free overnight at the test hotel without reducing budget or AP", () => {
-    getCityContent("delhi").travelSettings.lodgingCost = 0;
+    getCityContent("test_delhi").travelSettings.lodgingCost = 0;
     const start = validateGameState({ ...initialDelhi(), ap: 4 });
     const rested = sleepAtHotel(start, "walk", start.revision);
     expect(rested).not.toBe(start);
@@ -156,7 +156,7 @@ describe("three-city journey using development-only fixtures", () => {
     expect(rested.ap).toBe(start.ap);
   });
 
-  it.each(["delhi", "agra", "jaipur"])("opens all fixture scenes in %s Debug", (cityId) => {
+  it.each(["test_delhi", "test_agra", "test_jaipur"])("opens all fixture scenes in %s Debug", (cityId) => {
     for (const [scene, id] of [["tourism", `${cityId}_landmark`], ["battle", `${cityId}_battle`], ["encounter", `${cityId}_encounter`], ["date", `${cityId}_date`]] as const) {
       const state = createDebugState({ cityId, scene, id, progress: "completed", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
       expect(state.currentCityId).toBe(cityId);
@@ -164,7 +164,7 @@ describe("three-city journey using development-only fixtures", () => {
     }
   }, 120_000);
 
-  it.each(["milano", "delhi", "agra", "jaipur"])("opens %s in isolated Debug", (cityId) => {
+  it.each(["milano", "test_delhi", "test_agra", "test_jaipur"])("opens %s in isolated Debug", (cityId) => {
     const landmark = cityId === "milano" ? "duomo_milano" : `${cityId}_landmark`;
     const state = createDebugState({ cityId, scene: "tourism", id: landmark, progress: "initial", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
     expect(state.currentCityId).toBe(cityId);

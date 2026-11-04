@@ -80,6 +80,9 @@
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額2000ルピー。現地の実際の券種や料金を保証しない。"
         }
+      ],
+      "landmarkIds": [
+        "jaipur_amber_fort"
       ]
     },
     {
@@ -153,6 +156,9 @@
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額1200ルピー。現地の実際の券種や料金を保証しない。"
         }
+      ],
+      "landmarkIds": [
+        "jaipur_hawa_mahal"
       ]
     },
     {
@@ -242,6 +248,9 @@
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額2000ルピー。現地の実際の券種や料金を保証しない。"
         }
+      ],
+      "landmarkIds": [
+        "jaipur_city_palace"
       ]
     },
     {
@@ -315,6 +324,9 @@
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額1200ルピー。現地の実際の券種や料金を保証しない。"
         }
+      ],
+      "landmarkIds": [
+        "jaipur_jantar_mantar"
       ]
     },
     {
@@ -6749,7 +6761,6 @@
       "titleJa": "アンベール城を巡る",
       "activityMinutes": 165,
       "apCost": 0,
-      "contentStatus": "pending_content",
       "admissionCost": 2000
     },
     {
@@ -6760,7 +6771,6 @@
       "titleJa": "ハワー・マハルを巡る",
       "activityMinutes": 60,
       "apCost": 0,
-      "contentStatus": "pending_content",
       "admissionCost": 1200
     },
     {
@@ -6771,7 +6781,6 @@
       "titleJa": "シティ・パレスを巡る",
       "activityMinutes": 120,
       "apCost": 0,
-      "contentStatus": "pending_content",
       "admissionCost": 2000
     },
     {
@@ -6782,7 +6791,6 @@
       "titleJa": "ジャンタル・マンタルを巡る",
       "activityMinutes": 85,
       "apCost": 0,
-      "contentStatus": "pending_content",
       "admissionCost": 1200
     },
     {
@@ -6793,7 +6801,6 @@
       "titleJa": "ジャル・マハルで過ごす",
       "activityMinutes": 30,
       "apCost": 2,
-      "contentStatus": "pending_content",
       "admissionCost": 0
     },
     {
@@ -6804,7 +6811,6 @@
       "titleJa": "ナハルガル城で過ごす",
       "activityMinutes": 90,
       "apCost": 2,
-      "contentStatus": "pending_content",
       "admissionCost": 1200
     },
     {
@@ -6815,7 +6821,6 @@
       "titleJa": "アルバート・ホール博物館で過ごす",
       "activityMinutes": 90,
       "apCost": 2,
-      "contentStatus": "pending_content",
       "admissionCost": 1200
     },
     {
@@ -6826,7 +6831,6 @@
       "titleJa": "ジャイガル城で過ごす",
       "activityMinutes": 90,
       "apCost": 2,
-      "contentStatus": "pending_content",
       "admissionCost": 1000
     },
     {
@@ -6837,7 +6841,6 @@
       "titleJa": "ジョーハリー・バザールで過ごす",
       "activityMinutes": 70,
       "apCost": 2,
-      "contentStatus": "pending_content",
       "admissionCost": 0
     },
     {
@@ -6848,8 +6851,17 @@
       "titleJa": "パンナ・ミーナー・クンドで過ごす",
       "activityMinutes": 45,
       "apCost": 2,
-      "contentStatus": "pending_content",
       "admissionCost": 0
+    },
+    {
+      "id": "gt_jaipur_finale",
+      "cityId": "jaipur",
+      "placeId": "jaipur_jantar_mantar",
+      "category": "main",
+      "titleJa": "上映前、最後の五問",
+      "activityMinutes": 45,
+      "apCost": 0,
+      "admissionCost": 1200
     }
   ]
 }

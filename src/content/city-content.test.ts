@@ -10,12 +10,27 @@ import { validateJourney } from "../../scripts/journey-validation";
 import { battleCatalogSchema, battleSchema, quizSchema, trialProgressionSchema } from "./schemas";
 import { journeySchema } from "./journey-schemas";
 import { tourismCatalogSchema } from "./tourism-schemas";
-import { balance, battleQuizzes } from ".";
+import { balance, battleQuizzes, getCities } from ".";
 import journeyData from "../../content/progression/journey.json";
 import battleData from "../../content/battles/catalog.json";
 import cityData from "../../content/cities/milano.json";
 import tourismData from "../../content/tourism/catalog.json";
 import trialData from "../../content/romance/trial_progression.json";
+
+function milanJourney() {
+  const journey = journeySchema.parse(journeyData);
+  journey.episodes = journey.episodes.filter((episode) => episode.cityId === cityData.id);
+  const episodeIds = new Set(journey.episodes.map((episode) => episode.id));
+  const landmarkIds = new Set(cityData.landmarkIdsPlanned);
+  journey.storyBattles = journey.storyBattles.filter((entry) => {
+    const battle = battleData.battles.find((battle) => battle.id === entry.battleId);
+    return !!battle?.landmarkId && landmarkIds.has(battle.landmarkId);
+  });
+  const battleIds = new Set(journey.storyBattles.map((entry) => entry.battleId));
+  journey.rewards = journey.rewards.filter((rule) => rule.episodeId !== undefined
+    ? episodeIds.has(rule.episodeId) : battleIds.has(rule.battleId!));
+  return journey;
+}
 
 let fixture: string;
 beforeEach(async () => {
@@ -30,10 +45,10 @@ describe("Milan city content", () => {
   it("keeps four regular stops, separate special locations, and the five-question finale", async () => {
     const result = await buildContent(fixture, false);
     expect(
-      result.tourism.landmarks.map((landmark) => landmark.id).sort(),
+      result.tourism.landmarks.filter((landmark) => landmark.cityId === cityData.id).map((landmark) => landmark.id).sort(),
     ).toEqual([...cityData.landmarkIdsPlanned].sort());
     const stops = result.journey.episodes.filter(
-      (episode) => episode.kind !== "city_finale",
+      (episode) => episode.cityId === cityData.id && episode.kind !== "city_finale",
     );
     expect(stops).toHaveLength(4);
     expect(stops.map((episode) => episode.landmarkId)).toEqual([
@@ -62,7 +77,7 @@ describe("Milan city content", () => {
     });
     expect(normalQuestions).toHaveLength(12);
     const finale = result.battles.find(
-      (battle) => battle.scope === "city_finale",
+      (battle) => battle.cityId === cityData.id && battle.scope === "city_finale",
     )!;
     expect(finale.landmarkId).toBeNull();
     expect(finale.cityId).toBe("milano");
@@ -79,7 +94,7 @@ describe("Milan city content", () => {
   it("allows five questions and four intermediate scenes only for a city finale", async () => {
     const result = await buildContent(fixture, false);
     const boss = result.battles.find(
-      (battle) => battle.scope === "city_finale",
+      (battle) => battle.cityId === cityData.id && battle.scope === "city_finale",
     )!;
     const quiz = result.quizzes[boss.quizId];
     expect(() => quizSchema.parse({ ...quiz, scope: undefined })).toThrow();
@@ -130,12 +145,12 @@ describe("Milan city content", () => {
       battleQuizzes,
       trialProgressionSchema.parse(trialData).milestones,
     );
-    const journey = journeySchema.parse(journeyData);
+    const journey = milanJourney();
     const stops = journey.episodes.filter((episode) => episode.kind !== "city_finale");
     expect(stops).toHaveLength(4);
     expect(stops.every((episode) => episode.requiredEpisodeIds.length === 0)).toBe(true);
     expect(() => check(journey)).not.toThrow();
-    const valid = journeySchema.parse(journeyData);
+    const valid = milanJourney();
     valid.episodes.at(-1)!.requiredEpisodeIds = [valid.episodes.at(-2)!.id];
     expect(() => check(valid)).toThrow(
       "require every sightseeing episode",
@@ -167,9 +182,11 @@ describe("Milan city content", () => {
   it("validates different relationship-aware epilogues without making anyone a couple", async () => {
     const result = await buildContent(fixture, false);
     const finale = result.journey.episodes.find(
-      (episode) => episode.kind === "city_finale",
+      (episode) => episode.cityId === cityData.id && episode.kind === "city_finale",
     )!;
-    expect(result.epilogueScenarios).toBe(8);
+    const cityConversations = result.journey.episodes.filter((episode) => episode.epilogueStoryId).length +
+      getCities().filter((city) => city.arrivalStoryId).length;
+    expect(result.epilogueScenarios).toBe(8 * cityConversations);
     const versions: string[] = [];
     for (const [stage, dating] of [
       [1, false],

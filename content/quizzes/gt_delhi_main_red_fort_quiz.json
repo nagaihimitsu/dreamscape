@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "gt_delhi_main_red_fort_quiz",
+  "landmarkId": "delhi_red_fort",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "gt_delhi_red_fort_palace",
+      "questionEn": "Why would a board game showing only soldiers miss an important part of the Red Fort?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "It was built as a palace as well as a fort."
+        },
+        {
+          "id": "B",
+          "textEn": "It was built as a public market without a palace."
+        },
+        {
+          "id": "C",
+          "textEn": "It was built as a royal tomb without living quarters."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "as well as",
+          "meaning": "〜だけでなく"
+        },
+        {
+          "word": "living quarters",
+          "meaning": "居住区"
+        },
+        {
+          "word": "board game",
+          "meaning": "盤上ゲーム"
+        }
+      ],
+      "hintJa": "高い壁は守るため。その内側で、皇帝がどのように過ごしたかも考えてみよう。",
+      "correctExplanationJa": "新都シャージャハーナーバードの宮殿要塞として造られました。防衛だけでなく皇帝の生活の場でもあり、ゲームの盤面にも暮らしが入ります。",
+      "incorrectExplanationJa": "兵士だけでは宮廷の暮らしが抜け落ちます。レッド・フォートは、新しい都の宮殿と要塞を兼ねていました。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "Red Fort Complex",
+          "url": "https://whc.unesco.org/en/list/231/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "シャー・ジャハーンの新都の宮殿要塞として建設された。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_delhi_red_fort_channel",
+      "questionEn": "A thin line connects the private palace buildings on a plan of the Red Fort. What was the Nahr-i-Behisht?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A tunnel for soldiers to move between the buildings."
+        },
+        {
+          "id": "B",
+          "textEn": "A water channel running between the palace rooms."
+        },
+        {
+          "id": "C",
+          "textEn": "A wall separating the rooms from one another."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "private",
+          "meaning": "私的な"
+        },
+        {
+          "word": "channel",
+          "meaning": "水路"
+        },
+        {
+          "word": "separating",
+          "meaning": "隔てている"
+        }
+      ],
+      "hintJa": "その線を人が歩く道だと考えると、足元が濡れてしまう。",
+      "correctExplanationJa": "「楽園の流れ」と呼ばれる水路が、宮殿の私的な居室を結んでいました。外壁の大きさだけでは見えてこない、内側の過ごし方です。",
+      "incorrectExplanationJa": "水路です。兵士の地下道や部屋を分ける壁ではなく、水が宮殿の居室をつなぐ構成でした。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "Red Fort Complex",
+          "url": "https://whc.unesco.org/en/list/231/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "私的居室の並びをNahr-i-Behishtと呼ばれる連続した水路がつないだ。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_delhi_red_fort_changed_roles",
+      "questionEn": "Which sequence best describes how people used the Red Fort over time?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A British military site, then a Mughal palace, then a place to celebrate independence."
+        },
+        {
+          "id": "B",
+          "textEn": "A place to celebrate independence, then a Mughal palace, then British military buildings."
+        },
+        {
+          "id": "C",
+          "textEn": "A Mughal palace, later British military buildings, and a place to celebrate independence."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "sequence",
+          "meaning": "順序"
+        },
+        {
+          "word": "military",
+          "meaning": "軍の"
+        },
+        {
+          "word": "independence",
+          "meaning": "独立"
+        }
+      ],
+      "hintJa": "壁を残したまま、ムガル帝国、英国の支配、独立後という時代を迎えた。",
+      "correctExplanationJa": "宮殿の後に英国軍の施設としての時代があり、現在は独立を祝う場でもあります。同じ城壁の前で、異なる時代の人々が異なる目的を持って集まりました。",
+      "incorrectExplanationJa": "宮殿、英国軍の施設、独立を祝う場所という変化があります。城を取ったところで歴史が終わるわけではありません。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "Red Fort Complex",
+          "url": "https://whc.unesco.org/en/list/231/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "ムガル宮殿の建築に英国軍の用途が重なり、独立を祝う場になった。"
+        }
+      ],
+      "difficulty": "hard"
+    }
+  ]
+}

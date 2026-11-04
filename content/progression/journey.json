@@ -72,12 +72,229 @@
       "descriptionJa": "ダルセナで小さなラジオが始まる。旅の音を一つだけ選んでほしいという。",
       "clearTitleJa": "ミラノ 都市クリア",
       "clearDescriptionJa": "放送は終わった。水辺を離れる時間は、まだ二人で決められる。"
+    },
+    {
+      "id": "gt_delhi_main_red_fort",
+      "kind": "episode",
+      "cityId": "delhi",
+      "landmarkId": "delhi_red_fort",
+      "requiredEpisodeIds": [],
+      "battleId": "gt_delhi_main_red_fort_battle",
+      "legacyChapterId": "delhi",
+      "titleJa": "広場ばかりの城",
+      "descriptionJa": "レッド・フォートで、友達と遊ぶ盤面を作るターラーに出会う。",
+      "clearTitleJa": "城の中で暮らす人",
+      "clearDescriptionJa": "赤い壁の内側に、住まいと水路と、その後の時代が見えてきた。"
+    },
+    {
+      "id": "gt_delhi_main_qutb_minar",
+      "kind": "episode",
+      "cityId": "delhi",
+      "landmarkId": "delhi_qutb_minar",
+      "requiredEpisodeIds": [],
+      "battleId": "gt_delhi_main_qutb_minar_battle",
+      "legacyChapterId": "delhi",
+      "titleJa": "空まで撮れた",
+      "descriptionJa": "クトゥブ・ミナールの撮影失敗をきっかけに、描きかけの絵と未完の塔を見る。",
+      "clearTitleJa": "消さなかった一カット",
+      "clearDescriptionJa": "塔が画面から消えた後にも、二人で笑った声が残った。"
+    },
+    {
+      "id": "gt_delhi_main_humayun_tomb",
+      "kind": "episode",
+      "cityId": "delhi",
+      "landmarkId": "delhi_humayun_tomb",
+      "requiredEpisodeIds": [],
+      "battleId": "gt_delhi_main_humayun_tomb_battle",
+      "legacyChapterId": "delhi",
+      "titleJa": "写真の向こうへ歩く",
+      "descriptionJa": "フマユーン廟で、祖母へ写真を見せたいサイラと庭の話を探す。",
+      "clearTitleJa": "大きい、の続き",
+      "clearDescriptionJa": "庭を歩いて見つけたことが、写真に添える言葉になった。"
+    },
+    {
+      "id": "gt_delhi_main_jama_masjid",
+      "kind": "episode",
+      "cityId": "delhi",
+      "landmarkId": "delhi_jama_masjid",
+      "requiredEpisodeIds": [],
+      "battleId": "gt_delhi_main_jama_masjid_battle",
+      "legacyChapterId": "delhi",
+      "titleJa": "一枚貸して、三枚話す",
+      "descriptionJa": "ジャーマー・マスジドで、弟に貸す写真を選んでいるイムランの練習に付き合う。",
+      "clearTitleJa": "写真を撮った理由",
+      "clearDescriptionJa": "昔の建物と、今そこへ来る人を知り、写真に自分の見た話を添えた。"
+    },
+    {
+      "id": "gt_delhi_finale",
+      "kind": "city_finale",
+      "cityId": "delhi",
+      "landmarkId": null,
+      "requiredEpisodeIds": [
+        "gt_delhi_main_red_fort",
+        "gt_delhi_main_qutb_minar",
+        "gt_delhi_main_humayun_tomb",
+        "gt_delhi_main_jama_masjid"
+      ],
+      "epilogueStoryId": "epilogues/delhi",
+      "battleId": "gt_delhi_finale_battle",
+      "legacyChapterId": "delhi",
+      "titleJa": "三分間の旅への招待",
+      "descriptionJa": "レッド・フォートで、映像好きのニールと五枚の写真をめくる。",
+      "clearTitleJa": "わたしも、撮ってみたい",
+      "clearDescriptionJa": "自分たちの旅を三分間にして、ジャイプールの小さな上映会へ持っていく。"
+    },
+    {
+      "id": "gt_agra_main_taj_mahal",
+      "kind": "episode",
+      "cityId": "agra",
+      "landmarkId": "agra_taj_mahal",
+      "requiredEpisodeIds": [],
+      "battleId": "gt_agra_main_taj_mahal_battle",
+      "legacyChapterId": "agra",
+      "titleJa": "タージ・マハル――一枚に入らないもの",
+      "descriptionJa": "母に送る写真を選べない図案家ファリド。整った眺めの奥にある配置と、お墓の仕組みを確かめる。",
+      "clearTitleJa": "切り抜かずに送った一枚",
+      "clearDescriptionJa": "ファリドが最後に選んだのは、自分も写った写真だった。白い建物の見え方にも、新しい奥行きが増えた。"
+    },
+    {
+      "id": "gt_agra_main_agra_fort",
+      "kind": "episode",
+      "cityId": "agra",
+      "landmarkId": "agra_agra_fort",
+      "requiredEpisodeIds": [],
+      "battleId": "gt_agra_main_agra_fort_battle",
+      "legacyChapterId": "agra",
+      "titleJa": "アーグラ城――四コマでは足りない",
+      "descriptionJa": "甥に見せる四コマ漫画を描くアディ。赤と白の建物や、城の仕事、窓の先の眺めを描くうち、予定の枠からはみ出していく。",
+      "clearTitleJa": "城を歩く六コマ",
+      "clearDescriptionJa": "異なる皇帝の建物、政治と暮らし、窓からの眺め。アディのノートには、水を忘れた自分の話も含めて、城を歩く六コマが並んだ。"
+    },
+    {
+      "id": "gt_agra_main_itimad_tomb",
+      "kind": "episode",
+      "cityId": "agra",
+      "landmarkId": "agra_itimad_tomb",
+      "requiredEpisodeIds": [],
+      "battleId": "gt_agra_main_itimad_tomb_battle",
+      "legacyChapterId": "agra",
+      "titleJa": "イティマード・ウッダウラ廟――少し太った花",
+      "descriptionJa": "服の仕立てを仕事にするアミナは、白い廟の花模様を描いている。造営した娘の思いと、石が作る色や光を見つめる。",
+      "clearTitleJa": "自分の服のための模様",
+      "clearDescriptionJa": "アミナは少し太った花びらを消さずに残した。壁の表だけでなく、格子の向こうへ入る光にも目が向いた。"
+    },
+    {
+      "id": "gt_agra_main_fatehpur_sikri",
+      "kind": "episode",
+      "cityId": "agra",
+      "landmarkId": "agra_fatehpur_sikri",
+      "requiredEpisodeIds": [],
+      "battleId": "gt_agra_main_fatehpur_sikri_battle",
+      "legacyChapterId": "agra",
+      "titleJa": "ファテープル・シークリー――休憩もある案内図",
+      "descriptionJa": "家族を案内する下見に来たキラン。大きなお城という説明から、さまざまな営みのある街へと、案内を作り直す。",
+      "clearTitleJa": "行き先が減り、楽しみが増えた地図",
+      "clearDescriptionJa": "首都だった頃も、その後も続いた場所の話を確かめた。キランの案内図には、子どもたちが選ぶ道と大きな休憩の丸が残った。"
+    },
+    {
+      "id": "gt_agra_finale",
+      "kind": "city_finale",
+      "cityId": "agra",
+      "landmarkId": null,
+      "requiredEpisodeIds": [
+        "gt_agra_main_taj_mahal",
+        "gt_agra_main_agra_fort",
+        "gt_agra_main_itimad_tomb",
+        "gt_agra_main_fatehpur_sikri"
+      ],
+      "epilogueStoryId": "epilogues/agra",
+      "battleId": "gt_agra_finale_battle",
+      "legacyChapterId": "agra",
+      "titleJa": "アーグラ・フィナーレ――ここは残したい",
+      "descriptionJa": "写真好きのサナが、三分の映像に編集案を出す。滑らかな仕上がりにうなずいた彼女は、消しかけた数秒で指を止めた。",
+      "clearTitleJa": "自分で選び直した数秒",
+      "clearDescriptionJa": "史実の説明を確かめたあと、彼女は残したい場面を言葉にした。好みが違う相手とも映像を見せ合う約束をして、ジャイプールへ向かう。"
+    },
+    {
+      "id": "gt_jaipur_main_amber_fort",
+      "kind": "episode",
+      "cityId": "jaipur",
+      "landmarkId": "jaipur_amber_fort",
+      "requiredEpisodeIds": [],
+      "battleId": "gt_jaipur_main_amber_fort_battle",
+      "legacyChapterId": "jaipur",
+      "titleJa": "大きな城の、小さな案内役",
+      "descriptionJa": "アンベール城で、甥に送る写真を選びかねている元運転手に出会う。",
+      "clearTitleJa": "三枚では足りない城",
+      "clearDescriptionJa": "中庭から奥の暮らしへ。ハリッシュの写真選びに、二人の見方も加わった。"
+    },
+    {
+      "id": "gt_jaipur_main_hawa_mahal",
+      "kind": "episode",
+      "cityId": "jaipur",
+      "landmarkId": "jaipur_hawa_mahal",
+      "requiredEpisodeIds": [],
+      "battleId": "gt_jaipur_main_hawa_mahal_battle",
+      "legacyChapterId": "jaipur",
+      "titleJa": "描きたいのは、窓の向こう",
+      "descriptionJa": "ハワー・マハルを描く学生のスケッチには、窓だけがまだ描かれていない。",
+      "clearTitleJa": "向こう側からも見てみよう",
+      "clearDescriptionJa": "外観の美しさに、内側から街を眺めた人の目線が加わった。"
+    },
+    {
+      "id": "gt_jaipur_main_city_palace",
+      "kind": "episode",
+      "cityId": "jaipur",
+      "landmarkId": "jaipur_city_palace",
+      "requiredEpisodeIds": [],
+      "battleId": "gt_jaipur_main_city_palace_battle",
+      "legacyChapterId": "jaipur",
+      "titleJa": "父の説明、娘の発見",
+      "descriptionJa": "シティ・パレスで、仕立て屋の父娘がそれぞれ別のものに見入っている。",
+      "clearTitleJa": "続きを聞くのは帰り道",
+      "clearDescriptionJa": "宮殿を支えた仕事を知り、同じ場所を違う速さで楽しむ父娘を見送った。"
+    },
+    {
+      "id": "gt_jaipur_main_jantar_mantar",
+      "kind": "episode",
+      "cityId": "jaipur",
+      "landmarkId": "jaipur_jantar_mantar",
+      "requiredEpisodeIds": [],
+      "battleId": "gt_jaipur_main_jantar_mantar_battle",
+      "legacyChapterId": "jaipur",
+      "titleJa": "時計屋の、時計を見ない時間",
+      "descriptionJa": "ジャンタル・マンタルで出会った時計修理屋は、今日は腕時計を止めてきたという。",
+      "clearTitleJa": "空まで広がる仕事場",
+      "clearDescriptionJa": "巨大な観測器と、小さな時計。同じ時間を扱う二つの仕事から空を見上げた。"
+    },
+    {
+      "id": "gt_jaipur_finale",
+      "kind": "city_finale",
+      "cityId": "jaipur",
+      "landmarkId": null,
+      "requiredEpisodeIds": [
+        "gt_jaipur_main_amber_fort",
+        "gt_jaipur_main_hawa_mahal",
+        "gt_jaipur_main_city_palace",
+        "gt_jaipur_main_jantar_mantar"
+      ],
+      "epilogueStoryId": "epilogues/jaipur",
+      "battleId": "gt_jaipur_finale_battle",
+      "legacyChapterId": "jaipur",
+      "titleJa": "上映前、最後の五問",
+      "descriptionJa": "ジャンタル・マンタルで上映役のラヴィと合流。三分間の旅を人に見せる前に、街の話を確かめる。",
+      "clearTitleJa": "最初の言葉は、わたしから",
+      "clearDescriptionJa": "旅の映像が完成した。紹介の一言は、自分で話すと決めた。"
     }
   ],
   "storyBattles": [
     {
       "battleId": "milano_la_scala_b01",
-      "completionReward": { "id": "battle_scala_first", "ap": 1, "titleJa": "スカラ座の対決を初めて完了" },
+      "completionReward": {
+        "id": "battle_scala_first",
+        "ap": 1,
+        "titleJa": "スカラ座の対決を初めて完了"
+      },
       "requiredEpisodeIds": [],
       "titleJa": "椅子にも身元がある",
       "descriptionJa": "スカラ座の前に、売り物でも腰掛けでもない椅子が一脚ある。",
@@ -85,7 +302,11 @@
     },
     {
       "battleId": "milano_brera_c01",
-      "completionReward": { "id": "battle_brera_first", "ap": 1, "titleJa": "ブレラの対決を初めて完了" },
+      "completionReward": {
+        "id": "battle_brera_first",
+        "ap": 1,
+        "titleJa": "ブレラの対決を初めて完了"
+      },
       "requiredEpisodeIds": [],
       "titleJa": "青い布をほどくまで",
       "descriptionJa": "ブレラで衣装係と演出家が、同じ布の端を持っている。",
@@ -292,6 +513,462 @@
       "ap": 1,
       "minScore": null,
       "titleJa": "ブレラの対決を初めてクリア"
+    },
+    {
+      "id": "gt_delhi_main_red_fort_guide_read",
+      "episodeId": "gt_delhi_main_red_fort",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "gt_delhi_main_red_fort_battle_complete",
+      "episodeId": "gt_delhi_main_red_fort",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "対決を初めて完了"
+    },
+    {
+      "id": "gt_delhi_main_red_fort_battle_score",
+      "episodeId": "gt_delhi_main_red_fort",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて規定数に正解"
+    },
+    {
+      "id": "gt_delhi_main_red_fort_episode_clear",
+      "episodeId": "gt_delhi_main_red_fort",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光を初めてクリア"
+    },
+    {
+      "id": "gt_delhi_main_qutb_minar_guide_read",
+      "episodeId": "gt_delhi_main_qutb_minar",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "gt_delhi_main_qutb_minar_battle_complete",
+      "episodeId": "gt_delhi_main_qutb_minar",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "対決を初めて完了"
+    },
+    {
+      "id": "gt_delhi_main_qutb_minar_battle_score",
+      "episodeId": "gt_delhi_main_qutb_minar",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて規定数に正解"
+    },
+    {
+      "id": "gt_delhi_main_qutb_minar_episode_clear",
+      "episodeId": "gt_delhi_main_qutb_minar",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光を初めてクリア"
+    },
+    {
+      "id": "gt_delhi_main_humayun_tomb_guide_read",
+      "episodeId": "gt_delhi_main_humayun_tomb",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "gt_delhi_main_humayun_tomb_battle_complete",
+      "episodeId": "gt_delhi_main_humayun_tomb",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "対決を初めて完了"
+    },
+    {
+      "id": "gt_delhi_main_humayun_tomb_battle_score",
+      "episodeId": "gt_delhi_main_humayun_tomb",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて規定数に正解"
+    },
+    {
+      "id": "gt_delhi_main_humayun_tomb_episode_clear",
+      "episodeId": "gt_delhi_main_humayun_tomb",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光を初めてクリア"
+    },
+    {
+      "id": "gt_delhi_main_jama_masjid_guide_read",
+      "episodeId": "gt_delhi_main_jama_masjid",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "gt_delhi_main_jama_masjid_battle_complete",
+      "episodeId": "gt_delhi_main_jama_masjid",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "対決を初めて完了"
+    },
+    {
+      "id": "gt_delhi_main_jama_masjid_battle_score",
+      "episodeId": "gt_delhi_main_jama_masjid",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて規定数に正解"
+    },
+    {
+      "id": "gt_delhi_main_jama_masjid_episode_clear",
+      "episodeId": "gt_delhi_main_jama_masjid",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光を初めてクリア"
+    },
+    {
+      "id": "gt_delhi_finale_battle_complete",
+      "episodeId": "gt_delhi_finale",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "対決を初めて完了"
+    },
+    {
+      "id": "gt_delhi_finale_battle_score",
+      "episodeId": "gt_delhi_finale",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 3,
+      "titleJa": "初めて規定数に正解"
+    },
+    {
+      "id": "gt_delhi_finale_city_clear",
+      "episodeId": "gt_delhi_finale",
+      "trigger": "city_clear",
+      "ap": 4,
+      "minScore": null,
+      "titleJa": "都市を初めてクリア"
+    },
+    {
+      "id": "gt_agra_main_taj_mahal_guide_read",
+      "episodeId": "gt_agra_main_taj_mahal",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "gt_agra_main_taj_mahal_battle_complete",
+      "episodeId": "gt_agra_main_taj_mahal",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "対決を初めて完了"
+    },
+    {
+      "id": "gt_agra_main_taj_mahal_battle_score",
+      "episodeId": "gt_agra_main_taj_mahal",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて規定数に正解"
+    },
+    {
+      "id": "gt_agra_main_taj_mahal_episode_clear",
+      "episodeId": "gt_agra_main_taj_mahal",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光を初めてクリア"
+    },
+    {
+      "id": "gt_agra_main_agra_fort_guide_read",
+      "episodeId": "gt_agra_main_agra_fort",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "gt_agra_main_agra_fort_battle_complete",
+      "episodeId": "gt_agra_main_agra_fort",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "対決を初めて完了"
+    },
+    {
+      "id": "gt_agra_main_agra_fort_battle_score",
+      "episodeId": "gt_agra_main_agra_fort",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて規定数に正解"
+    },
+    {
+      "id": "gt_agra_main_agra_fort_episode_clear",
+      "episodeId": "gt_agra_main_agra_fort",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光を初めてクリア"
+    },
+    {
+      "id": "gt_agra_main_itimad_tomb_guide_read",
+      "episodeId": "gt_agra_main_itimad_tomb",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "gt_agra_main_itimad_tomb_battle_complete",
+      "episodeId": "gt_agra_main_itimad_tomb",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "対決を初めて完了"
+    },
+    {
+      "id": "gt_agra_main_itimad_tomb_battle_score",
+      "episodeId": "gt_agra_main_itimad_tomb",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて規定数に正解"
+    },
+    {
+      "id": "gt_agra_main_itimad_tomb_episode_clear",
+      "episodeId": "gt_agra_main_itimad_tomb",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光を初めてクリア"
+    },
+    {
+      "id": "gt_agra_main_fatehpur_sikri_guide_read",
+      "episodeId": "gt_agra_main_fatehpur_sikri",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "gt_agra_main_fatehpur_sikri_battle_complete",
+      "episodeId": "gt_agra_main_fatehpur_sikri",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "対決を初めて完了"
+    },
+    {
+      "id": "gt_agra_main_fatehpur_sikri_battle_score",
+      "episodeId": "gt_agra_main_fatehpur_sikri",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて規定数に正解"
+    },
+    {
+      "id": "gt_agra_main_fatehpur_sikri_episode_clear",
+      "episodeId": "gt_agra_main_fatehpur_sikri",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光を初めてクリア"
+    },
+    {
+      "id": "gt_agra_finale_battle_complete",
+      "episodeId": "gt_agra_finale",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "対決を初めて完了"
+    },
+    {
+      "id": "gt_agra_finale_battle_score",
+      "episodeId": "gt_agra_finale",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 3,
+      "titleJa": "初めて規定数に正解"
+    },
+    {
+      "id": "gt_agra_finale_city_clear",
+      "episodeId": "gt_agra_finale",
+      "trigger": "city_clear",
+      "ap": 4,
+      "minScore": null,
+      "titleJa": "都市を初めてクリア"
+    },
+    {
+      "id": "gt_jaipur_main_amber_fort_guide_read",
+      "episodeId": "gt_jaipur_main_amber_fort",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "gt_jaipur_main_amber_fort_battle_complete",
+      "episodeId": "gt_jaipur_main_amber_fort",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "対決を初めて完了"
+    },
+    {
+      "id": "gt_jaipur_main_amber_fort_battle_score",
+      "episodeId": "gt_jaipur_main_amber_fort",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて規定数に正解"
+    },
+    {
+      "id": "gt_jaipur_main_amber_fort_episode_clear",
+      "episodeId": "gt_jaipur_main_amber_fort",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光を初めてクリア"
+    },
+    {
+      "id": "gt_jaipur_main_hawa_mahal_guide_read",
+      "episodeId": "gt_jaipur_main_hawa_mahal",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "gt_jaipur_main_hawa_mahal_battle_complete",
+      "episodeId": "gt_jaipur_main_hawa_mahal",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "対決を初めて完了"
+    },
+    {
+      "id": "gt_jaipur_main_hawa_mahal_battle_score",
+      "episodeId": "gt_jaipur_main_hawa_mahal",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて規定数に正解"
+    },
+    {
+      "id": "gt_jaipur_main_hawa_mahal_episode_clear",
+      "episodeId": "gt_jaipur_main_hawa_mahal",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光を初めてクリア"
+    },
+    {
+      "id": "gt_jaipur_main_city_palace_guide_read",
+      "episodeId": "gt_jaipur_main_city_palace",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "gt_jaipur_main_city_palace_battle_complete",
+      "episodeId": "gt_jaipur_main_city_palace",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "対決を初めて完了"
+    },
+    {
+      "id": "gt_jaipur_main_city_palace_battle_score",
+      "episodeId": "gt_jaipur_main_city_palace",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて規定数に正解"
+    },
+    {
+      "id": "gt_jaipur_main_city_palace_episode_clear",
+      "episodeId": "gt_jaipur_main_city_palace",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光を初めてクリア"
+    },
+    {
+      "id": "gt_jaipur_main_jantar_mantar_guide_read",
+      "episodeId": "gt_jaipur_main_jantar_mantar",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "gt_jaipur_main_jantar_mantar_battle_complete",
+      "episodeId": "gt_jaipur_main_jantar_mantar",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "対決を初めて完了"
+    },
+    {
+      "id": "gt_jaipur_main_jantar_mantar_battle_score",
+      "episodeId": "gt_jaipur_main_jantar_mantar",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて規定数に正解"
+    },
+    {
+      "id": "gt_jaipur_main_jantar_mantar_episode_clear",
+      "episodeId": "gt_jaipur_main_jantar_mantar",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光を初めてクリア"
+    },
+    {
+      "id": "gt_jaipur_finale_battle_complete",
+      "episodeId": "gt_jaipur_finale",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "対決を初めて完了"
+    },
+    {
+      "id": "gt_jaipur_finale_battle_score",
+      "episodeId": "gt_jaipur_finale",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 3,
+      "titleJa": "初めて規定数に正解"
+    },
+    {
+      "id": "gt_jaipur_finale_city_clear",
+      "episodeId": "gt_jaipur_finale",
+      "trigger": "city_clear",
+      "ap": 4,
+      "minScore": null,
+      "titleJa": "都市を初めてクリア"
     }
   ]
 }

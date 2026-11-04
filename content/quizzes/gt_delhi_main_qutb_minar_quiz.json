@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "gt_delhi_main_qutb_minar_quiz",
+  "landmarkId": "delhi_qutb_minar",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "gt_delhi_qutb_unfinished_ambition",
+      "questionEn": "The Alai Minar remains much lower than the Qutb Minar. What had its builder planned?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A low platform for watching the older tower."
+        },
+        {
+          "id": "B",
+          "textEn": "A tower twice the scale of the Qutb Minar."
+        },
+        {
+          "id": "C",
+          "textEn": "A small copy designed to stay below the first balcony."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "builder",
+          "meaning": "造営者"
+        },
+        {
+          "word": "planned",
+          "meaning": "計画していた"
+        },
+        {
+          "word": "scale",
+          "meaning": "規模"
+        }
+      ],
+      "hintJa": "いま見える低さは、目標の大きさを示しているとは限らない。",
+      "correctExplanationJa": "計画はクトゥブ・ミナールの二倍の規模でしたが、第一層までで未完に終わりました。低い姿の向こうに、大きな計画が残っています。",
+      "incorrectExplanationJa": "小さく造る計画ではありませんでした。クトゥブ・ミナールの二倍を目指した塔が、第一層までで止まった姿です。",
+      "sources": [
+        {
+          "publisher": "UNESCO World Heritage Centre",
+          "title": "Qutb Minar and its Monuments, Delhi",
+          "url": "https://whc.unesco.org/en/list/233/",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アラーイー・ミナールはクトゥブ・ミナールの二倍の規模を計画し、第一層を残して未完。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_delhi_qutb_gate_record",
+      "questionEn": "What provides a written record of when the Alai Darwaza gateway was built?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The number of steps beside the gateway."
+        },
+        {
+          "id": "B",
+          "textEn": "The colour of its stone in the sunlight."
+        },
+        {
+          "id": "C",
+          "textEn": "The inscriptions carved on the gateway."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "provides",
+          "meaning": "伝える・与える"
+        },
+        {
+          "word": "inscriptions",
+          "meaning": "碑文"
+        },
+        {
+          "word": "carved",
+          "meaning": "刻まれた"
+        }
+      ],
+      "hintJa": "模様と思って見ていた部分の中に、読むことのできるものがある。",
+      "correctExplanationJa": "門に刻まれた碑文に、1311年の造営が記されています。古そうに見えるという印象と、文字として残る記録を分けることができます。",
+      "incorrectExplanationJa": "碑文が年代の記録を伝えます。色や階段の数から年を推測するのではなく、門に刻まれた文字が手がかりになります。",
+      "sources": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Qutab Minar",
+          "url": "https://www.delhitourism.gov.in/tourist_place/qutab_minar.html",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アラーイー門の碑文にAH710年、西暦1311年の造営が記録されている。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_delhi_qutb_many_hands",
+      "questionEn": "What do the building and repair records tell us about the Qutb Minar?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Later rulers added to and repaired an earlier tower."
+        },
+        {
+          "id": "B",
+          "textEn": "One ruler completed it, and no one changed it later."
+        },
+        {
+          "id": "C",
+          "textEn": "Later work changed the gardens, but never the tower itself."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "rulers",
+          "meaning": "支配者たち"
+        },
+        {
+          "word": "added to",
+          "meaning": "増築した"
+        },
+        {
+          "word": "repaired",
+          "meaning": "修理した"
+        }
+      ],
+      "hintJa": "塔に残っているのは、造り始めた人の記録だけだろうか。",
+      "correctExplanationJa": "建設を始めたアイバクの後、イルトゥトゥミシュらが増築し、後代の修理も碑文に残りました。一本の塔に、複数の時代の仕事が重なっています。",
+      "incorrectExplanationJa": "一人の仕事で固定された塔ではありません。後継者による増築があり、その後も修理が行われたことを記録から確認できます。",
+      "sources": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Qutab Minar",
+          "url": "https://www.delhitourism.gov.in/tourist_place/qutab_minar.html",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "アイバクの第一層に後継者が階を追加。塔の碑文にはフィーローズ・シャー・トゥグルク、シカンダル・ローディーの修理が記される。"
+        }
+      ],
+      "difficulty": "hard"
+    }
+  ]
+}

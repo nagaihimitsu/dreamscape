@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { expectNoOverflow, startNewGame } from "./helpers";
+import { saveIndependentIndiaGame } from "./india-preview-helpers";
+import { finishCityArrival } from "./city-arrival-helpers";
 
 const uzbekistanKey = "dreamscape.journey.uzbekistan.save.v1";
 const indiaKey = "dreamscape.journey.golden_triangle.save.v1";
@@ -11,9 +13,11 @@ test("Uzbekistan preparation is independent of both existing journeys on a narro
   await page.goto("/");
   await page.getByLabel("旅行編").selectOption("golden_triangle");
   await page.getByLabel("主人公の名前").fill("インドの名前");
-  await page.getByRole("button", { name: "旅の準備を保存する" }).click();
+  await page.getByRole("button", { name: "旅をはじめる", exact: true }).click();
+  await finishCityArrival(page);
   const india = await page.evaluate((key) => localStorage.getItem(key), indiaKey);
-  await page.getByLabel("旅行編").selectOption("uzbekistan");
+  await page.getByRole("button", { name: "設定", exact: true }).click();
+  await page.getByRole("dialog", { name: "設定" }).getByLabel("旅行編").selectOption("uzbekistan");
   await expect(page.getByText("タシュケント → サマルカンド → ブハラ → ヒヴァ")).toBeVisible();
   await expect(page.getByText("この旅行編は制作中です。観光やイベントはまだ遊べません。")).toBeVisible();
   await expect(page.getByRole("button", { name: "旅をはじめる" })).toHaveCount(0);
@@ -66,13 +70,13 @@ test("all four maps can travel, rest and reload in Debug without editing player 
   test.setTimeout(120_000);
   await page.setViewportSize({ width: 320, height: 740 });
   await startNewGame(page);
+  expect((await saveIndependentIndiaGame(page)).ok).toBe(true);
   await page.evaluate(async () => {
     const draftPath = "/src/persistence/journey-preparation.ts";
     const storagePath = "/src/persistence/journey-storage.ts";
     const { saveJourneyDraft } = await import(/* @vite-ignore */ draftPath);
     const { journeyStorage } = await import(/* @vite-ignore */ storagePath);
-    for (const journey of ["golden_triangle", "uzbekistan"])
-      if (!saveJourneyDraft(journeyStorage(localStorage, journey), journey, "相手").ok) throw new Error("Draft save failed");
+    if (!saveJourneyDraft(journeyStorage(localStorage, "uzbekistan"), "uzbekistan", "相手").ok) throw new Error("Draft save failed");
   });
   const original = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   await page.goto("/?debug");

@@ -16,11 +16,11 @@ import { expectNoOverflow, saved } from "./helpers";
 import { openCluebook } from "./tourism-helpers";
 
 export const cityEpisodes = (journey.episodes as EpisodeDefinition[]).filter(
-  (episode) => episode.kind !== "city_finale",
+  (episode) => episode.cityId === "milano" && episode.kind !== "city_finale",
 );
 export const cityFinale = () =>
   (journey.episodes as EpisodeDefinition[]).find(
-    (episode) => episode.kind === "city_finale",
+    (episode) => episode.cityId === "milano" && episode.kind === "city_finale",
   )!;
 const battles = catalog.battles as BattleDefinition[];
 const battleQuizzes = quizzes as Record<string, QuizDefinition>;

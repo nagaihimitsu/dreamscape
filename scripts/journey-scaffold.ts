@@ -114,7 +114,7 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
       battles.push(battleSchema.parse({ id: item.battleId, titleJa: script.titleJa, descriptionJa: script.descriptionJa,
         landmarkId: place.id, enemyNameJa: script.enemyNameJa, enemyTitleJa: script.enemyTitleJa,
         enemyDescriptionJa: script.enemyDescriptionJa, storyId: item.battleStoryId, quizId: item.quizId,
-        backgroundAssetId: place.backgroundAssetId, scenes: { intro: "intro", afterRounds: ["after_1", "after_2"], outro: "outro" } }));
+        backgroundAssetId: place.backgroundAssetId, portrait: "abstract", scenes: { intro: "intro", afterRounds: ["after_1", "after_2"], outro: "outro" } }));
       addRewards(event.id, false);
     }
     for (const item of plan.dates) {
@@ -145,7 +145,7 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
     battles.push(battleSchema.parse({ id: plan.finale.battleId, scope: "city_finale", cityId: plan.cityId, landmarkId: null,
       titleJa: script.titleJa, descriptionJa: script.descriptionJa, enemyNameJa: script.enemyNameJa, enemyTitleJa: script.enemyTitleJa,
       enemyDescriptionJa: script.enemyDescriptionJa, storyId: plan.finale.battleStoryId, quizId: plan.finale.quizId,
-      backgroundAssetId: place.backgroundAssetId, scenes: { intro: "intro", afterRounds: ["after_1", "after_2", "after_3", "after_4"], outro: "outro" } }));
+      backgroundAssetId: place.backgroundAssetId, portrait: "abstract", scenes: { intro: "intro", afterRounds: ["after_1", "after_2", "after_3", "after_4"], outro: "outro" } }));
     const destinationEvents = travel.events.filter((event) => event.placeId === place.id);
     const costs = new Set(destinationEvents.map((event) => event.admissionCost ?? 0));
     if (costs.size !== 1) throw new Error(`Journey scaffold: inconsistent admission at ${place.id}`);

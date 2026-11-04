@@ -3,7 +3,7 @@ import {
   battles,
   battleQuizzes,
   dates,
-  episodes,
+  episodes as allEpisodes,
   rewardRules,
   allRewardRules,
   type EpisodeDefinition,
@@ -44,6 +44,7 @@ import {
 import { startCityEpilogue, advanceCityEpilogue } from "./epilogue";
 import { startEncounter, chooseEncounter, advanceEncounter, finishEncounter } from "./encounter";
 import { loadGame, saveGame, type StorageLike } from "../persistence";
+const episodes = allEpisodes.filter((episode) => episode.cityId === "milano");
 const restore = (state: GameState) => {
   const next = validateGameState(JSON.parse(JSON.stringify(state)));
   expect(next).toEqual(state);

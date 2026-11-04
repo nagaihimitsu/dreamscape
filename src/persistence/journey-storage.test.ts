@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { createGame } from "../domain";
 import { cityContents, getCityContent } from "../content";
 import { getJourney } from "../content/journeys";
@@ -14,6 +14,19 @@ function memoryStorage() {
 }
 
 describe("independent journey saves", () => {
+  let restorePreparation: () => void;
+  beforeEach(() => {
+    // Preparation semantics use an explicit unfinished fixture even after the
+    // authored India journey becomes available to actual players.
+    const journey = getJourney("golden_triangle")!;
+    const journeyStatus = journey.status;
+    const city = getCityContent("delhi").city;
+    const cityStatus = city.productionStatus;
+    journey.status = "preparing";
+    city.productionStatus = "prototype";
+    restorePreparation = () => { journey.status = journeyStatus; city.productionStatus = cityStatus; };
+  });
+  afterEach(() => restorePreparation());
   it("rejects wrong-journey or unknown-city saves in either slot without replacing or deleting them", () => {
     const base = memoryStorage();
     const milan = journeyStorage(base, "milano");
@@ -117,7 +130,7 @@ describe("independent journey saves", () => {
       expect(saveJourneyDraft(india, "旅人", "小春").ok).toBe(true);
       const draft = loadJourneyDraft(india);
       if (draft.status !== "loaded") throw new Error("Expected a draft");
-      // Fixture only: production contains no Delhi hotel or fabricated prices.
+      // Fixture only: control city availability separately from release data.
       const fixture = structuredClone(getCityContent("milano"));
       fixture.city.id = "delhi";
       fixture.travel.cityId = "delhi";

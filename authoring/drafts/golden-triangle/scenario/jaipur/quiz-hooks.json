@@ -1,0 +1,35 @@
+{
+  "cityId": "jaipur",
+  "checkedAt": "2026-11-04",
+  "noteJa": "出題前の台詞では以下の答えを明かさない。通常戦は3問、フィナーレは5問。選択肢の正誤は史実に限定し、創作人物の好みやヒロインの意志を採点しない。",
+  "battles": {
+    "gt_jaipur_main_amber_fort": [
+      { "round": 1, "topicJa": "ジャレーブ・チョークで帰還した軍が戦利品を示した用途", "afterScene": "after_1", "sourceUrl": "https://www.tourism.rajasthan.gov.in/amber-palace.html" },
+      { "round": 2, "topicJa": "城内に居住区、庭、寺院など複数の暮らしの場があった", "afterScene": "after_2", "sourceUrl": "https://www.tourism.rajasthan.gov.in/amber-palace.html" },
+      { "round": 3, "topicJa": "地下通路がつないだ相手は丘上のジャイガル城", "afterScene": "outro", "sourceUrl": "https://www.tourism.rajasthan.gov.in/amber-palace.html", "cautionJa": "実際の通行可否・現行経路とは分ける。本文で通路を移動しない。" }
+    ],
+    "gt_jaipur_main_hawa_mahal": [
+      { "round": 1, "topicJa": "宮廷の女性が街から姿を見られずに街路を眺めるための格子", "afterScene": "after_1", "sourceUrl": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal" },
+      { "round": 2, "topicJa": "小窓は風を通す役割もある", "afterScene": "after_2", "sourceUrl": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal" },
+      { "round": 3, "topicJa": "有名な正面ではなく背後側から入る構成", "afterScene": "outro", "sourceUrl": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal", "cautionJa": "同ページの無基礎世界一やアルバート訪問記述は採用しない。" }
+    ],
+    "gt_jaipur_main_city_palace": [
+      { "round": 1, "topicJa": "宮殿は住まいだけでなく行政や儀礼の場でもあった", "afterScene": "after_1", "sourceUrl": "https://citypalace.org/" },
+      { "round": 2, "topicJa": "宮廷はさまざまな芸術・工芸を支援した", "afterScene": "after_2", "sourceUrl": "https://citypalace.org/" },
+      { "round": 3, "topicJa": "収集・制作を依頼した品々を博物館として公開し地域の文化を伝える", "afterScene": "outro", "sourceUrl": "https://citypalace.org/" }
+    ],
+    "gt_jaipur_main_jantar_mantar": [
+      { "round": 1, "topicJa": "巨大な固定式装置で肉眼による天体位置の観測", "afterScene": "after_1", "sourceUrl": "https://whc.unesco.org/en/list/1338" },
+      { "round": 2, "topicJa": "異なる文明の天文学の伝統が出会った場", "afterScene": "after_2", "sourceUrl": "https://whc.unesco.org/en/list/1338" },
+      { "round": 3, "topicJa": "観測所は科学だけでなく王の権威や社会とも結びついた", "afterScene": "outro", "sourceUrl": "https://whc.unesco.org/en/list/1338" }
+    ],
+    "gt_jaipur_finale": [
+      { "round": 1, "topicJa": "アンベール城の中庭ごとに区切られた複数の役割", "afterScene": "after_1", "sourceUrl": "https://www.tourism.rajasthan.gov.in/amber-palace.html" },
+      { "round": 2, "topicJa": "ハワー・マハルの格子と見る側・見られる側", "afterScene": "after_2", "sourceUrl": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal" },
+      { "round": 3, "topicJa": "シティ・パレスを支えた作り手と多様な活動", "afterScene": "after_3", "sourceUrl": "https://citypalace.org/" },
+      { "round": 4, "topicJa": "ジャンタル・マンタルの肉眼観測用の固定装置", "afterScene": "after_4", "sourceUrl": "https://whc.unesco.org/en/list/1338" },
+      { "round": 5, "topicJa": "ジャンタル・マンタルで複数文化の知識が交わったこと", "afterScene": "outro", "sourceUrl": "https://whc.unesco.org/en/list/1338" }
+    ]
+  },
+  "fictionJa": "全対戦相手、父娘、映像の会、そこでの会話・行動は創作。歴史上の人物の発言として扱わない。"
+}

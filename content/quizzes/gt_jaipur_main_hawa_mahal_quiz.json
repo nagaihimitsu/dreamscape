@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "gt_jaipur_main_hawa_mahal_quiz",
+  "landmarkId": "jaipur_hawa_mahal",
+  "englishLevel": "B1",
+  "questions": [
+    {
+      "id": "gt_jaipur_hawa_screened_view",
+      "questionEn": "Why did screened windows matter to women of the royal court watching street processions from Hawa Mahal?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "They made the women easier to see from the street."
+        },
+        {
+          "id": "B",
+          "textEn": "They let the women watch without being seen from outside."
+        },
+        {
+          "id": "C",
+          "textEn": "They prevented the women from seeing the street at all."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "screened",
+          "meaning": "ここでは、格子で覆われた"
+        },
+        {
+          "word": "court",
+          "meaning": "ここでは、王族や周囲の人々からなる宮廷"
+        },
+        {
+          "word": "processions",
+          "meaning": "行列、行進"
+        }
+      ],
+      "hintJa": "見る人と、外から見られる人を分けて考えましょう。窓には、視線の届き方を変える役割もありました。",
+      "correctExplanationJa": "格子越しに街を見ながら、通りの人からは姿を見られにくくするためです。政府観光案内は、当時のパルダーという社会・宗教上の隔離慣習との関係を説明します。窓の美しさだけでなく、そこで暮らした人の行動に目を向けられます。",
+      "incorrectExplanationJa": "外へ姿をよく見せるためでも、外を一切見せないためでもありません。格子は女性たちが姿を隠したまま街路を眺める助けになりました。見る方向によって、窓の役割は違っていたのです。",
+      "sources": [
+        {
+          "publisher": "Ministry of Tourism, Government of India",
+          "title": "Discovering Hawa Mahal's Architectural Splendor",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "宮廷女性がパルダーの慣習の下で、格子を通して街の様子や王族・宗教行列を、街路側から見られずに観察したと説明する。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_jaipur_hawa_airflow",
+      "questionEn": "Hawa Mahal has many small windows. Besides shaping the view, what practical role did these openings have?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "They stored water for the rooms below."
+        },
+        {
+          "id": "B",
+          "textEn": "They closed the building to moving air."
+        },
+        {
+          "id": "C",
+          "textEn": "They helped air move through the building."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "openings",
+          "meaning": "開口部、開いている部分"
+        },
+        {
+          "word": "practical",
+          "meaning": "実用的な"
+        },
+        {
+          "word": "air",
+          "meaning": "空気"
+        }
+      ],
+      "hintJa": "この建物は「風の宮殿」と呼ばれます。装飾のすき間を、目に見えるもの以外も通ります。",
+      "correctExplanationJa": "小窓は通風を助けました。人が外を見る仕組みと、空気が通る仕組みが同じ建物に組み込まれています。窓の多さを眺めるだけでなく、人がそこで過ごすための工夫として見られます。",
+      "incorrectExplanationJa": "貯水槽ではなく、空気を遮断する仕組みでもありません。政府観光案内は、多数の小窓が通風や涼しさに役立つと説明しています。繰り返す窓の形には、見た目以外の働きがあります。",
+      "sources": [
+        {
+          "publisher": "Ministry of Tourism, Government of India",
+          "title": "Discovering Hawa Mahal's Architectural Splendor",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "多数の小窓が建物の通風と冷却を助ける構成であると説明する。定量的な温度差や当日の気象条件は扱わない。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_jaipur_hawa_rear_entrance",
+      "questionEn": "A visitor looks for an entrance in Hawa Mahal's famous facade. Where is the entrance actually located?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Behind the palace, away from the famous facade."
+        },
+        {
+          "id": "B",
+          "textEn": "At the centre of the famous facade."
+        },
+        {
+          "id": "C",
+          "textEn": "Through a doorway at one end of the street-facing facade."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "facade",
+          "meaning": "建物の正面、ファサード"
+        },
+        {
+          "word": "entrance",
+          "meaning": "入口"
+        },
+        {
+          "word": "located",
+          "meaning": "位置している、設けられている"
+        }
+      ],
+      "hintJa": "写真でよく見る顔と、建物に入るための側は、必ずしも同じではありません。",
+      "correctExplanationJa": "入口は背後側にあります。外からの有名な姿だけを知っていると、正面を眺めたまま入口を探し続けてしまいそうです。建築の構成についての問題で、当日の入場規制や経路の保証ではありません。",
+      "incorrectExplanationJa": "有名な正面ファサードの中央や片端に、通りから入る入口があるのではありません。入口は背後側です。正面の外観を見る場所と、中へ入る場所が異なる点に気付くと、建物の構成が分かりやすくなります。",
+      "sources": [
+        {
+          "publisher": "Ministry of Tourism, Government of India",
+          "title": "Discovering Hawa Mahal's Architectural Splendor",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "政府観光案内は、ハワー・マハルには正面入口がなく背後側の入口があると説明する。"
+        }
+      ],
+      "difficulty": "medium"
+    }
+  ]
+}

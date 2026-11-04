@@ -5,7 +5,7 @@ import path from "node:path";
 import { Story } from "inkjs";
 import sharp from "sharp";
 import { buildContent, compileInk, validateStory } from "../../scripts/content-pipeline";
-import { effects, presentation } from "./index";
+import { effects, getCities, presentation } from "./index";
 import dateData from "../../content/romance/date_catalog.json";
 import battleData from "../../content/battles/catalog.json";
 import tourismData from "../../content/tourism/catalog.json";
@@ -202,6 +202,7 @@ describe("content build acceptance", () => {
             : []),
         ]),
         ...tourismData.landmarks.map((landmark) => landmark.guideStoryId),
+        ...getCities().flatMap((city) => city.arrivalStoryId ? [city.arrivalStoryId] : []),
         ...result.journey.episodes.flatMap((episode) =>
           episode.epilogueStoryId ? [episode.epilogueStoryId] : [],
         ),

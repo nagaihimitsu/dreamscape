@@ -14,5 +14,6 @@
     "jaipur_hawa_mahal",
     "jaipur_city_palace"
   ],
-  "productionStatus": "prototype"
+  "productionStatus": "complete",
+  "arrivalStoryId": "arrivals/jaipur"
 }

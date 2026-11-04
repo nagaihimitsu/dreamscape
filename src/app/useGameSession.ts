@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createGame, type GameState } from "../domain/game";
 import { advanceCompletedJourneyCity } from "../domain/city-travel";
+import { startCityArrival } from "../domain/epilogue";
 import { finishTravelEventIfComplete } from "../domain/travel-game";
 import {
   backupAndCreate, deleteSaveData, LEARNING_KEY, SAVE_KEY, loadGame,
@@ -64,7 +65,8 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCityCh
 
   function begin(player: string, heroine: string, journeyId: string) {
     if (loaded.status === "invalid" && loaded.kind === "journey") return;
-    const next = createGame(player.trim(), heroine.trim(), { journeyId });
+    const initial = createGame(player.trim(), heroine.trim(), { journeyId });
+    const next = startCityArrival(initial, initial.revision);
     const unsavedStart = !autoSave &&
       (loaded.status === "empty" || (loaded.status === "invalid" && loaded.raw !== null));
     const saved = unsavedStart ? { ok: true as const } : invalid && loaded.status === "invalid"

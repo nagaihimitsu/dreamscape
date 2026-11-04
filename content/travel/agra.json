@@ -99,6 +99,9 @@
       ],
       "closedWeekdays": [
         4
+      ],
+      "landmarkIds": [
+        "agra_taj_mahal"
       ]
     },
     {
@@ -180,6 +183,9 @@
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額1300ルピー。現地の実際の券種や料金を保証しない。"
         }
+      ],
+      "landmarkIds": [
+        "agra_agra_fort"
       ]
     },
     {
@@ -245,6 +251,9 @@
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額620ルピー。現地の実際の券種や料金を保証しない。"
         }
+      ],
+      "landmarkIds": [
+        "agra_itimad_tomb"
       ]
     },
     {
@@ -386,6 +395,9 @@
           "claimType": "hypothesis",
           "claimJa": "二人分の入場費はゲーム内の試算額1220ルピー。現地の実際の券種や料金を保証しない。"
         }
+      ],
+      "landmarkIds": [
+        "agra_fatehpur_sikri"
       ]
     },
     {
@@ -8134,7 +8146,6 @@
       "titleJa": "タージ・マハルを巡る",
       "activityMinutes": 150,
       "apCost": 0,
-      "contentStatus": "pending_content",
       "admissionCost": 2200
     },
     {
@@ -8145,7 +8156,6 @@
       "titleJa": "アーグラ城を巡る",
       "activityMinutes": 120,
       "apCost": 0,
-      "contentStatus": "pending_content",
       "admissionCost": 1300
     },
     {
@@ -8156,7 +8166,6 @@
       "titleJa": "イティマード・ウッダウラ廟を巡る",
       "activityMinutes": 70,
       "apCost": 0,
-      "contentStatus": "pending_content",
       "admissionCost": 620
     },
     {
@@ -8167,7 +8176,6 @@
       "titleJa": "メヘターブ・バーグで過ごす",
       "activityMinutes": 60,
       "apCost": 2,
-      "contentStatus": "pending_content",
       "admissionCost": 600
     },
     {
@@ -8178,7 +8186,6 @@
       "titleJa": "ファテープル・シークリーを巡る",
       "activityMinutes": 180,
       "apCost": 0,
-      "contentStatus": "pending_content",
       "admissionCost": 1220
     },
     {
@@ -8189,7 +8196,6 @@
       "titleJa": "アクバル廟で過ごす",
       "activityMinutes": 80,
       "apCost": 2,
-      "contentStatus": "pending_content",
       "admissionCost": 620
     },
     {
@@ -8200,7 +8206,6 @@
       "titleJa": "ラム・バーグで過ごす",
       "activityMinutes": 60,
       "apCost": 2,
-      "contentStatus": "pending_content",
       "admissionCost": 600
     },
     {
@@ -8211,7 +8216,6 @@
       "titleJa": "チーニー・カ・ラウザで過ごす",
       "activityMinutes": 45,
       "apCost": 2,
-      "contentStatus": "pending_content",
       "admissionCost": 0
     },
     {
@@ -8222,7 +8226,6 @@
       "titleJa": "マリアム・ウッザマーニー廟で過ごす",
       "activityMinutes": 50,
       "apCost": 2,
-      "contentStatus": "pending_content",
       "admissionCost": 600
     },
     {
@@ -8233,8 +8236,17 @@
       "titleJa": "グル・カ・タールで過ごす",
       "activityMinutes": 55,
       "apCost": 2,
-      "contentStatus": "pending_content",
       "admissionCost": 0
+    },
+    {
+      "id": "gt_agra_finale",
+      "cityId": "agra",
+      "placeId": "agra_agra_fort",
+      "category": "main",
+      "titleJa": "アーグラ・フィナーレ――ここは残したい",
+      "activityMinutes": 30,
+      "apCost": 0,
+      "admissionCost": 1300
     }
   ]
 }

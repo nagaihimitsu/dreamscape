@@ -1,0 +1,27 @@
+.city-arrival-logo {
+  position: fixed;
+  z-index: 1900;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 24px;
+  background: #f4f1e6ed;
+  color: #294b40;
+  animation: city-arrival-fade 1.8s ease both;
+}
+.city-arrival-mark { display: grid; justify-items: center; gap: 12px; width: min(260px, 78vw); }
+.city-arrival-mark svg { width: 180px; height: 64px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+.city-arrival-mark path { stroke-dasharray: 1; animation: city-arrival-draw 1s ease-out both; }
+.city-arrival-mark strong { font: 500 clamp(28px, 8vw, 40px) "Noto Serif JP", serif; letter-spacing: .2em; padding-left: .2em; }
+.city-arrival-line { width: 60px; height: 1px; background: #b38c4b; }
+.city-arrival-continue { min-height: 44px; }
+@keyframes city-arrival-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes city-arrival-fade { 0% { opacity: 0; } 15%, 100% { opacity: 1; } }
+@keyframes city-arrival-still { from, to { opacity: 1; } }
+.city-arrival-logo.is-reduced { animation: city-arrival-still .2s steps(1, end); }
+.city-arrival-logo.is-reduced path { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .city-arrival-logo { animation: city-arrival-still .2s steps(1, end); }
+  .city-arrival-mark path { animation: none; }
+}
