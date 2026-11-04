@@ -39,7 +39,7 @@ type FailureReason = "invalid" | "closed" | "closed_day" | "time" | "budget" | "
 type Failure = { ok: false; reason: FailureReason };
 const failure = (reason: FailureReason): Failure => ({ ok: false, reason });
 export const DAY_START = 9 * 60;
-const NIGHT_START = 18 * 60;
+export const NIGHT_START = 18 * 60;
 export const DAY_END = 21 * 60;
 
 /** Weekday comes from the saved in-game calendar, never the device clock. */

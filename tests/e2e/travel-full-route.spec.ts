@@ -2,6 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { cityEpisodes, cityFinale, playCityBattle } from "./city-helpers";
 import { advanceDialogue, choose, finishEvent, saved, selectTravelEvent, setDialogueSpeed, startGuideBattle, startNewGame } from "./helpers";
 import { playStoryBattle } from "./reasoning-helpers";
+import { finishAutomaticEncounters } from "./battle-helpers";
 
 test.use({ reducedMotion: "reduce" });
 
@@ -63,6 +64,8 @@ test("travel from a new game through lodging, both special battles and the city 
   await visitEpisode(page, "milano_castello_episode");
   for (const [format, id] of [["B", "milano_la_scala_b01"], ["C", "milano_brera_c01"]] as const) {
     await selectDestination(page, id);
+    await startGuideBattle(page);
+    await finishAutomaticEncounters(page);
     expect((await saved(page)).activeBattle?.battleId).toBe(id);
     await playStoryBattle(page, format, [true, true, true]);
     await page.getByRole("button", { name: "自由時間へ戻る" }).click();

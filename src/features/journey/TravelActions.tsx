@@ -5,10 +5,10 @@ import { getJourneyForCity } from "../../content/journeys";
 import type { TravelRoute } from "../../content/travel-schemas";
 import { Modal } from "../../components/Modal";
 import type { GameState } from "../../domain/game";
-import { DAY_END, canReturnByDayEnd, planOvernight } from "../../domain/travel";
-import { getTravelHomeRoutes, waitForTravel } from "../../domain/travel-game";
+import { getNextTravelWaitTime } from "../../domain/travel-destinations";
+import { getTravelSleepOptions, waitForTravel } from "../../domain/travel-game";
 import { formatTravelTime } from "./travel-time";
-import { showTravelEvent, travelModeLabels } from "./travel-visibility";
+import { travelModeLabels } from "./travel-visibility";
 
 /** Time and lodging use the same game rules as the destination menu. */
 export function TravelActions({ game, onTravelWait, onTravelSleep }: {
@@ -18,12 +18,8 @@ export function TravelActions({ game, onTravelWait, onTravelSleep }: {
 }) {
   const { travel, travelSettings } = getCityContent(game.currentCityId);
   const [showSleep, setShowSleep] = useState(false);
-  const events = travel.events.filter((event) => showTravelEvent(game, event));
-  const nextTimes = [18 * 60, ...events.flatMap((event) => event.startWindows?.map((window) => window.start) ?? []), ...travel.places.flatMap((place) => place.openingWindows?.map((window) => window.start) ?? [])]
-    .filter((value) => value > game.travel.minute && value < DAY_END);
-  const nextTime = nextTimes.length ? Math.min(...nextTimes) : null;
-  const homeRoutes = getTravelHomeRoutes(game.travel.currentPlaceId, game.travel.hotelPlaceId, game.currentCityId);
-  const snapshot = { ...game.travel, ap: game.ap, travelBudget: game.travelBudget };
+  const nextTime = getNextTravelWaitTime(game);
+  const sleepOptions = getTravelSleepOptions(game);
   return <div className="travel-utility">
     <details className="travel-wait">
       <summary aria-label="時間を進める">待機</summary>
@@ -36,12 +32,11 @@ export function TravelActions({ game, onTravelWait, onTravelSleep }: {
     {showSleep && <Modal labelledBy="travel-sleep-title" className="travel-choice-modal" onClose={() => setShowSleep(false)}>
       <div className="travel-choice-header"><h2 id="travel-sleep-title">滞在先で休む</h2><button type="button" className="secondary" onClick={() => setShowSleep(false)}>閉じる</button></div>
       <p>滞在先へ戻り、翌日9:00に出発します。ゲーム内の宿泊費は{formatMoneyForCity(game.currentCityId, travelSettings.lodgingCost)}、APは使いません。予算の不足分は補助されます。{getJourneyForCity(game.currentCityId)?.id === "golden_triangle" && "移動料金は2人分のゲーム内の目安です。"}</p>
-      <div className="travel-choice-routes">{homeRoutes.map((route) => {
-        const result = planOvernight(snapshot, route, travelSettings.lodgingCost, !canReturnByDayEnd(snapshot, homeRoutes));
+      <div className="travel-choice-routes">{sleepOptions.map(({ route, plan: result }) => {
         const via = route.viaPlaceId ? travel.places.find((place) => place.id === route.viaPlaceId)?.nameJa : undefined;
         return <div key={JSON.stringify([route.mode, route.viaPlaceId ?? null])}><button type="button" className="secondary travel-route" disabled={!result.ok} onClick={() => { onTravelSleep(route.mode, route.viaPlaceId ?? null); setShowSleep(false); }}>{travelModeLabels[route.mode]}{route.transferNote ? `（${route.transferNote}）` : ""}{via ? `・${via}から徒歩` : ""} {route.minutes}分 · {formatMoneyForCity(game.currentCityId, route.cost)}{result.ok && result.usedAssistance ? "（宿泊費の不足分は補助）" : ""}</button>{!result.ok && <p className="fine-print">{result.reason === "budget" ? "この移動手段の予算が足りません。" : "この経路では帰れません。"}</p>}</div>;
       })}</div>
-      {homeRoutes.length === 0 && <p>滞在先への経路は確認されていません。</p>}
+      {sleepOptions.length === 0 && <p>滞在先への経路は確認されていません。</p>}
     </Modal>}
   </div>;
 }

@@ -1,248 +1,59 @@
-import { z } from "zod";
 import { getJourney, type Journey } from "../content/journeys";
 import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
 import { deriveRelationshipTone } from "./romance-tone";
 import { secureRomanceRoll } from "../random/romance-source";
-import { minimumHomeFare } from "./travel-routes";
 import { DAY_END } from "./travel";
-import { activeEncounterSchema } from "./encounter-state";
 import { validateEncounterState } from "./encounter";
 import { responseProfileSchema } from "../content/schemas";
 import { legacyDates } from "../content/legacy-milano";
-import { activeEpilogueSchema, validateEpilogueState } from "./epilogue";
+import { validateEpilogueState } from "./epilogue";
 import {
   completeRecordedChapter,
   validateJourneyState,
 } from "./chapter";
 import {
-  battleRewardReceiptSchema,
-  pendingApRewardSchema,
   settlePendingAp,
   validateRewardState,
 } from "./rewards";
-import { activeTourismSchema, validateTourismState } from "./tourism";
+import { validateTourismState } from "./tourism";
 import {
-  activeBattleSchema,
-  legacyActiveBattleSchema,
-  legacyBattleRecordSchema,
-  phase6ActiveBattleSchema,
-  battleRecordSchema,
   validateBattleState,
 } from "./battle";
 import {
   balance,
-  battles,
   city,
-  getCities,
-  encounters,
   dates,
-  dateDestinations,
   effects,
   responseProfiles,
-  progression,
   trialMilestones,
   getCityContent,
   getCityStoryBackground,
-  episodes,
-  type DateDefinition,
 } from "../content";
 import {
   beginStory,
   continueStory,
   selectStoryChoice,
   storyFingerprint,
-  validateStorySnapshot,
   type StoryStep,
-  storyFrameSchema,
 } from "../story/runtime";
 
-const uniqueStrings = z
-  .array(z.string().min(1))
-  .refine((items) => new Set(items).size === items.length);
-const frameSchema = storyFrameSchema;
-const oldActiveSchema = z
-  .object({
-    dateId: z.string(),
-    runId: z.string(),
-    replay: z.boolean(),
-    storyState: z.string().min(1),
-    storyHash: z.string(),
-    frame: frameSchema,
-    choiceCount: z.number().int().min(0).max(2),
-    step: z.number().int().positive(),
-    appliedEffectIds: uniqueStrings,
-  })
-  .strict();
-const activeDateSchema = oldActiveSchema
-  .extend({
-    choiceCount: z.number().int().nonnegative(),
-    pendingOutcome: z.enum(["accepted", "deferred"]).nullable(),
-  })
-  .strict();
-const nameSchema = z.string().trim().min(1).max(balance.maxNameLength);
-const oldStateSchema = z
-  .object({
-    schemaVersion: z.literal(1),
-    revision: z.number().int().nonnegative(),
-    playerName: nameSchema,
-    heroineName: nameSchema,
-    ap: z.number().int().min(0).max(balance.apCap),
-    affection: z.number().int(),
-    romanceStage: z.literal(1),
-    completedChapters: uniqueStrings,
-    claimedRewardIds: uniqueStrings,
-    playedDateIds: uniqueStrings,
-    memories: uniqueStrings,
-    activeDate: oldActiveSchema.nullable(),
-  })
-  .strict();
-const phase2StateSchema = oldStateSchema
-  .extend({
-    schemaVersion: z.literal(2),
-    romanceStage: z.union([
-      z.literal(1),
-      z.literal(2),
-      z.literal(3),
-      z.literal(4),
-    ]),
-    activeDate: activeDateSchema.nullable(),
-    unlockedEventIds: uniqueStrings,
-    confessionStatus: z.enum(["none", "deferred", "accepted"]),
-    endingReached: z.boolean(),
-  })
-  .strict();
-const phase3StateSchema = phase2StateSchema
-  .extend({
-    schemaVersion: z.literal(3),
-    activeBattle: legacyActiveBattleSchema.nullable(),
-    battleRecords: z.array(legacyBattleRecordSchema),
-  })
-  .strict();
-const phase4StateSchema = phase3StateSchema
-  .extend({
-    schemaVersion: z.literal(4),
-    activeTourism: activeTourismSchema.nullable(),
-    discoveredClueIds: uniqueStrings,
-    visitedLandmarkIds: uniqueStrings,
-  })
-  .strict();
-const phase5StateSchema = phase4StateSchema
-  .extend({
-    schemaVersion: z.literal(5),
-    completedEpisodeIds: uniqueStrings,
-    completedCityIds: uniqueStrings,
-    completedGuideIds: uniqueStrings,
-    pendingApRewards: z.array(pendingApRewardSchema),
-    battleRewardReceipt: battleRewardReceiptSchema.nullable(),
-  })
-  .strict();
-const phase6StateSchema = phase5StateSchema
-  .extend({
-    schemaVersion: z.literal(6),
-    activeBattle: phase6ActiveBattleSchema.nullable(),
-  })
-  .strict();
-const phase7StateSchema = phase6StateSchema
-  .extend({
-    schemaVersion: z.literal(7),
-    activeBattle: activeBattleSchema.nullable(),
-    battleRecords: z.array(battleRecordSchema),
-    activeEpilogue: activeEpilogueSchema.nullable(),
-    viewedEpilogueCityIds: uniqueStrings,
-    legacyTrialAvailable: z.boolean(),
-  })
-  .strict();
-const phase8StateSchema = phase7StateSchema.extend({
-  schemaVersion: z.literal(8),
-  trust: z.number().int(),
-  spark: z.number().int(),
-  lastRejectedDateCount: z.number().int().nonnegative().nullable(),
-  confessionStatus: z.enum(["none", "deferred", "rejected", "accepted"]),
-  activeDate: activeDateSchema.extend({ pendingOutcome: z.enum(["accepted", "deferred", "rejected"]).nullable() }).nullable(),
-}).strict();
-const relationshipValuesSchema = z.object({
-  affection: z.number().int(), trust: z.number().int(), spark: z.number().int(),
-}).strict();
-const romanceRollTicketSchema = z.object({
-  reaction: z.number().int().min(0).max(9999),
-  affection: z.number().int().min(0).max(9999),
-  trust: z.number().int().min(0).max(9999),
-  spark: z.number().int().min(0).max(9999),
-}).strict();
-const resolvedChoiceSchema = z.object({
-  choiceIndex: z.number().int().min(0).max(2),
-  effectId: z.string().min(1),
-  before: relationshipValuesSchema,
-  result: z.enum(["positive", "negative"]),
-  chance: z.number().min(0).max(100),
-  deltas: relationshipValuesSchema,
-}).strict();
-const responseSnapshotSchema = z.object({
-  profiles: z.array(responseProfileSchema).min(1),
-  effectProfiles: z.record(z.string().regex(/^[a-z][a-z0-9_]*$/), z.string().regex(/^[a-z][a-z0-9_]*$/)),
-}).strict().refine(({ profiles, effectProfiles }) => {
-  const ids = new Set(profiles.map((profile) => profile.id));
-  return ids.size === profiles.length && Object.values(effectProfiles).every((id) => ids.has(id));
-}, "保存された恋愛リアクション設定が不正です。");
-const phase9ActiveDateSchema = activeDateSchema.extend({
-  pendingOutcome: z.enum(["accepted", "deferred", "rejected"]).nullable(),
-  resolutionMode: z.enum(["legacy_fixed", "random_v1"]),
-  randomPlan: z.array(romanceRollTicketSchema),
-  resolvedChoices: z.array(resolvedChoiceSchema),
-  responseSnapshot: responseSnapshotSchema.nullable(),
-}).strict();
-const phase9StateSchema = phase8StateSchema.extend({
-  schemaVersion: z.literal(9),
-  recoveryAfterRejection: z.boolean(),
-  completedRecoveryCount: z.number().int().min(0).max(3),
-  activeDate: phase9ActiveDateSchema.nullable(),
-}).strict();
-const stableContentId = z.string().regex(/^[a-z][a-z0-9_]*$/);
-const phase10StateSchema = phase9StateSchema.extend({
-  schemaVersion: z.literal(10),
-  travelBudget: z.number().int().nonnegative().safe(),
-  inventory: z.record(stableContentId, z.enum(["held", "gifted", "used", "left_behind"])),
-  completedEncounterIds: uniqueStrings,
-  encounterRewards: z.record(stableContentId, z.object({
-    roll: z.number().int().min(0).max(9999),
-    chancePercent: z.number().int().min(0).max(100),
-    won: z.boolean(),
-  }).strict()),
-  activeEncounter: activeEncounterSchema.nullable(),
-}).strict();
-const phase11StateSchema = phase10StateSchema.extend({
-  schemaVersion: z.literal(11),
-  updatedDateIds: uniqueStrings,
-}).strict();
-export const gameStateSchema = phase11StateSchema.extend({
-  schemaVersion: z.literal(12),
-  currentCityId: stableContentId.default("milano"),
-  travel: z.object({
-    currentPlaceId: stableContentId,
-    hotelPlaceId: stableContentId,
-    day: z.number().int().positive().safe(),
-    // Optional for existing v12 saves. Day one of the journey is fictional;
-    // it is not the device's real-world date.
-    calendar: z.object({
-      journeyDay: z.number().int().positive().safe(),
-      cityStartJourneyDay: z.number().int().positive().safe(),
-      startWeekday: z.number().int().min(0).max(6),
-    }).strict().optional(),
-    minute: z.number().int().min(540).max(1980),
-    returnReserve: z.number().int().nonnegative().safe(),
-    returnDeadline: z.literal(DAY_END).optional(),
-    activeEvent: z.object({
-      eventId: stableContentId,
-      placeId: stableContentId,
-      endMinute: z.number().int().min(540).max(1320),
-    }).strict().nullable(),
-  }).strict().superRefine((travel, context) => {
-    if (travel.calendar && travel.calendar.journeyDay - travel.calendar.cityStartJourneyDay + 1 !== travel.day)
-      context.addIssue({ code: "custom", message: "Travel day and journey calendar disagree", path: ["calendar"] });
-  }),
-}).strict();
-export type GameState = z.infer<typeof gameStateSchema>;
-export type ActiveDate = NonNullable<GameState["activeDate"]>;
+import { gameStateSchema, nameSchema, type GameState, type ActiveDate } from "./game-state-schema";
+import {
+  activeDateStoryId, completedDateCount, evaluateProgression, getPlayerAddress,
+  getMemoryCallback, canConfessSuccessfully, confessionResult, isUpdatedDateReplay,
+  getDateAvailability,
+} from "./date-rules";
+
+import { validateTravelState, validateGameHistory, validateActiveDateState } from "./game-state-validation";
+
+export { gameStateSchema, isKnownLegacyGameState } from "./game-state-schema";
+export type { GameState, ActiveDate } from "./game-state-schema";
+export {
+  completedDateCount, evaluateProgression, getPlayerAddress, getMemoryCallback,
+  canConfessSuccessfully, confessionResult, isUpdatedDateReplay,
+  activeDateStoryId, isDateUnlockedForTravel, isEventVisible, getDateAvailability,
+} from "./date-rules";
+
 export interface Availability {
   available: boolean;
   reason: string;
@@ -304,117 +115,6 @@ export function createGame(
     viewedEpilogueCityIds: [],
     legacyTrialAvailable: false,
   };
-}
-
-function meetsDateConditions(state: GameState, date: DateDefinition): boolean {
-  return (
-    date.requiredCompletedChapters.every((id) =>
-      state.completedChapters.includes(id),
-    ) &&
-    (date.requiredCompletedCityIds ?? []).every((id) =>
-      state.completedCityIds.includes(id),
-    ) &&
-    (date.requiredCompletedEpisodeIds ?? []).every((id) =>
-      state.completedEpisodeIds.includes(id),
-    ) &&
-    (date.forbiddenCompletedEpisodeIds ?? []).every((id) =>
-      !state.completedEpisodeIds.includes(id),
-    ) &&
-    date.requiredPlayedDateIds.every((id) =>
-      state.playedDateIds.includes(id),
-    ) &&
-    state.romanceStage >= date.minRomanceStage &&
-    (date.minAffection === 0 || state.affection >= date.minAffection) &&
-    (!date.needsDeferred || state.confessionStatus === "deferred")
-  );
-}
-
-function isConfessionOnCooldown(state: GameState, date: DateDefinition): boolean {
-  return date.kind === "confession" && state.confessionStatus === "rejected" &&
-    state.lastRejectedDateCount !== null && completedDateCount(state) <= state.lastRejectedDateCount &&
-    !state.recoveryAfterRejection;
-}
-
-/** Destinations own their city; destination-less events belong to a city's travel catalog. */
-function dateBelongsToCity(state: GameState, date: DateDefinition): boolean {
-  if (date.destinationId) return dateDestinations.some((destination) => destination.id === date.destinationId && destination.cityId === state.currentCityId);
-  return getCityContent(state.currentCityId).travel.events.some((event) => event.id === date.id && event.category === "date");
-}
-
-/** Progress and relationship requirements only; AP and opening hours do not hide a destination. */
-export function isDateUnlockedForTravel(state: GameState, dateId: string): boolean {
-  const date = dates.find((item) => item.id === dateId);
-  return !!date && dateBelongsToCity(state, date) && !date.legacyOnly && !isConfessionOnCooldown(state, date) &&
-    (isUpdatedDateReplay(state, dateId) || meetsDateConditions(state, date));
-}
-
-/** Count completed ordinary dates and up to three real recovery conversations. */
-export function completedDateCount(state: GameState): number {
-  const ordinary = state.playedDateIds.filter((id) => dates.some((date) => date.id === id && date.kind === "normal")).length;
-  return ordinary + state.completedRecoveryCount;
-}
-
-/** Re-evaluate only at durable event boundaries. Unlocks remain recorded after their first appearance. */
-export function evaluateProgression(state: GameState): GameState {
-  let romanceStage = state.romanceStage;
-  for (const stage of progression.stages) {
-    if (
-      state.affection >= stage.minAffection &&
-      state.trust >= stage.minTrust && state.spark >= stage.minSpark &&
-      completedDateCount(state) >= stage.minCompletedDates
-    ) {
-      romanceStage = Math.max(
-        romanceStage,
-        stage.stage,
-      ) as GameState["romanceStage"];
-    }
-  }
-  const next = { ...state, romanceStage };
-  const unlockedEventIds = [...state.unlockedEventIds];
-  for (const date of dates) {
-    if (
-      date.kind !== "normal" && !date.recovery && dateBelongsToCity(state, date) &&
-      meetsDateConditions(next, date) &&
-      !unlockedEventIds.includes(date.id)
-    )
-      unlockedEventIds.push(date.id);
-  }
-  if (
-    romanceStage === state.romanceStage &&
-    unlockedEventIds.length === state.unlockedEventIds.length
-  )
-    return state;
-  return { ...next, unlockedEventIds };
-}
-
-export function getPlayerAddress(state: GameState): string {
-  const stage = progression.stages.find(
-    (item) => item.stage === state.romanceStage,
-  )!;
-  return `${state.playerName}${stage.playerSuffix}`;
-}
-
-export function getMemoryCallback(state: GameState): string {
-  return (
-    progression.memoryCallbacks.find((item) =>
-      state.memories.includes(item.memoryId),
-    )?.textJa ?? progression.fallbackMemoryCallbackJa
-  );
-}
-
-export function canConfessSuccessfully(state: GameState): boolean {
-  return (
-    state.affection >= progression.confession.minAffection &&
-    state.trust >= progression.confession.minTrust &&
-    state.spark >= progression.confession.minSpark &&
-    completedDateCount(state) >= progression.confession.minCompletedDates
-  );
-}
-
-export function confessionResult(state: GameState): "accepted" | "deferred" | "rejected" {
-  if (canConfessSuccessfully(state)) return "accepted";
-  return state.affection >= progression.stages[2].minAffection && state.trust >= progression.stages[2].minTrust
-    ? "deferred" : "rejected";
 }
 
 export function setNames(
@@ -522,93 +222,6 @@ export function claimTrialMilestone(
   return grantRewardOnce(state, milestone.rewardSourceId, milestone.ap);
 }
 
-/** A repeatable conversation prevents random setbacks from permanently blocking recovery. */
-function canRecoverRelationship(state: GameState): boolean {
-  if (state.endingReached || completedDateCount(state) === 0) return false;
-  const needsRepair = !canConfessSuccessfully(state) ||
-    (state.confessionStatus === "rejected" && !state.recoveryAfterRejection &&
-      state.lastRejectedDateCount !== null && completedDateCount(state) <= state.lastRejectedDateCount);
-  if (!needsRepair) return false;
-  return !dates.some((date) => date.kind === "normal" && !isUpdatedDateReplay(state, date.id) && getDateAvailability(state, date.id).available);
-}
-
-/** A completed old normal date may show its rewritten scene once without rewards. */
-export function isUpdatedDateReplay(state: GameState, dateId: string): boolean {
-  const date = dates.find((item) => item.id === dateId);
-  const old = legacyDates.find((item) => item.id === dateId);
-  return !!date && !!old && date.kind === "normal" && old.kind === "normal" &&
-    date.rewardOnlyOnce && !date.legacyOnly && date.storyId !== old.storyId &&
-    state.playedDateIds.includes(dateId) && !state.updatedDateIds.includes(dateId);
-}
-
-export function isEventVisible(state: GameState, dateId: string): boolean {
-  const date = dates.find((item) => item.id === dateId);
-  return Boolean(
-    date && dateBelongsToCity(state, date) && !date.legacyOnly &&
-      (!date.recovery || canRecoverRelationship(state)) &&
-      (!state.endingReached || date.kind === "normal" || date.allowAfterEnding) &&
-      (isUpdatedDateReplay(state, dateId) || (date.forbiddenCompletedEpisodeIds ?? []).every((id) => !state.completedEpisodeIds.includes(id))) &&
-      (date.kind === "normal"
-        ? (!state.playedDateIds.includes(dateId) || isUpdatedDateReplay(state, dateId)) &&
-          (isUpdatedDateReplay(state, dateId) || (date.requiredCompletedEpisodeIds ?? []).every((id) => state.completedEpisodeIds.includes(id)))
-        : state.unlockedEventIds.includes(dateId) || meetsDateConditions(state, date)),
-  );
-}
-
-export function getDateAvailability(
-  state: GameState,
-  dateId: string,
-): Availability {
-  const date = dates.find((item) => item.id === dateId);
-  if (!date) return { available: false, reason: "デートが見つかりません。" };
-  if (!dateBelongsToCity(state, date)) return { available: false, reason: "この街では出かけられません。" };
-  if (date.legacyOnly) return { available: false, reason: "この場面は以前の途中セーブからのみ再開できます。" };
-  if (date.recovery && !canRecoverRelationship(state))
-    return { available: false, reason: "今は別のひとときを選べます。" };
-  if (state.endingReached && date.kind !== "normal" && !date.allowAfterEnding)
-    return {
-      available: false,
-      reason: "ふたりの物語は、交際エンディングを迎えました。",
-    };
-  if (
-    state.activeDate ||
-    state.activeBattle ||
-    state.activeTourism ||
-    state.activeEpilogue ||
-    state.activeEncounter
-  )
-    return {
-      available: false,
-      reason: "途中の会話・バトルを再開してください。",
-    };
-  if (isUpdatedDateReplay(state, dateId)) return { available: true, reason: "" };
-  if ((date.kind === "normal" || !date.repeatable) && state.playedDateIds.includes(dateId))
-    return {
-      available: false,
-      reason: "このひとときは、もう思い出になりました。",
-    };
-  if (
-    !(date.requiredCompletedCityIds ?? []).every((id) =>
-      state.completedCityIds.includes(id),
-    )
-  )
-    return {
-      available: false,
-      reason: "都市の旅を終えると、このデートに誘えます。",
-    };
-  if (!(date.requiredCompletedEpisodeIds ?? []).every((id) => state.completedEpisodeIds.includes(id)))
-    return { available: false, reason: "旅を進めると、この場所に誘えます。" };
-  if ((date.forbiddenCompletedEpisodeIds ?? []).some((id) => state.completedEpisodeIds.includes(id)))
-    return { available: false, reason: "この機会は過ぎました。" };
-  if (isConfessionOnCooldown(state, date))
-    return { available: false, reason: "新しいひとときを過ごしてから、もう一度話せます。" };
-  if (!meetsDateConditions(state, date))
-    return { available: false, reason: "もう少し、一緒の時間を過ごしてから。" };
-  if (state.ap < date.apCost)
-    return { available: false, reason: "APが足りません。" };
-  return { available: true, reason: "" };
-}
-
 function applyStep(
   state: GameState,
   active: ActiveDate,
@@ -662,13 +275,6 @@ function applyStep(
       appliedEffectIds: applied,
     },
   };
-}
-
-/** Resume only when the current story exactly matches the saved fingerprint. */
-export function activeDateStoryId(date: DateDefinition, active: Pick<ActiveDate, "storyHash">): string {
-  if (storyFingerprint(date.storyId) !== active.storyHash)
-    throw new Error("シナリオが更新されています。以前の途中データはそのまま保管されています。");
-  return date.storyId;
 }
 
 export function startDate(state: GameState, dateId: string, nextRoll: () => number = secureRomanceRoll): GameState {
@@ -879,51 +485,9 @@ export function finishDate(
   });
 }
 
-/** Recognize only a structurally valid historical format for a non-destructive notice. */
-export function isKnownLegacyGameState(input: unknown): boolean {
-  if (typeof input !== "object" || input === null || !("schemaVersion" in input)) return false;
-  const schemas: Record<number, z.ZodType> = {
-    1: oldStateSchema, 2: phase2StateSchema, 3: phase3StateSchema,
-    4: phase4StateSchema, 5: phase5StateSchema, 6: phase6StateSchema,
-    7: phase7StateSchema, 8: phase8StateSchema, 9: phase9StateSchema, 10: phase10StateSchema, 11: phase11StateSchema,
-  };
-  const version = input.schemaVersion;
-  return typeof version === "number" && !!schemas[version]?.safeParse(input).success;
-}
-
 export function validateGameState(input: unknown): GameState {
   const state = gameStateSchema.parse(input);
-  const travel = state.travel;
-  const { travel: cityTravel, travelSettings } = getCityContent(state.currentCityId);
-  if (travel.hotelPlaceId !== travelSettings.hotelPlaceId || travel.returnReserve > state.travelBudget ||
-      !cityTravel.places.some((place) => place.id === travel.currentPlaceId) ||
-      (travel.activeEvent && (!cityTravel.events.some((event) => event.id === travel.activeEvent!.eventId && event.placeId === travel.activeEvent!.placeId) ||
-        travel.activeEvent.placeId !== travel.currentPlaceId || travel.activeEvent.endMinute < travel.minute)))
-    throw new Error("旅行の位置や時間枠が一致しません。");
-  const returnMinute = travel.activeEvent?.endMinute ?? travel.minute;
-  let requiredFare = minimumHomeFare(cityTravel.routes, travel.currentPlaceId, travel.hotelPlaceId, returnMinute);
-  // Existing saves may have reserved an affordable return under the previous
-  // 22:00 deadline. Preserve those saves; new plans use the 21:00 deadline.
-  if (travel.returnDeadline === undefined && returnMinute < DAY_END && (requiredFare === undefined || travel.returnReserve < requiredFare)) {
-    requiredFare = minimumHomeFare(cityTravel.routes, travel.currentPlaceId, travel.hotelPlaceId, returnMinute, 22 * 60);
-  }
-  if (requiredFare === undefined || travel.returnReserve < requiredFare)
-    throw new Error("帰路の交通費を確保できていません。");
-  if (travel.activeEvent) {
-    const id = travel.activeEvent.eventId;
-    const episode = episodes.find((item) => item.id === id);
-    const sceneMatches = dates.some((item) => item.id === id)
-      ? state.activeDate?.dateId === id
-      : episode
-        ? state.activeTourism?.landmarkId === episode.landmarkId ||
-          state.activeEncounter?.returnTourism?.landmarkId === episode.landmarkId ||
-          state.activeBattle?.battleId === episode.battleId
-        : state.activeBattle?.battleId === id ||
-          battles.some((battle) => battle.id === id && !!battle.landmarkId &&
-            (state.activeTourism?.landmarkId === battle.landmarkId ||
-              state.activeEncounter?.returnTourism?.landmarkId === battle.landmarkId));
-    if (!sceneMatches) throw new Error("旅行の時間枠と進行中の場面が一致しません。");
-  }
+  validateTravelState(state);
   if (state.updatedDateIds.some((id) => !dates.some((entry) => entry.id === id) || !state.playedDateIds.includes(id)))
     throw new Error("刷新後のデート記録が一致しません。");
   if (state.activeEncounter && (state.activeDate || state.activeBattle || state.activeTourism || state.activeEpilogue))
@@ -934,110 +498,7 @@ export function validateGameState(input: unknown): GameState {
   validateJourneyState(state);
   validateRewardState(state);
   validateEpilogueState(state);
-  const knownMemories = new Set(
-    effects.flatMap((effect) => (effect.memoryId ? [effect.memoryId] : [])),
-  );
-  if (
-    state.completedChapters.some((id) => !getCities().some((entry) => entry.id === id)) ||
-    state.playedDateIds.some((id) => !dates.some((date) => date.id === id)) ||
-    state.memories.some((id) => !knownMemories.has(id)) ||
-    state.unlockedEventIds.some(
-      (id) => !dates.some((date) => date.id === id && date.kind !== "normal"),
-    )
-  )
-    throw new Error("保存データの参照先が見つかりません。");
-  for (const entry of getCities()) {
-    if (state.completedChapters.includes(entry.id) !==
-      (state.completedEpisodeIds.some((id) => episodes.some((episode) => episode.id === id && episode.cityId === entry.id)) ||
-        state.claimedRewardIds.includes(entry.firstClearReward.rewardSourceId)))
-      throw new Error("章の報酬記録が一致しません。");
-  }
-  if (state.endingReached !== (state.confessionStatus === "accepted"))
-    throw new Error("エンディングの記録が一致しません。");
-  if ((state.completedRecoveryCount > 0) !== state.playedDateIds.some(
-    (id) => dates.some((date) => date.id === id && date.recovery),
-  )) throw new Error("再交流の履歴が一致しません。");
-  if (state.recoveryAfterRejection &&
-      (state.confessionStatus !== "rejected" || state.completedRecoveryCount === 0))
-    throw new Error("告白後の交流記録が一致しません。");
-  if ((state.confessionStatus === "rejected") !== (state.lastRejectedDateCount !== null) ||
-      (state.lastRejectedDateCount !== null && state.lastRejectedDateCount > completedDateCount(state)))
-    throw new Error("告白後の進行記録が一致しません。");
-  if (
-    state.confessionStatus !== "none" &&
-    !state.playedDateIds.some(
-      (id) => dates.find((date) => date.id === id)?.kind === "confession",
-    )
-  )
-    throw new Error("告白の記録が一致しません。");
-  const active = state.activeDate;
-  if (active) {
-    const date = dates.find((item) => item.id === active.dateId);
-    if (
-      !date || !dateBelongsToCity(state, date) ||
-      (state.endingReached && date.kind !== "normal" && !date.allowAfterEnding) ||
-      (!isUpdatedDateReplay(state, active.dateId) && !(date.requiredCompletedCityIds ?? []).every((id) =>
-        state.completedCityIds.includes(id),
-      )) ||
-      (!isUpdatedDateReplay(state, active.dateId) && !(date.requiredCompletedEpisodeIds ?? []).every((id) =>
-        state.completedEpisodeIds.includes(id),
-      )) ||
-      (!isUpdatedDateReplay(state, active.dateId) && !date.requiredCompletedChapters.every((id) =>
-        state.completedChapters.includes(id),
-      ))
-    )
-      throw new Error("デートの保存状態を確認できません。");
-    const storyId = activeDateStoryId(date, active);
-    if (active.resolutionMode === "legacy_fixed") {
-      if (active.randomPlan.length || active.resolvedChoices.length || active.responseSnapshot)
-        throw new Error("旧デートの結果記録が一致しません。");
-    } else {
-      if (date.kind === "confession" || !active.responseSnapshot || active.randomPlan.length !== date.choiceCount ||
-          active.resolvedChoices.length !== active.choiceCount)
-        throw new Error("恋愛リアクションの進行記録が一致しません。");
-      for (const [choiceNumber, saved] of active.resolvedChoices.entries()) {
-        const previous = active.resolvedChoices[choiceNumber - 1];
-        if (previous && (saved.before.affection !== previous.before.affection + (active.replay ? 0 : previous.deltas.affection) ||
-            saved.before.trust !== previous.before.trust + (active.replay ? 0 : previous.deltas.trust) ||
-            saved.before.spark !== previous.before.spark + (active.replay ? 0 : previous.deltas.spark)))
-          throw new Error("保存された関係値の履歴が一致しません。");
-        const effect = effects.find((item) => item.id === saved.effectId);
-        const profileId = active.responseSnapshot.effectProfiles[saved.effectId];
-        const profile = active.responseSnapshot.profiles.find((item) => item.id === profileId);
-        if (!effect || effect.outcome || !profile) throw new Error("保存された選択効果が見つかりません。");
-        const expected = resolveRomanceChoice(profile, saved.before, active.randomPlan[choiceNumber]);
-        if (JSON.stringify(expected) !== JSON.stringify({ result: saved.result, chance: saved.chance, deltas: saved.deltas }) ||
-            !active.appliedEffectIds.some((key) => key.endsWith(`:${saved.effectId}`)))
-          throw new Error("保存された恋愛リアクションが一致しません。");
-      }
-    }
-    if (
-      active.replay !==
-      (date.rewardOnlyOnce && state.playedDateIds.includes(date.id))
-    )
-      throw new Error("デートの履歴が一致しません。");
-    if (
-      active.choiceCount > date.choiceCount ||
-      (active.pendingOutcome && date.kind !== "confession")
-    )
-      throw new Error("会話の進行記録が一致しません。");
-    const lastResolution = active.resolvedChoices.at(-1);
-    if (active.resolutionMode === "random_v1" && lastResolution && !active.replay &&
-        (state.affection !== lastResolution.before.affection + lastResolution.deltas.affection ||
-         state.trust !== lastResolution.before.trust + lastResolution.deltas.trust ||
-         state.spark !== lastResolution.before.spark + lastResolution.deltas.spark))
-      throw new Error("保存された関係値と選択結果が一致しません。");
-    validateStorySnapshot(storyId, active.storyState, active.frame, {
-      playerName: state.playerName,
-      heroineName: state.heroineName,
-      choiceCount: active.choiceCount,
-      variables: active.resolutionMode === "random_v1" ? {
-        romance_result: lastResolution?.result ?? "neutral",
-        affection_delta: lastResolution?.deltas.affection ?? 0,
-        trust_delta: lastResolution?.deltas.trust ?? 0,
-        spark_delta: lastResolution?.deltas.spark ?? 0,
-      } : undefined,
-    }, state.memories);
-  }
+  validateGameHistory(state);
+  validateActiveDateState(state);
   return state;
 }

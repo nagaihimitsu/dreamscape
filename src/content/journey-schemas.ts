@@ -41,7 +41,8 @@ export const episodeSchema = z
 export const rewardRuleSchema = z
   .object({
     id,
-    episodeId: id,
+    episodeId: id.optional(),
+    battleId: id.optional(),
     trigger: z.enum([
       "guide_read",
       "battle_complete",
@@ -54,6 +55,14 @@ export const rewardRuleSchema = z
     titleJa: japanese,
   })
   .strict()
+  .refine(
+    (rule) => (rule.episodeId !== undefined) !== (rule.battleId !== undefined),
+    "A reward must target exactly one episode or special battle",
+  )
+  .refine(
+    (rule) => rule.battleId === undefined || rule.trigger !== "city_clear",
+    "Only an episode can award city completion",
+  )
   .refine(
     (rule) => (rule.trigger === "battle_score") === (rule.minScore !== null),
     "Only score rewards require a minimum score",
@@ -83,3 +92,13 @@ export type EpisodeDefinition = z.infer<typeof episodeSchema>;
 export type StoryBattle = z.infer<typeof storyBattleSchema>;
 export type RewardRule = z.infer<typeof rewardRuleSchema>;
 export type JourneyConfig = z.infer<typeof journeySchema>;
+
+/** Existing special-battle reward IDs participate in the shared rule engine. */
+export function getAllRewardRules(journey: JourneyConfig): RewardRule[] {
+  return [...journey.storyBattles.flatMap((battle) => battle.completionReward ? [{
+    ...battle.completionReward,
+    battleId: battle.battleId,
+    trigger: "battle_complete" as const,
+    minScore: null,
+  }] : []), ...journey.rewards];
+}

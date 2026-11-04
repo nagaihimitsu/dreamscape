@@ -154,6 +154,9 @@ describe("two registered cities through the real game runtime", () => {
     expect(cityState.completedEpisodeIds).toContain("test_episode");
     expect(getEpisodeAvailability(cityState, "test_finale").available).toBe(false);
     cityState = beginTravelEvent(cityState, "test_special", "walk", cityState.revision);
+    expect(cityState.activeTourism?.landmarkId).toBe("test_special_landmark");
+    cityState = skipTourismGuide(cityState, cityState.revision);
+    cityState = startTourismBattle(cityState, cityState.revision);
     expect(cityState.activeBattle?.battleId).toBe("test_special");
     cityState = finishBattle(cityState);
     expect(cityState.battleRecords.some((record) => record.battleId === "test_special")).toBe(true);

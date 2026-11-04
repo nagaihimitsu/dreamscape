@@ -5,6 +5,7 @@ import {
 } from "../content";
 import { encounters } from "../content/encounters";
 import { getJourneyForCity } from "../content/journeys";
+import { getAllRewardRules } from "../content/journey-schemas";
 
 /** Reuse real executable scripts/assets while giving every owned entity a distinct ID. */
 export function installTestCity(options: {
@@ -97,10 +98,15 @@ export function installTestCity(options: {
   special.requiredEpisodeIds = [];
   if (special.completionReward) special.completionReward.id = id("special_first");
   journeyConfig.storyBattles.push(special);
-  if (special.completionReward) allRewardRules.push(special.completionReward);
-  const originalRewards = rewardRules.filter((item) => [normalSource.id, finaleSource.id].includes(item.episodeId));
+  allRewardRules.push(...getAllRewardRules({ ...journeyConfig, rewards: [], storyBattles: [special] }));
+  const originalRewards = rewardRules.filter((item) => item.episodeId && [normalSource.id, finaleSource.id].includes(item.episodeId));
   for (const source of originalRewards) {
     const rule = { ...clone(source), id: `${prefix}_${source.id}`, episodeId: source.episodeId === normalSource.id ? normal.id : finale.id };
+    rewardRules.push(rule);
+    allRewardRules.push(rule);
+  }
+  for (const source of rewardRules.filter((item) => item.battleId === "milano_la_scala_b01")) {
+    const rule = { ...clone(source), id: `${prefix}_${source.id}`, battleId: specialBattle.id };
     rewardRules.push(rule);
     allRewardRules.push(rule);
   }

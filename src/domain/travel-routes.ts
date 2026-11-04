@@ -1,6 +1,12 @@
 import type { TravelRoute } from "../content/travel-schemas";
 import { DAY_END } from "./travel";
 
+type RouteEstimate = Pick<TravelRoute, "minutes" | "cost">;
+
+/** Stable tie-breaking is shared by displayed options and return planning. */
+export const compareRouteTime = (a: RouteEstimate, b: RouteEstimate) => a.minutes - b.minutes || a.cost - b.cost;
+export const compareRouteCost = (a: RouteEstimate, b: RouteEstimate) => a.cost - b.cost || a.minutes - b.minutes;
+
 export type HomeRoute = Pick<TravelRoute, "fromPlaceId" | "toPlaceId" | "mode" | "minutes" | "cost" | "transferNote"> & { viaPlaceId?: string };
 
 /** Compose only existing directed transit and walking legs; never infer a reverse leg. */
@@ -17,7 +23,7 @@ export function findTravelHomeRoutes(routes: readonly TravelRoute[], fromPlaceId
   // Keep the useful time/fare trade-offs within each mode. Dropping a slower
   // but cheaper connection can strand a player who has reserved that fare.
   // Direct routes are listed first for equal time and fare.
-  const candidates = [...direct, ...transfers].sort((a, b) => a.minutes - b.minutes || a.cost - b.cost);
+  const candidates = [...direct, ...transfers].sort(compareRouteTime);
   return candidates.filter((item, index) => !candidates.some((other, otherIndex) =>
     other.mode === item.mode && other.minutes <= item.minutes && other.cost <= item.cost &&
     (other.minutes < item.minutes || other.cost < item.cost || otherIndex < index)));

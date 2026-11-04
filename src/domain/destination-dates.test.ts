@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { battles, battleQuizzes, dates, effects, episodes, progression, trialMilestones } from "../content";
+import { allRewardRules, battles, battleQuizzes, dates, effects, episodes, progression, trialMilestones } from "../content";
 import {
   advanceDate, chooseDate, createGame, finishDate, getDateAvailability,
   isEventVisible, startDate, validateGameState, type GameState,
@@ -44,7 +44,9 @@ function continueStoryBattles(initial: GameState): GameState {
     const special = getNextStoryBattle(state)!;
     state = finishBattle(startBattle(state, special.battleId));
     const total = (game: GameState) => game.ap + game.pendingApRewards.reduce((sum, reward) => sum + reward.remainingAp, 0);
-    expect(total(state)).toBe(total(before) + special.completionReward!.ap);
+    const rewardAp = allRewardRules.filter((rule) => rule.battleId === special.battleId &&
+      (rule.trigger === "battle_complete" || rule.trigger === "episode_clear")).reduce((sum, rule) => sum + rule.ap, 0);
+    expect(total(state)).toBe(total(before) + rewardAp);
     state = leaveBattle(state, state.revision);
   }
   return state;
@@ -224,7 +226,7 @@ describe("real-place optional dates", () => {
     expect(state.battleRecords.every((record) => record.firstScore === 0)).toBe(true);
     expect(state.legacyTrialAvailable).toBe(false);
     const initialAp = totalAp(state);
-    expect(initialAp).toBe(17);
+    expect(initialAp).toBe(19);
 
     const route: readonly [string, [number, number]][] = [
       ["milano_novecento_date_01", [2, 0]],
@@ -249,7 +251,7 @@ describe("real-place optional dates", () => {
       expect(startDate(state, id)).toBe(state);
     }
     expect(spent).toBe(13);
-    expect(totalAp(state)).toBe(4);
+    expect(totalAp(state)).toBe(6);
     expect(state.pendingApRewards).toEqual([]);
     expect(state.playedDateIds).toEqual(route.map(([id]) => id));
     expect(state.memories).toHaveLength(7);
