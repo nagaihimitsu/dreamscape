@@ -341,7 +341,7 @@ export async function buildContent(root: string, writeOutput = true) {
       throw new Error(`Unknown response profile: ${effect.id}/${effect.responseProfileId}`);
     if (effect.outcome && effect.responseProfileId)
       throw new Error(`Confession outcome cannot use a response profile: ${effect.id}`);
-    if (effect.outcome && (effect.affectionDelta !== 0 || (effect.trustDelta ?? 0) !== 0 || (effect.sparkDelta ?? 0) !== 0 || effect.stageDeltas))
+    if (effect.outcome && (effect.affectionDelta !== 0 || (effect.trustDelta ?? 0) !== 0 || (effect.sparkDelta ?? 0) !== 0))
       throw new Error("Confession outcome cannot award relationship points");
     if (!effect.memoryId && !effect.outcome && !effect.responseProfileId)
       throw new Error(`Effect has neither memory nor outcome: ${effect.id}`);
@@ -701,7 +701,7 @@ export async function buildContent(root: string, writeOutput = true) {
     // location-specific counterparts remain available when a scene needs one.
     const commonChoice = commonDateEffect.exec(effect.id);
     if (commonChoice) {
-      if (effect.memoryId || effect.outcome || effect.stageDeltas ||
+      if (effect.memoryId || effect.outcome ||
           effect.affectionDelta !== 0 || (effect.trustDelta ?? 0) !== 0 || (effect.sparkDelta ?? 0) !== 0 ||
           effect.responseProfileId !== commonChoice[2])
         throw new Error(`Invalid common date effect: ${effect.id}`);

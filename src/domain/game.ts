@@ -175,15 +175,13 @@ function applyStep(
           ? confessionResult(state) : effect.outcome;
     }
     if (!active.replay && !effect.outcome) {
-      const stage = String(state.romanceStage) as "1" | "2" | "3" | "4";
-      const fixed = effect.stageDeltas?.[stage] ?? effect;
       const resolved = active.resolutionMode === "random_v1"
         ? active.resolvedChoices[active.choiceCount - 1] : undefined;
       if (active.resolutionMode === "random_v1" && (!resolved || resolved.effectId !== effectId))
         throw new Error("選択結果と会話の効果が一致しません。");
-      affection += resolved?.deltas.affection ?? fixed.affectionDelta;
-      trust += resolved?.deltas.trust ?? fixed.trustDelta ?? 0;
-      spark += resolved?.deltas.spark ?? fixed.sparkDelta ?? 0;
+      affection += resolved?.deltas.affection ?? effect.affectionDelta;
+      trust += resolved?.deltas.trust ?? effect.trustDelta ?? 0;
+      spark += resolved?.deltas.spark ?? effect.sparkDelta ?? 0;
       if (effect.memoryId && !memories.includes(effect.memoryId))
         memories.push(effect.memoryId);
     }

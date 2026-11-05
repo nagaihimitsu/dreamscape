@@ -379,15 +379,12 @@ describe("Milan's four episodes and distinct city finale", () => {
     state = playDate(state, "milano_confession_01", [0]);
     expect(state.confessionStatus).toBe("deferred");
     // Respecting her request for time raises trust; a second confession can
-    // then succeed without changing the battle rewards or adding trial AP.
+    // then succeed without changing the battle rewards.
     state = playDate(state, "milano_reassurance_01", [1]);
     state = playDate(state, "milano_night_01", [0, 1]);
     state = playDate(state, "milano_confession_01", [0]);
     expect(state.endingReached).toBe(true);
     expect(totalAp(state)).toBe(11);
-    expect(state.claimedRewardIds.some((id) => id.startsWith("trial_"))).toBe(
-      false,
-    );
     expect(state.completedCityIds).toEqual(["milano"]);
   });
   it("changes the short city epilogue with the existing relationship, without advancing it", () => {

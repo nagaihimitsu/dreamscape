@@ -222,7 +222,7 @@ describe("tourism content contract", () => {
       path.join(fixture, guidePath),
       original.replace(
         "-> END",
-        "# effect: milano_cafe_first_joke\n余韻。\n-> END",
+        "# effect: common_date_first_playful\n余韻。\n-> END",
       ),
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(

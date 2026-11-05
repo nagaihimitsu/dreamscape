@@ -1,144 +1,117 @@
-// Dreamscape / Phase 1 のカフェデート。編集後は npm run content:check を実行。
-// プログラム側で player_name, heroine_name を現在の設定値に差し替える。
-VAR player_name = "たいち"
-VAR heroine_name = "あゆみ"
-
+// 現在のミラノ編のカフェデート（content/stories/milano/sound_cafe_01.ink）の記入例。編集後は npm run content:check を実行。
+// 最初の3択は共通効果 common_date_first_*、2回目は固有効果と思い出を使う例。
+// プログラム側で player_name, heroine_name, player_address などを現在の値に差し替える。
+VAR player_name = ""
+VAR heroine_name = ""
+VAR player_address = ""
+VAR romance_stage = 1
+VAR ending_reached = false
+VAR relationship_tone = "reserved"
+VAR relationship_tone_before = "reserved"
+VAR relationship_tone_after = "reserved"
 VAR romance_result = "neutral"
 VAR affection_delta = 0
 VAR trust_delta = 0
 VAR spark_delta = 0
 
--> start
-
-=== start ===
-# background: milano_cafe_landmark
+# background: milano_starbucks_roastery_date
 # speaker: narrator
-ナヴィリオ・グランデの運河沿いにある、小さなカフェ。
-今日の予定をすべて終えた{heroine_name}は、ガイドブックを閉じた。
+# reaction: heroine,worried,sweat
+ロースタリーの焙煎を見ていたら、彼女の小さいカップだけ先に届いた。鼻を近づけて、ちょっと困った顔をする。
 # speaker: heroine
-「昔、大聖堂の石をこの運河で運んだんだって」
-「石に『AUF』って印をつけると、税金を払わずに通れたらしいの」
-# speaker: narrator
-彼女は水面に目を向けてから、予定表の空欄を指で押さえた。
+「湯気はすごく好き。飲むほうは……まだ舌が信用できません。」
+# speaker: player
+「熱いの苦手だった？」
 # speaker: heroine
-「ここにも押したら、明日の予定を免除してもらえないかな」
-「……予定がない時間って、落ち着かないと思ってた」
+「猫舌なのに、いちばんいい匂いのときに飲みたいんです。かなり不利な趣味。」
+「あの透明な管、焙煎する前の豆が通ってるんだって。追いかけているうちに冷めるかな。」
+{
+- relationship_tone == "strained" || relationship_tone == "reserved":
 # speaker: narrator
-コーヒーカップの取っ手を、彼女はしばらく指でなぞっている。
+彼女はカップの取っ手を自分の方へ向けた。
+- relationship_tone == "romantic_tension" || relationship_tone == "warm":
+# speaker: narrator
+彼女は二人のカップを並べてから、そっと取っ手をこちらに向けた。
+}
+
+* [「その一口目、実況しようか」]
+    # effect: common_date_first_playful
+    { romance_result == "negative":
+        # speaker: heroine
+        「実況されたら、勢いで飲んでしまいそう。ちょっと待って。」
+    - else:
+        # speaker: heroine
+        # emotion: teasing
+        「まだ試合前です。選手の舌から冷静な判断を引き出しています。」
+    }
+    -> join_1
+
+* [「冷めるまで焙煎を見よう」]
+    # effect: common_date_first_attentive
+    { romance_result == "negative":
+        # speaker: heroine
+        「今席を離れると、ちょうどいい瞬間も逃しそう。ここで待ちたい。」
+    - else:
+        # speaker: heroine
+        「いいね。あそこで豆が返るたび、香りの向きが変わる気がする。」
+    }
+    -> join_1
+
+* [「同じのを頼めばよかった」]
+    # effect: common_date_first_honest
+    { romance_result == "negative":
+        # speaker: heroine
+        「好きかどうか、私もまだ分かんない。もう少し待ってから決めて。」
+    - else:
+        # speaker: heroine
+        「ひと口ずつ、あとで交換しようよ。比べたい。」
+    }
+    -> join_1
+
+=== join_1 ===
+# speaker: narrator
+やっと飲めた彼女は目を丸くした。隣に置いた水を飲み、もう一度味を確かめる。
 # speaker: heroine
-「でも今は……もう少しだけ、予定がないままでいたいな」
+「思ってたより酸っぱい。でも、嫌いっていうのとも違う。こういうとき、何て言う？」
 
-* [「明日は『15時に道に迷う』って予定を入れよう」]
-    # effect: milano_cafe_first_joke
+* [「もうひと口ほしい味」]
+    # effect: sound_cafe_01_2_1
     { romance_result == "negative":
         # speaker: heroine
-        # emotion: worried
-        「迷う予定まで入れたら、予定表がいっぱいになっちゃう」
-        # speaker: narrator
-        彼女は空いた欄を、手のひらでそっと隠した。
+        「うーん。もうひと口は私が決める。まだお水の番。」
     - else:
         # speaker: heroine
-        「……迷子を予約する人、初めて見た」
-        # speaker: narrator
-        彼女は笑いかけ、ガイドブックに視線を戻す。
+        「それ。美味しいかは保留なのに、カップはもう持ち上がってる。」
     }
-    -> after_first
+    -> join_2
 
-* [「{heroine_name}といると、時間が短く感じる」]
-    # effect: milano_cafe_first_flirt
+* [「感想をあとで交換しよう」]
+    # effect: sound_cafe_01_2_2
     { romance_result == "negative":
         # speaker: heroine
-        # emotion: shy
-        「……まだ、帰る時間の話はしたくないな」
-        # speaker: narrator
-        彼女はカップを口元へ運び、しばらく戻さなかった。
+        「あとでだと忘れちゃう。私は今、変な顔のうちに言いたい。」
     - else:
-        # emotion: shy
         # speaker: heroine
-        「……そういうこと、急に言うんだね」
-        # speaker: narrator
-        彼女はカップを持ち上げた。でも、まだ飲まなかった。
+        「いい。先に言われると、その味を探しちゃうから。」
     }
-    -> after_first
+    -> join_2
 
-* [「明日はどこへ行きたい？」]
-    # effect: milano_cafe_first_interest
+* [「その顔がもう感想だよ」]
+    # effect: sound_cafe_01_2_3
     { romance_result == "negative":
         # speaker: heroine
-        # emotion: worried
-        「今すぐ決めなくちゃ、だめ？」
-        # speaker: narrator
-        ガイドブックの頁を開きかけて、彼女は手を止めた。
+        「顔を見られると味に集中できないよ。カップの方を見てて。」
     - else:
         # speaker: heroine
-        「……私が決めても、いいの？」
-        # speaker: narrator
-        その言い方が、少し嬉しそうに聞こえた。
+        「そんなに出てた？　じゃあそっちが飲むときは絶対見る。」
     }
-    -> after_first
+    -> join_2
 
-=== after_first ===
+=== join_2 ===
+{ relationship_tone_after == "romantic_tension" || relationship_tone_after == "guarded_attraction":
 # speaker: narrator
-# emotion: neutral
-しばらくして、{heroine_name}は鞄から小さなメモ帳を取り出した。
-# speaker: heroine
-「……{player_name}さん。明日の予定、一つだけ書いてもいい？」
+カップとカップが軽く当たった。彼女は離す前に、一度だけこちらを見た。
+}
 # speaker: narrator
-彼女のペンが止まる。ページの一番上には、すでに『自由時間』とあった。
-# speaker: heroine
-「……自由時間まで予約しちゃった」
-
-* [「じゃあ、その時間は絶対に何もしないことにしよう」]
-    # effect: milano_cafe_second_playful
-    { romance_result == "negative":
-        # speaker: heroine
-        # emotion: serious
-        「何もしないって決めるのも、ちょっと窮屈かも」
-        # speaker: narrator
-        彼女は『自由時間』の下に、小さく波線を引いた。
-    - else:
-        # speaker: heroine
-        「……それ、ものすごく忙しい予定だね」
-        # speaker: narrator
-        彼女は『絶対に』の文字だけ二重線で囲んだ。
-    }
-    -> ending
-
-* [「その時間は、{heroine_name}の行きたい場所へ行こう」]
-    # effect: milano_cafe_second_warm
-    { romance_result == "negative":
-        # speaker: heroine
-        # emotion: worried
-        「私の行きたいところばかりでいいの？」
-        # speaker: narrator
-        ペン先が、空欄の上で止まった。
-    - else:
-        # speaker: heroine
-        「……じゃあ、一つだけ。観光案内には載ってない所があるの」
-        # speaker: narrator
-        彼女はメモ帳を閉じた。まだ教えてくれるつもりはないらしい。
-    }
-    -> ending
-
-* [「何もしないなら、またこうして話そう」]
-    # effect: milano_cafe_second_honest
-    { romance_result == "negative":
-        # speaker: heroine
-        # emotion: shy
-        「……話さない時間も、たまには欲しいかな」
-        # speaker: narrator
-        彼女は窓の外を見たまま、カップを両手で包んだ。
-    - else:
-        # emotion: shy
-        # speaker: heroine
-        「……それって、何もしないに入るのかな」
-        # speaker: narrator
-        彼女は窓の外に目を向けた。口元は少しだけ緩んでいた。
-    }
-    -> ending
-
-=== ending ===
-# speaker: narrator
-運河の向こうに街灯が灯り始めた。
-コーヒーはすっかり冷めていたが、誰も急いで飲み干そうとはしなかった。
+帰り際、彼女はカップの底をもう一度のぞいた。残っていた一滴だけ、自分の舌で確かめた。
 -> END

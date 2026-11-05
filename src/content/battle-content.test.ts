@@ -222,7 +222,7 @@ describe("battle content contract", () => {
   it("rejects reward effects even in a wrong-answer branch", async () => {
     await changeInk(
       "「ランプを探してた。",
-      "# effect: milano_cafe_first_joke\n「ランプを探してた。",
+      "# effect: common_date_first_playful\n「ランプを探してた。",
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Battle story cannot apply effects",

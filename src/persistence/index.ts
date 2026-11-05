@@ -74,7 +74,10 @@ export function loadGame(storage: StorageLike): LoadResult {
   }
   // Older versions are not migrated. The version number alone cannot rule out
   // a damaged file, so the notice says so and keeps the original untouched.
-  if (typeof version === "number" && Number.isInteger(version) && version >= 1 && version < SUPPORTED_SAVE_VERSION) {
+  // Game saves never carry a top-level `kind`; a snapshot that does (e.g. a
+  // journey-preparation draft) is not an old game save and falls through to "corrupt".
+  const otherSnapshot = typeof value === "object" && value !== null && "kind" in value;
+  if (!otherSnapshot && typeof version === "number" && Number.isInteger(version) && version >= 1 && version < SUPPORTED_SAVE_VERSION) {
     return { status: "invalid", kind: "legacy", raw,
       message: `保存データの形式はバージョン${version}です。現在のバージョンでは読み込めません。データの破損によって読み込めない場合もあります。元のデータは残っています。` };
   }

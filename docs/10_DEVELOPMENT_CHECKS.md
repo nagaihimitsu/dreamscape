@@ -13,7 +13,7 @@
 
 `npm run content:check` は差分検証ではなく全コンテンツを検証・生成する。対象テストを絞る場合、例えば `npm test -- src/domain/encounter-ap.test.ts` は通常どおり `pretest` でコンテンツを生成してから、そのテストだけを実行する。観察・戦闘画面には `npx playwright test tests/e2e/tourism-battle-background.spec.ts`、場所からの交流・戦闘と再開には `npx playwright test tests/e2e/galleria-fortune.spec.ts`、デート選択と再読込には `npx playwright test tests/e2e/romance-random.spec.ts -g 'saved random tickets'` を必要に応じて利用できる。Playwrightの `webServer` は通常 `npm run dev` を実行し、その `predev` がコンテンツを生成する。既に起動したサーバーを再利用する場合は、対象の変更が反映され、生成物が最新であることを確認する。自動テストの通過だけを写真の切れ方や操作性の目視確認の代わりにはしない。
 
-小変更のたびに全単体テストや全E2Eを実行する必要はない。ただしGitHub Actionsは `main` へのpushで `npm run verify` を自動実行し、全単体テストと本番ビルドを確認する。全E2EはCIに含まれず、影響に応じて別途選ぶ。開発中はv11を含む旧開発版セーブの更新後の再開を保証せず、旧互換テストを新機能ごとに増やす必要はない。現在のゲームの保存・再開や読めないデータの保護は維持する。
+小変更のたびに全単体テストや全E2Eを実行する必要はない。ただしGitHub Actionsは `main` へのpushで `npm run verify` を自動実行し、全単体テストと本番ビルドを確認する。全E2EはCIに含まれず、影響に応じて別途選ぶ。開発中はv12以前の旧開発版セーブの更新後の再開を保証せず、旧互換テストを新機能ごとに増やす必要はない。現在のゲームの保存・再開や読めないデータの保護は維持する。
 
 `npm test` と `npm run build` はそれぞれ実行前にコンテンツを生成する。`npm run verify` は生成、全ユニットテスト、型検査、製品ビルドを順に行う一括用コマンドで、生成は一度だけ行う。この中の `npm run test --ignore-scripts` は直前の生成を利用して `pretest` のみ省略している。個別に `--ignore-scripts` を付ける、または `npx vitest run` を直接呼ぶ場合は自動生成されないため、Ink・JSON等を変更した後は事前に `npm run content:build` を実行する。生成物の鮮度が分からない場合も再生成する。
 

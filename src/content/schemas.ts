@@ -74,9 +74,6 @@ export const effectSchema = z
     trustDelta: z.number().int().optional(),
     sparkDelta: z.number().int().optional(),
     responseProfileId: id.optional(),
-    stageDeltas: z.partialRecord(z.enum(["1", "2", "3", "4"]), z.object({
-      affectionDelta: z.number().int(), trustDelta: z.number().int(), sparkDelta: z.number().int(),
-    }).strict()).optional(),
     memoryId: id.optional(),
     outcome: z.enum(["accepted", "deferred", "rejected"]).optional(),
   })

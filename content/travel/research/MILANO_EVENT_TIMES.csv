@@ -19,7 +19,6 @@ milano_navigli_date_01,デート:normal,p_navigli,60,,1,0,09:00–22:00,ゲー�
 milano_san_satiro_date_01,デート:normal,p_satiro,60,,2,0,10:00–16:01（終端含まない）,ゲーム調整案・未実装,,終了は17:00まで（含む）、さらに22:00帰宿
 milano_starbucks_roastery_date_01,デート:normal,p_roastery,60,,2,0,09:00–21:01（終端含まない）,ゲーム調整案・未実装,,終了は22:00まで（含む）、さらに22:00帰宿
 milano_fondazione_prada_date_01,デート:normal,p_prada,60,,3,0,10:00–18:01（終端含まない）,ゲーム調整案・未実装,,終了は19:00まで（含む）、さらに22:00帰宿
-milano_love_date_01,デート:normal,p_love,60,,1,0,09:00–22:00,ゲーム調整案・未実装,,22:00帰宿まで
 milano_rain_pause_01,デート:special,p_galleria,15,,0,0,09:00–22:00,ゲーム調整案・未実装,,22:00帰宿まで
 milano_recovery_01,デート:special,p_galleria,15,15,0,0,09:00–22:00,ゲーム調整案・未実装,再戦は過去の観光を再課金しない。,22:00帰宿まで
 milano_novecento_date_01,デート:normal,p_novecento,60,,1,0,10:00–18:31（終端含まない）,ゲーム調整案・未実装,,終了は19:30まで（含む）、さらに22:00帰宿

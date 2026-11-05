@@ -76,6 +76,15 @@ describe("local save persistence", () => {
       .toMatchObject({ status: "invalid", kind: "storage", raw: null });
   });
 
+  it("reports a journey-preparation draft in the game slot as unreadable, not as an old save", () => {
+    const storage = new MemoryStorage();
+    const draft = JSON.stringify({ kind: "journey_preparation", schemaVersion: 1, journeyId: "golden_triangle" });
+    storage.setItem(SAVE_KEY, draft);
+    expect(loadGame(storage)).toMatchObject({ status: "invalid", kind: "corrupt", raw: draft });
+    expect(saveGame(storage, createGame()).ok).toBe(false);
+    expect(storage.getItem(SAVE_KEY)).toBe(draft);
+  });
+
   it.each([
     ["the first", JSON.stringify({ ...phase1.afterChoice, activeDate: {
       ...phase1.afterChoice.activeDate, storyHash: "not-a-published-script",

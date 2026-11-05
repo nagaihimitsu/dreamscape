@@ -106,9 +106,9 @@ describe.each([
 
   it("keeps an existing current-version completion save readable without retroactive AP", () => {
     const result = finishBattle(startBattle(createGame(), battleId), 3);
-    const legacyId = journeyConfig.storyBattles.find((battle) => battle.battleId === battleId)!.completionReward!.id;
-    const prior: GameState = { ...result, ap: 1, claimedRewardIds: [legacyId],
-      battleRewardReceipt: { ...result.battleRewardReceipt!, entries: result.battleRewardReceipt!.entries.filter((entry) => entry.rewardId === legacyId) } };
+    const completionRewardId = journeyConfig.storyBattles.find((battle) => battle.battleId === battleId)!.completionReward!.id;
+    const prior: GameState = { ...result, ap: 1, claimedRewardIds: [completionRewardId],
+      battleRewardReceipt: { ...result.battleRewardReceipt!, entries: result.battleRewardReceipt!.entries.filter((entry) => entry.rewardId === completionRewardId) } };
     expect(restore(prior)).toEqual(prior);
   });
 

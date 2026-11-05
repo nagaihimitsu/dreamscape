@@ -262,50 +262,37 @@
           "romanceStage": 3,
           "confessionReady": true,
           "confessionResult": "accepted",
-          "memoryIds": [
-            "milano_brera_first_listen"
-          ]
+          "memoryIds": []
         },
         {
           "romanceStage": 3,
           "confessionReady": false,
           "confessionResult": "rejected",
-          "memoryIds": [
-            "milano_brera_first_listen"
-          ]
+          "memoryIds": []
         },
         {
           "romanceStage": 4,
           "confessionReady": false,
           "confessionResult": "deferred",
-          "memoryIds": [
-            "milano_cafe_joke"
-          ]
+          "memoryIds": []
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
           "confessionResult": "accepted",
-          "memoryIds": [
-            "milano_cafe_joke"
-          ]
+          "memoryIds": []
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": false,
-          "memoryIds": [
-            "milano_cafe_first_joke_refresh",
-            "milano_brera_v2_first_listen"
-          ]
+          "memoryIds": []
         },
         {
           "romanceStage": 3,
           "confessionReady": true,
           "confessionResult": "accepted",
-          "memoryIds": [
-            "milano_cafe_first_interest_refresh"
-          ]
+          "memoryIds": []
         },
         {
           "romanceStage": 4,
@@ -406,26 +393,22 @@
         {
           "romanceStage": 2,
           "confessionReady": false,
-          "endingReached": false,
-          "memoryId": "milano_cafe_joke"
+          "endingReached": false
         },
         {
           "romanceStage": 3,
           "confessionReady": false,
-          "endingReached": false,
-          "memoryId": "milano_cafe_interest"
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": false,
-          "memoryId": "milano_cafe_secret_destination"
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "memoryId": "milano_cafe_future_talk"
+          "endingReached": true
         }
       ],
       "destinationId": "milano_galleria_revisit"
@@ -750,9 +733,7 @@
           "romanceStage": 2,
           "confessionReady": false,
           "endingReached": false,
-          "memoryIds": [
-            "milano_brera_first_listen"
-          ]
+          "memoryIds": []
         },
         {
           "romanceStage": 3,
@@ -764,9 +745,7 @@
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": false,
-          "memoryIds": [
-            "milano_brera_first_listen"
-          ]
+          "memoryIds": []
         },
         {
           "romanceStage": 4,
@@ -778,9 +757,7 @@
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": true,
-          "memoryIds": [
-            "milano_brera_first_listen"
-          ]
+          "memoryIds": []
         }
       ]
     },
