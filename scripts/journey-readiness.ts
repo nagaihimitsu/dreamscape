@@ -5,15 +5,16 @@ import { z } from "zod";
 import { citySchema, battleCatalogSchema, dateCatalogSchema, presentationSchema, quizSchema } from "../src/content/schemas";
 import { dateDestinationsSchema } from "../src/content/date-destinations";
 import { journeySchema } from "../src/content/journey-schemas";
-import { journeyCatalogSchema } from "../src/content/journey-catalog";
+import type { Journey } from "../src/content/journey-catalog";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { learningCatalogSchema, questionSource } from "../src/content/learning-schema";
+import { readJourneyCatalog } from "./content-sources";
 
 /** Report from real catalog entries; no additional hand-maintained content list. */
 export type JourneyReadinessInput = {
   journey: z.infer<typeof journeySchema>;
-  trip: z.infer<typeof journeyCatalogSchema>["journeys"][number];
+  trip: Journey;
   cities: Array<{
     city: z.infer<typeof citySchema>;
     travel: z.infer<typeof travelCatalogSchema>;
@@ -181,7 +182,7 @@ export function loadJourneyReadiness(root: string, journeyId: string): JourneyRe
     const file = path.join(dir, entry.name);
     return entry.isDirectory() ? filesIn(file) : [file];
   }).sort();
-  const catalog = journeyCatalogSchema.parse(read("journeys/catalog.json"));
+  const catalog = readJourneyCatalog(root);
   const trip = catalog.journeys.find((item) => item.id === journeyId);
   if (!trip) throw new Error("Journey journey is missing");
   const cities = trip.cities.map(({ id }) => ({ city: citySchema.parse(read(`cities/${id}.json`)),

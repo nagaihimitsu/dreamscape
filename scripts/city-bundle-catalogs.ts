@@ -7,7 +7,7 @@ import { dateCatalogSchema, presentationSchema } from "../src/content/schemas";
 import { travelCatalogSchema } from "../src/content/travel-schemas";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { dateDestinationSchema, dateDestinationsSchema } from "../src/content/date-destinations";
-import { journeyCatalogSchema } from "../src/content/journey-catalog";
+import { readJourneyCatalog } from "./content-sources";
 import type { CityBundle } from "./city-bundle-schema";
 import { catalogFiles, cityFiles, decisionFile, existing, read } from "./city-bundle-files";
 import { journeyAuthoringProfiles } from "./journey-authoring";
@@ -36,7 +36,7 @@ function replaceOwnedEntries<T extends { id: string }>(current: readonly T[], re
 
 /** Ensure observation regions stay tied to their reviewed image bytes. */
 function checkObservationImages(root: string, bundle: CityBundle, baseline: CityBundle | null) {
-  for (const { observationFile: observationsFile } of Object.values(journeyAuthoringProfiles)) {
+  for (const { observationFile: observationsFile } of journeyAuthoringProfiles(root).values()) {
     const file = path.join(root, observationsFile);
     if (!existsSync(file)) continue;
     const observations = read(root, observationsFile);
@@ -95,7 +95,7 @@ export function mergeCityCatalogs(root: string, bundle: CityBundle, baseline: Ci
   for (const date of dates) {
     if (date.chapterId !== cityId) otherBackgrounds.add(date.backgroundAssetId);
   }
-  for (const planned of journeyCatalogSchema.parse(read(root, "content/journeys/catalog.json")).journeys.flatMap((journey) => journey.cities)) {
+  for (const planned of readJourneyCatalog(root).journeys.flatMap((journey) => journey.cities)) {
     if (planned.id === cityId || !existing(root, planned.id)) continue;
     for (const place of travelCatalogSchema.parse(read(root, cityFiles(planned.id)[1])).places) otherBackgrounds.add(place.backgroundAssetId);
   }

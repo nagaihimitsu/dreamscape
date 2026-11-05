@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "order": 10,
+  "id": "milano",
+  "nameJa": "ミラノ編",
+  "status": "available",
+  "cities": [
+    {
+      "id": "milano",
+      "nameJa": "ミラノ"
+    }
+  ],
+  "currency": {
+    "code": "EUR",
+    "symbol": "€",
+    "unitJa": "ユーロ",
+    "unit": "whole"
+  },
+  "intercityModes": []
+}

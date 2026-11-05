@@ -7,7 +7,7 @@ import { episodeSchema, rewardRuleSchema } from "../src/content/journey-schemas"
 import { landmarkSchema, tourismClueSchema, tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { travelCatalogSchema, travelEventSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { dateDestinationsSchema } from "../src/content/date-destinations";
-import { journeyCatalogSchema } from "../src/content/journey-catalog";
+import { readJourneyCatalog } from "./content-sources";
 import { getJourneyAuthoringProfile } from "./journey-authoring";
 
 // Narrative metadata belongs to the not-yet-written scenario. No empty string
@@ -159,9 +159,9 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
 }
 
 export function loadJourneyScaffold(root: string, journeyId: string): JourneyScaffoldInput {
-  const profile = getJourneyAuthoringProfile(journeyId);
+  const profile = getJourneyAuthoringProfile(root, journeyId);
   const json = (file: string): unknown => JSON.parse(readFileSync(path.join(root, file), "utf8"));
-  const journey = journeyCatalogSchema.parse(json("content/journeys/catalog.json")).journeys.find((item) => item.id === journeyId);
+  const journey = readJourneyCatalog(root).journeys.find((item) => item.id === journeyId);
   if (!journey?.cityPlan) throw new Error("Journey scaffold: missing journey plan");
   const cities = journey.cities.map(({ id }) => travelCatalogSchema.parse(json(`content/travel/${id}.json`)));
   const cityData = cities.map((city) => citySchema.parse(json(`content/cities/${city.cityId}.json`)));

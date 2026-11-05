@@ -49,7 +49,7 @@ function fixture() {
 describe("draft journey scenario contracts", () => {
   it("checks every authored file and relationship/quiz input without making the journey playable", async () => {
     const { root, directory, plan } = fixture();
-    const catalog = readFileSync("content/journeys/catalog.json", "utf8");
+    const manifest = readFileSync("content/journeys/golden_triangle/manifest.json", "utf8");
     const generated = readFileSync("src/content/generated/stories.json", "utf8");
     try {
       // A promoted file has one canonical copy and still uses the same checker.
@@ -59,7 +59,7 @@ describe("draft journey scenario contracts", () => {
         journeyId: "golden_triangle", cities: ["delhi"], stories: 16, guides: 4,
         battleScenarios: 83, dateRoutes: 10368, epilogueScenarios: 8, readyForPublication: false,
       });
-      expect(readFileSync("content/journeys/catalog.json", "utf8")).toBe(catalog);
+      expect(readFileSync("content/journeys/golden_triangle/manifest.json", "utf8")).toBe(manifest);
       expect(readFileSync("src/content/generated/stories.json", "utf8")).toBe(generated);
     } finally { rmSync(root, { recursive: true, force: true }); }
   }, 120_000);

@@ -13,6 +13,7 @@ import path from "node:path";
 import { sourceFileOf } from "./catalog-merge";
 import { mirrorDirectory, type CatalogKind } from "./content-layout";
 import { displayPath, loadContentSources, writeContentMirror } from "./content-sources";
+import { authoringProfileOf } from "./journey-authoring";
 import { characterCatalogSchema } from "../src/content/character-assets";
 import { encounterCatalogInputSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
 import { encounterEntryRulesSchema, validateEncounterEntryRules } from "../src/content/encounter-entry-rules";
@@ -158,6 +159,8 @@ export async function buildContent(root: string, writeOutput = true) {
   // Every content layer, merged; the merged catalogs are validated below exactly
   // as the former single files were.
   const sources = loadContentSources(root);
+  // Only the authoring tools read these profiles; a broken one still fails the build early.
+  for (const manifest of sources.manifests) authoringProfileOf(manifest.data, manifest.file);
   const parseCatalog = <T>(schema: { parse(value: unknown): T }, kind: CatalogKind): T => {
     const merged = sources.catalogs[kind];
     if (!merged) throw new Error(`Missing content file: ${kind} (no content layer provides it)`);

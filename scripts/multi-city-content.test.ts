@@ -13,6 +13,8 @@ async function read(relative: string): Promise<any> {
 async function write(relative: string, value: unknown): Promise<void> {
   await writeFile(path.join(root, "content", relative), JSON.stringify(value));
 }
+/** Each journey registers its cities in its own manifest. */
+const manifest = (journeyId: string) => `journeys/${journeyId}/manifest.json`;
 
 /** A fictional, isolated second city reuses fixture artwork and Ink. */
 async function addSecondCity() {
@@ -23,9 +25,9 @@ async function addSecondCity() {
   milan.nextCityId = second.id;
   await write("cities/milano.json", milan);
   await write("cities/test_city.json", second);
-  const catalog = await read("journeys/catalog.json");
-  catalog.journeys.find((item: any) => item.id === "milano").cities.push({ id: second.id, nameJa: second.nameJa });
-  await write("journeys/catalog.json", catalog);
+  const milanJourney = await read(manifest("milano"));
+  milanJourney.cities.push({ id: second.id, nameJa: second.nameJa });
+  await write(manifest("milano"), milanJourney);
 
   const journey = await read("progression/journey.json");
   const chosenEpisodes = journey.episodes.filter((episode: any) => ["milano_duomo_episode", "milano_finale"].includes(episode.id));
@@ -92,9 +94,9 @@ describe("multi-city content build", () => {
     milano.nextCityId = successor.id;
     await write("cities/milano.json", milano);
     await write("cities/future_city.json", successor);
-    const catalog = await read("journeys/catalog.json");
-    catalog.journeys.find((item: any) => item.id === "milano").cities.push({ id: successor.id, nameJa: successor.nameJa });
-    await write("journeys/catalog.json", catalog);
+    const milanJourney = await read(manifest("milano"));
+    milanJourney.cities.push({ id: successor.id, nameJa: successor.nameJa });
+    await write(manifest("milano"), milanJourney);
     const travel = await read("travel/milano.json");
     travel.cityId = successor.id;
     travel.places = travel.places.map((place: any) => ({ ...place, id: `future_${place.id}`, cityId: successor.id, landmarkIds: [], destinationIds: [] }));
@@ -109,9 +111,9 @@ describe("multi-city content build", () => {
 
   it("builds two registered cities with independent content and travel", async () => {
     await addSecondCity();
-    const catalog = await read("journeys/catalog.json");
-    catalog.journeys.find((item: any) => item.id === "milano").cities.push({ id: "future_city", nameJa: "予定都市" });
-    await write("journeys/catalog.json", catalog);
+    const milanJourney = await read(manifest("milano"));
+    milanJourney.cities.push({ id: "future_city", nameJa: "予定都市" });
+    await write(manifest("milano"), milanJourney);
     const result = await buildContent(root, false);
     expect(result.journey.episodes.some((episode) => episode.cityId === "test_city")).toBe(true);
     expect(result.tourism.landmarks.some((landmark) => landmark.cityId === "test_city")).toBe(true);
@@ -129,47 +131,47 @@ describe("multi-city content build", () => {
 
   it("rejects a departure to a city belonging to another journey", async () => {
     await addSecondCity();
-    const catalog = await read("journeys/catalog.json");
-    const milano = catalog.journeys.find((item: any) => item.id === "milano");
-    const india = catalog.journeys.find((item: any) => item.id === "golden_triangle");
+    const milano = await read(manifest("milano"));
+    const india = await read(manifest("golden_triangle"));
     india.cities.push(milano.cities.pop());
-    await write("journeys/catalog.json", catalog);
+    await write(manifest("milano"), milano);
+    await write(manifest("golden_triangle"), india);
     await expect(buildContent(root, false)).rejects.toThrow(/Next city is outside the journey order/);
   }, 60000);
 
   it("rejects a departure that skips a planned city", async () => {
     await addSecondCity();
-    const catalog = await read("journeys/catalog.json");
-    catalog.journeys.find((item: any) => item.id === "milano").cities.splice(1, 0, { id: "planned_city", nameJa: "予定都市" });
-    catalog.journeys.find((item: any) => item.id === "milano").status = "preparing";
-    await write("journeys/catalog.json", catalog);
+    const milanJourney = await read(manifest("milano"));
+    milanJourney.cities.splice(1, 0, { id: "planned_city", nameJa: "予定都市" });
+    milanJourney.status = "preparing";
+    await write(manifest("milano"), milanJourney);
     await expect(buildContent(root, false)).rejects.toThrow(/Next city is outside the journey order/);
   }, 60000);
 
   it("rejects journey initial AP above the configured cap", async () => {
-    const catalog = await read("journeys/catalog.json");
+    const india = await read(manifest("golden_triangle"));
     const balance = await read("romance/balance.json");
-    catalog.journeys.find((item: any) => item.id === "golden_triangle").initialState.ap = balance.apCap + 1;
-    await write("journeys/catalog.json", catalog);
+    india.initialState.ap = balance.apCap + 1;
+    await write(manifest("golden_triangle"), india);
     await expect(buildContent(root, false)).rejects.toThrow(/Journey initial AP exceeds cap/);
   }, 60000);
 
   it("checks the city's actual finale reward against the journey plan", async () => {
-    const catalog = await read("journeys/catalog.json");
-    catalog.journeys.find((item: any) => item.id === "milano").cityPlan = {
+    const milanJourney = await read(manifest("milano"));
+    milanJourney.cityPlan = {
       cityClearAp: 4, lodgingCost: 10, mainTourismCount: 4, dateCount: 6,
     };
-    await write("journeys/catalog.json", catalog);
+    await write(manifest("milano"), milanJourney);
     // Milan has a 4 AP legacy first-episode reward, but its city-clear reward is 3 AP.
     await expect(buildContent(root, false)).rejects.toThrow(/City clear reward does not match journey plan: milano/);
   }, 60000);
 
   it("checks the city's lodging setting against the journey plan", async () => {
-    const catalog = await read("journeys/catalog.json");
-    catalog.journeys.find((item: any) => item.id === "milano").cityPlan = {
+    const milanJourney = await read(manifest("milano"));
+    milanJourney.cityPlan = {
       cityClearAp: 3, lodgingCost: 0, mainTourismCount: 4, dateCount: 6,
     };
-    await write("journeys/catalog.json", catalog);
+    await write(manifest("milano"), milanJourney);
     await expect(buildContent(root, false)).rejects.toThrow(/City lodging cost does not match journey plan: milano/);
   }, 60000);
 

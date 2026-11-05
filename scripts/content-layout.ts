@@ -4,13 +4,20 @@ import path from "node:path";
 //
 // Layers: the core layer is `content/` without the journey folders below
 // `content/journeys/`; every subdirectory of `content/journeys/` is a journey
-// layer with the same relative layout. Catalog files of all layers are merged
-// key by key (see CATALOG_RULES) and written, validated, to the generated
-// mirror `src/content/generated/content/` which the game imports.
+// layer with the same relative layout, registered by its `manifest.json`.
+// Catalog files of all layers are merged key by key (see CATALOG_RULES) and
+// written, validated, to the generated mirror `src/content/generated/content/`
+// which the game imports. The journey catalog is generated from the manifests.
 
 export const CONTENT_DIRECTORY = "content";
 export const JOURNEYS_DIRECTORY = "journeys";
 export const MIRROR_DIRECTORY = "src/content/generated/content";
+/** Registration of a journey layer: its former journey catalog entry plus the keys below. */
+export const MANIFEST_FILE = "manifest.json";
+/** Manifest keys that are not part of the generated journey catalog entry. */
+export const MANIFEST_ONLY_KEYS: readonly string[] = ["schemaVersion", "order", "authoring"];
+/** Generated from the journey manifests; no layer provides this file. */
+export const JOURNEY_CATALOG_KIND = "journeys/catalog.json";
 
 /**
  * How one key of a catalog file is merged across layers.
@@ -46,8 +53,6 @@ export const CATALOG_RULES = [
   { kind: "battles/catalog.json", fields: { schemaVersion: same, battles: concat } },
   { kind: "encounters/catalog.json", fields: { schemaVersion: same, items: concat, encounters: concat } },
   { kind: "encounters/entry-rules.json", fields: entries },
-  // Still one central core file until journeys register themselves with manifests.
-  { kind: "journeys/catalog.json", file: "core" },
   { kind: "learning/details.json", file: "single" },
   { kind: "learning/translations.json", fields: { schemaVersion: same, questions: record } },
   { kind: "learning/word-meanings.json", fields: { schemaVersion: same, words: { mode: "record", equalDuplicates: true } } },
@@ -81,18 +86,22 @@ export const CATALOG_RULES = [
   { kind: "tourism/catalog.json", fields: { schemaVersion: same, assets: concat, landmarks: concat, clues: concat } },
 ] as const satisfies readonly CatalogRule[];
 
-export type CatalogKind = (typeof CATALOG_RULES)[number]["kind"];
+/** A catalog merged from layer files. */
+export type MergedKind = (typeof CATALOG_RULES)[number]["kind"];
+/** Every catalog of the merged view (and of the generated mirror). */
+export type CatalogKind = MergedKind | typeof JOURNEY_CATALOG_KIND;
 
 const catalogRules = new Map<string, CatalogRule>(CATALOG_RULES.map((rule) => [rule.kind, rule]));
 
-export function catalogRule(kind: CatalogKind): CatalogRule {
+export function catalogRule(kind: MergedKind): CatalogRule {
   return catalogRules.get(kind)!;
 }
 
 export type LayerType = "core" | "journey";
 
 export type ContentFileType =
-  | { type: "catalog"; kind: CatalogKind }
+  | { type: "catalog"; kind: MergedKind }
+  | { type: "manifest" }
   | { type: "city"; id: string }
   | { type: "travel"; cityId: string; settings: boolean }
   | { type: "story"; id: string }
@@ -105,16 +114,17 @@ export type ContentFileType =
  * Classify a file by its path relative to its layer (posix separators).
  * Only `.json` and `.ink` files are data; notes such as `*.md` or research
  * tables are ignored. A data file outside the known layout is `unknown`.
- * Journey layers keep their images under `public/assets/`.
+ * Journey layers keep their images under `public/assets/` and are registered
+ * by `manifest.json` at their root.
  */
 export function classifyContentFile(relative: string, layer: LayerType): ContentFileType {
   if (relative.split("/").some((segment) => segment.startsWith("."))) return { type: "other" };
   if (layer === "journey" && relative.startsWith("public/"))
     return relative.startsWith("public/assets/") ? { type: "public" } : { type: "unknown" };
   if (!relative.endsWith(".json") && !relative.endsWith(".ink")) return { type: "other" };
+  if (layer === "journey" && relative === MANIFEST_FILE) return { type: "manifest" };
   const rule = catalogRules.get(relative);
-  if (rule && !(layer === "journey" && relative === "journeys/catalog.json"))
-    return { type: "catalog", kind: rule.kind as CatalogKind };
+  if (rule) return { type: "catalog", kind: rule.kind as MergedKind };
   const city = /^cities\/([^/]+)\.json$/u.exec(relative);
   if (city) return { type: "city", id: city[1] };
   const travel = /^travel\/([^/]+?)(-settings)?\.json$/u.exec(relative);
@@ -141,6 +151,11 @@ export function journeysDirectory(root: string): string {
 /** `content/journeys/<journeyId>/` */
 export function journeyDirectory(root: string, journeyId: string): string {
   return path.join(journeysDirectory(root), journeyId);
+}
+
+/** Root-relative posix path of a journey's manifest, e.g. `content/journeys/milano/manifest.json`. */
+export function journeyManifestPath(journeyId: string): string {
+  return `${CONTENT_DIRECTORY}/${JOURNEYS_DIRECTORY}/${journeyId}/${MANIFEST_FILE}`;
 }
 
 export function mirrorDirectory(root: string): string {

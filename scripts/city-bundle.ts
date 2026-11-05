@@ -7,7 +7,7 @@ import { citySchema, dateCatalogSchema, presentationSchema } from "../src/conten
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { dateDestinationsSchema } from "../src/content/date-destinations";
-import { journeyCatalogSchema } from "../src/content/journey-catalog";
+import { readJourneyCatalog } from "./content-sources";
 import { buildContent } from "./content-pipeline";
 import { buildIndiaTransitReview, indiaTransitCities, readIndiaTransitReview } from "./india-transit-review";
 import { compactTravel, expandTravel } from "./city-bundle-routes";
@@ -36,8 +36,7 @@ export function exportEditableCityBundle(root: string, cityId: string): Editable
 }
 
 function owner(root: string, id: string) {
-  const catalog = journeyCatalogSchema.parse(read(root, "content/journeys/catalog.json"));
-  const journeys = catalog.journeys.filter((journey) => journey.cities.some((city) => city.id === id));
+  const journeys = readJourneyCatalog(root).journeys.filter((journey) => journey.cities.some((city) => city.id === id));
   if (journeys.length !== 1) throw new Error(`Register city ${id} in exactly one journey before creating its bundle`);
   return journeys[0];
 }

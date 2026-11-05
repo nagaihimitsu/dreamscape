@@ -1,18 +1,24 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmdirSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { journeyCatalogSchema, type JourneyCatalog } from "../src/content/journey-catalog";
 import { mergeCatalog, type CatalogSource, type MergedCatalog } from "./catalog-merge";
 import {
   CATALOG_RULES,
   classifyContentFile,
   compareLayerFiles,
   coreLayerDirectory,
+  JOURNEY_CATALOG_KIND,
   journeysDirectory,
+  MANIFEST_FILE,
+  MANIFEST_ONLY_KEYS,
   toPosix,
   type CatalogKind,
   type LayerType,
 } from "./content-layout";
 
 export type ContentLayer = { id: string; type: LayerType; directory: string };
+/** A journey folder's `manifest.json` (unvalidated apart from id, order and schemaVersion). */
+export type JourneyManifest = { id: string; order: number; directory: string; file: string; data: Record<string, unknown> };
 /** City file plus the travel files expected next to it in the same layer. */
 export type CitySource = { id: string; layer: string; file: string; travelFile: string; settingsFile: string };
 export type StorySource = { id: string; file: string; layer: string };
@@ -21,6 +27,8 @@ export type QuizSource = { file: string; layer: string; sample: boolean };
 export type ContentSources = {
   root: string;
   layers: ContentLayer[];
+  /** Journey manifests in layer order. */
+  manifests: JourneyManifest[];
   /** Merged, unvalidated catalogs with provenance; a kind no layer provides is absent. */
   catalogs: Partial<Record<CatalogKind, MergedCatalog>>;
   cities: CitySource[];
@@ -50,21 +58,65 @@ function listFiles(directory: string, skipDirectory: (relative: string) => boole
   });
 }
 
+const isObject = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
+
+/**
+ * Every journey folder below `content/journeys/` with its `manifest.json`,
+ * sorted by the manifest `order`. A folder must be named after its journey
+ * ID, and every folder must have a manifest with a unique integer order.
+ */
+export function readJourneyManifests(root: string): JourneyManifest[] {
+  const journeys = journeysDirectory(root);
+  if (!existsSync(journeys)) return [];
+  const manifests = readdirSync(journeys, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && !entry.name.startsWith("."))
+    .map((entry) => entry.name)
+    .sort()
+    .map((id): JourneyManifest => {
+      const directory = path.join(journeys, id);
+      const file = path.join(directory, MANIFEST_FILE);
+      if (!existsSync(file)) throw new Error(`Missing journey manifest: ${file}`);
+      const data = readJson(file);
+      if (!isObject(data)) throw new Error(`Expected a JSON object in ${file}`);
+      if (data.schemaVersion !== 1) throw new Error(`Unsupported journey manifest schemaVersion in ${file}: ${JSON.stringify(data.schemaVersion)}`);
+      if (data.id !== id) throw new Error(`Journey folder name must equal the manifest id: ${file} has id ${JSON.stringify(data.id)}`);
+      if (!Number.isSafeInteger(data.order)) throw new Error(`Journey manifest order must be an integer: ${file}`);
+      return { id, order: data.order as number, directory, file, data };
+    });
+  const byOrder = new Map<number, JourneyManifest>();
+  for (const manifest of manifests) {
+    const previous = byOrder.get(manifest.order);
+    if (previous) throw new Error(`Duplicate journey order ${manifest.order}: ${previous.file} and ${manifest.file}`);
+    byOrder.set(manifest.order, manifest);
+  }
+  return manifests.sort((a, b) => a.order - b.order);
+}
+
+/**
+ * The journey catalog generated from the manifests: every manifest without
+ * its manifest-only keys (schemaVersion, order, authoring), in manifest order.
+ */
+export function journeyCatalogFromManifests(manifests: readonly JourneyManifest[]): MergedCatalog {
+  const journeys = manifests.map((manifest) =>
+    Object.fromEntries(Object.entries(manifest.data).filter(([key]) => !MANIFEST_ONLY_KEYS.includes(key))));
+  const files = manifests.map((manifest) => manifest.file);
+  return { value: { schemaVersion: 1, journeys }, provenance: { files, items: { journeys: files }, keys: {}, values: {} } };
+}
+
+/** The validated journey catalog of `root` (generated from the journey manifests). */
+export function readJourneyCatalog(root: string): JourneyCatalog {
+  return journeyCatalogSchema.parse(journeyCatalogFromManifests(readJourneyManifests(root)).value);
+}
+
 /**
  * Content layers: the core layer (`content/` without the journey folders),
- * then every journey folder below `content/journeys/` (by folder name).
+ * then every journey folder below `content/journeys/` in manifest order.
  */
-export function contentLayers(root: string): ContentLayer[] {
-  const journeys = journeysDirectory(root);
-  const journeyIds = existsSync(journeys)
-    ? readdirSync(journeys, { withFileTypes: true })
-      .filter((entry) => entry.isDirectory() && !entry.name.startsWith("."))
-      .map((entry) => entry.name)
-      .sort()
-    : [];
+export function contentLayers(root: string, manifests = readJourneyManifests(root)): ContentLayer[] {
   return [
     { id: "core", type: "core", directory: coreLayerDirectory(root) },
-    ...journeyIds.map((id): ContentLayer => ({ id, type: "journey", directory: path.join(journeys, id) })),
+    ...manifests.map(({ id, directory }): ContentLayer => ({ id, type: "journey", directory })),
   ];
 }
 
@@ -74,7 +126,8 @@ export function contentLayers(root: string): ContentLayer[] {
  * the merged data itself is validated by the content pipeline.
  */
 export function loadContentSources(root: string): ContentSources {
-  const layers = contentLayers(root);
+  const manifests = readJourneyManifests(root);
+  const layers = contentLayers(root, manifests);
   const files: LayerFile[] = layers.flatMap((layer, layerIndex) => {
     const skip = layer.type === "core"
       ? (relative: string) => relative.startsWith("journeys/") && relative.split("/").length === 2
@@ -92,7 +145,11 @@ export function loadContentSources(root: string): ContentSources {
   const quizFiles: QuizSource[] = [];
   for (const item of files) {
     const type = classifyContentFile(item.relative, item.layer.type);
-    if (type.type === "unknown") throw new Error(`Unknown content file: ${item.file}`);
+    if (type.type === "unknown") {
+      const hint = item.layer.type === "core" && item.relative === JOURNEY_CATALOG_KIND
+        ? " (journeys are registered by content/journeys/<journeyId>/manifest.json)" : "";
+      throw new Error(`Unknown content file: ${item.file}${hint}`);
+    }
     if (type.type === "catalog") catalogFiles.set(type.kind, [...(catalogFiles.get(type.kind) ?? []), item]);
     else if (type.type === "city") cityFiles.push({ ...item, id: type.id });
     else if (type.type === "travel") travelFiles.push({ ...item, cityId: type.cityId });
@@ -105,7 +162,7 @@ export function loadContentSources(root: string): ContentSources {
     }
   }
 
-  const catalogs: Partial<Record<CatalogKind, MergedCatalog>> = {};
+  const catalogs: Partial<Record<CatalogKind, MergedCatalog>> = { [JOURNEY_CATALOG_KIND]: journeyCatalogFromManifests(manifests) };
   for (const rule of CATALOG_RULES) {
     // Layer order (core first), not path order, decides the merge order.
     const sources: CatalogSource[] = (catalogFiles.get(rule.kind) ?? [])
@@ -135,7 +192,7 @@ export function loadContentSources(root: string): ContentSources {
     .filter((layer) => layer.type === "journey")
     .map((layer) => path.join(layer.directory, "public"))
     .filter((directory) => existsSync(directory))];
-  return { root, layers, catalogs, cities, storyFiles, quizFiles, publicRoots };
+  return { root, layers, manifests, catalogs, cities, storyFiles, quizFiles, publicRoots };
 }
 
 /** Root-relative posix path for messages, e.g. `content/stories/milano/sound_cafe_01.ink`. */

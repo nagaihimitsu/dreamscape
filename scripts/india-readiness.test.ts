@@ -4,11 +4,17 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { inspectIndiaReadiness, loadIndiaReadiness } from "./india-readiness";
 import { indiaInputFingerprint, indiaReleaseChanges, mergeIndiaReleaseFragments, writeIndiaReleaseFiles } from "./promote-india";
+import { getJourneyAuthoringProfile } from "./journey-authoring";
+
+const milanManifest = "content/journeys/milano/manifest.json";
+const indiaManifest = "content/journeys/golden_triangle/manifest.json";
 
 function temporaryRoot() {
   const root = mkdtempSync(path.join(tmpdir(), "dreamscape-india-release-test-"));
   const original: Record<string, string> = {
-    "content/journeys/catalog.json": JSON.stringify({ journeys: [{ id: "milano", status: "available", cities: [{ id: "milano" }] }, { id: "golden_triangle", status: "preparing", cities: ["delhi", "agra", "jaipur"].map((id) => ({ id })) }] }),
+    [milanManifest]: JSON.stringify({ schemaVersion: 1, order: 10, id: "milano", status: "available", cities: [{ id: "milano" }] }),
+    [indiaManifest]: JSON.stringify({ schemaVersion: 1, order: 20, id: "golden_triangle", status: "preparing", cities: ["delhi", "agra", "jaipur"].map((id) => ({ id })),
+      authoring: getJourneyAuthoringProfile(process.cwd(), "golden_triangle") }),
     "content/progression/journey.json": JSON.stringify({ episodes: [{ id: "milan_episode" }], rewards: [] }),
     "content/battles/catalog.json": JSON.stringify({ battles: [{ id: "milan_battle" }] }),
     "content/romance/date_catalog.json": JSON.stringify({ dates: [{ id: "milan_date" }] }),
@@ -49,15 +55,14 @@ describe("India completion and release", () => {
     const { root, original } = temporaryRoot();
     try {
       const changes = indiaReleaseChanges(original);
-      const catalog = JSON.parse(changes["content/journeys/catalog.json"]);
-      expect(catalog.journeys[0]).toEqual(JSON.parse(original["content/journeys/catalog.json"]).journeys[0]);
-      expect(catalog.journeys[1].status).toBe("available");
+      expect(changes[milanManifest]).toBeUndefined();
+      expect(JSON.parse(changes[indiaManifest])).toEqual({ ...JSON.parse(original[indiaManifest]), status: "available" });
       for (const id of ["delhi", "agra", "jaipur"]) {
         expect(JSON.parse(changes[`content/cities/${id}.json`]).productionStatus).toBe("complete");
         expect(JSON.parse(changes[`content/travel/${id}.json`]).events).toEqual([{ id: `${id}_event` }]);
       }
       const delhiOnly = indiaReleaseChanges(original, "delhi");
-      expect(Object.keys(delhiOnly).sort()).toEqual(["content/journeys/catalog.json", "content/cities/delhi.json", "content/travel/delhi.json"].sort());
+      expect(Object.keys(delhiOnly).sort()).toEqual([indiaManifest, "content/cities/delhi.json", "content/travel/delhi.json"].sort());
       expect(delhiOnly["content/cities/agra.json"]).toBeUndefined();
     } finally { rmSync(root, { recursive: true, force: true }); }
   });
@@ -104,12 +109,12 @@ describe("India completion and release", () => {
       writeFileSync(path.join(root, "content/journeys/new.json"), "new");
       expect(indiaInputFingerprint(root)).not.toBe(before);
       expect(() => writeIndiaReleaseFiles(root, original, indiaReleaseChanges(original), undefined, before)).toThrow(/Content or assets changed/);
-      expect(readFileSync(path.join(root, "content/journeys/catalog.json"), "utf8")).toBe(original["content/journeys/catalog.json"]);
+      expect(readFileSync(path.join(root, indiaManifest), "utf8")).toBe(original[indiaManifest]);
       const changed = "content/cities/delhi.json";
       writeFileSync(path.join(root, changed), "edited elsewhere");
       expect(() => writeIndiaReleaseFiles(root, original, indiaReleaseChanges(original))).toThrow(/changed while validating/);
       expect(readFileSync(path.join(root, changed), "utf8")).toBe("edited elsewhere");
-      expect(readFileSync(path.join(root, "content/journeys/catalog.json"), "utf8")).toBe(original["content/journeys/catalog.json"]);
+      expect(readFileSync(path.join(root, indiaManifest), "utf8")).toBe(original[indiaManifest]);
     } finally { rmSync(root, { recursive: true, force: true }); }
   });
 });

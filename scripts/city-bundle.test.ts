@@ -6,21 +6,21 @@ import { applyCityBundle, compactCityBundle, exportCityBundle, exportEditableCit
 import { compactTravel, expandTravel, type CompactTravel } from "./city-bundle-routes";
 import { travelCatalogSchema } from "../src/content/travel-schemas";
 import { inputFingerprint } from "./city-bundle-files";
-import { journeyAuthoringProfiles } from "./journey-authoring";
+import { getJourneyAuthoringProfile, journeyAuthoringProfiles } from "./journey-authoring";
+import { readJourneyCatalog } from "./content-sources";
 import { cityTransitFile, inspectCityTransit, readTransitLedger } from "./journey-transit-review";
 import { inspectIndiaReadiness, loadIndiaReadiness } from "./india-readiness";
 import { buildIndiaTransitReview, readIndiaTransitReview } from "./india-transit-review";
 
 const roots: string[] = [];
-const allCities = JSON.parse(readFileSync("content/journeys/catalog.json", "utf8")).journeys
-  .flatMap((journey: { cities: { id: string }[] }) => journey.cities.map((city) => city.id)) as string[];
+const allCities = readJourneyCatalog(process.cwd()).journeys.flatMap((journey) => journey.cities.map((city) => city.id));
 function fixture(): string {
   const root = mkdtempSync(path.join(tmpdir(), "dreamscape-city-bundle-"));
   roots.push(root);
   for (const directory of ["content", "public"]) {
     cpSync(path.join(process.cwd(), directory), path.join(root, directory), { recursive: true });
   }
-  const extraFiles = [...Object.values(journeyAuthoringProfiles).map((profile) => profile.observationFile),
+  const extraFiles = [...[...journeyAuthoringProfiles(process.cwd()).values()].map((profile) => profile.observationFile),
     "authoring/research/golden-triangle-transit-20261103/decisions.json",
     ...allCities.map((cityId) => cityTransitFile(process.cwd(), cityId)).filter((file): file is string => !!file)];
   for (const file of extraFiles) {
@@ -321,7 +321,7 @@ describe("city editing bundle", () => {
     await expect(applyCityBundle(root, unknown, true)).rejects.toThrow(/undecided directions/);
     expect(fingerprint(root)).toBe(before);
 
-    const observations = readJson(root, journeyAuthoringProfiles.uzbekistan.observationFile);
+    const observations = readJson(root, getJourneyAuthoringProfile(root, "uzbekistan").observationFile);
     const mainId = Object.keys(observations.images).find((id) => id.startsWith(`${cityId}_`))!;
     const imagePath = observations.images[mainId].path;
     const changedImage = exportCityBundle(root, cityId);
@@ -571,20 +571,22 @@ describe("city editing bundle", () => {
     const root = fixture();
     expect(() => newCityBundle(root, "unregistered_city")).toThrow();
     expect(() => newCityBundle(root, "delhi")).toThrow();
-    const journeys = readJson(root, "content/journeys/catalog.json");
+    // A journey registers itself with its own folder and manifest.
+    const registerJourney = (journey: { id: string; [key: string]: unknown }) => {
+      mkdirSync(path.join(root, "content/journeys", journey.id), { recursive: true });
+      writeJson(root, `content/journeys/${journey.id}/manifest.json`, { schemaVersion: 1, order: 900, ...journey });
+    };
     for (const unsafeId of ["constructor", "prototype", "__proto__"]) {
-      journeys.journeys.push({ id: "unsafe_test", nameJa: "試験", status: "preparing",
+      registerJourney({ id: "unsafe_test", nameJa: "試験", status: "preparing",
         cities: [{ id: unsafeId, nameJa: "試験" }],
         currency: { code: "TST", symbol: "¤", unitJa: "試験通貨", unit: "whole" }, intercityModes: [] });
-      writeJson(root, "content/journeys/catalog.json", journeys);
       expect(() => newCityBundle(root, unsafeId)).toThrow();
-      journeys.journeys.pop();
+      rmSync(path.join(root, "content/journeys/unsafe_test"), { recursive: true });
     }
-    journeys.journeys.push({ id: "test_journey", nameJa: "試験の旅", status: "preparing",
+    registerJourney({ id: "test_journey", nameJa: "試験の旅", status: "preparing",
       cities: [{ id: "testcity", nameJa: "試験都市" }],
       currency: { code: "TST", symbol: "¤", unitJa: "試験通貨", unit: "whole" },
       initialBudget: 1000, intercityModes: [] });
-    writeJson(root, "content/journeys/catalog.json", journeys);
     const before = fingerprint(root);
     const newFiles = ["content/cities/testcity.json", "content/travel/testcity.json", "content/travel/testcity-settings.json"];
     const template = newCityBundle(root, "testcity") as ReturnType<typeof exportCityBundle>;

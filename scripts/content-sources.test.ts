@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { journeyDirectory } from "./content-layout";
-import { contentLayers, displayPath, loadContentSources, writeContentMirror } from "./content-sources";
+import { contentLayers, displayPath, loadContentSources, readJourneyCatalog, readJourneyManifests, writeContentMirror } from "./content-sources";
 
 let root: string;
 const write = (relative: string, data: unknown) => {
@@ -12,6 +12,9 @@ const write = (relative: string, data: unknown) => {
   writeFileSync(file, typeof data === "string" ? data : JSON.stringify(data));
   return file;
 };
+/** Register a journey folder with a manifest (extra keys follow the required ones). */
+const manifest = (id: string, order: number, extra: Record<string, unknown> = {}) =>
+  write(`content/journeys/${id}/manifest.json`, { schemaVersion: 1, order, id, ...extra });
 const city = (layer: string, id: string) => {
   write(`${layer}/cities/${id}.json`, { id });
   write(`${layer}/travel/${id}.json`, { cityId: id });
@@ -21,7 +24,6 @@ const city = (layer: string, id: string) => {
 beforeEach(() => {
   root = mkdtempSync(path.join(tmpdir(), "dreamscape-sources-"));
   write("content/battles/catalog.json", { schemaVersion: 1, battles: [{ id: "core_battle" }] });
-  write("content/journeys/catalog.json", { schemaVersion: 1, journeys: [] });
   write("content/journeys/README.md", "notes");
   write("content/travel/research/ROUTES.csv", "a,b");
   write("content/stories/milano/cafe.ink", "core story");
@@ -31,15 +33,51 @@ beforeEach(() => {
 afterEach(() => rmSync(root, { recursive: true, force: true }));
 
 describe("content layers", () => {
-  it("finds the core layer and every journey folder, skipping dot folders", () => {
-    mkdirSync(journeyDirectory(root, "uzbekistan"), { recursive: true });
-    mkdirSync(journeyDirectory(root, "golden_triangle"), { recursive: true });
+  it("finds the core layer and every journey folder in manifest order, skipping dot folders", () => {
+    manifest("uzbekistan", 10);
+    manifest("golden_triangle", 20);
     mkdirSync(journeyDirectory(root, ".draft"), { recursive: true });
     expect(contentLayers(root).map(({ id, type, directory }) => [id, type, displayPath(root, directory)])).toEqual([
       ["core", "core", "content"],
-      ["golden_triangle", "journey", "content/journeys/golden_triangle"],
       ["uzbekistan", "journey", "content/journeys/uzbekistan"],
+      ["golden_triangle", "journey", "content/journeys/golden_triangle"],
     ]);
+  });
+
+  it("requires a manifest named after its folder with a unique integer order", () => {
+    mkdirSync(journeyDirectory(root, "uzbekistan"), { recursive: true });
+    expect(() => contentLayers(root)).toThrow(`Missing journey manifest: ${path.join(journeyDirectory(root, "uzbekistan"), "manifest.json")}`);
+    manifest("uzbekistan", 10, { id: "samarkand" });
+    expect(() => contentLayers(root)).toThrow(/Journey folder name must equal the manifest id: .*uzbekistan\/manifest\.json has id "samarkand"/);
+    manifest("uzbekistan", 1.5);
+    expect(() => contentLayers(root)).toThrow(/Journey manifest order must be an integer: .*uzbekistan/);
+    manifest("uzbekistan", 10, { schemaVersion: 2 });
+    expect(() => contentLayers(root)).toThrow(/Unsupported journey manifest schemaVersion in .*uzbekistan\/manifest\.json: 2/);
+    manifest("uzbekistan", 10);
+    manifest("golden_triangle", 10);
+    expect(() => contentLayers(root)).toThrow(/Duplicate journey order 10: .*golden_triangle\/manifest\.json and .*uzbekistan\/manifest\.json/);
+  });
+
+  it("generates the journey catalog from the manifests without manifest-only keys", () => {
+    manifest("uzbekistan", 30, { nameJa: "ウズベキスタン編", status: "preparing", authoring: { eventPrefix: "uz" } });
+    manifest("milano", 10, { nameJa: "ミラノ編", status: "available" });
+    const sources = loadContentSources(root);
+    expect(sources.manifests.map((item) => [item.id, item.order])).toEqual([["milano", 10], ["uzbekistan", 30]]);
+    const catalog = sources.catalogs["journeys/catalog.json"]!;
+    expect(JSON.stringify(catalog.value)).toBe(JSON.stringify({ schemaVersion: 1, journeys: [
+      { id: "milano", nameJa: "ミラノ編", status: "available" },
+      { id: "uzbekistan", nameJa: "ウズベキスタン編", status: "preparing" },
+    ] }));
+    expect(catalog.provenance.items.journeys.map((file) => displayPath(root, file)))
+      .toEqual(["content/journeys/milano/manifest.json", "content/journeys/uzbekistan/manifest.json"]);
+    expect(readJourneyManifests(root).map((item) => item.id)).toEqual(["milano", "uzbekistan"]);
+    // The generated catalog is validated like the former central file.
+    expect(() => readJourneyCatalog(root)).toThrow();
+  });
+
+  it("rejects a leftover central journey catalog", () => {
+    write("content/journeys/catalog.json", { schemaVersion: 1, journeys: [] });
+    expect(() => loadContentSources(root)).toThrow(/Unknown content file: .*content\/journeys\/catalog\.json \(journeys are registered by content\/journeys\/<journeyId>\/manifest\.json\)/);
   });
 
   it("reads the current single-layer content as it is", () => {
@@ -56,6 +94,9 @@ describe("content layers", () => {
 
 describe("loadContentSources with journey layers", () => {
   beforeEach(() => {
+    // Manifest order (not folder name) decides the layer order.
+    manifest("golden_triangle", 20);
+    manifest("milano", 30);
     write("content/journeys/golden_triangle/battles/catalog.json", { schemaVersion: 1, battles: [{ id: "gt_battle" }] });
     write("content/journeys/golden_triangle/stories/battles/gt.ink", "gt");
     write("content/journeys/golden_triangle/stories/milano/cafe-2.ink", "gt");
@@ -74,6 +115,7 @@ describe("loadContentSources with journey layers", () => {
     expect(battles.provenance.items.battles.map((file) => displayPath(root, file))).toEqual([
       "content/battles/catalog.json", "content/journeys/golden_triangle/battles/catalog.json",
     ]);
+    expect(sources.catalogs["journeys/catalog.json"]!.value).toEqual({ schemaVersion: 1, journeys: [{ id: "golden_triangle" }, { id: "milano" }] });
   });
 
   it("orders stories and quizzes by relative path (with extension), then layer", () => {
@@ -148,6 +190,7 @@ describe("writeContentMirror", () => {
     expect(existsSync(path.join(mirror, "old"))).toBe(false);
     expect(existsSync(path.join(mirror, "cities/rome.json"))).toBe(false);
     expect(existsSync(path.join(mirror, "quizzes"))).toBe(false);
+    expect(JSON.parse(readFileSync(path.join(mirror, "journeys/catalog.json"), "utf8"))).toEqual({ schemaVersion: 1, journeys: [] });
 
     // Unchanged files are not rewritten (no needless reloads of a running dev server).
     const unchanged = path.join(mirror, "cities/milano.json");

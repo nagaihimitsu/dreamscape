@@ -8,13 +8,16 @@ import { z } from "zod";
 import { learningCatalogSchema, questionSource, translationSchema } from "../src/content/learning-schema";
 import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readiness";
 import { buildJourneyFragments, loadJourneyScaffold } from "./journey-scaffold";
-import { getJourneyAuthoringProfile, journeyAuthoringProfiles } from "./journey-authoring";
+import { authoringProfileOf, getJourneyAuthoringProfile, journeyAuthoringProfiles } from "./journey-authoring";
+import { journeyManifestPath } from "./content-layout";
 
-const journeyCities = (catalog: { journeys: Array<{ id: string; cities: Array<{ id: string }> }> }, journeyId: string): string[] => {
-  getJourneyAuthoringProfile(journeyId);
-  const entries = catalog.journeys.filter((item) => item.id === journeyId);
-  const ids = entries[0]?.cities.map((city) => city.id) ?? [];
-  if (entries.length !== 1 || !ids.length || new Set(ids).size !== ids.length || ids.some((id) => !/^[a-z][a-z0-9_]*$/.test(id)))
+/** The journey's own manifest.json carries its status and city order. */
+const journeyCities = (original: Record<string, string>, journeyId: string): string[] => {
+  const file = journeyManifestPath(journeyId);
+  const manifest = typeof original[file] === "string" ? JSON.parse(original[file]) : undefined;
+  if (!manifest || !authoringProfileOf(manifest, file)) throw new Error(`Unknown authoring journey: ${journeyId}`);
+  const ids: string[] = Array.isArray(manifest.cities) ? manifest.cities.map((city: { id: string }) => city.id) : [];
+  if (manifest.id !== journeyId || !ids.length || new Set(ids).size !== ids.length || ids.some((id) => !/^[a-z][a-z0-9_]*$/.test(id)))
     throw new Error(`Journey or city order is invalid: ${journeyId}`);
   return ids;
 };
@@ -23,18 +26,18 @@ const prefix = (cityIds: readonly string[], through = cityIds.at(-1)!): readonly
   if (end < 0) throw new Error(`Unknown journey release city: ${through}`);
   return cityIds.slice(0, end + 1);
 };
-const releaseFiles = (cityIds: readonly string[], through?: string) => ["content/journeys/catalog.json", ...prefix(cityIds, through).flatMap((id) => [`content/cities/${id}.json`, `content/travel/${id}.json`])];
+const releaseFiles = (journeyId: string, cityIds: readonly string[], through?: string) => [journeyManifestPath(journeyId), ...prefix(cityIds, through).flatMap((id) => [`content/cities/${id}.json`, `content/travel/${id}.json`])];
 const fragmentFiles = ["content/progression/journey.json", "content/battles/catalog.json", "content/romance/date_catalog.json", "content/tourism/catalog.json", "content/romance/effect_catalog.json", "content/romance/presentation.json", "content/learning/translations.json"];
 const text = (value: unknown) => `${JSON.stringify(value, null, 2)}\n`;
 
 /** Changes only release markers; authored content remains the single source. */
 export function journeyReleaseChanges(original: Record<string, string>, journeyId: string, through?: string): Record<string, string> {
   const result: Record<string, string> = {};
-  const catalog = JSON.parse(original["content/journeys/catalog.json"]);
-  const cityIds = journeyCities(catalog, journeyId);
-  const files = releaseFiles(cityIds, through);
-  catalog.journeys.find((item: { id: string }) => item.id === journeyId).status = "available";
-  result[files[0]] = text(catalog);
+  const cityIds = journeyCities(original, journeyId);
+  const files = releaseFiles(journeyId, cityIds, through);
+  const manifest = JSON.parse(original[files[0]]);
+  manifest.status = "available";
+  result[files[0]] = text(manifest);
   for (const id of prefix(cityIds, through)) {
     const cityFile = `content/cities/${id}.json`;
     const travelFile = `content/travel/${id}.json`;
@@ -158,7 +161,7 @@ export function journeyInputFingerprint(root: string, ignore: ReadonlySet<string
   };
   walk("content");
   walk("public");
-  for (const { observationFile } of Object.values(journeyAuthoringProfiles)) {
+  for (const { observationFile } of journeyAuthoringProfiles(root).values()) {
     if (existsSync(path.join(root, observationFile))) walk(observationFile);
     else hash.update(`missing-observation-cards\0${observationFile}\0`);
   }
@@ -168,8 +171,8 @@ export function journeyInputFingerprint(root: string, ignore: ReadonlySet<string
 /** Stage all files first, then rename; roll back earlier renames on failure. */
 export function writeJourneyReleaseFiles(root: string, original: Record<string, string>, next: Record<string, string>, journeyId: string, move = renameSync, expectedFingerprint?: string): void {
   const files = Object.keys(next);
-  const cityIds = journeyCities(JSON.parse(original["content/journeys/catalog.json"]), journeyId);
-  const validSets = cityIds.flatMap((id) => [releaseFiles(cityIds, id), [...releaseFiles(cityIds, id), ...fragmentFiles]].map((set) => set.sort().join("\n")));
+  const cityIds = journeyCities(original, journeyId);
+  const validSets = cityIds.flatMap((id) => [releaseFiles(journeyId, cityIds, id), [...releaseFiles(journeyId, cityIds, id), ...fragmentFiles]].map((set) => set.sort().join("\n")));
   if (!validSets.includes([...files].sort().join("\n")) || files.some((file) => typeof original[file] !== "string"))
     throw new Error("Invalid Journey release file set");
   const token = `${process.pid}-${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -213,7 +216,7 @@ export function writeJourneyReleaseFiles(root: string, original: Record<string, 
 
 /** Preview in a temporary copy; only explicitly apply after full validation. */
 export async function prepareJourneyRelease(root: string, journeyId: string, apply: boolean, through?: string, narrativeFile?: string, translationsFile?: string): Promise<void> {
-  getJourneyAuthoringProfile(journeyId);
+  getJourneyAuthoringProfile(root, journeyId);
   const before = loadJourneyReadiness(root, journeyId);
   const cityIds = before.trip.cities.map((city) => city.id);
   const report = inspectJourneyReadiness(before);
@@ -225,7 +228,7 @@ export async function prepareJourneyRelease(root: string, journeyId: string, app
   const fingerprint = journeyInputFingerprint(root);
   const unpublished = new Set(before.cities.filter((entry) => ids.includes(entry.city.id) && entry.city.productionStatus !== "complete").map((entry) => entry.city.id));
   const includeFragments = !!narrativeFile && unpublished.size > 0;
-  const files = includeFragments ? [...releaseFiles(cityIds, through), ...fragmentFiles] : releaseFiles(cityIds, through);
+  const files = includeFragments ? [...releaseFiles(journeyId, cityIds, through), ...fragmentFiles] : releaseFiles(journeyId, cityIds, through);
   const original = Object.fromEntries(files.map((file) => [file, readFileSync(path.join(root, file), "utf8")]));
   let next = journeyReleaseChanges(original, journeyId, through);
   let narrativeOriginal: string | undefined;

@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { z } from "zod";
 import { citySchema } from "../src/content/schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
-import { journeyCatalogSchema } from "../src/content/journey-catalog";
+import { readJourneyCatalog } from "./content-sources";
 import { tourismSourceSchema } from "../src/content/tourism-schemas";
 import { readResearchCsv } from "./india-research-csv";
 
@@ -34,7 +34,7 @@ function uniqueSources(sources: Source[]): Source[] {
 
 /** Build reproducible authoring files; these are never registered by the game. */
 export function buildIndiaDraft(): Record<string, unknown> {
-  const journey = journeyCatalogSchema.parse(readJson("content/journeys/catalog.json")).journeys.find((item) => item.id === "golden_triangle");
+  const journey = readJourneyCatalog(root).journeys.find((item) => item.id === "golden_triangle");
   if (!journey || !journey.cityPlan) return fail("missing journey plan");
   if (journey.initialBudget == null) return fail("missing initial journey budget");
   const sequence = ["delhi", "agra", "jaipur"];

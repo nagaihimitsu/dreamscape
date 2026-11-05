@@ -4,7 +4,7 @@ import { isDeepStrictEqual } from "node:util";
 import { z } from "zod";
 import { tourismSourceSchema } from "../src/content/tourism-schemas";
 import { travelCatalogSchema, type TravelCatalog } from "../src/content/travel-schemas";
-import { journeyCatalogSchema } from "../src/content/journey-catalog";
+import { readJourneyCatalog } from "./content-sources";
 import { journeyAuthoringProfiles } from "./journey-authoring";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
@@ -24,11 +24,9 @@ const editableDecision = decision.omit({ sourceRefs: true }).extend({ cityId: id
 /** A source ledger accompanies travel catalogs; it never supplies runtime routes. */
 export function cityTransitFile(root: string, cityId: string): string | undefined {
   id.parse(cityId);
-  const catalog = journeyCatalogSchema.parse(JSON.parse(readFileSync(path.join(root, "content/journeys/catalog.json"), "utf8")));
-  const owner = catalog.journeys.find((journey) => journey.cities.some((city) => city.id === cityId));
-  if (!owner || !Object.hasOwn(journeyAuthoringProfiles, owner.id)) return undefined;
-  const profile = journeyAuthoringProfiles[owner.id as keyof typeof journeyAuthoringProfiles];
-  return "transitDirectory" in profile ? `${profile.transitDirectory}/${cityId}/transit-decisions.json` : undefined;
+  const owner = readJourneyCatalog(root).journeys.find((journey) => journey.cities.some((city) => city.id === cityId));
+  const profile = owner && journeyAuthoringProfiles(root).get(owner.id);
+  return profile?.transitDirectory ? `${profile.transitDirectory}/${cityId}/transit-decisions.json` : undefined;
 }
 
 export function readTransitLedger(root: string, file: string): TransitLedger {
@@ -87,8 +85,7 @@ export function inspectCityTransit(travel: TravelCatalog, raw: unknown) {
 }
 
 export function inspectJourneyTransit(root: string, journeyId: string) {
-  const catalog = journeyCatalogSchema.parse(JSON.parse(readFileSync(path.join(root, "content/journeys/catalog.json"), "utf8")));
-  const journey = catalog.journeys.find((entry) => entry.id === journeyId);
+  const journey = readJourneyCatalog(root).journeys.find((entry) => entry.id === journeyId);
   if (!journey) throw new Error(`Unknown journey: ${journeyId}`);
   return journey.cities.map(({ id: cityId }) => {
     const file = cityTransitFile(root, cityId);

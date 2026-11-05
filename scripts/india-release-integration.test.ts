@@ -23,7 +23,7 @@ function prepareUnpublishedFixture(root: string) {
     change(data);
     writeFileSync(target, JSON.stringify(data));
   };
-  edit("content/journeys/catalog.json", (data) => { data.journeys.find((entry: any) => entry.id === "golden_triangle").status = "preparing"; });
+  edit("content/journeys/golden_triangle/manifest.json", (data) => { data.status = "preparing"; });
   for (const city of plans) {
     edit(`content/cities/${city.cityId}.json`, (data) => {
       data.productionStatus = "prototype";
@@ -140,8 +140,7 @@ describe("India release pipeline", () => {
       expect(JSON.parse(readFileSync(cityFile, "utf8")).productionStatus).toBe("complete");
       expect(JSON.parse(readFileSync(path.join(root, "content/cities/agra.json"), "utf8")).productionStatus).toBe("prototype");
       expect(JSON.parse(readFileSync(path.join(root, "content/travel/agra.json"), "utf8")).events.every((event: { contentStatus?: string }) => event.contentStatus === "pending_content")).toBe(true);
-      const journeys = JSON.parse(readFileSync(path.join(root, "content/journeys/catalog.json"), "utf8")).journeys;
-      expect(journeys.find((entry: { id: string }) => entry.id === "golden_triangle").status).toBe("available");
+      expect(JSON.parse(readFileSync(path.join(root, "content/journeys/golden_triangle/manifest.json"), "utf8")).status).toBe("available");
       const journeyFile = path.join(root, "content/progression/journey.json");
       const after = readFileSync(journeyFile, "utf8");
       expect(JSON.parse(after).episodes.filter((episode: { cityId: string }) => episode.cityId === "delhi")).toHaveLength(5);

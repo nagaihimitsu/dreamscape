@@ -115,8 +115,11 @@ describe("catalog merge", () => {
 describe("content file layout", () => {
   it("classifies data files by their layer-relative path", () => {
     expect(classifyContentFile("battles/catalog.json", "journey")).toEqual({ type: "catalog", kind: "battles/catalog.json" });
-    expect(classifyContentFile("journeys/catalog.json", "core")).toEqual({ type: "catalog", kind: "journeys/catalog.json" });
+    // The journey catalog is generated from the manifests; no layer provides it.
+    expect(classifyContentFile("journeys/catalog.json", "core")).toEqual({ type: "unknown" });
     expect(classifyContentFile("journeys/catalog.json", "journey")).toEqual({ type: "unknown" });
+    expect(classifyContentFile("manifest.json", "journey")).toEqual({ type: "manifest" });
+    expect(classifyContentFile("manifest.json", "core")).toEqual({ type: "unknown" });
     expect(classifyContentFile("cities/delhi.json", "journey")).toEqual({ type: "city", id: "delhi" });
     expect(classifyContentFile("cities/old/delhi.json", "core")).toEqual({ type: "unknown" });
     expect(classifyContentFile("travel/delhi.json", "core")).toEqual({ type: "travel", cityId: "delhi", settings: false });

@@ -27,14 +27,15 @@ function scaffoldFixture(): JourneyScaffoldInput {
     imageAssetIds: Object.fromEntries(ids.flatMap((id) => renamed(planned, id).map((landmark, index) => [landmark, `${id}_test_photo_${index}`]))),
   };
 }
+const uzbekManifest = "content/journeys/uzbekistan/manifest.json";
 function releaseFixture() {
   const root = mkdtempSync(path.join(tmpdir(), "dreamscape-journey-release-test-"));
+  const manifest = (order: number, id: string, status: string, cities: string[], authoring = true) => JSON.stringify({ schemaVersion: 1, order, id, status,
+    cities: cities.map((city) => ({ id: city })), ...(authoring ? { authoring: getJourneyAuthoringProfile(process.cwd(), id) } : {}) }, null, 2);
   const original: Record<string, string> = {
-    "content/journeys/catalog.json": JSON.stringify({ journeys: [
-      { id: "milano", status: "available", cities: [{ id: "milano" }] },
-      { id: "golden_triangle", status: "preparing", cities: [{ id: "delhi" }, { id: "agra" }, { id: "jaipur" }] },
-      { id: "uzbekistan", status: "preparing", cities: ids.map((id) => ({ id })) },
-    ] }),
+    "content/journeys/milano/manifest.json": manifest(10, "milano", "available", ["milano"], false),
+    "content/journeys/golden_triangle/manifest.json": manifest(20, "golden_triangle", "preparing", ["delhi", "agra", "jaipur"]),
+    [uzbekManifest]: manifest(30, "uzbekistan", "preparing", ids),
   };
   for (const id of ids) {
     original[`content/cities/${id}.json`] = JSON.stringify({ id, productionStatus: "prototype" });
@@ -78,7 +79,8 @@ describe("journey authoring with four cities", () => {
     expect(fragments.episodes.filter((episode) => episode.kind === "episode").every((episode) => episode.requiredEpisodeIds.length === 0)).toBe(true);
     expect(new Set(fragments.rewards.map((reward) => reward.id)).size).toBe(fragments.rewards.length);
     expect(requirements.at(-1)?.finale.battleStoryId).toBe("battles/uz_khiva_finale");
-    expect(() => getJourneyAuthoringProfile("missing")).toThrow(/Unknown authoring journey/);
+    expect(() => getJourneyAuthoringProfile(process.cwd(), "missing")).toThrow(/Unknown authoring journey/);
+    expect(() => getJourneyAuthoringProfile(process.cwd(), "milano")).toThrow(/Unknown authoring journey/);
   });
 
   it("reports missing narrative content in the fourth city instead of declaring readiness", () => {
@@ -96,14 +98,15 @@ describe("journey authoring with four cities", () => {
     expect(report.cities.at(-1)?.events.some((event) => event.issues.some((issue) => issue.code === "episode_missing"))).toBe(true);
   });
 
-  it("promotes the catalog prefix and preserves both unrelated journeys", () => {
+  it("promotes the city prefix in the journey's own manifest and preserves both unrelated journeys", () => {
     const { root, original } = releaseFixture();
     try {
       const two = journeyReleaseChanges(original, "uzbekistan", "samarkand");
       expect(Object.keys(two)).toHaveLength(5);
       expect(two["content/cities/bukhara.json"]).toBeUndefined();
-      const catalog = JSON.parse(two["content/journeys/catalog.json"]);
-      expect(catalog.journeys.slice(0, 2)).toEqual(JSON.parse(original["content/journeys/catalog.json"]).journeys.slice(0, 2));
+      expect(Object.keys(two).filter((file) => file.startsWith("content/journeys/"))).toEqual([uzbekManifest]);
+      expect(JSON.parse(two[uzbekManifest])).toEqual({ ...JSON.parse(original[uzbekManifest]), status: "available" });
+      expect(() => journeyReleaseChanges(original, "milano")).toThrow(/Unknown authoring journey/);
       const all = journeyReleaseChanges(original, "uzbekistan");
       expect(Object.keys(all)).toHaveLength(9);
       expect(JSON.parse(all["content/cities/khiva.json"]).productionStatus).toBe("complete");
@@ -122,7 +125,7 @@ describe("journey authoring with four cities", () => {
       })).toThrow("test write failure");
       for (const [file, content] of Object.entries(original)) expect(readFileSync(path.join(root, file), "utf8")).toBe(content);
       const before = journeyInputFingerprint(root);
-      const observation = path.join(root, getJourneyAuthoringProfile("uzbekistan").observationFile);
+      const observation = path.join(root, getJourneyAuthoringProfile(root, "uzbekistan").observationFile);
       mkdirSync(path.dirname(observation), { recursive: true });
       writeFileSync(observation, "{}");
       expect(journeyInputFingerprint(root)).not.toBe(before);
