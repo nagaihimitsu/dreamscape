@@ -4,6 +4,10 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { journeyRequirements, loadJourneyScaffold } from "./journey-scaffold";
 import { validateJourneyScenario } from "./journey-scenario-validation";
+import { readJourneyManifests } from "./content-sources";
+
+/** Every journey manifest of a project, by journey ID. */
+const manifests = (root: string) => Object.fromEntries(readJourneyManifests(root).map((item) => [item.id, readFileSync(item.file, "utf8")]));
 
 const names = 'VAR player_name = "検証主人公"\nVAR heroine_name = "検証ヒロイン"\nVAR player_address = "検証主人公さん"\n';
 function fixture() {
@@ -49,7 +53,8 @@ function fixture() {
 describe("draft journey scenario contracts", () => {
   it("checks every authored file and relationship/quiz input without making the journey playable", async () => {
     const { root, directory, plan } = fixture();
-    const manifest = readFileSync("content/journeys/golden_triangle/manifest.json", "utf8");
+    const before = { project: manifests(process.cwd()), fixture: manifests(root) };
+    expect(Object.keys(before.project)).toEqual(expect.arrayContaining(["milano", "golden_triangle", "uzbekistan", "luang_prabang"]));
     const generated = readFileSync("src/content/generated/stories.json", "utf8");
     try {
       // A promoted file has one canonical copy and still uses the same checker.
@@ -59,7 +64,8 @@ describe("draft journey scenario contracts", () => {
         journeyId: "golden_triangle", cities: ["delhi"], stories: 16, guides: 4,
         battleScenarios: 83, dateRoutes: 10368, epilogueScenarios: 8, readyForPublication: false,
       });
-      expect(readFileSync("content/journeys/golden_triangle/manifest.json", "utf8")).toBe(manifest);
+      // No journey (not only the checked one) is registered or released by a scenario check.
+      expect({ project: manifests(process.cwd()), fixture: manifests(root) }).toEqual(before);
       expect(readFileSync("src/content/generated/stories.json", "utf8")).toBe(generated);
     } finally { rmSync(root, { recursive: true, force: true }); }
   }, 120_000);

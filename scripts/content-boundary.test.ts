@@ -8,8 +8,12 @@ import { describe, expect, it } from "vitest";
 // game code and browser tests must not import or read it directly.
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const contentRoot = path.join(root, "content");
-/** Unit tests and their fixture helpers may copy and edit authored sources. */
-const testCode = /(\.test\.tsx?|test-fixtures?\.ts)$/u;
+/**
+ * Unit tests and their fixture helper (src/content/test-fixtures.ts) may copy
+ * and edit authored sources. Other *-test-fixture.ts modules are imported by
+ * Debug mode at runtime and stay checked.
+ */
+const testCode = (file: string) => /\.test\.tsx?$/u.test(file) || file === path.join(root, "src/content/test-fixtures.ts");
 const literalPatterns = [/"([^"\n]*)"/gu, /'([^'\n]*)'/gu, /`([^`]*)`/gu];
 
 function codeFiles(directory: string): string[] {
@@ -58,8 +62,10 @@ describe("content boundary", () => {
   });
 
   it("keeps game code and browser tests on the generated mirror", () => {
-    const files = [...codeFiles(path.join(root, "src")).filter((file) => !testCode.test(file)), ...codeFiles(path.join(root, "tests/e2e"))];
+    const files = [...codeFiles(path.join(root, "src")).filter((file) => !testCode(file)), ...codeFiles(path.join(root, "tests/e2e"))];
     expect(files.length).toBeGreaterThan(50);
+    expect(files).toContain(path.join(root, "src/domain/multi-city-test-fixture.ts"));
+    expect(files).toContain(path.join(root, "src/domain/golden-triangle-test-fixture.ts"));
     const violations = files.flatMap((file) =>
       rootContentReferences(file, readFileSync(file, "utf8")).map((literal) => `${path.relative(root, file)}: ${literal}`));
     expect(violations).toEqual([]);

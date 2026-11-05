@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { Story } from "inkjs";
 import { buildContent, compileInk } from "../../scripts/content-pipeline";
-import { prepareContentFixture } from "./test-fixtures";
+import { changeCatalogEntry, prepareContentFixture } from "./test-fixtures";
 import {
   validateBattleEvidence,
   validateBattleStory,
@@ -16,7 +16,7 @@ import {
   type BattleDefinition,
 } from "./schemas";
 // Source catalogs that the tests rewrite in their fixture; read-only runtime data comes from the generated mirror.
-import battleData from "../../content/battles/catalog.json";
+import battleData from "./generated/content/battles/catalog.json";
 import tourismData from "./generated/content/tourism/catalog.json";
 
 let fixture: string;
@@ -36,12 +36,7 @@ async function changeBattle(
   format: "B" | "C",
   change: (battle: BattleDefinition) => void,
 ) {
-  const catalog = battleCatalogSchema.parse(structuredClone(battleData));
-  change(catalog.battles.find((battle) => battle.format === format)!);
-  await writeFile(
-    path.join(fixture, "content/battles/catalog.json"),
-    JSON.stringify(catalog),
-  );
+  await changeCatalogEntry(fixture, "battles/catalog.json", "battles", special(format).id, change);
 }
 
 describe("special battle content contract", () => {
@@ -140,13 +135,13 @@ describe("special battle content contract", () => {
           ...battle,
           reasoning: { ...reasoning, correctClueIds: [] },
         }),
-      ).toThrow();
+      ).toThrow(/"correctClueIds"[\s\S]*Too small: expected array to have exactly/);
       expect(() =>
         battleSchema.parse({
           ...battle,
           reasoning: { ...reasoning, correctClueIds: ["missing"] },
         }),
-      ).toThrow();
+      ).toThrow("Correct evidence must be available in the case materials");
       expect(() =>
         battleSchema.parse({
           ...battle,
@@ -179,20 +174,20 @@ describe("special battle content contract", () => {
         ...b,
         reasoning: { ...b.reasoning, roundIndex: 3 },
       }),
-    ).toThrow();
+    ).toThrow(/"roundIndex"[\s\S]*Too big: expected number to be <=2/);
     expect(() =>
       battleSchema.parse({
         ...b,
         reasoning: { ...b.reasoning, pressScene: undefined },
       }),
-    ).toThrow();
+    ).toThrow(/"pressScene"[\s\S]*Invalid input: expected string, received undefined/);
     const c = special("C");
     expect(() =>
       battleSchema.parse({
         ...c,
         reasoning: { ...c.reasoning, pressScene: "press" },
       }),
-    ).toThrow();
+    ).toThrow(/Unrecognized key: .*pressScene/);
   });
 
   it("rejects missing case evidence and evidence from a different landmark", async () => {

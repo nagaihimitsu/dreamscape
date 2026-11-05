@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { tourismClueSchema } from "../src/content/tourism-schemas";
+import { resolvePublicFile } from "./public-assets";
 
 const research = "authoring/research/golden-triangle-20261103/source/data";
 const draft = JSON.parse(readFileSync("authoring/drafts/golden-triangle/observation-cards.json", "utf8"));
@@ -40,7 +41,7 @@ describe("India authoring observation cards", () => {
 
   it("ties observed regions to the exact reviewed photos", () => {
     for (const entry of Object.values(draft.images) as Array<{ path: string; sha256: string }>) {
-      expect(createHash("sha256").update(readFileSync(`public/${entry.path}`)).digest("hex")).toBe(entry.sha256);
+      expect(createHash("sha256").update(readFileSync(resolvePublicFile(process.cwd(), entry.path))).digest("hex")).toBe(entry.sha256);
     }
   });
 });

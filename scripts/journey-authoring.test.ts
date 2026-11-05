@@ -1,4 +1,4 @@
-import { mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
@@ -7,7 +7,7 @@ import { loadIndiaScaffold } from "./india-scaffold";
 import { getJourneyAuthoringProfile } from "./journey-authoring";
 import { inspectJourneyReadiness } from "./journey-readiness";
 import { buildJourneyFragments, journeyRequirements, type JourneyScaffoldInput } from "./journey-scaffold";
-import { journeyInputFingerprint, journeyReleaseChanges, writeJourneyReleaseFiles } from "./promote-journey";
+import { journeyInputFingerprint, journeyReleaseChanges, mergeJourneyReleaseFragments, writeJourneyReleaseFiles, type ReleaseFiles } from "./promote-journey";
 
 const ids = ["tashkent", "samarkand", "bukhara", "khiva"];
 // Only test fixtures: cloning India here avoids shipping invented Uzbek scenarios.
@@ -28,7 +28,8 @@ function scaffoldFixture(): JourneyScaffoldInput {
   };
 }
 const uzbekManifest = "content/journeys/uzbekistan/manifest.json";
-function releaseFixture() {
+/** Manifests of three journeys, with Uzbekistan's cities in `layer` (the core layer by default). */
+function releaseFixture(layer = "content") {
   const root = mkdtempSync(path.join(tmpdir(), "dreamscape-journey-release-test-"));
   const manifest = (order: number, id: string, status: string, cities: string[], authoring = true) => JSON.stringify({ schemaVersion: 1, order, id, status,
     cities: cities.map((city) => ({ id: city })), ...(authoring ? { authoring: getJourneyAuthoringProfile(process.cwd(), id) } : {}) }, null, 2);
@@ -38,8 +39,8 @@ function releaseFixture() {
     [uzbekManifest]: manifest(30, "uzbekistan", "preparing", ids),
   };
   for (const id of ids) {
-    original[`content/cities/${id}.json`] = JSON.stringify({ id, productionStatus: "prototype" });
-    original[`content/travel/${id}.json`] = JSON.stringify({ cityId: id, events: [{ id: `uz_${id}_event`, contentStatus: "pending_content" }] });
+    original[`${layer}/cities/${id}.json`] = JSON.stringify({ id, productionStatus: "prototype" });
+    original[`${layer}/travel/${id}.json`] = JSON.stringify({ cityId: id, events: [{ id: `uz_${id}_event`, contentStatus: "pending_content" }] });
   }
   for (const [file, content] of Object.entries(original)) {
     mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
@@ -131,6 +132,67 @@ describe("journey authoring with four cities", () => {
       expect(journeyInputFingerprint(root)).not.toBe(before);
       expect(() => writeJourneyReleaseFiles(root, original, next, "uzbekistan", undefined, before)).toThrow(/Content or assets changed/);
       expect(readFileSync(path.join(root, "content/cities/tashkent.json"), "utf8")).toBe(original["content/cities/tashkent.json"]);
+    } finally { rmSync(root, { recursive: true, force: true }); }
+  });
+
+  it("releases into the journey's own folder: creates its missing catalogs there and removes them again on failure", () => {
+    const layer = "content/journeys/uzbekistan";
+    const { root, original } = releaseFixture(layer);
+    try {
+      const write = (file: string, value: unknown) => {
+        mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+        writeFileSync(path.join(root, file), JSON.stringify(value));
+        return JSON.stringify(value);
+      };
+      // Core catalogs the release must leave alone, and one existing catalog of the journey folder.
+      const coreJourney = { schemaVersion: 1, episodes: [{ id: "milano_episode", cityId: "milano" }], storyBattles: [], rewards: [] };
+      const corePresentation = { schemaVersion: 1, backgrounds: {}, memories: { shared_memory: { titleJa: "共有の思い出" } } };
+      const coreTranslations = JSON.parse(readFileSync(path.join(process.cwd(), "src/content/generated/content/learning/translations.json"), "utf8"));
+      const core = { "content/progression/journey.json": write("content/progression/journey.json", coreJourney),
+        "content/romance/presentation.json": write("content/romance/presentation.json", corePresentation),
+        "content/learning/translations.json": write("content/learning/translations.json", coreTranslations) };
+      const ownPresentation = { schemaVersion: 1, backgrounds: { uz_tashkent_bg: { nameJa: "タシケント" } }, memories: {} };
+      const fragmentKinds = ["progression/journey.json", "battles/catalog.json", "romance/date_catalog.json", "tourism/catalog.json",
+        "romance/effect_catalog.json", "romance/presentation.json", "learning/translations.json"];
+      const releaseOriginal: ReleaseFiles = { ...original, ...Object.fromEntries(fragmentKinds.map((kind) => [`${layer}/${kind}`, null])),
+        [`${layer}/romance/presentation.json`]: write(`${layer}/romance/presentation.json`, ownPresentation) };
+      const merged = { "progression/journey.json": coreJourney, "learning/translations.json": coreTranslations,
+        "romance/presentation.json": { ...corePresentation, backgrounds: ownPresentation.backgrounds } };
+      const quiz = loadIndiaReadiness(process.cwd()).quizzes.find((item) => item.id === "sound_duomo_b1")!;
+      const fragments = { episodes: [{ id: "uz_tashkent_episode", cityId: "tashkent" }], rewards: [],
+        battles: [{ id: "uz_tashkent_battle", quizId: quiz.id }], dates: [], landmarks: [], clues: [], finaleEvents: [],
+        effects: [{ id: "uz_tashkent_effect" }], memories: { shared_memory: { titleJa: "共有の思い出" }, uz_memory: { titleJa: "タシケント" } },
+      } as unknown as Parameters<typeof mergeJourneyReleaseFragments>[2];
+      const release = journeyReleaseChanges(releaseOriginal, "uzbekistan", "tashkent", layer);
+      const next = mergeJourneyReleaseFragments(releaseOriginal, release, fragments, [quiz], undefined, { layer, merged });
+      // Catalogs without new entries are not created; definitions of other layers are not repeated.
+      expect(Object.keys(next)).toEqual([uzbekManifest, `${layer}/cities/tashkent.json`, `${layer}/travel/tashkent.json`,
+        `${layer}/progression/journey.json`, `${layer}/battles/catalog.json`, `${layer}/romance/effect_catalog.json`, `${layer}/romance/presentation.json`]);
+      expect(JSON.parse(next[`${layer}/progression/journey.json`])).toEqual({ schemaVersion: 1, episodes: fragments.episodes, storyBattles: [], rewards: [] });
+      expect(JSON.parse(next[`${layer}/romance/presentation.json`])).toEqual({ ...ownPresentation, memories: { uz_memory: { titleJa: "タシケント" } } });
+      const collision = { ...fragments, episodes: [{ id: "milano_episode", cityId: "tashkent" }] } as typeof fragments;
+      expect(() => mergeJourneyReleaseFragments(releaseOriginal, release, collision, [quiz], undefined, { layer, merged }))
+        .toThrow("Existing episode differs: milano_episode");
+
+      // Three renames of release markers, three new catalogs, then the existing presentation fails.
+      let moves = 0;
+      expect(() => writeJourneyReleaseFiles(root, releaseOriginal, next, "uzbekistan", (from, to) => {
+        if (++moves === 4) throw new Error("test write failure");
+        renameSync(from, to);
+      }, undefined, layer)).toThrow("test write failure");
+      for (const [file, content] of Object.entries({ ...releaseOriginal, ...core }))
+        if (content === null) expect(existsSync(path.join(root, file)), file).toBe(false);
+        else expect(readFileSync(path.join(root, file), "utf8"), file).toBe(content);
+      expect(readdirSync(path.join(root, layer)).sort()).toEqual(["cities", "manifest.json", "romance", "travel"]);
+      expect(readdirSync(path.join(root, layer, "romance"))).toEqual(["presentation.json"]);
+      // Only the journey's manifest and its own folder may be written.
+      expect(() => writeJourneyReleaseFiles(root, releaseOriginal, { ...next, "content/progression/journey.json": "{}" }, "uzbekistan", undefined, undefined, layer))
+        .toThrow("Invalid Journey release file set");
+
+      writeJourneyReleaseFiles(root, releaseOriginal, next, "uzbekistan", undefined, undefined, layer);
+      for (const [file, content] of Object.entries(next)) expect(readFileSync(path.join(root, file), "utf8"), file).toBe(content);
+      for (const [file, content] of Object.entries(core)) expect(readFileSync(path.join(root, file), "utf8"), file).toBe(content);
+      expect(existsSync(path.join(root, layer, "learning"))).toBe(false);
     } finally { rmSync(root, { recursive: true, force: true }); }
   });
 });

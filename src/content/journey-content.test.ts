@@ -1,16 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { buildContent } from "../../scripts/content-pipeline";
-import { prepareContentFixture } from "./test-fixtures";
+import { changeCatalogEntry, prepareContentFixture } from "./test-fixtures";
 import { validateJourney } from "../../scripts/journey-validation";
 import { journeySchema, type JourneyConfig } from "./journey-schemas";
 import { battleCatalogSchema } from "./schemas";
 import { tourismCatalogSchema } from "./tourism-schemas";
 import { balance, battleQuizzes, getCities } from ".";
-// Source catalogs that the tests rewrite in their fixture; read-only runtime data comes from the generated mirror.
-import journeyData from "../../content/progression/journey.json";
+// Read-only data comes from the generated mirror; fixture edits use changeCatalogEntry.
+import journeyData from "./generated/content/progression/journey.json";
 import cityData from "./generated/content/cities/milano.json";
 import battleData from "./generated/content/battles/catalog.json";
 import tourismData from "./generated/content/tourism/catalog.json";
@@ -29,13 +29,16 @@ const copyJourney = (): JourneyTestData => ({
   ...structuredClone(journeyData), rewards: journeySchema.parse(journeyData).rewards,
 });
 
-async function changeJourney(change: (data: JourneyTestData) => void) {
-  const data = copyJourney();
-  change(data);
-  await writeFile(
-    path.join(fixture, "content/progression/journey.json"),
-    JSON.stringify(data),
-  );
+type Episode = JourneyTestData["episodes"][number];
+type Reward = JourneyTestData["rewards"][number];
+/** The first Milan episode and reward rules, edited wherever their content layer keeps them. */
+const episodeId = "milano_duomo_episode";
+const rewardIds = ["guide_last_supper_first_read", "battle_last_supper_first_complete"] as const;
+function changeEpisode(change: (episode: Episode) => void) {
+  return changeCatalogEntry(fixture, "progression/journey.json", "episodes", episodeId, change);
+}
+function changeReward(id: string, change: (reward: Reward, journey: JourneyTestData) => void) {
+  return changeCatalogEntry(fixture, "progression/journey.json", "rewards", id, change);
 }
 
 /** Reward and route checks do not need to recompile every unrelated Ink file. */
@@ -122,20 +125,25 @@ describe("integrated journey content contract", () => {
     );
   });
 
-  it.each(["cityId", "landmarkId", "battleId"] as const)(
+  it.each([
+    // A date that requires this episode is checked against the episode's city first.
+    ["cityId", "Unknown date prerequisite episode: milano_san_satiro_date_01/milano_duomo_episode"],
+    ["landmarkId", "Episode tourism/battle mismatch: milano_duomo_episode"],
+    ["battleId", "Episode tourism/battle mismatch: milano_duomo_episode"],
+  ] as const)(
     "rejects an unknown episode %s",
-    async (field) => {
-      await changeJourney((data) => {
-        data.episodes[0][field] = "missing";
+    async (field, message) => {
+      await changeEpisode((episode) => {
+        episode[field] = "missing";
       });
-      await expect(buildContent(fixture, false)).rejects.toThrow();
+      await expect(buildContent(fixture, false)).rejects.toThrow(message);
     },
   );
 
   it("requires episode rewards to reference a registered episode", async () => {
-    await changeJourney((data) => {
-      data.rewards.push({
-        ...data.rewards[0],
+    await changeReward(rewardIds[0], (reward, journey) => {
+      journey.rewards.push({
+        ...reward,
         id: "orphan_reward",
         episodeId: "missing",
       });
@@ -146,16 +154,16 @@ describe("integrated journey content contract", () => {
   });
 
   it("requires special rewards to reference a registered special battle", async () => {
-    await changeJourney((data) => {
-      const rule = data.rewards.find((reward) => reward.battleId !== undefined)!;
+    await changeReward("guide_scala_first", (rule) => {
+      expect(rule.battleId).toBeDefined();
       rule.battleId = "missing_special_battle";
     });
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown reward story battle");
   });
 
   it("rejects duplicate reward IDs", async () => {
-    await changeJourney((data) => {
-      data.rewards[1].id = data.rewards[0].id;
+    await changeReward(rewardIds[1], (rule) => {
+      rule.id = rewardIds[0];
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Duplicate journey reward ID",
@@ -191,10 +199,15 @@ describe("integrated journey content contract", () => {
   });
 
   it("rejects invalid AP and score thresholds without imposing a winning chapter condition", () => {
-    for (const amount of [0, -1, 1.5, 13]) {
+    for (const [amount, message] of [
+      [0, "Too small: expected number to be >0"],
+      [-1, "Too small: expected number to be >0"],
+      [1.5, "Invalid input: expected int, received number"],
+      [13, "Journey reward exceeds AP cap: guide_last_supper_first_read"],
+    ] as const) {
       expect(() => checkJourney((data) => {
         data.rewards[0].ap = amount;
-      })).toThrow();
+      })).toThrow(message);
     }
     expect(() => checkJourney((data) => {
       data.rewards[2].minScore = 4;
@@ -214,40 +227,23 @@ describe("integrated journey content contract", () => {
   });
 
   it("keeps city completion, mandatory discoveries and affection out of the journey integration contract", async () => {
-    await changeJourney((data) => {
-      data.episodes[0].kind = "city_clear";
+    await changeEpisode((episode) => {
+      (episode as { kind: string }).kind = "city_clear";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
-    const forbidden = {
-      ...journeyData,
-      episodes: [
-        {
-          ...journeyData.episodes[0],
-          requiredDiscoveredClueIds: ["last_supper_light"],
-        },
-      ],
-    };
-    await writeFile(
-      path.join(fixture, "content/progression/journey.json"),
-      JSON.stringify(forbidden),
-    );
-    await expect(buildContent(fixture, false)).rejects.toThrow();
-    await writeFile(
-      path.join(fixture, "content/progression/journey.json"),
-      JSON.stringify({
-        ...journeyData,
-        rewards: journeyData.rewards.map((rule) => ({
-          ...rule,
-          affectionDelta: 1,
-        })),
-      }),
-    );
-    await expect(buildContent(fixture, false)).rejects.toThrow();
+    await expect(buildContent(fixture, false)).rejects.toThrow(/"kind"[\s\S]*Invalid option/);
+    await changeEpisode((episode) => {
+      Object.assign(episode, { requiredDiscoveredClueIds: ["last_supper_light"] });
+    });
+    await expect(buildContent(fixture, false)).rejects.toThrow(/Unrecognized key: .*requiredDiscoveredClueIds/);
+    await changeReward(rewardIds[0], (rule) => {
+      Object.assign(rule, { affectionDelta: 1 });
+    });
+    await expect(buildContent(fixture, false)).rejects.toThrow(/Unrecognized key: .*affectionDelta/);
   });
 
   it("keeps episode descriptions in editable Japanese data", async () => {
-    await changeJourney((data) => {
-      data.episodes[0].clearDescriptionJa = "The city is complete.";
+    await changeEpisode((episode) => {
+      episode.clearDescriptionJa = "The city is complete.";
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Expected Japanese journey text",

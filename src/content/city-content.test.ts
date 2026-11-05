@@ -1,19 +1,19 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { Story } from "inkjs";
 import { buildContent, compileInk } from "../../scripts/content-pipeline";
-import { prepareContentFixture } from "./test-fixtures";
+import { changeCatalogEntry, prepareContentFixture } from "./test-fixtures";
 import { validateEpilogue } from "../../scripts/epilogue-validation";
 import { validateJourney } from "../../scripts/journey-validation";
 import { battleCatalogSchema, battleSchema, quizSchema } from "./schemas";
 import { journeySchema } from "./journey-schemas";
 import { tourismCatalogSchema } from "./tourism-schemas";
 import { balance, battleQuizzes, getCities } from ".";
-// Source catalogs that the tests rewrite in their fixture; read-only runtime data comes from the generated mirror.
-import journeyData from "../../content/progression/journey.json";
-import battleData from "../../content/battles/catalog.json";
+// Read-only data comes from the generated mirror; fixture edits use changeCatalogEntry.
+import journeyData from "./generated/content/progression/journey.json";
+import battleData from "./generated/content/battles/catalog.json";
 import cityData from "./generated/content/cities/milano.json";
 import tourismData from "./generated/content/tourism/catalog.json";
 
@@ -97,13 +97,13 @@ describe("Milan city content", () => {
       (battle) => battle.cityId === cityData.id && battle.scope === "city_finale",
     )!;
     const quiz = result.quizzes[boss.quizId];
-    expect(() => quizSchema.parse({ ...quiz, scope: undefined })).toThrow();
+    expect(() => quizSchema.parse({ ...quiz, scope: undefined })).toThrow("A normal quiz needs three questions; a city finale needs five");
     expect(() =>
       quizSchema.parse({ ...quiz, questions: quiz.questions.slice(0, 3) }),
-    ).toThrow();
+    ).toThrow("A normal quiz needs three questions; a city finale needs five");
     expect(() =>
       battleSchema.parse({ ...boss, landmarkId: "last_supper" }),
-    ).toThrow();
+    ).toThrow("Only a city finale has no landmark and four intermediate scenes");
     expect(() =>
       battleSchema.parse({
         ...boss,
@@ -112,24 +112,21 @@ describe("Milan city content", () => {
           afterRounds: boss.scenes.afterRounds.slice(0, 2),
         },
       }),
-    ).toThrow();
+    ).toThrow("Only a city finale has no landmark and four intermediate scenes");
     const ordinary = result.battles[0];
     expect(() =>
       battleSchema.parse({
         ...ordinary,
         scenes: { ...ordinary.scenes, afterRounds: boss.scenes.afterRounds },
       }),
-    ).toThrow();
+    ).toThrow("Only a city finale has no landmark and four intermediate scenes");
   });
 
   it("rejects a finale quiz from another city", async () => {
-    const catalog = battleCatalogSchema.parse(battleData);
-    catalog.battles.find((battle) => battle.scope === "city_finale")!.cityId =
-      "unknown_city";
-    await writeFile(
-      path.join(fixture, "content/battles/catalog.json"),
-      JSON.stringify(catalog),
-    );
+    await changeCatalogEntry(fixture, "battles/catalog.json", "battles", "milano_city_boss_01", (finale: { scope?: string; cityId?: string }) => {
+      expect(finale.scope).toBe("city_finale");
+      finale.cityId = "unknown_city";
+    });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "City finale quiz mismatch",
     );
@@ -157,22 +154,16 @@ describe("Milan city content", () => {
   });
 
   it("rejects a circular route and a city reward attached to a sightseeing stop", async () => {
-    const journey = journeySchema.parse(journeyData);
-    journey.episodes[1].requiredEpisodeIds = [journey.episodes[2].id];
-    await writeFile(
-      path.join(fixture, "content/progression/journey.json"),
-      JSON.stringify(journey),
-    );
+    await changeCatalogEntry(fixture, "progression/journey.json", "episodes", "milano_galleria_episode", (episode: { requiredEpisodeIds: string[] }) => {
+      episode.requiredEpisodeIds = ["milano_last_supper_episode"];
+    });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "unordered episode prerequisite",
     );
-    const valid = journeySchema.parse(journeyData);
-    valid.rewards.find((rule) => rule.trigger === "city_clear")!.episodeId =
-      valid.episodes[0].id;
-    await writeFile(
-      path.join(fixture, "content/progression/journey.json"),
-      JSON.stringify(valid),
-    );
+    await changeCatalogEntry(fixture, "progression/journey.json", "rewards", "city_milano_first_clear", (rule: { trigger: string; episodeId?: string }) => {
+      expect(rule.trigger).toBe("city_clear");
+      rule.episodeId = "milano_duomo_episode";
+    });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "does not fit the episode",
     );

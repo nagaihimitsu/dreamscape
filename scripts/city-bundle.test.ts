@@ -1,4 +1,5 @@
-import { cpSync, existsSync, linkSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { cpSync, existsSync, linkSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -11,6 +12,7 @@ import { readJourneyCatalog } from "./content-sources";
 import { cityTransitFile, inspectCityTransit, readTransitLedger } from "./journey-transit-review";
 import { inspectIndiaReadiness, loadIndiaReadiness } from "./india-readiness";
 import { buildIndiaTransitReview, readIndiaTransitReview } from "./india-transit-review";
+import { resolvePublicFile } from "./public-assets";
 
 const roots: string[] = [];
 const allCities = readJourneyCatalog(process.cwd()).journeys.flatMap((journey) => journey.cities.map((city) => city.id));
@@ -43,6 +45,50 @@ function useArrivalLocationBackground(root: string, cityId: string) {
   writeFileSync(path.join(root, file), read(root, file).replace(/^# background:.*\n/gm, ""));
 }
 const fingerprint = inputFingerprint;
+// A journey registers itself with its own folder and manifest.
+function registerJourney(root: string, journey: { id: string; [key: string]: unknown }) {
+  mkdirSync(path.join(root, "content/journeys", journey.id), { recursive: true });
+  writeJson(root, `content/journeys/${journey.id}/manifest.json`, { schemaVersion: 1, order: 900, ...journey });
+}
+const testJourney = { id: "test_journey", nameJa: "試験の旅", status: "preparing",
+  cities: [{ id: "testcity", nameJa: "試験都市" }],
+  currency: { code: "TST", symbol: "¤", unitJa: "試験通貨", unit: "whole" },
+  initialBudget: 1000, intercityModes: [] };
+const testLayer = "content/journeys/test_journey";
+/** Fill a new-city template with the smallest valid city (a hotel modelled on Delhi's). */
+function completeTestCity(root: string, template: ReturnType<typeof exportCityBundle>) {
+  const existing = exportCityBundle(root, "delhi");
+  const hotel = structuredClone(existing.travel.places.find((place) => place.id === "delhi_hotel_hub")!);
+  const identity = structuredClone(existing.travel.routes.find((route) => route.fromPlaceId === hotel.id && route.toPlaceId === hotel.id && route.mode === "walk")!);
+  hotel.id = "testcity_hotel";
+  hotel.cityId = "testcity";
+  hotel.nameJa = "試験の滞在先";
+  hotel.nameEn = "Test hotel";
+  hotel.backgroundAssetId = "testcity_hotel_bg";
+  identity.fromPlaceId = hotel.id;
+  identity.toPlaceId = hotel.id;
+  template.city = { schemaVersion: 1, id: "testcity", countryCode: "ZZ", nameJa: "試験都市", themeJa: "試験用",
+    firstClearReward: { rewardSourceId: "testcity_legacy_placeholder", ap: 0 }, landmarkIdsPlanned: [], productionStatus: "prototype" };
+  template.travel = { cityId: "testcity", places: [hotel], routes: [identity], events: [] };
+  template.travelSettings = { initialBudget: 1000, hotelPlaceId: hotel.id, lodgingCost: 0, retryMinutes: 15, notes: "試験用設定" };
+  template.backgrounds = { testcity_hotel_bg: { nameJa: "試験", captionJa: "試験の滞在先", color: "#817569" } };
+  template.assets = [];
+  template.dateDestinations = [];
+  template.transitDecisions = null;
+}
+/** Every file below content/ and public/ except one layer folder, by path. */
+function filesOutside(root: string, layer: string): Record<string, string> {
+  const files: Record<string, string> = {};
+  const walk = (relative: string) => {
+    if (relative === layer) return;
+    const absolute = path.join(root, relative);
+    if (statSync(absolute).isDirectory()) for (const name of readdirSync(absolute)) walk(`${relative}/${name}`);
+    else files[relative] = createHash("sha256").update(readFileSync(absolute)).digest("hex");
+  };
+  walk("content");
+  walk("public");
+  return files;
+}
 afterEach(() => { for (const root of roots.splice(0)) rmSync(root, { recursive: true, force: true }); });
 
 describe("city editing bundle", () => {
@@ -138,7 +184,7 @@ describe("city editing bundle", () => {
     const before = fingerprint(root);
     const brokenSource = exportEditableCityBundle(root, "milano");
     brokenSource.travel.routes[0].sourceRef = "missing_source";
-    await expect(applyCityBundle(root, brokenSource, true)).rejects.toThrow();
+    await expect(applyCityBundle(root, brokenSource, true)).rejects.toThrow("Unknown route source: missing_source");
     expect(fingerprint(root)).toBe(before);
 
     const duplicate = exportEditableCityBundle(root, "milano");
@@ -146,12 +192,12 @@ describe("city editing bundle", () => {
     const reverse = { ...shared, fromPlaceId: shared.toPlaceId, toPlaceId: shared.fromPlaceId };
     delete reverse.bothDirections;
     duplicate.travel.routes.push(reverse);
-    await expect(applyCityBundle(root, duplicate, true)).rejects.toThrow();
+    await expect(applyCityBundle(root, duplicate, true)).rejects.toThrow("Duplicate directed route: p_galleria:p_duomo:walk");
     expect(fingerprint(root)).toBe(before);
 
     const missingPlace = exportEditableCityBundle(root, "milano");
     missingPlace.travel.routes[0].toPlaceId = "missing_place";
-    await expect(applyCityBundle(root, missingPlace, true)).rejects.toThrow();
+    await expect(applyCityBundle(root, missingPlace, true)).rejects.toThrow(/Unknown route destination/);
     expect(fingerprint(root)).toBe(before);
   }, 180_000);
 
@@ -172,7 +218,7 @@ describe("city editing bundle", () => {
     }
     await applyCityBundle(root, exportCityBundle(root, "delhi"));
     expect(fingerprint(root)).toBe(before);
-    expect(() => exportCityBundle(root, "unknown_city")).toThrow();
+    expect(() => exportCityBundle(root, "unknown_city")).toThrow("Register city unknown_city in exactly one journey before creating its bundle");
   }, 180_000);
 
   it("applies one city's metadata, travel, prices, images and destinations without changing other cities", async () => {
@@ -228,13 +274,13 @@ describe("city editing bundle", () => {
 
   it("rejects stale edits after unrelated content or image changes without writing", async () => {
     const root = fixture();
-    for (const file of ["content/cities/agra.json", "public/assets/tourism/india/agra_taj_mahal.jpg", "authoring/research/golden-triangle-transit-20261103/decisions.json"]) {
+    for (const file of ["content/cities/agra.json", "assets/tourism/india/agra_taj_mahal.jpg", "authoring/research/golden-triangle-transit-20261103/decisions.json"]) {
       const bundle = exportCityBundle(root, "delhi");
-      const target = path.join(root, file);
+      const target = file.startsWith("assets/") ? resolvePublicFile(root, file) : path.join(root, file);
       const original = readFileSync(target);
       writeFileSync(target, Buffer.concat([original, Buffer.from("\n")]));
       const before = fingerprint(root);
-      await expect(applyCityBundle(root, bundle, true)).rejects.toThrow();
+      await expect(applyCityBundle(root, bundle, true)).rejects.toThrow("City bundle is stale: content or assets changed since export");
       expect(fingerprint(root)).toBe(before);
       expect(readFileSync(target)).toEqual(Buffer.concat([original, Buffer.from("\n")]));
       writeFileSync(target, original);
@@ -246,15 +292,15 @@ describe("city editing bundle", () => {
     const before = fingerprint(root);
     const brokenRoute = exportCityBundle(root, "delhi");
     brokenRoute.travel.routes[0].toPlaceId = "missing_place";
-    await expect(applyCityBundle(root, brokenRoute, true)).rejects.toThrow();
+    await expect(applyCityBundle(root, brokenRoute, true)).rejects.toThrow(/Unknown route destination/);
     expect(fingerprint(root)).toBe(before);
     const duplicate = exportCityBundle(root, "delhi");
     duplicate.dateDestinations[0].id = "agra_mehtab_bagh";
-    await expect(applyCityBundle(root, duplicate, true)).rejects.toThrow();
+    await expect(applyCityBundle(root, duplicate, true)).rejects.toThrow("Duplicate destination ID");
     expect(fingerprint(root)).toBe(before);
     const wrongCity = exportCityBundle(root, "delhi");
     wrongCity.travel.places[0].cityId = "agra";
-    await expect(applyCityBundle(root, wrongCity, true)).rejects.toThrow();
+    await expect(applyCityBundle(root, wrongCity, true)).rejects.toThrow(/Place belongs to another city/);
     expect(fingerprint(root)).toBe(before);
   }, 180_000);
 
@@ -268,11 +314,11 @@ describe("city editing bundle", () => {
     const template = bundle.travel.routes.find((route) => route.mode === decision.mode && route.fromPlaceId !== route.toPlaceId)!;
     bundle.travel.routes.push({ ...structuredClone(template), fromPlaceId: decision.fromPlaceId, toPlaceId: decision.toPlaceId });
     const before = fingerprint(root);
-    await expect(applyCityBundle(root, bundle, true)).rejects.toThrow();
+    await expect(applyCityBundle(root, bundle, true)).rejects.toThrow("Reviewed transit decision conflicts with a playable route: delhi:");
     expect(fingerprint(root)).toBe(before);
     // Compacting the same edit must still reject a route that was recorded as
     // unsuitable; an absent route is not equivalent to a confirmed service.
-    await expect(applyCityBundle(root, compactCityBundle(bundle), true)).rejects.toThrow();
+    await expect(applyCityBundle(root, compactCityBundle(bundle), true)).rejects.toThrow("Reviewed transit decision conflicts with a playable route: delhi:");
     expect(fingerprint(root)).toBe(before);
     const unreviewed = exportEditableCityBundle(root, "delhi");
     const index = unreviewed.travel.routes.findIndex((route) => route.mode === "bus");
@@ -330,7 +376,7 @@ describe("city editing bundle", () => {
     await expect(applyCityBundle(root, changedImage, true)).rejects.toThrow(/Observation image changed/);
     expect(fingerprint(root)).toBe(before);
 
-    const absolute = path.join(root, "public", imagePath);
+    const absolute = resolvePublicFile(root, imagePath);
     writeFileSync(absolute, Buffer.concat([readFileSync(absolute), Buffer.from("test changed image")]));
     // Re-exporting after a binary edit must still require observation review.
     const changedBytes = exportCityBundle(root, cityId);
@@ -343,23 +389,23 @@ describe("city editing bundle", () => {
     const before = fingerprint(root);
     const missing = exportCityBundle(root, "delhi");
     missing.assets.find((item) => item.id === "gt_img_delhi_red_fort")!.path = "assets/tourism/india/not-found.jpg";
-    await expect(applyCityBundle(root, missing, true)).rejects.toThrow();
+    await expect(applyCityBundle(root, missing, true)).rejects.toThrow("Observation image changed for delhi_red_fort; review observations first");
     expect(fingerprint(root)).toBe(before);
     const changedPhoto = exportCityBundle(root, "delhi");
     changedPhoto.assets.find((item) => item.id === "gt_img_delhi_red_fort")!.path =
       changedPhoto.assets.find((item) => item.id === "gt_img_delhi_qutb_minar")!.path;
-    await expect(applyCityBundle(root, changedPhoto, true)).rejects.toThrow();
+    await expect(applyCityBundle(root, changedPhoto, true)).rejects.toThrow("Observation image changed for delhi_red_fort; review observations first");
     expect(fingerprint(root)).toBe(before);
     // The release gate is tested with an actually unfinished journey. India
     // already has authored stories and must permit ordinary no-op edits.
     const prematureRelease = exportCityBundle(root, "tashkent");
     prematureRelease.city.productionStatus = "complete";
-    await expect(applyCityBundle(root, prematureRelease, true)).rejects.toThrow();
+    await expect(applyCityBundle(root, prematureRelease, true)).rejects.toThrow("City release status cannot be changed with a bundle");
     expect(fingerprint(root)).toBe(before);
     const shared = exportCityBundle(root, "delhi");
     const sharedAsset = shared.assets.find((item) => item.id === "gt_img_hotel_illustration")!;
     sharedAsset.altJa = "他都市の画像を変えてはならない";
-    await expect(applyCityBundle(root, shared, true)).rejects.toThrow();
+    await expect(applyCityBundle(root, shared, true)).rejects.toThrow("Cannot change another city's or shared image: gt_img_hotel_illustration");
     expect(fingerprint(root)).toBe(before);
   }, 180_000);
 
@@ -429,7 +475,7 @@ describe("city editing bundle", () => {
       if (++calls === 2) writeFileSync(to, "another editor's file", { flag: "wx" });
       linkSync(from, to);
     };
-    expect(() => writeCityBundleFiles(root, original, next, exportCityBundle(root, "delhi").baseFingerprint, renameSync, racingLink)).toThrow();
+    expect(() => writeCityBundleFiles(root, original, next, exportCityBundle(root, "delhi").baseFingerprint, renameSync, racingLink)).toThrow(/EEXIST: file already exists, link/);
     expect(calls).toBe(2);
     expect(existsSync(path.join(root, city))).toBe(false);
     expect(read(root, travel)).toBe("another editor's file");
@@ -555,40 +601,33 @@ describe("city editing bundle", () => {
     const before = fingerprint(root);
     const foreign = exportCityBundle(root, "milano");
     foreign.landmarks![0].cityId = "agra";
-    await expect(applyCityBundle(root, foreign, true)).rejects.toThrow();
+    await expect(applyCityBundle(root, foreign, true)).rejects.toThrow("City ownership mismatch: milano");
     expect(fingerprint(root)).toBe(before);
     const wrongOwner = exportCityBundle(root, "milano");
     wrongOwner.clues![0].landmarkId = "nonexistent_landmark";
-    await expect(applyCityBundle(root, wrongOwner, true)).rejects.toThrow();
+    await expect(applyCityBundle(root, wrongOwner, true)).rejects.toThrow("Clue belongs to another city: milano");
     expect(fingerprint(root)).toBe(before);
     const duplicate = exportCityBundle(root, "milano");
     duplicate.clues!.push(structuredClone(duplicate.clues![0]));
-    await expect(applyCityBundle(root, duplicate, true)).rejects.toThrow();
+    await expect(applyCityBundle(root, duplicate, true)).rejects.toThrow("Duplicate clue ID");
     expect(fingerprint(root)).toBe(before);
   }, 180_000);
 
   it("requires a registered journey and complete input before creating a new prototype city", async () => {
     const root = fixture();
-    expect(() => newCityBundle(root, "unregistered_city")).toThrow();
-    expect(() => newCityBundle(root, "delhi")).toThrow();
-    // A journey registers itself with its own folder and manifest.
-    const registerJourney = (journey: { id: string; [key: string]: unknown }) => {
-      mkdirSync(path.join(root, "content/journeys", journey.id), { recursive: true });
-      writeJson(root, `content/journeys/${journey.id}/manifest.json`, { schemaVersion: 1, order: 900, ...journey });
-    };
+    expect(() => newCityBundle(root, "unregistered_city")).toThrow("Register city unregistered_city in exactly one journey before creating its bundle");
+    expect(() => newCityBundle(root, "delhi")).toThrow("City already exists: delhi");
     for (const unsafeId of ["constructor", "prototype", "__proto__"]) {
-      registerJourney({ id: "unsafe_test", nameJa: "試験", status: "preparing",
+      registerJourney(root, { id: "unsafe_test", nameJa: "試験", status: "preparing",
         cities: [{ id: unsafeId, nameJa: "試験" }],
         currency: { code: "TST", symbol: "¤", unitJa: "試験通貨", unit: "whole" }, intercityModes: [] });
-      expect(() => newCityBundle(root, unsafeId)).toThrow();
+      expect(() => newCityBundle(root, unsafeId)).toThrow("Reserved city ID");
       rmSync(path.join(root, "content/journeys/unsafe_test"), { recursive: true });
     }
-    registerJourney({ id: "test_journey", nameJa: "試験の旅", status: "preparing",
-      cities: [{ id: "testcity", nameJa: "試験都市" }],
-      currency: { code: "TST", symbol: "¤", unitJa: "試験通貨", unit: "whole" },
-      initialBudget: 1000, intercityModes: [] });
+    registerJourney(root, testJourney);
     const before = fingerprint(root);
-    const newFiles = ["content/cities/testcity.json", "content/travel/testcity.json", "content/travel/testcity-settings.json"];
+    // A journey without cities elsewhere keeps its first city in its own folder.
+    const newFiles = [`${testLayer}/cities/testcity.json`, `${testLayer}/travel/testcity.json`, `${testLayer}/travel/testcity-settings.json`];
     const template = newCityBundle(root, "testcity") as ReturnType<typeof exportCityBundle>;
     const compactTemplate = compactCityBundle(template) as { schemaVersion: number; travel: { places: unknown[]; routes: unknown[]; routeSources: unknown; samePlaceRoute?: unknown } };
     expect(compactTemplate.schemaVersion).toBe(2);
@@ -596,28 +635,11 @@ describe("city editing bundle", () => {
     expect(compactTemplate.travel.routes).toEqual([]);
     expect(compactTemplate.travel.routeSources).toEqual({});
     expect(compactTemplate.travel.samePlaceRoute).toBeUndefined();
-    await expect(applyCityBundle(root, template, true)).rejects.toThrow();
+    await expect(applyCityBundle(root, template, true)).rejects.toThrow(/"countryCode"[\s\S]*Too small: expected string to have exactly 2 characters/);
     expect(fingerprint(root)).toBe(before);
     expect(newFiles.every((file) => !existsSync(path.join(root, file)))).toBe(true);
 
-    const existing = exportCityBundle(root, "delhi");
-    const hotel = structuredClone(existing.travel.places.find((place) => place.id === "delhi_hotel_hub")!);
-    const identity = structuredClone(existing.travel.routes.find((route) => route.fromPlaceId === hotel.id && route.toPlaceId === hotel.id && route.mode === "walk")!);
-    hotel.id = "testcity_hotel";
-    hotel.cityId = "testcity";
-    hotel.nameJa = "試験の滞在先";
-    hotel.nameEn = "Test hotel";
-    hotel.backgroundAssetId = "testcity_hotel_bg";
-    identity.fromPlaceId = hotel.id;
-    identity.toPlaceId = hotel.id;
-    template.city = { schemaVersion: 1, id: "testcity", countryCode: "ZZ", nameJa: "試験都市", themeJa: "試験用",
-      firstClearReward: { rewardSourceId: "testcity_legacy_placeholder", ap: 0 }, landmarkIdsPlanned: [], productionStatus: "prototype" };
-    template.travel = { cityId: "testcity", places: [hotel], routes: [identity], events: [] };
-    template.travelSettings = { initialBudget: 1000, hotelPlaceId: hotel.id, lodgingCost: 0, retryMinutes: 15, notes: "試験用設定" };
-    template.backgrounds = { testcity_hotel_bg: { nameJa: "試験", captionJa: "試験の滞在先", color: "#817569" } };
-    template.assets = [];
-    template.dateDestinations = [];
-    template.transitDecisions = null;
+    completeTestCity(root, template);
     const beforeMilan = read(root, "content/cities/milano.json");
     const beforeDelhi = read(root, "content/travel/delhi.json");
     await applyCityBundle(root, template);
@@ -628,6 +650,73 @@ describe("city editing bundle", () => {
     expect(readJson(root, newFiles[1])).toEqual(template.travel);
     expect(read(root, "content/cities/milano.json")).toBe(beforeMilan);
     expect(read(root, "content/travel/delhi.json")).toBe(beforeDelhi);
-    expect(() => newCityBundle(root, "testcity")).toThrow();
+    expect(() => newCityBundle(root, "testcity")).toThrow("City already exists: testcity");
+  }, 180_000);
+
+  it("edits a city of a journey folder only there, creating the folder's missing catalogs", async () => {
+    const root = fixture();
+    registerJourney(root, testJourney);
+    const others = filesOutside(root, testLayer);
+    const template = newCityBundle(root, "testcity") as ReturnType<typeof exportCityBundle>;
+    completeTestCity(root, template);
+    expect((await applyCityBundle(root, template, true)).changedFiles).toEqual([`${testLayer}/cities/testcity.json`,
+      `${testLayer}/travel/testcity.json`, `${testLayer}/travel/testcity-settings.json`, `${testLayer}/romance/presentation.json`]);
+    // Only catalogs that gain entries are created, with just this journey's part.
+    expect(readJson(root, `${testLayer}/romance/presentation.json`)).toEqual({ schemaVersion: 1, backgrounds: template.backgrounds, memories: {} });
+    expect(existsSync(path.join(root, testLayer, "romance/date_destinations.json"))).toBe(false);
+    expect(existsSync(path.join(root, testLayer, "tourism"))).toBe(false);
+
+    const bundle = exportEditableCityBundle(root, "testcity");
+    expect(bundle.city).toEqual(template.city);
+    expect(bundle.backgrounds).toEqual(template.backgrounds);
+    const destination = { id: "testcity_garden", cityId: "testcity", nameJa: "試験の庭園", nameEn: "Test garden",
+      descriptionJa: "試験用のデート先", backgroundAssetId: "testcity_garden_bg", facts: template.travel.places[0].sources };
+    bundle.travel.places[0].destinationIds = [destination.id];
+    bundle.backgrounds[destination.backgroundAssetId] = { nameJa: "試験の庭園", captionJa: "試験用の背景", color: "#6f8a5b" };
+    bundle.dateDestinations.push(destination);
+    bundle.travelSettings.notes += " 編集の検証。";
+    const before = fingerprint(root);
+    const expected = [`${testLayer}/travel/testcity.json`, `${testLayer}/travel/testcity-settings.json`,
+      `${testLayer}/romance/presentation.json`, `${testLayer}/romance/date_destinations.json`];
+    expect((await applyCityBundle(root, bundle)).changedFiles).toEqual(expected);
+    expect(fingerprint(root)).toBe(before);
+    expect((await applyCityBundle(root, bundle, true)).changedFiles).toEqual(expected);
+    expect(readJson(root, `${testLayer}/romance/date_destinations.json`)).toEqual({ schemaVersion: 1, destinations: [destination] });
+    expect(Object.keys(readJson(root, `${testLayer}/romance/presentation.json`).backgrounds)).toEqual(["testcity_hotel_bg", "testcity_garden_bg"]);
+    expect(exportCityBundle(root, "testcity").dateDestinations).toEqual([destination]);
+    expect(filesOutside(root, testLayer)).toEqual(others);
+    // A background of another layer is shared: it can be used but not changed from this city.
+    const shared = exportCityBundle(root, "testcity");
+    const coreBackground = Object.entries(readJson(root, "content/romance/presentation.json").backgrounds)[0];
+    shared.travel.places[0].backgroundAssetId = coreBackground[0];
+    delete shared.backgrounds.testcity_hotel_bg;
+    shared.backgrounds[coreBackground[0]] = { ...(coreBackground[1] as object), captionJa: "他の層の背景を変えてはならない" } as typeof shared.backgrounds[string];
+    await expect(applyCityBundle(root, shared, true)).rejects.toThrow(/Cannot change another city's or shared background/);
+    expect(filesOutside(root, testLayer)).toEqual(others);
+  }, 180_000);
+
+  it("removes the files and folders it created in a journey folder when a later write fails", () => {
+    const root = fixture();
+    registerJourney(root, testJourney);
+    const city = `${testLayer}/cities/testcity.json`, presentation = `${testLayer}/romance/presentation.json`;
+    const original = { [city]: null, [presentation]: null };
+    const next = { [city]: "first new file", [presentation]: "second new file" };
+    const before = fingerprint(root);
+    let calls = 0;
+    const failingLink: typeof linkSync = (from, to) => {
+      if (++calls === 2) throw new Error("injected link failure");
+      linkSync(from, to);
+    };
+    expect(() => writeCityBundleFiles(root, original, next, before, renameSync, failingLink)).toThrow("injected link failure");
+    expect(calls).toBe(2);
+    expect(readdirSync(path.join(root, testLayer))).toEqual(["manifest.json"]);
+    expect(fingerprint(root)).toBe(before);
+    // One bundle writes one layer: never a journey folder and the core layer together.
+    const core = "content/romance/presentation.json";
+    expect(() => writeCityBundleFiles(root, { [city]: null, [core]: read(root, core) }, { [city]: "new", [core]: `${read(root, core)}\n` }, before))
+      .toThrow("Invalid city bundle file set");
+    expect(() => writeCityBundleFiles(root, { "content/journeys/unknown_journey/cities/testcity.json": null },
+      { "content/journeys/unknown_journey/cities/testcity.json": "new" }, before)).toThrow("Invalid city bundle file set");
+    expect(fingerprint(root)).toBe(before);
   }, 180_000);
 });

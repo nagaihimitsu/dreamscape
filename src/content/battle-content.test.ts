@@ -4,14 +4,16 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { Story } from "inkjs";
 import { buildContent } from "../../scripts/content-pipeline";
-import { prepareContentFixture } from "./test-fixtures";
+import { changeCatalogEntry, prepareContentFixture } from "./test-fixtures";
 import quizData from "../../content/quizzes/sound_supper_B1.json";
-import battleData from "../../content/battles/catalog.json";
+import battleData from "./generated/content/battles/catalog.json";
+import type { BattleDefinition } from "./schemas";
 import { parseStoryTags } from "./tags";
 
 let fixture: string;
 const quizPath = "content/quizzes/sound_supper_B1.json";
-const battlePath = "content/battles/catalog.json";
+/** The Last Supper battle, which uses the quiz and Ink edited below. */
+const battleId = "milano_last_supper_01";
 const inkPath = "content/stories/battles/sound_supper.ink";
 
 beforeEach(async () => {
@@ -27,10 +29,8 @@ async function changeQuiz(change: (quiz: typeof quizData) => void) {
   change(quiz);
   await writeFile(path.join(fixture, quizPath), JSON.stringify(quiz));
 }
-async function changeBattle(change: (catalog: typeof battleData) => void) {
-  const data = structuredClone(battleData);
-  change(data);
-  await writeFile(path.join(fixture, battlePath), JSON.stringify(data));
+async function changeBattle(change: (battle: BattleDefinition, catalog: { battles: BattleDefinition[] }) => void) {
+  await changeCatalogEntry(fixture, "battles/catalog.json", "battles", battleId, change);
 }
 async function changeInk(before: string, after: string) {
   const file = path.join(fixture, inkPath);
@@ -107,8 +107,8 @@ describe("battle content contract", () => {
   });
 
   it("rejects a missing production quiz reference", async () => {
-    await changeBattle((data) => {
-      data.battles[0].quizId = "missing_quiz";
+    await changeBattle((battle) => {
+      battle.quizId = "missing_quiz";
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Unknown battle quizId",
@@ -116,8 +116,8 @@ describe("battle content contract", () => {
   });
 
   it("rejects duplicate battle IDs", async () => {
-    await changeBattle((data) => {
-      data.battles.push(structuredClone(data.battles[0]));
+    await changeBattle((battle, catalog) => {
+      catalog.battles.push(structuredClone(battle));
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Duplicate battleId",
@@ -125,8 +125,8 @@ describe("battle content contract", () => {
   });
 
   it("rejects a mismatched landmark", async () => {
-    await changeBattle((data) => {
-      data.battles[0].landmarkId = "duomo_milano";
+    await changeBattle((battle) => {
+      battle.landmarkId = "duomo_milano";
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Battle landmark mismatch",
@@ -137,7 +137,7 @@ describe("battle content contract", () => {
     await changeQuiz((quiz) => {
       quiz.questions.pop();
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
+    await expect(buildContent(fixture, false)).rejects.toThrow("A normal quiz needs three questions; a city finale needs five");
     await changeQuiz((quiz) => {
       quiz.questions[0].options[0].id = quiz.questions[0].options[1].id;
     });
@@ -156,26 +156,26 @@ describe("battle content contract", () => {
     await changeQuiz((quiz) => {
       quiz.questions[0].correctOptionId = "D";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
+    await expect(buildContent(fixture, false)).rejects.toThrow(/"correctOptionId"[\s\S]*Invalid option/);
   });
 
   it("requires source evidence with claim category, URL and real calendar date", async () => {
     await changeQuiz((quiz) => {
       quiz.questions[0].sources = [];
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
+    await expect(buildContent(fixture, false)).rejects.toThrow(/"sources"[\s\S]*Too small: expected array to have >=1 items/);
     await changeQuiz((quiz) => {
       quiz.questions[0].sources[0].checkedAt = "2026-02-30";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
+    await expect(buildContent(fixture, false)).rejects.toThrow(/"checkedAt"[\s\S]*Invalid ISO date/);
     await changeQuiz((quiz) => {
       quiz.questions[0].sources[0].url = "javascript:alert(1)";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
+    await expect(buildContent(fixture, false)).rejects.toThrow(/"url"[\s\S]*Invalid URL/);
     await changeQuiz((quiz) => {
       quiz.questions[0].sources[0].claimType = "probably_true";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
+    await expect(buildContent(fixture, false)).rejects.toThrow(/"claimType"[\s\S]*Invalid option/);
   });
 
   it("rejects Japanese questions and English explanations", async () => {
@@ -204,8 +204,8 @@ describe("battle content contract", () => {
   });
 
   it("validates configured scenes rather than assuming an Ink route shape", async () => {
-    await changeBattle((data) => {
-      data.battles[0].scenes.afterRounds[1] = "absent_scene";
+    await changeBattle((battle) => {
+      battle.scenes.afterRounds[1] = "absent_scene";
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Empty battle scene",

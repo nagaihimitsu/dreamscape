@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { isDeepStrictEqual } from "node:util";
 import { presentationSchema } from "../src/content/schemas";
@@ -7,6 +7,7 @@ import type { TagContext } from "../src/content/tags";
 import { RELATIONSHIP_TONES } from "../src/domain/romance-tone";
 import { validateMemoryReferences } from "../src/story/memory";
 import { validateBattleStory } from "./battle-validation";
+import { displayPath, loadContentSources, parseCatalog, storyFile } from "./content-sources";
 import { withContext } from "./content-validation-utils";
 import { validateEpilogue } from "./epilogue-validation";
 import { compileInk, validateNoInkRandom, validateRelationshipToneSource, validateStory } from "./ink-validation";
@@ -29,19 +30,20 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
   const json = (file: string): unknown => JSON.parse(readFileSync(file, "utf8"));
   const narrative = journeyNarrativeSchema.parse(json(path.join(base, selectedCityId ?? "", "narrative.json")));
   const fragments = buildJourneyFragments(input, narrative, requirements.map((city) => city.cityId));
-  const presentation = presentationSchema.parse(json(path.join(root, "content/romance/presentation.json")));
-  const tourism = tourismCatalogSchema.parse(json(path.join(root, "content/tourism/catalog.json")));
+  const sources = loadContentSources(root);
+  const presentation = parseCatalog(sources, presentationSchema, "romance/presentation.json");
+  const tourism = parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json");
   const expected = requirements.flatMap((city) => [
     ...city.main.flatMap((event) => [event.guideStoryId, event.battleStoryId]),
     ...city.dates.map((event) => event.storyId), city.finale.battleStoryId, city.finale.epilogueStoryId,
   ].map((storyId) => ({ cityId: city.cityId, storyId,
     draftFile: path.join(base, city.cityId, "stories", `${storyId}.ink`),
-    publishedFile: path.join(root, "content/stories", `${storyId}.ink`) })));
+    publishedFile: storyFile(sources, storyId) })));
   const actualFiles = new Set(inkFiles(path.join(base, selectedCityId ?? "")));
   const expectedFiles = new Set(expected.map((story) => story.draftFile));
-  const duplicate = expected.filter((story) => actualFiles.has(story.draftFile) && existsSync(story.publishedFile));
+  const duplicate = expected.filter((story) => actualFiles.has(story.draftFile) && story.publishedFile);
   if (duplicate.length) throw new Error(`Scenario has both draft and published Ink: ${duplicate.map((story) => story.storyId).join(", ")}; keep one source`);
-  const missing = expected.filter((story) => !actualFiles.has(story.draftFile) && !existsSync(story.publishedFile)).map((story) => story.draftFile);
+  const missing = expected.filter((story) => !actualFiles.has(story.draftFile) && !story.publishedFile).map((story) => story.draftFile);
   const extra = [...actualFiles].filter((file) => !expectedFiles.has(file));
   if (missing.length || extra.length)
     throw new Error(`Scenario Ink file mismatch: missing [${missing.map((file) => path.relative(base, file)).join(", ")}]; extra [${extra.map((file) => path.relative(base, file)).join(", ")}]`);
@@ -53,9 +55,11 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
     if (!isDeepStrictEqual(own, subset)) throw new Error(`Scenario metadata differs from the combined narrative: ${city.cityId}`);
   }
   const stories: Record<string, string> = {};
-  const sources: Record<string, string> = {};
+  const inkSources: Record<string, string> = {};
+  const storyFiles: Record<string, string> = {};
   for (const { storyId, draftFile, publishedFile } of expected) {
-    const file = actualFiles.has(draftFile) ? draftFile : publishedFile;
+    const file = actualFiles.has(draftFile) ? draftFile : publishedFile!;
+    storyFiles[storyId] = file;
     const source = readFileSync(file, "utf8");
     withContext(file, () => {
       // Also reject an unwanted protagonist line in a currently unreachable branch.
@@ -63,7 +67,7 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
       if (/#\s*speaker\s*:\s*player\b/.test(code)) throw new Error("The protagonist speaks only through date choices");
       validateMemoryReferences(source, Object.keys(fragments.memories));
       stories[storyId] = compileInk(source, file);
-      sources[storyId] = source;
+      inkSources[storyId] = source;
     });
   }
   let guides = 0;
@@ -82,12 +86,13 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
     const ownClues = fragments.clues.filter((clue) => ownLandmarks.some((landmark) => landmark.id === clue.landmarkId));
     guides += await validateTourism(root, { schemaVersion: 1, landmarks: ownLandmarks, clues: ownClues,
       assets: tourism.assets.filter((asset) => ownLandmarks.some((landmark) => landmark.imageAssetId === asset.id)) },
-    city.cityId, input.plannedLandmarks[city.cityId], fragments.battles, {}, stories, context, () => observe);
+    city.cityId, input.plannedLandmarks[city.cityId], fragments.battles, {}, stories, context, () => observe,
+    (storyId) => storyFiles[storyId] ? displayPath(root, storyFiles[storyId]) : `${storyId}.ink`);
     for (const battle of fragments.battles.filter((battle) => battle.cityId === city.cityId || ownLandmarks.some((landmark) => landmark.battleId === battle.id)))
       battleScenarios += withContext(battle.storyId, () => validateBattleStory(stories[battle.storyId], battle, context, observe));
     epilogueScenarios += withContext(city.finale.epilogueStoryId, () => validateEpilogue(stories[city.finale.epilogueStoryId], context, observe));
     for (const date of fragments.dates.filter((date) => date.chapterId === city.cityId)) {
-      const source = sources[date.storyId];
+      const source = inkSources[date.storyId];
       const compiled = stories[date.storyId];
       const effects = fragments.effects.filter((effect) => effect.id.startsWith(`${date.id}_`));
       const dateContext = { ...context, effectIds: effects.map((effect) => effect.id) };

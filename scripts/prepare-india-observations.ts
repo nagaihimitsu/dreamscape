@@ -5,6 +5,7 @@
 import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import { tourismClueSchema, type ObservationRegion } from "../src/content/tourism-schemas";
+import { resolvePublicFile } from "./public-assets";
 
 interface Fact {
   id: string; placeId: string; cityId: string; titleJa: string; summaryJa: string;
@@ -72,7 +73,7 @@ const clues = await Promise.all(selected.map(async ({ id, region, visualEvidence
   if (!source || source.url !== fact.sourceUrl) throw new Error(`Missing or inconsistent source: ${id}`);
   if (Boolean(region) !== Boolean(visualEvidence)) throw new Error(`Missing visual evidence: ${id}`);
   const imagePath = `assets/tourism/india/${fact.placeId}.jpg`;
-  images[fact.placeId] = { path: imagePath, sha256: createHash("sha256").update(await readFile(`public/${imagePath}`)).digest("hex") };
+  images[fact.placeId] = { path: imagePath, sha256: createHash("sha256").update(await readFile(resolvePublicFile(process.cwd(), imagePath))).digest("hex") };
   const clueId = `gt_obs_${id}`;
   const supplement = followup[id];
   const descriptionJa = supplement?.descriptionJa ?? fact.summaryJa;

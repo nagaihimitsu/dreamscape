@@ -1,6 +1,6 @@
 import path from "node:path";
-import { access } from "node:fs/promises";
 import sharp, { type Sharp, type Metadata, type ChannelStats } from "sharp";
+import { findPublicFile } from "./public-assets";
 
 /** Validate registered final artwork, not the legacy reference/placeholder art. */
 export async function validateCharacterImage(
@@ -8,13 +8,10 @@ export async function validateCharacterImage(
   imagePath: string,
   canvas: { width: number; height: number },
   label: string,
+  roots?: readonly string[],
 ): Promise<void> {
-  const file = path.join(root, "public", imagePath);
-  try {
-    await access(file);
-  } catch {
-    throw new Error(`Missing character image: ${label}/${imagePath}`);
-  }
+  const file = findPublicFile(root, imagePath, roots);
+  if (!file) throw new Error(`Missing character image: ${label}/${imagePath}`);
 
   // Decode the real contents; changing the extension of a white reference
   // image is not sufficient to register it as production artwork.

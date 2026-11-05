@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
@@ -51,5 +51,30 @@ describe("standalone content inspection", () => {
     await writeFile(file, "こんにちは。\n-> END\n");
     expect(await inspectFile(file)).toBe("ink");
     await expect(inspectFile(file, "other")).rejects.toThrow("--type");
+  });
+  it("checks a catalog of a journey folder as part of the merged catalog", async () => {
+    const presentation = JSON.parse(await readFile(path.resolve("src/content/generated/content/romance/presentation.json"), "utf8"));
+    const write = async (relative: string, value: unknown) => {
+      await mkdir(path.dirname(path.join(directory, relative)), { recursive: true });
+      await writeFile(path.join(directory, relative), JSON.stringify(value));
+      return path.join(directory, relative);
+    };
+    await write("content/romance/presentation.json", presentation);
+    await write("content/journeys/test_journey/manifest.json", { schemaVersion: 1, order: 10, id: "test_journey" });
+    const background = Object.values(presentation.backgrounds)[0];
+    const fragment = await write("content/journeys/test_journey/romance/presentation.json",
+      { schemaVersion: 1, backgrounds: { test_journey_bg: background }, memories: {} });
+    // The journey's part alone lacks the core keys; together with the core layer it is complete.
+    await expect(inspectFile(fragment, "presentation")).resolves.toBe("presentation");
+    expect(await inspectFile(fragment)).toBe("presentation");
+    await write("content/journeys/test_journey/romance/presentation.json",
+      { schemaVersion: 1, backgrounds: { test_journey_bg: { ...(background as object), color: 3 } }, memories: {} });
+    try {
+      await inspectFile(fragment);
+      throw new Error("accepted an invalid background");
+    } catch (error) {
+      expect((error as Error).message).toBe(`検証失敗: ${fragment}`);
+      expect(String((error as Error).cause)).toContain(`Invalid content in ${fragment}`);
+    }
   });
 });

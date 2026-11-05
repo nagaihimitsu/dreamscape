@@ -3,6 +3,7 @@ import path from "node:path";
 import { z } from "zod";
 import { tourismSourceSchema } from "../src/content/tourism-schemas";
 import { travelCatalogSchema, type TravelCatalog } from "../src/content/travel-schemas";
+import { loadContentSources, requireCity } from "./content-sources";
 
 export const indiaTransitCities = ["delhi", "agra", "jaipur"] as const;
 export const indiaTransitModes = ["rail", "bus"] as const;
@@ -28,8 +29,9 @@ export type IndiaTransitReview = { rows: ReviewRow[]; counts: Record<CityId, Rec
 export type IndiaTransitReviewInput = { catalogs: Record<CityId, unknown>; decisions: unknown };
 
 export function readIndiaTransitReview(root: string): IndiaTransitReviewInput {
-  const read = (file: string): unknown => JSON.parse(readFileSync(path.join(root, file), "utf8"));
-  return { catalogs: Object.fromEntries(indiaTransitCities.map((city) => [city, read(`content/travel/${city}.json`)])) as Record<CityId, unknown>,
+  const read = (file: string): unknown => JSON.parse(readFileSync(path.resolve(root, file), "utf8"));
+  const sources = loadContentSources(root);
+  return { catalogs: Object.fromEntries(indiaTransitCities.map((city) => [city, read(requireCity(sources, city).travelFile)])) as Record<CityId, unknown>,
     decisions: read("authoring/research/golden-triangle-transit-20261103/decisions.json") };
 }
 

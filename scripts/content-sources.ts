@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmdirSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { journeyCatalogSchema, type JourneyCatalog } from "../src/content/journey-catalog";
-import { mergeCatalog, type CatalogSource, type MergedCatalog } from "./catalog-merge";
+import { mergeCatalog, sourceFileOf, type CatalogSource, type MergedCatalog } from "./catalog-merge";
 import {
   CATALOG_RULES,
   classifyContentFile,
@@ -104,9 +104,17 @@ export function journeyCatalogFromManifests(manifests: readonly JourneyManifest[
   return { value: { schemaVersion: 1, journeys }, provenance: { files, items: { journeys: files }, keys: {}, values: {} } };
 }
 
+/** Without any journey folder there is nothing to play; name the file that registers one. */
+export function requireJourneyManifests(manifests: readonly JourneyManifest[]): void {
+  if (!manifests.length)
+    throw new Error("旅行編が登録されていません: content/journeys/<旅行編ID>/manifest.json を追加してください（No journey folder with a manifest.json below content/journeys/）。");
+}
+
 /** The validated journey catalog of `root` (generated from the journey manifests). */
 export function readJourneyCatalog(root: string): JourneyCatalog {
-  return journeyCatalogSchema.parse(journeyCatalogFromManifests(readJourneyManifests(root)).value);
+  const manifests = readJourneyManifests(root);
+  requireJourneyManifests(manifests);
+  return journeyCatalogSchema.parse(journeyCatalogFromManifests(manifests).value);
 }
 
 /**
@@ -188,11 +196,71 @@ export function loadContentSources(root: string): ContentSources {
     if (cityLayer.get(item.cityId)?.layer !== item.layer)
       throw new Error(`Travel file without a city in the same layer: ${item.file}`);
 
-  const publicRoots = [path.join(root, "public"), ...layers
+  return { root, layers, manifests, catalogs, cities, storyFiles, quizFiles, publicRoots: publicRoots(root, layers) };
+}
+
+/** Static file roots served by the game: root `public/`, then each journey layer's existing `public/`. */
+export function publicRoots(root: string, layers: readonly ContentLayer[] = contentLayers(root)): string[] {
+  return [path.join(root, "public"), ...layers
     .filter((layer) => layer.type === "journey")
     .map((layer) => path.join(layer.directory, "public"))
     .filter((directory) => existsSync(directory))];
-  return { root, layers, manifests, catalogs, cities, storyFiles, quizFiles, publicRoots };
+}
+
+/**
+ * Parse the merged `kind` with its schema. Errors name the layer file(s) the
+ * failing entries come from (provenance), not the merged position only.
+ */
+export function parseCatalog<T>(sources: ContentSources, schema: { parse(value: unknown): T }, kind: CatalogKind): T {
+  const merged = sources.catalogs[kind];
+  if (!merged) throw new Error(`Missing content file: ${kind} (no content layer provides it)`);
+  try {
+    return schema.parse(merged.value);
+  } catch (error) {
+    const issues = (error as { issues?: { path?: PropertyKey[] }[] }).issues ?? [];
+    const files = [...new Set(issues.map((issue) => sourceFileOf(merged.provenance, issue.path ?? [])))];
+    const label = files.length && files.every(Boolean) ? files.join(", ") : merged.provenance.files.join(", ");
+    throw new Error(
+      `Invalid content in ${label}: ${error instanceof Error ? error.message : String(error)}`,
+      { cause: error },
+    );
+  }
+}
+
+/** The city's files (city plus travel files in the same layer), or a clear error when no layer has them. */
+export function requireCity(sources: ContentSources, cityId: string): CitySource {
+  const city = sources.cities.find((item) => item.id === cityId);
+  if (!city) throw new Error(`Missing content file: cities/${cityId}.json (no content layer provides it)`);
+  return city;
+}
+
+/** The Ink file of a story ID in whichever layer provides it. */
+export function storyFile(sources: ContentSources, storyId: string): string | undefined {
+  return sources.storyFiles.find((story) => story.id === storyId)?.file;
+}
+
+/**
+ * The layer that holds (or will hold) a journey's city files: the one layer
+ * where its existing cities live, else the journey's own folder.
+ */
+export function journeyLayer(sources: ContentSources, journeyId: string): ContentLayer {
+  const manifest = sources.manifests.find((item) => item.id === journeyId);
+  if (!manifest) throw new Error(`Unknown journey: ${journeyId}`);
+  const planned = Array.isArray(manifest.data.cities) ? manifest.data.cities as { id?: unknown }[] : [];
+  const layerIds = new Set(sources.cities.filter((city) => planned.some((item) => item.id === city.id)).map((city) => city.layer));
+  if (layerIds.size > 1) throw new Error(`Journey cities must live in one content layer: ${journeyId} (${[...layerIds].join(", ")})`);
+  const layerId = [...layerIds][0] ?? journeyId;
+  return sources.layers.find((layer) => layer.id === layerId)!;
+}
+
+/** The layer that owns a city: the one with its city file, else the layer of its journey's cities. */
+export function cityLayer(sources: ContentSources, cityId: string): ContentLayer {
+  const city = sources.cities.find((item) => item.id === cityId);
+  if (city) return sources.layers.find((layer) => layer.id === city.layer)!;
+  const journeys = sources.manifests.filter((manifest) =>
+    Array.isArray(manifest.data.cities) && (manifest.data.cities as { id?: unknown }[]).some((item) => item.id === cityId));
+  if (journeys.length !== 1) throw new Error(`Register city ${cityId} in exactly one journey`);
+  return journeyLayer(sources, journeys[0].id);
 }
 
 /** Root-relative posix path for messages, e.g. `content/stories/milano/sound_cafe_01.ink`. */

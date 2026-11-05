@@ -3,7 +3,9 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { journeyDirectory } from "./content-layout";
-import { contentLayers, displayPath, loadContentSources, readJourneyCatalog, readJourneyManifests, writeContentMirror } from "./content-sources";
+import { z } from "zod";
+import { cityLayer, contentLayers, displayPath, journeyLayer, loadContentSources, parseCatalog, readJourneyCatalog, readJourneyManifests,
+  requireCity, storyFile, writeContentMirror } from "./content-sources";
 
 let root: string;
 const write = (relative: string, data: unknown) => {
@@ -72,7 +74,12 @@ describe("content layers", () => {
       .toEqual(["content/journeys/milano/manifest.json", "content/journeys/uzbekistan/manifest.json"]);
     expect(readJourneyManifests(root).map((item) => item.id)).toEqual(["milano", "uzbekistan"]);
     // The generated catalog is validated like the former central file.
-    expect(() => readJourneyCatalog(root)).toThrow();
+    expect(() => readJourneyCatalog(root)).toThrow(/"cities"[\s\S]*Invalid input: expected array, received undefined/);
+  });
+
+  it("explains how to register a journey when there is none", () => {
+    expect(() => readJourneyCatalog(root)).toThrow("旅行編が登録されていません: content/journeys/<旅行編ID>/manifest.json を追加してください");
+    expect(loadContentSources(root).manifests).toEqual([]);
   });
 
   it("rejects a leftover central journey catalog", () => {
@@ -137,6 +144,39 @@ describe("loadContentSources with journey layers", () => {
       ["milano", "core", "content/travel/milano.json"],
     ]);
     expect(sources.publicRoots).toEqual([path.join(root, "public"), path.join(root, "content/journeys/golden_triangle/public")]);
+  });
+
+  it("parses a merged catalog naming the layer file of a bad entry, and finds cities and stories", () => {
+    const sources = loadContentSources(root);
+    const schema = z.object({ schemaVersion: z.literal(1), battles: z.array(z.object({ id: z.string().regex(/^[a-z_]+$/) })) });
+    expect(parseCatalog(sources, schema, "battles/catalog.json").battles).toHaveLength(2);
+    // The second (journey layer) entry becomes invalid.
+    sources.catalogs["battles/catalog.json"]!.value = { schemaVersion: 1, battles: [{ id: "core_battle" }, { id: "Bad ID" }] };
+    expect(() => parseCatalog(sources, schema, "battles/catalog.json"))
+      .toThrow(`Invalid content in ${path.join(root, "content/journeys/golden_triangle/battles/catalog.json")}: `);
+    expect(() => parseCatalog(sources, schema, "tourism/catalog.json")).toThrow("Missing content file: tourism/catalog.json (no content layer provides it)");
+    expect(displayPath(root, requireCity(sources, "delhi").settingsFile)).toBe("content/journeys/golden_triangle/travel/delhi-settings.json");
+    expect(() => requireCity(sources, "rome")).toThrow("Missing content file: cities/rome.json (no content layer provides it)");
+    expect(storyFile(sources, "milano/cafe_03")).toBe(path.join(root, "content/journeys/milano/stories/milano/cafe_03.ink"));
+    expect(storyFile(sources, "milano/missing")).toBeUndefined();
+  });
+
+  it("finds the layer that owns a city, or that will hold a journey's new city", () => {
+    manifest("golden_triangle", 20, { cities: [{ id: "delhi" }, { id: "agra" }] });
+    manifest("milano", 30, { cities: [{ id: "milano" }] });
+    manifest("uzbekistan", 40, { cities: [{ id: "tashkent" }] });
+    const sources = loadContentSources(root);
+    expect(cityLayer(sources, "delhi").id).toBe("golden_triangle");
+    expect(cityLayer(sources, "milano").id).toBe("core");
+    // A new city goes next to its journey's existing cities, else into the journey's own folder.
+    expect(cityLayer(sources, "agra").id).toBe("golden_triangle");
+    expect(journeyLayer(sources, "milano").id).toBe("core");
+    expect(cityLayer(sources, "tashkent")).toEqual({ id: "uzbekistan", type: "journey", directory: journeyDirectory(root, "uzbekistan") });
+    expect(() => cityLayer(sources, "rome")).toThrow("Register city rome in exactly one journey");
+    expect(() => journeyLayer(sources, "unknown")).toThrow("Unknown journey: unknown");
+    city("content", "agra");
+    expect(() => journeyLayer(loadContentSources(root), "golden_triangle"))
+      .toThrow("Journey cities must live in one content layer: golden_triangle (core, golden_triangle)");
   });
 
   it("rejects a story ID or a city defined by two layers", () => {

@@ -309,7 +309,7 @@ describe("content build acceptance", () => {
     await changeDates((data) => {
       data.dates[0].apCost = -1;
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
+    await expect(buildContent(fixture, false)).rejects.toThrow(/"apCost"[\s\S]*Too small: expected number to be >=0/);
   });
 
   it("requires the name variables expected by the runtime", async () => {
@@ -354,7 +354,7 @@ describe("content build acceptance", () => {
       '"stage": 2,',
       '"stage": 2, "requiredPlayedDateIds": ["milano_walk_01"],',
     );
-    await expect(buildContent(fixture, false)).rejects.toThrow();
+    await expect(buildContent(fixture, false)).rejects.toThrow(/Unrecognized key: .*requiredPlayedDateIds/);
   });
 
   it("rejects a normal date requiring another date", async () => {

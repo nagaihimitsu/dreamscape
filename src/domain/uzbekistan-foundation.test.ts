@@ -1,7 +1,6 @@
-import { existsSync } from "node:fs";
-import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { inspectJourneyTransit } from "../../scripts/journey-transit-review";
+import { findPublicFile } from "../../scripts/public-assets";
 import { getCityContent, presentation, tourismAssets } from "../content";
 import { currencyForCity, formatMoneyForCity } from "../content/currency";
 import { getJourney, getJourneyForCity } from "../content/journeys";
@@ -131,7 +130,7 @@ describe("Uzbekistan scenario-ready foundation", () => {
       expect(asset.isPlaceholder).toBe(false);
       expect(asset.licenseName).not.toBe("");
       expect(asset.sourceUrl).toMatch(/^https:\/\//);
-      expect(existsSync(path.join(process.cwd(), "public", asset.path))).toBe(true);
+      expect(findPublicFile(process.cwd(), asset.path), asset.path).toBeDefined();
     }
   });
 

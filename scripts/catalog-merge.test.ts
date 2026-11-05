@@ -1,11 +1,21 @@
 import { describe, expect, it } from "vitest";
 import { mergeCatalog, sourceFileOf, type CatalogSource } from "./catalog-merge";
-import { catalogRule, classifyContentFile, storyIdFromPath } from "./content-layout";
+import { catalogRule, classifyContentFile, emptyCatalog, storyIdFromPath } from "./content-layout";
 
 const core = (data: unknown, file = "content/x.json"): CatalogSource => ({ file, core: true, data });
 const journey = (data: unknown, file: string): CatalogSource => ({ file, core: false, data });
 
 describe("catalog merge", () => {
+  it("starts a layer's missing catalog from an empty fragment that merges like no file", () => {
+    expect(JSON.stringify(emptyCatalog("romance/presentation.json"))).toBe(JSON.stringify({ schemaVersion: 1, backgrounds: {}, memories: {} }));
+    expect(JSON.stringify(emptyCatalog("presentation/characters.json")))
+      .toBe(JSON.stringify({ schemaVersion: 1, battleCharacters: {}, characters: [], wardrobe: { cities: {}, scenes: {} } }));
+    const rule = catalogRule("tourism/catalog.json");
+    const base = { schemaVersion: 1, assets: [{ id: "a" }], landmarks: [], clues: [] };
+    expect(mergeCatalog(rule, [core(base), journey(emptyCatalog("tourism/catalog.json"), "j.json")])!.value).toEqual(base);
+    expect(() => emptyCatalog("learning/details.json")).toThrow("learning/details.json is provided as a whole file and has no empty fragment");
+  });
+
   it("concatenates arrays core first and records which file supplied each entry", () => {
     const merged = mergeCatalog(catalogRule("battles/catalog.json"), [
       core({ schemaVersion: 1, battles: [{ id: "a" }, { id: "b" }] }, "core/battles.json"),

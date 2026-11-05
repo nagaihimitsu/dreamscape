@@ -10,9 +10,8 @@ import {
 import { unique, withContext } from "./content-validation-utils";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { sourceFileOf } from "./catalog-merge";
 import { mirrorDirectory, type CatalogKind } from "./content-layout";
-import { displayPath, loadContentSources, writeContentMirror } from "./content-sources";
+import { displayPath, loadContentSources, parseCatalog as parseSourceCatalog, requireJourneyManifests, writeContentMirror } from "./content-sources";
 import { authoringProfileOf } from "./journey-authoring";
 import { characterCatalogSchema } from "../src/content/character-assets";
 import { encounterCatalogInputSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
@@ -159,23 +158,10 @@ export async function buildContent(root: string, writeOutput = true) {
   // Every content layer, merged; the merged catalogs are validated below exactly
   // as the former single files were.
   const sources = loadContentSources(root);
+  requireJourneyManifests(sources.manifests);
   // Only the authoring tools read these profiles; a broken one still fails the build early.
   for (const manifest of sources.manifests) authoringProfileOf(manifest.data, manifest.file);
-  const parseCatalog = <T>(schema: { parse(value: unknown): T }, kind: CatalogKind): T => {
-    const merged = sources.catalogs[kind];
-    if (!merged) throw new Error(`Missing content file: ${kind} (no content layer provides it)`);
-    try {
-      return schema.parse(merged.value);
-    } catch (error) {
-      const issues = (error as { issues?: { path?: PropertyKey[] }[] }).issues ?? [];
-      const files = [...new Set(issues.map((issue) => sourceFileOf(merged.provenance, issue.path ?? [])))];
-      const label = files.length && files.every(Boolean) ? files.join(", ") : merged.provenance.files.join(", ");
-      throw new Error(
-        `Invalid content in ${label}: ${error instanceof Error ? error.message : String(error)}`,
-        { cause: error },
-      );
-    }
-  };
+  const parseCatalog = <T>(schema: { parse(value: unknown): T }, kind: CatalogKind): T => parseSourceCatalog(sources, schema, kind);
   // Messages name the real Ink file of a story, whichever layer it is in.
   const storyFiles = new Map(sources.storyFiles.map((story) => [story.id, displayPath(root, story.file)]));
   const storyLabel = (storyId: string) => storyFiles.get(storyId) ?? `${storyId}.ink`;
@@ -637,7 +623,7 @@ export async function buildContent(root: string, writeOutput = true) {
       landmarks,
       assets: tourism.assets,
       clues: tourism.clues.filter((clue) => ids.has(clue.landmarkId)),
-    }, current.id, current.landmarkIdsPlanned, battles, quizzes, stories, context, observeForStory);
+    }, current.id, current.landmarkIdsPlanned, battles, quizzes, stories, context, observeForStory, storyLabel);
   }
   for (const validateDate of deferredDateValidation) validateDate();
   for (const effect of effects) {

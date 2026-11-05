@@ -97,6 +97,24 @@ export function catalogRule(kind: MergedKind): CatalogRule {
   return catalogRules.get(kind)!;
 }
 
+/**
+ * An empty fragment of a merged catalog, for a layer that does not have the
+ * file yet: schemaVersion plus every mergeable key, empty. Core-only keys are
+ * left out (a journey layer may not set them).
+ */
+export function emptyCatalog(kind: MergedKind, schemaVersion: unknown = 1): Record<string, unknown> {
+  const rule = catalogRule(kind);
+  if ("file" in rule) throw new Error(`${kind} is provided as a whole file and has no empty fragment`);
+  const empty = (table: FieldTable): Record<string, unknown> => Object.fromEntries(Object.entries(table).flatMap(([key, field]) => {
+    if (field.mode === "same") return [[key, schemaVersion]];
+    if (field.mode === "concat") return [[key, []]];
+    if (field.mode === "record") return [[key, {}]];
+    if (field.mode === "nested") return [[key, empty(field.fields)]];
+    return [];
+  }));
+  return empty(rule.fields);
+}
+
 export type LayerType = "core" | "journey";
 
 export type ContentFileType =
