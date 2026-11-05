@@ -46,7 +46,7 @@
 npm run journey:scenario -- --journey golden_triangle --directory authoring/drafts/golden-triangle/scenario
 npm run journey:readiness -- --journey golden_triangle
 npm run verify
-npx playwright test tests/e2e/golden-triangle-story.spec.ts tests/e2e/city-arrival.spec.ts tests/e2e/journey-selection.spec.ts
+npm run test:e2e
 ```
 
 脚本検査は正本を読み、主人公の発話禁止、都市の背景・効果所属、通常戦・都市ボスの正誤と得点、18デートの選択肢と関係の分岐、エピローグを検証する。到着会話3本の効果・選択肢・発話・背景所属と、公開判定は別途既存コンテンツ検査で行う。

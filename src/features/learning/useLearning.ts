@@ -1,89 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { z } from "zod";
 import type { GameState } from "../../domain/game";
-import { battleAnswerSchema, getBattleContentByHash } from "../../domain/battle";
-import { battles, learningTranslations } from "../../content";
+import { learningTranslations } from "../../content";
 
 import { LEARNING_KEY as key, SAVE_KEY, type StorageLike } from "../../persistence";
 import { storagePhysicalKey } from "../../persistence/journey-storage";
-const schema = z
-  .object({
-    schemaVersion: z.literal(1),
-    revision: z.number().int().nonnegative(),
-    alwaysTranslate: z.boolean(),
-    revealed: z.record(
-      z.string(),
-      z.array(z.enum(["question", "A", "B", "C"])),
-    ),
-    marks: z.record(z.string(), z.string()),
-    records: z.record(
-      z.string(),
-      z
-        .object({
-          runId: z.string().min(1),
-          contentHash: z.string().min(1),
-          answers: z.array(battleAnswerSchema).max(5),
-        })
-        .strict(),
-    ),
-    openQuestion: z.string().nullable(),
-    openTopic: z.string().nullable(),
-  })
-  .strict();
-type LearningState = z.infer<typeof schema>;
-const fresh = (): LearningState => ({
-  schemaVersion: 1,
-  revision: 0,
-  alwaysTranslate: false,
-  revealed: {},
-  marks: {},
-  records: {},
-  openQuestion: null,
-  openTopic: null,
-});
-function validateRecords(state: LearningState) {
-  for (const [id, record] of Object.entries(state.records)) {
-    const battle = battles.find((item) => item.id === id);
-    if (!battle) throw new Error("Unknown battle in learning record");
-    const content = getBattleContentByHash(id, record.contentHash);
-    if (!content) continue;
-    const questions = content.quiz.questions;
-    if (
-      record.answers.length > questions.length ||
-      record.answers.some((answer, index) => {
-        const question = questions[index];
-        return (
-          !question ||
-          answer.questionId !== question.id ||
-          !question.options.some((option) => option.id === answer.optionId) ||
-          answer.correct !== (answer.optionId === question.correctOptionId)
-        );
-      })
-    )
-      throw new Error("Invalid learning answers");
-  }
-  return state;
-}
-function load(storage: StorageLike) {
-  try {
-    const raw = storage.getItem(key);
-    return {
-      raw,
-      data:
-        raw === null ? fresh() : validateRecords(schema.parse(JSON.parse(raw))),
-      error: "",
-    };
-  } catch {
-    return {
-      raw: null,
-      data: fresh(),
-      error:
-        "英語ノートの保存データを確認できないため、上書きせず保護しています。",
-    };
-  }
-}
+import { commitLearning, loadLearning, type LearningState } from "./learning-storage";
 export function useLearning(game: GameState | null, storage: StorageLike = window.localStorage, listenToStorage = true) {
-  const [initial] = useState(() => load(storage));
+  const [initial] = useState(() => loadLearning(storage));
   const [data, setData] = useState(initial.data);
   const [error, setError] = useState(initial.error);
   const rawRef = useRef(initial.raw);
@@ -92,34 +15,26 @@ export function useLearning(game: GameState | null, storage: StorageLike = windo
   const update = useCallback(
     (change: (state: LearningState) => LearningState) => {
       if (blocked.current) return false;
-      try {
-        if (storage.getItem(key) !== rawRef.current) {
-          setError(
-            "別の画面で英語ノートが更新されました。この画面を再読み込みしてください。",
-          );
-          blocked.current = true;
-          return false;
-        }
-        const next = change(dataRef.current);
-        if (next === dataRef.current) return true;
-        const valid = validateRecords(
-          schema.parse({
-            ...next,
-            revision: dataRef.current.revision + 1,
-          }),
+      const result = commitLearning(storage, rawRef.current, dataRef.current, change);
+      if (result.status === "stale") {
+        setError(
+          "別の画面で英語ノートが更新されました。この画面を再読み込みしてください。",
         );
-        const raw = JSON.stringify(valid);
-        storage.setItem(key, raw);
-        rawRef.current = raw;
-        dataRef.current = valid;
-        setData(valid);
-        return true;
-      } catch {
+        blocked.current = true;
+        return false;
+      }
+      if (result.status === "failed") {
         setError(
           "英語ノートを保存できませんでした。保存データは変更していません。",
         );
         return false;
       }
+      if (result.status === "saved") {
+        rawRef.current = result.raw;
+        dataRef.current = result.data;
+        setData(result.data);
+      }
+      return true;
     },
     [storage],
   );
