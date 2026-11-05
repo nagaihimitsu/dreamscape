@@ -121,7 +121,7 @@ describe("integrated journey content contract", () => {
     );
   });
 
-  it.each(["cityId", "legacyChapterId", "landmarkId", "battleId"] as const)(
+  it.each(["cityId", "landmarkId", "battleId"] as const)(
     "rejects an unknown episode %s",
     async (field) => {
       await changeJourney((data) => {

@@ -156,20 +156,6 @@
       "checkedAt": "2026-10-31"
     },
     {
-      "id": "love_vicinity_date_photo",
-      "path": "assets/tourism/dates/via_meravigli.webp",
-      "width": 1067,
-      "height": 1600,
-      "altJa": "アッファーリ広場付近、メラヴィリ通りのパラッツォ・トゥラーティ外観。彫刻は写っていません。",
-      "isPlaceholder": false,
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Palazzo_Turati,_Milano,_veduta_prospettica_della_facciata.jpg",
-      "licenseName": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
-      "creditJa": "写真：Paolobon140／Wikimedia Commons／CC BY-SA 4.0",
-      "modificationJa": "縦横比を維持して縮小・WebP変換。表示時は画面比率により端が切れます。変換画像もCC BY-SA 4.0。",
-      "checkedAt": "2026-10-31"
-    },
-    {
       "id": "roastery_exterior_date_photo",
       "path": "assets/tourism/dates/palazzo_broggi.webp",
       "width": 1600,

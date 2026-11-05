@@ -39,13 +39,14 @@ const scala = (dates: DateEntry[]) => dates.find((date) => date.id === "milano_l
 
 describe("date destination content references", () => {
   it("validates optional, clearly labelled HTTPS references for destination photos", () => {
-    const love = destinationData.destinations.find((item) => item.id === "milano_love")!;
-    expect(dateDestinationSchema.safeParse(love).success).toBe(true);
-    const reference = love.referenceImage!;
-    expect(dateDestinationSchema.safeParse({ ...love, referenceImage: { ...reference, url: "javascript:alert(1)" } }).success).toBe(false);
-    expect(dateDestinationSchema.safeParse({ ...love, referenceImage: { ...reference, url: "http://example.org" } }).success).toBe(false);
-    expect(dateDestinationSchema.safeParse({ ...love, referenceImage: { ...reference, backgroundNoteJa: "" } }).success).toBe(false);
-    expect(dateDestinationSchema.safeParse({ ...love, referenceImage: undefined }).success).toBe(true);
+    const novecento = destinationData.destinations.find((item) => item.id === "milano_novecento")!;
+    expect(dateDestinationSchema.safeParse(novecento).success).toBe(true);
+    const reference = novecento.referenceImage!;
+    expect(reference).toBeDefined();
+    expect(dateDestinationSchema.safeParse({ ...novecento, referenceImage: { ...reference, url: "javascript:alert(1)" } }).success).toBe(false);
+    expect(dateDestinationSchema.safeParse({ ...novecento, referenceImage: { ...reference, url: "http://example.org" } }).success).toBe(false);
+    expect(dateDestinationSchema.safeParse({ ...novecento, referenceImage: { ...reference, backgroundNoteJa: "" } }).success).toBe(false);
+    expect(dateDestinationSchema.safeParse({ ...novecento, referenceImage: undefined }).success).toBe(true);
   });
 
   it("accepts the three places without making them tourism/battle landmarks", async () => {

@@ -182,53 +182,6 @@
       ]
     },
     {
-      "id": "milano_love",
-      "cityId": "milano",
-      "nameJa": "彫刻《L.O.V.E.》",
-      "nameEn": "L.O.V.E.",
-      "descriptionJa": "証券取引所前に立つ、挑発的な手の彫刻を見る。",
-      "backgroundAssetId": "milano_love_date",
-      "facts": [
-        {
-          "publisher": "MUDEC（ミラノ市立文化博物館）",
-          "title": "L.O.V.E.",
-          "url": "https://www.mudec.it/en/2022/05/10/l-o-v-e/",
-          "checkedAt": "2026-11-01",
-          "claimType": "documented_fact",
-          "claimJa": "カッラーラ大理石の手は、中指だけが残り、ほかの四本の指を欠いた姿をしている。"
-        },
-        {
-          "publisher": "MUDEC（ミラノ市立文化博物館）",
-          "title": "L.O.V.E.",
-          "url": "https://www.mudec.it/en/2022/05/10/l-o-v-e/",
-          "checkedAt": "2026-11-01",
-          "claimType": "interpretation",
-          "claimJa": "金融界への風刺やファシスト式敬礼への言及という解釈があるが、作者は肯定も否定もしていないと紹介されている。題名はイタリア語の自由、憎悪、復讐、永遠の頭文字として紹介されている。"
-        },
-        {
-          "publisher": "inLOMBARDIA（ロンバルディア州公式観光）",
-          "title": "L.O.V.E.",
-          "url": "https://www.in-lombardia.it/en/tourism-in-lombardy/tourism-milan/love",
-          "checkedAt": "2026-10-31",
-          "claimType": "documented_fact",
-          "claimJa": "マウリツィオ・カテランの手の彫刻L.O.V.E.は、アッファーリ広場のミラノ証券取引所前に設置されている。"
-        },
-        {
-          "publisher": "inLombardia（ロンバルディア州観光局）",
-          "title": "L.O.V.E.",
-          "url": "https://www.in-lombardia.it/en/tourism-in-lombardy/tourism-milan/love",
-          "checkedAt": "2026-10-31",
-          "claimType": "documented_fact",
-          "claimJa": "作品は当初2週間の仮設展示の予定だったが、議論を経てその後も広場に残された。"
-        }
-      ],
-      "referenceImage": {
-        "url": "https://artsandculture.google.com/asset/l-o-v-e-0098/aQFJRsqTBD1p2Q",
-        "labelJa": "彫刻の写真を見る（外部）",
-        "backgroundNoteJa": "背景に彫刻は写っていません"
-      }
-    },
-    {
       "id": "milano_cafe_naviglio",
       "cityId": "milano",
       "nameJa": "ナヴィリオ運河のカフェ",

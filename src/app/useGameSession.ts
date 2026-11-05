@@ -4,12 +4,12 @@ import { advanceCompletedJourneyCity } from "../domain/city-travel";
 import { startCityArrival } from "../domain/epilogue";
 import { finishTravelEventIfComplete } from "../domain/travel-game";
 import {
-  backupAndCreate, deleteSaveData, LEARNING_KEY, SAVE_KEY, loadGame,
+  backupAndCreate, deleteSaveData, loadGame,
   sameGameState, saveGame, type StorageLike,
 } from "../persistence";
+import { checkDeleteRequest, type DeleteSnapshot } from "./save-deletion";
 
 export type GameChange = (state: GameState) => GameState;
-export type DeleteSnapshot = { game: string | null; learning: string | null };
 export type GameStorage = StorageLike & { removeItem(key: string): void };
 
 /** Owns the in-memory game and the snapshots used to protect persisted progress. */
@@ -106,26 +106,12 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCityCh
     return true;
   }
   function prepareDelete(): { snapshot?: DeleteSnapshot; closeSettings: boolean } {
-    try {
-      const current = loadGame(storage);
-      if (gameRef.current) {
-        if (savedGameRef.current === null
-          ? protectedOriginalRef.current === null
-            ? current.status !== "empty"
-            : current.status !== "invalid" || current.raw !== protectedOriginalRef.current
-          : current.status !== "loaded" || !sameGameState(current.state, savedGameRef.current)) {
-          setNotice("別の画面でセーブが更新されています。再読み込みしてからやり直してください。");
-          return { closeSettings: true };
-        }
-      } else if (loaded.status !== "invalid" || current.status !== "invalid" || current.raw === null || current.raw !== loaded.raw) {
-        setNotice("保存データを確認できません。再読み込みしてからやり直してください。");
-        return { closeSettings: false };
-      }
-      return { closeSettings: true, snapshot: { game: storage.getItem(SAVE_KEY), learning: storage.getItem(LEARNING_KEY) } };
-    } catch {
-      setNotice("保存データを読み取れませんでした。ブラウザの保存設定を確認してください。");
-      return { closeSettings: false };
-    }
+    const { notice: message, ...result } = checkDeleteRequest(storage, {
+      hasGame: !!gameRef.current, savedGame: savedGameRef.current,
+      protectedOriginal: protectedOriginalRef.current, loaded,
+    });
+    if (message) setNotice(message);
+    return result;
   }
   function deleteConfirmed(snapshot: DeleteSnapshot) {
     const result = deleteSaveData(storage, snapshot);

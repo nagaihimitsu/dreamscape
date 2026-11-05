@@ -25,7 +25,8 @@ import {
   setNames,
   startDate,
 } from "../domain/game";
-import { useGameSession, type DeleteSnapshot } from "./useGameSession";
+import { useGameSession } from "./useGameSession";
+import type { DeleteSnapshot } from "./save-deletion";
 import { CanalScene } from "../components/CanalScene";
 import { HeldItems } from "../components/HeldItems";
 import { secureRomanceRoll } from "../random/romance-source";

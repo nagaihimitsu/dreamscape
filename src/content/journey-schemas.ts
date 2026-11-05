@@ -23,7 +23,6 @@ export const episodeSchema = z
       .regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/)
       .optional(),
     battleId: id,
-    legacyChapterId: id,
     titleJa: japanese,
     descriptionJa: japanese,
     clearTitleJa: japanese,

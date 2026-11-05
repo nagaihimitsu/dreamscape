@@ -96,13 +96,6 @@
       "color": "#777462",
       "fallback": "neutral"
     },
-    "milano_love_date": {
-      "nameJa": "手のかたち",
-      "captionJa": "ミラノ ／ 手のかたち",
-      "color": "#727779",
-      "fallback": "neutral",
-      "imageAssetId": "love_vicinity_date_photo"
-    },
     "milano_rain_pause": {
       "nameJa": "ガッレリアの雨宿り",
       "captionJa": "ミラノ ／ 雨が通り過ぎるまで",

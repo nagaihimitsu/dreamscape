@@ -254,28 +254,6 @@
       ]
     },
     {
-      "id": "p_love",
-      "cityId": "milano",
-      "nameJa": "彫刻 L.O.V.E.",
-      "nameEn": "L.O.V.E. sculpture",
-      "latitude": 45.46481,
-      "longitude": 9.18328,
-      "backgroundAssetId": "milano_love_date",
-      "sources": [
-        {
-          "publisher": "Mapcarta / 地点別情報源",
-          "title": "彫刻 L.O.V.E. 地点情報",
-          "url": "https://mapcarta.com/N2524655282",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "参照先の代表点をゲーム用の地点に採用。入口や広い施設内の位置は完全一致を保証しない。"
-        }
-      ],
-      "destinationIds": [
-        "milano_love"
-      ]
-    },
-    {
       "id": "p_novecento",
       "cityId": "milano",
       "nameJa": "ノヴェチェント美術館",
@@ -529,23 +507,6 @@
     },
     {
       "fromPlaceId": "p_duomo",
-      "toPlaceId": "p_love",
-      "mode": "walk",
-      "minutes": 11,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_duomo",
       "toPlaceId": "p_novecento",
       "mode": "walk",
       "minutes": 2,
@@ -770,23 +731,6 @@
       "toPlaceId": "p_prada",
       "mode": "walk",
       "minutes": 45,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_galleria",
-      "toPlaceId": "p_love",
-      "mode": "walk",
-      "minutes": 9,
       "cost": 0,
       "sources": [
         {
@@ -1039,23 +983,6 @@
     },
     {
       "fromPlaceId": "p_supper",
-      "toPlaceId": "p_love",
-      "mode": "walk",
-      "minutes": 16,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_supper",
       "toPlaceId": "p_novecento",
       "mode": "walk",
       "minutes": 24,
@@ -1280,23 +1207,6 @@
       "toPlaceId": "p_prada",
       "mode": "walk",
       "minutes": 55,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_castello",
-      "toPlaceId": "p_love",
-      "mode": "walk",
-      "minutes": 10,
       "cost": 0,
       "sources": [
         {
@@ -1549,23 +1459,6 @@
     },
     {
       "fromPlaceId": "p_scala",
-      "toPlaceId": "p_love",
-      "mode": "walk",
-      "minutes": 10,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_scala",
       "toPlaceId": "p_novecento",
       "mode": "walk",
       "minutes": 7,
@@ -1804,23 +1697,6 @@
     },
     {
       "fromPlaceId": "p_brera",
-      "toPlaceId": "p_love",
-      "mode": "walk",
-      "minutes": 17,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_brera",
       "toPlaceId": "p_novecento",
       "mode": "walk",
       "minutes": 16,
@@ -2045,23 +1921,6 @@
       "toPlaceId": "p_prada",
       "mode": "walk",
       "minutes": 40,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_darsena",
-      "toPlaceId": "p_love",
-      "mode": "walk",
-      "minutes": 25,
       "cost": 0,
       "sources": [
         {
@@ -2314,23 +2173,6 @@
     },
     {
       "fromPlaceId": "p_navigli",
-      "toPlaceId": "p_love",
-      "mode": "walk",
-      "minutes": 28,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_navigli",
       "toPlaceId": "p_novecento",
       "mode": "walk",
       "minutes": 30,
@@ -2555,23 +2397,6 @@
       "toPlaceId": "p_prada",
       "mode": "walk",
       "minutes": 41,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_satiro",
-      "toPlaceId": "p_love",
-      "mode": "walk",
-      "minutes": 9,
       "cost": 0,
       "sources": [
         {
@@ -2824,23 +2649,6 @@
     },
     {
       "fromPlaceId": "p_roastery",
-      "toPlaceId": "p_love",
-      "mode": "walk",
-      "minutes": 5,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_roastery",
       "toPlaceId": "p_novecento",
       "mode": "walk",
       "minutes": 6,
@@ -3079,23 +2887,6 @@
     },
     {
       "fromPlaceId": "p_prada",
-      "toPlaceId": "p_love",
-      "mode": "walk",
-      "minutes": 48,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_prada",
       "toPlaceId": "p_novecento",
       "mode": "walk",
       "minutes": 41,
@@ -3133,261 +2924,6 @@
       "toPlaceId": "p_hotel",
       "mode": "walk",
       "minutes": 46,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_love",
-      "toPlaceId": "p_duomo",
-      "mode": "walk",
-      "minutes": 11,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_love",
-      "toPlaceId": "p_galleria",
-      "mode": "walk",
-      "minutes": 9,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_love",
-      "toPlaceId": "p_supper",
-      "mode": "walk",
-      "minutes": 16,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_love",
-      "toPlaceId": "p_castello",
-      "mode": "walk",
-      "minutes": 10,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_love",
-      "toPlaceId": "p_scala",
-      "mode": "walk",
-      "minutes": 10,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_love",
-      "toPlaceId": "p_brera",
-      "mode": "walk",
-      "minutes": 17,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_love",
-      "toPlaceId": "p_darsena",
-      "mode": "walk",
-      "minutes": 25,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_love",
-      "toPlaceId": "p_navigli",
-      "mode": "walk",
-      "minutes": 28,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_love",
-      "toPlaceId": "p_satiro",
-      "mode": "walk",
-      "minutes": 9,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_love",
-      "toPlaceId": "p_roastery",
-      "mode": "walk",
-      "minutes": 5,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_love",
-      "toPlaceId": "p_prada",
-      "mode": "walk",
-      "minutes": 48,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_love",
-      "toPlaceId": "p_love",
-      "mode": "walk",
-      "minutes": 0,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_love",
-      "toPlaceId": "p_novecento",
-      "mode": "walk",
-      "minutes": 10,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_love",
-      "toPlaceId": "p_maurizio",
-      "mode": "walk",
-      "minutes": 6,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_love",
-      "toPlaceId": "p_hotel",
-      "mode": "walk",
-      "minutes": 5,
       "cost": 0,
       "sources": [
         {
@@ -3575,23 +3111,6 @@
       "toPlaceId": "p_prada",
       "mode": "walk",
       "minutes": 41,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_novecento",
-      "toPlaceId": "p_love",
-      "mode": "walk",
-      "minutes": 10,
       "cost": 0,
       "sources": [
         {
@@ -3844,23 +3363,6 @@
     },
     {
       "fromPlaceId": "p_maurizio",
-      "toPlaceId": "p_love",
-      "mode": "walk",
-      "minutes": 6,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_maurizio",
       "toPlaceId": "p_novecento",
       "mode": "walk",
       "minutes": 15,
@@ -4085,23 +3587,6 @@
       "toPlaceId": "p_prada",
       "mode": "walk",
       "minutes": 46,
-      "cost": 0,
-      "sources": [
-        {
-          "publisher": "OpenSidewalkMap / OpenStreetMap contributors",
-          "title": "Milan pedestrian routing graph, 2026-10-29",
-          "url": "https://github.com/opensidewalkmap/milan/tree/main/data/routing",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "歩行ネットワーク上の最短距離と両端の直線接続を使い、時速4.5キロメートルで徒歩時間を推定した。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_hotel",
-      "toPlaceId": "p_love",
-      "mode": "walk",
-      "minutes": 5,
       "cost": 0,
       "sources": [
         {

@@ -128,7 +128,7 @@ describe("story battle references in the journey", () => {
   it("lets a city without first-clear AP leave the episode-clear reward undecided without weakening Milan", () => {
     const prototype = { ...city, id: "new_city", firstClearReward: { rewardSourceId: "new_city_placeholder", ap: 0 } };
     const journey = structuredClone(journeyConfig);
-    journey.episodes.forEach((episode) => { episode.cityId = "new_city"; episode.legacyChapterId = "new_city"; });
+    journey.episodes.forEach((episode) => { episode.cityId = "new_city"; });
     const oldClear = journey.rewards.find((rule) => rule.trigger === "episode_clear")!;
     journey.rewards = journey.rewards.filter((rule) => rule.trigger !== "episode_clear");
     const localLandmarks = landmarks.map((landmark) => ({ ...landmark, cityId: "new_city" }));

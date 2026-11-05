@@ -205,8 +205,8 @@ function recordEpisodes(state: GameState): GameState {
       continue;
     if (!completedEpisodeIds.includes(episode.id))
       completedEpisodeIds.push(episode.id);
-    if (!completedChapters.includes(episode.legacyChapterId))
-      completedChapters.push(episode.legacyChapterId);
+    if (!completedChapters.includes(episode.cityId))
+      completedChapters.push(episode.cityId);
     if (
       episode.kind === "city_finale" &&
       !completedCityIds.includes(episode.cityId)
@@ -277,7 +277,7 @@ export function completeRecordedChapter(
     return state;
   const matched = episodes.filter(
     (episode) =>
-      episode.legacyChapterId === chapterId &&
+      episode.cityId === chapterId &&
       hasCompletedBattle(state, episode),
   );
   if (!matched.length) return state;
@@ -301,7 +301,7 @@ export function validateJourneyState(state: GameState): void {
     if (
       !episode ||
       !hasCompletedBattle(state, episode) ||
-      !state.completedChapters.includes(episode.legacyChapterId) ||
+      !state.completedChapters.includes(episode.cityId) ||
       !episode.requiredEpisodeIds.every((required) =>
         state.completedEpisodeIds.includes(required),
       ) ||

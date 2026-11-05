@@ -127,7 +127,7 @@ describe("integrated tourism, battle, and free time", () => {
       expect(state.ap).toBe(rule("guide_read").ap + battleAP);
       expect(state.affection).toBe(beforeAffection);
       expect(state.completedEpisodeIds).toEqual([episode.id]);
-      expect(state.completedChapters).toEqual([episode.legacyChapterId]);
+      expect(state.completedChapters).toEqual([episode.cityId]);
       expect(state.completedCityIds).toEqual([]);
       expect(
         state.battleRewardReceipt?.entries.reduce(

@@ -90,8 +90,8 @@ export function validateJourney(
     }
     const landmark = landmarks.find((item) => item.id === episode.landmarkId);
     const battle = battles.find((item) => item.id === episode.battleId);
-    if (episode.cityId !== city.id || episode.legacyChapterId !== city.id) {
-      throw new Error(`Unknown episode city/chapter: ${episode.id}`);
+    if (episode.cityId !== city.id) {
+      throw new Error(`Unknown episode city: ${episode.id}`);
     }
     if (episode.kind === "city_finale") {
       const stops = journey.episodes.filter(

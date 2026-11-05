@@ -45,10 +45,10 @@ export function installTestCity(options: {
   const normalSource = episodes.find((item) => item.id === "milano_duomo_episode")!;
   const finaleSource = episodes.find((item) => item.id === "milano_finale")!;
   const normal = { ...clone(normalSource), id: id("episode"), cityId: cityId, landmarkId: id("landmark"),
-    battleId: id("battle"), legacyChapterId: cityId, requiredEpisodeIds: [] };
+    battleId: id("battle"), requiredEpisodeIds: [] };
   const finale = { ...clone(finaleSource), id: id("finale"), cityId: cityId, battleId: id("final_battle"),
     epilogueStoryId: ownStory(finaleSource.epilogueStoryId!, `${cityId}/epilogue`),
-    legacyChapterId: cityId, requiredEpisodeIds: [normal.id] };
+    requiredEpisodeIds: [normal.id] };
   episodes.push(normal, finale);
 
   const normalBattle = { ...clone(battles.find((item) => item.id === "milano_duomo_01")!), id: id("battle"), landmarkId: id("landmark") };

@@ -9,6 +9,8 @@
 
 提供ZIPを展開した場合の再計算：`node routing/calculate_matrix.cjs`。結果は `routing/network_results_recalculated.json`。調査時はZIP内の `network_results.json` と225組について数値一致を確認済み。ZIP内の `points.json` は地点データの座標スナップショット。生成ルートを使う場合はCSVの追加スナップ距離を合算し、GeoJSONだけの長さを時間に使わない。
 
+上記の地点数・組数（225組、210方向）は調査時の15地点の値です。2026-11に彫刻L.O.V.E.（`p_love`）をゲームから削除し、その地点・営業時間・徒歩経路の行も各CSVから除きました（現在14地点）。
+
 ## 選定地点
 スカラ座は劇場建物でなくPiazza della Scalaの代表点。城はFilarete門。最後の晩餐は美術館代表点。ブレラは美術館代表点。ダルセナはPonte dello Scodellinoで水際近くの橋という具体的なゲーム位置を採り、告白の橋にも共有。洗濯屋小路は別地点。ホテルはCordusio駅代表点に置いた架空の宿で、駅や実在ホテルをホテル扱いする主張ではない。
 

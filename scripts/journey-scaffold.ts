@@ -109,7 +109,7 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
         descriptionJa: script.descriptionJa, imageAssetId: input.imageAssetIds[place.id], guideStoryId: item.guideStoryId,
         battleId: item.battleId, clueIds: ownClues.map((clue) => clue.id) }));
       episodes.push(episodeSchema.parse({ id: event.id, kind: "episode", cityId: plan.cityId, landmarkId: place.id,
-        battleId: item.battleId, legacyChapterId: plan.cityId, requiredEpisodeIds: [], titleJa: script.titleJa,
+        battleId: item.battleId, requiredEpisodeIds: [], titleJa: script.titleJa,
         descriptionJa: script.descriptionJa, clearTitleJa: script.clearTitleJa, clearDescriptionJa: script.clearDescriptionJa }));
       battles.push(battleSchema.parse({ id: item.battleId, titleJa: script.titleJa, descriptionJa: script.descriptionJa,
         landmarkId: place.id, enemyNameJa: script.enemyNameJa, enemyTitleJa: script.enemyTitleJa,
@@ -139,7 +139,7 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
     if (!place || !travel.events.some((entry) => entry.placeId === place.id))
       throw new Error(`Journey scaffold: finale must use a registered attraction in ${plan.cityId}`);
     episodes.push(episodeSchema.parse({ id: plan.finale.eventId, kind: "city_finale", cityId: plan.cityId, landmarkId: null,
-      battleId: plan.finale.battleId, legacyChapterId: plan.cityId, requiredEpisodeIds: plan.main.map((item) => item.eventId),
+      battleId: plan.finale.battleId, requiredEpisodeIds: plan.main.map((item) => item.eventId),
       epilogueStoryId: plan.finale.epilogueStoryId, titleJa: script.titleJa, descriptionJa: script.descriptionJa,
       clearTitleJa: script.clearTitleJa, clearDescriptionJa: script.clearDescriptionJa }));
     battles.push(battleSchema.parse({ id: plan.finale.battleId, scope: "city_finale", cityId: plan.cityId, landmarkId: null,

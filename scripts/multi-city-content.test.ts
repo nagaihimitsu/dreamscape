@@ -30,7 +30,7 @@ async function addSecondCity() {
   const journey = await read("progression/journey.json");
   const chosenEpisodes = journey.episodes.filter((episode: any) => ["milano_duomo_episode", "milano_finale"].includes(episode.id));
   journey.episodes.push(...chosenEpisodes.map((episode: any) => ({ ...episode, id: prefix(episode.id),
-    cityId: second.id, legacyChapterId: second.id, landmarkId: episode.landmarkId && prefix(episode.landmarkId),
+    cityId: second.id, landmarkId: episode.landmarkId && prefix(episode.landmarkId),
     battleId: prefix(episode.battleId), requiredEpisodeIds: episode.kind === "city_finale" ? [prefix("milano_duomo_episode")] : [] })));
   journey.rewards.push(...journey.rewards.filter((reward: any) => chosenEpisodes.some((episode: any) => episode.id === reward.episodeId))
     .map((reward: any) => ({ ...reward, id: prefix(reward.id), episodeId: prefix(reward.episodeId) })));
