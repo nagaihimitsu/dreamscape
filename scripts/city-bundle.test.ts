@@ -466,7 +466,9 @@ describe("city editing bundle", () => {
 
   it("never overwrites a city file created concurrently and rolls back earlier new files", () => {
     const root = fixture();
-    const city = "content/cities/testcity.json", travel = "content/travel/testcity.json";
+    // A new city's files go to its journey's folder (here test_journey's own, as it has no city elsewhere).
+    registerJourney(root, testJourney);
+    const city = `${testLayer}/cities/testcity.json`, travel = `${testLayer}/travel/testcity.json`;
     const original = { [city]: null, [travel]: null };
     const next = { [city]: "first new file", [travel]: "second new file" };
     const beforeMilan = read(root, "content/cities/milano.json");
@@ -506,7 +508,8 @@ describe("city editing bundle", () => {
 
   it("does not delete another editor's newer change to a new file during a rollback", () => {
     const root = fixture();
-    const city = "content/cities/testcity.json", travel = "content/travel/testcity.json";
+    registerJourney(root, testJourney);
+    const city = `${testLayer}/cities/testcity.json`, travel = `${testLayer}/travel/testcity.json`;
     const original = { [city]: null, [travel]: null };
     const next = { [city]: "first new file", [travel]: "second new file" };
     const newer = "another editor changed the first file";
@@ -695,9 +698,44 @@ describe("city editing bundle", () => {
     expect(filesOutside(root, testLayer)).toEqual(others);
   }, 180_000);
 
+  it("edits a city whose journey folder has catalogs without some keys, adding only keys that gain entries", async () => {
+    const root = fixture();
+    registerJourney(root, testJourney);
+    const others = filesOutside(root, testLayer);
+    const template = newCityBundle(root, "testcity") as ReturnType<typeof exportCityBundle>;
+    completeTestCity(root, template);
+    // The merge accepts fragments that leave keys out: this layer contributes nothing there.
+    const presentationFile = `${testLayer}/romance/presentation.json`, tourismFile = `${testLayer}/tourism/catalog.json`;
+    const destinationsFile = `${testLayer}/romance/date_destinations.json`;
+    const files: Record<string, unknown> = { [`${testLayer}/cities/testcity.json`]: template.city, [`${testLayer}/travel/testcity.json`]: template.travel,
+      [`${testLayer}/travel/testcity-settings.json`]: template.travelSettings,
+      [presentationFile]: { schemaVersion: 1, backgrounds: template.backgrounds }, [tourismFile]: { schemaVersion: 1, assets: [] },
+      [destinationsFile]: { schemaVersion: 1 } };
+    for (const [file, value] of Object.entries(files)) {
+      mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+      writeJson(root, file, value);
+    }
+    const tourism = read(root, tourismFile);
+    const bundle = exportEditableCityBundle(root, "testcity");
+    const destination = { id: "testcity_garden", cityId: "testcity", nameJa: "試験の庭園", nameEn: "Test garden",
+      descriptionJa: "試験用のデート先", backgroundAssetId: "testcity_garden_bg", facts: template.travel.places[0].sources };
+    bundle.travel.places[0].destinationIds = [destination.id];
+    bundle.backgrounds[destination.backgroundAssetId] = { nameJa: "試験の庭園", captionJa: "試験用の背景", color: "#6f8a5b" };
+    bundle.dateDestinations.push(destination);
+    expect((await applyCityBundle(root, bundle, true)).changedFiles).toEqual([`${testLayer}/travel/testcity.json`, presentationFile, destinationsFile]);
+    // Keys that stay empty are not added; the untouched partial catalog keeps its bytes.
+    expect(readJson(root, presentationFile)).toStrictEqual({ schemaVersion: 1, backgrounds: bundle.backgrounds });
+    expect(readJson(root, destinationsFile)).toStrictEqual({ schemaVersion: 1, destinations: [destination] });
+    expect(read(root, tourismFile)).toBe(tourism);
+    expect(exportCityBundle(root, "testcity").dateDestinations).toEqual([destination]);
+    expect(filesOutside(root, testLayer)).toEqual(others);
+  }, 180_000);
+
   it("removes the files and folders it created in a journey folder when a later write fails", () => {
     const root = fixture();
     registerJourney(root, testJourney);
+    const otherLayer = "content/journeys/other_journey";
+    registerJourney(root, { ...testJourney, id: "other_journey", order: 901, cities: [{ id: "othercity", nameJa: "別の試験都市" }] });
     const city = `${testLayer}/cities/testcity.json`, presentation = `${testLayer}/romance/presentation.json`;
     const original = { [city]: null, [presentation]: null };
     const next = { [city]: "first new file", [presentation]: "second new file" };
@@ -717,6 +755,11 @@ describe("city editing bundle", () => {
       .toThrow("Invalid city bundle file set");
     expect(() => writeCityBundleFiles(root, { "content/journeys/unknown_journey/cities/testcity.json": null },
       { "content/journeys/unknown_journey/cities/testcity.json": "new" }, before)).toThrow("Invalid city bundle file set");
+    // A new city's files belong to its own journey's layer, not to another registered one.
+    for (const layer of [otherLayer, "content"]) {
+      const file = `${layer}/cities/testcity.json`;
+      expect(() => writeCityBundleFiles(root, { [file]: null }, { [file]: "new" }, before), layer).toThrow("Invalid city bundle file set");
+    }
     expect(fingerprint(root)).toBe(before);
   }, 180_000);
 });

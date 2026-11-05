@@ -3,7 +3,7 @@ import { closeSync, existsSync, linkSync, lstatSync, openSync, readFileSync, ren
 import path from "node:path";
 import { indiaInputFingerprint } from "./promote-india";
 import { cityTransitFile } from "./journey-transit-review";
-import { displayPath, loadContentSources, readJourneyCatalog, type ContentLayer, type ContentSources } from "./content-sources";
+import { cityLayer, displayPath, loadContentSources, readJourneyCatalog, type ContentLayer, type ContentSources } from "./content-sources";
 import type { MergedKind } from "./content-layout";
 import { createParentDirectories, removeCreatedDirectories } from "./created-directories";
 
@@ -47,7 +47,7 @@ export function existing(sources: ContentSources, id: string): boolean {
 // Files a bundle may write: one city's own files and the bundle catalogs, all in one content layer.
 const layerFile = /^(content(?:\/journeys\/[a-z][a-z0-9_]*)?)\/(?:cities\/([a-z][a-z0-9_]*)\.json|travel\/([a-z][a-z0-9_]*)(?:-settings)?\.json|romance\/(?:presentation|date_destinations)\.json|tourism\/catalog\.json)$/;
 
-/** True when every content file of a write set belongs to one existing layer and no city of it lives in another layer. */
+/** True when every content file of a write set belongs to one existing layer, the owner layer of each city of it (see cityLayer). */
 function inOneOwnerLayer(sources: ContentSources, files: readonly string[]): boolean {
   const matches = files.map((file) => layerFile.exec(file)).filter((match) => match !== null);
   const layers = new Set(matches.map((match) => match[1]));
@@ -55,9 +55,10 @@ function inOneOwnerLayer(sources: ContentSources, files: readonly string[]): boo
   const [layer] = layers;
   if (layer === undefined) return true;
   if (!sources.layers.some((entry) => layerPath(sources.root, entry) === layer)) return false;
+  // A new city belongs to the layer of its journey (manifest), not to any registered folder.
   return matches.every((match) => {
-    const city = sources.cities.find((item) => item.id === (match[2] ?? match[3]));
-    return !city || layerPath(sources.root, sources.layers.find((entry) => entry.id === city.layer)!) === layer;
+    const cityId = match[2] ?? match[3];
+    return cityId === undefined || layerPath(sources.root, cityLayer(sources, cityId)) === layer;
   });
 }
 

@@ -9,7 +9,7 @@ import { learningCatalogSchema, questionSource, translationSchema } from "../src
 import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readiness";
 import { buildJourneyFragments, loadJourneyScaffold } from "./journey-scaffold";
 import { authoringProfileOf, getJourneyAuthoringProfile, journeyAuthoringProfiles } from "./journey-authoring";
-import { CONTENT_DIRECTORY, emptyCatalog, journeyManifestPath, type MergedKind } from "./content-layout";
+import { CONTENT_DIRECTORY, completeFragment, emptyCatalog, journeyManifestPath, trimFragment, type MergedKind } from "./content-layout";
 import { displayPath, journeyLayer, loadContentSources } from "./content-sources";
 import { createParentDirectories, removeCreatedDirectories } from "./created-directories";
 
@@ -79,23 +79,29 @@ type Fragments = ReturnType<typeof buildJourneyFragments>;
 /**
  * Merge generated technical definitions without deleting or overwriting
  * unrelated content. Definitions go to the fragments of `layer` (a missing
- * fragment starts empty); an ID already defined in any layer (`merged`) must
- * be identical and is not added again.
+ * fragment, or a missing key of one, starts empty); an ID already defined in
+ * any layer (`merged`) must be identical and is not added again.
  */
 export function mergeJourneyReleaseFragments(original: ReleaseFiles, release: Record<string, string>, fragments: Fragments,
   quizzes: ReturnType<typeof loadJourneyReadiness>["quizzes"] = [], translations?: unknown,
   { layer = CONTENT_DIRECTORY, merged = {} }: { layer?: string; merged?: MergedCatalogValues } = {}): Record<string, string> {
   const result = { ...release };
   const read = (file: string): any => JSON.parse(result[file] ?? original[file] ?? "null");
+  // Keys an existing fragment leaves out are added for editing and trimmed again when they stay empty.
+  const added = new Map<FragmentName, ReadonlyMap<string, unknown>>();
   const fragment = (name: FragmentName): any => {
     const file = fragmentFile(layer, name);
-    return result[file] ?? original[file] ? read(file) : emptyCatalog(fragmentKinds[name], merged[fragmentKinds[name]]?.schemaVersion);
+    const schemaVersion = merged[fragmentKinds[name]]?.schemaVersion;
+    if (!(result[file] ?? original[file])) return emptyCatalog(fragmentKinds[name], schemaVersion);
+    const data = read(file);
+    added.set(name, completeFragment(fragmentKinds[name], data, schemaVersion));
+    return data;
   };
-  const write = (name: FragmentName, value: unknown) => {
+  const write = (name: FragmentName, value: Record<string, unknown>) => {
     const file = fragmentFile(layer, name);
-    // A fragment the layer does not have yet is created only when it gains entries.
-    if (typeof original[file] !== "string" && isDeepStrictEqual(value, emptyCatalog(fragmentKinds[name], (value as any).schemaVersion))) return;
-    result[file] = text(value);
+    // A fragment (or a key of it) the layer does not have yet is created only when it gains entries.
+    if (typeof original[file] !== "string" && isDeepStrictEqual(value, emptyCatalog(fragmentKinds[name], value.schemaVersion))) return;
+    result[file] = text(trimFragment(value, added.get(name) ?? new Map()));
   };
   const others = (name: FragmentName, key: string): any[] => merged[fragmentKinds[name]]?.[key] ?? [];
   const merge = (existing: any[], incoming: readonly any[], label: string, all: readonly any[] = []) => {

@@ -8,7 +8,7 @@ import { travelCatalogSchema } from "../src/content/travel-schemas";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { dateDestinationSchema, dateDestinationsSchema } from "../src/content/date-destinations";
 import { cityLayer, parseCatalog, readJourneyCatalog, requireCity, type ContentSources } from "./content-sources";
-import { emptyCatalog, type MergedKind } from "./content-layout";
+import { completeFragment, emptyCatalog, trimFragment, type MergedKind } from "./content-layout";
 import type { CityBundle } from "./city-bundle-schema";
 import { bundleCatalogKinds, cityFiles, decisionFile, existing, layerPath, read } from "./city-bundle-files";
 import { journeyAuthoringProfiles } from "./journey-authoring";
@@ -59,14 +59,20 @@ function checkObservationImages(root: string, bundle: CityBundle, baseline: City
   }
 }
 
-/** The owner layer's own copy of a bundle catalog (an empty fragment when the layer has none yet). */
-type Fragment = { kind: MergedKind; file: string; absolute: string; exists: boolean; data: any };
+/**
+ * The owner layer's own copy of a bundle catalog, with every mergeable key:
+ * an empty fragment when the layer has none yet, else the file completed with
+ * the keys it leaves out (`added`, trimmed again when they stay empty).
+ */
+type Fragment = { kind: MergedKind; file: string; absolute: string; exists: boolean; data: any; added: ReadonlyMap<string, unknown> };
 function ownFragment(sources: ContentSources, layer: string, kind: MergedKind): Fragment {
   const file = `${layer}/${kind}`;
   const absolute = path.join(sources.root, file);
   const exists = existsSync(absolute);
-  return { kind, file, absolute, exists,
-    data: exists ? JSON.parse(readFileSync(absolute, "utf8")) : emptyCatalog(kind, (sources.catalogs[kind]?.value as { schemaVersion?: unknown })?.schemaVersion) };
+  const schemaVersion = (sources.catalogs[kind]?.value as { schemaVersion?: unknown })?.schemaVersion;
+  if (!exists) return { kind, file, absolute, exists, data: emptyCatalog(kind, schemaVersion), added: new Map() };
+  const data = JSON.parse(readFileSync(absolute, "utf8"));
+  return { kind, file, absolute, exists, data, added: completeFragment(kind, data, schemaVersion) };
 }
 
 /**
@@ -175,9 +181,10 @@ export function mergeCityCatalogs(sources: ContentSources, bundle: CityBundle, b
   checkObservationImages(root, bundle, baseline, sources.publicRoots);
   const [cityPath, travelPath, settingsPath] = cityFiles(layer, cityId);
   const values: Record<string, unknown> = { [cityPath]: bundle.city, [travelPath]: bundle.travel, [settingsPath]: bundle.travelSettings };
-  // A fragment the layer does not have yet is created only when it gains entries.
+  // A fragment (or a key of it) the layer does not have yet is created only when it gains entries.
   for (const fragment of [own.presentation, own.tourism, own.destinations])
-    if (fragment.exists || !isDeepStrictEqual(fragment.data, emptyCatalog(fragment.kind, fragment.data.schemaVersion))) values[fragment.file] = fragment.data;
+    if (fragment.exists) values[fragment.file] = trimFragment(fragment.data, fragment.added);
+    else if (!isDeepStrictEqual(fragment.data, emptyCatalog(fragment.kind, fragment.data.schemaVersion))) values[fragment.file] = fragment.data;
   if (bundle.transitDecisions) {
     const ownFile = cityTransitFile(root, cityId);
     if (ownFile) {

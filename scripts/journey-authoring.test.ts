@@ -195,4 +195,57 @@ describe("journey authoring with four cities", () => {
       expect(existsSync(path.join(root, layer, "learning"))).toBe(false);
     } finally { rmSync(root, { recursive: true, force: true }); }
   });
+
+  it("releases into journey catalogs that leave keys out, adding only the keys that gain entries", () => {
+    const layer = "content/journeys/uzbekistan";
+    const { root, original } = releaseFixture(layer);
+    try {
+      const write = (file: string, value: unknown) => {
+        const content = `${JSON.stringify(value, null, 2)}\n`;
+        mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+        writeFileSync(path.join(root, file), content);
+        return content;
+      };
+      const corePresentation = { schemaVersion: 1, backgrounds: {}, memories: { shared_memory: { titleJa: "共有の思い出" } } };
+      const coreFile = "content/romance/presentation.json";
+      const core = write(coreFile, corePresentation);
+      // The merge accepts fragments that leave keys out: the layer contributes nothing there.
+      const partial = {
+        "progression/journey.json": { schemaVersion: 1, storyBattles: [] },
+        "battles/catalog.json": { schemaVersion: 1 },
+        "romance/date_catalog.json": { schemaVersion: 1 },
+        "tourism/catalog.json": { schemaVersion: 1, assets: [] },
+        "romance/presentation.json": { schemaVersion: 1, backgrounds: { uz_tashkent_bg: { nameJa: "タシケント" } } },
+        "learning/translations.json": { questions: {} },
+      };
+      const releaseOriginal: ReleaseFiles = { ...original, [`${layer}/romance/effect_catalog.json`]: null,
+        ...Object.fromEntries(Object.entries(partial).map(([kind, value]) => [`${layer}/${kind}`, write(`${layer}/${kind}`, value)])) };
+      const coreTranslations = JSON.parse(readFileSync(path.join(process.cwd(), "src/content/generated/content/learning/translations.json"), "utf8"));
+      const merged = { "learning/translations.json": coreTranslations,
+        "romance/presentation.json": { ...corePresentation, backgrounds: partial["romance/presentation.json"].backgrounds } };
+      const quiz = loadIndiaReadiness(process.cwd()).quizzes.find((item) => item.id === "sound_duomo_b1")!;
+      const fragments = { episodes: [{ id: "uz_tashkent_episode", cityId: "tashkent" }], rewards: [],
+        battles: [{ id: "uz_tashkent_battle", quizId: quiz.id }], dates: [], landmarks: [], clues: [], finaleEvents: [],
+        effects: [], memories: { shared_memory: { titleJa: "共有の思い出" }, uz_memory: { titleJa: "タシケント" } },
+      } as unknown as Parameters<typeof mergeJourneyReleaseFragments>[2];
+      const release = journeyReleaseChanges(releaseOriginal, "uzbekistan", "tashkent", layer);
+      const next = mergeJourneyReleaseFragments(releaseOriginal, release, fragments, [quiz], undefined, { layer, merged });
+      const json = (kind: string) => JSON.parse(next[`${layer}/${kind}`]);
+      // Missing keys that gain entries are appended; present keys keep their order.
+      expect(Object.keys(json("progression/journey.json"))).toEqual(["schemaVersion", "storyBattles", "episodes"]);
+      expect(json("progression/journey.json").episodes).toEqual(fragments.episodes);
+      expect(json("battles/catalog.json")).toStrictEqual({ schemaVersion: 1, battles: fragments.battles });
+      expect(json("romance/presentation.json")).toStrictEqual({ ...partial["romance/presentation.json"], memories: { uz_memory: { titleJa: "タシケント" } } });
+      // Catalogs without new entries keep their bytes (no empty keys or schemaVersion added).
+      for (const kind of ["romance/date_catalog.json", "tourism/catalog.json", "learning/translations.json"])
+        expect(next[`${layer}/${kind}`], kind).toBe(releaseOriginal[`${layer}/${kind}`]);
+      expect(next[`${layer}/romance/effect_catalog.json`]).toBeUndefined();
+
+      writeJourneyReleaseFiles(root, releaseOriginal, next, "uzbekistan", undefined, undefined, layer);
+      expect(Object.keys(next).filter((file) => file !== uzbekManifest && !file.startsWith(`${layer}/`))).toEqual([]);
+      for (const [file, content] of Object.entries(next)) expect(readFileSync(path.join(root, file), "utf8"), file).toBe(content);
+      expect(readFileSync(path.join(root, coreFile), "utf8")).toBe(core);
+      expect(existsSync(path.join(root, layer, "romance/effect_catalog.json"))).toBe(false);
+    } finally { rmSync(root, { recursive: true, force: true }); }
+  });
 });

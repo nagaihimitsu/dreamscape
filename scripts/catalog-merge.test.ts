@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { mergeCatalog, sourceFileOf, type CatalogSource } from "./catalog-merge";
-import { catalogRule, classifyContentFile, emptyCatalog, storyIdFromPath } from "./content-layout";
+import { catalogRule, classifyContentFile, completeFragment, emptyCatalog, storyIdFromPath, trimFragment } from "./content-layout";
 
 const core = (data: unknown, file = "content/x.json"): CatalogSource => ({ file, core: true, data });
 const journey = (data: unknown, file: string): CatalogSource => ({ file, core: false, data });
@@ -14,6 +14,17 @@ describe("catalog merge", () => {
     const base = { schemaVersion: 1, assets: [{ id: "a" }], landmarks: [], clues: [] };
     expect(mergeCatalog(rule, [core(base), journey(emptyCatalog("tourism/catalog.json"), "j.json")])!.value).toEqual(base);
     expect(() => emptyCatalog("learning/details.json")).toThrow("learning/details.json is provided as a whole file and has no empty fragment");
+  });
+
+  it("completes a fragment that leaves keys out for editing and trims the keys that stay empty", () => {
+    const fragment: Record<string, unknown> = { assets: [{ id: "a" }] };
+    const added = completeFragment("tourism/catalog.json", fragment, 2);
+    expect(JSON.stringify(fragment)).toBe(JSON.stringify({ assets: [{ id: "a" }], schemaVersion: 2, landmarks: [], clues: [] }));
+    (fragment.clues as unknown[]).push({ id: "c" });
+    expect(JSON.stringify(trimFragment(fragment, added))).toBe(JSON.stringify({ assets: [{ id: "a" }], clues: [{ id: "c" }] }));
+    const complete = { schemaVersion: 1, assets: [], landmarks: [], clues: [] };
+    expect(completeFragment("tourism/catalog.json", complete).size).toBe(0);
+    expect(JSON.stringify(trimFragment(complete, new Map()))).toBe(JSON.stringify({ schemaVersion: 1, assets: [], landmarks: [], clues: [] }));
   });
 
   it("concatenates arrays core first and records which file supplied each entry", () => {

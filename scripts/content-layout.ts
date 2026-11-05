@@ -1,4 +1,5 @@
 import path from "node:path";
+import { isDeepStrictEqual } from "node:util";
 
 // Layout of the content layers and the rules that merge them.
 //
@@ -113,6 +114,29 @@ export function emptyCatalog(kind: MergedKind, schemaVersion: unknown = 1): Reco
     return [];
   }));
   return empty(rule.fields);
+}
+
+/**
+ * Give a layer's existing fragment the top-level keys of emptyCatalog that it
+ * leaves out (the merge accepts such a fragment: the layer contributes nothing
+ * there), so authoring tools can edit every key. Missing keys are appended,
+ * empty; present keys keep their values and order. Returns the added keys with
+ * their empty values, for trimFragment.
+ */
+export function completeFragment(kind: MergedKind, data: Record<string, unknown>, schemaVersion?: unknown): Map<string, unknown> {
+  const added = new Map<string, unknown>();
+  for (const [key, empty] of Object.entries(emptyCatalog(kind, schemaVersion))) {
+    if (Object.hasOwn(data, key)) continue;
+    data[key] = empty;
+    added.set(key, structuredClone(empty));
+  }
+  return added;
+}
+
+/** Remove the keys completeFragment added that are still empty, before the fragment is written back. */
+export function trimFragment<T extends Record<string, unknown>>(data: T, added: ReadonlyMap<string, unknown>): T {
+  for (const [key, empty] of added) if (isDeepStrictEqual(data[key], empty)) delete data[key];
+  return data;
 }
 
 export type LayerType = "core" | "journey";

@@ -30,16 +30,13 @@ export function createParentDirectories(root: string, files: readonly string[]):
 
 /**
  * Remove directories returned by createParentDirectories, innermost first,
- * when they are empty. A directory someone else put a file into is kept and
- * returned, so the caller can report it.
+ * when they are empty. A directory someone else put a file into meanwhile is
+ * theirs too and is kept (with its parents), as is one that cannot be removed.
  */
-export function removeCreatedDirectories(root: string, created: readonly string[]): string[] {
-  const kept: string[] = [];
+export function removeCreatedDirectories(root: string, created: readonly string[]): void {
   for (const directory of [...created].reverse()) {
     const absolute = path.join(root, directory);
-    if (!existsSync(absolute)) continue;
-    if (readdirSync(absolute).length) { kept.push(directory); continue; }
-    try { rmdirSync(absolute); } catch { kept.push(directory); }
+    if (!existsSync(absolute) || readdirSync(absolute).length) continue;
+    try { rmdirSync(absolute); } catch { /* kept: another editor's file arrived meanwhile, or no permission */ }
   }
-  return kept;
 }
