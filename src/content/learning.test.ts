@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import raw from "../../content/learning/translations.json";
-import details from "../../content/learning/details.json";
+import raw from "./generated/content/learning/translations.json";
+import details from "./generated/content/learning/details.json";
 import { battleQuizzes } from "./index";
 import { learningCatalogSchema, validateLearning } from "./learning-schema";
 import {

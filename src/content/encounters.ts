@@ -1,5 +1,5 @@
-import data from "../../content/encounters/catalog.json";
-import tourismData from "../../content/tourism/catalog.json";
+import data from "./generated/content/encounters/catalog.json";
+import tourismData from "./generated/content/tourism/catalog.json";
 import { normalizeEncounterCatalog } from "./encounter-schemas";
 
 /** Encounter catalog with author shorthands normalized. */

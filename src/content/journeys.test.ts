@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import data from "../../content/journeys/catalog.json";
+import data from "./generated/content/journeys/catalog.json";
 import { journeyCatalogSchema } from "./journey-catalog";
 import { getJourney, getJourneyForCity } from "./journeys";
 

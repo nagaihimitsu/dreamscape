@@ -15,8 +15,9 @@ import {
   battleSchema,
   type BattleDefinition,
 } from "./schemas";
+// Source catalogs that the tests rewrite in their fixture; read-only runtime data comes from the generated mirror.
 import battleData from "../../content/battles/catalog.json";
-import tourismData from "../../content/tourism/catalog.json";
+import tourismData from "./generated/content/tourism/catalog.json";
 
 let fixture: string;
 const source = () => battleCatalogSchema.parse(battleData).battles;

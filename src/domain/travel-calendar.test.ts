@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import delhiTravel from "../../content/travel/delhi.json";
-import agraTravel from "../../content/travel/agra.json";
+import delhiTravel from "../content/generated/content/travel/delhi.json";
+import agraTravel from "../content/generated/content/travel/agra.json";
 import { travelCatalogSchema } from "../content/travel-schemas";
 import { loadGame, saveGame } from "../persistence";
 import { createGame, validateGameState } from "./game";

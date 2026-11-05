@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import characterData from "../../content/presentation/characters.json";
-import presentationData from "../../content/romance/presentation.json";
+import characterData from "./generated/content/presentation/characters.json";
+import presentationData from "./generated/content/romance/presentation.json";
 import { characterCatalogSchema, characterImage, characterPlacement, resolveCharacterCostume } from "./character-assets";
 import { parseStoryTags } from "./tags";
 

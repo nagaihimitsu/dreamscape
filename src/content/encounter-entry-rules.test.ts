@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import ruleData from "../../content/encounters/entry-rules.json";
+import ruleData from "./generated/content/encounters/entry-rules.json";
 import { encounters } from "./encounters";
 import { journeyConfig } from "./index";
 import { encounterEntryRulesSchema, validateEncounterEntryRules } from "./encounter-entry-rules";

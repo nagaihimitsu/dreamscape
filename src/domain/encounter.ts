@@ -11,7 +11,7 @@ import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
 import { deriveRelationshipTone } from "./romance-tone";
 import { scoreQuizAnswer } from "./quiz-answer";
 import { validObservationEncounterIds, type ActiveEncounter } from "./encounter-state";
-import placeRuleData from "../../content/encounters/entry-rules.json";
+import placeRuleData from "../content/generated/content/encounters/entry-rules.json";
 import { encounterEntryRulesSchema } from "../content/encounter-entry-rules";
 import { startTourismBattle } from "./tourism";
 

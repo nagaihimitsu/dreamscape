@@ -1,5 +1,5 @@
 import { useState } from "react";
-import characterData from "../../content/presentation/characters.json";
+import characterData from "../content/generated/content/presentation/characters.json";
 import { CharacterPortrait } from "../components/CharacterPortrait";
 import { CanalScene } from "../components/CanalScene";
 import { presentation } from "../content";

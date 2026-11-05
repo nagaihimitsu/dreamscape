@@ -242,6 +242,8 @@ npm run content:check
 
 `dev` 起動前、`test` 前、`build` 内で必ずコンパイル・検証します。開発サーバー起動中にInkを改稿したら別ターミナルで `npm run content:build` を実行してください。生成JSON変更をViteが反映します。**Ink原稿そのものの自動監視はありません。**
 
+ゲームが読むJSONは、`content/` を検証・統合して `npm run content:build` が書き出す `src/content/generated/content/`（生成物。手動編集しない）です。`content/` のJSONを編集した後も、Inkと同様に `npm run content:build` を実行してください。
+
 検証はJSONスキーマ、重複ID、章・背景・シナリオ・思い出参照、許可タグ、前提イベントの循環、段階設定、報酬ID重複、シナリオごとの選択数・効果数・告白結果を確認します。壊れたInk・参照切れ・未定義effect・不正JSONはビルド失敗になります。旧 `last_supper_B1.sample.json` は参考サンプルの検証だけに使用し、出題しません。
 
 ### クイズ・敵シナリオの編集

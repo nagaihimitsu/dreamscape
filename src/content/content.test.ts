@@ -6,11 +6,11 @@ import { Story } from "inkjs";
 import sharp from "sharp";
 import { buildContent, compileInk, validateStory } from "../../scripts/content-pipeline";
 import { effects, getCities, presentation } from "./index";
-import dateData from "../../content/romance/date_catalog.json";
-import battleData from "../../content/battles/catalog.json";
-import tourismData from "../../content/tourism/catalog.json";
-import reasoningIntroData from "../../content/presentation/reasoning-intros.json";
-import encounterData from "../../content/encounters/catalog.json";
+import dateData from "./generated/content/romance/date_catalog.json";
+import battleData from "./generated/content/battles/catalog.json";
+import tourismData from "./generated/content/tourism/catalog.json";
+import reasoningIntroData from "./generated/content/presentation/reasoning-intros.json";
+import encounterData from "./generated/content/encounters/catalog.json";
 import { parseStoryTags } from "./tags";
 import { prepareContentFixture } from "./test-fixtures";
 

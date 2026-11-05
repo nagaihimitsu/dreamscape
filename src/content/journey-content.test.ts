@@ -9,10 +9,11 @@ import { journeySchema, type JourneyConfig } from "./journey-schemas";
 import { battleCatalogSchema } from "./schemas";
 import { tourismCatalogSchema } from "./tourism-schemas";
 import { balance, battleQuizzes, getCities } from ".";
+// Source catalogs that the tests rewrite in their fixture; read-only runtime data comes from the generated mirror.
 import journeyData from "../../content/progression/journey.json";
-import cityData from "../../content/cities/milano.json";
-import battleData from "../../content/battles/catalog.json";
-import tourismData from "../../content/tourism/catalog.json";
+import cityData from "./generated/content/cities/milano.json";
+import battleData from "./generated/content/battles/catalog.json";
+import tourismData from "./generated/content/tourism/catalog.json";
 
 let fixture: string;
 beforeEach(async () => {

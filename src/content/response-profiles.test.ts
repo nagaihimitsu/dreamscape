@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import profileData from "../../content/romance/response_profiles.json";
+import profileData from "./generated/content/romance/response_profiles.json";
 import { responseProfileCatalogSchema } from "./schemas";
 import { compileInk, validateNoInkRandom, validateStory } from "../../scripts/content-pipeline";
 

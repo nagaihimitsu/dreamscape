@@ -1,13 +1,13 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import catalogData from "../content/encounters/catalog.json";
-import journeyData from "../content/progression/journey.json";
-import tourismData from "../content/tourism/catalog.json";
-import quizData from "../content/quizzes/sound_supper_B1.json";
-import effectsData from "../content/romance/effect_catalog.json";
-import presentationData from "../content/romance/presentation.json";
-import profileData from "../content/romance/response_profiles.json";
+import catalogData from "../src/content/generated/content/encounters/catalog.json";
+import journeyData from "../src/content/generated/content/progression/journey.json";
+import tourismData from "../src/content/generated/content/tourism/catalog.json";
+import generatedQuizzes from "../src/content/generated/quizzes.json";
+import effectsData from "../src/content/generated/content/romance/effect_catalog.json";
+import presentationData from "../src/content/generated/content/romance/presentation.json";
+import profileData from "../src/content/generated/content/romance/response_profiles.json";
 import { encounterCatalogSchema } from "../src/content/encounter-schemas";
 import { journeySchema } from "../src/content/journey-schemas";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
@@ -22,7 +22,7 @@ const sources = Object.fromEntries(paths.map((id) => [id, readFileSync(path.reso
 const stories = Object.fromEntries(Object.entries(sources).map(([id, source]) => [id, compileInk(source, `${id}.ink`)]));
 
 function input() {
-  const quiz = quizSchema.parse(quizData);
+  const quiz = quizSchema.parse(generatedQuizzes.sound_supper_b1);
   return {
     catalog: encounterCatalogSchema.parse(structuredClone(catalogData)),
     cityId: "milano",

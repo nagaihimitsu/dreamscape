@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { buildContent } from "../../scripts/content-pipeline";
 import { prepareContentFixture } from "./test-fixtures";
 import { dateDestinationSchema } from "./date-destinations";
-import destinationData from "../../content/romance/date_destinations.json";
+import destinationData from "./generated/content/romance/date_destinations.json";
 
 type Destination = {
   id: string; cityId: string; backgroundAssetId: string;

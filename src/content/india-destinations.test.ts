@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import destinationsData from "../../content/romance/date_destinations.json";
+import destinationsData from "./generated/content/romance/date_destinations.json";
 import { dateDestinationsSchema } from "./date-destinations";
 import { dates, getCityContent, presentation, stories } from "./index";
 

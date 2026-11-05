@@ -1,28 +1,28 @@
-import wordData from "../../content/learning/word-meanings.json";
+import wordData from "./generated/content/learning/word-meanings.json";
 import { wordMeaningsSchema } from "./word-meanings";
-import detailsData from "../../content/learning/details.json";
+import detailsData from "./generated/content/learning/details.json";
 import { learningDetailsSchema } from "./learning-details";
-import learningData from "../../content/learning/translations.json";
+import learningData from "./generated/content/learning/translations.json";
 import { learningCatalogSchema } from "./learning-schema";
-import battleData from "../../content/battles/catalog.json";
-import journeyData from "../../content/progression/journey.json";
+import battleData from "./generated/content/battles/catalog.json";
+import journeyData from "./generated/content/progression/journey.json";
 import { getAllRewardRules, journeySchema } from "./journey-schemas";
-import tourismData from "../../content/tourism/catalog.json";
+import tourismData from "./generated/content/tourism/catalog.json";
 import { tourismCatalogSchema } from "./tourism-schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "./travel-schemas";
 import generatedQuizzes from "./generated/quizzes.json";
-import progressionData from "../../content/romance/progression.json";
-import dateData from "../../content/romance/date_catalog.json";
-import destinationData from "../../content/romance/date_destinations.json";
+import progressionData from "./generated/content/romance/progression.json";
+import dateData from "./generated/content/romance/date_catalog.json";
+import destinationData from "./generated/content/romance/date_destinations.json";
 import { dateDestinationsSchema } from "./date-destinations";
-import effectData from "../../content/romance/effect_catalog.json";
-import responseProfileData from "../../content/romance/response_profiles.json";
-import balanceData from "../../content/romance/balance.json";
-import presentationData from "../../content/romance/presentation.json";
-import dialogueExpressionData from "../../content/presentation/dialogue-expressions.json";
-import dialogueReactionData from "../../content/presentation/dialogue-reactions.json";
+import effectData from "./generated/content/romance/effect_catalog.json";
+import responseProfileData from "./generated/content/romance/response_profiles.json";
+import balanceData from "./generated/content/romance/balance.json";
+import presentationData from "./generated/content/romance/presentation.json";
+import dialogueExpressionData from "./generated/content/presentation/dialogue-expressions.json";
+import dialogueReactionData from "./generated/content/presentation/dialogue-reactions.json";
 import { dialogueReactionCatalogSchema } from "./dialogue-reactions";
-import reasoningIntroData from "../../content/presentation/reasoning-intros.json";
+import reasoningIntroData from "./generated/content/presentation/reasoning-intros.json";
 import { reasoningIntroCatalogSchema } from "./reasoning-intros";
 import { dialogueExpressionCatalogSchema } from "./dialogue-expressions";
 import generatedStories from "./generated/stories.json";
@@ -53,10 +53,11 @@ export const landmarks = tourism.landmarks;
 export const tourismAssets = tourism.assets;
 export const tourismClues = tourism.clues;
 // City files, including each unpublished prototype, are the single registration source.
-// The same names are read by the content pipeline, so adding a city does not
-// require a separate runtime list.
-const cityFiles = import.meta.glob<unknown>("../../content/cities/*.json", { eager: true, import: "default" });
-const travelFiles = import.meta.glob<unknown>("../../content/travel/*.json", { eager: true, import: "default" });
+// The content pipeline validates them and copies them into the generated mirror,
+// so adding a city does not require a separate runtime list.
+// Runtime content is imported only from ./generated/ (written by `npm run content:build`).
+const cityFiles = import.meta.glob<unknown>("./generated/content/cities/*.json", { eager: true, import: "default" });
+const travelFiles = import.meta.glob<unknown>("./generated/content/travel/*.json", { eager: true, import: "default" });
 export type CityContent = {
   city: ReturnType<typeof citySchema.parse>;
   travel: ReturnType<typeof travelCatalogSchema.parse>;
@@ -67,8 +68,8 @@ for (const [file, data] of Object.entries(cityFiles)) {
   const city = citySchema.parse(data);
   if (!file.endsWith(`/${city.id}.json`) || cityContents[city.id])
     throw new Error(`Invalid or duplicate city registration: ${file}`);
-  const travel = travelCatalogSchema.parse(travelFiles[`../../content/travel/${city.id}.json`]);
-  const travelSettings = travelSettingsSchema.parse(travelFiles[`../../content/travel/${city.id}-settings.json`]);
+  const travel = travelCatalogSchema.parse(travelFiles[`./generated/content/travel/${city.id}.json`]);
+  const travelSettings = travelSettingsSchema.parse(travelFiles[`./generated/content/travel/${city.id}-settings.json`]);
   if (travel.cityId !== city.id || !travel.places.some((place) => place.id === travelSettings.hotelPlaceId))
     throw new Error(`Invalid city travel registration: ${city.id}`);
   cityContents[city.id] = { city, travel, travelSettings };

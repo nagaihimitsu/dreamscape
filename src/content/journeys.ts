@@ -1,4 +1,4 @@
-import data from "../../content/journeys/catalog.json";
+import data from "./generated/content/journeys/catalog.json";
 import { journeyCatalogSchema } from "./journey-catalog";
 
 export const journeys = journeyCatalogSchema.parse(data).journeys;

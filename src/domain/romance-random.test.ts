@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import data from "../../content/romance/response_profiles.json";
+import data from "../content/generated/content/romance/response_profiles.json";
 import { responseProfileCatalogSchema } from "../content/schemas";
 import {
   createRomanceRollPlan,

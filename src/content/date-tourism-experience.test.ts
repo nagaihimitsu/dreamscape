@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { Story } from "inkjs";
 import path from "node:path";
 import { buildContent } from "../../scripts/content-pipeline";
-import presentationData from "../../content/romance/presentation.json";
+import presentationData from "./generated/content/romance/presentation.json";
 import { presentationSchema } from "./schemas";
 
 type Content = Awaited<ReturnType<typeof buildContent>>;
