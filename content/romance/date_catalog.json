@@ -26,38 +26,32 @@
         {
           "romanceStage": 1,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 2,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 3,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": true
+          "endingReached": true
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": false
+          "endingReached": true
         }
       ],
       "allowAfterEnding": true,
@@ -88,38 +82,32 @@
         {
           "romanceStage": 1,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 2,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 3,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": true
+          "endingReached": true
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": false
+          "endingReached": true
         }
       ],
       "allowAfterEnding": true,
@@ -150,38 +138,32 @@
         {
           "romanceStage": 1,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 2,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 3,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": true
+          "endingReached": true
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": false
+          "endingReached": true
         }
       ],
       "invitationJa": "「行きたい所があるの。今日は、私についてきて」"
@@ -211,38 +193,32 @@
         {
           "romanceStage": 1,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 2,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 3,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": true
+          "endingReached": true
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": false
+          "endingReached": true
         }
       ],
       "allowAfterEnding": true,
@@ -318,7 +294,6 @@
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": false,
-          "hasCafeMemory": true,
           "memoryIds": [
             "milano_cafe_first_joke_refresh",
             "milano_brera_v2_first_listen"
@@ -337,7 +312,6 @@
           "confessionReady": true,
           "confessionResult": "accepted",
           "endingReached": false,
-          "hasCafeMemory": false,
           "memoryIds": [
             "sound_memory_maurizio_date_sound"
           ]
@@ -369,38 +343,32 @@
         {
           "romanceStage": 1,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 2,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 3,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": true
+          "endingReached": true
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": false
+          "endingReached": true
         }
       ]
     },
@@ -433,35 +401,30 @@
         {
           "romanceStage": 1,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 2,
           "confessionReady": false,
           "endingReached": false,
-          "hasCafeMemory": true,
           "memoryId": "milano_cafe_joke"
         },
         {
           "romanceStage": 3,
           "confessionReady": false,
           "endingReached": false,
-          "hasCafeMemory": true,
           "memoryId": "milano_cafe_interest"
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": false,
-          "hasCafeMemory": true,
           "memoryId": "milano_cafe_secret_destination"
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": true,
-          "hasCafeMemory": true,
           "memoryId": "milano_cafe_future_talk"
         }
       ],
@@ -495,38 +458,32 @@
         {
           "romanceStage": 1,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 2,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 3,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": true
+          "endingReached": true
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": false
+          "endingReached": true
         }
       ]
     },
@@ -558,38 +515,32 @@
         {
           "romanceStage": 1,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 2,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 3,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": true
+          "endingReached": true
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": false
+          "endingReached": true
         }
       ]
     },
@@ -621,38 +572,32 @@
         {
           "romanceStage": 1,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 2,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 3,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": true
+          "endingReached": true
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": false
+          "endingReached": true
         }
       ]
     },
@@ -684,38 +629,32 @@
         {
           "romanceStage": 1,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 2,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 3,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": true
+          "endingReached": true
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": false
+          "endingReached": true
         }
       ]
     },
@@ -747,38 +686,32 @@
         {
           "romanceStage": 1,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 2,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 3,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": true
+          "endingReached": true
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": false
+          "endingReached": true
         }
       ]
     },
@@ -811,14 +744,12 @@
           "romanceStage": 1,
           "confessionReady": false,
           "endingReached": false,
-          "hasCafeMemory": false,
           "memoryIds": []
         },
         {
           "romanceStage": 2,
           "confessionReady": false,
           "endingReached": false,
-          "hasCafeMemory": false,
           "memoryIds": [
             "milano_brera_first_listen"
           ]
@@ -827,14 +758,12 @@
           "romanceStage": 3,
           "confessionReady": false,
           "endingReached": false,
-          "hasCafeMemory": true,
           "memoryIds": []
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": false,
-          "hasCafeMemory": true,
           "memoryIds": [
             "milano_brera_first_listen"
           ]
@@ -843,83 +772,17 @@
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": true,
-          "hasCafeMemory": true,
           "memoryIds": []
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": true,
-          "hasCafeMemory": false,
           "memoryIds": [
             "milano_brera_first_listen"
           ]
         }
       ]
-    },
-    {
-      "id": "milano_love_date_01",
-      "kind": "normal",
-      "chapterId": "milano",
-      "destinationId": "milano_love",
-      "titleJa": "手のかたち",
-      "descriptionJa": "広場の彫刻を前に、それぞれの見方を話す。",
-      "apCost": 1,
-      "minRomanceStage": 1,
-      "minAffection": 0,
-      "storyId": "milano/love_date_tour_02_random_tone",
-      "requiredCompletedChapters": [],
-      "requiredCompletedEpisodeIds": [
-        "milano_duomo_episode"
-      ],
-      "allowAfterEnding": true,
-      "requiredPlayedDateIds": [],
-      "rewardOnlyOnce": true,
-      "backgroundAssetId": "milano_love_date",
-      "repeatable": false,
-      "needsDeferred": false,
-      "choiceCount": 2,
-      "effectCount": 2,
-      "actionLabelJa": "この場所へ誘う",
-      "validationContexts": [
-        {
-          "romanceStage": 1,
-          "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
-        },
-        {
-          "romanceStage": 2,
-          "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
-        },
-        {
-          "romanceStage": 3,
-          "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": true
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "endingReached": false,
-          "hasCafeMemory": true
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": true
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": false
-        }
-      ],
-      "legacyOnly": true
     },
     {
       "id": "milano_rain_pause_01",
@@ -1047,38 +910,32 @@
         {
           "romanceStage": 1,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 2,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 3,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": true
+          "endingReached": true
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": false
+          "endingReached": true
         }
       ]
     },
@@ -1110,38 +967,32 @@
         {
           "romanceStage": 1,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 2,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": false
+          "endingReached": false
         },
         {
           "romanceStage": 3,
           "confessionReady": false,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": false,
-          "hasCafeMemory": true
+          "endingReached": false
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": true
+          "endingReached": true
         },
         {
           "romanceStage": 4,
           "confessionReady": true,
-          "endingReached": true,
-          "hasCafeMemory": false
+          "endingReached": true
         }
       ]
     },

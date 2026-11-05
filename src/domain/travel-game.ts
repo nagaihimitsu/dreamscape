@@ -1,7 +1,7 @@
 import { battles, dates, episodes, getCityContent } from "../content";
 import { getBattleAvailability, startBattle } from "./battle";
 import { getEpisodeAvailability, isEpisodeUnlocked, isStoryBattleUnlocked, startEpisode } from "./chapter";
-import { getDateAvailability, isDateUnlockedForTravel, isUpdatedDateReplay, isEventVisible, startDate, type GameState } from "./game";
+import { getDateAvailability, isDateUnlockedForTravel, isEventVisible, startDate, type GameState } from "./game";
 import { hasPendingPlaceEncounter } from "./encounter";
 import { openTourism } from "./tourism";
 import { canReturnByDayEnd, DAY_END, getGameWeekday, planOvernight, planTravelEvent } from "./travel";
@@ -22,7 +22,7 @@ function route(state: GameState, from: string, to: string, mode: TravelMode) {
 export function getTravelHomeRoutes(fromPlaceId: string, hotelPlaceId: string, cityId = "milano"): HomeRoute[] {
   return findTravelHomeRoutes(getCityContent(cityId).travel.routes, fromPlaceId, hotelPlaceId);
 }
-/** Current event cost and duration, including existing replay and retry rules. */
+/** Current event cost and duration, including the retry rule. */
 export function getTravelEventDefinition(state: GameState, eventId: string) {
   const { travel, travelSettings } = getCityContent(state.currentCityId);
   const event = travel.events.find((item) => item.id === eventId);
@@ -34,7 +34,6 @@ export function getTravelEventDefinition(state: GameState, eventId: string) {
   return {
     ...event,
     activityMinutes: isRetry ? travelSettings.retryMinutes : event.activityMinutes,
-    apCost: event.category === "date" && isUpdatedDateReplay(state, event.id) ? 0 : event.apCost,
   };
 }
 function normalAvailability(state: GameState, eventId: string) {
@@ -76,7 +75,6 @@ export function isTravelEventVisible(state: GameState, event: TravelEvent): bool
   if (isCompletedTravelEvent(state, event.id) || !isTravelEventUnlocked(state, event.id)) return false;
   const date = dates.find((item) => item.id === event.id);
   if (!date) return true;
-  if (date.legacyOnly) return false;
   return date.kind === "normal" ? !state.playedDateIds.includes(date.id) || isEventVisible(state, date.id) : isEventVisible(state, date.id);
 }
 

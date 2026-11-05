@@ -15,7 +15,7 @@ for (const format of ["B", "C"] as const) {
       const { createDebugState } = await import(/* @vite-ignore */ path);
       const state = createDebugState({ scene: "battle", id, progress: "completed", ap: 8,
         affection: 0, trust: 0, spark: 0, roll: "positive" });
-      localStorage.setItem("dreamscape.save.v1", JSON.stringify(state));
+      localStorage.setItem("dreamscape.journey.milano.save.v1", JSON.stringify(state));
     }, battle.id);
     await page.reload();
     const before = await saved(page);

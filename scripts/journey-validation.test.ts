@@ -6,7 +6,6 @@ import {
   city,
   journeyConfig as allJourneyConfig,
   landmarks,
-  trialMilestones,
   type JourneyConfig,
 } from "../src/content";
 import { validateJourney } from "./journey-validation";
@@ -25,7 +24,7 @@ const journeyConfig: JourneyConfig = { ...allJourneyConfig, episodes, storyBattl
     ? episodeIds.has(rule.episodeId) : rule.battleId !== undefined && storyBattleIds.has(rule.battleId)) };
 
 function check(journey: JourneyConfig) {
-  validateJourney(journey, city, balance.apCap, landmarks, battles, battleQuizzes, trialMilestones);
+  validateJourney(journey, city, balance.apCap, landmarks, battles, battleQuizzes);
 }
 
 function withSpecialReward(trigger: RewardRule["trigger"] = "battle_score") {
@@ -76,7 +75,7 @@ describe("story battle references in the journey", () => {
     const { journey, reward } = withSpecialReward("battle_complete");
     expect(() => check(journey)).toThrow(/Duplicate story battle reward trigger/);
     reward.id = journey.storyBattles[0].completionReward!.id;
-    expect(() => check(journey)).toThrow(/Duplicate journey\/trial reward ID/);
+    expect(() => check(journey)).toThrow(/Duplicate journey reward ID/);
   });
 
   it("does not allow a special battle to grant the city-clear reward", () => {
@@ -89,7 +88,7 @@ describe("story battle references in the journey", () => {
     const battle = battles.find((item) => item.id === reward.battleId)!;
     const otherCityLandmarks = landmarks.map((landmark) => landmark.id === battle.landmarkId
       ? { ...landmark, cityId: "other_city" } : landmark);
-    expect(() => validateJourney(journey, city, balance.apCap, otherCityLandmarks, battles, battleQuizzes, trialMilestones))
+    expect(() => validateJourney(journey, city, balance.apCap, otherCityLandmarks, battles, battleQuizzes))
       .toThrow(/Invalid story battle/);
   });
 
@@ -126,7 +125,7 @@ describe("story battle references in the journey", () => {
     expect(() => check(journey)).toThrow("Unknown story battle prerequisite");
   });
 
-  it("lets a new city leave the legacy episode-clear reward undecided without weakening Milan", () => {
+  it("lets a city without first-clear AP leave the episode-clear reward undecided without weakening Milan", () => {
     const prototype = { ...city, id: "new_city", firstClearReward: { rewardSourceId: "new_city_placeholder", ap: 0 } };
     const journey = structuredClone(journeyConfig);
     journey.episodes.forEach((episode) => { episode.cityId = "new_city"; episode.legacyChapterId = "new_city"; });
@@ -134,13 +133,13 @@ describe("story battle references in the journey", () => {
     journey.rewards = journey.rewards.filter((rule) => rule.trigger !== "episode_clear");
     const localLandmarks = landmarks.map((landmark) => ({ ...landmark, cityId: "new_city" }));
     const localBattles = battles.map((battle) => battle.cityId === "milano" ? { ...battle, cityId: "new_city" } : battle);
-    const run = () => validateJourney(journey, prototype, balance.apCap, localLandmarks, localBattles, battleQuizzes, trialMilestones);
+    const run = () => validateJourney(journey, prototype, balance.apCap, localLandmarks, localBattles, battleQuizzes);
     expect(run).not.toThrow();
     journey.rewards.push({ ...oldClear, id: "new_episode_reward" });
     expect(run).not.toThrow();
     journey.rewards.push({ ...oldClear, id: "duplicate_episode_reward" });
     expect(run).toThrow(/Episode needs one episode_clear reward/);
-    const milanWithoutLegacy = { ...journeyConfig, rewards: journeyConfig.rewards.filter((rule) => rule.trigger !== "episode_clear") };
-    expect(() => check(milanWithoutLegacy)).toThrow();
+    const milanWithoutFirstClear = { ...journeyConfig, rewards: journeyConfig.rewards.filter((rule) => rule.trigger !== "episode_clear") };
+    expect(() => check(milanWithoutFirstClear)).toThrow();
   });
 });

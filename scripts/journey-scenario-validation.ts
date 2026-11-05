@@ -106,7 +106,7 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
           for (const seed of date.validationContexts) dateRoutes += validateStory(compiled, dateContext, date, {
             player_address: "検証主人公さん", romance_stage: romanceStage, ending_reached: endingReached,
             confession_ready: seed.confessionReady, confession_result: seed.confessionResult ?? "deferred",
-            memory_callback: "旅の思い出", has_cafe_memory: seed.hasCafeMemory ?? false,
+            memory_callback: "旅の思い出",
           }, effects, observe, { available: seed.memoryIds ?? (seed.memoryId ? [seed.memoryId] : []), known: Object.keys(fragments.memories) }, true, undefined, tone);
       });
     }

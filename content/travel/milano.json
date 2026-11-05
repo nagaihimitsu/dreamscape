@@ -4603,15 +4603,6 @@
       ]
     },
     {
-      "id": "milano_love_date_01",
-      "cityId": "milano",
-      "placeId": "p_love",
-      "category": "date",
-      "titleJa": "手のかたち",
-      "activityMinutes": 60,
-      "apCost": 1
-    },
-    {
       "id": "milano_rain_pause_01",
       "cityId": "milano",
       "placeId": "p_galleria",

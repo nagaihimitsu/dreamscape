@@ -4,7 +4,7 @@ import { expectNoOverflow, startNewGame } from "./helpers";
 test("Luang Prabang is a separate unfinished journey and preserves Milan's save", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 740 });
   await startNewGame(page, ["ミラノの旅人", "相手"]);
-  const original = await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"));
+  const original = await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"));
   await page.getByRole("button", { name: "設定", exact: true }).click();
   await page.getByRole("dialog", { name: "設定" }).getByLabel("旅行編").selectOption("luang_prabang");
   await expect(page.getByText("この旅行編は制作中です。観光やイベントはまだ遊べません。")).toBeVisible();
@@ -13,12 +13,12 @@ test("Luang Prabang is a separate unfinished journey and preserves Milan's save"
   await page.getByRole("button", { name: "旅の準備を保存する" }).click();
   await expect(page.getByText("ルアンの旅人 と あゆみ")).toBeVisible();
   await expectNoOverflow(page);
-  expect(await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"))).toBe(original);
+  expect(await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"))).toBe(original);
   await page.reload();
   await page.getByRole("button", { name: "設定", exact: true }).click();
   await page.getByRole("dialog", { name: "設定" }).getByLabel("旅行編").selectOption("luang_prabang");
   await expect(page.getByText("ルアンの旅人 と あゆみ")).toBeVisible();
-  expect(await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"))).toBe(original);
+  expect(await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"))).toBe(original);
 });
 
 test("debug previews city walking, taxi and isolated save and rest", async ({ page }) => {

@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import catalogData from "../content/encounters/catalog.json";
 import journeyData from "../content/progression/journey.json";
 import tourismData from "../content/tourism/catalog.json";
-import quizData from "../content/quizzes/last_supper_B1.json";
+import quizData from "../content/quizzes/sound_supper_B1.json";
 import effectsData from "../content/romance/effect_catalog.json";
 import presentationData from "../content/romance/presentation.json";
 import profileData from "../content/romance/response_profiles.json";
@@ -224,11 +224,7 @@ describe("encounter content validation", () => {
     expect(() => validateEncounterContent(data)).toThrow("Duplicate quiz option ID");
   });
 
-  it("rejects an unsafe integer for the initial budget, cost or completion payment", () => {
-    const initial = structuredClone(catalogData);
-    initial.initialBudget = Number.MAX_SAFE_INTEGER + 1;
-    expect(encounterCatalogSchema.safeParse(initial).success).toBe(false);
-
+  it("rejects an unsafe integer for a cost or completion payment", () => {
     const price = structuredClone(catalogData);
     price.encounters[0].options[0].costEuro = Number.MAX_SAFE_INTEGER + 1;
     expect(encounterCatalogSchema.safeParse(price).success).toBe(false);

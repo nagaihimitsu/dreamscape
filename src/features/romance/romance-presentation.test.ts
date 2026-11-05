@@ -4,7 +4,7 @@ import { storyFingerprint } from "../../story/runtime";
 import { resolveRomancePresentation } from "./romance-presentation";
 
 describe("presentation of the active romance script", () => {
-  it.each(dates.filter((date) => !date.legacyOnly).map((date) => [date.id] as const))(
+  it.each(dates.map((date) => [date.id] as const))(
     "uses the current script and destination for %s", (dateId) => {
       const date = dates.find((item) => item.id === dateId)!;
       expect(resolveRomancePresentation(date, { storyHash: storyFingerprint(date.storyId) })).toEqual({

@@ -7,7 +7,7 @@ import { buildContent, compileInk } from "../../scripts/content-pipeline";
 import { prepareContentFixture } from "./test-fixtures";
 import { validateEpilogue } from "../../scripts/epilogue-validation";
 import { validateJourney } from "../../scripts/journey-validation";
-import { battleCatalogSchema, battleSchema, quizSchema, trialProgressionSchema } from "./schemas";
+import { battleCatalogSchema, battleSchema, quizSchema } from "./schemas";
 import { journeySchema } from "./journey-schemas";
 import { tourismCatalogSchema } from "./tourism-schemas";
 import { balance, battleQuizzes, getCities } from ".";
@@ -15,7 +15,6 @@ import journeyData from "../../content/progression/journey.json";
 import battleData from "../../content/battles/catalog.json";
 import cityData from "../../content/cities/milano.json";
 import tourismData from "../../content/tourism/catalog.json";
-import trialData from "../../content/romance/trial_progression.json";
 
 function milanJourney() {
   const journey = journeySchema.parse(journeyData);
@@ -143,7 +142,6 @@ describe("Milan city content", () => {
       tourismCatalogSchema.parse(tourismData).landmarks,
       battleCatalogSchema.parse(battleData).battles,
       battleQuizzes,
-      trialProgressionSchema.parse(trialData).milestones,
     );
     const journey = milanJourney();
     const stops = journey.episodes.filter((episode) => episode.kind !== "city_finale");

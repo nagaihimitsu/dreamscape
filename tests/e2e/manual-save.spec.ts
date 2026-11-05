@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { saved, startNewGame } from "./helpers";
+import { saved, startNewGame, openStaleTab } from "./helpers";
 
 test("manual saving preserves the chosen position and reload asks before discarding changes", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 780 });
@@ -43,7 +43,7 @@ test("another tab cannot overwrite a manual-save branch", async ({ page, context
   await settings.getByRole("button", { name: "閉じる", exact: true }).click();
   const initial = await saved(page);
 
-  const other = await context.newPage();
+  const other = await openStaleTab(context);
   await other.goto("/");
   await page.getByTestId("travel-place-p_duomo").getByRole("button").click();
   await other.getByRole("button", { name: "設定", exact: true }).click();
@@ -63,7 +63,7 @@ test("a damaged save is kept until an explicit manual save backs it up", async (
   const original = "{damaged-save";
   await page.goto("/");
   await page.evaluate((raw) => {
-    localStorage.setItem("dreamscape.save.v1", raw);
+    localStorage.setItem("dreamscape.journey.milano.save.v1", raw);
     localStorage.setItem("dreamscape.presentation.v1", JSON.stringify({
       schemaVersion: 1, confirmChoices: true, reduceMotion: false, autoSave: false,
     }));
@@ -72,12 +72,12 @@ test("a damaged save is kept until an explicit manual save backs it up", async (
   await expect(page.getByRole("alert")).toContainText("保存データを読み込めませんでした");
   await page.getByRole("button", { name: /新しく始める/ }).click();
   await expect(page.getByTestId("travel-menu")).toBeVisible();
-  expect(await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"))).toBe(original);
-  expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => key.startsWith("dreamscape.save.v1.backup.")))).toHaveLength(0);
+  expect(await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"))).toBe(original);
+  expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => key.startsWith("dreamscape.journey.milano.save.v1.backup.")))).toHaveLength(0);
   await page.getByRole("button", { name: "セーブ", exact: true }).click();
-  expect((await saved(page)).schemaVersion).toBe(12);
+  expect((await saved(page)).schemaVersion).toBe(13);
   const backups = await page.evaluate(() => Object.keys(localStorage)
-    .filter((key) => key.startsWith("dreamscape.save.v1.backup."))
+    .filter((key) => key.startsWith("dreamscape.journey.milano.save.v1.backup."))
     .map((key) => localStorage.getItem(key)));
   expect(backups).toEqual([original]);
 });

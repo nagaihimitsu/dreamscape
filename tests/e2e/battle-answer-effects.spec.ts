@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { loadCurrentScene } from "./current-scenarios";
 import bossQuiz from "../../content/quizzes/sound_finale_B1.json" with { type: "json" };
 import supperQuiz from "../../content/quizzes/sound_supper_B1.json" with { type: "json" };
-import { expectNoOverflow, loadCurrentSupperQuestion, saved } from "./helpers";
+import { expectNoOverflow, loadCurrentSupperQuestion, saved, openStaleTab } from "./helpers";
 import { battleDialogueUntilQuestionOrResult } from "./battle-helpers";
 
 // Check the saved result and transient visual beat separately: a reload must
@@ -135,7 +135,7 @@ test("hiding a tab during the effect clears it without changing the saved answer
 
 test("a stale tab cannot start an effect for an answer that failed to save", async ({ page, context }) => {
   await loadCurrentSupperQuestion(page);
-  const stale = await context.newPage();
+  const stale = await openStaleTab(context);
   await stale.goto("/");
   await expect(stale.getByTestId("answer-A")).toBeEnabled();
   await page.getByTestId("answer-C").click();

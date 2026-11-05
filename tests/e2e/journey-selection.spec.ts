@@ -19,17 +19,17 @@ test("Milan and playable India are independent and resumable on a phone", async 
   expect(initialIndia).toBeTruthy();
   expect(JSON.parse(initialIndia!)).toMatchObject({ currentCityId: "delhi", travelBudget: 30000, ap: 0,
     playerName: "インドの主人公", heroineName: "インドの相手", completedCityIds: [], memories: [] });
-  expect(await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"))).toBeNull();
+  expect(await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"))).toBeNull();
   await page.getByRole("button", { name: "設定", exact: true }).click();
   await page.getByRole("dialog", { name: "設定" }).getByLabel("旅行編").selectOption("milano");
   await page.getByRole("button", { name: "旅をはじめる" }).click();
   await expect(page.getByTestId("travel-menu")).toBeVisible();
-  const milan = await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"));
+  const milan = await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"));
   await page.getByRole("button", { name: "設定", exact: true }).click();
   await page.getByRole("dialog", { name: "設定" }).getByLabel("旅行編").selectOption("golden_triangle");
   await expect(page.getByTestId("travel-menu")).toBeVisible();
   await expect(page.locator(".travelers")).toContainText("インドの主人公");
-  expect(await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"))).toBe(milan);
+  expect(await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"))).toBe(milan);
   expect(await page.evaluate((key) => localStorage.getItem(key), indiaKey)).toBe(initialIndia);
   await page.reload();
   await page.getByRole("button", { name: "設定", exact: true }).click();
@@ -58,6 +58,20 @@ test("a second tab cannot edit India while the journey is open", async ({ page, 
   expect(await page.evaluate((key) => localStorage.getItem(key), indiaKey)).toBe(first);
 });
 
+test("a second tab cannot edit Milan while the journey is open", async ({ page, context }) => {
+  await startNewGame(page, ["先の名前", "あゆみ"]);
+  const first = await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"));
+  const second = await context.newPage();
+  await second.goto("/");
+  await expect(second.getByRole("alert")).toContainText("別のタブで開いています");
+  await expect(second.getByRole("button", { name: "旅をはじめる" })).toHaveCount(0);
+  await page.getByRole("button", { name: "設定", exact: true }).click();
+  await page.getByRole("dialog", { name: "設定" }).getByLabel("旅行編").selectOption("golden_triangle");
+  await second.getByRole("button", { name: "再試行" }).click();
+  await expect(second.locator(".travelers")).toContainText("先の名前");
+  expect(await second.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"))).toBe(first);
+});
+
 test("a damaged India save is preserved", async ({ page }) => {
   await page.goto("/");
   await page.evaluate((key) => localStorage.setItem(key, "{broken"), indiaKey);
@@ -83,13 +97,15 @@ test("switching away from unsaved Milan asks before discarding progress", async 
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
 });
 
-test("India stays closed if the browser cannot protect its save from other tabs", async ({ page }) => {
+test("journeys stay closed if the browser cannot protect their saves from other tabs", async ({ page }) => {
   await page.addInitScript(() => Object.defineProperty(navigator, "locks", { configurable: true, value: undefined }));
   await page.goto("/");
+  // Milan uses the same cross-tab protection as every other journey.
+  await expect(page.getByRole("alert")).toContainText("対応ブラウザをご利用ください");
+  await expect(page.getByRole("button", { name: "旅をはじめる" })).toHaveCount(0);
   await page.getByLabel("旅行編").selectOption("golden_triangle");
   await expect(page.getByRole("alert")).toContainText("対応ブラウザをご利用ください");
   await expect(page.getByRole("button", { name: "旅をはじめる" })).toHaveCount(0);
   expect(await page.evaluate((key) => localStorage.getItem(key), indiaKey)).toBeNull();
-  await page.getByLabel("旅行編").selectOption("milano");
-  await expect(page.getByRole("button", { name: "旅をはじめる" })).toBeVisible();
+  expect(await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"))).toBeNull();
 });

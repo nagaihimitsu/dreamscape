@@ -2,7 +2,6 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { dialogueExpressions, dialogueReactions, landmarks, presentation, reasoningIntroductions, tourismAssets } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
-import { presentationStoryId } from "../../content/legacy-milano";
 import type { GameState } from "../../domain/game";
 import { getActiveBattleContent, getBattleOutcome } from "../../domain/battle";
 import { beginStory, continueStory, type StoryStep } from "../../story/runtime";
@@ -190,7 +189,7 @@ export function BattleScreen({
   const backgroundAsset = landmarkAsset ?? tourismAssets.find(
     (asset) => asset.id === presentation.backgrounds[backgroundId]?.imageAssetId,
   );
-  const storyId = presentationStoryId(rebuttal?.storyId ?? battle.storyId);
+  const storyId = rebuttal?.storyId ?? battle.storyId;
   // Reactions belong to their target, independently of the current speaker.
   // Unannotated frames retain the existing Ink and expression behavior.
   const heroineReaction = isDialogue && frame

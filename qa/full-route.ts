@@ -64,7 +64,7 @@ assert.equal(date(postponed,"milano_reassurance_01").endingReached,false);
 const rejectedSeed=date(s,"milano_san_satiro_date_01",0,[0,2]);
 assert.equal(confessionResult(rejectedSeed),"rejected");
 assert.equal(date(rejectedSeed,"milano_confession_01").confessionStatus,"rejected");
-const normal=dates.filter(d=>d.kind==="normal"&&!d.legacyOnly);
+const normal=dates.filter(d=>d.kind==="normal");
 assert.equal(normal.length,12);
 for(const d of [...normal].reverse()){
   s=claimPendingRewards(s,s.revision);

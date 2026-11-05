@@ -79,10 +79,10 @@ test("the current city epilogue preserves its scripted expression after reload",
   await startNewGame(page);
   await loadCurrentCompletedFreeTime(page);
   await page.evaluate(() => {
-    const raw = localStorage.getItem("dreamscape.save.v1")!;
+    const raw = localStorage.getItem("dreamscape.journey.milano.save.v1")!;
     const state = JSON.parse(raw);
     state.romanceStage = 3;
-    localStorage.setItem("dreamscape.save.v1", JSON.stringify(state));
+    localStorage.setItem("dreamscape.journey.milano.save.v1", JSON.stringify(state));
   });
   await page.reload();
   await page.getByTestId("city-epilogue").click();

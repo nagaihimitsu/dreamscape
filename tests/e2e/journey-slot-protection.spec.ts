@@ -11,14 +11,14 @@ test("protects an India save accidentally placed in the Milan slot", async ({ pa
     const hotel = getCityContent("delhi").travelSettings.hotelPlaceId;
     const data = JSON.stringify({ ...state, currentCityId: "delhi", travelBudget: 30_000,
       travel: { ...state.travel, currentPlaceId: hotel, hotelPlaceId: hotel } });
-    localStorage.setItem("dreamscape.save.v1", data);
+    localStorage.setItem("dreamscape.journey.milano.save.v1", data);
     return data;
   });
   await page.reload();
   await expect(page.getByRole("alert")).toContainText("旅行編が一致しない");
   await expect(page.getByRole("button", { name: "保存データを消去する" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: /新しく始める/ })).toHaveCount(0);
-  expect(await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"))).toBe(raw);
+  expect(await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"))).toBe(raw);
 });
 
 test("protects a Milan save accidentally placed in the India slot after release", async ({ page }) => {

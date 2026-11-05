@@ -25,7 +25,7 @@ function cityOptions(cityId: string): Record<DebugScene, { id: string; name: str
     tourism: landmarks.filter((item) => item.cityId === cityId).map((item) => ({ id: item.id, name: item.nameJa })),
     battle: battles.filter((item) => battleCityId(item.id) === cityId).map((item) => ({ id: item.id, name: item.titleJa })),
     encounter: encounters.encounters.filter((item) => item.cityId === cityId && item.availability !== "dormant").map((item) => ({ id: item.id, name: item.titleJa })),
-    date: dates.filter((item) => item.kind === "normal" && !item.legacyOnly && travel.events.some((event) => event.id === item.id)).map((item) => ({ id: item.id, name: item.titleJa })),
+    date: dates.filter((item) => item.kind === "normal" && travel.events.some((event) => event.id === item.id)).map((item) => ({ id: item.id, name: item.titleJa })),
   };
 }
 

@@ -61,7 +61,7 @@ test("the ordinary return dialog charges the selected direct or connected route"
   await page.setViewportSize({ width: 320, height: 740 });
   await startNewGame(page);
   const seed = await page.evaluate(() => {
-    const key = "dreamscape.save.v1";
+    const key = "dreamscape.journey.milano.save.v1";
     const state = JSON.parse(localStorage.getItem(key)!);
     state.travel.currentPlaceId = "p_duomo";
     state.travel.returnReserve = 4;
@@ -107,7 +107,7 @@ test("the ordinary return dialog charges the selected direct or connected route"
   await via.click();
   await expect.poll(async () => (await saved(page)).travel.currentPlaceId).toBe("p_hotel");
   expect((await saved(page)).travelBudget).toBe(6);
-  await page.evaluate((value) => localStorage.setItem("dreamscape.save.v1", value), seed);
+  await page.evaluate((value) => localStorage.setItem("dreamscape.journey.milano.save.v1", value), seed);
   await prepare();
   await direct.click();
   await expect.poll(async () => (await saved(page)).travel.currentPlaceId).toBe("p_hotel");

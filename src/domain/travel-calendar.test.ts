@@ -22,11 +22,11 @@ describe("fictional travel calendar", () => {
     }
   });
 
-  it("keeps weekdays through waiting, overnight and save/load without changing legacy Milan", () => {
-    const legacy = createGame();
-    expect(legacy.travel.calendar).toBeUndefined();
-    expect(validateGameState(legacy)).toEqual(legacy);
-    const state = validateGameState({ ...legacy, travel: { ...legacy.travel,
+  it("keeps weekdays through waiting, overnight and save/load without adding a calendar to Milan", () => {
+    const milan = createGame();
+    expect(milan.travel.calendar).toBeUndefined();
+    expect(validateGameState(milan)).toEqual(milan);
+    const state = validateGameState({ ...milan, travel: { ...milan.travel,
       calendar: { journeyDay: 1, cityStartJourneyDay: 1, startWeekday: 0 } } });
     const waited = waitForTravel(state, 30, state.revision);
     expect(waited).not.toBe(state);

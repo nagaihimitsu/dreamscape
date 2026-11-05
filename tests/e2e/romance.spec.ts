@@ -11,6 +11,7 @@ import {
   choose,
   finishCafe,
   revealDialogueControl,
+  openStaleTab,
 } from "./helpers";
 
 test.beforeEach(async ({ page }) => { await installRomanceRolls(page); });
@@ -142,7 +143,7 @@ test("corrupted save is preserved until explicit backup and fresh start", async 
         key.startsWith(`${SAVE_KEY}.backup.`) && value === "{broken-save",
     ),
   ).toBe(true);
-  expect((await saved(page)).schemaVersion).toBe(11);
+  expect((await saved(page)).schemaVersion).toBe(13);
   expect((await saved(page)).ap).toBe(0);
 });
 
@@ -178,7 +179,7 @@ test("an older tab cannot overwrite a date started in another tab", async ({
 }) => {
   await startNewGame(page);
   await loadCurrentFreeTime(page);
-  const older = await context.newPage();
+  const older = await openStaleTab(context);
   await older.goto("/");
   await expect(
     older.getByTestId("event-milano_cafe_01").getByRole("button"),

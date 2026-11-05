@@ -1,9 +1,8 @@
 import { battles, dates, effects, episodes, getCities, getCityContent } from "../content";
 import { validateStorySnapshot } from "../story/runtime";
-import { activeDateStoryId, completedDateCount, dateBelongsToCity, isUpdatedDateReplay } from "./date-rules";
+import { activeDateStoryId, completedDateCount, dateBelongsToCity } from "./date-rules";
 import type { GameState } from "./game-state-schema";
 import { resolveRomanceChoice } from "./romance-random";
-import { DAY_END } from "./travel";
 import { minimumHomeFare } from "./travel-routes";
 
 /** Cross-check the saved schedule, return fare and currently running scene. */
@@ -16,12 +15,7 @@ export function validateTravelState(state: GameState): void {
         travel.activeEvent.placeId !== travel.currentPlaceId || travel.activeEvent.endMinute < travel.minute)))
     throw new Error("旅行の位置や時間枠が一致しません。");
   const returnMinute = travel.activeEvent?.endMinute ?? travel.minute;
-  let requiredFare = minimumHomeFare(cityTravel.routes, travel.currentPlaceId, travel.hotelPlaceId, returnMinute);
-  // Existing saves may have reserved an affordable return under the previous
-  // 22:00 deadline. Preserve those saves; new plans use the 21:00 deadline.
-  if (travel.returnDeadline === undefined && returnMinute < DAY_END && (requiredFare === undefined || travel.returnReserve < requiredFare)) {
-    requiredFare = minimumHomeFare(cityTravel.routes, travel.currentPlaceId, travel.hotelPlaceId, returnMinute, 22 * 60);
-  }
+  const requiredFare = minimumHomeFare(cityTravel.routes, travel.currentPlaceId, travel.hotelPlaceId, returnMinute);
   if (requiredFare === undefined || travel.returnReserve < requiredFare)
     throw new Error("帰路の交通費を確保できていません。");
   if (travel.activeEvent) {
@@ -57,8 +51,7 @@ export function validateGameHistory(state: GameState): void {
     throw new Error("保存データの参照先が見つかりません。");
   for (const entry of getCities()) {
     if (state.completedChapters.includes(entry.id) !==
-      (state.completedEpisodeIds.some((id) => episodes.some((episode) => episode.id === id && episode.cityId === entry.id)) ||
-        state.claimedRewardIds.includes(entry.firstClearReward.rewardSourceId)))
+      state.completedEpisodeIds.some((id) => episodes.some((episode) => episode.id === id && episode.cityId === entry.id)))
       throw new Error("章の報酬記録が一致しません。");
   }
   if (state.endingReached !== (state.confessionStatus === "accepted"))
@@ -89,21 +82,21 @@ export function validateActiveDateState(state: GameState): void {
     if (
       !date || !dateBelongsToCity(state, date) ||
       (state.endingReached && date.kind !== "normal" && !date.allowAfterEnding) ||
-      (!isUpdatedDateReplay(state, active.dateId) && !(date.requiredCompletedCityIds ?? []).every((id) =>
+      !(date.requiredCompletedCityIds ?? []).every((id) =>
         state.completedCityIds.includes(id),
-      )) ||
-      (!isUpdatedDateReplay(state, active.dateId) && !(date.requiredCompletedEpisodeIds ?? []).every((id) =>
+      ) ||
+      !(date.requiredCompletedEpisodeIds ?? []).every((id) =>
         state.completedEpisodeIds.includes(id),
-      )) ||
-      (!isUpdatedDateReplay(state, active.dateId) && !date.requiredCompletedChapters.every((id) =>
+      ) ||
+      !date.requiredCompletedChapters.every((id) =>
         state.completedChapters.includes(id),
-      ))
+      )
     )
       throw new Error("デートの保存状態を確認できません。");
     const storyId = activeDateStoryId(date, active);
     if (active.resolutionMode === "legacy_fixed") {
-      if (active.randomPlan.length || active.resolvedChoices.length || active.responseSnapshot)
-        throw new Error("旧デートの結果記録が一致しません。");
+      if (date.kind !== "confession" || active.randomPlan.length || active.resolvedChoices.length || active.responseSnapshot)
+        throw new Error("告白の結果記録が一致しません。");
     } else {
       if (date.kind === "confession" || !active.responseSnapshot || active.randomPlan.length !== date.choiceCount ||
           active.resolvedChoices.length !== active.choiceCount)

@@ -1,10 +1,10 @@
-import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
+import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { describe, expect, it } from "vitest";
 import { createGame, startDate, type GameState } from "../domain";
 import { parseGameState } from "./index";
 
 function started(): GameState {
-  return startDate(seedLegacyChapter(createGame("晴", "灯")), "milano_cafe_01");
+  return startDate(seedCurrentFreeTime(createGame("晴", "灯")), "milano_cafe_01");
 }
 
 describe("saved story consistency", () => {

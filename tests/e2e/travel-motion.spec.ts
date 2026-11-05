@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { SAVE_KEY, saved, selectTravelEvent, startNewGame } from "./helpers";
+import { SAVE_KEY, saved, selectTravelEvent, startNewGame, openStaleTab } from "./helpers";
 
 test.use({ reducedMotion: "no-preference" });
 
@@ -109,7 +109,7 @@ test("returning to the hotel plays travel before the next-day effect", async ({ 
 
 test("a stale tab cannot play a movement for a rejected save", async ({ page, context }) => {
   await startNewGame(page);
-  const other = await context.newPage();
+  const other = await openStaleTab(context);
   await other.goto("/");
   await other.getByText("待機", { exact: true }).click();
   await other.getByRole("button", { name: "30分待つ" }).click();

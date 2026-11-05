@@ -22,10 +22,8 @@ import {
   advanceDate,
   chooseDate,
   finishDate,
-  claimTrialMilestone,
   setNames,
   startDate,
-  isUpdatedDateReplay,
 } from "../domain/game";
 import { useGameSession, type DeleteSnapshot } from "./useGameSession";
 import { CanalScene } from "../components/CanalScene";
@@ -217,7 +215,6 @@ export function GameApp({
     confirmation?.kind === "date"
       ? dates.find((date) => date.id === confirmation.id)
       : undefined;
-  const selectedUpdatedDate = !!game && !!selectedDate && isUpdatedDateReplay(game, selectedDate.id);
   const selectedDestination = dateDestinations.find(
     (destination) => destination.id === selectedDate?.destinationId,
   );
@@ -626,7 +623,6 @@ export function GameApp({
             onStartEpisode={(id) => commit((state) => startEpisode(state, id))}
             onEpilogue={(id) => commit((state) => startCityEpilogue(state, id, game.revision))}
             onChooseDate={(id) => setConfirmation({ kind: "date", id })}
-            onMilestone={(id) => commit((state) => claimTrialMilestone(state, id))}
             onTourism={(id) => commit((state) => {
               const episode = episodes.find((item) => item.landmarkId === id);
               const storyBattle = journeyConfig.storyBattles.find((entry) => battles.find((battle) => battle.id === entry.battleId)?.landmarkId === id);
@@ -720,9 +716,7 @@ export function GameApp({
               : `${selectedDate?.titleJa}を始めますか？`}
           </h2>
           <p className="confirm-text">
-            {selectedUpdatedDate
-              ? "APを使わず、新しくなった会話を一度楽しめます。"
-              : selectedDate?.apCost
+            {selectedDate?.apCost
               ? `${selectedDate.apCost}APを使って、デートを始めます。`
               : "APは使いません。ふたりの時間を始めます。"}
           </p>
@@ -735,7 +729,7 @@ export function GameApp({
               commit((state) => startDate(state, selected.id, nextRomanceRoll));
             }}
           >
-            {!selectedUpdatedDate && selectedDate?.apCost ? "APを使って始める" : "この時間を過ごす"}
+            {selectedDate?.apCost ? "APを使って始める" : "この時間を過ごす"}
           </button>
           <button className="secondary" onClick={() => setConfirmation(null)}>
             選び直す

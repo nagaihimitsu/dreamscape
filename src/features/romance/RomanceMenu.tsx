@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { city, dateDestinations, dates, presentation, trialMilestones } from "../../content";
+import { dateDestinations, dates, presentation } from "../../content";
 import {
   getDateAvailability,
-  getMilestoneAvailability,
   isEventVisible,
-  isUpdatedDateReplay,
   type GameState,
 } from "../../domain/game";
 import "./romance-menu.css";
@@ -20,11 +18,9 @@ export function withNames(text: string, game: GameState) {
 export function RomanceMenu({
   game,
   onChoose,
-  onMilestone,
 }: {
   game: GameState;
   onChoose: (id: string) => void;
-  onMilestone: (id: string) => void;
 }) {
   const visibleDates = dates.filter((date) => isEventVisible(game, date.id));
   const availableMoments = visibleDates.filter(
@@ -33,11 +29,7 @@ export function RomanceMenu({
       (!game.playedDateIds.includes(date.id) || date.repeatable),
   );
   const ordinaryDates = visibleDates.filter((date) => date.kind === "normal");
-  // Keep new experiences ahead of optional refreshed versions of previously
-  // completed dates, so returning players can find their next choice first.
-  const unplayedDates = ordinaryDates.filter((date) => !isUpdatedDateReplay(game, date.id));
-  const updatedDates = ordinaryDates.filter((date) => isUpdatedDateReplay(game, date.id));
-  const choices = [...availableMoments, ...unplayedDates, ...updatedDates];
+  const choices = [...availableMoments, ...ordinaryDates];
   const [datePage, setDatePage] = useState(0);
   const pageCount = Math.max(1, Math.ceil(choices.length / DATES_PER_PAGE));
   const currentPage = Math.min(datePage, pageCount - 1);
@@ -102,43 +94,10 @@ export function RomanceMenu({
           )}
         </>
       )}
-      <TrialMilestones game={game} onMilestone={onMilestone} />
     </>
   );
 }
 
-/** Shared legacy reward entry for both destination lists. */
-export function TrialMilestones({ game, onMilestone }: { game: GameState; onMilestone: (id: string) => void }) {
-  return game.currentCityId === city.id && game.legacyTrialAvailable ? (
-        <section className="trial-progress" aria-label="試遊用の旅の進行">
-          <h2>試遊用の補助AP</h2>
-          <p>以前の試遊向けの報酬です。観光報酬とは別に、各1回受け取れます。</p>
-          {trialMilestones.map((milestone) => {
-            const eligibility = getMilestoneAvailability(game, milestone.id);
-            const claimed = game.claimedRewardIds.includes(
-              milestone.rewardSourceId,
-            );
-            return (
-              <div className="milestone" key={milestone.id}>
-                <button
-                  className="milestone-option"
-                  data-testid={`milestone-${milestone.id}`}
-                  disabled={!eligibility.available}
-                  onClick={() => onMilestone(milestone.id)}
-                  aria-label={claimed ? `${milestone.titleJa}：受け取り済み` : `${milestone.titleJa}：${milestone.ap} APを受け取る`}
-                >
-                  <span>{milestone.titleJa}</span>
-                  <span>{claimed ? "受け取り済み" : `＋${milestone.ap} AP`}</span>
-                </button>
-                {!claimed && !eligibility.available && (
-                  <p className="fine-print">{eligibility.reason}</p>
-                )}
-              </div>
-            );
-          })}
-        </section>
-      ) : null;
-}
 export function EventCard({
   game,
   date,
@@ -149,8 +108,7 @@ export function EventCard({
   onChoose: (id: string) => void;
 }) {
   const eligibility = getDateAvailability(game, date.id);
-  const updated = isUpdatedDateReplay(game, date.id);
-  const cost = updated ? 0 : date.apCost;
+  const cost = date.apCost;
   const destination = date.destinationId
     ? dateDestinations.find((item) => item.id === date.destinationId)
     : undefined;
@@ -183,7 +141,7 @@ export function EventCard({
         {eligibility.available && <span aria-hidden="true">→</span>}
       </button>
       {eligibility.available && (
-        <p className="event-description">{updated ? "新しくなった会話を一度楽しめます。" : withNames(date.descriptionJa, game)}</p>
+        <p className="event-description">{withNames(date.descriptionJa, game)}</p>
       )}
       {!eligibility.available && (
         <p className="availability" role="status">

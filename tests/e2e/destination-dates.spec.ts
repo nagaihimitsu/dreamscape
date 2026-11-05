@@ -17,7 +17,7 @@ test("places appear only after their sightseeing episodes", async ({ page }) => 
   const unlocked = await page.evaluate(async (ids) => {
     const travelPath = "/src/domain/travel-game.ts";
     const { isTravelEventUnlocked } = await import(/* @vite-ignore */ travelPath);
-    const state = JSON.parse(localStorage.getItem("dreamscape.save.v1")!);
+    const state = JSON.parse(localStorage.getItem("dreamscape.journey.milano.save.v1")!);
     return ids.map((id) => isTravelEventUnlocked(state, id));
   }, ["milano_la_scala_date_01", "milano_brera_date_01", "milano_navigli_date_01"]);
   expect(unlocked).toEqual([false, false, false]);
@@ -27,7 +27,7 @@ test("places appear only after their sightseeing episodes", async ({ page }) => 
   // rain and recovery can coexist, while the city-clear date stays locked.
   await loadCurrentGalleriaFreeTime(page);
   await page.evaluate(() => {
-    const key = "dreamscape.save.v1";
+    const key = "dreamscape.journey.milano.save.v1";
     const state = JSON.parse(localStorage.getItem(key)!);
     state.ap = 0;
     state.pendingApRewards = [];
@@ -105,7 +105,7 @@ test("three destination dates work from a completed current journey on a phone",
       const contentPath = "/src/content/index.ts";
       const { showTravelEvent } = await import(/* @vite-ignore */ visibilityPath);
       const { getCityContent } = await import(/* @vite-ignore */ contentPath);
-      const state = JSON.parse(localStorage.getItem("dreamscape.save.v1")!);
+      const state = JSON.parse(localStorage.getItem("dreamscape.journey.milano.save.v1")!);
       const event = getCityContent("milano").travel.events.find((item: { id: string }) => item.id === id);
       return event && !showTravelEvent(state, event);
     }, place.id);

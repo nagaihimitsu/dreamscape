@@ -51,7 +51,6 @@ const encounterSchema = z.object({
 }).strict();
 const encounterCatalogObjectSchema = z.object({
   schemaVersion: z.literal(1),
-  initialBudget: money,
   items: z.array(z.object({ id, cityId: id, nameJa: japaneseText, descriptionJa: japaneseText }).strict()),
   encounters: z.array(encounterSchema),
 }).strict();

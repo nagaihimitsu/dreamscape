@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { saved, startNewGame } from "./helpers";
+import { saved, startNewGame, openStaleTab } from "./helpers";
 
 test.use({ reducedMotion: "no-preference" });
 
@@ -33,7 +33,7 @@ test("waiting has no effect; successful lodging shows the next day", async ({ pa
 
 test("a rejected save does not play the effect", async ({ page, context }) => {
   await startNewGame(page);
-  const other = await context.newPage();
+  const other = await openStaleTab(context);
   await other.goto("/");
   await other.getByText("待機", { exact: true }).click();
   await other.getByRole("button", { name: "30分待つ" }).click();

@@ -14,7 +14,7 @@ const japanese = z
 export const episodeSchema = z
   .object({
     id,
-    kind: z.enum(["episode", "trial_episode", "city_finale"]),
+    kind: z.enum(["episode", "city_finale"]),
     cityId: id,
     landmarkId: id.nullable(),
     requiredEpisodeIds: z.array(id),
@@ -81,7 +81,6 @@ export const storyBattleSchema = z.object({
 export const journeySchema = z
   .object({
     schemaVersion: z.literal(1),
-    entryEpisodeId: id,
     episodes: z.array(episodeSchema).min(1),
     storyBattles: z.array(storyBattleSchema).default([]),
     rewards: z.array(rewardRuleSchema).min(1),

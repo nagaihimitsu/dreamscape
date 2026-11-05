@@ -26,14 +26,13 @@ async function expectOnScreen(target: Locator) {
 
 async function checkDatePool(page: Page) {
   // Derive the visible rows from the current game's own rules.
-  const { state, visibleIds, updatedIds } = await page.evaluate(async ({ snapshot, ids }) => {
+  const { state, visibleIds } = await page.evaluate(async ({ snapshot, ids }) => {
     const modulePath = "/src/domain/game.ts";
     const domain = await import(/* @vite-ignore */ modulePath);
     const current = domain.validateGameState(snapshot);
     return {
       state: current,
       visibleIds: ids.filter((id) => domain.isEventVisible(current, id)),
-      updatedIds: ids.filter((id) => domain.isUpdatedDateReplay(current, id)),
     };
   }, { snapshot: await saved(page), ids: catalog.dates.map((date) => date.id) });
   const visible = catalog.dates.filter((date) =>
@@ -42,8 +41,7 @@ async function checkDatePool(page: Page) {
   const ordinary = visible.filter((date) => date.kind === "normal");
   const items = [
     ...visible.filter((date) => date.kind !== "normal"),
-    ...ordinary.filter((date) => !updatedIds.includes(date.id)),
-    ...ordinary.filter((date) => updatedIds.includes(date.id)),
+    ...ordinary,
   ];
   const count = Math.ceil(items.length / 5);
   const list = page.locator(".date-list");
@@ -57,7 +55,7 @@ async function checkDatePool(page: Page) {
       const button = row.getByRole("button");
       const destination = "destinationId" in date ? destinations.destinations.find((item) => item.id === date.destinationId) : undefined;
       await expect(button).toContainText(destination?.nameJa ?? date.titleJa);
-      const cost = updatedIds.includes(date.id) ? 0 : date.apCost;
+      const cost = date.apCost;
       await expect(button).toContainText(cost ? `${cost} AP` : "AP不要");
       if (await button.isEnabled()) await expect(row.locator(".event-description")).toBeVisible();
       else await expect(row.getByRole("status")).not.toBeEmpty();

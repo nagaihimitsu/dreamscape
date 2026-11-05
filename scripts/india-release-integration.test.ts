@@ -114,7 +114,7 @@ describe("India release pipeline", () => {
       }
       write(`content/stories/${plan.finale.battleStoryId}.ink`, read("content/stories/battles/sound_finale.ink"));
       write(`content/stories/${plan.finale.epilogueStoryId}.ink`, read("content/stories/milano/sound_epilogue.ink"));
-      const finalQuiz = JSON.parse(read("content/quizzes/milano_finale_B1.json"));
+      const finalQuiz = JSON.parse(read("content/quizzes/sound_finale_B1.json"));
       finalQuiz.id = plan.finale.quizId; finalQuiz.cityId = "delhi";
       finalQuiz.questions.forEach((question: { id: string }, index: number) => {
         const translated = originalTranslations[question.id];
@@ -183,7 +183,7 @@ describe("India release pipeline", () => {
       }
       write(`content/stories/${second.finale.battleStoryId}.ink`, read("content/stories/battles/sound_finale.ink"));
       write(`content/stories/${second.finale.epilogueStoryId}.ink`, read("content/stories/milano/sound_epilogue.ink"));
-      const agraQuiz = JSON.parse(read("content/quizzes/milano_finale_B1.json"));
+      const agraQuiz = JSON.parse(read("content/quizzes/sound_finale_B1.json"));
       agraQuiz.id = second.finale.quizId; agraQuiz.cityId = "agra";
       agraQuiz.questions.forEach((question: { id: string }, index: number) => {
         const translated = originalTranslations[question.id];

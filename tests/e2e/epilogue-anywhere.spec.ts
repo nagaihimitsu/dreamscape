@@ -7,7 +7,7 @@ test("the unread city epilogue can be read after leaving Darsena", async ({ page
   await startNewGame(page);
   await loadCurrentCompletedFreeTime(page);
   await page.evaluate(() => {
-    const key = "dreamscape.save.v1";
+    const key = "dreamscape.journey.milano.save.v1";
     const state = JSON.parse(localStorage.getItem(key)!);
     state.travel.currentPlaceId = "p_darsena";
     localStorage.setItem(key, JSON.stringify(state));

@@ -12,7 +12,6 @@ import { tourismCatalogSchema } from "./tourism-schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "./travel-schemas";
 import generatedQuizzes from "./generated/quizzes.json";
 import progressionData from "../../content/romance/progression.json";
-import trialData from "../../content/romance/trial_progression.json";
 import dateData from "../../content/romance/date_catalog.json";
 import destinationData from "../../content/romance/date_destinations.json";
 import { dateDestinationsSchema } from "./date-destinations";
@@ -32,7 +31,6 @@ import {
   quizSchema,
   type QuizDefinition,
   progressionSchema,
-  trialProgressionSchema,
   balanceSchema,
   citySchema,
   dateCatalogSchema,
@@ -99,8 +97,6 @@ export const battleQuizzes: Record<string, QuizDefinition> = Object.fromEntries(
   ]),
 );
 export const progression = progressionSchema.parse(progressionData);
-export const trialMilestones =
-  trialProgressionSchema.parse(trialData).milestones;
 export const dates = dateCatalogSchema.parse(dateData).dates;
 export const dateDestinations = dateDestinationsSchema.parse(destinationData).destinations;
 export const effects = effectCatalogSchema.parse(effectData).effects;

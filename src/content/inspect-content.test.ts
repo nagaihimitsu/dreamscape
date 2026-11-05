@@ -15,7 +15,7 @@ afterEach(async () => {
 describe("standalone content inspection", () => {
   it("accepts the same quiz in an arbitrary draft path by explicit type without modifying it", async () => {
     const input = await readFile(
-      path.resolve("content/quizzes/duomo_B1.json"),
+      path.resolve("content/quizzes/sound_duomo_B1.json"),
       "utf8",
     );
     const draft = path.join(directory, "draft.json");
@@ -23,7 +23,7 @@ describe("standalone content inspection", () => {
     expect(await inspectFile(draft, "quiz")).toBe("quiz");
     expect(await readFile(draft, "utf8")).toBe(input);
     expect(
-      inferContentType(path.resolve("content/quizzes/duomo_B1.json")),
+      inferContentType(path.resolve("content/quizzes/sound_duomo_B1.json")),
     ).toBe("quiz");
   });
   it("identifies JSON syntax, wrong correct ID and file path", async () => {
@@ -31,7 +31,7 @@ describe("standalone content inspection", () => {
     await writeFile(draft, "{");
     await expect(inspectFile(draft, "quiz")).rejects.toThrow(draft);
     const quiz = JSON.parse(
-      await readFile(path.resolve("content/quizzes/duomo_B1.json"), "utf8"),
+      await readFile(path.resolve("content/quizzes/sound_duomo_B1.json"), "utf8"),
     );
     quiz.questions[0].options[0].id = quiz.questions[0].options[1].id;
     await writeFile(draft, JSON.stringify(quiz));

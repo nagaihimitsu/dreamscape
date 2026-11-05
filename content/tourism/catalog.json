@@ -1619,9 +1619,7 @@
       "titleJa": "天井の線をたどる",
       "descriptionJa": "天井の奥行きの線を、中央へ延ばしてみよう。遠近法の消失点は、キリスト本人の右のこめかみ付近にある。絵の中の部屋も、その頭部へ視線を集めている。",
       "factId": "fact_last_supper_vanishing_point",
-      "relatedQuestionIds": [
-        "last_supper_vanishing_point"
-      ],
+      "relatedQuestionIds": [],
       "region": {
         "x": 0.28,
         "y": 0.08,
@@ -1646,9 +1644,7 @@
       "titleJa": "三人ずつのざわめき",
       "descriptionJa": "左端にも三人、その隣にも三人。十二使徒は三人ずつ四組に分かれ、身振りで応じ合う。中央のキリストは両隣から離れて座る。にぎやかな周囲と、静かな中央を見比べてみよう。",
       "factId": "fact_last_supper_four_groups",
-      "relatedQuestionIds": [
-        "last_supper_central_triangle"
-      ],
+      "relatedQuestionIds": [],
       "region": {
         "x": 0.06,
         "y": 0.46,
@@ -1673,9 +1669,7 @@
       "titleJa": "光輪のかわりに",
       "descriptionJa": "キリストの頭の後ろに、くっきりした輪はない。あるのは中央の窓と明るい空。美術館の解説では、この自然の光が従来の光輪に代わる表現として読まれている。",
       "factId": "fact_last_supper_window_light",
-      "relatedQuestionIds": [
-        "last_supper_central_triangle"
-      ],
+      "relatedQuestionIds": [],
       "region": {
         "x": 0.46,
         "y": 0.42,
@@ -1725,9 +1719,7 @@
       "titleJa": "資料：ゆっくり描くための選択",
       "descriptionJa": "画像だけでは判別できない制作技法の話。乾いた下地に描く方法なら、時間をかけて細部を直せる。一方、顔料は湿った漆喰に取り込まれず、傷みやすかった。劣化には室内環境も関わる。現在の保存は、空気の管理にも及んでいる。",
       "factId": "fact_last_supper_dry_technique",
-      "relatedQuestionIds": [
-        "last_supper_dry_tradeoff"
-      ],
+      "relatedQuestionIds": [],
       "region": null,
       "sources": [
         {
@@ -1747,9 +1739,7 @@
       "titleJa": "白一色ではない石の肌",
       "descriptionJa": "正面の石を見比べると、明るい部分にも淡い色や筋があります。公式資料によると、建設に使われたのは桃色の筋をもつカンドーリアの大理石。写真から産地を断定するのではなく、見える表面と採石場の記録を結びつける手がかりです。",
       "factId": "duomo_candoglia_material",
-      "relatedQuestionIds": [
-        "duomo_candoglia_marble"
-      ],
+      "relatedQuestionIds": [],
       "region": {
         "x": 0.375,
         "y": 0.31,
@@ -1774,9 +1764,7 @@
       "titleJa": "尖塔の上にも、人がいる",
       "descriptionJa": "尖った輪郭の先を拡大すると、人物像が立っています。建物の屋根をただ尖らせただけではなく、一つずつ彫刻が組み込まれた姿です。写真だけで個々の像の制作年代や、原像か写しかまでは判断できません。",
       "factId": "duomo_spire_sculpture",
-      "relatedQuestionIds": [
-        "duomo_statue_copies"
-      ],
+      "relatedQuestionIds": [],
       "region": {
         "x": 0.545,
         "y": 0.04,
@@ -1801,9 +1789,7 @@
       "titleJa": "石の旅は、水の上を通った",
       "descriptionJa": "大理石は船に載せられ、トーチェ川からマッジョーレ湖へ、ティチーノ川とナヴィリオ・グランデを経て街へ運ばれました。大聖堂近くには石材を降ろす船溜まりもありました。広場の写真に水路は写っていませんが、建物の大きさを支えた道です。",
       "factId": "duomo_transport_network",
-      "relatedQuestionIds": [
-        "duomo_water_transport"
-      ],
+      "relatedQuestionIds": [],
       "region": null,
       "sources": [
         {
@@ -1823,9 +1809,7 @@
       "titleJa": "同じ場所を、別の石が受け継ぐ",
       "descriptionJa": "カレッリ尖塔の聖ゲオルギウス像は、空襲で損傷した原像を守るため、1950年代に写しへ置き換えられました。修復された原像は大聖堂美術館にあります。この尖塔は正面写真では確認できないため、資料として扱います。写しと原像は、屋外の姿を保つ役割と作品を保存する役割を分けています。",
       "factId": "duomo_carelli_copy_conservation",
-      "relatedQuestionIds": [
-        "duomo_statue_copies"
-      ],
+      "relatedQuestionIds": [],
       "region": null,
       "sources": [
         {
@@ -1845,9 +1829,7 @@
       "titleJa": "空を区切る細い線",
       "descriptionJa": "頭上の明るい面はガラス、それを区切る骨組みは鉄。華やかな壁の装飾から視線を上げると、光を取り込みながら通路を覆う構造が見える。",
       "factId": "fact_galleria_iron_glass",
-      "relatedQuestionIds": [
-        "galleria_roof_materials"
-      ],
+      "relatedQuestionIds": [],
       "region": {
         "x": 0.32,
         "y": 0.015,
@@ -1872,9 +1854,7 @@
       "titleJa": "資料：雄牛の出身地",
       "descriptionJa": "床の雄牛はトリノの紋章。この写真では雄牛の細部は確認できないため、資料カードで紹介する。雄牛の上で回ると幸運が来るという言い伝えもあるが、その効き目が確認された史実ではない。",
       "factId": "fact_galleria_turin_bull",
-      "relatedQuestionIds": [
-        "galleria_bull_city"
-      ],
+      "relatedQuestionIds": [],
       "region": null,
       "sources": [
         {
@@ -1902,9 +1882,7 @@
       "titleJa": "椅子が道へ向く",
       "descriptionJa": "通路の両側には店やカフェ。写真の店先には椅子も見える。買い物だけでなく、一杯を飲みながら街を眺める時間も、この通りの風景に加わっている。",
       "factId": "fact_galleria_cafes_shops",
-      "relatedQuestionIds": [
-        "galleria_city_passage"
-      ],
+      "relatedQuestionIds": [],
       "region": {
         "x": 0.59,
         "y": 0.65,
@@ -1929,9 +1907,7 @@
       "titleJa": "店の先にも続く道",
       "descriptionJa": "中央の通路は店舗の入口だけで終わらない。ガッレリアはドゥオモ広場とスカラ広場をつなぐ屋根付きの道でもある。写真で見える通路の先を、街の動線としてたどってみよう。",
       "factId": "fact_galleria_square_link",
-      "relatedQuestionIds": [
-        "galleria_city_passage"
-      ],
+      "relatedQuestionIds": [],
       "region": {
         "x": 0.43,
         "y": 0.66,
@@ -1956,9 +1932,7 @@
       "titleJa": "中庭に立つ高い塔",
       "descriptionJa": "中庭の写真では、煉瓦の壁から高い塔が突き出している。これはボーナ・ディ・サヴォイアの塔。防御を思わせる姿だけで城の歴史を決めつけず、宮廷の住まいや、後の博物館としての役割も合わせて考えたい。",
       "factId": "castello_fortress_and_residence",
-      "relatedQuestionIds": [
-        "castello_changing_roles"
-      ],
+      "relatedQuestionIds": [],
       "region": {
         "x": 0.74,
         "y": 0.07,
@@ -1991,9 +1965,7 @@
       "titleJa": "壁の内側を歩く人たち",
       "descriptionJa": "写真の中庭では、人が門や案内表示の間を行き交っている。かつての城は、現在は博物館や文化施設を収める場所でもある。建物の外形が残っていても、訪れる理由や使い方は変わってきた。",
       "factId": "castello_public_cultural_use",
-      "relatedQuestionIds": [
-        "castello_changing_roles"
-      ],
+      "relatedQuestionIds": [],
       "region": {
         "x": 0.53,
         "y": 0.56,
@@ -2018,9 +1990,7 @@
       "titleJa": "壁から天井へ広がる木陰",
       "descriptionJa": "アッセの間には、レオナルドによる枝や結び紐のあずまやのような装飾が、壁から天井へ広がる。本物の木を植えたのではなく、描かれた空間だ。この室内は中庭の写真には写っていないため、公式資料をもとにしたカードで確認する。",
       "factId": "castello_sala_painted_arbor",
-      "relatedQuestionIds": [
-        "castello_painted_arbor"
-      ],
+      "relatedQuestionIds": [],
       "region": null,
       "sources": [
         {
@@ -2048,9 +2018,7 @@
       "titleJa": "客を迎えるための絵",
       "descriptionJa": "アッセの間は、スフォルツァ家が客や大使を迎える場だった。ルドヴィーコに招かれたレオナルドが装飾した部屋で、人と人が会っていた。絵の題材に加えて部屋の用途を見ると、宮廷と芸術のつながりがわかる。",
       "factId": "castello_sforza_guests",
-      "relatedQuestionIds": [
-        "castello_art_and_court"
-      ],
+      "relatedQuestionIds": [],
       "region": null,
       "sources": [
         {
@@ -2070,9 +2038,7 @@
       "titleJa": "先代劇場の火災",
       "descriptionJa": "1776年、火災で失われたのはスカラ座ではなく、その前にあったドゥカーレ劇場。スカラ座はその後に建設された。この写真に火災の様子は写っていない。",
       "factId": "scala_previous_theatre_fire",
-      "relatedQuestionIds": [
-        "scala_old_theatre_fire"
-      ],
+      "relatedQuestionIds": [],
       "region": null,
       "sources": [
         {
@@ -2092,9 +2058,7 @@
       "titleJa": "空襲で傷ついた劇場",
       "descriptionJa": "公式の劇場史には、1943年8月の空襲でスカラ座が大きな被害を受けたとある。現在の外観の写真は当時の被害を示すものではない。",
       "factId": "scala_1943_air_raid",
-      "relatedQuestionIds": [
-        "scala_wartime_counterexample"
-      ],
+      "relatedQuestionIds": [],
       "region": null,
       "sources": [
         {
@@ -2114,9 +2078,7 @@
       "titleJa": "再開の日の演奏会",
       "descriptionJa": "記録によると、スカラ座は1946年5月に演奏会とともに再開した。再開したという日付だけで、建物が閉じた原因までは特定できない。",
       "factId": "scala_reopening_concert",
-      "relatedQuestionIds": [
-        "scala_reopening_community"
-      ],
+      "relatedQuestionIds": [],
       "region": null,
       "sources": [
         {
@@ -2136,10 +2098,7 @@
       "titleJa": "記録１：カメリーノの祭壇",
       "descriptionJa": "クリヴェッリのカメリーノ祭壇画は、もともとカメリーノのサン・ドメニコ教会の主祭壇に置かれていた。ブレラ宮殿中庭の写真に、この絵は写っていない。",
       "factId": "brera_camerino_original_altar",
-      "relatedQuestionIds": [
-        "brera_camerino_original_place",
-        "brera_camerino_joined_records"
-      ],
+      "relatedQuestionIds": [],
       "region": null,
       "sources": [
         {
@@ -2159,9 +2118,7 @@
       "titleJa": "記録２：ミラノへ届いた箱",
       "descriptionJa": "公式の作品解説によると、カメリーノの祭壇画は1811年にブレラへ届いた。ナポレオン政権下、委員は各地の絵を学生が学べる収集を目指し、マルケの教会などから作品を徴発した。",
       "factId": "brera_camerino_transfer",
-      "relatedQuestionIds": [
-        "brera_camerino_joined_records"
-      ],
+      "relatedQuestionIds": [],
       "region": null,
       "sources": [
         {
@@ -2181,9 +2138,7 @@
       "titleJa": "別々の場所に残る板絵",
       "descriptionJa": "作品解説では、三つの主要画面はブレラに残り、上部の三点は取引を経てフランクフルトとベルンに分かれたと説明される。中庭の写真からは板絵の細部を確かめられない。",
       "factId": "brera_camerino_panels",
-      "relatedQuestionIds": [
-        "brera_camerino_separated_panels"
-      ],
+      "relatedQuestionIds": [],
       "region": null,
       "sources": [
         {

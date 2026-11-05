@@ -6,12 +6,11 @@ import { buildContent } from "../../scripts/content-pipeline";
 import { prepareContentFixture } from "./test-fixtures";
 import { validateJourney } from "../../scripts/journey-validation";
 import { journeySchema, type JourneyConfig } from "./journey-schemas";
-import { battleCatalogSchema, trialProgressionSchema } from "./schemas";
+import { battleCatalogSchema } from "./schemas";
 import { tourismCatalogSchema } from "./tourism-schemas";
 import { balance, battleQuizzes, getCities } from ".";
 import journeyData from "../../content/progression/journey.json";
 import cityData from "../../content/cities/milano.json";
-import trialData from "../../content/romance/trial_progression.json";
 import battleData from "../../content/battles/catalog.json";
 import tourismData from "../../content/tourism/catalog.json";
 
@@ -59,14 +58,12 @@ function checkJourney(change: (data: JourneyTestData) => void): void {
     tourismCatalogSchema.parse(tourismData).landmarks,
     battleCatalogSchema.parse(battleData).battles,
     battleQuizzes,
-    trialProgressionSchema.parse(trialData).milestones,
   );
 }
 
 describe("integrated journey content contract", () => {
-  it("connects four ordered landmarks and a separate city finale while retaining the legacy reward", async () => {
+  it("connects four ordered landmarks and a separate city finale with Milan's first-clear reward", async () => {
     const result = await buildContent(fixture, false);
-    expect(result.journey.entryEpisodeId).toBe("milano_duomo_episode");
     const stops = result.journey.episodes.filter(
       (episode) => episode.cityId === cityData.id && episode.kind !== "city_finale",
     );
@@ -84,10 +81,10 @@ describe("integrated journey content contract", () => {
       stops.map((episode) => episode.id),
     );
     expect(finale.epilogueStoryId).toBe("milano/sound_epilogue");
-    const legacy = result.journey.rewards.find(
+    const firstClear = result.journey.rewards.find(
       (rule) => rule.id === cityData.firstClearReward.rewardSourceId,
     )!;
-    expect(legacy).toMatchObject({
+    expect(firstClear).toMatchObject({
       episodeId: "milano_last_supper_episode",
       trigger: "episode_clear",
       ap: 4,
@@ -95,7 +92,7 @@ describe("integrated journey content contract", () => {
     expect(
       result.journey.rewards
         .filter(
-          (rule) => rule.trigger === "episode_clear" && rule.id !== legacy.id,
+          (rule) => rule.trigger === "episode_clear" && rule.id !== firstClear.id,
         )
         .every((rule) => rule.ap === 1),
     ).toBe(true);
@@ -105,13 +102,10 @@ describe("integrated journey content contract", () => {
     expect(result.epilogueScenarios).toBe(8 * cityConversations);
   });
 
-  it("rejects an unknown entry episode", async () => {
-    await changeJourney((data) => {
-      data.entryEpisodeId = "missing_episode";
-    });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Unknown entry episode",
-    );
+  it("requires a city's first episode to start without prerequisites", () => {
+    expect(() => checkJourney((data) => {
+      data.episodes[0].requiredEpisodeIds = [data.episodes[1].id];
+    })).toThrow("Entry episode must begin the route without prerequisites");
   });
 
   it("rejects duplicate episodes and ambiguous shared battles", () => {
@@ -158,34 +152,28 @@ describe("integrated journey content contract", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown reward story battle");
   });
 
-  it("rejects duplicate reward IDs and collisions with supplemental trial rewards", async () => {
+  it("rejects duplicate reward IDs", async () => {
     await changeJourney((data) => {
       data.rewards[1].id = data.rewards[0].id;
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Duplicate journey reward ID",
     );
-    await changeJourney((data) => {
-      data.rewards[0].id = trialData.milestones[0].rewardSourceId;
-    });
-    await expect(buildContent(fixture, false)).rejects.toThrow(
-      "Duplicate journey/trial reward ID",
-    );
   });
 
-  it("allows the existing chapter reward only as an equal-valued episode clear alias", () => {
+  it("allows the first-clear reward only as an equal-valued episode clear rule", () => {
     const clear = journeyData.rewards.find((rule) => rule.id === cityData.firstClearReward.rewardSourceId)!;
     expect(clear.ap).toBe(cityData.firstClearReward.ap);
     expect(() => checkJourney((data) => {
       data.rewards[3].id = "new_chapter_reward";
-    })).toThrow("Missing legacy chapter reward alias");
+    })).toThrow("Missing first-clear reward rule");
     expect(() => checkJourney((data) => {
       data.rewards[3].ap++;
-    })).toThrow("Legacy chapter reward");
+    })).toThrow("First-clear reward must keep its ID, trigger and amount");
     expect(() => checkJourney((data) => {
       data.rewards[0].id = cityData.firstClearReward.rewardSourceId;
       data.rewards[3].id = "different_reward";
-    })).toThrow("Legacy chapter reward");
+    })).toThrow("First-clear reward must keep its ID, trigger and amount");
   });
 
   it("requires one rule for each supported completion boundary", () => {
@@ -224,7 +212,7 @@ describe("integrated journey content contract", () => {
     );
   });
 
-  it("keeps city completion, mandatory discoveries and affection out of the trial integration contract", async () => {
+  it("keeps city completion, mandatory discoveries and affection out of the journey integration contract", async () => {
     await changeJourney((data) => {
       data.episodes[0].kind = "city_clear";
     });

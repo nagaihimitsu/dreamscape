@@ -6,7 +6,7 @@ import {
 } from "./game";
 
 
-/** Generate a valid v11 history via the current game rules. */
+/** Generate a valid history via the current game rules. */
 function currentFreeTime(): GameState {
   const state = createDebugState({ scene: "tourism", id: "duomo_milano", progress: "completed", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
   return validateGameState({ ...state, activeTourism: null });
@@ -21,7 +21,7 @@ function stranded(): GameState {
   // repeated unfortunate choices after the travel rewards have been spent.
   return validateGameState({
     ...base, ap: 0, affection: -8, trust: -8, spark: -8,
-    playedDateIds: ["milano_cafe_01"], updatedDateIds: ["milano_cafe_01"],
+    playedDateIds: ["milano_cafe_01"],
   });
 }
 

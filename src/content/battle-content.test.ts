@@ -5,12 +5,12 @@ import path from "node:path";
 import { Story } from "inkjs";
 import { buildContent } from "../../scripts/content-pipeline";
 import { prepareContentFixture } from "./test-fixtures";
-import quizData from "../../content/quizzes/last_supper_B1.json";
+import quizData from "../../content/quizzes/sound_supper_B1.json";
 import battleData from "../../content/battles/catalog.json";
 import { parseStoryTags } from "./tags";
 
 let fixture: string;
-const quizPath = "content/quizzes/last_supper_B1.json";
+const quizPath = "content/quizzes/sound_supper_B1.json";
 const battlePath = "content/battles/catalog.json";
 const inkPath = "content/stories/battles/sound_supper.ink";
 
@@ -59,8 +59,7 @@ describe("battle content contract", () => {
     const result = await buildContent(fixture);
     expect(result.routes).toBeGreaterThanOrEqual(105);
     expect(result.battleScenarios).toBeGreaterThanOrEqual(13);
-    // Previously published quiz sets remain available for old save and
-    // learning records alongside the revised battles' production quizzes.
+    // Every battle's production quiz is generated.
     expect(Object.keys(result.quizzes)).toEqual(
       expect.arrayContaining(battleData.battles.map((battle) => battle.quizId)),
     );

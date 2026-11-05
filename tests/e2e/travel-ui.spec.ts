@@ -145,7 +145,7 @@ test("an unavailable destination explains why without spending resources", async
   await page.setViewportSize({ width: 360, height: 780 });
   await loadCurrentScene(page, "freeTimeEarly");
   await page.evaluate(() => {
-    const key = "dreamscape.save.v1";
+    const key = "dreamscape.journey.milano.save.v1";
     const state = JSON.parse(localStorage.getItem(key)!);
     state.ap = 0;
     localStorage.setItem(key, JSON.stringify(state));
@@ -227,7 +227,7 @@ test("a completed-only destination disappears from the map, while current locati
     // Start away from the completed destination, then visit it separately
     // below to check the current-location exception.
     state = { ...state, travel: { ...state.travel, currentPlaceId: state.travel.hotelPlaceId, returnReserve: 0 } };
-    localStorage.setItem("dreamscape.save.v1", JSON.stringify(state));
+    localStorage.setItem("dreamscape.journey.milano.save.v1", JSON.stringify(state));
   });
   await page.reload();
   await expect(page.getByTestId("travel-place-p_prada")).toHaveCount(0);
@@ -238,7 +238,7 @@ test("a completed-only destination disappears from the map, while current locati
   await expect(places.locator('option[value="p_hotel"]')).toHaveCount(1);
   await expect(page.getByTestId("travel-map-canvas").locator('[title^="プラダ財団"]')).toHaveCount(0);
   await page.evaluate(() => {
-    const key = "dreamscape.save.v1";
+    const key = "dreamscape.journey.milano.save.v1";
     const state = JSON.parse(localStorage.getItem(key)!);
     state.travel.currentPlaceId = "p_prada";
     localStorage.setItem(key, JSON.stringify(state));
@@ -290,7 +290,7 @@ test("completed events disappear from a shared destination while an unplayed dat
   await page.setViewportSize({ width: 360, height: 780 });
   await loadCurrentScene(page, "freeTime");
   await page.evaluate(() => {
-    const key = "dreamscape.save.v1";
+    const key = "dreamscape.journey.milano.save.v1";
     const state = JSON.parse(localStorage.getItem(key)!);
     state.playedDateIds = [...new Set([...state.playedDateIds, "milano_cafe_01"])];
     localStorage.setItem(key, JSON.stringify(state));
@@ -312,7 +312,7 @@ test("choosing rail in the transport dialog starts the trip once", async ({ page
   // Put a valid idle test state at Duomo, where both rail and walking are
   // registered for the Last Supper. The trip itself uses the normal UI.
   await page.evaluate(() => {
-    const key = "dreamscape.save.v1";
+    const key = "dreamscape.journey.milano.save.v1";
     const state = JSON.parse(localStorage.getItem(key)!);
     state.travel.currentPlaceId = "p_duomo";
     localStorage.setItem(key, JSON.stringify(state));
@@ -341,7 +341,7 @@ test("all five transport choices fit on a narrow phone", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 740 });
   await loadCurrentScene(page, "freeTime");
   await page.evaluate(() => {
-    const key = "dreamscape.save.v1";
+    const key = "dreamscape.journey.milano.save.v1";
     const state = JSON.parse(localStorage.getItem(key)!);
     state.travel.currentPlaceId = "p_duomo";
     state.travel.minute = 600;

@@ -35,7 +35,7 @@ beforeAll(async () => {
 
 describe("tourism in normal dates", () => {
   it("connects every normal date to a real destination, sources, and a registered background", () => {
-    const normalDates = content.dates.filter((date) => date.kind === "normal" && !date.legacyOnly);
+    const normalDates = content.dates.filter((date) => date.kind === "normal");
     expect(normalDates.length).toBeGreaterThanOrEqual(11);
     for (const date of normalDates) {
       const destination = content.destinations.find((item) => item.id === date.destinationId);
@@ -59,27 +59,8 @@ describe("tourism in normal dates", () => {
     }
   });
 
-  it("introduces the sculpture itself and distinguishes interpretations", () => {
-    const date = content.dates.find((item) => item.id === "milano_love_date_01")!;
-    const story = new Story(content.stories[date.storyId]);
-    let introduction = "";
-    while (story.canContinue) introduction += story.Continue();
-    expect(introduction).toMatch(/中指/);
-    expect(introduction).toMatch(/四本.*欠け/);
-    expect(introduction).toMatch(/証券取引所/);
-    expect(introduction).toMatch(/自由、憎悪、復讐、永遠/);
-    expect(introduction).toMatch(/二週間/);
-    expect(story.currentChoices).toHaveLength(3);
-    story.variablesState.$("romance_result", "positive");
-    story.ChooseChoiceIndex(0);
-    let nextScene = "";
-    while (story.canContinue) nextScene += story.Continue();
-    expect(nextScene).toMatch(/皮肉.*見方/);
-    expect(nextScene).toMatch(/肯定も否定もしていない/);
-  });
-
   it("includes a local observation in spoken dialogue on every path in the Milan scripts", () => {
-    const normalDates = content.dates.filter((date) => date.chapterId === "milano" && date.kind === "normal" && !date.legacyOnly);
+    const normalDates = content.dates.filter((date) => date.chapterId === "milano" && date.kind === "normal");
     expect(Object.keys(currentPlaceDetails)).toHaveLength(normalDates.length);
     const tones = ["reserved", "strained", "comfortable", "guarded_attraction", "warm", "romantic_tension"];
     for (const [dateId, detail] of Object.entries(currentPlaceDetails)) {

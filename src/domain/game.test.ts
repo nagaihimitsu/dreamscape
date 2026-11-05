@@ -1,6 +1,6 @@
-import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
+import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { describe, expect, it } from "vitest";
-import { balance, city, dates } from "../content";
+import { balance, dates } from "../content";
 import { beginStory, continueStory } from "../story/runtime";
 import {
   advanceDate,
@@ -9,7 +9,6 @@ import {
   createGame,
   finishDate,
   getDateAvailability,
-  grantRewardOnce,
   isEventVisible,
   setNames,
   startDate,
@@ -19,7 +18,7 @@ import {
 
 const dateId = dates[0].id;
 function freshDate() {
-  return startDate(seedLegacyChapter(createGame()), dateId, stableRolls());
+  return startDate(seedCurrentFreeTime(createGame()), dateId, stableRolls());
 }
 function untilChoice(state: GameState): GameState {
   let steps = 0;
@@ -64,35 +63,24 @@ describe("AP and date rules", () => {
       heroineName: "花",
     });
   });
-  it("protects legacy chapter rewards and prevents mock completion without battle evidence", () => {
+  it("prevents mock completion without battle evidence and never repeats rewards", () => {
     const initial = createGame();
     expect(completeChapter(initial)).toBe(initial);
-    const state = seedLegacyChapter(initial);
-    expect(state.ap).toBe(city.firstClearReward.ap);
+    const state = seedCurrentFreeTime(initial);
+    expect(state.ap).toBe(4);
     expect(completeChapter(state)).toBe(state);
     expect(
       completeChapter(validateGameState(JSON.parse(JSON.stringify(state)))),
     ).toEqual(state);
-    expect(
-      grantRewardOnce(state, city.firstClearReward.rewardSourceId, 4),
-    ).toBe(state);
   });
-  it("caps AP, carries unused AP, rejects invalid reward values", () => {
-    const initial = createGame();
-    const capped = grantRewardOnce(initial, "test-cap", balance.apCap + 10);
-    expect(capped.ap).toBe(balance.apCap);
-    expect(grantRewardOnce(capped, "test-cap", 3)).toBe(capped);
-    expect(grantRewardOnce(initial, "negative", -1)).toBe(initial);
-    expect(grantRewardOnce(initial, "fraction", 0.5)).toBe(initial);
-    expect(play(freshDate()).ap).toBe(
-      city.firstClearReward.ap - dates[0].apCost,
-    );
+  it("carries unused AP after a date", () => {
+    expect(play(freshDate()).ap).toBe(4 - dates[0].apCost);
   });
   it("blocks locked, unknown, insufficient AP and repeated starts without mutations", () => {
     const locked = createGame();
     expect(startDate(locked, dateId)).toBe(locked);
     expect(startDate(locked, "unknown")).toBe(locked);
-    const poor = { ...seedLegacyChapter(locked), ap: dates[0].apCost - 1 };
+    const poor = { ...seedCurrentFreeTime(locked), ap: dates[0].apCost - 1 };
     expect(getDateAvailability(poor, dateId).available).toBe(false);
     expect(startDate(poor, dateId)).toBe(poor);
     const started = freshDate();
@@ -130,7 +118,7 @@ describe("Ink choices and reload boundaries", () => {
     for (let second = 0; second < 3; second++) {
       it(`plays route ${first + 1}/${second + 1}, round-tripping every line and choice`, () => {
         let state = startDate(
-          seedLegacyChapter(createGame("主人公試験", "ヒロイン試験")),
+          seedCurrentFreeTime(createGame("主人公試験", "ヒロイン試験")),
           dateId,
           stableRolls(),
         );

@@ -358,7 +358,7 @@ test("connection notes appear and can be selected in the shared travel and lodgi
   // its options after the fixture routes have been installed.
   await page.getByText("待機", { exact: true }).click();
   await page.getByRole("button", { name: "30分待つ" }).click();
-  const initialSave = await page.evaluate(() => localStorage.getItem("dreamscape.save.v1")!);
+  const initialSave = await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1")!);
   await page.getByTestId("travel-place-p_duomo").getByRole("button").click();
   const outbound = page.getByRole("dialog", { name: /へ$/ });
   const outgoingBus = outbound.getByRole("button", { name: /バス（試験停留所で乗り継ぎ） 15分 · €3/ });
@@ -378,7 +378,7 @@ test("connection notes appear and can be selected in the shared travel and lodgi
   await page.evaluate((value) => {
     const state = JSON.parse(value);
     state.travel.currentPlaceId = "p_duomo";
-    localStorage.setItem("dreamscape.save.v1", JSON.stringify(state));
+    localStorage.setItem("dreamscape.journey.milano.save.v1", JSON.stringify(state));
   }, initialSave);
   await page.reload();
   await installTestRoutes();

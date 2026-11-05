@@ -16,8 +16,9 @@ export default function App(props: AppProps = {}) {
   const [lockAttempt, setLockAttempt] = useState(0);
   const journey = getJourney(journeyId);
   const readOnlyPreparation = journey?.status === "preparing" && !journey.initialState;
-  // A read-only preparation has no save to edit, so it needs no storage lock.
-  const lockStatus = useJourneyLock(props.debug || readOnlyPreparation ? "milano" : journeyId, scopedStorage, lockAttempt);
+  // Debug storage is isolated and a read-only preparation has no save to edit,
+  // so neither needs the cross-tab storage lock.
+  const lockStatus = useJourneyLock(journeyId, scopedStorage, lockAttempt, !props.debug && !readOnlyPreparation);
   // Debug supplies an isolated, pre-populated game; do not alter its storage.
   if (props.debug) return <GameApp {...props} />;
   if (lockStatus !== "ready") return <div className="app-shell"><main id="main"><section className="paper intro">

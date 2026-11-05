@@ -63,7 +63,6 @@ test("a new zero-score Milan journey reaches the city epilogue and romance endin
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await startNewGame(page, ["航", "澪"]);
-  expect((await saved(page)).legacyTrialAvailable).toBe(false);
   await expect(page.getByTestId("episode-screen")).toContainText(
     "無人の広場、一名追加",
   );
@@ -87,9 +86,6 @@ test("a new zero-score Milan journey reaches the city epilogue and romance endin
     if (index === 0) {
       await enterFreeTime(page);
       await expect(page.getByTestId("event-milano_cafe_01")).toBeVisible();
-      await expect(page.getByTestId("milestone-trial_after_cafe")).toHaveCount(
-        0,
-      );
       await openCityRecords(page);
       await expect(page.getByTestId(`city-stop-${cityFinale().id}`)).toContainText("この先");
       await page.getByTestId(`next-episode-${cityEpisodes[1].id}`).click();

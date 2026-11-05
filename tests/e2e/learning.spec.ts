@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import quiz from "../../content/quizzes/sound_supper_B1.json" with { type: "json" };
-import { loadCurrentSupperQuestion, loadCurrentFreeTime, saved, startNewGame } from "./helpers";
+import { loadCurrentSupperQuestion, loadCurrentFreeTime, saved, startNewGame, openStaleTab } from "./helpers";
 import { playBattle } from "./battle-helpers";
 
 test.use({ viewport: { width: 360, height: 780 } });
@@ -90,7 +90,7 @@ test("invalid learning data is preserved", async ({
   await startNewGame(page);
   await loadCurrentFreeTime(page);
   await page.evaluate(() =>
-    localStorage.setItem("dreamscape.learning.v1", "{broken"),
+    localStorage.setItem("dreamscape.journey.milano.learning.v1", "{broken"),
   );
   await page.reload();
   await expect(
@@ -98,7 +98,7 @@ test("invalid learning data is preserved", async ({
   ).toBeVisible();
   await page.getByRole("button", { name: "英語ノートを開く" }).click();
   expect(
-    await page.evaluate(() => localStorage.getItem("dreamscape.learning.v1")),
+    await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.learning.v1")),
   ).toBe("{broken");
 });
 
@@ -147,19 +147,19 @@ test("a stale tab cannot overwrite learning settings", async ({
   context,
 }) => {
   await loadCurrentSupperQuestion(page);
-  const older = await context.newPage();
+  const older = await openStaleTab(context);
   await older.goto("/");
   const originalGame = await saved(page);
   await page.getByRole("button", { name: "問題文の訳を見る" }).click();
   const stored = await page.evaluate(() =>
-    localStorage.getItem("dreamscape.learning.v1"),
+    localStorage.getItem("dreamscape.journey.milano.learning.v1"),
   );
   await expect(
     older.getByText(/別の画面で英語ノートが更新されました/),
   ).toBeVisible();
   await older.getByRole("button", { name: "選択肢Aの訳を見る" }).click();
   expect(
-    await older.evaluate(() => localStorage.getItem("dreamscape.learning.v1")),
+    await older.evaluate(() => localStorage.getItem("dreamscape.journey.milano.learning.v1")),
   ).toBe(stored);
   expect(await saved(page)).toEqual(originalGame);
   await older.close();
@@ -195,7 +195,7 @@ test("semantically inconsistent learning records stay protected", async ({
     openTopic: null,
   });
   await page.evaluate(
-    (v) => localStorage.setItem("dreamscape.learning.v1", v),
+    (v) => localStorage.setItem("dreamscape.journey.milano.learning.v1", v),
     bad,
   );
   await page.reload();
@@ -204,7 +204,7 @@ test("semantically inconsistent learning records stay protected", async ({
   ).toBeVisible();
   await page.getByRole("button", { name: "問題文の訳を見る" }).click();
   expect(
-    await page.evaluate(() => localStorage.getItem("dreamscape.learning.v1")),
+    await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.learning.v1")),
   ).toBe(bad);
 });
 
@@ -212,7 +212,7 @@ test("unknown learning versions are never overwritten", async ({ page }) => {
   await loadCurrentSupperQuestion(page);
   const raw = JSON.stringify({ schemaVersion: 999, payload: "keep" });
   await page.evaluate(
-    (value) => localStorage.setItem("dreamscape.learning.v1", value),
+    (value) => localStorage.setItem("dreamscape.journey.milano.learning.v1", value),
     raw,
   );
   await page.reload();
@@ -221,7 +221,7 @@ test("unknown learning versions are never overwritten", async ({ page }) => {
   ).toBeVisible();
   await page.getByRole("button", { name: "問題文の訳を見る" }).click();
   expect(
-    await page.evaluate(() => localStorage.getItem("dreamscape.learning.v1")),
+    await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.learning.v1")),
   ).toBe(raw);
 });
 

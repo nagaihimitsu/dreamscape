@@ -411,11 +411,11 @@ describe("content build acceptance", () => {
       .toThrow("Only confession can apply a confession outcome");
   });
 
-  it("rejects duplicate milestone reward source IDs", async () => {
+  it("rejects duplicate city first-clear reward source IDs", async () => {
     await replace(
-      "content/romance/trial_progression.json",
-      '"trial_after_walk_reward"',
-      '"trial_after_cafe_reward"',
+      "content/cities/agra.json",
+      '"agra_legacy_episode_placeholder"',
+      '"delhi_legacy_episode_placeholder"',
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Duplicate reward source",

@@ -960,41 +960,6 @@ dialog.modal::backdrop {
 .cost {
   white-space: nowrap;
 }
-.trial-progress {
-  padding: 20px;
-  margin: 0 0 26px;
-  border: 1px dashed #bdc5af;
-  border-radius: 4px;
-  background: #f0f0e6;
-}
-.trial-progress h2 {
-  font-size: 19px;
-}
-.trial-progress > .section-meta {
-  flex-wrap: wrap;
-}
-.trial-progress p {
-  font-size: 12px;
-  color: var(--muted);
-  line-height: 1.9;
-  margin-top: 12px;
-}
-.milestone {
-  border-top: 1px solid var(--line);
-  margin-top: 18px;
-  padding-top: 15px;
-}
-.milestone h3 {
-  font-size: 13px;
-}
-.milestone p {
-  margin-top: 6px;
-  font-size: 11px;
-}
-.milestone .secondary {
-  font-size: 12px;
-  background: #fafbf4;
-}
 .deferred-note {
   margin-bottom: 25px;
   padding: 22px 20px;

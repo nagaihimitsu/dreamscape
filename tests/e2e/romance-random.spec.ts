@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 import {
   advanceToChoiceOrEnd, choose, finishEvent, loadCurrentFreeTime, loadSnapshot,
   saved, setDialogueSpeed, startCafe, startEvent, startNewGame,
+  openStaleTab,
 } from "./helpers";
 
 test.use({ reducedMotion: "reduce" });
@@ -61,7 +62,7 @@ test("a stale tab cannot overwrite the first tab's saved random result", async (
   await startCafe(page);
   await setDialogueSpeed(page, "0");
   const ready = await advanceToChoiceOrEnd(page);
-  const other = await context.newPage();
+  const other = await openStaleTab(context);
   await other.goto("/");
   await expect(other.locator(".choice").first()).toBeVisible();
   await expect(other.locator(".choice").nth(1)).toBeEnabled();

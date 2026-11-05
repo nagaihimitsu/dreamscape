@@ -1,18 +1,16 @@
-import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
+import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { describe, expect, it } from "vitest";
-import { dates, effects, progression, trialMilestones } from "../content";
+import { dates, effects, progression } from "../content";
 import { beginStory, continueStory } from "../story/runtime";
 import {
   advanceDate,
   canConfessSuccessfully,
   chooseDate,
-  claimTrialMilestone,
   createGame,
   evaluateProgression,
   finishDate,
   getDateAvailability,
   getMemoryCallback,
-  getMilestoneAvailability,
   getPlayerAddress,
   setNames,
   startDate,
@@ -54,20 +52,18 @@ function play(
   }
   return state;
 }
+/** Stand-in for AP earned elsewhere on the journey (sightseeing rewards). */
+function withTravelAp(state: GameState, ap = 4): GameState {
+  return validateGameState({ ...state, ap: state.ap + ap });
+}
 function toWalk() {
-  return claimTrialMilestone(
-    play(seedLegacyChapter(createGame("晴", "灯")), cafe, [0, 0]),
-    trialMilestones[0].id,
-  );
+  return withTravelAp(play(seedCurrentFreeTime(createGame("晴", "灯")), cafe, [0, 0]));
 }
 function toInvitation() {
   return play(toWalk(), walk, [0, 0]);
 }
 function toNight() {
-  return claimTrialMilestone(
-    play(toInvitation(), invitation, [0]),
-    trialMilestones[1].id,
-  );
+  return withTravelAp(play(toInvitation(), invitation, [0]));
 }
 function lowPath() {
   return play(toNight(), night, [0, 1]);
@@ -82,7 +78,7 @@ describe("Phase 2 relationship progression", () => {
     expect(
       evaluateProgression({ ...initial, playedDateIds: [cafe] }).romanceStage,
     ).toBe(1);
-    const afterCafe = play(seedLegacyChapter(initial), cafe, [0, 0]);
+    const afterCafe = play(seedCurrentFreeTime(initial), cafe, [0, 0]);
     expect(afterCafe.romanceStage).toBe(2);
     const afterWalk = toInvitation();
     expect(afterWalk.romanceStage).toBe(3);
@@ -94,21 +90,6 @@ describe("Phase 2 relationship progression", () => {
     );
     expect(lowPath().romanceStage).toBe(4);
   });
-  it("makes finite trial rewards idempotent, locked until history, capped without wasting rewards", () => {
-    const first = trialMilestones[0];
-    const initial = seedLegacyChapter(createGame());
-    expect(claimTrialMilestone(initial, first.id)).toBe(initial);
-    const afterCafe = play(initial, cafe, [0, 0]);
-    const awarded = claimTrialMilestone(afterCafe, first.id);
-    expect(awarded.ap).toBe(afterCafe.ap + first.ap);
-    expect(awarded.affection).toBe(afterCafe.affection);
-    expect(claimTrialMilestone(awarded, first.id)).toBe(awarded);
-    const full = { ...afterCafe, ap: 12 };
-    expect(getMilestoneAvailability(full, first.id).available).toBe(false);
-    expect(claimTrialMilestone(full, first.id)).toBe(full);
-    const reloaded = validateGameState(JSON.parse(JSON.stringify(awarded)));
-    expect(claimTrialMilestone(reloaded, first.id)).toBe(reloaded);
-  });
   it("keeps the next date funded by refusing an already completed date", () => {
     let state = toWalk();
     expect(state.ap).toBe(6);
@@ -116,7 +97,7 @@ describe("Phase 2 relationship progression", () => {
     expect(startDate(state, cafe)).toBe(state);
     state = play(state, walk, [0, 0]);
     expect(state.ap).toBe(3);
-    state = claimTrialMilestone(state, trialMilestones[1].id);
+    state = withTravelAp(state);
     state = play(state, invitation, [0]);
     state = play(state, night, [0, 1]);
     expect(state.romanceStage).toBe(4);

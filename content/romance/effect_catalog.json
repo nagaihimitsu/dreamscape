@@ -706,54 +706,6 @@
       "responseProfileId": "honest"
     },
     {
-      "id": "milano_love_first_a",
-      "affectionDelta": 1,
-      "trustDelta": 0,
-      "sparkDelta": 1,
-      "memoryId": "milano_love_first_a",
-      "responseProfileId": "playful"
-    },
-    {
-      "id": "milano_love_first_b",
-      "affectionDelta": -1,
-      "trustDelta": -2,
-      "sparkDelta": 0,
-      "memoryId": "milano_love_first_b",
-      "responseProfileId": "provocative"
-    },
-    {
-      "id": "milano_love_first_c",
-      "affectionDelta": 2,
-      "trustDelta": 1,
-      "sparkDelta": 1,
-      "memoryId": "milano_love_first_c",
-      "responseProfileId": "playful"
-    },
-    {
-      "id": "milano_love_second_a",
-      "affectionDelta": 2,
-      "trustDelta": 0,
-      "sparkDelta": 1,
-      "memoryId": "milano_love_second_a",
-      "responseProfileId": "playful"
-    },
-    {
-      "id": "milano_love_second_b",
-      "affectionDelta": 0,
-      "trustDelta": -1,
-      "sparkDelta": 0,
-      "memoryId": "milano_love_second_b",
-      "responseProfileId": "provocative"
-    },
-    {
-      "id": "milano_love_second_c",
-      "affectionDelta": 1,
-      "trustDelta": 1,
-      "sparkDelta": 1,
-      "memoryId": "milano_love_second_c",
-      "responseProfileId": "attentive"
-    },
-    {
       "id": "milano_rain_pause_music",
       "affectionDelta": 2,
       "trustDelta": 0,

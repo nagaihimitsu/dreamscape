@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { startNewGame, saved, selectTravelEvent } from "./helpers";
+import { startNewGame, saved, selectTravelEvent, openStaleTab } from "./helpers";
 import phase1 from "../fixtures/phase1-saves.json" with { type: "json" };
 
 test.use({ viewport: { width: 360, height: 780 } });
@@ -9,7 +9,7 @@ test("cancel preserves data and confirmed deletion returns to a fresh journey", 
 }) => {
   await startNewGame(page, ["旅人", "小春"]);
   await page.evaluate(() => {
-    localStorage.setItem("dreamscape.save.v1.backup.123", "backup");
+    localStorage.setItem("dreamscape.journey.milano.save.v1.backup.123", "backup");
     localStorage.setItem("unrelated-app", "keep");
   });
   await page.getByRole("button", { name: "設定", exact: true }).click();
@@ -31,9 +31,9 @@ test("cancel preserves data and confirmed deletion returns to a fresh journey", 
   ).toBeVisible();
   expect(
     await page.evaluate(() => ({
-      game: localStorage.getItem("dreamscape.save.v1"),
-      learning: localStorage.getItem("dreamscape.learning.v1"),
-      backup: localStorage.getItem("dreamscape.save.v1.backup.123"),
+      game: localStorage.getItem("dreamscape.journey.milano.save.v1"),
+      learning: localStorage.getItem("dreamscape.journey.milano.learning.v1"),
+      backup: localStorage.getItem("dreamscape.journey.milano.save.v1.backup.123"),
       other: localStorage.getItem("unrelated-app"),
     })),
   ).toEqual({ game: null, learning: null, backup: "backup", other: "keep" });
@@ -47,7 +47,7 @@ test("a stale tab cannot delete or recreate a newer save", async ({
   context,
 }) => {
   await startNewGame(page);
-  const older = await context.newPage();
+  const older = await openStaleTab(context);
   await older.goto("/");
   const previous = await saved(page);
   await selectTravelEvent(page, "milano_duomo_episode");
@@ -63,8 +63,8 @@ test("a stale tab cannot delete or recreate a newer save", async ({
 test("unreadable saves can be explicitly deleted", async ({ page }) => {
   await page.goto("/");
   await page.evaluate(() => {
-    localStorage.setItem("dreamscape.save.v1", "{broken");
-    localStorage.setItem("dreamscape.learning.v1", "{broken-notes");
+    localStorage.setItem("dreamscape.journey.milano.save.v1", "{broken");
+    localStorage.setItem("dreamscape.journey.milano.learning.v1", "{broken-notes");
   });
   await page.reload();
   await page
@@ -78,10 +78,10 @@ test("unreadable saves can be explicitly deleted", async ({ page }) => {
     page.getByRole("button", { name: "旅をはじめる", exact: true }),
   ).toBeVisible();
   expect(
-    await page.evaluate(() => localStorage.getItem("dreamscape.save.v1")),
+    await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1")),
   ).toBeNull();
   expect(
-    await page.evaluate(() => localStorage.getItem("dreamscape.learning.v1")),
+    await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.learning.v1")),
   ).toBeNull();
 });
 
@@ -91,10 +91,10 @@ test("incompatible old progress stays untouched until deletion is confirmed", as
   } });
   await page.goto("/");
   await page.evaluate((raw) => {
-    localStorage.setItem("dreamscape.save.v1", raw);
-    localStorage.setItem("dreamscape.learning.v1", "old notes");
+    localStorage.setItem("dreamscape.journey.milano.save.v1", raw);
+    localStorage.setItem("dreamscape.journey.milano.learning.v1", "old notes");
     localStorage.setItem("dreamscape.presentation.v1", "display preferences");
-    localStorage.setItem("dreamscape.save.v1.backup.123", "backup");
+    localStorage.setItem("dreamscape.journey.milano.save.v1.backup.123", "backup");
     localStorage.setItem("other-app", "untouched");
   }, old);
   await page.reload();
@@ -102,15 +102,15 @@ test("incompatible old progress stays untouched until deletion is confirmed", as
   await page.getByRole("button", { name: "保存データを消去する", exact: true }).click();
   await expect(page.getByRole("dialog")).toContainText("英語ノートと対訳設定");
   await page.getByRole("button", { name: "消去せず戻る" }).click();
-  expect(await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"))).toBe(old);
+  expect(await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"))).toBe(old);
   await page.getByRole("button", { name: "保存データを消去する", exact: true }).click();
   await page.getByRole("dialog").getByRole("button", { name: "保存データを消去する", exact: true }).click();
   await expect(page.getByRole("button", { name: "旅をはじめる", exact: true })).toBeVisible();
   expect(await page.evaluate(() => ({
-    game: localStorage.getItem("dreamscape.save.v1"),
-    notes: localStorage.getItem("dreamscape.learning.v1"),
+    game: localStorage.getItem("dreamscape.journey.milano.save.v1"),
+    notes: localStorage.getItem("dreamscape.journey.milano.learning.v1"),
     settings: localStorage.getItem("dreamscape.presentation.v1"),
-    backup: localStorage.getItem("dreamscape.save.v1.backup.123"),
+    backup: localStorage.getItem("dreamscape.journey.milano.save.v1.backup.123"),
     other: localStorage.getItem("other-app"),
   }))).toEqual({ game: null, notes: null, settings: "display preferences", backup: "backup", other: "untouched" });
 });
@@ -118,21 +118,21 @@ test("incompatible old progress stays untouched until deletion is confirmed", as
 test("future versions are identified and never replaced automatically", async ({ page }) => {
   const raw = JSON.stringify({ schemaVersion: 99, data: "unknown" });
   await page.goto("/");
-  await page.evaluate((value) => localStorage.setItem("dreamscape.save.v1", value), raw);
+  await page.evaluate((value) => localStorage.setItem("dreamscape.journey.milano.save.v1", value), raw);
   await page.reload();
   await expect(page.getByRole("alert")).toContainText("新しいバージョン");
-  expect(await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"))).toBe(raw);
+  expect(await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"))).toBe(raw);
 });
 
 test("recovery cannot replace a save updated since the error was shown", async ({ page }) => {
   await page.goto("/");
-  await page.evaluate(() => localStorage.setItem("dreamscape.save.v1", "{broken"));
+  await page.evaluate(() => localStorage.setItem("dreamscape.journey.milano.save.v1", "{broken"));
   await page.reload();
   await expect(page.getByRole("alert")).toContainText("読み込めませんでした");
-  await page.evaluate(() => localStorage.setItem("dreamscape.save.v1", "new data in another tab"));
+  await page.evaluate(() => localStorage.setItem("dreamscape.journey.milano.save.v1", "new data in another tab"));
   await page.getByRole("button", { name: /元のデータを退避して新しく始める/ }).click();
   await expect(page.getByRole("status")).toContainText("別の画面");
-  expect(await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"))).toBe("new data in another tab");
+  expect(await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"))).toBe("new data in another tab");
 });
 
 test("another open tab cannot recreate data after deletion", async ({
@@ -140,7 +140,7 @@ test("another open tab cannot recreate data after deletion", async ({
   context,
 }) => {
   await startNewGame(page);
-  const older = await context.newPage();
+  const older = await openStaleTab(context);
   await older.goto("/");
   await page.getByRole("button", { name: "設定", exact: true }).click();
   await page.getByRole("button", { name: "保存データの消去" }).click();
@@ -156,7 +156,7 @@ test("another open tab cannot recreate data after deletion", async ({
     older.locator(".notice").filter({ hasText: "セーブ" }),
   ).toContainText("別の画面");
   expect(
-    await page.evaluate(() => localStorage.getItem("dreamscape.save.v1")),
+    await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1")),
   ).toBeNull();
   await older.getByRole("button", { name: "設定", exact: true }).click();
   await expect(older.getByLabel("常に日本語訳を表示する")).toBeDisabled();
@@ -164,7 +164,7 @@ test("another open tab cannot recreate data after deletion", async ({
     "別の画面",
   );
   expect(
-    await page.evaluate(() => localStorage.getItem("dreamscape.learning.v1")),
+    await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.learning.v1")),
   ).toBeNull();
   await older.close();
 });
@@ -175,14 +175,14 @@ test("confirmation does not delete data changed in another tab", async ({
 }) => {
   await startNewGame(page);
   const originalGame = await saved(page);
-  const other = await context.newPage();
+  const other = await openStaleTab(context);
   await other.goto("/");
   await page.getByRole("button", { name: "設定", exact: true }).click();
   await page.getByRole("button", { name: "保存データの消去" }).click();
   await other.getByRole("button", { name: "設定", exact: true }).click();
   await other.getByLabel("常に日本語訳を表示する").check();
   const latest = await other.evaluate(() =>
-    localStorage.getItem("dreamscape.learning.v1"),
+    localStorage.getItem("dreamscape.journey.milano.learning.v1"),
   );
   await page
     .getByRole("dialog")
@@ -192,7 +192,7 @@ test("confirmation does not delete data changed in another tab", async ({
     page.locator(".notice").filter({ hasText: "保存データが更新" }),
   ).toBeVisible();
   expect(
-    await page.evaluate(() => localStorage.getItem("dreamscape.learning.v1")),
+    await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.learning.v1")),
   ).toBe(latest);
   expect(await saved(page)).toEqual(originalGame);
   await other.close();
@@ -215,6 +215,6 @@ test("a current in-progress save can be deleted from settings", async ({
     page.getByRole("button", { name: "旅をはじめる", exact: true }),
   ).toBeVisible();
   expect(
-    await page.evaluate(() => localStorage.getItem("dreamscape.save.v1")),
+    await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1")),
   ).toBeNull();
 });

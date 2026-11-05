@@ -3,7 +3,6 @@ import { getCityContent, dateDestinations, dialogueExpressions, dialogueReaction
 import type { DateDefinition } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
-import { presentationStoryId } from "../../content/legacy-milano";
 import type { GameState } from "../../domain/game";
 import { CanalScene } from "../../components/CanalScene";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
@@ -51,8 +50,8 @@ export function RomanceScene({
   const destination = destinationId
     ? dateDestinations.find((item) => item.id === destinationId)
     : undefined;
-  const reaction = resolveDialogueReaction(dialogueReactions, presentationStoryId(storyId), frame, "heroine");
-  const emotion = reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, presentationStoryId(storyId), frame);
+  const reaction = resolveDialogueReaction(dialogueReactions, storyId, frame, "heroine");
+  const emotion = reaction?.expression ?? resolveDialogueExpression(dialogueExpressions, storyId, frame);
   const speaker =
     frame.speaker === "heroine"
       ? game.heroineName

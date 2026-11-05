@@ -2,7 +2,6 @@ import { battles, episodes, landmarks, getCityContent } from "../../content";
 import type { TravelRoute } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
 import { getTourismAvailability } from "../../domain/tourism";
-import { TrialMilestones } from "../romance/RomanceMenu";
 import { CityProgress } from "./CityProgress";
 import { PendingRewards } from "./PendingRewards";
 import { TravelMenu } from "./TravelMenu";
@@ -16,7 +15,6 @@ export function FreeTimeHub({
   onStartEpisode,
   onEpilogue,
   onChooseDate,
-  onMilestone,
   onTourism,
   onBattle,
   selectedLandmarkId,
@@ -31,7 +29,6 @@ export function FreeTimeHub({
   onStartEpisode: (id: string) => void;
   onEpilogue: (id: string) => void;
   onChooseDate: (id: string) => void;
-  onMilestone: (id: string) => void;
   onTourism: (id: string) => void;
   onBattle: (id: string) => void;
   selectedLandmarkId: string | null;
@@ -66,7 +63,6 @@ export function FreeTimeHub({
       })}
 
       <PendingRewards game={game} onClaim={onClaimRewards} compact />
-      <TrialMilestones game={game} onMilestone={onMilestone} />
       {nextCityName && <button type="button" className="secondary" onClick={onDepart}>{nextCityName}へ出発</button>}
     </section>
   );

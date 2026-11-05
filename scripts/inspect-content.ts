@@ -17,7 +17,6 @@ import {
   progressionSchema,
   quizSchema,
   quizSampleSchema,
-  trialProgressionSchema,
 } from "../src/content/schemas";
 import {
   landmarkSchema,
@@ -60,7 +59,6 @@ const schemas = {
   balance: balanceSchema,
   presentation: presentationSchema,
   progression: progressionSchema,
-  "trial-progression": trialProgressionSchema,
 } as const;
 export type ContentType = keyof typeof schemas | "ink";
 
@@ -82,7 +80,6 @@ export function inferContentType(file: string): ContentType | undefined {
     "/romance/balance.json": "balance",
     "/romance/presentation.json": "presentation",
     "/romance/progression.json": "progression",
-    "/romance/trial_progression.json": "trial-progression",
   };
   return Object.entries(suffixes).find(([suffix]) =>
     name.endsWith(suffix),

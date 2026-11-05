@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createDebugState, type DebugSettings } from "../dev/debug-state";
 import { advanceEncounter, chooseEncounter } from "../domain/encounter";
-import { grantRewardOnce, setNames, startDate, validateGameState } from "../domain/game";
+import { setNames, startDate, validateGameState } from "../domain/game";
 import { getBattleAvailability } from "../domain/battle";
 import { getTourismAvailability } from "../domain/tourism";
 import { claimPendingRewards } from "../domain/rewards";
@@ -42,7 +42,6 @@ describe("current encounter save protection", () => {
     expect(getTourismAvailability(state, "duomo_milano").available).toBe(false);
     expect(startDate(state, "milano_cafe_01")).toBe(state);
     expect(setNames(state, "name", "name")).toBe(state);
-    expect(grantRewardOnce(state, "new_reward", 1)).toBe(state);
     expect(claimPendingRewards(state, state.revision)).toBe(state);
     const battle = createDebugState({ ...initial, scene: "battle", id: "milano_duomo_01" });
     expect(() => validateGameState({ ...state, activeBattle: battle.activeBattle })).toThrow();

@@ -15,7 +15,6 @@ import {
   advanceDate,
   chooseDate,
   finishDate,
-  getMilestoneAvailability,
   type GameState,
 } from "./game";
 import {
@@ -236,7 +235,6 @@ describe("Milan's four episodes and distinct city finale", () => {
   it("allows sightseeing in any order while keeping the city finale locked", () => {
     const state = createGame();
     expect(getNextEpisode(state)?.landmarkId).toBe("duomo_milano");
-    expect(state.legacyTrialAvailable).toBe(false);
     for (const episode of episodes.filter((item) => item.kind !== "city_finale")) {
       expect(getEpisodeAvailability(state, episode.id).available).toBe(true);
       expect(getBattleAvailability(state, episode.battleId).available).toBe(true);
@@ -249,9 +247,6 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(getEpisodeAvailability(state, finale().id).available).toBe(false);
     expect(startEpisode(state, finale().id)).toBe(state);
     expect(getBattleAvailability(state, finale().battleId).available).toBe(false);
-    expect(getMilestoneAvailability(state, "trial_after_cafe").available).toBe(
-      false,
-    );
   });
   it("plays every sightseeing episode in order with zero discoveries or correct answers and no duplicate rewards", () => {
     let state = createGame();
@@ -378,7 +373,6 @@ describe("Milan's four episodes and distinct city finale", () => {
     let state = finishEpisode(tour(), finale(), 0);
     state = enterFreeTime(state, state.revision);
     expect(totalAp(state)).toBe(19);
-    expect(state.legacyTrialAvailable).toBe(false);
     state = playDate(state, "milano_cafe_01", [0, 0]);
     state = playDate(state, "milano_walk_01", [0, 1]);
     state = playDate(state, "milano_invitation_01", [0]);

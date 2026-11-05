@@ -6,7 +6,7 @@ test("debug scenes and reload do not change the ordinary game, learning or setti
   await page.setViewportSize({ width: 360, height: 780 });
   await startNewGame(page);
   await page.evaluate(() => {
-    localStorage.setItem("dreamscape.learning.v1", JSON.stringify({ schemaVersion: 1, revision: 0, alwaysTranslate: false, revealed: {}, marks: {}, records: {}, openQuestion: null, openTopic: null }));
+    localStorage.setItem("dreamscape.journey.milano.learning.v1", JSON.stringify({ schemaVersion: 1, revision: 0, alwaysTranslate: false, revealed: {}, marks: {}, records: {}, openQuestion: null, openTopic: null }));
     localStorage.setItem("dreamscape.presentation.v1", JSON.stringify({ schemaVersion: 1, confirmChoices: true, reduceMotion: false }));
   });
   const original = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));

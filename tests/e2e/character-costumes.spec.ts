@@ -54,7 +54,7 @@ test("a basic outfit works in Milan with its regional outfit undelivered, includ
   await expect(portrait.locator(":scope > img")).toHaveAttribute("src", new RegExp(`${basicNeutralPath}$`));
   await expectNoOverflow(page);
 
-  await page.evaluate(() => localStorage.removeItem("dreamscape.save.v1"));
+  await page.evaluate(() => localStorage.removeItem("dreamscape.journey.milano.save.v1"));
   await startNewGame(page, ["航海者", "花子"]);
   await loadCurrentFreeTime(page);
   await startCafe(page);
@@ -66,7 +66,7 @@ test("the preview supports the registered expressions, choosing neutral when a d
   await page.setViewportSize({ width: 360, height: 640 });
   await installDeliveredImages(page, { basic: true, smile: true });
   await page.goto("/");
-  await page.evaluate(() => localStorage.setItem("dreamscape.save.v1", "test-save-must-not-change"));
+  await page.evaluate(() => localStorage.setItem("dreamscape.journey.milano.save.v1", "test-save-must-not-change"));
   await page.goto("/?character-preview");
   await expect(page.getByTestId("preview-costume")).toHaveValue("default_01");
   const selector = page.getByTestId("preview-emotion");
@@ -83,7 +83,7 @@ test("the preview supports the registered expressions, choosing neutral when a d
   await page.getByTestId("preview-background").selectOption("dark");
   await expect(page.getByTestId("preview-stage")).toHaveClass(/preview-stage-dark/);
   await expectNoOverflow(page);
-  expect(await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"))).toBe("test-save-must-not-change");
+  expect(await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"))).toBe("test-save-must-not-change");
 });
 
 test("a failed basic image cannot block the in-progress date", async ({ page }) => {
@@ -175,7 +175,7 @@ test("a delivered neutral stays on the same outfit during a current date and a r
   await expectNoOverflow(page);
 
   // An independently named player and heroine still reference the stable heroine ID.
-  await page.evaluate(() => localStorage.removeItem("dreamscape.save.v1"));
+  await page.evaluate(() => localStorage.removeItem("dreamscape.journey.milano.save.v1"));
   await startNewGame(page, ["航海者", "花子"]);
   await loadCurrentFreeTime(page);
   await startCafe(page);
@@ -187,7 +187,7 @@ test("the development preview shows added expressions and same-pose fallback wit
   await page.setViewportSize({ width: 360, height: 640 });
   await installDeliveredImages(page, { smile: true });
   await page.goto("/");
-  await page.evaluate(() => localStorage.setItem("dreamscape.save.v1", "test-save-must-not-change"));
+  await page.evaluate(() => localStorage.setItem("dreamscape.journey.milano.save.v1", "test-save-must-not-change"));
   await page.goto("/?character-preview");
   await expect(page.getByTestId("character-preview")).toBeVisible();
   await page.getByTestId("preview-costume").selectOption("south_europe_01");
@@ -204,7 +204,7 @@ test("the development preview shows added expressions and same-pose fallback wit
   await page.getByTestId("preview-background").selectOption("dark");
   await expect(page.getByTestId("preview-stage")).toHaveClass(/preview-stage-dark/);
   await expectNoOverflow(page);
-  expect(await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"))).toBe("test-save-must-not-change");
+  expect(await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"))).toBe("test-save-must-not-change");
 });
 
 test("a broken registered image cannot block a saved date", async ({ page }) => {

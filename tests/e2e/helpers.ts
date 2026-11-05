@@ -1,8 +1,26 @@
-import { expect, type Locator, type Page } from "@playwright/test";
+import { expect, type BrowserContext, type Locator, type Page } from "@playwright/test";
 import type { GameState } from "../../src/domain/game";
 import travelCatalog from "../../content/travel/milano.json" with { type: "json" };
 
-export const SAVE_KEY = "dreamscape.save.v1";
+export const SAVE_KEY = "dreamscape.journey.milano.save.v1";
+
+/**
+ * Open a second tab that holds an outdated view of the same journey slot.
+ * The cross-tab Web Lock normally keeps such a tab on its "already open"
+ * notice; the snapshot checks behind the lock are kept as a second line of
+ * defence, so this tab is granted a stand-in lock to exercise them.
+ */
+export async function openStaleTab(context: BrowserContext): Promise<Page> {
+  const page = await context.newPage();
+  await page.addInitScript(() => {
+    const request = (name: string, ...rest: unknown[]) => {
+      const callback = rest[rest.length - 1] as (lock: { name: string; mode: string }) => unknown;
+      return Promise.resolve(callback({ name, mode: "exclusive" }));
+    };
+    Object.defineProperty(navigator, "locks", { configurable: true, value: { request } });
+  });
+  return page;
+}
 
 /** Select a destination and, where needed, the event at that place. */
 export async function selectTravelEvent(page: Page, id: string) {
@@ -149,6 +167,12 @@ export async function loadCurrentSupperQuestion(page: Page) {
   throw new Error("Current battle did not reach its first question");
 }
 
+/** The game view (with its masthead, hidden during some phone scenes) appears
+ * once the journey's save lock is held. */
+export async function waitForJourneyView(page: Page) {
+  await expect(page.locator(".masthead")).toBeAttached();
+}
+
 export async function loadSnapshot(page: Page, snapshot: unknown) {
   await page.goto("/");
   await page.evaluate(
@@ -156,6 +180,7 @@ export async function loadSnapshot(page: Page, snapshot: unknown) {
     { key: SAVE_KEY, value: snapshot },
   );
   await page.reload();
+  await waitForJourneyView(page);
 }
 
 export function availableAp(state: GameState) {
@@ -320,19 +345,4 @@ export async function playEvent(
   for (const index of choices) await choose(page, index, observed);
   await finishEvent(page, choices.length, observed);
   return observed.join("\n");
-}
-
-export async function claimMilestone(page: Page, id: string) {
-  await returnToMenu(page);
-  const before = await saved(page);
-  await page
-    .getByTestId(`milestone-${id}`)
-    .evaluate((button: HTMLButtonElement) => {
-      button.click();
-      button.click();
-    });
-  await expect.poll(async () => (await saved(page)).ap).toBe(before.ap + 4);
-  await page.reload();
-  expect((await saved(page)).ap).toBe(before.ap + 4);
-  await expect(page.getByTestId(`milestone-${id}`)).toBeDisabled();
 }

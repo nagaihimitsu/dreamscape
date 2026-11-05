@@ -12,7 +12,7 @@ type Destination = {
   facts: { publisher: string; title: string; url: string; checkedAt: string; claimType: string; claimJa: string }[];
 };
 type DateEntry = {
-  id: string; destinationId?: string; legacyDestinationId?: string; legacyStoryIds?: string[];
+  id: string; destinationId?: string;
   chapterId: string; backgroundAssetId: string; requiredCompletedChapters: string[];
   requiredCompletedEpisodeIds?: string[];
 };

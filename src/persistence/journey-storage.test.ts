@@ -55,18 +55,38 @@ describe("independent journey saves", () => {
     expect(india.getItem(SAVE_KEY)).toBe(unknown);
   });
 
-  it("preserves the original Milan save and learning keys while creating the India preparation", () => {
+  it("gives Milan its own journey slots and leaves unprefixed keys untouched", () => {
+    const base = memoryStorage();
+    const milan = journeyStorage(base, "milano");
+    base.setItem(SAVE_KEY, "unprefixed save");
+    base.setItem(LEARNING_KEY, "unprefixed notes");
+    expect(storagePhysicalKey(milan, SAVE_KEY)).toBe("dreamscape.journey.milano.save.v1");
+    expect(storagePhysicalKey(milan, LEARNING_KEY)).toBe("dreamscape.journey.milano.learning.v1");
+    expect(storagePhysicalKey(milan, `${SAVE_KEY}.backup.1`)).toBe("dreamscape.journey.milano.save.v1.backup.1");
+    expect(loadGame(milan)).toEqual({ status: "empty" });
+    const state = createGame("ミラノ", "あゆみ");
+    expect(saveGame(milan, state)).toEqual({ ok: true });
+    expect(base.getItem("dreamscape.journey.milano.save.v1")).not.toBeNull();
+    expect(deleteSaveData(milan, { game: milan.getItem(SAVE_KEY), learning: null }).ok).toBe(true);
+    expect(base.getItem(SAVE_KEY)).toBe("unprefixed save");
+    expect(base.getItem(LEARNING_KEY)).toBe("unprefixed notes");
+    // Milan has no preparation stage; its slot never holds a draft.
+    expect(saveJourneyDraft(milan, "旅人", "小春").ok).toBe(false);
+    expect(loadGame(milan)).toEqual({ status: "empty" });
+  });
+
+  it("preserves the Milan save and learning slots while creating the India preparation", () => {
     const base = memoryStorage();
     const milan = journeyStorage(base, "milano");
     const india = journeyStorage(base, "golden_triangle");
     const state = createGame("ミラノ", "あゆみ");
-    expect(saveGame(base, state)).toEqual({ ok: true });
-    base.setItem(LEARNING_KEY, "milan notes");
-    const original = base.getItem(SAVE_KEY);
+    expect(saveGame(milan, state)).toEqual({ ok: true });
+    milan.setItem(LEARNING_KEY, "milan notes");
+    const original = milan.getItem(SAVE_KEY);
     expect(saveJourneyDraft(india, "  旅人  ", "小春")).toEqual({ ok: true });
-    expect(base.getItem(SAVE_KEY)).toBe(original);
+    expect(milan.getItem(SAVE_KEY)).toBe(original);
     expect(loadGame(milan)).toEqual({ status: "loaded", state });
-    expect(base.getItem(LEARNING_KEY)).toBe("milan notes");
+    expect(milan.getItem(LEARNING_KEY)).toBe("milan notes");
     const loaded = loadJourneyDraft(india);
     expect(loaded.status).toBe("loaded");
     if (loaded.status !== "loaded") throw new Error("Expected India draft");
@@ -81,8 +101,7 @@ describe("independent journey saves", () => {
     india.setItem(LEARNING_KEY, "india notes");
     expect(milan.getItem(LEARNING_KEY)).toBe("milan notes");
     expect(india.getItem(LEARNING_KEY)).toBe("india notes");
-    expect(storagePhysicalKey(milan, LEARNING_KEY)).toBe(LEARNING_KEY);
-    expect(storagePhysicalKey(india, LEARNING_KEY)).not.toBe(LEARNING_KEY);
+    expect(storagePhysicalKey(milan, LEARNING_KEY)).not.toBe(storagePhysicalKey(india, LEARNING_KEY));
   });
 
   it("never overwrites a corrupt, newer, or concurrently created preparation", () => {
@@ -115,7 +134,7 @@ describe("independent journey saves", () => {
     expect(deleteSaveData(india, { game: "stale", learning: "india notes" }).ok).toBe(false);
     expect(deleteSaveData(india, { game: indiaSnapshot, learning: "india notes" }).ok).toBe(true);
     expect(loadGame(milan).status).toBe("loaded");
-    expect([...base.data.keys()].some((key) => key.startsWith(`${SAVE_KEY}.backup.`))).toBe(true);
+    expect([...base.data.keys()].some((key) => key.startsWith("dreamscape.journey.milano.save.v1.backup."))).toBe(true);
   });
 
   it("promotes saved names and initial values only after real city registration is available", () => {

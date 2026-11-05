@@ -30,8 +30,8 @@ export function findTravelHomeRoutes(routes: readonly TravelRoute[], fromPlaceId
 }
 
 /** Minimum protected fare for an on-time return; allow emergency return at closing. */
-export function minimumHomeFare(routes: readonly TravelRoute[], fromPlaceId: string, hotelPlaceId: string, minute: number, dayEnd = DAY_END): number | undefined {
-  const deadline = minute < dayEnd ? dayEnd : 1980 - 1;
+export function minimumHomeFare(routes: readonly TravelRoute[], fromPlaceId: string, hotelPlaceId: string, minute: number): number | undefined {
+  const deadline = minute < DAY_END ? DAY_END : 1980 - 1;
   const candidates = findTravelHomeRoutes(routes, fromPlaceId, hotelPlaceId)
     .filter((item) => minute + item.minutes <= deadline);
   return candidates.length ? Math.min(...candidates.map((item) => item.cost)) : undefined;

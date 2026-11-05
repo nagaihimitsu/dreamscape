@@ -254,7 +254,7 @@ test("the published India story is playable through all three cities with automa
   }
   expect((await state(page)).battleRecords.filter((record) => record.battleId.startsWith("gt_") && record.attempts > 0)).toHaveLength(15);
   expect((await state(page)).playedDateIds).toHaveLength(3);
-  expect(await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"))).toBeNull();
+  expect(await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"))).toBeNull();
   await expect(page.getByRole("button", { name: /次の都市へ出発/ })).toHaveCount(0);
   await expectNoOverflow(page);
 });

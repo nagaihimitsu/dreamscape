@@ -30,15 +30,15 @@ test("Uzbekistan preparation is independent of both existing journeys on a narro
   expect(JSON.parse(uzbekistan!)).toMatchObject({ journeyId: "uzbekistan", currentCityId: "tashkent",
     ap: 0, affection: 0, trust: 0, spark: 0, memories: [], claimedRewardIds: [], inventory: {} });
   expect(await page.evaluate((key) => localStorage.getItem(key), indiaKey)).toBe(india);
-  expect(await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"))).toBeNull();
+  expect(await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"))).toBeNull();
   await page.getByLabel("旅行編").selectOption("milano");
   await page.getByRole("button", { name: "旅をはじめる" }).click();
   await expect(page.getByTestId("travel-menu")).toBeVisible();
-  const milan = await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"));
+  const milan = await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"));
   await page.getByRole("button", { name: "設定", exact: true }).click();
   await page.getByRole("dialog", { name: "設定" }).getByLabel("旅行編").selectOption("uzbekistan");
   await expect(page.getByText("ウズベキスタンの名前 と 新しい相手")).toBeVisible();
-  expect(await page.evaluate(() => localStorage.getItem("dreamscape.save.v1"))).toBe(milan);
+  expect(await page.evaluate(() => localStorage.getItem("dreamscape.journey.milano.save.v1"))).toBe(milan);
   expect(await page.evaluate((key) => localStorage.getItem(key), uzbekistanKey)).toBe(uzbekistan);
   expect(await page.evaluate((key) => localStorage.getItem(key), indiaKey)).toBe(india);
 });

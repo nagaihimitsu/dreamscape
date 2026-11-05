@@ -196,7 +196,7 @@ export function advanceTourismGuide(
   };
 }
 
-/** Re-reading is available after a skip or a legacy visit; its reward still has one stable ID. */
+/** Re-reading is available after a skip; its reward still has one stable ID. */
 export function replayTourismGuide(
   state: GameState,
   expectedRevision: number,
