@@ -204,7 +204,7 @@ npm run content:compat
 
 ## 文章・データの編集
 
-会話の編集元は `content/stories/` の各 `.ink` ファイルです。ミラノのデートは、例えば [`sound_cafe_01.ink`](content/stories/milano/sound_cafe_01.ink) にあります。インドの配置は [制作記録の編集元一覧](authoring/drafts/golden-triangle/scenario/README.md#編集元) を参照してください。台詞と選択肢をReactに埋め込まず、Inkに置いています。
+会話の編集元は各旅行編フォルダ `content/journeys/<旅行編ID>/stories/` の `.ink` ファイルです（ミラノ編は移行中のため `content/stories/`）。ストーリーIDは `stories/` からの相対パスです。ミラノのデートは、例えば [`sound_cafe_01.ink`](content/stories/milano/sound_cafe_01.ink) にあります。インドの配置は [制作記録の編集元一覧](authoring/drafts/golden-triangle/scenario/README.md#編集元) を参照してください。台詞と選択肢をReactに埋め込まず、Inkに置いています。
 
 ```ink
 # speaker: heroine
@@ -229,6 +229,8 @@ npm run content:compat
 | `content/tourism/catalog.json`           | 観光地・画像の出典と権利情報・発見範囲・説明・史実とクイズの参照     |
 | `content/stories/tourism/*.ink`          | ヒロインの短い観光案内                                               |
 | `public/assets/tourism/`                 | 同梱する資料画像。外部サイトへの画像直リンクは使用しない             |
+
+インド（ゴールデントライアングル）・ウズベキスタン・ルアンパパーン編の都市・移動・クイズ・Ink と各カタログの該当項目は、同じ相対パスで `content/journeys/<旅行編ID>/` 以下に置き、`npm run content:build` が `content/` 直下の共通データと統合します。旅行編フォルダの項目は自分の都市だけを扱い、参照先は同じ旅行編か共通データに限ります。
 
 新しい通常デートは、InkとJSON定義・効果を追加するだけで既存のメニューと会話画面に表示されます。`kind` は `normal` / `special` / `confession` / `reassurance`。通常は `choiceCount: 2`、無料イベントは必要に応じて0〜2回の3択を設定できます。`effectCount` は各経路で期待する効果数です。`actionLabelJa` もJSONにあり、Reactにイベント固有の文言を追加する必要はありません。
 

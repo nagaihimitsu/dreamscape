@@ -2,7 +2,7 @@
 
 このツールは、既存の旅行地点と検証済み観察カードを正本として、公開時に必要なカタログの機械的な部分を組み立てる。脚本、クイズ、人物、根拠や回答は作らない。未制作都市を公開可能にする操作でもない。
 
-現在はデリー・アーグラ・ジャイプールの3都市を登録済み。脚本48本、クイズ51問、デート18件、都市フィナーレ3件の構成は [制作記録](../drafts/golden-triangle/scenario/README.md) にまとめている。以後のInkの正本は `content/stories/`、クイズは `content/quizzes/`、定義は既存カタログ。下記は初期登録の手順であり、保存してある `narrative.json` を更新しても登録済み都市へ自動同期はしない。登録状態の `available` とWebサイトへのデプロイは別。
+現在はデリー・アーグラ・ジャイプールの3都市を登録済み。脚本48本、クイズ51問、デート18件、都市フィナーレ3件の構成は [制作記録](../drafts/golden-triangle/scenario/README.md) にまとめている。以後のInkの正本は `content/journeys/golden_triangle/stories/`、クイズは `content/journeys/golden_triangle/quizzes/`、定義は同じフォルダの各カタログ。下記は初期登録の手順であり、保存してある `narrative.json` を更新しても登録済み都市へ自動同期はしない。登録状態の `available` とWebサイトへのデプロイは別。
 
 ## 都市ごとの制作
 

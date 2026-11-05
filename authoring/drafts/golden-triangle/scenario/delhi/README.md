@@ -1,6 +1,6 @@
 # デリー脚本 — 三分間の旅
 
-観光案内 4 本、通常戦 4 本、デート 6 本、都市フィナーレ 1 本、エピローグ 1 本。`stories/` 以下は本番の `content/stories/` と同じ相対パスを使う。
+観光案内 4 本、通常戦 4 本、デート 6 本、都市フィナーレ 1 本、エピローグ 1 本。`stories/` 以下は本番の `content/journeys/golden_triangle/stories/` と同じ相対パスを使う。
 
 `narrative.json` は既存の journey scaffold に渡す表示文のデリー分。`quiz-hooks.json` は質問番号と回答後の会話を合わせる契約。`research-notes.json` は追加確認した出典と演出上の制約。クイズ本体は別担当で制作・統合する。
 

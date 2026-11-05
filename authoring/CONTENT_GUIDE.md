@@ -85,7 +85,7 @@ VAR heroine_name = ""
 | 観光案内                       | `guide.ink`                                                      | `content/stories/tourism/`                            |
 | 都市・順路・報酬               | `city.json`, `journey.json`                                      | `content/cities/`, `content/progression/journey.json` |
 
-JSONにはコメントを入れず、カンマ、引用符、配列の括弧を保ちます。`schemaVersion` はデータ形式の版で、個々のコンテンツIDとは別です。編集前に対象ファイルを複製し、既存内容を消さずに追加してください。表示名は変更できますが、公開済みIDはセーブ・他データの参照に使うため変更しないでください。新しいIDは英小文字で始め、英小文字・数字・`_` を使います。`storyId` は `tourism/duomo_guide` のように `content/stories/` からの拡張子なしの相対パスです。
+JSONにはコメントを入れず、カンマ、引用符、配列の括弧を保ちます。`schemaVersion` はデータ形式の版で、個々のコンテンツIDとは別です。編集前に対象ファイルを複製し、既存内容を消さずに追加してください。表示名は変更できますが、公開済みIDはセーブ・他データの参照に使うため変更しないでください。新しいIDは英小文字で始め、英小文字・数字・`_` を使います。`storyId` は `tourism/duomo_guide` のように、Inkを置いた層の `stories/`（`content/stories/` または `content/journeys/<旅行編ID>/stories/`）からの拡張子なしの相対パスです。インド・ウズベキスタン・ルアンパパーン編では、上表の配置先と同じ相対パスを `content/journeys/<旅行編ID>/` 以下に置きます。
 
 ## 題材を選ぶ
 

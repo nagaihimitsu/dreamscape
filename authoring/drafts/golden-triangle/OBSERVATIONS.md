@@ -1,6 +1,6 @@
 # インド編・観察カード制作資料
 
-`observation-cards.json` は12観光地の制作資料で、観光カタログを登録するときの入力です。統合調査の `TOURISM_FACTS.json` と `SOURCES.json` を正本として `npx tsx scripts/prepare-india-observations.ts --write` で作成し、`--check` で差分を検出します。現在の観察内容は `content/tourism/catalog.json` に登録済みです。制作資料の `relatedQuestionIds` は空のままで、クイズの完成状況を表しません。脚本・クイズの出典は [制作記録](scenario/README.md) を参照してください。
+`observation-cards.json` は12観光地の制作資料で、観光カタログを登録するときの入力です。統合調査の `TOURISM_FACTS.json` と `SOURCES.json` を正本として `npx tsx scripts/prepare-india-observations.ts --write` で作成し、`--check` で差分を検出します。現在の観察内容は `content/journeys/golden_triangle/tourism/catalog.json` に登録済みです。制作資料の `relatedQuestionIds` は空のままで、クイズの完成状況を表しません。脚本・クイズの出典は [制作記録](scenario/README.md) を参照してください。
 
 29件のうち9件は画像で対象物を確認した `hotspot` です。その他は写真に写らない、または特定できなかったため `document` としています。画像の全体表示に対する正規化座標と、確認対象の簡単な説明を記録しています。画像の SHA-256 が変わった場合、座標の適否を必ず目視確認してから再生成してください。画像の差し替えが確認なしで進むとテストと `--check` が失敗します。
 

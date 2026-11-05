@@ -120,7 +120,7 @@ npm run city:bundle -- apply artifacts/city-work/sample-city.json
 - インド編には既存の[制作補助](india-scaffold/README.md)と[完成確認・公開手順](drafts/golden-triangle/RELEASE_GATE.md)があります。シナリオ・クイズとそのメタデータ・訳を用意したうえで、生成・検証できます。特殊戦B・Cは現行の制作補助では自動設定されず、別途制作・登録が必要です。
 - 都市や旅行編を公開可能にする判断と検証は、この編集操作とは別です。未完成の都市が本番でプレイ可能と表示されないよう、制作状態を維持します。
 
-調査資料として残すファイルと、現在のゲームに反映済みの値は一致しないことがあります。特に `authoring/drafts/golden-triangle/cities/` と `travel/` は古い研究由来の生成ドラフトで、現在の交通や入場料の正本ではありません。編集用コピーの代わりにそのドラフトを本番データへ上書きしないでください。同じ旅行編の `scenario/` には今回の脚本・クイズの制作記録を置き、実行用Inkの正本は `content/stories/` にまとめています。
+調査資料として残すファイルと、現在のゲームに反映済みの値は一致しないことがあります。特に `authoring/drafts/golden-triangle/cities/` と `travel/` は古い研究由来の生成ドラフトで、現在の交通や入場料の正本ではありません。編集用コピーの代わりにそのドラフトを本番データへ上書きしないでください。同じ旅行編の `scenario/` には今回の脚本・クイズの制作記録を置き、実行用Inkの正本は `content/journeys/golden_triangle/stories/` にまとめています。
 
 ## ウズベキスタン4都市
 

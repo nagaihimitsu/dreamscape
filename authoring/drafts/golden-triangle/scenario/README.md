@@ -27,18 +27,18 @@
 
 ## 編集元
 
-公開用データへの取り込み後、Inkの正本は `content/stories/` だけに置く。このフォルダの `narrative.json`、都市別メタデータ、対訳・語義fragment、quiz-hooksは初期登録と編集確認の記録であり、並行更新する本番データではない。
+公開用データへの取り込み後、Inkの正本は旅行編フォルダの `content/journeys/golden_triangle/stories/` だけに置く。このフォルダの `narrative.json`、都市別メタデータ、対訳・語義fragment、quiz-hooksは初期登録と編集確認の記録であり、並行更新する本番データではない。
 
 | 内容 | 正本 |
 | --- | --- |
-| 到着会話 | `content/stories/arrivals/{delhi,agra,jaipur}.ink`（都市定義の `arrivalStoryId` から参照） |
-| 案内 | `content/stories/tourism/gt_*_guide.ink` |
-| 通常戦・ボス | `content/stories/battles/gt_*.ink` |
-| デート | `content/stories/dates/gt_*.ink` |
-| 都市の締め | `content/stories/epilogues/{delhi,agra,jaipur}.ink` |
-| クイズ | `content/quizzes/gt_*_quiz.json` |
-| 対訳・語義 | `content/learning/{translations,word-meanings}.json` |
-| 旅行・画像・地点・出典 | 既存の都市bundleおよび `content/` 各カタログ。編集手順は `authoring/CITY_BUNDLES.md` |
+| 到着会話 | `content/journeys/golden_triangle/stories/arrivals/{delhi,agra,jaipur}.ink`（都市定義の `arrivalStoryId` から参照） |
+| 案内 | `content/journeys/golden_triangle/stories/tourism/gt_*_guide.ink` |
+| 通常戦・ボス | `content/journeys/golden_triangle/stories/battles/gt_*.ink` |
+| デート | `content/journeys/golden_triangle/stories/dates/gt_*.ink` |
+| 都市の締め | `content/journeys/golden_triangle/stories/epilogues/{delhi,agra,jaipur}.ink` |
+| クイズ | `content/journeys/golden_triangle/quizzes/gt_*_quiz.json` |
+| 対訳・語義 | `content/journeys/golden_triangle/learning/translations.json`、語義は共通の `content/learning/word-meanings.json` |
+| 旅行・画像・地点・出典 | 既存の都市bundleおよび `content/journeys/golden_triangle/` の都市・移動・各カタログ（画像は `public/assets/tourism/india/`）。編集手順は `authoring/CITY_BUNDLES.md` |
 
 ## 検証
 

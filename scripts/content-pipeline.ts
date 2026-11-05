@@ -13,6 +13,7 @@ import path from "node:path";
 import { mirrorDirectory, type CatalogKind } from "./content-layout";
 import { displayPath, loadContentSources, parseCatalog as parseSourceCatalog, requireJourneyManifests, writeContentMirror } from "./content-sources";
 import { authoringProfileOf } from "./journey-authoring";
+import { checkContentOwnership } from "./content-ownership";
 import { characterCatalogSchema } from "../src/content/character-assets";
 import { encounterCatalogInputSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
 import { encounterEntryRulesSchema, validateEncounterEntryRules } from "../src/content/encounter-entry-rules";
@@ -161,6 +162,8 @@ export async function buildContent(root: string, writeOutput = true) {
   requireJourneyManifests(sources.manifests);
   // Only the authoring tools read these profiles; a broken one still fails the build early.
   for (const manifest of sources.manifests) authoringProfileOf(manifest.data, manifest.file);
+  // Each journey folder keeps to its own cities and content (and the core layer to core content).
+  checkContentOwnership(sources);
   const parseCatalog = <T>(schema: { parse(value: unknown): T }, kind: CatalogKind): T => parseSourceCatalog(sources, schema, kind);
   // Messages name the real Ink file of a story, whichever layer it is in.
   const storyFiles = new Map(sources.storyFiles.map((story) => [story.id, displayPath(root, story.file)]));

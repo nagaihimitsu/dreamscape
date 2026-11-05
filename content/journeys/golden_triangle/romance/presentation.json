@@ -1,0 +1,310 @@
+{
+  "schemaVersion": 1,
+  "backgrounds": {
+    "gt_bg_agra_agra_fort": {
+      "nameJa": "アーグラ城",
+      "captionJa": "アーグラ ／ アーグラ城",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_agra_agra_fort"
+    },
+    "gt_bg_agra_akbar_tomb": {
+      "nameJa": "アクバル廟",
+      "captionJa": "アーグラ ／ アクバル廟",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_agra_akbar_tomb"
+    },
+    "gt_bg_agra_chini_rauza": {
+      "nameJa": "チーニー・カ・ラウザ",
+      "captionJa": "アーグラ ／ チーニー・カ・ラウザ",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_agra_chini_rauza"
+    },
+    "gt_bg_agra_fatehpur_sikri": {
+      "nameJa": "ファテープル・シークリー",
+      "captionJa": "アーグラ ／ ファテープル・シークリー",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_agra_fatehpur_sikri"
+    },
+    "gt_bg_agra_guru_ka_taal": {
+      "nameJa": "グル・カ・タール",
+      "captionJa": "アーグラ ／ グル・カ・タール",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_agra_guru_ka_taal"
+    },
+    "gt_bg_agra_itimad_tomb": {
+      "nameJa": "イティマード・ウッダウラ廟",
+      "captionJa": "アーグラ ／ イティマード・ウッダウラ廟",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_agra_itimad_tomb"
+    },
+    "gt_bg_agra_mariam_tomb": {
+      "nameJa": "マリアム・ウッザマーニー廟",
+      "captionJa": "アーグラ ／ マリアム・ウッザマーニー廟",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_agra_mariam_tomb"
+    },
+    "gt_bg_agra_mehtab_bagh": {
+      "nameJa": "メヘターブ・バーグ",
+      "captionJa": "アーグラ ／ メヘターブ・バーグ",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_agra_mehtab_bagh"
+    },
+    "gt_bg_agra_ram_bagh": {
+      "nameJa": "ラム・バーグ",
+      "captionJa": "アーグラ ／ ラム・バーグ",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_agra_ram_bagh"
+    },
+    "gt_bg_agra_taj_mahal": {
+      "nameJa": "タージ・マハル",
+      "captionJa": "アーグラ ／ タージ・マハル",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_agra_taj_mahal"
+    },
+    "gt_bg_delhi_agrasen_baoli": {
+      "nameJa": "アグラセン・キ・バオリ",
+      "captionJa": "デリー ／ アグラセン・キ・バオリ",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_delhi_agrasen_baoli"
+    },
+    "gt_bg_delhi_bangla_sahib": {
+      "nameJa": "グルドワーラ・バングラ・サーヒブ",
+      "captionJa": "デリー ／ グルドワーラ・バングラ・サーヒブ",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_delhi_bangla_sahib"
+    },
+    "gt_bg_delhi_chandni_chowk": {
+      "nameJa": "チャンドニー・チョーク",
+      "captionJa": "デリー ／ チャンドニー・チョーク",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_delhi_chandni_chowk"
+    },
+    "gt_bg_delhi_humayun_tomb": {
+      "nameJa": "フマユーン廟",
+      "captionJa": "デリー ／ フマユーン廟",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_delhi_humayun_tomb"
+    },
+    "gt_bg_delhi_india_gate": {
+      "nameJa": "インド門",
+      "captionJa": "デリー ／ インド門",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_delhi_india_gate"
+    },
+    "gt_bg_delhi_jama_masjid": {
+      "nameJa": "ジャーマー・マスジド",
+      "captionJa": "デリー ／ ジャーマー・マスジド",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_delhi_jama_masjid"
+    },
+    "gt_bg_delhi_lodhi_garden": {
+      "nameJa": "ロディ・ガーデン",
+      "captionJa": "デリー ／ ロディ・ガーデン",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_delhi_lodhi_garden"
+    },
+    "gt_bg_delhi_lotus_temple": {
+      "nameJa": "ロータス寺院",
+      "captionJa": "デリー ／ ロータス寺院",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_delhi_lotus_temple"
+    },
+    "gt_bg_delhi_qutb_minar": {
+      "nameJa": "クトゥブ・ミナール",
+      "captionJa": "デリー ／ クトゥブ・ミナール",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_delhi_qutb_minar"
+    },
+    "gt_bg_delhi_red_fort": {
+      "nameJa": "レッド・フォート",
+      "captionJa": "デリー ／ レッド・フォート",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_delhi_red_fort"
+    },
+    "gt_bg_jaipur_albert_hall": {
+      "nameJa": "アルバート・ホール博物館",
+      "captionJa": "ジャイプール ／ アルバート・ホール博物館",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_jaipur_albert_hall"
+    },
+    "gt_bg_jaipur_amber_fort": {
+      "nameJa": "アンベール城",
+      "captionJa": "ジャイプール ／ アンベール城",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_jaipur_amber_fort"
+    },
+    "gt_bg_jaipur_city_palace": {
+      "nameJa": "シティ・パレス",
+      "captionJa": "ジャイプール ／ シティ・パレス",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_jaipur_city_palace"
+    },
+    "gt_bg_jaipur_hawa_mahal": {
+      "nameJa": "ハワー・マハル",
+      "captionJa": "ジャイプール ／ ハワー・マハル",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_jaipur_hawa_mahal"
+    },
+    "gt_bg_jaipur_jaigarh_fort": {
+      "nameJa": "ジャイガル城",
+      "captionJa": "ジャイプール ／ ジャイガル城",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_jaipur_jaigarh_fort"
+    },
+    "gt_bg_jaipur_jal_mahal": {
+      "nameJa": "ジャル・マハル",
+      "captionJa": "ジャイプール ／ ジャル・マハル",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_jaipur_jal_mahal"
+    },
+    "gt_bg_jaipur_jantar_mantar": {
+      "nameJa": "ジャンタル・マンタル",
+      "captionJa": "ジャイプール ／ ジャンタル・マンタル",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_jaipur_jantar_mantar"
+    },
+    "gt_bg_jaipur_johari_bazaar": {
+      "nameJa": "ジョーハリー・バザール",
+      "captionJa": "ジャイプール ／ ジョーハリー・バザール",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_jaipur_johari_bazaar"
+    },
+    "gt_bg_jaipur_nahargarh_fort": {
+      "nameJa": "ナハルガル城",
+      "captionJa": "ジャイプール ／ ナハルガル城",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_jaipur_nahargarh_fort"
+    },
+    "gt_bg_jaipur_panna_meena_kund": {
+      "nameJa": "パンナ・ミーナー・クンド",
+      "captionJa": "ジャイプール ／ パンナ・ミーナー・クンド",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_jaipur_panna_meena_kund"
+    },
+    "gt_bg_delhi_hotel_hub": {
+      "nameJa": "デリーの滞在先",
+      "captionJa": "デリー ／ 滞在先（バンガロールの施設を用いたロビーのイメージ）",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_hotel_illustration"
+    },
+    "gt_bg_agra_hotel_hub": {
+      "nameJa": "アーグラの滞在先",
+      "captionJa": "アーグラ ／ 滞在先（バンガロールの施設を用いたロビーのイメージ）",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_hotel_illustration"
+    },
+    "gt_bg_jaipur_hotel_hub": {
+      "nameJa": "ジャイプールの滞在先",
+      "captionJa": "ジャイプール ／ 滞在先（バンガロールの施設を用いたロビーのイメージ）",
+      "color": "#817569",
+      "fallback": "neutral",
+      "imageAssetId": "gt_img_hotel_illustration"
+    }
+  },
+  "memories": {
+    "gt_delhi_date_india_gate_memory": {
+      "titleJa": "シャッターより早い言葉",
+      "descriptionJa": "インド門を背に、落ち着かない顔と閉じかけた目を残した。写真の前に交わした言葉も一緒に。"
+    },
+    "gt_delhi_date_chandni_chowk_memory": {
+      "titleJa": "見るだけ、を言えた日",
+      "descriptionJa": "気に入った布にも、隣の人にも、自分の希望を伝えた。買い物袋は増えず、言えることが増えた。"
+    },
+    "gt_delhi_date_lodhi_garden_memory": {
+      "titleJa": "ベンチからお伝えします",
+      "descriptionJa": "廟の見えるベンチで、録音も観客もいない実況をした。休む顔と、格好をつける顔を見比べた。"
+    },
+    "gt_delhi_date_agrasen_baoli_memory": {
+      "titleJa": "横へ一歩の探検",
+      "descriptionJa": "階段井戸を、下へ進まず横の見学路から眺めた。帰り道は、隣の手を借りた。"
+    },
+    "gt_delhi_date_lotus_temple_memory": {
+      "titleJa": "言わずに持って帰るもの",
+      "descriptionJa": "静かな礼拝堂を訪ね、感想をすべて言葉にしないまま並んで歩いた。"
+    },
+    "gt_delhi_date_bangla_sahib_memory": {
+      "titleJa": "後ろまで完成",
+      "descriptionJa": "頭を覆う布を確かめ直し、帰りには鞄のねじれを二人で直した。分かった顔だけでは終わらせなかった。"
+    },
+    "gt_agra_date_mehtab_bagh_memory": {
+      "titleJa": "印を付けなかった場所",
+      "descriptionJa": "川向こうのタージを眺め、戻ると立ち位置が一歩違う気もした。地面に印を付けず、今日ここにいたことを覚えて帰る。"
+    },
+    "gt_agra_date_akbar_tomb_memory": {
+      "titleJa": "門、すごい。の続き",
+      "descriptionJa": "アクバル廟で、知らないことを足さない解説に挑戦した。書き足したメモにも、最初の短い感想は残した。"
+    },
+    "gt_agra_date_ram_bagh_memory": {
+      "titleJa": "競争をやめた園路",
+      "descriptionJa": "ラム・バーグを遅く歩こうとして、普通に歩く方が楽だと笑った。見たい水路の先まで行き、競わず二人で戻った。"
+    },
+    "gt_agra_date_chini_rauza_memory": {
+      "titleJa": "まだ続きのある一行",
+      "descriptionJa": "詩人の廟で、気取った一行が思いがけない会話になった。好きな青の位置を確かめ、詩の続きは決めずに帰った。"
+    },
+    "gt_agra_date_mariam_tomb_memory": {
+      "titleJa": "右も左も、二人で",
+      "descriptionJa": "紹介文だけでは言い切れない希望を聞いた。右から見たかった建物も、左からの眺めも、二人で確かめた。"
+    },
+    "gt_agra_date_guru_ka_taal_memory": {
+      "titleJa": "言葉で伝えた合図",
+      "descriptionJa": "貯水施設の歴史につながる砂岩の塔を見た。目配せだけでは伝わらなかったことを、帰りには言葉で確かめた。"
+    },
+    "gt_jaipur_date_jal_mahal_memory": {
+      "titleJa": "我慢できなかった「今」",
+      "descriptionJa": "湖面の宮殿が揃う瞬間を待った。黙って眺めるより、見えたことを隣へ伝えたくなる時間だった。"
+    },
+    "gt_jaipur_date_nahargarh_fort_memory": {
+      "titleJa": "いつもの高さへ戻るまで",
+      "descriptionJa": "ナハルガル城で高さに足が止まった時、彼女が戻ってきてくれた。落ち着ける位置から町を眺め、帰り道はゆっくり歩いた。"
+    },
+    "gt_jaipur_date_albert_hall_memory": {
+      "titleJa": "予想の外に残ったもの",
+      "descriptionJa": "細密画や金工を見て回り、庭園で感想を話した。相手の好みを分かった顔で決めず、続きを聞きたいと思った。"
+    },
+    "gt_jaipur_date_jaigarh_fort_memory": {
+      "titleJa": "国の向きを直して",
+      "descriptionJa": "ジャイガル城で案内図を逆に持った城主は、旅人へ戻った。冗談も本音も、相手に聞こえる所から伝えた。"
+    },
+    "gt_jaipur_date_johari_bazaar_memory": {
+      "titleJa": "売買はしなかった店先",
+      "descriptionJa": "腕飾りを買わずに店を出た。似合うと言われたい気持ちと、自分で選びたい気持ちを話した。"
+    },
+    "gt_jaipur_date_panna_meena_kund_memory": {
+      "titleJa": "悔しい顔も一緒に",
+      "descriptionJa": "階段井戸の周縁で線をたどり、見間違いに悔しがった。勝ちたい気持ちと、一緒に楽しみたい気持ちを話した。"
+    }
+  }
+}

@@ -21,4 +21,4 @@
 - 和訳は英文と同じ情報量にする。正解だけに追加の説明を足さない。
 - 独立レビュー後、材料当てを王の入口の問いへ変更。露骨な誤答や、選択肢中の年代だけで除外できる但書を修正した。
 
-本番の正本は `content/quizzes/gt_delhi_*_quiz.json`、対訳は `content/learning/translations.json`。ここにある対訳・語義fragmentは初期取り込み時の編集資料であり、本番と別に更新する正本ではない。
+本番の正本は `content/journeys/golden_triangle/quizzes/gt_delhi_*_quiz.json`、対訳は `content/journeys/golden_triangle/learning/translations.json`。ここにある対訳・語義fragmentは初期取り込み時の編集資料であり、本番と別に更新する正本ではない。

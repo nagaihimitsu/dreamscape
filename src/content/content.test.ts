@@ -413,7 +413,7 @@ describe("content build acceptance", () => {
 
   it("rejects duplicate city first-clear reward source IDs", async () => {
     await replace(
-      "content/cities/agra.json",
+      "content/journeys/golden_triangle/cities/agra.json",
       '"agra_legacy_episode_placeholder"',
       '"delhi_legacy_episode_placeholder"',
     );

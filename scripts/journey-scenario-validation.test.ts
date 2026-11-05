@@ -9,6 +9,8 @@ import { readJourneyManifests } from "./content-sources";
 /** Every journey manifest of a project, by journey ID. */
 const manifests = (root: string) => Object.fromEntries(readJourneyManifests(root).map((item) => [item.id, readFileSync(item.file, "utf8")]));
 
+/** India's published Ink lives in its journey folder; story IDs are paths below `stories/`. */
+const publishedStories = "content/journeys/golden_triangle/stories";
 const names = 'VAR player_name = "検証主人公"\nVAR heroine_name = "検証ヒロイン"\nVAR player_address = "検証主人公さん"\n';
 function fixture() {
   const root = mkdtempSync(path.join(tmpdir(), "dreamscape-scenario-test-"));
@@ -18,7 +20,7 @@ function fixture() {
   symlinkSync(path.join(process.cwd(), "public"), path.join(root, "public"));
   symlinkSync(path.join(process.cwd(), "authoring"), path.join(root, "authoring"));
   for (const storyId of [...plan.main.flatMap((main) => [main.guideStoryId, main.battleStoryId]), ...plan.dates.map((date) => date.storyId), plan.finale.battleStoryId, plan.finale.epilogueStoryId])
-    rmSync(path.join(root, "content/stories", `${storyId}.ink`), { force: true });
+    rmSync(path.join(root, publishedStories, `${storyId}.ink`), { force: true });
   const write = (relative: string, content: string) => {
     const target = path.join(directory, relative);
     mkdirSync(path.dirname(target), { recursive: true });
@@ -59,7 +61,7 @@ describe("draft journey scenario contracts", () => {
     try {
       // A promoted file has one canonical copy and still uses the same checker.
       const guide = `${plan.main[0].guideStoryId}.ink`;
-      renameSync(path.join(directory, "delhi/stories", guide), path.join(root, "content/stories", guide));
+      renameSync(path.join(directory, "delhi/stories", guide), path.join(root, publishedStories, guide));
       expect(await validateJourneyScenario(root, "golden_triangle", directory, "delhi")).toEqual({
         journeyId: "golden_triangle", cities: ["delhi"], stories: 16, guides: 4,
         battleScenarios: 83, dateRoutes: 10368, epilogueScenarios: 8, readyForPublication: false,
@@ -76,7 +78,7 @@ describe("draft journey scenario contracts", () => {
     try {
       const file = path.join(directory, "delhi/stories", `${plan.main[0].guideStoryId}.ink`);
       const original = readFileSync(file, "utf8");
-      const published = path.join(root, "content/stories", `${plan.main[0].guideStoryId}.ink`);
+      const published = path.join(root, publishedStories, `${plan.main[0].guideStoryId}.ink`);
       writeFileSync(published, original);
       await expect(check()).rejects.toThrow(/both draft and published Ink/);
       rmSync(published);

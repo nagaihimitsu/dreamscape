@@ -1,13 +1,15 @@
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, renameSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { indiaRequirements, loadIndiaScaffold } from "./india-scaffold";
 import { prepareIndiaRelease } from "./promote-india";
 
-/** Explicit unpublished fixture; this test must not depend on India's release date.
- * `cityLayer` is the content layer holding India's city files. */
-function prepareUnpublishedFixture(root: string, cityLayer: string) {
+/** India's journey folder: its cities, stories, quizzes and catalog fragments. */
+const layer = "content/journeys/golden_triangle";
+
+/** Explicit unpublished fixture; this test must not depend on India's release date. */
+function prepareUnpublishedFixture(root: string) {
   const plans = indiaRequirements(loadIndiaScaffold(root));
   const cityIds = new Set(plans.map((city) => city.cityId));
   const eventIds = new Set(plans.flatMap((city) => [...city.main.map((event) => event.eventId), city.finale.eventId]));
@@ -24,43 +26,43 @@ function prepareUnpublishedFixture(root: string, cityLayer: string) {
     change(data);
     writeFileSync(target, JSON.stringify(data));
   };
-  edit("content/journeys/golden_triangle/manifest.json", (data) => { data.status = "preparing"; });
+  edit(`${layer}/manifest.json`, (data) => { data.status = "preparing"; });
   for (const city of plans) {
-    edit(`${cityLayer}/cities/${city.cityId}.json`, (data) => {
+    edit(`${layer}/cities/${city.cityId}.json`, (data) => {
       data.productionStatus = "prototype";
       if (data.arrivalStoryId) storyIds.add(data.arrivalStoryId);
       delete data.arrivalStoryId;
     });
-    edit(`${cityLayer}/travel/${city.cityId}.json`, (data) => {
+    edit(`${layer}/travel/${city.cityId}.json`, (data) => {
       data.events = data.events.filter((event: any) => event.id !== city.finale.eventId).map((event: any) => ({ ...event, contentStatus: "pending_content" }));
       for (const place of data.places) if (place.landmarkIds) place.landmarkIds = place.landmarkIds.filter((id: string) => !landmarkIds.has(id));
     });
   }
-  edit("content/progression/journey.json", (data) => {
+  edit(`${layer}/progression/journey.json`, (data) => {
     data.episodes = data.episodes.filter((entry: any) => !cityIds.has(entry.cityId));
     data.rewards = data.rewards.filter((entry: any) => !eventIds.has(entry.episodeId));
   });
-  edit("content/battles/catalog.json", (data) => { data.battles = data.battles.filter((entry: any) => !battleIds.has(entry.id)); });
-  edit("content/romance/date_catalog.json", (data) => { data.dates = data.dates.filter((entry: any) => !dateIds.has(entry.id)); });
-  edit("content/tourism/catalog.json", (data) => {
+  edit(`${layer}/battles/catalog.json`, (data) => { data.battles = data.battles.filter((entry: any) => !battleIds.has(entry.id)); });
+  edit(`${layer}/romance/date_catalog.json`, (data) => { data.dates = data.dates.filter((entry: any) => !dateIds.has(entry.id)); });
+  edit(`${layer}/tourism/catalog.json`, (data) => {
     data.landmarks = data.landmarks.filter((entry: any) => !cityIds.has(entry.cityId));
     data.clues = data.clues.filter((entry: any) => !landmarkIds.has(entry.landmarkId));
   });
-  edit("content/romance/effect_catalog.json", (data) => { data.effects = data.effects.filter((entry: any) => !memoryIds.has(entry.memoryId)); });
-  edit("content/romance/presentation.json", (data) => { for (const id of memoryIds) delete data.memories[id]; });
-  for (const file of ["content/presentation/dialogue-expressions.json", "content/presentation/dialogue-reactions.json"])
-    edit(file, (data) => { data.entries = data.entries.filter((entry: any) => !storyIds.has(entry.storyId)); });
-  for (const id of storyIds) rmSync(path.join(root, "content/stories", `${id}.ink`), { force: true });
+  edit(`${layer}/romance/effect_catalog.json`, (data) => { data.effects = data.effects.filter((entry: any) => !memoryIds.has(entry.memoryId)); });
+  edit(`${layer}/romance/presentation.json`, (data) => { for (const id of memoryIds) delete data.memories[id]; });
+  for (const file of ["presentation/dialogue-expressions.json", "presentation/dialogue-reactions.json"].flatMap((kind) => [`content/${kind}`, `${layer}/${kind}`]))
+    if (existsSync(path.join(root, file))) edit(file, (data) => { data.entries = data.entries.filter((entry: any) => !storyIds.has(entry.storyId)); });
+  for (const id of storyIds) rmSync(path.join(root, layer, "stories", `${id}.ink`), { force: true });
   const questionIds = new Set<string>();
-  for (const file of readdirSync(path.join(root, "content/quizzes"))) {
+  for (const file of readdirSync(path.join(root, layer, "quizzes"))) {
     if (!file.endsWith(".json")) continue;
-    const target = path.join(root, "content/quizzes", file);
+    const target = path.join(root, layer, "quizzes", file);
     const quiz = JSON.parse(readFileSync(target, "utf8"));
     if (!quizIds.has(quiz.id)) continue;
     for (const question of quiz.questions) questionIds.add(question.id);
     rmSync(target);
   }
-  edit("content/learning/translations.json", (data) => { for (const id of questionIds) delete data.questions[id]; });
+  edit(`${layer}/learning/translations.json`, (data) => { for (const id of questionIds) delete data.questions[id]; });
 }
 
 // Test-only scripts and questions are copied into a temporary project. They
@@ -74,19 +76,29 @@ const originalQuiz = JSON.parse(read("content/quizzes/sound_duomo_B1.json"));
 const originalTranslations = JSON.parse(read("content/learning/translations.json")).questions;
 const dateTemplate = read("content/stories/milano/sound_cafe_01.ink");
 
-/** A copy of the project with India unpublished; India's city files are moved to `cityLayer` first. */
-function unpublishedProject(cityLayer = "content") {
+/** India's catalogs that hold nothing but India's unpublished entries. */
+const emptiedCatalogs = ["progression/journey.json", "battles/catalog.json", "romance/date_catalog.json",
+  "romance/effect_catalog.json", "learning/translations.json"];
+
+/**
+ * A copy of the project with India unpublished. With `withoutEmptyCatalogs`
+ * India's folder also loses the catalogs that only held unpublished entries.
+ */
+function unpublishedProject({ withoutEmptyCatalogs = false } = {}) {
   const root = mkdtempSync(path.join(tmpdir(), "dreamscape-india-full-release-"));
   cpSync(path.join(source, "content"), path.join(root, "content"), { recursive: true });
   cpSync(path.join(source, "public"), path.join(root, "public"), { recursive: true });
   const observation = "authoring/drafts/golden-triangle/observation-cards.json";
   mkdirSync(path.dirname(path.join(root, observation)), { recursive: true });
   cpSync(path.join(source, observation), path.join(root, observation));
-  if (cityLayer !== "content") for (const id of ["delhi", "agra", "jaipur"]) for (const file of [`cities/${id}.json`, `travel/${id}.json`, `travel/${id}-settings.json`]) {
-    mkdirSync(path.dirname(path.join(root, cityLayer, file)), { recursive: true });
-    renameSync(path.join(root, "content", file), path.join(root, cityLayer, file));
+  prepareUnpublishedFixture(root);
+  if (withoutEmptyCatalogs) for (const kind of emptiedCatalogs) {
+    const file = path.join(root, layer, kind);
+    const data = JSON.parse(readFileSync(file, "utf8"));
+    expect(Object.values(data).filter(Array.isArray).every((items) => !(items as unknown[]).length), kind).toBe(true);
+    if (kind === "learning/translations.json") expect(data.questions).toEqual({});
+    rmSync(file);
   }
-  prepareUnpublishedFixture(root, cityLayer);
   return root;
 }
 
@@ -100,15 +112,15 @@ function authorCity(root: string, plan: ReturnType<typeof indiaRequirements>[num
   writeFileSync(narrativeFile, JSON.stringify(narrative));
   const translations: Record<string, { questionJa: string; optionsJa: Record<string, string> }> = {};
   for (const item of plan.main) {
-    write(`content/stories/${item.guideStoryId}.ink`, read("content/stories/tourism/sound_duomo.ink"));
-    write(`content/stories/${item.battleStoryId}.ink`, read("content/stories/battles/sound_duomo.ink"));
+    write(`${layer}/stories/${item.guideStoryId}.ink`, read("content/stories/tourism/sound_duomo.ink"));
+    write(`${layer}/stories/${item.battleStoryId}.ink`, read("content/stories/battles/sound_duomo.ink"));
     const quiz = { ...structuredClone(originalQuiz), id: item.quizId, landmarkId: item.landmarkId };
     quiz.questions.forEach((question: { id: string }, index: number) => {
       const translated = originalTranslations[question.id];
       question.id = `${item.quizId}_${index}`;
       translations[question.id] = { questionJa: translated.questionJa, optionsJa: translated.optionsJa };
     });
-    write(`content/quizzes/${item.quizId}.json`, JSON.stringify(quiz));
+    write(`${layer}/quizzes/${item.quizId}.json`, JSON.stringify(quiz));
   }
   for (const item of plan.dates) {
     let story = dateTemplate;
@@ -118,10 +130,10 @@ function authorCity(root: string, plan: ReturnType<typeof indiaRequirements>[num
       sound_cafe_01_2_2: item.effectIds.second.attentive, sound_cafe_01_2_3: item.effectIds.second.bold,
     };
     for (const [from, to] of Object.entries(map)) story = story.replaceAll(from, to);
-    write(`content/stories/${item.storyId}.ink`, story);
+    write(`${layer}/stories/${item.storyId}.ink`, story);
   }
-  write(`content/stories/${plan.finale.battleStoryId}.ink`, read("content/stories/battles/sound_finale.ink"));
-  write(`content/stories/${plan.finale.epilogueStoryId}.ink`, read("content/stories/milano/sound_epilogue.ink"));
+  write(`${layer}/stories/${plan.finale.battleStoryId}.ink`, read("content/stories/battles/sound_finale.ink"));
+  write(`${layer}/stories/${plan.finale.epilogueStoryId}.ink`, read("content/stories/milano/sound_epilogue.ink"));
   const finalQuiz = JSON.parse(read("content/quizzes/sound_finale_B1.json"));
   finalQuiz.id = plan.finale.quizId; finalQuiz.cityId = plan.cityId;
   finalQuiz.questions.forEach((question: { id: string }, index: number) => {
@@ -129,7 +141,7 @@ function authorCity(root: string, plan: ReturnType<typeof indiaRequirements>[num
     question.id = `${plan.finale.quizId}_${index}`;
     translations[question.id] = { questionJa: translated.questionJa, optionsJa: translated.optionsJa };
   });
-  write(`content/quizzes/${plan.finale.quizId}.json`, JSON.stringify(finalQuiz));
+  write(`${layer}/quizzes/${plan.finale.quizId}.json`, JSON.stringify(finalQuiz));
   const translationsFile = path.join(root, `${name}translations.json`);
   writeFileSync(translationsFile, JSON.stringify({ schemaVersion: 1, questions: translations }));
   return { narrativeFile, translationsFile };
@@ -142,11 +154,11 @@ describe("India release pipeline", () => {
       const input = loadIndiaScaffold(root);
       const plan = indiaRequirements(input, ["delhi"])[0];
       const { narrativeFile, translationsFile } = authorCity(root, plan, "");
-      const cityFile = path.join(root, "content/cities/delhi.json");
+      const cityFile = path.join(root, layer, "cities/delhi.json");
       const before = readFileSync(cityFile, "utf8");
       await expect(prepareIndiaRelease(root, true, "delhi", narrativeFile)).rejects.toThrow(/quiz translation is missing/i);
       expect(readFileSync(cityFile, "utf8")).toBe(before);
-      const guidePath = path.join(root, "content/stories", `${plan.main[0].guideStoryId}.ink`);
+      const guidePath = path.join(root, layer, "stories", `${plan.main[0].guideStoryId}.ink`);
       const guide = readFileSync(guidePath, "utf8");
       rmSync(guidePath);
       await expect(prepareIndiaRelease(root, true, "delhi", narrativeFile, translationsFile)).rejects.toThrow(/unfinished scenario/i);
@@ -156,15 +168,15 @@ describe("India release pipeline", () => {
       expect(readFileSync(cityFile, "utf8")).toBe(before);
       await prepareIndiaRelease(root, true, "delhi", narrativeFile, translationsFile);
       expect(JSON.parse(readFileSync(cityFile, "utf8")).productionStatus).toBe("complete");
-      expect(JSON.parse(readFileSync(path.join(root, "content/cities/agra.json"), "utf8")).productionStatus).toBe("prototype");
-      expect(JSON.parse(readFileSync(path.join(root, "content/travel/agra.json"), "utf8")).events.every((event: { contentStatus?: string }) => event.contentStatus === "pending_content")).toBe(true);
-      expect(JSON.parse(readFileSync(path.join(root, "content/journeys/golden_triangle/manifest.json"), "utf8")).status).toBe("available");
-      const journeyFile = path.join(root, "content/progression/journey.json");
+      expect(JSON.parse(readFileSync(path.join(root, layer, "cities/agra.json"), "utf8")).productionStatus).toBe("prototype");
+      expect(JSON.parse(readFileSync(path.join(root, layer, "travel/agra.json"), "utf8")).events.every((event: { contentStatus?: string }) => event.contentStatus === "pending_content")).toBe(true);
+      expect(JSON.parse(readFileSync(path.join(root, layer, "manifest.json"), "utf8")).status).toBe("available");
+      const journeyFile = path.join(root, layer, "progression/journey.json");
       const after = readFileSync(journeyFile, "utf8");
       expect(JSON.parse(after).episodes.filter((episode: { cityId: string }) => episode.cityId === "delhi")).toHaveLength(5);
-      const translated = JSON.parse(readFileSync(path.join(root, "content/learning/translations.json"), "utf8")).questions[`${plan.main[0].quizId}_0`];
+      const translated = JSON.parse(readFileSync(path.join(root, layer, "learning/translations.json"), "utf8")).questions[`${plan.main[0].quizId}_0`];
       expect(translated.source.questionEn).toBe(originalQuiz.questions[0].questionEn);
-      expect(existsSync(path.join(root, "content/stories", `${plan.finale.epilogueStoryId}.ink`))).toBe(true);
+      expect(existsSync(path.join(root, layer, "stories", `${plan.finale.epilogueStoryId}.ink`))).toBe(true);
       await prepareIndiaRelease(root, true, "delhi", narrativeFile, translationsFile);
       expect(readFileSync(journeyFile, "utf8")).toBe(after);
 
@@ -175,23 +187,23 @@ describe("India release pipeline", () => {
       const afterSecond = JSON.parse(readFileSync(journeyFile, "utf8"));
       expect(afterSecond.episodes.filter((episode: { cityId: string }) => episode.cityId === "delhi")).toHaveLength(5);
       expect(afterSecond.episodes.filter((episode: { cityId: string }) => episode.cityId === "agra")).toHaveLength(5);
-      expect(JSON.parse(readFileSync(path.join(root, "content/cities/agra.json"), "utf8")).productionStatus).toBe("complete");
-      expect(JSON.parse(readFileSync(path.join(root, "content/cities/jaipur.json"), "utf8")).productionStatus).toBe("prototype");
+      expect(JSON.parse(readFileSync(path.join(root, layer, "cities/agra.json"), "utf8")).productionStatus).toBe("complete");
+      expect(JSON.parse(readFileSync(path.join(root, layer, "cities/jaipur.json"), "utf8")).productionStatus).toBe("prototype");
     } finally { rmSync(root, { recursive: true, force: true }); }
   }, 120_000);
 
-  it("releases Delhi into the journey folder that holds India's cities, creating its catalogs there", async () => {
-    const layer = "content/journeys/golden_triangle";
-    const root = unpublishedProject(layer);
+  it("releases Delhi into India's journey folder, creating the catalogs it lacks and leaving core catalogs alone", async () => {
+    const root = unpublishedProject({ withoutEmptyCatalogs: true });
     try {
       const plan = indiaRequirements(loadIndiaScaffold(root), ["delhi"])[0];
       const { narrativeFile, translationsFile } = authorCity(root, plan, "");
       const coreFiles = ["progression/journey.json", "battles/catalog.json", "romance/date_catalog.json", "tourism/catalog.json",
         "romance/effect_catalog.json", "romance/presentation.json", "learning/translations.json"];
       const coreBefore = coreFiles.map((kind) => readFileSync(path.join(root, "content", kind), "utf8"));
-      expect(coreFiles.some((kind) => existsSync(path.join(root, layer, kind)))).toBe(false);
+      expect(emptiedCatalogs.some((kind) => existsSync(path.join(root, layer, kind)))).toBe(false);
       await prepareIndiaRelease(root, true, "delhi", narrativeFile, translationsFile);
       expect(coreFiles.map((kind) => readFileSync(path.join(root, "content", kind), "utf8"))).toEqual(coreBefore);
+      expect(emptiedCatalogs.every((kind) => existsSync(path.join(root, layer, kind)))).toBe(true);
       expect(JSON.parse(readFileSync(path.join(root, layer, "cities/delhi.json"), "utf8")).productionStatus).toBe("complete");
       expect(JSON.parse(readFileSync(path.join(root, layer, "manifest.json"), "utf8")).status).toBe("available");
       const journeyFile = path.join(root, layer, "progression/journey.json");
