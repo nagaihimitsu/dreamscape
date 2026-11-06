@@ -356,7 +356,7 @@ export function GameApp({
         {!game ? (
           <>
             <div className="intro-art">
-              <CanalScene compact />
+              <CanalScene compact caption="旅の余白 ／ 予定のない午後" />
             </div>
             <section className="paper intro">
               <p className="eyebrow">旅のはじまり</p>

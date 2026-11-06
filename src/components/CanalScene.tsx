@@ -5,11 +5,14 @@ export function CanalScene({
   compact = false,
   backgroundId = "milano_cafe",
   imageAssetId,
+  caption,
 }: {
   compact?: boolean;
   backgroundId?: string;
   /** Use a location's registered photograph while keeping this scene's fallback. */
   imageAssetId?: string;
+  /** Replaces the background's place caption, e.g. on the title art shared by every journey. */
+  caption?: string;
 }) {
   const backdrop = presentation.backgrounds[backgroundId];
   const landmarkImage = imageAssetId
@@ -114,7 +117,7 @@ export function CanalScene({
       )}
       {image && <BackgroundArtwork key={image} path={image} position={backdrop?.imagePosition} />}
       <span className="scene-stamp">
-        {presentation.backgrounds[backgroundId]?.captionJa}
+        {caption ?? backdrop?.captionJa}
       </span>
     </div>
   );
