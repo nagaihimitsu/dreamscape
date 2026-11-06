@@ -7,6 +7,8 @@ import {
   unprefixedIds,
   UNPREFIXED_ID_EXCEPTIONS,
   unusedPublicFiles,
+  unusedWordMeanings,
+  wordUses,
 } from "./content-report";
 import { contentSourcesFromTree, contentTreeFromFiles, loadContentSources } from "./content-sources";
 
@@ -114,6 +116,38 @@ describe("journey ID prefixes", () => {
       [`${folder("luang_prabang")}/romance/presentation.json`]: json({ schemaVersion: 1, backgrounds: { luang_prabang_hotel_bg: {}, hotel_bg: {} } }),
     });
     expect(messages(unprefixedIds(sources)).map((message) => /"([^"]+)" \(/u.exec(message)?.[1])).toEqual(["hotel_bg"]);
+  });
+});
+
+describe("word meanings", () => {
+  const files = () => ({
+    ...journey("trip_a", 10, "a_city"),
+    ...journey("trip_b", 20, "b_city"),
+    "content/learning/word-meanings.json": json({ schemaVersion: 1, words: Object.fromEntries(
+      ["the", "cat", "sat", "a", "bell", "rings", "hold", "on", "it", "café", "tomb", "background", "milano"].map((word) => [word, "意味"])) }),
+    [`${folder("trip_b")}/learning/word-meanings.json`]: json({ schemaVersion: 1, words: { mausoleum: "霊廟", hall: "広間" } }),
+    [`${folder("trip_a")}/quizzes/q.json`]: json({ id: "q", questions: [{ id: "q1", questionEn: "The cat sat?", options: [{ id: "A", textEn: "A Café" }] }] }),
+    [`${folder("trip_a")}/quizzes/q.sample.json`]: json({ id: "s", questions: [{ id: "s1", questionEn: "Sample tomb", options: [] }] }),
+    [`${folder("trip_b")}/quizzes/q.json`]: json({ id: "b", questions: [{ id: "b1", questionEn: "The mausoleum", options: [] }] }),
+    [`${folder("trip_a")}/encounters/catalog.json`]: json({ schemaVersion: 1, items: [], encounters: [
+      { id: "bell", storyId: "encounters/bell", options: [{ id: "x" }], quiz: { question: { questionEn: "A bell rings", options: [] } } }] }),
+    // Only the Ink choices are English; narration, tags and diverts are not read.
+    [`${folder("trip_a")}/stories/encounters/bell.ink`]: "# background: milano_background\n" +
+      "鐘が鳴る。\n* [Hold on # option: x # translation: 待って] -> END\n+ (later) {seen} [It] \n",
+  });
+
+  it("knows which layers' English uses each word", () => {
+    const uses = wordUses(load(files()));
+    expect([...uses.keys()].sort()).toEqual(["a", "bell", "cafe", "cat", "hold", "it", "mausoleum", "on", "rings", "sat", "the"]);
+    expect([...uses.get("the")!]).toEqual(["trip_a", "trip_b"]);
+    expect([...uses.get("hold")!]).toEqual(["trip_a"]);
+  });
+
+  it("lists the entries no English text uses, per file", () => {
+    expect(unusedWordMeanings(load(files()))).toEqual([
+      { file: "content/learning/word-meanings.json", words: ["café", "tomb", "background", "milano"] },
+      { file: "content/journeys/trip_b/learning/word-meanings.json", words: ["hall"] },
+    ]);
   });
 });
 

@@ -113,7 +113,7 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 
 ### 単語の意味
 
-問題文・選択肢の単語には `content/learning/word-meanings.json` の一般的な意味を登録します。大文字・小文字、アクセント、曲がったアポストロフィは照合時に正規化します。その問題の `vocabularyJa` に同じ語句があれば、その文脈での意味を優先します。新しい問題の語に未登録があれば全体検証で知らせます。一般的な意味は文脈によって異なるため、曖昧な語は該当問題の `vocabularyJa` で補ってください。たとえば [court](https://dictionary.cambridge.org/dictionary/english/court) や [secure](https://dictionary.cambridge.org/dictionary/english/secure) の複数の用法はCambridge Dictionaryで確認できます。語義の正確さと文脈への適合は編集者が確認します。外部辞書APIは使いません。
+問題文・選択肢の単語には一般的な意味を登録します。複数の旅行編で使う語は共通の `content/learning/word-meanings.json`、1つの旅行編だけで使う語（地名・建造物名など）はその旅行編の `content/journeys/<旅行編ID>/learning/word-meanings.json` に置きます。同じ語を両方に置くときは同じ意味にします（違えば生成時のエラー）。旅行編の辞書にしかない語を別の旅行編の問題で使うと、その旅行編を外した生成（`scripts/journey-folders.test.ts`）で未登録として知らされるため、その語は共通の辞書へ移します。どの英文にも使われない語の一覧は `npm run content:build -- --verbose` で確認できます。大文字・小文字、アクセント、曲がったアポストロフィは照合時に正規化します。その問題の `vocabularyJa` に同じ語句があれば、その文脈での意味を優先します。新しい問題の語に未登録があれば全体検証で知らせます。一般的な意味は文脈によって異なるため、曖昧な語は該当問題の `vocabularyJa` で補ってください。たとえば [court](https://dictionary.cambridge.org/dictionary/english/court) や [secure](https://dictionary.cambridge.org/dictionary/english/secure) の複数の用法はCambridge Dictionaryで確認できます。語義の正確さと文脈への適合は編集者が確認します。外部辞書APIは使いません。
 
 ### 対訳・学習説明
 

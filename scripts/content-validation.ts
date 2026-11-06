@@ -15,7 +15,7 @@ import { displayPath, parseCatalog as parseSourceCatalog, parseSourceFile, requi
 import { DEFAULT_BACKGROUND_ID } from "../src/content/default-background";
 import { authoringProfileOf } from "./journey-authoring";
 import { checkContentOwnership } from "./content-ownership";
-import { contentWarnings, journeyContents } from "./content-report";
+import { contentWarnings, journeyContents, unusedWordMeanings } from "./content-report";
 import { characterCatalogSchema } from "../src/content/character-assets";
 import { encounterCatalogInputSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
 import { encounterEntryRulesSchema, validateEncounterEntryRules } from "../src/content/encounter-entry-rules";
@@ -786,5 +786,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     warnings: contentWarnings(sources),
     /** What each journey folder provides, for the build report. */
     journeyContents: journeyContents(sources),
+    /** Word meanings no English text uses, for the build report. */
+    unusedWordMeanings: unusedWordMeanings(sources),
   };
 }

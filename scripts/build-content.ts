@@ -43,6 +43,10 @@ try {
   );
   // One line per journey folder, so a forgotten or still empty folder shows before it is published.
   for (const journey of result.journeyContents) console.log(formatJourneyContents(journey));
+  // Unused dictionary entries do no harm: a count, the words with --verbose.
+  const unusedWords = result.unusedWordMeanings.reduce((sum, item) => sum + item.words.length, 0);
+  if (verbose) for (const item of result.unusedWordMeanings) console.log(`Unused word meanings in ${item.file} (${item.words.length}): ${item.words.join(", ")}`);
+  else if (unusedWords) console.log(`${unusedWords} word meaning(s) that no quiz or encounter text uses; list: npm run content:build -- --verbose`);
 } catch (error) {
   if (!verbose) staleWarnings.forEach((message) => warn(message));
   console.error(error);

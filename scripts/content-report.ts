@@ -4,6 +4,7 @@ import { localIssuePath } from "./catalog-merge";
 import { imageReferences } from "./content-ownership";
 import { CODE_IMAGE_FILES } from "../src/content/code-images";
 import { displayPath, type ContentSources } from "./content-sources";
+import { normalizeWord, wordPattern } from "../src/content/word-meanings";
 
 // What content:build reports besides errors (pure, on the loaded sources):
 // warnings about files and IDs that are probably mistakes but do not break
@@ -174,6 +175,71 @@ export function unprefixedIds(sources: ContentSources): ContentWarning[] {
     warnings.push({ kind: "id-prefix", message: `ID without the journey prefix: ${definition.where} "${definition.id}" (${convention})` });
   }
   return warnings;
+}
+
+/**
+ * The English an encounter story shows as choices: the text of each Ink
+ * choice line (`* [Could you play one note? # option: ask]`) without its
+ * label, conditions, tags and divert. Narration and tags are Japanese or IDs.
+ */
+function inkChoiceTexts(source: string): string[] {
+  return source.split("\n").flatMap((line) => {
+    const choice = /^\s*[*+][\s*+]*(.*)$/u.exec(line);
+    return choice ? [choice[1].replace(/^\([^)]*\)/u, "").replaceAll(/\{[^}]*\}/gu, "").split("#")[0].split("->")[0].replaceAll(/[[\]]/gu, "")] : [];
+  });
+}
+
+/**
+ * Each word (normalized like the game's word lookup) of the English shown
+ * with word meanings, and the layers whose texts use it: questions and options
+ * of the quiz files (samples excluded), and of encounters: their quiz, their
+ * catalog option texts and the choices of their Ink story.
+ */
+export function wordUses(sources: ContentSources): Map<string, Set<string>> {
+  const uses = new Map<string, Set<string>>();
+  const use = (text: unknown, layer: string) => {
+    if (typeof text === "string") for (const word of text.match(wordPattern) ?? []) {
+      const key = normalizeWord(word);
+      uses.set(key, (uses.get(key) ?? new Set()).add(layer));
+    }
+  };
+  const question = (value: unknown, layer: string) => {
+    if (!isObject(value)) return;
+    use(value.questionEn, layer);
+    for (const option of list(value.options)) use(option.textEn, layer);
+  };
+  for (const quiz of sources.quizFiles)
+    if (!quiz.sample && isObject(quiz.data)) for (const item of list(quiz.data.questions)) question(item, quiz.layer);
+  const layerOf = (file: string) => sources.layers.find((layer) => layer.type === "journey" && file.startsWith(layer.directory + path.sep))?.id ?? "core";
+  const stories = new Map(sources.storyFiles.map((story) => [story.id, story]));
+  const encounters = sources.catalogs["encounters/catalog.json"];
+  const entries = isObject(encounters?.value) && Array.isArray(encounters.value.encounters) ? encounters.value.encounters : [];
+  entries.forEach((encounter: unknown, index: number) => {
+    if (!isObject(encounter)) return;
+    const layer = layerOf(encounters!.provenance.items.encounters[index]);
+    if (isObject(encounter.quiz)) question(encounter.quiz.question, layer);
+    for (const option of list(encounter.options)) use(option.textEn, layer);
+    const story = typeof encounter.storyId === "string" ? stories.get(encounter.storyId) : undefined;
+    if (story) for (const text of inkChoiceTexts(story.source)) use(text, story.layer);
+  });
+  return uses;
+}
+
+/** Words of a word-meanings file that no English text uses. */
+export type UnusedWordMeanings = { file: string; words: string[] };
+
+/**
+ * Entries of the word meanings (the shared dictionary and journey fragments)
+ * that no English text of the content uses (wordUses), per file. They do no
+ * harm, so content:build reports them as a count (the list with --verbose)
+ * for the authors to decide, not as a warning.
+ */
+export function unusedWordMeanings(sources: ContentSources): UnusedWordMeanings[] {
+  const used = wordUses(sources);
+  const byFile = new Map<string, string[]>();
+  for (const [word, file] of Object.entries(sources.catalogs["learning/word-meanings.json"]?.provenance.keys.words ?? {}))
+    if (!used.has(word)) byFile.set(file, [...(byFile.get(file) ?? []), word]);
+  return [...byFile].map(([file, words]) => ({ file: displayPath(sources.root, file), words }));
 }
 
 /** What a journey folder provides: its cities, stories, quizzes and served files, and its entries of each catalog. */
