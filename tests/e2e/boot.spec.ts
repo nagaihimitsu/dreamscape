@@ -1,5 +1,7 @@
 import { readFileSync } from "node:fs";
 import type { JourneyCatalog } from "../../src/content/journey-catalog";
+import { DEBUG_HOOK_NAME, type DreamscapeDebugHook } from "../../src/dev/debug-hook";
+import { debugQueryString } from "../../src/dev/debug-query";
 import { allStorage, expect, readSave, startJourney, test } from "./helpers";
 
 test("the title screen opens every registered journey without writing a save", async ({ page }) => {
@@ -43,16 +45,33 @@ test("the title screen opens every registered journey without writing a save", a
   expect(Object.keys(await allStorage(page)).filter((key) => key.includes(".save."))).toEqual([]);
 });
 
-test("Debug mode opens a scene without changing the player's saved data", async ({ page }) => {
+test("a Debug launch URL opens its scene without changing the player's saved data", async ({ page }) => {
   await startJourney(page);
   await expect(page.getByTestId("travel-menu")).toBeVisible();
   expect((await readSave(page)).ap).toBe(0);
   const before = await allStorage(page);
-  await page.goto("/?debug");
-  await expect(page.getByTestId("debug-panel")).toBeVisible();
-  await page.getByRole("button", { name: "この場面を開く" }).click();
+  // Debug as a scene launchpad (docs/10): it checks the scene only, never saving and resuming.
+  const url = debugQueryString({ dataMode: "real", cityId: "milano", scene: "date", target: "milano_brera_date_01",
+    progress: "completed", ap: 9, affection: 0, trust: 0, spark: 0, roll: "negative" });
+  await page.goto(`/${url}`);
   await expect(page.getByTestId("debug-session")).toBeVisible();
+  await expect(page.getByTestId("romance-scene")).toBeVisible();
+  // The development-only, read-only hook shows Debug's own game (its date spent AP from 9).
+  const debug = await page.evaluate((name) => {
+    const hook = (window as unknown as Record<string, DreamscapeDebugHook>)[name];
+    return { state: hook.getState(), scene: hook.getScene() };
+  }, DEBUG_HOOK_NAME);
+  expect(debug.state?.activeDate?.dateId).toBe("milano_brera_date_01");
+  expect(debug.state?.ap).toBeLessThan(9);
+  expect(debug.scene?.url).toBe(url);
+  // Back on the settings screen, the same scene's URL is offered for copying.
   await page.getByRole("button", { name: "設定へ戻る" }).click();
+  await expect(page.getByTestId("debug-panel")).toBeVisible();
+  await expect(page.getByTestId("debug-url")).toHaveValue(new URL(url, page.url()).href);
+  // A URL that does not fit the content says why and links back to the settings screen.
+  await page.goto("/?debug&city=milano&scene=battle&target=gt_delhi_main_red_fort_battle");
+  await expect(page.getByRole("alert")).toHaveText("「gt_delhi_main_red_fort_battle」はミラノの「バトル」にありません。");
+  await page.getByRole("link", { name: "場面の確認（設定画面）へ" }).click();
   await expect(page.getByTestId("debug-panel")).toBeVisible();
   expect(await allStorage(page)).toEqual(before);
 });
