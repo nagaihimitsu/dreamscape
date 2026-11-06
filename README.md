@@ -219,7 +219,7 @@ tests/e2e/ tests/fixtures/        # E2Eとテスト用データ（tests/fixtures
 | `npm run test:quick` | コンテンツを生成してから速い組の単体テスト（日常の確認。全件は `npm test`・CI・`verify`。[テストの組](docs/10_DEVELOPMENT_CHECKS.md#単体テストの組と所要時間)） |
 | `npm test` | コンテンツを生成してから全単体テスト |
 | `npm run build` | 生成・型検査・本番ビルド（`dist/`）と、`dist/` にDebug・テスト用のコードやデータがないかの検査 |
-| `npm run verify` | 生成・全単体テスト・型検査・本番ビルド・`dist/` の検査を一度に実行（公開前・大きな変更） |
+| `npm run verify` | 生成・全単体テスト・型検査・本番ビルド・`dist/` の検査を一度に実行（公開前・大きな変更）。最初の生成は会話の全分岐検査のキャッシュを使わない |
 | `npm run dist:check` | ビルド済みの `dist/` にDebug・プレビュー・テスト用のコードや旅行編がないかを検査（`build`・`verify` が自動で実行） |
 | `npm run test:e2e` | 最小構成のE2E（Playwright） |
 | `npm run content:inspect -- <ファイル>` | 1ファイルの形式とInkコンパイルを確認 |
