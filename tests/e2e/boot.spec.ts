@@ -8,8 +8,13 @@ test("the title screen opens every registered journey without writing a save", a
     options.map((option) => ({ id: (option as HTMLOptionElement).value, name: option.textContent ?? "" })));
   expect(journeys.map((journey) => journey.id)).toEqual(expect.arrayContaining(["milano", "golden_triangle"]));
   const headings = new Map<string, string | null>();
-  for (const journey of journeys) {
-    await selector.selectOption(journey.id);
+  // Go through the journeys with the keyboard: each switch rebuilds the screen,
+  // and the new screen's selector takes the focus back so the next key works.
+  await selector.selectOption(journeys[0].id);
+  await selector.focus();
+  for (const [index, journey] of journeys.entries()) {
+    if (index > 0) await page.keyboard.press("ArrowDown");
+    await expect(selector).toHaveValue(journey.id);
     if (journey.name.includes("準備中")) {
       // An unfinished journey can only store names for later; it cannot be played yet.
       await expect(page.getByText("この旅行編は制作中です。", { exact: false })).toBeVisible();
@@ -19,6 +24,7 @@ test("the title screen opens every registered journey without writing a save", a
       await expect(page.getByRole("button", { name: "旅をはじめる", exact: true })).toBeVisible();
       headings.set(journey.id, await page.locator(".masthead .edition").textContent());
     }
+    await expect(selector).toBeFocused();
   }
   // Before the trip starts, the heading names the selected journey's first city.
   expect(headings.get("milano")).toBe("ミラノの旅");
