@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, statSync, utimesSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import type { DateDefinition, EffectDefinition } from "../src/content/schemas";
 import type { TagContext } from "../src/content/tags";
@@ -46,6 +46,13 @@ export interface StoryValidationCache {
 const cacheFormat = 1;
 /** The code fingerprint folders kept side by side (e.g. two branches); older ones are removed. */
 const keptFingerprints = 3;
+/**
+ * The entries kept in one fingerprint folder, about 5 KB each. Every content
+ * edit changes the keys of almost all dates (the key holds the global ID
+ * lists), so new entries pile up; a full unit-test run uses about 2,700.
+ * Beyond this, the least recently used are removed when the cache is opened.
+ */
+const keptEntries = 10_000;
 const repositoryRoot = path.resolve(import.meta.dirname, "..");
 /** The modules whose code (with every module they import) decides a validateStory result. */
 export const validatorEntryModules = ["scripts/ink-validation.ts", "scripts/story-validation-cache.ts"];
@@ -105,7 +112,9 @@ export function validatorCodeFingerprint(codeRoot = repositoryRoot, entries = va
  * entries live in a git-ignored folder (node_modules/.cache), which a fresh
  * checkout or `npm ci` starts empty.
  */
-export function openStoryValidationCache(options: { directory?: string; codeRoot?: string; env?: NodeJS.ProcessEnv } = {}): StoryValidationCache | undefined {
+export function openStoryValidationCache(
+  options: { directory?: string; codeRoot?: string; env?: NodeJS.ProcessEnv; entryLimit?: number } = {},
+): StoryValidationCache | undefined {
   if (inkCacheDisabledByEnv(options.env)) return undefined;
   const codeRoot = options.codeRoot ?? repositoryRoot;
   const code = validatorCodeFingerprint(codeRoot);
@@ -120,6 +129,7 @@ export function openStoryValidationCache(options: { directory?: string; codeRoot
   } catch {
     return undefined;
   }
+  removeLeastRecentlyUsed(directory, options.entryLimit ?? keptEntries);
   return { directory, fingerprint: code.fingerprint, stats: { reused: 0, run: 0 } };
 }
 
@@ -134,6 +144,25 @@ function removeOldFingerprints(base: string) {
     .map((entry) => ({ folder: path.join(base, entry.name), modified: statSync(path.join(base, entry.name)).mtimeMs }))
     .sort((left, right) => right.modified - left.modified);
   for (const { folder } of folders.slice(keptFingerprints)) rmSync(folder, { recursive: true, force: true });
+}
+
+/** Keep the newest `limit` files of a fingerprint folder by modification time (a reused entry is touched). Errors are ignored. */
+function removeLeastRecentlyUsed(directory: string, limit: number) {
+  try {
+    const names = readdirSync(directory);
+    if (names.length <= limit) return;
+    const files = names.flatMap((name) => {
+      const file = path.join(directory, name);
+      try {
+        return [{ file, used: statSync(file).mtimeMs }];
+      } catch {
+        return []; // Removed meanwhile by another process.
+      }
+    }).sort((left, right) => right.used - left.used);
+    for (const { file } of files.slice(limit)) rmSync(file, { force: true });
+  } catch {
+    // A folder that cannot be listed is only not pruned; its entries are still read and written one by one.
+  }
 }
 
 /**
@@ -157,8 +186,9 @@ export function validateStoryCached(
   const key = cacheKey(cache.fingerprint, input);
   const file = key && path.join(cache.directory, `${key}.json`);
   const stored = file ? readRecord(file, key) : undefined;
-  if (stored) {
+  if (file && stored) {
     cache.stats.reused++;
+    touch(file);
     for (const [text, speaker, explicitEmotion] of stored.observations) observe?.(text, speaker, explicitEmotion);
     for (const effectId of stored.effects) onEffect?.(effectId);
     return stored.routes;
@@ -232,6 +262,16 @@ function writeRecord(file: string, key: string, record: StoryValidationRecord) {
     } catch {
       // Leave the temporary file; it is never read as an entry.
     }
+  }
+}
+
+/** Mark an entry as used now, so pruning keeps it. Failures are ignored. */
+function touch(file: string) {
+  try {
+    const now = new Date();
+    utimesSync(file, now, now);
+  } catch {
+    // The entry stays; it may only be pruned earlier.
   }
 }
 

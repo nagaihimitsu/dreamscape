@@ -9,6 +9,7 @@ import { createDialogueReactionValidator } from "./dialogue-reaction-validation"
 import { compileInk, validateStory } from "./ink-validation";
 import {
   cacheKey,
+  chooseStoryCache,
   inkCacheDisabledByEnv,
   openStoryValidationCache,
   validateStoryCached,
@@ -39,6 +40,8 @@ const choices = ["a", "b", "c"].map((id) => `* [選択${id}]
         届かなかった${id}。
     }
     また明日。
+    # speaker: narrator
+    また明日。
     -> END
 `).join("\n");
 const source = header + choices;
@@ -64,6 +67,11 @@ const temporaryDirectory = () => {
 afterEach(() => {
   for (const directory of temporary.splice(0)) rmSync(directory, { recursive: true, force: true });
 });
+
+/** A cache in a temporary folder, open whatever DREAMSCAPE_INK_CACHE says in the environment running the tests. */
+const openTestCache = (directory = temporaryDirectory(), options: { codeRoot?: string; entryLimit?: number } = {}) =>
+  openStoryValidationCache({ directory, ...options, env: {} });
+const line = (text: string, speaker: string) => JSON.stringify([text, speaker, false]);
 
 /** Run once and report what the callbacks saw (in call order). */
 const runWith = (cache: ReturnType<typeof openStoryValidationCache>, value = input()) => {
@@ -117,6 +125,15 @@ describe("Ink validation cache", () => {
         }
       }
     }
+    // Data read at run time (files, the environment, the clock, chance) would
+    // be in neither the fingerprint nor the key. Only the cache itself and the
+    // import parser it uses (test-sets.ts) read files, and not for validateStory.
+    const readers = ["scripts/story-validation-cache.ts", "scripts/test-sets.ts"];
+    expect(code.files).toEqual(expect.arrayContaining(readers));
+    for (const file of code.files.filter((name) => !readers.includes(name))) {
+      expect(readFileSync(path.join(repository, file), "utf8"), `${file} reads data outside validateStory's input`).not.toMatch(
+        /["'](?:node:)?(?:fs|fs\/promises|child_process|process|os)["']|\bimport\.meta\b|\bprocess\.|\b(?:fetch|require)\s*\(|\b(?:globalThis|window|localStorage|sessionStorage|indexedDB|document)\b|\bMath\.random\b|\bDate\b|\bperformance\b/u);
+    }
   });
 
   it("changes the fingerprint when validator code or a package changes, not for other code", () => {
@@ -136,7 +153,7 @@ describe("Ink validation cache", () => {
     // An import that cannot be resolved is a doubt: no fingerprint, no cache.
     rmSync(path.join(root, "src/domain/romance-tone.ts"));
     expect(validatorCodeFingerprint(root)).toBeUndefined();
-    expect(openStoryValidationCache({ codeRoot: root, directory: temporaryDirectory() })).toBeUndefined();
+    expect(openTestCache(temporaryDirectory(), { codeRoot: root })).toBeUndefined();
   });
 
   it("reuses a stored result with the same routes and callbacks, and stores nothing without a cache", () => {
@@ -152,7 +169,7 @@ describe("Ink validation cache", () => {
     // Without a cache it is validateStory itself, call for call.
     expect(runWith(undefined)).toEqual(live);
     const directory = temporaryDirectory();
-    const cache = openStoryValidationCache({ directory })!;
+    const cache = openTestCache(directory)!;
     const first = runWith(cache);
     expect(first).toEqual(live);
     expect(cache.stats).toEqual({ reused: 0, run: 1 });
@@ -163,8 +180,10 @@ describe("Ink validation cache", () => {
     expect(second.observed).toEqual([...new Set(live.observed)]);
     expect(second.effects).toEqual([...new Set(live.effects)]);
     expect(live.observed.length).toBeGreaterThan(second.observed.length);
+    // The same text from two speakers is two lines.
+    expect(second.observed).toEqual(expect.arrayContaining([line("また明日。", "heroine"), line("また明日。", "narrator")]));
     // Another process (a new cache object) finds the same entry.
-    const other = openStoryValidationCache({ directory })!;
+    const other = openTestCache(directory)!;
     runWith(other);
     expect(other.stats).toEqual({ reused: 1, run: 0 });
   });
@@ -175,9 +194,11 @@ describe("Ink validation cache", () => {
     const storyId = "milano/cache_test";
     const reached = { storyId, speaker: "heroine" as const, text: "届いたa。" };
     const unreached = { storyId, speaker: "narrator" as const, text: "届いたa。" };
+    // One text, two speakers: each annotation is reached by its own line.
+    const shared = (["heroine", "narrator"] as const).map((speaker) => ({ storyId, speaker, text: "また明日。" }));
     const outcome = (cache: ReturnType<typeof openStoryValidationCache>) => {
       const expressions = createDialogueExpressionValidator(
-        dialogueExpressionCatalogSchema.parse({ schemaVersion: 1, entries: [reached, unreached].map((entry) => ({ ...entry, emotion: "smile" })) }),
+        dialogueExpressionCatalogSchema.parse({ schemaVersion: 1, entries: [reached, unreached, ...shared].map((entry) => ({ ...entry, emotion: "smile" })) }),
         { [storyId]: source }, [storyId], ["smile"]);
       const reactions = createDialogueReactionValidator(
         dialogueReactionCatalogSchema.parse({ schemaVersion: 1, entries: [{ ...reached, targetCharacterId: "heroine", mark: "heart" }] }),
@@ -197,16 +218,16 @@ describe("Ink validation cache", () => {
       return warnings;
     };
     const live = outcome(undefined);
-    // The narrator entry is stale; the heroine line is reached.
+    // The narrator entry of 届いたa。 is stale; the other lines are reached.
     expect(live).toEqual([expect.stringContaining("Stale dialogue expression (unreachable or speaker changed): milano/cache_test/narrator/")]);
-    const cache = openStoryValidationCache({ directory: temporaryDirectory() })!;
+    const cache = openTestCache()!;
     expect(outcome(cache)).toEqual(live);
     expect(outcome(cache)).toEqual(live);
     expect(cache.stats).toEqual({ reused: 1, run: 1 });
   });
 
   it("runs the validation again when the Ink source, the context or any other input changes", () => {
-    const cache = openStoryValidationCache({ directory: temporaryDirectory() })!;
+    const cache = openTestCache()!;
     runWith(cache);
     const variants: Array<Partial<StoryValidationInput>> = [
       { compiled: compileInk(source.replace("また明日。", "またね。")) },
@@ -233,19 +254,19 @@ describe("Ink validation cache", () => {
   it("runs the validation again when the validator code changes", () => {
     const codeRoot = copyValidatorCode();
     const directory = temporaryDirectory();
-    const before = openStoryValidationCache({ codeRoot, directory })!;
+    const before = openTestCache(directory, { codeRoot })!;
     runWith(before);
     runWith(before);
     expect(before.stats).toEqual({ reused: 1, run: 1 });
     writeFileSync(path.join(codeRoot, "scripts/ink-validation.ts"), `${readFileSync(path.join(codeRoot, "scripts/ink-validation.ts"), "utf8")}\n// changed\n`);
-    const after = openStoryValidationCache({ codeRoot, directory })!;
+    const after = openTestCache(directory, { codeRoot })!;
     expect(after.fingerprint).not.toBe(before.fingerprint);
     runWith(after);
     expect(after.stats).toEqual({ reused: 0, run: 1 });
   });
 
   it("never stores a failure, so the error is the live one every time", () => {
-    const cache = openStoryValidationCache({ directory: temporaryDirectory() })!;
+    const cache = openTestCache()!;
     const failing = input({ context: { effectIds: ["effect_a", "effect_b"], backgroundIds: [], emotionIds: [] } });
     const message = (() => {
       try {
@@ -261,7 +282,7 @@ describe("Ink validation cache", () => {
   });
 
   it("treats a damaged or foreign entry as missing and replaces it", () => {
-    const cache = openStoryValidationCache({ directory: temporaryDirectory() })!;
+    const cache = openTestCache()!;
     const key = cacheKey(cache.fingerprint, input())!;
     const entry = path.join(cache.directory, `${key}.json`);
     for (const damaged of ["{", JSON.stringify({ format: 1, key: "other", routes: 6, observations: [], effects: [] }),
@@ -274,7 +295,7 @@ describe("Ink validation cache", () => {
     expect(cache.stats).toEqual({ reused: 0, run: 3 });
   });
 
-  it("is never carried into CI: no workflow restores it, and the official build check runs without it", () => {
+  it("is never carried into CI, and the official checks (CI build, verify) start without it", () => {
     const workflows = readdirSync(path.join(repository, ".github/workflows")).filter((name) => name.endsWith(".yml"));
     expect(workflows.length).toBeGreaterThan(0);
     for (const name of workflows) {
@@ -286,6 +307,9 @@ describe("Ink validation cache", () => {
     }
     const ci = readFileSync(path.join(repository, ".github/workflows/ci.yml"), "utf8");
     expect(ci).toMatch(/run: npm run build\n\s+env:\n\s+DREAMSCAPE_INK_CACHE: "off"/u);
+    // verify (also pages.yml before deploying) validates every branch in its first generation.
+    const { scripts } = JSON.parse(readFileSync(path.join(repository, "package.json"), "utf8")) as { scripts: Record<string, string> };
+    expect(scripts.verify).toMatch(/^npm run content:build -- --no-cache && /u);
   });
 
   it("is off with DREAMSCAPE_INK_CACHE=off and keeps only the newest code fingerprints", () => {
@@ -295,13 +319,43 @@ describe("Ink validation cache", () => {
     const directory = temporaryDirectory();
     expect(openStoryValidationCache({ directory, env: { DREAMSCAPE_INK_CACHE: "off" } })).toBeUndefined();
     expect(readdirSync(directory)).toEqual([]);
+    // buildContent and journey:scenario take the default cache from the environment; an explicit one stays.
+    const explicit = openTestCache()!;
+    vi.stubEnv("DREAMSCAPE_INK_CACHE", "off");
+    try {
+      expect(chooseStoryCache(undefined)).toBeUndefined();
+      expect(chooseStoryCache(null)).toBeUndefined();
+      expect(chooseStoryCache(explicit)).toBe(explicit);
+    } finally {
+      vi.unstubAllEnvs();
+    }
     ["old1", "old2", "old3"].forEach((name, index) => {
       mkdirSync(path.join(directory, name));
       const time = new Date(Date.UTC(2020, 0, index + 1));
       utimesSync(path.join(directory, name), time, time);
     });
-    const cache = openStoryValidationCache({ directory })!;
+    const cache = openTestCache(directory)!;
     expect(readdirSync(directory).sort()).toEqual([cache.fingerprint, "old2", "old3"].sort());
     expect(existsSync(cache.directory)).toBe(true);
+  });
+
+  it("keeps the most recently used entries of a code fingerprint up to a limit", () => {
+    const directory = temporaryDirectory();
+    const cache = openTestCache(directory)!;
+    runWith(cache);
+    const entry = path.join(cache.directory, `${cacheKey(cache.fingerprint, input())}.json`);
+    const age = (days: number) => new Date(Date.UTC(2020, 0, days));
+    utimesSync(entry, age(1), age(1));
+    ["other1", "other2", "other3"].forEach((name, index) => {
+      writeFileSync(path.join(cache.directory, `${name}.json`), "{}");
+      utimesSync(path.join(cache.directory, `${name}.json`), age(index + 2), age(index + 2));
+    });
+    // Reusing the oldest entry makes it the most recently used.
+    runWith(cache);
+    expect(cache.stats).toEqual({ reused: 1, run: 1 });
+    const reopened = openTestCache(directory, { entryLimit: 2 })!;
+    expect(readdirSync(reopened.directory).sort()).toEqual([path.basename(entry), "other3.json"].sort());
+    runWith(reopened);
+    expect(reopened.stats).toEqual({ reused: 1, run: 0 });
   });
 });

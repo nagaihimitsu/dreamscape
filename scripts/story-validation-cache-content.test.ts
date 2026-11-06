@@ -25,6 +25,9 @@ afterAll(() => {
   rmSync(fixture, { recursive: true, force: true });
 });
 
+/** The test's cache, open whatever DREAMSCAPE_INK_CACHE says in the environment running the tests. */
+const openTestCache = () => openStoryValidationCache({ directory: cacheDirectory, env: {} });
+
 /** Build without writing, returning the result (or the error message) and every console warning. */
 const check = async (root: string, storyCache: ReturnType<typeof openStoryValidationCache> | null) => {
   const warnings: string[] = [];
@@ -43,12 +46,12 @@ describe("Ink validation cache on the real content", () => {
   it("gives the same result and warnings as a build without it, and reuses every date validation", async () => {
     const live = await check(repository, null);
     expect(live.result).toBeDefined();
-    const cold = openStoryValidationCache({ directory: cacheDirectory })!;
+    const cold = openTestCache()!;
     expect(await check(repository, cold)).toEqual(live);
     // Two declared contexts of a date can give the same inputs; the second one is reused even in the first build.
     expect(cold.stats.run).toBeGreaterThan(100);
     expect(cold.stats.reused).toBeLessThan(5);
-    const warm = openStoryValidationCache({ directory: cacheDirectory })!;
+    const warm = openTestCache()!;
     expect(await check(repository, warm)).toEqual(live);
     expect(warm.stats).toEqual({ reused: cold.stats.reused + cold.stats.run, run: 0 });
   });
@@ -66,7 +69,7 @@ describe("Ink validation cache on the real content", () => {
     writeFileSync(file, broken);
     const live = await check(fixture, null);
     expect(live.error).toMatch(/Duplicate choice text/u);
-    const cache = openStoryValidationCache({ directory: cacheDirectory })!;
+    const cache = openTestCache()!;
     expect(await check(fixture, cache)).toEqual(live);
     expect(await check(fixture, cache)).toEqual(live);
     // Only the failing validation ran, both times: a failure is never stored.
