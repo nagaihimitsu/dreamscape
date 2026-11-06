@@ -1,7 +1,11 @@
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, utimesSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { dialogueExpressionCatalogSchema } from "../src/content/dialogue-expressions";
+import { dialogueReactionCatalogSchema } from "../src/content/dialogue-reactions";
+import { createDialogueExpressionValidator } from "./dialogue-expression-validation";
+import { createDialogueReactionValidator } from "./dialogue-reaction-validation";
 import { compileInk, validateStory } from "./ink-validation";
 import {
   cacheKey,
@@ -163,6 +167,42 @@ describe("Ink validation cache", () => {
     const other = openStoryValidationCache({ directory })!;
     runWith(other);
     expect(other.stats).toEqual({ reused: 1, run: 0 });
+  });
+
+  it("gives the dialogue annotation checks the same outcome from a stored result as from a live run", () => {
+    // The content validation's observers: lines annotated in the dialogue
+    // catalogs must be reached, or content:build warns that they are stale.
+    const storyId = "milano/cache_test";
+    const reached = { storyId, speaker: "heroine" as const, text: "届いたa。" };
+    const unreached = { storyId, speaker: "narrator" as const, text: "届いたa。" };
+    const outcome = (cache: ReturnType<typeof openStoryValidationCache>) => {
+      const expressions = createDialogueExpressionValidator(
+        dialogueExpressionCatalogSchema.parse({ schemaVersion: 1, entries: [reached, unreached].map((entry) => ({ ...entry, emotion: "smile" })) }),
+        { [storyId]: source }, [storyId], ["smile"]);
+      const reactions = createDialogueReactionValidator(
+        dialogueReactionCatalogSchema.parse({ schemaVersion: 1, entries: [{ ...reached, targetCharacterId: "heroine", mark: "heart" }] }),
+        { [storyId]: source }, [storyId], ["smile"], ["heroine", "enemy"]);
+      const warnings: string[] = [];
+      const warn = vi.spyOn(console, "warn").mockImplementation((message: string) => { warnings.push(message); });
+      try {
+        validateStoryCached(cache, input(), (text, speaker, explicit) => {
+          expressions.observe(storyId, text, speaker, explicit);
+          reactions.observe(storyId, text, speaker);
+        });
+        expressions.finish();
+        reactions.finish();
+      } finally {
+        warn.mockRestore();
+      }
+      return warnings;
+    };
+    const live = outcome(undefined);
+    // The narrator entry is stale; the heroine line is reached.
+    expect(live).toEqual([expect.stringContaining("Stale dialogue expression (unreachable or speaker changed): milano/cache_test/narrator/")]);
+    const cache = openStoryValidationCache({ directory: temporaryDirectory() })!;
+    expect(outcome(cache)).toEqual(live);
+    expect(outcome(cache)).toEqual(live);
+    expect(cache.stats).toEqual({ reused: 1, run: 1 });
   });
 
   it("runs the validation again when the Ink source, the context or any other input changes", () => {
