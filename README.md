@@ -319,7 +319,7 @@ Inkには `battle_scene`（catalogのシーン名）、`answer_correct`（直前
 - `src/features/tourism/viewport.ts`: 画像座標・拡大・移動範囲の計算。
 - `src/story/`: 公式 `Continue` / `currentChoices` / `ChooseChoiceIndex` とstate JSONを包むアダプタ。
 - `src/persistence/`: localStorageアダプタ・保存データ検証・バックアップ。
-- `src/content/` / `scripts/`: データ契約・許可タグ・ビルド時検証。
+- `src/content/` / `scripts/`: データ契約・許可タグ・ビルド時検証。`scripts/journeys/<旅行編ID>/` はその旅行編だけの制作ツール（例：インド編の `india:check`）で、共通のコードとツールからは読み込みません。
 
 保存キーは旅行編ごとに `dreamscape.journey.<旅行編ID>.save.v1` です（ミラノは `dreamscape.journey.milano.save.v1`、インドは `dreamscape.journey.golden_triangle.save.v1`）。旅行編ごとにゲーム進行と英語ノートを分離し、データ内の `schemaVersion` は **13** を使います。名前・AP・関係状態・思い出・デート履歴・告白と交際状態、進行中のInk、バトル回答と戦績、観光と発見、現在都市、旅行の現在地・日数・時刻と進行中の活動を保持します。同一バージョン内のデート途中データは、脚本と指紋を照合して再開します。新しい恋愛イベントは開始時に保存した乱数から関係状態に応じた反応を決めます。通常デートを選べず関係を築き直す必要がある場合は、AP不要の短い再交流を利用できます。告白の成否は乱数で変わりません。進行中の確率デートは開始時点のプロフィールを保存し、再開後も同じ設定を使います。`completedEpisodeIds`、`completedCityIds`、`completedGuideIds`、`pendingApRewards`、`battleRewardReceipt` も維持します。
 
