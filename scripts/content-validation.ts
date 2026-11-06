@@ -3,11 +3,11 @@ import {
   compileInk,
   validateNoInkRandom,
   validateRelationshipToneSource,
-  validateStory,
   validateReasoningIntroduction,
   validateLearningTopic,
 } from "./ink-validation";
 import { unique, withContext } from "./content-validation-utils";
+import { validateStoryCached, type StoryValidationCache } from "./story-validation-cache";
 import { requireServedFile } from "./public-assets";
 import path from "node:path";
 import type { CatalogKind } from "./content-layout";
@@ -84,9 +84,11 @@ export type ValidatedContent = ReturnType<typeof validateContent>;
  * Validate the loaded content: layers and ownership, every catalog, city,
  * travel, quiz and Ink file, and the rules between them. Throws the first
  * problem found. Works on any ContentSources (e.g. one journey layer with
- * the core layer, see selectJourneys), without reading the disk.
+ * the core layer, see selectJourneys), without reading the disk. With a
+ * storyCache, the full-branch date validations (validateStory) reuse stored
+ * successful results (story-validation-cache.ts); that is the only disk access.
  */
-export function validateContent(sources: ContentSources) {
+export function validateContent(sources: ContentSources, options: { storyCache?: StoryValidationCache } = {}) {
   const { root } = sources;
   requireJourneyManifests(sources.manifests);
   // Only the authoring tools read these profiles; a broken one still fails the build early.
@@ -387,28 +389,31 @@ export function validateContent(sources: ContentSources) {
           const checkedRoutes = withContext(
             `${storyLabel(storyId)} (date ${date.id})`,
             () =>
-              validateStory(
-                stories[storyId],
-                context,
-                date,
+              validateStoryCached(
+                options.storyCache,
                 {
-                  player_address: `検証主人公${suffix}`,
-                  romance_stage: seed.romanceStage,
-                  memory_callback: memory,
-                  confession_ready: seed.confessionReady,
-                  confession_result: seed.confessionResult ?? (seed.confessionReady ? "accepted" : "deferred"),
-                  ending_reached: seed.endingReached ?? false,
+                  compiled: stories[storyId],
+                  context,
+                  contract: { choiceCount: date.choiceCount, effectCount: date.effectCount, kind: date.kind },
+                  variables: {
+                    player_address: `検証主人公${suffix}`,
+                    romance_stage: seed.romanceStage,
+                    memory_callback: memory,
+                    confession_ready: seed.confessionReady,
+                    confession_result: seed.confessionResult ?? (seed.confessionReady ? "accepted" : "deferred"),
+                    ending_reached: seed.endingReached ?? false,
+                  },
+                  effects,
+                  memories: { available: seed.memoryIds ?? (seed.memoryId ? [seed.memoryId] : []), known: Object.keys(presentation.memories) },
+                  randomReactions,
+                  tone: randomReactions ? RELATIONSHIP_TONES[seedIndex % RELATIONSHIP_TONES.length] : undefined,
                 },
-                effects,
                 observeForStory(storyId),
-                { available: seed.memoryIds ?? (seed.memoryId ? [seed.memoryId] : []), known: Object.keys(presentation.memories) },
-                randomReactions,
                 (effectId) => {
                   const users = effectDates.get(effectId) ?? new Set<string>();
                   users.add(date.id);
                   effectDates.set(effectId, users);
                 },
-                randomReactions ? RELATIONSHIP_TONES[seedIndex % RELATIONSHIP_TONES.length] : undefined,
               ),
           );
           if (storyId === date.storyId && seedIndex < date.validationContexts.length) routes += checkedRoutes;

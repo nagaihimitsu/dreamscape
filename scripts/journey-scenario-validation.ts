@@ -10,10 +10,11 @@ import { validateBattleStory } from "./battle-validation";
 import { displayPath, loadContentSources, parseCatalog, storyFile } from "./content-sources";
 import { withContext } from "./content-validation-utils";
 import { validateEpilogue } from "./epilogue-validation";
-import { compileInk, validateNoInkRandom, validateRelationshipToneSource, validateStory } from "./ink-validation";
+import { compileInk, validateNoInkRandom, validateRelationshipToneSource } from "./ink-validation";
 import { buildJourneyFragments, journeyNarrativeSchema, journeyRequirements, loadJourneyScaffold } from "./journey-scaffold";
 import { validateTourism } from "./tourism-validation";
 import { checkTourismImages } from "./content-images";
+import { openStoryValidationCache, validateStoryCached, type StoryValidationCache } from "./story-validation-cache";
 
 function inkFiles(directory: string): string[] {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -23,8 +24,12 @@ function inkFiles(directory: string): string[] {
 }
 
 /** Check authored scripts with the production contracts, without inventing quizzes
- * or writing generated content/release markers. This is not a release gate. */
-export async function validateJourneyScenario(root: string, journeyId: string, directory: string, selectedCityId?: string) {
+ * or writing generated content/release markers. This is not a release gate.
+ * The date routes use the Ink validation cache like content:build (storyCache
+ * null: without it). */
+export async function validateJourneyScenario(root: string, journeyId: string, directory: string, selectedCityId?: string,
+  options: { storyCache?: StoryValidationCache | null } = {}) {
+  const storyCache = options.storyCache === undefined ? openStoryValidationCache() : options.storyCache ?? undefined;
   const sources = loadContentSources(root);
   const input = loadJourneyScaffold(root, journeyId, sources);
   const requirements = journeyRequirements(input, selectedCityId ? [selectedCityId] : undefined);
@@ -111,11 +116,19 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
         // The published runtime supplies all relationship stages and ending states.
         // Exercise them even when the generated minimum metadata has one seed.
         for (const romanceStage of [1, 2, 3, 4]) for (const endingReached of [false, true]) for (const tone of RELATIONSHIP_TONES)
-          for (const seed of date.validationContexts) dateRoutes += validateStory(compiled, dateContext, date, {
-            player_address: "検証主人公さん", romance_stage: romanceStage, ending_reached: endingReached,
-            confession_ready: seed.confessionReady, confession_result: seed.confessionResult ?? "deferred",
-            memory_callback: "旅の思い出",
-          }, effects, observe, { available: seed.memoryIds ?? (seed.memoryId ? [seed.memoryId] : []), known: Object.keys(fragments.memories) }, true, undefined, tone);
+          for (const seed of date.validationContexts) dateRoutes += validateStoryCached(storyCache, {
+            compiled, context: dateContext,
+            contract: { choiceCount: date.choiceCount, effectCount: date.effectCount, kind: date.kind },
+            variables: {
+              player_address: "検証主人公さん", romance_stage: romanceStage, ending_reached: endingReached,
+              confession_ready: seed.confessionReady, confession_result: seed.confessionResult ?? "deferred",
+              memory_callback: "旅の思い出",
+            },
+            effects,
+            memories: { available: seed.memoryIds ?? (seed.memoryId ? [seed.memoryId] : []), known: Object.keys(fragments.memories) },
+            randomReactions: true,
+            tone,
+          }, observe);
       });
     }
   }

@@ -32,9 +32,12 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
       # content:build, typecheck, vite build, then the check that dist holds
-      # no Debug or test code (scripts/check-dist.ts).
+      # no Debug or test code (scripts/check-dist.ts). The official content
+      # check validates every Ink branch without the validation cache.
       - name: Build content, check types and build for production
         run: npm run build
+        env:
+          DREAMSCAPE_INK_CACHE: "off"
 
   unit:
     name: Unit tests
@@ -50,6 +53,8 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
-      # pretest builds the content first.
+      # pretest builds the content first. The Ink validation cache lives in
+      # node_modules/.cache, which npm ci starts empty: the tests reuse only
+      # results computed in this job.
       - name: Run all unit tests
         run: npm test

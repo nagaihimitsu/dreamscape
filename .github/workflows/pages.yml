@@ -25,6 +25,8 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
+      # npm ci starts the Ink validation cache (node_modules/.cache) empty,
+      # so the first content:build validates every branch.
       - name: Validate content, test and build
         run: npm run verify
       - name: Upload site
