@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { mergeCatalog, sourceFileOf, type CatalogSource } from "./catalog-merge";
+import { localIssuePath, mergeCatalog, sourceFileOf, type CatalogSource } from "./catalog-merge";
 import {
   absentCatalog, CATALOG_RULES, catalogRule, classifyContentFile, completeFragment, CORE_LAYER_KINDS, emptyCatalog, storyIdFromPath, trimFragment,
 } from "./content-layout";
@@ -56,6 +56,24 @@ describe("catalog merge", () => {
     expect(sourceFileOf(merged.provenance, ["battles", 2, "id"])).toBe("gt/battles.json");
     expect(sourceFileOf(merged.provenance, ["schemaVersion"])).toBe("core/battles.json");
     expect(sourceFileOf(merged.provenance, [])).toBeUndefined();
+  });
+
+  it("turns a merged position into the position inside the entry's own file", () => {
+    const merged = mergeCatalog(catalogRule("battles/catalog.json"), [
+      core({ schemaVersion: 1, battles: [{ id: "a" }, { id: "b" }] }, "core/battles.json"),
+      journey({ schemaVersion: 1, battles: [{ id: "c" }, { id: "d" }] }, "gt/battles.json"),
+    ])!;
+    expect(localIssuePath(merged.provenance, ["battles", 1, "id"])).toEqual(["battles", 1, "id"]);
+    expect(localIssuePath(merged.provenance, ["battles", 2, "id"])).toEqual(["battles", 0, "id"]);
+    expect(localIssuePath(merged.provenance, ["battles", 3, "scenes", 0])).toEqual(["battles", 1, "scenes", 0]);
+    // Paths without a concatenated element, and records, keep their positions.
+    expect(localIssuePath(merged.provenance, ["battles"])).toEqual(["battles"]);
+    expect(localIssuePath(merged.provenance, ["schemaVersion"])).toEqual(["schemaVersion"]);
+    const details = mergeCatalog(catalogRule("learning/details.json"), [
+      journey({ schemaVersion: 1, questions: { a: { topics: [{}, {}] } } }, "mi/details.json"),
+      journey({ schemaVersion: 1, questions: { b: { topics: [{}] } } }, "gt/details.json"),
+    ])!;
+    expect(localIssuePath(details.provenance, ["questions", "b", "topics", 0])).toEqual(["questions", "b", "topics", 0]);
   });
 
   it("returns nothing when no layer has the file and omits keys no layer sets", () => {

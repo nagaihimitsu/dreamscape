@@ -164,6 +164,23 @@ describe("loadContentSources with journey layers", () => {
     sources.catalogs["battles/catalog.json"]!.value = { schemaVersion: 1, battles: [{ id: "core_battle" }, { id: "Bad ID" }] };
     expect(() => parseCatalog(sources, schema, "battles/catalog.json"))
       .toThrow(`Invalid content in ${path.join(root, "content/journeys/golden_triangle/battles/catalog.json")}: `);
+    // Positions are those inside each file; every file with a bad entry is named on its own line.
+    sources.catalogs["battles/catalog.json"]!.value = { schemaVersion: 1, battles: [{ id: "Core" }, { id: "Bad ID" }] };
+    const message = (() => {
+      try {
+        parseCatalog(sources, schema, "battles/catalog.json");
+      } catch (error) {
+        return (error as Error).message;
+      }
+    })()!;
+    const lines = message.split("\n").filter((line) => line.startsWith("Invalid content in "));
+    expect(lines).toEqual([
+      `Invalid content in ${path.join(root, "content/battles/catalog.json")}: [`,
+      `Invalid content in ${path.join(root, "content/journeys/golden_triangle/battles/catalog.json")}: [`,
+    ]);
+    const [core, journey] = message.split("\nInvalid content in ").map((part) => JSON.parse(part.slice(part.indexOf(": [") + 2)));
+    expect(core.map((issue: { path: unknown }) => issue.path)).toEqual([["battles", 0, "id"]]);
+    expect(journey.map((issue: { path: unknown }) => issue.path)).toEqual([["battles", 0, "id"]]);
     // A core-layer kind no layer provides is missing; a journey kind is empty (see absentCatalog).
     expect(() => parseCatalog(sources, schema, "romance/balance.json")).toThrow("Missing content file: romance/balance.json (no content layer provides it)");
     expect(sources.catalogs["romance/balance.json"]).toBeUndefined();

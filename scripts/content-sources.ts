@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { journeyCatalogSchema, type JourneyCatalog } from "../src/content/journey-catalog";
-import { mergeCatalog, sourceFileOf, type CatalogSource, type MergedCatalog } from "./catalog-merge";
+import { localIssuePath, mergeCatalog, sourceFileOf, type CatalogSource, type MergedCatalog } from "./catalog-merge";
 import {
   absentCatalog,
   CATALOG_RULES,
@@ -397,8 +397,11 @@ export function publicRoots(root: string, layers: readonly ContentLayer[] = cont
 }
 
 /**
- * Parse the merged `kind` with its schema. Errors name the layer file(s) the
- * failing entries come from (provenance), not the merged position only.
+ * Parse the merged `kind` with its schema. Errors name the layer file each
+ * failing entry comes from (provenance), with the issue paths as positions
+ * inside that file (localIssuePath); the cause keeps the merged positions.
+ * Issues without a single source file (e.g. a rule over the whole merged
+ * list) name every file of the catalog with the merged positions.
  */
 export function parseCatalog<T>(sources: Pick<ContentSources, "catalogs">, schema: { parse(value: unknown): T }, kind: CatalogKind): T {
   const merged = sources.catalogs[kind];
@@ -407,9 +410,15 @@ export function parseCatalog<T>(sources: Pick<ContentSources, "catalogs">, schem
     return schema.parse(merged.value);
   } catch (error) {
     const issues = (error as { issues?: { path?: PropertyKey[] }[] }).issues ?? [];
-    const files = [...new Set(issues.map((issue) => sourceFileOf(merged.provenance, issue.path ?? [])))];
-    const label = files.length && files.every(Boolean) ? files.join(", ")
-      : merged.provenance.files.join(", ") || `${kind} (no content layer provides it)`;
+    const located = issues.map((issue) => ({ issue, file: sourceFileOf(merged.provenance, issue.path ?? []) }));
+    if (located.length && located.every((item) => item.file)) {
+      const byFile = new Map<string, unknown[]>();
+      for (const { issue, file } of located)
+        byFile.set(file!, [...(byFile.get(file!) ?? []), { ...issue, path: localIssuePath(merged.provenance, issue.path ?? []) }]);
+      throw new Error([...byFile].map(([file, fileIssues]) => `Invalid content in ${file}: ${JSON.stringify(fileIssues, null, 2)}`).join("\n"),
+        { cause: error });
+    }
+    const label = merged.provenance.files.join(", ") || `${kind} (no content layer provides it)`;
     throw new Error(
       `Invalid content in ${label}: ${error instanceof Error ? error.message : String(error)}`,
       { cause: error },

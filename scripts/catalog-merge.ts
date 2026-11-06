@@ -126,3 +126,22 @@ export function sourceFileOf(provenance: CatalogProvenance, issuePath: readonly 
   }
   return provenance.files.length === 1 ? provenance.files[0] : undefined;
 }
+
+/**
+ * `issuePath` (a path in the merged value) as a path inside the file it comes
+ * from: the index of a concatenated array becomes the element's index in its
+ * own file (`["battles", 9, "id"]` → `["battles", 0, "id"]` for the first
+ * battle of a journey's file). Record keys and other paths stay as they are.
+ */
+export function localIssuePath(provenance: CatalogProvenance, issuePath: readonly PropertyKey[]): PropertyKey[] {
+  const local = [...issuePath];
+  for (let length = 1; length < issuePath.length; length++) {
+    const items = provenance.items[issuePath.slice(0, length).map(String).join(".")];
+    const index = issuePath[length];
+    if (items && typeof index === "number" && items[index]) {
+      local[length] = items.slice(0, index).filter((file) => file === items[index]).length;
+      break;
+    }
+  }
+  return local;
+}
