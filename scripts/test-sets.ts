@@ -1,0 +1,81 @@
+import { existsSync, globSync, readFileSync, statSync } from "node:fs";
+import path from "node:path";
+
+/**
+ * The unit test files, relative to the repository root. Every one of them runs
+ * in `npm test`; `npm run test:quick` runs only the quick set (splitTestFiles).
+ */
+export const testFilePatterns = ["src/**/*.test.ts", "scripts/**/*.test.ts"];
+
+/**
+ * Modules that run the whole content build: the pipeline itself
+ * (buildContent) and the helper that copies all content into a temporary
+ * fixture for it (prepareContentFixture). A test that reaches one of them
+ * belongs to the slow "content" set.
+ */
+export const contentBuildModules = ["scripts/content-pipeline.ts", "src/content/test-fixtures.ts"];
+
+const sourceExtensions = [".ts", ".tsx", ".mts"];
+
+/**
+ * Module specifiers that `source` loads when it runs: static imports and
+ * re-exports (statements at the start of a line), side-effect imports and
+ * dynamic `import("…")` with a literal. Type-only imports and exports are left
+ * out; they do not load the module. Code inside a string (a test writing a
+ * source file) does not start a line and is not read as an import.
+ */
+export function runtimeImports(source: string): string[] {
+  // Comments that start a line (a glob such as "src/**/*.ts" inside a string is not one).
+  const code = source.replace(/^\s*\/\*[\s\S]*?\*\//gmu, "").replace(/^\s*\/\/.*$/gmu, "");
+  const specifiers: string[] = [];
+  for (const match of code.matchAll(/^[ \t]*(?:import|export)\s+(type\s+)?(?:[\w$*{},\s]+?\s+from\s+)?["']([^"']+)["']/gmu))
+    if (!match[1]) specifiers.push(match[2]);
+  for (const match of code.matchAll(/\bimport\s*\(\s*["']([^"']+)["']\s*\)/gu)) specifiers.push(match[1]);
+  return specifiers;
+}
+
+/** The source file a relative specifier of `from` points to, if it is one of the repository's TypeScript files. */
+function resolveLocal(from: string, specifier: string): string | undefined {
+  if (!specifier.startsWith(".")) return undefined;
+  const base = path.resolve(path.dirname(from), specifier);
+  const candidates = [base, ...sourceExtensions.map((extension) => base + extension), ...sourceExtensions.map((extension) => path.join(base, `index${extension}`))];
+  return candidates.find((candidate) => sourceExtensions.includes(path.extname(candidate)) && existsSync(candidate) && statSync(candidate).isFile());
+}
+
+/**
+ * Split `files` (root-relative test files) into the quick set and the content
+ * set. A file is in the content set when its own relative imports, followed to
+ * any depth, reach one of contentBuildModules. The split is derived from the
+ * code alone, so a new or moved test lands in the right set without a list to
+ * maintain. Both sets together are exactly `files`.
+ */
+export function splitTestFiles(root: string, files: readonly string[]): { quick: string[]; content: string[] } {
+  const targets = new Set(contentBuildModules.map((file) => path.join(root, file)));
+  const reaches = new Map<string, boolean>();
+  const reachesContentBuild = (file: string, visiting: Set<string>): boolean => {
+    if (targets.has(file)) return true;
+    const known = reaches.get(file);
+    if (known !== undefined) return known;
+    // An import cycle adds nothing new; the first visit decides.
+    if (visiting.has(file)) return false;
+    visiting.add(file);
+    const result = runtimeImports(readFileSync(file, "utf8"))
+      .map((specifier) => resolveLocal(file, specifier))
+      .some((target) => target !== undefined && reachesContentBuild(target, visiting));
+    visiting.delete(file);
+    reaches.set(file, result);
+    return result;
+  };
+  const quick: string[] = [];
+  const content: string[] = [];
+  for (const file of files) (reachesContentBuild(path.join(root, file), new Set()) ? content : quick).push(file);
+  return { quick, content };
+}
+
+/** The repository's test files (testFilePatterns), relative to `root`, with forward slashes, sorted. */
+export function listTestFiles(root: string): string[] {
+  return testFilePatterns
+    .flatMap((pattern) => globSync(pattern, { cwd: root, exclude: (name) => name === "node_modules" }))
+    .map((file) => file.split(path.sep).join("/"))
+    .sort();
+}
