@@ -1,9 +1,9 @@
 import path from "node:path";
-import { CATALOG_RULES, classifyContentFile, CONTENT_DIRECTORY, JOURNEYS_DIRECTORY, type FieldTable, type MergedKind } from "./content-layout";
+import { CATALOG_RULES, classifyContentFile, type FieldTable, type MergedKind } from "./content-layout";
 import { localIssuePath } from "./catalog-merge";
 import { imageReferences } from "./content-ownership";
 import { CODE_IMAGE_FILES } from "../src/content/code-images";
-import { displayPath, type ContentSources } from "./content-sources";
+import { displayPath, journeyFileOf, type ContentSources } from "./content-sources";
 import { normalizeWord, wordPattern } from "../src/content/word-meanings";
 
 // What content:build reports besides errors (pure, on the loaded sources):
@@ -37,7 +37,6 @@ export const UNPREFIXED_ID_EXCEPTIONS: Readonly<Record<string, readonly string[]
 type Entry = Record<string, unknown>;
 const isObject = (value: unknown): value is Entry => typeof value === "object" && value !== null && !Array.isArray(value);
 const list = (value: unknown): Entry[] => (Array.isArray(value) ? value.filter(isObject) : []);
-const JOURNEYS_PREFIX = `${CONTENT_DIRECTORY}/${JOURNEYS_DIRECTORY}/`;
 
 /** Warnings of the loaded content: unknown files, unused public files, IDs without the journey prefix. */
 export function contentWarnings(sources: ContentSources): ContentWarning[] {
@@ -52,10 +51,8 @@ export function contentWarnings(sources: ContentSources): ContentWarning[] {
 export function unknownJourneyFiles(sources: ContentSources): ContentWarning[] {
   const journeys = new Set(sources.manifests.map((manifest) => manifest.id));
   return [...sources.tree.files.keys()].sort().flatMap((treePath): ContentWarning[] => {
-    if (!treePath.startsWith(JOURNEYS_PREFIX)) return [];
-    const [journey, ...rest] = treePath.slice(JOURNEYS_PREFIX.length).split("/");
-    const relative = rest.join("/");
-    if (!journeys.has(journey) || !relative || relative.endsWith(".md") || classifyContentFile(relative, "journey").type !== "other") return [];
+    const { journey, relative } = journeyFileOf(sources.tree, treePath) ?? {};
+    if (!journey || !journeys.has(journey) || !relative || relative.endsWith(".md") || classifyContentFile(relative, "journey").type !== "other") return [];
     return [{ kind: "unknown-file", message: `Unknown file in a journey folder: ${treePath} (content:build reads only .json and .ink files ` +
       `and serves public/assets/; keep notes as .md, images in public/assets/, other material in authoring/journeys/${journey}/)` }];
   });

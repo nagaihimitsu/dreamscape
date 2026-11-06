@@ -23,6 +23,14 @@ export const MANIFEST_FILE = "manifest.json";
 export const MANIFEST_ONLY_KEYS: readonly string[] = ["schemaVersion", "order", "authoring"];
 /** Generated from the journey manifests; no layer provides this file. */
 export const JOURNEY_CATALOG_KIND = "journeys/catalog.json";
+/**
+ * The sample journey ("見本の旅"): a playable minimal journey folder for
+ * development and tests only. It lives outside content/journeys/, so the game
+ * and production builds never contain it; `npm run content:build -- --with-sample`
+ * (used by the unit tests and `npm run dev:sample`) loads it as an extra journey folder.
+ */
+export const SAMPLE_JOURNEY_ID = "sample_trip";
+export const SAMPLE_JOURNEY_DIRECTORY = `authoring/templates/${SAMPLE_JOURNEY_ID}`;
 
 /**
  * How one key of a catalog file is merged across layers.

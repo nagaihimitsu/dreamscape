@@ -1,6 +1,6 @@
 import { checkContentImages } from "./content-images";
 import { writeContentOutputs } from "./content-outputs";
-import { loadContentSources } from "./content-sources";
+import { loadContentSources, type ContentLoadOptions } from "./content-sources";
 import { validateContent } from "./content-validation";
 import { chooseStoryCache, type StoryValidationCache } from "./story-validation-cache";
 
@@ -17,9 +17,15 @@ import { chooseStoryCache, type StoryValidationCache } from "./story-validation-
  * The full-branch Ink validation uses the validation cache
  * (story-validation-cache.ts) unless `storyCache` is null or
  * DREAMSCAPE_INK_CACHE=off; pass an opened cache to read its statistics.
+ * `extraJourneyDirectories` adds journey folders outside content/journeys/
+ * (the sample journey); the outputs record them (build-info.json).
  */
-export async function buildContent(root: string, writeOutput = true, options: { storyCache?: StoryValidationCache | null } = {}) {
-  const sources = loadContentSources(root);
+export async function buildContent(
+  root: string,
+  writeOutput = true,
+  options: { storyCache?: StoryValidationCache | null } & ContentLoadOptions = {},
+) {
+  const sources = loadContentSources(root, { extraJourneyDirectories: options.extraJourneyDirectories });
   const storyCache = chooseStoryCache(options.storyCache);
   const content = validateContent(sources, { storyCache });
   await checkContentImages(sources.publicFiles, content.images);
