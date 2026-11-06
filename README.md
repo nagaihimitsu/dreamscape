@@ -199,8 +199,10 @@ content/                          # 共通データ（全旅行編で共有：�
     stories/**/*.ink quizzes/     # 会話とクイズ
     battles/ progression/ romance/ tourism/ encounters/ learning/ presentation/  # 各カタログ（必要なものだけ）
     public/assets/                # その旅行編だけが使う画像
-public/assets/                    # 全旅行編で共有する画像（ヒロイン、演出、共通アイコン）
+public/                           # ファビコン・アプリアイコン（npm run icons:build で生成）
+  assets/                         # 全旅行編で共有する画像（ヒロイン、演出、共通アイコン）
 authoring/                        # 共通の制作手順とテンプレート
+  brand/                          # ファビコン・アプリアイコンの元画像
   journeys/<旅行編ID>/            # 旅行編ごとの下書き・調査記録（ゲームは読み込まない）
 scripts/                          # 生成・検証・共通の制作ツール
   journeys/<旅行編ID>/            # その旅行編だけの制作ツール
@@ -220,6 +222,7 @@ tests/e2e/ tests/fixtures/        # E2Eとテスト用データ（tests/fixtures
 | `npm run content:inspect -- <ファイル>` | 1ファイルの形式とInkコンパイルを確認 |
 | `npm run journey:scaffold`・`journey:readiness`・`journey:release`・`journey:transit` | 旅行編へシナリオとクイズを取り込む制作ツール（[手順](authoring/JOURNEY_AUTHORING.md)） |
 | `npm run city:bundle` | 都市単位の作業用JSONで地点・交通・背景などを編集（[手順](authoring/CITY_BUNDLES.md)） |
+| `npm run icons:build` | `authoring/brand/favicon-master.png` から `public/` のファビコン（16・32・48px、顔の切り抜き）、Apple touch icon（180px）、アプリアイコン（192・512px）を作り直す。元画像を差し替えたときだけ実行し、生成した画像もコミットする |
 
 ゲームは `content/` を直接読まず、`npm run content:build` が書き出す生成物だけを読みます。`src/content/generated/` の `stories.json`・`quizzes.json`（コンパイル済みの会話と出題）、`content/`（統合したデータ）、`public/`（配信する画像）は手動で編集しないでください。Ink・JSON・画像を編集した後は `npm run content:build` を実行します（`dev`・`test`・`build`・`verify` は自動で実行します）。
 

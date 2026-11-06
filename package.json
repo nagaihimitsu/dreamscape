@@ -13,6 +13,7 @@
     "india:scaffold": "npm run journey:scaffold -- --journey golden_triangle",
     "india:release": "npm run journey:release -- --journey golden_triangle",
     "city:bundle": "tsx scripts/city-bundle-cli.ts",
+    "icons:build": "tsx scripts/generate-icons.ts",
     "predev": "npm run content:build",
     "dev": "vite --host 0.0.0.0",
     "typecheck": "tsc --noEmit",

@@ -36,8 +36,10 @@ content/                # 共通データ（全旅行編で共有する基盤）
 scripts/                # Inkコンパイル・コンテンツ検証・共通の制作ツール
   journeys/<journeyId>/ # その旅行編だけの制作ツール（共通コード・ツールからは読み込まない）
 authoring/              # 共通の制作手順・テンプレート
+  brand/                # ファビコンの元画像（npm run icons:build が public/ のアイコンを生成）
   journeys/<journeyId>/ # 旅行編ごとの下書き・調査記録（ゲームは読み込まない）
-public/assets/         # 全旅行編で共有する画像・音声（ヒロイン、演出、共通アイコン）
+public/                # ファビコン・アプリアイコン・manifest.webmanifest（index.html から相対パスで参照）
+  assets/              # 全旅行編で共有する画像・音声（ヒロイン、演出、共通アイコン）
 tests/e2e/             # 最小構成のE2E（Playwright）
 tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲームには含めない）
 ```
