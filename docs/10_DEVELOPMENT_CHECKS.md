@@ -13,6 +13,7 @@
 | 保存・進行 | 同一バージョン内の保存・再開、読めないデータの保護、明示消去、別タブ、報酬重複防止の関連テストとE2E一式、必要な実画面。型・共通基盤の影響に応じて型検査と検証範囲を広げる |
 | CI・Playwrightの設定、本番ビルドの検査（`.github/workflows/`・`playwright.config.ts`・`scripts/dist-guard.ts`） | `npm run build`（`dist/` の検査を含む）、`npx vitest run scripts/dist-guard.test.ts`、E2E一式。ワークフローの変更はPRで実際の実行結果を確認する |
 | 単体テストの設定・テストの組・テスト用フィクスチャ（`vite.config.ts` の `test`・`scripts/test-sets.ts`・`scripts/test-image-guard.ts`・`src/content/test-fixtures.ts`） | `npx vitest run scripts/test-sets.test.ts scripts/test-image-guard.test.ts src/content/test-fixtures.test.ts`（先に `content:build`）、`npm test`（両方の組） |
+| 会話の全分岐検査とそのキャッシュ（`scripts/ink-validation.ts`・`scripts/story-validation-cache.ts`） | `npx vitest run scripts/story-validation-cache.test.ts scripts/story-validation-cache-content.test.ts`（先に `content:build`）、`npm run content:build -- --no-cache` と通常の `npm run content:build` が同じ結果になること。検査コードを変えると指紋が変わり、次の生成はすべて検査する（[キャッシュ](#会話の全分岐検査のキャッシュ)） |
 | 大きな変更・公開前 | `npm run verify`、E2E一式と、影響範囲に応じた実画面確認 |
 
 `npm run content:check` は差分検証ではなく全コンテンツを検証・生成する。対象テストを絞る場合、例えば `npm test -- src/domain/encounter-ap.test.ts` は通常どおり `pretest` でコンテンツを生成してから、そのテストだけを実行する。Playwrightの `webServer` は通常 `npm run dev` を実行し、その `predev` がコンテンツを生成する。既に起動したサーバーを再利用する場合は、対象の変更が反映され、生成物が最新であることを確認する。自動テストの通過だけを写真の切れ方や操作性の目視確認の代わりにはしない。
@@ -44,19 +45,32 @@
 
 `prepareContentFixture` は `content/` と `public/` を一時フォルダへ写すが、各旅行編の画像（`content/journeys/<journeyId>/public/` のファイル。リポジトリの大半の容量）は写さず、フォルダだけを作って各ファイルへのシンボリックリンクを置く（リンクを作れない環境、たとえばリンク作成の権限がないWindowsでは、ファイルをコピーする。遅くなるが結果は同じ）。テストはそこへファイルを追加・削除してよいが、リンクされたファイルへ上書きするとリポジトリの画像が変わるため、差し替えは `replaceFixtureFile` を使う。単体テストの実行の前後で各旅行編の画像の大きさと更新時刻を比べ、変わっていれば実行全体を失敗にする（`scripts/test-image-guard.ts`）。失敗の表示には、変わったファイルと、最後にコミットした版へ戻すコマンド（`git checkout -- <ファイル>`）が出る。テストが追加したファイルは削除する。まだコミットしていない画像や、コミット後に編集した画像はgitから戻せないため、画像を追加・編集したら単体テストの前にコミットしておく。
 
-所要時間（4コアの開発環境で計測、2026年11月）：
+所要時間（4コアの開発環境で計測、2026年11月。[会話の全分岐検査のキャッシュ](#会話の全分岐検査のキャッシュ)の導入前、キャッシュが空のとき、保存済みのとき）：
 
-| 確認 | 以前 | 現在 |
-| --- | --- | --- |
-| `npm run content:build` | 約15.5〜16.3秒 | 約15.0〜16.0秒（交互に5回ずつ計測し、毎回0.3〜0.7秒短い。観光画像の検査を1回にまとめた分で、ほぼ同じ） |
-| `npm run test:quick`（生成を含む） | （組がなかった。同じテストファイルを指定すると約48秒） | 約44秒（109ファイル） |
-| 全単体テスト（`npx vitest run`、生成を除く） | 約610秒 | 約395秒 |
+| 確認 | 導入前 | キャッシュが空 | 保存済み |
+| --- | --- | --- | --- |
+| `npm run content:build` | 約15.7秒 | 約15.4〜16.0秒（`--no-cache` も同じ） | 約3.4秒 |
+| `npm run test:quick`（生成を含む） | 約44秒（110ファイル） | 約46秒（111ファイル） | 約30秒 |
+| 全単体テスト（`npx vitest run`、生成を除く） | 約400秒（全ワーカーの作業時間 約1,530秒分） | 約190秒（約690秒分） | 約150秒（約530秒分） |
 
-- 時間の長いファイルはすべて `content` の組にある：`scripts/city-bundle*.test.ts` の4ファイル（各約100〜190秒）、`src/content/content.test.ts`（約160秒）、`src/content/city-content.test.ts`・`src/content/journey-content.test.ts`・`scripts/journey-folders.test.ts`（各約70〜90秒）。`quick` の組で最も長いのは `scripts/journey-scenario-validation.test.ts`（約14秒）。
-- 全単体テストの時間は、各テストが一時コピーで生成を繰り返す作業の合計（約1,400〜1,500秒分）を、同時に動くワーカーの数で割った長さにほぼ等しい。1回の生成（約15秒）のうち約12秒は会話の全分岐の検査（`validateStory`。1回の生成で212回）で、Inkのコンパイルは約1秒、観光画像の検査は約0.1秒。単体テスト一式では `validateStory` が約18,000回呼ばれ、全ワーカーの作業時間（約1,470秒分）の約7割（約1,070秒分）を占める。
+- キャッシュが空でも全単体テストが速いのは、同じ内容の生成を繰り返すテストが、同じ実行の中で先に計算された結果を使うため（1回の実行で約2,700項目・約14MBが保存される）。2回目以降は、テストが一時コピーで作る内容の変化も保存済みになる。単体テストの組を分ける前（ワーカー数の調整も前）は約610秒だった。
+- 時間の長いファイル（保存済みのキャッシュで）は `content` の組にある：`scripts/city-bundle*.test.ts` のうち3ファイル（各約45〜60秒。全9都市の書き出し・反映を繰り返す）、`src/content/content.test.ts`（約50秒）、`scripts/story-validation-cache-content.test.ts`（約42秒。比較のためキャッシュなしの生成を含む）。`quick` の組で最も長いのは `src/domain/milano-freedom.test.ts`（約10秒。`scripts/journey-scenario-validation.test.ts` は約14秒から約2秒になった）。
+- 1回の生成（約15秒）のうち約12秒はデートの会話の全分岐の検査（`validateStory`。1回の生成で212回）で、キャッシュはこの部分を省く。残りの約3.4秒は、Inkのコンパイル（約1秒）、画像の中身の検査（約1.3秒）、ほかの検証、起動など。キャッシュ導入前の単体テスト一式では `validateStory` が約18,000回呼ばれ、全ワーカーの作業時間の約7割を占めていた。
 - ワーカーはCPUのコア数だけ使う（`vite.config.ts` の `maxWorkers`）。1つのファイルの中のテストは順に実行されるため、極端に長いファイルは分けて、別々のワーカーで並列に動くようにする（`scripts/city-bundle*.test.ts` は1つのファイルだったときに約610秒かかり、全体の待ち時間を決めていたため4つに分けた）。
 - 計測は `npx vitest run --reporter=dot --reporter=json --outputFile.json=<出力先>.json`（先に `content:build`）で、JSONの各ファイルの `startTime`・`endTime` を比べる。
 - 制作ツール（`city:bundle`・`journey:release`）は、検証中に入力が変わっていないことを確かめるため、`content/` と `public/` の全ファイルの指紋（`journeyInputFingerprint`）を取る。1回約80〜110ミリ秒（約73MBを読む）で、ツールの実行時間に比べて小さい。生成と検証は全旅行編を統合した結果に対して行うため、指紋を対象の旅行編だけに絞ると、別の旅行編での同時編集（IDの重複など）を見逃す。このため絞り込みは行わない（2026年11月に判断）。画像を内容ではなくパス・大きさ・更新時刻で比べて読む量を減らす案は、制作ツールの手直しの際に検討する。
+
+### 会話の全分岐検査のキャッシュ
+
+デートの会話の全分岐検査（`validateStory`）は生成時間の大半を占めるため、成功した結果をディスクに保存し、同じ入力と同じ検査コードの組み合わせでは検査をやり直さずに結果を使う（`scripts/story-validation-cache.ts`）。`npm run content:build`・`npm run journey:scenario`、単体テストと制作ツールの中の生成（一時コピーを含む）のすべてが同じ場所を使う。
+
+- 保存場所はGit管理外の `node_modules/.cache/dreamscape/ink-validation/`（1回の生成分で約200項目・約1MB）。フォルダはいつ消してもよく、消すと次の生成ですべて検査し直す。`npm ci` でも空になる。検査コードの指紋ごとにフォルダを分け、新しい方から3つだけを残す（ブランチの行き来で残す分）。
+- 鍵（項目の名前）は、検査が読む入力のすべて（コンパイル済みのInk、タグとして許すID〔効果・背景・表情〕、デートの選択の数・効果の数・種類、Inkへ渡す変数、効果の定義、思い出、偶然の反応と関係トーンの指定）と、検査コードの指紋から作る。指紋は `scripts/ink-validation.ts` と `scripts/story-validation-cache.ts`、そこから読み込むすべてのモジュール（何段でもたどる。2026年11月時点で `src/content/tags.ts`・`src/story/memory.ts`・`src/domain/romance-tone.ts` など8ファイル）の中身、使うパッケージ（`inkjs`・`zod`）の版、Node.jsの版から作る。どれか1つでも変われば別の項目になり、検査を実行する。読み込み先が見つからないなど指紋を作れない場合は、キャッシュを使わない。
+- 保存するのは成功した結果（経路の数と、検査が通った台詞・効果の一覧）だけ。失敗は保存しないため、エラーの文言は常にその場で検査した結果になる。保存した結果を使うときは、台詞と効果を一度ずつ（最初に通った順に）検査の受け手へ渡し直す。受け手（会話注釈の「古い注釈」警告、効果を使うデートの集計）は集合として数えるので、結果は検査し直した場合と同じになる。読めない・壊れた・鍵の合わない項目は、無いものとして検査する。
+- `npm run content:build` は「`Ink validation cache: 212 reused, 0 run`」のように再利用と実行の件数を表示する。キャッシュを使わずにすべて検査するには `npm run content:build -- --no-cache`（`journey:scenario` も同じ）、または環境変数 `DREAMSCAPE_INK_CACHE=off` を使う（`off`・`0`・`false`・`no`）。結果に疑いがあるとき、検査コードの外（例えば `node_modules` の中身を手で書き換えた場合）を変えたときは、これで確かめる。
+- CI：キャッシュは持ち越さない。各ジョブは `npm ci` で `node_modules` を作り直し、ワークフローは `actions/cache` を使わない（`setup-node` が保存するのは `~/.npm` だけ）。このため、使われる結果はすべて同じジョブの中で同じコードが計算したもの。そのうえで公式の内容検査（`ci.yml` の「Content, types and production build」）は `DREAMSCAPE_INK_CACHE=off` で、キャッシュなしにすべて検査する。単体テストのジョブと `pages.yml` の `npm run verify` は、最初の生成ですべて検査し、以降のテストがその結果を再利用する。`scripts/story-validation-cache.test.ts` がワークフローのこの条件も確かめる。
+- 正しさの確認：`scripts/story-validation-cache.test.ts`（`quick`）は、指紋が読み込み先をすべて含むこと（読み込みの解析とは別の広い検索でも確かめる）、検査コード・Inkの本文・タグのID・変数などの入力のどれを変えても検査し直すこと、保存した結果で経路数・台詞・効果・会話注釈の警告が同じになること、失敗を保存しないこと、壊れた項目を無視することを確かめる。`scripts/story-validation-cache-content.test.ts`（`content`）は、実際のコンテンツでキャッシュなし・空のキャッシュ・保存済みのキャッシュの生成結果と警告が一致し、壊したデートのエラーが同じ文言になることを確かめる。
+- `validateStory` に引数を足す場合は、`StoryValidationInput` にも加える（キャッシュ付きの呼び出しは、この入力だけを `validateStory` に渡す）。
 
 ## E2Eテスト
 
@@ -86,7 +100,7 @@ GitHub Actionsは次のワークフローを実行する。同じイベントで
 
 | きっかけ | ワークフローとジョブ | 内容 |
 | --- | --- | --- |
-| PR（作成・push） | `ci.yml`「Content, types and production build」 | `npm run build`（コンテンツの検証・生成、型検査、本番ビルド、`dist/` の検査） |
+| PR（作成・push） | `ci.yml`「Content, types and production build」 | `npm run build`（コンテンツの検証・生成、型検査、本番ビルド、`dist/` の検査）。会話の全分岐検査はキャッシュを使わずにすべて行う（`DREAMSCAPE_INK_CACHE=off`。[キャッシュ](#会話の全分岐検査のキャッシュ)） |
 | | `ci.yml`「Unit tests」 | `npm test`（全単体テスト） |
 | | `e2e.yml`「E2E (gate)」 | E2E一式（`npm run test:e2e`） |
 | `main` へのpush | `pages.yml` | `npm run verify` の後にGitHub Pagesへ公開する |
