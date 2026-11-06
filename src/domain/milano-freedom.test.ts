@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import { advanceDate, chooseDate, createGame, finishDate, validateGameState, type GameState } from "./game";
 import { getEpisodeAvailability, startEpisode } from "./chapter";
 import { skipTourismGuide, startTourismBattle } from "./tourism";
-import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "./battle";
+import { leaveBattle, startBattle } from "./battle";
+import { playBattleToResult } from "../dev/scenario-builders";
 import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, sleepAtHotel, waitForTravel } from "./travel-game";
 
 const mainEpisodes = ["milano_duomo_episode", "milano_galleria_episode", "milano_last_supper_episode", "milano_castello_episode"];
@@ -14,24 +15,7 @@ function permutations<T>(items: readonly T[]): T[][] {
 
 /** Execute the real battle rules and case evidence, rather than faking its receipt. */
 function completeBattle(initial: GameState): GameState {
-  let state = initial;
-  expect(state.activeBattle).not.toBeNull();
-  for (let count = 0; state.activeBattle?.phase !== "result"; count++) {
-    expect(count).toBeLessThan(220);
-    const active = state.activeBattle!;
-    const { battle, quiz } = getActiveBattleContent(active);
-    if (active.phase === "reasoning") {
-      for (const id of battle.reasoning!.correctClueIds) state = selectReasoningClue(state, id, state.revision);
-      const next = submitBattleEvidence(state, state.revision);
-      state = finishTravelEventIfComplete(state, next);
-    } else if (active.phase === "question") {
-      const next = answerBattle(state, quiz.questions[active.roundIndex].correctOptionId, state.revision);
-      state = finishTravelEventIfComplete(state, next);
-    } else {
-      const next = advanceBattle(state, state.revision);
-      state = finishTravelEventIfComplete(state, next);
-    }
-  }
+  const state = playBattleToResult(initial);
   return validateGameState(JSON.parse(JSON.stringify(leaveBattle(state, state.revision))));
 }
 

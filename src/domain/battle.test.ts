@@ -1,4 +1,5 @@
 import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
+import { firstCorrect, playBattleToResult } from "../dev/scenario-builders";
 import { describe, expect, it } from "vitest";
 import {
   battles,
@@ -62,23 +63,15 @@ function question(initial: GameState): GameState {
   expect(state.activeBattle?.phase).toBe("question");
   return state;
 }
+/** Answer round i with selections[i], saving and restoring every action; a battle never changes the relationship. */
 function finish(initial: GameState, selections: string[]): GameState {
-  let state = initial;
-  for (let i = 0; i < 200 && state.activeBattle?.phase !== "result"; i++) {
-    state = roundTrip(state);
-    const active = state.activeBattle!;
-    const before = state;
-    if (active.phase === "question")
-      state = answerBattle(
-        state,
-        selections[active.roundIndex],
-        state.revision,
-      );
-    else state = advanceBattle(state, state.revision);
-    expect(romance(state)).toEqual(romance(before));
-  }
-  expect(state.activeBattle?.phase).toBe("result");
-  return roundTrip(state);
+  return roundTrip(playBattleToResult(initial, {
+    answer: (_question, roundIndex) => selections[roundIndex],
+    after: (next, previous) => {
+      expect(romance(next)).toEqual(romance(previous));
+      return roundTrip(next);
+    },
+  }));
 }
 function choicesForScore(score: number) {
   return quiz().questions.map((item, index) =>
@@ -186,21 +179,16 @@ describe("three-round quiz battle", () => {
     });
   });
   it("branches enemy reactions and endings by answers and score", () => {
+    // Every line shown before each action, played with the first `score` answers correct.
     const transcript = (score: number) => {
-      let state = startBattle(createGame(), battleId());
       const text: string[] = [];
-      for (let n = 0; n < 200 && state.activeBattle?.phase !== "result"; n++) {
-        const active = state.activeBattle!;
-        if (active.frame) text.push(active.frame.text);
-        state =
-          active.phase === "question"
-            ? answerBattle(
-                state,
-                choicesForScore(score)[active.roundIndex],
-                state.revision,
-              )
-            : advanceBattle(state, state.revision);
-      }
+      playBattleToResult(startBattle(createGame(), battleId()), {
+        answer: firstCorrect(score),
+        after: (next, previous) => {
+          if (previous.activeBattle?.frame) text.push(previous.activeBattle.frame.text);
+          return next;
+        },
+      });
       return text.join("\n");
     };
     const defeat = transcript(0),

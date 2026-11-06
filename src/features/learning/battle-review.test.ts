@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { battleQuizzes, battles, learningTranslations } from "../../content";
 import { advanceBattle, answerBattle } from "../../domain/battle";
+import { playBattleToResult } from "../../dev/scenario-builders";
 import { enterFreeTime, startEpisode } from "../../domain/chapter";
 import { createGame, validateGameState, type GameState } from "../../domain/game";
 import { startTourismBattle } from "../../domain/tourism";
@@ -41,10 +42,7 @@ describe("review of current battle answers", () => {
   });
 
   it("shows recorded current answers after free time but rejects an unknown content hash", () => {
-    let state = currentBattle();
-    for (let i = 0; state.activeBattle?.phase !== "result" && i < 200; i++)
-      state = state.activeBattle?.phase === "question" ? answer(state) : advanceBattle(state, state.revision);
-    expect(state.activeBattle?.phase).toBe("result");
+    const state = playBattleToResult(currentBattle());
     const active = state.activeBattle!;
     const game = enterFreeTime(state, state.revision);
     const record = { runId: active.runId, contentHash: active.contentHash, answers: active.answers };

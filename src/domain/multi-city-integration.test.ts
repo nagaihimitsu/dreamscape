@@ -1,15 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { effects } from "../content";
 import { loadGame, saveGame, type StorageLike } from "../persistence";
-import { advanceBattle, answerBattle, getActiveBattleContent, getBattleAvailability, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "./battle";
+import { getBattleAvailability, leaveBattle, startBattle } from "./battle";
+import { clearCity, playBattleToResult } from "../dev/scenario-builders";
 import { departToNextCity, getNextCity } from "./city-travel";
-import { getEpisodeAvailability, getNextEpisode, getNextStoryBattle, startEpisode } from "./chapter";
+import { getEpisodeAvailability, startEpisode } from "./chapter";
 import { advanceEncounter, chooseEncounter, finishEncounter, proceedFromTourism, startEncounter } from "./encounter";
 import { startCityEpilogue } from "./epilogue";
 import { createGame, getDateAvailability, startDate, validateGameState, type GameState } from "./game";
 import { installTestCity } from "./multi-city-test-fixture";
 import { openTourism, skipTourismGuide, startTourismBattle } from "./tourism";
-import { beginTravelEvent, finishTravelEventIfComplete, waitForTravel } from "./travel-game";
+import { beginTravelEvent, waitForTravel } from "./travel-game";
 
 class MemoryStorage implements StorageLike {
   private readonly values = new Map<string, string>();
@@ -19,39 +20,11 @@ class MemoryStorage implements StorageLike {
 
 /** Complete real Ink/quiz/reasoning logic, including the saved travel reservation. */
 function finishBattle(initial: GameState): GameState {
-  let state = initial;
-  for (let count = 0; state.activeBattle?.phase !== "result"; count++) {
-    expect(count).toBeLessThan(250);
-    const active = state.activeBattle;
-    if (!active) throw new Error("Expected an active battle");
-    const { battle, quiz } = getActiveBattleContent(active);
-    let next = state;
-    if (active.phase === "reasoning") {
-      for (const clueId of battle.reasoning!.correctClueIds) next = selectReasoningClue(next, clueId, next.revision);
-      next = submitBattleEvidence(next, next.revision);
-    } else if (active.phase === "question") {
-      next = answerBattle(state, quiz.questions[active.roundIndex].correctOptionId, state.revision);
-    } else next = advanceBattle(state, state.revision);
-    expect(next).not.toBe(state);
-    state = finishTravelEventIfComplete(state, next);
-  }
+  const state = playBattleToResult(initial);
   return leaveBattle(state, state.revision);
 }
 
-function finishMilan(): GameState {
-  let state = createGame();
-  for (let count = 0; !state.completedCityIds.includes("milano"); count++) {
-    expect(count).toBeLessThan(20);
-    const special = getNextStoryBattle(state);
-    const episode = getNextEpisode(state);
-    if (!special && !episode) throw new Error("Milan has no next event");
-    state = special ? startBattle(state, special.battleId) : startEpisode(state, episode!.id);
-    if (state.activeTourism?.phase === "guide") state = skipTourismGuide(state, state.revision);
-    if (state.activeTourism) state = startTourismBattle(state, state.revision);
-    state = finishBattle(state);
-  }
-  return state;
-}
+const finishMilan = () => clearCity(createGame());
 
 describe("two registered cities through the real game runtime", () => {
   let cleanup: () => void;

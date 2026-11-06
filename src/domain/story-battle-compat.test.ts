@@ -1,30 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { battles, battleQuizzes, episodes } from "../content";
+import { playBattleToResult, wrongAnswer } from "../dev/scenario-builders";
 import { createGame, validateGameState, type GameState } from "./game";
 import { enterFreeTime, getEpisodeAvailability, getNextStoryBattle, startEpisode } from "./chapter";
 import { skipTourismGuide, startTourismBattle } from "./tourism";
-import { advanceBattle, answerBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "./battle";
+import { advanceBattle, answerBattle, selectReasoningClue, startBattle } from "./battle";
 
 const roundTrip = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
 
-function finish(state: GameState): GameState {
-  for (let step = 0; state.activeBattle?.phase !== "result" && step < 200; step++) {
-    const active = state.activeBattle!;
-    const battle = battles.find((item) => item.id === active.battleId)!;
-    if (active.phase === "reasoning") {
-      for (const clueId of battle.reasoning!.correctClueIds) {
-        if (!state.activeBattle!.reasoning!.selectedClueIds.includes(clueId))
-          state = selectReasoningClue(state, clueId, state.revision);
-      }
-      state = submitBattleEvidence(state, state.revision);
-    } else if (active.phase === "question") {
-      const question = battleQuizzes[battle.quizId].questions[active.roundIndex];
-      state = answerBattle(state, question.options.find((option) => option.id !== question.correctOptionId)!.id, state.revision);
-    } else state = advanceBattle(state, state.revision);
-  }
-  expect(state.activeBattle?.phase).toBe("result");
-  return roundTrip(state);
-}
+/** Correct evidence, wrong answers, then a save/restore round trip. */
+const finish = (state: GameState) => roundTrip(playBattleToResult(state, { answer: wrongAnswer }));
 
 function completeEpisode(state: GameState, episodeId: string): GameState {
   state = startEpisode(state, episodeId);

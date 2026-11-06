@@ -1,12 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { completedDateCount, createGame, validateGameState, type GameState } from "./game";
 import { encounters } from "../content/encounters";
-import { battles, battleQuizzes, responseProfiles } from "../content";
+import { responseProfiles } from "../content";
+import { finishEpisode } from "../dev/scenario-builders";
 import { loadGame, saveGame, type StorageLike } from "../persistence";
 import { startEncounter, startTourismEncounter, chooseEncounter, advanceEncounter, answerEncounterQuiz, finishEncounter, getEncounterAvailability, getEncounterOptionAvailability, validateEncounterState } from "./encounter";
-import { openTourism, startTourismBattle } from "./tourism";
-import { startEpisode } from "./chapter";
-import { advanceBattle, answerBattle, leaveBattle } from "./battle";
+import { openTourism } from "./tourism";
 
 const ready = (): GameState => galleriaReady();
 let completedGalleria: GameState | undefined;
@@ -14,19 +13,7 @@ let completedGalleria: GameState | undefined;
 function galleriaReady(): GameState {
   if (!completedGalleria) {
     let state = createGame();
-    for (const id of ["milano_duomo_episode", "milano_galleria_episode"]) {
-      state = startEpisode(state, id);
-      state = startTourismBattle(state, state.revision);
-      for (let step = 0; state.activeBattle?.phase !== "result" && step < 150; step++) {
-        const active = state.activeBattle!;
-        const battle = battles.find((entry) => entry.id === active.battleId)!;
-        state = active.phase === "question"
-          ? answerBattle(state, battleQuizzes[battle.quizId].questions[active.roundIndex].correctOptionId, state.revision)
-          : advanceBattle(state, state.revision);
-      }
-      expect(state.activeBattle?.phase).toBe("result");
-      state = leaveBattle(state, state.revision);
-    }
+    for (const id of ["milano_duomo_episode", "milano_galleria_episode"]) state = finishEpisode(state, id);
     completedGalleria = validateGameState(state);
   }
   return structuredClone(completedGalleria);

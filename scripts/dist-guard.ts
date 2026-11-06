@@ -32,11 +32,12 @@ export const devOnlyMarkers: readonly DevOnlyMarker[] = [
   // In-memory fixtures shared by unit tests and Debug.
   { text: "仮の場面の元になる都市データがありません", source: "src/domain/multi-city-test-fixture.ts" },
   { text: "test_golden_triangle", source: "src/domain/golden-triangle-test-fixture.ts" },
-  { text: "Could not finish the Duomo guide", source: "tests/fixtures/current-game.ts" },
   // The journey for development and tests only (npm run dev:sample, unit tests);
   // its ID also names its image folder.
   { text: "sample_trip", source: "authoring/templates/sample_trip/manifest.json" },
   // Source paths, as written by source maps and the development JSX transform.
+  // (tests/fixtures/current-game.ts has no text of its own: it calls the scene
+  // builders, whose markers above would show up with it.)
   { text: "src/dev/", source: "src/dev/" },
   { text: "test-fixture", source: "src/domain/multi-city-test-fixture.ts" },
   { text: "tests/fixtures/", source: "tests/fixtures/" },

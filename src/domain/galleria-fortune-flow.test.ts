@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { battleQuizzes, battles } from "../content";
-import { advanceBattle, answerBattle, leaveBattle } from "./battle";
+import { playBattleToResult } from "../dev/scenario-builders";
+import { leaveBattle } from "./battle";
 import { startEpisode } from "./chapter";
 import { advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, finishEncounter, getEncounterAvailability, getTourismEncounterAvailability, proceedFromTourism, startEncounter, startTourismEncounter } from "./encounter";
 import { createGame, validateGameState, type GameState } from "./game";
@@ -10,19 +11,8 @@ const galleria = "galleria_vittorio_emanuele_ii";
 const encounter = "galleria_fortune";
 const restore = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
 
-function finishBattle(initial: GameState): GameState {
-  let state = initial;
-  const battle = battles.find((entry) => entry.id === state.activeBattle?.battleId)!;
-  const quiz = battleQuizzes[battle.quizId];
-  for (let i = 0; state.activeBattle?.phase !== "result" && i < 160; i++) {
-    const active = state.activeBattle!;
-    state = active.phase === "question"
-      ? answerBattle(state, quiz.questions[active.roundIndex].correctOptionId, state.revision)
-      : advanceBattle(state, state.revision);
-  }
-  expect(state.activeBattle?.phase).toBe("result");
-  return restore(state);
-}
+/** The battle played to its result with the real rules, then saved and restored. */
+const finishBattle = (initial: GameState) => restore(playBattleToResult(initial));
 
 /** Reach the second episode through an actual first-play Duomo battle. */
 function enterGalleria(): GameState {

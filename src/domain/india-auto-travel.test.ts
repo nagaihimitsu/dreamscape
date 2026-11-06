@@ -2,51 +2,17 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { effects, getCityContent } from "../content";
 import { loadGame, saveGame, type StorageLike } from "../persistence";
 import { journeyStorage } from "../persistence/journey-storage";
-import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "./battle";
+import { clearCity, wrongAnswer } from "../dev/scenario-builders";
 import { advanceCompletedJourneyCity } from "./city-travel";
-import { getNextEpisode, getNextStoryBattle, startEpisode } from "./chapter";
 import { advanceCityEpilogue } from "./epilogue";
 import { createGame, validateGameState, type GameState } from "./game";
 import { installTestGoldenTriangle } from "./golden-triangle-test-fixture";
-import { skipTourismGuide, startTourismBattle } from "./tourism";
 
 class MemoryStorage implements StorageLike {
   private readonly values = new Map<string, string>();
   getItem(key: string) { return this.values.get(key) ?? null; }
   setItem(key: string, value: string) { this.values.set(key, value); }
   removeItem(key: string) { this.values.delete(key); }
-}
-
-/** Actual game rules with in-memory test city content, never production India stories. */
-function completeCity(initial: GameState, correctAnswers = true): GameState {
-  let state = initial;
-  const cityId = state.currentCityId;
-  for (let count = 0; !state.completedCityIds.includes(cityId); count++) {
-    expect(count).toBeLessThan(20);
-    const special = getNextStoryBattle(state);
-    const episode = getNextEpisode(state);
-    if (!special && !episode) throw new Error("No next fixture event");
-    state = special ? startBattle(state, special.battleId) : startEpisode(state, episode!.id);
-    if (state.activeTourism?.phase === "guide") state = skipTourismGuide(state, state.revision);
-    if (state.activeTourism) state = startTourismBattle(state, state.revision);
-    for (let step = 0; state.activeBattle?.phase !== "result"; step++) {
-      expect(step).toBeLessThan(250);
-      const active = state.activeBattle;
-      if (!active) throw new Error("Expected fixture battle");
-      const { battle, quiz } = getActiveBattleContent(active);
-      if (active.phase === "reasoning") {
-        for (const id of battle.reasoning!.correctClueIds) state = selectReasoningClue(state, id, state.revision);
-        state = submitBattleEvidence(state, state.revision);
-      } else if (active.phase === "question") {
-        const question = quiz.questions[active.roundIndex];
-        const answer = correctAnswers ? question.correctOptionId : question.options.find((option) => option.id !== question.correctOptionId)!.id;
-        state = answerBattle(state, answer, state.revision);
-      }
-      else state = advanceBattle(state, state.revision);
-    }
-    state = leaveBattle(state, state.revision);
-  }
-  return validateGameState(state);
 }
 
 function fixtureStart(cityId: "test_delhi" | "test_jaipur"): GameState {
@@ -62,7 +28,7 @@ describe("automatic India city transition with development-only content", () => 
   afterEach(() => cleanup());
 
   it("reads the epilogue before changing maps, preserving the journey and saving only once", () => {
-    let test_delhi = completeCity(fixtureStart("test_delhi"));
+    let test_delhi = clearCity(fixtureStart("test_delhi"));
     const memory = effects.find((effect) => effect.memoryId)?.memoryId;
     if (!memory) throw new Error("Expected a memory fixture");
     test_delhi = validateGameState({ ...test_delhi, playerName: "主人公", heroineName: "ヒロイン", affection: 3, trust: 2, spark: 1,
@@ -98,7 +64,7 @@ describe("automatic India city transition with development-only content", () => 
     expect(saveGame(storage, test_agra, started).ok).toBe(true);
     expect(loadGame(storage)).toEqual({ status: "loaded", state: test_agra });
 
-    const test_agraComplete = completeCity(test_agra);
+    const test_agraComplete = clearCity(test_agra);
     let test_agraEpilogue = advanceCompletedJourneyCity(test_agraComplete, test_agraComplete.revision);
     expect(test_agraEpilogue.activeEpilogue).not.toBeNull();
     for (let count = 0; !test_agraEpilogue.activeEpilogue?.frame.ended; count++) {
@@ -118,10 +84,10 @@ describe("automatic India city transition with development-only content", () => 
   }, 120_000);
 
   it("reads the ending without switching to an unfinished next city or leaving the final city", () => {
-    const test_delhi = completeCity(fixtureStart("test_delhi"));
+    const test_delhi = clearCity(fixtureStart("test_delhi"));
     getCityContent("test_agra").city.productionStatus = "prototype";
     expect(advanceCompletedJourneyCity(test_delhi, test_delhi.revision).activeEpilogue).not.toBeNull();
-    const test_jaipur = completeCity(fixtureStart("test_jaipur"));
+    const test_jaipur = clearCity(fixtureStart("test_jaipur"));
     expect(advanceCompletedJourneyCity(test_jaipur, test_jaipur.revision - 1)).toBe(test_jaipur);
     for (const completed of [test_delhi, test_jaipur]) {
       let state = advanceCompletedJourneyCity(completed, completed.revision);
@@ -143,13 +109,13 @@ describe("automatic India city transition with development-only content", () => 
   }, 120_000);
 
   it("does not change Milan's completed-city behavior", () => {
-    const milan = completeCity(createGame());
+    const milan = clearCity(createGame());
     expect(milan.currentCityId).toBe("milano");
     expect(advanceCompletedJourneyCity(milan, milan.revision)).toBe(milan);
   }, 120_000);
 
   it("still opens the city ending after a zero-score finale", () => {
-    const completed = completeCity(fixtureStart("test_jaipur"), false);
+    const completed = clearCity(fixtureStart("test_jaipur"), { answer: wrongAnswer });
     expect(completed.battleRecords.find((record) => record.battleId === "test_jaipur_final_battle")?.bestScore).toBe(0);
     const ending = advanceCompletedJourneyCity(completed, completed.revision);
     expect(ending.activeEpilogue).not.toBeNull();

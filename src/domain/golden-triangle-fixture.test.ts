@@ -3,12 +3,11 @@ import { effects, getCityContent, rewardRules } from "../content";
 import { loadGame, saveGame, type StorageLike } from "../persistence";
 import { journeyStorage } from "../persistence/journey-storage";
 import { createDebugState } from "../dev/debug-state";
-import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "./battle";
+import { clearCity } from "../dev/scenario-builders";
 import { departToNextCity, getNextCity } from "./city-travel";
-import { completeRecordedChapter, getNextEpisode, getNextStoryBattle, startEpisode } from "./chapter";
+import { completeRecordedChapter } from "./chapter";
 import { createGame, validateGameState, type GameState } from "./game";
 import { installTestGoldenTriangle } from "./golden-triangle-test-fixture";
-import { skipTourismGuide, startTourismBattle } from "./tourism";
 import { getTravelEventDefinition, sleepAtHotel, waitForTravel } from "./travel-game";
 
 class MemoryStorage implements StorageLike {
@@ -26,33 +25,6 @@ function initialDelhi(): GameState {
     travel: { ...base.travel, currentPlaceId: hotel, hotelPlaceId: hotel } });
 }
 
-function finishCity(initial: GameState, onResult?: (state: GameState) => void): GameState {
-  let state = initial;
-  for (let count = 0; !state.completedCityIds.includes(state.currentCityId); count++) {
-    expect(count).toBeLessThan(20);
-    const special = getNextStoryBattle(state);
-    const episode = getNextEpisode(state);
-    if (!special && !episode) throw new Error("No next fixture event");
-    state = special ? startBattle(state, special.battleId) : startEpisode(state, episode!.id);
-    if (state.activeTourism?.phase === "guide") state = skipTourismGuide(state, state.revision);
-    if (state.activeTourism) state = startTourismBattle(state, state.revision);
-    for (let step = 0; state.activeBattle?.phase !== "result"; step++) {
-      expect(step).toBeLessThan(250);
-      const active = state.activeBattle;
-      if (!active) throw new Error("Expected a fixture battle");
-      const { battle, quiz } = getActiveBattleContent(active);
-      if (active.phase === "reasoning") {
-        for (const clue of battle.reasoning!.correctClueIds) state = selectReasoningClue(state, clue, state.revision);
-        state = submitBattleEvidence(state, state.revision);
-      } else if (active.phase === "question") state = answerBattle(state, quiz.questions[active.roundIndex].correctOptionId, state.revision);
-      else state = advanceBattle(state, state.revision);
-    }
-    onResult?.(state);
-    state = leaveBattle(state, state.revision);
-  }
-  return validateGameState(state);
-}
-
 describe("three-city journey using development-only fixtures", () => {
   let cleanup: () => void;
   beforeEach(() => { cleanup = installTestGoldenTriangle(); });
@@ -65,7 +37,7 @@ describe("three-city journey using development-only fixtures", () => {
     expect(getTravelEventDefinition(initial, "test_delhi_episode")).toBeDefined();
     expect(getTravelEventDefinition(initial, "test_agra_episode")).toBeUndefined();
     expect(getTravelEventDefinition(initial, "milano_duomo_episode")).toBeUndefined();
-    let test_delhi = finishCity(initial);
+    let test_delhi = clearCity(initial);
     const memory = effects.find((entry) => entry.memoryId)?.memoryId;
     if (!memory) throw new Error("Expected a memory fixture");
     test_delhi = validateGameState({ ...test_delhi, playerName: "主人公", heroineName: "ヒロイン", affection: 3, trust: 2, spark: 1,
@@ -84,7 +56,7 @@ describe("three-city journey using development-only fixtures", () => {
     expect(departToNextCity(test_agra, test_delhi.revision)).toBe(test_agra);
     expect(saveGame(storage, test_agra, test_delhi).ok).toBe(true);
     expect(loadGame(storage)).toEqual({ status: "loaded", state: test_agra });
-    const test_agraComplete = finishCity(test_agra);
+    const test_agraComplete = clearCity(test_agra);
     expect(getNextCity(test_agraComplete)?.city.id).toBe("test_jaipur");
     expect(saveGame(storage, test_agraComplete, test_agra).ok).toBe(true);
     expect(loadGame(storage)).toEqual({ status: "loaded", state: test_agraComplete });
@@ -101,11 +73,11 @@ describe("three-city journey using development-only fixtures", () => {
     expect(test_jaipur.completedCityIds).toEqual(["test_delhi", "test_agra"]);
     expect(saveGame(storage, test_jaipur, test_agraComplete).ok).toBe(true);
     expect(loadGame(storage)).toEqual({ status: "loaded", state: test_jaipur });
-    expect(getNextCity(finishCity(test_jaipur))).toBeUndefined();
+    expect(getNextCity(clearCity(test_jaipur))).toBeUndefined();
   }, 120_000);
 
   it("preserves the game weekday when the local day resets on departure", () => {
-    let test_delhi = finishCity(initialDelhi());
+    let test_delhi = clearCity(initialDelhi());
     test_delhi = validateGameState({ ...test_delhi, travel: { ...test_delhi.travel, day: 4,
       calendar: { journeyDay: 4, cityStartJourneyDay: 1, startWeekday: 0 } } });
     const test_agra = departToNextCity(test_delhi, test_delhi.revision);
@@ -123,7 +95,7 @@ describe("three-city journey using development-only fixtures", () => {
     if (!clearReward) throw new Error("Expected fixture city-clear reward");
     clearReward.ap = 4;
     let sawFinale = false;
-    const completed = finishCity(initialDelhi(), (result) => {
+    const completed = clearCity(initialDelhi(), { onResult: (result) => {
       const entry = result.battleRewardReceipt?.entries.find((item) => item.rewardId === clearReward.id);
       if (!result.completedCityIds.includes("test_delhi")) {
         expect(entry).toBeUndefined();
@@ -133,7 +105,7 @@ describe("three-city journey using development-only fixtures", () => {
         expect(entry).toMatchObject({ rewardId: clearReward.id, earnedAp: 4 });
         expect(entry!.creditedAp + entry!.pendingAp).toBe(4);
       }
-    });
+    } });
     expect(sawFinale).toBe(true);
     expect(completed.claimedRewardIds.filter((id) => id === clearReward.id)).toHaveLength(1);
     const storage = new MemoryStorage();

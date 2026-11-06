@@ -1,16 +1,14 @@
 import { describe, expect, it } from "vitest";
 import {
   balance,
-  battleQuizzes,
-  battles,
   episodes,
   rewardRules,
 } from "../content";
+import { firstCorrect, playBattleToResult, readGuide as readWholeGuide } from "../dev/scenario-builders";
 import {
   advanceBattle,
   answerBattle,
   startBattle,
-  advanceTourismGuide,
   createGame,
   startTourismBattle,
   skipTourismGuide,
@@ -45,47 +43,13 @@ function reload(state: GameState): GameState {
   return next;
 }
 function readGuide(state: GameState): GameState {
-  for (
-    let count = 0;
-    state.activeTourism?.phase === "guide" && count < 30;
-    count++
-  ) {
-    state = reload(state);
-    state = advanceTourismGuide(state, state.revision);
-  }
-  expect(state.activeTourism?.phase).toBe("exploring");
-  return reload(state);
+  const read = readWholeGuide(reload(state), { after: (next) => reload(next) });
+  expect(read.activeTourism?.phase).toBe("exploring");
+  return reload(read);
 }
-function finishBattle(state: GameState, score: number): GameState {
-  const quiz =
-    battleQuizzes[
-      battles.find((item) => item.id === state.activeBattle!.battleId)!.quizId
-    ];
-  for (
-    let count = 0;
-    state.activeBattle?.phase !== "result" && count < 150;
-    count++
-  ) {
-    state = reload(state);
-    const active = state.activeBattle!;
-    state =
-      active.phase === "question"
-        ? answerBattle(
-            state,
-            active.roundIndex < score
-              ? quiz.questions[active.roundIndex].correctOptionId
-              : quiz.questions[active.roundIndex].options.find(
-                  (option) =>
-                    option.id !==
-                    quiz.questions[active.roundIndex].correctOptionId,
-                )!.id,
-            state.revision,
-          )
-        : advanceBattle(state, state.revision);
-  }
-  expect(state.activeBattle?.phase).toBe("result");
-  return reload(state);
-}
+/** The first `score` answers correct, saving and restoring every action. */
+const finishBattle = (state: GameState, score: number): GameState =>
+  reload(playBattleToResult(reload(state), { answer: firstCorrect(score), after: (next) => reload(next) }));
 function playDate(
   initial: GameState,
   id: string,
