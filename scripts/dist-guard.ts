@@ -22,7 +22,12 @@ export const devOnlyMarkers: readonly DevOnlyMarker[] = [
   { text: "debug-prototype-preview", source: "src/dev/PrototypePreview.tsx" },
   { text: "preview-costume", source: "src/dev/CharacterPreview.tsx" },
   { text: "人物素材の確認", source: "src/dev/CharacterPreview.tsx" },
-  { text: "到着の会話を完了できませんでした", source: "src/dev/debug-state.ts" },
+  { text: "仮の場面の都市なら data=fixture を付けます", source: "src/dev/debug-state.ts" },
+  // Debug launch URLs, the read-only test hook and the shared scene builders.
+  { text: "?debug だけで設定画面を開いてください", source: "src/dev/debug-query.ts" },
+  { text: "__dreamscapeDebug", source: "src/dev/debug-hook.ts" },
+  { text: "到着の会話を完了できませんでした", source: "src/dev/scenario-builders.ts" },
+  { text: "を結果まで進められませんでした", source: "src/dev/scenario-builders.ts" },
   { text: "制作中の都市ではありません", source: "src/dev/prototype-preview-state.ts" },
   // In-memory fixtures shared by unit tests and Debug.
   { text: "仮の場面の元になる都市データがありません", source: "src/domain/multi-city-test-fixture.ts" },

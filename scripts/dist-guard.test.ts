@@ -1,8 +1,9 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { describeFindings, devOnlyMarkers, findDevOnlyCode, isTextAsset, type DistFile } from "./dist-guard";
+import { runtimeImports } from "./test-sets";
 
 // No content build needed: the markers are checked against the repository's
 // sources and the detection against small in-memory "builds".
@@ -71,5 +72,30 @@ describe("production build guard", () => {
     const report = describeFindings("dist", [finding]);
     expect(report).toContain("本番ビルド（dist）");
     expect(report).toContain("- assets/DebugMode-x1.js の内容に「debug-panel」（目印の由来: src/dev/DebugMode.tsx）");
+  });
+});
+
+/** Game source files that ship: src/ without Debug/preview (src/dev/), tests and in-memory test fixtures. */
+function productionSources(): string[] {
+  return readdirSync(path.join(root, "src"), { recursive: true, encoding: "utf8" })
+    .map((file) => `src/${file.split(path.sep).join("/")}`)
+    .filter((file) => /\.tsx?$/.test(file) && !file.startsWith("src/dev/") && !/\.test\.tsx?$/.test(file) && !file.includes("test-fixture"));
+}
+const devOnlyImport = /(^|\/)dev\/|test-fixture|(^|\/)tests\//;
+
+describe("development-only code in the game's sources", () => {
+  it("is reached only through main.tsx's lazy imports behind import.meta.env.DEV", () => {
+    const sources = productionSources();
+    expect(sources).toContain("src/main.tsx");
+    expect(sources).toContain("src/app/GameApp.tsx");
+    const reached = sources.flatMap((file) => runtimeImports(readFileSync(path.join(root, file), "utf8"))
+      .filter((specifier) => devOnlyImport.test(specifier)).map((specifier) => `${file} → ${specifier}`));
+    expect(reached).toEqual(["src/main.tsx → ./dev/CharacterPreview", "src/main.tsx → ./dev/DebugMode"]);
+    // Each one is the lazy branch of a DEV check, which Vite removes from production builds;
+    // the Debug launch URL (?debug&…) and the test hook live behind it in src/dev/.
+    const main = readFileSync(path.join(root, "src/main.tsx"), "utf8");
+    const guarded = [...main.matchAll(/= import\.meta\.env\.DEV\s*\?\s*React\.lazy\(\(\) => import\("(\.\/dev\/\w+)"\)\)\s*:\s*null;/g)].map((match) => match[1]);
+    expect(guarded.sort()).toEqual(["./dev/CharacterPreview", "./dev/DebugMode"]);
+    expect(main).toMatch(/const query = import\.meta\.env\.DEV \? new URLSearchParams\(window\.location\.search\) : null;/);
   });
 });

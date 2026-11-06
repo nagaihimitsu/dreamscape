@@ -1,150 +1,102 @@
-import { balance, battles, episodes, getCities, getCityContent } from "../content";
-import { createGame, startDate, validateGameState, type GameState } from "../domain/game";
-import { getNextEpisode, getNextStoryBattle, startEpisode } from "../domain/chapter";
-import { openTourism, replayTourismGuide, skipTourismGuide, startTourismBattle } from "../domain/tourism";
-import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "../domain/battle";
-import { startEncounter, startTourismEncounter } from "../domain/encounter";
-import { departToNextCity } from "../domain/city-travel";
+import { battles, dateDestinations, dates, episodes, getCities, getCityContent, landmarks } from "../content";
 import { encounters } from "../content/encounters";
-import { minimumHomeFare } from "../domain/travel-routes";
-import { defaultJourneyId, getJourney, getJourneyForCity } from "../content/journeys";
-import { advanceCityEpilogue, completeArrivalLogo } from "../domain/epilogue";
+import { battleCityId } from "../domain/chapter";
+import { validateGameState, type GameState } from "../domain/game";
+import { defaultJourneyId, getJourney } from "../content/journeys";
+import { debugSceneLabels, debugValueRanges, type DebugQuery, type DebugScene, type DebugSettings } from "./debug-query";
+import {
+  cityStart, completedCity, openBattleScene, openEpilogueScene, openTourismScene, rollTickets,
+  startDateScene, startEncounterScene, withAp, withRelationship,
+} from "./scenario-builders";
 
-export type DebugScene = "tourism" | "battle" | "encounter" | "date";
-export type DebugSettings = {
-  cityId?: string;
-  scene: DebugScene;
-  id: string;
-  progress: "initial" | "completed";
-  ap: number;
-  affection: number;
-  trust: number;
-  spark: number;
-  roll: "positive" | "negative";
-};
+export type { DebugScene, DebugSettings } from "./debug-query";
 
 /** Debug opens the first city of the default journey unless another city is chosen. */
 export const defaultDebugCityId = getJourney(defaultJourneyId)!.cities[0].id;
 
-const completedByCity = new Map<string, GameState>();
+export type DebugTarget = { id: string; name: string };
 
-/** Prepare linked earlier cities through the same progress and departure rules. */
-function startingCity(cityId: string, visited = new Set<string>()): GameState {
-  if (visited.has(cityId)) throw new Error("都市の出発先が循環しています。");
-  const chain = new Set(visited).add(cityId);
-  const previous = getCities().find((item) => item.nextCityId === cityId && item.productionStatus === "complete");
-  if (previous) {
-    const completed = completedJourney(previous.id, chain);
-    const departed = departToNextCity(completed, completed.revision);
-    if (departed.currentCityId !== cityId) throw new Error("前の街から出発できませんでした。");
-    // Debug opens the requested scene directly, but still settles the welcome
-    // through its real, effect-free transitions rather than deleting a snapshot.
-    let ready = completeArrivalLogo(departed, departed.revision);
-    for (let line = 0; ready.activeEpilogue?.kind === "arrival"; line++) {
-      if (line > 50) throw new Error("到着の会話を完了できませんでした。");
-      ready = advanceCityEpilogue(ready, ready.revision);
-    }
-    return ready;
-  }
-  const base = createGame();
-  const { travelSettings } = getCityContent(cityId);
-  const journey = getJourneyForCity(cityId);
-  const initial = journey?.initialState;
-  return { ...base, currentCityId: cityId, travelBudget: journey?.initialBudget ?? travelSettings.initialBudget,
-    ap: initial?.ap ?? base.ap, affection: initial?.affection ?? base.affection,
-    trust: initial?.trust ?? base.trust, spark: initial?.spark ?? base.spark,
-    romanceStage: initial?.romanceStage ?? base.romanceStage, confessionStatus: initial?.confessionStatus ?? base.confessionStatus,
-    travel: { ...base.travel, currentPlaceId: travelSettings.hotelPlaceId, hotelPlaceId: travelSettings.hotelPlaceId,
-      ...(journey?.startWeekday === undefined ? {} : { calendar: { journeyDay: 1, cityStartJourneyDay: 1, startWeekday: journey.startWeekday } }) } };
+/** What each scene of the settings screen can open in a city. */
+export function debugTargets(cityId: string): Record<DebugScene, DebugTarget[]> {
+  const { city, travel } = getCityContent(cityId);
+  return {
+    tourism: landmarks.filter((item) => item.cityId === cityId).map((item) => ({ id: item.id, name: item.nameJa })),
+    battle: battles.filter((item) => battleCityId(item.id) === cityId).map((item) => ({ id: item.id, name: item.titleJa })),
+    encounter: encounters.encounters.filter((item) => item.cityId === cityId && item.availability !== "dormant").map((item) => ({ id: item.id, name: item.titleJa })),
+    date: dates.filter((item) => item.kind === "normal" && travel.events.some((event) => event.id === item.id)).map((item) => ({ id: item.id, name: item.titleJa })),
+    epilogue: episodes.filter((item) => item.cityId === cityId && item.kind === "city_finale" && item.epilogueStoryId)
+      .map((item) => ({ id: item.id, name: `${city.nameJa}のエピローグ` })),
+  };
 }
 
-/** Generate a consistent completed journey using the actual game rules. */
-function completedJourney(cityId: string, visited = new Set<string>()): GameState {
-  if (visited.has(cityId)) throw new Error("都市の出発先が循環しています。");
-  const cached = completedByCity.get(cityId);
-  if (cached) return cached;
-  let state = startingCity(cityId, visited);
-  for (let count = 0; !state.completedCityIds.includes(cityId); count++) {
-    if (count > 30) throw new Error("旅の準備を完了できませんでした。");
-    const special = getNextStoryBattle(state);
-    const episode = getNextEpisode(state);
-    if (!special && !episode) throw new Error("次の旅が見つかりません。");
-    state = special ? startBattle(state, special.battleId) : startEpisode(state, episode!.id);
-    if (state.activeTourism?.phase === "guide") state = skipTourismGuide(state, state.revision);
-    if (state.activeTourism) state = startTourismBattle(state, state.revision);
-    for (let step = 0; state.activeBattle?.phase !== "result"; step++) {
-      if (!state.activeBattle || step > 250) throw new Error("バトルの準備を完了できませんでした。");
-      const active = state.activeBattle;
-      const { battle, quiz } = getActiveBattleContent(active);
-      if (active.phase === "reasoning") {
-        for (const id of battle.reasoning!.correctClueIds) state = selectReasoningClue(state, id, state.revision);
-        state = submitBattleEvidence(state, state.revision);
-      } else if (active.phase === "question") {
-        state = answerBattle(state, quiz.questions[active.roundIndex].correctOptionId, state.revision);
-      } else state = advanceBattle(state, state.revision);
-    }
-    state = leaveBattle(state, state.revision);
+/** The settings screen's starting values for a city. */
+export function defaultDebugSettings(cityId = defaultDebugCityId): DebugSettings {
+  return { cityId, scene: "tourism", id: debugTargets(cityId).tourism[0]?.id ?? "", progress: "completed",
+    ap: debugValueRanges.ap[1], affection: 0, trust: 0, spark: 0, roll: "positive" };
+}
+
+export type DebugLaunch = { kind: "scene"; settings: DebugSettings } | { kind: "map"; cityId: string };
+
+/** Check a launch URL against the content and fill the omitted values; throws a message for the person. */
+export function resolveDebugLaunch(query: DebugQuery): DebugLaunch {
+  const cityId = query.cityId ?? defaultDebugCityId;
+  const city = getCities().find((item) => item.id === cityId);
+  if (!city) throw new Error(`都市「${cityId}」は登録されていません。${query.dataMode === "fixture" ? "" : "仮の場面の都市なら data=fixture を付けます。"}`);
+  const prototype = city.productionStatus === "prototype";
+  if (query.scene === "map") {
+    if (!prototype) throw new Error(`地図・交通の確認（scene=map）は制作中の都市だけで使えます。${city.nameJa}では観光・バトルなどの場面を指定してください。`);
+    return { kind: "map", cityId };
   }
-  const complete = validateGameState(state);
-  completedByCity.set(cityId, complete);
-  return complete;
+  if (prototype) throw new Error(`${city.nameJa}は制作中の都市で、物語・クイズはまだありません。地図・交通は scene=map で確認できます。`);
+  const label = debugSceneLabels[query.scene];
+  const targets = debugTargets(cityId)[query.scene];
+  if (!targets.length) throw new Error(`${city.nameJa}には「${label}」の場面がありません。`);
+  const id = query.target ?? targets[0].id;
+  if (!targets.some((item) => item.id === id)) throw new Error(`「${id}」は${city.nameJa}の「${label}」にありません。`);
+  const defaults = defaultDebugSettings(cityId);
+  return { kind: "scene", settings: { ...defaults, scene: query.scene, id,
+    progress: query.progress ?? defaults.progress, ap: query.ap ?? defaults.ap, affection: query.affection ?? defaults.affection,
+    trust: query.trust ?? defaults.trust, spark: query.spark ?? defaults.spark, roll: query.roll ?? defaults.roll } };
+}
+
+const completedByCity = new Map<string, GameState>();
+
+/** Debug reuses a city's cleared state while it stays open (about 0.1 s per city to build). */
+function completedJourney(cityId: string): GameState {
+  const cached = completedByCity.get(cityId) ?? completedCity(cityId);
+  completedByCity.set(cityId, cached);
+  return cached;
 }
 
 /** Build only states the real game functions can start; never alter player data. */
 export function createDebugState(settings: DebugSettings): GameState {
   const cityId = settings.cityId ?? defaultDebugCityId;
-  const base = settings.progress === "initial" ? startingCity(cityId) : completedJourney(cityId);
-  let state: GameState = {
-    ...base,
-    // The requested AP value is the whole debug balance; retained pending
-    // credits would otherwise be paid immediately after a date starts.
-    pendingApRewards: [],
-    ap: Math.min(balance.apCap, Math.max(0, settings.ap)),
-    affection: settings.affection,
-    trust: settings.trust,
-    spark: settings.spark,
-  };
-  const { travel } = getCityContent(cityId);
+  if (settings.scene === "epilogue" && settings.progress === "initial")
+    throw new Error("エピローグは都市クリア後に開けます。旅の進行を「都市クリア後」にしてください。");
+  const base = settings.progress === "initial" ? cityStart(cityId) : completedJourney(cityId);
+  const state = withRelationship(withAp(base, settings.ap), settings);
+  const ticket = rollTickets[settings.roll];
+  switch (settings.scene) {
+    case "tourism": return openTourismScene(state, settings.id);
+    case "battle": return openBattleScene(state, settings.id);
+    case "encounter": return startEncounterScene(state, settings.id, ticket);
+    case "date": return startDateScene(state, settings.id, ticket);
+    case "epilogue": {
+      if (!episodes.some((item) => item.id === settings.id && item.cityId === cityId && item.kind === "city_finale"))
+        throw new Error(`「${settings.id}」は${getCityContent(cityId).city.nameJa}のフィナーレではありません。`);
+      return validateGameState(openEpilogueScene(state));
+    }
+  }
+}
+
+/** Where the scene starts, for the Debug bar: the landmark, the date's destination or the city. */
+export function debugSceneLocation(settings: DebugSettings, state: GameState): string {
   const landmarkId = settings.scene === "tourism" ? settings.id
     : settings.scene === "battle" ? battles.find((item) => item.id === settings.id)?.landmarkId
       : settings.scene === "encounter" ? encounters.encounters.find((item) => item.id === settings.id)?.landmarkId
         : undefined;
-  const eventId = settings.scene === "battle"
-    ? episodes.find((item) => item.cityId === cityId && item.battleId === settings.id)?.id ?? settings.id
-    : settings.scene === "date" ? settings.id : undefined;
-  const event = travel.events.find((item) => item.id === eventId);
-  const place = travel.places.find((item) => item.id === event?.placeId) ??
-    travel.places.find((item) => landmarkId && item.landmarkIds?.includes(landmarkId));
-  if (!place) throw new Error("この街に場面の地点が見つかりません。");
-  const returnReserve = minimumHomeFare(travel.routes, place.id, state.travel.hotelPlaceId, state.travel.minute);
-  if (returnReserve === undefined || returnReserve > state.travelBudget)
-    throw new Error("この地点から滞在先への帰路を確認できません。");
-  state = { ...state, travel: { ...state.travel, currentPlaceId: place.id, returnReserve } };
-  const nextRoll = () => settings.roll === "positive" ? 0 : 9999;
-  switch (settings.scene) {
-    case "tourism":
-      state = openTourism(state, settings.id);
-      if (state.activeTourism?.phase === "exploring") state = replayTourismGuide(state, state.revision);
-      if (!state.activeTourism) throw new Error("この進行状態では場所を開けません。都市クリア後を選んでください。");
-      break;
-    case "battle":
-      state = startBattle(state, settings.id);
-      if (!state.activeBattle) throw new Error("この進行状態ではバトルを始められません。");
-      break;
-    case "encounter": {
-      const encounter = encounters.encounters.find((item) => item.id === settings.id && item.cityId === cityId);
-      if (encounter?.availability === "tourism") {
-        state = openTourism(state, encounter.landmarkId);
-        if (state.activeTourism?.phase === "guide") state = skipTourismGuide(state, state.revision);
-        state = startTourismEncounter(state, settings.id, state.revision, nextRoll);
-      } else state = startEncounter(state, settings.id, nextRoll);
-      if (!state.activeEncounter) throw new Error("この進行状態では交流を始められません。必要な進行や品物を確認してください。");
-      break;
-    }
-    case "date":
-      state = startDate(state, settings.id, nextRoll);
-      if (!state.activeDate) throw new Error("この進行状態ではデートを始められません。APや解放条件を確認してください。");
-      break;
-  }
-  return validateGameState(state);
+  const destinationId = settings.scene === "date" ? dates.find((item) => item.id === settings.id)?.destinationId : undefined;
+  return landmarks.find((item) => item.id === landmarkId)?.nameJa ??
+    dateDestinations.find((item) => item.id === destinationId)?.nameJa ??
+    getCityContent(state.currentCityId).city.nameJa;
 }
