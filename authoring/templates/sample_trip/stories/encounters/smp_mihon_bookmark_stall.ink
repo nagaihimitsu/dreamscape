@@ -17,7 +17,7 @@ VAR player_address = ""
     リリはいちばん針のまっすぐな一枚を選んで、こちらの手のひらにのせた。
     # speaker: heroine
     # emotion: smile
-    「選んでくれたんだ。……わたしのより、まっすぐかも」
+    「いちばんまっすぐなのを選んでくれたね。わたしが描いたら、絶対曲がる」
     -> END
 * [Did you draw these yourself? # option: drawn # translation: これ、自分で描いたの？]
     # speaker: narrator
