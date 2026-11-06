@@ -69,6 +69,10 @@
         {
           "word": "invitations",
           "meaning": "招待状"
+        },
+        {
+          "word": "any time",
+          "meaning": "いつでも"
         }
       ],
       "hintJa": "この街の誘いの言葉を思い出す。",
@@ -92,7 +96,7 @@
       "options": [
         {
           "id": "A",
-          "textEn": "The town kept the clock stopped on purpose."
+          "textEn": "The town kept the clock at three on purpose."
         },
         {
           "id": "B",
@@ -108,6 +112,10 @@
         {
           "word": "on purpose",
           "meaning": "わざと"
+        },
+        {
+          "word": "kept",
+          "meaning": "（〜のまま）にしておいた"
         }
       ],
       "hintJa": "鐘は直していたのに、時計は直していない。",

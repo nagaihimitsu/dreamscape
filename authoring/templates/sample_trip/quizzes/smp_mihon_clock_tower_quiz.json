@@ -6,11 +6,11 @@
   "questions": [
     {
       "id": "smp_mihon_clock_tower_q1",
-      "questionEn": "The clock stopped long ago. What did the town do?",
+      "questionEn": "The clock broke long ago. What did the town do?",
       "options": [
         {
           "id": "A",
-          "textEn": "They left it at three."
+          "textEn": "They kept it at three."
         },
         {
           "id": "B",
@@ -24,8 +24,8 @@
       "correctOptionId": "A",
       "vocabularyJa": [
         {
-          "word": "left",
-          "meaning": "そのままにした"
+          "word": "kept",
+          "meaning": "（〜のまま）にしておいた"
         }
       ],
       "hintJa": "塔の針は今も止まったまま。",

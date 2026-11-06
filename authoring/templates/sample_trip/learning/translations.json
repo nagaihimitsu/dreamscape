@@ -3,11 +3,11 @@
   "questions": {
     "smp_mihon_clock_tower_q1": {
       "source": {
-        "questionEn": "The clock stopped long ago. What did the town do?",
+        "questionEn": "The clock broke long ago. What did the town do?",
         "options": [
           {
             "id": "A",
-            "textEn": "They left it at three."
+            "textEn": "They kept it at three."
           },
           {
             "id": "B",
@@ -20,9 +20,9 @@
         ],
         "correctOptionId": "A"
       },
-      "questionJa": "時計はずっと前に止まった。街はどうした？",
+      "questionJa": "時計はずっと前に壊れた。街はどうした？",
       "optionsJa": {
-        "A": "三時のまま残した。",
+        "A": "三時のままにしておいた。",
         "B": "新しい塔を建てた。",
         "C": "時計を市場へ移した。"
       }
@@ -215,7 +215,7 @@
         "options": [
           {
             "id": "A",
-            "textEn": "The town kept the clock stopped on purpose."
+            "textEn": "The town kept the clock at three on purpose."
           },
           {
             "id": "B",
@@ -230,7 +230,7 @@
       },
       "questionJa": "日誌と招待状を合わせると、何が分かる？",
       "optionsJa": {
-        "A": "街はわざと時計を止めたままにした。",
+        "A": "街はわざと時計を三時のままにしておいた。",
         "B": "時計は直すには高すぎた。",
         "C": "誰も時計に気づかなかった。"
       }
@@ -241,7 +241,7 @@
         "options": [
           {
             "id": "A",
-            "textEn": "The stopped time became a promise."
+            "textEn": "Three o'clock became a promise."
           },
           {
             "id": "B",
@@ -256,7 +256,7 @@
       },
       "questionJa": "なぜ街は昔、時計を直さなかった？",
       "optionsJa": {
-        "A": "止まった時刻が約束になったから。",
+        "A": "三時という時刻が約束になったから。",
         "B": "誰も塔に登れなかったから。",
         "C": "部品が古すぎたから。"
       }

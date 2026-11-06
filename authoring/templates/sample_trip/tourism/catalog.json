@@ -249,7 +249,7 @@
       "landmarkId": "mihon_library",
       "kind": "document",
       "titleJa": "閉館の合図",
-      "descriptionJa": "図書室は今も、夕方の鐘の音で閉館する。",
+      "descriptionJa": "図書室は今も、司書が手を三度たたいて閉館を知らせる。",
       "factId": "smp_fact_mihon_library_hours",
       "relatedQuestionIds": [],
       "region": null,
@@ -260,7 +260,7 @@
           "url": "https://example.com/dreamscape-sample",
           "checkedAt": "2026-11-06",
           "claimType": "legend",
-          "claimJa": "見本用の架空の資料：図書室は今も、夕方の鐘の音で閉館する。"
+          "claimJa": "見本用の架空の資料：図書室は今も、司書が手を三度たたいて閉館を知らせる。"
         }
       ]
     }

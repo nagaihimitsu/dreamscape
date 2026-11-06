@@ -12,7 +12,7 @@
       "options": [
         {
           "id": "A",
-          "textEn": "The stopped time became a promise."
+          "textEn": "Three o'clock became a promise."
         },
         {
           "id": "B",
@@ -28,6 +28,10 @@
         {
           "word": "promise",
           "meaning": "約束"
+        },
+        {
+          "word": "parts",
+          "meaning": "部品"
         }
       ],
       "hintJa": "「三時に会おう」の意味を思い出す。",
