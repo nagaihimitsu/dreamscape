@@ -7,7 +7,7 @@ import { cityLayer, displayPath, loadContentSources, readJourneyCatalog, type Co
 import type { MergedKind } from "./content-layout";
 import { createParentDirectories, removeCreatedDirectories } from "./created-directories";
 
-export const decisionFile = "authoring/research/golden-triangle-transit-20261103/decisions.json";
+export const decisionFile = "authoring/journeys/golden_triangle/research/golden-triangle-transit-20261103/decisions.json";
 /** The catalogs a city bundle edits, written to the layer that owns the city. */
 export const bundleCatalogKinds = ["romance/presentation.json", "tourism/catalog.json", "romance/date_destinations.json"] as const satisfies readonly MergedKind[];
 /** Root-relative posix directory of a content layer: `content` or `content/journeys/<journeyId>`. */

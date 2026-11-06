@@ -117,10 +117,10 @@ npm run city:bundle -- apply artifacts/city-work/sample-city.json
 
 - 旅行編の都市順、通貨、開始予算などの共通設定は、都市ごとの作業コピーとは別途、旅行編ごとの `content/journeys/<旅行編ID>/manifest.json` で管理します。
 - シナリオのInk、クイズ、日本語訳、登場人物、各デートの思い出、都市フィナーレなどの制作と登録は別途必要です。単に都市データを反映するだけでは、プレイできる完成都市にはなりません。
-- インド編には既存の[制作補助](india-scaffold/README.md)と[完成確認・公開手順](drafts/golden-triangle/RELEASE_GATE.md)があります。シナリオ・クイズとそのメタデータ・訳を用意したうえで、生成・検証できます。特殊戦B・Cは現行の制作補助では自動設定されず、別途制作・登録が必要です。
+- インド編には既存の[制作補助](journeys/golden_triangle/scaffold/README.md)と[完成確認・公開手順](journeys/golden_triangle/drafts/RELEASE_GATE.md)があります。シナリオ・クイズとそのメタデータ・訳を用意したうえで、生成・検証できます。特殊戦B・Cは現行の制作補助では自動設定されず、別途制作・登録が必要です。
 - 都市や旅行編を公開可能にする判断と検証は、この編集操作とは別です。未完成の都市が本番でプレイ可能と表示されないよう、制作状態を維持します。
 
-調査資料として残すファイルと、現在のゲームに反映済みの値は一致しないことがあります。特に `authoring/drafts/golden-triangle/cities/` と `travel/` は古い研究由来の生成ドラフトで、現在の交通や入場料の正本ではありません。編集用コピーの代わりにそのドラフトを本番データへ上書きしないでください。同じ旅行編の `scenario/` には今回の脚本・クイズの制作記録を置き、実行用Inkの正本は `content/journeys/golden_triangle/stories/` にまとめています。
+調査資料として残すファイルと、現在のゲームに反映済みの値は一致しないことがあります。特に `authoring/journeys/golden_triangle/drafts/cities/` と `travel/` は古い研究由来の生成ドラフトで、現在の交通や入場料の正本ではありません。編集用コピーの代わりにそのドラフトを本番データへ上書きしないでください。同じ旅行編の `scenario/` には今回の脚本・クイズの制作記録を置き、実行用Inkの正本は `content/journeys/golden_triangle/stories/` にまとめています。
 
 ## ウズベキスタン4都市
 
@@ -128,4 +128,4 @@ npm run city:bundle -- apply artifacts/city-work/sample-city.json
 
 ## ルアンパパーン
 
-`npm run city:bundle -- export luang_prabang artifacts/city-work/laos-luang-prabang.json` で編集できます。市街地の観光候補・写真・徒歩と車の推定経路を登録し、旅行編は制作中です。根拠・交通の採否・未制作項目は[調査記録](research/luang-prabang-20261104/README.md)を参照してください。クァンシーの滝と将来のツアー機能は含まれていません。
+`npm run city:bundle -- export luang_prabang artifacts/city-work/laos-luang-prabang.json` で編集できます。市街地の観光候補・写真・徒歩と車の推定経路を登録し、旅行編は制作中です。根拠・交通の採否・未制作項目は[調査記録](journeys/luang_prabang/research/luang-prabang-20261104/README.md)を参照してください。クァンシーの滝と将来のツアー機能は含まれていません。

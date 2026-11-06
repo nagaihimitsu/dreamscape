@@ -37,8 +37,8 @@
   "intercityModes": [],
   "authoring": {
     "eventPrefix": "lpb",
-    "observationFile": "authoring/drafts/luang-prabang/observation-cards.json",
+    "observationFile": "authoring/journeys/luang_prabang/drafts/observation-cards.json",
     "imageDirectory": "assets/tourism/luang_prabang",
-    "transitDirectory": "authoring/research/luang-prabang-20261104"
+    "transitDirectory": "authoring/journeys/luang_prabang/research/luang-prabang-20261104"
   }
 }

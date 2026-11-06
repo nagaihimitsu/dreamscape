@@ -1,4 +1,4 @@
-// 現在のミラノ編のカフェデート（content/stories/milano/sound_cafe_01.ink）の記入例。編集後は npm run content:check を実行。
+// 現在のミラノ編のカフェデート（content/journeys/milano/stories/milano/sound_cafe_01.ink）の記入例。編集後は npm run content:check を実行。
 // 最初の3択は共通効果 common_date_first_*、2回目は固有効果と思い出を使う例。
 // プログラム側で player_name, heroine_name, player_address などを現在の値に差し替える。
 VAR player_name = ""

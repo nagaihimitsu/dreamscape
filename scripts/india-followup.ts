@@ -30,9 +30,9 @@ export type IndiaFollowupInput = { venues: unknown; access: unknown; transit: un
 
 export function readIndiaFollowup(root: string): IndiaFollowupInput {
   const read = (name: string): unknown => JSON.parse(readFileSync(path.join(root, name), "utf8"));
-  const base = "authoring/research/golden-triangle-followup-20261103";
+  const base = "authoring/journeys/golden_triangle/research/golden-triangle-followup-20261103";
   return { venues: read(`${base}/venues.json`), access: read(`${base}/access.json`), transit: read(`${base}/transit.json`),
-    images: read(`${base}/images.json`), places: read("authoring/research/golden-triangle-20261103/source/data/ALL_LOCATIONS.json") };
+    images: read(`${base}/images.json`), places: read("authoring/journeys/golden_triangle/research/golden-triangle-20261103/source/data/ALL_LOCATIONS.json") };
 }
 
 export function validateIndiaFollowup(input: IndiaFollowupInput): { venues: number; access: number; transit: number; images: number; alternatives: number } {

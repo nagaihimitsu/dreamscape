@@ -5,8 +5,8 @@ import { cityContents } from "../src/content";
 import { getJourney } from "../src/content/journeys";
 import { readResearchCsv as csv } from "./india-research-csv";
 
-const research = path.resolve("authoring/research/golden-triangle-all-research-20261103/source");
-const earlier = path.resolve("authoring/research/golden-triangle-20261103/source");
+const research = path.resolve("authoring/journeys/golden_triangle/research/golden-triangle-all-research-20261103/source");
+const earlier = path.resolve("authoring/journeys/golden_triangle/research/golden-triangle-20261103/source");
 const json = (base: string, file: string) => JSON.parse(readFileSync(path.join(base, file), "utf8"));
 
 describe("India research integration boundaries", () => {

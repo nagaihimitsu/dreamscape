@@ -32,7 +32,7 @@ export function readIndiaTransitReview(root: string): IndiaTransitReviewInput {
   const read = (file: string): unknown => JSON.parse(readFileSync(path.resolve(root, file), "utf8"));
   const sources = loadContentSources(root);
   return { catalogs: Object.fromEntries(indiaTransitCities.map((city) => [city, read(requireCity(sources, city).travelFile)])) as Record<CityId, unknown>,
-    decisions: read("authoring/research/golden-triangle-transit-20261103/decisions.json") };
+    decisions: read("authoring/journeys/golden_triangle/research/golden-triangle-transit-20261103/decisions.json") };
 }
 
 /** An absent decision is explicitly unresearched, never evidence of no service. */

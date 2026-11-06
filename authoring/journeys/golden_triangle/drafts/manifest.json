@@ -15,19 +15,19 @@
     "mainTourismCount": 4,
     "dateCount": 6
   },
-  "source": "authoring/research/golden-triangle-20261103/source",
-  "latestResearch": "authoring/research/golden-triangle-all-research-20261103/source/canonical",
+  "source": "authoring/journeys/golden_triangle/research/golden-triangle-20261103/source",
+  "latestResearch": "authoring/journeys/golden_triangle/research/golden-triangle-all-research-20261103/source/canonical",
   "followupResearch": [
-    "authoring/research/golden-triangle-followup-20261103/venues.json",
-    "authoring/research/golden-triangle-followup-20261103/access.json",
-    "authoring/research/golden-triangle-followup-20261103/transit.json",
-    "authoring/research/golden-triangle-followup-20261103/images.json"
+    "authoring/journeys/golden_triangle/research/golden-triangle-followup-20261103/venues.json",
+    "authoring/journeys/golden_triangle/research/golden-triangle-followup-20261103/access.json",
+    "authoring/journeys/golden_triangle/research/golden-triangle-followup-20261103/transit.json",
+    "authoring/journeys/golden_triangle/research/golden-triangle-followup-20261103/images.json"
   ],
   "warnings": [
     "候補イベント・背景IDは実コンテンツ未接続。クリア条件として使わない。",
     "firstClearRewardは旧互換episode_clear用の0 AP仮欄で、本来の初回報酬は未決定。都市クリア4APは別のcity_clear報酬。",
     "座標は入口の実測ではない。営業時間はゲーム試作で現地開館時刻ではない。",
     "タクシーは2人分のゲーム推定。異地点の徒歩は未検証のため出力しない。",
-    "この制作ドラフトには画像を含みません。登録済み画像の出典と利用条件は content/tourism/catalog.json を確認してください。"
+    "この制作ドラフトには画像を含みません。登録済み画像の出典と利用条件は content/journeys/golden_triangle/tourism/catalog.json を確認してください。"
   ]
 }

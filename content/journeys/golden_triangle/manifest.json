@@ -46,7 +46,7 @@
   "farePartySize": 2,
   "authoring": {
     "eventPrefix": "gt",
-    "observationFile": "authoring/drafts/golden-triangle/observation-cards.json",
+    "observationFile": "authoring/journeys/golden_triangle/drafts/observation-cards.json",
     "imageDirectory": "assets/tourism/india"
   }
 }

@@ -24,7 +24,7 @@ function fixture(): string {
     cpSync(path.join(process.cwd(), directory), path.join(root, directory), { recursive: true });
   }
   const extraFiles = [...[...journeyAuthoringProfiles(process.cwd()).values()].map((profile) => profile.observationFile),
-    "authoring/research/golden-triangle-transit-20261103/decisions.json",
+    "authoring/journeys/golden_triangle/research/golden-triangle-transit-20261103/decisions.json",
     ...allCities.map((cityId) => cityTransitFile(process.cwd(), cityId)).filter((file): file is string => !!file)];
   for (const file of extraFiles) {
     if (!existsSync(path.join(process.cwd(), file))) continue;
@@ -157,7 +157,7 @@ describe("city editing bundle", () => {
   it("round-trips compact city routes without changing direction, order, sources or transit reviews", async () => {
     const root = fixture();
     const before = fingerprint(root);
-    const decisionFile = "authoring/research/golden-triangle-transit-20261103/decisions.json";
+    const decisionFile = "authoring/journeys/golden_triangle/research/golden-triangle-transit-20261103/decisions.json";
     const decisions = read(root, decisionFile);
     for (const cityId of allCities) {
       const file = cityPaths(root, cityId).travel;
@@ -293,7 +293,7 @@ describe("city editing bundle", () => {
 
   it("rejects stale edits after unrelated content or image changes without writing", async () => {
     const root = fixture();
-    for (const file of [cityPaths(root, "agra").city, "assets/tourism/india/agra_taj_mahal.jpg", "authoring/research/golden-triangle-transit-20261103/decisions.json"]) {
+    for (const file of [cityPaths(root, "agra").city, "assets/tourism/india/agra_taj_mahal.jpg", "authoring/journeys/golden_triangle/research/golden-triangle-transit-20261103/decisions.json"]) {
       const bundle = exportCityBundle(root, "delhi");
       const target = file.startsWith("assets/") ? resolvePublicFile(root, file) : path.join(root, file);
       const original = readFileSync(target);
@@ -346,9 +346,9 @@ describe("city editing bundle", () => {
     await expect(applyCityBundle(root, unreviewed, true)).rejects.toThrow(/undecided/i);
     expect(fingerprint(root)).toBe(before);
     bundle.transitDecisions = decisions.filter((item) => item !== decision);
-    const original = readJson(root, "authoring/research/golden-triangle-transit-20261103/decisions.json");
+    const original = readJson(root, "authoring/journeys/golden_triangle/research/golden-triangle-transit-20261103/decisions.json");
     await applyCityBundle(root, bundle, true);
-    const updated = readJson(root, "authoring/research/golden-triangle-transit-20261103/decisions.json");
+    const updated = readJson(root, "authoring/journeys/golden_triangle/research/golden-triangle-transit-20261103/decisions.json");
     expect(updated.decisions.filter((item: { cityId: string }) => item.cityId !== "delhi"))
       .toEqual(original.decisions.filter((item: { cityId: string }) => item.cityId !== "delhi"));
     expect(updated.decisions.some((item: { cityId: string; fromPlaceId: string; toPlaceId: string; mode: string }) =>
@@ -557,7 +557,7 @@ describe("city editing bundle", () => {
       const untouched = cities.filter((id) => id !== cityId).flatMap((id) => cityFiles(root, id));
       const before = Object.fromEntries(untouched.map((file) => [file, read(root, file)]));
       const sharedFiles = [...catalogFiles(root, ["tourism/catalog.json", "romance/presentation.json", "romance/date_destinations.json"]),
-        "authoring/research/golden-triangle-transit-20261103/decisions.json"];
+        "authoring/journeys/golden_triangle/research/golden-triangle-transit-20261103/decisions.json"];
       const sharedBefore = Object.fromEntries(sharedFiles.map((file) => [file, read(root, file)]));
       const bundle = exportCityBundle(root, cityId);
       bundle.travelSettings.notes += " 都市ごとの編集検証。";

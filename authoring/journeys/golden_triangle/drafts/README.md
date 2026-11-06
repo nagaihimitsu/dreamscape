@@ -18,7 +18,7 @@
 
 ## 情報源と再生成
 
-都市・地点・イベント候補とタクシー推定は[前回統合資料](../../research/golden-triangle-20261103/README.md)、代表点とゲーム用時間枠は[全調査統合版](../../research/golden-triangle-all-research-20261103/README.md)を使用しています。新たな追加調査は `authoring/research/golden-triangle-followup-20261103/` も参照してください。原本は編集せず、追加調査と必要な制作判断を確認してから生成元を更新します。
+都市・地点・イベント候補とタクシー推定は[前回統合資料](../research/golden-triangle-20261103/README.md)、代表点とゲーム用時間枠は[全調査統合版](../research/golden-triangle-all-research-20261103/README.md)を使用しています。新たな追加調査は `authoring/journeys/golden_triangle/research/golden-triangle-followup-20261103/` も参照してください。原本は編集せず、追加調査と必要な制作判断を確認してから生成元を更新します。
 
 追補 `venues.json`・`access.json` の各地点の出典は、主張と確認日を保ったまま対応する `places[].sources` に自動で引用します。同一の出典と主張は一度だけ載せ、同じURLの異なる主張は保持します。矛盾する情報や時限的な状況を `openingWindows`、座標、料金などのゲーム値へ自動適用するものではありません。追補の条件・確度を確認してから制作上の値を選んでください。
 

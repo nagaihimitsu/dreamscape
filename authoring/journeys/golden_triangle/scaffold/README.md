@@ -2,13 +2,13 @@
 
 このツールは、既存の旅行地点と検証済み観察カードを正本として、公開時に必要なカタログの機械的な部分を組み立てる。脚本、クイズ、人物、根拠や回答は作らない。未制作都市を公開可能にする操作でもない。
 
-現在はデリー・アーグラ・ジャイプールの3都市を登録済み。脚本48本、クイズ51問、デート18件、都市フィナーレ3件の構成は [制作記録](../drafts/golden-triangle/scenario/README.md) にまとめている。以後のInkの正本は `content/journeys/golden_triangle/stories/`、クイズは `content/journeys/golden_triangle/quizzes/`、定義は同じフォルダの各カタログ。下記は初期登録の手順であり、保存してある `narrative.json` を更新しても登録済み都市へ自動同期はしない。登録状態の `available` とWebサイトへのデプロイは別。
+現在はデリー・アーグラ・ジャイプールの3都市を登録済み。脚本48本、クイズ51問、デート18件、都市フィナーレ3件の構成は [制作記録](../drafts/scenario/README.md) にまとめている。以後のInkの正本は `content/journeys/golden_triangle/stories/`、クイズは `content/journeys/golden_triangle/quizzes/`、定義は同じフォルダの各カタログ。下記は初期登録の手順であり、保存してある `narrative.json` を更新しても登録済み都市へ自動同期はしない。登録状態の `available` とWebサイトへのデプロイは別。
 
 ## 都市ごとの制作
 
 1. `npx tsx scripts/inspect-india-scaffold.ts --requirements --city delhi` で、デリーの観光4件、デート6件、フィナーレの固定IDと入力雛形を見る。`agra`、`jaipur` も同様。`--city` を省くと3都市分を表示する。
 2. 出力の `narrativeTemplate` 部分を別のJSONに保存し、各 `null` を実際の脚本の題名・紹介・クリア時の文・登場人物の情報・デートの思い出に置き換える。フィナーレの `placeId` はその都市の登録済みイベント地点から選び、`activityMinutes` は所要時間を入力する。その地点の入場料は既存イベントから引き継ぐ。入力JSONには雛形以外の `requirements` は含めない。
-3. `requirements` に列挙された Ink の案内・対決・デート・エピローグとクイズを作成する。命名、タグ、クイズ形式は [CONTENT_GUIDE](../CONTENT_GUIDE.md) と `authoring/templates` のミラノの例に従う。デートInkの2回の3択それぞれで、一覧の `effectIds.first` / `second` から選択内容に合う反応特性を指定する。思い出はそのデートの固有IDで記録される。クイズの一部として、各問題と選択肢の日本語訳を別JSONに用意する。形式は `{ "schemaVersion": 1, "questions": { "問題ID": { "questionJa": "問題の日本語訳", "optionsJa": { "A": "選択肢Aの訳", "B": "選択肢Bの訳", "C": "選択肢Cの訳" } } } }`。英文の原文は昇格ゲートが実際のクイズから生成し、IDや既存訳との衝突を検証する。
+3. `requirements` に列挙された Ink の案内・対決・デート・エピローグとクイズを作成する。命名、タグ、クイズ形式は [CONTENT_GUIDE](../../../CONTENT_GUIDE.md) と `authoring/templates` のミラノの例に従う。デートInkの2回の3択それぞれで、一覧の `effectIds.first` / `second` から選択内容に合う反応特性を指定する。思い出はそのデートの固有IDで記録される。クイズの一部として、各問題と選択肢の日本語訳を別JSONに用意する。形式は `{ "schemaVersion": 1, "questions": { "問題ID": { "questionJa": "問題の日本語訳", "optionsJa": { "A": "選択肢Aの訳", "B": "選択肢Bの訳", "C": "選択肢Cの訳" } } } }`。英文の原文は昇格ゲートが実際のクイズから生成し、IDや既存訳との衝突を検証する。
 4. `npx tsx scripts/inspect-india-scaffold.ts --fragments path/to/narrative.json --city delhi` で生成される内容を確認する。このコマンドは標準出力のみで、ファイルや本番データを書き換えない。`--city` を省略した場合は3都市すべての脚本メタデータが必要。
 5. `npx tsx scripts/release-india.ts --check --through delhi --narrative path/to/narrative.json --translations path/to/translations.json` で、生成物を既存データに統合した状態を一時領域で検証する。カタログへの反映には `--apply` を使う。初期登録はデリー、アーグラ、ジャイプールの順に行う。たとえばデリーまで登録した段階なら `--through agra` に必要なメタデータと訳は未登録のアーグラ分だけでよい。登録済みの都市は再生成されない。
 

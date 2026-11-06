@@ -57,8 +57,8 @@ const followup: Record<string, { publisher: string; title: string; url: string; 
   fact_jaipur_city_palace_01: { publisher: "The City Palace Museum Jaipur", title: "The City Palace Museum Jaipur", url: "https://citypalace.org/" },
   fact_jaipur_city_palace_02: { publisher: "Maharaja Sawai Man Singh II Museum Trust", title: "The City Palace Jaipur: Museum brochure", url: "https://citypalace.org/pdfs/Brochure.pdf", descriptionJa: "プリタム・ニワス中庭には、装飾を施した四つの門がある。この写真には写っていない。" },
 };
-const research = "authoring/research/golden-triangle-20261103/source/data";
-const output = "authoring/drafts/golden-triangle/observation-cards.json";
+const research = "authoring/journeys/golden_triangle/research/golden-triangle-20261103/source/data";
+const output = "authoring/journeys/golden_triangle/drafts/observation-cards.json";
 const facts: Fact[] = JSON.parse(await readFile(`${research}/TOURISM_FACTS.json`, "utf8"));
 const sources: Source[] = JSON.parse(await readFile(`${research}/SOURCES.json`, "utf8"));
 const factById = new Map(facts.map((fact) => [fact.id, fact]));

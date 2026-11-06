@@ -63,7 +63,7 @@ Debugの進行・学習記録・設定はメモリ内だけで、通常の保存
 
 都市内の4観光地は好きな順に訪問できます。すべてを完了すると都市ボスが解放され、成績にかかわらず都市クリアとなります。ボス後のエピローグを読み終えると、デリーからアーグラ、アーグラからジャイプールへ自動で進みます。デートは任意なので、体験したいものはエピローグ読了前に選んでください。最終都市ではクリア後も滞在できます。都市間の地図・交通費・移動時間は設けません。
 
-都市間では予算・AP・関係値・思い出・履歴を維持し、新都市の滞在先で1日目9:00から再開します。都市固有の品物は持ち越さず、入手・使用履歴は残ります。脚本・出典・検証方法は [インド編の制作記録](authoring/drafts/golden-triangle/scenario/README.md)、追加・編集手順は [旅行編共通の制作手順](authoring/JOURNEY_AUTHORING.md) を参照してください。
+都市間では予算・AP・関係値・思い出・履歴を維持し、新都市の滞在先で1日目9:00から再開します。都市固有の品物は持ち越さず、入手・使用履歴は残ります。脚本・出典・検証方法は [インド編の制作記録](authoring/journeys/golden_triangle/drafts/scenario/README.md)、追加・編集手順は [旅行編共通の制作手順](authoring/JOURNEY_AUTHORING.md) を参照してください。
 
 ここでいう実装済み・`available` は、このソースでのビルド登録状態です。サイトへの反映は別途GitHub Pagesへのデプロイが必要です。
 
@@ -185,11 +185,11 @@ B/C戦の戦績と途中状態は保存します。反論とカットインは�
 
 通常デートは一度完了すると再選択できず、終了後は自由時間に戻ります。思い出の一覧は表示しませんが、後の会話に使う記録は保存されます。交際状態は保存され、到達後も観光・バトル・未読の都市エピローグ・未体験の通常デートを楽しめます。
 
-現在の観光クイズの編集上の棚卸しは [編集メモ](authoring/quiz-editorial-review.md)、未採用の小話候補は [下書き](authoring/drafts/) にあります。候補はゲームに読み込まれず、史実の最終確認や公開承認を示すものではありません。
+現在の観光クイズの編集上の棚卸しは [編集メモ](authoring/journeys/milano/quiz-editorial-review.md)、未採用の小話候補は [下書き](authoring/journeys/milano/drafts/) にあります。候補はゲームに読み込まれず、史実の最終確認や公開承認を示すものではありません。
 
 ## コンテンツ制作の始め方（Phase 8）
 
-[制作マニュアル](authoring/CONTENT_GUIDE.md) と [テンプレート](authoring/templates/) に、観光地・発見・クイズ・A/B/C戦・デート・案内・都市進行の正規JSONとInkの編集例があります。直接編集しても、AIが提案した文章を転記しても、同じ形式と検証を使います。`authoring/drafts/` は必要に応じて使える任意の下書き置き場で、ゲームに読み込まれません。採用は通常のGitレビューで行います。
+[制作マニュアル](authoring/CONTENT_GUIDE.md) と [テンプレート](authoring/templates/) に、観光地・発見・クイズ・A/B/C戦・デート・案内・都市進行の正規JSONとInkの編集例があります。直接編集しても、AIが提案した文章を転記しても、同じ形式と検証を使います。`authoring/journeys/<旅行編ID>/drafts/` は必要に応じて使える任意の下書き置き場で、ゲームに読み込まれません。採用は通常のGitレビューで行います。
 
 ```sh
 npm run content:inspect -- content/journeys/milano/quizzes/sound_duomo_B1.json
@@ -204,7 +204,7 @@ npm run content:compat
 
 ## 文章・データの編集
 
-会話の編集元は各旅行編フォルダ `content/journeys/<旅行編ID>/stories/` の `.ink` ファイルです。ストーリーIDは `stories/` からの相対パスです。ミラノのデートは、例えば [`sound_cafe_01.ink`](content/journeys/milano/stories/milano/sound_cafe_01.ink) にあります。インドの配置は [制作記録の編集元一覧](authoring/drafts/golden-triangle/scenario/README.md#編集元) を参照してください。台詞と選択肢をReactに埋め込まず、Inkに置いています。
+会話の編集元は各旅行編フォルダ `content/journeys/<旅行編ID>/stories/` の `.ink` ファイルです。ストーリーIDは `stories/` からの相対パスです。ミラノのデートは、例えば [`sound_cafe_01.ink`](content/journeys/milano/stories/milano/sound_cafe_01.ink) にあります。インドの配置は [制作記録の編集元一覧](authoring/journeys/golden_triangle/drafts/scenario/README.md#編集元) を参照してください。台詞と選択肢をReactに埋め込まず、Inkに置いています。
 
 ```ink
 # speaker: heroine
@@ -368,10 +368,10 @@ Phase 2では解放済みイベントID、告白の保留/成功、交際エン�
 
 `uzbekistan` 旅行編にタシュケント・サマルカンド・ブハラ・ヒヴァの4都市を登録。各都市に主観光4件、デート6件の場所・画像・観察素材・市内移動・料金と出典を準備しています。シナリオとクイズは未制作のため、本番では旅の準備（名前の独立保存）までです。
 
-初期400万スム、宿泊無料、都市クリア4APはゲーム用暫定値。各都市のエピローグ後に次の公開済み都市へ進み、都市間の地図移動はありません。編集・投入手順は [旅行編共通の制作手順](authoring/JOURNEY_AUTHORING.md)、調査結果と制限は [4都市の制作資料](authoring/research/uzbekistan-20261104/README.md) を参照してください。
+初期400万スム、宿泊無料、都市クリア4APはゲーム用暫定値。各都市のエピローグ後に次の公開済み都市へ進み、都市間の地図移動はありません。編集・投入手順は [旅行編共通の制作手順](authoring/JOURNEY_AUTHORING.md)、調査結果と制限は [4都市の制作資料](authoring/journeys/uzbekistan/research/uzbekistan-20261104/README.md) を参照してください。
 
 ## ルアンパパーン市街地の制作基盤
 
 `luang_prabang` 旅行編に市街地の主観光4件、デート候補6件、写真・観察素材と都市内の移動データを登録しています。本文とクイズは未制作のため、本番では旅の準備までです。クァンシーの滝と将来のツアー機能は今回の対象に含みません。
 
-歩行・車の時間、車の料金、初期予算200万キープ、無料宿泊はゲーム用の推定・暫定値です。交通規制、公共交通の調査結果と未確認点、画像や後のシナリオ投入手順は[制作資料](authoring/research/luang-prabang-20261104/README.md)を参照してください。
+歩行・車の時間、車の料金、初期予算200万キープ、無料宿泊はゲーム用の推定・暫定値です。交通規制、公共交通の調査結果と未確認点、画像や後のシナリオ投入手順は[制作資料](authoring/journeys/luang_prabang/research/luang-prabang-20261104/README.md)を参照してください。

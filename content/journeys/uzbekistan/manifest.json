@@ -50,8 +50,8 @@
   "intercityModes": [],
   "authoring": {
     "eventPrefix": "uz",
-    "observationFile": "authoring/drafts/uzbekistan/observation-cards.json",
+    "observationFile": "authoring/journeys/uzbekistan/drafts/observation-cards.json",
     "imageDirectory": "assets/tourism/uzbekistan",
-    "transitDirectory": "authoring/research/uzbekistan-20261104"
+    "transitDirectory": "authoring/journeys/uzbekistan/research/uzbekistan-20261104"
   }
 }

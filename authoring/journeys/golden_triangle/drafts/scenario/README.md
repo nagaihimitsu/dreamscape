@@ -43,7 +43,7 @@
 ## 検証
 
 ```sh
-npm run journey:scenario -- --journey golden_triangle --directory authoring/drafts/golden-triangle/scenario
+npm run journey:scenario -- --journey golden_triangle --directory authoring/journeys/golden_triangle/drafts/scenario
 npm run journey:readiness -- --journey golden_triangle
 npm run verify
 npm run test:e2e

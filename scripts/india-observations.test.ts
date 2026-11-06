@@ -4,8 +4,8 @@ import { describe, expect, it } from "vitest";
 import { tourismClueSchema } from "../src/content/tourism-schemas";
 import { resolvePublicFile } from "./public-assets";
 
-const research = "authoring/research/golden-triangle-20261103/source/data";
-const draft = JSON.parse(readFileSync("authoring/drafts/golden-triangle/observation-cards.json", "utf8"));
+const research = "authoring/journeys/golden_triangle/research/golden-triangle-20261103/source/data";
+const draft = JSON.parse(readFileSync("authoring/journeys/golden_triangle/drafts/observation-cards.json", "utf8"));
 const facts = JSON.parse(readFileSync(`${research}/TOURISM_FACTS.json`, "utf8")) as Array<{ id: string; sourceId: string; summaryJa: string; cityId: string; classification: string; useWithoutFurtherResearch: boolean }>;
 const sources = JSON.parse(readFileSync(`${research}/SOURCES.json`, "utf8")) as Array<{ id: string; url: string }>;
 

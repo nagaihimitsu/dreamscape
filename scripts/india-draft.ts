@@ -9,10 +9,10 @@ import { tourismSourceSchema } from "../src/content/tourism-schemas";
 import { readResearchCsv } from "./india-research-csv";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const research = "authoring/research/golden-triangle-20261103/source";
-const latest = "authoring/research/golden-triangle-all-research-20261103/source/canonical";
-const followup = "authoring/research/golden-triangle-followup-20261103";
-export const indiaDraftDirectory = path.join(root, "authoring/drafts/golden-triangle");
+const research = "authoring/journeys/golden_triangle/research/golden-triangle-20261103/source";
+const latest = "authoring/journeys/golden_triangle/research/golden-triangle-all-research-20261103/source/canonical";
+const followup = "authoring/journeys/golden_triangle/research/golden-triangle-followup-20261103";
+export const indiaDraftDirectory = path.join(root, "authoring/journeys/golden_triangle/drafts");
 const readJson = (file: string): unknown => JSON.parse(readFileSync(path.join(root, file), "utf8"));
 const fail = (message: string): never => { throw new Error(`India draft: ${message}`); };
 const followupSchema = z.object({
@@ -139,14 +139,14 @@ export function buildIndiaDraft(): Record<string, unknown> {
     cityOrder: sequence, currency: journey.currency.code,
     initialBudget: journey.initialBudget, cityPlan: journey.cityPlan,
     source: research,
-    latestResearch: "authoring/research/golden-triangle-all-research-20261103/source/canonical",
-    followupResearch: ["venues", "access", "transit", "images"].map((name) => `authoring/research/golden-triangle-followup-20261103/${name}.json`),
+    latestResearch: "authoring/journeys/golden_triangle/research/golden-triangle-all-research-20261103/source/canonical",
+    followupResearch: ["venues", "access", "transit", "images"].map((name) => `authoring/journeys/golden_triangle/research/golden-triangle-followup-20261103/${name}.json`),
     warnings: [
       "候補イベント・背景IDは実コンテンツ未接続。クリア条件として使わない。",
       "firstClearRewardは旧互換episode_clear用の0 AP仮欄で、本来の初回報酬は未決定。都市クリア4APは別のcity_clear報酬。",
       "座標は入口の実測ではない。営業時間はゲーム試作で現地開館時刻ではない。",
       "タクシーは2人分のゲーム推定。異地点の徒歩は未検証のため出力しない。",
-      "この制作ドラフトには画像を含みません。登録済み画像の出典と利用条件は content/tourism/catalog.json を確認してください。"
+      "この制作ドラフトには画像を含みません。登録済み画像の出典と利用条件は content/journeys/golden_triangle/tourism/catalog.json を確認してください。"
     ]
   };
   return files;

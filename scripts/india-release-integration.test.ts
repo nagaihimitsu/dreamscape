@@ -93,7 +93,7 @@ function unpublishedProject({ withoutEmptyCatalogs = false } = {}) {
   const root = mkdtempSync(path.join(tmpdir(), "dreamscape-india-full-release-"));
   cpSync(path.join(source, "content"), path.join(root, "content"), { recursive: true });
   cpSync(path.join(source, "public"), path.join(root, "public"), { recursive: true });
-  const observation = "authoring/drafts/golden-triangle/observation-cards.json";
+  const observation = "authoring/journeys/golden_triangle/drafts/observation-cards.json";
   mkdirSync(path.dirname(path.join(root, observation)), { recursive: true });
   cpSync(path.join(source, observation), path.join(root, observation));
   prepareUnpublishedFixture(root);

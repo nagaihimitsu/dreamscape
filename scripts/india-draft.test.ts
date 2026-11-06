@@ -58,7 +58,7 @@ describe("Golden Triangle authoring draft", () => {
       travelCatalogSchema.parse(draft[`travel/${cityId}.json`]).places);
     const byId = new Map(places.map((place) => [place.id, place]));
     for (const name of ["venues", "access"]) {
-      const file = path.resolve(`authoring/research/golden-triangle-followup-20261103/${name}.json`);
+      const file = path.resolve(`authoring/journeys/golden_triangle/research/golden-triangle-followup-20261103/${name}.json`);
       const followup = JSON.parse(readFileSync(file, "utf8")) as { records: { placeId: string; sources: unknown[] }[] };
       expect(followup.records.length).toBeGreaterThan(0);
       for (const record of followup.records) {
@@ -71,7 +71,7 @@ describe("Golden Triangle authoring draft", () => {
       const keys = place.sources.map((source) => JSON.stringify([source.publisher, source.title, source.url, source.checkedAt, source.claimType, source.claimJa]));
       expect(new Set(keys).size, `Duplicate citation in ${place.id}`).toBe(keys.length);
     }
-    const canonical = path.resolve("authoring/research/golden-triangle-all-research-20261103/source/canonical");
+    const canonical = path.resolve("authoring/journeys/golden_triangle/research/golden-triangle-all-research-20261103/source/canonical");
     const time = (value: string) => Number(value.slice(0, 2)) * 60 + Number(value.slice(3, 5));
     for (const row of readResearchCsv(canonical, "08_OPENING_HOURS_30.csv")) {
       expect(byId.get(row.placeId)?.openingWindows).toEqual([{ start: time(row.gameWindowStart_NOT_REAL_WORLD_CLAIM), end: time(row.gameWindowEnd_NOT_REAL_WORLD_CLAIM) }]);
