@@ -106,7 +106,7 @@ tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲ�
 
 1. 旅行編IDと接頭辞を決める（例：`kyoto` と `ky_`）。既存の旅行編・都市・IDと重ならないことを確認する。
 2. `content/journeys/<旅行編ID>/manifest.json` を作る。`schemaVersion: 1`、一覧での並び順 `order`（他の旅行編と重ならない整数）、`id`、`nameJa`、`status: "preparing"`、`cities`（都市の順序）、`currency`、`initialBudget`、`intercityModes` などを、既存の `manifest.json`（例：ルアンパパーン編）にならって書く。最小の例は `tests/fixtures/journeys/zz_fixture_trip/` にある。制作ツール（`journey:scaffold` など）を使う場合は `authoring` も設定する（[JOURNEY_AUTHORING](../authoring/JOURNEY_AUTHORING.md)）。
-3. 都市ごとに `cities/<都市ID>.json`（最初は `productionStatus: "prototype"`）、`travel/<都市ID>.json`、`travel/<都市ID>-settings.json` を置く。都市別の作業用JSON（[CITY_BUNDLES](../authoring/CITY_BUNDLES.md)）で作成・反映してもよい。
+3. 都市ごとに `cities/<都市ID>.json`（最初は `productionStatus: "prototype"`）、`travel/<都市ID>.json`、`travel/<都市ID>-settings.json` を置く。都市別の作業用JSON（[CITY_BUNDLES](../authoring/CITY_BUNDLES.md)）で作成・反映してもよい。複数の都市を回る旅行編では、各都市の `nextCityId` で同じ旅行編の次の都市をつなぐ（[FUTURE_CITIES](../authoring/FUTURE_CITIES.md) の手順5）。
 4. 背景・行き先・観光画像など、その旅行編が使う項目を、共通データと同じ相対パスのカタログ（`romance/presentation.json`、`romance/date_destinations.json`、`tourism/catalog.json` など）に書く。必要なキーだけでよい。
 5. その旅行編だけが使う画像は `content/journeys/<旅行編ID>/public/assets/…` に置き、データには配信時のパス（`assets/tourism/<フォルダ>/<ファイル>`）を書く。全旅行編で共有する画像だけを直下の `public/assets/` に置く。
 6. 会話・クイズを登録するときは `stories/**/*.ink`、`quizzes/*.json` と、`progression/journey.json`・`battles/catalog.json`・`romance/date_catalog.json` などの該当カタログに追加する（[JOURNEY_AUTHORING](../authoring/JOURNEY_AUTHORING.md)、[CONTENT_GUIDE](../authoring/CONTENT_GUIDE.md)）。
