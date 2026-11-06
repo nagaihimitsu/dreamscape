@@ -99,10 +99,13 @@ describe("journey folders", () => {
     const clone = journeyDirectory(root, "gt_clone");
     const manifestFile = path.join(source, "manifest.json");
     const original = readFileSync(manifestFile, "utf8");
-    // The folder name and the manifest ID are the journey's only identity.
+    // The folder name and the manifest ID are the journey's identity; its authoring files move with it.
     renameSync(source, clone);
     try {
-      writeFileSync(path.join(clone, "manifest.json"), original.replace('"id": "golden_triangle"', '"id": "gt_clone"'));
+      const renamed = original.replace('"id": "golden_triangle"', '"id": "gt_clone"');
+      writeFileSync(path.join(clone, "manifest.json"), renamed);
+      await expect(buildContent(root)).rejects.toThrow("Keep the authoring files of gt_clone below authoring/journeys/gt_clone/");
+      writeFileSync(path.join(clone, "manifest.json"), renamed.replaceAll("authoring/journeys/golden_triangle/", "authoring/journeys/gt_clone/"));
       await expect(buildContent(root)).resolves.toBeDefined();
 
       const repositoryJourneys = readJourneyManifests(repository).map((item) => item.id);
