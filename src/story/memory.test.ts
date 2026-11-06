@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { Story } from "inkjs";
-import { compileInk, validateStory } from "../../scripts/content-pipeline";
+import { compileInk, validateStory } from "../../scripts/ink-validation";
 import { bindMemoryReader, validateMemoryReferences } from "./memory";
 
 const script = `EXTERNAL has_memory(memory_id)

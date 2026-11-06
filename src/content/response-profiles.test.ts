@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import profileData from "./generated/content/romance/response_profiles.json";
 import { responseProfileCatalogSchema } from "./schemas";
-import { compileInk, validateNoInkRandom, validateStory } from "../../scripts/content-pipeline";
+import { compileInk, validateNoInkRandom, validateStory } from "../../scripts/ink-validation";
 
 const profile = profileData.profiles[0];
 

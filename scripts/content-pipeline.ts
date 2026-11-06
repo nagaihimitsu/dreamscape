@@ -57,6 +57,8 @@ import { journeySchema } from "../src/content/journey-schemas";
 import { journeyCatalogSchema } from "../src/content/journey-catalog";
 import { validateJourney } from "./journey-validation";
 import { validateEpilogue } from "./epilogue-validation";
+import { validateQuizEntries } from "./quiz-validation";
+import { validateCityLinks } from "./city-links";
 import {
   wordMeaningsSchema,
   wordPattern,
@@ -71,8 +73,9 @@ import {
   validateLearning,
 } from "../src/content/learning-schema";
 
-// Preserve the authoring API used by the inspector and validation tests.
-export { compileInk, validateNoInkRandom, validateRelationshipToneSource, validateStory } from "./ink-validation";
+// This module exports only buildContent: the unit-test split (scripts/test-sets.ts) puts every test that imports
+// it in the slow "content" set. Put helpers that tests call on their own in light modules
+// (ink-validation, quiz-validation, city-links).
 
 async function json(file: string): Promise<unknown> {
   try {
@@ -94,65 +97,6 @@ async function parseFile<T>(
       `Invalid content in ${file}: ${error instanceof Error ? error.message : String(error)}`,
       { cause: error },
     );
-  }
-}
-
-/** Check facts contained within one quiz; cross-file references are checked by buildContent. */
-export function validateQuizEntries(quiz: {
-  questions: {
-    id: string;
-    options: { id: string; textEn: string }[];
-    correctOptionId: string;
-  }[];
-}): void {
-  unique(
-    quiz.questions.map((question) => question.id),
-    "quiz question ID",
-  );
-  for (const question of quiz.questions) {
-    unique(
-      question.options.map((option) => option.id),
-      "quiz option ID",
-    );
-    unique(
-      question.options.map((option) => option.textEn.toLowerCase()),
-      "quiz option text",
-    );
-    if (
-      question.options.filter(
-        (option) => option.id === question.correctOptionId,
-      ).length !== 1
-    ) {
-      throw new Error(`Invalid correct option: ${question.id}`);
-    }
-  }
-}
-
-/** Validate authored city links separately from content completion. */
-export function validateCityLinks(cities: Array<ReturnType<typeof citySchema.parse>>, journeyCatalog: ReturnType<typeof journeyCatalogSchema.parse>) {
-  for (const current of cities) {
-    const seen = new Set<string>();
-    let next: typeof current | undefined = current;
-    while (next) {
-      if (seen.has(next.id)) throw new Error(`Cyclic city route: ${next.id}`);
-      seen.add(next.id);
-      if (!next.nextCityId) break;
-      const following = cities.find((item) => item.id === next!.nextCityId);
-      const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === next!.id));
-      const index = owner?.cities.findIndex((planned) => planned.id === next!.id) ?? -1;
-      const plannedNext = following?.productionStatus === "prototype" && owner?.cities[index + 1]?.id === following.id;
-      if (!following || (following.productionStatus !== "complete" && !plannedNext)) throw new Error(`Unknown or incomplete next city: ${next.nextCityId}`);
-      next = following;
-    }
-  }
-  for (const current of cities) {
-    const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id));
-    if (!owner) throw new Error(`City has no journey: ${current.id}`);
-    if (current.nextCityId) {
-      const index = owner.cities.findIndex((planned) => planned.id === current.id);
-      if (owner.cities[index + 1]?.id !== current.nextCityId)
-        throw new Error(`Next city is outside the journey order: ${current.id}/${current.nextCityId}`);
-    }
   }
 }
 

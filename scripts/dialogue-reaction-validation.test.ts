@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { dialogueReactionCatalogSchema } from "../src/content/dialogue-reactions";
-import { compileInk, validateStory } from "./content-pipeline";
+import { compileInk, validateStory } from "./ink-validation";
 import { createDialogueReactionValidator } from "./dialogue-reaction-validation";
 
 const storyId = "milano/test";

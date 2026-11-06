@@ -63,6 +63,14 @@ describe("unit test sets", () => {
     expect(quick.filter((file) => content.includes(file))).toEqual([]);
     // Direct users of buildContent and prepareContentFixture, and a tool test that reaches buildContent through the tool.
     expect(content).toEqual(expect.arrayContaining(["src/content/content.test.ts", "src/content/tourism-content.test.ts", "scripts/city-bundle.test.ts"]));
-    expect(quick).toEqual(expect.arrayContaining(["scripts/test-sets.test.ts", "src/domain/game.test.ts"]));
+    // Tests of light helpers (Ink checks, one quiz, city links) do not run the build and stay in the quick set.
+    expect(quick).toEqual(expect.arrayContaining([
+      "scripts/test-sets.test.ts",
+      "src/domain/game.test.ts",
+      "src/story/memory.test.ts",
+      "src/content/response-profiles.test.ts",
+      "scripts/encounter-validation.test.ts",
+      "scripts/city-links.test.ts",
+    ]));
   });
 });

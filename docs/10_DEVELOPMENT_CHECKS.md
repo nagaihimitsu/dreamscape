@@ -36,9 +36,11 @@
 | 組 | 内容 | 実行 |
 | --- | --- | --- |
 | `quick` | ゲームルール、保存、画面部品、生成物を読むだけのテスト、制作ツールの純粋関数など | `npm run test:quick`（生成してから、この組だけ）。日常の確認用 |
-| `content` | コンテンツ全体の生成と検証（`buildContent`）を一時コピーで何度も実行するテストと、それを使う制作ツールのテスト | `npx vitest run --project content`（先に `content:build`） |
+| `content` | コンテンツ全体の生成と検証（`buildContent`）や一時コピーの準備（`prepareContentFixture`）を使うテストと、それらを使う制作ツール（`city-bundle`・`promote-journey`・`inspect-content` など）を読み込むテスト | `npx vitest run --project content`（先に `content:build`） |
 
 `npm test` と `npm run verify`、CIは両方の組を実行する。どちらの組に入るかは一覧で管理せず、`scripts/test-sets.ts` がテストファイルの `import` から自動で決める。テストファイル自身の相対 `import` を何段でもたどり、`scripts/content-pipeline.ts`（`buildContent`）か `src/content/test-fixtures.ts`（`prepareContentFixture`）に届くファイルが `content`、それ以外が `quick` になる（型だけの `import type` は数えない）。新しいテストもこの規則で自動的にどちらかに入り、どちらにも入らないテストはない（`scripts/test-sets.test.ts` が確認する）。ファイルを指定した `npx vitest run <ファイル>` は組に関係なく実行できる。
+
+判定はモジュール単位で、関数の呼び出しまでは追わない。そのため `scripts/content-pipeline.ts` は `buildContent` だけを公開し、テストが単独で使う検査関数は軽いモジュールに置く（Inkのコンパイルと会話の検査は `scripts/ink-validation.ts`、クイズ1件の検査は `scripts/quiz-validation.ts`、都市のつながりは `scripts/city-links.ts`）。テストはこれらを直接 `import` すれば `quick` に入る。一方、`buildContent` を読み込む制作ツールのモジュールから純粋な関数だけを使うテストも `content` に入る（2026年11月時点で `src/content/inspect-content.test.ts`、`scripts/journey-authoring.test.ts`、`scripts/journeys/golden_triangle/india-readiness.test.ts`。3ファイル合わせて約1秒）。これらは日常の `test:quick` では実行されないが、`npm test`・`npm run verify`・CIでは実行される。モジュール単位の判定は、読み込むだけで使わない場合も `content` に数えるため、生成を呼ぶテストが `quick` に入ることはない。ただし、子プロセスで生成を実行するテストや、変数で指定した `import()` はたどれないので、そうしたテストは作らない。
 
 `prepareContentFixture` は `content/` と `public/` を一時フォルダへ写すが、各旅行編の画像（`content/journeys/<journeyId>/public/` のファイル。リポジトリの大半の容量）は写さず、フォルダだけを作って各ファイルへのシンボリックリンクを置く。テストはそこへファイルを追加・削除してよいが、リンクされたファイルへ上書きするとリポジトリの画像が変わるため、差し替えは `replaceFixtureFile` を使う。単体テストの実行の前後で各旅行編の画像の大きさと更新時刻を比べ、変わっていれば実行全体を失敗にする（`scripts/test-image-guard.ts`）。
 
