@@ -29,6 +29,7 @@
     "test:e2e": "playwright test",
     "content:inspect": "tsx scripts/inspect-content.ts",
     "content:compat": "npm run content:build && vitest run src/persistence",
+    "journey:new": "tsx scripts/journey-new-cli.ts",
     "journey:scaffold": "tsx scripts/inspect-journey-scaffold.ts",
     "journey:readiness": "tsx scripts/inspect-journey-readiness.ts",
     "journey:release": "tsx scripts/release-journey.ts",

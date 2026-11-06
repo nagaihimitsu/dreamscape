@@ -10,6 +10,7 @@ import { buildContent } from "./content-pipeline";
 import { contentSourcesFromTree, listFiles, loadContentSources, selectJourneys, type ContentSources } from "./content-sources";
 import { validateContent } from "./content-validation";
 import { inspectJourneyReadiness, journeyReadinessInput } from "./journey-readiness";
+import { readSampleJourney, withoutOptionalParts } from "./sample-journey";
 
 // The sample journey (authoring/templates/sample_trip/) is the minimum example
 // of a journey folder. Its README lists the required files with the error each
@@ -22,35 +23,10 @@ const repository = path.resolve(".");
 const folder = path.join(repository, SAMPLE_JOURNEY_DIRECTORY);
 const treePrefix = `${SAMPLE_JOURNEY_DIRECTORY}/`;
 
-type Readme = { core: { file: string; error: string }[]; optionalFiles: string[]; optionalIds: string[] };
-
-/** The lists of the sample README: the required-file table and each optional part's files and entry IDs. */
-function readReadme(): Readme {
-  const lines = readFileSync(path.join(folder, "README.md"), "utf8").split("\n");
-  const ticks = (line: string) => [...line.matchAll(/`([^`]+)`/gu)].map((match) => match[1]);
-  const core = lines.flatMap((line) => {
-    const row = /^\| `([^`]+)` \|.*\| `([^`]+)` \|$/u.exec(line);
-    return row ? [{ file: row[1], error: row[2] }] : [];
-  });
-  return {
-    core,
-    optionalFiles: lines.filter((line) => line.startsWith("- ファイル：")).flatMap(ticks),
-    optionalIds: lines.filter((line) => line.startsWith("- 項目のID：")).flatMap(ticks),
-  };
-}
-
-const readme = readReadme();
+const { readme } = readSampleJourney(folder);
+const optionalFiles = readme.optional.flatMap((part) => part.files);
+const optionalIds = readme.optional.flatMap((part) => part.ids);
 const sampleFiles = listFiles(folder).filter((file) => file !== "README.md").sort();
-
-/** Remove an optional part's entries from a JSON file: array elements naming one of `ids`, those strings, and those record keys. */
-function withoutIds(value: unknown, ids: ReadonlySet<string>): unknown {
-  const names = (item: unknown) => typeof item === "string" ? ids.has(item)
-    : !!item && typeof item === "object" && !Array.isArray(item) && Object.values(item).some((field) => typeof field === "string" && ids.has(field));
-  if (Array.isArray(value)) return value.filter((item) => !names(item)).map((item) => withoutIds(item, ids));
-  if (value && typeof value === "object")
-    return Object.fromEntries(Object.entries(value).filter(([key]) => !ids.has(key)).map(([key, item]) => [key, withoutIds(item, ids)]));
-  return value;
-}
 
 describe("sample journey", () => {
   let core: ContentSources;
@@ -68,14 +44,12 @@ describe("sample journey", () => {
     // Every file of the folder except its README (notes are not content).
     full = new Map([...core.tree.files].filter(([treePath]) => treePath.startsWith(treePrefix) && treePath !== `${treePrefix}README.md`)
       .map(([treePath, bytes]) => [treePath.slice(treePrefix.length), bytes]));
-    const ids = new Set(readme.optionalIds);
-    minimal = new Map([...full].filter(([file]) => !readme.optionalFiles.includes(file)).map(([file, bytes]) =>
-      [file, file.endsWith(".json") ? Buffer.from(JSON.stringify(withoutIds(JSON.parse(bytes!.toString("utf8")), ids))) : bytes]));
+    minimal = withoutOptionalParts(full, readme);
   });
 
   it("(c) lists every file of the folder in its README, each once, as required or optional", () => {
     expect(readme.core).toHaveLength(20);
-    const listed = [...readme.core.map((item) => item.file), ...readme.optionalFiles];
+    const listed = [...readme.core.map((item) => item.file), ...optionalFiles];
     expect(new Set(listed).size).toBe(listed.length);
     expect(listed.sort()).toEqual(sampleFiles);
     // Each Ink file starts with comments that explain the rules of its kind of script.
@@ -109,7 +83,7 @@ describe("sample journey", () => {
     expect(() => validateContent(sourcesWith(minimal))).not.toThrow();
     // Nothing of the optional parts is left in the minimal subset.
     for (const [file, bytes] of minimal)
-      if (bytes) for (const id of readme.optionalIds) expect(bytes.toString("utf8"), `${file}: ${id}`).not.toContain(`"${id}"`);
+      if (bytes) for (const id of optionalIds) expect(bytes.toString("utf8"), `${file}: ${id}`).not.toContain(`"${id}"`);
     for (const { file, error } of readme.core) {
       const files = new Map(minimal);
       files.delete(file);
