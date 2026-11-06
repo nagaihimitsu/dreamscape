@@ -100,11 +100,12 @@ tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲ�
 
 ### 生成物（手動で編集しない）
 
-`src/content/generated/` は `npm run content:build` の出力で、Git管理しない。`npm run dev`・`npm test`・`npm run test:quick`・`npm run build`・`npm run verify` は先に生成する。
+`src/content/generated/` は `npm run content:build` の出力で、Git管理しない。`npm run dev`・`npm test`・`npm run test:quick`・`npm run build`・`npm run verify` は先に生成する。単体テスト（`npm test`・`npm run test:quick`）と `npm run verify` の最初の生成は見本の編を含め（`--with-sample`、下の「見本の編」）、`npm run dev`・`npm run build` は含めない。
 
 - `stories.json`（コンパイル済みInk）、`quizzes.json`（出題するクイズ）。
 - `content/`：統合・検証済みのカタログを、旧 `content/` と同じ相対パス（`battles/catalog.json`、`cities/delhi.json`、`journeys/catalog.json` など）で書き出した写し。都市・移動ファイルは元のバイト列のまま写す。ゲームと参照だけの単体テストはここだけを読む（`scripts/content-boundary.test.ts` が検査）。
 - `public/`：直下の `public/` と各旅行編の `public/` を集めた配信フォルダ（`vite.config.ts` の `publicDir`）。
+- `build-info.json`：生成に含めた `content/journeys/` の外の旅行編フォルダ（`{ "extraJourneyFolders": { "sample_trip": "authoring/templates/sample_trip" } }`、なければ空）。
 
 `stories.json`・`quizzes.json` は毎回書き直す。`content/`・`public/` は変更のないファイルを書き直さず、元がなくなったファイルを削除する。JSONや画像を編集した後も、Inkと同様に `npm run content:build` を実行する。
 
@@ -120,14 +121,15 @@ tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲ�
 - `content/journeys/catalog.json`：旧来の一括登録ファイル。置くとエラーになる（一覧は各 `manifest.json` から生成する）。
 - 共通デート効果 `common_date_*` は共通データの `romance/effect_catalog.json` 専用。共通の既定背景 `default_scene` は共通データの `romance/presentation.json` に必ず置く（下の「既定背景とタイトルの絵」）。
 - Debugの「仮の場面」は、準備中の旅行編の都市ごとに `<都市ID>_episode`・`<都市ID>_battle`・`<都市ID>_date` など `<都市ID>_` で始まるID（試験用の都市では `test_`）と、`<都市ID>/guide` などのストーリーIDをメモリ上だけで作る。準備中の旅行編の正式データには、上の接頭辞（例：`uz_`）を付けたIDを使う。
-- `tests/fixtures/journeys/zz_fixture_trip/` は自動テスト専用の旅行編で、`content/journeys/` には置かない。
-- 旅行編ID `sample_trip` は、開発・テスト専用の見本の編のために予約する（本番には含めない）。
-- 本番ビルド（`npm run build`・`npm run verify`）は `vite build` の後に `scripts/check-dist.ts` で `dist/` を検査し、Debug・プレビュー（`src/dev/`）、テスト用の仮データ（`*-test-fixture.ts`・`tests/fixtures/`）、上の2つの旅行編IDに固有の目印の文字列が、公開されるファイルの名前か内容にあればビルドを失敗にする。検出に使う文字列と由来のファイルは `scripts/dist-guard.ts` にあり、由来のファイルから文字列が消えると `scripts/dist-guard.test.ts` が失敗する。検出は目印による確認で、開発用のコードが入ったことを必ず見つけるものではない（目印を持たない新しいファイルや、目印の部分が使われずに省かれたコードは見逃す）。`src/dev/` などに開発用のファイルを足したら、そのファイルに固有の文字列も目印に加える。
+- 旅行編ID `sample_trip`、接頭辞 `smp_`、都市ID `mihon`、並び順 `order: 9000` は、開発・テスト専用の見本の編（`authoring/templates/sample_trip/`、下の「見本の編」）のために予約する。`content/journeys/` には置かず、本番には含めない。
+- 本番ビルド（`npm run build`・`npm run verify`）は `vite build` の後に `scripts/check-dist.ts` で `dist/` を検査し、Debug・プレビュー（`src/dev/`）、テスト用の仮データ（`*-test-fixture.ts`・`tests/fixtures/`）、見本の編の旅行編ID `sample_trip`（画像フォルダ名にも使う）に固有の目印の文字列が、公開されるファイルの名前か内容にあればビルドを失敗にする。検出に使う文字列と由来のファイルは `scripts/dist-guard.ts` にあり、由来のファイルから文字列が消えると `scripts/dist-guard.test.ts` が失敗する。検出は目印による確認で、開発用のコードが入ったことを必ず見つけるものではない（目印を持たない新しいファイルや、目印の部分が使われずに省かれたコードは見逃す）。`src/dev/` などに開発用のファイルを足したら、そのファイルに固有の文字列も目印に加える。
 
 ### 新しい編を追加する手順
 
+最小の例は見本の編 [`authoring/templates/sample_trip/`](../authoring/templates/sample_trip/README.md)。1都市で観光案内・通常戦・デート・都市フィナーレ・エピローグまで遊べる20ファイルと、任意の特殊戦B・C・道中交流を持ち、その README に必須のファイルと、外したときに `content:build` が出すエラーを一覧している（下の「見本の編」）。各ファイルの書き方は見本を写して確かめられる。`npm run dev:sample` で実際に遊べる。
+
 1. 旅行編IDと接頭辞を決める（例：`kyoto` と `ky_`）。既存の旅行編・都市・IDと重ならないことを確認する。
-2. `content/journeys/<旅行編ID>/manifest.json` を作る。`schemaVersion: 1`、一覧での並び順 `order`（他の旅行編と重ならない整数）、`id`、`nameJa`、`status: "preparing"`、`cities`（都市の順序）、`currency`、`initialBudget`、`intercityModes` などを、既存の `manifest.json`（例：ルアンパパーン編）にならって書く。タイトルの絵は任意の `titleArt` で後から付けられる（下の「既定背景とタイトルの絵」）。最小の例は `tests/fixtures/journeys/zz_fixture_trip/` にある。制作ツール（`journey:scaffold` など）を使う場合は `authoring` も設定する（[JOURNEY_AUTHORING](../authoring/JOURNEY_AUTHORING.md)）。
+2. `content/journeys/<旅行編ID>/manifest.json` を作る。`schemaVersion: 1`、一覧での並び順 `order`（他の旅行編と重ならない整数）、`id`、`nameJa`、`status: "preparing"`、`cities`（都市の順序）、`currency`、`initialBudget`、`intercityModes` などを、見本の編の `manifest.json` や既存の旅行編（例：ルアンパパーン編）にならって書く。タイトルの絵は任意の `titleArt` で後から付けられる（下の「既定背景とタイトルの絵」）。制作ツール（`journey:scaffold` など）を使う場合や、IDの接頭辞を `content:build` に検査させる場合は `authoring` も設定する（[JOURNEY_AUTHORING](../authoring/JOURNEY_AUTHORING.md)）。
 3. 都市ごとに `cities/<都市ID>.json`（最初は `productionStatus: "prototype"`。`nameJa` は `manifest.json` の `cities[].nameJa` と同じにする）、`travel/<都市ID>.json`、`travel/<都市ID>-settings.json` を置く。都市別の作業用JSON（[CITY_BUNDLES](../authoring/CITY_BUNDLES.md)）で作成・反映してもよい。複数の都市を回る旅行編では、各都市の `nextCityId` で同じ旅行編の次の都市をつなぐ（[FUTURE_CITIES](../authoring/FUTURE_CITIES.md) の手順5）。
 4. 背景・行き先・観光画像など、その旅行編が使う項目を、共通データと同じ相対パスのカタログ（`romance/presentation.json`、`romance/date_destinations.json`、`tourism/catalog.json` など）に書く。必要なキーだけでよい。
 5. その旅行編だけが使う画像は `content/journeys/<旅行編ID>/public/assets/…` に置き、データには配信時のパス（`assets/tourism/<フォルダ>/<ファイル>`）を書く。全旅行編で共有する画像だけを直下の `public/assets/` に置く。
@@ -137,6 +139,15 @@ tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲ�
 9. 公開するときは開始都市を `complete` にし、`status` を `available` にする（`npm run journey:release` でも反映できる）。`complete` の都市には都市フィナーレが必要。公開前に `npm run verify` とE2E一式を実行する（`boot.spec.ts` は登録済みのすべての旅行編の開始画面を開く）。
 
 旅行編をやめる場合は、そのフォルダ（と `authoring/journeys/<旅行編ID>/`、`scripts/journeys/<旅行編ID>/`）を削除して `npm run content:build` を実行する。生成とゲームはこれで動くが、その旅行編・都市を名指しするテストと補助コード（例：インド編の `src/content/india-*.test.ts`・`src/domain/golden-triangle-*.ts`、`tests/e2e/boot.spec.ts` の旅行編IDと見出し、`tests/e2e/inter-city.spec.ts` の都市間移動）と `package.json` の別名（例：`india:*`）も、削除するか残る旅行編向けに更新し、`npm run verify` とE2E一式が通ることを確認する。利用者のブラウザにある `dreamscape.journey.<旅行編ID>.*` の保存データは削除されない。
+
+### 見本の編
+
+`authoring/templates/sample_trip/` は、開発・テスト専用の遊べる最小の旅行編「見本の旅」（旅行編ID `sample_trip`、都市 `mihon`「見本の街」、接頭辞 `smp_`、`order: 9000`）。必須の20ファイル（登録・都市・移動と設定・背景・デートの行き先と通常デート1件・観光地と観察ポイント・進行と報酬・通常戦3問と都市フィナーレ5問・和訳・語の意味・Ink 5本・自作画像1枚）と、任意の特殊戦B・特殊戦C・品物つきの道中交流を持つ。ファイルの一覧と役割、外したときのエラー、任意の部分の外し方はその [README](../authoring/templates/sample_trip/README.md)、各Inkの書き方はファイル冒頭のコメントにある。
+
+- 架空であること：街・人物・言い伝え・出典・画像はすべて架空で、AGENTS.md の実在地と出典の規則の例外として認められている（開発・テスト専用に限る）。出典は `https://example.com/dreamscape-sample`、`claimJa` は「見本用の架空の…」で始め、画像は図形だけの自作PNG（CC0）。本番の旅行編にこれらを残さない。
+- 読み込み：`content/journeys/` の外にあるため、通常の `npm run content:build`・`npm run dev`・`npm run build`・制作ツール（`journey:readiness`・`city:bundle`・`journey:release` など）は読まない。`scripts/content-sources.ts` の `loadContentSources(root, { extraJourneyDirectories })` に明示したフォルダだけを旅行編として加え（フォルダ名が旅行編ID。`root` の中で `content/` の外にあり、`content/journeys/` の旅行編と同じ名前でないこと）、統合・所有・画像の検査は `content/journeys/` の旅行編と同じに行う。`npm run content:build -- --with-sample` はこの方法で見本を加え、`src/content/generated/build-info.json` に記録する。`npm run dev:sample` は見本を含めて生成してから開発サーバーを起動する。
+- 単体テスト（`pretest`・`pretest:quick`）と `npm run verify` の最初の生成は見本を含め、`verify` は最後の `npm run build` で見本なしに生成し直して本番用の `dist/` を作る。`dist:check` は `sample_trip` の文字列が `dist/` に入ると失敗する。
+- テスト：一時コピーには `prepareContentFixture(フォルダ, { withSample: true })` と明示したときだけ、見本を `content/journeys/sample_trip/` に複製する（暗黙には含めない）。リポジトリの生成物と一時コピーの生成結果を比べるテストは、見本の有無で食い違わないよう、一時コピー自身の生成結果どうしを比べる。`scripts/sample-journey.test.ts` は、共通データと見本だけでの生成・公開前チェック（readiness）・README の一覧とファイルの一致・必須ファイルを1つずつ外したときのエラー・任意の部分を外した最小構成の生成を確かめる。`scripts/journey-folders.test.ts` は見本を加えた一時コピーで、他の旅行編と並んで公開中・準備中として並ぶことを確かめる。`src/domain/sample-journey-route.test.ts` は生成物の見本を、タイトルからエピローグまで実際のゲームの関数で遊び、手順ごとに保存形式の検査を通す（生成物に見本がなければ、`npm run content:build -- --with-sample` を案内して失敗する）。
 
 ### 既定背景とタイトルの絵
 - 共通の既定背景は `default_scene`（名前「旅の余白」、説明「旅の余白 ／ 予定のない午後」、色 `#e6d8bb`、`fallback: "neutral"`）。共通データの `content/romance/presentation.json` が定義し、`content:build` は共通データにないとエラーにする（旅行編のフォルダに置いても認めない）。IDはコードでは `src/content/default-background.ts` の `DEFAULT_BACKGROUND_ID` だけで扱う。Inkも都市も背景を指定しない会話の初期背景（`src/story/runtime.ts`）、背景を渡されない `CanalScene`、タイトルの絵がない旅行編のタイトルに使う。色だけの中立な場面で、運河の絵は表示しない。

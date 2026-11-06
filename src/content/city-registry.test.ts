@@ -1,3 +1,5 @@
+import { readdirSync, readFileSync } from "node:fs";
+import path from "node:path";
 import { expect, it } from "vitest";
 import { getCities, getCityContent } from ".";
 import { createGame } from "../domain/game";
@@ -15,6 +17,21 @@ it("registers authored cities without making prototypes playable", () => {
   }
   expect(() => getCityContent("unknown_city")).toThrow(/Unknown city/);
   expect(() => getCityContent("constructor")).toThrow(/Unknown city/);
+});
+
+it("lists the generated cities afresh in every run", () => {
+  // Vitest caches transformed modules on disk unless their text contains
+  // "import.meta.glob(" (a type argument such as import.meta.glob<T>( hides it),
+  // so the city list would stay stale after a build adds a city (e.g. the sample journey's).
+  const sources = (directory: string): string[] => readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const file = path.join(directory, entry.name);
+    if (entry.isDirectory()) return entry.name === "generated" ? [] : sources(file);
+    return /\.tsx?$/u.test(entry.name) ? [file] : [];
+  });
+  const typed = sources(path.resolve("src")).filter((file) => /import\.meta\.glob\s*</u.test(readFileSync(file, "utf8")) && !file.endsWith("city-registry.test.ts"));
+  expect(typed).toEqual([]);
+  const generated = readdirSync(path.resolve("src/content/generated/content/cities")).map((file) => file.replace(/\.json$/u, ""));
+  expect(getCities().map((city) => city.id).sort()).toEqual(generated.sort());
 });
 
 it("does not offer departure to a registered incomplete city", () => {

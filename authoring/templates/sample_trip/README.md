@@ -25,8 +25,8 @@
 | --- | --- | --- |
 | `manifest.json` | 旅行編の登録。ID・並び順・状態・都市・通貨・開始資金・`cityPlan`・`authoring.eventPrefix` | `Missing journey manifest` |
 | `cities/mihon.json` | 都市。`productionStatus: "complete"`、予定の観光地、初回クリア報酬 | `Travel file without a city in the same layer` |
-| `travel/mihon.json` | 地点（宿・時計塔）、全地点間の経路、地図のイベント | `Cannot read JSON authoring/templates/sample_trip/travel/mihon.json` |
-| `travel/mihon-settings.json` | 宿の地点・宿泊費・再挑戦の間隔 | `Cannot read JSON authoring/templates/sample_trip/travel/mihon-settings.json` |
+| `travel/mihon.json` | 地点（宿・時計塔）、全地点間の経路、地図のイベント | `Cannot read JSON …/sample_trip/travel/mihon.json` |
+| `travel/mihon-settings.json` | 宿の地点・宿泊費・再挑戦の間隔 | `Cannot read JSON …/sample_trip/travel/mihon-settings.json` |
 | `romance/presentation.json` | 背景（宿は画像なしの `neutral`、時計塔は画像つき） | `Unknown date destination background` |
 | `romance/date_destinations.json` | デートの行き先（時計塔の広場）と小話 | `Unknown date destination` |
 | `romance/date_catalog.json` | 通常デート1件（2回の3択、共通効果） | `Invalid content in romance/date_catalog.json` |
@@ -66,9 +66,9 @@
 
 ### 道中交流と品物
 
-時計塔の下で「三時のしおり」を受け取り（入手）、別の交流でヒロインに渡せます（贈与）。品物には同じ都市での使い道が必要なため、受け取る交流と渡す交流の2件で1組です。
+時計塔の観察から対決へ進む前に、子どもから「三時のしおり」を受け取り（入手）、続く交流でヒロインに渡せます（贈与）。品物には同じ都市での使い道が必要なため、受け取る交流と渡す交流の2件で1組です。出会う条件（`encounters/entry-rules.json`）は付けていないので、初めての観察で出会います。
 
-- ファイル：`encounters/catalog.json`、`encounters/entry-rules.json`、`stories/encounters/smp_mihon_bookmark_stall.ink`、`stories/encounters/smp_mihon_bookmark_gift.ink`
+- ファイル：`encounters/catalog.json`、`stories/encounters/smp_mihon_bookmark_stall.ink`、`stories/encounters/smp_mihon_bookmark_gift.ink`
 - 項目のID：（必須のファイルには項目がありません）
 
 任意の英文だけが使う語は `learning/word-meanings.json` に残ります。使われない語はエラーではなく、`npm run content:build -- --verbose` で一覧できます。
@@ -77,7 +77,7 @@
 
 1. 宿から時計塔へ移動し、観光「止まった針の理由」を選ぶ。観光案内を読み、観察ポイントを見て、時計番のトーマと通常戦（3問）。初回の読了・完了・2問以上正解でAPが1ずつ入る。
 2. 都市の最初の観光を終えると、デート「三時までの席」（2 AP）を始められる。
-3. （任意）朝市の特殊戦B・図書室の特殊戦C（初回完了で1 APずつ）、時計塔の道中交流。特殊戦がある都市では、都市フィナーレの前に特殊戦を終える。
+3. （任意）時計塔の道中交流は、手順1の観察から対決へ進む前に起きる。朝市の特殊戦B・図書室の特殊戦C（初回完了で1 APずつ）は、初めて訪ねると観光案内のあとに始まる。特殊戦がある都市では、都市フィナーレの前に特殊戦を終える。
 4. 時計塔で都市フィナーレ「時計を動かす日」（5問）。完了・3問以上正解で1 APずつ、都市クリアで2 AP。
 5. エピローグを読んで旅が終わる（2都市目はない）。
 

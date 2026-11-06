@@ -56,8 +56,11 @@ export const tourismClues = tourism.clues;
 // The content pipeline validates them and copies them into the generated mirror,
 // so adding a city does not require a separate runtime list.
 // Runtime content is imported only from ./generated/ (written by `npm run content:build`).
-const cityFiles = import.meta.glob<unknown>("./generated/content/cities/*.json", { eager: true, import: "default" });
-const travelFiles = import.meta.glob<unknown>("./generated/content/travel/*.json", { eager: true, import: "default" });
+// No type argument on import.meta.glob: Vitest's file-system module cache leaves a
+// module uncached only when its text contains "import.meta.glob(", and a cached
+// copy would keep an old city list after a build adds or removes a city.
+const cityFiles: Record<string, unknown> = import.meta.glob("./generated/content/cities/*.json", { eager: true, import: "default" });
+const travelFiles: Record<string, unknown> = import.meta.glob("./generated/content/travel/*.json", { eager: true, import: "default" });
 export type CityContent = {
   city: ReturnType<typeof citySchema.parse>;
   travel: ReturnType<typeof travelCatalogSchema.parse>;

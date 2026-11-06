@@ -28,9 +28,8 @@ export const devOnlyMarkers: readonly DevOnlyMarker[] = [
   { text: "仮の場面の元になる都市データがありません", source: "src/domain/multi-city-test-fixture.ts" },
   { text: "test_golden_triangle", source: "src/domain/golden-triangle-test-fixture.ts" },
   { text: "Could not finish the Duomo guide", source: "tests/fixtures/current-game.ts" },
-  // Journeys for tests and development only; their IDs also name their image
-  // folders. sample_trip is the sample journey (npm run dev:sample, unit tests).
-  { text: "zz_fixture_trip", source: "tests/fixtures/journeys/zz_fixture_trip/manifest.json" },
+  // The journey for development and tests only (npm run dev:sample, unit tests);
+  // its ID also names its image folder.
   { text: "sample_trip", source: "authoring/templates/sample_trip/manifest.json" },
   // Source paths, as written by source maps and the development JSX transform.
   { text: "src/dev/", source: "src/dev/" },

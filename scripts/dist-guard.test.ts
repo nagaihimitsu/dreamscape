@@ -34,13 +34,13 @@ describe("production build guard", () => {
       ...cleanBuild,
       { path: "assets/DebugMode-x1.js", text: 'jsx("main",{className:"debug-panel","data-testid":"debug-panel"})' },
       { path: "assets/index-def.js", text: 'throw Error("仮の場面の元になる都市データがありません: milano")' },
-      { path: "assets/tourism/zz_fixture_trip/zz_fixture_spot.png", text: null },
+      { path: "assets/tourism/sample_trip/mihon_market.png", text: null },
       { path: "assets/index-abc.js.map", text: '{"sources":["../src/dev/debug-state.ts"]}' },
     ];
     expect(findDevOnlyCode(leaked).map(({ path, where, marker }) => [path, where, marker.text])).toEqual([
       ["assets/DebugMode-x1.js", "content", "debug-panel"],
       ["assets/index-def.js", "content", "仮の場面の元になる都市データがありません"],
-      ["assets/tourism/zz_fixture_trip/zz_fixture_spot.png", "path", "zz_fixture_trip"],
+      ["assets/tourism/sample_trip/mihon_market.png", "path", "sample_trip"],
       ["assets/index-abc.js.map", "content", "src/dev/"],
     ]);
   });
