@@ -7,7 +7,7 @@ import { getAvailableStoryBattles, getEpisodeAvailability, isEpisodeUnlocked } f
 import { getEncounterAvailability, getTourismEncounterAvailability, hasPendingPlaceEncounter, proceedFromTourism, startEncounter } from "./encounter";
 import { startCityEpilogue } from "./epilogue";
 import { createGame } from "./game";
-import { installTestCity } from "./multi-city-test-fixture";
+import { installTestCity } from "../dev/test-cities";
 import { getTourismAvailability, openTourism } from "./tourism";
 
 const record = (battleId: string) => ({ battleId, attempts: 1, firstScore: 0, bestScore: 0, lastScore: 0 });

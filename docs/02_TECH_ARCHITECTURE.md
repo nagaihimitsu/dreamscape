@@ -122,7 +122,7 @@ tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲ�
 - 共通デート効果 `common_date_*` は共通データの `romance/effect_catalog.json` 専用。共通の既定背景 `default_scene` は共通データの `romance/presentation.json` に必ず置く（下の「既定背景とタイトルの絵」）。
 - Debugの「仮の場面」は、準備中の旅行編の都市ごとに `<都市ID>_episode`・`<都市ID>_battle`・`<都市ID>_date` など `<都市ID>_` で始まるID（試験用の都市では `test_`）と、`<都市ID>/guide` などのストーリーIDをメモリ上だけで作る。準備中の旅行編の正式データには、上の接頭辞（例：`uz_`）を付けたIDを使う。
 - 旅行編ID `sample_trip`、接頭辞 `smp_`、都市ID `mihon`、並び順 `order: 9000` は、開発・テスト専用の見本の編（`authoring/templates/sample_trip/`、下の「見本の編」）のために予約する。`content/journeys/` には置かず、本番には含めない。
-- 本番ビルド（`npm run build`・`npm run verify`）は `vite build` の後に `scripts/check-dist.ts` で `dist/` を検査し、Debug・プレビュー（`src/dev/`）、テスト用の仮データ（`*-test-fixture.ts`・`tests/fixtures/`）、見本の編の旅行編ID `sample_trip`（画像フォルダ名にも使う）に固有の目印の文字列が、公開されるファイルの名前か内容にあればビルドを失敗にする。検出に使う文字列と由来のファイルは `scripts/dist-guard.ts` にあり、由来のファイルから文字列が消えると `scripts/dist-guard.test.ts` が失敗する。検出は目印による確認で、開発用のコードが入ったことを必ず見つけるものではない（目印を持たない新しいファイルや、目印の部分が使われずに省かれたコードは見逃す）。`src/dev/` などに開発用のファイルを足したら、そのファイルに固有の文字列も目印に加える。
+- 本番ビルド（`npm run build`・`npm run verify`）は `vite build` の後に `scripts/check-dist.ts` で `dist/` を検査し、Debug・プレビュー（`src/dev/`）、テスト用の仮データ（`src/dev/test-cities.ts`・`src/content/test-fixtures.ts`・`tests/fixtures/`）、見本の編の旅行編ID `sample_trip`（画像フォルダ名にも使う）に固有の目印の文字列が、公開されるファイルの名前か内容にあればビルドを失敗にする。検出に使う文字列と由来のファイルは `scripts/dist-guard.ts` にあり、由来のファイルから文字列が消えると `scripts/dist-guard.test.ts` が失敗する。検出は目印による確認で、開発用のコードが入ったことを必ず見つけるものではない（目印を持たない新しいファイルや、目印の部分が使われずに省かれたコードは見逃す）。`src/dev/` などに開発用のファイルを足したら、そのファイルに固有の文字列も目印に加える。
 
 ### 新しい編を追加する手順
 
@@ -173,7 +173,7 @@ tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲ�
 - 都市の会話の初期背景は、その都市の `travel/<cityId>-settings.json` の `storyBackgroundAssetId`（ミラノはミラノ編の背景 `milano_cafe`）。未指定の都市は現在地（なければ宿）の背景を使う。
 - 所持品のアイコンは道中交流カタログの品物の `iconPath`（未指定なら共通の `assets/items/item.svg`）。
 - 観光地のバトル後に自由時間から改めてクイズに挑める道中交流（ミラノのガッレリアの願掛け）は、`encounters/entry-rules.json` の `quizAfterLandmarkBattle` で指定する。
-- Debugの「仮の場面」（`src/domain/multi-city-test-fixture.ts`）と一部のテストは、ミラノのデータ（観光・対決・特殊戦・フィナーレ・道中交流とその品物・デート・地点）を複製して試験用の都市を作る。開発用で、通常プレイには影響しない。仮の場面は準備中で実際のエピソードがまだない旅行編だけに作り、ミラノ編のフォルダがない場合はその旨を表示して作らない。
+- Debugの「仮の場面」（`src/dev/test-cities.ts`）と一部のテストは、ミラノのデータ（観光・対決・特殊戦・フィナーレ・道中交流とその品物・デート・地点）を複製して試験用の都市を作る。開発用で、通常プレイには影響しない。仮の場面は準備中で実際のエピソードがまだない旅行編だけに作り、ミラノ編のフォルダがない場合はその旨を表示して作らない。
 
 ## レイヤー間の依存
 - `screens/components` → アプリ操作サービス → `domain` 純粋関数 → `persistence`

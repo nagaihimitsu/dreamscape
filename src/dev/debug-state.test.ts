@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { getJourney } from "../content/journeys";
 import { advanceDate, chooseDate, validateGameState } from "../domain/game";
-import { installPreparingJourneyTestCities } from "../domain/multi-city-test-fixture";
+import { installPreparingJourneyTestCities } from "./test-cities";
 import { parseDebugQuery, type DebugQuery } from "./debug-query";
 import { createDebugState, debugTargets, defaultDebugSettings, resolveDebugLaunch, type DebugSettings } from "./debug-state";
 

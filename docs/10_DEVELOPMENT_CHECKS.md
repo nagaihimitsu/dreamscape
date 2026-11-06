@@ -195,9 +195,9 @@ GitHub Actionsは次のワークフローを実行する。同じイベントで
 
 ### 本番ビルドの検査
 
-`npm run build` と `npm run verify` は、`vite build` の後に `npm run dist:check`（`scripts/check-dist.ts`）で `dist/` を検査する。Debug・人物素材のプレビュー（`src/dev/`）、テスト用の仮データ（`*-test-fixture.ts`・`tests/fixtures/`）、開発・テスト専用の見本の編（`sample_trip`。画像のフォルダ名にも使う）に固有の文字列が、公開されるファイルの名前か内容に1つでもあれば、ファイル名・文字列・その由来を表示してビルドを失敗にする。`vite.config.ts` は変えていない。
+`npm run build` と `npm run verify` は、`vite build` の後に `npm run dist:check`（`scripts/check-dist.ts`）で `dist/` を検査する。Debug・人物素材のプレビュー（`src/dev/`）、テスト用の仮データ（`src/dev/test-cities.ts`・`src/content/test-fixtures.ts`・`tests/fixtures/`）、開発・テスト専用の見本の編（`sample_trip`。画像のフォルダ名にも使う）に固有の文字列が、公開されるファイルの名前か内容に1つでもあれば、ファイル名・文字列・その由来を表示してビルドを失敗にする。`vite.config.ts` は変えていない。
 
 - 失敗した場合は、開発専用のモジュールを `import.meta.env.DEV` の分岐の外から読み込んでいないか、生成物（`src/content/generated/`）に見本の編が入っていないか（`src/content/generated/build-info.json` の `extraJourneyFolders`。単体テストや `npm run dev:sample` の後に `vite build` を直接実行した場合など）を確かめる。生成物が原因なら `npm run content:build` で生成し直してからビルドする。
 - 検出に使う文字列と由来のファイルは `scripts/dist-guard.ts` にある。由来のファイルを改名・改稿して文字列が消えると `scripts/dist-guard.test.ts` が失敗するので、そのファイルに固有の別の文字列へ差し替える。本番のコードやコンテンツが同じ文字列を使うとビルドが失敗するため、目印には開発用のファイルにしかない文字列を選ぶ。
 - 目印による確認なので、目印を持たない開発用のコード（目印を登録していない新しいファイルなど）が入っても失敗しないことがある。`src/dev/`・テスト用の仮データに新しいファイルを足したら、そのファイルに固有の文字列を目印に加える。
-- 目印を補うため、`scripts/dist-guard.test.ts` は本番のコード（`src/` のうち `src/dev/`・テスト・仮データ以外）を読み、`src/dev/`・`tests/`・`*-test-fixture.ts` を読み込んでいるのが `src/main.tsx` の `import.meta.env.DEV` の分岐の中の遅延読み込み（Debugとプレビュー）だけであることを確かめる。Debug起動URLの読み取り（`src/dev/debug-query.ts`）、開発用の読み取り口 `window.__dreamscapeDebug`（`src/dev/debug-hook.ts`）、場面の組み立て部品（`src/dev/scenario-builders.ts`）にも目印がある。
+- 目印を補うため、`scripts/dist-guard.test.ts` は本番のコード（`src/` のうち `src/dev/`・テスト・仮データ以外）を読み、`src/dev/`・`tests/`・`src/content/test-fixtures.ts` を読み込んでいるのが `src/main.tsx` の `import.meta.env.DEV` の分岐の中の遅延読み込み（Debugとプレビュー）だけであることを確かめる。Debug起動URLの読み取り（`src/dev/debug-query.ts`）、開発用の読み取り口 `window.__dreamscapeDebug`（`src/dev/debug-hook.ts`）、場面の組み立て部品（`src/dev/scenario-builders.ts`）にも目印がある。

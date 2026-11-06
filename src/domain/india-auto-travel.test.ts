@@ -6,7 +6,7 @@ import { clearCity, wrongAnswer } from "../dev/scenario-builders";
 import { advanceCompletedJourneyCity } from "./city-travel";
 import { advanceCityEpilogue } from "./epilogue";
 import { createGame, validateGameState, type GameState } from "./game";
-import { installTestGoldenTriangle } from "./golden-triangle-test-fixture";
+import { installTestGoldenTriangle } from "../dev/test-cities";
 
 class MemoryStorage implements StorageLike {
   private readonly values = new Map<string, string>();

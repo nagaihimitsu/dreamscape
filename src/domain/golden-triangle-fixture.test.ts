@@ -7,7 +7,7 @@ import { clearCity } from "../dev/scenario-builders";
 import { departToNextCity, getNextCity } from "./city-travel";
 import { completeRecordedChapter } from "./chapter";
 import { createGame, validateGameState, type GameState } from "./game";
-import { installTestGoldenTriangle } from "./golden-triangle-test-fixture";
+import { installTestGoldenTriangle } from "../dev/test-cities";
 import { getTravelEventDefinition, sleepAtHotel, waitForTravel } from "./travel-game";
 
 class MemoryStorage implements StorageLike {

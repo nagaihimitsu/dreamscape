@@ -30,8 +30,8 @@ export const devOnlyMarkers: readonly DevOnlyMarker[] = [
   { text: "を結果まで進められませんでした", source: "src/dev/scenario-builders.ts" },
   { text: "制作中の都市ではありません", source: "src/dev/prototype-preview-state.ts" },
   // In-memory fixtures shared by unit tests and Debug.
-  { text: "仮の場面の元になる都市データがありません", source: "src/domain/multi-city-test-fixture.ts" },
-  { text: "test_golden_triangle", source: "src/domain/golden-triangle-test-fixture.ts" },
+  { text: "仮の場面の元になる都市データがありません", source: "src/dev/test-cities.ts" },
+  { text: "test_golden_triangle", source: "src/dev/test-cities.ts" },
   // The journey for development and tests only (npm run dev:sample, unit tests);
   // its ID also names its image folder.
   { text: "sample_trip", source: "authoring/templates/sample_trip/manifest.json" },
@@ -39,7 +39,7 @@ export const devOnlyMarkers: readonly DevOnlyMarker[] = [
   // (tests/fixtures/current-game.ts has no text of its own: it calls the scene
   // builders, whose markers above would show up with it.)
   { text: "src/dev/", source: "src/dev/" },
-  { text: "test-fixture", source: "src/domain/multi-city-test-fixture.ts" },
+  { text: "test-fixture", source: "src/content/test-fixtures.ts" },
   { text: "tests/fixtures/", source: "tests/fixtures/" },
 ];
 

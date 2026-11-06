@@ -9,7 +9,7 @@ import { getEpisodeAvailability } from "./chapter";
 import { advanceCompletedJourneyCity, departToNextCity, getNextCity } from "./city-travel";
 import { advanceCityEpilogue } from "./epilogue";
 import { advanceDate, chooseDate, createGame, finishDate, startDate, validateGameState, type GameState } from "./game";
-import { installJourneyTestCities } from "./multi-city-test-fixture";
+import { installJourneyTestCities } from "../dev/test-cities";
 import { waitForTravel } from "./travel-game";
 
 const cityIds = ["tashkent", "samarkand", "bukhara", "khiva"] as const;

@@ -8,7 +8,7 @@ import { getEpisodeAvailability, startEpisode } from "./chapter";
 import { advanceEncounter, chooseEncounter, finishEncounter, proceedFromTourism, startEncounter } from "./encounter";
 import { startCityEpilogue } from "./epilogue";
 import { createGame, getDateAvailability, startDate, validateGameState, type GameState } from "./game";
-import { installTestCity } from "./multi-city-test-fixture";
+import { installTestCity } from "../dev/test-cities";
 import { openTourism, skipTourismGuide, startTourismBattle } from "./tourism";
 import { beginTravelEvent, waitForTravel } from "./travel-game";
 

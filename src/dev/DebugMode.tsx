@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import App from "../app/App";
 import { getCities, getCityContent } from "../content";
 import { loadGame, saveGame } from "../persistence";
-import { installPreparingJourneyTestCities } from "../domain/multi-city-test-fixture";
+import { installPreparingJourneyTestCities } from "./test-cities";
 import { installDebugHook, type DebugSceneInfo } from "./debug-hook";
 import {
   debugQueryString, debugSceneLabels, debugScenes, debugValueRanges, parseDebugQuery, settingsQuery,

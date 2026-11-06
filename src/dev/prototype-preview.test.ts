@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { cityContents, episodes, getCityContent } from "../content";
 import { journeys } from "../content/journeys";
-import { installIndiaTestCities, installJourneyTestCities, installPreparingJourneyTestCities } from "../domain/multi-city-test-fixture";
+import { installIndiaTestCities, installJourneyTestCities, installPreparingJourneyTestCities } from "./test-cities";
 import { loadGame, saveGame } from "../persistence";
 import { prototypePreviewState } from "./prototype-preview-state";
 

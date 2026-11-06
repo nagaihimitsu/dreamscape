@@ -5,7 +5,7 @@ import { loadGame, saveGame, SAVE_KEY, type StorageLike } from "../persistence";
 import { leaveBattle, startBattle } from "./battle";
 import { finalizeBattleProgress } from "./chapter";
 import { createGame, type GameState } from "./game";
-import { installTestCity } from "./multi-city-test-fixture";
+import { installTestCity } from "../dev/test-cities";
 import { claimPendingRewards } from "./rewards";
 import { beginTravelEvent } from "./travel-game";
 import { openTourism, replayTourismGuide, skipTourismGuide, startTourismBattle } from "./tourism";
