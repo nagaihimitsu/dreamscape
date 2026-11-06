@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { Story } from "inkjs";
 import { buildContent } from "../../scripts/content-pipeline";
-import { changeCatalogEntry, prepareContentFixture } from "./test-fixtures";
+import { changeCatalogEntry, prepareContentFixture, replaceFixtureFile } from "./test-fixtures";
 import catalogData from "./generated/content/tourism/catalog.json";
 import type { TourismCatalog } from "./tourism-schemas";
 import { resolvePublicFile } from "../../scripts/public-assets";
@@ -109,7 +109,7 @@ describe("tourism content contract", () => {
     });
     await expect(buildContent(fixture, false)).rejects.toThrow("Missing public file: assets/tourism/missing.webp");
     await changeEntry("assets", assetId, () => {});
-    await writeFile(
+    await replaceFixtureFile(
       resolvePublicFile(fixture, catalogData.assets.find((asset) => asset.id === assetId)!.path),
       "not an image",
     );

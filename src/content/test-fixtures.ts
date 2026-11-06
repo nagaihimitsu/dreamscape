@@ -1,16 +1,30 @@
-import { cp, readFile, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, readdir, rm, symlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { characterCatalogSchema } from "./character-assets";
 import type { MergedKind } from "../../scripts/content-layout";
-import { loadContentSources } from "../../scripts/content-sources";
+import { loadContentSources, publicRoots } from "../../scripts/content-sources";
 
-/** Build an isolated, artwork-undelivered fixture for tests of other content.
+/**
+ * Build an isolated, artwork-undelivered fixture for tests of other content.
  * Production content and its artwork are still validated by content:build;
- * image-specific tests can register their own images in this fixture. */
+ * image-specific tests can register their own images in this fixture.
+ *
+ * The images of the journeys (`content/journeys/<journeyId>/public/`, most of
+ * the repository's size) are not copied: their folders are real, but each file
+ * is a symbolic link to the repository's file. A test may add or remove files
+ * there, but must never write over a linked file, since that would change the
+ * repository; replace it with replaceFixtureFile. The unit test run checks
+ * that no linked image changed (scripts/test-image-guard.ts).
+ */
 export async function prepareContentFixture(fixture: string): Promise<void> {
   const root = path.resolve(".");
   const characterAssets = path.join(root, "public/assets/characters");
-  await cp(path.join(root, "content"), path.join(fixture, "content"), { recursive: true });
+  const journeyImages = new Set(publicRoots(root).filter((directory) => directory !== path.join(root, "public")));
+  await cp(path.join(root, "content"), path.join(fixture, "content"), {
+    recursive: true,
+    filter: (source) => !journeyImages.has(source),
+  });
+  for (const directory of journeyImages) await linkFiles(directory, path.join(fixture, path.relative(root, directory)));
   await cp(path.join(root, "public"), path.join(fixture, "public"), {
     recursive: true,
     filter: (source) => source !== characterAssets,
@@ -21,6 +35,26 @@ export async function prepareContentFixture(fixture: string): Promise<void> {
     for (const costume of character.costumes ?? [])
       for (const pose of costume.poses) pose.expressions = {};
   await writeFile(file, JSON.stringify(catalog));
+}
+
+/** Recreate the folders of `source` at `target`, with a symbolic link to each file. */
+async function linkFiles(source: string, target: string): Promise<void> {
+  await mkdir(target, { recursive: true });
+  for (const entry of await readdir(source, { withFileTypes: true })) {
+    const from = path.join(source, entry.name);
+    const to = path.join(target, entry.name);
+    if (entry.isDirectory()) await linkFiles(from, to);
+    else await symlink(from, to);
+  }
+}
+
+/**
+ * Write `data` to `file` in a fixture as a new file, so a file that
+ * prepareContentFixture linked to the repository is replaced, not written through.
+ */
+export async function replaceFixtureFile(file: string, data: string | Uint8Array): Promise<void> {
+  await rm(file, { force: true });
+  await writeFile(file, data);
 }
 
 /**

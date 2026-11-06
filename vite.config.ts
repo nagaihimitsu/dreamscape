@@ -12,5 +12,7 @@ export default defineConfig({
     include: ["src/**/*.test.ts", "scripts/**/*.test.ts"],
     // Content validation compiles every Ink branch, including relationship tones.
     testTimeout: 180_000,
+    // Fixtures link the journeys' images; fail the run if a test changed one.
+    globalSetup: ["scripts/test-image-guard.ts"],
   },
 });
