@@ -145,10 +145,10 @@ export default function DebugMode() {
 
   if (launching) return <main className="debug-panel"><p role="status">場面を準備しています…</p></main>;
   if (launchError) return (
-    <main className="debug-panel" data-testid="debug-launch-error">
+    <main className="debug-panel debug-launch-error" data-testid="debug-launch-error">
       <h1>場面を開けませんでした</h1>
       <p role="alert">{launchError}</p>
-      <p>URLの項目は docs/10_DEVELOPMENT_CHECKS.md の「Debug起動URL」にあります。設定画面で場面を選び直すこともできます。</p>
+      <p>使えるURLの項目は docs/10_DEVELOPMENT_CHECKS.md の「Debug起動URL」にあります。設定画面で場面を選び直すこともできます。</p>
       <p><a href="?debug">場面の確認（設定画面）へ</a></p>
       <a href={import.meta.env.BASE_URL}>通常プレイに戻る</a>
     </main>

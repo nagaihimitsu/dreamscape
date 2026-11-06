@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { getJourney } from "../content/journeys";
 import { advanceDate, chooseDate, validateGameState } from "../domain/game";
 import { parseDebugQuery, type DebugQuery } from "./debug-query";
 import { createDebugState, debugTargets, defaultDebugSettings, resolveDebugLaunch, type DebugSettings } from "./debug-state";
@@ -75,6 +76,8 @@ describe("Debug launch URLs against the content", () => {
   });
 
   it("opens every scene the settings screen lists for a cleared Milan and sample city", () => {
+    if (!getJourney("sample_trip"))
+      throw new Error("見本の旅（sample_trip）が生成物にありません。npm run content:build -- --with-sample を実行してから、もう一度テストしてください。");
     for (const cityId of ["milano", "mihon"]) {
       for (const [scene, targets] of Object.entries(debugTargets(cityId)) as Array<[DebugSettings["scene"], { id: string }[]]>) {
         expect(targets.length, `${cityId} ${scene}`).toBeGreaterThan(0);
