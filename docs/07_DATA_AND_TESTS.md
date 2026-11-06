@@ -3,6 +3,13 @@
 ## 必要な安定ID
 `chapterId`、`dateId`、`storyId`、`rewardSourceId`、`memoryId`、`quizId`、`factId`、`choiceEffectId` は文字列で永続的に一意。画面に出す日本語名は後から変えられるがIDは変えない。
 
+## 旅行編フォルダのデータ契約
+- 旅行編は `content/journeys/<journeyId>/manifest.json` で登録し、都市・移動・Ink・クイズ・カタログを `content/` 直下の共通データと同じ相対パスで置く。統合規則・生成物・予約された名前・追加手順は [技術設計](02_TECH_ARCHITECTURE.md#統合の規則) を参照する。
+- 上のIDを含むすべてのIDは全旅行編で一意（統合時に重複をエラーにする）。`storyId` はその層の `stories/` からの相対パス（`.ink` を除く）で、旅行編フォルダ名を含まない。
+- 旅行編フォルダの項目は自分の `manifest.json` の都市だけを扱い、参照先は同じ旅行編か共通データに限る。共通データは都市・旅行編の項目を参照しない（`content:build` が検査）。
+- ゲームは `src/content/generated/` の生成物だけを読む。旅行編だけが持つ種類（道中交流、会話注釈、英語ノートの詳細など）は、どの旅行編にもなければ空として生成する。`memoryCallbacks` は空でもよく（該当がなければ `fallbackMemoryCallbackJa`）、`learning/details.json` は問題の詳細がない場合だけ `storyId` を省略できる。
+- 自動テスト用の旅行編は `tests/fixtures/journeys/` に置き、`content/journeys/` には含めない。
+
 ## シナリオ編集
 - Inkは文章と選択肢を担当。`# speaker: heroine`、`# speaker: narrator`、`# background: milano_cafe`、`# effect: memory_milano_promise` のようなタグを採用する。
 - `effect:` タグは許可済みイベントの識別子。任意の式やJavaScriptを埋め込まない。
@@ -53,6 +60,8 @@
 9. 狭い画面で文字が切れない。長文の名前を入力してもレイアウトが大きく壊れない。
 10. セーブデータ破損時は明確に案内し、利用者の他データを勝手に消さない。
 11. ビルド/型チェック/テストの実行手順をREADMEに記載し、変更内容と影響範囲に応じて必要な確認を選ぶ。公開前や大きな変更では[開発時の確認](10_DEVELOPMENT_CHECKS.md)の全体確認を行う。
+12. 旅行編フォルダを1つ追加して `npm run content:build` を実行すると、コードを変更せずに旅行編一覧・会話・クイズ・画像に加わる。どの旅行編フォルダを外しても生成と検証が通る（`scripts/journey-folders.test.ts`）。
+13. 共通のテストは特定の旅行編・都市を対象にするときはその範囲に絞って数え、旅行編を追加しても失敗しない。
 
 恋愛に影響する変更では、保存済みチケットとプロフィールの再現性、各軸の確率補正・上下限・変化幅、正負両経路の会話、二重操作・別タブ競合、無作為化しない告白、APが尽きたときの再交流を必要に応じて検証する。
 

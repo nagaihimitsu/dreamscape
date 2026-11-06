@@ -187,6 +187,42 @@ B/C戦の戦績と途中状態は保存します。反論とカットインは�
 
 現在の観光クイズの編集上の棚卸しは [編集メモ](authoring/journeys/milano/quiz-editorial-review.md)、未採用の小話候補は [下書き](authoring/journeys/milano/drafts/) にあります。候補はゲームに読み込まれず、史実の最終確認や公開承認を示すものではありません。
 
+## フォルダ構成
+
+ゲームの仕組み（共通コード・共通データ）と、各旅行編（ミラノ編、インド・ゴールデントライアングル編など）のデータを分けています。旅行編は `content/journeys/<旅行編ID>/` のフォルダ1つで、フォルダを追加して `npm run content:build` を実行すると、コードを変えずに旅行編一覧に加わります。追加手順・統合の規則・IDの付け方は [技術設計](docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順) を参照してください。
+
+```
+content/                          # 共通データ（全旅行編で共有：恋愛の段階・数値、共通デート効果、既定背景、辞書、人物）
+  journeys/<旅行編ID>/            # 旅行編フォルダ（フォルダ名＝旅行編ID）
+    manifest.json                 # 登録（名前・並び順 order・公開状態・都市の順序・通貨・初期値）
+    cities/ travel/               # 都市・都市内の地点と移動
+    stories/**/*.ink quizzes/     # 会話とクイズ
+    battles/ progression/ romance/ tourism/ encounters/ learning/ presentation/  # 各カタログ（必要なものだけ）
+    public/assets/                # その旅行編だけが使う画像
+public/assets/                    # 全旅行編で共有する画像（ヒロイン、演出、共通アイコン）
+authoring/                        # 共通の制作手順とテンプレート
+  journeys/<旅行編ID>/            # 旅行編ごとの下書き・調査記録（ゲームは読み込まない）
+scripts/                          # 生成・検証・共通の制作ツール
+  journeys/<旅行編ID>/            # その旅行編だけの制作ツール
+src/                              # ゲーム本体（React・ゲームルール・保存）
+  content/generated/              # 生成物（Git管理せず、手動編集しない）
+tests/e2e/ tests/fixtures/        # E2Eとテスト用データ（tests/fixtures/journeys/ は自動テスト専用の旅行編）
+```
+
+| コマンド | 内容 |
+| --- | --- |
+| `npm run dev` | コンテンツを生成してから開発サーバーを起動 |
+| `npm run content:build`（`content:check`） | 共通データと全旅行編を検証・統合し、`src/content/generated/` に書き出す |
+| `npm test` | コンテンツを生成してから全単体テスト |
+| `npm run build` | 生成・型検査・本番ビルド（`dist/`） |
+| `npm run verify` | 生成・全単体テスト・型検査・本番ビルドを一度に実行（公開前・大きな変更） |
+| `npm run test:e2e` | 最小構成のE2E（Playwright） |
+| `npm run content:inspect -- <ファイル>` | 1ファイルの形式とInkコンパイルを確認 |
+| `npm run journey:scaffold`・`journey:readiness`・`journey:release`・`journey:transit` | 旅行編へシナリオとクイズを取り込む制作ツール（[手順](authoring/JOURNEY_AUTHORING.md)） |
+| `npm run city:bundle` | 都市単位の作業用JSONで地点・交通・背景などを編集（[手順](authoring/CITY_BUNDLES.md)） |
+
+ゲームは `content/` を直接読まず、`npm run content:build` が書き出す生成物だけを読みます。`src/content/generated/` の `stories.json`・`quizzes.json`（コンパイル済みの会話と出題）、`content/`（統合したデータ）、`public/`（配信する画像）は手動で編集しないでください。Ink・JSON・画像を編集した後は `npm run content:build` を実行します（`dev`・`test`・`build`・`verify` は自動で実行します）。
+
 ## コンテンツ制作の始め方（Phase 8）
 
 [制作マニュアル](authoring/CONTENT_GUIDE.md) と [テンプレート](authoring/templates/) に、観光地・発見・クイズ・A/B/C戦・デート・案内・都市進行の正規JSONとInkの編集例があります。直接編集しても、AIが提案した文章を転記しても、同じ形式と検証を使います。`authoring/journeys/<旅行編ID>/drafts/` は必要に応じて使える任意の下書き置き場で、ゲームに読み込まれません。採用は通常のGitレビューで行います。
