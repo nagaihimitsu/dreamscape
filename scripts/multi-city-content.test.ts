@@ -3,7 +3,7 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { buildContent, validateCityLinks } from "./content-pipeline";
-import { readJourneyCatalog } from "./content-sources";
+import { readJourneyCatalog, readJourneyManifests } from "./content-sources";
 import { citySchema } from "../src/content/schemas";
 import { prepareContentFixture } from "../src/content/test-fixtures";
 
@@ -158,11 +158,9 @@ describe("multi-city content build", () => {
   }, 60000);
 
   it("requires an available journey to open the title screen with", async () => {
-    for (const id of ["milano", "golden_triangle"]) {
-      const journey = await read(manifest(id));
-      journey.status = "preparing";
-      await write(manifest(id), journey);
-    }
+    // Every available journey of the repository's data, whichever journey folders there are.
+    const available = readJourneyManifests(root).filter((item) => item.data.status === "available");
+    for (const item of available) await writeFile(item.file, JSON.stringify({ ...item.data, status: "preparing" }));
     await expect(buildContent(root, false)).rejects.toThrow(
       'No available journey: at least one content/journeys/<journeyId>/manifest.json needs "status": "available"');
   }, 60000);

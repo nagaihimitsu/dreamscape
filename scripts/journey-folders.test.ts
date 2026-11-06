@@ -94,7 +94,7 @@ function expectAssembledImages(journeyFolder: string, served = true) {
 }
 
 describe("journey folders", () => {
-  it("turns a copied folder with a new manifest ID into a new playable journey", async () => {
+  it("turns a renamed folder with a matching manifest ID into a playable journey under the new ID", async () => {
     const source = journeyDirectory(root, "golden_triangle");
     const clone = journeyDirectory(root, "gt_clone");
     const manifestFile = path.join(source, "manifest.json");
