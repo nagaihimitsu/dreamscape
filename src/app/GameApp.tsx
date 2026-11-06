@@ -363,7 +363,7 @@ export function GameApp({
         {!game ? (
           <>
             <div className="intro-art">
-              <CanalScene compact />
+              <CanalScene compact artwork={getJourney(journeyId)?.titleArt} />
             </div>
             <section className="paper intro">
               <p className="eyebrow">旅のはじまり</p>

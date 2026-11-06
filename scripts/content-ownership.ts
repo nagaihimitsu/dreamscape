@@ -1,6 +1,7 @@
 import path from "node:path";
 import { displayPath, type ContentLayer, type ContentSources } from "./content-sources";
 import { CORE_LAYER_KINDS, type MergedKind } from "./content-layout";
+import { servedFile } from "./public-assets";
 
 // Ownership of content across layers. Every journey folder must stay
 // removable on its own: its entries describe only its own cities, and what
@@ -131,6 +132,8 @@ function inkTagReferences(source: string): Reference[] {
  *   battles, quizzes, backgrounds, images, memories, effects, …) must be
  *   defined in the same layer or in the core layer; the core layer may refer
  *   only to core content.
+ * - A manifest's title art image is served from the journey's own public/
+ *   folder or the root public/.
  * Throws one error listing every violation with the files involved. Works on
  * the loaded sources only (no file is read).
  */
@@ -278,6 +281,15 @@ export function checkContentOwnership(sources: ContentSources): void {
       ]);
     for (const event of list(travel.events))
       checkReferences(city.travelFile, `events["${String(event.id)}"]`, [...fields(event, "city", ["cityId"]), ref(EVENT, "id", event.id)]);
+  }
+  // A journey's title art is served from its own public/ folder or the root public/.
+  for (const manifest of sources.manifests) {
+    const imagePath = isObject(manifest.data.titleArt) ? manifest.data.titleArt.imagePath : undefined;
+    const file = typeof imagePath === "string" ? servedFile(sources.publicFiles, imagePath) : undefined;
+    const owner = file && sources.layers.find((layer) => layer.type === "journey" && file.startsWith(path.join(layer.directory, "public") + path.sep));
+    if (owner && owner.id !== manifest.id)
+      errors.push(`Reference to another layer: ${show(manifest.file)} titleArt.imagePath "${imagePath}" is the image of ${show(file)}; ` +
+        "a journey folder may only refer to its own content and the core layer.");
   }
   for (const quiz of quizzes)
     if (isObject(quiz.data)) checkReferences(quiz.file, "", [...fields(quiz.data, "landmark", ["landmarkId"]), ...fields(quiz.data, "city", ["cityId"])]);

@@ -53,6 +53,21 @@ describe("content build acceptance", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Public file assets/items/item.svg exists in more than one public folder: public/assets/items/item.svg and content/journeys/milano/public/assets/items/item.svg");
   });
+  it("serves a journey's title art from its public folder and rejects a missing image", async () => {
+    const manifestFile = path.join(fixture, "content/journeys/milano/manifest.json");
+    const manifest = JSON.parse(await readFile(manifestFile, "utf8"));
+    const image = path.join(fixture, "content/journeys/milano/public/assets/title/milano.webp");
+    await mkdir(path.dirname(image), { recursive: true });
+    await sharp({ create: { width: 1760, height: 560, channels: 3, background: "#e6d8bb" } }).webp().toFile(image);
+    const titleArt = { imagePath: "assets/title/milano.webp", captionJa: "ミラノ ／ 運河の午後" };
+    await writeFile(manifestFile, JSON.stringify({ ...manifest, titleArt }));
+    await buildContent(fixture);
+    const catalog = JSON.parse(await readFile(path.join(fixture, "src/content/generated/content/journeys/catalog.json"), "utf8"));
+    expect(catalog.journeys.find((journey: { id: string }) => journey.id === "milano").titleArt).toEqual(titleArt);
+    expect(await readFile(path.join(fixture, "src/content/generated/public/assets/title/milano.webp"))).toEqual(await readFile(image));
+    await writeFile(manifestFile, JSON.stringify({ ...manifest, titleArt: { ...titleArt, imagePath: "assets/title/missing.webp" } }));
+    await expect(buildContent(fixture, false)).rejects.toThrow("Missing title art image: milano/assets/title/missing.webp");
+  }, 120000);
   it("rejects a registered but missing background image", async () => {
     const file = path.join(fixture, "content/romance/presentation.json");
     const data = JSON.parse(await readFile(file, "utf8"));

@@ -1,8 +1,12 @@
+import { readFileSync } from "node:fs";
+import type { JourneyCatalog } from "../../src/content/journey-catalog";
 import { allStorage, expect, readSave, startJourney, test } from "./helpers";
 
 test("the title screen opens every registered journey without writing a save", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveTitle(/Dreamscape/);
+  // Read after the dev server's content:build: the title art each manifest declares.
+  const catalog: JourneyCatalog = JSON.parse(readFileSync("src/content/generated/content/journeys/catalog.json", "utf8"));
   const selector = page.getByLabel("旅行編");
   const journeys = await selector.locator("option").evaluateAll((options) =>
     options.map((option) => ({ id: (option as HTMLOptionElement).value, name: option.textContent ?? "" })));
@@ -23,6 +27,13 @@ test("the title screen opens every registered journey without writing a save", a
     } else {
       await expect(page.getByRole("button", { name: "旅をはじめる", exact: true })).toBeVisible();
       headings.set(journey.id, await page.locator(".masthead .edition").textContent());
+      // The journey's own title art (a missing file fails the error guard), else the shared neutral scene.
+      const art = catalog.journeys.find((item) => item.id === journey.id)?.titleArt;
+      const scene = page.locator(".intro-art .canal-scene");
+      await expect(scene.locator(".scene-stamp")).toHaveText(art?.captionJa ?? "旅の余白 ／ 予定のない午後");
+      await expect(scene.locator("img")).toHaveCount(art ? 1 : 0);
+      if (art) await expect(scene.locator("img")).toHaveAttribute("src", new RegExp(`${art.imagePath}$`));
+      else await expect(scene).toHaveAttribute("data-fallback", "neutral");
     }
     await expect(selector).toBeFocused();
   }

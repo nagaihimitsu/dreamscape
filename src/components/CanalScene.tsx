@@ -1,22 +1,26 @@
 import { useState } from "react";
 import { presentation, tourismAssets } from "../content";
 import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
+import type { TitleArt } from "../content/journey-catalog";
 /** Original decorative illustration; all game information is also available as text. */
 export function CanalScene({
   compact = false,
   backgroundId = DEFAULT_BACKGROUND_ID,
   imageAssetId,
+  artwork,
 }: {
   compact?: boolean;
   backgroundId?: string;
   /** Use a location's registered photograph while keeping this scene's fallback. */
   imageAssetId?: string;
+  /** A journey's title art: its own image and caption over this scene, which stays as the fallback. */
+  artwork?: TitleArt;
 }) {
   const backdrop = presentation.backgrounds[backgroundId];
   const landmarkImage = imageAssetId
     ? tourismAssets.find((asset) => asset.id === imageAssetId)?.path
     : undefined;
-  const image = landmarkImage ?? (backdrop?.imageAssetId
+  const image = artwork?.imagePath ?? landmarkImage ?? (backdrop?.imageAssetId
     ? tourismAssets.find((asset) => asset.id === backdrop.imageAssetId)?.path
     : backdrop?.imagePath);
   return (
@@ -107,9 +111,9 @@ export function CanalScene({
         <path fill="#ede2c8" d="m563 410 30-13 28 13-29 14z" />
       </svg>
       )}
-      {image && <BackgroundArtwork key={image} path={image} position={backdrop?.imagePosition} />}
+      {image && <BackgroundArtwork key={image} path={image} position={artwork ? artwork.imagePosition : backdrop?.imagePosition} />}
       <span className="scene-stamp">
-        {backdrop?.captionJa}
+        {artwork?.captionJa ?? backdrop?.captionJa}
       </span>
     </div>
   );

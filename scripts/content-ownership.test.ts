@@ -208,6 +208,32 @@ describe("checkContentOwnership", () => {
   });
 });
 
+describe("title art", () => {
+  const titleArt = (imagePath: string) => {
+    write(`${gt}/manifest.json`, { schemaVersion: 1, order: 20, id: "golden_triangle", cities: [{ id: "delhi" }, { id: "agra" }],
+      titleArt: { imagePath, captionJa: "デリー" } });
+  };
+  it("is served from the journey's own public folder or the root public folder", () => {
+    write(`${gt}/public/assets/title/golden_triangle.webp`, "image");
+    write("public/assets/title/shared.webp", "image");
+    titleArt("assets/title/golden_triangle.webp");
+    expect(() => check()).not.toThrow();
+    titleArt("assets/title/shared.webp");
+    expect(() => check()).not.toThrow();
+    // A missing image is left to the content pipeline ("Missing title art image").
+    titleArt("assets/title/missing.webp");
+    expect(() => check()).not.toThrow();
+  });
+
+  it("may not use another journey's image", () => {
+    write(`${mi}/public/assets/title/milano.webp`, "image");
+    titleArt("assets/title/milano.webp");
+    expect(() => check()).toThrow(
+      'Reference to another layer: content/journeys/golden_triangle/manifest.json titleArt.imagePath "assets/title/milano.webp" ' +
+      "is the image of content/journeys/milano/public/assets/title/milano.webp; a journey folder may only refer to its own content and the core layer.");
+  });
+});
+
 describe("content:build", () => {
   it("stops at a reference to another journey's content, naming both files", async () => {
     const fixture = mkdtempSync(path.join(tmpdir(), "dreamscape-ownership-build-"));

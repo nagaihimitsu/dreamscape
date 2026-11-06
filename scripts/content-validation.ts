@@ -8,7 +8,7 @@ import {
 } from "./ink-validation";
 import { unique, withContext } from "./content-validation-utils";
 import { validateStoryCached, type StoryValidationCache } from "./story-validation-cache";
-import { requireServedFile } from "./public-assets";
+import { requireServedFile, servedFile } from "./public-assets";
 import path from "node:path";
 import type { CatalogKind } from "./content-layout";
 import { displayPath, parseCatalog as parseSourceCatalog, parseSourceFile, requireJourneyManifests, type ContentSources } from "./content-sources";
@@ -138,6 +138,11 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   // game and Debug; each available journey's starting city is checked below.
   if (!journeyCatalog.journeys.some((item) => item.status === "available"))
     throw new Error('No available journey: at least one content/journeys/<journeyId>/manifest.json needs "status": "available"');
+  for (const plannedJourney of journeyCatalog.journeys) {
+    const art = plannedJourney.titleArt;
+    if (art && !servedFile(publicFiles, art.imagePath))
+      throw new Error(`Missing title art image: ${plannedJourney.id}/${art.imagePath} (place it in content/journeys/${plannedJourney.id}/public/)`);
+  }
   // A registered future prototype may be referenced by its predecessor;
   // getNextCity still hides departures to incomplete cities at runtime.
   validateCityLinks(cities, journeyCatalog);
