@@ -1,6 +1,6 @@
 # コンテンツ制作ガイド
 
-Dreamscapeの正式データは `content/` です（全旅行編で共有する共通データは `content/` 直下、各旅行編のデータは `content/journeys/<旅行編ID>/`）。文章はInk、クイズ・設定はJSON、画像は `public/assets/` に置きます。テキストエディタで直接編集できます。人間の原稿も、どのAIの出力も、同じファイル形式・同じ検証を使います。AIや外部APIは不要です。任意の作業途中原稿は `authoring/drafts/` などに置けますが、必須ではありません。Gitの差分とレビューで採用を決めます。
+Dreamscapeの正式データは `content/` です（全旅行編で共有する共通データは `content/` 直下、各旅行編のデータは `content/journeys/<旅行編ID>/`）。文章はInk、クイズ・設定はJSON、画像は旅行編の `content/journeys/<旅行編ID>/public/assets/`（全旅行編で共有する画像は `public/assets/`）に置きます。テキストエディタで直接編集できます。人間の原稿も、どのAIの出力も、同じファイル形式・同じ検証を使います。AIや外部APIは不要です。任意の作業途中原稿は `authoring/drafts/` などに置けますが、必須ではありません。Gitの差分とレビューで採用を決めます。
 
 ## Inkで会話と演出を作る
 
@@ -98,7 +98,7 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 ## 新しい観光地を準備する
 
 1. 事実・解釈・伝説を区別し、各項目の出典と日付を記録します。写真の作者、ライセンス、加工内容と利用条件も確認します。
-2. `tourism.json` を見ながら、画像を `assets`、場所を `landmarks`、その発見を `clues` に登録します。画像は `public/` 以下に配置し、`path` に `public/` を除いたパスを書きます。
+2. `tourism.json` を見ながら、画像を `assets`、場所を `landmarks`、その発見を `clues` に登録します。画像は旅行編の `content/journeys/<旅行編ID>/public/` 以下に配置し、`path` に `public/` を除いたパス（配信時のパス）を書きます。
 3. 3問の `quiz.json` と案内 `guide.ink` を作り、対応するIDをそろえます。
 4. 敵の `battle_a.json` と `battle_a.ink` を参考に、敵・会話と問題を結びます。演出背景は `<旅行編>/romance/presentation.json` に登録します。
 5. 順路・報酬を `journey.json` の既存配列に追加し、参照関係を確認します。新都市の追加には後述の現行制約があります。
@@ -138,7 +138,7 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 観光・発見・バトルを持つメイン観光地と、デート中に訪れる行き先は別のデータです。デート先のために敵・クイズ・観光エピソードを作る必要はありません。将来、メイン観光地と同じ場所をデートで再訪する場合も、同じ場所を指すデート先を登録できます。
 
 1. `content/journeys/<旅行編ID>/romance/date_destinations.json` の `destinations` に、安定した `id`、`cityId`、日本語・英語の名称、短い `descriptionJa`、`backgroundAssetId`、`facts` を登録します。事実ごとに `publisher`・`title`・`url`・`checkedAt`・`claimType`・`claimJa` を記録し、実際に資料の該当箇所を確認してください。事実・解釈・仮説・伝説は既存の観光資料と同じ区分を使います。
-2. 権利を確認した写真を `public/assets/tourism/` に置き、`content/journeys/<旅行編ID>/tourism/catalog.json` の `assets` に実寸・作者・出典URL・ライセンス・加工内容を登録します。同じ旅行編の `romance/presentation.json` の背景から `imageAssetId` で参照し、必要なら `imagePosition` の x / y を0〜100で指定します。写真家の権利だけでなく被写体の権利も確認してください。近隣の風景を使う場合は実際の場所を代替テキスト・クレジットに明記します。確認できる画像がない場合は `fallback: "neutral"` を使います。出典は会話中の操作メニューから確認できます。
+2. 権利を確認した写真を `content/journeys/<旅行編ID>/public/assets/tourism/` に置き、`content/journeys/<旅行編ID>/tourism/catalog.json` の `assets` に実寸・作者・出典URL・ライセンス・加工内容を登録します。同じ旅行編の `romance/presentation.json` の背景から `imageAssetId` で参照し、必要なら `imagePosition` の x / y を0〜100で指定します。写真家の権利だけでなく被写体の権利も確認してください。近隣の風景を使う場合は実際の場所を代替テキスト・クレジットに明記します。確認できる画像がない場合は `fallback: "neutral"` を使います。出典は会話中の操作メニューから確認できます。
    背景に訪問対象が写っていないときは、行き先に任意の `referenceImage`（HTTPSの `url`、リンク名 `labelJa`、背景についての `backgroundNoteJa`）を追加し、実物を確認できる公式資料へ案内できます。外部リンクは写真のゲーム内への転載許諾を意味しません。
 3. `content/journeys/<旅行編ID>/romance/date_catalog.json` の通常デートに `destinationId` と必要に応じて `requiredCompletedEpisodeIds` を指定します。デートの `chapterId`、行き先の `cityId`、双方の背景IDを一致させます。訪問後に開放する通常デートでは、必要エピソードを指定したうえで `requiredCompletedChapters` を空配列にできます。交際後も同じ短編を遊べる場合は `allowAfterEnding` を指定します。
 4. Inkには、その場所で見られるものや出典を確認した小話を、ヒロインの関心や会話に自然につなげて書きます。選択にかかわらず観光を楽しめるようにします。3択を2回書き、選択肢には共通または固有の `effect` を指定します。固有の思い出を残す場合は対応する `memory` も登録します。必要な表情は `# emotion:`、無言の反応は `# reaction:` で指定します。既存の恋愛進行に新イベントを必須条件として追加するかは、別途慎重に検討してください。

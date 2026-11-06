@@ -38,7 +38,7 @@
 | 都市の締め | `content/journeys/golden_triangle/stories/epilogues/{delhi,agra,jaipur}.ink` |
 | クイズ | `content/journeys/golden_triangle/quizzes/gt_*_quiz.json` |
 | 対訳・語義 | `content/journeys/golden_triangle/learning/translations.json`、語義は共通の `content/learning/word-meanings.json` |
-| 旅行・画像・地点・出典 | 既存の都市bundleおよび `content/journeys/golden_triangle/` の都市・移動・各カタログ（画像は `public/assets/tourism/india/`）。編集手順は `authoring/CITY_BUNDLES.md` |
+| 旅行・画像・地点・出典 | 既存の都市bundleおよび `content/journeys/golden_triangle/` の都市・移動・各カタログ（画像は `content/journeys/golden_triangle/public/assets/tourism/india/`）。編集手順は `authoring/CITY_BUNDLES.md` |
 
 ## 検証
 

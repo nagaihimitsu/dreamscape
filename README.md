@@ -177,7 +177,7 @@ B/C戦の戦績と途中状態は保存します。反論とカットインは�
 
 素材の確認は `npm run dev` を起動し、表示されたURLに `?character-preview` を付けて開きます。衣装・ポーズ・表情、明暗背景、台詞枠を切り替え、基準線と見比べながら差分の顔や足元、透過の縁を確認できます。「全体を確認」と「ゲーム中の配置」を切り替えて表示範囲を確認できます。未制作の差分と画像の読み込みエラーは区別して表示します。プレビューは開発サーバー専用で、ゲームのセーブやAPには触れません。
 
-会話用の背景画像は各旅行編の `romance/presentation.json`（例: [ミラノ編](content/journeys/milano/romance/presentation.json)。共通の既定背景 `milano_cafe` は [`content/romance/presentation.json`](content/romance/presentation.json)）の各背景に任意の `imagePath`（`public/assets/` 以下のパス）を追加して差し替えます。未登録・読込失敗時は既存の仮背景を表示し、観察用画像には影響しません。会話窓の色・透明度・角丸・余白・文字サイズなどは [`romance-scene.css`](src/features/romance/romance-scene.css) 冒頭の `--vn-*` でまとめて調整できます。背景・人物・テーマ・ウィンドウ表示は進行中のInkやクイズの指紋を変更しません。
+会話用の背景画像は各旅行編の `romance/presentation.json`（例: [ミラノ編](content/journeys/milano/romance/presentation.json)。共通の既定背景 `milano_cafe` は [`content/romance/presentation.json`](content/romance/presentation.json)）の各背景に任意の `imagePath`（配信時の `assets/` 以下のパス。画像の置き場所は下記）を追加して差し替えます。未登録・読込失敗時は既存の仮背景を表示し、観察用画像には影響しません。会話窓の色・透明度・角丸・余白・文字サイズなどは [`romance-scene.css`](src/features/romance/romance-scene.css) 冒頭の `--vn-*` でまとめて調整できます。背景・人物・テーマ・ウィンドウ表示は進行中のInkやクイズの指紋を変更しません。
 
 会話・選択肢・戦闘画面はPlaywrightのChromiumで360×780、430×932、1280×800、横向き780×360を確認しました（現在の自動E2Eは主要機能の動作確認に絞り、画面幅ごとの表示は実画面で確認します）。長い英文や対訳は縦にスクロールして読めます。実機Safariでは未確認です。
 
@@ -230,9 +230,11 @@ npm run content:compat
 | `<旅行編>/stories/battles/*.ink`                 | 日本語の敵の台詞・正誤反応・勝敗別の結末・ヒロインの余韻             |
 | `<旅行編>/tourism/catalog.json`                  | 観光地・画像の出典と権利情報・発見範囲・説明・史実とクイズの参照     |
 | `<旅行編>/stories/tourism/*.ink`                 | ヒロインの短い観光案内                                               |
-| `public/assets/tourism/`                         | 同梱する資料画像。外部サイトへの画像直リンクは使用しない             |
+| `<旅行編>/public/assets/tourism/`                | 同梱する資料画像。外部サイトへの画像直リンクは使用しない             |
 
 各旅行編の都市・移動・クイズ・Ink と各カタログの該当項目は、同じ相対パスで `content/journeys/<旅行編ID>/` 以下に置き、`npm run content:build` が `content/` 直下の共通データと統合します。旅行編フォルダの項目は自分の都市だけを扱い、参照先は同じ旅行編か共通データに限ります。共通データには都市・移動・Ink・クイズや旅行編専用のカタログを置けません。
+
+画像は、旅行編だけが使うもの（観光写真・デート背景・その旅行編の品物アイコン）を `content/journeys/<旅行編ID>/public/assets/` に、全旅行編で共有するもの（ヒロイン・演出・共通アイコン）をリポジトリ直下の `public/assets/` に置きます。データには `public/` を除いた配信時のパス（例: `assets/tourism/india/agra_taj_mahal.jpg`）を書き、置き場所によって変わりません。`npm run content:build` がこれらを `src/content/generated/public/`（生成物。Git管理せず、手動編集しない）へまとめ、開発サーバーとビルドはこのフォルダを配信します。同じパスの画像を二か所に置くとビルドが失敗します。画像を追加・差し替えた後も `npm run content:build` を実行してください。
 
 新しい通常デートは、InkとJSON定義・効果を追加するだけで既存のメニューと会話画面に表示されます。`kind` は `normal` / `special` / `confession` / `reassurance`。通常は `choiceCount: 2`、無料イベントは必要に応じて0〜2回の3択を設定できます。`effectCount` は各経路で期待する効果数です。`actionLabelJa` もJSONにあり、Reactにイベント固有の文言を追加する必要はありません。
 
