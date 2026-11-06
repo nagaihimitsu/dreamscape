@@ -8,7 +8,7 @@
 
 - 都市の施設・営業時間のゲーム設定・料金・交通・写真・出典：既存の [city:bundle](CITY_BUNDLES.md) で都市単位に編集。
 - 旅行編全体の通貨・開始予算・都市順・都市クリア報酬：`content/journeys/<旅行編ID>/manifest.json`。
-- 制作ツールの設定（イベントIDの接頭辞、観察資料のファイル、画像フォルダ、交通判断台帳のフォルダ）：同じ `manifest.json` の `authoring`。`authoring` がない旅行編（ミラノ編）は、この生成・検査・反映ツールの対象外です。
+- 制作ツールの設定（イベントIDの接頭辞、観察資料のファイル、画像フォルダ、交通判断台帳の場所＝都市ごとの台帳のフォルダ `transitDirectory`、またはインド編のように旅行編全体で1つの台帳 `transitDecisionLedger`）：同じ `manifest.json` の `authoring`。`authoring` がない旅行編（ミラノ編）は、この生成・検査・反映ツールの対象外です。
 - 写真に対応する観察ポイント：各旅行編の `authoring/journeys/<旅行編ID>/drafts/observation-cards.json`。画像変更時には実画像を確認し、領域とSHA-256を更新。
 - シナリオ：Ink、紹介・クリア文・登場人物・思い出のメタデータJSON。
 - クイズ：既存スキーマのクイズJSONと問題・選択肢の和訳JSON。
@@ -44,7 +44,7 @@ npm run journey:release -- --check --journey uzbekistan --through tashkent --nar
 
 通常観光は順不同で訪問でき、案内初読了・初完了・初好成績・エピソードクリアが各1APです。フィナーレは同じ都市の主観光を参照し、都市クリア報酬は旅行編の設定を使います。特殊戦B/Cの場所・証拠・対戦人物は脚本とクイズの制作時に決め、ミラノの既存形式で追加してください。
 
-インド編には `--journey golden_triangle` を指定します。従来の `india:scaffold`、`india:readiness`、`india:release` も使えます。
+インド編には `--journey golden_triangle` を指定します。`india:scaffold`、`india:readiness`、`india:release` は `--journey golden_triangle` を付けた同じコマンドの別名です。インド編だけの調査・下書きの検査ツール（`india:check`、`india:draft`、`india:transit`）は `scripts/journeys/golden_triangle/` にあります。
 
 ## クイズより先に脚本を制作する場合
 

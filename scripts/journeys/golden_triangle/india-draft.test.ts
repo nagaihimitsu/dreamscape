@@ -1,10 +1,10 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { citySchema } from "../src/content/schemas";
-import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
-import { getJourney } from "../src/content/journeys";
-import { tourismSourceSchema } from "../src/content/tourism-schemas";
+import { citySchema } from "../../../src/content/schemas";
+import { travelCatalogSchema, travelSettingsSchema } from "../../../src/content/travel-schemas";
+import { getJourney } from "../../../src/content/journeys";
+import { tourismSourceSchema } from "../../../src/content/tourism-schemas";
 import { readResearchCsv } from "./india-research-csv";
 import { buildIndiaDraft, indiaDraftDirectory, serializeIndiaDraft } from "./india-draft";
 

@@ -25,7 +25,7 @@
 リポジトリのルートから、次のように構造と生成物の一致を検査できます。
 
 ```sh
-npx tsx scripts/prepare-india-draft.ts --check
+npx tsx scripts/journeys/golden_triangle/prepare-india-draft.ts --check
 ```
 
-生成元の変更を確認し、このディレクトリの生成JSONを置き換える場合は `npx tsx scripts/prepare-india-draft.ts --write` を実行します。手編集した生成JSONは上書きされるため、変更は生成元とスクリプト側に反映してください。スキーマ検証は資料の真偽、背景画像の権利、本番コンテンツとの参照整合やゲームとしての完成を保証しません。
+生成元の変更を確認し、このディレクトリの生成JSONを置き換える場合は `npm run india:draft` を実行します。手編集した生成JSONは上書きされるため、変更は生成元とスクリプト側に反映してください。スキーマ検証は資料の真偽、背景画像の権利、本番コンテンツとの参照整合やゲームとしての完成を保証しません。

@@ -10,9 +10,10 @@ import { dateDestinationSchema, dateDestinationsSchema } from "../src/content/da
 import { cityLayer, parseCatalog, readJourneyCatalog, requireCity, type ContentSources } from "./content-sources";
 import { completeFragment, emptyCatalog, trimFragment, type MergedKind } from "./content-layout";
 import type { CityBundle } from "./city-bundle-schema";
-import { bundleCatalogKinds, cityFiles, decisionFile, existing, layerPath, read } from "./city-bundle-files";
+import { bundleCatalogKinds, cityFiles, existing, layerPath, read } from "./city-bundle-files";
 import { journeyAuthoringProfiles } from "./journey-authoring";
 import { cityTransitFile, readTransitLedger, replaceTransitDecisions } from "./journey-transit-review";
+import { journeyTransitDecisionFile } from "./journey-transit-decisions";
 import { findPublicFile } from "./public-assets";
 
 export const assertUniqueIds = <T>(items: readonly T[], get: (v: T) => string, label: string) => {
@@ -191,6 +192,8 @@ export function mergeCityCatalogs(sources: ContentSources, bundle: CityBundle, b
       values[ownFile] = replaceTransitDecisions(readTransitLedger(root, ownFile), bundle.transitDecisions);
       return values;
     }
+    const decisionFile = journeyTransitDecisionFile(root, cityId);
+    if (!decisionFile) throw new Error(`No transit decision ledger for city: ${cityId}`);
     const ledger = read(root, decisionFile);
     if (!isDeepStrictEqual(baseline?.transitDecisions, bundle.transitDecisions)) {
       // Keep every other city's records in their original order.

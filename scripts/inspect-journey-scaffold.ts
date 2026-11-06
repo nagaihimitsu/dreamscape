@@ -2,9 +2,11 @@ import { readFileSync } from "node:fs";
 import { buildJourneyFragments, journeyRequirements, loadJourneyScaffold } from "./journey-scaffold";
 
 // Read-only authoring helper. Content publication is performed by the release gate.
+// The mode may follow other options (e.g. `npm run india:scaffold -- --requirements`).
 const args = process.argv.slice(2);
-const mode = args.shift();
-const narrativePath = mode === "--fragments" ? args.shift() : undefined;
+const modeIndex = args.findIndex((arg) => arg === "--requirements" || arg === "--fragments");
+const mode = modeIndex < 0 ? undefined : args.splice(modeIndex, 1)[0];
+const narrativePath = mode === "--fragments" ? args.splice(modeIndex, 1)[0] : undefined;
 let selectedCities: string[] | undefined;
 let journeyId: string | undefined;
 const seen = new Set<string>();

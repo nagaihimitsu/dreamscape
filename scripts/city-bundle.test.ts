@@ -6,17 +6,19 @@ import { afterEach, describe, expect, it } from "vitest";
 import { applyCityBundle, compactCityBundle, exportCityBundle, exportEditableCityBundle, newCityBundle, writeCityBundleFiles } from "./city-bundle";
 import { compactTravel, expandTravel, type CompactTravel } from "./city-bundle-routes";
 import { travelCatalogSchema } from "../src/content/travel-schemas";
-import { inputFingerprint } from "./city-bundle-files";
+import { inputFingerprint, transitLedgerFiles } from "./city-bundle-files";
 import { getJourneyAuthoringProfile, journeyAuthoringProfiles } from "./journey-authoring";
 import { displayPath, loadContentSources, readJourneyCatalog, requireCity, storyFile } from "./content-sources";
 import type { MergedKind } from "./content-layout";
 import { cityTransitFile, inspectCityTransit, readTransitLedger } from "./journey-transit-review";
-import { inspectIndiaReadiness, loadIndiaReadiness } from "./india-readiness";
-import { buildIndiaTransitReview, readIndiaTransitReview } from "./india-transit-review";
+import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readiness";
+import { buildJourneyTransitDecisionReview, readJourneyTransitDecisions } from "./journey-transit-decisions";
 import { resolvePublicFile } from "./public-assets";
 
 const roots: string[] = [];
 const allCities = readJourneyCatalog(process.cwd()).journeys.flatMap((journey) => journey.cities.map((city) => city.id));
+/** Golden Triangle's journey-wide transit decision ledger (manifest authoring profile). */
+const indiaDecisionFile = getJourneyAuthoringProfile(process.cwd(), "golden_triangle").transitDecisionLedger!.file;
 function fixture(): string {
   const root = mkdtempSync(path.join(tmpdir(), "dreamscape-city-bundle-"));
   roots.push(root);
@@ -24,8 +26,7 @@ function fixture(): string {
     cpSync(path.join(process.cwd(), directory), path.join(root, directory), { recursive: true });
   }
   const extraFiles = [...[...journeyAuthoringProfiles(process.cwd()).values()].map((profile) => profile.observationFile),
-    "authoring/journeys/golden_triangle/research/golden-triangle-transit-20261103/decisions.json",
-    ...allCities.map((cityId) => cityTransitFile(process.cwd(), cityId)).filter((file): file is string => !!file)];
+    ...transitLedgerFiles(process.cwd())];
   for (const file of extraFiles) {
     if (!existsSync(path.join(process.cwd(), file))) continue;
     mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
@@ -157,8 +158,7 @@ describe("city editing bundle", () => {
   it("round-trips compact city routes without changing direction, order, sources or transit reviews", async () => {
     const root = fixture();
     const before = fingerprint(root);
-    const decisionFile = "authoring/journeys/golden_triangle/research/golden-triangle-transit-20261103/decisions.json";
-    const decisions = read(root, decisionFile);
+    const decisions = read(root, indiaDecisionFile);
     for (const cityId of allCities) {
       const file = cityPaths(root, cityId).travel;
       const original = read(root, file);
@@ -170,7 +170,7 @@ describe("city editing bundle", () => {
       // Compare the full file, not just times and fares: array order, all
       // direction-specific evidence, transfer notes and estimates matter.
       expect(read(root, file), cityId).toBe(original);
-      expect(read(root, decisionFile), cityId).toBe(decisions);
+      expect(read(root, indiaDecisionFile), cityId).toBe(decisions);
     }
     expect(fingerprint(root)).toBe(before);
   }, 480_000);
@@ -248,7 +248,7 @@ describe("city editing bundle", () => {
     const beforePresentation = merged(root, "romance/presentation.json");
     const beforeTourism = merged(root, "tourism/catalog.json");
     const beforeDestinations = merged(root, "romance/date_destinations.json");
-    const beforeReadiness = inspectIndiaReadiness(loadIndiaReadiness(root));
+    const beforeReadiness = inspectJourneyReadiness(loadJourneyReadiness(root, "golden_triangle"));
     bundle.city.themeJa = "試験用の都市テーマ";
     bundle.travel.places.find((place) => place.id === "delhi_hotel_hub")!.nameJa = "試験用の滞在先";
     const route = bundle.travel.routes.find((item) => item.mode === "taxi" && item.fromPlaceId !== item.toPlaceId)!;
@@ -284,7 +284,7 @@ describe("city editing bundle", () => {
       expect(afterDestinations.destinations.find((destination: { id: string }) => destination.id === item.id)).toEqual(item);
     expect(cityFiles(root, "agra").map((file) => read(root, file))).toEqual(agraBefore);
     expect(cityFiles(root, "milano").map((file) => read(root, file))).toEqual(milanBefore);
-    const afterReadiness = inspectIndiaReadiness(loadIndiaReadiness(root));
+    const afterReadiness = inspectJourneyReadiness(loadJourneyReadiness(root, "golden_triangle"));
     expect(beforeReadiness.ready).toBe(true);
     expect(afterReadiness.ready).toBe(beforeReadiness.ready);
     expect(afterReadiness.readyForPromotion).toBe(beforeReadiness.readyForPromotion);
@@ -293,7 +293,7 @@ describe("city editing bundle", () => {
 
   it("rejects stale edits after unrelated content or image changes without writing", async () => {
     const root = fixture();
-    for (const file of [cityPaths(root, "agra").city, "assets/tourism/india/agra_taj_mahal.jpg", "authoring/journeys/golden_triangle/research/golden-triangle-transit-20261103/decisions.json"]) {
+    for (const file of [cityPaths(root, "agra").city, "assets/tourism/india/agra_taj_mahal.jpg", indiaDecisionFile]) {
       const bundle = exportCityBundle(root, "delhi");
       const target = file.startsWith("assets/") ? resolvePublicFile(root, file) : path.join(root, file);
       const original = readFileSync(target);
@@ -346,14 +346,14 @@ describe("city editing bundle", () => {
     await expect(applyCityBundle(root, unreviewed, true)).rejects.toThrow(/undecided/i);
     expect(fingerprint(root)).toBe(before);
     bundle.transitDecisions = decisions.filter((item) => item !== decision);
-    const original = readJson(root, "authoring/journeys/golden_triangle/research/golden-triangle-transit-20261103/decisions.json");
+    const original = readJson(root, indiaDecisionFile);
     await applyCityBundle(root, bundle, true);
-    const updated = readJson(root, "authoring/journeys/golden_triangle/research/golden-triangle-transit-20261103/decisions.json");
+    const updated = readJson(root, indiaDecisionFile);
     expect(updated.decisions.filter((item: { cityId: string }) => item.cityId !== "delhi"))
       .toEqual(original.decisions.filter((item: { cityId: string }) => item.cityId !== "delhi"));
     expect(updated.decisions.some((item: { cityId: string; fromPlaceId: string; toPlaceId: string; mode: string }) =>
       item.cityId === "delhi" && item.fromPlaceId === decision.fromPlaceId && item.toPlaceId === decision.toPlaceId && item.mode === decision.mode)).toBe(false);
-    const report = buildIndiaTransitReview(readIndiaTransitReview(root));
+    const report = buildJourneyTransitDecisionReview(readJourneyTransitDecisions(root, "golden_triangle"));
     expect(report.counts.delhi.unresearched).toBe(0);
     expect(report.counts.delhi.inconclusive).toBe(0);
     expect(report.counts.delhi.available).toBeGreaterThan(0);
@@ -557,7 +557,7 @@ describe("city editing bundle", () => {
       const untouched = cities.filter((id) => id !== cityId).flatMap((id) => cityFiles(root, id));
       const before = Object.fromEntries(untouched.map((file) => [file, read(root, file)]));
       const sharedFiles = [...catalogFiles(root, ["tourism/catalog.json", "romance/presentation.json", "romance/date_destinations.json"]),
-        "authoring/journeys/golden_triangle/research/golden-triangle-transit-20261103/decisions.json"];
+        indiaDecisionFile];
       const sharedBefore = Object.fromEntries(sharedFiles.map((file) => [file, read(root, file)]));
       const bundle = exportCityBundle(root, cityId);
       bundle.travelSettings.notes += " 都市ごとの編集検証。";

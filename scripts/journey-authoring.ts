@@ -1,17 +1,22 @@
 import { z } from "zod";
 import { readJourneyManifests } from "./content-sources";
 
+const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 /**
  * Editing conventions of the authoring tools, set by the optional `authoring`
  * key of a journey's `manifest.json`; city order and gameplay belong to the
  * catalogs. A journey without a profile is not supported by those tools.
  */
 export const journeyAuthoringSchema = z.object({
-  eventPrefix: z.string().regex(/^[a-z][a-z0-9_]*$/),
+  eventPrefix: id,
   observationFile: z.string().min(1),
   imageDirectory: z.string().min(1),
+  /** Per-city transit ledgers: `<transitDirectory>/<cityId>/transit-decisions.json`. */
   transitDirectory: z.string().min(1).optional(),
-}).strict();
+  /** One journey-wide transit decision ledger for the listed cities (see journey-transit-decisions.ts). */
+  transitDecisionLedger: z.object({ file: z.string().min(1), cities: z.array(id).min(1) }).strict().optional(),
+}).strict().refine((profile) => !(profile.transitDirectory && profile.transitDecisionLedger),
+  "Use either transitDirectory or transitDecisionLedger, not both");
 export type JourneyAuthoringProfile = z.infer<typeof journeyAuthoringSchema>;
 
 /** The profile of one manifest, or undefined when it has none; `label` names the manifest in errors. */

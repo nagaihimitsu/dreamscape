@@ -2,13 +2,13 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
-import { citySchema } from "../src/content/schemas";
-import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
-import { readJourneyCatalog } from "./content-sources";
-import { tourismSourceSchema } from "../src/content/tourism-schemas";
+import { citySchema } from "../../../src/content/schemas";
+import { travelCatalogSchema, travelSettingsSchema } from "../../../src/content/travel-schemas";
+import { readJourneyCatalog } from "../../content-sources";
+import { tourismSourceSchema } from "../../../src/content/tourism-schemas";
 import { readResearchCsv } from "./india-research-csv";
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 const research = "authoring/journeys/golden_triangle/research/golden-triangle-20261103/source";
 const latest = "authoring/journeys/golden_triangle/research/golden-triangle-all-research-20261103/source/canonical";
 const followup = "authoring/journeys/golden_triangle/research/golden-triangle-followup-20261103";

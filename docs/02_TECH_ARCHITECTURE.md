@@ -32,7 +32,10 @@ src/
   types/                # GameState, Event, Content types
 content/                # 共通データ（全旅行編で共有する基盤）
   journeys/<journeyId>/ # 旅行編ごとのフォルダ（manifest.json, cities/, travel/, stories/, quizzes/, 各カタログ, public/assets/ の画像）
-scripts/                # Inkコンパイル・コンテンツ検証
+scripts/                # Inkコンパイル・コンテンツ検証・共通の制作ツール
+  journeys/<journeyId>/ # その旅行編だけの制作ツール（共通コード・ツールからは読み込まない）
+authoring/              # 共通の制作手順・テンプレート
+  journeys/<journeyId>/ # 旅行編ごとの下書き・調査記録（ゲームは読み込まない）
 public/assets/         # 全旅行編で共有する画像・音声（ヒロイン、演出、共通アイコン）
 ```
 
@@ -65,7 +68,7 @@ public/assets/         # 全旅行編で共有する画像・音声（ヒロイ�
 - `src/domain/game.ts` はゲームの状態遷移を扱う。保存形式の定義は `game-state-schema.ts`、デートの条件判定は `date-rules.ts`、保存された進行の整合確認は `game-state-validation.ts` に分ける。既存の公開関数と型は `game.ts` から引き続き利用できる。
 - `src/domain/travel-destinations.ts` は行き先候補と待機時刻を計算する。帰宿候補と宿泊計画は `travel-game.ts` を画面表示と実際の操作で共用し、画面内に同じルールを重複実装しない。
 - `scripts/content-pipeline.ts` はコンテンツ検証・生成の実行順を管理する。Inkのコンパイルと会話経路の検証は `ink-validation.ts`、背景画像とキャラクターの参照検証は `presentation-validation.ts` が担当する。共通データと各旅行編フォルダ（`content/journeys/<journeyId>/`）の統合は `content-sources.ts`、旅行編フォルダが自分の都市だけを扱い、同じ旅行編か共通データだけを参照することの検査は `content-ownership.ts` が担当する。
-- `scripts/city-bundle.ts` は都市編集の公開APIと検証手順を担当する。編集形式は `city-bundle-schema.ts`、経路の圧縮・展開は `city-bundle-routes.ts`、共有カタログの統合は `city-bundle-catalogs.ts`、競合確認と原子的なファイル更新は `city-bundle-files.ts` が担当する。
+- `scripts/city-bundle.ts` は都市編集の公開APIと検証手順を担当する。編集形式は `city-bundle-schema.ts`、経路の圧縮・展開は `city-bundle-routes.ts`、共有カタログの統合は `city-bundle-catalogs.ts`、競合確認と原子的なファイル更新は `city-bundle-files.ts` が担当する。交通判断台帳は旅行編の `manifest.json` の `authoring`（都市ごとの `transitDirectory`、または旅行編全体で1つの `transitDecisionLedger`）から選び、旅行編専用のツールは読み込まない。
 
 機能を追加するときは該当する責務へ実装し、画面や入口のファイルへ個別の保存・進行・検証ルールを戻さない。分離したモジュール間で型だけが必要な場合は `import type` を使い、実行時の循環参照を避ける。
 

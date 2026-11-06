@@ -2,9 +2,9 @@ import { mkdtempSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { inspectIndiaReadiness, loadIndiaReadiness } from "./india-readiness";
-import { indiaInputFingerprint, indiaReleaseChanges, mergeIndiaReleaseFragments, writeIndiaReleaseFiles } from "./promote-india";
-import { getJourneyAuthoringProfile } from "./journey-authoring";
+import { inspectJourneyReadiness, loadJourneyReadiness } from "../../journey-readiness";
+import { journeyInputFingerprint, journeyReleaseChanges, mergeJourneyReleaseFragments, writeJourneyReleaseFiles } from "../../promote-journey";
+import { getJourneyAuthoringProfile } from "../../journey-authoring";
 
 const milanManifest = "content/journeys/milano/manifest.json";
 const indiaManifest = "content/journeys/golden_triangle/manifest.json";
@@ -37,10 +37,10 @@ function temporaryRoot() {
 
 describe("India completion and release", () => {
   it("lists authored candidates and does not treat missing episode/date/story data as ready", () => {
-    const input = loadIndiaReadiness(process.cwd());
+    const input = loadJourneyReadiness(process.cwd(), "golden_triangle");
     const empty = { ...input, journey: { ...input.journey, episodes: [], rewards: [], storyBattles: [] },
       tourism: { ...input.tourism, landmarks: [] }, dates: [], battles: [], quizzes: [], storyExists: () => false };
-    const report = inspectIndiaReadiness(empty);
+    const report = inspectJourneyReadiness(empty);
     expect(report.ready).toBe(false);
     expect(report.readyForPromotion).toBe(false);
     expect(report.cities.map((city) => city.cityId)).toEqual(input.trip.cities.slice(0, 3).map((city) => city.id));
@@ -54,14 +54,14 @@ describe("India completion and release", () => {
   it("removes only release markers and leaves Milan and authored data intact", () => {
     const { root, original } = temporaryRoot();
     try {
-      const changes = indiaReleaseChanges(original);
+      const changes = journeyReleaseChanges(original, "golden_triangle");
       expect(changes[milanManifest]).toBeUndefined();
       expect(JSON.parse(changes[indiaManifest])).toEqual({ ...JSON.parse(original[indiaManifest]), status: "available" });
       for (const id of ["delhi", "agra", "jaipur"]) {
         expect(JSON.parse(changes[`content/cities/${id}.json`]).productionStatus).toBe("complete");
         expect(JSON.parse(changes[`content/travel/${id}.json`]).events).toEqual([{ id: `${id}_event` }]);
       }
-      const delhiOnly = indiaReleaseChanges(original, "delhi");
+      const delhiOnly = journeyReleaseChanges(original, "golden_triangle", "delhi");
       expect(Object.keys(delhiOnly).sort()).toEqual([indiaManifest, "content/cities/delhi.json", "content/travel/delhi.json"].sort());
       expect(delhiOnly["content/cities/agra.json"]).toBeUndefined();
     } finally { rmSync(root, { recursive: true, force: true }); }
@@ -70,9 +70,9 @@ describe("India completion and release", () => {
   it("restores already changed files when a later write fails", () => {
     const { root, original } = temporaryRoot();
     try {
-      const changes = indiaReleaseChanges(original);
+      const changes = journeyReleaseChanges(original, "golden_triangle");
       let calls = 0;
-      expect(() => writeIndiaReleaseFiles(root, original, changes, (from, to) => {
+      expect(() => writeJourneyReleaseFiles(root, original, changes, "golden_triangle", (from, to) => {
         if (++calls === 3) throw new Error("simulated write failure");
         renameSync(from, to);
       })).toThrow("simulated write failure");
@@ -86,11 +86,11 @@ describe("India completion and release", () => {
       const fragments = { episodes: [{ id: "delhi_episode", cityId: "delhi" }], rewards: [{ id: "delhi_reward" }],
         battles: [{ id: "delhi_battle", quizId: "sound_duomo_b1" }], dates: [{ id: "delhi_date" }], landmarks: [{ id: "delhi_place", cityId: "delhi" }],
         clues: [{ id: "delhi_clue" }], finaleEvents: [{ id: "delhi_finale", cityId: "delhi", contentStatus: "pending_content" }],
-        effects: [{ id: "delhi_effect" }], memories: { delhi_memory: { titleJa: "デリー" } } } as unknown as Parameters<typeof mergeIndiaReleaseFragments>[2];
-      const quiz = loadIndiaReadiness(process.cwd()).quizzes.find((item) => item.id === "sound_duomo_b1")!;
-      const changes = mergeIndiaReleaseFragments(original, indiaReleaseChanges(original, "delhi"), fragments, [quiz]);
+        effects: [{ id: "delhi_effect" }], memories: { delhi_memory: { titleJa: "デリー" } } } as unknown as Parameters<typeof mergeJourneyReleaseFragments>[2];
+      const quiz = loadJourneyReadiness(process.cwd(), "golden_triangle").quizzes.find((item) => item.id === "sound_duomo_b1")!;
+      const changes = mergeJourneyReleaseFragments(original, journeyReleaseChanges(original, "golden_triangle", "delhi"), fragments, [quiz]);
       const combined = { ...original, ...changes };
-      const repeated = mergeIndiaReleaseFragments(combined, indiaReleaseChanges(combined, "delhi"), fragments, [quiz]);
+      const repeated = mergeJourneyReleaseFragments(combined, journeyReleaseChanges(combined, "golden_triangle", "delhi"), fragments, [quiz]);
       expect(repeated).toEqual(changes);
       expect(JSON.parse(changes["content/progression/journey.json"]).episodes.map((item: { id: string }) => item.id)).toEqual(["milan_episode", "delhi_episode"]);
       expect(JSON.parse(changes["content/tourism/catalog.json"]).assets).toEqual([{ id: "milan_photo" }]);
@@ -98,21 +98,21 @@ describe("India completion and release", () => {
       expect(JSON.parse(changes["content/travel/delhi.json"]).places[0].landmarkIds).toEqual(["existing", "delhi_place"]);
       expect(changes["content/cities/agra.json"]).toBeUndefined();
       const collision = { ...fragments, episodes: [{ id: "milan_episode", cityId: "delhi" }] } as typeof fragments;
-      expect(() => mergeIndiaReleaseFragments(original, indiaReleaseChanges(original, "delhi"), collision, [quiz])).toThrow(/Existing episode differs/);
+      expect(() => mergeJourneyReleaseFragments(original, journeyReleaseChanges(original, "golden_triangle", "delhi"), collision, [quiz])).toThrow(/Existing episode differs/);
     } finally { rmSync(root, { recursive: true, force: true }); }
   });
 
   it("detects edits and additions while validating", () => {
     const { root, original } = temporaryRoot();
     try {
-      const before = indiaInputFingerprint(root);
+      const before = journeyInputFingerprint(root);
       writeFileSync(path.join(root, "content/journeys/new.json"), "new");
-      expect(indiaInputFingerprint(root)).not.toBe(before);
-      expect(() => writeIndiaReleaseFiles(root, original, indiaReleaseChanges(original), undefined, before)).toThrow(/Content or assets changed/);
+      expect(journeyInputFingerprint(root)).not.toBe(before);
+      expect(() => writeJourneyReleaseFiles(root, original, journeyReleaseChanges(original, "golden_triangle"), "golden_triangle", undefined, before)).toThrow(/Content or assets changed/);
       expect(readFileSync(path.join(root, indiaManifest), "utf8")).toBe(original[indiaManifest]);
       const changed = "content/cities/delhi.json";
       writeFileSync(path.join(root, changed), "edited elsewhere");
-      expect(() => writeIndiaReleaseFiles(root, original, indiaReleaseChanges(original))).toThrow(/changed while validating/);
+      expect(() => writeJourneyReleaseFiles(root, original, journeyReleaseChanges(original, "golden_triangle"), "golden_triangle")).toThrow(/changed while validating/);
       expect(readFileSync(path.join(root, changed), "utf8")).toBe("edited elsewhere");
       expect(readFileSync(path.join(root, indiaManifest), "utf8")).toBe(original[indiaManifest]);
     } finally { rmSync(root, { recursive: true, force: true }); }

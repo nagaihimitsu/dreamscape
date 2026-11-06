@@ -2,11 +2,9 @@ import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, renameSy
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { loadIndiaReadiness } from "./india-readiness";
-import { loadIndiaScaffold } from "./india-scaffold";
 import { getJourneyAuthoringProfile } from "./journey-authoring";
-import { inspectJourneyReadiness } from "./journey-readiness";
-import { buildJourneyFragments, journeyRequirements, type JourneyScaffoldInput } from "./journey-scaffold";
+import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readiness";
+import { buildJourneyFragments, journeyRequirements, loadJourneyScaffold, type JourneyScaffoldInput } from "./journey-scaffold";
 import { journeyInputFingerprint, journeyReleaseChanges, mergeJourneyReleaseFragments, writeJourneyReleaseFiles, type ReleaseFiles } from "./promote-journey";
 
 const ids = ["tashkent", "samarkand", "bukhara", "khiva"];
@@ -15,7 +13,7 @@ function renamed<T>(value: T, cityId: string): T {
   return JSON.parse(JSON.stringify(value).replaceAll("gt_delhi", `uz_${cityId}`).replaceAll("delhi", cityId));
 }
 function scaffoldFixture(): JourneyScaffoldInput {
-  const source = loadIndiaScaffold(process.cwd());
+  const source = loadJourneyScaffold(process.cwd(), "golden_triangle");
   const city = source.cities.find((item) => item.cityId === "delhi")!;
   const planned = source.plannedLandmarks.delhi;
   return {
@@ -85,7 +83,7 @@ describe("journey authoring with four cities", () => {
   });
 
   it("reports missing narrative content in the fourth city instead of declaring readiness", () => {
-    const source = loadIndiaReadiness(process.cwd());
+    const source = loadJourneyReadiness(process.cwd(), "golden_triangle");
     const delhi = source.cities.find((entry) => entry.city.id === "delhi")!;
     const report = inspectJourneyReadiness({ ...source,
       trip: { ...source.trip, id: "uzbekistan", cities: ids.map((id) => ({ id, nameJa: id })) },
@@ -158,7 +156,7 @@ describe("journey authoring with four cities", () => {
         [`${layer}/romance/presentation.json`]: write(`${layer}/romance/presentation.json`, ownPresentation) };
       const merged = { "progression/journey.json": coreJourney, "learning/translations.json": coreTranslations,
         "romance/presentation.json": { ...corePresentation, backgrounds: ownPresentation.backgrounds } };
-      const quiz = loadIndiaReadiness(process.cwd()).quizzes.find((item) => item.id === "sound_duomo_b1")!;
+      const quiz = loadJourneyReadiness(process.cwd(), "golden_triangle").quizzes.find((item) => item.id === "sound_duomo_b1")!;
       const fragments = { episodes: [{ id: "uz_tashkent_episode", cityId: "tashkent" }], rewards: [],
         battles: [{ id: "uz_tashkent_battle", quizId: quiz.id }], dates: [], landmarks: [], clues: [], finaleEvents: [],
         effects: [{ id: "uz_tashkent_effect" }], memories: { shared_memory: { titleJa: "共有の思い出" }, uz_memory: { titleJa: "タシケント" } },
@@ -223,7 +221,7 @@ describe("journey authoring with four cities", () => {
       const coreTranslations = JSON.parse(readFileSync(path.join(process.cwd(), "src/content/generated/content/learning/translations.json"), "utf8"));
       const merged = { "learning/translations.json": coreTranslations,
         "romance/presentation.json": { ...corePresentation, backgrounds: partial["romance/presentation.json"].backgrounds } };
-      const quiz = loadIndiaReadiness(process.cwd()).quizzes.find((item) => item.id === "sound_duomo_b1")!;
+      const quiz = loadJourneyReadiness(process.cwd(), "golden_triangle").quizzes.find((item) => item.id === "sound_duomo_b1")!;
       const fragments = { episodes: [{ id: "uz_tashkent_episode", cityId: "tashkent" }], rewards: [],
         battles: [{ id: "uz_tashkent_battle", quizId: quiz.id }], dates: [], landmarks: [], clues: [], finaleEvents: [],
         effects: [], memories: { shared_memory: { titleJa: "共有の思い出" }, uz_memory: { titleJa: "タシケント" } },

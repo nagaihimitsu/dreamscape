@@ -4,8 +4,8 @@
  */
 import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
-import { tourismClueSchema, type ObservationRegion } from "../src/content/tourism-schemas";
-import { resolvePublicFile } from "./public-assets";
+import { tourismClueSchema, type ObservationRegion } from "../../../src/content/tourism-schemas";
+import { resolvePublicFile } from "../../public-assets";
 
 interface Fact {
   id: string; placeId: string; cityId: string; titleJa: string; summaryJa: string;

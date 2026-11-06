@@ -47,6 +47,14 @@
   "authoring": {
     "eventPrefix": "gt",
     "observationFile": "authoring/journeys/golden_triangle/drafts/observation-cards.json",
-    "imageDirectory": "assets/tourism/india"
+    "imageDirectory": "assets/tourism/india",
+    "transitDecisionLedger": {
+      "file": "authoring/journeys/golden_triangle/research/golden-triangle-transit-20261103/decisions.json",
+      "cities": [
+        "delhi",
+        "agra",
+        "jaipur"
+      ]
+    }
   }
 }

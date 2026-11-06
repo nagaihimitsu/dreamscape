@@ -4,7 +4,7 @@ import { buildIndiaDraft, indiaDraftDirectory, serializeIndiaDraft } from "./ind
 
 const args = process.argv.slice(2);
 if (args.length !== 1 || !["--write", "--check"].includes(args[0])) {
-  throw new Error("Usage: npx tsx scripts/prepare-india-draft.ts --check|--write");
+  throw new Error("Usage: npx tsx scripts/journeys/golden_triangle/prepare-india-draft.ts --check|--write");
 }
 const draft = buildIndiaDraft();
 for (const [name, value] of Object.entries(draft)) {

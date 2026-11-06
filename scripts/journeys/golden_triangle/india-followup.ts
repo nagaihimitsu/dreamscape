@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { z } from "zod";
-import { tourismSourceSchema } from "../src/content/tourism-schemas";
+import { tourismSourceSchema } from "../../../src/content/tourism-schemas";
 
 // These files are authoring research, not the game's content catalogs. Reuse
 // Milan's source contract while leaving domain-specific observations intact.

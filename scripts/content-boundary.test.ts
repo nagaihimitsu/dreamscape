@@ -71,3 +71,32 @@ describe("content boundary", () => {
     expect(violations).toEqual([]);
   });
 });
+
+describe("journey-specific tools", () => {
+  // scripts/journeys/<journeyId>/ holds tools for one journey. Shared code and
+  // tools choose per-journey behavior from manifest data, never by importing them.
+  const journeyTools = path.join(root, "scripts/journeys");
+  const imports = (file: string, text: string) => [...text.matchAll(/(?:from|import\()\s*["']([^"']+)["']/gu)]
+    .map((match) => match[1]).filter((specifier) => specifier.startsWith("."))
+    .filter((specifier) => {
+      const target = path.resolve(path.dirname(file), specifier);
+      return target === journeyTools || target.startsWith(`${journeyTools}${path.sep}`);
+    });
+
+  it("detects imports of a journey's tools", () => {
+    expect(imports(path.join(root, "scripts/city-bundle.ts"), [
+      'import { a } from "./journeys/golden_triangle/india-draft";',
+      'const b = await import("../scripts/journeys/golden_triangle/india-followup");',
+      'import { c } from "./journey-transit-decisions";',
+    ].join("\n"))).toEqual(["./journeys/golden_triangle/india-draft", "../scripts/journeys/golden_triangle/india-followup"]);
+  });
+
+  it("keeps shared code and tools independent of them", () => {
+    // This file's own examples above are not imports.
+    const files = [...codeFiles(path.join(root, "src")), ...codeFiles(path.join(root, "scripts"))]
+      .filter((file) => !file.startsWith(`${journeyTools}${path.sep}`) && file !== fileURLToPath(import.meta.url));
+    expect(files).toContain(path.join(root, "scripts/city-bundle.ts"));
+    const violations = files.flatMap((file) => imports(file, readFileSync(file, "utf8")).map((specifier) => `${path.relative(root, file)}: ${specifier}`));
+    expect(violations).toEqual([]);
+  });
+});

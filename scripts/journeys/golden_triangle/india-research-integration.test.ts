@@ -1,8 +1,8 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { cityContents } from "../src/content";
-import { getJourney } from "../src/content/journeys";
+import { cityContents } from "../../../src/content";
+import { getJourney } from "../../../src/content/journeys";
 import { readResearchCsv as csv } from "./india-research-csv";
 
 const research = path.resolve("authoring/journeys/golden_triangle/research/golden-triangle-all-research-20261103/source");
