@@ -1,4 +1,5 @@
 import type { ReactionMark } from "../content/dialogue-reactions";
+import { reactionMarkImage } from "../content/code-images";
 import "./comic-effect.css";
 
 /** Decorative cue inside the character layer; a stable cueKey survives rerenders. */
@@ -11,7 +12,7 @@ export function ComicEffect({ effect, cueKey, reduceMotion = false }: {
     <span className={`comic-effect${reduceMotion ? " is-reduced" : ""}`} aria-hidden="true" data-effect={effect}>
       <img
         key={`${cueKey ?? ""}:${effect}`}
-        src={`${import.meta.env.BASE_URL}assets/effects/${effect}.svg`}
+        src={`${import.meta.env.BASE_URL}${reactionMarkImage(effect)}`}
         alt=""
         draggable={false}
         onError={(event) => { event.currentTarget.style.visibility = "hidden"; }}

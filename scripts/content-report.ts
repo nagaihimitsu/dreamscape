@@ -2,6 +2,7 @@ import path from "node:path";
 import { CATALOG_RULES, classifyContentFile, CONTENT_DIRECTORY, JOURNEYS_DIRECTORY, type FieldTable, type MergedKind } from "./content-layout";
 import { localIssuePath } from "./catalog-merge";
 import { imageReferences } from "./content-ownership";
+import { CODE_IMAGE_FILES } from "../src/content/code-images";
 import { displayPath, type ContentSources } from "./content-sources";
 
 // What content:build reports besides errors (pure, on the loaded sources):
@@ -60,18 +61,20 @@ export function unknownJourneyFiles(sources: ContentSources): ContentWarning[] {
 }
 
 /**
- * Files of a journey's public/ folder that no content refers to (tourism
- * images, backgrounds, item icons, character images, title art). The game's
- * code uses only files of the root public/ (effects, the default item icon,
- * favicons), so that folder is not checked.
+ * Served images that neither content (tourism images, backgrounds, item
+ * icons, character images, title art) nor the game's code (CODE_IMAGE_FILES)
+ * refers to: every file of a journey's public/ folder and of the root
+ * public/assets/. The rest of the root public/ (browser icons, the web app
+ * manifest) is linked from index.html and checked by app-icons.test.ts.
  */
 export function unusedPublicFiles(sources: ContentSources): ContentWarning[] {
-  const used = new Set(imageReferences(sources).map((image) => path.posix.normalize(image.path)));
-  const journeyPublic = sources.layers.filter((layer) => layer.type === "journey").map((layer) => path.join(layer.directory, "public") + path.sep);
+  const used = new Set([...imageReferences(sources).map((image) => path.posix.normalize(image.path)), ...CODE_IMAGE_FILES]);
+  const checked = [path.join(sources.root, "public", "assets"), ...sources.layers.filter((layer) => layer.type === "journey")
+    .map((layer) => path.join(layer.directory, "public"))].map((directory) => directory + path.sep);
   return [...sources.publicFiles].flatMap(([assetPath, file]): ContentWarning[] =>
-    used.has(assetPath) || !journeyPublic.some((directory) => file.startsWith(directory)) ? []
-      : [{ kind: "unused-public-file", message: `Unused public file: ${displayPath(sources.root, file)} (no content refers to ${assetPath}; ` +
-        "it would be published without being used)" }]);
+    used.has(assetPath) || !checked.some((directory) => file.startsWith(directory)) ? []
+      : [{ kind: "unused-public-file", message: `Unused public file: ${displayPath(sources.root, file)} (neither content nor the game's code ` +
+        `refers to ${assetPath}; it would be published without being used)` }]);
 }
 
 /** An ID a journey folder defines, and where. `place` IDs name a location of a city. */

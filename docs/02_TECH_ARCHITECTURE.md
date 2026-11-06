@@ -93,7 +93,7 @@ tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲ�
 - 統合したカタログのスキーマエラーは、問題の項目を持つファイルごとに `Invalid content in <ファイル>:` で始まるまとまりで示し、位置（`path`）はそのファイルの中での位置にする（例：旅行編の最初の対決なら、統合後の `battles[9]` ではなく `battles[0]`）。統合後の位置は、エラーの `cause` に残る。
 - 警告（生成は続ける。件数を表示し、`npm run content:build -- --verbose` で一覧。判定は `scripts/content-report.ts`）。警告があっても、単体テスト（`test:quick`・`npm test`）・CI・`npm run verify`・公開は失敗しない。直すかどうかは制作者が一覧を見て判断する
   - 旅行編フォルダの読み込まれず配信もされないファイル（上の「統合の規則」）。
-  - どのデータからも参照されない、旅行編の `public/` のファイル（参照されないまま公開される）。直下の `public/` はゲームのコードが使うファイル（演出の画像・既定の品物アイコン・ブラウザのアイコン）を含むため対象外。
+  - データからもゲームのコードからも参照されない、旅行編の `public/` と直下の `public/assets/` のファイル（参照されないまま公開される）。コードが自分で使う画像（演出の画像・既定の品物アイコン）は `src/content/code-images.ts` に一覧し、`src/content/code-images.test.ts` が、それらが直下の `public/` にあることと、ほかのコードが配信パス（`assets/…`）を直接書いていないことを確かめる（開発サーバーは存在しない画像にもページを返すため、ブラウザでは欠落に気付けない）。直下の `public/` のブラウザのアイコンとWebアプリのマニフェストは `index.html` が参照し、`scripts/app-icons.test.ts` が検査するため対象外。
   - `authoring.eventPrefix` を持つ旅行編の、接頭辞の決まり（下の「ストーリーIDとIDの名前空間」）に合わないID。既存の例外は `scripts/content-report.ts` の `UNPREFIXED_ID_EXCEPTIONS` に挙げ、新しいIDは例外に足さず接頭辞を付ける。例外に挙げたIDが実データから無くなると、単体テスト（`scripts/content-report.test.ts`）が失敗する（使われない例外を残さないため）。
 - 成功すると、旅行編ごとに1行、そのフォルダが持つ都市・ストーリー・クイズ・配信ファイルの数と、各カタログの項目数（0件の種類は省略）を表示する（例：`Journey uzbekistan (preparing): cities 4, stories 0, quizzes 0, public files 40; destinations 24, backgrounds 44, assets 40`）。置き忘れや、空のまま公開しかけていることに気付くための表示。
 

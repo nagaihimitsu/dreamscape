@@ -50,7 +50,7 @@ describe("unknown files in journey folders", () => {
 });
 
 describe("unused public files", () => {
-  it("names a journey's served files that no content refers to", () => {
+  it("names served files that neither content nor the code refers to", () => {
     const sources = load({
       ...journey("trip_a", 10, "a_city"),
       [`${folder("trip_a")}/manifest.json`]: json({ schemaVersion: 1, order: 10, id: "trip_a", cities: [{ id: "a_city" }],
@@ -61,12 +61,17 @@ describe("unused public files", () => {
       [`${folder("trip_a")}/public/assets/tourism/spot.LICENSE.txt`]: null,
       [`${folder("trip_a")}/public/assets/title/trip_a.webp`]: null,
       [`${folder("trip_a")}/public/assets/items/ticket.svg`]: null,
-      // The game's code uses files of the root public/ (effects, the default item icon), so it is not checked.
+      // The root public/: the game's code uses the effects and the default item icon; index.html links the browser icons.
       "public/assets/effects/heart.svg": null,
+      "public/assets/items/item.svg": null,
+      "public/assets/items/old_ticket.svg": null,
+      "public/favicon-16.png": null,
     });
     expect(messages(unusedPublicFiles(sources))).toEqual([
+      "Unused public file: public/assets/items/old_ticket.svg " +
+      "(neither content nor the game's code refers to assets/items/old_ticket.svg; it would be published without being used)",
       "Unused public file: content/journeys/trip_a/public/assets/tourism/spot.LICENSE.txt " +
-      "(no content refers to assets/tourism/spot.LICENSE.txt; it would be published without being used)",
+      "(neither content nor the game's code refers to assets/tourism/spot.LICENSE.txt; it would be published without being used)",
     ]);
   });
 });
