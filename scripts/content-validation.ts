@@ -10,7 +10,8 @@ import { unique, withContext } from "./content-validation-utils";
 import { validateStoryCached, type StoryValidationCache } from "./story-validation-cache";
 import { requireServedFile, servedFile } from "./public-assets";
 import path from "node:path";
-import type { CatalogKind } from "./content-layout";
+import { SAMPLE_JOURNEY_ID, type CatalogKind } from "./content-layout";
+import { exampleUrlCount } from "./sample-journey";
 import { displayPath, journeyFolderPath, parseCatalog as parseSourceCatalog, parseSourceFile, requireJourneyManifests, type ContentSources } from "./content-sources";
 import { DEFAULT_BACKGROUND_ID } from "../src/content/default-background";
 import { authoringProfileOf } from "./journey-authoring";
@@ -114,6 +115,31 @@ function checkJourneyCities(sources: ContentSources): void {
   }
 }
 
+/**
+ * A published journey (`status` "available") keeps no URL at example.com,
+ * the domain reserved for examples, where the sample journey's fictional
+ * sources point: a journey copied by journey:new and set to available by
+ * hand stops here (journey:readiness and journey:release check every kind of
+ * sample content left: sources, images and texts). The sample itself (dev
+ * and tests only, never in a production build) is exempt.
+ */
+function checkPublishedSources(sources: ContentSources): void {
+  for (const manifest of sources.manifests) {
+    if (manifest.data.status !== "available" || manifest.id === SAMPLE_JOURNEY_ID) continue;
+    const folder = `${journeyFolderPath(sources.tree, manifest.id)}/`;
+    for (const [file, bytes] of sources.tree.files) {
+      if (!bytes || !file.startsWith(folder) || !file.endsWith(".json")) continue;
+      const text = bytes.toString("utf8");
+      if (!/example\.com/iu.test(text)) continue;
+      let count = 0;
+      try { count = exampleUrlCount(text); } catch { continue; } // JSON that does not parse is reported by the loader and the schemas.
+      if (count) throw new Error(`見本の出典が残っている旅行編は公開（status "available"）にできません: ${file} に見本の出典（example.com のURL）が${count}件あります` +
+        `（Available journey with sample sources）。実際に確認した出典に置き換えるか、manifest.json の status を "preparing" に戻し、` +
+        `npm run journey:readiness -- --journey ${manifest.id} で残っている見本の内容を確かめてください。`);
+    }
+  }
+}
+
 /** The validated content: compiled stories, quizzes and the parsed catalogs content:build reports. */
 export type ValidatedContent = ReturnType<typeof validateContent>;
 
@@ -138,6 +164,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     path.join(coreLayer.directory, "romance", "presentation.json"))
     throw new Error(`Missing default background: content/romance/presentation.json must define backgrounds.${DEFAULT_BACKGROUND_ID} (the shared default of every journey)`);
   checkJourneyCities(sources);
+  checkPublishedSources(sources);
   // The game's static files (root public/ plus every journey's public/), listed by the loader.
   const { publicFiles } = sources;
   // A missing image is named with the public/ folder of the journey whose data file names it.

@@ -109,7 +109,8 @@ export function sampleTextsOf(file: string, text: string): string[] {
 
 /** A source URL at example.com (reserved for examples; the sample's sources), anywhere in a JSON file. */
 const exampleUrl = /^https?:\/\/(?:[a-z0-9-]+\.)*example\.com(?:[/:?#]|$)/iu;
-function exampleUrls(text: string): number {
+/** The number of URLs at example.com (or a subdomain) among the strings of a JSON text. */
+export function exampleUrlCount(text: string): number {
   let count = 0;
   const visit = (value: unknown) => {
     if (typeof value === "string") { if (exampleUrl.test(value)) count += 1; }
@@ -161,7 +162,7 @@ export function sampleLeftovers(files: ReadonlyMap<string, Buffer | null>, marks
     }
     if (!file.endsWith(".json") && !file.endsWith(".ink")) continue;
     const text = bytes.toString("utf8");
-    const sources = file.endsWith(".json") ? exampleUrls(text) : 0;
+    const sources = file.endsWith(".json") ? exampleUrlCount(text) : 0;
     if (sources) found.push({ file, kind: "source", count: sources });
     // Every occurrence counts, also of sharedTextKeys' strings: the marks never contain shared phrasing.
     const texts = sampleTextsOfAll(file, text).filter((item) => marks.texts.has(item)).length;
