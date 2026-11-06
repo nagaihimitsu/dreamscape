@@ -91,4 +91,6 @@
 
 ## 新しい旅行編の元にする
 
-`npm run journey:new` ができるまでは手作業で複製します。フォルダを `content/journeys/<旅行編ID>/` に写し、ID・接頭辞・都市ID・画像のフォルダ名を置き換え、`manifest.json` の `order` を他と重ならない値に、`status` を `"preparing"`、都市の `productionStatus` を `"prototype"` にします。架空の文章・出典・画像は実在のものに置き換えます。この `README.md` は複製しなくてかまいません（`.md` は読み込まれません）。手順全体は [新しい編を追加する手順](../../../docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順) を参照してください。
+`npm run journey:new -- <旅行編ID> --name <旅行編の日本語名> --city <都市ID> --city-name <都市の日本語名> [--prefix <接頭辞>] [--with-optional]` で、この見本を `content/journeys/<旅行編ID>/` に複製します。旅行編ID `sample_trip`・接頭辞 `smp`・都市ID `mihon`（IDの一部・ファイル名・画像のフォルダ名を含む）を置き換え、準備中（`status: "preparing"`、都市は `productionStatus: "prototype"`、画像は `isPlaceholder: true`）にして、この `README.md` の代わりに置き換えるものの一覧 `CHECKLIST.md` を置きます。任意の部分は `--with-optional` を付けたときだけ複製します（外し方は上の「任意の部分」と同じで、`scripts/sample-journey.ts` が README のこの一覧から行います）。架空の文章・出典・画像が残っているうちは `npm run journey:readiness` が「見本の…が残っています」と示し、`npm run journey:release` は公開を止めます。手順全体は [新しい編を追加する手順](../../../docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順) を参照してください。
+
+この README の必須ファイルの表と「任意の部分」の一覧は、`journey:new` とテストが読みます。表の行（ファイル・役割・エラーの3列）、`### ` で始まる部分の名前、`- ファイル：` と `- 項目のID：` で始まる行の形を保って編集してください。

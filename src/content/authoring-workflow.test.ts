@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import { SAMPLE_JOURNEY_DIRECTORY } from "../../scripts/content-layout";
 import { buildContent } from "../../scripts/content-pipeline";
 import { prepareContentFixture } from "./test-fixtures";
 import { quizSchema } from "./schemas";
@@ -10,7 +11,7 @@ const root = path.resolve(".");
 let fixture: string;
 beforeEach(async () => {
   fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-authoring-"));
-  await prepareContentFixture(fixture);
+  await prepareContentFixture(fixture, { withSample: true });
 });
 afterEach(async () => {
   await rm(fixture, { recursive: true, force: true });
@@ -26,15 +27,16 @@ async function generatedQuizzes() {
 
 describe("content authoring workflow", () => {
   it("accepts a new quiz from direct edits and transcribed JSON through the same pipeline", async () => {
+    // The sample journey's quiz is the example of a quiz file (authoring/templates/sample_trip/).
     const templateText = await readFile(
-      path.join(root, "authoring/templates/quiz.json"),
+      path.join(root, SAMPLE_JOURNEY_DIRECTORY, "quizzes/smp_mihon_clock_tower_quiz.json"),
       "utf8",
     );
     const template = quizSchema.parse(JSON.parse(templateText));
     const direct = structuredClone(template);
-    direct.id = "authoring_practice_b1";
+    direct.id = "smp_authoring_practice_quiz";
     direct.questions.forEach((question, index) => {
-      question.id = `authoring_practice_question_${index + 1}`;
+      question.id = `smp_authoring_practice_q${index + 1}`;
     });
     // Simulate transcribing a JSON response, without calling an AI service.
     let responseText = templateText.replace(template.id, direct.id);
@@ -47,22 +49,22 @@ describe("content authoring workflow", () => {
     const transcribed = quizSchema.parse(JSON.parse(responseText));
     expect(transcribed).toEqual(direct);
 
-    // Register the new quiz in the battle catalog using data alone.
-    const battleFile = path.join(fixture, "content/journeys/milano/battles/catalog.json");
+    // Register the new quiz in the sample's battle catalog using data alone.
+    const battleFile = path.join(fixture, "content/journeys/sample_trip/battles/catalog.json");
     const catalog = JSON.parse(await readFile(battleFile, "utf8"));
     const battle = catalog.battles.find(
-      (item: { id: string }) => item.id === "milano_duomo_01",
+      (item: { id: string }) => item.id === "smp_mihon_clock_tower_battle",
     );
     expect(battle).toBeDefined();
     battle.quizId = direct.id;
     await writeFile(battleFile, `${JSON.stringify(catalog, null, 2)}\n`);
     const quizFile = path.join(
       fixture,
-      "content/journeys/milano/quizzes/authoring_practice_B1.json",
+      "content/journeys/sample_trip/quizzes/smp_authoring_practice_quiz.json",
     );
     const learningFile = path.join(
       fixture,
-      "content/journeys/milano/learning/translations.json",
+      "content/journeys/sample_trip/learning/translations.json",
     );
     const learning = JSON.parse(await readFile(learningFile, "utf8"));
     direct.questions.forEach((question, index) => {

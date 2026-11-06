@@ -206,7 +206,8 @@ public/                           # ファビコン・アプリアイコン（np
 authoring/                        # 共通の制作手順とテンプレート
   brand/                          # ファビコン・アプリアイコンの元画像
   journeys/<旅行編ID>/            # 旅行編ごとの下書き・調査記録（ゲームは読み込まない）
-  templates/sample_trip/          # 見本の編（開発・テスト専用の架空の「見本の街」。npm run dev:sample で遊べ、本番には入らない）
+  templates/sample_trip/          # 見本の編（開発・テスト専用の架空の「見本の街」。npm run dev:sample で遊べ、本番には入らない。npm run journey:new の元）
+  templates/journey-new-checklist.md  # journey:new が新しい旅行編に書く CHECKLIST.md の元
 scripts/                          # 生成・検証・共通の制作ツール
   journeys/<旅行編ID>/            # その旅行編だけの制作ツール
 src/                              # ゲーム本体（React・ゲームルール・保存）
@@ -227,6 +228,7 @@ tests/e2e/ tests/fixtures/        # E2Eとテスト用データ
 | `npm run dist:check` | ビルド済みの `dist/` にDebug・プレビュー・テスト用のコードや旅行編がないかを検査（`build`・`verify` が自動で実行） |
 | `npm run test:e2e` | 最小構成のE2E（Playwright） |
 | `npm run content:inspect -- <ファイル>` | 1ファイルの形式とInkコンパイルを確認 |
+| `npm run journey:new -- <旅行編ID> --name <日本語名> --city <都市ID> --city-name <日本語名>` | 見本の編を複製して新しい旅行編（準備中）を `content/journeys/<旅行編ID>/` に作る。`--prefix <接頭辞>`（省略時は旅行編ID）、`--with-optional`（特殊戦B・C、道中交流も複製）。置き換えるものは作った旅行編の `CHECKLIST.md`。見本の出典・画像・文章が残っているうちは `journey:readiness` が示し、`journey:release` は止まる（[新しい編を追加する手順](docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順)） |
 | `npm run journey:scaffold`・`journey:readiness`・`journey:release`・`journey:transit` | 旅行編へシナリオとクイズを取り込む制作ツール（[手順](authoring/JOURNEY_AUTHORING.md)） |
 | `npm run city:bundle` | 都市単位の作業用JSONで地点・交通・背景などを編集（[手順](authoring/CITY_BUNDLES.md)） |
 | `npm run icons:build` | `authoring/brand/favicon-master.png` から `public/` のファビコン（16・32・48px、顔の切り抜き）、Apple touch icon（180px）、アプリアイコン（192・512px）を作り直す。元画像を差し替えたときだけ実行し、生成した画像もコミットする |
@@ -235,11 +237,11 @@ tests/e2e/ tests/fixtures/        # E2Eとテスト用データ
 
 ## コンテンツ制作の始め方（Phase 8）
 
-[制作マニュアル](authoring/CONTENT_GUIDE.md) と [テンプレート](authoring/templates/) に、観光地・発見・クイズ・A/B/C戦・デート・案内・都市進行の正規JSONとInkの編集例があります。直接編集しても、AIが提案した文章を転記しても、同じ形式と検証を使います。`authoring/journeys/<旅行編ID>/drafts/` は必要に応じて使える任意の下書き置き場で、ゲームに読み込まれません。採用は通常のGitレビューで行います。
+[制作マニュアル](authoring/CONTENT_GUIDE.md) と [見本の編](authoring/templates/sample_trip/README.md) に、観光地・発見・クイズ・A/B/C戦・デート・案内・道中交流・都市進行の正規JSONとInkの例があります（見本の編は架空の街で、文章・出典・画像は写したら実在のものに置き換えます）。新しい旅行編は `npm run journey:new` で見本から作れます。直接編集しても、AIが提案した文章を転記しても、同じ形式と検証を使います。`authoring/journeys/<旅行編ID>/drafts/` は必要に応じて使える任意の下書き置き場で、ゲームに読み込まれません。採用は通常のGitレビューで行います。
 
 ```sh
 npm run content:inspect -- content/journeys/milano/quizzes/sound_duomo_B1.json
-npm run content:inspect -- --type quiz authoring/templates/quiz.json
+npm run content:inspect -- --type quiz authoring/templates/sample_trip/quizzes/smp_mihon_clock_tower_quiz.json
 npm run content:inspect -- --all
 npm run content:compat
 ```
