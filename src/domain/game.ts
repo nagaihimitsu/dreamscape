@@ -1,4 +1,4 @@
-import { getJourney, type Journey } from "../content/journeys";
+import { defaultJourneyId, getJourney, type Journey } from "../content/journeys";
 import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
 import { deriveRelationshipTone } from "./romance-tone";
 import { secureRomanceRoll } from "../random/romance-source";
@@ -59,7 +59,7 @@ export interface Availability {
 export function createGame(
   playerName = balance.defaultPlayerName,
   heroineName = balance.defaultHeroineName,
-  options: { journeyId: string; initialState?: NonNullable<Journey["initialState"]> } = { journeyId: "milano" },
+  options: { journeyId: string; initialState?: NonNullable<Journey["initialState"]> } = { journeyId: defaultJourneyId },
 ): GameState {
   const journey = getJourney(options.journeyId);
   if (!journey || journey.status !== "available" || journey.initialBudget === null)

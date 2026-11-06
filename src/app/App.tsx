@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { getJourney } from "../content/journeys";
+import { defaultJourneyId, getJourney } from "../content/journeys";
 import { journeyStorage } from "../persistence/journey-storage";
 import { useJourneyLock } from "../persistence/useJourneyLock";
 import { loadJourneyDraft, promoteJourneyDraft } from "../persistence/journey-preparation";
@@ -10,7 +10,7 @@ import { GameApp } from "./GameApp";
 import { browserStorage, type AppProps } from "./app-storage";
 
 export default function App(props: AppProps = {}) {
-  const [journeyId, setJourneyId] = useState("milano");
+  const [journeyId, setJourneyId] = useState(defaultJourneyId);
   const baseStorage = props.storage ?? browserStorage;
   const scopedStorage = useMemo(() => journeyStorage(baseStorage, journeyId), [baseStorage, journeyId]);
   const [lockAttempt, setLockAttempt] = useState(0);

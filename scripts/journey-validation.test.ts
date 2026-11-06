@@ -3,7 +3,7 @@ import {
   balance,
   battleQuizzes,
   battles,
-  city,
+  getCityContent,
   journeyConfig as allJourneyConfig,
   landmarks,
   type JourneyConfig,
@@ -12,6 +12,7 @@ import { validateJourney } from "./journey-validation";
 import { journeySchema, type RewardRule } from "../src/content/journey-schemas";
 
 // The validator receives one city at a time, as it does in content-pipeline.
+const city = getCityContent("milano").city;
 const episodes = allJourneyConfig.episodes.filter((episode) => episode.cityId === city.id);
 const episodeIds = new Set(episodes.map((episode) => episode.id));
 const storyBattles = allJourneyConfig.storyBattles.filter((entry) => {

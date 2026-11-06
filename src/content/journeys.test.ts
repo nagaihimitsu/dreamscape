@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import data from "./generated/content/journeys/catalog.json";
 import { journeyCatalogSchema } from "./journey-catalog";
-import { getJourney, getJourneyForCity } from "./journeys";
+import { defaultJourneyId, getJourney, getJourneyForCity, journeys } from "./journeys";
 
 describe("journey catalog", () => {
   it("keeps the playable Indian cities ordered and separate from Milan", () => {
@@ -15,6 +15,11 @@ describe("journey catalog", () => {
     expect(getJourneyForCity("milano")?.currency.code).toBe("EUR");
     expect(getJourneyForCity("agra")?.id).toBe("golden_triangle");
     expect(getJourneyForCity("unknown")).toBeUndefined();
+  });
+
+  it("starts with the first available journey in manifest order", () => {
+    expect(defaultJourneyId).toBe(journeys.find((journey) => journey.status === "available")!.id);
+    expect(defaultJourneyId).toBe("milano");
   });
 
   it("rejects duplicate journeys and cities owned by multiple journeys", () => {

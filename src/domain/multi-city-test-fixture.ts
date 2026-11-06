@@ -129,8 +129,11 @@ export function installTestCity(options: {
   const eventSource = original.events.find((item) => item.id === normalSource.id)!;
   const event = (id: string, category: "main" | "date") => ({ ...clone(eventSource), id, cityId: cityId, placeId: place.id, category, activityMinutes: 15, apCost: category === "date" ? date.apCost : 0 });
   const city = { ...clone(milan.city), id: cityId, nextCityId: options.nextCityId, nameJa: options.nameJa ?? "試験都市", firstClearReward: { rewardSourceId: id("episode_duomo_first"), ap: 1 }, landmarkIdsPlanned: [normalLandmark.id, specialLandmark.id] };
+  // Scenes of a test city start with its own place's background, not Milan's story background.
+  const travelSettings = { ...clone(milan.travelSettings), hotelPlaceId: hotel.id };
+  delete travelSettings.storyBackgroundAssetId;
   cityContents[cityId] = { city, travel: { cityId: city.id, places: [hotel, place], routes, events: [event(normal.id, "main"), event(special.battleId, "main"), event(finale.id, "main"), event(date.id, "date")] },
-    travelSettings: { ...clone(milan.travelSettings), hotelPlaceId: hotel.id } };
+    travelSettings };
   if (previous) previous.city.nextCityId = city.id;
 
   return () => {

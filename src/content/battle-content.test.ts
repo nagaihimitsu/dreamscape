@@ -5,16 +5,16 @@ import path from "node:path";
 import { Story } from "inkjs";
 import { buildContent } from "../../scripts/content-pipeline";
 import { changeCatalogEntry, prepareContentFixture } from "./test-fixtures";
-import quizData from "../../content/quizzes/sound_supper_B1.json";
+import quizData from "../../content/journeys/milano/quizzes/sound_supper_B1.json";
 import battleData from "./generated/content/battles/catalog.json";
 import type { BattleDefinition } from "./schemas";
 import { parseStoryTags } from "./tags";
 
 let fixture: string;
-const quizPath = "content/quizzes/sound_supper_B1.json";
+const quizPath = "content/journeys/milano/quizzes/sound_supper_B1.json";
 /** The Last Supper battle, which uses the quiz and Ink edited below. */
 const battleId = "milano_last_supper_01";
-const inkPath = "content/stories/battles/sound_supper.ink";
+const inkPath = "content/journeys/milano/stories/battles/sound_supper.ink";
 
 beforeEach(async () => {
   fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-battle-content-"));
@@ -195,7 +195,7 @@ describe("battle content contract", () => {
 
   it("rejects duplicate production quiz IDs across files", async () => {
     await writeFile(
-      path.join(fixture, "content/quizzes/duplicate.json"),
+      path.join(fixture, "content/journeys/milano/quizzes/duplicate.json"),
       JSON.stringify(quizData),
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(

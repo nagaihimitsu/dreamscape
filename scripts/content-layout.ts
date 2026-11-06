@@ -89,6 +89,23 @@ export const CATALOG_RULES = [
 
 /** A catalog merged from layer files. */
 export type MergedKind = (typeof CATALOG_RULES)[number]["kind"];
+
+/**
+ * The catalogs the core layer may hold: the base system shared by every
+ * journey (balance, response profiles, the common date effects, global
+ * presentation, romance stages, the shared dictionary and the characters).
+ * Every other catalog, and every city, travel, story and quiz file, belongs
+ * to a journey folder.
+ */
+export const CORE_LAYER_KINDS: ReadonlySet<MergedKind> = new Set<MergedKind>([
+  "learning/word-meanings.json",
+  "presentation/characters.json",
+  "romance/balance.json",
+  "romance/effect_catalog.json",
+  "romance/presentation.json",
+  "romance/progression.json",
+  "romance/response_profiles.json",
+]);
 /** Every catalog of the merged view (and of the generated mirror). */
 export type CatalogKind = MergedKind | typeof JOURNEY_CATALOG_KIND;
 

@@ -8,6 +8,7 @@ import {
   validateLearningTopic,
 } from "./ink-validation";
 import { unique, withContext } from "./content-validation-utils";
+import { resolvePublicFile } from "./public-assets";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { mirrorDirectory, type CatalogKind } from "./content-layout";
@@ -194,8 +195,11 @@ export async function buildContent(root: string, writeOutput = true) {
     return city;
   }));
   unique(cities.map((city) => city.id), "city ID");
-  if (!cities.some((item) => item.id === "milano")) throw new Error("Missing initial city: milano");
   const journeyCatalog = parseCatalog(journeyCatalogSchema, "journeys/catalog.json");
+  // The first available journey (manifest order) opens the title screen, a new
+  // game and Debug; each available journey's starting city is checked below.
+  if (!journeyCatalog.journeys.some((item) => item.status === "available"))
+    throw new Error('No available journey: at least one content/journeys/<journeyId>/manifest.json needs "status": "available"');
   // A registered future prototype may be referenced by its predecessor;
   // getNextCity still hides departures to incomplete cities at runtime.
   validateCityLinks(cities, journeyCatalog);
@@ -267,6 +271,8 @@ export async function buildContent(root: string, writeOutput = true) {
   if (encounterCatalog.items.some((item) => !cities.some((entry) => entry.id === item.cityId)) ||
       encounterCatalog.encounters.some((item) => !cities.some((entry) => entry.id === item.cityId)))
     throw new Error("Unknown encounter/item city");
+  for (const item of encounterCatalog.items)
+    if (item.iconPath) withContext(`encounter item ${item.id}`, () => resolvePublicFile(root, item.iconPath!, sources.publicRoots));
   unique(journey.episodes.map((item) => item.id), "episode ID");
   unique(journey.episodes.map((item) => item.battleId), "episode battle ID");
   unique(journey.storyBattles.map((item) => item.battleId), "story battle ID");

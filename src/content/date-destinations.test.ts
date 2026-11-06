@@ -24,13 +24,13 @@ beforeEach(async () => {
 afterEach(async () => { await rm(fixture, { recursive: true, force: true }); });
 
 async function editDestinations(change: (items: Destination[]) => void) {
-  const file = path.join(fixture, "content/romance/date_destinations.json");
+  const file = path.join(fixture, "content/journeys/milano/romance/date_destinations.json");
   const catalog = JSON.parse(await readFile(file, "utf8")) as { destinations: Destination[] };
   change(catalog.destinations);
   await writeFile(file, JSON.stringify(catalog));
 }
 async function editDates(change: (items: DateEntry[]) => void) {
-  const file = path.join(fixture, "content/romance/date_catalog.json");
+  const file = path.join(fixture, "content/journeys/milano/romance/date_catalog.json");
   const catalog = JSON.parse(await readFile(file, "utf8")) as { dates: DateEntry[] };
   change(catalog.dates);
   await writeFile(file, JSON.stringify(catalog));

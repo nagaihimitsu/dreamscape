@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { milanoTravelCatalog } from "../content";
+import { getCityContent } from "../content";
 import { createGame, type GameState } from "../domain/game";
 import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle } from "../domain/battle";
 import { closeTourism, openTourism, skipTourismGuide, startTourismBattle } from "../domain/tourism";
 import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, getTravelHomeRoutes, sleepAtHotel, waitForTravel } from "../domain/travel-game";
 import { loadGame, SAVE_KEY, saveGame, type StorageLike } from "./index";
+
+const milanoTravelCatalog = getCityContent("milano").travel;
 
 class MemoryStorage implements StorageLike {
   values = new Map<string, string>();
@@ -133,7 +135,7 @@ describe("current travel save and concurrency", () => {
   });
 
   it("reserves an actual two-leg paid return when walking would be too late, reloads and pays once", () => {
-    const homeRoutes = getTravelHomeRoutes("p_prada", "p_hotel");
+    const homeRoutes = getTravelHomeRoutes("p_prada", "p_hotel", "milano");
     const rail = homeRoutes.find((route) => route.mode === "rail")!;
     const walk = homeRoutes.find((route) => route.mode === "walk")!;
     const firstLeg = milanoTravelCatalog.routes.find((route) => route.fromPlaceId === "p_prada" && route.toPlaceId === "p_duomo" && route.mode === "rail")!;

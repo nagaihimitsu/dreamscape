@@ -6,13 +6,12 @@ import {
   presentation,
   landmarks,
   tourismAssets,
-  city,
   getCityContent,
   battles,
   episodes,
   journeyConfig,
 } from "../content";
-import { getJourneyForCity } from "../content/journeys";
+import { defaultJourneyId, getJourney, getJourneyForCity } from "../content/journeys";
 import { currencyForCity, formatMoneyForCity } from "../content/currency";
 import { JourneySelection } from "../features/journey/JourneySelection";
 import { beginTravelEvent, waitForTravel } from "../domain/travel-game";
@@ -85,7 +84,7 @@ export function GameApp({
   storage = browserStorage,
   nextRomanceRoll = secureRomanceRoll,
   debug = false,
-  journeyId = "milano",
+  journeyId = defaultJourneyId,
   onSwitchJourney,
 }: AppProps & { journeyId?: string; onSwitchJourney?: (id: string) => void }) {
   const isDebug = import.meta.env.DEV && debug;
@@ -220,6 +219,8 @@ export function GameApp({
     (destination) => destination.id === selectedDate?.destinationId,
   );
   const currentCity = game ? getCityContent(game.currentCityId) : undefined;
+  // Before the trip starts, the heading names the selected journey's first city.
+  const editionCityName = currentCity?.city.nameJa ?? getJourney(journeyId)?.cities[0].nameJa;
   const currentTravelPlace = game
     ? currentCity!.travel.places.find((place) => place.id === game.travel.currentPlaceId)
     : undefined;
@@ -263,7 +264,7 @@ export function GameApp({
         <a href="#main" className="brand">
           Dreamscape<span>旅の余白</span>
         </a>
-        <span className="edition">{currentCity?.city.nameJa ?? city.nameJa}の旅</span>
+        <span className="edition">{editionCityName}の旅</span>
       </header>
       {game && (
         <div className="journey-bar">
@@ -282,7 +283,7 @@ export function GameApp({
               {game.ap}
               <small> AP</small>
             </span>
-            <HeldItems items={encounters.items.filter((item) => item.cityId === game.currentCityId && game.inventory[item.id] === "held").map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa }))} />
+            <HeldItems items={encounters.items.filter((item) => item.cityId === game.currentCityId && game.inventory[item.id] === "held").map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa, iconPath: item.iconPath }))} />
           </div>
           <div className="journey-controls" data-testid="city-progress">
             <button className="journey-progress-button" type="button" aria-label="観光地・発見・戦績を見る" onClick={() => setRecordsOpen(true)}><CityProgressBadge game={game} /></button>

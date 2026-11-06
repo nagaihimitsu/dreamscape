@@ -12,8 +12,11 @@ beforeEach(async () => {
 });
 afterEach(async () => { await rm(fixture, { recursive: true, force: true }); });
 
+/** Shared romance data (core layer) and Milan's own romance catalogs. */
+const core = "content/romance";
+const milano = "content/journeys/milano/romance";
 async function changeJson(relative: string, mutate: (data: any) => void) {
-  const file = path.join(fixture, "content/romance", relative);
+  const file = path.join(fixture, relative);
   const data = JSON.parse(await readFile(file, "utf8"));
   mutate(data);
   await writeFile(file, JSON.stringify(data));
@@ -21,17 +24,17 @@ async function changeJson(relative: string, mutate: (data: any) => void) {
 
 describe("response profile cross-file validation", () => {
   it("rejects duplicate profile IDs", async () => {
-    await changeJson("response_profiles.json", (data) => data.profiles.push(structuredClone(data.profiles[0])));
+    await changeJson(`${core}/response_profiles.json`, (data) => data.profiles.push(structuredClone(data.profiles[0])));
     await expect(buildContent(fixture, false)).rejects.toThrow(/Duplicate response profile ID/);
   });
 
   it("rejects effect references to unknown profiles", async () => {
-    await changeJson("effect_catalog.json", (data) => { data.effects[0].responseProfileId = "missing_profile"; });
+    await changeJson(`${core}/effect_catalog.json`, (data) => { data.effects[0].responseProfileId = "missing_profile"; });
     await expect(buildContent(fixture, false)).rejects.toThrow(/Unknown response profile/);
   });
 
   it("rejects an outcome effect that attempts to use a response profile", async () => {
-    await changeJson("effect_catalog.json", (data) => {
+    await changeJson(`${milano}/effect_catalog.json`, (data) => {
       const outcome = data.effects.find((effect: any) => effect.outcome);
       outcome.responseProfileId = "attentive";
     });
@@ -39,9 +42,9 @@ describe("response profile cross-file validation", () => {
   });
 
   it("rejects RANDOM in an active romance Ink script", async () => {
-    const catalog = JSON.parse(await readFile(path.join(fixture, "content/romance/date_catalog.json"), "utf8"));
+    const catalog = JSON.parse(await readFile(path.join(fixture, `${milano}/date_catalog.json`), "utf8"));
     const storyId = catalog.dates.find((date: any) => date.kind === "normal").storyId;
-    const file = path.join(fixture, "content/stories", `${storyId}.ink`);
+    const file = path.join(fixture, "content/journeys/milano/stories", `${storyId}.ink`);
     const source = await readFile(file, "utf8");
     expect(source).toMatch(/# background:[^\n]*\n/);
     await writeFile(file, source.replace(/(# background:[^\n]*\n)/, "$1~ temp forbidden_roll = RANDOM(1, 2)\n"));
@@ -49,7 +52,7 @@ describe("response profile cross-file validation", () => {
   }, 30_000);
 
   it("rejects a recovery event that consumes AP or cannot repeat", async () => {
-    await changeJson("date_catalog.json", (data) => {
+    await changeJson(`${milano}/date_catalog.json`, (data) => {
       const date = data.dates.find((entry: any) => entry.kind === "special");
       date.recovery = true;
       date.repeatable = false;
@@ -59,14 +62,14 @@ describe("response profile cross-file validation", () => {
   });
 
   it("rejects an unused memoryless effect even if its response profile exists", async () => {
-    await changeJson("effect_catalog.json", (data) => {
+    await changeJson(`${milano}/effect_catalog.json`, (data) => {
       data.effects.push({ id: "unused_memoryless_effect", affectionDelta: 0, responseProfileId: "attentive" });
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(/outside recovery: unused_memoryless_effect/);
   }, 120_000);
 
   it("rejects a memoryless effect used by an ordinary date", async () => {
-    await changeJson("effect_catalog.json", (data) => {
+    await changeJson(`${milano}/effect_catalog.json`, (data) => {
       const effect = data.effects.find((item: any) => item.id === "sound_cafe_01_2_1");
       delete effect.memoryId;
     });

@@ -20,26 +20,27 @@ const city = (layer: string, id: string, extra: Record<string, unknown> = {}, tr
   write(`${layer}/travel/${id}.json`, { cityId: id, places: [], events: [], ...travel });
   write(`${layer}/travel/${id}-settings.json`, {});
 };
+const mi = "content/journeys/milano";
 const gt = "content/journeys/golden_triangle";
 const uz = "content/journeys/uzbekistan";
 const check = () => checkContentOwnership(loadContentSources(root));
 
 /**
- * Core: Milan with its landmark, background, effect and story. Golden
- * Triangle (Delhi) and Uzbekistan (Tashkent) each have their own entries
- * that use their own content and the core layer.
+ * Core: the shared background and date effect. Milan (with its landmark and
+ * story), Golden Triangle (Delhi) and Uzbekistan (Tashkent) each have their
+ * own entries that use their own content and the core layer.
  */
 beforeEach(() => {
   root = mkdtempSync(path.join(tmpdir(), "dreamscape-ownership-"));
   manifest("milano", 10, ["milano"]);
   manifest("golden_triangle", 20, ["delhi", "agra"]);
   manifest("uzbekistan", 30, ["tashkent"]);
-  city("content", "milano");
+  city(mi, "milano");
   city(gt, "delhi", { arrivalStoryId: "arrivals/delhi", landmarkIdsPlanned: ["delhi_red_fort"] },
     { places: [{ id: "delhi_red_fort", cityId: "delhi", backgroundAssetId: "gt_bg_red_fort", landmarkIds: ["delhi_red_fort"] }],
       events: [{ id: "gt_delhi_episode", cityId: "delhi" }] });
   city(uz, "tashkent");
-  write("content/tourism/catalog.json", { schemaVersion: 1, assets: [{ id: "duomo_photo" }], landmarks: [{ id: "duomo", cityId: "milano" }] });
+  write(`${mi}/tourism/catalog.json`, { schemaVersion: 1, assets: [{ id: "duomo_photo" }], landmarks: [{ id: "duomo", cityId: "milano" }] });
   write(`${gt}/tourism/catalog.json`, { schemaVersion: 1,
     assets: [{ id: "gt_img_red_fort" }],
     landmarks: [{ id: "delhi_red_fort", cityId: "delhi", imageAssetId: "gt_img_red_fort", guideStoryId: "tourism/gt_red_fort" }],
@@ -61,7 +62,7 @@ beforeEach(() => {
   }] });
   write(`${gt}/learning/translations.json`, { schemaVersion: 1, questions: { gt_question: {} } });
   write(`${gt}/quizzes/gt_quiz.json`, { id: "gt_quiz", landmarkId: "delhi_red_fort", questions: [{ id: "gt_question" }] });
-  write("content/stories/milano/cafe.ink", "# background: milano_cafe\nHello\n");
+  write(`${mi}/stories/milano/cafe.ink`, "# background: milano_cafe\nHello\n");
   write(`${gt}/stories/dates/gt_date.ink`, "# background: milano_cafe\n* [Hi # effect: common_date_first_playful]\n* [Ho # effect: gt_effect]\n");
   write(`${gt}/stories/battles/gt_battle.ink`, "# background: gt_bg_red_fort\n");
   write(`${gt}/stories/tourism/gt_red_fort.ink`, "Guide\n");
@@ -95,10 +96,12 @@ describe("checkContentOwnership", () => {
       'destinations["gt_destination"] cityId "tashkent" is a city of content/journeys/uzbekistan/cities/tashkent.json; ' +
       "content/journeys/golden_triangle/ may only describe the cities of its manifest (delhi, agra).");
     write(`${gt}/romance/date_destinations.json`, { schemaVersion: 1, destinations: [] });
-    write(`${gt}/battles/catalog.json`, { schemaVersion: 1, battles: [{ id: "gt_battle", landmarkId: "duomo" }] });
+    // A journey's own landmark placed in another journey's city also taints every entry that uses it.
+    write(`${gt}/tourism/catalog.json`, { schemaVersion: 1, landmarks: [{ id: "gt_misplaced", cityId: "milano" }] });
+    write(`${gt}/battles/catalog.json`, { schemaVersion: 1, battles: [{ id: "gt_battle", landmarkId: "gt_misplaced" }] });
     expect(() => check()).toThrow(
-      'content/journeys/golden_triangle/battles/catalog.json battles["gt_battle"] landmarkId "duomo" (city) "milano" ' +
-      "is a city of content/cities/milano.json");
+      'content/journeys/golden_triangle/battles/catalog.json battles["gt_battle"] landmarkId "gt_misplaced" (city) "milano" ' +
+      "is a city of content/journeys/milano/cities/milano.json");
   });
 
   it("rejects references to another journey's content with both files", () => {
@@ -110,7 +113,7 @@ describe("checkContentOwnership", () => {
   });
 
   it("keeps the core layer free of references to journey content and cities", () => {
-    write("content/romance/date_catalog.json", { schemaVersion: 1, dates: [{ id: "milano_date", chapterId: "milano", backgroundAssetId: "gt_bg_red_fort" }] });
+    write("content/romance/presentation.json", { schemaVersion: 1, backgrounds: { milano_cafe: { imageAssetId: "gt_img_red_fort" } }, memories: {} });
     write("content/presentation/characters.json", { schemaVersion: 1, wardrobe: { cities: { delhi: {} } } });
     const error = (() => {
       try {
@@ -122,9 +125,9 @@ describe("checkContentOwnership", () => {
     // Every violation is listed at once.
     expect(error?.split("\n")).toEqual([
       'Content entry outside its layer\'s cities: content/presentation/characters.json wardrobe.cities.delhi city ID "delhi" ' +
-      "is a city of content/journeys/golden_triangle/cities/delhi.json; the core layer may only describe its own cities (milano).",
-      'Reference to another layer: content/romance/date_catalog.json dates["milano_date"] backgroundAssetId "gt_bg_red_fort" ' +
-      "is the background defined in content/journeys/golden_triangle/romance/presentation.json; the core layer may only refer to core content.",
+      "is a city of content/journeys/golden_triangle/cities/delhi.json; the core layer is shared by every journey and may not describe a city.",
+      'Reference to another layer: content/romance/presentation.json backgrounds.milano_cafe imageAssetId "gt_img_red_fort" ' +
+      "is the asset defined in content/journeys/golden_triangle/tourism/catalog.json; the core layer may only refer to core content.",
     ]);
   });
 
@@ -141,8 +144,8 @@ describe("checkContentOwnership", () => {
       "content/journeys/uzbekistan/cities/tashkent.json; content/journeys/golden_triangle/ may only describe the cities of its manifest (delhi, agra).",
       'Reference to another layer: content/journeys/golden_triangle/travel/agra.json places["agra_fort"] backgroundAssetId "uz_bg_registan" ' +
       "is the background defined in content/journeys/uzbekistan/romance/presentation.json; a journey folder may only refer to its own content and the core layer.",
-      'Content entry outside its layer\'s cities: content/journeys/uzbekistan/quizzes/uz_quiz.json landmarkId "duomo" (city) "milano" ' +
-      "is a city of content/cities/milano.json; content/journeys/uzbekistan/ may only describe the cities of its manifest (tashkent).",
+      'Reference to another layer: content/journeys/uzbekistan/quizzes/uz_quiz.json landmarkId "duomo" is the landmark defined in ' +
+      "content/journeys/milano/tourism/catalog.json; a journey folder may only refer to its own content and the core layer.",
       'Reference to another layer: content/journeys/golden_triangle/stories/dates/gt_date.ink #background "uz_bg_registan" is the background ' +
       "defined in content/journeys/uzbekistan/romance/presentation.json; a journey folder may only refer to its own content and the core layer.",
       'Reference to another layer: content/journeys/golden_triangle/stories/dates/gt_date.ink #effect "uz_effect" is the effect defined in ' +
@@ -150,10 +153,30 @@ describe("checkContentOwnership", () => {
     ].join("\n")));
   });
 
-  it("accepts journey entries for manifest cities whose files are still in the core layer", () => {
-    // Authoring tools may release a journey's catalogs into its folder before its city files move there.
+  it("keeps cities, travel, stories, quizzes and journey catalogs out of the core layer", () => {
     city("content", "agra");
-    write(`${gt}/romance/date_destinations.json`, { schemaVersion: 1, destinations: [{ id: "agra_garden", cityId: "agra" }] });
+    write("content/stories/milano/walk.ink", "Walk\n");
+    write("content/quizzes/milano_quiz.json", { id: "milano_quiz", questions: [] });
+    write("content/romance/date_catalog.json", { schemaVersion: 1, dates: [{ id: "milano_date", chapterId: "milano" }] });
+    const where = "cities, travel, stories, quizzes and journey catalogs belong in content/journeys/<journeyId>/.";
+    expect(() => check()).toThrow(new Error([
+      `Journey content in the core layer: content/cities/agra.json; ${where}`,
+      `Journey content in the core layer: content/travel/agra.json; ${where}`,
+      `Journey content in the core layer: content/travel/agra-settings.json; ${where}`,
+      `Journey content in the core layer: content/stories/milano/walk.ink; ${where}`,
+      `Journey content in the core layer: content/quizzes/milano_quiz.json; ${where}`,
+      `Journey content in the core layer: content/romance/date_catalog.json; ${where}`,
+      'Content entry outside its layer\'s cities: content/romance/date_catalog.json dates["milano_date"] chapterId "milano" ' +
+      "is a city of content/journeys/milano/cities/milano.json; the core layer is shared by every journey and may not describe a city.",
+    ].join("\n")));
+  });
+
+  it("checks a city's story background in its travel settings", () => {
+    write(`${gt}/travel/delhi-settings.json`, { storyBackgroundAssetId: "uz_bg_registan" });
+    expect(() => check()).toThrow(
+      'Reference to another layer: content/journeys/golden_triangle/travel/delhi-settings.json storyBackgroundAssetId "uz_bg_registan" ' +
+      "is the background defined in content/journeys/uzbekistan/romance/presentation.json; a journey folder may only refer to its own content and the core layer.");
+    write(`${gt}/travel/delhi-settings.json`, { storyBackgroundAssetId: "milano_cafe" });
     expect(() => check()).not.toThrow();
   });
 });

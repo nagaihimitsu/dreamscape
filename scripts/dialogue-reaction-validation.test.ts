@@ -65,7 +65,7 @@ it("integrates date and battle annotations through the real content pipeline", a
   const fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-reactions-"));
   try {
     await prepareContentFixture(fixture);
-    await writeFile(path.join(fixture, "content/presentation/dialogue-reactions.json"), JSON.stringify({
+    await writeFile(path.join(fixture, "content/journeys/milano/presentation/dialogue-reactions.json"), JSON.stringify({
       schemaVersion: 1,
       entries: [
         { storyId: "milano/cafe_tourism_01", speaker: "heroine", text: "「昔、大聖堂の石をこの運河で運んだんだって」", targetCharacterId: "heroine", expression: "smile" },
@@ -74,8 +74,8 @@ it("integrates date and battle annotations through the real content pipeline", a
       ],
     }));
     await expect(buildContent(fixture, false)).resolves.toBeDefined();
-    const learningDetails = JSON.parse(await readFile(path.join(fixture, "content/learning/details.json"), "utf8"));
-    await writeFile(path.join(fixture, "content/presentation/dialogue-reactions.json"), JSON.stringify({
+    const learningDetails = JSON.parse(await readFile(path.join(fixture, "content/journeys/milano/learning/details.json"), "utf8"));
+    await writeFile(path.join(fixture, "content/journeys/milano/presentation/dialogue-reactions.json"), JSON.stringify({
       schemaVersion: 1,
       entries: [{ storyId: learningDetails.storyId, speaker: "heroine", text: "「Which descriptionが、この文では主語だね。」", targetCharacterId: "heroine", mark: "question" }],
     }));

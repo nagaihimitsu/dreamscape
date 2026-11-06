@@ -82,15 +82,15 @@ export function getCityContent(cityId: string): CityContent {
   if (!content) throw new Error(`Unknown city: ${cityId}`);
   return content;
 }
-/** Keep existing Milan script defaults; new cities fall back to their own place. */
+/**
+ * The background a city's scenes start with: the city's own story background
+ * (travel settings) when set, else the background of the place (or the hotel).
+ */
 export function getCityStoryBackground(cityId: string, placeId: string): string | undefined {
-  if (cityId === "milano") return undefined;
   const { travel, travelSettings } = getCityContent(cityId);
-  return (travel.places.find((place) => place.id === placeId) ??
+  return travelSettings.storyBackgroundAssetId ?? (travel.places.find((place) => place.id === placeId) ??
     travel.places.find((place) => place.id === travelSettings.hotelPlaceId))?.backgroundAssetId;
 }
-export const milanoTravelCatalog = getCityContent("milano").travel;
-export const milanoTravelSettings = getCityContent("milano").travelSettings;
 export const battleQuizzes: Record<string, QuizDefinition> = Object.fromEntries(
   Object.entries(generatedQuizzes).map(([id, quiz]) => [
     id,
@@ -102,7 +102,6 @@ export const dates = dateCatalogSchema.parse(dateData).dates;
 export const dateDestinations = dateDestinationsSchema.parse(destinationData).destinations;
 export const effects = effectCatalogSchema.parse(effectData).effects;
 export const responseProfiles = responseProfileCatalogSchema.parse(responseProfileData).profiles;
-export const city = getCityContent("milano").city;
 export const balance = balanceSchema.parse(balanceData);
 export const presentation = presentationSchema.parse(presentationData);
 export const dialogueReactions = dialogueReactionCatalogSchema.parse(dialogueReactionData);

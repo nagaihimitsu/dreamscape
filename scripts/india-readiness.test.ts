@@ -21,7 +21,7 @@ function temporaryRoot() {
     "content/tourism/catalog.json": JSON.stringify({ assets: [{ id: "milan_photo" }], landmarks: [], clues: [] }),
     "content/romance/effect_catalog.json": JSON.stringify({ effects: [{ id: "milan_effect" }] }),
     "content/romance/presentation.json": JSON.stringify({ backgrounds: { milan: {} }, memories: { milan: { titleJa: "ミラノ" } } }),
-    "content/learning/translations.json": readFileSync(path.join(process.cwd(), "content/learning/translations.json"), "utf8"),
+    "content/learning/translations.json": readFileSync(path.join(process.cwd(), "src/content/generated/content/learning/translations.json"), "utf8"),
   };
   for (const id of ["delhi", "agra", "jaipur"]) {
     original[`content/cities/${id}.json`] = JSON.stringify({ id, productionStatus: "prototype" });

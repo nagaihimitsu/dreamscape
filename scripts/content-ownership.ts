@@ -1,13 +1,15 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { displayPath, type ContentLayer, type ContentSources } from "./content-sources";
-import type { MergedKind } from "./content-layout";
+import { CORE_LAYER_KINDS, type MergedKind } from "./content-layout";
 
 // Ownership of content across layers. Every journey folder must stay
 // removable on its own: its entries describe only its own cities, and what
 // they refer to lives in the same journey folder or in the core layer. The
-// core layer refers only to core content. Unknown IDs are left to the
-// content pipeline, which reports them with its usual messages.
+// core layer is the base system shared by every journey: it holds no city,
+// travel, story or quiz file and no journey-only catalog, describes no city
+// and refers only to core content. Unknown IDs are left to the content
+// pipeline, which reports them with its usual messages.
 
 type Namespace =
   | "city" | "landmark" | "asset" | "clue" | "battle" | "episode" | "reward" | "date" | "destination" | "effect"
@@ -128,9 +130,11 @@ function inkTagReferences(source: string): Reference[] {
 /**
  * Check that every layer keeps to its own content (spec: ownership checks).
  * - A city file in a journey folder must be listed in that journey's manifest.
+ * - The core layer holds only CORE_LAYER_KINDS catalogs (no cities, travel,
+ *   stories, quizzes or journey-only catalogs).
  * - An entry's cities (cityId, chapterId, the city of its landmark, …) must be
  *   cities of its own layer: a journey's manifest cities or the city files in
- *   the layer (for the core layer: its own city files only).
+ *   the layer (the core layer describes no city).
  * - Everything an entry, city, travel, quiz or Ink file refers to (stories,
  *   battles, quizzes, backgrounds, images, memories, effects, …) must be
  *   defined in the same layer or in the core layer; the core layer may refer
@@ -144,6 +148,18 @@ export function checkContentOwnership(sources: ContentSources): void {
   const layerOf = (file: string): ContentLayer => byDepth.find((layer) => file.startsWith(layer.directory + path.sep))!;
   const show = (file: string) => displayPath(root, file);
   const errors: string[] = [];
+
+  // The core layer is the shared base system.
+  const coreFiles = [
+    ...sources.cities.flatMap((city) => [city.file, city.travelFile, city.settingsFile]),
+    ...sources.storyFiles.map((story) => story.file),
+    ...sources.quizFiles.map((quiz) => quiz.file),
+    ...Object.entries(sources.catalogs)
+      .filter(([kind]) => !CORE_LAYER_KINDS.has(kind as MergedKind))
+      .flatMap(([, merged]) => merged.provenance.files),
+  ].filter((file) => layerOf(file).type === "core");
+  for (const file of coreFiles)
+    errors.push(`Journey content in the core layer: ${show(file)}; cities, travel, stories, quizzes and journey catalogs belong in content/journeys/<journeyId>/.`);
 
   // Cities: a journey owns the cities its manifest lists (in that order); a
   // city file belongs to the layer that holds it.
@@ -200,10 +216,9 @@ export function checkContentOwnership(sources: ContentSources): void {
 
   const checkCity = (layer: ContentLayer, where: string, field: string, id: string) => {
     if (ownCities.get(layer.id)!.has(id) || !cityOwner.has(id)) return;
-    const own = [...ownCities.get(layer.id)!];
     const scope = layer.type === "core"
-      ? `the core layer may only describe its own cities${own.length ? ` (${own.join(", ")})` : ""}`
-      : `${show(layer.directory)}/ may only describe the cities of its manifest (${own.join(", ")})`;
+      ? "the core layer is shared by every journey and may not describe a city"
+      : `${show(layer.directory)}/ may only describe the cities of its manifest (${[...ownCities.get(layer.id)!].join(", ")})`;
     errors.push(`Content entry outside its layer's cities: ${where} ${field} "${id}" is a city of ${cityOwner.get(id)}; ${scope}.`);
   };
   const checkReferences = (file: string, label: string, references: Reference[]) => {
@@ -268,6 +283,8 @@ export function checkContentOwnership(sources: ContentSources): void {
         ref("city", "nextCityId", data.nextCityId), ref("story", "arrivalStoryId", data.arrivalStoryId),
         ref("landmark", "landmarkIdsPlanned", data.landmarkIdsPlanned),
       ]);
+    const settings = readJson(city.settingsFile);
+    if (isObject(settings)) checkReferences(city.settingsFile, "", fields(settings, "background", ["storyBackgroundAssetId"]));
     const travel = readJson(city.travelFile);
     if (!isObject(travel)) continue;
     checkReferences(city.travelFile, "", fields(travel, "city", ["cityId"]));

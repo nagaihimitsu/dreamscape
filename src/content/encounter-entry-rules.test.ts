@@ -13,6 +13,11 @@ describe("location-based encounters", () => {
     expect(() => encounterEntryRulesSchema.parse({ ...rules, entries: [...rules.entries, rules.entries[0]] })).toThrow();
     expect(() => validateEncounterEntryRules({ ...rules, entries: [{ ...rules.entries[0], landmarkId: "last_supper" }] }, encounters.encounters, journeyConfig)).toThrow();
     expect(() => validateEncounterEntryRules({ ...rules, entries: [{ ...rules.entries[0], completedEpisodeId: "unknown_episode" }] }, encounters.encounters, journeyConfig)).toThrow();
+    // Only the Galleria fortune (a tourism encounter with a quiz) defers its quiz until the landmark battle.
+    expect(rules.entries.filter((entry) => entry.quizAfterLandmarkBattle).map((entry) => entry.encounterId)).toEqual(["galleria_fortune"]);
+    const duomo = rules.entries.find((entry) => entry.encounterId === "duomo_string")!;
+    expect(() => validateEncounterEntryRules({ ...rules, entries: [{ ...duomo, quizAfterLandmarkBattle: true }] }, encounters.encounters, journeyConfig))
+      .toThrow("A quiz after the landmark battle needs a tourism encounter with a quiz: duomo_string");
   });
 
   it("opens the new events only after their own milestones, and keeps the old events asleep", () => {

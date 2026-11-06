@@ -263,7 +263,7 @@ export function cityLayer(sources: ContentSources, cityId: string): ContentLayer
   return journeyLayer(sources, journeys[0].id);
 }
 
-/** Root-relative posix path for messages, e.g. `content/stories/milano/sound_cafe_01.ink`. */
+/** Root-relative posix path for messages, e.g. `content/journeys/milano/stories/milano/sound_cafe_01.ink`. */
 export function displayPath(root: string, file: string): string {
   return toPosix(path.relative(root, file));
 }

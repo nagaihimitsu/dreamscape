@@ -15,10 +15,12 @@ import { quizSchema } from "../src/content/schemas";
 import { validateItemReferences } from "../src/story/items";
 import { compileInk, validateQuizEntries } from "./content-pipeline";
 import { validateEncounterContent } from "./encounter-validation";
+import { loadContentSources, storyFile } from "./content-sources";
 
 const catalog = encounterCatalogSchema.parse(catalogData);
 const paths = catalog.encounters.flatMap((event) => [event.storyId, ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : [])]);
-const sources = Object.fromEntries(paths.map((id) => [id, readFileSync(path.resolve(`content/stories/${id}.ink`), "utf8")]));
+const contentSources = loadContentSources(process.cwd());
+const sources = Object.fromEntries(paths.map((id) => [id, readFileSync(storyFile(contentSources, id)!, "utf8")]));
 const stories = Object.fromEntries(Object.entries(sources).map(([id, source]) => [id, compileInk(source, `${id}.ink`)]));
 
 function input() {

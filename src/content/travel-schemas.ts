@@ -102,6 +102,12 @@ export const travelSettingsSchema = z.object({
   hotelPlaceId: id,
   lodgingCost: z.number().int().nonnegative(),
   retryMinutes: z.number().int().positive(),
+  /**
+   * Background every battle, guide, encounter, date and arrival/epilogue scene
+   * of the city starts with. Without it a scene starts with the background of
+   * its place (or of the hotel).
+   */
+  storyBackgroundAssetId: id.optional(),
   notes: text,
 }).strict();
 

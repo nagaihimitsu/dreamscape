@@ -15,8 +15,8 @@ import { parseStoryTags } from "./tags";
 import { prepareContentFixture } from "./test-fixtures";
 
 let fixture: string;
-const storyFile = "content/stories/milano/sound_cafe_01.ink";
-const dateFile = "content/romance/date_catalog.json";
+const storyFile = "content/journeys/milano/stories/milano/sound_cafe_01.ink";
+const dateFile = "content/journeys/milano/romance/date_catalog.json";
 
 beforeEach(async () => {
   fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-content-"));
@@ -53,18 +53,20 @@ describe("content build acceptance", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow("Missing background image: milano_cafe/assets/missing-background.png");
   });
   it("accepts a credited shared photo and rejects a missing or ambiguous background asset", async () => {
-    const file = path.join(fixture, "content/romance/presentation.json");
+    // A Milan background without an image (the core default may not use a journey's photo).
+    const file = path.join(fixture, "content/journeys/milano/romance/presentation.json");
     const data = JSON.parse(await readFile(file, "utf8"));
-    data.backgrounds.milano_cafe.imageAssetId = "galleria_milano_photo";
+    expect(data.backgrounds.milano_walk.imageAssetId).toBeUndefined();
+    data.backgrounds.milano_walk.imageAssetId = "galleria_milano_photo";
     await writeFile(file, JSON.stringify(data));
     await expect(buildContent(fixture, false)).resolves.toBeDefined();
-    data.backgrounds.milano_cafe.imageAssetId = "missing_background_asset";
+    data.backgrounds.milano_walk.imageAssetId = "missing_background_asset";
     await writeFile(file, JSON.stringify(data));
-    await expect(buildContent(fixture, false)).rejects.toThrow("Unknown background image asset: milano_cafe/missing_background_asset");
-    data.backgrounds.milano_cafe.imageAssetId = "galleria_milano_photo";
-    data.backgrounds.milano_cafe.imagePath = "assets/tourism/galleria-milano.webp";
+    await expect(buildContent(fixture, false)).rejects.toThrow("Unknown background image asset: milano_walk/missing_background_asset");
+    data.backgrounds.milano_walk.imageAssetId = "galleria_milano_photo";
+    data.backgrounds.milano_walk.imagePath = "assets/tourism/galleria-milano.webp";
     await writeFile(file, JSON.stringify(data));
-    await expect(buildContent(fixture, false)).rejects.toThrow("Background cannot specify both imagePath and imageAssetId: milano_cafe");
+    await expect(buildContent(fixture, false)).rejects.toThrow("Background cannot specify both imagePath and imageAssetId: milano_walk");
   }, 120000);
   it("rejects an undefined character ID and a registered but missing image", async () => {
     const file = path.join(fixture, "content/presentation/characters.json");
@@ -314,7 +316,7 @@ describe("content build acceptance", () => {
 
   it("requires the name variables expected by the runtime", async () => {
     await replace(
-      "content/stories/milano/sound_invitation_01.ink",
+      "content/journeys/milano/stories/milano/sound_invitation_01.ink",
       'VAR player_name = ""',
       "// player name accidentally removed",
     );
@@ -324,7 +326,7 @@ describe("content build acceptance", () => {
   });
 
   it("rejects relationship rewards attached to confession outcomes", async () => {
-    const file = path.join(fixture, "content/romance/effect_catalog.json");
+    const file = path.join(fixture, "content/journeys/milano/romance/effect_catalog.json");
     const data = JSON.parse(await readFile(file, "utf8"));
     const outcome = data.effects.find(
       (effect: { id: string }) => effect.id === "milano_confession_accepted",
@@ -377,7 +379,7 @@ describe("content build acceptance", () => {
 
   it("rejects invalid confession readiness branches", async () => {
     await replace(
-      "content/stories/milano/sound_confession_01.ink",
+      "content/journeys/milano/stories/milano/sound_confession_01.ink",
       'confession_result == "accepted":',
       "true:",
     );
@@ -388,7 +390,7 @@ describe("content build acceptance", () => {
 
   it("rejects missing outcome events in confession", async () => {
     await replace(
-      "content/stories/milano/sound_confession_01.ink",
+      "content/journeys/milano/stories/milano/sound_confession_01.ink",
       "# effect: milano_confession_accepted",
       "# effect: sound_invitation_01_1_1",
     );
@@ -424,7 +426,7 @@ describe("content build acceptance", () => {
 
   it("still validates the unpublished quiz sample", async () => {
     await replace(
-      "content/quizzes/last_supper_B1.sample.json",
+      "content/journeys/milano/quizzes/last_supper_B1.sample.json",
       '"correctOptionId": "A"',
       '"correctOptionId": "D"',
     );

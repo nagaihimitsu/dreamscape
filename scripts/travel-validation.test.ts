@@ -41,6 +41,13 @@ describe("Milan travel data references", () => {
     expect(() => validate()).not.toThrow();
   });
 
+  it("requires a city's story background to be a registered background", () => {
+    const check = (storyBackgroundAssetId: string) => validateTravelContent(travel, { hotelPlaceId: settings.hotelPlaceId, storyBackgroundAssetId },
+      "milano", journey, dates, battles, landmarkIds, destinationIds, backgrounds);
+    expect(() => check(settings.storyBackgroundAssetId!)).not.toThrow();
+    expect(() => check("missing_background")).toThrow("Unknown travel story background: milano/missing_background");
+  });
+
   it("offers every event a feasible time starting at the hotel with enough AP", () => {
     for (const event of travel.events) {
       const place = travel.places.find((candidate) => candidate.id === event.placeId)!;

@@ -19,7 +19,7 @@ function route(state: GameState, from: string, to: string, mode: TravelMode) {
   return getCityContent(state.currentCityId).travel.routes.find((item) => item.fromPlaceId === from && item.toPlaceId === to && item.mode === mode);
 }
 /** Return routes consist only of registered directed legs; the second leg is walking. */
-export function getTravelHomeRoutes(fromPlaceId: string, hotelPlaceId: string, cityId = "milano"): HomeRoute[] {
+export function getTravelHomeRoutes(fromPlaceId: string, hotelPlaceId: string, cityId: string): HomeRoute[] {
   return findTravelHomeRoutes(getCityContent(cityId).travel.routes, fromPlaceId, hotelPlaceId);
 }
 /** Current event cost and duration, including the retry rule. */
