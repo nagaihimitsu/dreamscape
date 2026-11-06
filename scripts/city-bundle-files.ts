@@ -39,12 +39,9 @@ export function inputFingerprint(root: string, ignored: ReadonlySet<string> = ne
   }
   return h.digest("hex");
 }
-/** Whether a city's files exist (a travel file without its city file is rejected by the loader). */
+/** Whether a city's files exist (the loader rejects a city without its travel files, and travel files without their city). */
 export function existing(sources: ContentSources, id: string): boolean {
-  const city = sources.cities.find((item) => item.id === id);
-  if (!city) return false;
-  if (!existsSync(city.travelFile) || !existsSync(city.settingsFile)) throw new Error(`Incomplete city file set: ${id}`);
-  return true;
+  return sources.cities.some((item) => item.id === id);
 }
 
 // Files a bundle may write: one city's own files and the bundle catalogs, all in one content layer.

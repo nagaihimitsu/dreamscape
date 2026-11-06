@@ -50,6 +50,15 @@ describe("public files", () => {
       .toThrow("Public file assets/items/item.svg exists in more than one public folder: public/assets/items/item.svg and content/journeys/milano/public/assets/items/item.svg");
   });
 
+  it("looks a URL path up in the loaded served files with the same message", () => {
+    const { publicFiles } = loadContentSources(root);
+    expect(servedFile(publicFiles, "assets/tourism/./india/delhi.jpg"))
+      .toBe(path.join(root, "content/journeys/golden_triangle/public/assets/tourism/india/delhi.jpg"));
+    expect(servedFile(publicFiles, "assets/tourism/missing.jpg")).toBeUndefined();
+    expect(() => requireServedFile(publicFiles, "assets/tourism/missing.jpg"))
+      .toThrow("Missing public file: assets/tourism/missing.jpg (searched public/ and content/journeys/<journeyId>/public/)");
+  });
+
   it("assembles the served folder incrementally and removes files no folder provides", () => {
     const target = path.join(root, "src/content/generated/public");
     const served = (relative: string) => path.join(target, relative);

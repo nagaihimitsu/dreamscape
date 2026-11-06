@@ -25,13 +25,13 @@ function inkFiles(directory: string): string[] {
 /** Check authored scripts with the production contracts, without inventing quizzes
  * or writing generated content/release markers. This is not a release gate. */
 export async function validateJourneyScenario(root: string, journeyId: string, directory: string, selectedCityId?: string) {
-  const input = loadJourneyScaffold(root, journeyId);
+  const sources = loadContentSources(root);
+  const input = loadJourneyScaffold(root, journeyId, sources);
   const requirements = journeyRequirements(input, selectedCityId ? [selectedCityId] : undefined);
   const base = path.resolve(root, directory);
   const json = (file: string): unknown => JSON.parse(readFileSync(file, "utf8"));
   const narrative = journeyNarrativeSchema.parse(json(path.join(base, selectedCityId ?? "", "narrative.json")));
   const fragments = buildJourneyFragments(input, narrative, requirements.map((city) => city.cityId));
-  const sources = loadContentSources(root);
   const presentation = parseCatalog(sources, presentationSchema, "romance/presentation.json");
   const tourism = parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json");
   const expected = requirements.flatMap((city) => [
@@ -61,7 +61,8 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
   for (const { storyId, draftFile, publishedFile } of expected) {
     const file = actualFiles.has(draftFile) ? draftFile : publishedFile!;
     storyFiles[storyId] = file;
-    const source = readFileSync(file, "utf8");
+    // A draft is read from the scenario folder; a published story comes from the loaded content.
+    const source = actualFiles.has(draftFile) ? readFileSync(draftFile, "utf8") : sources.storyFiles.find((story) => story.id === storyId)!.source;
     withContext(file, () => {
       // Also reject an unwanted protagonist line in a currently unreachable branch.
       const code = source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");

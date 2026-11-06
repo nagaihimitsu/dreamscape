@@ -7,7 +7,7 @@ import { dateCatalogSchema, presentationSchema } from "../src/content/schemas";
 import { travelCatalogSchema } from "../src/content/travel-schemas";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { dateDestinationSchema, dateDestinationsSchema } from "../src/content/date-destinations";
-import { cityLayer, parseCatalog, readJourneyCatalog, requireCity, type ContentSources } from "./content-sources";
+import { cityLayer, journeyCatalogOf, parseCatalog, requireCity, type ContentSources } from "./content-sources";
 import { completeFragment, emptyCatalog, trimFragment, type MergedKind } from "./content-layout";
 import type { CityBundle } from "./city-bundle-schema";
 import { bundleCatalogKinds, cityFiles, existing, layerPath, read } from "./city-bundle-files";
@@ -69,10 +69,12 @@ type Fragment = { kind: MergedKind; file: string; absolute: string; exists: bool
 function ownFragment(sources: ContentSources, layer: string, kind: MergedKind): Fragment {
   const file = `${layer}/${kind}`;
   const absolute = path.join(sources.root, file);
-  const exists = existsSync(absolute);
+  // The loaded copy (the loader read every catalog file of every layer).
+  const bytes = sources.tree.files.get(file);
+  const exists = !!bytes;
   const schemaVersion = (sources.catalogs[kind]?.value as { schemaVersion?: unknown })?.schemaVersion;
-  if (!exists) return { kind, file, absolute, exists, data: emptyCatalog(kind, schemaVersion), added: new Map() };
-  const data = JSON.parse(readFileSync(absolute, "utf8"));
+  if (!bytes) return { kind, file, absolute, exists, data: emptyCatalog(kind, schemaVersion), added: new Map() };
+  const data = JSON.parse(bytes.toString("utf8"));
   return { kind, file, absolute, exists, data, added: completeFragment(kind, data, schemaVersion) };
 }
 
@@ -137,9 +139,9 @@ export function mergeCityCatalogs(sources: ContentSources, bundle: CityBundle, b
   for (const date of dates) {
     if (date.chapterId !== cityId) otherBackgrounds.add(date.backgroundAssetId);
   }
-  for (const planned of readJourneyCatalog(root).journeys.flatMap((journey) => journey.cities)) {
+  for (const planned of journeyCatalogOf(sources).journeys.flatMap((journey) => journey.cities)) {
     if (planned.id === cityId || !existing(sources, planned.id)) continue;
-    for (const place of travelCatalogSchema.parse(JSON.parse(readFileSync(requireCity(sources, planned.id).travelFile, "utf8"))).places)
+    for (const place of travelCatalogSchema.parse(requireCity(sources, planned.id).travel).places)
       otherBackgrounds.add(place.backgroundAssetId);
   }
   const backgroundFiles = sources.catalogs[presentationKind]?.provenance.keys.backgrounds ?? {};
