@@ -165,7 +165,7 @@ export default function DebugMode() {
     <main className="debug-panel" data-testid="debug-panel">
       <h1>場面の確認</h1>
       <p>開発用の一時データです。制作中の都市は実際の候補地点・推定経路を確認できます。通常のセーブ・英語ノート・設定は変更しません。</p>
-      <p data-testid="debug-template">{template.text}{template.note}</p>
+      <p className="debug-template" data-testid="debug-template">{template.text}{template.note}</p>
       <form onSubmit={submit}>
         <label>確認データ
           <select data-testid="debug-data-mode" value={dataMode} onChange={(event) => selectDataMode(event.target.value as DebugDataMode)}>
