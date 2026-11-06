@@ -24,13 +24,13 @@ npm run preview
 
 `npm run dev` で起動し、表示されたURLに `?debug` を付けると、観光・バトル・交流・デートを直接開けます。AP、関係状態、旅の進行、デートの抽選値を設定でき、成功寄りと失敗寄りの反応を再現できます。背景・衣装・表情は画面内の「背景・人物・表情を確認」から既存プレビューで切り替えます。
 
-Debugの進行・学習記録・設定はメモリ内だけで、通常の保存領域には触れません。設定へ戻る・再読込・終了で一時状態は破棄されます。通常のゲームに戻るには「通常プレイに戻る」を選びます。本番ビルドではDebugとプレビューは公開されません。通常セーブの確認は別途行ってください。
+Debugの進行・学習記録・設定はメモリ内だけで、通常の保存領域には触れません。設定へ戻る・再読込・終了で一時状態は破棄されます。通常のゲームに戻るには「通常プレイに戻る」を選びます。本番ビルドではDebugとプレビューは公開されません（`npm run build` が `dist/` を検査し、入っていればビルドを失敗にします）。通常セーブの確認は別途行ってください。
 
 ## GitHub Pages
 
 公開先: https://nagaihimitsu.github.io/dreamscape/
 
-`.github/workflows/pages.yml` が `main` へのpushで、コンテンツ検証・単体テスト・型チェック・本番ビルドを実行し、成功した `dist/` をGitHub Pagesへ公開します。初回のみリポジトリの **Settings → Pages → Build and deployment → Source: GitHub Actions** を選択してください。設定後はActionsの「Deploy to GitHub Pages」から手動実行もできます。公開設定とデプロイの権限はGitHub側で必要です。
+`.github/workflows/pages.yml` が `main` へのpushで、コンテンツ検証・単体テスト・型チェック・本番ビルド（`dist/` の検査を含む）を実行し、成功した `dist/` をGitHub Pagesへ公開します。E2Eは `e2e.yml` が公開と並列に実行し、公開はE2Eの合格を待ちません（失敗はコミットのチェックの失敗として表示されます）。PRでは `ci.yml`（本番ビルド・全単体テスト）と `e2e.yml`（E2E一式）が並列に動きます。詳しくは [CI](docs/10_DEVELOPMENT_CHECKS.md#cigithub-actions) を参照してください。初回のみリポジトリの **Settings → Pages → Build and deployment → Source: GitHub Actions** を選択してください。設定後はActionsの「Deploy to GitHub Pages」から手動実行もできます。公開設定とデプロイの権限はGitHub側で必要です。
 
 ## ミラノ編の遊び方
 
@@ -209,6 +209,7 @@ scripts/                          # 生成・検証・共通の制作ツール
 src/                              # ゲーム本体（React・ゲームルール・保存）
   content/generated/              # 生成物（Git管理せず、手動編集しない）
 tests/e2e/ tests/fixtures/        # E2Eとテスト用データ（tests/fixtures/journeys/ は自動テスト専用の旅行編）
+.github/workflows/                # CI（ci.yml・e2e.yml）と GitHub Pages への公開（pages.yml）
 ```
 
 | コマンド | 内容 |
@@ -216,8 +217,9 @@ tests/e2e/ tests/fixtures/        # E2Eとテスト用データ（tests/fixtures
 | `npm run dev` | コンテンツを生成してから開発サーバーを起動 |
 | `npm run content:build`（`content:check`） | 共通データと全旅行編を検証・統合し、`src/content/generated/` に書き出す |
 | `npm test` | コンテンツを生成してから全単体テスト |
-| `npm run build` | 生成・型検査・本番ビルド（`dist/`） |
-| `npm run verify` | 生成・全単体テスト・型検査・本番ビルドを一度に実行（公開前・大きな変更） |
+| `npm run build` | 生成・型検査・本番ビルド（`dist/`）と、`dist/` にDebug・テスト用のコードやデータがないかの検査 |
+| `npm run verify` | 生成・全単体テスト・型検査・本番ビルド・`dist/` の検査を一度に実行（公開前・大きな変更） |
+| `npm run dist:check` | ビルド済みの `dist/` にDebug・プレビュー・テスト用のコードや旅行編がないかを検査（`build`・`verify` が自動で実行） |
 | `npm run test:e2e` | 最小構成のE2E（Playwright） |
 | `npm run content:inspect -- <ファイル>` | 1ファイルの形式とInkコンパイルを確認 |
 | `npm run journey:scaffold`・`journey:readiness`・`journey:release`・`journey:transit` | 旅行編へシナリオとクイズを取り込む制作ツール（[手順](authoring/JOURNEY_AUTHORING.md)） |
@@ -386,7 +388,7 @@ Phase 2では解放済みイベントID、告白の保留/成功、交際エン�
 
 `npm test` と `npm run build` を個別に使う場合はそれぞれコンテンツを再生成します。`npm run verify` は同じ一連の処理内で生成を一度にまとめます。空のcheckoutで `npm run typecheck` を単独実行する場合は、先に `npm run content:check` で生成してください。
 
-単体テストは現在のゲームの進行、保存・再開、二重取得・二重消費の防止、破損・未知版・別タブ競合の保護、コンテンツ参照などを確認します。PlaywrightのE2E（`tests/e2e/`）は、起動、ミラノでの移動・観光・バトル・デート、保存と再読み込み・別タブ保護、ゴールデントライアングル編の都市間移動を利用者と同じ操作で確かめる最小構成で、どのテストでもコンソールエラーや画像の欠落があれば失敗します。内容と追加の判断基準は [開発時の確認](docs/10_DEVELOPMENT_CHECKS.md#e2eテスト) を参照してください。見た目は実画面で確認します。CIの `npm run verify` は全単体テストとビルドを実行しますが、E2Eは実行しません。実機Safariでの検証は別途必要です。
+単体テストは現在のゲームの進行、保存・再開、二重取得・二重消費の防止、破損・未知版・別タブ競合の保護、コンテンツ参照などを確認します。PlaywrightのE2E（`tests/e2e/`）は、起動、ミラノでの移動・観光・バトル・デート、保存と再読み込み・別タブ保護、ゴールデントライアングル編の都市間移動を利用者と同じ操作で確かめる最小構成で、どのテストでもコンソールエラーや画像の欠落があれば失敗します。内容と追加の判断基準は [開発時の確認](docs/10_DEVELOPMENT_CHECKS.md#e2eテスト) を参照してください。見た目は実画面で確認します。GitHub Actionsは、PRで本番ビルド・全単体テスト・E2E一式を並列に、`main` へのpushで `npm run verify` と公開、並列してE2E一式を実行します。E2Eの失敗時はスクリーンショット・トレース・HTMLレポートが14日間残ります（見方は [CI](docs/10_DEVELOPMENT_CHECKS.md#cigithub-actions)）。画面の見た目と実機Safariでの確認は、CIと並行して人が行います。
 
 恋愛の背景と敵の立ち絵は簡易SVGイラストです。観光画面と証拠帳は上記の実物資料画像を使用しています。フォントはNoto Sans JP / Noto Serif JP（Google Fonts、SIL OFL）を任意取得し、取得できなくてもシステムフォントで動作します。
 

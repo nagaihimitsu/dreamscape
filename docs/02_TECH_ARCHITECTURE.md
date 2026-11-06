@@ -42,6 +42,7 @@ public/                # ファビコン・アプリアイコン・manifest.webm
   assets/              # 全旅行編で共有する画像・音声（ヒロイン、演出、共通アイコン）
 tests/e2e/             # 最小構成のE2E（Playwright）
 tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲームには含めない）
+.github/workflows/      # CI（ci.yml・e2e.yml）と GitHub Pages への公開（pages.yml）
 ```
 
 ## 共通データと旅行編フォルダ
