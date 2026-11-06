@@ -20,6 +20,17 @@ export function debugTemplate(templateCityId?: string): DebugTemplate {
   return findDebugTemplate(runtimeContent(), templateCityId);
 }
 
+/** For the Debug screen: which city 仮の場面 copy and which scenes they lack, or why there are none. */
+export function debugTemplateDescription(): { text: string; note: string } {
+  try {
+    const template = debugTemplate();
+    return { text: `仮の場面は、${template.journey.nameJa}の${template.city.city.nameJa}を元にしたテストデータで、その都市の物語ではありません。`,
+      note: template.note };
+  } catch (error) {
+    return { text: error instanceof Error ? error.message : "仮の場面の元になる都市を選べませんでした。", note: "" };
+  }
+}
+
 /**
  * Install a fictional city that copies the template city's roles: real
  * executable scripts and quizzes under IDs of its own (`<prefix>_episode`,

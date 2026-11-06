@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import App from "../app/App";
 import { getCities, getCityContent } from "../content";
 import { loadGame, saveGame } from "../persistence";
-import { installPreparingJourneyTestCities } from "./test-cities";
+import { debugTemplateDescription, installPreparingJourneyTestCities } from "./test-cities";
 import { installDebugHook, type DebugSceneInfo } from "./debug-hook";
 import {
   debugQueryString, debugSceneLabels, debugScenes, debugValueRanges, parseDebugQuery, settingsQuery,
@@ -40,6 +40,7 @@ export default function DebugMode() {
   const [dataMode, setDataMode] = useState<DebugDataMode>("real");
   const fixtureCleanup = useRef<(() => void) | null>(null);
   useEffect(() => () => { fixtureCleanup.current?.(); fixtureCleanup.current = null; }, []);
+  const [template] = useState(debugTemplateDescription);
   const [settings, setSettings] = useState<DebugSettings>(() => defaultDebugSettings());
   const cityId = settings.cityId ?? defaultDebugCityId;
   const options = debugTargets(cityId);
@@ -163,7 +164,8 @@ export default function DebugMode() {
   return (
     <main className="debug-panel" data-testid="debug-panel">
       <h1>場面の確認</h1>
-      <p>開発用の一時データです。制作中の都市は実際の候補地点・推定経路を確認できます。仮の場面はミラノを元にしたテストデータであり、その都市の物語ではありません。通常のセーブ・英語ノート・設定は変更しません。</p>
+      <p>開発用の一時データです。制作中の都市は実際の候補地点・推定経路を確認できます。通常のセーブ・英語ノート・設定は変更しません。</p>
+      <p data-testid="debug-template">{template.text}{template.note}</p>
       <form onSubmit={submit}>
         <label>確認データ
           <select data-testid="debug-data-mode" value={dataMode} onChange={(event) => selectDataMode(event.target.value as DebugDataMode)}>
@@ -184,7 +186,8 @@ export default function DebugMode() {
             const scene = event.target.value as DebugScene;
             update({ ...settings, scene, id: options[scene][0]?.id ?? "" });
           }}>
-            {debugScenes.map((scene) => <option key={scene} value={scene}>{debugSceneLabels[scene]}</option>)}
+            {debugScenes.map((scene) => <option key={scene} value={scene} disabled={!options[scene].length}>
+              {debugSceneLabels[scene]}{options[scene].length ? "" : "（この都市にはありません）"}</option>)}
           </select>
         </label>
         <label>対象

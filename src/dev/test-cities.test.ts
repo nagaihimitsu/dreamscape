@@ -10,7 +10,7 @@ import { validateGameState } from "../domain/game";
 import { createDebugState, debugTargets, type DebugSettings } from "./debug-state";
 import { sampleJourneyId } from "./fixture-template";
 import { clearCity, cityStart } from "./scenario-builders";
-import { debugTemplate, installTestCity } from "./test-cities";
+import { debugTemplate, debugTemplateDescription, installTestCity } from "./test-cities";
 
 const settings = (scene: DebugSettings["scene"], id: string): DebugSettings =>
   ({ cityId: "test_city", scene, id, progress: "completed", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
@@ -25,8 +25,11 @@ const snapshot = () => ({
 });
 
 describe("the fictional test cities", () => {
-  it("copy the sample journey when it is loaded, else Milan", () => {
-    expect(debugTemplate().city.city.id).toBe(getJourney(sampleJourneyId) ? "mihon" : "milano");
+  it("copy the sample journey when it is loaded, else Milan, and Debug says so", () => {
+    const sample = !!getJourney(sampleJourneyId);
+    expect(debugTemplate().city.city.id).toBe(sample ? "mihon" : "milano");
+    expect(debugTemplateDescription()).toEqual({
+      text: `仮の場面は、${sample ? "見本の旅の見本の街" : "ミラノ編のミラノ"}を元にしたテストデータで、その都市の物語ではありません。`, note: "" });
   });
 
   it.each(["milano", "mihon"])("copy every role of %s under the test city's own IDs and restore everything", (templateCityId) => {
