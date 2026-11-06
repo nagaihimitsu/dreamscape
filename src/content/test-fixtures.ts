@@ -1,7 +1,7 @@
 import { copyFile, cp, mkdir, readFile, readdir, rm, symlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { characterCatalogSchema } from "./character-assets";
-import { SAMPLE_JOURNEY_DIRECTORY, SAMPLE_JOURNEY_ID, journeyDirectory, type MergedKind } from "../../scripts/content-layout";
+import type { MergedKind } from "../../scripts/content-layout";
 import { loadContentSources, publicRoots } from "../../scripts/content-sources";
 
 /**
@@ -17,12 +17,11 @@ import { loadContentSources, publicRoots } from "../../scripts/content-sources";
  * repository; replace it with replaceFixtureFile. The unit test run checks
  * that no linked image changed (scripts/test-image-guard.ts).
  *
- * The sample journey (SAMPLE_JOURNEY_DIRECTORY) is left out unless the test
- * asks for it with `withSample`: it is then copied (images included) to the
- * fixture's `content/journeys/sample_trip/`, an ordinary journey folder that
- * every build of the fixture loads.
+ * The sample journey (SAMPLE_JOURNEY_DIRECTORY) lives outside content/ and is
+ * never copied: a test that needs it copies the folder itself, to the place
+ * its check is about.
  */
-export async function prepareContentFixture(fixture: string, options: { withSample?: boolean } = {}): Promise<void> {
+export async function prepareContentFixture(fixture: string): Promise<void> {
   const root = path.resolve(".");
   const characterAssets = path.join(root, "public/assets/characters");
   const journeyImages = new Set(publicRoots(root).filter((directory) => directory !== path.join(root, "public")));
@@ -41,8 +40,6 @@ export async function prepareContentFixture(fixture: string, options: { withSamp
     for (const costume of character.costumes ?? [])
       for (const pose of costume.poses) pose.expressions = {};
   await writeFile(file, JSON.stringify(catalog));
-  if (options.withSample)
-    await cp(path.join(root, SAMPLE_JOURNEY_DIRECTORY), journeyDirectory(fixture, SAMPLE_JOURNEY_ID), { recursive: true });
 }
 
 /**

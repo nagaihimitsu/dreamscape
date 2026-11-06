@@ -38,10 +38,11 @@ scripts/                # Inkコンパイル・コンテンツ検証・共通の
 authoring/              # 共通の制作手順・テンプレート
   brand/                # ファビコンの元画像（npm run icons:build が public/ のアイコンを生成）
   journeys/<journeyId>/ # 旅行編ごとの下書き・調査記録（ゲームは読み込まない）
+  templates/sample_trip/ # 開発・テスト専用の見本の編（明示したときだけ読み、本番には入らない。npm run journey:new の元。下の「見本の編」）
 public/                # ファビコン・アプリアイコン・manifest.webmanifest（index.html から相対パスで参照）
   assets/              # 全旅行編で共有する画像・音声（ヒロイン、演出、共通アイコン）
 tests/e2e/             # 最小構成のE2E（Playwright）
-tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲームには含めない）
+tests/fixtures/         # 単体テスト用の保存データと状態（ゲームには含めない）
 .github/workflows/      # CI（ci.yml・e2e.yml）と GitHub Pages への公開（pages.yml）
 ```
 
@@ -153,7 +154,7 @@ tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲ�
 - 架空であること：街・人物・言い伝え・出典・画像はすべて架空で、AGENTS.md の実在地と出典の規則の例外として認められている（開発・テスト専用に限る）。出典は `https://example.com/dreamscape-sample`、`claimJa` は「見本用の架空の…」で始め、画像は図形だけの自作PNG（CC0）。本番の旅行編にこれらを残さない。
 - 読み込み：`content/journeys/` の外にあるため、通常の `npm run content:build`・`npm run dev`・`npm run build`・制作ツール（`journey:readiness`・`city:bundle`・`journey:release` など）は読まない。`scripts/content-sources.ts` の `loadContentSources(root, { extraJourneyDirectories })` に明示したフォルダだけを旅行編として加え（フォルダ名が旅行編ID。`root` の中で `content/` の外にあり、`content/journeys/` の旅行編と同じ名前でないこと）、統合・所有・画像の検査は `content/journeys/` の旅行編と同じに行う。`npm run content:build -- --with-sample` はこの方法で見本を加え、`src/content/generated/build-info.json` に記録する。`npm run dev:sample` は見本を含めて生成してから開発サーバーを起動する。
 - 単体テスト（`pretest`・`pretest:quick`）と `npm run verify` の最初の生成は見本を含め、`verify` は最後の `npm run build` で見本なしに生成し直して本番用の `dist/` を作る。`dist:check` は `sample_trip` の文字列が `dist/` に入ると失敗する。
-- テスト：一時コピーには `prepareContentFixture(フォルダ, { withSample: true })` と明示したときだけ、見本を `content/journeys/sample_trip/` に複製する（暗黙には含めない）。リポジトリの生成物と一時コピーの生成結果を比べるテストは、見本の有無で食い違わないよう、一時コピー自身の生成結果どうしを比べる。`scripts/sample-journey.test.ts` は、共通データと見本だけでの生成・公開前チェック（readiness）・README の一覧とファイルの一致・必須ファイルを1つずつ外したときのエラー・任意の部分を外した最小構成の生成を確かめる。`scripts/journey-folders.test.ts` は見本を加えた一時コピーで、他の旅行編と並んで公開中・準備中として並ぶことを確かめる。`src/domain/sample-journey-route.test.ts` は生成物の見本を、タイトルからエピローグまで実際のゲームの関数で遊び、手順ごとに保存形式の検査を通す（生成物に見本がなければ、`npm run content:build -- --with-sample` を案内して失敗する）。
+- テスト：`prepareContentFixture` の一時コピーには見本を含めない（見本は `content/` の外にある）。見本を使うテストは、確かめる場所へ自分で複製する。`src/content/authoring-workflow.test.ts` は一時コピーの `content/journeys/sample_trip/` に置き（その一時コピーの生成には毎回入る）、`scripts/journey-folders.test.ts` は1つのテストの間だけ同じ場所に置いて最後に消し、`scripts/sample-journey.test.ts` と `scripts/journey-new.test.ts` は本来の置き場所 `authoring/templates/sample_trip/` に置く（`extraJourneyDirectories` と `journey:new` を確かめるため）。リポジトリの生成物と一時コピーの生成結果を比べるテストは、見本の有無で食い違わないよう、一時コピー自身の生成結果どうしを比べる。`scripts/sample-journey.test.ts` は、共通データと見本だけでの生成・公開前チェック（readiness）・README の一覧とファイルの一致・必須ファイルを1つずつ外したときのエラー・任意の部分を外した最小構成の生成を確かめる。`scripts/journey-folders.test.ts` は見本を加えた一時コピーで、他の旅行編と並んで公開中・準備中として並ぶことを確かめる。`src/domain/sample-journey-route.test.ts` は生成物の見本を、タイトルからエピローグまで実際のゲームの関数で遊び、手順ごとに保存形式の検査を通す（生成物に見本がなければ、`npm run content:build -- --with-sample` を案内して失敗する）。
 - ひな形：`npm run journey:new`（`scripts/journey-new.ts`、上の「新しい編を追加する手順」）は見本のファイルを読み、見本の README の一覧（必須のファイルと役割、任意の部分のファイルと項目のID）で最小構成を作り、`authoring/templates/journey-new-checklist.md` から `CHECKLIST.md` を作る。README の一覧と任意の部分の外し方は `scripts/sample-journey.ts` にあり、見本のテストと共有する。
 - 見本の内容の残り：`journey:readiness` は、見本以外の旅行編のフォルダに見本の内容が残っていれば `sample_content_left` として1ファイルずつ示す（`scripts/sample-journey.ts` の `sampleLeftovers`。見本自身は対象外）。対象は、JSON の `https://example.com/`（とそのサブドメイン）のURL、見本の画像と同じバイト列の画像（SHA-256）、見本の文章と全体が一致する文字列と行。見本の文章とは、JSON の文字列のうち日本語を含む8文字以上のもの、「見本」「Mihon」を含むもの、クイズの英文（問題 `questionEn` と3語以上の選択肢 `textEn`。「Every hour.」のような短い答えはどのクイズにもありうるので除く）（英単語の意味 `learning/word-meanings.json`、クイズの語注 `vocabularyJa`、報酬 `rewards`、通貨 `currency` は、どの旅行編でも同じ言い回しを使えるので除く）と、Ink の日本語を含む8文字以上の行（書き方の規則を書いた `//` コメントは除く）。`journey:release` は readiness に `sample_content_left` があると「見本の内容が残っているため公開できません」と一覧して止まる。`status` を手で `available` にした場合の備えとして、`content:build` は公開中の旅行編（見本自身を除く）のJSONに `example.com` のURLがあると止まる（`content-validation.ts` の `checkPublishedSources`。画像と文章の一致は readiness と release だけが調べる）。準備中の旅行編の文章・出典は本番の生成物にも入るが、タイトル画面に出るのは旅行編名と都市名だけで、遊べない。「見本」の語そのものは実在の旅行編の文章にも現れる（例：見本市）ため、語ではなく見本の文章との一致で判定する。
 

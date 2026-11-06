@@ -9,7 +9,7 @@
 - 旅行編フォルダの項目は自分の `manifest.json` の都市だけを扱い、参照先は同じ旅行編か共通データに限る。共通データは都市・旅行編の項目を参照しない（`content:build` が検査）。
 - `manifest.json` の都市名（`cities[].nameJa`）は都市ファイルの `nameJa` と同じ。`productionStatus: "complete"` の都市は都市フィナーレを持つ。画像は同じ旅行編の `public/` か直下の `public/` のもの（共通データは直下だけ）。`authoring` のパスは `authoring/journeys/<journeyId>/` の中の相対パス（いずれも `content:build` がエラーにする。読み込まれないファイル・参照されない配信ファイル・接頭辞のないIDは警告。[生成時の検査と報告](02_TECH_ARCHITECTURE.md#生成時の検査と報告)）。
 - ゲームは `src/content/generated/` の生成物だけを読む。旅行編だけが持つ種類（道中交流、会話注釈、英語ノートの詳細など）は、どの旅行編にもなければ空として生成する。`memoryCallbacks` は空でもよい（該当がなければ `fallbackMemoryCallbackJa`）。`learning/details.json` は問題ごとに統合し、詳細を持つ問題はそれぞれ学習会話の `storyId` を持つ（同じ旅行編の会話だけを指せる）。
-- 開発・テスト専用の見本の編（`authoring/templates/sample_trip/`、[技術設計](02_TECH_ARCHITECTURE.md#見本の編)）は `content/journeys/` に含めない。生成物に加えるのは `npm run content:build -- --with-sample`（単体テストと `npm run verify` の最初の生成、`npm run dev:sample`）だけで、本番ビルドには入れない。一時コピーで使うテストは `prepareContentFixture(フォルダ, { withSample: true })` と明示する。
+- 開発・テスト専用の見本の編（`authoring/templates/sample_trip/`、[技術設計](02_TECH_ARCHITECTURE.md#見本の編)）は `content/journeys/` に含めない。生成物に加えるのは `npm run content:build -- --with-sample`（単体テストと `npm run verify` の最初の生成、`npm run dev:sample`）だけで、本番ビルドには入れない。テストの一時コピー（`prepareContentFixture`）にも含めず、見本を使うテストが自分で複製する。
 
 ## シナリオ編集
 - Inkは文章と選択肢を担当。`# speaker: heroine`、`# speaker: narrator`、`# background: milano_cafe`、`# effect: memory_milano_promise` のようなタグを採用する。
