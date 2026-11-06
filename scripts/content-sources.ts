@@ -375,17 +375,28 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
     if (previous) throw new Error(`Duplicate city file: ${previous.file} and ${item.file}`);
     cityLayers.set(item.id, item);
   }
-  for (const item of travelFiles)
-    if (cityLayers.get(item.cityId)?.layer !== item.layer)
-      throw new Error(`Travel file without a city in the same layer: ${item.file}`);
+  // Missing files are named with what to add (Japanese first, like the missing-manifest message).
+  for (const item of travelFiles) {
+    const city = cityLayers.get(item.cityId);
+    if (city?.layer === item.layer) continue;
+    throw new Error(city
+      ? `都市 ${item.cityId} の移動データ ${item.file} は、都市ファイル ${city.file} と同じ旅行編フォルダの travel/ に置いてください` +
+        "（Travel file without a city in the same layer）。"
+      : `都市ファイル ${path.join(item.layer.directory, "cities", `${item.cityId}.json`)} がありません。${item.file} は都市 ${item.cityId} の移動データです。` +
+        "都市ファイルを追加するか、この移動データを消してください（Travel file without a city in the same layer）。");
+  }
 
   // JSON of quizzes, then of every city with its travel settings and travel files.
   const quizFiles = quizzes.map((item): QuizSource =>
     ({ file: item.file, layer: item.layer.id, sample: item.sample, data: parseJson(item.file, bytesOf(item)) }));
-  const read = (file: string): Buffer => {
+  /** A travel file every city file needs next to it; missing, the error says which file to add and what it holds. */
+  const readTravel = (city: LayerFile & { id: string }, file: string, settings: boolean): Buffer => {
     const bytes = tree.files.get(toPosix(path.relative(root, file)));
-    if (!bytes) throw new Error(`Cannot read JSON ${file}`, { cause: new Error(`Missing file: ${file}`) });
-    return bytes;
+    if (bytes) return bytes;
+    const [name, holds, english] = settings
+      ? ["移動の設定", "宿の地点・宿泊費・再挑戦の間隔", "Missing travel settings file"]
+      : ["移動データ", "地点・経路・地図のイベント", "Missing travel file"];
+    throw new Error(`${name} ${file} がありません。都市 ${city.id}（${city.file}）の${holds}を書くファイルです（${english} of city ${city.id}）。`);
   };
   const cities = cityFiles.map((item): CitySource => {
     const travel = path.join(item.layer.directory, "travel");
@@ -393,9 +404,9 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
     const settingsFile = path.join(travel, `${item.id}-settings.json`);
     const city = bytesOf(item);
     const data = parseJson(item.file, city);
-    const settingsBytes = read(settingsFile);
+    const settingsBytes = readTravel(item, settingsFile, true);
     const settings = parseJson(settingsFile, settingsBytes);
-    const travelBytes = read(travelFile);
+    const travelBytes = readTravel(item, travelFile, false);
     return {
       id: item.id, layer: item.layer.id, file: item.file, travelFile, settingsFile,
       data, travel: parseJson(travelFile, travelBytes), settings,

@@ -26,7 +26,7 @@ describe("encounter build integration", () => {
     const data = JSON.parse(await readFile(file, "utf8"));
     data.items.find((item: { id: string }) => item.id === "galleria_souvenir").iconPath = "assets/items/missing.svg";
     await writeFile(file, JSON.stringify(data));
-    await expect(buildContent(fixture, false)).rejects.toThrow("encounter item galleria_souvenir: Missing public file: assets/items/missing.svg");
+    await expect(buildContent(fixture, false)).rejects.toThrow("encounter item galleria_souvenir: Missing public file: assets/items/missing.svg (searched public/ and content/journeys/milano/public/)");
   }, 120000);
 
   it("rejects an unknown item referenced in encounter Ink", async () => {

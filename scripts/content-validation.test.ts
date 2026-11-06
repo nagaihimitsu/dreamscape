@@ -125,7 +125,7 @@ describe("validateContent on sources in memory", () => {
   it("rejects a city file whose travel file is missing, when the content is loaded", () => {
     const tree = files();
     delete tree[`${journeyFolder("trip_b")}/travel/b_city.json`];
-    expect(() => load(tree)).toThrow(`Cannot read JSON ${path.join(root, journeyFolder("trip_b"), "travel/b_city.json")}`);
+    expect(() => load(tree)).toThrow(`移動データ ${path.join(root, journeyFolder("trip_b"), "travel/b_city.json")} がありません。都市 b_city`);
   });
 });
 

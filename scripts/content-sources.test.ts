@@ -224,9 +224,32 @@ describe("loadContentSources with journey layers", () => {
     expect(() => loadContentSources(root)).toThrow(/Duplicate city file: .*golden_triangle\/cities\/delhi\.json and .*milano\/cities\/delhi\.json/);
   });
 
-  it("requires travel files to sit next to their city", () => {
+  it("requires travel files to sit next to their city, naming the file to add or move", () => {
+    const folder = (journey: string) => path.join(root, "content/journeys", journey);
     write("content/journeys/milano/travel/delhi.json", {});
-    expect(() => loadContentSources(root)).toThrow(/Travel file without a city in the same layer: .*milano\/travel\/delhi\.json/);
+    expect(() => loadContentSources(root)).toThrow(
+      `都市 delhi の移動データ ${folder("milano")}/travel/delhi.json は、都市ファイル ${folder("golden_triangle")}/cities/delhi.json と同じ旅行編フォルダの travel/ に置いてください` +
+      "（Travel file without a city in the same layer）。",
+    );
+    rmSync(path.join(folder("milano"), "travel/delhi.json"));
+    write("content/journeys/milano/travel/rome-settings.json", {});
+    expect(() => loadContentSources(root)).toThrow(
+      `都市ファイル ${folder("milano")}/cities/rome.json がありません。${folder("milano")}/travel/rome-settings.json は都市 rome の移動データです。` +
+      "都市ファイルを追加するか、この移動データを消してください（Travel file without a city in the same layer）。",
+    );
+    rmSync(path.join(folder("milano"), "travel/rome-settings.json"));
+    // A city file needs both travel files of its folder.
+    rmSync(path.join(folder("golden_triangle"), "travel/delhi-settings.json"));
+    expect(() => loadContentSources(root)).toThrow(
+      `移動の設定 ${folder("golden_triangle")}/travel/delhi-settings.json がありません。都市 delhi（${folder("golden_triangle")}/cities/delhi.json）の` +
+      "宿の地点・宿泊費・再挑戦の間隔を書くファイルです（Missing travel settings file of city delhi）。",
+    );
+    city("content/journeys/golden_triangle", "delhi");
+    rmSync(path.join(folder("golden_triangle"), "travel/delhi.json"));
+    expect(() => loadContentSources(root)).toThrow(
+      `移動データ ${folder("golden_triangle")}/travel/delhi.json がありません。都市 delhi（${folder("golden_triangle")}/cities/delhi.json）の` +
+      "地点・経路・地図のイベントを書くファイルです（Missing travel file of city delhi）。",
+    );
   });
 
   it("rejects data files outside the layout and images outside public/assets", () => {

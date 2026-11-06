@@ -8,8 +8,9 @@ import { duplicatePublicFileError, publicRoots } from "./content-sources";
 // (ContentSources.publicFiles) and content:build assembles them into one
 // folder that Vite serves; tools may also look a single file up on disk.
 
-const missingMessage = (assetPath: string) =>
-  `Missing public file: ${assetPath} (searched public/ and content/journeys/<journeyId>/public/)`;
+/** `journeyFolder` (repo-relative) is the folder of the journey whose data names the file, when the caller knows it. */
+const missingMessage = (assetPath: string, journeyFolder?: string) =>
+  `Missing public file: ${assetPath} (searched public/ and ${journeyFolder ?? "content/journeys/<journeyId>"}/public/)`;
 
 /**
  * The file serving `assetPath` (e.g. `assets/tourism/india/delhi.jpg`), or
@@ -34,9 +35,13 @@ export function servedFile(publicFiles: ReadonlyMap<string, string>, assetPath: 
   return publicFiles.get(path.posix.normalize(assetPath));
 }
 
-/** The served file of `assetPath` in loaded public files; the same error as resolvePublicFile when it is missing. */
-export function requireServedFile(publicFiles: ReadonlyMap<string, string>, assetPath: string): string {
+/**
+ * The served file of `assetPath` in loaded public files; the same error as
+ * resolvePublicFile when it is missing, naming `journeyFolder`'s public/ when
+ * given (the folder of the journey whose data names the file).
+ */
+export function requireServedFile(publicFiles: ReadonlyMap<string, string>, assetPath: string, journeyFolder?: string): string {
   const file = servedFile(publicFiles, assetPath);
-  if (!file) throw new Error(missingMessage(assetPath));
+  if (!file) throw new Error(missingMessage(assetPath, journeyFolder));
   return file;
 }

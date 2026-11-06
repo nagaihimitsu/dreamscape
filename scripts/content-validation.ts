@@ -11,7 +11,7 @@ import { validateStoryCached, type StoryValidationCache } from "./story-validati
 import { requireServedFile, servedFile } from "./public-assets";
 import path from "node:path";
 import type { CatalogKind } from "./content-layout";
-import { displayPath, parseCatalog as parseSourceCatalog, parseSourceFile, requireJourneyManifests, type ContentSources } from "./content-sources";
+import { displayPath, journeyFolderPath, parseCatalog as parseSourceCatalog, parseSourceFile, requireJourneyManifests, type ContentSources } from "./content-sources";
 import { DEFAULT_BACKGROUND_ID } from "../src/content/default-background";
 import { authoringProfileOf } from "./journey-authoring";
 import { checkContentOwnership } from "./content-ownership";
@@ -140,6 +140,12 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   checkJourneyCities(sources);
   // The game's static files (root public/ plus every journey's public/), listed by the loader.
   const { publicFiles } = sources;
+  // A missing image is named with the public/ folder of the journey whose data file names it.
+  const journeyFolderOf = (file: string | undefined) => {
+    const layer = file === undefined ? undefined
+      : sources.layers.find((item) => item.type === "journey" && file.startsWith(item.directory + path.sep));
+    return layer && displayPath(root, layer.directory);
+  };
   const parseCatalog = <T>(schema: { parse(value: unknown): T }, kind: CatalogKind): T => parseSourceCatalog(sources, schema, kind);
   // Messages name the real Ink file of a story, whichever layer it is in.
   const storyFiles = new Map(sources.storyFiles.map((story) => [story.id, displayPath(root, story.file)]));
@@ -178,7 +184,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   for (const plannedJourney of journeyCatalog.journeys) {
     const art = plannedJourney.titleArt;
     if (art && !servedFile(publicFiles, art.imagePath))
-      throw new Error(`Missing title art image: ${plannedJourney.id}/${art.imagePath} (place it in content/journeys/${plannedJourney.id}/public/)`);
+      throw new Error(`Missing title art image: ${plannedJourney.id}/${art.imagePath} (place it in ${journeyFolderPath(sources.tree, plannedJourney.id)}/public/)`);
   }
   // A registered future prototype may be referenced by its predecessor;
   // getNextCity still hides departures to incomplete cities at runtime.
@@ -252,8 +258,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   if (encounterCatalog.items.some((item) => !cities.some((entry) => entry.id === item.cityId)) ||
       encounterCatalog.encounters.some((item) => !cities.some((entry) => entry.id === item.cityId)))
     throw new Error("Unknown encounter/item city");
-  for (const item of encounterCatalog.items)
-    if (item.iconPath) withContext(`encounter item ${item.id}`, () => requireServedFile(publicFiles, item.iconPath!));
+  const itemFiles = sources.catalogs["encounters/catalog.json"]?.provenance.items.items ?? [];
+  encounterCatalog.items.forEach((item, index) => {
+    if (item.iconPath) withContext(`encounter item ${item.id}`, () => requireServedFile(publicFiles, item.iconPath!, journeyFolderOf(itemFiles[index])));
+  });
   unique(journey.episodes.map((item) => item.id), "episode ID");
   unique(journey.episodes.map((item) => item.battleId), "episode battle ID");
   unique(journey.storyBattles.map((item) => item.battleId), "story battle ID");
@@ -610,7 +618,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   }
   let tourismGuides = 0;
   // Every tourism image is served (checkTourismImages decodes them after this validation).
-  for (const asset of tourism.assets) requireServedFile(publicFiles, asset.path);
+  const assetFiles = sources.catalogs["tourism/catalog.json"]?.provenance.items.assets ?? [];
+  tourism.assets.forEach((asset, index) => requireServedFile(publicFiles, asset.path, journeyFolderOf(assetFiles[index])));
   for (const current of cities) {
     const landmarks = tourism.landmarks.filter((landmark) => landmark.cityId === current.id);
     const ids = new Set(landmarks.map((landmark) => landmark.id));

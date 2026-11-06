@@ -19,14 +19,14 @@
 
 ## 必須の20ファイル
 
-どれか1つを外すと `content:build` が止まります（`scripts/sample-journey.test.ts` が、任意の部分を外した最小の構成から1つずつ外して確かめます）。
+どれか1つを外すと `content:build` が止まります（`scripts/sample-journey.test.ts` が、任意の部分を外した最小の構成から1つずつ外して確かめます）。エラーの「…」は省いた部分で、パソコンごとに違う絶対パスを含みます。
 
 | ファイル | 役割 | 外したときのエラー |
 | --- | --- | --- |
 | `manifest.json` | 旅行編の登録。ID・並び順・状態・都市・通貨・開始資金・`cityPlan`・`authoring.eventPrefix` | `Missing journey manifest` |
-| `cities/mihon.json` | 都市。`productionStatus: "complete"`、予定の観光地、初回クリア報酬 | `Travel file without a city in the same layer` |
-| `travel/mihon.json` | 地点（宿・時計塔）、全地点間の経路、地図のイベント | `Cannot read JSON …/sample_trip/travel/mihon.json` |
-| `travel/mihon-settings.json` | 宿の地点・宿泊費・再挑戦の間隔 | `Cannot read JSON …/sample_trip/travel/mihon-settings.json` |
+| `cities/mihon.json` | 都市。`productionStatus: "complete"`、予定の観光地、初回クリア報酬 | `都市ファイル …/sample_trip/cities/mihon.json がありません` |
+| `travel/mihon.json` | 地点（宿・時計塔）、全地点間の経路、地図のイベント | `移動データ …/sample_trip/travel/mihon.json がありません` |
+| `travel/mihon-settings.json` | 宿の地点・宿泊費・再挑戦の間隔 | `移動の設定 …/sample_trip/travel/mihon-settings.json がありません` |
 | `romance/presentation.json` | 背景（宿は画像なしの `neutral`、時計塔は画像つき） | `Unknown date destination background` |
 | `romance/date_destinations.json` | デートの行き先（時計塔の広場）と小話 | `Unknown date destination` |
 | `romance/date_catalog.json` | 通常デート1件（2回の3択、共通効果） | `Invalid content in romance/date_catalog.json` |
@@ -42,7 +42,7 @@
 | `stories/battles/smp_mihon_finale.ink` | 都市フィナーレの会話 | `Unknown battle storyId: battles/smp_mihon_finale` |
 | `stories/epilogues/mihon.ink` | 都市エピローグ | `Unknown epilogue story: epilogues/mihon` |
 | `stories/dates/smp_mihon_date_tower_square.ink` | 通常デートの会話 | `Unknown storyId: dates/smp_mihon_date_tower_square` |
-| `public/assets/tourism/sample_trip/mihon_clock_tower.png` | 時計塔の自作画像（観察・背景） | `Missing public file: assets/tourism/sample_trip/mihon_clock_tower.png` |
+| `public/assets/tourism/sample_trip/mihon_clock_tower.png` | 時計塔の自作画像（観察・背景） | `Missing public file: assets/tourism/sample_trip/mihon_clock_tower.png (searched public/ and authoring/templates/sample_trip/public/)` |
 
 各Inkの冒頭の `//` コメントに、その種類の脚本の規則を書いています。
 

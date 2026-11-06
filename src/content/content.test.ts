@@ -72,7 +72,7 @@ describe("content build acceptance", () => {
     expect(catalog.journeys.find((journey: { id: string }) => journey.id === "milano").titleArt).toEqual(titleArt);
     expect(await readFile(path.join(fixture, "src/content/generated/public/assets/title/milano.webp"))).toEqual(await readFile(image));
     await writeFile(manifestFile, JSON.stringify({ ...manifest, titleArt: { ...titleArt, imagePath: "assets/title/missing.webp" } }));
-    await expect(buildContent(fixture, false)).rejects.toThrow("Missing title art image: milano/assets/title/missing.webp");
+    await expect(buildContent(fixture, false)).rejects.toThrow("Missing title art image: milano/assets/title/missing.webp (place it in content/journeys/milano/public/)");
   }, 120000);
   it("rejects a registered but missing background image", async () => {
     const file = path.join(fixture, "content/romance/presentation.json");
