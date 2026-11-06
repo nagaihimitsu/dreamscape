@@ -94,6 +94,34 @@ describe("validateContent on sources in memory", () => {
       .toThrow("City file outside its journey: content/journeys/trip_b/cities/c_city.json (c_city is not listed in content/journeys/trip_b/manifest.json)");
   });
 
+  it("requires the manifest's city name to equal the city file's", () => {
+    const file = `${journeyFolder("trip_b")}/cities/b_city.json`;
+    const tree = { ...files(), [file]: json({ ...JSON.parse(city("b_city")), nameJa: "別の市" }) };
+    expect(() => validateContent(load(tree))).toThrow(
+      'City name differs from the manifest: content/journeys/trip_b/manifest.json cities[0] has nameJa "テスト市", ' +
+      'content/journeys/trip_b/cities/b_city.json has "別の市"; use the same name in both files',
+    );
+  });
+
+  it("requires a city finale for every complete city", () => {
+    const file = `${journeyFolder("trip_a")}/cities/a_city.json`;
+    const complete = { ...files(), [file]: json({ ...JSON.parse(city("a_city")), productionStatus: "complete" }) };
+    expect(() => validateContent(load(complete))).toThrow(
+      'Complete city has no city finale: content/journeys/trip_a/cities/a_city.json is "complete", but no episode of ' +
+      'progression/journey.json has "kind": "city_finale" and "cityId": "a_city"; add the finale or keep the city "prototype"',
+    );
+    // A finale of another city does not count; the city's own one does.
+    const progressionFile = `${journeyFolder("trip_a")}/progression/journey.json`;
+    const withFinale = (cityId: string) => {
+      const progression = JSON.parse(complete[progressionFile]!);
+      progression.episodes.push({ ...progression.episodes[0], id: "trip_a_finale", kind: "city_finale", cityId, landmarkId: null,
+        epilogueStoryId: "epilogues/a_city" });
+      return { ...complete, [progressionFile]: json(progression) };
+    };
+    expect(() => validateContent(load(withFinale("unknown_city")))).toThrow("Complete city has no city finale");
+    expect(() => validateContent(load(withFinale("a_city")))).toThrow(NO_TOURISM);
+  });
+
   it("rejects a city file whose travel file is missing, when the content is loaded", () => {
     const tree = files();
     delete tree[`${journeyFolder("trip_b")}/travel/b_city.json`];

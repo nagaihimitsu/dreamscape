@@ -1,0 +1,77 @@
+import { describe, expect, it } from "vitest";
+import { authoringProfileOf, isRelativePath, journeyAuthoringProfiles } from "./journey-authoring";
+
+// The authoring profile of a manifest (`authoring`) points the tools at files
+// they read and write; keep those inside the journey's own authoring folder.
+
+const manifest = (authoring: Record<string, unknown>) => ({
+  id: "kyoto", cities: [{ id: "kyoto_city", nameJa: "京都" }, { id: "nara", nameJa: "奈良" }],
+  authoring: {
+    eventPrefix: "ky",
+    observationFile: "authoring/journeys/kyoto/drafts/observation-cards.json",
+    imageDirectory: "assets/tourism/kyoto",
+    ...authoring,
+  },
+});
+const label = "content/journeys/kyoto/manifest.json";
+/** The issue paths and messages of a rejected profile. */
+function issues(authoring: Record<string, unknown>) {
+  try {
+    authoringProfileOf(manifest(authoring), label);
+  } catch (error) {
+    expect((error as Error).message).toContain(`Invalid authoring profile in ${label}: `);
+    return ((error as Error).cause as { issues: { path: PropertyKey[]; message: string }[] }).issues
+      .map((issue) => `${issue.path.join(".")}: ${issue.message}`);
+  }
+  throw new Error("The profile was accepted");
+}
+
+describe("journey authoring profiles", () => {
+  it("accepts paths inside the journey's authoring folder", () => {
+    expect(authoringProfileOf(manifest({}), label)?.eventPrefix).toBe("ky");
+    expect(authoringProfileOf(manifest({ transitDirectory: "authoring/journeys/kyoto/research/transit" }), label)?.transitDirectory)
+      .toBe("authoring/journeys/kyoto/research/transit");
+    // The journey's folder itself may hold the per-city ledgers.
+    expect(authoringProfileOf(manifest({ transitDirectory: "authoring/journeys/kyoto" }), label)).toBeDefined();
+    expect(authoringProfileOf(manifest({
+      transitDecisionLedger: { file: "authoring/journeys/kyoto/research/decisions.json", cities: ["kyoto_city", "nara"] },
+    }), label)?.transitDecisionLedger?.cities).toEqual(["kyoto_city", "nara"]);
+    expect(authoringProfileOf({ id: "milano", cities: [] }, label)).toBeUndefined();
+  });
+
+  it("rejects absolute paths, .. segments and backslashes", () => {
+    expect(isRelativePath("authoring/journeys/kyoto/a.json")).toBe(true);
+    for (const value of ["/authoring/journeys/kyoto/a.json", "C:/repo/a.json", "authoring\\journeys\\kyoto\\a.json",
+      "authoring/journeys/kyoto/../milano/a.json", "./authoring/journeys/kyoto/a.json", "authoring/journeys/kyoto/", "authoring//a.json"])
+      expect(isRelativePath(value), value).toBe(false);
+    expect(issues({ observationFile: "authoring/journeys/kyoto/../milano/drafts/observation-cards.json" }))
+      .toContain("observationFile: Use a relative path with / separators, without .. or an absolute path");
+    expect(issues({ transitDirectory: "/tmp/kyoto" }))
+      .toContain("transitDirectory: Use a relative path with / separators, without .. or an absolute path");
+  });
+
+  it("keeps the files below authoring/journeys/<journeyId>/", () => {
+    expect(issues({ observationFile: "authoring/journeys/milano/drafts/observation-cards.json" }))
+      .toEqual(["observationFile: Keep the authoring files of kyoto below authoring/journeys/kyoto/"]);
+    expect(issues({ transitDirectory: "authoring/research/kyoto" }))
+      .toEqual(["transitDirectory: Keep the authoring files of kyoto below authoring/journeys/kyoto/"]);
+    // A neighbour whose name starts with the journey ID is another folder.
+    expect(issues({ transitDecisionLedger: { file: "authoring/journeys/kyoto_old/decisions.json", cities: ["nara"] } }))
+      .toEqual(["transitDecisionLedger.file: Keep the authoring files of kyoto below authoring/journeys/kyoto/"]);
+  });
+
+  it("lets the transit ledger list only the manifest's cities", () => {
+    expect(issues({ transitDecisionLedger: { file: "authoring/journeys/kyoto/decisions.json", cities: ["nara", "delhi"] } }))
+      .toEqual(["transitDecisionLedger.cities.1: delhi is not a city of this manifest"]);
+  });
+
+  it("keeps the image folder a served path below assets/", () => {
+    expect(issues({ imageDirectory: "public/assets/tourism/kyoto" })).toEqual(["imageDirectory: The image folder is a served path below assets/"]);
+    expect(issues({ imageDirectory: "assets/../tourism" }))
+      .toContain("imageDirectory: Use a relative path with / separators, without .. or an absolute path");
+  });
+
+  it("accepts the repository's profiles", () => {
+    expect([...journeyAuthoringProfiles(process.cwd()).keys()]).toEqual(["golden_triangle", "uzbekistan", "luang_prabang"]);
+  });
+});

@@ -2,27 +2,66 @@ import { z } from "zod";
 import { readJourneyManifests } from "./content-sources";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
+/** A relative posix path: no absolute path, drive letter or backslash, and no empty, "." or ".." segment. */
+export function isRelativePath(value: string): boolean {
+  return !value.startsWith("/") && !/^[A-Za-z]:/u.test(value) && !value.includes("\\") &&
+    value.split("/").every((segment) => segment !== "" && segment !== "." && segment !== "..");
+}
+const relativePath = z.string().min(1).refine(isRelativePath, "Use a relative path with / separators, without .. or an absolute path");
+/** The folder of a journey's authoring files (drafts, research, ledgers): `authoring/journeys/<journeyId>/`. */
+export const authoringFolder = (journeyId: string) => `authoring/journeys/${journeyId}/`;
 /**
  * Editing conventions of the authoring tools, set by the optional `authoring`
  * key of a journey's `manifest.json`; city order and gameplay belong to the
  * catalogs. A journey without a profile is not supported by those tools.
+ * File and folder paths are relative to the repository; authoringProfileOf
+ * also keeps them inside the journey's authoring folder.
  */
 export const journeyAuthoringSchema = z.object({
   eventPrefix: id,
-  observationFile: z.string().min(1),
-  imageDirectory: z.string().min(1),
+  observationFile: relativePath,
+  /** The journey's tourism image folder below public/ (a served path, e.g. `assets/tourism/india`). */
+  imageDirectory: relativePath.refine((value) => value.startsWith("assets/"), "The image folder is a served path below assets/"),
   /** Per-city transit ledgers: `<transitDirectory>/<cityId>/transit-decisions.json`. */
-  transitDirectory: z.string().min(1).optional(),
+  transitDirectory: relativePath.optional(),
   /** One journey-wide transit decision ledger for the listed cities (see journey-transit-decisions.ts). */
-  transitDecisionLedger: z.object({ file: z.string().min(1), cities: z.array(id).min(1) }).strict().optional(),
+  transitDecisionLedger: z.object({ file: relativePath, cities: z.array(id).min(1) }).strict().optional(),
 }).strict().refine((profile) => !(profile.transitDirectory && profile.transitDecisionLedger),
   "Use either transitDirectory or transitDecisionLedger, not both");
 export type JourneyAuthoringProfile = z.infer<typeof journeyAuthoringSchema>;
 
+const isObject = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
+
+/**
+ * The profile schema of one manifest: the authoring paths lie inside the
+ * journey's own authoring folder, and the transit ledger lists only cities of
+ * the manifest.
+ */
+function profileSchemaOf(manifest: Record<string, unknown>) {
+  const journeyId = String(manifest.id);
+  const folder = authoringFolder(journeyId);
+  const cityIds = (Array.isArray(manifest.cities) ? manifest.cities : []).map((city) => (isObject(city) ? city.id : undefined));
+  return journeyAuthoringSchema.superRefine((profile, context) => {
+    const paths: [string[], string | undefined, boolean][] = [
+      [["observationFile"], profile.observationFile, false],
+      [["transitDirectory"], profile.transitDirectory, true],
+      [["transitDecisionLedger", "file"], profile.transitDecisionLedger?.file, false],
+    ];
+    for (const [path, value, directory] of paths)
+      if (value !== undefined && !value.startsWith(folder) && !(directory && `${value}/` === folder))
+        context.addIssue({ code: "custom", path, message: `Keep the authoring files of ${journeyId} below ${folder}` });
+    profile.transitDecisionLedger?.cities.forEach((cityId, index) => {
+      if (!cityIds.includes(cityId))
+        context.addIssue({ code: "custom", path: ["transitDecisionLedger", "cities", index], message: `${cityId} is not a city of this manifest` });
+    });
+  });
+}
+
 /** The profile of one manifest, or undefined when it has none; `label` names the manifest in errors. */
 export function authoringProfileOf(manifest: Record<string, unknown>, label: string): JourneyAuthoringProfile | undefined {
   if (manifest.authoring === undefined) return undefined;
-  const parsed = journeyAuthoringSchema.safeParse(manifest.authoring);
+  const parsed = profileSchemaOf(manifest).safeParse(manifest.authoring);
   if (!parsed.success) throw new Error(`Invalid authoring profile in ${label}: ${parsed.error.message}`, { cause: parsed.error });
   return parsed.data;
 }

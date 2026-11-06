@@ -78,6 +78,41 @@ import {
 // is read from or written to disk; image contents are decoded afterwards
 // (content-images.ts) and the outputs written by content-outputs.ts.
 
+const isObject = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
+
+/**
+ * Checks of the journeys' cities on the loaded data, before the schemas (so
+ * they name the files even when other content is unfinished; values of the
+ * wrong type are left to the schemas):
+ * - a city's name in the manifest (`cities[].nameJa`) equals its city file's `nameJa`;
+ * - a complete city (`productionStatus` "complete") has a city finale episode
+ *   (`kind` "city_finale" in progression/journey.json): the city clear,
+ *   epilogue and departure happen only after the finale.
+ */
+function checkJourneyCities(sources: ContentSources): void {
+  const show = (file: string) => displayPath(sources.root, file);
+  for (const manifest of sources.manifests) {
+    const planned = Array.isArray(manifest.data.cities) ? manifest.data.cities : [];
+    planned.forEach((entry, index) => {
+      if (!isObject(entry)) return;
+      const city = sources.cities.find((item) => item.id === entry.id);
+      const cityName = isObject(city?.data) ? city.data.nameJa : undefined;
+      if (city && typeof entry.nameJa === "string" && typeof cityName === "string" && entry.nameJa !== cityName)
+        throw new Error(`City name differs from the manifest: ${show(manifest.file)} cities[${index}] has nameJa ${JSON.stringify(entry.nameJa)}, ` +
+          `${show(city.file)} has ${JSON.stringify(cityName)}; use the same name in both files`);
+    });
+  }
+  const progression = sources.catalogs["progression/journey.json"];
+  const episodes = isObject(progression?.value) && Array.isArray(progression.value.episodes) ? progression.value.episodes : [];
+  for (const city of sources.cities) {
+    if (!isObject(city.data) || city.data.productionStatus !== "complete") continue;
+    if (!episodes.some((episode) => isObject(episode) && episode.kind === "city_finale" && episode.cityId === city.id))
+      throw new Error(`Complete city has no city finale: ${show(city.file)} is "complete", but no episode of progression/journey.json ` +
+        `has "kind": "city_finale" and "cityId": ${JSON.stringify(city.id)}; add the finale or keep the city "prototype"`);
+  }
+}
+
 /** The validated content: compiled stories, quizzes and the parsed catalogs content:build reports. */
 export type ValidatedContent = ReturnType<typeof validateContent>;
 
@@ -101,6 +136,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   if (sources.catalogs["romance/presentation.json"]?.provenance.keys.backgrounds?.[DEFAULT_BACKGROUND_ID] !==
     path.join(coreLayer.directory, "romance", "presentation.json"))
     throw new Error(`Missing default background: content/romance/presentation.json must define backgrounds.${DEFAULT_BACKGROUND_ID} (the shared default of every journey)`);
+  checkJourneyCities(sources);
   // The game's static files (root public/ plus every journey's public/), listed by the loader.
   const { publicFiles } = sources;
   const parseCatalog = <T>(schema: { parse(value: unknown): T }, kind: CatalogKind): T => parseSourceCatalog(sources, schema, kind);
