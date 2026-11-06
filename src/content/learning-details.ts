@@ -1,16 +1,18 @@
 import { z } from "zod";
 import { japaneseText, englishText, type QuizDefinition } from "./schemas";
 const text = z.string().trim().min(1);
-// A journey set without English-note details has `questions: {}` and no
-// storyId (the story only opens from a question's topic).
+// English-note details, keyed by question ID and merged across the journey
+// folders like the translations. Each question names the learning story its
+// topics open (with the topic ID in the Ink variable `topic`); a journey set
+// without details has `questions: {}`.
 export const learningDetailsSchema = z
   .object({
     schemaVersion: z.literal(1),
-    storyId: text.optional(),
     questions: z.record(
       z.string(),
       z
         .object({
+          storyId: text,
           summaryJa: japaneseText,
           segments: z
             .array(
@@ -41,11 +43,7 @@ export const learningDetailsSchema = z
         .strict(),
     ),
   })
-  .strict()
-  .refine((details) => details.storyId !== undefined || !Object.keys(details.questions).length, {
-    message: "Learning details with questions need a storyId",
-    path: ["storyId"],
-  });
+  .strict();
 export function validateLearningDetails(
   details: z.infer<typeof learningDetailsSchema>,
   quizzes: Record<string, QuizDefinition>,

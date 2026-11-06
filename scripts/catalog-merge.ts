@@ -31,11 +31,9 @@ export function mergeCatalog(rule: CatalogRule, sources: readonly CatalogSource[
   if (!sources.length) return undefined;
   const provenance: CatalogProvenance = { files: sources.map((source) => source.file), items: {}, keys: {}, values: {} };
   if ("file" in rule) {
+    // There is one core layer, so a second copy is always a journey's.
     const journey = sources.find((source) => !source.core);
-    if (rule.file === "core" && journey)
-      throw new Error(`Only the core layer may provide ${rule.kind}: ${journey.file}`);
-    if (sources.length > 1)
-      throw new Error(`Only one layer may provide ${rule.kind}: ${sources[0].file} and ${sources[1].file}`);
+    if (journey) throw new Error(`Only the core layer may provide ${rule.kind}: ${journey.file}`);
     return { value: sources[0].data, provenance };
   }
   const objects = sources.map((source) => {

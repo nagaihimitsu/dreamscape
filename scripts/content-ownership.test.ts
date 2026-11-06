@@ -153,6 +153,27 @@ describe("checkContentOwnership", () => {
     ].join("\n")));
   });
 
+  it("checks each English-note question and the story it opens in the question's journey", () => {
+    write(`${gt}/stories/learning/gt_english.ink`, "Note\n");
+    write(`${uz}/stories/learning/uz_english.ink`, "Note\n");
+    write(`${uz}/quizzes/uz_quiz.json`, { id: "uz_quiz", questions: [{ id: "uz_question" }] });
+    write(`${uz}/learning/details.json`, { schemaVersion: 1, questions: { uz_question: { storyId: "learning/uz_english" } } });
+    // Two journeys each provide details for their own questions, with their own stories.
+    write(`${gt}/learning/details.json`, { schemaVersion: 1, questions: { gt_question: { storyId: "learning/gt_english" } } });
+    expect(() => check()).not.toThrow();
+    // Every question is checked on its own: one uses another journey's story, one is another journey's question.
+    write(`${uz}/learning/details.json`, { schemaVersion: 1, questions: {} });
+    write(`${gt}/learning/details.json`, { schemaVersion: 1, questions: {
+      gt_question: { storyId: "learning/uz_english" }, uz_question: { storyId: "learning/gt_english" },
+    } });
+    expect(() => check()).toThrow(new Error([
+      'Reference to another layer: content/journeys/golden_triangle/learning/details.json questions.gt_question storyId "learning/uz_english" ' +
+      "is the story defined in content/journeys/uzbekistan/stories/learning/uz_english.ink; a journey folder may only refer to its own content and the core layer.",
+      'Reference to another layer: content/journeys/golden_triangle/learning/details.json questions.uz_question question ID "uz_question" ' +
+      "is the question defined in content/journeys/uzbekistan/quizzes/uz_quiz.json; a journey folder may only refer to its own content and the core layer.",
+    ].join("\n")));
+  });
+
   it("keeps cities, travel, stories, quizzes and journey catalogs out of the core layer", () => {
     city("content", "agra");
     write("content/stories/milano/walk.ink", "Walk\n");

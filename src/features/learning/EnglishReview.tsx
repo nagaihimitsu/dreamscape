@@ -12,10 +12,6 @@ import { InteractiveEnglish } from "./InteractiveEnglish";
 import { toggleTranslation, type Part } from "./Translations";
 import "./learning.css";
 
-// Topics come only from questions with details, and details with questions
-// always name their story (learningDetailsSchema).
-const learningStoryId = learningDetails.storyId!;
-
 export function answeredQuestions(game: GameState, learning: Learning) {
   const records = game.activeBattle
     ? { [game.activeBattle.battleId]: game.activeBattle }
@@ -68,7 +64,7 @@ export function EnglishReview({
     if (!detail?.topics.some((item) => item.id === learning.data.openTopic))
       return null;
     return beginStory(
-      learningStoryId,
+      detail.storyId,
       game.playerName,
       game.heroineName,
       { topic: learning.data.openTopic },
@@ -83,9 +79,10 @@ export function EnglishReview({
     setStory(null);
     learning.update((s) => ({ ...s, openQuestion: id, openTopic: null }));
   }
-  function topic(id: string) {
+  // Each question names the story its topics open (learningDetailsSchema).
+  function topic(storyId: string, id: string) {
     const first = beginStory(
-      learningStoryId,
+      storyId,
       game.playerName,
       game.heroineName,
       { topic: id },
@@ -317,7 +314,7 @@ export function EnglishReview({
                       <button
                         type="button"
                         className="secondary"
-                        onClick={() => topic(item.id)}
+                        onClick={() => topic(details.storyId, item.id)}
                       >
                         {game.heroineName}と確認する
                       </button>
@@ -331,7 +328,7 @@ export function EnglishReview({
                               onClick={() =>
                                 setStory(
                                   continueStory(
-                                    learningStoryId,
+                                    details.storyId,
                                     story.storyState,
                                     story.frame,
                                   ),

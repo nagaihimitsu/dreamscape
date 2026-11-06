@@ -271,12 +271,14 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     context.emotionIds.filter((id) => characters.expressionIds?.includes(id) ?? true),
   );
   const learningDetails = parseCatalog(learningDetailsSchema, "learning/details.json");
+  // Every story an English-note question opens (each question names its own).
+  const learningStoryIds = new Set(Object.values(learningDetails.questions).map((detail) => detail.storyId));
   const reactionCatalog = parseCatalog(dialogueReactionCatalogSchema, "presentation/dialogue-reactions.json");
   const reactionValidator = createDialogueReactionValidator(
     reactionCatalog, storySources, Object.keys(stories),
     context.emotionIds.filter((id) => characters.expressionIds?.includes(id) ?? true),
     characters.characters.map((character) => character.id),
-    learningDetails.storyId ? [learningDetails.storyId] : [],
+    [...learningStoryIds],
   );
   const observeForStory = (storyId: string): DialogueObserver =>
     (text, speaker, explicitEmotion) => {
@@ -552,14 +554,11 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
         }
     }
   validateLearningDetails(learningDetails, quizzes);
-  if (learningDetails.storyId !== undefined) {
-    const learningStory = stories[learningDetails.storyId];
+  for (const detail of Object.values(learningDetails.questions)) {
+    const learningStory = stories[detail.storyId];
     if (!learningStory)
-      throw new Error(`Unknown learning story: ${learningDetails.storyId}`);
-    for (const detail of Object.values(learningDetails.questions))
-      for (const topic of detail.topics) {
-        validateLearningTopic(learningStory, context, topic.id);
-      }
+      throw new Error(`Unknown learning story: ${detail.storyId}`);
+    for (const topic of detail.topics) validateLearningTopic(learningStory, context, topic.id);
   }
   let tourismGuides = 0;
   // Every tourism image is served (checkTourismImages decodes them after this validation).
@@ -602,7 +601,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
         tourism.landmarks.some((landmark) => landmark.guideStoryId === storyId) ||
         journey.episodes.some((episode) => episode.epilogueStoryId === storyId) ||
         cities.some((city) => city.arrivalStoryId === storyId) ||
-        reasoningIntros.entries.some((entry) => entry.storyId === storyId) || storyId === learningDetails.storyId)
+        reasoningIntros.entries.some((entry) => entry.storyId === storyId) || learningStoryIds.has(storyId))
       throw new Error(`Encounter story is used by another system: ${storyId}`);
     if (stories[storyId]) validateNoInkRandom(stories[storyId]);
   }
@@ -704,7 +703,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   }
   for (const storyId of Object.keys(stories)) {
     if (
-      storyId !== learningDetails.storyId &&
+      !learningStoryIds.has(storyId) &&
       !dates.some((date) => date.storyId === storyId) &&
       !battles.some((battle) => battle.storyId === storyId) &&
       !encounterStoryIds.includes(storyId) &&

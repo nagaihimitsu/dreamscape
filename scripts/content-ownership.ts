@@ -54,6 +54,7 @@ const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry,
       ...fields(entry, "battle", ["completedStoryBattleId"]),
     ],
   },
+  "learning/details.json": { questions: (entry, key) => [ref("question", "question ID", key), ...fields(entry, "story", ["storyId"])] },
   "learning/translations.json": { questions: (_, key) => [ref("question", "question ID", key)] },
   "presentation/characters.json": {
     battleCharacters: (_, key) => [ref("battle", "battle ID", key)],
@@ -257,15 +258,6 @@ export function checkContentOwnership(sources: ContentSources): void {
         for (const [recordKey, entry] of Object.entries(value))
           checkReferences(merged.provenance.keys[key][recordKey], `${key}.${recordKey}`, references(isObject(entry) ? entry : {}, recordKey));
     }
-  }
-  const details = catalog("learning/details.json");
-  const detailsFile = details?.provenance.files[0];
-  // No file when no layer provides learning details (empty value).
-  if (details && detailsFile && isObject(details.value)) {
-    checkReferences(detailsFile, "", [
-      ref("story", "storyId", details.value.storyId),
-      ref("question", "question ID", isObject(details.value.questions) ? Object.keys(details.value.questions) : []),
-    ]);
   }
 
   // City, travel, quiz and Ink files.
