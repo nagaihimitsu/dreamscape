@@ -11,10 +11,11 @@ const CharacterPreview = import.meta.env.DEV
 const DebugMode = import.meta.env.DEV
   ? React.lazy(() => import("./dev/DebugMode"))
   : null;
-const showCharacterPreview = new URLSearchParams(window.location.search).has(
-  "character-preview",
-);
-const showDebug = new URLSearchParams(window.location.search).has("debug");
+// The query is read only in development, so the production bundle does not
+// carry these switches at all.
+const query = import.meta.env.DEV ? new URLSearchParams(window.location.search) : null;
+const showCharacterPreview = query?.has("character-preview") ?? false;
+const showDebug = query?.has("debug") ?? false;
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     {DebugMode && showDebug ? (
