@@ -30,14 +30,24 @@ src/
   story/                # inkjs実行アダプタ
   persistence/          # セーブ・復元・データ保護
   types/                # GameState, Event, Content types
-content/
-  stories/milano/       # 編集する .ink
-  romance/              # デート定義 JSON
-  quizzes/              # 例示／後続実装
-  cities/               # 都市データ
+content/                # 共通データ（全旅行編で共有する基盤）
+  journeys/<journeyId>/ # 旅行編ごとのフォルダ（manifest.json, cities/, travel/, stories/, quizzes/, 各カタログ）
 scripts/                # Inkコンパイル・コンテンツ検証
 public/assets/         # 画像・音声
 ```
+
+## 共通データと旅行編フォルダ
+
+- `content/`（`content/journeys/` を除く）は全旅行編で共有する基盤データ（共通レイヤー）。置けるのは `romance/balance.json`・`romance/response_profiles.json`・共通デート効果（`common_date_*`）・`romance/presentation.json` の共通部分（保留・エンディング表示、感情、既定背景 `milano_cafe`）・`romance/progression.json` の段階と告白・`learning/word-meanings.json`・`presentation/characters.json` だけ。都市・移動・Ink・クイズや旅行編専用のカタログは置けず、共通データから都市や旅行編のデータを参照することもできない（`scripts/content-ownership.ts` が検査）。
+- 各旅行編は `content/journeys/<journeyId>/`（`manifest.json` で登録し、`order` の順に並ぶ）へ同じ相対配置でデータを置く。`npm run content:build` が共通データと各旅行編を統合・検証して `src/content/generated/content/` に書き出し、ゲームはこの生成物だけを読む。
+- タイトル画面・新しいゲーム・Debugの初期値は、`order` 順で最初の公開中（`status: "available"`）の旅行編とその最初の都市。公開中の旅行編がない場合、`content:build` が失敗する。
+
+### 共通コードに残るミラノ由来の既定値
+- 背景 `milano_cafe` は共通レイヤーの既定背景。Inkが背景を指定しない会話（`src/story/runtime.ts`）と、旅の開始前の画面や背景未指定の場面の `CanalScene` が使う。名前はミラノ由来だが、どの旅行編からも使える共通データとして扱う。
+- 都市の会話の初期背景は、その都市の `travel/<cityId>-settings.json` の `storyBackgroundAssetId`（ミラノは `milano_cafe`）。未指定の都市は現在地（なければ宿）の背景を使う。
+- 所持品のアイコンは道中交流カタログの品物の `iconPath`（未指定なら共通の `assets/items/item.svg`）。
+- 観光地のバトル後に自由時間から改めてクイズに挑める道中交流（ミラノのガッレリアの願掛け）は、`encounters/entry-rules.json` の `quizAfterLandmarkBattle` で指定する。
+- Debugの「仮の場面」（`src/domain/multi-city-test-fixture.ts`）と一部のテストは、ミラノのデータを複製して試験用の都市を作る。開発用で、通常プレイには影響しない。
 
 ## レイヤー間の依存
 - `screens/components` → アプリ操作サービス → `domain` 純粋関数 → `persistence`

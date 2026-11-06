@@ -71,8 +71,10 @@ describe("content build acceptance", () => {
   it("rejects an undefined character ID and a registered but missing image", async () => {
     const file = path.join(fixture, "content/presentation/characters.json");
     const data = JSON.parse(await readFile(file, "utf8"));
-    // Isolate the required-character check from wardrobe's own references.
+    // Isolate the required-character check from wardrobe's own references
+    // (Milan's fragment holds only its wardrobe city).
     delete data.wardrobe;
+    await rm(path.join(fixture, "content/journeys/milano/presentation/characters.json"));
     data.characters[0].id = "unknown";
     await writeFile(file, JSON.stringify(data));
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown required character ID: heroine");
@@ -158,15 +160,19 @@ describe("content build acceptance", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow(`Missing character image: heroine/default_01/standing_01/teasing_big/${dir}/missing.png`);
   });
   it("checks the wardrobe city against real city data and its country", async () => {
+    // Countries are shared (core); each journey assigns its own cities.
     const file = path.join(fixture, "content/presentation/characters.json");
     const data = JSON.parse(await readFile(file, "utf8"));
-    data.wardrobe.cities.missing_city = { country: "IT" };
-    await writeFile(file, JSON.stringify(data));
+    const milanoFile = path.join(fixture, "content/journeys/milano/presentation/characters.json");
+    const milano = JSON.parse(await readFile(milanoFile, "utf8"));
+    milano.wardrobe.cities.missing_city = { country: "IT" };
+    await writeFile(milanoFile, JSON.stringify(milano));
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown city in character wardrobe: missing_city");
-    delete data.wardrobe.cities.missing_city;
+    delete milano.wardrobe.cities.missing_city;
     data.wardrobe.countries.FR = { region: "south_europe" };
-    data.wardrobe.cities.milano.country = "FR";
+    milano.wardrobe.cities.milano.country = "FR";
     await writeFile(file, JSON.stringify(data));
+    await writeFile(milanoFile, JSON.stringify(milano));
     await expect(buildContent(fixture, false)).rejects.toThrow("Character wardrobe country mismatch: milano/FR (expected IT)");
   });
   it("rejects a wardrobe scene assignment that no playable scene uses", async () => {

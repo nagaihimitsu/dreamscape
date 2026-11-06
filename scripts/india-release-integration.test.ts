@@ -7,6 +7,8 @@ import { prepareIndiaRelease } from "./promote-india";
 
 /** India's journey folder: its cities, stories, quizzes and catalog fragments. */
 const layer = "content/journeys/golden_triangle";
+/** Milan's folder: the source of the test templates, and a layer the release must leave alone. */
+const milano = "content/journeys/milano";
 
 /** Explicit unpublished fixture; this test must not depend on India's release date. */
 function prepareUnpublishedFixture(root: string) {
@@ -50,7 +52,7 @@ function prepareUnpublishedFixture(root: string) {
   });
   edit(`${layer}/romance/effect_catalog.json`, (data) => { data.effects = data.effects.filter((entry: any) => !memoryIds.has(entry.memoryId)); });
   edit(`${layer}/romance/presentation.json`, (data) => { for (const id of memoryIds) delete data.memories[id]; });
-  for (const file of ["presentation/dialogue-expressions.json", "presentation/dialogue-reactions.json"].flatMap((kind) => [`content/${kind}`, `${layer}/${kind}`]))
+  for (const file of ["presentation/dialogue-expressions.json", "presentation/dialogue-reactions.json"].map((kind) => `${layer}/${kind}`))
     if (existsSync(path.join(root, file))) edit(file, (data) => { data.entries = data.entries.filter((entry: any) => !storyIds.has(entry.storyId)); });
   for (const id of storyIds) rmSync(path.join(root, layer, "stories", `${id}.ink`), { force: true });
   const questionIds = new Set<string>();
@@ -72,9 +74,12 @@ const read = (file: string) => readFileSync(path.join(source, file), "utf8");
 const scene = { titleJa: "試験", descriptionJa: "試験の場面", clearTitleJa: "試験完了", clearDescriptionJa: "試験の記録",
   enemyNameJa: "試験人物", enemyTitleJa: "試験の人", enemyDescriptionJa: "試験用の人物" };
 const date = { titleJa: "試験", descriptionJa: "試験の場面", memoryTitleJa: "試験の思い出", memoryDescriptionJa: "試験の記録" };
-const originalQuiz = JSON.parse(read("content/quizzes/sound_duomo_B1.json"));
-const originalTranslations = JSON.parse(read("content/learning/translations.json")).questions;
-const dateTemplate = read("content/stories/milano/sound_cafe_01.ink");
+const originalQuiz = JSON.parse(read(`${milano}/quizzes/sound_duomo_B1.json`));
+const originalTranslations = JSON.parse(read(`${milano}/learning/translations.json`)).questions;
+/** A Milan Ink template for India's folder: Milan's own backgrounds become the shared default background. */
+const inkTemplate = (storyId: string) =>
+  read(`${milano}/stories/${storyId}.ink`).replace(/#\s*background\s*:\s*[A-Za-z0-9_]+/gu, "# background: milano_cafe");
+const dateTemplate = inkTemplate("milano/sound_cafe_01");
 
 /** India's catalogs that hold nothing but India's unpublished entries. */
 const emptiedCatalogs = ["progression/journey.json", "battles/catalog.json", "romance/date_catalog.json",
@@ -112,8 +117,8 @@ function authorCity(root: string, plan: ReturnType<typeof indiaRequirements>[num
   writeFileSync(narrativeFile, JSON.stringify(narrative));
   const translations: Record<string, { questionJa: string; optionsJa: Record<string, string> }> = {};
   for (const item of plan.main) {
-    write(`${layer}/stories/${item.guideStoryId}.ink`, read("content/stories/tourism/sound_duomo.ink"));
-    write(`${layer}/stories/${item.battleStoryId}.ink`, read("content/stories/battles/sound_duomo.ink"));
+    write(`${layer}/stories/${item.guideStoryId}.ink`, inkTemplate("tourism/sound_duomo"));
+    write(`${layer}/stories/${item.battleStoryId}.ink`, inkTemplate("battles/sound_duomo"));
     const quiz = { ...structuredClone(originalQuiz), id: item.quizId, landmarkId: item.landmarkId };
     quiz.questions.forEach((question: { id: string }, index: number) => {
       const translated = originalTranslations[question.id];
@@ -132,9 +137,9 @@ function authorCity(root: string, plan: ReturnType<typeof indiaRequirements>[num
     for (const [from, to] of Object.entries(map)) story = story.replaceAll(from, to);
     write(`${layer}/stories/${item.storyId}.ink`, story);
   }
-  write(`${layer}/stories/${plan.finale.battleStoryId}.ink`, read("content/stories/battles/sound_finale.ink"));
-  write(`${layer}/stories/${plan.finale.epilogueStoryId}.ink`, read("content/stories/milano/sound_epilogue.ink"));
-  const finalQuiz = JSON.parse(read("content/quizzes/sound_finale_B1.json"));
+  write(`${layer}/stories/${plan.finale.battleStoryId}.ink`, inkTemplate("battles/sound_finale"));
+  write(`${layer}/stories/${plan.finale.epilogueStoryId}.ink`, inkTemplate("milano/sound_epilogue"));
+  const finalQuiz = JSON.parse(read(`${milano}/quizzes/sound_finale_B1.json`));
   finalQuiz.id = plan.finale.quizId; finalQuiz.cityId = plan.cityId;
   finalQuiz.questions.forEach((question: { id: string }, index: number) => {
     const translated = originalTranslations[question.id];
@@ -192,17 +197,20 @@ describe("India release pipeline", () => {
     } finally { rmSync(root, { recursive: true, force: true }); }
   }, 120_000);
 
-  it("releases Delhi into India's journey folder, creating the catalogs it lacks and leaving core catalogs alone", async () => {
+  it("releases Delhi into India's journey folder, creating the catalogs it lacks and leaving other layers' catalogs alone", async () => {
     const root = unpublishedProject({ withoutEmptyCatalogs: true });
     try {
       const plan = indiaRequirements(loadIndiaScaffold(root), ["delhi"])[0];
       const { narrativeFile, translationsFile } = authorCity(root, plan, "");
-      const coreFiles = ["progression/journey.json", "battles/catalog.json", "romance/date_catalog.json", "tourism/catalog.json",
+      const kinds = ["progression/journey.json", "battles/catalog.json", "romance/date_catalog.json", "tourism/catalog.json",
         "romance/effect_catalog.json", "romance/presentation.json", "learning/translations.json"];
-      const coreBefore = coreFiles.map((kind) => readFileSync(path.join(root, "content", kind), "utf8"));
+      // The core layer has the shared effects and presentation; Milan's folder has every kind.
+      const otherFiles = ["content", milano].flatMap((directory) => kinds.map((kind) => path.join(root, directory, kind))).filter((file) => existsSync(file));
+      expect(otherFiles).toHaveLength(9);
+      const otherBefore = otherFiles.map((file) => readFileSync(file, "utf8"));
       expect(emptiedCatalogs.some((kind) => existsSync(path.join(root, layer, kind)))).toBe(false);
       await prepareIndiaRelease(root, true, "delhi", narrativeFile, translationsFile);
-      expect(coreFiles.map((kind) => readFileSync(path.join(root, "content", kind), "utf8"))).toEqual(coreBefore);
+      expect(otherFiles.map((file) => readFileSync(file, "utf8"))).toEqual(otherBefore);
       expect(emptiedCatalogs.every((kind) => existsSync(path.join(root, layer, kind)))).toBe(true);
       expect(JSON.parse(readFileSync(path.join(root, layer, "cities/delhi.json"), "utf8")).productionStatus).toBe("complete");
       expect(JSON.parse(readFileSync(path.join(root, layer, "manifest.json"), "utf8")).status).toBe("available");

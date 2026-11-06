@@ -7,6 +7,7 @@ test("the title screen opens every registered journey without writing a save", a
   const journeys = await selector.locator("option").evaluateAll((options) =>
     options.map((option) => ({ id: (option as HTMLOptionElement).value, name: option.textContent ?? "" })));
   expect(journeys.map((journey) => journey.id)).toEqual(expect.arrayContaining(["milano", "golden_triangle"]));
+  const headings = new Map<string, string | null>();
   for (const journey of journeys) {
     await selector.selectOption(journey.id);
     if (journey.name.includes("準備中")) {
@@ -16,8 +17,12 @@ test("the title screen opens every registered journey without writing a save", a
       await expect(page.getByRole("button", { name: "旅をはじめる" })).toHaveCount(0);
     } else {
       await expect(page.getByRole("button", { name: "旅をはじめる", exact: true })).toBeVisible();
+      headings.set(journey.id, await page.locator(".masthead .edition").textContent());
     }
   }
+  // Before the trip starts, the heading names the selected journey's first city.
+  expect(headings.get("milano")).toBe("ミラノの旅");
+  expect(headings.get("golden_triangle")).toBe("デリーの旅");
   expect(Object.keys(await allStorage(page)).filter((key) => key.includes(".save."))).toEqual([]);
 });
 
