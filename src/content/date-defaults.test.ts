@@ -49,4 +49,16 @@ describe("ordinary date defaults", () => {
   it("does not silently turn an explicitly empty prerequisite into a city clear", () => {
     expect(dateSchema.safeParse({ ...minimal, requiredCompletedChapters: [] }).success).toBe(false);
   });
+
+  it("rejects a validation context that repeats another one, whatever the field order", () => {
+    const contexts = [
+      { romanceStage: 4, confessionReady: true, endingReached: true },
+      { endingReached: true, romanceStage: 4, confessionReady: true },
+    ];
+    const result = dateSchema.safeParse({ ...minimal, validationContexts: contexts });
+    expect(result.success).toBe(false);
+    expect(result.error?.issues.map((issue) => issue.message)).toEqual(["Duplicate validation context"]);
+    // Contexts that differ in any field stay allowed.
+    expect(dateSchema.safeParse({ ...minimal, validationContexts: [contexts[0], { ...contexts[1], endingReached: false }] }).success).toBe(true);
+  });
 });

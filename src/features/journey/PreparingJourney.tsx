@@ -3,10 +3,10 @@ import { balance } from "../../content";
 import type { Journey } from "../../content/journeys";
 import { loadJourneyDraft, saveJourneyDraft } from "../../persistence/journey-preparation";
 import type { StorageLike } from "../../persistence";
-import { JourneySelection } from "./JourneySelection";
+import { JourneySelection, type SelectorFocus } from "./JourneySelection";
 
 /** A saved preparation is not a playable city: no fictional hotel or budget is introduced. */
-export function PreparingJourney({ journey, storage, onSwitchJourney }: { journey: Journey; storage: StorageLike; onSwitchJourney: (id: string) => void }) {
+export function PreparingJourney({ journey, storage, onSwitchJourney, selectorFocus }: { journey: Journey; storage: StorageLike; onSwitchJourney: (id: string) => void; selectorFocus?: SelectorFocus }) {
   const [loaded, setLoaded] = useState(() => loadJourneyDraft(storage));
   const [player, setPlayer] = useState(balance.defaultPlayerName);
   const [heroine, setHeroine] = useState(balance.defaultHeroineName);
@@ -29,7 +29,7 @@ export function PreparingJourney({ journey, storage, onSwitchJourney }: { journe
     <main id="main">
       <section className="paper intro journey-preparation">
         <p className="eyebrow">旅のはじまり</p>
-        <JourneySelection value={journey.id} onChange={onSwitchJourney} />
+        <JourneySelection value={journey.id} onChange={onSwitchJourney} {...selectorFocus} />
         <h1>{journey.nameJa}</h1>
         <p className="lead">{journey.cities.map((city, index) => <span key={city.id} className="journey-route-stop">{index ? " → " : ""}{city.nameJa}</span>)}</p>
         <p>この旅行編は制作中です。観光やイベントはまだ遊べません。</p>

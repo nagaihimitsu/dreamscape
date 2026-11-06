@@ -12,7 +12,7 @@ import { withContext } from "./content-validation-utils";
 import { validateEpilogue } from "./epilogue-validation";
 import { compileInk, validateNoInkRandom, validateRelationshipToneSource, validateStory } from "./ink-validation";
 import { buildJourneyFragments, journeyNarrativeSchema, journeyRequirements, loadJourneyScaffold } from "./journey-scaffold";
-import { validateTourism } from "./tourism-validation";
+import { validateTourism, validateTourismAssets } from "./tourism-validation";
 
 function inkFiles(directory: string): string[] {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -84,8 +84,9 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
       backgroundIds: [...new Set(travel.places.map((place) => place.backgroundAssetId))] };
     const ownLandmarks = fragments.landmarks.filter((landmark) => landmark.cityId === city.cityId);
     const ownClues = fragments.clues.filter((clue) => ownLandmarks.some((landmark) => landmark.id === clue.landmarkId));
-    guides += await validateTourism(root, { schemaVersion: 1, landmarks: ownLandmarks, clues: ownClues,
-      assets: tourism.assets.filter((asset) => ownLandmarks.some((landmark) => landmark.imageAssetId === asset.id)) },
+    const ownAssets = tourism.assets.filter((asset) => ownLandmarks.some((landmark) => landmark.imageAssetId === asset.id));
+    await validateTourismAssets(root, ownAssets);
+    guides += validateTourism({ schemaVersion: 1, landmarks: ownLandmarks, clues: ownClues, assets: ownAssets },
     city.cityId, input.plannedLandmarks[city.cityId], fragments.battles, {}, stories, context, () => observe,
     (storyId) => storyFiles[storyId] ? displayPath(root, storyFiles[storyId]) : `${storyId}.ink`);
     for (const battle of fragments.battles.filter((battle) => battle.cityId === city.cityId || ownLandmarks.some((landmark) => landmark.battleId === battle.id)))

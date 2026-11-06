@@ -13,7 +13,8 @@ import { journeySchema } from "../src/content/journey-schemas";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { quizSchema } from "../src/content/schemas";
 import { validateItemReferences } from "../src/story/items";
-import { compileInk, validateQuizEntries } from "./content-pipeline";
+import { compileInk } from "./ink-validation";
+import { validateQuizEntries } from "./quiz-validation";
 import { validateEncounterContent } from "./encounter-validation";
 import { loadContentSources, storyFile } from "./content-sources";
 

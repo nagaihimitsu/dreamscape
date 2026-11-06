@@ -1,5 +1,7 @@
 # インド編 統合調査資料（2026-11-03）
 
+> 記録の注記：本文のパス・コマンドは作成当時の配置のままです。現在、この旅行編のデータは `content/journeys/golden_triangle/`、制作資料は `authoring/journeys/golden_triangle/` にあります（[旧配置との対応表](../../../README.md#当時の配置と現在の配置)）。
+
 `source/` は提供された `Dreamscape_India_Integrated_20261103.zip` の資料を原本のまま保存したものです。出典、統合前データ、変更履歴、検証スクリプトと `MANIFEST.json` を含みます。ここは制作資料であり、ゲームの本番コンテンツや実際の旅行案内ではありません。
 
 この資料内での統合後の参照元は `source/data/`、`source/cities/`、`source/travel/` です。`source/reference/` は統合前資料の監査用です。都市・イベント・地点・経路の JSON は未制作の脚本や背景を参照する試作で、直接本番カタログにコピーしないでください。詳しくは `source/INTEGRATION_CHANGELOG.md` と `source/codex/INTEGRATED_HANDOFF.md` を参照してください。

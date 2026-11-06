@@ -13,38 +13,14 @@ function unique(values: string[], label: string) {
     throw new Error(`Duplicate ${label}`);
 }
 
-/** Tourism is optional; the content contract never grants effects or asks Ink choices. */
-export async function validateTourism(
-  root: string,
-  catalog: TourismCatalog,
-  cityId: string,
-  plannedLandmarkIds: string[],
-  battles: BattleDefinition[],
-  quizzes: Record<string, QuizDefinition>,
-  stories: Record<string, string>,
-  context: TagContext,
-  observeForStory?: (storyId: string) => DialogueObserver,
-  /** How messages name a story's Ink file (its real path). */
-  storyLabel: (storyId: string) => string = (storyId) => `${storyId}.ink`,
-): Promise<number> {
-  unique(
-    catalog.landmarks.map((item) => item.id),
-    "tourism landmark ID",
-  );
-  unique(
-    catalog.assets.map((item) => item.id),
-    "tourism asset ID",
-  );
-  unique(
-    catalog.clues.map((item) => item.id),
-    "tourism clue ID",
-  );
-  unique(
-    catalog.clues.map((item) => item.factId),
-    "tourism fact ID",
-  );
+/**
+ * Check every tourism image once per build: a JPEG, PNG or WebP file whose
+ * size matches its catalog entry. validateTourism checks each city's use of
+ * the images, so the files are not read again for every city.
+ */
+export async function validateTourismAssets(root: string, assets: TourismCatalog["assets"]): Promise<void> {
   const roots = publicRoots(root);
-  for (const asset of catalog.assets) {
+  for (const asset of assets) {
     const bytes = await readFile(resolvePublicFile(root, asset.path, roots));
     const jpeg = bytes[0] === 0xff && bytes[1] === 0xd8;
     const png = bytes
@@ -64,6 +40,40 @@ export async function validateTourism(
     if (dimensions.width !== asset.width || dimensions.height !== asset.height)
       throw new Error(`Tourism image dimensions do not match: ${asset.id}/${asset.path}`);
   }
+}
+
+/**
+ * Tourism is optional; the content contract never grants effects or asks Ink choices.
+ * The image files themselves are checked by validateTourismAssets.
+ */
+export function validateTourism(
+  catalog: TourismCatalog,
+  cityId: string,
+  plannedLandmarkIds: string[],
+  battles: BattleDefinition[],
+  quizzes: Record<string, QuizDefinition>,
+  stories: Record<string, string>,
+  context: TagContext,
+  observeForStory?: (storyId: string) => DialogueObserver,
+  /** How messages name a story's Ink file (its real path). */
+  storyLabel: (storyId: string) => string = (storyId) => `${storyId}.ink`,
+): number {
+  unique(
+    catalog.landmarks.map((item) => item.id),
+    "tourism landmark ID",
+  );
+  unique(
+    catalog.assets.map((item) => item.id),
+    "tourism asset ID",
+  );
+  unique(
+    catalog.clues.map((item) => item.id),
+    "tourism clue ID",
+  );
+  unique(
+    catalog.clues.map((item) => item.factId),
+    "tourism fact ID",
+  );
   let guideCount = 0;
   for (const landmark of catalog.landmarks) {
     if (landmark.cityId !== cityId || !plannedLandmarkIds.includes(landmark.id))

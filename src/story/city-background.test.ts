@@ -1,5 +1,5 @@
 import { afterEach, expect, it } from "vitest";
-import { compileInk } from "../../scripts/content-pipeline";
+import { compileInk } from "../../scripts/ink-validation";
 import { getCityContent, getCityStoryBackground, stories } from "../content";
 import { beginStory, continueStory } from "./runtime";
 

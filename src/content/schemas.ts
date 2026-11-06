@@ -3,6 +3,9 @@ import { z } from "zod";
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const text = z.string().trim().min(1);
 const version = z.literal(1);
+/** The fields and values of a date validation context, whatever their order. */
+const validationContextKey = (context: object) =>
+  JSON.stringify(Object.entries(context).sort(([a], [b]) => a.localeCompare(b)));
 
 export const dateSchema = z
   .object({
@@ -46,6 +49,11 @@ export const dateSchema = z
           .strict(),
       )
       .min(1)
+      // Each context is validated in full; a repeated one only costs build time.
+      .refine(
+        (contexts) => new Set(contexts.map(validationContextKey)).size === contexts.length,
+        "Duplicate validation context",
+      )
       .default([{ romanceStage: 1, confessionReady: false }]),
   })
   .strict()

@@ -1,5 +1,7 @@
 # デリー本番脚本の全面改稿レビュー（2026-11-04）
 
+> 記録の注記：本文のパス・コマンドは作成当時の配置のままです。現在、この旅行編のデータは `content/journeys/golden_triangle/`、制作資料は `authoring/journeys/golden_triangle/` にあります（[旧配置との対応表](../../../../README.md#当時の配置と現在の配置)）。
+
 本書は制作判断の記録。脚本の正本は `content/stories/`、表示文の正本は本番各カタログ。従来の `narrative.json`・`quiz-hooks.json` は初回取込み時の資料であり、ここから再生成して上書きしない。
 
 ## 診断と残したもの

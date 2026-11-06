@@ -6,8 +6,7 @@ export { expect };
 /**
  * Every test fails on an uncaught page error, a console error or a missing
  * image, media or font file of the game in any of its tabs. Failed requests to
- * other origins (map tiles, web fonts) and the browser's automatic favicon
- * request are outside the game and are ignored.
+ * other origins (map tiles, web fonts) are outside the game and are ignored.
  */
 export const test = base.extend<{ errorGuard: void }>({
   errorGuard: [async ({ context, baseURL }, use) => {
@@ -18,15 +17,14 @@ export const test = base.extend<{ errorGuard: void }>({
       page.on("console", (message) => {
         if (message.type() !== "error") return;
         const { url } = message.location();
-        const external = !url.startsWith(origin) || new URL(url).pathname === "/favicon.ico";
-        if (message.text().startsWith("Failed to load resource") && external) return;
+        if (message.text().startsWith("Failed to load resource") && !url.startsWith(origin)) return;
         errors.push(`console: ${message.text()} (${url})`);
       });
       // The dev server answers a missing file with its HTML page, not a 404.
       page.on("response", (response) => {
         const type = response.request().resourceType();
         const url = new URL(response.url());
-        if (!["image", "media", "font"].includes(type) || url.origin !== origin || url.pathname === "/favicon.ico") return;
+        if (!["image", "media", "font"].includes(type) || url.origin !== origin) return;
         if (response.status() >= 400 || response.headers()["content-type"]?.startsWith("text/html"))
           errors.push(`missing ${type}: ${response.url()}`);
       });

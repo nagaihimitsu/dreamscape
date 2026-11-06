@@ -1,5 +1,7 @@
 # インド編 全調査統合資料（2026-11-03）
 
+> 記録の注記：本文のパス・コマンドは作成当時の配置のままです。現在、この旅行編のデータは `content/journeys/golden_triangle/`、制作資料は `authoring/journeys/golden_triangle/` にあります（[旧配置との対応表](../../../README.md#当時の配置と現在の配置)）。
+
 `source/` は提供された `Dreamscape_India_All_Research_Integrated_20261103.zip` を原本のまま保存したものです。`source/original_archives/` に統合元の4 ZIP、`source/source_history/` に抽出済みの履歴とスクリプトがあります。既存の[前回統合資料](../golden-triangle-20261103/README.md)もそのまま保持しています。
 
 追加の4調査については `source/canonical/` の22系列を研究用の参照元とし、各表の出典や適用上の注意は `source/quality/SOURCE_PRECEDENCE.csv`、`source/quality/CONFLICTS_AND_DECISIONS.md`、`source/integration/CODEX_HANDOFF.md` で確認してください。この資料は既存の `content/` そのものではなく、研究資料です。資料ごとの調査日と根拠を確認し、実際の旅行案内や完成済みコンテンツとして扱わないでください。

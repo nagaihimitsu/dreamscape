@@ -1,5 +1,7 @@
 # ルアンパパーン市街地の制作基盤
 
+> 記録の注記：本文のパス・コマンドは作成当時の配置のままです。現在、この旅行編のデータは `content/journeys/luang_prabang/`、制作資料は `authoring/journeys/luang_prabang/` にあります（[旧配置との対応表](../../../README.md#当時の配置と現在の配置)）。
+
 独立旅行編 `luang_prabang` として登録。**シナリオ・クイズ・デート会話・都市フィナーレは未制作**のため、旅行編は `preparing`、都市は `prototype`、イベントは `pending_content`。Debugの地図で移動と一時保存を確認できる。新規ゲームを開始できる状態とは表示しない。
 
 クァンシーの滝、郊外ツアーとツアー機能は今回の対象外。今後の追加方法や交通手段は未決定。
@@ -32,4 +34,4 @@
 - 実行データの正本：`content/cities/luang_prabang.json`、`content/travel/luang_prabang*.json`、画像・背景・デート先の既存カタログ。都市別の編集には `npm run city:bundle -- export luang_prabang <出力先>` を使う。
 - 調査台帳と経路計算の原本はこのディレクトリ。生成時の記録でありゲームデータの自動上書き元ではない。
 - `npm run journey:scaffold -- --requirements --journey luang_prabang` で必要なInk・クイズ・対訳・題名・人物・思い出のIDを確認できる。`npm run journey:readiness -- --journey luang_prabang` は未完成項目を示す。
-- 完成には脚本・クイズ・和訳に加え、それらに付随する戦闘・デート・フィナーレのメタデータの作成と登録が必要。特殊戦B/Cの舞台や問題は後で決める。[共通手順](../../JOURNEY_AUTHORING.md)を参照。
+- 完成には脚本・クイズ・和訳に加え、それらに付随する戦闘・デート・フィナーレのメタデータの作成と登録が必要。特殊戦B/Cの舞台や問題は後で決める。[共通手順](../../../../JOURNEY_AUTHORING.md)を参照。

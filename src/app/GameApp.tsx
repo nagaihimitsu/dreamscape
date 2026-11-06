@@ -13,7 +13,7 @@ import {
 } from "../content";
 import { defaultJourneyId, getJourney, getJourneyForCity } from "../content/journeys";
 import { currencyForCity, formatMoneyForCity } from "../content/currency";
-import { JourneySelection } from "../features/journey/JourneySelection";
+import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
 import { beginTravelEvent, waitForTravel } from "../domain/travel-game";
 import { getGameWeekday } from "../domain/travel";
 import { getNextCity, departToNextCity } from "../domain/city-travel";
@@ -86,7 +86,8 @@ export function GameApp({
   debug = false,
   journeyId = defaultJourneyId,
   onSwitchJourney,
-}: AppProps & { journeyId?: string; onSwitchJourney?: (id: string) => void }) {
+  selectorFocus,
+}: AppProps & { journeyId?: string; onSwitchJourney?: (id: string) => void; selectorFocus?: SelectorFocus }) {
   const isDebug = import.meta.env.DEV && debug;
   const [selectedLandmarkId, setSelectedLandmarkId] = useState<string | null>(null);
   const displaySettings = usePresentationSettings(storage);
@@ -112,6 +113,12 @@ export function GameApp({
   const [confirmDeparture, setConfirmDeparture] = useState(false);
   const [settings, setSettings] = useState(false);
   const [switchJourneyTo, setSwitchJourneyTo] = useState<string | null>(null);
+  // This journey's screen is the end of a switch: the title's selector has
+  // taken the focus back (child effects run first); a resumed game has none.
+  const endSelectorFocus = selectorFocus?.onFocusRestored;
+  useEffect(() => {
+    endSelectorFocus?.();
+  }, [endSelectorFocus]);
   function requestJourneySwitch(id: string) {
     if (id === journeyId || !onSwitchJourney) return;
     if (session.hasUnsavedProgress()) {
@@ -393,7 +400,7 @@ export function GameApp({
                   </button>}
                 </div>
               )}
-              {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} />}
+              {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} restoreFocus={selectorFocus?.restoreFocus} />}
               {!(loaded.status === "invalid" && loaded.kind === "journey") && <form onSubmit={begin} className="name-form">
                 {nameForm}
                 <button

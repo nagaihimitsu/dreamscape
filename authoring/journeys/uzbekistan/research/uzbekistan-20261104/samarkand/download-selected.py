@@ -1,3 +1,9 @@
+# Archived research script: stop before it reads or writes the old layout.
+import sys
+sys.exit("This research script is archived. Its paths (public/assets/tourism/uzbekistan/) follow the repository layout of its time, so it\n"
+         "no longer runs; see authoring/journeys/README.md for the current places.\n"
+         "この調査スクリプトは保存用の記録です。パス（public/assets/tourism/uzbekistan/）が当時の配置のままのため、現在は実行できません。\n"
+         "現在の配置は authoring/journeys/README.md を参照してください。")
 import json,urllib.request,urllib.parse,concurrent.futures
 from pathlib import Path
 ROOT=Path(__file__).parent

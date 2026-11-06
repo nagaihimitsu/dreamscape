@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { RELATIONSHIP_TONES } from "../domain/romance-tone";
-import { compileInk, validateRelationshipToneSource, validateStory } from "../../scripts/content-pipeline";
+import { compileInk, validateRelationshipToneSource, validateStory } from "../../scripts/ink-validation";
 
 const header = `VAR player_name = ""
 VAR heroine_name = ""

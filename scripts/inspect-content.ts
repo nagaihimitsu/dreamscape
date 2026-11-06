@@ -29,11 +29,9 @@ import {
   journeySchema,
   rewardRuleSchema,
 } from "../src/content/journey-schemas";
-import {
-  buildContent,
-  compileInk,
-  validateQuizEntries,
-} from "./content-pipeline";
+import { buildContent } from "./content-pipeline";
+import { compileInk } from "./ink-validation";
+import { validateQuizEntries } from "./quiz-validation";
 import { classifyContentFile, toPosix, type MergedKind } from "./content-layout";
 import { loadContentSources, parseCatalog } from "./content-sources";
 

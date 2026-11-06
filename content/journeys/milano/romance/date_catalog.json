@@ -47,11 +47,6 @@
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": true
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "endingReached": true
         }
       ],
       "allowAfterEnding": true,
@@ -98,11 +93,6 @@
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": false
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "endingReached": true
         },
         {
           "romanceStage": 4,
@@ -159,11 +149,6 @@
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": true
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "endingReached": true
         }
       ],
       "invitationJa": "「行きたい所があるの。今日は、私についてきて」"
@@ -209,11 +194,6 @@
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": false
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "endingReached": true
         },
         {
           "romanceStage": 4,
@@ -289,12 +269,6 @@
           "memoryIds": []
         },
         {
-          "romanceStage": 3,
-          "confessionReady": true,
-          "confessionResult": "accepted",
-          "memoryIds": []
-        },
-        {
           "romanceStage": 4,
           "confessionReady": true,
           "confessionResult": "accepted",
@@ -346,11 +320,6 @@
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": false
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "endingReached": true
         },
         {
           "romanceStage": 4,
@@ -462,11 +431,6 @@
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": true
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "endingReached": true
         }
       ]
     },
@@ -514,11 +478,6 @@
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": false
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "endingReached": true
         },
         {
           "romanceStage": 4,
@@ -576,11 +535,6 @@
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": true
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "endingReached": true
         }
       ]
     },
@@ -628,11 +582,6 @@
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": false
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "endingReached": true
         },
         {
           "romanceStage": 4,
@@ -690,11 +639,6 @@
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": true
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "endingReached": true
         }
       ]
     },
@@ -745,12 +689,6 @@
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": false,
-          "memoryIds": []
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "endingReached": true,
           "memoryIds": []
         },
         {
@@ -908,11 +846,6 @@
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": true
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "endingReached": true
         }
       ]
     },
@@ -960,11 +893,6 @@
           "romanceStage": 4,
           "confessionReady": true,
           "endingReached": false
-        },
-        {
-          "romanceStage": 4,
-          "confessionReady": true,
-          "endingReached": true
         },
         {
           "romanceStage": 4,

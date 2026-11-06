@@ -4,6 +4,12 @@
 This produces research candidates only: an absent foot restriction is not
 evidence of legal or safe walking access. Output is never production ready.
 """
+# Archived research script: stop before it reads or writes the old layout.
+import sys
+sys.exit("This research script is archived. Its paths (authoring/research/) follow the repository layout of its time, so it\n"
+         "no longer runs; see authoring/journeys/README.md for the current places.\n"
+         "この調査スクリプトは保存用の記録です。パス（authoring/research/）が当時の配置のままのため、現在は実行できません。\n"
+         "現在の配置は authoring/journeys/README.md を参照してください。")
 import argparse
 import csv
 import importlib.util

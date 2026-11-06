@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { battles, battleQuizzes, reasoningIntroductions, stories } from ".";
-import { compileInk } from "../../scripts/content-pipeline";
+import { compileInk } from "../../scripts/ink-validation";
 import { reasoningIntroCatalogSchema } from "./reasoning-intros";
 import { beginStory, continueStory } from "../story/runtime";
 import { advanceBattle, answerBattle, battleFingerprint, getReasoningContext, selectReasoningClue, startBattle } from "../domain/battle";

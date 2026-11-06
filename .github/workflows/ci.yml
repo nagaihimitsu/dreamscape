@@ -1,0 +1,55 @@
+name: CI
+
+# Checks for every pull request, also runnable by hand. The jobs run in
+# parallel with each other and with the E2E workflow (e2e.yml). On main,
+# pages.yml runs the same checks (npm run verify) before it deploys.
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  # A newer push to the same pull request cancels the unfinished run.
+  # A manual run gets a group of its own and always finishes.
+  group: ci-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    name: Content, types and production build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      # content:build, typecheck, vite build, then the check that dist holds
+      # no Debug or test code (scripts/check-dist.ts).
+      - name: Build content, check types and build for production
+        run: npm run build
+
+  unit:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      # pretest builds the content first.
+      - name: Run all unit tests
+        run: npm test

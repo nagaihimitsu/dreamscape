@@ -6,7 +6,7 @@ import jaipurData from "../src/content/generated/content/cities/jaipur.json";
 import journeyData from "../src/content/generated/content/journeys/catalog.json";
 import { citySchema } from "../src/content/schemas";
 import { journeyCatalogSchema } from "../src/content/journey-catalog";
-import { validateCityLinks } from "./content-pipeline";
+import { validateCityLinks } from "./city-links";
 
 describe("registered city links", () => {
   it("accepts a completed first city followed by an unpublished prototype", () => {

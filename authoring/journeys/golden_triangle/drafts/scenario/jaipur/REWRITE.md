@@ -1,5 +1,7 @@
 # ジャイプール改稿記録（2026-11-04）
 
+> 記録の注記：本文のパス・コマンドは作成当時の配置のままです。現在、この旅行編のデータは `content/journeys/golden_triangle/`、制作資料は `authoring/journeys/golden_triangle/` にあります（[旧配置との対応表](../../../../README.md#当時の配置と現在の配置)）。
+
 この資料は編集判断の記録。実行脚本の正本は `content/stories/`。初期登録用 `narrative.json` を再投入して本番カタログを戻さない。
 
 ## 残したものと変えたもの

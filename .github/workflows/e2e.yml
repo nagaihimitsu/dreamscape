@@ -1,0 +1,63 @@
+name: E2E
+
+# Browser tests (Playwright) for every pull request and every push to main,
+# also runnable by hand. Deploying (pages.yml) does not wait for them: on
+# main they run alongside the deploy, and a failure shows as a failed check.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  # A newer push to the same pull request cancels the unfinished run. Runs
+  # on main and manual runs get a group of their own and always finish.
+  group: e2e-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  e2e:
+    name: E2E (${{ matrix.tier }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      # Every tier reports its own result even when another one fails.
+      fail-fast: false
+      matrix:
+        # One entry per tier; each entry is a separate job and all of them run
+        # in parallel. A new tier (for example a production-build check) is a
+        # new entry with its own command; a slow tier can be split into
+        # entries that pass --shard=1/2 and --shard=2/2 to Playwright.
+        include:
+          - tier: gate
+            command: npm run test:e2e
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Install Chromium for the locked Playwright version
+        run: npx playwright install --with-deps chromium
+      # The webServer of playwright.config.ts builds the content and starts
+      # the development server. GitHub sets CI, which turns on the CI
+      # settings there (no retries, forbidOnly, 2 workers, HTML report).
+      - name: Run the ${{ matrix.tier }} tier
+        run: ${{ matrix.command }}
+      - name: Keep the report, screenshots and traces of failed tests
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-${{ matrix.tier }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+          if-no-files-found: ignore
