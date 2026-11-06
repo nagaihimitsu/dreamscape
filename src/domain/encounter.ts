@@ -36,8 +36,7 @@ function optionItemsBelongToEncounter(event: EncounterDefinition, option: Encoun
   return [option.requiresItemId, option.consumeItemId, option.giftItemId].every((itemId) => itemBelongsToEncounter(event, itemId));
 }
 
-/** Exported only for the temporary refactor equivalence harness (src/refactor-equivalence.test.ts). */
-export function encounterFingerprint(event: EncounterDefinition): string {
+function encounterFingerprint(event: EncounterDefinition): string {
   const ids = [event.storyId, ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : [])];
   // Odds have their own stored snapshot; rebalancing must not invalidate an active event.
   const fingerprintData = event.quiz ? { ...event, quiz: { ...event.quiz, chancePercent: 0 } } : event;
