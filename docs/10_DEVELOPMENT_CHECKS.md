@@ -12,11 +12,12 @@
 | 旅行編フォルダの追加・削除、統合規則・生成処理の変更 | `npm run content:build`、`npx vitest run scripts/journey-folders.test.ts scripts/content-sources.test.ts scripts/catalog-merge.test.ts scripts/content-ownership.test.ts`（先に `content:build`）、E2E一式（`boot.spec.ts` が登録済みの全旅行編の開始画面を開く） |
 | 保存・進行 | 同一バージョン内の保存・再開、読めないデータの保護、明示消去、別タブ、報酬重複防止の関連テストとE2E一式、必要な実画面。型・共通基盤の影響に応じて型検査と検証範囲を広げる |
 | CI・Playwrightの設定、本番ビルドの検査（`.github/workflows/`・`playwright.config.ts`・`scripts/dist-guard.ts`） | `npm run build`（`dist/` の検査を含む）、`npx vitest run scripts/dist-guard.test.ts`、E2E一式。ワークフローの変更はPRで実際の実行結果を確認する |
+| 単体テストの設定・テストの組・テスト用フィクスチャ（`vite.config.ts` の `test`・`scripts/test-sets.ts`・`scripts/test-image-guard.ts`・`src/content/test-fixtures.ts`） | `npx vitest run scripts/test-sets.test.ts scripts/test-image-guard.test.ts src/content/test-fixtures.test.ts`（先に `content:build`）、`npm test`（両方の組） |
 | 大きな変更・公開前 | `npm run verify`、E2E一式と、影響範囲に応じた実画面確認 |
 
 `npm run content:check` は差分検証ではなく全コンテンツを検証・生成する。対象テストを絞る場合、例えば `npm test -- src/domain/encounter-ap.test.ts` は通常どおり `pretest` でコンテンツを生成してから、そのテストだけを実行する。Playwrightの `webServer` は通常 `npm run dev` を実行し、その `predev` がコンテンツを生成する。既に起動したサーバーを再利用する場合は、対象の変更が反映され、生成物が最新であることを確認する。自動テストの通過だけを写真の切れ方や操作性の目視確認の代わりにはしない。
 
-小変更のたびに全単体テストや全E2Eを手元で実行する必要はない。PRと `main` へのpushでは、GitHub Actionsが全単体テスト・本番ビルド・E2E一式を自動実行する（[CI](#cigithub-actions)）。上の表でE2E一式を挙げた変更は、PRを出す前に手元でも実行する。開発中はv12以前の旧開発版セーブの更新後の再開を保証せず、旧互換テストを新機能ごとに増やす必要はない。現在のゲームの保存・再開や読めないデータの保護は維持する。
+小変更のたびに全単体テストや全E2Eを手元で実行する必要はない。日常の単体テストは `npm run test:quick`（速い組。[単体テストの組](#単体テストの組と所要時間)）とし、全件（`npm test`）はCIと、公開前・大きな変更の `npm run verify` で実行する。PRと `main` へのpushでは、GitHub Actionsが全単体テスト・本番ビルド・E2E一式を自動実行する（[CI](#cigithub-actions)）。上の表でE2E一式を挙げた変更は、PRを出す前に手元でも実行する。開発中はv12以前の旧開発版セーブの更新後の再開を保証せず、旧互換テストを新機能ごとに増やす必要はない。現在のゲームの保存・再開や読めないデータの保護は維持する。
 
 `npm test` と `npm run build` はそれぞれ実行前にコンテンツを生成する。`npm run verify` は生成、全ユニットテスト、型検査、製品ビルド、`dist/` の検査を順に行う一括用コマンドで、生成は一度だけ行う。この中の `npm run test --ignore-scripts` は直前の生成を利用して `pretest` のみ省略している。個別に `--ignore-scripts` を付ける、または `npx vitest run` を直接呼ぶ場合は自動生成されないため、Ink・JSON等を変更した後は事前に `npm run content:build` を実行する。生成物の鮮度が分からない場合も再生成する。
 
@@ -27,6 +28,32 @@
 テストは簡潔な dot レポーターを使い、成功したテスト内のログを省略する。失敗したテストのログ、失敗箇所、終了コードは保持する。内容を詳しく追う場合は、生成後に `npx vitest run --reporter=verbose <対象>` とする。通常のコンテンツ生成は旧会話注釈の警告を件数で示し、個々の警告は `npm run content:build -- --verbose` で確認できる。生成に失敗した場合は警告の詳細と原因を表示し、失敗のまま終了する。
 
 検証の絞り込みと成功ログの抑制は、テストを削除したことや実行時間・トークンの削減量を意味しない。今回確認したコマンドと、実施できなかった確認は作業報告に記載する。
+
+## 単体テストの組と所要時間
+
+単体テストは2つの組に分かれる（`vite.config.ts` の `test.projects`）。
+
+| 組 | 内容 | 実行 |
+| --- | --- | --- |
+| `quick` | ゲームルール、保存、画面部品、生成物を読むだけのテスト、制作ツールの純粋関数など | `npm run test:quick`（生成してから、この組だけ）。日常の確認用 |
+| `content` | コンテンツ全体の生成と検証（`buildContent`）を一時コピーで何度も実行するテストと、それを使う制作ツールのテスト | `npx vitest run --project content`（先に `content:build`） |
+
+`npm test` と `npm run verify`、CIは両方の組を実行する。どちらの組に入るかは一覧で管理せず、`scripts/test-sets.ts` がテストファイルの `import` から自動で決める。テストファイル自身の相対 `import` を何段でもたどり、`scripts/content-pipeline.ts`（`buildContent`）か `src/content/test-fixtures.ts`（`prepareContentFixture`）に届くファイルが `content`、それ以外が `quick` になる（型だけの `import type` は数えない）。新しいテストもこの規則で自動的にどちらかに入り、どちらにも入らないテストはない（`scripts/test-sets.test.ts` が確認する）。ファイルを指定した `npx vitest run <ファイル>` は組に関係なく実行できる。
+
+`prepareContentFixture` は `content/` と `public/` を一時フォルダへ写すが、各旅行編の画像（`content/journeys/<journeyId>/public/` のファイル。リポジトリの大半の容量）は写さず、フォルダだけを作って各ファイルへのシンボリックリンクを置く。テストはそこへファイルを追加・削除してよいが、リンクされたファイルへ上書きするとリポジトリの画像が変わるため、差し替えは `replaceFixtureFile` を使う。単体テストの実行の前後で各旅行編の画像の大きさと更新時刻を比べ、変わっていれば実行全体を失敗にする（`scripts/test-image-guard.ts`）。
+
+所要時間（4コアの開発環境で計測、2026年11月）：
+
+| 確認 | 以前 | 現在 |
+| --- | --- | --- |
+| `npm run content:build` | 約15.5秒 | 約14.6秒 |
+| `npm run test:quick`（生成を含む） | （組がなかった。同じテストファイルを指定すると約48秒） | 約43秒 |
+| 全単体テスト（`npx vitest run`、生成を除く） | 約610秒 | 約395秒 |
+
+- 時間の長いファイルはすべて `content` の組にある：`scripts/city-bundle*.test.ts` の4ファイル（各約100〜190秒）、`src/content/content.test.ts`（約160秒）、`src/content/city-content.test.ts`・`src/content/journey-content.test.ts`・`scripts/journey-folders.test.ts`（各約70〜90秒）。`quick` の組で最も長いのは `scripts/journey-scenario-validation.test.ts`（約14秒）。
+- 全単体テストの時間は、各テストが一時コピーで生成を繰り返す作業の合計（約1,400〜1,500秒分）を、同時に動くワーカーの数で割った長さにほぼ等しい。1回の生成（約15秒）のうち約12秒は会話の全分岐の検査（`validateStory`。1回の生成で212回）で、Inkのコンパイルは約1秒、観光画像の検査は約0.1秒。単体テスト一式では `validateStory` が約18,000回呼ばれ、全ワーカーの作業時間（約1,470秒分）の約7割（約1,070秒分）を占める。
+- ワーカーはCPUのコア数だけ使う（`vite.config.ts` の `maxWorkers`）。1つのファイルの中のテストは順に実行されるため、極端に長いファイルは分けて、別々のワーカーで並列に動くようにする（`scripts/city-bundle*.test.ts` は1つのファイルだったときに約610秒かかり、全体の待ち時間を決めていたため4つに分けた）。
+- 計測は `npx vitest run --reporter=dot --reporter=json --outputFile.json=<出力先>.json`（先に `content:build`）で、JSONの各ファイルの `startTime`・`endTime` を比べる。
 
 ## E2Eテスト
 

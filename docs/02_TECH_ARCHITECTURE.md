@@ -83,7 +83,7 @@ tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲ�
 
 ### 生成物（手動で編集しない）
 
-`src/content/generated/` は `npm run content:build` の出力で、Git管理しない。`npm run dev`・`npm test`・`npm run build`・`npm run verify` は先に生成する。
+`src/content/generated/` は `npm run content:build` の出力で、Git管理しない。`npm run dev`・`npm test`・`npm run test:quick`・`npm run build`・`npm run verify` は先に生成する。
 
 - `stories.json`（コンパイル済みInk）、`quizzes.json`（出題するクイズ）。
 - `content/`：統合・検証済みのカタログを、旧 `content/` と同じ相対パス（`battles/catalog.json`、`cities/delhi.json`、`journeys/catalog.json` など）で書き出した写し。都市・移動ファイルは元のバイト列のまま写す。ゲームと参照だけの単体テストはここだけを読む（`scripts/content-boundary.test.ts` が検査）。

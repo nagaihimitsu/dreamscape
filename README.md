@@ -216,6 +216,7 @@ tests/e2e/ tests/fixtures/        # E2Eとテスト用データ（tests/fixtures
 | --- | --- |
 | `npm run dev` | コンテンツを生成してから開発サーバーを起動 |
 | `npm run content:build`（`content:check`） | 共通データと全旅行編を検証・統合し、`src/content/generated/` に書き出す |
+| `npm run test:quick` | コンテンツを生成してから速い組の単体テスト（日常の確認。全件は `npm test`・CI・`verify`。[テストの組](docs/10_DEVELOPMENT_CHECKS.md#単体テストの組と所要時間)） |
 | `npm test` | コンテンツを生成してから全単体テスト |
 | `npm run build` | 生成・型検査・本番ビルド（`dist/`）と、`dist/` にDebug・テスト用のコードやデータがないかの検査 |
 | `npm run verify` | 生成・全単体テスト・型検査・本番ビルド・`dist/` の検査を一度に実行（公開前・大きな変更） |
@@ -226,7 +227,7 @@ tests/e2e/ tests/fixtures/        # E2Eとテスト用データ（tests/fixtures
 | `npm run city:bundle` | 都市単位の作業用JSONで地点・交通・背景などを編集（[手順](authoring/CITY_BUNDLES.md)） |
 | `npm run icons:build` | `authoring/brand/favicon-master.png` から `public/` のファビコン（16・32・48px、顔の切り抜き）、Apple touch icon（180px）、アプリアイコン（192・512px）を作り直す。元画像を差し替えたときだけ実行し、生成した画像もコミットする |
 
-ゲームは `content/` を直接読まず、`npm run content:build` が書き出す生成物だけを読みます。`src/content/generated/` の `stories.json`・`quizzes.json`（コンパイル済みの会話と出題）、`content/`（統合したデータ）、`public/`（配信する画像）は手動で編集しないでください。Ink・JSON・画像を編集した後は `npm run content:build` を実行します（`dev`・`test`・`build`・`verify` は自動で実行します）。`vite` を直接起動する場合も先に実行してください。生成していないと、警告なしに画像のない状態で起動します。
+ゲームは `content/` を直接読まず、`npm run content:build` が書き出す生成物だけを読みます。`src/content/generated/` の `stories.json`・`quizzes.json`（コンパイル済みの会話と出題）、`content/`（統合したデータ）、`public/`（配信する画像）は手動で編集しないでください。Ink・JSON・画像を編集した後は `npm run content:build` を実行します（`dev`・`test`・`test:quick`・`build`・`verify` は自動で実行します）。`vite` を直接起動する場合も先に実行してください。生成していないと、警告なしに画像のない状態で起動します。
 
 ## コンテンツ制作の始め方（Phase 8）
 
@@ -386,7 +387,7 @@ Phase 2では解放済みイベントID、告白の保留/成功、交際エン�
 
 変更の影響に応じた対象テスト、実画面確認、ログの確認手順は [開発時の確認](docs/10_DEVELOPMENT_CHECKS.md) を参照してください。公開前や大きな変更は `npm run verify` でコンテンツ生成・全単体テスト・型検査・ビルドをまとめて行い、E2E一式（`npm run test:e2e`）と実画面も確認します。Playwrightを初めて使う場合は `npx playwright install chromium` を実行してください。
 
-`npm test` と `npm run build` を個別に使う場合はそれぞれコンテンツを再生成します。`npm run verify` は同じ一連の処理内で生成を一度にまとめます。空のcheckoutで `npm run typecheck` を単独実行する場合は、先に `npm run content:check` で生成してください。
+日常の確認には、コンテンツ全体の生成を何度も繰り返す重いテストを除いた `npm run test:quick` を使います。`npm test`・`npm run test:quick`・`npm run build` を個別に使う場合はそれぞれコンテンツを再生成します。`npm run verify` は同じ一連の処理内で生成を一度にまとめます。空のcheckoutで `npm run typecheck` を単独実行する場合は、先に `npm run content:check` で生成してください。
 
 単体テストは現在のゲームの進行、保存・再開、二重取得・二重消費の防止、破損・未知版・別タブ競合の保護、コンテンツ参照などを確認します。PlaywrightのE2E（`tests/e2e/`）は、起動、ミラノでの移動・観光・バトル・デート、保存と再読み込み・別タブ保護、ゴールデントライアングル編の都市間移動を利用者と同じ操作で確かめる最小構成で、どのテストでもコンソールエラーや画像の欠落があれば失敗します。内容と追加の判断基準は [開発時の確認](docs/10_DEVELOPMENT_CHECKS.md#e2eテスト) を参照してください。見た目は実画面で確認します。GitHub Actionsは、PRで本番ビルド・全単体テスト・E2E一式を並列に、`main` へのpushで `npm run verify` と公開、並列してE2E一式を実行します。E2Eの失敗時はスクリーンショット・トレース・HTMLレポートが14日間残ります（見方は [CI](docs/10_DEVELOPMENT_CHECKS.md#cigithub-actions)）。画面の見た目と実機Safariでの確認は、CIと並行して人が行います。
 
