@@ -7,6 +7,7 @@ import {
 } from "../../content";
 import { getEpisodeAvailability, getNextEpisode, getNextStoryBattle, storyBattlesForCity } from "../../domain/chapter";
 import type { GameState } from "../../domain/game";
+import { formatCityProgress } from "./city-progress-label";
 import "./city.css";
 
 export function CityProgress({
@@ -92,11 +93,15 @@ export function CityProgressBadge({ game }: { game: GameState }) {
   const { city } = getCityContent(game.currentCityId);
   const stops = episodes.filter((episode) => episode.cityId === city.id && episode.kind !== "city_finale");
   const storyBattles = storyBattlesForCity(city.id);
-  const completed = stops.filter((episode) => game.completedEpisodeIds.includes(episode.id)).length;
-  const completedSpecials = storyBattles.filter((item) => game.battleRecords.some((record) => record.battleId === item.battleId && record.attempts > 0)).length;
   const cityCompleted = game.completedCityIds.includes(city.id);
   return <span className="pill" data-testid={cityCompleted ? "city-complete" : undefined}>
-    {cityCompleted ? "都市クリア" : `観光 ${completed} / ${stops.length} · 対決 ${completedSpecials} / ${storyBattles.length}`}
+    {formatCityProgress({
+      completedStops: stops.filter((episode) => game.completedEpisodeIds.includes(episode.id)).length,
+      stops: stops.length,
+      completedSpecialBattles: storyBattles.filter((item) => game.battleRecords.some((record) => record.battleId === item.battleId && record.attempts > 0)).length,
+      specialBattles: storyBattles.length,
+      cityCompleted,
+    })}
   </span>;
 }
 
