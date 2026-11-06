@@ -19,7 +19,7 @@
 
 `npm test` と `npm run build` はそれぞれ実行前にコンテンツを生成する。`npm run verify` は生成、全ユニットテスト、型検査、製品ビルドを順に行う一括用コマンドで、生成は一度だけ行う。この中の `npm run test --ignore-scripts` は直前の生成を利用して `pretest` のみ省略している。個別に `--ignore-scripts` を付ける、または `npx vitest run` を直接呼ぶ場合は自動生成されないため、Ink・JSON等を変更した後は事前に `npm run content:build` を実行する。生成物の鮮度が分からない場合も再生成する。
 
-ゲームと、データを参照するだけの単体テストは `content/` のJSONを直接読まず、`npm run content:build` が検証・統合して書き出す `src/content/generated/content/`（生成物。手動編集しない）を読む。JSONを編集した後も `npm run content:build` を実行する。一方、原本を一時フィクスチャへ写して書き換え、生成を検証するテスト（`src/content/*-content.test.ts` など）と制作ツールは `content/`（旅行編フォルダを含む）の原本を読む。画像も同様に、`npm run content:build` が直下の `public/` と各旅行編の `public/` を `src/content/generated/public/` にまとめ、開発サーバー・`vite build`・Playwrightはこのフォルダを配信する（`npm run dev` / `build` / `test` は先に `content:build` を実行する）。`vite` を直接起動してこのフォルダがない場合は警告が出るので、先に `npm run content:build` を実行する。
+ゲームと、データを参照するだけの単体テストは `content/` のJSONを直接読まず、`npm run content:build` が検証・統合して書き出す `src/content/generated/content/`（生成物。手動編集しない）を読む。JSONを編集した後も `npm run content:build` を実行する。一方、原本を一時フィクスチャへ写して書き換え、生成を検証するテスト（`src/content/*-content.test.ts` など）と制作ツールは `content/`（旅行編フォルダを含む）の原本を読む。画像も同様に、`npm run content:build` が直下の `public/` と各旅行編の `public/` を `src/content/generated/public/` にまとめ、開発サーバー・`vite build`・Playwrightはこのフォルダを配信する（`npm run dev` / `build` / `test` は先に `content:build` を実行する）。`vite`（`npx vite`・`vite build`・`vite preview`）を直接起動する場合は、先に `npm run content:build` を実行する。このフォルダがないと、画像なしで起動・ビルドされる（警告は出ない）。
 
 `scripts/journey-folders.test.ts` は、原本の一時コピーで旅行編フォルダの改名・追加（`tests/fixtures/journeys/zz_fixture_trip/`）・各旅行編フォルダの除外を行い、そのたびに `content:build` 相当の生成と検証を実行する（約1分、旅行編が増えるほど長くなる）。特定の旅行編・都市の内容を確かめる単体テストは、全旅行編の合計件数や一覧ではなく、その旅行編・都市の範囲に絞って数える。
 

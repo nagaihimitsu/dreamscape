@@ -224,7 +224,7 @@ tests/e2e/ tests/fixtures/        # E2Eとテスト用データ（tests/fixtures
 | `npm run city:bundle` | 都市単位の作業用JSONで地点・交通・背景などを編集（[手順](authoring/CITY_BUNDLES.md)） |
 | `npm run icons:build` | `authoring/brand/favicon-master.png` から `public/` のファビコン（16・32・48px、顔の切り抜き）、Apple touch icon（180px）、アプリアイコン（192・512px）を作り直す。元画像を差し替えたときだけ実行し、生成した画像もコミットする |
 
-ゲームは `content/` を直接読まず、`npm run content:build` が書き出す生成物だけを読みます。`src/content/generated/` の `stories.json`・`quizzes.json`（コンパイル済みの会話と出題）、`content/`（統合したデータ）、`public/`（配信する画像）は手動で編集しないでください。Ink・JSON・画像を編集した後は `npm run content:build` を実行します（`dev`・`test`・`build`・`verify` は自動で実行します）。
+ゲームは `content/` を直接読まず、`npm run content:build` が書き出す生成物だけを読みます。`src/content/generated/` の `stories.json`・`quizzes.json`（コンパイル済みの会話と出題）、`content/`（統合したデータ）、`public/`（配信する画像）は手動で編集しないでください。Ink・JSON・画像を編集した後は `npm run content:build` を実行します（`dev`・`test`・`build`・`verify` は自動で実行します）。`vite` を直接起動する場合も先に実行してください。生成していないと、警告なしに画像のない状態で起動します。
 
 ## コンテンツ制作の始め方（Phase 8）
 
