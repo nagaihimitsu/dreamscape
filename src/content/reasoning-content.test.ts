@@ -20,7 +20,12 @@ import battleData from "./generated/content/battles/catalog.json";
 import tourismData from "./generated/content/tourism/catalog.json";
 
 let fixture: string;
-const source = () => battleCatalogSchema.parse(battleData).battles;
+// This file checks Milan's special battles; other journeys' battles may come before or after them.
+const landmarkCity = new Map(tourismCatalogSchema.parse(tourismData).landmarks.map((landmark) => [landmark.id, landmark.cityId]));
+const inMilan = (battle: { landmarkId?: string | null; cityId?: string }) =>
+  (battle.landmarkId ? landmarkCity.get(battle.landmarkId) : battle.cityId) === "milano";
+const source = () => battleCatalogSchema.parse(battleData).battles.filter(inMilan);
+const legacyA = battleData.battles.find((battle) => battle.id === "milano_last_supper_01")!;
 const special = (format: "B" | "C") =>
   source().find((battle) => battle.format === format)!;
 
@@ -41,31 +46,32 @@ async function changeBattle(
 
 describe("special battle content contract", () => {
   it("preserves the legacy A definition without injecting default fields", () => {
-    expect(battleSchema.parse(battleData.battles[0])).toEqual(
-      battleData.battles[0],
-    );
-    expect(battleSchema.parse(battleData.battles[0])).not.toHaveProperty(
+    expect(battleSchema.parse(legacyA)).toEqual(legacyA);
+    expect(battleSchema.parse(legacyA)).not.toHaveProperty(
       "format",
     );
-    expect(battleSchema.parse(battleData.battles[0])).not.toHaveProperty(
+    expect(battleSchema.parse(legacyA)).not.toHaveProperty(
       "reasoning",
     );
   });
 
   it("validates all A/B/C scenes while keeping the normal episode linked only to A", async () => {
     const result = await buildContent(fixture, false);
+    const milan = result.battles.filter(inMilan);
+    expect(milan[0].id).toBe(legacyA.id);
     expect(
-      result.battles.slice(0, 3).map((battle) => battle.format ?? "A"),
+      milan.slice(0, 3).map((battle) => battle.format ?? "A"),
     ).toEqual(["A", "B", "C"]);
     // The two published cases remain available for saved games; the main
     // journey now uses two distinct cases at Scala and Brera.
-    expect(result.reasoningBattles).toBe(4);
+    expect(milan.filter((battle) => battle.reasoning)).toHaveLength(4);
+    expect(result.reasoningBattles).toBe(result.battles.filter((battle) => battle.reasoning).length);
     expect(result.battleScenarios).toBeGreaterThanOrEqual(59);
     const original = result.journey.episodes.find(
       (episode) => episode.id === "milano_last_supper_episode",
     )!;
-    expect(original.battleId).toBe(result.battles[0].id);
-    expect(result.tourism.landmarks[0].battleId).toBe(result.battles[0].id);
+    expect(original.battleId).toBe(legacyA.id);
+    expect(result.tourism.landmarks.find((landmark) => landmark.id === "last_supper")!.battleId).toBe(legacyA.id);
     expect(
       result.journey.episodes.every(
         (episode) =>
@@ -107,7 +113,8 @@ describe("special battle content contract", () => {
     expect(new Set(newC.reasoning!.correctClueIds)).toEqual(
       new Set(["brera_colours", "brera_show"]),
     );
-    expect(result.journey.storyBattles.map((entry) => entry.battleId)).toEqual([newB.id, newC.id]);
+    expect(result.journey.storyBattles.map((entry) => entry.battleId).filter((id) => milan.some((battle) => battle.id === id)))
+      .toEqual([newB.id, newC.id]);
   });
 
   it.each(["B", "C"] as const)(

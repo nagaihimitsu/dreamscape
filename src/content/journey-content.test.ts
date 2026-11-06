@@ -74,7 +74,12 @@ describe("integrated journey content contract", () => {
     expect(stops.map((episode) => episode.landmarkId)).toEqual([
       "duomo_milano", "galleria_vittorio_emanuele_ii", "last_supper", "castello_sforzesco",
     ]);
-    expect(result.journey.storyBattles.map((entry) => entry.battleId)).toEqual([
+    // Milan's entries only: other journeys add their own story battles and rewards.
+    const milanLandmarks = new Set(result.tourism.landmarks.filter((landmark) => landmark.cityId === cityData.id).map((landmark) => landmark.id));
+    const milanBattles = new Set(result.battles.filter((battle) => battle.landmarkId ? milanLandmarks.has(battle.landmarkId) : battle.cityId === cityData.id)
+      .map((battle) => battle.id));
+    const milanEpisodes = new Set(result.journey.episodes.filter((episode) => episode.cityId === cityData.id).map((episode) => episode.id));
+    expect(result.journey.storyBattles.map((entry) => entry.battleId).filter((id) => milanBattles.has(id))).toEqual([
       "milano_la_scala_b01", "milano_brera_c01",
     ]);
     const finale = result.journey.episodes.find(
@@ -93,13 +98,11 @@ describe("integrated journey content contract", () => {
       trigger: "episode_clear",
       ap: 4,
     });
-    expect(
-      result.journey.rewards
-        .filter(
-          (rule) => rule.trigger === "episode_clear" && rule.id !== firstClear.id,
-        )
-        .every((rule) => rule.ap === 1),
-    ).toBe(true);
+    const otherClears = result.journey.rewards.filter(
+      (rule) => rule.trigger === "episode_clear" && rule.id !== firstClear.id && milanEpisodes.has(rule.episodeId!),
+    );
+    expect(otherClears.length).toBeGreaterThan(0);
+    expect(otherClears.every((rule) => rule.ap === 1)).toBe(true);
     expect(result.tourismGuides).toBe(result.tourism.landmarks.length);
     const cityConversations = result.journey.episodes.filter((episode) => episode.epilogueStoryId).length +
       getCities().filter((city) => city.arrivalStoryId).length;
