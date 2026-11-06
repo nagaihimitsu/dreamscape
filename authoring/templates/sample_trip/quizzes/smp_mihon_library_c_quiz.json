@@ -10,18 +10,18 @@
       "options": [
         {
           "id": "A",
-          "textEn": "Repairs of the bell."
-        },
-        {
-          "id": "B",
           "textEn": "Repairs of the clock."
         },
         {
-          "id": "C",
+          "id": "B",
           "textEn": "Visits from the mayor."
+        },
+        {
+          "id": "C",
+          "textEn": "Repairs of the bell."
         }
       ],
-      "correctOptionId": "A",
+      "correctOptionId": "C",
       "vocabularyJa": [
         {
           "word": "diary",
@@ -96,18 +96,18 @@
       "options": [
         {
           "id": "A",
-          "textEn": "The town kept the clock at three on purpose."
+          "textEn": "The clock was too expensive to fix."
         },
         {
           "id": "B",
-          "textEn": "The clock was too expensive to fix."
+          "textEn": "The town kept the clock at three on purpose."
         },
         {
           "id": "C",
           "textEn": "Nobody noticed the clock."
         }
       ],
-      "correctOptionId": "A",
+      "correctOptionId": "B",
       "vocabularyJa": [
         {
           "word": "on purpose",
