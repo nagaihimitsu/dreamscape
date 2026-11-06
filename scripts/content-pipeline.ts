@@ -50,7 +50,7 @@ import {
   validateBattleStory,
 } from "./battle-validation";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
-import { validateTourism } from "./tourism-validation";
+import { validateTourism, validateTourismAssets } from "./tourism-validation";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { validateTravelContent } from "./travel-validation";
 import { journeySchema } from "../src/content/journey-schemas";
@@ -629,10 +629,11 @@ export async function buildContent(root: string, writeOutput = true) {
       }
   }
   let tourismGuides = 0;
+  await validateTourismAssets(root, tourism.assets);
   for (const current of cities) {
     const landmarks = tourism.landmarks.filter((landmark) => landmark.cityId === current.id);
     const ids = new Set(landmarks.map((landmark) => landmark.id));
-    tourismGuides += await validateTourism(root, {
+    tourismGuides += validateTourism({
       ...tourism,
       landmarks,
       assets: tourism.assets,
