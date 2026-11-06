@@ -4,8 +4,11 @@ import {
   episodes, journeyConfig, landmarks, rewardRules, stories, tourismClues,
 } from "../content";
 import { encounters } from "../content/encounters";
-import { getJourney, getJourneyForCity } from "../content/journeys";
+import { getJourney, getJourneyForCity, journeys } from "../content/journeys";
 import { getAllRewardRules } from "../content/journey-schemas";
+
+/** The authored city whose scenes, quizzes and places the fictional test cities copy. */
+const TEMPLATE_CITY_ID = "milano";
 
 /** Reuse real executable scripts/assets while giving every owned entity a distinct ID. */
 export function installTestCity(options: {
@@ -20,12 +23,13 @@ export function installTestCity(options: {
   const originalCity = cityContents[cityId];
   const prefix = cityId === "test_city" ? "test" : cityId;
   const id = (suffix: string) => `${prefix}_${suffix}`;
-  const milan = cityContents.milano;
-  const previous = options.previousCityId === null ? undefined : cityContents[options.previousCityId ?? "milano"];
+  const milan = cityContents[TEMPLATE_CITY_ID];
+  if (!milan) throw new Error(`仮の場面の元になる都市データがありません: ${TEMPLATE_CITY_ID}`);
+  const previous = options.previousCityId === null ? undefined : cityContents[options.previousCityId ?? TEMPLATE_CITY_ID];
   const previousNext = previous?.city.nextCityId;
   // Ad-hoc test cities inherit their predecessor's journey currency. Planned
   // Indian cities are already registered in the journey catalog.
-  const owner = getJourneyForCity(cityId) ?? getJourneyForCity(previous?.city.id ?? "milano");
+  const owner = getJourneyForCity(cityId) ?? getJourneyForCity(previous?.city.id ?? TEMPLATE_CITY_ID);
   const addedCity = !getJourneyForCity(cityId) && owner ? { id: cityId, nameJa: options.nameJa ?? "試験都市" } : null;
   if (addedCity) owner!.cities.push(addedCity);
   const sizes = {
@@ -86,9 +90,11 @@ export function installTestCity(options: {
   }
   battles.push(normalBattle, specialBattle, finalBattle);
   landmarks.push(normalLandmark, specialLandmark);
-  const item = { ...clone(encounters.items.find((entry) => entry.id === "blue_pick")!), id: id("item"), cityId: cityId };
+  // The test encounter and its reward item copy a template encounter and the item it awards.
+  const encounterSource = encounters.encounters.find((entry) => entry.id === "duomo_string")!;
+  const item = { ...clone(encounters.items.find((entry) => entry.id === encounterSource.completionItemId)!), id: id("item"), cityId: cityId };
   encounters.items.push(item);
-  const encounter = { ...clone(encounters.encounters.find((entry) => entry.id === "duomo_string")!),
+  const encounter = { ...clone(encounterSource),
     id: id("encounter"), cityId: cityId, landmarkId: normalLandmark.id, completionItemId: item.id };
   encounter.storyId = ownStory(encounter.storyId, `${cityId}/encounter`);
   encounters.encounters.push(encounter);
@@ -168,6 +174,25 @@ export function installJourneyTestCities(journeyId: string): () => void {
   }
   const cleanups = fixtures.map((fixture) => installTestCity({ ...fixture, previousCityId: null }));
   return () => { for (const cleanup of cleanups.reverse()) cleanup(); };
+}
+
+/**
+ * Debug "仮の場面": fictional cities for every preparing journey that has no
+ * authored episode yet. A preparing journey whose cities already have real
+ * scenes is left as it is (installJourneyTestCities refuses to replace it).
+ */
+export function installPreparingJourneyTestCities(): () => void {
+  const cleanups: Array<() => void> = [];
+  const cleanup = () => { for (const item of cleanups.reverse()) item(); };
+  try {
+    for (const journey of journeys.filter((item) => item.status === "preparing" &&
+      !item.cities.some((city) => episodes.some((episode) => episode.cityId === city.id))))
+      cleanups.push(installJourneyTestCities(journey.id));
+  } catch (error) {
+    cleanup();
+    throw error;
+  }
+  return cleanup;
 }
 
 /** Existing India tests and developer commands keep their stable entry point. */
