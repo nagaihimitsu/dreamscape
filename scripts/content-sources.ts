@@ -49,7 +49,7 @@ function readJson(file: string): unknown {
 }
 
 /** Files below `directory` (posix paths relative to it); dot entries are skipped. */
-function listFiles(directory: string, skipDirectory: (relative: string) => boolean = () => false, prefix = ""): string[] {
+export function listFiles(directory: string, skipDirectory: (relative: string) => boolean = () => false, prefix = ""): string[] {
   return readdirSync(path.join(directory, prefix), { withFileTypes: true }).flatMap((entry) => {
     if (entry.name.startsWith(".")) return [];
     const relative = prefix ? `${prefix}/${entry.name}` : entry.name;
@@ -296,7 +296,7 @@ export function writeContentMirror(sources: ContentSources, directory: string): 
 }
 
 /** Remove empty directories below and including `directory`; true when it was removed. */
-function removeEmptyDirectories(directory: string): boolean {
+export function removeEmptyDirectories(directory: string): boolean {
   if (!existsSync(directory)) return false;
   let empty = true;
   for (const entry of readdirSync(directory, { withFileTypes: true })) {

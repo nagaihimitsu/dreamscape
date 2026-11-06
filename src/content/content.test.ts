@@ -45,6 +45,13 @@ describe("content build acceptance", () => {
   it("validates the real production catalog and registered artwork", async () => {
     await expect(buildContent(path.resolve("."), false)).resolves.toBeDefined();
   }, 120000);
+  it("rejects a served file that two public folders provide", async () => {
+    // The game serves one assembled folder, so a journey may not shadow a shared file.
+    const copy = path.join(fixture, "content/journeys/milano/public/assets/items/item.svg");
+    await writeFile(copy, await readFile(path.join(fixture, "public/assets/items/item.svg")));
+    await expect(buildContent(fixture, false)).rejects.toThrow(
+      "Public file assets/items/item.svg exists in more than one public folder: public/assets/items/item.svg and content/journeys/milano/public/assets/items/item.svg");
+  });
   it("rejects a registered but missing background image", async () => {
     const file = path.join(fixture, "content/romance/presentation.json");
     const data = JSON.parse(await readFile(file, "utf8"));

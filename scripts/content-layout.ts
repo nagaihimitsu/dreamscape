@@ -9,10 +9,14 @@ import { isDeepStrictEqual } from "node:util";
 // Catalog files of all layers are merged key by key (see CATALOG_RULES) and
 // written, validated, to the generated mirror `src/content/generated/content/`
 // which the game imports. The journey catalog is generated from the manifests.
+// Static files (images) of the root `public/` and of every journey's `public/`
+// are assembled into `src/content/generated/public/`, which Vite serves.
 
 export const CONTENT_DIRECTORY = "content";
 export const JOURNEYS_DIRECTORY = "journeys";
 export const MIRROR_DIRECTORY = "src/content/generated/content";
+/** The served static files, assembled by content:build (`publicDir` in vite.config.ts). */
+export const GENERATED_PUBLIC_DIRECTORY = "src/content/generated/public";
 /** Registration of a journey layer: its former journey catalog entry plus the keys below. */
 export const MANIFEST_FILE = "manifest.json";
 /** Manifest keys that are not part of the generated journey catalog entry. */
@@ -219,6 +223,10 @@ export function journeyManifestPath(journeyId: string): string {
 
 export function mirrorDirectory(root: string): string {
   return path.join(root, MIRROR_DIRECTORY);
+}
+
+export function generatedPublicDirectory(root: string): string {
+  return path.join(root, GENERATED_PUBLIC_DIRECTORY);
 }
 
 export const toPosix = (file: string) => file.split(path.sep).join("/");

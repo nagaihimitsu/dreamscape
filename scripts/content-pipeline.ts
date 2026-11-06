@@ -8,10 +8,10 @@ import {
   validateLearningTopic,
 } from "./ink-validation";
 import { unique, withContext } from "./content-validation-utils";
-import { resolvePublicFile } from "./public-assets";
+import { assemblePublicDirectory, collectPublicFiles, resolvePublicFile } from "./public-assets";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { mirrorDirectory, type CatalogKind } from "./content-layout";
+import { generatedPublicDirectory, mirrorDirectory, type CatalogKind } from "./content-layout";
 import { displayPath, loadContentSources, parseCatalog as parseSourceCatalog, requireJourneyManifests, writeContentMirror } from "./content-sources";
 import { authoringProfileOf } from "./journey-authoring";
 import { checkContentOwnership } from "./content-ownership";
@@ -165,6 +165,8 @@ export async function buildContent(root: string, writeOutput = true) {
   for (const manifest of sources.manifests) authoringProfileOf(manifest.data, manifest.file);
   // Each journey folder keeps to its own cities and content (and the core layer to core content).
   checkContentOwnership(sources);
+  // The game's static files: root public/ plus every journey's public/, one file per URL path.
+  const publicFiles = collectPublicFiles(root, sources.publicRoots);
   const parseCatalog = <T>(schema: { parse(value: unknown): T }, kind: CatalogKind): T => parseSourceCatalog(sources, schema, kind);
   // Messages name the real Ink file of a story, whichever layer it is in.
   const storyFiles = new Map(sources.storyFiles.map((story) => [story.id, displayPath(root, story.file)]));
@@ -792,6 +794,8 @@ export async function buildContent(root: string, writeOutput = true) {
     );
     // The game imports the validated, merged catalogs only from this mirror.
     writeContentMirror(sources, mirrorDirectory(root));
+    // Vite serves and builds the game's images from this folder (publicDir in vite.config.ts).
+    assemblePublicDirectory(publicFiles, generatedPublicDirectory(root));
   }
   return {
     stories,
