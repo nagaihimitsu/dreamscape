@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "backgrounds": {
+    "smp_bg_mihon_hotel": {
+      "nameJa": "見本の宿",
+      "captionJa": "見本の街 ／ 宿",
+      "color": "#8a8f96",
+      "fallback": "neutral"
+    },
+    "smp_bg_mihon_clock_tower": {
+      "nameJa": "見本の時計塔",
+      "captionJa": "見本の街 ／ 時計塔の広場",
+      "color": "#8a7a6a",
+      "fallback": "neutral",
+      "imageAssetId": "smp_img_mihon_clock_tower"
+    },
+    "smp_bg_mihon_market": {
+      "nameJa": "見本の朝市",
+      "captionJa": "見本の街 ／ 朝市",
+      "color": "#c2b08f",
+      "fallback": "neutral",
+      "imageAssetId": "smp_img_mihon_market"
+    },
+    "smp_bg_mihon_library": {
+      "nameJa": "見本の図書室",
+      "captionJa": "見本の街 ／ 図書室",
+      "color": "#7a5c45",
+      "fallback": "neutral",
+      "imageAssetId": "smp_img_mihon_library"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "initialBudget": 100,
+  "hotelPlaceId": "mihon_hotel",
+  "lodgingCost": 0,
+  "retryMinutes": 15,
+  "notes": "見本の旅の架空の設定。開始資金・宿泊費・徒歩時間はゲーム用の仮の値で、実在の場所や料金を表さない。"
+}

@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "episodes": [
+    {
+      "id": "smp_mihon_clock_tower",
+      "kind": "episode",
+      "cityId": "mihon",
+      "landmarkId": "mihon_clock_tower",
+      "requiredEpisodeIds": [],
+      "battleId": "smp_mihon_clock_tower_battle",
+      "titleJa": "止まった針の理由",
+      "descriptionJa": "時計塔で、時計を直したい時計番のトーマに会う。",
+      "clearTitleJa": "いつ来ても三時",
+      "clearDescriptionJa": "止まった針が、街の約束になっていたと分かった。"
+    },
+    {
+      "id": "smp_mihon_finale",
+      "kind": "city_finale",
+      "cityId": "mihon",
+      "landmarkId": null,
+      "requiredEpisodeIds": [
+        "smp_mihon_clock_tower"
+      ],
+      "epilogueStoryId": "epilogues/mihon",
+      "battleId": "smp_mihon_finale_battle",
+      "titleJa": "時計を動かす日",
+      "descriptionJa": "町長のハンナが、時計を動かす図面を広げている。",
+      "clearTitleJa": "塔の下の札",
+      "clearDescriptionJa": "時計を動かす前に、止まった理由を旅人に伝えることにした。"
+    }
+  ],
+  "storyBattles": [
+    {
+      "battleId": "smp_mihon_market_b",
+      "completionReward": {
+        "id": "smp_mihon_market_b_complete",
+        "ap": 1,
+        "titleJa": "朝市の対決を初めて完了"
+      },
+      "requiredEpisodeIds": [],
+      "titleJa": "誰も時間を守らない？",
+      "descriptionJa": "朝市で、パン屋のサラの大きすぎる断言に資料を一枚突きつける。",
+      "actionLabelJa": "朝市へ行く"
+    },
+    {
+      "battleId": "smp_mihon_library_c",
+      "completionReward": {
+        "id": "smp_mihon_library_c_complete",
+        "ap": 1,
+        "titleJa": "図書室の対決を初めて完了"
+      },
+      "requiredEpisodeIds": [],
+      "titleJa": "記録にない約束",
+      "descriptionJa": "図書室で、二枚の資料を結んで司書のイオに見せる。",
+      "actionLabelJa": "図書室へ行く"
+    }
+  ],
+  "rewards": [
+    {
+      "id": "smp_mihon_clock_tower_guide_read",
+      "episodeId": "smp_mihon_clock_tower",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "smp_mihon_clock_tower_battle_complete",
+      "episodeId": "smp_mihon_clock_tower",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "対決を初めて完了"
+    },
+    {
+      "id": "smp_mihon_clock_tower_battle_score",
+      "episodeId": "smp_mihon_clock_tower",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて規定数に正解"
+    },
+    {
+      "id": "smp_mihon_finale_battle_complete",
+      "episodeId": "smp_mihon_finale",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "対決を初めて完了"
+    },
+    {
+      "id": "smp_mihon_finale_battle_score",
+      "episodeId": "smp_mihon_finale",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 3,
+      "titleJa": "初めて規定数に正解"
+    },
+    {
+      "id": "smp_mihon_finale_city_clear",
+      "episodeId": "smp_mihon_finale",
+      "trigger": "city_clear",
+      "ap": 2,
+      "minScore": null,
+      "titleJa": "都市を初めてクリア"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "destinations": [
+    {
+      "id": "mihon_tower_square",
+      "cityId": "mihon",
+      "nameJa": "時計塔の広場",
+      "nameEn": "Clock Tower Square",
+      "descriptionJa": "ベンチがどれも時計塔を向いている、見本の街の架空の広場。",
+      "backgroundAssetId": "smp_bg_mihon_clock_tower",
+      "facts": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の言い伝え：広場のベンチは、待つ人が文字盤を見られるように塔の方を向けて置かれた。"
+        }
+      ]
+    }
+  ]
+}

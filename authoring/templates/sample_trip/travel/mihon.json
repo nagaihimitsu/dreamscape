@@ -1,0 +1,430 @@
+{
+  "cityId": "mihon",
+  "places": [
+    {
+      "id": "mihon_hotel",
+      "cityId": "mihon",
+      "nameJa": "見本の宿",
+      "nameEn": "Mihon Inn",
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "backgroundAssetId": "smp_bg_mihon_hotel",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の宿。"
+        }
+      ]
+    },
+    {
+      "id": "mihon_clock_tower",
+      "cityId": "mihon",
+      "nameJa": "見本の時計塔",
+      "nameEn": "Mihon Clock Tower",
+      "latitude": 0.001,
+      "longitude": 0.001,
+      "backgroundAssetId": "smp_bg_mihon_clock_tower",
+      "landmarkIds": [
+        "mihon_clock_tower"
+      ],
+      "destinationIds": [
+        "mihon_tower_square"
+      ],
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の時計塔と広場。"
+        }
+      ]
+    },
+    {
+      "id": "mihon_market",
+      "cityId": "mihon",
+      "nameJa": "見本の朝市",
+      "nameEn": "Mihon Morning Market",
+      "latitude": 0.0015,
+      "longitude": -0.001,
+      "backgroundAssetId": "smp_bg_mihon_market",
+      "landmarkIds": [
+        "mihon_market"
+      ],
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の朝市。"
+        }
+      ]
+    },
+    {
+      "id": "mihon_library",
+      "cityId": "mihon",
+      "nameJa": "見本の図書室",
+      "nameEn": "Mihon Library",
+      "latitude": -0.001,
+      "longitude": 0.0015,
+      "backgroundAssetId": "smp_bg_mihon_library",
+      "landmarkIds": [
+        "mihon_library"
+      ],
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の図書室。"
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "fromPlaceId": "mihon_hotel",
+      "toPlaceId": "mihon_hotel",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の徒歩時間（ゲーム用の推定）。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_hotel",
+      "toPlaceId": "mihon_clock_tower",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の徒歩時間（ゲーム用の推定）。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_hotel",
+      "toPlaceId": "mihon_market",
+      "mode": "walk",
+      "minutes": 6,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の徒歩時間（ゲーム用の推定）。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_hotel",
+      "toPlaceId": "mihon_library",
+      "mode": "walk",
+      "minutes": 7,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の徒歩時間（ゲーム用の推定）。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_clock_tower",
+      "toPlaceId": "mihon_hotel",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の徒歩時間（ゲーム用の推定）。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_clock_tower",
+      "toPlaceId": "mihon_clock_tower",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の徒歩時間（ゲーム用の推定）。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_clock_tower",
+      "toPlaceId": "mihon_market",
+      "mode": "walk",
+      "minutes": 4,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の徒歩時間（ゲーム用の推定）。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_clock_tower",
+      "toPlaceId": "mihon_library",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の徒歩時間（ゲーム用の推定）。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_market",
+      "toPlaceId": "mihon_hotel",
+      "mode": "walk",
+      "minutes": 6,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の徒歩時間（ゲーム用の推定）。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_market",
+      "toPlaceId": "mihon_clock_tower",
+      "mode": "walk",
+      "minutes": 4,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の徒歩時間（ゲーム用の推定）。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_market",
+      "toPlaceId": "mihon_market",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の徒歩時間（ゲーム用の推定）。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_market",
+      "toPlaceId": "mihon_library",
+      "mode": "walk",
+      "minutes": 6,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の徒歩時間（ゲーム用の推定）。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_library",
+      "toPlaceId": "mihon_hotel",
+      "mode": "walk",
+      "minutes": 7,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の徒歩時間（ゲーム用の推定）。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_library",
+      "toPlaceId": "mihon_clock_tower",
+      "mode": "walk",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の徒歩時間（ゲーム用の推定）。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_library",
+      "toPlaceId": "mihon_market",
+      "mode": "walk",
+      "minutes": 6,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の徒歩時間（ゲーム用の推定）。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_library",
+      "toPlaceId": "mihon_library",
+      "mode": "walk",
+      "minutes": 0,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の徒歩時間（ゲーム用の推定）。"
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "smp_mihon_clock_tower",
+      "cityId": "mihon",
+      "placeId": "mihon_clock_tower",
+      "category": "main",
+      "titleJa": "止まった針の理由",
+      "activityMinutes": 60,
+      "apCost": 0
+    },
+    {
+      "id": "smp_mihon_market_b",
+      "cityId": "mihon",
+      "placeId": "mihon_market",
+      "category": "main",
+      "titleJa": "誰も時間を守らない？",
+      "activityMinutes": 40,
+      "apCost": 0
+    },
+    {
+      "id": "smp_mihon_library_c",
+      "cityId": "mihon",
+      "placeId": "mihon_library",
+      "category": "main",
+      "titleJa": "記録にない約束",
+      "activityMinutes": 40,
+      "apCost": 0
+    },
+    {
+      "id": "smp_mihon_date_tower_square",
+      "cityId": "mihon",
+      "placeId": "mihon_clock_tower",
+      "category": "date",
+      "titleJa": "三時までの席",
+      "activityMinutes": 45,
+      "apCost": 2
+    },
+    {
+      "id": "smp_mihon_finale",
+      "cityId": "mihon",
+      "placeId": "mihon_clock_tower",
+      "category": "main",
+      "titleJa": "時計を動かす日",
+      "activityMinutes": 45,
+      "apCost": 0
+    }
+  ]
+}

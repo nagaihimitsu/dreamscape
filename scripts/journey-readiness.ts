@@ -7,7 +7,7 @@ import type { Journey } from "../src/content/journey-catalog";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { learningCatalogSchema, questionSource } from "../src/content/learning-schema";
-import { journeyCatalogOf, loadContentSources, parseCatalog, requireCity } from "./content-sources";
+import { journeyCatalogOf, loadContentSources, parseCatalog, requireCity, type ContentSources } from "./content-sources";
 import { servedFile } from "./public-assets";
 
 /** Report from real catalog entries; no additional hand-maintained content list. */
@@ -176,7 +176,11 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
 }
 
 export function loadJourneyReadiness(root: string, journeyId: string): JourneyReadinessInput {
-  const sources = loadContentSources(root);
+  return journeyReadinessInput(loadContentSources(root), journeyId);
+}
+
+/** The readiness input of a journey of loaded sources (e.g. sources with the sample journey). */
+export function journeyReadinessInput(sources: ContentSources, journeyId: string): JourneyReadinessInput {
   const catalog = journeyCatalogOf(sources);
   const trip = catalog.journeys.find((item) => item.id === journeyId);
   if (!trip) throw new Error("Journey journey is missing");

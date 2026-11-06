@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "id": "smp_mihon_library_c_quiz",
+  "landmarkId": "mihon_library",
+  "englishLevel": "A2",
+  "questions": [
+    {
+      "id": "smp_mihon_library_c_q1",
+      "questionEn": "What does the town diary record many times?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Repairs of the bell."
+        },
+        {
+          "id": "B",
+          "textEn": "Repairs of the clock."
+        },
+        {
+          "id": "C",
+          "textEn": "Visits from the mayor."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "diary",
+          "meaning": "日誌"
+        },
+        {
+          "word": "repairs",
+          "meaning": "修理"
+        }
+      ],
+      "hintJa": "時計を直した記録は見つからない。",
+      "correctExplanationJa": "日誌には鐘の修理が何度も書かれている。",
+      "incorrectExplanationJa": "時計を直した記録はない。何度も書かれているのは鐘の修理。",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の言い伝え：町の日誌には、鐘の修理が何度も書かれている。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "smp_mihon_library_c_q2",
+      "questionEn": "What do the old invitations say?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "At three, in the square."
+        },
+        {
+          "id": "B",
+          "textEn": "At noon, at the station."
+        },
+        {
+          "id": "C",
+          "textEn": "Any time, at home."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "invitations",
+          "meaning": "招待状"
+        }
+      ],
+      "hintJa": "この街の誘いの言葉を思い出す。",
+      "correctExplanationJa": "招待状には『三時に広場で』と書いてある。",
+      "incorrectExplanationJa": "古い招待状には『三時に広場で』と書いてある。",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の言い伝え：古い招待状には『三時に広場で』と書かれている。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "smp_mihon_library_c_q3",
+      "questionEn": "What do the diary and the invitations show together?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The town kept the clock stopped on purpose."
+        },
+        {
+          "id": "B",
+          "textEn": "The clock was too expensive to fix."
+        },
+        {
+          "id": "C",
+          "textEn": "Nobody noticed the clock."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "on purpose",
+          "meaning": "わざと"
+        }
+      ],
+      "hintJa": "鐘は直していたのに、時計は直していない。",
+      "correctExplanationJa": "鐘は直したのに時計は直さず、止まった三時を誘いに使った。わざと残したと考えられる。",
+      "incorrectExplanationJa": "鐘を直せたのに時計の修理はなく、三時の招待状が残る。わざと止めたままにしたと考えられる。",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の言い伝え：鐘を直した記録と三時の招待状から、街はわざと時計を止めたままにしたと考えられる。"
+        }
+      ],
+      "difficulty": "medium"
+    }
+  ]
+}

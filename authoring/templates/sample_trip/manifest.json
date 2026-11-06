@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "order": 9000,
+  "id": "sample_trip",
+  "nameJa": "見本の旅",
+  "status": "available",
+  "cities": [
+    {
+      "id": "mihon",
+      "nameJa": "見本の街"
+    }
+  ],
+  "currency": {
+    "code": "EUR",
+    "symbol": "€",
+    "unitJa": "ユーロ",
+    "unit": "whole"
+  },
+  "initialBudget": 100,
+  "cityPlan": {
+    "cityClearAp": 2,
+    "lodgingCost": 0,
+    "mainTourismCount": 1,
+    "dateCount": 1
+  },
+  "intercityModes": [],
+  "authoring": {
+    "eventPrefix": "smp",
+    "observationFile": "authoring/journeys/sample_trip/drafts/observation-cards.json",
+    "imageDirectory": "assets/tourism/sample_trip"
+  }
+}
