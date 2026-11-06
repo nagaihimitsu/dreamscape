@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { readJourneyManifests } from "./content-sources";
 import { authoringProfileOf, isRelativePath, journeyAuthoringProfiles } from "./journey-authoring";
 
 // The authoring profile of a manifest (`authoring`) points the tools at files
@@ -72,6 +73,9 @@ describe("journey authoring profiles", () => {
   });
 
   it("accepts the repository's profiles", () => {
-    expect([...journeyAuthoringProfiles(process.cwd()).keys()]).toEqual(["golden_triangle", "uzbekistan", "luang_prabang"]);
+    // Every manifest that declares `authoring` (also a journey made by journey:new), in manifest order.
+    const declared = readJourneyManifests(process.cwd()).filter((manifest) => manifest.data.authoring !== undefined).map((manifest) => manifest.id);
+    expect(declared.length).toBeGreaterThan(0);
+    expect([...journeyAuthoringProfiles(process.cwd()).keys()]).toEqual(declared);
   });
 });

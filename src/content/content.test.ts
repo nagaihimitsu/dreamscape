@@ -6,12 +6,14 @@ import { Story } from "inkjs";
 import sharp from "sharp";
 import { buildContent } from "../../scripts/content-pipeline";
 import { compileInk, validateStory } from "../../scripts/ink-validation";
-import { effects, getCities, presentation } from "./index";
+import { MIRROR_DIRECTORY } from "../../scripts/content-layout";
+import { listFiles } from "../../scripts/content-sources";
+import { effects, presentation } from "./index";
 import dateData from "./generated/content/romance/date_catalog.json";
-import battleData from "./generated/content/battles/catalog.json";
-import tourismData from "./generated/content/tourism/catalog.json";
-import reasoningIntroData from "./generated/content/presentation/reasoning-intros.json";
-import encounterData from "./generated/content/encounters/catalog.json";
+import { normalizeEncounterCatalog } from "./encounter-schemas";
+import { reasoningIntroCatalogSchema } from "./reasoning-intros";
+import { battleCatalogSchema, citySchema, dateCatalogSchema } from "./schemas";
+import { tourismCatalogSchema } from "./tourism-schemas";
 import { parseStoryTags } from "./tags";
 import { prepareContentFixture } from "./test-fixtures";
 
@@ -70,7 +72,7 @@ describe("content build acceptance", () => {
     expect(catalog.journeys.find((journey: { id: string }) => journey.id === "milano").titleArt).toEqual(titleArt);
     expect(await readFile(path.join(fixture, "src/content/generated/public/assets/title/milano.webp"))).toEqual(await readFile(image));
     await writeFile(manifestFile, JSON.stringify({ ...manifest, titleArt: { ...titleArt, imagePath: "assets/title/missing.webp" } }));
-    await expect(buildContent(fixture, false)).rejects.toThrow("Missing title art image: milano/assets/title/missing.webp");
+    await expect(buildContent(fixture, false)).rejects.toThrow("Missing title art image: milano/assets/title/missing.webp (place it in content/journeys/milano/public/)");
   }, 120000);
   it("rejects a registered but missing background image", async () => {
     const file = path.join(fixture, "content/romance/presentation.json");
@@ -211,13 +213,20 @@ describe("content build acceptance", () => {
   });
   it("compiles every declared scenario context and route", async () => {
     const result = await buildContent(fixture);
+    // Compare with the fixture's own generated mirror: the repository's generated
+    // output may hold other journeys (the unit tests build it with the sample journey).
+    const mirror = async (relative: string) => JSON.parse(await readFile(path.join(fixture, MIRROR_DIRECTORY, relative), "utf8"));
+    const dates = dateCatalogSchema.parse(await mirror("romance/date_catalog.json")).dates;
     expect(result.routes).toBe(
-      dateData.dates.reduce(
+      dates.reduce(
         (sum, date) =>
           sum + (date.kind === "confession" ? 3 : 6) ** date.choiceCount * date.validationContexts.length,
         0,
       ),
     );
+    const encounterCatalog = normalizeEncounterCatalog(await mirror("encounters/catalog.json"), result.tourism.landmarks);
+    const cities = await Promise.all(listFiles(path.join(fixture, MIRROR_DIRECTORY, "cities"))
+      .map(async (file) => citySchema.parse(await mirror(`cities/${file}`))));
     const generated = JSON.parse(
       await readFile(
         path.join(fixture, "src/content/generated/stories.json"),
@@ -227,17 +236,15 @@ describe("content build acceptance", () => {
     expect(Object.keys(generated).sort()).toEqual(
       [...new Set([
         "learning/sound_english",
-        ...dateData.dates.map((date) => date.storyId),
-        ...battleData.battles.map((battle) => battle.storyId),
-        ...reasoningIntroData.entries.map((entry) => entry.storyId),
-        ...encounterData.encounters.flatMap((event) => [
+        ...dates.map((date) => date.storyId),
+        ...battleCatalogSchema.parse(await mirror("battles/catalog.json")).battles.map((battle) => battle.storyId),
+        ...reasoningIntroCatalogSchema.parse(await mirror("presentation/reasoning-intros.json")).entries.map((entry) => entry.storyId),
+        ...encounterCatalog.encounters.flatMap((event) => [
           event.storyId,
-          ...("quiz" in event && event.quiz
-            ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId]
-            : []),
+          ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : []),
         ]),
-        ...tourismData.landmarks.map((landmark) => landmark.guideStoryId),
-        ...getCities().flatMap((city) => city.arrivalStoryId ? [city.arrivalStoryId] : []),
+        ...tourismCatalogSchema.parse(await mirror("tourism/catalog.json")).landmarks.map((landmark) => landmark.guideStoryId),
+        ...cities.flatMap((city) => city.arrivalStoryId ? [city.arrivalStoryId] : []),
         ...result.journey.episodes.flatMap((episode) =>
           episode.epilogueStoryId ? [episode.epilogueStoryId] : [],
         ),

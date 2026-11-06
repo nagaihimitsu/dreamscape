@@ -22,19 +22,24 @@ export const devOnlyMarkers: readonly DevOnlyMarker[] = [
   { text: "debug-prototype-preview", source: "src/dev/PrototypePreview.tsx" },
   { text: "preview-costume", source: "src/dev/CharacterPreview.tsx" },
   { text: "人物素材の確認", source: "src/dev/CharacterPreview.tsx" },
-  { text: "到着の会話を完了できませんでした", source: "src/dev/debug-state.ts" },
+  { text: "仮の場面の都市なら data=fixture を付けます", source: "src/dev/debug-state.ts" },
+  // Debug launch URLs, the read-only test hook and the shared scene builders.
+  { text: "?debug だけで設定画面を開いてください", source: "src/dev/debug-query.ts" },
+  { text: "__dreamscapeDebug", source: "src/dev/debug-hook.ts" },
+  { text: "到着の会話を完了できませんでした", source: "src/dev/scenario-builders.ts" },
+  { text: "を結果まで進められませんでした", source: "src/dev/scenario-builders.ts" },
   { text: "制作中の都市ではありません", source: "src/dev/prototype-preview-state.ts" },
   // In-memory fixtures shared by unit tests and Debug.
-  { text: "仮の場面の元になる都市データがありません", source: "src/domain/multi-city-test-fixture.ts" },
-  { text: "test_golden_triangle", source: "src/domain/golden-triangle-test-fixture.ts" },
-  { text: "Could not finish the Duomo guide", source: "tests/fixtures/current-game.ts" },
-  // Journeys for tests and development only; their IDs also name their image
-  // folders. sample_trip is reserved for the sample journey (docs/02).
-  { text: "zz_fixture_trip", source: "tests/fixtures/journeys/zz_fixture_trip/manifest.json" },
-  { text: "sample_trip", source: "docs/02_TECH_ARCHITECTURE.md" },
+  { text: "仮の場面の元になる都市がありません", source: "src/dev/fixture-template.ts" },
+  { text: "test_golden_triangle", source: "src/dev/test-cities.ts" },
+  // The journey for development and tests only (npm run dev:sample, unit tests);
+  // its ID also names its image folder.
+  { text: "sample_trip", source: "authoring/templates/sample_trip/manifest.json" },
   // Source paths, as written by source maps and the development JSX transform.
+  // (tests/fixtures/current-game.ts has no text of its own: it calls the scene
+  // builders, whose markers above would show up with it.)
   { text: "src/dev/", source: "src/dev/" },
-  { text: "test-fixture", source: "src/domain/multi-city-test-fixture.ts" },
+  { text: "test-fixture", source: "src/content/test-fixtures.ts" },
   { text: "tests/fixtures/", source: "tests/fixtures/" },
 ];
 

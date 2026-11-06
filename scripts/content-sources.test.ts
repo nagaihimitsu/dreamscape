@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { journeyDirectory } from "./content-layout";
 import { z } from "zod";
 import { cityLayer, contentLayers, displayPath, journeyLayer, loadContentSources, parseCatalog, readJourneyCatalog, readJourneyManifests,
-  requireCity, storyFile } from "./content-sources";
+  requireCity, selectJourneys, storyFile } from "./content-sources";
 import { writeContentMirror } from "./content-outputs";
 
 let root: string;
@@ -224,9 +224,32 @@ describe("loadContentSources with journey layers", () => {
     expect(() => loadContentSources(root)).toThrow(/Duplicate city file: .*golden_triangle\/cities\/delhi\.json and .*milano\/cities\/delhi\.json/);
   });
 
-  it("requires travel files to sit next to their city", () => {
+  it("requires travel files to sit next to their city, naming the file to add or move", () => {
+    const folder = (journey: string) => path.join(root, "content/journeys", journey);
     write("content/journeys/milano/travel/delhi.json", {});
-    expect(() => loadContentSources(root)).toThrow(/Travel file without a city in the same layer: .*milano\/travel\/delhi\.json/);
+    expect(() => loadContentSources(root)).toThrow(
+      `都市 delhi の移動データ ${folder("milano")}/travel/delhi.json は、都市ファイル ${folder("golden_triangle")}/cities/delhi.json と同じ旅行編フォルダの travel/ に置いてください` +
+      "（Travel file without a city in the same layer）。",
+    );
+    rmSync(path.join(folder("milano"), "travel/delhi.json"));
+    write("content/journeys/milano/travel/rome-settings.json", {});
+    expect(() => loadContentSources(root)).toThrow(
+      `都市ファイル ${folder("milano")}/cities/rome.json がありません。${folder("milano")}/travel/rome-settings.json は都市 rome の移動データです。` +
+      "都市ファイルを追加するか、この移動データを消してください（Travel file without a city in the same layer）。",
+    );
+    rmSync(path.join(folder("milano"), "travel/rome-settings.json"));
+    // A city file needs both travel files of its folder.
+    rmSync(path.join(folder("golden_triangle"), "travel/delhi-settings.json"));
+    expect(() => loadContentSources(root)).toThrow(
+      `移動の設定 ${folder("golden_triangle")}/travel/delhi-settings.json がありません。都市 delhi（${folder("golden_triangle")}/cities/delhi.json）の` +
+      "宿の地点・宿泊費・再挑戦の間隔を書くファイルです（Missing travel settings file of city delhi）。",
+    );
+    city("content/journeys/golden_triangle", "delhi");
+    rmSync(path.join(folder("golden_triangle"), "travel/delhi.json"));
+    expect(() => loadContentSources(root)).toThrow(
+      `移動データ ${folder("golden_triangle")}/travel/delhi.json がありません。都市 delhi（${folder("golden_triangle")}/cities/delhi.json）の` +
+      "地点・経路・地図のイベントを書くファイルです（Missing travel file of city delhi）。",
+    );
   });
 
   it("rejects data files outside the layout and images outside public/assets", () => {
@@ -274,5 +297,51 @@ describe("writeContentMirror", () => {
     writeContentMirror(loadContentSources(root), mirror);
     expect(statSync(unchanged).mtime.getFullYear()).toBe(2000);
     expect(JSON.parse(readFileSync(path.join(mirror, "battles/catalog.json"), "utf8"))).toEqual({ schemaVersion: 1, battles: [] });
+  });
+});
+
+describe("extra journey folders", () => {
+  /** A journey folder outside content/journeys/, like the sample journey. */
+  const extra = (id: string, order: number) => {
+    write(`authoring/templates/${id}/manifest.json`, { schemaVersion: 1, order, id });
+    write(`authoring/templates/${id}/battles/catalog.json`, { schemaVersion: 1, battles: [{ id: `${id}_battle` }] });
+    write(`authoring/templates/${id}/stories/battles/${id}.ink`, "story");
+    write(`authoring/templates/${id}/public/assets/tourism/${id}/spot.png`, "png");
+    write(`authoring/templates/${id}/README.md`, "notes");
+  };
+
+  it("loads a folder outside content/journeys/ as one more journey layer, only when asked", () => {
+    manifest("milan", 10);
+    extra("sample", 9000);
+    const options = { extraJourneyDirectories: ["authoring/templates/sample"] };
+    expect(loadContentSources(root).manifests.map((item) => item.id)).toEqual(["milan"]);
+    expect(readJourneyManifests(root, options).map((item) => item.id)).toEqual(["milan", "sample"]);
+    const sources = loadContentSources(root, options);
+    expect(sources.tree.extraJourneyFolders).toEqual({ sample: "authoring/templates/sample" });
+    expect(sources.layers.map(({ id, directory }) => [id, displayPath(root, directory)])).toEqual([
+      ["core", "content"], ["milan", "content/journeys/milan"], ["sample", "authoring/templates/sample"],
+    ]);
+    expect(sources.catalogs["battles/catalog.json"]!.provenance.items.battles.map((file) => displayPath(root, file)))
+      .toEqual(["content/battles/catalog.json", "authoring/templates/sample/battles/catalog.json"]);
+    expect(storyFile(sources, "battles/sample")).toBe(path.join(root, "authoring/templates/sample/stories/battles/sample.ink"));
+    expect(sources.publicFiles.get("assets/tourism/sample/spot.png"))
+      .toBe(path.join(root, "authoring/templates/sample/public/assets/tourism/sample/spot.png"));
+    // An absolute path inside the root names the same folder.
+    expect(loadContentSources(root, { extraJourneyDirectories: [path.join(root, "authoring/templates/sample")] }).tree.extraJourneyFolders)
+      .toEqual({ sample: "authoring/templates/sample" });
+    // selectJourneys keeps the extra folder only when it is selected.
+    expect(selectJourneys(sources, ["sample"]).layers.map((layer) => layer.id)).toEqual(["core", "sample"]);
+    expect(selectJourneys(sources, ["milan"]).tree.extraJourneyFolders).toBeUndefined();
+    expect(selectJourneys(sources, ["milan"]).publicFiles.has("assets/tourism/sample/spot.png")).toBe(false);
+  });
+
+  it("rejects a folder that is missing, outside the root, inside content/ or named like another journey", () => {
+    manifest("sample", 10);
+    extra("sample", 9000);
+    expect(() => loadContentSources(root, { extraJourneyDirectories: ["authoring/templates/sample"] }))
+      .toThrow("Journey folder sample exists twice: content/journeys/sample and authoring/templates/sample");
+    expect(() => readJourneyManifests(root, { extraJourneyDirectories: ["authoring/templates/missing"] })).toThrow("Missing extra journey folder");
+    expect(() => loadContentSources(root, { extraJourneyDirectories: ["content/extra"] })).toThrow("outside content/");
+    expect(() => loadContentSources(root, { extraJourneyDirectories: ["../elsewhere"] })).toThrow("must lie inside");
   });
 });

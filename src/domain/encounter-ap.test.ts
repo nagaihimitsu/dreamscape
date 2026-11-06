@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { battleQuizzes, battles } from "../content";
-import { advanceBattle, answerBattle, leaveBattle } from "./battle";
+import { playBattleToResult } from "../dev/scenario-builders";
+import { leaveBattle } from "./battle";
 import { startEpisode } from "./chapter";
 import { advanceEncounter, chooseEncounter, finishEncounter, startTourismEncounter } from "./encounter";
 import { createGame, validateGameState, type GameState } from "./game";
@@ -10,19 +10,8 @@ import { skipTourismGuide, startTourismBattle } from "./tourism";
 const rewardId = "victory_galleria_first";
 const restore = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
 
-function finishBattle(initial: GameState): GameState {
-  let state = initial;
-  const battle = battles.find((entry) => entry.id === state.activeBattle?.battleId)!;
-  const quiz = battleQuizzes[battle.quizId];
-  for (let i = 0; state.activeBattle?.phase !== "result" && i < 160; i++) {
-    const active = state.activeBattle!;
-    state = active.phase === "question"
-      ? answerBattle(state, quiz.questions[active.roundIndex].correctOptionId, state.revision)
-      : advanceBattle(state, state.revision);
-  }
-  expect(state.activeBattle?.phase).toBe("result");
-  return restore(state);
-}
+/** The battle played to its result with the real rules, then saved and restored. */
+const finishBattle = (initial: GameState) => restore(playBattleToResult(initial));
 
 describe("Galleria encounter and battle AP reward", () => {
   it("preserves a pending overflow without granting it twice across both routes", () => {

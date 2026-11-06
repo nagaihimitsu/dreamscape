@@ -7,8 +7,12 @@ import type { Journey } from "../src/content/journey-catalog";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { learningCatalogSchema, questionSource } from "../src/content/learning-schema";
-import { journeyCatalogOf, loadContentSources, parseCatalog, requireCity } from "./content-sources";
+import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";
+import { SAMPLE_JOURNEY_ID } from "./content-layout";
+import { journeyCatalogOf, journeyFolderPath, loadContentSources, parseCatalog, requireCity, type ContentSources } from "./content-sources";
 import { servedFile } from "./public-assets";
+import { describeSampleLeftover, sampleLeftovers, type SampleLeftover } from "./sample-journey";
 
 /** Report from real catalog entries; no additional hand-maintained content list. */
 export type JourneyReadinessInput = {
@@ -28,6 +32,8 @@ export type JourneyReadinessInput = {
   translations: z.infer<typeof learningCatalogSchema>["questions"];
   storyExists: (id: string) => boolean;
   assetExists: (assetPath: string) => boolean;
+  /** Sample content left in the journey's folder (paths relative to the repository); none for the sample itself. */
+  sampleLeftovers: SampleLeftover[];
 };
 
 export type JourneyReadinessIssue = { code: string; detail: string };
@@ -42,6 +48,8 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
   const { trip } = input;
   if (!trip.cityPlan) throw new Error("Journey plan is missing");
   if (trip.status !== "available") problem(issues, "journey_unavailable", "旅行編は準備中です。");
+  // A journey copied from the sample (journey:new) keeps its fictional sources, images and texts until they are replaced.
+  for (const leftover of input.sampleLeftovers) problem(issues, "sample_content_left", describeSampleLeftover(leftover));
   const seenEventIds = new Set<string>();
   const seenPlaceIds = new Set<string>();
   const checkImage = (backgroundId: string, list: JourneyReadinessIssue[], allowNeutral = false) => {
@@ -176,7 +184,11 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
 }
 
 export function loadJourneyReadiness(root: string, journeyId: string): JourneyReadinessInput {
-  const sources = loadContentSources(root);
+  return journeyReadinessInput(loadContentSources(root), journeyId);
+}
+
+/** The readiness input of a journey of loaded sources (e.g. sources with the sample journey). */
+export function journeyReadinessInput(sources: ContentSources, journeyId: string): JourneyReadinessInput {
   const catalog = journeyCatalogOf(sources);
   const trip = catalog.journeys.find((item) => item.id === journeyId);
   if (!trip) throw new Error("Journey journey is missing");
@@ -187,7 +199,7 @@ export function loadJourneyReadiness(root: string, journeyId: string): JourneyRe
   });
   const quizzes = sources.quizFiles.filter((quiz) => !quiz.sample).map((quiz) => quizSchema.parse(quiz.data));
   const storyIds = new Set(sources.storyFiles.map((story) => story.id));
-  return { trip, cities, quizzes, journey: parseCatalog(sources, journeySchema, "progression/journey.json"),
+  return { trip, cities, quizzes, sampleLeftovers: journeySampleLeftovers(sources, journeyId), journey: parseCatalog(sources, journeySchema, "progression/journey.json"),
     tourism: parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json"),
     backgrounds: parseCatalog(sources, presentationSchema, "romance/presentation.json").backgrounds,
     dates: parseCatalog(sources, dateCatalogSchema, "romance/date_catalog.json").dates,
@@ -196,4 +208,18 @@ export function loadJourneyReadiness(root: string, journeyId: string): JourneyRe
     translations: parseCatalog(sources, learningCatalogSchema, "learning/translations.json").questions,
     storyExists: (id) => /^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/.test(id) && storyIds.has(id),
     assetExists: (assetPath) => servedFile(sources.publicFiles, assetPath) !== undefined };
+}
+
+/**
+ * The sample content left in a journey's own folder (sample-journey.ts): the
+ * data files as loaded, the images (only listed by the loader) read from disk.
+ */
+function journeySampleLeftovers(sources: ContentSources, journeyId: string): SampleLeftover[] {
+  if (journeyId === SAMPLE_JOURNEY_ID) return [];
+  const folder = journeyFolderPath(sources.tree, journeyId);
+  const files = new Map([...sources.tree.files].filter(([treePath]) => treePath.startsWith(`${folder}/`)).map(([treePath, bytes]) => {
+    const file = path.join(sources.root, treePath);
+    return [treePath.slice(folder.length + 1), bytes ?? (existsSync(file) ? readFileSync(file) : null)];
+  }));
+  return sampleLeftovers(files).map((leftover) => ({ ...leftover, file: `${folder}/${leftover.file}` }));
 }

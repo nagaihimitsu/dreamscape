@@ -1,8 +1,9 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { describeFindings, devOnlyMarkers, findDevOnlyCode, isTextAsset, type DistFile } from "./dist-guard";
+import { runtimeImports } from "./test-sets";
 
 // No content build needed: the markers are checked against the repository's
 // sources and the detection against small in-memory "builds".
@@ -33,21 +34,28 @@ describe("production build guard", () => {
     const leaked: DistFile[] = [
       ...cleanBuild,
       { path: "assets/DebugMode-x1.js", text: 'jsx("main",{className:"debug-panel","data-testid":"debug-panel"})' },
-      { path: "assets/index-def.js", text: 'throw Error("仮の場面の元になる都市データがありません: milano")' },
-      { path: "assets/tourism/zz_fixture_trip/zz_fixture_spot.png", text: null },
+      { path: "assets/index-def.js", text: 'throw Error("仮の場面の元になる都市がありません。公開中の旅行編のどれかに…")' },
+      { path: "assets/tourism/sample_trip/mihon_market.png", text: null },
       { path: "assets/index-abc.js.map", text: '{"sources":["../src/dev/debug-state.ts"]}' },
     ];
     expect(findDevOnlyCode(leaked).map(({ path, where, marker }) => [path, where, marker.text])).toEqual([
       ["assets/DebugMode-x1.js", "content", "debug-panel"],
-      ["assets/index-def.js", "content", "仮の場面の元になる都市データがありません"],
-      ["assets/tourism/zz_fixture_trip/zz_fixture_spot.png", "path", "zz_fixture_trip"],
+      ["assets/index-def.js", "content", "仮の場面の元になる都市がありません"],
+      ["assets/tourism/sample_trip/mihon_market.png", "path", "sample_trip"],
       ["assets/index-abc.js.map", "content", "src/dev/"],
     ]);
   });
 
-  it("reports a reserved journey ID found in generated content", () => {
-    const build = [{ path: "assets/index-abc.js", text: '{"id":"sample_trip","status":"available"}' }];
-    expect(findDevOnlyCode(build).map((finding) => finding.marker.source)).toEqual(["docs/02_TECH_ARCHITECTURE.md"]);
+  it("reports the sample journey in generated content and in served image paths", () => {
+    // What a production build would contain after `npm run content:build -- --with-sample`.
+    const build = [
+      { path: "assets/index-abc.js", text: '{"id":"sample_trip","status":"available"}' },
+      { path: "assets/tourism/sample_trip/mihon_clock_tower.png", text: null },
+    ];
+    expect(findDevOnlyCode(build).map(({ path, where, marker }) => [path, where, marker.source])).toEqual([
+      ["assets/index-abc.js", "content", "authoring/templates/sample_trip/manifest.json"],
+      ["assets/tourism/sample_trip/mihon_clock_tower.png", "path", "authoring/templates/sample_trip/manifest.json"],
+    ]);
   });
 
   it("checks only the path of binary files", () => {
@@ -64,5 +72,30 @@ describe("production build guard", () => {
     const report = describeFindings("dist", [finding]);
     expect(report).toContain("本番ビルド（dist）");
     expect(report).toContain("- assets/DebugMode-x1.js の内容に「debug-panel」（目印の由来: src/dev/DebugMode.tsx）");
+  });
+});
+
+/** Game source files that ship: src/ without Debug/preview (src/dev/), tests and in-memory test fixtures. */
+function productionSources(): string[] {
+  return readdirSync(path.join(root, "src"), { recursive: true, encoding: "utf8" })
+    .map((file) => `src/${file.split(path.sep).join("/")}`)
+    .filter((file) => /\.tsx?$/.test(file) && !file.startsWith("src/dev/") && !/\.test\.tsx?$/.test(file) && !file.includes("test-fixture"));
+}
+const devOnlyImport = /(^|\/)dev\/|test-fixture|(^|\/)tests\//;
+
+describe("development-only code in the game's sources", () => {
+  it("is reached only through main.tsx's lazy imports behind import.meta.env.DEV", () => {
+    const sources = productionSources();
+    expect(sources).toContain("src/main.tsx");
+    expect(sources).toContain("src/app/GameApp.tsx");
+    const reached = sources.flatMap((file) => runtimeImports(readFileSync(path.join(root, file), "utf8"))
+      .filter((specifier) => devOnlyImport.test(specifier)).map((specifier) => `${file} → ${specifier}`));
+    expect(reached).toEqual(["src/main.tsx → ./dev/CharacterPreview", "src/main.tsx → ./dev/DebugMode"]);
+    // Each one is the lazy branch of a DEV check, which Vite removes from production builds;
+    // the Debug launch URL (?debug&…) and the test hook live behind it in src/dev/.
+    const main = readFileSync(path.join(root, "src/main.tsx"), "utf8");
+    const guarded = [...main.matchAll(/= import\.meta\.env\.DEV\s*\?\s*React\.lazy\(\(\) => import\("(\.\/dev\/\w+)"\)\)\s*:\s*null;/g)].map((match) => match[1]);
+    expect(guarded.sort()).toEqual(["./dev/CharacterPreview", "./dev/DebugMode"]);
+    expect(main).toMatch(/const query = import\.meta\.env\.DEV \? new URLSearchParams\(window\.location\.search\) : null;/);
   });
 });

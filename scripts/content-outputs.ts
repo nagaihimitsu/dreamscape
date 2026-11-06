@@ -10,6 +10,8 @@ import { listFiles, type ContentSources } from "./content-sources";
 // (src/content/generated/public/).
 
 export const GENERATED_DIRECTORY = "src/content/generated";
+/** How the outputs were built: `{ extraJourneyFolders: { <journeyId>: <folder> } }`, empty without extra journey folders. */
+export const BUILD_INFO_FILE = `${GENERATED_DIRECTORY}/build-info.json`;
 
 /** Write every output of a validated build into `root`. */
 export function writeContentOutputs(
@@ -19,6 +21,9 @@ export function writeContentOutputs(
 ): void {
   const directory = path.join(root, GENERATED_DIRECTORY);
   mkdirSync(directory, { recursive: true });
+  // Records whether development-only journey folders (the sample journey) are part of these outputs.
+  const buildInfo = { extraJourneyFolders: sources.tree.extraJourneyFolders ?? {} };
+  writeFileSync(path.join(root, BUILD_INFO_FILE), `${JSON.stringify(buildInfo, null, 2)}\n`);
   writeFileSync(path.join(directory, "quizzes.json"), `${JSON.stringify(validated.quizzes, null, 2)}\n`);
   writeFileSync(path.join(directory, "stories.json"), `${JSON.stringify(validated.stories, null, 2)}\n`);
   // The game imports the validated, merged catalogs only from this mirror.

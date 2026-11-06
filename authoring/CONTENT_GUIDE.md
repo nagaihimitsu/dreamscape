@@ -70,22 +70,25 @@ VAR heroine_name = ""
 
 公開済みInkを編集・差し替えると途中セーブの指紋が変わり、過去のセーブや途中の会話が再開できなくなる場合があります。開発中は誤字修正や改稿のたびに旧セーブ再開用の旧稿を保存する必要はありません。現在のゲームが使っている脚本・データは誤って削除しないでください。安全に読めないデータは勝手に消さず、利用者が案内に従って消去し、最初から始められます。古い外部演出の行や脚本がなくなった場合は警告されます。`npm run content:check` は差分だけでなく全コンテンツの参照と分岐を検証し、ゲーム用データを生成します。
 
-## この雛形について
+## 見本の編（雛形）
 
-[`templates/`](templates/) は現在のミラノ編から抜き出した**記入例**です。実際に使われているID・文章・出典を含むので、コピーしてそのまま追加するとIDが重複します。新作には各ID、参照先、文章、実際に確認した出典・画像情報を更新してください。実在する記述を雛形として示しているだけで、別の題材の根拠や使用許諾にはなりません。`tourism.json`、`battle_*.json`、`date.json` は対応する既存カタログの配列に**項目を追加するための例**です。既存カタログを例で上書きしないでください。`date_presentation_parts.json` はカタログ全体ではなく、`presentation.json` の各オブジェクトに追加する部品です。
+ファイルの書き方の手本は、架空の「見本の街」を舞台にした遊べる最小の旅行編 [見本の編](templates/sample_trip/README.md)（`templates/sample_trip/`、開発・テスト専用）です。観光案内・通常戦・デート・都市フィナーレ・エピローグの必須の20ファイルと、任意の特殊戦B（矛盾追及）・特殊戦C（証拠連結）・品物つきの道中交流があり、各Inkの冒頭のコメントにその種類の脚本の規則を書いています。新しい旅行編は `npm run journey:new` で見本から作れます（[新しい編を追加する手順](../docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順)）。既存の旅行編に項目を足すときも、見本の同じ種類の項目を写してIDと内容を置き換えます。見本の文章・出典（`https://example.com/dreamscape-sample`）・画像は架空なので、写したら実在の観光地、実際に確認した出典、権利を確認した画像に置き換えます（残っていると `npm run journey:readiness` が示し、`npm run journey:release` は公開を止めます）。カタログのファイルは、既存のカタログの配列に項目を追加します。例でカタログ全体を上書きしないでください。
 
-配置先の `<旅行編>` は `content/journeys/<旅行編ID>/`（ミラノ編なら `content/journeys/milano/`）です。
+配置先の `<旅行編>` は `content/journeys/<旅行編ID>/`（ミラノ編なら `content/journeys/milano/`）です。見本の中も同じ相対配置です。
 
-| 作るもの                       | 例                                                               | 正式な配置先                                              |
-| ------------------------------ | ---------------------------------------------------------------- | --------------------------------------------------------- |
-| 観光地・画像・発見・資料       | `tourism.json`                                                   | `<旅行編>/tourism/catalog.json` の各配列                  |
-| 英語3択3問                     | `quiz.json`                                                      | `<旅行編>/quizzes/任意名.json`                            |
-| 敵と通常戦、矛盾追及、証拠連結 | `battle_a.json`, `battle_b.json`, `battle_c.json`                | `<旅行編>/battles/catalog.json` の `battles`              |
-| 敵の会話                       | `battle_a.ink`, `battle_b.ink`, `battle_c.ink`                   | `<旅行編>/stories/battles/`                               |
-| デート、効果、思い出・背景     | `date.json`, `date_effects.json`, `date_presentation_parts.json` | `<旅行編>/romance/` の対応するカタログ                    |
-| デートの会話                   | `date.ink`                                                       | `<旅行編>/stories/<都市ID>/`（ミラノは `stories/milano/`） |
-| 観光案内                       | `guide.ink`                                                      | `<旅行編>/stories/tourism/`                               |
-| 都市・順路・報酬               | `city.json`, `journey.json`                                      | `<旅行編>/cities/`, `<旅行編>/progression/journey.json`   |
+| 作るもの                       | 見本の例（`templates/sample_trip/` の中）                                                        | 正式な配置先                                              |
+| ------------------------------ | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------- |
+| 観光地・画像・発見・資料       | `tourism/catalog.json`                                                                           | `<旅行編>/tourism/catalog.json` の各配列                  |
+| 英語3択（通常戦3問・フィナーレ5問） | `quizzes/smp_mihon_clock_tower_quiz.json`, `quizzes/smp_mihon_finale_quiz.json`             | `<旅行編>/quizzes/任意名.json`                            |
+| 敵と通常戦、矛盾追及、証拠連結 | `battles/catalog.json`（特殊戦は `quizzes/smp_mihon_market_b_quiz.json`・`smp_mihon_library_c_quiz.json` も） | `<旅行編>/battles/catalog.json` の `battles`              |
+| 敵の会話                       | `stories/battles/smp_mihon_clock_tower.ink`, `smp_mihon_market_b.ink`, `smp_mihon_library_c.ink`, `smp_mihon_finale.ink` | `<旅行編>/stories/battles/`                               |
+| デート、行き先、背景           | `romance/date_catalog.json`, `romance/date_destinations.json`, `romance/presentation.json`       | `<旅行編>/romance/` の対応するカタログ                    |
+| デートの会話                   | `stories/dates/smp_mihon_date_tower_square.ink`                                                  | `<旅行編>/stories/dates/` など                            |
+| 観光案内                       | `stories/tourism/smp_mihon_clock_tower_guide.ink`                                                | `<旅行編>/stories/tourism/`                               |
+| 都市・順路・報酬               | `cities/mihon.json`, `progression/journey.json`                                                  | `<旅行編>/cities/`, `<旅行編>/progression/journey.json`   |
+| 道中交流と品物                 | `encounters/catalog.json`, `stories/encounters/smp_mihon_bookmark_stall.ink`                     | `<旅行編>/encounters/catalog.json`, `<旅行編>/stories/encounters/` |
+
+デート専用の効果と思い出（`romance/effect_catalog.json` の固有effect、`romance/presentation.json` の `memories`）は見本にありません。ミラノ編・インド編の同じファイルの項目を参考にします。
 
 JSONにはコメントを入れず、カンマ、引用符、配列の括弧を保ちます。`schemaVersion` はデータ形式の版で、個々のコンテンツIDとは別です。編集前に対象ファイルを複製し、既存内容を消さずに追加してください。表示名は変更できますが、公開済みIDはセーブ・他データの参照に使うため変更しないでください。新しいIDは英小文字で始め、英小文字・数字・`_` を使います。IDはすべての旅行編で共有する一つの名前空間にあるため、新しい旅行編では `manifest.json` の `authoring.eventPrefix` と同じ接頭辞（例：`gt_`、`uz_`）を付けます（地点IDは都市IDを接頭辞にします。付け忘れは `content:build` が警告します）。`storyId` は `tourism/duomo_guide` のように、旅行編フォルダの `stories/`（`content/journeys/<旅行編ID>/stories/`）からの拡張子なしの相対パスです。旅行編フォルダ名は含まないため、他の旅行編と同じフォルダ名（`battles/` など）を使う場合はファイル名に接頭辞を付けて重ならないようにします。共通データ（`content/` 直下）には都市・移動・Ink・クイズや旅行編専用のカタログを置けません。
 
@@ -98,10 +101,10 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 ## 新しい観光地を準備する
 
 1. 事実・解釈・伝説を区別し、各項目の出典と日付を記録します。写真の作者、ライセンス、加工内容と利用条件も確認します。
-2. `tourism.json` を見ながら、画像を `assets`、場所を `landmarks`、その発見を `clues` に登録します。画像は旅行編の `content/journeys/<旅行編ID>/public/` 以下に配置し、`path` に `public/` を除いたパス（配信時のパス）を書きます。
-3. 3問の `quiz.json` と案内 `guide.ink` を作り、対応するIDをそろえます。
-4. 敵の `battle_a.json` と `battle_a.ink` を参考に、敵・会話と問題を結びます。演出背景は `<旅行編>/romance/presentation.json` に登録します。
-5. 順路・報酬を `journey.json` の既存配列に追加し、参照関係を確認します。新都市の追加には後述の現行制約があります。
+2. 見本の `tourism/catalog.json` を見ながら、画像を `assets`、場所を `landmarks`、その発見を `clues` に登録します。画像は旅行編の `content/journeys/<旅行編ID>/public/` 以下に配置し、`path` に `public/` を除いたパス（配信時のパス）を書きます。
+3. 3問のクイズ（見本の `quizzes/smp_mihon_clock_tower_quiz.json`）と観光案内（`stories/tourism/smp_mihon_clock_tower_guide.ink`）を作り、対応するIDをそろえます。
+4. 見本の `battles/catalog.json` の通常戦と `stories/battles/smp_mihon_clock_tower.ink` を参考に、敵・会話と問題を結びます。演出背景は `<旅行編>/romance/presentation.json` に登録します。
+5. 順路・報酬を `<旅行編>/progression/journey.json` の既存配列に追加し、参照関係を確認します。新都市の追加には後述の現行制約があります。
 6. 後述の検証と編集者レビューを済ませてからGitで採用します。
 
 ### 観光データの項目
@@ -123,7 +126,7 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 
 ### クイズの項目
 
-`quiz.json` の `id` は問題セット、`landmarkId` は観光地、`englishLevel` は `A2` / `B1` / `B2`。通常戦の `questions` は3問です。各問の `id`、英語の `questionEn`、`options` の `id` と `textEn`、`correctOptionId` を指定します。選択肢は3つ、正解IDはそのうち一つ。`vocabularyJa` の `word` / `meaning` は英単語と日本語補足、`hintJa`、`correctExplanationJa`、`incorrectExplanationJa` は日本語、`sources` は各問の根拠、`difficulty` は `easy` / `medium` / `hard`。問題と選択肢だけを英語にします。解答前の会話で正解を明かさないようにします。都市フィナーレは `scope: "city_finale"`、`cityId`、`landmarkId: null`、5問です。
+クイズの `id` は問題セット、`landmarkId` は観光地、`englishLevel` は `A2` / `B1` / `B2`。通常戦の `questions` は3問です。各問の `id`、英語の `questionEn`、`options` の `id` と `textEn`、`correctOptionId` を指定します。選択肢は3つ、正解IDはそのうち一つ。`vocabularyJa` の `word` / `meaning` は英単語と日本語補足、`hintJa`、`correctExplanationJa`、`incorrectExplanationJa` は日本語、`sources` は各問の根拠、`difficulty` は `easy` / `medium` / `hard`。問題と選択肢だけを英語にします。解答前の会話で正解を明かさないようにします。都市フィナーレは `scope: "city_finale"`、`cityId`、`landmarkId: null`、5問です。
 
 ### 敵・バトルの項目
 
@@ -152,11 +155,11 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 
 ### 通常デートのデータ
 
-`date.json` の `id`、`chapterId`、`titleJa`、`descriptionJa`、`storyId`、`backgroundAssetId` はイベント、章、表示文、脚本、背景です。`kind` は通常なら `normal`。`apCost`、`minRomanceStage`、`minAffection`、`requiredCompletedChapters` は開始条件で、`destinationId`・`requiredCompletedEpisodeIds`・`requiredCompletedCityIds` は必要な場合のみ。通常デートの `requiredPlayedDateIds` は空配列とし、他のデートを必須にしません。期間限定イベントには `forbiddenCompletedEpisodeIds` で終了条件を指定でき、`eventLabelJa` で「今だけの出来事」などの種別を表示できます。`repeatable` は再挑戦可否で、通常デートは `false`、告白は再挑戦のため `true` にします。`rewardOnlyOnce` は効果の重複防止、`needsDeferred` は告白保留後の条件、`choiceCount` / `effectCount` は各経路の選択・効果回数です。
+デート（`romance/date_catalog.json` の `dates`）の `id`、`chapterId`、`titleJa`、`descriptionJa`、`storyId`、`backgroundAssetId` はイベント、章、表示文、脚本、背景です。`kind` は通常なら `normal`。`apCost`、`minRomanceStage`、`minAffection`、`requiredCompletedChapters` は開始条件で、`destinationId`・`requiredCompletedEpisodeIds`・`requiredCompletedCityIds` は必要な場合のみ。通常デートの `requiredPlayedDateIds` は空配列とし、他のデートを必須にしません。期間限定イベントには `forbiddenCompletedEpisodeIds` で終了条件を指定でき、`eventLabelJa` で「今だけの出来事」などの種別を表示できます。`repeatable` は再挑戦可否で、通常デートは `false`、告白は再挑戦のため `true` にします。`rewardOnlyOnce` は効果の重複防止、`needsDeferred` は告白保留後の条件、`choiceCount` / `effectCount` は各経路の選択・効果回数です。
 
 `effect_catalog.json` の各 `id` と任意の `memoryId` はInkの `# effect:` に対応します。告白を除く恋愛選択には `responseProfileId` を指定し、`content/romance/response_profiles.json` のリスク特性から選びます。`responseProfileId` を指定した選択の関係値は確率判定で決まり、固定の `affectionDelta`・`trustDelta`・`sparkDelta` は使われません。`affectionDelta` は `0` とし、`trustDelta`・`sparkDelta` は書きません。台詞と選択の性格に合うプロフィールを選び、全段階をレビューしてください。思い出は `presentation.json` の `memories` に同じIDと `titleJa` / `descriptionJa` を登録します。Stage・告白条件は `progression.json` で管理し、特定デートIDを条件にしません。
 
-Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受け取ります。`# speaker: narrator` / `heroine` / `player` / `enemy`、`# background: 登録済みID`、`# emotion: 登録済みID` を使い、本文を日本語で書きます。デートの `* [選択肢]` と各分岐直後の `# effect: 登録済みID`、`->` の合流例は `date.ink` を参照。通常デートは3択を2回、各選択直後・最初の発話の前に対応する `# effect:` を1つ置きます。Inkで `romance_result` と `affection_delta`・`trust_delta`・`spark_delta` を宣言し、`romance_result` の positive と negative それぞれで異なる人物らしい反応を書きます。確率計算と乱数はInkに書きません。告白は確定的な別契約です。案内とバトルには恋愛effectを置きません。バトルInkは `battle_scene`、`answer_correct`、`battle_score` で分岐し、各場面を `-> END` で閉じます。特殊戦の主張・追及・証拠成功／失敗の例もB/CのInkにあります。
+Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受け取ります。`# speaker: narrator` / `heroine` / `player` / `enemy`、`# background: 登録済みID`、`# emotion: 登録済みID` を使い、本文を日本語で書きます。デートの `* [選択肢]` と各分岐直後の `# effect: 登録済みID`、`->` の合流例は見本の `stories/dates/smp_mihon_date_tower_square.ink` を参照。通常デートは3択を2回、各選択直後・最初の発話の前に対応する `# effect:` を1つ置きます。Inkで `romance_result` と `affection_delta`・`trust_delta`・`spark_delta` を宣言し、`romance_result` の positive と negative それぞれで異なる人物らしい反応を書きます。確率計算と乱数はInkに書きません。告白は確定的な別契約です。案内とバトルには恋愛effectを置きません。バトルInkは `battle_scene`、`answer_correct`、`battle_score` で分岐し、各場面を `-> END` で閉じます。特殊戦の主張・追及・証拠成功／失敗の例は見本の `stories/battles/smp_mihon_market_b.ink`（B）と `smp_mihon_library_c.ink`（C）にあります。
 
 会話中の無言リアクションは、通常はInkの `# reaction:` で指定します。既存の `content/journeys/milano/presentation/dialogue-reactions.json` は、公開済みの脚本を変えずに演出を付けた旧指定として維持します。外部指定では固定台詞の完全一致が必要で、変数を含む行には指定できません。脚本を更新した場合、参照先の消えた旧指定は検証時に警告されます。
 
@@ -180,7 +183,7 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 
 交流Inkから以前の品物を参照する場合は `EXTERNAL has_item_status(id, status)` を宣言し、例えば `has_item_status("galleria_souvenir", "gifted")` のように登録済みIDと `held`・`gifted`・`used` の固定文字列を使います。状態の変更はゲーム側だけが行います。この参照は現時点では道中交流のInkで使用できます。`npm run content:check` は重複ID、参照、選択肢と分岐、出典の形式、アイテム参照を検証します。既存の戦闘・デートInkを改稿した場合、過去の途中セーブを再開できなくなることがあります。
 
-`city.json` の `id`、`countryCode`、`nameJa`、`themeJa`、`landmarkIdsPlanned`、`productionStatus` は都市と場所の識別、表示、予定と状態。`firstClearReward` は都市の初回クリア報酬の `rewardSourceId` と `ap` です（`ap` が正の場合、同じIDの `episode_clear` 報酬を一つの観光エピソードに設定します。0なら設定しません）。`journey.json` の `episodes` は順路（各都市の最初のエピソードは前提なし）、`rewards` は一度限りの報酬です。各エピソードの `id`、`kind`、`cityId`、`landmarkId`、`battleId`、`requiredEpisodeIds`、`titleJa` / `descriptionJa` / `clearTitleJa` / `clearDescriptionJa` は識別・参照・順序・表示文。都市フィナーレは `kind: "city_finale"`、`landmarkId: null` と `epilogueStoryId` を指定します。
+都市（`cities/<都市ID>.json`）の `id`、`countryCode`、`nameJa`、`themeJa`、`landmarkIdsPlanned`、`productionStatus` は都市と場所の識別、表示、予定と状態。`firstClearReward` は都市の初回クリア報酬の `rewardSourceId` と `ap` です（`ap` が正の場合、同じIDの `episode_clear` 報酬を一つの観光エピソードに設定します。0なら設定しません）。`progression/journey.json` の `episodes` は順路（各都市の最初のエピソードは前提なし）、`rewards` は一度限りの報酬です。各エピソードの `id`、`kind`、`cityId`、`landmarkId`、`battleId`、`requiredEpisodeIds`、`titleJa` / `descriptionJa` / `clearTitleJa` / `clearDescriptionJa` は識別・参照・順序・表示文。都市フィナーレは `kind: "city_finale"`、`landmarkId: null` と `epilogueStoryId` を指定します。
 
 報酬の `id`、`episodeId`、`trigger`、`ap`、`minScore`、`titleJa` は安定ID、対象、発生条件、付与量、得点条件、表示文です。`trigger` は `guide_read` / `battle_complete` / `battle_score` / `episode_clear` / `city_clear`。`minScore` は `battle_score` のみ正の数、それ以外は `null`。AP上限や報酬IDの重複防止はゲームルール側で処理します。
 
@@ -188,12 +191,12 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 
 ## 確認と公開前レビュー
 
-`npm ci` の後、1ファイルを編集中に確認する例です。形式の推測が難しい雛形や下書きは `--type` を指定します。バトルの例は複数項目を含むカタログ形式なので `battle-catalog` です。
+`npm ci` の後、1ファイルを編集中に確認する例です（見本のファイルで試せます）。形式の推測が難しい雛形や下書きは `--type` を指定します。対決は複数項目を含むカタログ形式なので `battle-catalog` です。
 
 ```sh
-npm run content:inspect -- --type quiz authoring/templates/quiz.json
-npm run content:inspect -- --type battle-catalog authoring/templates/battle_b.json
-npm run content:inspect -- authoring/templates/date.ink
+npm run content:inspect -- --type quiz authoring/templates/sample_trip/quizzes/smp_mihon_clock_tower_quiz.json
+npm run content:inspect -- --type battle-catalog authoring/templates/sample_trip/battles/catalog.json
+npm run content:inspect -- authoring/templates/sample_trip/stories/dates/smp_mihon_date_tower_square.ink
 ```
 
 単体検証はJSONの構文・指定形式とInkのコンパイルを調べます。参照先、Inkタグ、分岐の全文脈は単体では検証しません。正式データの変更後に `npm run content:check` を実行すると、全コンテンツの構造・参照を検証し、ゲーム用のデータを生成します。生成ファイルを書き換えずに全体を確認したい場合は、代わりに `npm run content:inspect -- --all` を利用できます。`npm run content:compat` はコンテンツ生成後に保存関連テストを実行します。過去のセーブの更新後の再開を保証するものではありません。

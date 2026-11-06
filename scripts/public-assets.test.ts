@@ -57,6 +57,9 @@ describe("public files", () => {
     expect(servedFile(publicFiles, "assets/tourism/missing.jpg")).toBeUndefined();
     expect(() => requireServedFile(publicFiles, "assets/tourism/missing.jpg"))
       .toThrow("Missing public file: assets/tourism/missing.jpg (searched public/ and content/journeys/<journeyId>/public/)");
+    // The folder of the journey whose data names the file, when the caller knows it (any journey folder).
+    expect(() => requireServedFile(publicFiles, "assets/tourism/missing.jpg", "authoring/templates/sample_trip"))
+      .toThrow("Missing public file: assets/tourism/missing.jpg (searched public/ and authoring/templates/sample_trip/public/)");
   });
 
   it("assembles the served folder incrementally and removes files no folder provides", () => {

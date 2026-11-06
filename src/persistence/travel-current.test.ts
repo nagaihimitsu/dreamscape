@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { getCityContent } from "../content";
 import { createGame, type GameState } from "../domain/game";
-import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle } from "../domain/battle";
+import { leaveBattle } from "../domain/battle";
+import { playBattleToResult } from "../dev/scenario-builders";
 import { closeTourism, openTourism, skipTourismGuide, startTourismBattle } from "../domain/tourism";
 import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, getTravelHomeRoutes, sleepAtHotel, waitForTravel } from "../domain/travel-game";
 import { loadGame, SAVE_KEY, saveGame, type StorageLike } from "./index";
@@ -15,18 +16,10 @@ class MemoryStorage implements StorageLike {
   removeItem(key: string) { this.values.delete(key); }
 }
 
+/** Skip the guide and win the battle; GameApp settles the map event at the result (so does the builder). */
 function completeMainEvent(initial: GameState): GameState {
-  let state = skipTourismGuide(initial, initial.revision);
-  state = startTourismBattle(state, state.revision);
-  for (let step = 0; state.activeBattle?.phase !== "result"; step++) {
-    expect(step).toBeLessThan(200);
-    const active = state.activeBattle!;
-    const next = active.phase === "question"
-      ? answerBattle(state, getActiveBattleContent(active).quiz.questions[active.roundIndex].correctOptionId, state.revision)
-      : advanceBattle(state, state.revision);
-    state = finishTravelEventIfComplete(state, next);
-  }
-  return state;
+  const explored = skipTourismGuide(initial, initial.revision);
+  return playBattleToResult(startTourismBattle(explored, explored.revision));
 }
 
 describe("current travel save and concurrency", () => {

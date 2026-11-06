@@ -304,6 +304,9 @@ export async function prepareJourneyRelease(root: string, journeyId: string, app
   const before = loadJourneyReadiness(root, journeyId);
   const cityIds = before.trip.cities.map((city) => city.id);
   const report = inspectJourneyReadiness(before);
+  // A journey made from the sample (journey:new) is never published with the sample's fictional content.
+  const leftovers = report.issues.filter((issue) => issue.code === "sample_content_left");
+  if (leftovers.length) throw new Error(`見本の内容が残っているため公開できません。実在の出典・画像・文章に置き換えてから実行し直してください（一覧: npm run journey:readiness -- --journey ${journeyId}）。\n${leftovers.map((issue) => `- ${issue.detail}`).join("\n")}`);
   const ids = prefix(cityIds, through);
   const candidate = report.cities.filter((city) => ids.includes(city.cityId));
   const hasBlocker = report.issues.some((issue) => issue.code !== "journey_unavailable") || candidate.length !== ids.length || candidate.some((city) =>

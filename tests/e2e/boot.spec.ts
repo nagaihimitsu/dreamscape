@@ -1,12 +1,15 @@
 import { readFileSync } from "node:fs";
 import type { JourneyCatalog } from "../../src/content/journey-catalog";
+import { DEBUG_HOOK_NAME, type DreamscapeDebugHook } from "../../src/dev/debug-hook";
+import { debugQueryString } from "../../src/dev/debug-query";
 import { allStorage, expect, readSave, startJourney, test } from "./helpers";
 
 test("the title screen opens every registered journey without writing a save", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveTitle(/Dreamscape/);
-  // Read after the dev server's content:build: the title art each manifest declares.
-  const catalog: JourneyCatalog = JSON.parse(readFileSync("src/content/generated/content/journeys/catalog.json", "utf8"));
+  // Read after the dev server's content:build (of this spec's checkout, whatever the working folder):
+  // each journey's status, initial state and title art.
+  const catalog: JourneyCatalog = JSON.parse(readFileSync(new URL("../../src/content/generated/content/journeys/catalog.json", import.meta.url), "utf8"));
   const selector = page.getByLabel("旅行編");
   const journeys = await selector.locator("option").evaluateAll((options) =>
     options.map((option) => ({ id: (option as HTMLOptionElement).value, name: option.textContent ?? "" })));
@@ -19,11 +22,19 @@ test("the title screen opens every registered journey without writing a save", a
   for (const [index, journey] of journeys.entries()) {
     if (index > 0) await page.keyboard.press("ArrowDown");
     await expect(selector).toHaveValue(journey.id);
-    if (journey.name.includes("準備中")) {
-      // An unfinished journey can only store names for later; it cannot be played yet.
+    const entry = catalog.journeys.find((item) => item.id === journey.id);
+    expect(journey.name.includes("準備中"), journey.id).toBe(entry?.status === "preparing");
+    if (entry?.status === "preparing") {
+      // An unfinished journey cannot be played yet. With an initial state
+      // (manifest initialState) it can store names for later; without one,
+      // as a journey fresh from `npm run journey:new`, it is read-only.
       await expect(page.getByText("この旅行編は制作中です。", { exact: false })).toBeVisible();
-      await expect(page.getByRole("button", { name: "旅の準備を保存する" })).toBeVisible();
       await expect(page.getByRole("button", { name: "旅をはじめる" })).toHaveCount(0);
+      if (entry.initialState) await expect(page.getByRole("button", { name: "旅の準備を保存する" })).toBeVisible();
+      else {
+        await expect(page.getByRole("status")).toHaveText("この旅行編は制作中です。公開をお待ちください。");
+        await expect(page.getByRole("button")).toHaveCount(0);
+      }
     } else {
       await expect(page.getByRole("button", { name: "旅をはじめる", exact: true })).toBeVisible();
       headings.set(journey.id, await page.locator(".masthead .edition").textContent());
@@ -43,16 +54,33 @@ test("the title screen opens every registered journey without writing a save", a
   expect(Object.keys(await allStorage(page)).filter((key) => key.includes(".save."))).toEqual([]);
 });
 
-test("Debug mode opens a scene without changing the player's saved data", async ({ page }) => {
+test("a Debug launch URL opens its scene without changing the player's saved data", async ({ page }) => {
   await startJourney(page);
   await expect(page.getByTestId("travel-menu")).toBeVisible();
   expect((await readSave(page)).ap).toBe(0);
   const before = await allStorage(page);
-  await page.goto("/?debug");
-  await expect(page.getByTestId("debug-panel")).toBeVisible();
-  await page.getByRole("button", { name: "この場面を開く" }).click();
+  // Debug as a scene launchpad (docs/10): it checks the scene only, never saving and resuming.
+  const url = debugQueryString({ dataMode: "real", cityId: "milano", scene: "date", target: "milano_brera_date_01",
+    progress: "completed", ap: 9, affection: 0, trust: 0, spark: 0, roll: "negative" });
+  await page.goto(`/${url}`);
   await expect(page.getByTestId("debug-session")).toBeVisible();
+  await expect(page.getByTestId("romance-scene")).toBeVisible();
+  // The development-only, read-only hook shows Debug's own game (its date spent AP from 9).
+  const debug = await page.evaluate((name) => {
+    const hook = (window as unknown as Record<string, DreamscapeDebugHook>)[name];
+    return { state: hook.getState(), scene: hook.getScene() };
+  }, DEBUG_HOOK_NAME);
+  expect(debug.state?.activeDate?.dateId).toBe("milano_brera_date_01");
+  expect(debug.state?.ap).toBeLessThan(9);
+  expect(debug.scene?.url).toBe(url);
+  // Back on the settings screen, the same scene's URL is offered for copying.
   await page.getByRole("button", { name: "設定へ戻る" }).click();
+  await expect(page.getByTestId("debug-panel")).toBeVisible();
+  await expect(page.getByTestId("debug-url")).toHaveValue(new URL(url, page.url()).href);
+  // A URL that does not fit the content says why and links back to the settings screen.
+  await page.goto("/?debug&city=milano&scene=battle&target=gt_delhi_main_red_fort_battle");
+  await expect(page.getByRole("alert")).toHaveText("「gt_delhi_main_red_fort_battle」はミラノの「バトル」にありません。");
+  await page.getByRole("link", { name: "場面の確認（設定画面）へ" }).click();
   await expect(page.getByTestId("debug-panel")).toBeVisible();
   expect(await allStorage(page)).toEqual(before);
 });

@@ -1,13 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { allRewardRules, balance, battleQuizzes, battles, journeyConfig } from "../content";
+import { allRewardRules, balance, journeyConfig } from "../content";
+import { firstCorrect, playBattleToResult, readGuide as readWholeGuide } from "../dev/scenario-builders";
 import { loadGame, saveGame, SAVE_KEY, type StorageLike } from "../persistence";
-import { advanceBattle, answerBattle, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "./battle";
+import { leaveBattle, startBattle } from "./battle";
 import { finalizeBattleProgress } from "./chapter";
 import { createGame, type GameState } from "./game";
-import { installTestCity } from "./multi-city-test-fixture";
+import { installTestCity } from "../dev/test-cities";
 import { claimPendingRewards } from "./rewards";
 import { beginTravelEvent } from "./travel-game";
-import { advanceTourismGuide, openTourism, replayTourismGuide, skipTourismGuide, startTourismBattle } from "./tourism";
+import { openTourism, replayTourismGuide, skipTourismGuide, startTourismBattle } from "./tourism";
 
 class MemoryStorage implements StorageLike {
   values = new Map<string, string>();
@@ -27,32 +28,16 @@ function restore(state: GameState): GameState {
 const totalAp = (state: GameState) => state.ap + state.pendingApRewards.reduce((sum, reward) => sum + reward.remainingAp, 0);
 const rulesFor = (battleId: string) => allRewardRules.filter((rule) => rule.battleId === battleId);
 
+/** Read the guide to its end, saving and restoring every line. */
 function readGuide(initial: GameState): GameState {
-  let state = initial;
-  for (let count = 0; state.activeTourism?.phase === "guide" && count < 100; count++) {
-    state = advanceTourismGuide(restore(state), state.revision);
-  }
+  const state = readWholeGuide(initial, { after: (next) => restore(next) });
   expect(state.activeTourism?.phase).toBe("exploring");
   return restore(state);
 }
 
+/** The first `score` answers correct (B/C evidence correct), saving and restoring every action. */
 function finishBattle(initial: GameState, score: number): GameState {
-  let state = initial;
-  const battle = battles.find((item) => item.id === state.activeBattle!.battleId)!;
-  const quiz = battleQuizzes[battle.quizId];
-  for (let count = 0; state.activeBattle?.phase !== "result" && count < 160; count++) {
-    state = restore(state);
-    const active = state.activeBattle!;
-    if (active.phase === "reasoning") {
-      for (const clue of battle.reasoning!.correctClueIds) state = selectReasoningClue(state, clue, state.revision);
-      state = submitBattleEvidence(state, state.revision);
-    } else if (active.phase === "question") {
-      const question = quiz.questions[active.roundIndex];
-      const answer = active.roundIndex < score ? question.correctOptionId : question.options.find((option) => option.id !== question.correctOptionId)!.id;
-      state = answerBattle(state, answer, state.revision);
-    } else state = advanceBattle(state, state.revision);
-  }
-  expect(state.activeBattle?.phase).toBe("result");
+  const state = playBattleToResult(initial, { answer: firstCorrect(score), after: (next) => restore(next) });
   expect(state.activeBattle?.score).toBe(score);
   return restore(state);
 }
@@ -129,21 +114,21 @@ describe.each([
 });
 
 it("keeps special rewards and guide records independent between cities", () => {
-  const cleanup = installTestCity();
+  const cleanup = installTestCity({ templateCityId: "milano" });
   try {
     let milan = readGuide(openTourism(createGame(), "la_scala_case"));
     milan = finishBattle(startTourismBattle(milan, milan.revision), 3);
     milan = leaveBattle(milan, milan.revision);
     const milanIds = [...milan.claimedRewardIds];
-    expect(rulesFor("test_special")).toHaveLength(4);
-    expect(milanIds.some((id) => rulesFor("test_special").some((rule) => rule.id === id))).toBe(false);
+    expect(rulesFor("test_special_b")).toHaveLength(4);
+    expect(milanIds.some((id) => rulesFor("test_special_b").some((rule) => rule.id === id))).toBe(false);
     let second: GameState = { ...milan, currentCityId: "test_city",
       travel: { ...milan.travel, currentPlaceId: "test_hotel", hotelPlaceId: "test_hotel" } };
-    second = readGuide(openTourism(restore(second), "test_special_landmark"));
+    second = readGuide(openTourism(restore(second), "test_special_b_landmark"));
     second = finishBattle(startTourismBattle(second, second.revision), 3);
     expect(totalAp(second)).toBe(totalAp(milan) + 4);
     expect(second.claimedRewardIds).toEqual(expect.arrayContaining(milanIds));
-    expect(second.claimedRewardIds).toEqual(expect.arrayContaining(rulesFor("test_special").map((rule) => rule.id)));
+    expect(second.claimedRewardIds).toEqual(expect.arrayContaining(rulesFor("test_special_b").map((rule) => rule.id)));
     expect(second.completedEpisodeIds).toEqual([]);
     expect(second.completedCityIds).toEqual([]);
   } finally { cleanup(); }

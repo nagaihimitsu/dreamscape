@@ -122,10 +122,22 @@ describe("validateContent on sources in memory", () => {
     expect(() => validateContent(load(withFinale("a_city")))).toThrow(NO_TOURISM);
   });
 
+  it("refuses a published journey that keeps the sample's sources (example.com), not a preparing one", () => {
+    // The sample journey itself (sample_trip, available) is exempt: every unit test run builds with it.
+    const withSources = (id: string, cityId: string) => ({ ...files(), [`${journeyFolder(id)}/travel/${cityId}-settings.json`]:
+      json({ sources: [{ url: "https://example.com/dreamscape-sample" }, { url: "https://www.example.com/a" }, { url: "https://example.com.evil.jp/" }] }) });
+    expect(() => validateContent(load(withSources("trip_a", "a_city")))).toThrow(
+      '見本の出典が残っている旅行編は公開（status "available"）にできません: content/journeys/trip_a/travel/a_city-settings.json に' +
+      '見本の出典（example.com のURL）が2件あります（Available journey with sample sources）。実際に確認した出典に置き換えるか、' +
+      'manifest.json の status を "preparing" に戻し、npm run journey:readiness -- --journey trip_a で残っている見本の内容を確かめてください。',
+    );
+    expect(() => validateContent(load(withSources("trip_b", "b_city")))).toThrow(NO_TOURISM);
+  });
+
   it("rejects a city file whose travel file is missing, when the content is loaded", () => {
     const tree = files();
     delete tree[`${journeyFolder("trip_b")}/travel/b_city.json`];
-    expect(() => load(tree)).toThrow(`Cannot read JSON ${path.join(root, journeyFolder("trip_b"), "travel/b_city.json")}`);
+    expect(() => load(tree)).toThrow(`移動データ ${path.join(root, journeyFolder("trip_b"), "travel/b_city.json")} がありません。都市 b_city`);
   });
 });
 

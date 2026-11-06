@@ -1,6 +1,6 @@
 # 都市の追加手順
 
-この文書は既存の旅行編に都市を加える手順です。旅行編そのものを加える場合は、`content/journeys/<旅行編ID>/` のフォルダと `manifest.json` を作る [新しい編を追加する手順](../docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順) から始め、都市ごとの登録は以下に従います。最小の旅行編フォルダの例は `tests/fixtures/journeys/zz_fixture_trip/`（自動テスト専用）にあります。
+この文書は既存の旅行編に都市を加える手順です。旅行編そのものを加える場合は、`npm run journey:new` で見本の編から `content/journeys/<旅行編ID>/` を作る [新しい編を追加する手順](../docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順) から始め、都市ごとの登録は以下に従います。遊べる最小の旅行編フォルダの例は [見本の編](templates/sample_trip/README.md)（開発・テスト専用）です。
 
 旅行編は独立した新規ゲームです。旅行編ごとのフォルダ `content/journeys/<旅行編ID>/`（フォルダ名は旅行編IDと一致）の `manifest.json` に、旅行編のID、一覧での並び順 `order`（旅行編間で重複不可）、都市の順序、通貨、公開状態と初期値を登録します。ゲームが読む旅行編一覧は `npm run content:build` がすべての `manifest.json` から生成します。ミラノ編とゴールデントライアングル編は別々に保存され、互いの進行や予算を引き継ぎません。インド編はデリー、アーグラ、ジャイプールの3都市に地点・背景・市内移動・観光・デート・シナリオ・クイズを登録済みです。各都市は `complete`、旅行編は `available` とし、ミラノ未クリアでも開始できます。これらはビルド対象の状態であり、サイトのデプロイとは別です。ウズベキスタン編は引き続き制作基盤のみの `preparing` です。
 
@@ -12,7 +12,7 @@
 
 ## データの登録
 
-1. 該当する旅行編の `content/journeys/<旅行編ID>/manifest.json` の `cities` に一意な都市IDを順に登録します。次の手順で都市の作業用JSONを作成し、検証・反映すると旅行編フォルダに `content/journeys/<旅行編ID>/cities/<都市ID>.json` が作成されます。ファイル名と `id` は一致させ、正式公開時は `productionStatus` を `complete` とします。既存の `milano.json` は変更せず参考にできます。旅行編を公開するときは開始都市のデータと初期予算を確定し、旅行編の `status` を `available` に変更します。
+1. 該当する旅行編の `content/journeys/<旅行編ID>/manifest.json` の `cities` に一意な都市IDを順に登録します。次の手順で都市の作業用JSONを作成し、検証・反映すると旅行編フォルダに `content/journeys/<旅行編ID>/cities/<都市ID>.json` が作成されます。ファイル名と `id` は一致させ、正式公開時は `productionStatus` を `complete` とします。既存の `milano.json` は変更せず参考にできます。旅行編を公開するときは開始都市のデータと初期予算を確定し、`npm run journey:readiness -- --journey <旅行編ID>` で準備中であること以外の問題がないことを確かめてから、`npm run journey:release -- --check --journey <旅行編ID>`、続けて `--apply` で開始都市を `complete`、旅行編の `status` を `available` にします（[新しい編を追加する手順](../docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順) の手順9）。`status` を手で書き換えると、`journey:new` で作った旅行編に残る見本の画像・文章の確認（readiness・release）を通らずに公開されてしまいます（見本の出典 example.com が残っていれば `content:build` も止めます）。
 2. 滞在先、地点、イベントと地点の対応、都市内の移動経路・費用・時間・営業時間を登録します。[都市別データの編集手順](CITY_BUNDLES.md) を使うと、地点・交通・背景などを都市ごとに１つの作業用JSONでまとめて編集し、検証してから `content/journeys/<旅行編ID>/travel/<都市ID>.json` などの正本に反映できます。地点やイベントのIDは都市をまたいでも重複させません。
 3. 旅行編フォルダの `progression/journey.json` に都市ID付きの観光エピソードと都市フィナーレ、特殊戦、固有の報酬を追加します。その都市の最初のエピソードを先に、フィナーレを最後に置きます。フィナーレは同じ都市の観光を条件にし、特殊戦の完了もその都市内で判定します。ミラノの報酬IDを再利用しないでください。
 4. 旅行編フォルダ `content/journeys/<旅行編ID>/` の `tourism/catalog.json`、`battles/catalog.json`、`quizzes/`、`romance/date_catalog.json` と `date_destinations.json`、`encounters/catalog.json` に必要な内容を追加します（`content/` 直下と同じ相対パス。ファイルが無ければ作成し、ビルド時に共通データと統合されます）。項目は自分の旅行編の都市だけを扱い、参照先は同じ旅行編か共通データに限ります。各観光地・バトル・クイズ・デート・交流・品物の所属と参照先を揃えます。会話のInk、対訳、演出や画像なども必要に応じて登録してください（その旅行編だけが使う画像は `content/journeys/<旅行編ID>/public/assets/` に、配信時と同じ相対パスで置きます）。

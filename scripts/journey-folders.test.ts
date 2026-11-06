@@ -21,9 +21,9 @@ import { prepareContentFixture } from "../src/content/test-fixtures";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { wordMeaningsSchema } from "../src/content/word-meanings";
-import { GENERATED_PUBLIC_DIRECTORY, journeyDirectory, MIRROR_DIRECTORY, type CatalogKind } from "./content-layout";
+import { GENERATED_PUBLIC_DIRECTORY, journeyDirectory, MIRROR_DIRECTORY, SAMPLE_JOURNEY_DIRECTORY, SAMPLE_JOURNEY_ID, type CatalogKind } from "./content-layout";
 import { buildContent } from "./content-pipeline";
-import { listFiles, loadContentSources, readJourneyManifests } from "./content-sources";
+import { journeyCatalogOf, listFiles, loadContentSources, readJourneyManifests } from "./content-sources";
 
 // Acceptance tests of the journey-folder layout: a journey is one folder below
 // content/journeys/, so adding, renaming or removing a folder is all it takes
@@ -31,7 +31,7 @@ import { listFiles, loadContentSources, readJourneyManifests } from "./content-s
 // the repository's content and restores the copy's folders afterwards.
 
 const repository = path.resolve(".");
-const fixtureJourney = path.join(repository, "tests/fixtures/journeys/zz_fixture_trip");
+const sampleJourney = path.join(repository, SAMPLE_JOURNEY_DIRECTORY);
 let root: string;
 
 beforeAll(async () => {
@@ -131,19 +131,32 @@ describe("journey folders", () => {
     }
   });
 
-  it("lists an added preparing journey folder in manifest order and serves its image", async () => {
-    const target = journeyDirectory(root, "zz_fixture_trip");
-    cpSync(fixtureJourney, target, { recursive: true });
+  it("adds the sample journey folder as one more available journey, in manifest order, with its images", async () => {
+    // A complete journey folder (the sample journey) next to the repository's journeys.
+    const target = journeyDirectory(root, SAMPLE_JOURNEY_ID);
+    cpSync(sampleJourney, target, { recursive: true });
+    const manifestFile = path.join(target, "manifest.json");
     try {
       await expect(buildContent(root)).resolves.toBeDefined();
-      // Order 25: after golden_triangle (20) and before uzbekistan (30), whatever the folder name.
-      const manifests = [...readJourneyManifests(repository), { id: "zz_fixture_trip", order: readJson(path.join(target, "manifest.json")).order }]
-        .sort((a, b) => a.order - b.order);
-      expect(journeyIds().map((item) => item.id)).toEqual(manifests.map((item) => item.id));
-      expect(journeyIds().find((item) => item.id === "zz_fixture_trip")?.status).toBe("preparing");
-      expect(parseMirror()).toContain("zz_fixture_city");
-      expect(mirror("romance/date_destinations.json").destinations.map((item: { id: string }) => item.id)).toContain("zz_fixture_square");
+      const repositoryJourneys = journeyCatalogOf(loadContentSources(repository)).journeys;
+      // Order 9000: after every other journey, which all stay as they were.
+      expect(journeyIds()).toEqual([...repositoryJourneys.map(({ id, status }) => ({ id, status })), { id: SAMPLE_JOURNEY_ID, status: "available" }]
+        .map((journey) => expect.objectContaining(journey)));
+      expect(parseMirror()).toContain("mihon");
+      expect(mirror("romance/date_destinations.json").destinations.map((item: { id: string }) => item.id)).toContain("mihon_tower_square");
+      const sampleStories = loadContentSources(root).storyFiles.filter((story) => story.layer === SAMPLE_JOURNEY_ID).map((story) => story.id);
+      expect(sampleStories.length).toBeGreaterThan(0);
+      expect(Object.keys(generated("stories.json"))).toEqual(expect.arrayContaining(sampleStories));
       expectAssembledImages(target);
+
+      // The same folder as a preparing journey takes its place by its manifest order, whatever its name.
+      const manifest = readJson(manifestFile);
+      writeFileSync(manifestFile, JSON.stringify({ ...manifest, order: 25, status: "preparing" }));
+      await expect(buildContent(root, false)).resolves.toBeDefined();
+      const manifests = [...readJourneyManifests(repository), { id: SAMPLE_JOURNEY_ID, order: 25 }].sort((a, b) => a.order - b.order);
+      const catalog = journeyCatalogOf(loadContentSources(root)).journeys;
+      expect(catalog.map((journey) => journey.id)).toEqual(manifests.map((item) => item.id));
+      expect(catalog.find((journey) => journey.id === SAMPLE_JOURNEY_ID)?.status).toBe("preparing");
     } finally {
       rmSync(target, { recursive: true, force: true });
     }

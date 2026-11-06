@@ -1,0 +1,268 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "id": "smp_img_mihon_clock_tower",
+      "path": "assets/tourism/sample_trip/mihon_clock_tower.png",
+      "width": 240,
+      "height": 160,
+      "altJa": "見本の時計塔を描いた簡単な絵。文字盤の針は三時を指している。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://example.com/dreamscape-sample",
+      "licenseName": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creditJa": "Dreamscape 見本の旅のための自作画像（架空の街）",
+      "modificationJa": "見本用に図形だけで描いたPNG。写真や実在の建物はもとにしていない。",
+      "checkedAt": "2026-11-06"
+    },
+    {
+      "id": "smp_img_mihon_market",
+      "path": "assets/tourism/sample_trip/mihon_market.png",
+      "width": 240,
+      "height": 160,
+      "altJa": "見本の朝市を描いた簡単な絵。色違いの屋根の店が三軒並ぶ。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://example.com/dreamscape-sample",
+      "licenseName": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creditJa": "Dreamscape 見本の旅のための自作画像（架空の街）",
+      "modificationJa": "見本用に図形だけで描いたPNG。写真や実在の建物はもとにしていない。",
+      "checkedAt": "2026-11-06"
+    },
+    {
+      "id": "smp_img_mihon_library",
+      "path": "assets/tourism/sample_trip/mihon_library.png",
+      "width": 240,
+      "height": 160,
+      "altJa": "見本の図書室を描いた簡単な絵。色とりどりの本が棚に並ぶ。",
+      "isPlaceholder": false,
+      "sourceUrl": "https://example.com/dreamscape-sample",
+      "licenseName": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creditJa": "Dreamscape 見本の旅のための自作画像（架空の街）",
+      "modificationJa": "見本用に図形だけで描いたPNG。写真や実在の建物はもとにしていない。",
+      "checkedAt": "2026-11-06"
+    }
+  ],
+  "landmarks": [
+    {
+      "id": "mihon_clock_tower",
+      "cityId": "mihon",
+      "nameJa": "見本の時計塔",
+      "nameEn": "Mihon Clock Tower",
+      "descriptionJa": "針が三時で止まったままの、見本用の架空の時計塔。",
+      "imageAssetId": "smp_img_mihon_clock_tower",
+      "guideStoryId": "tourism/smp_mihon_clock_tower_guide",
+      "battleId": "smp_mihon_clock_tower_battle",
+      "clueIds": [
+        "smp_obs_mihon_clock_tower_hands"
+      ]
+    },
+    {
+      "id": "mihon_market",
+      "cityId": "mihon",
+      "nameJa": "見本の朝市",
+      "nameEn": "Mihon Morning Market",
+      "descriptionJa": "パン屋のサラが、街の人は時間を守らないと怒っている。",
+      "imageAssetId": "smp_img_mihon_market",
+      "guideStoryId": "tourism/smp_mihon_market_guide",
+      "battleId": "smp_mihon_market_b",
+      "clueIds": [
+        "smp_obs_mihon_market_rain",
+        "smp_obs_mihon_market_timer",
+        "smp_obs_mihon_market_rows"
+      ]
+    },
+    {
+      "id": "mihon_library",
+      "cityId": "mihon",
+      "nameJa": "見本の図書室",
+      "nameEn": "Mihon Library",
+      "descriptionJa": "司書のイオが、記録にない言い伝えは信じないと言う。",
+      "imageAssetId": "smp_img_mihon_library",
+      "guideStoryId": "tourism/smp_mihon_library_guide",
+      "battleId": "smp_mihon_library_c",
+      "clueIds": [
+        "smp_obs_mihon_library_diary",
+        "smp_obs_mihon_library_letters",
+        "smp_obs_mihon_library_weather",
+        "smp_obs_mihon_library_hours"
+      ]
+    }
+  ],
+  "clues": [
+    {
+      "id": "smp_obs_mihon_clock_tower_hands",
+      "landmarkId": "mihon_clock_tower",
+      "kind": "hotspot",
+      "titleJa": "三時で止まった針",
+      "descriptionJa": "文字盤の針は三時を指したまま動かない。",
+      "factId": "smp_fact_mihon_clock_tower_hands",
+      "relatedQuestionIds": [
+        "smp_mihon_clock_tower_q1"
+      ],
+      "region": {
+        "x": 0.41,
+        "y": 0.23,
+        "width": 0.18,
+        "height": 0.26
+      },
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の言い伝え：時計塔の針は昔から三時で止まっている。"
+        }
+      ]
+    },
+    {
+      "id": "smp_obs_mihon_market_rain",
+      "landmarkId": "mihon_market",
+      "kind": "document",
+      "titleJa": "雨の日の休み",
+      "descriptionJa": "朝市は雨の日だけ休む。",
+      "factId": "smp_fact_mihon_market_rain",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の資料：朝市は雨の日だけ休む。"
+        }
+      ]
+    },
+    {
+      "id": "smp_obs_mihon_market_timer",
+      "landmarkId": "mihon_market",
+      "kind": "document",
+      "titleJa": "パン屋の砂時計",
+      "descriptionJa": "パン屋は焼き時間を砂時計で計り、パンを一度も焦がしたことがないと言われる。",
+      "factId": "smp_fact_mihon_market_timer",
+      "relatedQuestionIds": [
+        "smp_mihon_market_b_q2"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の資料：パン屋は焼き時間を砂時計で計り、パンを一度も焦がしたことがないと言われる。"
+        }
+      ]
+    },
+    {
+      "id": "smp_obs_mihon_market_rows",
+      "landmarkId": "mihon_market",
+      "kind": "document",
+      "titleJa": "店の並び",
+      "descriptionJa": "朝市の店の並びは、何代も同じ順番のまま。",
+      "factId": "smp_fact_mihon_market_rows",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の資料：朝市の店の並びは、何代も同じ順番のまま。"
+        }
+      ]
+    },
+    {
+      "id": "smp_obs_mihon_library_diary",
+      "landmarkId": "mihon_library",
+      "kind": "document",
+      "titleJa": "町の日誌",
+      "descriptionJa": "日誌には鐘の修理が何度も書かれているが、時計を直した記録はない。",
+      "factId": "smp_fact_mihon_library_diary",
+      "relatedQuestionIds": [
+        "smp_mihon_library_c_q1"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の資料：日誌には鐘の修理が何度も書かれているが、時計を直した記録はない。"
+        }
+      ]
+    },
+    {
+      "id": "smp_obs_mihon_library_letters",
+      "landmarkId": "mihon_library",
+      "kind": "document",
+      "titleJa": "三時の招待状",
+      "descriptionJa": "『三時に広場で』と書いた古い招待状が、何通も残っている。",
+      "factId": "smp_fact_mihon_library_letters",
+      "relatedQuestionIds": [
+        "smp_mihon_library_c_q2"
+      ],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の資料：『三時に広場で』と書いた古い招待状が、何通も残っている。"
+        }
+      ]
+    },
+    {
+      "id": "smp_obs_mihon_library_weather",
+      "landmarkId": "mihon_library",
+      "kind": "document",
+      "titleJa": "天気の記録",
+      "descriptionJa": "時計が止まった年は、雨の多い年だった。",
+      "factId": "smp_fact_mihon_library_weather",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の資料：時計が止まった年は、雨の多い年だった。"
+        }
+      ]
+    },
+    {
+      "id": "smp_obs_mihon_library_hours",
+      "landmarkId": "mihon_library",
+      "kind": "document",
+      "titleJa": "閉館の合図",
+      "descriptionJa": "図書室は今も、司書が手を三度たたいて閉館を知らせる。",
+      "factId": "smp_fact_mihon_library_hours",
+      "relatedQuestionIds": [],
+      "region": null,
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-06",
+          "claimType": "legend",
+          "claimJa": "見本用の架空の資料：図書室は今も、司書が手を三度たたいて閉館を知らせる。"
+        }
+      ]
+    }
+  ]
+}

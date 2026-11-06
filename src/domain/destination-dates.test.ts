@@ -1,11 +1,12 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { allRewardRules, battles, battleQuizzes, dates, effects, episodes as allEpisodes, progression } from "../content";
+import { allRewardRules, dates, effects, episodes as allEpisodes, progression } from "../content";
+import { playBattleToResult, wrongAnswer } from "../dev/scenario-builders";
 import {
   advanceDate, chooseDate, createGame, finishDate, getDateAvailability,
   isEventVisible, startDate, validateGameState, type GameState,
 } from "./game";
 import { enterFreeTime, getNextStoryBattle, startEpisode } from "./chapter";
-import { advanceBattle, answerBattle, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "./battle";
+import { leaveBattle, startBattle } from "./battle";
 import { skipTourismGuide, startTourismBattle } from "./tourism";
 
 const episodes = allEpisodes.filter((episode) => episode.cityId === "milano");
@@ -18,22 +19,9 @@ const firstProfiles = [
   ["attentive", "playful", "bold"],
 ] as const;
 
-/** Exercise the real A/B/C route rather than inventing episode save flags. */
+/** Exercise the real A/B/C route rather than inventing episode save flags (correct evidence, wrong answers). */
 function finishBattle(initial: GameState): GameState {
-  let state = initial;
-  for (let step = 0; state.activeBattle?.phase !== "result" && step < 200; step++) {
-    const active = state.activeBattle!;
-    const battle = battles.find((entry) => entry.id === active.battleId)!;
-    if (active.phase === "reasoning") {
-      for (const clue of battle.reasoning!.correctClueIds)
-        state = selectReasoningClue(state, clue, state.revision);
-      state = submitBattleEvidence(state, state.revision);
-    } else if (active.phase === "question") {
-      const question = battleQuizzes[battle.quizId].questions[active.roundIndex];
-      state = answerBattle(state, question.options.find((item) => item.id !== question.correctOptionId)!.id, state.revision);
-    } else state = advanceBattle(state, state.revision);
-  }
-  expect(state.activeBattle?.phase).toBe("result");
+  const state = playBattleToResult(initial, { answer: wrongAnswer });
   expect(state.activeBattle?.score).toBe(0);
   return validateGameState(JSON.parse(JSON.stringify(state)));
 }

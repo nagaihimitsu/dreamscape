@@ -9,10 +9,13 @@
 | 画像・背景 | `npm run content:check`、対象画面の実表示と必要な画像失敗時の表示。画像の配置・パスを変えた場合はE2E一式（`npm run test:e2e`）も実行 |
 | CSS・UIの小変更 | 対象操作とスマートフォン幅の実画面。共通UIや型・操作への影響に応じて `npm run typecheck` やE2E一式を追加 |
 | ゲームルール | 該当ドメインテストと必要な画面操作。型・共通進行への影響があれば型検査と関連テストを追加 |
-| 旅行編フォルダの追加・削除、統合規則・生成処理の変更 | `npm run content:build`、`npx vitest run scripts/journey-folders.test.ts scripts/content-sources.test.ts scripts/catalog-merge.test.ts scripts/content-ownership.test.ts scripts/content-validation.test.ts scripts/content-report.test.ts`（先に `content:build`）、E2E一式（`boot.spec.ts` が登録済みの全旅行編の開始画面を開く） |
+| 旅行編フォルダの追加・削除、統合規則・生成処理の変更 | `npm run content:build`、`npx vitest run scripts/journey-folders.test.ts scripts/content-sources.test.ts scripts/catalog-merge.test.ts scripts/content-ownership.test.ts scripts/content-validation.test.ts scripts/content-report.test.ts scripts/sample-journey.test.ts`（先に `npm run content:build -- --with-sample`）、E2E一式（`boot.spec.ts` が登録済みの全旅行編の開始画面を開く） |
+| 見本の編（`authoring/templates/sample_trip/`）・データの書式（スキーマ）の変更 | `npx vitest run scripts/sample-journey.test.ts src/domain/sample-journey-route.test.ts`（先に `npm run content:build -- --with-sample`）。必須項目が増えたときは、まず見本のテストが失敗して知らせる。見本の README の一覧と必須ファイルのエラーも直す。`npm run dev:sample` で実際に遊べる。見本を変えたら、見本を複製する `journey:new` と見本の内容の残りの検査も確かめる：`npx vitest run scripts/journey-new.test.ts scripts/sample-leftovers.test.ts` |
+| ひな形作成 `journey:new`・見本の内容の残りの検査（`scripts/journey-new.ts`・`scripts/sample-journey.ts`・`scripts/journey-readiness.ts`・`scripts/promote-journey.ts`） | `npx vitest run scripts/journey-new.test.ts scripts/sample-leftovers.test.ts scripts/sample-journey.test.ts`（一時コピーで作成・生成・readiness・`journey:release --check`、`city:bundle` の書き出しと確認、観察資料・交通判断台帳がないときの `journey:scaffold`・`journey:transit` の案内まで行う。名前と並び順は一時コピーの旅行編と重ならないものを選ぶので、`journey:new` で作った旅行編がリポジトリにあっても通る。約13秒）。readiness と release を変えたら `scripts/journey-authoring.test.ts`・`scripts/journeys/golden_triangle/india-readiness.test.ts`・`india-release-integration.test.ts` も実行する |
 | 保存・進行 | 同一バージョン内の保存・再開、読めないデータの保護、明示消去、別タブ、報酬重複防止の関連テストとE2E一式、必要な実画面。型・共通基盤の影響に応じて型検査と検証範囲を広げる |
 | CI・Playwrightの設定、本番ビルドの検査（`.github/workflows/`・`playwright.config.ts`・`scripts/dist-guard.ts`） | `npm run build`（`dist/` の検査を含む）、`npx vitest run scripts/dist-guard.test.ts`、E2E一式。ワークフローの変更はPRで実際の実行結果を確認する |
 | 単体テストの設定・テストの組・テスト用フィクスチャ（`vite.config.ts` の `test`・`scripts/test-sets.ts`・`scripts/test-image-guard.ts`・`src/content/test-fixtures.ts`） | `npx vitest run scripts/test-sets.test.ts scripts/test-image-guard.test.ts src/content/test-fixtures.test.ts`（先に `content:build`）、`npm test`（両方の組） |
+| Debug・場面の組み立て部品・Debug起動URL（`src/dev/`） | `npx vitest run src/dev/ scripts/dist-guard.test.ts`（先に `npm run content:build -- --with-sample`）、`npm run build`（`dist/` の検査）、`boot.spec.ts`。部品・仮の場面（`test-cities.ts`・`fixture-template.ts`）を変えたら、それを使う単体テスト（`npm run test:quick`。`src/domain` の試験用の都市を使うテストを含む）と `inter-city.spec.ts` も実行する。Debug画面の変更は320・360・390px幅の実画面（[Debug起動URL](#debug起動url)） |
 | 会話の全分岐検査とそのキャッシュ（`scripts/ink-validation.ts`・`scripts/story-validation-cache.ts`） | `npx vitest run scripts/story-validation-cache.test.ts scripts/story-validation-cache-content.test.ts`（先に `content:build`）、`npm run content:build -- --no-cache` と通常の `npm run content:build` が同じ結果になること。検査コードを変えると指紋が変わり、次の生成はすべて検査する（[キャッシュ](#会話の全分岐検査のキャッシュ)） |
 | 大きな変更・公開前 | `npm run verify`、E2E一式と、影響範囲に応じた実画面確認 |
 
@@ -20,11 +23,13 @@
 
 小変更のたびに全単体テストや全E2Eを手元で実行する必要はない。日常の単体テストは `npm run test:quick`（速い組。[単体テストの組](#単体テストの組と所要時間)）とし、全件（`npm test`）はCIと、公開前・大きな変更の `npm run verify` で実行する。PRと `main` へのpushでは、GitHub Actionsが全単体テスト・本番ビルド・E2E一式を自動実行する（[CI](#cigithub-actions)）。上の表でE2E一式を挙げた変更は、PRを出す前に手元でも実行する。開発中はv12以前の旧開発版セーブの更新後の再開を保証せず、旧互換テストを新機能ごとに増やす必要はない。現在のゲームの保存・再開や読めないデータの保護は維持する。
 
-`npm test` と `npm run build` はそれぞれ実行前にコンテンツを生成する。`npm run verify` は生成、全ユニットテスト、型検査、製品ビルド、`dist/` の検査を順に行う一括用コマンドで、生成は一度だけ行う。この生成は会話の全分岐検査のキャッシュを使わずにすべて検査する（`content:build -- --no-cache`。[キャッシュ](#会話の全分岐検査のキャッシュ)）。この中の `npm run test --ignore-scripts` は直前の生成を利用して `pretest` のみ省略している。個別に `--ignore-scripts` を付ける、または `npx vitest run` を直接呼ぶ場合は自動生成されないため、Ink・JSON等を変更した後は事前に `npm run content:build` を実行する。生成物の鮮度が分からない場合も再生成する。
+`npm test`・`npm run test:quick` と `npm run build` はそれぞれ実行前にコンテンツを生成する。単体テストの前の生成は見本の編を含め（`npm run content:build -- --with-sample`。[見本の編](02_TECH_ARCHITECTURE.md#見本の編)）、`npm run build` と `npm run dev` の前の生成は含めない。`npm run verify` は、見本を含めた生成、全ユニットテスト、`npm run build`（見本なしの生成、型検査、製品ビルド、`dist/` の検査）を順に行う一括用コマンドで、生成は2回行う。最初の生成は会話の全分岐検査のキャッシュを使わずにすべて検査する（`content:build -- --no-cache --with-sample`。[キャッシュ](#会話の全分岐検査のキャッシュ)）。この中の `npm run test --ignore-scripts` は直前の生成を利用して `pretest` のみ省略している。個別に `--ignore-scripts` を付ける、または `npx vitest run` を直接呼ぶ場合は自動生成されないため、Ink・JSON等を変更した後は事前に `npm run content:build -- --with-sample` を実行する。見本の編を前提とするテスト（`src/domain/sample-journey-route.test.ts` など）は、見本なしで生成した後に実行すると、このコマンドを案内して失敗する。生成物の鮮度が分からない場合も再生成する。
 
 ゲームと、データを参照するだけの単体テストは `content/` のJSONを直接読まず、`npm run content:build` が検証・統合して書き出す `src/content/generated/content/`（生成物。手動編集しない）を読む。JSONを編集した後も `npm run content:build` を実行する。一方、原本を一時フィクスチャへ写して書き換え、生成を検証するテスト（`src/content/*-content.test.ts` など）と制作ツールは `content/`（旅行編フォルダを含む）の原本を読む。画像も同様に、`npm run content:build` が直下の `public/` と各旅行編の `public/` を `src/content/generated/public/` にまとめ、開発サーバー・`vite build`・Playwrightはこのフォルダを配信する（`npm run dev` / `build` / `test` は先に `content:build` を実行する）。`vite`（`npx vite`・`vite build`・`vite preview`）を直接起動する場合は、先に `npm run content:build` を実行する。このフォルダがないと、画像なしで起動・ビルドされる（警告は出ない）。
 
-`scripts/journey-folders.test.ts` は、原本の一時コピーで旅行編フォルダの改名・追加（`tests/fixtures/journeys/zz_fixture_trip/`）・各旅行編フォルダの除外を行い、そのたびに `content:build` 相当の生成と検証を実行する（約1分、旅行編が増えるほど長くなる）。特定の旅行編・都市の内容を確かめる単体テストは、全旅行編の合計件数や一覧ではなく、その旅行編・都市の範囲に絞って数える。
+`scripts/journey-folders.test.ts` は、原本の一時コピーで旅行編フォルダの改名・追加（見本の編 `authoring/templates/sample_trip/` を写す）・各旅行編フォルダの除外を行い、そのたびに `content:build` 相当の生成と検証を実行する（約1分、旅行編が増えるほど長くなる）。特定の旅行編・都市の内容を確かめる単体テストは、全旅行編の合計件数や一覧ではなく、その旅行編・都市の範囲に絞って数える。単体テストの生成物には見本の編（公開中、都市 `mihon`）が加わるため、リポジトリの生成物と一時コピーの生成結果を比べるテストは、一時コピー自身の生成結果（`buildContent` の戻り値や一時コピーの生成物）どうしを比べる。
+
+`src/content/index.ts` は都市・移動のファイルを `import.meta.glob` で集める。Vitestは変換したモジュールをディスクに保存して次回も使う（`node_modules/.vitest-cache`）が、本文に `import.meta.glob(` を含むモジュールだけは保存しない。型引数を付けた `import.meta.glob<T>(` はこの判定をすり抜け、生成で都市が増減しても古い一覧が使われる（見本の編を含めた生成の後に `Unknown city: mihon` になる）ため、型引数は付けない（`src/content/city-registry.test.ts` が検査する）。古い変換結果が疑わしいときは `npx vitest --clearCache` で消せる。
 
 テストは簡潔な dot レポーターを使い、成功したテスト内のログを省略する。失敗したテストのログ、失敗箇所、終了コードは保持する。内容を詳しく追う場合は、生成後に `npx vitest run --reporter=verbose <対象>` とする。通常のコンテンツ生成は、旧会話注釈の警告と内容の警告（旅行編フォルダの読み込まれないファイル、参照されない配信ファイル、接頭辞のないID。[技術設計](02_TECH_ARCHITECTURE.md#生成時の検査と報告)）を件数で示し、個々の警告は `npm run content:build -- --verbose` で確認できる。警告は生成・単体テスト・CI・`verify`・公開のいずれも止めない（旅行編フォルダに置いたままのメモやエディタの控えファイルがあっても `test:quick` は通る）。成功時の最後には旅行編ごとに1行、そのフォルダが持つ都市・ストーリー・クイズ・配信ファイルと各カタログの項目の数が出る。どの英文にも使われない語の意味があれば、その数も出る（一覧は `--verbose`）。生成に失敗した場合は旧会話注釈の警告の詳細と原因を表示し、失敗のまま終了する。
 
@@ -83,12 +88,24 @@
 
 | ファイル | 確認する流れ |
 | --- | --- |
-| `boot.spec.ts` | 起動とタイトル画面、登録済みの全旅行編の開始画面、Debugが通常の保存データに触れないこと |
+| `boot.spec.ts` | 起動とタイトル画面、登録済みの全旅行編の開始画面（準備中の旅行編は、`manifest.json` に `initialState` があれば名前を保存する欄、なければ `journey:new` で作ったばかりの旅行編のように公開待ちの案内だけ）、Debug起動URLで場面を開いても通常の保存データが変わらないこと（URLの誤りの案内を含む） |
 | `play.spec.ts` | ミラノの新しい旅で移動、観光ガイド、クイズバトル、報酬、デート（AP消費）を経て自由時間へ戻る |
 | `save-load.spec.ts` | 自動保存とイベント途中の再読み込み、手動セーブ、別タブからの同時利用の防止、読めないセーブの保護 |
-| `inter-city.spec.ts` | ゴールデントライアングル編でデリーのエピローグからアーグラへ移り、地図と都市情報が切り替わる |
+| `inter-city.spec.ts` | ゴールデントライアングル編でデリーのエピローグからアーグラへ移り、地図と都市情報が切り替わる（デリーのフィナーレ結果までは下の道2で作る） |
 
-`npm run test:e2e`（個別には `npx playwright test tests/e2e/play.spec.ts`）で実行する。一式は1〜2ワーカーで数分以内に終わる。各テストは自分のブラウザコンテキスト（保存領域・タブ）を持ち、同じファイルのテストも別のワーカーで並列に実行する（`fullyParallel`）。テスト同士で保存データや順序に依存しない。共通の `tests/e2e/helpers.ts` の `test` は、どのタブでもコンソールエラー・未処理の例外・ゲームの画像等の欠落があればテストを失敗にする（外部の地図タイル・Webフォントの取得失敗は除く）。都市間移動はデリー全体の操作に数分かかるため、ページ内のゲーム関数で実際の規則どおりにデリーを最後まで進めたセーブを作り、移動そのものを画面で操作している。
+`npm run test:e2e`（個別には `npx playwright test tests/e2e/play.spec.ts`）で実行する。一式は1〜2ワーカーで数分以内に終わる。各テストは自分のブラウザコンテキスト（保存領域・タブ）を持ち、同じファイルのテストも別のワーカーで並列に実行する（`fullyParallel`）。テスト同士で保存データや順序に依存しない。共通の `tests/e2e/helpers.ts` の `test` は、どのタブでもコンソールエラー・未処理の例外・ゲームの画像等の欠落があればテストを失敗にする（外部の地図タイル・Webフォントの取得失敗は除く）。状態の作り方と数え方は、次の3つの道に分ける。
+
+### テストの3つの道
+
+| 道 | 内容 | 確認として数えるもの |
+| --- | --- | --- |
+| 1. 通常の操作 | タイトルから利用者と同じ操作で進める。`play.spec.ts` と `save-load.spec.ts` はDebugも近道も使わない | 遊び方・保存・再読み込みからの再開・別タブ・読めないデータの保護 |
+| 2. 本物の関数で作った状態を通常セーブとして置く | 実際の操作では数分かかる前段だけを、`src/dev/scenario-builders.ts`（本物のゲーム関数だけで状態を作り、最後に `validateGameState` を通す部品）で作り、ゲームと同じ形式の通常セーブとして置く。その後は画面で操作する（例：`inter-city.spec.ts` はデリーのフィナーレ結果を `cityFinaleResult("delhi")` で作り、エピローグからアーグラへの移動と再読み込みを画面で確かめる）。ページ内で開発サーバーの `/src/dev/scenario-builders.ts` を読み込むので、本番ビルドを配信するE2Eでは使えない | 置いた後の画面操作と、その後の保存・再開 |
+| 3. Debugを場面の起動台にする | [Debug起動URL](#debug起動url)で場面へ直接入り、その場面の表示と操作だけを確かめる。テストの前後で通常の保存領域（`localStorage`）が変わらないことを確かめる（`boot.spec.ts`）。Debugの状態は開発用の読み取り口 `window.__dreamscapeDebug` から読む | 場面の確認だけ。保存・再開の確認には数えない |
+
+- Debugの一時データはメモリの中だけにあり、再読み込みで消える。Debugから通常セーブを作る機能はなく、作らない。道2のセーブはテストのコードが作る。
+- 単体テストも同じ部品を使う。「バトルを結果まで解く」「都市をクリアする」処理を各テストに書かず、`playBattleToResult`・`readGuide`・`finishEpisode`・`playCityToFinaleResult`・`clearCity`・`cityStart`・`cityFinaleResult`・`completedCity` などを使う。回答の選び方（既定は全問正解。`wrongAnswer`・`firstCorrect(n)`・独自の関数）と、操作ごとの確認や保存・復元（`after`）を渡せる。各操作は状態を必ず変え（変わらなければその場で止まって理由を示す）、地図から始めた予定はゲーム画面と同じく結果の時点で精算する。1手ごとに独自の確認をするテスト（全選択肢の採点、回答の二重送信、手がかりの選び直し）は自前の繰り返しのままでよい。
+- 部品は、場面を開く処理（地点への配置、AP・関係値の設定、保存した抽選値でのデートと交流）も持ち、Debugもこれを使う。`src/dev/scenario-builders.test.ts` が、公開中の全旅行編の全都市（見本の編を含む）で開始・フィナーレ結果・クリア・エピローグを作れることを確かめる。
 
 ### E2Eテストを追加する際の判断基準
 
@@ -96,8 +113,61 @@
 2. E2Eに残すのは、ブラウザで組み合わせて初めて起きる重大な失敗（画面の遷移、ReactとInkの実行、ブラウザの保存領域・再読み込み・別タブ、画像やスクリプトの読み込み）を、利用者と同じ操作で確かめる場合に限る。
 3. 新しいファイルやテストを増やす前に、上の4つの流れへ1〜2個の確認を足せないか検討する。
 4. 全観光地・全シナリオ・全選択肢・全デート・全品物の網羅、台詞や文言の一致、要素の位置・幅・余白、画面幅ごとの繰り返し、Debug画面の細部はE2Eにしない。
-5. 共通の `test` を使い、固定時間ではなく保存のリビジョンや画面要素で待つ。状態の近道は、実際の操作では数分かかる場合だけ、実際のゲーム関数で作った通常のセーブを使い、理由をコメントに残す。テストのためにゲーム側の設計・分岐・設定を変えない。コンテンツファイルのパスには依存せず、IDと画面で確認する。
+5. 共通の `test` を使い、固定時間ではなく保存のリビジョンや画面要素で待つ。状態の近道は、実際の操作では数分かかる場合だけ、`src/dev/scenario-builders.ts` で作った通常のセーブ（道2）を使う。通常の流れで確かめていない場面の表示・操作だけを確かめる場合はDebug起動URL（道3）を使ってよく、保存・再開の確認には数えない。どちらも理由をコメントに残す。`play.spec.ts`・`save-load.spec.ts` は近道を使わない。テストのためにゲーム側の設計・分岐・設定を変えない。コンテンツファイルのパスには依存せず、IDと画面で確認する。
 6. 追加・変更後は一式を3回続けて実行し、毎回通ることを確かめる。不安定なテストは再試行で隠さず、原因を直すか削除する。一式の実行時間は数分以内に保つ。
+
+## Debug起動URL
+
+`npm run dev` で開いたページのURLに `?debug` だけを付けると、Debugの設定画面（場面の確認）が開く。項目を足すと、設定画面を通らずにその場面を直接開く。見本の編の場面は `npm run dev:sample` で開く。URLの形式は開発用で、変えるときに互換は保証しない。読み取りとURLの組み立ては `src/dev/debug-query.ts`（ゲームのデータを読まない純粋な関数。PlaywrightなどNodeからも使える）、データとの照合は `src/dev/debug-state.ts` の `resolveDebugLaunch` が行う。
+
+| 項目 | 値 | 省略したとき |
+| --- | --- | --- |
+| `city` | 都市ID | 既定の旅行編の最初の都市（ミラノ） |
+| `scene` | `tourism`（観光・場所）、`battle`（バトル。通常戦・特殊戦B/C・都市フィナーレ）、`encounter`（人物との交流）、`date`（デート）、`epilogue`（都市のエピローグ）、`map`（制作中の都市の地図・交通） | 省略できない（`?debug` だけなら設定画面） |
+| `target` | 対象のID。設定画面の「対象」の括弧内のID（エピローグは都市フィナーレのエピソードID） | その場面の一覧の最初 |
+| `progress` | `completed`（都市クリア後）、`initial`（旅の開始時） | `completed` |
+| `ap` | 0〜12の整数 | 12 |
+| `affection`・`trust`・`spark` | -20〜20の整数（親しさ・信頼・恋愛の意識） | 0 |
+| `roll` | `positive`（成功寄り、抽選値0）、`negative`（失敗寄り、抽選値9999）。デートと交流の反応に使う | `positive` |
+| `data` | `fixture`（仮の場面） | 都市データ |
+
+- 場面は本物のゲーム関数で作る（[テストの3つの道](#テストの3つの道)の部品）。「都市クリア後」は、その都市までの都市を実際の規則でクリアし、旅行編の進み方どおりに出発した状態（エピローグの後に次の都市へ進む旅行編は、エピローグも読んだ状態）。そのうえで場面の地点に移り、AP・関係値をURLの値にする。都市のエピローグはそのまま読み進められ、次の都市がある旅行編では到着まで続く。
+- `data=fixture`（仮の場面）は、準備中の旅行編の都市に、実在する1都市を役割ごとに複製した試験データを入れる。元にする都市は `npm run dev` ではミラノ、`npm run dev:sample` では見本の街（データから自動で選ぶ。[docs/02](02_TECH_ARCHITECTURE.md) の「Debugの「仮の場面」」）。元の都市にない場面（例：ミラノ編がない構成での特殊戦B・C、道中交流）は作られず、設定画面に注記され、場面の一覧では「（この都市にはありません）」と表示される。そのURLは「…には「人物との交流」の場面がありません。」のように表示する。
+- 誤った項目名・値、データにない都市・対象、その進行では開けない場面（例：旅の開始時のデート、品物が必要な交流）は、理由（`role="alert"`）と設定画面へのリンクを表示する。
+- 設定画面の下の「この場面のURL」欄に、選んでいる設定のURLが出る。「この場面のURLをコピー」で写せる。自動でコピーできない環境（スマートフォンからPCの開発サーバーを `http://<IPアドレス>` で開いた場合など）では、欄のURLが選択されるので長押しなどで写す。場面を開いている間はアドレス欄も同じURLになり、再読み込みするとその場面を最初から開き直す（Debugの進行は残らない）。「設定へ戻る」でアドレス欄は `?debug` に戻る。
+- 開発用の読み取り口：Debugの画面を開いている間だけ `window.__dreamscapeDebug` があり、`getState()`（Debugのゲームの最後に保存された状態）と `getScene()`（開いた場面の設定・URL・開始地点）を返す。どちらも複製を返し、Debugやゲームを変えられない。設定画面では `null`。E2EがDebugの状態を確かめるために使う。
+- 本番には入らない：`?debug` の読み取りは開発時（`import.meta.env.DEV`）だけ行う。`npm run build` の `dist/` の検査は、読み取り口・URLの読み取り・場面の組み立て部品に固有の文字列も探し（[本番ビルドの検査](#本番ビルドの検査)）、`scripts/dist-guard.test.ts` は本番のコードが `src/dev/`・テスト用の仮データを `src/main.tsx` のDEVの分岐からしか読み込まないことを確かめる。
+
+### URLの例
+
+開発サーバーのアドレス（例：`http://localhost:5173`）の後ろに付ける。下の一覧は `src/dev/debug-state.test.ts` が、どれも開けることを確かめている。
+
+| 場面 | URL |
+| --- | --- |
+| ミラノの観光案内 | `/?debug&city=milano&scene=tourism&target=duomo_milano` |
+| ミラノの通常戦 | `/?debug&city=milano&scene=battle&target=milano_duomo_01` |
+| ミラノの特殊戦B（矛盾追及） | `/?debug&city=milano&scene=battle&target=milano_la_scala_b01` |
+| ミラノの特殊戦C（証拠連結） | `/?debug&city=milano&scene=battle&target=milano_brera_c01` |
+| ミラノの都市フィナーレ | `/?debug&city=milano&scene=battle&target=milano_city_boss_01` |
+| ミラノの道中交流 | `/?debug&city=milano&scene=encounter&target=galleria_fortune` |
+| デート（成功寄り） | `/?debug&city=milano&scene=date&target=milano_brera_date_01&roll=positive` |
+| デート（失敗寄り・AP2） | `/?debug&city=milano&scene=date&target=milano_brera_date_01&ap=2&roll=negative` |
+| ミラノのエピローグ | `/?debug&city=milano&scene=epilogue&target=milano_finale` |
+| デリー：旅の開始時の通常戦 | `/?debug&city=delhi&scene=battle&target=gt_delhi_main_red_fort_battle&progress=initial` |
+| デリーのエピローグからアーグラの到着へ | `/?debug&city=delhi&scene=epilogue&target=gt_delhi_finale` |
+| ジャイプルのデート | `/?debug&city=jaipur&scene=date&target=gt_jaipur_date_jal_mahal&roll=negative` |
+| 制作中の都市の地図・交通 | `/?debug&city=samarkand&scene=map` |
+| 仮の場面（準備中の旅行編の都市） | `/?debug&data=fixture&city=tashkent&scene=battle&target=tashkent_special_b` |
+| 見本の編の特殊戦B（`npm run dev:sample`） | `/?debug&city=mihon&scene=battle&target=smp_mihon_market_b` |
+| 見本の編の特殊戦C（`npm run dev:sample`） | `/?debug&city=mihon&scene=battle&target=smp_mihon_library_c` |
+| 見本の編の道中交流（`npm run dev:sample`） | `/?debug&city=mihon&scene=encounter&target=smp_mihon_bookmark_stall&progress=initial` |
+
+### 人が画面を確かめるときの使い方
+
+- UIを変えたら、変えた画面に当たる場面を上の一覧から選ぶか、設定画面で選んで「この場面のURLをコピー」で写し、ブラウザの端末表示やスマートフォンで開く。`npm run dev` は同じネットワークの端末からも開ける（`http://<PCのIPアドレス>:<表示されたポート>/?debug&…`）。320・360・390px程度の幅で、[UIレビュー](../UI_REVIEW_CHECKLIST.md) に沿って確かめる。
+- 成功寄りと失敗寄りの反応、AP不足など、値だけを変えたURLを並べて比べられる。
+- 確かめたURLを作業報告やPRに書くと、レビューする人が同じ場面をすぐ開ける。
+- Debug起動での確認は、場面の見た目と操作の確認に限る。保存・再読み込みからの再開や別タブの確認は、通常の操作（道1）で行う。
 
 ## CI（GitHub Actions）
 
@@ -127,8 +197,9 @@ GitHub Actionsは次のワークフローを実行する。同じイベントで
 
 ### 本番ビルドの検査
 
-`npm run build` と `npm run verify` は、`vite build` の後に `npm run dist:check`（`scripts/check-dist.ts`）で `dist/` を検査する。Debug・人物素材のプレビュー（`src/dev/`）、テスト用の仮データ（`*-test-fixture.ts`・`tests/fixtures/`）、自動テスト専用・見本の旅行編（`zz_fixture_trip`・`sample_trip`）に固有の文字列が、公開されるファイルの名前か内容に1つでもあれば、ファイル名・文字列・その由来を表示してビルドを失敗にする。`vite.config.ts` は変えていない。
+`npm run build` と `npm run verify` は、`vite build` の後に `npm run dist:check`（`scripts/check-dist.ts`）で `dist/` を検査する。Debug・人物素材のプレビュー（`src/dev/`）、テスト用の仮データ（`src/dev/test-cities.ts`・`src/content/test-fixtures.ts`・`tests/fixtures/`）、開発・テスト専用の見本の編（`sample_trip`。画像のフォルダ名にも使う）に固有の文字列が、公開されるファイルの名前か内容に1つでもあれば、ファイル名・文字列・その由来を表示してビルドを失敗にする。`vite.config.ts` は変えていない。
 
-- 失敗した場合は、開発専用のモジュールを `import.meta.env.DEV` の分岐の外から読み込んでいないか、生成物（`src/content/generated/`）にテスト用・見本の旅行編が入っていないかを確かめる。生成物が原因なら `npm run content:build` で生成し直してからビルドする。
+- 失敗した場合は、開発専用のモジュールを `import.meta.env.DEV` の分岐の外から読み込んでいないか、生成物（`src/content/generated/`）に見本の編が入っていないか（`src/content/generated/build-info.json` の `extraJourneyFolders`。単体テストや `npm run dev:sample` の後に `vite build` を直接実行した場合など）を確かめる。生成物が原因なら `npm run content:build` で生成し直してからビルドする。
 - 検出に使う文字列と由来のファイルは `scripts/dist-guard.ts` にある。由来のファイルを改名・改稿して文字列が消えると `scripts/dist-guard.test.ts` が失敗するので、そのファイルに固有の別の文字列へ差し替える。本番のコードやコンテンツが同じ文字列を使うとビルドが失敗するため、目印には開発用のファイルにしかない文字列を選ぶ。
 - 目印による確認なので、目印を持たない開発用のコード（目印を登録していない新しいファイルなど）が入っても失敗しないことがある。`src/dev/`・テスト用の仮データに新しいファイルを足したら、そのファイルに固有の文字列を目印に加える。
+- 目印を補うため、`scripts/dist-guard.test.ts` は本番のコード（`src/` のうち `src/dev/`・テスト・仮データ以外）を読み、`src/dev/`・`tests/`・`src/content/test-fixtures.ts` を読み込んでいるのが `src/main.tsx` の `import.meta.env.DEV` の分岐の中の遅延読み込み（Debugとプレビュー）だけであることを確かめる。Debug起動URLの読み取り（`src/dev/debug-query.ts`）、開発用の読み取り口 `window.__dreamscapeDebug`（`src/dev/debug-hook.ts`）、場面の組み立て部品（`src/dev/scenario-builders.ts`）にも目印がある。

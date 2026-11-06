@@ -1,16 +1,15 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { getCityContent } from "../content";
+import { effects, getCityContent } from "../content";
 import { getJourney } from "../content/journeys";
 import { createDebugState } from "../dev/debug-state";
+import { clearCity } from "../dev/scenario-builders";
 import { loadGame, saveGame } from "../persistence";
 import { journeyStorage } from "../persistence/journey-storage";
-import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "./battle";
-import { getEpisodeAvailability, getNextEpisode, getNextStoryBattle, startEpisode } from "./chapter";
+import { getEpisodeAvailability } from "./chapter";
 import { advanceCompletedJourneyCity, departToNextCity, getNextCity } from "./city-travel";
 import { advanceCityEpilogue } from "./epilogue";
 import { advanceDate, chooseDate, createGame, finishDate, startDate, validateGameState, type GameState } from "./game";
-import { installJourneyTestCities } from "./multi-city-test-fixture";
-import { skipTourismGuide, startTourismBattle } from "./tourism";
+import { installJourneyTestCities } from "../dev/test-cities";
 import { waitForTravel } from "./travel-game";
 
 const cityIds = ["tashkent", "samarkand", "bukhara", "khiva"] as const;
@@ -19,34 +18,6 @@ function memoryStorage() {
   return { getItem: (key: string) => values.get(key) ?? null,
     setItem: (key: string, value: string) => { values.set(key, value); },
     removeItem: (key: string) => { values.delete(key); } };
-}
-
-/** Executable Milan-derived fixtures are temporary; real Uzbek content stays empty. */
-function completeCity(initial: GameState): GameState {
-  let state = initial;
-  const cityId = state.currentCityId;
-  for (let count = 0; !state.completedCityIds.includes(cityId); count++) {
-    expect(count).toBeLessThan(20);
-    const special = getNextStoryBattle(state);
-    const episode = getNextEpisode(state);
-    if (!special && !episode) throw new Error("No next fixture event");
-    state = special ? startBattle(state, special.battleId) : startEpisode(state, episode!.id);
-    if (state.activeTourism?.phase === "guide") state = skipTourismGuide(state, state.revision);
-    if (state.activeTourism) state = startTourismBattle(state, state.revision);
-    for (let step = 0; state.activeBattle?.phase !== "result"; step++) {
-      expect(step).toBeLessThan(250);
-      const active = state.activeBattle;
-      if (!active) throw new Error("Fixture battle did not start");
-      const { battle, quiz } = getActiveBattleContent(active);
-      if (active.phase === "reasoning") {
-        for (const clueId of battle.reasoning!.correctClueIds) state = selectReasoningClue(state, clueId, state.revision);
-        state = submitBattleEvidence(state, state.revision);
-      } else if (active.phase === "question") state = answerBattle(state, quiz.questions[active.roundIndex].correctOptionId, state.revision);
-      else state = advanceBattle(state, state.revision);
-    }
-    state = leaveBattle(state, state.revision);
-  }
-  return validateGameState(state);
 }
 
 function completeDate(initial: GameState): GameState {
@@ -75,6 +46,8 @@ describe("four-city Uzbekistan handoff with test-only scenarios", () => {
 
   it("starts independently and preserves histories, money and pending AP across all three departures", () => {
     const journey = getJourney("uzbekistan")!;
+    const memory = effects.find((effect) => effect.memoryId)?.memoryId;
+    if (!memory) throw new Error("No existing memory fixture");
     let state = createGame("旅人", "相手", { journeyId: journey.id, initialState: { ...journey.initialState!, ap: 12 } });
     expect(state.currentCityId).toBe("tashkent");
     expect(state.travelBudget).toBe(4_000_000);
@@ -92,9 +65,11 @@ describe("four-city Uzbekistan handoff with test-only scenarios", () => {
       expect(state.currentCityId).toBe(cityId);
       // Earlier cities' regular and special victories do not unlock this finale.
       expect(getEpisodeAvailability(state, `${cityId}_finale`).available).toBe(false);
-      state = completeCity(state);
+      state = clearCity(state);
       if (index === 0) state = completeDate(state);
-      state = validateGameState({ ...state, completedEncounterIds: [...state.completedEncounterIds, `${cityId}_encounter`],
+      // A memory from the first city (whether the copied date gives one depends on the template city).
+      const memories = index === 0 ? [...new Set([...state.memories, memory])] : state.memories;
+      state = validateGameState({ ...state, memories, completedEncounterIds: [...state.completedEncounterIds, `${cityId}_encounter`],
         inventory: { ...state.inventory, [`${cityId}_item`]: "held" },
         travel: { ...state.travel, day: 3, calendar: { journeyDay: 3 + index * 2, cityStartJourneyDay: 1 + index * 2, startWeekday: 0 } } });
       expect(state.claimedRewardIds.some((id) => id.startsWith("milano"))).toBe(false);
@@ -158,12 +133,12 @@ describe("four-city Uzbekistan handoff with test-only scenarios", () => {
     expect(state.inventory.bukhara_item).toBe("left_behind");
     expect(state.inventory.khiva_item).toBe("held");
     expect(state.playedDateIds).toContain("tashkent_date");
-    expect(state.memories.length).toBeGreaterThan(0);
+    expect(state.memories).toContain(memory);
     expect(validateGameState(state)).toEqual(state);
   }, 120_000);
 
   it("reads the ending and stays in the completed city while its successor is unfinished", () => {
-    let state = completeCity(createGame("旅人", "相手", { journeyId: "uzbekistan" }));
+    let state = clearCity(createGame("旅人", "相手", { journeyId: "uzbekistan" }));
     getCityContent("samarkand").city.productionStatus = "prototype";
     expect(getNextCity(state)).toBeUndefined();
     state = advanceCompletedJourneyCity(state, state.revision);

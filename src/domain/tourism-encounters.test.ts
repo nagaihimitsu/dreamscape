@@ -18,7 +18,8 @@ function visit(landmarkId: string): GameState {
 }
 
 describe("automatic place encounters", () => {
-  it.each(encounters.encounters.filter((event) => event.availability !== "dormant").map((event) => [event.id, event.landmarkId]))
+  // Milan's encounters, met in a Milan game (other journeys' encounters belong to their own cities).
+  it.each(encounters.encounters.filter((event) => event.cityId === "milano" && event.availability !== "dormant").map((event) => [event.id, event.landmarkId]))
     ("introduces %s when its location and existing conditions are met", (id, landmarkId) => {
       const state = visit(landmarkId);
       expect(getTourismEncounterAvailability(state, id).available).toBe(true);

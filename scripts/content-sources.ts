@@ -53,9 +53,28 @@ export type QuizSource = { file: string; layer: string; sample: boolean; data: u
  */
 export type ContentTree = {
   root: string;
-  /** Folder names directly below `content/journeys/` (dot folders skipped), sorted. */
+  /**
+   * Journey folder names (= journey IDs), sorted: every folder directly below
+   * `content/journeys/` (dot folders skipped) and every extra journey folder.
+   */
   journeyFolders: string[];
+  /**
+   * Extra journey folders outside `content/journeys/` (ContentLoadOptions):
+   * journey ID → the folder's posix path relative to `root`.
+   */
+  extraJourneyFolders?: Readonly<Record<string, string>>;
   files: ReadonlyMap<string, Buffer | null>;
+};
+
+export type ContentLoadOptions = {
+  /**
+   * Journey folders outside `content/journeys/` that are loaded as journey
+   * layers too (paths relative to `root`, or absolute, inside `root` but not
+   * inside `content/`; the folder name is the journey ID). Only explicit
+   * callers pass them: `content:build --with-sample` passes the sample journey
+   * (SAMPLE_JOURNEY_DIRECTORY); the authoring tools never do.
+   */
+  extraJourneyDirectories?: readonly string[];
 };
 
 export type ContentSources = {
@@ -107,50 +126,87 @@ export function listFiles(directory: string, skipDirectory: (relative: string) =
 const isObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value);
 
-/** The journey folder a tree path lies in (`content/journeys/<id>/…`), if any. */
-function journeyFolderOf(treePath: string): string | undefined {
-  if (!treePath.startsWith(JOURNEYS_PREFIX)) return undefined;
-  const rest = treePath.slice(JOURNEYS_PREFIX.length);
-  const slash = rest.indexOf("/");
-  return slash > 0 ? rest.slice(0, slash) : undefined;
+/** The posix folder of a journey of `tree`, relative to its root (`content/journeys/<id>` or an extra folder). */
+export function journeyFolderPath(tree: Pick<ContentTree, "extraJourneyFolders">, journeyId: string): string {
+  return tree.extraJourneyFolders?.[journeyId] ?? `${JOURNEYS_PREFIX}${journeyId}`;
 }
 
-/** Data files are read; images (a journey's `public/`) and notes are only listed. */
-function isDataFile(treePath: string): boolean {
+/**
+ * The journey folder a tree path lies in (`content/journeys/<id>/…` or an
+ * extra journey folder) and the path relative to that folder, if any.
+ */
+export function journeyFileOf(tree: Pick<ContentTree, "extraJourneyFolders">, treePath: string): { journey: string; relative: string } | undefined {
+  if (treePath.startsWith(JOURNEYS_PREFIX)) {
+    const rest = treePath.slice(JOURNEYS_PREFIX.length);
+    const slash = rest.indexOf("/");
+    return slash > 0 ? { journey: rest.slice(0, slash), relative: rest.slice(slash + 1) } : undefined;
+  }
+  for (const [journey, folder] of Object.entries(tree.extraJourneyFolders ?? {}))
+    if (treePath.startsWith(`${folder}/`)) return { journey, relative: treePath.slice(folder.length + 1) };
+  return undefined;
+}
+
+/** Data files are read; images (a journey's `public/`) and notes are only listed. `relative` is the path inside its journey folder. */
+function isDataFile(treePath: string, journey: { relative: string } | undefined): boolean {
   if (!treePath.endsWith(".json") && !treePath.endsWith(".ink")) return false;
-  const journey = journeyFolderOf(treePath);
-  return !journey || !treePath.startsWith(`${JOURNEYS_PREFIX}${journey}/${PUBLIC_PREFIX}`);
+  return !journey || !journey.relative.startsWith(PUBLIC_PREFIX);
+}
+
+/**
+ * The extra journey folders of `root` (ContentLoadOptions) as journey ID →
+ * posix path relative to `root`. Each must be an existing folder inside
+ * `root`, outside `content/`, named like no other journey folder.
+ */
+function resolveExtraJourneyFolders(root: string, directories: readonly string[], journeyFolders: readonly string[]): Record<string, string> {
+  const folders: Record<string, string> = {};
+  for (const directory of directories) {
+    const absolute = path.resolve(root, directory);
+    const relative = toPosix(path.relative(root, absolute));
+    const id = path.basename(absolute);
+    if (!relative || relative.startsWith("../") || relative === ".." || path.isAbsolute(relative) || relative === CONTENT_DIRECTORY || relative.startsWith(CONTENT_PREFIX))
+      throw new Error(`Extra journey folder must lie inside ${root} and outside content/: ${directory}`);
+    if (!existsSync(absolute) || !statSync(absolute).isDirectory()) throw new Error(`Missing extra journey folder: ${absolute}`);
+    const other = journeyFolders.includes(id) ? `${JOURNEYS_PREFIX}${id}` : folders[id];
+    if (other) throw new Error(`Journey folder ${id} exists twice: ${other} and ${relative}`);
+    folders[id] = relative;
+  }
+  return folders;
 }
 
 /**
  * Read the content of `root` from disk: every file below `content/` and
- * `public/`, data files with their bytes. With `scope` "manifests" only the
- * journey folders and their manifests are read (for readJourneyManifests).
+ * `public/` and in the extra journey folders, data files with their bytes.
+ * With `scope` "manifests" only the journey folders and their manifests are
+ * read (for readJourneyManifests).
  */
-export function readContentTree(root: string, scope: "all" | "manifests" = "all"): ContentTree {
+export function readContentTree(root: string, scope: "all" | "manifests" = "all", options: ContentLoadOptions = {}): ContentTree {
   const journeys = journeysDirectory(root);
-  const journeyFolders = existsSync(journeys)
+  const contentFolders = existsSync(journeys)
     ? readdirSync(journeys, { withFileTypes: true })
       .filter((entry) => entry.isDirectory() && !entry.name.startsWith("."))
       .map((entry) => entry.name)
-      .sort()
     : [];
+  const extra = resolveExtraJourneyFolders(root, options.extraJourneyDirectories ?? [], contentFolders);
+  const tree = {
+    root,
+    journeyFolders: [...contentFolders, ...Object.keys(extra)].sort(),
+    ...(Object.keys(extra).length ? { extraJourneyFolders: extra } : {}),
+  };
   const files = new Map<string, Buffer | null>();
   if (scope === "manifests") {
-    for (const id of journeyFolders) {
-      const treePath = `${JOURNEYS_PREFIX}${id}/${MANIFEST_FILE}`;
+    for (const id of tree.journeyFolders) {
+      const treePath = `${journeyFolderPath(tree, id)}/${MANIFEST_FILE}`;
       const file = path.join(root, treePath);
       if (existsSync(file) && statSync(file).isFile()) files.set(treePath, readFileSync(file));
     }
-    return { root, journeyFolders, files };
+    return { ...tree, files };
   }
-  for (const relative of listFiles(coreLayerDirectory(root))) {
-    const treePath = `${CONTENT_PREFIX}${relative}`;
-    files.set(treePath, isDataFile(treePath) ? readFileSync(path.join(root, treePath)) : null);
-  }
+  const add = (treePath: string) => files.set(treePath, isDataFile(treePath, journeyFileOf(tree, treePath)) ? readFileSync(path.join(root, treePath)) : null);
+  for (const relative of listFiles(coreLayerDirectory(root))) add(`${CONTENT_PREFIX}${relative}`);
+  for (const folder of Object.values(extra)) for (const relative of listFiles(path.join(root, folder))) add(`${folder}/${relative}`);
   const shared = path.join(root, "public");
   if (existsSync(shared)) for (const relative of listFiles(shared)) files.set(`${PUBLIC_PREFIX}${relative}`, null);
-  return { root, journeyFolders, files };
+  return { ...tree, files };
 }
 
 /**
@@ -158,11 +214,17 @@ export function readContentTree(root: string, scope: "all" | "manifests" = "all"
  * contents; null for a listed file that is not read, such as an image), for
  * tests and tools that check content without writing it to disk.
  */
-export function contentTreeFromFiles(root: string, files: Readonly<Record<string, string | Buffer | null>>): ContentTree {
+export function contentTreeFromFiles(
+  root: string,
+  files: Readonly<Record<string, string | Buffer | null>>,
+  extraJourneyFolders: Readonly<Record<string, string>> = {},
+): ContentTree {
   const tree = new Map(Object.entries(files).map(([treePath, data]): [string, Buffer | null] =>
     [treePath, data === null ? null : Buffer.isBuffer(data) ? data : Buffer.from(data)]));
-  const journeyFolders = [...new Set([...tree.keys()].map(journeyFolderOf).filter((id): id is string => !!id && !id.startsWith(".")))].sort();
-  return { root, journeyFolders, files: tree };
+  const folders = Object.keys(extraJourneyFolders).length ? { extraJourneyFolders } : {};
+  const journeyFolders = [...new Set([...tree.keys()].map((treePath) => journeyFileOf(folders, treePath)?.journey)
+    .filter((id): id is string => !!id && !id.startsWith(".")))].sort();
+  return { root, journeyFolders, ...folders, files: tree };
 }
 
 /**
@@ -172,9 +234,9 @@ export function contentTreeFromFiles(root: string, files: Readonly<Record<string
  */
 function manifestsFromTree(tree: ContentTree): JourneyManifest[] {
   const manifests = tree.journeyFolders.map((id): JourneyManifest => {
-    const directory = path.join(journeysDirectory(tree.root), id);
+    const directory = path.join(tree.root, journeyFolderPath(tree, id));
     const file = path.join(directory, MANIFEST_FILE);
-    const bytes = tree.files.get(`${JOURNEYS_PREFIX}${id}/${MANIFEST_FILE}`);
+    const bytes = tree.files.get(`${journeyFolderPath(tree, id)}/${MANIFEST_FILE}`);
     if (!bytes) throw new Error(`Missing journey manifest: ${file}`);
     const data = parseJson(file, bytes);
     if (!isObject(data)) throw new Error(`Expected a JSON object in ${file}`);
@@ -193,11 +255,12 @@ function manifestsFromTree(tree: ContentTree): JourneyManifest[] {
 }
 
 /**
- * Every journey folder below `content/journeys/` with its `manifest.json`,
- * sorted by the manifest `order` (reads only the manifests).
+ * Every journey folder below `content/journeys/` (and every extra journey
+ * folder of `options`) with its `manifest.json`, sorted by the manifest
+ * `order` (reads only the manifests).
  */
-export function readJourneyManifests(root: string): JourneyManifest[] {
-  return manifestsFromTree(readContentTree(root, "manifests"));
+export function readJourneyManifests(root: string, options: ContentLoadOptions = {}): JourneyManifest[] {
+  return manifestsFromTree(readContentTree(root, "manifests", options));
 }
 
 /**
@@ -231,7 +294,8 @@ export function readJourneyCatalog(root: string): JourneyCatalog {
 
 /**
  * Content layers: the core layer (`content/` without the journey folders),
- * then every journey folder below `content/journeys/` in manifest order.
+ * then every journey folder (below `content/journeys/` and the extra ones)
+ * in manifest order.
  */
 export function contentLayers(root: string, manifests = readJourneyManifests(root)): ContentLayer[] {
   return [
@@ -241,8 +305,8 @@ export function contentLayers(root: string, manifests = readJourneyManifests(roo
 }
 
 /** Read every content layer of `root` and assemble it (readContentTree, then contentSourcesFromTree). */
-export function loadContentSources(root: string): ContentSources {
-  return contentSourcesFromTree(readContentTree(root));
+export function loadContentSources(root: string, options: ContentLoadOptions = {}): ContentSources {
+  return contentSourcesFromTree(readContentTree(root, "all", options));
 }
 
 /**
@@ -258,12 +322,12 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
   const layerIndex = new Map(layers.map((layer, index) => [layer.id, index]));
   const files: LayerFile[] = [];
   for (const [treePath, bytes] of tree.files) {
-    if (!treePath.startsWith(CONTENT_PREFIX)) continue;
-    const journey = journeyFolderOf(treePath);
-    const index = journey === undefined ? 0 : layerIndex.get(journey);
+    const journey = journeyFileOf(tree, treePath);
+    if (!journey && !treePath.startsWith(CONTENT_PREFIX)) continue;
+    const index = journey === undefined ? 0 : layerIndex.get(journey.journey);
     if (index === undefined) continue;
     const layer = layers[index];
-    const relative = journey === undefined ? treePath.slice(CONTENT_PREFIX.length) : treePath.slice(`${JOURNEYS_PREFIX}${journey}/`.length);
+    const relative = journey === undefined ? treePath.slice(CONTENT_PREFIX.length) : journey.relative;
     files.push({ layer, layerIndex: index, relative, file: path.join(root, treePath), bytes });
   }
   files.sort(compareLayerFiles);
@@ -311,17 +375,28 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
     if (previous) throw new Error(`Duplicate city file: ${previous.file} and ${item.file}`);
     cityLayers.set(item.id, item);
   }
-  for (const item of travelFiles)
-    if (cityLayers.get(item.cityId)?.layer !== item.layer)
-      throw new Error(`Travel file without a city in the same layer: ${item.file}`);
+  // Missing files are named with what to add (Japanese first, like the missing-manifest message).
+  for (const item of travelFiles) {
+    const city = cityLayers.get(item.cityId);
+    if (city?.layer === item.layer) continue;
+    throw new Error(city
+      ? `都市 ${item.cityId} の移動データ ${item.file} は、都市ファイル ${city.file} と同じ旅行編フォルダの travel/ に置いてください` +
+        "（Travel file without a city in the same layer）。"
+      : `都市ファイル ${path.join(item.layer.directory, "cities", `${item.cityId}.json`)} がありません。${item.file} は都市 ${item.cityId} の移動データです。` +
+        "都市ファイルを追加するか、この移動データを消してください（Travel file without a city in the same layer）。");
+  }
 
   // JSON of quizzes, then of every city with its travel settings and travel files.
   const quizFiles = quizzes.map((item): QuizSource =>
     ({ file: item.file, layer: item.layer.id, sample: item.sample, data: parseJson(item.file, bytesOf(item)) }));
-  const read = (file: string): Buffer => {
+  /** A travel file every city file needs next to it; missing, the error says which file to add and what it holds. */
+  const readTravel = (city: LayerFile & { id: string }, file: string, settings: boolean): Buffer => {
     const bytes = tree.files.get(toPosix(path.relative(root, file)));
-    if (!bytes) throw new Error(`Cannot read JSON ${file}`, { cause: new Error(`Missing file: ${file}`) });
-    return bytes;
+    if (bytes) return bytes;
+    const [name, holds, english] = settings
+      ? ["移動の設定", "宿の地点・宿泊費・再挑戦の間隔", "Missing travel settings file"]
+      : ["移動データ", "地点・経路・地図のイベント", "Missing travel file"];
+    throw new Error(`${name} ${file} がありません。都市 ${city.id}（${city.file}）の${holds}を書くファイルです（${english} of city ${city.id}）。`);
   };
   const cities = cityFiles.map((item): CitySource => {
     const travel = path.join(item.layer.directory, "travel");
@@ -329,9 +404,9 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
     const settingsFile = path.join(travel, `${item.id}-settings.json`);
     const city = bytesOf(item);
     const data = parseJson(item.file, city);
-    const settingsBytes = read(settingsFile);
+    const settingsBytes = readTravel(item, settingsFile, true);
     const settings = parseJson(settingsFile, settingsBytes);
-    const travelBytes = read(travelFile);
+    const travelBytes = readTravel(item, travelFile, false);
     return {
       id: item.id, layer: item.layer.id, file: item.file, travelFile, settingsFile,
       data, travel: parseJson(travelFile, travelBytes), settings,
@@ -373,12 +448,14 @@ export function selectJourneys(sources: ContentSources, journeyIds: readonly str
   for (const id of journeyIds)
     if (!tree.journeyFolders.includes(id)) throw new Error(`Unknown journey folder: ${id}`);
   const keep = (treePath: string) => {
-    const journey = journeyFolderOf(treePath);
+    const journey = journeyFileOf(tree, treePath)?.journey;
     return journey === undefined || !tree.journeyFolders.includes(journey) || journeyIds.includes(journey);
   };
+  const extra = Object.entries(tree.extraJourneyFolders ?? {}).filter(([id]) => journeyIds.includes(id));
   return contentSourcesFromTree({
     root: tree.root,
     journeyFolders: tree.journeyFolders.filter((id) => journeyIds.includes(id)),
+    ...(extra.length ? { extraJourneyFolders: Object.fromEntries(extra) } : {}),
     files: new Map([...tree.files].filter(([treePath]) => keep(treePath))),
   });
 }

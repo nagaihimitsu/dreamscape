@@ -90,7 +90,9 @@ export function inspectJourneyTransit(root: string, journeyId: string) {
   if (!journey) throw new Error(`Unknown journey: ${journeyId}`);
   return journey.cities.map(({ id: cityId }) => {
     const file = cityTransitFile(root, cityId);
-    if (!file || !existsSync(path.join(root, file))) throw new Error(`Transit review missing: ${cityId}`);
+    if (!file || !existsSync(path.join(root, file)))
+      throw new Error(`都市「${cityId}」の交通判断台帳がありません（${file ?? `${journeyId} の manifest.json の authoring に transitDirectory がありません`}）。` +
+        "journey:transit は、manifest.json の authoring.transitDirectory（都市ごとの台帳のフォルダ）を設定し、そこに <都市ID>/transit-decisions.json を置いてから使います（authoring/JOURNEY_AUTHORING.md）。");
     const travel = travelCatalogSchema.parse(requireCity(sources, cityId).travel);
     return inspectCityTransit(travel, readTransitLedger(root, file));
   });

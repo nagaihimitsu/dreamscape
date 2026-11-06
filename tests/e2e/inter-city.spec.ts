@@ -5,34 +5,15 @@ const journeyId = "golden_triangle";
 test("finishing Delhi reads its ending and moves the journey to Agra's map", async ({ page }) => {
   test.setTimeout(120_000);
   await page.goto("/");
-  // State shortcut: playing all of Delhi through the UI takes minutes, so the
-  // page's own game modules play Delhi's arrival, four sightseeing battles and
-  // the finale with the real rules, and the result becomes a normal save. The
-  // move to Agra itself is then played through the UI.
+  // State shortcut (lane 2 in docs/10): playing all of Delhi through the UI
+  // takes minutes, so the page's own scene builders (src/dev/scenario-builders.ts,
+  // the same ones the unit tests and Debug use) play Delhi's arrival, every
+  // sightseeing battle and the finale with the real rules, and the finale's
+  // result becomes a normal save. The move to Agra itself is then played through the UI.
   await page.evaluate(async (key) => {
-    const load = (path: string) => import(/* @vite-ignore */ path);
-    const [{ createGame }, { episodes }, chapter, tourism, battle, epilogue] = await Promise.all([
-      load("/src/domain/game.ts"), load("/src/content/index.ts"), load("/src/domain/chapter.ts"),
-      load("/src/domain/tourism.ts"), load("/src/domain/battle.ts"), load("/src/domain/epilogue.ts")]);
-    let state = createGame("旅人", "澪", { journeyId: "golden_triangle" });
-    state = epilogue.startCityArrival(state, state.revision);
-    state = epilogue.completeArrivalLogo(state, state.revision);
-    while (state.activeEpilogue) state = epilogue.advanceCityEpilogue(state, state.revision);
-    for (const episode of episodes.filter((item: { cityId: string }) => item.cityId === "delhi")) {
-      state = chapter.startEpisode(state, episode.id);
-      if (state.activeTourism) state = tourism.skipTourismGuide(state, state.revision);
-      if (state.activeTourism) state = tourism.startTourismBattle(state, state.revision);
-      for (let step = 0; state.activeBattle?.phase !== "result"; step++) {
-        const active = state.activeBattle;
-        if (!active || step > 300) throw new Error(`Could not finish ${episode.id}`);
-        const { quiz } = battle.getActiveBattleContent(active);
-        state = active.phase === "question"
-          ? battle.answerBattle(state, quiz.questions[active.roundIndex].correctOptionId, state.revision)
-          : battle.advanceBattle(state, state.revision);
-      }
-      if (episode.kind !== "city_finale") state = battle.leaveBattle(state, state.revision);
-    }
-    localStorage.setItem(key, JSON.stringify(state));
+    const builders = "/src/dev/scenario-builders.ts";
+    const { cityFinaleResult } = await import(/* @vite-ignore */ builders);
+    localStorage.setItem(key, JSON.stringify(cityFinaleResult("delhi", { names: ["旅人", "澪"] })));
   }, saveKey(journeyId));
 
   await page.getByLabel("旅行編").selectOption(journeyId);

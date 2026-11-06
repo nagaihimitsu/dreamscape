@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { battles, battleQuizzes, rewardRules } from "../content";
+import { rewardRules } from "../content";
+import { playBattleToResult } from "../dev/scenario-builders";
 import { createGame, type GameState } from "../domain/game";
-import { advanceBattle, answerBattle } from "../domain/battle";
 import { startEpisode } from "../domain/chapter";
 import { startTourismBattle } from "../domain/tourism";
 import { loadGame, saveGame, SAVE_KEY, type StorageLike } from "./index";
@@ -14,14 +14,7 @@ class MemoryStorage implements StorageLike {
 
 function currentResult(): GameState {
   let state = startEpisode({ ...createGame(), ap: 12 });
-  state = startTourismBattle(state, state.revision);
-  for (let i = 0; state.activeBattle?.phase !== "result" && i < 200; i++) {
-    const active = state.activeBattle!;
-    const battle = battles.find((item) => item.id === active.battleId)!;
-    state = active.phase === "question"
-      ? answerBattle(state, battleQuizzes[battle.quizId].questions[active.roundIndex].correctOptionId, state.revision)
-      : advanceBattle(state, state.revision);
-  }
+  state = playBattleToResult(startTourismBattle(state, state.revision));
   expect(state.activeBattle?.phase).toBe("result");
   expect(state.pendingApRewards.length).toBeGreaterThan(0);
   expect(state.battleRewardReceipt?.entries.length).toBeGreaterThan(0);

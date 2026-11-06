@@ -107,7 +107,7 @@ describe("tourism content contract", () => {
     await changeEntry("assets", assetId, (asset) => {
       asset.path = "assets/tourism/missing.webp";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow("Missing public file: assets/tourism/missing.webp");
+    await expect(buildContent(fixture, false)).rejects.toThrow("Missing public file: assets/tourism/missing.webp (searched public/ and content/journeys/milano/public/)");
     await changeEntry("assets", assetId, () => {});
     await replaceFixtureFile(
       resolvePublicFile(fixture, catalogData.assets.find((asset) => asset.id === assetId)!.path),

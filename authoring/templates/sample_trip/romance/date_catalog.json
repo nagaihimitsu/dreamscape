@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "dates": [
+    {
+      "id": "smp_mihon_date_tower_square",
+      "kind": "normal",
+      "chapterId": "mihon",
+      "titleJa": "三時までの席",
+      "descriptionJa": "時計塔の広場で、塔を向いたベンチに並んで座る。",
+      "apCost": 2,
+      "storyId": "dates/smp_mihon_date_tower_square",
+      "destinationId": "mihon_tower_square",
+      "backgroundAssetId": "smp_bg_mihon_clock_tower",
+      "choiceCount": 2,
+      "effectCount": 2
+    }
+  ]
+}

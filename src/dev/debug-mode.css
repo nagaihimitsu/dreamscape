@@ -1,6 +1,7 @@
 .debug-panel { max-width: 620px; margin: 0 auto; padding: 18px 16px; }
 .debug-panel h1 { margin: 0; font-size: 22px; }
 .debug-panel p { font-size: 14px; line-height: 1.6; }
+.debug-panel .debug-template { margin: 8px 0 16px; }
 .debug-panel form, .debug-panel label { display: grid; gap: 6px; }
 .debug-panel form { gap: 12px; }
 .debug-panel select, .debug-panel input { width: 100%; min-width: 0; min-height: 44px; padding: 6px; }
@@ -12,3 +13,9 @@
 @media (max-width: 480px) {
   .debug-session .app-shell.mobile-play-active { height: calc(100dvh - 56px); }
 }
+.debug-panel [role="alert"] { background: #f1e7d1; padding: 10px 12px; border-radius: 4px; overflow-wrap: anywhere; }
+.debug-launch-error { display: grid; gap: 14px; align-content: start; }
+.debug-url { display: grid; gap: 8px; margin: 28px 0 20px; }
+.debug-url h2 { font-size: 17px; letter-spacing: 0; }
+.debug-url button { min-height: 44px; }
+.debug-url [role="status"] { font-size: 13px; overflow-wrap: anywhere; }

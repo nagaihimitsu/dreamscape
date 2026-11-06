@@ -1,4 +1,5 @@
 import path from "node:path";
+import { SAMPLE_JOURNEY_DIRECTORY } from "./content-layout";
 import { buildContent } from "./content-pipeline";
 import { CONTENT_WARNING_LABELS, formatJourneyContents, type ContentWarningKind } from "./content-report";
 import { inkCacheDisabledByEnv, openStoryValidationCache } from "./story-validation-cache";
@@ -11,6 +12,9 @@ const verbose = process.argv.includes("--verbose");
 // --no-cache (or DREAMSCAPE_INK_CACHE=off) validates every Ink branch without
 // reading or writing the validation cache.
 const noCache = process.argv.includes("--no-cache");
+// --with-sample adds the sample journey (development and tests only; see
+// SAMPLE_JOURNEY_DIRECTORY). Production builds never pass it.
+const withSample = process.argv.includes("--with-sample");
 const details = "details: npm run content:build -- --verbose";
 const staleWarnings: string[] = [];
 const warn = console.warn;
@@ -25,7 +29,10 @@ console.warn = (...args: unknown[]) => {
 
 try {
   const storyCache = noCache ? undefined : openStoryValidationCache();
-  const result = await buildContent(process.cwd(), true, { storyCache: storyCache ?? null });
+  const result = await buildContent(process.cwd(), true, {
+    storyCache: storyCache ?? null,
+    ...(withSample ? { extraJourneyDirectories: [SAMPLE_JOURNEY_DIRECTORY] } : {}),
+  });
   if (staleWarnings.length && !verbose) warn(`${staleWarnings.length} stale dialogue annotation(s); ${details}`);
   if (verbose) result.warnings.forEach((warning) => warn(warning.message));
   else if (result.warnings.length) {
@@ -43,6 +50,7 @@ try {
   );
   // One line per journey folder, so a forgotten or still empty folder shows before it is published.
   for (const journey of result.journeyContents) console.log(formatJourneyContents(journey));
+  if (withSample) console.log(`Sample journey included from ${SAMPLE_JOURNEY_DIRECTORY} (development and tests only; npm run content:build without --with-sample removes it)`);
   // Unused dictionary entries do no harm: a count, the words with --verbose.
   const unusedWords = result.unusedWordMeanings.reduce((sum, item) => sum + item.words.length, 0);
   if (verbose) for (const item of result.unusedWordMeanings) console.log(`Unused word meanings in ${item.file} (${item.words.length}): ${item.words.join(", ")}`);

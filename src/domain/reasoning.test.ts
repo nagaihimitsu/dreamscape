@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { battles, battleQuizzes, type BattleDefinition } from "../content";
+import { firstCorrect, playBattleToResult } from "../dev/scenario-builders";
 import {
   startBattle,
   advanceBattle,
@@ -69,32 +70,9 @@ function select(state: GameState, ids: string[]): GameState {
     state = roundTrip(selectReasoningClue(state, id, state.revision));
   return state;
 }
-function finish(
-  initial: GameState,
-  battle: BattleDefinition,
-  score: number,
-): GameState {
-  let state = initial;
-  for (let i = 0; state.activeBattle?.phase !== "result" && i < 200; i++) {
-    state = roundTrip(state);
-    const active = state.activeBattle!;
-    if (active.phase === "reasoning") {
-      state = select(state, battle.reasoning!.correctClueIds);
-      state = submitBattleEvidence(state, state.revision);
-    } else if (active.phase === "question") {
-      const q = battleQuizzes[battle.quizId].questions[active.roundIndex];
-      state = answerBattle(
-        state,
-        active.roundIndex < score
-          ? q.correctOptionId
-          : q.options.find((o) => o.id !== q.correctOptionId)!.id,
-        state.revision,
-      );
-    } else state = advanceBattle(state, state.revision);
-  }
-  expect(state.activeBattle?.phase).toBe("result");
-  return roundTrip(state);
-}
+/** The first `score` answers correct and the correct evidence, every action saved and restored. */
+const finish = (initial: GameState, score: number): GameState =>
+  roundTrip(playBattleToResult(initial, { answer: firstCorrect(score), after: (next) => roundTrip(next) }));
 
 describe("small proof steps inside three-round battles", () => {
   it.each(["contradiction", "connection"] as const)(
@@ -242,7 +220,7 @@ describe("small proof steps inside three-round battles", () => {
       for (const kind of ["contradiction", "connection"] as const) {
         const battle = special(kind);
         const initial = createGame();
-        let state = finish(startBattle(initial, battle.id), battle, score);
+        let state = finish(startBattle(initial, battle.id), score);
         expect(state.activeBattle?.score).toBe(score);
         expect(state.battleRecords).toEqual([
           {
@@ -278,7 +256,7 @@ describe("small proof steps inside three-round battles", () => {
         expect(canAccessFreeTime(state)).toBe(true);
         const result = state;
         expect(advanceBattle(result, result.revision)).toBe(result);
-        state = finish(startBattle(result, battle.id), battle, 3);
+        state = finish(startBattle(result, battle.id), 3);
         expect(state.battleRecords[0].attempts).toBe(2);
         expect(state.battleRecords[0].bestScore).toBe(3);
         expect(unchangedProgress(state)).toEqual(unchangedProgress(initial));
@@ -300,13 +278,13 @@ describe("small proof steps inside three-round battles", () => {
     initial = startEpisode(initial, "milano_duomo_episode");
     initial = skipTourismGuide(initial, initial.revision);
     initial = startTourismBattle(initial, initial.revision);
-    initial = finish(initial, battles.find((battle) => battle.id === "milano_duomo_01")!, 3);
+    initial = finish(initial, 3);
     initial = leaveBattle(initial, initial.revision);
     expect(initial.pendingApRewards.length).toBeGreaterThan(0);
     roundTrip(initial);
     for (const kind of ["contradiction", "connection"] as const) {
       const battle = special(kind);
-      const state = finish(startBattle(initial, battle.id), battle, 3);
+      const state = finish(startBattle(initial, battle.id), 3);
       expect(unchangedProgress(state)).toEqual(unchangedProgress(initial));
       const suffix = kind === "contradiction" ? "scala" : "brera";
       const rewardIds = [`battle_${suffix}_first`, `victory_${suffix}_first`, `episode_${suffix}_first`];

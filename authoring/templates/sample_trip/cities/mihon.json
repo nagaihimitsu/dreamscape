@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "mihon",
+  "countryCode": "XX",
+  "nameJa": "見本の街",
+  "themeJa": "針の止まった時計塔がある、見本用の架空の街",
+  "firstClearReward": {
+    "rewardSourceId": "smp_mihon_first_clear",
+    "ap": 0
+  },
+  "landmarkIdsPlanned": [
+    "mihon_clock_tower",
+    "mihon_market",
+    "mihon_library"
+  ],
+  "productionStatus": "complete"
+}
