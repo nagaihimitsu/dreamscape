@@ -41,7 +41,9 @@
 
 `npm test` と `npm run verify`、CIは両方の組を実行する。どちらの組に入るかは一覧で管理せず、`scripts/test-sets.ts` がテストファイルの `import` から自動で決める。テストファイル自身の相対 `import` を何段でもたどり、`scripts/content-pipeline.ts`（`buildContent`）か `src/content/test-fixtures.ts`（`prepareContentFixture`）に届くファイルが `content`、それ以外が `quick` になる（型だけの `import type` は数えない）。新しいテストもこの規則で自動的にどちらかに入り、どちらにも入らないテストはない（`scripts/test-sets.test.ts` が確認する）。ファイルを指定した `npx vitest run <ファイル>` は組に関係なく実行できる。
 
-判定はモジュール単位で、関数の呼び出しまでは追わない。そのため `scripts/content-pipeline.ts` は `buildContent` だけを公開し、テストが単独で使う検査関数は軽いモジュールに置く（Inkのコンパイルと会話の検査は `scripts/ink-validation.ts`、クイズ1件の検査は `scripts/quiz-validation.ts`、都市のつながりは `scripts/city-links.ts`、読み込んだ内容全体の検証は `scripts/content-validation.ts` の `validateContent`）。テストはこれらを直接 `import` すれば `quick` に入る。`validateContent` は、メモリ上に作った小さな内容（`contentTreeFromFiles`）で拒否を確かめるテストに使う。リポジトリ全体の内容を検証すると生成と同じだけ時間がかかるため、そうしたテストは `buildContent` を使う（`content` に入る）。一方、`buildContent` を読み込む制作ツールのモジュールから純粋な関数だけを使うテストも `content` に入る（2026年11月時点で `src/content/inspect-content.test.ts`、`scripts/journey-authoring.test.ts`、`scripts/journeys/golden_triangle/india-readiness.test.ts`。3ファイル合わせて約1秒）。これらは日常の `test:quick` では実行されないが、`npm test`・`npm run verify`・CIでは実行される。モジュール単位の判定は、読み込むだけで使わない場合も `content` に数えるため、生成を呼ぶテストが `quick` に入ることはない。ただし、子プロセスで生成を実行するテストや、変数で指定した `import()` はたどれないので、そうしたテストは作らない。
+判定はモジュール単位で、関数の呼び出しまでは追わない。そのため `scripts/content-pipeline.ts` は `buildContent` だけを公開し、テストが単独で使う検査関数は軽いモジュールに置く（Inkのコンパイルと会話の検査は `scripts/ink-validation.ts`、クイズ1件の検査は `scripts/quiz-validation.ts`、都市のつながりは `scripts/city-links.ts`、読み込んだ内容全体の検証は `scripts/content-validation.ts` の `validateContent`）。テストはこれらを直接 `import` すれば `quick` に入る。`validateContent` は、メモリ上に作った小さな内容（`contentTreeFromFiles`）で拒否を確かめるテストに使う。リポジトリ全体の内容を検証すると生成と同じだけ時間がかかるため、そうしたテストは `buildContent` を使う（`content` に入る）。一方、`buildContent` を読み込む制作ツールのモジュールから純粋な関数だけを使うテストも `content` に入る（2026年11月時点で `src/content/inspect-content.test.ts`、`scripts/journey-authoring.test.ts`、`scripts/journeys/golden_triangle/india-readiness.test.ts`。3ファイル合わせて約1秒）。これらは日常の `test:quick` では実行されないが、`npm test`・`npm run verify`・CIでは実行される。モジュール単位の判定は、読み込むだけで使わない場合も `content` に数える。
+
+`import` の読み取りは正規表現による簡易なもので、たどれるのは行頭の `import`・`export … from`（複数行も可）、`import "…"`、文字列を直接書いた `import("…")` で、行き先は `.` で始まる相対パスの `.ts`・`.tsx`・`.mts`（`index` を含む）だけである。次の書き方はたどらない：行の途中から始まる `import`、`require()`、変数やテンプレート文字列で指定した `import()`、子プロセスで実行する生成、パスの別名、拡張子を `.js` と書いたTypeScriptファイルの指定（`./x.js` → `x.ts`）。逆に、テンプレート文字列の中で行頭にある `import` 文は読み込みとして数える。2026年11月時点のテストと読み込み先には、これらの書き方はない。たどれなかった先が生成に届くテストは `quick` に入り、日常の `test:quick` が遅くなる（`npm test`・`verify`・CIは両方の組を実行するので、実行されないテストは出ない）。そうした書き方は使わない。また、組は設定を読み込んだときに一度だけ決まる。監視モード（`npx vitest`）の実行中に追加したテストファイルはどちらの組にも入らず実行されず、`import` を変えたテストの組も変わらないため、Vitestを起動し直す。
 
 `prepareContentFixture` は `content/` と `public/` を一時フォルダへ写すが、各旅行編の画像（`content/journeys/<journeyId>/public/` のファイル。リポジトリの大半の容量）は写さず、フォルダだけを作って各ファイルへのシンボリックリンクを置く（リンクを作れない環境、たとえばリンク作成の権限がないWindowsでは、ファイルをコピーする。遅くなるが結果は同じ）。テストはそこへファイルを追加・削除してよいが、リンクされたファイルへ上書きするとリポジトリの画像が変わるため、差し替えは `replaceFixtureFile` を使う。単体テストの実行の前後で各旅行編の画像の大きさと更新時刻を比べ、変わっていれば実行全体を失敗にする（`scripts/test-image-guard.ts`）。失敗の表示には、変わったファイルと、最後にコミットした版へ戻すコマンド（`git checkout -- <ファイル>`）が出る。テストが追加したファイルは削除する。まだコミットしていない画像や、コミット後に編集した画像はgitから戻せないため、画像を追加・編集したら単体テストの前にコミットしておく。
 
@@ -52,6 +54,7 @@
 | `npm run content:build` | 約15.7秒 | 約15.4〜16.0秒（`--no-cache` も同じ） | 約3.4秒 |
 | `npm run test:quick`（生成を含む） | 約44秒（110ファイル） | 約46秒（111ファイル） | 約30秒 |
 | 全単体テスト（`npx vitest run`、生成を除く） | 約400秒（全ワーカーの作業時間 約1,530秒分） | 約190秒（約690秒分） | 約150秒（約530秒分） |
+| `npm run verify`（生成はキャッシュなし。単体テストはキャッシュを使う） | 約416秒 | 約200秒 | 約165秒 |
 
 - キャッシュが空でも全単体テストが速いのは、同じ内容の生成を繰り返すテストが、同じ実行の中で先に計算された結果を使うため（1回の実行で約2,700項目・約14MBが保存される）。2回目以降は、テストが一時コピーで作る内容の変化も保存済みになる。単体テストの組を分ける前（ワーカー数の調整も前）は約610秒だった。
 - 時間の長いファイル（保存済みのキャッシュで）は `content` の組にある：`scripts/city-bundle*.test.ts` のうち3ファイル（各約45〜60秒。全9都市の書き出し・反映を繰り返す）、`src/content/content.test.ts`（約50秒）、`scripts/story-validation-cache-content.test.ts`（約42秒。比較のためキャッシュなしの生成を含む）。`quick` の組で最も長いのは `src/domain/milano-freedom.test.ts`（約10秒。`scripts/journey-scenario-validation.test.ts` は約14秒から約2秒になった）。
@@ -113,13 +116,13 @@ GitHub Actionsは次のワークフローを実行する。同じイベントで
 - PRでは、新しいpushが来ると同じPRの実行中のCIとE2Eを取り消して最新のコミットだけを確かめる。`main` へのpushと手動実行は取り消さず、最後まで実行する。
 - 画面の見た目・操作感・実機の確認は人が並行して行う。CIの合否を待つ必要はなく、CIの通過は目視確認の代わりにならない。
 - E2Eはマトリクスの段（tier）ごとに別のジョブになる。現在は「gate」の1段だけ。本番ビルドでの確認などの段を足すときや、長い段を `--shard=1/2`・`--shard=2/2` で分けるときは、`e2e.yml` の `matrix.include` に項目を足す。足した段も並列に動く。
-- Playwrightの設定（`playwright.config.ts`）：失敗したテストは再試行しない（不安定なテストは再試行で隠さず原因を直す）。失敗したテストだけ、スクリーンショットとトレースを `test-results/` に保存する。CI（環境変数 `CI` がある場合）では、さらに `test.only` が残っていれば失敗にし、2ワーカーで実行し、失敗の注釈・HTMLレポート（`playwright-report/`）・一覧を出力する。手元では一覧だけを出力し、ワーカー数はPlaywrightの既定（CPUの半数）。
+- Playwrightの設定（`playwright.config.ts`）：失敗したテストは再試行しない（不安定なテストは再試行で隠さず原因を直す）。失敗したテストだけ、スクリーンショットとトレースを `test-results/` に保存する。CI（環境変数 `CI` がある場合）では、さらに `test.only` が残っていれば失敗にし、2ワーカーで実行し、失敗の注釈・HTMLレポート（`playwright-report/`）・一覧を出力する。CIの実行は12分で打ち切り（`globalTimeout`）、打ち切った場合もレポートと、そこまでに失敗したテストのトレースを残す。`e2e.yml` はテストの手順に16分、ジョブに25分の上限を置き、手順が時間切れになった場合も成果物（下記）を保存する（ジョブ全体の時間切れでは保存の手順が実行されないため）。手元では一覧だけを出力し、ワーカー数はPlaywrightの既定（CPUの半数）。
 
 ### 失敗したときの見方
 
 1. PRの「Checks」タブ、またはコミットの赤い×から失敗したジョブを開く。単体テスト・ビルドはジョブのログの末尾に、失敗したテストと理由が出る。
 2. E2Eは、失敗したテストの行が注釈として実行結果ページ（Summary）の「Annotations」に出る。そのファイルがPRの差分に含まれる場合は、差分（Files changed）の該当行にも出る。ジョブのログには各テストの成否と失敗箇所が出る。
-3. E2Eが失敗した実行では、実行結果ページ（Summary）の「Artifacts」に `e2e-<段の名前>` が14日間残る。ダウンロードして展開し、`npx playwright show-report playwright-report` でHTMLレポートを開く。レポートから各テストのスクリーンショットとトレース（操作ごとの画面・DOM・コンソール・通信）を見られる。トレースだけを見る場合は `npx playwright show-trace test-results/<テスト名>/trace.zip`。`test-results/<テスト名>/error-context.md` には失敗時のページの構造が残る。
+3. E2Eが失敗した実行（時間切れを含む）では、実行結果ページ（Summary）の「Artifacts」に `e2e-<段の名前>` が14日間残る。ダウンロードして展開し、`npx playwright show-report playwright-report` でHTMLレポートを開く。レポートから各テストのスクリーンショットとトレース（操作ごとの画面・DOM・コンソール・通信）を見られる。トレースだけを見る場合は `npx playwright show-trace test-results/<テスト名>/trace.zip`。`test-results/<テスト名>/error-context.md` には失敗時のページの構造が残る。
 4. 手元で同じテストを実行して再現する（`npx playwright test tests/e2e/<ファイル> --repeat-each=3` など）。CIでだけ失敗する場合は、待ち時間ではなく画面の状態・保存のリビジョンで待っているかを確かめる。
 
 ### 本番ビルドの検査
@@ -128,3 +131,4 @@ GitHub Actionsは次のワークフローを実行する。同じイベントで
 
 - 失敗した場合は、開発専用のモジュールを `import.meta.env.DEV` の分岐の外から読み込んでいないか、生成物（`src/content/generated/`）にテスト用・見本の旅行編が入っていないかを確かめる。生成物が原因なら `npm run content:build` で生成し直してからビルドする。
 - 検出に使う文字列と由来のファイルは `scripts/dist-guard.ts` にある。由来のファイルを改名・改稿して文字列が消えると `scripts/dist-guard.test.ts` が失敗するので、そのファイルに固有の別の文字列へ差し替える。本番のコードやコンテンツが同じ文字列を使うとビルドが失敗するため、目印には開発用のファイルにしかない文字列を選ぶ。
+- 目印による確認なので、目印を持たない開発用のコード（目印を登録していない新しいファイルなど）が入っても失敗しないことがある。`src/dev/`・テスト用の仮データに新しいファイルを足したら、そのファイルに固有の文字列を目印に加える。

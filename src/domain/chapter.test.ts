@@ -26,6 +26,7 @@ import {
   canAccessFreeTime,
   enterFreeTime,
   getCurrentEpisode,
+  getEpisodeAvailability,
   startEpisode,
 } from "./chapter";
 import { claimPendingRewards } from "./rewards";
@@ -316,3 +317,13 @@ function lowAffectionRolls() {
   const tickets = [0, 0, 5000, 0];
   return () => tickets[index++ % tickets.length];
 }
+
+describe("the locked city finale", () => {
+  it("mentions mid-journey battles only in cities that have special battles", () => {
+    // Milan has special battles; Delhi (Golden Triangle) has none.
+    expect(getEpisodeAvailability(createGame(), "milano_finale"))
+      .toEqual({ available: false, reason: "観光地と旅の途中の対決を巡ると、この対決へ進めます。" });
+    expect(getEpisodeAvailability(createGame("旅人", "同行者", { journeyId: "golden_triangle" }), "gt_delhi_finale"))
+      .toEqual({ available: false, reason: "観光地を巡ると、この対決へ進めます。" });
+  });
+});

@@ -13,6 +13,9 @@ export default defineConfig({
   forbidOnly: ci,
   retries: 0,
   workers: ci ? 2 : undefined,
+  // In CI a run that hangs stops itself after 12 minutes and still writes its
+  // report and traces, before the job limits of e2e.yml would cut it off.
+  globalTimeout: ci ? 12 * 60_000 : undefined,
   reporter: ci ? [["github"], ["html", { open: "never" }], ["list"]] : "list",
   use: {
     baseURL: "http://127.0.0.1:4173",

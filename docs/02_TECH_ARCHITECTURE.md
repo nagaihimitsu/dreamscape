@@ -105,7 +105,7 @@ tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲ�
 - Debugの「仮の場面」は、準備中の旅行編の都市ごとに `<都市ID>_episode`・`<都市ID>_battle`・`<都市ID>_date` など `<都市ID>_` で始まるID（試験用の都市では `test_`）と、`<都市ID>/guide` などのストーリーIDをメモリ上だけで作る。準備中の旅行編の正式データには、上の接頭辞（例：`uz_`）を付けたIDを使う。
 - `tests/fixtures/journeys/zz_fixture_trip/` は自動テスト専用の旅行編で、`content/journeys/` には置かない。
 - 旅行編ID `sample_trip` は、開発・テスト専用の見本の編のために予約する（本番には含めない）。
-- 本番ビルド（`npm run build`・`npm run verify`）は `vite build` の後に `scripts/check-dist.ts` で `dist/` を検査し、Debug・プレビュー（`src/dev/`）、テスト用の仮データ（`*-test-fixture.ts`・`tests/fixtures/`）、上の2つの旅行編IDが含まれていればビルドを失敗にする。検出に使う文字列と由来のファイルは `scripts/dist-guard.ts` にあり、由来のファイルから文字列が消えると `scripts/dist-guard.test.ts` が失敗する。
+- 本番ビルド（`npm run build`・`npm run verify`）は `vite build` の後に `scripts/check-dist.ts` で `dist/` を検査し、Debug・プレビュー（`src/dev/`）、テスト用の仮データ（`*-test-fixture.ts`・`tests/fixtures/`）、上の2つの旅行編IDに固有の目印の文字列が、公開されるファイルの名前か内容にあればビルドを失敗にする。検出に使う文字列と由来のファイルは `scripts/dist-guard.ts` にあり、由来のファイルから文字列が消えると `scripts/dist-guard.test.ts` が失敗する。検出は目印による確認で、開発用のコードが入ったことを必ず見つけるものではない（目印を持たない新しいファイルや、目印の部分が使われずに省かれたコードは見逃す）。`src/dev/` などに開発用のファイルを足したら、そのファイルに固有の文字列も目印に加える。
 
 ### 新しい編を追加する手順
 
