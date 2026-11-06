@@ -14,7 +14,7 @@ import { compileInk, validateNoInkRandom, validateRelationshipToneSource } from 
 import { buildJourneyFragments, journeyNarrativeSchema, journeyRequirements, loadJourneyScaffold } from "./journey-scaffold";
 import { validateTourism } from "./tourism-validation";
 import { checkTourismImages } from "./content-images";
-import { openStoryValidationCache, validateStoryCached, type StoryValidationCache } from "./story-validation-cache";
+import { chooseStoryCache, validateStoryCached, type StoryValidationCache } from "./story-validation-cache";
 
 function inkFiles(directory: string): string[] {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -29,7 +29,7 @@ function inkFiles(directory: string): string[] {
  * null: without it). */
 export async function validateJourneyScenario(root: string, journeyId: string, directory: string, selectedCityId?: string,
   options: { storyCache?: StoryValidationCache | null } = {}) {
-  const storyCache = options.storyCache === undefined ? openStoryValidationCache() : options.storyCache ?? undefined;
+  const storyCache = chooseStoryCache(options.storyCache);
   const sources = loadContentSources(root);
   const input = loadJourneyScaffold(root, journeyId, sources);
   const requirements = journeyRequirements(input, selectedCityId ? [selectedCityId] : undefined);

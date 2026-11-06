@@ -2,7 +2,7 @@ import { checkContentImages } from "./content-images";
 import { writeContentOutputs } from "./content-outputs";
 import { loadContentSources } from "./content-sources";
 import { validateContent } from "./content-validation";
-import { openStoryValidationCache, type StoryValidationCache } from "./story-validation-cache";
+import { chooseStoryCache, type StoryValidationCache } from "./story-validation-cache";
 
 // content:build in three steps: load (content-sources.ts reads every content
 // file once) → validate (content-validation.ts, pure; content-images.ts then
@@ -20,7 +20,7 @@ import { openStoryValidationCache, type StoryValidationCache } from "./story-val
  */
 export async function buildContent(root: string, writeOutput = true, options: { storyCache?: StoryValidationCache | null } = {}) {
   const sources = loadContentSources(root);
-  const storyCache = options.storyCache === undefined ? openStoryValidationCache() : options.storyCache ?? undefined;
+  const storyCache = chooseStoryCache(options.storyCache);
   const content = validateContent(sources, { storyCache });
   await checkContentImages(sources.publicFiles, content.images);
   if (writeOutput) writeContentOutputs(root, sources, content);

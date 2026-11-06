@@ -123,6 +123,11 @@ export function openStoryValidationCache(options: { directory?: string; codeRoot
   return { directory, fingerprint: code.fingerprint, stats: { reused: 0, run: 0 } };
 }
 
+/** The cache a caller asked for: undefined means the default (openStoryValidationCache), null means none. */
+export function chooseStoryCache(option: StoryValidationCache | null | undefined): StoryValidationCache | undefined {
+  return option === undefined ? openStoryValidationCache() : option ?? undefined;
+}
+
 function removeOldFingerprints(base: string) {
   const folders = readdirSync(base, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
@@ -133,9 +138,10 @@ function removeOldFingerprints(base: string) {
 
 /**
  * validateStory with the cache: a stored result is replayed (each observed
- * line and each effect once, in the order first seen; the observers of the
- * content validation only collect sets), otherwise the story is validated and
- * a successful result stored. Without a cache this is validateStory itself.
+ * line and each effect once, in the order first seen), otherwise the story is
+ * validated and a successful result stored. Without a cache this is
+ * validateStory itself. The callers' observers must not depend on how often a
+ * line is seen: content:build's collect sets, journey:scenario's checks each line.
  */
 export function validateStoryCached(
   cache: StoryValidationCache | undefined,
