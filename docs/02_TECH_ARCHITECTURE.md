@@ -62,7 +62,7 @@ tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲ�
 | `battles/catalog.json` | `battles` を連結 |
 | `encounters/catalog.json` | `items`・`encounters` を連結 |
 | `encounters/entry-rules.json` | `entries` を連結 |
-| `learning/details.json` | ファイル全体を1つの層だけが持つ（どの層にもなければ `questions` が空） |
+| `learning/details.json` | `questions` をキーごとに統合（問題ごとに学習会話の `storyId` を持つ） |
 | `learning/translations.json` | `questions` をキーごとに統合 |
 | `learning/word-meanings.json` | `words` をキーごとに統合（同じ内容の重複だけ許可） |
 | `presentation/characters.json` | `characters` を連結、`battleCharacters`・`wardrobe.cities`・`wardrobe.scenes` をキーごとに統合。`expressionIds`・`wardrobe.regions`・`wardrobe.countries` は共通データのみ |
@@ -95,7 +95,7 @@ tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲ�
 
 - ストーリーIDは、その層の `stories/` からの相対パスから `.ink` を除いたもの（例：`content/journeys/milano/stories/milano/sound_cafe_01.ink` → `milano/sound_cafe_01`）。旅行編フォルダ名は含まない。複数の旅行編が `stories/battles/` のような同じフォルダ名を使えるため、ファイル名（または旅行編専用のサブフォルダ）でIDが重ならないようにする。
 - 都市・地点・観光地・発見・画像・背景・思い出・効果・デート・行き先・エピソード・報酬・対決・クイズ・問題・道中交流・品物・旅行編のIDは、すべての旅行編で共有する一つの名前空間にある。保存データもこれらのIDを記録するため、公開後は変更しない。
-- 新しい旅行編では、`manifest.json` の `authoring.eventPrefix` と同じ接頭辞をIDとストーリーのファイル名に付けることを推奨する（インド編 `gt_`、ウズベキスタン編 `uz_`、ルアンパパーン編 `lpb_`）。地点IDは都市IDを接頭辞にする（例：`delhi_red_fort`）。ミラノ編は作成時からの `milano_`・`sound_` などをそのまま使う。
+- 新しい旅行編では、`manifest.json` の `authoring.eventPrefix` と同じ接頭辞をIDとストーリーのファイル名に付けることを推奨する（インド編 `gt_`、ウズベキスタン編 `uz_`、ルアンパパーン編 `lpb_`）。地点IDは都市IDを接頭辞にする（例：`delhi_red_fort`）。英語ノートの話題ID（`learning/details.json` の `topics[].id`）も全旅行編で重ならないよう同じ接頭辞を付ける（例：`gt_which_subject`）。ミラノ編は作成時からの `milano_`・`sound_` などをそのまま使う。
 
 ### 予約された名前
 

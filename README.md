@@ -118,7 +118,7 @@ APの獲得量は案内の読了やクイズの成績により変わります。
 
 対訳設定・開閉・復習マーク・各バトルの直近の回答は、ゲーム本体とは別に旅行編ごとの `dreamscape.journey.<旅行編ID>.learning.v1`（ミラノ編は `dreamscape.journey.milano.learning.v1`）に保存します。壊れたデータや未知の版は自動上書きせず、別タブで更新されたときは再読込を案内します。問題やバトル内容の指紋が変わった古い回答は現在の問題に重ねません。戦績はあるのに英語ノートに回答が記録されていないバトルは「以前の回答内容は未記録」と表示し、回答を推測しません。
 
-対訳は各旅行編の `content/journeys/<旅行編ID>/learning/translations.json` に、安定した問題IDと原文・選択肢・正解の照合用スナップショット、日本語訳を置きます。問題を変更すると `npm run content:check` が不一致を報告するので、訳を確認して照合用の原文も更新します。詳しい文法・語法は `content/journeys/milano/learning/details.json`、短い学習会話は `content/journeys/milano/stories/learning/sound_english.ink` で編集します。語句・質問の対象が英文中にあること、資料URL、会話の話者・行数・効果なしの契約をビルドで確認します。英語の自然さや訳の妥当性は人が確認してください。
+対訳は各旅行編の `content/journeys/<旅行編ID>/learning/translations.json` に、安定した問題IDと原文・選択肢・正解の照合用スナップショット、日本語訳を置きます。問題を変更すると `npm run content:check` が不一致を報告するので、訳を確認して照合用の原文も更新します。詳しい文法・語法は各旅行編の `content/journeys/<旅行編ID>/learning/details.json` に問題ごとに置き、問題ごとに学習会話の `storyId` を指定します（ミラノ編の会話は `content/journeys/milano/stories/learning/sound_english.ink`）。語句・質問の対象が英文中にあること、資料URL、会話の話者・行数・効果なしの契約をビルドで確認します。英語の自然さや訳の妥当性は人が確認してください。
 
 ## 特別対決：矛盾追及・証拠連結
 

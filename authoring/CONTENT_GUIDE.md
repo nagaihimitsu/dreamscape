@@ -119,7 +119,7 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 
 公開する問題は `content/journeys/<旅行編ID>/learning/translations.json` に問題IDを登録し、`source` に問題文・全選択肢・正解IDの原文をそのまま記録します。`questionJa` と `optionsJa` は正誤の根拠を加えず、選択肢A/B/Cを公平に訳します。原文や正解を変更すると全体検証が不一致を検出するため、訳を確認して `source` を更新してください。既存のバトル保存指紋は学習データを含みません。
 
-詳細が必要な問題だけ `content/journeys/milano/learning/details.json` に、原文中の `segments` と `topics`、疑問見出し、説明、実用例文・訳、確認済みの文法資料URLと確認日を追加します。学習会話は `content/journeys/milano/stories/learning/sound_english.ink` のtopicに対応し、話者はヒロイン、2〜4行、選択肢やeffectは使いません。現在は『最後の晩餐』の通常戦3問が対象です。このファイルは全旅行編を通じて1つの旅行編フォルダだけが持てます（現在はミラノ編。どの旅行編にもなければ詳細なしとして扱います）。意味の自然さ、資料の該当箇所と訳は編集者が確認します。
+詳細が必要な問題だけ、その問題がある旅行編の `content/journeys/<旅行編ID>/learning/details.json` に問題IDで登録し、学習会話の `storyId`、原文中の `segments` と `topics`、疑問見出し、説明、実用例文・訳、確認済みの文法資料URLと確認日を追加します。対訳と同じく問題IDごとに統合されるため、どの旅行編も自分の問題の詳細を持てます（どの旅行編にもなければ詳細なしとして扱います）。`storyId` は問題ごとに必須で、同じ旅行編の学習会話を指します。学習会話は話題ID（`topic`）ごとに分岐し、話者はヒロイン、2〜4行、選択肢やeffectは使いません。話題IDは全旅行編で重ならないようにし、新しい旅行編では `authoring.eventPrefix` の接頭辞を付けます（例：`gt_which_subject`）。現在はミラノ編の『最後の晩餐』の通常戦3問が対象で、会話は `content/journeys/milano/stories/learning/sound_english.ink` です。意味の自然さ、資料の該当箇所と訳は編集者が確認します。
 
 ### クイズの項目
 
