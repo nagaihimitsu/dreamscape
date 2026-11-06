@@ -1,6 +1,7 @@
 import path from "node:path";
 import { displayPath, type ContentLayer, type ContentSources } from "./content-sources";
 import { CORE_LAYER_KINDS, type MergedKind } from "./content-layout";
+import { localIssuePath } from "./catalog-merge";
 import { servedFile } from "./public-assets";
 
 // Ownership of content across layers. Every journey folder must stay
@@ -157,7 +158,8 @@ export function imageReferences(sources: Pick<ContentSources, "catalogs" | "mani
       if (Array.isArray(value))
         value.forEach((entry, index) => {
           if (isObject(entry))
-            add(merged.provenance.items[key][index], `${key}[${typeof entry.id === "string" ? `"${entry.id}"` : index}]`, fieldsOf(entry));
+            add(merged.provenance.items[key][index],
+              `${key}[${typeof entry.id === "string" ? `"${entry.id}"` : String(localIssuePath(merged.provenance, [key, index])[1])}]`, fieldsOf(entry));
         });
       else if (isObject(value))
         for (const [recordKey, entry] of Object.entries(value))

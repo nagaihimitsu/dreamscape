@@ -75,7 +75,8 @@ describe("unused public files", () => {
 describe("journey ID prefixes", () => {
   const files = () => ({
     ...journey("trip_a", 10, "a_city", "ta"),
-    ...journey("trip_b", 20, "b_city"),
+    // trip_b comes first in the merged catalogs; positions are those inside trip_a's files.
+    ...journey("trip_b", 5, "b_city"),
     [`${folder("trip_a")}/cities/a_city.json`]: json({ id: "a_city", firstClearReward: { rewardSourceId: "a_city_clear" } }),
     [`${folder("trip_a")}/progression/journey.json`]: json({ schemaVersion: 1, episodes: [{ id: "ta_episode" }, { id: "episode_two" }] }),
     [`${folder("trip_a")}/romance/date_destinations.json`]: json({ schemaVersion: 1,
@@ -86,7 +87,7 @@ describe("journey ID prefixes", () => {
     [`${folder("trip_a")}/stories/dates/ta_garden.ink`]: "Date\n",
     [`${folder("trip_a")}/stories/dates/garden.ink`]: "Date\n",
     // Journeys without authoring.eventPrefix (like Milan) are not checked.
-    [`${folder("trip_b")}/progression/journey.json`]: json({ schemaVersion: 1, episodes: [{ id: "anything" }] }),
+    [`${folder("trip_b")}/progression/journey.json`]: json({ schemaVersion: 1, episodes: [{ id: "anything" }, { id: "more" }] }),
   });
 
   it("asks for the prefix on IDs and story names, and a city ID on places", () => {

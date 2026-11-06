@@ -49,7 +49,7 @@ tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲ�
 
 - `content/`（`content/journeys/` を除く）は全旅行編で共有する基盤データ（共通レイヤー）。置けるのは `romance/balance.json`・`romance/response_profiles.json`・共通デート効果（`common_date_*`）・`romance/presentation.json` の共通部分（保留・エンディング表示、感情、共通の既定背景 `default_scene`）・`romance/progression.json` の段階と告白・`learning/word-meanings.json`・`presentation/characters.json` だけ。都市・移動・Ink・クイズや旅行編専用のカタログは置けず、共通データから都市や旅行編のデータを参照することもできない（`scripts/content-ownership.ts` が検査）。
 - 各旅行編は `content/journeys/<journeyId>/`（`manifest.json` で登録し、`order` の順に並ぶ）へ同じ相対配置でデータを置く。`npm run content:build` が共通データと各旅行編を統合・検証して `src/content/generated/content/` に書き出し、ゲームはこの生成物だけを読む。
-- 画像は、全旅行編で共有するものをリポジトリ直下の `public/`、旅行編だけが使うもの（観光写真・デート背景・その旅行編の品物アイコン）を `content/journeys/<journeyId>/public/` に、配信時と同じ相対パス（`assets/tourism/...` など）で置く。`npm run content:build` がこれらを `src/content/generated/public/`（生成物。Git管理しない）へまとめて写し（変更のないファイルはサイズと更新時刻で判定して省略し、元がなくなったファイルは消す）、Viteはこのフォルダを `publicDir` として配信・ビルドする（Viteプラグインや独自のVite処理は使わない）。同じ相対パスの画像を二つのフォルダに置くと `content:build` が失敗する。データ中の画像パスは配信時の相対パスのままで、置き場所によって変わらない。
+- 画像は、全旅行編で共有するものをリポジトリ直下の `public/`、旅行編だけが使うもの（観光写真・デート背景・その旅行編の品物アイコン）を `content/journeys/<journeyId>/public/` に、配信時と同じ相対パス（`assets/tourism/...` など）で置く。`npm run content:build` がこれらを `src/content/generated/public/`（生成物。Git管理しない）へまとめて写し（変更のないファイルはサイズと更新時刻で判定して省略し、元がなくなったファイルは消す）、Viteはこのフォルダを `publicDir` として配信・ビルドする（Viteプラグインや独自のVite処理は使わない）。同じ相対パスの画像を二つのフォルダに置くと `content:build` が失敗する。データ中の画像パスは配信時の相対パスのままで、置き場所によって変わらない。旅行編のデータが使えるのは自分の `public/` と直下の `public/` の画像だけ、共通データは直下の `public/` の画像だけ。
 - タイトル画面・新しいゲーム・Debugの初期値は、`order` 順で最初の公開中（`status: "available"`）の旅行編とその最初の都市。公開中の旅行編がない場合、`content:build` が失敗する。
 - どの旅行編フォルダも単独で外せる。ある種類のカタログをどの旅行編も持たない場合（例：ミラノ編を外したときの道中交流・会話注釈・英語ノートの詳細）、統合結果は空のカタログになる。ただし統合後のスキーマ検査はそのまま適用されるため、対決・エピソード・デートなど1件以上が必要な種類は、公開中の旅行編のどれかが持っている必要がある（`scripts/journey-folders.test.ts` が各旅行編フォルダを外した一時コピーで確認する）。
 
@@ -79,7 +79,23 @@ tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲ�
 - 旅行編のファイルは、自分が使うキーだけを書いてよい（例：`{ "schemaVersion": 1, "backgrounds": { … } }`）。ファイルがない層は何も加えない。共通データ専用の種類（`CORE_LAYER_KINDS`）をどの層も持たない場合は「Missing content file」で失敗する。
 - 都市は `cities/<cityId>.json`、移動は同じ層の `travel/<cityId>.json` と `travel/<cityId>-settings.json`。同じ都市のファイルを二つの層に置くこと、`manifest.json` に登録していない都市を旅行編フォルダに置くことはエラー。
 - Inkは各層の `stories/**/*.ink`、クイズは `quizzes/**/*.json`（`*.sample.json` は検証だけで出題しない）。ストーリーIDは全体で一意で、同じ相対パスのInkを二つの層に置くとエラー。クイズは同じファイル名を別の層に置けるが、クイズID（JSONの `id`）は全体で一意。
-- `*.md` とドットで始まるファイル・フォルダは読み込まない。それ以外の未知の `.json`・`.ink` はエラー。旅行編フォルダの `public/` に置けるのは `public/assets/**` だけ。
+- `*.md` とドットで始まるファイル・フォルダは読み込まない。それ以外の未知の `.json`・`.ink` はエラー。旅行編フォルダの `public/` に置けるのは `public/assets/**` だけ。旅行編フォルダのそれ以外のファイル（`public/assets/` の外に置いた画像、`.txt` のメモなど）は読み込まれも配信されもしないため、`content:build` が警告する（下の「生成時の検査と報告」）。
+
+### 生成時の検査と報告
+
+`content:build` はスキーマと参照の検査に加えて、旅行編フォルダの置き忘れ・取り違えを次のとおり検査する。
+
+- エラー（生成を止める）
+  - `manifest.json` の `cities[].nameJa` と、その都市の `cities/<都市ID>.json` の `nameJa` が違う（`City name differs from the manifest`）。
+  - `productionStatus: "complete"` の都市に、その都市の `kind: "city_finale"` のエピソード（`progression/journey.json`）がない（`Complete city has no city finale`）。都市クリア・エピローグ・次の都市への出発はフィナーレの後に起きるため。
+  - データの画像（観光画像の `path`、背景の `imagePath`、品物の `iconPath`、人物画像、タイトルの絵）が、別の旅行編の `public/` の画像を指す。旅行編のデータが使えるのは自分の `public/` と直下の `public/` の画像、共通データが使えるのは直下の `public/` の画像だけ（`Reference to another layer`）。
+  - `manifest.json` の `authoring` のパス（`observationFile`・`transitDirectory`・`transitDecisionLedger.file`）が、`/` 区切りのリポジトリからの相対パスでない（絶対パス、`..`、`\` を含む）か、`authoring/journeys/<旅行編ID>/` の外を指す。`transitDecisionLedger.cities` にその旅行編の都市以外がある。`imageDirectory` は配信時のパス（`assets/` で始まる相対パス）。
+- 統合したカタログのスキーマエラーは、問題の項目を持つファイルごとに1行で示し、位置（`path`）はそのファイルの中での位置にする（例：旅行編の最初の対決なら、統合後の `battles[9]` ではなく `battles[0]`）。統合後の位置は、エラーの `cause` に残る。
+- 警告（生成は続ける。件数を表示し、`npm run content:build -- --verbose` で一覧。判定は `scripts/content-report.ts`）
+  - 旅行編フォルダの読み込まれず配信もされないファイル（上の「統合の規則」）。
+  - どのデータからも参照されない、旅行編の `public/` のファイル（参照されないまま公開される）。直下の `public/` はゲームのコードが使うファイル（演出・既定の品物アイコン・アイコン）を含むため対象外。
+  - `authoring.eventPrefix` を持つ旅行編の、接頭辞の決まり（下の「ストーリーIDとIDの名前空間」）に合わないID。既存の例外は `scripts/content-report.ts` の `UNPREFIXED_ID_EXCEPTIONS` に挙げ、新しいIDは例外に足さず接頭辞を付ける。
+- 成功すると、旅行編ごとに1行、そのフォルダが持つ都市・ストーリー・クイズ・配信ファイルの数と、各カタログの項目数（0件の種類は省略）を表示する（例：`Journey uzbekistan (preparing): cities 4, stories 0, quizzes 0, public files 40; destinations 24, backgrounds 44, assets 40`）。置き忘れや、空のまま公開しかけていることに気付くための表示。
 
 ### 生成物（手動で編集しない）
 
@@ -95,7 +111,7 @@ tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲ�
 
 - ストーリーIDは、その層の `stories/` からの相対パスから `.ink` を除いたもの（例：`content/journeys/milano/stories/milano/sound_cafe_01.ink` → `milano/sound_cafe_01`）。旅行編フォルダ名は含まない。複数の旅行編が `stories/battles/` のような同じフォルダ名を使えるため、ファイル名（または旅行編専用のサブフォルダ）でIDが重ならないようにする。
 - 都市・地点・観光地・発見・画像・背景・思い出・効果・デート・行き先・エピソード・報酬・対決・クイズ・問題・道中交流・品物・旅行編のIDは、すべての旅行編で共有する一つの名前空間にある。保存データもこれらのIDを記録するため、公開後は変更しない。
-- 新しい旅行編では、`manifest.json` の `authoring.eventPrefix` と同じ接頭辞をIDとストーリーのファイル名に付けることを推奨する（インド編 `gt_`、ウズベキスタン編 `uz_`、ルアンパパーン編 `lpb_`）。地点IDは都市IDを接頭辞にする（例：`delhi_red_fort`）。英語ノートの話題ID（`learning/details.json` の `topics[].id`）も全旅行編で重ならないよう同じ接頭辞を付ける（例：`gt_which_subject`）。ミラノ編は作成時からの `milano_`・`sound_` などをそのまま使う。
+- 新しい旅行編では、`manifest.json` の `authoring.eventPrefix` と同じ接頭辞をIDとストーリーのファイル名に付けることを推奨する（インド編 `gt_`、ウズベキスタン編 `uz_`、ルアンパパーン編 `lpb_`）。地点ID（観光地・デートの行き先・移動の地点）は都市IDを接頭辞にする（例：`delhi_red_fort`）。都市ごとに1本のストーリーは都市IDをファイル名にしてよい（例：`arrivals/delhi`・`epilogues/delhi`）。英語ノートの話題ID（`learning/details.json` の `topics[].id`）も全旅行編で重ならないよう同じ接頭辞を付ける（例：`gt_which_subject`）。ミラノ編は作成時からの `milano_`・`sound_` などをそのまま使う。`authoring.eventPrefix` を持つ旅行編でこの決まりに合わないIDは、`content:build` が警告する（ミラノ編は接頭辞を持たないため対象外。既存の例外は `UNPREFIXED_ID_EXCEPTIONS`）。対象は、カタログの項目のID（対決・道中交流・品物・人物・エピソード・報酬・デート・行き先・効果・画像・観光地・発見）、背景・思い出、英語ノートの話題、ストーリー、クイズと問題、都市の `firstClearReward.rewardSourceId`、移動の地点とイベント。
 
 ### 予約された名前
 
@@ -111,13 +127,13 @@ tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲ�
 
 1. 旅行編IDと接頭辞を決める（例：`kyoto` と `ky_`）。既存の旅行編・都市・IDと重ならないことを確認する。
 2. `content/journeys/<旅行編ID>/manifest.json` を作る。`schemaVersion: 1`、一覧での並び順 `order`（他の旅行編と重ならない整数）、`id`、`nameJa`、`status: "preparing"`、`cities`（都市の順序）、`currency`、`initialBudget`、`intercityModes` などを、既存の `manifest.json`（例：ルアンパパーン編）にならって書く。タイトルの絵は任意の `titleArt` で後から付けられる（下の「既定背景とタイトルの絵」）。最小の例は `tests/fixtures/journeys/zz_fixture_trip/` にある。制作ツール（`journey:scaffold` など）を使う場合は `authoring` も設定する（[JOURNEY_AUTHORING](../authoring/JOURNEY_AUTHORING.md)）。
-3. 都市ごとに `cities/<都市ID>.json`（最初は `productionStatus: "prototype"`）、`travel/<都市ID>.json`、`travel/<都市ID>-settings.json` を置く。都市別の作業用JSON（[CITY_BUNDLES](../authoring/CITY_BUNDLES.md)）で作成・反映してもよい。複数の都市を回る旅行編では、各都市の `nextCityId` で同じ旅行編の次の都市をつなぐ（[FUTURE_CITIES](../authoring/FUTURE_CITIES.md) の手順5）。
+3. 都市ごとに `cities/<都市ID>.json`（最初は `productionStatus: "prototype"`。`nameJa` は `manifest.json` の `cities[].nameJa` と同じにする）、`travel/<都市ID>.json`、`travel/<都市ID>-settings.json` を置く。都市別の作業用JSON（[CITY_BUNDLES](../authoring/CITY_BUNDLES.md)）で作成・反映してもよい。複数の都市を回る旅行編では、各都市の `nextCityId` で同じ旅行編の次の都市をつなぐ（[FUTURE_CITIES](../authoring/FUTURE_CITIES.md) の手順5）。
 4. 背景・行き先・観光画像など、その旅行編が使う項目を、共通データと同じ相対パスのカタログ（`romance/presentation.json`、`romance/date_destinations.json`、`tourism/catalog.json` など）に書く。必要なキーだけでよい。
 5. その旅行編だけが使う画像は `content/journeys/<旅行編ID>/public/assets/…` に置き、データには配信時のパス（`assets/tourism/<フォルダ>/<ファイル>`）を書く。全旅行編で共有する画像だけを直下の `public/assets/` に置く。
 6. 会話・クイズを登録するときは `stories/**/*.ink`、`quizzes/*.json` と、`progression/journey.json`・`battles/catalog.json`・`romance/date_catalog.json` などの該当カタログに追加する（[JOURNEY_AUTHORING](../authoring/JOURNEY_AUTHORING.md)、[CONTENT_GUIDE](../authoring/CONTENT_GUIDE.md)）。
 7. 下書き・調査記録は `authoring/journeys/<旅行編ID>/`、その旅行編だけで使う制作ツールは `scripts/journeys/<旅行編ID>/` に置く（共通コード・共通ツールからは読み込まない）。
-8. `npm run content:build` を実行し、エラーを直す。`npm run dev` のタイトル画面に旅行編が「準備中」として並び、`?debug` で都市が「制作中」として選べることを確認する。
-9. 公開するときは開始都市を `complete` にし、`status` を `available` にする（`npm run journey:release` でも反映できる）。公開前に `npm run verify` とE2E一式を実行する（`boot.spec.ts` は登録済みのすべての旅行編の開始画面を開く）。
+8. `npm run content:build` を実行し、エラーと警告を直す。最後に出る旅行編ごとの1行で、置いたデータが数えられているかを確かめる。`npm run dev` のタイトル画面に旅行編が「準備中」として並び、`?debug` で都市が「制作中」として選べることを確認する。
+9. 公開するときは開始都市を `complete` にし、`status` を `available` にする（`npm run journey:release` でも反映できる）。`complete` の都市には都市フィナーレが必要。公開前に `npm run verify` とE2E一式を実行する（`boot.spec.ts` は登録済みのすべての旅行編の開始画面を開く）。
 
 旅行編をやめる場合は、そのフォルダ（と `authoring/journeys/<旅行編ID>/`、`scripts/journeys/<旅行編ID>/`）を削除して `npm run content:build` を実行する。生成とゲームはこれで動くが、その旅行編・都市を名指しするテストと補助コード（例：インド編の `src/content/india-*.test.ts`・`src/domain/golden-triangle-*.ts`、`tests/e2e/boot.spec.ts` の旅行編IDと見出し、`tests/e2e/inter-city.spec.ts` の都市間移動）と `package.json` の別名（例：`india:*`）も、削除するか残る旅行編向けに更新し、`npm run verify` とE2E一式が通ることを確認する。利用者のブラウザにある `dreamscape.journey.<旅行編ID>.*` の保存データは削除されない。
 

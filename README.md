@@ -215,7 +215,7 @@ tests/e2e/ tests/fixtures/        # E2Eとテスト用データ（tests/fixtures
 | コマンド | 内容 |
 | --- | --- |
 | `npm run dev` | コンテンツを生成してから開発サーバーを起動 |
-| `npm run content:build`（`content:check`） | 共通データと全旅行編を検証・統合し、`src/content/generated/` に書き出す。会話の全分岐検査は前回の成功結果を再利用する（`-- --no-cache` で再利用せずに全部検査。[キャッシュ](docs/10_DEVELOPMENT_CHECKS.md#会話の全分岐検査のキャッシュ)） |
+| `npm run content:build`（`content:check`） | 共通データと全旅行編を検証・統合し、`src/content/generated/` に書き出す。成功すると旅行編ごとに提供内容の件数を1行ずつ表示し、警告は件数だけ出す（`-- --verbose` で一覧。[生成時の検査と報告](docs/02_TECH_ARCHITECTURE.md#生成時の検査と報告)）。会話の全分岐検査は前回の成功結果を再利用する（`-- --no-cache` で再利用せずに全部検査。[キャッシュ](docs/10_DEVELOPMENT_CHECKS.md#会話の全分岐検査のキャッシュ)） |
 | `npm run test:quick` | コンテンツを生成してから速い組の単体テスト（日常の確認。全件は `npm test`・CI・`verify`。[テストの組](docs/10_DEVELOPMENT_CHECKS.md#単体テストの組と所要時間)） |
 | `npm test` | コンテンツを生成してから全単体テスト |
 | `npm run build` | 生成・型検査・本番ビルド（`dist/`）と、`dist/` にDebug・テスト用のコードやデータがないかの検査 |

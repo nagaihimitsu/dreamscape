@@ -7,6 +7,7 @@
 - 旅行編は `content/journeys/<journeyId>/manifest.json` で登録し、都市・移動・Ink・クイズ・カタログを `content/` 直下の共通データと同じ相対パスで置く。統合規則・生成物・予約された名前・追加手順は [技術設計](02_TECH_ARCHITECTURE.md#統合の規則) を参照する。
 - 上のIDを含むすべてのIDは全旅行編で一意（統合時に重複をエラーにする）。`storyId` はその層の `stories/` からの相対パス（`.ink` を除く）で、旅行編フォルダ名を含まない。
 - 旅行編フォルダの項目は自分の `manifest.json` の都市だけを扱い、参照先は同じ旅行編か共通データに限る。共通データは都市・旅行編の項目を参照しない（`content:build` が検査）。
+- `manifest.json` の都市名（`cities[].nameJa`）は都市ファイルの `nameJa` と同じ。`productionStatus: "complete"` の都市は都市フィナーレを持つ。画像は同じ旅行編の `public/` か直下の `public/` のもの（共通データは直下だけ）。`authoring` のパスは `authoring/journeys/<journeyId>/` の中の相対パス（いずれも `content:build` がエラーにする。読み込まれないファイル・参照されない配信ファイル・接頭辞のないIDは警告。[生成時の検査と報告](02_TECH_ARCHITECTURE.md#生成時の検査と報告)）。
 - ゲームは `src/content/generated/` の生成物だけを読む。旅行編だけが持つ種類（道中交流、会話注釈、英語ノートの詳細など）は、どの旅行編にもなければ空として生成する。`memoryCallbacks` は空でもよい（該当がなければ `fallbackMemoryCallbackJa`）。`learning/details.json` は問題ごとに統合し、詳細を持つ問題はそれぞれ学習会話の `storyId` を持つ（同じ旅行編の会話だけを指せる）。
 - 自動テスト用の旅行編は `tests/fixtures/journeys/` に置き、`content/journeys/` には含めない。
 

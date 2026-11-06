@@ -9,7 +9,7 @@
 | 画像・背景 | `npm run content:check`、対象画面の実表示と必要な画像失敗時の表示。画像の配置・パスを変えた場合はE2E一式（`npm run test:e2e`）も実行 |
 | CSS・UIの小変更 | 対象操作とスマートフォン幅の実画面。共通UIや型・操作への影響に応じて `npm run typecheck` やE2E一式を追加 |
 | ゲームルール | 該当ドメインテストと必要な画面操作。型・共通進行への影響があれば型検査と関連テストを追加 |
-| 旅行編フォルダの追加・削除、統合規則・生成処理の変更 | `npm run content:build`、`npx vitest run scripts/journey-folders.test.ts scripts/content-sources.test.ts scripts/catalog-merge.test.ts scripts/content-ownership.test.ts`（先に `content:build`）、E2E一式（`boot.spec.ts` が登録済みの全旅行編の開始画面を開く） |
+| 旅行編フォルダの追加・削除、統合規則・生成処理の変更 | `npm run content:build`、`npx vitest run scripts/journey-folders.test.ts scripts/content-sources.test.ts scripts/catalog-merge.test.ts scripts/content-ownership.test.ts scripts/content-validation.test.ts scripts/content-report.test.ts`（先に `content:build`）、E2E一式（`boot.spec.ts` が登録済みの全旅行編の開始画面を開く） |
 | 保存・進行 | 同一バージョン内の保存・再開、読めないデータの保護、明示消去、別タブ、報酬重複防止の関連テストとE2E一式、必要な実画面。型・共通基盤の影響に応じて型検査と検証範囲を広げる |
 | CI・Playwrightの設定、本番ビルドの検査（`.github/workflows/`・`playwright.config.ts`・`scripts/dist-guard.ts`） | `npm run build`（`dist/` の検査を含む）、`npx vitest run scripts/dist-guard.test.ts`、E2E一式。ワークフローの変更はPRで実際の実行結果を確認する |
 | 単体テストの設定・テストの組・テスト用フィクスチャ（`vite.config.ts` の `test`・`scripts/test-sets.ts`・`scripts/test-image-guard.ts`・`src/content/test-fixtures.ts`） | `npx vitest run scripts/test-sets.test.ts scripts/test-image-guard.test.ts src/content/test-fixtures.test.ts`（先に `content:build`）、`npm test`（両方の組） |
@@ -26,7 +26,7 @@
 
 `scripts/journey-folders.test.ts` は、原本の一時コピーで旅行編フォルダの改名・追加（`tests/fixtures/journeys/zz_fixture_trip/`）・各旅行編フォルダの除外を行い、そのたびに `content:build` 相当の生成と検証を実行する（約1分、旅行編が増えるほど長くなる）。特定の旅行編・都市の内容を確かめる単体テストは、全旅行編の合計件数や一覧ではなく、その旅行編・都市の範囲に絞って数える。
 
-テストは簡潔な dot レポーターを使い、成功したテスト内のログを省略する。失敗したテストのログ、失敗箇所、終了コードは保持する。内容を詳しく追う場合は、生成後に `npx vitest run --reporter=verbose <対象>` とする。通常のコンテンツ生成は旧会話注釈の警告を件数で示し、個々の警告は `npm run content:build -- --verbose` で確認できる。生成に失敗した場合は警告の詳細と原因を表示し、失敗のまま終了する。
+テストは簡潔な dot レポーターを使い、成功したテスト内のログを省略する。失敗したテストのログ、失敗箇所、終了コードは保持する。内容を詳しく追う場合は、生成後に `npx vitest run --reporter=verbose <対象>` とする。通常のコンテンツ生成は、旧会話注釈の警告と内容の警告（旅行編フォルダの読み込まれないファイル、参照されない配信ファイル、接頭辞のないID。[技術設計](02_TECH_ARCHITECTURE.md#生成時の検査と報告)）を件数で示し、個々の警告は `npm run content:build -- --verbose` で確認できる。成功時の最後には旅行編ごとに1行、そのフォルダが持つ都市・ストーリー・クイズ・配信ファイルと各カタログの項目の数が出る。生成に失敗した場合は旧会話注釈の警告の詳細と原因を表示し、失敗のまま終了する。
 
 検証の絞り込みと成功ログの抑制は、テストを削除したことや実行時間・トークンの削減量を意味しない。今回確認したコマンドと、実施できなかった確認は作業報告に記載する。
 

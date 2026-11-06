@@ -1,5 +1,6 @@
 import path from "node:path";
 import { CATALOG_RULES, classifyContentFile, CONTENT_DIRECTORY, JOURNEYS_DIRECTORY, type FieldTable, type MergedKind } from "./content-layout";
+import { localIssuePath } from "./catalog-merge";
 import { imageReferences } from "./content-ownership";
 import { displayPath, type ContentSources } from "./content-sources";
 
@@ -97,22 +98,20 @@ function definitions(sources: ContentSources): Definition[] {
   const add = (id: unknown, file: string, where: string, rule: Definition["rule"] = "id") => {
     if (typeof id === "string") found.push({ id, file, where: `${show(file)} ${where}`, rule });
   };
-  for (const [kind, key, rule] of ENTRY_IDS) {
+  // Entries of a concatenated catalog key, each with its file and its position inside that file.
+  const entriesOf = (kind: MergedKind, key: string, each: (entry: Entry, file: string, position: string) => void) => {
     const merged = sources.catalogs[kind];
     const entries = isObject(merged?.value) ? merged.value[key] : undefined;
     if (Array.isArray(entries)) entries.forEach((entry, index) => {
-      if (isObject(entry)) add(entry.id, merged!.provenance.items[key][index], `${key}[${index}]`, rule);
+      if (isObject(entry)) each(entry, merged!.provenance.items[key][index], `${key}[${String(localIssuePath(merged!.provenance, [key, index])[1])}]`);
     });
-  }
-  const progression = sources.catalogs["progression/journey.json"];
-  list(isObject(progression?.value) ? progression.value.storyBattles : undefined).forEach((battle, index) => {
-    if (isObject(battle.completionReward))
-      add(battle.completionReward.id, progression!.provenance.items.storyBattles[index], `storyBattles[${index}].completionReward`);
+  };
+  for (const [kind, key, rule] of ENTRY_IDS) entriesOf(kind, key, (entry, file, position) => add(entry.id, file, position, rule));
+  entriesOf("progression/journey.json", "storyBattles", (battle, file, position) => {
+    if (isObject(battle.completionReward)) add(battle.completionReward.id, file, `${position}.completionReward`);
   });
-  const encounters = sources.catalogs["encounters/catalog.json"];
-  list(isObject(encounters?.value) ? encounters.value.encounters : undefined).forEach((encounter, index) => {
-    if (isObject(encounter.quiz) && isObject(encounter.quiz.question))
-      add(encounter.quiz.question.id, encounters!.provenance.items.encounters[index], `encounters[${index}].quiz.question`);
+  entriesOf("encounters/catalog.json", "encounters", (encounter, file, position) => {
+    if (isObject(encounter.quiz) && isObject(encounter.quiz.question)) add(encounter.quiz.question.id, file, `${position}.quiz.question`);
   });
   const presentation = sources.catalogs["romance/presentation.json"];
   for (const key of ["backgrounds", "memories"])
