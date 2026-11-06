@@ -342,6 +342,21 @@ async function captureAll(shards = 4): Promise<Capture> {
 
 const strip = (outcome: Outcome) => ({ ...outcome, ms: undefined });
 
+/**
+ * Differences the refactor makes on purpose (listed in the WP21 log): the
+ * mutation name and the field whose baseline value may change.
+ */
+const ALLOWED: Record<string, { field: keyof Outcome; reason: string }> = {
+  // The loader finds the missing travel file in what it read; the message is unchanged, the cause no longer quotes ENOENT.
+  "missing-travel-file": { field: "causes", reason: "cause names the missing file instead of the ENOENT text" },
+};
+const comparable = (name: string, outcome: Outcome) => {
+  const allowed = ALLOWED[name];
+  return allowed ? { ...strip(outcome), [allowed.field]: undefined } : strip(outcome);
+};
+
+const allowedChanges: string[] = [];
+
 function compare(baseline: Capture, current: Capture): string[] {
   const problems: string[] = [];
   for (const [name, entry] of Object.entries(baseline.variants)) {
@@ -356,8 +371,10 @@ function compare(baseline: Capture, current: Capture): string[] {
   for (const [name, outcome] of Object.entries(baseline.mutations)) {
     const now = current.mutations[name];
     if (!now) { problems.push(`mutation ${name}: missing`); continue; }
-    if (!isDeepStrictEqual(strip(outcome), strip(now)))
+    if (!isDeepStrictEqual(comparable(name, outcome), comparable(name, now)))
       problems.push(`mutation ${name}: differs\n  before ${JSON.stringify(strip(outcome))}\n  after  ${JSON.stringify(strip(now))}`);
+    else if (!isDeepStrictEqual(strip(outcome), strip(now)))
+      allowedChanges.push(`mutation ${name}: ${ALLOWED[name].reason}\n  before ${JSON.stringify(outcome[ALLOWED[name].field])}\n  after  ${JSON.stringify(now[ALLOWED[name].field])}`);
   }
   return problems;
 }
@@ -377,6 +394,7 @@ if (command === "worker") {
   const current = await captureAll();
   if (args[1]) writeFileSync(args[1], `${JSON.stringify(current, null, 2)}\n`);
   const problems = compare(baseline, current);
+  if (allowedChanges.length) console.log(`Listed, intended differences:\n${allowedChanges.join("\n")}`);
   console.log(problems.length ? problems.join("\n") : `Equivalent: ${Object.keys(current.variants).length} variants, ${Object.keys(current.mutations).length} mutations`);
   console.log(`(${((performance.now() - start) / 1000).toFixed(1)} s)`);
   process.exitCode = problems.length ? 1 : 0;

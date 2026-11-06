@@ -2,9 +2,13 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, uti
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { assemblePublicDirectory, collectPublicFiles, findPublicFile, resolvePublicFile } from "./public-assets";
+import { assemblePublicDirectory } from "./content-outputs";
+import { loadContentSources } from "./content-sources";
+import { findPublicFile, requireServedFile, resolvePublicFile, servedFile } from "./public-assets";
 
 let root: string;
+/** The served files as content:build lists them. */
+const collectPublicFiles = (directory: string) => loadContentSources(directory).publicFiles;
 const write = (relative: string, data = "file") => {
   mkdirSync(path.dirname(path.join(root, relative)), { recursive: true });
   writeFileSync(path.join(root, relative), data);

@@ -5,7 +5,8 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { journeyDirectory } from "./content-layout";
 import { z } from "zod";
 import { cityLayer, contentLayers, displayPath, journeyLayer, loadContentSources, parseCatalog, readJourneyCatalog, readJourneyManifests,
-  requireCity, storyFile, writeContentMirror } from "./content-sources";
+  requireCity, storyFile } from "./content-sources";
+import { writeContentMirror } from "./content-outputs";
 
 let root: string;
 const write = (relative: string, data: unknown) => {
@@ -98,7 +99,12 @@ describe("content layers", () => {
     expect(sources.catalogs["battles/catalog.json"]!.value).toEqual({ schemaVersion: 1, battles: [{ id: "core_battle" }] });
     expect(sources.cities.map((item) => [item.id, item.layer, displayPath(root, item.travelFile), displayPath(root, item.settingsFile)]))
       .toEqual([["milano", "core", "content/travel/milano.json", "content/travel/milano-settings.json"]]);
-    expect(sources.storyFiles).toEqual([{ id: "milano/cafe", file: path.join(root, "content/stories/milano/cafe.ink"), layer: "core" }]);
+    // Every data file is read once, here: Ink text, quiz and city JSON (unvalidated), and the city files' bytes.
+    expect(sources.storyFiles).toEqual([{ id: "milano/cafe", file: path.join(root, "content/stories/milano/cafe.ink"), layer: "core", source: "core story" }]);
+    expect(sources.quizFiles).toEqual([{ file: path.join(root, "content/quizzes/duomo.json"), layer: "core", sample: false, data: {} }]);
+    const [milano] = sources.cities;
+    expect([milano.data, milano.travel, milano.settings]).toEqual([{ id: "milano" }, { cityId: "milano" }, { hotelPlaceId: "hotel" }]);
+    expect(milano.bytes.travel.toString("utf8")).toBe(readFileSync(path.join(root, "content/travel/milano.json"), "utf8"));
     expect(sources.publicRoots).toEqual([path.join(root, "public")]);
   });
 });

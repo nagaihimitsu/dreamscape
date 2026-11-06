@@ -1,4 +1,3 @@
-import { readFileSync } from "node:fs";
 import path from "node:path";
 import { displayPath, type ContentLayer, type ContentSources } from "./content-sources";
 import { CORE_LAYER_KINDS, type MergedKind } from "./content-layout";
@@ -113,14 +112,6 @@ const DEFINITIONS: [MergedKind, string, Namespace][] = [
   ["encounters/catalog.json", "items", "item"],
 ];
 
-const readJson = (file: string): unknown => {
-  try {
-    return JSON.parse(readFileSync(file, "utf8"));
-  } catch (error) {
-    throw new Error(`Cannot read JSON ${file}`, { cause: error });
-  }
-};
-
 /** `# background: id` and `# effect: id` tags of an Ink source. */
 function inkTagReferences(source: string): Reference[] {
   return [...source.matchAll(/#\s*(background|effect)\s*:\s*([A-Za-z0-9_]+)/gu)]
@@ -139,7 +130,8 @@ function inkTagReferences(source: string): Reference[] {
  *   battles, quizzes, backgrounds, images, memories, effects, …) must be
  *   defined in the same layer or in the core layer; the core layer may refer
  *   only to core content.
- * Throws one error listing every violation with the files involved.
+ * Throws one error listing every violation with the files involved. Works on
+ * the loaded sources only (no file is read).
  */
 export function checkContentOwnership(sources: ContentSources): void {
   const { root } = sources;
@@ -207,7 +199,7 @@ export function checkContentOwnership(sources: ContentSources): void {
   for (const [key, namespace] of [["backgrounds", "background"], ["memories", "memory"]] as const)
     for (const [id, file] of Object.entries(presentation?.provenance.keys[key] ?? {})) define(namespace, id, file);
   for (const story of sources.storyFiles) define("story", story.id, story.file);
-  const quizzes = sources.quizFiles.map((quiz) => ({ ...quiz, data: readJson(quiz.file) }));
+  const quizzes = sources.quizFiles;
   for (const quiz of quizzes.filter((item) => !item.sample && isObject(item.data))) {
     const data = quiz.data as Entry;
     define("quiz", data.id, quiz.file);
@@ -278,15 +270,13 @@ export function checkContentOwnership(sources: ContentSources): void {
 
   // City, travel, quiz and Ink files.
   for (const city of sources.cities) {
-    const data = readJson(city.file);
+    const { data, settings, travel } = city;
     if (isObject(data))
       checkReferences(city.file, "", [
         ref("city", "nextCityId", data.nextCityId), ref("story", "arrivalStoryId", data.arrivalStoryId),
         ref("landmark", "landmarkIdsPlanned", data.landmarkIdsPlanned),
       ]);
-    const settings = readJson(city.settingsFile);
     if (isObject(settings)) checkReferences(city.settingsFile, "", fields(settings, "background", ["storyBackgroundAssetId"]));
-    const travel = readJson(city.travelFile);
     if (!isObject(travel)) continue;
     checkReferences(city.travelFile, "", fields(travel, "city", ["cityId"]));
     for (const place of list(travel.places))
@@ -299,7 +289,7 @@ export function checkContentOwnership(sources: ContentSources): void {
   }
   for (const quiz of quizzes)
     if (isObject(quiz.data)) checkReferences(quiz.file, "", [...fields(quiz.data, "landmark", ["landmarkId"]), ...fields(quiz.data, "city", ["cityId"])]);
-  for (const story of sources.storyFiles) checkReferences(story.file, "", inkTagReferences(readFileSync(story.file, "utf8")));
+  for (const story of sources.storyFiles) checkReferences(story.file, "", inkTagReferences(story.source));
 
   if (errors.length) throw new Error([...new Set(errors)].join("\n"));
 }
