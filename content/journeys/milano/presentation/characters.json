@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "wardrobe": {
+    "cities": {
+      "milano": {
+        "country": "IT"
+      }
+    }
+  }
+}
