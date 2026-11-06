@@ -79,12 +79,16 @@ const sampleLabel = /見本|Mihon/u;
 /** JSON whose Japanese texts are shared phrasing any journey may reuse: word glosses, reward titles, the currency. */
 const sharedTextFiles = new Set(["learning/word-meanings.json"]);
 const sharedTextKeys = new Set(["vocabularyJa", "rewards", "currency"]);
+/** The English quiz texts (question, options): the sample's own unless as short as a common answer ("Every hour."). */
+const englishQuizKeys = new Set(["questionEn", "textEn"]);
+const englishQuizText = (key: string | undefined, value: string) => !!key && englishQuizKeys.has(key) && value.trim().split(/\s+/u).length >= 3;
 
 /**
  * The texts of a sample file that another journey must not keep: of JSON,
  * every string with Japanese of 8 or more characters or with the sample's
- * label (見本, Mihon), except shared phrasing (sharedTextFiles, sharedTextKeys);
- * of Ink, every line with Japanese of 8 or more characters (trimmed) except
+ * label (見本, Mihon), and the English quiz questions and options of 3 or
+ * more words, except shared phrasing (sharedTextFiles, sharedTextKeys); of
+ * Ink, every line with Japanese of 8 or more characters (trimmed) except
  * `//` comments, which explain the rules of the script and may stay.
  */
 export function sampleTextsOf(file: string, text: string): string[] {
@@ -93,11 +97,11 @@ export function sampleTextsOf(file: string, text: string): string[] {
     return text.split("\n").map((line) => line.trim()).filter((line) => !line.startsWith("//") && japanese.test(line) && [...line].length >= 8);
   if (!file.endsWith(".json") || sharedTextFiles.has(file)) return [];
   const texts: string[] = [];
-  const visit = (value: unknown) => {
-    if (typeof value === "string") { if (kept(value)) texts.push(value); }
-    else if (Array.isArray(value)) value.forEach(visit);
+  const visit = (value: unknown, key?: string) => {
+    if (typeof value === "string") { if (kept(value) || englishQuizText(key, value)) texts.push(value); }
+    else if (Array.isArray(value)) value.forEach((item) => visit(item, key));
     else if (value && typeof value === "object")
-      for (const [key, item] of Object.entries(value)) if (!sharedTextKeys.has(key)) visit(item);
+      for (const [name, item] of Object.entries(value)) if (!sharedTextKeys.has(name)) visit(item, name);
   };
   visit(JSON.parse(text));
   return texts;

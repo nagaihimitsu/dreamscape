@@ -76,23 +76,39 @@ function sampleNames(files: ReadonlyMap<string, Buffer>): { journeyId: string; p
   return { journeyId: manifest.id, prefix: manifest.authoring.eventPrefix, cityId: manifest.cities[0].id, order: manifest.order };
 }
 
+/**
+ * The sample name a new journey ID, city ID or prefix would carry into the
+ * copy's IDs and paths, if any: the sample's journey ID anywhere in it
+ * (dist:check refuses that text in a production build), its prefix or city
+ * ID as a part between `_` (as the copy's IDs join them: `ky_mihon_finale`).
+ */
+function sampleNameIn(value: string, reserved: { journeyId: string; prefix: string; cityId: string }): string | undefined {
+  if (value.includes(reserved.journeyId)) return reserved.journeyId;
+  return [reserved.prefix, reserved.cityId].find((name) => new RegExp(`(?<![a-z0-9])${name}(?![a-z0-9])`, "u").test(value));
+}
+
 /** Checked options with the prefix resolved (no `_` at the end); format errors only, see createJourney for collisions. */
 export function checkNewJourneyOptions(options: NewJourneyOptions, reserved: { journeyId: string; prefix: string; cityId: string }): Required<NewJourneyOptions> {
-  const id = (value: string, label: string, sampleValue: string) => {
+  const notSample = (value: string, label: string) => {
+    const name = sampleNameIn(value, reserved);
+    if (name === value) throw new Error(`${label}「${value}」は見本の編のために予約されています。別の名前にしてください。`);
+    if (name) throw new Error(`${label}「${value}」は見本の編の名前「${name}」を含むため使えません。別の名前にしてください。`);
+  };
+  const id = (value: string, label: string) => {
     if (!idPattern.test(value)) throw new Error(`${label}「${value}」は使えません。英小文字で始め、英小文字・数字・_ だけで書いてください。`);
-    if (value === sampleValue) throw new Error(`${label}「${value}」は見本の編のために予約されています。別の名前にしてください。`);
+    notSample(value, label);
   };
   const name = (value: string, flag: string, example: string) => {
     if (value.trim() !== value || !value || /[\r\n]/u.test(value) || !japanese.test(value))
       throw new Error(`${flag} には日本語の名前を1行で指定してください（例：${example}）。`);
   };
-  id(options.journeyId, "旅行編ID", reserved.journeyId);
-  id(options.cityId, "都市ID", reserved.cityId);
+  id(options.journeyId, "旅行編ID");
+  id(options.cityId, "都市ID");
   name(options.nameJa, "--name", "京都の旅");
   name(options.cityNameJa, "--city-name", "京都");
   const prefix = (options.prefix ?? options.journeyId).replace(/_$/u, "");
   if (!prefixPattern.test(prefix)) throw new Error(`IDの接頭辞「${options.prefix}」は使えません。英小文字で始め、英小文字・数字・_ だけで書いてください（最後の _ は付けなくてよい）。`);
-  if (prefix === reserved.prefix) throw new Error(`IDの接頭辞「${prefix}」は見本の編のために予約されています。別の接頭辞にしてください。`);
+  notSample(prefix, "IDの接頭辞");
   return { ...options, prefix, withOptional: options.withOptional ?? false };
 }
 

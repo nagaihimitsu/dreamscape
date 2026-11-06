@@ -53,6 +53,19 @@ describe("journey:new command line", () => {
     expect(() => checkNewJourneyOptions({ ...kyoto, journeyId: "sample_trip" }, reserved)).toThrow("旅行編ID「sample_trip」は見本の編のために予約されています。");
     expect(() => checkNewJourneyOptions({ ...kyoto, cityId: "mihon" }, reserved)).toThrow("都市ID「mihon」は見本の編のために予約されています。");
     expect(() => checkNewJourneyOptions({ ...kyoto, prefix: "smp_" }, reserved)).toThrow("IDの接頭辞「smp」は見本の編のために予約されています。");
+    // Every sample name in every role, also as a part of an ID (it would stay in the copy's IDs and paths).
+    for (const name of ["sample_trip", "smp", "mihon"]) {
+      expect(() => checkNewJourneyOptions({ ...kyoto, journeyId: name }, reserved)).toThrow(`旅行編ID「${name}」は見本の編のために予約されています。`);
+      expect(() => checkNewJourneyOptions({ ...kyoto, cityId: name }, reserved)).toThrow(`都市ID「${name}」は見本の編のために予約されています。`);
+      expect(() => checkNewJourneyOptions({ ...kyoto, prefix: name }, reserved)).toThrow(`IDの接頭辞「${name}」は見本の編のために予約されています。`);
+    }
+    expect(() => checkNewJourneyOptions({ ...kyoto, journeyId: "old_sample_trip" }, reserved)).toThrow("旅行編ID「old_sample_trip」は見本の編の名前「sample_trip」を含むため使えません。");
+    // dist:check looks for the sample's journey ID anywhere in the production build.
+    expect(() => checkNewJourneyOptions({ ...kyoto, cityId: "my_sample_trips" }, reserved)).toThrow("都市ID「my_sample_trips」は見本の編の名前「sample_trip」を含むため使えません。");
+    expect(() => checkNewJourneyOptions({ ...kyoto, cityId: "mihon_new" }, reserved)).toThrow("都市ID「mihon_new」は見本の編の名前「mihon」を含むため使えません。");
+    expect(() => checkNewJourneyOptions({ ...kyoto, prefix: "ky_smp" }, reserved)).toThrow("IDの接頭辞「ky_smp」は見本の編の名前「smp」を含むため使えません。");
+    // Other words that only share letters with them are fine.
+    expect(checkNewJourneyOptions({ ...kyoto, journeyId: "sample", cityId: "mihonia", prefix: "smpx" }, reserved)).toMatchObject({ cityId: "mihonia", prefix: "smpx" });
     expect(() => checkNewJourneyOptions({ ...kyoto, nameJa: "Kyoto Trip" }, reserved)).toThrow("--name には日本語の名前を1行で指定してください");
     expect(() => checkNewJourneyOptions({ ...kyoto, cityNameJa: " 京都" }, reserved)).toThrow("--city-name には日本語の名前を1行で指定してください");
   });
@@ -111,13 +124,20 @@ describe("journey:new copy of the sample", () => {
   });
 });
 
-/** A rewrite that keeps the structure: a mark in every Japanese text, other source URLs, new images, no placeholders. */
+/**
+ * A rewrite that keeps the structure: a mark in every Japanese text, another
+ * word in every English quiz text (the same in the quizzes and their
+ * translations; "now" is in the shared word meanings), other source URLs,
+ * new images, no placeholders.
+ */
 async function replaceSampleContent(folder: string): Promise<void> {
   const mark = (text: string) => text.replace(/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u, "$&改").replaceAll("Mihon", "Kyoto");
-  const rewrite = (value: unknown): unknown => {
-    if (typeof value === "string") return value.startsWith("https://example.com/") ? "https://dreamscape-check.jp/source" : mark(value);
-    if (Array.isArray(value)) return value.map(rewrite);
-    if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, key === "isPlaceholder" ? false : rewrite(item)]));
+  const english = (text: string) => text.replace(/[.?!]?$/u, " now$&");
+  const rewrite = (value: unknown, key?: string): unknown => {
+    if (typeof value === "string")
+      return value.startsWith("https://example.com/") ? "https://dreamscape-check.jp/source" : key === "questionEn" || key === "textEn" ? english(value) : mark(value);
+    if (Array.isArray(value)) return value.map((item) => rewrite(item, key));
+    if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([name, item]) => [name, name === "isPlaceholder" ? false : rewrite(item, name)]));
     return value;
   };
   for (const file of listFiles(folder)) {

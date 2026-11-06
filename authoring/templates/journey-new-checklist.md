@@ -26,5 +26,5 @@
 1. `npm run content:build` で検証する。`npm run dev` のタイトル画面には「準備中」として並ぶ。
 2. `npm run journey:readiness -- --journey {{journeyId}}` で、残っている見本の内容と未完成の項目を確かめる。
 3. 上の項目を置き換える。観光地やデートを増やすときは `authoring/JOURNEY_AUTHORING.md` の `journey:scaffold` や `authoring/CITY_BUNDLES.md` の `city:bundle` を使える。
-4. `npm run content:build` と `npm run journey:readiness -- --journey {{journeyId}}` を繰り返し、問題がなくなったら `npm run journey:release -- --check --journey {{journeyId}}`、続けて `--apply` で公開の状態にする。
+4. `npm run content:build` と `npm run journey:readiness -- --journey {{journeyId}}` を繰り返し、準備中であること（「旅行編は準備中です。」）以外の問題がなくなったら `npm run journey:release -- --check --journey {{journeyId}}`、続けて `--apply` で公開の状態にする。
 5. 公開前に `npm run verify` とE2E一式を実行する。

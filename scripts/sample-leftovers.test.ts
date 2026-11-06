@@ -42,6 +42,16 @@ describe("sample leftovers", () => {
     ]);
   });
 
+  it("finds the sample's English quiz questions and options, but not an answer as short as a common one", () => {
+    const [question] = JSON.parse(sample.files.get("quizzes/smp_mihon_clock_tower_quiz.json")!.toString("utf8")).questions;
+    expect(question.options.map((option: { textEn: string }) => option.textEn.split(" ").length >= 3)).toEqual([true, true, true]);
+    expect(sampleLeftovers(files({ "quizzes/q.json": json({ questions: [{ questionEn: question.questionEn, options: question.options }] }) })))
+      .toEqual([{ file: "quizzes/q.json", kind: "text", count: 4 }]);
+    // A two-word option of the sample ("Every hour.") could be any quiz's answer.
+    expect(sampleMarks().texts.has("Every hour.")).toBe(false);
+    expect(sampleMarks().texts.has(question.questionEn)).toBe(true);
+  });
+
   it("leaves shared phrasing alone: word meanings, reward titles and the currency", () => {
     const words = sample.files.get("learning/word-meanings.json")!;
     const rewards = JSON.parse(sample.files.get("progression/journey.json")!.toString("utf8")).rewards;
