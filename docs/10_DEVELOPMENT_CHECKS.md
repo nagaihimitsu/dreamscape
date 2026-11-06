@@ -14,7 +14,7 @@
 | 保存・進行 | 同一バージョン内の保存・再開、読めないデータの保護、明示消去、別タブ、報酬重複防止の関連テストとE2E一式、必要な実画面。型・共通基盤の影響に応じて型検査と検証範囲を広げる |
 | CI・Playwrightの設定、本番ビルドの検査（`.github/workflows/`・`playwright.config.ts`・`scripts/dist-guard.ts`） | `npm run build`（`dist/` の検査を含む）、`npx vitest run scripts/dist-guard.test.ts`、E2E一式。ワークフローの変更はPRで実際の実行結果を確認する |
 | 単体テストの設定・テストの組・テスト用フィクスチャ（`vite.config.ts` の `test`・`scripts/test-sets.ts`・`scripts/test-image-guard.ts`・`src/content/test-fixtures.ts`） | `npx vitest run scripts/test-sets.test.ts scripts/test-image-guard.test.ts src/content/test-fixtures.test.ts`（先に `content:build`）、`npm test`（両方の組） |
-| Debug・場面の組み立て部品・Debug起動URL（`src/dev/`） | `npx vitest run src/dev/ scripts/dist-guard.test.ts`（先に `npm run content:build -- --with-sample`）、`npm run build`（`dist/` の検査）、`boot.spec.ts`。部品を変えたら、それを使う単体テスト（`npm run test:quick`）と `inter-city.spec.ts` も実行する。Debug画面の変更は320・360・390px幅の実画面（[Debug起動URL](#debug起動url)） |
+| Debug・場面の組み立て部品・Debug起動URL（`src/dev/`） | `npx vitest run src/dev/ scripts/dist-guard.test.ts`（先に `npm run content:build -- --with-sample`）、`npm run build`（`dist/` の検査）、`boot.spec.ts`。部品・仮の場面（`test-cities.ts`・`fixture-template.ts`）を変えたら、それを使う単体テスト（`npm run test:quick`。`src/domain` の試験用の都市を使うテストを含む）と `inter-city.spec.ts` も実行する。Debug画面の変更は320・360・390px幅の実画面（[Debug起動URL](#debug起動url)） |
 | 会話の全分岐検査とそのキャッシュ（`scripts/ink-validation.ts`・`scripts/story-validation-cache.ts`） | `npx vitest run scripts/story-validation-cache.test.ts scripts/story-validation-cache-content.test.ts`（先に `content:build`）、`npm run content:build -- --no-cache` と通常の `npm run content:build` が同じ結果になること。検査コードを変えると指紋が変わり、次の生成はすべて検査する（[キャッシュ](#会話の全分岐検査のキャッシュ)） |
 | 大きな変更・公開前 | `npm run verify`、E2E一式と、影響範囲に応じた実画面確認 |
 
@@ -131,6 +131,7 @@
 | `data` | `fixture`（仮の場面） | 都市データ |
 
 - 場面は本物のゲーム関数で作る（[テストの3つの道](#テストの3つの道)の部品）。「都市クリア後」は、その都市までの都市を実際の規則でクリアし、旅行編の進み方どおりに出発した状態（エピローグの後に次の都市へ進む旅行編は、エピローグも読んだ状態）。そのうえで場面の地点に移り、AP・関係値をURLの値にする。都市のエピローグはそのまま読み進められ、次の都市がある旅行編では到着まで続く。
+- `data=fixture`（仮の場面）は、準備中の旅行編の都市に、実在する1都市を役割ごとに複製した試験データを入れる。元にする都市は `npm run dev` ではミラノ、`npm run dev:sample` では見本の街（データから自動で選ぶ。[docs/02](02_TECH_ARCHITECTURE.md) の「Debugの「仮の場面」」）。元の都市にない場面（例：ミラノ編がない構成での特殊戦B・C、道中交流）は作られず、設定画面に注記され、場面の一覧では「（この都市にはありません）」と表示される。そのURLは「…には「人物との交流」の場面がありません。」のように表示する。
 - 誤った項目名・値、データにない都市・対象、その進行では開けない場面（例：旅の開始時のデート、品物が必要な交流）は、理由（`role="alert"`）と設定画面へのリンクを表示する。
 - 設定画面の下の「この場面のURL」欄に、選んでいる設定のURLが出る。「この場面のURLをコピー」で写せる。自動でコピーできない環境（スマートフォンからPCの開発サーバーを `http://<IPアドレス>` で開いた場合など）では、欄のURLが選択されるので長押しなどで写す。場面を開いている間はアドレス欄も同じURLになり、再読み込みするとその場面を最初から開き直す（Debugの進行は残らない）。「設定へ戻る」でアドレス欄は `?debug` に戻る。
 - 開発用の読み取り口：Debugの画面を開いている間だけ `window.__dreamscapeDebug` があり、`getState()`（Debugのゲームの最後に保存された状態）と `getScene()`（開いた場面の設定・URL・開始地点）を返す。どちらも複製を返し、Debugやゲームを変えられない。設定画面では `null`。E2EがDebugの状態を確かめるために使う。
