@@ -107,11 +107,11 @@ function templateOf(content: DebugTemplateContent, journey: Journey, cityId: str
 
   const special = (format: "B" | "C"): TemplateSpecial | undefined => content.storyBattles.flatMap((storyBattle) => {
     const battle = battleOf(storyBattle.battleId);
-    const landmark = battle?.format === format && battle.reasoning ? landmarkOf(battle) : undefined;
+    const landmark = battle?.format === format ? landmarkOf(battle) : undefined;
     // The reasoning round points at the clues of its own landmark, which the copy renames.
-    const clues = landmark && battle!.reasoning!.caseClueIds.every((id) => landmark.clueIds.includes(id) &&
+    const ownClues = (ids: readonly string[]) => !!landmark && ids.every((id) => landmark.clueIds.includes(id) &&
       content.tourismClues.some((clue) => clue.id === id && clue.landmarkId === landmark.id));
-    return clues ? [{ storyBattle, battle: battle!, landmark: landmark! }] : [];
+    return battle && landmark && battle.reasoning && ownClues(battle.reasoning.caseClueIds) ? [{ storyBattle, battle, landmark }] : [];
   })[0];
   // A plain encounter that gives an item of this city: no quiz, no AP alternative, no item needed to choose.
   const encounter = content.encounters.encounters.flatMap((event) => {
