@@ -22,7 +22,9 @@ npm run preview
 
 ### 開発用の場面確認
 
-`npm run dev` で起動し、表示されたURLに `?debug` を付けると、観光・バトル・交流・デートを直接開けます。AP、関係状態、旅の進行、デートの抽選値を設定でき、成功寄りと失敗寄りの反応を再現できます。背景・衣装・表情は画面内の「背景・人物・表情を確認」から既存プレビューで切り替えます。
+`npm run dev` で起動し、表示されたURLに `?debug` を付けると、観光・バトル（特殊戦B/C・都市フィナーレを含む）・交流・デート・都市のエピローグを直接開けます。AP、関係状態、旅の進行、デートの抽選値を設定でき、成功寄りと失敗寄りの反応を再現できます。背景・衣装・表情は画面内の「背景・人物・表情を確認」から既存プレビューで切り替えます。
+
+`?debug&city=milano&scene=date&target=milano_brera_date_01&roll=negative` のように項目を足したURL（Debug起動URL）は、設定画面を通らずにその場面を開きます。設定画面の「この場面のURLをコピー」で、選んだ場面のURLを写せます。項目の一覧・URLの例・画面確認での使い方は[開発時の確認](docs/10_DEVELOPMENT_CHECKS.md#debug起動url)にあります。場面は単体テスト・E2Eと同じ部品（`src/dev/scenario-builders.ts`。本物のゲーム関数だけで状態を作る）で作ります。
 
 Debugの進行・学習記録・設定はメモリ内だけで、通常の保存領域には触れません。設定へ戻る・再読込・終了で一時状態は破棄されます。通常のゲームに戻るには「通常プレイに戻る」を選びます。本番ビルドではDebugとプレビューは公開されません（`npm run build` が `dist/` を検査し、入っていればビルドを失敗にします）。通常セーブの確認は別途行ってください。
 
@@ -363,6 +365,7 @@ Inkには `battle_scene`（catalogのシーン名）、`answer_correct`（直前
 - `src/features/tourism/viewport.ts`: 画像座標・拡大・移動範囲の計算。
 - `src/story/`: 公式 `Continue` / `currentChoices` / `ChooseChoiceIndex` とstate JSONを包むアダプタ。
 - `src/persistence/`: localStorageアダプタ・保存データ検証・バックアップ。
+- `src/dev/`: 開発用のDebug（`?debug`・Debug起動URL）と素材のプレビュー。`scenario-builders.ts` は単体テスト・Debug・E2Eが共有する場面の組み立て部品です。本番ビルドには含まれません。
 - `src/content/` / `scripts/`: データ契約・許可タグ・ビルド時検証。`scripts/journeys/<旅行編ID>/` はその旅行編だけの制作ツール（例：インド編の `india:check`）で、共通のコードとツールからは読み込みません。
 
 保存キーは旅行編ごとに `dreamscape.journey.<旅行編ID>.save.v1` です（ミラノは `dreamscape.journey.milano.save.v1`、インドは `dreamscape.journey.golden_triangle.save.v1`）。旅行編ごとにゲーム進行と英語ノートを分離し、データ内の `schemaVersion` は **13** を使います。名前・AP・関係状態・思い出・デート履歴・告白と交際状態、進行中のInk、バトル回答と戦績、観光と発見、現在都市、旅行の現在地・日数・時刻と進行中の活動を保持します。同一バージョン内のデート途中データは、脚本と指紋を照合して再開します。新しい恋愛イベントは開始時に保存した乱数から関係状態に応じた反応を決めます。通常デートを選べず関係を築き直す必要がある場合は、AP不要の短い再交流を利用できます。告白の成否は乱数で変わりません。進行中の確率デートは開始時点のプロフィールを保存し、再開後も同じ設定を使います。`completedEpisodeIds`、`completedCityIds`、`completedGuideIds`、`pendingApRewards`、`battleRewardReceipt` も維持します。

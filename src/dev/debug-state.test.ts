@@ -1,6 +1,8 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { getJourney } from "../content/journeys";
 import { advanceDate, chooseDate, validateGameState } from "../domain/game";
+import { installPreparingJourneyTestCities } from "../domain/multi-city-test-fixture";
 import { parseDebugQuery, type DebugQuery } from "./debug-query";
 import { createDebugState, debugTargets, defaultDebugSettings, resolveDebugLaunch, type DebugSettings } from "./debug-state";
 
@@ -98,3 +100,26 @@ describe("Debug launch URLs against the content", () => {
     }
   });
 });
+
+describe("the URL list in docs/10", () => {
+  // Every example a person or a test may copy from the docs opens its scene.
+  const docs = readFileSync("docs/10_DEVELOPMENT_CHECKS.md", "utf8");
+  const urls = [...docs.slice(docs.indexOf("### URLの例"), docs.indexOf("### 人が画面を確かめるときの使い方")).matchAll(/`\/(\?debug&[^`]+)`/g)].map((match) => match[1]);
+
+  it("has examples", () => {
+    expect(urls.length).toBeGreaterThan(10);
+  });
+
+  it.each(urls)("opens %s", (search) => {
+    const parsed = parseDebugQuery(search);
+    if (parsed.kind !== "launch") throw new Error(parsed.kind === "error" ? parsed.message : "not a launch URL");
+    const cleanup = parsed.query.dataMode === "fixture" ? installPreparingJourneyTestCities() : () => {};
+    try {
+      const launch = resolveDebugLaunch(parsed.query);
+      if (launch.kind === "scene") expect(validateGameState(createDebugState(launch.settings))).toBeTruthy();
+    } finally {
+      cleanup();
+    }
+  });
+});
+
