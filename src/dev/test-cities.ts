@@ -2,34 +2,53 @@
 import {
   allRewardRules, battleQuizzes, battles, cityContents, dateDestinations, dates,
   episodes, journeyConfig, landmarks, rewardRules, stories, tourismClues,
+  type BattleDefinition, type LandmarkDefinition,
 } from "../content";
 import { encounters } from "../content/encounters";
 import { getJourney, getJourneyForCity, journeys } from "../content/journeys";
 import { getAllRewardRules } from "../content/journey-schemas";
+import { findDebugTemplate, type DebugTemplate, type DebugTemplateContent } from "./fixture-template";
 
-/** The authored city whose scenes, quizzes and places the fictional test cities copy. */
-const TEMPLATE_CITY_ID = "milano";
+/** The runtime catalogs, as findDebugTemplate reads them. */
+function runtimeContent(): DebugTemplateContent {
+  return { journeys, cityContents, episodes, battles, landmarks, tourismClues, storyBattles: journeyConfig.storyBattles,
+    encounters, dates, dateDestinations };
+}
 
-/** Reuse real executable scripts/assets while giving every owned entity a distinct ID. */
+/** The city the fictional test cities copy (see fixture-template.ts); throws a message for the person. */
+export function debugTemplate(templateCityId?: string): DebugTemplate {
+  return findDebugTemplate(runtimeContent(), templateCityId);
+}
+
+/**
+ * Install a fictional city that copies the template city's roles: real
+ * executable scripts and quizzes under IDs of its own (`<prefix>_episode`,
+ * `<prefix>_special_b`, `<cityId>/guide`, …; prefix `test` for test_city).
+ * Optional roles the template lacks are left out. The shared catalogs are
+ * changed in place; the returned function restores them.
+ */
 export function installTestCity(options: {
   cityId?: string;
   nameJa?: string;
+  /** The city whose nextCityId becomes this one; default the template city, null for none. */
   previousCityId?: string | null;
   nextCityId?: string;
+  /** Copy this city instead of the automatic choice (tests that use its IDs say so). */
+  templateCityId?: string;
 } = {}): () => void {
+  const template = debugTemplate(options.templateCityId);
+  const templateCityId = template.city.city.id;
   const cityId = options.cityId ?? "test_city";
   // Real prototype cities may already be registered. Preserve the exact
   // original content object when installing a temporary debug fixture.
   const originalCity = cityContents[cityId];
   const prefix = cityId === "test_city" ? "test" : cityId;
   const id = (suffix: string) => `${prefix}_${suffix}`;
-  const milan = cityContents[TEMPLATE_CITY_ID];
-  if (!milan) throw new Error(`仮の場面の元になる都市データがありません: ${TEMPLATE_CITY_ID}`);
-  const previous = options.previousCityId === null ? undefined : cityContents[options.previousCityId ?? TEMPLATE_CITY_ID];
+  const previous = options.previousCityId === null ? undefined : cityContents[options.previousCityId ?? templateCityId];
   const previousNext = previous?.city.nextCityId;
   // Ad-hoc test cities inherit their predecessor's journey currency. Planned
-  // Indian cities are already registered in the journey catalog.
-  const owner = getJourneyForCity(cityId) ?? getJourneyForCity(previous?.city.id ?? TEMPLATE_CITY_ID);
+  // cities of a preparing journey are already registered in the journey catalog.
+  const owner = getJourneyForCity(cityId) ?? getJourneyForCity(previous?.city.id ?? templateCityId);
   const addedCity = !getJourneyForCity(cityId) && owner ? { id: cityId, nameJa: options.nameJa ?? "試験都市" } : null;
   if (addedCity) owner!.cities.push(addedCity);
   const sizes = {
@@ -46,100 +65,112 @@ export function installTestCity(options: {
     addedStories.push(id);
     return id;
   };
-  const normalSource = episodes.find((item) => item.id === "milano_duomo_episode")!;
-  const finaleSource = episodes.find((item) => item.id === "milano_finale")!;
-  const normal = { ...clone(normalSource), id: id("episode"), cityId: cityId, landmarkId: id("landmark"),
-    battleId: id("battle"), requiredEpisodeIds: [] };
-  const finale = { ...clone(finaleSource), id: id("finale"), cityId: cityId, battleId: id("final_battle"),
-    epilogueStoryId: ownStory(finaleSource.epilogueStoryId!, `${cityId}/epilogue`),
-    requiredEpisodeIds: [normal.id] };
-  episodes.push(normal, finale);
-
-  const normalBattle = { ...clone(battles.find((item) => item.id === "milano_duomo_01")!), id: id("battle"), landmarkId: id("landmark") };
-  const specialBattle = { ...clone(battles.find((item) => item.id === "milano_la_scala_b01")!), id: id("special"), landmarkId: id("special_landmark") };
-  const finalBattle = { ...clone(battles.find((item) => item.id === "milano_city_boss_01")!), id: id("final_battle"), cityId: cityId };
-  const normalLandmark = { ...clone(landmarks.find((item) => item.id === "duomo_milano")!), id: id("landmark"), cityId: cityId, battleId: normalBattle.id };
-  const specialLandmark = { ...clone(landmarks.find((item) => item.id === "la_scala_case")!), id: id("special_landmark"), cityId: cityId, battleId: specialBattle.id };
-  normalLandmark.guideStoryId = ownStory(normalLandmark.guideStoryId, `${cityId}/guide`);
-  specialLandmark.guideStoryId = ownStory(specialLandmark.guideStoryId, `${cityId}/special_guide`);
-  for (const [battle, landmarkId] of [[normalBattle, normalLandmark.id], [specialBattle, specialLandmark.id], [finalBattle, null]] as const) {
-    const id = `${prefix}_${battle.quizId}`;
-    const quiz = clone(battleQuizzes[battle.quizId]);
-    quiz.id = id;
+  /** A battle with its own quiz (question IDs prefixed) and story, at a landmark or (finale) of the city. */
+  const copyBattle = (source: BattleDefinition, battleId: string, landmarkId: string | null): BattleDefinition => {
+    const quizId = `${prefix}_${source.quizId}`;
+    const quiz = clone(battleQuizzes[source.quizId]);
+    quiz.id = quizId;
     quiz.landmarkId = landmarkId;
     if ("cityId" in quiz) quiz.cityId = cityId;
     quiz.questions = quiz.questions.map((question) => ({ ...question, id: `${prefix}_${question.id}` }));
-    battleQuizzes[id] = quiz;
-    addedQuizzes.push(id);
-    battle.quizId = id;
-    battle.storyId = ownStory(battle.storyId, `${cityId}/${battle.id}`);
-  }
-  const clueMap = new Map<string, string>();
-  for (const [sourceId, target] of [["duomo_milano", normalLandmark], ["la_scala_case", specialLandmark]] as const) {
-    target.clueIds = target.clueIds.map((id) => {
-      const clue = clone(tourismClues.find((item) => item.id === id && item.landmarkId === sourceId)!);
-      const newId = `${prefix}_${id}`;
-      clueMap.set(id, newId);
-      tourismClues.push({ ...clue, id: newId, landmarkId: target.id });
-      return newId;
-    });
-  }
-  if (specialBattle.reasoning) {
-    specialBattle.reasoning.caseClueIds = specialBattle.reasoning.caseClueIds.map((id) => clueMap.get(id)!);
-    specialBattle.reasoning.correctClueIds = specialBattle.reasoning.correctClueIds.map((id) => clueMap.get(id)!);
-  }
-  battles.push(normalBattle, specialBattle, finalBattle);
-  landmarks.push(normalLandmark, specialLandmark);
-  // The test encounter and its reward item copy a template encounter and the item it awards.
-  const encounterSource = encounters.encounters.find((entry) => entry.id === "duomo_string")!;
-  const item = { ...clone(encounters.items.find((entry) => entry.id === encounterSource.completionItemId)!), id: id("item"), cityId: cityId };
-  encounters.items.push(item);
-  const encounter = { ...clone(encounterSource),
-    id: id("encounter"), cityId: cityId, landmarkId: normalLandmark.id, completionItemId: item.id };
-  encounter.storyId = ownStory(encounter.storyId, `${cityId}/encounter`);
-  encounters.encounters.push(encounter);
+    battleQuizzes[quizId] = quiz;
+    addedQuizzes.push(quizId);
+    const battle = { ...clone(source), id: battleId, quizId, storyId: ownStory(source.storyId, `${cityId}/${battleId}`),
+      ...(landmarkId ? { landmarkId } : { cityId }) };
+    battles.push(battle);
+    return battle;
+  };
+  /** A landmark with its guide and its own copies of its clues; returns the clue ID mapping. */
+  const copyLandmark = (source: LandmarkDefinition, landmarkId: string, battleId: string, guideStoryId: string) => {
+    const clueIds = new Map<string, string>();
+    const landmark = { ...clone(source), id: landmarkId, cityId, battleId, guideStoryId: ownStory(source.guideStoryId, guideStoryId),
+      clueIds: source.clueIds.map((clueId) => {
+        const clue = clone(tourismClues.find((item) => item.id === clueId && item.landmarkId === source.id)!);
+        const copyId = `${prefix}_${clueId}`;
+        clueIds.set(clueId, copyId);
+        tourismClues.push({ ...clue, id: copyId, landmarkId });
+        return copyId;
+      }) };
+    landmarks.push(landmark);
+    return { landmark, clueIds };
+  };
+  /** Reward rules of a template episode or special battle, renamed for the copy. */
+  const copyRewards = (match: (rule: (typeof rewardRules)[number]) => boolean, target: { episodeId: string } | { battleId: string }) => {
+    for (const source of rewardRules.filter(match)) {
+      const rule = { ...clone(source), id: `${prefix}_${source.id}`, ...target };
+      rewardRules.push(rule);
+      allRewardRules.push(rule);
+    }
+  };
 
-  const special = clone(journeyConfig.storyBattles.find((item) => item.battleId === "milano_la_scala_b01")!);
-  special.battleId = specialBattle.id;
-  special.requiredEpisodeIds = [];
-  if (special.completionReward) special.completionReward.id = id("special_first");
-  journeyConfig.storyBattles.push(special);
-  allRewardRules.push(...getAllRewardRules({ ...journeyConfig, rewards: [], storyBattles: [special] }));
-  const originalRewards = rewardRules.filter((item) => item.episodeId && [normalSource.id, finaleSource.id].includes(item.episodeId));
-  for (const source of originalRewards) {
-    const rule = { ...clone(source), id: `${prefix}_${source.id}`, episodeId: source.episodeId === normalSource.id ? normal.id : finale.id };
-    rewardRules.push(rule);
-    allRewardRules.push(rule);
-  }
-  for (const source of rewardRules.filter((item) => item.battleId === "milano_la_scala_b01")) {
-    const rule = { ...clone(source), id: `${prefix}_${source.id}`, battleId: specialBattle.id };
-    rewardRules.push(rule);
-    allRewardRules.push(rule);
-  }
+  // Required roles: a normal episode at its landmark and the city finale.
+  const normal = { ...clone(template.normal.episode), id: id("episode"), cityId, landmarkId: id("landmark"),
+    battleId: id("battle"), requiredEpisodeIds: [] };
+  const finale = { ...clone(template.finale.episode), id: id("finale"), cityId, battleId: id("final_battle"),
+    epilogueStoryId: ownStory(template.finale.episode.epilogueStoryId!, `${cityId}/epilogue`), requiredEpisodeIds: [normal.id] };
+  episodes.push(normal, finale);
+  copyBattle(template.normal.battle, normal.battleId, normal.landmarkId);
+  const { landmark: normalLandmark } = copyLandmark(template.normal.landmark, normal.landmarkId, normal.battleId, `${cityId}/guide`);
 
-  const destination = { ...clone(dateDestinations[0]), id: id("date_destination"), cityId: cityId };
-  dateDestinations.push(destination);
-  const date = { ...clone(dates.find((item) => item.id === "milano_cafe_01")!), id: id("date"), chapterId: cityId,
-    destinationId: destination.id, requiredCompletedChapters: [], requiredCompletedCityIds: [], requiredCompletedEpisodeIds: [], requiredPlayedDateIds: [] };
-  date.storyId = ownStory(date.storyId, `${cityId}/date`);
-  dates.push(date);
+  // Optional roles: special battles B and C, each at a landmark of its own.
+  const specials = (["b", "c"] as const).flatMap((kind) => {
+    const role = template[`special_${kind}`];
+    if (!role) return [];
+    const battleId = id(`special_${kind}`);
+    const battle = copyBattle(role.battle, battleId, id(`special_${kind}_landmark`));
+    const { landmark, clueIds } = copyLandmark(role.landmark, battle.landmarkId!, battleId, `${cityId}/special_${kind}_guide`);
+    if (battle.reasoning) {
+      battle.reasoning.caseClueIds = battle.reasoning.caseClueIds.map((clueId) => clueIds.get(clueId)!);
+      battle.reasoning.correctClueIds = battle.reasoning.correctClueIds.map((clueId) => clueIds.get(clueId)!);
+    }
+    const special = { ...clone(role.storyBattle), battleId, requiredEpisodeIds: [] };
+    if (special.completionReward) special.completionReward.id = id(`special_${kind}_first`);
+    journeyConfig.storyBattles.push(special);
+    allRewardRules.push(...getAllRewardRules({ ...journeyConfig, rewards: [], storyBattles: [special] }));
+    copyRewards((rule) => rule.battleId === role.battle.id, { battleId });
+    return [{ special, landmark }];
+  });
+  copyBattle(template.finale.battle, finale.battleId, null);
+  copyRewards((rule) => rule.episodeId === template.normal.episode.id, { episodeId: normal.id });
+  copyRewards((rule) => rule.episodeId === template.finale.episode.id, { episodeId: finale.id });
 
-  const original = milan.travel;
-  const sourcePlace = original.places.find((item) => item.id === "p_duomo")!;
-  const sourceRoute = original.routes.find((item) => item.mode === "walk" && item.fromPlaceId !== item.toPlaceId)!;
-  const hotel = { ...clone(sourcePlace), id: id("hotel"), cityId: cityId, landmarkIds: [], destinationIds: [] };
-  const place = { ...clone(sourcePlace), id: id("place"), cityId: cityId, landmarkIds: [normalLandmark.id, specialLandmark.id], destinationIds: [destination.id] };
+  // Optional: an encounter at the normal landmark that gives its own item.
+  if (template.encounter) {
+    const item = { ...clone(template.encounter.item), id: id("item"), cityId };
+    encounters.items.push(item);
+    encounters.encounters.push({ ...clone(template.encounter.encounter), id: id("encounter"), cityId, landmarkId: normalLandmark.id,
+      completionItemId: item.id, storyId: ownStory(template.encounter.encounter.storyId, `${cityId}/encounter`) });
+  }
+  // Optional: a normal date at the city's place, open from the start.
+  const date = template.date && (() => {
+    const destination = { ...clone(template.date.destination), id: id("date_destination"), cityId };
+    dateDestinations.push(destination);
+    const entry = { ...clone(template.date.date), id: id("date"), chapterId: cityId, destinationId: destination.id,
+      requiredCompletedChapters: [], requiredCompletedCityIds: [], requiredCompletedEpisodeIds: [], requiredPlayedDateIds: [],
+      storyId: ownStory(template.date.date.storyId, `${cityId}/date`) };
+    dates.push(entry);
+    return entry;
+  })();
+
+  // Travel: a hotel and one place hosting every event, both copies of the normal episode's place.
+  const hotel = { ...clone(template.normal.place), id: id("hotel"), cityId, landmarkIds: [], destinationIds: [] };
+  const place = { ...clone(template.normal.place), id: id("place"), cityId,
+    landmarkIds: [normalLandmark.id, ...specials.map((item) => item.landmark.id)], destinationIds: date ? [date.destinationId] : [] };
   const routes = [[hotel.id, hotel.id, 0], [hotel.id, place.id, 5], [place.id, hotel.id, 5], [place.id, place.id, 0]].map(([fromPlaceId, toPlaceId, minutes]) => ({
-    ...clone(sourceRoute), fromPlaceId: String(fromPlaceId), toPlaceId: String(toPlaceId), minutes: Number(minutes), cost: 0,
+    ...clone(template.walkRoute), fromPlaceId: String(fromPlaceId), toPlaceId: String(toPlaceId), minutes: Number(minutes), cost: 0,
   }));
-  const eventSource = original.events.find((item) => item.id === normalSource.id)!;
-  const event = (id: string, category: "main" | "date") => ({ ...clone(eventSource), id, cityId: cityId, placeId: place.id, category, activityMinutes: 15, apCost: category === "date" ? date.apCost : 0 });
-  const city = { ...clone(milan.city), id: cityId, nextCityId: options.nextCityId, nameJa: options.nameJa ?? "試験都市", firstClearReward: { rewardSourceId: id("episode_duomo_first"), ap: 1 }, landmarkIdsPlanned: [normalLandmark.id, specialLandmark.id] };
-  // Scenes of a test city start with its own place's background, not Milan's story background.
-  const travelSettings = { ...clone(milan.travelSettings), hotelPlaceId: hotel.id };
+  const event = (eventId: string, category: "main" | "date", apCost = 0) => ({ ...clone(template.normal.event), id: eventId, cityId,
+    placeId: place.id, category, activityMinutes: 15, apCost });
+  const events = [event(normal.id, "main"), ...specials.map((item) => event(item.special.battleId, "main")), event(finale.id, "main"),
+    ...(date ? [event(date.id, "date", date.apCost)] : [])];
+  const { firstClearReward } = template.city.city;
+  const city = { ...clone(template.city.city), id: cityId, nextCityId: options.nextCityId, nameJa: options.nameJa ?? "試験都市",
+    firstClearReward: { ...firstClearReward, rewardSourceId: `${prefix}_${firstClearReward.rewardSourceId}` },
+    landmarkIdsPlanned: place.landmarkIds };
+  // Scenes of a test city start with its own place's background, not the template's story background.
+  const travelSettings = { ...clone(template.city.travelSettings), hotelPlaceId: hotel.id };
   delete travelSettings.storyBackgroundAssetId;
-  cityContents[cityId] = { city, travel: { cityId: city.id, places: [hotel, place], routes, events: [event(normal.id, "main"), event(special.battleId, "main"), event(finale.id, "main"), event(date.id, "date")] },
-    travelSettings };
+  cityContents[cityId] = { city, travel: { cityId, places: [hotel, place], routes, events }, travelSettings };
   if (previous) previous.city.nextCityId = city.id;
 
   return () => {

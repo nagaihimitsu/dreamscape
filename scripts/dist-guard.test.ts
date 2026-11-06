@@ -34,13 +34,13 @@ describe("production build guard", () => {
     const leaked: DistFile[] = [
       ...cleanBuild,
       { path: "assets/DebugMode-x1.js", text: 'jsx("main",{className:"debug-panel","data-testid":"debug-panel"})' },
-      { path: "assets/index-def.js", text: 'throw Error("仮の場面の元になる都市データがありません: milano")' },
+      { path: "assets/index-def.js", text: 'throw Error("仮の場面の元になる都市がありません。公開中の旅行編のどれかに…")' },
       { path: "assets/tourism/sample_trip/mihon_market.png", text: null },
       { path: "assets/index-abc.js.map", text: '{"sources":["../src/dev/debug-state.ts"]}' },
     ];
     expect(findDevOnlyCode(leaked).map(({ path, where, marker }) => [path, where, marker.text])).toEqual([
       ["assets/DebugMode-x1.js", "content", "debug-panel"],
-      ["assets/index-def.js", "content", "仮の場面の元になる都市データがありません"],
+      ["assets/index-def.js", "content", "仮の場面の元になる都市がありません"],
       ["assets/tourism/sample_trip/mihon_market.png", "path", "sample_trip"],
       ["assets/index-abc.js.map", "content", "src/dev/"],
     ]);

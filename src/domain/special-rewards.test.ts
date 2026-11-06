@@ -114,21 +114,21 @@ describe.each([
 });
 
 it("keeps special rewards and guide records independent between cities", () => {
-  const cleanup = installTestCity();
+  const cleanup = installTestCity({ templateCityId: "milano" });
   try {
     let milan = readGuide(openTourism(createGame(), "la_scala_case"));
     milan = finishBattle(startTourismBattle(milan, milan.revision), 3);
     milan = leaveBattle(milan, milan.revision);
     const milanIds = [...milan.claimedRewardIds];
-    expect(rulesFor("test_special")).toHaveLength(4);
-    expect(milanIds.some((id) => rulesFor("test_special").some((rule) => rule.id === id))).toBe(false);
+    expect(rulesFor("test_special_b")).toHaveLength(4);
+    expect(milanIds.some((id) => rulesFor("test_special_b").some((rule) => rule.id === id))).toBe(false);
     let second: GameState = { ...milan, currentCityId: "test_city",
       travel: { ...milan.travel, currentPlaceId: "test_hotel", hotelPlaceId: "test_hotel" } };
-    second = readGuide(openTourism(restore(second), "test_special_landmark"));
+    second = readGuide(openTourism(restore(second), "test_special_b_landmark"));
     second = finishBattle(startTourismBattle(second, second.revision), 3);
     expect(totalAp(second)).toBe(totalAp(milan) + 4);
     expect(second.claimedRewardIds).toEqual(expect.arrayContaining(milanIds));
-    expect(second.claimedRewardIds).toEqual(expect.arrayContaining(rulesFor("test_special").map((rule) => rule.id)));
+    expect(second.claimedRewardIds).toEqual(expect.arrayContaining(rulesFor("test_special_b").map((rule) => rule.id)));
     expect(second.completedEpisodeIds).toEqual([]);
     expect(second.completedCityIds).toEqual([]);
   } finally { cleanup(); }

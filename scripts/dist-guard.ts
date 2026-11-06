@@ -30,7 +30,7 @@ export const devOnlyMarkers: readonly DevOnlyMarker[] = [
   { text: "を結果まで進められませんでした", source: "src/dev/scenario-builders.ts" },
   { text: "制作中の都市ではありません", source: "src/dev/prototype-preview-state.ts" },
   // In-memory fixtures shared by unit tests and Debug.
-  { text: "仮の場面の元になる都市データがありません", source: "src/dev/test-cities.ts" },
+  { text: "仮の場面の元になる都市がありません", source: "src/dev/fixture-template.ts" },
   { text: "test_golden_triangle", source: "src/dev/test-cities.ts" },
   // The journey for development and tests only (npm run dev:sample, unit tests);
   // its ID also names its image folder.

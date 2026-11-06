@@ -28,7 +28,8 @@ const finishMilan = () => clearCity(createGame());
 
 describe("two registered cities through the real game runtime", () => {
   let cleanup: () => void;
-  beforeEach(() => { cleanup = installTestCity(); });
+  // Milan's IDs below (dates, encounters, items) are part of the test.
+  beforeEach(() => { cleanup = installTestCity({ templateCityId: "milano" }); });
   afterEach(() => cleanup());
 
   it("departs once, preserves histories and saves, then plays the second city's actual scenes", () => {
@@ -126,14 +127,17 @@ describe("two registered cities through the real game runtime", () => {
     cityState = finishBattle(startTourismBattle(cityState, cityState.revision));
     expect(cityState.completedEpisodeIds).toContain("test_episode");
     expect(getEpisodeAvailability(cityState, "test_finale").available).toBe(false);
-    cityState = beginTravelEvent(cityState, "test_special", "walk", cityState.revision);
-    expect(cityState.activeTourism?.landmarkId).toBe("test_special_landmark");
-    cityState = skipTourismGuide(cityState, cityState.revision);
-    cityState = startTourismBattle(cityState, cityState.revision);
-    expect(cityState.activeBattle?.battleId).toBe("test_special");
-    cityState = finishBattle(cityState);
-    expect(cityState.battleRecords.some((record) => record.battleId === "test_special")).toBe(true);
-    expect(getEpisodeAvailability(cityState, "test_finale").available).toBe(true);
+    // Both special battles (B and C, copied from Milan) open the finale, each at its own landmark.
+    for (const [index, battleId] of ["test_special_b", "test_special_c"].entries()) {
+      cityState = beginTravelEvent(cityState, battleId, "walk", cityState.revision);
+      expect(cityState.activeTourism?.landmarkId).toBe(`${battleId}_landmark`);
+      cityState = skipTourismGuide(cityState, cityState.revision);
+      cityState = startTourismBattle(cityState, cityState.revision);
+      expect(cityState.activeBattle?.battleId).toBe(battleId);
+      cityState = finishBattle(cityState);
+      expect(cityState.battleRecords.some((record) => record.battleId === battleId)).toBe(true);
+      expect(getEpisodeAvailability(cityState, "test_finale").available).toBe(index === 1);
+    }
     cityState = beginTravelEvent(cityState, "test_finale", "walk", cityState.revision);
     expect(cityState.activeBattle?.battleId).toBe("test_final_battle");
     cityState = finishBattle(cityState);

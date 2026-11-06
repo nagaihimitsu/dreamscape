@@ -1,4 +1,4 @@
-import { battles, dateDestinations, dates, episodes, getCities, getCityContent, landmarks } from "../content";
+import { battles, dateDestinations, dates, episodes, getCities, getCityContent, landmarks, type CityContent } from "../content";
 import { encounters } from "../content/encounters";
 import { battleCityId } from "../domain/chapter";
 import { validateGameState, type GameState } from "../domain/game";
@@ -59,12 +59,15 @@ export function resolveDebugLaunch(query: DebugQuery): DebugLaunch {
     trust: query.trust ?? defaults.trust, spark: query.spark ?? defaults.spark, roll: query.roll ?? defaults.roll } };
 }
 
-const completedByCity = new Map<string, GameState>();
+// Keyed by the city's content object: installing 仮の場面 again (possibly from another
+// template city) registers new objects, so a cleared state of an older copy is never reused.
+const completedByCity = new WeakMap<CityContent, GameState>();
 
 /** Debug reuses a city's cleared state while it stays open (about 0.1 s per city to build). */
 function completedJourney(cityId: string): GameState {
-  const cached = completedByCity.get(cityId) ?? completedCity(cityId);
-  completedByCity.set(cityId, cached);
+  const content = getCityContent(cityId);
+  const cached = completedByCity.get(content) ?? completedCity(cityId);
+  completedByCity.set(content, cached);
   return cached;
 }
 

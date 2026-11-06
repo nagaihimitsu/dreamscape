@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { getCityContent } from "../content";
+import { effects, getCityContent } from "../content";
 import { getJourney } from "../content/journeys";
 import { createDebugState } from "../dev/debug-state";
 import { clearCity } from "../dev/scenario-builders";
@@ -46,6 +46,8 @@ describe("four-city Uzbekistan handoff with test-only scenarios", () => {
 
   it("starts independently and preserves histories, money and pending AP across all three departures", () => {
     const journey = getJourney("uzbekistan")!;
+    const memory = effects.find((effect) => effect.memoryId)?.memoryId;
+    if (!memory) throw new Error("No existing memory fixture");
     let state = createGame("旅人", "相手", { journeyId: journey.id, initialState: { ...journey.initialState!, ap: 12 } });
     expect(state.currentCityId).toBe("tashkent");
     expect(state.travelBudget).toBe(4_000_000);
@@ -65,7 +67,9 @@ describe("four-city Uzbekistan handoff with test-only scenarios", () => {
       expect(getEpisodeAvailability(state, `${cityId}_finale`).available).toBe(false);
       state = clearCity(state);
       if (index === 0) state = completeDate(state);
-      state = validateGameState({ ...state, completedEncounterIds: [...state.completedEncounterIds, `${cityId}_encounter`],
+      // A memory from the first city (whether the copied date gives one depends on the template city).
+      const memories = index === 0 ? [...new Set([...state.memories, memory])] : state.memories;
+      state = validateGameState({ ...state, memories, completedEncounterIds: [...state.completedEncounterIds, `${cityId}_encounter`],
         inventory: { ...state.inventory, [`${cityId}_item`]: "held" },
         travel: { ...state.travel, day: 3, calendar: { journeyDay: 3 + index * 2, cityStartJourneyDay: 1 + index * 2, startWeekday: 0 } } });
       expect(state.claimedRewardIds.some((id) => id.startsWith("milano"))).toBe(false);
@@ -129,7 +133,7 @@ describe("four-city Uzbekistan handoff with test-only scenarios", () => {
     expect(state.inventory.bukhara_item).toBe("left_behind");
     expect(state.inventory.khiva_item).toBe("held");
     expect(state.playedDateIds).toContain("tashkent_date");
-    expect(state.memories.length).toBeGreaterThan(0);
+    expect(state.memories).toContain(memory);
     expect(validateGameState(state)).toEqual(state);
   }, 120_000);
 
