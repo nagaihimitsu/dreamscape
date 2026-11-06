@@ -3,12 +3,13 @@
 // and domain functions, the way the map screen starts each scene: tourism
 // guide → normal battle → date → (optional) encounters and special battles
 // B/C → city finale → epilogue. Every step is restored from JSON and checked
-// with validateGameState; AP is checked where it is earned and spent.
+// with validateGameState; AP is checked where it is earned and spent, and the
+// normal battle is repeated the ways a reload or a re-clear repeats it.
 import { beforeAll, describe, expect, it } from "vitest";
 import { getJourney } from "../content/journeys";
 import { loadGame, saveGame, type StorageLike } from "../persistence";
 import { journeyStorage } from "../persistence/journey-storage";
-import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle, selectReasoningClue, submitBattleEvidence } from "./battle";
+import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "./battle";
 import { advanceEncounter, chooseEncounter, continueTourismEncounters, finishEncounter, proceedFromTourism } from "./encounter";
 import { advanceCityEpilogue, startCityEpilogue } from "./epilogue";
 import { advanceDate, chooseDate, createGame, finishDate, validateGameState, type GameState } from "./game";
@@ -19,6 +20,7 @@ const JOURNEY = "sample_trip";
 const CITY = "mihon";
 const TOWER = "mihon_clock_tower";
 const EPISODE = "smp_mihon_clock_tower";
+const BATTLE = "smp_mihon_clock_tower_battle";
 const DATE = "smp_mihon_date_tower_square";
 const FINALE = "smp_mihon_finale";
 
@@ -51,19 +53,28 @@ function sightsee(state: GameState, clueId?: string): GameState {
   return act(s, (current) => proceedFromTourism(current, current.revision, () => 0));
 }
 
-/** Play the active battle to its result: correct answers, correct evidence. */
-function playBattle(state: GameState): GameState {
+/** One player step of the active battle: the correct answer or evidence, else go on. */
+function battleStep(state: GameState): GameState {
+  const active = state.activeBattle!;
+  const { battle, quiz } = getActiveBattleContent(active);
+  if (active.phase === "reasoning") {
+    let s = state;
+    for (const id of battle.reasoning!.correctClueIds) s = act(s, (current) => selectReasoningClue(current, id, current.revision));
+    return act(s, (current) => submitBattleEvidence(current, current.revision));
+  }
+  if (active.phase === "question")
+    return act(state, (current) => answerBattle(current, quiz.questions[active.roundIndex].correctOptionId, current.revision));
+  return act(state, (current) => advanceBattle(current, current.revision));
+}
+
+/** Play the active battle to its result, or with `untilLastSave` to the last saved state before the result. */
+function playBattle(state: GameState, untilLastSave = false): GameState {
   let s = state;
   for (let step = 0; s.activeBattle?.phase !== "result"; step++) {
     expect(step, "battle stuck").toBeLessThan(200);
-    const active = s.activeBattle!;
-    const { battle, quiz } = getActiveBattleContent(active);
-    if (active.phase === "reasoning") {
-      for (const id of battle.reasoning!.correctClueIds) s = act(s, (current) => selectReasoningClue(current, id, current.revision));
-      s = act(s, (current) => submitBattleEvidence(current, current.revision));
-    } else if (active.phase === "question")
-      s = act(s, (current) => answerBattle(current, quiz.questions[active.roundIndex].correctOptionId, current.revision));
-    else s = act(s, (current) => advanceBattle(current, current.revision));
+    const next = battleStep(s);
+    if (untilLastSave && next.activeBattle?.phase === "result") return s;
+    s = next;
   }
   return s;
 }
@@ -134,14 +145,27 @@ describe("sample journey route", () => {
     expect(s.activeTourism?.phase).toBe("exploring");
     // Battle (+1 complete, +1 for 2 or more correct).
     s = act(s, (current) => proceedFromTourism(current, current.revision, () => 0));
-    expect(s.activeBattle?.battleId).toBe("smp_mihon_clock_tower_battle");
-    s = playBattle(s);
+    expect(s.activeBattle?.battleId).toBe(BATTLE);
+    const lastSave = playBattle(s, true);
+    expect(totalAp(lastSave)).toBe(1);
+    s = playBattle(lastSave);
     expect(s.completedEpisodeIds).toEqual([EPISODE]);
     expect(totalAp(s)).toBe(3);
-    // A saved result restored again pays nothing twice.
-    expect(totalAp(restore(restore(s)))).toBe(3);
-    s = act(s, (current) => leaveBattle(current, current.revision));
-    expect(s.travel.activeEvent).toBeNull();
+    // What a reload can repeat pays nothing twice: the final answer again from the save made before the result ...
+    expect(playBattle(restore(lastSave))).toEqual(s);
+    // ... leaving the restored result, also with a second (stale) tap ...
+    const left = act(restore(s), (current) => leaveBattle(current, current.revision));
+    expect(leaveBattle(left, s.revision)).toBe(left);
+    expect(totalAp(left)).toBe(3);
+    expect(left.travel.activeEvent).toBeNull();
+    // ... and clearing the battle again from the map (re-clear).
+    const again = playBattle(act(left, (current) => startBattle(current, BATTLE)));
+    expect(again.battleRewardReceipt?.entries ?? []).toEqual([]);
+    const replayed = act(again, (current) => leaveBattle(current, current.revision));
+    expect(replayed.battleRecords.find((record) => record.battleId === BATTLE)?.attempts).toBe(2);
+    expect(totalAp(replayed)).toBe(3);
+    expect(replayed.claimedRewardIds).toEqual(left.claimedRewardIds);
+    s = left;
 
     // 2. Date at the tower square: 2 AP. With too little AP it does not start and spends nothing.
     const short = restore({ ...s, ap: 1 });
