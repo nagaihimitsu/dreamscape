@@ -1,7 +1,6 @@
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import {
-  contentWarnings,
   formatJourneyContents,
   journeyContents,
   unknownJourneyFiles,
@@ -113,12 +112,11 @@ describe("journey ID prefixes", () => {
   });
 });
 
+// Warnings never fail a test: content:build, the tests, CI and the deploy go
+// on with them (docs/02). Only the exception list is kept current here, so an
+// exception cannot outlive the ID it was made for.
 describe("the repository's content", () => {
   const sources = loadContentSources(process.cwd());
-
-  it("has no content warnings", () => {
-    expect(messages(contentWarnings(sources))).toEqual([]);
-  });
 
   it("still needs every listed prefix exception", () => {
     const listed = Object.entries(UNPREFIXED_ID_EXCEPTIONS).flatMap(([journeyId, ids]) => ids.map((id) => `${journeyId}/${id}`)).sort();
@@ -126,11 +124,12 @@ describe("the repository's content", () => {
     const exceptions = UNPREFIXED_ID_EXCEPTIONS as Record<string, string[]>;
     try {
       for (const journeyId of Object.keys(exceptions)) exceptions[journeyId] = [];
-      const found = unprefixedIds(sources).map((warning) => {
+      const found = new Set(unprefixedIds(sources).map((warning) => {
         const [, file, id] = /: content\/journeys\/([^/]+)\/.* "([^"]+)" \(/u.exec(warning.message)!;
         return `${file}/${id}`;
-      }).sort();
-      expect(found).toEqual(listed);
+      }));
+      // Other unprefixed IDs are warnings for their authors, not test failures.
+      expect(listed.filter((exception) => !found.has(exception))).toEqual([]);
     } finally {
       Object.assign(exceptions, saved);
     }
