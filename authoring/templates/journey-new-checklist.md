@@ -25,6 +25,6 @@
 
 1. `npm run content:build` で検証する。`npm run dev` のタイトル画面には「準備中」として並ぶ。
 2. `npm run journey:readiness -- --journey {{journeyId}}` で、残っている見本の内容と未完成の項目を確かめる。
-3. 上の項目を置き換える。観光地やデートを増やすときは `authoring/JOURNEY_AUTHORING.md` の `journey:scaffold` や `authoring/CITY_BUNDLES.md` の `city:bundle` を使える。
+3. 上の項目を置き換える。地点・交通・背景などの都市データは `authoring/CITY_BUNDLES.md` の `city:bundle` で編集できる。観光地やデートの登録を生成する `journey:scaffold`（`authoring/JOURNEY_AUTHORING.md`）は、観察資料 `authoring/journeys/{{journeyId}}/drafts/observation-cards.json`（まだない）に仮でない JPEG の観光画像ごとの記録と出典を確かめた観察ポイントを置いてから、交通の採否を検査する `journey:transit` は `manifest.json` の `authoring.transitDirectory` と都市ごとの台帳を置いてから使う。
 4. `npm run content:build` と `npm run journey:readiness -- --journey {{journeyId}}` を繰り返し、準備中であること（「旅行編は準備中です。」）以外の問題がなくなったら `npm run journey:release -- --check --journey {{journeyId}}`、続けて `--apply` で公開の状態にする。
 5. 公開前に `npm run verify` とE2E一式を実行する。

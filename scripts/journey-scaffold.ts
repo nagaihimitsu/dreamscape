@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import path from "node:path";
 import { z } from "zod";
@@ -168,6 +168,9 @@ export function loadJourneyScaffold(root: string, journeyId: string, sources = l
   const cities = journey.cities.map(({ id }) => travelCatalogSchema.parse(requireCity(sources, id).travel));
   const cityData = cities.map((city) => citySchema.parse(requireCity(sources, city.cityId).data));
   const plannedLandmarks = Object.fromEntries(cityData.map((city) => [city.id, city.landmarkIdsPlanned]));
+  // A journey made by journey:new names the file (authoring.observationFile) but has none yet.
+  if (!existsSync(path.resolve(root, profile.observationFile)))
+    throw new Error(`観察資料がありません: ${profile.observationFile}（manifest.json の authoring.observationFile）。journey:scaffold は、観光地ごとの JPEG の画像（仮でないもの）の記録（パスと SHA-256）と、出典を確かめた観察ポイントを観察資料に置いてから使います（authoring/JOURNEY_AUTHORING.md）。`);
   const observationsFile = z.object({ clues: z.array(tourismClueSchema), images: z.record(z.string(), z.object({ path: words, sha256: z.string().regex(/^[0-9a-f]{64}$/) })), provenance: z.record(z.string(), z.object({ needsFurtherResearch: z.boolean() }).loose()) }).loose()
     .parse(json(profile.observationFile));
   if (observationsFile.clues.some((clue) => !observationsFile.provenance[clue.id] || observationsFile.provenance[clue.id].needsFurtherResearch))

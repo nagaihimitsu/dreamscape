@@ -8,6 +8,9 @@ import { MIRROR_DIRECTORY, journeyDirectory, journeysDirectory } from "./content
 import { buildContent } from "./content-pipeline";
 import { listFiles, readJourneyManifests } from "./content-sources";
 import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readiness";
+import { applyCityBundle, exportEditableCityBundle } from "./city-bundle";
+import { loadJourneyScaffold } from "./journey-scaffold";
+import { inspectJourneyTransit } from "./journey-transit-review";
 import { CHECKLIST_FILE, CHECKLIST_TEMPLATE, checkNewJourneyOptions, createJourney, parseNewJourneyArgs, scaffoldJourney } from "./journey-new";
 import { prepareJourneyRelease } from "./promote-journey";
 import { readSampleJourney } from "./sample-journey";
@@ -209,6 +212,14 @@ describe("journey:new in a copy of the repository", () => {
     expect(result.journeyContents.find((journey) => journey.id === n)).toMatchObject({ status: "preparing" });
     // Every ID follows the new prefix and every file is used: no warning names the new journeys.
     expect(result.warnings.filter((warning) => [k, kc, kp, n].some((name) => warning.message.includes(name)))).toEqual([]);
+  });
+
+  it("works with city:bundle at once; journey:scaffold and journey:transit say what they need first", async () => {
+    const { journeyId: k, cityId: kc } = first;
+    // The city's editable bundle goes back unchanged (city:bundle export, then check).
+    await expect(applyCityBundle(root, exportEditableCityBundle(root, kc))).resolves.toEqual({ changedFiles: [] });
+    expect(() => loadJourneyScaffold(root, k)).toThrow(`観察資料がありません: authoring/journeys/${k}/drafts/observation-cards.json（manifest.json の authoring.observationFile）。`);
+    expect(() => inspectJourneyTransit(root, k)).toThrow(`都市「${kc}」の交通判断台帳がありません（${k} の manifest.json の authoring に transitDirectory がありません）。`);
   });
 
   it("refuses an existing journey, city or prefix and content that would not build, writing nothing", () => {
