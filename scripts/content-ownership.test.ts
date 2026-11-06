@@ -45,13 +45,14 @@ beforeEach(() => {
     assets: [{ id: "gt_img_red_fort" }],
     landmarks: [{ id: "delhi_red_fort", cityId: "delhi", imageAssetId: "gt_img_red_fort", guideStoryId: "tourism/gt_red_fort" }],
     clues: [{ id: "gt_clue", landmarkId: "delhi_red_fort", relatedQuestionIds: ["gt_question"] }] });
-  write("content/romance/presentation.json", { schemaVersion: 1, backgrounds: { milano_cafe: {} }, memories: {} });
+  write("content/romance/presentation.json", { schemaVersion: 1, backgrounds: { default_scene: {} }, memories: {} });
+  write(`${mi}/romance/presentation.json`, { schemaVersion: 1, backgrounds: { milano_cafe: {} } });
   write(`${gt}/romance/presentation.json`, { schemaVersion: 1, backgrounds: { gt_bg_red_fort: { imageAssetId: "gt_img_red_fort" } } });
   write(`${uz}/romance/presentation.json`, { schemaVersion: 1, backgrounds: { uz_bg_registan: {} } });
   write("content/romance/effect_catalog.json", { schemaVersion: 1, effects: [{ id: "common_date_first_playful" }] });
   write(`${gt}/romance/effect_catalog.json`, { schemaVersion: 1, effects: [{ id: "gt_effect", memoryId: "gt_memory" }] });
   write(`${gt}/romance/date_catalog.json`, { schemaVersion: 1, dates: [{
-    id: "gt_date", chapterId: "delhi", storyId: "dates/gt_date", backgroundAssetId: "milano_cafe",
+    id: "gt_date", chapterId: "delhi", storyId: "dates/gt_date", backgroundAssetId: "default_scene",
     requiredCompletedChapters: ["delhi"], requiredCompletedEpisodeIds: ["gt_delhi_episode"],
   }] });
   write(`${gt}/progression/journey.json`, { schemaVersion: 1,
@@ -63,7 +64,7 @@ beforeEach(() => {
   write(`${gt}/learning/translations.json`, { schemaVersion: 1, questions: { gt_question: {} } });
   write(`${gt}/quizzes/gt_quiz.json`, { id: "gt_quiz", landmarkId: "delhi_red_fort", questions: [{ id: "gt_question" }] });
   write(`${mi}/stories/milano/cafe.ink`, "# background: milano_cafe\nHello\n");
-  write(`${gt}/stories/dates/gt_date.ink`, "# background: milano_cafe\n* [Hi # effect: common_date_first_playful]\n* [Ho # effect: gt_effect]\n");
+  write(`${gt}/stories/dates/gt_date.ink`, "# background: default_scene\n* [Hi # effect: common_date_first_playful]\n* [Ho # effect: gt_effect]\n");
   write(`${gt}/stories/battles/gt_battle.ink`, "# background: gt_bg_red_fort\n");
   write(`${gt}/stories/tourism/gt_red_fort.ink`, "Guide\n");
   write(`${gt}/stories/arrivals/delhi.ink`, "Arrival\n");
@@ -113,7 +114,7 @@ describe("checkContentOwnership", () => {
   });
 
   it("keeps the core layer free of references to journey content and cities", () => {
-    write("content/romance/presentation.json", { schemaVersion: 1, backgrounds: { milano_cafe: { imageAssetId: "gt_img_red_fort" } }, memories: {} });
+    write("content/romance/presentation.json", { schemaVersion: 1, backgrounds: { default_scene: { imageAssetId: "gt_img_red_fort" } }, memories: {} });
     write("content/presentation/characters.json", { schemaVersion: 1, wardrobe: { cities: { delhi: {} } } });
     const error = (() => {
       try {
@@ -126,7 +127,7 @@ describe("checkContentOwnership", () => {
     expect(error?.split("\n")).toEqual([
       'Content entry outside its layer\'s cities: content/presentation/characters.json wardrobe.cities.delhi city ID "delhi" ' +
       "is a city of content/journeys/golden_triangle/cities/delhi.json; the core layer is shared by every journey and may not describe a city.",
-      'Reference to another layer: content/romance/presentation.json backgrounds.milano_cafe imageAssetId "gt_img_red_fort" ' +
+      'Reference to another layer: content/romance/presentation.json backgrounds.default_scene imageAssetId "gt_img_red_fort" ' +
       "is the asset defined in content/journeys/golden_triangle/tourism/catalog.json; the core layer may only refer to core content.",
     ]);
   });
@@ -197,8 +198,13 @@ describe("checkContentOwnership", () => {
     expect(() => check()).toThrow(
       'Reference to another layer: content/journeys/golden_triangle/travel/delhi-settings.json storyBackgroundAssetId "uz_bg_registan" ' +
       "is the background defined in content/journeys/uzbekistan/romance/presentation.json; a journey folder may only refer to its own content and the core layer.");
-    write(`${gt}/travel/delhi-settings.json`, { storyBackgroundAssetId: "milano_cafe" });
+    // The shared default is usable by every journey; Milan's cafe belongs to Milan.
+    write(`${gt}/travel/delhi-settings.json`, { storyBackgroundAssetId: "default_scene" });
     expect(() => check()).not.toThrow();
+    write(`${gt}/travel/delhi-settings.json`, { storyBackgroundAssetId: "milano_cafe" });
+    expect(() => check()).toThrow(
+      'Reference to another layer: content/journeys/golden_triangle/travel/delhi-settings.json storyBackgroundAssetId "milano_cafe" ' +
+      "is the background defined in content/journeys/milano/romance/presentation.json; a journey folder may only refer to its own content and the core layer.");
   });
 });
 

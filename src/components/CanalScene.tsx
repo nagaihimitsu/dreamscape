@@ -1,18 +1,16 @@
 import { useState } from "react";
 import { presentation, tourismAssets } from "../content";
+import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 /** Original decorative illustration; all game information is also available as text. */
 export function CanalScene({
   compact = false,
-  backgroundId = "milano_cafe",
+  backgroundId = DEFAULT_BACKGROUND_ID,
   imageAssetId,
-  caption,
 }: {
   compact?: boolean;
   backgroundId?: string;
   /** Use a location's registered photograph while keeping this scene's fallback. */
   imageAssetId?: string;
-  /** Replaces the background's place caption, e.g. on the title art shared by every journey. */
-  caption?: string;
 }) {
   const backdrop = presentation.backgrounds[backgroundId];
   const landmarkImage = imageAssetId
@@ -32,13 +30,7 @@ export function CanalScene({
       <svg viewBox="0 0 800 440" preserveAspectRatio="xMidYMid slice">
         <defs>
           <linearGradient id="sky" x2="0" y2="1">
-            <stop
-              stopColor={
-                backgroundId === "milano_cafe"
-                  ? "#e6d8bb"
-                  : (backdrop?.color ?? "#e6d8bb")
-              }
-            />
+            <stop stopColor={backdrop?.color ?? "#e6d8bb"} />
             <stop offset="1" stopColor="#f6ebd5" />
           </linearGradient>
           <linearGradient id="water" x2="0" y2="1">
@@ -117,7 +109,7 @@ export function CanalScene({
       )}
       {image && <BackgroundArtwork key={image} path={image} position={backdrop?.imagePosition} />}
       <span className="scene-stamp">
-        {caption ?? backdrop?.captionJa}
+        {backdrop?.captionJa}
       </span>
     </div>
   );

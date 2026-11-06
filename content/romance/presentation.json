@@ -10,10 +10,10 @@
     "buttonJa": "旅のしおりを見る"
   },
   "backgrounds": {
-    "milano_cafe": {
-      "nameJa": "運河沿いのカフェ",
-      "captionJa": "ミラノ ／ 予定のない午後",
-      "color": "#b87964"
+    "default_scene": {
+      "nameJa": "旅の余白",
+      "captionJa": "旅の余白 ／ 予定のない午後",
+      "color": "#e6d8bb"
     }
   },
   "emotions": {

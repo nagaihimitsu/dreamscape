@@ -56,9 +56,9 @@ describe("content build acceptance", () => {
   it("rejects a registered but missing background image", async () => {
     const file = path.join(fixture, "content/romance/presentation.json");
     const data = JSON.parse(await readFile(file, "utf8"));
-    data.backgrounds.milano_cafe.imagePath = "assets/missing-background.png";
+    data.backgrounds.default_scene.imagePath = "assets/missing-background.png";
     await writeFile(file, JSON.stringify(data));
-    await expect(buildContent(fixture, false)).rejects.toThrow("Missing background image: milano_cafe/assets/missing-background.png");
+    await expect(buildContent(fixture, false)).rejects.toThrow("Missing background image: default_scene/assets/missing-background.png");
   });
   it("accepts a credited shared photo and rejects a missing or ambiguous background asset", async () => {
     // A Milan background without an image (the core default may not use a journey's photo).

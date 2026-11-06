@@ -1,6 +1,11 @@
 {
   "schemaVersion": 1,
   "backgrounds": {
+    "milano_cafe": {
+      "nameJa": "運河沿いのカフェ",
+      "captionJa": "ミラノ ／ 予定のない午後",
+      "color": "#e6d8bb"
+    },
     "milano_walk": {
       "nameJa": "夕暮れの散歩道",
       "captionJa": "ミラノ ／ 日暮れの寄り道",

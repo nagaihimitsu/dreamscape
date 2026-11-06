@@ -21,7 +21,7 @@ const city = (id: string) => json({
 /**
  * Two journeys, `trip_a` (available) and `trip_b` (preparing), with one
  * prototype city each, a background and a progression; the core layer holds
- * a shared background. Just enough for the layer checks and the first catalogs.
+ * the shared default background. Just enough for the layer checks and the first catalogs.
  */
 function files(): Record<string, string | null> {
   const journeys: Record<string, string | null> = {};
@@ -38,7 +38,7 @@ function files(): Record<string, string | null> {
       rewards: [{ id: `${id}_reward`, episodeId: `${id}_episode`, trigger: "episode_clear", ap: 1, minScore: null, titleJa: "見学完了" }] });
   }
   return {
-    "content/romance/presentation.json": json({ schemaVersion: 1, backgrounds: { shared_bg: {} }, memories: {} }),
+    "content/romance/presentation.json": json({ schemaVersion: 1, backgrounds: { default_scene: {} }, memories: {} }),
     "public/assets/items/item.svg": null,
     ...journeys,
   };
@@ -75,6 +75,16 @@ describe("validateContent on sources in memory", () => {
     expect(() => validateContent(load(tree))).toThrow(
       'Reference to another layer: content/journeys/trip_b/travel/b_city-settings.json storyBackgroundAssetId "trip_a_bg" is the background defined in content/journeys/trip_a/romance/presentation.json; a journey folder may only refer to its own content and the core layer.',
     );
+  });
+
+  it("requires the shared default background from the core layer", () => {
+    const missing = "Missing default background: content/romance/presentation.json must define backgrounds.default_scene";
+    const withoutDefault = { ...files(), "content/romance/presentation.json": json({ schemaVersion: 1, backgrounds: {}, memories: {} }) };
+    expect(() => validateContent(load(withoutDefault))).toThrow(missing);
+    // A journey's copy would leave every other journey without it.
+    const inJourney = { ...withoutDefault,
+      [`${journeyFolder("trip_a")}/romance/presentation.json`]: json({ schemaVersion: 1, backgrounds: { trip_a_bg: {}, default_scene: {} } }) };
+    expect(() => validateContent(load(inJourney))).toThrow(missing);
   });
 
   it("rejects a city file the journey's manifest does not list", () => {

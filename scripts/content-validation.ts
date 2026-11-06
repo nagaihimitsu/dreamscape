@@ -12,6 +12,7 @@ import { requireServedFile } from "./public-assets";
 import path from "node:path";
 import type { CatalogKind } from "./content-layout";
 import { displayPath, parseCatalog as parseSourceCatalog, parseSourceFile, requireJourneyManifests, type ContentSources } from "./content-sources";
+import { DEFAULT_BACKGROUND_ID } from "../src/content/default-background";
 import { authoringProfileOf } from "./journey-authoring";
 import { checkContentOwnership } from "./content-ownership";
 import { characterCatalogSchema } from "../src/content/character-assets";
@@ -95,6 +96,11 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   for (const manifest of sources.manifests) authoringProfileOf(manifest.data, manifest.file);
   // Each journey folder keeps to its own cities and content (and the core layer to core content).
   checkContentOwnership(sources);
+  // Every journey falls back to the shared default background, so the core layer provides it.
+  const coreLayer = sources.layers.find((layer) => layer.type === "core")!;
+  if (sources.catalogs["romance/presentation.json"]?.provenance.keys.backgrounds?.[DEFAULT_BACKGROUND_ID] !==
+    path.join(coreLayer.directory, "romance", "presentation.json"))
+    throw new Error(`Missing default background: content/romance/presentation.json must define backgrounds.${DEFAULT_BACKGROUND_ID} (the shared default of every journey)`);
   // The game's static files (root public/ plus every journey's public/), listed by the loader.
   const { publicFiles } = sources;
   const parseCatalog = <T>(schema: { parse(value: unknown): T }, kind: CatalogKind): T => parseSourceCatalog(sources, schema, kind);

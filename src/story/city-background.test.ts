@@ -1,6 +1,7 @@
 import { afterEach, expect, it } from "vitest";
 import { compileInk } from "../../scripts/ink-validation";
 import { getCityContent, getCityStoryBackground, stories } from "../content";
+import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import { beginStory, continueStory } from "./runtime";
 
 const id = "test/city_background";
@@ -17,7 +18,9 @@ VAR heroine_name = ""
   expect(first.frame.background).toBe("milano_duomo");
   const second = continueStory(id, first.storyState, first.frame);
   expect(second.frame.background).toBe("milano_galleria");
-  expect(beginStory(id, "航", "澪").frame.background).toBe("milano_cafe");
+  // Without a city background, a scene starts with the shared default background.
+  expect(beginStory(id, "航", "澪").frame.background).toBe(DEFAULT_BACKGROUND_ID);
+  expect(DEFAULT_BACKGROUND_ID).toBe("default_scene");
 });
 
 it("starts a city's scenes with its story background, else with the place's (or the hotel's) background", () => {
