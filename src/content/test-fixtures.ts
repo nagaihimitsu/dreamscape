@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile, readdir, rm, symlink, writeFile } from "node:fs/promises";
+import { copyFile, cp, mkdir, readFile, readdir, rm, symlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { characterCatalogSchema } from "./character-assets";
 import type { MergedKind } from "../../scripts/content-layout";
@@ -11,7 +11,8 @@ import { loadContentSources, publicRoots } from "../../scripts/content-sources";
  *
  * The images of the journeys (`content/journeys/<journeyId>/public/`, most of
  * the repository's size) are not copied: their folders are real, but each file
- * is a symbolic link to the repository's file. A test may add or remove files
+ * is a symbolic link to the repository's file (a copy where links cannot be
+ * made, see linkFiles). A test may add or remove files
  * there, but must never write over a linked file, since that would change the
  * repository; replace it with replaceFixtureFile. The unit test run checks
  * that no linked image changed (scripts/test-image-guard.ts).
@@ -37,14 +38,27 @@ export async function prepareContentFixture(fixture: string): Promise<void> {
   await writeFile(file, JSON.stringify(catalog));
 }
 
-/** Recreate the folders of `source` at `target`, with a symbolic link to each file. */
-async function linkFiles(source: string, target: string): Promise<void> {
+/**
+ * Recreate the folders of `source` at `target`, with a symbolic link to each
+ * file. Where a link cannot be made (EPERM: Windows without the right to
+ * create links; ENOTSUP: a file system without links) the file is copied
+ * instead: slower, but a copy can never change the repository's file.
+ */
+export async function linkFiles(source: string, target: string, link: (from: string, to: string) => Promise<void> = symlink): Promise<void> {
   await mkdir(target, { recursive: true });
   for (const entry of await readdir(source, { withFileTypes: true })) {
     const from = path.join(source, entry.name);
     const to = path.join(target, entry.name);
-    if (entry.isDirectory()) await linkFiles(from, to);
-    else await symlink(from, to);
+    if (entry.isDirectory()) await linkFiles(from, to, link);
+    else {
+      try {
+        await link(from, to);
+      } catch (error) {
+        const code = (error as NodeJS.ErrnoException).code;
+        if (code !== "EPERM" && code !== "ENOTSUP") throw error;
+        await copyFile(from, to);
+      }
+    }
   }
 }
 

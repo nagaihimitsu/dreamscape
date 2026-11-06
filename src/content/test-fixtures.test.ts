@@ -1,10 +1,10 @@
 import { afterEach, expect, it } from "vitest";
-import { access, lstat, mkdtemp, readFile, readlink, rm, writeFile } from "node:fs/promises";
+import { access, lstat, mkdir, mkdtemp, readFile, readlink, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { resolvePublicFile } from "../../scripts/public-assets";
 import tourismData from "./generated/content/tourism/catalog.json";
-import { prepareContentFixture, replaceFixtureFile } from "./test-fixtures";
+import { linkFiles, prepareContentFixture, replaceFixtureFile } from "./test-fixtures";
 
 let fixture: string | undefined;
 afterEach(async () => {
@@ -46,4 +46,21 @@ it("links the journeys' images into real folders, so a test can add or replace f
   expect((await lstat(fixtureFile)).isSymbolicLink()).toBe(false);
   expect(await readFile(fixtureFile, "utf8")).toBe("not an image");
   expect((await readFile(repositoryFile)).equals(original)).toBe(true);
+});
+
+it("copies the images where symbolic links cannot be made, and reports other errors", async () => {
+  fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-fixture-check-"));
+  const source = path.join(fixture, "source");
+  await mkdir(path.join(source, "assets"), { recursive: true });
+  await writeFile(path.join(source, "assets/spot.webp"), "image");
+  const refuse = (code: string) => async () => {
+    throw Object.assign(new Error(`link refused: ${code}`), { code });
+  };
+  for (const code of ["EPERM", "ENOTSUP"]) {
+    const copy = path.join(fixture, code, "assets/spot.webp");
+    await linkFiles(source, path.join(fixture, code), refuse(code));
+    expect((await lstat(copy)).isSymbolicLink()).toBe(false);
+    expect(await readFile(copy, "utf8")).toBe("image");
+  }
+  await expect(linkFiles(source, path.join(fixture, "other"), refuse("EIO"))).rejects.toThrow("link refused: EIO");
 });

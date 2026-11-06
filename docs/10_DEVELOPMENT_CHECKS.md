@@ -42,7 +42,7 @@
 
 判定はモジュール単位で、関数の呼び出しまでは追わない。そのため `scripts/content-pipeline.ts` は `buildContent` だけを公開し、テストが単独で使う検査関数は軽いモジュールに置く（Inkのコンパイルと会話の検査は `scripts/ink-validation.ts`、クイズ1件の検査は `scripts/quiz-validation.ts`、都市のつながりは `scripts/city-links.ts`）。テストはこれらを直接 `import` すれば `quick` に入る。一方、`buildContent` を読み込む制作ツールのモジュールから純粋な関数だけを使うテストも `content` に入る（2026年11月時点で `src/content/inspect-content.test.ts`、`scripts/journey-authoring.test.ts`、`scripts/journeys/golden_triangle/india-readiness.test.ts`。3ファイル合わせて約1秒）。これらは日常の `test:quick` では実行されないが、`npm test`・`npm run verify`・CIでは実行される。モジュール単位の判定は、読み込むだけで使わない場合も `content` に数えるため、生成を呼ぶテストが `quick` に入ることはない。ただし、子プロセスで生成を実行するテストや、変数で指定した `import()` はたどれないので、そうしたテストは作らない。
 
-`prepareContentFixture` は `content/` と `public/` を一時フォルダへ写すが、各旅行編の画像（`content/journeys/<journeyId>/public/` のファイル。リポジトリの大半の容量）は写さず、フォルダだけを作って各ファイルへのシンボリックリンクを置く。テストはそこへファイルを追加・削除してよいが、リンクされたファイルへ上書きするとリポジトリの画像が変わるため、差し替えは `replaceFixtureFile` を使う。単体テストの実行の前後で各旅行編の画像の大きさと更新時刻を比べ、変わっていれば実行全体を失敗にする（`scripts/test-image-guard.ts`）。
+`prepareContentFixture` は `content/` と `public/` を一時フォルダへ写すが、各旅行編の画像（`content/journeys/<journeyId>/public/` のファイル。リポジトリの大半の容量）は写さず、フォルダだけを作って各ファイルへのシンボリックリンクを置く（リンクを作れない環境、たとえばリンク作成の権限がないWindowsでは、ファイルをコピーする。遅くなるが結果は同じ）。テストはそこへファイルを追加・削除してよいが、リンクされたファイルへ上書きするとリポジトリの画像が変わるため、差し替えは `replaceFixtureFile` を使う。単体テストの実行の前後で各旅行編の画像の大きさと更新時刻を比べ、変わっていれば実行全体を失敗にする（`scripts/test-image-guard.ts`）。失敗の表示には、変わったファイルと、最後にコミットした版へ戻すコマンド（`git checkout -- <ファイル>`）が出る。テストが追加したファイルは削除する。まだコミットしていない画像や、コミット後に編集した画像はgitから戻せないため、画像を追加・編集したら単体テストの前にコミットしておく。
 
 所要時間（4コアの開発環境で計測、2026年11月）：
 
