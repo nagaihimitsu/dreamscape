@@ -120,6 +120,55 @@ function inkTagReferences(source: string): Reference[] {
     .map(([, tag, id]) => ref(tag === "background" ? "background" : "effect", `#${tag}`, id));
 }
 
+/** A served image (a path below public/, e.g. `assets/tourism/x.webp`) that a content file refers to. */
+export type ImageReference = { file: string; label: string; field: string; path: string };
+
+/** Image fields of an array element (`key`) or a record entry of a catalog: [field, path] pairs. */
+const IMAGE_FIELDS: Partial<Record<MergedKind, Record<string, (entry: Entry) => [string, unknown][]>>> = {
+  "encounters/catalog.json": { items: (entry) => [["iconPath", entry.iconPath]] },
+  "presentation/characters.json": {
+    characters: (entry) => [
+      ["imagePath", entry.imagePath],
+      ...list(entry.variants).map((variant, index): [string, unknown] => [`variants[${index}].imagePath`, variant.imagePath]),
+      ...list(entry.costumes).flatMap((costume) => list(costume.poses).flatMap((pose) =>
+        Object.entries(isObject(pose.expressions) ? pose.expressions : {}).map(([expression, imagePath]): [string, unknown] =>
+          [`costumes["${String(costume.id)}"].poses["${String(pose.id)}"].expressions.${expression}`, imagePath]))),
+    ],
+  },
+  "romance/presentation.json": { backgrounds: (entry) => [["imagePath", entry.imagePath]] },
+  "tourism/catalog.json": { assets: (entry) => [["path", entry.path]] },
+};
+
+/**
+ * Every served image the loaded content names, with the layer file that
+ * names it: catalog image fields and each manifest's title art. Values that
+ * are not strings are left to the schemas.
+ */
+export function imageReferences(sources: Pick<ContentSources, "catalogs" | "manifests">): ImageReference[] {
+  const images: ImageReference[] = [];
+  const add = (file: string, label: string, pairs: [string, unknown][]) => {
+    for (const [field, value] of pairs) if (typeof value === "string") images.push({ file, label, field, path: value });
+  };
+  for (const [kind, keys] of Object.entries(IMAGE_FIELDS) as [MergedKind, Record<string, (entry: Entry) => [string, unknown][]>][]) {
+    const merged = sources.catalogs[kind];
+    if (!merged) continue;
+    for (const [key, fieldsOf] of Object.entries(keys)) {
+      const value = (merged.value as Entry)[key];
+      if (Array.isArray(value))
+        value.forEach((entry, index) => {
+          if (isObject(entry))
+            add(merged.provenance.items[key][index], `${key}[${typeof entry.id === "string" ? `"${entry.id}"` : index}]`, fieldsOf(entry));
+        });
+      else if (isObject(value))
+        for (const [recordKey, entry] of Object.entries(value))
+          if (isObject(entry)) add(merged.provenance.keys[key][recordKey], `${key}.${recordKey}`, fieldsOf(entry));
+    }
+  }
+  for (const manifest of sources.manifests)
+    if (isObject(manifest.data.titleArt)) add(manifest.file, "", [["titleArt.imagePath", manifest.data.titleArt.imagePath]]);
+  return images;
+}
+
 /**
  * Check that every layer keeps to its own content (spec: ownership checks).
  * - A city file in a journey folder must be listed in that journey's manifest.
@@ -132,8 +181,9 @@ function inkTagReferences(source: string): Reference[] {
  *   battles, quizzes, backgrounds, images, memories, effects, …) must be
  *   defined in the same layer or in the core layer; the core layer may refer
  *   only to core content.
- * - A manifest's title art image is served from the journey's own public/
- *   folder or the root public/.
+ * - Images (tourism images, backgrounds, item icons, character images, a
+ *   manifest's title art) are served from the journey's own public/ folder or
+ *   the root public/; the core layer uses only the root public/.
  * Throws one error listing every violation with the files involved. Works on
  * the loaded sources only (no file is read).
  */
@@ -282,14 +332,19 @@ export function checkContentOwnership(sources: ContentSources): void {
     for (const event of list(travel.events))
       checkReferences(city.travelFile, `events["${String(event.id)}"]`, [...fields(event, "city", ["cityId"]), ref(EVENT, "id", event.id)]);
   }
-  // A journey's title art is served from its own public/ folder or the root public/.
-  for (const manifest of sources.manifests) {
-    const imagePath = isObject(manifest.data.titleArt) ? manifest.data.titleArt.imagePath : undefined;
-    const file = typeof imagePath === "string" ? servedFile(sources.publicFiles, imagePath) : undefined;
-    const owner = file && sources.layers.find((layer) => layer.type === "journey" && file.startsWith(path.join(layer.directory, "public") + path.sep));
-    if (owner && owner.id !== manifest.id)
-      errors.push(`Reference to another layer: ${show(manifest.file)} titleArt.imagePath "${imagePath}" is the image of ${show(file)}; ` +
-        "a journey folder may only refer to its own content and the core layer.");
+  // Images are served from the data's own journey public/ folder or the root public/ (core data: the root one only).
+  const servedOwner = (file: string) =>
+    sources.layers.find((layer) => layer.type === "journey" && file.startsWith(path.join(layer.directory, "public") + path.sep));
+  for (const image of imageReferences(sources)) {
+    const served = servedFile(sources.publicFiles, image.path);
+    const owner = served && servedOwner(served);
+    const layer = layerOf(image.file);
+    if (!owner || owner.id === layer.id) continue;
+    const scope = layer.type === "core"
+      ? "the core layer may only use images of the root public/ folder"
+      : "a journey folder may only use images of its own public/ folder and the root public/ folder";
+    errors.push(`Reference to another layer: ${show(image.file)}${image.label ? ` ${image.label}` : ""} ${image.field} "${image.path}" ` +
+      `is the image of ${show(served)}; ${scope}.`);
   }
   for (const quiz of quizzes)
     if (isObject(quiz.data)) checkReferences(quiz.file, "", [...fields(quiz.data, "landmark", ["landmarkId"]), ...fields(quiz.data, "city", ["cityId"])]);
