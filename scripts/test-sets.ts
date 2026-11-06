@@ -51,24 +51,37 @@ function resolveLocal(from: string, specifier: string): string | undefined {
  */
 export function splitTestFiles(root: string, files: readonly string[]): { quick: string[]; content: string[] } {
   const targets = new Set(contentBuildModules.map((file) => path.join(root, file)));
-  const reaches = new Map<string, boolean>();
-  const reachesContentBuild = (file: string, visiting: Set<string>): boolean => {
-    if (targets.has(file)) return true;
-    const known = reaches.get(file);
-    if (known !== undefined) return known;
-    // An import cycle adds nothing new; the first visit decides.
-    if (visiting.has(file)) return false;
-    visiting.add(file);
-    const result = runtimeImports(readFileSync(file, "utf8"))
-      .map((specifier) => resolveLocal(file, specifier))
-      .some((target) => target !== undefined && reachesContentBuild(target, visiting));
-    visiting.delete(file);
-    reaches.set(file, result);
-    return result;
+  const importsOf = new Map<string, string[]>();
+  const localImports = (file: string): string[] => {
+    let known = importsOf.get(file);
+    if (!known) {
+      known = runtimeImports(readFileSync(file, "utf8"))
+        .map((specifier) => resolveLocal(file, specifier))
+        .filter((target): target is string => target !== undefined);
+      importsOf.set(file, known);
+    }
+    return known;
+  };
+  // Every test file walks the import graph with its own visited set, so the
+  // answer does not depend on the order of the files or on import cycles. Only
+  // the parsed imports are shared between the walks.
+  const reachesContentBuild = (start: string): boolean => {
+    const visited = new Set([start]);
+    const pending = [start];
+    while (pending.length) {
+      const file = pending.pop()!;
+      if (targets.has(file)) return true;
+      for (const next of localImports(file)) {
+        if (visited.has(next)) continue;
+        visited.add(next);
+        pending.push(next);
+      }
+    }
+    return false;
   };
   const quick: string[] = [];
   const content: string[] = [];
-  for (const file of files) (reachesContentBuild(path.join(root, file), new Set()) ? content : quick).push(file);
+  for (const file of files) (reachesContentBuild(path.join(root, file)) ? content : quick).push(file);
   return { quick, content };
 }
 

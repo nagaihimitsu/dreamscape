@@ -56,6 +56,20 @@ describe("unit test sets", () => {
     });
   });
 
+  it("finds the content build through an import cycle whatever the order of the files", () => {
+    root = mkdtempSync(path.join(tmpdir(), "dreamscape-test-sets-"));
+    write("scripts/content-pipeline.ts", "export const buildContent = () => {};\n");
+    // a and b import each other; only a reaches the build (through c).
+    write("src/x/a.ts", 'import { b } from "./b";\nimport { c } from "./c";\nexport const a = [b, c];\n');
+    write("src/x/b.ts", 'import { a } from "./a";\nexport const b = () => a;\n');
+    write("src/x/c.ts", 'import { buildContent } from "../../scripts/content-pipeline";\nexport const c = buildContent;\n');
+    write("src/x/a.test.ts", 'import { a } from "./a";\n');
+    write("src/x/b.test.ts", 'import { b } from "./b";\n');
+    const files = ["src/x/a.test.ts", "src/x/b.test.ts"];
+    expect(splitTestFiles(root, files)).toEqual({ quick: [], content: files });
+    expect(splitTestFiles(root, [...files].reverse())).toEqual({ quick: [], content: [...files].reverse() });
+  });
+
   it("splits every repository test into exactly one set, with the content builds in the content set", () => {
     const files = listTestFiles(repository);
     const { quick, content } = splitTestFiles(repository, files);
