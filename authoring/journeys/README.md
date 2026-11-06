@@ -24,4 +24,4 @@
 | インド編専用の `scripts/*.ts`（`inspect-india-transit.ts` など） | `scripts/journeys/golden_triangle/` |
 | 削除したE2E（`tests/e2e/city-arrival.spec.ts` など） | 現在のE2Eは [開発時の確認](../../docs/10_DEVELOPMENT_CHECKS.md#e2eテスト) を参照 |
 
-調査フォルダに残るPythonの取得・組み立てスクリプトは当時の書き込み先（`public/assets/…`、`content/…`）を使うため、実行すると冒頭の確認で停止します。
+当時の配置のパス（`public/assets/…`、`content/…`、`authoring/research/…`）を読み書きする調査スクリプト（ウズベキスタン編サマルカンドの `download-selected.py`・`assemble-city.py`、インド編の `walk-network/exploratory_profile.py`）は、実行すると冒頭で理由を表示して停止します。調査記録の `source/` にある原本のスクリプトは、その資料フォルダの中だけを読み書きするため、手を加えずに残しています。
