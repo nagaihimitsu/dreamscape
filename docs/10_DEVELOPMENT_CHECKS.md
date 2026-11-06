@@ -48,14 +48,15 @@
 
 | 確認 | 以前 | 現在 |
 | --- | --- | --- |
-| `npm run content:build` | 約15.5秒 | 約14.6秒 |
-| `npm run test:quick`（生成を含む） | （組がなかった。同じテストファイルを指定すると約48秒） | 約43秒 |
+| `npm run content:build` | 約15.5〜16.3秒 | 約15.0〜16.0秒（交互に5回ずつ計測し、毎回0.3〜0.7秒短い。観光画像の検査を1回にまとめた分で、ほぼ同じ） |
+| `npm run test:quick`（生成を含む） | （組がなかった。同じテストファイルを指定すると約48秒） | 約44秒（109ファイル） |
 | 全単体テスト（`npx vitest run`、生成を除く） | 約610秒 | 約395秒 |
 
 - 時間の長いファイルはすべて `content` の組にある：`scripts/city-bundle*.test.ts` の4ファイル（各約100〜190秒）、`src/content/content.test.ts`（約160秒）、`src/content/city-content.test.ts`・`src/content/journey-content.test.ts`・`scripts/journey-folders.test.ts`（各約70〜90秒）。`quick` の組で最も長いのは `scripts/journey-scenario-validation.test.ts`（約14秒）。
 - 全単体テストの時間は、各テストが一時コピーで生成を繰り返す作業の合計（約1,400〜1,500秒分）を、同時に動くワーカーの数で割った長さにほぼ等しい。1回の生成（約15秒）のうち約12秒は会話の全分岐の検査（`validateStory`。1回の生成で212回）で、Inkのコンパイルは約1秒、観光画像の検査は約0.1秒。単体テスト一式では `validateStory` が約18,000回呼ばれ、全ワーカーの作業時間（約1,470秒分）の約7割（約1,070秒分）を占める。
 - ワーカーはCPUのコア数だけ使う（`vite.config.ts` の `maxWorkers`）。1つのファイルの中のテストは順に実行されるため、極端に長いファイルは分けて、別々のワーカーで並列に動くようにする（`scripts/city-bundle*.test.ts` は1つのファイルだったときに約610秒かかり、全体の待ち時間を決めていたため4つに分けた）。
 - 計測は `npx vitest run --reporter=dot --reporter=json --outputFile.json=<出力先>.json`（先に `content:build`）で、JSONの各ファイルの `startTime`・`endTime` を比べる。
+- 制作ツール（`city:bundle`・`journey:release`）は、検証中に入力が変わっていないことを確かめるため、`content/` と `public/` の全ファイルの指紋（`journeyInputFingerprint`）を取る。1回約80〜110ミリ秒（約73MBを読む）で、ツールの実行時間に比べて小さい。生成と検証は全旅行編を統合した結果に対して行うため、指紋を対象の旅行編だけに絞ると、別の旅行編での同時編集（IDの重複など）を見逃す。このため絞り込みは行わない（2026年11月に判断）。画像を内容ではなくパス・大きさ・更新時刻で比べて読む量を減らす案は、制作ツールの手直しの際に検討する。
 
 ## E2Eテスト
 
