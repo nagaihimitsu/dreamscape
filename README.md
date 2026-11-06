@@ -177,7 +177,7 @@ B/C戦の戦績と途中状態は保存します。反論とカットインは�
 
 素材の確認は `npm run dev` を起動し、表示されたURLに `?character-preview` を付けて開きます。衣装・ポーズ・表情、明暗背景、台詞枠を切り替え、基準線と見比べながら差分の顔や足元、透過の縁を確認できます。「全体を確認」と「ゲーム中の配置」を切り替えて表示範囲を確認できます。未制作の差分と画像の読み込みエラーは区別して表示します。プレビューは開発サーバー専用で、ゲームのセーブやAPには触れません。
 
-会話用の背景画像は各旅行編の `romance/presentation.json`（例: [ミラノ編](content/journeys/milano/romance/presentation.json)。共通の既定背景 `milano_cafe` は [`content/romance/presentation.json`](content/romance/presentation.json)）の各背景に任意の `imagePath`（配信時の `assets/` 以下のパス。画像の置き場所は下記）を追加して差し替えます。未登録・読込失敗時は既存の仮背景を表示し、観察用画像には影響しません。会話窓の色・透明度・角丸・余白・文字サイズなどは [`romance-scene.css`](src/features/romance/romance-scene.css) 冒頭の `--vn-*` でまとめて調整できます。背景・人物・テーマ・ウィンドウ表示は進行中のInkやクイズの指紋を変更しません。
+会話用の背景画像は各旅行編の `romance/presentation.json`（例: [ミラノ編](content/journeys/milano/romance/presentation.json)。共通の既定背景 `default_scene`「旅の余白」は [`content/romance/presentation.json`](content/romance/presentation.json)）の各背景に任意の `imagePath`（配信時の `assets/` 以下のパス。画像の置き場所は下記）を追加して差し替えます。未登録・読込失敗時は既存の仮背景を表示し、観察用画像には影響しません。タイトル画面の絵は旅行編ごとに `manifest.json` の任意の `titleArt`（画像・説明・切り抜き位置）で指定し、ない旅行編は既定背景の色だけの場面を表示します。推奨サイズ（1760×560px）と安全域は [技術構成](docs/02_TECH_ARCHITECTURE.md#既定背景とタイトルの絵) にあります。会話窓の色・透明度・角丸・余白・文字サイズなどは [`romance-scene.css`](src/features/romance/romance-scene.css) 冒頭の `--vn-*` でまとめて調整できます。背景・人物・テーマ・ウィンドウ表示は進行中のInkやクイズの指紋を変更しません。
 
 会話・選択肢・戦闘画面はPlaywrightのChromiumで360×780、430×932、1280×800、横向き780×360を確認しました（現在の自動E2Eは主要機能の動作確認に絞り、画面幅ごとの表示は実画面で確認します）。長い英文や対訳は縦にスクロールして読めます。実機Safariでは未確認です。
 
@@ -194,7 +194,7 @@ B/C戦の戦績と途中状態は保存します。反論とカットインは�
 ```
 content/                          # 共通データ（全旅行編で共有：恋愛の段階・数値、共通デート効果、既定背景、辞書、人物）
   journeys/<旅行編ID>/            # 旅行編フォルダ（フォルダ名＝旅行編ID）
-    manifest.json                 # 登録（名前・並び順 order・公開状態・都市の順序・通貨・初期値）
+    manifest.json                 # 登録（名前・並び順 order・公開状態・都市の順序・通貨・初期値・任意のタイトルの絵）
     cities/ travel/               # 都市・都市内の地点と移動
     stories/**/*.ink quizzes/     # 会話とクイズ
     battles/ progression/ romance/ tourism/ encounters/ learning/ presentation/  # 各カタログ（必要なものだけ）
