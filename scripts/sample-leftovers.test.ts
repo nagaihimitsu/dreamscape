@@ -1,0 +1,55 @@
+import path from "node:path";
+import { describe, expect, it } from "vitest";
+import { journeysDirectory } from "./content-layout";
+import { journeyFolderFiles, readSampleJourney, sampleLeftovers, sampleMarks, SAMPLE_SOURCE_URL } from "./sample-journey";
+
+// What journey:readiness counts as sample content left in a journey copied
+// from the sample (journey:new): example.com sources, the sample's images and
+// its texts, compared whole, without shared phrasing or the scripts' comments.
+
+const sample = readSampleJourney();
+const files = (entries: Record<string, string | Buffer>) =>
+  new Map(Object.entries(entries).map(([file, data]): [string, Buffer] => [file, Buffer.isBuffer(data) ? data : Buffer.from(data)]));
+const json = (value: unknown) => JSON.stringify(value);
+const sampleLine = sample.files.get("stories/tourism/smp_mihon_clock_tower_guide.ink")!.toString("utf8").split("\n")
+  .find((line) => line.startsWith("「止まってるんだ。"))!;
+
+describe("sample leftovers", () => {
+  it("finds every kind in the sample itself, and nothing in the repository's journeys", () => {
+    const kinds = new Set(sampleLeftovers(sample.files).map((leftover) => leftover.kind));
+    expect([...kinds].sort()).toEqual(["image", "source", "text"]);
+    expect(sampleMarks().imageHashes.size).toBe([...sample.files.keys()].filter((file) => file.startsWith("public/")).length);
+    for (const id of ["milano", "golden_triangle", "uzbekistan", "luang_prabang"])
+      expect(sampleLeftovers(journeyFolderFiles(path.join(journeysDirectory(path.resolve(".")), id))), id).toEqual([]);
+  });
+
+  it("counts example.com sources, sample images and whole sample texts per file", () => {
+    const image = sample.files.get("public/assets/tourism/sample_trip/mihon_market.png")!;
+    expect(sampleLeftovers(files({
+      "quizzes/q.json": json({ sources: [{ url: SAMPLE_SOURCE_URL }, { url: "https://www.example.com/other" }, { url: "https://example.com.evil.jp/" }] }),
+      "public/assets/tourism/kyoto/market.png": image,
+      "public/assets/tourism/kyoto/new.png": Buffer.concat([image, Buffer.from([0])]),
+      "stories/tourism/guide.ink": `// ${sampleLine}\n${sampleLine}\n  ${sampleLine}\n「止まってるんだ。」\n`,
+      "romance/presentation.json": json({ backgrounds: { a: { nameJa: "見本の宿", captionJa: "時計塔の広場" } } }),
+      "CHECKLIST.md": sampleLine,
+    }))).toEqual([
+      { file: "public/assets/tourism/kyoto/market.png", kind: "image", count: 1 },
+      { file: "quizzes/q.json", kind: "source", count: 2 },
+      // 見本 marks the sample's names; a short unmarked name (時計塔の広場) may be real.
+      { file: "romance/presentation.json", kind: "text", count: 1 },
+      // The rules in `//` comments may stay; whole lines only.
+      { file: "stories/tourism/guide.ink", kind: "text", count: 2 },
+    ]);
+  });
+
+  it("leaves shared phrasing alone: word meanings, reward titles and the currency", () => {
+    const words = sample.files.get("learning/word-meanings.json")!;
+    const rewards = JSON.parse(sample.files.get("progression/journey.json")!.toString("utf8")).rewards;
+    const manifest = JSON.parse(sample.files.get("manifest.json")!.toString("utf8"));
+    expect(sampleLeftovers(files({
+      "learning/word-meanings.json": words,
+      "progression/journey.json": json({ episodes: [], rewards }),
+      "manifest.json": json({ id: "kyoto_trip", nameJa: "京都の旅", currency: manifest.currency }),
+    }))).toEqual([]);
+  });
+});

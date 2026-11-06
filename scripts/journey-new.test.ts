@@ -1,10 +1,10 @@
-import { cpSync, existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import sharp from "sharp";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { journeyCatalogSchema } from "../src/content/journey-catalog";
-import { MIRROR_DIRECTORY, SAMPLE_JOURNEY_DIRECTORY, journeyDirectory, journeysDirectory } from "./content-layout";
+import { MIRROR_DIRECTORY, journeyDirectory, journeysDirectory } from "./content-layout";
 import { buildContent } from "./content-pipeline";
 import { listFiles } from "./content-sources";
 import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readiness";
@@ -102,6 +102,13 @@ describe("journey:new copy of the sample", () => {
     expect(full.get(CHECKLIST_FILE)!.toString("utf8")).toContain("- [ ] `quizzes/ky_kyoto_market_b_quiz.json` — 任意の部分「特殊戦B（矛盾追及）」");
     expect(optionalFiles.length).toBe(full.size - minimal.size);
   });
+
+  it("replaces the sample's names only where they stand alone or between separators", () => {
+    const words = { a: "smp_mihon_x", b: "epilogues/mihon", c: "smpx", d: "mihonia", e: "xmihon", f: "sample_trips", g: "Mihon Inn", h: "assets/tourism/sample_trip/a-mihon.png" };
+    const files = scaffoldJourney({ ...sample, files: new Map([...sample.files, ["extra.json", Buffer.from(JSON.stringify(words))]]) },
+      { ...kyoto, withOptional: true, order: 50 }, checklist);
+    expect(json(files, "extra.json")).toEqual({ ...words, a: "ky_kyoto_x", b: "epilogues/kyoto", h: "assets/tourism/kyoto_trip/a-kyoto.png" });
+  });
 });
 
 /** A rewrite that keeps the structure: a mark in every Japanese text, other source URLs, new images, no placeholders. */
@@ -187,10 +194,4 @@ describe("journey:new in a copy of the repository", () => {
     await prepareJourneyRelease(root, "kyoto_trip", false);
     expect(readFileSync(path.join(journeyDirectory(root, "kyoto_trip"), "manifest.json"), "utf8")).toBe(manifest);
   }, 120_000);
-
-  it("never reports the repository's journeys or the sample itself", () => {
-    for (const id of ["milano", "golden_triangle", "uzbekistan", "luang_prabang"])
-      expect(loadJourneyReadiness(repository, id).sampleLeftovers, id).toEqual([]);
-    expect(existsSync(path.join(repository, SAMPLE_JOURNEY_DIRECTORY))).toBe(true);
-  });
 });
