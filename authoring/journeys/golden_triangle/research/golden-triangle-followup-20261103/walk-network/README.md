@@ -1,5 +1,7 @@
 # アーグラ歩行ネットワーク試算（制作資料）
 
+> 記録の注記：本文のパス・コマンドは作成当時の配置のままです。現在、この旅行編のデータは `content/journeys/golden_triangle/`、制作資料は `authoring/journeys/golden_triangle/` にあります（[旧配置との対応表](../../../../README.md#当時の配置と現在の配置)）。
+
 2026-11-03に、Geofabrikが配布した[OpenStreetMapのCentral Zone抽出](https://download.geofabrik.de/asia/india/central-zone-261102.osm.pbf)（データ日2026-11-02）を取得し、既存研究の歩行グラフ計算器でアーグラ市街の候補を計算した。OpenStreetMap contributorsへの帰属と[ODbLの条件](https://www.openstreetmap.org/copyright)を維持する。元PBFのSHA-256、抽出XMLのSHA-256、対象範囲と集計は [metadata.json](metadata.json) に記録した。PBF・抽出XML・経路形状はリポジトリに含めていない。
 
 対象は既存の `core_routing_points.csv` にある**7地点**で、7×7の49行。アーグラの候補全11地点を網羅しない。ファテープル・シークリー、アクバル廟、マリアム廟、グル・カ・タールの4地点は今回の範囲外であり、経路が存在しないことや徒歩で行けないことを意味しない。デリー・ジャイプールも今回未計算である。

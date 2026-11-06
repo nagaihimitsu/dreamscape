@@ -4,6 +4,7 @@
 
 | 変更 | 主な確認 |
 | --- | --- |
+| 文書（Markdown）の追加・移動・リンク | `npx vitest run scripts/docs-links.test.ts`（生成不要。Git管理下の全Markdownの相対リンク先が存在するかを検査する。新しいファイルは `git add` 後に対象になる） |
 | 誤字・会話文 | Ink・JSONの変更は `npm run content:check` と必要な会話経路の実表示。型やUIコードにも影響する場合は型検査や対象テストを追加 |
 | 画像・背景 | `npm run content:check`、対象画面の実表示と必要な画像失敗時の表示。画像の配置・パスを変えた場合はE2E一式（`npm run test:e2e`）も実行 |
 | CSS・UIの小変更 | 対象操作とスマートフォン幅の実画面。共通UIや型・操作への影響に応じて `npm run typecheck` やE2E一式を追加 |
