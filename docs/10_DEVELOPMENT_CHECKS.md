@@ -9,7 +9,8 @@
 | 画像・背景 | `npm run content:check`、対象画面の実表示と必要な画像失敗時の表示。画像の配置・パスを変えた場合はE2E一式（`npm run test:e2e`）も実行 |
 | CSS・UIの小変更 | 対象操作とスマートフォン幅の実画面。共通UIや型・操作への影響に応じて `npm run typecheck` やE2E一式を追加 |
 | ゲームルール | 該当ドメインテストと必要な画面操作。型・共通進行への影響があれば型検査と関連テストを追加 |
-| 旅行編フォルダの追加・削除、統合規則・生成処理の変更 | `npm run content:build`、`npx vitest run scripts/journey-folders.test.ts scripts/content-sources.test.ts scripts/catalog-merge.test.ts scripts/content-ownership.test.ts scripts/content-validation.test.ts scripts/content-report.test.ts`（先に `content:build`）、E2E一式（`boot.spec.ts` が登録済みの全旅行編の開始画面を開く） |
+| 旅行編フォルダの追加・削除、統合規則・生成処理の変更 | `npm run content:build`、`npx vitest run scripts/journey-folders.test.ts scripts/content-sources.test.ts scripts/catalog-merge.test.ts scripts/content-ownership.test.ts scripts/content-validation.test.ts scripts/content-report.test.ts scripts/sample-journey.test.ts`（先に `npm run content:build -- --with-sample`）、E2E一式（`boot.spec.ts` が登録済みの全旅行編の開始画面を開く） |
+| 見本の編（`authoring/templates/sample_trip/`）・データの書式（スキーマ）の変更 | `npx vitest run scripts/sample-journey.test.ts src/domain/sample-journey-route.test.ts`（先に `npm run content:build -- --with-sample`）。必須項目が増えたときは、まず見本のテストが失敗して知らせる。見本の README の一覧と必須ファイルのエラーも直す。`npm run dev:sample` で実際に遊べる |
 | 保存・進行 | 同一バージョン内の保存・再開、読めないデータの保護、明示消去、別タブ、報酬重複防止の関連テストとE2E一式、必要な実画面。型・共通基盤の影響に応じて型検査と検証範囲を広げる |
 | CI・Playwrightの設定、本番ビルドの検査（`.github/workflows/`・`playwright.config.ts`・`scripts/dist-guard.ts`） | `npm run build`（`dist/` の検査を含む）、`npx vitest run scripts/dist-guard.test.ts`、E2E一式。ワークフローの変更はPRで実際の実行結果を確認する |
 | 単体テストの設定・テストの組・テスト用フィクスチャ（`vite.config.ts` の `test`・`scripts/test-sets.ts`・`scripts/test-image-guard.ts`・`src/content/test-fixtures.ts`） | `npx vitest run scripts/test-sets.test.ts scripts/test-image-guard.test.ts src/content/test-fixtures.test.ts`（先に `content:build`）、`npm test`（両方の組） |
@@ -20,11 +21,13 @@
 
 小変更のたびに全単体テストや全E2Eを手元で実行する必要はない。日常の単体テストは `npm run test:quick`（速い組。[単体テストの組](#単体テストの組と所要時間)）とし、全件（`npm test`）はCIと、公開前・大きな変更の `npm run verify` で実行する。PRと `main` へのpushでは、GitHub Actionsが全単体テスト・本番ビルド・E2E一式を自動実行する（[CI](#cigithub-actions)）。上の表でE2E一式を挙げた変更は、PRを出す前に手元でも実行する。開発中はv12以前の旧開発版セーブの更新後の再開を保証せず、旧互換テストを新機能ごとに増やす必要はない。現在のゲームの保存・再開や読めないデータの保護は維持する。
 
-`npm test` と `npm run build` はそれぞれ実行前にコンテンツを生成する。`npm run verify` は生成、全ユニットテスト、型検査、製品ビルド、`dist/` の検査を順に行う一括用コマンドで、生成は一度だけ行う。この生成は会話の全分岐検査のキャッシュを使わずにすべて検査する（`content:build -- --no-cache`。[キャッシュ](#会話の全分岐検査のキャッシュ)）。この中の `npm run test --ignore-scripts` は直前の生成を利用して `pretest` のみ省略している。個別に `--ignore-scripts` を付ける、または `npx vitest run` を直接呼ぶ場合は自動生成されないため、Ink・JSON等を変更した後は事前に `npm run content:build` を実行する。生成物の鮮度が分からない場合も再生成する。
+`npm test`・`npm run test:quick` と `npm run build` はそれぞれ実行前にコンテンツを生成する。単体テストの前の生成は見本の編を含め（`npm run content:build -- --with-sample`。[見本の編](02_TECH_ARCHITECTURE.md#見本の編)）、`npm run build` と `npm run dev` の前の生成は含めない。`npm run verify` は、見本を含めた生成、全ユニットテスト、`npm run build`（見本なしの生成、型検査、製品ビルド、`dist/` の検査）を順に行う一括用コマンドで、生成は2回行う。最初の生成は会話の全分岐検査のキャッシュを使わずにすべて検査する（`content:build -- --no-cache --with-sample`。[キャッシュ](#会話の全分岐検査のキャッシュ)）。この中の `npm run test --ignore-scripts` は直前の生成を利用して `pretest` のみ省略している。個別に `--ignore-scripts` を付ける、または `npx vitest run` を直接呼ぶ場合は自動生成されないため、Ink・JSON等を変更した後は事前に `npm run content:build -- --with-sample` を実行する。見本の編を前提とするテスト（`src/domain/sample-journey-route.test.ts` など）は、見本なしで生成した後に実行すると、このコマンドを案内して失敗する。生成物の鮮度が分からない場合も再生成する。
 
 ゲームと、データを参照するだけの単体テストは `content/` のJSONを直接読まず、`npm run content:build` が検証・統合して書き出す `src/content/generated/content/`（生成物。手動編集しない）を読む。JSONを編集した後も `npm run content:build` を実行する。一方、原本を一時フィクスチャへ写して書き換え、生成を検証するテスト（`src/content/*-content.test.ts` など）と制作ツールは `content/`（旅行編フォルダを含む）の原本を読む。画像も同様に、`npm run content:build` が直下の `public/` と各旅行編の `public/` を `src/content/generated/public/` にまとめ、開発サーバー・`vite build`・Playwrightはこのフォルダを配信する（`npm run dev` / `build` / `test` は先に `content:build` を実行する）。`vite`（`npx vite`・`vite build`・`vite preview`）を直接起動する場合は、先に `npm run content:build` を実行する。このフォルダがないと、画像なしで起動・ビルドされる（警告は出ない）。
 
-`scripts/journey-folders.test.ts` は、原本の一時コピーで旅行編フォルダの改名・追加（`tests/fixtures/journeys/zz_fixture_trip/`）・各旅行編フォルダの除外を行い、そのたびに `content:build` 相当の生成と検証を実行する（約1分、旅行編が増えるほど長くなる）。特定の旅行編・都市の内容を確かめる単体テストは、全旅行編の合計件数や一覧ではなく、その旅行編・都市の範囲に絞って数える。
+`scripts/journey-folders.test.ts` は、原本の一時コピーで旅行編フォルダの改名・追加（見本の編 `authoring/templates/sample_trip/` を写す）・各旅行編フォルダの除外を行い、そのたびに `content:build` 相当の生成と検証を実行する（約1分、旅行編が増えるほど長くなる）。特定の旅行編・都市の内容を確かめる単体テストは、全旅行編の合計件数や一覧ではなく、その旅行編・都市の範囲に絞って数える。単体テストの生成物には見本の編（公開中、都市 `mihon`）が加わるため、リポジトリの生成物と一時コピーの生成結果を比べるテストは、一時コピー自身の生成結果（`buildContent` の戻り値や一時コピーの生成物）どうしを比べる。
+
+`src/content/index.ts` は都市・移動のファイルを `import.meta.glob` で集める。Vitestは変換したモジュールをディスクに保存して次回も使う（`node_modules/.vitest-cache`）が、本文に `import.meta.glob(` を含むモジュールだけは保存しない。型引数を付けた `import.meta.glob<T>(` はこの判定をすり抜け、生成で都市が増減しても古い一覧が使われる（見本の編を含めた生成の後に `Unknown city: mihon` になる）ため、型引数は付けない（`src/content/city-registry.test.ts` が検査する）。古い変換結果が疑わしいときは `npx vitest --clearCache` で消せる。
 
 テストは簡潔な dot レポーターを使い、成功したテスト内のログを省略する。失敗したテストのログ、失敗箇所、終了コードは保持する。内容を詳しく追う場合は、生成後に `npx vitest run --reporter=verbose <対象>` とする。通常のコンテンツ生成は、旧会話注釈の警告と内容の警告（旅行編フォルダの読み込まれないファイル、参照されない配信ファイル、接頭辞のないID。[技術設計](02_TECH_ARCHITECTURE.md#生成時の検査と報告)）を件数で示し、個々の警告は `npm run content:build -- --verbose` で確認できる。警告は生成・単体テスト・CI・`verify`・公開のいずれも止めない（旅行編フォルダに置いたままのメモやエディタの控えファイルがあっても `test:quick` は通る）。成功時の最後には旅行編ごとに1行、そのフォルダが持つ都市・ストーリー・クイズ・配信ファイルと各カタログの項目の数が出る。どの英文にも使われない語の意味があれば、その数も出る（一覧は `--verbose`）。生成に失敗した場合は旧会話注釈の警告の詳細と原因を表示し、失敗のまま終了する。
 
@@ -127,8 +130,8 @@ GitHub Actionsは次のワークフローを実行する。同じイベントで
 
 ### 本番ビルドの検査
 
-`npm run build` と `npm run verify` は、`vite build` の後に `npm run dist:check`（`scripts/check-dist.ts`）で `dist/` を検査する。Debug・人物素材のプレビュー（`src/dev/`）、テスト用の仮データ（`*-test-fixture.ts`・`tests/fixtures/`）、自動テスト専用・見本の旅行編（`zz_fixture_trip`・`sample_trip`）に固有の文字列が、公開されるファイルの名前か内容に1つでもあれば、ファイル名・文字列・その由来を表示してビルドを失敗にする。`vite.config.ts` は変えていない。
+`npm run build` と `npm run verify` は、`vite build` の後に `npm run dist:check`（`scripts/check-dist.ts`）で `dist/` を検査する。Debug・人物素材のプレビュー（`src/dev/`）、テスト用の仮データ（`*-test-fixture.ts`・`tests/fixtures/`）、開発・テスト専用の見本の編（`sample_trip`。画像のフォルダ名にも使う）に固有の文字列が、公開されるファイルの名前か内容に1つでもあれば、ファイル名・文字列・その由来を表示してビルドを失敗にする。`vite.config.ts` は変えていない。
 
-- 失敗した場合は、開発専用のモジュールを `import.meta.env.DEV` の分岐の外から読み込んでいないか、生成物（`src/content/generated/`）にテスト用・見本の旅行編が入っていないかを確かめる。生成物が原因なら `npm run content:build` で生成し直してからビルドする。
+- 失敗した場合は、開発専用のモジュールを `import.meta.env.DEV` の分岐の外から読み込んでいないか、生成物（`src/content/generated/`）に見本の編が入っていないか（`src/content/generated/build-info.json` の `extraJourneyFolders`。単体テストや `npm run dev:sample` の後に `vite build` を直接実行した場合など）を確かめる。生成物が原因なら `npm run content:build` で生成し直してからビルドする。
 - 検出に使う文字列と由来のファイルは `scripts/dist-guard.ts` にある。由来のファイルを改名・改稿して文字列が消えると `scripts/dist-guard.test.ts` が失敗するので、そのファイルに固有の別の文字列へ差し替える。本番のコードやコンテンツが同じ文字列を使うとビルドが失敗するため、目印には開発用のファイルにしかない文字列を選ぶ。
 - 目印による確認なので、目印を持たない開発用のコード（目印を登録していない新しいファイルなど）が入っても失敗しないことがある。`src/dev/`・テスト用の仮データに新しいファイルを足したら、そのファイルに固有の文字列を目印に加える。
