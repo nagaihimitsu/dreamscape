@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { legacyBattles, legacyBattleQuizzes } from "../content/legacy-milano";
 import { battleCityId, finalizeBattleProgress, isEpisodeBlockedByStoryBattle, isEpisodeUnlocked, isStoryBattleUnlocked } from "./chapter";
 import {
   battles,
@@ -30,36 +29,13 @@ export const battleAnswerSchema = z
     hintUsed: z.boolean(),
   })
   .strict();
-export const legacyBattleRecordSchema = z
+export const battleRecordSchema = z
   .object({
     battleId: z.string().min(1),
     attempts: z.number().int().positive(),
-    firstScore: z.number().int().min(0).max(3),
-    bestScore: z.number().int().min(0).max(3),
-    lastScore: z.number().int().min(0).max(3),
-  })
-  .strict();
-export const battleRecordSchema = legacyBattleRecordSchema
-  .extend({
     firstScore: z.number().int().min(0).max(5),
     bestScore: z.number().int().min(0).max(5),
     lastScore: z.number().int().min(0).max(5),
-  })
-  .strict();
-export const legacyActiveBattleSchema = z
-  .object({
-    battleId: z.string().min(1),
-    runId: z.string().min(1),
-    contentHash: z.string().min(1),
-    phase: z.enum(["dialogue", "question", "feedback", "result"]),
-    roundIndex: z.number().int().min(0).max(2),
-    answers: z.array(battleAnswerSchema).max(3),
-    score: z.number().int().min(0).max(3),
-    hintOpen: z.boolean(),
-    hintUsed: z.boolean(),
-    dialogueScene: z.string().nullable(),
-    storyState: z.string().nullable(),
-    frame: storyFrameSchema.nullable(),
   })
   .strict();
 /** One small proof step per special battle; quiz answers remain the only score source. */
@@ -72,17 +48,21 @@ const reasoningStateSchema = z
     status: z.enum(["selecting", "incorrect", "accepted"]),
   })
   .strict();
-export const phase6ActiveBattleSchema = legacyActiveBattleSchema
-  .extend({
+export const activeBattleSchema = z
+  .object({
+    battleId: z.string().min(1),
+    runId: z.string().min(1),
+    contentHash: z.string().min(1),
     phase: z.enum(["dialogue", "reasoning", "question", "feedback", "result"]),
-    reasoning: reasoningStateSchema.nullable(),
-  })
-  .strict();
-export const activeBattleSchema = phase6ActiveBattleSchema
-  .extend({
     roundIndex: z.number().int().min(0).max(4),
     answers: z.array(battleAnswerSchema).max(5),
     score: z.number().int().min(0).max(5),
+    hintOpen: z.boolean(),
+    hintUsed: z.boolean(),
+    dialogueScene: z.string().nullable(),
+    storyState: z.string().nullable(),
+    frame: storyFrameSchema.nullable(),
+    reasoning: reasoningStateSchema.nullable(),
   })
   .strict();
 export type ActiveBattle = z.infer<typeof activeBattleSchema>;
@@ -127,7 +107,7 @@ export function getBattleContentByHash(battleId: string, contentHash: string) {
   const current = battles.find((item) => item.id === battleId);
   try {
     if (current && contentHash === battleFingerprint(battleId))
-      return { battle: current, quiz: battleQuizzes[current.quizId], clues: tourismClues, legacy: false };
+      return { battle: current, quiz: battleQuizzes[current.quizId], clues: tourismClues };
   } catch { /* Missing or changed content must not be resumed. */ }
   return null;
 }
@@ -619,13 +599,9 @@ export function validateBattleState(state: GameState): void {
     throw new Error("バトルの記録が重複しています。");
   for (const record of state.battleRecords) {
     const definition = battles.find((item) => item.id === record.battleId);
-    const currentTotal = definition
+    const total = definition
       ? battleQuizzes[definition.quizId].questions.length
       : 0;
-    const old = legacyBattles.find((item) => item.id === record.battleId);
-    // Records predate content hashes; an older, longer quiz can legitimately
-    // have produced a score above the current version's maximum.
-    const total = Math.max(currentTotal, old ? legacyBattleQuizzes[old.quizId].questions.length : 0);
     if (
       Math.max(record.firstScore, record.bestScore, record.lastScore) > total ||
       !battles.some((item) => item.id === record.battleId) ||

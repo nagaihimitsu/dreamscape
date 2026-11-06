@@ -22,9 +22,9 @@
       "cityId": "milano",
       "nameJa": "ミラノ大聖堂（ドゥオモ）",
       "nameEn": "Milan Cathedral (Duomo di Milano)",
-      "descriptionJa": "空へ伸びる石の尖塔。その石がここへ届き、今も残るまでの旅を見つける。",
+      "descriptionJa": "広場で録音中の男が、小さな布を頭からかぶった。",
       "imageAssetId": "duomo_milano_photo",
-      "guideStoryId": "tourism/duomo_guide",
+      "guideStoryId": "tourism/sound_duomo",
       "battleId": "milano_duomo_01",
       "clueIds": [
         "duomo_marble_surface",
@@ -42,9 +42,7 @@
       "titleJa": "白一色ではない石の肌",
       "descriptionJa": "正面の石を見比べると、明るい部分にも淡い色や筋があります。公式資料によると、建設に使われたのは桃色の筋をもつカンドーリアの大理石。写真から産地を断定するのではなく、見える表面と採石場の記録を結びつける手がかりです。",
       "factId": "duomo_candoglia_material",
-      "relatedQuestionIds": [
-        "duomo_candoglia_marble"
-      ],
+      "relatedQuestionIds": [],
       "region": {
         "x": 0.375,
         "y": 0.31,
@@ -69,9 +67,7 @@
       "titleJa": "尖塔の上にも、人がいる",
       "descriptionJa": "尖った輪郭の先を拡大すると、人物像が立っています。建物の屋根をただ尖らせただけではなく、一つずつ彫刻が組み込まれた姿です。写真だけで個々の像の制作年代や、原像か写しかまでは判断できません。",
       "factId": "duomo_spire_sculpture",
-      "relatedQuestionIds": [
-        "duomo_statue_copies"
-      ],
+      "relatedQuestionIds": [],
       "region": {
         "x": 0.545,
         "y": 0.04,
@@ -96,9 +92,7 @@
       "titleJa": "石の旅は、水の上を通った",
       "descriptionJa": "大理石は船に載せられ、トーチェ川からマッジョーレ湖へ、ティチーノ川とナヴィリオ・グランデを経て街へ運ばれました。大聖堂近くには石材を降ろす船溜まりもありました。広場の写真に水路は写っていませんが、建物の大きさを支えた道です。",
       "factId": "duomo_transport_network",
-      "relatedQuestionIds": [
-        "duomo_water_transport"
-      ],
+      "relatedQuestionIds": [],
       "region": null,
       "sources": [
         {
@@ -118,9 +112,7 @@
       "titleJa": "同じ場所を、別の石が受け継ぐ",
       "descriptionJa": "カレッリ尖塔の聖ゲオルギウス像は、空襲で損傷した原像を守るため、1950年代に写しへ置き換えられました。修復された原像は大聖堂美術館にあります。この尖塔は正面写真では確認できないため、資料として扱います。写しと原像は、屋外の姿を保つ役割と作品を保存する役割を分けています。",
       "factId": "duomo_carelli_copy_conservation",
-      "relatedQuestionIds": [
-        "duomo_statue_copies"
-      ],
+      "relatedQuestionIds": [],
       "region": null,
       "sources": [
         {

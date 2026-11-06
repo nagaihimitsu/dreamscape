@@ -45,7 +45,7 @@ describe("optional Milan moments", () => {
       ...createGame(),
       completedChapters: ["milano"],
       completedEpisodeIds: ["milano_duomo_episode", "milano_galleria_episode", "milano_last_supper_episode", "milano_castello_episode"],
-      memories: ["milano_san_satiro_first_b"],
+      memories: ["sound_memory_san_satiro_date_01"],
       ap: 3,
     };
     const { text } = playToEnd(state, "milano_navigli_date_01");

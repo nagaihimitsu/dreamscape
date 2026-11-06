@@ -1,4 +1,4 @@
-import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { isDeepStrictEqual } from "node:util";
@@ -7,12 +7,12 @@ import { citySchema, dateCatalogSchema, presentationSchema } from "../src/conten
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { dateDestinationsSchema } from "../src/content/date-destinations";
-import { journeyCatalogSchema } from "../src/content/journey-catalog";
+import { loadContentSources, parseCatalog, readJourneyCatalog, requireCity } from "./content-sources";
 import { buildContent } from "./content-pipeline";
-import { buildIndiaTransitReview, indiaTransitCities, readIndiaTransitReview } from "./india-transit-review";
+import { buildJourneyTransitDecisionReview, journeyTransitDecisionFile, readJourneyTransitDecisions } from "./journey-transit-decisions";
 import { compactTravel, expandTravel } from "./city-bundle-routes";
 import { idSchema, bundleSchema, completeBundleSchema, editableBundleSchema, completeEditableBundleSchema, type CityBundle, type EditableCityBundle } from "./city-bundle-schema";
-import { catalogFiles, cityFiles, decisionFile, existing, inputFingerprint, read, writeCityBundleFiles } from "./city-bundle-files";
+import { bundleCatalogKinds, existing, inputFingerprint, read, writeCityBundleFiles } from "./city-bundle-files";
 import { assertUniqueIds, mergeCityCatalogs, referencedBackgrounds } from "./city-bundle-catalogs";
 import { cityTransitFile, readTransitLedger, exportTransitDecisions, inspectCityTransit } from "./journey-transit-review";
 
@@ -20,7 +20,6 @@ export type { CityBundle, EditableCityBundle } from "./city-bundle-schema";
 export { writeCityBundleFiles } from "./city-bundle-files";
 
 const output = (value: unknown) => `${JSON.stringify(value, null, 2)}\n`;
-const indiaCity = (id: string) => (indiaTransitCities as readonly string[]).includes(id);
 
 /** Convert a v1 bundle or an incomplete new-city template without inventing data. */
 export function compactCityBundle(raw: unknown): unknown {
@@ -36,8 +35,7 @@ export function exportEditableCityBundle(root: string, cityId: string): Editable
 }
 
 function owner(root: string, id: string) {
-  const catalog = journeyCatalogSchema.parse(read(root, "content/journeys/catalog.json"));
-  const journeys = catalog.journeys.filter((journey) => journey.cities.some((city) => city.id === id));
+  const journeys = readJourneyCatalog(root).journeys.filter((journey) => journey.cities.some((city) => city.id === id));
   if (journeys.length !== 1) throw new Error(`Register city ${id} in exactly one journey before creating its bundle`);
   return journeys[0];
 }
@@ -46,20 +44,23 @@ export function exportCityBundle(root: string, cityId: string): CityBundle {
   idSchema.parse(cityId);
   const fingerprint = inputFingerprint(root);
   owner(root, cityId);
-  if (!existing(root, cityId)) throw new Error(`Unknown registered city: ${cityId}`);
-  const [cityPath, travelPath, settingsPath] = cityFiles(cityId);
-  const city = citySchema.parse(read(root, cityPath));
-  const travel = travelCatalogSchema.parse(read(root, travelPath));
-  const travelSettings = travelSettingsSchema.parse(read(root, settingsPath));
+  const sources = loadContentSources(root);
+  if (!existing(sources, cityId)) throw new Error(`Unknown registered city: ${cityId}`);
+  const files = requireCity(sources, cityId);
+  const json = (file: string): unknown => JSON.parse(readFileSync(file, "utf8"));
+  const city = citySchema.parse(json(files.file));
+  const travel = travelCatalogSchema.parse(json(files.travelFile));
+  const travelSettings = travelSettingsSchema.parse(json(files.settingsFile));
   if (city.id !== cityId || travel.cityId !== cityId) throw new Error(`City ownership mismatch: ${cityId}`);
-  const presentation = presentationSchema.parse(read(root, catalogFiles[0]));
-  const tourism = tourismCatalogSchema.parse(read(root, catalogFiles[1]));
+  const [presentationKind, tourismKind, destinationsKind] = bundleCatalogKinds;
+  const presentation = parseCatalog(sources, presentationSchema, presentationKind);
+  const tourism = parseCatalog(sources, tourismCatalogSchema, tourismKind);
   const landmarks = tourism.landmarks.filter((landmark) => landmark.cityId === cityId);
   const landmarkIds = new Set(landmarks.map((landmark) => landmark.id));
   const clues = tourism.clues.filter((clue) => landmarkIds.has(clue.landmarkId));
-  const destinationCatalog = dateDestinationsSchema.parse(read(root, catalogFiles[2]));
+  const destinationCatalog = parseCatalog(sources, dateDestinationsSchema, destinationsKind);
   const dateDestinations = destinationCatalog.destinations.filter((item) => item.cityId === cityId);
-  const dates = dateCatalogSchema.parse(read(root, "content/romance/date_catalog.json")).dates;
+  const dates = parseCatalog(sources, dateCatalogSchema, "romance/date_catalog.json").dates;
   const dateBackgrounds = dates.filter((item) => item.chapterId === cityId).map((item) => item.backgroundAssetId);
   const backgroundIds = referencedBackgrounds(travel, dateDestinations, dateBackgrounds);
   const backgrounds: CityBundle["backgrounds"] = {};
@@ -72,8 +73,9 @@ export function exportCityBundle(root: string, cityId: string): CityBundle {
   const assets = tourism.assets.filter((item) => assetIds.has(item.id));
   if (assets.length !== assetIds.size) throw new Error(`Missing city image asset: ${cityId}`);
   let transitDecisions: unknown[] | null = null;
-  if (indiaCity(cityId)) {
-    const ledger = read(root, decisionFile);
+  const journeyLedger = journeyTransitDecisionFile(root, cityId);
+  if (journeyLedger) {
+    const ledger = read(root, journeyLedger);
     if (!Array.isArray(ledger.decisions)) throw new Error("Invalid transit decision ledger");
     transitDecisions = ledger.decisions.filter((item: { cityId?: string }) => item.cityId === cityId);
   } else {
@@ -88,8 +90,8 @@ export function exportCityBundle(root: string, cityId: string): CityBundle {
 export function newCityBundle(root: string, cityId: string): unknown {
   idSchema.parse(cityId);
   owner(root, cityId);
-  if (existing(root, cityId)) throw new Error(`City already exists: ${cityId}`);
-  if (indiaCity(cityId)) throw new Error("India's registered city files must be restored before editing");
+  if (existing(loadContentSources(root), cityId)) throw new Error(`City already exists: ${cityId}`);
+  if (journeyTransitDecisionFile(root, cityId)) throw new Error(`Registered city files must be restored before editing: ${cityId} (its transit decisions are kept in its journey's ledger)`);
   const hotel = `${cityId}_hotel`;
   const background = `${cityId}_hotel_bg`;
   return { schemaVersion: 1, cityId, baseFingerprint: inputFingerprint(root),
@@ -105,15 +107,17 @@ export async function applyCityBundle(root: string, raw: unknown, apply = false)
   let input: z.infer<typeof bundleSchema>;
   if (raw && typeof raw === "object" && "schemaVersion" in raw && raw.schemaVersion === 2) {
     const compact = editableBundleSchema.parse(raw);
-    const previous = existing(root, compact.cityId)
-      ? travelCatalogSchema.parse(read(root, cityFiles(compact.cityId)[1])).routes : [];
+    const sources = loadContentSources(root);
+    const previous = existing(sources, compact.cityId)
+      ? travelCatalogSchema.parse(JSON.parse(readFileSync(requireCity(sources, compact.cityId).travelFile, "utf8"))).routes : [];
     input = bundleSchema.parse({ ...compact, schemaVersion: 1, travel: expandTravel(compact.travel, previous) });
   } else input = bundleSchema.parse(raw);
   const { cityId } = input;
   owner(root, cityId);
   const fingerprint = inputFingerprint(root);
   if (input.baseFingerprint !== fingerprint) throw new Error("City bundle is stale: content or assets changed since export");
-  const isExisting = existing(root, cityId);
+  const sources = loadContentSources(root);
+  const isExisting = existing(sources, cityId);
   const baseline = isExisting ? exportCityBundle(root, cityId) : null;
   const bundle = completeBundleSchema.parse({ ...input,
     landmarks: input.landmarks ?? baseline?.landmarks ?? [], clues: input.clues ?? baseline?.clues ?? [] });
@@ -121,7 +125,8 @@ export async function applyCityBundle(root: string, raw: unknown, apply = false)
     throw new Error(`City ownership mismatch: ${cityId}`);
   if (bundle.city.productionStatus !== (baseline?.city.productionStatus ?? "prototype")) throw new Error("City release status cannot be changed with a bundle");
   const ownDecisionFile = cityTransitFile(root, cityId);
-  if ((indiaCity(cityId) || !!ownDecisionFile) !== (bundle.transitDecisions !== null)) throw new Error("Transit decision ledger does not match city");
+  const journeyLedger = journeyTransitDecisionFile(root, cityId);
+  if (!!(journeyLedger || ownDecisionFile) !== (bundle.transitDecisions !== null)) throw new Error("Transit decision ledger does not match city");
   if (baseline) for (const event of bundle.travel.events) {
     const previous = baseline.travel.events.find((entry) => entry.id === event.id);
     if (previous && previous.contentStatus !== event.contentStatus) throw new Error(`Event release status cannot be changed with a bundle: ${event.id}`);
@@ -135,7 +140,7 @@ export async function applyCityBundle(root: string, raw: unknown, apply = false)
   const landmarkIds = new Set(bundle.landmarks.map((landmark) => landmark.id));
   if (bundle.clues.some((clue) => !landmarkIds.has(clue.landmarkId))) throw new Error(`Clue belongs to another city: ${cityId}`);
   if (bundle.transitDecisions?.some((item: any) => item?.cityId !== cityId)) throw new Error("Transit decision belongs to another city");
-  const values = mergeCityCatalogs(root, bundle, baseline);
+  const values = mergeCityCatalogs(sources, bundle, baseline);
   const original: Record<string, string | null> = Object.fromEntries(Object.keys(values).map((file) => [file, existsSync(path.join(root, file)) ? readFileSync(path.join(root, file), "utf8") : null]));
   // Keep formatting and array ordering for semantically unchanged documents.
   const next: Record<string, string> = Object.fromEntries(Object.entries(values).map(([file, value]) => [file,
@@ -147,16 +152,17 @@ export async function applyCityBundle(root: string, raw: unknown, apply = false)
     cpSync(path.join(root, "public"), path.join(stage, "public"), { recursive: true });
     for (const [file, value] of Object.entries(next)) {
       const target = path.join(stage, file);
-      if (file === decisionFile || file === ownDecisionFile) continue;
+      if (file === journeyLedger || file === ownDecisionFile) continue;
+      mkdirSync(path.dirname(target), { recursive: true });
       writeFileSync(target, value);
     }
     if (bundle.transitDecisions && ownDecisionFile) {
       if (!inspectCityTransit(bundle.travel, JSON.parse(next[ownDecisionFile])).ready)
         throw new Error(`Transit has undecided directions: ${cityId}`);
-    } else if (bundle.transitDecisions) {
-      const transit = readIndiaTransitReview(root);
-      const check = buildIndiaTransitReview({ catalogs: { ...transit.catalogs, [cityId]: bundle.travel }, decisions: JSON.parse(next[decisionFile]) });
-      const counts = check.counts[cityId as keyof typeof check.counts];
+    } else if (bundle.transitDecisions && journeyLedger) {
+      const transit = readJourneyTransitDecisions(root, owner(root, cityId).id);
+      const check = buildJourneyTransitDecisionReview({ catalogs: { ...transit.catalogs, [cityId]: bundle.travel }, decisions: JSON.parse(next[journeyLedger]) });
+      const counts = check.counts[cityId];
       if (counts.unresearched || counts.inconclusive) throw new Error(`Transit has undecided directions: ${cityId}`);
     }
     await buildContent(stage, false);

@@ -17,7 +17,6 @@ import {
   progressionSchema,
   quizSchema,
   quizSampleSchema,
-  trialProgressionSchema,
 } from "../src/content/schemas";
 import {
   landmarkSchema,
@@ -35,6 +34,8 @@ import {
   compileInk,
   validateQuizEntries,
 } from "./content-pipeline";
+import { classifyContentFile, toPosix, type MergedKind } from "./content-layout";
+import { loadContentSources, parseCatalog } from "./content-sources";
 
 const schemas = {
   quiz: quizSchema,
@@ -60,7 +61,6 @@ const schemas = {
   balance: balanceSchema,
   presentation: presentationSchema,
   progression: progressionSchema,
-  "trial-progression": trialProgressionSchema,
 } as const;
 export type ContentType = keyof typeof schemas | "ink";
 
@@ -82,11 +82,20 @@ export function inferContentType(file: string): ContentType | undefined {
     "/romance/balance.json": "balance",
     "/romance/presentation.json": "presentation",
     "/romance/progression.json": "progression",
-    "/romance/trial_progression.json": "trial-progression",
   };
   return Object.entries(suffixes).find(([suffix]) =>
     name.endsWith(suffix),
   )?.[1];
+}
+
+/**
+ * A catalog file in a journey folder holds only that journey's part of the
+ * catalog; it is checked as part of the merged catalog of its project.
+ */
+function journeyCatalogFragment(file: string): { root: string; kind: MergedKind } | undefined {
+  const match = /^(.*)\/content\/journeys\/[^/]+\/(.+)$/u.exec(toPosix(file));
+  const type = match && classifyContentFile(match[2], "journey");
+  return type?.type === "catalog" ? { root: match![1], kind: type.kind } : undefined;
 }
 
 export async function inspectFile(
@@ -105,7 +114,11 @@ export async function inspectFile(
     if (selected === "ink") compileInk(raw, resolved);
     else {
       const data: unknown = JSON.parse(raw);
-      const parsed = schemas[selected as keyof typeof schemas].parse(data);
+      const schema: { parse(value: unknown): unknown } = schemas[selected as keyof typeof schemas];
+      const fragment = journeyCatalogFragment(resolved);
+      const parsed = fragment
+        ? parseCatalog(loadContentSources(fragment.root), schema, fragment.kind)
+        : schema.parse(data);
       if (selected === "quiz" || selected === "quiz-sample") {
         validateQuizEntries(
           parsed as Parameters<typeof validateQuizEntries>[0],

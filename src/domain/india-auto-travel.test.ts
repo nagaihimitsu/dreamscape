@@ -3,7 +3,7 @@ import { effects, getCityContent } from "../content";
 import { loadGame, saveGame, type StorageLike } from "../persistence";
 import { journeyStorage } from "../persistence/journey-storage";
 import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "./battle";
-import { advanceCompletedIndiaCity } from "./city-travel";
+import { advanceCompletedJourneyCity } from "./city-travel";
 import { getNextEpisode, getNextStoryBattle, startEpisode } from "./chapter";
 import { advanceCityEpilogue } from "./epilogue";
 import { createGame, validateGameState, type GameState } from "./game";
@@ -68,10 +68,10 @@ describe("automatic India city transition with development-only content", () => 
     test_delhi = validateGameState({ ...test_delhi, playerName: "主人公", heroineName: "ヒロイン", affection: 3, trust: 2, spark: 1,
       memories: [memory], completedEncounterIds: [...test_delhi.completedEncounterIds, "test_delhi_encounter"], inventory: { test_delhi_item: "held" },
       travel: { ...test_delhi.travel, day: 4, calendar: { journeyDay: 4, cityStartJourneyDay: 1, startWeekday: 0 } } });
-    const started = advanceCompletedIndiaCity(test_delhi, test_delhi.revision);
+    const started = advanceCompletedJourneyCity(test_delhi, test_delhi.revision);
     expect(started.currentCityId).toBe("test_delhi");
     expect(started.activeEpilogue).not.toBeNull();
-    expect(advanceCompletedIndiaCity(started, started.revision)).toBe(started);
+    expect(advanceCompletedJourneyCity(started, started.revision)).toBe(started);
     const storage = journeyStorage(new MemoryStorage(), "test_golden_triangle");
     expect(saveGame(storage, started).ok).toBe(true);
     expect(loadGame(storage)).toEqual({ status: "loaded", state: started });
@@ -84,7 +84,7 @@ describe("automatic India city transition with development-only content", () => 
     // Match the app's single save operation: the last story step and automatic
     // departure form one resulting snapshot.
     const lastStep = advanceCityEpilogue(epilogue, epilogue.revision);
-    const test_agra = advanceCompletedIndiaCity(lastStep, lastStep.revision);
+    const test_agra = advanceCompletedJourneyCity(lastStep, lastStep.revision);
     expect(test_agra.currentCityId).toBe("test_agra");
     expect(test_agra.viewedEpilogueCityIds).toContain("test_delhi");
     expect(test_agra.travel).toMatchObject({ hotelPlaceId: "test_agra_hotel", currentPlaceId: "test_agra_hotel", day: 1, minute: 540 });
@@ -93,20 +93,20 @@ describe("automatic India city transition with development-only content", () => 
     for (const field of ["playerName", "heroineName", "ap", "pendingApRewards", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds", "completedEncounterIds"] as const)
       expect(test_agra[field]).toEqual(test_delhi[field]);
     expect(validateGameState(test_agra)).toEqual(test_agra);
-    expect(advanceCompletedIndiaCity(test_agra, lastStep.revision)).toBe(test_agra);
-    expect(advanceCompletedIndiaCity(test_agra, test_agra.revision)).toBe(test_agra);
+    expect(advanceCompletedJourneyCity(test_agra, lastStep.revision)).toBe(test_agra);
+    expect(advanceCompletedJourneyCity(test_agra, test_agra.revision)).toBe(test_agra);
     expect(saveGame(storage, test_agra, started).ok).toBe(true);
     expect(loadGame(storage)).toEqual({ status: "loaded", state: test_agra });
 
     const test_agraComplete = completeCity(test_agra);
-    let test_agraEpilogue = advanceCompletedIndiaCity(test_agraComplete, test_agraComplete.revision);
+    let test_agraEpilogue = advanceCompletedJourneyCity(test_agraComplete, test_agraComplete.revision);
     expect(test_agraEpilogue.activeEpilogue).not.toBeNull();
     for (let count = 0; !test_agraEpilogue.activeEpilogue?.frame.ended; count++) {
       expect(count).toBeLessThan(100);
       test_agraEpilogue = advanceCityEpilogue(test_agraEpilogue, test_agraEpilogue.revision);
     }
     const test_agraLastStep = advanceCityEpilogue(test_agraEpilogue, test_agraEpilogue.revision);
-    const test_jaipur = advanceCompletedIndiaCity(test_agraLastStep, test_agraLastStep.revision);
+    const test_jaipur = advanceCompletedJourneyCity(test_agraLastStep, test_agraLastStep.revision);
     expect(test_jaipur.currentCityId).toBe("test_jaipur");
     expect(test_jaipur.completedCityIds).toEqual(["test_delhi", "test_agra"]);
     expect(test_jaipur.viewedEpilogueCityIds).toEqual(["test_delhi", "test_agra"]);
@@ -120,14 +120,14 @@ describe("automatic India city transition with development-only content", () => 
   it("reads the ending without switching to an unfinished next city or leaving the final city", () => {
     const test_delhi = completeCity(fixtureStart("test_delhi"));
     getCityContent("test_agra").city.productionStatus = "prototype";
-    expect(advanceCompletedIndiaCity(test_delhi, test_delhi.revision).activeEpilogue).not.toBeNull();
+    expect(advanceCompletedJourneyCity(test_delhi, test_delhi.revision).activeEpilogue).not.toBeNull();
     const test_jaipur = completeCity(fixtureStart("test_jaipur"));
-    expect(advanceCompletedIndiaCity(test_jaipur, test_jaipur.revision - 1)).toBe(test_jaipur);
+    expect(advanceCompletedJourneyCity(test_jaipur, test_jaipur.revision - 1)).toBe(test_jaipur);
     for (const completed of [test_delhi, test_jaipur]) {
-      let state = advanceCompletedIndiaCity(completed, completed.revision);
+      let state = advanceCompletedJourneyCity(completed, completed.revision);
       expect(state.activeEpilogue).not.toBeNull();
       expect(state.currentCityId).toBe(completed.currentCityId);
-      expect(advanceCompletedIndiaCity(state, state.revision)).toBe(state);
+      expect(advanceCompletedJourneyCity(state, state.revision)).toBe(state);
       const storage = journeyStorage(new MemoryStorage(), "test_golden_triangle");
       expect(saveGame(storage, state).ok).toBe(true);
       expect(loadGame(storage)).toEqual({ status: "loaded", state });
@@ -136,7 +136,7 @@ describe("automatic India city transition with development-only content", () => 
         state = advanceCityEpilogue(state, state.revision);
       }
       expect(state.viewedEpilogueCityIds).toContain(completed.currentCityId);
-      expect(advanceCompletedIndiaCity(state, state.revision)).toBe(state);
+      expect(advanceCompletedJourneyCity(state, state.revision)).toBe(state);
       expect(state.currentCityId).toBe(completed.currentCityId);
       expect(validateGameState(state)).toEqual(state);
     }
@@ -145,13 +145,13 @@ describe("automatic India city transition with development-only content", () => 
   it("does not change Milan's completed-city behavior", () => {
     const milan = completeCity(createGame());
     expect(milan.currentCityId).toBe("milano");
-    expect(advanceCompletedIndiaCity(milan, milan.revision)).toBe(milan);
+    expect(advanceCompletedJourneyCity(milan, milan.revision)).toBe(milan);
   }, 120_000);
 
   it("still opens the city ending after a zero-score finale", () => {
     const completed = completeCity(fixtureStart("test_jaipur"), false);
     expect(completed.battleRecords.find((record) => record.battleId === "test_jaipur_final_battle")?.bestScore).toBe(0);
-    const ending = advanceCompletedIndiaCity(completed, completed.revision);
+    const ending = advanceCompletedJourneyCity(completed, completed.revision);
     expect(ending.activeEpilogue).not.toBeNull();
     expect(ending.completedCityIds).toContain("test_jaipur");
     expect(ending.claimedRewardIds).toEqual(completed.claimedRewardIds);

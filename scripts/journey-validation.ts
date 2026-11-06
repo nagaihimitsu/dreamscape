@@ -2,7 +2,6 @@ import { getAllRewardRules, type JourneyConfig, type RewardRule } from "../src/c
 import type {
   BattleDefinition,
   QuizDefinition,
-  TrialMilestone,
 } from "../src/content/schemas";
 import type { LandmarkDefinition } from "../src/content/tourism-schemas";
 
@@ -29,7 +28,6 @@ export function validateJourney(
   landmarks: LandmarkDefinition[],
   battles: BattleDefinition[],
   quizzes: Record<string, QuizDefinition>,
-  trialMilestones: TrialMilestone[],
 ): void {
   unique(
     journey.episodes.map((episode) => episode.id),
@@ -48,19 +46,11 @@ export function validateJourney(
     [
       ...journey.rewards.map((rule) => rule.id),
       ...journey.storyBattles.flatMap((battle) => battle.completionReward ? [battle.completionReward.id] : []),
-      ...trialMilestones.map((rule) => rule.rewardSourceId),
     ],
-    "journey/trial reward ID",
+    "journey reward ID",
   );
-  if (
-    !journey.episodes.some((episode) => episode.id === journey.entryEpisodeId)
-  ) {
-    throw new Error("Unknown entry episode");
-  }
-  const entry = journey.episodes.find(
-    (episode) => episode.id === journey.entryEpisodeId,
-  )!;
-  if (entry.requiredEpisodeIds.length || journey.episodes[0].id !== entry.id)
+  // The city's first episode is where a new arrival begins.
+  if (journey.episodes[0].requiredEpisodeIds.length)
     throw new Error("Entry episode must begin the route without prerequisites");
   const finales = journey.episodes.filter(
     (episode) => episode.kind === "city_finale",
@@ -100,8 +90,8 @@ export function validateJourney(
     }
     const landmark = landmarks.find((item) => item.id === episode.landmarkId);
     const battle = battles.find((item) => item.id === episode.battleId);
-    if (episode.cityId !== city.id || episode.legacyChapterId !== city.id) {
-      throw new Error(`Unknown episode city/chapter: ${episode.id}`);
+    if (episode.cityId !== city.id) {
+      throw new Error(`Unknown episode city: ${episode.id}`);
     }
     if (episode.kind === "city_finale") {
       const stops = journey.episodes.filter(
@@ -141,9 +131,9 @@ export function validateJourney(
       throw new Error(`Reward trigger does not fit the episode: ${episode.id}`);
     for (const trigger of triggers) {
       const count = rules.filter((rule) => rule.trigger === trigger).length;
-      // New cities can leave the old chapter-clear AP unspecified. Milan's
-      // positive legacy alias retains its original mandatory reward.
-      const optionalEpisodeReward = trigger === "episode_clear" && city.id !== "milano" && city.firstClearReward.ap === 0;
+      // A city whose first-clear AP is 0 may leave the episode-clear reward
+      // unspecified; a positive first-clear AP needs exactly one per episode.
+      const optionalEpisodeReward = trigger === "episode_clear" && city.firstClearReward.ap === 0;
       if (optionalEpisodeReward ? count > 1 : count !== 1) {
         throw new Error(`Episode needs one ${trigger} reward: ${episode.id}`);
       }
@@ -162,14 +152,14 @@ export function validateJourney(
       (rule.episodeId === undefined || rule.trigger !== "episode_clear" || rule.ap !== city.firstClearReward.ap)
     ) {
       throw new Error(
-        "Legacy chapter reward must keep its ID, trigger and amount",
+        "First-clear reward must keep its ID, trigger and amount",
       );
     }
   }
-  // Exactly one trial episode inherits the Phase 1–4 reward ID. It is not a new city-clear reward.
-  const legacyAliases = journey.rewards.filter((rule) => rule.id === city.firstClearReward.rewardSourceId);
-  const noLegacyReward = city.id !== "milano" && city.firstClearReward.ap === 0;
-  if (noLegacyReward ? legacyAliases.length !== 0 : legacyAliases.length !== 1) {
-    throw new Error("Missing legacy chapter reward alias");
+  // A positive first-clear AP is granted by exactly one episode-clear rule with
+  // the city's reward ID. It is not the city-clear reward.
+  const firstClearRules = journey.rewards.filter((rule) => rule.id === city.firstClearReward.rewardSourceId);
+  if (city.firstClearReward.ap === 0 ? firstClearRules.length !== 0 : firstClearRules.length !== 1) {
+    throw new Error("Missing first-clear reward rule");
   }
 }

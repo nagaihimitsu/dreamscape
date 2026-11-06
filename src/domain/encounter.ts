@@ -11,12 +11,14 @@ import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
 import { deriveRelationshipTone } from "./romance-tone";
 import { scoreQuizAnswer } from "./quiz-answer";
 import { validObservationEncounterIds, type ActiveEncounter } from "./encounter-state";
-import placeRuleData from "../../content/encounters/entry-rules.json";
+import placeRuleData from "../content/generated/content/encounters/entry-rules.json";
 import { encounterEntryRulesSchema } from "../content/encounter-entry-rules";
 import { startTourismBattle } from "./tourism";
 
 const findEncounter = (id: string) => encounters.encounters.find((item) => item.id === id);
 const placeRules = encounterEntryRulesSchema.parse(placeRuleData);
+const entryRule = (event: EncounterDefinition) =>
+  placeRules.entries.find((entry) => entry.encounterId === event.id && (!entry.storyId || entry.storyId === event.storyId));
 const unavailable = (reason: string): Availability => ({ available: false, reason });
 const available: Availability = { available: true, reason: "" };
 
@@ -59,8 +61,8 @@ function activeStoryId(active: ActiveEncounter, id: string): string {
 export function getEncounterAvailability(state: GameState, id: string): Availability {
   const event = findEncounter(id);
   if (!event) return unavailable("寄り道が見つかりません。");
-  const revisitableFortune = event.id === "galleria_fortune" && event.availability === "tourism" && hasLandmarkBattle(state, event);
-  if (event.availability === "dormant" || (event.availability === "tourism" && !revisitableFortune))
+  const revisitableQuiz = event.availability === "tourism" && !!entryRule(event)?.quizAfterLandmarkBattle && hasLandmarkBattle(state, event);
+  if (event.availability === "dormant" || (event.availability === "tourism" && !revisitableQuiz))
     return unavailable("この寄り道は自由時間からは選べません。");
   return getEncounterEntryAvailability(state, event);
 }
@@ -68,7 +70,7 @@ export function getEncounterAvailability(state: GameState, id: string): Availabi
 /** Shared rules apply regardless of whether an encounter starts at an observation screen. */
 function getEncounterEntryAvailability(state: GameState, event: EncounterDefinition): Availability {
   if (event.cityId !== state.currentCityId) return unavailable("この街では出かけられません。");
-  const rule = placeRules.entries.find((entry) => entry.encounterId === event.id && (!entry.storyId || entry.storyId === event.storyId));
+  const rule = entryRule(event);
   if (rule?.completedEpisodeId && !state.completedEpisodeIds.includes(rule.completedEpisodeId))
     return unavailable("この場所を訪れたあとに出会えます。");
   if (rule?.completedStoryBattleId && !state.battleRecords.some((record) => record.battleId === rule.completedStoryBattleId && record.attempts > 0))
@@ -94,13 +96,13 @@ function hasLandmarkBattle(state: GameState, event: EncounterDefinition): boolea
   return state.battleRecords.some((record) => record.battleId === battleId && record.attempts > 0);
 }
 
-/** The new fortune's leave branch, or its pre-battle visit, ends without a quiz. */
+/** A deferred quiz's leave branch, or its pre-battle visit, ends without the quiz. */
 export function encounterStoryCanFinish(state: GameState): boolean {
   const active = state.activeEncounter;
   if (!active || active.phase !== "story" || !active.frame.ended || !active.selectedOptionId) return false;
   const event = getActiveEncounterDefinition(active);
   if (!event.quiz) return true;
-  if (event.storyId !== "encounters/sound_galleria_fortune") return false;
+  if (!entryRule(event)?.quizAfterLandmarkBattle) return false;
   const option = event.options.find((item) => item.id === active.selectedOptionId);
   return !!option?.deferCompletion || !hasLandmarkBattle(state, event);
 }
@@ -166,9 +168,9 @@ export function getTourismEncounterAvailability(state: GameState, id: string): A
       active.encounterIds?.includes(id) ||
       (!event.repeatable && state.completedEncounterIds.includes(id)))
     return unavailable("今は話しかけられません。");
-  // Fortune is explicitly available during the first observation, before its
-  // separate post-battle quiz becomes available.
-  if (event.availability === "tourism" && event.id === "galleria_fortune") return available;
+  // An encounter with a deferred quiz is available during the first
+  // observation, before its separate post-battle quiz becomes available.
+  if (event.availability === "tourism" && entryRule(event)?.quizAfterLandmarkBattle) return available;
   return getEncounterEntryAvailability({ ...state, activeTourism: null }, event);
 }
 

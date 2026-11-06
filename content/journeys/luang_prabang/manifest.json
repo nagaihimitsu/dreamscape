@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "order": 40,
+  "id": "luang_prabang",
+  "nameJa": "ルアンパパーン編",
+  "status": "preparing",
+  "cities": [
+    {
+      "id": "luang_prabang",
+      "nameJa": "ルアンパパーン"
+    }
+  ],
+  "currency": {
+    "code": "LAK",
+    "symbol": "₭",
+    "unitJa": "キープ",
+    "unit": "whole"
+  },
+  "initialBudget": 2000000,
+  "startWeekday": 0,
+  "initialState": {
+    "ap": 0,
+    "pendingAp": 0,
+    "affection": 0,
+    "trust": 0,
+    "spark": 0,
+    "romanceStage": 1,
+    "confessionStatus": "none"
+  },
+  "cityPlan": {
+    "cityClearAp": 4,
+    "lodgingCost": 0,
+    "mainTourismCount": 4,
+    "dateCount": 6
+  },
+  "farePartySize": 2,
+  "intercityModes": [],
+  "authoring": {
+    "eventPrefix": "lpb",
+    "observationFile": "authoring/journeys/luang_prabang/drafts/observation-cards.json",
+    "imageDirectory": "assets/tourism/luang_prabang",
+    "transitDirectory": "authoring/journeys/luang_prabang/research/luang-prabang-20261104"
+  }
+}

@@ -8,7 +8,6 @@ import {
 } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
-import { presentationStoryId } from "../../content/legacy-milano";
 import { activeGuideStoryId } from "../../domain/tourism";
 import type { GameState } from "../../domain/game";
 import { DialogueText } from "../../components/DialogueText";
@@ -79,7 +78,7 @@ export function TourismScreen({
   const shouldScrollToSelection = useRef(true);
   const selected = clues.find((clue) => clue.id === selectedId);
   const frame = active.frame;
-  const guideStoryId = presentationStoryId(activeGuideStoryId(active) ?? landmark.guideStoryId);
+  const guideStoryId = activeGuideStoryId(active) ?? landmark.guideStoryId;
   const reaction = frame && active.phase === "guide"
     ? resolveDialogueReaction(dialogueReactions, guideStoryId, frame, "heroine")
     : undefined;

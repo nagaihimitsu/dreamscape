@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "order": 25,
+  "id": "zz_fixture_trip",
+  "nameJa": "テスト用の旅",
+  "status": "preparing",
+  "cities": [
+    {
+      "id": "zz_fixture_city",
+      "nameJa": "テストの街"
+    }
+  ],
+  "currency": {
+    "code": "EUR",
+    "symbol": "€",
+    "unitJa": "ユーロ",
+    "unit": "whole"
+  },
+  "initialBudget": 100,
+  "intercityModes": []
+}

@@ -20,7 +20,7 @@ it("creates an isolated undelivered-artwork fixture without changing the source 
     for (const costume of character.costumes ?? [])
       for (const pose of costume.poses) pose.expressions = {};
   expect(catalog).toEqual(expected);
-  await expect(access(path.join(fixture, "public/assets/characters"))).rejects.toThrow();
+  await expect(access(path.join(fixture, "public/assets/characters"))).rejects.toThrow(/ENOENT/);
   await expect(access(path.join(fixture, "public/assets/presentation/heroine_shy_placeholder.svg"))).resolves.toBeUndefined();
   expect(await readFile(original, "utf8")).toBe(source);
 });

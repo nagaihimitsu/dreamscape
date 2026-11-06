@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import milanoData from "../content/cities/milano.json";
-import delhiData from "../content/cities/delhi.json";
-import agraData from "../content/cities/agra.json";
-import jaipurData from "../content/cities/jaipur.json";
-import journeyData from "../content/journeys/catalog.json";
+import milanoData from "../src/content/generated/content/cities/milano.json";
+import delhiData from "../src/content/generated/content/cities/delhi.json";
+import agraData from "../src/content/generated/content/cities/agra.json";
+import jaipurData from "../src/content/generated/content/cities/jaipur.json";
+import journeyData from "../src/content/generated/content/journeys/catalog.json";
 import { citySchema } from "../src/content/schemas";
 import { journeyCatalogSchema } from "../src/content/journey-catalog";
 import { validateCityLinks } from "./content-pipeline";

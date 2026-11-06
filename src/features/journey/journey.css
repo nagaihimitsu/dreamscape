@@ -262,7 +262,11 @@
 }
 
 .journey-selection { display: grid; gap: 7px; margin: 16px 0; font-size: 12px; }
-.journey-selection select { width: 100%; min-height: 48px; padding: 10px; border: 1px solid #c9cebf; border-radius: 3px; background: #fffdf7; color: #303d36; font-size: 16px; }
+.journey-select { position: relative; display: block; }
+.journey-select-value { display: block; min-height: 48px; padding: 12px 40px 12px 10px; border: 1px solid #c9cebf; border-radius: 3px; background: #fffdf7; color: #303d36; font-size: 16px; line-height: 1.4; word-break: auto-phrase; overflow-wrap: anywhere; }
+.journey-select-value::after { content: ""; position: absolute; top: 50%; right: 16px; width: 8px; height: 8px; border-right: 2px solid #303d36; border-bottom: 2px solid #303d36; transform: translateY(-70%) rotate(45deg); }
+.journey-select select { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 48px; margin: 0; opacity: 0; font-size: 16px; cursor: pointer; }
+.journey-select:has(select:focus-visible) .journey-select-value { outline: 3px solid #ba8f4d; outline-offset: 4px; }
 .journey-preparation h1 { margin-top: 24px; }
 .journey-preparation > p:not(.eyebrow) { line-height: 1.8; }
 .journey-route-stop { display: inline-block; white-space: nowrap; }

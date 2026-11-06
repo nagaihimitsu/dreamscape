@@ -5,21 +5,32 @@ import type { StorageLike } from "./index";
 
 export type JourneyLockStatus = "loading" | "ready" | "busy" | "unsupported";
 
-/** Hold the journey's exclusive Web Lock for the lifetime of its editing view. */
-export function useJourneyLock(journeyId: string, storage: StorageLike, attempt = 0): JourneyLockStatus {
+// A view released by this page (a React remount, a journey switch and back)
+// must finish releasing before the same lock is requested again; otherwise
+// the page would report its own lock as held by another tab.
+const settledRequests = new Map<string, Promise<unknown>>();
+// A document being replaced by a reload can release the lock a moment after
+// the new page asks. Retry briefly before reporting another tab.
+const LOCK_RETRIES = 10;
+const LOCK_RETRY_MS = 100;
+
+/** Hold the journey's exclusive Web Lock for the lifetime of its editing view.
+ * `enabled` is false for views that never write the slot (Debug, read-only preparation). */
+export function useJourneyLock(journeyId: string, storage: StorageLike, attempt: number, enabled: boolean): JourneyLockStatus {
   const [state, setState] = useState<{ journeyId: string; status: JourneyLockStatus }>({
-    journeyId, status: journeyId === "milano" ? "ready" : "loading",
+    journeyId, status: enabled ? "loading" : "ready",
   });
   const [generation, setGeneration] = useState(0);
 
   useEffect(() => {
-    if (journeyId === "milano") {
+    if (!enabled) {
       setState({ journeyId, status: "ready" });
       return;
     }
     let cancelled = false;
     let pageActive = true;
     let release: (() => void) | undefined;
+    let retry: ReturnType<typeof setTimeout> | undefined;
     setState({ journeyId, status: "loading" });
     if (typeof navigator === "undefined" || !navigator.locks?.request) {
       setState({ journeyId, status: "unsupported" });
@@ -36,25 +47,34 @@ export function useJourneyLock(journeyId: string, storage: StorageLike, attempt 
     };
     window.addEventListener("pagehide", pagehide);
     window.addEventListener("pageshow", pageshow);
-    void navigator.locks.request(`dreamscape:${storagePhysicalKey(storage, SAVE_KEY)}`, { ifAvailable: true }, (lock) => {
-      if (cancelled || !pageActive) return;
-      if (!lock) {
-        setState({ journeyId, status: "busy" });
-        return;
-      }
-      return new Promise<void>((resolve) => {
-        release = resolve;
-        setState({ journeyId, status: "ready" });
+    const locks = navigator.locks;
+    const name = `dreamscape:${storagePhysicalKey(storage, SAVE_KEY)}`;
+    const acquire = (retriesLeft: number): Promise<unknown> =>
+      locks.request(name, { ifAvailable: true }, (lock) => {
+        if (cancelled || !pageActive) return;
+        if (!lock) {
+          if (retriesLeft > 0) retry = setTimeout(() => track(acquire(retriesLeft - 1)), LOCK_RETRY_MS);
+          else setState({ journeyId, status: "busy" });
+          return;
+        }
+        return new Promise<void>((resolve) => {
+          release = resolve;
+          setState({ journeyId, status: "ready" });
+        });
+      }).catch(() => {
+        if (!cancelled) setState({ journeyId, status: "unsupported" });
       });
-    }).catch(() => {
-      if (!cancelled) setState({ journeyId, status: "unsupported" });
-    });
+    // The request promise settles only after its lock has been released.
+    const track = (request: Promise<unknown>) => { settledRequests.set(name, request); };
+    const previous = settledRequests.get(name) ?? Promise.resolve();
+    track(previous.then(() => cancelled ? undefined : acquire(LOCK_RETRIES)));
     return () => {
       cancelled = true;
+      clearTimeout(retry);
       release?.();
       window.removeEventListener("pagehide", pagehide);
       window.removeEventListener("pageshow", pageshow);
     };
-  }, [journeyId, storage, generation, attempt]);
-  return state.journeyId === journeyId ? state.status : "loading";
+  }, [journeyId, storage, generation, attempt, enabled]);
+  return !enabled ? "ready" : state.journeyId === journeyId ? state.status : "loading";
 }

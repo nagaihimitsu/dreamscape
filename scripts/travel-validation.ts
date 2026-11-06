@@ -6,7 +6,7 @@ import { DAY_END, DAY_START } from "../src/domain/travel";
 /** Check the city's authored destinations against the existing game catalogs. */
 export function validateTravelContent(
   travel: TravelCatalog,
-  settings: { hotelPlaceId: string },
+  settings: { hotelPlaceId: string; storyBackgroundAssetId?: string },
   cityId: string,
   journey: JourneyConfig,
   dates: DateDefinition[],
@@ -19,6 +19,8 @@ export function validateTravelContent(
   if (travel.cityId !== cityId) throw new Error(`Unknown travel city: ${travel.cityId}`);
   if (!travel.places.some((place) => place.id === settings.hotelPlaceId))
     throw new Error(`Unknown travel hotel: ${settings.hotelPlaceId}`);
+  if (settings.storyBackgroundAssetId !== undefined && !backgrounds[settings.storyBackgroundAssetId])
+    throw new Error(`Unknown travel story background: ${cityId}/${settings.storyBackgroundAssetId}`);
   const assignedLandmarks = new Set<string>();
   const assignedDestinations = new Set<string>();
   for (const place of travel.places) {

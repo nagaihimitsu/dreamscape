@@ -1,0 +1,299 @@
+{
+  "schemaVersion": 1,
+  "episodes": [
+    {
+      "id": "milano_duomo_episode",
+      "kind": "episode",
+      "cityId": "milano",
+      "landmarkId": "duomo_milano",
+      "battleId": "milano_duomo_01",
+      "requiredEpisodeIds": [],
+      "titleJa": "無人の広場、一名追加",
+      "descriptionJa": "広場で録音中の男が、小さな布を頭からかぶった。",
+      "clearTitleJa": "ドゥオモ編 クリア",
+      "clearDescriptionJa": "袖の音を持って、広場を歩き出す。"
+    },
+    {
+      "id": "milano_galleria_episode",
+      "kind": "episode",
+      "cityId": "milano",
+      "landmarkId": "galleria_vittorio_emanuele_ii",
+      "battleId": "milano_galleria_01",
+      "requiredEpisodeIds": [],
+      "titleJa": "そこ、映っています",
+      "descriptionJa": "二人の後ろで、見知らぬ人が同じ動きを繰り返している。",
+      "clearTitleJa": "ガッレリア編 クリア",
+      "clearDescriptionJa": "録音を消した広場に、今度は自分の足で戻れる。"
+    },
+    {
+      "id": "milano_last_supper_episode",
+      "kind": "episode",
+      "cityId": "milano",
+      "landmarkId": "last_supper",
+      "battleId": "milano_last_supper_01",
+      "titleJa": "五本の指で話す人",
+      "descriptionJa": "旧食堂で声を出さない兄と、その手を見て席を立つ妹がいる。",
+      "clearTitleJa": "最後の晩餐編 クリア",
+      "clearDescriptionJa": "三秒のままの録音をしまい、旧食堂を出る。",
+      "requiredEpisodeIds": []
+    },
+    {
+      "id": "milano_castello_episode",
+      "kind": "episode",
+      "cityId": "milano",
+      "landmarkId": "castello_sforzesco",
+      "battleId": "milano_castello_01",
+      "requiredEpisodeIds": [],
+      "titleJa": "鼻がなくなる前に",
+      "descriptionJa": "城の中庭で、父親が自分の鼻をかばっている。",
+      "clearTitleJa": "スフォルツェスコ城編 クリア",
+      "clearDescriptionJa": "笑った顔のまま、中庭に人を残して歩き出す。"
+    },
+    {
+      "id": "milano_finale",
+      "kind": "city_finale",
+      "cityId": "milano",
+      "landmarkId": null,
+      "battleId": "milano_city_boss_01",
+      "requiredEpisodeIds": [
+        "milano_duomo_episode",
+        "milano_galleria_episode",
+        "milano_last_supper_episode",
+        "milano_castello_episode"
+      ],
+      "epilogueStoryId": "milano/sound_epilogue",
+      "titleJa": "この十秒を誰に渡す",
+      "descriptionJa": "ダルセナで小さなラジオが始まる。旅の音を一つだけ選んでほしいという。",
+      "clearTitleJa": "ミラノ 都市クリア",
+      "clearDescriptionJa": "放送は終わった。水辺を離れる時間は、まだ二人で決められる。"
+    }
+  ],
+  "storyBattles": [
+    {
+      "battleId": "milano_la_scala_b01",
+      "completionReward": {
+        "id": "battle_scala_first",
+        "ap": 1,
+        "titleJa": "スカラ座の対決を初めて完了"
+      },
+      "requiredEpisodeIds": [],
+      "titleJa": "椅子にも身元がある",
+      "descriptionJa": "スカラ座の前に、売り物でも腰掛けでもない椅子が一脚ある。",
+      "actionLabelJa": "スカラ座へ行く"
+    },
+    {
+      "battleId": "milano_brera_c01",
+      "completionReward": {
+        "id": "battle_brera_first",
+        "ap": 1,
+        "titleJa": "ブレラの対決を初めて完了"
+      },
+      "requiredEpisodeIds": [],
+      "titleJa": "青い布をほどくまで",
+      "descriptionJa": "ブレラで衣装係と演出家が、同じ布の端を持っている。",
+      "actionLabelJa": "ブレラ絵画館へ行く"
+    }
+  ],
+  "rewards": [
+    {
+      "id": "guide_last_supper_first_read",
+      "episodeId": "milano_last_supper_episode",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "battle_last_supper_first_complete",
+      "episodeId": "milano_last_supper_episode",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "バトルを初めて完了"
+    },
+    {
+      "id": "battle_last_supper_first_victory",
+      "episodeId": "milano_last_supper_episode",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて2問以上正解"
+    },
+    {
+      "id": "chapter_milano_first_clear",
+      "episodeId": "milano_last_supper_episode",
+      "trigger": "episode_clear",
+      "ap": 4,
+      "minScore": null,
+      "titleJa": "最後の晩餐編を初めてクリア"
+    },
+    {
+      "id": "guide_duomo_first",
+      "episodeId": "milano_duomo_episode",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "battle_duomo_first",
+      "episodeId": "milano_duomo_episode",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "バトルを初めて完了"
+    },
+    {
+      "id": "victory_duomo_first",
+      "episodeId": "milano_duomo_episode",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて2問以上正解"
+    },
+    {
+      "id": "episode_duomo_first",
+      "episodeId": "milano_duomo_episode",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光エピソードを初めてクリア"
+    },
+    {
+      "id": "guide_galleria_first",
+      "episodeId": "milano_galleria_episode",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "battle_galleria_first",
+      "episodeId": "milano_galleria_episode",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "バトルを初めて完了"
+    },
+    {
+      "id": "victory_galleria_first",
+      "episodeId": "milano_galleria_episode",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて2問以上正解"
+    },
+    {
+      "id": "episode_galleria_first",
+      "episodeId": "milano_galleria_episode",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光エピソードを初めてクリア"
+    },
+    {
+      "id": "guide_castello_first",
+      "episodeId": "milano_castello_episode",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "battle_castello_first",
+      "episodeId": "milano_castello_episode",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "バトルを初めて完了"
+    },
+    {
+      "id": "victory_castello_first",
+      "episodeId": "milano_castello_episode",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて2問以上正解"
+    },
+    {
+      "id": "episode_castello_first",
+      "episodeId": "milano_castello_episode",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光エピソードを初めてクリア"
+    },
+    {
+      "id": "battle_milano_finale_first",
+      "episodeId": "milano_finale",
+      "trigger": "battle_complete",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "都市ボスとの対決を初めて完了"
+    },
+    {
+      "id": "victory_milano_finale_first",
+      "episodeId": "milano_finale",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 3,
+      "titleJa": "都市ボスで初めて3問以上正解"
+    },
+    {
+      "id": "city_milano_first_clear",
+      "episodeId": "milano_finale",
+      "trigger": "city_clear",
+      "ap": 3,
+      "minScore": null,
+      "titleJa": "ミラノ都市を初めてクリア"
+    },
+    {
+      "id": "guide_scala_first",
+      "battleId": "milano_la_scala_b01",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "victory_scala_first",
+      "battleId": "milano_la_scala_b01",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて2問以上正解"
+    },
+    {
+      "id": "episode_scala_first",
+      "battleId": "milano_la_scala_b01",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "スカラ座の対決を初めてクリア"
+    },
+    {
+      "id": "guide_brera_first",
+      "battleId": "milano_brera_c01",
+      "trigger": "guide_read",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "観光案内を初めて読了"
+    },
+    {
+      "id": "victory_brera_first",
+      "battleId": "milano_brera_c01",
+      "trigger": "battle_score",
+      "ap": 1,
+      "minScore": 2,
+      "titleJa": "初めて2問以上正解"
+    },
+    {
+      "id": "episode_brera_first",
+      "battleId": "milano_brera_c01",
+      "trigger": "episode_clear",
+      "ap": 1,
+      "minScore": null,
+      "titleJa": "ブレラの対決を初めてクリア"
+    }
+  ]
+}

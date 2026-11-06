@@ -44,7 +44,7 @@ export type JourneyDraftLoadResult =
 
 const invalidMessage = "準備中のセーブを読み込めませんでした。元のデータは残っています。";
 function preparationJourney(storage: StorageLike) {
-  return journeys.find((journey) => journey.initialState && journey.id !== "milano" &&
+  return journeys.find((journey) => journey.initialState &&
     storagePhysicalKey(storage, SAVE_KEY) === `dreamscape.journey.${journey.id}.save.v1`);
 }
 

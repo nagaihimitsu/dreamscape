@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { cityContents, getCityContent } from "../content";
-import { installIndiaTestCities, installJourneyTestCities } from "../domain/multi-city-test-fixture";
+import { cityContents, episodes, getCityContent } from "../content";
+import { journeys } from "../content/journeys";
+import { installIndiaTestCities, installJourneyTestCities, installPreparingJourneyTestCities } from "../domain/multi-city-test-fixture";
 import { loadGame, saveGame } from "../persistence";
 import { prototypePreviewState } from "./prototype-preview-state";
 
@@ -30,6 +31,29 @@ describe("prototype city debug preview", () => {
       }
     } finally { cleanup(); }
     for (const [index, id] of prototypeCityIds.entries()) expect(cityContents[id]).toBe(actual[index]);
+  });
+
+  it("Debug's fictional scenes skip a preparing journey that already has an authored episode", () => {
+    const preparing = journeys.filter((journey) => journey.status === "preparing");
+    expect(preparing.map((journey) => journey.id)).toEqual(expect.arrayContaining(["uzbekistan", "luang_prabang"]));
+    const actual = { tashkent: cityContents.tashkent, luang_prabang: cityContents.luang_prabang };
+    // Pretend Uzbekistan's first city got its first real episode while the journey is still preparing.
+    episodes.push({ ...structuredClone(episodes[0]), id: "tashkent_authored_episode", cityId: "tashkent" });
+    try {
+      const cleanup = installPreparingJourneyTestCities();
+      try {
+        expect(cityContents.tashkent).toBe(actual.tashkent);
+        expect(cityContents.luang_prabang).not.toBe(actual.luang_prabang);
+        expect(cityContents.luang_prabang.city.nameJa).toContain("仮データ");
+      } finally { cleanup(); }
+    } finally { episodes.pop(); }
+    expect(cityContents.luang_prabang).toBe(actual.luang_prabang);
+    // Without the episode, both preparing journeys get their fictional cities again.
+    const cleanup = installPreparingJourneyTestCities();
+    try {
+      expect(cityContents.tashkent.city.nameJa).toContain("仮データ");
+    } finally { cleanup(); }
+    expect(cityContents.tashkent).toBe(actual.tashkent);
   });
 
   it("does not replace authored India with fictional scenes", () => {

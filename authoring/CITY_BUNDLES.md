@@ -6,7 +6,7 @@
 
 ## 基本的な使い方
 
-リポジトリのルートで次を実行します。`delhi` は登録済みの都市IDに、出力先は作業しやすいファイル名に変更できます。画像を新規追加・差し替えする場合は、**先に画像本体を `public/assets/` に用意してから**書き出してください。
+リポジトリのルートで次を実行します。`delhi` は登録済みの都市IDに、出力先は作業しやすいファイル名に変更できます。画像を新規追加・差し替えする場合は、**先に画像本体を旅行編の `content/journeys/<旅行編ID>/public/assets/` に用意してから**書き出してください。
 
 ```sh
 # 編集用ディレクトリを用意する（Gitには含まれません）
@@ -24,6 +24,8 @@ npm run city:bundle -- apply artifacts/city-work/india-delhi.json
 
 `check` は入力と既存データを照合し、一時領域でコンテンツ検証を行います。反映はしません。`apply` も検証を実行し、成功した場合に関連ファイルを更新します。`apply` はサイトの公開、Gitへのコミット、プッシュを行いません。
 
+`apply` が書き込むのは、その都市の都市ファイルがある旅行編フォルダ `content/journeys/<旅行編ID>/` だけです（共通データ `content/` 直下には都市を置けません）。まだ都市ファイルがない新しい都市は、同じ旅行編の既存の都市と同じ層へ、旅行編に都市が一つもなければその旅行編フォルダへ作られます。その層にまだないカタログ（例：`romance/date_destinations.json`）は、項目が追加されるときにフォルダごと作られます。既存のカタログにないキー（例：`landmarks`）も、項目が追加されるときだけ書き加えます。他の層に登録された背景・画像は参照できますが、この都市の編集では変更・削除できません。ID の重複は全層を合わせて確認します。
+
 `apply` が通常のエラーで途中終了した場合は、更新済みファイルを元に戻します。別の編集ツールとの同時書き込みや、プロセス・OSの強制終了に対しては完全な原子性を保証できません。強制終了後に `.city-bundle.lock` が残って再実行できない場合は、他の `city:bundle apply` が動いていないことと変更内容を確認してからロックファイルを取り除いてください。
 
 書き出し先には `content/` と `public/` の外を指定してください。既存のファイルは上書きされないため、再度書き出すときは別のファイル名を指定します。
@@ -36,7 +38,7 @@ npm run city:bundle -- apply artifacts/city-work/india-delhi.json
 
 ## 新しい都市を作る
 
-先に `content/journeys/catalog.json` の対象旅行編に都市IDと都市名を登録し、都市の順番や通貨などの旅行編共通設定を決めます。都市IDは既存の都市と重ならないものを使います。使用する画像の本体を `public/assets/` に用意した後、その都市の編集用JSONの雛形を作ります。
+先に対象旅行編の `content/journeys/<旅行編ID>/manifest.json` の `cities` に都市IDと都市名を登録し、都市の順番や通貨などの旅行編共通設定を決めます。都市IDは既存の都市と重ならないものを使います。使用する画像の本体を `content/journeys/<旅行編ID>/public/assets/` に用意した後、その都市の編集用JSONの雛形を作ります。
 
 旅行編に都市IDだけを先に追加すると、都市データの `apply` が終わるまで全体のコンテンツ検証は通りません。専用ブランチで作業し、必要な都市データをまとめて準備してください。
 
@@ -101,7 +103,7 @@ npm run city:bundle -- apply artifacts/city-work/sample-city.json
 | `assets` | 画像のパス、寸法、説明、作者・ライセンス・出典などの情報 |
 | `transitDecisions` | インド３都市の公共交通について、登録しない候補・未特定の調査判断と出典。他の都市では `null` |
 
-画像本体は `public/assets/` に置く必要があります。JSONへ画像の実体は含まれません。画像のファイル名・出典・ライセンス・利用条件を確認し、参照に合うファイルを `export` / `new` の前に用意してください。画像を変える場合は、観察位置や説明も新しい画像で確認が必要です。
+画像本体は、その旅行編の `content/journeys/<旅行編ID>/public/assets/`（全旅行編で共有する画像はリポジトリ直下の `public/assets/`）に置く必要があります。JSONの `path` には `public/` を除いた配信時のパス（例: `assets/tourism/india/delhi_red_fort.jpg`）を書き、画像の実体は含まれません。画像のファイル名・出典・ライセンス・利用条件を確認し、参照に合うファイルを `export` / `new` の前に用意してください。画像を変える場合は、観察位置や説明も新しい画像で確認が必要です。
 
 インド編の観察画像は記録済みのハッシュと照合します。ミラノの既存観察画像には旧画像のハッシュがないため、`export` より前に同じパスの画像ファイルを差し替えた場合、その差し替えを自動では検出できません。画像を変更したときは、観察ポイントの位置・説明・出典を必ず再確認してください。
 
@@ -113,12 +115,12 @@ npm run city:bundle -- apply artifacts/city-work/sample-city.json
 
 ## ほかに必要な作業
 
-- 旅行編の都市順、通貨、開始予算などの共通設定は、都市ごとの作業コピーとは別途 `content/journeys/catalog.json` で管理します。
+- 旅行編の都市順、通貨、開始予算などの共通設定は、都市ごとの作業コピーとは別途、旅行編ごとの `content/journeys/<旅行編ID>/manifest.json` で管理します。
 - シナリオのInk、クイズ、日本語訳、登場人物、各デートの思い出、都市フィナーレなどの制作と登録は別途必要です。単に都市データを反映するだけでは、プレイできる完成都市にはなりません。
-- インド編には既存の[制作補助](india-scaffold/README.md)と[完成確認・公開手順](drafts/golden-triangle/RELEASE_GATE.md)があります。シナリオ・クイズとそのメタデータ・訳を用意したうえで、生成・検証できます。特殊戦B・Cは現行の制作補助では自動設定されず、別途制作・登録が必要です。
+- インド編には既存の[制作補助](journeys/golden_triangle/scaffold/README.md)と[完成確認・公開手順](journeys/golden_triangle/drafts/RELEASE_GATE.md)があります。シナリオ・クイズとそのメタデータ・訳を用意したうえで、生成・検証できます。特殊戦B・Cは現行の制作補助では自動設定されず、別途制作・登録が必要です。
 - 都市や旅行編を公開可能にする判断と検証は、この編集操作とは別です。未完成の都市が本番でプレイ可能と表示されないよう、制作状態を維持します。
 
-調査資料として残すファイルと、現在のゲームに反映済みの値は一致しないことがあります。特に `authoring/drafts/golden-triangle/cities/` と `travel/` は古い研究由来の生成ドラフトで、現在の交通や入場料の正本ではありません。編集用コピーの代わりにそのドラフトを本番データへ上書きしないでください。同じ旅行編の `scenario/` には今回の脚本・クイズの制作記録を置き、実行用Inkの正本は `content/stories/` にまとめています。
+調査資料として残すファイルと、現在のゲームに反映済みの値は一致しないことがあります。特に `authoring/journeys/golden_triangle/drafts/cities/` と `travel/` は古い研究由来の生成ドラフトで、現在の交通や入場料の正本ではありません。編集用コピーの代わりにそのドラフトを本番データへ上書きしないでください。同じ旅行編の `scenario/` には今回の脚本・クイズの制作記録を置き、実行用Inkの正本は `content/journeys/golden_triangle/stories/` にまとめています。
 
 ## ウズベキスタン4都市
 
@@ -126,4 +128,4 @@ npm run city:bundle -- apply artifacts/city-work/sample-city.json
 
 ## ルアンパパーン
 
-`npm run city:bundle -- export luang_prabang artifacts/city-work/laos-luang-prabang.json` で編集できます。市街地の観光候補・写真・徒歩と車の推定経路を登録し、旅行編は制作中です。根拠・交通の採否・未制作項目は[調査記録](research/luang-prabang-20261104/README.md)を参照してください。クァンシーの滝と将来のツアー機能は含まれていません。
+`npm run city:bundle -- export luang_prabang artifacts/city-work/laos-luang-prabang.json` で編集できます。市街地の観光候補・写真・徒歩と車の推定経路を登録し、旅行編は制作中です。根拠・交通の採否・未制作項目は[調査記録](journeys/luang_prabang/research/luang-prabang-20261104/README.md)を参照してください。クァンシーの滝と将来のツアー機能は含まれていません。

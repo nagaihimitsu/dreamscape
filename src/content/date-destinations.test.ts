@@ -5,14 +5,14 @@ import { tmpdir } from "node:os";
 import { buildContent } from "../../scripts/content-pipeline";
 import { prepareContentFixture } from "./test-fixtures";
 import { dateDestinationSchema } from "./date-destinations";
-import destinationData from "../../content/romance/date_destinations.json";
+import destinationData from "./generated/content/romance/date_destinations.json";
 
 type Destination = {
   id: string; cityId: string; backgroundAssetId: string;
   facts: { publisher: string; title: string; url: string; checkedAt: string; claimType: string; claimJa: string }[];
 };
 type DateEntry = {
-  id: string; destinationId?: string; legacyDestinationId?: string; legacyStoryIds?: string[];
+  id: string; destinationId?: string;
   chapterId: string; backgroundAssetId: string; requiredCompletedChapters: string[];
   requiredCompletedEpisodeIds?: string[];
 };
@@ -24,13 +24,13 @@ beforeEach(async () => {
 afterEach(async () => { await rm(fixture, { recursive: true, force: true }); });
 
 async function editDestinations(change: (items: Destination[]) => void) {
-  const file = path.join(fixture, "content/romance/date_destinations.json");
+  const file = path.join(fixture, "content/journeys/milano/romance/date_destinations.json");
   const catalog = JSON.parse(await readFile(file, "utf8")) as { destinations: Destination[] };
   change(catalog.destinations);
   await writeFile(file, JSON.stringify(catalog));
 }
 async function editDates(change: (items: DateEntry[]) => void) {
-  const file = path.join(fixture, "content/romance/date_catalog.json");
+  const file = path.join(fixture, "content/journeys/milano/romance/date_catalog.json");
   const catalog = JSON.parse(await readFile(file, "utf8")) as { dates: DateEntry[] };
   change(catalog.dates);
   await writeFile(file, JSON.stringify(catalog));
@@ -39,13 +39,14 @@ const scala = (dates: DateEntry[]) => dates.find((date) => date.id === "milano_l
 
 describe("date destination content references", () => {
   it("validates optional, clearly labelled HTTPS references for destination photos", () => {
-    const love = destinationData.destinations.find((item) => item.id === "milano_love")!;
-    expect(dateDestinationSchema.safeParse(love).success).toBe(true);
-    const reference = love.referenceImage!;
-    expect(dateDestinationSchema.safeParse({ ...love, referenceImage: { ...reference, url: "javascript:alert(1)" } }).success).toBe(false);
-    expect(dateDestinationSchema.safeParse({ ...love, referenceImage: { ...reference, url: "http://example.org" } }).success).toBe(false);
-    expect(dateDestinationSchema.safeParse({ ...love, referenceImage: { ...reference, backgroundNoteJa: "" } }).success).toBe(false);
-    expect(dateDestinationSchema.safeParse({ ...love, referenceImage: undefined }).success).toBe(true);
+    const novecento = destinationData.destinations.find((item) => item.id === "milano_novecento")!;
+    expect(dateDestinationSchema.safeParse(novecento).success).toBe(true);
+    const reference = novecento.referenceImage!;
+    expect(reference).toBeDefined();
+    expect(dateDestinationSchema.safeParse({ ...novecento, referenceImage: { ...reference, url: "javascript:alert(1)" } }).success).toBe(false);
+    expect(dateDestinationSchema.safeParse({ ...novecento, referenceImage: { ...reference, url: "http://example.org" } }).success).toBe(false);
+    expect(dateDestinationSchema.safeParse({ ...novecento, referenceImage: { ...reference, backgroundNoteJa: "" } }).success).toBe(false);
+    expect(dateDestinationSchema.safeParse({ ...novecento, referenceImage: undefined }).success).toBe(true);
   });
 
   it("accepts the three places without making them tourism/battle landmarks", async () => {
@@ -76,11 +77,11 @@ describe("date destination content references", () => {
 
   it("rejects malformed source URL, date and claim classification", async () => {
     await editDestinations((items) => { items[0].facts[0].url = "not-a-url"; });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
+    await expect(buildContent(fixture, false)).rejects.toThrow(/"url"[\s\S]*Invalid URL/);
     await editDestinations((items) => { items[0].facts[0].url = "https://example.org"; items[0].facts[0].checkedAt = "not-a-date"; });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
+    await expect(buildContent(fixture, false)).rejects.toThrow(/"checkedAt"[\s\S]*Invalid ISO date/);
     await editDestinations((items) => { items[0].facts[0].checkedAt = "2026-11-01"; items[0].facts[0].claimType = "unknown"; });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
+    await expect(buildContent(fixture, false)).rejects.toThrow(/"claimType"[\s\S]*Invalid option/);
   });
 
   it("rejects a reference to an unknown episode prerequisite", async () => {

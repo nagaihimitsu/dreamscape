@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { milanoTravelCatalog } from "../../content";
+import { getCityContent } from "../../content";
 import { createGame } from "../../domain/game";
 import { showTravelEvent } from "./travel-visibility";
+
+const milanoTravelCatalog = getCityContent("milano").travel;
 
 describe("destination visibility", () => {
   const event = (id: string) => milanoTravelCatalog.events.find((item) => item.id === id)!;

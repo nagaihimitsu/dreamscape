@@ -20,7 +20,6 @@ import {
   advanceDate,
   chooseDate,
   finishDate,
-  claimTrialMilestone,
   type GameState,
 } from "./index";
 import {
@@ -128,7 +127,7 @@ describe("integrated tourism, battle, and free time", () => {
       expect(state.ap).toBe(rule("guide_read").ap + battleAP);
       expect(state.affection).toBe(beforeAffection);
       expect(state.completedEpisodeIds).toEqual([episode.id]);
-      expect(state.completedChapters).toEqual([episode.legacyChapterId]);
+      expect(state.completedChapters).toEqual([episode.cityId]);
       expect(state.completedCityIds).toEqual([]);
       expect(
         state.battleRewardReceipt?.entries.reduce(
@@ -150,7 +149,7 @@ describe("integrated tourism, battle, and free time", () => {
   );
 
   it("skips guide rewards, then permits an actual later read exactly once", () => {
-    let state = startEpisode({ ...createGame(), legacyTrialAvailable: true });
+    let state = startEpisode(createGame());
     state = skipTourismGuide(state, state.revision);
     expect(state.ap).toBe(0);
     expect(state.completedGuideIds).toEqual([]);
@@ -223,11 +222,8 @@ describe("integrated tourism, battle, and free time", () => {
     reload(state);
   });
 
-  it("continues the legacy zero-score journey after rejection, deferral and eventual acceptance", () => {
-    let state = startEpisode(
-      { ...createGame(), legacyTrialAvailable: true },
-      "milano_last_supper_episode",
-    );
+  it("continues a zero-score journey after rejection, deferral and eventual acceptance", () => {
+    let state = startEpisode(createGame(), "milano_last_supper_episode");
     state = finishBattle(startTourismBattle(state, state.revision), 0);
     state = enterFreeTime(state, state.revision);
     // One date opens the conversation, not a guaranteed success.
@@ -244,11 +240,8 @@ describe("integrated tourism, battle, and free time", () => {
     state = playDate(state, "milano_confession_01", [0]);
     expect(state.confessionStatus).toBe("deferred");
 
-    // The old optional trial credit is still redeemable exactly once.
-    const beforeReward = state.ap;
-    state = claimTrialMilestone(state, "trial_after_cafe");
-    expect(state.ap).toBe(beforeReward + 4);
-    expect(claimTrialMilestone(state, "trial_after_cafe")).toBe(state);
+    // Stand-in for AP earned elsewhere on the journey (sightseeing rewards).
+    state = validateGameState({ ...state, ap: state.ap + 4 });
     state = playDate(state, "milano_walk_01", [0, 0]);
     state = playDate(state, "milano_confession_01", [0]);
     expect(state.confessionStatus).toBe("accepted");

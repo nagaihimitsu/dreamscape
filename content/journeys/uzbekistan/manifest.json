@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "order": 30,
+  "id": "uzbekistan",
+  "nameJa": "ウズベキスタン編",
+  "status": "preparing",
+  "cities": [
+    {
+      "id": "tashkent",
+      "nameJa": "タシュケント"
+    },
+    {
+      "id": "samarkand",
+      "nameJa": "サマルカンド"
+    },
+    {
+      "id": "bukhara",
+      "nameJa": "ブハラ"
+    },
+    {
+      "id": "khiva",
+      "nameJa": "ヒヴァ"
+    }
+  ],
+  "currency": {
+    "code": "UZS",
+    "symbol": "soʻm ",
+    "unitJa": "スム",
+    "unit": "whole"
+  },
+  "initialBudget": 4000000,
+  "startWeekday": 0,
+  "initialState": {
+    "ap": 0,
+    "pendingAp": 0,
+    "affection": 0,
+    "trust": 0,
+    "spark": 0,
+    "romanceStage": 1,
+    "confessionStatus": "none"
+  },
+  "cityPlan": {
+    "cityClearAp": 4,
+    "lodgingCost": 0,
+    "mainTourismCount": 4,
+    "dateCount": 6
+  },
+  "cityTransition": "after_epilogue",
+  "farePartySize": 2,
+  "intercityModes": [],
+  "authoring": {
+    "eventPrefix": "uz",
+    "observationFile": "authoring/journeys/uzbekistan/drafts/observation-cards.json",
+    "imageDirectory": "assets/tourism/uzbekistan",
+    "transitDirectory": "authoring/journeys/uzbekistan/research/uzbekistan-20261104"
+  }
+}

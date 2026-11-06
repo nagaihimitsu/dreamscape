@@ -6,17 +6,17 @@ import { Story } from "inkjs";
 import sharp from "sharp";
 import { buildContent, compileInk, validateStory } from "../../scripts/content-pipeline";
 import { effects, getCities, presentation } from "./index";
-import dateData from "../../content/romance/date_catalog.json";
-import battleData from "../../content/battles/catalog.json";
-import tourismData from "../../content/tourism/catalog.json";
-import reasoningIntroData from "../../content/presentation/reasoning-intros.json";
-import encounterData from "../../content/encounters/catalog.json";
+import dateData from "./generated/content/romance/date_catalog.json";
+import battleData from "./generated/content/battles/catalog.json";
+import tourismData from "./generated/content/tourism/catalog.json";
+import reasoningIntroData from "./generated/content/presentation/reasoning-intros.json";
+import encounterData from "./generated/content/encounters/catalog.json";
 import { parseStoryTags } from "./tags";
 import { prepareContentFixture } from "./test-fixtures";
 
 let fixture: string;
-const storyFile = "content/stories/milano/sound_cafe_01.ink";
-const dateFile = "content/romance/date_catalog.json";
+const storyFile = "content/journeys/milano/stories/milano/sound_cafe_01.ink";
+const dateFile = "content/journeys/milano/romance/date_catalog.json";
 
 beforeEach(async () => {
   fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-content-"));
@@ -45,6 +45,13 @@ describe("content build acceptance", () => {
   it("validates the real production catalog and registered artwork", async () => {
     await expect(buildContent(path.resolve("."), false)).resolves.toBeDefined();
   }, 120000);
+  it("rejects a served file that two public folders provide", async () => {
+    // The game serves one assembled folder, so a journey may not shadow a shared file.
+    const copy = path.join(fixture, "content/journeys/milano/public/assets/items/item.svg");
+    await writeFile(copy, await readFile(path.join(fixture, "public/assets/items/item.svg")));
+    await expect(buildContent(fixture, false)).rejects.toThrow(
+      "Public file assets/items/item.svg exists in more than one public folder: public/assets/items/item.svg and content/journeys/milano/public/assets/items/item.svg");
+  });
   it("rejects a registered but missing background image", async () => {
     const file = path.join(fixture, "content/romance/presentation.json");
     const data = JSON.parse(await readFile(file, "utf8"));
@@ -53,24 +60,28 @@ describe("content build acceptance", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow("Missing background image: milano_cafe/assets/missing-background.png");
   });
   it("accepts a credited shared photo and rejects a missing or ambiguous background asset", async () => {
-    const file = path.join(fixture, "content/romance/presentation.json");
+    // A Milan background without an image (the core default may not use a journey's photo).
+    const file = path.join(fixture, "content/journeys/milano/romance/presentation.json");
     const data = JSON.parse(await readFile(file, "utf8"));
-    data.backgrounds.milano_cafe.imageAssetId = "galleria_milano_photo";
+    expect(data.backgrounds.milano_walk.imageAssetId).toBeUndefined();
+    data.backgrounds.milano_walk.imageAssetId = "galleria_milano_photo";
     await writeFile(file, JSON.stringify(data));
     await expect(buildContent(fixture, false)).resolves.toBeDefined();
-    data.backgrounds.milano_cafe.imageAssetId = "missing_background_asset";
+    data.backgrounds.milano_walk.imageAssetId = "missing_background_asset";
     await writeFile(file, JSON.stringify(data));
-    await expect(buildContent(fixture, false)).rejects.toThrow("Unknown background image asset: milano_cafe/missing_background_asset");
-    data.backgrounds.milano_cafe.imageAssetId = "galleria_milano_photo";
-    data.backgrounds.milano_cafe.imagePath = "assets/tourism/galleria-milano.webp";
+    await expect(buildContent(fixture, false)).rejects.toThrow("Unknown background image asset: milano_walk/missing_background_asset");
+    data.backgrounds.milano_walk.imageAssetId = "galleria_milano_photo";
+    data.backgrounds.milano_walk.imagePath = "assets/tourism/galleria-milano.webp";
     await writeFile(file, JSON.stringify(data));
-    await expect(buildContent(fixture, false)).rejects.toThrow("Background cannot specify both imagePath and imageAssetId: milano_cafe");
+    await expect(buildContent(fixture, false)).rejects.toThrow("Background cannot specify both imagePath and imageAssetId: milano_walk");
   }, 120000);
   it("rejects an undefined character ID and a registered but missing image", async () => {
     const file = path.join(fixture, "content/presentation/characters.json");
     const data = JSON.parse(await readFile(file, "utf8"));
-    // Isolate the required-character check from wardrobe's own references.
+    // Isolate the required-character check from wardrobe's own references
+    // (Milan's fragment holds only its wardrobe city).
     delete data.wardrobe;
+    await rm(path.join(fixture, "content/journeys/milano/presentation/characters.json"));
     data.characters[0].id = "unknown";
     await writeFile(file, JSON.stringify(data));
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown required character ID: heroine");
@@ -156,15 +167,19 @@ describe("content build acceptance", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow(`Missing character image: heroine/default_01/standing_01/teasing_big/${dir}/missing.png`);
   });
   it("checks the wardrobe city against real city data and its country", async () => {
+    // Countries are shared (core); each journey assigns its own cities.
     const file = path.join(fixture, "content/presentation/characters.json");
     const data = JSON.parse(await readFile(file, "utf8"));
-    data.wardrobe.cities.missing_city = { country: "IT" };
-    await writeFile(file, JSON.stringify(data));
+    const milanoFile = path.join(fixture, "content/journeys/milano/presentation/characters.json");
+    const milano = JSON.parse(await readFile(milanoFile, "utf8"));
+    milano.wardrobe.cities.missing_city = { country: "IT" };
+    await writeFile(milanoFile, JSON.stringify(milano));
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown city in character wardrobe: missing_city");
-    delete data.wardrobe.cities.missing_city;
+    delete milano.wardrobe.cities.missing_city;
     data.wardrobe.countries.FR = { region: "south_europe" };
-    data.wardrobe.cities.milano.country = "FR";
+    milano.wardrobe.cities.milano.country = "FR";
     await writeFile(file, JSON.stringify(data));
+    await writeFile(milanoFile, JSON.stringify(milano));
     await expect(buildContent(fixture, false)).rejects.toThrow("Character wardrobe country mismatch: milano/FR (expected IT)");
   });
   it("rejects a wardrobe scene assignment that no playable scene uses", async () => {
@@ -309,12 +324,12 @@ describe("content build acceptance", () => {
     await changeDates((data) => {
       data.dates[0].apCost = -1;
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
+    await expect(buildContent(fixture, false)).rejects.toThrow(/"apCost"[\s\S]*Too small: expected number to be >=0/);
   });
 
   it("requires the name variables expected by the runtime", async () => {
     await replace(
-      "content/stories/milano/sound_invitation_01.ink",
+      "content/journeys/milano/stories/milano/sound_invitation_01.ink",
       'VAR player_name = ""',
       "// player name accidentally removed",
     );
@@ -324,7 +339,7 @@ describe("content build acceptance", () => {
   });
 
   it("rejects relationship rewards attached to confession outcomes", async () => {
-    const file = path.join(fixture, "content/romance/effect_catalog.json");
+    const file = path.join(fixture, "content/journeys/milano/romance/effect_catalog.json");
     const data = JSON.parse(await readFile(file, "utf8"));
     const outcome = data.effects.find(
       (effect: { id: string }) => effect.id === "milano_confession_accepted",
@@ -354,7 +369,7 @@ describe("content build acceptance", () => {
       '"stage": 2,',
       '"stage": 2, "requiredPlayedDateIds": ["milano_walk_01"],',
     );
-    await expect(buildContent(fixture, false)).rejects.toThrow();
+    await expect(buildContent(fixture, false)).rejects.toThrow(/Unrecognized key: .*requiredPlayedDateIds/);
   });
 
   it("rejects a normal date requiring another date", async () => {
@@ -377,7 +392,7 @@ describe("content build acceptance", () => {
 
   it("rejects invalid confession readiness branches", async () => {
     await replace(
-      "content/stories/milano/sound_confession_01.ink",
+      "content/journeys/milano/stories/milano/sound_confession_01.ink",
       'confession_result == "accepted":',
       "true:",
     );
@@ -388,7 +403,7 @@ describe("content build acceptance", () => {
 
   it("rejects missing outcome events in confession", async () => {
     await replace(
-      "content/stories/milano/sound_confession_01.ink",
+      "content/journeys/milano/stories/milano/sound_confession_01.ink",
       "# effect: milano_confession_accepted",
       "# effect: sound_invitation_01_1_1",
     );
@@ -411,11 +426,11 @@ describe("content build acceptance", () => {
       .toThrow("Only confession can apply a confession outcome");
   });
 
-  it("rejects duplicate milestone reward source IDs", async () => {
+  it("rejects duplicate city first-clear reward source IDs", async () => {
     await replace(
-      "content/romance/trial_progression.json",
-      '"trial_after_walk_reward"',
-      '"trial_after_cafe_reward"',
+      "content/journeys/golden_triangle/cities/agra.json",
+      '"agra_legacy_episode_placeholder"',
+      '"delhi_legacy_episode_placeholder"',
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Duplicate reward source",
@@ -424,7 +439,7 @@ describe("content build acceptance", () => {
 
   it("still validates the unpublished quiz sample", async () => {
     await replace(
-      "content/quizzes/last_supper_B1.sample.json",
+      "content/journeys/milano/quizzes/last_supper_B1.sample.json",
       '"correctOptionId": "A"',
       '"correctOptionId": "D"',
     );

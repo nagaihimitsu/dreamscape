@@ -51,8 +51,11 @@ const encounterSchema = z.object({
 }).strict();
 const encounterCatalogObjectSchema = z.object({
   schemaVersion: z.literal(1),
-  initialBudget: money,
-  items: z.array(z.object({ id, cityId: id, nameJa: japaneseText, descriptionJa: japaneseText }).strict()),
+  items: z.array(z.object({
+    id, cityId: id, nameJa: japaneseText, descriptionJa: japaneseText,
+    /** Icon among the held items (a served file such as assets/items/x.svg); a generic icon otherwise. */
+    iconPath: z.string().regex(/^assets\/(?!.*(?:^|\/)\.\.(?:\/|$))[a-zA-Z0-9_./-]+\.(?:png|webp|svg)$/).optional(),
+  }).strict()),
   encounters: z.array(encounterSchema),
 }).strict();
 function validateMoneyFields(catalog: { encounters: { completionMoney?: number; completionMoneyEuro?: number }[] }, context: z.RefinementCtx) {

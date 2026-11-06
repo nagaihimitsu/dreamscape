@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "backgrounds": {
+    "zz_fixture_hotel_bg": {
+      "nameJa": "テストの宿",
+      "captionJa": "テストの街 ／ 架空の宿",
+      "color": "#7a7f86",
+      "fallback": "neutral"
+    },
+    "zz_fixture_spot_bg": {
+      "nameJa": "テストの広場",
+      "captionJa": "テストの街 ／ 架空の広場",
+      "color": "#78828c",
+      "fallback": "neutral",
+      "imageAssetId": "zz_fixture_spot_image"
+    }
+  }
+}

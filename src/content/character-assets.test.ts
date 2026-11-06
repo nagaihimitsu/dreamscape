@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import characterData from "../../content/presentation/characters.json";
+import characterData from "./generated/content/presentation/characters.json";
 import { battleCharacterId, characterCatalogSchema, characterImage } from "./character-assets";
 
 const base = characterCatalogSchema.parse(characterData).characters[0];

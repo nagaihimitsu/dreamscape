@@ -1,19 +1,20 @@
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { isDeepStrictEqual } from "node:util";
-import path from "node:path";
 import { z } from "zod";
 import { citySchema, battleCatalogSchema, dateCatalogSchema, presentationSchema, quizSchema } from "../src/content/schemas";
 import { dateDestinationsSchema } from "../src/content/date-destinations";
 import { journeySchema } from "../src/content/journey-schemas";
-import { journeyCatalogSchema } from "../src/content/journey-catalog";
+import type { Journey } from "../src/content/journey-catalog";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { learningCatalogSchema, questionSource } from "../src/content/learning-schema";
+import { loadContentSources, parseCatalog, publicRoots, readJourneyCatalog, requireCity } from "./content-sources";
+import { findPublicFile } from "./public-assets";
 
 /** Report from real catalog entries; no additional hand-maintained content list. */
 export type JourneyReadinessInput = {
   journey: z.infer<typeof journeySchema>;
-  trip: z.infer<typeof journeyCatalogSchema>["journeys"][number];
+  trip: Journey;
   cities: Array<{
     city: z.infer<typeof citySchema>;
     travel: z.infer<typeof travelCatalogSchema>;
@@ -176,23 +177,26 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
 }
 
 export function loadJourneyReadiness(root: string, journeyId: string): JourneyReadinessInput {
-  const read = (file: string): unknown => JSON.parse(readFileSync(path.join(root, "content", file), "utf8"));
-  const filesIn = (dir: string): string[] => readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
-    const file = path.join(dir, entry.name);
-    return entry.isDirectory() ? filesIn(file) : [file];
-  }).sort();
-  const catalog = journeyCatalogSchema.parse(read("journeys/catalog.json"));
+  const sources = loadContentSources(root);
+  const read = (file: string): unknown => JSON.parse(readFileSync(file, "utf8"));
+  const catalog = readJourneyCatalog(root);
   const trip = catalog.journeys.find((item) => item.id === journeyId);
   if (!trip) throw new Error("Journey journey is missing");
-  const cities = trip.cities.map(({ id }) => ({ city: citySchema.parse(read(`cities/${id}.json`)),
-    travel: travelCatalogSchema.parse(read(`travel/${id}.json`)), settings: travelSettingsSchema.parse(read(`travel/${id}-settings.json`)) }));
-  const quizzes = filesIn(path.join(root, "content/quizzes")).filter((file) => file.endsWith(".json") && !file.endsWith(".sample.json"))
-    .map((file) => quizSchema.parse(JSON.parse(readFileSync(file, "utf8"))));
-  return { trip, cities, quizzes, journey: journeySchema.parse(read("progression/journey.json")),
-    tourism: tourismCatalogSchema.parse(read("tourism/catalog.json")), backgrounds: presentationSchema.parse(read("romance/presentation.json")).backgrounds,
-    dates: dateCatalogSchema.parse(read("romance/date_catalog.json")).dates, destinations: dateDestinationsSchema.parse(read("romance/date_destinations.json")).destinations,
-    battles: battleCatalogSchema.parse(read("battles/catalog.json")).battles,
-    translations: learningCatalogSchema.parse(read("learning/translations.json")).questions,
-    storyExists: (id) => /^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/.test(id) && existsSync(path.join(root, "content/stories", `${id}.ink`)),
-    assetExists: (assetPath) => existsSync(path.join(root, "public", assetPath)) };
+  const cities = trip.cities.map(({ id }) => {
+    const files = requireCity(sources, id);
+    return { city: citySchema.parse(read(files.file)), travel: travelCatalogSchema.parse(read(files.travelFile)),
+      settings: travelSettingsSchema.parse(read(files.settingsFile)) };
+  });
+  const quizzes = sources.quizFiles.filter((quiz) => !quiz.sample).map((quiz) => quizSchema.parse(read(quiz.file)));
+  const storyIds = new Set(sources.storyFiles.map((story) => story.id));
+  const roots = publicRoots(root, sources.layers);
+  return { trip, cities, quizzes, journey: parseCatalog(sources, journeySchema, "progression/journey.json"),
+    tourism: parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json"),
+    backgrounds: parseCatalog(sources, presentationSchema, "romance/presentation.json").backgrounds,
+    dates: parseCatalog(sources, dateCatalogSchema, "romance/date_catalog.json").dates,
+    destinations: parseCatalog(sources, dateDestinationsSchema, "romance/date_destinations.json").destinations,
+    battles: parseCatalog(sources, battleCatalogSchema, "battles/catalog.json").battles,
+    translations: parseCatalog(sources, learningCatalogSchema, "learning/translations.json").questions,
+    storyExists: (id) => /^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/.test(id) && storyIds.has(id),
+    assetExists: (assetPath) => findPublicFile(root, assetPath, roots) !== undefined };
 }

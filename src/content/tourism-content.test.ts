@@ -4,27 +4,36 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { Story } from "inkjs";
 import { buildContent } from "../../scripts/content-pipeline";
-import { prepareContentFixture } from "./test-fixtures";
-import catalogData from "../../content/tourism/catalog.json";
+import { changeCatalogEntry, prepareContentFixture } from "./test-fixtures";
+import catalogData from "./generated/content/tourism/catalog.json";
+import type { TourismCatalog } from "./tourism-schemas";
+import { resolvePublicFile } from "../../scripts/public-assets";
 
 let fixture: string;
-let fixtureCatalog: typeof catalogData;
-const catalogPath = "content/tourism/catalog.json";
-const guidePath = "content/stories/tourism/sound_supper.ink";
+const guidePath = "content/journeys/milano/stories/tourism/sound_supper.ink";
+// The Last Supper landmark, its first clues and an image asset.
+const assetId = "darsena_finale_photo";
+const landmarkId = "last_supper";
+const clueIds = ["last_supper_perspective", "last_supper_apostle_groups", "last_supper_technique_card"] as const;
 beforeEach(async () => {
   fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-tourism-content-"));
   await prepareContentFixture(fixture);
-  fixtureCatalog = JSON.parse(await readFile(path.join(fixture, catalogPath), "utf8"));
 });
 afterEach(async () => {
   await rm(fixture, { recursive: true, force: true });
 });
 
-async function changeCatalog(change: (data: typeof catalogData) => void) {
-  const data = structuredClone(fixtureCatalog);
-  change(data);
-  await writeFile(path.join(fixture, catalogPath), JSON.stringify(data));
+type Asset = TourismCatalog["assets"][number];
+type Landmark = TourismCatalog["landmarks"][number];
+type Clue = TourismCatalog["clues"][number];
+/** Change one tourism entry, starting again from the repository's catalog. */
+function changeEntry(key: "assets", id: string, change: (entry: Asset, catalog: TourismCatalog) => void): Promise<void>;
+function changeEntry(key: "landmarks", id: string, change: (entry: Landmark, catalog: TourismCatalog) => void): Promise<void>;
+function changeEntry(key: "clues", id: string, change: (entry: Clue, catalog: TourismCatalog) => void): Promise<void>;
+function changeEntry(key: string, id: string, change: (entry: never, catalog: TourismCatalog) => void) {
+  return changeCatalogEntry(fixture, "tourism/catalog.json", key, id, change);
 }
+const clue = (catalog: TourismCatalog, id: string) => catalog.clues.find((entry) => entry.id === id)!;
 async function changeGuide(before: string, after: string) {
   const file = path.join(fixture, guidePath);
   const source = await readFile(file, "utf8");
@@ -69,39 +78,39 @@ describe("tourism content contract", () => {
   });
 
   it("requires image credits, a source, rights and a checked date", async () => {
-    await changeCatalog((data) => {
-      data.assets[0].licenseName = "";
+    await changeEntry("assets", assetId, (asset) => {
+      asset.licenseName = "";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
-    await changeCatalog((data) => {
-      data.assets[0].sourceUrl = "not-a-source";
+    await expect(buildContent(fixture, false)).rejects.toThrow(/"licenseName"[\s\S]*Too small: expected string to have >=1 characters/);
+    await changeEntry("assets", assetId, (asset) => {
+      asset.sourceUrl = "not-a-source";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
-    await changeCatalog((data) => {
-      data.assets[0].checkedAt = "unknown";
+    await expect(buildContent(fixture, false)).rejects.toThrow(/"sourceUrl"[\s\S]*Invalid URL/);
+    await changeEntry("assets", assetId, (asset) => {
+      asset.checkedAt = "unknown";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
+    await expect(buildContent(fixture, false)).rejects.toThrow(/"checkedAt"[\s\S]*Invalid ISO date/);
   });
 
   it("rejects image dimensions that disagree with the registered file", async () => {
-    await changeCatalog((data) => {
-      data.assets[0].width += 1;
+    await changeEntry("assets", assetId, (asset) => {
+      asset.width += 1;
     });
     await expect(buildContent(fixture, false)).rejects.toThrow("Tourism image dimensions do not match");
   });
 
   it("rejects unsafe image paths and missing or non-image assets", async () => {
-    await changeCatalog((data) => {
-      data.assets[0].path = "../README.md";
+    await changeEntry("assets", assetId, (asset) => {
+      asset.path = "../README.md";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
-    await changeCatalog((data) => {
-      data.assets[0].path = "assets/tourism/missing.webp";
+    await expect(buildContent(fixture, false)).rejects.toThrow(/must match pattern \/\^assets/);
+    await changeEntry("assets", assetId, (asset) => {
+      asset.path = "assets/tourism/missing.webp";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
-    await changeCatalog(() => {});
+    await expect(buildContent(fixture, false)).rejects.toThrow("Missing public file: assets/tourism/missing.webp");
+    await changeEntry("assets", assetId, () => {});
     await writeFile(
-      path.join(fixture, "public", fixtureCatalog.assets[0].path),
+      resolvePublicFile(fixture, catalogData.assets.find((asset) => asset.id === assetId)!.path),
       "not an image",
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(
@@ -110,27 +119,27 @@ describe("tourism content contract", () => {
   });
 
   it("rejects regions outside the image and zero-sized regions", async () => {
-    await changeCatalog((data) => {
-      data.clues[0].region!.x = 0.9;
+    await changeEntry("clues", clueIds[0], (clue) => {
+      clue.region!.x = 0.9;
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "exceeds image bounds",
     );
-    await changeCatalog((data) => {
-      data.clues[0].region!.width = 0;
+    await changeEntry("clues", clueIds[0], (clue) => {
+      clue.region!.width = 0;
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
+    await expect(buildContent(fixture, false)).rejects.toThrow(/"width"[\s\S]*Too small: expected number to be >0/);
   });
 
   it("keeps nonvisual research cards separate from image hotspots", async () => {
-    await changeCatalog((data) => {
-      data.clues[4].region = data.clues[0].region;
+    await changeEntry("clues", clueIds[2], (card, catalog) => {
+      card.region = clue(catalog, clueIds[0]).region;
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "document cards must not have one",
     );
-    await changeCatalog((data) => {
-      data.clues[0].region = null;
+    await changeEntry("clues", clueIds[0], (clue) => {
+      clue.region = null;
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Hotspots need a region",
@@ -140,8 +149,8 @@ describe("tourism content contract", () => {
   it.each(["id", "factId"] as const)(
     "rejects duplicate clue %s",
     async (field) => {
-      await changeCatalog((data) => {
-        data.clues[1][field] = data.clues[0][field];
+      await changeEntry("clues", clueIds[1], (second, catalog) => {
+        second[field] = clue(catalog, clueIds[0])[field];
       });
       await expect(buildContent(fixture, false)).rejects.toThrow(
         "Duplicate tourism",
@@ -150,35 +159,35 @@ describe("tourism content contract", () => {
   );
 
   it("rejects unknown city, image, guide and battle references", async () => {
-    for (const field of [
-      "cityId",
-      "imageAssetId",
-      "guideStoryId",
-      "battleId",
+    for (const [field, message] of [
+      ["cityId", "Unknown tourism city/landmark"],
+      ["imageAssetId", "Unknown tourism imageAssetId: last_supper"],
+      ["guideStoryId", "Unknown tourism guideStoryId: tourism/missing"],
+      ["battleId", "Tourism battle landmark mismatch: last_supper"],
     ] as const) {
-      await changeCatalog((data) => {
-        data.landmarks[0][field] =
+      await changeEntry("landmarks", landmarkId, (landmark) => {
+        landmark[field] =
           field === "guideStoryId" ? "tourism/missing" : "missing";
       });
-      await expect(buildContent(fixture, false)).rejects.toThrow();
+      await expect(buildContent(fixture, false)).rejects.toThrow(message);
     }
   });
 
   it("requires each clue to belong to its registered landmark", async () => {
-    await changeCatalog((data) => {
-      data.landmarks[0].clueIds.push("missing");
+    await changeEntry("landmarks", landmarkId, (landmark) => {
+      landmark.clueIds.push("missing");
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Unknown or mismatched tourism clue",
     );
-    await changeCatalog((data) => {
-      data.landmarks[0].clueIds.pop();
+    await changeEntry("landmarks", landmarkId, (landmark) => {
+      landmark.clueIds.pop();
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Unlisted tourism clue",
     );
-    await changeCatalog((data) => {
-      data.clues[0].landmarkId = "elsewhere";
+    await changeEntry("clues", clueIds[0], (clue) => {
+      clue.landmarkId = "elsewhere";
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Unknown or mismatched tourism clue",
@@ -186,8 +195,8 @@ describe("tourism content contract", () => {
   });
 
   it("checks related quiz question references without changing the quiz answers", async () => {
-    await changeCatalog((data) => {
-      data.clues[0].relatedQuestionIds = ["missing_question"];
+    await changeEntry("clues", clueIds[0], (clue) => {
+      clue.relatedQuestionIds = ["missing_question"];
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Unknown related tourism question",
@@ -195,25 +204,25 @@ describe("tourism content contract", () => {
   });
 
   it("requires Japanese explanation text and a known claim classification", async () => {
-    await changeCatalog((data) => {
-      data.clues[0].descriptionJa = "Just look here.";
+    await changeEntry("clues", clueIds[0], (clue) => {
+      clue.descriptionJa = "Just look here.";
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Expected Japanese tourism text",
     );
-    await changeCatalog((data) => {
-      data.clues[0].sources[0].claimType = "maybe_true";
+    await changeEntry("clues", clueIds[0], (clue) => {
+      (clue.sources[0] as { claimType: string }).claimType = "maybe_true";
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
-    await changeCatalog((data) => {
-      data.clues[0].sources = [];
+    await expect(buildContent(fixture, false)).rejects.toThrow(/"claimType"[\s\S]*Invalid option/);
+    await changeEntry("clues", clueIds[0], (clue) => {
+      clue.sources = [];
     });
-    await expect(buildContent(fixture, false)).rejects.toThrow();
+    await expect(buildContent(fixture, false)).rejects.toThrow(/"sources"[\s\S]*Too small: expected array to have >=1 items/);
   });
 
   it("requires guide variables needed for safe snapshot restoration", async () => {
     await changeGuide('VAR player_address = ""', "// removed variable");
-    await expect(buildContent(fixture, false)).rejects.toThrow();
+    await expect(buildContent(fixture, false)).rejects.toThrow("(landmark last_supper): Missing tourism guide variable: player_address");
   });
 
   it("forbids rewards, choices and non-Japanese prose in tourism guides", async () => {
@@ -222,7 +231,7 @@ describe("tourism content contract", () => {
       path.join(fixture, guidePath),
       original.replace(
         "-> END",
-        "# effect: milano_cafe_first_joke\n余韻。\n-> END",
+        "# effect: common_date_first_playful\n余韻。\n-> END",
       ),
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(

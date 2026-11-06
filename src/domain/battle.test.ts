@@ -1,5 +1,4 @@
-import { createLegacyJourneyGame as createGame } from "../../tests/fixtures/legacy-game";
-import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
+import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { describe, expect, it } from "vitest";
 import {
   battles,
@@ -8,7 +7,7 @@ import {
 } from "../content";
 import {
   completeChapter,
-  claimTrialMilestone,
+  createGame,
   setNames,
   startDate,
   validateGameState,
@@ -99,7 +98,7 @@ describe("three-round quiz battle", () => {
   )(
     "scores exact choices %i/%i/%i with reload at every boundary",
     (a, b, c) => {
-      const before = seedLegacyChapter(createGame("なお", "りえ"));
+      const before = createGame("なお", "りえ");
       const selections = [a, b, c].map(
         (value, index) => quiz().questions[index].options[value].id,
       );
@@ -124,10 +123,11 @@ describe("three-round quiz battle", () => {
         expected === 3 ? "perfect" : expected === 2 ? "victory" : "defeat",
       );
       expect(romance(state)).toEqual(romance(before));
+      // The first battle also clears its episode, whatever the score.
       const battleAP = rewardRules
         .filter(
           (rule) =>
-            rule.trigger === "battle_complete" ||
+            rule.trigger === "battle_complete" || rule.trigger === "episode_clear" ||
             (rule.trigger === "battle_score" && expected >= rule.minScore!),
         )
         .reduce((total, rule) => total + rule.ap, 0);
@@ -212,7 +212,7 @@ describe("three-round quiz battle", () => {
     expect(perfect).toMatch(/[ぁ-んァ-ヶ一-龠]/);
   });
   it("records first and best scores across direct replay without duplicate completion", () => {
-    const before = seedLegacyChapter(createGame());
+    const before = createGame();
     let state = finish(startBattle(before, battleId()), choicesForScore(1));
     state = finish(startBattle(state, battleId()), choicesForScore(3));
     state = finish(startBattle(state, battleId()), choicesForScore(0));
@@ -226,7 +226,7 @@ describe("three-round quiz battle", () => {
     const allBattleAP = rewardRules
       .filter(
         (rule) =>
-          rule.trigger === "battle_complete" || rule.trigger === "battle_score",
+          rule.trigger === "battle_complete" || rule.trigger === "battle_score" || rule.trigger === "episode_clear",
       )
       .reduce((total, rule) => total + rule.ap, 0);
     expect(state.ap).toBe(before.ap + allBattleAP);
@@ -238,7 +238,7 @@ describe("three-round quiz battle", () => {
     expect(romance(state)).toEqual(romance(before));
   });
   it("blocks overlapping romance, rewards, names, and battle runs", () => {
-    const before = seedLegacyChapter(createGame());
+    const before = seedCurrentFreeTime(createGame());
     const dating = startDate(before, "milano_cafe_01");
     expect(getBattleAvailability(dating, battleId()).available).toBe(false);
     expect(startBattle(dating, battleId())).toBe(dating);
@@ -246,7 +246,6 @@ describe("three-round quiz battle", () => {
     expect(startBattle(state, battleId())).toBe(state);
     expect(startDate(state, "milano_cafe_01")).toBe(state);
     expect(setNames(state, "変更", "変更")).toBe(state);
-    expect(claimTrialMilestone(state, "trial_after_cafe")).toBe(state);
     expect(leaveBattle(state, state.revision)).toBe(state);
     const noChapter = startBattle(createGame(), battleId());
     expect(completeChapter(noChapter)).toBe(noChapter);

@@ -22,7 +22,7 @@ describe("current date effect application", () => {
     expect(effects.find((item) => item.id === currentId)?.responseProfileId).toBe("bold");
     const ready = untilChoice(createDebugState({ ...seed, roll: roll === 0 ? "positive" : "negative", affection: stage === 1 ? 0 : 10, trust: stage === 1 ? 0 : 10, spark: stage === 1 ? 0 : 10 }));
     // Stage is independent of the current relationship values; use a valid
-    // v11 state to confirm the saved random result isn't applied twice.
+    // current state to confirm the saved random result isn't applied twice.
     const prepared = stage === 1 ? ready : validateGameState({ ...ready, romanceStage: 4 });
     const after = chooseDate(prepared, 2, prepared.revision);
     const resolved = after.activeDate!.resolvedChoices[0];

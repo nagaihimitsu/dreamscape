@@ -1,6 +1,5 @@
 {
   "schemaVersion": 1,
-  "entryEpisodeId": "milano_duomo_episode",
   "episodes": [
     {
       "id": "milano_duomo_episode",
@@ -8,7 +7,6 @@
       "cityId": "milano",
       "landmarkId": "duomo_milano",
       "battleId": "milano_duomo_01",
-      "legacyChapterId": "milano",
       "requiredEpisodeIds": [],
       "titleJa": "ミラノ 第1話／ドゥオモ",
       "descriptionJa": "広場に出ると、白い尖塔が空へ続いていた。見上げるふたりの横で、重たい靴を引きずる男が立ち止まる。",
@@ -21,7 +19,6 @@
       "cityId": "milano",
       "landmarkId": "galleria_vittorio_emanuele_ii",
       "battleId": "milano_galleria_01",
-      "legacyChapterId": "milano",
       "requiredEpisodeIds": [
         "milano_duomo_episode"
       ],
@@ -36,7 +33,6 @@
       "cityId": "milano",
       "landmarkId": "last_supper",
       "battleId": "milano_last_supper_01",
-      "legacyChapterId": "milano",
       "titleJa": "ミラノ 第3話／最後の晩餐",
       "descriptionJa": "修道院の旧食堂で、絵の前に立ち止まる。白い手袋の男が守ろうとしているものは、いったい何だろう。",
       "clearTitleJa": "最後の晩餐編 クリア",
@@ -51,7 +47,6 @@
       "cityId": "milano",
       "landmarkId": "castello_sforzesco",
       "battleId": "milano_castello_01",
-      "legacyChapterId": "milano",
       "requiredEpisodeIds": [
         "milano_last_supper_episode"
       ],
@@ -66,7 +61,6 @@
       "cityId": "milano",
       "landmarkId": null,
       "battleId": "milano_city_boss_01",
-      "legacyChapterId": "milano",
       "requiredEpisodeIds": [
         "milano_duomo_episode",
         "milano_galleria_episode",

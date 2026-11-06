@@ -1,4 +1,4 @@
-import { balance, battles, city, episodes, getCities, getCityContent } from "../content";
+import { balance, battles, episodes, getCities, getCityContent } from "../content";
 import { createGame, startDate, validateGameState, type GameState } from "../domain/game";
 import { getNextEpisode, getNextStoryBattle, startEpisode } from "../domain/chapter";
 import { openTourism, replayTourismGuide, skipTourismGuide, startTourismBattle } from "../domain/tourism";
@@ -7,7 +7,7 @@ import { startEncounter, startTourismEncounter } from "../domain/encounter";
 import { departToNextCity } from "../domain/city-travel";
 import { encounters } from "../content/encounters";
 import { minimumHomeFare } from "../domain/travel-routes";
-import { getJourneyForCity } from "../content/journeys";
+import { defaultJourneyId, getJourney, getJourneyForCity } from "../content/journeys";
 import { advanceCityEpilogue, completeArrivalLogo } from "../domain/epilogue";
 
 export type DebugScene = "tourism" | "battle" | "encounter" | "date";
@@ -22,6 +22,9 @@ export type DebugSettings = {
   spark: number;
   roll: "positive" | "negative";
 };
+
+/** Debug opens the first city of the default journey unless another city is chosen. */
+export const defaultDebugCityId = getJourney(defaultJourneyId)!.cities[0].id;
 
 const completedByCity = new Map<string, GameState>();
 
@@ -89,7 +92,7 @@ function completedJourney(cityId: string, visited = new Set<string>()): GameStat
 
 /** Build only states the real game functions can start; never alter player data. */
 export function createDebugState(settings: DebugSettings): GameState {
-  const cityId = settings.cityId ?? city.id;
+  const cityId = settings.cityId ?? defaultDebugCityId;
   const base = settings.progress === "initial" ? startingCity(cityId) : completedJourney(cityId);
   let state: GameState = {
     ...base,

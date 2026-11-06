@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { milanoTravelCatalog } from "../content";
+import { getCityContent } from "../content";
 import { createGame, type GameState } from "../domain/game";
 import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle } from "../domain/battle";
 import { closeTourism, openTourism, skipTourismGuide, startTourismBattle } from "../domain/tourism";
 import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, getTravelHomeRoutes, sleepAtHotel, waitForTravel } from "../domain/travel-game";
 import { loadGame, SAVE_KEY, saveGame, type StorageLike } from "./index";
+
+const milanoTravelCatalog = getCityContent("milano").travel;
 
 class MemoryStorage implements StorageLike {
   values = new Map<string, string>();
@@ -133,7 +135,7 @@ describe("current travel save and concurrency", () => {
   });
 
   it("reserves an actual two-leg paid return when walking would be too late, reloads and pays once", () => {
-    const homeRoutes = getTravelHomeRoutes("p_prada", "p_hotel");
+    const homeRoutes = getTravelHomeRoutes("p_prada", "p_hotel", "milano");
     const rail = homeRoutes.find((route) => route.mode === "rail")!;
     const walk = homeRoutes.find((route) => route.mode === "walk")!;
     const firstLeg = milanoTravelCatalog.routes.find((route) => route.fromPlaceId === "p_prada" && route.toPlaceId === "p_duomo" && route.mode === "rail")!;
@@ -183,46 +185,12 @@ describe("current travel save and concurrency", () => {
     expect(storage.getItem(SAVE_KEY)).toBe(raw);
   });
 
-  it("loads an older late save and permits its affordable return, including at 21:00", () => {
-    const initial = createGame();
-    const legacyTravel = { ...initial.travel, currentPlaceId: "p_prada", minute: 20 * 60 + 55 };
-    delete legacyTravel.returnDeadline;
-    const state = { ...initial, ap: 3, travelBudget: 0, travel: legacyTravel };
-    const storage = new MemoryStorage();
-    storage.setItem(SAVE_KEY, JSON.stringify(state));
-    const loaded = loadGame(storage);
-    expect(loaded.status).toBe("loaded");
-    if (loaded.status !== "loaded") throw new Error("legacy travel save did not load");
-    const slept = sleepAtHotel(loaded.state, "walk", loaded.state.revision);
-    expect(slept.travel).toMatchObject({ currentPlaceId: "p_hotel", day: 2, minute: 540, returnDeadline: 1260 });
-    expect(slept.ap).toBe(3);
-    expect(slept.travelBudget).toBe(0);
-    const atClosing = { ...loaded.state, travel: { ...loaded.state.travel, minute: 21 * 60 } };
-    expect(sleepAtHotel(atClosing, "walk", atClosing.revision).travel.day).toBe(2);
-  });
-
   it("disallows a late return when an affordable on-time route exists", () => {
     const initial = createGame();
     const state = { ...initial, ap: 3, travelBudget: 5,
       travel: { ...initial.travel, currentPlaceId: "p_prada", minute: 20 * 60 + 20, returnReserve: 5 } };
     expect(sleepAtHotel(state, "walk", state.revision)).toBe(state);
     expect(sleepAtHotel(state, "rail", state.revision).travel.day).toBe(2);
-  });
-
-  it("resumes a pre-change event whose reserved end is after 21:00", () => {
-    const initial = createGame();
-    const event = beginTravelEvent(initial, "milano_duomo_episode", "walk", initial.revision);
-    const legacyTravel = { ...event.travel, minute: 20 * 60 + 20,
-      activeEvent: { ...event.travel.activeEvent!, endMinute: 21 * 60 + 15 } };
-    delete legacyTravel.returnDeadline;
-    const storage = new MemoryStorage();
-    storage.setItem(SAVE_KEY, JSON.stringify({ ...event, travel: legacyTravel }));
-    const loaded = loadGame(storage);
-    expect(loaded.status).toBe("loaded");
-    if (loaded.status !== "loaded") throw new Error("legacy event save did not load");
-    const completed = finishTravelEventIfComplete(loaded.state, closeTourism(loaded.state, loaded.state.revision));
-    expect(completed.travel.minute).toBe(21 * 60 + 15);
-    expect(sleepAtHotel(completed, "walk", completed.revision).travel.day).toBe(2);
   });
 
   it("settles an interrupted visit before a new visit is started at the same place", () => {

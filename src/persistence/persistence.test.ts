@@ -1,4 +1,4 @@
-import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
+import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { describe, expect, it, vi } from "vitest";
 import { advanceDate, chooseDate, createGame, startDate } from "../domain";
 import phase1 from "../../tests/fixtures/phase1-saves.json";
@@ -69,27 +69,40 @@ describe("local save persistence", () => {
     expect(loadGame(storage)).toMatchObject({ status: "invalid", kind: "newer", raw: newer });
     expect(saveGame(storage, createGame()).ok).toBe(false);
     expect(storage.getItem(SAVE_KEY)).toBe(newer);
-    const malformed = JSON.stringify({ schemaVersion: 1, revision: -1 });
+    const malformed = JSON.stringify({ ...createGame(), revision: -1 });
     storage.setItem(SAVE_KEY, malformed);
     expect(loadGame(storage)).toMatchObject({ status: "invalid", kind: "corrupt", raw: malformed });
     expect(loadGame({ getItem: () => { throw new Error("unavailable"); }, setItem: () => {} }))
       .toMatchObject({ status: "invalid", kind: "storage", raw: null });
   });
 
-  it("keeps a structurally recognizable old save without automatically migrating or overwriting it", () => {
+  it("reports a journey-preparation draft in the game slot as unreadable, not as an old save", () => {
     const storage = new MemoryStorage();
-    const raw = JSON.stringify({ ...phase1.afterChoice, activeDate: {
+    const draft = JSON.stringify({ kind: "journey_preparation", schemaVersion: 1, journeyId: "golden_triangle" });
+    storage.setItem(SAVE_KEY, draft);
+    expect(loadGame(storage)).toMatchObject({ status: "invalid", kind: "corrupt", raw: draft });
+    expect(saveGame(storage, createGame()).ok).toBe(false);
+    expect(storage.getItem(SAVE_KEY)).toBe(draft);
+  });
+
+  it.each([
+    ["the first", JSON.stringify({ ...phase1.afterChoice, activeDate: {
       ...phase1.afterChoice.activeDate, storyHash: "not-a-published-script",
-    } });
+    } })],
+    ["the previous", JSON.stringify({ ...createGame(), schemaVersion: createGame().schemaVersion - 1 })],
+  ])("keeps a save in %s older format without migrating or overwriting it", (_label, raw) => {
+    const storage = new MemoryStorage();
     storage.setItem(SAVE_KEY, raw);
-    expect(loadGame(storage)).toMatchObject({ status: "invalid", kind: "legacy", raw });
+    const loaded = loadGame(storage);
+    expect(loaded).toMatchObject({ status: "invalid", kind: "legacy", raw });
+    expect(loaded.status === "invalid" && loaded.message).toContain("元のデータは残っています");
     expect(saveGame(storage, createGame()).ok).toBe(false);
     expect(storage.getItem(SAVE_KEY)).toBe(raw);
   });
 
   it("does not resume or overwrite a current-format date with a different story fingerprint", () => {
     const storage = new MemoryStorage();
-    const started = startDate(seedLegacyChapter(createGame()), "milano_cafe_01");
+    const started = startDate(seedCurrentFreeTime(createGame()), "milano_cafe_01");
     expect(started.activeDate).not.toBeNull();
     const raw = JSON.stringify({ ...started, activeDate: { ...started.activeDate, storyHash: "different-story" } });
     storage.setItem(SAVE_KEY, raw);
@@ -179,7 +192,7 @@ describe("local save persistence", () => {
       },
     };
     expect(
-      saveGame(blocked, seedLegacyChapter(previous), previous),
+      saveGame(blocked, seedCurrentFreeTime(previous), previous),
     ).toMatchObject({
       ok: false,
       message: expect.stringContaining("空き容量"),
@@ -200,7 +213,7 @@ describe("multiple tabs sharing a save slot", () => {
 
   it("rejects an older manual save without restoring spent AP", () => {
     const storage = new MemoryStorage();
-    const menu = seedLegacyChapter(createGame());
+    const menu = seedCurrentFreeTime(createGame());
     saveGame(storage, menu);
     const started = startDate(menu, "milano_cafe_01");
     expect(saveGame(storage, started, menu)).toEqual({ ok: true });
@@ -214,7 +227,7 @@ describe("multiple tabs sharing a save slot", () => {
 
   it("rejects conflicting choices at the same revision and retains the first branch", () => {
     const storage = new MemoryStorage();
-    let choice = startDate(seedLegacyChapter(createGame()), "milano_cafe_01");
+    let choice = startDate(seedCurrentFreeTime(createGame()), "milano_cafe_01");
     while (!choice.activeDate!.frame.choices.length)
       choice = advanceDate(choice, choice.revision);
     saveGame(storage, choice);
@@ -229,7 +242,7 @@ describe("multiple tabs sharing a save slot", () => {
 
   it("rejects a higher-revision branch whose expected prior snapshot is stale", () => {
     const storage = new MemoryStorage();
-    const menu = seedLegacyChapter(createGame());
+    const menu = seedCurrentFreeTime(createGame());
     saveGame(storage, menu);
     const first = startDate(menu, "milano_cafe_01");
     const staleNext = advanceDate(first, first.revision);
@@ -242,7 +255,7 @@ describe("multiple tabs sharing a save slot", () => {
     const storage = new MemoryStorage();
     const initial = createGame();
     saveGame(storage, initial);
-    const completed = seedLegacyChapter(initial);
+    const completed = seedCurrentFreeTime(initial);
     expect(saveGame(storage, completed, initial)).toEqual({ ok: true });
     expect(saveGame(storage, completed)).toEqual({ ok: true });
     expect(saveGame(storage, completed, initial)).toEqual({ ok: true });
@@ -252,7 +265,7 @@ describe("multiple tabs sharing a save slot", () => {
   it("does not silently recreate a slot removed since the previous snapshot", () => {
     const storage = new MemoryStorage();
     const initial = createGame();
-    expect(saveGame(storage, seedLegacyChapter(initial), initial).ok).toBe(
+    expect(saveGame(storage, seedCurrentFreeTime(initial), initial).ok).toBe(
       false,
     );
     expect(loadGame(storage)).toEqual({ status: "empty" });

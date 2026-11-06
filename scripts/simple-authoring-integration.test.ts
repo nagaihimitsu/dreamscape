@@ -23,7 +23,7 @@ it("builds a new encounter and date with Ink, small catalog entries and a travel
   const dateStory = "milano/fixture_simple_date";
   try {
     await prepareContentFixture(root);
-    const encountersPath = path.join(root, "content/encounters/catalog.json");
+    const encountersPath = path.join(root, "content/journeys/milano/encounters/catalog.json");
     const encounterCatalog = JSON.parse(await readFile(encountersPath, "utf8"));
     encounterCatalog.encounters.push({
       id: "fixture_simple_encounter",
@@ -43,7 +43,7 @@ it("builds a new encounter and date with Ink, small catalog entries and a travel
       ],
     });
     await writeFile(encountersPath, JSON.stringify(encounterCatalog));
-    await writeFile(path.join(root, "content/stories/encounters/fixture_simple_encounter.ink"), `VAR player_name = ""
+    await writeFile(path.join(root, "content/journeys/milano/stories/encounters/fixture_simple_encounter.ink"), `VAR player_name = ""
 VAR heroine_name = ""
 # background: milano_galleria
 # speaker: narrator
@@ -63,7 +63,7 @@ VAR heroine_name = ""
     「また後で見に行こう」
     -> END
 `);
-    await writeFile(path.join(root, "content/stories/encounters/fixture_paid_encounter.ink"), `VAR player_name = ""
+    await writeFile(path.join(root, "content/journeys/milano/stories/encounters/fixture_paid_encounter.ink"), `VAR player_name = ""
 VAR heroine_name = ""
 # speaker: narrator
 店員がメニューを差し出した。
@@ -81,7 +81,7 @@ VAR heroine_name = ""
     -> END
 `);
 
-    const datesPath = path.join(root, "content/romance/date_catalog.json");
+    const datesPath = path.join(root, "content/journeys/milano/romance/date_catalog.json");
     const dateCatalog = JSON.parse(await readFile(datesPath, "utf8"));
     dateCatalog.dates.push({
       id: "fixture_simple_date",
@@ -91,7 +91,7 @@ VAR heroine_name = ""
       backgroundAssetId: "milano_la_scala_date",
     });
     await writeFile(datesPath, JSON.stringify(dateCatalog));
-    const travelPath = path.join(root, "content/travel/milano.json");
+    const travelPath = path.join(root, "content/journeys/milano/travel/milano.json");
     const travelCatalog = JSON.parse(await readFile(travelPath, "utf8"));
     travelCatalog.events.push({
       id: dateId,
@@ -103,11 +103,11 @@ VAR heroine_name = ""
       apCost: 2,
     });
     await writeFile(travelPath, JSON.stringify(travelCatalog));
-    let dateInk = await readFile(path.join(root, "content/stories/milano/sound_cafe_01.ink"), "utf8");
+    let dateInk = await readFile(path.join(root, "content/journeys/milano/stories/milano/sound_cafe_01.ink"), "utf8");
     for (const [index, profile] of [[1, "playful"], [2, "attentive"], [3, "honest"]] as const) {
       dateInk = dateInk.replace(`sound_cafe_01_2_${index}`, `common_date_second_${profile}`);
     }
-    await writeFile(path.join(root, "content/stories/milano/fixture_simple_date.ink"), dateInk);
+    await writeFile(path.join(root, "content/journeys/milano/stories/milano/fixture_simple_date.ink"), dateInk);
 
     const result = await buildContent(root, false);
     expect(result.dates.find((date) => date.id === "fixture_simple_date")).toMatchObject({

@@ -1,11 +1,12 @@
-import { isKnownLegacyGameState, validateGameState, type GameState } from "../domain";
+import { GAME_STATE_VERSION, validateGameState, type GameState } from "../domain";
 import { getJourneyForCity } from "../content/journeys";
 
-/** Keep the slot stable; schemaVersion inside the payload controls compatibility. */
+/** Logical slot names. Browser journeys map them to per-journey keys (journey-storage.ts);
+ * isolated Debug/test storage uses them as they are. schemaVersion controls compatibility. */
 export const SAVE_KEY = "dreamscape.save.v1";
 export const LEARNING_KEY = "dreamscape.learning.v1";
 /** The current format is validated, not automatically migrated from older versions. */
-export const SUPPORTED_SAVE_VERSION = 12;
+export const SUPPORTED_SAVE_VERSION = GAME_STATE_VERSION;
 
 export interface StorageLike {
   getItem(key: string): string | null;
@@ -71,7 +72,12 @@ export function loadGame(storage: StorageLike): LoadResult {
     return { status: "invalid", kind: "newer", raw,
       message: "このセーブは新しいバージョンで作成されています。アプリを更新してください。元のデータは残っています。" };
   }
-  if (isKnownLegacyGameState(value)) {
+  // Older versions are not migrated. The version number alone cannot rule out
+  // a damaged file, so the notice says so and keeps the original untouched.
+  // Game saves never carry a top-level `kind`; a snapshot that does (e.g. a
+  // journey-preparation draft) is not an old game save and falls through to "corrupt".
+  const otherSnapshot = typeof value === "object" && value !== null && "kind" in value;
+  if (!otherSnapshot && typeof version === "number" && Number.isInteger(version) && version >= 1 && version < SUPPORTED_SAVE_VERSION) {
     return { status: "invalid", kind: "legacy", raw,
       message: `保存データの形式はバージョン${version}です。現在のバージョンでは読み込めません。データの破損によって読み込めない場合もあります。元のデータは残っています。` };
   }

@@ -1,5 +1,4 @@
-import { createLegacyJourneyGame as createGame } from "../../tests/fixtures/legacy-game";
-import { seedLegacyChapter } from "../../tests/fixtures/legacy-game";
+import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { describe, expect, it } from "vitest";
 import {
   battles,
@@ -8,9 +7,8 @@ import {
   tourismClues,
 } from "../content";
 import {
-  claimTrialMilestone,
   completeChapter,
-  grantRewardOnce,
+  createGame,
   setNames,
   startDate,
   validateGameState,
@@ -167,13 +165,11 @@ describe("optional tourism and discoveries", () => {
   it("blocks overlapping romance, names and rewards while allowing visits after the romance ending", () => {
     const fresh = explore();
     expect(completeChapter(fresh)).toBe(fresh);
-    expect(grantRewardOnce(fresh, "unexpected", 4)).toBe(fresh);
     expect(setNames(fresh, "違う", "名前")).toBe(fresh);
     expect(startBattle(fresh, battles[0].id)).toBe(fresh);
-    const state = explore(seedLegacyChapter(createGame()));
+    const state = explore(seedCurrentFreeTime(createGame()));
     expect(startDate(state, "milano_cafe_01")).toBe(state);
-    expect(claimTrialMilestone(state, "trial_after_cafe")).toBe(state);
-    const dating = startDate(seedLegacyChapter(createGame()), "milano_cafe_01", () => 0);
+    const dating = startDate(seedCurrentFreeTime(createGame()), "milano_cafe_01", () => 0);
     expect(dating.activeDate).not.toBeNull();
     expect(getTourismAvailability(dating, landmarkId()).available).toBe(false);
     expect(openTourism(dating, landmarkId())).toBe(dating);

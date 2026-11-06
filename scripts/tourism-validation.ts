@@ -1,11 +1,12 @@
 import { readFile } from "node:fs/promises";
-import path from "node:path";
 import { Story } from "inkjs";
 import sharp from "sharp";
 import type { BattleDefinition, QuizDefinition } from "../src/content/schemas";
 import type { TourismCatalog } from "../src/content/tourism-schemas";
 import { parseStoryTags, type TagContext } from "../src/content/tags";
 import type { DialogueObserver } from "./dialogue-expression-validation";
+import { publicRoots } from "./content-sources";
+import { resolvePublicFile } from "./public-assets";
 
 function unique(values: string[], label: string) {
   if (new Set(values).size !== values.length)
@@ -23,6 +24,8 @@ export async function validateTourism(
   stories: Record<string, string>,
   context: TagContext,
   observeForStory?: (storyId: string) => DialogueObserver,
+  /** How messages name a story's Ink file (its real path). */
+  storyLabel: (storyId: string) => string = (storyId) => `${storyId}.ink`,
 ): Promise<number> {
   unique(
     catalog.landmarks.map((item) => item.id),
@@ -40,8 +43,9 @@ export async function validateTourism(
     catalog.clues.map((item) => item.factId),
     "tourism fact ID",
   );
+  const roots = publicRoots(root);
   for (const asset of catalog.assets) {
-    const bytes = await readFile(path.join(root, "public", asset.path));
+    const bytes = await readFile(resolvePublicFile(root, asset.path, roots));
     const jpeg = bytes[0] === 0xff && bytes[1] === 0xd8;
     const png = bytes
       .subarray(0, 8)
@@ -120,7 +124,7 @@ export async function validateTourism(
         throw new Error("Tourism guide cannot contain choices");
     } catch (error) {
       throw new Error(
-        `content/stories/${landmark.guideStoryId}.ink (landmark ${landmark.id}): ${error instanceof Error ? error.message : String(error)}`,
+        `${storyLabel(landmark.guideStoryId)} (landmark ${landmark.id}): ${error instanceof Error ? error.message : String(error)}`,
         { cause: error },
       );
     }

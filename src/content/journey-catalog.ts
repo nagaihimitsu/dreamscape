@@ -55,4 +55,5 @@ export const journeyCatalogSchema = z.object({
   }
 });
 
-export type Journey = z.infer<typeof journeyCatalogSchema>["journeys"][number];
+export type JourneyCatalog = z.infer<typeof journeyCatalogSchema>;
+export type Journey = JourneyCatalog["journeys"][number];

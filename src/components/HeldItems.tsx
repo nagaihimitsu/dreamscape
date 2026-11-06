@@ -1,13 +1,8 @@
 import { useEffect, useId, useRef, useState } from "react";
 import "./held-items.css";
 
-export type HeldItem = { id: string; name: string; description: string };
-
-const itemImages: Record<string, string> = {
-  galleria_souvenir: "assets/items/galleria-bookmark.svg",
-  galleria_ticket: "assets/items/galleria-ticket.svg",
-  blue_pick: "assets/items/blue-pick.svg",
-};
+/** `iconPath`: the item's own icon from its catalog entry; a generic icon otherwise. */
+export type HeldItem = { id: string; name: string; description: string; iconPath?: string };
 
 /** Items are read-only here: using them remains part of their events. */
 export function HeldItems({ items }: { items: HeldItem[] }) {
@@ -53,7 +48,7 @@ export function HeldItems({ items }: { items: HeldItem[] }) {
               setSelectedId((previous) => previous === item.id ? null : item.id);
             }}
           >
-            <img src={`${import.meta.env.BASE_URL}${itemImages[item.id] ?? "assets/items/item.svg"}`} alt="" />
+            <img src={`${import.meta.env.BASE_URL}${item.iconPath ?? "assets/items/item.svg"}`} alt="" />
           </button>
         ))}
       </div>

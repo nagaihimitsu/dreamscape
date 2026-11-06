@@ -7,8 +7,9 @@ import { episodeSchema, rewardRuleSchema } from "../src/content/journey-schemas"
 import { landmarkSchema, tourismClueSchema, tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { travelCatalogSchema, travelEventSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { dateDestinationsSchema } from "../src/content/date-destinations";
-import { journeyCatalogSchema } from "../src/content/journey-catalog";
+import { loadContentSources, parseCatalog, readJourneyCatalog, requireCity } from "./content-sources";
 import { getJourneyAuthoringProfile } from "./journey-authoring";
+import { resolvePublicFile } from "./public-assets";
 
 // Narrative metadata belongs to the not-yet-written scenario. No empty string
 // or fictional opponent is promoted to a production catalog.
@@ -109,7 +110,7 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
         descriptionJa: script.descriptionJa, imageAssetId: input.imageAssetIds[place.id], guideStoryId: item.guideStoryId,
         battleId: item.battleId, clueIds: ownClues.map((clue) => clue.id) }));
       episodes.push(episodeSchema.parse({ id: event.id, kind: "episode", cityId: plan.cityId, landmarkId: place.id,
-        battleId: item.battleId, legacyChapterId: plan.cityId, requiredEpisodeIds: [], titleJa: script.titleJa,
+        battleId: item.battleId, requiredEpisodeIds: [], titleJa: script.titleJa,
         descriptionJa: script.descriptionJa, clearTitleJa: script.clearTitleJa, clearDescriptionJa: script.clearDescriptionJa }));
       battles.push(battleSchema.parse({ id: item.battleId, titleJa: script.titleJa, descriptionJa: script.descriptionJa,
         landmarkId: place.id, enemyNameJa: script.enemyNameJa, enemyTitleJa: script.enemyTitleJa,
@@ -139,7 +140,7 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
     if (!place || !travel.events.some((entry) => entry.placeId === place.id))
       throw new Error(`Journey scaffold: finale must use a registered attraction in ${plan.cityId}`);
     episodes.push(episodeSchema.parse({ id: plan.finale.eventId, kind: "city_finale", cityId: plan.cityId, landmarkId: null,
-      battleId: plan.finale.battleId, legacyChapterId: plan.cityId, requiredEpisodeIds: plan.main.map((item) => item.eventId),
+      battleId: plan.finale.battleId, requiredEpisodeIds: plan.main.map((item) => item.eventId),
       epilogueStoryId: plan.finale.epilogueStoryId, titleJa: script.titleJa, descriptionJa: script.descriptionJa,
       clearTitleJa: script.clearTitleJa, clearDescriptionJa: script.clearDescriptionJa }));
     battles.push(battleSchema.parse({ id: plan.finale.battleId, scope: "city_finale", cityId: plan.cityId, landmarkId: null,
@@ -159,12 +160,13 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
 }
 
 export function loadJourneyScaffold(root: string, journeyId: string): JourneyScaffoldInput {
-  const profile = getJourneyAuthoringProfile(journeyId);
-  const json = (file: string): unknown => JSON.parse(readFileSync(path.join(root, file), "utf8"));
-  const journey = journeyCatalogSchema.parse(json("content/journeys/catalog.json")).journeys.find((item) => item.id === journeyId);
+  const profile = getJourneyAuthoringProfile(root, journeyId);
+  const sources = loadContentSources(root);
+  const json = (file: string): unknown => JSON.parse(readFileSync(path.resolve(root, file), "utf8"));
+  const journey = readJourneyCatalog(root).journeys.find((item) => item.id === journeyId);
   if (!journey?.cityPlan) throw new Error("Journey scaffold: missing journey plan");
-  const cities = journey.cities.map(({ id }) => travelCatalogSchema.parse(json(`content/travel/${id}.json`)));
-  const cityData = cities.map((city) => citySchema.parse(json(`content/cities/${city.cityId}.json`)));
+  const cities = journey.cities.map(({ id }) => travelCatalogSchema.parse(json(requireCity(sources, id).travelFile)));
+  const cityData = cities.map((city) => citySchema.parse(json(requireCity(sources, city.cityId).file)));
   const plannedLandmarks = Object.fromEntries(cityData.map((city) => [city.id, city.landmarkIdsPlanned]));
   const observationsFile = z.object({ clues: z.array(tourismClueSchema), images: z.record(z.string(), z.object({ path: words, sha256: z.string().regex(/^[0-9a-f]{64}$/) })), provenance: z.record(z.string(), z.object({ needsFurtherResearch: z.boolean() }).loose()) }).loose()
     .parse(json(profile.observationFile));
@@ -174,13 +176,13 @@ export function loadJourneyScaffold(root: string, journeyId: string): JourneySca
     const image = observationsFile.images[clue.landmarkId];
     if (!image || !image.path.startsWith(`${profile.imageDirectory}/`) || !/^[a-z0-9_]+\.jpg$/.test(image.path.slice(profile.imageDirectory.length + 1)))
       throw new Error(`Journey scaffold: missing observation image ${clue.landmarkId}`);
-    const hash = createHash("sha256").update(readFileSync(path.join(root, "public", image.path))).digest("hex");
+    const hash = createHash("sha256").update(readFileSync(resolvePublicFile(root, image.path, sources.publicRoots))).digest("hex");
     if (hash !== image.sha256) throw new Error(`Journey scaffold: observation image changed ${clue.landmarkId}`);
   }
   const observations = observationsFile.clues;
-  const destinations = dateDestinationsSchema.parse(json("content/romance/date_destinations.json")).destinations;
-  const { assets } = tourismCatalogSchema.parse(json("content/tourism/catalog.json"));
-  const { backgrounds } = presentationSchema.parse(json("content/romance/presentation.json"));
+  const destinations = parseCatalog(sources, dateDestinationsSchema, "romance/date_destinations.json").destinations;
+  const { assets } = parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json");
+  const { backgrounds } = parseCatalog(sources, presentationSchema, "romance/presentation.json");
   const imageAssetIds: Record<string, string> = {};
   for (const city of cities) for (const landmarkId of plannedLandmarks[city.cityId]) {
     const place = city.places.find((entry) => entry.id === landmarkId);
@@ -191,6 +193,6 @@ export function loadJourneyScaffold(root: string, journeyId: string): JourneySca
     imageAssetIds[landmarkId] = asset.id;
   }
   // Ensure hotel settings exist and are valid; this function never uses them as finale places.
-  for (const city of cities) travelSettingsSchema.parse(json(`content/travel/${city.cityId}-settings.json`));
+  for (const city of cities) travelSettingsSchema.parse(json(requireCity(sources, city.cityId).settingsFile));
   return { cities, plannedLandmarks, observations, destinations, cityClearAp: journey.cityPlan.cityClearAp, eventPrefix: profile.eventPrefix, imageAssetIds };
 }

@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { battles, dialogueExpressions, dialogueReactions, episodes, getCityContent } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
-import { presentationStoryId } from "../../content/legacy-milano";
 import { activeEpilogueStoryId } from "../../domain/epilogue";
 import { getNextCity } from "../../domain/city-travel";
 import { getJourneyForCity } from "../../content/journeys";
@@ -44,7 +43,7 @@ export function EpilogueScreen({
   const dialogueRef = useDialogueScrollReset<HTMLElement>(active.storyState);
   const frame = active.frame;
   const episode = episodes.find((item) => item.id === active.episodeId)!;
-  const storyId = presentationStoryId(activeEpilogueStoryId(active) ?? episode.epilogueStoryId!);
+  const storyId = activeEpilogueStoryId(active) ?? episode.epilogueStoryId!;
   const reaction = resolveDialogueReaction(dialogueReactions, storyId, frame, "heroine");
   const speaker =
     frame.speaker === "heroine"

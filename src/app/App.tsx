@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { getJourney } from "../content/journeys";
+import { defaultJourneyId, getJourney } from "../content/journeys";
 import { journeyStorage } from "../persistence/journey-storage";
 import { useJourneyLock } from "../persistence/useJourneyLock";
 import { loadJourneyDraft, promoteJourneyDraft } from "../persistence/journey-preparation";
@@ -10,14 +10,15 @@ import { GameApp } from "./GameApp";
 import { browserStorage, type AppProps } from "./app-storage";
 
 export default function App(props: AppProps = {}) {
-  const [journeyId, setJourneyId] = useState("milano");
+  const [journeyId, setJourneyId] = useState(defaultJourneyId);
   const baseStorage = props.storage ?? browserStorage;
   const scopedStorage = useMemo(() => journeyStorage(baseStorage, journeyId), [baseStorage, journeyId]);
   const [lockAttempt, setLockAttempt] = useState(0);
   const journey = getJourney(journeyId);
   const readOnlyPreparation = journey?.status === "preparing" && !journey.initialState;
-  // A read-only preparation has no save to edit, so it needs no storage lock.
-  const lockStatus = useJourneyLock(props.debug || readOnlyPreparation ? "milano" : journeyId, scopedStorage, lockAttempt);
+  // Debug storage is isolated and a read-only preparation has no save to edit,
+  // so neither needs the cross-tab storage lock.
+  const lockStatus = useJourneyLock(journeyId, scopedStorage, lockAttempt, !props.debug && !readOnlyPreparation);
   // Debug supplies an isolated, pre-populated game; do not alter its storage.
   if (props.debug) return <GameApp {...props} />;
   if (lockStatus !== "ready") return <div className="app-shell"><main id="main"><section className="paper intro">

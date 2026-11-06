@@ -57,7 +57,7 @@ describe("Luang Prabang city foundation", () => {
   });
 
   it("only uses reviewed vehicle paths that avoid the named restricted street", () => {
-    const root = "authoring/research/luang-prabang-20261104/";
+    const root = "authoring/journeys/luang_prabang/research/luang-prabang-20261104/";
     const model = JSON.parse(readFileSync(root + "safe-taxi-model.json", "utf8"));
     const pickups = JSON.parse(readFileSync(root + "riverside-pickups.json", "utf8"));
     const { travel } = getCityContent(cityId);

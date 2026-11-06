@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getCityContent } from "../content";
-import { buildIndiaTransitReview, readIndiaTransitReview } from "../../scripts/india-transit-review";
+import { buildJourneyTransitDecisionReview, readJourneyTransitDecisions } from "../../scripts/journey-transit-decisions";
 import { DAY_END, DAY_START, planOvernight, planTravel, planTravelEvent } from "./travel";
 import { findTravelHomeRoutes } from "./travel-routes";
 
@@ -8,7 +8,7 @@ const cities = ["delhi", "agra", "jaipur"] as const;
 
 describe("India city travel data", () => {
   it("records a game decision for every public-transport direction", () => {
-    const review = buildIndiaTransitReview(readIndiaTransitReview(process.cwd()));
+    const review = buildJourneyTransitDecisionReview(readJourneyTransitDecisions(process.cwd(), "golden_triangle"));
     for (const cityId of cities) {
       // A decision to omit a game route does not establish whether a real
       // service exists; its sources must retain any factual uncertainty.

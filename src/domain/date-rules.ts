@@ -1,5 +1,4 @@
 import { dates, dateDestinations, getCityContent, progression, type DateDefinition } from "../content";
-import { legacyDates } from "../content/legacy-milano";
 import type { GameState, ActiveDate } from "./game-state-schema";
 import { storyFingerprint } from "../story/runtime";
 import type { Availability } from "./game";
@@ -42,8 +41,8 @@ export function dateBelongsToCity(state: GameState, date: DateDefinition): boole
 /** Progress and relationship requirements only; AP and opening hours do not hide a destination. */
 export function isDateUnlockedForTravel(state: GameState, dateId: string): boolean {
   const date = dates.find((item) => item.id === dateId);
-  return !!date && dateBelongsToCity(state, date) && !date.legacyOnly && !isConfessionOnCooldown(state, date) &&
-    (isUpdatedDateReplay(state, dateId) || meetsDateConditions(state, date));
+  return !!date && dateBelongsToCity(state, date) && !isConfessionOnCooldown(state, date) &&
+    meetsDateConditions(state, date);
 }
 
 /** Count completed ordinary dates and up to three real recovery conversations. */
@@ -122,28 +121,19 @@ function canRecoverRelationship(state: GameState): boolean {
     (state.confessionStatus === "rejected" && !state.recoveryAfterRejection &&
       state.lastRejectedDateCount !== null && completedDateCount(state) <= state.lastRejectedDateCount);
   if (!needsRepair) return false;
-  return !dates.some((date) => date.kind === "normal" && !isUpdatedDateReplay(state, date.id) && getDateAvailability(state, date.id).available);
-}
-
-/** A completed old normal date may show its rewritten scene once without rewards. */
-export function isUpdatedDateReplay(state: GameState, dateId: string): boolean {
-  const date = dates.find((item) => item.id === dateId);
-  const old = legacyDates.find((item) => item.id === dateId);
-  return !!date && !!old && date.kind === "normal" && old.kind === "normal" &&
-    date.rewardOnlyOnce && !date.legacyOnly && date.storyId !== old.storyId &&
-    state.playedDateIds.includes(dateId) && !state.updatedDateIds.includes(dateId);
+  return !dates.some((date) => date.kind === "normal" && getDateAvailability(state, date.id).available);
 }
 
 export function isEventVisible(state: GameState, dateId: string): boolean {
   const date = dates.find((item) => item.id === dateId);
   return Boolean(
-    date && dateBelongsToCity(state, date) && !date.legacyOnly &&
+    date && dateBelongsToCity(state, date) &&
       (!date.recovery || canRecoverRelationship(state)) &&
       (!state.endingReached || date.kind === "normal" || date.allowAfterEnding) &&
-      (isUpdatedDateReplay(state, dateId) || (date.forbiddenCompletedEpisodeIds ?? []).every((id) => !state.completedEpisodeIds.includes(id))) &&
+      (date.forbiddenCompletedEpisodeIds ?? []).every((id) => !state.completedEpisodeIds.includes(id)) &&
       (date.kind === "normal"
-        ? (!state.playedDateIds.includes(dateId) || isUpdatedDateReplay(state, dateId)) &&
-          (isUpdatedDateReplay(state, dateId) || (date.requiredCompletedEpisodeIds ?? []).every((id) => state.completedEpisodeIds.includes(id)))
+        ? !state.playedDateIds.includes(dateId) &&
+          (date.requiredCompletedEpisodeIds ?? []).every((id) => state.completedEpisodeIds.includes(id))
         : state.unlockedEventIds.includes(dateId) || meetsDateConditions(state, date)),
   );
 }
@@ -155,7 +145,6 @@ export function getDateAvailability(
   const date = dates.find((item) => item.id === dateId);
   if (!date) return { available: false, reason: "デートが見つかりません。" };
   if (!dateBelongsToCity(state, date)) return { available: false, reason: "この街では出かけられません。" };
-  if (date.legacyOnly) return { available: false, reason: "この場面は以前の途中セーブからのみ再開できます。" };
   if (date.recovery && !canRecoverRelationship(state))
     return { available: false, reason: "今は別のひとときを選べます。" };
   if (state.endingReached && date.kind !== "normal" && !date.allowAfterEnding)
@@ -174,7 +163,6 @@ export function getDateAvailability(
       available: false,
       reason: "途中の会話・バトルを再開してください。",
     };
-  if (isUpdatedDateReplay(state, dateId)) return { available: true, reason: "" };
   if ((date.kind === "normal" || !date.repeatable) && state.playedDateIds.includes(dateId))
     return {
       available: false,

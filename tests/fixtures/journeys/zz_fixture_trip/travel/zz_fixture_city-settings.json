@@ -1,0 +1,7 @@
+{
+  "initialBudget": 100,
+  "hotelPlaceId": "zz_fixture_hotel",
+  "lodgingCost": 0,
+  "retryMinutes": 15,
+  "notes": "自動テスト専用の架空の設定。"
+}

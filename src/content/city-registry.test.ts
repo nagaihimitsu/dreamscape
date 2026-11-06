@@ -4,7 +4,8 @@ import { createGame } from "../domain/game";
 import { departToNextCity, getNextCity } from "../domain/city-travel";
 
 it("registers authored cities without making prototypes playable", () => {
-  expect(getCities().map((city) => city.id).sort()).toEqual(["agra", "bukhara", "delhi", "jaipur", "khiva", "luang_prabang", "milano", "samarkand", "tashkent"]);
+  // Other journey folders may register more cities.
+  expect(getCities().map((city) => city.id)).toEqual(expect.arrayContaining(["agra", "bukhara", "delhi", "jaipur", "khiva", "luang_prabang", "milano", "samarkand", "tashkent"]));
   expect(getCityContent("milano").travel.cityId).toBe("milano");
   for (const id of ["milano", "delhi", "agra", "jaipur"])
     expect(getCityContent(id).city.productionStatus).toBe("complete");

@@ -1,9 +1,9 @@
-import { access } from "node:fs/promises";
-import path from "node:path";
 import type { characterCatalogSchema } from "../src/content/character-assets";
 import type { presentationSchema } from "../src/content/schemas";
 import type { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { validateCharacterImage } from "./character-image-validation";
+import { publicRoots } from "./content-sources";
+import { findPublicFile } from "./public-assets";
 
 type Presentation = ReturnType<typeof presentationSchema.parse>;
 type Characters = ReturnType<typeof characterCatalogSchema.parse>;
@@ -15,11 +15,10 @@ export async function validateBackgroundAssets(
   backgrounds: Presentation["backgrounds"],
   assets: Tourism["assets"],
 ): Promise<void> {
+  const roots = publicRoots(root);
   for (const [backgroundId, background] of Object.entries(backgrounds)) {
-    if (background.imagePath) {
-      try { await access(path.join(root, "public", background.imagePath)); }
-      catch { throw new Error(`Missing background image: ${backgroundId}/${background.imagePath}`); }
-    }
+    if (background.imagePath && !findPublicFile(root, background.imagePath, roots))
+      throw new Error(`Missing background image: ${backgroundId}/${background.imagePath}`);
     if (background.imageAssetId && !assets.some((asset) => asset.id === background.imageAssetId))
       throw new Error(`Unknown background image asset: ${backgroundId}/${background.imageAssetId}`);
     if (background.imagePath && background.imageAssetId)
@@ -57,21 +56,20 @@ export async function validateCharacters(
     if (!references.sceneIds.has(sceneId))
       throw new Error(`Unknown scene in character wardrobe: ${sceneId}`);
   }
+  const roots = publicRoots(root);
   for (const character of characters.characters) {
     for (const variant of character.variants) {
       if (variant.emotion && !references.emotions[variant.emotion])
         throw new Error(`Unknown character emotion: ${character.id}/${variant.emotion}`);
     }
     for (const image of [character.imagePath, ...character.variants.map((variant) => variant.imagePath)]) {
-      if (image) {
-        try { await access(path.join(root, "public", image)); }
-        catch { throw new Error(`Missing character image: ${character.id}/${image}`); }
-      }
+      if (image && !findPublicFile(root, image, roots))
+        throw new Error(`Missing character image: ${character.id}/${image}`);
     }
     for (const costume of character.costumes ?? []) {
       for (const pose of costume.poses) {
         for (const [expression, image] of Object.entries(pose.expressions)) {
-          await validateCharacterImage(root, image, pose.canvas, `${character.id}/${costume.id}/${pose.id}/${expression}`);
+          await validateCharacterImage(root, image, pose.canvas, `${character.id}/${costume.id}/${pose.id}/${expression}`, roots);
         }
       }
     }

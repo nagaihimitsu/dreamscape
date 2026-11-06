@@ -48,7 +48,7 @@ describe("content authoring workflow", () => {
     expect(transcribed).toEqual(direct);
 
     // Register the new quiz in the battle catalog using data alone.
-    const battleFile = path.join(fixture, "content/battles/catalog.json");
+    const battleFile = path.join(fixture, "content/journeys/milano/battles/catalog.json");
     const catalog = JSON.parse(await readFile(battleFile, "utf8"));
     const battle = catalog.battles.find(
       (item: { id: string }) => item.id === "milano_duomo_01",
@@ -58,11 +58,11 @@ describe("content authoring workflow", () => {
     await writeFile(battleFile, `${JSON.stringify(catalog, null, 2)}\n`);
     const quizFile = path.join(
       fixture,
-      "content/quizzes/authoring_practice_B1.json",
+      "content/journeys/milano/quizzes/authoring_practice_B1.json",
     );
     const learningFile = path.join(
       fixture,
-      "content/learning/translations.json",
+      "content/journeys/milano/learning/translations.json",
     );
     const learning = JSON.parse(await readFile(learningFile, "utf8"));
     direct.questions.forEach((question, index) => {
@@ -90,7 +90,7 @@ describe("content authoring workflow", () => {
   }, 90_000);
 
   it("reflects an existing Milan quiz edit while leaving production text untouched", async () => {
-    const productionFile = path.join(root, "content/quizzes/sound_duomo_B1.json");
+    const productionFile = path.join(root, "content/journeys/milano/quizzes/sound_duomo_B1.json");
     const original = await readFile(productionFile, "utf8");
     const screenFile = path.join(root, "src/features/battle/BattleScreen.tsx");
     const originalScreen = await readFile(screenFile, "utf8");
@@ -100,7 +100,7 @@ describe("content authoring workflow", () => {
     expect(quiz.questions[0].questionEn).not.toBe(editedQuestion);
     quiz.questions[0].questionEn = editedQuestion;
     await writeFile(
-      path.join(fixture, "content/quizzes/sound_duomo_B1.json"),
+      path.join(fixture, "content/journeys/milano/quizzes/sound_duomo_B1.json"),
       `${JSON.stringify(quiz, null, 2)}\n`,
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(
@@ -108,7 +108,7 @@ describe("content authoring workflow", () => {
     );
     const learningFile = path.join(
       fixture,
-      "content/learning/translations.json",
+      "content/journeys/milano/learning/translations.json",
     );
     const learning = JSON.parse(await readFile(learningFile, "utf8"));
     learning.questions[quiz.questions[0].id].source.questionEn = editedQuestion;

@@ -1,11 +1,10 @@
-import { getJourney, type Journey } from "../content/journeys";
+import { defaultJourneyId, getJourney, type Journey } from "../content/journeys";
 import { createRomanceRollPlan, resolveRomanceChoice } from "./romance-random";
 import { deriveRelationshipTone } from "./romance-tone";
 import { secureRomanceRoll } from "../random/romance-source";
 import { DAY_END } from "./travel";
 import { validateEncounterState } from "./encounter";
 import { responseProfileSchema } from "../content/schemas";
-import { legacyDates } from "../content/legacy-milano";
 import { validateEpilogueState } from "./epilogue";
 import {
   completeRecordedChapter,
@@ -21,11 +20,9 @@ import {
 } from "./battle";
 import {
   balance,
-  city,
   dates,
   effects,
   responseProfiles,
-  trialMilestones,
   getCityContent,
   getCityStoryBackground,
 } from "../content";
@@ -37,20 +34,20 @@ import {
   type StoryStep,
 } from "../story/runtime";
 
-import { gameStateSchema, nameSchema, type GameState, type ActiveDate } from "./game-state-schema";
+import { GAME_STATE_VERSION, gameStateSchema, nameSchema, type GameState, type ActiveDate } from "./game-state-schema";
 import {
   activeDateStoryId, completedDateCount, evaluateProgression, getPlayerAddress,
-  getMemoryCallback, canConfessSuccessfully, confessionResult, isUpdatedDateReplay,
+  getMemoryCallback, canConfessSuccessfully, confessionResult,
   getDateAvailability,
 } from "./date-rules";
 
 import { validateTravelState, validateGameHistory, validateActiveDateState } from "./game-state-validation";
 
-export { gameStateSchema, isKnownLegacyGameState } from "./game-state-schema";
+export { GAME_STATE_VERSION, gameStateSchema } from "./game-state-schema";
 export type { GameState, ActiveDate } from "./game-state-schema";
 export {
   completedDateCount, evaluateProgression, getPlayerAddress, getMemoryCallback,
-  canConfessSuccessfully, confessionResult, isUpdatedDateReplay,
+  canConfessSuccessfully, confessionResult,
   activeDateStoryId, isDateUnlockedForTravel, isEventVisible, getDateAvailability,
 } from "./date-rules";
 
@@ -62,7 +59,7 @@ export interface Availability {
 export function createGame(
   playerName = balance.defaultPlayerName,
   heroineName = balance.defaultHeroineName,
-  options: { journeyId: string; initialState?: NonNullable<Journey["initialState"]> } = { journeyId: "milano" },
+  options: { journeyId: string; initialState?: NonNullable<Journey["initialState"]> } = { journeyId: defaultJourneyId },
 ): GameState {
   const journey = getJourney(options.journeyId);
   if (!journey || journey.status !== "available" || journey.initialBudget === null)
@@ -72,11 +69,10 @@ export function createGame(
   const initial = options.initialState ?? journey.initialState;
   if (initial && initial.pendingAp !== 0) throw new Error("Pending AP requires a reward record");
   return {
-    schemaVersion: 12,
+    schemaVersion: GAME_STATE_VERSION,
     currentCityId: cityId,
     travel: { currentPlaceId: travelSettings.hotelPlaceId, hotelPlaceId: travelSettings.hotelPlaceId, day: 1, minute: 540, returnReserve: 0, returnDeadline: DAY_END, activeEvent: null,
       ...(journey.startWeekday === undefined ? {} : { calendar: { journeyDay: 1, cityStartJourneyDay: 1, startWeekday: journey.startWeekday } }) },
-    updatedDateIds: [],
     travelBudget: journey.initialBudget ?? travelSettings.initialBudget,
     inventory: {},
     completedEncounterIds: [],
@@ -113,7 +109,6 @@ export function createGame(
     battleRewardReceipt: null,
     activeEpilogue: null,
     viewedEpilogueCityIds: [],
-    legacyTrialAvailable: false,
   };
 }
 
@@ -146,80 +141,12 @@ export function setNames(
   };
 }
 
-export function grantRewardOnce(
-  state: GameState,
-  rewardId: string,
-  amount: number,
-): GameState {
-  if (
-    state.activeTourism ||
-    state.activeEpilogue ||
-    state.activeEncounter ||
-    !rewardId ||
-    state.claimedRewardIds.includes(rewardId) ||
-    !Number.isSafeInteger(amount) ||
-    amount < 0
-  )
-    return state;
-  return {
-    ...state,
-    revision: state.revision + 1,
-    ap: Math.min(balance.apCap, state.ap + amount),
-    claimedRewardIds: [...state.claimedRewardIds, rewardId],
-  };
-}
-
 /** Compatibility entry point; real battle evidence is required. */
 export function completeChapter(
   state: GameState,
   chapterId = state.currentCityId,
 ): GameState {
   return completeRecordedChapter(state, chapterId);
-}
-
-/** Trial AP sources are finite, separately configured, and never grant affection. */
-export function getMilestoneAvailability(
-  state: GameState,
-  milestoneId: string,
-): Availability {
-  const milestone = trialMilestones.find((item) => item.id === milestoneId);
-  if (!milestone || state.currentCityId !== city.id || state.endingReached || !state.legacyTrialAvailable)
-    return { available: false, reason: "この試遊用の進行は終了しました。" };
-  if (state.claimedRewardIds.includes(milestone.rewardSourceId))
-    return { available: false, reason: "受け取り済みです。" };
-  if (
-    state.activeDate ||
-    state.activeBattle ||
-    state.activeTourism ||
-    state.activeEpilogue ||
-    state.activeEncounter
-  )
-    return {
-      available: false,
-      reason: "今の会話・バトルを終えてから進めます。",
-    };
-  if (
-    !state.completedChapters.includes(city.id) ||
-    !milestone.requiredPlayedDateIds.every((id) =>
-      state.playedDateIds.includes(id),
-    )
-  )
-    return {
-      available: false,
-      reason: "今の自由時間を過ごすと、次の試遊用の進行を選べます。",
-    };
-  if (state.ap + milestone.ap > balance.apCap)
-    return { available: false, reason: "APに空きができてから受け取れます。" };
-  return { available: true, reason: "" };
-}
-
-export function claimTrialMilestone(
-  state: GameState,
-  milestoneId: string,
-): GameState {
-  if (!getMilestoneAvailability(state, milestoneId).available) return state;
-  const milestone = trialMilestones.find((item) => item.id === milestoneId)!;
-  return grantRewardOnce(state, milestone.rewardSourceId, milestone.ap);
 }
 
 function applyStep(
@@ -248,15 +175,13 @@ function applyStep(
           ? confessionResult(state) : effect.outcome;
     }
     if (!active.replay && !effect.outcome) {
-      const stage = String(state.romanceStage) as "1" | "2" | "3" | "4";
-      const fixed = effect.stageDeltas?.[stage] ?? effect;
       const resolved = active.resolutionMode === "random_v1"
         ? active.resolvedChoices[active.choiceCount - 1] : undefined;
       if (active.resolutionMode === "random_v1" && (!resolved || resolved.effectId !== effectId))
         throw new Error("選択結果と会話の効果が一致しません。");
-      affection += resolved?.deltas.affection ?? fixed.affectionDelta;
-      trust += resolved?.deltas.trust ?? fixed.trustDelta ?? 0;
-      spark += resolved?.deltas.spark ?? fixed.sparkDelta ?? 0;
+      affection += resolved?.deltas.affection ?? effect.affectionDelta;
+      trust += resolved?.deltas.trust ?? effect.trustDelta ?? 0;
+      spark += resolved?.deltas.spark ?? effect.sparkDelta ?? 0;
       if (effect.memoryId && !memories.includes(effect.memoryId))
         memories.push(effect.memoryId);
     }
@@ -280,7 +205,6 @@ function applyStep(
 export function startDate(state: GameState, dateId: string, nextRoll: () => number = secureRomanceRoll): GameState {
   if (!getDateAvailability(state, dateId).available) return state;
   const date = dates.find((item) => item.id === dateId)!;
-  const updatedReplay = isUpdatedDateReplay(state, dateId);
   const placeId = getCityContent(state.currentCityId).travel.events.find((item) => item.id === dateId)?.placeId ?? state.travel.currentPlaceId;
   const result = beginStory(date.storyId, state.playerName, state.heroineName, {
     relationship_tone: deriveRelationshipTone(state),
@@ -289,8 +213,6 @@ export function startDate(state: GameState, dateId: string, nextRoll: () => numb
     player_address: getPlayerAddress(state),
     romance_stage: state.romanceStage,
     memory_callback: getMemoryCallback(state),
-    // Legacy scripts use this variable; only a cafe memory may set it.
-    has_cafe_memory: state.memories.some((id) => id.startsWith("milano_cafe_")),
     ending_reached: state.endingReached,
     confession_ready: canConfessSuccessfully(state),
     confession_result: confessionResult(state),
@@ -298,10 +220,10 @@ export function startDate(state: GameState, dateId: string, nextRoll: () => numb
   const next = {
     ...state,
     revision: state.revision + 1,
-    ap: state.ap - (updatedReplay ? 0 : date.apCost),
+    ap: state.ap - date.apCost,
   };
   return applyStep(
-    updatedReplay ? next : settlePendingAp(next),
+    settlePendingAp(next),
     {
       dateId,
       runId: `${dateId}:${next.revision}`,
@@ -434,17 +356,6 @@ export function finishDate(
     (date.kind === "confession" && !active.pendingOutcome)
   )
     return state;
-  const previous = legacyDates.find((item) => item.id === date.id);
-  const completedUpdatedStory = date.kind === "normal" && !!previous &&
-    previous.storyId !== date.storyId && !date.legacyOnly &&
-    active.storyHash === storyFingerprint(date.storyId);
-  if (active.replay && completedUpdatedStory && isUpdatedDateReplay(state, date.id))
-    return {
-      ...state,
-      revision: state.revision + 1,
-      activeDate: null,
-      updatedDateIds: [...state.updatedDateIds, date.id],
-    };
   const confessionStatus =
     date.kind === "confession"
       ? active.pendingOutcome!
@@ -466,8 +377,6 @@ export function finishDate(
   return evaluateProgression({
     ...state,
     memories,
-    updatedDateIds: completedUpdatedStory && !state.updatedDateIds.includes(date.id)
-      ? [...state.updatedDateIds, date.id] : state.updatedDateIds,
     revision: state.revision + 1,
     activeDate: null,
     confessionStatus,
@@ -488,8 +397,6 @@ export function finishDate(
 export function validateGameState(input: unknown): GameState {
   const state = gameStateSchema.parse(input);
   validateTravelState(state);
-  if (state.updatedDateIds.some((id) => !dates.some((entry) => entry.id === id) || !state.playedDateIds.includes(id)))
-    throw new Error("刷新後のデート記録が一致しません。");
   if (state.activeEncounter && (state.activeDate || state.activeBattle || state.activeTourism || state.activeEpilogue))
     throw new Error("道中の交流と他の進行が重複しています。");
   validateBattleState(state);

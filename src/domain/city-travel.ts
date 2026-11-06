@@ -53,5 +53,3 @@ export function advanceCompletedJourneyCity(state: GameState, expectedRevision: 
     return startCityEpilogue(state, state.currentCityId, expectedRevision);
   return departToNextCity(state, expectedRevision);
 }
-
-export const advanceCompletedIndiaCity = advanceCompletedJourneyCity;

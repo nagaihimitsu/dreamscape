@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
-import travelData from "../content/travel/milano.json";
-import settingsData from "../content/travel/milano-settings.json";
-import journeyData from "../content/progression/journey.json";
-import dateData from "../content/romance/date_catalog.json";
-import presentationData from "../content/romance/presentation.json";
-import battleData from "../content/battles/catalog.json";
-import tourismData from "../content/tourism/catalog.json";
-import destinationData from "../content/romance/date_destinations.json";
+import travelData from "../src/content/generated/content/travel/milano.json";
+import settingsData from "../src/content/generated/content/travel/milano-settings.json";
+import journeyData from "../src/content/generated/content/progression/journey.json";
+import dateData from "../src/content/generated/content/romance/date_catalog.json";
+import presentationData from "../src/content/generated/content/romance/presentation.json";
+import battleData from "../src/content/generated/content/battles/catalog.json";
+import tourismData from "../src/content/generated/content/tourism/catalog.json";
+import destinationData from "../src/content/generated/content/romance/date_destinations.json";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { journeySchema } from "../src/content/journey-schemas";
 import { battleCatalogSchema, dateCatalogSchema, presentationSchema } from "../src/content/schemas";
@@ -39,6 +39,13 @@ const validate = (data = travel, hotel = settings.hotelPlaceId) =>
 describe("Milan travel data references", () => {
   it("covers the existing events, backgrounds and all directed walking pairs", () => {
     expect(() => validate()).not.toThrow();
+  });
+
+  it("requires a city's story background to be a registered background", () => {
+    const check = (storyBackgroundAssetId: string) => validateTravelContent(travel, { hotelPlaceId: settings.hotelPlaceId, storyBackgroundAssetId },
+      "milano", journey, dates, battles, landmarkIds, destinationIds, backgrounds);
+    expect(() => check(settings.storyBackgroundAssetId!)).not.toThrow();
+    expect(() => check("missing_background")).toThrow("Unknown travel story background: milano/missing_background");
   });
 
   it("offers every event a feasible time starting at the hotel with enough AP", () => {

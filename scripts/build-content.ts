@@ -1,7 +1,7 @@
 import { buildContent } from "./content-pipeline";
 
-// Legacy dialogue annotations may remain for saves made with older Ink. Keep
-// the warnings visible as a count and offer their details on demand, without
+// Dialogue annotations can become stale when Ink text is edited. Keep the
+// warnings visible as a count and offer their details on demand, without
 // burying errors under the same list on every successful build.
 const verbose = process.argv.includes("--verbose");
 const staleWarnings: string[] = [];

@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { allRewardRules, battles, battleQuizzes, dates, effects, episodes as allEpisodes, progression, trialMilestones } from "../content";
+import { allRewardRules, battles, battleQuizzes, dates, effects, episodes as allEpisodes, progression } from "../content";
 import {
   advanceDate, chooseDate, createGame, finishDate, getDateAvailability,
   isEventVisible, startDate, validateGameState, type GameState,
@@ -154,13 +154,11 @@ describe("real-place optional dates", () => {
     });
   }
 
-  it("does not add these optional dates to stage, confession, existing events or legacy trial requirements", () => {
+  it("does not add these optional dates to stage, confession or existing event requirements", () => {
     const forbidden = new Set<string>(ids);
     for (const stage of progression.stages)
       expect(stage).not.toHaveProperty("requiredPlayedDateIds");
     expect(progression.confession).not.toHaveProperty("requiredPlayedDateIds");
-    for (const milestone of trialMilestones)
-      expect(milestone.requiredPlayedDateIds.some((id) => forbidden.has(id))).toBe(false);
     for (const event of dates.filter((date) => !forbidden.has(date.id)))
       expect(event.requiredPlayedDateIds.some((id) => forbidden.has(id))).toBe(false);
   });
@@ -225,7 +223,6 @@ describe("real-place optional dates", () => {
     expect(state.completedGuideIds).toEqual([]);
     expect(state.playedDateIds).toEqual([]);
     expect(state.battleRecords.every((record) => record.firstScore === 0)).toBe(true);
-    expect(state.legacyTrialAvailable).toBe(false);
     const initialAp = totalAp(state);
     expect(initialAp).toBe(19);
 
@@ -272,7 +269,6 @@ describe("real-place optional dates", () => {
     state = clearEpisode(state, "milano_finale");
     expect(state.playedDateIds).toEqual([...ids.slice(0, 3)]);
     expect(state.ap).toBeGreaterThanOrEqual(0);
-    expect(state.legacyTrialAvailable).toBe(false);
     expect(getDateAvailability(state, "milano_confession_01").available).toBe(true);
     // The honest confession is free and succeeds once the existing history and affection qualify.
     state = playDate(state, "milano_confession_01", [2]);

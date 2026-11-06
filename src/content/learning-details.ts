@@ -1,10 +1,12 @@
 import { z } from "zod";
 import { japaneseText, englishText, type QuizDefinition } from "./schemas";
 const text = z.string().trim().min(1);
+// A journey set without English-note details has `questions: {}` and no
+// storyId (the story only opens from a question's topic).
 export const learningDetailsSchema = z
   .object({
     schemaVersion: z.literal(1),
-    storyId: text,
+    storyId: text.optional(),
     questions: z.record(
       z.string(),
       z
@@ -39,7 +41,11 @@ export const learningDetailsSchema = z
         .strict(),
     ),
   })
-  .strict();
+  .strict()
+  .refine((details) => details.storyId !== undefined || !Object.keys(details.questions).length, {
+    message: "Learning details with questions need a storyId",
+    path: ["storyId"],
+  });
 export function validateLearningDetails(
   details: z.infer<typeof learningDetailsSchema>,
   quizzes: Record<string, QuizDefinition>,

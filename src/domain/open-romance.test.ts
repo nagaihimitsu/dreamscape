@@ -7,7 +7,7 @@ import {
 } from "./game";
 
 
-/** Generate a valid v11 history via the current game rules. */
+/** Generate a valid history via the current game rules. */
 function currentFreeTime(): GameState {
   const state = createDebugState({ scene: "tourism", id: "duomo_milano", progress: "completed", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
   return validateGameState({ ...state, activeTourism: null });

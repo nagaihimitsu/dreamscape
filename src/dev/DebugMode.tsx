@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import App from "../app/App";
-import { battles, city, getCities, dates, dateDestinations, landmarks, getCityContent } from "../content";
+import { battles, getCities, dates, dateDestinations, landmarks, getCityContent } from "../content";
 import { encounters } from "../content/encounters";
 import { battleCityId } from "../domain/chapter";
 import { saveGame } from "../persistence";
-import { journeys } from "../content/journeys";
-import { installJourneyTestCities } from "../domain/multi-city-test-fixture";
-import { createDebugState, type DebugScene, type DebugSettings } from "./debug-state";
+import { installPreparingJourneyTestCities } from "../domain/multi-city-test-fixture";
+import { createDebugState, defaultDebugCityId, type DebugScene, type DebugSettings } from "./debug-state";
 import { PrototypePreview } from "./PrototypePreview";
 import "./debug-mode.css";
 
@@ -25,7 +24,7 @@ function cityOptions(cityId: string): Record<DebugScene, { id: string; name: str
     tourism: landmarks.filter((item) => item.cityId === cityId).map((item) => ({ id: item.id, name: item.nameJa })),
     battle: battles.filter((item) => battleCityId(item.id) === cityId).map((item) => ({ id: item.id, name: item.titleJa })),
     encounter: encounters.encounters.filter((item) => item.cityId === cityId && item.availability !== "dormant").map((item) => ({ id: item.id, name: item.titleJa })),
-    date: dates.filter((item) => item.kind === "normal" && !item.legacyOnly && travel.events.some((event) => event.id === item.id)).map((item) => ({ id: item.id, name: item.titleJa })),
+    date: dates.filter((item) => item.kind === "normal" && travel.events.some((event) => event.id === item.id)).map((item) => ({ id: item.id, name: item.titleJa })),
   };
 }
 
@@ -33,28 +32,18 @@ export default function DebugMode() {
   const [dataMode, setDataMode] = useState<"real" | "fixture">("real");
   const fixtureCleanup = useRef<(() => void) | null>(null);
   useEffect(() => () => { fixtureCleanup.current?.(); fixtureCleanup.current = null; }, []);
-  const [settings, setSettings] = useState<DebugSettings>({ cityId: city.id, scene: "tourism", id: cityOptions(city.id).tourism[0]?.id ?? "", progress: "completed", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
-  const options = cityOptions(settings.cityId ?? city.id);
+  const [settings, setSettings] = useState<DebugSettings>({ cityId: defaultDebugCityId, scene: "tourism", id: cityOptions(defaultDebugCityId).tourism[0]?.id ?? "", progress: "completed", ap: 12, affection: 0, trust: 0, spark: 0, roll: "positive" });
+  const options = cityOptions(settings.cityId ?? defaultDebugCityId);
   const [session, setSession] = useState<{ storage: MemoryStorage; roll: () => number; key: number; location: string } | null>(null);
   const [prototypeCity, setPrototypeCity] = useState<string | null>(null);
   const [message, setMessage] = useState("");
-  const isPrototype = getCityContent(settings.cityId ?? city.id).city.productionStatus === "prototype";
+  const isPrototype = getCityContent(settings.cityId ?? defaultDebugCityId).city.productionStatus === "prototype";
   function selectDataMode(next: "real" | "fixture") {
     if (next === dataMode) return;
     try {
-      if (next === "fixture") {
-        const cleanups: Array<() => void> = [];
-        try {
-          for (const journey of journeys.filter((item) => item.status === "preparing"))
-            cleanups.push(installJourneyTestCities(journey.id));
-        } catch (error) {
-          for (const cleanup of cleanups.reverse()) cleanup();
-          throw error;
-        }
-        fixtureCleanup.current = () => { for (const cleanup of cleanups.reverse()) cleanup(); };
-      }
+      if (next === "fixture") fixtureCleanup.current = installPreparingJourneyTestCities();
       else { fixtureCleanup.current?.(); fixtureCleanup.current = null; }
-      const target = settings.cityId ?? city.id;
+      const target = settings.cityId ?? defaultDebugCityId;
       const nextOptions = cityOptions(target);
       setSettings({ ...settings, id: nextOptions[settings.scene][0]?.id ?? "" });
       setDataMode(next);
@@ -66,7 +55,7 @@ export default function DebugMode() {
   function open(event: FormEvent) {
     event.preventDefault();
     try {
-      if (isPrototype) { setPrototypeCity(settings.cityId ?? city.id); setMessage(""); return; }
+      if (isPrototype) { setPrototypeCity(settings.cityId ?? defaultDebugCityId); setMessage(""); return; }
       const state = createDebugState(settings);
       const storage = newStorage();
       const result = saveGame(storage, state);
@@ -103,7 +92,7 @@ export default function DebugMode() {
           </select>
         </label>
         <label>都市
-          <select data-testid="debug-city" value={settings.cityId ?? city.id} onChange={(event) => {
+          <select data-testid="debug-city" value={settings.cityId ?? defaultDebugCityId} onChange={(event) => {
             const cityId = event.target.value;
             const next = cityOptions(cityId);
             setSettings({ ...settings, cityId, id: next[settings.scene][0]?.id ?? "" });

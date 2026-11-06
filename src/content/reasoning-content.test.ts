@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { Story } from "inkjs";
 import { buildContent, compileInk } from "../../scripts/content-pipeline";
-import { prepareContentFixture } from "./test-fixtures";
+import { changeCatalogEntry, prepareContentFixture } from "./test-fixtures";
 import {
   validateBattleEvidence,
   validateBattleStory,
@@ -15,11 +15,17 @@ import {
   battleSchema,
   type BattleDefinition,
 } from "./schemas";
-import battleData from "../../content/battles/catalog.json";
-import tourismData from "../../content/tourism/catalog.json";
+// Source catalogs that the tests rewrite in their fixture; read-only runtime data comes from the generated mirror.
+import battleData from "./generated/content/battles/catalog.json";
+import tourismData from "./generated/content/tourism/catalog.json";
 
 let fixture: string;
-const source = () => battleCatalogSchema.parse(battleData).battles;
+// This file checks Milan's special battles; other journeys' battles may come before or after them.
+const landmarkCity = new Map(tourismCatalogSchema.parse(tourismData).landmarks.map((landmark) => [landmark.id, landmark.cityId]));
+const inMilan = (battle: { landmarkId?: string | null; cityId?: string }) =>
+  (battle.landmarkId ? landmarkCity.get(battle.landmarkId) : battle.cityId) === "milano";
+const source = () => battleCatalogSchema.parse(battleData).battles.filter(inMilan);
+const legacyA = battleData.battles.find((battle) => battle.id === "milano_last_supper_01")!;
 const special = (format: "B" | "C") =>
   source().find((battle) => battle.format === format)!;
 
@@ -35,41 +41,37 @@ async function changeBattle(
   format: "B" | "C",
   change: (battle: BattleDefinition) => void,
 ) {
-  const catalog = battleCatalogSchema.parse(structuredClone(battleData));
-  change(catalog.battles.find((battle) => battle.format === format)!);
-  await writeFile(
-    path.join(fixture, "content/battles/catalog.json"),
-    JSON.stringify(catalog),
-  );
+  await changeCatalogEntry(fixture, "battles/catalog.json", "battles", special(format).id, change);
 }
 
 describe("special battle content contract", () => {
   it("preserves the legacy A definition without injecting default fields", () => {
-    expect(battleSchema.parse(battleData.battles[0])).toEqual(
-      battleData.battles[0],
-    );
-    expect(battleSchema.parse(battleData.battles[0])).not.toHaveProperty(
+    expect(battleSchema.parse(legacyA)).toEqual(legacyA);
+    expect(battleSchema.parse(legacyA)).not.toHaveProperty(
       "format",
     );
-    expect(battleSchema.parse(battleData.battles[0])).not.toHaveProperty(
+    expect(battleSchema.parse(legacyA)).not.toHaveProperty(
       "reasoning",
     );
   });
 
   it("validates all A/B/C scenes while keeping the normal episode linked only to A", async () => {
     const result = await buildContent(fixture, false);
+    const milan = result.battles.filter(inMilan);
+    expect(milan[0].id).toBe(legacyA.id);
     expect(
-      result.battles.slice(0, 3).map((battle) => battle.format ?? "A"),
+      milan.slice(0, 3).map((battle) => battle.format ?? "A"),
     ).toEqual(["A", "B", "C"]);
     // The two published cases remain available for saved games; the main
     // journey now uses two distinct cases at Scala and Brera.
-    expect(result.reasoningBattles).toBe(4);
+    expect(milan.filter((battle) => battle.reasoning)).toHaveLength(4);
+    expect(result.reasoningBattles).toBe(result.battles.filter((battle) => battle.reasoning).length);
     expect(result.battleScenarios).toBeGreaterThanOrEqual(59);
     const original = result.journey.episodes.find(
       (episode) => episode.id === "milano_last_supper_episode",
     )!;
-    expect(original.battleId).toBe(result.battles[0].id);
-    expect(result.tourism.landmarks[0].battleId).toBe(result.battles[0].id);
+    expect(original.battleId).toBe(legacyA.id);
+    expect(result.tourism.landmarks.find((landmark) => landmark.id === "last_supper")!.battleId).toBe(legacyA.id);
     expect(
       result.journey.episodes.every(
         (episode) =>
@@ -111,7 +113,8 @@ describe("special battle content contract", () => {
     expect(new Set(newC.reasoning!.correctClueIds)).toEqual(
       new Set(["brera_colours", "brera_show"]),
     );
-    expect(result.journey.storyBattles.map((entry) => entry.battleId)).toEqual([newB.id, newC.id]);
+    expect(result.journey.storyBattles.map((entry) => entry.battleId).filter((id) => milan.some((battle) => battle.id === id)))
+      .toEqual([newB.id, newC.id]);
   });
 
   it.each(["B", "C"] as const)(
@@ -139,13 +142,13 @@ describe("special battle content contract", () => {
           ...battle,
           reasoning: { ...reasoning, correctClueIds: [] },
         }),
-      ).toThrow();
+      ).toThrow(/"correctClueIds"[\s\S]*Too small: expected array to have exactly/);
       expect(() =>
         battleSchema.parse({
           ...battle,
           reasoning: { ...reasoning, correctClueIds: ["missing"] },
         }),
-      ).toThrow();
+      ).toThrow("Correct evidence must be available in the case materials");
       expect(() =>
         battleSchema.parse({
           ...battle,
@@ -178,20 +181,20 @@ describe("special battle content contract", () => {
         ...b,
         reasoning: { ...b.reasoning, roundIndex: 3 },
       }),
-    ).toThrow();
+    ).toThrow(/"roundIndex"[\s\S]*Too big: expected number to be <=2/);
     expect(() =>
       battleSchema.parse({
         ...b,
         reasoning: { ...b.reasoning, pressScene: undefined },
       }),
-    ).toThrow();
+    ).toThrow(/"pressScene"[\s\S]*Invalid input: expected string, received undefined/);
     const c = special("C");
     expect(() =>
       battleSchema.parse({
         ...c,
         reasoning: { ...c.reasoning, pressScene: "press" },
       }),
-    ).toThrow();
+    ).toThrow(/Unrecognized key: .*pressScene/);
   });
 
   it("rejects missing case evidence and evidence from a different landmark", async () => {

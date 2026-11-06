@@ -115,11 +115,7 @@
         "region": "south_europe"
       }
     },
-    "cities": {
-      "milano": {
-        "country": "IT"
-      }
-    },
+    "cities": {},
     "scenes": {}
   }
 }

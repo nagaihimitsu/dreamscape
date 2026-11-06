@@ -8,8 +8,13 @@ import {
   validateLearningTopic,
 } from "./ink-validation";
 import { unique, withContext } from "./content-validation-utils";
-import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { assemblePublicDirectory, collectPublicFiles, resolvePublicFile } from "./public-assets";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { generatedPublicDirectory, mirrorDirectory, type CatalogKind } from "./content-layout";
+import { displayPath, loadContentSources, parseCatalog as parseSourceCatalog, requireJourneyManifests, writeContentMirror } from "./content-sources";
+import { authoringProfileOf } from "./journey-authoring";
+import { checkContentOwnership } from "./content-ownership";
 import { characterCatalogSchema } from "../src/content/character-assets";
 import { encounterCatalogInputSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
 import { encounterEntryRulesSchema, validateEncounterEntryRules } from "../src/content/encounter-entry-rules";
@@ -36,7 +41,6 @@ import {
   presentationSchema,
   quizSampleSchema,
   progressionSchema,
-  trialProgressionSchema,
   type DateDefinition,
 } from "../src/content/schemas";
 import type { TagContext } from "../src/content/tags";
@@ -91,20 +95,6 @@ async function parseFile<T>(
       { cause: error },
     );
   }
-}
-
-async function filesIn(directory: string): Promise<string[]> {
-  const entries = await readdir(directory, { withFileTypes: true });
-  return (
-    await Promise.all(
-      entries.map(async (entry) => {
-        const location = path.join(directory, entry.name);
-        return entry.isDirectory() ? filesIn(location) : [location];
-      }),
-    )
-  )
-    .flat()
-    .sort();
 }
 
 /** Check facts contained within one quiz; cross-file references are checked by buildContent. */
@@ -167,71 +157,51 @@ export function validateCityLinks(cities: Array<ReturnType<typeof citySchema.par
 }
 
 export async function buildContent(root: string, writeOutput = true) {
-  const content = path.join(root, "content");
-  const journey = await parseFile(
-    journeySchema,
-    path.join(content, "progression/journey.json"),
-  );
-  const tourism = await parseFile(
-    tourismCatalogSchema,
-    path.join(content, "tourism/catalog.json"),
-  );
-  const encounterInput = await parseFile(
-    encounterCatalogInputSchema,
-    path.join(content, "encounters/catalog.json"),
-  );
+  // Every content layer, merged; the merged catalogs are validated below exactly
+  // as the former single files were.
+  const sources = loadContentSources(root);
+  requireJourneyManifests(sources.manifests);
+  // Only the authoring tools read these profiles; a broken one still fails the build early.
+  for (const manifest of sources.manifests) authoringProfileOf(manifest.data, manifest.file);
+  // Each journey folder keeps to its own cities and content (and the core layer to core content).
+  checkContentOwnership(sources);
+  // The game's static files: root public/ plus every journey's public/, one file per URL path.
+  const publicFiles = collectPublicFiles(root, sources.publicRoots);
+  const parseCatalog = <T>(schema: { parse(value: unknown): T }, kind: CatalogKind): T => parseSourceCatalog(sources, schema, kind);
+  // Messages name the real Ink file of a story, whichever layer it is in.
+  const storyFiles = new Map(sources.storyFiles.map((story) => [story.id, displayPath(root, story.file)]));
+  const storyLabel = (storyId: string) => storyFiles.get(storyId) ?? `${storyId}.ink`;
+  const journey = parseCatalog(journeySchema, "progression/journey.json");
+  const tourism = parseCatalog(tourismCatalogSchema, "tourism/catalog.json");
+  const encounterInput = parseCatalog(encounterCatalogInputSchema, "encounters/catalog.json");
   const encounterCatalog = normalizeEncounterCatalog(encounterInput, tourism.landmarks);
-  const encounterEntryRules = await parseFile(encounterEntryRulesSchema, path.join(content, "encounters/entry-rules.json"));
+  const encounterEntryRules = parseCatalog(encounterEntryRulesSchema, "encounters/entry-rules.json");
   validateEncounterEntryRules(encounterEntryRules, encounterCatalog.encounters, journey);
   const encounterStoryIds = [...new Set(encounterCatalog.encounters.flatMap((event) => [
     event.storyId,
     ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : []),
   ]))];
-  const battles = (
-    await parseFile(
-      battleCatalogSchema,
-      path.join(content, "battles/catalog.json"),
-    )
-  ).battles;
+  const battles = parseCatalog(battleCatalogSchema, "battles/catalog.json").battles;
   unique(
     battles.map((battle) => battle.id),
     "battleId",
   );
-  const dates = (
-    await parseFile(
-      dateCatalogSchema,
-      path.join(content, "romance/date_catalog.json"),
-    )
-  ).dates;
-  const destinations = (
-    await parseFile(
-      dateDestinationsSchema,
-      path.join(content, "romance/date_destinations.json"),
-    )
-  ).destinations;
-  const effects = (
-    await parseFile(
-      effectCatalogSchema,
-      path.join(content, "romance/effect_catalog.json"),
-    )
-  ).effects;
-  const responseProfiles = (
-    await parseFile(
-      responseProfileCatalogSchema,
-      path.join(content, "romance/response_profiles.json"),
-    )
-  ).profiles;
+  const dates = parseCatalog(dateCatalogSchema, "romance/date_catalog.json").dates;
+  const destinations = parseCatalog(dateDestinationsSchema, "romance/date_destinations.json").destinations;
+  const effects = parseCatalog(effectCatalogSchema, "romance/effect_catalog.json").effects;
+  const responseProfiles = parseCatalog(responseProfileCatalogSchema, "romance/response_profiles.json").profiles;
   unique(responseProfiles.map((profile) => profile.id), "response profile ID");
-  const cityPaths = (await filesIn(path.join(content, "cities"))).filter((file) => file.endsWith(".json"));
-  const cities = await Promise.all(cityPaths.map(async (file) => {
+  const cities = await Promise.all(sources.cities.map(async ({ file }) => {
     const city = await parseFile(citySchema, file);
     if (path.basename(file) !== `${city.id}.json`) throw new Error(`City file ID mismatch: ${file}/${city.id}`);
     return city;
   }));
   unique(cities.map((city) => city.id), "city ID");
-  const city = cities.find((item) => item.id === "milano");
-  if (!city) throw new Error("Missing initial city: milano");
-  const journeyCatalog = await parseFile(journeyCatalogSchema, path.join(content, "journeys/catalog.json"));
+  const journeyCatalog = parseCatalog(journeyCatalogSchema, "journeys/catalog.json");
+  // The first available journey (manifest order) opens the title screen, a new
+  // game and Debug; each available journey's starting city is checked below.
+  if (!journeyCatalog.journeys.some((item) => item.status === "available"))
+    throw new Error('No available journey: at least one content/journeys/<journeyId>/manifest.json needs "status": "available"');
   // A registered future prototype may be referenced by its predecessor;
   // getNextCity still hides departures to incomplete cities at runtime.
   validateCityLinks(cities, journeyCatalog);
@@ -244,23 +214,17 @@ export async function buildContent(root: string, writeOutput = true) {
         throw new Error(`Available journey has no initial budget: ${plannedJourney.id}`);
     }
   }
-  const balance = await parseFile(
-    balanceSchema,
-    path.join(content, "romance/balance.json"),
-  );
+  const balance = parseCatalog(balanceSchema, "romance/balance.json");
   for (const plannedJourney of journeyCatalog.journeys) {
     if (plannedJourney.initialState && plannedJourney.initialState.ap > balance.apCap)
       throw new Error(`Journey initial AP exceeds cap: ${plannedJourney.id}`);
     if (plannedJourney.cityPlan && plannedJourney.cityPlan.cityClearAp > balance.apCap)
       throw new Error(`Journey city clear AP exceeds cap: ${plannedJourney.id}`);
   }
-  const presentation = await parseFile(
-    presentationSchema,
-    path.join(content, "romance/presentation.json"),
-  );
-  const travels = await Promise.all(cities.map(async (item) => ({ city: item,
-    travel: await parseFile(travelCatalogSchema, path.join(content, `travel/${item.id}.json`)),
-    settings: await parseFile(travelSettingsSchema, path.join(content, `travel/${item.id}-settings.json`)),
+  const presentation = parseCatalog(presentationSchema, "romance/presentation.json");
+  const travels = await Promise.all(cities.map(async (item, index) => ({ city: item,
+    travel: await parseFile(travelCatalogSchema, sources.cities[index].travelFile),
+    settings: await parseFile(travelSettingsSchema, sources.cities[index].settingsFile),
   })));
   for (const { city: registeredCity, settings } of travels) {
     const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === registeredCity.id));
@@ -276,10 +240,7 @@ export async function buildContent(root: string, writeOutput = true) {
     if (!presentation.backgrounds[destination.backgroundAssetId])
       throw new Error(`Unknown date destination background: ${destination.id}/${destination.backgroundAssetId}`);
   }
-  const characters = await parseFile(
-    characterCatalogSchema,
-    path.join(content, "presentation/characters.json"),
-  );
+  const characters = parseCatalog(characterCatalogSchema, "presentation/characters.json");
   await validateBackgroundAssets(root, presentation.backgrounds, tourism.assets);
   const wardrobeSceneIds = new Set([
     ...dates.map((date) => date.id),
@@ -293,16 +254,7 @@ export async function buildContent(root: string, writeOutput = true) {
     battleIds: new Set(battles.map((battle) => battle.id)),
     sceneIds: wardrobeSceneIds,
   });
-  const progression = await parseFile(
-    progressionSchema,
-    path.join(content, "romance/progression.json"),
-  );
-  const milestones = (
-    await parseFile(
-      trialProgressionSchema,
-      path.join(content, "romance/trial_progression.json"),
-    )
-  ).milestones;
+  const progression = parseCatalog(progressionSchema, "romance/progression.json");
   unique(
     dates.map((date) => date.id),
     "dateId",
@@ -321,12 +273,14 @@ export async function buildContent(root: string, writeOutput = true) {
   if (encounterCatalog.items.some((item) => !cities.some((entry) => entry.id === item.cityId)) ||
       encounterCatalog.encounters.some((item) => !cities.some((entry) => entry.id === item.cityId)))
     throw new Error("Unknown encounter/item city");
+  for (const item of encounterCatalog.items)
+    if (item.iconPath) withContext(`encounter item ${item.id}`, () => resolvePublicFile(root, item.iconPath!, sources.publicRoots));
   unique(journey.episodes.map((item) => item.id), "episode ID");
   unique(journey.episodes.map((item) => item.battleId), "episode battle ID");
   unique(journey.storyBattles.map((item) => item.battleId), "story battle ID");
-  unique([...cities.map((item) => item.firstClearReward.rewardSourceId), ...milestones.map((item) => item.rewardSourceId)], "reward source");
+  unique(cities.map((item) => item.firstClearReward.rewardSourceId), "reward source");
   unique(journey.rewards.map((item) => item.id), "journey reward ID");
-  unique([...journey.rewards.map((item) => item.id), ...journey.storyBattles.flatMap((item) => item.completionReward ? [item.completionReward.id] : []), ...milestones.map((item) => item.rewardSourceId)], "journey/trial reward ID");
+  unique([...journey.rewards.map((item) => item.id), ...journey.storyBattles.flatMap((item) => item.completionReward ? [item.completionReward.id] : [])], "journey reward ID");
   if (tourism.clues.some((clue) => !tourism.landmarks.some((landmark) => landmark.id === clue.landmarkId)))
     throw new Error("Unknown or mismatched tourism clue");
   if (tourism.landmarks.some((landmark) => !cities.some((entry) => entry.id === landmark.cityId && entry.landmarkIdsPlanned.includes(landmark.id))))
@@ -349,7 +303,7 @@ export async function buildContent(root: string, writeOutput = true) {
       throw new Error(`Unknown response profile: ${effect.id}/${effect.responseProfileId}`);
     if (effect.outcome && effect.responseProfileId)
       throw new Error(`Confession outcome cannot use a response profile: ${effect.id}`);
-    if (effect.outcome && (effect.affectionDelta !== 0 || (effect.trustDelta ?? 0) !== 0 || (effect.sparkDelta ?? 0) !== 0 || effect.stageDeltas))
+    if (effect.outcome && (effect.affectionDelta !== 0 || (effect.trustDelta ?? 0) !== 0 || (effect.sparkDelta ?? 0) !== 0))
       throw new Error("Confession outcome cannot award relationship points");
     if (!effect.memoryId && !effect.outcome && !effect.responseProfileId)
       throw new Error(`Effect has neither memory nor outcome: ${effect.id}`);
@@ -360,13 +314,7 @@ export async function buildContent(root: string, writeOutput = true) {
   const storySources: Record<string, string> = {};
   const storyMemoryReferences: Record<string, string[]> = {};
   let routes = 0;
-  const storyDirectory = path.join(content, "stories");
-  for (const file of await filesIn(storyDirectory)) {
-    if (!file.endsWith(".ink")) continue;
-    const id = path
-      .relative(storyDirectory, file)
-      .replaceAll(path.sep, "/")
-      .slice(0, -4);
+  for (const { id, file } of sources.storyFiles) {
     const source = await readFile(file, "utf8");
     storyMemoryReferences[id] = withContext(file, () => validateMemoryReferences(source, Object.keys(presentation.memories)));
     const itemReferences = withContext(file, () => validateItemReferences(source, encounterCatalog.items.map((item) => item.id)));
@@ -385,23 +333,20 @@ export async function buildContent(root: string, writeOutput = true) {
     stories[id] = compiled;
     storySources[id] = source;
   }
-  const expressionCatalog = await parseFile(dialogueExpressionCatalogSchema, path.join(content, "presentation/dialogue-expressions.json"));
+  const expressionCatalog = parseCatalog(dialogueExpressionCatalogSchema, "presentation/dialogue-expressions.json");
   const expressionValidator = createDialogueExpressionValidator(
     expressionCatalog,
     storySources,
     Object.keys(stories),
     context.emotionIds.filter((id) => characters.expressionIds?.includes(id) ?? true),
   );
-  const learningDetails = await parseFile(
-    learningDetailsSchema,
-    path.join(content, "learning/details.json"),
-  );
-  const reactionCatalog = await parseFile(dialogueReactionCatalogSchema, path.join(content, "presentation/dialogue-reactions.json"));
+  const learningDetails = parseCatalog(learningDetailsSchema, "learning/details.json");
+  const reactionCatalog = parseCatalog(dialogueReactionCatalogSchema, "presentation/dialogue-reactions.json");
   const reactionValidator = createDialogueReactionValidator(
     reactionCatalog, storySources, Object.keys(stories),
     context.emotionIds.filter((id) => characters.expressionIds?.includes(id) ?? true),
     characters.characters.map((character) => character.id),
-    [learningDetails.storyId],
+    learningDetails.storyId ? [learningDetails.storyId] : [],
   );
   const observeForStory = (storyId: string): DialogueObserver =>
     (text, speaker, explicitEmotion) => {
@@ -414,7 +359,7 @@ export async function buildContent(root: string, writeOutput = true) {
     if (!Object.hasOwn(stories, date.storyId))
       throw new Error(`Unknown storyId: ${date.storyId}`);
     if (date.kind !== "confession" && date.choiceCount > 0)
-      withContext(`content/stories/${date.storyId}.ink (date ${date.id})`, () => {
+      withContext(`${storyLabel(date.storyId)} (date ${date.id})`, () => {
         validateNoInkRandom(stories[date.storyId]);
         validateRelationshipToneSource(storySources[date.storyId]);
       });
@@ -512,7 +457,7 @@ export async function buildContent(root: string, writeOutput = true) {
               (callback) => callback.memoryId === seed.memoryId,
             )?.textJa ?? progression.fallbackMemoryCallbackJa;
           const checkedRoutes = withContext(
-            `content/stories/${storyId}.ink (date ${date.id})`,
+            `${storyLabel(storyId)} (date ${date.id})`,
             () =>
               validateStory(
                 stories[storyId],
@@ -525,7 +470,6 @@ export async function buildContent(root: string, writeOutput = true) {
                   confession_ready: seed.confessionReady,
                   confession_result: seed.confessionResult ?? (seed.confessionReady ? "accepted" : "deferred"),
                   ending_reached: seed.endingReached ?? false,
-                  has_cafe_memory: seed.hasCafeMemory ?? false,
                 },
                 effects,
                 observeForStory(storyId),
@@ -545,11 +489,6 @@ export async function buildContent(root: string, writeOutput = true) {
     });
   }
 
-  const verifyDateReferences = (ids: string[], label: string) => {
-    unique(ids, label);
-    if (ids.some((id) => !dates.some((date) => date.id === id)))
-      throw new Error(`Unknown ${label}`);
-  };
   progression.stages.forEach((stage, index) => {
     if (
       stage.stage !== index + 1 ||
@@ -569,15 +508,6 @@ export async function buildContent(root: string, writeOutput = true) {
     if (!presentation.memories[callback.memoryId])
       throw new Error(`Unknown callback memory: ${callback.memoryId}`);
   }
-  unique(
-    milestones.map((item) => item.id),
-    "trial milestone",
-  );
-  for (const milestone of milestones) {
-    verifyDateReferences(milestone.requiredPlayedDateIds, "trial prerequisite");
-    if (milestone.ap > balance.apCap)
-      throw new Error("Trial reward exceeds AP cap");
-  }
   const visiting = new Set<string>();
   const visited = new Set<string>();
   const visitPrerequisites = (date: DateDefinition) => {
@@ -593,9 +523,7 @@ export async function buildContent(root: string, writeOutput = true) {
   // Samples remain validated but excluded from gameplay. Production quizzes are discovered by data alone.
   const quizzes: Record<string, QuizDefinition> = {};
   const productionQuestionIds: string[] = [];
-  for (const file of await filesIn(path.join(content, "quizzes"))) {
-    if (!file.endsWith(".json")) continue;
-    const isSample = file.endsWith(".sample.json");
+  for (const { file, sample: isSample } of sources.quizFiles) {
     const quiz = isSample
       ? await parseFile(quizSampleSchema, file)
       : await parseFile(quizSchema, file);
@@ -658,35 +586,26 @@ export async function buildContent(root: string, writeOutput = true) {
       "battle scene",
     );
     battleScenarios += withContext(
-      `content/stories/${battle.storyId}.ink (battle ${battle.id})`,
+      `${storyLabel(battle.storyId)} (battle ${battle.id})`,
       () => validateBattleStory(stories[battle.storyId], battle, context, observeForStory(battle.storyId)),
     );
   }
   // Dialogue leading into a proof is presentation-only: it is deliberately
   // kept outside the battle definition and its save-data fingerprint.
-  const reasoningIntros = await parseFile(
-    reasoningIntroCatalogSchema,
-    path.join(content, "presentation/reasoning-intros.json"),
-  );
+  const reasoningIntros = parseCatalog(reasoningIntroCatalogSchema, "presentation/reasoning-intros.json");
   for (const { battleId, storyId } of reasoningIntros.entries) {
     const battle = battles.find((item) => item.id === battleId);
     if (!battle?.reasoning) throw new Error(`Unknown special battle introduction: ${battleId}`);
     if (!stories[storyId]) throw new Error(`Unknown reasoning introduction story: ${battleId}/${storyId}`);
-    withContext(`content/stories/${storyId}.ink (reasoning introduction ${battleId})`, () => {
+    withContext(`${storyLabel(storyId)} (reasoning introduction ${battleId})`, () => {
       validateReasoningIntroduction(stories[storyId], context, observeForStory(storyId));
     });
   }
-  const learning = await parseFile(
-    learningCatalogSchema,
-    path.join(content, "learning/translations.json"),
-  );
+  const learning = parseCatalog(learningCatalogSchema, "learning/translations.json");
   validateLearning(learning, quizzes, [
     ...new Set(battles.map((battle) => battle.quizId)),
   ]);
-  const wordMeanings = await parseFile(
-    wordMeaningsSchema,
-    path.join(content, "learning/word-meanings.json"),
-  );
+  const wordMeanings = parseCatalog(wordMeaningsSchema, "learning/word-meanings.json");
   for (const battle of battles)
     for (const question of quizzes[battle.quizId].questions) {
       const texts = [
@@ -700,12 +619,15 @@ export async function buildContent(root: string, writeOutput = true) {
         }
     }
   validateLearningDetails(learningDetails, quizzes);
-  if (!stories[learningDetails.storyId])
-    throw new Error(`Unknown learning story: ${learningDetails.storyId}`);
-  for (const detail of Object.values(learningDetails.questions))
-    for (const topic of detail.topics) {
-      validateLearningTopic(stories[learningDetails.storyId], context, topic.id);
-    }
+  if (learningDetails.storyId !== undefined) {
+    const learningStory = stories[learningDetails.storyId];
+    if (!learningStory)
+      throw new Error(`Unknown learning story: ${learningDetails.storyId}`);
+    for (const detail of Object.values(learningDetails.questions))
+      for (const topic of detail.topics) {
+        validateLearningTopic(learningStory, context, topic.id);
+      }
+  }
   let tourismGuides = 0;
   for (const current of cities) {
     const landmarks = tourism.landmarks.filter((landmark) => landmark.cityId === current.id);
@@ -715,7 +637,7 @@ export async function buildContent(root: string, writeOutput = true) {
       landmarks,
       assets: tourism.assets,
       clues: tourism.clues.filter((clue) => ids.has(clue.landmarkId)),
-    }, current.id, current.landmarkIdsPlanned, battles, quizzes, stories, context, observeForStory);
+    }, current.id, current.landmarkIdsPlanned, battles, quizzes, stories, context, observeForStory, storyLabel);
   }
   for (const validateDate of deferredDateValidation) validateDate();
   for (const effect of effects) {
@@ -724,7 +646,7 @@ export async function buildContent(root: string, writeOutput = true) {
     // location-specific counterparts remain available when a scene needs one.
     const commonChoice = commonDateEffect.exec(effect.id);
     if (commonChoice) {
-      if (effect.memoryId || effect.outcome || effect.stageDeltas ||
+      if (effect.memoryId || effect.outcome ||
           effect.affectionDelta !== 0 || (effect.trustDelta ?? 0) !== 0 || (effect.sparkDelta ?? 0) !== 0 ||
           effect.responseProfileId !== commonChoice[2])
         throw new Error(`Invalid common date effect: ${effect.id}`);
@@ -785,8 +707,7 @@ export async function buildContent(root: string, writeOutput = true) {
         throw new Error(`City clear reward does not match journey plan: ${current.id}`);
     }
     const episodeIds = new Set(episodes.map((episode) => episode.id));
-    const cityJourney = { ...journey, entryEpisodeId: current.id === city.id ? journey.entryEpisodeId : (episodes[0]?.id ?? journey.entryEpisodeId),
-      episodes, storyBattles: journey.storyBattles.filter((battle) => battleCity(battle.battleId) === current.id),
+    const cityJourney = { ...journey, episodes, storyBattles: journey.storyBattles.filter((battle) => battleCity(battle.battleId) === current.id),
       rewards: journey.rewards.filter((rule) => rule.episodeId !== undefined
         ? episodeIds.has(rule.episodeId)
         : rule.battleId !== undefined && battleCity(rule.battleId) === current.id) };
@@ -809,7 +730,7 @@ export async function buildContent(root: string, writeOutput = true) {
       responseProfileIds: responseProfiles.map((profile) => profile.id), memoryIds: Object.keys(presentation.memories), context,
       validateQuiz: validateQuizEntries,
     });
-    if (episodes.length) validateJourney(cityJourney, current, balance.apCap, cityLandmarks, battles, quizzes, milestones);
+    if (episodes.length) validateJourney(cityJourney, current, balance.apCap, cityLandmarks, battles, quizzes);
     else if (cityJourney.storyBattles.length) throw new Error(`Prototype battle has no city episodes: ${current.id}`);
     validateTravelContent(travel, settings, current.id, cityJourney, cityDates, battles,
       cityLandmarks.map((landmark) => landmark.id), cityDestinations.map((destination) => destination.id), presentation.backgrounds,
@@ -830,7 +751,7 @@ export async function buildContent(root: string, writeOutput = true) {
     if (!compiled) throw new Error(`Unknown arrival story: ${storyId}`);
     validateNoInkRandom(compiled);
     const backgrounds = travels.find(({ city }) => city.id === current.id)!.travel.places.map((place) => place.backgroundAssetId);
-    epilogueScenarios += withContext(`content/stories/${storyId}.ink`, () =>
+    epilogueScenarios += withContext(storyLabel(storyId), () =>
       validateEpilogue(compiled, { ...context, backgroundIds: backgrounds }, (text, speaker, explicitEmotion) => {
         if (!["heroine", "narrator"].includes(speaker)) throw new Error("City arrival cannot speak for the player");
         observeForStory(storyId)(text, speaker, explicitEmotion);
@@ -842,7 +763,7 @@ export async function buildContent(root: string, writeOutput = true) {
     if (!compiled)
       throw new Error(`Unknown epilogue story: ${episode.epilogueStoryId}`);
     epilogueScenarios += withContext(
-      `content/stories/${episode.epilogueStoryId}.ink`,
+      storyLabel(episode.epilogueStoryId),
       () => validateEpilogue(compiled, context, observeForStory(episode.epilogueStoryId!)),
     );
   }
@@ -874,6 +795,10 @@ export async function buildContent(root: string, writeOutput = true) {
       path.join(directory, "stories.json"),
       `${JSON.stringify(stories, null, 2)}\n`,
     );
+    // The game imports the validated, merged catalogs only from this mirror.
+    writeContentMirror(sources, mirrorDirectory(root));
+    // Vite serves and builds the game's images from this folder (publicDir in vite.config.ts).
+    assemblePublicDirectory(publicFiles, generatedPublicDirectory(root));
   }
   return {
     stories,

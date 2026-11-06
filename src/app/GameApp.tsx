@@ -6,13 +6,12 @@ import {
   presentation,
   landmarks,
   tourismAssets,
-  city,
   getCityContent,
   battles,
   episodes,
   journeyConfig,
 } from "../content";
-import { getJourneyForCity } from "../content/journeys";
+import { defaultJourneyId, getJourney, getJourneyForCity } from "../content/journeys";
 import { currencyForCity, formatMoneyForCity } from "../content/currency";
 import { JourneySelection } from "../features/journey/JourneySelection";
 import { beginTravelEvent, waitForTravel } from "../domain/travel-game";
@@ -22,12 +21,11 @@ import {
   advanceDate,
   chooseDate,
   finishDate,
-  claimTrialMilestone,
   setNames,
   startDate,
-  isUpdatedDateReplay,
 } from "../domain/game";
-import { useGameSession, type DeleteSnapshot } from "./useGameSession";
+import { useGameSession } from "./useGameSession";
+import type { DeleteSnapshot } from "./save-deletion";
 import { CanalScene } from "../components/CanalScene";
 import { HeldItems } from "../components/HeldItems";
 import { secureRomanceRoll } from "../random/romance-source";
@@ -86,7 +84,7 @@ export function GameApp({
   storage = browserStorage,
   nextRomanceRoll = secureRomanceRoll,
   debug = false,
-  journeyId = "milano",
+  journeyId = defaultJourneyId,
   onSwitchJourney,
 }: AppProps & { journeyId?: string; onSwitchJourney?: (id: string) => void }) {
   const isDebug = import.meta.env.DEV && debug;
@@ -217,11 +215,12 @@ export function GameApp({
     confirmation?.kind === "date"
       ? dates.find((date) => date.id === confirmation.id)
       : undefined;
-  const selectedUpdatedDate = !!game && !!selectedDate && isUpdatedDateReplay(game, selectedDate.id);
   const selectedDestination = dateDestinations.find(
     (destination) => destination.id === selectedDate?.destinationId,
   );
   const currentCity = game ? getCityContent(game.currentCityId) : undefined;
+  // Before the trip starts, the heading names the selected journey's first city.
+  const editionCityName = currentCity?.city.nameJa ?? getJourney(journeyId)?.cities[0].nameJa;
   const currentTravelPlace = game
     ? currentCity!.travel.places.find((place) => place.id === game.travel.currentPlaceId)
     : undefined;
@@ -265,7 +264,7 @@ export function GameApp({
         <a href="#main" className="brand">
           Dreamscape<span>旅の余白</span>
         </a>
-        <span className="edition">{currentCity?.city.nameJa ?? city.nameJa}の旅</span>
+        <span className="edition">{editionCityName}の旅</span>
       </header>
       {game && (
         <div className="journey-bar">
@@ -284,7 +283,7 @@ export function GameApp({
               {game.ap}
               <small> AP</small>
             </span>
-            <HeldItems items={encounters.items.filter((item) => item.cityId === game.currentCityId && game.inventory[item.id] === "held").map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa }))} />
+            <HeldItems items={encounters.items.filter((item) => item.cityId === game.currentCityId && game.inventory[item.id] === "held").map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa, iconPath: item.iconPath }))} />
           </div>
           <div className="journey-controls" data-testid="city-progress">
             <button className="journey-progress-button" type="button" aria-label="観光地・発見・戦績を見る" onClick={() => setRecordsOpen(true)}><CityProgressBadge game={game} /></button>
@@ -357,7 +356,7 @@ export function GameApp({
         {!game ? (
           <>
             <div className="intro-art">
-              <CanalScene compact />
+              <CanalScene compact caption="旅の余白 ／ 予定のない午後" />
             </div>
             <section className="paper intro">
               <p className="eyebrow">旅のはじまり</p>
@@ -626,7 +625,6 @@ export function GameApp({
             onStartEpisode={(id) => commit((state) => startEpisode(state, id))}
             onEpilogue={(id) => commit((state) => startCityEpilogue(state, id, game.revision))}
             onChooseDate={(id) => setConfirmation({ kind: "date", id })}
-            onMilestone={(id) => commit((state) => claimTrialMilestone(state, id))}
             onTourism={(id) => commit((state) => {
               const episode = episodes.find((item) => item.landmarkId === id);
               const storyBattle = journeyConfig.storyBattles.find((entry) => battles.find((battle) => battle.id === entry.battleId)?.landmarkId === id);
@@ -720,9 +718,7 @@ export function GameApp({
               : `${selectedDate?.titleJa}を始めますか？`}
           </h2>
           <p className="confirm-text">
-            {selectedUpdatedDate
-              ? "APを使わず、新しくなった会話を一度楽しめます。"
-              : selectedDate?.apCost
+            {selectedDate?.apCost
               ? `${selectedDate.apCost}APを使って、デートを始めます。`
               : "APは使いません。ふたりの時間を始めます。"}
           </p>
@@ -735,7 +731,7 @@ export function GameApp({
               commit((state) => startDate(state, selected.id, nextRomanceRoll));
             }}
           >
-            {!selectedUpdatedDate && selectedDate?.apCost ? "APを使って始める" : "この時間を過ごす"}
+            {selectedDate?.apCost ? "APを使って始める" : "この時間を過ごす"}
           </button>
           <button className="secondary" onClick={() => setConfirmation(null)}>
             選び直す

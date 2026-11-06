@@ -1,0 +1,1085 @@
+{
+  "schemaVersion": 1,
+  "effects": [
+    {
+      "id": "gt_delhi_date_india_gate_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_delhi_date_india_gate_memory"
+    },
+    {
+      "id": "gt_delhi_date_india_gate_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_delhi_date_india_gate_memory"
+    },
+    {
+      "id": "gt_delhi_date_india_gate_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_delhi_date_india_gate_memory"
+    },
+    {
+      "id": "gt_delhi_date_india_gate_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_delhi_date_india_gate_memory"
+    },
+    {
+      "id": "gt_delhi_date_india_gate_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_delhi_date_india_gate_memory"
+    },
+    {
+      "id": "gt_delhi_date_india_gate_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_delhi_date_india_gate_memory"
+    },
+    {
+      "id": "gt_delhi_date_india_gate_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_delhi_date_india_gate_memory"
+    },
+    {
+      "id": "gt_delhi_date_india_gate_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_delhi_date_india_gate_memory"
+    },
+    {
+      "id": "gt_delhi_date_india_gate_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_delhi_date_india_gate_memory"
+    },
+    {
+      "id": "gt_delhi_date_india_gate_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_delhi_date_india_gate_memory"
+    },
+    {
+      "id": "gt_delhi_date_chandni_chowk_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_delhi_date_chandni_chowk_memory"
+    },
+    {
+      "id": "gt_delhi_date_chandni_chowk_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_delhi_date_chandni_chowk_memory"
+    },
+    {
+      "id": "gt_delhi_date_chandni_chowk_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_delhi_date_chandni_chowk_memory"
+    },
+    {
+      "id": "gt_delhi_date_chandni_chowk_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_delhi_date_chandni_chowk_memory"
+    },
+    {
+      "id": "gt_delhi_date_chandni_chowk_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_delhi_date_chandni_chowk_memory"
+    },
+    {
+      "id": "gt_delhi_date_chandni_chowk_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_delhi_date_chandni_chowk_memory"
+    },
+    {
+      "id": "gt_delhi_date_chandni_chowk_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_delhi_date_chandni_chowk_memory"
+    },
+    {
+      "id": "gt_delhi_date_chandni_chowk_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_delhi_date_chandni_chowk_memory"
+    },
+    {
+      "id": "gt_delhi_date_chandni_chowk_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_delhi_date_chandni_chowk_memory"
+    },
+    {
+      "id": "gt_delhi_date_chandni_chowk_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_delhi_date_chandni_chowk_memory"
+    },
+    {
+      "id": "gt_delhi_date_lodhi_garden_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_delhi_date_lodhi_garden_memory"
+    },
+    {
+      "id": "gt_delhi_date_lodhi_garden_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_delhi_date_lodhi_garden_memory"
+    },
+    {
+      "id": "gt_delhi_date_lodhi_garden_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_delhi_date_lodhi_garden_memory"
+    },
+    {
+      "id": "gt_delhi_date_lodhi_garden_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_delhi_date_lodhi_garden_memory"
+    },
+    {
+      "id": "gt_delhi_date_lodhi_garden_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_delhi_date_lodhi_garden_memory"
+    },
+    {
+      "id": "gt_delhi_date_lodhi_garden_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_delhi_date_lodhi_garden_memory"
+    },
+    {
+      "id": "gt_delhi_date_lodhi_garden_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_delhi_date_lodhi_garden_memory"
+    },
+    {
+      "id": "gt_delhi_date_lodhi_garden_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_delhi_date_lodhi_garden_memory"
+    },
+    {
+      "id": "gt_delhi_date_lodhi_garden_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_delhi_date_lodhi_garden_memory"
+    },
+    {
+      "id": "gt_delhi_date_lodhi_garden_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_delhi_date_lodhi_garden_memory"
+    },
+    {
+      "id": "gt_delhi_date_agrasen_baoli_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_delhi_date_agrasen_baoli_memory"
+    },
+    {
+      "id": "gt_delhi_date_agrasen_baoli_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_delhi_date_agrasen_baoli_memory"
+    },
+    {
+      "id": "gt_delhi_date_agrasen_baoli_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_delhi_date_agrasen_baoli_memory"
+    },
+    {
+      "id": "gt_delhi_date_agrasen_baoli_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_delhi_date_agrasen_baoli_memory"
+    },
+    {
+      "id": "gt_delhi_date_agrasen_baoli_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_delhi_date_agrasen_baoli_memory"
+    },
+    {
+      "id": "gt_delhi_date_agrasen_baoli_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_delhi_date_agrasen_baoli_memory"
+    },
+    {
+      "id": "gt_delhi_date_agrasen_baoli_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_delhi_date_agrasen_baoli_memory"
+    },
+    {
+      "id": "gt_delhi_date_agrasen_baoli_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_delhi_date_agrasen_baoli_memory"
+    },
+    {
+      "id": "gt_delhi_date_agrasen_baoli_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_delhi_date_agrasen_baoli_memory"
+    },
+    {
+      "id": "gt_delhi_date_agrasen_baoli_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_delhi_date_agrasen_baoli_memory"
+    },
+    {
+      "id": "gt_delhi_date_lotus_temple_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_delhi_date_lotus_temple_memory"
+    },
+    {
+      "id": "gt_delhi_date_lotus_temple_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_delhi_date_lotus_temple_memory"
+    },
+    {
+      "id": "gt_delhi_date_lotus_temple_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_delhi_date_lotus_temple_memory"
+    },
+    {
+      "id": "gt_delhi_date_lotus_temple_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_delhi_date_lotus_temple_memory"
+    },
+    {
+      "id": "gt_delhi_date_lotus_temple_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_delhi_date_lotus_temple_memory"
+    },
+    {
+      "id": "gt_delhi_date_lotus_temple_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_delhi_date_lotus_temple_memory"
+    },
+    {
+      "id": "gt_delhi_date_lotus_temple_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_delhi_date_lotus_temple_memory"
+    },
+    {
+      "id": "gt_delhi_date_lotus_temple_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_delhi_date_lotus_temple_memory"
+    },
+    {
+      "id": "gt_delhi_date_lotus_temple_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_delhi_date_lotus_temple_memory"
+    },
+    {
+      "id": "gt_delhi_date_lotus_temple_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_delhi_date_lotus_temple_memory"
+    },
+    {
+      "id": "gt_delhi_date_bangla_sahib_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_delhi_date_bangla_sahib_memory"
+    },
+    {
+      "id": "gt_delhi_date_bangla_sahib_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_delhi_date_bangla_sahib_memory"
+    },
+    {
+      "id": "gt_delhi_date_bangla_sahib_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_delhi_date_bangla_sahib_memory"
+    },
+    {
+      "id": "gt_delhi_date_bangla_sahib_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_delhi_date_bangla_sahib_memory"
+    },
+    {
+      "id": "gt_delhi_date_bangla_sahib_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_delhi_date_bangla_sahib_memory"
+    },
+    {
+      "id": "gt_delhi_date_bangla_sahib_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_delhi_date_bangla_sahib_memory"
+    },
+    {
+      "id": "gt_delhi_date_bangla_sahib_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_delhi_date_bangla_sahib_memory"
+    },
+    {
+      "id": "gt_delhi_date_bangla_sahib_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_delhi_date_bangla_sahib_memory"
+    },
+    {
+      "id": "gt_delhi_date_bangla_sahib_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_delhi_date_bangla_sahib_memory"
+    },
+    {
+      "id": "gt_delhi_date_bangla_sahib_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_delhi_date_bangla_sahib_memory"
+    },
+    {
+      "id": "gt_agra_date_mehtab_bagh_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_agra_date_mehtab_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_mehtab_bagh_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_agra_date_mehtab_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_mehtab_bagh_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_agra_date_mehtab_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_mehtab_bagh_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_agra_date_mehtab_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_mehtab_bagh_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_agra_date_mehtab_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_mehtab_bagh_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_agra_date_mehtab_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_mehtab_bagh_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_agra_date_mehtab_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_mehtab_bagh_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_agra_date_mehtab_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_mehtab_bagh_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_agra_date_mehtab_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_mehtab_bagh_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_agra_date_mehtab_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_akbar_tomb_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_agra_date_akbar_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_akbar_tomb_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_agra_date_akbar_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_akbar_tomb_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_agra_date_akbar_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_akbar_tomb_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_agra_date_akbar_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_akbar_tomb_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_agra_date_akbar_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_akbar_tomb_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_agra_date_akbar_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_akbar_tomb_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_agra_date_akbar_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_akbar_tomb_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_agra_date_akbar_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_akbar_tomb_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_agra_date_akbar_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_akbar_tomb_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_agra_date_akbar_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_ram_bagh_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_agra_date_ram_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_ram_bagh_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_agra_date_ram_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_ram_bagh_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_agra_date_ram_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_ram_bagh_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_agra_date_ram_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_ram_bagh_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_agra_date_ram_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_ram_bagh_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_agra_date_ram_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_ram_bagh_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_agra_date_ram_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_ram_bagh_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_agra_date_ram_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_ram_bagh_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_agra_date_ram_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_ram_bagh_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_agra_date_ram_bagh_memory"
+    },
+    {
+      "id": "gt_agra_date_chini_rauza_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_agra_date_chini_rauza_memory"
+    },
+    {
+      "id": "gt_agra_date_chini_rauza_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_agra_date_chini_rauza_memory"
+    },
+    {
+      "id": "gt_agra_date_chini_rauza_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_agra_date_chini_rauza_memory"
+    },
+    {
+      "id": "gt_agra_date_chini_rauza_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_agra_date_chini_rauza_memory"
+    },
+    {
+      "id": "gt_agra_date_chini_rauza_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_agra_date_chini_rauza_memory"
+    },
+    {
+      "id": "gt_agra_date_chini_rauza_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_agra_date_chini_rauza_memory"
+    },
+    {
+      "id": "gt_agra_date_chini_rauza_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_agra_date_chini_rauza_memory"
+    },
+    {
+      "id": "gt_agra_date_chini_rauza_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_agra_date_chini_rauza_memory"
+    },
+    {
+      "id": "gt_agra_date_chini_rauza_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_agra_date_chini_rauza_memory"
+    },
+    {
+      "id": "gt_agra_date_chini_rauza_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_agra_date_chini_rauza_memory"
+    },
+    {
+      "id": "gt_agra_date_mariam_tomb_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_agra_date_mariam_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_mariam_tomb_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_agra_date_mariam_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_mariam_tomb_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_agra_date_mariam_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_mariam_tomb_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_agra_date_mariam_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_mariam_tomb_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_agra_date_mariam_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_mariam_tomb_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_agra_date_mariam_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_mariam_tomb_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_agra_date_mariam_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_mariam_tomb_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_agra_date_mariam_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_mariam_tomb_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_agra_date_mariam_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_mariam_tomb_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_agra_date_mariam_tomb_memory"
+    },
+    {
+      "id": "gt_agra_date_guru_ka_taal_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_agra_date_guru_ka_taal_memory"
+    },
+    {
+      "id": "gt_agra_date_guru_ka_taal_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_agra_date_guru_ka_taal_memory"
+    },
+    {
+      "id": "gt_agra_date_guru_ka_taal_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_agra_date_guru_ka_taal_memory"
+    },
+    {
+      "id": "gt_agra_date_guru_ka_taal_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_agra_date_guru_ka_taal_memory"
+    },
+    {
+      "id": "gt_agra_date_guru_ka_taal_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_agra_date_guru_ka_taal_memory"
+    },
+    {
+      "id": "gt_agra_date_guru_ka_taal_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_agra_date_guru_ka_taal_memory"
+    },
+    {
+      "id": "gt_agra_date_guru_ka_taal_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_agra_date_guru_ka_taal_memory"
+    },
+    {
+      "id": "gt_agra_date_guru_ka_taal_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_agra_date_guru_ka_taal_memory"
+    },
+    {
+      "id": "gt_agra_date_guru_ka_taal_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_agra_date_guru_ka_taal_memory"
+    },
+    {
+      "id": "gt_agra_date_guru_ka_taal_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_agra_date_guru_ka_taal_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jal_mahal_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_jaipur_date_jal_mahal_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jal_mahal_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_jaipur_date_jal_mahal_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jal_mahal_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_jaipur_date_jal_mahal_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jal_mahal_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_jaipur_date_jal_mahal_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jal_mahal_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_jaipur_date_jal_mahal_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jal_mahal_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_jaipur_date_jal_mahal_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jal_mahal_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_jaipur_date_jal_mahal_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jal_mahal_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_jaipur_date_jal_mahal_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jal_mahal_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_jaipur_date_jal_mahal_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jal_mahal_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_jaipur_date_jal_mahal_memory"
+    },
+    {
+      "id": "gt_jaipur_date_nahargarh_fort_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_jaipur_date_nahargarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_nahargarh_fort_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_jaipur_date_nahargarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_nahargarh_fort_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_jaipur_date_nahargarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_nahargarh_fort_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_jaipur_date_nahargarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_nahargarh_fort_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_jaipur_date_nahargarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_nahargarh_fort_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_jaipur_date_nahargarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_nahargarh_fort_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_jaipur_date_nahargarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_nahargarh_fort_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_jaipur_date_nahargarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_nahargarh_fort_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_jaipur_date_nahargarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_nahargarh_fort_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_jaipur_date_nahargarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_albert_hall_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_jaipur_date_albert_hall_memory"
+    },
+    {
+      "id": "gt_jaipur_date_albert_hall_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_jaipur_date_albert_hall_memory"
+    },
+    {
+      "id": "gt_jaipur_date_albert_hall_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_jaipur_date_albert_hall_memory"
+    },
+    {
+      "id": "gt_jaipur_date_albert_hall_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_jaipur_date_albert_hall_memory"
+    },
+    {
+      "id": "gt_jaipur_date_albert_hall_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_jaipur_date_albert_hall_memory"
+    },
+    {
+      "id": "gt_jaipur_date_albert_hall_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_jaipur_date_albert_hall_memory"
+    },
+    {
+      "id": "gt_jaipur_date_albert_hall_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_jaipur_date_albert_hall_memory"
+    },
+    {
+      "id": "gt_jaipur_date_albert_hall_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_jaipur_date_albert_hall_memory"
+    },
+    {
+      "id": "gt_jaipur_date_albert_hall_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_jaipur_date_albert_hall_memory"
+    },
+    {
+      "id": "gt_jaipur_date_albert_hall_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_jaipur_date_albert_hall_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jaigarh_fort_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_jaipur_date_jaigarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jaigarh_fort_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_jaipur_date_jaigarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jaigarh_fort_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_jaipur_date_jaigarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jaigarh_fort_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_jaipur_date_jaigarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jaigarh_fort_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_jaipur_date_jaigarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jaigarh_fort_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_jaipur_date_jaigarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jaigarh_fort_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_jaipur_date_jaigarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jaigarh_fort_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_jaipur_date_jaigarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jaigarh_fort_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_jaipur_date_jaigarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_jaigarh_fort_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_jaipur_date_jaigarh_fort_memory"
+    },
+    {
+      "id": "gt_jaipur_date_johari_bazaar_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_jaipur_date_johari_bazaar_memory"
+    },
+    {
+      "id": "gt_jaipur_date_johari_bazaar_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_jaipur_date_johari_bazaar_memory"
+    },
+    {
+      "id": "gt_jaipur_date_johari_bazaar_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_jaipur_date_johari_bazaar_memory"
+    },
+    {
+      "id": "gt_jaipur_date_johari_bazaar_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_jaipur_date_johari_bazaar_memory"
+    },
+    {
+      "id": "gt_jaipur_date_johari_bazaar_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_jaipur_date_johari_bazaar_memory"
+    },
+    {
+      "id": "gt_jaipur_date_johari_bazaar_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_jaipur_date_johari_bazaar_memory"
+    },
+    {
+      "id": "gt_jaipur_date_johari_bazaar_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_jaipur_date_johari_bazaar_memory"
+    },
+    {
+      "id": "gt_jaipur_date_johari_bazaar_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_jaipur_date_johari_bazaar_memory"
+    },
+    {
+      "id": "gt_jaipur_date_johari_bazaar_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_jaipur_date_johari_bazaar_memory"
+    },
+    {
+      "id": "gt_jaipur_date_johari_bazaar_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_jaipur_date_johari_bazaar_memory"
+    },
+    {
+      "id": "gt_jaipur_date_panna_meena_kund_first_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_jaipur_date_panna_meena_kund_memory"
+    },
+    {
+      "id": "gt_jaipur_date_panna_meena_kund_first_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_jaipur_date_panna_meena_kund_memory"
+    },
+    {
+      "id": "gt_jaipur_date_panna_meena_kund_first_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_jaipur_date_panna_meena_kund_memory"
+    },
+    {
+      "id": "gt_jaipur_date_panna_meena_kund_first_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_jaipur_date_panna_meena_kund_memory"
+    },
+    {
+      "id": "gt_jaipur_date_panna_meena_kund_first_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_jaipur_date_panna_meena_kund_memory"
+    },
+    {
+      "id": "gt_jaipur_date_panna_meena_kund_second_attentive",
+      "affectionDelta": 0,
+      "responseProfileId": "attentive",
+      "memoryId": "gt_jaipur_date_panna_meena_kund_memory"
+    },
+    {
+      "id": "gt_jaipur_date_panna_meena_kund_second_playful",
+      "affectionDelta": 0,
+      "responseProfileId": "playful",
+      "memoryId": "gt_jaipur_date_panna_meena_kund_memory"
+    },
+    {
+      "id": "gt_jaipur_date_panna_meena_kund_second_honest",
+      "affectionDelta": 0,
+      "responseProfileId": "honest",
+      "memoryId": "gt_jaipur_date_panna_meena_kund_memory"
+    },
+    {
+      "id": "gt_jaipur_date_panna_meena_kund_second_bold",
+      "affectionDelta": 0,
+      "responseProfileId": "bold",
+      "memoryId": "gt_jaipur_date_panna_meena_kund_memory"
+    },
+    {
+      "id": "gt_jaipur_date_panna_meena_kund_second_provocative",
+      "affectionDelta": 0,
+      "responseProfileId": "provocative",
+      "memoryId": "gt_jaipur_date_panna_meena_kund_memory"
+    }
+  ]
+}

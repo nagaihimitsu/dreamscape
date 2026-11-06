@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "destinations": [
+    {
+      "id": "delhi_india_gate",
+      "cityId": "delhi",
+      "nameJa": "インド門",
+      "nameEn": "India Gate",
+      "descriptionJa": "植民地期に造られた戦没者記念門。現在は首都の公共空間として親しまれる。",
+      "backgroundAssetId": "gt_bg_delhi_india_gate",
+      "facts": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "India Gate",
+          "url": "https://delhitourism.gov.in/tourist_place/india_gate.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "インド門は第一次世界大戦などの戦没者の記憶を刻む戦争記念碑。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_chandni_chowk",
+      "cityId": "delhi",
+      "nameJa": "チャンドニー・チョーク",
+      "nameEn": "Chandni Chowk",
+      "descriptionJa": "17世紀のシャージャハーナーバードに由来し、再整備された現代の歩行者商業空間。",
+      "backgroundAssetId": "gt_bg_delhi_chandni_chowk",
+      "facts": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Chandni Chowk",
+          "url": "https://delhitourism.gov.in/dt/delhi_delicacies/chandni_chowk.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "シャージャハーナーバードの17世紀の市場・通りが現在も商業の中心。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_lodhi_garden",
+      "cityId": "delhi",
+      "nameJa": "ロディ・ガーデン",
+      "nameEn": "Lodhi Gardens",
+      "descriptionJa": "サイイド朝・ロディ朝の廟やモスクを含む近代都市の緑地。",
+      "backgroundAssetId": "gt_bg_delhi_lodhi_garden",
+      "facts": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Lodi Tomb",
+          "url": "https://delhitourism.gov.in/tourist_place/lodi_tomb.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "ロディ庭園にサイイド朝とロディ朝の廟やモスクがある。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_agrasen_baoli",
+      "cityId": "delhi",
+      "nameJa": "アグラセン・キ・バオリ",
+      "nameEn": "Agrasen ki Baoli",
+      "descriptionJa": "階段井戸の機能を持つ遺構。由来に関する伝承と立証された歴史を区別する必要がある。",
+      "backgroundAssetId": "gt_bg_delhi_agrasen_baoli",
+      "facts": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Agrasen ki Baoli",
+          "url": "https://www.delhitourism.gov.in/dt/explore_the_city/agrasen_ki_baoli.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "デリー観光局は階段井戸に103段の踏段があると案内。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_lotus_temple",
+      "cityId": "delhi",
+      "nameJa": "ロータス寺院",
+      "nameEn": "Lotus Temple",
+      "descriptionJa": "バハイ信仰の礼拝堂として1986年完成。多様な信仰の来訪者に開かれる。",
+      "backgroundAssetId": "gt_bg_delhi_lotus_temple",
+      "facts": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Lotus Temple",
+          "url": "https://delhitourism.gov.in/tourist_place/bahai_temple.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "バハイ礼拝堂は信仰を問わず祈り・瞑想のために訪ねられる。"
+        }
+      ]
+    },
+    {
+      "id": "delhi_bangla_sahib",
+      "cityId": "delhi",
+      "nameJa": "グルドワーラ・バングラ・サーヒブ",
+      "nameEn": "Gurdwara Bangla Sahib",
+      "descriptionJa": "第8代シク教グルが滞在した地と伝えられるシク教の礼拝所。",
+      "backgroundAssetId": "gt_bg_delhi_bangla_sahib",
+      "facts": [
+        {
+          "publisher": "Delhi Tourism",
+          "title": "Spiritual Delhi: Bangla Sahib",
+          "url": "https://delhitourism.gov.in/tourist_place/spritual_delhi.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "第8代シク教グルが1664年に滞在した屋敷が礼拝所の由来とされる。"
+        }
+      ]
+    },
+    {
+      "id": "agra_mehtab_bagh",
+      "cityId": "agra",
+      "nameJa": "メヘターブ・バーグ",
+      "nameEn": "Mehtab Bagh",
+      "descriptionJa": "ヤムナー川をはさんでタージ・マハルの向かいにある庭園。",
+      "backgroundAssetId": "gt_bg_agra_mehtab_bagh",
+      "facts": [
+        {
+          "publisher": "Agra District Government",
+          "title": "Mehtab Bagh",
+          "url": "https://agra.nic.in/tourist-place/mehtab-bagh/",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "庭園はタージとヤムナー川を挟んで正面に対応する。"
+        }
+      ]
+    },
+    {
+      "id": "agra_akbar_tomb",
+      "cityId": "agra",
+      "nameJa": "アクバル廟",
+      "nameEn": "Akbar’s Tomb, Sikandra",
+      "descriptionJa": "皇帝アクバル自身が着工し、息子ジャハーンギールが完成させた墓廟。",
+      "backgroundAssetId": "gt_bg_agra_akbar_tomb",
+      "facts": [
+        {
+          "publisher": "Agra District Government",
+          "title": "Akbar Tomb",
+          "url": "https://agra.nic.in/tourist-place/akbars-tomb-sikandra/",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "アクバルが墓の建設を始め、息子ジャハーンギールが完成させた。"
+        }
+      ]
+    },
+    {
+      "id": "agra_ram_bagh",
+      "cityId": "agra",
+      "nameJa": "ラム・バーグ",
+      "nameEn": "Ram Bagh",
+      "descriptionJa": "バーブル期に造営された、インドに残る初期ムガル庭園の一つ。",
+      "backgroundAssetId": "gt_bg_agra_ram_bagh",
+      "facts": [
+        {
+          "publisher": "Agra District Government",
+          "title": "Ram Bagh",
+          "url": "https://agra.nic.in/tourist-place/ram-bagh-bagh-i-gul-afshan/",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "バーブルが1528年頃に造営した早期のムガル式庭園。"
+        }
+      ]
+    },
+    {
+      "id": "agra_chini_rauza",
+      "cityId": "agra",
+      "nameJa": "チーニー・カ・ラウザ",
+      "nameEn": "Chini ka Rauza",
+      "descriptionJa": "詩人・高官アフザル・ハーンの墓廟。ペルシア式釉薬タイルに特色がある。",
+      "backgroundAssetId": "gt_bg_agra_chini_rauza",
+      "facts": [
+        {
+          "publisher": "Agra District Government",
+          "title": "Chini ka Rauza",
+          "url": "https://agra.nic.in/tourist-place/chini-ka-rauza/",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "シャー・ジャハーンの重臣で学者・詩人のアフザル・ハーンの廟。"
+        }
+      ]
+    },
+    {
+      "id": "agra_mariam_tomb",
+      "cityId": "agra",
+      "nameJa": "マリアム・ウッザマーニー廟",
+      "nameEn": "Tomb of Mariam-uz-Zamani",
+      "descriptionJa": "アクバルの王妃、ジャハーンギールの母とされる女性の墓廟。",
+      "backgroundAssetId": "gt_bg_agra_mariam_tomb",
+      "facts": [
+        {
+          "publisher": "Agra District Government",
+          "title": "Tomb of Mariam-uz-Zamani",
+          "url": "https://agra.nic.in/tourist-place/tomb-of-mariam-uz-zamani/",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "マリアム・ウッザマーニーはジャハーンギールの母とされる。"
+        }
+      ]
+    },
+    {
+      "id": "agra_guru_ka_taal",
+      "cityId": "agra",
+      "nameJa": "グル・カ・タール",
+      "nameEn": "Guru ka Taal Gurdwara",
+      "descriptionJa": "シク教第9代グルの逸話と17世紀の水槽に関わる礼拝所。",
+      "backgroundAssetId": "gt_bg_agra_guru_ka_taal",
+      "facts": [
+        {
+          "publisher": "Agra District Government",
+          "title": "Guru ka Taal",
+          "url": "https://agra.nic.in/tourist-place/guru-ka-taal-gurudwara/",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "17世紀の貯水施設と彫刻砂岩の塔が境内に残る。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_jal_mahal",
+      "cityId": "jaipur",
+      "nameJa": "ジャル・マハル",
+      "nameEn": "Jal Mahal",
+      "descriptionJa": "マン・サーガル湖の中央にある宮殿。",
+      "backgroundAssetId": "gt_bg_jaipur_jal_mahal",
+      "facts": [
+        {
+          "publisher": "Rajasthan Tourism",
+          "title": "Jal Mahal",
+          "url": "https://www.tourism.rajasthan.gov.in/content/rajasthan-tourism/en/tourist-destinations/jal-mahal.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "ラージャスターン州観光局は、ジャル・マハルがジャイプールのマン・サーガル湖の中央にある宮殿と説明する。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_nahargarh_fort",
+      "cityId": "jaipur",
+      "nameJa": "ナハルガル城",
+      "nameEn": "Nahargarh Fort",
+      "descriptionJa": "ジャイプール市街を望む丘上の城。",
+      "backgroundAssetId": "gt_bg_jaipur_nahargarh_fort",
+      "facts": [
+        {
+          "publisher": "Rajasthan Tourism",
+          "title": "Nahargarh Fort",
+          "url": "https://www.tourism.rajasthan.gov.in/nahargarh-fort.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "ラージャスターン州観光局は、ナハルガル城がジャイプールを望むアラヴァリ丘陵の尾根上に位置すると説明する。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_albert_hall",
+      "cityId": "jaipur",
+      "nameJa": "アルバート・ホール博物館",
+      "nameEn": "Albert Hall Museum",
+      "descriptionJa": "ラームニワース庭園内の博物館。",
+      "backgroundAssetId": "gt_bg_jaipur_albert_hall",
+      "facts": [
+        {
+          "publisher": "Rajasthan Tourism",
+          "title": "Jaipur: Ram Niwas Garden",
+          "url": "https://www.tourism.rajasthan.gov.in/jaipur.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "ラージャスターン州観光局は、ラームニワース庭園内にアルバート・ホール博物館があると案内する。"
+        },
+        {
+          "publisher": "Rajasthan Tourism",
+          "title": "Jaipur: Albert Hall Museum (Central Museum)",
+          "url": "https://www.tourism.rajasthan.gov.in/jaipur.html",
+          "checkedAt": "2026-11-04",
+          "claimType": "documented_fact",
+          "claimJa": "州観光局のアルバート・ホール紹介は、金属工芸、木工、絨毯、複数の流派による細密画の収蔵展示を案内している。脚本ではこの分類のみを用い、特定作品の名前や描かれた人物・歴史は創作していない。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_jaigarh_fort",
+      "cityId": "jaipur",
+      "nameJa": "ジャイガル城",
+      "nameEn": "Jaigarh Fort",
+      "descriptionJa": "ジャイプールの丘陵にある城。",
+      "backgroundAssetId": "gt_bg_jaipur_jaigarh_fort",
+      "facts": [
+        {
+          "publisher": "Rajasthan Tourism",
+          "title": "Jaipur: Jaigarh Fort",
+          "url": "https://www.tourism.rajasthan.gov.in/jaipur.html",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "ラージャスターン州観光局は、ジャイガル城をジャイプールの丘陵にある城として案内する。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_johari_bazaar",
+      "cityId": "jaipur",
+      "nameJa": "ジョーハリー・バザール",
+      "nameEn": "Johari Bazaar",
+      "descriptionJa": "宝飾品や工芸品を扱う市場。",
+      "backgroundAssetId": "gt_bg_jaipur_johari_bazaar",
+      "facts": [
+        {
+          "publisher": "Jaipur Municipal Corporation",
+          "title": "Main Market: Johari Bazaar",
+          "url": "https://jaipurmc.org/Presentation/Aboutjaipur/MainMarket.aspx",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "地元自治体はジョーハリー・バザールをジュエリーや工芸品の市場として案内。"
+        }
+      ]
+    },
+    {
+      "id": "jaipur_panna_meena_kund",
+      "cityId": "jaipur",
+      "nameJa": "パンナ・ミーナー・クンド",
+      "nameEn": "Panna Meena ka Kund",
+      "descriptionJa": "アンベールにある階段井戸。",
+      "backgroundAssetId": "gt_bg_jaipur_panna_meena_kund",
+      "facts": [
+        {
+          "publisher": "Incredible India",
+          "title": "Panna Meena ka Kund",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/panna-meena-ka-kund",
+          "checkedAt": "2026-11-03",
+          "claimType": "documented_fact",
+          "claimJa": "インド政府観光案内は、パナ・ミーナ・カ・クンドをアンベールの階段井戸として紹介する。"
+        }
+      ]
+    }
+  ]
+}

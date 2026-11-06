@@ -5,14 +5,13 @@ export interface ScopedStorage extends StorageLike {
   physicalKey(key: string): string;
 }
 
-/** Keep the original Milan keys intact; all other journeys get separate slots. */
+/** Every journey keeps its game save, backups and English notes in separate slots. */
 export function journeyStorage(
   base: StorageLike & { removeItem(key: string): void },
   journeyId: string,
 ): ScopedStorage {
   if (!/^[a-z][a-z0-9_]*$/.test(journeyId)) throw new Error("Invalid journey ID");
   const mapKey = (key: string): string => {
-    if (journeyId === "milano") return key;
     const prefix = `dreamscape.journey.${journeyId}`;
     if (key === SAVE_KEY || key.startsWith(`${SAVE_KEY}.backup.`))
       return `${prefix}.save.v1${key.slice(SAVE_KEY.length)}`;

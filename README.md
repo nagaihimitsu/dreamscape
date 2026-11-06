@@ -47,7 +47,7 @@ Debugの進行・学習記録・設定はメモリ内だけで、通常の保存
 
 行き先は同じ場所のイベントをまとめ、徒歩時間順に最大5地点を表示します。5地点に選択可能な未クリアのメイン観光がなければ、5地点目を最寄りの未クリアのメイン観光に差し替えます。複数のイベントがある地点では、場所を選んでから内容を選べます。「ほかの行き先を見る」から残りの地点を選べます。地図は補助で、大きく表示して操作することも、地図を使わずに行き先を選ぶこともできます。昼は9:00〜18:00、夜は18:00〜21:00です。移動と活動で時刻が進み、待機や帰宿・翌朝までの休息も選べます。宿泊にはゲーム内予算を使い、APは消費しません。予算不足時は宿泊費の不足分を補助します。
 
-徒歩所要時間は歩行網からの推計であり、交通時間・料金、架空の滞在先や宿泊費はゲーム内の調整値です。実際の出入口や運行、営業時間を保証しません。出典、確認日、推計方法とゲーム用の簡略化は [ミラノの旅行データ](content/travel/README.md) に記載しています。
+徒歩所要時間は歩行網からの推計であり、交通時間・料金、架空の滞在先や宿泊費はゲーム内の調整値です。実際の出入口や運行、営業時間を保証しません。出典、確認日、推計方法とゲーム用の簡略化は [ミラノの旅行データ](authoring/journeys/milano/research/travel/README.md) に記載しています。
 
 寄り道は条件を満たした観光地で、観察の後に自動的に発生します。ガッレリアでは床の雄牛の近くにいる親子と出会い、英語の返答・行動をA/B/Cから選べます。個別の訳も開け、会話の選択に正解・不正解はありません。完了した観光は再プレイできないため、後から条件を満たした寄り道を体験できない場合があります。
 
@@ -63,13 +63,13 @@ Debugの進行・学習記録・設定はメモリ内だけで、通常の保存
 
 都市内の4観光地は好きな順に訪問できます。すべてを完了すると都市ボスが解放され、成績にかかわらず都市クリアとなります。ボス後のエピローグを読み終えると、デリーからアーグラ、アーグラからジャイプールへ自動で進みます。デートは任意なので、体験したいものはエピローグ読了前に選んでください。最終都市ではクリア後も滞在できます。都市間の地図・交通費・移動時間は設けません。
 
-都市間では予算・AP・関係値・思い出・履歴を維持し、新都市の滞在先で1日目9:00から再開します。都市固有の品物は持ち越さず、入手・使用履歴は残ります。脚本・出典・検証方法は [インド編の制作記録](authoring/drafts/golden-triangle/scenario/README.md)、追加・編集手順は [旅行編共通の制作手順](authoring/JOURNEY_AUTHORING.md) を参照してください。
+都市間では予算・AP・関係値・思い出・履歴を維持し、新都市の滞在先で1日目9:00から再開します。都市固有の品物は持ち越さず、入手・使用履歴は残ります。脚本・出典・検証方法は [インド編の制作記録](authoring/journeys/golden_triangle/drafts/scenario/README.md)、追加・編集手順は [旅行編共通の制作手順](authoring/JOURNEY_AUTHORING.md) を参照してください。
 
 ここでいう実装済み・`available` は、このソースでのビルド登録状態です。サイトへの反映は別途GitHub Pagesへのデプロイが必要です。
 
 ## AP報酬のルール
 
-条件と数値は `content/progression/journey.json` の試験設定です。APの加算はTypeScriptのゲームルール層だけで行います。
+条件と数値は各旅行編の `content/journeys/<旅行編ID>/progression/journey.json` の試験設定です。APの加算はTypeScriptのゲームルール層だけで行います。
 
 | 対象                           | 案内初読了 | バトル初完了 |   初好成績 | エピソード／都市クリア |
 | ------------------------------ | ---------: | -----------: | ---------: | ---------------------: |
@@ -116,9 +116,9 @@ APの獲得量は案内の読了やクイズの成績により変わります。
 
 回答後の「英文を確認する」では、問題・全選択肢・自分の回答・正解・訳を見比べられます。『最後の晩餐』の通常戦3問には、文の組み立て、文法・表現、例文、ヒロインとの短い確認も用意しています。その他の問題は対訳・語彙・観光の正誤解説を利用できます。バトル中は回答済み問題、結果画面は全問を振り返れます。自由時間の「英語ノート」では過去の回答と「あとで復習する」の登録・解除を確認できます。再戦やAPは不要です。
 
-対訳設定・開閉・復習マーク・各バトルの直近の回答は、ゲーム本体とは別の `dreamscape.learning.v1` に保存します。壊れたデータや未知の版は自動上書きせず、別タブで更新されたときは再読込を案内します。問題やバトル内容の指紋が変わった古い回答は現在の問題に重ねません。旧セーブに合計点しかない場合は「以前の回答内容は未記録」と表示し、回答を推測しません。
+対訳設定・開閉・復習マーク・各バトルの直近の回答は、ゲーム本体とは別に旅行編ごとの `dreamscape.journey.<旅行編ID>.learning.v1`（ミラノ編は `dreamscape.journey.milano.learning.v1`）に保存します。壊れたデータや未知の版は自動上書きせず、別タブで更新されたときは再読込を案内します。問題やバトル内容の指紋が変わった古い回答は現在の問題に重ねません。戦績はあるのに英語ノートに回答が記録されていないバトルは「以前の回答内容は未記録」と表示し、回答を推測しません。
 
-対訳は `content/learning/translations.json` に、安定した問題IDと原文・選択肢・正解の照合用スナップショット、日本語訳を置きます。問題を変更すると `npm run content:check` が不一致を報告するので、訳を確認して照合用の原文も更新します。詳しい文法・語法は `content/learning/details.json`、短い学習会話は `content/stories/learning/english.ink` で編集します。語句・質問の対象が英文中にあること、資料URL、会話の話者・行数・効果なしの契約をビルドで確認します。英語の自然さや訳の妥当性は人が確認してください。
+対訳は各旅行編の `content/journeys/<旅行編ID>/learning/translations.json` に、安定した問題IDと原文・選択肢・正解の照合用スナップショット、日本語訳を置きます。問題を変更すると `npm run content:check` が不一致を報告するので、訳を確認して照合用の原文も更新します。詳しい文法・語法は `content/journeys/milano/learning/details.json`、短い学習会話は `content/journeys/milano/stories/learning/sound_english.ink` で編集します。語句・質問の対象が英文中にあること、資料URL、会話の話者・行数・効果なしの契約をビルドで確認します。英語の自然さや訳の妥当性は人が確認してください。
 
 ## 特別対決：矛盾追及・証拠連結
 
@@ -138,7 +138,7 @@ APの獲得量は案内の読了やクイズの成績により変わります。
 
 Bでは劇場の客席の歴史に関する断言を資料で確かめます。Cでは《接吻》の色の組み合わせと、発表当時の事情を結び付けます。
 
-B/C戦の戦績と途中状態は保存します。反論とカットインは表示だけの演出で、再読み込みした途中セーブでは繰り返しません。反論は `content/presentation/reasoning-intros.json` と別Inkで管理し、既存バトルの指紋や敵の主張を変更しません。本編のB/C戦は通常観光と同じく、案内初読了・バトル初完了・初好成績・対決クリアで各1 APを獲得し、所持上限を超える分は保管されます。好感度・告白条件は変更しません。A/B/Cの80/15/5という比率は将来の目安で、出現抽選や数合わせは実装していません。
+B/C戦の戦績と途中状態は保存します。反論とカットインは表示だけの演出で、再読み込みした途中セーブでは繰り返しません。反論は `content/journeys/<旅行編ID>/presentation/reasoning-intros.json` と別Inkで管理し、既存バトルの指紋や敵の主張を変更しません。本編のB/C戦は通常観光と同じく、案内初読了・バトル初完了・初好成績・対決クリアで各1 APを獲得し、所持上限を超える分は保管されます。好感度・告白条件は変更しません。A/B/Cの80/15/5という比率は将来の目安で、出現抽選や数合わせは実装していません。
 
 ## 自由時間とデート
 
@@ -149,8 +149,6 @@ B/C戦の戦績と途中状態は保存します。反論とカットインは�
 ミラノの告白も任意で、成立・保留・拒否があります。拒否後も旅を続けられ、再告白には新たなデートを挟みます。交際後も未体験の通常デートを楽しめます。いずれの旅行編も、告白や交際を都市クリアの条件にしません。
 
 通常デートでは行き先にちなんだ実景と小話を会話で楽しめます。背景上の「画像の出典」から作者・利用条件を確認できます。周辺の街並みを用いた画像は出典欄にその旨を記載し、画像を用意できない場合は中立色で表示します。行き先や出典の追加方法は[制作マニュアル](authoring/CONTENT_GUIDE.md)を参照してください。
-
-彫刻《L.O.V.E.》の旧デートは新規の候補には表示しません。
 
 同じバージョンで進行中のデートは、保存時の脚本と指紋を照合して再開します。
 
@@ -171,7 +169,7 @@ B/C戦の戦績と途中状態は保存します。反論とカットインは�
 
 人物の配置は各人物の `placement`、衣装・ポーズごとの補正は同じポーズの `placement` で設定します。`x`・`bottom`・`width`・`height`・`scale`・`originX`・`originY` を差分間で共有し、画像を歪めずに表示します。既存の `imagePath`、`variants`、敵の `battleCharacters` の設定も使えます。観察用画像と座標は別管理です。
 
-既存の台詞に表情を付ける場合は [`content/presentation/dialogue-expressions.json`](content/presentation/dialogue-expressions.json) に `storyId`・`speaker`・`text`・`emotion` を指定できます。名前などの変数を含まないInk原文の一行を完全一致で登録してください。台詞に既存の `emotion` タグがある場合はその指定を使い、同じ行への重複指定はしません。`npm run content:check` は登録された検証条件の分岐で、話者・台詞の存在や表情ID・タグとの競合を検証します。脚本を変更した際は、未検証の分岐も含めて編集者が表情とタグの対応を確認してください。表情指定は表示だけに使い、保存した会話位置や好感度を変更しません。Ink自体を編集する場合は、途中セーブの指紋に影響する点に注意してください。
+既存の台詞に表情を付ける場合は各旅行編の `presentation/dialogue-expressions.json`（例: [ミラノ編](content/journeys/milano/presentation/dialogue-expressions.json)）に `storyId`・`speaker`・`text`・`emotion` を指定できます。名前などの変数を含まないInk原文の一行を完全一致で登録してください。台詞に既存の `emotion` タグがある場合はその指定を使い、同じ行への重複指定はしません。`npm run content:check` は登録された検証条件の分岐で、話者・台詞の存在や表情ID・タグとの競合を検証します。脚本を変更した際は、未検証の分岐も含めて編集者が表情とタグの対応を確認してください。表情指定は表示だけに使い、保存した会話位置や好感度を変更しません。Ink自体を編集する場合は、途中セーブの指紋に影響する点に注意してください。
 
 `heroine` の `defaultCostume` と `defaultPose` が地域に属さない基本衣装とポーズです。`wardrobe` の `cities`・`countries`・`regions` では、将来の都市から国・地域・標準衣装を指定できます。既存の `milano` → `IT` → `south_europe` → `south_europe_01` 設定は維持していますが、南欧衣装は未納品のため、現在は基本衣装を表示します。個別指定の優先順位は `scenes`、都市、国、地域の標準衣装、基本衣装、仮素材の順です。`scenes` のキーには既存のデートID、バトルID、観光地ID、都市エピローグのエピソードIDを使い、例えば `"milano_cafe_01": { "costume": "south_europe_01", "pose": "standing_01" }` と登録します。未納品の衣装から別の表情だけ別衣装に切り替わることはありません。
 
@@ -179,22 +177,58 @@ B/C戦の戦績と途中状態は保存します。反論とカットインは�
 
 素材の確認は `npm run dev` を起動し、表示されたURLに `?character-preview` を付けて開きます。衣装・ポーズ・表情、明暗背景、台詞枠を切り替え、基準線と見比べながら差分の顔や足元、透過の縁を確認できます。「全体を確認」と「ゲーム中の配置」を切り替えて表示範囲を確認できます。未制作の差分と画像の読み込みエラーは区別して表示します。プレビューは開発サーバー専用で、ゲームのセーブやAPには触れません。
 
-会話用の背景画像は [`content/romance/presentation.json`](content/romance/presentation.json) の各背景に任意の `imagePath`（`public/assets/` 以下のパス）を追加して差し替えます。未登録・読込失敗時は既存の仮背景を表示し、観察用画像には影響しません。会話窓の色・透明度・角丸・余白・文字サイズなどは [`romance-scene.css`](src/features/romance/romance-scene.css) 冒頭の `--vn-*` でまとめて調整できます。背景・人物・テーマ・ウィンドウ表示は進行中のInkやクイズの指紋を変更しません。
+会話用の背景画像は各旅行編の `romance/presentation.json`（例: [ミラノ編](content/journeys/milano/romance/presentation.json)。共通の既定背景 `milano_cafe` は [`content/romance/presentation.json`](content/romance/presentation.json)）の各背景に任意の `imagePath`（配信時の `assets/` 以下のパス。画像の置き場所は下記）を追加して差し替えます。未登録・読込失敗時は既存の仮背景を表示し、観察用画像には影響しません。会話窓の色・透明度・角丸・余白・文字サイズなどは [`romance-scene.css`](src/features/romance/romance-scene.css) 冒頭の `--vn-*` でまとめて調整できます。背景・人物・テーマ・ウィンドウ表示は進行中のInkやクイズの指紋を変更しません。
 
-会話・選択肢・戦闘画面はPlaywrightのChromiumで360×780、430×932、1280×800、横向き780×360を確認しています。長い英文や対訳は縦にスクロールして読めます。実機Safariでは未確認です。
+会話・選択肢・戦闘画面はPlaywrightのChromiumで360×780、430×932、1280×800、横向き780×360を確認しました（現在の自動E2Eは主要機能の動作確認に絞り、画面幅ごとの表示は実画面で確認します）。長い英文や対訳は縦にスクロールして読めます。実機Safariでは未確認です。
 
 スマートフォンの縦画面では会話・戦闘を画面内に収め、長い台詞や対訳だけをその欄の中でスクロールできます。観察では画像の操作とバトルへの入口を近くに配置しています。横向きや高さの小さい画面では、内容を切らないよう必要に応じてページをスクロールします。
 
-通常デートは一度完了すると再選択できず、終了後は自由時間に戻ります。読み込み可能なデータで、完了済みの通常デートに刷新版がある場合は、その新しい会話を一度だけAP不要で楽しめます。関係値・思い出・報酬は追加されず、保留APも変わりません。刷新版を初めて通常プレイした場合は再表示されません。思い出の一覧は表示しませんが、後の会話に使う記録は保存されます。交際状態は保存され、到達後も観光・バトル・未読の都市エピローグ・未体験の通常デートを楽しめます。
+通常デートは一度完了すると再選択できず、終了後は自由時間に戻ります。思い出の一覧は表示しませんが、後の会話に使う記録は保存されます。交際状態は保存され、到達後も観光・バトル・未読の都市エピローグ・未体験の通常デートを楽しめます。
 
-現在の観光クイズの編集上の棚卸しは [編集メモ](authoring/quiz-editorial-review.md)、未採用の小話候補は [下書き](authoring/drafts/) にあります。候補はゲームに読み込まれず、史実の最終確認や公開承認を示すものではありません。
+現在の観光クイズの編集上の棚卸しは [編集メモ](authoring/journeys/milano/quiz-editorial-review.md)、未採用の小話候補は [下書き](authoring/journeys/milano/drafts/) にあります。候補はゲームに読み込まれず、史実の最終確認や公開承認を示すものではありません。
+
+## フォルダ構成
+
+ゲームの仕組み（共通コード・共通データ）と、各旅行編（ミラノ編、インド・ゴールデントライアングル編など）のデータを分けています。旅行編は `content/journeys/<旅行編ID>/` のフォルダ1つで、フォルダを追加して `npm run content:build` を実行すると、コードを変えずに旅行編一覧に加わります。追加手順・統合の規則・IDの付け方は [技術設計](docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順) を参照してください。
+
+```
+content/                          # 共通データ（全旅行編で共有：恋愛の段階・数値、共通デート効果、既定背景、辞書、人物）
+  journeys/<旅行編ID>/            # 旅行編フォルダ（フォルダ名＝旅行編ID）
+    manifest.json                 # 登録（名前・並び順 order・公開状態・都市の順序・通貨・初期値）
+    cities/ travel/               # 都市・都市内の地点と移動
+    stories/**/*.ink quizzes/     # 会話とクイズ
+    battles/ progression/ romance/ tourism/ encounters/ learning/ presentation/  # 各カタログ（必要なものだけ）
+    public/assets/                # その旅行編だけが使う画像
+public/assets/                    # 全旅行編で共有する画像（ヒロイン、演出、共通アイコン）
+authoring/                        # 共通の制作手順とテンプレート
+  journeys/<旅行編ID>/            # 旅行編ごとの下書き・調査記録（ゲームは読み込まない）
+scripts/                          # 生成・検証・共通の制作ツール
+  journeys/<旅行編ID>/            # その旅行編だけの制作ツール
+src/                              # ゲーム本体（React・ゲームルール・保存）
+  content/generated/              # 生成物（Git管理せず、手動編集しない）
+tests/e2e/ tests/fixtures/        # E2Eとテスト用データ（tests/fixtures/journeys/ は自動テスト専用の旅行編）
+```
+
+| コマンド | 内容 |
+| --- | --- |
+| `npm run dev` | コンテンツを生成してから開発サーバーを起動 |
+| `npm run content:build`（`content:check`） | 共通データと全旅行編を検証・統合し、`src/content/generated/` に書き出す |
+| `npm test` | コンテンツを生成してから全単体テスト |
+| `npm run build` | 生成・型検査・本番ビルド（`dist/`） |
+| `npm run verify` | 生成・全単体テスト・型検査・本番ビルドを一度に実行（公開前・大きな変更） |
+| `npm run test:e2e` | 最小構成のE2E（Playwright） |
+| `npm run content:inspect -- <ファイル>` | 1ファイルの形式とInkコンパイルを確認 |
+| `npm run journey:scaffold`・`journey:readiness`・`journey:release`・`journey:transit` | 旅行編へシナリオとクイズを取り込む制作ツール（[手順](authoring/JOURNEY_AUTHORING.md)） |
+| `npm run city:bundle` | 都市単位の作業用JSONで地点・交通・背景などを編集（[手順](authoring/CITY_BUNDLES.md)） |
+
+ゲームは `content/` を直接読まず、`npm run content:build` が書き出す生成物だけを読みます。`src/content/generated/` の `stories.json`・`quizzes.json`（コンパイル済みの会話と出題）、`content/`（統合したデータ）、`public/`（配信する画像）は手動で編集しないでください。Ink・JSON・画像を編集した後は `npm run content:build` を実行します（`dev`・`test`・`build`・`verify` は自動で実行します）。
 
 ## コンテンツ制作の始め方（Phase 8）
 
-[制作マニュアル](authoring/CONTENT_GUIDE.md) と [テンプレート](authoring/templates/) に、観光地・発見・クイズ・A/B/C戦・デート・案内・都市進行の正規JSONとInkの編集例があります。直接編集しても、AIが提案した文章を転記しても、同じ形式と検証を使います。`authoring/drafts/` は必要に応じて使える任意の下書き置き場で、ゲームに読み込まれません。採用は通常のGitレビューで行います。
+[制作マニュアル](authoring/CONTENT_GUIDE.md) と [テンプレート](authoring/templates/) に、観光地・発見・クイズ・A/B/C戦・デート・案内・都市進行の正規JSONとInkの編集例があります。直接編集しても、AIが提案した文章を転記しても、同じ形式と検証を使います。`authoring/journeys/<旅行編ID>/drafts/` は必要に応じて使える任意の下書き置き場で、ゲームに読み込まれません。採用は通常のGitレビューで行います。
 
 ```sh
-npm run content:inspect -- content/quizzes/duomo_B1.json
+npm run content:inspect -- content/journeys/milano/quizzes/sound_duomo_B1.json
 npm run content:inspect -- --type quiz authoring/templates/quiz.json
 npm run content:inspect -- --all
 npm run content:compat
@@ -206,7 +240,7 @@ npm run content:compat
 
 ## 文章・データの編集
 
-会話の編集元は `content/stories/` の各 `.ink` ファイルです。ミラノのデートは、例えば [`sound_cafe_01.ink`](content/stories/milano/sound_cafe_01.ink) にあります。インドの配置は [制作記録の編集元一覧](authoring/drafts/golden-triangle/scenario/README.md#編集元) を参照してください。台詞と選択肢をReactに埋め込まず、Inkに置いています。
+会話の編集元は各旅行編フォルダ `content/journeys/<旅行編ID>/stories/` の `.ink` ファイルです。ストーリーIDは `stories/` からの相対パスです。ミラノのデートは、例えば [`sound_cafe_01.ink`](content/journeys/milano/stories/milano/sound_cafe_01.ink) にあります。インドの配置は [制作記録の編集元一覧](authoring/journeys/golden_triangle/drafts/scenario/README.md#編集元) を参照してください。台詞と選択肢をReactに埋め込まず、Inkに置いています。
 
 ```ink
 # speaker: heroine
@@ -215,23 +249,28 @@ npm run content:compat
 
 名前は `player_name` / `heroine_name` をゲーム状態から渡します。新しい恋愛シナリオでは `player_address`（段階に応じた敬称つき呼称）、`romance_stage`、`memory_callback`（過去の思い出）、`confession_ready` も利用できます。AP・段階・告白条件の計算はTypeScript側で行い、Inkには結果だけを渡します。`* [選択肢]`、`->` の合流で短い分岐を編集します。タグは `speaker`（narrator/heroine/player/enemy）、`background`、`emotion`、`effect` に限定。背景・表情はpresentationに登録、effectはeffect_catalogのIDに限定し、文字列をコードとして実行しません。本文タグとInk公式choice tagsの両方を検証・処理します。
 
-| 編集ファイル                             | 内容                                                                 |
-| ---------------------------------------- | -------------------------------------------------------------------- |
-| `content/stories/**/*.ink`               | 会話、選択肢、リアクション、タグ                                     |
-| `content/romance/date_catalog.json`      | 種別、表示文、AP費用、必要章・履歴、シナリオ参照、選択回数・検証条件 |
-| `content/romance/effect_catalog.json`    | 好感度差分、思い出ID、告白結果（accepted/deferred）                  |
-| `content/romance/progression.json`       | 4段階の閾値・必要履歴・敬称、告白成立条件、思い出の引用              |
-| `content/romance/trial_progression.json` | 試遊専用の有限AP報酬と前提イベント。将来の章報酬とは分離             |
-| `content/romance/presentation.json`      | 背景・表情・思い出・保留案内・エンディングの文章                     |
-| `content/romance/balance.json`           | AP上限・既定名・名前長                                               |
-| `content/progression/journey.json`       | 観光と対決の解放条件・都市フィナーレ・章末の表示文・有限AP報酬条件 |
-| `content/cities/milano.json`             | 都市名・予定観光地・旧章報酬の互換設定                               |
-| `content/battles/catalog.json`           | A/B/Cの形式、敵、クイズ・Ink参照、推理ラウンド、ケース資料・正解証拠 |
-| `content/quizzes/*.json`                 | 通常3問・都市ボス5問、正解ID、語彙、ヒント、正誤解説、難易度、出典   |
-| `content/stories/battles/*.ink`          | 日本語の敵の台詞・正誤反応・勝敗別の結末・ヒロインの余韻             |
-| `content/tourism/catalog.json`           | 観光地・画像の出典と権利情報・発見範囲・説明・史実とクイズの参照     |
-| `content/stories/tourism/*.ink`          | ヒロインの短い観光案内                                               |
-| `public/assets/tourism/`                 | 同梱する資料画像。外部サイトへの画像直リンクは使用しない             |
+`<旅行編>` は `content/journeys/<旅行編ID>/`（例: `content/journeys/milano/`）、`<共通>` は `content/` 直下の共通データです。
+
+| 編集ファイル                                     | 内容                                                                 |
+| ------------------------------------------------ | -------------------------------------------------------------------- |
+| `<旅行編>/stories/**/*.ink`                      | 会話、選択肢、リアクション、タグ                                     |
+| `<旅行編>/romance/date_catalog.json`             | 種別、表示文、AP費用、必要章・履歴、シナリオ参照、選択回数・検証条件 |
+| `<旅行編>/romance/effect_catalog.json`           | 好感度差分、思い出ID、告白結果（accepted/deferred）。共通デート効果は `<共通>` |
+| `<共通>/romance/progression.json`                | 4段階の閾値・必要履歴・敬称、告白成立条件（思い出の引用は `<旅行編>`） |
+| `<旅行編>/romance/presentation.json`             | 背景・思い出。表情・保留案内・エンディングの文章と既定背景は `<共通>` |
+| `<共通>/romance/balance.json`                    | AP上限・既定名・名前長                                               |
+| `<旅行編>/progression/journey.json`              | 観光と対決の解放条件・都市フィナーレ・章末の表示文・有限AP報酬条件 |
+| `<旅行編>/cities/<都市ID>.json`                  | 都市名・予定観光地・初回クリア報酬（`firstClearReward`）             |
+| `<旅行編>/battles/catalog.json`                  | A/B/Cの形式、敵、クイズ・Ink参照、推理ラウンド、ケース資料・正解証拠 |
+| `<旅行編>/quizzes/*.json`                        | 通常3問・都市ボス5問、正解ID、語彙、ヒント、正誤解説、難易度、出典   |
+| `<旅行編>/stories/battles/*.ink`                 | 日本語の敵の台詞・正誤反応・勝敗別の結末・ヒロインの余韻             |
+| `<旅行編>/tourism/catalog.json`                  | 観光地・画像の出典と権利情報・発見範囲・説明・史実とクイズの参照     |
+| `<旅行編>/stories/tourism/*.ink`                 | ヒロインの短い観光案内                                               |
+| `<旅行編>/public/assets/tourism/`                | 同梱する資料画像。外部サイトへの画像直リンクは使用しない             |
+
+各旅行編の都市・移動・クイズ・Ink と各カタログの該当項目は、同じ相対パスで `content/journeys/<旅行編ID>/` 以下に置き、`npm run content:build` が `content/` 直下の共通データと統合します。旅行編フォルダの項目は自分の都市だけを扱い、参照先は同じ旅行編か共通データに限ります。共通データには都市・移動・Ink・クイズや旅行編専用のカタログを置けません。
+
+画像は、旅行編だけが使うもの（観光写真・デート背景・その旅行編の品物アイコン）を `content/journeys/<旅行編ID>/public/assets/` に、全旅行編で共有するもの（ヒロイン・演出・共通アイコン）をリポジトリ直下の `public/assets/` に置きます。データには `public/` を除いた配信時のパス（例: `assets/tourism/india/agra_taj_mahal.jpg`）を書き、置き場所によって変わりません。`npm run content:build` がこれらを `src/content/generated/public/`（生成物。Git管理せず、手動編集しない）へまとめ、開発サーバーとビルドはこのフォルダを配信します。同じパスの画像を二か所に置くとビルドが失敗します。画像を追加・差し替えた後も `npm run content:build` を実行してください。
 
 新しい通常デートは、InkとJSON定義・効果を追加するだけで既存のメニューと会話画面に表示されます。`kind` は `normal` / `special` / `confession` / `reassurance`。通常は `choiceCount: 2`、無料イベントは必要に応じて0〜2回の3択を設定できます。`effectCount` は各経路で期待する効果数です。`actionLabelJa` もJSONにあり、Reactにイベント固有の文言を追加する必要はありません。
 
@@ -245,11 +284,13 @@ npm run content:check
 
 `dev` 起動前、`test` 前、`build` 内で必ずコンパイル・検証します。開発サーバー起動中にInkを改稿したら別ターミナルで `npm run content:build` を実行してください。生成JSON変更をViteが反映します。**Ink原稿そのものの自動監視はありません。**
 
+ゲームが読むJSONは、`content/` を検証・統合して `npm run content:build` が書き出す `src/content/generated/content/`（生成物。手動編集しない）です。`content/` のJSONを編集した後も、Inkと同様に `npm run content:build` を実行してください。
+
 検証はJSONスキーマ、重複ID、章・背景・シナリオ・思い出参照、許可タグ、前提イベントの循環、段階設定、報酬ID重複、シナリオごとの選択数・効果数・告白結果を確認します。壊れたInk・参照切れ・未定義effect・不正JSONはビルド失敗になります。旧 `last_supper_B1.sample.json` は参考サンプルの検証だけに使用し、出題しません。
 
 ### クイズ・敵シナリオの編集
 
-新しい通常バトルは、3問入りクイズJSON・Inkを用意し、`content/battles/catalog.json` に登録します。既存の画面を直接編集する必要はありません。クイズの `englishLevel` は A2/B1/B2 を表現できます。ミラノは7セット（通常4本、B/C各1本、都市ボス1本）、インドは各都市5セット（通常4本、都市ボス1本）です。各問の `difficulty` は easy/medium/hard。選択肢IDと正解IDを一致させ、正解位置に偏りがないか確認してください。
+新しい通常バトルは、3問入りクイズJSON・Inkを用意し、`content/journeys/<旅行編ID>/battles/catalog.json` に登録します。既存の画面を直接編集する必要はありません。クイズの `englishLevel` は A2/B1/B2 を表現できます。ミラノは7セット（通常4本、B/C各1本、都市ボス1本）、インドは各都市5セット（通常4本、都市ボス1本）です。各問の `difficulty` は easy/medium/hard。選択肢IDと正解IDを一致させ、正解位置に偏りがないか確認してください。
 
 出典は `sources` に公式資料のURL・発行元・タイトル・確認日・根拠文を保存します。`claimType` は documented_fact / interpretation / legend で区別し、学説は断定せず根拠文に明記します。今回は美術館の公式解説 [A powerful theatrical machine](https://cenacolovinciano.org/en/story/a-powerful-theatrical-machine/) と [Backstage](https://cenacolovinciano.org/en/museum/backstage/) を参照しています。プレイヤーには解答後に根拠リンクを表示し、出題前に解説を見せません。
 
@@ -268,11 +309,11 @@ Inkには `battle_scene`（catalogのシーン名）、`answer_correct`（直前
 
 推理の結論は、同じ `roundIndex` のクイズの `correctOptionId` で指定します。証拠の選択と英語の採点は独立しており、証拠だけで3択に自動回答しません。追加シーンも既存の `battle_scene` で分岐し、`-> END` で閉じます。主張は帳面にも表示されるため、短い日本語にしてください。台詞はInk、証拠・条件はJSON、判定・保存はTypeScript、入力と描画はReactです。
 
-ビルド時に形式と推理種別、証拠枚数・重複・正解の包含、証拠IDと観光地の一致、ラウンド範囲、シーンIDの重複と実行可能性を検証します。正解証拠と結論が論理的に一意かは出典と脚本も照合してください。本編への配置は `content/progression/journey.json` の `storyBattles` に、対決ID、前後のエピソードID、案内文とボタン名を指定します。B/C戦績を完了記録に使い、観光エピソードや報酬を重複登録しません。
+ビルド時に形式と推理種別、証拠枚数・重複・正解の包含、証拠IDと観光地の一致、ラウンド範囲、シーンIDの重複と実行可能性を検証します。正解証拠と結論が論理的に一意かは出典と脚本も照合してください。本編への配置は `content/journeys/<旅行編ID>/progression/journey.json` の `storyBattles` に、対決ID、前後のエピソードID、案内文とボタン名を指定します。B/C戦績を完了記録に使い、観光エピソードや報酬を重複登録しません。
 
 ### 観光地・発見ポイント・画像の編集
 
-`content/tourism/catalog.json` の `landmarks` に観光地を、`assets` に画像を、`clues` に発見内容を登録します。観光地は都市ID、日本語・英語名、画像アセットID、案内InkのID、既存バトルID、手がかりID一覧を持ちます。追加には都市の `landmarkIdsPlanned` と対応するバトル定義も登録します。React画面の修正は不要です。
+`content/journeys/<旅行編ID>/tourism/catalog.json` の `landmarks` に観光地を、`assets` に画像を、`clues` に発見内容を登録します。観光地は都市ID、日本語・英語名、画像アセットID、案内InkのID、既存バトルID、手がかりID一覧を持ちます。追加には都市の `landmarkIdsPlanned` と対応するバトル定義も登録します。React画面の修正は不要です。
 
 `clues[].region` は**画像全体に対する0〜1の相対座標**で、左上の `x` / `y` と `width` / `height` を指定します。画面のpx値は書きません。`kind: "hotspot"` は領域必須、`kind: "document"` は `region: null` とし、技法など画像から直接観察できない知識を資料カードにします。`factId` は安定ID、`relatedQuestionIds` は既存クイズの問題IDです。説明はJSON、人物の台詞はInkに分けます。出典の `claimType` は事実・解釈・学説・伝承を区別し、画面にも区分と根拠を表示します。
 
@@ -293,11 +334,11 @@ Inkには `battle_scene`（catalogのシーン名）、`answer_correct`（直前
 
 ### エピソード・報酬の編集
 
-`content/progression/journey.json` の `episodes` が観光地・バトル・解放条件を結びます。`entryEpisodeId` は互換用の既定エピソードであり、旅行開始時の選択を限定しません。`requiredEpisodeIds` の循環や参照切れを検証します。通常観光は `kind: "episode"`。都市ボスは `kind: "city_finale"`、`landmarkId: null` の独立したフィナーレです。ミラノでは同都市の4観光地と2つの特殊戦、インドでは各都市の4観光地が前提です。架空の5番目の観光地を作りません。
+`content/journeys/<旅行編ID>/progression/journey.json` の `episodes` が観光地・バトル・解放条件を結びます。各都市の最初のエピソードは前提なしで始まり、旅行開始時の選択を限定しません。`requiredEpisodeIds` の循環や参照切れを検証します。通常観光は `kind: "episode"`。都市ボスは `kind: "city_finale"`、`landmarkId: null` の独立したフィナーレです。ミラノでは同都市の4観光地と2つの特殊戦、インドでは各都市の4観光地が前提です。架空の5番目の観光地を作りません。
 
 都市ボスのバトル・クイズも `scope: "city_finale"` と都市IDを指定し、`landmarkId: null` にします。クイズは5問、中間シーンは4つ。通常戦の3問・中間2つは維持します。得点上限・ラウンド・結果・保存の整合性は、登録された問題数に照らして判定します。
 
-報酬の条件は `guide_read` / `battle_complete` / `battle_score` / `episode_clear` / `city_clear`。対象は通常の `episodeId` または特殊戦の `battleId` のどちらか一方を指定します。特殊戦の `episode_clear` はその対決の初完了を条件とし、観光エピソード数や都市のクリア条件は増やしません。`minScore` は好成績報酬だけに指定します。特殊戦の既存 `completionReward` は `battle_complete` として共通の報酬処理で扱います。IDは保存に使うため、公開後に変更しないでください。旧 `chapter_milano_first_clear` は『最後の晩餐』だけの互換報酬として保持し、都市クリアのIDは別にします。章末の短い地の文はこのJSON、人物の台詞はInkに置きます。
+報酬の条件は `guide_read` / `battle_complete` / `battle_score` / `episode_clear` / `city_clear`。対象は通常の `episodeId` または特殊戦の `battleId` のどちらか一方を指定します。特殊戦の `episode_clear` はその対決の初完了を条件とし、観光エピソード数や都市のクリア条件は増やしません。`minScore` は好成績報酬だけに指定します。特殊戦の既存 `completionReward` は `battle_complete` として共通の報酬処理で扱います。IDは保存に使うため、公開後に変更しないでください。ミラノの `firstClearReward`（`chapter_milano_first_clear`、4AP）は『最後の晩餐』の `episode_clear` 報酬で、都市クリアのIDとは別です。章末の短い地の文はこのJSON、人物の台詞はInkに置きます。
 
 フィナーレの `epilogueStoryId` は都市ごとに設定します（ミラノは `milano/sound_epilogue`）。Inkに名前・呼称・`romance_stage`・`ending_reached` を渡し、恋愛効果や選択肢は許可しません。デート間の固定順序はなく、実体験だけを思い出として参照します。都市クリアと交際状態は別々に記録します。
 
@@ -307,24 +348,24 @@ Inkには `battle_scene`（catalogのシーン名）、`answer_correct`（直前
 - `src/domain/game.ts`: デート可否・AP消費・恋愛の選択効果・思い出と告白の進行。
 - `src/domain/battle.ts`: 採点・ラウンド・勝敗・戦績、証拠選択・追及・組み合わせ。通常戦の決着時に共通の章進行処理を呼ぶ。
 - `src/domain/tourism.ts`: 案内・訪問・発見・バトルとの往復。案内読了時に共通の報酬処理へ通知する。
-- `src/domain/chapter.ts`: エピソードと特殊戦の解放、都市完了、自由時間、既存章IDとの互換性。
+- `src/domain/chapter.ts`: エピソードと特殊戦の解放、都市完了、自由時間、デート解放に使う章の記録。
 - `src/domain/travel.ts` / `src/domain/travel-game.ts`: 旅行の事前計算と、現在地・時刻・支払いの状態更新。
 - `src/domain/epilogue.ts`: 効果のない都市の到着会話とエピローグの開始・途中保存・読了。
 - `src/domain/rewards.ts`: 一度限りのAP獲得、上限を超えた残額、結果画面の報酬記録。
 - `src/features/tourism/viewport.ts`: 画像座標・拡大・移動範囲の計算。
 - `src/story/`: 公式 `Continue` / `currentChoices` / `ChooseChoiceIndex` とstate JSONを包むアダプタ。
 - `src/persistence/`: localStorageアダプタ・保存データ検証・バックアップ。
-- `src/content/` / `scripts/`: データ契約・許可タグ・ビルド時検証。
+- `src/content/` / `scripts/`: データ契約・許可タグ・ビルド時検証。`scripts/journeys/<旅行編ID>/` はその旅行編だけの制作ツール（例：インド編の `india:check`）で、共通のコードとツールからは読み込みません。
 
-ミラノの保存キーは旧版と同じ `dreamscape.save.v1`、インドは `dreamscape.journey.golden_triangle.save.v1` です。旅行編ごとにゲーム進行と英語ノートを分離し、データ内の `schemaVersion` は **12** を使います。名前・AP・関係状態・思い出・デート履歴・告白と交際状態、進行中のInk、バトル回答と戦績、観光と発見、現在都市、旅行の現在地・日数・時刻と進行中の活動を保持します。同一バージョン内のデート途中データは、脚本と指紋を照合して再開します。新しい恋愛イベントは開始時に保存した乱数から関係状態に応じた反応を決めます。通常デートを選べず関係を築き直す必要がある場合は、AP不要の短い再交流を利用できます。告白の成否は乱数で変わりません。進行中の確率デートは開始時点のプロフィールを保存し、再開後も同じ設定を使います。`completedEpisodeIds`、`completedCityIds`、`completedGuideIds`、`pendingApRewards`、`battleRewardReceipt` も維持します。
+保存キーは旅行編ごとに `dreamscape.journey.<旅行編ID>.save.v1` です（ミラノは `dreamscape.journey.milano.save.v1`、インドは `dreamscape.journey.golden_triangle.save.v1`）。旅行編ごとにゲーム進行と英語ノートを分離し、データ内の `schemaVersion` は **13** を使います。名前・AP・関係状態・思い出・デート履歴・告白と交際状態、進行中のInk、バトル回答と戦績、観光と発見、現在都市、旅行の現在地・日数・時刻と進行中の活動を保持します。同一バージョン内のデート途中データは、脚本と指紋を照合して再開します。新しい恋愛イベントは開始時に保存した乱数から関係状態に応じた反応を決めます。通常デートを選べず関係を築き直す必要がある場合は、AP不要の短い再交流を利用できます。告白の成否は乱数で変わりません。進行中の確率デートは開始時点のプロフィールを保存し、再開後も同じ設定を使います。`completedEpisodeIds`、`completedCityIds`、`completedGuideIds`、`pendingApRewards`、`battleRewardReceipt` も維持します。
 
-ゲーム進行の自動保存は設定で切り替えられます。オフの間は進行をメモリに保持し、「セーブ」を押した時点で保存します。未保存の進行がある状態でのロードやブラウザ離脱には確認が出ます。保存先は旅行編ごとに1枠で、他のタブで更新されていた場合は上書きを拒否します。インド編はWeb Locksで同じ旅行編の複数タブ同時編集を防ぎます。英語ノートと表示設定はゲーム進行とは別に保存されます。
+ゲーム進行の自動保存は設定で切り替えられます。オフの間は進行をメモリに保持し、「セーブ」を押した時点で保存します。未保存の進行がある状態でのロードやブラウザ離脱には確認が出ます。保存先は旅行編ごとに1枠で、他のタブで更新されていた場合は上書きを拒否します。各旅行編はWeb Locksで同じ旅行編の複数タブ同時編集を防ぎます。英語ノートと表示設定はゲーム進行とは別に保存されます。
 
 Phase 6では `activeBattle.reasoning` に主張のシーンID、選択中・提出済みの証拠、追及済みか、推理の状態を保存します。通常戦では `null`。推理中も同じInkの実行位置を保存し、誤った証拠への反応・追及の途中・英語回答の前後から再開できます。選択と提出はリビジョンを検証し、連打で二重採点しません。特殊戦の指紋には証拠データも含め、資料の意味が変わったセーブを勝手に再判定しません。
 
-`completedChapters: ["milano"]` は、既存デートの解放に使う互換用の記録です。最初の観光エピソード完了でもこのトークンを記録しますが、旧4APの受給や都市全体のクリアを意味しません。各観光地・フィナーレは `completedEpisodeIds`、都市全体は `completedCityIds` に分けます。ミラノ都市クリアには4観光地、2特殊戦、ボスの完了が必要です。
+`completedChapters: ["milano"]` は、デートの解放条件に使う章の記録です。章IDは都市ID（エピソードの `cityId`）と同じで、その都市の最初の観光エピソード完了で記録しますが、都市全体のクリアを意味しません。各観光地・フィナーレは `completedEpisodeIds`、都市全体は `completedCityIds` に分けます。ミラノ都市クリアには4観光地、2特殊戦、ボスの完了が必要です。
 
-開発中は、過去のセーブが更新後も利用できることや自動移行を保証しません。**v1〜v11のゲームセーブは現在の形式へ自動移行されず、読み込めません。** 同一バージョン内では有効なセーブの保存・再開を維持します。安全に読めないデータは自動消去・上書きせず、内容を案内して利用者が消去を選べます。一般公開時には互換性方針を改めて検討します。
+開発中は、過去のセーブが更新後も利用できることや自動移行を保証しません。**v1〜v12のゲームセーブは現在の形式へ自動移行されず、読み込めません。** 以前のミラノ編の保存キー `dreamscape.save.v1` / `dreamscape.learning.v1` は読み込みも消去もしません。同一バージョン内では有効なセーブの保存・再開を維持します。安全に読めないデータは自動消去・上書きせず、内容を案内して利用者が消去を選べます。一般公開時には互換性方針を改めて検討します。
 
 交流中の選択、支払い、所持状態、抽選結果と抽選時の設定は保存され、再読込や古いタブからの操作で二重に適用しません。破損、未知の新しい版、保存領域の読込失敗と、判別できる対応外の旧版は区別し、いずれも自動消去しません。
 
@@ -334,15 +375,15 @@ Phase 6では `activeBattle.reasoning` に主張のシーンID、選択中・提
 
 Phase 2では解放済みイベントID、告白の保留/成功、交際エンディングの到達を保持します。成立の思い出とエンディングは告白を読み終えた時点で一緒に確定するため、成功反応の途中で更新しても欠落・二重付与しません。古いタブからの上書きも検出してロードを案内します。
 
-破損・未知バージョン・不整合な保存は自動上書きしません。案内画面から明示的に新しく始める場合に限り、元データを `dreamscape.save.v1.backup.<時刻>` に退避します。他アプリの保存データは削除しません。シナリオ更新で進行中のInkとの互換性が失われた場合も元データを保護します。バトルでは問題・正解・シナリオの定義を含む指紋を照合し、更新前の回答を新しい問題で勝手に採点し直しません。観光画像の交換だけでは案内の指紋は変わりません。任意に改稿したInkの実行位置を移す機能はありません。改稿確認には上記のDebugモードまたは別ブラウザプロファイルを使うと既存の旅を残せます。保存は端末・ブラウザ・URLのオリジンごとです。
+破損・未知バージョン・不整合な保存は自動上書きしません。案内画面から明示的に新しく始める場合に限り、元データを `dreamscape.journey.<旅行編ID>.save.v1.backup.<時刻>` に退避します。他アプリの保存データは削除しません。シナリオ更新で進行中のInkとの互換性が失われた場合も元データを保護します。バトルでは問題・正解・シナリオの定義を含む指紋を照合し、更新前の回答を新しい問題で勝手に採点し直しません。観光画像の交換だけでは案内の指紋は変わりません。任意に改稿したInkの実行位置を移す機能はありません。改稿確認には上記のDebugモードまたは別ブラウザプロファイルを使うと既存の旅を残せます。保存は端末・ブラウザ・URLのオリジンごとです。
 
 ## 検証
 
-変更の影響に応じた対象テスト、実画面確認、ログの確認手順は [開発時の確認](docs/10_DEVELOPMENT_CHECKS.md) を参照してください。公開前や大きな変更は `npm run verify` でコンテンツ生成・全単体テスト・型検査・ビルドをまとめて行い、必要なE2Eと実画面も確認します。Playwrightを初めて使う場合は `npx playwright install chromium` を実行してください。
+変更の影響に応じた対象テスト、実画面確認、ログの確認手順は [開発時の確認](docs/10_DEVELOPMENT_CHECKS.md) を参照してください。公開前や大きな変更は `npm run verify` でコンテンツ生成・全単体テスト・型検査・ビルドをまとめて行い、E2E一式（`npm run test:e2e`）と実画面も確認します。Playwrightを初めて使う場合は `npx playwright install chromium` を実行してください。
 
 `npm test` と `npm run build` を個別に使う場合はそれぞれコンテンツを再生成します。`npm run verify` は同じ一連の処理内で生成を一度にまとめます。空のcheckoutで `npm run typecheck` を単独実行する場合は、先に `npm run content:check` で生成してください。
 
-単体テストは現在のゲームの進行、保存・再開、二重取得・二重消費の防止、破損・未知版・別タブ競合の保護、コンテンツ参照などを確認します。対象となる画面の操作や見た目は必要に応じてPlaywrightと実画面で確認します。CIの `npm run verify` は全単体テストとビルドを実行しますが、全E2Eは実行しません。実機Safariでの検証は別途必要です。
+単体テストは現在のゲームの進行、保存・再開、二重取得・二重消費の防止、破損・未知版・別タブ競合の保護、コンテンツ参照などを確認します。PlaywrightのE2E（`tests/e2e/`）は、起動、ミラノでの移動・観光・バトル・デート、保存と再読み込み・別タブ保護、ゴールデントライアングル編の都市間移動を利用者と同じ操作で確かめる最小構成で、どのテストでもコンソールエラーや画像の欠落があれば失敗します。内容と追加の判断基準は [開発時の確認](docs/10_DEVELOPMENT_CHECKS.md#e2eテスト) を参照してください。見た目は実画面で確認します。CIの `npm run verify` は全単体テストとビルドを実行しますが、E2Eは実行しません。実機Safariでの検証は別途必要です。
 
 恋愛の背景と敵の立ち絵は簡易SVGイラストです。観光画面と証拠帳は上記の実物資料画像を使用しています。フォントはNoto Sans JP / Noto Serif JP（Google Fonts、SIL OFL）を任意取得し、取得できなくてもシステムフォントで動作します。
 
@@ -363,10 +404,10 @@ Phase 2では解放済みイベントID、告白の保留/成功、交際エン�
 
 `uzbekistan` 旅行編にタシュケント・サマルカンド・ブハラ・ヒヴァの4都市を登録。各都市に主観光4件、デート6件の場所・画像・観察素材・市内移動・料金と出典を準備しています。シナリオとクイズは未制作のため、本番では旅の準備（名前の独立保存）までです。
 
-初期400万スム、宿泊無料、都市クリア4APはゲーム用暫定値。各都市のエピローグ後に次の公開済み都市へ進み、都市間の地図移動はありません。編集・投入手順は [旅行編共通の制作手順](authoring/JOURNEY_AUTHORING.md)、調査結果と制限は [4都市の制作資料](authoring/research/uzbekistan-20261104/README.md) を参照してください。
+初期400万スム、宿泊無料、都市クリア4APはゲーム用暫定値。各都市のエピローグ後に次の公開済み都市へ進み、都市間の地図移動はありません。編集・投入手順は [旅行編共通の制作手順](authoring/JOURNEY_AUTHORING.md)、調査結果と制限は [4都市の制作資料](authoring/journeys/uzbekistan/research/uzbekistan-20261104/README.md) を参照してください。
 
 ## ルアンパパーン市街地の制作基盤
 
 `luang_prabang` 旅行編に市街地の主観光4件、デート候補6件、写真・観察素材と都市内の移動データを登録しています。本文とクイズは未制作のため、本番では旅の準備までです。クァンシーの滝と将来のツアー機能は今回の対象に含みません。
 
-歩行・車の時間、車の料金、初期予算200万キープ、無料宿泊はゲーム用の推定・暫定値です。交通規制、公共交通の調査結果と未確認点、画像や後のシナリオ投入手順は[制作資料](authoring/research/luang-prabang-20261104/README.md)を参照してください。
+歩行・車の時間、車の料金、初期予算200万キープ、無料宿泊はゲーム用の推定・暫定値です。交通規制、公共交通の調査結果と未確認点、画像や後のシナリオ投入手順は[制作資料](authoring/journeys/luang_prabang/research/luang-prabang-20261104/README.md)を参照してください。

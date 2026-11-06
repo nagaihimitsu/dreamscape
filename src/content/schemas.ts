@@ -14,15 +14,11 @@ export const dateSchema = z
     apCost: z.number().int().nonnegative().default(2),
     minRomanceStage: z.number().int().min(1).max(4).default(1),
     storyId: z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/),
-    legacyOnly: z.boolean().optional(),
-    legacyStoryIds: z.array(z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/)).optional(),
     requiredCompletedChapters: z.array(id).optional(),
     requiredCompletedCityIds: z.array(id).optional(),
     requiredCompletedEpisodeIds: z.array(id).optional(),
     forbiddenCompletedEpisodeIds: z.array(id).optional(),
     destinationId: id.optional(),
-    legacyDestinationId: id.optional(),
-    legacyStoryDestinationIds: z.record(z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/), id).optional(),
     allowAfterEnding: z.boolean().optional(),
     rewardOnlyOnce: z.boolean().default(true),
     backgroundAssetId: id,
@@ -46,7 +42,6 @@ export const dateSchema = z
             memoryId: id.optional(),
             memoryIds: z.array(id).optional(),
             endingReached: z.boolean().optional(),
-            hasCafeMemory: z.boolean().optional(),
           })
           .strict(),
       )
@@ -79,9 +74,6 @@ export const effectSchema = z
     trustDelta: z.number().int().optional(),
     sparkDelta: z.number().int().optional(),
     responseProfileId: id.optional(),
-    stageDeltas: z.partialRecord(z.enum(["1", "2", "3", "4"]), z.object({
-      affectionDelta: z.number().int(), trustDelta: z.number().int(), sparkDelta: z.number().int(),
-    }).strict()).optional(),
     memoryId: id.optional(),
     outcome: z.enum(["accepted", "deferred", "rejected"]).optional(),
   })
@@ -240,26 +232,11 @@ export const progressionSchema = z
         minCompletedDates: z.number().int().nonnegative(),
       })
       .strict(),
-    memoryCallbacks: z
-      .array(z.object({ memoryId: id, textJa: text }).strict())
-      .min(1),
+    // May be empty: a date without a matching callback uses fallbackMemoryCallbackJa.
+    memoryCallbacks: z.array(z.object({ memoryId: id, textJa: text }).strict()),
     fallbackMemoryCallbackJa: text,
   })
   .strict();
-export const trialMilestoneSchema = z
-  .object({
-    id,
-    rewardSourceId: id,
-    titleJa: text,
-    descriptionJa: text,
-    ap: z.number().int().positive(),
-    requiredPlayedDateIds: z.array(id).min(1),
-  })
-  .strict();
-export const trialProgressionSchema = z
-  .object({ schemaVersion: version, milestones: z.array(trialMilestoneSchema) })
-  .strict();
-export type TrialMilestone = z.infer<typeof trialMilestoneSchema>;
 
 export const englishText = text.refine(
   (value) =>
@@ -331,7 +308,8 @@ export const battleSchema = z
     portrait: z
       .enum(["porter", "fortune", "archivist", "conductor", "abstract"])
       .optional(),
-    // Deliberately no default: legacy A definitions and their saved fingerprints stay unchanged.
+    // Deliberately no default: an omitted format is an ordinary A battle, and its
+    // definition (and content fingerprint) stays exactly as authored.
     format: z.enum(["A", "B", "C"]).optional(),
     reasoning: battleReasoningSchema.optional(),
     scenes: z
