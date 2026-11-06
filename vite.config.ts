@@ -18,6 +18,9 @@ export default defineConfig({
   test: {
     // Content validation compiles every Ink branch, including relationship tones.
     testTimeout: 180_000,
+    // One worker per core. The tests are CPU-bound and the main process mostly
+    // waits; Vitest's default leaves a core idle (one worker on a 2-core runner).
+    maxWorkers: "100%",
     // Fixtures link the journeys' images; fail the run if a test changed one.
     globalSetup: ["scripts/test-image-guard.ts"],
     projects: [
