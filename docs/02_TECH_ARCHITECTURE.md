@@ -117,7 +117,7 @@ tests/fixtures/journeys/ # 自動テスト専用の旅行編フォルダ（ゲ�
 旅行編をやめる場合は、そのフォルダ（と `authoring/journeys/<旅行編ID>/`、`scripts/journeys/<旅行編ID>/`）を削除して `npm run content:build` を実行する。利用者のブラウザにある `dreamscape.journey.<旅行編ID>.*` の保存データは削除されない。
 
 ### 共通コードに残るミラノ由来の既定値
-- 背景 `milano_cafe` は共通レイヤーの既定背景。Inkが背景を指定しない会話（`src/story/runtime.ts`）と、旅の開始前の画面や背景未指定の場面の `CanalScene` が使う。名前はミラノ由来だが、どの旅行編からも使える共通データとして扱う。
+- 背景 `milano_cafe` は共通レイヤーの既定背景。Inkが背景を指定しない会話（`src/story/runtime.ts`）と、旅の開始前の画面や背景未指定の場面の `CanalScene` が使う。名前はミラノ由来だが、どの旅行編からも使える共通データとして扱う。旅の開始前のタイトルの絵は全旅行編で共有するため、背景の説明（「ミラノ ／ 予定のない午後」）の代わりに画面側の「旅の余白 ／ 予定のない午後」を表示する。
 - 都市の会話の初期背景は、その都市の `travel/<cityId>-settings.json` の `storyBackgroundAssetId`（ミラノは `milano_cafe`）。未指定の都市は現在地（なければ宿）の背景を使う。
 - 所持品のアイコンは道中交流カタログの品物の `iconPath`（未指定なら共通の `assets/items/item.svg`）。
 - 観光地のバトル後に自由時間から改めてクイズに挑める道中交流（ミラノのガッレリアの願掛け）は、`encounters/entry-rules.json` の `quizAfterLandmarkBattle` で指定する。
