@@ -40,14 +40,9 @@ export type FieldRule =
 /** Output key order is the table order (the key order of the current files). */
 export type FieldTable = { readonly [key: string]: FieldRule };
 
-/**
- * A catalog is merged key by key (`fields`) or provided as a whole file:
- * `single` by at most one layer (`empty`: its value when no layer provides
- * it), `core` by the core layer only.
- */
+/** A catalog is merged key by key (`fields`) or provided as a whole file by the core layer only (`file: "core"`). */
 export type CatalogRule =
   | { readonly kind: string; readonly fields: FieldTable }
-  | { readonly kind: string; readonly file: "single"; readonly empty: Readonly<Record<string, unknown>> }
   | { readonly kind: string; readonly file: "core" };
 
 const same = { mode: "same" } as const;
@@ -60,7 +55,7 @@ export const CATALOG_RULES = [
   { kind: "battles/catalog.json", fields: { schemaVersion: same, battles: concat } },
   { kind: "encounters/catalog.json", fields: { schemaVersion: same, items: concat, encounters: concat } },
   { kind: "encounters/entry-rules.json", fields: entries },
-  { kind: "learning/details.json", file: "single", empty: { schemaVersion: 1, questions: {} } },
+  { kind: "learning/details.json", fields: { schemaVersion: same, questions: record } },
   { kind: "learning/translations.json", fields: { schemaVersion: same, questions: record } },
   { kind: "learning/word-meanings.json", fields: { schemaVersion: same, words: { mode: "record", equalDuplicates: true } } },
   {
@@ -124,14 +119,11 @@ export function catalogRule(kind: MergedKind): CatalogRule {
 /**
  * The merged value of a catalog that no layer provides, so any journey folder
  * can be left out: journey catalogs are empty (the schemas decide whether
- * empty is valid), a single-file kind uses its `empty` value. Core-layer
- * kinds have none: the base system must provide them.
+ * empty is valid). Core-layer kinds, including every whole-file kind, have
+ * none: the base system must provide them.
  */
 export function absentCatalog(kind: MergedKind): Record<string, unknown> | undefined {
-  if (CORE_LAYER_KINDS.has(kind)) return undefined;
-  const rule = catalogRule(kind);
-  if (!("file" in rule)) return emptyCatalog(kind);
-  return rule.file === "single" ? structuredClone(rule.empty) : undefined;
+  return CORE_LAYER_KINDS.has(kind) ? undefined : emptyCatalog(kind);
 }
 
 /**

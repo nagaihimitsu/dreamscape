@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "storyId": "learning/sound_english",
   "questions": {
     "sound_supper_1": {
+      "storyId": "learning/sound_english",
       "summaryJa": "主語は単数のthe painted room。現在の疑問文ではdoesに単数の印が移り、動詞は原形になる。",
       "segments": [
         {
@@ -25,6 +25,7 @@
       ]
     },
     "sound_supper_2": {
+      "storyId": "learning/sound_english",
       "summaryJa": "showするのはthis。whatは、何を示すかを尋ねる目的語なのでdoesを置く。",
       "segments": [
         {
@@ -47,6 +48,7 @@
       ]
     },
     "sound_supper_3": {
+      "storyId": "learning/sound_english",
       "summaryJa": "didの後のpainting on dry plaster全体が主語。giveは過去の疑問文なので原形。What freedomは与えられたものを尋ねる。",
       "segments": [
         {

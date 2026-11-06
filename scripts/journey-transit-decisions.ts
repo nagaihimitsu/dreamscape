@@ -47,7 +47,7 @@ export function readJourneyTransitDecisions(root: string, journeyId: string): Jo
   if (!ledger) throw new Error(`Journey has no transit decision ledger: ${journeyId}`);
   const read = (file: string): unknown => JSON.parse(readFileSync(path.resolve(root, file), "utf8"));
   const sources = loadContentSources(root);
-  return { catalogs: Object.fromEntries(ledger.cities.map((city) => [city, read(requireCity(sources, city).travelFile)])),
+  return { catalogs: Object.fromEntries(ledger.cities.map((city) => [city, requireCity(sources, city).travel])),
     decisions: read(ledger.file) };
 }
 

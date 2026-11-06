@@ -7,9 +7,9 @@ import { episodeSchema, rewardRuleSchema } from "../src/content/journey-schemas"
 import { landmarkSchema, tourismClueSchema, tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { travelCatalogSchema, travelEventSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { dateDestinationsSchema } from "../src/content/date-destinations";
-import { loadContentSources, parseCatalog, readJourneyCatalog, requireCity } from "./content-sources";
+import { journeyCatalogOf, loadContentSources, parseCatalog, requireCity } from "./content-sources";
 import { getJourneyAuthoringProfile } from "./journey-authoring";
-import { resolvePublicFile } from "./public-assets";
+import { requireServedFile } from "./public-assets";
 
 // Narrative metadata belongs to the not-yet-written scenario. No empty string
 // or fictional opponent is promoted to a production catalog.
@@ -159,14 +159,14 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
   return { episodes, rewards, battles, dates, landmarks, clues, finaleEvents, effects, memories };
 }
 
-export function loadJourneyScaffold(root: string, journeyId: string): JourneyScaffoldInput {
+/** `sources`: the loaded content, when the caller already has it. */
+export function loadJourneyScaffold(root: string, journeyId: string, sources = loadContentSources(root)): JourneyScaffoldInput {
   const profile = getJourneyAuthoringProfile(root, journeyId);
-  const sources = loadContentSources(root);
   const json = (file: string): unknown => JSON.parse(readFileSync(path.resolve(root, file), "utf8"));
-  const journey = readJourneyCatalog(root).journeys.find((item) => item.id === journeyId);
+  const journey = journeyCatalogOf(sources).journeys.find((item) => item.id === journeyId);
   if (!journey?.cityPlan) throw new Error("Journey scaffold: missing journey plan");
-  const cities = journey.cities.map(({ id }) => travelCatalogSchema.parse(json(requireCity(sources, id).travelFile)));
-  const cityData = cities.map((city) => citySchema.parse(json(requireCity(sources, city.cityId).file)));
+  const cities = journey.cities.map(({ id }) => travelCatalogSchema.parse(requireCity(sources, id).travel));
+  const cityData = cities.map((city) => citySchema.parse(requireCity(sources, city.cityId).data));
   const plannedLandmarks = Object.fromEntries(cityData.map((city) => [city.id, city.landmarkIdsPlanned]));
   const observationsFile = z.object({ clues: z.array(tourismClueSchema), images: z.record(z.string(), z.object({ path: words, sha256: z.string().regex(/^[0-9a-f]{64}$/) })), provenance: z.record(z.string(), z.object({ needsFurtherResearch: z.boolean() }).loose()) }).loose()
     .parse(json(profile.observationFile));
@@ -176,7 +176,7 @@ export function loadJourneyScaffold(root: string, journeyId: string): JourneySca
     const image = observationsFile.images[clue.landmarkId];
     if (!image || !image.path.startsWith(`${profile.imageDirectory}/`) || !/^[a-z0-9_]+\.jpg$/.test(image.path.slice(profile.imageDirectory.length + 1)))
       throw new Error(`Journey scaffold: missing observation image ${clue.landmarkId}`);
-    const hash = createHash("sha256").update(readFileSync(resolvePublicFile(root, image.path, sources.publicRoots))).digest("hex");
+    const hash = createHash("sha256").update(readFileSync(requireServedFile(sources.publicFiles, image.path))).digest("hex");
     if (hash !== image.sha256) throw new Error(`Journey scaffold: observation image changed ${clue.landmarkId}`);
   }
   const observations = observationsFile.clues;
@@ -193,6 +193,6 @@ export function loadJourneyScaffold(root: string, journeyId: string): JourneySca
     imageAssetIds[landmarkId] = asset.id;
   }
   // Ensure hotel settings exist and are valid; this function never uses them as finale places.
-  for (const city of cities) travelSettingsSchema.parse(json(requireCity(sources, city.cityId).settingsFile));
+  for (const city of cities) travelSettingsSchema.parse(requireCity(sources, city.cityId).settings);
   return { cities, plannedLandmarks, observations, destinations, cityClearAp: journey.cityPlan.cityClearAp, eventPrefix: profile.eventPrefix, imageAssetIds };
 }

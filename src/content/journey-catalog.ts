@@ -39,6 +39,15 @@ export const journeyCatalogSchema = z.object({
       dateCount: z.number().int().nonnegative(),
     }).strict().optional(),
     intercityModes: z.array(z.enum(["train", "car"])),
+    // The title screen's art for this journey: an image served from the
+    // journey's own public/ folder (or the root public/) with its caption.
+    // Without it the title shows the shared default background.
+    titleArt: z.object({
+      imagePath: z.string().regex(/^assets\/(?!.*\.\.)[a-zA-Z0-9_./-]+\.(?:webp|png|jpe?g)$/),
+      captionJa: text,
+      // Focal point kept in view when the art is cropped (percent; default centre).
+      imagePosition: z.object({ x: z.number().min(0).max(100), y: z.number().min(0).max(100) }).strict().optional(),
+    }).strict().optional(),
   }).strict()).min(1),
 }).strict().superRefine((catalog, context) => {
   const journeyIds = new Set<string>();
@@ -57,3 +66,4 @@ export const journeyCatalogSchema = z.object({
 
 export type JourneyCatalog = z.infer<typeof journeyCatalogSchema>;
 export type Journey = JourneyCatalog["journeys"][number];
+export type TitleArt = NonNullable<Journey["titleArt"]>;

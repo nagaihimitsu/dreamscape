@@ -53,12 +53,31 @@ describe("content build acceptance", () => {
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Public file assets/items/item.svg exists in more than one public folder: public/assets/items/item.svg and content/journeys/milano/public/assets/items/item.svg");
   });
+  it("serves a journey's title art from its public folder and rejects a missing image", async () => {
+    // A stray file in the journey folder is a warning: the build goes on and returns it.
+    await writeFile(path.join(fixture, "content/journeys/milano/notes.txt"), "memo\n");
+    const manifestFile = path.join(fixture, "content/journeys/milano/manifest.json");
+    const manifest = JSON.parse(await readFile(manifestFile, "utf8"));
+    const image = path.join(fixture, "content/journeys/milano/public/assets/title/milano.webp");
+    await mkdir(path.dirname(image), { recursive: true });
+    await sharp({ create: { width: 1760, height: 560, channels: 3, background: "#e6d8bb" } }).webp().toFile(image);
+    const titleArt = { imagePath: "assets/title/milano.webp", captionJa: "ミラノ ／ 運河の午後" };
+    await writeFile(manifestFile, JSON.stringify({ ...manifest, titleArt }));
+    const result = await buildContent(fixture);
+    expect(result.warnings).toContainEqual({ kind: "unknown-file",
+      message: expect.stringContaining("Unknown file in a journey folder: content/journeys/milano/notes.txt ") });
+    const catalog = JSON.parse(await readFile(path.join(fixture, "src/content/generated/content/journeys/catalog.json"), "utf8"));
+    expect(catalog.journeys.find((journey: { id: string }) => journey.id === "milano").titleArt).toEqual(titleArt);
+    expect(await readFile(path.join(fixture, "src/content/generated/public/assets/title/milano.webp"))).toEqual(await readFile(image));
+    await writeFile(manifestFile, JSON.stringify({ ...manifest, titleArt: { ...titleArt, imagePath: "assets/title/missing.webp" } }));
+    await expect(buildContent(fixture, false)).rejects.toThrow("Missing title art image: milano/assets/title/missing.webp");
+  }, 120000);
   it("rejects a registered but missing background image", async () => {
     const file = path.join(fixture, "content/romance/presentation.json");
     const data = JSON.parse(await readFile(file, "utf8"));
-    data.backgrounds.milano_cafe.imagePath = "assets/missing-background.png";
+    data.backgrounds.default_scene.imagePath = "assets/missing-background.png";
     await writeFile(file, JSON.stringify(data));
-    await expect(buildContent(fixture, false)).rejects.toThrow("Missing background image: milano_cafe/assets/missing-background.png");
+    await expect(buildContent(fixture, false)).rejects.toThrow("Missing background image: default_scene/assets/missing-background.png");
   });
   it("accepts a credited shared photo and rejects a missing or ambiguous background asset", async () => {
     // A Milan background without an image (the core default may not use a journey's photo).

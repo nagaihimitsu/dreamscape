@@ -1,7 +1,8 @@
-import { readFileSync } from "node:fs";
 import path from "node:path";
 import { displayPath, type ContentLayer, type ContentSources } from "./content-sources";
 import { CORE_LAYER_KINDS, type MergedKind } from "./content-layout";
+import { localIssuePath } from "./catalog-merge";
+import { servedFile } from "./public-assets";
 
 // Ownership of content across layers. Every journey folder must stay
 // removable on its own: its entries describe only its own cities, and what
@@ -55,6 +56,7 @@ const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry,
       ...fields(entry, "battle", ["completedStoryBattleId"]),
     ],
   },
+  "learning/details.json": { questions: (entry, key) => [ref("question", "question ID", key), ...fields(entry, "story", ["storyId"])] },
   "learning/translations.json": { questions: (_, key) => [ref("question", "question ID", key)] },
   "presentation/characters.json": {
     battleCharacters: (_, key) => [ref("battle", "battle ID", key)],
@@ -113,18 +115,60 @@ const DEFINITIONS: [MergedKind, string, Namespace][] = [
   ["encounters/catalog.json", "items", "item"],
 ];
 
-const readJson = (file: string): unknown => {
-  try {
-    return JSON.parse(readFileSync(file, "utf8"));
-  } catch (error) {
-    throw new Error(`Cannot read JSON ${file}`, { cause: error });
-  }
-};
-
 /** `# background: id` and `# effect: id` tags of an Ink source. */
 function inkTagReferences(source: string): Reference[] {
   return [...source.matchAll(/#\s*(background|effect)\s*:\s*([A-Za-z0-9_]+)/gu)]
     .map(([, tag, id]) => ref(tag === "background" ? "background" : "effect", `#${tag}`, id));
+}
+
+/** A served image (a path below public/, e.g. `assets/tourism/x.webp`) that a content file refers to. */
+export type ImageReference = { file: string; label: string; field: string; path: string };
+
+/** Image fields of an array element (`key`) or a record entry of a catalog: [field, path] pairs. */
+const IMAGE_FIELDS: Partial<Record<MergedKind, Record<string, (entry: Entry) => [string, unknown][]>>> = {
+  "encounters/catalog.json": { items: (entry) => [["iconPath", entry.iconPath]] },
+  "presentation/characters.json": {
+    characters: (entry) => [
+      ["imagePath", entry.imagePath],
+      ...list(entry.variants).map((variant, index): [string, unknown] => [`variants[${index}].imagePath`, variant.imagePath]),
+      ...list(entry.costumes).flatMap((costume) => list(costume.poses).flatMap((pose) =>
+        Object.entries(isObject(pose.expressions) ? pose.expressions : {}).map(([expression, imagePath]): [string, unknown] =>
+          [`costumes["${String(costume.id)}"].poses["${String(pose.id)}"].expressions.${expression}`, imagePath]))),
+    ],
+  },
+  "romance/presentation.json": { backgrounds: (entry) => [["imagePath", entry.imagePath]] },
+  "tourism/catalog.json": { assets: (entry) => [["path", entry.path]] },
+};
+
+/**
+ * Every served image the loaded content names, with the layer file that
+ * names it: catalog image fields and each manifest's title art. Values that
+ * are not strings are left to the schemas.
+ */
+export function imageReferences(sources: Pick<ContentSources, "catalogs" | "manifests">): ImageReference[] {
+  const images: ImageReference[] = [];
+  const add = (file: string, label: string, pairs: [string, unknown][]) => {
+    for (const [field, value] of pairs) if (typeof value === "string") images.push({ file, label, field, path: value });
+  };
+  for (const [kind, keys] of Object.entries(IMAGE_FIELDS) as [MergedKind, Record<string, (entry: Entry) => [string, unknown][]>][]) {
+    const merged = sources.catalogs[kind];
+    if (!merged) continue;
+    for (const [key, fieldsOf] of Object.entries(keys)) {
+      const value = (merged.value as Entry)[key];
+      if (Array.isArray(value))
+        value.forEach((entry, index) => {
+          if (isObject(entry))
+            add(merged.provenance.items[key][index],
+              `${key}[${typeof entry.id === "string" ? `"${entry.id}"` : String(localIssuePath(merged.provenance, [key, index])[1])}]`, fieldsOf(entry));
+        });
+      else if (isObject(value))
+        for (const [recordKey, entry] of Object.entries(value))
+          if (isObject(entry)) add(merged.provenance.keys[key][recordKey], `${key}.${recordKey}`, fieldsOf(entry));
+    }
+  }
+  for (const manifest of sources.manifests)
+    if (isObject(manifest.data.titleArt)) add(manifest.file, "", [["titleArt.imagePath", manifest.data.titleArt.imagePath]]);
+  return images;
 }
 
 /**
@@ -139,7 +183,11 @@ function inkTagReferences(source: string): Reference[] {
  *   battles, quizzes, backgrounds, images, memories, effects, …) must be
  *   defined in the same layer or in the core layer; the core layer may refer
  *   only to core content.
- * Throws one error listing every violation with the files involved.
+ * - Images (tourism images, backgrounds, item icons, character images, a
+ *   manifest's title art) are served from the journey's own public/ folder or
+ *   the root public/; the core layer uses only the root public/.
+ * Throws one error listing every violation with the files involved. Works on
+ * the loaded sources only (no file is read).
  */
 export function checkContentOwnership(sources: ContentSources): void {
   const { root } = sources;
@@ -207,7 +255,7 @@ export function checkContentOwnership(sources: ContentSources): void {
   for (const [key, namespace] of [["backgrounds", "background"], ["memories", "memory"]] as const)
     for (const [id, file] of Object.entries(presentation?.provenance.keys[key] ?? {})) define(namespace, id, file);
   for (const story of sources.storyFiles) define("story", story.id, story.file);
-  const quizzes = sources.quizFiles.map((quiz) => ({ ...quiz, data: readJson(quiz.file) }));
+  const quizzes = sources.quizFiles;
   for (const quiz of quizzes.filter((item) => !item.sample && isObject(item.data))) {
     const data = quiz.data as Entry;
     define("quiz", data.id, quiz.file);
@@ -266,27 +314,16 @@ export function checkContentOwnership(sources: ContentSources): void {
           checkReferences(merged.provenance.keys[key][recordKey], `${key}.${recordKey}`, references(isObject(entry) ? entry : {}, recordKey));
     }
   }
-  const details = catalog("learning/details.json");
-  const detailsFile = details?.provenance.files[0];
-  // No file when no layer provides learning details (empty value).
-  if (details && detailsFile && isObject(details.value)) {
-    checkReferences(detailsFile, "", [
-      ref("story", "storyId", details.value.storyId),
-      ref("question", "question ID", isObject(details.value.questions) ? Object.keys(details.value.questions) : []),
-    ]);
-  }
 
   // City, travel, quiz and Ink files.
   for (const city of sources.cities) {
-    const data = readJson(city.file);
+    const { data, settings, travel } = city;
     if (isObject(data))
       checkReferences(city.file, "", [
         ref("city", "nextCityId", data.nextCityId), ref("story", "arrivalStoryId", data.arrivalStoryId),
         ref("landmark", "landmarkIdsPlanned", data.landmarkIdsPlanned),
       ]);
-    const settings = readJson(city.settingsFile);
     if (isObject(settings)) checkReferences(city.settingsFile, "", fields(settings, "background", ["storyBackgroundAssetId"]));
-    const travel = readJson(city.travelFile);
     if (!isObject(travel)) continue;
     checkReferences(city.travelFile, "", fields(travel, "city", ["cityId"]));
     for (const place of list(travel.places))
@@ -297,9 +334,23 @@ export function checkContentOwnership(sources: ContentSources): void {
     for (const event of list(travel.events))
       checkReferences(city.travelFile, `events["${String(event.id)}"]`, [...fields(event, "city", ["cityId"]), ref(EVENT, "id", event.id)]);
   }
+  // Images are served from the data's own journey public/ folder or the root public/ (core data: the root one only).
+  const servedOwner = (file: string) =>
+    sources.layers.find((layer) => layer.type === "journey" && file.startsWith(path.join(layer.directory, "public") + path.sep));
+  for (const image of imageReferences(sources)) {
+    const served = servedFile(sources.publicFiles, image.path);
+    const owner = served && servedOwner(served);
+    const layer = layerOf(image.file);
+    if (!owner || owner.id === layer.id) continue;
+    const scope = layer.type === "core"
+      ? "the core layer may only use images of the root public/ folder"
+      : "a journey folder may only use images of its own public/ folder and the root public/ folder";
+    errors.push(`Reference to another layer: ${show(image.file)}${image.label ? ` ${image.label}` : ""} ${image.field} "${image.path}" ` +
+      `is the image of ${show(served)}; ${scope}.`);
+  }
   for (const quiz of quizzes)
     if (isObject(quiz.data)) checkReferences(quiz.file, "", [...fields(quiz.data, "landmark", ["landmarkId"]), ...fields(quiz.data, "city", ["cityId"])]);
-  for (const story of sources.storyFiles) checkReferences(story.file, "", inkTagReferences(readFileSync(story.file, "utf8")));
+  for (const story of sources.storyFiles) checkReferences(story.file, "", inkTagReferences(story.source));
 
   if (errors.length) throw new Error([...new Set(errors)].join("\n"));
 }

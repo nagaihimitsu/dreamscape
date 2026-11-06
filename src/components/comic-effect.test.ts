@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { REACTION_MARKS } from "../content/dialogue-reactions";
+import { reactionMarkImage } from "../content/code-images";
 import { ComicEffect } from "./ComicEffect";
 import { resolvePublicFile } from "../../scripts/public-assets";
 
@@ -10,7 +11,7 @@ describe("reaction artwork", () => {
   it("has a distinct local SVG for every supported mark", async () => {
     expect(new Set(REACTION_MARKS).size).toBe(13);
     const images = await Promise.all(REACTION_MARKS.map((mark) =>
-      readFile(resolvePublicFile(process.cwd(), `assets/effects/${mark}.svg`), "utf8"),
+      readFile(resolvePublicFile(process.cwd(), reactionMarkImage(mark)), "utf8"),
     ));
     for (const image of images) {
       expect(image).toContain('viewBox="0 0 64 64"');

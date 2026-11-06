@@ -5,7 +5,8 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { journeyDirectory } from "./content-layout";
 import { z } from "zod";
 import { cityLayer, contentLayers, displayPath, journeyLayer, loadContentSources, parseCatalog, readJourneyCatalog, readJourneyManifests,
-  requireCity, storyFile, writeContentMirror } from "./content-sources";
+  requireCity, storyFile } from "./content-sources";
+import { writeContentMirror } from "./content-outputs";
 
 let root: string;
 const write = (relative: string, data: unknown) => {
@@ -98,7 +99,12 @@ describe("content layers", () => {
     expect(sources.catalogs["battles/catalog.json"]!.value).toEqual({ schemaVersion: 1, battles: [{ id: "core_battle" }] });
     expect(sources.cities.map((item) => [item.id, item.layer, displayPath(root, item.travelFile), displayPath(root, item.settingsFile)]))
       .toEqual([["milano", "core", "content/travel/milano.json", "content/travel/milano-settings.json"]]);
-    expect(sources.storyFiles).toEqual([{ id: "milano/cafe", file: path.join(root, "content/stories/milano/cafe.ink"), layer: "core" }]);
+    // Every data file is read once, here: Ink text, quiz and city JSON (unvalidated), and the city files' bytes.
+    expect(sources.storyFiles).toEqual([{ id: "milano/cafe", file: path.join(root, "content/stories/milano/cafe.ink"), layer: "core", source: "core story" }]);
+    expect(sources.quizFiles).toEqual([{ file: path.join(root, "content/quizzes/duomo.json"), layer: "core", sample: false, data: {} }]);
+    const [milano] = sources.cities;
+    expect([milano.data, milano.travel, milano.settings]).toEqual([{ id: "milano" }, { cityId: "milano" }, { hotelPlaceId: "hotel" }]);
+    expect(milano.bytes.travel.toString("utf8")).toBe(readFileSync(path.join(root, "content/travel/milano.json"), "utf8"));
     expect(sources.publicRoots).toEqual([path.join(root, "public")]);
   });
 });
@@ -158,6 +164,23 @@ describe("loadContentSources with journey layers", () => {
     sources.catalogs["battles/catalog.json"]!.value = { schemaVersion: 1, battles: [{ id: "core_battle" }, { id: "Bad ID" }] };
     expect(() => parseCatalog(sources, schema, "battles/catalog.json"))
       .toThrow(`Invalid content in ${path.join(root, "content/journeys/golden_triangle/battles/catalog.json")}: `);
+    // Positions are those inside each file; every file with a bad entry is named on its own line.
+    sources.catalogs["battles/catalog.json"]!.value = { schemaVersion: 1, battles: [{ id: "Core" }, { id: "Bad ID" }] };
+    const message = (() => {
+      try {
+        parseCatalog(sources, schema, "battles/catalog.json");
+      } catch (error) {
+        return (error as Error).message;
+      }
+    })()!;
+    const lines = message.split("\n").filter((line) => line.startsWith("Invalid content in "));
+    expect(lines).toEqual([
+      `Invalid content in ${path.join(root, "content/battles/catalog.json")}: [`,
+      `Invalid content in ${path.join(root, "content/journeys/golden_triangle/battles/catalog.json")}: [`,
+    ]);
+    const [core, journey] = message.split("\nInvalid content in ").map((part) => JSON.parse(part.slice(part.indexOf(": [") + 2)));
+    expect(core.map((issue: { path: unknown }) => issue.path)).toEqual([["battles", 0, "id"]]);
+    expect(journey.map((issue: { path: unknown }) => issue.path)).toEqual([["battles", 0, "id"]]);
     // A core-layer kind no layer provides is missing; a journey kind is empty (see absentCatalog).
     expect(() => parseCatalog(sources, schema, "romance/balance.json")).toThrow("Missing content file: romance/balance.json (no content layer provides it)");
     expect(sources.catalogs["romance/balance.json"]).toBeUndefined();

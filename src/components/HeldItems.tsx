@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
+import { DEFAULT_ITEM_ICON } from "../content/code-images";
 import "./held-items.css";
 
 /** `iconPath`: the item's own icon from its catalog entry; a generic icon otherwise. */
@@ -48,7 +49,7 @@ export function HeldItems({ items }: { items: HeldItem[] }) {
               setSelectedId((previous) => previous === item.id ? null : item.id);
             }}
           >
-            <img src={`${import.meta.env.BASE_URL}${item.iconPath ?? "assets/items/item.svg"}`} alt="" />
+            <img src={`${import.meta.env.BASE_URL}${item.iconPath ?? DEFAULT_ITEM_ICON}`} alt="" />
           </button>
         ))}
       </div>

@@ -78,7 +78,7 @@ const originalQuiz = JSON.parse(read(`${milano}/quizzes/sound_duomo_B1.json`));
 const originalTranslations = JSON.parse(read(`${milano}/learning/translations.json`)).questions;
 /** A Milan Ink template for India's folder: Milan's own backgrounds become the shared default background. */
 const inkTemplate = (storyId: string) =>
-  read(`${milano}/stories/${storyId}.ink`).replace(/#\s*background\s*:\s*[A-Za-z0-9_]+/gu, "# background: milano_cafe");
+  read(`${milano}/stories/${storyId}.ink`).replace(/#\s*background\s*:\s*[A-Za-z0-9_]+/gu, "# background: default_scene");
 const dateTemplate = inkTemplate("milano/sound_cafe_01");
 
 /** India's catalogs that hold nothing but India's unpublished entries. */

@@ -33,4 +33,25 @@ describe("journey catalog", () => {
     invalidInitial.journeys[1].initialState!.confessionStatus = "accepted";
     expect(journeyCatalogSchema.safeParse(invalidInitial).success).toBe(false);
   });
+
+  it("accepts optional title art: a served image, its caption and an optional focal point", () => {
+    const withArt = (titleArt: unknown) => {
+      const copy = structuredClone(data) as { journeys: Record<string, unknown>[] };
+      copy.journeys[0].titleArt = titleArt;
+      return journeyCatalogSchema.safeParse(copy);
+    };
+    // No journey has art yet: the title shows the shared default background.
+    expect(journeys.every((journey) => journey.titleArt === undefined)).toBe(true);
+    expect(withArt({ imagePath: "assets/title/milano.webp", captionJa: "ミラノ ／ 運河の午後" }).success).toBe(true);
+    expect(withArt({ imagePath: "assets/title/milano.jpg", captionJa: "ミラノ", imagePosition: { x: 70, y: 40 } }).success).toBe(true);
+    for (const invalid of [
+      { imagePath: "assets/title/milano.webp" },
+      { imagePath: "assets/title/milano.webp", captionJa: " " },
+      { imagePath: "title/milano.webp", captionJa: "ミラノ" },
+      { imagePath: "assets/../milano.webp", captionJa: "ミラノ" },
+      { imagePath: "assets/title/milano.gif", captionJa: "ミラノ" },
+      { imagePath: "assets/title/milano.webp", captionJa: "ミラノ", imagePosition: { x: 120, y: 40 } },
+      { imagePath: "assets/title/milano.webp", captionJa: "ミラノ", backgroundId: "milano_cafe" },
+    ]) expect(withArt(invalid).success, JSON.stringify(invalid)).toBe(false);
+  });
 });

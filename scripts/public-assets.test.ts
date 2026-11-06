@@ -2,9 +2,13 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, uti
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { assemblePublicDirectory, collectPublicFiles, findPublicFile, resolvePublicFile } from "./public-assets";
+import { assemblePublicDirectory } from "./content-outputs";
+import { loadContentSources } from "./content-sources";
+import { findPublicFile, requireServedFile, resolvePublicFile, servedFile } from "./public-assets";
 
 let root: string;
+/** The served files as content:build lists them. */
+const collectPublicFiles = (directory: string) => loadContentSources(directory).publicFiles;
 const write = (relative: string, data = "file") => {
   mkdirSync(path.dirname(path.join(root, relative)), { recursive: true });
   writeFileSync(path.join(root, relative), data);
@@ -44,6 +48,15 @@ describe("public files", () => {
     write("content/journeys/milano/public/assets/items/item.svg");
     expect(() => collectPublicFiles(root))
       .toThrow("Public file assets/items/item.svg exists in more than one public folder: public/assets/items/item.svg and content/journeys/milano/public/assets/items/item.svg");
+  });
+
+  it("looks a URL path up in the loaded served files with the same message", () => {
+    const { publicFiles } = loadContentSources(root);
+    expect(servedFile(publicFiles, "assets/tourism/./india/delhi.jpg"))
+      .toBe(path.join(root, "content/journeys/golden_triangle/public/assets/tourism/india/delhi.jpg"));
+    expect(servedFile(publicFiles, "assets/tourism/missing.jpg")).toBeUndefined();
+    expect(() => requireServedFile(publicFiles, "assets/tourism/missing.jpg"))
+      .toThrow("Missing public file: assets/tourism/missing.jpg (searched public/ and content/journeys/<journeyId>/public/)");
   });
 
   it("assembles the served folder incrementally and removes files no folder provides", () => {

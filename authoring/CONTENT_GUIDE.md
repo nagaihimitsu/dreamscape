@@ -87,7 +87,7 @@ VAR heroine_name = ""
 | 観光案内                       | `guide.ink`                                                      | `<旅行編>/stories/tourism/`                               |
 | 都市・順路・報酬               | `city.json`, `journey.json`                                      | `<旅行編>/cities/`, `<旅行編>/progression/journey.json`   |
 
-JSONにはコメントを入れず、カンマ、引用符、配列の括弧を保ちます。`schemaVersion` はデータ形式の版で、個々のコンテンツIDとは別です。編集前に対象ファイルを複製し、既存内容を消さずに追加してください。表示名は変更できますが、公開済みIDはセーブ・他データの参照に使うため変更しないでください。新しいIDは英小文字で始め、英小文字・数字・`_` を使います。IDはすべての旅行編で共有する一つの名前空間にあるため、新しい旅行編では `manifest.json` の `authoring.eventPrefix` と同じ接頭辞（例：`gt_`、`uz_`）を付けます。`storyId` は `tourism/duomo_guide` のように、旅行編フォルダの `stories/`（`content/journeys/<旅行編ID>/stories/`）からの拡張子なしの相対パスです。旅行編フォルダ名は含まないため、他の旅行編と同じフォルダ名（`battles/` など）を使う場合はファイル名に接頭辞を付けて重ならないようにします。共通データ（`content/` 直下）には都市・移動・Ink・クイズや旅行編専用のカタログを置けません。
+JSONにはコメントを入れず、カンマ、引用符、配列の括弧を保ちます。`schemaVersion` はデータ形式の版で、個々のコンテンツIDとは別です。編集前に対象ファイルを複製し、既存内容を消さずに追加してください。表示名は変更できますが、公開済みIDはセーブ・他データの参照に使うため変更しないでください。新しいIDは英小文字で始め、英小文字・数字・`_` を使います。IDはすべての旅行編で共有する一つの名前空間にあるため、新しい旅行編では `manifest.json` の `authoring.eventPrefix` と同じ接頭辞（例：`gt_`、`uz_`）を付けます（地点IDは都市IDを接頭辞にします。付け忘れは `content:build` が警告します）。`storyId` は `tourism/duomo_guide` のように、旅行編フォルダの `stories/`（`content/journeys/<旅行編ID>/stories/`）からの拡張子なしの相対パスです。旅行編フォルダ名は含まないため、他の旅行編と同じフォルダ名（`battles/` など）を使う場合はファイル名に接頭辞を付けて重ならないようにします。共通データ（`content/` 直下）には都市・移動・Ink・クイズや旅行編専用のカタログを置けません。
 
 ## 題材を選ぶ
 
@@ -113,13 +113,13 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 
 ### 単語の意味
 
-問題文・選択肢の単語には `content/learning/word-meanings.json` の一般的な意味を登録します。大文字・小文字、アクセント、曲がったアポストロフィは照合時に正規化します。その問題の `vocabularyJa` に同じ語句があれば、その文脈での意味を優先します。新しい問題の語に未登録があれば全体検証で知らせます。一般的な意味は文脈によって異なるため、曖昧な語は該当問題の `vocabularyJa` で補ってください。たとえば [court](https://dictionary.cambridge.org/dictionary/english/court) や [secure](https://dictionary.cambridge.org/dictionary/english/secure) の複数の用法はCambridge Dictionaryで確認できます。語義の正確さと文脈への適合は編集者が確認します。外部辞書APIは使いません。
+問題文・選択肢の単語には一般的な意味を登録します。複数の旅行編で使う語は共通の `content/learning/word-meanings.json`、1つの旅行編だけで使う語（地名・建造物名など）はその旅行編の `content/journeys/<旅行編ID>/learning/word-meanings.json` に置きます。同じ語を両方に置くときは同じ意味にします（違えば生成時のエラー）。旅行編の辞書にしかない語を別の旅行編の問題で使うと、その旅行編を外した生成（`scripts/journey-folders.test.ts`）で未登録として知らされるため、その語は共通の辞書へ移します。どの英文にも使われない語の一覧は `npm run content:build -- --verbose` で確認できます。大文字・小文字、アクセント、曲がったアポストロフィは照合時に正規化します。その問題の `vocabularyJa` に同じ語句があれば、その文脈での意味を優先します。新しい問題の語に未登録があれば全体検証で知らせます。一般的な意味は文脈によって異なるため、曖昧な語は該当問題の `vocabularyJa` で補ってください。たとえば [court](https://dictionary.cambridge.org/dictionary/english/court) や [secure](https://dictionary.cambridge.org/dictionary/english/secure) の複数の用法はCambridge Dictionaryで確認できます。語義の正確さと文脈への適合は編集者が確認します。外部辞書APIは使いません。
 
 ### 対訳・学習説明
 
 公開する問題は `content/journeys/<旅行編ID>/learning/translations.json` に問題IDを登録し、`source` に問題文・全選択肢・正解IDの原文をそのまま記録します。`questionJa` と `optionsJa` は正誤の根拠を加えず、選択肢A/B/Cを公平に訳します。原文や正解を変更すると全体検証が不一致を検出するため、訳を確認して `source` を更新してください。既存のバトル保存指紋は学習データを含みません。
 
-詳細が必要な問題だけ `content/journeys/milano/learning/details.json` に、原文中の `segments` と `topics`、疑問見出し、説明、実用例文・訳、確認済みの文法資料URLと確認日を追加します。学習会話は `content/journeys/milano/stories/learning/sound_english.ink` のtopicに対応し、話者はヒロイン、2〜4行、選択肢やeffectは使いません。現在は『最後の晩餐』の通常戦3問が対象です。このファイルは全旅行編を通じて1つの旅行編フォルダだけが持てます（現在はミラノ編。どの旅行編にもなければ詳細なしとして扱います）。意味の自然さ、資料の該当箇所と訳は編集者が確認します。
+詳細が必要な問題だけ、その問題がある旅行編の `content/journeys/<旅行編ID>/learning/details.json` に問題IDで登録し、学習会話の `storyId`、原文中の `segments` と `topics`、疑問見出し、説明、実用例文・訳、確認済みの文法資料URLと確認日を追加します。対訳と同じく問題IDごとに統合されるため、どの旅行編も自分の問題の詳細を持てます（どの旅行編にもなければ詳細なしとして扱います）。`storyId` は問題ごとに必須で、同じ旅行編の学習会話を指します。学習会話は話題ID（`topic`）ごとに分岐し、話者はヒロイン、2〜4行、選択肢やeffectは使いません。話題IDは全旅行編で重ならないようにし、新しい旅行編では `authoring.eventPrefix` の接頭辞を付けます（例：`gt_which_subject`）。現在はミラノ編の『最後の晩餐』の通常戦3問が対象で、会話は `content/journeys/milano/stories/learning/sound_english.ink` です。意味の自然さ、資料の該当箇所と訳は編集者が確認します。
 
 ### クイズの項目
 

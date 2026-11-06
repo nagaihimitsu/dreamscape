@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { mergeCatalog, sourceFileOf, type CatalogSource } from "./catalog-merge";
-import { absentCatalog, catalogRule, classifyContentFile, completeFragment, emptyCatalog, storyIdFromPath, trimFragment } from "./content-layout";
+import { localIssuePath, mergeCatalog, sourceFileOf, type CatalogSource } from "./catalog-merge";
+import {
+  absentCatalog, CATALOG_RULES, catalogRule, classifyContentFile, completeFragment, CORE_LAYER_KINDS, emptyCatalog, storyIdFromPath, trimFragment,
+} from "./content-layout";
 
 const core = (data: unknown, file = "content/x.json"): CatalogSource => ({ file, core: true, data });
 const journey = (data: unknown, file: string): CatalogSource => ({ file, core: false, data });
@@ -13,18 +15,21 @@ describe("catalog merge", () => {
     const rule = catalogRule("tourism/catalog.json");
     const base = { schemaVersion: 1, assets: [{ id: "a" }], landmarks: [], clues: [] };
     expect(mergeCatalog(rule, [core(base), journey(emptyCatalog("tourism/catalog.json"), "j.json")])!.value).toEqual(base);
-    expect(() => emptyCatalog("learning/details.json")).toThrow("learning/details.json is provided as a whole file and has no empty fragment");
+    expect(JSON.stringify(emptyCatalog("learning/details.json"))).toBe(JSON.stringify({ schemaVersion: 1, questions: {} }));
+    expect(() => emptyCatalog("romance/balance.json")).toThrow("romance/balance.json is provided as a whole file and has no empty fragment");
   });
 
   it("gives a journey kind that no layer provides an empty value, and none to a core-layer kind", () => {
     // So any journey folder can be removed: e.g. only Milan has encounters or English-note details.
     expect(JSON.stringify(absentCatalog("encounters/catalog.json"))).toBe(JSON.stringify({ schemaVersion: 1, items: [], encounters: [] }));
     expect(absentCatalog("presentation/reasoning-intros.json")).toEqual({ schemaVersion: 1, entries: [] });
-    expect(absentCatalog("learning/details.json")).toEqual({ schemaVersion: 1, questions: {} });
-    // A copy, not the rule's own object.
+    expect(JSON.stringify(absentCatalog("learning/details.json"))).toBe(JSON.stringify({ schemaVersion: 1, questions: {} }));
+    // A new object each time, never one a caller could have changed.
     expect(absentCatalog("learning/details.json")).not.toBe(absentCatalog("learning/details.json"));
     for (const kind of ["romance/balance.json", "romance/presentation.json", "presentation/characters.json", "learning/word-meanings.json"] as const)
       expect(absentCatalog(kind)).toBeUndefined();
+    // Whole files belong to the core layer, so absentCatalog never needs an empty whole file.
+    for (const rule of CATALOG_RULES) if ("file" in rule) expect(CORE_LAYER_KINDS.has(rule.kind)).toBe(true);
   });
 
   it("completes a fragment that leaves keys out for editing and trims the keys that stay empty", () => {
@@ -51,6 +56,24 @@ describe("catalog merge", () => {
     expect(sourceFileOf(merged.provenance, ["battles", 2, "id"])).toBe("gt/battles.json");
     expect(sourceFileOf(merged.provenance, ["schemaVersion"])).toBe("core/battles.json");
     expect(sourceFileOf(merged.provenance, [])).toBeUndefined();
+  });
+
+  it("turns a merged position into the position inside the entry's own file", () => {
+    const merged = mergeCatalog(catalogRule("battles/catalog.json"), [
+      core({ schemaVersion: 1, battles: [{ id: "a" }, { id: "b" }] }, "core/battles.json"),
+      journey({ schemaVersion: 1, battles: [{ id: "c" }, { id: "d" }] }, "gt/battles.json"),
+    ])!;
+    expect(localIssuePath(merged.provenance, ["battles", 1, "id"])).toEqual(["battles", 1, "id"]);
+    expect(localIssuePath(merged.provenance, ["battles", 2, "id"])).toEqual(["battles", 0, "id"]);
+    expect(localIssuePath(merged.provenance, ["battles", 3, "scenes", 0])).toEqual(["battles", 1, "scenes", 0]);
+    // Paths without a concatenated element, and records, keep their positions.
+    expect(localIssuePath(merged.provenance, ["battles"])).toEqual(["battles"]);
+    expect(localIssuePath(merged.provenance, ["schemaVersion"])).toEqual(["schemaVersion"]);
+    const details = mergeCatalog(catalogRule("learning/details.json"), [
+      journey({ schemaVersion: 1, questions: { a: { topics: [{}, {}] } } }, "mi/details.json"),
+      journey({ schemaVersion: 1, questions: { b: { topics: [{}] } } }, "gt/details.json"),
+    ])!;
+    expect(localIssuePath(details.provenance, ["questions", "b", "topics", 0])).toEqual(["questions", "b", "topics", 0]);
   });
 
   it("returns nothing when no layer has the file and omits keys no layer sets", () => {
@@ -133,13 +156,29 @@ describe("catalog merge", () => {
       .toThrow('Unknown key "wardrobe.towns" in gt/characters.json');
   });
 
-  it("lets whole files come from one layer, and core-only files from the core layer", () => {
-    expect(mergeCatalog(catalogRule("learning/details.json"), [journey({ storyId: "x" }, "milano/details.json")])!.value)
-      .toEqual({ storyId: "x" });
-    expect(() => mergeCatalog(catalogRule("learning/details.json"), [
-      core({}, "core/details.json"), journey({}, "milano/details.json"),
-    ])).toThrow("Only one layer may provide learning/details.json: core/details.json and milano/details.json");
+  it("merges English-note details of several journeys per question, each with its own story", () => {
+    const rule = catalogRule("learning/details.json");
+    const milano = { schemaVersion: 1, questions: { sound_supper_1: { storyId: "learning/sound_english" } } };
+    const gt = { schemaVersion: 1, questions: { gt_question: { storyId: "learning/gt_english" } } };
+    const merged = mergeCatalog(rule, [journey(milano, "milano/details.json"), journey(gt, "gt/details.json")])!;
+    expect(JSON.stringify(merged.value)).toBe(JSON.stringify({
+      schemaVersion: 1,
+      questions: { sound_supper_1: { storyId: "learning/sound_english" }, gt_question: { storyId: "learning/gt_english" } },
+    }));
+    // An error inside a question names the file that provides it.
+    expect(sourceFileOf(merged.provenance, ["questions", "gt_question", "storyId"])).toBe("gt/details.json");
+    expect(() => mergeCatalog(rule, [journey(milano, "milano/details.json"), journey(milano, "gt/details.json")]))
+      .toThrow('Duplicate key "questions.sound_supper_1" in learning/details.json: milano/details.json and gt/details.json');
+    // The file has no story of its own any more.
+    expect(() => mergeCatalog(rule, [journey({ ...milano, storyId: "learning/sound_english" }, "milano/details.json")]))
+      .toThrow('Unknown key "storyId" in milano/details.json');
+  });
+
+  it("lets whole files come only from the core layer", () => {
+    expect(mergeCatalog(catalogRule("romance/balance.json"), [core({ ap: 1 }, "core/balance.json")])!.value).toEqual({ ap: 1 });
     expect(() => mergeCatalog(catalogRule("romance/balance.json"), [journey({}, "gt/balance.json")]))
+      .toThrow("Only the core layer may provide romance/balance.json: gt/balance.json");
+    expect(() => mergeCatalog(catalogRule("romance/balance.json"), [core({}, "core/balance.json"), journey({}, "gt/balance.json")]))
       .toThrow("Only the core layer may provide romance/balance.json: gt/balance.json");
   });
 });

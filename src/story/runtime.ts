@@ -2,6 +2,7 @@ import { Story } from "inkjs";
 import { z } from "zod";
 import { presentation, stories, tagContext } from "../content";
 import { parseStoryTags } from "../content/tags";
+import { DEFAULT_BACKGROUND_ID } from "../content/default-background";
 import { bindMemoryReader } from "./memory";
 import { bindItemReader, type ItemStatus } from "./items";
 import { encounters } from "../content/encounters";
@@ -100,7 +101,7 @@ function readFrame(
   story: Story,
   previous?: StoryFrame,
   choiceTags: readonly string[] = [],
-  initialBackground = "milano_cafe",
+  initialBackground = DEFAULT_BACKGROUND_ID,
 ): StoryStep {
   const frame: StoryFrame = {
     text: previous?.text ?? "",
@@ -149,7 +150,7 @@ export function beginStory(
   variables: Record<string, string | number | boolean> = {},
   memoryIds: readonly string[] = [],
   inventory: Readonly<Record<string, ItemStatus>> = {},
-  initialBackground = "milano_cafe",
+  initialBackground = DEFAULT_BACKGROUND_ID,
 ): StoryStep {
   const story = runtime(storyId, undefined, memoryIds, inventory);
   story.variablesState.$("player_name", playerName);

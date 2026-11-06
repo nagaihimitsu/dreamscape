@@ -22,7 +22,8 @@ jobs:
   e2e:
     name: E2E (${{ matrix.tier }})
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # Above the test step's own limit below, so the failure report is still uploaded.
+    timeout-minutes: 25
     strategy:
       # Every tier reports its own result even when another one fails.
       fail-fast: false
@@ -49,9 +50,14 @@ jobs:
       # The webServer of playwright.config.ts builds the content and starts
       # the development server. GitHub sets CI, which turns on the CI
       # settings there (no retries, forbidOnly, 2 workers, HTML report).
+      # Playwright stops itself after its globalTimeout in CI (12 minutes) and
+      # still writes the report; this step limit is the backstop. A step that
+      # times out fails (not cancels) the job, so the upload below still runs,
+      # which a job-level timeout would skip.
       - name: Run the ${{ matrix.tier }} tier
+        timeout-minutes: 16
         run: ${{ matrix.command }}
-      - name: Keep the report, screenshots and traces of failed tests
+      - name: Keep the report, screenshots and traces of failed or timed-out tests
         if: failure()
         uses: actions/upload-artifact@v4
         with:

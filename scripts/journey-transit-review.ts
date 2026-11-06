@@ -4,7 +4,7 @@ import { isDeepStrictEqual } from "node:util";
 import { z } from "zod";
 import { tourismSourceSchema } from "../src/content/tourism-schemas";
 import { travelCatalogSchema, type TravelCatalog } from "../src/content/travel-schemas";
-import { loadContentSources, readJourneyCatalog, requireCity } from "./content-sources";
+import { journeyCatalogOf, loadContentSources, readJourneyCatalog, requireCity } from "./content-sources";
 import { journeyAuthoringProfiles } from "./journey-authoring";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
@@ -85,13 +85,13 @@ export function inspectCityTransit(travel: TravelCatalog, raw: unknown) {
 }
 
 export function inspectJourneyTransit(root: string, journeyId: string) {
-  const journey = readJourneyCatalog(root).journeys.find((entry) => entry.id === journeyId);
-  if (!journey) throw new Error(`Unknown journey: ${journeyId}`);
   const sources = loadContentSources(root);
+  const journey = journeyCatalogOf(sources).journeys.find((entry) => entry.id === journeyId);
+  if (!journey) throw new Error(`Unknown journey: ${journeyId}`);
   return journey.cities.map(({ id: cityId }) => {
     const file = cityTransitFile(root, cityId);
     if (!file || !existsSync(path.join(root, file))) throw new Error(`Transit review missing: ${cityId}`);
-    const travel = travelCatalogSchema.parse(JSON.parse(readFileSync(requireCity(sources, cityId).travelFile, "utf8")));
+    const travel = travelCatalogSchema.parse(requireCity(sources, cityId).travel);
     return inspectCityTransit(travel, readTransitLedger(root, file));
   });
 }

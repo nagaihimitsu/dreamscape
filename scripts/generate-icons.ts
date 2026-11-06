@@ -14,8 +14,14 @@ const MASTER = "authoring/brand/favicon-master.png";
 const OUTPUT = "public";
 /** The master's corner radius (251 px at 1254 px) as a share of its side. */
 const CORNER_RADIUS = 0.2;
-/** Pulls the transparent corner in so the master's anti-aliased white edge does not show. */
+/**
+ * Pulls the transparent corner in so the master's anti-aliased white edge does
+ * not show. Applied along the whole arc and faded out within FADE_ANGLE of
+ * where the arc meets the straight edges, which keep their outermost pixels
+ * fully opaque (the master's artwork reaches its straight borders).
+ */
 const CORNER_INSET = 0.0012;
+const FADE_ANGLE = (5 * Math.PI) / 180;
 /** The face, in master pixels. */
 const FACE = { left: 300, top: 110, width: 620, height: 620 };
 /** Matches the master's near-white corners for the opaque Apple touch icon. */
@@ -27,14 +33,17 @@ async function roundCorners(image: Sharp, inset: number) {
   const size = info.width;
   if (info.height !== size) throw new Error(`Icon source must be square, got ${info.width}x${info.height}`);
   const radius = CORNER_RADIUS * size;
-  const edge = radius - inset * size;
   const rgba = Buffer.alloc(size * size * 4);
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       // Distance of the pixel centre from the nearest corner circle's centre.
       const dx = Math.max(radius - (x + 0.5), x + 0.5 - (size - radius), 0);
       const dy = Math.max(radius - (y + 0.5), y + 0.5 - (size - radius), 0);
-      const coverage = Math.min(1, Math.max(0, edge - Math.hypot(dx, dy) + 0.5));
+      const distance = Math.hypot(dx, dy);
+      // sin(2θ) of the pixel's angle in the corner is 0 along the straight edges; full inset from FADE_ANGLE on.
+      const angle = distance > 0 ? (2 * dx * dy) / (distance * distance) : 0;
+      const edge = radius - inset * size * Math.min(1, angle / Math.sin(2 * FADE_ANGLE));
+      const coverage = Math.min(1, Math.max(0, edge - distance + 0.5));
       const from = (y * size + x) * 3;
       const to = (y * size + x) * 4;
       rgba[to] = data[from];

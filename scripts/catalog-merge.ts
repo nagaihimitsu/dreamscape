@@ -31,11 +31,9 @@ export function mergeCatalog(rule: CatalogRule, sources: readonly CatalogSource[
   if (!sources.length) return undefined;
   const provenance: CatalogProvenance = { files: sources.map((source) => source.file), items: {}, keys: {}, values: {} };
   if ("file" in rule) {
+    // There is one core layer, so a second copy is always a journey's.
     const journey = sources.find((source) => !source.core);
-    if (rule.file === "core" && journey)
-      throw new Error(`Only the core layer may provide ${rule.kind}: ${journey.file}`);
-    if (sources.length > 1)
-      throw new Error(`Only one layer may provide ${rule.kind}: ${sources[0].file} and ${sources[1].file}`);
+    if (journey) throw new Error(`Only the core layer may provide ${rule.kind}: ${journey.file}`);
     return { value: sources[0].data, provenance };
   }
   const objects = sources.map((source) => {
@@ -127,4 +125,23 @@ export function sourceFileOf(provenance: CatalogProvenance, issuePath: readonly 
     if (Object.hasOwn(provenance.values, name)) return provenance.values[name];
   }
   return provenance.files.length === 1 ? provenance.files[0] : undefined;
+}
+
+/**
+ * `issuePath` (a path in the merged value) as a path inside the file it comes
+ * from: the index of a concatenated array becomes the element's index in its
+ * own file (`["battles", 9, "id"]` → `["battles", 0, "id"]` for the first
+ * battle of a journey's file). Record keys and other paths stay as they are.
+ */
+export function localIssuePath(provenance: CatalogProvenance, issuePath: readonly PropertyKey[]): PropertyKey[] {
+  const local = [...issuePath];
+  for (let length = 1; length < issuePath.length; length++) {
+    const items = provenance.items[issuePath.slice(0, length).map(String).join(".")];
+    const index = issuePath[length];
+    if (items && typeof index === "number" && items[index]) {
+      local[length] = items.slice(0, index).filter((file) => file === items[index]).length;
+      break;
+    }
+  }
+  return local;
 }

@@ -1,4 +1,4 @@
-import { cpSync, existsSync, mkdtempSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -99,10 +99,13 @@ describe("journey folders", () => {
     const clone = journeyDirectory(root, "gt_clone");
     const manifestFile = path.join(source, "manifest.json");
     const original = readFileSync(manifestFile, "utf8");
-    // The folder name and the manifest ID are the journey's only identity.
+    // The folder name and the manifest ID are the journey's identity; its authoring files move with it.
     renameSync(source, clone);
     try {
-      writeFileSync(path.join(clone, "manifest.json"), original.replace('"id": "golden_triangle"', '"id": "gt_clone"'));
+      const renamed = original.replace('"id": "golden_triangle"', '"id": "gt_clone"');
+      writeFileSync(path.join(clone, "manifest.json"), renamed);
+      await expect(buildContent(root)).rejects.toThrow("Keep the authoring files of gt_clone below authoring/journeys/gt_clone/");
+      writeFileSync(path.join(clone, "manifest.json"), renamed.replaceAll("authoring/journeys/golden_triangle/", "authoring/journeys/gt_clone/"));
       await expect(buildContent(root)).resolves.toBeDefined();
 
       const repositoryJourneys = readJourneyManifests(repository).map((item) => item.id);
@@ -143,6 +146,53 @@ describe("journey folders", () => {
       expectAssembledImages(target);
     } finally {
       rmSync(target, { recursive: true, force: true });
+    }
+  });
+
+  it("merges the English-note details of two journey folders, each question opening its own story", async () => {
+    // Test data (never shipped): one Golden Triangle question gets details and a learning story of its own.
+    const folder = journeyDirectory(root, "golden_triangle");
+    const detailsFile = path.join(folder, "learning/details.json");
+    const storyFolder = path.join(folder, "stories/learning");
+    mkdirSync(storyFolder);
+    writeFileSync(path.join(storyFolder, "gt_english.ink"), [
+      'VAR player_name = ""', 'VAR heroine_name = ""', 'VAR topic = ""', "# speaker: heroine", "{",
+      '- topic == "gt_which_subject":', "    「見える建物、Which monumentが主語だね。」", "    「だからdoは置かずに、can be seenがすぐ続くよ。」",
+      "- else:", "    「この英文のまとまりを一緒に見よう。」", "}", "-> END", "",
+    ].join("\n"));
+    const details = { schemaVersion: 1, questions: { gt_agra_fort_last_years: {
+      storyId: "learning/gt_english",
+      summaryJa: "主語はWhich monument。主語を尋ねる疑問文なのでdoは置かず、受け身のcan be seenが続く。",
+      segments: [{ textEn: "Which monument can be seen", meaningJa: "どの建物が見えるか" }],
+      topics: [{
+        id: "gt_which_subject", category: "grammar", titleJa: "なぜdoがない？",
+        explanationJa: "主語はWhich monument。主語を尋ねる疑問文なのでdoは置かず、受け身のcan be seenが続く。",
+        targetEn: "Which monument can be seen", exampleEn: "Which room can be seen from the garden?", exampleJa: "庭からどの部屋が見えますか。",
+        sourceUrl: "https://dictionary.cambridge.org/grammar/british-grammar/questions-wh-questions", checkedAt: "2026-11-02",
+      }],
+    } } };
+    writeFileSync(detailsFile, JSON.stringify(details));
+    try {
+      await expect(buildContent(root)).resolves.toBeDefined();
+      const merged = learningDetailsSchema.parse(mirror("learning/details.json"));
+      expect(Object.entries(merged.questions).map(([id, detail]) => [id, detail.storyId])).toEqual([
+        ["sound_supper_1", "learning/sound_english"],
+        ["sound_supper_2", "learning/sound_english"],
+        ["sound_supper_3", "learning/sound_english"],
+        ["gt_agra_fort_last_years", "learning/gt_english"],
+      ]);
+      expect(Object.keys(generated("stories.json"))).toEqual(expect.arrayContaining(["learning/sound_english", "learning/gt_english"]));
+
+      // A question without its story stops the build, naming only that journey's file.
+      delete (details.questions.gt_agra_fort_last_years as { storyId?: string }).storyId;
+      writeFileSync(detailsFile, JSON.stringify(details));
+      const error = await buildContent(root, false).then(() => undefined, (caught: Error) => caught);
+      expect(error?.message.startsWith(`Invalid content in ${detailsFile}: `)).toBe(true);
+      expect((error?.cause as { issues: { path: PropertyKey[] }[] }).issues.map((issue) => issue.path))
+        .toEqual([["questions", "gt_agra_fort_last_years", "storyId"]]);
+    } finally {
+      rmSync(detailsFile, { force: true });
+      rmSync(storyFolder, { recursive: true, force: true });
     }
   });
 

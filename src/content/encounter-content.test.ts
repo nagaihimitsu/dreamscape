@@ -50,11 +50,12 @@ describe("encounter build integration", () => {
     catalog.items.push({ id: "foreign_item", cityId: "fixture_city", nameJa: "別の街の品", descriptionJa: "別の街で入手する品。" });
     await writeFile(catalogFile, JSON.stringify(catalog));
     // Register an actual second city, so this exercises a cross-city item
-    // reference rather than merely an unknown-city error.
+    // reference rather than merely an unknown-city error. It is still being
+    // made (prototype): a complete city would need its own episodes and finale.
     const cityFile = path.join(fixture, "content/journeys/milano/cities/milano.json");
     const city = JSON.parse(await readFile(cityFile, "utf8"));
     await writeFile(path.join(fixture, "content/journeys/milano/cities/fixture_city.json"), JSON.stringify({
-      ...city, id: "fixture_city", nameJa: "試験都市", landmarkIdsPlanned: [],
+      ...city, id: "fixture_city", nameJa: "試験都市", landmarkIdsPlanned: [], productionStatus: "prototype",
       firstClearReward: { rewardSourceId: "fixture_first_clear", ap: 1 },
     }));
     const journeyFile = path.join(fixture, "content/journeys/milano/manifest.json");

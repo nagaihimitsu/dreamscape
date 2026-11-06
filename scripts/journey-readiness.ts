@@ -1,4 +1,3 @@
-import { readFileSync } from "node:fs";
 import { isDeepStrictEqual } from "node:util";
 import { z } from "zod";
 import { citySchema, battleCatalogSchema, dateCatalogSchema, presentationSchema, quizSchema } from "../src/content/schemas";
@@ -8,8 +7,8 @@ import type { Journey } from "../src/content/journey-catalog";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { learningCatalogSchema, questionSource } from "../src/content/learning-schema";
-import { loadContentSources, parseCatalog, publicRoots, readJourneyCatalog, requireCity } from "./content-sources";
-import { findPublicFile } from "./public-assets";
+import { journeyCatalogOf, loadContentSources, parseCatalog, requireCity } from "./content-sources";
+import { servedFile } from "./public-assets";
 
 /** Report from real catalog entries; no additional hand-maintained content list. */
 export type JourneyReadinessInput = {
@@ -178,18 +177,16 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
 
 export function loadJourneyReadiness(root: string, journeyId: string): JourneyReadinessInput {
   const sources = loadContentSources(root);
-  const read = (file: string): unknown => JSON.parse(readFileSync(file, "utf8"));
-  const catalog = readJourneyCatalog(root);
+  const catalog = journeyCatalogOf(sources);
   const trip = catalog.journeys.find((item) => item.id === journeyId);
   if (!trip) throw new Error("Journey journey is missing");
   const cities = trip.cities.map(({ id }) => {
     const files = requireCity(sources, id);
-    return { city: citySchema.parse(read(files.file)), travel: travelCatalogSchema.parse(read(files.travelFile)),
-      settings: travelSettingsSchema.parse(read(files.settingsFile)) };
+    return { city: citySchema.parse(files.data), travel: travelCatalogSchema.parse(files.travel),
+      settings: travelSettingsSchema.parse(files.settings) };
   });
-  const quizzes = sources.quizFiles.filter((quiz) => !quiz.sample).map((quiz) => quizSchema.parse(read(quiz.file)));
+  const quizzes = sources.quizFiles.filter((quiz) => !quiz.sample).map((quiz) => quizSchema.parse(quiz.data));
   const storyIds = new Set(sources.storyFiles.map((story) => story.id));
-  const roots = publicRoots(root, sources.layers);
   return { trip, cities, quizzes, journey: parseCatalog(sources, journeySchema, "progression/journey.json"),
     tourism: parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json"),
     backgrounds: parseCatalog(sources, presentationSchema, "romance/presentation.json").backgrounds,
@@ -198,5 +195,5 @@ export function loadJourneyReadiness(root: string, journeyId: string): JourneyRe
     battles: parseCatalog(sources, battleCatalogSchema, "battles/catalog.json").battles,
     translations: parseCatalog(sources, learningCatalogSchema, "learning/translations.json").questions,
     storyExists: (id) => /^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/.test(id) && storyIds.has(id),
-    assetExists: (assetPath) => findPublicFile(root, assetPath, roots) !== undefined };
+    assetExists: (assetPath) => servedFile(sources.publicFiles, assetPath) !== undefined };
 }

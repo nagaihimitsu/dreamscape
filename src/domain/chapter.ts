@@ -113,9 +113,12 @@ export function getEpisodeAvailability(
     return {
       available: false,
       reason:
-        episode.kind === "city_finale"
-          ? "観光地と旅の途中の対決を巡ると、この対決へ進めます。"
-          : "先の観光エピソードを終えると出発できます。",
+        episode.kind !== "city_finale"
+          ? "先の観光エピソードを終えると出発できます。"
+          // Only cities with special battles have mid-journey battles to mention.
+          : storyBattlesForCity(episode.cityId).length
+            ? "観光地と旅の途中の対決を巡ると、この対決へ進めます。"
+            : "観光地を巡ると、この対決へ進めます。",
     };
   if (isEpisodeBlockedByStoryBattle(state, episode))
     return { available: false, reason: "先に、旅の途中の対決へ進みましょう。" };

@@ -47,4 +47,19 @@ describe("app icons", () => {
     expect(manifest.icons.map((icon) => icon.sizes)).toEqual(["192x192", "512x512"]);
     for (const icon of manifest.icons) await expectSize(publicFile(`./${icon.src}`), icon.sizes);
   });
+
+  it("gives the manifest icons transparent rounded corners and fully opaque straight edges", async () => {
+    for (const size of [192, 512]) {
+      const { data, info } = await sharp(path.join(root, "public", `icon-${size}.png`)).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+      const alpha = (x: number, y: number) => data[(y * info.width + x) * 4 + 3];
+      const last = size - 1;
+      expect([alpha(0, 0), alpha(last, 0), alpha(0, last), alpha(last, last)], `icon-${size} corners`).toEqual([0, 0, 0, 0]);
+      // The rounded corner (radius 20 % of the side) ends before 21 %; beyond it the outermost pixels are opaque
+      // (the 256-colour palette may store a few of them as 254).
+      const straight = [...Array(size).keys()].filter((offset) => offset > size * 0.21 && offset < size * 0.79);
+      for (const [name, at] of [["top", (o: number) => alpha(o, 0)], ["bottom", (o: number) => alpha(o, last)],
+        ["left", (o: number) => alpha(0, o)], ["right", (o: number) => alpha(last, o)]] as const)
+        expect(straight.filter((offset) => at(offset) < 254), `icon-${size} ${name} edge`).toEqual([]);
+    }
+  });
 });

@@ -47,10 +47,9 @@ export function exportCityBundle(root: string, cityId: string): CityBundle {
   const sources = loadContentSources(root);
   if (!existing(sources, cityId)) throw new Error(`Unknown registered city: ${cityId}`);
   const files = requireCity(sources, cityId);
-  const json = (file: string): unknown => JSON.parse(readFileSync(file, "utf8"));
-  const city = citySchema.parse(json(files.file));
-  const travel = travelCatalogSchema.parse(json(files.travelFile));
-  const travelSettings = travelSettingsSchema.parse(json(files.settingsFile));
+  const city = citySchema.parse(files.data);
+  const travel = travelCatalogSchema.parse(files.travel);
+  const travelSettings = travelSettingsSchema.parse(files.settings);
   if (city.id !== cityId || travel.cityId !== cityId) throw new Error(`City ownership mismatch: ${cityId}`);
   const [presentationKind, tourismKind, destinationsKind] = bundleCatalogKinds;
   const presentation = parseCatalog(sources, presentationSchema, presentationKind);
@@ -109,7 +108,7 @@ export async function applyCityBundle(root: string, raw: unknown, apply = false)
     const compact = editableBundleSchema.parse(raw);
     const sources = loadContentSources(root);
     const previous = existing(sources, compact.cityId)
-      ? travelCatalogSchema.parse(JSON.parse(readFileSync(requireCity(sources, compact.cityId).travelFile, "utf8"))).routes : [];
+      ? travelCatalogSchema.parse(requireCity(sources, compact.cityId).travel).routes : [];
     input = bundleSchema.parse({ ...compact, schemaVersion: 1, travel: expandTravel(compact.travel, previous) });
   } else input = bundleSchema.parse(raw);
   const { cityId } = input;
