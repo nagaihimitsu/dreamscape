@@ -346,7 +346,7 @@ export async function buildContent(root: string, writeOutput = true) {
     reactionCatalog, storySources, Object.keys(stories),
     context.emotionIds.filter((id) => characters.expressionIds?.includes(id) ?? true),
     characters.characters.map((character) => character.id),
-    [learningDetails.storyId],
+    learningDetails.storyId ? [learningDetails.storyId] : [],
   );
   const observeForStory = (storyId: string): DialogueObserver =>
     (text, speaker, explicitEmotion) => {
@@ -619,12 +619,15 @@ export async function buildContent(root: string, writeOutput = true) {
         }
     }
   validateLearningDetails(learningDetails, quizzes);
-  if (!stories[learningDetails.storyId])
-    throw new Error(`Unknown learning story: ${learningDetails.storyId}`);
-  for (const detail of Object.values(learningDetails.questions))
-    for (const topic of detail.topics) {
-      validateLearningTopic(stories[learningDetails.storyId], context, topic.id);
-    }
+  if (learningDetails.storyId !== undefined) {
+    const learningStory = stories[learningDetails.storyId];
+    if (!learningStory)
+      throw new Error(`Unknown learning story: ${learningDetails.storyId}`);
+    for (const detail of Object.values(learningDetails.questions))
+      for (const topic of detail.topics) {
+        validateLearningTopic(learningStory, context, topic.id);
+      }
+  }
   let tourismGuides = 0;
   for (const current of cities) {
     const landmarks = tourism.landmarks.filter((landmark) => landmark.cityId === current.id);

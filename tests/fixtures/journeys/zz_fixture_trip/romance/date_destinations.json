@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "destinations": [
+    {
+      "id": "zz_fixture_square",
+      "cityId": "zz_fixture_city",
+      "nameJa": "テストの広場",
+      "nameEn": "Fixture square",
+      "descriptionJa": "自動テストだけで使う架空の行き先。",
+      "backgroundAssetId": "zz_fixture_spot_bg",
+      "facts": [
+        {
+          "publisher": "Dreamscape テスト",
+          "title": "テスト用の架空データ",
+          "url": "https://example.com/dreamscape-fixture",
+          "checkedAt": "2026-11-06",
+          "claimType": "hypothesis",
+          "claimJa": "自動テスト用の架空の説明。実在の場所を示さない。"
+        }
+      ]
+    }
+  ]
+}

@@ -90,7 +90,11 @@ describe("content layers", () => {
   it("reads the current single-layer content as it is", () => {
     const sources = loadContentSources(root);
     expect(sources.layers.map((layer) => layer.id)).toEqual(["core"]);
-    expect(Object.keys(sources.catalogs).sort()).toEqual(["battles/catalog.json", "journeys/catalog.json"]);
+    // Provided by a file: battles; generated: journeys; every other journey kind is empty, core-layer kinds are absent.
+    const provided = Object.entries(sources.catalogs).filter(([, merged]) => merged.provenance.files.length).map(([kind]) => kind);
+    expect(provided.sort()).toEqual(["battles/catalog.json"]);
+    expect(Object.keys(sources.catalogs)).toContain("journeys/catalog.json");
+    expect(Object.keys(sources.catalogs)).not.toContain("romance/balance.json");
     expect(sources.catalogs["battles/catalog.json"]!.value).toEqual({ schemaVersion: 1, battles: [{ id: "core_battle" }] });
     expect(sources.cities.map((item) => [item.id, item.layer, displayPath(root, item.travelFile), displayPath(root, item.settingsFile)]))
       .toEqual([["milano", "core", "content/travel/milano.json", "content/travel/milano-settings.json"]]);
@@ -154,7 +158,15 @@ describe("loadContentSources with journey layers", () => {
     sources.catalogs["battles/catalog.json"]!.value = { schemaVersion: 1, battles: [{ id: "core_battle" }, { id: "Bad ID" }] };
     expect(() => parseCatalog(sources, schema, "battles/catalog.json"))
       .toThrow(`Invalid content in ${path.join(root, "content/journeys/golden_triangle/battles/catalog.json")}: `);
-    expect(() => parseCatalog(sources, schema, "tourism/catalog.json")).toThrow("Missing content file: tourism/catalog.json (no content layer provides it)");
+    // A core-layer kind no layer provides is missing; a journey kind is empty (see absentCatalog).
+    expect(() => parseCatalog(sources, schema, "romance/balance.json")).toThrow("Missing content file: romance/balance.json (no content layer provides it)");
+    expect(sources.catalogs["romance/balance.json"]).toBeUndefined();
+    expect(sources.catalogs["tourism/catalog.json"]).toEqual({
+      value: { schemaVersion: 1, assets: [], landmarks: [], clues: [] }, provenance: { files: [], items: {}, keys: {}, values: {} },
+    });
+    expect(sources.catalogs["learning/details.json"]!.value).toEqual({ schemaVersion: 1, questions: {} });
+    expect(() => parseCatalog(sources, z.object({ assets: z.array(z.unknown()).min(1) }).strip(), "tourism/catalog.json"))
+      .toThrow("Invalid content in tourism/catalog.json (no content layer provides it): ");
     expect(displayPath(root, requireCity(sources, "delhi").settingsFile)).toBe("content/journeys/golden_triangle/travel/delhi-settings.json");
     expect(() => requireCity(sources, "rome")).toThrow("Missing content file: cities/rome.json (no content layer provides it)");
     expect(storyFile(sources, "milano/cafe_03")).toBe(path.join(root, "content/journeys/milano/stories/milano/cafe_03.ink"));

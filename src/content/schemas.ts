@@ -232,9 +232,8 @@ export const progressionSchema = z
         minCompletedDates: z.number().int().nonnegative(),
       })
       .strict(),
-    memoryCallbacks: z
-      .array(z.object({ memoryId: id, textJa: text }).strict())
-      .min(1),
+    // May be empty: a date without a matching callback uses fallbackMemoryCallbackJa.
+    memoryCallbacks: z.array(z.object({ memoryId: id, textJa: text }).strict()),
     fallbackMemoryCallbackJa: text,
   })
   .strict();

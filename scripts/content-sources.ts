@@ -3,6 +3,7 @@ import path from "node:path";
 import { journeyCatalogSchema, type JourneyCatalog } from "../src/content/journey-catalog";
 import { mergeCatalog, sourceFileOf, type CatalogSource, type MergedCatalog } from "./catalog-merge";
 import {
+  absentCatalog,
   CATALOG_RULES,
   classifyContentFile,
   compareLayerFiles,
@@ -29,7 +30,11 @@ export type ContentSources = {
   layers: ContentLayer[];
   /** Journey manifests in layer order. */
   manifests: JourneyManifest[];
-  /** Merged, unvalidated catalogs with provenance; a kind no layer provides is absent. */
+  /**
+   * Merged, unvalidated catalogs with provenance. A journey kind no layer
+   * provides is its empty value (absentCatalog, no provenance files); a
+   * missing core-layer kind is absent.
+   */
   catalogs: Partial<Record<CatalogKind, MergedCatalog>>;
   cities: CitySource[];
   storyFiles: StorySource[];
@@ -176,7 +181,8 @@ export function loadContentSources(root: string): ContentSources {
     const sources: CatalogSource[] = (catalogFiles.get(rule.kind) ?? [])
       .sort((a, b) => a.layerIndex - b.layerIndex)
       .map((item) => ({ file: item.file, core: item.layer.type === "core", data: readJson(item.file) }));
-    const merged = mergeCatalog(rule, sources);
+    const absent = sources.length ? undefined : absentCatalog(rule.kind);
+    const merged = absent ? { value: absent, provenance: { files: [], items: {}, keys: {}, values: {} } } : mergeCatalog(rule, sources);
     if (merged) catalogs[rule.kind] = merged;
   }
 
@@ -219,7 +225,8 @@ export function parseCatalog<T>(sources: ContentSources, schema: { parse(value: 
   } catch (error) {
     const issues = (error as { issues?: { path?: PropertyKey[] }[] }).issues ?? [];
     const files = [...new Set(issues.map((issue) => sourceFileOf(merged.provenance, issue.path ?? [])))];
-    const label = files.length && files.every(Boolean) ? files.join(", ") : merged.provenance.files.join(", ");
+    const label = files.length && files.every(Boolean) ? files.join(", ")
+      : merged.provenance.files.join(", ") || `${kind} (no content layer provides it)`;
     throw new Error(
       `Invalid content in ${label}: ${error instanceof Error ? error.message : String(error)}`,
       { cause: error },

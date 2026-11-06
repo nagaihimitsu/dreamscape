@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { mergeCatalog, sourceFileOf, type CatalogSource } from "./catalog-merge";
-import { catalogRule, classifyContentFile, completeFragment, emptyCatalog, storyIdFromPath, trimFragment } from "./content-layout";
+import { absentCatalog, catalogRule, classifyContentFile, completeFragment, emptyCatalog, storyIdFromPath, trimFragment } from "./content-layout";
 
 const core = (data: unknown, file = "content/x.json"): CatalogSource => ({ file, core: true, data });
 const journey = (data: unknown, file: string): CatalogSource => ({ file, core: false, data });
@@ -14,6 +14,17 @@ describe("catalog merge", () => {
     const base = { schemaVersion: 1, assets: [{ id: "a" }], landmarks: [], clues: [] };
     expect(mergeCatalog(rule, [core(base), journey(emptyCatalog("tourism/catalog.json"), "j.json")])!.value).toEqual(base);
     expect(() => emptyCatalog("learning/details.json")).toThrow("learning/details.json is provided as a whole file and has no empty fragment");
+  });
+
+  it("gives a journey kind that no layer provides an empty value, and none to a core-layer kind", () => {
+    // So any journey folder can be removed: e.g. only Milan has encounters or English-note details.
+    expect(JSON.stringify(absentCatalog("encounters/catalog.json"))).toBe(JSON.stringify({ schemaVersion: 1, items: [], encounters: [] }));
+    expect(absentCatalog("presentation/reasoning-intros.json")).toEqual({ schemaVersion: 1, entries: [] });
+    expect(absentCatalog("learning/details.json")).toEqual({ schemaVersion: 1, questions: {} });
+    // A copy, not the rule's own object.
+    expect(absentCatalog("learning/details.json")).not.toBe(absentCatalog("learning/details.json"));
+    for (const kind of ["romance/balance.json", "romance/presentation.json", "presentation/characters.json", "learning/word-meanings.json"] as const)
+      expect(absentCatalog(kind)).toBeUndefined();
   });
 
   it("completes a fragment that leaves keys out for editing and trims the keys that stay empty", () => {

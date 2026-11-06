@@ -54,4 +54,12 @@ describe("learning content", () => {
       "target missing",
     );
   });
+
+  it("allows no details at all, but needs the story once a question has details", () => {
+    // The value content:build uses when no journey folder provides learning/details.json.
+    expect(learningDetailsSchema.parse({ schemaVersion: 1, questions: {} })).toEqual({ schemaVersion: 1, questions: {} });
+    const { storyId, ...withoutStory } = learningDetailsSchema.parse(details);
+    expect(storyId).toBeDefined();
+    expect(() => learningDetailsSchema.parse(withoutStory)).toThrow("Learning details with questions need a storyId");
+  });
 });

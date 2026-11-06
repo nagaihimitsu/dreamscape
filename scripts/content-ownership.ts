@@ -267,9 +267,10 @@ export function checkContentOwnership(sources: ContentSources): void {
     }
   }
   const details = catalog("learning/details.json");
-  if (details && isObject(details.value)) {
-    const file = details.provenance.files[0];
-    checkReferences(file, "", [
+  const detailsFile = details?.provenance.files[0];
+  // No file when no layer provides learning details (empty value).
+  if (details && detailsFile && isObject(details.value)) {
+    checkReferences(detailsFile, "", [
       ref("story", "storyId", details.value.storyId),
       ref("question", "question ID", isObject(details.value.questions) ? Object.keys(details.value.questions) : []),
     ]);
