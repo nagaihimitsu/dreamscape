@@ -4,7 +4,7 @@
 
 - `drafts/`：下書き・観察カードなどの作業資料
 - `research/`：調査記録
-- その他：旅行編専用の制作補助（例：インド編の `scaffold/`）や編集メモ
+- その他：旅行編専用の制作補助（例：インド編の `scaffold/`）や編集メモ（例：ミラノ編の画像の権利情報の写し `image-licenses/`）
 
 全旅行編で共有する手順書とテンプレートは `authoring/` 直下（[制作マニュアル](../CONTENT_GUIDE.md)、[テンプレート](../templates/) など）にあります。制作ツールが使う観察カードや交通判断の場所は、各旅行編の `content/journeys/<旅行編ID>/manifest.json` の `authoring` で指定します。
 
