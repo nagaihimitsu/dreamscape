@@ -7,8 +7,9 @@ import { allStorage, expect, readSave, startJourney, test } from "./helpers";
 test("the title screen opens every registered journey without writing a save", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveTitle(/Dreamscape/);
-  // Read after the dev server's content:build: the title art each manifest declares.
-  const catalog: JourneyCatalog = JSON.parse(readFileSync("src/content/generated/content/journeys/catalog.json", "utf8"));
+  // Read after the dev server's content:build (of this spec's checkout, whatever the working folder):
+  // each journey's status, initial state and title art.
+  const catalog: JourneyCatalog = JSON.parse(readFileSync(new URL("../../src/content/generated/content/journeys/catalog.json", import.meta.url), "utf8"));
   const selector = page.getByLabel("旅行編");
   const journeys = await selector.locator("option").evaluateAll((options) =>
     options.map((option) => ({ id: (option as HTMLOptionElement).value, name: option.textContent ?? "" })));
