@@ -45,9 +45,16 @@ describe("production build guard", () => {
     ]);
   });
 
-  it("reports a reserved journey ID found in generated content", () => {
-    const build = [{ path: "assets/index-abc.js", text: '{"id":"sample_trip","status":"available"}' }];
-    expect(findDevOnlyCode(build).map((finding) => finding.marker.source)).toEqual(["docs/02_TECH_ARCHITECTURE.md"]);
+  it("reports the sample journey in generated content and in served image paths", () => {
+    // What a production build would contain after `npm run content:build -- --with-sample`.
+    const build = [
+      { path: "assets/index-abc.js", text: '{"id":"sample_trip","status":"available"}' },
+      { path: "assets/tourism/sample_trip/mihon_clock_tower.png", text: null },
+    ];
+    expect(findDevOnlyCode(build).map(({ path, where, marker }) => [path, where, marker.source])).toEqual([
+      ["assets/index-abc.js", "content", "authoring/templates/sample_trip/manifest.json"],
+      ["assets/tourism/sample_trip/mihon_clock_tower.png", "path", "authoring/templates/sample_trip/manifest.json"],
+    ]);
   });
 
   it("checks only the path of binary files", () => {

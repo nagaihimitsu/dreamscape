@@ -6,7 +6,6 @@ import { Story } from "inkjs";
 import { buildContent } from "../../scripts/content-pipeline";
 import { changeCatalogEntry, prepareContentFixture } from "./test-fixtures";
 import quizData from "../../content/journeys/milano/quizzes/sound_supper_B1.json";
-import battleData from "./generated/content/battles/catalog.json";
 import type { BattleDefinition } from "./schemas";
 import { parseStoryTags } from "./tags";
 
@@ -59,9 +58,10 @@ describe("battle content contract", () => {
     const result = await buildContent(fixture);
     expect(result.routes).toBeGreaterThanOrEqual(105);
     expect(result.battleScenarios).toBeGreaterThanOrEqual(13);
-    // Every battle's production quiz is generated.
+    // Every battle's production quiz is generated (the battles of this build: the
+    // repository's generated output may hold other journeys, e.g. the sample journey).
     expect(Object.keys(result.quizzes)).toEqual(
-      expect.arrayContaining(battleData.battles.map((battle) => battle.quizId)),
+      expect.arrayContaining(result.battles.map((battle) => battle.quizId)),
     );
     const generated = JSON.parse(
       await readFile(

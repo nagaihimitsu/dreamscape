@@ -1,14 +1,14 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import catalogData from "../src/content/generated/content/encounters/catalog.json";
+import generatedCatalog from "../src/content/generated/content/encounters/catalog.json";
 import journeyData from "../src/content/generated/content/progression/journey.json";
 import tourismData from "../src/content/generated/content/tourism/catalog.json";
 import generatedQuizzes from "../src/content/generated/quizzes.json";
 import effectsData from "../src/content/generated/content/romance/effect_catalog.json";
 import presentationData from "../src/content/generated/content/romance/presentation.json";
 import profileData from "../src/content/generated/content/romance/response_profiles.json";
-import { encounterCatalogSchema } from "../src/content/encounter-schemas";
+import { encounterCatalogSchema, type EncounterCatalog } from "../src/content/encounter-schemas";
 import { journeySchema } from "../src/content/journey-schemas";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { quizSchema } from "../src/content/schemas";
@@ -18,6 +18,15 @@ import { validateQuizEntries } from "./quiz-validation";
 import { validateEncounterContent } from "./encounter-validation";
 import { loadContentSources, storyFile } from "./content-sources";
 
+// These tests check Milan's encounters and items (cityId "milano", the city of input()); other
+// journeys in the generated catalog (e.g. the sample journey) have their own cities.
+const milanLandmarks = new Set(tourismCatalogSchema.parse(tourismData).landmarks.filter((landmark) => landmark.cityId === "milano").map((landmark) => landmark.id));
+// Milan writes every encounter in full (cityId, sources), the shape of encounterCatalogSchema.
+const catalogData = {
+  ...generatedCatalog,
+  items: generatedCatalog.items.filter((item) => item.cityId === "milano"),
+  encounters: generatedCatalog.encounters.filter((event) => milanLandmarks.has(event.landmarkId)),
+} as EncounterCatalog;
 const catalog = encounterCatalogSchema.parse(catalogData);
 const paths = catalog.encounters.flatMap((event) => [event.storyId, ...(event.quiz ? [event.quiz.wonStoryId, event.quiz.lostStoryId, event.quiz.alreadyStoryId] : [])]);
 const contentSources = loadContentSources(process.cwd());

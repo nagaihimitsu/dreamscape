@@ -307,9 +307,10 @@ describe("Ink validation cache", () => {
     }
     const ci = readFileSync(path.join(repository, ".github/workflows/ci.yml"), "utf8");
     expect(ci).toMatch(/run: npm run build\n\s+env:\n\s+DREAMSCAPE_INK_CACHE: "off"/u);
-    // verify (also pages.yml before deploying) validates every branch in its first generation.
+    // verify (also pages.yml before deploying) validates every branch in its first generation
+    // (with the sample journey, which the unit tests need).
     const { scripts } = JSON.parse(readFileSync(path.join(repository, "package.json"), "utf8")) as { scripts: Record<string, string> };
-    expect(scripts.verify).toMatch(/^npm run content:build -- --no-cache && /u);
+    expect(scripts.verify).toMatch(/^npm run content:build -- --no-cache --with-sample && /u);
   });
 
   it("is off with DREAMSCAPE_INK_CACHE=off and keeps only the newest code fingerprints", () => {
