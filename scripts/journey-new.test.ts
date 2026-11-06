@@ -6,7 +6,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { journeyCatalogSchema } from "../src/content/journey-catalog";
 import { MIRROR_DIRECTORY, journeyDirectory, journeysDirectory } from "./content-layout";
 import { buildContent } from "./content-pipeline";
-import { listFiles } from "./content-sources";
+import { listFiles, readJourneyManifests } from "./content-sources";
 import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readiness";
 import { CHECKLIST_FILE, CHECKLIST_TEMPLATE, checkNewJourneyOptions, createJourney, parseNewJourneyArgs, scaffoldJourney } from "./journey-new";
 import { prepareJourneyRelease } from "./promote-journey";
@@ -136,62 +136,99 @@ async function replaceSampleContent(folder: string): Promise<void> {
 describe("journey:new in a copy of the repository", () => {
   let root: string;
   const journeyFolders = () => readdirSync(journeysDirectory(root)).sort();
+  // The copy holds whatever journeys the repository has (also ones made by
+  // journey:new), so the new names are chosen among the unused ones.
+  let before: string[];
+  let orders: number[];
+  let first: typeof kyoto;
+  let second: { journeyId: string; nameJa: string; cityId: string; cityNameJa: string };
+  let unused: { journeyId: string; prefix: string };
   beforeAll(() => {
     root = mkdtempSync(path.join(tmpdir(), "dreamscape-journey-new-"));
     // A real copy (journey:release refuses the linked images of prepareContentFixture), with the sample and the checklist.
     for (const folder of ["content", "public", "authoring/templates"])
       cpSync(path.join(repository, folder), path.join(root, folder), { recursive: true });
+    before = journeyFolders();
+    const manifests = readJourneyManifests(root);
+    orders = manifests.map((manifest) => manifest.order);
+    const used = new Set([...before, ...manifests.flatMap((manifest) => [manifest.id,
+      ...(manifest.data.cities as { id: string }[]).map((city) => city.id),
+      String((manifest.data.authoring as { eventPrefix?: unknown } | undefined)?.eventPrefix)])]);
+    const free = (name: string) => {
+      let candidate = name;
+      for (let index = 2; used.has(candidate); index += 1) candidate = `${name}${index}`;
+      used.add(candidate);
+      return candidate;
+    };
+    first = { ...kyoto, journeyId: free(kyoto.journeyId), cityId: free(kyoto.cityId), prefix: free(kyoto.prefix) };
+    const nara = free("nara");
+    second = { journeyId: nara, nameJa: "奈良の旅", cityId: nara, cityNameJa: "奈良" };
+    unused = { journeyId: free("osaka"), prefix: free("os") };
   });
   afterAll(() => rmSync(root, { recursive: true, force: true }));
+  /** The order journey:new gives (docs/02): the next multiple of 10 above every journey's, never the sample's 9000. */
+  const nextOrder = (taken: readonly number[]) => {
+    const order = Math.floor(Math.max(0, ...taken) / 10) * 10 + 10;
+    return order === 9000 ? 9010 : order;
+  };
 
   it("creates preparing journeys that content:build accepts, the minimal one and one with the optional parts", async () => {
-    const created = createJourney(root, kyoto);
-    expect(created).toMatchObject({ journeyId: "kyoto_trip", prefix: "ky", cityId: "kyoto", order: 50, folder: "content/journeys/kyoto_trip" });
+    const { journeyId: k, cityId: kc, prefix: kp } = first;
+    const created = createJourney(root, first);
+    const order = nextOrder(orders);
+    expect(created).toMatchObject({ journeyId: k, prefix: kp, cityId: kc, order, folder: `content/journeys/${k}` });
     expect(created.files).toHaveLength(sample.readme.core.length + 1);
-    expect(createJourney(root, { journeyId: "nara", nameJa: "奈良の旅", cityId: "nara", cityNameJa: "奈良", withOptional: true }))
-      .toMatchObject({ prefix: "nara", order: 60, files: expect.arrayContaining(["stories/encounters/nara_nara_bookmark_gift.ink"]) });
-    expect(journeyFolders()).toEqual(["golden_triangle", "kyoto_trip", "luang_prabang", "milano", "nara", "uzbekistan"]);
+    const n = second.journeyId;
+    expect(createJourney(root, { ...second, withOptional: true }))
+      .toMatchObject({ prefix: n, order: nextOrder([...orders, order]), files: expect.arrayContaining([`stories/encounters/${n}_${n}_bookmark_gift.ink`]) });
+    expect(journeyFolders()).toEqual([...before, k, n].sort());
     const result = await buildContent(root);
     const catalog = journeyCatalogSchema.parse(JSON.parse(readFileSync(path.join(root, MIRROR_DIRECTORY, "journeys/catalog.json"), "utf8")));
-    expect(catalog.journeys.slice(-2).map((journey) => [journey.id, journey.status, journey.nameJa])).toEqual([["kyoto_trip", "preparing", "京都の旅"], ["nara", "preparing", "奈良の旅"]]);
-    expect(result.journeyContents.find((journey) => journey.id === "nara")).toMatchObject({ status: "preparing" });
+    expect(catalog.journeys.filter((journey) => journey.id === k || journey.id === n).map((journey) => [journey.id, journey.status, journey.nameJa]))
+      .toEqual([[k, "preparing", "京都の旅"], [n, "preparing", "奈良の旅"]]);
+    expect(result.journeyContents.find((journey) => journey.id === n)).toMatchObject({ status: "preparing" });
     // Every ID follows the new prefix and every file is used: no warning names the new journeys.
-    expect(result.warnings.filter((warning) => /kyoto|nara/u.test(warning.message))).toEqual([]);
+    expect(result.warnings.filter((warning) => [k, kc, kp, n].some((name) => warning.message.includes(name)))).toEqual([]);
   });
 
   it("refuses an existing journey, city or prefix and content that would not build, writing nothing", () => {
-    const before = journeyFolders();
-    expect(() => createJourney(root, { ...kyoto, cityId: "kyoto2" })).toThrow("旅行編「kyoto_trip」はすでにあります: content/journeys/kyoto_trip");
-    expect(() => createJourney(root, { ...kyoto, journeyId: "osaka", prefix: "os" })).toThrow("都市ID「kyoto」はすでに使われています: content/journeys/kyoto_trip/cities/kyoto.json");
-    expect(() => createJourney(root, { ...kyoto, journeyId: "osaka", cityId: "osaka", prefix: "gt" })).toThrow("IDの接頭辞「gt」は旅行編「golden_triangle」が使っています");
-    expect(() => createJourney(root, { ...kyoto, journeyId: "osaka", cityId: "osaka", prefix: "os", nameJa: "" })).toThrow("--name には日本語の名前を1行で指定してください");
-    // A story ID of another journey that the copy would define again.
-    const taken = path.join(journeyDirectory(root, "golden_triangle"), "stories/epilogues/osaka.ink");
+    const current = journeyFolders();
+    const { journeyId: k, cityId: kc, prefix: kp } = first;
+    const other = { journeyId: unused.journeyId, cityId: unused.journeyId, prefix: unused.prefix };
+    expect(() => createJourney(root, { ...first, cityId: other.cityId })).toThrow(`旅行編「${k}」はすでにあります: content/journeys/${k}`);
+    expect(() => createJourney(root, { ...first, journeyId: other.journeyId, prefix: other.prefix }))
+      .toThrow(`都市ID「${kc}」はすでに使われています: content/journeys/${k}/cities/${kc}.json`);
+    expect(() => createJourney(root, { ...first, ...other, prefix: kp })).toThrow(`IDの接頭辞「${kp}」は旅行編「${k}」が使っています`);
+    expect(() => createJourney(root, { ...first, ...other, nameJa: "" })).toThrow("--name には日本語の名前を1行で指定してください");
+    // A story ID of another journey that the copy would define again (its epilogue `epilogues/<cityId>`).
+    const taken = path.join(journeyDirectory(root, k), `stories/epilogues/${other.cityId}.ink`);
     writeFileSync(taken, "// taken\n-> END\n");
     try {
-      expect(() => createJourney(root, { ...kyoto, journeyId: "osaka", cityId: "osaka", prefix: "os" })).toThrow(/^作った旅行編が内容の検証を通らなかったため、何も書き込んでいません: .*epilogues\/osaka/u);
+      expect(() => createJourney(root, { ...first, ...other }))
+        .toThrow(new RegExp(`^作った旅行編が内容の検証を通らなかったため、何も書き込んでいません: .*epilogues/${other.cityId}`, "u"));
     } finally { rmSync(taken); }
-    expect(journeyFolders()).toEqual(before);
+    expect(journeyFolders()).toEqual(current);
   });
 
   it("is reported by journey:readiness and refused by journey:release until the sample content is replaced", async () => {
-    const report = inspectJourneyReadiness(loadJourneyReadiness(root, "kyoto_trip"));
+    const { journeyId: k, cityId: kc, prefix: kp } = first;
+    const report = inspectJourneyReadiness(loadJourneyReadiness(root, k));
     const left = report.issues.filter((issue) => issue.code === "sample_content_left").map((issue) => issue.detail);
     expect(left).toEqual(expect.arrayContaining([
-      "見本の出典（example.com）が残っています: content/journeys/kyoto_trip/quizzes/ky_kyoto_clock_tower_quiz.json（3件）",
-      "見本の画像のままです: content/journeys/kyoto_trip/public/assets/tourism/kyoto_trip/kyoto_clock_tower.png",
-      "見本の文章が残っています: content/journeys/kyoto_trip/stories/tourism/ky_kyoto_clock_tower_guide.ink（6か所）",
+      `見本の出典（example.com）が残っています: content/journeys/${k}/quizzes/${kp}_${kc}_clock_tower_quiz.json（3件）`,
+      `見本の画像のままです: content/journeys/${k}/public/assets/tourism/${k}/${kc}_clock_tower.png`,
+      `見本の文章が残っています: content/journeys/${k}/stories/tourism/${kp}_${kc}_clock_tower_guide.ink（6か所）`,
     ]));
     expect(report).toMatchObject({ ready: false, readyForPromotion: false });
-    await expect(prepareJourneyRelease(root, "kyoto_trip", false)).rejects.toThrow(/^見本の内容が残っているため公開できません。[\s\S]*見本の画像のままです/u);
+    await expect(prepareJourneyRelease(root, k, false)).rejects.toThrow(/^見本の内容が残っているため公開できません。[\s\S]*見本の画像のままです/u);
 
-    await replaceSampleContent(journeyDirectory(root, "kyoto_trip"));
-    const replaced = inspectJourneyReadiness(loadJourneyReadiness(root, "kyoto_trip"));
+    await replaceSampleContent(journeyDirectory(root, k));
+    const replaced = inspectJourneyReadiness(loadJourneyReadiness(root, k));
     expect(replaced.issues.map((issue) => issue.detail)).toEqual(["旅行編は準備中です。"]);
     expect(replaced.readyForPromotion).toBe(true);
     // The release preview validates the released state in a copy and changes nothing.
-    const manifest = readFileSync(path.join(journeyDirectory(root, "kyoto_trip"), "manifest.json"), "utf8");
-    await prepareJourneyRelease(root, "kyoto_trip", false);
-    expect(readFileSync(path.join(journeyDirectory(root, "kyoto_trip"), "manifest.json"), "utf8")).toBe(manifest);
+    const manifest = readFileSync(path.join(journeyDirectory(root, k), "manifest.json"), "utf8");
+    await prepareJourneyRelease(root, k, false);
+    expect(readFileSync(path.join(journeyDirectory(root, k), "manifest.json"), "utf8")).toBe(manifest);
   }, 120_000);
 });

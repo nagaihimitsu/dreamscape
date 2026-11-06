@@ -55,8 +55,10 @@ describe("Milan city content", () => {
     expect(stops.map((episode) => episode.landmarkId)).toEqual([
       "duomo_milano", "galleria_vittorio_emanuele_ii", "last_supper", "castello_sforzesco",
     ]);
-    const specialStops = result.journey.storyBattles.map((entry) => {
+    // Milan's special battles only: other journeys (e.g. one made by journey:new --with-optional) have their own.
+    const specialStops = result.journey.storyBattles.flatMap((entry) => {
       const battle = result.battles.find((item) => item.id === entry.battleId)!;
+      if (result.tourism.landmarks.find((landmark) => landmark.id === battle.landmarkId)?.cityId !== cityData.id) return [];
       expect(battle.reasoning).toBeDefined();
       expect(result.quizzes[battle.quizId].questions).toHaveLength(3);
       return battle.landmarkId;

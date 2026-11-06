@@ -21,11 +21,19 @@ test("the title screen opens every registered journey without writing a save", a
   for (const [index, journey] of journeys.entries()) {
     if (index > 0) await page.keyboard.press("ArrowDown");
     await expect(selector).toHaveValue(journey.id);
-    if (journey.name.includes("準備中")) {
-      // An unfinished journey can only store names for later; it cannot be played yet.
+    const entry = catalog.journeys.find((item) => item.id === journey.id);
+    expect(journey.name.includes("準備中"), journey.id).toBe(entry?.status === "preparing");
+    if (entry?.status === "preparing") {
+      // An unfinished journey cannot be played yet. With an initial state
+      // (manifest initialState) it can store names for later; without one,
+      // as a journey fresh from `npm run journey:new`, it is read-only.
       await expect(page.getByText("この旅行編は制作中です。", { exact: false })).toBeVisible();
-      await expect(page.getByRole("button", { name: "旅の準備を保存する" })).toBeVisible();
       await expect(page.getByRole("button", { name: "旅をはじめる" })).toHaveCount(0);
+      if (entry.initialState) await expect(page.getByRole("button", { name: "旅の準備を保存する" })).toBeVisible();
+      else {
+        await expect(page.getByRole("status")).toHaveText("この旅行編は制作中です。公開をお待ちください。");
+        await expect(page.getByRole("button")).toHaveCount(0);
+      }
     } else {
       await expect(page.getByRole("button", { name: "旅をはじめる", exact: true })).toBeVisible();
       headings.set(journey.id, await page.locator(".masthead .edition").textContent());
