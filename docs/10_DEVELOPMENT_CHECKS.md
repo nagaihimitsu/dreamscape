@@ -13,13 +13,14 @@
 | 見本の編（`authoring/templates/sample_trip/`）・データの書式（スキーマ）の変更 | `npx vitest run scripts/sample-journey.test.ts src/domain/sample-journey-route.test.ts`（先に `npm run content:build -- --with-sample`）。必須項目が増えたときは、まず見本のテストが失敗して知らせる。見本の README の一覧と必須ファイルのエラーも直す。`npm run dev:sample` で実際に遊べる。見本を変えたら、見本を複製する `journey:new` と見本の内容の残りの検査も確かめる：`npx vitest run scripts/journey-new.test.ts scripts/sample-leftovers.test.ts` |
 | ひな形作成 `journey:new`・見本の内容の残りの検査（`scripts/journey-new.ts`・`scripts/sample-journey.ts`・`scripts/journey-readiness.ts`・`scripts/promote-journey.ts`） | `npx vitest run scripts/journey-new.test.ts scripts/sample-leftovers.test.ts scripts/sample-journey.test.ts`（一時コピーで作成・生成・readiness・`journey:release --check`、`city:bundle` の書き出しと確認、観察資料・交通判断台帳がないときの `journey:scaffold`・`journey:transit` の案内まで行う。名前と並び順は一時コピーの旅行編と重ならないものを選ぶので、`journey:new` で作った旅行編がリポジトリにあっても通る。約13秒）。readiness と release を変えたら `scripts/journey-authoring.test.ts`・`scripts/journeys/golden_triangle/india-readiness.test.ts`・`india-release-integration.test.ts` も実行する |
 | 保存・進行 | 同一バージョン内の保存・再開、読めないデータの保護、明示消去、別タブ、報酬重複防止の関連テストとE2E一式、必要な実画面。型・共通基盤の影響に応じて型検査と検証範囲を広げる |
-| CI・Playwrightの設定、本番ビルドの検査（`.github/workflows/`・`playwright.config.ts`・`scripts/dist-guard.ts`） | `npm run build`（`dist/` の検査を含む）、`npx vitest run scripts/dist-guard.test.ts`、E2E一式。ワークフローの変更はPRで実際の実行結果を確認する |
+| CI・Playwrightの設定、E2Eの共通部品、本番ビルドの検査（`.github/workflows/`・`playwright*.config.ts`・`tests/e2e/helpers.ts`・`scripts/dist-guard.ts`） | `npm run build`（`dist/` の検査を含む）、`npx vitest run scripts/dist-guard.test.ts scripts/e2e-specs.test.ts scripts/story-validation-cache.test.ts`、E2Eの全段（`npm run test:e2e` と `npm run test:e2e:prod`）。ワークフローの変更はPRで実際の実行結果を確認する |
+| 画面一覧（`npm run screens`・`scripts/dev/screen-gallery.ts`・`tests/screens/`） | `npx vitest run scripts/dev/screen-gallery.test.ts`、`npm run screens` で一覧ができること |
 | 単体テストの設定・テストの組・テスト用フィクスチャ（`vite.config.ts` の `test`・`scripts/test-sets.ts`・`scripts/test-image-guard.ts`・`src/content/test-fixtures.ts`） | `npx vitest run scripts/test-sets.test.ts scripts/test-image-guard.test.ts src/content/test-fixtures.test.ts`（先に `content:build`）、`npm test`（両方の組） |
-| Debug・場面の組み立て部品・Debug起動URL（`src/dev/`） | `npx vitest run src/dev/ scripts/dist-guard.test.ts`（先に `npm run content:build -- --with-sample`）、`npm run build`（`dist/` の検査）、`boot.spec.ts`。部品・仮の場面（`test-cities.ts`・`fixture-template.ts`）を変えたら、それを使う単体テスト（`npm run test:quick`。`src/domain` の試験用の都市を使うテストを含む）と `inter-city.spec.ts` も実行する。Debug画面の変更は320・360・390px幅の実画面（[Debug起動URL](#debug起動url)） |
+| Debug・場面の組み立て部品・Debug起動URL（`src/dev/`） | `npx vitest run src/dev/ scripts/dist-guard.test.ts`（先に `npm run content:build -- --with-sample`）、`npm run build`（`dist/` の検査）、`npx playwright test --project=debug`（`debug-scenes.spec.ts`）。部品・仮の場面（`test-cities.ts`・`fixture-template.ts`）を変えたら、それを使う単体テスト（`npm run test:quick`。`src/domain` の試験用の都市を使うテストを含む）と `inter-city.spec.ts` も実行する。Debug画面の変更は320・360・390px幅の実画面（[Debug起動URL](#debug起動url)） |
 | 会話の全分岐検査とそのキャッシュ（`scripts/ink-validation.ts`・`scripts/story-validation-cache.ts`） | `npx vitest run scripts/story-validation-cache.test.ts scripts/story-validation-cache-content.test.ts`（先に `content:build`）、`npm run content:build -- --no-cache` と通常の `npm run content:build` が同じ結果になること。検査コードを変えると指紋が変わり、次の生成はすべて検査する（[キャッシュ](#会話の全分岐検査のキャッシュ)） |
-| 大きな変更・公開前 | `npm run verify`、E2E一式と、影響範囲に応じた実画面確認 |
+| 大きな変更・公開前 | `npm run verify`、E2E一式（`npm run test:e2e`）と本番ビルドの段（`npm run test:e2e:prod`）、影響範囲に応じた実画面確認（`npm run screens` の画面一覧を含む） |
 
-`npm run content:check` は差分検証ではなく全コンテンツを検証・生成する。対象テストを絞る場合、例えば `npm test -- src/domain/encounter-ap.test.ts` は通常どおり `pretest` でコンテンツを生成してから、そのテストだけを実行する。Playwrightの `webServer` は通常 `npm run dev` を実行し、その `predev` がコンテンツを生成する。既に起動したサーバーを再利用する場合は、対象の変更が反映され、生成物が最新であることを確認する。自動テストの通過だけを写真の切れ方や操作性の目視確認の代わりにはしない。
+`npm run content:check` は差分検証ではなく全コンテンツを検証・生成する。対象テストを絞る場合、例えば `npm test -- src/domain/encounter-ap.test.ts` は通常どおり `pretest` でコンテンツを生成してから、そのテストだけを実行する。Playwrightの `webServer` は、開発サーバーの段では `npm run dev` を実行してその `predev` がコンテンツを生成し、本番ビルドの段では `npm run build` の後に `vite preview` を起動する。既に起動したサーバーを再利用する場合は、対象の変更が反映され、生成物が最新であることを確認する。自動テストの通過だけを写真の切れ方や操作性の目視確認の代わりにはしない。
 
 小変更のたびに全単体テストや全E2Eを手元で実行する必要はない。日常の単体テストは `npm run test:quick`（速い組。[単体テストの組](#単体テストの組と所要時間)）とし、全件（`npm test`）はCIと、公開前・大きな変更の `npm run verify` で実行する。PRと `main` へのpushでは、GitHub Actionsが全単体テスト・本番ビルド・E2E一式を自動実行する（[CI](#cigithub-actions)）。上の表でE2E一式を挙げた変更は、PRを出す前に手元でも実行する。開発中はv12以前の旧開発版セーブの更新後の再開を保証せず、旧互換テストを新機能ごとに増やす必要はない。現在のゲームの保存・再開や読めないデータの保護は維持する。
 
@@ -78,43 +79,88 @@
 - 保存するのは成功した結果（経路の数と、検査が通った台詞・効果の一覧）だけ。失敗は保存しないため、エラーの文言は常にその場で検査した結果になる。保存した結果を使うときは、台詞と効果を一度ずつ（最初に通った順に）検査の受け手へ渡し直す。受け手（会話注釈の「古い注釈」警告、効果を使うデートの集計）は集合として数えるので、結果は検査し直した場合と同じになる。読めない・壊れた・鍵の合わない項目は、無いものとして検査する。
 - `npm run content:build` は「`Ink validation cache: 212 reused, 0 run`」のように再利用と実行の件数を表示する。キャッシュを使わずにすべて検査するには `npm run content:build -- --no-cache`（`journey:scenario` も同じ）、または環境変数 `DREAMSCAPE_INK_CACHE=off` を使う（`off`・`0`・`false`・`no`）。結果に疑いがあるとき、検査コードの外（例えば `node_modules` の中身を手で書き換えた場合）を変えたときは、これで確かめる。
 - `npm run verify`（手元の公開前の確認と、`pages.yml` の公開前の確認）：最初の生成は `--no-cache` で、キャッシュを読まず書かずにすべて検査する。続く単体テストはキャッシュを使う（手元では、同じ検査コードで以前に保存した結果も使う）。
-- CI：キャッシュは持ち越さない。各ジョブは `npm ci` で `node_modules` を作り直し、ワークフローは `actions/cache` を使わない（`setup-node` が保存するのは `~/.npm` だけ）。このため、使われる結果はすべて同じジョブの中で同じコードが計算したもの。そのうえで公式の内容検査（`ci.yml` の「Content, types and production build」）は `DREAMSCAPE_INK_CACHE=off` で、キャッシュなしにすべて検査する。単体テストのジョブは、空のキャッシュで始まる最初の生成ですべて検査し、以降のテストがその結果を再利用する。`pages.yml` は上の `npm run verify`。`scripts/story-validation-cache.test.ts` がワークフローと `verify` のこの条件も確かめる。
+- CI：キャッシュは持ち越さない。各ジョブは `npm ci` で `node_modules` を作り直し、ワークフローの `actions/cache` はPlaywrightのブラウザ（`~/.cache/ms-playwright`）だけを持ち越す（`setup-node` が保存するのは `~/.npm` だけ）。このため、使われる結果はすべて同じジョブの中で同じコードが計算したもの。そのうえで公式の内容検査（`ci.yml` の「Content, types and production build」）は `DREAMSCAPE_INK_CACHE=off` で、キャッシュなしにすべて検査する。単体テストのジョブは、空のキャッシュで始まる最初の生成ですべて検査し、以降のテストがその結果を再利用する。`pages.yml` は上の `npm run verify`。`scripts/story-validation-cache.test.ts` がワークフローと `verify` のこの条件も確かめる。
 - 正しさの確認：`scripts/story-validation-cache.test.ts`（`quick`）は、指紋が読み込み先をすべて含むこと（読み込みの解析とは別の広い検索でも確かめる）、指紋に入るモジュールが実行中にファイル・環境変数・時刻・乱数などを読まないこと、検査コード・Inkの本文・タグのID・変数などの入力のどれを変えても検査し直すこと、保存した結果で経路数・台詞（同じ文を別の話者が話す場合を含む）・効果・会話注釈の警告が同じになること、失敗を保存しないこと、壊れた項目を無視すること、項目数の上限で最近使ったものを残すことを確かめる。テストは環境変数 `DREAMSCAPE_INK_CACHE` に関係なく自分の一時フォルダのキャッシュを開くため、`off` を付けて `npm test` などを実行しても失敗しない。`scripts/story-validation-cache-content.test.ts`（`content`）は、実際のコンテンツでキャッシュなし・空のキャッシュ・保存済みのキャッシュの生成結果と警告が一致し、壊したデートのエラーが同じ文言になることを確かめる。
 - `validateStory` に引数を足す場合は、`StoryValidationInput` にも加える（キャッシュ付きの呼び出しは、この入力だけを `validateStory` に渡す）。検査が使うデータは必ずこの入力から渡し、検査コード（指紋に入るモジュール）の中でファイル・`import.meta.glob`・環境変数・時刻・乱数などから読まない。そうしたデータは指紋にも鍵にも入らず、変わっても古い結果が使われる（上のテストが検出する）。
 
 ## E2Eテスト
 
-`tests/e2e/` のE2Eは、利用者と同じ操作で主要機能が動くことと、重大な不具合（起動できない、進行が止まる、保存が失われる、致命的なJSエラー）がないことだけを確認する最小構成とする。個々の観光地・シナリオ・選択肢・デート・品物の網羅や、細かな見た目・位置は対象にしない。それらのルールは単体・統合テストで、見た目は [UIレビュー](../UI_REVIEW_CHECKLIST.md) と実画面で確認する。
+`tests/e2e/` のE2Eは、利用者と同じ操作で主要な流れが最後まで通ることと、重大な不具合（起動できない、進行が止まる、保存が失われる、致命的なJSエラー、本番にDebugが入る）がないことを確かめる。個々の観光地・シナリオ・選択肢・デート・品物の網羅や、細かな見た目・位置は対象にしない。ルールは単体・統合テストで、見た目は[人が画面を確かめる](#人が画面を確かめる)と [UIレビュー](../UI_REVIEW_CHECKLIST.md) で確認する。少数の重要な流れに、過去に起きた・起きやすい失敗を狙う確認（エラー推測）を数手ずつ足す形をとり、状態の移り変わりの網羅は画面ではなく単体テストの層で行う。
 
-| ファイル | 確認する流れ |
+### E2Eの段
+
+テストは段（tier）に分け、CIでは段ごとに別のジョブとして並列に実行する（[CI](#cigithub-actions)）。どの段で動くかは各テストのタグで決める（`tests/e2e/helpers.ts` の `tier`。`test("…", { tag: [tier.gate, tier.prod] }, …)`）。タグのないテストはどの段でも実行されないため、`scripts/e2e-specs.test.ts`（単体テストの `quick`）が失敗にする。
+
+| 段 | タグ | 起動するもの | 内容 | 件数と所要時間（4コアの開発環境、2026年11月） |
+| --- | --- | --- | --- | --- |
+| 合否判定 | `@gate` | 開発サーバー（`npm run dev`） | `boot`・`play`・`save-load`・`inter-city` の全テスト | 9件、約35秒（予算: 約14件・2ワーカーで2分以内） |
+| Debug起動台 | `@debug` | 開発サーバー | `debug-scenes`（下の道3） | 6件、約30秒 |
+| 本番ビルド | `@prod` | `npm run build` の後に `vite preview`（`playwright.prod.config.ts`） | 起動と全旅行編の開始画面、ミラノの開始からバトル結果・デートまで（`play`）、本番での確認（下表） | 4件、ビルド込みで約20秒（CIではビルドの分だけ長い） |
+| 見本の編の通しプレイ | — | （WP06bで追加する。CIの段も同時に足す） | | |
+| 予定（週1回・手動。合否判定にしない） | `@smoke`・`@explore` | — | `@smoke` はiPhone系（WebKit）で確かめる候補（`boot`・`play`に付いている）。`@explore` は探索的な操作用 | — |
+
+| 実行 | コマンド |
 | --- | --- |
-| `boot.spec.ts` | 起動とタイトル画面、登録済みの全旅行編の開始画面（準備中の旅行編は、`manifest.json` に `initialState` があれば名前を保存する欄、なければ `journey:new` で作ったばかりの旅行編のように公開待ちの案内だけ）、Debug起動URLで場面を開いても通常の保存データが変わらないこと（URLの誤りの案内を含む） |
-| `play.spec.ts` | ミラノの新しい旅で移動、観光ガイド、クイズバトル、報酬、デート（AP消費）を経て自由時間へ戻る |
-| `save-load.spec.ts` | 自動保存とイベント途中の再読み込み、手動セーブ、別タブからの同時利用の防止、読めないセーブの保護 |
-| `inter-city.spec.ts` | ゴールデントライアングル編でデリーのエピローグからアーグラへ移り、地図と都市情報が切り替わる（デリーのフィナーレ結果までは下の道2で作る） |
+| 開発サーバーの2つの段（手元の標準） | `npm run test:e2e`（1つの開発サーバーで `gate` と `debug` を実行。約1分） |
+| 1つの段 | `npx playwright test --project=gate`、`npx playwright test --project=debug` |
+| 本番ビルドの段 | `npm run test:e2e:prod`（先に `npm run build` を実行して生成物を書き直すため、開発サーバーのE2Eと同時に実行しない） |
+| 1ファイル・1件 | `npx playwright test tests/e2e/play.spec.ts`、`npx playwright test -g "読めないセーブ"` |
+| 新規・変更したテスト | `npx playwright test <ファイル> --repeat-each=3` |
 
-`npm run test:e2e`（個別には `npx playwright test tests/e2e/play.spec.ts`）で実行する。一式は1〜2ワーカーで数分以内に終わる。各テストは自分のブラウザコンテキスト（保存領域・タブ）を持ち、同じファイルのテストも別のワーカーで並列に実行する（`fullyParallel`）。テスト同士で保存データや順序に依存しない。共通の `tests/e2e/helpers.ts` の `test` は、どのタブでもコンソールエラー・未処理の例外・ゲームの画像等の欠落があればテストを失敗にする（外部の地図タイル・Webフォントの取得失敗は除く）。状態の作り方と数え方は、次の3つの道に分ける。
+| ファイル | 確認する流れ（根拠はテストの注記） | 段 |
+| --- | --- | --- |
+| `boot.spec.ts` | 起動とタイトル、登録済みの全旅行編の開始画面（生成されたカタログから読み、旅行編を名指ししない。見出しは各旅行編の最初の都市名、準備中の旅行編は `manifest.json` の `initialState` があれば名前を保存する欄、なければ `journey:new` で作ったばかりの旅行編のように公開待ちの案内だけ、タイトルの絵）。本番だけ: `?debug`・`?character-preview` を付けても通常のタイトルが出てDebugの読み取り口もないこと、アイコンが画像として配信されること、タイトル画面までの読み込み量の報告（合否にしない） | gate・prod |
+| `play.spec.ts` | ミラノの新しい旅で移動、観光ガイド、クイズバトル、報酬、デート（AP消費）を経て自由時間へ戻る。記号入りの名前を文字として表示。既定の文字送り（1回目のタップは書きかけの行を最後まで表示し保存は変わらない、2回目で次の行へ）。回答ボタンの二重タップ（回答は1件だけ記録され、次の問題へ進まない） | gate・prod |
+| `save-load.spec.ts` | 自動保存と再読み込み: バトルの問題の途中（同じ問題から再開し、報酬とAPは受領記録のとおり1回だけ）、結果画面、観光後、デートの途中（APを再び使わない）。英語ノートの記録・復習の登録と文字送りの設定が再読み込み後も残る。手動セーブ。別タブ。読めないセーブ（「消去せず戻る」で変わらず、「元のデータを退避して新しく始める」で元のバイト列が同じ旅行編のバックアップのキーに残る）。新しい版のセーブ（壊れたデータとは別の案内、消去はその旅行編のセーブと英語ノートだけで、バックアップと他の旅行編は残る）。保存の書き込みの失敗（セーブのキーだけを失敗させる。案内が出て操作でき、再読み込みで最後に成功した保存から続く） | gate |
+| `inter-city.spec.ts` | 都市を2つ以上持ち、エピローグの後に次の都市へ進む最初の公開中の旅行編（カタログから選ぶ）で、最初の都市のフィナーレ結果（道2で作る）からエピローグ、次の都市の到着と地図・行き先、引き継ぐ値、再読み込み | gate |
+| `debug-scenes.spec.ts` | 特殊戦B（矛盾追及）と特殊戦C（証拠連結）: 正しい証拠を手がかり帳で選び、開き直しても選択が保たれ、提出して結果まで進み、設定画面へ戻る（対象の戦いと証拠のIDは開発サーバーの内容から選ぶ）。品物をくれる道中交流（英語の3択に答えて品物を得る）。成功寄り（抽選値0）と失敗寄り（9999）のデートを最後まで。起動URLの再表示と誤ったURLの案内 | debug |
 
 ### テストの3つの道
 
+状態の作り方と数え方は、次の3つの道に分ける。
+
 | 道 | 内容 | 確認として数えるもの |
 | --- | --- | --- |
-| 1. 通常の操作 | タイトルから利用者と同じ操作で進める。`play.spec.ts` と `save-load.spec.ts` はDebugも近道も使わない | 遊び方・保存・再読み込みからの再開・別タブ・読めないデータの保護 |
-| 2. 本物の関数で作った状態を通常セーブとして置く | 実際の操作では数分かかる前段だけを、`src/dev/scenario-builders.ts`（本物のゲーム関数だけで状態を作り、最後に `validateGameState` を通す部品）で作り、ゲームと同じ形式の通常セーブとして置く。その後は画面で操作する（例：`inter-city.spec.ts` はデリーのフィナーレ結果を `cityFinaleResult("delhi")` で作り、エピローグからアーグラへの移動と再読み込みを画面で確かめる）。ページ内で開発サーバーの `/src/dev/scenario-builders.ts` を読み込むので、本番ビルドを配信するE2Eでは使えない | 置いた後の画面操作と、その後の保存・再開 |
-| 3. Debugを場面の起動台にする | [Debug起動URL](#debug起動url)で場面へ直接入り、その場面の表示と操作だけを確かめる。テストの前後で通常の保存領域（`localStorage`）が変わらないことを確かめる（`boot.spec.ts`）。Debugの状態は開発用の読み取り口 `window.__dreamscapeDebug` から読む | 場面の確認だけ。保存・再開の確認には数えない |
+| 1. 通常の操作 | タイトルから利用者と同じ操作で進める。`play.spec.ts` と `save-load.spec.ts` はDebugも近道も使わない（`scripts/e2e-specs.test.ts` が確かめる） | 遊び方・保存・再読み込みからの再開・別タブ・読めないデータの保護 |
+| 2. 本物の関数で作った状態を通常セーブとして置く | 実際の操作では数分かかる前段だけを、`src/dev/scenario-builders.ts`（本物のゲーム関数だけで状態を作り、最後に `validateGameState` を通す部品）で作り、ゲーム自身の `saveGame` で通常のセーブとして置く（`helpers.ts` の `placeSave`）。その後は画面で操作する（例：`inter-city.spec.ts`）。ページ内で開発サーバーの `/src/...` を読み込むので、本番ビルドの段では使えない | 置いた後の画面操作と、その後の保存・再開 |
+| 3. Debugを場面の起動台にする | [Debug起動URL](#debug起動url)で場面へ直接入り、その場面を最後まで操作して離れられることだけを確かめる（`debug-scenes.spec.ts`）。各テストは通常のセーブを置いた状態から始まり、終わりに `localStorage` と `sessionStorage` の全体が始めと同じであることを自動で確かめる。Debugの状態は開発用の読み取り口 `window.__dreamscapeDebug` から読む | 場面の確認だけ。保存・再開・別タブ・英語ノートの保存の確認には数えない（AGENTS.mdの「Debugを通常の保存・再開確認の代わりにしない」） |
 
-- Debugの一時データはメモリの中だけにあり、再読み込みで消える。Debugから通常セーブを作る機能はなく、作らない。道2のセーブはテストのコードが作る。
+- Debugの一時データはメモリの中だけにあり、再読み込みで消える。Debugから通常セーブを作る機能はなく、作らない。道2のセーブはテストのコードが作る。手書きの正常なセーブJSONは使わず、意図的に壊したデータ（読めないセーブ、未知の新しい版）は保護の確認にだけ使う。
+- Debugは別タブの排他と英語ノートの保存を通らないため、それらの確認は道1で行う。Debug画面（設定画面）の細部はE2Eにしない。
 - 単体テストも同じ部品を使う。「バトルを結果まで解く」「都市をクリアする」処理を各テストに書かず、`playBattleToResult`・`readGuide`・`finishEpisode`・`playCityToFinaleResult`・`clearCity`・`cityStart`・`cityFinaleResult`・`completedCity` などを使う。回答の選び方（既定は全問正解。`wrongAnswer`・`firstCorrect(n)`・独自の関数）と、操作ごとの確認や保存・復元（`after`）を渡せる。各操作は状態を必ず変え（変わらなければその場で止まって理由を示す）、地図から始めた予定はゲーム画面と同じく結果の時点で精算する。1手ごとに独自の確認をするテスト（全選択肢の採点、回答の二重送信、手がかりの選び直し）は自前の繰り返しのままでよい。
 - 部品は、場面を開く処理（地点への配置、AP・関係値の設定、保存した抽選値でのデートと交流）も持ち、Debugもこれを使う。`src/dev/scenario-builders.test.ts` が、公開中の全旅行編の全都市（見本の編を含む）で開始・フィナーレ結果・クリア・エピローグを作れることを確かめる。
+
+### 共通の部品と書き方
+
+- `tests/e2e/helpers.ts` の `test` を使う。自動で次を行う: 他のオリジンへの通信（地図タイル・Webフォント）を遮断する（ネットの状態に左右されず、外部がなくても遊べることも確かめる）。どのタブでもコンソールエラー・未処理の例外・ゲームの画像等の欠落があれば失敗にする（遮断した外部の取得失敗は除く）。失敗したテストには、各タブのURLと `dreamscape.` で始まる `localStorage` の内容を `storage.json` として添付する。
+- 画面の操作は `ops`（旅を始める、設定、文字送り、自動保存、手動セーブ、自由時間へ、エピローグへ、行き先、英語ノート、ガイドを閉じて対決へ、Debugの場面を開く・設定へ戻る）にまとめ、ボタン名などの日本語の文言を各specに散らさない。文言が変わったら `ops` を直す。
+- 要素は役割（role）とアクセシブルな名前・ラベル、または `data-testid` で探し、CSSのクラス名には頼らない。`data-testid` はゲームの見た目・分岐を変えずに足してよい。
+- 待つときは保存のリビジョン（`playUntil`。通常セーブまたはDebugの読み取り口を `source` で選び、3択の選び方を `pick` で渡せる）か画面の状態を使う。`waitForTimeout` と `networkidle` は使わない。
+- すべての段は `prefers-reduced-motion: reduce` で動き、台詞は1行ずつ一度に表示され、装飾の演出は短い。文字送りそのものを確かめるテストだけが `page.emulateMedia` で切り替え、`page.clock` でページの時計を止めて確かめる。
+- 各テストは自分のブラウザコンテキスト（保存領域・タブ）を持ち、同じファイルのテストも別のワーカーで並列に実行する（`fullyParallel`）。前のテストの終わりの状態を次のテストが使う書き方はしない。
+- 状態や名前は生成されたカタログ（`helpers.ts` の `journeyCatalog`・`generated`）か開発サーバーの内容から選び、旅行編・都市の一覧を固定しない。ミラノの流れを確かめるテスト（`play`・`save-load`）は、ミラノのIDと画面で確かめてよい。コンテンツファイルのパスには依存しない。
+
+### 期待値の決め方と直し方
+
+- 合否の基準は仕様（[docs/07](07_DATA_AND_TESTS.md) の受け入れテスト、AGENTS.md）から決め、各テストにその根拠を注記する。観察した数値を書き写さず、関係で確かめる（例：「APは受領記録の合計だけ増えた」「デートを始めた時点から減らない」）。
+- テストが落ちたら、まず仕様と照らす。直してよいのは「どこを操作するか」（`ops` の文言、`data-testid`、待つ対象）で、合否の基準を実装に合わせて書き換えない。仕様が変わる場合は、先に仕様の文書を直し、同じ変更でテストを直す。AIに直させるときも同じ。
+- 仕様どおりに動かないことが分かったら、ゲームを直し、規則の単体テストを足す（E2Eの期待値を緩めない）。
+
+### 不安定さと時間の決まり
+
+- 再試行しない（`retries: 0`）。たまたま通ったテストを合格にしない。不安定なテストは原因を直すか削除する。
+- 新規・変更したテストは `--repeat-each=3` で3回通してから入れる。
+- 1件30秒以内を目安にする（長い流れは理由を注記して `test.setTimeout(120_000)` まで）。合否判定の段は約14件・2ワーカーで2分以内、各段のCIのジョブはブラウザの導入を含めて8分以内を目安にし、超えたら件数や前段の作り方を見直す。
+- 小さな変更のたびに全段を手元で実行しない。関係するspecだけを実行し、全体はCIに任せる（上の表でE2E一式を挙げた変更は、PRの前に手元でも `npm run test:e2e` を実行する）。
 
 ### E2Eテストを追加する際の判断基準
 
 1. まず単体・統合テストで確認できないか考える。ゲームルール、AP・報酬、分岐・解放条件、保存形式・別タブ競合・破損データの保護、コンテンツ参照は `src/**/*.test.ts`・`scripts/**/*.test.ts` に書く。画面の中にしかない判定は、先に純粋関数へ移せないか検討する。
-2. E2Eに残すのは、ブラウザで組み合わせて初めて起きる重大な失敗（画面の遷移、ReactとInkの実行、ブラウザの保存領域・再読み込み・別タブ、画像やスクリプトの読み込み）を、利用者と同じ操作で確かめる場合に限る。
-3. 新しいファイルやテストを増やす前に、上の4つの流れへ1〜2個の確認を足せないか検討する。
-4. 全観光地・全シナリオ・全選択肢・全デート・全品物の網羅、台詞や文言の一致、要素の位置・幅・余白、画面幅ごとの繰り返し、Debug画面の細部はE2Eにしない。
-5. 共通の `test` を使い、固定時間ではなく保存のリビジョンや画面要素で待つ。状態の近道は、実際の操作では数分かかる場合だけ、`src/dev/scenario-builders.ts` で作った通常のセーブ（道2）を使う。通常の流れで確かめていない場面の表示・操作だけを確かめる場合はDebug起動URL（道3）を使ってよく、保存・再開の確認には数えない。どちらも理由をコメントに残す。`play.spec.ts`・`save-load.spec.ts` は近道を使わない。テストのためにゲーム側の設計・分岐・設定を変えない。コンテンツファイルのパスには依存せず、IDと画面で確認する。
-6. 追加・変更後は一式を3回続けて実行し、毎回通ることを確かめる。不安定なテストは再試行で隠さず、原因を直すか削除する。一式の実行時間は数分以内に保つ。
+2. E2Eに残すのは、ブラウザで組み合わせて初めて起きる重大な失敗（画面の遷移、ReactとInkの実行、ブラウザの保存領域・再読み込み・別タブ、画像やスクリプトの読み込み、本番ビルド）を、利用者と同じ操作で確かめる場合に限る。
+3. 新しいファイルやテストを増やす前に、既存の流れへ1〜2個の確認を足せないか検討する。足したテストには段のタグを付ける。
+4. 全観光地・全シナリオ・全選択肢・全デート・全品物の網羅、台詞や文言の一致、要素の位置・幅・余白、画面幅ごとの繰り返し、Debug画面の細部はE2Eにしない（見た目は[人が画面を確かめる](#人が画面を確かめる)）。
+5. 状態の近道は、実際の操作では数分かかる場合だけ道2を使う。通常の流れで確かめていない場面の表示・操作だけを確かめる場合は道3を使ってよい。どちらも理由をコメントに残す。テストのためにゲーム側の設計・分岐・設定を変えない。
+6. 追加・変更したら上の「不安定さと時間の決まり」に従う。
 
 ## Debug起動URL
 
@@ -169,6 +215,36 @@
 - 成功寄りと失敗寄りの反応、AP不足など、値だけを変えたURLを並べて比べられる。
 - 確かめたURLを作業報告やPRに書くと、レビューする人が同じ場面をすぐ開ける。
 - Debug起動での確認は、場面の見た目と操作の確認に限る。保存・再読み込みからの再開や別タブの確認は、通常の操作（道1）で行う。
+- 主要な画面をまとめて見るときは `npm run screens` の画面一覧を使う（[人が画面を確かめる](#人が画面を確かめる)）。
+
+## 人が画面を確かめる
+
+見た目・操作感・実機での確認は、CIの合否とは別に人が並行して行う。CIの合否を待つ必要はなく、CIの通過は目視確認の代わりにならない（逆に、目視の結果でE2Eの期待値を決めない）。
+
+- `npm run screens`：主要な画面を320pxと390pxの幅で撮り、画面一覧 `artifacts/screens/index.html`（Git管理外）にまとめる。撮るのは、タイトルから通常の操作で開く画面（タイトル、旅の始まりの行き先、設定、観光案内、クイズの問題・回答後の解説・結果と報酬、英語ノート。`tests/screens/screens.spec.ts`）と、[URLの例](#urlの例)のDebug起動URL（見本の編の行を除く）で開く画面。E2Eと同じく外部通信を遮断し、演出を短くして撮る（地図のタイルとWebフォントは写らない）。約1分（4コア、44枚）。開発サーバー（4173番）が起動していれば使い、なければ起動する。
+- 前の一覧と比べる：前回の `artifacts/screens/` を別の場所へ写しておき、`npm run screens -- --previous <そのフォルダ>` とする。場面と幅ごとに「新規」「変更あり（変わった点の割合）」「ごく小さな差（0.1%未満。点線の位置などの描画の揺れ）」「変更なし」（画像のバイト列が同じ）を付け、変わった場面を一覧の最初に挙げる。合否の判定ではなく、見る場面を絞るための目印。
+- CI：PRと `main` へのpushで `e2e.yml` の「Screens for review (320 and 390 px)」が同じ一覧を作り、成果物 `screens` として14日間残す（失敗してもチェックを失敗にしない）。ダウンロードして展開し、`index.html` を開く。前の実行と比べるときは、その成果物を展開したフォルダを `--previous` に渡して手元で作り直す。
+- 撮る画面を足すときは、通常の操作なら `tests/screens/screens.spec.ts`、Debugで開く場面なら[URLの例](#urlの例)の表に足す（`src/dev/debug-state.test.ts` が表のURLがどれも開けることを確かめる）。Playwrightの設定は `playwright.screens.config.ts`（`npm run screens -- --config <ファイル>` で差し替えられる）。
+- 撮った一覧で見るのは配置・切れ・重なりまで。フォーカスの移動、ダイアログの復帰、文字送り、長押し、実機のSafariでの表示は実画面で試す（[Debug起動URL](#人が画面を確かめるときの使い方)で場面へ直接入れる）。
+
+### 場面ごとの確認
+
+一覧の各場面は、[UIレビュー](../UI_REVIEW_CHECKLIST.md)の共通の項目（目的・状態・主操作・無効な操作の理由・スマートフォン幅）に加えて、次の点を見る。320pxでは一覧・本文の最後まで、390pxでは配置の釣り合いを見る。
+
+| 場面 | 主に見るところ |
+| --- | --- |
+| タイトル画面 | 旅行編の名前が切れずに読めるか、タイトルの絵と見出しの重なり、「旅をはじめる」が主操作として分かるか、準備中の旅行編の案内 |
+| 旅の始まりの行き先 | 現在地・日時・予算・APが読めるか、行き先の名称・状態・移動時間を比べられるか、「ほかの行き先を見る」まで届くか |
+| 設定 | 各設定の意味と現在の値、保存データの消去が何を消すかの説明、閉じる操作の位置 |
+| 観光案内 | 台詞と立ち絵・背景の重なり、話し手の名前、送りと「閉じる」の区別 |
+| クイズの問題・回答後の解説 | 英文と選択肢と訳の切り替えが読めるか、A・B・Cの押しやすさと誤タップのしにくさ、正誤・正しい答え・根拠の示し方 |
+| バトルの結果と報酬 | 結果とAP報酬の内訳、次の操作（自由時間へ・次の観光地・振り返り）の優先度 |
+| 英語ノート | 回答した問題の選び方、訳の開閉、復習の登録の状態が分かるか |
+| 特殊戦B・C（Debug） | 主張・選んだ証拠の枚数・提出できるかが分かるか、手がかり帳との行き来 |
+| 道中交流（Debug） | 英語の3択と訳、品物を受け取ったことが分かるか |
+| デート（Debug、成功寄り・失敗寄り） | 選択肢の押しやすさ、反応の違いが会話で伝わるか、APの表示 |
+| エピローグ・次の都市への到着（Debug） | 読み進める操作、到着後の地図と行き先への切り替わり |
+| 制作中の都市の地図・交通、仮の場面（Debug） | 開発用の画面として、選択欄と結果が読めれば足りる |
 
 ## CI（GitHub Actions）
 
@@ -178,22 +254,25 @@ GitHub Actionsは次のワークフローを実行する。同じイベントで
 | --- | --- | --- |
 | PR（作成・push） | `ci.yml`「Content, types and production build」 | `npm run build`（コンテンツの検証・生成、型検査、本番ビルド、`dist/` の検査）。会話の全分岐検査はキャッシュを使わずにすべて行う（`DREAMSCAPE_INK_CACHE=off`。[キャッシュ](#会話の全分岐検査のキャッシュ)） |
 | | `ci.yml`「Unit tests」 | `npm test`（全単体テスト） |
-| | `e2e.yml`「E2E (gate)」 | E2E一式（`npm run test:e2e`） |
+| | `e2e.yml`「E2E (gate)」「E2E (debug)」「E2E (prod)」 | E2Eの3つの段（[E2Eの段](#e2eの段)）。段ごとに別のジョブ |
+| | `e2e.yml`「Screens for review (320 and 390 px)」 | 画面一覧（`npm run screens`）を作って成果物に残す。合否にしない（[人が画面を確かめる](#人が画面を確かめる)） |
 | `main` へのpush | `pages.yml` | `npm run verify` の後にGitHub Pagesへ公開する |
-| | `e2e.yml`「E2E (gate)」 | E2E一式。公開と並列に動く |
+| | `e2e.yml` の4つのジョブ | PRと同じ。公開と並列に動く |
 | 手動（Actions画面の「Run workflow」） | 3つのワークフロー | それぞれ上と同じ内容 |
 
 - 公開はE2Eの合格を待たない。`main` のE2Eは公開と並列に動き、失敗するとそのコミットのチェックが失敗（赤い×）になり、GitHubの通知設定に従って知らされる。公開済みの版に問題があれば、修正をPRで取り込んで再公開する。
 - PRでは、新しいpushが来ると同じPRの実行中のCIとE2Eを取り消して最新のコミットだけを確かめる。`main` へのpushと手動実行は取り消さず、最後まで実行する。
-- 画面の見た目・操作感・実機の確認は人が並行して行う。CIの合否を待つ必要はなく、CIの通過は目視確認の代わりにならない。
-- E2Eはマトリクスの段（tier）ごとに別のジョブになる。現在は「gate」の1段だけ。本番ビルドでの確認などの段を足すときや、長い段を `--shard=1/2`・`--shard=2/2` で分けるときは、`e2e.yml` の `matrix.include` に項目を足す。足した段も並列に動く。
-- Playwrightの設定（`playwright.config.ts`）：失敗したテストは再試行しない（不安定なテストは再試行で隠さず原因を直す）。失敗したテストだけ、スクリーンショットとトレースを `test-results/` に保存する。CI（環境変数 `CI` がある場合）では、さらに `test.only` が残っていれば失敗にし、2ワーカーで実行し、失敗の注釈・HTMLレポート（`playwright-report/`）・一覧を出力する。CIの実行は12分で打ち切り（`globalTimeout`）、打ち切った場合もレポートと、そこまでに失敗したテストのトレースを残す。`e2e.yml` はテストの手順に16分、ジョブに25分の上限を置き、手順が時間切れになった場合も成果物（下記）を保存する（ジョブ全体の時間切れでは保存の手順が実行されないため）。手元では一覧だけを出力し、ワーカー数はPlaywrightの既定（CPUの半数）。
+- 画面の見た目・操作感・実機の確認は人が並行して行う（[人が画面を確かめる](#人が画面を確かめる)）。CIの合否を待つ必要はなく、CIの通過は目視確認の代わりにならない。
+- E2Eはマトリクスの段（tier）ごとに別のジョブになり、並列に動く：`gate`（`npx playwright test --project=gate`）、`debug`（`--project=debug`）、`prod`（`-c playwright.prod.config.ts`。ジョブの中で `npm run build` から行う）。段を足すとき（見本の編の通しプレイなど）や、長い段を `--shard=1/2`・`--shard=2/2` で分けるときは、`e2e.yml` の `matrix.include` に項目を足す。各ジョブは自分でコンテンツを生成する（並列なので待ち時間は増えない。別のジョブの生成物を受け渡すと、受け渡しを待つ分だけ遅くなる）。
+- Playwrightのブラウザ（`~/.cache/ms-playwright`）は、固定した `@playwright/test` の版をキーに `actions/cache` で実行の間に持ち越し、見つかったときはダウンロードを省いてシステムのライブラリだけを入れる。`node_modules` とその中の会話の検査キャッシュは持ち越さない（`scripts/story-validation-cache.test.ts` が、ワークフローの `actions/cache` がこのフォルダだけを対象にすることを確かめる）。
+- 本番ビルドの段は、タイトル画面までに読み込む量を実行結果ページ（Summary）に表として出し、HTMLレポートにも添付する（報告のみ。上限は設けない）。
+- Playwrightの設定（`playwright.config.ts`。本番ビルドの段の `playwright.prod.config.ts` と画面一覧の `playwright.screens.config.ts` は共通の部分をここから読む）：失敗したテストは再試行しない（不安定なテストは再試行で隠さず原因を直す）。失敗したテストだけ、スクリーンショットとトレースを `test-results/` に保存する。CI（環境変数 `CI` がある場合）では、さらに `test.only` が残っていれば失敗にし、2ワーカーで実行し、失敗の注釈・HTMLレポート（`playwright-report/`）・一覧を出力する。CIの実行は12分で打ち切り（`globalTimeout`）、打ち切った場合もレポートと、そこまでに失敗したテストのトレースを残す。`e2e.yml` はテストの手順に16分、ジョブに25分の上限を置き、手順が時間切れになった場合も成果物（下記）を保存する（ジョブ全体の時間切れでは保存の手順が実行されないため）。手元では一覧だけを出力し、ワーカー数はPlaywrightの既定（CPUの半数）。
 
 ### 失敗したときの見方
 
 1. PRの「Checks」タブ、またはコミットの赤い×から失敗したジョブを開く。単体テスト・ビルドはジョブのログの末尾に、失敗したテストと理由が出る。
 2. E2Eは、失敗したテストの行が注釈として実行結果ページ（Summary）の「Annotations」に出る。そのファイルがPRの差分に含まれる場合は、差分（Files changed）の該当行にも出る。ジョブのログには各テストの成否と失敗箇所が出る。
-3. E2Eが失敗した実行（時間切れを含む）では、実行結果ページ（Summary）の「Artifacts」に `e2e-<段の名前>` が14日間残る。ダウンロードして展開し、`npx playwright show-report playwright-report` でHTMLレポートを開く。レポートから各テストのスクリーンショットとトレース（操作ごとの画面・DOM・コンソール・通信）を見られる。トレースだけを見る場合は `npx playwright show-trace test-results/<テスト名>/trace.zip`。`test-results/<テスト名>/error-context.md` には失敗時のページの構造が残る。
+3. E2Eが失敗した実行（時間切れを含む）では、実行結果ページ（Summary）の「Artifacts」に `e2e-<段の名前>` が14日間残る。失敗したテストには、各タブのURLと `localStorage`（`dreamscape.` で始まるキー）を記録した `storage.json` も添付される。ダウンロードして展開し、`npx playwright show-report playwright-report` でHTMLレポートを開く。レポートから各テストのスクリーンショットとトレース（操作ごとの画面・DOM・コンソール・通信）を見られる。トレースだけを見る場合は `npx playwright show-trace test-results/<テスト名>/trace.zip`。`test-results/<テスト名>/error-context.md` には失敗時のページの構造が残る。
 4. 手元で同じテストを実行して再現する（`npx playwright test tests/e2e/<ファイル> --repeat-each=3` など）。CIでだけ失敗する場合は、待ち時間ではなく画面の状態・保存のリビジョンで待っているかを確かめる。
 
 ### 本番ビルドの検査

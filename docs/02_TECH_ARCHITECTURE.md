@@ -41,7 +41,8 @@ authoring/              # 共通の制作手順・テンプレート
   templates/sample_trip/ # 開発・テスト専用の見本の編（明示したときだけ読み、本番には入らない。npm run journey:new の元。下の「見本の編」）
 public/                # ファビコン・アプリアイコン・manifest.webmanifest（index.html から相対パスで参照）
   assets/              # 全旅行編で共有する画像・音声（ヒロイン、演出、共通アイコン）
-tests/e2e/             # 最小構成のE2E（Playwright）
+tests/e2e/             # E2E（Playwright）。段ごとのタグ（gate・debug・prod）で実行を分ける（docs/10「E2Eの段」）
+tests/screens/          # 人が見る画面一覧の撮影（npm run screens。合否にしない）
 tests/fixtures/         # 単体テスト用の保存データと状態（ゲームには含めない）
 .github/workflows/      # CI（ci.yml・e2e.yml）と GitHub Pages への公開（pages.yml）
 ```
@@ -145,7 +146,7 @@ tests/fixtures/         # 単体テスト用の保存データと状態（ゲー
 
 `journey:new` を使わずに手作業で作る場合は、見本のフォルダを `content/journeys/<旅行編ID>/` に写し、手順1と同じ置き換えを行う（`README.md` は写さなくてよい）。`manifest.json` には `schemaVersion: 1`、他の旅行編と重ならない整数の `order`、`id`、`nameJa`、`status: "preparing"`、`cities`（都市の順序）、`currency`、`initialBudget`、`intercityModes` などが必要で、制作ツールとIDの接頭辞の検査には `authoring` も設定する（[JOURNEY_AUTHORING](../authoring/JOURNEY_AUTHORING.md)）。
 
-旅行編をやめる場合は、そのフォルダ（と `authoring/journeys/<旅行編ID>/`、`scripts/journeys/<旅行編ID>/`）を削除して `npm run content:build` を実行する。生成とゲームはこれで動くが、その旅行編・都市を名指しするテストと補助コード（例：インド編の `src/content/india-*.test.ts`・`src/domain/golden-triangle-*.ts`、`tests/e2e/boot.spec.ts` の旅行編IDと見出し、`tests/e2e/inter-city.spec.ts` の都市間移動）と `package.json` の別名（例：`india:*`）も、削除するか残る旅行編向けに更新し、`npm run verify` とE2E一式が通ることを確認する。利用者のブラウザにある `dreamscape.journey.<旅行編ID>.*` の保存データは削除されない。
+旅行編をやめる場合は、そのフォルダ（と `authoring/journeys/<旅行編ID>/`、`scripts/journeys/<旅行編ID>/`）を削除して `npm run content:build` を実行する。生成とゲームはこれで動くが、その旅行編・都市を名指しするテストと補助コード（例：インド編の `src/content/india-*.test.ts`・`src/domain/golden-triangle-*.ts`。E2Eの `boot.spec.ts`・`inter-city.spec.ts` は旅行編を生成されたカタログから選ぶので変更は要らない。ミラノを外す場合はミラノの流れを確かめる `play.spec.ts`・`save-load.spec.ts`・画面一覧の通常の操作も残る旅行編向けに書き直す）と `package.json` の別名（例：`india:*`）も、削除するか残る旅行編向けに更新し、`npm run verify` とE2E一式が通ることを確認する。利用者のブラウザにある `dreamscape.journey.<旅行編ID>.*` の保存データは削除されない。
 
 ### 見本の編
 
