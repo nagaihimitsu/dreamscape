@@ -259,7 +259,13 @@ test("the title offers no start or deletion over another journey's save, and dis
 });
 
 // AGENTS.md: 未知の新しい版は破損と区別して案内し、削除は対象キーと影響範囲を示し明示確認のうえで行う.
+// A double tap on 「保存データを消去する」 (AGENTS.md 「明示確認」「誤タップ防止」): the confirmation opens over
+// the button, and its own 「保存データを消去する」 can be under the finger for the second tap (it was at
+// 320×568 from 設定). That tap deletes nothing: the confirmation's action takes presses only once the
+// confirmation has been on screen a moment (ConfirmActionButton). The page's clock is held, so the
+// second tap comes 300 ms after the first however slow the machine.
 test("a save from a newer version is reported as such, and deleting it removes only that journey's save and notes", { tag: tier.gate }, async ({ page }) => {
+  await page.clock.install();
   const newer = JSON.stringify({ schemaVersion: 999, revision: 1 });
   const others = {
     [`${saveKey()}.backup.1`]: "an earlier backup",
@@ -275,10 +281,20 @@ test("a save from a newer version is reported as such, and deleting it removes o
   await expect(alert).toContainText("アプリを更新してください");
   await expect(alert).not.toContainText("保存データを読み込めませんでした");
 
-  await alert.getByRole("button", { name: "保存データを消去する" }).click();
+  const seeded = await allStorage(page);
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.tap(page, alert.getByRole("button", { name: "保存データを消去する" }));
   const confirm = page.getByRole("dialog", { name: "保存データを消去しますか？" });
+  await expect(confirm).toBeVisible();
+  const remove = confirm.getByRole("button", { name: "保存データを消去する" });
+  await page.clock.runFor(300);
+  await ops.tap(page, remove);
+  await expect(remove).toBeDisabled();
+  await page.clock.resume();
+  await expect(remove).toBeEnabled();
+  expect(await allStorage(page)).toEqual(seeded);
   await expect(confirm).toContainText("以前に退避したバックアップと、ほかのサイトのデータは消去しません。");
-  await confirm.getByRole("button", { name: "保存データを消去する" }).click();
+  await remove.click();
   await expect(ops.startButton(page)).toBeVisible();
   await expect(ops.startButton(page)).toHaveAccessibleName(ops.startLabel);
   await expect(page.getByRole("alert")).toHaveCount(0);
@@ -351,6 +367,72 @@ test("old saved data is listed with its keys, removed only after confirmation an
   await expect(cleanup.getByText("整理できる古い保存データはありません。")).toBeVisible();
   const { "dreamscape.save.v1": _rootSave, "dreamscape.learning.v1": _rootNotes, ...left } = kept;
   expect(await allStorage(page)).toEqual(left);
+});
+
+// The cleanup opened from a journey other than the default one (here the Indian journey) treats that
+// journey as the one open in this tab (GameApp passes its own ID): its backups go without a lock (this
+// tab holds it) and its own slot is never listed, while Milan's old save is another journey's.
+// AGENTS.md 「明示確認」「誤タップ防止」: the confirmation replaces the list and starts at its top, so the
+// second tap of a double tap on 「選んだデータを消去する」 can land on 「消去する」 (it did at 320–390 px).
+// That tap removes nothing: 「消去する」 takes presses only once the confirmation has been on screen a
+// moment (ConfirmActionButton). The page's clock is held, so the second tap comes 300 ms after the
+// first however slow the machine.
+test("from another journey, the cleanup lists that journey's own old data, and a double tap cannot pass its confirmation", { tag: tier.gate }, async ({ page }) => {
+  await page.clock.install();
+  // The Indian journey opens on its arrival talk; 設定 is already there.
+  await page.goto("/");
+  await ops.beginJourney(page, "golden_triangle");
+  await expect.poll(async () => (await allStorage(page))[saveKey("golden_triangle")]).toBeDefined();
+  const name = (journeyId: string) => journeyCatalog().journeys.find((journey) => journey.id === journeyId)!.nameJa;
+  const backup = `${saveKey("golden_triangle")}.backup.1762500000000`;
+  const old = { [backup]: "{damaged-save", [saveKey()]: JSON.stringify({ schemaVersion: 13, revision: 3, completedChapters: [] }) };
+  await page.evaluate((items) => { for (const [key, value] of Object.entries(items)) localStorage.setItem(key, value); }, old);
+  // The game keeps writing its own save (the arrival's opening finishes on a timer); it is never
+  // listed and is compared apart: it must stay, everything else exactly as expected.
+  const besidesGame = async () => {
+    const { [saveKey("golden_triangle")]: game, ...rest } = await allStorage(page);
+    expect(game).toContain('"schemaVersion":14');
+    return rest;
+  };
+  const before = await besidesGame();
+
+  const cleanup = await ops.openOldDataCleanup(page);
+  await expect(cleanup.getByRole("checkbox", { name: new RegExp(`^${name("golden_triangle")}のバックアップ（1件）`) })).toBeVisible();
+  await expect(cleanup.getByRole("checkbox", { name: new RegExp(`^${name("milano")}のセーブ（旧版）`) })).toBeVisible();
+  for (const key of Object.keys(old)) await expect(cleanup.getByText(key, { exact: true })).toBeVisible();
+  await expect(cleanup.getByText(saveKey("golden_triangle"), { exact: true })).toHaveCount(0);
+
+  // The double tap: nothing goes, the confirmation stays until 消去せず戻る or a deliberate press.
+  await cleanup.getByRole("checkbox", { name: /のバックアップ（1件）/ }).check();
+  const ask = cleanup.getByRole("button", { name: "選んだデータを消去する" });
+  const confirm = page.getByRole("dialog", { name: "選んだ保存データを消去しますか？" });
+  const remove = confirm.getByRole("button", { name: "消去する", exact: true });
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.tap(page, ask);
+  await expect(confirm).toBeVisible();
+  await page.clock.runFor(300);
+  await ops.tap(page, remove);
+  await expect(remove).toBeDisabled();
+  await page.clock.resume();
+  await expect(remove).toBeEnabled();
+  expect(await besidesGame()).toEqual(before);
+
+  // A deliberate press removes the backup once, without this journey's lock: a second press that
+  // reaches the button before it re-renders as disabled (both clicks in one task) removes nothing more
+  // and leaves the result shown.
+  await remove.evaluate((button: HTMLButtonElement) => { button.click(); button.click(); });
+  await expect(cleanup.getByRole("status")).toHaveText("消去しました（キー1個）。");
+  await expect(cleanup.getByRole("alert")).toHaveCount(0);
+  const { [backup]: _removedBackup, ...withoutBackup } = before;
+  expect(await besidesGame()).toEqual(withoutBackup);
+
+  // Milan's old save goes under Milan's lock, which no tab holds.
+  const next = await ops.chooseOldData(page, cleanup, [new RegExp(`^${name("milano")}のセーブ（旧版）`)]);
+  await next.getByRole("button", { name: "消去する", exact: true }).click();
+  await expect(cleanup.getByRole("status")).toHaveText("消去しました（キー1個）。");
+  await expect(cleanup.getByText("整理できる古い保存データはありません。")).toBeVisible();
+  const { [saveKey()]: _removedSave, ...left } = withoutBackup;
+  expect(await besidesGame()).toEqual(left);
 });
 
 // AGENTS.md 「保存領域の読込失敗…」 and the save rule of docs/02: a write that fails says so,

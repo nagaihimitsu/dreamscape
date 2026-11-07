@@ -35,6 +35,7 @@ import { secureRomanceRoll } from "../random/romance-source";
 import { usePresentationSettings } from "../components/usePresentationSettings";
 import { RomanceScene } from "../features/romance/RomanceScene";
 import { Modal } from "../components/Modal";
+import { ConfirmActionButton } from "../components/ConfirmActionButton";
 import { withNames } from "../features/romance/RomanceMenu";
 import { BattleScreen } from "../features/battle/BattleScreen";
 import { TourismScreen } from "../features/tourism/TourismScreen";
@@ -777,7 +778,7 @@ export function GameApp({
           >
             消去せず戻る
           </button>
-          <button
+          <ConfirmActionButton
             className="danger-button"
             onClick={() => {
               if (!session.deleteConfirmed(deleteSnapshot)) {
@@ -788,7 +789,7 @@ export function GameApp({
             }}
           >
             {isDebug ? "Debug用の一時データを消去する" : "保存データを消去する"}
-          </button>
+          </ConfirmActionButton>
         </Modal>
       )}
       {switchJourneyTo && (

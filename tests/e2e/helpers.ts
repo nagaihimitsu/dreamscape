@@ -204,6 +204,15 @@ export const ops = {
     await expect(confirm).toBeVisible();
     return confirm;
   },
+  /**
+   * A finger tap at the centre of `target` as it is on screen now, without waiting for it to be
+   * enabled or still: a quick second tap lands on whatever has moved under the finger.
+   */
+  async tap(page: Page, target: Locator) {
+    await target.scrollIntoViewIfNeeded();
+    const box = (await target.boundingBox())!;
+    await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2);
+  },
   async closeDialog(dialog: Locator) {
     await dialog.getByRole("button", { name: "閉じる", exact: true }).click();
     await expect(dialog).toBeHidden();

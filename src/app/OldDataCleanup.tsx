@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { ConfirmActionButton } from "../components/ConfirmActionButton";
 import { Modal } from "../components/Modal";
 import { runWithSlotLocks } from "../persistence/journey-lock";
 import {
@@ -32,8 +33,8 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
   const [listing, setListing] = useState(() => readList(storage, context));
   const [chosen, setChosen] = useState<string[]>([]);
   const [confirming, setConfirming] = useState(false);
-  // The press already being handled: a second tap of a double tap removes nothing more (the ref
-  // answers before the disabled button re-renders).
+  // The press already being handled: a second press that reaches 「消去する」 before it re-renders
+  // as disabled (two clicks in one task) removes nothing more and leaves the first result shown.
   const pressed = useRef(false);
   const [working, setWorking] = useState(false);
   const [notice, setNotice] = useState<Notice | null>(null);
@@ -96,7 +97,7 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
       </ul>
       <p className="fine-print">一覧にないデータ（今の版のセーブ、各旅行編の英語ノート、表示設定など）は残ります。ほかの旅行編を別のタブで開いている間は消去できません。</p>
       <button type="button" className="secondary" onClick={() => { setConfirming(false); setFocusRequest({ target: "remove" }); }}>消去せず戻る</button>
-      <button type="button" className="danger-button" disabled={working} onClick={() => void remove()}>消去する</button>
+      <ConfirmActionButton className="danger-button" disabled={working} onClick={() => void remove()}>消去する</ConfirmActionButton>
     </> : <>
       <h2 id="old-data-title" ref={heading} tabIndex={-1}>古い保存データの整理</h2>
       <p>このブラウザに残っている、今のゲームでは使わない保存データです。消去するものを選んでください。</p>
