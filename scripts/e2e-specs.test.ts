@@ -47,7 +47,8 @@ describe("E2E specs", () => {
     const paths = workflow.match(/^ {2}pull_request:\n {4}paths:\n((?: {6}- .*\n)+)/mu);
     expect(paths, "pull_request runs only for the exploration's own files").not.toBeNull();
     expect(paths![1].split("\n").filter(Boolean).map((line) => line.trim().slice(2)).sort()).toEqual([
-      ".github/workflows/e2e-explore.yml", "playwright.explore.config.ts", "playwright.webkit.config.ts", "tests/e2e/explore/**", "tests/explore/**",
+      ".github/workflows/e2e-explore.yml", "playwright.explore.config.ts", "playwright.webkit.config.ts", "scripts/dev/screen-gallery.ts",
+      "src/dev/debug-query.ts", "tests/e2e/explore/**", "tests/e2e/helpers.ts", "tests/explore/**",
     ]);
     expect(workflow).toMatch(/run: npm run test:e2e:explore\n/u);
     expect(workflow).toMatch(/run: npm run test:e2e:webkit\n/u);

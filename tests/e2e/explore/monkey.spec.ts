@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from "node:fs";
-import { debugExampleUrls } from "../../../scripts/dev/screen-gallery";
+import { debugSessionExampleUrls } from "../../../scripts/dev/screen-gallery";
 import { DEBUG_HOOK_NAME } from "../../../src/dev/debug-hook";
 import { bothStorages, devModules, expect, journeyCatalog, placeSave, saveKey, test, tier, type Page } from "../helpers";
 
@@ -13,7 +13,9 @@ import { bothStorages, devModules, expect, journeyCatalog, placeSave, saveKey, t
 //   with AP within 0..cap, and its revision never goes back;
 // - something can be pressed within 5 s, unless the journey has ended (otherwise: stuck).
 // Every 40 presses the page reloads (a normal save must come back unchanged); every 200 it
-// starts again (a new journey, or another Debug scene). The romance draws come from a seeded
+// starts again (a new journey, or another Debug scene). The Debug start points are the docs/10
+// examples that open a scene with a game state (debugSessionExampleUrls; the map check has none).
+// A start point that does not open fails like any check, with the seed and the trace. The romance draws come from a seeded
 // crypto.getRandomValues (addInitScript, test side only). A failure prints MONKEY_SEED and the
 // last presses; rerun with the same MONKEY_SEED (and -g for the start point).
 const seed = Number(process.env.MONKEY_SEED ?? Math.floor(Math.random() * 1_000_000));
@@ -39,7 +41,8 @@ function random(start: number): () => number {
 const playable = journeyCatalog().journeys.filter((journey) => journey.status === "available");
 /** The journey a page load opens (the first available one); another journey is chosen on its title, as a player does. */
 const openedFirst = playable[0].id;
-const debugUrls = debugExampleUrls(readFileSync(new URL("../../../docs/10_DEVELOPMENT_CHECKS.md", import.meta.url), "utf8"));
+/** The Debug examples of docs/10 that open a scene with a game state (not the prototype map check, which has none). */
+const debugUrls = debugSessionExampleUrls(readFileSync(new URL("../../../docs/10_DEVELOPMENT_CHECKS.md", import.meta.url), "utf8"));
 /** Controls the monkey never presses: they delete data, switch journeys or leave Debug (labels as shown). */
 const excludedLabels = ["消去", "通常プレイに戻る", "設定へ戻る"];
 
@@ -105,33 +108,32 @@ async function startJourney(page: Page, journeyId: string) {
   await expect.poll(() => page.evaluate((key) => localStorage.getItem(key) !== null, saveKey(journeyId))).toBe(true);
 }
 
-type StartPoint = {
-  name: string;
-  /** Open the start point; returns where the game state is read and a label for the trace. */
-  open: (page: Page, next: () => number) => Promise<{ source: Source; label: string }>;
-};
+/** A chosen start: where the game state is read, a label for the trace, and how to open it. */
+type Start = { source: Source; label: string; open: (page: Page) => Promise<void> };
+type StartPoint = { name: string; pick: (next: () => number) => Start };
 const pickFrom = <T>(items: readonly T[], next: () => number) => items[Math.floor(next() * items.length)];
 const startPoints: StartPoint[] = [
-  { name: "a new journey from the title", open: async (page, next) => {
+  { name: "a new journey from the title", pick: (next) => {
     const journey = pickFrom(playable, next);
-    await startJourney(page, journey.id);
-    return { source: { kind: "save", journeyId: journey.id }, label: `new ${journey.id}` };
+    return { source: { kind: "save", journeyId: journey.id }, label: `new ${journey.id}`, open: (page) => startJourney(page, journey.id) };
   } },
-  { name: "a normal save placed midway through a city", open: async (page, next) => {
+  { name: "a normal save placed midway through a city", pick: (next) => {
     const journey = pickFrom(playable, next);
     const city = pickFrom(journey.cities, next);
-    await page.evaluate(() => localStorage.clear());
-    // Lane 2 (docs/10): the real game functions build the state, the game's own saveGame stores it.
-    await placeSave(page, journey.id, "cityMidway", city.id);
-    await page.reload();
-    await resume(page, journey.id);
-    return { source: { kind: "save", journeyId: journey.id }, label: `cityMidway(${city.id})` };
+    return { source: { kind: "save", journeyId: journey.id }, label: `cityMidway(${city.id})`, open: async (page) => {
+      await page.evaluate(() => localStorage.clear());
+      // Lane 2 (docs/10): the real game functions build the state, the game's own saveGame stores it.
+      await placeSave(page, journey.id, "cityMidway", city.id);
+      await page.reload();
+      await resume(page, journey.id);
+    } };
   } },
-  { name: "a Debug scene from the launch URLs of docs/10", open: async (page, next) => {
+  { name: "a Debug scene from the launch URLs of docs/10", pick: (next) => {
     const scene = pickFrom(debugUrls, next);
-    await page.goto(`/${scene.url}`);
-    await expect(page.getByTestId("debug-session")).toBeVisible();
-    return { source: { kind: "debug" }, label: `Debug ${scene.titleJa} (${scene.url})` };
+    return { source: { kind: "debug" }, label: `Debug ${scene.titleJa} (${scene.url})`, open: async (page) => {
+      await page.goto(`/${scene.url}`);
+      await expect(page.getByTestId("debug-session")).toBeVisible();
+    } };
   } },
 ];
 
@@ -170,30 +172,44 @@ startPoints.forEach((start, index) => {
       throw new Error([message, `MONKEY_SEED=${seed} (start point ${index}, seed ${ownSeed}), press ${step}`, "last presses (oldest first):",
         ...trace.map((line) => `  ${line}`), `rerun: MONKEY_SEED=${seed} npm run test:e2e:explore -- -g "${start.name}"`].join("\n"));
     };
+    /** Wait for the page to get somewhere; when it does not, fail with the seed and the trace like any other check. */
+    const must = async (what: string, action: () => Promise<unknown>) => {
+      try {
+        await action();
+      } catch (error) {
+        fail(`${what}: ${(error as Error).message.split("\n").filter((line) => line.trim()).slice(0, 3).join(" / ")}`);
+      }
+    };
 
     await page.goto("/");
     const before = await bothStorages(page);
-    let opened = await start.open(page, next);
-    log(`(start ${opened.label})`);
+    let opened: Start | undefined;
     let lastRevision = -1;
+    const openStart = async (again: boolean) => {
+      opened = start.pick(next);
+      log(`(start${again ? " again" : ""} ${opened.label})`);
+      await must(`the start point did not open (${opened.label})`, () => opened!.open(page));
+      lastRevision = -1;
+    };
     const deadline = Date.now() + seconds * 1000;
     let presses = 0;
     try {
+      await openStart(false);
       for (; Date.now() < deadline; step++) {
+        const current = opened!;
         if (presses > 0 && presses % RESTART_EVERY === 0) {
-          opened = await start.open(page, next);
-          log(`(start again ${opened.label})`);
-          lastRevision = -1;
+          await openStart(true);
         } else if (presses > 0 && presses % RELOAD_EVERY === 0) {
-          const saved = opened.source.kind === "save" ? await page.evaluate((key) => localStorage.getItem(key), saveKey(opened.source.journeyId)) : null;
+          const saved = current.source.kind === "save" ? await page.evaluate((key) => localStorage.getItem(key), saveKey(current.source.journeyId)) : null;
           await page.reload();
           log("(reload)");
-          if (opened.source.kind === "save") {
-            await resume(page, opened.source.journeyId);
-            const after = await page.evaluate((key) => localStorage.getItem(key), saveKey(opened.source.journeyId));
+          if (current.source.kind === "save") {
+            const journeyId = current.source.journeyId;
+            await must("the journey did not come back after a reload", () => resume(page, journeyId));
+            const after = await page.evaluate((key) => localStorage.getItem(key), saveKey(journeyId));
             if (after !== saved) fail("the save changed across a reload");
           } else {
-            await expect(page.getByTestId("debug-session")).toBeVisible();
+            await must("the Debug scene did not come back after a reload", () => expect(page.getByTestId("debug-session")).toBeVisible());
             lastRevision = -1;
           }
         }
@@ -203,7 +219,7 @@ startPoints.forEach((start, index) => {
         const roll = next();
         await expect.poll(async () => (target = await choose(page, roll)) !== null, { timeout: STUCK_MS }).toBe(true).catch(() => undefined);
         if (!target) {
-          const state = await check(page, opened.source);
+          const state = await check(page, opened!.source);
           if (state.ended) { presses = RESTART_EVERY; continue; }
           fail("stuck: nothing to press for 5 seconds");
         }
@@ -220,7 +236,7 @@ startPoints.forEach((start, index) => {
         await expect(page.locator("[data-answer-settling]")).toHaveCount(0);
         await expect(page.getByTestId("travel-transition")).toHaveCount(0);
         if (pageError) fail(`uncaught exception in the page: ${pageError}`);
-        const state = await check(page, opened.source);
+        const state = await check(page, opened!.source);
         if (state.error) fail(state.error);
         if (state.revision !== null) {
           if (state.revision < lastRevision) fail(`the saved revision went back from ${lastRevision} to ${state.revision}`);
@@ -229,10 +245,10 @@ startPoints.forEach((start, index) => {
       }
     } finally {
       const file = testInfo.outputPath("monkey-trace.txt");
-      writeFileSync(file, [`MONKEY_SEED=${seed} start point ${index} (${start.name}), ${presses} presses, last start: ${opened.label}`, ...trace].join("\n") + "\n");
+      writeFileSync(file, [`MONKEY_SEED=${seed} start point ${index} (${start.name}), ${presses} presses, last start: ${opened?.label ?? "none"}`, ...trace].join("\n") + "\n");
       await testInfo.attach("monkey-trace.txt", { path: file, contentType: "text/plain" });
     }
     // Debug works in memory only: the browser's storage is as it was before Debug opened.
-    if (opened.source.kind === "debug") expect(await bothStorages(page), "Debug changed the normal storage").toEqual(before);
+    if (opened!.source.kind === "debug") expect(await bothStorages(page), "Debug changed the normal storage").toEqual(before);
   });
 });

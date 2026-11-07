@@ -3,7 +3,10 @@ name: E2E explore (weekly)
 # Exploration runs (docs/10「探索テスト」), weekly and by hand. Never a gate: no other
 # workflow waits for them, deploying (pages.yml) does not, and a failure only shows as
 # a failed run of this workflow. A pull request runs them only when it changes this
-# workflow or the exploration tests themselves, so such a change proves they still run.
+# workflow, the exploration tests themselves or the test code the monkey drives the game
+# with (the shared E2E helpers, the Debug start-URL reading), so such a change proves they
+# still run. The Debug start URLs in docs/10 are checked by the unit tests on every pull
+# request (src/dev/debug-state.test.ts); a manual run shows the monkey with a changed list.
 on:
   schedule:
     # Mondays 04:23 UTC (13:23 in Japan).
@@ -23,7 +26,10 @@ on:
       - playwright.explore.config.ts
       - playwright.webkit.config.ts
       - tests/e2e/explore/**
+      - tests/e2e/helpers.ts
       - tests/explore/**
+      - scripts/dev/screen-gallery.ts
+      - src/dev/debug-query.ts
 
 permissions:
   contents: read
