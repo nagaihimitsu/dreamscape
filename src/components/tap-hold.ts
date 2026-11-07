@@ -5,9 +5,10 @@ let holdTimer: number | undefined;
 
 /**
  * Let no tap reach the page for DOUBLE_TAP_WINDOW_MS, after a story scene starts
- * or ends and a new screen appears under the finger (src/app/scene-exit.ts): the
- * root carries `data-tap-hold`, and styles.css takes pointer events off every
- * element meanwhile. Keyboards are not held. Tests wait for the mark to go.
+ * or ends (src/app/story-scene-change.ts) or a load brings back a saved scene,
+ * and a new screen appears under the finger: the root carries `data-tap-hold`,
+ * and styles.css takes pointer events off every element meanwhile. Keyboards are
+ * not held. Tests wait for the mark to go.
  */
 export function holdTaps() {
   const root = document.documentElement;

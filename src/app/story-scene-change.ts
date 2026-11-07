@@ -9,7 +9,8 @@
  * start the epilogue, answer a question) or the new scene's first line, read on
  * before it is seen. So GameApp holds taps for a moment then (holdTaps,
  * src/components/tap-hold.ts; AGENTS.md 選択肢の誤タップ防止; the battle's answer
- * guard is the same rule).
+ * guard is the same rule). A load holds them too, also when it brings back the
+ * scene on screen (GameApp's loadSavedGame).
  */
 
 /** The parts of the game state that say which story scene is on screen. */

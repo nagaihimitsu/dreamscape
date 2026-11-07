@@ -80,7 +80,7 @@ import {
 } from "../domain/battle";
 
 import { browserStorage, type AppProps } from "./app-storage";
-import { storySceneChanged, storySceneOnScreen } from "./scene-exit";
+import { storySceneChanged, storySceneOnScreen } from "./story-scene-change";
 import { holdTaps } from "../components/tap-hold";
 import { PAGE_MARGIN_ATTRIBUTE } from "../components/scene-tap";
 
@@ -100,7 +100,7 @@ export function GameApp({
   const session = useGameSession(storage, displaySettings.value.autoSave, () => setSelectedLandmarkId(null));
   const { game, loaded, invalid, notice, setNotice, commit, getCurrent, save } = session;
   // The second tap of a double tap that starts or ends a story scene must not press the next
-  // screen or read the new scene on (scene-exit.ts).
+  // screen or read the new scene on (story-scene-change.ts).
   const storyScene = storySceneOnScreen(game);
   const shownStoryScene = useRef(storyScene);
   useLayoutEffect(() => {

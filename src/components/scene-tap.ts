@@ -28,9 +28,9 @@ export interface SceneTapState {
    */
   obstructed: boolean;
   /**
-   * A control of the page was pressed a moment ago, or a tap closed something open
-   * over the scene (double-tap.ts): this tap is that press's second tap, landing on
-   * whatever the press put under the finger.
+   * A control of the page was pressed a moment ago, or a tap landed over something
+   * on the scene (closing it, or under the travel transition; double-tap.ts): this
+   * tap is that press's second tap, landing on whatever the press put under the finger.
    */
   settling: boolean;
 }

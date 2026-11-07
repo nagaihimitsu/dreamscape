@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { storySceneChanged, storySceneOnScreen, type SceneState } from "./scene-exit";
+import { storySceneChanged, storySceneOnScreen, type SceneState } from "./story-scene-change";
 
 const none: SceneState = { activeEncounter: null, activeEpilogue: null, activeTourism: null, activeBattle: null, activeDate: null };
 const date = { ...none, activeDate: { runId: "date-run-1" } };
