@@ -11,6 +11,9 @@ import { expect, ops, playUntil, test, type Page } from "../e2e/helpers";
 const out = process.env.SCREENS_OUT ?? path.resolve("artifacts/screens");
 
 async function save(page: Page, scene: string, titleJa: string, route: Shot["route"], width: number) {
+  // The settled screen: no travel transition over it, every image loaded (so two runs match).
+  await expect(page.getByTestId("travel-transition")).toHaveCount(0);
+  await expect.poll(() => page.evaluate(() => [...document.images].every((image) => image.complete))).toBe(true);
   const file = `shots/${width}/${scene}.png`;
   mkdirSync(path.join(out, `shots/${width}`), { recursive: true });
   const image = await page.screenshot({ path: path.join(out, file), fullPage: true, animations: "disabled", caret: "hide" });
