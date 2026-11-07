@@ -1,28 +1,33 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { DialogueTextHandle } from "./DialogueText";
-import { dialogueObstructed } from "./dialogueObstructed";
+import { tapsObstructed } from "./dialogueObstructed";
 import { DOUBLE_TAP_WINDOW_MS, isSecondTap } from "./double-tap";
-import { pressesControl, shouldAdvanceOnTap, type SceneTapState } from "./scene-tap";
+import { DIALOGUE_LINE_ATTRIBUTE, pressesControl, shouldAdvanceOnTap, type SceneTapState } from "./scene-tap";
 
 const elementOf = (target: EventTarget | null) => target instanceof Element ? target : null;
 
 /**
  * The click handling of a story scene: a tap that is not on a control does what
  * a tap on the line does (DialogueText decides between completing the line and
- * going on), on the scene and on the page's own margin beside it. Mouse and touch
- * taps arrive as clicks; a drag that scrolls the window does not. Keyboards keep
- * using the line and the buttons. `active`: the scene shows its dialogue (a battle
- * between its talks, a guide's observation and an encounter's quiz do not read on).
+ * going on), on the scene and on the page's own margin beside it. While the
+ * window is hidden, its restore control covers the whole scene (the guide, the
+ * only scene with a heading or a margin beside it, cannot hide its window).
+ * Mouse and touch taps arrive as clicks; a drag that scrolls the window does
+ * not. Keyboards keep using the line and the buttons. `active`: the scene shows
+ * its dialogue (a battle between its talks and a guide's observation do not read
+ * on; an encounter's quiz has no line, and its answers are choices).
  *
  * A press on any control of the page (a reply, a choice, a tool, the restore
  * control; the header's buttons, a modal's 「閉じる」) is seen in the capture phase
  * at the document, before the control's own handler (the restore control stops
- * the click there), and so is a tap that closes something open over the scene
- * (a log, the held-item detail): its pointer goes down while that is open. For
- * DOUBLE_TAP_WINDOW_MS after either the scene takes no reading tap: taps on the
- * picture are ignored, and the line takes no pointer events while the root
- * carries `data-tap-settling` (styles.css), so the second tap of a double tap
- * never skips the line the press brought.
+ * the click there), and so is a tap whose pointer went down while something lay
+ * over the scene (tapsObstructed: a log or the held-item detail it closes, the
+ * travel transition). For DOUBLE_TAP_WINDOW_MS after either the scene takes no
+ * reading tap: taps on the picture are ignored, and the line takes no pointer
+ * events while the root carries `data-tap-settling` (styles.css), so the second
+ * tap of a double tap never skips the line the press brought. The tap over
+ * something does not reach the line either (the line reads on in its own click
+ * handler, before the scene could ignore it).
  */
 export function useSceneTap({ active, ...state }: Omit<SceneTapState, "obstructed" | "settling"> & { active: boolean }) {
   const line = useRef<DialogueTextHandle>(null);
@@ -43,23 +48,26 @@ export function useSceneTap({ active, ...state }: Omit<SceneTapState, "obstructe
     const scene = root.current;
     if (!active || !scene) return;
     const settling = pressedAt.current !== null && isSecondTap(performance.now() - pressedAt.current);
-    if (shouldAdvanceOnTap(target, scene, { ...state, settling, obstructed: dialogueObstructed() }))
+    if (shouldAdvanceOnTap(target, scene, { ...state, settling, obstructed: tapsObstructed() }))
       line.current?.activate();
   }
   const readFromPage = useRef(read);
   readFromPage.current = read;
   useEffect(() => {
-    // The pointer of this tap went down while something was open over the scene.
-    let closing = false;
+    // The pointer of this tap went down while something lay over the scene.
+    let overlaid = false;
     const onPointerDown = () => {
-      closing = dialogueObstructed();
+      overlaid = tapsObstructed();
     };
     const onPress = (event: Event) => {
-      if (closing || pressesControl(elementOf(event.target), root.current)) {
+      const target = elementOf(event.target);
+      if (overlaid || pressesControl(target, root.current)) {
         pressedAt.current = performance.now();
         setSettlingFrom(pressedAt.current);
+        const tappedLine = target?.closest(`[${DIALOGUE_LINE_ATTRIBUTE}]`);
+        if (overlaid && tappedLine && root.current?.contains(tappedLine)) event.stopPropagation();
       }
-      closing = false;
+      overlaid = false;
     };
     // Clicks inside the scene reach its root's onClick; this one hears the rest of the page (its margin).
     const onPageClick = (event: Event) => {

@@ -125,6 +125,17 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   expect(started.revision).toBe(beforeDate.revision + 1);
   expect(started.ap).toBeLessThan(result.ap);
   await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  // The travel transition outlasts that hold (0.45 s with reduced motion) and lets taps through to
+  // the date under it: until it ends the date takes no reading tap, neither on the line itself nor
+  // on the transition's card in the middle of the screen.
+  const transition = page.getByTestId("travel-transition");
+  await expect(transition).toBeVisible();
+  await ops.tap(page, await ops.centerOf(line));
+  const card = await ops.centerOf(transition);
+  await page.touchscreen.tap(card.x, card.y);
+  await expect(transition).toBeVisible();
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await expect(transition).toHaveCount(0);
   await page.clock.resume();
   await ops.settled(page);
   expect(await readSave(page)).toEqual(started);

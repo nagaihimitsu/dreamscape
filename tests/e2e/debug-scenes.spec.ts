@@ -281,9 +281,10 @@ test("battle: a double tap on 「敵の反応を見る」 opens the reaction and
   expect((await debugGame(page))!.revision).toBe(feedback.revision + 1);
 });
 
-// docs/02 「UX/スマホ」: nothing reads on while something is open over the scene. The header's
-// held-item detail closes on a tap anywhere outside it; that tap only closes it.
-test("encounter: the tap on the picture that closes the held-item detail does not read on", { tag: tier.debug }, async ({ page }) => {
+// docs/02 「UX/スマホ」: no tap reads on while something is open over the scene. The header's
+// held-item detail closes on a tap anywhere outside it; that tap only closes it, on the picture and
+// on the line alike. The detail is not modal: the keyboard reads on while it is open, as before.
+test("encounter: the tap on the picture or the line that closes the held-item detail does not read on, Enter on the line does", { tag: tier.debug }, async ({ page }) => {
   const encounter = await itemEncounter(page, true);
   expect(encounter, "an encounter whose English answer gives an item, that Debug can open").toBeDefined();
   // A won reward needs the saved ticket below its chance: the positive ticket (0) always wins.
@@ -295,14 +296,26 @@ test("encounter: the tap on the picture that closes the held-item detail does no
   const text = await line.textContent();
   const picture = await ops.sceneBackgroundPoint(page);
   const items = page.getByRole("group", { name: "所持アイテム" });
-  await items.getByRole("button", { name: `${encounter!.itemName}の詳細` }).click();
-  await expect(items.getByRole("dialog")).toBeVisible();
+  const detail = items.getByRole("dialog");
+  const openDetail = async () => {
+    await items.getByRole("button", { name: `${encounter!.itemName}の詳細` }).click();
+    await expect(detail).toBeVisible();
+  };
+  await openDetail();
   await ops.tap(page, picture);
-  await expect(items.getByRole("dialog")).toBeHidden();
+  await expect(detail).toBeHidden();
   await expect(line).toHaveText(text!);
-  // The next tap reads one line on: the closing tap did not.
-  await ops.tap(page, picture);
+  await openDetail();
+  await ops.tap(page, await ops.centerOf(line));
+  await expect(detail).toBeHidden();
+  await expect(line).toHaveText(text!);
+  expect((await debugGame(page))!.revision).toBe(held.revision);
+  // Enter on the line reads one line on with the detail open: the closing taps did not.
+  await openDetail();
+  await line.focus();
+  await page.keyboard.press("Enter");
   await expect.poll(async () => (await debugGame(page))!.revision).toBe(held.revision + 1);
+  await expect(detail).toBeVisible();
 });
 
 // User idea (2026-11-07): the whole screen reads on, not only the scene's picture. The guide's

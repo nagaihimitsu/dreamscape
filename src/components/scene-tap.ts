@@ -21,7 +21,11 @@ export interface SceneTapState {
   choicesShown: boolean;
   /** The dialogue window is hidden: its full-scene restore control takes the tap. */
   windowHidden: boolean;
-  /** A log, menu or modal is open over the scene, or the page is hidden. */
+  /**
+   * A log, menu or modal is open over the scene, or the held-item detail, or the
+   * travel transition still plays over a scene that has just started; or the page
+   * is hidden (tapsObstructed).
+   */
   obstructed: boolean;
   /**
    * A control of the page was pressed a moment ago, or a tap closed something open
