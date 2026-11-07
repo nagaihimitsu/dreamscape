@@ -1,4 +1,5 @@
-import { expect, expectNoActiveScene, ops, playUntil, readSave, test, tier } from "./helpers";
+import { DOUBLE_TAP_WINDOW_MS } from "../../src/features/battle/double-tap";
+import { allStorage, expect, expectNoActiveScene, learningKey, ops, playUntil, readSave, test, tier } from "./helpers";
 
 // Lane 1 (docs/10): the real flow from the title screen, no Debug, no state shortcut.
 test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a date, and returns to free time", { tag: [tier.gate, tier.prod, tier.smoke] }, async ({ page }) => {
@@ -45,16 +46,29 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   // The guide leads into the quiz battle; every answer and line is saved before the next.
   await page.getByRole("button", { name: "進む", exact: true }).click();
   // A quick double tap on an answer (誤タップ防止, user decision: the second tap is
-  // ignored) records one answer and stays on that question's feedback.
-  const question = await playUntil(page, (state) => state.activeBattle?.phase === "question");
-  await page.getByTestId("answer-A").dblclick();
+  // ignored) records one answer and stays on that question's feedback. After the
+  // first tap the verdict and feedback appear and the screen shifts, so the second
+  // tap can land on another control (on this phone and question 「敵の反応を見る」,
+  // which would skip the feedback; elsewhere 「英文を確認する」 or 「訳を見る」): it must
+  // not act. The page's clock is held, so the two taps count as one double tap
+  // however slow the machine.
+  const question = await playUntil(page, (state) => state.activeBattle?.phase === "question" && state.activeBattle.roundIndex === 2);
+  const answer = page.getByTestId("answer-C");
+  await answer.scrollIntoViewIfNeeded();
+  const box = (await answer.boundingBox())!;
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await page.mouse.dblclick(box.x + box.width / 2, box.y + box.height / 2);
   await expect(page.getByTestId("battle-feedback")).toBeVisible();
   const answered = await readSave(page);
   expect(answered.revision).toBe(question.revision + 1);
   expect(answered.activeBattle).toMatchObject({ phase: "feedback", roundIndex: question.activeBattle!.roundIndex });
   expect(answered.activeBattle!.answers).toHaveLength(question.activeBattle!.answers.length + 1);
   await expect(page.getByRole("dialog")).toHaveCount(0);
-
+  await expect(page.locator("[aria-expanded=true], details[open]")).toHaveCount(0);
+  expect(JSON.parse((await allStorage(page))[learningKey()] ?? "{}").revealed ?? {}).toEqual({});
+  // Taps after the double-tap window act again.
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await page.clock.resume();
   const result = await playUntil(page, (state) => state.activeBattle?.phase === "result");
   await expect(page.getByTestId("battle-result")).toBeVisible();
   await expect(page.getByTestId("battle-rewards")).toBeVisible();

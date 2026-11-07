@@ -222,6 +222,8 @@ const nextButtons = ["tourism-advance", "battle-advance", "epilogue-advance", "a
 
 /** One player action in the current scene: answer, choose, or tap the line or its next button. */
 async function act(page: Page, state: GameState, pick: Pick) {
+  // Right after an answer the battle ignores taps for a moment (the second tap of a double tap).
+  await expect(page.locator("[data-answer-settling]")).toHaveCount(0);
   const date = state.activeDate;
   const encounter = state.activeEncounter;
   if (state.activeBattle?.phase === "question") return page.getByTestId(`answer-${pick(state)}`).click();
