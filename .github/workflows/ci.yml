@@ -43,8 +43,9 @@ jobs:
     # The unit tests in parallel parts: vitest --shard gives each job a share of
     # the test files (chosen from a hash of each file's path); together the
     # jobs run every file of `npm test`, which stays one run locally and in
-    # `npm run verify`.
-    name: Unit tests (${{ matrix.shard }}/3)
+    # `npm run verify`. To change the number of parts, change only the list
+    # in matrix.shard (1 … N): the job names and --shard follow its length.
+    name: Unit tests (${{ matrix.shard }}/${{ strategy.job-total }})
     runs-on: ubuntu-latest
     timeout-minutes: 40
     strategy:
@@ -65,14 +66,16 @@ jobs:
       # node_modules/.cache, which npm ci starts empty: the tests reuse only
       # results computed in this job.
       - name: Run this part of the unit tests
-        run: npm test -- --shard=${{ matrix.shard }}/3
+        run: npm test -- --shard=${{ matrix.shard }}/${{ strategy.job-total }}
 
   unit:
     # One check named "Unit tests" whatever the number of parts: it passes
-    # only when every part passed (and is skipped when the run is cancelled).
+    # only when every part passed. It runs even when a part failed or the run
+    # was cancelled, and then fails: a skipped check could count as passed
+    # for a required check (branch protection).
     name: Unit tests
     needs: unit-shard
-    if: ${{ !cancelled() }}
+    if: ${{ always() }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
