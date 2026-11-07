@@ -9,7 +9,7 @@
 | 画像・背景 | `npm run content:check`、対象画面の実表示と必要な画像失敗時の表示。画像の配置・パスを変えた場合はE2E一式（`npm run test:e2e`）も実行 |
 | CSS・UIの小変更 | 対象操作とスマートフォン幅の実画面（押す部品の大きさは[タップ領域](#タップ領域)）。共通UIや型・操作への影響に応じて `npm run typecheck` やE2E一式を追加 |
 | ゲームルール | 該当ドメインテストと必要な画面操作。型・共通進行への影響があれば型検査と関連テストを追加 |
-| 画面が出す操作（ボタン・選択肢の出し方や押せる条件）・行動の一覧（`src/domain/player-action.ts` の `listPlayerActions`） | 画面の判定は関数に置き、画面と `listPlayerActions` の両方がそれを呼ぶ（[探索テスト](#探索テスト)）。`npx vitest run src/domain/player-action.test.ts` と `npm run test:walk`（関数の層のランダムウォーク、約25秒。先に `content:build -- --with-sample` を自動で実行）、変えた画面の操作 |
+| 画面が出す操作（ボタン・選択肢の出し方や押せる条件）・行動の一覧（`src/domain/player-action.ts` の `listPlayerActions`） | 画面の判定は関数に置き、画面と `listPlayerActions` の両方がそれを呼ぶ（[探索テスト](#探索テスト)）。`npx vitest run src/domain/player-action.test.ts` と `npm run test:walk`（関数の層のランダムウォーク、約21秒。先に `content:build -- --with-sample` を自動で実行）、変えた画面の操作 |
 | 旅行編フォルダの追加・削除、統合規則・生成処理の変更 | `npm run content:build`、`npx vitest run scripts/journey-folders.test.ts scripts/content-sources.test.ts scripts/catalog-merge.test.ts scripts/content-ownership.test.ts scripts/content-validation.test.ts scripts/content-report.test.ts scripts/content-boundary.test.ts tests/journeys/sample_trip/`（先に `npm run content:build -- --with-sample`）、旅行編を外す・改名するときはその旅行編の `tests/journeys/<旅行編ID>/`（[旅行編ごとのテスト](#旅行編ごとのテスト)）、E2E一式（`boot.spec.ts` が登録済みの全旅行編の開始画面を開く） |
 | 見本の編（`authoring/templates/sample_trip/`）・データの書式（スキーマ）の変更 | `npx vitest run tests/journeys/sample_trip/`（先に `npm run content:build -- --with-sample`）。必須項目が増えたときは、まず見本のテストが失敗して知らせる。見本の README の一覧と必須ファイルのエラーも直す。`npm run dev:sample` で実際に遊べる。画面で最後まで遊べることは見本の編の段（`npm run test:e2e:sample`。[E2Eの段](#e2eの段)）で確かめる。見本を変えたら、見本を複製する `journey:new` と見本の内容の残りの検査も確かめる：`npx vitest run scripts/journey-new.test.ts scripts/sample-leftovers.test.ts` |
 | ひな形作成 `journey:new`・見本の内容の残りの検査（`scripts/journey-new.ts`・`scripts/sample-journey.ts`・`scripts/journey-readiness.ts`・`scripts/promote-journey.ts`） | `npx vitest run scripts/journey-new.test.ts scripts/sample-leftovers.test.ts tests/journeys/sample_trip/sample-journey.test.ts`（一時コピーで作成・生成・readiness・`journey:release --check`、`city:bundle` の書き出しと確認、観察資料・交通判断台帳がないときの `journey:scaffold`・`journey:transit` の案内まで行う。名前と並び順は一時コピーの旅行編と重ならないものを選ぶので、`journey:new` で作った旅行編がリポジトリにあっても通る。約13秒）。作った旅行編が画面で準備中として開くことは、CIの見本の編の段が確かめる（[E2Eの段](#e2eの段)）。readiness と release を変えたら `scripts/journey-authoring.test.ts`・`tests/journeys/golden_triangle/india-readiness.test.ts`・`india-release-integration.test.ts` も実行する |
@@ -205,7 +205,7 @@
 
 | 種類 | 置き場所と実行 | 頻度と所要時間（4コアの開発環境、2026年11月） |
 | --- | --- | --- |
-| 関数の層のランダムウォーク | `tests/explore/journey-walk.test.ts`。`npm run test:walk`（到達の要約を表示）、`npm test`・`npm run verify`・CIの単体テスト（`content` の組） | 毎回：固定の種4つ×1,500手、約25秒。週1回：種12個×4,000手 |
+| 関数の層のランダムウォーク | `tests/explore/journey-walk.test.ts`。`npm run test:walk`（到達の要約を表示）、`npm test`・`npm run verify`・CIの単体テスト（`content` の組） | 毎回：固定の種4つ×1,500手、約21秒（`npm test` の中では他のテストと並列に動き、`content` の組全体は約5秒長くなった）。週1回：種12個×4,000手 |
 | モンキー | `tests/e2e/explore/monkey.spec.ts`（`@explore`、`playwright.explore.config.ts`）。`npm run test:e2e:explore` | 週1回・手動：種3つ×開始地点3つ、各約55秒（手元の既定は40秒） |
 | WebKit | `@smoke` のテスト（`playwright.webkit.config.ts`）。`npm run test:e2e:webkit` | 週1回・手動：2件 |
 
