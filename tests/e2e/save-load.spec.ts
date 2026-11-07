@@ -280,6 +280,7 @@ test("a save from a newer version is reported as such, and deleting it removes o
   await expect(confirm).toContainText("以前に退避したバックアップと、ほかのサイトのデータは消去しません。");
   await confirm.getByRole("button", { name: "保存データを消去する" }).click();
   await expect(ops.startButton(page)).toBeVisible();
+  await expect(ops.startButton(page)).toHaveAccessibleName(ops.startLabel);
   await expect(page.getByRole("alert")).toHaveCount(0);
   const storage = await allStorage(page);
   expect(storage).not.toHaveProperty([saveKey()]);

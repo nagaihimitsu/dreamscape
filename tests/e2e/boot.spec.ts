@@ -36,6 +36,8 @@ test("the title screen opens every registered journey without writing a save", {
       }
     } else {
       await expect(ops.startButton(page)).toBeVisible();
+      // A title without a save offers the normal start (not a start that backs up a save).
+      await expect(ops.startButton(page)).toHaveAccessibleName(ops.startLabel);
       // Before the trip starts, the heading names the selected journey's first city.
       await expect(page.getByTestId("journey-edition")).toHaveText(`${entry.cities[0].nameJa}の旅`);
       // The journey's own title art (a missing file fails the error guard), else the shared neutral scene.
@@ -56,6 +58,7 @@ test("the production build ignores the Debug and character preview switches", { 
   for (const query of ["?debug", "?character-preview", "?debug&city=milano&scene=battle"]) {
     await page.goto(`/${query}`);
     await expect(ops.startButton(page)).toBeVisible();
+    await expect(ops.startButton(page)).toHaveAccessibleName(ops.startLabel);
     await expect(page.getByTestId("debug-panel")).toHaveCount(0);
     await expect(page.getByTestId("debug-session")).toHaveCount(0);
     await expect(page.getByText("場面の確認")).toHaveCount(0);
