@@ -9,8 +9,10 @@ import {
   type RewardRule,
   type StoryBattle,
 } from "../content";
+import { getJourneyForCity } from "../content/journeys";
 import { openTourism } from "./tourism";
-import { startBattle } from "./battle";
+import { getActiveBattleContent, leaveBattle, startBattle } from "./battle";
+import { canReadCityEpilogue } from "./epilogue";
 import { earnRewards } from "./rewards";
 import { rewardBattleId, rewardLandmarkId } from "./reward-rules";
 import { encounters } from "../content/encounters";
@@ -162,6 +164,29 @@ export function enterFreeTime(
     battleRewardReceipt: null,
   };
 }
+/**
+ * The ways out of a battle's result screen: the city finale's 「エピローグへ進む」 while its
+ * epilogue is unread (and no special battle is left), and leaving to free time, which a journey
+ * that moves on after the epilogue (cityTransition after_epilogue) does not offer beside it.
+ */
+export function getBattleResultExits(state: GameState): { epilogue: boolean; leave: boolean } {
+  const active = state.activeBattle;
+  if (!active || active.phase !== "result" || state.activeTourism) return { epilogue: false, leave: false };
+  const { battle } = getActiveBattleContent(active);
+  const epilogue = battle.scope === "city_finale" && !!battle.cityId && !getNextStoryBattle(state) && canReadCityEpilogue(state, battle.cityId);
+  const automatic = getJourneyForCity(state.currentCityId)?.cityTransition === "after_epilogue";
+  return { epilogue, leave: !(automatic && epilogue) };
+}
+
+/** The result screen's 「自由時間へ戻る／進む」: a special battle returns to its place, the others to free time. */
+export function leaveBattleResult(state: GameState, expectedRevision: number): GameState {
+  const active = state.activeBattle;
+  if (!active || active.phase !== "result" || state.activeTourism) return state;
+  return getActiveBattleContent(active).battle.reasoning
+    ? leaveBattle(state, expectedRevision)
+    : enterFreeTime(state, expectedRevision);
+}
+
 function hasCompletedBattle(state: GameState, episode: EpisodeDefinition) {
   return state.battleRecords.some(
     (record) => record.battleId === episode.battleId && record.attempts > 0,

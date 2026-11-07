@@ -7,16 +7,13 @@ import {
   landmarks,
   tourismAssets,
   getCityContent,
-  battles,
-  episodes,
-  journeyConfig,
 } from "../content";
-import { defaultJourneyId, getJourney, getJourneyForCity } from "../content/journeys";
+import { defaultJourneyId, getJourney } from "../content/journeys";
 import { currencyForCity, formatMoneyForCity } from "../content/currency";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
-import { beginTravelEvent, waitForTravel } from "../domain/travel-game";
+import { observeLocalLandmark, waitForTravel } from "../domain/travel-game";
 import { getGameWeekday } from "../domain/travel";
-import { getNextCity, departToNextCity } from "../domain/city-travel";
+import { getPlayerDeparture, departToNextCity } from "../domain/city-travel";
 import {
   advanceDate,
   chooseDate,
@@ -46,15 +43,16 @@ import { TravelActions } from "../features/journey/TravelActions";
 import { useTravelEffects } from "./useTravelEffects";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
 import { encounters } from "../content/encounters";
-import { advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterOptionAvailability, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption, encounterStoryCanFinish, proceedFromTourism, continueTourismEncounters } from "../domain/encounter";
+import { advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterOptionAvailability, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption, encounterCanFinish, proceedFromTourism, continueTourismEncounters } from "../domain/encounter";
 import { EpilogueScreen } from "../features/journey/EpilogueScreen";
 import { startCityEpilogue, advanceCityEpilogue, completeArrivalLogo } from "../domain/epilogue";
 import {
+  getBattleResultExits,
   getCurrentEpisode,
   getNextEpisode,
   getNextStoryBattle,
+  leaveBattleResult,
   startEpisode,
-  enterFreeTime,
 } from "../domain/chapter";
 import { claimPendingRewards } from "../domain/rewards";
 import "../features/journey/journey.css";
@@ -75,7 +73,9 @@ import {
   selectReasoningClue,
   pressBattleClaim,
   submitBattleEvidence,
-  leaveBattle,
+  canToggleReasoningClue,
+  getBattleObservationLandmarkId,
+  reasoningEvidenceCount,
 } from "../domain/battle";
 
 import { browserStorage, type AppProps } from "./app-storage";
@@ -241,10 +241,9 @@ export function GameApp({
     ? currentCity!.travel.places.find((place) => place.id === game.travel.currentPlaceId)
     : undefined;
   const weekday = getGameWeekday(game?.travel.calendar);
-  const nextCity = game ? getNextCity(game) : undefined;
-  const automaticCityJourney = !!game && getJourneyForCity(game.currentCityId)?.cityTransition === "after_epilogue";
-  const canStartCityEpilogue = !!game && !!currentBattle?.cityId && cityNotebook && !nextStoryBattle &&
-    game.completedCityIds.includes(currentBattle.cityId) && !game.viewedEpilogueCityIds.includes(currentBattle.cityId);
+  const departure = game ? getPlayerDeparture(game) : undefined;
+  const resultExits = game ? getBattleResultExits(game) : { epilogue: false, leave: false };
+  const observationLandmarkId = game ? getBattleObservationLandmarkId(game) : null;
   const nameForm = (
     <>
       <label>
@@ -465,7 +464,7 @@ export function GameApp({
                 const availability = getEncounterOptionAvailability(game, choice.index);
                 return { index: choice.index, textEn: choice.text, translationJa: choice.translationJa ?? option?.translationJa ?? "", cost: option?.cost ?? option?.costEuro, unavailableReason: availability.available ? undefined : availability.reason };
               }),
-              ended: activeEncounter.frame.ended && (activeEncounter.phase === "outcome" || encounterStoryCanFinish(game)),
+              ended: encounterCanFinish(game),
               finishLabel: activeEncounter.returnTourism ? "観光に戻る" : undefined,
               quiz: (activeEncounter.phase === "quiz" || activeEncounter.phase === "feedback") && currentEncounter.quiz ? {
                 id: currentEncounter.quiz.question.id,
@@ -566,24 +565,14 @@ export function GameApp({
             nextStoryBattle={nextStoryBattle ?? undefined}
             onNextStoryBattle={undefined}
             onEpilogue={
-              canStartCityEpilogue
-                ? () =>
-                    commit((state) =>
-                      startCityEpilogue(
-                        state,
-                        currentBattle.cityId!,
-                        game.revision,
-                      ),
-                    )
+              resultExits.epilogue
+                ? () => commit((state) => startCityEpilogue(state, state.currentCityId, game.revision))
                 : undefined
             }
-            onLeave={automaticCityJourney && canStartCityEpilogue ? undefined : () => {
-              if (commit((state) =>
-                reasoningRule
-                  ? leaveBattle(state, game.revision)
-                  : enterFreeTime(state, game.revision),
-              )) returnToPlace(currentBattle?.landmarkId);
-            }}
+            onLeave={resultExits.leave ? () => {
+              if (commit((state) => leaveBattleResult(state, game.revision)))
+                returnToPlace(currentBattle?.landmarkId);
+            } : undefined}
           />
         ) : active && frame ? (
           <RomanceScene
@@ -641,15 +630,10 @@ export function GameApp({
             onStartEpisode={(id) => commit((state) => startEpisode(state, id))}
             onEpilogue={(id) => commit((state) => startCityEpilogue(state, id, game.revision))}
             onChooseDate={(id) => setConfirmation({ kind: "date", id })}
-            onTourism={(id) => commit((state) => {
-              const episode = episodes.find((item) => item.landmarkId === id);
-              const storyBattle = journeyConfig.storyBattles.find((entry) => battles.find((battle) => battle.id === entry.battleId)?.landmarkId === id);
-              const eventId = episode?.id ?? storyBattle?.battleId;
-              return eventId ? beginTravelEvent(state, eventId, "walk", game.revision, nextRomanceRoll) : state;
-            })}
+            onTourism={(id) => commit((state) => observeLocalLandmark(state, id, game.revision, nextRomanceRoll))}
             onBattle={(id) => commit((state) => startBattle(state, id))}
             onTravelEvent={(id, mode) => travelToEvent(id, mode, game.revision)}
-            nextCityName={automaticCityJourney ? undefined : nextCity?.city.nameJa}
+            nextCityName={departure?.city.nameJa}
             onDepart={() => setConfirmDeparture(true)}
           />
         )}
@@ -657,8 +641,8 @@ export function GameApp({
       <footer>
         Dreamscape <span>·</span> 旅の余白に、ふたりの物語。
       </footer>
-      {confirmDeparture && game && nextCity && !automaticCityJourney && <Modal labelledBy="departure-title" onClose={() => setConfirmDeparture(false)}>
-        <h2 id="departure-title">{nextCity.city.nameJa}へ出発</h2>
+      {confirmDeparture && game && departure && <Modal labelledBy="departure-title" onClose={() => setConfirmDeparture(false)}>
+        <h2 id="departure-title">{departure.city.nameJa}へ出発</h2>
         <p>次の街へ進みます。今の街の未使用アイテムは持って行けません。</p>
         <button type="button" className="primary" onClick={() => {
           if (commit((state) => departToNextCity(state, game.revision))) setConfirmDeparture(false);
@@ -692,8 +676,9 @@ export function GameApp({
                     ].questionEn,
                   selectedIds:
                     game.activeBattle.reasoning?.selectedClueIds ?? [],
-                  maxSelections: reasoningRule.kind === "contradiction" ? 1 : 2,
+                  maxSelections: reasoningEvidenceCount(reasoningRule) as 1 | 2,
                   selectionEnabled: game.activeBattle.phase === "reasoning",
+                  canToggle: (id) => canToggleReasoningClue(game, id),
                   onSelect: (id) =>
                     commit((state) =>
                       selectReasoningClue(state, id, game.revision),
@@ -702,9 +687,9 @@ export function GameApp({
               : undefined
           }
           onObserve={
-            !game.activeTourism && !reasoningRule && currentLandmarkId
+            observationLandmarkId
               ? () => {
-                  if (commit((state) => openTourism(state, currentLandmarkId)))
+                  if (commit((state) => openTourism(state, observationLandmarkId)))
                     setNotebook(false);
                 }
               : undefined

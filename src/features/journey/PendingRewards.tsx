@@ -1,5 +1,6 @@
 import { allRewardRules, balance } from "../../content";
 import type { GameState } from "../../domain/game";
+import { canClaimPendingRewards } from "../../domain/rewards";
 
 export function PendingRewards({
   game,
@@ -23,7 +24,7 @@ export function PendingRewards({
           <button
             className="secondary"
             data-testid="pending-claim"
-            disabled={game.ap >= balance.apCap}
+            disabled={!canClaimPendingRewards(game)}
             onClick={onClaim}
           >
             受け取る
@@ -68,7 +69,7 @@ export function PendingRewards({
       <button
         className="secondary"
         data-testid="pending-claim"
-        disabled={game.ap >= balance.apCap}
+        disabled={!canClaimPendingRewards(game)}
         onClick={onClaim}
       >
         保留中のAPを受け取る

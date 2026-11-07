@@ -12,6 +12,8 @@ export interface NotebookReasoning {
   selectedIds: string[];
   maxSelections: 1 | 2;
   selectionEnabled: boolean;
+  /** Whether choosing or putting back this clue is possible now (canToggleReasoningClue). */
+  canToggle: (id: string) => boolean;
   onSelect: (id: string) => void;
   clues?: typeof tourismClues;
 }
@@ -186,7 +188,7 @@ export function ClueNotebook({
                 className="case-select"
                 data-testid={`select-evidence-${current.id}`}
                 aria-pressed={currentSelected}
-                disabled={!reasoning.selectionEnabled || (reasoning.maxSelections === 2 && reasoning.selectedIds.length >= 2 && !currentSelected)}
+                disabled={!reasoning.canToggle(current.id)}
                 onClick={() => reasoning.onSelect(current.id)}
               >
                 {currentSelected ? (reasoning.selectionEnabled ? "✓ 選択中 · 外す" : "✓ 提示した証拠") : "この証拠を選ぶ"}

@@ -5,8 +5,8 @@ import { getJourneyForCity } from "../../content/journeys";
 import type { TravelRoute } from "../../content/travel-schemas";
 import { Modal } from "../../components/Modal";
 import type { GameState } from "../../domain/game";
-import { getNextTravelWaitTime } from "../../domain/travel-destinations";
-import { getTravelSleepOptions, waitForTravel } from "../../domain/travel-game";
+import { getTravelWaitOptions } from "../../domain/travel-destinations";
+import { getTravelSleepOptions } from "../../domain/travel-game";
 import { formatTravelTime } from "./travel-time";
 import { travelModeLabels } from "./travel-visibility";
 
@@ -18,14 +18,13 @@ export function TravelActions({ game, onTravelWait, onTravelSleep }: {
 }) {
   const { travel, travelSettings } = getCityContent(game.currentCityId);
   const [showSleep, setShowSleep] = useState(false);
-  const nextTime = getNextTravelWaitTime(game);
+  const waitOptions = getTravelWaitOptions(game);
   const sleepOptions = getTravelSleepOptions(game);
   return <div className="travel-utility">
     <details className="travel-wait">
       <summary aria-label="時間を進める">待機</summary>
       <div className="travel-wait-actions">
-        <button type="button" className="secondary" disabled={waitForTravel(game, 30, game.revision) === game} onClick={() => onTravelWait(30)}>30分待つ</button>
-        {nextTime !== null && <button type="button" className="secondary" disabled={waitForTravel(game, nextTime - game.travel.minute, game.revision) === game} onClick={() => onTravelWait(nextTime - game.travel.minute)}>{formatTravelTime(nextTime)}まで待つ</button>}
+        {waitOptions.map((option) => <button key={option.until ?? "minutes"} type="button" className="secondary" disabled={!option.available} onClick={() => onTravelWait(option.minutes)}>{option.until === null ? `${option.minutes}分待つ` : `${formatTravelTime(option.until)}まで待つ`}</button>)}
       </div>
     </details>
     <button type="button" className="travel-sleep-toggle" aria-label="滞在先で休む" onClick={() => setShowSleep(true)}>休む</button>

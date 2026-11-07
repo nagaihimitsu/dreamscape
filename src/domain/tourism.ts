@@ -234,6 +234,21 @@ export function closeTourism(
   return { ...state, revision: state.revision + 1, activeTourism: null };
 }
 
+/** The clues the observation image marks (ObservationViewer): the landmark's hotspots that have a region. */
+export function observationHotspots(landmarkId: string) {
+  const clueIds = landmarks.find((item) => item.id === landmarkId)?.clueIds ?? [];
+  return clueIds.flatMap((id) => tourismClues.filter((clue) => clue.id === id && clue.kind === "hotspot" && clue.region !== null));
+}
+
+/** What an open observation still lets the player find: its marked hotspots and the landmark's documents (the clue book's 「資料を読む」). */
+export function getDiscoverableClueIds(state: GameState): string[] {
+  const active = state.activeTourism;
+  if (!active || active.phase !== "exploring") return [];
+  const documents = tourismClues.filter((clue) => clue.kind === "document" && clue.landmarkId === active.landmarkId);
+  return [...observationHotspots(active.landmarkId), ...documents].map((clue) => clue.id)
+    .filter((id) => !state.discoveredClueIds.includes(id));
+}
+
 /** Hotspots and documentary cards share stable clue IDs; repeated discoveries are harmless. */
 export function discoverClue(
   state: GameState,

@@ -56,6 +56,18 @@ describe("unit test sets", () => {
     });
   });
 
+  it("puts a long exploration in tests/explore/ in the content set whatever it imports", () => {
+    root = mkdtempSync(path.join(tmpdir(), "dreamscape-test-sets-"));
+    write("src/rules/a.ts", "export const a = 1;\n");
+    write("tests/explore/walk.test.ts", 'import { a } from "../../src/rules/a";\n');
+    write("tests/journeys/milano/route.test.ts", 'import { a } from "../../../src/rules/a";\n');
+    write("src/rules/a.test.ts", 'import { a } from "./a";\n');
+    expect(splitTestFiles(root, listTestFiles(root))).toEqual({
+      quick: ["src/rules/a.test.ts", "tests/journeys/milano/route.test.ts"],
+      content: ["tests/explore/walk.test.ts"],
+    });
+  });
+
   it("finds the content build through an import cycle whatever the order of the files", () => {
     root = mkdtempSync(path.join(tmpdir(), "dreamscape-test-sets-"));
     write("scripts/content-pipeline.ts", "export const buildContent = () => {};\n");

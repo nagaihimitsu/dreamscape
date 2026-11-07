@@ -8,7 +8,7 @@ import {
 } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
-import { activeGuideStoryId } from "../../domain/tourism";
+import { activeGuideStoryId, observationHotspots } from "../../domain/tourism";
 import type { GameState } from "../../domain/game";
 import { DialogueText } from "../../components/DialogueText";
 import { CanalScene } from "../../components/CanalScene";
@@ -62,8 +62,7 @@ export function TourismScreen({
   const clues = landmark.clueIds.map((id) =>
     tourismClues.find((item) => item.id === id)!,
   );
-  const points = clues
-    .filter((clue) => clue.kind === "hotspot" && clue.region !== null)
+  const points = observationHotspots(landmark.id)
     .map((clue) => ({
       id: clue.id,
       titleJa: clue.titleJa,

@@ -107,6 +107,12 @@ export function encounterStoryCanFinish(state: GameState): boolean {
   return !!option?.deferCompletion || !hasLandmarkBattle(state, event);
 }
 
+/** The encounter's last line ends the scene (EncounterScreen's 「観光に戻る」／「自由時間へ」) instead of reading on. */
+export function encounterCanFinish(state: GameState): boolean {
+  const active = state.activeEncounter;
+  return !!active && active.frame.ended && (active.phase === "outcome" || encounterStoryCanFinish(state));
+}
+
 export function getEncounterOptionAvailability(state: GameState, index: number): Availability {
   const active = state.activeEncounter;
   const event = active && getActiveEncounterDefinition(active);

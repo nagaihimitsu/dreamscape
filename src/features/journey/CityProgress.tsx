@@ -7,6 +7,7 @@ import {
 } from "../../content";
 import { getEpisodeAvailability, getNextEpisode, getNextStoryBattle, storyBattlesForCity } from "../../domain/chapter";
 import type { GameState } from "../../domain/game";
+import { canReadCityEpilogue } from "../../domain/epilogue";
 import { formatCityProgress } from "./city-progress-label";
 import "./city.css";
 
@@ -28,8 +29,8 @@ export function CityProgress({
   const { city } = getCityContent(game.currentCityId);
   const next = getNextEpisode(game);
   const nextBattle = getNextStoryBattle(game);
-  const cityCompleted = game.completedCityIds.includes(city.id);
-  if (!showSummary && !showNext && (!cityCompleted || game.viewedEpilogueCityIds.includes(city.id))) return null;
+  const epilogue = canReadCityEpilogue(game, city.id);
+  if (!showSummary && !showNext && !epilogue) return null;
   return (
     <section
       className="city-progress paper"
@@ -74,7 +75,7 @@ export function CityProgress({
           <p className="fine-print">自由時間は、この下から楽しめます。</p>
         </div>
       )}
-      {cityCompleted && !game.viewedEpilogueCityIds.includes(city.id) && (
+      {epilogue && (
         <div className="city-complete">
           <button
             className="secondary"

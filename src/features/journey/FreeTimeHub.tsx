@@ -1,11 +1,10 @@
-import { battles, episodes, landmarks, getCityContent } from "../../content";
+import { landmarks, getCityContent } from "../../content";
 import type { TravelRoute } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
-import { getTourismAvailability } from "../../domain/tourism";
+import { getLocalObservationLandmarkIds } from "../../domain/travel-game";
 import { CityProgress } from "./CityProgress";
 import { PendingRewards } from "./PendingRewards";
 import { TravelMenu } from "./TravelMenu";
-import { showTravelEvent } from "./travel-visibility";
 import "./free-time-hub.css";
 
 /** The same compact destination for an unfinished or completed romance. */
@@ -38,12 +37,9 @@ export function FreeTimeHub({
   nextCityName?: string;
   onDepart: () => void;
 }) {
-  const { city, travel } = getCityContent(game.currentCityId);
-  const localLandmarkIds = new Set(travel.events.filter((event) => event.placeId === game.travel.currentPlaceId && event.category === "main" && showTravelEvent(game, event)).flatMap((event) => {
-    const landmarkId = episodes.find((episode) => episode.id === event.id)?.landmarkId ?? battles.find((battle) => battle.id === event.id)?.landmarkId;
-    return landmarkId ? [landmarkId] : [];
-  }));
-  const localLandmarks = landmarks.filter((landmark) => localLandmarkIds.has(landmark.id));
+  const { city } = getCityContent(game.currentCityId);
+  const observable = getLocalObservationLandmarkIds(game);
+  const localLandmarks = landmarks.filter((landmark) => observable.includes(landmark.id));
   // Retain the existing callback contract for callers; direct navigation from
   // these callbacks is deliberately not presented in the destination list.
   void onChooseDate; void selectedLandmarkId; void onSelectLandmark; void placeFocusRequest;
@@ -54,13 +50,9 @@ export function FreeTimeHub({
 
       <TravelMenu key={game.currentCityId} game={game} onTravelEvent={onTravelEvent} />
 
-      {localLandmarks.map((landmark) => {
-        const canObserve = game.visitedLandmarkIds.includes(landmark.id) && getTourismAvailability(game, landmark.id).available;
-        if (!canObserve) return null;
-        return <section key={landmark.id} aria-label={`${landmark.nameJa}で過ごす`}>
-          {canObserve && <button className="secondary" onClick={() => onTourism(landmark.id)}>{landmark.nameJa}を観察する</button>}
-        </section>;
-      })}
+      {localLandmarks.map((landmark) => <section key={landmark.id} aria-label={`${landmark.nameJa}で過ごす`}>
+        <button className="secondary" onClick={() => onTourism(landmark.id)}>{landmark.nameJa}を観察する</button>
+      </section>)}
 
       <PendingRewards game={game} onClaim={onClaimRewards} compact />
       {nextCityName && <button type="button" className="secondary" onClick={onDepart}>{nextCityName}へ出発</button>}

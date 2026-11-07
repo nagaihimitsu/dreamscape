@@ -1,4 +1,4 @@
-import { getActiveBattleContent, getReasoningContext } from "../../domain/battle";
+import { canSubmitBattleEvidence, getActiveBattleContent, getReasoningContext, reasoningEvidenceCount } from "../../domain/battle";
 import type { GameState } from "../../domain/game";
 import "./reasoning.css";
 
@@ -19,7 +19,7 @@ export function ReasoningPanel({
   const reasoning = active.reasoning;
   const context = getReasoningContext(game);
   const selecting = active.phase === "reasoning";
-  const count = rule.kind === "contradiction" ? 1 : 2;
+  const count = reasoningEvidenceCount(rule);
   const selected = reasoning?.selectedClueIds ?? [];
   return (
     <section
@@ -91,7 +91,7 @@ export function ReasoningPanel({
           <button
             className="primary"
             data-testid="reasoning-submit"
-            disabled={selected.length !== count}
+            disabled={!canSubmitBattleEvidence(game)}
             onClick={onSubmit}
           >
             {rule.kind === "contradiction"
