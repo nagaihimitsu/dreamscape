@@ -72,7 +72,10 @@ const pairKey = (from: string, to: string, mode: string) => `${from} → ${to}�
  * where a route of that mode exists, resolvable sources, and a documented
  * fact (isFactSource) behind every decision that is not `available` (what the
  * fact shows: the service does not reach the place, the service exists there,
- * or what was checked). `file` names the ledger in the errors.
+ * or what was checked), and a walking route for every direction: the ledger
+ * weighs each vehicle against walking there (e.g. 「徒歩が20分未満」), so a
+ * city with a ledger keeps walking everywhere. `file` names the ledger in the
+ * errors.
  */
 export function inspectCityTransit(travel: TravelCatalog, raw: unknown, modes: readonly string[], file = "transit ledger"): CityTransitReview {
   const parsed = transitLedgerSchema.safeParse(raw);
@@ -84,6 +87,7 @@ export function inspectCityTransit(travel: TravelCatalog, raw: unknown, modes: r
   if (declared.has(WALK_MODE_ID)) throw new Error("Walking is not a transit ledger mode");
   const places = new Set(travel.places.map((place) => place.id));
   const routes = new Set(travel.routes.map((route) => pairKey(route.fromPlaceId, route.toPlaceId, route.mode)));
+  const walks = new Set(travel.routes.filter((route) => route.mode === WALK_MODE_ID).map((route) => `${route.fromPlaceId} → ${route.toPlaceId}`));
   const decided = new Set<string>();
   const counts: TransitCounts = Object.fromEntries(modes.map((mode) => [mode, Object.fromEntries(transitStatuses.map((status) => [status, 0]))])) as TransitCounts;
   for (const decision of ledger.decisions) {
@@ -105,6 +109,8 @@ export function inspectCityTransit(travel: TravelCatalog, raw: unknown, modes: r
   }
   for (const from of places) for (const to of places) {
     if (from === to) continue;
+    if (!walks.has(`${from} → ${to}`))
+      throw fail(`徒歩の経路がない方向があります: ${from} → ${to}`, `Walking game model missing: ${from} → ${to}`);
     for (const mode of modes) {
       const key = pairKey(from, to, mode);
       if (!decided.has(key)) throw fail(`判断のない方向があります: ${key}`, `Undecided transit direction: ${key}`);

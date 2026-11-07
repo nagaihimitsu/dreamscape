@@ -747,7 +747,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       const transport = { journey: owner, pending: pendingTransport.get(owner.id), manifestFile: manifestFiles.get(owner.id) };
       checkRouteModes(travel, travelFile, transport);
       checkCityRentals(travel, settings.rentals, settingsFile, transport);
-      const review = checkCityTransit({ travel, transit, transitFile, travelFile }, transport, { requireLedger: true });
+      const review = checkCityTransit({ travel, transit, transitFile, travelFile }, transport);
       if (review) transitReviews.set(owner.id, [...(transitReviews.get(owner.id) ?? []), review]);
     }
     // A journey may publish its first city while keeping later, pre-registered

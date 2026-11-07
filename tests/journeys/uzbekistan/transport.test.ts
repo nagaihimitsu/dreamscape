@@ -33,4 +33,18 @@ describe("Uzbekistan transport", () => {
       expect(route.sources.some((source) => /1分1000スム|走行分数×1000スム/u.test(source.claimJa))).toBe(false);
     }
   });
+
+  it("charges the formula fares of the budget proposal (lowest, highest and median per city)", () => {
+    // p4/uz-budget-proposal.md, 「新しい料金」; the old fixed fares were 15,000–58,000 (Tashkent), 19,000–79,000
+    // (Samarkand) and 19,000–24,000 UZS (Bukhara).
+    const spread = (cityId: string) => {
+      const costs = getCityContent(cityId).travel.routes.filter((route) => route.mode === "taxi").map((route) => route.cost)
+        .sort((a, b) => a - b);
+      const middle = costs.length / 2;
+      return { lowest: costs[0], highest: costs.at(-1), median: (costs[middle - 1] + costs[middle]) / 2 };
+    };
+    expect(spread("tashkent")).toEqual({ lowest: 5000, highest: 19000, median: 11000 });
+    expect(spread("samarkand")).toEqual({ lowest: 5000, highest: 15000, median: 8000 });
+    expect(spread("bukhara")).toEqual({ lowest: 4000, highest: 9000, median: 6000 });
+  });
 });

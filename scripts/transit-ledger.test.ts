@@ -57,6 +57,13 @@ describe("per-city transit ledger", () => {
     expect(() => inspectCityTransit(travel, ledger, ["walk", ...modes], FILE)).toThrow("Walking is not a transit ledger mode");
   });
 
+  it("requires a walking route for every direction (the decisions weigh each vehicle against walking)", () => {
+    const { travel, ledger } = fixture();
+    const noWalk = { ...travel, routes: travel.routes.filter((route) => !(route.mode === "walk" && route.fromPlaceId === "test_b" && route.toPlaceId === "test_a")) };
+    expect(() => inspectCityTransit(noWalk, ledger, modes, FILE))
+      .toThrow(`徒歩の経路がない方向があります: test_b → test_a: ${FILE}（Walking game model missing: test_b → test_a）`);
+  });
+
   it("keeps available and route in step, both ways", () => {
     const { travel, ledger } = fixture();
     const noRoute = { ...travel, routes: travel.routes.filter((route) => !(route.mode === "taxi" && route.fromPlaceId === "test_a")) };

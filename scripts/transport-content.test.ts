@@ -36,8 +36,14 @@ describe("transport checks in content:build", () => {
     expect(() => validateContent(edit({ "travel/mihon.json": (data) => ({ ...data,
       routes: data.routes.filter((route: { mode: string; fromPlaceId: string; toPlaceId: string }) => !(route.mode === "rental_bicycle" && route.toPlaceId === "mihon_market" && route.fromPlaceId === "mihon_hotel")) }) })))
       .toThrow("Transit decision and route disagree: mihon_hotel → mihon_market（rental_bicycle）");
+    // A city with a ledger walks every direction; a walk longer than the day leaves only the rental to reach the market.
+    const isWalkToMarket = (route: { mode: string; fromPlaceId: string; toPlaceId: string }) =>
+      route.mode === "walk" && route.fromPlaceId === "mihon_hotel" && route.toPlaceId === "mihon_market";
     expect(() => validateContent(edit({ "travel/mihon.json": (data) => ({ ...data,
-      routes: data.routes.filter((route: { mode: string; fromPlaceId: string; toPlaceId: string }) => !(route.mode === "walk" && route.fromPlaceId === "mihon_hotel" && route.toPlaceId === "mihon_market")) }) })))
+      routes: data.routes.filter((route: { mode: string; fromPlaceId: string; toPlaceId: string }) => !isWalkToMarket(route)) }) })))
+      .toThrow("徒歩の経路がない方向があります: mihon_hotel → mihon_market: authoring/templates/sample_trip/travel/mihon-transit.json（Walking game model missing: mihon_hotel → mihon_market）");
+    expect(() => validateContent(edit({ "travel/mihon.json": (data) => ({ ...data,
+      routes: data.routes.map((route: { mode: string; fromPlaceId: string; toPlaceId: string; minutes: number }) => isWalkToMarket(route) ? { ...route, minutes: 12 * 60 } : route) }) })))
       .toThrow("Missing usable directed route: mihon_hotel/mihon_market");
     expect(() => validateContent(edit({ "travel/mihon.json": (data) => ({ ...data,
       routes: data.routes.map((route: { mode: string; estimation?: string }) => route.mode === "rental_bicycle" ? { ...route, estimation: undefined } : route) }) })))

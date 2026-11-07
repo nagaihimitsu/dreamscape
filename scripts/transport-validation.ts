@@ -65,10 +65,10 @@ export type CityTransitFiles = { travel: TravelCatalog; transit: unknown; transi
  * keeps its old journey-wide ledger and its own tools). Returns the review,
  * or undefined without a ledger.
  */
-export function checkCityTransit(city: CityTransitFiles, transport: JourneyTransport, options: { requireLedger: boolean }): CityTransitReview | undefined {
+export function checkCityTransit(city: CityTransitFiles, transport: JourneyTransport): CityTransitReview | undefined {
   const modes = transport.journey.transportModes.map((mode) => mode.id);
   if (city.transit === undefined) {
-    if (options.requireLedger && modes.length && !transport.pending)
+    if (modes.length && !transport.pending)
       throw new Error(`交通判断台帳 ${city.transitFile} がありません。乗り物を宣言した旅行編では、都市ごとに台帳が要ります（Missing transit ledger）。`);
     return undefined;
   }

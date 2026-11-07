@@ -42,33 +42,32 @@ describe("route modes", () => {
 
 describe("per-city transit ledgers in content:build", () => {
   const taxi = { id: "taxi", nameJa: "タクシー", movingJa: "タクシーで移動中", kind: "car" as const };
-  const files = (transit: unknown) => ({ travel: travel([route("a", "a", "walk", 0), route("a", "b", "walk")]), transit, transitFile: "content/journeys/test_trip/travel/test_city-transit.json" });
+  const files = (transit: unknown) => ({ travel: travel([route("a", "a", "walk", 0), route("a", "b", "walk"), route("b", "b", "walk", 0), route("b", "a", "walk")]), transit, transitFile: "content/journeys/test_trip/travel/test_city-transit.json" });
   const ledger = { schemaVersion: 2, cityId: "test_city", sourceRefs: { fact: { ...source[0], claimType: "documented_fact" } }, decisions: [
     { fromPlaceId: "a", toPlaceId: "b", mode: "taxi", status: "not_suitable", checkedAt: "2026-11-07", reasonJa: "歩いてすぐです。", sourceRefs: ["fact"] },
     { fromPlaceId: "b", toPlaceId: "a", mode: "taxi", status: "not_suitable", checkedAt: "2026-11-07", reasonJa: "歩いてすぐです。", sourceRefs: ["fact"] },
   ] };
 
   it("checks a ledger against the routes and returns its review", () => {
-    expect(checkCityTransit(files(ledger), journey([taxi]), { requireLedger: true })).toMatchObject({ decisions: 2, ready: true });
+    expect(checkCityTransit(files(ledger), journey([taxi]))).toMatchObject({ decisions: 2, ready: true });
   });
 
   it("requires a ledger once the journey declares a mode, and only then", () => {
-    expect(() => checkCityTransit(files(undefined), journey([taxi]), { requireLedger: true }))
+    expect(() => checkCityTransit(files(undefined), journey([taxi])))
       .toThrow("交通判断台帳 content/journeys/test_trip/travel/test_city-transit.json がありません。乗り物を宣言した旅行編では、都市ごとに台帳が要ります（Missing transit ledger）。");
-    expect(checkCityTransit(files(undefined), journey([taxi]), { requireLedger: false })).toBeUndefined();
-    expect(checkCityTransit(files(undefined), journey([]), { requireLedger: true })).toBeUndefined();
-    expect(() => checkCityTransit(files(ledger), journey([]), { requireLedger: true }))
+    expect(checkCityTransit(files(undefined), journey([]))).toBeUndefined();
+    expect(() => checkCityTransit(files(ledger), journey([])))
       .toThrow("content/journeys/test_trip/travel/test_city-transit.json は要りません。test_trip は徒歩だけの旅行編です（Transit ledger in a walk-only journey）。");
   });
 
   it("lets a journey waiting for its switch keep no per-city ledger and need none", () => {
-    expect(checkCityTransit(files(undefined), journey([taxi], "ツアー機能待ち"), { requireLedger: true })).toBeUndefined();
-    expect(() => checkCityTransit(files(ledger), journey([taxi], "ツアー機能待ち"), { requireLedger: true }))
+    expect(checkCityTransit(files(undefined), journey([taxi], "ツアー機能待ち"))).toBeUndefined();
+    expect(() => checkCityTransit(files(ledger), journey([taxi], "ツアー機能待ち")))
       .toThrow("test_city-transit.json は置けません。test_trip は交通の切り替えを待っています（ツアー機能待ち）。");
   });
 
   it("reports the modes and the ledger counts per journey, or what a journey waits for", () => {
-    const review = checkCityTransit(files(ledger), journey([taxi]), { requireLedger: true })!;
+    const review = checkCityTransit(files(ledger), journey([taxi]))!;
     expect(transportSummary(journey([taxi]), [review]))
       .toBe("Transport test_trip: modes walk, taxi; transit ledgers 1: available 0, not_suitable 2, not_applicable 0, inconclusive 0");
     expect(transportSummary(journey([{ ...taxi, rental: true }]), [])).toBe("Transport test_trip: modes walk, taxi (rental)");
@@ -127,11 +126,11 @@ describe("the transport limits", () => {
       { fromPlaceId: "b", toPlaceId: "a", mode: "taxi", status: "not_suitable", checkedAt: "2026-11-07", reasonJa: "試験の判断です。", sourceRefs: ["fact"] },
     ] });
     const supported = { ...route("a", "b", "taxi", 5, 3), estimation: "game_model" as const, sources: [...source, fact] };
-    const files = (taxiRoute: TravelCatalog["routes"][number]) => ({ travel: travel([route("a", "a", "walk", 0), route("a", "b", "walk"), taxiRoute]),
+    const files = (taxiRoute: TravelCatalog["routes"][number]) => ({ travel: travel([route("a", "a", "walk", 0), route("a", "b", "walk"), route("b", "b", "walk", 0), route("b", "a", "walk"), taxiRoute]),
       transit: ledger("available"), transitFile: "x-transit.json", travelFile: "content/journeys/test_trip/travel/test_city.json" });
-    expect(checkCityTransit(files(supported), journey([taxi]), { requireLedger: true })).toMatchObject({ ready: true });
+    expect(checkCityTransit(files(supported), journey([taxi]))).toMatchObject({ ready: true });
     for (const weak of [{ ...supported, sources: source }, { ...supported, estimation: undefined }])
-      expect(() => checkCityTransit(files(weak), journey([taxi]), { requireLedger: true })).toThrow(
+      expect(() => checkCityTransit(files(weak), journey([taxi]))).toThrow(
         "乗り物の経路1本に、ゲーム用の推定の印（\"estimation\": \"game_model\"）か事実の出典（documented_fact）がありません。最初の1本: content/journeys/test_trip/travel/test_city.json の a → b（taxi）");
   });
 });

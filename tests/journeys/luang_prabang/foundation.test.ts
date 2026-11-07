@@ -114,5 +114,38 @@ describe("Luang Prabang city foundation", () => {
     }
     const toTemple = travel.routes.filter((route) => route.mode === "bicycle" && (route.fromPlaceId === "luang_prabang_wat_phol_phao" || route.toPlaceId === "luang_prabang_wat_phol_phao"));
     expect(toTemple).toHaveLength(20);
+    // U4: the shorter times that ride the central street (set A of the research, p4/transport-uzbekistan-
+    // luang-prabang.md §7). If the street closed, haw_pha_bang <-> wat_phol_phao, wat_phol_phao -> night_market
+    // and wat_phol_phao -> xieng_thong would be 25 instead of 20.
+    const short = (id: string) => id.replace("luang_prabang_", "");
+    const minutes = Object.fromEntries(travel.routes.filter((route) => route.mode === "bicycle")
+      .map((route) => [`${short(route.fromPlaceId)}>${short(route.toPlaceId)}`, route.minutes]));
+    expect(minutes).toEqual({
+      "ethnology>wat_phol_phao": 20, "ethnology>xieng_thong": 15, "haw_pha_bang>wat_phol_phao": 20,
+      "heuan_chan>wat_phol_phao": 20, "hotel>wat_phol_phao": 20, "hotel>xieng_thong": 15,
+      "night_market>wat_phol_phao": 20, "phousi>wat_phol_phao": 25, "royal_palace>wat_phol_phao": 20,
+      "wat_mai>wat_phol_phao": 20, "wat_phol_phao>ethnology": 20, "wat_phol_phao>haw_pha_bang": 20,
+      "wat_phol_phao>heuan_chan": 20, "wat_phol_phao>hotel": 20, "wat_phol_phao>night_market": 20,
+      "wat_phol_phao>phousi": 25, "wat_phol_phao>royal_palace": 20, "wat_phol_phao>wat_mai": 20,
+      "wat_phol_phao>wat_sen": 20, "wat_phol_phao>xieng_thong": 20, "wat_sen>wat_phol_phao": 25,
+      "xieng_thong>ethnology": 15, "xieng_thong>hotel": 15, "xieng_thong>wat_phol_phao": 25,
+    });
+  });
+
+  it("explains each bicycle decision by the streets its route rides (the night market only where it rides the central street)", () => {
+    const ledger = JSON.parse(readFileSync(`content/journeys/${cityId}/travel/${cityId}-transit.json`, "utf8")) as {
+      decisions: { fromPlaceId: string; toPlaceId: string; mode: string; status: string; reasonJa: string }[];
+    };
+    const bicycle = ledger.decisions.filter((decision) => decision.mode === "bicycle" && decision.status === "available");
+    expect(bicycle).toHaveLength(24);
+    const short = (id: string) => id.replace("luang_prabang_", "");
+    // The research's routed-bike steps ride neither Sisavangvong Rd nor Sakkaline Rd in these 4 directions.
+    const offStreet = bicycle.filter((decision) => decision.reasonJa.startsWith("中心の通り（シーサワンウォン通り）を通らない"))
+      .map((decision) => `${short(decision.fromPlaceId)}>${short(decision.toPlaceId)}`).sort();
+    expect(offStreet).toEqual(["ethnology>wat_phol_phao", "hotel>wat_phol_phao", "wat_phol_phao>ethnology", "wat_phol_phao>hotel"]);
+    for (const decision of bicycle) {
+      expect(decision.reasonJa.includes("夜市"), `${decision.fromPlaceId}>${decision.toPlaceId}`)
+        .toBe(!decision.reasonJa.startsWith("中心の通り（シーサワンウォン通り）を通らない"));
+    }
   });
 });
