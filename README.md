@@ -337,7 +337,7 @@ Inkには `battle_scene`（catalogのシーン名）、`answer_correct`（直前
 
 `content/journeys/<旅行編ID>/tourism/catalog.json` の `landmarks` に観光地を、`assets` に画像を、`clues` に発見内容を登録します。観光地は都市ID、日本語・英語名、画像アセットID、案内InkのID、既存バトルID、手がかりID一覧を持ちます。追加には都市の `landmarkIdsPlanned` と対応するバトル定義も登録します。React画面の修正は不要です。
 
-`clues[].region` は**画像全体に対する0〜1の相対座標**で、左上の `x` / `y` と `width` / `height` を指定します。画面のpx値は書きません。`kind: "hotspot"` は領域必須、`kind: "document"` は `region: null` とし、技法など画像から直接観察できない知識を資料カードにします。`factId` は安定ID、`relatedQuestionIds` は既存クイズの問題IDです。説明はJSON、人物の台詞はInkに分けます。出典の `claimType` は事実・解釈・学説・伝承を区別し、画面にも区分と根拠を表示します。
+`clues[].region` は**画像全体に対する0〜1の相対座標**で、左上の `x` / `y` と `width` / `height` を指定します。画面のpx値は書きません。`kind: "hotspot"` は領域必須、`kind: "document"` は `region: null` とし、技法など画像から直接観察できない知識を資料カードにします。`factId` は安定ID、`relatedQuestionIds` は同じ観光地のクイズで、その手がかりの内容を必要とする問題のIDです（どの問題にも結び付かなければ `[]` の「観察だけの手がかり」。[データ契約](docs/07_DATA_AND_TESTS.md#観察だけの手がかり)）。説明はJSON、人物の台詞はInkに分けます。出典の `claimType` は事実・解釈・学説・伝承を区別し、画面にも区分と根拠を表示します。
 
 観光案内Inkには `player_name` / `heroine_name` / `player_address` を渡します。短い日本語の線形会話として書き、恋愛effectや選択肢を入れません。コンテンツ検証ではID・参照・座標範囲・資料カードとの区別・出典・画像ファイルの形式・案内の実行を確認します。
 

@@ -194,4 +194,24 @@ describe("what each journey provides", () => {
       "Journey trip_b (preparing): cities 1, stories 0, quizzes 0, public files 0",
     ]);
   });
+
+  it("counts each journey's observation-only clues (an empty relatedQuestionIds) after its clues", () => {
+    // docs/07 「観察だけの手がかり」: an empty list means no quiz question depends on the clue.
+    const clue = (id: string, relatedQuestionIds: string[]) => ({ id, relatedQuestionIds });
+    const sources = load({
+      ...journey("trip_a", 10, "a_city"),
+      ...journey("trip_b", 20, "b_city"),
+      ...journey("trip_c", 30, "c_city"),
+      [`${folder("trip_a")}/tourism/catalog.json`]: json({ schemaVersion: 1, clues: [
+        clue("ta_view", []), clue("ta_card", ["ta_q1"]), clue("ta_sign", []),
+      ] }),
+      [`${folder("trip_b")}/tourism/catalog.json`]: json({ schemaVersion: 1, clues: [clue("tb_card", ["tb_q1", "tb_q2"])] }),
+      [`${folder("trip_c")}/tourism/catalog.json`]: json({ schemaVersion: 1, clues: [clue("tc_view", [])] }),
+    });
+    expect(journeyContents(sources).map(formatJourneyContents)).toEqual([
+      "Journey trip_a (preparing): cities 1, stories 0, quizzes 0, public files 0; clues 3, observation-only clues 2",
+      "Journey trip_b (preparing): cities 1, stories 0, quizzes 0, public files 0; clues 1",
+      "Journey trip_c (preparing): cities 1, stories 0, quizzes 0, public files 0; clues 1, observation-only clues 1",
+    ]);
+  });
 });

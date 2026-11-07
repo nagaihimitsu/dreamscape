@@ -11,6 +11,12 @@
 - ゲームは `src/content/generated/` の生成物だけを読む。旅行編だけが持つ種類（道中交流、会話注釈、英語ノートの詳細など）は、どの旅行編にもなければ空として生成する。`memoryCallbacks` は空でもよい（該当がなければ `fallbackMemoryCallbackJa`）。`learning/details.json` は問題ごとに統合し、詳細を持つ問題はそれぞれ学習会話の `storyId` を持つ（同じ旅行編の会話だけを指せる）。
 - 開発・テスト専用の見本の編（`authoring/templates/sample_trip/`、[技術設計](02_TECH_ARCHITECTURE.md#見本の編)）は `content/journeys/` に含めない。生成物に加えるのは `npm run content:build -- --with-sample`（単体テストと `npm run verify` の最初の生成、`npm run dev:sample`、E2Eの見本の編の段）だけで、本番ビルドには入れない。テストの一時コピー（`prepareContentFixture`）にも含めず、見本を使うテストが自分で複製する。
 
+## 観察だけの手がかり
+- 観光の手がかり（`tourism/catalog.json` の `clues`）の `relatedQuestionIds` には、同じ観光地のクイズの問題のうち、問題文・正解・解説がその手がかりの示す事実を必要とするものだけを書く。同じ場所や同じ時代の話題というだけでは書かない。
+- `relatedQuestionIds: []` の手がかりを「観察だけの手がかり」と呼び、正式に認める。どの問題の根拠にもならないが、その場所の見え方を変える観察・資料として手がかり帳に残す。ゲームはこの項目を読まず、手がかり帳は問題と結び付いた手がかりと同じに表示する（問題は手がかりを見なくても解ける。[観光・対決](04_BATTLE_TOURISM.md#バトル)）。観察資料から登録した手がかり（`journey:scaffold`、インド編の観察カード）は観察だけの手がかりとして始まる。
+- `content:build` は、書いた問題IDが手がかりと同じ観光地のクイズの問題であることを確かめる（例のクイズ `*.example.json` と、観光地を持たない都市フィナーレのクイズの問題は書けない）。旅行編ごとの行には観察だけの手がかりの数を出す（例：`clues 32, observation-only clues 25`。[生成時の検査と報告](02_TECH_ARCHITECTURE.md#生成時の検査と報告)）。
+- 結び付けは機械的に足さず、手がかりと問題の文を照らして1件ずつ人が決める。特殊戦B・Cの証拠（`reasoning.caseClueIds`）に使う手がかりは、項目全体がその特殊戦の保存指紋に入るため、結び付けを変えると、その特殊戦の途中のセーブは再開できず（「バトルが更新されています」と案内し、データは残す）、その特殊戦の英語ノートの解答記録も表示されなくなる。証拠でない手がかりの結び付けは保存データに影響しない。
+
 ## シナリオ編集
 - Inkは文章と選択肢を担当。`# speaker: heroine`、`# speaker: narrator`、`# background: milano_cafe`、`# effect: memory_milano_promise` のようなタグを採用する。
 - `effect:` タグは許可済みイベントの識別子。任意の式やJavaScriptを埋め込まない。
