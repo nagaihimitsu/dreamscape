@@ -1,5 +1,5 @@
 // The unsaved-progress confirmation (AGENTS.md 「現在のバージョンで作成した有効なセーブは…正しく保存・
-// 再開できる」, docs/07 acceptance 6): with manual saving, switching journeys, ロード and closing the
+// 再開できる」, docs/07 acceptance 10): with manual saving, switching journeys, ロード and closing the
 // page ask before discarding play that the last save does not hold.
 import { describe, expect, it } from "vitest";
 import { createGame, type GameState } from "../domain/game";

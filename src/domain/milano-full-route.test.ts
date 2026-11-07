@@ -1,9 +1,10 @@
 // Integration route through the whole Milan journey with the game's real Ink and domain functions
 // (formerly qa/full-route.ts), each scene started the way a player starts it: from the title
 // (newJourney), every sightseeing stop, special battle and the finale from the map
-// (getTravelDestinations → beginTravelEvent, as TravelMenu → travelToEvent), waiting or resting at the
-// hotel when nothing can start (TravelActions), the guide, observation, place encounters and battle
-// like TourismScreen, EncounterScreen and BattleScreen, every action applied like GameApp's commit.
+// (getTravelDestinations → beginTravelEvent, as TravelMenu → travelToEvent), the guide, observation,
+// place encounters and battle like TourismScreen, EncounterScreen and BattleScreen, every action applied
+// with applyPlayerAction as GameApp's commit applies it. Waiting or resting at the hotel (TravelActions)
+// is only a fallback for a route that cannot start its next event: today every start fits on day 1.
 // Two routes: skipped guides and wrong answers; read guides and correct answers, then the epilogue,
 // every standard date and the three confession outcomes (the dates start directly with startDate).
 // The special battles B and C open their guide on the first visit, so the read route also earns their
@@ -13,7 +14,6 @@ import { battles, dates, episodes, getCityContent, journeyConfig, rewardRules } 
 import { newJourney } from "../dev/scenario-builders";
 import { advanceBattle, answerBattle, getActiveBattleContent, getReasoningContext, leaveBattle, selectReasoningClue, submitBattleEvidence } from "./battle";
 import { enterFreeTime } from "./chapter";
-import { advanceCompletedJourneyCity } from "./city-travel";
 import {
   advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterStoryCanFinish,
   finishEncounter, getActiveEncounterDefinition, getEncounterOptionAvailability, proceedFromTourism,
@@ -23,7 +23,8 @@ import { advanceDate, chooseDate, confessionResult, finishDate, startDate, valid
 import { claimPendingRewards } from "./rewards";
 import { advanceTourismGuide, skipTourismGuide } from "./tourism";
 import { getNextTravelWaitTime, getTravelDestinations } from "./travel-destinations";
-import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, getTravelSleepOptions, sleepAtHotel, waitForTravel } from "./travel-game";
+import { applyPlayerAction } from "./player-action";
+import { beginTravelEvent, getTravelEventAvailability, getTravelSleepOptions, sleepAtHotel, waitForTravel } from "./travel-game";
 
 const CITY = "milano";
 const restore = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
@@ -36,11 +37,11 @@ const specialBattles = mainEvents.filter((id) => journeyConfig.storyBattles.some
 const route = [...specialBattles, ...episodes.filter((episode) => episode.cityId === CITY).map((episode) => episode.id)];
 const guideRewards = (battleId: string) => rewardRules.filter((rule) => rule.trigger === "guide_read" && rule.battleId === battleId).map((rule) => rule.id);
 
-/** Apply one player action like GameApp's commit: settle the map event and an automatic departure, then save and restore. */
+/** Apply one player action as GameApp's commit does (applyPlayerAction), then save and restore. */
 function act(state: GameState, change: (current: GameState) => GameState): GameState {
-  const changed = finishTravelEventIfComplete(state, change(state));
-  expect(changed, "the action changed nothing").not.toBe(state);
-  return restore(advanceCompletedJourneyCity(changed, changed.revision));
+  const next = applyPlayerAction(state, change);
+  expect(next, "the action changed nothing").not.toBe(state);
+  return restore(next);
 }
 
 /** In free time: start the next event of the route from the map; when none can start, wait or rest at the hotel. */

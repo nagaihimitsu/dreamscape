@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { holdJourneyLock, journeyLockName, type JourneyLockStatus } from "./journey-lock";
 import type { StorageLike } from "./index";
 
-export type { JourneyLockStatus } from "./journey-lock";
-
 /** Hold the journey's exclusive Web Lock for the lifetime of its editing view (journey-lock.ts).
  * `enabled` is false for views that never write the slot (Debug, read-only preparation). */
 export function useJourneyLock(journeyId: string, storage: StorageLike, attempt: number, enabled: boolean): JourneyLockStatus {

@@ -2,7 +2,7 @@ import type { Journey } from "../content/journeys";
 import { SAVE_KEY, type StorageLike } from "./index";
 import { storagePhysicalKey } from "./journey-storage";
 
-/** The other-tab protection of a journey's save slot (docs/07: 別タブ競合の保護). */
+/** The other-tab protection of a journey's save slot (AGENTS.md 「別タブ競合の保護」, docs/07 acceptance 10). */
 export type JourneyLockStatus = "loading" | "ready" | "busy" | "unsupported";
 
 /** The part of the Web Locks API (`navigator.locks`) the journey lock uses. */

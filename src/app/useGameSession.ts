@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { createGame, type GameState } from "../domain/game";
 import { advanceCompletedJourneyCity } from "../domain/city-travel";
 import { startCityArrival } from "../domain/epilogue";
-import { finishTravelEventIfComplete } from "../domain/travel-game";
+import { applyPlayerAction } from "../domain/player-action";
 import { deleteSaveData, loadGame, saveGame, type StorageLike } from "../persistence";
 import { checkDeleteRequest, type DeleteSnapshot } from "./save-deletion";
 import { writeExplicitSave, writeNewGame, type BaselineResult } from "./save-recovery";
@@ -34,10 +34,9 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCityCh
   function commit(change: GameChange) {
     const previous = gameRef.current;
     if (!previous) return false;
-    const changed = finishTravelEventIfComplete(previous, change(previous));
-    if (changed === previous) return false;
     // The action and any automatic city departure form one saved snapshot.
-    const next = advanceCompletedJourneyCity(changed, changed.revision);
+    const next = applyPlayerAction(previous, change);
+    if (next === previous) return false;
     if (autoSave) {
       const saved = saveGame(storage, next, savedGameRef.current);
       if (!saved.ok) { setNotice(saved.message); return false; }
