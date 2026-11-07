@@ -107,15 +107,14 @@ export function bothStorages(page: Page): Promise<{ local: Record<string, string
   }));
 }
 
-/** A file of the generated content of the checkout under test, as the dev server or the build wrote it. */
-function generatedFile<T>(file: string): T {
-  return JSON.parse(readFileSync(new URL(`../../src/content/generated/${file}`, import.meta.url), "utf8")) as T;
+const readJson = <T>(url: URL): T => JSON.parse(readFileSync(url, "utf8")) as T;
+/** The generated catalogs of the checkout under test, as the dev server or the build wrote them. */
+export function generated<T>(file: string): T {
+  return readJson<T>(new URL(`../../src/content/generated/content/${file}`, import.meta.url));
 }
-/** The generated catalogs (src/content/generated/content/). */
-export const generated = <T>(file: string): T => generatedFile<T>(`content/${file}`);
 export const journeyCatalog = () => generated<JourneyCatalog>("journeys/catalog.json");
 /** Every generated quiz by its ID. */
-export const quizCatalog = () => generatedFile<Record<string, QuizDefinition>>("quizzes.json");
+export const quizCatalog = () => readJson<Record<string, QuizDefinition>>(new URL("../../src/content/generated/quizzes.json", import.meta.url));
 
 /** Game modules the development server serves to tests running code in the page (never the production build). */
 export const devModules = {

@@ -10,21 +10,21 @@
 | CSS・UIの小変更 | 対象操作とスマートフォン幅の実画面。共通UIや型・操作への影響に応じて `npm run typecheck` やE2E一式を追加 |
 | ゲームルール | 該当ドメインテストと必要な画面操作。型・共通進行への影響があれば型検査と関連テストを追加 |
 | 旅行編フォルダの追加・削除、統合規則・生成処理の変更 | `npm run content:build`、`npx vitest run scripts/journey-folders.test.ts scripts/content-sources.test.ts scripts/catalog-merge.test.ts scripts/content-ownership.test.ts scripts/content-validation.test.ts scripts/content-report.test.ts scripts/sample-journey.test.ts`（先に `npm run content:build -- --with-sample`）、E2E一式（`boot.spec.ts` が登録済みの全旅行編の開始画面を開く） |
-| 見本の編（`authoring/templates/sample_trip/`）・データの書式（スキーマ）の変更 | `npx vitest run scripts/sample-journey.test.ts src/domain/sample-journey-route.test.ts`（先に `npm run content:build -- --with-sample`）。必須項目が増えたときは、まず見本のテストが失敗して知らせる。見本の README の一覧と必須ファイルのエラーも直す。`npm run dev:sample` で実際に遊べる。見本を変えたら、見本を複製する `journey:new` と見本の内容の残りの検査も確かめる：`npx vitest run scripts/journey-new.test.ts scripts/sample-leftovers.test.ts` |
-| ひな形作成 `journey:new`・見本の内容の残りの検査（`scripts/journey-new.ts`・`scripts/sample-journey.ts`・`scripts/journey-readiness.ts`・`scripts/promote-journey.ts`） | `npx vitest run scripts/journey-new.test.ts scripts/sample-leftovers.test.ts scripts/sample-journey.test.ts`（一時コピーで作成・生成・readiness・`journey:release --check`、`city:bundle` の書き出しと確認、観察資料・交通判断台帳がないときの `journey:scaffold`・`journey:transit` の案内まで行う。名前と並び順は一時コピーの旅行編と重ならないものを選ぶので、`journey:new` で作った旅行編がリポジトリにあっても通る。約13秒）。readiness と release を変えたら `scripts/journey-authoring.test.ts`・`scripts/journeys/golden_triangle/india-readiness.test.ts`・`india-release-integration.test.ts` も実行する |
+| 見本の編（`authoring/templates/sample_trip/`）・データの書式（スキーマ）の変更 | `npx vitest run scripts/sample-journey.test.ts src/domain/sample-journey-route.test.ts`（先に `npm run content:build -- --with-sample`）。必須項目が増えたときは、まず見本のテストが失敗して知らせる。見本の README の一覧と必須ファイルのエラーも直す。`npm run dev:sample` で実際に遊べる。画面で最後まで遊べることは見本の編の段（`npm run test:e2e:sample`。[E2Eの段](#e2eの段)）で確かめる。見本を変えたら、見本を複製する `journey:new` と見本の内容の残りの検査も確かめる：`npx vitest run scripts/journey-new.test.ts scripts/sample-leftovers.test.ts` |
+| ひな形作成 `journey:new`・見本の内容の残りの検査（`scripts/journey-new.ts`・`scripts/sample-journey.ts`・`scripts/journey-readiness.ts`・`scripts/promote-journey.ts`） | `npx vitest run scripts/journey-new.test.ts scripts/sample-leftovers.test.ts scripts/sample-journey.test.ts`（一時コピーで作成・生成・readiness・`journey:release --check`、`city:bundle` の書き出しと確認、観察資料・交通判断台帳がないときの `journey:scaffold`・`journey:transit` の案内まで行う。名前と並び順は一時コピーの旅行編と重ならないものを選ぶので、`journey:new` で作った旅行編がリポジトリにあっても通る。約13秒）。作った旅行編が画面で準備中として開くことは、CIの見本の編の段が確かめる（[E2Eの段](#e2eの段)）。readiness と release を変えたら `scripts/journey-authoring.test.ts`・`scripts/journeys/golden_triangle/india-readiness.test.ts`・`india-release-integration.test.ts` も実行する |
 | 保存・進行 | 同一バージョン内の保存・再開、読めないデータの保護、明示消去、別タブ、報酬重複防止の関連テストとE2E一式、必要な実画面。型・共通基盤の影響に応じて型検査と検証範囲を広げる |
-| CI・Playwrightの設定、E2Eの共通部品、本番ビルドの検査（`.github/workflows/`・`playwright*.config.ts`・`tests/e2e/helpers.ts`・`scripts/dist-guard.ts`） | `npm run build`（`dist/` の検査を含む）、`npx vitest run scripts/dist-guard.test.ts scripts/e2e-specs.test.ts scripts/story-validation-cache.test.ts`、E2Eの全段（`npm run test:e2e` と `npm run test:e2e:prod`）。ワークフローの変更はPRで実際の実行結果を確認する |
+| CI・Playwrightの設定、E2Eの共通部品、本番ビルドの検査（`.github/workflows/`・`playwright*.config.ts`・`tests/e2e/helpers.ts`・`scripts/dist-guard.ts`） | `npm run build`（`dist/` の検査を含む）、`npx vitest run scripts/dist-guard.test.ts scripts/e2e-specs.test.ts scripts/story-validation-cache.test.ts`、E2Eの全段（`npm run test:e2e`、`npm run test:e2e:prod`、`npm run test:e2e:sample`。続けて1つずつ実行する）。ワークフローの変更はPRで実際の実行結果を確認する |
 | 画面一覧（`npm run screens`・`scripts/dev/screen-gallery.ts`・`tests/screens/`） | `npx vitest run scripts/dev/screen-gallery.test.ts`、`npm run screens` で一覧ができること |
 | 単体テストの設定・テストの組・テスト用フィクスチャ（`vite.config.ts` の `test`・`scripts/test-sets.ts`・`scripts/test-image-guard.ts`・`src/content/test-fixtures.ts`） | `npx vitest run scripts/test-sets.test.ts scripts/test-image-guard.test.ts src/content/test-fixtures.test.ts`（先に `content:build`）、`npm test`（両方の組） |
 | Debug・場面の組み立て部品・Debug起動URL（`src/dev/`） | `npx vitest run src/dev/ scripts/dist-guard.test.ts`（先に `npm run content:build -- --with-sample`）、`npm run build`（`dist/` の検査）、`npx playwright test --project=debug`（`debug-scenes.spec.ts`）。部品・仮の場面（`test-cities.ts`・`fixture-template.ts`）を変えたら、それを使う単体テスト（`npm run test:quick`。`src/domain` の試験用の都市を使うテストを含む）と `inter-city.spec.ts` も実行する。Debug画面の変更は320・360・390px幅の実画面（[Debug起動URL](#debug起動url)） |
 | 会話の全分岐検査とそのキャッシュ（`scripts/ink-validation.ts`・`scripts/story-validation-cache.ts`） | `npx vitest run scripts/story-validation-cache.test.ts scripts/story-validation-cache-content.test.ts`（先に `content:build`）、`npm run content:build -- --no-cache` と通常の `npm run content:build` が同じ結果になること。検査コードを変えると指紋が変わり、次の生成はすべて検査する（[キャッシュ](#会話の全分岐検査のキャッシュ)） |
-| 大きな変更・公開前 | `npm run verify`、E2E一式（`npm run test:e2e`）と本番ビルドの段（`npm run test:e2e:prod`）、影響範囲に応じた実画面確認（`npm run screens` の画面一覧を含む） |
+| 大きな変更・公開前 | `npm run verify`、E2E一式（`npm run test:e2e`）、本番ビルドの段（`npm run test:e2e:prod`）と見本の編の段（`npm run test:e2e:sample`）、影響範囲に応じた実画面確認（`npm run screens` の画面一覧を含む） |
 
-`npm run content:check` は差分検証ではなく全コンテンツを検証・生成する。対象テストを絞る場合、例えば `npm test -- src/domain/encounter-ap.test.ts` は通常どおり `pretest` でコンテンツを生成してから、そのテストだけを実行する。Playwrightの `webServer` は、開発サーバーの段では `npm run dev` を実行してその `predev` がコンテンツを生成し、本番ビルドの段では `npm run build` の後に `vite preview` を起動する。既に起動したサーバーを再利用する場合は、対象の変更が反映され、生成物が最新であることを確認する。自動テストの通過だけを写真の切れ方や操作性の目視確認の代わりにはしない。
+`npm run content:check` は差分検証ではなく全コンテンツを検証・生成する。対象テストを絞る場合、例えば `npm test -- src/domain/encounter-ap.test.ts` は通常どおり `pretest` でコンテンツを生成してから、そのテストだけを実行する。Playwrightの `webServer` は、開発サーバーの段では `npm run dev` を実行してその `predev` がコンテンツを生成し、本番ビルドの段では `npm run build` の後に `vite preview` を起動し、見本の編の段では `npm run dev:sample`（見本を含めた生成と開発サーバー）を別のポートで起動する。既に起動したサーバーを再利用する場合は、対象の変更が反映され、生成物が最新であることを確認する。自動テストの通過だけを写真の切れ方や操作性の目視確認の代わりにはしない。
 
 小変更のたびに全単体テストや全E2Eを手元で実行する必要はない。日常の単体テストは `npm run test:quick`（速い組。[単体テストの組](#単体テストの組と所要時間)）とし、全件（`npm test`）はCIと、公開前・大きな変更の `npm run verify` で実行する。PRと `main` へのpushでは、GitHub Actionsが全単体テスト・本番ビルド・E2E一式を自動実行する（[CI](#cigithub-actions)）。上の表でE2E一式を挙げた変更は、PRを出す前に手元でも実行する。開発中はv12以前の旧開発版セーブの更新後の再開を保証せず、旧互換テストを新機能ごとに増やす必要はない。現在のゲームの保存・再開や読めないデータの保護は維持する。
 
-`npm test`・`npm run test:quick` と `npm run build` はそれぞれ実行前にコンテンツを生成する。単体テストの前の生成は見本の編を含め（`npm run content:build -- --with-sample`。[見本の編](02_TECH_ARCHITECTURE.md#見本の編)）、`npm run build` と `npm run dev` の前の生成は含めない。`npm run verify` は、見本を含めた生成、全ユニットテスト、`npm run build`（見本なしの生成、型検査、製品ビルド、`dist/` の検査）を順に行う一括用コマンドで、生成は2回行う。最初の生成は会話の全分岐検査のキャッシュを使わずにすべて検査する（`content:build -- --no-cache --with-sample`。[キャッシュ](#会話の全分岐検査のキャッシュ)）。この中の `npm run test --ignore-scripts` は直前の生成を利用して `pretest` のみ省略している。個別に `--ignore-scripts` を付ける、または `npx vitest run` を直接呼ぶ場合は自動生成されないため、Ink・JSON等を変更した後は事前に `npm run content:build -- --with-sample` を実行する。見本の編を前提とするテスト（`src/domain/sample-journey-route.test.ts` など）は、見本なしで生成した後に実行すると、このコマンドを案内して失敗する。生成物は1つなので、`npm run dev` を起動したまま単体テスト（`npm run test:quick`・`npm test`）を実行すると、テストの前の生成で見本の編が加わり、その開発サーバーにも「見本の旅」が出る。次に見本なしで生成する（`npm run content:build`、`npm run dev` の起動し直し、`npm run build`。`npm run verify` は最後に行う）まで残る。逆に `npm run dev:sample` の起動中に見本なしで生成すると、見本は消える。生成物の鮮度が分からない場合も再生成する。
+`npm test`・`npm run test:quick` と `npm run build` はそれぞれ実行前にコンテンツを生成する。単体テストの前の生成は見本の編を含め（`npm run content:build -- --with-sample`。[見本の編](02_TECH_ARCHITECTURE.md#見本の編)）、`npm run build` と `npm run dev` の前の生成は含めない。`npm run verify` は、見本を含めた生成、全ユニットテスト、`npm run build`（見本なしの生成、型検査、製品ビルド、`dist/` の検査）を順に行う一括用コマンドで、生成は2回行う。最初の生成は会話の全分岐検査のキャッシュを使わずにすべて検査する（`content:build -- --no-cache --with-sample`。[キャッシュ](#会話の全分岐検査のキャッシュ)）。この中の `npm run test --ignore-scripts` は直前の生成を利用して `pretest` のみ省略している。個別に `--ignore-scripts` を付ける、または `npx vitest run` を直接呼ぶ場合は自動生成されないため、Ink・JSON等を変更した後は事前に `npm run content:build -- --with-sample` を実行する。見本の編を前提とするテスト（`src/domain/sample-journey-route.test.ts` など）は、見本なしで生成した後に実行すると、このコマンドを案内して失敗する。生成物は1つなので、`npm run dev` を起動したまま単体テスト（`npm run test:quick`・`npm test`）を実行すると、テストの前の生成で見本の編が加わり、その開発サーバーにも「見本の旅」が出る。次に見本なしで生成する（`npm run content:build`、`npm run dev` の起動し直し、`npm run build`。`npm run verify` は最後に行う）まで残る。逆に `npm run dev:sample` の起動中に見本なしで生成すると、見本は消える。E2Eの見本の編の段も見本を含めて生成し、終わると見本なしで生成し直す（[E2Eの段](#e2eの段)）。生成物の鮮度が分からない場合も再生成する。
 
 ゲームと、データを参照するだけの単体テストは `content/` のJSONを直接読まず、`npm run content:build` が検証・統合して書き出す `src/content/generated/content/`（生成物。手動編集しない）を読む。JSONを編集した後も `npm run content:build` を実行する。一方、原本を一時フィクスチャへ写して書き換え、生成を検証するテスト（`src/content/*-content.test.ts` など）と制作ツールは `content/`（旅行編フォルダを含む）の原本を読む。画像も同様に、`npm run content:build` が直下の `public/` と各旅行編の `public/` を `src/content/generated/public/` にまとめ、開発サーバー・`vite build`・Playwrightはこのフォルダを配信する（`npm run dev` / `build` / `test` は先に `content:build` を実行する）。`vite`（`npx vite`・`vite build`・`vite preview`）を直接起動する場合は、先に `npm run content:build` を実行する。このフォルダがないと、画像なしで起動・ビルドされる（警告は出ない）。
 
@@ -96,7 +96,7 @@
 | 合否判定 | `@gate` | 開発サーバー（`npm run dev`） | `boot`・`play`・`save-load`・`inter-city` の全テスト | 9件、約35秒（予算: 約14件・2ワーカーで2分以内） |
 | Debug起動台 | `@debug` | 開発サーバー | `debug-scenes`（下の道3） | 6件、約30秒 |
 | 本番ビルド | `@prod` | `npm run build` の後に `vite preview`（`playwright.prod.config.ts`） | 起動と全旅行編の開始画面、ミラノの開始からバトル結果・デートまで（`play`）、本番での確認（下表） | 4件、ビルド込みで約20秒（CIではビルドの分だけ長い） |
-| 見本の編の通しプレイ | — | （WP06bで追加する。CIの段も同時に足す） | | |
+| 見本の編の通しプレイ | `@sample` | 見本の編を含めて生成した専用の開発サーバー（`npm run dev:sample`、4175番。`playwright.sample.config.ts`） | 見本の編を新しい旅から旅の終わりまで近道なしで遊ぶ（`sample-journey`）、起動と全旅行編の開始画面（`boot`。見本の編を含み、CIでは `journey:new` で作ったばかりの旅行編も含む） | 2件、サーバーの起動と終わりの生成込みで約40秒（通しプレイは約30秒） |
 | 予定（週1回・手動。合否判定にしない） | `@smoke`・`@explore` | — | `@smoke` はiPhone系（WebKit）で確かめる候補（`boot`・`play`に付いている）。`@explore` は探索的な操作用 | — |
 
 | 実行 | コマンド |
@@ -104,15 +104,19 @@
 | 開発サーバーの2つの段（手元の標準） | `npm run test:e2e`（1つの開発サーバーで `gate` と `debug` を実行。約1分） |
 | 1つの段 | `npx playwright test --project=gate`、`npx playwright test --project=debug` |
 | 本番ビルドの段 | `npm run test:e2e:prod`（先に `npm run build` を実行して生成物を書き直すため、開発サーバーのE2Eと同時に実行しない） |
+| 見本の編の段 | `npm run test:e2e:sample`（見本を含めて生成物を書き直し、終わると見本なしで生成し直すため、ほかの段と同時に実行しない） |
 | 1ファイル・1件 | `npx playwright test tests/e2e/play.spec.ts`、`npx playwright test -g "読めないセーブ"` |
 | 新規・変更したテスト | `npx playwright test <ファイル> --repeat-each=3` |
 
+見本の編の段は、見本を含めて生成した開発サーバーを専用のポート（4175番）で毎回起動し、起動済みのサーバーは使い回さない（見本のないサーバーで動いて失敗することがない）。`npm run dev` とほかの段のサーバーは見本を含めない。ただし生成物（`src/content/generated/`）は1つなので、この段の実行中は、起動している `npm run dev` にも見本が出る。段が終わると `tests/e2e/sample-teardown.ts` が見本なしで生成し直す（約4秒）。
+
 | ファイル | 確認する流れ（根拠はテストの注記） | 段 |
 | --- | --- | --- |
-| `boot.spec.ts` | 起動とタイトル、登録済みの全旅行編の開始画面（生成されたカタログから読み、旅行編を名指ししない。見出しは各旅行編の最初の都市名、準備中の旅行編は `manifest.json` の `initialState` があれば名前を保存する欄、なければ `journey:new` で作ったばかりの旅行編のように公開待ちの案内だけ、タイトルの絵）。本番だけ: `?debug`・`?character-preview` を付けても通常のタイトルが出てDebugの読み取り口もないこと、アイコンが画像として配信されること、タイトル画面までの読み込み量の報告（合否にしない） | gate・prod |
+| `boot.spec.ts` | 起動とタイトル、登録済みの全旅行編の開始画面（生成されたカタログから読み、旅行編を名指ししない。見出しは各旅行編の最初の都市名、準備中の旅行編は `manifest.json` の `initialState` があれば名前を保存する欄、なければ `journey:new` で作ったばかりの旅行編のように公開待ちの案内だけ、タイトルの絵）。見本の編の段でも実行し、見本の編と、CIでは直前に `journey:new` で作った旅行編（`journey:new` の受け入れの確認）も開く。本番だけ: `?debug`・`?character-preview` を付けても通常のタイトルが出てDebugの読み取り口もないこと、アイコンが画像として配信されること、タイトル画面までの読み込み量の報告（合否にしない） | gate・prod・sample |
 | `play.spec.ts` | ミラノの新しい旅で移動、観光ガイド、クイズバトル、報酬、デート（AP消費）を経て自由時間へ戻る。記号入りの名前を文字として表示。既定の文字送り（1回目のタップは書きかけの行を最後まで表示し保存は変わらない、2回目で次の行へ）。回答ボタンの二重タップ（回答は1件だけ記録され、2回目のタップは、判定と解説が現れて動いた画面のどのボタンに当たっても働かない。`src/features/battle/double-tap.ts`） | gate・prod |
 | `save-load.spec.ts` | 自動保存と再読み込み: バトルの問題の途中（同じ問題から再開し、報酬とAPは受領記録のとおり1回だけ）、結果画面、観光後、デートの途中（APを再び使わない）。英語ノートの記録・復習の登録と文字送りの設定が再読み込み後も残る。手動セーブ。別タブ。読めないセーブ（「消去せず戻る」で変わらず、「元のデータを退避して新しく始める」で元のバイト列が同じ旅行編のバックアップのキーに残る）。新しい版のセーブ（壊れたデータとは別の案内、消去はその旅行編のセーブと英語ノートだけで、バックアップと他の旅行編は残る）。保存の書き込みの失敗（セーブのキーだけを失敗させる。案内が出て操作でき、再読み込みで最後に成功した保存から続く） | gate |
 | `inter-city.spec.ts` | 都市を2つ以上持ち、エピローグの後に次の都市へ進む最初の公開中の旅行編（カタログから選ぶ）で、最初の都市のフィナーレ結果（道2で作る）からエピローグ、次の都市の到着と地図・行き先、引き継ぐ値、再読み込み | gate |
+| `sample-journey.spec.ts` | 見本の編（`authoring/templates/sample_trip/`）を、タイトルから利用者と同じ操作で最後まで遊ぶ（道1。Debugも近道も使わず、操作ごとに保存のリビジョンを待つ）：新しい旅、移動、観光ガイドと観察、道中交流（品物を受け取って渡す）、通常戦と報酬（APは結果の受領記録の分だけ、1回）、デート（開始時にAPを1回だけ使い、地図に戻る）、特殊戦BとC（手がかり帳で証拠を選んで提出）、都市フィナーレ（都市クリア）、エピローグ、旅の終わり（次の都市がなく自由時間に残る）、再読み込みで同じ状態から再開。経路とIDは生成されたデータから読む（`src/domain/sample-journey-route.test.ts` がゲーム関数で通す経路と同じ）。ミラノでは近道でしか通らない都市フィナーレからエピローグ・旅の終わりまでを、新しい旅行編の元になる見本で画面から確かめる。道中交流と特殊戦B・Cは見本の任意の部分だが、合わせても約30秒に収まるため含める | sample |
 | `debug-scenes.spec.ts` | 特殊戦B（矛盾追及）と特殊戦C（証拠連結）: 正しい証拠を手がかり帳で選び、開き直しても選択が保たれ、提出して結果まで進み、設定画面へ戻る（対象の戦いと証拠のIDは開発サーバーの内容から選ぶ）。品物をくれる道中交流（英語の3択に答えて品物を得る）。成功寄り（抽選値0）と失敗寄り（9999）のデートを最後まで。起動URLの再表示と誤ったURLの案内 | debug |
 
 ### テストの3つの道
@@ -121,7 +125,7 @@
 
 | 道 | 内容 | 確認として数えるもの |
 | --- | --- | --- |
-| 1. 通常の操作 | タイトルから利用者と同じ操作で進める。`play.spec.ts` と `save-load.spec.ts` はDebugも近道も使わない（`scripts/e2e-specs.test.ts` が確かめる） | 遊び方・保存・再読み込みからの再開・別タブ・読めないデータの保護 |
+| 1. 通常の操作 | タイトルから利用者と同じ操作で進める。`play.spec.ts`・`save-load.spec.ts`・`sample-journey.spec.ts` はDebugも近道も使わない（`scripts/e2e-specs.test.ts` が確かめる） | 遊び方・保存・再読み込みからの再開・別タブ・読めないデータの保護 |
 | 2. 本物の関数で作った状態を通常セーブとして置く | 実際の操作では数分かかる前段だけを、`src/dev/scenario-builders.ts`（本物のゲーム関数だけで状態を作り、最後に `validateGameState` を通す部品）で作り、ゲーム自身の `saveGame` で通常のセーブとして置く（`helpers.ts` の `placeSave`）。その後は画面で操作する（例：`inter-city.spec.ts`）。ページ内で開発サーバーの `/src/...` を読み込むので、本番ビルドの段では使えない | 置いた後の画面操作と、その後の保存・再開 |
 | 3. Debugを場面の起動台にする | [Debug起動URL](#debug起動url)で場面へ直接入り、その場面を最後まで操作して離れられることだけを確かめる（`debug-scenes.spec.ts`）。各テストは通常のセーブを置いた状態から始まり、終わりに `localStorage` と `sessionStorage` の全体が始めと同じであることを自動で確かめる。Debugの状態は開発用の読み取り口 `window.__dreamscapeDebug` から読む | 場面の確認だけ。保存・再開・別タブ・英語ノートの保存の確認には数えない（AGENTS.mdの「Debugを通常の保存・再開確認の代わりにしない」） |
 
@@ -254,19 +258,19 @@ GitHub Actionsは次のワークフローを実行する。同じイベントで
 | --- | --- | --- |
 | PR（作成・push） | `ci.yml`「Content, types and production build」 | `npm run build`（コンテンツの検証・生成、型検査、本番ビルド、`dist/` の検査）。会話の全分岐検査はキャッシュを使わずにすべて行う（`DREAMSCAPE_INK_CACHE=off`。[キャッシュ](#会話の全分岐検査のキャッシュ)） |
 | | `ci.yml`「Unit tests」 | `npm test`（全単体テスト） |
-| | `e2e.yml`「E2E (gate)」「E2E (debug)」「E2E (prod)」 | E2Eの3つの段（[E2Eの段](#e2eの段)）。段ごとに別のジョブ |
+| | `e2e.yml`「E2E (gate)」「E2E (debug)」「E2E (prod)」「E2E (sample)」 | E2Eの4つの段（[E2Eの段](#e2eの段)）。段ごとに別のジョブ |
 | | `e2e.yml`「Screens for review (320 and 390 px)」 | 画面一覧（`npm run screens`）を作って成果物に残す。合否にしない（[人が画面を確かめる](#人が画面を確かめる)） |
 | `main` へのpush | `pages.yml` | `npm run verify` の後にGitHub Pagesへ公開する |
-| | `e2e.yml` の4つのジョブ | PRと同じ。公開と並列に動く |
+| | `e2e.yml` の5つのジョブ | PRと同じ。公開と並列に動く |
 | 手動（Actions画面の「Run workflow」） | 3つのワークフロー | それぞれ上と同じ内容 |
 
 - 公開はE2Eの合格を待たない。`main` のE2Eは公開と並列に動き、失敗するとそのコミットのチェックが失敗（赤い×）になり、GitHubの通知設定に従って知らされる。公開済みの版に問題があれば、修正をPRで取り込んで再公開する。
 - PRでは、新しいpushが来ると同じPRの実行中のCIとE2Eを取り消して最新のコミットだけを確かめる。`main` へのpushと手動実行は取り消さず、最後まで実行する。
 - 画面の見た目・操作感・実機の確認は人が並行して行う（[人が画面を確かめる](#人が画面を確かめる)）。CIの合否を待つ必要はなく、CIの通過は目視確認の代わりにならない。
-- E2Eはマトリクスの段（tier）ごとに別のジョブになり、並列に動く：`gate`（`npx playwright test --project=gate`）、`debug`（`--project=debug`）、`prod`（`-c playwright.prod.config.ts`。ジョブの中で `npm run build` から行う）。段を足すとき（見本の編の通しプレイなど）や、長い段を `--shard=1/2`・`--shard=2/2` で分けるときは、`e2e.yml` の `matrix.include` に項目を足す。各ジョブは自分でコンテンツを生成する（並列なので待ち時間は増えない。別のジョブの生成物を受け渡すと、受け渡しを待つ分だけ遅くなる）。
+- E2Eはマトリクスの段（tier）ごとに別のジョブになり、並列に動く：`gate`（`npx playwright test --project=gate`）、`debug`（`--project=debug`）、`prod`（`-c playwright.prod.config.ts`。ジョブの中で `npm run build` から行う）、`sample`（`-c playwright.sample.config.ts`）。`sample` のジョブは、段の前の手順（`matrix.prepare`）で `npm run journey:new -- ci_new_trip --name 新しい旅 --city ci_new_town --city-name 新しい街` を実行して旅行編を1つ作る。ジョブのチェックアウトは終わると捨てられる使い捨てのコピーなので、リポジトリには残らない。段の `boot` が、作った旅行編も生成でき、タイトル画面で準備中（公開待ちの案内だけ）として開くことを確かめ、これを `journey:new` の受け入れの確認とする（作成と生成は単体テストの `scripts/journey-new.test.ts` でも確かめる）。`scripts/e2e-specs.test.ts` が、合否判定に使う段ごとにジョブがあることと、この手順を確かめる。段を足すときや、長い段を `--shard=1/2`・`--shard=2/2` で分けるときは、`e2e.yml` の `matrix.include` に項目を足す。各ジョブは自分でコンテンツを生成する（並列なので待ち時間は増えない。別のジョブの生成物を受け渡すと、受け渡しを待つ分だけ遅くなる）。
 - Playwrightのブラウザ（`~/.cache/ms-playwright`）は、固定した `@playwright/test` の版をキーに `actions/cache` で実行の間に持ち越し、見つかったときはダウンロードを省いてシステムのライブラリだけを入れる。`node_modules` とその中の会話の検査キャッシュは持ち越さない（`scripts/story-validation-cache.test.ts` が、ワークフローの `actions/cache` がこのフォルダだけを対象にすることを確かめる）。
 - 本番ビルドの段は、タイトル画面までに読み込む量を実行結果ページ（Summary）に表として出し、HTMLレポートにも添付する（報告のみ。上限は設けない）。
-- Playwrightの設定（`playwright.config.ts`。本番ビルドの段の `playwright.prod.config.ts` と画面一覧の `playwright.screens.config.ts` は共通の部分をここから読む）：失敗したテストは再試行しない（不安定なテストは再試行で隠さず原因を直す）。失敗したテストだけ、スクリーンショットとトレースを `test-results/` に保存する。CI（環境変数 `CI` がある場合）では、さらに `test.only` が残っていれば失敗にし、2ワーカーで実行し、失敗の注釈・HTMLレポート（`playwright-report/`）・一覧を出力する。CIの実行は12分で打ち切り（`globalTimeout`）、打ち切った場合もレポートと、そこまでに失敗したテストのトレースを残す。`e2e.yml` はテストの手順に16分、ジョブに25分の上限を置き、手順が時間切れになった場合も成果物（下記）を保存する（ジョブ全体の時間切れでは保存の手順が実行されないため）。手元では一覧だけを出力し、ワーカー数はPlaywrightの既定（CPUの半数）。
+- Playwrightの設定（`playwright.config.ts`。本番ビルドの段の `playwright.prod.config.ts`、見本の編の段の `playwright.sample.config.ts` と画面一覧の `playwright.screens.config.ts` は共通の部分をここから読む）：失敗したテストは再試行しない（不安定なテストは再試行で隠さず原因を直す）。失敗したテストだけ、スクリーンショットとトレースを `test-results/` に保存する。CI（環境変数 `CI` がある場合）では、さらに `test.only` が残っていれば失敗にし、2ワーカーで実行し、失敗の注釈・HTMLレポート（`playwright-report/`）・一覧を出力する。CIの実行は12分で打ち切り（`globalTimeout`）、打ち切った場合もレポートと、そこまでに失敗したテストのトレースを残す。`e2e.yml` はテストの手順に16分、ジョブに25分の上限を置き、手順が時間切れになった場合も成果物（下記）を保存する（ジョブ全体の時間切れでは保存の手順が実行されないため）。手元では一覧だけを出力し、ワーカー数はPlaywrightの既定（CPUの半数）。
 
 ### 失敗したときの見方
 

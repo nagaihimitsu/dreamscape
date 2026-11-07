@@ -7,6 +7,7 @@
   - `npm run dev:sample`：見本を含めて生成し、開発サーバーを起動します（タイトル画面に「見本の旅」が並びます）。`npm run dev` に戻すと見本は消えます。
   - `npm run content:build -- --with-sample`：見本を含めて生成します。`src/content/generated/build-info.json` に読み込んだフォルダが記録されます。単体テスト（`npm test`・`npm run test:quick`）と `npm run verify` の最初の生成はこの形です。
   - テストの一時コピー（`prepareContentFixture`）には入りません。見本を使うテストは、このフォルダを自分で複製します。
+  - `npm run test:e2e:sample`：見本を含めて生成した専用の開発サーバー（4175番）で、見本を新しい旅から旅の終わりまで画面で遊ぶE2Eです（`tests/e2e/sample-journey.spec.ts`）。終わると見本なしで生成し直します。
 - 生成物（`src/content/generated/`）は1つなので、`npm run dev` を起動したまま単体テスト（`npm run test:quick`・`npm test`）を実行すると、テストの前の生成で見本が加わり、開いている開発サーバーのタイトル画面にも「見本の旅」が出ます。次に見本なしで生成する（`npm run content:build`、`npm run dev` の起動し直し、`npm run build`。`npm run verify` は最後に行う）まで残ります。
 - 旅行編ID `sample_trip`、ID の接頭辞 `smp_`（`manifest.json` の `authoring.eventPrefix`）、都市ID `mihon`、並び順 `order: 9000` は見本のために予約されています。
 
