@@ -38,10 +38,21 @@ const fresh = (): LearningState => ({
   openQuestion: null,
   openTopic: null,
 });
-function validateRecords(state: LearningState) {
+/**
+ * Check the answer records against the battles they name. A record of a
+ * battle that no longer exists (a battle removed or renamed by a content
+ * update, e.g. the v14 ID renames) stays in the notebook as it was read and
+ * is never shown, like a record of an outdated run (another content hash),
+ * which stays unchecked. `stored` holds the records read from storage: a
+ * change may keep such a record unchanged but never add or alter one.
+ */
+function validateRecords(state: LearningState, stored: LearningState["records"] = state.records) {
   for (const [id, record] of Object.entries(state.records)) {
     const battle = battles.find((item) => item.id === id);
-    if (!battle) throw new Error("Unknown battle in learning record");
+    if (!battle) {
+      if (JSON.stringify(stored[id]) !== JSON.stringify(record)) throw new Error("Unknown battle in learning record");
+      continue;
+    }
     const content = getBattleContentByHash(id, record.contentHash);
     if (!content) continue;
     const questions = content.quiz.questions;
@@ -103,6 +114,7 @@ export function commitLearning(
     if (next === current) return { status: "unchanged" };
     const data = validateRecords(
       schema.parse({ ...next, revision: current.revision + 1 }),
+      current.records,
     );
     const raw = JSON.stringify(data);
     storage.setItem(key, raw);
