@@ -1,5 +1,5 @@
-import { LEARNING_KEY, SAVE_KEY, loadGame } from "./index";
-import { journeyPhysicalKey } from "./journey-storage";
+import { LEARNING_KEY, SAVE_KEY, isSaveBackupKey, loadGame } from "./index";
+import { journeyPhysicalKey, parseJourneyPhysicalKey } from "./journey-storage";
 import { slotLockName } from "./journey-lock";
 
 /**
@@ -9,7 +9,8 @@ import { slotLockName } from "./journey-lock";
  *
  * Listed (each item = keys removed together):
  * - another journey's game save identified as an old version (loadGame `legacy`: v1 to v13);
- * - backups of unreadable saves (`….save.v1.backup.<time>`), of every journey including this one;
+ * - backups of unreadable saves (`….save.v1.backup.<time>[.<n>]`, as backupAndCreate names them),
+ *   of every journey including this one;
  * - the keys Milan used before journeys had their own slots (`dreamscape.save.v1` with its backups,
  *   `dreamscape.learning.v1`);
  * - the keys of a journey this version does not have (its save with backups, and its notes apart).
@@ -28,7 +29,6 @@ export type OldDataContext = {
   currentJourneyId: string;
 };
 
-export type OldDataKind = "old_version" | "backup" | "old_milano" | "removed_journey";
 export type OldDataKey = {
   key: string;
   /** What the key holds (Japanese, shown beside the key name). */
@@ -39,20 +39,18 @@ export type OldDataKey = {
   backedUpAt: number | null;
 };
 export type OldDataItem = {
-  /** Stable while the same keys are listed, e.g. `backup:milano`. */
+  /** What the item is and stable while the same keys are listed: `old_version:<id>`, `backup:<id>`, `old_milano:save|learning`, `removed:<id>:save|learning`. */
   id: string;
-  kind: OldDataKind;
   titleJa: string;
   impactJa: string;
   keys: OldDataKey[];
   /**
    * The slot lock held while the keys are removed, so a tab that has the journey open (and may write
-   * them) refuses the removal; null when no tab of this version can hold one (this tab already holds
-   * the current journey's lock; no version that used the old Milan keys took a lock).
+   * them) refuses the removal, and who would hold it (for that refusal); null when no tab of this
+   * version can hold one (this tab already holds the current journey's lock; no version that used
+   * the old Milan keys took a lock).
    */
-  lockName: string | null;
-  /** Who would hold that lock, for the refusal message. */
-  ownerJa: string;
+  lock: { name: string; ownerJa: string } | null;
 };
 
 /** The browser storage the cleanup reads: every key of the origin and its value. */
@@ -70,10 +68,6 @@ export type OldDataListing = {
 };
 
 const PREFIX = "dreamscape.";
-const ROOT_BACKUP = `${SAVE_KEY}.backup.`;
-// The physical keys of journeyStorage (journey-storage.ts): `dreamscape.journey.<id>.save.v1`,
-// its backups `….save.v1.backup.<time>[.<n>]` and `dreamscape.journey.<id>.learning.v1`.
-const JOURNEY_KEY = /^dreamscape\.journey\.([a-z][a-z0-9_]*)\.(save\.v1(?:\.backup\..+)?|learning\.v1)$/;
 
 /** Only `dreamscape.` keys are read; any other key of the origin is never looked at. */
 export function readDreamscapeEntries(storage: KeyedStorage): Map<string, string> {
@@ -98,11 +92,15 @@ function describeSave(raw: string, journeyId?: string): SaveContent {
   return { kind: "unreadable" };
 }
 
-function contentNote(content: SaveContent): string {
+const UNREADABLE_JA = "読み込めないデータ";
+/** A journey this version does not have: its save may be fine in a version that has the journey. */
+const ABSENT_JOURNEY_SAVE_JA = "この版では読み込めないセーブ";
+
+function contentNote(content: SaveContent, unreadableJa = UNREADABLE_JA): string {
   switch (content.kind) {
     case "old": return `バージョン${content.version}の旧版のセーブ`;
     case "newer": return `新しい版（バージョン${content.version}）のセーブ`;
-    default: return "読み込めないデータ";
+    default: return unreadableJa;
   }
 }
 
@@ -115,14 +113,14 @@ const entry = (key: string, value: string, noteJa: string): OldDataKey =>
   ({ key, noteJa, chars: key.length + value.length, backedUpAt: backupTime(key) });
 
 /** Game saves (slot or backup) that are not a save this version loads, with what each holds. */
-function unusedSaves(entries: ReadonlyMap<string, string>, keys: readonly string[], backupNote: boolean): OldDataKey[] {
+function unusedSaves(entries: ReadonlyMap<string, string>, keys: readonly string[], unreadableJa = UNREADABLE_JA): OldDataKey[] {
   const listed: OldDataKey[] = [];
   for (const key of keys) {
     const value = entries.get(key)!;
     const content = describeSave(value);
     if (content.kind === "current") continue;
-    const note = contentNote(content);
-    listed.push(entry(key, value, backupNote && key.includes(".backup.") ? `退避したデータ（${note}）` : note));
+    const note = contentNote(content, unreadableJa);
+    listed.push(entry(key, value, key.includes(".backup.") ? `退避したデータ（${note}）` : note));
   }
   return listed;
 }
@@ -132,13 +130,14 @@ export function listOldData(entries: ReadonlyMap<string, string>, context: OldDa
   const known = new Map(context.journeys.map((journey) => [journey.id, journey]));
   const byJourney = new Map<string, { save?: string; backups: string[]; learning?: string }>();
   for (const key of entries.keys()) {
-    const match = JOURNEY_KEY.exec(key);
-    if (!match) continue;
-    const slot = byJourney.get(match[1]) ?? { backups: [] };
-    if (match[2] === "save.v1") slot.save = key;
-    else if (match[2] === "learning.v1") slot.learning = key;
-    else slot.backups.push(key);
-    byJourney.set(match[1], slot);
+    const parsed = parseJourneyPhysicalKey(key);
+    if (!parsed) continue;
+    const slot = byJourney.get(parsed.journeyId) ?? { backups: [] };
+    if (parsed.key === SAVE_KEY) slot.save = key;
+    else if (parsed.key === LEARNING_KEY) slot.learning = key;
+    else if (isSaveBackupKey(parsed.key)) slot.backups.push(key);
+    else continue;
+    byJourney.set(parsed.journeyId, slot);
   }
   const items: OldDataItem[] = [];
 
@@ -146,20 +145,20 @@ export function listOldData(entries: ReadonlyMap<string, string>, context: OldDa
     const slot = byJourney.get(journey.id);
     if (!slot) continue;
     const current = journey.id === context.currentJourneyId;
-    const lockName = current ? null : slotLockName(journeyPhysicalKey(journey.id, SAVE_KEY));
+    const lock = current ? null : { name: slotLockName(journeyPhysicalKey(journey.id, SAVE_KEY)), ownerJa: journey.nameJa };
     if (!current && slot.save !== undefined) {
       const raw = entries.get(slot.save)!;
       const content = describeSave(raw, journey.id);
       if (content.kind === "old") items.push({
-        id: `old_version:${journey.id}`, kind: "old_version", lockName, ownerJa: journey.nameJa,
+        id: `old_version:${journey.id}`, lock,
         titleJa: `${journey.nameJa}のセーブ（旧版）`,
         impactJa: `バージョン${content.version}の形式のため、今の版では再開できません。消去すると、${journey.nameJa}は次に開いたとき新しい旅から始まります。英語ノートは消えません。`,
         keys: [entry(slot.save, raw, contentNote(content))],
       });
     }
-    const backups = unusedSaves(entries, slot.backups, true);
+    const backups = unusedSaves(entries, slot.backups);
     if (backups.length) items.push({
-      id: `backup:${journey.id}`, kind: "backup", lockName, ownerJa: journey.nameJa,
+      id: `backup:${journey.id}`, lock,
       titleJa: `${journey.nameJa}のバックアップ（${backups.length}件）`,
       impactJa: "読み込めなかったセーブを、新しく始める前に退避したものです。ゲームはバックアップを読み込みません。消去すると元のデータは取り出せなくなります。今のセーブと英語ノートは消えません。",
       keys: backups,
@@ -167,16 +166,16 @@ export function listOldData(entries: ReadonlyMap<string, string>, context: OldDa
   }
 
   // Milan before journeys had their own slots (no version that wrote these keys took a lock).
-  const rootSaves = unusedSaves(entries, [...entries.keys()].filter((key) => key === SAVE_KEY || key.startsWith(ROOT_BACKUP)), true);
+  const rootSaves = unusedSaves(entries, [...entries.keys()].filter((key) => key === SAVE_KEY || isSaveBackupKey(key)));
   if (rootSaves.length) items.push({
-    id: "old_milano:save", kind: "old_milano", lockName: null, ownerJa: "以前のミラノ編",
+    id: "old_milano:save", lock: null,
     titleJa: "以前のミラノ編のセーブ",
     impactJa: "旅行編ごとに保存先を分ける前の、ミラノ編のセーブです。今のゲームは読み込みません。今のミラノ編のセーブと英語ノートは消えません。",
     keys: rootSaves,
   });
   const rootNotes = entries.get(LEARNING_KEY);
   if (rootNotes !== undefined) items.push({
-    id: "old_milano:learning", kind: "old_milano", lockName: null, ownerJa: "以前のミラノ編",
+    id: "old_milano:learning", lock: null,
     titleJa: "以前のミラノ編の英語ノート",
     impactJa: "旅行編ごとに保存先を分ける前の英語ノートです。今のゲームは読み込みません。消去すると、その記録と復習の印は戻せません。今のミラノ編の英語ノートは消えません。",
     keys: [entry(LEARNING_KEY, rootNotes, "英語ノート")],
@@ -184,16 +183,16 @@ export function listOldData(entries: ReadonlyMap<string, string>, context: OldDa
 
   for (const [journeyId, slot] of [...byJourney].filter(([id]) => !known.has(id)).sort(([a], [b]) => a.localeCompare(b))) {
     const name = `旅行編「${journeyId}」`;
-    const lockName = slotLockName(journeyPhysicalKey(journeyId, SAVE_KEY));
-    const saves = unusedSaves(entries, [...(slot.save === undefined ? [] : [slot.save]), ...slot.backups], true);
+    const lock = { name: slotLockName(journeyPhysicalKey(journeyId, SAVE_KEY)), ownerJa: name };
+    const saves = unusedSaves(entries, [...(slot.save === undefined ? [] : [slot.save]), ...slot.backups], ABSENT_JOURNEY_SAVE_JA);
     if (saves.length) items.push({
-      id: `removed:${journeyId}:save`, kind: "removed_journey", lockName, ownerJa: name,
+      id: `removed:${journeyId}:save`, lock,
       titleJa: `この版にない${name}のセーブ`,
-      impactJa: "この版のゲームにない旅行編のため、読み込みません。その旅行編がある版で開くと使われるデータです（開発用の見本の編など）。消去すると戻せません。",
+      impactJa: "この版のゲームにない旅行編のため、読み込みません。その旅行編がある版で開くと使われることがあります。消去すると戻せません。",
       keys: saves,
     });
     if (slot.learning !== undefined) items.push({
-      id: `removed:${journeyId}:learning`, kind: "removed_journey", lockName, ownerJa: name,
+      id: `removed:${journeyId}:learning`, lock,
       titleJa: `この版にない${name}の英語ノート`,
       impactJa: "この版のゲームにない旅行編の英語ノートです。今のゲームは読み込みません。消去すると、その記録と復習の印は戻せません。",
       keys: [entry(slot.learning, entries.get(slot.learning)!, "英語ノート")],
@@ -210,7 +209,7 @@ export function readOldData(storage: KeyedStorage, context: OldDataContext): Old
 
 /** The slot locks to hold while removing `items` (each once). */
 export function oldDataLockNames(items: readonly OldDataItem[]): string[] {
-  return [...new Set(items.flatMap((item) => item.lockName === null ? [] : [item.lockName]))].sort();
+  return [...new Set(items.flatMap((item) => item.lock === null ? [] : [item.lock.name]))].sort();
 }
 
 export type OldDataRemoval =
@@ -218,9 +217,11 @@ export type OldDataRemoval =
   | { ok: false; message: string; removedKeys: string[] };
 
 /**
- * Remove the chosen items' keys, all or none: only while each key still holds the value listed and is
- * still listed as removable (another tab or screen may have written it since). Call it while holding
- * `oldDataLockNames` of the chosen items. A key that cannot be removed stops the rest and is reported.
+ * Remove the chosen items' keys. All of them are checked first: if any key no longer holds the value
+ * listed or is no longer listed as removable (another tab or screen may have written it since),
+ * nothing is removed. Then the keys are removed in order; one that cannot be removed stops the rest,
+ * and the result names it and the keys removed before it. Call it while holding `oldDataLockNames`
+ * of the chosen items.
  */
 export function removeOldData(storage: KeyedStorage, listing: OldDataListing, chosenIds: readonly string[]): OldDataRemoval {
   const chosen = listing.items.filter((item) => chosenIds.includes(item.id));

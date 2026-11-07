@@ -51,6 +51,14 @@ const kept = {
   "dreamscape.presentation.v1": JSON.stringify({ schemaVersion: 1, confirmChoices: true, reduceMotion: false }),
   "dreamscape.journey.trip_b.unknown": "not a slot key",
   "dreamscape.unknown.v1": "not a known key",
+  // Shaped like slot keys, but not as the game writes them (backups are `.backup.<time>[.<n>]`).
+  "dreamscape.journey.trip_b.save.v1.backup.abc": damaged,
+  "dreamscape.journey.milano.save.v1.backup.": damaged,
+  "dreamscape.journey.milano.save.v1.backup.1.x": damaged,
+  "dreamscape.journey.trip_b.save.v1.extra": damaged,
+  "dreamscape.journey.gone.save.v1.backup.abc": damaged,
+  "dreamscape.journey.Trip_b.save.v1": v13,
+  "dreamscape.save.v1.backup.abc": damaged,
   "other-site.save": "another app on the same origin",
 };
 
@@ -65,8 +73,8 @@ describe("which old saved data can be removed", () => {
   it("lists another journey's save of an old version (v13 included), with its key, size and impact, never this journey's own slot", () => {
     const items = list({ ...kept, [save("trip_b")]: v13 });
     expect(items).toEqual([{
-      id: "old_version:trip_b", kind: "old_version", ownerJa: "見本B編",
-      lockName: "dreamscape:dreamscape.journey.trip_b.save.v1",
+      id: "old_version:trip_b",
+      lock: { name: "dreamscape:dreamscape.journey.trip_b.save.v1", ownerJa: "見本B編" },
       titleJa: "見本B編のセーブ（旧版）",
       impactJa: "バージョン13の形式のため、今の版では再開できません。消去すると、見本B編は次に開いたとき新しい旅から始まります。英語ノートは消えません。",
       keys: [{ key: "dreamscape.journey.trip_b.save.v1", noteJa: "バージョン13の旧版のセーブ", chars: "dreamscape.journey.trip_b.save.v1".length + v13.length, backedUpAt: null }],
@@ -86,10 +94,10 @@ describe("which old saved data can be removed", () => {
       [backup("milano", "1762600000000")]: current,
       [backup("trip_b", "1762700000000")]: v15,
     });
-    expect(items.map(({ id, titleJa, lockName, ownerJa }) => ({ id, titleJa, lockName, ownerJa }))).toEqual([
+    expect(items.map(({ id, titleJa, lock }) => ({ id, titleJa, lock }))).toEqual([
       // This tab holds Milan's lock already; trip_b's is taken while removing.
-      { id: "backup:milano", titleJa: "ミラノ編のバックアップ（2件）", lockName: null, ownerJa: "ミラノ編" },
-      { id: "backup:trip_b", titleJa: "見本B編のバックアップ（1件）", lockName: "dreamscape:dreamscape.journey.trip_b.save.v1", ownerJa: "見本B編" },
+      { id: "backup:milano", titleJa: "ミラノ編のバックアップ（2件）", lock: null },
+      { id: "backup:trip_b", titleJa: "見本B編のバックアップ（1件）", lock: { name: "dreamscape:dreamscape.journey.trip_b.save.v1", ownerJa: "見本B編" } },
     ]);
     expect(items[0].keys.map(({ key, noteJa, backedUpAt }) => ({ key, noteJa, backedUpAt }))).toEqual([
       { key: "dreamscape.journey.milano.save.v1.backup.1762500000000", noteJa: "退避したデータ（読み込めないデータ）", backedUpAt: 1762500000000 },
@@ -111,7 +119,7 @@ describe("which old saved data can be removed", () => {
     });
     expect(items).toEqual([
       {
-        id: "old_milano:save", kind: "old_milano", lockName: null, ownerJa: "以前のミラノ編",
+        id: "old_milano:save", lock: null,
         titleJa: "以前のミラノ編のセーブ",
         impactJa: "旅行編ごとに保存先を分ける前の、ミラノ編のセーブです。今のゲームは読み込みません。今のミラノ編のセーブと英語ノートは消えません。",
         keys: [
@@ -120,7 +128,7 @@ describe("which old saved data can be removed", () => {
         ],
       },
       {
-        id: "old_milano:learning", kind: "old_milano", lockName: null, ownerJa: "以前のミラノ編",
+        id: "old_milano:learning", lock: null,
         titleJa: "以前のミラノ編の英語ノート",
         impactJa: "旅行編ごとに保存先を分ける前の英語ノートです。今のゲームは読み込みません。消去すると、その記録と復習の印は戻せません。今のミラノ編の英語ノートは消えません。",
         keys: [{ key: "dreamscape.learning.v1", noteJa: "英語ノート", chars: "dreamscape.learning.v1".length + notebook.length, backedUpAt: null }],
@@ -129,18 +137,21 @@ describe("which old saved data can be removed", () => {
   });
 
   it("lists every key of a journey this version does not have, its notes apart, under that journey's lock", () => {
-    const removed = { [save("zeta")]: current.replace('"milano"', '"zeta_city"'), [backup("zeta", "5")]: v13, [notes("zeta")]: notebook, [notes("alpha")]: notebook };
+    // A save of the journey in a version that has it (this version cannot tell it from damaged bytes).
+    const removed = { [save("zeta")]: current.replace('"milano"', '"zeta_city"'), [backup("zeta", "5")]: v13, [backup("zeta", "6")]: damaged, [notes("zeta")]: notebook, [notes("alpha")]: notebook };
     const items = list({ ...kept, ...removed });
-    expect(items.map(({ id, kind, titleJa, lockName, ownerJa }) => ({ id, kind, titleJa, lockName, ownerJa }))).toEqual([
-      { id: "removed:alpha:learning", kind: "removed_journey", titleJa: "この版にない旅行編「alpha」の英語ノート", lockName: "dreamscape:dreamscape.journey.alpha.save.v1", ownerJa: "旅行編「alpha」" },
-      { id: "removed:zeta:save", kind: "removed_journey", titleJa: "この版にない旅行編「zeta」のセーブ", lockName: "dreamscape:dreamscape.journey.zeta.save.v1", ownerJa: "旅行編「zeta」" },
-      { id: "removed:zeta:learning", kind: "removed_journey", titleJa: "この版にない旅行編「zeta」の英語ノート", lockName: "dreamscape:dreamscape.journey.zeta.save.v1", ownerJa: "旅行編「zeta」" },
+    const zetaLock = { name: "dreamscape:dreamscape.journey.zeta.save.v1", ownerJa: "旅行編「zeta」" };
+    expect(items.map(({ id, titleJa, lock }) => ({ id, titleJa, lock }))).toEqual([
+      { id: "removed:alpha:learning", titleJa: "この版にない旅行編「alpha」の英語ノート", lock: { name: "dreamscape:dreamscape.journey.alpha.save.v1", ownerJa: "旅行編「alpha」" } },
+      { id: "removed:zeta:save", titleJa: "この版にない旅行編「zeta」のセーブ", lock: zetaLock },
+      { id: "removed:zeta:learning", titleJa: "この版にない旅行編「zeta」の英語ノート", lock: zetaLock },
     ]);
     expect(items[1].keys.map((entry) => [entry.key, entry.noteJa])).toEqual([
-      ["dreamscape.journey.zeta.save.v1", "読み込めないデータ"],
+      ["dreamscape.journey.zeta.save.v1", "この版では読み込めないセーブ"],
       ["dreamscape.journey.zeta.save.v1.backup.5", "退避したデータ（バージョン13の旧版のセーブ）"],
+      ["dreamscape.journey.zeta.save.v1.backup.6", "退避したデータ（この版では読み込めないセーブ）"],
     ]);
-    expect(items[1].impactJa).toBe("この版のゲームにない旅行編のため、読み込みません。その旅行編がある版で開くと使われるデータです（開発用の見本の編など）。消去すると戻せません。");
+    expect(items[1].impactJa).toBe("この版のゲームにない旅行編のため、読み込みません。その旅行編がある版で開くと使われることがあります。消去すると戻せません。");
     expect(items[2].impactJa).toBe("この版のゲームにない旅行編の英語ノートです。今のゲームは読み込みません。消去すると、その記録と復習の印は戻せません。");
     // A save that loads in this version is kept even under an unknown journey's key.
     expect(list({ [save("zeta")]: current })).toEqual([]);
@@ -162,7 +173,7 @@ describe("which old saved data can be removed", () => {
   it("names each lock once and none for keys no tab of this version locks", () => {
     const items = list({ [backup("milano", "1")]: damaged, [save("trip_b")]: v13, [backup("trip_b", "1")]: damaged, [LEARNING_KEY]: notebook, [notes("gone")]: notebook });
     expect(oldDataLockNames(items)).toEqual(["dreamscape:dreamscape.journey.gone.save.v1", "dreamscape:dreamscape.journey.trip_b.save.v1"]);
-    expect(oldDataLockNames(items.filter((item) => item.lockName === null))).toEqual([]);
+    expect(oldDataLockNames(items.filter((item) => item.lock === null))).toEqual([]);
   });
 
   it("shows sizes as UTF-16 kilobytes, rounded up to 0.1 KB", () => {

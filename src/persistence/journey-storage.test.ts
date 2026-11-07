@@ -1,9 +1,9 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createGame } from "../domain";
 import { cityContents, getCityContent } from "../content";
 import { getJourney } from "../content/journeys";
-import { backupAndCreate, deleteSaveData, LEARNING_KEY, loadGame, SAVE_KEY, saveGame } from "./index";
-import { journeyStorage, storagePhysicalKey } from "./journey-storage";
+import { backupAndCreate, deleteSaveData, isSaveBackupKey, LEARNING_KEY, loadGame, SAVE_KEY, saveGame } from "./index";
+import { journeyPhysicalKey, journeyStorage, parseJourneyPhysicalKey, storagePhysicalKey } from "./journey-storage";
 import { journeyDraftStartParameters, loadJourneyDraft, promoteJourneyDraft, saveJourneyDraft } from "./journey-preparation";
 
 function memoryStorage() {
@@ -135,6 +135,36 @@ describe("independent journey saves", () => {
     expect(deleteSaveData(india, { game: indiaSnapshot, learning: "india notes" }).ok).toBe(true);
     expect(loadGame(milan).status).toBe("loaded");
     expect([...base.data.keys()].some((key) => key.startsWith("dreamscape.journey.milano.save.v1.backup."))).toBe(true);
+  });
+
+  // 「古い保存データの整理」 (old-data.ts) finds the slots by reading these keys back.
+  it("reads a journey slot's browser key back to its journey and logical key, and no other key", () => {
+    for (const key of [SAVE_KEY, LEARNING_KEY, `${SAVE_KEY}.backup.1762500000000`, `${SAVE_KEY}.backup.1762500000000.2`])
+      expect(parseJourneyPhysicalKey(journeyPhysicalKey("golden_triangle", key))).toEqual({ journeyId: "golden_triangle", key });
+    for (const physical of [SAVE_KEY, LEARNING_KEY, "dreamscape.presentation.v1", "dreamscape.journey.Milano.save.v1",
+      "dreamscape.journey..save.v1", "dreamscape.journey.milano.save.v2", "dreamscape.journey.milano.save.v1.extra",
+      "dreamscape.journey.milano.learning.v1.backup.1", "dreamscape.journey.milano.unknown", "x.dreamscape.journey.milano.save.v1"])
+      expect(parseJourneyPhysicalKey(physical), physical).toBeNull();
+  });
+
+  it("names every backup as isSaveBackupKey expects, also a second one in the same millisecond", () => {
+    const base = memoryStorage();
+    const milan = journeyStorage(base, "milano");
+    vi.useFakeTimers({ now: 1_762_500_000_000 });
+    try {
+      for (const name of ["一", "二", "三"]) {
+        base.setItem("dreamscape.journey.milano.save.v1", "{damaged-save");
+        expect(backupAndCreate(milan, createGame(name, "小春"), milan.getItem(SAVE_KEY)).ok).toBe(true);
+      }
+    } finally {
+      vi.useRealTimers();
+    }
+    const backups = [...base.data.keys()].filter((key) => key.includes(".backup.")).sort();
+    expect(backups).toEqual(["dreamscape.journey.milano.save.v1.backup.1762500000000",
+      "dreamscape.journey.milano.save.v1.backup.1762500000000.1", "dreamscape.journey.milano.save.v1.backup.1762500000000.2"]);
+    for (const key of backups) expect(isSaveBackupKey(parseJourneyPhysicalKey(key)!.key), key).toBe(true);
+    for (const key of [SAVE_KEY, `${SAVE_KEY}.backup.`, `${SAVE_KEY}.backup.abc`, `${SAVE_KEY}.backup.1.x`, `${SAVE_KEY}.backup.1.2.3`, `${SAVE_KEY}.extra`])
+      expect(isSaveBackupKey(key), key).toBe(false);
   });
 
   it("promotes saved names and initial values only after real city registration is available", () => {

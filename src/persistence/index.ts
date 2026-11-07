@@ -147,6 +147,13 @@ export function writeIfUnchanged(storage: StorageLike, key: string, expected: st
   return true;
 }
 
+const BACKUP_PREFIX = `${SAVE_KEY}.backup.`;
+
+/** A backup's key as backupAndCreate writes it: `<SAVE_KEY>.backup.<Date.now()>`, `.<n>` added when that key is taken. */
+export function isSaveBackupKey(key: string): boolean {
+  return key.startsWith(BACKUP_PREFIX) && /^\d+(?:\.\d+)?$/.test(key.slice(BACKUP_PREFIX.length));
+}
+
 /** Explicit recovery only: retain the exact original before creating a new game. */
 export function backupAndCreate(
   storage: StorageLike,
@@ -162,7 +169,7 @@ export function backupAndCreate(
     if (expectedOriginal !== undefined && original !== expectedOriginal)
       return { ok: false, message: "別の画面でセーブが更新されています。再読み込みしてからやり直してください。" };
     if (original !== null) {
-      const prefix = `${SAVE_KEY}.backup.${Date.now()}`;
+      const prefix = `${BACKUP_PREFIX}${Date.now()}`;
       let key = prefix;
       let suffix = 0;
       while (storage.getItem(key) !== null) key = `${prefix}.${++suffix}`;
