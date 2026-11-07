@@ -150,6 +150,29 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await ops.settled(page);
   await expect(line).toHaveText(dateLine!);
   expect((await readSave(page)).revision).toBe(started.revision);
+  // A load brings the saved date back as a new scene under the finger (the confirmation's
+  // 「ロードする」 sits over the date). With manual saving, the second tap of a quick double tap on
+  // 「ロードする」 does not read the restored line on: a load holds taps like a scene start.
+  await ops.setAutoSave(page, false);
+  await ops.manualSave(page);
+  await expect(ops.noticeClose(page)).toBeVisible();
+  const saved = await readSave(page);
+  await ops.tap(page, await ops.sceneBackgroundPoint(page));
+  await expect(line).not.toHaveText(dateLine!);
+  const loading = await ops.askToLoad(page);
+  const load = await ops.centerOf(loading.loadButton);
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.doubleTap(page, load);
+  await expect(loading.dialog).toBeHidden();
+  await expect(line).toHaveText(dateLine!);
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await page.clock.resume();
+  await ops.settled(page);
+  await expect(line).toHaveText(dateLine!);
+  expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest('[data-testid="romance-scene"]'), load),
+    "the second tap landed on the restored date").toBe(true);
+  expect(await readSave(page)).toEqual(saved);
+  await ops.setAutoSave(page, true);
   // With the window hidden, a tap on the picture only shows it again, also as a quick double
   // tap (誤タップ防止: the restore control leaves the picture under the finger, and the second
   // tap is ignored); the next tap goes on. Lines appear whole here (reduced motion), as they

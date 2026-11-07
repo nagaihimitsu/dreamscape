@@ -186,6 +186,10 @@ export function GameApp({
   }
   function loadSavedGame() {
     if (!session.restore()) return;
+    // A load replaces the screen under the finger like a scene start, also when the same scene
+    // comes back (a date, battle or encounter is a new instance: sceneEpoch): the second tap of a
+    // double tap on 「ロード」 or 「ロードする」 must not read the restored line on.
+    holdTaps();
     setConfirmation(null);
     setShowRomanceEnding(false);
     setSceneEpoch((epoch) => epoch + 1);

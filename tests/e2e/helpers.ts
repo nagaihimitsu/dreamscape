@@ -210,6 +210,16 @@ export const ops = {
   async manualSave(page: Page) {
     await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "セーブ", exact: true }).click();
   },
+  /**
+   * The header's 「ロード」 while progress is unsaved (manual saving): returns the confirmation
+   * 「保存した場面を読み込みますか？」 with its 「ロードする」 (`loadButton`).
+   */
+  async askToLoad(page: Page): Promise<{ dialog: Locator; loadButton: Locator }> {
+    await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "ロード", exact: true }).click();
+    const dialog = page.getByRole("dialog", { name: "保存した場面を読み込みますか？" });
+    await expect(dialog).toBeVisible();
+    return { dialog, loadButton: dialog.getByRole("button", { name: "ロードする", exact: true }) };
+  },
   async openEnglishNote(page: Page): Promise<Locator> {
     await page.getByRole("button", { name: "英語ノートを開く" }).click();
     const note = page.getByRole("dialog", { name: "英語ノート" });

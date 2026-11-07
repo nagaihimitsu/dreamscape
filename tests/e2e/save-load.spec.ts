@@ -115,10 +115,9 @@ test("a manual save keeps the saved position and settings when unsaved changes a
 
   // ロード asks too, and loading brings the manual save's scene back.
   await page.getByTestId("tourism-skip").click();
-  await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "ロード", exact: true }).click();
-  const loading = page.getByRole("dialog", { name: "保存した場面を読み込みますか？" });
-  await loading.getByRole("button", { name: "ロードする", exact: true }).click();
-  await expect(loading).toBeHidden();
+  const loading = await ops.askToLoad(page);
+  await loading.loadButton.click();
+  await expect(loading.dialog).toBeHidden();
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
   await expect(page.getByRole("status").filter({ hasText: "保存した場面から再開しました。" })).toBeVisible();
   expect(prompts).toEqual(["beforeunload"]);
