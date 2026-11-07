@@ -68,11 +68,12 @@ describe("journey-wide transit decision ledger", () => {
     const profile = getJourneyAuthoringProfile(process.cwd(), "golden_triangle");
     expect(profile.transitDecisionLedger?.cities).toEqual(ledgerCities);
     for (const city of ledgerCities) expect(journeyTransitDecisionFile(process.cwd(), city)).toBe(profile.transitDecisionLedger?.file);
-    // Milan has no profile; Uzbekistan reviews transit in per-city ledgers.
+    // Milan has no profile; Uzbekistan reviews transit in per-city ledgers (travel/<city>-transit.json).
     expect(journeyTransitDecisionFile(process.cwd(), "milano")).toBeUndefined();
     expect(journeyTransitDecisionFile(process.cwd(), "tashkent")).toBeUndefined();
     expect(() => readJourneyTransitDecisions(process.cwd(), "uzbekistan")).toThrow("Journey has no transit decision ledger: uzbekistan");
-    expect(journeyAuthoringSchema.safeParse({ ...profile, transitDirectory: "authoring/x" }).error?.message)
-      .toMatch(/Use either transitDirectory or transitDecisionLedger, not both/);
+    // The journey-wide ledger stays only while the journey waits for its transport switch.
+    expect(profile.transitDecisionLedger?.pendingJa).toBe("ツアー機能待ち");
+    expect(journeyAuthoringSchema.safeParse({ ...profile, transitDecisionLedger: { ...profile.transitDecisionLedger, pendingJa: undefined } }).success).toBe(false);
   });
 });

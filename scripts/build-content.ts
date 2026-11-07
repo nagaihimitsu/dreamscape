@@ -50,6 +50,7 @@ try {
   );
   // One line per journey folder, so a forgotten or still empty folder shows before it is published.
   for (const journey of result.journeyContents) console.log(formatJourneyContents(journey));
+  for (const line of result.transport) console.log(line);
   if (withSample) console.log(`Sample journey included from ${SAMPLE_JOURNEY_DIRECTORY} (development and tests only; npm run content:build without --with-sample removes it)`);
   // Unused dictionary entries do no harm: a count, the words with --verbose.
   const unusedWords = result.unusedWordMeanings.reduce((sum, item) => sum + item.words.length, 0);

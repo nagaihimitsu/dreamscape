@@ -193,8 +193,9 @@ describe("content file layout", () => {
     expect(classifyContentFile("manifest.json", "core")).toEqual({ type: "unknown" });
     expect(classifyContentFile("cities/delhi.json", "journey")).toEqual({ type: "city", id: "delhi" });
     expect(classifyContentFile("cities/old/delhi.json", "core")).toEqual({ type: "unknown" });
-    expect(classifyContentFile("travel/delhi.json", "core")).toEqual({ type: "travel", cityId: "delhi", settings: false });
-    expect(classifyContentFile("travel/delhi-settings.json", "core")).toEqual({ type: "travel", cityId: "delhi", settings: true });
+    expect(classifyContentFile("travel/delhi.json", "core")).toEqual({ type: "travel", cityId: "delhi", part: "routes" });
+    expect(classifyContentFile("travel/delhi-settings.json", "core")).toEqual({ type: "travel", cityId: "delhi", part: "settings" });
+    expect(classifyContentFile("travel/delhi-transit.json", "journey")).toEqual({ type: "travel", cityId: "delhi", part: "transit" });
     expect(classifyContentFile("stories/dates/milano_date_cafe.ink", "journey")).toEqual({ type: "story", id: "dates/milano_date_cafe" });
     expect(classifyContentFile("quizzes/x.example.json", "core")).toEqual({ type: "quiz", example: true });
     expect(classifyContentFile("quizzes/sub/x.json", "core")).toEqual({ type: "quiz", example: false });

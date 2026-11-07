@@ -12,7 +12,8 @@ import { completeFragment, emptyCatalog, trimFragment, type MergedKind } from ".
 import type { CityBundle } from "./city-bundle-schema";
 import { bundleCatalogKinds, cityFiles, existing, layerPath, read } from "./city-bundle-files";
 import { journeyAuthoringProfiles } from "./journey-authoring";
-import { cityTransitFile, readTransitLedger, replaceTransitDecisions } from "./journey-transit-review";
+import { cityTransitPath } from "./journey-transit";
+import { replaceTransitDecisions, transitLedgerFromDecisions, transitLedgerSchema } from "./transit-ledger";
 import { journeyTransitDecisionFile } from "./journey-transit-decisions";
 import { findPublicFile } from "./public-assets";
 
@@ -189,9 +190,13 @@ export function mergeCityCatalogs(sources: ContentSources, bundle: CityBundle, b
     if (fragment.exists) values[fragment.file] = trimFragment(fragment.data, fragment.added);
     else if (!isDeepStrictEqual(fragment.data, emptyCatalog(fragment.kind, fragment.data.schemaVersion))) values[fragment.file] = fragment.data;
   if (bundle.transitDecisions) {
-    const ownFile = cityTransitFile(root, cityId);
+    const ownFile = cityTransitPath(sources, cityId);
     if (ownFile) {
-      values[ownFile] = replaceTransitDecisions(readTransitLedger(root, ownFile), bundle.transitDecisions);
+      const current = existing(sources, cityId) ? requireCity(sources, cityId).transit : undefined;
+      // A city without a ledger keeps none until decisions are given (content:build says when one is required).
+      if (current !== undefined || bundle.transitDecisions.length)
+        values[ownFile] = current === undefined ? transitLedgerFromDecisions(cityId, bundle.transitDecisions)
+          : replaceTransitDecisions(transitLedgerSchema.parse(current), bundle.transitDecisions);
       return values;
     }
     const decisionFile = journeyTransitDecisionFile(root, cityId);

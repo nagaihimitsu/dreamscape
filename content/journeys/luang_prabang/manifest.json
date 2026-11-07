@@ -46,7 +46,6 @@
   "authoring": {
     "eventPrefix": "lpb",
     "observationFile": "authoring/journeys/luang_prabang/drafts/observation-cards.json",
-    "imageDirectory": "assets/tourism/luang_prabang",
-    "transitDirectory": "authoring/journeys/luang_prabang/research/luang-prabang-20261104"
+    "imageDirectory": "assets/tourism/luang_prabang"
   }
 }

@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { getCityContent, presentation, tourismAssets } from "../../../src/content";
 import { getJourney } from "../../../src/content/journeys";
 import { prototypePreviewState } from "../../../src/dev/prototype-preview-state";
-import { inspectJourneyTransit } from "../../../scripts/journey-transit-review";
+import { inspectJourneyTransit } from "../../../scripts/journey-transit";
 import { loadJourneyScaffold, journeyRequirements } from "../../../scripts/journey-scaffold";
 import { createGame } from "../../../src/domain/game";
 import { planTravel } from "../../../src/domain/travel";
@@ -52,8 +52,8 @@ describe("Luang Prabang city foundation", () => {
       }
     }
     expect(travel.routes.filter((route) => route.mode === "taxi")).toHaveLength(38);
-    expect(inspectJourneyTransit(process.cwd(), cityId)[0]).toMatchObject({ directions: 110, decisions: 440, ready: true,
-      counts: { available: 38, not_suitable: 402, unconfirmed: 0 } });
+    expect(inspectJourneyTransit(process.cwd(), cityId)).toMatchObject({ modes: ["taxi"], cities: [{ directions: 110, decisions: 110, ready: true,
+      counts: { taxi: { available: 38, not_suitable: 72, not_applicable: 0, inconclusive: 0 } } }] });
   });
 
   it("only uses reviewed vehicle paths that avoid the named restricted street", () => {

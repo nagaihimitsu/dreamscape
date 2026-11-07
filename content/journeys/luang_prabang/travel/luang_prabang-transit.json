@@ -1,0 +1,1344 @@
+{
+  "schemaVersion": 2,
+  "cityId": "luang_prabang",
+  "sourceRefs": {
+    "model": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "市内移動の採用方針",
+      "url": "https://en.wikivoyage.org/wiki/Luang_Prabang#Get_around",
+      "checkedAt": "2026-11-04",
+      "claimType": "hypothesis",
+      "claimJa": "ゲームでは徒歩と車を採用。市内定期交通の各地点間の接続・運賃を確認できないため今回採用せず、実際に運行していないと断定しない。車の所要時間・料金はゲーム用推定。"
+    },
+    "restriction": {
+      "publisher": "KPL Lao News Agency",
+      "title": "Luang Prabang vehicle restrictions, 11 March 2026",
+      "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+    }
+  },
+  "decisions": [
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
+      "sourceRefs": [
+        "restriction",
+        "model"
+      ]
+    }
+  ]
+}

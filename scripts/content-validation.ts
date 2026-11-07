@@ -55,7 +55,8 @@ import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { validateTourism } from "./tourism-validation";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { validateTravelContent } from "./travel-validation";
-import { checkRouteModes } from "./transport-validation";
+import { checkCityTransit, checkRouteModes, transportSummary } from "./transport-validation";
+import type { CityTransitReview } from "./transit-ledger";
 import { journeySchema } from "../src/content/journey-schemas";
 import { journeyCatalogSchema } from "../src/content/journey-catalog";
 import { validateJourney } from "./journey-validation";
@@ -260,6 +261,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     const files = sources.cities[index];
     const travel = parseSourceFile(travelCatalogSchema, files.travelFile, files.travel);
     return { city: item, travel, travelFile: displayPath(root, files.travelFile),
+      transit: files.transit, transitFile: displayPath(root, files.transitFile),
       settings: parseSourceFile(travelSettingsSchema, files.settingsFile, files.settings) };
   });
   for (const { city: registeredCity, settings } of travels) {
@@ -733,11 +735,17 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       throw new Error(`Encounter entry city mismatch: ${encounter.id}`);
   }
   unique([...productionQuestionIds, ...encounterCatalog.encounters.flatMap((event) => event.quiz ? [event.quiz.question.id] : [])], "production quiz question ID");
-  for (const { city: current, travel, travelFile, settings } of travels) {
+  const transitReviews = new Map<string, CityTransitReview[]>();
+  for (const { city: current, travel, travelFile, transit, transitFile, settings } of travels) {
     const episodes = journey.episodes.filter((episode) => episode.cityId === current.id);
     const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id));
     // checkContentOwnership keeps every city file in the folder of the journey that lists it.
-    if (owner) checkRouteModes(travel, travelFile, { journey: owner, pendingJa: pendingTransport.get(owner.id) });
+    if (owner) {
+      const transport = { journey: owner, pendingJa: pendingTransport.get(owner.id) };
+      checkRouteModes(travel, travelFile, transport);
+      const review = checkCityTransit({ travel, transit, transitFile }, transport, { requireLedger: false });
+      if (review) transitReviews.set(owner.id, [...(transitReviews.get(owner.id) ?? []), review]);
+    }
     // A journey may publish its first city while keeping later, pre-registered
     // cities unfinished. The city status controls the deferred content gate.
     const isUnpublished = current.productionStatus === "prototype";
@@ -848,6 +856,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     warnings: contentWarnings(sources),
     /** What each journey folder provides, for the build report. */
     journeyContents: journeyContents(sources),
+    /** Each journey's in-city transport (modes, transit ledger counts, or what it waits for), for the build report. */
+    transport: journeyCatalog.journeys.map((item) => transportSummary({ journey: item, pendingJa: pendingTransport.get(item.id) }, transitReviews.get(item.id) ?? [])),
     /** Word meanings no English text uses, for the build report. */
     unusedWordMeanings: unusedWordMeanings(sources),
   };

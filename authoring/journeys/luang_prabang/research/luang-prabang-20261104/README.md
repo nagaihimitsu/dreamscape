@@ -1,6 +1,8 @@
 # ルアンパパーン市街地の制作基盤
 
 > 記録の注記：本文のパス・コマンドは作成当時の配置のままです。現在、この旅行編のデータは `content/journeys/luang_prabang/`、制作資料は `authoring/journeys/luang_prabang/` にあります（[旧配置との対応表](../../../README.md#当時の配置と現在の配置)）。
+>
+> 交通判断台帳の注記（2026-11-07）：`luang_prabang/transit-decisions.json` は記録として残します。ゲームが使う台帳は `content/journeys/luang_prabang/travel/luang_prabang-transit.json`（都市ごとの新しい形式）に移しました。移すときに宣言していない乗り物（bus・rail・tram）の判断を外し、判断ごとの確認日 `checkedAt` は、その判断が挙げる出典の確認日（どれも 2026-11-04）から付けました。
 
 独立旅行編 `luang_prabang` として登録。**シナリオ・クイズ・デート会話・都市フィナーレは未制作**のため、旅行編は `preparing`、都市は `prototype`、イベントは `pending_content`。Debugの地図で移動と一時保存を確認できる。新規ゲームを開始できる状態とは表示しない。
 

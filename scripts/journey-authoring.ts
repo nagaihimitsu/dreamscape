@@ -24,8 +24,6 @@ export const journeyAuthoringSchema = z.object({
   observationFile: relativePath,
   /** The journey's tourism image folder below public/ (a served path, e.g. `assets/tourism/india`). */
   imageDirectory: relativePath.refine((value) => value.startsWith("assets/"), "The image folder is a served path below assets/"),
-  /** Per-city transit ledgers: `<transitDirectory>/<cityId>/transit-decisions.json`. */
-  transitDirectory: relativePath.optional(),
   /**
    * The old journey-wide transit decision ledger for the listed cities (see
    * journey-transit-decisions.ts). Only a journey that still waits for its
@@ -35,8 +33,7 @@ export const journeyAuthoringSchema = z.object({
    * checks (scripts/transport-validation.ts).
    */
   transitDecisionLedger: z.object({ file: relativePath, cities: z.array(id).min(1), pendingJa: japanese }).strict().optional(),
-}).strict().refine((profile) => !(profile.transitDirectory && profile.transitDecisionLedger),
-  "Use either transitDirectory or transitDecisionLedger, not both");
+}).strict();
 export type JourneyAuthoringProfile = z.infer<typeof journeyAuthoringSchema>;
 
 const isObject = (value: unknown): value is Record<string, unknown> =>
@@ -52,13 +49,12 @@ function profileSchemaOf(manifest: Record<string, unknown>) {
   const folder = authoringFolder(journeyId);
   const cityIds = (Array.isArray(manifest.cities) ? manifest.cities : []).map((city) => (isObject(city) ? city.id : undefined));
   return journeyAuthoringSchema.superRefine((profile, context) => {
-    const paths: [string[], string | undefined, boolean][] = [
-      [["observationFile"], profile.observationFile, false],
-      [["transitDirectory"], profile.transitDirectory, true],
-      [["transitDecisionLedger", "file"], profile.transitDecisionLedger?.file, false],
+    const paths: [string[], string | undefined][] = [
+      [["observationFile"], profile.observationFile],
+      [["transitDecisionLedger", "file"], profile.transitDecisionLedger?.file],
     ];
-    for (const [path, value, directory] of paths)
-      if (value !== undefined && !value.startsWith(folder) && !(directory && `${value}/` === folder))
+    for (const [path, value] of paths)
+      if (value !== undefined && !value.startsWith(folder))
         context.addIssue({ code: "custom", path, message: `Keep the authoring files of ${journeyId} below ${folder}` });
     profile.transitDecisionLedger?.cities.forEach((cityId, index) => {
       if (!cityIds.includes(cityId))

@@ -71,7 +71,6 @@
   "authoring": {
     "eventPrefix": "uz",
     "observationFile": "authoring/journeys/uzbekistan/drafts/observation-cards.json",
-    "imageDirectory": "assets/tourism/uzbekistan",
-    "transitDirectory": "authoring/journeys/uzbekistan/research/uzbekistan-20261104"
+    "imageDirectory": "assets/tourism/uzbekistan"
   }
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { inspectJourneyTransit } from "../../../scripts/journey-transit-review";
+import { inspectJourneyTransit } from "../../../scripts/journey-transit";
 import { findPublicFile } from "../../../scripts/public-assets";
 import { getCityContent, presentation, tourismAssets } from "../../../src/content";
 import { currencyForCity, formatMoneyForCity } from "../../../src/content/currency";
@@ -24,11 +24,12 @@ function memoryStorage() {
 describe("Uzbekistan scenario-ready foundation", () => {
   it("records a sourced game decision for every public-transport and taxi direction", () => {
     const review = inspectJourneyTransit(process.cwd(), "uzbekistan");
-    expect(review.map((city) => city.cityId)).toEqual(cities);
-    for (const city of review) {
-      expect(city.decisions).toBe(city.directions * 4);
+    if ("pendingJa" in review) throw new Error("Uzbekistan uses the per-city transit ledgers");
+    expect(review.cities.map((city) => city.cityId)).toEqual(cities);
+    for (const city of review.cities) {
+      expect(city.decisions).toBe(city.directions * review.modes.length);
       expect(city.ready, city.cityId).toBe(true);
-      expect(city.counts.unconfirmed, city.cityId).toBe(0);
+      for (const mode of review.modes) expect(city.counts[mode].inconclusive, `${city.cityId} ${mode}`).toBe(0);
     }
   });
 

@@ -11,7 +11,7 @@ import { listFiles, loadContentSources, readJourneyManifests } from "./content-s
 import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readiness";
 import { applyCityBundle, exportEditableCityBundle } from "./city-bundle";
 import { loadJourneyScaffold } from "./journey-scaffold";
-import { inspectJourneyTransit } from "./journey-transit-review";
+import { inspectJourneyTransit } from "./journey-transit";
 import { CHECKLIST_FILE, CHECKLIST_TEMPLATE, checkNewJourneyOptions, createJourney, parseNewJourneyArgs, scaffoldJourney } from "./journey-new";
 import { prepareJourneyRelease } from "./promote-journey";
 import { readSampleJourney } from "./sample-journey";
@@ -220,12 +220,13 @@ describe("journey:new in a copy of the repository", () => {
     expect(result.warnings.filter((warning) => [k, kc, kp, n].some((name) => warning.message.includes(name)))).toEqual([]);
   });
 
-  it("works with city:bundle at once; journey:scaffold and journey:transit say what they need first", async () => {
+  it("works with city:bundle at once; journey:scaffold says what it needs first and journey:transit needs nothing for a walk-only journey", async () => {
     const { journeyId: k, cityId: kc } = first;
     // The city's editable bundle goes back unchanged (city:bundle export, then check).
     await expect(applyCityBundle(root, exportEditableCityBundle(root, kc))).resolves.toEqual({ changedFiles: [] });
     expect(() => loadJourneyScaffold(root, k)).toThrow(`観察資料がありません: authoring/journeys/${k}/drafts/observation-cards.json（manifest.json の authoring.observationFile）。`);
-    expect(() => inspectJourneyTransit(root, k)).toThrow(`都市「${kc}」の交通判断台帳がありません（${k} の manifest.json の authoring に transitDirectory がありません）。`);
+    // A walk-only copy (the sample's core declares no transport mode) needs no transit ledger.
+    expect(inspectJourneyTransit(root, k)).toEqual({ journeyId: k, modes: [], cities: [] });
   });
 
   it("refuses an existing journey, city or prefix and content that would not build, writing nothing", () => {

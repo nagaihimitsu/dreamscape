@@ -36,7 +36,11 @@ export type JourneyManifest = { id: string; order: number; directory: string; fi
 export type CitySource = {
   id: string; layer: string;
   file: string; travelFile: string; settingsFile: string;
+  /** Where the city's transit ledger is (or belongs): `travel/<city>-transit.json` of its layer. */
+  transitFile: string;
   data: unknown; travel: unknown; settings: unknown;
+  /** The parsed transit ledger, or undefined when the city has none (it never reaches the game). */
+  transit: unknown;
   bytes: { city: Buffer; travel: Buffer; settings: Buffer };
 };
 /** An Ink file and its text. */
@@ -377,7 +381,7 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
   }
   // Missing files are named with what to add (Japanese first, like the missing-manifest message).
   // travel/<city>.json is the city's 移動データ, travel/<city>-settings.json its 移動の設定, in every message.
-  const travelLabel = (file: string) => file.endsWith("-settings.json") ? "移動の設定" : "移動データ";
+  const travelLabel = (file: string) => file.endsWith("-settings.json") ? "移動の設定" : file.endsWith("-transit.json") ? "交通判断台帳" : "移動データ";
   for (const item of travelFiles) {
     const city = cityLayers.get(item.cityId);
     if (city?.layer === item.layer) continue;
@@ -410,9 +414,12 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
     const settingsBytes = readTravel(item, settingsFile, true);
     const settings = parseJson(settingsFile, settingsBytes);
     const travelBytes = readTravel(item, travelFile, false);
+    const transitFile = path.join(travel, `${item.id}-transit.json`);
+    const transitBytes = tree.files.get(toPosix(path.relative(root, transitFile)));
     return {
-      id: item.id, layer: item.layer.id, file: item.file, travelFile, settingsFile,
+      id: item.id, layer: item.layer.id, file: item.file, travelFile, settingsFile, transitFile,
       data, travel: parseJson(travelFile, travelBytes), settings,
+      transit: transitBytes ? parseJson(transitFile, transitBytes) : undefined,
       bytes: { city, travel: travelBytes, settings: settingsBytes },
     };
   });

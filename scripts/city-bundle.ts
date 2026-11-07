@@ -14,7 +14,8 @@ import { compactTravel, expandTravel } from "./city-bundle-routes";
 import { idSchema, bundleSchema, completeBundleSchema, editableBundleSchema, completeEditableBundleSchema, type CityBundle, type EditableCityBundle } from "./city-bundle-schema";
 import { bundleCatalogKinds, existing, inputFingerprint, read, writeCityBundleFiles } from "./city-bundle-files";
 import { assertUniqueIds, mergeCityCatalogs, referencedBackgrounds } from "./city-bundle-catalogs";
-import { cityTransitFile, readTransitLedger, exportTransitDecisions, inspectCityTransit } from "./journey-transit-review";
+import { cityTransitPath, cityTransitPlan } from "./journey-transit";
+import { exportTransitDecisions, inspectCityTransit, transitLedgerSchema } from "./transit-ledger";
 
 export type { CityBundle, EditableCityBundle } from "./city-bundle-schema";
 export { writeCityBundleFiles } from "./city-bundle-files";
@@ -77,9 +78,9 @@ export function exportCityBundle(root: string, cityId: string): CityBundle {
     const ledger = read(root, journeyLedger);
     if (!Array.isArray(ledger.decisions)) throw new Error("Invalid transit decision ledger");
     transitDecisions = ledger.decisions.filter((item: { cityId?: string }) => item.cityId === cityId);
-  } else {
-    const file = cityTransitFile(root, cityId);
-    if (file) transitDecisions = exportTransitDecisions(readTransitLedger(root, file));
+  } else if (cityTransitPath(sources, cityId)) {
+    // A journey with transport modes: the city's ledger decisions (none yet without a ledger).
+    transitDecisions = files.transit === undefined ? [] : exportTransitDecisions(transitLedgerSchema.parse(files.transit));
   }
   if (inputFingerprint(root) !== fingerprint) throw new Error("Content or assets changed during export; retry");
   return completeBundleSchema.parse({ schemaVersion: 1, cityId, baseFingerprint: fingerprint, city, travel, travelSettings, backgrounds, assets, dateDestinations, landmarks, clues, transitDecisions });
@@ -89,7 +90,8 @@ export function exportCityBundle(root: string, cityId: string): CityBundle {
 export function newCityBundle(root: string, cityId: string): unknown {
   idSchema.parse(cityId);
   owner(root, cityId);
-  if (existing(loadContentSources(root), cityId)) throw new Error(`City already exists: ${cityId}`);
+  const sources = loadContentSources(root);
+  if (existing(sources, cityId)) throw new Error(`City already exists: ${cityId}`);
   if (journeyTransitDecisionFile(root, cityId)) throw new Error(`Registered city files must be restored before editing: ${cityId} (its transit decisions are kept in its journey's ledger)`);
   const hotel = `${cityId}_hotel`;
   const background = `${cityId}_hotel_bg`;
@@ -98,7 +100,8 @@ export function newCityBundle(root: string, cityId: string): unknown {
     travel: { cityId, places: [{ id: hotel, cityId, nameJa: "", nameEn: "", latitude: null, longitude: null, backgroundId: background, sources: [] }], routes: [], events: [] },
     travelSettings: { initialBudget: null, hotelPlaceId: hotel, lodgingCost: null, retryMinutes: 15, notes: "要入力：ゲーム用の前提と出典を記入してください。" },
     backgrounds: { [background]: { nameJa: "", captionJa: "", color: "#817569", fallback: "neutral" } },
-    assets: [], dateDestinations: [], landmarks: [], clues: [], transitDecisions: null };
+    // A journey with transport modes needs the new city's transit decisions (to be filled in).
+    assets: [], dateDestinations: [], landmarks: [], clues: [], transitDecisions: cityTransitPath(sources, cityId) ? [] : null };
 }
 
 /** Validate in an isolated copy before optionally committing an editable snapshot. */
@@ -123,7 +126,7 @@ export async function applyCityBundle(root: string, raw: unknown, apply = false)
   if (bundle.city.id !== cityId || bundle.travel.cityId !== cityId || bundle.travel.places.some((place) => place.cityId !== cityId) || bundle.travel.events.some((event) => event.cityId !== cityId) || bundle.dateDestinations.some((item) => item.cityId !== cityId) || bundle.landmarks.some((item) => item.cityId !== cityId))
     throw new Error(`City ownership mismatch: ${cityId}`);
   if (bundle.city.productionStatus !== (baseline?.city.productionStatus ?? "prototype")) throw new Error("City release status cannot be changed with a bundle");
-  const ownDecisionFile = cityTransitFile(root, cityId);
+  const ownDecisionFile = cityTransitPath(sources, cityId);
   const journeyLedger = journeyTransitDecisionFile(root, cityId);
   if (!!(journeyLedger || ownDecisionFile) !== (bundle.transitDecisions !== null)) throw new Error("Transit decision ledger does not match city");
   if (baseline) for (const event of bundle.travel.events) {
@@ -151,12 +154,14 @@ export async function applyCityBundle(root: string, raw: unknown, apply = false)
     cpSync(path.join(root, "public"), path.join(stage, "public"), { recursive: true });
     for (const [file, value] of Object.entries(next)) {
       const target = path.join(stage, file);
-      if (file === journeyLedger || file === ownDecisionFile) continue;
+      // The old journey-wide ledger is not content; the per-city ledger is, and content:build checks it below.
+      if (file === journeyLedger) continue;
       mkdirSync(path.dirname(target), { recursive: true });
       writeFileSync(target, value);
     }
-    if (bundle.transitDecisions && ownDecisionFile) {
-      if (!inspectCityTransit(bundle.travel, JSON.parse(next[ownDecisionFile])).ready)
+    if (bundle.transitDecisions && ownDecisionFile && next[ownDecisionFile] !== undefined) {
+      // content:build accepts inconclusive decisions; an applied city has none.
+      if (!inspectCityTransit(bundle.travel, JSON.parse(next[ownDecisionFile]), cityTransitPlan(sources, cityId).modes, ownDecisionFile).ready)
         throw new Error(`Transit has undecided directions: ${cityId}`);
     } else if (bundle.transitDecisions && journeyLedger) {
       const transit = readJourneyTransitDecisions(root, owner(root, cityId).id);
