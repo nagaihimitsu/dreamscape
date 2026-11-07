@@ -2,6 +2,7 @@ import { allStorage, expect, learningKey, ops, playUntil, presentationKey, readS
 
 // Lane 1 (docs/10): saving and resuming are only ever checked through the real flow.
 
+// AGENTS.md 「同一バージョン内の保存・再開を守る」「セーブ再開で二重消費しない」; docs/07 acceptance 2, 5, 6 and 「英語学習データと保存の方針」.
 test("autosaved progress, a battle question, the English note and the text speed are restored after a reload", { tag: tier.gate }, async ({ page }) => {
   test.setTimeout(120_000);
   await ops.startJourney(page);
@@ -72,6 +73,7 @@ test("autosaved progress, a battle question, the English note and the text speed
   expect(finished.playedDateIds).toEqual(["milano_novecento_date_01"]);
 });
 
+// AGENTS.md 「現在のバージョンで作成した有効なセーブは…正しく保存・再開できる」 and docs/07 acceptance 6.
 test("a manual save keeps the saved position and settings when unsaved changes are discarded", { tag: tier.gate }, async ({ page }) => {
   await ops.startJourney(page);
   await ops.setAutoSave(page, false);
@@ -95,6 +97,7 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await expect(settings.getByLabel("自動保存する")).not.toBeChecked();
 });
 
+// AGENTS.md 「明示確認と別タブ競合の保護を維持する」: a second tab never overwrites the first one's progress.
 test("a second tab cannot open a journey that is already open", { tag: tier.gate }, async ({ page, context }) => {
   await ops.startJourney(page, "milano", ["先の名前", "あゆみ"]);
   const saved = await allStorage(page);

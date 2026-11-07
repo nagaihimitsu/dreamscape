@@ -2,6 +2,7 @@ import { DOUBLE_TAP_WINDOW_MS } from "../../src/features/battle/double-tap";
 import { allStorage, expect, expectNoActiveScene, learningKey, ops, playUntil, readSave, test, tier } from "./helpers";
 
 // Lane 1 (docs/10): the real flow from the title screen, no Debug, no state shortcut.
+// docs/07 acceptance 1–4 (names, AP from the first battle, a date spending AP once and finishing).
 test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a date, and returns to free time", { tag: [tier.gate, tier.prod, tier.smoke] }, async ({ page }) => {
   test.setTimeout(120_000);
   // Time runs normally; it is paused only for the typewriter check below.
