@@ -198,6 +198,65 @@ test("with manual saving, an unreadable save stays in place until the first セ�
   expect((await readSave(page)).playerName).toBe("航");
 });
 
+// writeNewGame refuses a start once the slot no longer holds what the title showed, and the title
+// opens nothing then (useGameSession.begin): another tab's newer bytes are neither replaced nor
+// backed up as if they were the unreadable save (AGENTS.md 「別タブ競合の保護」).
+test("an unreadable save that another tab replaces before the start is kept, and the refused start opens nothing", { tag: tier.gate }, async ({ page, context }) => {
+  await page.goto("/");
+  await page.evaluate(([key]) => localStorage.setItem(key, "{damaged-save"), [saveKey()]);
+  await page.reload();
+  await expect(page.getByRole("alert")).toContainText("保存データを読み込めませんでした");
+  // Another tab of the site (not the game, which this tab's lock keeps closed there) writes the slot.
+  const other = await context.newPage();
+  await other.goto("/favicon-32.png");
+  await other.evaluate(([key]) => localStorage.setItem(key, "newer bytes from another tab"), [saveKey()]);
+  await other.close();
+
+  await ops.fillNames(page);
+  await page.getByRole("button", { name: "元のデータを退避して新しく始める" }).click();
+  await expect(page.getByText("別の画面でセーブが更新されています。再読み込みしてからやり直してください。")).toBeVisible();
+  await expect(page.getByLabel("主人公の名前")).toBeVisible();
+  await expect(page.getByTestId("travel-menu")).toHaveCount(0);
+  const storage = await allStorage(page);
+  expect(storage[saveKey()]).toBe("newer bytes from another tab");
+  expect(Object.keys(storage).filter((key) => key.includes(".backup."))).toEqual([]);
+});
+
+// titleSaveActions (docs/10 「画面の保護を担う関数」): over another journey's save the title offers
+// neither a start nor deletion; when the storage area cannot be read both stay disabled.
+test("the title offers no start or deletion over another journey's save, and disables both when storage cannot be read", { tag: tier.gate }, async ({ page }) => {
+  await ops.startJourney(page);
+  const otherJourney = journeyCatalog().journeys.find((journey) => journey.id !== "milano" && journey.status === "available")!.id;
+  // A Milano save copied into the other journey's slot; Milano's own slot is emptied so the title opens.
+  await page.evaluate(([from, to]) => {
+    localStorage.setItem(to, localStorage.getItem(from)!);
+    localStorage.removeItem(from);
+  }, [saveKey(), saveKey(otherJourney)]);
+  await page.reload();
+  await ops.chooseJourney(page, otherJourney);
+  await expect(page.getByRole("alert")).toContainText("保存先の旅行編と現在地の旅行編が一致しないか、現在地を確認できません。元のデータは変更せず保護しています。");
+  await expect(page.getByLabel("主人公の名前")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /旅をはじめる|新しく始める/ })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "保存データを消去する" })).toHaveCount(0);
+  const copied = (await allStorage(page))[saveKey(otherJourney)];
+  expect(copied).toContain('"currentCityId":"milano"');
+
+  // The storage area cannot be read (e.g. blocked site data): Milano's title disables both.
+  await page.addInitScript(() => {
+    const getItem = Storage.prototype.getItem;
+    Storage.prototype.getItem = function (key: string) {
+      if (key.endsWith(".save.v1")) throw new DOMException("The operation is insecure.", "SecurityError");
+      return getItem.call(this, key);
+    };
+  });
+  await page.reload();
+  await expect(page.getByRole("alert")).toContainText("このブラウザの保存領域を読み取れません。保存の設定を確認してください。");
+  await ops.fillNames(page);
+  await expect(page.getByRole("button", { name: /新しく始める/ })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "保存データを消去する" })).toBeDisabled();
+  expect((await allStorage(page))[saveKey(otherJourney)]).toBe(copied);
+});
+
 // AGENTS.md: 未知の新しい版は破損と区別して案内し、削除は対象キーと影響範囲を示し明示確認のうえで行う.
 test("a save from a newer version is reported as such, and deleting it removes only that journey's save and notes", { tag: tier.gate }, async ({ page }) => {
   const newer = JSON.stringify({ schemaVersion: 999, revision: 1 });

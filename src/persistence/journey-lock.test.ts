@@ -227,6 +227,30 @@ describe("journey lock", () => {
     expect(again.statuses).toEqual(["ready"]);
   });
 
+  it("reports nothing when the browser refuses a request after the view was cancelled, and the next view still opens", async () => {
+    const locks = new FakeLocks();
+    const name = newName();
+    // The first request stays unanswered until the test refuses it (e.g. the document is being
+    // unloaded); later requests go to the working lock manager.
+    let refuse: ((error: unknown) => void) | undefined;
+    const refusingOnce: LockManagerLike = {
+      request: (lockName, options, callback) => refuse
+        ? locks.request(lockName, options, callback)
+        : new Promise((_resolve, reject) => { refuse = reject; }),
+    };
+    const view = openView(refusingOnce, name);
+    await settle();
+    expect(refuse).toBeDefined();
+    view.hold.cancel();
+    refuse!(new DOMException("The request was aborted.", "AbortError"));
+    await settle();
+    expect(view.statuses).toEqual([]);
+    const again = openView(refusingOnce, name);
+    await settle();
+    expect(again.statuses).toEqual(["ready"]);
+    expect(locks.requests).toEqual([{ name, granted: true }]);
+  });
+
   it("stops for good when cancelled while a retry's request waits for its answer", async () => {
     const locks = new FakeLocks();
     const name = newName();
