@@ -743,7 +743,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     validateEncounterContent({
       catalog: { ...encounterCatalog, items: encounterCatalog.items.filter((item) => item.cityId === current.id),
         encounters: encounterCatalog.encounters.filter((event) => event.cityId === current.id) },
-      cityId: current.id, currencyCode: journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id))!.currency.code,
+      cityId: current.id,
       landmarks: cityLandmarks, journey: cityJourney, stories, quizzes,
       responseProfileIds: responseProfiles.map((profile) => profile.id), memoryIds: Object.keys(presentation.memories), context,
       validateQuiz: validateQuizEntries,

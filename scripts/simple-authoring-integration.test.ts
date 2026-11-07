@@ -37,8 +37,8 @@ it("builds a new encounter and date with Ink, small catalog entries and a travel
       titleJa: "追加の買い物",
       storyId: paidEncounterStory,
       options: [
-        { id: "tea", costEuro: 4 },
-        { id: "cake", costEuro: 8 },
+        { id: "tea", cost: 4 },
+        { id: "cake", cost: 8 },
         { id: "skip" },
       ],
     });

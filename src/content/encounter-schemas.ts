@@ -10,17 +10,14 @@ const optionSchema = z.object({
   // take the displayed English from Ink instead.
   textEn: englishText.optional(),
   translationJa: japaneseText.optional(),
+  /** In whole units of the journey's currency (manifest currency). */
   cost: money.optional(),
-  costEuro: money.optional(),
   requiresItemId: id.optional(),
   consumeItemId: id.optional(),
   giftItemId: id.optional(),
   responseProfileId: id.optional(),
   deferCompletion: z.boolean().optional(),
-}).strict().superRefine((option, context) => {
-  if (option.cost !== undefined && option.costEuro !== undefined)
-    context.addIssue({ code: "custom", message: "Specify cost or costEuro, not both" });
-});
+}).strict();
 const encounterSchema = z.object({
   id,
   cityId: id,
@@ -32,7 +29,6 @@ const encounterSchema = z.object({
   options: z.array(optionSchema).length(3),
   repeatable: z.boolean().optional(),
   completionMoney: money.optional(),
-  completionMoneyEuro: money.optional(),
   completionItemId: id.optional(),
   alternativeApRewardId: id.optional(),
   sources: z.array(quizQuestionSchema.shape.sources.element),
@@ -58,13 +54,7 @@ const encounterCatalogObjectSchema = z.object({
   }).strict()),
   encounters: z.array(encounterSchema),
 }).strict();
-function validateMoneyFields(catalog: { encounters: { completionMoney?: number; completionMoneyEuro?: number }[] }, context: z.RefinementCtx) {
-  catalog.encounters.forEach((event, index) => {
-    if (event.completionMoney !== undefined && event.completionMoneyEuro !== undefined)
-      context.addIssue({ code: "custom", message: "Specify completionMoney or completionMoneyEuro, not both", path: ["encounters", index] });
-  });
-}
-export const encounterCatalogSchema = encounterCatalogObjectSchema.superRefine(validateMoneyFields);
+export const encounterCatalogSchema = encounterCatalogObjectSchema;
 const encounterInputSchema = encounterSchema.extend({
   cityId: id.optional(),
   descriptionJa: japaneseText.optional(),
@@ -74,7 +64,7 @@ const encounterInputSchema = encounterSchema.extend({
 /** Author-facing catalog: plain three-choice encounters need no rule boilerplate. */
 export const encounterCatalogInputSchema = encounterCatalogObjectSchema.extend({
   encounters: z.array(encounterInputSchema),
-}).superRefine(validateMoneyFields);
+});
 export function normalizeEncounterCatalog(
   value: unknown,
   landmarks: readonly { id: string; cityId: string }[],

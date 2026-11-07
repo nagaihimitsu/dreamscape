@@ -91,9 +91,7 @@ describe("travel encounters", () => {
     const cafe = encounters.encounters.find((event) => event.id === "galleria_cafe")!;
     const option = cafe.options[0];
     option.cost = 7;
-    delete option.costEuro;
     cafe.completionMoney = 3;
-    delete cafe.completionMoneyEuro;
     const initial = ready();
     const chosen = choose(startEncounter(initial, cafe.id, () => 0), 0);
     expect(chosen.travelBudget).toBe(initial.travelBudget - 7);

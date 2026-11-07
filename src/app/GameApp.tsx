@@ -464,7 +464,7 @@ export function GameApp({
               choices: activeEncounter.frame.choices.map((choice) => {
                 const option = encounterChoiceOption(currentEncounter, choice);
                 const availability = getEncounterOptionAvailability(game, choice.index);
-                return { index: choice.index, textEn: choice.text, translationJa: choice.translationJa ?? option?.translationJa ?? "", cost: option?.cost ?? option?.costEuro, unavailableReason: availability.available ? undefined : availability.reason };
+                return { index: choice.index, textEn: choice.text, translationJa: choice.translationJa ?? option?.translationJa ?? "", cost: option?.cost, unavailableReason: availability.available ? undefined : availability.reason };
               }),
               ended: encounterCanFinish(game),
               finishLabel: activeEncounter.returnTourism ? "観光に戻る" : undefined,

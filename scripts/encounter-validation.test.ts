@@ -16,6 +16,7 @@ import { validateItemReferences } from "../src/story/items";
 import { compileInk } from "./ink-validation";
 import { validateQuizEntries } from "./quiz-validation";
 import { validateEncounterContent } from "./encounter-validation";
+import { zodIssues } from "../tests/fixtures/zod-issues";
 import { loadContentSources, storyFile } from "./content-sources";
 
 // These tests check Milan's encounters and items (cityId "milano", the city of input()); other
@@ -38,7 +39,6 @@ function input() {
   return {
     catalog: encounterCatalogSchema.parse(structuredClone(catalogData)),
     cityId: "milano",
-    currencyCode: "EUR",
     landmarks: tourismCatalogSchema.parse(tourismData).landmarks,
     journey: journeySchema.parse(journeyData),
     stories: { ...stories },
@@ -51,41 +51,25 @@ function input() {
 }
 
 describe("journey currency rules", () => {
-  it("accepts neutral amounts and rejects ambiguous old and new fields", () => {
-    const data = structuredClone(catalogData);
-    const event = data.encounters.find((entry) => entry.id === "galleria_cafe")!;
-    const priced = event.options[0];
-    // Keep the old catalog intact while exercising author-facing fields.
-    const neutral = structuredClone(data) as unknown as { encounters: Array<Record<string, unknown>> };
-    const changed = neutral.encounters.find((entry) => entry.id === "galleria_cafe")!;
-    const options = changed.options as Array<Record<string, unknown>>;
-    options[0].cost = priced.costEuro;
-    delete options[0].costEuro;
-    changed.completionMoney = changed.completionMoneyEuro;
-    delete changed.completionMoneyEuro;
-    expect(encounterCatalogSchema.safeParse(neutral).success).toBe(true);
-    options[0].costEuro = 0;
-    expect(encounterCatalogSchema.safeParse(neutral).success).toBe(false);
-    delete options[0].costEuro;
-    changed.completionMoneyEuro = 0;
-    expect(encounterCatalogSchema.safeParse(neutral).success).toBe(false);
-  });
-
-  it("refuses euro-specific fields in another currency, including zero", () => {
-    const data = input();
-    data.currencyCode = "INR";
-    expect(() => validateEncounterContent(data)).toThrow("Euro-denominated encounter rules in INR city");
-    for (const event of data.catalog.encounters) {
-      event.completionMoney = event.completionMoneyEuro;
-      delete event.completionMoneyEuro;
-      for (const option of event.options) {
-        option.cost = option.costEuro;
-        delete option.costEuro;
-      }
-    }
-    expect(() => validateEncounterContent(data)).not.toThrow();
-    data.catalog.encounters[0].options[0].costEuro = 0;
-    expect(() => validateEncounterContent(data)).toThrow("Euro-denominated encounter rules in INR city");
+  it("takes amounts in the journey's currency (cost, completionMoney) and refuses the Euro-only names v14 removed", () => {
+    type Loose = { encounters: Array<Record<string, unknown> & { options: Array<Record<string, unknown>> }> };
+    const data = structuredClone(catalogData) as unknown as Loose;
+    const eventIndex = data.encounters.findIndex((entry) => entry.options.some((option) => option.cost !== undefined));
+    const event = data.encounters[eventIndex];
+    const optionIndex = event.options.findIndex((option) => option.cost !== undefined);
+    expect(eventIndex).toBeGreaterThanOrEqual(0);
+    event.completionMoney = 3;
+    expect(encounterCatalogSchema.safeParse(data).success).toBe(true);
+    const old = structuredClone(data);
+    old.encounters[eventIndex].options[optionIndex].costEuro = old.encounters[eventIndex].options[optionIndex].cost;
+    delete old.encounters[eventIndex].options[optionIndex].cost;
+    expect(() => encounterCatalogSchema.parse(old)).toThrow(zodIssues(
+      { code: "unrecognized_keys", path: ["encounters", eventIndex, "options", optionIndex], keys: ["costEuro"] }));
+    const oldPayment = structuredClone(data);
+    oldPayment.encounters[eventIndex].completionMoneyEuro = 3;
+    delete oldPayment.encounters[eventIndex].completionMoney;
+    expect(() => encounterCatalogSchema.parse(oldPayment)).toThrow(zodIssues(
+      { code: "unrecognized_keys", path: ["encounters", eventIndex], keys: ["completionMoneyEuro"] }));
   });
 });
 
@@ -193,13 +177,13 @@ describe("encounter content validation", () => {
   it("rejects repeatable paid choices, deferred effects and duplicate quiz questions", () => {
     const data = input();
     const fortune = data.catalog.encounters.find((event) => event.id === "galleria_fortune")!;
-    fortune.options[0].costEuro = 4;
+    fortune.options[0].cost = 4;
     expect(() => validateEncounterContent(data)).toThrow("Repeatable encounter must be free");
-    fortune.options[0].costEuro = 0;
+    fortune.options[0].cost = 0;
     const gift = data.catalog.encounters.find((event) => event.id === "galleria_gift")!;
-    gift.options[2].costEuro = 1;
+    gift.options[2].cost = 1;
     expect(() => validateEncounterContent(data)).toThrow("Deferred encounter choice must have no cost or effects");
-    gift.options[2].costEuro = 0;
+    gift.options[2].cost = 0;
     fortune.quiz!.question.id = Object.values(data.quizzes)[0].questions[0].id;
     expect(() => validateEncounterContent(data)).toThrow("Duplicate production quiz question ID");
   });
@@ -212,10 +196,10 @@ describe("encounter content validation", () => {
     expect(event.alternativeApRewardId).toBe("victory_galleria_first");
     expect(() => validateEncounterContent(data)).not.toThrow();
     for (const change of [
-      () => { event.options[0].costEuro = 1; },
+      () => { event.options[0].cost = 1; },
       () => { event.options[0].requiresItemId = "galleria_souvenir"; },
       () => { event.options[0].responseProfileId = "honest"; },
-      () => { event.completionMoneyEuro = 1; },
+      () => { event.completionMoney = 1; },
       () => { event.completionItemId = "galleria_souvenir"; },
     ]) {
       const snapshot = structuredClone(event);
@@ -238,11 +222,11 @@ describe("encounter content validation", () => {
 
   it("rejects an unsafe integer for a cost or completion payment", () => {
     const price = structuredClone(catalogData);
-    price.encounters[0].options[0].costEuro = Number.MAX_SAFE_INTEGER + 1;
+    price.encounters[0].options[0].cost = Number.MAX_SAFE_INTEGER + 1;
     expect(encounterCatalogSchema.safeParse(price).success).toBe(false);
 
     const reward = structuredClone(catalogData);
-    reward.encounters[0].completionMoneyEuro = Number.MAX_SAFE_INTEGER + 1;
+    reward.encounters[0].completionMoney = Number.MAX_SAFE_INTEGER + 1;
     expect(encounterCatalogSchema.safeParse(reward).success).toBe(false);
   });
 

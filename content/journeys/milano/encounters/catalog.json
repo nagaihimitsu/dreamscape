@@ -56,23 +56,23 @@
       "titleJa": "カンパリーノでひと休み",
       "descriptionJa": "ガッレリアの老舗で休憩する。表示価格はゲーム内の設定。",
       "storyId": "encounters/galleria_cafe_rewrite",
-      "completionMoneyEuro": 2,
+      "completionMoney": 2,
       "completionItemId": "galleria_souvenir",
       "options": [
         {
           "id": "coffee",
           "translationJa": "コーヒーを二杯ください。",
-          "costEuro": 4
+          "cost": 4
         },
         {
           "id": "coffee_pastry",
           "translationJa": "カプチーノとお菓子を一つずつください。",
-          "costEuro": 8
+          "cost": 8
         },
         {
           "id": "nothing",
           "translationJa": "今は何もいりません、ありがとう。",
-          "costEuro": 0
+          "cost": 0
         }
       ],
       "landmarkId": "galleria_vittorio_emanuele_ii",
@@ -107,15 +107,15 @@
       "options": [
         {
           "id": "believe",
-          "costEuro": 0
+          "cost": 0
         },
         {
           "id": "doubt",
-          "costEuro": 0
+          "cost": 0
         },
         {
           "id": "leave",
-          "costEuro": 0,
+          "cost": 0,
           "deferCompletion": true
         }
       ],
@@ -200,7 +200,7 @@
         {
           "id": "offer",
           "translationJa": "このしおり、いりますか？",
-          "costEuro": 0,
+          "cost": 0,
           "requiresItemId": "galleria_souvenir",
           "giftItemId": "galleria_souvenir",
           "responseProfileId": "attentive"
@@ -208,7 +208,7 @@
         {
           "id": "thought",
           "translationJa": "このしおりを見て、あなたを思い出しました。",
-          "costEuro": 0,
+          "cost": 0,
           "requiresItemId": "galleria_souvenir",
           "giftItemId": "galleria_souvenir",
           "responseProfileId": "honest"
@@ -216,7 +216,7 @@
         {
           "id": "later",
           "translationJa": "今は自分で持っておく。",
-          "costEuro": 0,
+          "cost": 0,
           "deferCompletion": true
         }
       ],
@@ -243,19 +243,19 @@
         {
           "id": "ticket",
           "translationJa": "展示券を使う。",
-          "costEuro": 0,
+          "cost": 0,
           "requiresItemId": "galleria_ticket",
           "consumeItemId": "galleria_ticket"
         },
         {
           "id": "buy",
           "translationJa": "入場券を買う。",
-          "costEuro": 4
+          "cost": 4
         },
         {
           "id": "later",
           "translationJa": "今はやめておく。",
-          "costEuro": 0,
+          "cost": 0,
           "deferCompletion": true
         }
       ],
@@ -272,15 +272,15 @@
       "options": [
         {
           "id": "coil",
-          "costEuro": 0
+          "cost": 0
         },
         {
           "id": "case",
-          "costEuro": 0
+          "cost": 0
         },
         {
           "id": "leave",
-          "costEuro": 0,
+          "cost": 0,
           "deferCompletion": true
         }
       ],
@@ -306,15 +306,15 @@
       "options": [
         {
           "id": "act",
-          "costEuro": 0
+          "cost": 0
         },
         {
           "id": "ask",
-          "costEuro": 0
+          "cost": 0
         },
         {
           "id": "leave",
-          "costEuro": 0,
+          "cost": 0,
           "deferCompletion": true
         }
       ],
@@ -339,15 +339,15 @@
       "options": [
         {
           "id": "pay",
-          "costEuro": 4
+          "cost": 4
         },
         {
           "id": "sample",
-          "costEuro": 0
+          "cost": 0
         },
         {
           "id": "leave",
-          "costEuro": 0,
+          "cost": 0,
           "deferCompletion": true
         }
       ],
@@ -372,19 +372,19 @@
       "options": [
         {
           "id": "press",
-          "costEuro": 0,
+          "cost": 0,
           "requiresItemId": "galleria_ticket",
           "consumeItemId": "galleria_ticket"
         },
         {
           "id": "watch",
-          "costEuro": 0,
+          "cost": 0,
           "requiresItemId": "galleria_ticket",
           "consumeItemId": "galleria_ticket"
         },
         {
           "id": "later",
-          "costEuro": 0,
+          "cost": 0,
           "deferCompletion": true
         }
       ],
@@ -409,15 +409,15 @@
       "options": [
         {
           "id": "buy",
-          "costEuro": 2
+          "cost": 2
         },
         {
           "id": "ask",
-          "costEuro": 0
+          "cost": 0
         },
         {
           "id": "leave",
-          "costEuro": 0,
+          "cost": 0,
           "deferCompletion": true
         }
       ],
@@ -442,19 +442,19 @@
       "options": [
         {
           "id": "give",
-          "costEuro": 0,
+          "cost": 0,
           "requiresItemId": "blue_pick",
           "giftItemId": "blue_pick"
         },
         {
           "id": "ask",
-          "costEuro": 0,
+          "cost": 0,
           "requiresItemId": "blue_pick",
           "giftItemId": "blue_pick"
         },
         {
           "id": "later",
-          "costEuro": 0,
+          "cost": 0,
           "deferCompletion": true
         }
       ],
@@ -479,15 +479,15 @@
       "options": [
         {
           "id": "pose",
-          "costEuro": 0
+          "cost": 0
         },
         {
           "id": "count",
-          "costEuro": 0
+          "cost": 0
         },
         {
           "id": "decline",
-          "costEuro": 0
+          "cost": 0
         }
       ],
       "sources": [
@@ -511,19 +511,19 @@
       "options": [
         {
           "id": "offer",
-          "costEuro": 0,
+          "cost": 0,
           "requiresItemId": "galleria_souvenir",
           "giftItemId": "galleria_souvenir"
         },
         {
           "id": "gift",
-          "costEuro": 0,
+          "cost": 0,
           "requiresItemId": "galleria_souvenir",
           "giftItemId": "galleria_souvenir"
         },
         {
           "id": "later",
-          "costEuro": 0,
+          "cost": 0,
           "deferCompletion": true
         }
       ],
