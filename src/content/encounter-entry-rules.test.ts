@@ -21,7 +21,7 @@ describe("location-based encounters", () => {
       .toThrow("A quiz after the landmark battle needs a tourism encounter with a quiz: duomo_string");
   });
 
-  it("opens the new events only after their own milestones, and keeps the old events asleep", () => {
+  it("opens duomo_string after the Duomo and scala_mint after La Scala, and keeps the Galleria encounters (the dormant galleria_cafe/gift/outing included) closed", () => {
     const fresh = createGame("たいち", "あゆみ");
     const afterDuomo = { ...fresh, completedEpisodeIds: ["milano_duomo_episode"] };
     expect(getEncounterAvailability(fresh, "duomo_string").available).toBe(false);

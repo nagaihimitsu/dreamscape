@@ -144,8 +144,8 @@ describe("journey-specific tools and tests", () => {
       .filter((file) => file !== fileURLToPath(import.meta.url));
     expect(files).toContain(path.join(root, "scripts/city-bundle.ts"));
     expect(files).toContain(path.join(root, "tests/e2e/helpers.ts"));
-    expect(files).toContain(path.join(root, "tests/journeys/milano/full-route.test.ts"));
-    expect(files).toContain(path.join(root, "tests/journeys/golden_triangle/test-journey.ts"));
+    // Journey folders are scanned too (no journey named here: removing one must not fail this test).
+    expect(files.some((file) => journeyOf(file) !== undefined)).toBe(true);
     const violations = files.flatMap((file) => imports(file, readFileSync(file, "utf8")).map((specifier) => `${path.relative(root, file)}: ${specifier}`));
     expect(violations).toEqual([]);
   });

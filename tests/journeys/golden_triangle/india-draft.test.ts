@@ -9,7 +9,7 @@ import { readResearchCsv } from "../../../scripts/journeys/golden_triangle/india
 import { buildIndiaDraft, indiaDraftDirectory, serializeIndiaDraft } from "../../../scripts/journeys/golden_triangle/india-draft";
 
 describe("Golden Triangle authoring draft", () => {
-  it("is reproducible from the archived research and current journey policy", () => {
+  it("is reproducible from the archived research and the journey's city plan and budget", () => {
     const files = buildIndiaDraft();
     expect(Object.keys(files)).toHaveLength(10);
     for (const [file, value] of Object.entries(files)) {

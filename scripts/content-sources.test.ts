@@ -88,7 +88,7 @@ describe("content layers", () => {
     expect(() => loadContentSources(root)).toThrow(/Unknown content file: .*content\/journeys\/catalog\.json \(journeys are registered by content\/journeys\/<journeyId>\/manifest\.json\)/);
   });
 
-  it("reads the current single-layer content as it is", () => {
+  it("reads content with only the core layer as it is", () => {
     const sources = loadContentSources(root);
     expect(sources.layers.map((layer) => layer.id)).toEqual(["core"]);
     // Provided by a file: battles; generated: journeys; every other journey kind is empty, core-layer kinds are absent.

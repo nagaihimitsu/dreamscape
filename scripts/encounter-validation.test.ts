@@ -246,7 +246,7 @@ describe("encounter content validation", () => {
     expect(encounterCatalogSchema.safeParse(reward).success).toBe(false);
   });
 
-  it("takes English choices from Ink, retaining legacy mismatch checks and rejecting Ink effects", () => {
+  it("takes English choices from Ink, rejects an option textEn that differs from its Ink choice, and rejects Ink effects", () => {
     const data = input();
     const event = data.catalog.encounters.find((item) => item.id === "galleria_cafe")!;
     const source = sources[event.storyId];

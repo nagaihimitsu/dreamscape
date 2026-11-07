@@ -201,7 +201,7 @@ function persisted(state: GameState): GameState {
 }
 
 describe("Milan's four episodes and distinct city finale", () => {
-  it("keeps a held local item, memories and funds through city completion and a current save", () => {
+  it("keeps a held local item, memories and funds through city completion and a save and reload", () => {
     let state = collectPick(playDate(tour(), "milano_cafe_01"));
     expect(state.memories.length).toBeGreaterThan(0);
     state = restore({ ...state, ap: 12 });
@@ -343,7 +343,7 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(totalAp(state)).toBe(totalAp(initial));
     expect(advanceCityEpilogue(state, state.revision)).toBe(state);
   });
-  it("pays the new two-choice city date once and keeps a pre-existing relationship ending", () => {
+  it("pays the two-choice date that opens after the Milan clear once and keeps a pre-existing relationship ending", () => {
     const date = dates.find((item) =>
       item.requiredCompletedCityIds?.includes("milano"),
     )!;

@@ -4,7 +4,7 @@ import { dates, stories } from "../../../src/content/index";
 import type { RelationshipTone } from "../../../src/domain/romance-tone";
 
 describe("relationship tone in the Brera conversation", () => {
-  it("shows the present relationship and the result together in the new conversation", () => {
+  it("shows the present relationship and the result together in the Brera date's conversation", () => {
     const currentStoryId = dates.find((entry) => entry.id === "milano_brera_date_01")!.storyId;
     const run = (tone: RelationshipTone, result: "positive" | "negative") => {
       const story = new Story(stories[currentStoryId]);

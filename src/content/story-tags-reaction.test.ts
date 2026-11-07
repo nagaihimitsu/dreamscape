@@ -41,7 +41,7 @@ describe("Ink presentation and choice tags", () => {
     expect(resolveDialogueReaction(catalog, "milano/test", { ...old, emotionExplicit: true, reactions: { heroine: { expression: "exasperated" } } }, "heroine")).toEqual({ expression: "exasperated", mark: "heart" });
   });
 
-  it("preserves an explicitly authored neutral instead of a legacy text annotation", () => {
+  it("keeps a neutral written in the Ink line over the external expression annotation for that line", () => {
     const catalog = dialogueExpressionCatalogSchema.parse({ schemaVersion: 1, entries: [{ storyId: "milano/test", text: "行", speaker: "heroine", emotion: "smile" }] });
     expect(resolveDialogueExpression(catalog, "milano/test", { text: "行", speaker: "heroine", emotion: "neutral", emotionExplicit: true })).toBe("neutral");
     expect(resolveDialogueExpression(catalog, "milano/test", { text: "行", speaker: "heroine", emotion: "neutral" })).toBe("smile");

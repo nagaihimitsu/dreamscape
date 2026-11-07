@@ -130,7 +130,7 @@ describe("real-place optional dates", () => {
         effects.find((effect) => effect.id === `${storyStem}_2_${second + 1}`)!,
       ];
       expect(chosenEffects.every(Boolean)).toBe(true);
-      // The new manuscript records one shared memory per destination, after the second choice.
+      // Each destination date records one shared memory, after the second choice.
       expect(memories).toEqual([chosenEffects[1].memoryId]);
       expect(after.playedDateIds).toContain(id);
       expect(resolutions.map((entry) => entry.effectId)).toEqual(chosenEffects.map((effect) => effect.id));
@@ -151,7 +151,7 @@ describe("real-place optional dates", () => {
       expect(event.requiredPlayedDateIds.some((id) => forbidden.has(id))).toBe(false);
   });
 
-  it("advances from a destination date without the old cafe, walk or invitation", () => {
+  it("raises the romance stage with a destination date alone, before any cafe, walk or invitation date, and leaves the cafe date available", () => {
     const before = checkpoints[2];
     const after = playDate(before, "milano_novecento_date_01", [2, 0]);
     expect(after.romanceStage).toBe(2);
@@ -159,7 +159,7 @@ describe("real-place optional dates", () => {
     expect(getDateAvailability(after, "milano_cafe_01").available).toBe(true);
   });
 
-  it("visits Navigli both before and after the cafe without inventing old dialogue", () => {
+  it("visits Navigli before and after the cafe date with the same laundry detail and no line about an earlier canal talk", () => {
     const afterCastle = checkpoints[4];
     const firstTime: string[] = [];
     playDate(afterCastle, ids[2], [0, 0], firstTime);

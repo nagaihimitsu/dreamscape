@@ -111,26 +111,26 @@ describe("travel encounters", () => {
     expect(() => restored(cafe)).toThrow("道中交流の保存状態が一致しません");
   });
 
-  it("allows the revised visit after a previous completion or draw without changing rewards", () => {
+  it("replays galleria_fortune on a later Galleria visit after a completion or draw without paying its rewards again", () => {
     const original = galleriaReady();
-    const oldSaves = [fortune(original, "A", 0), fortune(original, "B", 0), fortune(original, "B", 9999)];
+    const finishedSaves = [fortune(original, "A", 0), fortune(original, "B", 0), fortune(original, "B", 9999)];
     useCurrentCatalog();
-    for (const old of oldSaves) {
-      let state = openTourism(restored(old), "galleria_vittorio_emanuele_ii");
+    for (const finished of finishedSaves) {
+      let state = openTourism(restored(finished), "galleria_vittorio_emanuele_ii");
       expect(state.activeTourism?.phase).toBe("exploring");
-      const oldTourism = state.activeTourism;
+      const visitBefore = state.activeTourism;
       const begin = startTourismEncounter(state, "galleria_fortune", state.revision, () => 0);
       expect(begin.activeEncounter?.encounterId).toBe("galleria_fortune");
       state = untilPhase(choose(restored(begin), 0), "quiz");
       state = answerEncounterQuiz(state, "A", state.revision);
       state = finish(untilPhase(restored(state), "outcome"));
-      expect(state.activeTourism).toEqual({ ...oldTourism, encounterIds: ["galleria_fortune"] });
-      expect(state.ap).toBe(old.ap);
-      expect(state.pendingApRewards).toEqual(old.pendingApRewards);
-      expect(state.claimedRewardIds).toEqual(old.claimedRewardIds);
-      expect(state.travelBudget).toBe(old.travelBudget);
-      expect(state.inventory).toEqual(old.inventory);
-      expect(state.encounterRewards).toEqual(old.encounterRewards);
+      expect(state.activeTourism).toEqual({ ...visitBefore, encounterIds: ["galleria_fortune"] });
+      expect(state.ap).toBe(finished.ap);
+      expect(state.pendingApRewards).toEqual(finished.pendingApRewards);
+      expect(state.claimedRewardIds).toEqual(finished.claimedRewardIds);
+      expect(state.travelBudget).toBe(finished.travelBudget);
+      expect(state.inventory).toEqual(finished.inventory);
+      expect(state.encounterRewards).toEqual(finished.encounterRewards);
       expect(state.completedEncounterIds.filter((id) => id === "galleria_fortune")).toHaveLength(1);
     }
   });

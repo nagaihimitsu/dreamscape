@@ -158,7 +158,7 @@ describe("Ink choices and reload boundaries", () => {
       });
     }
   }
-  it("keeps names as plain Ink text in the current guide", () => {
+  it("keeps names as plain Ink text in the Duomo guide", () => {
     const storyId = "tourism/sound_duomo";
     expect(beginStory(storyId, "旅人", "{heroine_name}").frame.text).toContain("{heroine_name}");
     expect(beginStory(storyId, "旅人", "<img src=x>").frame.text).toContain("<img src=x>");

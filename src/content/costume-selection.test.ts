@@ -37,7 +37,7 @@ describe("regional costume selection", () => {
     expect(resolveCharacterCostume(heroine, wardrobe, { costume: "country_outfit", sceneId: "date_scene", cityId: "milano" })).toEqual({ costume: "country_outfit", pose: "standing_01" });
   });
 
-  it("never changes to the legacy shy artwork when this pose only has neutral", () => {
+  it("keeps the pose's neutral image for every expression when the pose has only neutral, never the heroine's variants shy image", () => {
     const { heroine, wardrobe } = catalogue();
     const outfit = resolveCharacterCostume(heroine, wardrobe, { cityId: "milano" });
     expect(heroine.variants.find((variant) => variant.emotion === "shy")?.imagePath).toBeTruthy();
