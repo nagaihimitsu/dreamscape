@@ -310,13 +310,14 @@ export const ops = {
   },
   /**
    * The game takes taps again: right after an answer the battle ignores the second tap of
-   * a double tap (`data-answer-settling`), right after a press on a control (or a tap that
-   * closes something open over a story scene) the scene takes no reading tap
-   * (`data-tap-settling`), and right after a story scene starts or ends no tap reaches the
-   * page (`data-tap-hold` on the root). Each lasts DOUBLE_TAP_WINDOW_MS.
+   * a double tap (`data-answer-settling`), right after a press on a control (or a tap over
+   * something on a story scene) the scene takes no reading tap (`data-tap-settling`), and
+   * right after a story scene starts or ends or a load no tap reaches the page
+   * (`data-tap-hold` on the root). Each lasts DOUBLE_TAP_WINDOW_MS. A scene that a move
+   * has just started takes no reading tap until the travel transition is gone.
    */
   async settled(page: Page) {
-    await expect(page.locator("[data-answer-settling], [data-tap-settling], html[data-tap-hold]")).toHaveCount(0);
+    await expect(page.locator("[data-answer-settling], [data-tap-settling], html[data-tap-hold], [data-testid=travel-transition]")).toHaveCount(0);
   },
   /** A story scene's 「ログ」: opens the dialogue log. */
   async openDialogueLog(page: Page): Promise<Locator> {

@@ -256,10 +256,7 @@ startPoints.forEach((start, index) => {
             ? "  (another element covered the control)" : "  (the control went away before the press)");
         }
         // Wait on the game's own settling marks, not on time.
-        await must("the page did not settle after the press", async () => {
-          await ops.settled(page);
-          await expect(page.getByTestId("travel-transition")).toHaveCount(0);
-        });
+        await must("the page did not settle after the press", () => ops.settled(page));
         if (pageError) fail(`uncaught exception in the page: ${pageError}`);
         const state = await must("reading the game state", () => check(page, opened!.source));
         if (state.error) fail(state.error);

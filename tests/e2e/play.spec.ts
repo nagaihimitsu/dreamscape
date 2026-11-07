@@ -130,7 +130,9 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   // on the transition's card in the middle of the screen.
   const transition = page.getByTestId("travel-transition");
   await expect(transition).toBeVisible();
-  await ops.tap(page, await ops.centerOf(line));
+  await expect(page.locator("[data-tap-settling], html[data-tap-hold]"), "the start hold is over").toHaveCount(0);
+  const firstLine = (await line.boundingBox())!;
+  await page.touchscreen.tap(firstLine.x + firstLine.width / 2, firstLine.y + firstLine.height / 2);
   const card = await ops.centerOf(transition);
   await page.touchscreen.tap(card.x, card.y);
   await expect(transition).toBeVisible();
