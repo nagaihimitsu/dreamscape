@@ -2,7 +2,7 @@ import type { Journey } from "../src/content/journey-catalog";
 import type { RentalOffer, TravelCatalog } from "../src/content/travel-schemas";
 import { WALK_MODE_ID } from "../src/content/transport-schemas";
 import { journeyManifestPath } from "./content-layout";
-import { inspectCityTransit, transitStatuses, type CityTransitReview } from "./transit-ledger";
+import { inspectCityTransit, transitStatuses, unsupportedTransitRoutes, type CityTransitReview } from "./transit-ledger";
 
 // Build checks of in-city transport (pure): the modes a journey declares in
 // its manifest, the routes that use them, rentals and the per-city transit
@@ -15,21 +15,33 @@ import { inspectCityTransit, transitStatuses, type CityTransitReview } from "./t
 export const MAX_TRANSPORT_MODES = 2;
 
 /** A journey's transport facts the checks need: its declared modes and whether it still waits for its switch. */
-export type JourneyTransport = { journey: Pick<Journey, "id" | "transportModes">; pendingJa?: string };
+export type JourneyTransport = { journey: Pick<Journey, "id" | "transportModes">; pendingJa?: string;
+  /** The journey's manifest as content:build read it (default: content/journeys/<id>/manifest.json). */
+  manifestFile?: string };
+const manifestOf = (transport: JourneyTransport) => transport.manifestFile ?? journeyManifestPath(transport.journey.id);
+
+/** Walking plus at most two declared modes; a journey waiting for its switch keeps its old ones. */
+export function checkTransportModeCount(transport: JourneyTransport): void {
+  const count = transport.journey.transportModes.length;
+  if (count <= MAX_TRANSPORT_MODES || transport.pendingJa) return;
+  const manifest = manifestOf(transport);
+  throw new Error(`乗り物は徒歩のほかに${MAX_TRANSPORT_MODES}つまでです: ${manifest} の transportModes に${count}つあります` +
+    `（At most ${MAX_TRANSPORT_MODES} transport modes besides walking: ${manifest}）。`);
+}
 
 /** Every route uses walking or a mode its journey declares. */
 export function checkRouteModes(travel: TravelCatalog, travelFile: string, transport: JourneyTransport): void {
   const declared = new Set([WALK_MODE_ID, ...transport.journey.transportModes.map((mode) => mode.id)]);
   for (const route of travel.routes) {
     if (declared.has(route.mode)) continue;
-    const manifest = journeyManifestPath(transport.journey.id);
+    const manifest = manifestOf(transport);
     throw new Error(`乗り物 "${route.mode}" は ${manifest} の transportModes に宣言されていません: ${travelFile} の ${route.fromPlaceId} → ${route.toPlaceId}。` +
       `manifest.json に宣言するか、経路の mode を直してください（Undeclared transport mode: ${travelFile} ${route.fromPlaceId} → ${route.toPlaceId} uses "${route.mode}"; declare it in ${manifest} transportModes）。`);
   }
 }
 
 /** A city's travel files as content:build has them (paths for the messages). */
-export type CityTransitFiles = { travel: TravelCatalog; transit: unknown; transitFile: string };
+export type CityTransitFiles = { travel: TravelCatalog; transit: unknown; transitFile: string; travelFile?: string };
 
 /**
  * The per-city transit ledger: a journey that declares transport modes keeps
@@ -50,7 +62,16 @@ export function checkCityTransit(city: CityTransitFiles, transport: JourneyTrans
       "それまでは編全体の旧方式の台帳だけを使います（A journey waiting for its transport switch keeps no per-city transit ledger）。");
   if (!modes.length)
     throw new Error(`${city.transitFile} は要りません。${transport.journey.id} は徒歩だけの旅行編です（Transit ledger in a walk-only journey）。`);
-  return inspectCityTransit(city.travel, city.transit, modes, city.transitFile);
+  const review = inspectCityTransit(city.travel, city.transit, modes, city.transitFile);
+  // A route of a declared mode is a game estimate backed by a documented fact (the fact's reach is a review rule).
+  const unsupported = unsupportedTransitRoutes(city.travel, modes);
+  if (unsupported.length) {
+    const [first] = unsupported;
+    throw new Error(`乗り物の経路${unsupported.length}本に、ゲーム用の推定の印（"estimation": "game_model"）か事実の出典（documented_fact）がありません。` +
+      `最初の1本: ${city.travelFile ?? city.travel.cityId} の ${first.fromPlaceId} → ${first.toPlaceId}（${first.mode}）` +
+      `（A route of a declared transport mode needs a game-model estimate and a documented fact）。`);
+  }
+  return review;
 }
 
 /**

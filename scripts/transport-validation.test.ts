@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { TravelCatalog } from "../src/content/travel-schemas";
-import { checkCityRentals, checkCityTransit, checkRouteModes, transportSummary, type JourneyTransport } from "./transport-validation";
+import { checkCityRentals, checkCityTransit, checkRouteModes, checkTransportModeCount, transportSummary, type JourneyTransport } from "./transport-validation";
 
 const source = [{ publisher: "試験", title: "試験", url: "https://example.org/test", checkedAt: "2026-11-07", claimType: "hypothesis" as const, claimJa: "試験用。" }];
 const place = (id: string) => ({ id, cityId: "test_city", nameJa: "地点", nameEn: "Place", latitude: 0, longitude: 0, backgroundId: "test_bg", sources: source });
@@ -94,5 +94,33 @@ describe("rentals in content:build", () => {
     expect(() => checkCityRentals(withBike, [offer()], FILE, journey([bike], "ツアー機能待ち")))
       .toThrow("test_trip は交通の切り替えを待っているので（ツアー機能待ち）、借りる乗り物と貸し出しはまだ使えません");
     expect(() => checkCityRentals(travel([route("a", "b", "walk")]), [], FILE, journey([tram], "ツアー機能待ち"))).not.toThrow();
+  });
+});
+
+describe("the transport limits", () => {
+  const mode = (id: string) => ({ id, nameJa: "乗り物", movingJa: "乗り物で移動中", kind: "car" as const });
+
+  it("allows walking plus two modes, and keeps a journey waiting for its switch at its old modes", () => {
+    expect(() => checkTransportModeCount(journey([]))).not.toThrow();
+    expect(() => checkTransportModeCount(journey([mode("a"), mode("b")]))).not.toThrow();
+    expect(() => checkTransportModeCount(journey([mode("a"), mode("b"), mode("c")])))
+      .toThrow("乗り物は徒歩のほかに2つまでです: content/journeys/test_trip/manifest.json の transportModes に3つあります（At most 2 transport modes besides walking: content/journeys/test_trip/manifest.json）。");
+    expect(() => checkTransportModeCount(journey([mode("a"), mode("b"), mode("c")], "ツアー機能待ち"))).not.toThrow();
+  });
+
+  it("refuses a route of a declared mode without a game estimate backed by a documented fact", () => {
+    const fact = { ...source[0], claimType: "documented_fact" as const };
+    const taxi = mode("taxi");
+    const ledger = (status: string) => ({ schemaVersion: 2, cityId: "test_city", sourceRefs: { fact }, decisions: [
+      { fromPlaceId: "a", toPlaceId: "b", mode: "taxi", status, checkedAt: "2026-11-07", reasonJa: "試験の判断です。", sourceRefs: ["fact"] },
+      { fromPlaceId: "b", toPlaceId: "a", mode: "taxi", status: "not_suitable", checkedAt: "2026-11-07", reasonJa: "試験の判断です。", sourceRefs: ["fact"] },
+    ] });
+    const supported = { ...route("a", "b", "taxi", 5, 3), estimation: "game_model" as const, sources: [...source, fact] };
+    const files = (taxiRoute: TravelCatalog["routes"][number]) => ({ travel: travel([route("a", "a", "walk", 0), route("a", "b", "walk"), taxiRoute]),
+      transit: ledger("available"), transitFile: "x-transit.json", travelFile: "content/journeys/test_trip/travel/test_city.json" });
+    expect(checkCityTransit(files(supported), journey([taxi]), { requireLedger: true })).toMatchObject({ ready: true });
+    for (const weak of [{ ...supported, sources: source }, { ...supported, estimation: undefined }])
+      expect(() => checkCityTransit(files(weak), journey([taxi]), { requireLedger: true })).toThrow(
+        "乗り物の経路1本に、ゲーム用の推定の印（\"estimation\": \"game_model\"）か事実の出典（documented_fact）がありません。最初の1本: content/journeys/test_trip/travel/test_city.json の a → b（taxi）");
   });
 });

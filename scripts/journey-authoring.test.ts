@@ -134,6 +134,16 @@ describe("journey authoring with four cities", () => {
     }
   });
 
+  it("does not promote a city whose transit ledger still has inconclusive decisions", () => {
+    const source = loadJourneyReadiness(process.cwd(), "luang_prabang");
+    expect(source.cities.map((entry) => entry.inconclusiveTransit)).toEqual([0]);
+    expect(inspectJourneyReadiness(source).cities[0].issues.some((issue) => issue.code === "transit_inconclusive")).toBe(false);
+    const report = inspectJourneyReadiness({ ...source, cities: source.cities.map((entry) => ({ ...entry, inconclusiveTransit: 2 })) });
+    expect(report.cities[0].issues).toContainEqual({ code: "transit_inconclusive",
+      detail: "交通判断台帳に「特定できず」の判断が2件あります: luang_prabang（調べて available・not_suitable・not_applicable に決めてください）" });
+    expect(report.readyForPromotion).toBe(false);
+  });
+
   it("promotes the city prefix in the journey's own manifest and preserves both unrelated journeys", () => {
     const { root, original } = releaseFixture();
     try {

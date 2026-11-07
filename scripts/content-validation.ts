@@ -55,7 +55,7 @@ import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { validateTourism } from "./tourism-validation";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { validateTravelContent } from "./travel-validation";
-import { checkCityRentals, checkCityTransit, checkRouteModes, transportSummary } from "./transport-validation";
+import { checkCityRentals, checkCityTransit, checkRouteModes, checkTransportModeCount, transportSummary } from "./transport-validation";
 import type { CityTransitReview } from "./transit-ledger";
 import { journeySchema } from "../src/content/journey-schemas";
 import { journeyCatalogSchema } from "../src/content/journey-catalog";
@@ -175,6 +175,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   requireJourneyManifests(sources.manifests);
   // The authoring tools read these profiles; a broken one still fails the build early. The
   // transport checks read one thing of them: whether a journey still waits for its transport switch.
+  const manifestFiles = new Map(sources.manifests.map((manifest) => [manifest.id, displayPath(root, manifest.file)]));
   const pendingTransport = new Map(sources.manifests.flatMap((manifest) => {
     const pendingJa = authoringProfileOf(manifest.data, manifest.file)?.transitDecisionLedger?.pendingJa;
     return pendingJa ? [[manifest.id, pendingJa] as const] : [];
@@ -232,6 +233,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   // game and Debug; each available journey's starting city is checked below.
   if (!journeyCatalog.journeys.some((item) => item.status === "available"))
     throw new Error('No available journey: at least one content/journeys/<journeyId>/manifest.json needs "status": "available"');
+  for (const plannedJourney of journeyCatalog.journeys)
+    checkTransportModeCount({ journey: plannedJourney, pendingJa: pendingTransport.get(plannedJourney.id), manifestFile: manifestFiles.get(plannedJourney.id) });
   for (const plannedJourney of journeyCatalog.journeys) {
     const art = plannedJourney.titleArt;
     if (art && !servedFile(publicFiles, art.imagePath))
@@ -741,10 +744,10 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id));
     // checkContentOwnership keeps every city file in the folder of the journey that lists it.
     if (owner) {
-      const transport = { journey: owner, pendingJa: pendingTransport.get(owner.id) };
+      const transport = { journey: owner, pendingJa: pendingTransport.get(owner.id), manifestFile: manifestFiles.get(owner.id) };
       checkRouteModes(travel, travelFile, transport);
       checkCityRentals(travel, settings.rentals, settingsFile, transport);
-      const review = checkCityTransit({ travel, transit, transitFile }, transport, { requireLedger: false });
+      const review = checkCityTransit({ travel, transit, transitFile, travelFile }, transport, { requireLedger: true });
       if (review) transitReviews.set(owner.id, [...(transitReviews.get(owner.id) ?? []), review]);
     }
     // A journey may publish its first city while keeping later, pre-registered

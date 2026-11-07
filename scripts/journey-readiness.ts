@@ -12,6 +12,8 @@ import path from "node:path";
 import { SAMPLE_JOURNEY_ID } from "./content-layout";
 import { journeyCatalogOf, journeyFolderPath, loadContentSources, parseCatalog, requireCity, type ContentSources } from "./content-sources";
 import { servedFile } from "./public-assets";
+import { cityTransitPath, cityTransitPlan } from "./journey-transit";
+import { inspectCityTransit } from "./transit-ledger";
 import { describeSampleLeftover, sampleLeftovers, type SampleLeftover } from "./sample-journey";
 
 /** Report from real catalog entries; no additional hand-maintained content list. */
@@ -22,6 +24,8 @@ export type JourneyReadinessInput = {
     city: z.infer<typeof citySchema>;
     travel: z.infer<typeof travelCatalogSchema>;
     settings: z.infer<typeof travelSettingsSchema>;
+    /** Decisions of the city's transit ledger still `inconclusive` (0 without a ledger; content:build checks the rest). */
+    inconclusiveTransit?: number;
   }>;
   tourism: z.infer<typeof tourismCatalogSchema>;
   backgrounds: z.infer<typeof presentationSchema>["backgrounds"];
@@ -88,6 +92,8 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
     }
     const { city, travel, settings } = content;
     if (city.productionStatus !== "complete") problem(cityIssues, "city_incomplete", `都市は制作中: ${cityId}`);
+    if (content.inconclusiveTransit)
+      problem(cityIssues, "transit_inconclusive", `交通判断台帳に「特定できず」の判断が${content.inconclusiveTransit}件あります: ${cityId}（調べて available・not_suitable・not_applicable に決めてください）`);
     if (city.id !== travel.cityId || !travel.places.some((place) => place.id === settings.hotelPlaceId))
       problem(cityIssues, "travel_owner_mismatch", `都市・滞在先が不一致: ${cityId}`);
     if (settings.lodgingCost !== trip.cityPlan!.lodgingCost) problem(cityIssues, "lodging_mismatch", `宿泊費が旅行編の設定と不一致: ${cityId}`);
@@ -195,8 +201,11 @@ export function journeyReadinessInput(sources: ContentSources, journeyId: string
     `登録されている旅行編: ${catalog.journeys.map((item) => item.id).join(", ") || "なし"}（Unknown journey）。`);
   const cities = trip.cities.map(({ id }) => {
     const files = requireCity(sources, id);
-    return { city: citySchema.parse(files.data), travel: travelCatalogSchema.parse(files.travel),
-      settings: travelSettingsSchema.parse(files.settings) };
+    const travel = travelCatalogSchema.parse(files.travel);
+    const { modes } = cityTransitPlan(sources, id);
+    const transit = files.transit === undefined || !modes.length ? undefined : inspectCityTransit(travel, files.transit, modes, cityTransitPath(sources, id));
+    return { city: citySchema.parse(files.data), travel, settings: travelSettingsSchema.parse(files.settings),
+      inconclusiveTransit: transit ? Object.values(transit.counts).reduce((sum, byStatus) => sum + byStatus.inconclusive, 0) : 0 };
   });
   const quizzes = sources.quizFiles.filter((quiz) => !quiz.example).map((quiz) => quizSchema.parse(quiz.data));
   const storyIds = new Set(sources.storyFiles.map((story) => story.id));
