@@ -118,6 +118,22 @@
 }
 .english-review-header button {
   flex-shrink: 0;
+  min-width: 44px;
+}
+/* A 44 px row like the settings checkboxes (docs/10「タップ領域」). */
+.english-review .review-filter {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-height: 44px;
+  padding: 10px 0;
+  line-height: 1.5;
+}
+.english-review .review-filter input {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
 }
 .english-review > details > summary {
   cursor: pointer;
