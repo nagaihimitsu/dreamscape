@@ -3,7 +3,7 @@
 // (travel/mihon-settings.json rentals) and ridden until the party leaves
 // the city. Without it every place is reached on foot.
 import { describe, expect, it } from "vitest";
-import { getCityContent } from "../../../src/content";
+import { cityContents, getCityContent } from "../../../src/content";
 import { departToNextCity } from "../../../src/domain/city-travel";
 import { createGame, validateGameState, type GameState } from "../../../src/domain/game";
 import { listPlayerActions, playerActionChange } from "../../../src/domain/player-action";
@@ -53,10 +53,23 @@ describe("rental transport (sample journey)", () => {
 
   it("takes the event's reason from a usable route, never the rental reason, when the event is closed", () => {
     const late = { ...start(), travel: { ...start().travel, minute: DAY_END - 1 } };
-    const event = getTravelDestinations(late).candidates.find((item) => item.id === EPISODE)!;
-    expect(event.available).toBe(false);
-    expect(event.unavailableReason).toBe(getTravelEventAvailability(late, EPISODE, "walk").reason);
-    expect(event.unavailableReason).not.toBe(rentalReason("mihon", BIKE));
+    const closedReason = getTravelEventAvailability(late, EPISODE, "walk").reason;
+    expect(closedReason).toBeTruthy();
+    expect(closedReason).not.toBe(rentalReason("mihon", BIKE));
+    const reasonOf = () => getTravelDestinations(late).candidates.find((item) => item.id === EPISODE)!;
+    expect(reasonOf()).toMatchObject({ available: false, unavailableReason: closedReason });
+    // The sample lists walking first. With the not-rented bicycle route listed first, the
+    // reason must still come from the usable route (design: transport-design §3.3, §11).
+    const content = getCityContent("mihon");
+    const bikeFirst = [...content.travel.routes].sort((a, b) => Number(b.mode === BIKE) - Number(a.mode === BIKE));
+    cityContents.mihon = { ...content, travel: { ...content.travel, routes: bikeFirst } };
+    try {
+      const event = reasonOf();
+      expect(event.routes.map((route) => route.mode)).toEqual([BIKE, "walk"]);
+      expect(event).toMatchObject({ available: false, unavailableReason: closedReason });
+    } finally {
+      cityContents.mihon = content;
+    }
   });
 
   it("offers the rental at the hotel only, and refuses a stale revision, a scene, the end of the day and money kept for the way back", () => {

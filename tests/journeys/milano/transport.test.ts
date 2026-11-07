@@ -22,7 +22,9 @@ describe("Milano transport", () => {
     expect(pairs("tram")).toEqual(["p_duomo>p_prada", "p_duomo>p_supper", "p_hotel>p_prada", "p_hotel>p_supper",
       "p_prada>p_duomo", "p_prada>p_hotel", "p_supper>p_duomo", "p_supper>p_hotel"]);
     const tram = (from: string, to: string) => travel.routes.find((route) => route.mode === "tram" && route.fromPlaceId === from && route.toPlaceId === to)!;
-    // The longer of the weekday and Sunday estimates, rounded up (M3).
+    // The longer of the weekday and Sunday estimates, rounded up (M3), from the unrounded estimates:
+    // the Last Supper → hotel Sunday estimate is 2 + 480 / 33 / 2 + 6.75 + 1 = 17.02 min (shown as
+    // 17.0 in the research's one-decimal table), so 18, not 17.
     expect([tram("p_duomo", "p_prada").minutes, tram("p_prada", "p_duomo").minutes, tram("p_hotel", "p_prada").minutes, tram("p_prada", "p_hotel").minutes])
       .toEqual([35, 35, 40, 38]);
     expect([tram("p_duomo", "p_supper").minutes, tram("p_supper", "p_duomo").minutes, tram("p_hotel", "p_supper").minutes, tram("p_supper", "p_hotel").minutes])
