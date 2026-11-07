@@ -281,8 +281,8 @@
 | ジャイプルのデート | `/?debug&city=jaipur&scene=date&target=gt_jaipur_date_jal_mahal&roll=negative` |
 | 制作中の都市の地図・交通 | `/?debug&city=samarkand&scene=map` |
 | 仮の場面（準備中の旅行編の都市） | `/?debug&data=fixture&city=tashkent&scene=battle&target=tashkent_special_b` |
-| 見本の編の特殊戦B（`npm run dev:sample`） | `/?debug&city=mihon&scene=battle&target=smp_mihon_market_b` |
-| 見本の編の特殊戦C（`npm run dev:sample`） | `/?debug&city=mihon&scene=battle&target=smp_mihon_library_c` |
+| 見本の編の特殊戦B（`npm run dev:sample`） | `/?debug&city=mihon&scene=battle&target=smp_mihon_special_b_market` |
+| 見本の編の特殊戦C（`npm run dev:sample`） | `/?debug&city=mihon&scene=battle&target=smp_mihon_special_c_library` |
 | 見本の編の道中交流（`npm run dev:sample`） | `/?debug&city=mihon&scene=encounter&target=smp_mihon_bookmark_stall&progress=initial` |
 
 ### 人が画面を確かめるときの使い方

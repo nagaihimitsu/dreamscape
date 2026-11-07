@@ -382,7 +382,7 @@
   ],
   "events": [
     {
-      "id": "smp_mihon_clock_tower",
+      "id": "smp_mihon_main_clock_tower",
       "cityId": "mihon",
       "placeId": "mihon_clock_tower",
       "category": "main",
@@ -391,7 +391,7 @@
       "apCost": 0
     },
     {
-      "id": "smp_mihon_market_b",
+      "id": "smp_mihon_special_b_market",
       "cityId": "mihon",
       "placeId": "mihon_market",
       "category": "main",
@@ -400,7 +400,7 @@
       "apCost": 0
     },
     {
-      "id": "smp_mihon_library_c",
+      "id": "smp_mihon_special_c_library",
       "cityId": "mihon",
       "placeId": "mihon_library",
       "category": "main",

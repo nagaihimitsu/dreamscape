@@ -20,8 +20,8 @@ import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailabili
 const JOURNEY = "sample_trip";
 const CITY = "mihon";
 const TOWER = "mihon_clock_tower";
-const EPISODE = "smp_mihon_clock_tower";
-const BATTLE = "smp_mihon_clock_tower_battle";
+const EPISODE = "smp_mihon_main_clock_tower";
+const BATTLE = "smp_mihon_main_clock_tower_battle";
 const DATE = "smp_mihon_date_tower_square";
 const FINALE = "smp_mihon_finale";
 
@@ -182,14 +182,14 @@ describe("sample journey route", () => {
     expect(totalAp(s)).toBe(1);
 
     // (Optional part) Special battles B and C: first visit opens the place's guide, then the battle (+1 each).
-    s = begin(s, "smp_mihon_market_b");
+    s = begin(s, "smp_mihon_special_b_market");
     s = sightsee(s);
-    expect(s.activeBattle?.battleId).toBe("smp_mihon_market_b");
+    expect(s.activeBattle?.battleId).toBe("smp_mihon_special_b_market");
     s = playBattle(s);
     s = act(s, (current) => leaveBattle(current, current.revision));
-    s = begin(s, "smp_mihon_library_c");
+    s = begin(s, "smp_mihon_special_c_library");
     s = sightsee(s);
-    expect(s.activeBattle?.battleId).toBe("smp_mihon_library_c");
+    expect(s.activeBattle?.battleId).toBe("smp_mihon_special_c_library");
     s = playBattle(s);
     s = act(s, (current) => leaveBattle(current, current.revision));
     expect(totalAp(s)).toBe(3);

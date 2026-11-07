@@ -81,7 +81,7 @@ describe("scenario builders", () => {
   });
 
   it("presents the correct evidence of special battles B and C", () => {
-    for (const battleId of ["milano_la_scala_b01", "smp_mihon_market_b", "smp_mihon_library_c"]) {
+    for (const battleId of ["milano_la_scala_b01", "smp_mihon_special_b_market", "smp_mihon_special_c_library"]) {
       const cityId = battleId.startsWith("smp_") ? "mihon" : "milano";
       const result = playBattleToResult(openBattleScene(completedCity(cityId), battleId));
       expect(result.activeBattle, battleId).toMatchObject({ battleId, phase: "result" });
@@ -109,10 +109,10 @@ describe("scenario builders", () => {
 
   it("reads or skips the guide of a main episode", () => {
     const fresh = newJourney("sample_trip");
-    const read = finishEpisode(fresh, "smp_mihon_clock_tower", { guide: "read" });
-    const skipped = finishEpisode(fresh, "smp_mihon_clock_tower");
+    const read = finishEpisode(fresh, "smp_mihon_main_clock_tower", { guide: "read" });
+    const skipped = finishEpisode(fresh, "smp_mihon_main_clock_tower");
     expect(read).toMatchObject(noScene);
-    expect(read.completedEpisodeIds).toEqual(["smp_mihon_clock_tower"]);
+    expect(read.completedEpisodeIds).toEqual(["smp_mihon_main_clock_tower"]);
     expect(read.completedGuideIds.length).toBe(1);
     expect(skipped.completedGuideIds).toEqual([]);
     const totalAp = (state: GameState) => state.ap + state.pendingApRewards.reduce((sum, item) => sum + item.remainingAp, 0);
@@ -121,9 +121,9 @@ describe("scenario builders", () => {
 
   it("settles a map event at the battle result like the game screen", () => {
     const fresh = createGame("航", "澪", { journeyId: "sample_trip" });
-    const travelling = beginTravelEvent(fresh, "smp_mihon_clock_tower", "walk", fresh.revision, () => 0);
+    const travelling = beginTravelEvent(fresh, "smp_mihon_main_clock_tower", "walk", fresh.revision, () => 0);
     const event = travelling.travel.activeEvent!;
-    expect(event.eventId).toBe("smp_mihon_clock_tower");
+    expect(event.eventId).toBe("smp_mihon_main_clock_tower");
     const guided = readGuide(travelling);
     const result = playBattleToResult(startTourismBattle(guided, guided.revision));
     expect(result.activeBattle?.phase).toBe("result");

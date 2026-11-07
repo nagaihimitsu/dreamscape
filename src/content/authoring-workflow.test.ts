@@ -55,7 +55,7 @@ describe("content authoring workflow", () => {
     const battleFile = path.join(fixture, "content/journeys/sample_trip/battles/catalog.json");
     const catalog = JSON.parse(await readFile(battleFile, "utf8"));
     const battle = catalog.battles.find(
-      (item: { id: string }) => item.id === "smp_mihon_clock_tower_battle",
+      (item: { id: string }) => item.id === "smp_mihon_main_clock_tower_battle",
     );
     expect(battle).toBeDefined();
     battle.quizId = direct.id;
