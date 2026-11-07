@@ -1,29 +1,35 @@
 VAR player_name = ""
 VAR heroine_name = ""
 VAR player_address = ""
+
 # background: gt_bg_agra_agra_fort
 # speaker: narrator
-アーグラ城の赤い壁を前に、{heroine_name}が門と案内図を交互に見た。図を裏返し、また元に戻す。
+アーグラ城の赤い城壁は、デリーの赤い城より、さらに分厚く見えた。入口の門へ続く坂道の両側に、高い壁がそびえている。
 # speaker: heroine
-# reaction: heroine,worried,question
-「お城一つなのに、行き先がこんなにあるの？　入口に着いてから迷うの、早くない？」
+# reaction: heroine,surprised,question
+「デリーのお城と、色がそっくり。……兄弟みたいだね」
 # speaker: narrator
-案内図には宮殿や謁見の間が並ぶ。彼女は全部を一度に指すのをやめ、まず今いる門を探した。
+城壁の上を、猿が一列になって歩いていた。一匹が、観光客の持つ水のボトルをじっと見ている。
 # speaker: heroine
-# reaction: heroine,teasing,music
-「赤い方へ行こう、って言いかけた。地図の半分に案内するところだったね」
+# reaction: heroine,worried,sweat
+「あの子、狙ってる。ボトル、しまっておこう。……目、合わせないようにしよう」
 # speaker: narrator
-言った本人が案内図へ戻る。指を置いて場所を確かめてから、水のボトルを取り出した。こちらの分も入っているか目で尋ねる。
+門の中は、赤い石の宮殿と白い大理石の宮殿が、隣り合って並んでいた。旗を掲げた添乗員のあとを、ツアーの一行が列になって進んでいく。
 # speaker: heroine
-# emotion: smile
-「名前まで確かめました。では、案内役から同行者に戻ります」
+「赤い建物と、白い建物。同じお城の中で、こんなに雰囲気が違うんだ」
 # speaker: narrator
-赤い建物と白い建物が、歩く先で違う輪郭を見せる。彼女は外観をひとつずつ短く撮り、すぐにはつなげなかった。
-# speaker: heroine
-「どこから撮ったかも残そう。赤、白、赤って並べたら、お城の中を瞬間移動したみたいになっちゃう」
-# speaker: narrator
-通れる道を確かめ、二人は門の奥へ進む。彼女は画面より先に首を動かした。
+白い建物のテラスに出ると、川の向こうに、小さく白いドームが見えた。
 # speaker: heroine
 # reaction: heroine,surprised,sparkle
-「こっちにも続いてた。……今のは撮ってない。まあ、忘れそうになったら指で説明するね」
+「あれ、タージ・マハルだ。こんなに遠くから、ちゃんと見えるんだね」
+# speaker: narrator
+川に面した八角形の塔の欄干から、ツアーの人々が順番にタージを眺めている。誰かが言った。ここは、ある皇帝が最後の年月を過ごした場所だ、と。
+# speaker: heroine
+# emotion: neutral
+「最後の年月を、遠くのタージを見ながら……。どんな気持ちだったんだろう」
+# speaker: narrator
+ツアーの一行が出口へ流れ始める。ただ一人、鳥打ち帽の老人が、塔の床にどっかと腰を下ろした。
+# speaker: heroine
+# reaction: heroine,surprised,question
+「……あの人、動かないね」
 -> END

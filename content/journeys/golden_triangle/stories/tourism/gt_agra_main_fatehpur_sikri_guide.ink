@@ -1,29 +1,30 @@
 VAR player_name = ""
 VAR heroine_name = ""
 VAR player_address = ""
+
 # background: gt_bg_agra_fatehpur_sikri
 # speaker: narrator
-ファテープル・シークリーでは、赤い建物の先に、また別の広場が開ける。{heroine_name}が地図を縮めると、細かな文字が一斉に小さくなった。
+アーグラから車で一時間ほど。畑の中の道の先、尾根の上に、赤い石の町が丸ごと載っていた。
 # speaker: heroine
 # reaction: heroine,surprised,interrobang
-「待って。一つの建物の名前じゃなかったの？」
+「町が、まるごと？　お城じゃなくて、町なの？」
 # speaker: narrator
-皇帝アクバルが造営した都市。彼女は画面を拡大し直して、門と広場をひとつずつ確かめた。
+宮殿、広場、柱廊。どこまでも赤い砂岩。けれど、洗濯物も、呼び込みの声もない。人の暮らしの音だけが、すっぽり抜けている。
 # speaker: heroine
-# emotion: smile
-「来るまで、赤い宮殿を一つ見るつもりだった。地図を閉じても、収まらないね」
+# emotion: neutral
+「きれいなのに、ちょっと不思議。お店も家もあるのに、誰も住んでないみたい」
 # speaker: narrator
-建物へカメラを向け、止める。もう一度向ける前に、建物と建物をつなぐ道に目が止まった。
+町の一角に、巨大な門がそびえていた。見上げるほど高いアーチ。その下へ、急な石段が延々と続く。
 # speaker: heroine
-「きれいな所だけ撮ると、全部すぐ隣にあったみたいになる。間を歩いた感じも、何か残したいな」
+# reaction: heroine,exasperated,dizzy
+「この階段を、上るの……？　門って、くぐるものじゃなくて、登るものだったんだ」
 # speaker: narrator
-スマートフォンをしまい、目の前の道を選ぶ。彼女は自信ありげに一歩出てから、案内図へ視線を戻した。
+途中で三回休み、{heroine_name}はやっとアーチの真下にたどり着いた。見上げると、石の表面に、流れるような文字が帯になって刻まれている。
 # speaker: heroine
-# reaction: heroine,teasing,music
-「いま、案内できる顔をしたけど、確認中です。顔は信用しないで」
+「何て書いてあるんだろう。……文字が読めなくても、何か大事なことが書いてあるのは分かるね」
 # speaker: narrator
-二人で位置を確かめる。風に浮いた図の端を押さえると、その向こうに赤い広場が見えた。
+同じ段に、男の人が一人座っていた。携帯を碑文に向けたまま、肩を震わせている。笑っているのか、泣いているのか。
 # speaker: heroine
-# reaction: heroine,happy,sparkle
-「よし、あそこを見たい。全部回る順番は、まだ決めなくていいよね」
+# reaction: heroine,worried,question
+「……あの人、大丈夫かな」
 -> END

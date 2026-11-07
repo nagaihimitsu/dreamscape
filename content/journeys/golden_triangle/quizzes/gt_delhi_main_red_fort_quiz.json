@@ -5,145 +5,157 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "gt_delhi_red_fort_palace",
-      "questionEn": "Why would a board game showing only soldiers miss an important part of the Red Fort?",
+      "id": "gt_delhi_red_fort_paradise_line",
+      "questionEn": "A student points to the Hall of Private Audience. Which famous line is carved inside it?",
       "options": [
         {
           "id": "A",
-          "textEn": "It was built as a palace as well as a fort."
+          "textEn": "The world is a bridge. Pass over it, but build no house on it."
         },
         {
           "id": "B",
-          "textEn": "It was built as a public market without a palace."
+          "textEn": "If there is a paradise on earth, it is this, it is this, it is this."
         },
         {
           "id": "C",
-          "textEn": "It was built as a royal tomb without living quarters."
-        }
-      ],
-      "correctOptionId": "A",
-      "vocabularyJa": [
-        {
-          "word": "as well as",
-          "meaning": "〜だけでなく"
-        },
-        {
-          "word": "living quarters",
-          "meaning": "居住区"
-        },
-        {
-          "word": "board game",
-          "meaning": "盤上ゲーム"
-        }
-      ],
-      "hintJa": "高い壁は守るため。その内側で、皇帝がどのように過ごしたかも考えてみよう。",
-      "correctExplanationJa": "新都シャージャハーナーバードの宮殿要塞として造られました。防衛だけでなく皇帝の生活の場でもあり、ゲームの盤面にも暮らしが入ります。",
-      "incorrectExplanationJa": "兵士だけでは宮廷の暮らしが抜け落ちます。レッド・フォートは、新しい都の宮殿と要塞を兼ねていました。",
-      "sources": [
-        {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "Red Fort Complex",
-          "url": "https://whc.unesco.org/en/list/231/",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "シャー・ジャハーンの新都の宮殿要塞として建設された。"
-        }
-      ],
-      "difficulty": "easy"
-    },
-    {
-      "id": "gt_delhi_red_fort_channel",
-      "questionEn": "A thin line connects the private palace buildings on a plan of the Red Fort. What was the Nahr-i-Behisht?",
-      "options": [
-        {
-          "id": "A",
-          "textEn": "A tunnel for soldiers to move between the buildings."
-        },
-        {
-          "id": "B",
-          "textEn": "A water channel running between the palace rooms."
-        },
-        {
-          "id": "C",
-          "textEn": "A wall separating the rooms from one another."
+          "textEn": "Truth alone wins, and every visitor must remember it."
         }
       ],
       "correctOptionId": "B",
       "vocabularyJa": [
         {
-          "word": "private",
-          "meaning": "私的な"
+          "word": "Hall of Private Audience",
+          "meaning": "内謁の間（ディーワーニ・ハース）"
         },
         {
-          "word": "channel",
-          "meaning": "水路"
+          "word": "carved",
+          "meaning": "刻まれた"
         },
         {
-          "word": "separating",
-          "meaning": "隔てている"
+          "word": "paradise",
+          "meaning": "楽園"
         }
       ],
-      "hintJa": "その線を人が歩く道だと考えると、足元が濡れてしまう。",
-      "correctExplanationJa": "「楽園の流れ」と呼ばれる水路が、宮殿の私的な居室を結んでいました。外壁の大きさだけでは見えてこない、内側の過ごし方です。",
-      "incorrectExplanationJa": "水路です。兵士の地下道や部屋を分ける壁ではなく、水が宮殿の居室をつなぐ構成でした。",
+      "hintJa": "皇帝が限られた客と会った、いちばん美しい広間。そこを見た人が思わず口にしそうな言葉は？",
+      "correctExplanationJa": "ディーワーニ・ハースの内側のアーチ上部に、ペルシア語の対句「地上に楽園があるなら、それはここ、ここ、ここ」が刻まれています。",
+      "incorrectExplanationJa": "刻まれているのは「地上に楽園があるなら、それはここ」という対句です。「世界は橋」はアーグラ近郊ファテープル・シークリーの門の碑文で、別の場所のものです。",
       "sources": [
         {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "Red Fort Complex",
-          "url": "https://whc.unesco.org/en/list/231/",
-          "checkedAt": "2026-11-04",
+          "publisher": "Scroll.in",
+          "title": "Who really wrote the lines 'If there is Paradise on earth, it is this, it is this, it is this'?",
+          "url": "https://scroll.in/article/942273/who-really-wrote-the-lines-if-there-is-paradise-on-earth-it-is-this-it-is-this-it-is-this",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "私的居室の並びをNahr-i-Behishtと呼ばれる連続した水路がつないだ。"
+          "claimJa": "この対句はレッド・フォートのディーワーニ・ハースの内側のアーチ上部、南北に刻まれている。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "easy"
     },
     {
-      "id": "gt_delhi_red_fort_changed_roles",
-      "questionEn": "Which sequence best describes how people used the Red Fort over time?",
+      "id": "gt_delhi_red_fort_august_flag",
+      "questionEn": "A boy salutes and asks what happens at the Red Fort every Independence Day. What is the answer?",
       "options": [
         {
           "id": "A",
-          "textEn": "A British military site, then a Mughal palace, then a place to celebrate independence."
+          "textEn": "The Prime Minister raises the national flag and speaks to the country from its walls."
         },
         {
           "id": "B",
-          "textEn": "A place to celebrate independence, then a Mughal palace, then British military buildings."
+          "textEn": "The President opens the old royal treasury to the public for one day."
         },
         {
           "id": "C",
-          "textEn": "A Mughal palace, later British military buildings, and a place to celebrate independence."
+          "textEn": "Every school in Delhi holds its final exams inside the fort."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "salutes",
+          "meaning": "敬礼する"
+        },
+        {
+          "word": "Independence Day",
+          "meaning": "独立記念日（8月15日）"
+        },
+        {
+          "word": "national flag",
+          "meaning": "国旗"
+        },
+        {
+          "word": "treasury",
+          "meaning": "宝物庫"
+        }
+      ],
+      "hintJa": "1947年、独立した国の最初の首相がこの城壁で何をしたか。その習わしは今も続いている。",
+      "correctExplanationJa": "1947年にネルー首相が城壁の上で国旗を掲げて以来、独立記念日の首相演説はレッド・フォートから行われています。",
+      "incorrectExplanationJa": "毎年の独立記念日には、首相がレッド・フォートの城壁で国旗を掲げ、国民に向けて演説します。1947年のネルー首相から続く習わしです。",
+      "sources": [
+        {
+          "publisher": "Deccan Herald",
+          "title": "Here's why PM delivers Independence Day speech from the ramparts of Red Fort",
+          "url": "https://www.deccanherald.com/national/north-and-central/heres-why-pm-delivers-independence-day-speech-from-the-ramparts-of-red-fort-1135825.html",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ネルー首相がレッド・フォートの城壁で国旗を掲げ、以後の首相も独立記念日の演説をここで行っている。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_delhi_red_fort_last_emperor_trial",
+      "questionEn": "A quiet student asks what happened in 1858 to the man who lived in this palace. What happened?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "He moved to a new palace in Agra and never came back."
+        },
+        {
+          "id": "B",
+          "textEn": "He gave the palace to his poet friends and became a teacher."
+        },
+        {
+          "id": "C",
+          "textEn": "The last Mughal emperor was put on trial by the British in his own palace."
         }
       ],
       "correctOptionId": "C",
       "vocabularyJa": [
         {
-          "word": "sequence",
-          "meaning": "順序"
+          "word": "put on trial",
+          "meaning": "裁判にかけられた"
         },
         {
-          "word": "military",
-          "meaning": "軍の"
+          "word": "Mughal emperor",
+          "meaning": "ムガル皇帝"
         },
         {
-          "word": "independence",
-          "meaning": "独立"
+          "word": "British",
+          "meaning": "イギリス（側）の"
         }
       ],
-      "hintJa": "壁を残したまま、ムガル帝国、英国の支配、独立後という時代を迎えた。",
-      "correctExplanationJa": "宮殿の後に英国軍の施設としての時代があり、現在は独立を祝う場でもあります。同じ城壁の前で、異なる時代の人々が異なる目的を持って集まりました。",
-      "incorrectExplanationJa": "宮殿、英国軍の施設、独立を祝う場所という変化があります。城を取ったところで歴史が終わるわけではありません。",
+      "hintJa": "1857年の大反乱のあと、この城の主は自分の家で、囚人として裁かれた。",
+      "correctExplanationJa": "最後のムガル皇帝バハードゥル・シャー・ザファルは1858年、自分の住まいだったレッド・フォートで英国側の裁判にかけられ、ビルマへ追放されました。詩人としても知られています。",
+      "incorrectExplanationJa": "1858年1月、最後のムガル皇帝バハードゥル・シャー・ザファルが、自分の住まいだったレッド・フォートで裁かれました。判決の後、ビルマへ追放されています。",
       "sources": [
         {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "Red Fort Complex",
-          "url": "https://whc.unesco.org/en/list/231/",
-          "checkedAt": "2026-11-04",
+          "publisher": "ThePrint",
+          "title": "Bahadur Shah Zafar, the last Mughal who would rather have been a poet",
+          "url": "https://theprint.in/theprint-profile/bahadur-shah-zafar-the-last-mughal-who-would-rather-have-been-a-poet/316114",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "ムガル宮殿の建築に英国軍の用途が重なり、独立を祝う場になった。"
+          "claimJa": "ザファルの裁判は1858年1月27日に始まり、彼の住まいであったレッド・フォートで行われた。"
+        },
+        {
+          "publisher": "LiveLaw",
+          "title": "Two Monumental Red Fort Trials - Bahadur Shah Zafar To INA",
+          "url": "https://livelaw.in/articles/two-monumental-red-fort-trials-bahadur-shah-zafar-ina-301090",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "裁判は1858年1月27日から3月9日まで続き、皇帝はビルマへ追放された。"
         }
       ],
-      "difficulty": "hard"
+      "difficulty": "medium"
     }
   ]
 }

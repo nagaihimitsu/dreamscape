@@ -5,7 +5,6 @@ VAR battle_scene = "intro"
 VAR answer_correct = false
 VAR battle_score = 0
 
-# background: gt_bg_jaipur_hawa_mahal
 { battle_scene == "intro": -> introduction }
 { battle_scene == "after_1": -> after_first }
 { battle_scene == "after_2": -> after_second }
@@ -13,100 +12,131 @@ VAR battle_score = 0
 -> END
 
 === introduction ===
+# background: gt_bg_jaipur_hawa_mahal
 # speaker: narrator
-ハワー・マハルを望む場所で、若い女性が仕事用らしい名札を鞄の奥へ押し込んだ。目が合うと、彼女は先に口を開いた。
+ハワー・マハルの正面は、通りに向かって無数の小窓を広げていた。{heroine_name}が見上げて立ち止まると、足もとから声が飛んだ。
 # speaker: enemy
-「今日は案内できないよ。ここで働いてるわけでもないし」
-# speaker: heroine
-# reaction: heroine,surprised,question
-「いえ、わたしたちも休んでるだけで。……お仕事帰りですか？」
-# speaker: enemy
-「病院の受付。イーシャ。さっきまで、いろんな人に同時に呼ばれてた。今は、窓を見てるところ」
+「そこ、うちの大根に影が落ちてるよ」
 # speaker: narrator
-彼女は建物へ顎を向けた。{heroine_name}はスマートフォンを手にしたまま、少しためらう。
+歩道の端に布を敷き、野菜を並べている女性がいた。大根、人参、オクラ、小ぶりのトマト。古い日傘を、竿にくくりつけている。
 # speaker: heroine
-「旅の短い動画を作っていて。今の話も、一緒に撮っていいですか？」
+# reaction: heroine,surprised,sweat
+「す、すみません！　……写真を撮ろうとしてて」
 # speaker: enemy
-「いや。今日は、誰かに見せる顔まで用意してない」
+「撮るなら、大根も一緒に入れなさい。四十年、あの窓の下にいるのは、こっちなんだから」
 # speaker: narrator
-返事は速かった。彼女はカメラを開かず、スマートフォンをしまう。
+ガウラ。この歩道で野菜を売って四十年。朝四時に卸の市場で仕入れて、昼過ぎまでここに座る。膝が痛いのは、三十年前から。
 # speaker: heroine
-# emotion: neutral
-「分かりました。聞くだけなら？」
+「四十年……じゃあ、中にも何度も？」
 # speaker: enemy
-「仕事の話は終わり。あの窓の話ならいいよ。通りにいる人と、内側の人。どっちが何を見ていたのか、気になってた」
+「一度も。入場券の値段で、トマトが何キロ買えると思う。それに、あれは王様の女の人たちの建物。私らのじゃない」
+# speaker: narrator
+ガウラはトマトを一つ磨きながら、窓を見上げた。四十年見上げてきた人の、慣れた角度だった。
+# speaker: enemy
+「ねえ、外国の娘さん。上に行くなら、頼みがあるの」
+# speaker: heroine
+「頼み、ですか？」
+# speaker: enemy
+「窓から、私を見て。上からだと、私がどう見えるか。帰りに教えてちょうだい」
+# speaker: narrator
+冗談のような口ぶりだった。けれど、トマトを磨く手は止まっていた。
+# speaker: heroine
+# emotion: serious
+「……はい。ちゃんと見てきます」
+# speaker: enemy
+「ついでに、あの屋根の形。ガイドが毎日、何かにたとえてるのよ。四十年聞いてるのに、いつも途中で客が来て聞きそびれる」
 -> END
 
 === after_first ===
-# speaker: heroine
+# background: gt_bg_jaipur_hawa_mahal
 { answer_correct:
-「宮廷の女性が、街から姿を見られずに眺めるための格子だったんですね」
+    # speaker: enemy
+    「クリシュナ様の冠！　それそれ。四十年かかって、やっと最後まで聞けた」
 - else:
-「宮廷の女性が、姿を見られずに外を眺めるためだったんですね。見られる側を逆に考えてました」
+    # speaker: enemy
+    「……今、隣のガイドが言ったわ。クリシュナ様の冠だって。あんたのおかげで、四十年ぶりに最後まで聞けた」
 }
-# speaker: enemy
-「今日はその窓、借りたいな。顔を作らなくても、街を見ていられる」
-# speaker: heroine
-# emotion: serious
-「でも、中にいた人が外へ出たかったかもしれないって、わたしは思いました」
 # speaker: narrator
-イーシャは彼女を見た。少しの間、二人とも窓を見ない。
+ガウラは満足そうに、オクラの山を整え直した。そして、思い出したように付け加える。
 # speaker: enemy
-「それは、その人に聞かなきゃ分からない。私が今日は隠れたいのも、その人と同じじゃないし」
-# speaker: heroine
-「そうですね。わたし、知らない人の気持ちまで、続けてしまった」
+「それとね。窓の数も数えたのよ。暇な日に、少しずつ。何度数えても九百五十一。ガイドの言う数と、合わないの」
 # speaker: narrator
-風が髪を動かす。彼女は押さえながら、窓が街を見る以外にも働いていたことを案内で確かめた。
+入口は正面ではなく、裏手の路地にあった。券を買って中へ入ると、{heroine_name}は首をかしげた。上の階が見えるのに、どこにも階段がない。
+# speaker: heroine
+# reaction: heroine,surprised,question
+「あれ……どうやって上がるの？」
 -> END
 
 === after_second ===
-# speaker: heroine
+# background: gt_bg_jaipur_hawa_mahal
 { answer_correct:
-「小窓は風も通す。飾りだけじゃないんだ」
+    # speaker: heroine
+    「坂道だ。階段じゃなくて、ゆるい坂でぐるぐる上がっていくんだ」
 - else:
-「風を通す役目もあったんですね。きれいな形に気を取られてました」
+    # speaker: narrator
+    係員が指さした先に、ゆるい坂道があった。階段ではなく、傾斜路で上の階へ上がるのだ。
 }
-# speaker: enemy
-「目にも涼しく、だったらいいんだけどね。見てるだけじゃ、私の暑さは減らない」
-# speaker: heroine
-# reaction: heroine,teasing,music
-「説明を聞いて涼しくなるなら、わたしもいっぱい聞きたいです」
 # speaker: narrator
-イーシャが初めて声を出して笑う。すぐに笑顔を戻そうとはせず、顔を上げたまま風を待った。
-# speaker: heroine
-「今の感じ、覚えておきたいな。撮る代わりに言葉で書いてもいいですか。名前は出さずに」
-# speaker: enemy
-「それなら。『顔を撮られたくない日もある』。そこ、消さないで」
+上の階へ行くほど、通路は細くなっていった。小窓の格子に顔を寄せると、通りが真下に広がっていた。
 # speaker: narrator
-彼女は短い言葉をメモに入れた。イーシャは入場案内を見て、正面のどこに入口があるのか目を細める。
+車、リキシャ、牛、人。そのすべてが、こちらに気づかずに流れていく。
+# speaker: narrator
+古い日傘はすぐに見つかった。ガウラは客と値段で揉めていた。それから、通りがかった子どもに、トマトを一つ黙って渡した。日傘の陰で髪を直し、膝をさすった。
+# speaker: heroine
+# emotion: neutral
+「……ここにいた人たちも、毎日こうやって見てたんだ。下の人は、上に誰がいるか知らないまま」
+# speaker: narrator
+窓の数を数えようとして、{heroine_name}はすぐに諦めた。中からでは、とても数えきれない。ガウラは四十年、外から数え続けてきたのだ。
 -> END
 
 === conclusion ===
-# speaker: enemy
+# background: gt_bg_jaipur_hawa_mahal
 { answer_correct:
-「背後側か。正面に立って、正面ばかり探してた」
+    # speaker: heroine
+    「九百五十三、なんだって。ガウラさんの九百五十一、ほとんど合ってます」
 - else:
-「入口は背後側なんだね。いちばん目立つ所に扉があるって、勝手に決めてた」
-}
-# speaker: heroine
-「入るなら、まずそっちの案内ですね」
-# speaker: enemy
-{ battle_score == 3:
-「調べるのは速いんだ。私の機嫌まで調べなくていいからね」
-- else:
-「一緒に探した入口だけ、案内できた。今日はそれで十分かな」
+    # speaker: narrator
+    出口の案内板に、窓の数が書いてあった。九百五十三。ガウラの数とは、二つしか違わない。
 }
 # speaker: narrator
-彼女は笑いかけたが、イーシャの笑顔を待つのはやめた。メモの文を見せると、短くうなずいてもらえた。
-# speaker: heroine
-「ここ、使うかもしれません。姿のない場面として」
+通りに戻ると、ガウラが待ちかねた顔で手招きした。
 # speaker: enemy
-「どうぞ。いい顔をしてた、とか付け足さなければ」
+「で？　私は、どう見えた」
+# speaker: heroine
+「ガウラさんは、お客さんと値段で喧嘩してました。それから、子どもにトマトを一つあげてました。誰にも見られてないと思って」
+# speaker: heroine
+「……上から見たガウラさんが、通りで一番、生きてるって感じがしました」
 # speaker: narrator
-イーシャはまだ窓を見ていた。二人は会釈して、その視線の先を横切らない方へ離れる。
+ガウラは何も言わず、日傘の竿を握り直した。目が、少し赤かった。
+# speaker: heroine
+# emotion: smile
+「あの、今度、一緒に上に行きませんか。入場券は、わたしが……」
+# speaker: enemy
+# reaction: enemy,anger
+「施しはいらないよ」
+# speaker: narrator
+ぴしゃりとした声だった。{heroine_name}は、自分の言葉が何をしたのかに気づいた。
+# speaker: heroine
+# emotion: worried
+「……ごめんなさい。聞きもしないで、決めちゃいました」
+# speaker: enemy
+「行くなら、自分のお金で、自分の足で行く。……今の話を聞いたら、行きたくなったわ。膝が言うことを聞く日にね」
+{
+- battle_score == 3:
+    # speaker: enemy
+    「あんた、全部ちゃんと見てきたね。屋根も、坂も、窓の数も。それに、私も」
+- battle_score == 2:
+    # speaker: enemy
+    「一つ取りこぼしたって、いいのよ。私なんか四十年、窓の数を二つ取りこぼしてた」
+- else:
+    # speaker: enemy
+    「答えは、まあ、外れが多かったわね。でも、一番大事な頼みごとは、ちゃんとやってきた」
+}
+# speaker: narrator
+ガウラは大根を一本、新聞紙でくるんで差し出した。報告のお礼だという。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
-「最後、また笑ってもらおうとしてた。お仕事終わったところなのにね」
-# speaker: narrator
-彼女は人の顔を外して、小窓の列を短く撮る。通りの音と、許してもらった一文を残し、イーシャの姿は入れなかった。
+「だ、大根……。ホテルで、どうしよう……」
+# speaker: enemy
+「宿の台所に渡しなさい。明日の朝、あんたの皿に戻ってくるから」
 -> END

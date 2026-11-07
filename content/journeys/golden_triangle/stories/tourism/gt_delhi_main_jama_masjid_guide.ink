@@ -4,24 +4,31 @@ VAR player_address = ""
 
 # background: gt_bg_delhi_jama_masjid
 # speaker: narrator
-見学の案内を確かめ、二人はジャーマー・マスジドの中庭へ入った。{heroine_name}の視線が、赤と白の縞を上へたどる。
-# speaker: heroine
-# reaction: heroine,surprised,sparkle
-「近くで見ると、白が強い。赤い建物って覚えてたけど、足りなかった」
-# speaker: narrator
-塔を見ていた彼女は、通り過ぎる人の足音で顔を戻した。見学する自分たちとは違い、迷わず向かう先がある。
-# speaker: heroine
-# emotion: neutral
-「ここで立ち止まりたい人と、先へ行きたい人がいるんだね」
-# speaker: narrator
-彼女はスマートフォンを出しかけ、しまった。人が過ぎ去るのを待っていた指も、そのまま鞄へ戻る。
-# speaker: heroine
-「誰もいないところだけ待ってたら、ここで何を見たか、違う感じになっちゃいそう。今は撮らないで見ようかな」
-# speaker: narrator
-案内のシャー・ジャハーンの名を、彼女は目で追った。タージ・マハルやレッド・フォートを造った皇帝でもある。
+ジャーマー・マスジドの門の前で、靴を脱いで預ける。{heroine_name}は門の係から薄い上着を借りて羽織り、袖の長さを確かめた。
 # speaker: heroine
 # reaction: heroine,smile,question
-「同じ人が建てた場所でも、来る人の用事は違うんだ。……わたしは、もう少しあの白い線を見てたい」
+「似合ってる？　……あ、そういう場所じゃないね。ちゃんと見てきます」
 # speaker: narrator
-見学できる方へ進み、二人はしばらく足を止めた。彼女が取り出したのは、カメラではなく、今の色を忘れないための短いメモだった。
+裸足の足の裏に、日差しを吸った石の温度が伝わる。広い中庭の向こうで、赤と白の塔が空へ伸びていた。
+# speaker: narrator
+中庭の端から見下ろすと、町が足もとにある。屋根、物干しの洗濯物、給水タンク、旋回する鳩の群れ。
+# speaker: heroine
+# reaction: heroine,surprised,sparkle
+「階段を上っただけなのに、旧市街が全部見える気がする」
+# speaker: narrator
+見学を終えて、また長い階段を下りる。段の下は、もう別の世界だった。焼いた肉の煙、呼び込みの声、自転車リキシャの鈴。
+# speaker: narrator
+{heroine_name}は段ボールの切れ端を出した。四行目。ジャーマー・マスジド、朝のニハーリー、階段の下の店。
+# speaker: heroine
+# reaction: heroine,worried,gloom
+「ニハーリーって、一晩じっくり煮込む朝ごはんなんだって。……今、お昼過ぎ。完全に出遅れた」
+# speaker: narrator
+彼女は本気で悔しがり、通りの鍋を一つずつのぞき込んだ。どの鍋も、もう底が見えている。
+# speaker: heroine
+「明日の朝、もう一回来る？　……って言いたいけど、明日の朝は別の街かもしれないし」
+# speaker: narrator
+そのとき、路地の奥から甘い匂いが流れてきた。料理ではない。花のような、木のような、少し煙たい匂い。
+# speaker: heroine
+# emotion: smile
+「ちょっとだけ寄ってもいい？　ごはんの代わりに、匂いだけでも」
 -> END

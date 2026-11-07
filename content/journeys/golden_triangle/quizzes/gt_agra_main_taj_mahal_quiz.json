@@ -5,142 +5,154 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "gt_agra_taj_garden_position",
-      "questionEn": "Where did the designers place the Taj Mahal mausoleum within its main garden?",
+      "id": "gt_agra_taj_mumtaz_last_journey",
+      "questionEn": "Tanvi asks Nikhil where and how Mumtaz Mahal died. What is the answer?",
       "options": [
         {
           "id": "A",
-          "textEn": "At the exact centre, with equal garden space on every side."
+          "textEn": "Peacefully in her palace in Agra, in her old age."
         },
         {
           "id": "B",
-          "textEn": "At one end, with the garden stretching out in front of it."
+          "textEn": "In Burhanpur in the Deccan, during childbirth, while travelling with Shah Jahan's army."
         },
         {
           "id": "C",
-          "textEn": "Beside the entrance gate, with the garden hidden behind it."
+          "textEn": "In a hunting accident near the Yamuna river."
         }
       ],
       "correctOptionId": "B",
       "vocabularyJa": [
         {
-          "word": "designers",
-          "meaning": "設計者たち"
+          "word": "peacefully",
+          "meaning": "安らかに"
         },
         {
-          "word": "mausoleum",
-          "meaning": "墓廟"
+          "word": "childbirth",
+          "meaning": "出産"
         },
         {
-          "word": "stretching out",
-          "meaning": "広がっている"
+          "word": "travelling with",
+          "meaning": "〜に同行して"
+        },
+        {
+          "word": "hunting accident",
+          "meaning": "狩りでの事故"
         }
       ],
-      "hintJa": "正面の門から建物まで歩く場面を思い浮かべよう。建物の手前には、どのくらい庭が広がっているだろう。",
-      "correctExplanationJa": "墓廟は主庭園の中央ではなく、一端に置かれています。手前に長く広がる庭が、近づいていく眺めに奥行きを生みます。",
-      "incorrectExplanationJa": "中央に見える正面写真でも、庭の中央に建っているとは限りません。タージの墓廟は主庭園の一端にあり、庭がその前に広がります。",
+      "hintJa": "ムムターズは何度も身ごもりながら、夫の遠征の旅に同行していた。",
+      "correctExplanationJa": "ムムターズ・マハルは1631年、デカン地方のブルハーンプルで、出産の際に亡くなりました。度重なる妊娠の中でも、シャー・ジャハーンの遠征に同行していたのです。",
+      "incorrectExplanationJa": "亡くなったのは1631年、遠征先のブルハーンプルで、出産の最中でした。何人目の子だったかは資料によって十三人目とも十四人目ともされます。",
       "sources": [
         {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "Taj Mahal — Outstanding Universal Value",
-          "url": "https://whc.unesco.org/en/list/252/",
-          "checkedAt": "2026-11-04",
+          "publisher": "Taj Mahal official website (tajmahal.gov.in)",
+          "title": "Empress Mumtaz Mahal",
+          "url": "https://tajmahal.gov.in/about-mumtaz-mahal.aspx",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "墓廟を四分庭園の中央ではなく一端に配置し、遠くからの眺めに奥行きを加えたと説明。"
+          "claimJa": "ムムターズは1631年、デカンのブルハーンプルで出産中に亡くなった。頻繁な妊娠にもかかわらず、シャー・ジャハーンの遠征に同行していた。"
         }
       ],
       "difficulty": "easy"
     },
     {
-      "id": "gt_agra_taj_cenotaphs",
-      "questionEn": "The decorated cenotaphs stand in the main hall. Where are the actual graves?",
+      "id": "gt_agra_taj_first_grave",
+      "questionEn": "'He built this for her right away,' says Nikhil. Where was Mumtaz Mahal first buried?",
       "options": [
         {
           "id": "A",
-          "textEn": "In the garden beside the main entrance."
+          "textEn": "In a walled garden at Burhanpur, for some months, before her body was brought to Agra."
         },
         {
           "id": "B",
-          "textEn": "Inside the bases of the four minarets."
+          "textEn": "Directly under the Taj Mahal's great dome, on the day she died."
         },
         {
           "id": "C",
-          "textEn": "In a lower burial chamber."
-        }
-      ],
-      "correctOptionId": "C",
-      "vocabularyJa": [
-        {
-          "word": "cenotaphs",
-          "meaning": "遺体を納めない記念棺"
-        },
-        {
-          "word": "actual",
-          "meaning": "実際の"
-        },
-        {
-          "word": "burial chamber",
-          "meaning": "埋葬室"
-        }
-      ],
-      "hintJa": "見える記念碑と、実際に埋葬されている場所は同じとは限らない。建物には上下の空間がある。",
-      "correctExplanationJa": "上の主室にあるのは記念棺で、実際の埋葬場所はその下です。写真に写るものと、そこが記念しているものを分けて見ると、内部の意味が変わります。",
-      "incorrectExplanationJa": "庭や塔の下ではなく、下の埋葬室です。上で目にする装飾された記念棺を、遺体を納めた墓そのものと取り違えないようにします。",
-      "sources": [
-        {
-          "publisher": "Uttar Pradesh Tourism",
-          "title": "The Taj Interiors — The Tomb; The Screen and the Cenotaphs",
-          "url": "https://www.tajmahal.gov.in/the-taj-interiors.aspx",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "主室の記念棺と下階の実際の埋葬を区別している。"
-        }
-      ],
-      "difficulty": "medium"
-    },
-    {
-      "id": "gt_agra_taj_later_cenotaph",
-      "questionEn": "Why does Shah Jahan's cenotaph stand beside the central cenotaph of Mumtaz Mahal?",
-      "options": [
-        {
-          "id": "A",
-          "textEn": "His cenotaph was added later beside hers."
-        },
-        {
-          "id": "B",
-          "textEn": "Her cenotaph was moved there from a garden pavilion."
-        },
-        {
-          "id": "C",
-          "textEn": "Both cenotaphs were originally placed outside the hall."
+          "textEn": "In her family's home town in Persia."
         }
       ],
       "correctOptionId": "A",
       "vocabularyJa": [
         {
-          "word": "beside",
-          "meaning": "〜の隣に"
+          "word": "right away",
+          "meaning": "すぐに"
         },
         {
-          "word": "added",
-          "meaning": "加えられた"
+          "word": "walled garden",
+          "meaning": "塀に囲まれた庭園"
         },
         {
-          "word": "originally",
-          "meaning": "もともとは"
+          "word": "buried",
+          "meaning": "埋葬された"
+        },
+        {
+          "word": "dome",
+          "meaning": "ドーム、丸屋根"
         }
       ],
-      "hintJa": "最初から二人分を同時に置いたのか、それぞれの生涯の終わりを経て増えたのかを考えよう。",
-      "correctExplanationJa": "中央の妃の記念棺に対し、皇帝の記念棺は後から隣に加えられました。整った配置の中にも、異なる時に亡くなった二人の時間が残っています。",
-      "incorrectExplanationJa": "妃の記念棺を移したという説明ではありません。中央にある妃のものの隣に、後年、皇帝の記念棺が加えられました。",
+      "hintJa": "亡くなった土地とアーグラは、何百キロも離れていた。",
+      "correctExplanationJa": "遺体はまずブルハーンプルのザイナーバードという庭園に仮に葬られ、1631年12月に掘り出されてアーグラへ運ばれました。今の姿の墓廟は、その後に造られていきます。",
+      "incorrectExplanationJa": "最初の墓はブルハーンプルの塀に囲まれた庭園でした。数か月後に遺体がアーグラへ運ばれ、それから墓廟の造営が進みました。",
       "sources": [
         {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "Taj Mahal — Outstanding Universal Value",
-          "url": "https://whc.unesco.org/en/list/252/",
-          "checkedAt": "2026-11-04",
+          "publisher": "Taj Mahal official website (tajmahal.gov.in)",
+          "title": "Empress Mumtaz Mahal",
+          "url": "https://tajmahal.gov.in/about-mumtaz-mahal.aspx",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "ムムターズの記念棺は主室中央、シャー・ジャハーンのものは三十年以上後にその西側へ追加された。"
+          "claimJa": "遺体はブルハーンプルのザイナーバードという塀に囲まれた庭園に仮埋葬され、1631年12月に掘り出されてアーグラへ運ばれた。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_agra_taj_balancing_twin",
+      "questionEn": "Tanvi points to the building on the east side that looks just like the mosque. Why was it built?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "As a second mosque, because one was too small for the crowds."
+        },
+        {
+          "id": "B",
+          "textEn": "As a home for the emperor's guards and their horses."
+        },
+        {
+          "id": "C",
+          "textEn": "As a copy of the mosque, to balance the whole design."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "points to",
+          "meaning": "〜を指さす"
+        },
+        {
+          "word": "crowds",
+          "meaning": "群衆"
+        },
+        {
+          "word": "copy",
+          "meaning": "写し、複製"
+        },
+        {
+          "word": "balance",
+          "meaning": "釣り合いを取る"
+        }
+      ],
+      "hintJa": "西のモスクと東の建物は、鏡に映したようにそっくり。左右がそろうと、何が生まれる？",
+      "correctExplanationJa": "東の建物は、西のモスクとの釣り合いを取るためだけに、その写しとして造られました。もとはムムターズの命日に集う客を泊める場所でもありました。",
+      "incorrectExplanationJa": "東の建物はモスクの写しで、全体の左右の釣り合いを取るために造られました。前の池も、機能を持たない鏡像だと説明されています。",
+      "sources": [
+        {
+          "publisher": "Taj Mahal official website (tajmahal.gov.in)",
+          "title": "Outlying Buildings",
+          "url": "https://tajmahal.gov.in/outlying-building.aspx",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミフマーン・ハーナはモスクとの釣り合いを取るためだけに複製として造られ、本来はムムターズの命日に訪れる客を泊めるためのものだった。"
         }
       ],
       "difficulty": "medium"

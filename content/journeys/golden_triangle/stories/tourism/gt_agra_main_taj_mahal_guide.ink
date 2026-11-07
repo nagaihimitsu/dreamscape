@@ -1,29 +1,34 @@
 VAR player_name = ""
 VAR heroine_name = ""
 VAR player_address = ""
+
 # background: gt_bg_agra_taj_mahal
 # speaker: narrator
-門の向こうに、タージ・マハルの白いドームが収まる。{heroine_name}はスマートフォンを持ち上げかけ、そのまま手を下ろした。
+タージ・マハルの手前で、車は入れない。二人は電動の小さなバスに乗り換え、手荷物検査の列に並んだ。前の家族が、持ち込めないお菓子を慌てて食べている。
 # speaker: heroine
-# reaction: heroine,surprised,exclamation
-「写真で何回も見たのに。……ちゃんと、大きいんだね」
+# reaction: heroine,teasing,music
+「ここで全部食べちゃうんだ。わたしも見習って、心の準備を全部しておこう」
 # speaker: narrator
-水路の先を歩く人を見て、建物までの距離がようやく分かる。彼女の足は進みかけて、止まった。
-# speaker: heroine
-# reaction: heroine,exasperated,sweat
-「近くまで行きたい。ここにもいたい。足が二組ほしい」
+赤い砂岩の大きな門をくぐる。暗いアーチの向こうに、白いものが四角く切り取られて見えた。
 # speaker: narrator
-こちらが隣で待つと、彼女は今の眺めを短く撮った。止めた直後に、風で葉が動く。
+一歩進むごとに、白がアーチからはみ出していく。最後の一歩で、全体が現れた。
 # speaker: heroine
-「今のも入れたかった。……だめだ、これを始めたら帰れないね」
+# reaction: heroine,surprised_big,exclamation
+「……あ」
 # speaker: narrator
-皇帝シャー・ジャハーンが妃ムムターズ・マハルをしのんで造営した墓廟。その名を案内で確かめ、彼女は撮った外観のメモへ書き添えた。
+{heroine_name}は、しばらく何も言わなかった。言葉が出てこない、という顔だった。
 # speaker: heroine
-# emotion: serious
-「中ではカメラをしまうんだね。撮れないところを、あとで勝手に埋めないようにしよう」
+# emotion: neutral
+「写真と、同じ形なのに。全然、同じじゃない。……大きいのに、浮いてるみたい」
 # speaker: narrator
-画面を消す。さっきより近くへ進むと、白い姿に細かい線や色が見えてくる。
+まっすぐな水路が、建物まで続いている。水面に、もう一つのタージが逆さに揺れていた。
+# speaker: narrator
+水路の途中に、白い大理石のベンチ。その前に、記念写真の列が長く伸びている。
 # speaker: heroine
-# reaction: heroine,smile,sparkle
-「あ、近づく方にしてよかった。もう少し。ここからは、目で見たい」
+# reaction: heroine,smile,question
+「あのベンチ、写真でよく見るやつだ。みんな、あそこで撮るんだね。……並んでる人、ほとんど二人組」
+# speaker: narrator
+列の脇で、胸ポケットを何度も押さえている青年が、きょろきょろと誰かを探していた。
+# speaker: heroine
+「なんだか、あの人の方が、建物より緊張してるみたい」
 -> END

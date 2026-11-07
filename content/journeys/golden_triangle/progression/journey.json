@@ -8,10 +8,10 @@
       "landmarkId": "delhi_red_fort",
       "requiredEpisodeIds": [],
       "battleId": "gt_delhi_main_red_fort_battle",
-      "titleJa": "広場ばかりの城",
-      "descriptionJa": "レッド・フォートで、負けず嫌いのターラーが作る盤面に巻き込まれる。",
-      "clearTitleJa": "おやつ休憩は攻撃禁止",
-      "clearDescriptionJa": "城の中身は直ったけれど、ターラーの仕返しのルールは残った。"
+      "titleJa": "質問は英語で",
+      "descriptionJa": "レッド・フォートで、遠足の中学生たちに英語の質問攻めにされる。",
+      "clearTitleJa": "三十九人目の聞き手",
+      "clearDescriptionJa": "一年話さなかった少年が、最後の皇帝の話をした。引率の先生は、明日になればまた黙ると言った。それでも、聞いていた。"
     },
     {
       "id": "gt_delhi_main_qutb_minar",
@@ -20,10 +20,10 @@
       "landmarkId": "delhi_qutb_minar",
       "requiredEpisodeIds": [],
       "battleId": "gt_delhi_main_qutb_minar_battle",
-      "titleJa": "空は返品できません",
-      "descriptionJa": "クトゥブ・ミナールを撮り損ねた動画に、電器店員デーヴが故障ではないと口を挟む。",
-      "clearTitleJa": "消さなかった一カット",
-      "clearDescriptionJa": "塔の映った一本も、空と二人の笑い声だけの一本も残した。"
+      "titleJa": "抱けない柱",
+      "descriptionJa": "クトゥブ・ミナールの鉄柱の柵を、一人の父親がまたごうとしている。",
+      "clearTitleJa": "抱く代わりの話",
+      "clearDescriptionJa": "遠くから運ばれても立ち続けた鉄の柱の話を、父親は娘に持ち帰った。止めたのに、なぜか叱られた。"
     },
     {
       "id": "gt_delhi_main_humayun_tomb",
@@ -32,10 +32,10 @@
       "landmarkId": "delhi_humayun_tomb",
       "requiredEpisodeIds": [],
       "battleId": "gt_delhi_main_humayun_tomb_battle",
-      "titleJa": "座っているのも観光です",
-      "descriptionJa": "フマユーン廟の庭で、一人で座るサイラを気遣ったつもりが、ぴしゃりと言い返される。",
-      "clearTitleJa": "座る方の観光",
-      "clearDescriptionJa": "先を急ぐ息子と座りたいサイラ。面白いことを全部教えるかどうかは、意見が違ったまま。"
+      "titleJa": "三人目の友達",
+      "descriptionJa": "フマユーン廟で、隠れて会う大学生の二人に「友達のふり」を頼まれる。",
+      "clearTitleJa": "誰も誰にも会わなかった日",
+      "clearDescriptionJa": "叔父の尋問を切り抜けたら、叔父の胸にも薔薇があった。今日は誰も誰にも会わなかったことにして、三人は東と西の門へ別れていった。"
     },
     {
       "id": "gt_delhi_main_jama_masjid",
@@ -44,10 +44,10 @@
       "landmarkId": "delhi_jama_masjid",
       "requiredEpisodeIds": [],
       "battleId": "gt_delhi_main_jama_masjid_battle",
-      "titleJa": "昔の、を先に言って",
-      "descriptionJa": "ジャーマー・マスジドの見学出口で、イムランの曖昧な道案内にヒロインまで慌てる。",
-      "clearTitleJa": "王様より仕込みの時間",
-      "clearDescriptionJa": "門の昔と今を確かめたあと、説明していた本人が店の当番へ大急ぎで帰った。"
+      "titleJa": "雨の匂い一瓶",
+      "descriptionJa": "ジャーマー・マスジドの下の路地で、香油屋の存続を懸けた賭けの客にされる。",
+      "clearTitleJa": "賭けではなく、欲しいから",
+      "clearDescriptionJa": "雨の匂いの小瓶を、定価で買った。店の行方は賭けではなく、遠くの息子との電話で決まる。"
     },
     {
       "id": "gt_delhi_finale",
@@ -62,10 +62,10 @@
       ],
       "epilogueStoryId": "epilogues/delhi",
       "battleId": "gt_delhi_finale_battle",
-      "titleJa": "三分間の旅への招待",
-      "descriptionJa": "レッド・フォートで映像好きのニールと仮編集。空のカットを切る指を、ヒロインが止める。",
-      "clearTitleJa": "この続きを、自分で",
-      "clearDescriptionJa": "自分たちの素材だけに戻し、空から始める三分の旅を作ると決めた。"
+      "titleJa": "月が落ちた通り",
+      "descriptionJa": "デリー最後の日、カムラが姿を消した。暗号の地図を手がかりに、孫のアマンと夜の旧市街を捜す。",
+      "clearTitleJa": "六十年目の返事",
+      "clearDescriptionJa": "暗い城の中で、カムラは亡き夫に返事をした。連れてきたことを怒られたけれど、孫は隣に座り、話の続きを聞いた。"
     },
     {
       "id": "gt_agra_main_taj_mahal",
@@ -74,10 +74,10 @@
       "landmarkId": "agra_taj_mahal",
       "requiredEpisodeIds": [],
       "battleId": "gt_agra_main_taj_mahal_battle",
-      "titleJa": "中央集合、の行き先",
-      "descriptionJa": "タージ・マハルで母と待ち合わせた菓子店主ファリド。「真ん中」がどこか分からず、案内図を開き直す。",
-      "clearTitleJa": "中央ではない待ち合わせ",
-      "clearDescriptionJa": "庭の配置と記念棺を確かめているうちに、母が到着した。今日は店の電話をしまい、二人で歩いていく。"
+      "titleJa": "ベンチの番",
+      "descriptionJa": "タージ・マハルの名物ベンチで、求婚の場所取りを頼まれる。",
+      "clearTitleJa": "指輪は、また今度",
+      "clearDescriptionJa": "恋人が嫌だったのはタージではなく、一度も聞かれなかったこと。指輪は出てこなかった。名物のベンチに座ったのは、ふりの恋人の二人だけ。"
     },
     {
       "id": "gt_agra_main_agra_fort",
@@ -86,10 +86,10 @@
       "landmarkId": "agra_agra_fort",
       "requiredEpisodeIds": [],
       "battleId": "gt_agra_main_agra_fort_battle",
-      "titleJa": "聞いていたのは誰？",
-      "descriptionJa": "アーグラ城で家族へ熱弁する建築学生アディ。振り返ると、聞いている相手が二人の旅行者に変わっていた。",
-      "clearTitleJa": "案内板には勝てない",
-      "clearDescriptionJa": "防御と暮らし、城の赤と白、窓の先の墓廟。熱弁を終えた学生には、家族の水を配る大事な出番が残っていた。"
+      "titleJa": "大佐の座り込み",
+      "descriptionJa": "アーグラ城の塔で、座り込む退役大佐の国際監視団に任命される。",
+      "clearTitleJa": "最前列の解説係",
+      "clearDescriptionJa": "座り込みの本当の理由は、言えない車酔い。大佐は見栄を守ったまま、最前列で窓の外の解説を引き受けた。"
     },
     {
       "id": "gt_agra_main_itimad_tomb",
@@ -98,10 +98,10 @@
       "landmarkId": "agra_itimad_tomb",
       "requiredEpisodeIds": [],
       "battleId": "gt_agra_main_itimad_tomb_battle",
-      "titleJa": "袖は明日、花は今日",
-      "descriptionJa": "イティマード・ウッダウラ廟で、父からの袖直しを断る仕立て屋アミナ。気遣ったつもりの言葉が、かえって彼女の休みを急かしてしまう。",
-      "clearTitleJa": "返事は明日読む",
-      "clearDescriptionJa": "娘による造営と石の花、格子の光を見た。アミナは父へ花の名前を尋ね、袖の話は明日に残す。"
+      "titleJa": "署名をください",
+      "descriptionJa": "「ベビー・タージ」と言ったせいで、元教師に請願書への署名を迫られる。",
+      "clearTitleJa": "自分の一文で署名する",
+      "clearDescriptionJa": "盛られた一行には署名しなかった。代わりに書いた短い一文が、請願書の一番上に留められた。"
     },
     {
       "id": "gt_agra_main_fatehpur_sikri",
@@ -110,10 +110,10 @@
       "landmarkId": "agra_fatehpur_sikri",
       "requiredEpisodeIds": [],
       "battleId": "gt_agra_main_fatehpur_sikri_battle",
-      "titleJa": "乗客は私、一名",
-      "descriptionJa": "ファテープル・シークリーで、退職した車掌キランが自分だけの見学へ。家族の案内を考える手を止め、街の続きを探す。",
-      "clearTitleJa": "戻った一歩も残す",
-      "clearDescriptionJa": "首都のその後を確かめ、キランとは別の見たい場所へ。広場を探して一度戻った足取りを、短い映像に残した。"
+      "titleJa": "橋の上の家",
+      "descriptionJa": "大門の碑文を読んで崩れ落ちた建設業者に、人生の決断を迫られる。",
+      "clearTitleJa": "決めてくれなかった人",
+      "clearDescriptionJa": "代わりに決めなかったことに、お礼を言われた。四時のミキサー車は予定どおり。二階の奥に、本を読む部屋が増える。"
     },
     {
       "id": "gt_agra_finale",
@@ -128,10 +128,10 @@
       ],
       "epilogueStoryId": "epilogues/agra",
       "battleId": "gt_agra_finale_battle",
-      "titleJa": "ここは、切りたくない",
-      "descriptionJa": "サナの短く滑らかな編集案を前に、消せない歩行の数秒がある。説明の正確さと、自分が残したいものを分けて選ぶ。",
-      "clearTitleJa": "歩く版を送った",
-      "clearDescriptionJa": "短い版の良さも認めながら、迷って戻った数秒を残した。サナと好みは違うまま、三分に向けた編集を続ける。"
+      "titleJa": "一番いい話",
+      "descriptionJa": "名物ガイドに「新婚さん」として観客に紹介される。泣ける伝説と本当の話の、公開の勝負。",
+      "clearTitleJa": "手を受け継いだ人の話",
+      "clearDescriptionJa": "新婚ではないと、人前で言えた。ガイドは明日も古い伝説を話す。ただ、終わりに書家の名前と、南門の外の町の話を足すという。"
     },
     {
       "id": "gt_jaipur_main_amber_fort",
@@ -140,10 +140,10 @@
       "landmarkId": "jaipur_amber_fort",
       "requiredEpisodeIds": [],
       "battleId": "gt_jaipur_main_amber_fort_battle",
-      "titleJa": "近道を勧める人",
-      "descriptionJa": "アンベール城で、最短経路を勧める元運転手と、立ち止まりたい二人の用事が食い違う。",
-      "clearTitleJa": "急がない方の中庭",
-      "clearDescriptionJa": "広場の使われ方を確かめ、自分で省く所を決めたいハリッシュと、違う道を選んだ。"
+      "titleJa": "写された絵",
+      "descriptionJa": "アンベール城で買った絵と同じ印刷が、隣の店に並んでいた。",
+      "clearTitleJa": "裏に書かれた名前",
+      "clearDescriptionJa": "写したのは土産物屋の方だった。人前で疑ったことを、人前で取り消した。初めて自分のために買った絵の裏に、画家の名前が入った。"
     },
     {
       "id": "gt_jaipur_main_hawa_mahal",
@@ -152,10 +152,10 @@
       "landmarkId": "jaipur_hawa_mahal",
       "requiredEpisodeIds": [],
       "battleId": "gt_jaipur_main_hawa_mahal_battle",
-      "titleJa": "顔のない一場面",
-      "descriptionJa": "ハワー・マハルを見ていた病院受付のイーシャは、動画に写ることをきっぱり断る。",
-      "clearTitleJa": "撮らなかった人の言葉",
-      "clearDescriptionJa": "イーシャの姿や声を録らず、本人が許した一文を残した。窓の内外と、今日の彼女の希望を混同しない。"
+      "titleJa": "窓から見た私",
+      "descriptionJa": "四十年窓の下で野菜を売る女性に、上からの眺めを報告してほしいと頼まれる。",
+      "clearTitleJa": "自分の足で入る日",
+      "clearDescriptionJa": "窓から見た彼女は、通りで一番生きていた。善意の申し出は断られたけれど、いつか自分のお金で上る、と彼女は言った。"
     },
     {
       "id": "gt_jaipur_main_city_palace",
@@ -164,10 +164,10 @@
       "landmarkId": "jaipur_city_palace",
       "requiredEpisodeIds": [],
       "battleId": "gt_jaipur_main_city_palace_battle",
-      "titleJa": "迷子なのはお父さん",
-      "descriptionJa": "シティ・パレスで木工職人の話が止まらない。娘がいう「お父さんが迷子」の意味を、ヒロインも取り違える。",
-      "clearTitleJa": "説明役が二人になった日",
-      "clearDescriptionJa": "作る仕事の話に引き込まれ、娘を助けるつもりが自分も説明を長くしてしまった。今度は娘の案内で進む。"
+      "titleJa": "漬物五キロ",
+      "descriptionJa": "シティ・パレスで、ドイツへ発つ息子と漬物を持たせたい母の口論の審判にされる。",
+      "clearTitleJa": "二キロと毎週の電話",
+      "clearDescriptionJa": "どちらの味方もせず、二キロと毎週日曜の電話で手を打った。審判の報酬は、二百グラムのライムの漬物。"
     },
     {
       "id": "gt_jaipur_main_jantar_mantar",
@@ -176,10 +176,10 @@
       "landmarkId": "jaipur_jantar_mantar",
       "requiredEpisodeIds": [],
       "battleId": "gt_jaipur_main_jantar_mantar_battle",
-      "titleJa": "止めた時計、動く約束",
-      "descriptionJa": "ジャンタル・マンタルへ時計を止めて来たディーペン。休日の自由には、忘れていた約束があった。",
-      "clearTitleJa": "時計より先に謝る",
-      "clearDescriptionJa": "時刻を忘れて観測器を楽しんだ時計屋は、待っている姉に連絡した。二人はその後、装置から空へ続く映像を撮った。"
+      "titleJa": "吉時の計算",
+      "descriptionJa": "大日時計の陰で、天文学者が占星術師に抗議していた。",
+      "clearTitleJa": "時刻は母に、中身は自分に",
+      "clearDescriptionJa": "時刻を読み違えていたのは天文学者の方だった。論文は十一時四十三分に出す。中身は、何時に出しても彼女のものだから。"
     },
     {
       "id": "gt_jaipur_finale",
@@ -194,10 +194,10 @@
       ],
       "epilogueStoryId": "epilogues/jaipur",
       "battleId": "gt_jaipur_finale_battle",
-      "titleJa": "三分の最後に、何を残す",
-      "descriptionJa": "ジャンタル・マンタルでラヴィと合流。字幕を確かめ、映像を削り、最後に自分の声を入れる。",
-      "clearTitleJa": "もう一度見たい、その先へ",
-      "clearDescriptionJa": "三分に収まる映像を仕上げた。失敗した空も歩く数秒も残し、最初の紹介と最後の声を自分で決めた。"
+      "titleJa": "窓の外へ",
+      "descriptionJa": "旅の最後の夜、花婿の行列。花嫁の家の門の前で、花婿側の代表として問題に答える。",
+      "clearTitleJa": "通りで踊った夜",
+      "clearDescriptionJa": "大勢の前で答え、通りの真ん中で踊った。六十年、窓から行列を見てきた花嫁の祖母も、杖をついて通りへ出てきた。"
     }
   ],
   "rewards": [

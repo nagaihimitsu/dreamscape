@@ -5,142 +5,162 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "gt_jaipur_palace_public_roles",
-      "questionEn": "Jaipur's City Palace was more than a royal home. Which other activities belonged there?",
+      "id": "gt_jaipur_palace_silver_water_jars",
+      "questionEn": "The mother points to the giant silver jars. Why did a Maharaja of Jaipur take jars like these to England?",
       "options": [
         {
           "id": "A",
-          "textEn": "Government work, religious rituals and community entertainment."
+          "textEn": "To carry Ganges water for his journey to King Edward VII's coronation."
         },
         {
           "id": "B",
-          "textEn": "Public markets and workshops, with government work kept outside the palace."
+          "textEn": "To give them to the British king as a wedding present."
         },
         {
           "id": "C",
-          "textEn": "Private holidays, with government and ceremonies kept elsewhere."
+          "textEn": "To bring English tea back to the palace."
         }
       ],
       "correctOptionId": "A",
       "vocabularyJa": [
         {
-          "word": "rituals",
-          "meaning": "儀礼"
+          "word": "giant",
+          "meaning": "巨大な"
         },
         {
-          "word": "community",
-          "meaning": "地域の人々、共同体"
+          "word": "jars",
+          "meaning": "壺"
         },
         {
-          "word": "entertainment",
-          "meaning": "娯楽、催し"
+          "word": "Ganges water",
+          "meaning": "ガンジス川の水"
+        },
+        {
+          "word": "coronation",
+          "meaning": "戴冠式"
         }
       ],
-      "hintJa": "王族が眠る部屋だけで、宮廷の仕事がすべて済むでしょうか。人々が集まる用途も考えます。",
-      "correctExplanationJa": "行政や宗教儀礼、地域の娯楽の場という役割がありました。博物館の公式説明は、王族の住まいを越える複数の用途を挙げています。ここを一つの豪華な住宅とだけ見ると、集まっていた人々の仕事が見えなくなります。",
-      "incorrectExplanationJa": "王族の私的な休暇だけを支える場所でも、行政の仕事を外へ切り離した市場でもありません。公式説明は行政・宗教儀礼・地域の娯楽を挙げています。住まいだけでなく、多様な人の活動を支えた場所です。",
+      "hintJa": "信仰を守るため、王は旅の間、よその国の水を口にしたくなかった。",
+      "correctExplanationJa": "マハーラージャ・マドー・シング2世は、英国王エドワード7世の戴冠式に向かう旅に、ガンジス川の水を満たした巨大な銀の壺を持っていきました。英国の水を使わずに済ませるためです。そのうち二つが今も宮殿に展示されています。",
+      "incorrectExplanationJa": "壺に入れて運んだのは、ガンジス川の水でした。戴冠式に招かれた王は、旅の間も信仰の決まりを守るため、自分の水を持っていったのです。",
       "sources": [
         {
-          "publisher": "The City Palace Museum Jaipur",
-          "title": "The City Palace Museum Jaipur",
-          "url": "https://citypalace.org/",
-          "checkedAt": "2026-11-04",
+          "publisher": "Michael Backman Ltd",
+          "title": "Massive Silver Gangajali",
+          "url": "https://www.michaelbackmanltd.com/archived_objects/massive-silver-gangajali/",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "公式サイトは王族の住居に加えて、宗教儀礼、community entertainment、政治行政の中心としての機能を挙げる。"
+          "claimJa": "マドー・シング2世はエドワード7世の戴冠式に出席し、ガンジス川の水を満たした大きな銀の壺を持参した。二つの巨大な壺がジャイプールのシティ・パレスに展示されている。"
+        },
+        {
+          "publisher": "Current",
+          "title": "Column: Jaipur's giant silver jars",
+          "url": "https://youarecurrent.com/2018/06/19/column-jaipurs-giant-silver-jars/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "宗教上の指導者が英国の水を使わないようガンジスの水を持参するよう求め、銀の壺に水が満たされた。残る二つはシティ・パレスに展示されている。"
         }
       ],
       "difficulty": "easy"
     },
     {
-      "id": "gt_jaipur_palace_supported_makers",
-      "questionEn": "Why are painters and other skilled makers part of the City Palace's history?",
+      "id": "gt_jaipur_palace_four_season_gates",
+      "questionEn": "In one courtyard of the City Palace there are four decorated gates. What do they stand for?",
       "options": [
         {
           "id": "A",
-          "textEn": "The palace first supported artists when it became a museum."
+          "textEn": "The four wives of the king who built them."
         },
         {
           "id": "B",
-          "textEn": "Earlier rulers collected finished objects but did not order new work."
+          "textEn": "The four seasons, each with a Hindu god."
         },
         {
           "id": "C",
-          "textEn": "The court supported many arts and commissioned objects."
-        }
-      ],
-      "correctOptionId": "C",
-      "vocabularyJa": [
-        {
-          "word": "skilled",
-          "meaning": "熟練した"
-        },
-        {
-          "word": "commissioned",
-          "meaning": "制作を依頼した"
-        },
-        {
-          "word": "order",
-          "meaning": "ここでは、制作を注文する・依頼する"
-        }
-      ],
-      "hintJa": "豪華な品の持ち主と、それを作った人は同じとは限りません。制作を支える仕組みに注目します。",
-      "correctExplanationJa": "宮廷は多くの芸術・工芸を支援し、作品を収集するだけでなく制作も依頼しました。王の名前だけを追うのではなく、注文を受けて働いた作り手の存在にも目を向けられます。",
-      "incorrectExplanationJa": "芸術への支援が博物館になって初めて始まったのでも、支配者たちが完成品を集めるだけだったのでもありません。公式サイトは、宮廷の芸術支援と、歴代の支配者による収集・制作依頼を説明しています。",
-      "sources": [
-        {
-          "publisher": "The City Palace Museum Jaipur",
-          "title": "The City Palace Museum Jaipur",
-          "url": "https://citypalace.org/",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "公式サイトは宮廷が36を超える芸術形態を支援したとし、歴代の支配者が品々を収集・制作依頼したことを説明する。問題では数の暗記は求めない。"
-        }
-      ],
-      "difficulty": "medium"
-    },
-    {
-      "id": "gt_jaipur_palace_museum_purpose",
-      "questionEn": "According to the museum's description, why does it display objects collected and commissioned by earlier rulers?",
-      "options": [
-        {
-          "id": "A",
-          "textEn": "To show royal wealth without exploring the cultural setting of the objects."
-        },
-        {
-          "id": "B",
-          "textEn": "To share the region's culture and traditions through its collections."
-        },
-        {
-          "id": "C",
-          "textEn": "To document royal family life without showing the region's wider traditions."
+          "textEn": "The four countries that traded with Jaipur."
         }
       ],
       "correctOptionId": "B",
       "vocabularyJa": [
         {
-          "word": "collections",
-          "meaning": "所蔵品、収集品"
+          "word": "courtyard",
+          "meaning": "中庭"
         },
         {
-          "word": "region",
-          "meaning": "地域"
+          "word": "decorated",
+          "meaning": "装飾された"
         },
         {
-          "word": "cultural setting",
-          "meaning": "文化的な背景"
+          "word": "stand for",
+          "meaning": "〜を表す"
+        },
+        {
+          "word": "seasons",
+          "meaning": "季節"
+        },
+        {
+          "word": "traded",
+          "meaning": "交易した"
         }
       ],
-      "hintJa": "品物が作られ、集められた背景を知ると、誰の暮らしや技術が見えてくるでしょうか。",
-      "correctExplanationJa": "博物館は、所蔵品を通じて地域の文化や伝統を伝えます。かつて特定の人のために作られたものが、今は来訪者の学びの入口になっています。個々の品の来歴は、それぞれの資料で確認する必要があります。",
-      "incorrectExplanationJa": "富の大きさだけを見せたり、王家の暮らしを地域の伝統から切り離したりする説明ではありません。博物館は、所蔵品が地域の文化と伝統を映し出すものだと紹介しています。",
+      "hintJa": "孔雀の門、蓮の門、緑の門、薔薇の門。巡るものと言えば？",
+      "correctExplanationJa": "プリタム・ニワス中庭の四つの門は、四つの季節を表し、それぞれヒンドゥーの神にささげられています。孔雀の門は秋、蓮の門は夏、緑の門は春、薔薇の門は冬です。",
+      "incorrectExplanationJa": "四つの門が表すのは四季です。孔雀は秋、蓮は夏、緑は春、薔薇は冬。それぞれに神が結び付けられています。",
       "sources": [
         {
-          "publisher": "The City Palace Museum Jaipur",
-          "title": "The City Palace Museum Jaipur",
-          "url": "https://citypalace.org/",
-          "checkedAt": "2026-11-04",
+          "publisher": "The Better India",
+          "title": "These 9 Marvellous Doorways in Amer Fort & City Palace Offer a Glimpse of Jaipur's History",
+          "url": "https://www.thebetterindia.com/68039/doorways-jaipur-amer-fort-city-palace/",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "公式サイト冒頭は、歴代の支配者が収集・制作依頼した建築や収蔵品が地域の文化的・伝統的な根を反映すると説明する。"
+          "claimJa": "プリタム・ニワス中庭には四つの小さな門があり、それぞれ四季を主題とし、特定のヒンドゥーの神にささげられている。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_jaipur_palace_still_home",
+      "questionEn": "Is the City Palace only a museum today?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Yes. The British turned the whole palace into a museum in 1900."
+        },
+        {
+          "id": "B",
+          "textEn": "Yes. Nobody has lived there since Jaipur was founded."
+        },
+        {
+          "id": "C",
+          "textEn": "No. Part of it is still a home for the present-day royal family."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "museum",
+          "meaning": "博物館"
+        },
+        {
+          "word": "royal family",
+          "meaning": "王家"
+        },
+        {
+          "word": "present-day",
+          "meaning": "現在の"
+        }
+      ],
+      "hintJa": "宮殿の奥には、見学者の入れない階がある。",
+      "correctExplanationJa": "宮殿の一部、チャンドラ・マハルの一角は、今も王家の人々の住まいです。ほかの部分は博物館として公開されています。",
+      "incorrectExplanationJa": "博物館だけではありません。宮殿の一部は、今も現在の王家の住まいとして使われています。",
+      "sources": [
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "City Palace",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/city-palace",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "宮殿の一部は、今も現在の王家の住まいとして使われている。"
         }
       ],
       "difficulty": "medium"

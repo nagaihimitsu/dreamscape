@@ -170,17 +170,17 @@ describe("journey folders", () => {
     mkdirSync(storyFolder);
     writeFileSync(path.join(storyFolder, "gt_english.ink"), [
       'VAR player_name = ""', 'VAR heroine_name = ""', 'VAR topic = ""', "# speaker: heroine", "{",
-      '- topic == "gt_which_subject":', "    「見える建物、Which monumentが主語だね。」", "    「だからdoは置かずに、can be seenがすぐ続くよ。」",
+      '- topic == "gt_which_subject":', "    「世話をした人、Whoが主語だね。」", "    「だからdidは置かずに、looked afterがすぐ続くよ。」",
       "- else:", "    「この英文のまとまりを一緒に見よう。」", "}", "-> END", "",
     ].join("\n"));
-    const details = { schemaVersion: 1, questions: { gt_agra_fort_last_years: {
+    const details = { schemaVersion: 1, questions: { gt_agra_fort_jahanara_care: {
       storyId: "learning/gt_english",
-      summaryJa: "主語はWhich monument。主語を尋ねる疑問文なのでdoは置かず、受け身のcan be seenが続く。",
-      segments: [{ textEn: "Which monument can be seen", meaningJa: "どの建物が見えるか" }],
+      summaryJa: "主語はWho。主語を尋ねる疑問文なのでdidは置かず、過去形のlooked afterが続く。",
+      segments: [{ textEn: "Who looked after Shah Jahan", meaningJa: "誰がシャー・ジャハーンの世話をしたか" }],
       topics: [{
-        id: "gt_which_subject", category: "grammar", titleJa: "なぜdoがない？",
-        explanationJa: "主語はWhich monument。主語を尋ねる疑問文なのでdoは置かず、受け身のcan be seenが続く。",
-        targetEn: "Which monument can be seen", exampleEn: "Which room can be seen from the garden?", exampleJa: "庭からどの部屋が見えますか。",
+        id: "gt_which_subject", category: "grammar", titleJa: "なぜdidがない？",
+        explanationJa: "主語はWho。主語を尋ねる疑問文なのでdidは置かず、過去形のlooked afterが続く。",
+        targetEn: "Who looked after Shah Jahan", exampleEn: "Who opened the window?", exampleJa: "誰が窓を開けましたか。",
         sourceUrl: "https://dictionary.cambridge.org/grammar/british-grammar/questions-wh-questions", checkedAt: "2026-11-02",
       }],
     } } };
@@ -192,17 +192,17 @@ describe("journey folders", () => {
         ["sound_supper_1", "learning/sound_english"],
         ["sound_supper_2", "learning/sound_english"],
         ["sound_supper_3", "learning/sound_english"],
-        ["gt_agra_fort_last_years", "learning/gt_english"],
+        ["gt_agra_fort_jahanara_care", "learning/gt_english"],
       ]);
       expect(Object.keys(generated("stories.json"))).toEqual(expect.arrayContaining(["learning/sound_english", "learning/gt_english"]));
 
       // A question without its story stops the build, naming only that journey's file.
-      delete (details.questions.gt_agra_fort_last_years as { storyId?: string }).storyId;
+      delete (details.questions.gt_agra_fort_jahanara_care as { storyId?: string }).storyId;
       writeFileSync(detailsFile, JSON.stringify(details));
       const error = await buildContent(root, false).then(() => undefined, (caught: Error) => caught);
       expect(error?.message.startsWith(`Invalid content in ${detailsFile}: `)).toBe(true);
       expect((error?.cause as { issues: { path: PropertyKey[] }[] }).issues.map((issue) => issue.path))
-        .toEqual([["questions", "gt_agra_fort_last_years", "storyId"]]);
+        .toEqual([["questions", "gt_agra_fort_jahanara_care", "storyId"]]);
     } finally {
       rmSync(detailsFile, { force: true });
       rmSync(storyFolder, { recursive: true, force: true });

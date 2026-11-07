@@ -6856,9 +6856,9 @@
     {
       "id": "gt_jaipur_finale",
       "cityId": "jaipur",
-      "placeId": "jaipur_jantar_mantar",
+      "placeId": "jaipur_hawa_mahal",
       "category": "main",
-      "titleJa": "上映前、最後の五問",
+      "titleJa": "窓の外へ",
       "activityMinutes": 45,
       "apCost": 0,
       "admissionCost": 1200

@@ -5,142 +5,162 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "gt_agra_fatehpur_short_capital",
-      "questionEn": "What is surprising about Fatehpur Sikri despite the size of its royal buildings?",
+      "id": "gt_agra_fatehpur_bridge_words",
+      "questionEn": "The great gate's inscription says, 'The world is a bridge, pass over it, but build no houses on it.' Whose words does it quote?",
       "options": [
         {
           "id": "A",
-          "textEn": "It served as the Mughal capital for only a short period."
+          "textEn": "Jesus, son of Mary."
         },
         {
           "id": "B",
-          "textEn": "It remained the Mughal capital until the empire ended."
+          "textEn": "Emperor Akbar, written on the day of his wedding."
         },
         {
           "id": "C",
-          "textEn": "It was built as a palace but never used by an emperor."
+          "textEn": "The gate's builder, as a joke for future builders."
         }
       ],
       "correctOptionId": "A",
       "vocabularyJa": [
         {
-          "word": "despite",
-          "meaning": "〜にもかかわらず"
+          "word": "inscription",
+          "meaning": "碑文"
         },
         {
-          "word": "served as",
-          "meaning": "〜として使われた"
+          "word": "bridge",
+          "meaning": "橋"
         },
         {
-          "word": "period",
-          "meaning": "期間"
+          "word": "quote",
+          "meaning": "引用する"
+        },
+        {
+          "word": "son of Mary",
+          "meaning": "マリアの子"
         }
       ],
-      "hintJa": "大きな建物を残すことと、その場所で長く統治を続けることは別。宮廷は後にラホールへ移った。",
-      "correctExplanationJa": "壮大な街ですが、首都だったのは十数年ほどです。建物の大きさだけで、そこで政治が行われた期間の長さは決められません。",
-      "incorrectExplanationJa": "実際に皇帝と宮廷が暮らした首都でしたが、その役割は長く続きませんでした。見事な建物が残ることと、首都であり続けることは別です。",
+      "hintJa": "イスラームの皇帝の門に刻まれたのは、別の宗教でも大切にされる人物の言葉だった。",
+      "correctExplanationJa": "門のアーチの碑文には「マリアの子イエス（彼に平安あれ）は言った。世界は橋である。渡りなさい、だがその上に家を建ててはならない」とあります。イスラームでもイエスは預言者イーサーとして敬われています。",
+      "incorrectExplanationJa": "碑文が引用しているのは、マリアの子イエスの言葉です。皇帝の冗談でも、職人の落書きでもありません。",
       "sources": [
         {
-          "publisher": "Archaeological Survey of India, Agra Circle",
-          "title": "Fatehpur Sikri",
-          "url": "https://www.asiagracircle.in/fateh-pur.html",
-          "checkedAt": "2026-11-04",
+          "publisher": "British Library",
+          "title": "Buland Darwaza, Fatehpur Sikri (photograph record)",
+          "url": "https://searcharchives.bl.uk/catalog/040-003047547",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "アクバルが居住地と宮廷をアーグラからシークリーに移し、1572年から1585年まで滞在したと記載。"
-        }
-      ],
-      "difficulty": "easy"
-    },
-    {
-      "id": "gt_agra_fatehpur_working_city",
-      "questionEn": "Which description best shows who lived and worked in Fatehpur Sikri?",
-      "options": [
-        {
-          "id": "A",
-          "textEn": "Only the emperor and his family lived inside the city."
-        },
-        {
-          "id": "B",
-          "textEn": "The court, soldiers and servants had living and working spaces there."
-        },
-        {
-          "id": "C",
-          "textEn": "Only visiting pilgrims stayed there; no one worked for the court."
-        }
-      ],
-      "correctOptionId": "B",
-      "vocabularyJa": [
-        {
-          "word": "servants",
-          "meaning": "使用人たち"
-        },
-        {
-          "word": "court",
-          "meaning": "ここでは、宮廷とそこに属する人々"
-        },
-        {
-          "word": "pilgrims",
-          "meaning": "巡礼者たち"
-        }
-      ],
-      "hintJa": "一つの宮殿だけでは、街として暮らせない。行政や礼拝、働く人の住まいを含めて見てみよう。",
-      "correctExplanationJa": "宮殿だけでなく、行政や礼拝の建物、宮廷・兵士・使用人たちの生活空間がありました。皇帝一人の舞台ではなく、多くの仕事が支える都市です。",
-      "incorrectExplanationJa": "皇帝の家族だけの住まいではありません。行政、礼拝、居住などの空間があり、さまざまな役割の人が暮らしていました。",
-      "sources": [
-        {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "Fatehpur Sikri — Outstanding Universal Value",
-          "url": "https://whc.unesco.org/en/list/255/",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "行政・居住・宗教の建物と、宮廷、軍、皇帝の使用人のための生活空間を持つ計画都市と説明。"
+          "claimJa": "門のアーチには二つの碑文があり、その一つは「マリアの子イエス（彼に平安あれ）は言った。世界は橋である。渡りなさい、その上に家を建ててはならない」と記す。"
         }
       ],
       "difficulty": "medium"
     },
     {
-      "id": "gt_agra_fatehpur_after_move",
-      "questionEn": "What happened after the Mughal court moved from Fatehpur Sikri to Lahore?",
+      "id": "gt_agra_fatehpur_saint_for_heir",
+      "questionEn": "Why did Emperor Akbar first come to the village of Sikri?",
       "options": [
         {
           "id": "A",
-          "textEn": "Every royal building was immediately taken apart."
+          "textEn": "To hunt tigers in the forests around a lake."
         },
         {
           "id": "B",
-          "textEn": "All later emperors were forbidden to enter the city."
+          "textEn": "To escape a fire that had destroyed his palace in Agra."
         },
         {
           "id": "C",
-          "textEn": "Mughal emperors still used the city for temporary visits."
+          "textEn": "To seek the blessing of the Sufi saint Shaikh Salim Chishti for an heir."
         }
       ],
       "correctOptionId": "C",
       "vocabularyJa": [
         {
-          "word": "temporary",
-          "meaning": "一時的な"
+          "word": "escape",
+          "meaning": "逃れる"
         },
         {
-          "word": "forbidden",
-          "meaning": "禁じられた"
+          "word": "blessing",
+          "meaning": "祝福"
         },
         {
-          "word": "taken apart",
-          "meaning": "解体された"
+          "word": "Sufi saint",
+          "meaning": "スーフィー（イスラーム神秘主義）の聖者"
+        },
+        {
+          "word": "heir",
+          "meaning": "跡継ぎ"
         }
       ],
-      "hintJa": "首都の役割が移ることは、その街との関係がすべて切れることと同じだろうか。",
-      "correctExplanationJa": "首都移転後も、皇帝の一時的な訪問先として使われました。「首都でなくなった」からといって、その日から誰も来なかったと決めることはできません。",
-      "incorrectExplanationJa": "直ちに全建物が解体されたわけでも、皇帝の入場が禁止されたわけでもありません。首都の役割を終えてからも、皇帝たちの訪問はありました。",
+      "hintJa": "皇帝には、まだ跡継ぎがいなかった。生まれた皇子は、ある人の名前をもらっている。",
+      "correctExplanationJa": "跡継ぎのいなかったアクバルは、シークリー村の聖者シャイフ・サリーム・チシュティーに助言を求めました。1569年、皇子が生まれ、聖者の名を取ってサリームと名付けられます。後の皇帝ジャハーンギールです。",
+      "incorrectExplanationJa": "アクバルが訪ねたのは、跡継ぎを願って聖者サリーム・チシュティーに会うためでした。生まれた皇子サリームの名は、この聖者にちなみます。",
       "sources": [
         {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "Fatehpur Sikri — Outstanding Universal Value",
-          "url": "https://whc.unesco.org/en/list/255/",
-          "checkedAt": "2026-11-04",
+          "publisher": "PBS (The Story of India)",
+          "title": "Fatehpur Sikri",
+          "url": "https://www.pbs.org/thestoryofindia/gallery/photos/15.html",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "ラホール遷都後もムガール皇帝たちが一時的に訪れる場所として残ったと記載。"
+          "claimJa": "跡継ぎのいないことを案じたアクバルはシークリー村の聖者シャイフ・サリーム・チシュティーを訪ね、1569年、聖者にちなんで名付けられた皇子サリームがシークリーで生まれた。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_agra_fatehpur_short_capital",
+      "questionEn": "How long did Fatehpur Sikri serve as the Mughal capital?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "For more than two hundred years."
+        },
+        {
+          "id": "B",
+          "textEn": "Only until 1585, about fifteen years after it was founded."
+        },
+        {
+          "id": "C",
+          "textEn": "Never. The court left before a single building was finished."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "serve as",
+          "meaning": "〜の役目を果たす"
+        },
+        {
+          "word": "capital",
+          "meaning": "首都"
+        },
+        {
+          "word": "founded",
+          "meaning": "築かれた"
+        },
+        {
+          "word": "court",
+          "meaning": "宮廷"
+        }
+      ],
+      "hintJa": "壮大な町を築いた皇帝は、意外なほど早く、ここを後にした。",
+      "correctExplanationJa": "1569年に築かれたこの町は1585年まで首都の役目を果たし、その後宮廷は去りました。十五年ほどで主を失った町が、今もほぼそのまま残っています。",
+      "incorrectExplanationJa": "首都だったのは1585年までの十五年ほどです。建物は完成し、宮廷も暮らしましたが、皇帝はやがてこの町を後にしました。",
+      "sources": [
+        {
+          "publisher": "PBS (The Story of India)",
+          "title": "Fatehpur Sikri",
+          "url": "https://www.pbs.org/thestoryofindia/gallery/photos/15.html",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ファテープル・シークリーは1569年に築かれ、1585年までムガル帝国の首都とされた。"
+        },
+        {
+          "publisher": "British Library",
+          "title": "Buland Darwaza, Fatehpur Sikri (photograph record)",
+          "url": "https://searcharchives.bl.uk/catalog/040-003047547",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "町はアクバルによって1571年から1585年の間に建設された。"
         }
       ],
       "difficulty": "medium"

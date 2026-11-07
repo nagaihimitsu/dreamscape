@@ -4,6 +4,7 @@ VAR player_address = ""
 VAR battle_scene = "intro"
 VAR answer_correct = false
 VAR battle_score = 0
+
 { battle_scene == "intro": -> introduction }
 { battle_scene == "after_1": -> after_first }
 { battle_scene == "after_2": -> after_second }
@@ -12,109 +13,122 @@ VAR battle_score = 0
 
 === introduction ===
 # background: gt_bg_agra_itimad_tomb
-# speaker: enemy
-「今日は無理。袖が短いのは、今日始まった話じゃないでしょう」
 # speaker: narrator
-イティマード・ウッダウラ廟の庭で、女性が電話を切った。白い壁の花模様へ向き直った顔は、まだ険しい。
+門をくぐると、庭の奥に白い墓廟が見えた。大きくはない。けれど近づくほど、壁一面に色の石の模様が浮かび上がってくる。
 # speaker: heroine
-# emotion: worried
-「大丈夫ですか。お仕事、戻らなくていいんですか？」
+# reaction: heroine,happy,sparkle
+「わあ……これが『ベビー・タージ』だね。名前どおり、かわいい」
 # speaker: enemy
-「戻らないために切ったの。私はアミナ。仕立て屋だけど、さっきのは父。明日の袖を今日頼む名人」
+「ベビーではありません！」
 # speaker: narrator
-アミナはスマートフォンを裏返した。{heroine_name}は気遣うつもりで開いた口を、一度閉じる。
-# speaker: heroine
-# reaction: heroine,worried,sweat
-「すみません。聞いてもないのに、戻る方へ背中を押しちゃった」
+ニームの木陰から、サリー姿の女性が立ち上がった。白髪をきっちり結い、布の手提げを肩にかけている。手提げから、紙の束がのぞいていた。
 # speaker: enemy
-「ええ。今日は押されない日にしたい」
+「ヴィムラーです。ヒンディー語の教師を三十八年。今は、この墓の名誉回復をしています」
+# speaker: heroine
+# reaction: heroine,surprised,sweat
+「め、名誉回復……？」
+# speaker: enemy
+「この墓は、誰の赤ちゃんでもない。娘が、亡くなった両親のために建てたものです。それを『タージの赤ちゃん』だなんて」
 # speaker: narrator
-少し離れて壁を見ていると、アミナの方から声がかかった。
+ヴィムラーは紙の束から一枚を抜き、クリップボードごと差し出した。観光局宛ての請願書。案内板の「ベビー・タージ」を外してほしい、という内容だった。
 # speaker: enemy
-「でも、ここへ来た理由も父なの。自分でも面倒くさいと思う」
+「署名を。名前と国名だけで結構です」
 # speaker: heroine
-# reaction: heroine,surprised,question
-「お父さんに会いに？」
+# emotion: serious
+「あの……読んでからでも、いいですか？」
+# speaker: narrator
+ヴィムラーの手が止まった。教師の目で、{heroine_name}を上から下まで見る。
 # speaker: enemy
-「違う。父がこの廟の話をしていたから。造営を頼んだヌール・ジャハーンにも、家族の話があるんだって。そこは聞きたくなった」
+「署名の前に読む人は、珍しいわね。……どうぞ。三つ、主張を書いてあります」
+# speaker: narrator
+一つ目の主張。この墓は、タージ・マハルの赤ちゃんではない。先に建てられたのは、こちらである。
 -> END
 
 === after_first ===
 # background: gt_bg_agra_itimad_tomb
 { answer_correct:
-# speaker: enemy
-「ヌール・ジャハーンが父ギヤース・ベグのために。頼まれる側だけじゃなく、造ると決める側に娘がいるんだね」
+    # speaker: enemy
+    「よろしい。先輩を赤ちゃん呼ばわりしていたのは、世間の方なの」
 - else:
-# speaker: enemy
-「皇妃ヌール・ジャハーンが父のために造営した廟。名前だけでは、二人の関係まで見えないね」
+    # speaker: enemy
+    「いいえ、こちらが先。タージの工事が始まる四年前に、もう完成していたの。世間が順番を逆にしているのよ」
 }
+# speaker: narrator
+二つ目の主張は、ここに眠る人についてだった。{heroine_name}が読み上げかけると、ヴィムラーが先に言った。
+# speaker: enemy
+「イティマード・ウッダウラは名前じゃなくて称号。『国家の柱』という意味。どんな人だったか、分かる？」
 # speaker: heroine
-「アミナさんのお父さんも、こんな花模様が好きなんですか？」
+「えっと……偉い人、ですよね」
 # speaker: enemy
-「知らない。縫い目には詳しい。私の縫い目には、特に」
+# reaction: enemy,sigh
+「偉くなった人、よ。最初から偉かったわけじゃない。そこが大事なの」
 # speaker: narrator
-彼女は口の端を上げた。{heroine_name}も、ようやく少し笑う。
-# speaker: enemy
-「見て。あの色の曲がるところ。布なら、どこを切るか考えるけど、これは石でしょう」
-# speaker: narrator
-二人は模様をよく見る。表面へ色を塗ることと、別の素材を組み込むこと。その違いが気になった。
+ヴィムラーは墓廟を見上げた。授業中、一番聞いてほしいところで声を落とす先生のように。
 -> END
 
 === after_second ===
 # background: gt_bg_agra_itimad_tomb
 { answer_correct:
-# speaker: heroine
-# reaction: heroine,surprised,sparkle
-「違う石をはめ込んで、花にするんだ。線を描くのとは、迷う場所も違いそう」
+    # speaker: enemy
+    「そう。遠い国から来て、自分の力で上った人。その娘が皇妃になって、両親のためにこれを建てた。いい話でしょう」
 - else:
-# speaker: heroine
-# reaction: heroine,surprised,exclamation
-「塗った色かと思った。ここは、色石をはめ込む象嵌なんだね」
+    # speaker: enemy
+    「ペルシアから来た貴族よ。宮廷に来て、自分の力で一番上まで上った。その娘が、皇妃ヌール・ジャハーン」
 }
-# speaker: enemy
-「細かいものを見ると、『何日かかった？』が先に出るの。休みなのに」
 # speaker: heroine
 # emotion: smile
-「好きだから、でしょうか」
+「建てたのも、建ててもらったのも、自分の足で来た人たちなんですね」
 # speaker: enemy
-「癖。好きだけで、納期は越えられない」
+「分かってきたじゃない。白い大理石で覆った最初の墓も、石をはめ込む模様も、全部こっちが先。タージは、それを大きくしただけ」
 # speaker: narrator
-即答され、彼女は笑いかけた顔を引っ込めた。アミナはそれを見て、声だけ少し緩める。
+三つ目の主張は、一番下に、一番大きな字で書いてあった。ヌール・ジャハーンは、タージ・マハルの設計にも関わった。
+# speaker: narrator
+{heroine_name}のペンが、紙の上で止まった。ヴィムラーがその手元をのぞき込む。
 # speaker: enemy
-「嫌いじゃないよ。今は、その格子の向こうを見たい。模様ばかり見ていると、部屋の方を忘れそう」
+「どうしたの。三つとも事実よ。署名して」
 -> END
 
 === conclusion ===
 # background: gt_bg_agra_itimad_tomb
 { answer_correct:
-# speaker: heroine
-「石の隙間から、光を通す。壁の模様が、その先の明るさも作ってるんだ」
+    # speaker: heroine
+    # emotion: serious
+    「三つ目だけ、資料で確かめられないと思います。タージは、シャー・ジャハーンの建物ですよね」
 - else:
-# speaker: heroine
-「格子は飾りだけじゃないんだね。透かして彫ったところから、室内へ光が入る」
+    # speaker: narrator
+    {heroine_name}が迷っていると、ヴィムラーは自分から目をそらした。三つ目の行を、指で隠すように。
 }
-{ battle_score == 3:
 # speaker: enemy
-「全部拾えたね。私の方は、さっきから袖の縫い代が頭に戻ってくる」
+# reaction: enemy,sweat
+「……知ってるわよ。盛ったの」
+# speaker: enemy
+「本当のことだけ書いても、誰も読まない。三年集めて、署名は四十二人。大きく書いたら、少しは足を止めてくれるかと思って」
+# speaker: heroine
+「でも、一つ盛ったら、ほかの二つまで疑われちゃいます。せっかく、本当なのに」
+# speaker: narrator
+ヴィムラーは長いこと黙っていた。先生に赤ペンを入れられた生徒みたいな顔だった。
+# speaker: heroine
+「この紙には署名できません。……でも、白い紙を一枚もらえますか」
+# speaker: narrator
+{heroine_name}は新しい紙に、短く書いた。この墓は、娘が両親のために建てた。タージ・マハルより先に。その下に、自分の名前と国名を。
+# speaker: enemy
+「……あなたの文の方が、短くて強いわね。元ヒンディー語教師として、悔しい」
+{
+- battle_score == 3:
+    # speaker: enemy
+    「満点。うちのクラスにいたら、学級委員にしてたわ。……反論ばかりしてくる学級委員にね」
+- battle_score == 2:
+    # speaker: enemy
+    「三問中二問。悪くない。間違えたところは、署名する前に読んだから気づけたのよ」
 - else:
-# speaker: enemy
-「急いで全部分からなくてもいい。私は、あの光を見て帰る。それで今日は足りる」
+    # speaker: enemy
+    「点数は低いけれど、署名の前に読んだ。それだけで、この三年で一番の人よ」
 }
 # speaker: narrator
-通知が鳴った。アミナは画面を読み、返事を打った。
+ヴィムラーは新しい紙を、請願書の一番上にクリップで留めた。一番大きな字の三つ目の行は、ボールペンで一本、線を引かれていた。
 # speaker: enemy
-「『袖は明日。今日は好きな花の名前を送って』。そう返した」
+「それから、あなた。さっきの『イティマード』、発音が違います。イッ、ティ、マード。はい、繰り返して」
 # speaker: heroine
-# emotion: smile
-「お父さん、答えてくれそうですか？」
-# speaker: enemy
-# reaction: enemy,sigh
-「袖の長さが来そう。来たら、明日読む」
-# speaker: narrator
-電話をしまい、彼女は光を見る方へ歩いた。二人に合わせて立ち止まることはしなかった。
-# speaker: heroine
-# reaction: heroine,exasperated,sweat
-「『好きだから』って、簡単に言っちゃったな。わたしなら、好きなことほど休みたくないって思われたら、困るのに」
-# speaker: narrator
-こちらが隣の場所を空けると、彼女もそこで立ち止まった。アミナには声をかけず、それぞれに格子の向こうを見た。
+# reaction: heroine,teasing,music
+「……授業、始まっちゃった」
 -> END

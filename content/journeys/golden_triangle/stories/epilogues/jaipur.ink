@@ -4,95 +4,82 @@ VAR player_address = ""
 VAR romance_stage = 1
 VAR ending_reached = false
 
-# background: gt_bg_jaipur_jantar_mantar
+# background: gt_bg_jaipur_hotel_hub
 # speaker: narrator
-人の流れから離れ、ラヴィの仲間たちがスマートフォンの周りへ集まる。誰かが眼鏡をかけ、誰かが見やすい位置を譲った。上映会の準備は、それだけだった。
+翌朝、宿の中庭。荷物をまとめ終えた二人の前に、オートリキシャが止まった。降りてきたのは、桃色のサリーのカムラだった。
+# speaker: narrator
+運転手が何か文句を言っている。料金を半分に値切られたらしい。
+# speaker: heroine
+# reaction: heroine,surprised,sparkle
+「カムラさん！　昨日の今日なのに、もう値切ってる……」
 # speaker: enemy
-「作者は、この二人。それでは――」
+「ジャイプールの運転手は、デリーより素直ね。三十秒で折れた」
 # speaker: narrator
-ラヴィが口を閉じる。彼女は待っていた紹介の言葉が本当に終わったことに、一瞬だけ慌てた。
-# speaker: heroine
-# reaction: heroine,shy,sweat
-「三分間の旅です。途中で、わたしが道を間違えます。それも、入れました」
+カムラは中庭の椅子に腰を下ろし、手を差し出した。デリーで渡した、あの段ボールの切れ端を出せ、という仕草だった。
 # speaker: narrator
-再生を押す。デリーの塔が伸びて、追い越されて、空になる。画面の外で二人が笑う。見ていた一人が、塔を戻すように首を下へ曲げた。
-# speaker: heroine
-# reaction: heroine,surprised,exclamation
-「あっ、それ。わたしも、そうした！」
-# speaker: narrator
-その声に、今度は周りで笑いが起きた。画面の中の笑いと、外の笑いが少し重なる。
-# speaker: narrator
-アーグラ。広場へ向かう彼女が一度戻り、道を確かめてから進む。画面の中では、まだ見えない先へ行こうとしている。
-# speaker: narrator
-「ここ、間違えたところ？」と、若い男性が尋ねた。彼女はうなずきかけ、あらためて再生を止める。
-# speaker: heroine
-# emotion: serious
-「はい。宮殿の空間を、歩いて……」
-# speaker: narrator
-ラヴィが何も言わずに待っている。彼女は息を吐き、少しだけ笑った。
-# speaker: heroine
-# emotion: smile
-「格好よく言おうとしました。違います。わたしが道を間違えたんです。でも、戻ったあとも、先が見たくて」
-# speaker: heroine
-「建物が出るところだけにしたら、わたしが行きたかった時間までなくなっちゃう。それが、嫌でした」
-# speaker: narrator
-男性はもう一度そこを見たがった。別の人は「私は建物からの方が好き」と言った。彼女はそちらも見て、画面を指す。
-# speaker: heroine
-# reaction: heroine,teasing,music
-「きっとサナさんと気が合います。あの人の案も、そっちでした」
-# speaker: narrator
-再生が進む。ハワー・マハルの通りの音。顔の写っていない人の一文。宮殿の作り手を記した字幕。そして、空を測る大きな道具。
-# speaker: narrator
-最後の空に、さっき録った声が重なる。『ちょっと待って。わたし、ここをもう一度見たい』。再生の印が戻っても、少しの間、誰も話さなかった。
+{heroine_name}がガイドブックから取り出すと、カムラは油性ペンで、五行の下にもう一行を書き足した。
 # speaker: enemy
-「困った。私も、もう一度見たくなった」
+「ジャイプール。通りで踊った夜」
 # speaker: heroine
-# reaction: heroine,surprised,question
-「どこですか？」
+# reaction: heroine,shy,blush
+「……それ、わたしの、ですか」
 # speaker: enemy
-「映像じゃなくて、あれ。今日、待ち合わせ場所にしかしていなかったから」
+「わたしのよ。でも、あんたにもあげる。ナーニーは昨日、この家に来て六十年で初めて、行列と一緒に通りを歩いたわ。来年のガンガウルは、二人で行列を見に行くの。窓じゃなくて、下から」
 # speaker: narrator
-ラヴィが目の前の観測器を指す。一人が案内へ近づき、別の人がついていく。拍手を待つ形のままでは、会が終わらなかった。
-# speaker: heroine
-# reaction: heroine,happy,sparkle
-「え、そっち？　……うん。わたしも行きたい！」
-# speaker: narrator
-二歩進んで、彼女は振り返る。ラヴィが指で三を作り、時計へ目を落とした。
+カムラはペンのふたを閉め、二人を順に見た。それから、デリーの路地で初めて会ったときと同じ言い方をした。
 # speaker: enemy
-「店に戻る前に、三分だけ。今度は私の寄り道だ」
-# speaker: heroine
-# emotion: teasing
-「時間を計るのは、わたしがやります。長い挨拶は、なしで」
-# speaker: narrator
-仲間たちと別れたあと、ニールへ報告を送る。返事は『空、残した？』。彼女は『残しました。最初に』と打ち、上映中に首を下げた人の話も添えた。
-# speaker: narrator
-サナには『歩く版』を送った。しばらくして、『まだ短くできる。歩くところを好きだったのは、どんな人？』と届く。
-# speaker: heroine
-# reaction: heroine,teasing,music
-「まだ切るつもりだ。でも、そこを見てくれたんだね」
-# speaker: narrator
-彼女はすぐに説明を打ち始めた。途中で画面をこちらへ向け、あの人が言ったことを思い出しながら文章を直す。
-# speaker: heroine
-「全員に好きになってもらうの、無理だった。……でも、もう一度見たいって言ってもらえた」
+「あんたの連れ、相変わらず黙ってるね。いい男は黙ってるもんだ。……でも、あんたは黙らないこと。わたしみたいに、六十年も待たないこと」
 {
 - ending_reached:
     # speaker: heroine
-    # emotion: shy
-    「隣にいてくれて、ありがとう。今日のわたし、ちょっと好きになった。{player_address}にも、そうだといいな」
+    # emotion: smile
+    「はい。……もう、言いました。これからも、言いたいときに言います」
+    # speaker: enemy
+    「よろしい。言い過ぎるくらいで、ちょうどいいのよ」
+- romance_stage >= 3:
+    # speaker: heroine
+    # reaction: heroine,shy,blush
+    「……まだ、です。でも、六十年は待ちません。約束します」
+    # speaker: enemy
+    「約束は軽くするもんじゃないわよ。……したなら、守りなさい」
+- romance_stage == 2:
+    # speaker: heroine
+    # reaction: heroine,shy,sweat
+    「そ、そういうのじゃ……。でも、言いたいことは、ちゃんと言うようにします」
+    # speaker: enemy
+    「『そういうのじゃ』って言う子は、だいたいそういうのよ」
+- else:
+    # speaker: heroine
+    「旅の連れ、です。……でも、この旅で一緒にいられてよかったって、それは、ちゃんと言えます」
+    # speaker: enemy
+    「それで十分。最初の一言は、それくらいがいい」
+}
+# speaker: narrator
+カムラは立ち上がり、待たせていたオートリキシャに乗り込んだ。運転手がまた何か言い、カムラが言い返す。笑い声と一緒に、桃色の町の角へ消えていった。
+# speaker: narrator
+{heroine_name}は段ボールの切れ端を見つめた。デリーの五行と、ジャイプールの一行。アーグラの分は、空いている。
+# speaker: heroine
+「アーグラは、自分で書かなきゃね。……本当の話の方を、短く」
+{
+- ending_reached:
+    # speaker: heroine
+    # emotion: smile
+    「インドで覚えた一番大事なこと、言うね。……好き。言いたいときに言うって、決めたから」
+    # speaker: heroine
+    # reaction: heroine,teasing,blush
+    「ふふ。今のは、六十年待たなかった分」
 - romance_stage >= 3:
     # speaker: heroine
     # emotion: smile
-    「隣で見てくれて、心強かった。話すところまで代わってもらわなくて、よかったな」
+    「次の旅の行き先、今度はわたしから言ってもいい？　……一緒に行きたい所が、もうあるんだ」
+- romance_stage == 2:
+    # speaker: heroine
+    # reaction: heroine,smile,music
+    「楽しかった。……あなたと来られて、よかった。これは、勢いじゃないからね」
 - else:
     # speaker: heroine
-    # emotion: smile
-    「見ていてくれて、ありがとう。わたしの話、途中で止まっても待ってくれて」
+    「ありがとう。一人だったら、きっと窓の内側から、見てるだけだった」
 }
 # speaker: narrator
-送信して、彼女はスマートフォンをしまった。今度は撮影のために取り出さず、街の方を見た。
-# speaker: heroine
-# reaction: heroine,happy,music
-「先に言っておくね。わたし、おなかがすいてます。次の行き先、それがいい」
-# speaker: narrator
-こちらがうなずくと、彼女の足が動く。その先に何があるかは、三分間の動画には入っていなかった。
+彼女は切れ端をガイドブックの一番前に挟み直し、鞄の口を閉めた。旅の荷物の中で、それが一番軽くて、一番大事なものになっていた。
 -> END

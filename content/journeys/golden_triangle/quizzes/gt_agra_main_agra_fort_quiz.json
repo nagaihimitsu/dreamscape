@@ -5,150 +5,146 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "gt_agra_fort_generations",
-      "questionEn": "Why can visitors see both red sandstone buildings and white marble palaces at Agra Fort?",
+      "id": "gt_agra_fort_who_confined",
+      "questionEn": "The colonel asks who kept Shah Jahan shut away in Agra Fort. Who was it?",
       "options": [
         {
           "id": "A",
-          "textEn": "Different emperors rebuilt and added to the fort over time."
+          "textEn": "The British army, after the uprising of 1857."
         },
         {
           "id": "B",
-          "textEn": "All the buildings were made as one project by a single emperor."
+          "textEn": "A Persian king who had invaded Delhi."
         },
         {
           "id": "C",
-          "textEn": "The white palaces were moved here from another city in recent times."
-        }
-      ],
-      "correctOptionId": "A",
-      "vocabularyJa": [
-        {
-          "word": "sandstone",
-          "meaning": "砂岩"
-        },
-        {
-          "word": "emperors",
-          "meaning": "皇帝たち"
-        },
-        {
-          "word": "over time",
-          "meaning": "時の経過とともに"
-        }
-      ],
-      "hintJa": "一人が建てて終わりの城ではない。アクバルの時代と、後のシャー・ジャハーンの時代を分けてみよう。",
-      "correctExplanationJa": "アクバルが赤砂岩で再建した城に、後のシャー・ジャハーンが白大理石の宮殿などを加えました。石の違いから、住む人と造営の時代の違いも見えてきます。",
-      "incorrectExplanationJa": "別の街から近年移した宮殿ではありません。城は代々使われ、アクバルの再建後にもシャー・ジャハーンらが手を加えています。",
-      "sources": [
-        {
-          "publisher": "District Agra, Government of Uttar Pradesh",
-          "title": "Agra Fort",
-          "url": "https://agra.nic.in/tourist-place/agra-fort/",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "アクバルの赤砂岩による再建と、その後のシャー・ジャハーンによる白大理石の建築を説明。"
-        }
-      ],
-      "difficulty": "easy"
-    },
-    {
-      "id": "gt_agra_fort_living_city",
-      "questionEn": "Besides defence, what important role did Agra Fort have?",
-      "options": [
-        {
-          "id": "A",
-          "textEn": "It was a burial garden for the whole royal family."
-        },
-        {
-          "id": "B",
-          "textEn": "It was a royal home and a place for meetings and government."
-        },
-        {
-          "id": "C",
-          "textEn": "It was a market run entirely by visiting foreign merchants."
-        }
-      ],
-      "correctOptionId": "B",
-      "vocabularyJa": [
-        {
-          "word": "defence",
-          "meaning": "防衛"
-        },
-        {
-          "word": "government",
-          "meaning": "政治・統治"
-        },
-        {
-          "word": "royal",
-          "meaning": "王室の・皇帝の"
-        }
-      ],
-      "hintJa": "壁の厚さだけでなく、内側の宮殿や人を迎える広間にも目を向けよう。",
-      "correctExplanationJa": "城壁の内側には宮殿、謁見の間、モスクがあります。兵士の守る要塞であると同時に、暮らしや政治、礼拝の場を含む皇帝の都市でした。",
-      "incorrectExplanationJa": "王族の墓だけの場所でも、外国商人の市場でもありません。宮殿や謁見の間があり、皇帝の生活と統治が行われていました。",
-      "sources": [
-        {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "Agra Fort",
-          "url": "https://whc.unesco.org/en/list/251/",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "要塞内にムガール皇帝の都市があり、宮殿、謁見の間、モスクを含むと記載。"
-        }
-      ],
-      "difficulty": "medium"
-    },
-    {
-      "id": "gt_agra_fort_last_years",
-      "questionEn": "Which monument can be seen from Musamman Burj, where Shah Jahan spent his last years?",
-      "options": [
-        {
-          "id": "A",
-          "textEn": "The Red Fort in Delhi."
-        },
-        {
-          "id": "B",
-          "textEn": "The palace complex at Fatehpur Sikri."
-        },
-        {
-          "id": "C",
-          "textEn": "The Taj Mahal."
+          "textEn": "His own son Aurangzeb, who had taken the throne."
         }
       ],
       "correctOptionId": "C",
       "vocabularyJa": [
         {
-          "word": "Musamman Burj",
-          "meaning": "ムサンマン・ブルジュ（アーグラ城内の塔）"
+          "word": "shut away",
+          "meaning": "閉じ込められた"
         },
         {
-          "word": "last years",
-          "meaning": "晩年"
+          "word": "invaded",
+          "meaning": "侵攻した"
         },
         {
-          "word": "can be seen",
-          "meaning": "見ることができる"
+          "word": "throne",
+          "meaning": "王位"
         }
       ],
-      "hintJa": "遠くの別の都市ではなく、同じアーグラの川辺にある建物。皇帝が妃のために建てさせた場所を思い出そう。",
-      "correctExplanationJa": "そこからはタージ・マハルが見えます。皇帝は息子によって城に幽閉され、晩年を過ごしました。ただし、見える景色から毎日の心情まで断定することはできません。",
-      "incorrectExplanationJa": "見えるのはタージ・マハルです。離れた都市の宮殿ではありません。城で過ごした晩年と、妃のための墓廟が、同じ景色の中につながります。",
+      "hintJa": "皇帝が病に倒れると、息子たちが跡目を争った。勝った者が、父をこの城に置いた。",
+      "correctExplanationJa": "帝位を得た息子アウラングゼーブが、父シャー・ジャハーンをアーグラ城に幽閉しました。シャー・ジャハーンは1666年に亡くなるまで、ここで暮らしました。",
+      "incorrectExplanationJa": "閉じ込めたのは英国でもペルシアの王でもなく、実の息子アウラングゼーブでした。帝位を争って勝った息子が、父をアーグラ城に置いたのです。",
       "sources": [
         {
-          "publisher": "District Agra, Government of Uttar Pradesh",
-          "title": "Agra Fort",
-          "url": "https://agra.nic.in/tourist-place/agra-fort/",
-          "checkedAt": "2026-11-04",
+          "publisher": "Encyclopaedia Iranica",
+          "title": "JAHĀNĀRĀ BEGUM",
+          "url": "https://www.iranicaonline.org/?p=4055",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "ムサンマン・ブルジュでシャー・ジャハーンが晩年を過ごし、そこからタージ・マハルが見えると記載。"
+          "claimJa": "アウラングゼーブは父シャー・ジャハーンをアーグラの城（赤い城）に幽閉した。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_agra_fort_jahanara_care",
+      "questionEn": "Who looked after Shah Jahan in the fort until his death in 1666?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A palace guard who later wrote a famous book about him."
         },
         {
-          "publisher": "Archaeological Survey of India, Agra Circle",
-          "title": "Agra Fort",
-          "url": "https://www.asiagracircle.in/agra-fort.html",
-          "checkedAt": "2026-11-04",
+          "id": "B",
+          "textEn": "His daughter Jahanara."
+        },
+        {
+          "id": "C",
+          "textEn": "Mumtaz Mahal's younger sister."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "looked after",
+          "meaning": "世話をした"
+        },
+        {
+          "word": "palace guard",
+          "meaning": "宮殿の衛兵"
+        },
+        {
+          "word": "younger sister",
+          "meaning": "妹"
+        }
+      ],
+      "hintJa": "デリーの大通りを造ったと伝えられる、皇帝の娘。",
+      "correctExplanationJa": "シャー・ジャハーンの娘ジャハーナーラーが、1666年に父が亡くなるまで世話を続けました。デリーのチャンドニー・チョークを造ったことで知られる皇女です。",
+      "incorrectExplanationJa": "最期まで父の世話をしたのは、娘のジャハーナーラーでした。デリーのチャンドニー・チョークを造ったことでも知られています。",
+      "sources": [
+        {
+          "publisher": "Encyclopaedia Iranica",
+          "title": "JAHĀNĀRĀ BEGUM",
+          "url": "https://www.iranicaonline.org/?p=4055",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "アウラングゼーブが父シャー・ジャハーンを城に幽閉したと記載。"
+          "claimJa": "ジャハーナーラーは1666年に父が亡くなるまで世話をした。チャンドニー・チョークの建設で最もよく知られる。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_agra_fort_army_today",
+      "questionEn": "The colonel says soldiers are still at the fort today. Is he right?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Yes. Part of the fort is used by the Indian Army and is closed to the public."
+        },
+        {
+          "id": "B",
+          "textEn": "No. The army left the fort in 1858 and never came back."
+        },
+        {
+          "id": "C",
+          "textEn": "Only once a year, when soldiers march through it on a holiday."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "soldiers",
+          "meaning": "兵士"
+        },
+        {
+          "word": "Indian Army",
+          "meaning": "インド陸軍"
+        },
+        {
+          "word": "closed to the public",
+          "meaning": "一般には非公開の"
+        },
+        {
+          "word": "march",
+          "meaning": "行進する"
+        }
+      ],
+      "hintJa": "城の地図を見ると、入れない区域がある。",
+      "correctExplanationJa": "アーグラ城の一部は今もインド陸軍が使っており、その区域には一般の人は入れません。見学できるのは城の一部です。",
+      "incorrectExplanationJa": "大佐の言うとおりです。城の一部はインド陸軍が使っていて、一般公開されていません。",
+      "sources": [
+        {
+          "publisher": "Taj Mahal official website (tajmahal.gov.in)",
+          "title": "Agra Fort",
+          "url": "https://tajmahal.gov.in/agrafort.aspx",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "城の一部はインド陸軍が使用しており、その区域への一般の立ち入りは禁止されている。"
         }
       ],
       "difficulty": "medium"
