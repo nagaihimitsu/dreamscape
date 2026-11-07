@@ -1,6 +1,6 @@
-import { battles, dates, effects, episodes, getCities, getCityContent } from "../content";
+import { battles, dates, effects, episodes, getCityContent } from "../content";
 import { validateStorySnapshot } from "../story/runtime";
-import { activeDateStoryId, completedDateCount, dateBelongsToCity } from "./date-rules";
+import { activeDateStoryId, completedDateCount, dateBelongsToCity, hasCompletedChapter } from "./date-rules";
 import type { GameState } from "./game-state-schema";
 import { resolveRomanceChoice } from "./romance-random";
 import { minimumHomeFare } from "./travel-routes";
@@ -41,7 +41,6 @@ export function validateGameHistory(state: GameState): void {
     effects.flatMap((effect) => (effect.memoryId ? [effect.memoryId] : [])),
   );
   if (
-    state.completedChapters.some((id) => !getCities().some((entry) => entry.id === id)) ||
     state.playedDateIds.some((id) => !dates.some((date) => date.id === id)) ||
     state.memories.some((id) => !knownMemories.has(id)) ||
     state.unlockedEventIds.some(
@@ -49,11 +48,6 @@ export function validateGameHistory(state: GameState): void {
     )
   )
     throw new Error("保存データの参照先が見つかりません。");
-  for (const entry of getCities()) {
-    if (state.completedChapters.includes(entry.id) !==
-      state.completedEpisodeIds.some((id) => episodes.some((episode) => episode.id === id && episode.cityId === entry.id)))
-      throw new Error("章の報酬記録が一致しません。");
-  }
   if (state.endingReached !== (state.confessionStatus === "accepted"))
     throw new Error("エンディングの記録が一致しません。");
   if ((state.completedRecoveryCount > 0) !== state.playedDateIds.some(
@@ -88,9 +82,7 @@ export function validateActiveDateState(state: GameState): void {
       !(date.requiredCompletedEpisodeIds ?? []).every((id) =>
         state.completedEpisodeIds.includes(id),
       ) ||
-      !date.requiredCompletedChapters.every((id) =>
-        state.completedChapters.includes(id),
-      )
+      !date.requiredCompletedChapters.every((id) => hasCompletedChapter(state, id))
     )
       throw new Error("デートの保存状態を確認できません。");
     const storyId = activeDateStoryId(date, active);

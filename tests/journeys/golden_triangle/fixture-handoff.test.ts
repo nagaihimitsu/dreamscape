@@ -5,7 +5,7 @@ import { journeyStorage } from "../../../src/persistence/journey-storage";
 import { createDebugState } from "../../../src/dev/debug-state";
 import { clearCity } from "../../../src/dev/scenario-builders";
 import { departToNextCity, getNextCity } from "../../../src/domain/city-travel";
-import { recordFinishedEpisodes } from "../../../src/domain/chapter";
+import { finalizeBattleProgress } from "../../../src/domain/chapter";
 import { createGame, validateGameState, type GameState } from "../../../src/domain/game";
 import { installTestGoldenTriangle } from "./test-journey";
 import { getTravelEventDefinition, sleepAtHotel, waitForTravel } from "../../../src/domain/travel-game";
@@ -112,10 +112,10 @@ describe("three-city journey using development-only fixtures", () => {
     expect(saveGame(storage, completed).ok).toBe(true);
     const reloaded = loadGame(storage);
     if (reloaded.status !== "loaded") throw new Error("Expected completed city to load");
-    const repeated = recordFinishedEpisodes(reloaded.state, "test_delhi");
-    expect(repeated.ap).toBe(completed.ap);
-    expect(repeated.pendingApRewards).toEqual(completed.pendingApRewards);
-    expect(repeated.claimedRewardIds.filter((id) => id === clearReward.id)).toHaveLength(1);
+    // Loading pays nothing again, and no battle result is open that could record the finale twice.
+    expect(reloaded.state).toEqual(completed);
+    expect(finalizeBattleProgress(reloaded.state)).toBe(reloaded.state);
+    expect(reloaded.state.claimedRewardIds.filter((id) => id === clearReward.id)).toHaveLength(1);
   }, 120_000);
 
   it("uses a free overnight at the test hotel without reducing budget or AP", () => {

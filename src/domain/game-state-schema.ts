@@ -90,7 +90,6 @@ export const gameStateSchema = z.object({
   ap: z.number().int().min(0).max(balance.apCap),
   affection: z.number().int(),
   romanceStage: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),
-  completedChapters: uniqueStrings,
   claimedRewardIds: uniqueStrings,
   playedDateIds: uniqueStrings,
   memories: uniqueStrings,

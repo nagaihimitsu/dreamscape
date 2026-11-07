@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { hasCompletedChapter } from "./date-rules";
 import {
   balance,
   episodes,
@@ -84,6 +85,7 @@ describe("integrated tourism, battle, and free time", () => {
       expect(state.discoveredClueIds).toEqual([]);
       state = startTourismBattle(state, state.revision);
       const beforeAffection = state.affection;
+      expect(hasCompletedChapter(state, episode.cityId)).toBe(false);
       state = finishBattle(state, score);
       const battleAP =
         rule("battle_complete").ap +
@@ -92,7 +94,7 @@ describe("integrated tourism, battle, and free time", () => {
       expect(state.ap).toBe(rule("guide_read").ap + battleAP);
       expect(state.affection).toBe(beforeAffection);
       expect(state.completedEpisodeIds).toEqual([episode.id]);
-      expect(state.completedChapters).toEqual([episode.cityId]);
+      expect(hasCompletedChapter(state, episode.cityId)).toBe(true);
       expect(state.completedCityIds).toEqual([]);
       expect(
         state.battleRewardReceipt?.entries.reduce(

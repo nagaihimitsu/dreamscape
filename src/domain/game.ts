@@ -88,7 +88,6 @@ export function createGame(
     recoveryAfterRejection: false,
     completedRecoveryCount: 0,
     romanceStage: initial?.romanceStage ?? 1,
-    completedChapters: [],
     claimedRewardIds: [],
     playedDateIds: [],
     memories: [],

@@ -1,8 +1,9 @@
 import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { describe, expect, it } from "vitest";
-import { recordFinishedEpisodes } from "./chapter";
+import { startBattle } from "./battle";
+import { playBattleToResult } from "../dev/scenario-builders";
 import { zodIssues } from "../../tests/fixtures/zod-issues";
-import { balance, dates } from "../content";
+import { balance, dates, episodes } from "../content";
 import { beginStory, continueStory } from "../story/runtime";
 import {
   advanceDate,
@@ -64,15 +65,20 @@ describe("AP and date rules", () => {
       heroineName: "花",
     });
   });
-  it("prevents mock completion without battle evidence and never repeats rewards", () => {
+  it("refuses an episode completion without battle evidence and never repeats its rewards", () => {
     const initial = createGame();
-    expect(recordFinishedEpisodes(initial)).toBe(initial);
+    const episode = episodes.find((item) => item.id === "milano_duomo_episode")!;
+    expect(() => validateGameState({ ...initial, completedEpisodeIds: [episode.id] }))
+      .toThrow("観光エピソードのクリア記録が一致しません。");
     const state = seedCurrentFreeTime(initial);
     expect(state.ap).toBe(4);
-    expect(recordFinishedEpisodes(state)).toBe(state);
-    expect(
-      recordFinishedEpisodes(validateGameState(JSON.parse(JSON.stringify(state)))),
-    ).toEqual(state);
+    expect(state.completedEpisodeIds).toEqual([episode.id]);
+    // Loading pays nothing, and playing the finished battle again records nothing new.
+    expect(validateGameState(JSON.parse(JSON.stringify(state)))).toEqual(state);
+    const replay = playBattleToResult(startBattle(state, episode.battleId));
+    expect(replay.ap).toBe(state.ap);
+    expect(replay.claimedRewardIds).toEqual(state.claimedRewardIds);
+    expect(replay.completedEpisodeIds).toEqual(state.completedEpisodeIds);
   });
   it("carries unused AP after a date", () => {
     expect(play(freshDate()).ap).toBe(4 - dates[0].apCost);
@@ -186,9 +192,13 @@ describe("Ink choices and reload boundaries", () => {
         },
       }),
     ).toThrow("保存された選択肢が一致しません。");
+    // v14 derives a date's chapter from the episode records; the v13 field is not part of the format.
     expect(() =>
-      validateGameState({ ...state, completedChapters: [] }),
-    ).toThrow("観光エピソードのクリア記録が一致しません。");
+      validateGameState({ ...state, completedChapters: [state.currentCityId] }),
+    ).toThrow(zodIssues({ code: "unrecognized_keys", path: [], keys: ["completedChapters"] }));
+    expect(() =>
+      validateGameState({ ...state, completedEpisodeIds: [] }),
+    ).toThrow("完了したバトルと章の記録が一致しません。");
     expect(() => validateGameState({ ...state, ap: -1 })).toThrow(zodIssues({ code: "too_small", path: ["ap"] }));
   });
 });

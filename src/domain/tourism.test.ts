@@ -1,6 +1,6 @@
 import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { describe, expect, it } from "vitest";
-import { recordFinishedEpisodes } from "./chapter";
+import { finalizeBattleProgress } from "./chapter";
 import {
   battles,
   landmarks,
@@ -164,7 +164,7 @@ describe("optional tourism and discoveries", () => {
 
   it("blocks overlapping romance, names and rewards while allowing visits after the romance ending", () => {
     const fresh = explore();
-    expect(recordFinishedEpisodes(fresh)).toBe(fresh);
+    expect(finalizeBattleProgress(fresh)).toBe(fresh);
     expect(setNames(fresh, "違う", "名前")).toBe(fresh);
     expect(startBattle(fresh, battles[0].id)).toBe(fresh);
     const state = explore(seedCurrentFreeTime(createGame()));

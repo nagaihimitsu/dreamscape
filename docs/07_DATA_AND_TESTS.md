@@ -44,7 +44,7 @@
   "trust": 1,
   "spark": 1,
   "romanceStage": 1,
-  "completedChapters": ["milano"],
+  "completedEpisodeIds": ["milano_duomo_episode"],
   "claimedRewardIds": ["episode_duomo_first"],
   "playedDateIds": ["milano_cafe_01"],
   "memories": ["milano_promise"],

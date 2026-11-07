@@ -21,7 +21,7 @@ function playToEnd(initial: GameState, dateId: string): { state: GameState; text
 
 describe("optional Milan moments", () => {
   it("offers the rain pause only between its two travel milestones and only once", () => {
-    const base = { ...createGame(), completedChapters: ["milano"] };
+    const base = createGame();
     const before = { ...base, completedEpisodeIds: ["milano_duomo_episode"] };
     const during = { ...base, completedEpisodeIds: ["milano_duomo_episode", "milano_galleria_episode"] };
     const after = { ...during, completedEpisodeIds: [...during.completedEpisodeIds, "milano_last_supper_episode"] };
@@ -43,7 +43,6 @@ describe("optional Milan moments", () => {
   it("does not invent a cafe callback after experiencing a different date", () => {
     const state = {
       ...createGame(),
-      completedChapters: ["milano"],
       completedEpisodeIds: ["milano_duomo_episode", "milano_galleria_episode", "milano_last_supper_episode", "milano_castello_episode"],
       memories: ["sound_memory_san_satiro_date_01"],
       ap: 3,

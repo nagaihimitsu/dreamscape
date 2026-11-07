@@ -49,7 +49,6 @@ describe("Milan encounter route", () => {
       ...fresh,
       completedEpisodeIds: ["milano_duomo_episode", "milano_galleria_episode", "milano_last_supper_episode", "milano_castello_episode", "milano_finale"],
       completedCityIds: ["milano"],
-      completedChapters: ["milano"],
       battleRecords: [{ battleId: "milano_galleria_01", firstScore: 0, lastScore: 0, bestScore: 0, attempts: 1 }],
     };
     const budget = initial.travelBudget;
@@ -103,7 +102,7 @@ describe("Milan encounter route", () => {
 describe("Milan place entry", () => {
   it("gates encounters by visited place and case, keeps dormant ones closed and allows a free exit", () => {
     const fresh = createGame("ユウ", "ミオ");
-    const first: GameState = { ...fresh, completedEpisodeIds: ["milano_duomo_episode"], completedChapters: ["milano"] };
+    const first: GameState = { ...fresh, completedEpisodeIds: ["milano_duomo_episode"] };
     // A completed episode in a real save always carries its completed battle.
     const second: GameState = {
       ...first,
