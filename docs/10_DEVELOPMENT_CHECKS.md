@@ -166,6 +166,19 @@
 5. 状態の近道は、実際の操作では数分かかる場合だけ道2を使う。通常の流れで確かめていない場面の表示・操作だけを確かめる場合は道3を使ってよい。どちらも理由をコメントに残す。テストのためにゲーム側の設計・分岐・設定を変えない。
 6. 追加・変更したら上の「不安定さと時間の決まり」に従う。
 
+### 画面の保護を担う関数
+
+保存と別タブの保護の判定は、画面（`App`・`GameApp`・`useGameSession`・`useJourneyLock`）ではなく次の関数が持ち、画面はそれを呼ぶだけにする。判定を変えるときは単体テストを先に直す。E2Eは画面からその関数まで通じていることを代表の流れで確かめる。
+
+| 保護 | 関数（単体テスト） | E2E |
+| --- | --- | --- |
+| 別タブ：同じ旅行編を開いている間は待つ画面と「再試行」。前のページが閉じる間は少し待ち、同じページの前の画面の解放を待ってから取る。画面が消える・ページが隠れると手放す | `holdJourneyLock`（`src/persistence/journey-lock.ts`。偽のLockManagerで `journey-lock.test.ts`） | `save-load.spec.ts` の別タブ |
+| Web Locksのない・要求を拒むブラウザでは旅行編を開かず、「再試行」も出さない（Debugと、保存のない準備中の案内は除く） | `holdJourneyLock`・`journeyLockNotice`・`needsJourneyLock`（同上） | なし（Chromiumは対応） |
+| 手動セーブで保存していない進行は、旅行編の切り替え・「ロード」・ページを閉じる前に確かめる（自動保存ならページを閉じても尋ねない） | `hasUnsavedProgress`・`leaveStep`（`src/app/unsaved-progress.ts`、`unsaved-progress.test.ts`） | `save-load.spec.ts` の手動セーブ（再読み込み） |
+| 読めないセーブから新しく始める：手動セーブなら最初の「セーブ」まで元のまま残し、そのとき元のバイト列を退避する。自動保存なら先に退避する。表示の後に別タブが変えたデータと、ほかの旅行編のセーブは置き換えない | `writeNewGame`・`writeExplicitSave`（`src/app/save-recovery.ts`、`save-recovery.test.ts`） | `save-load.spec.ts` の読めないセーブ（自動保存で退避） |
+| 保存データの消去：確認の前後で保存が変わっていれば消さない | `checkDeleteRequest`（`src/app/save-deletion.ts`）、`deleteSaveData` | `save-load.spec.ts` の新しい版のセーブ |
+| 英語ノート：壊れた記録・古いタブからの上書きを拒む | `loadLearning`・`commitLearning`（`src/features/learning/learning-storage.ts`） | なし |
+
 ## Debug起動URL
 
 `npm run dev` で開いたページのURLに `?debug` だけを付けると、Debugの設定画面（場面の確認）が開く。項目を足すと、設定画面を通らずにその場面を直接開く。見本の編の場面は `npm run dev:sample` で開く。URLの形式は開発用で、変えるときに互換は保証しない。読み取りとURLの組み立ては `src/dev/debug-query.ts`（ゲームのデータを読まない純粋な関数。PlaywrightなどNodeからも使える）、データとの照合は `src/dev/debug-state.ts` の `resolveDebugLaunch` が行う。
