@@ -189,9 +189,9 @@ describe("journey folders", () => {
       await expect(buildContent(root)).resolves.toBeDefined();
       const merged = learningDetailsSchema.parse(mirror("learning/details.json"));
       expect(Object.entries(merged.questions).map(([id, detail]) => [id, detail.storyId])).toEqual([
-        ["sound_supper_1", "learning/milano_english"],
-        ["sound_supper_2", "learning/milano_english"],
-        ["sound_supper_3", "learning/milano_english"],
+        ["milano_last_supper_q1", "learning/milano_english"],
+        ["milano_last_supper_q2", "learning/milano_english"],
+        ["milano_last_supper_q3", "learning/milano_english"],
         ["gt_agra_fort_jahanara_care", "learning/gt_english"],
       ]);
       expect(Object.keys(generated("stories.json"))).toEqual(expect.arrayContaining(["learning/milano_english", "learning/gt_english"]));

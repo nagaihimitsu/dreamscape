@@ -5,7 +5,7 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "sound_scala_1",
+      "id": "milano_la_scala_b_q1",
       "questionEn": "What could a family do with its theatre box in early La Scala?",
       "options": [
         {
@@ -44,7 +44,7 @@
       "difficulty": "easy"
     },
     {
-      "id": "sound_scala_2",
+      "id": "milano_la_scala_b_q2",
       "questionEn": "Which record challenges the claim that the stalls always had fixed seats?",
       "options": [
         {
@@ -83,7 +83,7 @@
       "difficulty": "medium"
     },
     {
-      "id": "sound_scala_3",
+      "id": "milano_la_scala_b_q3",
       "questionEn": "What did people do among the ruins before the theatre fully reopened?",
       "options": [
         {

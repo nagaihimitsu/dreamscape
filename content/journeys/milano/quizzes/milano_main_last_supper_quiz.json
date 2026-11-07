@@ -5,7 +5,7 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "sound_supper_1",
+      "id": "milano_last_supper_q1",
       "questionEn": "Why does the painted room seem to share the friars' light?",
       "options": [
         {
@@ -44,7 +44,7 @@
       "difficulty": "easy"
     },
     {
-      "id": "sound_supper_2",
+      "id": "milano_last_supper_q2",
       "questionEn": "Matthew reaches toward Jesus but looks away. What does this show?",
       "options": [
         {
@@ -83,7 +83,7 @@
       "difficulty": "medium"
     },
     {
-      "id": "sound_supper_3",
+      "id": "milano_last_supper_q3",
       "questionEn": "What freedom did painting on dry plaster give Leonardo?",
       "options": [
         {

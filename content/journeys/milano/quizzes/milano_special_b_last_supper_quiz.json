@@ -5,7 +5,7 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "last_supper_b_slow_revision",
+      "id": "milano_last_supper_b_slow_revision",
       "questionEn": "Why was painting on dry plaster useful to Leonardo?",
       "options": [
         {
@@ -52,7 +52,7 @@
       "difficulty": "easy"
     },
     {
-      "id": "last_supper_b_doorway_counterexample",
+      "id": "milano_last_supper_b_doorway_counterexample",
       "questionEn": "Which reason best challenges the claim that Leonardo's technique caused ALL the damage?",
       "options": [
         {
@@ -111,7 +111,7 @@
       "difficulty": "medium"
     },
     {
-      "id": "last_supper_b_preventive_care",
+      "id": "milano_last_supper_b_preventive_care",
       "questionEn": "Why does the museum filter the air and limit visitor numbers?",
       "options": [
         {

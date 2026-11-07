@@ -77,7 +77,7 @@ it("integrates date and battle annotations through the real content pipeline", a
     const learningDetails = JSON.parse(await readFile(path.join(fixture, "content/journeys/milano/learning/details.json"), "utf8"));
     await writeFile(path.join(fixture, "content/journeys/milano/presentation/dialogue-reactions.json"), JSON.stringify({
       schemaVersion: 1,
-      entries: [{ storyId: learningDetails.questions.sound_supper_1.storyId, speaker: "heroine", text: "「Which descriptionが、この文では主語だね。」", targetCharacterId: "heroine", mark: "question" }],
+      entries: [{ storyId: learningDetails.questions.milano_last_supper_q1.storyId, speaker: "heroine", text: "「Which descriptionが、この文では主語だね。」", targetCharacterId: "heroine", mark: "question" }],
     }));
     await expect(buildContent(fixture, false)).rejects.toThrow("Unsupported dialogue reaction story");
   } finally {

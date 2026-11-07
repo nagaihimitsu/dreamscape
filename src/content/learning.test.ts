@@ -18,19 +18,19 @@ describe("learning content", () => {
     const published = ids.flatMap((id) => battleQuizzes[id].questions.map((question) => question.id));
     expect(Object.keys(catalog.questions).sort()).toEqual([...new Set(published)].sort());
     expect(published).toEqual(expect.arrayContaining([
-      "last_supper_b_doorway_counterexample", "last_supper_c_shared_focus",
-      "sound_scala_2", "sound_brera_3",
+      "milano_last_supper_b_doorway_counterexample", "milano_last_supper_c_shared_focus",
+      "milano_la_scala_b_q2", "milano_brera_c_q3",
     ]));
     for (const entry of Object.values(catalog.questions))
       expect(Object.keys(entry.optionsJa).sort()).toEqual(["A", "B", "C"]);
   });
   it("rejects missing translations and changed wording, options or answer", () => {
-    const id = "sound_supper_1";
+    const id = "milano_last_supper_q1";
     const expected = {
-      question: "Translation source changed: sound_supper_1",
-      option: "Translation source changed: sound_supper_1",
-      answer: "Translation source changed: sound_supper_1",
-      missing: "Missing translation: sound_supper_1",
+      question: "Translation source changed: milano_last_supper_q1",
+      option: "Translation source changed: milano_last_supper_q1",
+      answer: "Translation source changed: milano_last_supper_q1",
+      missing: "Missing translation: milano_last_supper_q1",
     };
     for (const field of ["question", "option", "answer", "missing"] as const) {
       const data = structuredClone(raw) as any;
@@ -46,16 +46,16 @@ describe("learning content", () => {
   });
   it("rejects a missing option and non-Japanese translation", () => {
     const missing = structuredClone(raw) as any;
-    delete missing.questions.sound_supper_1.optionsJa.A;
-    expect(() => learningCatalogSchema.parse(missing)).toThrow(zodIssues({ code: "invalid_type", path: ["questions", "sound_supper_1", "optionsJa", "A"] }));
+    delete missing.questions.milano_last_supper_q1.optionsJa.A;
+    expect(() => learningCatalogSchema.parse(missing)).toThrow(zodIssues({ code: "invalid_type", path: ["questions", "milano_last_supper_q1", "optionsJa", "A"] }));
     const english = structuredClone(raw);
-    english.questions.sound_supper_1.questionJa = "English only";
-    expect(() => learningCatalogSchema.parse(english)).toThrow(zodIssues({ code: "custom", path: ["questions", "sound_supper_1", "questionJa"], message: "Expected Japanese text" }));
+    english.questions.milano_last_supper_q1.questionJa = "English only";
+    expect(() => learningCatalogSchema.parse(english)).toThrow(zodIssues({ code: "custom", path: ["questions", "milano_last_supper_q1", "questionJa"], message: "Expected Japanese text" }));
   });
   it("checks detailed explanations refer to actual English", () => {
     const value = learningDetailsSchema.parse(details);
     expect(() => validateLearningDetails(value, battleQuizzes)).not.toThrow();
-    value.questions.sound_supper_1.topics[0].targetEn =
+    value.questions.milano_last_supper_q1.topics[0].targetEn =
       "not in sentence";
     expect(() => validateLearningDetails(value, battleQuizzes)).toThrow(
       "target missing",
@@ -70,8 +70,8 @@ describe("learning content", () => {
     const issues = (value: unknown) => learningDetailsSchema.safeParse(value).error?.issues
       .map((issue) => ({ code: issue.code, path: issue.path }));
     const withoutStory = structuredClone(details) as any;
-    delete withoutStory.questions.sound_supper_2.storyId;
-    expect(issues(withoutStory)).toEqual([{ code: "invalid_type", path: ["questions", "sound_supper_2", "storyId"] }]);
+    delete withoutStory.questions.milano_last_supper_q2.storyId;
+    expect(issues(withoutStory)).toEqual([{ code: "invalid_type", path: ["questions", "milano_last_supper_q2", "storyId"] }]);
     // One story for the whole file is no longer a field.
     expect(issues({ ...structuredClone(details), storyId: "learning/milano_english" }))
       .toEqual([{ code: "unrecognized_keys", path: [] }]);

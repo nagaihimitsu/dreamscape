@@ -5,7 +5,7 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "sound_castle_1",
+      "id": "milano_castello_q1",
       "questionEn": "Who once needed the room that now holds the Rondanini Pietà?",
       "options": [
         {
@@ -44,7 +44,7 @@
       "difficulty": "easy"
     },
     {
-      "id": "sound_castle_2",
+      "id": "milano_castello_q2",
       "questionEn": "What marked Michelangelo's work on his last Pietà?",
       "options": [
         {
@@ -83,7 +83,7 @@
       "difficulty": "medium"
     },
     {
-      "id": "sound_castle_3",
+      "id": "milano_castello_q3",
       "questionEn": "What can a visitor do in the present display of the Pietà?",
       "options": [
         {

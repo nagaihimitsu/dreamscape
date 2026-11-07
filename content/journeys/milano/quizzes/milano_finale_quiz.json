@@ -5,7 +5,7 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "sound_finale_1",
+      "id": "milano_finale_q1",
       "questionEn": "What did the Darsena offer Milan before it became a meeting place for evening walks?",
       "options": [
         {
@@ -44,7 +44,7 @@
       "difficulty": "easy"
     },
     {
-      "id": "sound_finale_2",
+      "id": "milano_finale_q2",
       "questionEn": "Which load linked the waterways to the Duomo building site?",
       "options": [
         {
@@ -83,7 +83,7 @@
       "difficulty": "medium"
     },
     {
-      "id": "sound_finale_3",
+      "id": "milano_finale_q3",
       "questionEn": "Why limit the number of people in the old refectory?",
       "options": [
         {
@@ -122,7 +122,7 @@
       "difficulty": "easy"
     },
     {
-      "id": "sound_finale_4",
+      "id": "milano_finale_q4",
       "questionEn": "Why could the stalls at early La Scala serve as a dance floor?",
       "options": [
         {
@@ -161,7 +161,7 @@
       "difficulty": "medium"
     },
     {
-      "id": "sound_finale_5",
+      "id": "milano_finale_q5",
       "questionEn": "Which trace of work can you still find in Vicolo dei Lavandai?",
       "options": [
         {

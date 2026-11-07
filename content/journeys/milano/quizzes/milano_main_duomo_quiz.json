@@ -5,7 +5,7 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "sound_duomo_1",
+      "id": "milano_duomo_q1",
       "questionEn": "Why were earlier places of worship buried here?",
       "options": [
         {
@@ -44,7 +44,7 @@
       "difficulty": "easy"
     },
     {
-      "id": "sound_duomo_2",
+      "id": "milano_duomo_q2",
       "questionEn": "What once happened in the pool below the square?",
       "options": [
         {
@@ -83,7 +83,7 @@
       "difficulty": "medium"
     },
     {
-      "id": "sound_duomo_3",
+      "id": "milano_duomo_q3",
       "questionEn": "How can a donor leave a name in the history of the Duomo today?",
       "options": [
         {

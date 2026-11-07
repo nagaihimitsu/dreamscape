@@ -10,7 +10,7 @@
   },
   "questions": [
     {
-      "id": "last_supper_dry_technique",
+      "id": "milano_last_supper_example_dry_technique",
       "questionEn": "Why did Leonardo choose to paint on dry plaster?",
       "options": [
         {"id": "A", "textEn": "To give himself time to change details"},
@@ -24,7 +24,7 @@
       "historicalClaimType": "documented_fact"
     },
     {
-      "id": "last_supper_pigment_absorption",
+      "id": "milano_last_supper_example_pigment_absorption",
       "questionEn": "What made Leonardo's painting technique more fragile than traditional fresco?",
       "options": [
         {"id": "A", "textEn": "The pigments stayed on the surface instead of being absorbed"},
@@ -38,7 +38,7 @@
       "historicalClaimType": "documented_fact"
     },
     {
-      "id": "last_supper_early_damage",
+      "id": "milano_last_supper_example_early_damage",
       "questionEn": "When did the painting begin to deteriorate?",
       "options": [
         {"id": "A", "textEn": "Soon after its completion"},

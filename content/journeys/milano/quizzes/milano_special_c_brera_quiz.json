@@ -5,7 +5,7 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "sound_brera_1",
+      "id": "milano_brera_c_q1",
       "questionEn": "What draws viewers so close to Mantegna's Dead Christ?",
       "options": [
         {
@@ -44,7 +44,7 @@
       "difficulty": "easy"
     },
     {
-      "id": "sound_brera_2",
+      "id": "milano_brera_c_q2",
       "questionEn": "What did the public show at Brera in 1859 celebrate?",
       "options": [
         {
@@ -83,7 +83,7 @@
       "difficulty": "medium"
     },
     {
-      "id": "sound_brera_3",
+      "id": "milano_brera_c_q3",
       "questionEn": "What reading links the clothes in The Kiss with its first public show?",
       "options": [
         {

@@ -5,7 +5,7 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "last_supper_c_apostle_groups",
+      "id": "milano_last_supper_c_apostle_groups",
       "questionEn": "How are the twelve apostles arranged around Christ?",
       "options": [
         {
@@ -52,7 +52,7 @@
       "difficulty": "easy"
     },
     {
-      "id": "last_supper_c_room_extension",
+      "id": "milano_last_supper_c_room_extension",
       "questionEn": "What effect does the painted room create for people in the refectory?",
       "options": [
         {
@@ -111,7 +111,7 @@
       "difficulty": "medium"
     },
     {
-      "id": "last_supper_c_shared_focus",
+      "id": "milano_last_supper_c_shared_focus",
       "questionEn": "Which conclusion about the composition is best supported by the two pieces of evidence?",
       "options": [
         {

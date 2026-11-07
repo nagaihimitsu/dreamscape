@@ -2,6 +2,8 @@
 
 本番23問の題材を新基準で棚卸しした暫定案。維持候補は史実・文章の承認を意味しない。変更案は未検証であり、既存の問題・正解・脚本は変更しない。資料の該当箇所を再確認してから採否を決める。
 
+問題IDは、セーブ版 v14 で改名した（例：`last_supper_b_slow_revision` → `milano_last_supper_b_slow_revision`）。表で今のゲームの問題を指すのは `milano_last_supper_b_…`・`milano_last_supper_c_…` の6件で、新しい名前にしてある。ほかのIDは下書きの案の名前で、ゲームのIDではない。
+
 | 問題ID | 区分 | 理由 | 切り口の案 |
 | --- | --- | --- | --- |
 | `castello_changing_roles` | 切り口を変更 | 砦・宮廷・博物館の列挙 | 城の所有者や市民が建物をどう使い直したかを追う。 |
@@ -16,12 +18,12 @@
 | `last_supper_central_triangle` | 切り口を変更 | 配置の識別に留まる | 周囲の反応と中央の静けさの対比を問う。 |
 | `last_supper_vanishing_point` | 切り口を変更 | 一点の位置の識別が中心 | 視線の集まり方で場面がどう見えるかを問う。 |
 | `last_supper_dry_tradeoff` | 維持候補 | 制作上の自由と損傷の代償がある | 描き直す自由を選ぶことの代償から入る。 |
-| `last_supper_b_slow_revision` | 切り口を変更 | 修正の利点の確認が中心 | 描き直したい画家の選択として問う。 |
-| `last_supper_b_doorway_counterexample` | 維持候補 | 後世の出入口が絵を変えた事件がある | 絵の下を人が通るようにした後世の改変から問う。 |
-| `last_supper_b_preventive_care` | 切り口を変更 | 保存設備の説明が中心 | 人の訪問と保存を両立する選択を問う。 |
-| `last_supper_c_apostle_groups` | 切り口を変更 | 人数の数え上げ | 使徒たちの反応をまとまりとして見る問いにする。 |
-| `last_supper_c_room_extension` | 維持候補 | 絵が実際の部屋へ続くように見える | 食堂にいる人の視点で空間を問い直す。 |
-| `last_supper_c_shared_focus` | 維持候補 | 異なる二つの構図の結びつき | 観察から中央へ向かう視線の解釈を問う。 |
+| `milano_last_supper_b_slow_revision` | 切り口を変更 | 修正の利点の確認が中心 | 描き直したい画家の選択として問う。 |
+| `milano_last_supper_b_doorway_counterexample` | 維持候補 | 後世の出入口が絵を変えた事件がある | 絵の下を人が通るようにした後世の改変から問う。 |
+| `milano_last_supper_b_preventive_care` | 切り口を変更 | 保存設備の説明が中心 | 人の訪問と保存を両立する選択を問う。 |
+| `milano_last_supper_c_apostle_groups` | 切り口を変更 | 人数の数え上げ | 使徒たちの反応をまとまりとして見る問いにする。 |
+| `milano_last_supper_c_room_extension` | 維持候補 | 絵が実際の部屋へ続くように見える | 食堂にいる人の視点で空間を問い直す。 |
+| `milano_last_supper_c_shared_focus` | 維持候補 | 異なる二つの構図の結びつき | 観察から中央へ向かう視線の解釈を問う。 |
 | `milano_finale_materials` | 差し替え候補 | 二種類の材料の組合せ暗記 | 複数の場所での人の選択を結び直す。 |
 | `milano_finale_routes` | 切り口を変更 | 運搬と通路の事実の組合せ | 人や物の移動が街に与えた変化を問う。 |
 | `milano_finale_painted_spaces` | 維持候補 | 二つの空間の見え方を比べられる | 壁の絵が訪れた人に与える印象を比較する。 |

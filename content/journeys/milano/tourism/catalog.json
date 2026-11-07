@@ -878,7 +878,7 @@
       "descriptionJa": "初期には平土間の椅子を動かせた。座りたい客は椅子を借り、床は舞踏会など別の用途にも使われた。",
       "factId": "scala_mobile_fact",
       "relatedQuestionIds": [
-        "sound_scala_2"
+        "milano_la_scala_b_q2"
       ],
       "region": null,
       "sources": [
@@ -900,7 +900,7 @@
       "descriptionJa": "桟敷を所有する家族は、各々の好みで内装を選ぶことができた。",
       "factId": "scala_box_fact",
       "relatedQuestionIds": [
-        "sound_scala_1"
+        "milano_la_scala_b_q1"
       ],
       "region": null,
       "sources": [
@@ -922,7 +922,7 @@
       "descriptionJa": "電灯の導入によって客席は明るく照らされた。資料は椅子の固定方法には触れない。",
       "factId": "scala_light_fact",
       "relatedQuestionIds": [
-        "sound_scala_2"
+        "milano_la_scala_b_q2"
       ],
       "region": null,
       "sources": [
@@ -944,7 +944,7 @@
       "descriptionJa": "美術館は赤と緑、青と白などの衣装の配色を、イタリアとフランスの旗への暗示と解説している。",
       "factId": "brera_colours_fact",
       "relatedQuestionIds": [
-        "sound_brera_3"
+        "milano_brera_c_q3"
       ],
       "region": null,
       "sources": [
@@ -966,8 +966,8 @@
       "descriptionJa": "1859年、統一運動の進展を祝うブレラの展覧会で《接吻》が発表された。",
       "factId": "brera_show_fact",
       "relatedQuestionIds": [
-        "sound_brera_2",
-        "sound_brera_3"
+        "milano_brera_c_q2",
+        "milano_brera_c_q3"
       ],
       "region": null,
       "sources": [
@@ -989,7 +989,7 @@
       "descriptionJa": "マンテーニャ《死せるキリスト》では身体の短縮表現が鑑賞者を場面に引き込む。",
       "factId": "brera_view_fact",
       "relatedQuestionIds": [
-        "sound_brera_1"
+        "milano_brera_c_q1"
       ],
       "region": null,
       "sources": [
@@ -1011,7 +1011,7 @@
       "descriptionJa": "《接吻》は発注者の遺贈で1886年に絵画館の所蔵になった。これは公開当時とは別の出来事。",
       "factId": "brera_legacy_fact",
       "relatedQuestionIds": [
-        "sound_brera_2"
+        "milano_brera_c_q2"
       ],
       "region": null,
       "sources": [
