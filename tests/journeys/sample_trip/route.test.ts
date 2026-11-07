@@ -11,7 +11,7 @@ import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 import { journeyStorage } from "../../../src/persistence/journey-storage";
 import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "../../../src/domain/battle";
 import { leaveBattleResult } from "../../../src/domain/chapter";
-import { advanceEncounter, chooseEncounter, continueTourismEncounters, finishEncounter, proceedFromTourism } from "../../../src/domain/encounter";
+import { advanceEncounter, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter, proceedFromTourism } from "../../../src/domain/encounter";
 import { advanceCityEpilogue, startCityEpilogue } from "../../../src/domain/epilogue";
 import { advanceDate, chooseDate, createGame, finishDate, validateGameState, type GameState } from "../../../src/domain/game";
 import { advanceTourismGuide, discoverClue } from "../../../src/domain/tourism";
@@ -93,7 +93,7 @@ function playEncounter(state: GameState, ...optionIds: string[]): GameState {
       const choice = frame.choices.find((item) => item.optionId === optionId);
       expect(choice, `option ${optionId}`).toBeDefined();
       s = act(s, (current) => chooseEncounter(current, choice!.index, current.revision));
-    } else if (frame.ended) s = act(s, (current) => finishEncounter(current, current.revision));
+    } else if (encounterCanFinish(s)) s = act(s, (current) => finishEncounter(current, current.revision));
     else s = act(s, (current) => advanceEncounter(current, current.revision));
     // Like GameApp: when a place encounter ends, the next eligible one at the same place starts.
     if (!s.activeEncounter) s = restore(continueTourismEncounters(before, s, () => 0));

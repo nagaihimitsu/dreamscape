@@ -4,13 +4,28 @@ import { getJourney } from "../../../src/content/journeys";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 import { journeyStorage } from "../../../src/persistence/journey-storage";
 import { advanceBattle, answerBattle, getActiveBattleContent } from "../../../src/domain/battle";
-import { leaveBattleResult, startEpisode } from "../../../src/domain/chapter";
+import { getBattleResultExits, leaveBattleResult, startEpisode } from "../../../src/domain/chapter";
 import { advanceCompletedJourneyCity, getNextCity } from "../../../src/domain/city-travel";
 import { isDateUnlockedForTravel } from "../../../src/domain/date-rules";
-import { advanceCityEpilogue, completeArrivalLogo, startCityArrival } from "../../../src/domain/epilogue";
+import { advanceCityEpilogue, completeArrivalLogo, startCityArrival, startCityEpilogue } from "../../../src/domain/epilogue";
 import { advanceDate, chooseDate, createGame, finishDate, startDate, validateGameState, type GameState } from "../../../src/domain/game";
+import { applyPlayerAction, playerActionChange } from "../../../src/domain/player-action";
 import { advanceTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
 import { correctAnswer, playBattleToResult, wrongAnswer } from "../../../src/dev/scenario-builders";
+
+/**
+ * The result screen's way out, as the screen offers it: a sightseeing result offers only 「自由時間へ」;
+ * a city finale's result offers only 「エピローグへ進む」, since the Golden Triangle moves on after
+ * the epilogue (manifest cityTransition after_epilogue).
+ */
+function closeBattleResult(result: GameState): GameState {
+  const finale = getActiveBattleContent(result.activeBattle!).battle.scope === "city_finale";
+  expect(getBattleResultExits(result)).toEqual({ epilogue: finale, leave: !finale });
+  if (!finale) return leaveBattleResult(result, result.revision);
+  const epilogue = applyPlayerAction(result, playerActionChange({ kind: "battle_epilogue" }, () => 0));
+  expect(epilogue.activeBattle).toBeNull();
+  return epilogue;
+}
 
 /** Exercise the actual published scripts, questions and definitions, not Debug fixtures. */
 describe("authored Golden Triangle journey", () => {
@@ -42,7 +57,7 @@ describe("authored Golden Triangle journey", () => {
     // Every step of the battle is saved and loaded again on the way to its result.
     const playBattle = (initial: GameState, correct: boolean) => {
       const result = playBattleToResult(checkpoint(initial), { answer: correct ? correctAnswer : wrongAnswer, after: (next) => checkpoint(next) });
-      return checkpoint(leaveBattleResult(result, result.revision));
+      return checkpoint(closeBattleResult(result));
     };
     for (const [cityIndex, { id: cityId }] of journey.cities.entries()) {
       expect(state.currentCityId).toBe(cityId);
@@ -97,13 +112,13 @@ describe("authored Golden Triangle journey", () => {
       const finale = episodes.find((episode) => episode.cityId === cityId && episode.kind === "city_finale")!;
       // A spent budget must not be reset to the initial grant at the next city.
       state = validateGameState({ ...state, travelBudget: state.travelBudget - 111 });
+      // The finale's result opens the city's epilogue (its only way out); the journey stays in the city.
       state = playBattle(startEpisode(state, finale.id), false);
       expect(state.completedCityIds).toContain(cityId);
       expect(state.battleRecords.find((record) => record.battleId === finale.battleId)?.bestScore).toBe(0);
       const completed = state;
-      state = advanceCompletedJourneyCity(state, state.revision);
       expect(state.currentCityId).toBe(cityId);
-      expect(state.activeEpilogue).not.toBeNull();
+      expect(state.activeEpilogue?.episodeId).toBe(finale.id);
       expect(advanceCompletedJourneyCity(state, state.revision)).toBe(state);
       for (let steps = 0; state.activeEpilogue; steps++) {
         expect(steps).toBeLessThan(60);
@@ -180,14 +195,15 @@ it("finishes the three-city story without any date or optional memory, in altern
       }
       expect(state.activeBattle?.score).toBe(score);
       const rewarded = state;
-      state = leaveBattleResult(state, state.revision);
+      state = closeBattleResult(state);
       expect(leaveBattleResult(state, rewarded.revision)).toBe(state);
+      expect(startCityEpilogue(state, state.currentCityId, rewarded.revision)).toBe(state);
       state = roundtrip(state);
       expect(state.playedDateIds).toEqual([]);
       expect(state.memories).toEqual([]);
       expect(state.endingReached).toBe(false);
     }
-    state = advanceCompletedJourneyCity(state, state.revision);
+    expect(state.activeEpilogue?.episodeId).toBe(finale.id);
     for (let step = 0; state.activeEpilogue; step++) {
       expect(step).toBeLessThan(120);
       expect(state.activeEpilogue.frame.speaker).not.toBe("player");

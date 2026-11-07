@@ -5,7 +5,7 @@ import { getBattleAvailability, startBattle } from "./battle";
 import { clearCity, playBattleToResult } from "../dev/scenario-builders";
 import { departToNextCity, getNextCity } from "./city-travel";
 import { getEpisodeAvailability, leaveBattleResult, startEpisode } from "./chapter";
-import { advanceEncounter, chooseEncounter, finishEncounter, proceedFromTourism, startEncounter } from "./encounter";
+import { advanceEncounter, chooseEncounter, encounterCanFinish, finishEncounter, proceedFromTourism, startEncounter } from "./encounter";
 import { startCityEpilogue } from "./epilogue";
 import { createGame, getDateAvailability, startDate, validateGameState, type GameState } from "./game";
 import { installTestCity } from "../dev/test-cities";
@@ -116,7 +116,7 @@ describe("two registered cities through the real game runtime", () => {
       expect(count).toBeLessThan(60);
       const active = cityState.activeEncounter;
       if (active.frame.choices.length) cityState = chooseEncounter(cityState, active.frame.choices[0].index, cityState.revision);
-      else if (active.frame.ended) cityState = finishEncounter(cityState, cityState.revision);
+      else if (encounterCanFinish(cityState)) cityState = finishEncounter(cityState, cityState.revision);
       else cityState = advanceEncounter(cityState, cityState.revision);
     }
     expect(cityState.completedEncounterIds).toContain("test_encounter");
