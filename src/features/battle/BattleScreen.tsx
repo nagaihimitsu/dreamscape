@@ -31,6 +31,16 @@ import { InteractiveEnglish } from "../learning/InteractiveEnglish";
 import type { Learning } from "../learning/useLearning";
 import "./battle.css";
 
+/**
+ * The result heading shows the English word as decoration; screen readers read
+ * the Japanese instead (the page is Japanese, the English part is marked as such).
+ */
+const outcomeHeadings = {
+  perfect: { en: "PERFECT VICTORY", ja: "完全勝利" },
+  victory: { en: "VICTORY", ja: "勝利" },
+  defeat: { en: "DEFEAT", ja: "敗北" },
+} as const;
+
 interface Props {
   learning: Learning;
   onEnglish: (questionId?: string) => void;
@@ -79,6 +89,7 @@ export function BattleScreen({
   const { battle, quiz } = getActiveBattleContent(active);
   const question = quiz.questions[active.roundIndex];
   const answer = active.answers[active.roundIndex];
+  const outcome = getBattleOutcome(active.score, quiz.questions.length);
   const perfectAnswer = active.phase === "feedback" && !!answer?.correct &&
     active.answers.length === quiz.questions.length && active.score === quiz.questions.length;
   const record = game.battleRecords.find((item) => item.battleId === battle.id);
@@ -400,13 +411,8 @@ export function BattleScreen({
             <p className="eyebrow">今回の結果</p>
             <div className="battle-result-heading">
               <h2 className="outcome">
-                {
-                  {
-                    perfect: "PERFECT VICTORY",
-                    victory: "VICTORY",
-                    defeat: "DEFEAT",
-                  }[getBattleOutcome(active.score, quiz.questions.length)]
-                }
+                <span lang="en" aria-hidden="true">{outcomeHeadings[outcome].en}</span>
+                <span className="sr-only">{outcomeHeadings[outcome].ja}</span>
               </h2>
               <p className="battle-score">
                 <strong>{active.score}</strong>
