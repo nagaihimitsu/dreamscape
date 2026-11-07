@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { defaultJourneyId, getJourney } from "../content/journeys";
 import { journeyStorage } from "../persistence/journey-storage";
 import { useJourneyLock } from "../persistence/useJourneyLock";
+import { journeyLockNotice, needsJourneyLock } from "../persistence/journey-lock";
 import { loadJourneyDraft, promoteJourneyDraft } from "../persistence/journey-preparation";
 import { PreparingJourney } from "../features/journey/PreparingJourney";
 import { UnavailableJourney } from "../features/journey/UnavailableJourney";
@@ -30,20 +31,15 @@ export default function App(props: AppProps = {}) {
     setLockAttempt((value) => value + 1);
   }, []);
   const journey = getJourney(journeyId);
-  const readOnlyPreparation = journey?.status === "preparing" && !journey.initialState;
-  // Debug storage is isolated and a read-only preparation has no save to edit,
-  // so neither needs the cross-tab storage lock.
-  const lockStatus = useJourneyLock(journeyId, scopedStorage, lockAttempt, !props.debug && !readOnlyPreparation);
+  const lockStatus = useJourneyLock(journeyId, scopedStorage, lockAttempt, needsJourneyLock(journey, !!props.debug));
   // Debug supplies an isolated, pre-populated game; do not alter its storage.
   if (props.debug) return <GameApp {...props} />;
-  if (lockStatus !== "ready") return <div className="app-shell"><main id="main"><section className="paper intro">
+  const lockNotice = journeyLockNotice(lockStatus);
+  if (lockNotice) return <div className="app-shell"><main id="main"><section className="paper intro">
     <JourneySelection value={journeyId} onChange={switchJourney} restoreFocus={restoreSelectorFocus}
       onFocusRestored={lockStatus === "loading" ? undefined : selectorFocusRestored} />
-    <p role={lockStatus === "loading" ? "status" : "alert"}>{lockStatus === "loading"
-      ? "保存データを確認しています。"
-      : lockStatus === "busy" ? "この旅行編は別のタブで開いています。そちらを閉じてから再試行してください。"
-      : "このブラウザでは別タブとの保存競合を防げないため、この旅行編を開けません。対応ブラウザをご利用ください。"}</p>
-    {lockStatus === "busy" && <button type="button" className="secondary" onClick={retryLock}>再試行</button>}
+    <p role={lockNotice.role}>{lockNotice.message}</p>
+    {lockNotice.retry && <button type="button" className="secondary" onClick={retryLock}>再試行</button>}
   </section></main></div>;
   if (journey?.status === "preparing") {
     return journey.initialState
