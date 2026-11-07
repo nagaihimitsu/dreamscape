@@ -482,14 +482,15 @@ footer span {
 .unrevealed {
   visibility: hidden;
 }
-/* Right after a press on a story scene's control, its line takes no taps:
+/* Right after a press on a control, its story scene's line takes no taps:
    the second tap of the double tap must not skip the line the press brought
-   (useSceneTap). A tap there falls through to the scene, which ignores it. */
+   (useSceneTap). A tap there falls through to the scene, which ignores it.
+   data-dialogue-line = DIALOGUE_LINE_ATTRIBUTE (src/components/scene-tap.ts). */
 [data-tap-settling] [data-dialogue-line] {
   pointer-events: none;
 }
-/* Right after a story scene ends, no tap reaches the next screen: the second
-   tap of a double tap would press whatever moved under the finger (tap-hold.ts). */
+/* Right after a story scene starts or ends, no tap reaches the new screen: the
+   second tap of a double tap would press whatever moved under the finger (tap-hold.ts). */
 :root[data-tap-hold] body * {
   pointer-events: none !important;
 }

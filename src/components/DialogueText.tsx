@@ -1,5 +1,6 @@
 import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "react";
 import { dialogueObstructed } from "./dialogueObstructed";
+import { DIALOGUE_LINE_ATTRIBUTE } from "./scene-tap";
 
 /** What a tap on the line does, for a tap elsewhere on the scene (useSceneTap). */
 export interface DialogueTextHandle {
@@ -82,7 +83,7 @@ export function DialogueText({
         ref={textRef}
         className="dialogue-text"
         data-testid="dialogue-text"
-        data-dialogue-line
+        {...{ [DIALOGUE_LINE_ATTRIBUTE]: "" }}
         data-ready={ready}
         role={onAdvance ? "button" : undefined}
         tabIndex={onAdvance ? 0 : undefined}

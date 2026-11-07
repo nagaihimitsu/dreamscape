@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { leftStoryScene, storySceneOnScreen, type SceneState } from "./scene-exit";
+import { storySceneChanged, storySceneOnScreen, type SceneState } from "./scene-exit";
 
 const none: SceneState = { activeEncounter: null, activeEpilogue: null, activeTourism: null, activeBattle: null, activeDate: null };
 const date = { ...none, activeDate: { runId: "date-run-1" } };
@@ -11,8 +11,9 @@ const epilogue = { ...none, activeEpilogue: { episodeId: "milano_finale" } };
 const arrival = { ...none, activeEpilogue: { episodeId: "next_city_first", kind: "arrival" as const } };
 const encounter = (runId: string) => ({ ...none, activeEncounter: { runId } });
 
-// AGENTS.md 選択肢の誤タップ防止: after a story scene ends, the second tap of the double tap
-// that ended it must not press the next screen (a date's end starting another date).
+// AGENTS.md 選択肢の誤タップ防止: after a story scene starts or ends, the second tap of the double
+// tap that did it must not press the next screen (a date's end starting another date) nor read
+// the new scene's first line on before it is seen.
 describe("which story scene is on screen", () => {
   it("names each scene with the dialogue window, and nothing else", () => {
     expect(storySceneOnScreen(date)).toBe("date:date-run-1");
@@ -32,21 +33,30 @@ describe("which story scene is on screen", () => {
   });
 });
 
-describe("leaving a story scene", () => {
+describe("a story scene starting or ending", () => {
   const name = storySceneOnScreen;
   it("is every change from a story scene: to the map, the observation, a question or another scene", () => {
-    expect(leftStoryScene(name(date), name(none))).toBe(true);
-    expect(leftStoryScene(name(guide), name(observing))).toBe(true);
-    expect(leftStoryScene(name(battleDialogue), name(battleQuestion))).toBe(true);
-    expect(leftStoryScene(name(epilogue), name(arrival))).toBe(true);
-    expect(leftStoryScene(name(encounter("e1")), name(encounter("e2")))).toBe(true);
-    expect(leftStoryScene(name(encounter("e1")), name(guide))).toBe(true);
+    expect(storySceneChanged(name(date), name(none))).toBe(true);
+    expect(storySceneChanged(name(guide), name(observing))).toBe(true);
+    expect(storySceneChanged(name(battleDialogue), name(battleQuestion))).toBe(true);
+    expect(storySceneChanged(name(epilogue), name(arrival))).toBe(true);
+    expect(storySceneChanged(name(encounter("e1")), name(encounter("e2")))).toBe(true);
+    expect(storySceneChanged(name(encounter("e1")), name(guide))).toBe(true);
   });
 
-  it("is not reading on in the same scene, entering a scene or moving between other screens", () => {
-    expect(leftStoryScene(name(date), name({ ...none, activeDate: { runId: "date-run-1" } }))).toBe(false);
-    expect(leftStoryScene(name(none), name(date))).toBe(false);
-    expect(leftStoryScene(name(observing), name(battleQuestion))).toBe(false);
-    expect(leftStoryScene(null, null)).toBe(false);
+  it("is every change into a story scene: a destination's date or guide, a battle's talk, the epilogue", () => {
+    expect(storySceneChanged(name(none), name(date))).toBe(true);
+    expect(storySceneChanged(name(none), name(guide))).toBe(true);
+    expect(storySceneChanged(name(battleQuestion), name(battleDialogue))).toBe(true);
+    expect(storySceneChanged(name({ ...none, activeBattle: { runId: "battle-run-1", phase: "feedback" } }), name(battleDialogue))).toBe(true);
+    expect(storySceneChanged(name({ ...none, activeBattle: { runId: "battle-run-1", phase: "result" } }), name(epilogue))).toBe(true);
+    expect(storySceneChanged(null, name(arrival))).toBe(true);
+  });
+
+  it("is not reading on in the same scene or moving between other screens", () => {
+    expect(storySceneChanged(name(date), name({ ...none, activeDate: { runId: "date-run-1" } }))).toBe(false);
+    expect(storySceneChanged(name(observing), name(battleQuestion))).toBe(false);
+    expect(storySceneChanged(name(none), name(battleQuestion))).toBe(false);
+    expect(storySceneChanged(null, null)).toBe(false);
   });
 });

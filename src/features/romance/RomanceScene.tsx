@@ -136,7 +136,7 @@ export function RomanceScene({
     onAdvance: advance,
     defaultEnabled: autoAdvanceEnabled,
   });
-  const sceneTap = useSceneTap({ lineShown: ready, choicesShown: frame.choices.length > 0, windowHidden: windowVisibility.hidden });
+  const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: frame.choices.length > 0, windowHidden: windowVisibility.hidden });
   return (
     <div className="vn-scene romance-scene" data-testid="romance-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-has-choices={frame.choices.length > 0} {...sceneTap.props}>
       <div className="vn-background" data-testid="scene-picture">

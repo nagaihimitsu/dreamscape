@@ -26,7 +26,9 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await expect(page.getByTestId("travel-transition")).toHaveCount(0);
   const line = page.getByTestId("dialogue-text");
   await expect(line).toHaveAttribute("data-ready", "true");
-  // Freeze the page's clock so the next line cannot finish writing by itself.
+  // Freeze the page's clock so the next line cannot finish writing by itself (once the
+  // guide that has just started takes taps: a new scene holds them for a moment).
+  await ops.settled(page);
   await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
   const first = await readSave(page);
   await line.click();
@@ -48,13 +50,20 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await expect.poll(async () => (await readSave(page)).revision).toBe(first.revision + 3);
   await expect(line).toHaveAttribute("data-ready", "false");
   // The log (a control in the window) and the English note (in the header above the scene)
-  // open and close without moving the story or finishing the line.
+  // open and close without moving the story or finishing the line, also when the note's
+  // 「閉じる」 gets a quick double tap: its second tap lands on the scene the note leaves
+  // behind, and a press on any control of the page settles the scene for a moment.
   await ops.closeDialog(await ops.openDialogueLog(page));
-  await ops.closeDialog(await ops.openEnglishNote(page));
+  const note = await ops.openEnglishNote(page);
+  const closeNote = await ops.centerOf(note.getByRole("button", { name: "閉じる", exact: true }));
+  await ops.doubleTap(page, closeNote);
+  await expect(note).toBeHidden();
+  expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest("#tourism-screen"), closeNote),
+    "the second tap landed on the guide").toBe(true);
   expect((await readSave(page)).revision).toBe(first.revision + 3);
   await expect(line).toHaveAttribute("data-ready", "false");
-  // A tap on the line itself right after closing the log counts as that press's second tap
-  // (the clock is held, so it falls within the double-tap window): it does not finish the line.
+  // A tap on the line itself right after those presses counts as a press's second tap (the
+  // clock is held, so it falls within the double-tap window): it does not finish the line.
   const lineBox = (await line.boundingBox())!;
   await page.touchscreen.tap(lineBox.x + lineBox.width / 2, lineBox.y + lineBox.height / 2);
   await expect(line).toHaveAttribute("data-ready", "false");
@@ -104,10 +113,26 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await expect(page.getByTestId("city-progress")).toContainText("観光 1 / 4");
 
   // A date costs AP when it starts and returns to the travel menu when it ends (docs/07 acceptance 3, 4).
-  await ops.goTo(page, "p_novecento");
+  // A quick double tap on the destination starts it once, and the second tap, landing on the
+  // date that opens under the finger, does not read its first line on unseen: taps are held for
+  // a moment when a story scene starts (lines appear whole here, as with 文字送り「一括表示」).
+  const novecento = await ops.centerOf(await ops.destination(page, "p_novecento"));
+  const beforeDate = await readSave(page);
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.doubleTap(page, novecento);
   await expect.poll(async () => (await readSave(page)).activeDate?.dateId).toBe("milano_novecento_date_01");
   const started = await readSave(page);
+  expect(started.revision).toBe(beforeDate.revision + 1);
   expect(started.ap).toBeLessThan(result.ap);
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await page.clock.resume();
+  await ops.settled(page);
+  expect(await readSave(page)).toEqual(started);
+  // The note beside the visited place's reference photo is not the picture: a tap on it does nothing.
+  const dateLine = await line.textContent();
+  await ops.tap(page, await ops.centerOf(page.getByTestId("destination-reference-note")));
+  await expect(line).toHaveText(dateLine!);
+  expect((await readSave(page)).revision).toBe(started.revision);
   // With the window hidden, a tap on the picture only shows it again, also as a quick double
   // tap (誤タップ防止: the restore control leaves the picture under the finger, and the second
   // tap is ignored); the next tap goes on. Lines appear whole here (reduced motion), as they

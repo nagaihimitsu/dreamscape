@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DIALOGUE_LINE_ATTRIBUTE, pressesSceneControl, shouldAdvanceOnTap, type SceneTapState, type TapNode } from "./scene-tap";
+import { DIALOGUE_LINE_ATTRIBUTE, PAGE_MARGIN_ATTRIBUTE, pressesControl, shouldAdvanceOnTap, type SceneTapState, type TapNode } from "./scene-tap";
 
 /** A stand-in for a DOM element: a tag, attributes and a parent. */
 function node(tagName: string, parentElement: TapNode | null = null, attributes: Record<string, string> = {}): TapNode {
@@ -9,7 +9,11 @@ function node(tagName: string, parentElement: TapNode | null = null, attributes:
 const reading: SceneTapState = { lineShown: true, choicesShown: false, windowHidden: false, obstructed: false, settling: false };
 
 // One scene as the story screens build it: background, portrait, dialogue window with a tool row and the line.
-const scene = node("DIV", node("MAIN"));
+// Its page: the header above, and main, whose own margin beside a narrow scene is part of the screen.
+const page = node("DIV");
+const header = node("DIV", page);
+const main = node("MAIN", page, { [PAGE_MARGIN_ATTRIBUTE]: "" });
+const scene = node("DIV", main);
 const background = node("DIV", scene);
 const picture = node("img", background);
 const portrait = node("path", node("svg", node("DIV", scene), { role: "presentation" }));
@@ -34,7 +38,7 @@ describe("tap anywhere in a story scene", () => {
     const controls: [string, Record<string, string>][] = [
       ["BUTTON", {}], ["A", { href: "https://example.com/" }], ["INPUT", {}], ["SELECT", {}], ["OPTION", {}], ["TEXTAREA", {}],
       ["LABEL", {}], ["SUMMARY", {}], ["DIALOG", { open: "" }], ["SPAN", { role: "button" }], ["SPAN", { role: "link" }],
-      ["DIV", { role: "checkbox" }], ["DIV", { role: "tab" }], ["LI", { role: "menuitem" }], ["DIV", { role: "presentation button" }],
+      ["DIV", { role: "checkbox" }], ["DIV", { role: "tab" }], ["LI", { role: "menuitem" }], ["DIV", { role: "presentation button" }], ["DIV", { role: "dialog" }],
       ["DIV", { contenteditable: "" }], ["DIV", { contenteditable: "true" }], ["DIV", { "data-no-advance": "" }],
     ];
     for (const [tag, attributes] of controls) {
@@ -53,10 +57,20 @@ describe("tap anywhere in a story scene", () => {
   });
 
   it("ignores a click from outside the scene's own elements (a portal, the header, another screen)", () => {
-    const header = node("HEADER", node("DIV"));
+    expect(shouldAdvanceOnTap(node("SPAN", node("HEADER", node("DIV"))), scene, reading)).toBe(false);
     expect(shouldAdvanceOnTap(node("SPAN", header), scene, reading)).toBe(false);
-    expect(shouldAdvanceOnTap(node("DIV", scene.parentElement), scene, reading)).toBe(false);
+    expect(shouldAdvanceOnTap(header, scene, reading)).toBe(false);
+    // A notice shown in main above the scene is not main's margin.
+    expect(shouldAdvanceOnTap(node("DIV", main), scene, reading)).toBe(false);
+    expect(shouldAdvanceOnTap(node("SPAN", node("DIV", main)), scene, reading)).toBe(false);
     expect(shouldAdvanceOnTap(null, scene, reading)).toBe(false);
+  });
+
+  it("reads on from the page's own margin beside the scene, like a tap on its picture", () => {
+    expect(shouldAdvanceOnTap(main, scene, reading)).toBe(true);
+    expect(shouldAdvanceOnTap(main, scene, { ...reading, lineShown: false })).toBe(true);
+    for (const state of [{ obstructed: true }, { windowHidden: true }, { settling: true }, { choicesShown: true }])
+      expect(shouldAdvanceOnTap(main, scene, { ...reading, ...state }), JSON.stringify(state)).toBe(false);
   });
 
   it("does nothing while something is open over the scene or the window is hidden", () => {
@@ -81,25 +95,32 @@ describe("tap anywhere in a story scene", () => {
 });
 
 // A press on a control changes the screen under the finger: a reply gives way to the
-// reaction line, the restore control to the window. The scene then ignores reading taps
-// for the double-tap window (useSceneTap, double-tap.ts).
-describe("presses on a story scene's controls", () => {
+// reaction line, the restore control to the window, a modal's 「閉じる」 to the scene. The
+// scene then ignores reading taps for the double-tap window (useSceneTap, double-tap.ts).
+describe("presses on the page's controls", () => {
   const replies = node("DIV", dialogueWindow, { role: "group" });
   const reply = node("BUTTON", replies);
   const restore = node("BUTTON", scene);
   const reference = node("ASIDE", scene, { "data-no-advance": "" });
+  const modal = node("DIALOG", page, { open: "" });
 
   it("counts a reply, a tool, the restore control and a link, and taps on their contents", () => {
     for (const target of [reply, node("SPAN", reply), node("BUTTON", tools), node("SPAN", restore), node("A", reference, { href: "https://example.com/" }), node("P", node("DIALOG", tools))])
-      expect(pressesSceneControl(target, scene)).toBe(true);
+      expect(pressesControl(target, scene)).toBe(true);
   });
 
-  it("does not count reading taps (the line, the picture, the window) or near misses", () => {
-    for (const target of [line, lineText, scene, background, picture, portrait, dialogueWindow, speaker, tools, reference, node("SPAN", reference)])
-      expect(pressesSceneControl(target, scene)).toBe(false);
+  it("counts controls outside the scene: the header's buttons, a modal's 「閉じる」, the modal and its text", () => {
+    for (const target of [node("BUTTON", header), node("SPAN", node("BUTTON", header)), node("BUTTON", modal), modal, node("P", modal), node("BUTTON", node("DIV", header, { role: "dialog" })), node("P", node("DIV", header, { role: "dialog" }))])
+      expect(pressesControl(target, scene)).toBe(true);
+  });
+
+  it("does not count reading taps (the line, the picture, the window, the margin), near misses or plain page text", () => {
+    for (const target of [line, lineText, scene, background, picture, portrait, dialogueWindow, speaker, tools, reference, node("SPAN", reference), main, header, node("SPAN", header), page])
+      expect(pressesControl(target, scene)).toBe(false);
   });
 
   it("does not count a click without an element", () => {
-    expect(pressesSceneControl(null, scene)).toBe(false);
+    expect(pressesControl(null, scene)).toBe(false);
+    expect(pressesControl(null, null)).toBe(false);
   });
 });

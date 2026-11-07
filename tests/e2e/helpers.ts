@@ -212,11 +212,15 @@ export const ops = {
     await expect(note).toBeVisible();
     return note;
   },
-  /** Pick a destination on the travel menu, opening the longer list when needed. */
-  async goTo(page: Page, placeId: string) {
+  /** A destination's button on the travel menu, opening the longer list when needed. */
+  async destination(page: Page, placeId: string): Promise<Locator> {
     const place = page.getByTestId(`travel-place-${placeId}`);
     if (!(await place.isVisible())) await page.getByText("ほかの行き先を見る", { exact: true }).click();
-    await place.getByRole("button").click();
+    return place.getByRole("button");
+  },
+  /** Pick a destination on the travel menu, opening the longer list when needed. */
+  async goTo(page: Page, placeId: string) {
+    await (await ops.destination(page, placeId)).click();
   },
   /** Close a sightseeing guide and go on to the landmark's battle. */
   async skipGuideToBattle(page: Page) {
@@ -233,9 +237,11 @@ export const ops = {
   },
   /**
    * A story scene: a point on its picture above the dialogue window, where no control is
-   * (a tap anywhere but on a control reads on, docs/02 「UX/スマホ」). Taken while the window is shown.
+   * (a tap anywhere but on a control reads on, docs/02 「UX/スマホ」). Taken while the window is
+   * shown, once the page takes taps again (a scene that has just started holds them).
    */
   async sceneBackgroundPoint(page: Page): Promise<{ x: number; y: number }> {
+    await ops.settled(page);
     const picture = (await page.getByTestId("scene-picture").filter({ visible: true }).boundingBox())!;
     const line = (await page.getByTestId("dialogue-text").boundingBox())!;
     // A quarter of the way down from the picture's top to the line: well above the window's name plate and tools.
@@ -253,6 +259,7 @@ export const ops = {
    * of its buttons: a near miss, which never reads on.
    */
   async dialogueToolsGap(page: Page): Promise<{ x: number; y: number }> {
+    await ops.settled(page);
     const point = await page.getByLabel("会話の操作", { exact: true }).filter({ visible: true }).evaluate((row) => {
       const buttons = [...row.querySelectorAll(":scope > button, :scope > * > button")].map((button) => button.getBoundingClientRect())
         .filter((box) => box.width > 0).sort((a, b) => a.left - b.left);
@@ -266,6 +273,12 @@ export const ops = {
     const hit = await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.getAttribute("aria-label"), point!);
     expect(hit, "the point is the tool row itself, not one of its buttons").toBe("会話の操作");
     return point!;
+  },
+  /** The middle of an element on screen, for taps at a point (`tap`, `doubleTap`). */
+  async centerOf(locator: Locator): Promise<{ x: number; y: number }> {
+    await expect(locator).toBeVisible();
+    const box = (await locator.boundingBox())!;
+    return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
   },
   /** A finger's tap at a point of the page, once the game takes taps again (settled). */
   async tap(page: Page, point: { x: number; y: number }) {
@@ -283,9 +296,10 @@ export const ops = {
   },
   /**
    * The game takes taps again: right after an answer the battle ignores the second tap of
-   * a double tap (`data-answer-settling`), right after a press on a story scene's control
-   * the scene takes no reading tap (`data-tap-settling`), and right after a story scene
-   * ends no tap reaches the page (`data-tap-hold` on the root). Each lasts DOUBLE_TAP_WINDOW_MS.
+   * a double tap (`data-answer-settling`), right after a press on a control (or a tap that
+   * closes something open over a story scene) the scene takes no reading tap
+   * (`data-tap-settling`), and right after a story scene starts or ends no tap reaches the
+   * page (`data-tap-hold` on the root). Each lasts DOUBLE_TAP_WINDOW_MS.
    */
   async settled(page: Page) {
     await expect(page.locator("[data-answer-settling], [data-tap-settling], html[data-tap-hold]")).toHaveCount(0);

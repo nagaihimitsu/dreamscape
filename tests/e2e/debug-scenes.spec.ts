@@ -72,21 +72,24 @@ for (const [kind, label] of [["contradiction", "B（矛盾追及）"], ["connect
 
 type ItemEncounter = { cityId: string; encounterId: string; itemId: string; itemName: string; correctOptionId?: string };
 
-/** The first encounter Debug can open that gives an item, from the dev server's content. */
-function itemEncounter(page: Page): Promise<ItemEncounter | undefined> {
-  return page.evaluate(async (modules) => {
+/**
+ * The first encounter Debug can open that gives an item, from the dev server's content;
+ * `byAnswer`: one whose English answer gives it (the scene goes on with the item held).
+ */
+function itemEncounter(page: Page, byAnswer = false): Promise<ItemEncounter | undefined> {
+  return page.evaluate(async ({ modules, byAnswer }) => {
     const { getCities } = await import(/* @vite-ignore */ modules.content);
     const { encounters } = await import(/* @vite-ignore */ modules.encounters);
     const { debugTargets } = await import(/* @vite-ignore */ modules.debugState);
     for (const city of getCities().filter((item: { productionStatus?: string }) => item.productionStatus !== "prototype"))
       for (const target of debugTargets(city.id).encounter.filter((item: { unavailable?: string }) => !item.unavailable)) {
         const encounter = encounters.encounters.find((item: { id: string }) => item.id === target.id);
-        const itemId = encounter.quiz?.rewardItemId ?? encounter.completionItemId;
+        const itemId = byAnswer ? encounter.quiz?.rewardItemId : encounter.quiz?.rewardItemId ?? encounter.completionItemId;
         const itemName = encounters.items.find((item: { id: string }) => item.id === itemId)?.nameJa;
         if (itemId) return { cityId: city.id, encounterId: encounter.id, itemId, itemName, correctOptionId: encounter.quiz?.question.correctOptionId };
       }
     return undefined;
-  }, devModules);
+  }, { modules: devModules, byAnswer });
 }
 
 // AGENTS.md 「英語は…道中交流で主人公の返答・行動を選ぶ3択に用いる」「道中の品物は所属都市を登録し…」.
@@ -152,7 +155,7 @@ test("a Debug launch URL opens its scene, offers the same URL and explains a URL
   await expect(page.getByTestId("debug-panel")).toBeVisible();
 });
 
-type TapScene = "encounter" | "epilogue" | "battle" | "rebuttal";
+type TapScene = "encounter" | "epilogue" | "battle" | "rebuttal" | "tourism";
 type TapTarget = { cityId: string; scene: DebugSettings["scene"]; id: string };
 
 /** One scene of each kind in Debug's default city, from the dev server's content (no fixed IDs). */
@@ -166,6 +169,7 @@ function tapTargets(page: Page): Promise<Partial<Record<TapScene, TapTarget>>> {
     const choices: [TapScene, DebugSettings["scene"], (id: string) => boolean][] = [
       ["encounter", "encounter", () => true], ["epilogue", "epilogue", () => true],
       ["battle", "battle", (id) => !special(id)], ["rebuttal", "battle", (id) => !!reasoningIntroductions[id]],
+      ["tourism", "tourism", () => true],
     ];
     const found: Partial<Record<TapScene, TapTarget>> = {};
     for (const [kind, scene, fits] of choices) {
@@ -183,6 +187,7 @@ const reading: Record<TapScene, (state: GameState) => boolean> = {
   epilogue: (state) => !!state.activeEpilogue && !state.activeEpilogue.frame.ended,
   battle: (state) => state.activeBattle?.phase === "dialogue" && !state.activeBattle.frame?.ended,
   rebuttal: (state) => state.activeBattle?.phase === "reasoning",
+  tourism: (state) => state.activeTourism?.phase === "guide" && !state.activeTourism.frame?.ended,
 };
 
 // User idea (2026-11-07, docs/02 「UX/スマホ」): in every story scene a tap anywhere but on a control
@@ -190,9 +195,11 @@ const reading: Record<TapScene, (state: GameState) => boolean> = {
 // the other scene kinds (encounter, epilogue — the arrival uses the same screen —, battle dialogue,
 // and a special battle's presentation-only rebuttal).
 for (const kind of ["encounter", "epilogue", "battle", "rebuttal"] as const) {
-  test(`${kind}: a tap on the picture reads one step on, a click between the window's tools does not`, { tag: tier.debug }, async ({ page }) => {
+  test(`${kind}: a tap on the picture reads one step on, a click between the window's tools or a double tap on the log's 「閉じる」 does not`, { tag: tier.debug }, async ({ page }) => {
     const target = (await tapTargets(page))[kind];
     expect(target, `a ${kind} that Debug opens in its default city`).toBeDefined();
+    // Time runs normally; it is held only for the double tap below.
+    await page.clock.install();
     await ops.openDebugScene(page, settings(target!));
     await playUntil(page, reading[kind], { source: debugGame });
     const line = page.getByTestId("dialogue-text");
@@ -202,6 +209,18 @@ for (const kind of ["encounter", "epilogue", "battle", "rebuttal"] as const) {
     // A click in a gap of the tool row is a near miss of its buttons: nothing moves.
     const gap = await ops.dialogueToolsGap(page);
     await page.mouse.click(gap.x, gap.y);
+    expect((await debugGame(page))!.revision).toBe(before.revision);
+    expect(await line.textContent()).toBe(text);
+    // A quick double tap on the log's 「閉じる」: the second tap lands on the scene the log leaves
+    // behind, within the moment a press on a control settles the scene, and does not read on.
+    const log = await ops.openDialogueLog(page);
+    const close = await ops.centerOf(log.getByRole("button", { name: "閉じる", exact: true }));
+    await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+    await ops.doubleTap(page, close);
+    await expect(log).toBeHidden();
+    await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+    await page.clock.resume();
+    await ops.settled(page);
     expect((await debugGame(page))!.revision).toBe(before.revision);
     expect(await line.textContent()).toBe(text);
     // A tap on the picture (the battle's stage) goes one line on, like a tap on the line.
@@ -235,9 +254,80 @@ test("rebuttal: the tap that ends it does not also skip the cut-in under the fin
   const skip = (await page.getByTestId("reasoning-cutin-skip").boundingBox())!;
   await page.touchscreen.tap(skip.x + skip.width / 2, skip.y + skip.height / 2);
   await expect(cutIn).toBeVisible();
+  // After the moment the skip works. The clock stays held, so the cut-in cannot end by itself first.
   await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
-  await page.clock.resume();
   await ops.settled(page);
   await page.getByTestId("reasoning-cutin-skip").click();
   await expect(page.getByTestId("reasoning-notebook")).toBeVisible();
+  await page.clock.resume();
+});
+
+// A story scene that starts under the finger (here the enemy's reaction after an answer's
+// feedback) does not take the second tap of the double tap that started it: taps are held for
+// a moment, so its first line is not read on before it is seen (lines appear whole here).
+test("battle: a double tap on 「敵の反応を見る」 opens the reaction and stays on its first line", { tag: tier.debug }, async ({ page }) => {
+  const target = (await tapTargets(page)).battle;
+  expect(target, "a battle that Debug opens in its default city").toBeDefined();
+  await page.clock.install();
+  await ops.openDebugScene(page, settings(target!));
+  const feedback = await playUntil(page, (state) => state.activeBattle?.phase === "feedback", { source: debugGame });
+  const reaction = await ops.centerOf(page.getByTestId("battle-advance"));
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.doubleTap(page, reaction);
+  await expect.poll(async () => (await debugGame(page))!.activeBattle?.phase).toBe("dialogue");
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await page.clock.resume();
+  await ops.settled(page);
+  expect((await debugGame(page))!.revision).toBe(feedback.revision + 1);
+});
+
+// docs/02 「UX/スマホ」: nothing reads on while something is open over the scene. The header's
+// held-item detail closes on a tap anywhere outside it; that tap only closes it.
+test("encounter: the tap on the picture that closes the held-item detail does not read on", { tag: tier.debug }, async ({ page }) => {
+  const encounter = await itemEncounter(page, true);
+  expect(encounter, "an encounter whose English answer gives an item, that Debug can open").toBeDefined();
+  // A won reward needs the saved ticket below its chance: the positive ticket (0) always wins.
+  await ops.openDebugScene(page, settings({ cityId: encounter!.cityId, scene: "encounter", id: encounter!.encounterId, roll: "positive" }));
+  const pick = (state: GameState) => state.activeEncounter?.phase === "quiz" ? encounter!.correctOptionId! : "A";
+  const held = await playUntil(page, (state) => !state.activeEncounter || state.inventory[encounter!.itemId] === "held" && reading.encounter(state), { source: debugGame, pick });
+  expect(held.activeEncounter, "a line to read after the item is given").not.toBeNull();
+  const line = page.getByTestId("dialogue-text");
+  const text = await line.textContent();
+  const picture = await ops.sceneBackgroundPoint(page);
+  const items = page.getByRole("group", { name: "所持アイテム" });
+  await items.getByRole("button", { name: `${encounter!.itemName}の詳細` }).click();
+  await expect(items.getByRole("dialog")).toBeVisible();
+  await ops.tap(page, picture);
+  await expect(items.getByRole("dialog")).toBeHidden();
+  await expect(line).toHaveText(text!);
+  // The next tap reads one line on: the closing tap did not.
+  await ops.tap(page, picture);
+  await expect.poll(async () => (await debugGame(page))!.revision).toBe(held.revision + 1);
+});
+
+// User idea (2026-11-07): the whole screen reads on, not only the scene's picture. The guide's
+// heading strip (the landmark's name beside 手がかり帳) on a phone, and on a wide screen the page's
+// margin beside the guide, which keeps a phone-like width there.
+test("tourism: a tap on the landmark's heading, and on a wide screen on the page's margin, reads one step on", { tag: tier.debug }, async ({ page }) => {
+  const target = (await tapTargets(page)).tourism;
+  expect(target, "a guide that Debug opens in its default city").toBeDefined();
+  await ops.openDebugScene(page, settings(target!));
+  await playUntil(page, reading.tourism, { source: debugGame });
+  const line = page.getByTestId("dialogue-text");
+  const before = (await debugGame(page))!;
+  const heading = page.getByTestId("tourism-screen").getByRole("heading", { level: 1 });
+  await ops.tap(page, await ops.centerOf(heading));
+  await expect.poll(async () => (await debugGame(page))!.revision).toBe(before.revision + 1);
+  await page.setViewportSize({ width: 1280, height: 800 });
+  const text = await line.textContent();
+  const margin = await page.getByTestId("tourism-screen").evaluate((screen) => {
+    const box = screen.getBoundingClientRect();
+    return { x: box.left / 2, y: box.top + box.height / 3 };
+  });
+  expect(margin.x, "the guide is narrower than the wide screen").toBeGreaterThan(20);
+  expect(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.id, margin), "the point is the page's own margin").toBe("main");
+  await ops.settled(page);
+  await page.mouse.click(margin.x, margin.y);
+  await expect(line).not.toHaveText(text!);
+  expect((await debugGame(page))!.revision).toBe(before.revision + 2);
 });

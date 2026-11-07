@@ -104,7 +104,7 @@ export function TourismScreen({
     onAdvance: advanceSafely,
     defaultEnabled: autoAdvanceEnabled,
   });
-  const sceneTap = useSceneTap({ lineShown: ready, choicesShown: false, windowHidden: windowVisibility.hidden });
+  const sceneTap = useSceneTap({ active: active.phase === "guide" && !!frame, lineShown: ready, choicesShown: false, windowHidden: windowVisibility.hidden });
   useEffect(() => {
     const media = window.matchMedia(COMPACT_OBSERVATION);
     const update = () => setCompactObservation(media.matches);
@@ -146,7 +146,7 @@ export function TourismScreen({
   }
 
   const toolbar = (
-    <div className="tourism-toolbar">
+    <div className="tourism-toolbar" data-no-advance>
       <button className="notebook-button" onClick={onNotebook}>手がかり帳</button>
     </div>
   );
@@ -156,6 +156,7 @@ export function TourismScreen({
       className={`tourism-screen${active.phase === "guide" ? " guide-active" : ""}`}
       id="tourism-screen"
       data-testid="tourism-screen"
+      {...sceneTap.props}
     >
       {active.phase === "guide" && <header className="tourism-heading">
         <p className="eyebrow">観光と観察 · 旅先の発見</p>
@@ -169,7 +170,7 @@ export function TourismScreen({
         </p>
       )}
       {active.phase === "guide" && frame ? (
-        <div className="vn-scene tourism-guide-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} {...sceneTap.props}>
+        <div className="vn-scene tourism-guide-scene" data-dialogue-hidden={windowVisibility.hidden || undefined}>
           <div className="vn-background" data-testid="scene-picture">
             <CanalScene backgroundId={frame.background} imageAssetId={landmark.imageAssetId} />
           </div>
@@ -250,7 +251,7 @@ export function TourismScreen({
           </details>
         </div>
       )}
-      {active.phase === "guide" && <details className="tourism-credits">
+      {active.phase === "guide" && <details className="tourism-credits" data-no-advance>
         <summary>画像の出典と利用条件</summary>
         <p>{asset.creditJa}</p>
         <p>{asset.modificationJa}</p>

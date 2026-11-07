@@ -80,8 +80,9 @@ import {
 } from "../domain/battle";
 
 import { browserStorage, type AppProps } from "./app-storage";
-import { leftStoryScene, storySceneOnScreen } from "./scene-exit";
+import { storySceneChanged, storySceneOnScreen } from "./scene-exit";
 import { holdTaps } from "../components/tap-hold";
+import { PAGE_MARGIN_ATTRIBUTE } from "../components/scene-tap";
 
 type Confirmation = { kind: "date"; id: string };
 
@@ -98,11 +99,12 @@ export function GameApp({
   const displaySettings = usePresentationSettings(storage);
   const session = useGameSession(storage, displaySettings.value.autoSave, () => setSelectedLandmarkId(null));
   const { game, loaded, invalid, notice, setNotice, commit, getCurrent, save } = session;
-  // The second tap of a double tap that ends a story scene must not press the next screen (scene-exit.ts).
+  // The second tap of a double tap that starts or ends a story scene must not press the next
+  // screen or read the new scene on (scene-exit.ts).
   const storyScene = storySceneOnScreen(game);
   const shownStoryScene = useRef(storyScene);
   useLayoutEffect(() => {
-    if (leftStoryScene(shownStoryScene.current, storyScene)) holdTaps();
+    if (storySceneChanged(shownStoryScene.current, storyScene)) holdTaps();
     shownStoryScene.current = storyScene;
   }, [storyScene]);
   const titleActions = titleSaveActions(loaded);
@@ -364,7 +366,8 @@ export function GameApp({
           </span>
         </div>
       )}
-      <main id="main" ref={main} tabIndex={-1}>
+      {/* A tap on main's own margin beside a narrow story scene reads on (scene-tap.ts). */}
+      <main id="main" ref={main} tabIndex={-1} {...{ [PAGE_MARGIN_ATTRIBUTE]: "" }}>
         {learning.error && (
           <div className="notice" role="status">
             {learning.error}

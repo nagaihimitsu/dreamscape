@@ -4,8 +4,8 @@ const HOLD_ATTRIBUTE = "data-tap-hold";
 let holdTimer: number | undefined;
 
 /**
- * Let no tap reach the page for DOUBLE_TAP_WINDOW_MS, after a story scene ends
- * and the next screen appears under the finger (src/app/scene-exit.ts): the
+ * Let no tap reach the page for DOUBLE_TAP_WINDOW_MS, after a story scene starts
+ * or ends and a new screen appears under the finger (src/app/scene-exit.ts): the
  * root carries `data-tap-hold`, and styles.css takes pointer events off every
  * element meanwhile. Keyboards are not held. Tests wait for the mark to go.
  */

@@ -254,7 +254,7 @@ export function BattleScreen({
     onAdvance: advanceSafely,
     defaultEnabled: autoAdvanceEnabled,
   });
-  const sceneTap = useSceneTap({ lineShown: ready, choicesShown: false, windowHidden: windowVisibility.hidden });
+  const sceneTap = useSceneTap({ active: isDialogue, lineShown: ready, choicesShown: false, windowHidden: windowVisibility.hidden });
   const isResult = active.phase === "result";
   const isSpecial = !!battle.reasoning;
   const showReasoning =
@@ -268,15 +268,14 @@ export function BattleScreen({
         if (answeredAt.current !== null && isSecondTap(performance.now() - answeredAt.current)) {
           event.preventDefault();
           event.stopPropagation();
-        } else if (isDialogue) sceneTap.props.onClickCapture(event);
+        }
       }}
       data-phase={isDialogue ? "dialogue" : active.phase}
       data-answer-settling={answerSettling || undefined}
       data-effect-active={active.phase === "feedback" && effectAnswer === answerKey || undefined}
       data-reduce-motion={reduceMotion || undefined}
       data-dialogue-hidden={isDialogue && windowVisibility.hidden || undefined}
-      onClick={isDialogue ? sceneTap.props.onClick : undefined}
-      data-tap-settling={isDialogue && sceneTap.props["data-tap-settling"] || undefined}
+      {...sceneTap.props}
     >
       {active.phase === "feedback" && answer && effectAnswer === answerKey && (
         <div

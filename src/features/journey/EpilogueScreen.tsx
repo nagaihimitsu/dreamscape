@@ -70,7 +70,7 @@ export function EpilogueScreen({
     onAdvance: advanceSafely,
     defaultEnabled: autoAdvanceEnabled,
   });
-  const sceneTap = useSceneTap({ lineShown: ready, choicesShown: false, windowHidden: windowVisibility.hidden });
+  const sceneTap = useSceneTap({ active: true, lineShown: ready, choicesShown: false, windowHidden: windowVisibility.hidden });
   useEffect(() => {
     document
       .getElementById("city-epilogue-screen")
