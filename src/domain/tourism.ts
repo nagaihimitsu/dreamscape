@@ -240,12 +240,21 @@ export function observationHotspots(landmarkId: string) {
   return clueIds.flatMap((id) => tourismClues.filter((clue) => clue.id === id && clue.kind === "hotspot" && clue.region !== null));
 }
 
-/** What an open observation still lets the player find: its marked hotspots and the landmark's documents (the clue book's 「資料を読む」). */
+/**
+ * The documents the clue book lists for reading now (「資料を読む」 on those not yet read): the
+ * landmark's documents while its observation is open, none otherwise.
+ */
+export function getReadableDocumentIds(state: GameState): string[] {
+  const active = state.activeTourism;
+  if (!active || active.phase !== "exploring") return [];
+  return tourismClues.filter((clue) => clue.kind === "document" && clue.landmarkId === active.landmarkId).map((clue) => clue.id);
+}
+
+/** What an open observation still lets the player find: its marked hotspots and the documents the clue book offers to read. */
 export function getDiscoverableClueIds(state: GameState): string[] {
   const active = state.activeTourism;
   if (!active || active.phase !== "exploring") return [];
-  const documents = tourismClues.filter((clue) => clue.kind === "document" && clue.landmarkId === active.landmarkId);
-  return [...observationHotspots(active.landmarkId), ...documents].map((clue) => clue.id)
+  return [...observationHotspots(active.landmarkId).map((clue) => clue.id), ...getReadableDocumentIds(state)]
     .filter((id) => !state.discoveredClueIds.includes(id));
 }
 

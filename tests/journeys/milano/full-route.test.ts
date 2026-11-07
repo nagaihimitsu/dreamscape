@@ -12,8 +12,8 @@
 import { describe, expect, it } from "vitest";
 import { battles, dates, episodes, getCityContent, journeyConfig, rewardRules } from "../../../src/content";
 import { newJourney } from "../../../src/dev/scenario-builders";
-import { advanceBattle, answerBattle, getActiveBattleContent, getReasoningContext, leaveBattle, selectReasoningClue, submitBattleEvidence } from "../../../src/domain/battle";
-import { enterFreeTime } from "../../../src/domain/chapter";
+import { advanceBattle, answerBattle, getActiveBattleContent, getReasoningContext, selectReasoningClue, submitBattleEvidence } from "../../../src/domain/battle";
+import { leaveBattleResult } from "../../../src/domain/chapter";
 import {
   advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterStoryCanFinish,
   finishEncounter, getActiveEncounterDefinition, getEncounterOptionAvailability, proceedFromTourism,
@@ -114,9 +114,8 @@ function playMilano(allCorrect: boolean): GameState {
     } else if (s.activeEncounter) s = encounterStep(s, allCorrect);
     else if (s.activeTourism) s = act(s, (current) => proceedFromTourism(current, current.revision, roll));
     else if (s.activeBattle?.phase === "result") {
-      // Like the result screen's 戻る: a special battle returns to its place, the others to free time.
-      const special = !!getActiveBattleContent(s.activeBattle).battle.reasoning;
-      s = act(s, (current) => special ? leaveBattle(current, current.revision) : enterFreeTime(current, current.revision));
+      // The result screen's 戻る: a special battle returns to its place, the others to free time.
+      s = act(s, (current) => leaveBattleResult(current, current.revision));
     } else if (s.activeBattle) {
       if (!battlesSeen.includes(s.activeBattle.battleId)) battlesSeen.push(s.activeBattle.battleId);
       s = battleStep(s, allCorrect);

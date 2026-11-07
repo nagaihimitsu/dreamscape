@@ -24,6 +24,7 @@ export function ClueNotebook({
   discoveredIds,
   onClose,
   onObserve,
+  readableDocumentIds = [],
   onDiscoverDocument,
   reasoning,
 }: {
@@ -32,6 +33,8 @@ export function ClueNotebook({
   discoveredIds: string[];
   onClose: () => void;
   onObserve?: () => void;
+  /** The documents listed for reading now (getReadableDocumentIds); the unread ones get 「資料を読む」. */
+  readableDocumentIds?: readonly string[];
   onDiscoverDocument?: (id: string) => boolean;
   reasoning?: NotebookReasoning;
 }) {
@@ -43,7 +46,7 @@ export function ClueNotebook({
     (clue) =>
       availableLandmarks.includes(clue.landmarkId) &&
       (discoveredIds.includes(clue.id) ||
-        (!!onDiscoverDocument && clue.kind === "document" && clue.landmarkId === landmarkId) ||
+        readableDocumentIds.includes(clue.id) ||
         reasoning?.caseClueIds.includes(clue.id)),
   );
   const [currentId, setCurrentId] = useState(
@@ -57,7 +60,7 @@ export function ClueNotebook({
   const current = clues[currentIndex];
   const currentSelected = !!current && !!reasoning?.selectedIds.includes(current.id);
   const canSelectCurrent = !!current && !!reasoning?.caseClueIds.includes(current.id);
-  const unreadDocument = !!current && current.kind === "document" && !discoveredIds.includes(current.id) && !!onDiscoverDocument && !reasoning;
+  const unreadDocument = !!current && readableDocumentIds.includes(current.id) && !discoveredIds.includes(current.id) && !!onDiscoverDocument && !reasoning;
   return (
     <Modal
       labelledBy="cluebook-title"

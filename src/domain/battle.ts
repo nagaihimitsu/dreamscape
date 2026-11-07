@@ -294,33 +294,24 @@ export function selectReasoningClue(
   clueId: string,
   expectedRevision: number,
 ): GameState {
-  const active = state.activeBattle;
-  const config = active ? getActiveBattleContent(active).battle.reasoning : undefined;
-  if (
-    state.activeTourism ||
-    state.revision !== expectedRevision ||
-    active?.phase !== "reasoning" ||
-    !active.reasoning ||
-    !config ||
-    !config.caseClueIds.includes(clueId)
-  )
-    return state;
-  const selected = active.reasoning.selectedClueIds;
+  // The clue book's rule (canToggleReasoningClue) decides whether this clue can be chosen or put back.
+  if (state.revision !== expectedRevision || !canToggleReasoningClue(state, clueId)) return state;
+  const active = state.activeBattle!;
+  const config = getActiveBattleContent(active).battle.reasoning!;
+  const reasoning = active.reasoning!;
+  const selected = reasoning.selectedClueIds;
   const next = selected.includes(clueId)
     ? selected.filter((id) => id !== clueId)
     : config.kind === "contradiction"
       ? [clueId]
-      : selected.length < 2
-        ? [...selected, clueId]
-        : selected;
-  if (next === selected) return state;
+      : [...selected, clueId];
   return {
     ...state,
     revision: state.revision + 1,
     activeBattle: {
       ...active,
       reasoning: {
-        ...active.reasoning,
+        ...reasoning,
         selectedClueIds: next,
         submittedClueIds: [],
         status: "selecting",

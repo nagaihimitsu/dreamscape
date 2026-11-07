@@ -93,7 +93,7 @@ describe("E2E specs", () => {
     const workflow = readFileSync(path.join(import.meta.dirname, "../.github/workflows/e2e.yml"), "utf8");
     const jobs = Object.fromEntries([...workflow.matchAll(/^\s*- tier: (\w+)\n((?:\s+(?!- )\w+: .*\n)*)/gmu)]
       .map((match) => [match[1], match[2]]));
-    // smoke and explore are the planned weekly runs, never a gate.
+    // smoke (WebKit) and explore run weekly in e2e-explore.yml, never as a gate.
     expect(Object.keys(jobs)).toEqual(["gate", "debug", "prod", "sample"]);
     expect(jobs.sample).toMatch(/prepare: npm run journey:new -- \w+ --name \S+ --city \w+ --city-name \S+\n/u);
     expect(jobs.sample).toMatch(/command: npx playwright test -c playwright\.sample\.config\.ts\n/u);

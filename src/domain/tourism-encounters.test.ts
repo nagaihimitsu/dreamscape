@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { encounters } from "../content/encounters";
 import { createGame, type GameState } from "./game";
 import { openTourism } from "./tourism";
-import { advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterStoryCanFinish, finishEncounter, getTourismEncounterAvailability, proceedFromTourism, startTourismEncounter } from "./encounter";
+import { advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter, getTourismEncounterAvailability, proceedFromTourism, startTourismEncounter } from "./encounter";
 
 const battleRecord = (battleId: string) => ({ battleId, attempts: 1, firstScore: 0, bestScore: 0, lastScore: 0 });
 
@@ -49,7 +49,7 @@ describe("automatic place encounters", () => {
       let next: GameState;
       if (active.phase === "quiz") next = answerEncounterQuiz(state, "B", state.revision);
       else if (active.frame.choices.length) next = chooseEncounter(state, active.frame.choices.find((choice) => choice.optionId === choiceId)!.index, state.revision);
-      else if (active.frame.ended && (active.phase === "outcome" || encounterStoryCanFinish(state))) next = finishEncounter(state, state.revision);
+      else if (encounterCanFinish(state)) next = finishEncounter(state, state.revision);
       else next = advanceEncounter(state, state.revision);
       state = continueTourismEncounters(before, next, () => 0);
     }

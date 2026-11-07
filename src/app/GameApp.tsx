@@ -61,6 +61,7 @@ import {
   advanceTourismGuide,
   skipTourismGuide,
   discoverClue,
+  getReadableDocumentIds,
   replayTourismGuide,
 } from "../domain/tourism";
 import {
@@ -658,7 +659,8 @@ export function GameApp({
           landmarkId={currentLandmarkId ?? undefined}
           cityId={cityNotebook ? currentBattle.cityId : undefined}
           discoveredIds={game.discoveredClueIds}
-          onDiscoverDocument={game.activeTourism?.phase === "exploring" ? (id) => commit((state) => discoverClue(state, id, game.revision)) : undefined}
+          readableDocumentIds={getReadableDocumentIds(game)}
+          onDiscoverDocument={(id) => commit((state) => discoverClue(state, id, game.revision))}
           onClose={() => setNotebook(false)}
           reasoning={
             reasoningRule &&
