@@ -8,6 +8,7 @@ import { canReturnByDayEnd, DAY_END, getGameWeekday, planOvernight, planTravelEv
 import { compareRouteCost, findTravelHomeRoutes, type HomeRoute } from "./travel-routes";
 import type { TravelEvent, TravelRoute } from "../content/travel-schemas";
 
+/** `walk` or a transport mode ID declared by the journey (src/content/transport.ts). */
 export type TravelMode = TravelRoute["mode"];
 type Plan = Extract<ReturnType<typeof planTravelEvent>, { ok: true }> & { returnReserve: number };
 export type TravelAvailability = { available: boolean; reason: string; plan?: Plan };

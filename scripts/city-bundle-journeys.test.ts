@@ -14,7 +14,7 @@ describe("city editing bundle: new cities and journey folders", () => {
     for (const unsafeId of ["constructor", "prototype", "__proto__"]) {
       registerJourney(root, { id: "unsafe_test", nameJa: "試験", status: "preparing",
         cities: [{ id: unsafeId, nameJa: "試験" }],
-        currency: { code: "TST", symbol: "¤", unitJa: "試験通貨", unit: "whole" }, intercityModes: [] });
+        currency: { code: "TST", symbol: "¤", unitJa: "試験通貨", unit: "whole" }, intercityModes: [], transportModes: [] });
       expect(() => newCityBundle(root, unsafeId)).toThrow("Reserved city ID");
       rmSync(path.join(root, "content/journeys/unsafe_test"), { recursive: true });
     }

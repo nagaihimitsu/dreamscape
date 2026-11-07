@@ -66,7 +66,7 @@ export function registerJourney(root: string, journey: { id: string; [key: strin
 export const testJourney = { id: "test_journey", nameJa: "試験の旅", status: "preparing",
   cities: [{ id: "testcity", nameJa: "試験都市" }],
   currency: { code: "TST", symbol: "¤", unitJa: "試験通貨", unit: "whole" },
-  initialBudget: 1000, intercityModes: [] };
+  initialBudget: 1000, intercityModes: [], transportModes: [] };
 export const testLayer = "content/journeys/test_journey";
 /** Fill a new-city template with the smallest valid city (a hotel modelled on Delhi's). */
 export function completeTestCity(root: string, template: ReturnType<typeof exportCityBundle>) {

@@ -12,7 +12,7 @@ const json = (value: unknown) => JSON.stringify(value);
 const journeyFolder = (id: string) => `content/journeys/${id}`;
 const manifest = (id: string, order: number, status: "available" | "preparing", cityId: string) => json({
   schemaVersion: 1, order, id, nameJa: "テスト編", status, cities: [{ id: cityId, nameJa: "テスト市" }],
-  currency: { code: "EUR", symbol: "€", unitJa: "ユーロ", unit: "whole" }, initialBudget: 100, intercityModes: [],
+  currency: { code: "EUR", symbol: "€", unitJa: "ユーロ", unit: "whole" }, initialBudget: 100, intercityModes: [], transportModes: [],
 });
 const city = (id: string) => json({
   schemaVersion: 1, id, countryCode: "IT", nameJa: "テスト市", themeJa: "旅の練習",

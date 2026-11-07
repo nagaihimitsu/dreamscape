@@ -7,7 +7,7 @@ import { getGameWeekday, planTravel } from "../domain/travel";
 import { minimumHomeFare } from "../domain/travel-routes";
 import { getTravelHomeRoutes, sleepAtHotel } from "../domain/travel-game";
 import { PlaceMap } from "../features/journey/PlaceMap";
-import { travelModeLabels } from "../features/journey/travel-visibility";
+import { transportLabel } from "../content/transport";
 import { loadGame, saveGame } from "../persistence";
 import { prototypePreviewState } from "./prototype-preview-state";
 
@@ -64,14 +64,14 @@ export function PrototypePreview({ cityId, onClose }: { cityId: string; onClose:
       {travel.places.map((place) => <option key={place.id} value={place.id}>{place.nameJa}</option>)}
     </select></label>
     <div>{routes.map((route) => <button type="button" className="secondary" key={route.mode} onClick={() => move(route)}>
-      {travelModeLabels[route.mode]}{route.transferNote ? `（${route.transferNote}）` : ""} {route.minutes}分 · {formatMoneyForCity(cityId, route.cost)}
+      {transportLabel(cityId, route.mode)}{route.transferNote ? `（${route.transferNote}）` : ""} {route.minutes}分 · {formatMoneyForCity(cityId, route.cost)}
     </button>)}</div>
     {routes.length === 0 && <p>登録された移動手段はありません。</p>}
     <div>{homeRoutes.map((route) => {
       const via = route.viaPlaceId ? travel.places.find((place) => place.id === route.viaPlaceId)?.nameJa : undefined;
       return <button type="button" className="secondary" key={JSON.stringify([route.mode, route.viaPlaceId ?? null])} onClick={() =>
         commit(sleepAtHotel(game, route.mode, game.revision, route.viaPlaceId ?? null), "一時データで翌日になりました。") }>
-        滞在先で休む（{travelModeLabels[route.mode]}{route.transferNote ? `・${route.transferNote}` : ""}{via ? `・${via}から徒歩` : ""} {route.minutes}分 · {formatMoneyForCity(cityId, route.cost)}）
+        滞在先で休む（{transportLabel(cityId, route.mode)}{route.transferNote ? `・${route.transferNote}` : ""}{via ? `・${via}から徒歩` : ""} {route.minutes}分 · {formatMoneyForCity(cityId, route.cost)}）
       </button>;
     })}</div>
     <button type="button" onClick={() => {

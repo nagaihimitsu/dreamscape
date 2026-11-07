@@ -7,6 +7,8 @@ export function isRelativePath(value: string): boolean {
   return !value.startsWith("/") && !/^[A-Za-z]:/u.test(value) && !value.includes("\\") &&
     value.split("/").every((segment) => segment !== "" && segment !== "." && segment !== "..");
 }
+const japanese = z.string().trim().min(1).refine(
+  (value) => /[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(value), "Expected Japanese text");
 const relativePath = z.string().min(1).refine(isRelativePath, "Use a relative path with / separators, without .. or an absolute path");
 /** The folder of a journey's authoring files (drafts, research, ledgers): `authoring/journeys/<journeyId>/`. */
 export const authoringFolder = (journeyId: string) => `authoring/journeys/${journeyId}/`;
@@ -24,8 +26,15 @@ export const journeyAuthoringSchema = z.object({
   imageDirectory: relativePath.refine((value) => value.startsWith("assets/"), "The image folder is a served path below assets/"),
   /** Per-city transit ledgers: `<transitDirectory>/<cityId>/transit-decisions.json`. */
   transitDirectory: relativePath.optional(),
-  /** One journey-wide transit decision ledger for the listed cities (see journey-transit-decisions.ts). */
-  transitDecisionLedger: z.object({ file: relativePath, cities: z.array(id).min(1) }).strict().optional(),
+  /**
+   * The old journey-wide transit decision ledger for the listed cities (see
+   * journey-transit-decisions.ts). Only a journey that still waits for its
+   * switch to the per-city transport system keeps it; `pendingJa` says what
+   * it waits for (Golden Triangle: 「ツアー機能待ち」), and content:build
+   * reports the journey as waiting instead of applying the new transport
+   * checks (scripts/transport-validation.ts).
+   */
+  transitDecisionLedger: z.object({ file: relativePath, cities: z.array(id).min(1), pendingJa: japanese }).strict().optional(),
 }).strict().refine((profile) => !(profile.transitDirectory && profile.transitDecisionLedger),
   "Use either transitDirectory or transitDecisionLedger, not both");
 export type JourneyAuthoringProfile = z.infer<typeof journeyAuthoringSchema>;

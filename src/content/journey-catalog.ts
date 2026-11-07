@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { transportModeSchema } from "./transport-schemas";
 
 const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 const text = z.string().trim().min(1);
@@ -39,6 +40,10 @@ export const journeyCatalogSchema = z.object({
       dateCount: z.number().int().nonnegative(),
     }).strict().optional(),
     intercityModes: z.array(z.enum(["train", "car"])),
+    // In-city transport besides walking (built in): see transport-schemas.ts.
+    // content:build allows at most two (a journey still waiting for its
+    // switch to this system keeps its old modes, see journey-authoring.ts).
+    transportModes: z.array(transportModeSchema),
     // The title screen's art for this journey: an image served from the
     // journey's own public/ folder (or the root public/) with its caption.
     // Without it the title shows the shared default background.
@@ -57,6 +62,11 @@ export const journeyCatalogSchema = z.object({
     journeyIds.add(journey.id);
     if (new Set(journey.intercityModes).size !== journey.intercityModes.length)
       context.addIssue({ code: "custom", message: "Duplicate intercity mode", path: ["journeys", index, "intercityModes"] });
+    const modeIds = journey.transportModes.map((mode) => mode.id);
+    modeIds.forEach((modeId, modeIndex) => {
+      if (modeIds.indexOf(modeId) !== modeIndex)
+        context.addIssue({ code: "custom", message: "Duplicate transport mode", path: ["journeys", index, "transportModes", modeIndex, "id"] });
+    });
     for (const [cityIndex, city] of journey.cities.entries()) {
       if (cityIds.has(city.id)) context.addIssue({ code: "custom", message: "City belongs to multiple journeys", path: ["journeys", index, "cities", cityIndex, "id"] });
       cityIds.add(city.id);

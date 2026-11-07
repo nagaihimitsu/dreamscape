@@ -28,10 +28,11 @@ export const travelPlaceSchema = z.object({
 export const travelRouteSchema = z.object({
   fromPlaceId: id,
   toPlaceId: id,
-  mode: z.enum(["walk", "rail", "tram", "bus", "taxi"]),
+  /** `walk` or a transport mode the city's journey declares in its manifest (checked by content:build). */
+  mode: id,
   minutes: z.number().int().nonnegative(),
   cost: z.number().int().nonnegative(),
-  /** Short passenger-facing detail when a route includes a connection. */
+  /** Short passenger-facing detail shown after the mode: line, transfer or boarding point (e.g. 「16番」). */
   transferNote: text.max(40).optional(),
   /** Editorial estimates are not an observation of the actual route or fare. */
   estimation: z.literal("game_model").optional(),

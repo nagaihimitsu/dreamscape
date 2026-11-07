@@ -11,7 +11,7 @@ import { compareRouteTime } from "../../domain/travel-routes";
 import { Modal } from "../../components/Modal";
 import { withNames } from "../romance/RomanceMenu";
 import { PlaceMap } from "./PlaceMap";
-import { travelModeLabels as modes } from "./travel-visibility";
+import { transportLabel } from "../../content/transport";
 import "./travel-menu.css";
 
 type Mode = TravelRoute["mode"];
@@ -65,7 +65,7 @@ export function TravelMenu({ game, onTravelEvent }: {
     </Modal>}
     {selected && <Modal labelledBy="travel-choice-title" className="travel-choice-modal" onClose={() => setSelectedId(null)}><div className="travel-choice-header"><h2 id="travel-choice-title">{selected.place.nameJa}へ</h2><button type="button" className="secondary" onClick={() => setSelectedId(null)}>閉じる</button></div><p>移動手段を選んでください。時間・料金はゲーム内の目安です。{getJourneyForCity(game.currentCityId)?.farePartySize === 2 && "料金は2人分です。"}</p>{selected.admissionCost ? <p>入場料 {formatMoneyForCity(game.currentCityId, selected.admissionCost)}（2人分・ゲーム設定）</p> : null}<div className="travel-choice-routes">{selected.routes.map((route) => {
       const availability = getTravelEventAvailability(game, selected.id, route.mode);
-      return <div key={route.mode}><button type="button" className="secondary travel-route" disabled={!availability.available} onClick={() => { onTravelEvent(selected.id, route.mode); setSelectedId(null); }}>{modes[route.mode]}{route.transferNote ? `（${route.transferNote}）` : ""} {route.minutes}分 · {formatMoneyForCity(game.currentCityId, route.cost)}{route.estimation === "game_model" ? "（ゲーム内の推定）" : ""}</button>{!availability.available && <p className="fine-print">{availability.reason}</p>}</div>;
+      return <div key={route.mode}><button type="button" className="secondary travel-route" disabled={!availability.available} onClick={() => { onTravelEvent(selected.id, route.mode); setSelectedId(null); }}>{transportLabel(game.currentCityId, route.mode)}{route.transferNote ? `（${route.transferNote}）` : ""} {route.minutes}分 · {formatMoneyForCity(game.currentCityId, route.cost)}{route.estimation === "game_model" ? "（ゲーム内の推定）" : ""}</button>{!availability.available && <p className="fine-print">{availability.reason}</p>}</div>;
     })}</div></Modal>}
   </section>;
 }
@@ -88,7 +88,7 @@ function Destination({ place, game, current, recommended, onSelect }: {
     <button type="button" className="travel-destination-button" onClick={onSelect}>
       <span className="travel-category">{categories.has("main") && "◇ 観光"}{categories.size > 1 && " · "}{categories.has("date") && "♡ デート"}</span>
       <span className="travel-destination-title">{event.place.nameJa}</span>
-      <span className="travel-destination-meta">{onlyRoute ? `${modes[onlyRoute.mode]}約${onlyRoute.minutes}分 · ${formatMoneyForCity(game.currentCityId, onlyRoute.cost)}` : fastestRoute ? `${modes[fastestRoute.mode]}約${fastestRoute.minutes}分` : `徒歩約${event.walkMinutes}分`}{shownRoute?.transferNote && `（${shownRoute.transferNote}）`}{shownRoute?.estimation === "game_model" && "（ゲーム内の推定）"}{event.walkMinutes === null && " · 徒歩の所要時間不明"}（{direction}）{place.events.length === 1 && apCost ? ` · ${apCost} AP` : ""}{place.events.length === 1 && event.admissionCost ? ` · 入場料 ${formatMoneyForCity(game.currentCityId, event.admissionCost)}（2人分・ゲーム設定）` : ""}</span>
+      <span className="travel-destination-meta">{onlyRoute ? `${transportLabel(game.currentCityId, onlyRoute.mode)}約${onlyRoute.minutes}分 · ${formatMoneyForCity(game.currentCityId, onlyRoute.cost)}` : fastestRoute ? `${transportLabel(game.currentCityId, fastestRoute.mode)}約${fastestRoute.minutes}分` : `徒歩約${event.walkMinutes}分`}{shownRoute?.transferNote && `（${shownRoute.transferNote}）`}{shownRoute?.estimation === "game_model" && "（ゲーム内の推定）"}{event.walkMinutes === null && " · 徒歩の所要時間不明"}（{direction}）{place.events.length === 1 && apCost ? ` · ${apCost} AP` : ""}{place.events.length === 1 && event.admissionCost ? ` · 入場料 ${formatMoneyForCity(game.currentCityId, event.admissionCost)}（2人分・ゲーム設定）` : ""}</span>
       {recommended && <small>おすすめ</small>}
       {!place.available && <small>{event.unavailableReason || "今は行けません。"}</small>}
     </button>

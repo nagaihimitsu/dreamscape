@@ -55,6 +55,7 @@ import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { validateTourism } from "./tourism-validation";
 import { travelCatalogSchema, travelSettingsSchema } from "../src/content/travel-schemas";
 import { validateTravelContent } from "./travel-validation";
+import { checkRouteModes } from "./transport-validation";
 import { journeySchema } from "../src/content/journey-schemas";
 import { journeyCatalogSchema } from "../src/content/journey-catalog";
 import { validateJourney } from "./journey-validation";
@@ -171,8 +172,12 @@ export type ValidatedContent = ReturnType<typeof validateContent>;
 export function validateContent(sources: ContentSources, options: { storyCache?: StoryValidationCache } = {}) {
   const { root } = sources;
   requireJourneyManifests(sources.manifests);
-  // Only the authoring tools read these profiles; a broken one still fails the build early.
-  for (const manifest of sources.manifests) authoringProfileOf(manifest.data, manifest.file);
+  // The authoring tools read these profiles; a broken one still fails the build early. The
+  // transport checks read one thing of them: whether a journey still waits for its transport switch.
+  const pendingTransport = new Map(sources.manifests.flatMap((manifest) => {
+    const pendingJa = authoringProfileOf(manifest.data, manifest.file)?.transitDecisionLedger?.pendingJa;
+    return pendingJa ? [[manifest.id, pendingJa] as const] : [];
+  }));
   // Each journey folder keeps to its own cities and content (and the core layer to core content).
   checkContentOwnership(sources);
   // Every journey falls back to the shared default background, so the core layer provides it.
@@ -254,7 +259,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   const travels = cities.map((item, index) => {
     const files = sources.cities[index];
     const travel = parseSourceFile(travelCatalogSchema, files.travelFile, files.travel);
-    return { city: item, travel, settings: parseSourceFile(travelSettingsSchema, files.settingsFile, files.settings) };
+    return { city: item, travel, travelFile: displayPath(root, files.travelFile),
+      settings: parseSourceFile(travelSettingsSchema, files.settingsFile, files.settings) };
   });
   for (const { city: registeredCity, settings } of travels) {
     const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === registeredCity.id));
@@ -727,9 +733,11 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       throw new Error(`Encounter entry city mismatch: ${encounter.id}`);
   }
   unique([...productionQuestionIds, ...encounterCatalog.encounters.flatMap((event) => event.quiz ? [event.quiz.question.id] : [])], "production quiz question ID");
-  for (const { city: current, travel, settings } of travels) {
+  for (const { city: current, travel, travelFile, settings } of travels) {
     const episodes = journey.episodes.filter((episode) => episode.cityId === current.id);
     const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id));
+    // checkContentOwnership keeps every city file in the folder of the journey that lists it.
+    if (owner) checkRouteModes(travel, travelFile, { journey: owner, pendingJa: pendingTransport.get(owner.id) });
     // A journey may publish its first city while keeping later, pre-registered
     // cities unfinished. The city status controls the deferred content gate.
     const isUnpublished = current.productionStatus === "prototype";

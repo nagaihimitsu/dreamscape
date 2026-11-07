@@ -35,6 +35,14 @@
   },
   "farePartySize": 2,
   "intercityModes": [],
+  "transportModes": [
+    {
+      "id": "taxi",
+      "nameJa": "タクシー",
+      "movingJa": "タクシーで移動中",
+      "kind": "car"
+    }
+  ],
   "authoring": {
     "eventPrefix": "lpb",
     "observationFile": "authoring/journeys/luang_prabang/drafts/observation-cards.json",

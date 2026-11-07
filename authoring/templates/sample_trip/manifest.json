@@ -24,6 +24,7 @@
     "dateCount": 1
   },
   "intercityModes": [],
+  "transportModes": [],
   "authoring": {
     "eventPrefix": "smp",
     "observationFile": "authoring/journeys/sample_trip/drafts/observation-cards.json",

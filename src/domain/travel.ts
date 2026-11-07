@@ -130,7 +130,7 @@ function validSnapshot(state: TravelSnapshot): boolean {
 }
 
 function validRoute(route: Route): boolean {
-  return !!route.fromPlaceId && !!route.toPlaceId && ["walk", "rail", "tram", "bus", "taxi"].includes(route.mode) &&
+  return !!route.fromPlaceId && !!route.toPlaceId && !!route.mode &&
     Number.isSafeInteger(route.minutes) && route.minutes >= 0 && Number.isSafeInteger(route.cost) && route.cost >= 0 &&
     (route.fromPlaceId !== route.toPlaceId || (route.minutes === 0 && route.cost === 0)) &&
     (route.fromPlaceId === route.toPlaceId || route.minutes > 0) &&
