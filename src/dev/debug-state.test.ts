@@ -4,7 +4,7 @@ import { getJourney } from "../content/journeys";
 import { advanceDate, chooseDate, validateGameState } from "../domain/game";
 import { installPreparingJourneyTestCities } from "./test-cities";
 import { parseDebugQuery, type DebugQuery } from "./debug-query";
-import { createDebugState, debugTargets, defaultDebugSettings, resolveDebugLaunch, type DebugSettings } from "./debug-state";
+import { createDebugState, debugTargets, defaultDebugSettings, firstDebugTarget, resolveDebugLaunch, type DebugSettings, type DebugTarget } from "./debug-state";
 
 const base: DebugSettings = { scene: "tourism", id: "duomo_milano", progress: "completed", ap: 9, affection: 3, trust: 2, spark: 1, roll: "positive" };
 
@@ -71,33 +71,41 @@ describe("Debug launch URLs against the content", () => {
     [{ dataMode: "real", cityId: "atlantis", scene: "battle" }, "都市「atlantis」は登録されていません。仮の場面の都市なら data=fixture を付けます。"],
     [{ dataMode: "real", cityId: "milano", scene: "battle", target: "gt_delhi_main_red_fort_battle" }, "「gt_delhi_main_red_fort_battle」はミラノの「バトル」にありません。"],
     [{ dataMode: "real", cityId: "delhi", scene: "encounter" }, "デリーには「人物との交流」の場面がありません。"],
+    [{ dataMode: "real", cityId: "milano", scene: "encounter", target: "castello_pick" },
+      "「castello_pick」（弦を一本、余らせて）は、品物「青いピック」が必要なため開けません。Debugの場面は品物を持たない状態から始まります。"],
     [{ dataMode: "real", cityId: "milano", scene: "map" }, "地図・交通の確認（scene=map）は制作中の都市だけで使えます。"],
     [{ dataMode: "real", cityId: "samarkand", scene: "battle" }, "サマルカンドは制作中の都市で、物語・クイズはまだありません。地図・交通は scene=map で確認できます。"],
   ] satisfies Array<[DebugQuery, string]>)("explains a URL that does not fit the content: %o", (query, message) => {
     expect(() => resolveDebugLaunch(query)).toThrow(message);
   });
 
-  it("opens every scene the settings screen lists for a cleared Milan and sample city", () => {
+  it("opens every scene the settings screen lists for a cleared Milan and sample city, and explains the rest", () => {
     if (!getJourney("sample_trip"))
       throw new Error("見本の旅（sample_trip）が生成物にありません。npm run content:build -- --with-sample を実行してから、もう一度テストしてください。");
+    const unavailable: string[] = [];
     for (const cityId of ["milano", "mihon"]) {
-      for (const [scene, targets] of Object.entries(debugTargets(cityId)) as Array<[DebugSettings["scene"], { id: string }[]]>) {
-        expect(targets.length, `${cityId} ${scene}`).toBeGreaterThan(0);
-        const opened = targets.filter(({ id }) => {
-          try {
-            const game = createDebugState({ ...base, cityId, scene, id });
-            expect(validateGameState(game), `${cityId} ${scene} ${id}`).toEqual(game);
-            return true;
-          } catch (error) {
-            // Some encounters need an item from another encounter first; Debug says so.
-            expect(scene, `${cityId} ${scene} ${id}: ${error}`).toBe("encounter");
-            expect((error as Error).message).toBe("この進行状態では交流を始められません。必要な進行や品物を確認してください。");
-            return false;
+      for (const [scene, targets] of Object.entries(debugTargets(cityId)) as Array<[DebugSettings["scene"], DebugTarget[]]>) {
+        expect(firstDebugTarget(targets), `${cityId} ${scene}`).not.toBe("");
+        for (const target of targets) {
+          const settings = { ...base, cityId, scene, id: target.id };
+          if (!target.unavailable) {
+            const game = createDebugState(settings);
+            expect(validateGameState(game), `${cityId} ${scene} ${target.id}`).toEqual(game);
+            continue;
           }
-        });
-        expect(opened.length, `${cityId} ${scene}`).toBeGreaterThan(0);
+          // Shown disabled with its reason; the game's own rule refuses it too, and so does its URL.
+          unavailable.push(target.id);
+          expect(() => createDebugState(settings), target.id).toThrow("この進行状態では交流を始められません。必要な進行や品物を確認してください。");
+          expect(() => resolveDebugLaunch({ dataMode: "real", cityId, scene, target: target.id }), target.id)
+            .toThrow(`「${target.id}」（${target.name}）は、${target.unavailable}。Debugの場面は品物を持たない状態から始まります。`);
+        }
       }
     }
+    expect(unavailable).toEqual(expect.arrayContaining(["castello_pick", "smp_mihon_bookmark_gift"]));
+    expect(debugTargets("mihon").encounter).toEqual([
+      { id: "smp_mihon_bookmark_stall", name: "三時のしおりの露店" },
+      { id: "smp_mihon_bookmark_gift", name: "しおりを渡す", unavailable: "品物「三時のしおり」が必要なため開けません" },
+    ]);
   });
 });
 

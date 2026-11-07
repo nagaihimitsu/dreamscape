@@ -9,7 +9,7 @@ import {
   type DebugDataMode, type DebugQuery,
 } from "./debug-query";
 import {
-  createDebugState, debugSceneLocation, debugTargets, defaultDebugCityId, defaultDebugSettings, resolveDebugLaunch,
+  createDebugState, debugSceneLocation, debugTargets, defaultDebugCityId, defaultDebugSettings, firstDebugTarget, resolveDebugLaunch,
   type DebugScene, type DebugSettings,
 } from "./debug-state";
 import { rollTickets } from "./scenario-builders";
@@ -111,7 +111,7 @@ export default function DebugMode() {
     try {
       if (next === "fixture") fixtureCleanup.current = installPreparingJourneyTestCities();
       else { fixtureCleanup.current?.(); fixtureCleanup.current = null; }
-      update({ ...settings, id: debugTargets(cityId)[settings.scene][0]?.id ?? "" });
+      update({ ...settings, id: firstDebugTarget(debugTargets(cityId)[settings.scene]) });
       setDataMode(next);
       setMessage("");
     } catch (error) {
@@ -175,7 +175,7 @@ export default function DebugMode() {
         <label>都市
           <select data-testid="debug-city" value={cityId} onChange={(event) => {
             const next = event.target.value;
-            update({ ...settings, cityId: next, id: debugTargets(next)[settings.scene][0]?.id ?? "" });
+            update({ ...settings, cityId: next, id: firstDebugTarget(debugTargets(next)[settings.scene]) });
           }}>
             {getCities().map((item) => <option key={item.id} value={item.id}>{item.nameJa}{item.productionStatus === "prototype" ? "（制作中）" : ""}</option>)}
           </select>
@@ -184,15 +184,16 @@ export default function DebugMode() {
         <label>場面
           <select data-testid="debug-scene" value={settings.scene} onChange={(event) => {
             const scene = event.target.value as DebugScene;
-            update({ ...settings, scene, id: options[scene][0]?.id ?? "" });
+            update({ ...settings, scene, id: firstDebugTarget(options[scene]) });
           }}>
-            {debugScenes.map((scene) => <option key={scene} value={scene} disabled={!options[scene].length}>
-              {debugSceneLabels[scene]}{options[scene].length ? "" : "（この都市にはありません）"}</option>)}
+            {debugScenes.map((scene) => <option key={scene} value={scene} disabled={!firstDebugTarget(options[scene])}>
+              {debugSceneLabels[scene]}{!options[scene].length ? "（この都市にはありません）" : firstDebugTarget(options[scene]) ? "" : "（開ける場面がありません）"}</option>)}
           </select>
         </label>
         <label>対象
           <select data-testid="debug-target" value={settings.id} onChange={(event) => update({ ...settings, id: event.target.value })}>
-            {options[settings.scene].map((item) => <option key={item.id} value={item.id}>{item.name} ({item.id})</option>)}
+            {options[settings.scene].map((item) => <option key={item.id} value={item.id} disabled={!!item.unavailable}>
+              {item.name} ({item.id}){item.unavailable ? `（${item.unavailable}）` : ""}</option>)}
           </select>
         </label>
         <label>旅の進行

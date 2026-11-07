@@ -14,15 +14,36 @@ export type { DebugScene, DebugSettings } from "./debug-query";
 /** Debug opens the first city of the default journey unless another city is chosen. */
 export const defaultDebugCityId = getJourney(defaultJourneyId)!.cities[0].id;
 
-export type DebugTarget = { id: string; name: string };
+/** A scene target; `unavailable` says why Debug can never open it (the screen shows it disabled, a URL is refused). */
+export type DebugTarget = { id: string; name: string; unavailable?: string };
 
-/** What each scene of the settings screen can open in a city. */
+type Encounter = (typeof encounters.encounters)[number];
+
+/**
+ * Debug's states hold no items: items come only from encounters, and Debug
+ * never plays one before the scene. An encounter whose every choice needs an
+ * item therefore never starts there (getEncounterAvailability: 必要な品物を持っていません).
+ */
+function encounterTarget(item: Encounter): DebugTarget {
+  const choices = item.options.filter((option) => !option.deferCompletion);
+  const needed = choices.length && choices.every((option) => option.requiresItemId)
+    ? [...new Set(choices.map((option) => option.requiresItemId!))] : [];
+  const names = needed.map((id) => `「${encounters.items.find((entry) => entry.id === id)?.nameJa ?? id}」`).join("・");
+  return { id: item.id, name: item.titleJa, ...(needed.length ? { unavailable: `品物${names}が必要なため開けません` } : {}) };
+}
+
+/** The first target Debug can open, as the settings screen preselects it. */
+export function firstDebugTarget(targets: readonly DebugTarget[]): string {
+  return targets.find((item) => !item.unavailable)?.id ?? "";
+}
+
+/** What each scene of the settings screen lists for a city. */
 export function debugTargets(cityId: string): Record<DebugScene, DebugTarget[]> {
   const { city, travel } = getCityContent(cityId);
   return {
     tourism: landmarks.filter((item) => item.cityId === cityId).map((item) => ({ id: item.id, name: item.nameJa })),
     battle: battles.filter((item) => battleCityId(item.id) === cityId).map((item) => ({ id: item.id, name: item.titleJa })),
-    encounter: encounters.encounters.filter((item) => item.cityId === cityId && item.availability !== "dormant").map((item) => ({ id: item.id, name: item.titleJa })),
+    encounter: encounters.encounters.filter((item) => item.cityId === cityId && item.availability !== "dormant").map(encounterTarget),
     date: dates.filter((item) => item.kind === "normal" && travel.events.some((event) => event.id === item.id)).map((item) => ({ id: item.id, name: item.titleJa })),
     epilogue: episodes.filter((item) => item.cityId === cityId && item.kind === "city_finale" && item.epilogueStoryId)
       .map((item) => ({ id: item.id, name: `${city.nameJa}のエピローグ` })),
@@ -31,7 +52,7 @@ export function debugTargets(cityId: string): Record<DebugScene, DebugTarget[]> 
 
 /** The settings screen's starting values for a city. */
 export function defaultDebugSettings(cityId = defaultDebugCityId): DebugSettings {
-  return { cityId, scene: "tourism", id: debugTargets(cityId).tourism[0]?.id ?? "", progress: "completed",
+  return { cityId, scene: "tourism", id: firstDebugTarget(debugTargets(cityId).tourism), progress: "completed",
     ap: debugValueRanges.ap[1], affection: 0, trust: 0, spark: 0, roll: "positive" };
 }
 
@@ -51,8 +72,12 @@ export function resolveDebugLaunch(query: DebugQuery): DebugLaunch {
   const label = debugSceneLabels[query.scene];
   const targets = debugTargets(cityId)[query.scene];
   if (!targets.length) throw new Error(`${city.nameJa}には「${label}」の場面がありません。`);
-  const id = query.target ?? targets[0].id;
-  if (!targets.some((item) => item.id === id)) throw new Error(`「${id}」は${city.nameJa}の「${label}」にありません。`);
+  const id = query.target ?? firstDebugTarget(targets);
+  if (!id) throw new Error(`${city.nameJa}の「${label}」は、どれもDebugでは開けません（理由は設定画面の一覧にあります）。`);
+  const target = targets.find((item) => item.id === id);
+  if (!target) throw new Error(`「${id}」は${city.nameJa}の「${label}」にありません。`);
+  if (target.unavailable)
+    throw new Error(`「${id}」（${target.name}）は、${target.unavailable}。Debugの場面は品物を持たない状態から始まります。`);
   const defaults = defaultDebugSettings(cityId);
   return { kind: "scene", settings: { ...defaults, scene: query.scene, id,
     progress: query.progress ?? defaults.progress, ap: query.ap ?? defaults.ap, affection: query.affection ?? defaults.affection,
