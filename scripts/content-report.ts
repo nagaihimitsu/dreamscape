@@ -122,7 +122,7 @@ function definitions(sources: ContentSources): Definition[] {
     list(isObject(detail) ? detail.topics : undefined).forEach((topic, index) =>
       add(topic.id, details!.provenance.keys.questions[questionId], `questions.${questionId}.topics[${index}]`));
   for (const story of sources.storyFiles) found.push({ id: story.id, file: story.file, where: show(story.file), rule: "story" });
-  for (const quiz of sources.quizFiles.filter((item) => !item.sample && isObject(item.data))) {
+  for (const quiz of sources.quizFiles.filter((item) => !item.example && isObject(item.data))) {
     const data = quiz.data as Entry;
     add(data.id, quiz.file, "id");
     list(data.questions).forEach((question, index) => add(question.id, quiz.file, `questions[${index}]`));
@@ -216,7 +216,7 @@ export function wordUses(sources: ContentSources): Map<string, Set<string>> {
     for (const option of list(value.options)) use(option.textEn, layer);
   };
   for (const quiz of sources.quizFiles)
-    if (!quiz.sample && isObject(quiz.data)) for (const item of list(quiz.data.questions)) question(item, quiz.layer);
+    if (!quiz.example && isObject(quiz.data)) for (const item of list(quiz.data.questions)) question(item, quiz.layer);
   const layerOf = (file: string) => sources.layers.find((layer) => layer.type === "journey" && file.startsWith(layer.directory + path.sep))?.id ?? "core";
   const stories = new Map(sources.storyFiles.map((story) => [story.id, story]));
   const encounters = sources.catalogs["encounters/catalog.json"];
@@ -271,7 +271,7 @@ export function journeyContents(sources: ContentSources): JourneyContents[] {
     const counts: [string, number][] = [
       ["cities", sources.cities.filter((city) => city.layer === manifest.id).length],
       ["stories", sources.storyFiles.filter((story) => story.layer === manifest.id).length],
-      ["quizzes", sources.quizFiles.filter((quiz) => quiz.layer === manifest.id && !quiz.sample).length],
+      ["quizzes", sources.quizFiles.filter((quiz) => quiz.layer === manifest.id && !quiz.example).length],
       ["public files", [...sources.publicFiles.values()].filter(own).length],
     ];
     for (const rule of CATALOG_RULES) {

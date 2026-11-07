@@ -22,7 +22,7 @@ class MemoryStorage implements StorageLike {
   setItem(key: string, value: string) { this.values.set(key, value); }
 }
 
-describe("current reasoning save protection", () => {
+describe("reasoning save protection", () => {
   it("rejects inconsistent or bypassed reasoning without deleting its original save", () => {
     const initial = proof();
     let selected = initial;

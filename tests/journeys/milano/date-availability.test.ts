@@ -6,7 +6,7 @@ import {
   isEventVisible, startDate, validateGameState, type GameState,
 } from "../../../src/domain/game";
 
-const newId = "milano_novecento_date_01";
+const novecentoId = "milano_novecento_date_01";
 const restore = (state: GameState) => validateGameState(JSON.parse(JSON.stringify(state)));
 
 /** Generate a valid history via the current game rules. */
@@ -21,12 +21,12 @@ describe("Milan date availability", () => {
   it("starts the Novecento date independently of other dates", () => {
     const state = seed();
     expect(state.playedDateIds).toEqual([]);
-    const definition = dates.find((entry) => entry.id === newId)!;
+    const definition = dates.find((entry) => entry.id === novecentoId)!;
     expect(definition.requiredPlayedDateIds).toEqual([]);
-    expect(isEventVisible(state, newId)).toBe(true);
-    expect(getDateAvailability(state, newId).available).toBe(true);
-    const started = startDate(state, newId, () => 0);
-    expect(started.activeDate?.dateId).toBe(newId);
+    expect(isEventVisible(state, novecentoId)).toBe(true);
+    expect(getDateAvailability(state, novecentoId).available).toBe(true);
+    const started = startDate(state, novecentoId, () => 0);
+    expect(started.activeDate?.dateId).toBe(novecentoId);
     expect(started.ap).toBe(state.ap - definition.apCost);
     expect(restore(started)).toEqual(started);
     let completed = started;
@@ -37,7 +37,7 @@ describe("Milan date availability", () => {
       else completed = advanceDate(completed, completed.revision);
     }
     expect(completed.activeDate).toBeNull();
-    expect(completed.playedDateIds).toContain(newId);
+    expect(completed.playedDateIds).toContain(novecentoId);
     expect(completed.memories.filter((memory) => memory === "sound_memory_novecento_date_01")).toHaveLength(1);
     expect(restore(completed)).toEqual(completed);
   });

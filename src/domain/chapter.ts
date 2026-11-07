@@ -266,9 +266,16 @@ export function recordGuideRead(
     .map((rule) => rule.id);
   return earnRewards(next, ids).state;
 }
-export function completeRecordedChapter(
+/**
+ * Records the city's episodes whose battle this save has finished and pays
+ * their episode rewards not received yet. During a scene, without such a
+ * battle, or when everything is recorded already, the state comes back
+ * unchanged: completing a city's episodes needs real battle evidence and never
+ * pays twice.
+ */
+export function recordFinishedEpisodes(
   state: GameState,
-  chapterId: string,
+  cityId = state.currentCityId,
 ): GameState {
   if (
     state.activeEncounter ||
@@ -280,7 +287,7 @@ export function completeRecordedChapter(
     return state;
   const matched = episodes.filter(
     (episode) =>
-      episode.cityId === chapterId &&
+      episode.cityId === cityId &&
       hasCompletedBattle(state, episode),
   );
   if (!matched.length) return state;

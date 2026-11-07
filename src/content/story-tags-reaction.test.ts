@@ -31,7 +31,7 @@ describe("Ink presentation and choice tags", () => {
     expect(() => parseStoryTags(["option: bad id"], context)).toThrow("Invalid or duplicate option tag: bad id");
   });
 
-  it("accepts old saved frames and makes authored reactions override external annotations", () => {
+  it("accepts frames without reactions and makes authored reactions override external annotations", () => {
     const old = { text: "行", speaker: "heroine" as const, emotion: "neutral", background: "cafe", choices: [], ended: false };
     expect(storyFrameSchema.parse(old)).toEqual(old);
     const catalog = dialogueReactionCatalogSchema.parse({ schemaVersion: 1, entries: [{ storyId: "milano/test", text: "行", speaker: "heroine", targetCharacterId: "heroine", expression: "smile", mark: "heart" }] });

@@ -256,7 +256,7 @@ export function checkContentOwnership(sources: ContentSources): void {
     for (const [id, file] of Object.entries(presentation?.provenance.keys[key] ?? {})) define(namespace, id, file);
   for (const story of sources.storyFiles) define("story", story.id, story.file);
   const quizzes = sources.quizFiles;
-  for (const quiz of quizzes.filter((item) => !item.sample && isObject(item.data))) {
+  for (const quiz of quizzes.filter((item) => !item.example && isObject(item.data))) {
     const data = quiz.data as Entry;
     define("quiz", data.id, quiz.file);
     for (const question of list(data.questions)) define("question", question.id, quiz.file);

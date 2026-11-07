@@ -127,7 +127,7 @@ describe("word meanings", () => {
       ["the", "cat", "sat", "a", "bell", "rings", "hold", "on", "it", "café", "tomb", "background", "milano"].map((word) => [word, "意味"])) }),
     [`${folder("trip_b")}/learning/word-meanings.json`]: json({ schemaVersion: 1, words: { mausoleum: "霊廟", hall: "広間" } }),
     [`${folder("trip_a")}/quizzes/q.json`]: json({ id: "q", questions: [{ id: "q1", questionEn: "The cat sat?", options: [{ id: "A", textEn: "A Café" }] }] }),
-    [`${folder("trip_a")}/quizzes/q.sample.json`]: json({ id: "s", questions: [{ id: "s1", questionEn: "Sample tomb", options: [] }] }),
+    [`${folder("trip_a")}/quizzes/q.example.json`]: json({ id: "s", questions: [{ id: "s1", questionEn: "Sample tomb", options: [] }] }),
     [`${folder("trip_b")}/quizzes/q.json`]: json({ id: "b", questions: [{ id: "b1", questionEn: "The mausoleum", options: [] }] }),
     [`${folder("trip_a")}/encounters/catalog.json`]: json({ schemaVersion: 1, items: [], encounters: [
       { id: "bell", storyId: "encounters/bell", options: [{ id: "x" }], quiz: { question: { questionEn: "A bell rings", options: [] } } }] }),
@@ -185,7 +185,7 @@ describe("what each journey provides", () => {
       [`${folder("trip_a")}/learning/translations.json`]: json({ schemaVersion: 1, questions: { ta_q1: {} } }),
       [`${folder("trip_a")}/presentation/characters.json`]: json({ schemaVersion: 1, wardrobe: { cities: { a_city: {} } } }),
       [`${folder("trip_a")}/quizzes/ta_quiz.json`]: json({ id: "ta_quiz", questions: [] }),
-      [`${folder("trip_a")}/quizzes/ta_quiz.sample.json`]: json({ id: "ta_sample", questions: [] }),
+      [`${folder("trip_a")}/quizzes/ta_quiz.example.json`]: json({ id: "ta_sample", questions: [] }),
       [`${folder("trip_a")}/stories/arrivals/a_city.ink`]: "Arrival\n",
       [`${folder("trip_a")}/public/assets/tourism/spot.webp`]: null,
     });

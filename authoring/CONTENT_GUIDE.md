@@ -199,7 +199,7 @@ npm run content:inspect -- --type battle-catalog authoring/templates/sample_trip
 npm run content:inspect -- authoring/templates/sample_trip/stories/dates/smp_mihon_date_tower_square.ink
 ```
 
-単体検証はJSONの構文・指定形式とInkのコンパイルを調べます。参照先、Inkタグ、分岐の全文脈は単体では検証しません。正式データの変更後に `npm run content:check` を実行すると、全コンテンツの構造・参照を検証し、ゲーム用のデータを生成します。生成ファイルを書き換えずに全体を確認したい場合は、代わりに `npm run content:inspect -- --all` を利用できます。`npm run content:compat` はコンテンツ生成後に保存関連テストを実行します。過去のセーブの更新後の再開を保証するものではありません。
+単体検証はJSONの構文・指定形式とInkのコンパイルを調べます。参照先、Inkタグ、分岐の全文脈は単体では検証しません。正式データの変更後に `npm run content:check` を実行すると、全コンテンツの構造・参照を検証し、ゲーム用のデータを生成します。生成ファイルを書き換えずに全体を確認したい場合は、代わりに `npm run content:inspect -- --all` を利用できます。`npm run test:saves` はコンテンツ生成後に保存関連の単体テスト（`src/persistence/`）を実行します。過去のセーブの更新後の再開を保証するものではありません。
 
 普段は変更内容と影響範囲に応じて、必要な型検査・対象テスト・実画面確認を選びます。全単体テストと全E2Eを毎回実行する必要はありません。公開前や大きな変更時の全体確認は [開発時の確認](../docs/10_DEVELOPMENT_CHECKS.md) を参照してください。失敗したらエラーで示されたファイル、ID、フィールドを直して再実行します。Inkやクイズの途中再開は内容の指紋を使うため、改稿で読めなくなったデータを勝手に削除しないでください。
 

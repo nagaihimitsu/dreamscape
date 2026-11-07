@@ -7,7 +7,6 @@ import { validateEncounterState } from "./encounter";
 import { responseProfileSchema } from "../content/schemas";
 import { validateEpilogueState } from "./epilogue";
 import {
-  completeRecordedChapter,
   validateJourneyState,
 } from "./chapter";
 import {
@@ -139,14 +138,6 @@ export function setNames(
     heroineName: heroine.data,
     revision: state.revision + 1,
   };
-}
-
-/** Compatibility entry point; real battle evidence is required. */
-export function completeChapter(
-  state: GameState,
-  chapterId = state.currentCityId,
-): GameState {
-  return completeRecordedChapter(state, chapterId);
 }
 
 function applyStep(

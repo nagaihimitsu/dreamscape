@@ -196,8 +196,8 @@ describe("content file layout", () => {
     expect(classifyContentFile("travel/delhi.json", "core")).toEqual({ type: "travel", cityId: "delhi", settings: false });
     expect(classifyContentFile("travel/delhi-settings.json", "core")).toEqual({ type: "travel", cityId: "delhi", settings: true });
     expect(classifyContentFile("stories/milano/sound_cafe_01.ink", "journey")).toEqual({ type: "story", id: "milano/sound_cafe_01" });
-    expect(classifyContentFile("quizzes/x.sample.json", "core")).toEqual({ type: "quiz", sample: true });
-    expect(classifyContentFile("quizzes/sub/x.json", "core")).toEqual({ type: "quiz", sample: false });
+    expect(classifyContentFile("quizzes/x.example.json", "core")).toEqual({ type: "quiz", example: true });
+    expect(classifyContentFile("quizzes/sub/x.json", "core")).toEqual({ type: "quiz", example: false });
     expect(classifyContentFile("travel/research/routes.csv", "core")).toEqual({ type: "other" });
     expect(classifyContentFile("travel/README.md", "core")).toEqual({ type: "other" });
     expect(classifyContentFile("battles/.draft.json", "core")).toEqual({ type: "other" });

@@ -33,7 +33,7 @@ function beforeSpecial(kind: "contradiction" | "connection"): GameState {
   return roundTrip(state);
 }
 
-describe("current journey special battles", () => {
+describe("Milan's special battles among the sightseeing stops", () => {
   it("makes the Scala and Brera encounters available without blocking other sightseeing", () => {
     let state = beforeSpecial("contradiction");
     expect(getEpisodeAvailability(state, "milano_castello_episode").available).toBe(true);

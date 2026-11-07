@@ -1,12 +1,12 @@
 import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { describe, expect, it } from "vitest";
+import { recordFinishedEpisodes } from "./chapter";
 import { zodIssues } from "../../tests/fixtures/zod-issues";
 import { balance, dates } from "../content";
 import { beginStory, continueStory } from "../story/runtime";
 import {
   advanceDate,
   chooseDate,
-  completeChapter,
   createGame,
   finishDate,
   getDateAvailability,
@@ -66,12 +66,12 @@ describe("AP and date rules", () => {
   });
   it("prevents mock completion without battle evidence and never repeats rewards", () => {
     const initial = createGame();
-    expect(completeChapter(initial)).toBe(initial);
+    expect(recordFinishedEpisodes(initial)).toBe(initial);
     const state = seedCurrentFreeTime(initial);
     expect(state.ap).toBe(4);
-    expect(completeChapter(state)).toBe(state);
+    expect(recordFinishedEpisodes(state)).toBe(state);
     expect(
-      completeChapter(validateGameState(JSON.parse(JSON.stringify(state)))),
+      recordFinishedEpisodes(validateGameState(JSON.parse(JSON.stringify(state)))),
     ).toEqual(state);
   });
   it("carries unused AP after a date", () => {

@@ -464,9 +464,9 @@ describe("content build acceptance", () => {
     );
   });
 
-  it("still validates the unpublished quiz sample", async () => {
+  it("still validates the example quiz, which is never played", async () => {
     await replace(
-      "content/journeys/milano/quizzes/last_supper_B1.sample.json",
+      "content/journeys/milano/quizzes/last_supper_B1.example.json",
       '"correctOptionId": "A"',
       '"correctOptionId": "D"',
     );

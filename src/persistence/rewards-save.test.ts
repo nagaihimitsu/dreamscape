@@ -21,7 +21,7 @@ function currentResult(): GameState {
   return state;
 }
 
-describe("current reward and journey saves protect inconsistent input", () => {
+describe("reward and journey saves protect inconsistent input", () => {
   it.each(["unearned", "duplicate", "unknown", "remainder", "oversized", "city", "episode", "receipt", "receipt-amount", "version"])(
     "preserves raw %s data without overwriting it", (kind) => {
       const state = currentResult();

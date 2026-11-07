@@ -25,7 +25,7 @@ function proof(id: typeof ids[number]): GameState {
   return state;
 }
 
-describe("new Milan reasoning cases", () => {
+describe("Milan's special battle cases", () => {
   it("uses two different actual places and independent evidence and quizzes", () => {
     const cases = ids.map((id) => battles.find((battle) => battle.id === id)!);
     expect(cases.map((battle) => battle.landmarkId)).toEqual(["la_scala_case", "brera_case"]);

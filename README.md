@@ -225,6 +225,7 @@ tests/screens/                    # 人が見る画面一覧の撮影（npm run 
 | `npm run content:build`（`content:check`） | 共通データと全旅行編を検証・統合し、`src/content/generated/` に書き出す。成功すると旅行編ごとに提供内容の件数を1行ずつ表示し、警告は件数だけ出す（`-- --verbose` で一覧。[生成時の検査と報告](docs/02_TECH_ARCHITECTURE.md#生成時の検査と報告)）。会話の全分岐検査は前回の成功結果を再利用する（`-- --no-cache` で再利用せずに全部検査。[キャッシュ](docs/10_DEVELOPMENT_CHECKS.md#会話の全分岐検査のキャッシュ)）。`-- --with-sample` で見本の編も加える（単体テストの前の生成はこの形） |
 | `npm run test:quick` | コンテンツを生成してから速い組の単体テスト（日常の確認。全件は `npm test`・CI・`verify`。[テストの組](docs/10_DEVELOPMENT_CHECKS.md#単体テストの組と所要時間)） |
 | `npm test` | コンテンツを生成してから全単体テスト |
+| `npm run test:saves` | コンテンツを生成してから保存関連の単体テスト（`src/persistence/`）だけ |
 | `npm run build` | 生成・型検査・本番ビルド（`dist/`）と、`dist/` にDebug・テスト用のコードやデータがないかの検査 |
 | `npm run verify` | 見本の編を含めた生成・全単体テストの後、見本なしで生成し直して型検査・本番ビルド・`dist/` の検査を行う（公開前・大きな変更）。最初の生成は会話の全分岐検査のキャッシュを使わない |
 | `npm run dist:check` | ビルド済みの `dist/` にDebug・プレビュー・テスト用のコードや旅行編がないかを検査（`build`・`verify` が自動で実行） |
@@ -248,10 +249,10 @@ tests/screens/                    # 人が見る画面一覧の撮影（npm run 
 npm run content:inspect -- content/journeys/milano/quizzes/sound_duomo_B1.json
 npm run content:inspect -- --type quiz authoring/templates/sample_trip/quizzes/smp_mihon_clock_tower_quiz.json
 npm run content:inspect -- --all
-npm run content:compat
+npm run test:saves
 ```
 
-単体検証はJSON構文・型やInkコンパイルを確認します。ファイル間の参照、実行時タグ、画像、報酬条件は `--all` または `npm run content:check` で検証してください。`content:compat` は保存関連テストを実行するコマンドであり、過去のセーブの更新後の再開を保証するものではありません。公開済みIDの変更や、進行中Ink・問題の改稿は保存データに影響し得ます。文章の面白さ、英文の自然さ、史実と画像使用権は人が確認します。
+単体検証はJSON構文・型やInkコンパイルを確認します。ファイル間の参照、実行時タグ、画像、報酬条件は `--all` または `npm run content:check` で検証してください。`test:saves` はコンテンツを生成してから保存関連の単体テスト（`src/persistence/`）を実行するコマンドで、過去のセーブの更新後の再開を保証するものではありません。公開済みIDの変更や、進行中Ink・問題の改稿は保存データに影響し得ます。文章の面白さ、英文の自然さ、史実と画像使用権は人が確認します。
 
 [都市別データの編集手順](authoring/CITY_BUNDLES.md) では、地点・都市内交通・出典・画像などを都市ごとの作業用JSONでまとめて編集できます。[都市追加手順](authoring/FUTURE_CITIES.md) には、都市・旅行・各コンテンツの登録方法と検証手順を記しています。
 
@@ -303,7 +304,7 @@ npm run content:check
 
 ゲームが読むJSONは、`content/` を検証・統合して `npm run content:build` が書き出す `src/content/generated/content/`（生成物。手動編集しない）です。`content/` のJSONを編集した後も、Inkと同様に `npm run content:build` を実行してください。
 
-検証はJSONスキーマ、重複ID、章・背景・シナリオ・思い出参照、許可タグ、前提イベントの循環、段階設定、報酬ID重複、シナリオごとの選択数・効果数・告白結果を確認します。壊れたInk・参照切れ・未定義effect・不正JSONはビルド失敗になります。旧 `last_supper_B1.sample.json` は参考サンプルの検証だけに使用し、出題しません。
+検証はJSONスキーマ、重複ID、章・背景・シナリオ・思い出参照、許可タグ、前提イベントの循環、段階設定、報酬ID重複、シナリオごとの選択数・効果数・告白結果を確認します。壊れたInk・参照切れ・未定義effect・不正JSONはビルド失敗になります。例のクイズ（`quizzes/*.example.json`。ミラノ編の `last_supper_B1.example.json`）は検証だけに使い、出題しません。
 
 ### クイズ・敵シナリオの編集
 

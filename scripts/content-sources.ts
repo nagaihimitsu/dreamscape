@@ -42,7 +42,7 @@ export type CitySource = {
 /** An Ink file and its text. */
 export type StorySource = { id: string; file: string; layer: string; source: string };
 /** A quiz file and its parsed (unvalidated) JSON. */
-export type QuizSource = { file: string; layer: string; sample: boolean; data: unknown };
+export type QuizSource = { file: string; layer: string; example: boolean; data: unknown };
 
 /**
  * The content files of a repository as read from disk: every file below
@@ -338,7 +338,7 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
   const travelFiles: (LayerFile & { cityId: string })[] = [];
   const stories: StorySource[] = [];
   const storyFileById = new Map<string, string>();
-  const quizzes: (LayerFile & { sample: boolean })[] = [];
+  const quizzes: (LayerFile & { example: boolean })[] = [];
   for (const item of files) {
     const type = classifyContentFile(item.relative, item.layer.type);
     if (type.type === "unknown") {
@@ -349,7 +349,7 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
     if (type.type === "catalog") catalogFiles.set(type.kind, [...(catalogFiles.get(type.kind) ?? []), item]);
     else if (type.type === "city") cityFiles.push({ ...item, id: type.id });
     else if (type.type === "travel") travelFiles.push({ ...item, cityId: type.cityId });
-    else if (type.type === "quiz") quizzes.push({ ...item, sample: type.sample });
+    else if (type.type === "quiz") quizzes.push({ ...item, example: type.example });
     else if (type.type === "story") {
       const previous = storyFileById.get(type.id);
       if (previous) throw new Error(`Duplicate story ID ${type.id}: ${previous} and ${item.file}`);
@@ -391,7 +391,7 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
 
   // JSON of quizzes, then of every city with its travel settings and travel files.
   const quizFiles = quizzes.map((item): QuizSource =>
-    ({ file: item.file, layer: item.layer.id, sample: item.sample, data: parseJson(item.file, bytesOf(item)) }));
+    ({ file: item.file, layer: item.layer.id, example: item.example, data: parseJson(item.file, bytesOf(item)) }));
   /** A travel file every city file needs next to it; missing, the error says which file to add and what it holds. */
   const readTravel = (city: LayerFile & { id: string }, file: string, settings: boolean): Buffer => {
     const bytes = tree.files.get(toPosix(path.relative(root, file)));

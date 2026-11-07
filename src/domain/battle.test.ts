@@ -1,13 +1,13 @@
 import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { firstCorrect, playBattleToResult } from "../dev/scenario-builders";
 import { describe, expect, it } from "vitest";
+import { recordFinishedEpisodes } from "./chapter";
 import {
   battles,
   battleQuizzes,
   rewardRules as allRewardRules,
 } from "../content";
 import {
-  completeChapter,
   createGame,
   setNames,
   startDate,
@@ -236,7 +236,7 @@ describe("three-round quiz battle", () => {
     expect(setNames(state, "変更", "変更")).toBe(state);
     expect(leaveBattle(state, state.revision)).toBe(state);
     const noChapter = startBattle(createGame(), battleId());
-    expect(completeChapter(noChapter)).toBe(noChapter);
+    expect(recordFinishedEpisodes(noChapter)).toBe(noChapter);
   });
 });
 

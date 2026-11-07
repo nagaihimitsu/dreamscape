@@ -22,7 +22,7 @@ function completeMainEvent(initial: GameState): GameState {
   return playBattleToResult(startTourismBattle(explored, explored.revision));
 }
 
-describe("current travel save and concurrency", () => {
+describe("travel save and concurrency", () => {
   it("rejects an unregistered directed mode without charging or moving", () => {
     const state = createGame();
     expect(milanoTravelCatalog.routes.some((route) => route.fromPlaceId === "p_hotel" && route.toPlaceId === "p_duomo" && route.mode === "bus")).toBe(false);

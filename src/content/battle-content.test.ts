@@ -71,7 +71,7 @@ describe("battle content contract", () => {
     );
     expect(generated[quizData.id]).toEqual(quizData);
     expect(Object.keys(generated)).not.toContain(
-      "milano_last_supper_b1_sample",
+      "milano_last_supper_b1_example",
     );
     expect(
       new Set(quizData.questions.map((question) => question.correctOptionId))

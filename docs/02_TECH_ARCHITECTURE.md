@@ -81,7 +81,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 - 連結は共通データが先、続いて旅行編を `order` 順に並べ、ファイル内の順序を保つ。キーごとの統合で同じキーを二つの層が定義するとエラー（両方のファイル名を表示）。`schemaVersion` はファイルを持つすべての層で同じ値にする。表にないキー、共通データ専用のキーを旅行編が設定することはエラー。
 - 旅行編のファイルは、自分が使うキーだけを書いてよい（例：`{ "schemaVersion": 1, "backgrounds": { … } }`）。ファイルがない層は何も加えない。共通データ専用の種類（`CORE_LAYER_KINDS`）をどの層も持たない場合は「Missing content file」で失敗する。
 - 都市は `cities/<cityId>.json`、移動は同じ層の `travel/<cityId>.json` と `travel/<cityId>-settings.json`。同じ都市のファイルを二つの層に置くこと、`manifest.json` に登録していない都市を旅行編フォルダに置くことはエラー。
-- Inkは各層の `stories/**/*.ink`、クイズは `quizzes/**/*.json`（`*.sample.json` は検証だけで出題しない）。ストーリーIDは全体で一意で、同じ相対パスのInkを二つの層に置くとエラー。クイズは同じファイル名を別の層に置けるが、クイズID（JSONの `id`）は全体で一意。
+- Inkは各層の `stories/**/*.ink`、クイズは `quizzes/**/*.json`（`*.example.json` は例のクイズで、検証だけで出題しない）。ストーリーIDは全体で一意で、同じ相対パスのInkを二つの層に置くとエラー。クイズは同じファイル名を別の層に置けるが、クイズID（JSONの `id`）は全体で一意。
 - `*.md` とドットで始まるファイル・フォルダは読み込まない。それ以外の未知の `.json`・`.ink` はエラー。旅行編フォルダの `public/` に置けるのは `public/assets/**` だけ。旅行編フォルダのそれ以外のファイル（`public/assets/` の外に置いた画像、`.txt` のメモなど）は読み込まれも配信されもしないため、`content:build` が警告する（下の「生成時の検査と報告」）。
 
 ### 生成時の検査と報告
@@ -99,7 +99,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
   - データからもゲームのコードからも参照されない、旅行編の `public/` と直下の `public/assets/` のファイル（参照されないまま公開される）。コードが自分で使う画像（演出の画像・既定の品物アイコン）は `src/content/code-images.ts` に一覧し、`src/content/code-images.test.ts` が、それらが直下の `public/` にあることと、ほかのコードが配信パス（`assets/…`）を直接書いていないことを確かめる（開発サーバーは存在しない画像にもページを返すため、ブラウザでは欠落に気付けない）。直下の `public/` のブラウザのアイコンとWebアプリのマニフェストは `index.html` が参照し、`scripts/app-icons.test.ts` が検査するため対象外。
   - `authoring.eventPrefix` を持つ旅行編の、接頭辞の決まり（下の「ストーリーIDとIDの名前空間」）に合わないID。既存の例外は `scripts/content-report.ts` の `UNPREFIXED_ID_EXCEPTIONS` に挙げ、新しいIDは例外に足さず接頭辞を付ける。例外に挙げたIDが実データから無くなると、単体テスト（`scripts/content-report.test.ts`）が失敗する（使われない例外を残さないため）。
 - 成功すると、旅行編ごとに1行、そのフォルダが持つ都市・ストーリー・クイズ・配信ファイルの数と、各カタログの項目数（0件の種類は省略）を表示する（例：`Journey uzbekistan (preparing): cities 4, stories 0, quizzes 0, public files 40; destinations 24, backgrounds 44, assets 40`）。置き忘れや、空のまま公開しかけていることに気付くための表示。
-- 語の意味（共通の `learning/word-meanings.json` と旅行編の断片）のうち、どの英文にも出ない語があれば、その数を表示する（一覧は `--verbose`。判定は `scripts/content-report.ts` の `unusedWordMeanings`）。対象の英文は、クイズの問題文・選択肢（`*.sample.json` を除く）と、道中交流の問題・選択肢（カタログの `textEn` と、そのInkの選択肢の文）。使われない語は害がないため警告ではなく、消すかどうかは制作者が判断する。
+- 語の意味（共通の `learning/word-meanings.json` と旅行編の断片）のうち、どの英文にも出ない語があれば、その数を表示する（一覧は `--verbose`。判定は `scripts/content-report.ts` の `unusedWordMeanings`）。対象の英文は、クイズの問題文・選択肢（例のクイズ `*.example.json` を除く）と、道中交流の問題・選択肢（カタログの `textEn` と、そのInkの選択肢の文）。使われない語は害がないため警告ではなく、消すかどうかは制作者が判断する。
 
 ### 生成物（手動で編集しない）
 

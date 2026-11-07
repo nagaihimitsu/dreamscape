@@ -13,7 +13,7 @@ function untilChoice(initial: GameState): GameState {
   return state;
 }
 
-describe("current date effect application", () => {
+describe("applying a date choice's saved random result", () => {
   it.each([
     [1, 0, "positive"], [1, 9999, "negative"],
     [4, 0, "positive"], [4, 9999, "negative"],

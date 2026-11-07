@@ -17,7 +17,7 @@ const initial: DebugSettings = {
   affection: 0, trust: 0, spark: 0, roll: "positive",
 };
 
-describe("current encounter save protection", () => {
+describe("encounter save protection", () => {
   it("persists the preselected tickets and rejects a stale competing choice", () => {
     let state = createDebugState(initial);
     for (let count = 0; !state.activeEncounter!.frame.choices.length && count < 100; count++)
