@@ -53,7 +53,7 @@ const activeDateSchema = z.object({
   appliedEffectIds: uniqueStrings,
   pendingOutcome: z.enum(["accepted", "deferred", "rejected"]).nullable(),
   // Confession conversations use fixed effects; other events use saved random tickets.
-  resolutionMode: z.enum(["legacy_fixed", "random_v1"]),
+  resolutionMode: z.enum(["fixed", "random_v1"]),
   randomPlan: z.array(romanceRollTicketSchema),
   resolvedChoices: z.array(resolvedChoiceSchema),
   responseSnapshot: responseSnapshotSchema.nullable(),

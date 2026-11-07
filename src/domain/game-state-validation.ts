@@ -86,7 +86,7 @@ export function validateActiveDateState(state: GameState): void {
     )
       throw new Error("デートの保存状態を確認できません。");
     const storyId = activeDateStoryId(date, active);
-    if (active.resolutionMode === "legacy_fixed") {
+    if (active.resolutionMode === "fixed") {
       if (date.kind !== "confession" || active.randomPlan.length || active.resolvedChoices.length || active.responseSnapshot)
         throw new Error("告白の結果記録が一致しません。");
     } else {
