@@ -322,6 +322,7 @@ test("encounter: the tap on the picture or the line that closes the held-item de
   await line.focus();
   await page.keyboard.press("Enter");
   await expect.poll(revision).toBe(held.revision + 1);
+  expect(reading.encounter((await debugGame(page))!), "another line of the encounter follows").toBe(true);
   await expect(detail).toBeVisible();
   await expect(line).toHaveAttribute("data-ready", "false");
   // A pan that starts over the picture closes the detail with no click. A click on the line with no

@@ -343,9 +343,10 @@ export const ops = {
    * The game takes taps again: right after an answer the battle ignores the second tap of
    * a double tap (`data-answer-settling`), right after a press on a control (or a tap over
    * something on a story scene) the scene takes no reading tap (`data-tap-settling`), and
-   * right after a story scene starts or ends or a load no tap reaches the page
+   * right after a story scene starts or ends, a load, a journey switch or 再試行 no tap reaches the page
    * (`data-tap-hold` on the root). Each lasts DOUBLE_TAP_WINDOW_MS. A scene that a move
-   * has just started takes no reading tap until the travel transition is gone.
+   * has just started takes no reading tap on the travel transition's card, so this also
+   * waits for the transition to go.
    */
   async settled(page: Page) {
     await expect(page.locator("[data-answer-settling], [data-tap-settling], html[data-tap-hold], [data-testid=travel-transition]")).toHaveCount(0);
