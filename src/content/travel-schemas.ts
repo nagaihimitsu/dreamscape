@@ -97,6 +97,20 @@ export const travelCatalogSchema = z.object({
   }
 });
 
+/**
+ * Where the party can rent a rental transport mode of the journey (manifest
+ * transportModes[].rental) in this city: at these places, for this price
+ * (for the whole party, in the journey currency). A rented mode is ridden
+ * until the party leaves the city. Placeholder values until the scenario is
+ * fixed; the common condition system will decide any further conditions.
+ */
+export const rentalOfferSchema = z.object({
+  modeId: id,
+  placeIds: z.array(id).min(1).refine((ids) => new Set(ids).size === ids.length, "Duplicate rental place"),
+  cost: z.number().int().nonnegative().safe(),
+  sources: z.array(tourismSourceSchema).min(1),
+}).strict();
+
 /** Game-balancing values, not claims about actual hotel prices or fares. */
 export const travelSettingsSchema = z.object({
   initialBudget: z.number().int().nonnegative(),
@@ -109,6 +123,9 @@ export const travelSettingsSchema = z.object({
    * its place (or of the hotel).
    */
   storyBackgroundId: id.optional(),
+  /** Rental offers of the city, at most one per mode. */
+  rentals: z.array(rentalOfferSchema).refine((offers) => new Set(offers.map((offer) => offer.modeId)).size === offers.length,
+    "Duplicate rental offer for a mode").optional(),
   notes: text,
 }).strict();
 
@@ -116,3 +133,4 @@ export type TravelPlace = z.infer<typeof travelPlaceSchema>;
 export type TravelRoute = z.infer<typeof travelRouteSchema>;
 export type TravelEvent = z.infer<typeof travelEventSchema>;
 export type TravelCatalog = z.infer<typeof travelCatalogSchema>;
+export type RentalOffer = z.infer<typeof rentalOfferSchema>;

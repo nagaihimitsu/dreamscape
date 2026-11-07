@@ -12,6 +12,8 @@ import { defaultJourneyId, getJourney } from "../content/journeys";
 import { currencyForCity, formatMoneyForCity } from "../content/currency";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
 import { observeLocalLandmark, waitForTravel } from "../domain/travel-game";
+import { rentTransport } from "../domain/transport";
+import { getTransportMode } from "../content/transport";
 import { getGameWeekday } from "../domain/travel";
 import { getPlayerDeparture, departToNextCity } from "../domain/city-travel";
 import {
@@ -635,6 +637,7 @@ export function GameApp({
             onTourism={(id) => commit((state) => observeLocalLandmark(state, id, game.revision, nextRomanceRoll))}
             onBattle={(id) => commit((state) => startBattle(state, id))}
             onTravelEvent={(id, mode) => travelToEvent(id, mode, game.revision)}
+            onRent={(modeId) => commit((state) => rentTransport(state, modeId, game.revision))}
             nextCityName={departure?.city.nameJa}
             onDepart={() => setConfirmDeparture(true)}
           />
@@ -645,7 +648,8 @@ export function GameApp({
       </footer>
       {confirmDeparture && game && departure && <Modal labelledBy="departure-title" onClose={() => setConfirmDeparture(false)}>
         <h2 id="departure-title">{departure.city.nameJa}へ出発</h2>
-        <p>次の街へ進みます。今の街の未使用アイテムは持って行けません。</p>
+        <p>次の街へ進みます。今の街の未使用アイテムは持って行けません。{game.travel.rentedModeIds.length > 0 &&
+          `借りている${game.travel.rentedModeIds.map((modeId) => getTransportMode(game.currentCityId, modeId)?.nameJa ?? modeId).join("・")}は返します。`}</p>
         <button type="button" className="primary" onClick={() => {
           if (commit((state) => departToNextCity(state, game.revision))) setConfirmDeparture(false);
         }}>出発する</button>

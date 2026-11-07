@@ -4,6 +4,8 @@ import { activeDateStoryId, completedDateCount, dateBelongsToCity, hasCompletedC
 import type { GameState } from "./game-state-schema";
 import { resolveRomanceChoice } from "./romance-random";
 import { minimumHomeFare } from "./travel-routes";
+import { getTransportMode } from "../content/transport";
+import { getUsableRoutes } from "./transport";
 
 /** Cross-check the saved schedule, return fare and currently running scene. */
 export function validateTravelState(state: GameState): void {
@@ -14,8 +16,13 @@ export function validateTravelState(state: GameState): void {
       (travel.activeEvent && (!cityTravel.events.some((event) => event.id === travel.activeEvent!.eventId && event.placeId === travel.activeEvent!.placeId) ||
         travel.activeEvent.placeId !== travel.currentPlaceId || travel.activeEvent.endMinute < travel.minute)))
     throw new Error("旅行の位置や時間枠が一致しません。");
+  // A rental mode is usable once rented and stays usable in the city, so the saved reserve
+  // (computed from the usable routes when it was set) never falls below this minimum.
+  if (travel.rentedModeIds.some((modeId) => !getTransportMode(state.currentCityId, modeId)?.rental ||
+      !getCityContent(state.currentCityId).travelSettings.rentals?.some((offer) => offer.modeId === modeId)))
+    throw new Error("借りた乗り物の記録が一致しません。");
   const returnMinute = travel.activeEvent?.endMinute ?? travel.minute;
-  const requiredFare = minimumHomeFare(cityTravel.routes, travel.currentPlaceId, travel.hotelPlaceId, returnMinute);
+  const requiredFare = minimumHomeFare(getUsableRoutes(state), travel.currentPlaceId, travel.hotelPlaceId, returnMinute);
   if (requiredFare === undefined || travel.returnReserve < requiredFare)
     throw new Error("帰路の交通費を確保できていません。");
   if (travel.activeEvent) {

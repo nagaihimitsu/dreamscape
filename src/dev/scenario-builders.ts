@@ -24,6 +24,7 @@ import { createGame, startDate, validateGameState, type GameState } from "../dom
 import { advanceTourismGuide, openTourism, replayTourismGuide, skipTourismGuide, startTourismBattle } from "../domain/tourism";
 import { finishTravelEventIfComplete } from "../domain/travel-game";
 import { minimumHomeFare } from "../domain/travel-routes";
+import { getUsableRoutes } from "../domain/transport";
 
 /** The option chosen for a quiz question (its round index counts from 0). */
 export type AnswerPicker = (question: QuizQuestion, roundIndex: number) => string;
@@ -266,7 +267,7 @@ export function withRelationship(state: GameState, values: Pick<GameState, "affe
 function atPlace(state: GameState, placeId: string): GameState {
   const { travel } = getCityContent(state.currentCityId);
   if (!travel.places.some((place) => place.id === placeId)) throw new Error("この街に場面の地点が見つかりません。");
-  const returnReserve = minimumHomeFare(travel.routes, placeId, state.travel.hotelPlaceId, state.travel.minute);
+  const returnReserve = minimumHomeFare(getUsableRoutes(state), placeId, state.travel.hotelPlaceId, state.travel.minute);
   if (returnReserve === undefined || returnReserve > state.travelBudget)
     throw new Error("この地点から滞在先への帰路を確認できません。");
   return { ...state, travel: { ...state.travel, currentPlaceId: placeId, returnReserve } };

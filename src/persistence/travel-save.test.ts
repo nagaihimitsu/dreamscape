@@ -128,7 +128,7 @@ describe("travel save and concurrency", () => {
   });
 
   it("reserves an actual two-leg paid return when walking would be too late, reloads and pays once", () => {
-    const homeRoutes = getTravelHomeRoutes("p_prada", "p_hotel", "milano");
+    const homeRoutes = getTravelHomeRoutes(createGame(), "p_prada");
     const rail = homeRoutes.find((route) => route.mode === "rail")!;
     const walk = homeRoutes.find((route) => route.mode === "walk")!;
     const firstLeg = milanoTravelCatalog.routes.find((route) => route.fromPlaceId === "p_prada" && route.toPlaceId === "p_duomo" && route.mode === "rail")!;

@@ -77,6 +77,9 @@ const travelStateSchema = z.object({
     placeId: stableContentId,
     endMinute: z.number().int().min(540).max(1320),
   }).strict().nullable(),
+  // Rental transport modes rented in the current city (src/domain/transport.ts);
+  // a rental lasts until the party leaves the city.
+  rentedModeIds: uniqueStrings,
 }).strict().superRefine((travel, context) => {
   if (travel.calendar && travel.calendar.journeyDay - travel.calendar.cityStartJourneyDay + 1 !== travel.day)
     context.addIssue({ code: "custom", message: "Travel day and journey calendar disagree", path: ["calendar"] });

@@ -8,16 +8,19 @@ import { getDirection } from "../../domain/travel";
 import { getTravelEventAvailability, getTravelEventDefinition } from "../../domain/travel-game";
 import { getTravelDestinations, type TravelDestinationPlace } from "../../domain/travel-destinations";
 import { compareRouteTime } from "../../domain/travel-routes";
+import { isTransportModeUsable } from "../../domain/transport";
 import { Modal } from "../../components/Modal";
 import { withNames } from "../romance/RomanceMenu";
 import { PlaceMap } from "./PlaceMap";
+import { TravelRentals } from "./TravelRentals";
 import { transportLabel } from "../../content/transport";
 import "./travel-menu.css";
 
 type Mode = TravelRoute["mode"];
-export function TravelMenu({ game, onTravelEvent }: {
+export function TravelMenu({ game, onTravelEvent, onRent }: {
   game: GameState;
   onTravelEvent: (eventId: string, mode: Mode) => void;
+  onRent: (modeId: string) => boolean;
 }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
@@ -41,6 +44,7 @@ export function TravelMenu({ game, onTravelEvent }: {
   }
   return <section className="travel-menu" aria-label={`${city.nameJa}の行き先`} data-testid="travel-menu">
     {game.travel.returnReserve > 0 && <p className="travel-reserve">帰路用に{formatMoneyForCity(game.currentCityId, game.travel.returnReserve)}を確保（所持金に含む）</p>}
+    <TravelRentals game={game} onRent={onRent} />
     <PlaceMap game={game} events={candidates} />
     {nearby.length === 0 && <p>今すぐ行ける場所はありません。時間を待つか、滞在先で休めます。</p>}
     <div className="travel-list">{nearby.map((place) => <Destination key={place.id} place={place} game={game} current={current} recommended={place.id === recommendedMainId} onSelect={() => selectPlace(place)} />)}</div>
@@ -81,9 +85,12 @@ function Destination({ place, game, current, recommended, onSelect }: {
   const direction = getDirection(current, event.place);
   const apCost = getTravelEventDefinition(game, event.id)?.apCost ?? event.apCost;
   const categories = new Set(place.events.map((item) => item.category));
-  const onlyRoute = event.routes.length === 1 ? event.routes[0] : undefined;
-  const fastestRoute = event.walkMinutes === null ? [...event.routes].sort(compareRouteTime)[0] : undefined;
-  const shownRoute = onlyRoute ?? fastestRoute ?? event.routes.find((route) => route.mode === "walk");
+  // The line describes the routes the party can ride now (a rental mode once rented).
+  const usable = event.routes.filter((route) => isTransportModeUsable(game, route.mode));
+  const routes = usable.length ? usable : event.routes;
+  const onlyRoute = routes.length === 1 ? routes[0] : undefined;
+  const fastestRoute = event.walkMinutes === null ? [...routes].sort(compareRouteTime)[0] : undefined;
+  const shownRoute = onlyRoute ?? fastestRoute ?? routes.find((route) => route.mode === "walk");
   return <article className="travel-destination" data-testid={`travel-place-${place.id}`}>
     <button type="button" className="travel-destination-button" onClick={onSelect}>
       <span className="travel-category">{categories.has("main") && "◇ 観光"}{categories.size > 1 && " · "}{categories.has("date") && "♡ デート"}</span>

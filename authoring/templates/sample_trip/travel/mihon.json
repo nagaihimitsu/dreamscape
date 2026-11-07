@@ -378,6 +378,222 @@
           "claimJa": "見本用の架空の徒歩時間（ゲーム用の推定）。"
         }
       ]
+    },
+    {
+      "fromPlaceId": "mihon_hotel",
+      "toPlaceId": "mihon_clock_tower",
+      "mode": "rental_bicycle",
+      "minutes": 3,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の自転車の所要時間（ゲーム用の推定）。宿で借りた自転車で走る。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_hotel",
+      "toPlaceId": "mihon_market",
+      "mode": "rental_bicycle",
+      "minutes": 4,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の自転車の所要時間（ゲーム用の推定）。宿で借りた自転車で走る。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_hotel",
+      "toPlaceId": "mihon_library",
+      "mode": "rental_bicycle",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の自転車の所要時間（ゲーム用の推定）。宿で借りた自転車で走る。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_clock_tower",
+      "toPlaceId": "mihon_hotel",
+      "mode": "rental_bicycle",
+      "minutes": 3,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の自転車の所要時間（ゲーム用の推定）。宿で借りた自転車で走る。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_clock_tower",
+      "toPlaceId": "mihon_market",
+      "mode": "rental_bicycle",
+      "minutes": 2,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の自転車の所要時間（ゲーム用の推定）。宿で借りた自転車で走る。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_clock_tower",
+      "toPlaceId": "mihon_library",
+      "mode": "rental_bicycle",
+      "minutes": 3,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の自転車の所要時間（ゲーム用の推定）。宿で借りた自転車で走る。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_market",
+      "toPlaceId": "mihon_hotel",
+      "mode": "rental_bicycle",
+      "minutes": 4,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の自転車の所要時間（ゲーム用の推定）。宿で借りた自転車で走る。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_market",
+      "toPlaceId": "mihon_clock_tower",
+      "mode": "rental_bicycle",
+      "minutes": 2,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の自転車の所要時間（ゲーム用の推定）。宿で借りた自転車で走る。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_market",
+      "toPlaceId": "mihon_library",
+      "mode": "rental_bicycle",
+      "minutes": 4,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の自転車の所要時間（ゲーム用の推定）。宿で借りた自転車で走る。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_library",
+      "toPlaceId": "mihon_hotel",
+      "mode": "rental_bicycle",
+      "minutes": 5,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の自転車の所要時間（ゲーム用の推定）。宿で借りた自転車で走る。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_library",
+      "toPlaceId": "mihon_clock_tower",
+      "mode": "rental_bicycle",
+      "minutes": 3,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の自転車の所要時間（ゲーム用の推定）。宿で借りた自転車で走る。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "mihon_library",
+      "toPlaceId": "mihon_market",
+      "mode": "rental_bicycle",
+      "minutes": 4,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 見本の旅（架空）",
+          "title": "見本の街の設定（架空）",
+          "url": "https://example.com/dreamscape-sample",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "見本用の架空の自転車の所要時間（ゲーム用の推定）。宿で借りた自転車で走る。"
+        }
+      ]
     }
   ],
   "events": [

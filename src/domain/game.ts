@@ -70,7 +70,7 @@ export function createGame(
   return {
     schemaVersion: GAME_STATE_VERSION,
     currentCityId: cityId,
-    travel: { currentPlaceId: travelSettings.hotelPlaceId, hotelPlaceId: travelSettings.hotelPlaceId, day: 1, minute: 540, returnReserve: 0, returnDeadline: DAY_END, activeEvent: null,
+    travel: { currentPlaceId: travelSettings.hotelPlaceId, hotelPlaceId: travelSettings.hotelPlaceId, day: 1, minute: 540, returnReserve: 0, returnDeadline: DAY_END, activeEvent: null, rentedModeIds: [],
       ...(journey.startWeekday === undefined ? {} : { calendar: { journeyDay: 1, cityStartJourneyDay: 1, startWeekday: journey.startWeekday } }) },
     travelBudget: journey.initialBudget ?? travelSettings.initialBudget,
     inventory: {},

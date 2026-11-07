@@ -7,6 +7,8 @@ import { getTourismAvailability, openTourism } from "./tourism";
 import { canReturnByDayEnd, DAY_END, getGameWeekday, planOvernight, planTravelEvent } from "./travel";
 import { compareRouteCost, findTravelHomeRoutes, type HomeRoute } from "./travel-routes";
 import type { TravelEvent, TravelRoute } from "../content/travel-schemas";
+import { getTransportMode } from "../content/transport";
+import { getUsableRoutes, isTransportModeUsable, rentalReason } from "./transport";
 
 /** `walk` or a transport mode ID declared by the journey (src/content/transport.ts). */
 export type TravelMode = TravelRoute["mode"];
@@ -19,9 +21,13 @@ function snapshot(state: GameState) {
 function route(state: GameState, from: string, to: string, mode: TravelMode) {
   return getCityContent(state.currentCityId).travel.routes.find((item) => item.fromPlaceId === from && item.toPlaceId === to && item.mode === mode);
 }
-/** Return routes consist only of registered directed legs; the second leg is walking. */
-export function getTravelHomeRoutes(fromPlaceId: string, hotelPlaceId: string, cityId: string): HomeRoute[] {
-  return findTravelHomeRoutes(getCityContent(cityId).travel.routes, fromPlaceId, hotelPlaceId);
+/**
+ * The ways from a place of the current city back to the hotel the party may
+ * take now (usable routes only: a rental mode once rented). They consist only
+ * of registered directed legs; the second leg is walking.
+ */
+export function getTravelHomeRoutes(state: GameState, fromPlaceId: string): HomeRoute[] {
+  return findTravelHomeRoutes(getUsableRoutes(state), fromPlaceId, state.travel.hotelPlaceId);
 }
 /** Current event cost and duration, including the retry rule. */
 export function getTravelEventDefinition(state: GameState, eventId: string) {
@@ -82,7 +88,7 @@ export function isTravelEventVisible(state: GameState, event: TravelEvent): bool
 /** Preview and commit use the same return candidates and late-return policy. */
 export function getTravelSleepOptions(state: GameState) {
   const { travelSettings } = getCityContent(state.currentCityId);
-  const routes = getTravelHomeRoutes(state.travel.currentPlaceId, state.travel.hotelPlaceId, state.currentCityId);
+  const routes = getTravelHomeRoutes(state, state.travel.currentPlaceId);
   const current = snapshot(state);
   const allowLateReturn = !canReturnByDayEnd(current, routes);
   return routes.map((route) => ({ route, plan: planOvernight(current, route, travelSettings.lodgingCost, allowLateReturn) }));
@@ -111,7 +117,9 @@ export function getTravelEventAvailability(state: GameState, eventId: string, mo
   const outbound = route(state, state.travel.currentPlaceId, event.placeId, mode);
   const place = getCityContent(state.currentCityId).travel.places.find((item) => item.id === event.placeId);
   if (!outbound || !place) return { available: false, reason: reasonJa.route };
-  const returns = getTravelHomeRoutes(event.placeId, state.travel.hotelPlaceId, state.currentCityId)
+  if (!isTransportModeUsable(state, mode))
+    return { available: false, reason: getTransportMode(state.currentCityId, mode)?.rental ? rentalReason(state.currentCityId, mode) : reasonJa.route };
+  const returns = getTravelHomeRoutes(state, event.placeId)
     .sort(compareRouteCost);
   let reason = reasonJa.route;
   for (const returnRoute of returns) {
@@ -194,7 +202,7 @@ export function finishTravelEventIfComplete(previous: GameState, next: GameState
 export function waitForTravel(state: GameState, minutes: number, expectedRevision: number): GameState {
   if (state.revision !== expectedRevision || hasActiveTravelScene(state) ||
       !Number.isSafeInteger(minutes) || minutes <= 0 || state.travel.minute + minutes > DAY_END) return state;
-  const home = getTravelHomeRoutes(state.travel.currentPlaceId, state.travel.hotelPlaceId, state.currentCityId)
+  const home = getTravelHomeRoutes(state, state.travel.currentPlaceId)
     .filter((item) => item.cost <= state.travelBudget && state.travel.minute + minutes + item.minutes <= DAY_END)
     .sort(compareRouteCost)[0];
   if (!home) return state;

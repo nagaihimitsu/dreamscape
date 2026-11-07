@@ -1,5 +1,5 @@
 import type { Journey } from "../src/content/journey-catalog";
-import type { TravelCatalog } from "../src/content/travel-schemas";
+import type { RentalOffer, TravelCatalog } from "../src/content/travel-schemas";
 import { WALK_MODE_ID } from "../src/content/transport-schemas";
 import { journeyManifestPath } from "./content-layout";
 import { inspectCityTransit, transitStatuses, type CityTransitReview } from "./transit-ledger";
@@ -67,4 +67,30 @@ export function transportSummary(transport: JourneyTransport, reviews: readonly 
     reviews.reduce((sum, review) => sum + Object.values(review.counts).reduce((inner, byStatus) => inner + byStatus[status], 0), 0)]));
   const ledger = reviews.length ? `; transit ledgers ${reviews.length}: ${transitStatuses.map((status) => `${status} ${totals[status]}`).join(", ")}` : "";
   return `Transport ${journey.id}: modes ${modes}${ledger}`;
+}
+
+/**
+ * Rentals of a city: an offer names a rental mode of the journey that has
+ * routes in this city, at places of the city; every rental mode with routes
+ * here has an offer (else its routes could never be ridden). A journey
+ * waiting for its switch declares no rental mode and keeps no offer.
+ */
+export function checkCityRentals(travel: TravelCatalog, rentals: readonly RentalOffer[] | undefined, settingsFile: string, transport: JourneyTransport): void {
+  const offers = rentals ?? [];
+  const rentalModes = transport.journey.transportModes.filter((mode) => mode.rental).map((mode) => mode.id);
+  if (transport.pendingJa && (rentalModes.length || offers.length))
+    throw new Error(`${transport.journey.id} は交通の切り替えを待っているので（${transport.pendingJa}）、借りる乗り物と貸し出しはまだ使えません（Rentals in a journey waiting for its transport switch）。`);
+  const places = new Set(travel.places.map((place) => place.id));
+  const routed = new Set(travel.routes.map((route) => route.mode));
+  for (const offer of offers) {
+    if (!rentalModes.includes(offer.modeId))
+      throw new Error(`${settingsFile} の貸し出し "${offer.modeId}" は、借りる乗り物（manifest.json の transportModes で "rental": true）ではありません（Rental offer for a mode that is not a declared rental mode）。`);
+    if (!routed.has(offer.modeId))
+      throw new Error(`${settingsFile} の貸し出し "${offer.modeId}" には、この都市の経路がありません（Rental offer for a mode without routes in the city）。`);
+    const unknown = offer.placeIds.find((placeId) => !places.has(placeId));
+    if (unknown) throw new Error(`${settingsFile} の貸し出し "${offer.modeId}" の場所 "${unknown}" は、この都市の地点ではありません（Unknown rental place）。`);
+  }
+  for (const modeId of rentalModes)
+    if (routed.has(modeId) && !offers.some((offer) => offer.modeId === modeId))
+      throw new Error(`借りる乗り物 "${modeId}" の経路がありますが、${settingsFile} の rentals に貸し出しがありません（Rental mode without an offer）。`);
 }

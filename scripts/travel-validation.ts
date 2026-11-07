@@ -14,7 +14,7 @@ export function validateTravelContent(
   landmarkIds: readonly string[],
   destinationIds: readonly string[],
   backgrounds: Record<string, unknown>,
-  options: { allowPendingContent?: boolean; plannedLandmarkIds?: readonly string[] } = {},
+  options: { allowPendingContent?: boolean; plannedLandmarkIds?: readonly string[]; rentalModeIds?: readonly string[] } = {},
 ): void {
   if (travel.cityId !== cityId) throw new Error(`Unknown travel city: ${travel.cityId}`);
   if (!travel.places.some((place) => place.id === settings.hotelPlaceId))
@@ -38,9 +38,11 @@ export function validateTravelContent(
     // authored transport: never infer a walking route from its coordinates.
     if (!travel.routes.some((route) => route.fromPlaceId === place.id && route.toPlaceId === place.id && route.mode === "walk"))
       throw new Error(`Missing same-place route: ${place.id}`);
+    // A rental mode is an extra way to go: without the rental every place is still reached (and the hotel).
     for (const destination of travel.places) {
       if (place.id === destination.id) continue;
-      if (!travel.routes.some((route) => route.fromPlaceId === place.id && route.toPlaceId === destination.id && route.minutes < DAY_END - DAY_START))
+      if (!travel.routes.some((route) => route.fromPlaceId === place.id && route.toPlaceId === destination.id && route.minutes < DAY_END - DAY_START &&
+          !options.rentalModeIds?.includes(route.mode)))
         throw new Error(`Missing usable directed route: ${place.id}/${destination.id}`);
     }
   }

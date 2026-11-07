@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { TravelCatalog } from "../src/content/travel-schemas";
-import { checkCityTransit, checkRouteModes, transportSummary, type JourneyTransport } from "./transport-validation";
+import { checkCityRentals, checkCityTransit, checkRouteModes, transportSummary, type JourneyTransport } from "./transport-validation";
 
 const source = [{ publisher: "試験", title: "試験", url: "https://example.org/test", checkedAt: "2026-11-07", claimType: "hypothesis" as const, claimJa: "試験用。" }];
 const place = (id: string) => ({ id, cityId: "test_city", nameJa: "地点", nameEn: "Place", latitude: 0, longitude: 0, backgroundId: "test_bg", sources: source });
@@ -64,5 +64,35 @@ describe("per-city transit ledgers in content:build", () => {
     expect(transportSummary(journey([{ ...taxi, rental: true }]), [])).toBe("Transport test_trip: modes walk, taxi (rental)");
     expect(transportSummary(journey([taxi], "ツアー機能待ち"), []))
       .toBe("Transport test_trip: ツアー機能待ち（交通は旧方式のまま。都市ごとの交通判断台帳と新しい交通の確認はまだ使いません）; modes walk, taxi");
+  });
+});
+
+describe("rentals in content:build", () => {
+  const bike = { id: "rental_bicycle", nameJa: "貸し自転車", movingJa: "貸し自転車で移動中", kind: "bicycle" as const, rental: true as const };
+  const withBike = travel([route("a", "a", "walk", 0), route("a", "b", "walk"), route("a", "b", "rental_bicycle", 5)]);
+  const offer = (changes: Partial<{ modeId: string; placeIds: string[] }> = {}) => ({ modeId: "rental_bicycle", placeIds: ["a"], cost: 6, sources: source, ...changes });
+  const FILE = "content/journeys/test_trip/travel/test_city-settings.json";
+
+  it("accepts an offer of a declared rental mode with routes here, at places of the city", () => {
+    expect(() => checkCityRentals(withBike, [offer()], FILE, journey([bike]))).not.toThrow();
+    // A rental mode without routes in this city needs no offer.
+    expect(() => checkCityRentals(travel([route("a", "b", "walk")]), undefined, FILE, journey([bike]))).not.toThrow();
+  });
+
+  it("requires an offer for a rental mode with routes, and refuses offers that cannot be used", () => {
+    expect(() => checkCityRentals(withBike, undefined, FILE, journey([bike])))
+      .toThrow(`借りる乗り物 "rental_bicycle" の経路がありますが、${FILE} の rentals に貸し出しがありません（Rental mode without an offer）。`);
+    expect(() => checkCityRentals(withBike, [offer({ modeId: "tram" })], FILE, journey([bike, tram])))
+      .toThrow(`${FILE} の貸し出し "tram" は、借りる乗り物（manifest.json の transportModes で "rental": true）ではありません`);
+    expect(() => checkCityRentals(travel([route("a", "b", "walk")]), [offer()], FILE, journey([bike])))
+      .toThrow(`${FILE} の貸し出し "rental_bicycle" には、この都市の経路がありません（Rental offer for a mode without routes in the city）。`);
+    expect(() => checkCityRentals(withBike, [offer({ placeIds: ["a", "elsewhere"] })], FILE, journey([bike])))
+      .toThrow(`${FILE} の貸し出し "rental_bicycle" の場所 "elsewhere" は、この都市の地点ではありません（Unknown rental place）。`);
+  });
+
+  it("keeps rentals out of a journey waiting for its switch", () => {
+    expect(() => checkCityRentals(withBike, [offer()], FILE, journey([bike], "ツアー機能待ち")))
+      .toThrow("test_trip は交通の切り替えを待っているので（ツアー機能待ち）、借りる乗り物と貸し出しはまだ使えません");
+    expect(() => checkCityRentals(travel([route("a", "b", "walk")]), [], FILE, journey([tram], "ツアー機能待ち"))).not.toThrow();
   });
 });

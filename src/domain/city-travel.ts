@@ -46,7 +46,8 @@ export function departToNextCity(state: GameState, expectedRevision: number): Ga
     currentCityId: next.city.id,
     inventory,
     travel: { currentPlaceId: hotel, hotelPlaceId: hotel, day: 1, minute: 9 * 60,
-      returnReserve: 0, returnDeadline: DAY_END, activeEvent: null,
+      // Rentals end here: they are ridden only in the city where they were rented.
+      returnReserve: 0, returnDeadline: DAY_END, activeEvent: null, rentedModeIds: [],
       ...(state.travel.calendar ? { calendar: { ...state.travel.calendar, cityStartJourneyDay: state.travel.calendar.journeyDay } } : {}) },
   };
   return startCityArrival(arrived, arrived.revision);

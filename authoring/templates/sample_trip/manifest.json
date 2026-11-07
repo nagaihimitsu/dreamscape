@@ -24,7 +24,15 @@
     "dateCount": 1
   },
   "intercityModes": [],
-  "transportModes": [],
+  "transportModes": [
+    {
+      "id": "rental_bicycle",
+      "nameJa": "貸し自転車",
+      "movingJa": "貸し自転車で移動中",
+      "kind": "bicycle",
+      "rental": true
+    }
+  ],
   "authoring": {
     "eventPrefix": "smp",
     "observationFile": "authoring/journeys/sample_trip/drafts/observation-cards.json",

@@ -6,6 +6,7 @@ import { validateGameState } from "../domain/game";
 import { getGameWeekday, planTravel } from "../domain/travel";
 import { minimumHomeFare } from "../domain/travel-routes";
 import { getTravelHomeRoutes, sleepAtHotel } from "../domain/travel-game";
+import { getRentalOffers, getUsableRoutes, rentTransport } from "../domain/transport";
 import { PlaceMap } from "../features/journey/PlaceMap";
 import { transportLabel } from "../content/transport";
 import { loadGame, saveGame } from "../persistence";
@@ -31,8 +32,10 @@ export function PrototypePreview({ cityId, onClose }: { cityId: string; onClose:
   const [placeId, setPlaceId] = useState(() => travel.places.find((place) => place.id !== game.travel.currentPlaceId)?.id ?? game.travel.currentPlaceId);
   const [message, setMessage] = useState("");
   const current = travel.places.find((place) => place.id === game.travel.currentPlaceId)!;
-  const routes = travel.routes.filter((route) => route.fromPlaceId === current.id && route.toPlaceId === placeId);
-  const homeRoutes = getTravelHomeRoutes(current.id, game.travel.hotelPlaceId, cityId);
+  // Rental modes appear once rented here (as in the game).
+  const routes = getUsableRoutes(game).filter((route) => route.fromPlaceId === current.id && route.toPlaceId === placeId);
+  const homeRoutes = getTravelHomeRoutes(game, current.id);
+  const rentals = getRentalOffers(game);
   const weekday = getGameWeekday(game.travel.calendar);
 
   function commit(next: typeof game, success: string) {
@@ -46,7 +49,7 @@ export function PrototypePreview({ cityId, onClose }: { cityId: string; onClose:
   function move(route: (typeof routes)[number]) {
     const result = planTravel({ ...game.travel, ap: game.ap, travelBudget: game.travelBudget }, route);
     if (!result.ok) { setMessage("この時間・予算では移動できません。"); return; }
-    const returnReserve = minimumHomeFare(travel.routes, route.toPlaceId, game.travel.hotelPlaceId, result.arrivalMinute);
+    const returnReserve = minimumHomeFare(getUsableRoutes(game), route.toPlaceId, game.travel.hotelPlaceId, result.arrivalMinute);
     if (returnReserve === undefined || returnReserve > result.remainingBudget) {
       setMessage("滞在先への帰路と費用を確保できません。"); return;
     }
@@ -67,6 +70,10 @@ export function PrototypePreview({ cityId, onClose }: { cityId: string; onClose:
       {transportLabel(cityId, route.mode)}{route.transferNote ? `（${route.transferNote}）` : ""} {route.minutes}分 · {formatMoneyForCity(cityId, route.cost)}
     </button>)}</div>
     {routes.length === 0 && <p>登録された移動手段はありません。</p>}
+    <div>{rentals.map(({ offer, mode, available, reason }) => <button type="button" className="secondary" key={offer.modeId} disabled={!available}
+      title={reason || undefined} onClick={() => commit(rentTransport(game, offer.modeId, game.revision), `一時データで${mode.nameJa}を借りました。`)}>
+      {mode.nameJa}を借りる（{formatMoneyForCity(cityId, offer.cost)}）{reason ? `：${reason}` : ""}
+    </button>)}</div>
     <div>{homeRoutes.map((route) => {
       const via = route.viaPlaceId ? travel.places.find((place) => place.id === route.viaPlaceId)?.nameJa : undefined;
       return <button type="button" className="secondary" key={JSON.stringify([route.mode, route.viaPlaceId ?? null])} onClick={() =>

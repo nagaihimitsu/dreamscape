@@ -3,6 +3,7 @@ import type { TravelEvent, TravelPlace, TravelRoute } from "../content/travel-sc
 import type { GameState } from "./game";
 import { DAY_END, NIGHT_START, groupDestinationEvents, selectNearbyDestinations, type DestinationPlace } from "./travel";
 import { getTravelEventAvailability, isTravelEventVisible, isUnclearedMainTravelEvent, waitForTravel } from "./travel-game";
+import { isTransportModeUsable } from "./transport";
 
 export type TravelDestinationEvent = TravelEvent & {
   walkMinutes: number | null;
@@ -24,7 +25,10 @@ export function getTravelDestinations(state: GameState) {
     const routes = outgoing.filter((route) => route.toPlaceId === event.placeId);
     if (!place || routes.length === 0) return [];
     const walk = routes.find((route) => route.mode === "walk");
-    const availability = routes.map((route) => getTravelEventAvailability(state, event.id, route.mode));
+    // The menu lists a rental route before it is rented (with its reason), but the event's
+    // reason comes from a usable route: a closed event says so, not 「…で借りると乗れます」.
+    const usable = routes.filter((route) => isTransportModeUsable(state, route.mode));
+    const availability = (usable.length ? usable : routes).map((route) => getTravelEventAvailability(state, event.id, route.mode));
     return [{ ...event, walkMinutes: walk?.minutes ?? null, place, routes,
       available: availability.some((result) => result.available), unavailableReason: availability[0]?.reason,
       unclearedMain: isUnclearedMainTravelEvent(state, event.id) }];

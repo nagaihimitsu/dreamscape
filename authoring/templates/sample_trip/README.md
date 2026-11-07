@@ -73,6 +73,13 @@
 - ファイル：`encounters/catalog.json`、`stories/encounters/smp_mihon_bookmark_stall.ink`、`stories/encounters/smp_mihon_bookmark_gift.ink`
 - 項目のID：（必須のファイルには項目がありません）
 
+### 乗り物（貸し自転車）
+
+徒歩のほかに、宿で借りる貸し自転車で街を回れます。借りるまでは自転車の経路に乗れず、借りなくてもどこへでも歩いて行けて、宿に帰れます。宿で一度払うと、見本の街にいるあいだ乗れます（次の都市へ出発すると返したことになります）。乗り物の宣言（`manifest.json` の `transportModes`、`"rental": true`）、自転車の経路、宿の貸し出し（`travel/mihon-settings.json` の `rentals`）、都市ごとの交通判断台帳（`travel/mihon-transit.json`）の書き方を示します。乗っているときの会話（乗車イベント）は入れていません。
+
+- ファイル：`travel/mihon-transit.json`
+- 項目のID：`rental_bicycle`
+
 任意の英文だけが使う語は `learning/word-meanings.json` に残ります。使われない語はエラーではなく、`npm run content:build -- --verbose` で一覧できます。
 
 ## 遊び方の流れとAP
@@ -90,6 +97,7 @@
 - 地点・観光地・デートの行き先：都市IDで始める（`mihon_clock_tower`、`mihon_tower_square`）。観光地の地点IDは観光地IDと同じにする。
 - それ以外のID（エピソード・対決・クイズ・問題・報酬・背景・画像・観察ポイント・デート・品物・交流）とストーリーのファイル名：接頭辞 `smp_` で始める。都市ごとに1本のストーリーは都市IDをファイル名にしてよい（`epilogues/mihon`）。
 - 地図のイベントのIDは、対応するエピソード・特殊戦・デートのIDと同じにする。
+- 乗り物のID：旅行編の中だけで使うので、接頭辞 `smp_` を付けない（`rental_bicycle`）。`walk` は使えない（徒歩は最初からある）。セーブデータ（借りた乗り物）に入るので、公開したあとは変えない。見本では、任意の部分を外すときにIDと同じ文字列を消すので、絵の種類の名前（`kind` の `bicycle`）と違うIDにしている。
 
 会話（ストーリー）・クイズ・問題の名前は、すべての旅行編で「頭 ＋ 役割 ＋ 場所・話題」の形にします（[技術設計の「IDの付け方」](../../../docs/02_TECH_ARCHITECTURE.md#idの付け方) と同じ決まり）。頭は `<接頭辞>_<都市ID>` で、見本では `smp_mihon` です。
 

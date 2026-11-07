@@ -78,6 +78,12 @@ describe("Milan travel data references", () => {
     const walk = travel.routes.find((route) => route.fromPlaceId === "p_duomo" && route.toPlaceId === "p_hotel" && route.mode === "walk")!;
     expect(() => validate({ ...travel, routes: [...routes, { ...walk, mode: "taxi", cost: 10, minutes: 12 * 60 }] }))
       .toThrow(/Missing usable directed route: p_duomo\/p_hotel/);
+    // A rental mode is an extra way: a pair reached only by it is missing for a party that has not rented.
+    const rentalOnly = [...routes, { ...walk, mode: "rental_bicycle", minutes: 5 }];
+    expect(() => validateTravelContent({ ...travel, routes: rentalOnly }, { hotelPlaceId: settings.hotelPlaceId }, "milano", journey, dates, battles,
+      landmarkIds, destinationIds, backgrounds, { rentalModeIds: ["rental_bicycle"] })).toThrow(/Missing usable directed route: p_duomo\/p_hotel/);
+    expect(() => validateTravelContent({ ...travel, routes: rentalOnly }, { hotelPlaceId: settings.hotelPlaceId }, "milano", journey, dates, battles,
+      landmarkIds, destinationIds, backgrounds)).not.toThrow();
   });
 
   it("requires the free zero-time route for events at the current place", () => {
