@@ -1,3 +1,4 @@
+import { DOUBLE_TAP_WINDOW_MS } from "../../src/components/double-tap";
 import type { GameState } from "../../src/domain/game";
 import { DEBUG_HOOK_NAME, type DreamscapeDebugHook } from "../../src/dev/debug-hook";
 import { debugQueryString, type DebugSettings } from "../../src/dev/debug-query";
@@ -209,3 +210,34 @@ for (const kind of ["encounter", "epilogue", "battle", "rebuttal"] as const) {
     expect((await debugGame(page))!.revision).toBe(kind === "rebuttal" ? before.revision : before.revision + 1);
   });
 }
+
+// A presentation-only scene end (the special battle's rebuttal) holds taps like a saved one: the
+// tap on its last line brings the cut-in, whose 「スキップ」 must not take the double tap's second tap.
+test("rebuttal: the tap that ends it does not also skip the cut-in under the finger", { tag: tier.debug }, async ({ page }) => {
+  const target = (await tapTargets(page)).rebuttal;
+  expect(target, "a special battle with a rebuttal that Debug opens in its default city").toBeDefined();
+  await page.clock.install();
+  await ops.openDebugScene(page, settings(target!));
+  await playUntil(page, reading.rebuttal, { source: debugGame });
+  const line = page.getByTestId("dialogue-text");
+  const last = page.getByTestId("reasoning-rebuttal-advance");
+  for (let step = 0; step < 50 && !(await last.isVisible()); step++) {
+    const text = await line.textContent();
+    await ops.tap(page, await ops.sceneBackgroundPoint(page));
+    await expect(line).not.toHaveText(text!);
+  }
+  await expect(last).toBeVisible();
+  const end = await ops.sceneBackgroundPoint(page);
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.doubleTap(page, end);
+  const cutIn = page.getByTestId("reasoning-cutin");
+  await expect(cutIn).toBeVisible();
+  const skip = (await page.getByTestId("reasoning-cutin-skip").boundingBox())!;
+  await page.touchscreen.tap(skip.x + skip.width / 2, skip.y + skip.height / 2);
+  await expect(cutIn).toBeVisible();
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await page.clock.resume();
+  await ops.settled(page);
+  await page.getByTestId("reasoning-cutin-skip").click();
+  await expect(page.getByTestId("reasoning-notebook")).toBeVisible();
+});
