@@ -36,7 +36,7 @@
 ## GameState概念例
 ```
 {
-  "schemaVersion": 13,
+  "schemaVersion": 14,
   "playerName": "たいち",
   "heroineName": "あゆみ",
   "ap": 2,

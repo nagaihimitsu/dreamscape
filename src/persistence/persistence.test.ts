@@ -12,6 +12,7 @@ import {
   sameGameState,
   SAVE_KEY,
   saveGame,
+  SUPPORTED_SAVE_VERSION,
   type StorageLike,
 } from "./index";
 
@@ -199,6 +200,50 @@ describe("local save persistence", () => {
       message: expect.stringContaining("空き容量"),
     });
     expect(loadGame(storage)).toEqual({ status: "loaded", state: previous });
+  });
+});
+
+describe("save format v14 (docs/07: one format per version, no migration)", () => {
+  // A save as v13 wrote it: the same shape plus the completedChapters record v14 removed.
+  const v13Save = () => JSON.stringify({ ...createGame(), schemaVersion: 13, completedChapters: ["milano"] });
+
+  it("is the version every new game is written in", () => {
+    expect(SUPPORTED_SAVE_VERSION).toBe(14);
+    expect(createGame().schemaVersion).toBe(14);
+  });
+
+  it("round-trips a v14 save with a date in progress", () => {
+    const storage = new MemoryStorage();
+    const state = startDate(seedCurrentFreeTime(createGame("旅人", "小春")), "milano_cafe_01");
+    expect(state.activeDate).not.toBeNull();
+    expect(saveGame(storage, state)).toEqual({ ok: true });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 14 });
+    expect(loadGame(storage)).toEqual({ status: "loaded", state });
+  });
+
+  it("reports a v13 save as an identified old version, never migrates, overwrites or deletes it", () => {
+    const storage = new MemoryStorage();
+    const raw = v13Save();
+    storage.setItem(SAVE_KEY, raw);
+    expect(loadGame(storage)).toEqual({
+      status: "invalid", kind: "legacy", raw,
+      message: "保存データの形式はバージョン13です。現在のバージョンでは読み込めません。データの破損によって読み込めない場合もあります。元のデータは残っています。",
+    });
+    expect(saveGame(storage, createGame()).ok).toBe(false);
+    expect(storage.getItem(SAVE_KEY)).toBe(raw);
+    // Starting over is an explicit choice that keeps the old save as a backup.
+    expect(backupAndCreate(storage, createGame(), raw)).toEqual({ ok: true });
+    const backups = [...storage.values.entries()].filter(([key]) => key.startsWith(`${SAVE_KEY}.backup.`));
+    expect(backups.map(([, value]) => value)).toEqual([raw]);
+  });
+
+  it("leaves an unknown newer version (v15) unchanged", () => {
+    const storage = new MemoryStorage();
+    const raw = JSON.stringify({ ...createGame(), schemaVersion: 15 });
+    storage.setItem(SAVE_KEY, raw);
+    expect(loadGame(storage)).toMatchObject({ status: "invalid", kind: "newer", raw });
+    expect(saveGame(storage, createGame()).ok).toBe(false);
+    expect(storage.getItem(SAVE_KEY)).toBe(raw);
   });
 });
 
