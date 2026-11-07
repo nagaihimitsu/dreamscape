@@ -133,6 +133,23 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await ops.tap(page, await ops.centerOf(page.getByTestId("destination-reference-note")));
   await expect(line).toHaveText(dateLine!);
   expect((await readSave(page)).revision).toBe(started.revision);
+  // A notice above the scene (here after 「セーブ」) pushes the date down; its 「閉じる」 lets the date
+  // move back up under the finger. A press on any control of the page, also outside the scene,
+  // settles the scene for a moment: a quick tap on the picture right after does not read on
+  // (where the second tap of a double tap on 「閉じる」 lands depends on the notice's length).
+  const sceneryAfterNotice = await ops.sceneBackgroundPoint(page);
+  await ops.manualSave(page);
+  const closeNotice = await ops.centerOf(ops.noticeClose(page));
+  await ops.settled(page);
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await page.touchscreen.tap(closeNotice.x, closeNotice.y);
+  await expect(ops.noticeClose(page)).toHaveCount(0);
+  await page.touchscreen.tap(sceneryAfterNotice.x, sceneryAfterNotice.y);
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await page.clock.resume();
+  await ops.settled(page);
+  await expect(line).toHaveText(dateLine!);
+  expect((await readSave(page)).revision).toBe(started.revision);
   // With the window hidden, a tap on the picture only shows it again, also as a quick double
   // tap (誤タップ防止: the restore control leaves the picture under the finger, and the second
   // tap is ignored); the next tap goes on. Lines appear whole here (reduced motion), as they

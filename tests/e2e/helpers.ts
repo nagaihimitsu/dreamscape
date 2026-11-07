@@ -203,6 +203,10 @@ export const ops = {
     await settings.getByLabel("自動保存する").setChecked(on);
     await ops.closeDialog(settings);
   },
+  /** The 「閉じる」 of the notice shown at the top of the screen (after 「セーブ」, for one). */
+  noticeClose(page: Page): Locator {
+    return page.getByRole("main").getByRole("status").getByRole("button", { name: "閉じる", exact: true });
+  },
   async manualSave(page: Page) {
     await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "セーブ", exact: true }).click();
   },
