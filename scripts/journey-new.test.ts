@@ -6,7 +6,8 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { journeyCatalogSchema } from "../src/content/journey-catalog";
 import { MIRROR_DIRECTORY, journeyDirectory, journeysDirectory } from "./content-layout";
 import { buildContent } from "./content-pipeline";
-import { listFiles, readJourneyManifests } from "./content-sources";
+import { idWithPrefix } from "./content-report";
+import { listFiles, loadContentSources, readJourneyManifests } from "./content-sources";
 import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readiness";
 import { applyCityBundle, exportEditableCityBundle } from "./city-bundle";
 import { loadJourneyScaffold } from "./journey-scaffold";
@@ -53,6 +54,9 @@ describe("journey:new command line", () => {
     expect(() => checkNewJourneyOptions({ ...kyoto, journeyId: "Kyoto" }, reserved)).toThrow("旅行編ID「Kyoto」は使えません。");
     expect(() => checkNewJourneyOptions({ ...kyoto, cityId: "kyoto-city" }, reserved)).toThrow("都市ID「kyoto-city」は使えません。");
     expect(() => checkNewJourneyOptions({ ...kyoto, prefix: "9k" }, reserved)).toThrow("IDの接頭辞「9k」は使えません。");
+    // Without --prefix the prefix comes from the journey ID, and the message says so.
+    expect(() => checkNewJourneyOptions({ ...kyoto, journeyId: "kyoto__", prefix: undefined }, reserved)).toThrow(
+      "IDの接頭辞「kyoto_」（--prefix を省いたので旅行編ID「kyoto__」から作りました）は使えません。--prefix で、英小文字で始め、英小文字・数字・_ だけの接頭辞を指定してください。");
     expect(() => checkNewJourneyOptions({ ...kyoto, journeyId: "sample_trip" }, reserved)).toThrow("旅行編ID「sample_trip」は見本の編のために予約されています。");
     expect(() => checkNewJourneyOptions({ ...kyoto, cityId: "mihon" }, reserved)).toThrow("都市ID「mihon」は見本の編のために予約されています。");
     expect(() => checkNewJourneyOptions({ ...kyoto, prefix: "smp_" }, reserved)).toThrow("IDの接頭辞「smp」は見本の編のために予約されています。");
@@ -177,9 +181,11 @@ describe("journey:new in a copy of the repository", () => {
     const used = new Set([...before, ...manifests.flatMap((manifest) => [manifest.id,
       ...(manifest.data.cities as { id: string }[]).map((city) => city.id),
       String((manifest.data.authoring as { eventPrefix?: unknown } | undefined)?.eventPrefix)])]);
+    // Names no existing ID starts with either (journey:new refuses a prefix of an existing ID family).
+    const sources = loadContentSources(root);
     const free = (name: string) => {
       let candidate = name;
-      for (let index = 2; used.has(candidate); index += 1) candidate = `${name}${index}`;
+      for (let index = 2; used.has(candidate) || idWithPrefix(sources, candidate); index += 1) candidate = `${name}${index}`;
       used.add(candidate);
       return candidate;
     };
@@ -230,6 +236,14 @@ describe("journey:new in a copy of the repository", () => {
     expect(() => createJourney(root, { ...first, journeyId: other.journeyId, prefix: other.prefix }))
       .toThrow(`都市ID「${kc}」はすでに使われています: content/journeys/${k}/cities/${kc}.json`);
     expect(() => createJourney(root, { ...first, ...other, prefix: kp })).toThrow(`IDの接頭辞「${kp}」は旅行編「${k}」が使っています`);
+    // A journey that declares no prefix (like Milano) still owns the IDs that start with it.
+    const manifestFile = path.join(journeyDirectory(root, k), "manifest.json");
+    const manifest = readFileSync(manifestFile, "utf8");
+    writeFileSync(manifestFile, JSON.stringify({ ...JSON.parse(manifest), authoring: undefined }));
+    try {
+      expect(() => createJourney(root, { ...first, ...other, prefix: kp }))
+        .toThrow(new RegExp(`^IDの接頭辞「${kp}」で始まるIDがすでにあります（content/journeys/${k}/[^）]+ の「(?:[a-z_]+/)?${kp}_[a-z0-9_]+」）。--prefix で別の接頭辞を指定してください。$`, "u"));
+    } finally { writeFileSync(manifestFile, manifest); }
     expect(() => createJourney(root, { ...first, ...other, nameJa: "" })).toThrow("--name には日本語の名前を1行で指定してください");
     // A story ID of another journey that the copy would define again (its epilogue `epilogues/<cityId>`).
     const taken = path.join(journeyDirectory(root, k), `stories/epilogues/${other.cityId}.ink`);

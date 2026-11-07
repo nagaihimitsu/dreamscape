@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { CONTENT_DIRECTORY, JOURNEYS_DIRECTORY, MANIFEST_FILE, SAMPLE_JOURNEY_DIRECTORY, journeyDirectory, journeysDirectory } from "./content-layout";
+import { idWithPrefix } from "./content-report";
 import { contentSourcesFromTree, displayPath, loadContentSources } from "./content-sources";
 import { validateContent } from "./content-validation";
 import { createParentDirectories, removeCreatedDirectories } from "./created-directories";
@@ -107,7 +108,10 @@ export function checkNewJourneyOptions(options: NewJourneyOptions, reserved: { j
   name(options.nameJa, "--name", "京都の旅");
   name(options.cityNameJa, "--city-name", "京都");
   const prefix = (options.prefix ?? options.journeyId).replace(/_$/u, "");
-  if (!prefixPattern.test(prefix)) throw new Error(`IDの接頭辞「${options.prefix}」は使えません。英小文字で始め、英小文字・数字・_ だけで書いてください（最後の _ は付けなくてよい）。`);
+  if (!prefixPattern.test(prefix))
+    throw new Error(options.prefix === undefined
+      ? `IDの接頭辞「${prefix}」（--prefix を省いたので旅行編ID「${options.journeyId}」から作りました）は使えません。--prefix で、英小文字で始め、英小文字・数字・_ だけの接頭辞を指定してください。`
+      : `IDの接頭辞「${options.prefix}」は使えません。英小文字で始め、英小文字・数字・_ だけで書いてください（最後の _ は付けなくてよい）。`);
   notSample(prefix, "IDの接頭辞");
   return { ...options, prefix, withOptional: options.withOptional ?? false };
 }
@@ -177,7 +181,8 @@ export type CreatedJourney = { journeyId: string; prefix: string; cityId: string
 /**
  * Create `content/journeys/<journeyId>/` in `root` from the sample journey of
  * `root` (SAMPLE_JOURNEY_DIRECTORY). Refuses an invalid or reserved name, a
- * journey ID or city ID that exists, a prefix another journey uses, and a
+ * journey ID or city ID that exists, a prefix another journey declares or
+ * that existing IDs already start with (`<prefix>_`), and a
  * result that the content validation (content:build) would not accept, all
  * before anything is written; the folder is written under a dot name (which
  * the loader skips) and then renamed, and removed again on failure.
@@ -198,6 +203,10 @@ export function createJourney(root: string, options: NewJourneyOptions, { storyC
     if (authoring?.eventPrefix === prefix)
       throw new Error(`IDの接頭辞「${prefix}」は旅行編「${manifest.id}」が使っています（${displayPath(root, manifest.file)} の authoring.eventPrefix）。--prefix で別の接頭辞を指定してください。`);
   }
+  // Also the ID families of journeys that declare no prefix (e.g. Milano's milano_…) and of the shared data.
+  const family = idWithPrefix(sources, prefix);
+  if (family)
+    throw new Error(`IDの接頭辞「${prefix}」で始まるIDがすでにあります（${family.where} の「${family.id}」）。--prefix で別の接頭辞を指定してください。`);
   const order = nextOrder(sources.manifests.map((manifest) => manifest.order), reserved.order);
   const files = scaffoldJourney(sample, { ...checked, order }, readFileSync(path.join(root, CHECKLIST_TEMPLATE), "utf8"));
   // The same validation as content:build, on the content with the new folder added, before anything is written.

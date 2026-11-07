@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, renameSy
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
+import { journeyCatalogOf, loadContentSources } from "./content-sources";
 import { getJourneyAuthoringProfile } from "./journey-authoring";
 import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readiness";
 import { buildJourneyFragments, journeyRequirements, loadJourneyScaffold, type JourneyScaffoldInput } from "./journey-scaffold";
@@ -80,6 +81,12 @@ describe("journey authoring with four cities", () => {
     expect(requirements.at(-1)?.finale.battleStoryId).toBe("battles/uz_khiva_finale");
     expect(() => getJourneyAuthoringProfile(process.cwd(), "missing")).toThrow(/Unknown authoring journey/);
     expect(() => getJourneyAuthoringProfile(process.cwd(), "milano")).toThrow(/Unknown authoring journey/);
+  });
+
+  it("names the registered journeys when asked for one that is not", () => {
+    const registered = journeyCatalogOf(loadContentSources(process.cwd())).journeys.map((journey) => journey.id);
+    expect(() => loadJourneyReadiness(process.cwd(), "atlantis")).toThrow(
+      `旅行編「atlantis」は登録されていません（content/journeys/<旅行編ID>/manifest.json）。登録されている旅行編: ${registered.join(", ")}（Unknown journey）。`);
   });
 
   it("reports missing narrative content in the fourth city instead of declaring readiness", () => {
