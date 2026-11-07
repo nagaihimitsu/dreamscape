@@ -39,10 +39,18 @@ jobs:
         env:
           DREAMSCAPE_INK_CACHE: "off"
 
-  unit:
-    name: Unit tests
+  unit-shard:
+    # The unit tests in parallel parts: vitest --shard gives each job a share of
+    # the test files (chosen from a hash of each file's path); together the
+    # jobs run every file of `npm test`, which stays one run locally and in
+    # `npm run verify`.
+    name: Unit tests (${{ matrix.shard }}/3)
     runs-on: ubuntu-latest
     timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
     steps:
       - name: Check out source
         uses: actions/checkout@v4
@@ -56,5 +64,17 @@ jobs:
       # pretest builds the content first. The Ink validation cache lives in
       # node_modules/.cache, which npm ci starts empty: the tests reuse only
       # results computed in this job.
-      - name: Run all unit tests
-        run: npm test
+      - name: Run this part of the unit tests
+        run: npm test -- --shard=${{ matrix.shard }}/3
+
+  unit:
+    # One check named "Unit tests" whatever the number of parts: it passes
+    # only when every part passed (and is skipped when the run is cancelled).
+    name: Unit tests
+    needs: unit-shard
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Every part of the unit tests passed
+        run: test "${{ needs.unit-shard.result }}" = success
