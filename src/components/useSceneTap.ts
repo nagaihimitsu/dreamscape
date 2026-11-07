@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { DialogueTextHandle } from "./DialogueText";
-import { tapsObstructed } from "./dialogueObstructed";
+import { dialogueObstructed, tapsObstructed } from "./dialogueObstructed";
 import { DOUBLE_TAP_WINDOW_MS, isSecondTap } from "./double-tap";
 import { DIALOGUE_LINE_ATTRIBUTE, pressesControl, shouldAdvanceOnTap, type SceneTapState } from "./scene-tap";
 
@@ -20,14 +20,17 @@ const elementOf = (target: EventTarget | null) => target instanceof Element ? ta
  * A press on any control of the page (a reply, a choice, a tool, the restore
  * control; the header's buttons, a modal's 「閉じる」) is seen in the capture phase
  * at the document, before the control's own handler (the restore control stops
- * the click there), and so is a tap whose pointer went down while something lay
+ * the click there), and so is a tap whose pointer went down where something lay
  * over the scene (tapsObstructed: a log or the held-item detail it closes, the
- * travel transition). For DOUBLE_TAP_WINDOW_MS after either the scene takes no
- * reading tap: taps on the picture are ignored, and the line takes no pointer
- * events while the root carries `data-tap-settling` (styles.css), so the second
- * tap of a double tap never skips the line the press brought. The tap over
+ * travel transition's card). For DOUBLE_TAP_WINDOW_MS after either the scene
+ * takes no reading tap: taps on the picture are ignored, and the line takes no
+ * pointer events while the root carries `data-tap-settling` (styles.css), so the
+ * second tap of a double tap never skips the line the press brought. The tap over
  * something does not reach the line either (the line reads on in its own click
- * handler, before the scene could ignore it).
+ * handler, before the scene could ignore it). tapsObstructed is asked only where
+ * a pointer goes down, and a click with no pointer behind it (`detail` 0: a screen
+ * reader's activation, Enter on a button) is never taken for a tap over something;
+ * the scene's own check when it reads on is dialogueObstructed, as for the keyboard.
  */
 export function useSceneTap({ active, ...state }: Omit<SceneTapState, "obstructed" | "settling"> & { active: boolean }) {
   const line = useRef<DialogueTextHandle>(null);
@@ -48,19 +51,23 @@ export function useSceneTap({ active, ...state }: Omit<SceneTapState, "obstructe
     const scene = root.current;
     if (!active || !scene) return;
     const settling = pressedAt.current !== null && isSecondTap(performance.now() - pressedAt.current);
-    if (shouldAdvanceOnTap(target, scene, { ...state, settling, obstructed: tapsObstructed() }))
+    if (shouldAdvanceOnTap(target, scene, { ...state, settling, obstructed: dialogueObstructed() }))
       line.current?.activate();
   }
   const readFromPage = useRef(read);
   readFromPage.current = read;
   useEffect(() => {
-    // The pointer of this tap went down while something lay over the scene.
+    // The pointer of this tap went down where something lay over the scene (until its click, or a pan cancels it).
     let overlaid = false;
-    const onPointerDown = () => {
-      overlaid = tapsObstructed();
+    const onPointerDown = (event: PointerEvent) => {
+      overlaid = tapsObstructed({ x: event.clientX, y: event.clientY });
     };
-    const onPress = (event: Event) => {
+    const onPointerCancel = () => {
+      overlaid = false;
+    };
+    const onPress = (event: MouseEvent) => {
       const target = elementOf(event.target);
+      if (event.detail === 0) overlaid = false;
       if (overlaid || pressesControl(target, root.current)) {
         pressedAt.current = performance.now();
         setSettlingFrom(pressedAt.current);
@@ -75,10 +82,12 @@ export function useSceneTap({ active, ...state }: Omit<SceneTapState, "obstructe
       if (target && !root.current?.contains(target)) readFromPage.current(target);
     };
     document.addEventListener("pointerdown", onPointerDown, true);
+    document.addEventListener("pointercancel", onPointerCancel, true);
     document.addEventListener("click", onPress, true);
     document.addEventListener("click", onPageClick);
     return () => {
       document.removeEventListener("pointerdown", onPointerDown, true);
+      document.removeEventListener("pointercancel", onPointerCancel, true);
       document.removeEventListener("click", onPress, true);
       document.removeEventListener("click", onPageClick);
     };

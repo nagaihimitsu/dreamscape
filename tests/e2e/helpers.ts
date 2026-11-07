@@ -328,6 +328,18 @@ export const ops = {
     await page.touchscreen.tap(point.x, point.y);
   },
   /**
+   * A finger's short sideways drag from a point (Chromium's touch input): the browser takes it
+   * for a pan and cancels the pointer (pointerdown, then pointercancel), so no click follows.
+   */
+  async pan(page: Page, point: { x: number; y: number }) {
+    const cdp = await page.context().newCDPSession(page);
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: point.x - 60, y: point.y }] });
+    for (let step = 1; step <= 6; step++)
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: point.x - 60 + step * 20, y: point.y }] });
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    await cdp.detach();
+  },
+  /**
    * The game takes taps again: right after an answer the battle ignores the second tap of
    * a double tap (`data-answer-settling`), right after a press on a control (or a tap over
    * something on a story scene) the scene takes no reading tap (`data-tap-settling`), and

@@ -125,14 +125,19 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   expect(started.revision).toBe(beforeDate.revision + 1);
   expect(started.ap).toBeLessThan(result.ap);
   await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
-  // The travel transition outlasts that hold (0.45 s with reduced motion) and lets taps through to
-  // the date under it: until it ends the date takes no reading tap, neither on the line itself nor
-  // on the transition's card in the middle of the screen.
+  // The travel transition outlasts that hold (0.45 s with reduced motion). Its card in the middle of
+  // the screen lets taps through to the date under it: a tap on the card does not reach the date (the
+  // picture of the move is not the date's picture). The rest of the date is in view and takes taps as
+  // usual: a tap on its line reads one line on. The clock is held, so the transition stays meanwhile.
   const transition = page.getByTestId("travel-transition");
   await expect(transition).toBeVisible();
   await expect(page.locator("[data-tap-settling], html[data-tap-hold]"), "the start hold is over").toHaveCount(0);
-  const firstLine = (await line.boundingBox())!;
-  await page.touchscreen.tap(firstLine.x + firstLine.width / 2, firstLine.y + firstLine.height / 2);
+  const firstLine = await line.textContent();
+  const onLine = await ops.centerOf(line);
+  await page.touchscreen.tap(onLine.x, onLine.y);
+  await expect.poll(async () => (await readSave(page)).revision).toBe(started.revision + 1);
+  await expect(line).not.toHaveText(firstLine!);
+  // The card sits in the middle of the transition's overlay.
   const card = await ops.centerOf(transition);
   await page.touchscreen.tap(card.x, card.y);
   await expect(transition).toBeVisible();
@@ -140,12 +145,14 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await expect(transition).toHaveCount(0);
   await page.clock.resume();
   await ops.settled(page);
-  expect(await readSave(page)).toEqual(started);
+  const opened = await readSave(page);
+  expect(opened.revision).toBe(started.revision + 1);
+  expect(opened.activeDate?.runId).toBe(started.activeDate!.runId);
   // The note beside the visited place's reference photo is not the picture: a tap on it does nothing.
   const dateLine = await line.textContent();
   await ops.tap(page, await ops.centerOf(page.getByTestId("destination-reference-note")));
   await expect(line).toHaveText(dateLine!);
-  expect((await readSave(page)).revision).toBe(started.revision);
+  expect((await readSave(page)).revision).toBe(opened.revision);
   // A notice above the scene (here after 「セーブ」) pushes the date down; its 「閉じる」 lets the date
   // move back up under the finger. A press on any control of the page, also outside the scene,
   // settles the scene for a moment: a quick tap on the picture right after does not read on
@@ -162,7 +169,7 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await page.clock.resume();
   await ops.settled(page);
   await expect(line).toHaveText(dateLine!);
-  expect((await readSave(page)).revision).toBe(started.revision);
+  expect((await readSave(page)).revision).toBe(opened.revision);
   // A load brings the saved date back as a new scene under the finger (the confirmation's
   // 「ロードする」 sits over the date). With manual saving, the second tap of a quick double tap on
   // 「ロードする」 does not read the restored line on: a load holds taps like a scene start.
@@ -195,11 +202,11 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
   await ops.doubleTap(page, scenery);
   await expect(page.getByTestId("romance-scene").getByRole("region", { name: "デートの会話" })).toBeVisible();
-  expect((await readSave(page)).revision).toBe(started.revision);
+  expect((await readSave(page)).revision).toBe(opened.revision);
   await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
   await page.clock.resume();
   await ops.tap(page, scenery);
-  await expect.poll(async () => (await readSave(page)).revision).toBe(started.revision + 1);
+  await expect.poll(async () => (await readSave(page)).revision).toBe(opened.revision + 1);
   // While the replies are offered, a tap on the picture neither chooses one nor goes on
   // (選択肢の誤タップ防止). A quick double tap on a reply saves that reply only: its second tap
   // lands on the scene the reply leaves behind and does not skip the reaction line.

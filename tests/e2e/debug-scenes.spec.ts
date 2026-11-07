@@ -283,10 +283,13 @@ test("battle: a double tap on 「敵の反応を見る」 opens the reaction and
 
 // docs/02 「UX/スマホ」: no tap reads on while something is open over the scene. The header's
 // held-item detail closes on a tap anywhere outside it; that tap only closes it, on the picture and
-// on the line alike. The detail is not modal: the keyboard reads on while it is open, as before.
+// on the line alike. The detail is not modal: the keyboard reads on while it is open, as before, and
+// a screen reader's activation of the line reads on after the detail has gone; so do taps again.
 test("encounter: the tap on the picture or the line that closes the held-item detail does not read on, Enter on the line does", { tag: tier.debug }, async ({ page }) => {
   const encounter = await itemEncounter(page, true);
   expect(encounter, "an encounter whose English answer gives an item, that Debug can open").toBeDefined();
+  // Time runs normally; it is held below so that a line stays half written.
+  await page.clock.install();
   // A won reward needs the saved ticket below its chance: the positive ticket (0) always wins.
   await ops.openDebugScene(page, settings({ cityId: encounter!.cityId, scene: "encounter", id: encounter!.encounterId, roll: "positive" }));
   const pick = (state: GameState) => state.activeEncounter?.phase === "quiz" ? encounter!.correctOptionId! : "A";
@@ -310,12 +313,31 @@ test("encounter: the tap on the picture or the line that closes the held-item de
   await expect(detail).toBeHidden();
   await expect(line).toHaveText(text!);
   expect((await debugGame(page))!.revision).toBe(held.revision);
-  // Enter on the line reads one line on with the detail open: the closing taps did not.
+  // Enter on the line reads one line on with the detail open: the closing taps did not. The next line
+  // is written letter by letter (motion not reduced), and the clock is held, so it stays half written.
+  const revision = async () => (await debugGame(page))!.revision;
   await openDetail();
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
   await line.focus();
   await page.keyboard.press("Enter");
-  await expect.poll(async () => (await debugGame(page))!.revision).toBe(held.revision + 1);
+  await expect.poll(revision).toBe(held.revision + 1);
   await expect(detail).toBeVisible();
+  await expect(line).toHaveAttribute("data-ready", "false");
+  // A pan that starts over the picture closes the detail with no click. A click on the line with no
+  // pointer behind it (as a screen reader activates it) is then no tap over the detail: like a tap on
+  // the line, it writes the line out at once.
+  await ops.pan(page, picture);
+  await expect(detail).toBeHidden();
+  await line.evaluate((element) => (element as HTMLElement).click());
+  await expect(line).toHaveAttribute("data-ready", "true");
+  expect(await revision()).toBe(held.revision + 1);
+  // Once the detail is gone, a tap on the picture reads on again (here past the encounter's last line).
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await page.clock.resume();
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await ops.tap(page, picture);
+  await expect.poll(revision).toBeGreaterThan(held.revision + 1);
 });
 
 // User idea (2026-11-07): the whole screen reads on, not only the scene's picture. The guide's
