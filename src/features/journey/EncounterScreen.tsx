@@ -6,6 +6,7 @@ import { useDialogueLog } from "../../components/DialogueLog";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
+import { useSceneTap } from "../../components/useSceneTap";
 import { CharacterPortrait } from "../../components/CharacterPortrait";
 import { ComicEffect } from "../../components/ComicEffect";
 import type { ReactionMark } from "../../content/dialogue-reactions";
@@ -79,8 +80,9 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
   const quiz = view.quiz;
   const autoAdvance = useAutoAdvance({ ready, canAdvance: !view.ended && !quiz && view.choices.length === 0 && !windowVisibility.hidden,
     text: view.text, onAdvance: advance, defaultEnabled: autoAdvanceEnabled });
+  const sceneTap = useSceneTap({ lineShown: ready, choicesShown: !!quiz || view.choices.length > 0, windowHidden: windowVisibility.hidden });
   return (
-    <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined}>
+    <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined} onClick={sceneTap.onClick}>
       <div className="vn-background">{view.backgroundImage ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundImage}`} alt="" /> : <CanalScene backgroundId={view.background} />}</div>
       {!quiz && view.portraits && <div className="vn-character-layer encounter-character-layer" data-two-characters={!!view.portraits.heroine && !!view.portraits.enemy}>
         {(["heroine", "enemy"] as const).map((id) => {
@@ -112,7 +114,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
           </>
         ) : (
           <>
-            <DialogueText key={view.revision} text={view.text} speed={autoAdvance.fast ? 0 : speed} onReady={onReady} onAdvance={advance} />
+            <DialogueText key={view.revision} ref={sceneTap.line} text={view.text} speed={autoAdvance.fast ? 0 : speed} onReady={onReady} onAdvance={advance} />
             {view.choices.length ? (
               <EncounterChoices currencySymbol={currencyForCity(view.cityId).symbol} id={view.id} choices={view.choices} learning={learning} onChoose={(index) => select(index, onChoose)} disabled={!ready || !choiceReady} />
             ) : view.ended ? (

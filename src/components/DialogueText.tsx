@@ -1,16 +1,24 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "react";
 import { dialogueObstructed } from "./dialogueObstructed";
+
+/** What a tap on the line does, for a tap elsewhere on the scene (useSceneTap). */
+export interface DialogueTextHandle {
+  activate(): void;
+}
+
 export function DialogueText({
   text,
   speed,
   onReady,
   onAdvance,
+  ref,
 }: {
   text: string;
   speed: number;
   onReady: (ready: boolean) => void;
   /** Clicking text reveals it first; a subsequent click advances. */
   onAdvance?: () => void;
+  ref?: Ref<DialogueTextHandle>;
 }) {
   const timerRef = useRef<number | undefined>(undefined);
   const textRef = useRef<HTMLParagraphElement>(null);
@@ -64,6 +72,7 @@ export function DialogueText({
       onAdvance?.();
     }
   }
+  useImperativeHandle(ref, () => ({ activate }));
   useEffect(() => {
     if (ready) onReady(true);
   }, [ready, onReady]);

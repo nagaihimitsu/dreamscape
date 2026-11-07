@@ -231,6 +231,37 @@ export const ops = {
     await page.getByRole("button", { name: "エピローグへ進む", exact: true }).click();
     await expect(page.getByTestId("city-epilogue-screen")).toBeVisible();
   },
+  /**
+   * A story scene: a point on its picture above the dialogue window, where no control is
+   * (a tap anywhere but on a control reads on, docs/02 「UX/スマホ」). Taken while the window is shown.
+   */
+  async sceneBackgroundPoint(page: Page): Promise<{ x: number; y: number }> {
+    const scene = page.locator(".vn-scene").filter({ visible: true });
+    const sceneBox = (await scene.boundingBox())!;
+    const windowBox = (await scene.locator(".vn-dialogue").boundingBox())!;
+    const point = { x: sceneBox.x + sceneBox.width / 2, y: (sceneBox.y + windowBox.y) / 2 };
+    const hit = await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.closest(".vn-background") !== null, point);
+    expect(hit, "the point shows the scene's picture, not a control or the window").toBe(true);
+    return point;
+  },
+  /** A finger's tap at a point of the page. */
+  async tap(page: Page, point: { x: number; y: number }) {
+    await page.touchscreen.tap(point.x, point.y);
+  },
+  /** A story scene's 「ログ」: opens the dialogue log. */
+  async openDialogueLog(page: Page): Promise<Locator> {
+    await page.getByRole("button", { name: "会話ログ", exact: true }).click();
+    const log = page.getByRole("dialog", { name: "会話ログ" });
+    await expect(log).toBeVisible();
+    return log;
+  },
+  /** A story scene's 「閉じる」 in the dialogue window: hides the window; returns the full-scene control that shows it again. */
+  async hideDialogueWindow(page: Page): Promise<Locator> {
+    await page.getByRole("button", { name: "会話ウィンドウを隠す", exact: true }).click();
+    const restore = page.getByRole("button", { name: "会話ウィンドウを表示", exact: true });
+    await expect(restore).toBeVisible();
+    return restore;
+  },
   /** Lane 3 (docs/10): open a scene through its Debug launch URL; returns the URL. */
   async openDebugScene(page: Page, settings: DebugSettings, dataMode: DebugDataMode = "real") {
     const url = debugQueryString(settingsQuery(dataMode, settings));

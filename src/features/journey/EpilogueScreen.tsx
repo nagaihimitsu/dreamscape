@@ -16,6 +16,7 @@ import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { DialogueControls } from "../../components/DialogueControls";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
+import { useSceneTap } from "../../components/useSceneTap";
 import { CityArrivalLogo } from "./CityArrivalLogo";
 
 export function EpilogueScreen({
@@ -69,6 +70,7 @@ export function EpilogueScreen({
     onAdvance: advanceSafely,
     defaultEnabled: autoAdvanceEnabled,
   });
+  const sceneTap = useSceneTap({ lineShown: ready, choicesShown: false, windowHidden: windowVisibility.hidden });
   useEffect(() => {
     document
       .getElementById("city-epilogue-screen")
@@ -77,7 +79,7 @@ export function EpilogueScreen({
   return (
     <div id="city-epilogue-screen" data-testid={arrival ? "city-arrival-screen" : "city-epilogue-screen"}>
       {showLogo && <CityArrivalLogo nameJa={city.nameJa} reduceMotion={reduceMotion} onEnd={onLogoComplete ?? (() => undefined)} />}
-      <div className="vn-scene" data-dialogue-hidden={windowVisibility.hidden || undefined}>
+      <div className="vn-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} onClick={sceneTap.onClick}>
         <div className="vn-background">
           <CanalScene backgroundId={frame.background} />
         </div>
@@ -105,6 +107,7 @@ export function EpilogueScreen({
           <h1>{arrival ? `${city.nameJa}に到着` : episode.clearTitleJa}</h1>
           <DialogueText
             key={game.revision}
+            ref={sceneTap.line}
             text={frame.text}
             speed={autoAdvance.fast ? 0 : speed}
             onReady={onReady}

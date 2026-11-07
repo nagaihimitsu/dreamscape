@@ -14,6 +14,7 @@ import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { DialogueControls } from "../../components/DialogueControls";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
+import { useSceneTap } from "../../components/useSceneTap";
 import { resolveRomancePresentation } from "./romance-presentation";
 import { BackgroundCredits } from "../../components/BackgroundCredits";
 import "./romance-scene.css";
@@ -135,14 +136,15 @@ export function RomanceScene({
     onAdvance: advance,
     defaultEnabled: autoAdvanceEnabled,
   });
+  const sceneTap = useSceneTap({ lineShown: ready, choicesShown: frame.choices.length > 0, windowHidden: windowVisibility.hidden });
   return (
-    <div className="vn-scene romance-scene" data-testid="romance-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-has-choices={frame.choices.length > 0}>
+    <div className="vn-scene romance-scene" data-testid="romance-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} data-has-choices={frame.choices.length > 0} onClick={sceneTap.onClick}>
       <div className="vn-background">
         <CanalScene backgroundId={frame.background} />
       </div>
       {backgroundAsset && <button type="button" className="vn-credit-link" onClick={() => setCreditsOpen(true)}>画像の出典</button>}
       {destination?.referenceImage && (
-        <aside className="date-reference" aria-label="訪問先の写真">
+        <aside className="date-reference" aria-label="訪問先の写真" data-no-advance>
           <span data-testid="destination-reference-note">{destination.referenceImage.backgroundNoteJa}</span>
           <a data-testid="destination-reference-link" href={destination.referenceImage.url} target="_blank" rel="noreferrer">
             {destination.referenceImage.labelJa} <span aria-hidden="true">↗</span>
@@ -197,6 +199,7 @@ export function RomanceScene({
         <>
             <DialogueText
               key={game.revision}
+              ref={sceneTap.line}
               text={frame.text}
               speed={autoAdvance.fast ? 0 : speed}
               onReady={onReady}

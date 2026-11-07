@@ -37,6 +37,22 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   expect((await readSave(page)).revision).toBe(first.revision + 1);
   await line.click();
   await expect.poll(async () => (await readSave(page)).revision).toBe(first.revision + 2);
+  // Tap anywhere (user idea, 2026-11-07): a tap on the picture above the window acts like a
+  // tap on the line, one step per tap, and a control is not the picture.
+  const picture = await ops.sceneBackgroundPoint(page);
+  await expect(line).toHaveAttribute("data-ready", "false");
+  await ops.tap(page, picture);
+  await expect(line).toHaveAttribute("data-ready", "true");
+  expect((await readSave(page)).revision).toBe(first.revision + 2);
+  await ops.tap(page, picture);
+  await expect.poll(async () => (await readSave(page)).revision).toBe(first.revision + 3);
+  await expect(line).toHaveAttribute("data-ready", "false");
+  // The log (a control in the window) and the English note (in the header above the scene)
+  // open and close without moving the story or finishing the line.
+  await ops.closeDialog(await ops.openDialogueLog(page));
+  await ops.closeDialog(await ops.openEnglishNote(page));
+  expect((await readSave(page)).revision).toBe(first.revision + 3);
+  await expect(line).toHaveAttribute("data-ready", "false");
   await page.clock.resume();
   // The line now being written finishes by itself; later lines appear whole.
   await expect(line).toHaveAttribute("data-ready", "true");
@@ -86,6 +102,24 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await expect.poll(async () => (await readSave(page)).activeDate?.dateId).toBe("milano_novecento_date_01");
   const started = await readSave(page);
   expect(started.ap).toBeLessThan(result.ap);
+  // With the window hidden, a tap on the picture only shows it again; the next tap goes on.
+  const scenery = await ops.sceneBackgroundPoint(page);
+  await ops.hideDialogueWindow(page);
+  await ops.tap(page, scenery);
+  await expect(page.getByTestId("romance-scene").getByRole("region", { name: "デートの会話" })).toBeVisible();
+  expect((await readSave(page)).revision).toBe(started.revision);
+  await ops.tap(page, scenery);
+  await expect.poll(async () => (await readSave(page)).revision).toBe(started.revision + 1);
+  // While the replies are offered, a tap on the picture neither chooses one nor goes on
+  // (選択肢の誤タップ防止); the reply chosen next is the only change.
+  const choosing = await playUntil(page, (state) => !!state.activeDate?.frame.choices.length);
+  const reply = page.getByTestId("date-choice").first();
+  await expect(reply).toBeEnabled();
+  await ops.tap(page, await ops.sceneBackgroundPoint(page));
+  expect((await readSave(page)).revision).toBe(choosing.revision);
+  await reply.click();
+  await expect.poll(async () => (await readSave(page)).revision).toBe(choosing.revision + 1);
+  expect((await readSave(page)).activeDate!.choiceCount).toBe(choosing.activeDate!.choiceCount + 1);
   const finished = await playUntil(page, (state) => !state.activeDate);
   await expect(menu).toBeVisible();
   expect(finished.playedDateIds).toEqual(["milano_novecento_date_01"]);

@@ -9,6 +9,7 @@ import { DialogueText } from "../../components/DialogueText";
 import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { DialogueControls } from "../../components/DialogueControls";
+import { useSceneTap } from "../../components/useSceneTap";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { CanalScene } from "../../components/CanalScene";
 import { BackgroundCredits } from "../../components/BackgroundCredits";
@@ -250,6 +251,7 @@ export function BattleScreen({
     onAdvance: advanceSafely,
     defaultEnabled: autoAdvanceEnabled,
   });
+  const sceneTap = useSceneTap({ lineShown: ready, choicesShown: false, windowHidden: windowVisibility.hidden });
   const isResult = active.phase === "result";
   const isSpecial = !!battle.reasoning;
   const showReasoning =
@@ -270,6 +272,7 @@ export function BattleScreen({
       data-effect-active={active.phase === "feedback" && effectAnswer === answerKey || undefined}
       data-reduce-motion={reduceMotion || undefined}
       data-dialogue-hidden={isDialogue && windowVisibility.hidden || undefined}
+      onClick={isDialogue ? sceneTap.onClick : undefined}
     >
       {active.phase === "feedback" && answer && effectAnswer === answerKey && (
         <div
@@ -475,6 +478,7 @@ export function BattleScreen({
           <>
             <DialogueText
               key={rebuttal ? `rebuttal-${rebuttal.index}` : game.revision}
+              ref={sceneTap.line}
               text={frame.text}
               speed={auto.fast ? 0 : speed}
               onReady={onReady}

@@ -20,6 +20,7 @@ import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { DialogueControls } from "../../components/DialogueControls";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
+import { useSceneTap } from "../../components/useSceneTap";
 import { ObservationViewer } from "./ObservationViewer";
 import { ClueDetails } from "./ClueDetails";
 import "./tourism.css";
@@ -103,6 +104,7 @@ export function TourismScreen({
     onAdvance: advanceSafely,
     defaultEnabled: autoAdvanceEnabled,
   });
+  const sceneTap = useSceneTap({ lineShown: ready, choicesShown: false, windowHidden: windowVisibility.hidden });
   useEffect(() => {
     const media = window.matchMedia(COMPACT_OBSERVATION);
     const update = () => setCompactObservation(media.matches);
@@ -167,7 +169,7 @@ export function TourismScreen({
         </p>
       )}
       {active.phase === "guide" && frame ? (
-        <div className="vn-scene tourism-guide-scene" data-dialogue-hidden={windowVisibility.hidden || undefined}>
+        <div className="vn-scene tourism-guide-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} onClick={sceneTap.onClick}>
           <div className="vn-background">
             <CanalScene backgroundId={frame.background} imageAssetId={landmark.imageAssetId} />
           </div>
@@ -194,6 +196,7 @@ export function TourismScreen({
             <DialogueControls close={<button type="button" className="text-button" data-testid="tourism-skip" aria-label="観光案内を閉じる" onClick={onSkip}>閉じる</button>} entries={entries} auto={autoAdvance} />
             <DialogueText
               key={game.revision}
+              ref={sceneTap.line}
               text={frame.text}
               speed={autoAdvance.fast ? 0 : speed}
               onReady={onReady}
