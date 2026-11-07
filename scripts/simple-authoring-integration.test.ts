@@ -7,7 +7,7 @@ import { createDebugState } from "../src/dev/debug-state";
 import { dates, getCityContent, landmarks, stories } from "../src/content";
 import { encounters } from "../src/content/encounters";
 import { normalizeEncounterCatalog } from "../src/content/encounter-schemas";
-import { prepareContentFixture } from "../src/content/test-fixtures";
+import { prepareContentFixture, storySourceFile } from "../src/content/test-fixtures";
 import { advanceEncounter, chooseEncounter, finishEncounter, startEncounter } from "../src/domain/encounter";
 import { advanceDate, chooseDate, finishDate, startDate, validateGameState } from "../src/domain/game";
 import { buildContent } from "./content-pipeline";
@@ -103,7 +103,7 @@ VAR heroine_name = ""
       apCost: 2,
     });
     await writeFile(travelPath, JSON.stringify(travelCatalog));
-    let dateInk = await readFile(path.join(root, "content/journeys/milano/stories/milano/sound_cafe_01.ink"), "utf8");
+    let dateInk = await readFile(path.join(root, storySourceFile("milano/sound_cafe_01")), "utf8");
     for (const [index, profile] of [[1, "playful"], [2, "attentive"], [3, "honest"]] as const) {
       dateInk = dateInk.replace(`sound_cafe_01_2_${index}`, `common_date_second_${profile}`);
     }
