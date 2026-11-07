@@ -8,7 +8,6 @@ import { getDirection } from "../../domain/travel";
 import { getTravelEventAvailability, getTravelEventDefinition } from "../../domain/travel-game";
 import { getTravelDestinations, type TravelDestinationPlace } from "../../domain/travel-destinations";
 import { compareRouteTime } from "../../domain/travel-routes";
-import { isTransportModeUsable } from "../../domain/transport";
 import { Modal } from "../../components/Modal";
 import { withNames } from "../romance/RomanceMenu";
 import { PlaceMap } from "./PlaceMap";
@@ -86,8 +85,7 @@ function Destination({ place, game, current, recommended, onSelect }: {
   const apCost = getTravelEventDefinition(game, event.id)?.apCost ?? event.apCost;
   const categories = new Set(place.events.map((item) => item.category));
   // The line describes the routes the party can ride now (a rental mode once rented).
-  const usable = event.routes.filter((route) => isTransportModeUsable(game, route.mode));
-  const routes = usable.length ? usable : event.routes;
+  const routes = event.describedRoutes;
   const onlyRoute = routes.length === 1 ? routes[0] : undefined;
   const fastestRoute = event.walkMinutes === null ? [...routes].sort(compareRouteTime)[0] : undefined;
   const shownRoute = onlyRoute ?? fastestRoute ?? routes.find((route) => route.mode === "walk");

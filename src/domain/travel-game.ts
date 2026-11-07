@@ -9,6 +9,7 @@ import { compareRouteCost, findTravelHomeRoutes, type HomeRoute } from "./travel
 import type { TravelEvent, TravelRoute } from "../content/travel-schemas";
 import { getTransportMode } from "../content/transport";
 import { getUsableRoutes, isTransportModeUsable, rentalReason } from "./transport";
+import { hasActiveScene } from "./game-state-schema";
 
 /** `walk` or a transport mode ID declared by the journey (src/content/transport.ts). */
 export type TravelMode = TravelRoute["mode"];
@@ -92,10 +93,6 @@ export function getTravelSleepOptions(state: GameState) {
   const current = snapshot(state);
   const allowLateReturn = !canReturnByDayEnd(current, routes);
   return routes.map((route) => ({ route, plan: planOvernight(current, route, travelSettings.lodgingCost, allowLateReturn) }));
-}
-
-function hasActiveTravelScene(state: GameState): boolean {
-  return !!(state.travel.activeEvent || state.activeDate || state.activeBattle || state.activeTourism || state.activeEncounter || state.activeEpilogue);
 }
 
 const reasonJa: Record<string, string> = {
@@ -200,7 +197,7 @@ export function finishTravelEventIfComplete(previous: GameState, next: GameState
 }
 
 export function waitForTravel(state: GameState, minutes: number, expectedRevision: number): GameState {
-  if (state.revision !== expectedRevision || hasActiveTravelScene(state) ||
+  if (state.revision !== expectedRevision || hasActiveScene(state) ||
       !Number.isSafeInteger(minutes) || minutes <= 0 || state.travel.minute + minutes > DAY_END) return state;
   const home = getTravelHomeRoutes(state, state.travel.currentPlaceId)
     .filter((item) => item.cost <= state.travelBudget && state.travel.minute + minutes + item.minutes <= DAY_END)
@@ -212,7 +209,7 @@ export function waitForTravel(state: GameState, minutes: number, expectedRevisio
 /** `viaPlaceId`: undefined selects a feasible route for legacy callers; null
  * selects the direct route; a place ID selects that exact connection. */
 export function sleepAtHotel(state: GameState, mode: TravelMode, expectedRevision: number, viaPlaceId?: string | null): GameState {
-  if (state.revision !== expectedRevision || hasActiveTravelScene(state)) return state;
+  if (state.revision !== expectedRevision || hasActiveScene(state)) return state;
   const plan = getTravelSleepOptions(state)
     .filter(({ route }) => route.mode === mode && (viaPlaceId === undefined || (route.viaPlaceId ?? null) === viaPlaceId))
     .map((option) => option.plan).find((item) => item.ok);

@@ -131,3 +131,8 @@ export const gameStateSchema = z.object({
 }).strict();
 export type GameState = z.infer<typeof gameStateSchema>;
 export type ActiveDate = NonNullable<GameState["activeDate"]>;
+
+/** A scene is in progress: a map event, a date, a battle, a tourism scene, an encounter or an epilogue. */
+export function hasActiveScene(state: GameState): boolean {
+  return !!(state.travel.activeEvent || state.activeDate || state.activeBattle || state.activeTourism || state.activeEncounter || state.activeEpilogue);
+}

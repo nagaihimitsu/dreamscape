@@ -33,7 +33,7 @@ export function applyPlayerAction(previous: GameState, change: (state: GameState
  * ending's 「自由時間へ」, the clue book's page turning) are not actions.
  */
 export type PlayerAction =
-  // Free time: TravelMenu, FreeTimeHub, TravelActions (待機・休む・借りる), PendingRewards, CityProgress.
+  // Free time: TravelMenu (TravelRentals: 借りる), FreeTimeHub, TravelActions (待機・休む), PendingRewards, CityProgress.
   | { kind: "travel"; eventId: string; mode: TravelMode }
   | { kind: "rent"; modeId: string }
   | { kind: "observe_again"; landmarkId: string }

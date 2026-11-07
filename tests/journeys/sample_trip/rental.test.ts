@@ -46,6 +46,8 @@ describe("rental transport (sample journey)", () => {
     // The menu still shows the route (with its reason); only walking is offered as an action.
     const event = getTravelDestinations(state).candidates.find((item) => item.id === EPISODE)!;
     expect(event.routes.map((route) => route.mode).sort()).toEqual([BIKE, "walk"]);
+    // The destination line describes what can be ridden now: walking until the bicycle is rented.
+    expect(event.describedRoutes.map((route) => route.mode)).toEqual(["walk"]);
     expect(event.available).toBe(true);
     expect(listPlayerActions(state).filter((action) => action.kind === "travel" && action.eventId === EPISODE))
       .toEqual([{ kind: "travel", eventId: EPISODE, mode: "walk" }]);
@@ -107,6 +109,8 @@ describe("rental transport (sample journey)", () => {
     expect(rentTransport(rented, BIKE, rented.revision)).toBe(rented);
     expect(listPlayerActions(rented)).not.toContainEqual({ kind: "rent", modeId: BIKE });
     expect(listPlayerActions(rented)).toContainEqual({ kind: "travel", eventId: EPISODE, mode: BIKE });
+    expect(getTravelDestinations(rented).candidates.find((item) => item.id === EPISODE)!.describedRoutes.map((route) => route.mode).sort())
+      .toEqual([BIKE, "walk"]);
     const bike = getCityContent("mihon").travel.routes.find((route) => route.fromPlaceId === HOTEL && route.toPlaceId === TOWER && route.mode === BIKE)!;
     const moved = beginTravelEvent(rented, EPISODE, BIKE, rented.revision);
     expect(moved.travel).toMatchObject({ currentPlaceId: TOWER, minute: rented.travel.minute + bike.minutes, rentedModeIds: [BIKE] });
@@ -131,10 +135,14 @@ describe("rental transport (sample journey)", () => {
   });
 
   it("returns every rental when the party leaves for the next city", () => {
+    // No journey has both a rental and a next city yet, so the rental is planted in a cleared Delhi:
+    // such a save would not load (nothing is rented out there), but departing must still return it.
     const cleared = completedCity("delhi");
     const before = { ...cleared, travel: { ...cleared.travel, rentedModeIds: [BIKE] } };
+    expect(() => validateGameState(before)).toThrow("借りた乗り物の記録が一致しません。");
     const after = departToNextCity(before, before.revision);
     expect(after.currentCityId).not.toBe("delhi");
     expect(after.travel.rentedModeIds).toEqual([]);
+    expect(validateGameState(JSON.parse(JSON.stringify(after)))).toEqual(after);
   });
 });

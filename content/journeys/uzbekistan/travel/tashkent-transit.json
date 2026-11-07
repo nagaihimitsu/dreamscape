@@ -56,7 +56,7 @@
       "url": "https://tashmetro.botirbaev.uz/schema",
       "checkedAt": "2026-11-04",
       "claimType": "hypothesis",
-      "claimJa": "運行路線と乗換駅は出典で確認し、アクセス徒歩・乗車・待機時間はゲーム用に設定。地下鉄は改札待ち5分、バスは乗車ごと待機8分。徒歩より遅い選択や同じ乗降拠点への迂回は不採用とする。"
+      "claimJa": "運行路線と乗換駅は出典で確認し、アクセス徒歩・乗車・待機時間はゲーム用に設定。地下鉄は改札待ち5分。徒歩より遅い選択や同じ乗降拠点への迂回は不採用とする。"
     },
     "yandex_start": {
       "publisher": "Yandex Go",

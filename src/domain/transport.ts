@@ -2,7 +2,7 @@ import { getCityContent } from "../content";
 import { formatMoneyForCity } from "../content/currency";
 import { getTransportMode, type TransportMode } from "../content/transport";
 import type { RentalOffer, TravelRoute } from "../content/travel-schemas";
-import type { GameState } from "./game-state-schema";
+import { hasActiveScene, type GameState } from "./game-state-schema";
 import { DAY_END } from "./travel";
 
 // In-city transport rules on the game state (pure): which modes the party may
@@ -25,11 +25,11 @@ export function getUsableRoutes(state: GameState): TravelRoute[] {
 }
 
 /** The city's offer for a rental mode, if any. */
-export function getRentalOffer(cityId: string, modeId: string): RentalOffer | undefined {
+function getRentalOffer(cityId: string, modeId: string): RentalOffer | undefined {
   return getCityContent(cityId).travelSettings.rentals?.find((offer) => offer.modeId === modeId);
 }
 
-/** Why a route of a not-yet-rented rental mode cannot be ridden: 「貸し自転車は宿で借りると乗れます。」 */
+/** Why a route of a not-yet-rented rental mode cannot be ridden: 「貸し自転車は滞在先で借りると乗れます。」 */
 export function rentalReason(cityId: string, modeId: string): string {
   const mode = getTransportMode(cityId, modeId);
   const offer = getRentalOffer(cityId, modeId);
@@ -40,10 +40,6 @@ export function rentalReason(cityId: string, modeId: string): string {
 }
 
 export type RentalChoice = { offer: RentalOffer; mode: TransportMode; available: boolean; reason: string };
-
-function hasActiveScene(state: GameState): boolean {
-  return !!(state.travel.activeEvent || state.activeDate || state.activeBattle || state.activeTourism || state.activeEncounter || state.activeEpilogue);
-}
 
 /**
  * The rental offers at the party's place that are not rented yet, each with
