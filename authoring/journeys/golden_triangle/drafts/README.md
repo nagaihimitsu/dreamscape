@@ -4,7 +4,7 @@
 
 各都市は `cities/<都市ID>.json`、`travel/<都市ID>.json`、`travel/<都市ID>-settings.json` に対応し、生成時の内容と警告は `manifest.json` にあります。都市名と順序、₹30,000、無料宿泊、各都市の都市クリア4APは `content/journeys/golden_triangle/manifest.json`（旧 `content/journeys/catalog.json`）を正とします。デリー以外の `initialBudget: 0` は都市間で追加支給しない意味です。既存の出発処理は前都市の残金を引き継ぎます。
 
-この研究由来の生成ドラフトには各都市にメイン観光4件・デート6件の**候補**があります。その後、3都市のInk・戦闘・クイズ・デート・フィナーレを `content/` に登録しました。完成版の構成・編集記録は [scenario/README](scenario/README.md) を参照してください。ここに残る都市・旅行の生成ドラフトは現在のプレイ内容を表さず、完成版へ上書きしてはいけません。
+この研究由来の生成ドラフトには各都市にメイン観光4件・デート6件の**候補**があります。その後、3都市のInk・戦闘・クイズ・デート・フィナーレを `content/` に登録しました。現行の脚本の設計は [インド編改稿の設計](SCENARIO_REWRITE.md)、旧稿の構成・編集記録は [scenario/README](scenario/README.md) を参照してください。ここに残る都市・旅行の生成ドラフトは現在のプレイ内容を表さず、完成版へ上書きしてはいけません。
 
 `firstClearReward` は現行スキーマに必要な旧互換の初回 `episode_clear` 用で、未決定を示すため仮IDと0 APを置いています。これは初回報酬の決定ではありません。各都市のクリア4APは別途、都市フィナーレの `city_clear` に一意な報酬IDで登録します。
 

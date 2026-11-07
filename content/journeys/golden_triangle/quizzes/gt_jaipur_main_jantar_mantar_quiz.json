@@ -5,142 +5,150 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "gt_jaipur_jantar_naked_eye",
-      "questionEn": "The huge stone instruments at Jantar Mantar look like buildings. What were they designed to help people do?",
+      "id": "gt_jaipur_jantar_local_time",
+      "questionEn": "What time does the shadow on the giant sundial, the Samrat Yantra, show?",
       "options": [
         {
           "id": "A",
-          "textEn": "Magnify distant stars through lenses built into the stone."
+          "textEn": "Indian Standard Time, the same as a mobile phone."
         },
         {
           "id": "B",
-          "textEn": "Track the water level inside the stone structures."
+          "textEn": "The local time, set by the sun's position over Jaipur."
         },
         {
           "id": "C",
-          "textEn": "Observe positions in the sky with the naked eye."
-        }
-      ],
-      "correctOptionId": "C",
-      "vocabularyJa": [
-        {
-          "word": "instruments",
-          "meaning": "観測用の装置、器具"
-        },
-        {
-          "word": "observe",
-          "meaning": "観察する、観測する"
-        },
-        {
-          "word": "naked eye",
-          "meaning": "肉眼"
-        }
-      ],
-      "hintJa": "望遠鏡が見当たらなくても、観測のための工夫はできます。目で空を見上げる人と、大きな装置の関係を考えましょう。",
-      "correctExplanationJa": "肉眼で天体の位置を観測するための装置です。UNESCOは、固定された大きな石造装置に建築と観測器具の工夫が組み合わされていると説明します。大きいから飾り、というわけではありません。",
-      "incorrectExplanationJa": "主要な石造装置は、星をレンズで拡大したり、水位を追跡したりするためのものではありません。肉眼で天体の位置を観測するために設計されました。建物のように見える形そのものが、観測の道具なのです。",
-      "sources": [
-        {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "The Jantar Mantar, Jaipur — Outstanding Universal Value",
-          "url": "https://whc.unesco.org/en/list/1338",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "固定された石造の主要装置群が、肉眼で天体の位置を観測するために設計されたとUNESCOが説明する。"
-        }
-      ],
-      "difficulty": "easy"
-    },
-    {
-      "id": "gt_jaipur_jantar_shared_knowledge",
-      "questionEn": "How does UNESCO describe the scientific knowledge behind Jantar Mantar?",
-      "options": [
-        {
-          "id": "A",
-          "textEn": "It grew from traditions shared across different cultures."
-        },
-        {
-          "id": "B",
-          "textEn": "It belonged to one family with no outside influences."
-        },
-        {
-          "id": "C",
-          "textEn": "It began with no connection to earlier astronomy."
-        }
-      ],
-      "correctOptionId": "A",
-      "vocabularyJa": [
-        {
-          "word": "traditions",
-          "meaning": "受け継がれた伝統、知識の系統"
-        },
-        {
-          "word": "influences",
-          "meaning": "影響"
-        },
-        {
-          "word": "astronomy",
-          "meaning": "天文学"
-        }
-      ],
-      "hintJa": "一つの都市にある施設でも、そこで使う知識の旅は、その都市の境界で終わるとは限りません。",
-      "correctExplanationJa": "複数の文明に共有された天文学の伝統が背景にあります。UNESCOはここを、異なる科学文化が出会った場所として評価しています。一つの王の興味だけでなく、長い知識の受け渡しも建物に結び付いています。",
-      "incorrectExplanationJa": "一族だけの秘密や、過去と無関係な発明としては説明されていません。異なる地域や文化が受け継いだ天文学の伝統が、この観測所でも生かされました。",
-      "sources": [
-        {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "The Jantar Mantar, Jaipur — Outstanding Universal Value",
-          "url": "https://whc.unesco.org/en/list/1338",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "UNESCOは多くの文明に共有された位置天文学の伝統と、ジャイ・シング2世のもとで異なる科学文化が出会ったことを説明する。"
-        }
-      ],
-      "difficulty": "medium"
-    },
-    {
-      "id": "gt_jaipur_jantar_royal_authority",
-      "questionEn": "Why was Jantar Mantar more than a place for studying the sky?",
-      "options": [
-        {
-          "id": "A",
-          "textEn": "It kept scientific work separate from the court's political decisions."
-        },
-        {
-          "id": "B",
-          "textEn": "It connected sky observations with royal power and social beliefs."
-        },
-        {
-          "id": "C",
-          "textEn": "It supplied the court with decorative models of instruments used elsewhere."
+          "textEn": "London time, for the British officials of the past."
         }
       ],
       "correctOptionId": "B",
       "vocabularyJa": [
         {
-          "word": "royal power",
-          "meaning": "王の権力"
+          "word": "shadow",
+          "meaning": "影"
         },
         {
-          "word": "beliefs",
-          "meaning": "信仰、信念"
+          "word": "sundial",
+          "meaning": "日時計"
         },
         {
-          "word": "decorative models",
-          "meaning": "装飾用の模型"
+          "word": "local time",
+          "meaning": "地方時（その土地の太陽による時刻）"
+        },
+        {
+          "word": "officials",
+          "meaning": "役人"
         }
       ],
-      "hintJa": "時刻を定めたり、天体から先を予測したりする知識は、宮廷や社会にどんな影響を持ったかを考えましょう。",
-      "correctExplanationJa": "UNESCOは、観測所が王権の象徴でもあり、政治・科学・宗教の必要が重なっていたと説明します。時の把握や予測は、ただ空を見るだけの私的な楽しみには収まりませんでした。",
-      "incorrectExplanationJa": "科学を宮廷の政治から切り離した場所でも、ほかで使う装置の装飾用模型を並べただけの場所でもありません。UNESCOは、実際の観測と、王の権威、社会の慣習、信仰が重なる場所として評価しています。",
+      "hintJa": "日時計が知っているのは、頭の上の太陽だけ。",
+      "correctExplanationJa": "サムラート・ヤントラの影が示すのは、ジャイプールの太陽の位置で決まる地方時です。国全体で使う標準時とは別のものです。",
+      "incorrectExplanationJa": "日時計が示すのは、その土地の太陽による地方時です。携帯の標準時とも、ロンドンの時刻とも違います。",
       "sources": [
         {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "The Jantar Mantar, Jaipur — Outstanding Universal Value",
-          "url": "https://whc.unesco.org/en/list/1338",
-          "checkedAt": "2026-11-04",
+          "publisher": "Jantar Mantar Project (Barry Perlus)",
+          "title": "Samrat Yantra",
+          "url": "https://jantarmantar.org/learn/observatories/instruments/samrat/index.html",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "UNESCOのOutstanding Universal Valueは、時の制御や予測能力を通じた王権の象徴であり、政治・科学・宗教の必要が一体化した施設と説明する。"
+          "claimJa": "晴れた日、日時計の指針の影が四分円の目盛りに落ちて、地方時を示す。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_jaipur_jantar_two_seconds",
+      "questionEn": "How precisely can Jaipur's Samrat Yantra measure time?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "To about two seconds."
+        },
+        {
+          "id": "B",
+          "textEn": "Only to the nearest hour."
+        },
+        {
+          "id": "C",
+          "textEn": "Only whether it is morning or afternoon."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "precisely",
+          "meaning": "正確に、精密に"
+        },
+        {
+          "word": "measure",
+          "meaning": "測る"
+        },
+        {
+          "word": "nearest hour",
+          "meaning": "時間単位まで"
+        }
+      ],
+      "hintJa": "装置が巨大なのは、目盛りを細かく刻むため。",
+      "correctExplanationJa": "ジャイプールのサムラート・ヤントラは、時刻を約二秒の精度で測ることができます。巨大な大きさが、細かな目盛りを可能にしました。",
+      "incorrectExplanationJa": "精度は約二秒です。大きな日時計ほど影の動きが目に見えやすく、細かく刻めます。",
+      "sources": [
+        {
+          "publisher": "Jantar Mantar Project (Barry Perlus)",
+          "title": "Samrat Yantra",
+          "url": "https://jantarmantar.org/learn/observatories/instruments/samrat/index.html",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ジャイプールのサムラート・ヤントラは、時刻を二秒の精度で測ることができる。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_jaipur_jantar_time_correction",
+      "questionEn": "At twelve o'clock by Divya's phone, the shadow has not reached the noon line. Why?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The sundial has been broken since the early 1900s."
+        },
+        {
+          "id": "B",
+          "textEn": "The shadow only moves correctly when the moon is up."
+        },
+        {
+          "id": "C",
+          "textEn": "To get standard time, you must correct for the difference in longitude and the time of year."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "noon line",
+          "meaning": "正午の線"
+        },
+        {
+          "word": "standard time",
+          "meaning": "標準時"
+        },
+        {
+          "word": "correct for",
+          "meaning": "〜の分を補正する"
+        },
+        {
+          "word": "longitude",
+          "meaning": "経度"
+        }
+      ],
+      "hintJa": "国中が同じ時計を使っても、太陽が真南に来る時刻は、東と西で違う。",
+      "correctExplanationJa": "日時計の地方時を標準時に直すには、経度の差と、季節による日々のずれを補正する式を使います。ジャイプールは標準時の基準より西にあるため、太陽が南中するのは時計の正午より遅くなります。",
+      "incorrectExplanationJa": "日時計は壊れていません。地方時から標準時を求めるには、経度の差と季節のずれを補正する必要があります。",
+      "sources": [
+        {
+          "publisher": "Jantar Mantar Project (Barry Perlus)",
+          "title": "Samrat Yantra",
+          "url": "https://jantarmantar.org/learn/observatories/instruments/samrat/index.html",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "標準時を得るには、経度の差と、地球の公転による日々の調整を補う式を用いる。"
         }
       ],
       "difficulty": "hard"

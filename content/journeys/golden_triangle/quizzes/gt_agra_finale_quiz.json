@@ -1,249 +1,277 @@
 {
   "schemaVersion": 1,
   "id": "gt_agra_finale_quiz",
+  "landmarkId": null,
   "scope": "city_finale",
   "cityId": "agra",
-  "landmarkId": null,
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "gt_agra_finale_taj_memorial",
-      "questionEn": "Which caption correctly explains why the Taj Mahal was commissioned?",
+      "id": "gt_agra_finale_cut_hands",
+      "questionEn": "The guide says Shah Jahan cut off the hands of the Taj Mahal's workers. What do historians say?",
       "options": [
         {
           "id": "A",
-          "textEn": "A palace built to celebrate a military victory."
+          "textEn": "It is true, and the workers' names were written in a court diary."
         },
         {
           "id": "B",
-          "textEn": "A mausoleum commissioned by Shah Jahan in memory of Mumtaz Mahal."
+          "textEn": "There is no historical evidence for it. It is a popular legend."
         },
         {
           "id": "C",
-          "textEn": "A hall built for the coronation of Shah Jahan."
+          "textEn": "Only the chief architect lost his hands, as a punishment."
         }
       ],
       "correctOptionId": "B",
       "vocabularyJa": [
         {
-          "word": "caption",
-          "meaning": "写真や映像に添える説明文"
+          "word": "cut off",
+          "meaning": "切り落とす"
         },
         {
-          "word": "coronation",
-          "meaning": "戴冠式"
+          "word": "historians",
+          "meaning": "歴史家"
         },
         {
-          "word": "in memory of",
-          "meaning": "〜をしのんで"
+          "word": "evidence",
+          "meaning": "証拠"
+        },
+        {
+          "word": "legend",
+          "meaning": "伝説"
+        },
+        {
+          "word": "punishment",
+          "meaning": "罰"
         }
       ],
-      "hintJa": "外観が宮殿のように華やかでも、建てた目的を確かめよう。皇帝と妃の関係が手掛かりになる。",
-      "correctExplanationJa": "妃ムムターズ・マハルを記念するための墓廟です。見た目の華やかさから、勝利を祝う宮殿や戴冠の広間と紹介しないようにします。",
-      "incorrectExplanationJa": "正しい説明は、妃をしのんで造営された墓廟です。写真の印象と、資料で確認できる造営の目的を分けて考えましょう。",
+      "hintJa": "二度と同じ建物を造らせないために職人の手を切った、という話。記録には残っているだろうか。",
+      "correctExplanationJa": "職人の手を切ったという話に、歴史的な裏付けはありません。歴史家たちは、広く語られてきた伝説だと指摘しています。",
+      "incorrectExplanationJa": "この話を裏付ける記録はなく、歴史家は根拠のない伝説としています。建築家だけが罰を受けたという記録もありません。",
       "sources": [
         {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "Taj Mahal — Outstanding Universal Value",
-          "url": "https://whc.unesco.org/en/list/252/",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "シャー・ジャハーンが妃ムムターズ・マハルを記念して造営したと記載。"
+          "publisher": "Newschecker",
+          "title": "Fact Check: Shah Jahan did not cut off the hands of the masons who constructed the Taj Mahal",
+          "url": "https://newschecker.in/fact-check/factcheck-shah-jahan-did-not-cut-off-the-hands-of-the-masons-who-constructed-the-taj-mahal",
+          "checkedAt": "2026-11-07",
+          "claimType": "legend",
+          "claimJa": "職人の手を切ったという話は証拠に裏付けられておらず、ジャワハルラール・ネルー大学の歴史家ナジャフ・ハイダルらも歴史的根拠はないと述べる。"
         }
       ],
       "difficulty": "easy"
     },
     {
-      "id": "gt_agra_finale_fort_layers",
-      "questionEn": "Which caption best explains the different royal buildings in Agra Fort?",
+      "id": "gt_agra_finale_moonlight_garden",
+      "questionEn": "He also says a 'Black Taj' was planned across the river at Mehtab Bagh. What did researchers find there?",
       "options": [
         {
           "id": "A",
-          "textEn": "A fort shaped by building projects under different emperors."
+          "textEn": "A garden with a large pool for viewing the Taj and its reflection, not a black tomb."
         },
         {
           "id": "B",
-          "textEn": "A fort built entirely by one emperor in a single project."
+          "textEn": "The base of a black marble tomb that was never finished."
         },
         {
           "id": "C",
-          "textEn": "A fort made by gathering old palaces moved from other cities."
+          "textEn": "A secret tunnel under the river joining the two banks."
         }
       ],
       "correctOptionId": "A",
       "vocabularyJa": [
         {
-          "word": "shaped by",
-          "meaning": "〜によって形作られた"
+          "word": "planned",
+          "meaning": "計画された"
         },
         {
-          "word": "projects",
-          "meaning": "計画・事業"
+          "word": "researchers",
+          "meaning": "研究者"
         },
         {
-          "word": "entirely",
-          "meaning": "すべて・完全に"
+          "word": "reflection",
+          "meaning": "（水面に）映った姿"
+        },
+        {
+          "word": "tunnel",
+          "meaning": "トンネル、地下道"
         }
       ],
-      "hintJa": "赤砂岩の再建と白大理石の宮殿の追加には、同じ皇帝の名前が付いていただろうか。",
-      "correctExplanationJa": "代々の皇帝が使い、造営や変更を重ねた城です。いま一緒に見える建物が、すべて同じ時に造られたとは限りません。",
-      "incorrectExplanationJa": "一人の一度きりの計画でも、各地の宮殿を移設した集合でもありません。アクバルやシャー・ジャハーンらの異なる造営が残っています。",
+      "hintJa": "対岸の庭は、タージの真正面にある。何かを建てるためではなく、何かを見るための場所だったとしたら？",
+      "correctExplanationJa": "インド考古調査局と米国スミソニアンの研究で、メヘターブ・バーグはタージとその水に映る姿を眺めるための庭だったと考えられるようになりました。黒い墓のための土台だという説は否定されています。",
+      "incorrectExplanationJa": "見つかったのは黒い墓の土台ではなく、八角形の池を持つ庭でした。タージとその映り姿を眺める庭だったと考えられ、黒いタージの伝説は退けられました。",
       "sources": [
         {
-          "publisher": "Archaeological Survey of India, Agra Circle",
-          "title": "Agra Fort",
-          "url": "https://www.asiagracircle.in/agra-fort.html",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "アクバルによる赤砂岩での再建と、シャー・ジャハーンが一部建築を取り壊して白大理石の宮殿を造った経緯を記載。"
+          "publisher": "Smithsonian Freer and Sackler Galleries",
+          "title": "The Moonlight Garden: New Discoveries at the Taj Mahal (press release)",
+          "url": "https://archive.asia.si.edu/press/past/prmoonlightgarden.htm",
+          "checkedAt": "2026-11-07",
+          "claimType": "interpretation",
+          "claimJa": "インド考古調査局と共同の七年間の調査は、庭がタージとその八角形の池に映る姿を眺めるために設計された可能性を示し、シャー・ジャハーンの黒大理石の墓のための場所という俗説を退けた。"
         }
       ],
       "difficulty": "medium"
     },
     {
-      "id": "gt_agra_finale_baby_taj",
-      "questionEn": "Which caption avoids a mistake about the tomb nicknamed the 'Baby Taj'?",
+      "id": "gt_agra_finale_builders_next",
+      "questionEn": "After the Taj Mahal was finished, what did many of its skilled builders do next?",
       "options": [
         {
           "id": "A",
-          "textEn": "A small copy made after the Taj Mahal was finished."
+          "textEn": "They were sent back to Persia and never returned to India."
         },
         {
           "id": "B",
-          "textEn": "A model that was later rebuilt as the Taj Mahal itself."
+          "textEn": "They stopped working, because nobody needed their skills anymore."
         },
         {
           "id": "C",
-          "textEn": "An earlier tomb with its own patrons and family history."
+          "textEn": "They helped to build Shah Jahan's new capital, Shahjahanabad, in Delhi."
         }
       ],
       "correctOptionId": "C",
       "vocabularyJa": [
         {
-          "word": "nicknamed",
-          "meaning": "愛称で呼ばれる"
+          "word": "skilled",
+          "meaning": "熟練した"
         },
         {
-          "word": "earlier",
-          "meaning": "より前の"
+          "word": "builders",
+          "meaning": "建設に携わった人々"
         },
         {
-          "word": "patrons",
-          "meaning": "制作・造営を支えた人たち"
+          "word": "skills",
+          "meaning": "技能"
+        },
+        {
+          "word": "capital",
+          "meaning": "首都"
         }
       ],
-      "hintJa": "愛称にタージと入っていても、後から小さくまねたとは限らない。二つの建物の前後関係を思い出そう。",
-      "correctExplanationJa": "イティマード・ウッダウラ廟はタージに先行します。皇妃が家族のために造営した場所であり、小型の複製として始まった建物ではありません。",
-      "incorrectExplanationJa": "タージ完成後の複製でも、後でタージに建て替えた模型でもありません。先に造られた、別の家族の記憶を持つ墓廟です。",
+      "hintJa": "シャー・ジャハーンは、タージのあと、デリーに新しい都を築いた。赤い城と大きなモスクのある都だ。",
+      "correctExplanationJa": "同じ職人たちが、のちにデリーの新都シャージャハーナーバードの建設に携わったと伝えられています。レッド・フォートやジャーマー・マスジドのある都です。手を切られていたら、できなかった仕事でした。",
+      "incorrectExplanationJa": "職人たちは、のちにデリーの新都シャージャハーナーバードの建設に関わったと伝えられています。技術は途切れず、次の都に受け継がれました。",
       "sources": [
         {
-          "publisher": "District Agra, Government of Uttar Pradesh",
-          "title": "Tomb of Itimad-ud-Daulah",
-          "url": "https://agra.nic.in/tourist-place/tomb-of-itimad-ud-daulah-baby-taj/",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "廟を1622〜1628年の造営で、タージ・マハルに先行するものと説明。"
+          "publisher": "Newschecker",
+          "title": "Fact Check: Shah Jahan did not cut off the hands of the masons who constructed the Taj Mahal",
+          "url": "https://newschecker.in/fact-check/factcheck-shah-jahan-did-not-cut-off-the-hands-of-the-masons-who-constructed-the-taj-mahal",
+          "checkedAt": "2026-11-07",
+          "claimType": "interpretation",
+          "claimJa": "Times of India（2017年）の報道を引き、同じ職人たちが後にデリーのシャージャハーナーバードを築いたと伝える。"
         }
       ],
       "difficulty": "medium"
     },
     {
-      "id": "gt_agra_finale_working_city",
-      "questionEn": "Which caption gives a fuller account of Fatehpur Sikri than \"a large palace\"?",
+      "id": "gt_agra_finale_one_signature",
+      "questionEn": "Whose signature can be found among the Taj Mahal's inscriptions?",
       "options": [
         {
           "id": "A",
-          "textEn": "A private garden with no buildings for public affairs."
+          "textEn": "Shah Jahan's own, carved above the main door."
         },
         {
           "id": "B",
-          "textEn": "A city with spaces for government, worship and everyday life."
+          "textEn": "The calligrapher Amanat Khan's, dated 1638."
         },
         {
           "id": "C",
-          "textEn": "A single royal home built apart from all other activities."
+          "textEn": "The chief stonemason's, carved on Mumtaz's tomb."
         }
       ],
       "correctOptionId": "B",
       "vocabularyJa": [
         {
-          "word": "account",
-          "meaning": "ここでは、説明・記述"
+          "word": "signature",
+          "meaning": "署名"
         },
         {
-          "word": "worship",
-          "meaning": "礼拝"
+          "word": "calligrapher",
+          "meaning": "書家"
         },
         {
-          "word": "everyday",
-          "meaning": "日常の"
+          "word": "dated",
+          "meaning": "日付の入った"
+        },
+        {
+          "word": "stonemason",
+          "meaning": "石工"
         }
       ],
-      "hintJa": "宮殿のほかに、働く人や礼拝する人のための空間もあった。建物を一つだけとして説明してよいだろうか。",
-      "correctExplanationJa": "行政、礼拝、居住などを含む都市でした。宮殿だけを映していても、画面の外にあった人々の働きや生活まで消してしまわない説明ができます。",
-      "incorrectExplanationJa": "私庭や一軒の王家の住まいに限られる場所ではありません。政治や礼拝、さまざまな人の生活を含む都市として説明できます。",
+      "hintJa": "壁を飾る美しい文字。それを書いた人だけが、自分の名を残すことを許された。",
+      "correctExplanationJa": "廟の内部の銘文を書いた書家アマーナト・ハーン・シーラーズィーは、ヒジュラ暦1048年（1638年）の日付とともに署名を残しました。タージで作品に署名を許されたのは彼だけだったと言われます。",
+      "incorrectExplanationJa": "署名があるのは書家アマーナト・ハーンです。1638年に内部の銘文を完成させ、自分の名を書き添えました。",
       "sources": [
         {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "Fatehpur Sikri — Outstanding Universal Value",
-          "url": "https://whc.unesco.org/en/list/255/",
-          "checkedAt": "2026-11-04",
+          "publisher": "Encyclopaedia Iranica",
+          "title": "AMĀNAT KHAN ŠĪRĀZĪ",
+          "url": "https://www.iranicaonline.org/articles/amanat-khan-sirazi-abd-al-haqq",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "宮殿、公共建築、モスク、宮廷・軍・使用人の生活空間を含む計画都市と説明。"
+          "claimJa": "タージ・マハルの大ドーム内の銘文は1048年（1638年）に完成し、書家アマーナト・ハーン・シーラーズィーの署名がある。"
+        },
+        {
+          "publisher": "Rana Safvi",
+          "title": "The calligrapher of Taj Mahal",
+          "url": "https://ranasafvi.com/the-calligrapher-of-taj-mahal",
+          "checkedAt": "2026-11-07",
+          "claimType": "interpretation",
+          "claimJa": "タージ・マハルで自分の作品に署名を許されたのは、アマーナト・ハーンだけだったとされる。"
         }
       ],
       "difficulty": "medium"
     },
     {
-      "id": "gt_agra_finale_visible_memorials",
-      "questionEn": "Which caption fits a diagram of the decorated cenotaphs in the Taj Mahal’s main hall?",
+      "id": "gt_agra_finale_taj_ganj",
+      "questionEn": "The guide's family lives in Taj Ganj, just outside the Taj's south gate. What was Taj Ganj in the plan of the Taj Mahal?",
       "options": [
         {
           "id": "A",
-          "textEn": "Memorials above the actual burial chamber."
+          "textEn": "A royal hunting ground closed to ordinary people."
         },
         {
           "id": "B",
-          "textEn": "The actual graves in an open garden."
+          "textEn": "A farming village much older than the city of Agra."
         },
         {
           "id": "C",
-          "textEn": "Royal seats used for meetings with visitors."
+          "textEn": "A bazaar and caravanserai area that was part of the Taj complex."
         }
       ],
-      "correctOptionId": "A",
+      "correctOptionId": "C",
       "vocabularyJa": [
         {
-          "word": "memorials",
-          "meaning": "故人などを記念するもの"
+          "word": "hunting ground",
+          "meaning": "狩猟場"
         },
         {
-          "word": "above",
-          "meaning": "〜の上に"
+          "word": "ordinary people",
+          "meaning": "一般の人々"
         },
         {
-          "word": "seats",
-          "meaning": "座席"
+          "word": "caravanserai",
+          "meaning": "隊商宿"
         },
         {
-          "word": "diagram",
-          "meaning": "説明図"
+          "word": "complex",
+          "meaning": "（建物の）複合体、一群"
         }
       ],
-      "hintJa": "見えているものをそのまま紹介しよう。上の記念棺と、下の実際の埋葬の場所は区別されていた。",
-      "correctExplanationJa": "図が示すのは、実際の埋葬室の上にある記念棺です。資料に添える言葉を、確かめた範囲に合わせます。",
-      "incorrectExplanationJa": "庭の墓や謁見用の席ではありません。主室にある記念棺と、下の埋葬室との関係を伝える説明が合っています。",
+      "hintJa": "墓廟の南門の外には、旅人と商人のための場所が、最初から設けられていた。",
+      "correctExplanationJa": "タージ・ガンジは、タージ・マハルの南門の外に設けられた市場と隊商宿の区画です。墓廟と同じ計画の一部が、今は人の暮らす町になっています。",
+      "incorrectExplanationJa": "タージ・ガンジは狩猟場でも古い農村でもなく、南門の外の市場と隊商宿の区画として、タージの複合体の一部でした。",
       "sources": [
         {
-          "publisher": "Uttar Pradesh Tourism",
-          "title": "The Taj Interiors — The Tomb; The Screen and the Cenotaphs",
-          "url": "https://www.tajmahal.gov.in/the-taj-interiors.aspx",
-          "checkedAt": "2026-11-04",
+          "publisher": "Taj Mahal official website (tajmahal.gov.in)",
+          "title": "Outlying Buildings",
+          "url": "https://tajmahal.gov.in/outlying-building.aspx",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "主室にある記念棺と、その下の埋葬室にある実際の墓を区別。"
+          "claimJa": "南門の外の一段高い場所に、市場と隊商宿の区画であるタージ・ガンジがある。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "hard"
     }
   ]
 }

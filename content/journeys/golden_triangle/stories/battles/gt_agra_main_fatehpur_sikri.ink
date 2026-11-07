@@ -4,6 +4,7 @@ VAR player_address = ""
 VAR battle_scene = "intro"
 VAR answer_correct = false
 VAR battle_score = 0
+
 { battle_scene == "intro": -> introduction }
 { battle_scene == "after_1": -> after_first }
 { battle_scene == "after_2": -> after_second }
@@ -12,108 +13,134 @@ VAR battle_score = 0
 
 === introduction ===
 # background: gt_bg_agra_fatehpur_sikri
-# speaker: enemy
-「出発します。忘れ物は……私の仕事だった」
 # speaker: narrator
-ファテープル・シークリーの広場で、年配の女性が自分の声に笑っていた。{heroine_name}も、つられて足を止める。
+巨大な門へ続く急な石段の途中で、{heroine_name}は息を整えていた。見上げるアーチの内側に、流れるような文字が刻まれている。
+# speaker: narrator
+同じ段に、男が一人座っていた。五十過ぎ。ヘルメットの跡がついた髪。携帯の翻訳アプリを碑文に向けたまま、笑っているのか泣いているのか分からない声を出している。
+# speaker: enemy
+「家を、建てるな……だと」
 # speaker: heroine
 # reaction: heroine,surprised,question
-「出発、しないんですか？」
+「だ、大丈夫ですか？」
 # speaker: enemy
-「しない。長いことバスの車掌だったから、誰かが集まると口が勝手に。キランよ。今日は乗客一名、私だけ」
+「大丈夫に見えますか。ムケーシュ、建設業です。人の家を三十年建ててきて、三年前から、自分の家を建てている」
 # speaker: narrator
-退職した今も、家族で出かけると案内を任されるという。今日は下見のつもりで来て、途中でそれをやめた。
+アーグラの郊外。二階建て。貯金と借金で四百万ルピー。今日の午後四時に、屋根のコンクリートを流すミキサー車が来るという。
 # speaker: enemy
-「妹に『楽しんでおいで』と言われたのに、来週の順路を考えてた。賃金の出ない車掌まで続けるところだったわ」
+「聖者の墓に、しるしをくださいと頼みに来たんです。そしたら門に、これだ。世界は橋だ、家を建てるな。……しるし、来ちゃったでしょう」
+# speaker: narrator
+ムケーシュは携帯を突き出した。現場監督の番号が表示されている。
+# speaker: enemy
+「止めるべきですか、ミキサー車。あなたが決めてください。外国の人は、しがらみがない。正しいことが言える」
 # speaker: heroine
-# reaction: heroine,teasing,music
-「運行を終了したんですね」
+# reaction: heroine,surprised_big,interrobang
+「えっ、わたしが？　む、無理です。それは、ムケーシュさんが決めることです」
 # speaker: enemy
-「私の分だけ、まだ走ります」
+# reaction: enemy,anger
+「冷たいな。人生相談に来た男に」
+# speaker: heroine
+# emotion: worried
+「人生相談、されてたんですね……。でも、家のことは、やっぱり」
 # speaker: narrator
-キランは赤い建物の列を見渡す。{heroine_name}も、その先の広場を探すように顔を上げた。
+ムケーシュは鼻を鳴らし、もう一度アーチを見上げた。翻訳の続きを、指で追う。
 # speaker: enemy
-「これだけ大きな街にしたのね。どのくらい首都だったのかしら。建物の大きさだけで、長く使ったとは決められないけど」
+「だいたい、誰が言ったんだ、こんなこと。皇帝か？　自分は町ごと建てたくせに」
 -> END
 
 === after_first ===
 # background: gt_bg_agra_fatehpur_sikri
 { answer_correct:
-# speaker: enemy
-「そう、短い首都の時代。建物の大きさで、長く使ったと思い込んじゃ駄目ね」
+    # speaker: enemy
+    「イエス……？　キリストの？　イスラームの皇帝の門に？」
+    # speaker: heroine
+    「はい。マリアの子イエスの言葉、って書いてあるそうです」
 - else:
-# speaker: enemy
-「首都だった期間は長くないの。大きく造ったら、ずっとそこにいるとも限らない」
+    # speaker: enemy
+    「……待て。翻訳の続きに出てる。『マリアの子イエスは言った』。キリストの言葉だ。イスラームの皇帝の門に？」
 }
-# speaker: heroine
-「キランさんは、同じ路線に長くいたんですか？」
-# speaker: enemy
-「いくつも変わった。路線を覚えると、人も覚える。最後まで降りる場所を間違える人もいた」
-# speaker: heroine
-「それは、困りますね」
-# speaker: enemy
-# reaction: enemy,music
-「私が」
 # speaker: narrator
-彼女の即答に、{heroine_name}は声を抑えて笑った。目の前の都市にも、違う用事で通った人たちがいたはずだ。
+ムケーシュは、しばらく口を開けたままだった。それから、変なところに感心し始めた。
 # speaker: enemy
-「王様の住まいだけなら、こんなにいろんな建物はいらないでしょう。どんな用事が集まった街だったのかしら」
+「皇帝ってのは、度量が大きいんだな。よその宗教の言葉を、自分の勝ちを祝う門に刻むなんて。……うちの施主なら、絶対に許さない」
+# speaker: heroine
+# reaction: heroine,teasing,music
+「施主さん、厳しいんですね」
+# speaker: enemy
+「施主は自分です。だから一番厳しい」
+# speaker: narrator
+彼は石段の上の、赤い石の町並みを見渡した。宮殿、広場、柱廊。人の住まない町が、どこまでも続いている。
+# speaker: enemy
+「でも、変じゃないですか。家を建てるなと刻んだ皇帝が、そもそも、なんでこんな所に町を一つ建てたんです」
 -> END
 
 === after_second ===
 # background: gt_bg_agra_fatehpur_sikri
 { answer_correct:
-# speaker: heroine
-「政治も、礼拝も、暮らしも。一つの宮殿の大きさで考えると、足りないんだ」
+    # speaker: enemy
+    「跡継ぎが欲しくて、聖者に会いに来た。それで息子が生まれて、町を建てた。……息子のために、町を一つ」
 - else:
-# speaker: heroine
-「宮殿だけじゃなかった。役所や、礼拝の場所や、そこで暮らす人の空間もある都市なんだね」
+    # speaker: enemy
+    「跡継ぎ、か。聖者に会いに来て、息子が生まれて、それで町を建てた。……息子のために、町を一つ」
 }
-# speaker: enemy
-「なら、全員同じ順番に案内する必要もないわね。私の家族だって、見たいものが違う」
 # speaker: narrator
-キランは折った案内図を鞄へしまう。{heroine_name}は、まだ見えていない方の広場へ視線を向けた。
-# speaker: heroine
-「都が移ると、こういう道も全部使われなくなるんでしょうか」
+ムケーシュの声の調子が変わった。携帯を膝に置き、画面を伏せる。
 # speaker: enemy
-「『終点、全員降りて』みたいに？　その先がないと思うと、急に寂しいわね。確かめてみましょう」
+「わたしの家もね、息子のためなんです。二階は全部、息子夫婦の部屋。孫ができたら、屋上で凧を揚げる」
+# speaker: enemy
+「先週、息子が言いました。ベンガルールで仕事が決まった。向こうで暮らすって。……誰も住まない二階に、今日、屋根を流すんです」
+# speaker: narrator
+{heroine_name}は何も言えなかった。慰める言葉なら、いくらでも浮かぶ。どれも、この人の四百万ルピーには軽すぎた。
+# speaker: heroine
+# emotion: serious
+「……ごめんなさい。気の利いたことが、言えません」
+# speaker: enemy
+「いいんです。言われたら、たぶん怒ってた」
+# speaker: narrator
+ムケーシュは鼻をすすり、町並みを顎で示した。
+# speaker: enemy
+「で、皇帝は、息子のために建てたこの町に、何年住んだんです」
 -> END
 
 === conclusion ===
 # background: gt_bg_agra_fatehpur_sikri
 { answer_correct:
-# speaker: enemy
-「皇帝たちの一時的な訪問は続いた。首都でなくなっても、帰ってくる人はいたのね」
+    # speaker: enemy
+    「十五年……。皇帝でさえ、出ていったのか」
 - else:
-# speaker: enemy
-「首都がラホールへ移った後も、皇帝たちが訪れていたの。誰も来なくなった、と閉じる話ではないわ」
+    # speaker: enemy
+    「十五年ほど。……皇帝でさえ、出ていったのか」
 }
-{ battle_score == 3:
 # speaker: heroine
-# reaction: heroine,happy,sparkle
-「三つとも分かった。わたし、今度はあっちの広場へ行ってみたいです」
-- else:
+「でも、町は残ってます。四百年以上たっても、こうやって人が来て、上まで石段を上って」
 # speaker: heroine
-# emotion: smile
-「思い込み、途中で降りられてよかった。今度はあっちの広場へ行ってみたいです」
-}
-# speaker: enemy
-「私はもう少しここ。案内はしませんよ」
-# speaker: heroine
-# reaction: heroine,teasing,music
-「はい。乗客一名ですもんね」
+「この門、家を建てるなとは書いてあるけど、橋を渡るな、とは書いてないです。……ムケーシュさんの家も、誰かが渡ってくる橋みたいなものじゃないかなって」
 # speaker: narrator
-キランに手を振り、二人は広場へ続く道を確かめた。{heroine_name}が、スマートフォンをこちらへ差し出す。
-# speaker: heroine
-「向こうが見えるところまで、少し撮ってもらえる？　建物だけだと、どうつながっていたか忘れそう」
-# speaker: narrator
-歩ける道で画面を向ける。彼女は一歩出て、案内を確かめるために戻り、それから広場へ進んだ。こちらは立ち止まったまま、その足取りを数秒だけ撮った。
+言ってから、{heroine_name}は赤くなった。決めないと言ったのに、口を出してしまった。
 # speaker: heroine
 # reaction: heroine,exasperated,sweat
-「戻ったところまで入ってる。『こちらです！』って顔で、逆だったね」
+「い、今のは感想です。決めたわけじゃないです」
 # speaker: narrator
-彼女は消去の印に指を近づけたが、触れずに引っ込めた。
+ムケーシュは長いあいだ黙っていた。それから携帯を表に返し、現場監督の番号を押した。
+# speaker: enemy
+「わたしだ。四時、予定どおり屋根を流せ。……それと、図面の変更だ。二階の奥に一部屋、わたしの部屋を作る。本を読む部屋だ。息子が帰ってきたら、そこで一緒に茶を飲む」
+# speaker: narrator
+電話を切ると、彼は立ち上がり、ズボンの埃を払った。
+{
+- battle_score == 3:
+    # speaker: enemy
+    「あなたは全部、正しく読んだ。それなのに、わたしの代わりには決めなかった。……そういう人に、家の鍵を預けたい」
+- battle_score == 2:
+    # speaker: enemy
+    「二つ正解。一つは、この門と同じで、わたしにも読めなかった。おあいこです」
+- else:
+    # speaker: enemy
+    「あなたもわたしも、碑文は読めなかった。でも、決めることだけは、自分でできた」
+}
+# speaker: enemy
+「あなた、最後まで決めてくれませんでしたね。……ありがとう。人に決めてもらった家には、住めないところでした」
+# speaker: narrator
+彼は石段を、一段ずつ下りていった。現場の方角へ。四時まで、まだ少し時間がある。
 # speaker: heroine
 # emotion: smile
-「残そう。次は何が見えるんだろうって、迷ったところも面白かったから」
+「……わたし、何もしてないのに、お礼を言われちゃった」
 -> END

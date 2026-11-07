@@ -8241,12 +8241,12 @@
     {
       "id": "gt_agra_finale",
       "cityId": "agra",
-      "placeId": "agra_agra_fort",
+      "placeId": "agra_taj_mahal",
       "category": "main",
-      "titleJa": "アーグラ・フィナーレ――ここは残したい",
+      "titleJa": "一番いい話",
       "activityMinutes": 30,
       "apCost": 0,
-      "admissionCost": 1300
+      "admissionCost": 2200
     }
   ]
 }

@@ -5,7 +5,6 @@ VAR battle_scene = "intro"
 VAR answer_correct = false
 VAR battle_score = 0
 
-# background: gt_bg_jaipur_city_palace
 { battle_scene == "intro": -> introduction }
 { battle_scene == "after_1": -> after_first }
 { battle_scene == "after_2": -> after_second }
@@ -13,104 +12,129 @@ VAR battle_score = 0
 -> END
 
 === introduction ===
+# background: gt_bg_jaipur_city_palace
 # speaker: narrator
-シティ・パレスの中庭で、女の子が父親の袖を引いた。父親は装飾の細部へ指を向けたまま、足を動かさない。
-# speaker: narrator
-「お父さんが、また迷子」と、女の子がこちらに言った。
-# speaker: heroine
-# reaction: heroine,worried,question
-「どこへ行きたいの？　一緒に案内を見ようか」
+宮殿の中庭の一角に、人の背丈ほどもある銀の壺が二つ、並んで光っていた。{heroine_name}がその大きさに口を開けていると、すぐ隣で言い争う声が始まった。
 # speaker: enemy
-「迷ってはいない。ここの仕事が気になって、見ているだけだよ。木工職人のヴィクラムだ」
+「五キロ！　五キロのどこが多いの！」
 # speaker: narrator
-女の子は父親を指し、次に自分の腕を組む。父親も同じ姿勢になった。
-# speaker: heroine
-# reaction: heroine,exasperated,sweat
-「あ、行き先が分からない迷子じゃなくて……。お父さんが戻ってこない方ね」
+サリー姿の女性と、二十代半ばの青年。青年の手には、荷物の重さを測る小さな秤。女性の手提げからは、ガラス瓶がのぞいている。
+# speaker: narrator
+「母さん、預け荷物は二十三キロまでなんだ。漬物だけで五キロは無理だって」
+# speaker: narrator
+青年はヴィシャール。来週、仕事でドイツへ発つ。母親のスシュマは、彼のために漬けたライムとマンゴーの漬物を、全部持たせるつもりでいる。最後の週末にと、家族で宮殿を見に来たのだという。
 # speaker: enemy
-「娘の見たい所も、もちろん見る。ただ、その前にここを――」
-# speaker: narrator
-「その前、もう聞いた」と娘が言う。彼女は吹き出しかけ、口を押さえた。
+「ちょっと、そこの旅行者さん。あなた、外国から来たのよね」
 # speaker: heroine
-「わたしも、その前に一つ聞いていいですか。ここは王様の住まいなら、どうしてこんなに違う場所が集まってるんでしょう」
+# reaction: heroine,surprised,question
+「は、はい。日本から……」
 # speaker: enemy
-「いい質問だ。それを聞かれると、短く済まない」
+「教えて。外国に家の味を持っていくのは、恥ずかしいこと？」
 # speaker: narrator
-娘が大きく肩を落とす。彼女は慌てて、説明の項目を指さした。まず、宮殿を使っていた人々のことから。
+二組の目が、同時に{heroine_name}を見た。母親の目と、息子の目。どちらに答えても、片方が傷つく。
+# speaker: heroine
+# reaction: heroine,worried,sweat
+「え、ええと……それは……」
+# speaker: narrator
+スシュマは返事を待たず、銀の壺を指さした。勝ちを確信した弁護士のような手つきだった。
+# speaker: enemy
+「この壺はね、昔の王様が外国へ持っていったのよ。中に何を入れていったと思う？」
 -> END
 
 === after_first ===
-# speaker: enemy
+# background: gt_bg_jaipur_city_palace
 { answer_correct:
-「住まいだけでなく、行政、儀礼、人が集まる活動の場でもあった。その通りだ」
+    # speaker: enemy
+    「そう！　ガンジスの水！　王様だって、自分の家の水を持っていったのよ。漬物五キロくらい、何よ」
 - else:
-「王の住まいだけじゃない。行政や儀礼、人の集まる活動にも使われた場所なんだ」
+    # speaker: enemy
+    「ガンジスの水よ！　王様だって、自分の家の水を壺に詰めて持っていったの。漬物五キロくらい、何よ」
 }
 # speaker: narrator
-ヴィクラムは畳みかけるように手を動かした。娘が、その手の動きをひと呼吸遅れてそっくりまねる。
-# speaker: heroine
-# reaction: heroine,happy,music
-「ふふっ、ごめんなさい。後ろに、小さい説明役が増えてて」
-# speaker: enemy
-「店でもやるんだ、そのまねを。客が私じゃなく娘を見る」
+「王様には、荷物の重量制限がなかったんだよ、母さん」
 # speaker: narrator
-「だって毎回長いんだもん」。娘の声に、彼は憮然とする。
+ヴィシャールの切り返しに、{heroine_name}は思わず吹き出した。慌てて口を押さえたが、もう遅い。
 # speaker: enemy
-「仕事が見えないまま、出来たものだけ褒められるのは、好きじゃないんだよ」
+# reaction: enemy,anger
+「笑ったわね。審判が笑うなんて」
 # speaker: heroine
-# emotion: serious
-「その話は聞きたいです。でも、聞きたいのはわたしで……この子も、とは限らないですね」
+# reaction: heroine,exasperated,sweat
+「す、すみません！　……でも、どっちの言い分も、ちょっと分かるんです」
 # speaker: narrator
-彼女は娘に場所を譲り、作品が宮殿へ届くまでの案内を開いた。
+ヴィシャールが小声で言う。向こうで新しい同僚に、漬物の匂いのする部屋だと思われたくない。最初くらい、身軽に始めたいのだと。
+# speaker: narrator
+スシュマは聞こえないふりをして、二人を隣の中庭へ引っぱっていった。四方に、色の違う四つの門が並んでいる。
+# speaker: enemy
+「ほら、この門。何を表してるか、あんたは知ってる？　小さい頃に連れてきたのに、どうせ覚えてないでしょう」
 -> END
 
 === after_second ===
-# speaker: heroine
+# background: gt_bg_jaipur_city_palace
 { answer_correct:
-「宮廷が芸術や工芸を支えていた。注文する人の後ろに、仕事をする人もいたんですね」
+    # speaker: enemy
+    「四つの季節。春も、夏も、秋も、冬も。……うちの台所には、季節ごとの漬物があったの。あんたが忘れても、瓶は覚えてる」
 - else:
-「宮廷が芸術や工芸を支えていたんですね。飾られた品だけだと、頼んだ人までしか考えていませんでした」
+    # speaker: enemy
+    「四季よ。孔雀が秋で、蓮が夏。……うちの台所にも、季節ごとの漬物があったの。あんたが忘れても、瓶は覚えてる」
 }
-# speaker: enemy
-「板を短くするのを、ただ切るだけだと思われることがある。切ったあとで戻せと言われても、ね」
 # speaker: narrator
-娘が父親の袖をもう一度引いた。今度は引く長さを指で測っている。
-# speaker: heroine
-# reaction: heroine,teasing,music
-「切る前に、相談が来てますよ」
-# speaker: enemy
-# reaction: enemy,sigh
-「相談じゃなくて、督促だね」
+ヴィシャールは、緑の門を見上げたまま黙った。それから、母親に聞こえないくらいの声で言った。
 # speaker: narrator
-彼はようやく案内を娘へ渡した。だが、娘が展示品の写真を指すと、また口が開きかける。
+「……持っていったら、向こうで毎日食べる。そしたら毎日、帰りたくなる。だから、持っていきたくないんだ」
+# speaker: narrator
+本当の理由は、同僚の目ではなかった。{heroine_name}は少し考えてから、口を開いた。
 # speaker: heroine
-「それ、今は誰に見せるために置いてあるんでしょう。昔に頼んだ人と、今日ここへ来た人は違いますよね」
+「わたし、旅の途中で、家のお味噌汁が恋しくなることがあります。我慢したら、もっと恋しくなりました」
+# speaker: heroine
+「恋しくなるのは、帰る場所があるってことだと思います。……恥ずかしいことじゃ、ないです」
+# speaker: narrator
+スシュマが、こちらを見た。勝ち誇った顔ではなかった。息子が、遠くへ行ってしまうことを、今さら思い知った顔だった。
+# speaker: enemy
+「……ねえ、上を見て。この宮殿の奥には、今も住んでる人がいるのよ。出ていかずに。知ってた？」
 -> END
 
 === conclusion ===
-# speaker: enemy
+# background: gt_bg_jaipur_city_palace
 { answer_correct:
-「収集され、制作を依頼された品が、博物館で文化を伝えている。今日来た人へ、ということだね」
+    # speaker: heroine
+    「はい。宮殿の一部は、今も王家の方の住まいなんですよね」
 - else:
-「王家の収集や制作依頼による品々を、今は博物館で紹介している。昔の使い方のままではないんだ」
+    # speaker: narrator
+    案内板には、宮殿の一部が今も王家の住まいだと書いてあった。博物館だけの建物ではないのだ。
 }
-# speaker: narrator
-娘が案内を開いたまま歩きだす。ヴィクラムは一歩だけ追い、その場に残った二人を振り返った。
 # speaker: enemy
-{ battle_score == 3:
-「君たちは私の話をよく聞いてくれた。娘は聞いていないと思っていたが、口調まで覚えていた」
+「王様の家族は、まだここに住んでる。……でも、うちの息子は出ていくの」
+# speaker: narrator
+冗談めかした声が、途中でかすれた。ヴィシャールが母親の肩に手を置く。
+# speaker: narrator
+審判の答えを、二人が待っていた。{heroine_name}は、どちらの側にも立たないことにした。
+# speaker: heroine
+# emotion: serious
+「五キロは無理でも、二キロなら入りますよね。……それで、漬物がなくなったら、電話してください。お母さんに、次の分を頼むって」
+# speaker: heroine
+「なくなるたびに、電話する理由ができます」
+# speaker: narrator
+スシュマとヴィシャールが、同時に黙った。先に口を開いたのは、母親の方だった。
+# speaker: enemy
+「……毎週よ。日曜の朝。時差があるなら、そっちに合わせてあげる」
+# speaker: narrator
+「二キロと、毎週の電話。……分かった」
+{
+- battle_score == 3:
+    # speaker: enemy
+    「審判さん、全問正解ね。うちの息子より、この宮殿に詳しいじゃない」
+- battle_score == 2:
+    # speaker: enemy
+    「二問正解。審判としては合格。笑ったのは減点だけど」
 - else:
-「説明は、長ければ伝わるわけじゃないね。……短くできるとは、約束しないけど」
+    # speaker: enemy
+    「答えは、まあまあね。でも、判定は一番いいのを出してくれた」
 }
-# speaker: heroine
-「はい。わたしも、途中で娘さんの味方をするつもりが、話を長くしちゃいました」
 # speaker: narrator
-「二人とも迷子だった！」と娘が言った。ヴィクラムがむっとし、彼女は今度こそこらえられずに笑った。
+スシュマは手提げから小瓶を一つ取り出し、{heroine_name}の手に握らせた。ライムの漬物。審判の報酬だという。
 # speaker: heroine
-# reaction: heroine,happy,music
-「そうだね。わたしも迷子でした。案内、お願いします」
-# speaker: narrator
-父娘が先へ向かう。父親はまだ何か言いたそうだが、娘の指す方を見ている。彼女はスマートフォンを出しかけ、しまった。
-# speaker: heroine
-「今の、動画にないな。わたしが笑っちゃったから。……短くメモだけしておこう」
+# reaction: heroine,exasperated,sweat
+「あ、ありがとうございます。……わたしにも、重量制限が……」
+# speaker: enemy
+「二百グラムよ。文句があるなら、電話してちょうだい」
 -> END

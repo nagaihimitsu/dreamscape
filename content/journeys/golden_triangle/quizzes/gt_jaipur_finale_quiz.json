@@ -2,244 +2,272 @@
   "schemaVersion": 1,
   "id": "gt_jaipur_finale_quiz",
   "landmarkId": null,
+  "scope": "city_finale",
+  "cityId": "jaipur",
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "gt_jaipur_finale_amber_courtyards",
-      "questionEn": "A film shows Amber's courtyards one after another. Which caption best describes the palace layout?",
+      "id": "gt_jaipur_finale_pink_city",
+      "questionEn": "The bride's cousin blocks the door and asks, 'Why is our old city pink?' What is the best answer?",
       "options": [
         {
           "id": "A",
-          "textEn": "A single open camp with no separate living areas."
+          "textEn": "Pink stone is found only in the hills around Jaipur."
         },
         {
           "id": "B",
-          "textEn": "Four identical rooms used only for storing weapons."
+          "textEn": "It is widely said the king had it painted pink, a colour of welcome, for a royal visit in 1876."
         },
         {
           "id": "C",
-          "textEn": "Several courtyard sections containing different parts of palace life."
-        }
-      ],
-      "correctOptionId": "C",
-      "vocabularyJa": [
-        {
-          "word": "caption",
-          "meaning": "字幕、説明文"
-        },
-        {
-          "word": "layout",
-          "meaning": "配置、構成"
-        },
-        {
-          "word": "sections",
-          "meaning": "区画、部分"
-        }
-      ],
-      "hintJa": "中庭を一つ見たら、すべてを見たことになるでしょうか。各区画を、そこで行われたことと結び付けます。",
-      "correctExplanationJa": "アンベールは、それぞれ中庭を持つ複数の区画から構成されます。宮殿内には居住区や庭園などがあり、一つの広場や武器庫だけでは説明できません。映像でも区画を切り替えると、違う使われ方を見せられます。",
-      "incorrectExplanationJa": "一つの野営地や、四つの同じ武器庫ではありません。中庭を持つ区画がつながり、その中に宮殿の暮らしの異なる部分が含まれています。",
-      "sources": [
-        {
-          "publisher": "Ministry of Tourism, Government of India",
-          "title": "Explore the Amber Fort in Jaipur",
-          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/amber-fort",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "政府観光案内は中庭を持つ四つの主要区画と、居住区や王の庭園などの構成を説明する。"
-        }
-      ],
-      "difficulty": "medium"
-    },
-    {
-      "id": "gt_jaipur_finale_hawa_two_views",
-      "questionEn": "A film cuts from Hawa Mahal's street to a view through its screens. What difference should the caption explain?",
-      "options": [
-        {
-          "id": "A",
-          "textEn": "Women inside could watch the street while remaining hidden from view."
-        },
-        {
-          "id": "B",
-          "textEn": "People in the street could watch every room without obstruction."
-        },
-        {
-          "id": "C",
-          "textEn": "The screens stopped people inside from seeing any street activity."
-        }
-      ],
-      "correctOptionId": "A",
-      "vocabularyJa": [
-        {
-          "word": "screens",
-          "meaning": "ここでは、格子"
-        },
-        {
-          "word": "remaining",
-          "meaning": "ある状態のままでいること"
-        },
-        {
-          "word": "obstruction",
-          "meaning": "視界などを遮るもの"
-        }
-      ],
-      "hintJa": "同じ窓でも、通りから見る場合と、内側から見る場合では、誰の姿が見えるかが変わります。",
-      "correctExplanationJa": "内側の女性は、街路から姿を見られずに外の様子を見られました。外観の美しさに加えて、この視線の違いを説明すると、そこで暮らした人の立場が伝わります。",
-      "incorrectExplanationJa": "どの部屋も丸見えにしたのでも、内側から外を一切見えなくしたのでもありません。格子は、姿を隠して外を眺めるという目的を助けました。",
-      "sources": [
-        {
-          "publisher": "Ministry of Tourism, Government of India",
-          "title": "Discovering Hawa Mahal's Architectural Splendor",
-          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "宮廷女性が格子越しに街路の様子を見ながら、外からは姿を見られずにいられる構成だったと説明する。"
-        }
-      ],
-      "difficulty": "medium"
-    },
-    {
-      "id": "gt_jaipur_finale_palace_makers",
-      "questionEn": "A film about the City Palace's historic collections has introduced the rulers who ordered new works. Whose role should it show next to explain how those works were produced?",
-      "options": [
-        {
-          "id": "A",
-          "textEn": "The officials who valued the finished objects for the rulers."
-        },
-        {
-          "id": "B",
-          "textEn": "The artists and skilled makers supported by the court."
-        },
-        {
-          "id": "C",
-          "textEn": "The modern museum staff who arranged the original objects for display."
+          "textEn": "A paint company gave the city free paint in the 1950s."
         }
       ],
       "correctOptionId": "B",
       "vocabularyJa": [
         {
-          "word": "historic collections",
-          "meaning": "歴史ある所蔵品"
+          "word": "blocks",
+          "meaning": "ふさぐ"
         },
         {
-          "word": "supported",
-          "meaning": "支援された"
+          "word": "widely said",
+          "meaning": "広く言われている"
         },
         {
-          "word": "makers",
-          "meaning": "作り手"
+          "word": "colour of welcome",
+          "meaning": "歓迎の色"
+        },
+        {
+          "word": "royal visit",
+          "meaning": "王族の訪問"
         }
       ],
-      "hintJa": "品を集める人や制作を依頼する人がいたなら、その依頼に技で応えた人もいたはずです。",
-      "correctExplanationJa": "宮廷に支えられた芸術家や作り手です。公式サイトは、多様な芸術への支援と歴代の収集・制作依頼を示しています。支配者だけでなく、品々を作る仕事も宮殿の歴史を形作りました。",
-      "incorrectExplanationJa": "完成品の価値を評価する仕事や、後世に展示する仕事だけでは、当時の作品がどう生まれたかを説明できません。宮廷に支えられた芸術家や熟練した作り手の仕事が、その制作に関わっています。",
+      "hintJa": "石の色ではない。客を迎えるために、町ごと塗り替えたと言われている。",
+      "correctExplanationJa": "1876年の英国皇太子の訪問に合わせ、マハーラージャ・ラーム・シング2世が町をもてなしの色であるピンクに塗らせたと広く言われています。今も旧市街では、ピンクを保つことが決まりになっています。",
+      "incorrectExplanationJa": "ピンクは石の色ではなく、塗られた色です。1876年の英国皇太子の訪問を、もてなしの色で迎えたのが始まりと広く言われています。",
       "sources": [
         {
-          "publisher": "The City Palace Museum Jaipur",
-          "title": "The City Palace Museum Jaipur",
-          "url": "https://citypalace.org/",
-          "checkedAt": "2026-11-04",
+          "publisher": "Mental Floss",
+          "title": "Why Jaipur's King Painted His City Pink to Impress the Prince of Wales",
+          "url": "https://mentalfloss.com/article/542269/why-jaipurs-king-painted-his-city-pink-impress-prince-wales",
+          "checkedAt": "2026-11-07",
+          "claimType": "interpretation",
+          "claimJa": "1876年の英国皇太子の訪問に際し、ラーム・シング2世がもてなしを象徴するピンクに町を塗らせたと広く信じられている。1877年にはピンクを保つ法が定められた。"
+        },
+        {
+          "publisher": "Jaipur Municipal Corporation",
+          "title": "History of Jaipur",
+          "url": "https://jaipurmc.org/Presentation/AboutJaipur/HistoryOfJaipur.aspx",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "宮廷の芸術支援と、支配者による収集・制作依頼を公式サイトが説明する。これは作り手の仕事も含めるという解説の根拠となる。"
+          "claimJa": "町はもてなしの色とされるピンクに塗られ、今も旧市街の住民は法によってその色を保つことを求められている。"
         }
       ],
-      "difficulty": "medium"
+      "difficulty": "easy"
     },
     {
-      "id": "gt_jaipur_finale_jantar_stone_tool",
-      "questionEn": "A fixed stone structure fills the screen at Jantar Mantar. Which caption identifies its purpose?",
+      "id": "gt_jaipur_finale_sawai_title",
+      "questionEn": "The kings of Jaipur used the title 'Sawai'. What does it mean?",
       "options": [
         {
           "id": "A",
-          "textEn": "A stage built to display goods brought back by an army."
+          "textEn": "One and a quarter."
         },
         {
           "id": "B",
-          "textEn": "A closed storehouse built to keep the royal grain supply."
+          "textEn": "Son of the sun."
         },
         {
           "id": "C",
-          "textEn": "An instrument for observing positions in the sky without a telescope."
-        }
-      ],
-      "correctOptionId": "C",
-      "vocabularyJa": [
-        {
-          "word": "fixed",
-          "meaning": "固定された"
-        },
-        {
-          "word": "structure",
-          "meaning": "構造物"
-        },
-        {
-          "word": "telescope",
-          "meaning": "望遠鏡"
-        }
-      ],
-      "hintJa": "ここは観測所です。建築物ほど大きくても、その形が人の目による観測を助けます。",
-      "correctExplanationJa": "肉眼で天体の位置を観測する装置です。UNESCOが説明する固定式の大きな器具は、単なる背景の建物ではありません。用途を添えると、同じ映像の形が観測の道具として見えてきます。",
-      "incorrectExplanationJa": "戦利品の展示台や穀物庫ではありません。ジャンタル・マンタルの主要な石造装置は、肉眼による天体位置の観測のために設計されました。",
-      "sources": [
-        {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "The Jantar Mantar, Jaipur — Outstanding Universal Value",
-          "url": "https://whc.unesco.org/en/list/1338",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "UNESCOは固定式の石造装置群を、肉眼で天体の位置を観測するための器具として説明する。"
-        }
-      ],
-      "difficulty": "medium"
-    },
-    {
-      "id": "gt_jaipur_finale_shared_sky",
-      "questionEn": "The final shot returns to Jaipur's observatory. Which historical idea fits this place?",
-      "options": [
-        {
-          "id": "A",
-          "textEn": "Different scientific traditions met here while studying the same sky."
-        },
-        {
-          "id": "B",
-          "textEn": "The study of the sky began here without any earlier knowledge."
-        },
-        {
-          "id": "C",
-          "textEn": "Its observations had no connection with ideas from other cultures."
+          "textEn": "Keeper of the pink city."
         }
       ],
       "correctOptionId": "A",
       "vocabularyJa": [
         {
-          "word": "observatory",
-          "meaning": "観測所、天文台"
+          "word": "title",
+          "meaning": "称号"
         },
         {
-          "word": "scientific",
-          "meaning": "科学の"
+          "word": "quarter",
+          "meaning": "四分の一"
         },
         {
-          "word": "earlier",
-          "meaning": "それ以前の"
+          "word": "keeper",
+          "meaning": "守り手"
         }
       ],
-      "hintJa": "この観測所は、長く受け継がれた天文学の中にあります。知識がどのように届いたかを思い出しましょう。",
-      "correctExplanationJa": "UNESCOは、異なる科学文化が交わった場所と評価しています。これが天文学の始まりだという意味ではありません。空を見上げる映像に、その空を調べてきた多くの人々の知識を重ねられます。",
-      "incorrectExplanationJa": "天文学が何もないところからここで始まったのでも、ほかの文化と無関係だったのでもありません。複数の文明に受け継がれた知識が、この観測所につながっています。",
+      "hintJa": "数で表すと、一より少しだけ多い。",
+      "correctExplanationJa": "「サワーイー」は「一と四分の一」という意味です。皇帝アウラングゼーブがジャイ・シング2世に与えた称号で、その子孫が受け継ぎました。",
+      "incorrectExplanationJa": "サワーイーは「一と四分の一」。アウラングゼーブがジャイ・シング2世に贈った称号で、子孫に受け継がれました。",
       "sources": [
         {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "The Jantar Mantar, Jaipur — Outstanding Universal Value",
-          "url": "https://whc.unesco.org/en/list/1338",
-          "checkedAt": "2026-11-04",
+          "publisher": "Jaipur Municipal Corporation",
+          "title": "History of Jaipur",
+          "url": "https://jaipurmc.org/Presentation/AboutJaipur/HistoryOfJaipur.aspx",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "UNESCOは複数文明に共有された天文学の伝統と、異なる科学文化の出会いの場であった点を評価する。"
+          "claimJa": "アウラングゼーブは「一と四分の一」を意味するサワーイーの称号を与え、ジャイ・シングの子孫はそれを受け継いだ。"
         }
       ],
       "difficulty": "medium"
+    },
+    {
+      "id": "gt_jaipur_finale_city_planner",
+      "questionEn": "Who is given much of the credit for planning Jaipur, and how was the city laid out?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "A British engineer, who copied the streets of London."
+        },
+        {
+          "id": "B",
+          "textEn": "The king's astrologer, who chose each street by the stars alone."
+        },
+        {
+          "id": "C",
+          "textEn": "Vidyadhar Bhattacharya, following the Shilpa Shastra, an old Indian manual of architecture."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "credit",
+          "meaning": "功績"
+        },
+        {
+          "word": "laid out",
+          "meaning": "区画された"
+        },
+        {
+          "word": "astrologer",
+          "meaning": "占星術師"
+        },
+        {
+          "word": "manual",
+          "meaning": "手引書"
+        },
+        {
+          "word": "architecture",
+          "meaning": "建築"
+        }
+      ],
+      "hintJa": "この町は、インドの古い建築の手引きに沿って、一人の設計者が線を引いた。",
+      "correctExplanationJa": "ジャイプールの設計の功績の多くは、ヴィディヤーダル・バッターチャーリヤに帰されます。町は古代インドの建築書シルパ・シャーストラに沿って区画され、インドで最もよく計画された町の一つとされています。",
+      "incorrectExplanationJa": "設計者として名が挙がるのはヴィディヤーダル・バッターチャーリヤです。町はシルパ・シャーストラという建築の手引きに沿って区画されました。",
+      "sources": [
+        {
+          "publisher": "Jaipur Municipal Corporation",
+          "title": "History of Jaipur",
+          "url": "https://jaipurmc.org/Presentation/AboutJaipur/HistoryOfJaipur.aspx",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ジャイプールの功績の多くはヴィディヤーダル・バッターチャーリヤに帰され、町は古い建築書シルパ・シャーストラに従って区画された。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_jaipur_finale_gangaur",
+      "questionEn": "Every spring, a women's festival procession leaves the women's quarters of the City Palace and passes through these streets. Which festival is it?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Holi, the festival of colours."
+        },
+        {
+          "id": "B",
+          "textEn": "Gangaur, which honours the goddess Gauri."
+        },
+        {
+          "id": "C",
+          "textEn": "Diwali, the festival of lights."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "procession",
+          "meaning": "行列"
+        },
+        {
+          "word": "women's quarters",
+          "meaning": "女性の居住区"
+        },
+        {
+          "word": "honours",
+          "meaning": "敬う、たたえる"
+        },
+        {
+          "word": "goddess",
+          "meaning": "女神"
+        }
+      ],
+      "hintJa": "女性たちが女神に夫婦の幸せを祈る、春の祭り。",
+      "correctExplanationJa": "春のチャイトラ月に祝われるガンガウルは、女神ガウリー（パールヴァティー）を敬う祭りで、とくに女性たちが祝います。ジャイプールでは、行列がシティ・パレスの女性の居住区の門から出て、旧市街を進みます。",
+      "incorrectExplanationJa": "この行列はガンガウルです。女神ガウリーを敬う春の祭りで、シティ・パレスの女性の居住区から旧市街へと練り歩きます。",
+      "sources": [
+        {
+          "publisher": "Utsav (Ministry of Tourism, Government of India)",
+          "title": "Gangaur Festival",
+          "url": "https://utsav.gov.in/view-event/gangaur-festival",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ガンガウルはチャイトラ月に女神ガウリーを敬う祭りで、特に女性が祝う。ジャイプールの行列はシティ・パレスのザナーナー・デオリーから出て、トリポリア・バザールなど旧市街を進む。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_jaipur_finale_screened_windows",
+      "questionEn": "The bride's grandmother asks why the screened windows of Hawa Mahal were built. What is the answer?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "So that royal women could watch the street and the bazaar without being seen."
+        },
+        {
+          "id": "B",
+          "textEn": "So that guards could shoot arrows at enemies in the street."
+        },
+        {
+          "id": "C",
+          "textEn": "So that the king could count the shoppers in the bazaar below."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "screened",
+          "meaning": "格子で覆われた"
+        },
+        {
+          "word": "bazaar",
+          "meaning": "市場"
+        },
+        {
+          "word": "without being seen",
+          "meaning": "見られることなく"
+        },
+        {
+          "word": "shoppers",
+          "meaning": "買い物客"
+        }
+      ],
+      "hintJa": "窓の内側にいた人たちは、外から姿を見られてはならなかった。",
+      "correctExplanationJa": "ハワー・マハルは王家の女性たちの居室を広げた建物で、細かな格子窓から、通りやジョーハリー・バザールの人々を、見られることなく眺められるように造られました。",
+      "incorrectExplanationJa": "格子窓は、王家の女性たちが外から見られずに通りと市場を眺めるためのものでした。戦いや人数を数えるための窓ではありません。",
+      "sources": [
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Hawa Mahal",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ハワー・マハルは王家の女性の居室を広げたもので、格子によって女性たちは通りの人々に見られることなく、ジョーハリー・バザール周辺の人々を眺めることができた。"
+        }
+      ],
+      "difficulty": "easy"
     }
-  ],
-  "scope": "city_finale",
-  "cityId": "jaipur"
+  ]
 }

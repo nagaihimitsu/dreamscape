@@ -5,142 +5,146 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "gt_delhi_humayun_garden_hope",
-      "questionEn": "What idea is expressed by the garden's four-part layout and water channels at Humayun's Tomb?",
+      "id": "gt_delhi_humayun_library_stairs",
+      "questionEn": "The uncle tests the 'foreign friends'. How did Emperor Humayun die?",
       "options": [
         {
           "id": "A",
-          "textEn": "A map of the emperor’s four military camps."
+          "textEn": "He fell down the steep stairs of his library."
         },
         {
           "id": "B",
-          "textEn": "A plan for four separate trading markets."
+          "textEn": "He was poisoned at a wedding feast in Agra."
         },
         {
           "id": "C",
-          "textEn": "The rivers of paradise described in the Quran."
-        }
-      ],
-      "correctOptionId": "C",
-      "vocabularyJa": [
-        {
-          "word": "layout",
-          "meaning": "配置・構成"
-        },
-        {
-          "word": "expressed",
-          "meaning": "表されている"
-        },
-        {
-          "word": "paradise",
-          "meaning": "楽園"
-        }
-      ],
-      "hintJa": "この庭は墓を囲んでいる。ここに眠る人へ向けた願いにも目を向けよう。",
-      "correctExplanationJa": "四分庭園と水路は、クルアーンに描かれる楽園の川のイメージと結び付いています。庭は建物へ歩くための空間であると同時に、意味を持つ構成です。",
-      "incorrectExplanationJa": "軍営や市場の区画ではなく、楽園の川のイメージにつながる庭園です。水路が区切る形そのものにも意味があります。",
-      "sources": [
-        {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "Humayun’s Tomb, Delhi",
-          "url": "https://whc.unesco.org/en/list/232/",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "チャハルバーグの四分庭園と水路はクルアーンの楽園の四河を表す。"
-        }
-      ],
-      "difficulty": "medium"
-    },
-    {
-      "id": "gt_delhi_humayun_more_than_one",
-      "questionEn": "What would be missing from a description that mentions only Humayun as buried here?",
-      "options": [
-        {
-          "id": "A",
-          "textEn": "Many other members of the Mughal family are also buried here."
-        },
-        {
-          "id": "B",
-          "textEn": "The building commemorates the emperor, but contains no graves."
-        },
-        {
-          "id": "C",
-          "textEn": "The other graves belong only to people who built the tomb."
+          "textEn": "He drowned while crossing a river on an elephant."
         }
       ],
       "correctOptionId": "A",
       "vocabularyJa": [
         {
-          "word": "buried",
-          "meaning": "葬られた"
+          "word": "steep",
+          "meaning": "急な"
         },
         {
-          "word": "mentions",
-          "meaning": "言及する"
+          "word": "library",
+          "meaning": "書庫、図書室"
         },
         {
-          "word": "members",
-          "meaning": "一員・人々"
+          "word": "poisoned",
+          "meaning": "毒を盛られた"
+        },
+        {
+          "word": "drowned",
+          "meaning": "溺れ死んだ"
         }
       ],
-      "hintJa": "廟の名前は一人の皇帝を指していても、そこに眠る人が一人とは限らない。",
-      "correctExplanationJa": "フマユーン廟には多くのムガル皇族も葬られています。有名な一人の名から、周囲に重なる人々の歴史へと目を広げられます。",
-      "incorrectExplanationJa": "ここにはフマユーン以外のムガル皇族も葬られています。建物の呼び名と、そこに眠るすべての人々は同じ範囲ではありません。",
+      "hintJa": "本の好きな皇帝だった。礼拝を呼びかける声を聞いて、急いで振り向いた場所は？",
+      "correctExplanationJa": "1556年、フマユーンは書庫として使っていた建物の急な階段で、礼拝の呼びかけを聞いた拍子に足を滑らせ、数日後に亡くなりました。",
+      "incorrectExplanationJa": "毒殺でも溺死でもありません。書庫の急な階段から転げ落ちたのが死因とされています。礼拝の呼びかけを聞いた直後のことでした。",
       "sources": [
         {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "Humayun’s Tomb, Delhi",
-          "url": "https://whc.unesco.org/en/list/232/",
-          "checkedAt": "2026-11-04",
+          "publisher": "Deccan Herald",
+          "title": "A monument of beauty, learning and tragedy",
+          "url": "https://www.deccanherald.com/content/395985/a-monument-beauty-learning-tragedy.html",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "フマユーンの庭園墓には150人を超えるムガル皇族が葬られている。人数自体は設問にしない。"
+          "claimJa": "1556年1月、フマユーンは礼拝の呼びかけを聞いて、書庫シェール・マンダルの急な階段から転落し、三日のうちに亡くなった。"
         }
       ],
       "difficulty": "easy"
     },
     {
-      "id": "gt_delhi_humayun_future_taj",
-      "questionEn": "Which later monument was influenced by the garden-tomb tradition represented by Humayun's Tomb?",
+      "id": "gt_delhi_humayun_first_tomb",
+      "questionEn": "'The first tomb you see when you come in. Whose is it?' Which answer is correct?",
       "options": [
         {
           "id": "A",
-          "textEn": "The Qutb Minar in Delhi."
+          "textEn": "A tomb that the British moved here from Agra in the 1800s."
         },
         {
           "id": "B",
-          "textEn": "The Taj Mahal in Agra."
+          "textEn": "Isa Khan's, a noble from the court of Sher Shah Suri, built before Humayun's tomb."
         },
         {
           "id": "C",
-          "textEn": "The Alai Minar in Delhi."
+          "textEn": "The tomb of Humayun's royal cook, built by his son Akbar."
         }
       ],
       "correctOptionId": "B",
       "vocabularyJa": [
         {
-          "word": "influenced",
-          "meaning": "影響した"
+          "word": "noble",
+          "meaning": "貴族、廷臣"
         },
         {
-          "word": "tradition",
-          "meaning": "伝統"
+          "word": "court",
+          "meaning": "宮廷"
         },
         {
-          "word": "represented",
-          "meaning": "表された"
+          "word": "royal cook",
+          "meaning": "宮廷の料理人"
         }
       ],
-      "hintJa": "次に訪れるアーグラの、有名な庭園墓へつながる。",
-      "correctExplanationJa": "後のタージ・マハルへとつながります。次の街で白い廟を見るとき、ここで歩いた庭や建物への近づき方を思い出して比べられます。",
-      "incorrectExplanationJa": "タージ・マハルです。デリーで見た庭園墓の工夫が、後のアーグラの建築を眺める手がかりになります。",
+      "hintJa": "入口で出迎えるのは、フマユーン廟より古い墓。その主は、別の王の宮廷にいた人物だった。",
+      "correctExplanationJa": "入口近くのイーサー・ハーンの墓は、碑文から1547〜48年の建造と分かり、フマユーン廟より古い建物です。イーサー・ハーンは、シェール・シャー・スーリーの宮廷の有力者でした。",
+      "incorrectExplanationJa": "最初に出会う墓は、シェール・シャー・スーリーの宮廷にいたイーサー・ハーンのものです。碑文によれば1547〜48年の建造で、フマユーン廟より古い建物です。",
       "sources": [
         {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "Humayun’s Tomb, Delhi",
-          "url": "https://whc.unesco.org/en/list/232/",
-          "checkedAt": "2026-11-04",
+          "publisher": "World Monuments Fund",
+          "title": "Isa Khan's Complex At Humayun's Tomb",
+          "url": "https://wmf.org/node/13826",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "フマユーン廟の庭園墓に見られる建築的革新は、後のタージ・マハルに影響した。"
+          "claimJa": "イーサー・ハーンの墓は碑文によりヒジュラ暦954年（1547〜48年）の建造で、フマユーン廟の敷地で訪問者が最初に出会う歴史的建造物である。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_delhi_humayun_1857_arrest",
+      "questionEn": "Last question: what happened at Humayun's Tomb in September 1857?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The British held a royal wedding in its garden."
+        },
+        {
+          "id": "B",
+          "textEn": "The tomb was closed for repairs for the first time."
+        },
+        {
+          "id": "C",
+          "textEn": "The last Mughal emperor was arrested there by the British."
+        }
+      ],
+      "correctOptionId": "C",
+      "vocabularyJa": [
+        {
+          "word": "royal wedding",
+          "meaning": "王族の結婚式"
+        },
+        {
+          "word": "repairs",
+          "meaning": "修理"
+        },
+        {
+          "word": "arrested",
+          "meaning": "捕らえられた"
+        }
+      ],
+      "hintJa": "大反乱が鎮圧されたあと、最後の皇帝は先祖の眠る場所へ逃れた。",
+      "correctExplanationJa": "1857年9月19日、最後のムガル皇帝バハードゥル・シャー・ザファルは、先祖フマユーンの廟に身を寄せていたところを英国側に捕らえられました。",
+      "incorrectExplanationJa": "1857年9月、最後のムガル皇帝バハードゥル・シャー・ザファルが、この廟で英国側に捕らえられました。先祖の眠る場所に逃れていたのです。",
+      "sources": [
+        {
+          "publisher": "ThePrint",
+          "title": "Bahadur Shah Zafar, the last Mughal who would rather have been a poet",
+          "url": "https://theprint.in/theprint-profile/bahadur-shah-zafar-the-last-mughal-who-would-rather-have-been-a-poet/316114",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "1857年9月19日、皇帝は妃や皇子らとともにフマユーン廟で捕らえられた。"
         }
       ],
       "difficulty": "medium"
