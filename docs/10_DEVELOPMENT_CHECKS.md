@@ -64,7 +64,7 @@
 | `tests/journeys/<旅行編ID>/` | 1つの旅行編の内容・経路・その旅行編だけの制作ツール（`scripts/journeys/<旅行編ID>/`）を確かめるテストと、その補助（例：インド編の三都市を仮の都市で作る `tests/journeys/golden_triangle/test-journey.ts`） | フォルダごと消す |
 
 - 新しい旅行編のテストは、`tests/journeys/<旅行編ID>/` を作って `*.test.ts` を置くだけで `npm test` に加わる。`quick`・`content` のどちらの組かも `import` から自動で決まり（`scripts/test-sets.ts` の `testFilePatterns`）、共通のテストや設定は変えない。フォルダ名は旅行編ID（見本の編は `sample_trip`）にし、ファイル名には旅行編IDを繰り返さない（例：`tests/journeys/milano/full-route.test.ts`）。
-- 共通のコード・制作ツール・テスト（`src/`・`scripts/`・`tests/e2e/` など）は `tests/journeys/` と `scripts/journeys/` を読み込まない。旅行編を外した後に残ったフォルダ（同じIDの旅行編フォルダがないもの）とあわせて `scripts/content-boundary.test.ts` が検査する。
+- 共通のコード・制作ツール・テスト（`src/`・`scripts/`・`tests/e2e/` など）は `tests/journeys/` と `scripts/journeys/` を読み込まない。1つの旅行編のフォルダ（`scripts/journeys/<旅行編ID>/`・`tests/journeys/<旅行編ID>/`）は、同じ旅行編のフォルダは読み込んでよいが、ほかの旅行編のフォルダは読み込まない（その旅行編を外すと、読み込んだ側のテストまで壊れるため）。旅行編を外した後に残ったフォルダ（同じIDの旅行編フォルダがないもの）とあわせて `scripts/content-boundary.test.ts` が検査する。読み込みとして数えるのは `from "…"`（型だけの `import type`、`export … from` を含む）、`import "…"`、`import("…")` の相対パスで、`vi.mock("…")`・`vi.importActual("…")` のパスは数えない（2026年11月時点で、共通のテストにそうした指定はない）。この検査自身は旅行編を名指ししない（例は架空の旅行編）ので、どの旅行編を外しても直す必要はない。旅行編のテストの補助には本番ビルドの検査の目印も付けない（[本番ビルドの検査](#本番ビルドの検査)）。
 - 判断の目安：その旅行編を外したら消すテスト（確かめる対象がなくなる）は旅行編のフォルダ、別の旅行編で書き直すテスト（共通の規則が残る）は共通の場所に置く。1つのファイルが両方を含む場合は共通の場所に残す（例：`src/content/date-tourism-experience.test.ts` は全旅行編の通常デートの検査とミラノ編の台詞の検査を持つ）。
 - 旅行編のフォルダのテストだけが確かめていた共通の規則があれば、フォルダを消す前に共通のテストへ移す（例：`tests/journeys/golden_triangle/auto-travel.test.ts` は、都市のエピローグの最後の一歩と次の都市への出発が1回の保存になることも確かめている）。
 - E2E（`tests/e2e/`）は段ごとの設定で動くので、ここには置かない（旅行編を名指しするE2Eは[技術設計](02_TECH_ARCHITECTURE.md#新しい編を追加する手順)の「旅行編をやめる場合」）。
@@ -378,9 +378,9 @@ GitHub Actionsは次のワークフローを実行する。同じイベントで
 
 ### 本番ビルドの検査
 
-`npm run build` と `npm run verify` は、`vite build` の後に `npm run dist:check`（`scripts/check-dist.ts`）で `dist/` を検査する。Debug・人物素材のプレビュー（`src/dev/`）、テスト用の仮データ（`src/dev/test-cities.ts`・`src/content/test-fixtures.ts`・`tests/fixtures/`）、開発・テスト専用の見本の編（`sample_trip`。画像のフォルダ名にも使う）に固有の文字列が、公開されるファイルの名前か内容に1つでもあれば、ファイル名・文字列・その由来を表示してビルドを失敗にする。`vite.config.ts` は変えていない。
+`npm run build` と `npm run verify` は、`vite build` の後に `npm run dist:check`（`scripts/check-dist.ts`）で `dist/` を検査する。Debug・人物素材のプレビュー（`src/dev/`）、テスト用の仮データ（`src/dev/test-cities.ts`・`src/content/test-fixtures.ts`・`tests/fixtures/`）、開発・テスト専用の見本の編（`sample_trip`。画像のフォルダ名にも使う）に固有の文字列か、開発・テスト用のファイルのパス（`src/dev/`・`tests/fixtures/`・`tests/journeys/`。ソースマップや開発用のJSX変換が書き込む）が、公開されるファイルの名前か内容に1つでもあれば、ファイル名・文字列・その由来を表示してビルドを失敗にする。`vite.config.ts` は変えていない。
 
 - 失敗した場合は、開発専用のモジュールを `import.meta.env.DEV` の分岐の外から読み込んでいないか、生成物（`src/content/generated/`）に見本の編が入っていないか（`src/content/generated/build-info.json` の `extraJourneyFolders`。単体テストや `npm run dev:sample` の後に `vite build` を直接実行した場合など）を確かめる。生成物が原因なら `npm run content:build` で生成し直してからビルドする。
 - 検出に使う文字列と由来のファイルは `scripts/dist-guard.ts` にある。由来のファイルを改名・改稿して文字列が消えると `scripts/dist-guard.test.ts` が失敗するので、そのファイルに固有の別の文字列へ差し替える。本番のコードやコンテンツが同じ文字列を使うとビルドが失敗するため、目印には開発用のファイルにしかない文字列を選ぶ。
-- 目印による確認なので、目印を持たない開発用のコード（目印を登録していない新しいファイルなど）が入っても失敗しないことがある。`src/dev/`・テスト用の仮データに新しいファイルを足したら、そのファイルに固有の文字列を目印に加える。
+- 目印による確認なので、目印を持たない開発用のコード（目印を登録していない新しいファイルなど）が入っても失敗しないことがある。`src/dev/`・テスト用の仮データに新しいファイルを足したら、そのファイルに固有の文字列を目印に加える。ただし旅行編ごとのテストのフォルダ（`tests/journeys/<旅行編ID>/`）の補助には加えない。旅行編を外すときにフォルダを消すだけで済むようにするためで、補助は `src/dev/test-cities.ts` の上に仮の都市を作るのでその目印が一緒に現れ、パスには `tests/journeys/` の目印が出て、本番のコードからの読み込みは次の確認が見つける。
 - 目印を補うため、`scripts/dist-guard.test.ts` は本番のコード（`src/` のうち `src/dev/`・テスト・仮データ以外）を読み、`src/dev/`・`tests/`・`src/content/test-fixtures.ts` を読み込んでいるのが `src/main.tsx` の `import.meta.env.DEV` の分岐の中の遅延読み込み（Debugとプレビュー）だけであることを確かめる。Debug起動URLの読み取り（`src/dev/debug-query.ts`）、開発用の読み取り口 `window.__dreamscapeDebug`（`src/dev/debug-hook.ts`）、場面の組み立て部品（`src/dev/scenario-builders.ts`）にも目印がある。
