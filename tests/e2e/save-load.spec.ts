@@ -163,8 +163,7 @@ test("an unreadable save stays as it was until the player backs it up and starts
   expect((await allStorage(page))[saveKey()]).toBe(damaged);
 
   // Starting again keeps the original bytes under a backup key of the same journey.
-  await page.getByLabel("主人公の名前").fill("航");
-  await page.getByLabel("ヒロインの名前").fill("澪");
+  await ops.fillNames(page);
   await page.getByRole("button", { name: "元のデータを退避して新しく始める" }).click();
   await expect(page.getByTestId("travel-menu")).toBeVisible();
   const storage = await allStorage(page);
@@ -187,8 +186,7 @@ test("with manual saving, an unreadable save stays in place until the first セ�
     return Object.keys(storage).filter((key) => key.startsWith(`${saveKey()}.backup.`)).map((key) => storage[key]);
   };
 
-  await page.getByLabel("主人公の名前").fill("航");
-  await page.getByLabel("ヒロインの名前").fill("澪");
+  await ops.fillNames(page);
   await page.getByRole("button", { name: "元のデータを残して新しく始める" }).click();
   await expect(page.getByTestId("travel-menu")).toBeVisible();
   expect((await allStorage(page))[saveKey()]).toBe(damaged);

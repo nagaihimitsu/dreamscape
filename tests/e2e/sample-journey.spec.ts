@@ -153,7 +153,7 @@ test("the sample journey plays from a new journey through its city finale and ep
 
   // A reload resumes the finished journey exactly as saved.
   await page.reload();
-  await page.getByLabel("旅行編").selectOption(JOURNEY);
+  await ops.chooseJourney(page, JOURNEY);
   await expect(menu).toBeVisible();
   expect(await readSave(page, JOURNEY)).toEqual(ended);
 });

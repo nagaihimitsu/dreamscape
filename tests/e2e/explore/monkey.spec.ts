@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { debugSessionExampleUrls } from "../../../scripts/dev/screen-gallery";
 import { DEBUG_HOOK_NAME } from "../../../src/dev/debug-hook";
-import { bothStorages, devModules, expect, journeyCatalog, placeSave, saveKey, test, tier, type Page } from "../helpers";
+import { bothStorages, devModules, expect, journeyCatalog, ops, placeSave, saveKey, test, tier, type Page } from "../helpers";
 
 // Weekly monkey (docs/10「探索テスト」; research E2E-8). Not a gate: it runs only with
 // playwright.explore.config.ts (`npm run test:e2e:explore`, weekly and manual CI).
@@ -15,9 +15,11 @@ import { bothStorages, devModules, expect, journeyCatalog, placeSave, saveKey, t
 // Every 40 presses the page reloads (a normal save must come back unchanged); every 200 it
 // starts again (a new journey, or another Debug scene). The Debug start points are the docs/10
 // examples that open a scene with a game state (debugSessionExampleUrls; the map check has none).
-// A start point that does not open fails like any check, with the seed and the trace. The romance draws come from a seeded
+// A start point that does not open, a page that does not settle and the storage check at the end
+// fail like any check, with the seed and the trace; the shared error guard's message repeats the
+// rerun line too (the `reproduce` annotation). The romance draws come from a seeded
 // crypto.getRandomValues (addInitScript, test side only). A failure prints MONKEY_SEED and the
-// last presses; rerun with the same MONKEY_SEED (and -g for the start point).
+// last presses; rerun with the same MONKEY_SEED and MONKEY_SECONDS (and -g for the start point).
 const seed = Number(process.env.MONKEY_SEED ?? Math.floor(Math.random() * 1_000_000));
 const seconds = Number(process.env.MONKEY_SECONDS ?? 40);
 const RELOAD_EVERY = 40;
@@ -80,9 +82,21 @@ function choose(page: Page, roll: number) {
       const style = getComputedStyle(element);
       return box.width > 0 && box.height > 0 && style.visibility !== "hidden";
     };
+    // A control under another one (e.g. under the full-screen 「タップして会話を表示」 while the
+    // dialogue window is hidden) cannot be pressed: its centre hits something else. Off-screen
+    // controls stay candidates (the press scrolls them into view).
+    const uncovered = (element: Element) => {
+      const box = element.getBoundingClientRect();
+      const x = box.left + box.width / 2;
+      const y = box.top + box.height / 2;
+      if (x < 0 || y < 0 || x >= innerWidth || y >= innerHeight) return true;
+      const hit = document.elementFromPoint(x, y);
+      const labels = element instanceof HTMLInputElement ? [...(element.labels ?? [])] : [];
+      return !!hit && (element.contains(hit) || labels.some((item) => item.contains(hit)));
+    };
     const candidates = roots.flatMap((root) => root ? [...root.querySelectorAll('button, select, summary, [role="button"], input[type="checkbox"]')] : [])
       .filter((element) => shown(element) && !(element as HTMLButtonElement).disabled && !element.closest("[inert], [aria-hidden='true']") &&
-        !element.closest(".journey-selection") && !excludedLabels.some((text) => label(element).includes(text)));
+        !element.closest(".journey-selection") && !excludedLabels.some((text) => label(element).includes(text)) && uncovered(element));
     if (!candidates.length) return null;
     const index = Math.floor(roll * candidates.length);
     const element = candidates[index];
@@ -94,17 +108,15 @@ function choose(page: Page, roll: number) {
 
 /** After a load, open the journey's saved game (a player chooses it on the title after a reload). */
 async function resume(page: Page, journeyId: string) {
-  if (journeyId !== openedFirst) await page.getByLabel("旅行編").selectOption(journeyId);
+  if (journeyId !== openedFirst) await ops.chooseJourney(page, journeyId);
   await expect(page.getByTestId("travelers")).toBeVisible();
 }
 
+/** A new journey from the title; the monkey presses on from the scene that opens (its arrival). */
 async function startJourney(page: Page, journeyId: string) {
   await page.evaluate(() => localStorage.clear());
   await page.goto("/");
-  await page.getByLabel("旅行編").selectOption(journeyId);
-  await page.getByLabel("主人公の名前").fill("航");
-  await page.getByLabel("ヒロインの名前").fill("澪");
-  await page.getByRole("button", { name: "旅をはじめる", exact: true }).click();
+  await ops.beginJourney(page, journeyId);
   await expect.poll(() => page.evaluate((key) => localStorage.getItem(key) !== null, saveKey(journeyId))).toBe(true);
 }
 
@@ -142,7 +154,9 @@ startPoints.forEach((start, index) => {
     test.setTimeout(seconds * 1000 + 120_000);
     const ownSeed = seed + index;
     const next = random(ownSeed);
-    testInfo.annotations.push({ type: "MONKEY_SEED", description: String(seed) });
+    const rerun = `MONKEY_SEED=${seed} MONKEY_SECONDS=${seconds} npm run test:e2e:explore -- -g "${start.name}"`;
+    testInfo.annotations.push({ type: "MONKEY_SEED", description: String(seed) }, { type: "reproduce", description: `rerun: ${rerun}` });
+    console.log(`monkey from ${start.name}: MONKEY_SEED=${seed} (start point ${index}, seed ${ownSeed}), MONKEY_SECONDS=${seconds}`);
     // Seeded romance draws (crypto.getRandomValues, used by the game's secure roll); test side only.
     await page.addInitScript((value) => {
       let a = value >>> 0;
@@ -169,20 +183,21 @@ startPoints.forEach((start, index) => {
       if (message.type() === "error" && !message.text().startsWith("Failed to load resource")) log(`${step}: console error ${message.text()}`);
     });
     const fail = (message: string): never => {
-      throw new Error([message, `MONKEY_SEED=${seed} (start point ${index}, seed ${ownSeed}), press ${step}`, "last presses (oldest first):",
-        ...trace.map((line) => `  ${line}`), `rerun: MONKEY_SEED=${seed} npm run test:e2e:explore -- -g "${start.name}"`].join("\n"));
+      throw new Error([message, `MONKEY_SEED=${seed} (start point ${index}, seed ${ownSeed}), MONKEY_SECONDS=${seconds}, press ${step}`,
+        "last presses (oldest first):", ...trace.map((line) => `  ${line}`), `rerun: ${rerun}`].join("\n"));
     };
-    /** Wait for the page to get somewhere; when it does not, fail with the seed and the trace like any other check. */
-    const must = async (what: string, action: () => Promise<unknown>) => {
+    const brief = (error: unknown, lines = 3) => (error as Error).message.split("\n").filter((line) => line.trim()).slice(0, lines)
+      .map((line) => line.length > 200 ? `${line.slice(0, 200)}…` : line).join(" / ");
+    /** Wait for the page or read it; when that fails, fail with the seed and the trace like any other check. */
+    const must = async <T>(what: string, action: () => Promise<T>): Promise<T> => {
       try {
-        await action();
+        return await action();
       } catch (error) {
-        fail(`${what}: ${(error as Error).message.split("\n").filter((line) => line.trim()).slice(0, 3).join(" / ")}`);
+        return fail(`${what}: ${brief(error)}`);
       }
     };
 
-    await page.goto("/");
-    const before = await bothStorages(page);
+    let before: Awaited<ReturnType<typeof bothStorages>> | undefined;
     let opened: Start | undefined;
     let lastRevision = -1;
     const openStart = async (again: boolean) => {
@@ -193,21 +208,25 @@ startPoints.forEach((start, index) => {
     };
     const deadline = Date.now() + seconds * 1000;
     let presses = 0;
+    const savedText = (journeyId: string) => must("reading the save", () => page.evaluate((key) => localStorage.getItem(key), saveKey(journeyId)));
     try {
+      before = await must("the title did not open", async () => {
+        await page.goto("/");
+        return bothStorages(page);
+      });
       await openStart(false);
       for (; Date.now() < deadline; step++) {
         const current = opened!;
         if (presses > 0 && presses % RESTART_EVERY === 0) {
           await openStart(true);
         } else if (presses > 0 && presses % RELOAD_EVERY === 0) {
-          const saved = current.source.kind === "save" ? await page.evaluate((key) => localStorage.getItem(key), saveKey(current.source.journeyId)) : null;
-          await page.reload();
+          const saved = current.source.kind === "save" ? await savedText(current.source.journeyId) : null;
           log("(reload)");
+          await must("the page did not reload", () => page.reload());
           if (current.source.kind === "save") {
             const journeyId = current.source.journeyId;
             await must("the journey did not come back after a reload", () => resume(page, journeyId));
-            const after = await page.evaluate((key) => localStorage.getItem(key), saveKey(journeyId));
-            if (after !== saved) fail("the save changed across a reload");
+            if (await savedText(journeyId) !== saved) fail("the save changed across a reload");
           } else {
             await must("the Debug scene did not come back after a reload", () => expect(page.getByTestId("debug-session")).toBeVisible());
             lastRevision = -1;
@@ -219,7 +238,7 @@ startPoints.forEach((start, index) => {
         const roll = next();
         await expect.poll(async () => (target = await choose(page, roll)) !== null, { timeout: STUCK_MS }).toBe(true).catch(() => undefined);
         if (!target) {
-          const state = await check(page, opened!.source);
+          const state = await must("reading the game state", () => check(page, opened!.source));
           if (state.ended) { presses = RESTART_EVERY; continue; }
           fail("stuck: nothing to press for 5 seconds");
         }
@@ -229,26 +248,37 @@ startPoints.forEach((start, index) => {
         try {
           if (chosen.tag === "select") await control.selectOption(pickFrom(chosen.options, next), { timeout: 2_000 });
           else await control.click({ timeout: 2_000 });
-        } catch {
-          log("  (the control went away before the press)");
+        } catch (error) {
+          log(/intercepts pointer events/u.test((error as Error).message)
+            ? "  (another element covered the control)" : "  (the control went away before the press)");
         }
         // Wait on the game's own settling marks, not on time.
-        await expect(page.locator("[data-answer-settling]")).toHaveCount(0);
-        await expect(page.getByTestId("travel-transition")).toHaveCount(0);
+        await must("the page did not settle after the press", async () => {
+          await expect(page.locator("[data-answer-settling]")).toHaveCount(0);
+          await expect(page.getByTestId("travel-transition")).toHaveCount(0);
+        });
         if (pageError) fail(`uncaught exception in the page: ${pageError}`);
-        const state = await check(page, opened!.source);
+        const state = await must("reading the game state", () => check(page, opened!.source));
         if (state.error) fail(state.error);
         if (state.revision !== null) {
           if (state.revision < lastRevision) fail(`the saved revision went back from ${lastRevision} to ${state.revision}`);
           lastRevision = state.revision;
         }
       }
+      // Debug works in memory only: the browser's storage is as it was before Debug opened.
+      if (opened!.source.kind === "debug") {
+        const after = await must("reading the storage at the end", () => bothStorages(page));
+        try {
+          expect(after).toEqual(before);
+        } catch (error) {
+          fail(`Debug changed the normal storage: ${brief(error, 12)}`);
+        }
+      }
     } finally {
       const file = testInfo.outputPath("monkey-trace.txt");
-      writeFileSync(file, [`MONKEY_SEED=${seed} start point ${index} (${start.name}), ${presses} presses, last start: ${opened?.label ?? "none"}`, ...trace].join("\n") + "\n");
+      writeFileSync(file, [`MONKEY_SEED=${seed} MONKEY_SECONDS=${seconds} start point ${index} (${start.name}), ${presses} presses, last start: ${opened?.label ?? "none"}`,
+        `rerun: ${rerun}`, ...trace].join("\n") + "\n");
       await testInfo.attach("monkey-trace.txt", { path: file, contentType: "text/plain" });
     }
-    // Debug works in memory only: the browser's storage is as it was before Debug opened.
-    if (opened!.source.kind === "debug") expect(await bothStorages(page), "Debug changed the normal storage").toEqual(before);
   });
 });

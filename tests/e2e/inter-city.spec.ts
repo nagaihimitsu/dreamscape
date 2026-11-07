@@ -23,7 +23,7 @@ test("finishing a journey's first city reads its ending and moves the journey to
   // saveGame stores the finale's result as a normal save. The move itself is played in the UI.
   await placeSave(page, journeyId, "cityFinaleResult", from.id, { names: ["旅人", "澪"] });
 
-  await page.getByLabel("旅行編").selectOption(journeyId);
+  await ops.chooseJourney(page, journeyId);
   await expect(page.getByTestId("battle-result")).toBeVisible();
   const finale = await readSave(page, journeyId);
   expect(finale.completedCityIds).toEqual([from.id]);
@@ -43,7 +43,7 @@ test("finishing a journey's first city reads its ending and moves the journey to
     expect(arrived[field], field).toEqual(finale[field]);
 
   await page.reload();
-  await page.getByLabel("旅行編").selectOption(journeyId);
+  await ops.chooseJourney(page, journeyId);
   await expect(menu).toHaveAttribute("aria-label", `${to.nameJa}の行き先`);
   expect(await readSave(page, journeyId)).toEqual(arrived);
 });

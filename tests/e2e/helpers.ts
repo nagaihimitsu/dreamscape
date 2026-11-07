@@ -31,6 +31,8 @@ const gameKeyPrefix = "dreamscape.";
  *   depends on the network; the game must work without them.
  * - Every test fails on an uncaught page error, a console error or a missing image, media or
  *   font file of the game in any of its tabs. Blocked requests to other origins are ignored.
+ *   A test that can be replayed (the monkey's seed) adds a `reproduce` annotation; the
+ *   guard's failure message repeats it.
  * - A failed test gets each tab's URL and the game's localStorage keys attached (storage.json).
  */
 export const test = base.extend<{ externalNetwork: void; errorGuard: void; failureReport: void }>({
@@ -39,7 +41,7 @@ export const test = base.extend<{ externalNetwork: void; errorGuard: void; failu
     await context.route((url) => url.origin !== origin, (route) => route.abort("blockedbyclient"));
     await use();
   }, { auto: true }],
-  errorGuard: [async ({ context, baseURL }, use) => {
+  errorGuard: [async ({ context, baseURL }, use, testInfo) => {
     const origin = new URL(baseURL!).origin;
     const errors: string[] = [];
     const watch = (page: Page) => {
@@ -62,7 +64,8 @@ export const test = base.extend<{ externalNetwork: void; errorGuard: void; failu
     context.pages().forEach(watch);
     context.on("page", watch);
     await use();
-    expect(errors, "console errors, uncaught exceptions or missing game files").toEqual([]);
+    const reproduce = testInfo.annotations.filter((note) => note.type === "reproduce").map((note) => ` (${note.description})`).join("");
+    expect(errors, `console errors, uncaught exceptions or missing game files${reproduce}`).toEqual([]);
   }, { auto: true }],
   failureReport: [async ({ context }, use, testInfo) => {
     await use();
@@ -153,11 +156,23 @@ export const ops = {
   /** Title screen: choose a journey and names, and start playing. */
   async startJourney(page: Page, journeyId = "milano", names: readonly [string, string] = ["航", "澪"]) {
     await page.goto("/");
+    await ops.beginJourney(page, journeyId, names);
+    await expect(page.getByTestId("travel-menu")).toBeVisible();
+  },
+  /** Title screen: choose a journey and names and press 「旅をはじめる」, without waiting for the scene that opens (an arrival, or the map). */
+  async beginJourney(page: Page, journeyId = "milano", names: readonly [string, string] = ["航", "澪"]) {
+    await ops.chooseJourney(page, journeyId);
+    await ops.fillNames(page, names);
+    await page.getByRole("button", { name: "旅をはじめる", exact: true }).click();
+  },
+  /** Title screen: choose the journey (a page load opens the first available one; its save, if any, opens with it). */
+  async chooseJourney(page: Page, journeyId: string) {
     await page.getByLabel("旅行編").selectOption(journeyId);
+  },
+  /** Title screen: the player's and the heroine's names. */
+  async fillNames(page: Page, names: readonly [string, string] = ["航", "澪"]) {
     await page.getByLabel("主人公の名前").fill(names[0]);
     await page.getByLabel("ヒロインの名前").fill(names[1]);
-    await page.getByRole("button", { name: "旅をはじめる", exact: true }).click();
-    await expect(page.getByTestId("travel-menu")).toBeVisible();
   },
   async openSettings(page: Page): Promise<Locator> {
     await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "設定", exact: true }).click();
