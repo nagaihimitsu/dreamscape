@@ -1,7 +1,8 @@
 // The other-tab protection (AGENTS.md 「明示確認と別タブ競合の保護を維持する」, docs/07 acceptance 10):
 // the journey opens only while this view holds the slot's exclusive Web Lock. Played against a
 // fake LockManager with the browser's rules (exclusive by name; `ifAvailable` answers null while
-// another holder has it; a lock is held until the callback's promise settles).
+// another holder has it; a lock is held until the callback's promise settles, and it is let go
+// of in a later task).
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { journeyStorage } from "./journey-storage";
 import {
@@ -22,12 +23,15 @@ class FakeLocks implements LockManagerLike {
     const granted = !this.held.has(name);
     if (granted) this.grant(name);
     this.requests.push({ name, granted });
-    // Browsers answer in a later task, never inside request().
+    // The answer comes after request() returns (a microtask here keeps the retry times exact).
     await Promise.resolve();
     if (!granted) return callback(null);
     try {
       return await callback({ name, mode: "exclusive" } as Lock);
     } finally {
+      // As in browsers, a released lock is let go of, and its request settles, in a later task:
+      // a view that asks at once without waiting for that would find the lock still held.
+      await new Promise((resolve) => setTimeout(resolve, 0));
       this.held.delete(name);
       this.holders.set(name, (this.holders.get(name) ?? 1) - 1);
     }
@@ -175,14 +179,75 @@ describe("journey lock", () => {
     expect(locks.maxHolders).toBe(1);
   });
 
-  it("does nothing for a view cancelled before its answer, and frees the lock at once", async () => {
+  it("waits after a lock obtained on a retry too, when the view is rebuilt (no busy retry for its own lock)", async () => {
+    const locks = new FakeLocks();
+    const name = newName();
+    const other = await locks.otherTab(name);
+    const first = openView(locks, name);
+    await vi.advanceTimersByTimeAsync(2 * LOCK_RETRY_MS);
+    await other.close();
+    await vi.advanceTimersByTimeAsync(LOCK_RETRY_MS);
+    expect(first.statuses).toEqual(["ready"]);
+    expect(locks.requests.at(-1)).toEqual({ name, granted: true });
+    // The retry's request is the one the page must wait for.
+    const asked = locks.requests.length;
+    first.hold.cancel();
+    const second = openView(locks, name);
+    await settle();
+    expect(second.statuses).toEqual(["ready"]);
+    expect(locks.requests.slice(asked)).toEqual([{ name, granted: true }]);
+    expect(locks.maxHolders).toBe(1);
+  });
+
+  it("does not ask for a view cancelled before its request is sent", async () => {
     const locks = new FakeLocks();
     const name = newName();
     const view = openView(locks, name);
     view.hold.cancel();
     await settle();
     expect(view.statuses).toEqual([]);
+    expect(locks.requests).toEqual([]);
     expect(locks.held.has(name)).toBe(false);
+  });
+
+  it("ignores the answer to a request sent before the view was cancelled, and leaves the lock free", async () => {
+    const locks = new FakeLocks();
+    const name = newName();
+    const view = openView(locks, name);
+    // The view's request is out; the browser has not answered yet.
+    await Promise.resolve();
+    expect(locks.requests).toEqual([{ name, granted: true }]);
+    view.hold.cancel();
+    await settle();
+    expect(view.statuses).toEqual([]);
+    expect(locks.held.has(name)).toBe(false);
+    // The page's next view of the journey opens it (nothing left behind on the chain).
+    const again = openView(locks, name);
+    await settle();
+    expect(again.statuses).toEqual(["ready"]);
+  });
+
+  it("stops for good when cancelled while a retry's request waits for its answer", async () => {
+    const locks = new FakeLocks();
+    const name = newName();
+    const other = await locks.otherTab(name);
+    const view = openView(locks, name);
+    await settle();
+    // The first retry fires and sends its request; its answer has not come yet.
+    vi.advanceTimersByTime(LOCK_RETRY_MS);
+    const asked = locks.requests.length;
+    expect(locks.requests.slice(1)).toEqual([{ name, granted: false }, { name, granted: false }]);
+    view.hold.cancel();
+    await vi.advanceTimersByTimeAsync(2 * LOCK_RETRY_MS);
+    await other.close();
+    await vi.advanceTimersByTimeAsync(LOCK_RETRIES * LOCK_RETRY_MS);
+    // No more requests, and the lock is not taken behind the player's back once the other tab closes.
+    expect(locks.requests).toHaveLength(asked);
+    expect(locks.held.has(name)).toBe(false);
+    expect(view.statuses).toEqual([]);
+    const again = openView(locks, name);
+    await settle();
+    expect(again.statuses).toEqual(["ready"]);
   });
 
   it("releases the lock when the view goes away, and stops retrying", async () => {
