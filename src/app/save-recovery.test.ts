@@ -6,7 +6,7 @@ import { createGame, type GameState } from "../domain/game";
 import { startCityArrival } from "../domain/epilogue";
 import { loadGame, saveGame, SAVE_KEY } from "../persistence";
 import { journeyStorage } from "../persistence/journey-storage";
-import { writeExplicitSave, writeNewGame } from "./save-recovery";
+import { titleSaveActions, writeExplicitSave, writeNewGame } from "./save-recovery";
 
 const SLOT = "dreamscape.journey.milano.save.v1";
 const staleTab = "別の画面でセーブが更新されています。再読み込みしてからやり直してください。";
@@ -104,21 +104,36 @@ describe("starting over an unreadable save", () => {
     data.set(other.physicalKey(SAVE_KEY), milan);
     const loaded = loadGame(other);
     expect(loaded).toMatchObject({ status: "invalid", kind: "journey" });
+    // The title offers neither a start nor deletion; its notice points to the other journey.
+    expect(titleSaveActions(loaded)).toEqual({ start: "hidden", deletion: "hidden" });
     const before = new Map(data);
     for (const autoSave of [false, true]) expect(writeNewGame(other, newGame(), loaded, autoSave)).toEqual({ ok: false, message: null });
     expect(data).toEqual(before);
   });
 
-  it("starts nothing when the storage area cannot be read", () => {
+  it("starts nothing, and touches nothing, when the storage area cannot be read", () => {
+    const calls: string[] = [];
     const unreadable = {
-      getItem: (): string | null => { throw new Error("blocked"); },
-      setItem: () => { throw new Error("blocked"); },
+      getItem: (key: string): string | null => { calls.push(`get ${key}`); throw new Error("blocked"); },
+      setItem: (key: string) => { calls.push(`set ${key}`); throw new Error("blocked"); },
     };
     const loaded = loadGame(unreadable);
     expect(loaded).toMatchObject({ status: "invalid", kind: "storage", raw: null });
+    // The title shows its start and deletion disabled beside the notice.
+    expect(titleSaveActions(loaded)).toEqual({ start: "disabled", deletion: "disabled" });
+    calls.length = 0;
     for (const autoSave of [false, true])
-      expect(writeNewGame(unreadable, newGame(), loaded, autoSave)).toEqual({ ok: false,
-        message: "元のセーブを残して新しく始める処理に失敗しました。保存領域を確認してください。" });
+      expect(writeNewGame(unreadable, newGame(), loaded, autoSave)).toEqual({ ok: false, message: null });
+    expect(calls).toEqual([]);
+  });
+
+  it("offers the start and deletion over an unreadable save whose bytes were read", () => {
+    for (const raw of [damaged, JSON.stringify({ schemaVersion: 999 }), JSON.stringify({ schemaVersion: 1 })]) {
+      const loaded = loadGame(browser({ [SLOT]: raw }).slot);
+      expect(loaded).toMatchObject({ status: "invalid", raw });
+      expect(titleSaveActions(loaded)).toEqual({ start: "shown", deletion: "shown" });
+    }
+    expect(titleSaveActions({ status: "empty" })).toMatchObject({ start: "shown" });
   });
 });
 
@@ -151,7 +166,7 @@ describe("starting and saving over a readable slot", () => {
     expect(loadGame(slot)).toEqual({ status: "loaded", state: theirs });
   });
 
-  it("keeps the old baseline and reports the message when the save cannot be written", () => {
+  it("reports the message when the new game cannot be written", () => {
     const full = { getItem: () => null, setItem: () => { throw new Error("quota"); } };
     expect(writeNewGame(full, newGame(), { status: "empty" }, true)).toEqual({ ok: false,
       message: "保存できませんでした。空き容量やブラウザの保存設定を確認して、もう一度お試しください。" });

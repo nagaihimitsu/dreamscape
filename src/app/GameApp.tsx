@@ -26,6 +26,7 @@ import {
 } from "../domain/game";
 import { useGameSession } from "./useGameSession";
 import { leaveStep } from "./unsaved-progress";
+import { titleSaveActions } from "./save-recovery";
 import type { DeleteSnapshot } from "./save-deletion";
 import { CanalScene } from "../components/CanalScene";
 import { HeldItems } from "../components/HeldItems";
@@ -94,6 +95,7 @@ export function GameApp({
   const displaySettings = usePresentationSettings(storage);
   const session = useGameSession(storage, displaySettings.value.autoSave, () => setSelectedLandmarkId(null));
   const { game, loaded, invalid, notice, setNotice, commit, getCurrent, save } = session;
+  const titleActions = titleSaveActions(loaded);
   const learning = useLearning(game, storage, !isDebug);
   const { travelToEvent, returnToHotel, effects: travelEffects } = useTravelEffects({
     getCurrent, commit, nextRomanceRoll, reduceMotion: displaySettings.value.reduceMotion,
@@ -397,22 +399,22 @@ export function GameApp({
                       ? "元のデータは残っています。バックアップを保存してから新しく始めるか、保存データの消去を選べます。"
                       : "元のデータは残っています。新しく始めた場合、手動セーブ時に元のデータをバックアップします。"}
                   </p>}
-                  {!(loaded.status === "invalid" && loaded.kind === "journey") && <button
+                  {titleActions.deletion !== "hidden" && <button
                     className="secondary"
                     type="button"
                     onClick={requestDelete}
-                    disabled={loaded.status === "invalid" && loaded.raw === null}
+                    disabled={titleActions.deletion === "disabled"}
                   >
                     保存データを消去する
                   </button>}
                 </div>
               )}
               {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} restoreFocus={selectorFocus?.restoreFocus} />}
-              {!(loaded.status === "invalid" && loaded.kind === "journey") && <form onSubmit={begin} className="name-form">
+              {titleActions.start !== "hidden" && <form onSubmit={begin} className="name-form">
                 {nameForm}
                 <button
                   className="primary"
-                  disabled={!player.trim() || !heroine.trim() || (loaded.status === "invalid" && (loaded.raw === null || loaded.kind === "journey"))}
+                  disabled={!player.trim() || !heroine.trim() || titleActions.start === "disabled"}
                 >
                   {invalid
                     ? displaySettings.value.autoSave ? "元のデータを退避して新しく始める" : "元のデータを残して新しく始める"
