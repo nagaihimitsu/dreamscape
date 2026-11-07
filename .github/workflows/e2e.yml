@@ -42,7 +42,15 @@ jobs:
           # The production build: `npm run build`, then `vite preview` (@prod).
           - tier: prod
             command: npx playwright test -c playwright.prod.config.ts
-          # The sample journey played from start to end (WP06b) joins as its own entry.
+          # The sample journey played from a new journey to the end of the
+          # journey, on a development server of its own built with the sample
+          # (@sample). This checkout is thrown away after the job, so a journey
+          # is made here first with journey:new, as an author would start one:
+          # the tier's title test then checks that it builds and opens as a
+          # preparing journey (journey:new's acceptance check).
+          - tier: sample
+            prepare: npm run journey:new -- ci_new_trip --name 新しい旅 --city ci_new_town --city-name 新しい街
+            command: npx playwright test -c playwright.sample.config.ts
     steps:
       - name: Check out source
         uses: actions/checkout@v4
@@ -70,6 +78,9 @@ jobs:
       - name: Install Chromium's system libraries
         if: steps.browser.outputs.cache-hit == 'true'
         run: npx playwright install-deps chromium
+      - name: Prepare the ${{ matrix.tier }} tier
+        if: matrix.prepare
+        run: ${{ matrix.prepare }}
       # The webServer of each Playwright config builds the content and starts
       # the development server or the production preview. GitHub sets CI,
       # which turns on the CI settings there (no retries, forbidOnly, 2 workers,

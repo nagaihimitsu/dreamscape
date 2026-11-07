@@ -60,6 +60,16 @@ describe("E2E specs", () => {
       expect(test.tiers, `「${test.title}」`).toEqual(["sample"]);
   });
 
+  it("give each gating tier its own CI job, the sample job after making a journey with journey:new", () => {
+    const workflow = readFileSync(path.join(import.meta.dirname, "../.github/workflows/e2e.yml"), "utf8");
+    const jobs = Object.fromEntries([...workflow.matchAll(/^\s*- tier: (\w+)\n((?:\s+(?!- )\w+: .*\n)*)/gmu)]
+      .map((match) => [match[1], match[2]]));
+    // smoke and explore are the planned weekly runs, never a gate.
+    expect(Object.keys(jobs)).toEqual(["gate", "debug", "prod", "sample"]);
+    expect(jobs.sample).toMatch(/prepare: npm run journey:new -- \w+ --name \S+ --city \w+ --city-name \S+\n/u);
+    expect(jobs.sample).toMatch(/command: npx playwright test -c playwright\.sample\.config\.ts\n/u);
+  });
+
   it("reads tiers of plain, template and multi-line test calls", () => {
     expect(specTests([
       'test("a", { tag: tier.gate }, async ({ page }) => {});',
