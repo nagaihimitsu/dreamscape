@@ -72,7 +72,14 @@ function runtime(storyId: string, saved?: string, memoryIds: readonly string[] =
   story.onError = (message) => {
     throw new Error(message);
   };
-  if (saved) story.state.LoadJson(saved);
+  if (saved) {
+    try {
+      story.state.LoadJson(saved);
+    } catch (error) {
+      // inkjs reports a broken snapshot in English ("ink save format incorrect").
+      throw new Error("保存された会話の途中データを読み込めません。", { cause: error });
+    }
+  }
   return story;
 }
 

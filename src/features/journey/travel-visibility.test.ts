@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { getCityContent } from "../../content";
 import { createGame } from "../../domain/game";
-import { showTravelEvent } from "./travel-visibility";
+import { isTravelEventVisible } from "../../domain/travel-game";
 
 const milanoTravelCatalog = getCityContent("milano").travel;
 
@@ -15,9 +15,9 @@ describe("destination visibility", () => {
       battleRecords: [{ battleId: "milano_la_scala_b01", attempts: 1, firstScore: 0, bestScore: 0, lastScore: 0 }],
       playedDateIds: ["milano_rain_pause_01"],
     };
-    expect(showTravelEvent(state, event("milano_galleria_episode"))).toBe(false);
-    expect(showTravelEvent(state, event("milano_la_scala_b01"))).toBe(false);
-    expect(showTravelEvent(state, event("milano_rain_pause_01"))).toBe(false);
-    expect(showTravelEvent(state, event("milano_duomo_episode"))).toBe(true);
+    expect(isTravelEventVisible(state, event("milano_galleria_episode"))).toBe(false);
+    expect(isTravelEventVisible(state, event("milano_la_scala_b01"))).toBe(false);
+    expect(isTravelEventVisible(state, event("milano_rain_pause_01"))).toBe(false);
+    expect(isTravelEventVisible(state, event("milano_duomo_episode"))).toBe(true);
   });
 });

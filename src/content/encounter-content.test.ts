@@ -3,7 +3,7 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { buildContent } from "../../scripts/content-pipeline";
-import { prepareContentFixture } from "./test-fixtures";
+import { changeCatalogEntry, prepareContentFixture, storySourceFile } from "./test-fixtures";
 
 let fixture: string;
 beforeEach(async () => {
@@ -14,23 +14,21 @@ afterEach(async () => { await rm(fixture, { recursive: true, force: true }); });
 
 describe("encounter build integration", () => {
   it("rejects a missing item in the actual encounter catalog", async () => {
-    const file = path.join(fixture, "content/journeys/milano/encounters/catalog.json");
-    const data = JSON.parse(await readFile(file, "utf8"));
-    data.encounters.find((event: { id: string }) => event.id === "galleria_gift").options[0].giftItemId = "missing_item";
-    await writeFile(file, JSON.stringify(data));
+    await changeCatalogEntry(fixture, "encounters/catalog.json", "encounters", "galleria_gift", (event) => {
+      event.options[0].giftItemId = "missing_item";
+    });
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown encounter item");
   }, 120000);
 
   it("rejects an item icon that no public folder serves", async () => {
-    const file = path.join(fixture, "content/journeys/milano/encounters/catalog.json");
-    const data = JSON.parse(await readFile(file, "utf8"));
-    data.items.find((item: { id: string }) => item.id === "galleria_souvenir").iconPath = "assets/items/missing.svg";
-    await writeFile(file, JSON.stringify(data));
+    await changeCatalogEntry(fixture, "encounters/catalog.json", "items", "galleria_souvenir", (item) => {
+      item.iconPath = "assets/items/missing.svg";
+    });
     await expect(buildContent(fixture, false)).rejects.toThrow("encounter item galleria_souvenir: Missing public file: assets/items/missing.svg (searched public/ and content/journeys/milano/public/)");
   }, 120000);
 
   it("rejects an unknown item referenced in encounter Ink", async () => {
-    const file = path.join(fixture, "content/journeys/milano/stories/encounters/galleria_outing_rewrite.ink");
+    const file = path.join(fixture, storySourceFile("encounters/galleria_outing_rewrite"));
     const source = await readFile(file, "utf8");
     expect(source).toContain('has_item_status("galleria_souvenir", "gifted")');
     await writeFile(file, source.replace('has_item_status("galleria_souvenir", "gifted")', 'has_item_status("missing_item", "gifted")'));
@@ -38,17 +36,17 @@ describe("encounter build integration", () => {
   }, 120000);
 
   it("rejects item queries in existing stories which do not receive inventory", async () => {
-    const file = path.join(fixture, "content/journeys/milano/stories/milano/sound_cafe_01.ink");
+    const file = path.join(fixture, storySourceFile("milano/sound_cafe_01"));
     const source = await readFile(file, "utf8");
     await writeFile(file, `${source}\n{has_item_status("galleria_souvenir", "gifted"): 持っています}\n`);
     await expect(buildContent(fixture, false)).rejects.toThrow("Item references are only supported in encounters: milano/sound_cafe_01");
   }, 120000);
 
   it("rejects an Ink item query belonging to another city", async () => {
-    const catalogFile = path.join(fixture, "content/journeys/milano/encounters/catalog.json");
-    const catalog = JSON.parse(await readFile(catalogFile, "utf8"));
-    catalog.items.push({ id: "foreign_item", cityId: "fixture_city", nameJa: "別の街の品", descriptionJa: "別の街で入手する品。" });
-    await writeFile(catalogFile, JSON.stringify(catalog));
+    // The foreign item sits next to the souvenir that the Ink below asks about.
+    await changeCatalogEntry(fixture, "encounters/catalog.json", "items", "galleria_souvenir", (_item, catalog) => {
+      catalog.items.push({ id: "foreign_item", cityId: "fixture_city", nameJa: "別の街の品", descriptionJa: "別の街で入手する品。" });
+    });
     // Register an actual second city, so this exercises a cross-city item
     // reference rather than merely an unknown-city error. It is still being
     // made (prototype): a complete city would need its own episodes and finale.
@@ -72,7 +70,7 @@ describe("encounter build integration", () => {
     }));
     const settings = JSON.parse(await readFile(path.join(fixture, "content/journeys/milano/travel/milano-settings.json"), "utf8"));
     await writeFile(path.join(fixture, "content/journeys/milano/travel/fixture_city-settings.json"), JSON.stringify({ ...settings, hotelPlaceId: "fixture_hotel" }));
-    const storyFile = path.join(fixture, "content/journeys/milano/stories/encounters/galleria_outing_rewrite.ink");
+    const storyFile = path.join(fixture, storySourceFile("encounters/galleria_outing_rewrite"));
     const source = await readFile(storyFile, "utf8");
     expect(source).toContain('has_item_status("galleria_souvenir", "gifted")');
     await writeFile(storyFile, source.replace('has_item_status("galleria_souvenir", "gifted")', 'has_item_status("foreign_item", "gifted")'));

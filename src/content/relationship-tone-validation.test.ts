@@ -46,7 +46,7 @@ describe("relationship tone Ink contract", () => {
       .toThrow(/declared with a quoted allowed ID/);
   });
 
-  it("requires all three variables for the new contract but preserves legacy Ink", () => {
+  it("requires all three tone variables when the tone is passed, and accepts Ink without them otherwise", () => {
     const source = header.replace('VAR relationship_tone_before = "reserved"\n', "") + choices;
     const compiled = compileInk(source);
     const validate = (withTone: boolean) => validateStory(compiled, context,

@@ -3,6 +3,10 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { inferContentType, inspectFile } from "../../scripts/inspect-content";
+import { quizSourceFile } from "./test-fixtures";
+
+/** A production quiz file, wherever its journey folder keeps it. */
+const duomoQuiz = quizSourceFile("sound_duomo_b1");
 
 let directory: string;
 beforeEach(async () => {
@@ -15,7 +19,7 @@ afterEach(async () => {
 describe("standalone content inspection", () => {
   it("accepts the same quiz in an arbitrary draft path by explicit type without modifying it", async () => {
     const input = await readFile(
-      path.resolve("content/journeys/milano/quizzes/sound_duomo_B1.json"),
+      path.resolve(duomoQuiz),
       "utf8",
     );
     const draft = path.join(directory, "draft.json");
@@ -23,7 +27,7 @@ describe("standalone content inspection", () => {
     expect(await inspectFile(draft, "quiz")).toBe("quiz");
     expect(await readFile(draft, "utf8")).toBe(input);
     expect(
-      inferContentType(path.resolve("content/journeys/milano/quizzes/sound_duomo_B1.json")),
+      inferContentType(path.resolve(duomoQuiz)),
     ).toBe("quiz");
   });
   it("identifies JSON syntax, wrong correct ID and file path", async () => {
@@ -31,7 +35,7 @@ describe("standalone content inspection", () => {
     await writeFile(draft, "{");
     await expect(inspectFile(draft, "quiz")).rejects.toThrow(draft);
     const quiz = JSON.parse(
-      await readFile(path.resolve("content/journeys/milano/quizzes/sound_duomo_B1.json"), "utf8"),
+      await readFile(path.resolve(duomoQuiz), "utf8"),
     );
     quiz.questions[0].options[0].id = quiz.questions[0].options[1].id;
     await writeFile(draft, JSON.stringify(quiz));

@@ -1,4 +1,4 @@
-import { allStorage, expect, learningKey, ops, playUntil, presentationKey, readSave, saveKey, test, tier } from "./helpers";
+import { allStorage, expect, journeyCatalog, learningKey, ops, playUntil, presentationKey, readSave, saveKey, test, tier } from "./helpers";
 
 // Lane 1 (docs/10): saving and resuming are only ever checked through the real flow.
 
@@ -73,7 +73,9 @@ test("autosaved progress, a battle question, the English note and the text speed
   expect(finished.playedDateIds).toEqual(["milano_novecento_date_01"]);
 });
 
-// AGENTS.md 「現在のバージョンで作成した有効なセーブは…正しく保存・再開できる」 and docs/07 acceptance 6.
+// AGENTS.md 「現在のバージョンで作成した有効なセーブは…正しく保存・再開できる」 and docs/07 acceptance 6;
+// docs/07 acceptance 10: with manual saving, leaving unsaved progress asks first (switching journeys,
+// ロード, reloading), as hasUnsavedProgress/leaveStep decide (docs/10 「画面の保護を担う関数」).
 test("a manual save keeps the saved position and settings when unsaved changes are discarded", { tag: tier.gate }, async ({ page }) => {
   await ops.startJourney(page);
   await ops.setAutoSave(page, false);
@@ -87,14 +89,39 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   expect(manual.travel.currentPlaceId).toBe("p_duomo");
   expect(manual.activeTourism?.landmarkId).toBe("duomo_milano");
 
-  // Progress after the manual save is not stored; reloading asks first, then restores the save.
+  // Progress after the manual save is not stored. Switching journeys asks first; 戻る keeps this scene.
   await page.getByTestId("tourism-skip").click();
-  page.once("dialog", (dialog) => dialog.accept());
+  await expect(page.getByTestId("tourism-guide")).toHaveCount(0);
+  const otherJourney = journeyCatalog().journeys.find((journey) => journey.id !== "milano")!.id;
+  const settings = await ops.openSettings(page);
+  await settings.getByLabel("旅行編").selectOption(otherJourney);
+  const switching = page.getByRole("dialog", { name: "旅行編を切り替える" });
+  await expect(switching).toContainText("手動セーブしていない進行は失われます。");
+  await switching.getByRole("button", { name: "戻る", exact: true }).click();
+  await expect(switching).toBeHidden();
+  await expect(page.getByTestId("tourism-guide")).toHaveCount(0);
+  await expect(page.getByText("現在地：ドゥオモ広場")).toBeVisible();
+
+  // Reloading asks through the browser's own prompt; leaving restores the manual save.
+  const prompts: string[] = [];
+  page.on("dialog", (dialog) => { prompts.push(dialog.type()); void dialog.accept(); });
   await page.reload();
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
+  expect(prompts).toEqual(["beforeunload"]);
   expect(await readSave(page)).toEqual(manual);
-  const settings = await ops.openSettings(page);
-  await expect(settings.getByLabel("自動保存する")).not.toBeChecked();
+  const reopened = await ops.openSettings(page);
+  await expect(reopened.getByLabel("自動保存する")).not.toBeChecked();
+  await ops.closeDialog(reopened);
+
+  // ロード asks too, and loading brings the manual save's scene back.
+  await page.getByTestId("tourism-skip").click();
+  await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "ロード", exact: true }).click();
+  const loading = page.getByRole("dialog", { name: "保存した場面を読み込みますか？" });
+  await loading.getByRole("button", { name: "ロードする", exact: true }).click();
+  await expect(loading).toBeHidden();
+  await expect(page.getByTestId("tourism-guide")).toBeVisible();
+  await expect(page.getByRole("status").filter({ hasText: "保存した場面から再開しました。" })).toBeVisible();
+  expect(prompts).toEqual(["beforeunload"]);
 });
 
 // AGENTS.md 「明示確認と別タブ競合の保護を維持する」: a second tab never overwrites the first one's progress.
@@ -136,14 +163,98 @@ test("an unreadable save stays as it was until the player backs it up and starts
   expect((await allStorage(page))[saveKey()]).toBe(damaged);
 
   // Starting again keeps the original bytes under a backup key of the same journey.
-  await page.getByLabel("主人公の名前").fill("航");
-  await page.getByLabel("ヒロインの名前").fill("澪");
+  await ops.fillNames(page);
   await page.getByRole("button", { name: "元のデータを退避して新しく始める" }).click();
   await expect(page.getByTestId("travel-menu")).toBeVisible();
   const storage = await allStorage(page);
   const backups = Object.keys(storage).filter((key) => key.startsWith(`${saveKey()}.backup.`));
   expect(backups.map((key) => storage[key])).toEqual([damaged]);
   expect((await readSave(page)).playerName).toBe("航");
+});
+
+// The same with manual saving (docs/07 acceptance 10, writeNewGame/writeExplicitSave): starting again
+// writes nothing, and the first セーブ backs the original bytes up before saving over them.
+test("with manual saving, an unreadable save stays in place until the first セーブ backs it up", { tag: tier.gate }, async ({ page }) => {
+  const damaged = "{damaged-save";
+  await ops.startJourney(page);
+  await ops.setAutoSave(page, false);
+  await page.evaluate(([key, raw]) => localStorage.setItem(key, raw), [saveKey(), damaged]);
+  await page.reload();
+  await expect(page.getByRole("alert")).toContainText("新しく始めた場合、手動セーブ時に元のデータをバックアップします。");
+  const backups = async () => {
+    const storage = await allStorage(page);
+    return Object.keys(storage).filter((key) => key.startsWith(`${saveKey()}.backup.`)).map((key) => storage[key]);
+  };
+
+  await ops.fillNames(page);
+  await page.getByRole("button", { name: "元のデータを残して新しく始める" }).click();
+  await expect(page.getByTestId("travel-menu")).toBeVisible();
+  expect((await allStorage(page))[saveKey()]).toBe(damaged);
+  expect(await backups()).toEqual([]);
+
+  await ops.manualSave(page);
+  await expect(page.getByRole("status").filter({ hasText: "現在の場面を保存しました。" })).toBeVisible();
+  expect(await backups()).toEqual([damaged]);
+  expect((await readSave(page)).playerName).toBe("航");
+});
+
+// writeNewGame refuses a start once the slot no longer holds what the title showed, and the title
+// opens nothing then (useGameSession.begin): another tab's newer bytes are neither replaced nor
+// backed up as if they were the unreadable save (AGENTS.md 「別タブ競合の保護」).
+test("an unreadable save that another tab replaces before the start is kept, and the refused start opens nothing", { tag: tier.gate }, async ({ page, context }) => {
+  await page.goto("/");
+  await page.evaluate(([key]) => localStorage.setItem(key, "{damaged-save"), [saveKey()]);
+  await page.reload();
+  await expect(page.getByRole("alert")).toContainText("保存データを読み込めませんでした");
+  // Another tab of the site (not the game, which this tab's lock keeps closed there) writes the slot.
+  const other = await context.newPage();
+  await other.goto("/favicon-32.png");
+  await other.evaluate(([key]) => localStorage.setItem(key, "newer bytes from another tab"), [saveKey()]);
+  await other.close();
+
+  await ops.fillNames(page);
+  await page.getByRole("button", { name: "元のデータを退避して新しく始める" }).click();
+  await expect(page.getByText("別の画面でセーブが更新されています。再読み込みしてからやり直してください。")).toBeVisible();
+  await expect(page.getByLabel("主人公の名前")).toBeVisible();
+  await expect(page.getByTestId("travel-menu")).toHaveCount(0);
+  const storage = await allStorage(page);
+  expect(storage[saveKey()]).toBe("newer bytes from another tab");
+  expect(Object.keys(storage).filter((key) => key.includes(".backup."))).toEqual([]);
+});
+
+// titleSaveActions (docs/10 「画面の保護を担う関数」): over another journey's save the title offers
+// neither a start nor deletion; when the storage area cannot be read both stay disabled.
+test("the title offers no start or deletion over another journey's save, and disables both when storage cannot be read", { tag: tier.gate }, async ({ page }) => {
+  await ops.startJourney(page);
+  const otherJourney = journeyCatalog().journeys.find((journey) => journey.id !== "milano" && journey.status === "available")!.id;
+  // A Milano save copied into the other journey's slot; Milano's own slot is emptied so the title opens.
+  await page.evaluate(([from, to]) => {
+    localStorage.setItem(to, localStorage.getItem(from)!);
+    localStorage.removeItem(from);
+  }, [saveKey(), saveKey(otherJourney)]);
+  await page.reload();
+  await ops.chooseJourney(page, otherJourney);
+  await expect(page.getByRole("alert")).toContainText("保存先の旅行編と現在地の旅行編が一致しないか、現在地を確認できません。元のデータは変更せず保護しています。");
+  await expect(page.getByLabel("主人公の名前")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /旅をはじめる|新しく始める/ })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "保存データを消去する" })).toHaveCount(0);
+  const copied = (await allStorage(page))[saveKey(otherJourney)];
+  expect(copied).toContain('"currentCityId":"milano"');
+
+  // The storage area cannot be read (e.g. blocked site data): Milano's title disables both.
+  await page.addInitScript(() => {
+    const getItem = Storage.prototype.getItem;
+    Storage.prototype.getItem = function (key: string) {
+      if (key.endsWith(".save.v1")) throw new DOMException("The operation is insecure.", "SecurityError");
+      return getItem.call(this, key);
+    };
+  });
+  await page.reload();
+  await expect(page.getByRole("alert")).toContainText("このブラウザの保存領域を読み取れません。保存の設定を確認してください。");
+  await ops.fillNames(page);
+  await expect(page.getByRole("button", { name: /新しく始める/ })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "保存データを消去する" })).toBeDisabled();
+  expect((await allStorage(page))[saveKey(otherJourney)]).toBe(copied);
 });
 
 // AGENTS.md: 未知の新しい版は破損と区別して案内し、削除は対象キーと影響範囲を示し明示確認のうえで行う.

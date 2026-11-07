@@ -2,7 +2,7 @@ import { getCityContent } from "../content";
 import type { TravelEvent, TravelPlace, TravelRoute } from "../content/travel-schemas";
 import type { GameState } from "./game";
 import { DAY_END, NIGHT_START, groupDestinationEvents, selectNearbyDestinations, type DestinationPlace } from "./travel";
-import { getTravelEventAvailability, isTravelEventVisible, isUnclearedMainTravelEvent } from "./travel-game";
+import { getTravelEventAvailability, isTravelEventVisible, isUnclearedMainTravelEvent, waitForTravel } from "./travel-game";
 
 export type TravelDestinationEvent = TravelEvent & {
   walkMinutes: number | null;
@@ -31,6 +31,15 @@ export function getTravelDestinations(state: GameState) {
   });
   const places = groupDestinationEvents(candidates);
   return { current, candidates, places, ...selectNearbyDestinations(places) };
+}
+
+export type TravelWaitOption = { minutes: number; until: number | null; available: boolean };
+
+/** The 待機 menu (TravelActions): 30 minutes, then until the next time something opens, each enabled only if waiting is possible. */
+export function getTravelWaitOptions(state: GameState): TravelWaitOption[] {
+  const next = getNextTravelWaitTime(state);
+  const options = [{ minutes: 30, until: null }, ...(next === null ? [] : [{ minutes: next - state.travel.minute, until: next }])];
+  return options.map((option) => ({ ...option, available: waitForTravel(state, option.minutes, state.revision) !== state }));
 }
 
 /** Next visible event, opening time or evening boundary before the day ends. */

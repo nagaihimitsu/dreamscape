@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { zodIssues } from "../../tests/fixtures/zod-issues";
 import profileData from "./generated/content/romance/response_profiles.json";
 import { responseProfileCatalogSchema } from "./schemas";
 import { compileInk, validateNoInkRandom, validateStory } from "../../scripts/ink-validation";
@@ -10,17 +11,19 @@ describe("romance response profile contract", () => {
     expect(responseProfileCatalogSchema.parse(profileData).profiles.length).toBeGreaterThan(0);
   });
 
+  const chanceOrder = { code: "custom", path: ["profiles", 0], message: "Expected minChance <= baseChance <= maxChance" };
   it.each([
-    ["chance below zero", (p: any) => { p.baseChance = -1; }],
-    ["chance above 100", (p: any) => { p.maxChance = 101; }],
-    ["minimum above base", (p: any) => { p.minChance = p.baseChance + 1; }],
-    ["base above maximum", (p: any) => { p.maxChance = p.baseChance - 1; }],
-    ["inverted delta range", (p: any) => { p.positive.trust = [3, 2]; }],
-    ["unknown stat", (p: any) => { p.negative.luck = [0, 1]; }],
-  ])("rejects %s", (_label, mutate) => {
+    ["chance below zero", (p: any) => { p.baseChance = -1; }, [{ code: "too_small", path: ["profiles", 0, "baseChance"], minimum: 0 }, chanceOrder]],
+    ["chance above 100", (p: any) => { p.maxChance = 101; }, [{ code: "too_big", path: ["profiles", 0, "maxChance"], maximum: 100 }]],
+    ["minimum above base", (p: any) => { p.minChance = p.baseChance + 1; }, [chanceOrder]],
+    ["base above maximum", (p: any) => { p.maxChance = p.baseChance - 1; }, [chanceOrder]],
+    ["inverted delta range", (p: any) => { p.positive.trust = [3, 2]; },
+      [{ code: "custom", path: ["profiles", 0, "positive", "trust"], message: "Delta range minimum exceeds maximum" }]],
+    ["unknown stat", (p: any) => { p.negative.luck = [0, 1]; }, [{ code: "unrecognized_keys", path: ["profiles", 0, "negative"], keys: ["luck"] }]],
+  ])("rejects %s", (_label, mutate, issues) => {
     const copy = structuredClone(profile);
     mutate(copy);
-    expect(() => responseProfileCatalogSchema.parse({ schemaVersion: 1, profiles: [copy] })).toThrow();
+    expect(() => responseProfileCatalogSchema.parse({ schemaVersion: 1, profiles: [copy] })).toThrow(zodIssues(...issues));
   });
 });
 
@@ -84,7 +87,7 @@ describe("random reaction Ink validation", () => {
   });
 
   it("rejects an undeclared result variable", () => {
-    expect(() => validate(header.replace('VAR romance_result = "neutral"\n', "") + choices)).toThrow();
+    expect(() => validate(header.replace('VAR romance_result = "neutral"\n', "") + choices)).toThrow(/Unresolved variable: romance_result/);
   });
 
   it("rejects an effect without a response profile", () => {

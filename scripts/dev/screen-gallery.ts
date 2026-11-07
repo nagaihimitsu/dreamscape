@@ -2,6 +2,7 @@
  * The screen gallery for people checking screens by eye (`npm run screens`,
  * docs/10「人が画面を確かめる」). Pure: the runner (screens.ts) reads and writes files.
  */
+import { parseDebugQuery } from "../../src/dev/debug-query";
 
 /** One captured screen, as tests/screens/screens.spec.ts records it next to its image. */
 export interface Shot {
@@ -56,6 +57,18 @@ export function debugExampleUrls(docs: string): { titleJa: string; url: string }
   return [...docs.slice(start, end).matchAll(/^\| ([^|]+?) \| `\/(\?debug&[^`]+)` \|$/gmu)]
     .filter((match) => !match[1].includes("dev:sample"))
     .map((match) => ({ titleJa: match[1].trim(), url: match[2] }));
+}
+
+/**
+ * The examples that open a Debug session with a game state, the monkey's Debug start points
+ * (docs/10「モンキー」): every example but a prototype city's map check (scene=map), which shows
+ * the city's data without a game state.
+ */
+export function debugSessionExampleUrls(docs: string): { titleJa: string; url: string }[] {
+  return debugExampleUrls(docs).filter(({ url }) => {
+    const parsed = parseDebugQuery(url);
+    return parsed.kind === "launch" && parsed.query.scene !== "map";
+  });
 }
 
 const escape = (text: string) => text.replace(/[&<>"']/gu, (char) => `&#${char.charCodeAt(0)};`);

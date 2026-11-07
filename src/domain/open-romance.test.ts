@@ -38,7 +38,7 @@ function play(state: GameState, id: string, choices: number[], seen: string[] = 
 }
 
 describe("open romance progression", () => {
-  it("offers several independent destinations without the old cafe path", () => {
+  it("offers four destination dates at the start, none of which needs the cafe date first", () => {
     const state = initial();
     for (const id of ["milano_la_scala_date_01", "milano_brera_date_01", "milano_navigli_date_01", "milano_novecento_date_01"]) {
       expect(isEventVisible(state, id)).toBe(true);

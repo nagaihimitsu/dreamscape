@@ -180,7 +180,7 @@ describe("multi-city content build", () => {
       cityClearAp: 4, lodgingCost: 10, mainTourismCount: 4, dateCount: 6,
     };
     await write(manifest("milano"), milanJourney);
-    // Milan has a 4 AP legacy first-episode reward, but its city-clear reward is 3 AP.
+    // Milan's Last Supper episode pays 4 AP on its first clear (chapter_milano_first_clear); its city clear pays 3 AP.
     await expect(buildContent(root, false)).rejects.toThrow(/City clear reward does not match journey plan: milano/);
   }, 60000);
 

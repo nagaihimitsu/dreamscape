@@ -88,7 +88,7 @@ describe("content layers", () => {
     expect(() => loadContentSources(root)).toThrow(/Unknown content file: .*content\/journeys\/catalog\.json \(journeys are registered by content\/journeys\/<journeyId>\/manifest\.json\)/);
   });
 
-  it("reads the current single-layer content as it is", () => {
+  it("reads content with only the core layer as it is", () => {
     const sources = loadContentSources(root);
     expect(sources.layers.map((layer) => layer.id)).toEqual(["core"]);
     // Provided by a file: battles; generated: journeys; every other journey kind is empty, core-layer kinds are absent.
@@ -101,7 +101,7 @@ describe("content layers", () => {
       .toEqual([["milano", "core", "content/travel/milano.json", "content/travel/milano-settings.json"]]);
     // Every data file is read once, here: Ink text, quiz and city JSON (unvalidated), and the city files' bytes.
     expect(sources.storyFiles).toEqual([{ id: "milano/cafe", file: path.join(root, "content/stories/milano/cafe.ink"), layer: "core", source: "core story" }]);
-    expect(sources.quizFiles).toEqual([{ file: path.join(root, "content/quizzes/duomo.json"), layer: "core", sample: false, data: {} }]);
+    expect(sources.quizFiles).toEqual([{ file: path.join(root, "content/quizzes/duomo.json"), layer: "core", example: false, data: {} }]);
     const [milano] = sources.cities;
     expect([milano.data, milano.travel, milano.settings]).toEqual([{ id: "milano" }, { cityId: "milano" }, { hotelPlaceId: "hotel" }]);
     expect(milano.bytes.travel.toString("utf8")).toBe(readFileSync(path.join(root, "content/travel/milano.json"), "utf8"));

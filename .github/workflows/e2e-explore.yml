@@ -1,0 +1,160 @@
+name: E2E explore (weekly)
+
+# Exploration runs (docs/10「探索テスト」), weekly and by hand. Never a gate: no other
+# workflow waits for them, deploying (pages.yml) does not, and a failure only shows as
+# a failed run of this workflow. A pull request runs them only when it changes this
+# workflow, the exploration tests themselves or the test code the monkey drives the game
+# with (the shared E2E helpers, the Debug start-URL reading), so such a change proves they
+# still run. The Debug start URLs in docs/10 are checked by the unit tests on every pull
+# request (src/dev/debug-state.test.ts); a manual run shows the monkey with a changed list.
+on:
+  schedule:
+    # Mondays 04:23 UTC (13:23 in Japan).
+    - cron: "23 4 * * 1"
+  workflow_dispatch:
+    inputs:
+      seed:
+        description: "MONKEY_SEED to replay (empty: seeds from the run number)"
+        required: false
+      seconds:
+        description: "MONKEY_SECONDS per start point"
+        required: false
+        default: "55"
+  pull_request:
+    paths:
+      - .github/workflows/e2e-explore.yml
+      - playwright.explore.config.ts
+      - playwright.webkit.config.ts
+      - tests/e2e/explore/**
+      - tests/e2e/helpers.ts
+      - tests/explore/**
+      - scripts/dev/screen-gallery.ts
+      - src/dev/debug-query.ts
+
+permissions:
+  contents: read
+
+concurrency:
+  group: e2e-explore-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  monkey:
+    # Three seeds in parallel, each about three minutes (three start points).
+    name: Monkey (seed ${{ matrix.slot }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        slot: [1, 2, 3]
+    env:
+      # A new set of seeds every run (printed in the log and kept in the report); a manual
+      # run can replay one seed in every slot.
+      MONKEY_SEED: ${{ inputs.seed || format('{0}{1}', github.run_number, matrix.slot) }}
+      MONKEY_SECONDS: ${{ inputs.seconds || '55' }}
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Read the locked Playwright version
+        id: playwright
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+      - name: Restore the Chromium build of that version
+        id: browser
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+      - name: Install Chromium for the locked Playwright version
+        if: steps.browser.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+      - name: Install Chromium's system libraries
+        if: steps.browser.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+      - name: Print the seed
+        run: echo "MONKEY_SEED=$MONKEY_SEED MONKEY_SECONDS=$MONKEY_SECONDS"
+      - name: Run the monkey
+        timeout-minutes: 16
+        run: npm run test:e2e:explore
+      - name: Keep the report, traces and the monkey's last presses
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-explore-monkey-${{ matrix.slot }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+          if-no-files-found: ignore
+
+  webkit:
+    # The @smoke tests on an iPhone 13 with WebKit (Safari's engine on Linux, not the
+    # iPhone itself). Only this job installs WebKit.
+    name: WebKit smoke (iPhone 13)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Install WebKit for the locked Playwright version
+        run: npx playwright install --with-deps webkit
+      - name: Run the @smoke tests on WebKit
+        timeout-minutes: 16
+        run: npm run test:e2e:webkit
+      - name: Keep the report, screenshots and traces of failed tests
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-webkit
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+          if-no-files-found: ignore
+
+  walk:
+    # The random walk through the game functions with more seeds and steps than the
+    # pull request run (tests/explore/journey-walk.test.ts); its reached-content
+    # summary is kept as an artifact.
+    name: Random walk (more seeds)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      DREAMSCAPE_WALK_STEPS: "4000"
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Choose this run's seeds
+        run: echo "DREAMSCAPE_WALK_SEEDS=$(seq -s, $(( ${{ github.run_number }} * 100 + 1 )) $(( ${{ github.run_number }} * 100 + 12 )))" >> "$GITHUB_ENV"
+      - name: Walk
+        timeout-minutes: 16
+        run: npm run test:walk
+      - name: Keep the reached-content summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: journey-walk-coverage
+          path: artifacts/explore/
+          retention-days: 30
+          if-no-files-found: ignore

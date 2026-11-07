@@ -41,6 +41,6 @@ describe("fictional travel calendar", () => {
     expect(saveGame(storage, rested).ok).toBe(true);
     expect(loadGame(storage)).toEqual({ status: "loaded", state: rested });
     expect(() => validateGameState({ ...rested, travel: { ...rested.travel,
-      calendar: { ...rested.travel.calendar, journeyDay: 9 } } })).toThrow();
+      calendar: { ...rested.travel.calendar, journeyDay: 9 } } })).toThrow("Travel day and journey calendar disagree");
   });
 });

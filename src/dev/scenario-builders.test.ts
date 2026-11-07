@@ -2,11 +2,12 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { balance, episodes, getCityContent } from "../content";
 import { getJourney, journeys } from "../content/journeys";
 import { leaveBattle } from "../domain/battle";
+import { storyBattlesForCity } from "../domain/chapter";
 import { advanceDate, chooseDate, createGame, validateGameState, type GameState } from "../domain/game";
 import { startTourismBattle } from "../domain/tourism";
 import { beginTravelEvent } from "../domain/travel-game";
 import {
-  cityFinaleResult, cityStart, completedCity, correctAnswer, finishEpisode, firstCorrect, newJourney,
+  cityFinaleResult, cityMidway, cityStart, completedCity, correctAnswer, finishEpisode, firstCorrect, newJourney,
   openBattleScene, openEpilogueScene, openTourismScene, playBattleToResult, playEpisodeToResult, readEpilogue,
   readGuide, rollTickets, startDateScene, startEncounterScene, withAp, wrongAnswer,
 } from "./scenario-builders";
@@ -52,6 +53,15 @@ describe("scenario builders", () => {
     const ended = readEpilogue(openEpilogueScene(cleared));
     expect(ended.viewedEpilogueCityIds).toContain(cityId);
     expect(ended.currentCityId).toBe(cityId);
+  });
+
+  it.each(playableCities)("is midway through $cityId: half of the battles before its finale won, back in free time", ({ cityId }) => {
+    const midway = cityMidway(cityId);
+    const stops = episodes.filter((item) => item.cityId === cityId && item.kind !== "city_finale");
+    const done = midway.battleRecords.filter((record) => [...stops.map((item) => item.battleId), ...storyBattlesForCity(cityId).map((item) => item.battleId)].includes(record.battleId));
+    expect(midway).toMatchObject({ ...noScene, currentCityId: cityId });
+    expect(done).toHaveLength(Math.ceil((stops.length + storyBattlesForCity(cityId).length) / 2));
+    expect(midway.completedCityIds).not.toContain(cityId);
   });
 
   it("answers by the given picker and calls `after` for every action", () => {

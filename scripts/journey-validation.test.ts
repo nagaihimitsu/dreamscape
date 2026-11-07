@@ -141,6 +141,6 @@ describe("story battle references in the journey", () => {
     journey.rewards.push({ ...oldClear, id: "duplicate_episode_reward" });
     expect(run).toThrow(/Episode needs one episode_clear reward/);
     const milanWithoutFirstClear = { ...journeyConfig, rewards: journeyConfig.rewards.filter((rule) => rule.trigger !== "episode_clear") };
-    expect(() => check(milanWithoutFirstClear)).toThrow();
+    expect(() => check(milanWithoutFirstClear)).toThrow(/Episode needs one episode_clear reward/);
   });
 });

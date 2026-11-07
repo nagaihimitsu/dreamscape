@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { zodIssues } from "../../tests/fixtures/zod-issues";
 import raw from "./generated/content/learning/translations.json";
 import details from "./generated/content/learning/details.json";
 import { battleQuizzes } from "./index";
@@ -25,7 +26,13 @@ describe("learning content", () => {
   });
   it("rejects missing translations and changed wording, options or answer", () => {
     const id = "sound_supper_1";
-    for (const field of ["question", "option", "answer", "missing"]) {
+    const expected = {
+      question: "Translation source changed: sound_supper_1",
+      option: "Translation source changed: sound_supper_1",
+      answer: "Translation source changed: sound_supper_1",
+      missing: "Missing translation: sound_supper_1",
+    };
+    for (const field of ["question", "option", "answer", "missing"] as const) {
       const data = structuredClone(raw) as any;
       if (field === "question") data.questions[id].source.questionEn += "x";
       if (field === "option")
@@ -34,16 +41,16 @@ describe("learning content", () => {
       if (field === "missing") delete data.questions[id];
       expect(() =>
         validateLearning(learningCatalogSchema.parse(data), battleQuizzes, ids),
-      ).toThrow();
+      ).toThrow(expected[field]);
     }
   });
   it("rejects a missing option and non-Japanese translation", () => {
     const missing = structuredClone(raw) as any;
     delete missing.questions.sound_supper_1.optionsJa.A;
-    expect(() => learningCatalogSchema.parse(missing)).toThrow();
+    expect(() => learningCatalogSchema.parse(missing)).toThrow(zodIssues({ code: "invalid_type", path: ["questions", "sound_supper_1", "optionsJa", "A"] }));
     const english = structuredClone(raw);
     english.questions.sound_supper_1.questionJa = "English only";
-    expect(() => learningCatalogSchema.parse(english)).toThrow();
+    expect(() => learningCatalogSchema.parse(english)).toThrow(zodIssues({ code: "custom", path: ["questions", "sound_supper_1", "questionJa"], message: "Expected Japanese text" }));
   });
   it("checks detailed explanations refer to actual English", () => {
     const value = learningDetailsSchema.parse(details);

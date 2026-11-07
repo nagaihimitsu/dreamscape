@@ -22,6 +22,7 @@
 | `content/travel/research/`（ミラノの交通調査） | `authoring/journeys/milano/research/travel/` |
 | `public/assets/tourism/<旅行編>/` などの旅行編の画像 | `content/journeys/<旅行編ID>/public/assets/` |
 | インド編専用の `scripts/*.ts`（`inspect-india-transit.ts` など） | `scripts/journeys/golden_triangle/` |
+| 旅行編だけを確かめる単体テスト（`src/domain/golden-triangle-*.test.ts`・`src/content/india-*.test.ts`・`src/domain/milano-*.test.ts`、`scripts/journeys/golden_triangle/*.test.ts` など） | `tests/journeys/<旅行編ID>/`（ファイル名から旅行編名を除いたもの。例：`golden-triangle-scenario.test.ts` → `tests/journeys/golden_triangle/scenario.test.ts`） |
 | 削除したE2E（`tests/e2e/city-arrival.spec.ts` など） | 現在のE2Eは [開発時の確認](../../docs/10_DEVELOPMENT_CHECKS.md#e2eテスト) を参照 |
 
 当時の配置のパス（`public/assets/…`、`content/…`、`authoring/research/…`）を読み書きする調査スクリプト（ウズベキスタン編サマルカンドの `download-selected.py`・`assemble-city.py`、インド編の `walk-network/exploratory_profile.py`）は、実行すると冒頭で理由を表示して停止します。調査記録の `source/` にある原本のスクリプトは、その資料フォルダの中だけを読み書きするため、手を加えずに残しています。

@@ -93,7 +93,7 @@ describe("city editing bundle: applying edits to each city", () => {
     expect(fingerprint(root)).toBe(before);
   }, 180_000);
 
-  it("applies edits to all eight cities without changing other cities", async () => {
+  it("applies edits to every city without changing other cities", async () => {
     const root = fixture();
     const cities = allCities;
     for (const cityId of cities) {

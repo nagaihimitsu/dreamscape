@@ -97,7 +97,7 @@ function hasLandmarkBattle(state: GameState, event: EncounterDefinition): boolea
 }
 
 /** A deferred quiz's leave branch, or its pre-battle visit, ends without the quiz. */
-export function encounterStoryCanFinish(state: GameState): boolean {
+function encounterStoryCanFinish(state: GameState): boolean {
   const active = state.activeEncounter;
   if (!active || active.phase !== "story" || !active.frame.ended || !active.selectedOptionId) return false;
   const event = getActiveEncounterDefinition(active);
@@ -105,6 +105,12 @@ export function encounterStoryCanFinish(state: GameState): boolean {
   if (!entryRule(event)?.quizAfterLandmarkBattle) return false;
   const option = event.options.find((item) => item.id === active.selectedOptionId);
   return !!option?.deferCompletion || !hasLandmarkBattle(state, event);
+}
+
+/** The encounter's last line ends the scene (EncounterScreen's 「観光に戻る」／「自由時間へ」) instead of reading on. */
+export function encounterCanFinish(state: GameState): boolean {
+  const active = state.activeEncounter;
+  return !!active && active.frame.ended && (active.phase === "outcome" || encounterStoryCanFinish(state));
 }
 
 export function getEncounterOptionAvailability(state: GameState, index: number): Availability {

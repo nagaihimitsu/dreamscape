@@ -25,7 +25,7 @@ function catalog() {
   };
 }
 
-describe("future travel data contract", () => {
+describe("travel data contract", () => {
   it("preserves a one-way route without inventing its reverse", () => {
     const parsed = travelCatalogSchema.parse(catalog());
     expect(parsed.routes).toHaveLength(1);

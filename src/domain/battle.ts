@@ -294,33 +294,24 @@ export function selectReasoningClue(
   clueId: string,
   expectedRevision: number,
 ): GameState {
-  const active = state.activeBattle;
-  const config = active ? getActiveBattleContent(active).battle.reasoning : undefined;
-  if (
-    state.activeTourism ||
-    state.revision !== expectedRevision ||
-    active?.phase !== "reasoning" ||
-    !active.reasoning ||
-    !config ||
-    !config.caseClueIds.includes(clueId)
-  )
-    return state;
-  const selected = active.reasoning.selectedClueIds;
+  // The clue book's rule (canToggleReasoningClue) decides whether this clue can be chosen or put back.
+  if (state.revision !== expectedRevision || !canToggleReasoningClue(state, clueId)) return state;
+  const active = state.activeBattle!;
+  const config = getActiveBattleContent(active).battle.reasoning!;
+  const reasoning = active.reasoning!;
+  const selected = reasoning.selectedClueIds;
   const next = selected.includes(clueId)
     ? selected.filter((id) => id !== clueId)
     : config.kind === "contradiction"
       ? [clueId]
-      : selected.length < 2
-        ? [...selected, clueId]
-        : selected;
-  if (next === selected) return state;
+      : [...selected, clueId];
   return {
     ...state,
     revision: state.revision + 1,
     activeBattle: {
       ...active,
       reasoning: {
-        ...active.reasoning,
+        ...reasoning,
         selectedClueIds: next,
         submittedClueIds: [],
         status: "selecting",
@@ -355,6 +346,44 @@ export function pressBattleClaim(
       config.pressScene,
     ),
   };
+}
+
+/** How many clues a special battle's evidence takes (B: 1, C: 2), as the panel and the clue book show it. */
+export function reasoningEvidenceCount(rule: NonNullable<BattleDefinition["reasoning"]>): number {
+  return rule.correctClueIds.length;
+}
+
+/**
+ * The clue book's 「この証拠を選ぶ」／「外す」 for one clue of the case: a chosen clue can always be
+ * put back; B replaces its one choice; C takes a new clue only while fewer than two are chosen.
+ */
+export function canToggleReasoningClue(state: GameState, clueId: string): boolean {
+  const active = state.activeBattle;
+  const rule = active ? getActiveBattleContent(active).battle.reasoning : undefined;
+  if (state.activeTourism || active?.phase !== "reasoning" || !active.reasoning || !rule || !rule.caseClueIds.includes(clueId)) return false;
+  const selected = active.reasoning.selectedClueIds;
+  return selected.includes(clueId) || selected.length < reasoningEvidenceCount(rule) || rule.kind === "contradiction";
+}
+
+/** The evidence button (ReasoningPanel): enabled once the chosen clues reach the count. */
+export function canSubmitBattleEvidence(state: GameState): boolean {
+  const active = state.activeBattle;
+  const rule = active ? getActiveBattleContent(active).battle.reasoning : undefined;
+  return !state.activeTourism && active?.phase === "reasoning" && !!active.reasoning && !!rule &&
+    active.reasoning.selectedClueIds.length === reasoningEvidenceCount(rule);
+}
+
+/**
+ * The landmark the clue book's 「観光に戻って調べる」 reopens during a battle (GameApp): the battle's own
+ * landmark, for a battle without reasoning (special battles B and C keep the player in the case).
+ */
+export function getBattleObservationLandmarkId(state: GameState): string | null {
+  const active = state.activeBattle;
+  if (!active || state.activeTourism) return null;
+  const { battle } = getActiveBattleContent(active);
+  const landmarkId = battle.landmarkId;
+  if (battle.reasoning || !landmarkId || !landmarks.some((landmark) => landmark.id === landmarkId)) return null;
+  return landmarkId;
 }
 
 export function submitBattleEvidence(

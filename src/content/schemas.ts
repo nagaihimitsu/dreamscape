@@ -175,8 +175,8 @@ export const presentationSchema = z
   })
   .strict();
 
-// The future quiz sample is checked as data only; no battle runtime is included.
-export const quizSampleSchema = z
+// An example quiz (quizzes/*.example.json) is checked as data only and never played.
+export const quizExampleSchema = z
   .object({
     schemaVersion: version,
     id,

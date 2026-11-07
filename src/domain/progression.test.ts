@@ -69,7 +69,7 @@ function lowPath() {
   return play(toNight(), night, [0, 1]);
 }
 
-describe("Phase 2 relationship progression", () => {
+describe("relationship progression", () => {
   it("requires affection and completed history together, uses configured address suffixes", () => {
     const initial = createGame("晴", "灯");
     expect(

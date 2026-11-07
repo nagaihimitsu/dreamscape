@@ -76,6 +76,11 @@ export function settlePendingAp(state: GameState): GameState {
   return ap === state.ap ? state : { ...state, ap, pendingApRewards };
 }
 
+/** The 「受け取る」 button for stored AP: something is stored and the wallet is below its cap. */
+export function canClaimPendingRewards(state: GameState): boolean {
+  return state.pendingApRewards.length > 0 && state.ap < balance.apCap;
+}
+
 export function claimPendingRewards(
   state: GameState,
   expectedRevision: number,

@@ -212,9 +212,11 @@ scripts/                          # 生成・検証・共通の制作ツール
   journeys/<旅行編ID>/            # その旅行編だけの制作ツール
 src/                              # ゲーム本体（React・ゲームルール・保存）
   content/generated/              # 生成物（Git管理せず、手動編集しない）
-tests/e2e/ tests/fixtures/        # E2E（段ごとのタグで実行を分ける）とテスト用データ
+tests/e2e/ tests/fixtures/        # E2E（段ごとのタグで実行を分ける。explore/ は週1回のモンキー）とテスト用データ
+tests/explore/                    # 全旅行編を種付きで歩くゲーム関数の層の探索（npm test に含まれる）
+tests/journeys/<旅行編ID>/        # その旅行編だけの内容・経路・制作ツールの単体テスト（フォルダに置けば npm test に加わる）
 tests/screens/                    # 人が見る画面一覧の撮影（npm run screens）
-.github/workflows/                # CI（ci.yml・e2e.yml）と GitHub Pages への公開（pages.yml）
+.github/workflows/                # CI（ci.yml・e2e.yml）、週1回の探索（e2e-explore.yml）と GitHub Pages への公開（pages.yml）
 ```
 
 | コマンド | 内容 |
@@ -224,12 +226,16 @@ tests/screens/                    # 人が見る画面一覧の撮影（npm run 
 | `npm run content:build`（`content:check`） | 共通データと全旅行編を検証・統合し、`src/content/generated/` に書き出す。成功すると旅行編ごとに提供内容の件数を1行ずつ表示し、警告は件数だけ出す（`-- --verbose` で一覧。[生成時の検査と報告](docs/02_TECH_ARCHITECTURE.md#生成時の検査と報告)）。会話の全分岐検査は前回の成功結果を再利用する（`-- --no-cache` で再利用せずに全部検査。[キャッシュ](docs/10_DEVELOPMENT_CHECKS.md#会話の全分岐検査のキャッシュ)）。`-- --with-sample` で見本の編も加える（単体テストの前の生成はこの形） |
 | `npm run test:quick` | コンテンツを生成してから速い組の単体テスト（日常の確認。全件は `npm test`・CI・`verify`。[テストの組](docs/10_DEVELOPMENT_CHECKS.md#単体テストの組と所要時間)） |
 | `npm test` | コンテンツを生成してから全単体テスト |
+| `npm run test:saves` | コンテンツを生成してから保存関連の単体テスト（`src/persistence/`）だけ |
 | `npm run build` | 生成・型検査・本番ビルド（`dist/`）と、`dist/` にDebug・テスト用のコードやデータがないかの検査 |
 | `npm run verify` | 見本の編を含めた生成・全単体テストの後、見本なしで生成し直して型検査・本番ビルド・`dist/` の検査を行う（公開前・大きな変更）。最初の生成は会話の全分岐検査のキャッシュを使わない |
 | `npm run dist:check` | ビルド済みの `dist/` にDebug・プレビュー・テスト用のコードや旅行編がないかを検査（`build`・`verify` が自動で実行） |
 | `npm run test:e2e` | E2E（Playwright）の開発サーバーの2つの段（合否判定 `gate` とDebug起動台 `debug`）。1つの段だけは `npx playwright test --project=gate`（[E2Eの段](docs/10_DEVELOPMENT_CHECKS.md#e2eの段)） |
 | `npm run test:e2e:prod` | 本番ビルド（`npm run build` の後の `vite preview`）でのE2E。起動・全旅行編の開始画面・ミラノの最初の流れ・本番にDebugがないこと、タイトル画面までの読み込み量の報告 |
 | `npm run test:e2e:sample` | 見本の編を含めて生成した専用の開発サーバー（4175番）でのE2E。見本の編を新しい旅から旅の終わりまで遊ぶ。終わると見本なしで生成し直す。ほかの段と同時に実行しない |
+| `npm run test:walk` | 見本の編を含めて生成してから、ゲーム関数の層のランダムウォーク（全旅行編を種付きで歩き、保存・AP・報酬・詰みを毎手確かめ、固定の種ではどの旅行編も旅の終わりに届くことを確かめる）を実行し、到達した内容の要約を表示する。種と手数は `DREAMSCAPE_WALK_SEEDS`・`DREAMSCAPE_WALK_STEPS`（[探索テスト](docs/10_DEVELOPMENT_CHECKS.md#探索テスト)） |
+| `npm run test:e2e:explore` | 週1回のモンキー（`@explore`）。押せる部品を種付きの乱数で押し続け、エラー・保存・詰みを確かめる。種は `MONKEY_SEED`、開始地点ごとの秒数は `MONKEY_SECONDS`（合否判定にしない） |
+| `npm run test:e2e:webkit` | `@smoke` のテストを iPhone 13 の WebKit で実行（WebKit を入れた環境だけ。CIでは週1回） |
 | `npm run screens` | 主要な画面を320px・390pxで撮り `artifacts/screens/index.html` にまとめる（人の確認用。`-- --previous <前の一覧>` で変わった画面に印。[人が画面を確かめる](docs/10_DEVELOPMENT_CHECKS.md#人が画面を確かめる)） |
 | `npm run content:inspect -- <ファイル>` | 1ファイルの形式とInkコンパイルを確認 |
 | `npm run journey:new -- <旅行編ID> --name <日本語名> --city <都市ID> --city-name <日本語名>` | 見本の編を複製して新しい旅行編（準備中）を `content/journeys/<旅行編ID>/` に作る。`--prefix <接頭辞>`（省略時は旅行編ID）、`--with-optional`（特殊戦B・C、道中交流も複製）。置き換えるものは作った旅行編の `CHECKLIST.md`。見本の出典・画像・文章が残っているうちは `journey:readiness` が示し、`journey:release` は止まる（[新しい編を追加する手順](docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順)） |
@@ -247,10 +253,10 @@ tests/screens/                    # 人が見る画面一覧の撮影（npm run 
 npm run content:inspect -- content/journeys/milano/quizzes/sound_duomo_B1.json
 npm run content:inspect -- --type quiz authoring/templates/sample_trip/quizzes/smp_mihon_clock_tower_quiz.json
 npm run content:inspect -- --all
-npm run content:compat
+npm run test:saves
 ```
 
-単体検証はJSON構文・型やInkコンパイルを確認します。ファイル間の参照、実行時タグ、画像、報酬条件は `--all` または `npm run content:check` で検証してください。`content:compat` は保存関連テストを実行するコマンドであり、過去のセーブの更新後の再開を保証するものではありません。公開済みIDの変更や、進行中Ink・問題の改稿は保存データに影響し得ます。文章の面白さ、英文の自然さ、史実と画像使用権は人が確認します。
+単体検証はJSON構文・型やInkコンパイルを確認します。ファイル間の参照、実行時タグ、画像、報酬条件は `--all` または `npm run content:check` で検証してください。`test:saves` はコンテンツを生成してから保存関連の単体テスト（`src/persistence/`）を実行するコマンドで、過去のセーブの更新後の再開を保証するものではありません。公開済みIDの変更や、進行中Ink・問題の改稿は保存データに影響し得ます。文章の面白さ、英文の自然さ、史実と画像使用権は人が確認します。
 
 [都市別データの編集手順](authoring/CITY_BUNDLES.md) では、地点・都市内交通・出典・画像などを都市ごとの作業用JSONでまとめて編集できます。[都市追加手順](authoring/FUTURE_CITIES.md) には、都市・旅行・各コンテンツの登録方法と検証手順を記しています。
 
@@ -302,7 +308,7 @@ npm run content:check
 
 ゲームが読むJSONは、`content/` を検証・統合して `npm run content:build` が書き出す `src/content/generated/content/`（生成物。手動編集しない）です。`content/` のJSONを編集した後も、Inkと同様に `npm run content:build` を実行してください。
 
-検証はJSONスキーマ、重複ID、章・背景・シナリオ・思い出参照、許可タグ、前提イベントの循環、段階設定、報酬ID重複、シナリオごとの選択数・効果数・告白結果を確認します。壊れたInk・参照切れ・未定義effect・不正JSONはビルド失敗になります。旧 `last_supper_B1.sample.json` は参考サンプルの検証だけに使用し、出題しません。
+検証はJSONスキーマ、重複ID、章・背景・シナリオ・思い出参照、許可タグ、前提イベントの循環、段階設定、報酬ID重複、シナリオごとの選択数・効果数・告白結果を確認します。壊れたInk・参照切れ・未定義effect・不正JSONはビルド失敗になります。例のクイズ（`quizzes/*.example.json`。ミラノ編の `last_supper_B1.example.json`）は検証だけに使い、出題しません。
 
 ### クイズ・敵シナリオの編集
 
@@ -400,7 +406,7 @@ Phase 2では解放済みイベントID、告白の保留/成功、交際エン�
 
 日常の確認には、コンテンツ全体の生成を何度も繰り返す重いテストを除いた `npm run test:quick` を使います。`npm test`・`npm run test:quick`・`npm run build` を個別に使う場合はそれぞれコンテンツを再生成します（単体テストの前は見本の編を含め、`build` の前は含めません）。`npm run verify` は単体テスト用と本番ビルド用の生成を一度ずつ行います。空のcheckoutで `npm run typecheck` を単独実行する場合は、先に `npm run content:check` で生成してください。
 
-単体テストは現在のゲームの進行、保存・再開、二重取得・二重消費の防止、破損・未知版・別タブ競合の保護、コンテンツ参照などを確認します。PlaywrightのE2E（`tests/e2e/`）は段に分かれます。合否判定の段は、起動と全旅行編の開始画面、ミラノでの移動・観光・バトル・デート、保存と再読み込み（バトルの途中を含む）・別タブ・読めないセーブや書き込み失敗の保護、都市間移動を利用者と同じ操作で確かめます。Debug起動台の段は特殊戦B・C、道中交流、デートを場面から直接確かめ（保存・再開の確認には数えません）、本番ビルドの段は公開されるビルドで起動と最初の流れを確かめます。どのテストでもコンソールエラーや画像の欠落があれば失敗します。内容と追加の判断基準は [開発時の確認](docs/10_DEVELOPMENT_CHECKS.md#e2eテスト) を参照してください。見た目は実画面で確認します。GitHub Actionsは、PRで本番ビルド・全単体テスト・E2Eの各段を並列に、`main` へのpushで `npm run verify` と公開、並列してE2Eの各段を実行します。E2Eの失敗時はスクリーンショット・トレース・HTMLレポートが14日間残ります（見方は [CI](docs/10_DEVELOPMENT_CHECKS.md#cigithub-actions)）。画面の見た目と実機Safariでの確認は、CIと並行して人が行います（CIが作る画面一覧 `screens` も使えます）。公開前には、片手で遊ぶ人・キーボードや読み上げで操作する人・英語が苦手な人になりきって目標まで遊ぶ確認も行います（[想定する遊び手での確認](docs/10_DEVELOPMENT_CHECKS.md#想定する遊び手での確認)）。
+単体テストは現在のゲームの進行、保存・再開、二重取得・二重消費の防止、破損・未知版・別タブ競合の保護、コンテンツ参照などを確認します。共通の仕組みのテストはコードの隣（`src/`・`scripts/`）に、1つの旅行編の内容・経路だけを確かめるテストは `tests/journeys/<旅行編ID>/` に置きます（新しい旅行編はフォルダを作ってテストを置くだけで加わります。[旅行編ごとのテスト](docs/10_DEVELOPMENT_CHECKS.md#旅行編ごとのテスト)）。PlaywrightのE2E（`tests/e2e/`）は段に分かれます。合否判定の段は、起動と全旅行編の開始画面、ミラノでの移動・観光・バトル・デート、保存と再読み込み（バトルの途中を含む）・別タブ・読めないセーブや書き込み失敗の保護、都市間移動を利用者と同じ操作で確かめます。Debug起動台の段は特殊戦B・C、道中交流、デートを場面から直接確かめ（保存・再開の確認には数えません）、本番ビルドの段は公開されるビルドで起動と最初の流れを確かめます。さらに、種付きの乱数で遊び方を変える探索テストがあります。ゲーム関数の層のランダムウォーク（固定の種）は単体テストの一部として、PRの確認と公開前の `npm run verify` で合否に入ります。週1回のモンキーとWebKit（iPhone）での確認は、合否にも公開にも関わりません（[探索テスト](docs/10_DEVELOPMENT_CHECKS.md#探索テスト)）。どのテストでもコンソールエラーや画像の欠落があれば失敗します。内容と追加の判断基準は [開発時の確認](docs/10_DEVELOPMENT_CHECKS.md#e2eテスト) を参照してください。見た目は実画面で確認します。GitHub Actionsは、PRで本番ビルド・全単体テスト・E2Eの各段を並列に、`main` へのpushで `npm run verify` と公開、並列してE2Eの各段を実行します。E2Eの失敗時はスクリーンショット・トレース・HTMLレポートが14日間残ります（見方は [CI](docs/10_DEVELOPMENT_CHECKS.md#cigithub-actions)）。画面の見た目と実機Safariでの確認は、CIと並行して人が行います（CIが作る画面一覧 `screens` も使えます）。公開前には、片手で遊ぶ人・キーボードや読み上げで操作する人・英語が苦手な人になりきって目標まで遊ぶ確認も行います（[想定する遊び手での確認](docs/10_DEVELOPMENT_CHECKS.md#想定する遊び手での確認)）。
 
 恋愛の背景と敵の立ち絵は簡易SVGイラストです。観光画面と証拠帳は上記の実物資料画像を使用しています。フォントはNoto Sans JP / Noto Serif JP（Google Fonts、SIL OFL）を任意取得し、取得できなくてもシステムフォントで動作します。
 

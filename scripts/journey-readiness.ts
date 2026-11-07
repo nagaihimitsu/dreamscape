@@ -198,7 +198,7 @@ export function journeyReadinessInput(sources: ContentSources, journeyId: string
     return { city: citySchema.parse(files.data), travel: travelCatalogSchema.parse(files.travel),
       settings: travelSettingsSchema.parse(files.settings) };
   });
-  const quizzes = sources.quizFiles.filter((quiz) => !quiz.sample).map((quiz) => quizSchema.parse(quiz.data));
+  const quizzes = sources.quizFiles.filter((quiz) => !quiz.example).map((quiz) => quizSchema.parse(quiz.data));
   const storyIds = new Set(sources.storyFiles.map((story) => story.id));
   return { trip, cities, quizzes, sampleLeftovers: journeySampleLeftovers(sources, journeyId), journey: parseCatalog(sources, journeySchema, "progression/journey.json"),
     tourism: parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json"),

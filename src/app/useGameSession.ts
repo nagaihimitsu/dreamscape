@@ -2,12 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { createGame, type GameState } from "../domain/game";
 import { advanceCompletedJourneyCity } from "../domain/city-travel";
 import { startCityArrival } from "../domain/epilogue";
-import { finishTravelEventIfComplete } from "../domain/travel-game";
-import {
-  backupAndCreate, deleteSaveData, loadGame,
-  sameGameState, saveGame, type StorageLike,
-} from "../persistence";
+import { applyPlayerAction } from "../domain/player-action";
+import { deleteSaveData, loadGame, saveGame, type StorageLike } from "../persistence";
 import { checkDeleteRequest, type DeleteSnapshot } from "./save-deletion";
+import { writeExplicitSave, writeNewGame, type BaselineResult } from "./save-recovery";
+import { hasUnsavedProgress as unsavedProgress, leaveStep } from "./unsaved-progress";
 
 export type GameChange = (state: GameState) => GameState;
 export type GameStorage = StorageLike & { removeItem(key: string): void };
@@ -26,7 +25,7 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCityCh
 
   function getCurrent() { return gameRef.current; }
   function hasUnsavedProgress() {
-    return !!gameRef.current && (!savedGameRef.current || !sameGameState(gameRef.current, savedGameRef.current));
+    return unsavedProgress(gameRef.current, savedGameRef.current);
   }
   function adopt(next: GameState) {
     gameRef.current = next;
@@ -35,10 +34,9 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCityCh
   function commit(change: GameChange) {
     const previous = gameRef.current;
     if (!previous) return false;
-    const changed = finishTravelEventIfComplete(previous, change(previous));
-    if (changed === previous) return false;
     // The action and any automatic city departure form one saved snapshot.
-    const next = advanceCompletedJourneyCity(changed, changed.revision);
+    const next = applyPlayerAction(previous, change);
+    if (next === previous) return false;
     if (autoSave) {
       const saved = saveGame(storage, next, savedGameRef.current);
       if (!saved.ok) { setNotice(saved.message); return false; }
@@ -51,7 +49,7 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCityCh
   }
   useEffect(() => {
     const warnIfUnsaved = (event: BeforeUnloadEvent) => {
-      if (autoSave || !hasUnsavedProgress()) return;
+      if (leaveStep({ way: "close_page", autoSave }, hasUnsavedProgress()) !== "ask") return;
       event.preventDefault();
       event.returnValue = "";
     };
@@ -63,17 +61,20 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCityCh
     if (game) commit((state) => advanceCompletedJourneyCity(state, state.revision));
   }, [game]);
 
+  /** Keep what a successful write says this tab now knows about its slot; report a refusal. */
+  function adoptBaseline(result: BaselineResult) {
+    if (!result.ok) {
+      if (result.message !== null) setNotice(result.message);
+      return false;
+    }
+    savedGameRef.current = result.baseline.savedGame;
+    protectedOriginalRef.current = result.baseline.protectedOriginal;
+    return true;
+  }
   function begin(player: string, heroine: string, journeyId: string) {
-    if (loaded.status === "invalid" && loaded.kind === "journey") return;
     const initial = createGame(player.trim(), heroine.trim(), { journeyId });
     const next = startCityArrival(initial, initial.revision);
-    const unsavedStart = !autoSave &&
-      (loaded.status === "empty" || (loaded.status === "invalid" && loaded.raw !== null));
-    const saved = unsavedStart ? { ok: true as const } : invalid && loaded.status === "invalid"
-      ? backupAndCreate(storage, next, loaded.raw) : saveGame(storage, next);
-    if (!saved.ok) { setNotice(saved.message); return; }
-    savedGameRef.current = unsavedStart ? null : next;
-    protectedOriginalRef.current = unsavedStart && loaded.status === "invalid" ? loaded.raw : null;
+    if (!adoptBaseline(writeNewGame(storage, next, loaded, autoSave))) return;
     adopt(next);
     setInvalid("");
     setNotice("");
@@ -82,13 +83,8 @@ export function useGameSession(storage: GameStorage, autoSave: boolean, onCityCh
   function persistCurrent() {
     const current = gameRef.current;
     if (!current) return true;
-    const result = protectedOriginalRef.current !== null
-      ? backupAndCreate(storage, current, protectedOriginalRef.current)
-      : saveGame(storage, current, savedGameRef.current);
-    if (!result.ok) { setNotice(result.message); return false; }
-    savedGameRef.current = current;
-    protectedOriginalRef.current = null;
-    return true;
+    return adoptBaseline(writeExplicitSave(storage, current,
+      { savedGame: savedGameRef.current, protectedOriginal: protectedOriginalRef.current }));
   }
   function save() {
     if (gameRef.current && persistCurrent()) setNotice("現在の場面を保存しました。");

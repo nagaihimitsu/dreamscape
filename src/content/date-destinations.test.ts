@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, rm } from "node:fs/promises";
 import path from "node:path";
 import { tmpdir } from "node:os";
 import { buildContent } from "../../scripts/content-pipeline";
-import { prepareContentFixture } from "./test-fixtures";
+import { changeCatalogEntry, prepareContentFixture } from "./test-fixtures";
 import { dateDestinationSchema } from "./date-destinations";
 import destinationData from "./generated/content/romance/date_destinations.json";
 
@@ -23,19 +23,12 @@ beforeEach(async () => {
 });
 afterEach(async () => { await rm(fixture, { recursive: true, force: true }); });
 
-async function editDestinations(change: (items: Destination[]) => void) {
-  const file = path.join(fixture, "content/journeys/milano/romance/date_destinations.json");
-  const catalog = JSON.parse(await readFile(file, "utf8")) as { destinations: Destination[] };
-  change(catalog.destinations);
-  await writeFile(file, JSON.stringify(catalog));
-}
-async function editDates(change: (items: DateEntry[]) => void) {
-  const file = path.join(fixture, "content/journeys/milano/romance/date_catalog.json");
-  const catalog = JSON.parse(await readFile(file, "utf8")) as { dates: DateEntry[] };
-  change(catalog.dates);
-  await writeFile(file, JSON.stringify(catalog));
-}
-const scala = (dates: DateEntry[]) => dates.find((date) => date.id === "milano_la_scala_date_01")!;
+// Each change starts again from the repository's copy of the layer file that
+// holds the entry, so every edit below makes exactly one defect.
+const editScalaDestination = (change: (destination: Destination, catalog: { destinations: Destination[] }) => void) =>
+  changeCatalogEntry<Destination>(fixture, "romance/date_destinations.json", "destinations", "milano_la_scala", change);
+const editScalaDate = (change: (date: DateEntry) => void) =>
+  changeCatalogEntry<DateEntry>(fixture, "romance/date_catalog.json", "dates", "milano_la_scala_date_01", change);
 
 describe("date destination content references", () => {
   it("validates optional, clearly labelled HTTPS references for destination photos", () => {
@@ -56,36 +49,37 @@ describe("date destination content references", () => {
   });
 
   it("rejects duplicate destination IDs", async () => {
-    await editDestinations((items) => { items.push({ ...items[0] }); });
+    await editScalaDestination((destination, catalog) => { catalog.destinations.push({ ...destination }); });
     await expect(buildContent(fixture, false)).rejects.toThrow("Duplicate date destination ID");
   });
 
   it("rejects an unknown destination and a city mismatch", async () => {
-    await editDates((items) => { scala(items).destinationId = "missing_destination"; });
+    await editScalaDate((date) => { date.destinationId = "missing_destination"; });
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown date destination");
-    await editDates((items) => { scala(items).destinationId = "milano_la_scala"; scala(items).chapterId = "unknown_city"; });
+    await editScalaDate((date) => { expect(date.destinationId).toBe("milano_la_scala"); date.chapterId = "unknown_city"; });
     await expect(buildContent(fixture, false)).rejects.toThrow("Date destination city mismatch");
   });
 
   it("rejects an unregistered background and a date/destination background mismatch", async () => {
-    await editDestinations((items) => { items[0].backgroundAssetId = "missing_background"; });
+    await editScalaDestination((destination) => { destination.backgroundAssetId = "missing_background"; });
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown date destination background");
-    await editDestinations((items) => { items[0].backgroundAssetId = "milano_la_scala_date"; });
-    await editDates((items) => { scala(items).backgroundAssetId = "milano_cafe"; });
+    // Back to the repository's destination (its own background), then a date with another background.
+    await editScalaDestination((destination) => { expect(destination.backgroundAssetId).toBe("milano_la_scala_date"); });
+    await editScalaDate((date) => { date.backgroundAssetId = "milano_cafe"; });
     await expect(buildContent(fixture, false)).rejects.toThrow("Date destination background mismatch");
   });
 
   it("rejects malformed source URL, date and claim classification", async () => {
-    await editDestinations((items) => { items[0].facts[0].url = "not-a-url"; });
+    await editScalaDestination((destination) => { destination.facts[0].url = "not-a-url"; });
     await expect(buildContent(fixture, false)).rejects.toThrow(/"url"[\s\S]*Invalid URL/);
-    await editDestinations((items) => { items[0].facts[0].url = "https://example.org"; items[0].facts[0].checkedAt = "not-a-date"; });
+    await editScalaDestination((destination) => { destination.facts[0].checkedAt = "not-a-date"; });
     await expect(buildContent(fixture, false)).rejects.toThrow(/"checkedAt"[\s\S]*Invalid ISO date/);
-    await editDestinations((items) => { items[0].facts[0].checkedAt = "2026-11-01"; items[0].facts[0].claimType = "unknown"; });
+    await editScalaDestination((destination) => { destination.facts[0].claimType = "unknown"; });
     await expect(buildContent(fixture, false)).rejects.toThrow(/"claimType"[\s\S]*Invalid option/);
   });
 
   it("rejects a reference to an unknown episode prerequisite", async () => {
-    await editDates((items) => { scala(items).requiredCompletedEpisodeIds = ["missing_episode"]; });
+    await editScalaDate((date) => { date.requiredCompletedEpisodeIds = ["missing_episode"]; });
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown date prerequisite episode");
   });
 });

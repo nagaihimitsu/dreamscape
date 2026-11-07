@@ -252,7 +252,7 @@ describe("small proof steps inside three-round battles", () => {
               entries: [{ rewardId: "battle_duomo_first", earnedAp: 1, creditedAp: 1, pendingAp: 0 }],
             },
           }),
-        ).toThrow();
+        ).toThrow("受け取った報酬の定義が一致しません。");
         expect(canAccessFreeTime(state)).toBe(true);
         const result = state;
         expect(advanceBattle(result, result.revision)).toBe(result);

@@ -67,7 +67,7 @@ describe("travel destination selection", () => {
     const result = select([unavailable, date("near", 2)]);
     expect(result.nearby.map((place) => place.id)).toEqual(["near"]);
     expect(result.other.map((place) => place.id)).toEqual(["closed"]);
-    expect(() => groupDestinationEvents([{ ...date("one", 1), placeId: "shared" }, { ...date("two", 2), placeId: "shared" }])).toThrow();
+    expect(() => groupDestinationEvents([{ ...date("one", 1), placeId: "shared" }, { ...date("two", 2), placeId: "shared" }])).toThrow("Events at the same place have inconsistent walking times");
   });
 
   it("keeps destinations without an authored walking route without inventing walking times", () => {
@@ -76,7 +76,7 @@ describe("travel destination selection", () => {
     const result = selectNearbyDestinations(groupDestinationEvents([otherMode, date("walk", 12), busOnly]));
     expect(result.nearby.map((place) => place.id)).toEqual(["walk", "bus_only", "taxi_only"]);
     expect(result.nearby[1].walkMinutes).toBeNull();
-    expect(() => groupDestinationEvents([{ ...otherMode, placeId: "shared" }, { ...date("walk2", 2), placeId: "shared" }])).toThrow();
+    expect(() => groupDestinationEvents([{ ...otherMode, placeId: "shared" }, { ...date("walk2", 2), placeId: "shared" }])).toThrow("Events at the same place have inconsistent walking times");
   });
 });
 

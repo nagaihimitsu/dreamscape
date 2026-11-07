@@ -4,8 +4,18 @@ import path from "node:path";
 /**
  * The unit test files, relative to the repository root. Every one of them runs
  * in `npm test`; `npm run test:quick` runs only the quick set (splitTestFiles).
+ * Tests of shared code sit next to it in src/ and scripts/; the tests of one
+ * journey's own content, route and tools sit in tests/journeys/<journeyId>/, so
+ * a new journey's folder there is found without editing this list.
  */
-export const testFilePatterns = ["src/**/*.test.ts", "scripts/**/*.test.ts"];
+export const testFilePatterns = ["src/**/*.test.ts", "scripts/**/*.test.ts", "tests/journeys/**/*.test.ts", "tests/explore/**/*.test.ts"];
+
+/**
+ * Long seeded explorations over every journey (tests/explore/, e.g. the random walk through
+ * the game functions) run with the content set whatever they import: they take tens of seconds
+ * and are not part of the daily quick set.
+ */
+export const longTestFolders = ["tests/explore/"];
 
 /**
  * Modules that run the whole content build: the pipeline itself
@@ -45,9 +55,10 @@ function resolveLocal(from: string, specifier: string): string | undefined {
 /**
  * Split `files` (root-relative test files) into the quick set and the content
  * set. A file is in the content set when its own relative imports, followed to
- * any depth, reach one of contentBuildModules. The split is derived from the
- * code alone, so a new or moved test lands in the right set without a list to
- * maintain. Both sets together are exactly `files`.
+ * any depth, reach one of contentBuildModules, or when it sits in one of
+ * longTestFolders. The split is derived from the code and the folder alone, so a
+ * new or moved test lands in the right set without a list to maintain. Both sets
+ * together are exactly `files`.
  */
 export function splitTestFiles(root: string, files: readonly string[]): { quick: string[]; content: string[] } {
   const targets = new Set(contentBuildModules.map((file) => path.join(root, file)));
@@ -81,7 +92,8 @@ export function splitTestFiles(root: string, files: readonly string[]): { quick:
   };
   const quick: string[] = [];
   const content: string[] = [];
-  for (const file of files) (reachesContentBuild(path.join(root, file)) ? content : quick).push(file);
+  const long = (file: string) => longTestFolders.some((folder) => file.split(path.sep).join("/").startsWith(folder));
+  for (const file of files) (long(file) || reachesContentBuild(path.join(root, file)) ? content : quick).push(file);
   return { quick, content };
 }
 

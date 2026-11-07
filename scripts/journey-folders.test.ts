@@ -114,7 +114,7 @@ describe("journey folders", () => {
 
       const repositorySources = loadContentSources(repository);
       const storyIds = repositorySources.storyFiles.filter((story) => story.layer === "golden_triangle").map((story) => story.id);
-      const quizIds = repositorySources.quizFiles.filter((quiz) => quiz.layer === "golden_triangle" && !quiz.sample)
+      const quizIds = repositorySources.quizFiles.filter((quiz) => quiz.layer === "golden_triangle" && !quiz.example)
         .map((quiz) => readJson(quiz.file).id as string);
       expect(storyIds.length).toBeGreaterThan(0);
       expect(quizIds.length).toBeGreaterThan(0);

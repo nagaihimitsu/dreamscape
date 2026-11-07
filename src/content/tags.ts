@@ -53,8 +53,9 @@ export function parseStoryTags(
       // be provided: `heroine,exasperated,sigh`.
       const parts = value.split(",").map((part) => part.trim());
       const [target, first, second] = parts;
-      if ((target !== "heroine" && target !== "enemy") || parts.length < 2 || parts.length > 3 || !first || (parts.length === 3 && !second))
+      if (parts.length < 2 || parts.length > 3 || !first || (parts.length === 3 && !second))
         throw new Error(`Invalid reaction tag: ${value}`);
+      if (target !== "heroine" && target !== "enemy") throw new Error(`Unknown reaction target: ${target}`);
       let expression: string | undefined;
       let mark: DialogueReaction["mark"];
       if (parts.length === 2 && REACTION_MARKS.includes(first as NonNullable<DialogueReaction["mark"]>)) {

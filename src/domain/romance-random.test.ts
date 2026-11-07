@@ -23,10 +23,10 @@ describe("romance reaction tickets", () => {
       { reaction: 0, affection: 1, trust: 2, spark: 3 },
       { reaction: 9999, affection: 44, trust: 55, spark: 66 },
     ]);
-    expect(() => createRomanceRollPlan(1, () => 10000)).toThrow();
-    expect(() => createRomanceRollPlan(1, () => -1)).toThrow();
-    expect(() => createRomanceRollPlan(1, () => 0.5)).toThrow();
-    expect(() => createRomanceRollPlan(-1, () => 1)).toThrow();
+    expect(() => createRomanceRollPlan(1, () => 10000)).toThrow("恋愛リアクションの乱数値が不正です。");
+    expect(() => createRomanceRollPlan(1, () => -1)).toThrow("恋愛リアクションの乱数値が不正です。");
+    expect(() => createRomanceRollPlan(1, () => 0.5)).toThrow("恋愛リアクションの乱数値が不正です。");
+    expect(() => createRomanceRollPlan(-1, () => 1)).toThrow("選択回数が不正です。");
   });
 
   it("reproduces the exact outcome and deltas with the same ticket", () => {

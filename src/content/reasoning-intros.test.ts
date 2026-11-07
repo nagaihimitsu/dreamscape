@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { zodIssues } from "../../tests/fixtures/zod-issues";
 import { battles, battleQuizzes, reasoningIntroductions, stories } from ".";
 import { compileInk } from "../../scripts/ink-validation";
 import { reasoningIntroCatalogSchema } from "./reasoning-intros";
@@ -14,7 +15,7 @@ describe("reasoning introductions", () => {
     ] })).toThrow(/Duplicate reasoning introduction/);
     expect(() => reasoningIntroCatalogSchema.parse({ schemaVersion: 1, entries: [
       { battleId: "milano_last_supper_b01", storyId: "../missing" },
-    ] })).toThrow();
+    ] })).toThrow(zodIssues({ code: "invalid_format", path: ["entries", 0, "storyId"] }));
   });
 
   it.each(["milano_la_scala_b01", "milano_brera_c01"])(
@@ -54,7 +55,7 @@ describe("reasoning introductions", () => {
     const restored = validateGameState(JSON.parse(JSON.stringify(state)));
     expect(restored.activeBattle!.reasoning).toEqual(state.activeBattle!.reasoning);
     expect(restored.activeBattle!.storyState).toEqual(state.activeBattle!.storyState);
-    expect(() => validateGameState({ ...restored, activeBattle: { ...restored.activeBattle!, contentHash: "mismatched" } })).toThrow();
+    expect(() => validateGameState({ ...restored, activeBattle: { ...restored.activeBattle!, contentHash: "mismatched" } })).toThrow("バトルが更新されています。以前の途中データは保管されています。");
   });
 
   it("keeps heroine dialogue out of the claim but retains the press dialogue", () => {

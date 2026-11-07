@@ -1,7 +1,8 @@
 import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { describe, expect, it, vi } from "vitest";
 import { advanceDate, chooseDate, createGame, startDate } from "../domain";
-import phase1 from "../../tests/fixtures/phase1-saves.json";
+// A date in progress saved in the first save format (schemaVersion 1).
+import firstFormatSave from "../../tests/fixtures/save-format-v1.json";
 import {
   backupAndCreate,
   deleteSaveData,
@@ -86,8 +87,8 @@ describe("local save persistence", () => {
   });
 
   it.each([
-    ["the first", JSON.stringify({ ...phase1.afterChoice, activeDate: {
-      ...phase1.afterChoice.activeDate, storyHash: "not-a-published-script",
+    ["the first", JSON.stringify({ ...firstFormatSave, activeDate: {
+      ...firstFormatSave.activeDate, storyHash: "not-a-published-script",
     } })],
     ["the previous", JSON.stringify({ ...createGame(), schemaVersion: createGame().schemaVersion - 1 })],
   ])("keeps a save in %s older format without migrating or overwriting it", (_label, raw) => {

@@ -26,7 +26,7 @@ const landmarkCity = new Map(tourismCatalogSchema.parse(tourismData).landmarks.m
 const inMilan = (battle: { landmarkId?: string | null; cityId?: string }) =>
   (battle.landmarkId ? landmarkCity.get(battle.landmarkId) : battle.cityId) === "milano";
 const source = () => battleCatalogSchema.parse(battleData).battles.filter(inMilan);
-const legacyA = battleData.battles.find((battle) => battle.id === "milano_last_supper_01")!;
+const plainA = battleData.battles.find((battle) => battle.id === "milano_last_supper_01")!;
 const special = (format: "B" | "C") =>
   source().find((battle) => battle.format === format)!;
 
@@ -46,12 +46,12 @@ async function changeBattle(
 }
 
 describe("special battle content contract", () => {
-  it("preserves the legacy A definition without injecting default fields", () => {
-    expect(battleSchema.parse(legacyA)).toEqual(legacyA);
-    expect(battleSchema.parse(legacyA)).not.toHaveProperty(
+  it("keeps an A battle without format or reasoning as written, injecting no defaults", () => {
+    expect(battleSchema.parse(plainA)).toEqual(plainA);
+    expect(battleSchema.parse(plainA)).not.toHaveProperty(
       "format",
     );
-    expect(battleSchema.parse(legacyA)).not.toHaveProperty(
+    expect(battleSchema.parse(plainA)).not.toHaveProperty(
       "reasoning",
     );
   });
@@ -59,7 +59,7 @@ describe("special battle content contract", () => {
   it("validates all A/B/C scenes while keeping the normal episode linked only to A", async () => {
     const result = await buildContent(fixture, false);
     const milan = result.battles.filter(inMilan);
-    expect(milan[0].id).toBe(legacyA.id);
+    expect(milan[0].id).toBe(plainA.id);
     expect(
       milan.slice(0, 3).map((battle) => battle.format ?? "A"),
     ).toEqual(["A", "B", "C"]);
@@ -71,8 +71,8 @@ describe("special battle content contract", () => {
     const original = result.journey.episodes.find(
       (episode) => episode.id === "milano_last_supper_episode",
     )!;
-    expect(original.battleId).toBe(legacyA.id);
-    expect(result.tourism.landmarks.find((landmark) => landmark.id === "last_supper")!.battleId).toBe(legacyA.id);
+    expect(original.battleId).toBe(plainA.id);
+    expect(result.tourism.landmarks.find((landmark) => landmark.id === "last_supper")!.battleId).toBe(plainA.id);
     expect(
       result.journey.episodes.every(
         (episode) =>

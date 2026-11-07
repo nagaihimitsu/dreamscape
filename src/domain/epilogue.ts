@@ -66,6 +66,11 @@ export function completeArrivalLogo(state: GameState, expectedRevision: number):
   if (state.revision !== expectedRevision || active?.kind !== "arrival" || active.logoComplete) return state;
   return { ...state, revision: state.revision + 1, activeEpilogue: { ...active, logoComplete: true } };
 }
+/** A cleared city whose epilogue has not been read yet offers it (free time, the finale's result). */
+export function canReadCityEpilogue(state: GameState, cityId = state.currentCityId): boolean {
+  return state.completedCityIds.includes(cityId) && !state.viewedEpilogueCityIds.includes(cityId);
+}
+
 export function startCityEpilogue(
   state: GameState,
   cityId: string,

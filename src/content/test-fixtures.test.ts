@@ -1,10 +1,12 @@
 import { afterEach, expect, it } from "vitest";
 import { access, lstat, mkdir, mkdtemp, readFile, readlink, rm, writeFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { resolvePublicFile } from "../../scripts/public-assets";
 import tourismData from "./generated/content/tourism/catalog.json";
-import { linkFiles, prepareContentFixture, replaceFixtureFile } from "./test-fixtures";
+import battleData from "./generated/content/battles/catalog.json";
+import { linkFiles, prepareContentFixture, quizSourceFile, replaceFixtureFile, storySourceFile } from "./test-fixtures";
 
 let fixture: string | undefined;
 afterEach(async () => {
@@ -63,4 +65,16 @@ it("copies the images where symbolic links cannot be made, and reports other err
     expect(await readFile(copy, "utf8")).toBe("image");
   }
   await expect(linkFiles(source, path.join(fixture, "other"), refuse("EIO"))).rejects.toThrow("link refused: EIO");
+});
+
+it("finds the file of a story and of a quiz by their IDs, as the build does", () => {
+  // Battle IDs name the story and quiz they use; the files live in the battle's journey folder.
+  const battle = battleData.battles.find((entry) => entry.id === "milano_last_supper_01")!;
+  const story = storySourceFile(battle.storyId);
+  const quiz = quizSourceFile(battle.quizId);
+  expect(story).toBe(path.join("content/journeys/milano/stories", `${battle.storyId}.ink`));
+  expect(JSON.parse(readFileSync(quiz, "utf8")).id).toBe(battle.quizId);
+  expect(path.dirname(quiz)).toBe(path.join("content/journeys/milano/quizzes"));
+  expect(() => storySourceFile("milano/missing")).toThrow("No story milano/missing");
+  expect(() => quizSourceFile("missing_quiz")).toThrow("No quiz missing_quiz");
 });

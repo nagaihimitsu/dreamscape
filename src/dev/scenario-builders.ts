@@ -15,8 +15,8 @@
 import { balance, battles, episodes, getCities, getCityContent, type QuizQuestion } from "../content";
 import { encounters } from "../content/encounters";
 import { getJourneyForCity } from "../content/journeys";
-import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "../domain/battle";
-import { getNextEpisode, getNextStoryBattle, startEpisode } from "../domain/chapter";
+import { advanceBattle, answerBattle, getActiveBattleContent, selectReasoningClue, startBattle, submitBattleEvidence } from "../domain/battle";
+import { getNextEpisode, getNextStoryBattle, leaveBattleResult, startEpisode, storyBattlesForCity } from "../domain/chapter";
 import { departToNextCity } from "../domain/city-travel";
 import { startEncounter, startTourismEncounter } from "../domain/encounter";
 import { advanceCityEpilogue, completeArrivalLogo, startCityArrival, startCityEpilogue } from "../domain/epilogue";
@@ -117,7 +117,7 @@ export function playEpisodeToResult(state: GameState, episodeId: string, options
 /** Finish one main episode like a player: guide, battle and leaving its result. */
 export function finishEpisode(state: GameState, episodeId: string, options: EpisodePlayOptions = {}): GameState {
   const result = playEpisodeToResult(state, episodeId, options);
-  return validateGameState(act(result, (current) => leaveBattle(current, current.revision), "対決の結果を閉じる", options));
+  return validateGameState(act(result, (current) => leaveBattleResult(current, current.revision), "対決の結果を閉じる", options));
 }
 
 /**
@@ -142,14 +142,14 @@ export function playCityToFinaleResult(initial: GameState, options: CityPlayOpti
         throw new Error(`${cityId} のフィナーレ ${episode.id} の結果になりましたが、都市クリアになっていません。`);
       return state;
     }
-    state = act(state, (current) => leaveBattle(current, current.revision), "対決の結果を閉じる", options);
+    state = act(state, (current) => leaveBattleResult(current, current.revision), "対決の結果を閉じる", options);
   }
 }
 
 /** Clear the current city: every remaining battle, the finale, and leaving the finale's result. */
 export function clearCity(state: GameState, options: CityPlayOptions = {}): GameState {
   const result = playCityToFinaleResult(state, options);
-  return validateGameState(act(result, (current) => leaveBattle(current, current.revision), "フィナーレの結果を閉じる", options));
+  return validateGameState(act(result, (current) => leaveBattleResult(current, current.revision), "フィナーレの結果を閉じる", options));
 }
 
 /** Finish the arrival logo and conversation through their real, effect-free transitions. */
@@ -225,6 +225,26 @@ function startOfCity(cityId: string, visited: Set<string>, names?: Names): GameS
 /** The city's finale result screen, every earlier battle of the city cleared (correct answers by default). */
 export function cityFinaleResult(cityId: string, options: CityPlayOptions & { names?: Names } = {}): GameState {
   return playCityToFinaleResult(cityStart(cityId, options.names), options);
+}
+
+/**
+ * Midway through a city: its start, then the first half of the battles before its finale (special
+ * battles first, in the order the city recommends) won and left, back in free time.
+ */
+export function cityMidway(cityId: string, options: CityPlayOptions & { names?: Names } = {}): GameState {
+  let state = cityStart(cityId, options.names);
+  const before = episodes.filter((episode) => episode.cityId === cityId && episode.kind !== "city_finale").length +
+    storyBattlesForCity(cityId).length;
+  for (let played = 0; played < Math.ceil(before / 2); played++) {
+    const special = getNextStoryBattle(state);
+    const episode = special ? null : getNextEpisode(state);
+    if (!episode && !special) throw new Error(`${cityId} の途中まで進められませんでした。`);
+    const result = special
+      ? playBattleToResult(act(state, (current) => startBattle(current, special.battleId), `特殊戦 ${special.battleId} を始める`, options), options)
+      : playEpisodeToResult(state, episode!.id, options);
+    state = act(result, (current) => leaveBattleResult(current, current.revision), "対決の結果を閉じる", options);
+  }
+  return validateGameState(state);
 }
 
 /** The city cleared and its finale result left: free time after the clear. */

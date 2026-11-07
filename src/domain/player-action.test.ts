@@ -1,0 +1,140 @@
+// The action list the exploration tests walk (listPlayerActions) and the screen rules it is built
+// from: the list is built from the same rule functions the screens call, and each offered action
+// changes the game.
+import { describe, expect, it } from "vitest";
+import { battles, episodes, getCityContent, journeyConfig } from "../content";
+import { defaultJourneyId, journeys } from "../content/journeys";
+import { cityStart, clearCity, completedCity, departFromClearedCity, newJourney, openBattleScene, openEpilogueScene, readEpilogue } from "../dev/scenario-builders";
+import { getActiveBattleContent } from "./battle";
+import { battleCityId, storyBattlesForCity } from "./chapter";
+import { isJourneyComplete } from "./city-travel";
+import { startCityArrival } from "./epilogue";
+import { createGame, type GameState } from "./game";
+import { applyPlayerAction, listPlayerActions, playerActionChange, type PlayerAction } from "./player-action";
+import { canClaimPendingRewards } from "./rewards";
+import { getTravelWaitOptions } from "./travel-destinations";
+import { DAY_END } from "./travel";
+
+const roll = () => 0;
+const kinds = (actions: PlayerAction[]) => actions.map((action) => action.kind);
+const apply = (state: GameState, action: PlayerAction) => applyPlayerAction(state, playerActionChange(action, roll));
+/** Play the open battle on (next, or the right answer) until `done` holds. */
+function until(initial: GameState, done: (state: GameState) => boolean): GameState {
+  let state = initial;
+  for (let step = 0; !done(state); step++) {
+    expect(step, "the battle did not get there").toBeLessThan(200);
+    const active = state.activeBattle!;
+    const right = active.phase === "question" ? getActiveBattleContent(active).quiz.questions[active.roundIndex].correctOptionId : null;
+    const action = listPlayerActions(state).find((item) => item.kind === "battle_next" || (item.kind === "battle_answer" && item.optionId === right));
+    expect(action, `nothing moves the battle on in phase ${active.phase}`).toBeDefined();
+    state = apply(state, action!);
+  }
+  return state;
+}
+const playable = journeys.filter((journey) => journey.status === "available");
+const startCity = (journeyId: string) => playable.find((journey) => journey.id === journeyId)!.cities[0].id;
+
+describe("the actions a player can take now", () => {
+  const withArrival = playable.find((journey) => getCityContent(journey.cities[0].id).city.arrivalStoryId);
+  it.runIf(withArrival)("a new journey offers only its arrival: the logo first, then the lines", () => {
+    const created = createGame("ユウ", "ミオ", { journeyId: withArrival!.id });
+    const arrival = startCityArrival(created, created.revision);
+    expect(listPlayerActions(arrival)).toEqual([{ kind: "arrival_logo" }]);
+    expect(listPlayerActions(apply(arrival, { kind: "arrival_logo" }))).toEqual([{ kind: "epilogue_next" }]);
+  });
+
+  it("free time offers the map's destinations by their available modes and waiting, and each offered action changes the game", () => {
+    const state = newJourney(defaultJourneyId);
+    const actions = listPlayerActions(state);
+    expect(kinds(actions)).toContain("travel");
+    expect(kinds(actions)).toContain("wait");
+    for (const action of actions) expect(apply(state, action), JSON.stringify(action)).not.toBe(state);
+  });
+
+  it("a battle question offers its three answers and the hint, and a landmark's battle the way back to its observation", () => {
+    const cityId = startCity(defaultJourneyId);
+    const episode = episodes.find((item) => item.cityId === cityId && item.kind !== "city_finale")!;
+    const question = until(openBattleScene(newJourney(defaultJourneyId), episode.battleId), (state) => state.activeBattle!.phase === "question");
+    const landmarkId = battles.find((battle) => battle.id === episode.battleId)!.landmarkId!;
+    expect(listPlayerActions(question)).toEqual([
+      { kind: "battle_answer", optionId: "A" }, { kind: "battle_answer", optionId: "B" }, { kind: "battle_answer", optionId: "C" },
+      { kind: "battle_hint" }, { kind: "battle_observe", landmarkId },
+    ]);
+  });
+
+  const storyBattle = (kind: "contradiction" | "connection") => journeyConfig.storyBattles
+    .map((entry) => battles.find((battle) => battle.id === entry.battleId)!)
+    .find((battle) => battle.reasoning?.kind === kind && battleCityId(battle.id) === startCity(defaultJourneyId));
+  it.each(["contradiction", "connection"] as const)("special battle (%s): the clue book offers the clues the screen lets the player choose, and the evidence once enough are chosen", (kind) => {
+    const battle = storyBattle(kind);
+    expect(battle, `the default journey's first city has a ${kind} battle`).toBeDefined();
+    const rule = battle!.reasoning!;
+    let state = until(openBattleScene(newJourney(defaultJourneyId), battle!.id), (current) => current.activeBattle!.phase === "reasoning");
+    const toggles = (current: GameState) => listPlayerActions(current).flatMap((action) => action.kind === "evidence_toggle" ? [action.clueId] : []);
+    expect(toggles(state)).toEqual(rule.caseClueIds);
+    expect(kinds(listPlayerActions(state))).not.toContain("evidence_submit");
+    expect(kinds(listPlayerActions(state)).includes("battle_press")).toBe(kind === "contradiction");
+    for (const clueId of rule.correctClueIds) state = apply(state, { kind: "evidence_toggle", clueId });
+    // B replaces its one clue (every clue stays choosable); C takes no third clue, only puts one back.
+    expect(toggles(state)).toEqual(kind === "contradiction" ? rule.caseClueIds : rule.correctClueIds.filter((id) => rule.caseClueIds.includes(id)).sort((a, b) => rule.caseClueIds.indexOf(a) - rule.caseClueIds.indexOf(b)));
+    expect(kinds(listPlayerActions(state))).toContain("evidence_submit");
+  });
+
+  /** Each battle's result screen on the way through the journey, every city in turn (correct answers). */
+  function everyBattleResult(journeyId: string): GameState[] {
+    const results: GameState[] = [];
+    const cities = playable.find((journey) => journey.id === journeyId)!.cities;
+    let state = cityStart(cities[0].id);
+    for (const [index, city] of cities.entries()) {
+      expect(state.currentCityId).toBe(city.id);
+      const cleared = clearCity(state, { onResult: (result) => results.push(result) });
+      if (index < cities.length - 1) state = departFromClearedCity(cleared);
+    }
+    return results;
+  }
+  it.each(playable.map((journey) => [journey.id, journey.cityTransition ?? "manual"]))("%s: every battle's result has a way out: free time after each battle but a finale whatever the city transition (%s), and a finale its epilogue (free time too unless the journey moves on after it)", (journeyId, transition) => {
+    const cityIds = playable.find((journey) => journey.id === journeyId)!.cities.map((city) => city.id);
+    const battleIds = [...episodes.filter((episode) => cityIds.includes(episode.cityId)).map((episode) => episode.battleId),
+      ...cityIds.flatMap((cityId) => storyBattlesForCity(cityId).map((battle) => battle.battleId))];
+    const results = everyBattleResult(journeyId);
+    expect(new Set(results.map((result) => result.activeBattle!.battleId)), "every episode, special battle and finale").toEqual(new Set(battleIds));
+    for (const result of results) {
+      const { battle } = getActiveBattleContent(result.activeBattle!);
+      const actions = kinds(listPlayerActions(result));
+      if (battle.scope === "city_finale") {
+        expect(actions, battle.id).toContain("battle_epilogue");
+        expect(actions.includes("battle_leave"), battle.id).toBe(transition !== "after_epilogue");
+      } else {
+        expect(actions, battle.id).toContain("battle_leave");
+        expect(actions, battle.id).not.toContain("battle_epilogue");
+      }
+      // Each way out closes the result screen (to free time, the battle's place, or the epilogue).
+      for (const kind of ["battle_leave", "battle_epilogue"] as const)
+        if (actions.includes(kind)) expect(apply(result, { kind }).activeBattle, `${battle.id}: ${kind}`).toBeNull();
+    }
+  });
+
+  it.each(playable.map((journey) => journey.id))("%s: the journey ends once its last city is cleared and that city's epilogue is read", (journeyId) => {
+    const last = playable.find((journey) => journey.id === journeyId)!.cities.at(-1)!.id;
+    const cleared = completedCity(last);
+    expect(isJourneyComplete(cleared)).toBe(false);
+    expect(isJourneyComplete(readEpilogue(openEpilogueScene(cleared)))).toBe(true);
+  });
+
+  it("stored AP is offered for collection only while the wallet is below its cap", () => {
+    const state = newJourney(defaultJourneyId);
+    const stored = { ...state, pendingApRewards: [{ rewardId: "any", earnedAp: 2, remainingAp: 1 }] };
+    expect(canClaimPendingRewards(state)).toBe(false);
+    expect(canClaimPendingRewards(stored)).toBe(true);
+    expect(canClaimPendingRewards({ ...stored, ap: 10_000 })).toBe(false);
+  });
+
+  it("waiting offers 30 minutes and the next opening, each only while it still ends before the day does", () => {
+    const morning = newJourney(defaultJourneyId);
+    const [thirty, ...rest] = getTravelWaitOptions(morning);
+    expect(thirty).toEqual({ minutes: 30, until: null, available: true });
+    for (const option of rest) expect(option.minutes).toBe(option.until! - morning.travel.minute);
+    const late = { ...morning, travel: { ...morning.travel, minute: DAY_END - 20 } };
+    expect(getTravelWaitOptions(late)[0]).toEqual({ minutes: 30, until: null, available: false });
+  });
+});

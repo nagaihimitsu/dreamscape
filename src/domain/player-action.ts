@@ -1,0 +1,182 @@
+import { getActiveBattleContent, getBattleObservationLandmarkId, advanceBattle, answerBattle, canSubmitBattleEvidence, canToggleReasoningClue, pressBattleClaim, selectReasoningClue, submitBattleEvidence, toggleBattleHint } from "./battle";
+import { getBattleResultExits, leaveBattleResult } from "./chapter";
+import { advanceCompletedJourneyCity, departToNextCity, getPlayerDeparture } from "./city-travel";
+import {
+  advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter,
+  getActiveEncounterDefinition, getEncounterOptionAvailability, proceedFromTourism,
+} from "./encounter";
+import { advanceCityEpilogue, canReadCityEpilogue, completeArrivalLogo, startCityEpilogue } from "./epilogue";
+import { advanceDate, chooseDate, finishDate, type GameState } from "./game";
+import { canClaimPendingRewards, claimPendingRewards } from "./rewards";
+import { openTourism, advanceTourismGuide, discoverClue, getDiscoverableClueIds, replayTourismGuide, skipTourismGuide } from "./tourism";
+import { getTravelDestinations, getTravelWaitOptions } from "./travel-destinations";
+import {
+  beginTravelEvent, finishTravelEventIfComplete, getLocalObservationLandmarkIds, getTravelEventAvailability, getTravelSleepOptions,
+  observeLocalLandmark, sleepAtHotel, waitForTravel, type TravelMode,
+} from "./travel-game";
+
+/**
+ * One player action as the game applies it: the change, the map event it completes, and the
+ * automatic departure of a completed city, as one snapshot (the one that is saved). Returns
+ * `previous` itself when the action changed nothing.
+ */
+export function applyPlayerAction(previous: GameState, change: (state: GameState) => GameState): GameState {
+  const changed = finishTravelEventIfComplete(previous, change(previous));
+  if (changed === previous) return previous;
+  return advanceCompletedJourneyCity(changed, changed.revision);
+}
+
+/**
+ * A control a screen offers that changes the game (the name of the screen is in each group).
+ * Presentation-only controls (logs, translations, the English note, settings, the romance
+ * ending's 「自由時間へ」, the clue book's page turning) are not actions.
+ */
+export type PlayerAction =
+  // Free time: TravelMenu, FreeTimeHub, TravelActions (待機・休む), PendingRewards, CityProgress.
+  | { kind: "travel"; eventId: string; mode: TravelMode }
+  | { kind: "observe_again"; landmarkId: string }
+  | { kind: "wait"; minutes: number }
+  | { kind: "rest"; mode: TravelMode; viaPlaceId: string | null }
+  | { kind: "depart" }
+  | { kind: "read_epilogue" }
+  | { kind: "claim_ap" }
+  // Arrival and city epilogue: EpilogueScreen (the arrival logo ends by itself).
+  | { kind: "arrival_logo" }
+  | { kind: "epilogue_next" }
+  // Sightseeing: TourismScreen, ObservationViewer, the clue book's 「資料を読む」.
+  | { kind: "guide_next" }
+  | { kind: "guide_close" }
+  | { kind: "guide_again" }
+  | { kind: "discover"; clueId: string }
+  | { kind: "observation_next" }
+  // Place encounters: EncounterScreen.
+  | { kind: "encounter_choose"; index: number }
+  | { kind: "encounter_answer"; optionId: string }
+  | { kind: "encounter_next" }
+  | { kind: "encounter_finish" }
+  // Battles: BattleScreen, ReasoningPanel, the clue book (evidence, 「観光に戻って調べる」).
+  | { kind: "battle_next" }
+  | { kind: "battle_answer"; optionId: string }
+  | { kind: "battle_hint" }
+  | { kind: "battle_press" }
+  | { kind: "evidence_toggle"; clueId: string }
+  | { kind: "evidence_submit" }
+  | { kind: "battle_observe"; landmarkId: string }
+  | { kind: "battle_epilogue" }
+  | { kind: "battle_leave" }
+  // Dates: RomanceScene.
+  | { kind: "date_choose"; index: number }
+  | { kind: "date_next" }
+  | { kind: "date_finish" };
+
+/**
+ * What the player can do now: every enabled control of the screen this state shows, built from
+ * the same availability rules the screens use (GameApp picks the screen by the same order:
+ * encounter, epilogue, sightseeing, battle, date, free time). Used by the exploration tests;
+ * when a screen gains or changes a control, change this list with it.
+ */
+export function listPlayerActions(state: GameState): PlayerAction[] {
+  const encounter = state.activeEncounter;
+  if (encounter) {
+    if (encounter.phase === "quiz")
+      return getActiveEncounterDefinition(encounter).quiz!.question.options.map((option) => ({ kind: "encounter_answer", optionId: option.id }));
+    if (encounter.phase === "feedback") return [{ kind: "encounter_next" }];
+    if (encounter.frame.choices.length)
+      return encounter.frame.choices.filter((choice) => getEncounterOptionAvailability(state, choice.index).available)
+        .map((choice) => ({ kind: "encounter_choose", index: choice.index }));
+    return [encounterCanFinish(state) ? { kind: "encounter_finish" } : { kind: "encounter_next" }];
+  }
+  const epilogue = state.activeEpilogue;
+  if (epilogue) return [epilogue.kind === "arrival" && !epilogue.logoComplete ? { kind: "arrival_logo" } : { kind: "epilogue_next" }];
+  const tourism = state.activeTourism;
+  if (tourism) {
+    if (tourism.phase === "guide") return [{ kind: "guide_next" }, { kind: "guide_close" }];
+    return [
+      { kind: "observation_next" }, { kind: "guide_again" },
+      ...getDiscoverableClueIds(state).map((clueId) => ({ kind: "discover" as const, clueId })),
+    ];
+  }
+  const battle = state.activeBattle;
+  if (battle) {
+    const observe = getBattleObservationLandmarkId(state);
+    const back: PlayerAction[] = observe ? [{ kind: "battle_observe", landmarkId: observe }] : [];
+    if (battle.phase === "dialogue" || battle.phase === "feedback") return [{ kind: "battle_next" }, ...back];
+    if (battle.phase === "question") {
+      const { quiz } = getActiveBattleContent(battle);
+      return [
+        ...quiz.questions[battle.roundIndex].options.map((option) => ({ kind: "battle_answer" as const, optionId: option.id })),
+        { kind: "battle_hint" }, ...back,
+      ];
+    }
+    if (battle.phase === "reasoning") {
+      const rule = getActiveBattleContent(battle).battle.reasoning!;
+      return [
+        ...rule.caseClueIds.filter((clueId) => canToggleReasoningClue(state, clueId)).map((clueId) => ({ kind: "evidence_toggle" as const, clueId })),
+        ...(rule.kind === "contradiction" ? [{ kind: "battle_press" as const }] : []),
+        ...(canSubmitBattleEvidence(state) ? [{ kind: "evidence_submit" as const }] : []),
+      ];
+    }
+    const exits = getBattleResultExits(state);
+    return [
+      ...(canClaimPendingRewards(state) ? [{ kind: "claim_ap" as const }] : []),
+      ...(exits.epilogue ? [{ kind: "battle_epilogue" as const }] : []),
+      ...(exits.leave ? [{ kind: "battle_leave" as const }] : []),
+      ...back,
+    ];
+  }
+  const date = state.activeDate;
+  if (date) {
+    if (date.frame.choices.length) return date.frame.choices.map((choice) => ({ kind: "date_choose", index: choice.index }));
+    return [date.frame.ended ? { kind: "date_finish" } : { kind: "date_next" }];
+  }
+  return [
+    ...getTravelDestinations(state).candidates.flatMap((event) => event.routes
+      .filter((route) => getTravelEventAvailability(state, event.id, route.mode).available)
+      .map((route) => ({ kind: "travel" as const, eventId: event.id, mode: route.mode }))),
+    ...getLocalObservationLandmarkIds(state).map((landmarkId) => ({ kind: "observe_again" as const, landmarkId })),
+    ...(canReadCityEpilogue(state) ? [{ kind: "read_epilogue" as const }] : []),
+    ...(canClaimPendingRewards(state) ? [{ kind: "claim_ap" as const }] : []),
+    ...(getPlayerDeparture(state) ? [{ kind: "depart" as const }] : []),
+    ...getTravelWaitOptions(state).filter((option) => option.available).map((option) => ({ kind: "wait" as const, minutes: option.minutes })),
+    ...getTravelSleepOptions(state).filter((option) => option.plan.ok)
+      .map(({ route }) => ({ kind: "rest" as const, mode: route.mode, viaPlaceId: route.viaPlaceId ?? null })),
+  ];
+}
+
+/** The change a screen commits for `action` (with the shown revision), as GameApp wires each control. */
+export function playerActionChange(action: PlayerAction, nextRoll: () => number): (state: GameState) => GameState {
+  return (state) => {
+    const revision = state.revision;
+    switch (action.kind) {
+      case "travel": return beginTravelEvent(state, action.eventId, action.mode, revision, nextRoll);
+      case "observe_again": return observeLocalLandmark(state, action.landmarkId, revision, nextRoll);
+      case "wait": return waitForTravel(state, action.minutes, revision);
+      case "rest": return sleepAtHotel(state, action.mode, revision, action.viaPlaceId);
+      case "depart": return departToNextCity(state, revision);
+      case "read_epilogue": case "battle_epilogue": return startCityEpilogue(state, state.currentCityId, revision);
+      case "claim_ap": return claimPendingRewards(state, revision);
+      case "arrival_logo": return completeArrivalLogo(state, revision);
+      case "epilogue_next": return advanceCityEpilogue(state, revision);
+      case "guide_next": return advanceTourismGuide(state, revision);
+      case "guide_close": return skipTourismGuide(state, revision);
+      case "guide_again": return replayTourismGuide(state, revision);
+      case "discover": return discoverClue(state, action.clueId, revision);
+      case "observation_next": return proceedFromTourism(state, revision, nextRoll);
+      case "encounter_choose": return chooseEncounter(state, action.index, revision);
+      case "encounter_answer": return answerEncounterQuiz(state, action.optionId, revision);
+      case "encounter_next": return continueTourismEncounters(state, advanceEncounter(state, revision), nextRoll);
+      case "encounter_finish": return continueTourismEncounters(state, finishEncounter(state, revision), nextRoll);
+      case "battle_next": return advanceBattle(state, revision);
+      case "battle_answer": return answerBattle(state, action.optionId, revision);
+      case "battle_hint": return toggleBattleHint(state, revision);
+      case "battle_press": return pressBattleClaim(state, revision);
+      case "evidence_toggle": return selectReasoningClue(state, action.clueId, revision);
+      case "evidence_submit": return submitBattleEvidence(state, revision);
+      case "battle_observe": return openTourism(state, action.landmarkId);
+      case "battle_leave": return leaveBattleResult(state, revision);
+      case "date_choose": return chooseDate(state, action.index, revision);
+      case "date_next": return advanceDate(state, revision);
+      case "date_finish": return finishDate(state, revision);
+    }
+  };
+}

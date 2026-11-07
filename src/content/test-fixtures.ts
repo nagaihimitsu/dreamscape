@@ -2,7 +2,7 @@ import { copyFile, cp, mkdir, readFile, readdir, rm, symlink, writeFile } from "
 import path from "node:path";
 import { characterCatalogSchema } from "./character-assets";
 import type { MergedKind } from "../../scripts/content-layout";
-import { loadContentSources, publicRoots } from "../../scripts/content-sources";
+import { loadContentSources, publicRoots, storyFile } from "../../scripts/content-sources";
 
 /**
  * Build an isolated, artwork-undelivered fixture for tests of other content.
@@ -101,4 +101,25 @@ export async function changeCatalogEntry<Entry = any>(
   const entry = Array.isArray(fragment[key]) ? fragment[key].find((item: { id?: string }) => item.id === id) : fragment[key][id];
   change(entry, fragment);
   await writeFile(path.join(fixture, path.relative(root, file)), JSON.stringify(fragment));
+}
+
+/**
+ * The file (relative to the repository root) that defines story `id`, found
+ * the way the build finds it. A test that edits a story in a fixture made by
+ * prepareContentFixture writes `path.join(fixture, storySourceFile(id))`, so
+ * it keeps working wherever the story's content layer keeps it.
+ */
+export function storySourceFile(id: string): string {
+  const root = path.resolve(".");
+  const file = storyFile(loadContentSources(root), id);
+  if (!file) throw new Error(`No story ${id}`);
+  return path.relative(root, file);
+}
+
+/** The file (relative to the repository root) that defines the quiz with this `id`; see storySourceFile. */
+export function quizSourceFile(id: string): string {
+  const root = path.resolve(".");
+  const quiz = loadContentSources(root).quizFiles.find((item) => (item.data as { id?: unknown }).id === id);
+  if (!quiz) throw new Error(`No quiz ${id}`);
+  return path.relative(root, quiz.file);
 }

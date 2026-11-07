@@ -12,10 +12,10 @@ describe("saved story consistency", () => {
     const state = started();
     expect(() =>
       parseGameState(JSON.stringify({ ...state, heroineName: "別の名前" })),
-    ).toThrow();
+    ).toThrow("保存された名前が一致しません。");
     expect(() =>
       parseGameState(JSON.stringify({ ...state, playerName: "別の名前" })),
-    ).toThrow();
+    ).toThrow("保存された名前が一致しません。");
   });
 
   it.each(["background", "emotion"] as const)(
@@ -30,11 +30,11 @@ describe("saved story consistency", () => {
             activeDate: { ...state.activeDate, frame },
           }),
         ),
-      ).toThrow();
+      ).toThrow("保存された場面の情報が一致しません。");
     },
   );
 
-  it("rejects a saved choice counter that disagrees with the Ink turn", () => {
+  it("rejects a saved choice counter that disagrees with the resolved romance choices", () => {
     const state = started();
     expect(() =>
       parseGameState(
@@ -43,7 +43,7 @@ describe("saved story consistency", () => {
           activeDate: { ...state.activeDate, choiceCount: 1 },
         }),
       ),
-    ).toThrow();
+    ).toThrow("恋愛リアクションの進行記録が一致しません。");
   });
 
   it("keeps unmodified snapshots loadable", () => {

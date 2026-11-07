@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { getJourney } from "../content/journeys";
 import { advanceDate, chooseDate, validateGameState } from "../domain/game";
+import { debugExampleUrls, debugSessionExampleUrls } from "../../scripts/dev/screen-gallery";
 import { installPreparingJourneyTestCities } from "./test-cities";
 import { parseDebugQuery, type DebugQuery } from "./debug-query";
 import { createDebugState, debugTargets, defaultDebugSettings, firstDebugTarget, resolveDebugLaunch, type DebugSettings, type DebugTarget } from "./debug-state";
@@ -37,8 +38,8 @@ describe("debug scene preparation", () => {
     }
   });
   it("does not open a locked scene and keeps the AP limit", () => {
-    expect(() => createDebugState({ ...base, scene: "date", id: "milano_brera_date_01", progress: "initial" })).toThrow();
-    expect(() => createDebugState({ ...base, scene: "date", id: "milano_brera_date_01", ap: 0 })).toThrow();
+    expect(() => createDebugState({ ...base, scene: "date", id: "milano_brera_date_01", progress: "initial" })).toThrow("この進行状態ではデートを始められません。APや解放条件を確認してください。");
+    expect(() => createDebugState({ ...base, scene: "date", id: "milano_brera_date_01", ap: 0 })).toThrow("この進行状態ではデートを始められません。APや解放条件を確認してください。");
     expect(createDebugState({ ...base, ap: 99 }).ap).toBe(12);
   });
   it("opens a cleared city's epilogue, not before the clear", () => {
@@ -118,16 +119,31 @@ describe("the URL list in docs/10", () => {
     expect(urls.length).toBeGreaterThan(10);
   });
 
-  it.each(urls)("opens %s", (search) => {
+  /** What a launch URL opens: a scene with a game state, or a prototype city's map. */
+  const opens = (search: string) => {
     const parsed = parseDebugQuery(search);
     if (parsed.kind !== "launch") throw new Error(parsed.kind === "error" ? parsed.message : "not a launch URL");
     const cleanup = parsed.query.dataMode === "fixture" ? installPreparingJourneyTestCities() : () => {};
     try {
       const launch = resolveDebugLaunch(parsed.query);
       if (launch.kind === "scene") expect(validateGameState(createDebugState(launch.settings))).toBeTruthy();
+      return launch.kind;
     } finally {
       cleanup();
     }
+  };
+
+  it.each(urls)("opens %s", (search) => {
+    expect(["scene", "map"]).toContain(opens(search));
+  });
+
+  it("gives the monkey every example that opens a scene with a game state as a Debug start point, and only those", () => {
+    // The monkey (tests/e2e/explore/monkey.spec.ts) reads the game state of each start point;
+    // the map check shows none, so a start there could only fail.
+    const examples = debugExampleUrls(docs).map((item) => item.url);
+    const starts = debugSessionExampleUrls(docs).map((item) => item.url);
+    expect(starts).toEqual(examples.filter((url) => opens(url) === "scene"));
+    expect(starts.length).toBeGreaterThan(10);
   });
 });
 

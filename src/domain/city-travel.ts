@@ -13,6 +13,17 @@ export function getNextCity(state: GameState): ReturnType<typeof getCityContent>
   return getCityContent(next.id);
 }
 
+/** The next city free time offers to leave for (「…へ出発」): none for a journey that moves on by itself after the epilogue. */
+export function getPlayerDeparture(state: GameState): ReturnType<typeof getCityContent> | undefined {
+  return getJourneyForCity(state.currentCityId)?.cityTransition === "after_epilogue" ? undefined : getNextCity(state);
+}
+
+/** The end of a journey: its last city cleared and that city's epilogue read, with no next city to go to. */
+export function isJourneyComplete(state: GameState): boolean {
+  return state.completedCityIds.includes(state.currentCityId) && state.viewedEpilogueCityIds.includes(state.currentCityId) &&
+    !getNextCity(state) && !state.activeEpilogue;
+}
+
 /** Leave once; the caller commits the returned snapshot with the existing save guard. */
 export function departToNextCity(state: GameState, expectedRevision: number): GameState {
   if (state.revision !== expectedRevision || !state.completedCityIds.includes(state.currentCityId) ||

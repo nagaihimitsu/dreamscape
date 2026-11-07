@@ -16,7 +16,7 @@ import {
   presentationSchema,
   progressionSchema,
   quizSchema,
-  quizSampleSchema,
+  quizExampleSchema,
 } from "../src/content/schemas";
 import {
   landmarkSchema,
@@ -37,7 +37,7 @@ import { loadContentSources, parseCatalog } from "./content-sources";
 
 const schemas = {
   quiz: quizSchema,
-  "quiz-sample": quizSampleSchema,
+  "quiz-example": quizExampleSchema,
   battle: battleSchema,
   "battle-catalog": battleCatalogSchema,
   date: dateSchema,
@@ -66,7 +66,7 @@ export type ContentType = keyof typeof schemas | "ink";
 export function inferContentType(file: string): ContentType | undefined {
   const name = file.replaceAll("\\", "/");
   if (name.endsWith(".ink")) return "ink";
-  if (/\/quizzes\/.*\.sample\.json$/.test(name)) return "quiz-sample";
+  if (/\/quizzes\/.*\.example\.json$/.test(name)) return "quiz-example";
   if (/\/quizzes\/.*\.json$/.test(name)) return "quiz";
   if (/\/cities\/[^/]+\.json$/.test(name)) return "city";
   const suffixes: Record<string, ContentType> = {
@@ -117,7 +117,7 @@ export async function inspectFile(
       const parsed = fragment
         ? parseCatalog(loadContentSources(fragment.root), schema, fragment.kind)
         : schema.parse(data);
-      if (selected === "quiz" || selected === "quiz-sample") {
+      if (selected === "quiz" || selected === "quiz-example") {
         validateQuizEntries(
           parsed as Parameters<typeof validateQuizEntries>[0],
         );

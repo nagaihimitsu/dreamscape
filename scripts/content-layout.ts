@@ -183,7 +183,7 @@ export type ContentFileType =
   | { type: "city"; id: string }
   | { type: "travel"; cityId: string; settings: boolean }
   | { type: "story"; id: string }
-  | { type: "quiz"; sample: boolean }
+  | { type: "quiz"; example: boolean }
   | { type: "public" }
   | { type: "other" }
   | { type: "unknown" };
@@ -209,7 +209,7 @@ export function classifyContentFile(relative: string, layer: LayerType): Content
   if (travel) return { type: "travel", cityId: travel[1], settings: Boolean(travel[2]) };
   const story = storyIdFromPath(relative);
   if (story !== undefined) return { type: "story", id: story };
-  if (/^quizzes\/.+\.json$/u.test(relative)) return { type: "quiz", sample: relative.endsWith(".sample.json") };
+  if (/^quizzes\/.+\.json$/u.test(relative)) return { type: "quiz", example: relative.endsWith(".example.json") };
   return { type: "unknown" };
 }
 

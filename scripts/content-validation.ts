@@ -41,7 +41,7 @@ import {
   effectCatalogSchema,
   responseProfileCatalogSchema,
   presentationSchema,
-  quizSampleSchema,
+  quizExampleSchema,
   progressionSchema,
   type DateDefinition,
 } from "../src/content/schemas";
@@ -538,14 +538,14 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     visited.add(date.id);
   };
   dates.forEach(visitPrerequisites);
-  // Samples remain validated but excluded from gameplay. Production quizzes are discovered by data alone.
+  // Example quizzes (*.example.json) are validated but never played. Production quizzes are discovered by data alone.
   const quizzes: Record<string, QuizDefinition> = {};
   const productionQuestionIds: string[] = [];
-  for (const { file, sample: isSample, data } of sources.quizFiles) {
-    const quiz = isSample
-      ? parseSourceFile(quizSampleSchema, file, data)
+  for (const { file, example: isExample, data } of sources.quizFiles) {
+    const quiz = isExample
+      ? parseSourceFile(quizExampleSchema, file, data)
       : parseSourceFile(quizSchema, file, data);
-    if (!isSample) {
+    if (!isExample) {
       if (quizzes[quiz.id]) throw new Error(`Duplicate quizId: ${quiz.id}`);
       quizzes[quiz.id] = quiz as QuizDefinition;
       productionQuestionIds.push(

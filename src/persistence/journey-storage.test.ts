@@ -97,7 +97,7 @@ describe("independent journey saves", () => {
       initialState: { ap: 0, pendingAp: 0, affection: 0, trust: 0, spark: 0 } });
     expect(promoteJourneyDraft(india, loaded.raw).ok).toBe(false);
     expect(india.getItem(SAVE_KEY)).toBe(loaded.raw);
-    expect(() => createGame("旅人", "小春", { journeyId: "golden_triangle" })).toThrow();
+    expect(() => createGame("旅人", "小春", { journeyId: "golden_triangle" })).toThrow("Journey is not ready: golden_triangle");
     india.setItem(LEARNING_KEY, "india notes");
     expect(milan.getItem(LEARNING_KEY)).toBe("milan notes");
     expect(india.getItem(LEARNING_KEY)).toBe("india notes");
@@ -177,7 +177,7 @@ describe("independent journey saves", () => {
 
   it("validates journey IDs and names", () => {
     const base = memoryStorage();
-    expect(() => journeyStorage(base, "../milano")).toThrow();
+    expect(() => journeyStorage(base, "../milano")).toThrow("Invalid journey ID");
     const india = journeyStorage(base, "golden_triangle");
     expect(saveJourneyDraft(india, "  ", "名前").ok).toBe(false);
     expect(saveJourneyDraft(india, "あ".repeat(25), "名前").ok).toBe(false);

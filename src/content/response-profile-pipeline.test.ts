@@ -3,7 +3,8 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { buildContent } from "../../scripts/content-pipeline";
-import { prepareContentFixture } from "./test-fixtures";
+import { changeCatalogEntry, prepareContentFixture, storySourceFile } from "./test-fixtures";
+import dateData from "./generated/content/romance/date_catalog.json";
 
 let fixture: string;
 beforeEach(async () => {
@@ -12,9 +13,10 @@ beforeEach(async () => {
 });
 afterEach(async () => { await rm(fixture, { recursive: true, force: true }); });
 
-/** Shared romance data (core layer) and Milan's own romance catalogs. */
+/** Shared romance data (core layer); entries of the other catalogs are changed by ID where their layer keeps them. */
 const core = "content/romance";
-const milano = "content/journeys/milano/romance";
+const changeEffect = (id: string, change: (effect: any, catalog: any) => void) =>
+  changeCatalogEntry(fixture, "romance/effect_catalog.json", "effects", id, change);
 async function changeJson(relative: string, mutate: (data: any) => void) {
   const file = path.join(fixture, relative);
   const data = JSON.parse(await readFile(file, "utf8"));
@@ -29,22 +31,21 @@ describe("response profile cross-file validation", () => {
   });
 
   it("rejects effect references to unknown profiles", async () => {
-    await changeJson(`${core}/effect_catalog.json`, (data) => { data.effects[0].responseProfileId = "missing_profile"; });
+    await changeEffect("common_date_first_attentive", (effect) => { effect.responseProfileId = "missing_profile"; });
     await expect(buildContent(fixture, false)).rejects.toThrow(/Unknown response profile/);
   });
 
   it("rejects an outcome effect that attempts to use a response profile", async () => {
-    await changeJson(`${milano}/effect_catalog.json`, (data) => {
-      const outcome = data.effects.find((effect: any) => effect.outcome);
+    await changeEffect("milano_confession_accepted", (outcome) => {
+      expect(outcome.outcome).toBe("accepted");
       outcome.responseProfileId = "attentive";
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(/Confession outcome cannot use a response profile/);
   });
 
   it("rejects RANDOM in an active romance Ink script", async () => {
-    const catalog = JSON.parse(await readFile(path.join(fixture, `${milano}/date_catalog.json`), "utf8"));
-    const storyId = catalog.dates.find((date: any) => date.kind === "normal").storyId;
-    const file = path.join(fixture, "content/journeys/milano/stories", `${storyId}.ink`);
+    const storyId = dateData.dates.find((date) => date.kind === "normal")!.storyId;
+    const file = path.join(fixture, storySourceFile(storyId));
     const source = await readFile(file, "utf8");
     expect(source).toMatch(/# background:[^\n]*\n/);
     await writeFile(file, source.replace(/(# background:[^\n]*\n)/, "$1~ temp forbidden_roll = RANDOM(1, 2)\n"));
@@ -52,8 +53,8 @@ describe("response profile cross-file validation", () => {
   }, 30_000);
 
   it("rejects a recovery event that consumes AP or cannot repeat", async () => {
-    await changeJson(`${milano}/date_catalog.json`, (data) => {
-      const date = data.dates.find((entry: any) => entry.kind === "special");
+    await changeCatalogEntry(fixture, "romance/date_catalog.json", "dates", "milano_invitation_01", (date: any) => {
+      expect(date.kind).toBe("special");
       date.recovery = true;
       date.repeatable = false;
       date.rewardOnlyOnce = false;
@@ -62,15 +63,15 @@ describe("response profile cross-file validation", () => {
   });
 
   it("rejects an unused memoryless effect even if its response profile exists", async () => {
-    await changeJson(`${milano}/effect_catalog.json`, (data) => {
-      data.effects.push({ id: "unused_memoryless_effect", affectionDelta: 0, responseProfileId: "attentive" });
+    // A new effect next to Milan's own date effects.
+    await changeEffect("sound_cafe_01_2_1", (_effect, catalog) => {
+      catalog.effects.push({ id: "unused_memoryless_effect", affectionDelta: 0, responseProfileId: "attentive" });
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(/outside recovery: unused_memoryless_effect/);
   }, 120_000);
 
   it("rejects a memoryless effect used by an ordinary date", async () => {
-    await changeJson(`${milano}/effect_catalog.json`, (data) => {
-      const effect = data.effects.find((item: any) => item.id === "sound_cafe_01_2_1");
+    await changeEffect("sound_cafe_01_2_1", (effect) => {
       delete effect.memoryId;
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(/outside recovery: sound_cafe_01_2_1/);

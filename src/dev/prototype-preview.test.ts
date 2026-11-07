@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { cityContents, episodes, getCityContent } from "../content";
 import { journeys } from "../content/journeys";
-import { installIndiaTestCities, installJourneyTestCities, installPreparingJourneyTestCities } from "./test-cities";
+import { installJourneyTestCities, installPreparingJourneyTestCities } from "./test-cities";
 import { loadGame, saveGame } from "../persistence";
 import { prototypePreviewState } from "./prototype-preview-state";
 
@@ -58,7 +58,7 @@ describe("prototype city debug preview", () => {
 
   it("does not replace authored India with fictional scenes", () => {
     const original = cityContents.delhi;
-    expect(() => installIndiaTestCities()).toThrow(/制作中の旅行編ではありません/);
+    expect(() => installJourneyTestCities("golden_triangle")).toThrow("制作中の旅行編ではありません: golden_triangle");
     expect(() => prototypePreviewState("delhi")).toThrow(/制作中の都市ではありません/);
     expect(cityContents.delhi).toBe(original);
   });
