@@ -1,19 +1,23 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { Story } from "inkjs";
 import { buildContent } from "../../scripts/content-pipeline";
-import { changeCatalogEntry, prepareContentFixture } from "./test-fixtures";
-import quizData from "../../content/journeys/milano/quizzes/sound_supper_B1.json";
+import { changeCatalogEntry, prepareContentFixture, quizSourceFile, storySourceFile } from "./test-fixtures";
+import battleData from "./generated/content/battles/catalog.json";
 import type { BattleDefinition } from "./schemas";
 import { parseStoryTags } from "./tags";
 
 let fixture: string;
-const quizPath = "content/journeys/milano/quizzes/sound_supper_B1.json";
-/** The Last Supper battle, which uses the quiz and Ink edited below. */
+/** The Last Supper battle; its quiz and Ink, edited below, are found by their IDs. */
 const battleId = "milano_last_supper_01";
-const inkPath = "content/journeys/milano/stories/battles/sound_supper.ink";
+const battle = battleData.battles.find((entry) => entry.id === battleId)!;
+const quizPath = quizSourceFile(battle.quizId);
+const inkPath = storySourceFile(battle.storyId);
+// The quiz as written in its file; the tests below write invalid values into it on purpose.
+const quizData: Record<string, any> = JSON.parse(readFileSync(quizPath, "utf8"));
 
 beforeEach(async () => {
   fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-battle-content-"));
@@ -74,7 +78,7 @@ describe("battle content contract", () => {
       "milano_last_supper_b1_example",
     );
     expect(
-      new Set(quizData.questions.map((question) => question.correctOptionId))
+      new Set(quizData.questions.map((question: { correctOptionId: string }) => question.correctOptionId))
         .size,
     ).toBe(3);
   });
@@ -195,7 +199,7 @@ describe("battle content contract", () => {
 
   it("rejects duplicate production quiz IDs across files", async () => {
     await writeFile(
-      path.join(fixture, "content/journeys/milano/quizzes/duplicate.json"),
+      path.join(fixture, path.dirname(quizPath), "duplicate.json"),
       JSON.stringify(quizData),
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(

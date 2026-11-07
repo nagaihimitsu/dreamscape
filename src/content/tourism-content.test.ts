@@ -4,13 +4,13 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { Story } from "inkjs";
 import { buildContent } from "../../scripts/content-pipeline";
-import { changeCatalogEntry, prepareContentFixture, replaceFixtureFile } from "./test-fixtures";
+import { changeCatalogEntry, prepareContentFixture, replaceFixtureFile, storySourceFile } from "./test-fixtures";
 import catalogData from "./generated/content/tourism/catalog.json";
 import type { TourismCatalog } from "./tourism-schemas";
 import { resolvePublicFile } from "../../scripts/public-assets";
 
 let fixture: string;
-const guidePath = "content/journeys/milano/stories/tourism/sound_supper.ink";
+const guidePath = storySourceFile("tourism/sound_supper");
 // The Last Supper landmark, its first clues and an image asset.
 const assetId = "darsena_finale_photo";
 const landmarkId = "last_supper";

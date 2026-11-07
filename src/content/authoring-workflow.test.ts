@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { SAMPLE_JOURNEY_DIRECTORY, SAMPLE_JOURNEY_ID, journeyDirectory } from "../../scripts/content-layout";
 import { buildContent } from "../../scripts/content-pipeline";
-import { prepareContentFixture } from "./test-fixtures";
+import { prepareContentFixture, quizSourceFile } from "./test-fixtures";
 import { quizSchema } from "./schemas";
 
 const root = path.resolve(".");
@@ -94,7 +94,7 @@ describe("content authoring workflow", () => {
   }, 90_000);
 
   it("reflects an existing Milan quiz edit while leaving production text untouched", async () => {
-    const productionFile = path.join(root, "content/journeys/milano/quizzes/sound_duomo_B1.json");
+    const productionFile = path.join(root, quizSourceFile("sound_duomo_b1"));
     const original = await readFile(productionFile, "utf8");
     const screenFile = path.join(root, "src/features/battle/BattleScreen.tsx");
     const originalScreen = await readFile(screenFile, "utf8");
@@ -104,7 +104,7 @@ describe("content authoring workflow", () => {
     expect(quiz.questions[0].questionEn).not.toBe(editedQuestion);
     quiz.questions[0].questionEn = editedQuestion;
     await writeFile(
-      path.join(fixture, "content/journeys/milano/quizzes/sound_duomo_B1.json"),
+      path.join(fixture, quizSourceFile("sound_duomo_b1")),
       `${JSON.stringify(quiz, null, 2)}\n`,
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(

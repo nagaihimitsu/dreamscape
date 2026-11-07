@@ -15,10 +15,10 @@ import { reasoningIntroCatalogSchema } from "./reasoning-intros";
 import { battleCatalogSchema, citySchema, dateCatalogSchema } from "./schemas";
 import { tourismCatalogSchema } from "./tourism-schemas";
 import { parseStoryTags } from "./tags";
-import { prepareContentFixture } from "./test-fixtures";
+import { changeCatalogEntry, prepareContentFixture, quizSourceFile, storySourceFile } from "./test-fixtures";
 
 let fixture: string;
-const storyFile = "content/journeys/milano/stories/milano/sound_cafe_01.ink";
+const storyFile = storySourceFile("milano/sound_cafe_01");
 const dateFile = "content/journeys/milano/romance/date_catalog.json";
 
 beforeEach(async () => {
@@ -36,12 +36,10 @@ async function replace(file: string, from: string, to: string) {
   await writeFile(target, original.replace(from, to));
 }
 
-async function changeDates(change: (data: typeof dateData) => void) {
-  const data: typeof dateData = JSON.parse(
-    await readFile(path.join(fixture, dateFile), "utf8"),
-  );
-  change(data);
-  await writeFile(path.join(fixture, dateFile), JSON.stringify(data));
+type DateEntry = (typeof dateData)["dates"][number];
+/** Change one date, by ID, in the layer file that defines it. */
+function changeDate(id: string, change: (date: DateEntry, catalog: typeof dateData) => void) {
+  return changeCatalogEntry<DateEntry>(fixture, "romance/date_catalog.json", "dates", id, change);
 }
 
 describe("content build acceptance", () => {
@@ -83,18 +81,20 @@ describe("content build acceptance", () => {
   });
   it("accepts a credited shared photo and rejects a missing or ambiguous background asset", async () => {
     // A Milan background without an image (the core default may not use a journey's photo).
-    const file = path.join(fixture, "content/journeys/milano/romance/presentation.json");
-    const data = JSON.parse(await readFile(file, "utf8"));
-    expect(data.backgrounds.milano_walk.imageAssetId).toBeUndefined();
-    data.backgrounds.milano_walk.imageAssetId = "galleria_milano_photo";
-    await writeFile(file, JSON.stringify(data));
+    type Background = { imageAssetId?: string; imagePath?: string };
+    const changeWalk = (change: (background: Background) => void) =>
+      changeCatalogEntry<Background>(fixture, "romance/presentation.json", "backgrounds", "milano_walk", change);
+    await changeWalk((background) => {
+      expect(background.imageAssetId).toBeUndefined();
+      background.imageAssetId = "galleria_milano_photo";
+    });
     await expect(buildContent(fixture, false)).resolves.toBeDefined();
-    data.backgrounds.milano_walk.imageAssetId = "missing_background_asset";
-    await writeFile(file, JSON.stringify(data));
+    await changeWalk((background) => { background.imageAssetId = "missing_background_asset"; });
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown background image asset: milano_walk/missing_background_asset");
-    data.backgrounds.milano_walk.imageAssetId = "galleria_milano_photo";
-    data.backgrounds.milano_walk.imagePath = "assets/tourism/galleria-milano.webp";
-    await writeFile(file, JSON.stringify(data));
+    await changeWalk((background) => {
+      background.imageAssetId = "galleria_milano_photo";
+      background.imagePath = "assets/tourism/galleria-milano.webp";
+    });
     await expect(buildContent(fixture, false)).rejects.toThrow("Background cannot specify both imagePath and imageAssetId: milano_walk");
   }, 120000);
   it("rejects an undefined character ID and a registered but missing image", async () => {
@@ -264,8 +264,8 @@ describe("content build acceptance", () => {
   });
 
   it("rejects an unknown story reference", async () => {
-    await changeDates((data) => {
-      data.dates[0].storyId = "milano/missing";
+    await changeDate("milano_cafe_01", (date) => {
+      date.storyId = "milano/missing";
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Unknown storyId",
@@ -273,8 +273,8 @@ describe("content build acceptance", () => {
   });
 
   it("rejects duplicate stable date IDs", async () => {
-    await changeDates((data) => {
-      data.dates.push({ ...data.dates[0] });
+    await changeDate("milano_cafe_01", (date, catalog) => {
+      catalog.dates.push({ ...date });
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Duplicate dateId",
@@ -282,8 +282,8 @@ describe("content build acceptance", () => {
   });
 
   it("rejects a normal date configured for replay", async () => {
-    await changeDates((data) => {
-      data.dates[0].repeatable = true;
+    await changeDate("milano_cafe_01", (date) => {
+      date.repeatable = true;
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "One-time event is repeatable: milano_cafe_01",
@@ -348,15 +348,15 @@ describe("content build acceptance", () => {
   });
 
   it("rejects valid JSON with invalid schema", async () => {
-    await changeDates((data) => {
-      data.dates[0].apCost = -1;
+    await changeDate("milano_cafe_01", (date) => {
+      date.apCost = -1;
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(/"apCost"[\s\S]*Too small: expected number to be >=0/);
   });
 
   it("requires the name variables expected by the runtime", async () => {
     await replace(
-      "content/journeys/milano/stories/milano/sound_invitation_01.ink",
+      storySourceFile("milano/sound_invitation_01"),
       'VAR player_name = ""',
       "// player name accidentally removed",
     );
@@ -366,18 +366,13 @@ describe("content build acceptance", () => {
   });
 
   it("rejects relationship rewards attached to confession outcomes", async () => {
-    const file = path.join(fixture, "content/journeys/milano/romance/effect_catalog.json");
-    const data = JSON.parse(await readFile(file, "utf8"));
-    const outcome = data.effects.find(
-      (effect: { id: string }) => effect.id === "milano_confession_accepted",
-    );
     for (const field of ["affectionDelta", "trustDelta", "sparkDelta"]) {
-      outcome[field] = 1;
-      await writeFile(file, JSON.stringify(data));
+      // Each change starts again from the repository's file: one field at a time.
+      await changeCatalogEntry<Record<string, unknown>>(fixture, "romance/effect_catalog.json", "effects", "milano_confession_accepted",
+        (outcome) => { outcome[field] = 1; });
       await expect(buildContent(fixture, false)).rejects.toThrow(
         "Confession outcome cannot award relationship points",
       );
-      outcome[field] = 0;
     }
   });
 
@@ -400,8 +395,8 @@ describe("content build acceptance", () => {
   });
 
   it("rejects a normal date requiring another date", async () => {
-    await changeDates((data) => {
-      (data.dates[0].requiredPlayedDateIds as string[]).push("milano_walk_01");
+    await changeDate("milano_cafe_01", (date) => {
+      (date.requiredPlayedDateIds as string[]).push("milano_walk_01");
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Normal dates cannot require other dates",
@@ -409,8 +404,9 @@ describe("content build acceptance", () => {
   });
 
   it("rejects a paid special event", async () => {
-    await changeDates((data) => {
-      data.dates.find((date) => date.kind === "special")!.apCost = 1;
+    await changeDate("milano_invitation_01", (date) => {
+      expect(date.kind).toBe("special");
+      date.apCost = 1;
     });
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Special events must be free",
@@ -419,7 +415,7 @@ describe("content build acceptance", () => {
 
   it("rejects invalid confession readiness branches", async () => {
     await replace(
-      "content/journeys/milano/stories/milano/sound_confession_01.ink",
+      storySourceFile("milano/sound_confession_01"),
       'confession_result == "accepted":',
       "true:",
     );
@@ -430,7 +426,7 @@ describe("content build acceptance", () => {
 
   it("rejects missing outcome events in confession", async () => {
     await replace(
-      "content/journeys/milano/stories/milano/sound_confession_01.ink",
+      storySourceFile("milano/sound_confession_01"),
       "# effect: milano_confession_accepted",
       "# effect: sound_invitation_01_1_1",
     );
@@ -466,7 +462,7 @@ describe("content build acceptance", () => {
 
   it("still validates the example quiz, which is never played", async () => {
     await replace(
-      "content/journeys/milano/quizzes/last_supper_B1.example.json",
+      quizSourceFile("milano_last_supper_b1_example"),
       '"correctOptionId": "A"',
       '"correctOptionId": "D"',
     );
