@@ -26,6 +26,18 @@ function scaffoldFixture(): JourneyScaffoldInput {
     imageAssetIds: Object.fromEntries(ids.flatMap((id) => renamed(planned, id).map((landmark, index) => [landmark, `${id}_test_photo_${index}`]))),
   };
 }
+const testScene = { titleJa: "試験", descriptionJa: "試験用", clearTitleJa: "試験", clearDescriptionJa: "試験用",
+  enemyNameJa: "試験", enemyTitleJa: "試験", enemyDescriptionJa: "試験用" };
+/** Placeholder scenario metadata for every required event of `requirements`. */
+function testNarrative(requirements: ReturnType<typeof journeyRequirements>) {
+  return {
+    main: Object.fromEntries(requirements.flatMap((city) => city.main.map((event) => [event.eventId, testScene]))),
+    dates: Object.fromEntries(requirements.flatMap((city) => city.dates.map((event) => [event.eventId,
+      { titleJa: "試験", descriptionJa: "試験用", memoryTitleJa: "試験", memoryDescriptionJa: "試験用" }]))),
+    finales: Object.fromEntries(requirements.map((city) => [city.cityId,
+      { ...testScene, placeId: city.main[0].landmarkId, activityMinutes: 60 }])),
+  };
+}
 const uzbekManifest = "content/journeys/uzbekistan/manifest.json";
 /** Manifests of three journeys, with Uzbekistan's cities in `layer` (the core layer by default). */
 function releaseFixture(layer = "content") {
@@ -55,16 +67,7 @@ describe("journey authoring with four cities", () => {
     const requirements = journeyRequirements(input);
     expect(requirements.map((city) => city.cityId)).toEqual(ids);
     expect(requirements.every((city) => city.main.length === 4 && city.dates.length === 6)).toBe(true);
-    const scene = { titleJa: "試験", descriptionJa: "試験用", clearTitleJa: "試験", clearDescriptionJa: "試験用",
-      enemyNameJa: "試験", enemyTitleJa: "試験", enemyDescriptionJa: "試験用" };
-    const narrative = {
-      main: Object.fromEntries(requirements.flatMap((city) => city.main.map((event) => [event.eventId, scene]))),
-      dates: Object.fromEntries(requirements.flatMap((city) => city.dates.map((event) => [event.eventId,
-        { titleJa: "試験", descriptionJa: "試験用", memoryTitleJa: "試験", memoryDescriptionJa: "試験用" }]))),
-      finales: Object.fromEntries(requirements.map((city) => [city.cityId,
-        { ...scene, placeId: city.main[0].landmarkId, activityMinutes: 60 }])),
-    };
-    const fragments = buildJourneyFragments(input, narrative);
+    const fragments = buildJourneyFragments(input, testNarrative(requirements));
     expect(fragments.episodes).toHaveLength(20);
     expect(fragments.dates).toHaveLength(24);
     expect(fragments.landmarks.every((landmark) => landmark.imageAssetId === input.imageAssetIds[landmark.id])).toBe(true);
@@ -81,6 +84,29 @@ describe("journey authoring with four cities", () => {
     expect(requirements.at(-1)?.finale.battleStoryId).toBe("battles/uz_khiva_finale");
     expect(() => getJourneyAuthoringProfile(process.cwd(), "missing")).toThrow(/Unknown authoring journey/);
     expect(() => getJourneyAuthoringProfile(process.cwd(), "milano")).toThrow(/Unknown authoring journey/);
+  });
+
+  it("keeps a later finale or special battle at a main attraction out of the main-event requirements", () => {
+    const input = scaffoldFixture();
+    const city = input.cities.find((item) => item.cityId === "tashkent")!;
+    const event = city.events.find((item) => item.category === "main")!;
+    city.events.push({ ...event, id: "uz_tashkent_finale" }, { ...event, id: "uz_tashkent_special" });
+    expect(journeyRequirements(input, ["tashkent"])[0].main).toHaveLength(4);
+  });
+
+  it("rejects invalid city selections, missing scenario data and a finale at another city's attraction", () => {
+    const input = scaffoldFixture();
+    expect(() => journeyRequirements(input, [])).toThrow("Journey scaffold: invalid city selection");
+    expect(() => journeyRequirements(input, ["missing"])).toThrow("Journey scaffold: invalid city selection");
+    expect(() => journeyRequirements(input, ["tashkent", "tashkent"])).toThrow("Journey scaffold: invalid city selection");
+    const missing = testNarrative(journeyRequirements(input, ["tashkent"]));
+    delete missing.main[Object.keys(missing.main)[0]];
+    expect(() => buildJourneyFragments(input, missing, ["tashkent"])).toThrow("Journey scaffold: main scenarios must contain exactly the registered IDs");
+    const wrongCity = testNarrative(journeyRequirements(input, ["tashkent"]));
+    wrongCity.finales.tashkent.placeId = journeyRequirements(input, ["samarkand"])[0].main[0].landmarkId;
+    expect(() => buildJourneyFragments(input, wrongCity, ["tashkent"])).toThrow("Journey scaffold: finale must use a registered attraction in tashkent");
+    expect(buildJourneyFragments(input, testNarrative(journeyRequirements(input, ["samarkand"])), ["samarkand"]).episodes
+      .every((episode) => episode.cityId === "samarkand")).toBe(true);
   });
 
   it("names the registered journeys when asked for one that is not", () => {
@@ -100,8 +126,12 @@ describe("journey authoring with four cities", () => {
     expect(report.cities.map((city) => city.cityId)).toEqual(ids);
     expect(report.ready).toBe(false);
     expect(report.readyForPromotion).toBe(false);
-    expect(report.cities.at(-1)?.issues.some((issue) => issue.code === "finale_missing")).toBe(true);
-    expect(report.cities.at(-1)?.events.some((event) => event.issues.some((issue) => issue.code === "episode_missing"))).toBe(true);
+    // Every city, the fourth included, lacks its finale, its main episodes and its dates.
+    for (const city of report.cities) {
+      expect(city.issues.some((issue) => issue.code === "finale_missing"), city.cityId).toBe(true);
+      expect(city.events.some((event) => event.category === "main" && event.issues.some((issue) => issue.code === "episode_missing")), city.cityId).toBe(true);
+      expect(city.events.some((event) => event.category === "date" && event.issues.some((issue) => issue.code === "date_missing")), city.cityId).toBe(true);
+    }
   });
 
   it("promotes the city prefix in the journey's own manifest and preserves both unrelated journeys", () => {

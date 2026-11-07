@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { buildJourneyFragments, journeyRequirements, loadJourneyScaffold } from "../../../scripts/journey-scaffold";
 
+// The Golden Triangle's own travel data and observations through the scaffold.
+// The scaffold's shared rules (selection errors, finale and special events,
+// missing scenarios) are checked on fictional cities in scripts/journey-authoring.test.ts.
+
 const input = loadJourneyScaffold(process.cwd(), "golden_triangle");
 const scene = { titleJa: "試験", descriptionJa: "試験用の場面", clearTitleJa: "試験完了", clearDescriptionJa: "試験用の記録",
   enemyNameJa: "試験人物", enemyTitleJa: "試験の人", enemyDescriptionJa: "試験用の人物" };
@@ -12,7 +16,7 @@ function narrative(city: string) {
     finales: { [city]: { ...scene, placeId: plan.main[0].landmarkId, activityMinutes: 60 } } };
 }
 
-describe("India authoring scaffold", () => {
+describe("Golden Triangle authoring scaffold", () => {
   it("derives isolated city fragments from existing travel data and verified observations", () => {
     const plan = journeyRequirements(input, ["delhi"])[0];
     const fragments = buildJourneyFragments(input, narrative("delhi"), ["delhi"]);
@@ -28,25 +32,5 @@ describe("India authoring scaffold", () => {
     const finale = fragments.finaleEvents[0];
     const destinationEvent = input.cities.find((city) => city.cityId === "delhi")!.events.find((event) => event.placeId === finale.placeId)!;
     expect(finale.admissionCost ?? 0).toBe(destinationEvent.admissionCost ?? 0);
-  });
-
-  it("excludes finale and special events from future main-event requirements", () => {
-    const clone = structuredClone(input);
-    const city = clone.cities.find((item) => item.cityId === "delhi")!;
-    const event = city.events.find((item) => item.category === "main")!;
-    city.events.push({ ...event, id: "gt_delhi_finale" }, { ...event, id: "gt_delhi_special" });
-    expect(journeyRequirements(clone, ["delhi"])[0].main).toHaveLength(4);
-  });
-
-  it("rejects invalid city selections, missing scenario data and cross-city finale locations", () => {
-    expect(() => journeyRequirements(input, ["missing"])).toThrow("Journey scaffold: invalid city selection");
-    expect(() => journeyRequirements(input, ["delhi", "delhi"])).toThrow("Journey scaffold: invalid city selection");
-    const missing = narrative("delhi");
-    delete missing.main[Object.keys(missing.main)[0]];
-    expect(() => buildJourneyFragments(input, missing, ["delhi"])).toThrow("Journey scaffold: main scenarios must contain exactly the registered IDs");
-    const wrongCity = narrative("delhi");
-    wrongCity.finales.delhi.placeId = journeyRequirements(input, ["agra"])[0].main[0].landmarkId;
-    expect(() => buildJourneyFragments(input, wrongCity, ["delhi"])).toThrow("Journey scaffold: finale must use a registered attraction in delhi");
-    expect(buildJourneyFragments(input, narrative("agra"), ["agra"]).episodes.every((episode) => episode.cityId === "agra")).toBe(true);
   });
 });

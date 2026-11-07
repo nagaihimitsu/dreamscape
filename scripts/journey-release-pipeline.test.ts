@@ -2,8 +2,14 @@ import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, 
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { journeyRequirements, loadJourneyScaffold } from "../../../scripts/journey-scaffold";
-import { prepareJourneyRelease } from "../../../scripts/promote-journey";
+import { journeyRequirements, loadJourneyScaffold } from "./journey-scaffold";
+import { prepareJourneyRelease } from "./promote-journey";
+
+// The whole journey:release pipeline (prepareJourneyRelease) on a copy of the
+// project. It needs a journey with an authoring profile, travel data and
+// observation cards, so it uses the Golden Triangle as its example; if that
+// journey is removed, rewrite it for another one (docs/02 「旅行編をやめる場合」).
+// The release rules alone are checked on a fictional journey in journey-release.test.ts.
 
 /** India's journey folder: its cities, stories, quizzes and catalog fragments. */
 const layer = "content/journeys/golden_triangle";
@@ -152,7 +158,7 @@ function authorCity(root: string, plan: ReturnType<typeof journeyRequirements>[n
   return { narrativeFile, translationsFile };
 }
 
-describe("India release pipeline", () => {
+describe("journey release pipeline (the Golden Triangle as the example)", () => {
   it("validates, previews and releases Delhi alone, and can be rerun without duplicates", async () => {
     const root = unpublishedProject();
     try {
