@@ -1,5 +1,6 @@
 import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { describe, expect, it } from "vitest";
+import { zodIssues } from "../../tests/fixtures/zod-issues";
 import { balance, dates } from "../content";
 import { beginStory, continueStory } from "../story/runtime";
 import {
@@ -54,8 +55,8 @@ describe("AP and date rules", () => {
       playerName: "旅人",
       heroineName: "しずく",
     });
-    expect(() => createGame(" ", "名前")).toThrow();
-    expect(() => createGame("あ".repeat(balance.maxNameLength + 1))).toThrow();
+    expect(() => createGame(" ", "名前")).toThrow(zodIssues({ code: "too_small", path: [], minimum: 1 }));
+    expect(() => createGame("あ".repeat(balance.maxNameLength + 1))).toThrow(zodIssues({ code: "too_big", path: [], maximum: balance.maxNameLength }));
     const state = createGame();
     expect(setNames(state, " ", "名前")).toBe(state);
     expect(setNames(state, "青", "花")).toMatchObject({
@@ -169,13 +170,13 @@ describe("Ink choices and reload boundaries", () => {
         ...state,
         activeDate: { ...state.activeDate, storyState: "{}" },
       }),
-    ).toThrow();
+    ).toThrow("保存された会話の途中データを読み込めません。");
     expect(() =>
       validateGameState({
         ...state,
         activeDate: { ...state.activeDate, storyHash: "old" },
       }),
-    ).toThrow();
+    ).toThrow("シナリオが更新されています。以前の途中データはそのまま保管されています。");
     expect(() =>
       validateGameState({
         ...state,
@@ -184,11 +185,11 @@ describe("Ink choices and reload boundaries", () => {
           frame: { ...state.activeDate!.frame, choices: [] },
         },
       }),
-    ).toThrow();
+    ).toThrow("保存された選択肢が一致しません。");
     expect(() =>
       validateGameState({ ...state, completedChapters: [] }),
-    ).toThrow();
-    expect(() => validateGameState({ ...state, ap: -1 })).toThrow();
+    ).toThrow("観光エピソードのクリア記録が一致しません。");
+    expect(() => validateGameState({ ...state, ap: -1 })).toThrow(zodIssues({ code: "too_small", path: ["ap"] }));
   });
 });
 

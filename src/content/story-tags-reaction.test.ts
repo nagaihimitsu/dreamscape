@@ -15,14 +15,20 @@ describe("Ink presentation and choice tags", () => {
   });
 
   it("rejects bad targets, emotions, marks, duplicate targets and malformed tags", () => {
-    for (const tag of ["reaction: player,smile", "reaction: heroine,unknown", "reaction: heroine,smile,unknown", "reaction: heroine", "reaction: heroine,smile,"])
-      expect(() => parseStoryTags([tag], context)).toThrow();
+    for (const [tag, message] of [
+      ["reaction: player,smile", "Unknown reaction target: player"],
+      ["reaction: heroine,unknown", "Unknown reaction emotion: unknown"],
+      ["reaction: heroine,smile,unknown", "Unknown reaction mark: unknown"],
+      ["reaction: heroine", "Invalid reaction tag: heroine"],
+      ["reaction: heroine,smile,", "Invalid reaction tag: heroine,smile,"],
+    ])
+      expect(() => parseStoryTags([tag], context), tag).toThrow(message);
     expect(() => parseStoryTags(["reaction: heroine,sigh", "reaction: heroine,smile"], context)).toThrow("Duplicate reaction target");
   });
 
   it("reads choice identity and translation without repeating choice text", () => {
     expect(parseStoryTags(["option: coffee", "translation: コーヒーを頼む"], context)).toMatchObject({ optionId: "coffee", translationJa: "コーヒーを頼む" });
-    expect(() => parseStoryTags(["option: bad id"], context)).toThrow();
+    expect(() => parseStoryTags(["option: bad id"], context)).toThrow("Invalid or duplicate option tag: bad id");
   });
 
   it("accepts old saved frames and makes authored reactions override external annotations", () => {

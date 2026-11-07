@@ -64,9 +64,9 @@ describe("city arrival conversations", () => {
     const initial = createGame("旅人", "同行者", { journeyId: "golden_triangle" });
     const state = startCityArrival(initial, initial.revision);
     expect(() => validateGameState(state)).not.toThrow();
-    expect(() => validateGameState({ ...state, activeEpilogue: { ...state.activeEpilogue!, contentHash: "changed" } })).toThrow();
-    expect(() => validateGameState({ ...state, activeEpilogue: { ...state.activeEpilogue!, logoComplete: undefined } })).toThrow();
-    expect(() => validateGameState({ ...state, activeEpilogue: { ...state.activeEpilogue!, kind: undefined } })).toThrow();
-    expect(() => validateGameState({ ...state, activeEpilogue: { ...state.activeEpilogue!, frame: { ...state.activeEpilogue!.frame, text: "書き換え" } } })).toThrow();
+    expect(() => validateGameState({ ...state, activeEpilogue: { ...state.activeEpilogue!, contentHash: "changed" } })).toThrow("都市エピローグの途中データを確認できません。元のデータは保管されています。");
+    expect(() => validateGameState({ ...state, activeEpilogue: { ...state.activeEpilogue!, logoComplete: undefined } })).toThrow("都市エピローグの途中データを確認できません。元のデータは保管されています。");
+    expect(() => validateGameState({ ...state, activeEpilogue: { ...state.activeEpilogue!, kind: undefined } })).toThrow("都市エピローグの途中データを確認できません。元のデータは保管されています。");
+    expect(() => validateGameState({ ...state, activeEpilogue: { ...state.activeEpilogue!, frame: { ...state.activeEpilogue!.frame, text: "書き換え" } } })).toThrow("保存された本文が一致しません。");
   });
 });

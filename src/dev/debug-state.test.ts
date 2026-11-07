@@ -37,8 +37,8 @@ describe("debug scene preparation", () => {
     }
   });
   it("does not open a locked scene and keeps the AP limit", () => {
-    expect(() => createDebugState({ ...base, scene: "date", id: "milano_brera_date_01", progress: "initial" })).toThrow();
-    expect(() => createDebugState({ ...base, scene: "date", id: "milano_brera_date_01", ap: 0 })).toThrow();
+    expect(() => createDebugState({ ...base, scene: "date", id: "milano_brera_date_01", progress: "initial" })).toThrow("この進行状態ではデートを始められません。APや解放条件を確認してください。");
+    expect(() => createDebugState({ ...base, scene: "date", id: "milano_brera_date_01", ap: 0 })).toThrow("この進行状態ではデートを始められません。APや解放条件を確認してください。");
     expect(createDebugState({ ...base, ap: 99 }).ap).toBe(12);
   });
   it("opens a cleared city's epilogue, not before the clear", () => {

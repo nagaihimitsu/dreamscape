@@ -44,6 +44,6 @@ describe("current encounter save protection", () => {
     expect(setNames(state, "name", "name")).toBe(state);
     expect(claimPendingRewards(state, state.revision)).toBe(state);
     const battle = createDebugState({ ...initial, scene: "battle", id: "milano_duomo_01" });
-    expect(() => validateGameState({ ...state, activeBattle: battle.activeBattle })).toThrow();
+    expect(() => validateGameState({ ...state, activeBattle: battle.activeBattle })).toThrow("道中の交流と他の進行が重複しています。");
   });
 });

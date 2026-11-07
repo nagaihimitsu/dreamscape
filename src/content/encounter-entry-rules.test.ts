@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { zodIssues } from "../../tests/fixtures/zod-issues";
 import ruleData from "./generated/content/encounters/entry-rules.json";
 import { encounters } from "./encounters";
 import { journeyConfig } from "./index";
@@ -10,9 +11,9 @@ describe("location-based encounters", () => {
   it("validates entry IDs, places and completion milestones", () => {
     const rules = encounterEntryRulesSchema.parse(ruleData);
     expect(() => validateEncounterEntryRules(rules, encounters.encounters, journeyConfig)).not.toThrow();
-    expect(() => encounterEntryRulesSchema.parse({ ...rules, entries: [...rules.entries, rules.entries[0]] })).toThrow();
-    expect(() => validateEncounterEntryRules({ ...rules, entries: [{ ...rules.entries[0], landmarkId: "last_supper" }] }, encounters.encounters, journeyConfig)).toThrow();
-    expect(() => validateEncounterEntryRules({ ...rules, entries: [{ ...rules.entries[0], completedEpisodeId: "unknown_episode" }] }, encounters.encounters, journeyConfig)).toThrow();
+    expect(() => encounterEntryRulesSchema.parse({ ...rules, entries: [...rules.entries, rules.entries[0]] })).toThrow(zodIssues({ code: "custom", message: "Duplicate encounter entry rule" }));
+    expect(() => validateEncounterEntryRules({ ...rules, entries: [{ ...rules.entries[0], landmarkId: "last_supper" }] }, encounters.encounters, journeyConfig)).toThrow("Unknown or mismatched encounter entry: duomo_string/last_supper");
+    expect(() => validateEncounterEntryRules({ ...rules, entries: [{ ...rules.entries[0], completedEpisodeId: "unknown_episode" }] }, encounters.encounters, journeyConfig)).toThrow("Unknown encounter entry episode: duomo_string/unknown_episode");
     // Only the Galleria fortune (a tourism encounter with a quiz) defers its quiz until the landmark battle.
     expect(rules.entries.filter((entry) => entry.quizAfterLandmarkBattle).map((entry) => entry.encounterId)).toEqual(["galleria_fortune"]);
     const duomo = rules.entries.find((entry) => entry.encounterId === "duomo_string")!;

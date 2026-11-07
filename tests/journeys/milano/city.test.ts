@@ -327,7 +327,7 @@ describe("Milan's four episodes and distinct city finale", () => {
     // A save from different story content must never resume at an unrelated Ink position.
     const altered = structuredClone(state);
     altered.activeEpilogue!.contentHash = "unrecognized";
-    expect(() => validateGameState(altered)).toThrow();
+    expect(() => validateGameState(altered)).toThrow("都市エピローグの途中データを確認できません。元のデータは保管されています。");
     while (state.activeEpilogue) {
       state = restore(state);
       text.push(state.activeEpilogue!.frame.text);

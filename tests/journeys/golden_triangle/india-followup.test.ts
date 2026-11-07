@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { zodIssues } from "../../../tests/fixtures/zod-issues";
 import { readIndiaFollowup, validateIndiaFollowup } from "../../../scripts/journeys/golden_triangle/india-followup";
 
 describe("India follow-up research", () => {
@@ -21,7 +22,7 @@ describe("India follow-up research", () => {
     const badSource = structuredClone(original);
     const access = badSource.access as { records: Array<{ sources: Array<{ url: string }> }> };
     access.records[0].sources[0].url = "http://example.org";
-    expect(() => validateIndiaFollowup(badSource)).toThrow();
+    expect(() => validateIndiaFollowup(badSource)).toThrow(zodIssues({ code: "invalid_format", path: ["records", 0, "sources", 0, "url"] }));
   });
 
   it("does not treat a preview as a fully reviewed production image", () => {

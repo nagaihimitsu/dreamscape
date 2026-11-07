@@ -39,14 +39,14 @@ describe("India authoring scaffold", () => {
   });
 
   it("rejects invalid city selections, missing scenario data and cross-city finale locations", () => {
-    expect(() => journeyRequirements(input, ["missing"])).toThrow();
-    expect(() => journeyRequirements(input, ["delhi", "delhi"])).toThrow();
+    expect(() => journeyRequirements(input, ["missing"])).toThrow("Journey scaffold: invalid city selection");
+    expect(() => journeyRequirements(input, ["delhi", "delhi"])).toThrow("Journey scaffold: invalid city selection");
     const missing = narrative("delhi");
     delete missing.main[Object.keys(missing.main)[0]];
-    expect(() => buildJourneyFragments(input, missing, ["delhi"])).toThrow();
+    expect(() => buildJourneyFragments(input, missing, ["delhi"])).toThrow("Journey scaffold: main scenarios must contain exactly the registered IDs");
     const wrongCity = narrative("delhi");
     wrongCity.finales.delhi.placeId = journeyRequirements(input, ["agra"])[0].main[0].landmarkId;
-    expect(() => buildJourneyFragments(input, wrongCity, ["delhi"])).toThrow();
+    expect(() => buildJourneyFragments(input, wrongCity, ["delhi"])).toThrow("Journey scaffold: finale must use a registered attraction in delhi");
     expect(buildJourneyFragments(input, narrative("agra"), ["agra"]).episodes.every((episode) => episode.cityId === "agra")).toBe(true);
   });
 });

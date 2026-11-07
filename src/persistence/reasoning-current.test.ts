@@ -29,11 +29,12 @@ describe("current reasoning save protection", () => {
     for (const id of battle().reasoning!.correctClueIds)
       selected = selectReasoningClue(selected, id, selected.revision);
     const accepted = submitBattleEvidence(selected, selected.revision);
-    const invalid: GameState[] = [];
-    const change = (base: GameState, mutate: (state: GameState) => void) => {
+    const invalid: Array<{ state: GameState; message: string }> = [];
+    const progressMismatch = "保存された推理の進行が一致しません。";
+    const change = (base: GameState, mutate: (state: GameState) => void, message = progressMismatch) => {
       const next = snapshot(base);
       mutate(next);
-      invalid.push(next);
+      invalid.push({ state: next, message });
     };
     change(initial, (s) => {
       s.activeBattle!.reasoning = null;
@@ -67,9 +68,9 @@ describe("current reasoning save protection", () => {
     });
     change(accepted, (s) => {
       s.activeBattle!.contentHash = "changed-evidence";
-    });
-    for (const state of invalid) {
-      expect(() => validateGameState(state)).toThrow();
+    }, "バトルが更新されています。以前の途中データは保管されています。");
+    for (const { state, message } of invalid) {
+      expect(() => validateGameState(state)).toThrow(message);
       const storage = new MemoryStorage();
       const raw = JSON.stringify(state);
       storage.setItem(SAVE_KEY, raw);

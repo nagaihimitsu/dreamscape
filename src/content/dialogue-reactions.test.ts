@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { zodIssues } from "../../tests/fixtures/zod-issues";
 import { dialogueReactionCatalogSchema, REACTION_MARKS, resolveDialogueReaction } from "./dialogue-reactions";
 
 const entry = { storyId: "milano/test", speaker: "heroine" as const, text: "「ここにいよう」", targetCharacterId: "heroine" as const };
@@ -9,11 +10,11 @@ describe("dialogue reactions", () => {
     expect(REACTION_MARKS).toHaveLength(13);
     for (const mark of REACTION_MARKS) expect(parse([{ ...entry, mark }]).entries[0].mark).toBe(mark);
     expect(parse([{ ...entry, expression: "smile" }]).entries[0].expression).toBe("smile");
-    expect(() => parse([entry])).toThrow();
+    expect(() => parse([entry])).toThrow(zodIssues({ code: "custom", path: ["entries", 0], message: "A dialogue reaction requires an expression or a mark" }));
   });
   it("rejects unknown marks, targets, and duplicate target annotations", () => {
-    expect(() => parse([{ ...entry, mark: "not_registered" }])).toThrow();
-    expect(() => parse([{ ...entry, mark: "heart", targetCharacterId: "stranger" }])).toThrow();
+    expect(() => parse([{ ...entry, mark: "not_registered" }])).toThrow(zodIssues({ code: "invalid_value", path: ["entries", 0, "mark"] }));
+    expect(() => parse([{ ...entry, mark: "heart", targetCharacterId: "stranger" }])).toThrow(zodIssues({ code: "invalid_value", path: ["entries", 0, "targetCharacterId"] }));
     expect(() => parse([{ ...entry, mark: "heart" }, { ...entry, expression: "smile" }])).toThrow("Duplicate dialogue reaction");
   });
   it("matches story, text, speaker, and target without changing the frame", () => {

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { zodIssues } from "../tests/fixtures/zod-issues";
 import { travelCatalogSchema } from "../src/content/travel-schemas";
 import { cityTransitFile, exportTransitDecisions, inspectCityTransit, replaceTransitDecisions,
   reviewedModes, type TransitLedger } from "./journey-transit-review";
@@ -36,11 +37,11 @@ describe("directional transit review", () => {
 
   it("rejects malformed IDs, foreign places and another city's ledger", () => {
     const { travel, ledger } = fixture();
-    expect(() => cityTransitFile(process.cwd(), "../milano")).toThrow();
+    expect(() => cityTransitFile(process.cwd(), "../milano")).toThrow(zodIssues({ code: "invalid_format", path: [] }));
     expect(() => inspectCityTransit(travel, { ...ledger, cityId: "foreign_city" })).toThrow(/city mismatch/);
     const invalid = structuredClone(ledger);
     invalid.decisions[0].toPlaceId = "../test_b";
-    expect(() => inspectCityTransit(travel, invalid)).toThrow();
+    expect(() => inspectCityTransit(travel, invalid)).toThrow(zodIssues({ code: "invalid_format", path: ["decisions", 0, "toPlaceId"] }));
     invalid.decisions[0].toPlaceId = "foreign_place";
     expect(() => inspectCityTransit(travel, invalid)).toThrow(/Invalid or duplicate transit direction/);
     invalid.decisions[0].toPlaceId = invalid.decisions[0].fromPlaceId;
@@ -66,13 +67,13 @@ describe("directional transit review", () => {
     expect(() => inspectCityTransit(travel, missing)).toThrow(/Unresolved transit source/);
     expect(() => exportTransitDecisions(missing)).toThrow(/Missing transit source/);
     missing.decisions[0].sourceRefs = [];
-    expect(() => inspectCityTransit(travel, missing)).toThrow();
+    expect(() => inspectCityTransit(travel, missing)).toThrow(zodIssues({ code: "too_small", path: ["decisions", 0, "sourceRefs"] }));
     const invalid = structuredClone(ledger);
     invalid.sourceRefs.test_source.url = "javascript:alert(1)";
-    expect(() => inspectCityTransit(travel, invalid)).toThrow();
+    expect(() => inspectCityTransit(travel, invalid)).toThrow(zodIssues({ code: "invalid_format", path: ["sourceRefs", "test_source", "url"] }));
     invalid.sourceRefs.test_source.url = "https://example.org/transit";
     invalid.sourceRefs.test_source.checkedAt = "not-a-date";
-    expect(() => inspectCityTransit(travel, invalid)).toThrow();
+    expect(() => inspectCityTransit(travel, invalid)).toThrow(zodIssues({ code: "invalid_format", path: ["sourceRefs", "test_source", "checkedAt"] }));
   });
 
   it("requires available decisions to match the exact directed playable route", () => {
