@@ -20,7 +20,7 @@ Dreamscapeの正式データは `content/` です（全旅行編で共有する�
 
 ## 簡単な道中交流を追加する
 
-`content/journeys/milano/stories/encounters/duomo_new_event.ink` を作り、名前用変数、会話、3択と分岐を書きます。英文はInkを正とします。訳を付ける場合は **選択肢の角括弧の中** にタグを置きます。
+`content/journeys/milano/stories/encounters/milano_duomo_new_event.ink` を作り（名前は [IDの付け方](../docs/02_TECH_ARCHITECTURE.md#idの付け方) の `encounters/<頭>_<交流>`）、名前用変数、会話、3択と分岐を書きます。英文はInkを正とします。訳を付ける場合は **選択肢の角括弧の中** にタグを置きます。
 
 ```ink
 VAR player_name = ""
@@ -43,10 +43,10 @@ VAR heroine_name = ""
 
 ```json
 {
-  "id": "duomo_new_event",
+  "id": "milano_duomo_new_event",
   "landmarkId": "duomo_milano",
   "titleJa": "ドゥオモの新しい出会い",
-  "storyId": "encounters/duomo_new_event"
+  "storyId": "encounters/milano_duomo_new_event"
 }
 ```
 
@@ -54,7 +54,7 @@ VAR heroine_name = ""
 
 ## 簡単な通常デートを追加する
 
-新しいInkに既存の通常デートと同様の変数、2回の3択、結果別の反応を記述します。各分岐では、1回目に `# effect: common_date_first_attentive`、2回目に `# effect: common_date_second_attentive` のような共通効果を使えます。末尾は `attentive`、`playful`、`honest`、`bold`、`provocative` から、その返答に合う既存の確率特性を選びます。結果は `romance_result` の `positive` / `negative` で描き分けます。共通効果は個別の思い出を保存しません。場所固有の思い出が必要な場合は従来どおり固有effectとmemoryを追加します。
+新しいInk（`content/journeys/milano/stories/dates/milano_date_new.ink`。名前は `dates/<頭>_date_<行き先・出来事>`）に既存の通常デートと同様の変数、2回の3択、結果別の反応を記述します。各分岐では、1回目に `# effect: common_date_first_attentive`、2回目に `# effect: common_date_second_attentive` のような共通効果を使えます。末尾は `attentive`、`playful`、`honest`、`bold`、`provocative` から、その返答に合う既存の確率特性を選びます。結果は `romance_result` の `positive` / `negative` で描き分けます。共通効果は個別の思い出を保存しません。場所固有の思い出が必要な場合は従来どおり固有effectとmemoryを追加します。
 
 `content/journeys/milano/romance/date_catalog.json` の `dates` には、例えば次の最小設定を追加できます。都市クリア後に解放、2 AP、一度限り、交際後も利用可能が標準です。旅の途中で解放したい場合は既存の `destinationId` と `requiredCompletedEpisodeIds` などを明示してください。
 
@@ -63,7 +63,7 @@ VAR heroine_name = ""
   "id": "milano_new_date",
   "chapterId": "milano",
   "titleJa": "新しいデート",
-  "storyId": "milano/new_date",
+  "storyId": "dates/milano_date_new",
   "backgroundId": "milano_cafe"
 }
 ```
