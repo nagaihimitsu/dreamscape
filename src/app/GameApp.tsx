@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   balance,
   dates,
@@ -113,12 +113,19 @@ export function GameApp({
   const [confirmDeparture, setConfirmDeparture] = useState(false);
   const [settings, setSettings] = useState(false);
   const [switchJourneyTo, setSwitchJourneyTo] = useState<string | null>(null);
-  // This journey's screen is the end of a switch: the title's selector has
-  // taken the focus back (child effects run first); a resumed game has none.
+  // This journey's screen is the end of a switch (or of the lock's 再試行):
+  // the title's selector has taken the focus back (child effects run first).
+  // A resumed game has no selector, so its main area takes the focus instead
+  // of leaving it on the page body, unless a scene has already taken it.
+  const main = useRef<HTMLElement>(null);
+  const restoreSelectorFocus = selectorFocus?.restoreFocus;
   const endSelectorFocus = selectorFocus?.onFocusRestored;
   useEffect(() => {
-    endSelectorFocus?.();
-  }, [endSelectorFocus]);
+    if (!endSelectorFocus) return;
+    if (restoreSelectorFocus && (!document.activeElement || document.activeElement === document.body))
+      main.current?.focus({ preventScroll: true });
+    endSelectorFocus();
+  }, [restoreSelectorFocus, endSelectorFocus]);
   function requestJourneySwitch(id: string) {
     if (id === journeyId || !onSwitchJourney) return;
     if (session.hasUnsavedProgress()) {
@@ -346,7 +353,7 @@ export function GameApp({
           </span>
         </div>
       )}
-      <main id="main">
+      <main id="main" ref={main} tabIndex={-1}>
         {learning.error && (
           <div className="notice" role="status">
             {learning.error}

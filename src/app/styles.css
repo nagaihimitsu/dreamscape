@@ -48,6 +48,9 @@ summary:focus-visible {
   outline: 3px solid #ba8f4d;
   outline-offset: 4px;
 }
+/* The game's main area takes the focus only as a starting point (after a
+   switch or 再試行, or the brand link); it is not a control to outline. */
+main[tabindex="-1"]:focus { outline: none; }
 button {
   min-height: 48px;
   border: 0;

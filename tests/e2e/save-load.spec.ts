@@ -111,6 +111,9 @@ test("a second tab cannot open a journey that is already open", { tag: tier.gate
   await page.close();
   await second.getByRole("button", { name: "再試行" }).click();
   await expect(second.getByTestId("travel-menu")).toBeVisible();
+  // AGENTS.md 「アクセシビリティを考慮する」: 再試行 disappears with the lock message, so the
+  // resumed game's main area takes the focus instead of leaving it on the page body.
+  await expect(second.getByRole("main")).toBeFocused();
   await expect(second.getByTestId("travelers")).toContainText("先の名前");
   expect(await allStorage(second)).toEqual(saved);
 });

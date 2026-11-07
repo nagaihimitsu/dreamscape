@@ -17,30 +17,34 @@ const LOCK_RETRY_MS = 100;
 /** Hold the journey's exclusive Web Lock for the lifetime of its editing view.
  * `enabled` is false for views that never write the slot (Debug, read-only preparation). */
 export function useJourneyLock(journeyId: string, storage: StorageLike, attempt: number, enabled: boolean): JourneyLockStatus {
-  const [state, setState] = useState<{ journeyId: string; status: JourneyLockStatus }>({
-    journeyId, status: enabled ? "loading" : "ready",
+  // A status answers one journey's request of one attempt: after 再試行 the
+  // previous answer no longer holds, so the view reports loading until the
+  // new request answers.
+  const [answer, setAnswer] = useState<{ journeyId: string; attempt: number; status: JourneyLockStatus }>({
+    journeyId, attempt, status: enabled ? "loading" : "ready",
   });
   const [generation, setGeneration] = useState(0);
 
   useEffect(() => {
+    const report = (status: JourneyLockStatus) => setAnswer({ journeyId, attempt, status });
     if (!enabled) {
-      setState({ journeyId, status: "ready" });
+      report("ready");
       return;
     }
     let cancelled = false;
     let pageActive = true;
     let release: (() => void) | undefined;
     let retry: ReturnType<typeof setTimeout> | undefined;
-    setState({ journeyId, status: "loading" });
+    report("loading");
     if (typeof navigator === "undefined" || !navigator.locks?.request) {
-      setState({ journeyId, status: "unsupported" });
+      report("unsupported");
       return;
     }
     const pagehide = () => {
       pageActive = false;
       release?.();
       release = undefined;
-      if (!cancelled) setState({ journeyId, status: "loading" });
+      if (!cancelled) report("loading");
     };
     const pageshow = (event: PageTransitionEvent) => {
       if (event.persisted && !cancelled) setGeneration((value) => value + 1);
@@ -54,15 +58,15 @@ export function useJourneyLock(journeyId: string, storage: StorageLike, attempt:
         if (cancelled || !pageActive) return;
         if (!lock) {
           if (retriesLeft > 0) retry = setTimeout(() => track(acquire(retriesLeft - 1)), LOCK_RETRY_MS);
-          else setState({ journeyId, status: "busy" });
+          else report("busy");
           return;
         }
         return new Promise<void>((resolve) => {
           release = resolve;
-          setState({ journeyId, status: "ready" });
+          report("ready");
         });
       }).catch(() => {
-        if (!cancelled) setState({ journeyId, status: "unsupported" });
+        if (!cancelled) report("unsupported");
       });
     // The request promise settles only after its lock has been released.
     const track = (request: Promise<unknown>) => { settledRequests.set(name, request); };
@@ -76,5 +80,5 @@ export function useJourneyLock(journeyId: string, storage: StorageLike, attempt:
       window.removeEventListener("pageshow", pageshow);
     };
   }, [journeyId, storage, generation, attempt, enabled]);
-  return !enabled ? "ready" : state.journeyId === journeyId ? state.status : "loading";
+  return !enabled ? "ready" : answer.journeyId === journeyId && answer.attempt === attempt ? answer.status : "loading";
 }
