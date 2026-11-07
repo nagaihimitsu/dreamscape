@@ -168,12 +168,14 @@ export function enterFreeTime(
  * The ways out of a battle's result screen: the city finale's 「エピローグへ進む」 while its
  * epilogue is unread (and no special battle is left), and leaving to free time, which a journey
  * that moves on after the epilogue (cityTransition after_epilogue) does not offer beside it.
+ * The epilogue is the current city's, the one startCityEpilogue(state, state.currentCityId) opens.
  */
 export function getBattleResultExits(state: GameState): { epilogue: boolean; leave: boolean } {
   const active = state.activeBattle;
   if (!active || active.phase !== "result" || state.activeTourism) return { epilogue: false, leave: false };
   const { battle } = getActiveBattleContent(active);
-  const epilogue = battle.scope === "city_finale" && !!battle.cityId && !getNextStoryBattle(state) && canReadCityEpilogue(state, battle.cityId);
+  const epilogue = battle.scope === "city_finale" && battle.cityId === state.currentCityId && !getNextStoryBattle(state) &&
+    canReadCityEpilogue(state);
   const automatic = getJourneyForCity(state.currentCityId)?.cityTransition === "after_epilogue";
   return { epilogue, leave: !(automatic && epilogue) };
 }

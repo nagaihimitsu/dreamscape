@@ -6,7 +6,10 @@
 // - safety: the state passes validateGameState, AP stays within 0..cap, AP changes only by the
 //   rewards whose IDs are newly recorded (each ID once) minus the AP of a date started in that step,
 //   every offered action changes the state, and the save → load round trip gives the same state;
-// - liveness: before the end of the journey there is always something to do (zero actions = stuck).
+// - liveness: before the end of the journey there is always something to do (zero actions = stuck);
+// - progress (fixed seeds only): together the fixed seeds reach the end of every available journey,
+//   so a soft lock that leaves something to press but no way forward (e.g. a result screen whose only
+//   control leads back to it) fails too.
 // A failure names the seed, the step and the last actions; rerun it with DREAMSCAPE_WALK_SEEDS and
 // `npm run test:walk` (it builds the content with the sample journey first: which journeys the content
 // holds changes the walk).
@@ -14,8 +17,9 @@
 // begins at start (s + r) mod their number, so the seeds begin in different places and the last
 // cities of multi-city journeys are walked too. A run ends at the end of the journey (8 times out of
 // 10; otherwise it stays for the dates still open) or after RESTART_STEPS steps.
-// Which content the walks reached is printed as a summary, never asserted: it shows content that
-// normal play cannot reach (e.g. most Milano place encounters, ideas2 [WP06a]) without failing.
+// Apart from the journeys' ends, which content the walks reached is printed as a summary, never
+// asserted: it shows content that normal play cannot reach (e.g. most Milano place encounters,
+// ideas2 [WP06a]) without failing.
 // PR/verify: the fixed seeds below. Weekly: DREAMSCAPE_WALK_SEEDS (comma-separated) and
 // DREAMSCAPE_WALK_STEPS (steps per seed) widen it.
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -47,6 +51,10 @@ function envList(name: string): number[] | undefined {
 }
 const seeds = envList("DREAMSCAPE_WALK_SEEDS") ?? FIXED_SEEDS;
 const steps = envList("DREAMSCAPE_WALK_STEPS")?.[0] ?? FIXED_STEPS;
+/** The fixed seeds with at least the fixed steps: a walk's first steps never depend on its length. */
+const fixedRun = seeds === FIXED_SEEDS && steps >= FIXED_STEPS;
+/** Seeds whose walk ran to its last step (the progress check needs all fixed seeds). */
+const finished = new Set<number>();
 
 /** mulberry32: a small seeded generator, so a seed always replays the same walk. */
 function random(seed: number): () => number {
@@ -164,18 +172,27 @@ function walk(seed: number, total: number) {
       `rerun: DREAMSCAPE_WALK_SEEDS=${seed} DREAMSCAPE_WALK_STEPS=${total} npm run test:walk (builds the content with the sample journey first)`,
     ].join("\n"));
   };
+  /** Run one of the game functions the walk calls; when it throws, fail with the seed and the trace like any check. */
+  const run = <T>(step: number, what: string, call: () => T): T => {
+    try {
+      return call();
+    } catch (error) {
+      return fail(step, `${what} threw: ${(error as Error).message}`);
+    }
+  };
   for (let step = 0; step < total; step++) {
     if (!state || since >= RESTART_STEPS) {
       // The starts take turns, seed by seed and run by run.
       start = starts[(((seed + runs++) % starts.length) + starts.length) % starts.length];
-      state = startState(start);
-      memory.clear();
       since = 0;
       trace = [`(start ${start.label})`];
+      state = run(step, "building the start", () => startState(start!));
+      memory.clear();
     }
     const journeyId = start!.journeyId;
-    const actions = listPlayerActions(state);
-    const ended = isJourneyComplete(state);
+    const current: GameState = state;
+    const actions = run(step, "listPlayerActions", () => listPlayerActions(current));
+    const ended = run(step, "isJourneyComplete", () => isJourneyComplete(current));
     if (!actions.length) {
       if (!ended) fail(step, "stuck: nothing to do before the end of the journey");
       state = undefined;
@@ -185,15 +202,10 @@ function walk(seed: number, total: number) {
       state = undefined;
       continue;
     }
-    const action = pick(state, actions, next);
-    trace = [...trace, `${state.currentCityId} r${state.revision}: ${describeAction(action)}`].slice(-TRACE_LENGTH);
-    const previous: GameState = state;
-    let changed: GameState;
-    try {
-      changed = applyPlayerAction(previous, playerActionChange(action, roll));
-    } catch (error) {
-      return fail(step, `the action threw: ${(error as Error).message}`);
-    }
+    const action = run(step, "choosing an action", () => pick(current, actions, next));
+    trace = [...trace, `${current.currentCityId} r${current.revision}: ${describeAction(action)}`].slice(-TRACE_LENGTH);
+    const previous = current;
+    const changed = run(step, "the action", () => applyPlayerAction(previous, playerActionChange(action, roll)));
     if (changed === previous) fail(step, "an offered action changed nothing");
     if (changed.ap < 0 || changed.ap > balance.apCap) fail(step, `AP out of range: ${changed.ap}`);
     const lost = previous.claimedRewardIds.filter((id) => !changed.claimedRewardIds.includes(id));
@@ -218,8 +230,9 @@ function walk(seed: number, total: number) {
     catch { fail(step, "the save → load round trip changed the state"); }
     state = restored;
     since++;
-    record(journeyId, previous, state);
+    run(step, "recording what the step reached", () => record(journeyId, previous, restored));
   }
+  finished.add(seed);
 }
 
 /** Content of a journey a player could meet, against what the walks reached. */
@@ -263,4 +276,16 @@ describe("random walk through the game functions", () => {
   it.each(seeds)("seed %i: every step is valid and saved, and the player is never stuck before the end", (seed) => {
     walk(seed, steps);
   }, 120_000);
+
+  // Runs after the seeds' walks (tests of a file run in order). Deterministic for the content built.
+  it.runIf(fixedRun)("the fixed seeds reach the end of every available journey", () => {
+    const unfinished = FIXED_SEEDS.filter((seed) => !finished.has(seed));
+    expect(unfinished, "these fixed seeds did not finish their walk (failed above, or left out with -t): the check needs them all").toEqual([]);
+    const notEnded = playable.filter((journey) => reachedFor(journey.id).ends === 0).map((journey) => journey.id);
+    expect(notEnded, [
+      "no fixed seed reached the end of these journeys (the summary shows how far they got): a way forward is missing,",
+      "e.g. a screen whose only controls lead back to it. If the journey grew instead (more cities or starts), raise",
+      "FIXED_SEEDS or FIXED_STEPS (docs/10「関数の層のランダムウォーク」)",
+    ].join(" ")).toEqual([]);
+  });
 });

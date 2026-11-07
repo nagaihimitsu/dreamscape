@@ -1,11 +1,12 @@
 // The action list the exploration tests walk (listPlayerActions) and the screen rules it is built
-// from: each offered action is one the screen shows enabled, and each changes the game.
+// from: the list is built from the same rule functions the screens call, and each offered action
+// changes the game.
 import { describe, expect, it } from "vitest";
 import { battles, episodes, getCityContent, journeyConfig } from "../content";
 import { defaultJourneyId, journeys } from "../content/journeys";
-import { cityFinaleResult, completedCity, newJourney, openBattleScene, openEpilogueScene, readEpilogue } from "../dev/scenario-builders";
+import { cityStart, clearCity, completedCity, departFromClearedCity, newJourney, openBattleScene, openEpilogueScene, readEpilogue } from "../dev/scenario-builders";
 import { getActiveBattleContent } from "./battle";
-import { battleCityId } from "./chapter";
+import { battleCityId, storyBattlesForCity } from "./chapter";
 import { isJourneyComplete } from "./city-travel";
 import { startCityArrival } from "./epilogue";
 import { createGame, type GameState } from "./game";
@@ -79,11 +80,38 @@ describe("the actions a player can take now", () => {
     expect(kinds(listPlayerActions(state))).toContain("evidence_submit");
   });
 
-  it.each(playable.map((journey) => [journey.id, journey.cityTransition ?? "manual"]))("%s: the first city's finale result offers its epilogue, and free time too unless the journey moves on after the epilogue (%s)", (journeyId, transition) => {
-    const result = cityFinaleResult(startCity(journeyId));
-    const actions = kinds(listPlayerActions(result));
-    expect(actions).toContain("battle_epilogue");
-    expect(actions.includes("battle_leave")).toBe(transition !== "after_epilogue");
+  /** Each battle's result screen on the way through the journey, every city in turn (correct answers). */
+  function everyBattleResult(journeyId: string): GameState[] {
+    const results: GameState[] = [];
+    const cities = playable.find((journey) => journey.id === journeyId)!.cities;
+    let state = cityStart(cities[0].id);
+    for (const [index, city] of cities.entries()) {
+      expect(state.currentCityId).toBe(city.id);
+      const cleared = clearCity(state, { onResult: (result) => results.push(result) });
+      if (index < cities.length - 1) state = departFromClearedCity(cleared);
+    }
+    return results;
+  }
+  it.each(playable.map((journey) => [journey.id, journey.cityTransition ?? "manual"]))("%s: every battle's result has a way out: free time after each battle but a finale whatever the city transition (%s), and a finale its epilogue (free time too unless the journey moves on after it)", (journeyId, transition) => {
+    const cityIds = playable.find((journey) => journey.id === journeyId)!.cities.map((city) => city.id);
+    const battleIds = [...episodes.filter((episode) => cityIds.includes(episode.cityId)).map((episode) => episode.battleId),
+      ...cityIds.flatMap((cityId) => storyBattlesForCity(cityId).map((battle) => battle.battleId))];
+    const results = everyBattleResult(journeyId);
+    expect(new Set(results.map((result) => result.activeBattle!.battleId)), "every episode, special battle and finale").toEqual(new Set(battleIds));
+    for (const result of results) {
+      const { battle } = getActiveBattleContent(result.activeBattle!);
+      const actions = kinds(listPlayerActions(result));
+      if (battle.scope === "city_finale") {
+        expect(actions, battle.id).toContain("battle_epilogue");
+        expect(actions.includes("battle_leave"), battle.id).toBe(transition !== "after_epilogue");
+      } else {
+        expect(actions, battle.id).toContain("battle_leave");
+        expect(actions, battle.id).not.toContain("battle_epilogue");
+      }
+      // Each way out closes the result screen (to free time, the battle's place, or the epilogue).
+      for (const kind of ["battle_leave", "battle_epilogue"] as const)
+        if (actions.includes(kind)) expect(apply(result, { kind }).activeBattle, `${battle.id}: ${kind}`).toBeNull();
+    }
   });
 
   it.each(playable.map((journey) => journey.id))("%s: the journey ends once its last city is cleared and that city's epilogue is read", (journeyId) => {
