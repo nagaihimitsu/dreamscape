@@ -3,5 +3,40 @@
   "hotelPlaceId": "luang_prabang_hotel",
   "lodgingCost": 0,
   "retryMinutes": 15,
-  "notes": "初期200万キープと無料宿泊はゲーム用暫定値。徒歩・車道経路はOpenStreetMapの経路計算を参考にした推定値。車は乗降と待ち時間込み、料金は2人分のゲーム設定。現地の運行・運賃・通行を保証しない。"
+  "rentals": [
+    {
+      "modeId": "bicycle",
+      "placeIds": [
+        "luang_prabang_hotel"
+      ],
+      "cost": 60000,
+      "sources": [
+        {
+          "publisher": "Asia for Visitors",
+          "title": "Getting Around | Asia for Visitors",
+          "url": "https://asiaforvisitors.com/laos/prabang/lp-getar/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "町のいくつかの店や宿で自転車を借りられる（you can rent bicycles from several shops and guest houses around town）。ナムカーン川の向こうへ行くのに便利と案内。本文に日付がなく、古い可能性がある。"
+        },
+        {
+          "publisher": "Nasha Planeta",
+          "title": "How to get around Luang Prabang: transport, rent motorbikes and bicycles",
+          "url": "https://nashaplaneta.net/asia/laos/luang-prabang-transport-arenda-motobaika_en",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "バイクや自転車を借りる所は、ほとんどの宿か中心部の通りにある（Find a rental is not difficult, now it is almost in every guesthouse）。値段は期間・通貨・日付が分からないので、ゲームの料金の根拠にしない。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "貸し自転車の仮の料金と期間",
+          "url": "https://asiaforvisitors.com/laos/prabang/lp-getar/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "宿で2台借りて60,000キープ（1台30,000キープ）、ルアンパパーンにいるあいだ乗れる、というゲーム用の仮の値（シナリオが決まるまで）。資料の1日あたりの値段（約10,000キープなど）は古い可能性があり、実際の料金ではない。"
+        }
+      ]
+    }
+  ],
+  "notes": "初期200万キープと無料宿泊はゲーム用暫定値。徒歩・車道経路はOpenStreetMapの経路計算を参考にした推定値。車は乗降と待ち時間込み、料金は2人分のゲーム設定。現地の運行・運賃・通行を保証しない。自転車は宿で借りる仮の設定（2台60,000キープ、ルアンパパーンにいるあいだ）。場所・料金・期間はシナリオが決まるまでの仮の値。"
 }

@@ -2637,7 +2637,7 @@
     {
       "fromPlaceId": "luang_prabang_xieng_thong",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 30,
       "cost": 30000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -2664,7 +2664,7 @@
     {
       "fromPlaceId": "luang_prabang_royal_palace",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 25,
       "cost": 25000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -2691,7 +2691,7 @@
     {
       "fromPlaceId": "luang_prabang_royal_palace",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 20,
       "cost": 25000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -2718,7 +2718,7 @@
     {
       "fromPlaceId": "luang_prabang_royal_palace",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 25,
       "cost": 30000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -2745,7 +2745,7 @@
     {
       "fromPlaceId": "luang_prabang_phousi",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 20,
       "cost": 25000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -2772,7 +2772,7 @@
     {
       "fromPlaceId": "luang_prabang_phousi",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 15,
       "cost": 25000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -2799,7 +2799,7 @@
     {
       "fromPlaceId": "luang_prabang_phousi",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 20,
       "cost": 30000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -2826,7 +2826,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_mai",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 25,
       "cost": 25000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -2853,7 +2853,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_mai",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 20,
       "cost": 25000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -2880,7 +2880,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_mai",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 25,
       "cost": 30000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -2907,7 +2907,7 @@
     {
       "fromPlaceId": "luang_prabang_ethnology",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 25,
       "cost": 25000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -2934,7 +2934,7 @@
     {
       "fromPlaceId": "luang_prabang_ethnology",
       "toPlaceId": "luang_prabang_phousi",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 25,
       "cost": 25000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -2961,7 +2961,7 @@
     {
       "fromPlaceId": "luang_prabang_ethnology",
       "toPlaceId": "luang_prabang_heuan_chan",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 25,
       "cost": 25000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -2988,7 +2988,7 @@
     {
       "fromPlaceId": "luang_prabang_ethnology",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 20,
       "cost": 25000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3015,7 +3015,7 @@
     {
       "fromPlaceId": "luang_prabang_ethnology",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 20,
       "cost": 30000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3042,7 +3042,7 @@
     {
       "fromPlaceId": "luang_prabang_heuan_chan",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 25,
       "cost": 25000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3069,7 +3069,7 @@
     {
       "fromPlaceId": "luang_prabang_heuan_chan",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 20,
       "cost": 25000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3096,7 +3096,7 @@
     {
       "fromPlaceId": "luang_prabang_heuan_chan",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 25,
       "cost": 30000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3123,7 +3123,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_sen",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 25,
       "cost": 30000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3150,7 +3150,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 20,
       "cost": 35000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3177,7 +3177,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_royal_palace",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 20,
       "cost": 35000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3204,7 +3204,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_phousi",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 15,
       "cost": 35000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3231,7 +3231,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_wat_mai",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 25,
       "cost": 35000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3258,7 +3258,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_ethnology",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 20,
       "cost": 30000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3285,7 +3285,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_heuan_chan",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 20,
       "cost": 35000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3312,7 +3312,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 15,
       "cost": 35000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3339,7 +3339,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_haw_pha_bang",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 20,
       "cost": 35000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3366,7 +3366,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_night_market",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 20,
       "cost": 35000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3393,7 +3393,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_hotel",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 25,
       "cost": 30000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3420,7 +3420,7 @@
     {
       "fromPlaceId": "luang_prabang_haw_pha_bang",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 25,
       "cost": 25000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3447,7 +3447,7 @@
     {
       "fromPlaceId": "luang_prabang_haw_pha_bang",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 20,
       "cost": 25000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3474,7 +3474,7 @@
     {
       "fromPlaceId": "luang_prabang_haw_pha_bang",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 25,
       "cost": 30000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3501,7 +3501,7 @@
     {
       "fromPlaceId": "luang_prabang_night_market",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 20,
       "cost": 25000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3528,7 +3528,7 @@
     {
       "fromPlaceId": "luang_prabang_night_market",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 20,
       "cost": 25000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3555,7 +3555,7 @@
     {
       "fromPlaceId": "luang_prabang_night_market",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 25,
       "cost": 30000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3582,7 +3582,7 @@
     {
       "fromPlaceId": "luang_prabang_hotel",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 25,
       "cost": 25000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3609,7 +3609,7 @@
     {
       "fromPlaceId": "luang_prabang_hotel",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 25,
       "cost": 25000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3636,7 +3636,7 @@
     {
       "fromPlaceId": "luang_prabang_hotel",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "minutes": 25,
       "cost": 30000,
       "transferNote": "車道側で乗降・前後に徒歩",
@@ -3657,6 +3657,822 @@
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
           "claimJa": "地点から車道側の候補乗降点まで徒歩、車道を経由して再び徒歩。既知のSisavangvong Roadへの通過を避けた経路計算で、待機を加えた時間と料金はゲーム用推定。乗降場所の許可、通行規制や運行は現地確認していない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bicycle",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "minutes": 25,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bicycle",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "minutes": 25,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bicycle",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "minutes": 25,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bicycle",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bicycle",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bicycle",
+      "minutes": 25,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bicycle",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bicycle",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bicycle",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bicycle",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bicycle",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bicycle",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bicycle",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bicycle",
+      "minutes": 15,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "minutes": 20,
+      "cost": 0,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Dreamscape 作者の現地確認",
+          "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+          "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+        },
+        {
+          "publisher": "KPL ラオス国営通信（Lao News Agency）",
+          "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+          "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+        },
+        {
+          "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+          "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
         }
       ]
     }

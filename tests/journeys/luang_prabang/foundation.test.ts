@@ -51,9 +51,12 @@ describe("Luang Prabang city foundation", () => {
         expect(result.ok, `${a.id} to ${b.id} ${route.mode}`).toBe(true);
       }
     }
-    expect(travel.routes.filter((route) => route.mode === "taxi")).toHaveLength(38);
-    expect(inspectJourneyTransit(process.cwd(), cityId)).toMatchObject({ modes: ["taxi"], cities: [{ directions: 110, decisions: 110, ready: true,
-      counts: { taxi: { available: 38, not_suitable: 72, not_applicable: 0, inconclusive: 0 } } }] });
+    expect(travel.routes.filter((route) => route.mode === "tuk_tuk")).toHaveLength(38);
+    expect(travel.routes.filter((route) => route.mode === "bicycle")).toHaveLength(24);
+    expect(inspectJourneyTransit(process.cwd(), cityId)).toMatchObject({ modes: ["tuk_tuk", "bicycle"], cities: [{ directions: 110, decisions: 220, ready: true,
+      unsupportedRoutes: [],
+      counts: { tuk_tuk: { available: 38, not_suitable: 72, not_applicable: 0, inconclusive: 0 },
+        bicycle: { available: 24, not_suitable: 86, not_applicable: 0, inconclusive: 0 } } }] });
   });
 
   it("only uses reviewed vehicle paths that avoid the named restricted street", () => {
@@ -61,7 +64,7 @@ describe("Luang Prabang city foundation", () => {
     const model = JSON.parse(readFileSync(root + "safe-taxi-model.json", "utf8"));
     const pickups = JSON.parse(readFileSync(root + "riverside-pickups.json", "utf8"));
     const { travel } = getCityContent(cityId);
-    const taxis = travel.routes.filter((route) => route.mode === "taxi");
+    const taxis = travel.routes.filter((route) => route.mode === "tuk_tuk");
     expect(Object.keys(model.directions)).toHaveLength(taxis.length);
     for (const route of taxis) {
       const direction = model.directions[`${route.fromPlaceId}>${route.toPlaceId}`];
@@ -83,5 +86,33 @@ describe("Luang Prabang city foundation", () => {
     expect(plan).toHaveLength(1);
     expect(plan[0].main).toHaveLength(4);
     expect(plan[0].dates).toHaveLength(6);
+  });
+
+  it("declares tuk-tuk and a rental bicycle (user decision U3), rented at the hotel with placeholder values (U5)", () => {
+    expect(getJourney(cityId)!.transportModes).toEqual([
+      { id: "tuk_tuk", nameJa: "トゥクトゥク", movingJa: "トゥクトゥクで移動中", kind: "three_wheeler" },
+      { id: "bicycle", nameJa: "自転車", movingJa: "自転車で移動中", kind: "bicycle", rental: true },
+    ]);
+    const { travelSettings } = getCityContent(cityId);
+    expect(travelSettings.rentals).toEqual([expect.objectContaining({ modeId: "bicycle", placeIds: ["luang_prabang_hotel"], cost: 60_000 })]);
+    const [offer] = travelSettings.rentals!;
+    expect(offer.sources.map((source) => source.claimType).sort()).toEqual(["documented_fact", "documented_fact", "hypothesis"]);
+  });
+
+  it("rides the bicycles on the central street (the shorter times of U4), citing the author's field check of July 2026", () => {
+    const { travel } = getCityContent(cityId);
+    const walk = (from: string, to: string) => travel.routes.find((route) => route.mode === "walk" && route.fromPlaceId === from && route.toPlaceId === to)!;
+    const note = "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md";
+    expect(readFileSync("authoring/journeys/luang_prabang/research/field-check-2026-07/README.md", "utf8")).toContain("2026年7月（日付は記録していません）");
+    for (const route of travel.routes.filter((item) => item.mode === "bicycle")) {
+      expect(route.cost).toBe(0);
+      expect(route.minutes % 5).toBe(0);
+      // Every bicycle direction saves at least 10 minutes against walking (the research's threshold).
+      expect(walk(route.fromPlaceId, route.toPlaceId).minutes - route.minutes).toBeGreaterThanOrEqual(10);
+      expect(route.sources.find((source) => source.url === note)).toMatchObject({ claimType: "documented_fact", checkedAt: "2026-11-07" });
+      expect(route.sources.some((source) => source.claimType === "hypothesis")).toBe(true);
+    }
+    const toTemple = travel.routes.filter((route) => route.mode === "bicycle" && (route.fromPlaceId === "luang_prabang_wat_phol_phao" || route.toPlaceId === "luang_prabang_wat_phol_phao"));
+    expect(toTemple).toHaveLength(20);
   });
 });

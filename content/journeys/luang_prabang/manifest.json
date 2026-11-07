@@ -37,10 +37,17 @@
   "intercityModes": [],
   "transportModes": [
     {
-      "id": "taxi",
-      "nameJa": "タクシー",
-      "movingJa": "タクシーで移動中",
-      "kind": "car"
+      "id": "tuk_tuk",
+      "nameJa": "トゥクトゥク",
+      "movingJa": "トゥクトゥクで移動中",
+      "kind": "three_wheeler"
+    },
+    {
+      "id": "bicycle",
+      "nameJa": "自転車",
+      "movingJa": "自転車で移動中",
+      "kind": "bicycle",
+      "rental": true
     }
   ],
   "authoring": {

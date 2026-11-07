@@ -17,13 +17,45 @@
       "checkedAt": "2026-11-04",
       "claimType": "documented_fact",
       "claimJa": "旧市街の指定区間はタクシー・トゥクトゥクを含む車両の進入を制限し、河川側道路の乗降にも制限があると報じる。"
+    },
+    "field_check_2026_07": {
+      "publisher": "Dreamscape 作者の現地確認",
+      "title": "ルアンパパーン 作者の現地確認メモ（2026年7月）",
+      "url": "https://github.com/nagaihimitsu/dreamscape/blob/main/authoring/journeys/luang_prabang/research/field-check-2026-07/README.md",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "2026年7月の作者の現地確認（日付は記録していない）：朝と昼は自転車が中心の通り（シーサワンウォン通り）を走れた。夜は夜市の屋台で通れなかった。"
+    },
+    "kpl_rules_2026": {
+      "publisher": "KPL ラオス国営通信（Lao News Agency）",
+      "title": "Luang Prabang Begins Enforcement of Vehicle Regulations in World Heritage Area",
+      "url": "https://kpl.gov.la/en/detail.aspx?id=97345",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "2026年3月11日の報道。シーサワンウォン通りの中心区間（ホンセー〜パークカーン交差点）は、許可車両を除きバン・乗用車・トゥクトゥク・ジャンボが入れない（自転車は挙げられていない）。バイク・電動バイク・自転車は、中心の道路とシーサワンウォン通りの歩道に止めてはいけない。"
+    },
+    "routed_bike": {
+      "publisher": "FOSSGIS e.V.（routing.openstreetmap.de）／地図 © OpenStreetMap contributors（ODbL）",
+      "title": "自転車の経路計算 routed-bike table/v1（ルアンパパーンの11地点）",
+      "url": "https://routing.openstreetmap.de/routed-bike/table/v1/driving/",
+      "checkedAt": "2026-11-07",
+      "claimType": "hypothesis",
+      "claimJa": "自転車の距離と時間を2026-11-07に問い合わせた。ゲームの分数は、経路計算の時間に止めて鍵をかける5分を足し、5分単位で切り上げた推定。中心の通り（シーサワンウォン通りと、その続きのサッカリン通り）も走る計算で、規則・段差・混雑は考えていない。"
+    },
+    "rental_shops": {
+      "publisher": "Asia for Visitors",
+      "title": "Getting Around | Asia for Visitors",
+      "url": "https://asiaforvisitors.com/laos/prabang/lp-getar/",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "町のいくつかの店や宿で自転車を借りられる（you can rent bicycles from several shops and guest houses around town）。ナムカーン川の向こうへ行くのに便利と案内。本文に日付がなく、古い可能性がある。"
     }
   },
   "decisions": [
     {
       "fromPlaceId": "luang_prabang_xieng_thong",
       "toPlaceId": "luang_prabang_royal_palace",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -35,7 +67,7 @@
     {
       "fromPlaceId": "luang_prabang_xieng_thong",
       "toPlaceId": "luang_prabang_phousi",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -47,7 +79,7 @@
     {
       "fromPlaceId": "luang_prabang_xieng_thong",
       "toPlaceId": "luang_prabang_wat_mai",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -59,7 +91,7 @@
     {
       "fromPlaceId": "luang_prabang_xieng_thong",
       "toPlaceId": "luang_prabang_ethnology",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -71,7 +103,7 @@
     {
       "fromPlaceId": "luang_prabang_xieng_thong",
       "toPlaceId": "luang_prabang_heuan_chan",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -83,7 +115,7 @@
     {
       "fromPlaceId": "luang_prabang_xieng_thong",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -95,7 +127,7 @@
     {
       "fromPlaceId": "luang_prabang_xieng_thong",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -107,7 +139,7 @@
     {
       "fromPlaceId": "luang_prabang_xieng_thong",
       "toPlaceId": "luang_prabang_haw_pha_bang",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -119,7 +151,7 @@
     {
       "fromPlaceId": "luang_prabang_xieng_thong",
       "toPlaceId": "luang_prabang_night_market",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -131,7 +163,7 @@
     {
       "fromPlaceId": "luang_prabang_xieng_thong",
       "toPlaceId": "luang_prabang_hotel",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -143,7 +175,7 @@
     {
       "fromPlaceId": "luang_prabang_royal_palace",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -155,7 +187,7 @@
     {
       "fromPlaceId": "luang_prabang_royal_palace",
       "toPlaceId": "luang_prabang_phousi",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -167,7 +199,7 @@
     {
       "fromPlaceId": "luang_prabang_royal_palace",
       "toPlaceId": "luang_prabang_wat_mai",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -179,7 +211,7 @@
     {
       "fromPlaceId": "luang_prabang_royal_palace",
       "toPlaceId": "luang_prabang_ethnology",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -191,7 +223,7 @@
     {
       "fromPlaceId": "luang_prabang_royal_palace",
       "toPlaceId": "luang_prabang_heuan_chan",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -203,7 +235,7 @@
     {
       "fromPlaceId": "luang_prabang_royal_palace",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -215,7 +247,7 @@
     {
       "fromPlaceId": "luang_prabang_royal_palace",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -227,7 +259,7 @@
     {
       "fromPlaceId": "luang_prabang_royal_palace",
       "toPlaceId": "luang_prabang_haw_pha_bang",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -239,7 +271,7 @@
     {
       "fromPlaceId": "luang_prabang_royal_palace",
       "toPlaceId": "luang_prabang_night_market",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -251,7 +283,7 @@
     {
       "fromPlaceId": "luang_prabang_royal_palace",
       "toPlaceId": "luang_prabang_hotel",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -263,7 +295,7 @@
     {
       "fromPlaceId": "luang_prabang_phousi",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -275,7 +307,7 @@
     {
       "fromPlaceId": "luang_prabang_phousi",
       "toPlaceId": "luang_prabang_royal_palace",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -287,7 +319,7 @@
     {
       "fromPlaceId": "luang_prabang_phousi",
       "toPlaceId": "luang_prabang_wat_mai",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -299,7 +331,7 @@
     {
       "fromPlaceId": "luang_prabang_phousi",
       "toPlaceId": "luang_prabang_ethnology",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -311,7 +343,7 @@
     {
       "fromPlaceId": "luang_prabang_phousi",
       "toPlaceId": "luang_prabang_heuan_chan",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -323,7 +355,7 @@
     {
       "fromPlaceId": "luang_prabang_phousi",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -335,7 +367,7 @@
     {
       "fromPlaceId": "luang_prabang_phousi",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -347,7 +379,7 @@
     {
       "fromPlaceId": "luang_prabang_phousi",
       "toPlaceId": "luang_prabang_haw_pha_bang",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -359,7 +391,7 @@
     {
       "fromPlaceId": "luang_prabang_phousi",
       "toPlaceId": "luang_prabang_night_market",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -371,7 +403,7 @@
     {
       "fromPlaceId": "luang_prabang_phousi",
       "toPlaceId": "luang_prabang_hotel",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -383,7 +415,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_mai",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -395,7 +427,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_mai",
       "toPlaceId": "luang_prabang_royal_palace",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -407,7 +439,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_mai",
       "toPlaceId": "luang_prabang_phousi",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -419,7 +451,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_mai",
       "toPlaceId": "luang_prabang_ethnology",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -431,7 +463,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_mai",
       "toPlaceId": "luang_prabang_heuan_chan",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -443,7 +475,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_mai",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -455,7 +487,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_mai",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -467,7 +499,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_mai",
       "toPlaceId": "luang_prabang_haw_pha_bang",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -479,7 +511,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_mai",
       "toPlaceId": "luang_prabang_night_market",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -491,7 +523,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_mai",
       "toPlaceId": "luang_prabang_hotel",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -503,7 +535,7 @@
     {
       "fromPlaceId": "luang_prabang_ethnology",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -515,7 +547,7 @@
     {
       "fromPlaceId": "luang_prabang_ethnology",
       "toPlaceId": "luang_prabang_royal_palace",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -527,7 +559,7 @@
     {
       "fromPlaceId": "luang_prabang_ethnology",
       "toPlaceId": "luang_prabang_phousi",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -539,7 +571,7 @@
     {
       "fromPlaceId": "luang_prabang_ethnology",
       "toPlaceId": "luang_prabang_wat_mai",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -551,7 +583,7 @@
     {
       "fromPlaceId": "luang_prabang_ethnology",
       "toPlaceId": "luang_prabang_heuan_chan",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -563,7 +595,7 @@
     {
       "fromPlaceId": "luang_prabang_ethnology",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -575,7 +607,7 @@
     {
       "fromPlaceId": "luang_prabang_ethnology",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -587,7 +619,7 @@
     {
       "fromPlaceId": "luang_prabang_ethnology",
       "toPlaceId": "luang_prabang_haw_pha_bang",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -599,7 +631,7 @@
     {
       "fromPlaceId": "luang_prabang_ethnology",
       "toPlaceId": "luang_prabang_night_market",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -611,7 +643,7 @@
     {
       "fromPlaceId": "luang_prabang_ethnology",
       "toPlaceId": "luang_prabang_hotel",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -623,7 +655,7 @@
     {
       "fromPlaceId": "luang_prabang_heuan_chan",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -635,7 +667,7 @@
     {
       "fromPlaceId": "luang_prabang_heuan_chan",
       "toPlaceId": "luang_prabang_royal_palace",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -647,7 +679,7 @@
     {
       "fromPlaceId": "luang_prabang_heuan_chan",
       "toPlaceId": "luang_prabang_phousi",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -659,7 +691,7 @@
     {
       "fromPlaceId": "luang_prabang_heuan_chan",
       "toPlaceId": "luang_prabang_wat_mai",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -671,7 +703,7 @@
     {
       "fromPlaceId": "luang_prabang_heuan_chan",
       "toPlaceId": "luang_prabang_ethnology",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -683,7 +715,7 @@
     {
       "fromPlaceId": "luang_prabang_heuan_chan",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -695,7 +727,7 @@
     {
       "fromPlaceId": "luang_prabang_heuan_chan",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -707,7 +739,7 @@
     {
       "fromPlaceId": "luang_prabang_heuan_chan",
       "toPlaceId": "luang_prabang_haw_pha_bang",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -719,7 +751,7 @@
     {
       "fromPlaceId": "luang_prabang_heuan_chan",
       "toPlaceId": "luang_prabang_night_market",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -731,7 +763,7 @@
     {
       "fromPlaceId": "luang_prabang_heuan_chan",
       "toPlaceId": "luang_prabang_hotel",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -743,7 +775,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_sen",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -755,7 +787,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_sen",
       "toPlaceId": "luang_prabang_royal_palace",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -767,7 +799,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_sen",
       "toPlaceId": "luang_prabang_phousi",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -779,7 +811,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_sen",
       "toPlaceId": "luang_prabang_wat_mai",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -791,7 +823,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_sen",
       "toPlaceId": "luang_prabang_ethnology",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -803,7 +835,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_sen",
       "toPlaceId": "luang_prabang_heuan_chan",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -815,7 +847,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_sen",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -827,7 +859,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_sen",
       "toPlaceId": "luang_prabang_haw_pha_bang",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -839,7 +871,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_sen",
       "toPlaceId": "luang_prabang_night_market",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -851,7 +883,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_sen",
       "toPlaceId": "luang_prabang_hotel",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -863,7 +895,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -875,7 +907,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_royal_palace",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -887,7 +919,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_phousi",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -899,7 +931,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_wat_mai",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -911,7 +943,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_ethnology",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -923,7 +955,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_heuan_chan",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -935,7 +967,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -947,7 +979,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_haw_pha_bang",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -959,7 +991,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_night_market",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -971,7 +1003,7 @@
     {
       "fromPlaceId": "luang_prabang_wat_phol_phao",
       "toPlaceId": "luang_prabang_hotel",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -983,7 +1015,7 @@
     {
       "fromPlaceId": "luang_prabang_haw_pha_bang",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -995,7 +1027,7 @@
     {
       "fromPlaceId": "luang_prabang_haw_pha_bang",
       "toPlaceId": "luang_prabang_royal_palace",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1007,7 +1039,7 @@
     {
       "fromPlaceId": "luang_prabang_haw_pha_bang",
       "toPlaceId": "luang_prabang_phousi",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1019,7 +1051,7 @@
     {
       "fromPlaceId": "luang_prabang_haw_pha_bang",
       "toPlaceId": "luang_prabang_wat_mai",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1031,7 +1063,7 @@
     {
       "fromPlaceId": "luang_prabang_haw_pha_bang",
       "toPlaceId": "luang_prabang_ethnology",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1043,7 +1075,7 @@
     {
       "fromPlaceId": "luang_prabang_haw_pha_bang",
       "toPlaceId": "luang_prabang_heuan_chan",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1055,7 +1087,7 @@
     {
       "fromPlaceId": "luang_prabang_haw_pha_bang",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -1067,7 +1099,7 @@
     {
       "fromPlaceId": "luang_prabang_haw_pha_bang",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -1079,7 +1111,7 @@
     {
       "fromPlaceId": "luang_prabang_haw_pha_bang",
       "toPlaceId": "luang_prabang_night_market",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1091,7 +1123,7 @@
     {
       "fromPlaceId": "luang_prabang_haw_pha_bang",
       "toPlaceId": "luang_prabang_hotel",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1103,7 +1135,7 @@
     {
       "fromPlaceId": "luang_prabang_night_market",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -1115,7 +1147,7 @@
     {
       "fromPlaceId": "luang_prabang_night_market",
       "toPlaceId": "luang_prabang_royal_palace",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1127,7 +1159,7 @@
     {
       "fromPlaceId": "luang_prabang_night_market",
       "toPlaceId": "luang_prabang_phousi",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1139,7 +1171,7 @@
     {
       "fromPlaceId": "luang_prabang_night_market",
       "toPlaceId": "luang_prabang_wat_mai",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1151,7 +1183,7 @@
     {
       "fromPlaceId": "luang_prabang_night_market",
       "toPlaceId": "luang_prabang_ethnology",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1163,7 +1195,7 @@
     {
       "fromPlaceId": "luang_prabang_night_market",
       "toPlaceId": "luang_prabang_heuan_chan",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1175,7 +1207,7 @@
     {
       "fromPlaceId": "luang_prabang_night_market",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -1187,7 +1219,7 @@
     {
       "fromPlaceId": "luang_prabang_night_market",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -1199,7 +1231,7 @@
     {
       "fromPlaceId": "luang_prabang_night_market",
       "toPlaceId": "luang_prabang_haw_pha_bang",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1211,7 +1243,7 @@
     {
       "fromPlaceId": "luang_prabang_night_market",
       "toPlaceId": "luang_prabang_hotel",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1223,7 +1255,7 @@
     {
       "fromPlaceId": "luang_prabang_hotel",
       "toPlaceId": "luang_prabang_xieng_thong",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -1235,7 +1267,7 @@
     {
       "fromPlaceId": "luang_prabang_hotel",
       "toPlaceId": "luang_prabang_royal_palace",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1247,7 +1279,7 @@
     {
       "fromPlaceId": "luang_prabang_hotel",
       "toPlaceId": "luang_prabang_phousi",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1259,7 +1291,7 @@
     {
       "fromPlaceId": "luang_prabang_hotel",
       "toPlaceId": "luang_prabang_wat_mai",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1271,7 +1303,7 @@
     {
       "fromPlaceId": "luang_prabang_hotel",
       "toPlaceId": "luang_prabang_ethnology",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1283,7 +1315,7 @@
     {
       "fromPlaceId": "luang_prabang_hotel",
       "toPlaceId": "luang_prabang_heuan_chan",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1295,7 +1327,7 @@
     {
       "fromPlaceId": "luang_prabang_hotel",
       "toPlaceId": "luang_prabang_wat_sen",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -1307,7 +1339,7 @@
     {
       "fromPlaceId": "luang_prabang_hotel",
       "toPlaceId": "luang_prabang_wat_phol_phao",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "available",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制区間を避けた車道側の候補地点で乗降し、前後は徒歩。現地の乗降許可、料金と時間は確認されていないゲーム用推定。",
@@ -1319,7 +1351,7 @@
     {
       "fromPlaceId": "luang_prabang_hotel",
       "toPlaceId": "luang_prabang_haw_pha_bang",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
@@ -1331,13 +1363,1357 @@
     {
       "fromPlaceId": "luang_prabang_hotel",
       "toPlaceId": "luang_prabang_night_market",
-      "mode": "taxi",
+      "mode": "tuk_tuk",
       "status": "not_suitable",
       "checkedAt": "2026-11-04",
       "reasonJa": "規制を避けた候補乗降点の徒歩・車経路が徒歩より大幅に長いためゲームでは採用しない。実際の車両運行の有無は断定しない。",
       "sourceRefs": [
         "restriction",
         "model"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。この方向はシーサワンウォン通りの続きのサッカリン通りも走る計算で、サッカリン通りを走れるかは確かめていない。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。この方向はシーサワンウォン通りの続きのサッカリン通りも走る計算で、サッカリン通りを走れるかは確かめていない。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_xieng_thong",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。この方向はシーサワンウォン通りの続きのサッカリン通りも走る計算で、サッカリン通りを走れるかは確かめていない。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_royal_palace",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_phousi",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_mai",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。この方向はシーサワンウォン通りの続きのサッカリン通りも走る計算で、サッカリン通りを走れるかは確かめていない。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_ethnology",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_heuan_chan",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。この方向はシーサワンウォン通りの続きのサッカリン通りも走る計算で、サッカリン通りを走れるかは確かめていない。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_sen",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。この方向はシーサワンウォン通りの続きのサッカリン通りも走る計算で、サッカリン通りを走れるかは確かめていない。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。この方向はシーサワンウォン通りの続きのサッカリン通りも走る計算で、サッカリン通りを走れるかは確かめていない。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_wat_phol_phao",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_haw_pha_bang",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_night_market",
+      "toPlaceId": "luang_prabang_hotel",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_xieng_thong",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。この方向はシーサワンウォン通りの続きのサッカリン通りも走る計算で、サッカリン通りを走れるかは確かめていない。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_royal_palace",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_phousi",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_mai",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_ethnology",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_heuan_chan",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_sen",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_wat_phol_phao",
+      "mode": "bicycle",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "中心の通りを走る時間（ゲーム用の推定）。作者の現地確認（2026年7月）では、朝と昼は自転車でシーサワンウォン通りを走れた。夜は夜市の屋台で通れないが、ゲームでは時間を問わず走れることにする。止める場所（川沿いの決められた場所）は確かめておらず、止める5分は仮定。",
+      "sourceRefs": [
+        "field_check_2026_07",
+        "kpl_rules_2026",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_haw_pha_bang",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
+      ]
+    },
+    {
+      "fromPlaceId": "luang_prabang_hotel",
+      "toPlaceId": "luang_prabang_night_market",
+      "mode": "bicycle",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩きとの差が10分未満（ゲームの時間で比べた結果）。自転車で行けないという意味ではない。",
+      "sourceRefs": [
+        "rental_shops",
+        "routed_bike"
       ]
     }
   ]
