@@ -212,7 +212,8 @@ scripts/                          # 生成・検証・共通の制作ツール
   journeys/<旅行編ID>/            # その旅行編だけの制作ツール
 src/                              # ゲーム本体（React・ゲームルール・保存）
   content/generated/              # 生成物（Git管理せず、手動編集しない）
-tests/e2e/ tests/fixtures/        # E2Eとテスト用データ
+tests/e2e/ tests/fixtures/        # E2E（段ごとのタグで実行を分ける）とテスト用データ
+tests/screens/                    # 人が見る画面一覧の撮影（npm run screens）
 .github/workflows/                # CI（ci.yml・e2e.yml）と GitHub Pages への公開（pages.yml）
 ```
 
@@ -226,7 +227,10 @@ tests/e2e/ tests/fixtures/        # E2Eとテスト用データ
 | `npm run build` | 生成・型検査・本番ビルド（`dist/`）と、`dist/` にDebug・テスト用のコードやデータがないかの検査 |
 | `npm run verify` | 見本の編を含めた生成・全単体テストの後、見本なしで生成し直して型検査・本番ビルド・`dist/` の検査を行う（公開前・大きな変更）。最初の生成は会話の全分岐検査のキャッシュを使わない |
 | `npm run dist:check` | ビルド済みの `dist/` にDebug・プレビュー・テスト用のコードや旅行編がないかを検査（`build`・`verify` が自動で実行） |
-| `npm run test:e2e` | 最小構成のE2E（Playwright） |
+| `npm run test:e2e` | E2E（Playwright）の開発サーバーの2つの段（合否判定 `gate` とDebug起動台 `debug`）。1つの段だけは `npx playwright test --project=gate`（[E2Eの段](docs/10_DEVELOPMENT_CHECKS.md#e2eの段)） |
+| `npm run test:e2e:prod` | 本番ビルド（`npm run build` の後の `vite preview`）でのE2E。起動・全旅行編の開始画面・ミラノの最初の流れ・本番にDebugがないこと、タイトル画面までの読み込み量の報告 |
+| `npm run test:e2e:sample` | 見本の編を含めて生成した専用の開発サーバー（4175番）でのE2E。見本の編を新しい旅から旅の終わりまで遊ぶ。終わると見本なしで生成し直す。ほかの段と同時に実行しない |
+| `npm run screens` | 主要な画面を320px・390pxで撮り `artifacts/screens/index.html` にまとめる（人の確認用。`-- --previous <前の一覧>` で変わった画面に印。[人が画面を確かめる](docs/10_DEVELOPMENT_CHECKS.md#人が画面を確かめる)） |
 | `npm run content:inspect -- <ファイル>` | 1ファイルの形式とInkコンパイルを確認 |
 | `npm run journey:new -- <旅行編ID> --name <日本語名> --city <都市ID> --city-name <日本語名>` | 見本の編を複製して新しい旅行編（準備中）を `content/journeys/<旅行編ID>/` に作る。`--prefix <接頭辞>`（省略時は旅行編ID）、`--with-optional`（特殊戦B・C、道中交流も複製）。置き換えるものは作った旅行編の `CHECKLIST.md`。見本の出典・画像・文章が残っているうちは `journey:readiness` が示し、`journey:release` は止まる（[新しい編を追加する手順](docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順)） |
 | `npm run journey:scaffold`・`journey:readiness`・`journey:release`・`journey:transit` | 旅行編へシナリオとクイズを取り込む制作ツール（[手順](authoring/JOURNEY_AUTHORING.md)） |
@@ -392,11 +396,11 @@ Phase 2では解放済みイベントID、告白の保留/成功、交際エン�
 
 ## 検証
 
-変更の影響に応じた対象テスト、実画面確認、ログの確認手順は [開発時の確認](docs/10_DEVELOPMENT_CHECKS.md) を参照してください。公開前や大きな変更は `npm run verify` でコンテンツ生成・全単体テスト・型検査・ビルドをまとめて行い、E2E一式（`npm run test:e2e`）と実画面も確認します。Playwrightを初めて使う場合は `npx playwright install chromium` を実行してください。
+変更の影響に応じた対象テスト、実画面確認、ログの確認手順は [開発時の確認](docs/10_DEVELOPMENT_CHECKS.md) を参照してください。公開前や大きな変更は `npm run verify` でコンテンツ生成・全単体テスト・型検査・ビルドをまとめて行い、E2E一式（`npm run test:e2e`、本番ビルドの段の `npm run test:e2e:prod`、見本の編の段の `npm run test:e2e:sample`）と実画面も確認します。Playwrightを初めて使う場合は `npx playwright install chromium` を実行してください。
 
 日常の確認には、コンテンツ全体の生成を何度も繰り返す重いテストを除いた `npm run test:quick` を使います。`npm test`・`npm run test:quick`・`npm run build` を個別に使う場合はそれぞれコンテンツを再生成します（単体テストの前は見本の編を含め、`build` の前は含めません）。`npm run verify` は単体テスト用と本番ビルド用の生成を一度ずつ行います。空のcheckoutで `npm run typecheck` を単独実行する場合は、先に `npm run content:check` で生成してください。
 
-単体テストは現在のゲームの進行、保存・再開、二重取得・二重消費の防止、破損・未知版・別タブ競合の保護、コンテンツ参照などを確認します。PlaywrightのE2E（`tests/e2e/`）は、起動、ミラノでの移動・観光・バトル・デート、保存と再読み込み・別タブ保護、ゴールデントライアングル編の都市間移動を利用者と同じ操作で確かめる最小構成で、どのテストでもコンソールエラーや画像の欠落があれば失敗します。内容と追加の判断基準は [開発時の確認](docs/10_DEVELOPMENT_CHECKS.md#e2eテスト) を参照してください。見た目は実画面で確認します。GitHub Actionsは、PRで本番ビルド・全単体テスト・E2E一式を並列に、`main` へのpushで `npm run verify` と公開、並列してE2E一式を実行します。E2Eの失敗時はスクリーンショット・トレース・HTMLレポートが14日間残ります（見方は [CI](docs/10_DEVELOPMENT_CHECKS.md#cigithub-actions)）。画面の見た目と実機Safariでの確認は、CIと並行して人が行います。
+単体テストは現在のゲームの進行、保存・再開、二重取得・二重消費の防止、破損・未知版・別タブ競合の保護、コンテンツ参照などを確認します。PlaywrightのE2E（`tests/e2e/`）は段に分かれます。合否判定の段は、起動と全旅行編の開始画面、ミラノでの移動・観光・バトル・デート、保存と再読み込み（バトルの途中を含む）・別タブ・読めないセーブや書き込み失敗の保護、都市間移動を利用者と同じ操作で確かめます。Debug起動台の段は特殊戦B・C、道中交流、デートを場面から直接確かめ（保存・再開の確認には数えません）、本番ビルドの段は公開されるビルドで起動と最初の流れを確かめます。どのテストでもコンソールエラーや画像の欠落があれば失敗します。内容と追加の判断基準は [開発時の確認](docs/10_DEVELOPMENT_CHECKS.md#e2eテスト) を参照してください。見た目は実画面で確認します。GitHub Actionsは、PRで本番ビルド・全単体テスト・E2Eの各段を並列に、`main` へのpushで `npm run verify` と公開、並列してE2Eの各段を実行します。E2Eの失敗時はスクリーンショット・トレース・HTMLレポートが14日間残ります（見方は [CI](docs/10_DEVELOPMENT_CHECKS.md#cigithub-actions)）。画面の見た目と実機Safariでの確認は、CIと並行して人が行います（CIが作る画面一覧 `screens` も使えます）。公開前には、片手で遊ぶ人・キーボードや読み上げで操作する人・英語が苦手な人になりきって目標まで遊ぶ確認も行います（[想定する遊び手での確認](docs/10_DEVELOPMENT_CHECKS.md#想定する遊び手での確認)）。
 
 恋愛の背景と敵の立ち絵は簡易SVGイラストです。観光画面と証拠帳は上記の実物資料画像を使用しています。フォントはNoto Sans JP / Noto Serif JP（Google Fonts、SIL OFL）を任意取得し、取得できなくてもシステムフォントで動作します。
 

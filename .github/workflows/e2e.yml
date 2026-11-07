@@ -3,6 +3,7 @@ name: E2E
 # Browser tests (Playwright) for every pull request and every push to main,
 # also runnable by hand. Deploying (pages.yml) does not wait for them: on
 # main they run alongside the deploy, and a failure shows as a failed check.
+# Each tier (docs/10「E2Eの段」) is its own job, and all jobs run in parallel.
 on:
   pull_request:
   push:
@@ -29,12 +30,27 @@ jobs:
       fail-fast: false
       matrix:
         # One entry per tier; each entry is a separate job and all of them run
-        # in parallel. A new tier (for example a production-build check) is a
-        # new entry with its own command; a slow tier can be split into
-        # entries that pass --shard=1/2 and --shard=2/2 to Playwright.
+        # in parallel. A slow tier can be split into entries that pass
+        # --shard=1/2 and --shard=2/2 to Playwright.
         include:
+          # Main flows on the development server (every test tagged @gate).
           - tier: gate
-            command: npm run test:e2e
+            command: npx playwright test --project=gate
+          # Debug as a scene launchpad on the development server (@debug).
+          - tier: debug
+            command: npx playwright test --project=debug
+          # The production build: `npm run build`, then `vite preview` (@prod).
+          - tier: prod
+            command: npx playwright test -c playwright.prod.config.ts
+          # The sample journey played from a new journey to the end of the
+          # journey, on a development server of its own built with the sample
+          # (@sample). This checkout is thrown away after the job, so a journey
+          # is made here first with journey:new, as an author would start one:
+          # the tier's title test then checks that it builds and opens as a
+          # preparing journey (journey:new's acceptance check).
+          - tier: sample
+            prepare: npm run journey:new -- ci_new_trip --name 新しい旅 --city ci_new_town --city-name 新しい街
+            command: npx playwright test -c playwright.sample.config.ts
     steps:
       - name: Check out source
         uses: actions/checkout@v4
@@ -45,15 +61,33 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
+      - name: Read the locked Playwright version
+        id: playwright
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+      # Only the browser download is kept between runs (keyed by the locked
+      # version); node_modules always comes fresh from npm ci.
+      - name: Restore the Chromium build of that version
+        id: browser
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-${{ steps.playwright.outputs.version }}
       - name: Install Chromium for the locked Playwright version
+        if: steps.browser.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps chromium
-      # The webServer of playwright.config.ts builds the content and starts
-      # the development server. GitHub sets CI, which turns on the CI
-      # settings there (no retries, forbidOnly, 2 workers, HTML report).
-      # Playwright stops itself after its globalTimeout in CI (12 minutes) and
-      # still writes the report; this step limit is the backstop. A step that
-      # times out fails (not cancels) the job, so the upload below still runs,
-      # which a job-level timeout would skip.
+      - name: Install Chromium's system libraries
+        if: steps.browser.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+      - name: Prepare the ${{ matrix.tier }} tier
+        if: matrix.prepare
+        run: ${{ matrix.prepare }}
+      # The webServer of each Playwright config builds the content and starts
+      # the development server or the production preview. GitHub sets CI,
+      # which turns on the CI settings there (no retries, forbidOnly, 2 workers,
+      # HTML report). Playwright stops itself after its globalTimeout in CI
+      # (12 minutes) and still writes the report; this step limit is the
+      # backstop. A step that times out fails (not cancels) the job, so the
+      # upload below still runs, which a job-level timeout would skip.
       - name: Run the ${{ matrix.tier }} tier
         timeout-minutes: 16
         run: ${{ matrix.command }}
@@ -65,5 +99,48 @@ jobs:
           path: |
             playwright-report/
             test-results/
+          retention-days: 14
+          if-no-files-found: ignore
+
+  screens:
+    # For people checking screens by eye (docs/10「人が画面を確かめる」); never a gate.
+    name: Screens for review (320 and 390 px)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    continue-on-error: true
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Read the locked Playwright version
+        id: playwright
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+      - name: Restore the Chromium build of that version
+        id: browser
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+      - name: Install Chromium for the locked Playwright version
+        if: steps.browser.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+      - name: Install Chromium's system libraries
+        if: steps.browser.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+      - name: Capture the screens
+        timeout-minutes: 12
+        run: npm run screens
+      - name: Keep the gallery
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screens
+          path: artifacts/screens/
           retention-days: 14
           if-no-files-found: ignore

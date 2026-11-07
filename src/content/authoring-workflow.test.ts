@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { cp, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { SAMPLE_JOURNEY_DIRECTORY } from "../../scripts/content-layout";
+import { SAMPLE_JOURNEY_DIRECTORY, SAMPLE_JOURNEY_ID, journeyDirectory } from "../../scripts/content-layout";
 import { buildContent } from "../../scripts/content-pipeline";
 import { prepareContentFixture } from "./test-fixtures";
 import { quizSchema } from "./schemas";
@@ -11,7 +11,9 @@ const root = path.resolve(".");
 let fixture: string;
 beforeEach(async () => {
   fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-authoring-"));
-  await prepareContentFixture(fixture, { withSample: true });
+  await prepareContentFixture(fixture);
+  // The sample as an ordinary journey folder of the copy: the new quiz below joins it.
+  await cp(path.join(root, SAMPLE_JOURNEY_DIRECTORY), journeyDirectory(fixture, SAMPLE_JOURNEY_ID), { recursive: true });
 });
 afterEach(async () => {
   await rm(fixture, { recursive: true, force: true });

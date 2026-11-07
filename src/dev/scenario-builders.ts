@@ -5,9 +5,11 @@
  * these builders, so a scene is prepared the same way everywhere. Progress is
  * made only through the domain functions the screens call (every action must
  * change the state, and a finished map event is settled like GameApp does);
- * every builder returns a state that passes validateGameState. Only the scene
- * openers and withAp/withRelationship set values directly, as Debug always has:
- * they place the player at the scene's place and set AP and the relationship.
+ * every exported builder returns its state through validateGameState, and the
+ * city builders stop with a message unless the finale cleared the city. Only
+ * the scene openers and withAp/withRelationship set values directly, as Debug
+ * always has: they place the player at the scene's place and set AP and the
+ * relationship.
  * Never imported by production code (scripts/dist-guard.ts checks the build).
  */
 import { balance, battles, episodes, getCities, getCityContent, type QuizQuestion } from "../content";
@@ -82,7 +84,7 @@ export function playBattleToResult(initial: GameState, options: PlayOptions = {}
       state = act(state, (current) => answerBattle(current, optionId, current.revision), what, options);
     } else state = act(state, (current) => advanceBattle(current, current.revision), what, options);
   }
-  return state;
+  return validateGameState(state);
 }
 
 /** Read the open sightseeing guide line by line to its end (the guide's reward is earned). */
@@ -92,7 +94,7 @@ export function readGuide(initial: GameState, options: PlayOptions = {}): GameSt
     if (line > MAX_STEPS) throw new Error(`観光案内 ${state.activeTourism.landmarkId} を読み終えられませんでした。`);
     state = act(state, (current) => advanceTourismGuide(current, current.revision), "観光案内", options);
   }
-  return state;
+  return validateGameState(state);
 }
 
 /** From an opened guide or observation, go on to the landmark's battle (read or skip the guide first). */
@@ -120,7 +122,8 @@ export function finishEpisode(state: GameState, episodeId: string, options: Epis
 
 /**
  * Play the current city's remaining special battles and episodes in the order
- * the city recommends, until the finale's result screen (the city is cleared).
+ * the city recommends, until the finale's result screen; stops with a message
+ * if that finale did not clear the city.
  */
 export function playCityToFinaleResult(initial: GameState, options: CityPlayOptions = {}): GameState {
   const cityId = initial.currentCityId;
@@ -134,7 +137,11 @@ export function playCityToFinaleResult(initial: GameState, options: CityPlayOpti
       ? playBattleToResult(act(state, (current) => startBattle(current, special.battleId), `特殊戦 ${special.battleId} を始める`, options), options)
       : playEpisodeToResult(state, episode!.id, options);
     options.onResult?.(state);
-    if (episode?.kind === "city_finale") return validateGameState(state);
+    if (episode?.kind === "city_finale") {
+      if (!state.completedCityIds.includes(cityId))
+        throw new Error(`${cityId} のフィナーレ ${episode.id} の結果になりましたが、都市クリアになっていません。`);
+      return state;
+    }
     state = act(state, (current) => leaveBattle(current, current.revision), "対決の結果を閉じる", options);
   }
 }
@@ -236,7 +243,7 @@ export function withRelationship(state: GameState, values: Pick<GameState, "affe
 }
 
 /** Put the player at a place of the current city (Debug's placement), keeping a payable way back to the hotel. */
-export function atPlace(state: GameState, placeId: string): GameState {
+function atPlace(state: GameState, placeId: string): GameState {
   const { travel } = getCityContent(state.currentCityId);
   if (!travel.places.some((place) => place.id === placeId)) throw new Error("この街に場面の地点が見つかりません。");
   const returnReserve = minimumHomeFare(travel.routes, placeId, state.travel.hotelPlaceId, state.travel.minute);

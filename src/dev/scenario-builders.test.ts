@@ -83,7 +83,18 @@ describe("scenario builders", () => {
     const fresh = newJourney("milano");
     expect(() => playBattleToResult(fresh)).toThrow("対決が始まっていません。");
     expect(() => playEpisodeToResult(fresh, finaleOf("milano").id)).toThrow("この操作では状態が変わりませんでした");
-    expect(readGuide(fresh)).toBe(fresh);
+    expect(readGuide(fresh)).toEqual(fresh);
+  });
+
+  it("never returns a finale result or a cleared city whose clear is missing", () => {
+    const finale = finaleOf("mihon");
+    // `after` takes the clear away at the finale's result, as a broken clear rule would. Today the
+    // state check (validateGameState: 「都市クリアの記録が一致しません。」) refuses it first; the
+    // builders' own check (「…都市クリアになっていません。」) covers rules the state check would allow.
+    const notCleared = (next: GameState) => next.activeBattle?.battleId === finale.battleId && next.activeBattle.phase === "result"
+      ? { ...next, completedCityIds: next.completedCityIds.filter((id) => id !== "mihon") } : next;
+    expect(() => cityFinaleResult("mihon", { after: notCleared })).toThrow(/都市クリア/u);
+    expect(() => completedCity("mihon", { after: notCleared })).toThrow(/都市クリア/u);
   });
 
   it("reads or skips the guide of a main episode", () => {

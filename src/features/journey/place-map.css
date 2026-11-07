@@ -1,4 +1,7 @@
-.travel-map-preview { position: relative; }
+/* Leaflet's panes and controls use z-index 400–1000; keep them inside the map
+   so the sticky journey bar stays on top (and tappable) when the map scrolls
+   under it. */
+.travel-map-preview { position: relative; isolation: isolate; }
 .travel-map-expand {
   position: absolute;
   z-index: 500;

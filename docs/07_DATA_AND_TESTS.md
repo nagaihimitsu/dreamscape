@@ -9,7 +9,7 @@
 - 旅行編フォルダの項目は自分の `manifest.json` の都市だけを扱い、参照先は同じ旅行編か共通データに限る。共通データは都市・旅行編の項目を参照しない（`content:build` が検査）。
 - `manifest.json` の都市名（`cities[].nameJa`）は都市ファイルの `nameJa` と同じ。`productionStatus: "complete"` の都市は都市フィナーレを持つ。画像は同じ旅行編の `public/` か直下の `public/` のもの（共通データは直下だけ）。`authoring` のパスは `authoring/journeys/<journeyId>/` の中の相対パス（いずれも `content:build` がエラーにする。読み込まれないファイル・参照されない配信ファイル・接頭辞のないIDは警告。[生成時の検査と報告](02_TECH_ARCHITECTURE.md#生成時の検査と報告)）。
 - ゲームは `src/content/generated/` の生成物だけを読む。旅行編だけが持つ種類（道中交流、会話注釈、英語ノートの詳細など）は、どの旅行編にもなければ空として生成する。`memoryCallbacks` は空でもよい（該当がなければ `fallbackMemoryCallbackJa`）。`learning/details.json` は問題ごとに統合し、詳細を持つ問題はそれぞれ学習会話の `storyId` を持つ（同じ旅行編の会話だけを指せる）。
-- 開発・テスト専用の見本の編（`authoring/templates/sample_trip/`、[技術設計](02_TECH_ARCHITECTURE.md#見本の編)）は `content/journeys/` に含めない。生成物に加えるのは `npm run content:build -- --with-sample`（単体テストと `npm run verify` の最初の生成、`npm run dev:sample`）だけで、本番ビルドには入れない。一時コピーで使うテストは `prepareContentFixture(フォルダ, { withSample: true })` と明示する。
+- 開発・テスト専用の見本の編（`authoring/templates/sample_trip/`、[技術設計](02_TECH_ARCHITECTURE.md#見本の編)）は `content/journeys/` に含めない。生成物に加えるのは `npm run content:build -- --with-sample`（単体テストと `npm run verify` の最初の生成、`npm run dev:sample`、E2Eの見本の編の段）だけで、本番ビルドには入れない。テストの一時コピー（`prepareContentFixture`）にも含めず、見本を使うテストが自分で複製する。
 
 ## シナリオ編集
 - Inkは文章と選択肢を担当。`# speaker: heroine`、`# speaker: narrator`、`# background: milano_cafe`、`# effect: memory_milano_promise` のようなタグを採用する。
@@ -61,9 +61,9 @@
 9. 狭い画面で文字が切れない。長文の名前を入力してもレイアウトが大きく壊れない。
 10. セーブデータ破損時は明確に案内し、利用者の他データを勝手に消さない。
 11. ビルド/型チェック/テストの実行手順をREADMEに記載し、変更内容と影響範囲に応じて必要な確認を選ぶ。公開前や大きな変更では[開発時の確認](10_DEVELOPMENT_CHECKS.md)の全体確認を行う。
-12. 旅行編フォルダを1つ追加して `npm run content:build` を実行すると、コードを変更せずに旅行編一覧・会話・クイズ・画像に加わる。どの旅行編フォルダを外しても生成と検証が通る（`scripts/journey-folders.test.ts`。追加の確認には見本の編を使う）。見本の編は共通データだけと組み合わせても生成でき、README に挙げた必須の20ファイルのどれを外しても決まったエラーで止まり、任意の部分（特殊戦B・C、道中交流）を外した最小構成でも生成できる（`scripts/sample-journey.test.ts`）。見本の編はタイトルからエピローグまで実際のゲームの関数で遊べる（`src/domain/sample-journey-route.test.ts`）。`npm run journey:new` で見本から作った旅行編は、最小構成でも任意の部分を含めても準備中として生成・検証を通り、日本語名がない・既にあるID・使用中の接頭辞は何も書かずに拒否する。見本の出典・画像・文章が残っているうちは `journey:readiness` が示し `journey:release` が止まり、置き換えれば公開の確認を通る（`scripts/journey-new.test.ts`、`scripts/sample-leftovers.test.ts`）。公開中にした旅行編に見本の出典（example.com）が残っていれば `content:build` が止まる（`scripts/content-validation.test.ts`）。
+12. 旅行編フォルダを1つ追加して `npm run content:build` を実行すると、コードを変更せずに旅行編一覧・会話・クイズ・画像に加わる。どの旅行編フォルダを外しても生成と検証が通る（`scripts/journey-folders.test.ts`。追加の確認には見本の編を使う）。見本の編は共通データだけと組み合わせても生成でき、README に挙げた必須の20ファイルのどれを外しても決まったエラーで止まり、任意の部分（特殊戦B・C、道中交流）を外した最小構成でも生成できる（`scripts/sample-journey.test.ts`）。見本の編はタイトルからエピローグまで実際のゲームの関数で遊べ（`src/domain/sample-journey-route.test.ts`）、画面でも新しい旅から旅の終わりまで近道なしで遊べる（`tests/e2e/sample-journey.spec.ts`、E2Eの見本の編の段）。`npm run journey:new` で見本から作った旅行編は、最小構成でも任意の部分を含めても準備中として生成・検証を通り（CIでは、作った旅行編がタイトル画面で準備中として開くこともE2Eの見本の編の段が確かめる）、日本語名がない・既にあるID・使用中の接頭辞は何も書かずに拒否する。見本の出典・画像・文章が残っているうちは `journey:readiness` が示し `journey:release` が止まり、置き換えれば公開の確認を通る（`scripts/journey-new.test.ts`、`scripts/sample-leftovers.test.ts`）。公開中にした旅行編に見本の出典（example.com）が残っていれば `content:build` が止まる（`scripts/content-validation.test.ts`）。
 13. 共通のテストは特定の旅行編・都市を対象にするときはその範囲に絞って数え、旅行編を追加しても失敗しない。単体テストの生成物には公開中の見本の編が常に加わるため、この条件は毎回の単体テストで確かめられる。
-14. Debug・素材のプレビュー・場面の組み立て部品（`src/dev/`）とテスト用の仮データは本番ビルドに含まれない（`npm run build` の `dist/` の検査）。Debugは起動URLから開いても通常のセーブ・英語ノート・表示設定を変えず（`boot.spec.ts`）、Debugでの場面確認は保存・再開の確認に数えない（[テストの3つの道](10_DEVELOPMENT_CHECKS.md#テストの3つの道)）。
+14. Debug・素材のプレビュー・場面の組み立て部品（`src/dev/`）とテスト用の仮データは本番ビルドに含まれない（`npm run build` の `dist/` の検査）。Debugは起動URLから開いても通常のセーブ・英語ノート・表示設定を変えず（`debug-scenes.spec.ts`。各テストの前後で保存領域全体を比べる）、本番ビルドでは `?debug` を付けても通常のタイトルが出る（`boot.spec.ts` の本番ビルドの段）、Debugでの場面確認は保存・再開の確認に数えない（[テストの3つの道](10_DEVELOPMENT_CHECKS.md#テストの3つの道)）。
 
 恋愛に影響する変更では、保存済みチケットとプロフィールの再現性、各軸の確率補正・上下限・変化幅、正負両経路の会話、二重操作・別タブ競合、無作為化しない告白、APが尽きたときの再交流を必要に応じて検証する。
 

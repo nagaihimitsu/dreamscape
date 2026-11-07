@@ -376,14 +376,17 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
     cityLayers.set(item.id, item);
   }
   // Missing files are named with what to add (Japanese first, like the missing-manifest message).
+  // travel/<city>.json is the city's 移動データ, travel/<city>-settings.json its 移動の設定, in every message.
+  const travelLabel = (file: string) => file.endsWith("-settings.json") ? "移動の設定" : "移動データ";
   for (const item of travelFiles) {
     const city = cityLayers.get(item.cityId);
     if (city?.layer === item.layer) continue;
+    const label = travelLabel(item.file);
     throw new Error(city
-      ? `都市 ${item.cityId} の移動データ ${item.file} は、都市ファイル ${city.file} と同じ旅行編フォルダの travel/ に置いてください` +
+      ? `都市 ${item.cityId} の${label} ${item.file} は、都市ファイル ${city.file} と同じ旅行編フォルダの travel/ に置いてください` +
         "（Travel file without a city in the same layer）。"
-      : `都市ファイル ${path.join(item.layer.directory, "cities", `${item.cityId}.json`)} がありません。${item.file} は都市 ${item.cityId} の移動データです。` +
-        "都市ファイルを追加するか、この移動データを消してください（Travel file without a city in the same layer）。");
+      : `都市ファイル ${path.join(item.layer.directory, "cities", `${item.cityId}.json`)} がありません。${item.file} は都市 ${item.cityId} の${label}です。` +
+        `都市ファイルを追加するか、この${label}を消してください（Travel file without a city in the same layer）。`);
   }
 
   // JSON of quizzes, then of every city with its travel settings and travel files.
@@ -393,10 +396,10 @@ export function contentSourcesFromTree(tree: ContentTree): ContentSources {
   const readTravel = (city: LayerFile & { id: string }, file: string, settings: boolean): Buffer => {
     const bytes = tree.files.get(toPosix(path.relative(root, file)));
     if (bytes) return bytes;
-    const [name, holds, english] = settings
-      ? ["移動の設定", "宿の地点・宿泊費・再挑戦の間隔", "Missing travel settings file"]
-      : ["移動データ", "地点・経路・地図のイベント", "Missing travel file"];
-    throw new Error(`${name} ${file} がありません。都市 ${city.id}（${city.file}）の${holds}を書くファイルです（${english} of city ${city.id}）。`);
+    const [holds, english] = settings
+      ? ["宿の地点・宿泊費・再挑戦の間隔", "Missing travel settings file"]
+      : ["地点・経路・地図のイベント", "Missing travel file"];
+    throw new Error(`${travelLabel(file)} ${file} がありません。都市 ${city.id}（${city.file}）の${holds}を書くファイルです（${english} of city ${city.id}）。`);
   };
   const cities = cityFiles.map((item): CitySource => {
     const travel = path.join(item.layer.directory, "travel");

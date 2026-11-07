@@ -191,7 +191,8 @@ export function loadJourneyReadiness(root: string, journeyId: string): JourneyRe
 export function journeyReadinessInput(sources: ContentSources, journeyId: string): JourneyReadinessInput {
   const catalog = journeyCatalogOf(sources);
   const trip = catalog.journeys.find((item) => item.id === journeyId);
-  if (!trip) throw new Error("Journey journey is missing");
+  if (!trip) throw new Error(`旅行編「${journeyId}」は登録されていません（content/journeys/<旅行編ID>/manifest.json）。` +
+    `登録されている旅行編: ${catalog.journeys.map((item) => item.id).join(", ") || "なし"}（Unknown journey）。`);
   const cities = trip.cities.map(({ id }) => {
     const files = requireCity(sources, id);
     return { city: citySchema.parse(files.data), travel: travelCatalogSchema.parse(files.travel),

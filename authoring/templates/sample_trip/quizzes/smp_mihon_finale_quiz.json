@@ -12,18 +12,18 @@
       "options": [
         {
           "id": "A",
-          "textEn": "Three o'clock became a promise."
+          "textEn": "Nobody could climb the tower."
         },
         {
           "id": "B",
-          "textEn": "Nobody could climb the tower."
+          "textEn": "Three o'clock became a promise."
         },
         {
           "id": "C",
           "textEn": "The parts were too old."
         }
       ],
-      "correctOptionId": "A",
+      "correctOptionId": "B",
       "vocabularyJa": [
         {
           "word": "promise",
@@ -55,18 +55,18 @@
       "options": [
         {
           "id": "A",
-          "textEn": "That it is broken."
-        },
-        {
-          "id": "B",
           "textEn": "That it is new."
         },
         {
-          "id": "C",
+          "id": "B",
           "textEn": "That it runs too fast."
+        },
+        {
+          "id": "C",
+          "textEn": "That it is broken."
         }
       ],
-      "correctOptionId": "A",
+      "correctOptionId": "C",
       "vocabularyJa": [
         {
           "word": "visitors",
@@ -141,18 +141,18 @@
       "options": [
         {
           "id": "A",
-          "textEn": "When someone comes back to the town."
-        },
-        {
-          "id": "B",
           "textEn": "Every morning at six."
         },
         {
-          "id": "C",
+          "id": "B",
           "textEn": "When the mayor asks."
+        },
+        {
+          "id": "C",
+          "textEn": "When someone comes back to the town."
         }
       ],
-      "correctOptionId": "A",
+      "correctOptionId": "C",
       "vocabularyJa": [
         {
           "word": "keeper",
@@ -180,18 +180,18 @@
       "options": [
         {
           "id": "A",
-          "textEn": "Say \"Meet me at three.\""
+          "textEn": "Say \"See you at noon.\""
         },
         {
           "id": "B",
-          "textEn": "Say \"See you at noon.\""
+          "textEn": "Say \"Meet me at three.\""
         },
         {
           "id": "C",
           "textEn": "Say \"Come at five sharp.\""
         }
       ],
-      "correctOptionId": "A",
+      "correctOptionId": "B",
       "vocabularyJa": [
         {
           "word": "invite",

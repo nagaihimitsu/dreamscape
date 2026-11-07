@@ -7,24 +7,24 @@
         "options": [
           {
             "id": "A",
-            "textEn": "They kept it at three."
-          },
-          {
-            "id": "B",
             "textEn": "They built a new tower."
           },
           {
-            "id": "C",
+            "id": "B",
             "textEn": "They moved the clock to the market."
+          },
+          {
+            "id": "C",
+            "textEn": "They kept it at three."
           }
         ],
-        "correctOptionId": "A"
+        "correctOptionId": "C"
       },
       "questionJa": "時計はずっと前に壊れた。街はどうした？",
       "optionsJa": {
-        "A": "三時のままにしておいた。",
-        "B": "新しい塔を建てた。",
-        "C": "時計を市場へ移した。"
+        "A": "新しい塔を建てた。",
+        "B": "時計を市場へ移した。",
+        "C": "三時のままにしておいた。"
       }
     },
     "smp_mihon_clock_tower_q2": {
@@ -85,23 +85,23 @@
         "options": [
           {
             "id": "A",
-            "textEn": "The sellers clap their hands."
+            "textEn": "The tower bell rings."
           },
           {
             "id": "B",
-            "textEn": "The tower bell rings."
+            "textEn": "The sellers clap their hands."
           },
           {
             "id": "C",
             "textEn": "A radio calls the time."
           }
         ],
-        "correctOptionId": "A"
+        "correctOptionId": "B"
       },
       "questionJa": "朝市はどうやって始まる？",
       "optionsJa": {
-        "A": "店主たちが手をたたく。",
-        "B": "塔の鐘が鳴る。",
+        "A": "塔の鐘が鳴る。",
+        "B": "店主たちが手をたたく。",
         "C": "ラジオが時刻を知らせる。"
       }
     },
@@ -111,24 +111,24 @@
         "options": [
           {
             "id": "A",
-            "textEn": "With a sand timer."
-          },
-          {
-            "id": "B",
             "textEn": "With the tower clock."
           },
           {
-            "id": "C",
+            "id": "B",
             "textEn": "By asking her neighbor."
+          },
+          {
+            "id": "C",
+            "textEn": "With a sand timer."
           }
         ],
-        "correctOptionId": "A"
+        "correctOptionId": "C"
       },
       "questionJa": "パン屋はパンの焼き時間をどう計る？",
       "optionsJa": {
-        "A": "砂時計で。",
-        "B": "塔の時計で。",
-        "C": "隣の人に聞いて。"
+        "A": "塔の時計で。",
+        "B": "隣の人に聞いて。",
+        "C": "砂時計で。"
       }
     },
     "smp_mihon_market_b_q3": {
@@ -163,24 +163,24 @@
         "options": [
           {
             "id": "A",
-            "textEn": "Repairs of the bell."
-          },
-          {
-            "id": "B",
             "textEn": "Repairs of the clock."
           },
           {
-            "id": "C",
+            "id": "B",
             "textEn": "Visits from the mayor."
+          },
+          {
+            "id": "C",
+            "textEn": "Repairs of the bell."
           }
         ],
-        "correctOptionId": "A"
+        "correctOptionId": "C"
       },
       "questionJa": "町の日誌に何度も書かれているのは？",
       "optionsJa": {
-        "A": "鐘の修理。",
-        "B": "時計の修理。",
-        "C": "町長の訪問。"
+        "A": "時計の修理。",
+        "B": "町長の訪問。",
+        "C": "鐘の修理。"
       }
     },
     "smp_mihon_library_c_q2": {
@@ -215,23 +215,23 @@
         "options": [
           {
             "id": "A",
-            "textEn": "The town kept the clock at three on purpose."
+            "textEn": "The clock was too expensive to fix."
           },
           {
             "id": "B",
-            "textEn": "The clock was too expensive to fix."
+            "textEn": "The town kept the clock at three on purpose."
           },
           {
             "id": "C",
             "textEn": "Nobody noticed the clock."
           }
         ],
-        "correctOptionId": "A"
+        "correctOptionId": "B"
       },
       "questionJa": "日誌と招待状を合わせると、何が分かる？",
       "optionsJa": {
-        "A": "街はわざと時計を三時のままにしておいた。",
-        "B": "時計は直すには高すぎた。",
+        "A": "時計は直すには高すぎた。",
+        "B": "街はわざと時計を三時のままにしておいた。",
         "C": "誰も時計に気づかなかった。"
       }
     },
@@ -241,23 +241,23 @@
         "options": [
           {
             "id": "A",
-            "textEn": "Three o'clock became a promise."
+            "textEn": "Nobody could climb the tower."
           },
           {
             "id": "B",
-            "textEn": "Nobody could climb the tower."
+            "textEn": "Three o'clock became a promise."
           },
           {
             "id": "C",
             "textEn": "The parts were too old."
           }
         ],
-        "correctOptionId": "A"
+        "correctOptionId": "B"
       },
       "questionJa": "なぜ街は昔、時計を直さなかった？",
       "optionsJa": {
-        "A": "三時という時刻が約束になったから。",
-        "B": "誰も塔に登れなかったから。",
+        "A": "誰も塔に登れなかったから。",
+        "B": "三時という時刻が約束になったから。",
         "C": "部品が古すぎたから。"
       }
     },
@@ -267,24 +267,24 @@
         "options": [
           {
             "id": "A",
-            "textEn": "That it is broken."
-          },
-          {
-            "id": "B",
             "textEn": "That it is new."
           },
           {
-            "id": "C",
+            "id": "B",
             "textEn": "That it runs too fast."
+          },
+          {
+            "id": "C",
+            "textEn": "That it is broken."
           }
         ],
-        "correctOptionId": "A"
+        "correctOptionId": "C"
       },
       "questionJa": "旅人は時計を見て、よく何と思う？",
       "optionsJa": {
-        "A": "壊れている。",
-        "B": "新しい。",
-        "C": "進みすぎている。"
+        "A": "新しい。",
+        "B": "進みすぎている。",
+        "C": "壊れている。"
       }
     },
     "smp_mihon_finale_q3": {
@@ -319,24 +319,24 @@
         "options": [
           {
             "id": "A",
-            "textEn": "When someone comes back to the town."
-          },
-          {
-            "id": "B",
             "textEn": "Every morning at six."
           },
           {
-            "id": "C",
+            "id": "B",
             "textEn": "When the mayor asks."
+          },
+          {
+            "id": "C",
+            "textEn": "When someone comes back to the town."
           }
         ],
-        "correctOptionId": "A"
+        "correctOptionId": "C"
       },
       "questionJa": "時計番はいつ鐘を手で鳴らす？",
       "optionsJa": {
-        "A": "誰かが街に戻ってきたとき。",
-        "B": "毎朝六時。",
-        "C": "町長に頼まれたとき。"
+        "A": "毎朝六時。",
+        "B": "町長に頼まれたとき。",
+        "C": "誰かが街に戻ってきたとき。"
       }
     },
     "smp_mihon_finale_q5": {
@@ -345,23 +345,23 @@
         "options": [
           {
             "id": "A",
-            "textEn": "Say \"Meet me at three.\""
+            "textEn": "Say \"See you at noon.\""
           },
           {
             "id": "B",
-            "textEn": "Say \"See you at noon.\""
+            "textEn": "Say \"Meet me at three.\""
           },
           {
             "id": "C",
             "textEn": "Say \"Come at five sharp.\""
           }
         ],
-        "correctOptionId": "A"
+        "correctOptionId": "B"
       },
       "questionJa": "この街らしく友達を誘うには？",
       "optionsJa": {
-        "A": "「三時に会おう」と言う。",
-        "B": "「正午に会おう」と言う。",
+        "A": "「正午に会おう」と言う。",
+        "B": "「三時に会おう」と言う。",
         "C": "「五時ちょうどに来て」と言う。"
       }
     }

@@ -292,6 +292,10 @@
 
 @media (max-width: 700px) and (min-height: 500px) and (orientation: portrait) {
   .battle-screen[data-phase="result"] .battle-stage { display: none; }
+  /* Without the stage, 54 px down is the round bar's 手がかり帳: keep the
+     image credit beside the place name (centred on its row, above the paper),
+     in the space the name leaves free. */
+  .battle-screen[data-phase="result"] .vn-credit-link { top: 5px; }
   .battle-screen[data-phase="result"] .battle-paper { padding: 6px 12px 12px; }
   .battle-result { padding-top: 0; }
   .battle-result-heading {

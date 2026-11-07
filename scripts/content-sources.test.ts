@@ -234,10 +234,22 @@ describe("loadContentSources with journey layers", () => {
     rmSync(path.join(folder("milano"), "travel/delhi.json"));
     write("content/journeys/milano/travel/rome-settings.json", {});
     expect(() => loadContentSources(root)).toThrow(
-      `都市ファイル ${folder("milano")}/cities/rome.json がありません。${folder("milano")}/travel/rome-settings.json は都市 rome の移動データです。` +
-      "都市ファイルを追加するか、この移動データを消してください（Travel file without a city in the same layer）。",
+      `都市ファイル ${folder("milano")}/cities/rome.json がありません。${folder("milano")}/travel/rome-settings.json は都市 rome の移動の設定です。` +
+      "都市ファイルを追加するか、この移動の設定を消してください（Travel file without a city in the same layer）。",
     );
     rmSync(path.join(folder("milano"), "travel/rome-settings.json"));
+    write("content/journeys/milano/travel/rome.json", {});
+    expect(() => loadContentSources(root)).toThrow(
+      `都市ファイル ${folder("milano")}/cities/rome.json がありません。${folder("milano")}/travel/rome.json は都市 rome の移動データです。` +
+      "都市ファイルを追加するか、この移動データを消してください（Travel file without a city in the same layer）。",
+    );
+    rmSync(path.join(folder("milano"), "travel/rome.json"));
+    write("content/journeys/milano/travel/delhi-settings.json", {});
+    expect(() => loadContentSources(root)).toThrow(
+      `都市 delhi の移動の設定 ${folder("milano")}/travel/delhi-settings.json は、都市ファイル ${folder("golden_triangle")}/cities/delhi.json と同じ旅行編フォルダの travel/ に置いてください` +
+      "（Travel file without a city in the same layer）。",
+    );
+    rmSync(path.join(folder("milano"), "travel/delhi-settings.json"));
     // A city file needs both travel files of its folder.
     rmSync(path.join(folder("golden_triangle"), "travel/delhi-settings.json"));
     expect(() => loadContentSources(root)).toThrow(

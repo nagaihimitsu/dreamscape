@@ -10,18 +10,18 @@
       "options": [
         {
           "id": "A",
-          "textEn": "The sellers clap their hands."
+          "textEn": "The tower bell rings."
         },
         {
           "id": "B",
-          "textEn": "The tower bell rings."
+          "textEn": "The sellers clap their hands."
         },
         {
           "id": "C",
           "textEn": "A radio calls the time."
         }
       ],
-      "correctOptionId": "A",
+      "correctOptionId": "B",
       "vocabularyJa": [
         {
           "word": "sellers",
@@ -53,18 +53,18 @@
       "options": [
         {
           "id": "A",
-          "textEn": "With a sand timer."
-        },
-        {
-          "id": "B",
           "textEn": "With the tower clock."
         },
         {
-          "id": "C",
+          "id": "B",
           "textEn": "By asking her neighbor."
+        },
+        {
+          "id": "C",
+          "textEn": "With a sand timer."
         }
       ],
-      "correctOptionId": "A",
+      "correctOptionId": "C",
       "vocabularyJa": [
         {
           "word": "baker",

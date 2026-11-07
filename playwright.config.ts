@@ -5,7 +5,12 @@ import { defineConfig, devices } from "@playwright/test";
 // test is never retried, so an unstable test shows up instead of passing.
 const ci = !!process.env.CI;
 
-export default defineConfig({
+/** The phone every tier emulates. Lines show at once and decorative motion is
+ * short (prefers-reduced-motion); a test that checks the typewriter turns it off. */
+export const phone = { ...devices["iPhone 13"], defaultBrowserType: "chromium" as const, reducedMotion: "reduce" as const };
+
+/** Settings shared with playwright.prod.config.ts. */
+export const shared = {
   testDir: "./tests/e2e",
   // Every test opens its own browser context (separate storage and tabs), so
   // tests of the same file may run in different workers.
@@ -17,16 +22,20 @@ export default defineConfig({
   // report and traces, before the job limits of e2e.yml would cut it off.
   globalTimeout: ci ? 12 * 60_000 : undefined,
   reporter: ci ? [["github"], ["html", { open: "never" }], ["list"]] : "list",
+} satisfies Parameters<typeof defineConfig>[0];
+
+// Development server tiers (docs/10「E2Eの段」). `npm run test:e2e` runs both on
+// one server; CI runs each project as its own job (--project=gate, --project=debug).
+export default defineConfig({
+  ...shared,
   use: {
     baseURL: "http://127.0.0.1:4173",
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
   },
   projects: [
-    {
-      name: "mobile-chromium",
-      use: { ...devices["iPhone 13"], defaultBrowserType: "chromium" },
-    },
+    { name: "gate", grep: /@gate/, use: phone },
+    { name: "debug", grep: /@debug/, use: phone },
   ],
   webServer: {
     command: "npm run dev -- --port 4173",

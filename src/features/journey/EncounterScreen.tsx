@@ -106,7 +106,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
               {visible(learning, quiz.id, "question") ? "訳を閉じる" : "訳を見る"}
             </button>
             {visible(learning, quiz.id, "question") && <p>{quiz.questionJa}</p>}
-            {quiz.result ? <><p role="status">{quiz.result}</p><button type="button" className="next" onClick={onAdvance}>続きを読む →</button></> : (
+            {quiz.result ? <><p role="status">{quiz.result}</p><button type="button" className="next" data-testid="encounter-advance" onClick={onAdvance}>続きを読む →</button></> : (
               <EncounterChoices currencySymbol={currencyForCity(view.cityId).symbol} id={quiz.id} choices={quiz.options} learning={learning} onChoose={(index) => select(index, onAnswer)} disabled={!choiceReady} />
             )}
           </>
@@ -116,7 +116,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
             {view.choices.length ? (
               <EncounterChoices currencySymbol={currencyForCity(view.cityId).symbol} id={view.id} choices={view.choices} learning={learning} onChoose={(index) => select(index, onChoose)} disabled={!ready || !choiceReady} />
             ) : view.ended ? (
-              <button type="button" className="next" disabled={!ready} onClick={advance}>{view.ended ? view.finishLabel ?? "自由時間へ" : "続きを読む"} <span aria-hidden="true">→</span></button>
+              <button type="button" className="next" data-testid="encounter-advance" disabled={!ready} onClick={advance}>{view.ended ? view.finishLabel ?? "自由時間へ" : "続きを読む"} <span aria-hidden="true">→</span></button>
             ) : null}
           </>
         )}

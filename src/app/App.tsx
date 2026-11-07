@@ -23,6 +23,12 @@ export default function App(props: AppProps = {}) {
   const baseStorage = props.storage ?? browserStorage;
   const scopedStorage = useMemo(() => journeyStorage(baseStorage, journeyId), [baseStorage, journeyId]);
   const [lockAttempt, setLockAttempt] = useState(0);
+  // 再試行 rebuilds the screen like a switch: the selector keeps the focus
+  // while the lock is checked again, and the new screen takes it at the end.
+  const retryLock = useCallback(() => {
+    setRestoreSelectorFocus(true);
+    setLockAttempt((value) => value + 1);
+  }, []);
   const journey = getJourney(journeyId);
   const readOnlyPreparation = journey?.status === "preparing" && !journey.initialState;
   // Debug storage is isolated and a read-only preparation has no save to edit,
@@ -37,7 +43,7 @@ export default function App(props: AppProps = {}) {
       ? "保存データを確認しています。"
       : lockStatus === "busy" ? "この旅行編は別のタブで開いています。そちらを閉じてから再試行してください。"
       : "このブラウザでは別タブとの保存競合を防げないため、この旅行編を開けません。対応ブラウザをご利用ください。"}</p>
-    {lockStatus === "busy" && <button type="button" className="secondary" onClick={() => setLockAttempt((value) => value + 1)}>再試行</button>}
+    {lockStatus === "busy" && <button type="button" className="secondary" onClick={retryLock}>再試行</button>}
   </section></main></div>;
   if (journey?.status === "preparing") {
     return journey.initialState

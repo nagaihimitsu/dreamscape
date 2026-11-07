@@ -138,6 +138,16 @@ function definitions(sources: ContentSources): Definition[] {
 }
 
 /**
+ * The first ID of the loaded content (a story by its file name) that starts
+ * with `<prefix>_`: the ID family a new journey's prefix would join, whether
+ * or not that journey declares authoring.eventPrefix (Milano does not).
+ */
+export function idWithPrefix(sources: ContentSources, prefix: string): { id: string; where: string } | undefined {
+  const found = definitions(sources).find((item) => (item.rule === "story" ? item.id.split("/").at(-1)! : item.id).startsWith(`${prefix}_`));
+  return found && { id: found.id, where: found.where };
+}
+
+/**
  * IDs of journey folders with `authoring.eventPrefix` in their manifest that
  * do not follow the convention of docs/02 (IDs share one namespace across all
  * journeys): an ID starts with `<prefix>_`; a place (landmark, date

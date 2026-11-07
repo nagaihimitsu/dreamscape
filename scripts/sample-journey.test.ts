@@ -95,6 +95,24 @@ describe("sample journey", () => {
     expect(inspectJourneyReadiness(journeyReadinessInput(sourcesWith(minimal), SAMPLE_JOURNEY_ID)).ready).toBe(true);
   });
 
+  it("spreads its correct answers over the options, also without the optional parts (journey:new copies them)", () => {
+    const correctLetters = (files: ReadonlyMap<string, Buffer | null>) => [...files]
+      .filter(([file, bytes]) => file.startsWith("quizzes/") && bytes)
+      .flatMap(([, bytes]) => (JSON.parse(bytes!.toString("utf8")) as { questions: { options: { id: string }[]; correctOptionId: string }[] }).questions)
+      .map((question) => {
+        expect(question.options.map((option) => option.id)).toEqual(["A", "B", "C"]);
+        return question.correctOptionId;
+      });
+    for (const [label, files] of [["full", full], ["minimal", minimal]] as const) {
+      const letters = correctLetters(files);
+      for (const letter of ["A", "B", "C"]) {
+        const count = letters.filter((item) => item === letter).length;
+        expect(count, `${label}: ${letter}`).toBeGreaterThan(0);
+        expect(count, `${label}: ${letter}`).toBeLessThanOrEqual(letters.length / 2);
+      }
+    }
+  });
+
   describe("(a) with the core content only", () => {
     let root: string;
     beforeAll(async () => {

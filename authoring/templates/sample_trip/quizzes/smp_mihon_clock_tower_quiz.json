@@ -10,18 +10,18 @@
       "options": [
         {
           "id": "A",
-          "textEn": "They kept it at three."
-        },
-        {
-          "id": "B",
           "textEn": "They built a new tower."
         },
         {
-          "id": "C",
+          "id": "B",
           "textEn": "They moved the clock to the market."
+        },
+        {
+          "id": "C",
+          "textEn": "They kept it at three."
         }
       ],
-      "correctOptionId": "A",
+      "correctOptionId": "C",
       "vocabularyJa": [
         {
           "word": "kept",

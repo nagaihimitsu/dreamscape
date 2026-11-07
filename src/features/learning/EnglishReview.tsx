@@ -112,7 +112,7 @@ export function EnglishReview({
           </p>
         )}
       {allEntries.length > 0 && (
-        <label>
+        <label className="review-filter">
           <input
             type="checkbox"
             checked={markedOnly}

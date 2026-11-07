@@ -301,7 +301,10 @@ describe("Ink validation cache", () => {
     for (const name of workflows) {
       const text = readFileSync(path.join(repository, ".github/workflows", name), "utf8");
       // actions/cache would carry folders such as node_modules/.cache between runs (setup-node caches only ~/.npm).
-      expect(text, name).not.toMatch(/uses:\s*actions\/cache\b/u);
+      // The only cache allowed is the Playwright browser download (e2e.yml), outside node_modules.
+      const caches = [...text.matchAll(/uses:\s*actions\/cache\b[^\n]*\n(?:[ \t]+(?!-)[^\n]*\n)*?[ \t]+path:\s*([^\n]+)/gu)];
+      expect(caches.length, `${name}: every actions/cache step names its path`).toBe((text.match(/uses:\s*actions\/cache\b/gu) ?? []).length);
+      for (const cache of caches) expect(cache[1].trim(), name).toBe("~/.cache/ms-playwright");
       // Every job installs with npm ci, which starts node_modules (and the cache in it) empty.
       if (/npm (?:run |)(?:build|test|verify)/u.test(text)) expect(text, name).toContain("npm ci");
     }

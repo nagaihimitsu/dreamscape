@@ -19,6 +19,7 @@ import { EnemyPortrait } from "./EnemyPortrait";
 import { BattleRewards } from "../journey/BattleRewards";
 import { ReasoningPanel } from "./ReasoningPanel";
 import { ReasoningCutIn } from "./ReasoningCutIn";
+import { DOUBLE_TAP_WINDOW_MS, isAnswerDoubleTap } from "./double-tap";
 import {
   Translation,
   TranslationAll,
@@ -123,6 +124,15 @@ export function BattleScreen({
   // Only animate an answer saved in this mounted screen. A restored feedback
   // frame is already final and must never be scored or animated again.
   const [animatedAnswer, setAnimatedAnswer] = useState<string | null>(null);
+  // When this screen last saved an answer; a tap right after it is the answer's double tap.
+  const answeredAt = useRef<number | null>(null);
+  // Shown as data-answer-settling while such taps are ignored (tests wait for it to end).
+  const [answerSettling, setAnswerSettling] = useState(false);
+  useEffect(() => {
+    if (!answerSettling) return;
+    const timer = window.setTimeout(() => setAnswerSettling(false), DOUBLE_TAP_WINDOW_MS);
+    return () => window.clearTimeout(timer);
+  }, [answerSettling]);
   const [effectAnswer, setEffectAnswer] = useState<string | null>(null);
   const answerKey = `${battle.id}:${active.roundIndex}:${answer?.optionId}`;
   useEffect(() => {
@@ -248,7 +258,15 @@ export function BattleScreen({
   return (
     <div
       className={`battle-screen ${answer && animatedAnswer === answerKey ? "answer-animating" : ""}`}
+      onClickCapture={(event) => {
+        // The second tap of a double tap on an answer is ignored, whatever moved under it.
+        if (answeredAt.current !== null && isAnswerDoubleTap(performance.now() - answeredAt.current)) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      }}
       data-phase={isDialogue ? "dialogue" : active.phase}
+      data-answer-settling={answerSettling || undefined}
       data-effect-active={active.phase === "feedback" && effectAnswer === answerKey || undefined}
       data-reduce-motion={reduceMotion || undefined}
       data-dialogue-hidden={isDialogue && windowVisibility.hidden || undefined}
@@ -539,6 +557,8 @@ export function BattleScreen({
                         disabled={active.phase !== "question"}
                         onClick={() => {
                           if (onAnswer(option.id)) {
+                            answeredAt.current = performance.now();
+                            setAnswerSettling(true);
                             const key = `${battle.id}:${active.roundIndex}:${option.id}`;
                             setAnimatedAnswer(key);
                             if ((isSpecial || option.id === question.correctOptionId) && !reduceMotion && !document.hidden &&

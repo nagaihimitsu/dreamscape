@@ -1,20 +1,19 @@
-import { readFileSync } from "node:fs";
-import type { JourneyCatalog } from "../../src/content/journey-catalog";
-import { DEBUG_HOOK_NAME, type DreamscapeDebugHook } from "../../src/dev/debug-hook";
-import { debugQueryString } from "../../src/dev/debug-query";
-import { allStorage, expect, readSave, startJourney, test } from "./helpers";
+import { appendFileSync } from "node:fs";
+import { allStorage, expect, journeyCatalog, test, tier } from "./helpers";
 
-test("the title screen opens every registered journey without writing a save", async ({ page }) => {
+// AGENTS.md 「データ・セーブ・品質」, docs/07 acceptance 1 and 12: every registered
+// journey (from the generated catalog of this checkout, never a fixed list) opens
+// its start screen, and opening the title writes no save. In the sample tier the list
+// also has the sample journey, and in CI a journey just made by `npm run journey:new`
+// (e2e.yml), which must open as a preparing journey.
+test("the title screen opens every registered journey without writing a save", { tag: [tier.gate, tier.prod, tier.sample, tier.smoke] }, async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveTitle(/Dreamscape/);
-  // Read after the dev server's content:build (of this spec's checkout, whatever the working folder):
-  // each journey's status, initial state and title art.
-  const catalog: JourneyCatalog = JSON.parse(readFileSync(new URL("../../src/content/generated/content/journeys/catalog.json", import.meta.url), "utf8"));
+  const catalog = journeyCatalog();
   const selector = page.getByLabel("旅行編");
   const journeys = await selector.locator("option").evaluateAll((options) =>
     options.map((option) => ({ id: (option as HTMLOptionElement).value, name: option.textContent ?? "" })));
-  expect(journeys.map((journey) => journey.id)).toEqual(expect.arrayContaining(["milano", "golden_triangle"]));
-  const headings = new Map<string, string | null>();
+  expect(journeys.map((journey) => journey.id)).toEqual(catalog.journeys.map((journey) => journey.id));
   // Go through the journeys with the keyboard: each switch rebuilds the screen,
   // and the new screen's selector takes the focus back so the next key works.
   await selector.selectOption(journeys[0].id);
@@ -22,9 +21,9 @@ test("the title screen opens every registered journey without writing a save", a
   for (const [index, journey] of journeys.entries()) {
     if (index > 0) await page.keyboard.press("ArrowDown");
     await expect(selector).toHaveValue(journey.id);
-    const entry = catalog.journeys.find((item) => item.id === journey.id);
-    expect(journey.name.includes("準備中"), journey.id).toBe(entry?.status === "preparing");
-    if (entry?.status === "preparing") {
+    const entry = catalog.journeys.find((item) => item.id === journey.id)!;
+    expect(journey.name).toBe(`${entry.nameJa}${entry.status === "preparing" ? "（準備中）" : ""}`);
+    if (entry.status === "preparing") {
       // An unfinished journey cannot be played yet. With an initial state
       // (manifest initialState) it can store names for later; without one,
       // as a journey fresh from `npm run journey:new`, it is read-only.
@@ -37,50 +36,72 @@ test("the title screen opens every registered journey without writing a save", a
       }
     } else {
       await expect(page.getByRole("button", { name: "旅をはじめる", exact: true })).toBeVisible();
-      headings.set(journey.id, await page.locator(".masthead .edition").textContent());
+      // Before the trip starts, the heading names the selected journey's first city.
+      await expect(page.getByTestId("journey-edition")).toHaveText(`${entry.cities[0].nameJa}の旅`);
       // The journey's own title art (a missing file fails the error guard), else the shared neutral scene.
-      const art = catalog.journeys.find((item) => item.id === journey.id)?.titleArt;
-      const scene = page.locator(".intro-art .canal-scene");
-      await expect(scene.locator(".scene-stamp")).toHaveText(art?.captionJa ?? "旅の余白 ／ 予定のない午後");
-      await expect(scene.locator("img")).toHaveCount(art ? 1 : 0);
-      if (art) await expect(scene.locator("img")).toHaveAttribute("src", new RegExp(`${art.imagePath}$`));
-      else await expect(scene).toHaveAttribute("data-fallback", "neutral");
+      const art = page.getByTestId("title-art");
+      await expect(art.getByTestId("scene-stamp")).toHaveText(entry.titleArt?.captionJa ?? "旅の余白 ／ 予定のない午後");
+      await expect(art.locator("img")).toHaveCount(entry.titleArt ? 1 : 0);
+      if (entry.titleArt) await expect(art.locator("img")).toHaveAttribute("src", new RegExp(`${entry.titleArt.imagePath}$`));
+      else await expect(art.locator("[data-fallback]")).toHaveAttribute("data-fallback", "neutral");
     }
     await expect(selector).toBeFocused();
   }
-  // Before the trip starts, the heading names the selected journey's first city.
-  expect(headings.get("milano")).toBe("ミラノの旅");
-  expect(headings.get("golden_triangle")).toBe("デリーの旅");
   expect(Object.keys(await allStorage(page)).filter((key) => key.includes(".save."))).toEqual([]);
 });
 
-test("a Debug launch URL opens its scene without changing the player's saved data", async ({ page }) => {
-  await startJourney(page);
-  await expect(page.getByTestId("travel-menu")).toBeVisible();
-  expect((await readSave(page)).ap).toBe(0);
-  const before = await allStorage(page);
-  // Debug as a scene launchpad (docs/10): it checks the scene only, never saving and resuming.
-  const url = debugQueryString({ dataMode: "real", cityId: "milano", scene: "date", target: "milano_brera_date_01",
-    progress: "completed", ap: 9, affection: 0, trust: 0, spark: 0, roll: "negative" });
-  await page.goto(`/${url}`);
-  await expect(page.getByTestId("debug-session")).toBeVisible();
-  await expect(page.getByTestId("romance-scene")).toBeVisible();
-  // The development-only, read-only hook shows Debug's own game (its date spent AP from 9).
-  const debug = await page.evaluate((name) => {
-    const hook = (window as unknown as Record<string, DreamscapeDebugHook>)[name];
-    return { state: hook.getState(), scene: hook.getScene() };
-  }, DEBUG_HOOK_NAME);
-  expect(debug.state?.activeDate?.dateId).toBe("milano_brera_date_01");
-  expect(debug.state?.ap).toBeLessThan(9);
-  expect(debug.scene?.url).toBe(url);
-  // Back on the settings screen, the same scene's URL is offered for copying.
-  await page.getByRole("button", { name: "設定へ戻る" }).click();
-  await expect(page.getByTestId("debug-panel")).toBeVisible();
-  await expect(page.getByTestId("debug-url")).toHaveValue(new URL(url, page.url()).href);
-  // A URL that does not fit the content says why and links back to the settings screen.
-  await page.goto("/?debug&city=milano&scene=battle&target=gt_delhi_main_red_fort_battle");
-  await expect(page.getByRole("alert")).toHaveText("「gt_delhi_main_red_fort_battle」はミラノの「バトル」にありません。");
-  await page.getByRole("link", { name: "場面の確認（設定画面）へ" }).click();
-  await expect(page.getByTestId("debug-panel")).toBeVisible();
-  expect(await allStorage(page)).toEqual(before);
+// AGENTS.md 「Debug機能は開発用で…本番ビルドに公開しない」, docs/07 acceptance 14: in the
+// production build the development switches are ignored and the normal title opens.
+test("the production build ignores the Debug and character preview switches", { tag: tier.prod }, async ({ page }) => {
+  for (const query of ["?debug", "?character-preview", "?debug&city=milano&scene=battle"]) {
+    await page.goto(`/${query}`);
+    await expect(page.getByRole("button", { name: "旅をはじめる", exact: true })).toBeVisible();
+    await expect(page.getByTestId("debug-panel")).toHaveCount(0);
+    await expect(page.getByTestId("debug-session")).toHaveCount(0);
+    await expect(page.getByText("場面の確認")).toHaveCount(0);
+  }
+  expect(await page.evaluate(() => "__dreamscapeDebug" in window)).toBe(false);
+  // The icons are real images here (the dev server would answer a missing file with its page).
+  const icons = await page.locator('link[rel="icon"], link[rel="apple-touch-icon"]').evaluateAll((links) =>
+    links.map((link) => (link as HTMLLinkElement).href));
+  expect(icons.length).toBeGreaterThan(0);
+  for (const href of icons) {
+    const response = await page.request.get(href);
+    expect(response.status(), href).toBe(200);
+    expect(response.headers()["content-type"], href).toMatch(/^image\//);
+  }
+});
+
+// Report only (user decision: load size is measured and reported, not a gate). Counts
+// every response of the game's origin until the title screen and its images are
+// shown: headers plus body as sent (`vite preview` does not compress; GitHub Pages
+// gzips text files, so the published transfer is smaller for scripts and styles).
+test("reports how many bytes the title screen loads", { tag: tier.prod }, async ({ page }, testInfo) => {
+  const sizes: Promise<{ type: string; url: string; bytes: number }>[] = [];
+  page.on("requestfinished", (request) => sizes.push(request.sizes().then((size) => ({
+    type: request.resourceType(), url: new URL(request.url()).pathname, bytes: size.responseHeadersSize + size.responseBodySize,
+  }))));
+  await page.goto("/");
+  await expect(page.getByRole("button", { name: "旅をはじめる", exact: true })).toBeVisible();
+  await page.waitForLoadState("load");
+  await expect.poll(() => page.evaluate(() => [...document.images].every((image) => image.complete))).toBe(true);
+  const files = await Promise.all(sizes);
+  const byType = [...new Set(files.map((file) => file.type))].map((type) => {
+    const list = files.filter((file) => file.type === type);
+    return { type, files: list.length, bytes: list.reduce((sum, file) => sum + file.bytes, 0) };
+  }).sort((left, right) => right.bytes - left.bytes);
+  const total = files.reduce((sum, file) => sum + file.bytes, 0);
+  const kib = (bytes: number) => `${(bytes / 1024).toFixed(1)} KiB`;
+  const summary = [
+    "### タイトル画面までの読み込み量（本番ビルド・報告のみ）", "",
+    `合計 ${kib(total)}（${files.length}ファイル）`, "",
+    "| 種類 | ファイル数 | 量 |", "| --- | --- | --- |",
+    ...byType.map((row) => `| ${row.type} | ${row.files} | ${kib(row.bytes)} |`), "",
+  ].join("\n");
+  testInfo.annotations.push({ type: "タイトル画面までの読み込み量", description: `合計 ${kib(total)}（${files.length}ファイル）` });
+  await testInfo.attach("title-transfer.json", { body: JSON.stringify({ total, byType, files }, null, 2), contentType: "application/json" });
+  await testInfo.attach("title-transfer.md", { body: summary, contentType: "text/markdown" });
+  if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${summary}\n`);
+  console.log(summary);
+  expect(total).toBeGreaterThan(0);
 });
