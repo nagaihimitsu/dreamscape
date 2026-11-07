@@ -53,6 +53,12 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await ops.closeDialog(await ops.openEnglishNote(page));
   expect((await readSave(page)).revision).toBe(first.revision + 3);
   await expect(line).toHaveAttribute("data-ready", "false");
+  // A tap on the line itself right after closing the log counts as that press's second tap
+  // (the clock is held, so it falls within the double-tap window): it does not finish the line.
+  const lineBox = (await line.boundingBox())!;
+  await page.touchscreen.tap(lineBox.x + lineBox.width / 2, lineBox.y + lineBox.height / 2);
+  await expect(line).toHaveAttribute("data-ready", "false");
+  expect((await readSave(page)).revision).toBe(first.revision + 3);
   await page.clock.resume();
   // The line now being written finishes by itself; later lines appear whole.
   await expect(line).toHaveAttribute("data-ready", "true");
