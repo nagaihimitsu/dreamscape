@@ -32,6 +32,9 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
   const [listing, setListing] = useState(() => readList(storage, context));
   const [chosen, setChosen] = useState<string[]>([]);
   const [confirming, setConfirming] = useState(false);
+  // The press already being handled: a second tap of a double tap removes nothing more (the ref
+  // answers before the disabled button re-renders).
+  const pressed = useRef(false);
   const [working, setWorking] = useState(false);
   const [notice, setNotice] = useState<Notice | null>(null);
   // A step change rebuilds the dialog's content: the confirmation and a result start at the
@@ -60,10 +63,12 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
     setFocusRequest({ target: "heading" });
   }
   async function remove() {
-    if (!listing || working) return;
+    if (!listing || pressed.current) return;
+    pressed.current = true;
     setWorking(true);
     const locks = typeof navigator === "undefined" ? undefined : navigator.locks;
     const run = await runWithSlotLocks(locks, oldDataLockNames(chosenItems), () => removeOldData(storage, listing, chosen));
+    pressed.current = false;
     setWorking(false);
     if (run.status === "busy") {
       const owner = chosenItems.find((item) => item.lockName === run.name)?.ownerJa ?? "選んだ旅行編";

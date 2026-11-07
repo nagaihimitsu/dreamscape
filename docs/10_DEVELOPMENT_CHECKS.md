@@ -109,7 +109,7 @@
 
 | 段 | タグ | 起動するもの | 内容 | 件数と所要時間（4コアの開発環境、2026年11月） |
 | --- | --- | --- | --- | --- |
-| 合否判定 | `@gate` | 開発サーバー（`npm run dev`） | `boot`・`play`・`save-load`・`inter-city` の全テスト | 12件、約50秒（予算: 約14件・2ワーカーで2分以内） |
+| 合否判定 | `@gate` | 開発サーバー（`npm run dev`） | `boot`・`play`・`save-load`・`inter-city` の全テスト | 14件、2ワーカーで約1分（予算: 約14件・2ワーカーで2分以内） |
 | Debug起動台 | `@debug` | 開発サーバー | `debug-scenes`（下の道3） | 6件、約30秒 |
 | 本番ビルド | `@prod` | `npm run build` の後に `vite preview`（`playwright.prod.config.ts`） | 起動と全旅行編の開始画面、ミラノの開始からバトル結果・デートまで（`play`）、本番での確認（下表） | 4件、ビルド込みで約20秒（CIではビルドの分だけ長い） |
 | 見本の編の通しプレイ | `@sample` | 見本の編を含めて生成した専用の開発サーバー（`npm run dev:sample`、4175番。`playwright.sample.config.ts`） | 見本の編を新しい旅から旅の終わりまで近道なしで遊ぶ（`sample-journey`）、起動と全旅行編の開始画面（`boot`。見本の編を含み、CIでは `journey:new` で作ったばかりの旅行編も含む） | 2件、サーバーの起動と終わりの生成込みで約40秒（通しプレイは約30秒） |
@@ -118,7 +118,7 @@
 
 | 実行 | コマンド |
 | --- | --- |
-| 開発サーバーの2つの段（手元の標準） | `npm run test:e2e`（1つの開発サーバーで `gate` と `debug` を実行。約1分） |
+| 開発サーバーの2つの段（手元の標準） | `npm run test:e2e`（1つの開発サーバーで `gate` と `debug` を実行。サーバーの起動込みで約2分） |
 | 1つの段 | `npx playwright test --project=gate`、`npx playwright test --project=debug` |
 | 本番ビルドの段 | `npm run test:e2e:prod`（先に `npm run build` を実行して生成物を書き直すため、開発サーバーのE2Eと同時に実行しない） |
 | 見本の編の段 | `npm run test:e2e:sample`（見本を含めて生成物を書き直し、終わると見本なしで生成し直すため、ほかの段と同時に実行しない） |
