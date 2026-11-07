@@ -201,12 +201,14 @@ h3 {
 .records-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .records-heading h2 { margin: 0 0 10px; }
 .records-heading button { width: auto; min-height: 44px; padding: 8px 12px; }
-.journey-controls .travel-wait { position: relative; }
+/* The open 待機 menu hangs from the sticky bar's bottom edge (the bar is its
+   containing block), not from the 32 px summary, so it never covers the
+   44 px quick actions beside it; `left: auto` keeps it under the summary. */
 .journey-controls .travel-wait-actions {
   position: absolute;
   z-index: 5;
   top: 100%;
-  left: 0;
+  left: auto;
   width: max-content;
   max-width: min(260px, 90vw);
   padding: 8px;
