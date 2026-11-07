@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { shouldAdvanceOnTap, type SceneTapState, type TapNode } from "./scene-tap";
+import { DIALOGUE_LINE_ATTRIBUTE, pressesSceneControl, shouldAdvanceOnTap, type SceneTapState, type TapNode } from "./scene-tap";
 
 /** A stand-in for a DOM element: a tag, attributes and a parent. */
 function node(tagName: string, parentElement: TapNode | null = null, attributes: Record<string, string> = {}): TapNode {
   return { tagName, parentElement, getAttribute: (name) => attributes[name] ?? null };
 }
 
-const reading: SceneTapState = { lineShown: true, choicesShown: false, windowHidden: false, obstructed: false };
+const reading: SceneTapState = { lineShown: true, choicesShown: false, windowHidden: false, obstructed: false, settling: false };
 
 // One scene as the story screens build it: background, portrait, dialogue window with a tool row and the line.
 const scene = node("DIV", node("MAIN"));
@@ -16,7 +16,7 @@ const portrait = node("path", node("svg", node("DIV", scene), { role: "presentat
 const dialogueWindow = node("SECTION", scene);
 const speaker = node("DIV", dialogueWindow);
 const tools = node("DIV", dialogueWindow, { "data-no-advance": "" });
-const line = node("P", dialogueWindow, { role: "button", tabindex: "0" });
+const line = node("P", dialogueWindow, { role: "button", tabindex: "0", [DIALOGUE_LINE_ATTRIBUTE]: "" });
 const lineText = node("SPAN", line);
 
 describe("tap anywhere in a story scene", () => {
@@ -66,10 +66,40 @@ describe("tap anywhere in a story scene", () => {
     expect(shouldAdvanceOnTap(background, scene, { ...reading, lineShown: false, windowHidden: true })).toBe(false);
   });
 
+  it("ignores a reading tap right after a press on one of the scene's controls (the press's second tap)", () => {
+    for (const target of [background, picture, speaker, dialogueWindow])
+      expect(shouldAdvanceOnTap(target, scene, { ...reading, settling: true })).toBe(false);
+    expect(shouldAdvanceOnTap(background, scene, { ...reading, lineShown: false, settling: true })).toBe(false);
+  });
+
   it("with choices on screen, only completes a line still being written and never moves on", () => {
     expect(shouldAdvanceOnTap(background, scene, { ...reading, choicesShown: true })).toBe(false);
     expect(shouldAdvanceOnTap(background, scene, { ...reading, choicesShown: true, lineShown: false })).toBe(true);
     // Without choices, the first tap completes the line and the next one goes on: both read on.
     expect(shouldAdvanceOnTap(background, scene, { ...reading, lineShown: false })).toBe(true);
+  });
+});
+
+// A press on a control changes the screen under the finger: a reply gives way to the
+// reaction line, the restore control to the window. The scene then ignores reading taps
+// for the double-tap window (useSceneTap, double-tap.ts).
+describe("presses on a story scene's controls", () => {
+  const replies = node("DIV", dialogueWindow, { role: "group" });
+  const reply = node("BUTTON", replies);
+  const restore = node("BUTTON", scene);
+  const reference = node("ASIDE", scene, { "data-no-advance": "" });
+
+  it("counts a reply, a tool, the restore control and a link, and taps on their contents", () => {
+    for (const target of [reply, node("SPAN", reply), node("BUTTON", tools), node("SPAN", restore), node("A", reference, { href: "https://example.com/" }), node("P", node("DIALOG", tools))])
+      expect(pressesSceneControl(target, scene)).toBe(true);
+  });
+
+  it("does not count reading taps (the line, the picture, the window) or near misses", () => {
+    for (const target of [line, lineText, scene, background, picture, portrait, dialogueWindow, speaker, tools, reference, node("SPAN", reference)])
+      expect(pressesSceneControl(target, scene)).toBe(false);
+  });
+
+  it("does not count a click without an element", () => {
+    expect(pressesSceneControl(null, scene)).toBe(false);
   });
 });

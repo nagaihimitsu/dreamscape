@@ -10,6 +10,7 @@ import { DialogueWindowHide, DialogueWindowRestore, useDialogueWindow } from "..
 import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { DialogueControls } from "../../components/DialogueControls";
 import { useSceneTap } from "../../components/useSceneTap";
+import { holdTaps } from "../../components/tap-hold";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { CanalScene } from "../../components/CanalScene";
 import { BackgroundCredits } from "../../components/BackgroundCredits";
@@ -20,7 +21,7 @@ import { EnemyPortrait } from "./EnemyPortrait";
 import { BattleRewards } from "../journey/BattleRewards";
 import { ReasoningPanel } from "./ReasoningPanel";
 import { ReasoningCutIn } from "./ReasoningCutIn";
-import { DOUBLE_TAP_WINDOW_MS, isAnswerDoubleTap } from "./double-tap";
+import { DOUBLE_TAP_WINDOW_MS, isSecondTap } from "../../components/double-tap";
 import {
   Translation,
   TranslationAll,
@@ -230,6 +231,8 @@ export function BattleScreen({
     if (cutIn || (isDialogue && !ready) || windowVisibility.hidden || dialogueObstructed()) return;
     if (rebuttal) {
       if (rebuttal.step.frame.ended) {
+        // A presentation-only scene end: the cut-in's skip must not take the double tap's second tap.
+        holdTaps();
         setRebuttal(null);
         setCutIn(battle.reasoning!.kind);
       } else {
@@ -262,17 +265,18 @@ export function BattleScreen({
       className={`battle-screen ${answer && animatedAnswer === answerKey ? "answer-animating" : ""}`}
       onClickCapture={(event) => {
         // The second tap of a double tap on an answer is ignored, whatever moved under it.
-        if (answeredAt.current !== null && isAnswerDoubleTap(performance.now() - answeredAt.current)) {
+        if (answeredAt.current !== null && isSecondTap(performance.now() - answeredAt.current)) {
           event.preventDefault();
           event.stopPropagation();
-        }
+        } else if (isDialogue) sceneTap.props.onClickCapture(event);
       }}
       data-phase={isDialogue ? "dialogue" : active.phase}
       data-answer-settling={answerSettling || undefined}
       data-effect-active={active.phase === "feedback" && effectAnswer === answerKey || undefined}
       data-reduce-motion={reduceMotion || undefined}
       data-dialogue-hidden={isDialogue && windowVisibility.hidden || undefined}
-      onClick={isDialogue ? sceneTap.onClick : undefined}
+      onClick={isDialogue ? sceneTap.props.onClick : undefined}
+      data-tap-settling={isDialogue && sceneTap.props["data-tap-settling"] || undefined}
     >
       {active.phase === "feedback" && answer && effectAnswer === answerKey && (
         <div
@@ -304,6 +308,7 @@ export function BattleScreen({
       )}
       <div
         className={`battle-stage ${isDialogue ? "" : "battle-stage-compact"} ${battle.scope === "city_finale" ? "finale-stage" : ""}`}
+        data-testid={isDialogue ? "scene-picture" : undefined}
       >
         <div className="battle-enemy-info">
           <p className="eyebrow">{battle.titleJa}</p>

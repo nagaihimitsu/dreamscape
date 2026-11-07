@@ -257,7 +257,7 @@ startPoints.forEach((start, index) => {
         }
         // Wait on the game's own settling marks, not on time.
         await must("the page did not settle after the press", async () => {
-          await expect(page.locator("[data-answer-settling]")).toHaveCount(0);
+          await ops.settled(page);
           await expect(page.getByTestId("travel-transition")).toHaveCount(0);
         });
         if (pageError) fail(`uncaught exception in the page: ${pageError}`);

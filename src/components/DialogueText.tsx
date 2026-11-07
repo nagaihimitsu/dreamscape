@@ -82,6 +82,7 @@ export function DialogueText({
         ref={textRef}
         className="dialogue-text"
         data-testid="dialogue-text"
+        data-dialogue-line
         data-ready={ready}
         role={onAdvance ? "button" : undefined}
         tabIndex={onAdvance ? 0 : undefined}

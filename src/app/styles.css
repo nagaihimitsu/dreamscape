@@ -482,6 +482,17 @@ footer span {
 .unrevealed {
   visibility: hidden;
 }
+/* Right after a press on a story scene's control, its line takes no taps:
+   the second tap of the double tap must not skip the line the press brought
+   (useSceneTap). A tap there falls through to the scene, which ignores it. */
+[data-tap-settling] [data-dialogue-line] {
+  pointer-events: none;
+}
+/* Right after a story scene ends, no tap reaches the next screen: the second
+   tap of a double tap would press whatever moved under the finger (tap-hold.ts). */
+:root[data-tap-hold] body * {
+  pointer-events: none !important;
+}
 .text-button {
   background: none;
   color: #596b59;

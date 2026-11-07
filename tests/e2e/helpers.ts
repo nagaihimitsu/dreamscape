@@ -240,13 +240,55 @@ export const ops = {
     const line = (await page.getByTestId("dialogue-text").boundingBox())!;
     // A quarter of the way down from the picture's top to the line: well above the window's name plate and tools.
     const point = { x: picture.x + picture.width / 2, y: picture.y + (line.y - picture.y) / 4 };
-    const hit = await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.closest('[data-testid="scene-picture"]') !== null, point);
+    const hit = await page.evaluate(({ x, y }) => {
+      const element = document.elementFromPoint(x, y);
+      return element?.closest('[data-testid="scene-picture"]') !== null &&
+        element?.closest("a, button, input, select, textarea, label, summary, dialog, [role=button], [role=link], [data-no-advance]") === null;
+    }, point);
     expect(hit, "the point shows the scene's picture, not a control or the window").toBe(true);
     return point;
   },
-  /** A finger's tap at a point of the page. */
+  /**
+   * A point in a gap of the dialogue window's tool row (「閉じる」「ログ」「高速送り」), between two
+   * of its buttons: a near miss, which never reads on.
+   */
+  async dialogueToolsGap(page: Page): Promise<{ x: number; y: number }> {
+    const point = await page.getByLabel("会話の操作", { exact: true }).filter({ visible: true }).evaluate((row) => {
+      const buttons = [...row.querySelectorAll(":scope > button, :scope > * > button")].map((button) => button.getBoundingClientRect())
+        .filter((box) => box.width > 0).sort((a, b) => a.left - b.left);
+      for (let index = 1; index < buttons.length; index++) {
+        const [left, right] = [buttons[index - 1], buttons[index]];
+        if (right.left - left.right >= 2) return { x: (left.right + right.left) / 2, y: left.top + left.height / 2 };
+      }
+      return null;
+    });
+    expect(point, "a gap between two buttons of the tool row").not.toBeNull();
+    const hit = await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.getAttribute("aria-label"), point!);
+    expect(hit, "the point is the tool row itself, not one of its buttons").toBe("会話の操作");
+    return point!;
+  },
+  /** A finger's tap at a point of the page, once the game takes taps again (settled). */
   async tap(page: Page, point: { x: number; y: number }) {
+    await ops.settled(page);
     await page.touchscreen.tap(point.x, point.y);
+  },
+  /**
+   * Two taps of a finger at a point, as one quick double tap. Hold the page's clock
+   * first (`page.clock.pauseAt`), so they fall within the double-tap window however
+   * slow the machine; `page.clock.fastForward(DOUBLE_TAP_WINDOW_MS)` ends it.
+   */
+  async doubleTap(page: Page, point: { x: number; y: number }) {
+    await page.touchscreen.tap(point.x, point.y);
+    await page.touchscreen.tap(point.x, point.y);
+  },
+  /**
+   * The game takes taps again: right after an answer the battle ignores the second tap of
+   * a double tap (`data-answer-settling`), right after a press on a story scene's control
+   * the scene takes no reading tap (`data-tap-settling`), and right after a story scene
+   * ends no tap reaches the page (`data-tap-hold` on the root). Each lasts DOUBLE_TAP_WINDOW_MS.
+   */
+  async settled(page: Page) {
+    await expect(page.locator("[data-answer-settling], [data-tap-settling], html[data-tap-hold]")).toHaveCount(0);
   },
   /** A story scene's 「ログ」: opens the dialogue log. */
   async openDialogueLog(page: Page): Promise<Locator> {
@@ -308,8 +350,8 @@ const nextButtons = ["tourism-advance", "battle-advance", "epilogue-advance", "a
 
 /** One player action in the current scene: answer, choose, or tap the line or its next button. */
 async function act(page: Page, state: GameState, pick: Pick) {
-  // Right after an answer the battle ignores taps for a moment (the second tap of a double tap).
-  await expect(page.locator("[data-answer-settling]")).toHaveCount(0);
+  // Right after an answer, a reply or a scene's end, taps are ignored for a moment (the second tap of a double tap).
+  await ops.settled(page);
   const date = state.activeDate;
   const encounter = state.activeEncounter;
   if (state.activeBattle?.phase === "question") return page.getByTestId(`answer-${pick(state)}`).click();
@@ -337,7 +379,11 @@ export interface PlayOptions {
 export async function playUntil(page: Page, done: (state: GameState) => boolean, { source = savedGame(), pick = firstOption }: PlayOptions = {}) {
   for (let step = 0; step < 200; step++) {
     const state = (await source(page))!;
-    if (done(state)) return state;
+    if (done(state)) {
+      // The caller may tap at once (also with the page's clock held).
+      await ops.settled(page);
+      return state;
+    }
     await act(page, state, pick);
     await expect.poll(async () => (await source(page))?.revision, {
       message: "the scene did not save a response to the player's action", timeout: 10_000,

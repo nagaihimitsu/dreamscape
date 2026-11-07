@@ -150,3 +150,62 @@ test("a Debug launch URL opens its scene, offers the same URL and explains a URL
   await page.getByRole("link", { name: "場面の確認（設定画面）へ" }).click();
   await expect(page.getByTestId("debug-panel")).toBeVisible();
 });
+
+type TapScene = "encounter" | "epilogue" | "battle" | "rebuttal";
+type TapTarget = { cityId: string; scene: DebugSettings["scene"]; id: string };
+
+/** One scene of each kind in Debug's default city, from the dev server's content (no fixed IDs). */
+function tapTargets(page: Page): Promise<Partial<Record<TapScene, TapTarget>>> {
+  return page.evaluate(async (modules) => {
+    const { battles, reasoningIntroductions } = await import(/* @vite-ignore */ modules.content);
+    const { debugTargets, defaultDebugCityId } = await import(/* @vite-ignore */ modules.debugState);
+    const cityId: string = defaultDebugCityId;
+    const listed: Record<string, { id: string; unavailable?: string }[]> = debugTargets(cityId);
+    const special = (id: string) => !!battles.find((battle: { id: string; reasoning?: unknown }) => battle.id === id)?.reasoning;
+    const choices: [TapScene, DebugSettings["scene"], (id: string) => boolean][] = [
+      ["encounter", "encounter", () => true], ["epilogue", "epilogue", () => true],
+      ["battle", "battle", (id) => !special(id)], ["rebuttal", "battle", (id) => !!reasoningIntroductions[id]],
+    ];
+    const found: Partial<Record<TapScene, TapTarget>> = {};
+    for (const [kind, scene, fits] of choices) {
+      const id = listed[scene].find((item) => !item.unavailable && fits(item.id))?.id;
+      if (id) found[kind] = { cityId, scene, id };
+    }
+    return found;
+  }, devModules);
+}
+
+/** The scene shows a line to read on (no choice, quiz or last line); the rebuttal is presentation only, not saved. */
+const reading: Record<TapScene, (state: GameState) => boolean> = {
+  encounter: (state) => !!state.activeEncounter && !state.activeEncounter.frame.choices.length && !state.activeEncounter.frame.ended &&
+    state.activeEncounter.phase !== "quiz" && state.activeEncounter.phase !== "feedback",
+  epilogue: (state) => !!state.activeEpilogue && !state.activeEpilogue.frame.ended,
+  battle: (state) => state.activeBattle?.phase === "dialogue" && !state.activeBattle.frame?.ended,
+  rebuttal: (state) => state.activeBattle?.phase === "reasoning",
+};
+
+// User idea (2026-11-07, docs/02 「UX/スマホ」): in every story scene a tap anywhere but on a control
+// reads on, one step per tap. The tourism guide and the date are played in play.spec.ts; these are
+// the other scene kinds (encounter, epilogue — the arrival uses the same screen —, battle dialogue,
+// and a special battle's presentation-only rebuttal).
+for (const kind of ["encounter", "epilogue", "battle", "rebuttal"] as const) {
+  test(`${kind}: a tap on the picture reads one step on, a click between the window's tools does not`, { tag: tier.debug }, async ({ page }) => {
+    const target = (await tapTargets(page))[kind];
+    expect(target, `a ${kind} that Debug opens in its default city`).toBeDefined();
+    await ops.openDebugScene(page, settings(target!));
+    await playUntil(page, reading[kind], { source: debugGame });
+    const line = page.getByTestId("dialogue-text");
+    await expect(line).toHaveAttribute("data-ready", "true");
+    const before = (await debugGame(page))!;
+    const text = await line.textContent();
+    // A click in a gap of the tool row is a near miss of its buttons: nothing moves.
+    const gap = await ops.dialogueToolsGap(page);
+    await page.mouse.click(gap.x, gap.y);
+    expect((await debugGame(page))!.revision).toBe(before.revision);
+    expect(await line.textContent()).toBe(text);
+    // A tap on the picture (the battle's stage) goes one line on, like a tap on the line.
+    await ops.tap(page, await ops.sceneBackgroundPoint(page));
+    await expect(line).not.toHaveText(text!);
+    expect((await debugGame(page))!.revision).toBe(kind === "rebuttal" ? before.revision : before.revision + 1);
+  });
+}

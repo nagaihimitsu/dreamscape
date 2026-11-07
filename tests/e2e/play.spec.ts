@@ -1,4 +1,4 @@
-import { DOUBLE_TAP_WINDOW_MS } from "../../src/features/battle/double-tap";
+import { DOUBLE_TAP_WINDOW_MS } from "../../src/components/double-tap";
 import { allStorage, expect, expectNoActiveScene, learningKey, ops, playUntil, readSave, test, tier } from "./helpers";
 
 // Lane 1 (docs/10): the real flow from the title screen, no Debug, no state shortcut.
@@ -102,26 +102,52 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await expect.poll(async () => (await readSave(page)).activeDate?.dateId).toBe("milano_novecento_date_01");
   const started = await readSave(page);
   expect(started.ap).toBeLessThan(result.ap);
-  // With the window hidden, a tap on the picture only shows it again; the next tap goes on.
+  // With the window hidden, a tap on the picture only shows it again, also as a quick double
+  // tap (誤タップ防止: the restore control leaves the picture under the finger, and the second
+  // tap is ignored); the next tap goes on. Lines appear whole here (reduced motion), as they
+  // do with 文字送り「一括表示」, so a second tap that read on would skip a line unread.
   const scenery = await ops.sceneBackgroundPoint(page);
   await ops.hideDialogueWindow(page);
-  await ops.tap(page, scenery);
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.doubleTap(page, scenery);
   await expect(page.getByTestId("romance-scene").getByRole("region", { name: "デートの会話" })).toBeVisible();
   expect((await readSave(page)).revision).toBe(started.revision);
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await page.clock.resume();
   await ops.tap(page, scenery);
   await expect.poll(async () => (await readSave(page)).revision).toBe(started.revision + 1);
   // While the replies are offered, a tap on the picture neither chooses one nor goes on
-  // (選択肢の誤タップ防止); the reply chosen next is the only change.
+  // (選択肢の誤タップ防止). A quick double tap on a reply saves that reply only: its second tap
+  // lands on the scene the reply leaves behind and does not skip the reaction line.
   const choosing = await playUntil(page, (state) => !!state.activeDate?.frame.choices.length);
   const reply = page.getByTestId("date-choice").first();
   await expect(reply).toBeEnabled();
   await ops.tap(page, await ops.sceneBackgroundPoint(page));
   expect((await readSave(page)).revision).toBe(choosing.revision);
-  await reply.click();
+  const replyBox = (await reply.boundingBox())!;
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.doubleTap(page, { x: replyBox.x + replyBox.width / 2, y: replyBox.y + replyBox.height / 2 });
   await expect.poll(async () => (await readSave(page)).revision).toBe(choosing.revision + 1);
-  expect((await readSave(page)).activeDate!.choiceCount).toBe(choosing.activeDate!.choiceCount + 1);
-  const finished = await playUntil(page, (state) => !state.activeDate);
+  const replied = await readSave(page);
+  expect(replied.activeDate!.choiceCount).toBe(choosing.activeDate!.choiceCount + 1);
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await page.clock.resume();
+  // At the last line a tap on the picture ends the date, as a tap on the line does. The free
+  // time then appears under the finger: neither the double tap's second tap nor a tap on a
+  // destination there acts for a moment (it would start another date or a walk).
+  const last = await playUntil(page, (state) => !!state.activeDate?.frame.ended);
+  const end = await ops.sceneBackgroundPoint(page);
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.doubleTap(page, end);
   await expect(menu).toBeVisible();
+  const destination = (await page.getByTestId(/^travel-place-/u).getByRole("button").filter({ visible: true }).first().boundingBox())!;
+  await page.touchscreen.tap(destination.x + destination.width / 2, destination.y + destination.height / 2);
+  const finished = await readSave(page);
+  expect(finished.revision).toBe(last.revision + 1);
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await page.clock.resume();
+  await ops.settled(page);
+  expect(await readSave(page)).toEqual(finished);
   expect(finished.playedDateIds).toEqual(["milano_novecento_date_01"]);
   expect(finished.memories.length).toBeGreaterThan(0);
   expect(finished.ap).toBe(started.ap);
