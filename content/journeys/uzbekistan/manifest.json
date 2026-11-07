@@ -50,16 +50,10 @@
   "intercityModes": [],
   "transportModes": [
     {
-      "id": "rail",
-      "nameJa": "鉄道・地下鉄",
-      "movingJa": "電車で移動中",
+      "id": "metro",
+      "nameJa": "地下鉄",
+      "movingJa": "地下鉄で移動中",
       "kind": "rail"
-    },
-    {
-      "id": "bus",
-      "nameJa": "バス",
-      "movingJa": "バスで移動中",
-      "kind": "bus"
     },
     {
       "id": "taxi",
