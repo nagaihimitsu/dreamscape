@@ -35,7 +35,7 @@ const sources = Object.fromEntries(paths.map((id) => [id, readFileSync(storyFile
 const stories = Object.fromEntries(Object.entries(sources).map(([id, source]) => [id, compileInk(source, `${id}.ink`)]));
 
 function input() {
-  const quiz = quizSchema.parse(generatedQuizzes.sound_supper_b1);
+  const quiz = quizSchema.parse(generatedQuizzes.milano_main_last_supper_quiz);
   return {
     catalog: encounterCatalogSchema.parse(structuredClone(catalogData)),
     cityId: "milano",

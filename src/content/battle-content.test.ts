@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -75,7 +75,7 @@ describe("battle content contract", () => {
     );
     expect(generated[quizData.id]).toEqual(quizData);
     expect(Object.keys(generated)).not.toContain(
-      "milano_last_supper_b1_example",
+      "milano_last_supper_example_quiz",
     );
     expect(
       new Set(quizData.questions.map((question: { correctOptionId: string }) => question.correctOptionId))
@@ -198,8 +198,10 @@ describe("battle content contract", () => {
   });
 
   it("rejects duplicate production quiz IDs across files", async () => {
+    // A quiz file is named after its ID, so the second file with the same ID sits in a subfolder.
+    await mkdir(path.join(fixture, path.dirname(quizPath), "copy"), { recursive: true });
     await writeFile(
-      path.join(fixture, path.dirname(quizPath), "duplicate.json"),
+      path.join(fixture, path.dirname(quizPath), "copy", path.basename(quizPath)),
       JSON.stringify(quizData),
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(

@@ -31,7 +31,7 @@ describe("content authoring workflow", () => {
   it("accepts a new quiz from direct edits and transcribed JSON through the same pipeline", async () => {
     // The sample journey's quiz is the example of a quiz file (authoring/templates/sample_trip/).
     const templateText = await readFile(
-      path.join(root, SAMPLE_JOURNEY_DIRECTORY, "quizzes/smp_mihon_clock_tower_quiz.json"),
+      path.join(root, SAMPLE_JOURNEY_DIRECTORY, "quizzes/smp_mihon_main_clock_tower_quiz.json"),
       "utf8",
     );
     const template = quizSchema.parse(JSON.parse(templateText));
@@ -94,7 +94,7 @@ describe("content authoring workflow", () => {
   }, 90_000);
 
   it("reflects an existing Milan quiz edit while leaving production text untouched", async () => {
-    const productionFile = path.join(root, quizSourceFile("sound_duomo_b1"));
+    const productionFile = path.join(root, quizSourceFile("milano_main_duomo_quiz"));
     const original = await readFile(productionFile, "utf8");
     const screenFile = path.join(root, "src/features/battle/BattleScreen.tsx");
     const originalScreen = await readFile(screenFile, "utf8");
@@ -104,7 +104,7 @@ describe("content authoring workflow", () => {
     expect(quiz.questions[0].questionEn).not.toBe(editedQuestion);
     quiz.questions[0].questionEn = editedQuestion;
     await writeFile(
-      path.join(fixture, quizSourceFile("sound_duomo_b1")),
+      path.join(fixture, quizSourceFile("milano_main_duomo_quiz")),
       `${JSON.stringify(quiz, null, 2)}\n`,
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(

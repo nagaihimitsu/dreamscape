@@ -140,6 +140,23 @@ function checkPublishedSources(sources: ContentSources): void {
   }
 }
 
+/**
+ * A quiz file is named after its quiz ID: `quizzes/<id>.json`, an example
+ * quiz `quizzes/<id>.example.json` (docs/02 「IDの付け方」). Checked on the
+ * loaded data, before the schemas, so the message names the file even when
+ * the quiz is otherwise unfinished (an `id` that is not a string is left to
+ * the schema).
+ */
+function checkQuizFileNames(sources: ContentSources): void {
+  for (const { file, example, data } of sources.quizFiles) {
+    if (!isObject(data) || typeof data.id !== "string") continue;
+    const expected = `${data.id}${example ? ".example.json" : ".json"}`;
+    if (path.basename(file) !== expected)
+      throw new Error(`クイズのファイル名がクイズIDと違います（Quiz file name differs from its id）: ${displayPath(sources.root, file)} のIDは ` +
+        `${JSON.stringify(data.id)} です。ファイル名を ${expected} にしてください（${example ? "例のクイズは <ID>.example.json" : "クイズのファイル名は <ID>.json"}）。`);
+  }
+}
+
 /** The validated content: compiled stories, quizzes and the parsed catalogs content:build reports. */
 export type ValidatedContent = ReturnType<typeof validateContent>;
 
@@ -165,6 +182,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     throw new Error(`Missing default background: content/romance/presentation.json must define backgrounds.${DEFAULT_BACKGROUND_ID} (the shared default of every journey)`);
   checkJourneyCities(sources);
   checkPublishedSources(sources);
+  checkQuizFileNames(sources);
   // The game's static files (root public/ plus every journey's public/), listed by the loader.
   const { publicFiles } = sources;
   // A missing image is named with the public/ folder of the journey whose data file names it.

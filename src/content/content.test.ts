@@ -462,7 +462,7 @@ describe("content build acceptance", () => {
 
   it("still validates the example quiz, which is never played", async () => {
     await replace(
-      quizSourceFile("milano_last_supper_b1_example"),
+      quizSourceFile("milano_last_supper_example_quiz"),
       '"correctOptionId": "A"',
       '"correctOptionId": "D"',
     );

@@ -80,7 +80,7 @@ const read = (file: string) => readFileSync(path.join(source, file), "utf8");
 const scene = { titleJa: "試験", descriptionJa: "試験の場面", clearTitleJa: "試験完了", clearDescriptionJa: "試験の記録",
   enemyNameJa: "試験人物", enemyTitleJa: "試験の人", enemyDescriptionJa: "試験用の人物" };
 const date = { titleJa: "試験", descriptionJa: "試験の場面", memoryTitleJa: "試験の思い出", memoryDescriptionJa: "試験の記録" };
-const originalQuiz = JSON.parse(read(`${milano}/quizzes/sound_duomo_B1.json`));
+const originalQuiz = JSON.parse(read(`${milano}/quizzes/milano_main_duomo_quiz.json`));
 const originalTranslations = JSON.parse(read(`${milano}/learning/translations.json`)).questions;
 /** A Milan Ink template for India's folder: Milan's own backgrounds become the shared default background. */
 const inkTemplate = (storyId: string) =>
@@ -145,7 +145,7 @@ function authorCity(root: string, plan: ReturnType<typeof journeyRequirements>[n
   }
   write(`${layer}/stories/${plan.finale.battleStoryId}.ink`, inkTemplate("battles/sound_finale"));
   write(`${layer}/stories/${plan.finale.epilogueStoryId}.ink`, inkTemplate("milano/sound_epilogue"));
-  const finalQuiz = JSON.parse(read(`${milano}/quizzes/sound_finale_B1.json`));
+  const finalQuiz = JSON.parse(read(`${milano}/quizzes/milano_finale_quiz.json`));
   finalQuiz.id = plan.finale.quizId; finalQuiz.cityId = plan.cityId;
   finalQuiz.questions.forEach((question: { id: string }, index: number) => {
     const translated = originalTranslations[question.id];

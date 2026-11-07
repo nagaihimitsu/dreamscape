@@ -50,14 +50,15 @@ async function addSecondCity() {
   await write(`${mi}/battles/catalog.json`, battles);
 
   const learning = await read(`${mi}/learning/translations.json`);
-  for (const name of ["sound_duomo_B1", "sound_finale_B1"]) {
+  for (const name of ["milano_main_duomo_quiz", "milano_finale_quiz"]) {
     const quiz = await read(`${mi}/quizzes/${name}.json`);
     const copy = { ...quiz, id: prefix(quiz.id), ...(quiz.cityId ? { cityId: second.id } : {}),
       landmarkId: quiz.landmarkId && prefix(quiz.landmarkId), questions: quiz.questions.map((question: any) => {
         if (learning.questions[question.id]) learning.questions[prefix(question.id)] = learning.questions[question.id];
         return { ...question, id: prefix(question.id) };
       }) };
-    await write(`${mi}/quizzes/test_${name}.json`, copy);
+    // A quiz file is named after its id (content:build checks it).
+    await write(`${mi}/quizzes/${copy.id}.json`, copy);
   }
   await write(`${mi}/learning/translations.json`, learning);
 

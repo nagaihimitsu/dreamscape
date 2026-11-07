@@ -99,7 +99,7 @@ describe("journey:new copy of the sample", () => {
     expect(full.size).toBe(sample.files.size + 1);
     expect([...minimal.keys()]).toContain("stories/battles/ky_kyoto_finale.ink");
     expect([...minimal.keys()]).toContain("public/assets/tourism/kyoto_trip/kyoto_clock_tower.png");
-    expect([...full.keys()]).toContain("quizzes/ky_kyoto_market_b_quiz.json");
+    expect([...full.keys()]).toContain("quizzes/ky_kyoto_special_b_market_quiz.json");
     // No name of the sample is left as an ID, a part of one or a path (English names such as "Mihon Inn" are text to rewrite).
     const left = /(?<![A-Za-z0-9])(sample_trip|smp|mihon)(?![A-Za-z0-9])/u;
     for (const [file, bytes] of full) {
@@ -119,7 +119,7 @@ describe("journey:new copy of the sample", () => {
     expect(list).toContain("# 京都の旅（kyoto_trip）の置き換えチェックリスト");
     expect(list).toContain("- [ ] `stories/battles/ky_kyoto_finale.ink` — 都市フィナーレの会話");
     for (const file of minimal.keys()) if (file !== CHECKLIST_FILE) expect(list, file).toContain(`\`${file}\``);
-    expect(full.get(CHECKLIST_FILE)!.toString("utf8")).toContain("- [ ] `quizzes/ky_kyoto_market_b_quiz.json` — 任意の部分「特殊戦B（矛盾追及）」");
+    expect(full.get(CHECKLIST_FILE)!.toString("utf8")).toContain("- [ ] `quizzes/ky_kyoto_special_b_market_quiz.json` — 任意の部分「特殊戦B（矛盾追及）」");
     expect(optionalFiles.length).toBe(full.size - minimal.size);
   });
 
@@ -260,7 +260,7 @@ describe("journey:new in a copy of the repository", () => {
     const report = inspectJourneyReadiness(loadJourneyReadiness(root, k));
     const left = report.issues.filter((issue) => issue.code === "sample_content_left").map((issue) => issue.detail);
     expect(left).toEqual(expect.arrayContaining([
-      `見本の出典（example.com）が残っています: content/journeys/${k}/quizzes/${kp}_${kc}_clock_tower_quiz.json（3件）`,
+      `見本の出典（example.com）が残っています: content/journeys/${k}/quizzes/${kp}_${kc}_main_clock_tower_quiz.json（3件）`,
       `見本の画像のままです: content/journeys/${k}/public/assets/tourism/${k}/${kc}_clock_tower.png`,
       `見本の文章が残っています: content/journeys/${k}/stories/tourism/${kp}_${kc}_clock_tower_guide.ink（6か所）`,
     ]));

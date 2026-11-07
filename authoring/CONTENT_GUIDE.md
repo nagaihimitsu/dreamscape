@@ -79,8 +79,8 @@ VAR heroine_name = ""
 | 作るもの                       | 見本の例（`templates/sample_trip/` の中）                                                        | 正式な配置先                                              |
 | ------------------------------ | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------- |
 | 観光地・画像・発見・資料       | `tourism/catalog.json`                                                                           | `<旅行編>/tourism/catalog.json` の各配列                  |
-| 英語3択（通常戦3問・フィナーレ5問） | `quizzes/smp_mihon_clock_tower_quiz.json`, `quizzes/smp_mihon_finale_quiz.json`             | `<旅行編>/quizzes/任意名.json`                            |
-| 敵と通常戦、矛盾追及、証拠連結 | `battles/catalog.json`（特殊戦は `quizzes/smp_mihon_market_b_quiz.json`・`smp_mihon_library_c_quiz.json` も） | `<旅行編>/battles/catalog.json` の `battles`              |
+| 英語3択（通常戦3問・フィナーレ5問） | `quizzes/smp_mihon_main_clock_tower_quiz.json`, `quizzes/smp_mihon_finale_quiz.json`             | `<旅行編>/quizzes/<クイズID>.json`（ファイル名＝クイズID）   |
+| 敵と通常戦、矛盾追及、証拠連結 | `battles/catalog.json`（特殊戦は `quizzes/smp_mihon_special_b_market_quiz.json`・`smp_mihon_special_c_library_quiz.json` も） | `<旅行編>/battles/catalog.json` の `battles`              |
 | 敵の会話                       | `stories/battles/smp_mihon_clock_tower.ink`, `smp_mihon_market_b.ink`, `smp_mihon_library_c.ink`, `smp_mihon_finale.ink` | `<旅行編>/stories/battles/`                               |
 | デート、行き先、背景           | `romance/date_catalog.json`, `romance/date_destinations.json`, `romance/presentation.json`       | `<旅行編>/romance/` の対応するカタログ                    |
 | デートの会話                   | `stories/dates/smp_mihon_date_tower_square.ink`                                                  | `<旅行編>/stories/dates/` など                            |
@@ -102,7 +102,7 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 
 1. 事実・解釈・伝説を区別し、各項目の出典と日付を記録します。写真の作者、ライセンス、加工内容と利用条件も確認します。
 2. 見本の `tourism/catalog.json` を見ながら、画像を `assets`、場所を `landmarks`、その発見を `clues` に登録します。画像は旅行編の `content/journeys/<旅行編ID>/public/` 以下に配置し、`path` に `public/` を除いたパス（配信時のパス）を書きます。
-3. 3問のクイズ（見本の `quizzes/smp_mihon_clock_tower_quiz.json`）と観光案内（`stories/tourism/smp_mihon_clock_tower_guide.ink`）を作り、対応するIDをそろえます。
+3. 3問のクイズ（見本の `quizzes/smp_mihon_main_clock_tower_quiz.json`）と観光案内（`stories/tourism/smp_mihon_clock_tower_guide.ink`）を作り、対応するIDをそろえます。
 4. 見本の `battles/catalog.json` の通常戦と `stories/battles/smp_mihon_clock_tower.ink` を参考に、敵・会話と問題を結びます。演出背景は `<旅行編>/romance/presentation.json` に登録します。
 5. 順路・報酬を `<旅行編>/progression/journey.json` の既存配列に追加し、参照関係を確認します。新都市の追加には後述の現行制約があります。
 6. 後述の検証と編集者レビューを済ませてからGitで採用します。
@@ -194,7 +194,7 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 `npm ci` の後、1ファイルを編集中に確認する例です（見本のファイルで試せます）。形式の推測が難しい雛形や下書きは `--type` を指定します。対決は複数項目を含むカタログ形式なので `battle-catalog` です。
 
 ```sh
-npm run content:inspect -- --type quiz authoring/templates/sample_trip/quizzes/smp_mihon_clock_tower_quiz.json
+npm run content:inspect -- --type quiz authoring/templates/sample_trip/quizzes/smp_mihon_main_clock_tower_quiz.json
 npm run content:inspect -- --type battle-catalog authoring/templates/sample_trip/battles/catalog.json
 npm run content:inspect -- authoring/templates/sample_trip/stories/dates/smp_mihon_date_tower_square.ink
 ```

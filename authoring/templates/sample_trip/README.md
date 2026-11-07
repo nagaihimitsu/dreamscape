@@ -35,7 +35,7 @@
 | `tourism/catalog.json` | 画像台帳・観光地・観察ポイント（hotspot） | `Invalid content in tourism/catalog.json` |
 | `progression/journey.json` | 観光エピソードと都市フィナーレ（エピローグつき）、報酬 | `Complete city has no city finale` |
 | `battles/catalog.json` | 通常戦（中間2場面）と都市フィナーレ（中間4場面） | `Invalid content in battles/catalog.json` |
-| `quizzes/smp_mihon_clock_tower_quiz.json` | 通常戦の英語3択3問 | `Unknown battle quizId: smp_mihon_clock_tower_quiz` |
+| `quizzes/smp_mihon_main_clock_tower_quiz.json` | 通常戦の英語3択3問 | `Unknown battle quizId: smp_mihon_main_clock_tower_quiz` |
 | `quizzes/smp_mihon_finale_quiz.json` | 都市フィナーレの英語3択5問 | `Unknown battle quizId: smp_mihon_finale_quiz` |
 | `learning/translations.json` | 全問題の和訳（原文の写しと照合される） | `Missing translation` |
 | `learning/word-meanings.json` | 共通の辞書（`content/learning/word-meanings.json`）にない英単語だけ | `Missing word meaning` |
@@ -56,14 +56,14 @@
 
 朝市でパン屋のサラの「誰も時間を守らない」という断言に、資料を1枚突きつけます（全3問のうち第2問）。
 
-- ファイル：`quizzes/smp_mihon_market_b_quiz.json`、`stories/battles/smp_mihon_market_b.ink`、`stories/tourism/smp_mihon_market_guide.ink`、`public/assets/tourism/sample_trip/mihon_market.png`
+- ファイル：`quizzes/smp_mihon_special_b_market_quiz.json`、`stories/battles/smp_mihon_market_b.ink`、`stories/tourism/smp_mihon_market_guide.ink`、`public/assets/tourism/sample_trip/mihon_market.png`
 - 項目のID：`smp_mihon_market_b`、`mihon_market`、`smp_bg_mihon_market`、`smp_img_mihon_market`、`smp_obs_mihon_market_rain`、`smp_obs_mihon_market_timer`、`smp_obs_mihon_market_rows`、`smp_mihon_market_b_q1`、`smp_mihon_market_b_q2`、`smp_mihon_market_b_q3`
 
 ### 特殊戦C（証拠連結）
 
 図書室で、司書のイオに資料を2枚組み合わせて示します（全3問のうち第3問）。
 
-- ファイル：`quizzes/smp_mihon_library_c_quiz.json`、`stories/battles/smp_mihon_library_c.ink`、`stories/tourism/smp_mihon_library_guide.ink`、`public/assets/tourism/sample_trip/mihon_library.png`
+- ファイル：`quizzes/smp_mihon_special_c_library_quiz.json`、`stories/battles/smp_mihon_library_c.ink`、`stories/tourism/smp_mihon_library_guide.ink`、`public/assets/tourism/sample_trip/mihon_library.png`
 - 項目のID：`smp_mihon_library_c`、`mihon_library`、`smp_bg_mihon_library`、`smp_img_mihon_library`、`smp_obs_mihon_library_diary`、`smp_obs_mihon_library_letters`、`smp_obs_mihon_library_weather`、`smp_obs_mihon_library_hours`、`smp_mihon_library_c_q1`、`smp_mihon_library_c_q2`、`smp_mihon_library_c_q3`
 
 ### 道中交流と品物

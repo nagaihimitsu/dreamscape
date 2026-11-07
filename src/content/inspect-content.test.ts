@@ -6,7 +6,7 @@ import { inferContentType, inspectFile } from "../../scripts/inspect-content";
 import { quizSourceFile } from "./test-fixtures";
 
 /** A production quiz file, wherever its journey folder keeps it. */
-const duomoQuiz = quizSourceFile("sound_duomo_b1");
+const duomoQuiz = quizSourceFile("milano_main_duomo_quiz");
 
 let directory: string;
 beforeEach(async () => {

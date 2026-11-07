@@ -250,8 +250,8 @@ tests/screens/                    # 人が見る画面一覧の撮影（npm run 
 [制作マニュアル](authoring/CONTENT_GUIDE.md) と [見本の編](authoring/templates/sample_trip/README.md) に、観光地・発見・クイズ・A/B/C戦・デート・案内・道中交流・都市進行の正規JSONとInkの例があります（見本の編は架空の街で、文章・出典・画像は写したら実在のものに置き換えます）。新しい旅行編は `npm run journey:new` で見本から作れます。直接編集しても、AIが提案した文章を転記しても、同じ形式と検証を使います。`authoring/journeys/<旅行編ID>/drafts/` は必要に応じて使える任意の下書き置き場で、ゲームに読み込まれません。採用は通常のGitレビューで行います。
 
 ```sh
-npm run content:inspect -- content/journeys/milano/quizzes/sound_duomo_B1.json
-npm run content:inspect -- --type quiz authoring/templates/sample_trip/quizzes/smp_mihon_clock_tower_quiz.json
+npm run content:inspect -- content/journeys/milano/quizzes/milano_main_duomo_quiz.json
+npm run content:inspect -- --type quiz authoring/templates/sample_trip/quizzes/smp_mihon_main_clock_tower_quiz.json
 npm run content:inspect -- --all
 npm run test:saves
 ```
@@ -308,7 +308,7 @@ npm run content:check
 
 ゲームが読むJSONは、`content/` を検証・統合して `npm run content:build` が書き出す `src/content/generated/content/`（生成物。手動編集しない）です。`content/` のJSONを編集した後も、Inkと同様に `npm run content:build` を実行してください。
 
-検証はJSONスキーマ、重複ID、章・背景・シナリオ・思い出参照、許可タグ、前提イベントの循環、段階設定、報酬ID重複、シナリオごとの選択数・効果数・告白結果を確認します。壊れたInk・参照切れ・未定義effect・不正JSONはビルド失敗になります。例のクイズ（`quizzes/*.example.json`。ミラノ編の `last_supper_B1.example.json`）は検証だけに使い、出題しません。
+検証はJSONスキーマ、重複ID、章・背景・シナリオ・思い出参照、許可タグ、前提イベントの循環、段階設定、報酬ID重複、シナリオごとの選択数・効果数・告白結果を確認します。壊れたInk・参照切れ・未定義effect・不正JSONはビルド失敗になります。例のクイズ（`quizzes/*.example.json`。ミラノ編の `milano_last_supper_example_quiz.example.json`）は検証だけに使い、出題しません。
 
 ### クイズ・敵シナリオの編集
 

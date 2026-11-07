@@ -193,7 +193,7 @@ describe("journey authoring with four cities", () => {
         [`${layer}/romance/presentation.json`]: write(`${layer}/romance/presentation.json`, ownPresentation) };
       const merged = { "progression/journey.json": coreJourney, "learning/translations.json": coreTranslations,
         "romance/presentation.json": { ...corePresentation, backgrounds: ownPresentation.backgrounds } };
-      const quiz = loadJourneyReadiness(process.cwd(), "golden_triangle").quizzes.find((item) => item.id === "sound_duomo_b1")!;
+      const quiz = loadJourneyReadiness(process.cwd(), "golden_triangle").quizzes.find((item) => item.id === "milano_main_duomo_quiz")!;
       const fragments = { episodes: [{ id: "uz_tashkent_episode", cityId: "tashkent" }], rewards: [],
         battles: [{ id: "uz_tashkent_battle", quizId: quiz.id }], dates: [], landmarks: [], clues: [], finaleEvents: [],
         effects: [{ id: "uz_tashkent_effect" }], memories: { shared_memory: { titleJa: "共有の思い出" }, uz_memory: { titleJa: "タシケント" } },
@@ -258,7 +258,7 @@ describe("journey authoring with four cities", () => {
       const coreTranslations = JSON.parse(readFileSync(path.join(process.cwd(), "src/content/generated/content/learning/translations.json"), "utf8"));
       const merged = { "learning/translations.json": coreTranslations,
         "romance/presentation.json": { ...corePresentation, backgrounds: partial["romance/presentation.json"].backgrounds } };
-      const quiz = loadJourneyReadiness(process.cwd(), "golden_triangle").quizzes.find((item) => item.id === "sound_duomo_b1")!;
+      const quiz = loadJourneyReadiness(process.cwd(), "golden_triangle").quizzes.find((item) => item.id === "milano_main_duomo_quiz")!;
       const fragments = { episodes: [{ id: "uz_tashkent_episode", cityId: "tashkent" }], rewards: [],
         battles: [{ id: "uz_tashkent_battle", quizId: quiz.id }], dates: [], landmarks: [], clues: [], finaleEvents: [],
         effects: [], memories: { shared_memory: { titleJa: "共有の思い出" }, uz_memory: { titleJa: "タシケント" } },
