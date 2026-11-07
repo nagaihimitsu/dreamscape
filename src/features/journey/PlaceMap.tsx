@@ -47,7 +47,16 @@ function MapCanvas({ game, events, places, onSelect, mapRef, initialView, expand
       if (initialView) map.setView(initialView.center, initialView.zoom, { animate: false });
       else map.fitBounds(L.latLngBounds(places.map((place) => [place.latitude, place.longitude])), { padding: [24, 24], maxZoom: 15 });
     });
-    return () => { cancelAnimationFrame(frame); map.remove(); mapRef.current = null; markersRef.current = null; };
+    return () => {
+      cancelAnimationFrame(frame);
+      map.remove();
+      // Leaflet 1.9 ends a zoom animation from a 250 ms timer that remove() leaves running; when a
+      // destination is chosen right after a zoom tap the timer then moves the removed panes and
+      // throws (found by the weekly monkey, docs/10「探索テスト」). Mark the animation as over.
+      (map as unknown as { _animatingZoom?: boolean })._animatingZoom = false;
+      mapRef.current = null;
+      markersRef.current = null;
+    };
   // A map is initialized once per opening; marker updates do not reset its pan or zoom.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

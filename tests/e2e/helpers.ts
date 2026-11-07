@@ -17,7 +17,8 @@ export type { Page };
  * - debug: Debug as a scene launchpad (development server only; never counted as a save/resume check).
  * - prod: also against the production build (`vite preview` of `npm run build`).
  * - sample: the sample journey's own development server, built with the sample (playwright.sample.config.ts).
- * - smoke: the WebKit (iPhone) weekly run; explore: the weekly exploration runs (both planned, not a gate).
+ * - smoke: also in the weekly WebKit (iPhone) run (playwright.webkit.config.ts); explore: the weekly
+ *   monkey (tests/e2e/explore/, playwright.explore.config.ts). Neither is a gate.
  */
 export const tier = { gate: "@gate", debug: "@debug", prod: "@prod", sample: "@sample", smoke: "@smoke", explore: "@explore" } as const;
 
@@ -124,6 +125,8 @@ export const devModules = {
   content: "/src/content/index.ts",
   encounters: "/src/content/encounters.ts",
   debugState: "/src/dev/debug-state.ts",
+  game: "/src/domain/game.ts",
+  cityTravel: "/src/domain/city-travel.ts",
 } as const;
 
 /**

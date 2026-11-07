@@ -20,7 +20,7 @@ export function TravelActions({ game, onTravelWait, onTravelSleep }: {
   const [showSleep, setShowSleep] = useState(false);
   const waitOptions = getTravelWaitOptions(game);
   const sleepOptions = getTravelSleepOptions(game);
-  return <div className="travel-utility">
+  return <div className="travel-utility" data-testid="travel-actions">
     <details className="travel-wait">
       <summary aria-label="時間を進める">待機</summary>
       <div className="travel-wait-actions">
