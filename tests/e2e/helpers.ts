@@ -130,8 +130,6 @@ export const devModules = {
   debugState: "/src/dev/debug-state.ts",
   game: "/src/domain/game.ts",
   cityTravel: "/src/domain/city-travel.ts",
-  travelDestinations: "/src/domain/travel-destinations.ts",
-  travelGame: "/src/domain/travel-game.ts",
 } as const;
 
 /**

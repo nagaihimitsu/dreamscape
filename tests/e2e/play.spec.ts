@@ -1,5 +1,5 @@
 import { DOUBLE_TAP_WINDOW_MS } from "../../src/features/battle/double-tap";
-import { allStorage, devModules, expect, expectNoActiveScene, journeyCatalog, learningKey, ops, playUntil, readSave, savedGame, test, tier } from "./helpers";
+import { allStorage, expect, expectNoActiveScene, generated, journeyCatalog, learningKey, ops, playUntil, readSave, savedGame, test, tier } from "./helpers";
 
 // Lane 1 (docs/10): the real flow from the title screen, no Debug, no state shortcut.
 // docs/07 acceptance 1–4 (names, AP from the first battle, a date spending AP once and finishing).
@@ -127,13 +127,15 @@ test("a new Milan journey rides tram 16 to the Last Supper, named in the route d
 });
 
 // Every available journey (from the generated catalog, Golden Triangle included with the
-// modes it keeps while it waits for its switch): at the start, the first place reached on
-// foot or by one of its vehicles opens the route dialog, the vehicle is named as its manifest
-// declares it (nameJa), and the transition shows its caption (movingJa), ID and art kind.
+// modes it keeps while it waits for its switch): at the start, the first listed place that
+// is reached on foot and by one of its vehicles (the city's travel data) and that the party
+// can ride to now opens the route dialog with the vehicle named as its manifest declares it
+// (nameJa), and the transition shows its caption (movingJa), ID and art kind.
 test("in each available journey a new trip's first vehicle route is named and shown as its manifest declares", { tag: tier.gate }, async ({ page }) => {
   await page.clock.install();
   const journeys = journeyCatalog().journeys.filter((item) => item.status === "available" && item.transportModes.length);
   expect(journeys.map((journey) => journey.id)).toEqual(expect.arrayContaining(["milano", "golden_triangle"]));
+  const pattern = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
   await page.goto("/");
   for (const [index, journey] of journeys.entries()) {
     // The next journey from 設定 (a page load would resume the journey just played).
@@ -143,36 +145,44 @@ test("in each available journey a new trip's first vehicle route is named and sh
     await playUntil(page, (state) => state.activeEpilogue === null, { source: savedGame(journey.id) });
     await expect(page.getByTestId("travel-menu")).toBeVisible();
     const before = await readSave(page, journey.id);
-    const ride = await page.evaluate(async ({ state, modules }) => {
-      const { getTravelDestinations } = await import(/* @vite-ignore */ modules.travelDestinations);
-      const { getTravelEventAvailability } = await import(/* @vite-ignore */ modules.travelGame);
-      type Route = { mode: string; minutes: number; cost: number };
-      type Place = { id: string; events: { id: string; routes: Route[] }[] };
-      // A place with one event, reached on foot and by a vehicle the party can take now (so the route dialog opens).
-      for (const place of getTravelDestinations(state).places as Place[]) {
-        const [event] = place.events;
-        if (place.events.length !== 1 || !event.routes.some((route) => route.mode === "walk")) continue;
-        const vehicle = event.routes.find((route) => route.mode !== "walk" && getTravelEventAvailability(state, event.id, route.mode).available);
-        if (vehicle) return { placeId: place.id, ...vehicle };
+    type Route = { fromPlaceId: string; toPlaceId: string; mode: string; minutes: number; cost: number };
+    const travel = generated<{ events: { placeId: string }[]; routes: Route[] }>(`travel/${before.currentCityId}.json`);
+    const modes = new Map(journey.transportModes.map((mode) => [mode.id, mode]));
+    const from = before.travel.currentPlaceId;
+    const routesTo = (to: string) => travel.routes.filter((route) => route.fromPlaceId === from && route.toPlaceId === to);
+    // One event at the place, so choosing it opens the route dialog (walk and a vehicle) at once.
+    const targets = [...new Set(travel.events.map((event) => event.placeId))].filter((to) => to !== from &&
+      travel.events.filter((event) => event.placeId === to).length === 1 &&
+      routesTo(to).some((route) => route.mode === "walk") && routesTo(to).some((route) => modes.has(route.mode)));
+    const more = page.getByText("ほかの行き先を見る", { exact: true });
+    if (await more.isVisible()) await more.click();
+    let ride: { route: Route; button: ReturnType<typeof ops.routeButton> } | undefined;
+    for (const to of targets) {
+      const place = page.getByTestId(`travel-place-${to}`);
+      if (!(await place.count())) continue;
+      await place.getByRole("button").click();
+      await expect(page.getByRole("dialog")).toBeVisible();
+      for (const route of routesTo(to).filter((item) => modes.has(item.mode))) {
+        const button = ops.routeButton(page, pattern(modes.get(route.mode)!.nameJa));
+        if (await button.isEnabled()) { ride = { route, button }; break; }
       }
-      return null;
-    }, { state: before, modules: devModules });
-    expect(ride, `${journey.id}: a place reached on foot and by vehicle at the start`).not.toBeNull();
-    const mode = journey.transportModes.find((item) => item.id === ride!.mode)!;
-    test.info().annotations.push({ type: "ride", description: `${journey.id}: ${ride!.placeId} by ${mode.id} (${mode.nameJa})` });
-    await ops.goTo(page, ride!.placeId);
-    const button = ops.routeButton(page, mode.nameJa);
-    await expect(button).toBeEnabled();
+      if (ride) break;
+      await page.getByRole("dialog").getByRole("button", { name: "閉じる", exact: true }).click();
+    }
+    expect(ride, `${journey.id}: a listed place reached on foot and by a vehicle the party can take at the start`).toBeDefined();
+    const { route, button } = ride!;
+    const mode = modes.get(route.mode)!;
+    test.info().annotations.push({ type: "ride", description: `${journey.id}: ${route.toPlaceId} by ${mode.id} (${mode.nameJa})` });
     await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
     await button.click();
     const transition = page.getByTestId("travel-transition");
     await expect(transition).toHaveAttribute("data-mode", mode.id);
     await expect(transition).toHaveAttribute("data-kind", mode.kind);
     await expect(transition.locator(".travel-transition-label")).toHaveText(mode.movingJa);
-    const arrived = await readSave(page, journey.id);
     // The ride took the route's time (the budget may also pay an admission at the place; the Milan test above pins a fare).
-    expect(arrived.travel).toMatchObject({ currentPlaceId: ride!.placeId, minute: before.travel.minute + ride!.minutes });
-    expect(arrived.travelBudget).toBeLessThanOrEqual(before.travelBudget - ride!.cost);
+    const arrived = await readSave(page, journey.id);
+    expect(arrived.travel).toMatchObject({ currentPlaceId: route.toPlaceId, minute: before.travel.minute + route.minutes });
+    expect(arrived.travelBudget).toBeLessThanOrEqual(before.travelBudget - route.cost);
     await page.clock.resume();
     await expect(transition).toHaveCount(0);
   }
