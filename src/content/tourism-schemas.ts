@@ -73,10 +73,12 @@ export const tourismClueSchema = z
     factId: id,
     /**
      * Questions of a quiz of the same landmark whose question, correct answer
-     * or explanation needs what this clue shows (checked by content:build; the
-     * game does not read it). An empty list is deliberate: an observation-only
-     * clue (観察だけの手がかり) that no question depends on. See docs/07
-     * 「観察だけの手がかり」.
+     * or explanation needs what this clue shows (checked by content:build; no
+     * screen or rule reads it). Only a special battle's save fingerprint hashes
+     * its evidence clues whole (battle.ts hashBattle), so changing an evidence
+     * clue's links makes that battle's mid-battle save non-resumable. An empty
+     * list is deliberate: an observation-only clue (観察だけの手がかり) that no
+     * question depends on. See docs/07 「観察だけの手がかり」.
      */
     relatedQuestionIds: uniqueIds,
     region: observationRegionSchema.nullable(),
