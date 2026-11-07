@@ -6,6 +6,7 @@ import { clearCity, wrongAnswer } from "../dev/scenario-builders";
 import { advanceCompletedJourneyCity } from "./city-travel";
 import { advanceCityEpilogue } from "./epilogue";
 import { createGame, validateGameState, type GameState } from "./game";
+import { applyPlayerAction } from "./player-action";
 import { installTestGoldenTriangle } from "../dev/test-cities";
 
 class MemoryStorage implements StorageLike {
@@ -47,10 +48,10 @@ describe("automatic India city transition with development-only content", () => 
       expect(count).toBeLessThan(100);
       epilogue = advanceCityEpilogue(epilogue, epilogue.revision);
     }
-    // Match the app's single save operation: the last story step and automatic
-    // departure form one resulting snapshot.
+    // The app's single save operation (applyPlayerAction, as GameApp's commit): the last story
+    // step and the automatic departure form one resulting snapshot.
     const lastStep = advanceCityEpilogue(epilogue, epilogue.revision);
-    const test_agra = advanceCompletedJourneyCity(lastStep, lastStep.revision);
+    const test_agra = applyPlayerAction(epilogue, (state) => advanceCityEpilogue(state, state.revision));
     expect(test_agra.currentCityId).toBe("test_agra");
     expect(test_agra.viewedEpilogueCityIds).toContain("test_delhi");
     expect(test_agra.travel).toMatchObject({ hotelPlaceId: "test_agra_hotel", currentPlaceId: "test_agra_hotel", day: 1, minute: 540 });

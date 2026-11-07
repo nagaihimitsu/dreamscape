@@ -197,7 +197,7 @@ tests/fixtures/         # 単体テスト用の保存データと状態（ゲー
 
 既存の入口を保ちながら、次の単位で処理を分担する。
 
-- `src/app/App.tsx` は旅行編の選択と保存領域のロック、`GameApp.tsx` はゲーム画面と画面間の操作を担当する。`useGameSession.ts` が状態更新・保存・復元・削除時の競合確認をまとめ、`useTravelEffects.tsx` が成功した移動の演出を扱う。保存と別タブの保護の判定は画面から分けた関数（`src/app/save-recovery.ts`・`unsaved-progress.ts`・`save-deletion.ts`、`src/persistence/journey-lock.ts`）が持つ（[画面の保護を担う関数](10_DEVELOPMENT_CHECKS.md#画面の保護を担う関数)）。
+- `src/app/App.tsx` は旅行編の選択と保存領域のロック、`GameApp.tsx` はゲーム画面と画面間の操作を担当する。`useGameSession.ts` が状態更新・保存・復元・削除時の競合確認をまとめ（1回の操作の反映は `src/domain/player-action.ts` の `applyPlayerAction`。地図の行き先の完了と、クリアした都市からの自動の出発を同じ保存単位にする。ミラノの通しテストも同じ関数で操作する）、`useTravelEffects.tsx` が成功した移動の演出を扱う。保存と別タブの保護の判定は画面から分けた関数（`src/app/save-recovery.ts`・`unsaved-progress.ts`・`save-deletion.ts`、`src/persistence/journey-lock.ts`）が持つ（[画面の保護を担う関数](10_DEVELOPMENT_CHECKS.md#画面の保護を担う関数)）。
 - `src/domain/game.ts` はゲームの状態遷移を扱う。保存形式の定義は `game-state-schema.ts`、デートの条件判定は `date-rules.ts`、保存された進行の整合確認は `game-state-validation.ts` に分ける。既存の公開関数と型は `game.ts` から引き続き利用できる。
 - `src/domain/travel-destinations.ts` は行き先候補と待機時刻を計算する。帰宿候補と宿泊計画は `travel-game.ts` を画面表示と実際の操作で共用し、画面内に同じルールを重複実装しない。
 - `scripts/content-pipeline.ts` の `buildContent`（`content:build`）は、読み込み → 検証 → 書き出しの3段階で動く。
