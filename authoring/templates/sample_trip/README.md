@@ -91,6 +91,36 @@
 - それ以外のID（エピソード・対決・クイズ・問題・報酬・背景・画像・観察ポイント・デート・品物・交流）とストーリーのファイル名：接頭辞 `smp_` で始める。都市ごとに1本のストーリーは都市IDをファイル名にしてよい（`epilogues/mihon`）。
 - 地図のイベントのIDは、対応するエピソード・特殊戦・デートのIDと同じにする。
 
+会話（ストーリー）・クイズ・問題の名前は、すべての旅行編で「頭 ＋ 役割 ＋ 場所・話題」の形にします（[技術設計の「IDの付け方」](../../../docs/02_TECH_ARCHITECTURE.md#idの付け方) と同じ決まり）。頭は `<接頭辞>_<都市ID>` で、見本では `smp_mihon` です。
+
+| 種類 | ストーリーID（`stories/` の下の場所と同じ） | クイズID（ファイル名も同じ） | 見本の例 |
+| --- | --- | --- | --- |
+| 通常戦 | `battles/<頭>_main_<観光地>` | `<頭>_main_<観光地>_quiz` | `battles/smp_mihon_main_clock_tower`、`smp_mihon_main_clock_tower_quiz` |
+| 特殊戦B・C | `battles/<頭>_special_b_<観光地>`（Cは `special_c`） | `<頭>_special_b_<観光地>_quiz` | `battles/smp_mihon_special_b_market`、`smp_mihon_special_c_library_quiz` |
+| 特殊戦の反論の場面 | `battles/<特殊戦の名前>_rebuttal` | なし | （見本にはない） |
+| 都市フィナーレ | `battles/<頭>_finale` | `<頭>_finale_quiz` | `battles/smp_mihon_finale`、`smp_mihon_finale_quiz` |
+| 観光案内 | `tourism/<頭>_<観光地>_guide` | なし | `tourism/smp_mihon_clock_tower_guide` |
+| デート・恋愛の出来事 | `dates/<頭>_date_<行き先・出来事>` | なし | `dates/smp_mihon_date_tower_square` |
+| 道中交流 | `encounters/<頭>_<交流>`（くじの結果は `_won`・`_lost`・`_already`） | なし | `encounters/smp_mihon_bookmark_stall` |
+| 到着・エピローグ | `arrivals/<都市ID>`、`epilogues/<都市ID>` | なし | `epilogues/mihon` |
+| 英語ノートの解説 | `learning/<頭>_english`（編に1本だけなら `learning/<接頭辞>_english` でもよい。2本目からは `learning/<頭>_<話題>_english`） | なし | （見本にはない） |
+
+- 使う文字は英小文字・数字・`_` だけ。英語のレベル（`B1`）や連番（`_01`）は名前に入れない。番号で区別せず、違いを表す語を選ぶ。
+- 会話の名前の「観光地」は、観光地IDから都市名を除いた名前（`mihon_clock_tower` → `clock_tower`）。デートの「行き先・出来事」は、行き先IDから都市名を除いた名前（`mihon_tower_square` → `tower_square`）。2つのデートが同じ行き先を使うときや行き先がないときは、出来事を表す語にする。
+- 通常戦・特殊戦の会話の名前は、その対決の出来事（エピソード・地図のイベント）のIDと同じにする（`smp_mihon_main_clock_tower`、`smp_mihon_special_b_market`、`smp_mihon_special_c_library`）。
+- クイズのファイル名はクイズIDと同じにする（`quizzes/<クイズID>.json`、例のクイズは `quizzes/<クイズID>.example.json`）。違うと `content:build` が止まる。
+
+問題ID ＝ `<頭>_<観光地>_<要点>`。対決のクイズ・例のクイズ・道中交流のクイズに使う。
+
+- 問題IDの「観光地」は、もっと短くしてよい。観光地IDの中の続いた語を使う（例：`agra_fort` → `fort`、`taj_mahal` → `taj`、`city_palace` → `palace`）。1つのクイズの中では同じ名前を使う。都市フィナーレは `finale`。
+- 特殊戦B・Cの問題は、観光地のあとに `b`・`c` を付ける（例：`milano_last_supper_b_slow_revision`、`smp_mihon_market_b_q1`）。同じ観光地に対決が3つあっても分けられる。
+- 例のクイズの問題は、観光地のあとに `example` を付ける（例：`milano_last_supper_example_dry_technique`）。
+- 道中交流のクイズの問題も同じ形（例：`milano_galleria_bull_city`）。
+- 要点は短い英語（1〜3語。数字も使える。例：`gt_delhi_qutb_iron_pillar_fence` の `iron_pillar_fence`、`gt_delhi_humayun_1857_arrest` の `1857_arrest`）か、`q1`〜`q5`。
+- 問題IDは、すべての旅行編を通して重ならないようにする（本番のクイズと道中交流のクイズの問題は `content:build` が調べる）。問題IDの形そのものは検査しない。
+
+`npm run journey:new` で複製すると、接頭辞 `smp` と都市ID `mihon` が置き換わるので、複製した旅行編の名前もこの決まりに合います（例：`--prefix ky --city kyoto` なら `battles/ky_kyoto_main_clock_tower`、`quizzes/ky_kyoto_main_clock_tower_quiz.json`）。
+
 ## 新しい旅行編の元にする
 
 `npm run journey:new -- <旅行編ID> --name <旅行編の日本語名> --city <都市ID> --city-name <都市の日本語名> [--prefix <接頭辞>] [--with-optional]` で、この見本を `content/journeys/<旅行編ID>/` に複製します。旅行編ID `sample_trip`・接頭辞 `smp`・都市ID `mihon`（IDの一部・ファイル名・画像のフォルダ名を含む）を置き換え、準備中（`status: "preparing"`、都市は `productionStatus: "prototype"`、画像は `isPlaceholder: true`）にして、この `README.md` の代わりに置き換えるものの一覧 `CHECKLIST.md` を置きます。任意の部分は `--with-optional` を付けたときだけ複製します（外し方は上の「任意の部分」と同じで、`scripts/sample-journey.ts` が README のこの一覧から行います）。架空の文章・出典・画像が残っているうちは `npm run journey:readiness` が「見本の…が残っています」と示し、`npm run journey:release` は公開を止めます。手順全体は [新しい編を追加する手順](../../../docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順) を参照してください。

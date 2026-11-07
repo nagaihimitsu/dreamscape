@@ -42,7 +42,10 @@
   - 告白の解決方式 `activeDate.resolutionMode` の `legacy_fixed` を `fixed` に改名した（通常の恋愛イベントは `random_v1` のまま）。
   - データの項目名をそろえた（保存には入らないが、途中の場面の指紋に含まれる）：道中交流の金額 `costEuro` → `cost`、`completionMoneyEuro` → `completionMoney`（旅行編の通貨の整数単位。ユーロ専用の名前はなくなった）、背景 `backgroundAssetId` → `backgroundId`、都市の会話の初期背景 `storyBackgroundAssetId` → `storyBackgroundId`。
   - 都市の仮の初回クリア報酬ID `<都市ID>_legacy_episode_placeholder` を `<接頭辞>_<都市ID>_first_clear` に改名した（0 AP、報酬の規則なし）。
+  - 会話（ストーリー）・クイズ・問題の名前を [IDの付け方](02_TECH_ARCHITECTURE.md#idの付け方) にそろえた：ストーリー64本（ミラノ49本。`milano/` フォルダはなくなり、デートは `dates/`、エピローグは `epilogues/milano`。インド編は観光案内12本を観光地の名前に。見本3本）、クイズ13件（ミラノ10件、見本3件。ファイル名＝クイズID）、ミラノの問題33件。見本の編の対決・エピソード・地図の出来事・報酬のID9件も役割の語にそろえた。対決・デート・エピソードなど保存データに入るミラノ編とインド編のIDは変えていない。ストーリーとクイズのIDは途中の場面の指紋に含まれる（保存には直接入らない）。
+  - ミラノ編の使っていない道中交流 `galleria_cafe`・`galleria_gift`・`galleria_outing` を消した。品物「雄牛のしおり」（`galleria_souvenir`）を使う `brera_bookmark` も、その品物の入手先が `galleria_cafe` だけで出会えなくなるため、品物と一緒に消した。
 - IDの改名は v14 での一度だけとし、以後は変えない。
+- 英語ノート（`dreamscape.journey.<旅行編ID>.learning.v1`、ゲームセーブとは別の版 `schemaVersion: 1`）は版を上げない。改名・削除で無くなったバトルの記録は、読み込みを止めずにそのまま残して表示しない（新しく足したり書き換えたりはしない）。無くなった問題IDの印も残るが表示しない。
 
 ## GameState概念例
 ```

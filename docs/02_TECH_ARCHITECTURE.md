@@ -118,7 +118,38 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 
 - ストーリーIDは、その層の `stories/` からの相対パスから `.ink` を除いたもの（例：`content/journeys/milano/stories/dates/milano_date_cafe.ink` → `dates/milano_date_cafe`）。旅行編フォルダ名は含まない。複数の旅行編が `stories/battles/` のような同じフォルダ名を使えるため、ファイル名（または旅行編専用のサブフォルダ）でIDが重ならないようにする。
 - 都市・地点・観光地・発見・画像・背景・思い出・効果・デート・行き先・エピソード・報酬・対決・クイズ・問題・道中交流・品物・旅行編のIDは、すべての旅行編で共有する一つの名前空間にある。保存データもこれらのIDを記録するため、公開後は変更しない（例外として、セーブ版 v14 で一度だけ改名した。以後は変えない。[セーブの版](07_DATA_AND_TESTS.md#セーブの版)）。
-- 新しい旅行編では、`manifest.json` の `authoring.eventPrefix` と同じ接頭辞をIDとストーリーのファイル名に付けることを推奨する（インド編 `gt_`、ウズベキスタン編 `uz_`、ルアンパパーン編 `lpb_`）。地点ID（観光地・デートの行き先・移動の地点）は都市IDを接頭辞にする（例：`delhi_red_fort`）。都市ごとに1本のストーリーは都市IDをファイル名にしてよい（例：`arrivals/delhi`・`epilogues/delhi`）。英語ノートの話題ID（`learning/details.json` の `topics[].id`）も全旅行編で重ならないよう同じ接頭辞を付ける（例：`gt_which_subject`）。ミラノ編は作成時からの `milano_`・`sound_` などをそのまま使う。`authoring.eventPrefix` を持つ旅行編でこの決まりに合わないIDは、`content:build` が警告する（ミラノ編は接頭辞を持たないため対象外。既存の例外は `UNPREFIXED_ID_EXCEPTIONS`）。対象は、カタログの項目のID（対決・道中交流・品物・人物・エピソード・報酬・デート・行き先・効果・画像・観光地・発見）、背景・思い出、英語ノートの話題、ストーリー、クイズと問題、都市の `firstClearReward.rewardSourceId`、移動の地点とイベント。
+- 新しい旅行編では、`manifest.json` の `authoring.eventPrefix` と同じ接頭辞をIDとストーリーのファイル名に付けることを推奨する（インド編 `gt_`、ウズベキスタン編 `uz_`、ルアンパパーン編 `lpb_`）。地点ID（観光地・デートの行き先・移動の地点）は都市IDを接頭辞にする（例：`delhi_red_fort`）。都市ごとに1本のストーリーは都市IDをファイル名にしてよい（例：`arrivals/delhi`・`epilogues/delhi`）。英語ノートの話題ID（`learning/details.json` の `topics[].id`）も全旅行編で重ならないよう同じ接頭辞を付ける（例：`gt_which_subject`）。ミラノ編は接頭辞を持たない。ストーリー・クイズ・問題は下の「IDの付け方」に合わせて頭を `milano` にした（セーブ版 v14）。対決・デート・エピソード・報酬などのIDは作成時からの名前（`milano_duomo_01` など）のままで、効果・思い出・英語ノートの話題・背景の一部には `sound_` が残る（Inkのタグと保存データに入る名前のため）。`authoring.eventPrefix` を持つ旅行編でこの決まりに合わないIDは、`content:build` が警告する（ミラノ編は接頭辞を持たないため対象外。既存の例外は `UNPREFIXED_ID_EXCEPTIONS`）。対象は、カタログの項目のID（対決・道中交流・品物・人物・エピソード・報酬・デート・行き先・効果・画像・観光地・発見）、背景・思い出、英語ノートの話題、ストーリー、クイズと問題、都市の `firstClearReward.rewardSourceId`、移動の地点とイベント。
+
+### IDの付け方
+
+会話（ストーリー）・クイズ・問題の名前は、すべての旅行編で「頭 ＋ 役割 ＋ 場所・話題」の形にする。頭は `<接頭辞>_<都市ID>`（例：`gt_delhi`、`smp_mihon`）。接頭辞を持たないミラノ編は、都市ID `milano` を頭にする。同じ文を見本の編の [README](../authoring/templates/sample_trip/README.md#idの付け方) にも置いている。
+
+| 種類 | ストーリーID（`stories/` の下の場所と同じ） | クイズID（ファイル名も同じ） |
+| --- | --- | --- |
+| 通常戦 | `battles/<頭>_main_<観光地>` | `<頭>_main_<観光地>_quiz` |
+| 特殊戦B・C | `battles/<頭>_special_b_<観光地>`（Cは `special_c`） | `<頭>_special_b_<観光地>_quiz` |
+| 特殊戦の反論の場面 | `battles/<特殊戦の名前>_rebuttal` | なし |
+| 都市フィナーレ | `battles/<頭>_finale` | `<頭>_finale_quiz` |
+| 観光案内 | `tourism/<頭>_<観光地>_guide` | なし |
+| デート・恋愛の出来事 | `dates/<頭>_date_<行き先・出来事>` | なし |
+| 道中交流 | `encounters/<頭>_<交流>`（くじの結果は `_won`・`_lost`・`_already`） | なし |
+| 到着・エピローグ | `arrivals/<都市ID>`、`epilogues/<都市ID>` | なし |
+| 英語ノートの解説 | `learning/<頭>_english`（編に1本だけなら `learning/<接頭辞>_english` でもよい。2本目からは `learning/<頭>_<話題>_english`） | なし |
+
+- 使う文字は英小文字・数字・`_` だけ。英語のレベル（`B1`）や連番（`_01`）は名前に入れない。番号で区別せず、違いを表す語を選ぶ。
+- 会話の名前の「観光地」は、観光地IDから都市名を除いた名前（`delhi_red_fort` → `red_fort`）。ミラノは対決IDで使っている短い名前（`duomo`、`galleria`、`last_supper`、`castello`、`la_scala`、`brera`）。デートの「行き先・出来事」は、行き先IDから都市名を除いた名前。2つのデートが同じ行き先を使うときや行き先がないときは、出来事を表す語（`milano_date_confession`）。
+- 通常戦の会話の名前は、その観光の出来事・エピソードのIDと同じにする（`journey:scaffold` も同じ名前を作る）。
+- クイズのファイル名はクイズIDと同じにする（`quizzes/<クイズID>.json`、例のクイズは `quizzes/<クイズID>.example.json`）。違うと `content:build` が止まる。
+
+問題ID ＝ `<頭>_<観光地>_<要点>`。対決のクイズ・例のクイズ・道中交流のクイズに使う。
+
+- 問題IDの「観光地」は、もっと短くしてよい。観光地IDの中の続いた語を使う（例：`agra_fort` → `fort`、`taj_mahal` → `taj`、`city_palace` → `palace`）。1つのクイズの中では同じ名前を使う。都市フィナーレは `finale`。
+- 特殊戦B・Cの問題は、観光地のあとに `b`・`c` を付ける（例：`milano_last_supper_b_slow_revision`、`smp_mihon_market_b_q1`）。同じ観光地に対決が3つあっても分けられる。
+- 例のクイズの問題は、観光地のあとに `example` を付ける（例：`milano_last_supper_example_dry_technique`）。
+- 道中交流のクイズの問題も同じ形（例：`milano_galleria_bull_city`）。
+- 要点は短い英語（1〜3語。数字も使える。例：`gt_delhi_qutb_iron_pillar_fence` の `iron_pillar_fence`、`gt_delhi_humayun_1857_arrest` の `1857_arrest`）か、`q1`〜`q5`。
+- 問題IDは、すべての旅行編を通して重ならないようにする（本番のクイズと道中交流のクイズの問題は `content:build` が調べる）。問題IDの形そのものは検査しない。
+- 対決・エピソード・地図の出来事・報酬のIDも、同じ役割の語をそろえる（見本の編：`smp_mihon_main_clock_tower`、`smp_mihon_special_b_market`、`smp_mihon_special_c_library`）。ミラノ編の対決・デート・エピソードなどのIDは保存データに入るため、この決まりに合わせて変えていない（上の項目）。
 
 ### 予約された名前
 
