@@ -1,7 +1,7 @@
 # 07 データ契約・検証・テスト
 
 ## 必要な安定ID
-`chapterId`、`dateId`、`storyId`、`rewardSourceId`、`memoryId`、`quizId`、`factId`、`choiceEffectId` は文字列で永続的に一意。画面に出す日本語名は後から変えられるがIDは変えない。
+`chapterId`、`dateId`、`storyId`、`rewardSourceId`、`memoryId`、`quizId`、`factId`、`choiceEffectId` は文字列で永続的に一意。画面に出す日本語名は後から変えられるがIDは変えない。例外として、セーブ版 v14 で一度だけIDを名前の決まりにそろえて改名した（[セーブの版](#セーブの版)）。以後は変えない。
 
 ## 旅行編フォルダのデータ契約
 - 旅行編は `content/journeys/<journeyId>/manifest.json` で登録し、都市・移動・Ink・クイズ・カタログを `content/` 直下の共通データと同じ相対パスで置く。統合規則・生成物・予約された名前・追加手順は [技術設計](02_TECH_ARCHITECTURE.md#統合の規則) を参照する。
@@ -32,6 +32,17 @@
 - 選択前に保存済みチケットと直前の関係から確率・変化量を確定し、その結果をInkへ渡す。結果と効果・`finishDate` の履歴・告白結果はそれぞれ一度だけ適用する。同一バージョン内の途中デートは保存時の方式で継続する。親しさ・信頼・恋愛の意識には正・ゼロ・負の効果があり、途中で失敗しても重複適用しない。
 - 未完了状態のまま再開するなら`startDate`を再度呼ばない。開始をリトライしても重複減算しない。
 - APは0以上、設定の上限以下で常に整合。
+
+## セーブの版
+- ゲームセーブの形式は1つの番号（`schemaVersion`、`src/domain/game-state-schema.ts` の `GAME_STATE_VERSION`）で、全旅行編に共通。現在は **v14**。保存の形が変わるときだけ番号を上げ、移行処理は作らない。
+- v13 以前のセーブは「旧版」として読み込まず、元のデータを変えずに残して「保存データの形式はバージョン13です。…元のデータは残っています。」と案内する（破損との区別はつかないため、その旨も伝える）。v14 より新しい番号は「新しいバージョン」と案内し、どちらも勝手に上書き・削除しない。新しく始めるときは元のデータを退避してから始める。
+- 同じ v14 の中では、有効なセーブを保存・再開できる状態を保つ。公開後に保存の形を変えるときは番号を上げる。
+- v14 で変えたこと：
+  - 章の記録 `completedChapters` を保存しない。デートの章（`chapterId`・`requiredCompletedChapters`、都市IDと同じ）は、その都市のエピソードを1つでも終えた（`completedEpisodeIds`）ときに完了とみなす。
+  - 告白の解決方式 `activeDate.resolutionMode` の `legacy_fixed` を `fixed` に改名した（通常の恋愛イベントは `random_v1` のまま）。
+  - データの項目名をそろえた（保存には入らないが、途中の場面の指紋に含まれる）：道中交流の金額 `costEuro` → `cost`、`completionMoneyEuro` → `completionMoney`（旅行編の通貨の整数単位。ユーロ専用の名前はなくなった）、背景 `backgroundAssetId` → `backgroundId`、都市の会話の初期背景 `storyBackgroundAssetId` → `storyBackgroundId`。
+  - 都市の仮の初回クリア報酬ID `<都市ID>_legacy_episode_placeholder` を `<接頭辞>_<都市ID>_first_clear` に改名した（0 AP、報酬の規則なし）。
+- IDの改名は v14 での一度だけとし、以後は変えない。
 
 ## GameState概念例
 ```
