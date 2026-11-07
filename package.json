@@ -28,6 +28,7 @@
     "verify": "npm run content:build -- --no-cache --with-sample && npm run test --ignore-scripts && npm run build",
     "test:e2e": "playwright test",
     "test:e2e:prod": "playwright test -c playwright.prod.config.ts",
+    "test:e2e:sample": "playwright test -c playwright.sample.config.ts",
     "screens": "tsx scripts/dev/screens.ts",
     "content:inspect": "tsx scripts/inspect-content.ts",
     "content:compat": "npm run content:build && vitest run src/persistence",

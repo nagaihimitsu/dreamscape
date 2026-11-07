@@ -40,21 +40,6 @@ function specialBattles(page: Page): Promise<Partial<Record<"contradiction" | "c
   }, devModules);
 }
 
-/** After the claim, the optional rebuttal lines and the cut-in are presentation only (never saved). */
-async function passReasoningIntro(page: Page) {
-  const notebook = page.getByTestId("reasoning-notebook");
-  const line = page.getByTestId("dialogue-text");
-  const rebuttal = page.getByTestId("reasoning-rebuttal-advance");
-  const skip = page.getByTestId("reasoning-cutin-skip");
-  for (let step = 0; step < 50 && !(await notebook.isVisible()); step++) {
-    await expect(notebook.or(skip).or(rebuttal).or(line).first()).toBeVisible();
-    if (await skip.isVisible()) await skip.click();
-    else if (await rebuttal.isVisible()) await rebuttal.click();
-    else if (await line.isVisible()) await line.click();
-  }
-  await expect(notebook).toBeVisible();
-}
-
 for (const [kind, label] of [["contradiction", "B（矛盾追及）"], ["connection", "C（証拠連結）"]] as const) {
   // docs/07 「将来のテスト」: B/C特殊戦で証拠メモを開閉しても回答状態保持. Special battles lead to
   // the city finale, so an evidence screen that does not accept the right evidence stops every player.
@@ -63,15 +48,8 @@ for (const [kind, label] of [["contradiction", "B（矛盾追及）"], ["connect
     expect(special, `a ${kind} special battle that Debug lists`).toBeDefined();
     await ops.openDebugScene(page, settings({ cityId: special!.cityId, scene: "battle", id: special!.battleId }));
     await playUntil(page, (state) => state.activeBattle?.phase === "reasoning", { source: debugGame });
-    await passReasoningIntro(page);
-
-    for (const clueId of special!.correctClueIds) {
-      await page.getByTestId("reasoning-notebook").click();
-      await page.getByTestId("clue-picker").selectOption(clueId);
-      await page.getByTestId(`select-evidence-${clueId}`).click();
-      await expect(page.getByTestId(`select-evidence-${clueId}`)).toContainText("選択中");
-      await page.getByTestId("case-return").click();
-    }
+    await ops.passReasoningIntro(page);
+    await ops.chooseEvidence(page, special!.correctClueIds);
     const count = special!.correctClueIds.length;
     await expect(page.getByTestId("selected-evidence")).toContainText(`選んだ証拠 ${count} / ${count}枚`);
     const chosen = (await debugGame(page))!.activeBattle!.reasoning!.selectedClueIds;

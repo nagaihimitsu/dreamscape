@@ -4,12 +4,13 @@ import { describe, expect, it } from "vitest";
 
 // The E2E rules of docs/10 「E2Eの段」 that a reader of the specs could break without
 // noticing: a test without a tier runs in no CI job, the real-flow specs must not take
-// shortcuts, and tests that also run against the production build cannot use the
-// development server's modules.
+// shortcuts, tests that also run against the production build cannot use the
+// development server's modules, and the sample journey's playthrough runs only on its
+// own server, the one built with the sample.
 const folder = path.join(import.meta.dirname, "../tests/e2e");
 const specs = readdirSync(folder).filter((name) => name.endsWith(".spec.ts")).sort();
 const source = (name: string) => readFileSync(path.join(folder, name), "utf8");
-const tiers = ["gate", "debug", "prod", "smoke", "explore"];
+const tiers = ["gate", "debug", "prod", "sample", "smoke", "explore"];
 
 /** Each `test(` call of a spec with the tiers named in its details argument. */
 function specTests(text: string): { title: string; tiers: string[] }[] {
@@ -26,7 +27,7 @@ const shortcuts = new RegExp(`${devServerOnly.source}|\\?debug`, "u");
 
 describe("E2E specs", () => {
   it("are found", () => {
-    expect(specs).toEqual(expect.arrayContaining(["boot.spec.ts", "play.spec.ts", "save-load.spec.ts"]));
+    expect(specs).toEqual(expect.arrayContaining(["boot.spec.ts", "play.spec.ts", "save-load.spec.ts", "sample-journey.spec.ts"]));
   });
 
   it.each(specs)("%s: every test names at least one known tier, so a CI job runs it", (name) => {
@@ -39,7 +40,7 @@ describe("E2E specs", () => {
   });
 
   it("keep the real-flow specs free of Debug and state shortcuts (lane 1)", () => {
-    for (const name of ["play.spec.ts", "save-load.spec.ts"])
+    for (const name of ["play.spec.ts", "save-load.spec.ts", "sample-journey.spec.ts"])
       expect(source(name), `${name} must play from the title screen only`).not.toMatch(shortcuts);
   });
 
@@ -52,6 +53,11 @@ describe("E2E specs", () => {
     for (const name of specs) for (const test of specTests(source(name)))
       if (test.tiers.includes("debug"))
         expect(test.tiers.filter((tier) => tier === "gate" || tier === "prod"), `「${test.title}」`).toEqual([]);
+  });
+
+  it("run the sample journey's playthrough only in the sample tier (its server is the only one with the sample)", () => {
+    for (const test of specTests(source("sample-journey.spec.ts")))
+      expect(test.tiers, `「${test.title}」`).toEqual(["sample"]);
   });
 
   it("reads tiers of plain, template and multi-line test calls", () => {

@@ -3,8 +3,10 @@ import { allStorage, expect, journeyCatalog, test, tier } from "./helpers";
 
 // AGENTS.md 「データ・セーブ・品質」, docs/07 acceptance 1 and 12: every registered
 // journey (from the generated catalog of this checkout, never a fixed list) opens
-// its start screen, and opening the title writes no save.
-test("the title screen opens every registered journey without writing a save", { tag: [tier.gate, tier.prod, tier.smoke] }, async ({ page }) => {
+// its start screen, and opening the title writes no save. In the sample tier the list
+// also has the sample journey, and in CI a journey just made by `npm run journey:new`
+// (e2e.yml), which must open as a preparing journey.
+test("the title screen opens every registered journey without writing a save", { tag: [tier.gate, tier.prod, tier.sample, tier.smoke] }, async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveTitle(/Dreamscape/);
   const catalog = journeyCatalog();

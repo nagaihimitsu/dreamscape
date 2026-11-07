@@ -1,6 +1,7 @@
 import { test as base, expect, type Locator, type Page, type TestInfo } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import type { JourneyCatalog } from "../../src/content/journey-catalog";
+import type { QuizDefinition } from "../../src/content/schemas";
 import type { GameState } from "../../src/domain/game";
 import { DEBUG_HOOK_NAME, type DreamscapeDebugHook } from "../../src/dev/debug-hook";
 import { debugQueryString, settingsQuery, type DebugDataMode, type DebugSettings } from "../../src/dev/debug-query";
@@ -15,9 +16,10 @@ export type { Page };
  * - gate: every pull request and push to main, on the development server.
  * - debug: Debug as a scene launchpad (development server only; never counted as a save/resume check).
  * - prod: also against the production build (`vite preview` of `npm run build`).
+ * - sample: the sample journey's own development server, built with the sample (playwright.sample.config.ts).
  * - smoke: the WebKit (iPhone) weekly run; explore: the weekly exploration runs (both planned, not a gate).
  */
-export const tier = { gate: "@gate", debug: "@debug", prod: "@prod", smoke: "@smoke", explore: "@explore" } as const;
+export const tier = { gate: "@gate", debug: "@debug", prod: "@prod", sample: "@sample", smoke: "@smoke", explore: "@explore" } as const;
 
 /** Keys the game writes (saves, backups, English notes, presentation settings). */
 const gameKeyPrefix = "dreamscape.";
@@ -105,11 +107,15 @@ export function bothStorages(page: Page): Promise<{ local: Record<string, string
   }));
 }
 
-/** The generated catalogs of the checkout under test, as the dev server or the build wrote them. */
-export function generated<T>(file: string): T {
-  return JSON.parse(readFileSync(new URL(`../../src/content/generated/content/${file}`, import.meta.url), "utf8")) as T;
+/** A file of the generated content of the checkout under test, as the dev server or the build wrote it. */
+function generatedFile<T>(file: string): T {
+  return JSON.parse(readFileSync(new URL(`../../src/content/generated/${file}`, import.meta.url), "utf8")) as T;
 }
+/** The generated catalogs (src/content/generated/content/). */
+export const generated = <T>(file: string): T => generatedFile<T>(`content/${file}`);
 export const journeyCatalog = () => generated<JourneyCatalog>("journeys/catalog.json");
+/** Every generated quiz by its ID. */
+export const quizCatalog = () => generatedFile<Record<string, QuizDefinition>>("quizzes.json");
 
 /** Game modules the development server serves to tests running code in the page (never the production build). */
 export const devModules = {
@@ -210,6 +216,30 @@ export const ops = {
   async backToDebugSettings(page: Page) {
     await page.getByRole("button", { name: "設定へ戻る" }).click();
     await expect(page.getByTestId("debug-panel")).toBeVisible();
+  },
+  /** Special battle B/C: after the claim, the optional rebuttal lines and the cut-in (presentation only, never saved). */
+  async passReasoningIntro(page: Page) {
+    const notebook = page.getByTestId("reasoning-notebook");
+    const line = page.getByTestId("dialogue-text");
+    const rebuttal = page.getByTestId("reasoning-rebuttal-advance");
+    const skip = page.getByTestId("reasoning-cutin-skip");
+    for (let step = 0; step < 50 && !(await notebook.isVisible()); step++) {
+      await expect(notebook.or(skip).or(rebuttal).or(line).first()).toBeVisible();
+      if (await skip.isVisible()) await skip.click();
+      else if (await rebuttal.isVisible()) await rebuttal.click();
+      else if (await line.isVisible()) await line.click();
+    }
+    await expect(notebook).toBeVisible();
+  },
+  /** Special battle B/C: choose each clue as evidence in the clue book, then return to the battle. */
+  async chooseEvidence(page: Page, clueIds: readonly string[]) {
+    for (const clueId of clueIds) {
+      await page.getByTestId("reasoning-notebook").click();
+      await page.getByTestId("clue-picker").selectOption(clueId);
+      await page.getByTestId(`select-evidence-${clueId}`).click();
+      await expect(page.getByTestId(`select-evidence-${clueId}`)).toContainText("選択中");
+      await page.getByTestId("case-return").click();
+    }
   },
 };
 
