@@ -40,6 +40,8 @@ import { EnglishReview } from "../features/learning/EnglishReview";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import { CityProgressBadge, CityRecords } from "../features/journey/CityProgress";
 import { TravelActions } from "../features/journey/TravelActions";
+import { TitleNameFields } from "../features/journey/TitleNameFields";
+import { nameOrDefault } from "../domain/player-names";
 import { useTravelEffects } from "./useTravelEffects";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
 import { encounters } from "../content/encounters";
@@ -157,12 +159,9 @@ export function GameApp({
   const [confirmLoad, setConfirmLoad] = useState(false);
   const [showRomanceEnding, setShowRomanceEnding] = useState(false);
   const [placeFocusRequest, setPlaceFocusRequest] = useState(0);
-  const [player, setPlayer] = useState(
-    game?.playerName ?? balance.defaultPlayerName,
-  );
-  const [heroine, setHeroine] = useState(
-    game?.heroineName ?? balance.defaultHeroineName,
-  );
+  // The title starts with empty fields (the default names are their placeholders); 設定 fills in the current names.
+  const [player, setPlayer] = useState(game?.playerName ?? "");
+  const [heroine, setHeroine] = useState(game?.heroineName ?? "");
 
   function returnToPlace(landmarkId: string | null | undefined) {
     setSelectedLandmarkId(landmarkId ?? null);
@@ -170,7 +169,7 @@ export function GameApp({
   }
   function begin(event: FormEvent) {
     event.preventDefault();
-    session.begin(player, heroine, journeyId);
+    session.begin(nameOrDefault(player, balance.defaultPlayerName), nameOrDefault(heroine, balance.defaultHeroineName), journeyId);
   }
   function requestDelete() {
     const result = session.prepareDelete();
@@ -427,11 +426,11 @@ export function GameApp({
               )}
               {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} restoreFocus={selectorFocus?.restoreFocus} />}
               {titleActions.start !== "hidden" && <form onSubmit={begin} className="name-form">
-                {nameForm}
+                <TitleNameFields player={player} heroine={heroine} onPlayer={setPlayer} onHeroine={setHeroine} />
                 <button
                   className="primary"
                   data-testid="title-start"
-                  disabled={!player.trim() || !heroine.trim() || titleActions.start === "disabled"}
+                  disabled={titleActions.start === "disabled"}
                 >
                   {invalid
                     ? displaySettings.value.autoSave ? "元のデータを退避して新しく始める" : "元のデータを残して新しく始める"

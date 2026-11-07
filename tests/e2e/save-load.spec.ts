@@ -1,12 +1,15 @@
 import { DOUBLE_TAP_WINDOW_MS } from "../../src/components/double-tap";
-import { allStorage, expect, journeyCatalog, learningKey, ops, placeGuideSave, playUntil, presentationKey, readSave, saveKey, test, tier } from "./helpers";
+import { allStorage, expect, generated, journeyCatalog, learningKey, ops, placeGuideSave, playUntil, presentationKey, readSave, saveKey, test, tier } from "./helpers";
 
 // Lane 1 (docs/10): saving and resuming are only ever checked through the real flow.
 
 // AGENTS.md 「同一バージョン内の保存・再開を守る」「セーブ再開で二重消費しない」; docs/07 acceptance 2, 5, 6 and 「英語学習データと保存の方針」.
 test("autosaved progress, a battle question, the English note and the text speed are restored after a reload", { tag: tier.gate }, async ({ page }) => {
   test.setTimeout(120_000);
-  await ops.startJourney(page);
+  // Name fields left empty start with the default names, their placeholders (nameOrDefault, src/domain/player-names.ts).
+  await ops.startJourney(page, "milano", ["", ""]);
+  const balance = generated<{ defaultPlayerName: string; defaultHeroineName: string }>("romance/balance.json");
+  expect(await readSave(page)).toMatchObject({ playerName: balance.defaultPlayerName, heroineName: balance.defaultHeroineName });
   await ops.goTo(page, "p_duomo");
   await ops.skipGuideToBattle(page);
   const beforeBattle = await readSave(page);

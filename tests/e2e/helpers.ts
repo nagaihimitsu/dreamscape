@@ -196,7 +196,7 @@ export const ops = {
   async chooseJourney(page: Page, journeyId: string) {
     await page.getByLabel("旅行編").selectOption(journeyId);
   },
-  /** Title screen: the player's and the heroine's names. */
+  /** Title screen: the player's and the heroine's names (an empty name leaves its field empty: the journey starts with the default name shown as its placeholder). */
   async fillNames(page: Page, names: readonly [string, string] = ["航", "澪"]) {
     await page.getByLabel("主人公の名前").fill(names[0]);
     await page.getByLabel("ヒロインの名前").fill(names[1]);

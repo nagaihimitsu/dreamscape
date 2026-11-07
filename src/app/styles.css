@@ -348,6 +348,15 @@ h3 {
 .name-form .primary {
   margin-top: 7px;
 }
+/* The default names shown as placeholders: lighter than a typed name, still readable (about 4.6:1). */
+.name-form input::placeholder {
+  color: #70756a;
+  opacity: 1;
+}
+.name-form .name-defaults {
+  grid-column: 1 / -1;
+  margin: -8px 0 0;
+}
 .fine-print {
   font-size: 11px;
   color: #70756a;
