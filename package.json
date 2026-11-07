@@ -33,7 +33,7 @@
     "test:e2e:explore": "playwright test -c playwright.explore.config.ts",
     "test:e2e:webkit": "playwright test -c playwright.webkit.config.ts",
     "pretest:walk": "npm run content:build -- --with-sample",
-    "test:walk": "vitest run tests/explore/journey-walk.test.ts",
+    "test:walk": "vitest run --silent=false tests/explore/journey-walk.test.ts",
     "screens": "tsx scripts/dev/screens.ts",
     "content:inspect": "tsx scripts/inspect-content.ts",
     "journey:new": "tsx scripts/journey-new-cli.ts",

@@ -7,9 +7,13 @@
 //   rewards whose IDs are newly recorded (each ID once) minus the AP of a date started in that step,
 //   every offered action changes the state, and the save → load round trip gives the same state;
 // - liveness: before the end of the journey there is always something to do (zero actions = stuck).
-// A failure names the seed, the step and the last actions; rerun it with DREAMSCAPE_WALK_SEEDS.
-// The walk starts at the title of a journey or at the start of one of its later cities, and starts
-// again at the end of the journey or after RESTART_STEPS steps.
+// A failure names the seed, the step and the last actions; rerun it with DREAMSCAPE_WALK_SEEDS and
+// `npm run test:walk` (it builds the content with the sample journey first: which journeys the content
+// holds changes the walk).
+// The starts are every journey's title and the start of each of its later cities; run r of seed s
+// begins at start (s + r) mod their number, so the seeds begin in different places and the last
+// cities of multi-city journeys are walked too. A run ends at the end of the journey (8 times out of
+// 10; otherwise it stays for the dates still open) or after RESTART_STEPS steps.
 // Which content the walks reached is printed as a summary, never asserted: it shows content that
 // normal play cannot reach (e.g. most Milano place encounters, ideas2 [WP06a]) without failing.
 // PR/verify: the fixed seeds below. Weekly: DREAMSCAPE_WALK_SEEDS (comma-separated) and
@@ -156,16 +160,14 @@ function walk(seed: number, total: number) {
     throw new Error([
       `${message}`, `seed ${seed}, step ${step}, start「${start!.label}」, ${since} steps after the start`,
       `last actions (oldest first):`, ...trace.map((line) => `  ${line}`),
-      `rerun: DREAMSCAPE_WALK_SEEDS=${seed} DREAMSCAPE_WALK_STEPS=${total} npx vitest run tests/explore/journey-walk.test.ts`,
+      `journeys walked: ${playable.map((journey) => journey.id).join(", ")}`,
+      `rerun: DREAMSCAPE_WALK_SEEDS=${seed} DREAMSCAPE_WALK_STEPS=${total} npm run test:walk (builds the content with the sample journey first)`,
     ].join("\n"));
   };
   for (let step = 0; step < total; step++) {
     if (!state || since >= RESTART_STEPS) {
-      // The journeys take turns (seed by seed, run by run), then one of the journey's starts.
-      const journeyId = playable[(seed + runs++) % playable.length].id;
-      // A seed's first run of each journey starts at its title, later runs anywhere.
-      const own = starts.filter((item) => item.journeyId === journeyId);
-      start = runs <= playable.length ? own[0] : own[Math.floor(next() * own.length)];
+      // The starts take turns, seed by seed and run by run.
+      start = starts[(((seed + runs++) % starts.length) + starts.length) % starts.length];
       state = startState(start);
       memory.clear();
       since = 0;
