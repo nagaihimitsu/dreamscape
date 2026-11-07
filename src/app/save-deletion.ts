@@ -1,16 +1,12 @@
-import type { GameState } from "../domain/game";
 import { LEARNING_KEY, SAVE_KEY, loadGame, sameGameState, type LoadResult, type StorageLike } from "../persistence";
+import type { SaveBaseline } from "./save-recovery";
 
 export type DeleteSnapshot = { game: string | null; learning: string | null };
 export type DeleteRequest = { snapshot?: DeleteSnapshot; closeSettings: boolean; notice?: string };
 
 /** What this tab knows about the save it shows. */
-export type DeleteSession = {
+export type DeleteSession = SaveBaseline & {
   hasGame: boolean;
-  /** Last save this tab wrote or loaded; null when the current game was never saved. */
-  savedGame: GameState | null;
-  /** Unreadable original kept by an unsaved start until an explicit save backs it up. */
-  protectedOriginal: string | null;
   /** Result of loading the slot when the page opened. */
   loaded: LoadResult;
 };

@@ -25,6 +25,7 @@ import {
   startDate,
 } from "../domain/game";
 import { useGameSession } from "./useGameSession";
+import { leaveStep } from "./unsaved-progress";
 import type { DeleteSnapshot } from "./save-deletion";
 import { CanalScene } from "../components/CanalScene";
 import { HeldItems } from "../components/HeldItems";
@@ -127,13 +128,12 @@ export function GameApp({
     endSelectorFocus();
   }, [restoreSelectorFocus, endSelectorFocus]);
   function requestJourneySwitch(id: string) {
-    if (id === journeyId || !onSwitchJourney) return;
-    if (session.hasUnsavedProgress()) {
+    if (!onSwitchJourney) return;
+    const step = leaveStep({ way: "switch_journey", from: journeyId, to: id }, session.hasUnsavedProgress());
+    if (step === "ask") {
       setSettings(false);
       setSwitchJourneyTo(id);
-      return;
-    }
-    onSwitchJourney(id);
+    } else if (step === "leave") onSwitchJourney(id);
   }
   const [recordsOpen, setRecordsOpen] = useState(false);
   const [sceneEpoch, setSceneEpoch] = useState(0);
@@ -164,7 +164,7 @@ export function GameApp({
     if (result.snapshot) setDeleteSnapshot(result.snapshot);
   }
   function reload() {
-    if (session.hasUnsavedProgress()) {
+    if (leaveStep({ way: "load_save" }, session.hasUnsavedProgress()) === "ask") {
       setConfirmLoad(true);
       return;
     }
