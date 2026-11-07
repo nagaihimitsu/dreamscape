@@ -191,7 +191,7 @@ export function BattleScreen({
   }, [active.phase, active.roundIndex, animatedAnswer, answerKey, reduceMotion]);
   const frame = rebuttal?.step.frame ?? active.frame;
   const isDialogue = active.phase === "dialogue" || !!rebuttal;
-  const backgroundId = frame?.background ?? battle.backgroundAssetId;
+  const backgroundId = frame?.background ?? battle.backgroundId;
   const landmark = landmarks.find((item) => item.id === battle.landmarkId);
   // Keep the same registered location photograph across dialogue, questions
   // and results. A city-wide finale has no landmark and keeps its own scene.

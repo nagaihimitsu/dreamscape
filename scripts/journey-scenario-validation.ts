@@ -88,7 +88,7 @@ export async function validateJourneyScenario(root: string, journeyId: string, d
   for (const city of requirements) {
     const travel = input.cities.find((item) => item.cityId === city.cityId)!;
     const context: TagContext = { effectIds: [], emotionIds: Object.keys(presentation.emotions),
-      backgroundIds: [...new Set(travel.places.map((place) => place.backgroundAssetId))] };
+      backgroundIds: [...new Set(travel.places.map((place) => place.backgroundId))] };
     const ownLandmarks = fragments.landmarks.filter((landmark) => landmark.cityId === city.cityId);
     const ownClues = fragments.clues.filter((clue) => ownLandmarks.some((landmark) => landmark.id === clue.landmarkId));
     const ownAssets = tourism.assets.filter((asset) => ownLandmarks.some((landmark) => landmark.imageAssetId === asset.id));

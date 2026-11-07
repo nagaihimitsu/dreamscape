@@ -8,7 +8,7 @@
       "nameEn": "Piazza del Duomo",
       "latitude": 45.46389,
       "longitude": 9.19066,
-      "backgroundAssetId": "milano_duomo",
+      "backgroundId": "milano_duomo",
       "sources": [
         {
           "publisher": "Mapcarta / 地点別情報源",
@@ -33,7 +33,7 @@
       "nameEn": "Galleria Vittorio Emanuele II",
       "latitude": 45.46564,
       "longitude": 9.19001,
-      "backgroundAssetId": "milano_galleria",
+      "backgroundId": "milano_galleria",
       "sources": [
         {
           "publisher": "Mapcarta / 地点別情報源",
@@ -58,7 +58,7 @@
       "nameEn": "Last Supper Museum",
       "latitude": 45.46621,
       "longitude": 9.17066,
-      "backgroundAssetId": "milano_refectory",
+      "backgroundId": "milano_refectory",
       "sources": [
         {
           "publisher": "Mapcarta / 地点別情報源",
@@ -80,7 +80,7 @@
       "nameEn": "Sforza Castle, Filarete Gate",
       "latitude": 45.46968,
       "longitude": 9.18035,
-      "backgroundAssetId": "milano_castello",
+      "backgroundId": "milano_castello",
       "sources": [
         {
           "publisher": "Mapcarta / 地点別情報源",
@@ -102,7 +102,7 @@
       "nameEn": "Piazza della Scala",
       "latitude": 45.4671,
       "longitude": 9.18973,
-      "backgroundAssetId": "milano_la_scala_date",
+      "backgroundId": "milano_la_scala_date",
       "sources": [
         {
           "publisher": "Mapcarta / 地点別情報源",
@@ -127,7 +127,7 @@
       "nameEn": "Brera Picture Gallery",
       "latitude": 45.47224,
       "longitude": 9.18841,
-      "backgroundAssetId": "milano_brera_date",
+      "backgroundId": "milano_brera_date",
       "sources": [
         {
           "publisher": "Mapcarta / 地点別情報源",
@@ -152,7 +152,7 @@
       "nameEn": "Scodellino Bridge, Darsena",
       "latitude": 45.45235,
       "longitude": 9.17701,
-      "backgroundAssetId": "milano_darsena_finale",
+      "backgroundId": "milano_darsena_finale",
       "sources": [
         {
           "publisher": "Mapcarta / 地点別情報源",
@@ -171,7 +171,7 @@
       "nameEn": "Vicolo dei Lavandai",
       "latitude": 45.4522736,
       "longitude": 9.1746997,
-      "backgroundAssetId": "milano_navigli_date",
+      "backgroundId": "milano_navigli_date",
       "sources": [
         {
           "publisher": "Mapcarta / 地点別情報源",
@@ -194,7 +194,7 @@
       "nameEn": "Church of Santa Maria presso San Satiro",
       "latitude": 45.4627,
       "longitude": 9.18777,
-      "backgroundAssetId": "milano_san_satiro_date",
+      "backgroundId": "milano_san_satiro_date",
       "sources": [
         {
           "publisher": "Mapcarta / 地点別情報源",
@@ -216,7 +216,7 @@
       "nameEn": "Starbucks Reserve Roastery Milan",
       "latitude": 45.46495,
       "longitude": 9.18609,
-      "backgroundAssetId": "milano_starbucks_roastery_date",
+      "backgroundId": "milano_starbucks_roastery_date",
       "sources": [
         {
           "publisher": "Mapcarta / 地点別情報源",
@@ -238,7 +238,7 @@
       "nameEn": "Fondazione Prada Milan",
       "latitude": 45.44394,
       "longitude": 9.20432,
-      "backgroundAssetId": "milano_fondazione_prada_date",
+      "backgroundId": "milano_fondazione_prada_date",
       "sources": [
         {
           "publisher": "Mapcarta / 地点別情報源",
@@ -260,7 +260,7 @@
       "nameEn": "Museum of the Twentieth Century",
       "latitude": 45.46339,
       "longitude": 9.19023,
-      "backgroundAssetId": "milano_novecento_date",
+      "backgroundId": "milano_novecento_date",
       "sources": [
         {
           "publisher": "Mapcarta / 地点別情報源",
@@ -282,7 +282,7 @@
       "nameEn": "Church of San Maurizio al Monastero Maggiore",
       "latitude": 45.46544,
       "longitude": 9.17895,
-      "backgroundAssetId": "milano_san_maurizio_sound",
+      "backgroundId": "milano_san_maurizio_sound",
       "sources": [
         {
           "publisher": "Mapcarta / 地点別情報源",
@@ -304,7 +304,7 @@
       "nameEn": "Fictional Hotel near Cordusio",
       "latitude": 45.46555,
       "longitude": 9.18623,
-      "backgroundAssetId": "milano_city_date_landmark",
+      "backgroundId": "milano_city_date_landmark",
       "sources": [
         {
           "publisher": "Mapcarta / 地点別情報源",

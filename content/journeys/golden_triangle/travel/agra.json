@@ -8,7 +8,7 @@
       "nameEn": "Taj Mahal",
       "latitude": 27.17501,
       "longitude": 78.04209,
-      "backgroundAssetId": "gt_bg_agra_taj_mahal",
+      "backgroundId": "gt_bg_agra_taj_mahal",
       "openingWindows": [
         {
           "start": 540,
@@ -111,7 +111,7 @@
       "nameEn": "Agra Fort",
       "latitude": 27.17602,
       "longitude": 78.02192,
-      "backgroundAssetId": "gt_bg_agra_agra_fort",
+      "backgroundId": "gt_bg_agra_agra_fort",
       "openingWindows": [
         {
           "start": 540,
@@ -195,7 +195,7 @@
       "nameEn": "Itimad-ud-Daulah’s Tomb",
       "latitude": 27.19281,
       "longitude": 78.03143,
-      "backgroundAssetId": "gt_bg_agra_itimad_tomb",
+      "backgroundId": "gt_bg_agra_itimad_tomb",
       "openingWindows": [
         {
           "start": 540,
@@ -263,7 +263,7 @@
       "nameEn": "Mehtab Bagh",
       "latitude": 27.17967,
       "longitude": 78.04204,
-      "backgroundAssetId": "gt_bg_agra_mehtab_bagh",
+      "backgroundId": "gt_bg_agra_mehtab_bagh",
       "openingWindows": [
         {
           "start": 540,
@@ -339,7 +339,7 @@
       "nameEn": "Fatehpur Sikri",
       "latitude": 27.09602,
       "longitude": 77.66473,
-      "backgroundAssetId": "gt_bg_agra_fatehpur_sikri",
+      "backgroundId": "gt_bg_agra_fatehpur_sikri",
       "openingWindows": [
         {
           "start": 540,
@@ -407,7 +407,7 @@
       "nameEn": "Akbar’s Tomb, Sikandra",
       "latitude": 27.22042,
       "longitude": 77.9504,
-      "backgroundAssetId": "gt_bg_agra_akbar_tomb",
+      "backgroundId": "gt_bg_agra_akbar_tomb",
       "openingWindows": [
         {
           "start": 540,
@@ -467,7 +467,7 @@
       "nameEn": "Ram Bagh",
       "latitude": 27.205306,
       "longitude": 78.038639,
-      "backgroundAssetId": "gt_bg_agra_ram_bagh",
+      "backgroundId": "gt_bg_agra_ram_bagh",
       "openingWindows": [
         {
           "start": 540,
@@ -527,7 +527,7 @@
       "nameEn": "Chini ka Rauza",
       "latitude": 27.20086,
       "longitude": 78.03439,
-      "backgroundAssetId": "gt_bg_agra_chini_rauza",
+      "backgroundId": "gt_bg_agra_chini_rauza",
       "openingWindows": [
         {
           "start": 540,
@@ -587,7 +587,7 @@
       "nameEn": "Tomb of Mariam-uz-Zamani",
       "latitude": 27.2153,
       "longitude": 77.94272,
-      "backgroundAssetId": "gt_bg_agra_mariam_tomb",
+      "backgroundId": "gt_bg_agra_mariam_tomb",
       "openingWindows": [
         {
           "start": 540,
@@ -647,7 +647,7 @@
       "nameEn": "Guru ka Taal Gurdwara",
       "latitude": 27.21162,
       "longitude": 77.96763,
-      "backgroundAssetId": "gt_bg_agra_guru_ka_taal",
+      "backgroundId": "gt_bg_agra_guru_ka_taal",
       "openingWindows": [
         {
           "start": 540,
@@ -707,7 +707,7 @@
       "nameEn": "fictional lodging / Agra Fort rail station",
       "latitude": 27.18225,
       "longitude": 78.01825,
-      "backgroundAssetId": "gt_bg_agra_hotel_hub",
+      "backgroundId": "gt_bg_agra_hotel_hub",
       "openingWindows": [
         {
           "start": 0,

@@ -15,7 +15,7 @@ export const travelPlaceSchema = z.object({
   nameEn: text,
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
-  backgroundAssetId: id,
+  backgroundId: id,
   /** Existing catalogs stay authoritative; these IDs identify the same physical place. */
   landmarkIds: z.array(id).optional(),
   destinationIds: z.array(id).optional(),
@@ -107,7 +107,7 @@ export const travelSettingsSchema = z.object({
    * of the city starts with. Without it a scene starts with the background of
    * its place (or of the hotel).
    */
-  storyBackgroundAssetId: id.optional(),
+  storyBackgroundId: id.optional(),
   notes: text,
 }).strict();
 

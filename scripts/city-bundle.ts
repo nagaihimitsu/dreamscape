@@ -60,7 +60,7 @@ export function exportCityBundle(root: string, cityId: string): CityBundle {
   const destinationCatalog = parseCatalog(sources, dateDestinationsSchema, destinationsKind);
   const dateDestinations = destinationCatalog.destinations.filter((item) => item.cityId === cityId);
   const dates = parseCatalog(sources, dateCatalogSchema, "romance/date_catalog.json").dates;
-  const dateBackgrounds = dates.filter((item) => item.chapterId === cityId).map((item) => item.backgroundAssetId);
+  const dateBackgrounds = dates.filter((item) => item.chapterId === cityId).map((item) => item.backgroundId);
   const backgroundIds = referencedBackgrounds(travel, dateDestinations, dateBackgrounds);
   const backgrounds: CityBundle["backgrounds"] = {};
   for (const id of backgroundIds) {
@@ -95,7 +95,7 @@ export function newCityBundle(root: string, cityId: string): unknown {
   const background = `${cityId}_hotel_bg`;
   return { schemaVersion: 1, cityId, baseFingerprint: inputFingerprint(root),
     city: { schemaVersion: 1, id: cityId, countryCode: "", nameJa: "", themeJa: "", firstClearReward: { rewardSourceId: "", ap: null }, landmarkIdsPlanned: [], productionStatus: "prototype" },
-    travel: { cityId, places: [{ id: hotel, cityId, nameJa: "", nameEn: "", latitude: null, longitude: null, backgroundAssetId: background, sources: [] }], routes: [], events: [] },
+    travel: { cityId, places: [{ id: hotel, cityId, nameJa: "", nameEn: "", latitude: null, longitude: null, backgroundId: background, sources: [] }], routes: [], events: [] },
     travelSettings: { initialBudget: null, hotelPlaceId: hotel, lodgingCost: null, retryMinutes: 15, notes: "要入力：ゲーム用の前提と出典を記入してください。" },
     backgrounds: { [background]: { nameJa: "", captionJa: "", color: "#817569", fallback: "neutral" } },
     assets: [], dateDestinations: [], landmarks: [], clues: [], transitDecisions: null };

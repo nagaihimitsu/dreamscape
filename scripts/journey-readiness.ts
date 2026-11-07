@@ -94,7 +94,7 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
     for (const place of travel.places) {
       if (place.cityId !== cityId || seenPlaceIds.has(place.id)) problem(cityIssues, "place_mismatch", `地点の都市・IDが不正: ${place.id}`);
       seenPlaceIds.add(place.id);
-      if (place.id === settings.hotelPlaceId) checkImage(place.backgroundAssetId, cityIssues, true);
+      if (place.id === settings.hotelPlaceId) checkImage(place.backgroundId, cityIssues, true);
     }
     const specialIds = new Set(input.journey.storyBattles.filter((entry) => {
       const battle = input.battles.find((item) => item.id === entry.battleId);
@@ -119,7 +119,7 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
       seenEventIds.add(event.id);
       const place = travel.places.find((item) => item.id === event.placeId);
       if (!place) problem(eventIssues, "place_missing", `地点が未登録: ${event.placeId}`);
-      else checkImage(place.backgroundAssetId, eventIssues);
+      else checkImage(place.backgroundId, eventIssues);
       if (event.category === "main" && finales.some((item) => item.id === event.id)) {
         // Finale references, reward and quiz are checked once at city level.
       } else if (event.category === "main" && specialIds.has(event.id)) {
@@ -155,8 +155,8 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
           const destination = input.destinations.find((item) => item.id === date.destinationId);
           if (!destination || destination.cityId !== cityId || date.chapterId !== cityId || !place?.destinationIds?.includes(destination.id))
             problem(eventIssues, "destination_mismatch", `デート行き先・都市が未登録または不一致: ${event.id}`);
-          else if (destination.backgroundAssetId !== date.backgroundAssetId) problem(eventIssues, "date_background_mismatch", `デート背景が不一致: ${event.id}`);
-          if (date.backgroundAssetId !== place?.backgroundAssetId) checkImage(date.backgroundAssetId, eventIssues);
+          else if (destination.backgroundId !== date.backgroundId) problem(eventIssues, "date_background_mismatch", `デート背景が不一致: ${event.id}`);
+          if (date.backgroundId !== place?.backgroundId) checkImage(date.backgroundId, eventIssues);
           if (!input.storyExists(date.storyId)) problem(eventIssues, "date_story_missing", `デート脚本が未登録: ${date.storyId}`);
         }
       }

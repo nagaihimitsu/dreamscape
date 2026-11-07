@@ -8,7 +8,7 @@
       "nameEn": "Wat Xieng Thong",
       "latitude": 19.8975,
       "longitude": 102.143056,
-      "backgroundAssetId": "lpb_bg_xieng_thong",
+      "backgroundId": "lpb_bg_xieng_thong",
       "openingWindows": [
         {
           "start": 540,
@@ -49,7 +49,7 @@
       "nameEn": "Royal Palace National Museum",
       "latitude": 19.8921,
       "longitude": 102.1356,
-      "backgroundAssetId": "lpb_bg_royal_palace",
+      "backgroundId": "lpb_bg_royal_palace",
       "openingWindows": [
         {
           "start": 540,
@@ -90,7 +90,7 @@
       "nameEn": "Phou Si Hill",
       "latitude": 19.8904,
       "longitude": 102.1369,
-      "backgroundAssetId": "lpb_bg_phousi",
+      "backgroundId": "lpb_bg_phousi",
       "openingWindows": [
         {
           "start": 540,
@@ -131,7 +131,7 @@
       "nameEn": "Wat Mai Suwannaphumaham",
       "latitude": 19.8905738,
       "longitude": 102.1349947,
-      "backgroundAssetId": "lpb_bg_wat_mai",
+      "backgroundId": "lpb_bg_wat_mai",
       "openingWindows": [
         {
           "start": 540,
@@ -172,7 +172,7 @@
       "nameEn": "Traditional Arts and Ethnology Centre",
       "latitude": 19.8886,
       "longitude": 102.1353,
-      "backgroundAssetId": "lpb_bg_ethnology",
+      "backgroundId": "lpb_bg_ethnology",
       "destinationIds": [
         "luang_prabang_ethnology"
       ],
@@ -216,7 +216,7 @@
       "nameEn": "Heuan Chan Heritage House",
       "latitude": 19.89288,
       "longitude": 102.13664,
-      "backgroundAssetId": "lpb_bg_heuan_chan",
+      "backgroundId": "lpb_bg_heuan_chan",
       "destinationIds": [
         "luang_prabang_heuan_chan"
       ],
@@ -260,7 +260,7 @@
       "nameEn": "Wat Sensoukharam",
       "latitude": 19.89537,
       "longitude": 102.14161,
-      "backgroundAssetId": "lpb_bg_wat_sen",
+      "backgroundId": "lpb_bg_wat_sen",
       "destinationIds": [
         "luang_prabang_wat_sen"
       ],
@@ -304,7 +304,7 @@
       "nameEn": "Wat Phol Phao",
       "latitude": 19.878889,
       "longitude": 102.145833,
-      "backgroundAssetId": "lpb_bg_wat_phol_phao",
+      "backgroundId": "lpb_bg_wat_phol_phao",
       "destinationIds": [
         "luang_prabang_wat_phol_phao"
       ],
@@ -348,7 +348,7 @@
       "nameEn": "Haw Pha Bang",
       "latitude": 19.89175,
       "longitude": 102.13644,
-      "backgroundAssetId": "lpb_bg_haw_pha_bang",
+      "backgroundId": "lpb_bg_haw_pha_bang",
       "destinationIds": [
         "luang_prabang_haw_pha_bang"
       ],
@@ -392,7 +392,7 @@
       "nameEn": "Luang Prabang Night Market",
       "latitude": 19.8913699,
       "longitude": 102.1364268,
-      "backgroundAssetId": "lpb_bg_night_market",
+      "backgroundId": "lpb_bg_night_market",
       "destinationIds": [
         "luang_prabang_night_market"
       ],
@@ -436,7 +436,7 @@
       "nameEn": "Fictional Luang Prabang lodging",
       "latitude": 19.88888,
       "longitude": 102.13311,
-      "backgroundAssetId": "luang_prabang_hotel_bg",
+      "backgroundId": "luang_prabang_hotel_bg",
       "openingWindows": [
         {
           "start": 0,

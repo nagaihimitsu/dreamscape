@@ -34,7 +34,7 @@ const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry,
   "battles/catalog.json": {
     battles: (entry) => [
       ...fields(entry, "city", ["cityId"]), ...fields(entry, "landmark", ["landmarkId"]), ...fields(entry, "story", ["storyId"]),
-      ...fields(entry, "quiz", ["quizId"]), ...fields(entry, "background", ["backgroundAssetId"]),
+      ...fields(entry, "quiz", ["quizId"]), ...fields(entry, "background", ["backgroundId"]),
       ...(isObject(entry.reasoning) ? fields(entry.reasoning, "clue", ["caseClueIds", "correctClueIds"]) : []),
     ],
   },
@@ -79,14 +79,14 @@ const ENTRY_REFERENCES: Partial<Record<MergedKind, Record<string, (entry: Entry,
   "romance/date_catalog.json": {
     dates: (entry) => [
       ...fields(entry, "city", ["chapterId", "requiredCompletedChapters", "requiredCompletedCityIds"]),
-      ...fields(entry, "story", ["storyId"]), ...fields(entry, "background", ["backgroundAssetId"]),
+      ...fields(entry, "story", ["storyId"]), ...fields(entry, "background", ["backgroundId"]),
       ...fields(entry, "destination", ["destinationId"]), ...fields(entry, "date", ["requiredPlayedDateIds"]),
       ...fields(entry, "episode", ["requiredCompletedEpisodeIds", "forbiddenCompletedEpisodeIds"]),
       ...list(entry.validationContexts).flatMap((context) => fields(context, "memory", ["memoryId", "memoryIds"])),
     ],
   },
   "romance/date_destinations.json": {
-    destinations: (entry) => [...fields(entry, "city", ["cityId"]), ...fields(entry, "background", ["backgroundAssetId"])],
+    destinations: (entry) => [...fields(entry, "city", ["cityId"]), ...fields(entry, "background", ["backgroundId"])],
   },
   "romance/effect_catalog.json": { effects: (entry) => fields(entry, "memory", ["memoryId"]) },
   "romance/presentation.json": { backgrounds: (entry) => fields(entry, "asset", ["imageAssetId"]) },
@@ -323,12 +323,12 @@ export function checkContentOwnership(sources: ContentSources): void {
         ref("city", "nextCityId", data.nextCityId), ref("story", "arrivalStoryId", data.arrivalStoryId),
         ref("landmark", "landmarkIdsPlanned", data.landmarkIdsPlanned),
       ]);
-    if (isObject(settings)) checkReferences(city.settingsFile, "", fields(settings, "background", ["storyBackgroundAssetId"]));
+    if (isObject(settings)) checkReferences(city.settingsFile, "", fields(settings, "background", ["storyBackgroundId"]));
     if (!isObject(travel)) continue;
     checkReferences(city.travelFile, "", fields(travel, "city", ["cityId"]));
     for (const place of list(travel.places))
       checkReferences(city.travelFile, `places["${String(place.id)}"]`, [
-        ...fields(place, "city", ["cityId"]), ...fields(place, "background", ["backgroundAssetId"]),
+        ...fields(place, "city", ["cityId"]), ...fields(place, "background", ["backgroundId"]),
         ...fields(place, "landmark", ["landmarkIds"]), ...fields(place, "destination", ["destinationIds"]),
       ]);
     for (const event of list(travel.events))

@@ -25,7 +25,7 @@ describe("city editing bundle: applying edits to each city", () => {
     route.minutes += 1;
     route.cost += 1;
     bundle.travelSettings.notes = "試験用の旅行設定";
-    const backgroundId = bundle.travel.places.find((place) => place.id === "delhi_red_fort")!.backgroundAssetId;
+    const backgroundId = bundle.travel.places.find((place) => place.id === "delhi_red_fort")!.backgroundId;
     bundle.backgrounds[backgroundId].captionJa = "試験用の背景説明";
     const asset = bundle.assets.find((item) => item.id === bundle.backgrounds[backgroundId].imageAssetId)!;
     asset.altJa = "試験用の画像説明";

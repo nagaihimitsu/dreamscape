@@ -6,7 +6,7 @@ const minimal = {
   chapterId: "milano",
   titleJa: "新しい場所",
   storyId: "milano/new_date",
-  backgroundAssetId: "milano_walk_landmark",
+  backgroundId: "milano_walk_landmark",
 };
 
 describe("ordinary date defaults", () => {

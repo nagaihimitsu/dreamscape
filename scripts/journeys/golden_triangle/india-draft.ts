@@ -15,6 +15,17 @@ const followup = "authoring/journeys/golden_triangle/research/golden-triangle-fo
 export const indiaDraftDirectory = path.join(root, "authoring/journeys/golden_triangle/drafts");
 const readJson = (file: string): unknown => JSON.parse(readFileSync(path.join(root, file), "utf8"));
 const fail = (message: string): never => { throw new Error(`India draft: ${message}`); };
+/**
+ * The research records keep the field names they were written with: a place's
+ * background was `backgroundAssetId` there, and is `backgroundId` since save v14.
+ */
+function withCurrentPlaceFields(catalog: unknown): unknown {
+  if (!catalog || typeof catalog !== "object" || !Array.isArray((catalog as { places?: unknown }).places)) return catalog;
+  const places = (catalog as { places: unknown[] }).places.map((place) => place && typeof place === "object"
+    ? Object.fromEntries(Object.entries(place).map(([key, value]) => [key === "backgroundAssetId" ? "backgroundId" : key, value]))
+    : place);
+  return { ...catalog, places };
+}
 const followupSchema = z.object({
   records: z.array(z.object({ placeId: z.string().regex(/^[a-z][a-z0-9_]*$/), cityId: z.string().optional(),
     sources: z.array(tourismSourceSchema).min(1) }).passthrough()),
@@ -59,7 +70,7 @@ export function buildIndiaDraft(): Record<string, unknown> {
     // This old compatibility field is NOT the city-clear reward. Until the
     // episode has been authored, use an explicit unpublished placeholder.
     const city = citySchema.parse({ ...sourceCity, firstClearReward: { rewardSourceId: `${id}_legacy_episode_placeholder`, ap: 0 } });
-    const original = travelCatalogSchema.parse(readJson(`${research}/travel/${id}.json`));
+    const original = travelCatalogSchema.parse(withCurrentPlaceFields(readJson(`${research}/travel/${id}.json`)));
     const originalSettings = travelSettingsSchema.parse(readJson(`${research}/travel/${id}-settings.json`));
     const settings = travelSettingsSchema.parse({ ...originalSettings, initialBudget: index === 0 ? journey.initialBudget : 0,
       lodgingCost: journey.cityPlan.lodgingCost,

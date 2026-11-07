@@ -11,7 +11,7 @@
       "enemyDescriptionJa": "今日だけ兄の付き人を買って出た。兄妹の合図を、世間の常識のように使う。",
       "storyId": "battles/sound_supper",
       "quizId": "sound_supper_b1",
-      "backgroundAssetId": "milano_refectory",
+      "backgroundId": "milano_refectory",
       "scenes": {
         "intro": "intro",
         "afterRounds": [
@@ -32,7 +32,7 @@
       "quizId": "milano_last_supper_b_reasoning_b1",
       "format": "B",
       "landmarkId": "last_supper",
-      "backgroundAssetId": "milano_refectory",
+      "backgroundId": "milano_refectory",
       "scenes": {
         "intro": "intro",
         "afterRounds": [
@@ -69,7 +69,7 @@
       "quizId": "milano_last_supper_c_reasoning_b1",
       "format": "C",
       "landmarkId": "last_supper",
-      "backgroundAssetId": "milano_refectory",
+      "backgroundId": "milano_refectory",
       "scenes": {
         "intro": "intro",
         "afterRounds": [
@@ -106,7 +106,7 @@
       "enemyDescriptionJa": "広場の音を録って売りたい。失敗した音まで消す癖がある。",
       "storyId": "battles/sound_duomo",
       "quizId": "sound_duomo_b1",
-      "backgroundAssetId": "milano_duomo",
+      "backgroundId": "milano_duomo",
       "scenes": {
         "intro": "intro",
         "afterRounds": [
@@ -126,7 +126,7 @@
       "enemyDescriptionJa": "ガッレリアを背景に商品の撮影をする。通行人の都合より、次の注文を優先する。",
       "storyId": "battles/sound_galleria",
       "quizId": "sound_galleria_b1",
-      "backgroundAssetId": "milano_galleria",
+      "backgroundId": "milano_galleria",
       "scenes": {
         "intro": "intro",
         "afterRounds": [
@@ -146,7 +146,7 @@
       "enemyDescriptionJa": "娘の作る粘土の自分が妙に気に入った。娘は飽きて次の顔を作りたい。",
       "storyId": "battles/sound_castle",
       "quizId": "sound_castle_b1",
-      "backgroundAssetId": "milano_castello",
+      "backgroundId": "milano_castello",
       "scenes": {
         "intro": "intro",
         "afterRounds": [
@@ -168,7 +168,7 @@
       "enemyDescriptionJa": "自分の移動放送の最後の一枠を編集している。沈黙が放送事故に聞こえるのが怖い。",
       "storyId": "battles/sound_finale",
       "quizId": "sound_finale_b1",
-      "backgroundAssetId": "milano_darsena_finale",
+      "backgroundId": "milano_darsena_finale",
       "scenes": {
         "intro": "intro",
         "afterRounds": [
@@ -191,7 +191,7 @@
       "quizId": "sound_scala_b1",
       "format": "B",
       "landmarkId": "la_scala_case",
-      "backgroundAssetId": "milano_la_scala_date",
+      "backgroundId": "milano_la_scala_date",
       "scenes": {
         "intro": "intro",
         "afterRounds": [
@@ -228,7 +228,7 @@
       "quizId": "sound_brera_b1",
       "format": "C",
       "landmarkId": "brera_case",
-      "backgroundAssetId": "milano_brera_date",
+      "backgroundId": "milano_brera_date",
       "scenes": {
         "intro": "intro",
         "afterRounds": [

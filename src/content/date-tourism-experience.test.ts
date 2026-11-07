@@ -42,8 +42,8 @@ describe("tourism in normal dates", () => {
       expect(destination, date.id).toBeDefined();
       expect(destination!.cityId, date.id).toBe(date.chapterId);
       expect(destination!.facts.length, date.id).toBeGreaterThan(0);
-      expect(destination!.backgroundAssetId, date.id).toBe(date.backgroundAssetId);
-      const background = presentation.backgrounds[date.backgroundAssetId];
+      expect(destination!.backgroundId, date.id).toBe(date.backgroundId);
+      const background = presentation.backgrounds[date.backgroundId];
       expect(background, date.id).toBeDefined();
       if (background.imageAssetId) {
         const asset = content.tourism.assets.find((item) => item.id === background.imageAssetId);
@@ -101,7 +101,7 @@ describe("tourism in normal dates", () => {
           const context = `${dateId}, ${tone}, choices ${first}/${second}, ${firstResult}/${secondResult}`;
           expect(choiceCount, context).toBe(2);
           expect(story.canContinue, context).toBe(false);
-          expect(backgrounds.has(date!.backgroundAssetId), context).toBe(true);
+          expect(backgrounds.has(date!.backgroundId), context).toBe(true);
           expect(spoken, context).toMatch(detail);
         }
     }
@@ -116,7 +116,7 @@ describe("tourism in normal dates", () => {
       const date = content.dates.find((entry) => entry.id === event.id);
       expect(date, event.id).toBeDefined();
       expect(date!.kind, event.id).toBe("special");
-      const background = presentation.backgrounds[date!.backgroundAssetId];
+      const background = presentation.backgrounds[date!.backgroundId];
       expect(background.imageAssetId, event.id).toBeTruthy();
       expect(content.tourism.assets.find((asset) => asset.id === background.imageAssetId), event.id).toBeDefined();
       for (const stage of [1, 4]) for (let choice = 0; choice < 3; choice++) {
@@ -154,7 +154,7 @@ describe("tourism in normal dates", () => {
         }
         expect(choiceCount, event.id).toBe(1);
         expect(story.canContinue, event.id).toBe(false);
-        expect(backgrounds.has(date!.backgroundAssetId), event.id).toBe(true);
+        expect(backgrounds.has(date!.backgroundId), event.id).toBe(true);
         expect(allLines, event.id).toContain("ガッレリア");
         expect(heroineLines, event.id).toMatch(event.detail);
         expect([...effects], event.id).toEqual([event.effects[choice]]);

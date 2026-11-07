@@ -77,7 +77,7 @@ export function completeTestCity(root: string, template: ReturnType<typeof expor
   hotel.cityId = "testcity";
   hotel.nameJa = "試験の滞在先";
   hotel.nameEn = "Test hotel";
-  hotel.backgroundAssetId = "testcity_hotel_bg";
+  hotel.backgroundId = "testcity_hotel_bg";
   identity.fromPlaceId = hotel.id;
   identity.toPlaceId = hotel.id;
   template.city = { schemaVersion: 1, id: "testcity", countryCode: "ZZ", nameJa: "試験都市", themeJa: "試験用",

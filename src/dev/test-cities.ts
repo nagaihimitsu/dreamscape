@@ -180,7 +180,7 @@ export function installTestCity(options: {
     landmarkIdsPlanned: place.landmarkIds };
   // Scenes of a test city start with its own place's background, not the template's story background.
   const travelSettings = { ...clone(template.city.travelSettings), hotelPlaceId: hotel.id };
-  delete travelSettings.storyBackgroundAssetId;
+  delete travelSettings.storyBackgroundId;
   cityContents[cityId] = { city, travel: { cityId, places: [hotel, place], routes, events }, travelSettings };
   if (previous) previous.city.nextCityId = city.id;
 

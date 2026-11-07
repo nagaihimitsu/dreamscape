@@ -10,7 +10,7 @@
       "apCost": 2,
       "storyId": "dates/smp_mihon_date_tower_square",
       "destinationId": "mihon_tower_square",
-      "backgroundAssetId": "smp_bg_mihon_clock_tower",
+      "backgroundId": "smp_bg_mihon_clock_tower",
       "choiceCount": 2,
       "effectCount": 2
     }

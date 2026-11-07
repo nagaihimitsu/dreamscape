@@ -6,7 +6,7 @@ import { DAY_END, DAY_START } from "../src/domain/travel";
 /** Check the city's authored destinations against the existing game catalogs. */
 export function validateTravelContent(
   travel: TravelCatalog,
-  settings: { hotelPlaceId: string; storyBackgroundAssetId?: string },
+  settings: { hotelPlaceId: string; storyBackgroundId?: string },
   cityId: string,
   journey: JourneyConfig,
   dates: DateDefinition[],
@@ -19,12 +19,12 @@ export function validateTravelContent(
   if (travel.cityId !== cityId) throw new Error(`Unknown travel city: ${travel.cityId}`);
   if (!travel.places.some((place) => place.id === settings.hotelPlaceId))
     throw new Error(`Unknown travel hotel: ${settings.hotelPlaceId}`);
-  if (settings.storyBackgroundAssetId !== undefined && !backgrounds[settings.storyBackgroundAssetId])
-    throw new Error(`Unknown travel story background: ${cityId}/${settings.storyBackgroundAssetId}`);
+  if (settings.storyBackgroundId !== undefined && !backgrounds[settings.storyBackgroundId])
+    throw new Error(`Unknown travel story background: ${cityId}/${settings.storyBackgroundId}`);
   const assignedLandmarks = new Set<string>();
   const assignedDestinations = new Set<string>();
   for (const place of travel.places) {
-    if (!backgrounds[place.backgroundAssetId]) throw new Error(`Unknown travel background: ${place.id}/${place.backgroundAssetId}`);
+    if (!backgrounds[place.backgroundId]) throw new Error(`Unknown travel background: ${place.id}/${place.backgroundId}`);
     for (const landmarkId of place.landmarkIds ?? []) {
       if (!landmarkIds.includes(landmarkId) || assignedLandmarks.has(landmarkId)) throw new Error(`Unknown or duplicate travel landmark: ${place.id}/${landmarkId}`);
       assignedLandmarks.add(landmarkId);

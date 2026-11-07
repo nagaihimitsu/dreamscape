@@ -7,7 +7,7 @@
       "nameJa": "時計塔の広場",
       "nameEn": "Clock Tower Square",
       "descriptionJa": "ベンチがどれも時計塔を向いている、見本の街の架空の広場。",
-      "backgroundAssetId": "smp_bg_mihon_clock_tower",
+      "backgroundId": "smp_bg_mihon_clock_tower",
       "facts": [
         {
           "publisher": "Dreamscape 見本の旅（架空）",

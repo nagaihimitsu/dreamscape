@@ -8,7 +8,7 @@ function fixture() {
   const source = { publisher: "Dreamscape test", title: "Test fixture", url: "https://example.org/transit",
     checkedAt: "2026-11-04", claimType: "hypothesis" as const, claimJa: "検証専用の推定値です。" };
   const places = ["test_a", "test_b"].map((id) => ({ id, cityId: "test_city", nameJa: "試験地点", nameEn: "Test place",
-    latitude: 41, longitude: 69, backgroundAssetId: "test_bg", sources: [source] }));
+    latitude: 41, longitude: 69, backgroundId: "test_bg", sources: [source] }));
   const travel = travelCatalogSchema.parse({ cityId: "test_city", places, events: [], routes: places.flatMap((from) => places.flatMap((to) => [
     { fromPlaceId: from.id, toPlaceId: to.id, mode: "walk", minutes: from.id === to.id ? 0 : 10,
       cost: 0, estimation: "game_model", sources: [source] },

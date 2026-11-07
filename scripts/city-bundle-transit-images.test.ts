@@ -122,8 +122,8 @@ describe("city editing bundle: transit ledgers, images and observations", () => 
     const agraTravel = cityPaths(root, "agra").travel;
     const agra = readJson(root, agraTravel);
     const delhi = readJson(root, cityPaths(root, "delhi").travel);
-    const sharedId = delhi.places.find((item: { id: string }) => item.id === "delhi_hotel_hub").backgroundAssetId;
-    agra.places.find((item: { id: string }) => item.id === "agra_hotel_hub").backgroundAssetId = sharedId;
+    const sharedId = delhi.places.find((item: { id: string }) => item.id === "delhi_hotel_hub").backgroundId;
+    agra.places.find((item: { id: string }) => item.id === "agra_hotel_hub").backgroundId = sharedId;
     writeJson(root, agraTravel, agra);
     const bundle = exportCityBundle(root, "delhi");
     bundle.backgrounds[sharedId].captionJa = "他都市の共有背景を変更してはならない";
@@ -138,19 +138,19 @@ describe("city editing bundle: transit ledgers, images and observations", () => 
     const agraTravel = cityPaths(root, "agra").travel;
     const agra = readJson(root, agraTravel);
     const delhi = readJson(root, cityPaths(root, "delhi").travel);
-    const sharedId = delhi.places.find((item: { id: string }) => item.id === "delhi_hotel_hub").backgroundAssetId;
-    agra.places.find((item: { id: string }) => item.id === "agra_hotel_hub").backgroundAssetId = sharedId;
+    const sharedId = delhi.places.find((item: { id: string }) => item.id === "delhi_hotel_hub").backgroundId;
+    agra.places.find((item: { id: string }) => item.id === "agra_hotel_hub").backgroundId = sharedId;
     writeJson(root, agraTravel, agra);
     const sharedBackground = merged(root, "romance/presentation.json").backgrounds[sharedId];
     const bundle = exportCityBundle(root, "delhi");
-    bundle.travel.places.find((place) => place.id === "delhi_hotel_hub")!.backgroundAssetId = "delhi_alternate_hotel_bg";
+    bundle.travel.places.find((place) => place.id === "delhi_hotel_hub")!.backgroundId = "delhi_alternate_hotel_bg";
     bundle.backgrounds.delhi_alternate_hotel_bg = { ...bundle.backgrounds[sharedId], captionJa: "デリーの滞在先" };
     delete bundle.backgrounds[sharedId];
     await applyCityBundle(root, bundle, true);
     const presentation = merged(root, "romance/presentation.json");
     expect(presentation.backgrounds[sharedId]).toEqual(sharedBackground);
     expect(presentation.backgrounds.delhi_alternate_hotel_bg.captionJa).toBe("デリーの滞在先");
-    expect(readJson(root, agraTravel).places.find((item: { id: string }) => item.id === "agra_hotel_hub").backgroundAssetId).toBe(sharedId);
+    expect(readJson(root, agraTravel).places.find((item: { id: string }) => item.id === "agra_hotel_hub").backgroundId).toBe(sharedId);
   }, 180_000);
 
   it("edits Milan's observations and image attribution without changing unrelated content", async () => {

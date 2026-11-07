@@ -71,9 +71,9 @@ describe("validateContent on sources in memory", () => {
   });
 
   it("rejects a reference to another journey's content, naming both files", () => {
-    const tree = { ...files(), [`${journeyFolder("trip_b")}/travel/b_city-settings.json`]: json({ storyBackgroundAssetId: "trip_a_bg" }) };
+    const tree = { ...files(), [`${journeyFolder("trip_b")}/travel/b_city-settings.json`]: json({ storyBackgroundId: "trip_a_bg" }) };
     expect(() => validateContent(load(tree))).toThrow(
-      'Reference to another layer: content/journeys/trip_b/travel/b_city-settings.json storyBackgroundAssetId "trip_a_bg" is the background defined in content/journeys/trip_a/romance/presentation.json; a journey folder may only refer to its own content and the core layer.',
+      'Reference to another layer: content/journeys/trip_b/travel/b_city-settings.json storyBackgroundId "trip_a_bg" is the background defined in content/journeys/trip_a/romance/presentation.json; a journey folder may only refer to its own content and the core layer.',
     );
   });
 
@@ -156,7 +156,7 @@ describe("one journey layer with the core layer (selectJourneys)", () => {
   });
 
   it("drops a cross-journey reference together with the journey it points to", () => {
-    const tree = { ...files(), [`${journeyFolder("trip_b")}/travel/b_city-settings.json`]: json({ storyBackgroundAssetId: "trip_a_bg" }) };
+    const tree = { ...files(), [`${journeyFolder("trip_b")}/travel/b_city-settings.json`]: json({ storyBackgroundId: "trip_a_bg" }) };
     expect(() => validateContent(load(tree))).toThrow("Reference to another layer");
     // trip_b alone: the background is just unknown, which the later checks report.
     expect(() => validateContent(selectJourneys(load(tree), ["trip_b"]))).toThrow(NO_TOURISM);

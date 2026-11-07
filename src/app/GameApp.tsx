@@ -602,7 +602,7 @@ export function GameApp({
           />
         ) : game.endingReached && showRomanceEnding ? (
           <>
-            <CanalScene backgroundId={currentTravelPlace?.backgroundAssetId} />
+            <CanalScene backgroundId={currentTravelPlace?.backgroundId} />
             <section className="paper ending" data-testid="romance-ending">
               <p className="eyebrow">交際開始</p>
               <h1>{presentation.ending.titleJa}</h1>

@@ -124,7 +124,7 @@ describe("Uzbekistan scenario-ready foundation", () => {
     for (const event of travel.events) {
       expect(event.cityId).toBe(cityId);
       const place = travel.places.find((item) => item.id === event.placeId)!;
-      const background = presentation.backgrounds[place.backgroundAssetId];
+      const background = presentation.backgrounds[place.backgroundId];
       const asset = tourismAssets.find((item) => item.id === background?.imageAssetId)!;
       expect(asset, `${cityId}: ${event.id} image`).toBeDefined();
       expect(asset.isPlaceholder).toBe(false);

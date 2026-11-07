@@ -8,7 +8,7 @@
       "nameEn": "Red Fort",
       "latitude": 28.65588,
       "longitude": 77.23865,
-      "backgroundAssetId": "gt_bg_delhi_red_fort",
+      "backgroundId": "gt_bg_delhi_red_fort",
       "openingWindows": [
         {
           "start": 570,
@@ -97,7 +97,7 @@
       "nameEn": "Qutb Minar",
       "latitude": 28.52442,
       "longitude": 77.18545,
-      "backgroundAssetId": "gt_bg_delhi_qutb_minar",
+      "backgroundId": "gt_bg_delhi_qutb_minar",
       "openingWindows": [
         {
           "start": 540,
@@ -170,7 +170,7 @@
       "nameEn": "Humayun’s Tomb",
       "latitude": 28.59329,
       "longitude": 77.25065,
-      "backgroundAssetId": "gt_bg_delhi_humayun_tomb",
+      "backgroundId": "gt_bg_delhi_humayun_tomb",
       "openingWindows": [
         {
           "start": 540,
@@ -235,7 +235,7 @@
       "nameEn": "India Gate",
       "latitude": 28.61293,
       "longitude": 77.22949,
-      "backgroundAssetId": "gt_bg_delhi_india_gate",
+      "backgroundId": "gt_bg_delhi_india_gate",
       "openingWindows": [
         {
           "start": 540,
@@ -292,7 +292,7 @@
       "nameEn": "Jama Masjid",
       "latitude": 28.6507,
       "longitude": 77.2335,
-      "backgroundAssetId": "gt_bg_delhi_jama_masjid",
+      "backgroundId": "gt_bg_delhi_jama_masjid",
       "openingWindows": [
         {
           "start": 540,
@@ -373,7 +373,7 @@
       "nameEn": "Chandni Chowk",
       "latitude": 28.65124,
       "longitude": 77.22912,
-      "backgroundAssetId": "gt_bg_delhi_chandni_chowk",
+      "backgroundId": "gt_bg_delhi_chandni_chowk",
       "openingWindows": [
         {
           "start": 540,
@@ -430,7 +430,7 @@
       "nameEn": "Lodhi Gardens",
       "latitude": 28.59348,
       "longitude": 77.21956,
-      "backgroundAssetId": "gt_bg_delhi_lodhi_garden",
+      "backgroundId": "gt_bg_delhi_lodhi_garden",
       "openingWindows": [
         {
           "start": 540,
@@ -487,7 +487,7 @@
       "nameEn": "Agrasen ki Baoli",
       "latitude": 28.62609,
       "longitude": 77.22501,
-      "backgroundAssetId": "gt_bg_delhi_agrasen_baoli",
+      "backgroundId": "gt_bg_delhi_agrasen_baoli",
       "openingWindows": [
         {
           "start": 540,
@@ -552,7 +552,7 @@
       "nameEn": "Lotus Temple",
       "latitude": 28.55336,
       "longitude": 77.25862,
-      "backgroundAssetId": "gt_bg_delhi_lotus_temple",
+      "backgroundId": "gt_bg_delhi_lotus_temple",
       "openingWindows": [
         {
           "start": 540,
@@ -601,7 +601,7 @@
       "nameEn": "Gurdwara Bangla Sahib",
       "latitude": 28.62646,
       "longitude": 77.20883,
-      "backgroundAssetId": "gt_bg_delhi_bangla_sahib",
+      "backgroundId": "gt_bg_delhi_bangla_sahib",
       "openingWindows": [
         {
           "start": 540,
@@ -650,7 +650,7 @@
       "nameEn": "fictional lodging / Rajiv Chowk anchor",
       "latitude": 28.63278,
       "longitude": 77.2197,
-      "backgroundAssetId": "gt_bg_delhi_hotel_hub",
+      "backgroundId": "gt_bg_delhi_hotel_hub",
       "openingWindows": [
         {
           "start": 0,

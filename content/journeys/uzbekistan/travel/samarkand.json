@@ -8,7 +8,7 @@
       "nameEn": "Registan Square",
       "latitude": 39.65469,
       "longitude": 66.97587,
-      "backgroundAssetId": "uz_bg_samarkand_registan",
+      "backgroundId": "uz_bg_samarkand_registan",
       "openingWindows": [
         {
           "start": 540,
@@ -57,7 +57,7 @@
       "nameEn": "Shah-i-Zinda",
       "latitude": 39.66248,
       "longitude": 66.98781,
-      "backgroundAssetId": "uz_bg_samarkand_shah_i_zinda",
+      "backgroundId": "uz_bg_samarkand_shah_i_zinda",
       "openingWindows": [
         {
           "start": 540,
@@ -106,7 +106,7 @@
       "nameEn": "Gur-e-Amir Mausoleum",
       "latitude": 39.64861,
       "longitude": 66.96932,
-      "backgroundAssetId": "uz_bg_samarkand_gur_e_amir",
+      "backgroundId": "uz_bg_samarkand_gur_e_amir",
       "openingWindows": [
         {
           "start": 540,
@@ -155,7 +155,7 @@
       "nameEn": "Bibi-Khanym Mosque",
       "latitude": 39.66069,
       "longitude": 66.98006,
-      "backgroundAssetId": "uz_bg_samarkand_bibi_khanym",
+      "backgroundId": "uz_bg_samarkand_bibi_khanym",
       "openingWindows": [
         {
           "start": 540,
@@ -204,7 +204,7 @@
       "nameEn": "Siyob Bazaar",
       "latitude": 39.66279,
       "longitude": 66.98053,
-      "backgroundAssetId": "uz_bg_samarkand_siyob_bazaar",
+      "backgroundId": "uz_bg_samarkand_siyob_bazaar",
       "openingWindows": [
         {
           "start": 540,
@@ -259,7 +259,7 @@
       "nameEn": "Ulugh Beg Observatory",
       "latitude": 39.67506,
       "longitude": 67.00534,
-      "backgroundAssetId": "uz_bg_samarkand_ulugh_beg_observatory",
+      "backgroundId": "uz_bg_samarkand_ulugh_beg_observatory",
       "openingWindows": [
         {
           "start": 540,
@@ -303,7 +303,7 @@
       "nameEn": "Afrasiyab Museum",
       "latitude": 39.66934,
       "longitude": 66.99335,
-      "backgroundAssetId": "uz_bg_samarkand_afrasiab_museum",
+      "backgroundId": "uz_bg_samarkand_afrasiab_museum",
       "openingWindows": [
         {
           "start": 540,
@@ -347,7 +347,7 @@
       "nameEn": "Hazrat Khizr Mosque Exterior",
       "latitude": 39.66343,
       "longitude": 66.98332,
-      "backgroundAssetId": "uz_bg_samarkand_hazrat_khizr",
+      "backgroundId": "uz_bg_samarkand_hazrat_khizr",
       "openingWindows": [
         {
           "start": 540,
@@ -391,7 +391,7 @@
       "nameEn": "Rukhabad Mausoleum Exterior",
       "latitude": 39.65085,
       "longitude": 66.96819,
-      "backgroundAssetId": "uz_bg_samarkand_rukhabad",
+      "backgroundId": "uz_bg_samarkand_rukhabad",
       "openingWindows": [
         {
           "start": 540,
@@ -435,7 +435,7 @@
       "nameEn": "University Boulevard",
       "latitude": 39.64694,
       "longitude": 66.96194,
-      "backgroundAssetId": "uz_bg_samarkand_university_boulevard",
+      "backgroundId": "uz_bg_samarkand_university_boulevard",
       "openingWindows": [
         {
           "start": 540,
@@ -479,7 +479,7 @@
       "nameEn": "Fictional Samarkand lodging near Rukhabad",
       "latitude": 39.65065,
       "longitude": 66.9665,
-      "backgroundAssetId": "uz_bg_samarkand_hotel_hub",
+      "backgroundId": "uz_bg_samarkand_hotel_hub",
       "openingWindows": [
         {
           "start": 0,

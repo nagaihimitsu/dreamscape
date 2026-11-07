@@ -8,7 +8,7 @@
       "nameEn": "Khast Imam Complex",
       "latitude": 41.33731,
       "longitude": 69.24008,
-      "backgroundAssetId": "uz_bg_tashkent_khast_imam",
+      "backgroundId": "uz_bg_tashkent_khast_imam",
       "openingWindows": [
         {
           "start": 540,
@@ -49,7 +49,7 @@
       "nameEn": "Chorsu Bazaar",
       "latitude": 41.32617,
       "longitude": 69.23653,
-      "backgroundAssetId": "uz_bg_tashkent_chorsu_bazaar",
+      "backgroundId": "uz_bg_tashkent_chorsu_bazaar",
       "openingWindows": [
         {
           "start": 540,
@@ -90,7 +90,7 @@
       "nameEn": "Kukeldash Madrasah",
       "latitude": 41.32333,
       "longitude": 69.23611,
-      "backgroundAssetId": "uz_bg_tashkent_kukeldash",
+      "backgroundId": "uz_bg_tashkent_kukeldash",
       "openingWindows": [
         {
           "start": 540,
@@ -131,7 +131,7 @@
       "nameEn": "Amir Temur Square",
       "latitude": 41.31139,
       "longitude": 69.27972,
-      "backgroundAssetId": "uz_bg_tashkent_amir_temur_square",
+      "backgroundId": "uz_bg_tashkent_amir_temur_square",
       "openingWindows": [
         {
           "start": 540,
@@ -172,7 +172,7 @@
       "nameEn": "Anhor Canal near Minor",
       "latitude": 41.3352,
       "longitude": 69.2741,
-      "backgroundAssetId": "uz_bg_tashkent_anhor_canal",
+      "backgroundId": "uz_bg_tashkent_anhor_canal",
       "openingWindows": [
         {
           "start": 540,
@@ -216,7 +216,7 @@
       "nameEn": "Japanese Garden",
       "latitude": 41.33843,
       "longitude": 69.28192,
-      "backgroundAssetId": "uz_bg_tashkent_japanese_garden",
+      "backgroundId": "uz_bg_tashkent_japanese_garden",
       "openingWindows": [
         {
           "start": 600,
@@ -268,7 +268,7 @@
       "nameEn": "Navoi Theatre exterior",
       "latitude": 41.30922,
       "longitude": 69.27152,
-      "backgroundAssetId": "uz_bg_tashkent_navoi_theatre",
+      "backgroundId": "uz_bg_tashkent_navoi_theatre",
       "openingWindows": [
         {
           "start": 540,
@@ -312,7 +312,7 @@
       "nameEn": "Independence Square gardens",
       "latitude": 41.3164,
       "longitude": 69.2668,
-      "backgroundAssetId": "uz_bg_tashkent_independence_square",
+      "backgroundId": "uz_bg_tashkent_independence_square",
       "openingWindows": [
         {
           "start": 540,
@@ -356,7 +356,7 @@
       "nameEn": "Abulkasym Madrasah",
       "latitude": 41.30672,
       "longitude": 69.24027,
-      "backgroundAssetId": "uz_bg_tashkent_abulkasym",
+      "backgroundId": "uz_bg_tashkent_abulkasym",
       "openingWindows": [
         {
           "start": 540,
@@ -400,7 +400,7 @@
       "nameEn": "Alisher Navoi National Park",
       "latitude": 41.30148,
       "longitude": 69.24124,
-      "backgroundAssetId": "uz_bg_tashkent_navoi_park",
+      "backgroundId": "uz_bg_tashkent_navoi_park",
       "openingWindows": [
         {
           "start": 540,
@@ -444,7 +444,7 @@
       "nameEn": "Tashkent fictional hotel hub",
       "latitude": 41.312,
       "longitude": 69.2774,
-      "backgroundAssetId": "uz_bg_tashkent_hotel_hub",
+      "backgroundId": "uz_bg_tashkent_hotel_hub",
       "openingWindows": [
         {
           "start": 0,

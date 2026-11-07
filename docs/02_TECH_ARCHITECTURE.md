@@ -165,7 +165,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 
 ### 既定背景とタイトルの絵
 - 共通の既定背景は `default_scene`（名前「旅の余白」、説明「旅の余白 ／ 予定のない午後」、色 `#e6d8bb`、`fallback: "neutral"`）。共通データの `content/romance/presentation.json` が定義し、`content:build` は共通データにないとエラーにする（旅行編のフォルダに置いても認めない）。IDはコードでは `src/content/default-background.ts` の `DEFAULT_BACKGROUND_ID` だけで扱う。Inkも都市も背景を指定しない会話の初期背景（`src/story/runtime.ts`）、背景を渡されない `CanalScene`、タイトルの絵がない旅行編のタイトルに使う。色だけの中立な場面で、運河の絵は表示しない。
-- `milano_cafe`（運河沿いのカフェ、「ミラノ ／ 予定のない午後」）はミラノ編の背景（`content/journeys/milano/romance/presentation.json`）。IDと意味は以前の共通背景と同じで、運河の絵と同じ空の色（`#e6d8bb`）で表示する。ミラノの会話の初期背景（ミラノの `storyBackgroundAssetId`）として使い、他の旅行編からは参照できない。
+- `milano_cafe`（運河沿いのカフェ、「ミラノ ／ 予定のない午後」）はミラノ編の背景（`content/journeys/milano/romance/presentation.json`）。IDと意味は以前の共通背景と同じで、運河の絵と同じ空の色（`#e6d8bb`）で表示する。ミラノの会話の初期背景（ミラノの `storyBackgroundId`）として使い、他の旅行編からは参照できない。
 - タイトルの絵は旅行編ごとに `manifest.json` の任意の `titleArt` で指定する。`imagePath`（配信時のパス。`assets/` で始まる WebP・PNG・JPEG）、`captionJa`（絵の左下に重ねる短い説明。例「ミラノ ／ 運河の午後」）、任意の `imagePosition`（切り抜くときに残す位置。`x`・`y` を0〜100の％で指定し、省略時は中央）。画像はその旅行編の `content/journeys/<旅行編ID>/public/assets/…`（例：`public/assets/title/<旅行編ID>.webp` → `assets/title/<旅行編ID>.webp`）か、全旅行編で共有するなら直下の `public/assets/…` に置く。`content:build` は画像がないとき（`Missing title art image`）と、他の旅行編のフォルダの画像を指すとき（`Reference to another layer`）にエラーにする。`titleArt` がない旅行編と、画像を読み込めなかった場合は、既定背景 `default_scene` の色と説明（絵を読み込めなかった場合は `captionJa`）を表示する。準備中の旅行編の画面（`PreparingJourney`・`UnavailableJourney`）には絵の欄がないので表示されない。`tests/e2e/boot.spec.ts` は公開中の各旅行編のタイトルで、指定した絵と説明（なければ既定背景）が表示され、画像が読み込めることを確かめる。
 - タイトルの絵の表示枠（2026年11月、Chromiumで実測）。枠は画面の横幅いっぱい（PCでは最大 878px）で、高さだけが画面によって変わり、画像は枠を覆うように中央（または `imagePosition`）を基準に切り抜かれる。
 
@@ -184,7 +184,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 
 ### 共通コードに残るミラノ由来の既定値
 - 共通の既定背景はミラノ由来ではなくなった（上の「既定背景とタイトルの絵」）。
-- 都市の会話の初期背景は、その都市の `travel/<cityId>-settings.json` の `storyBackgroundAssetId`（ミラノはミラノ編の背景 `milano_cafe`）。未指定の都市は現在地（なければ宿）の背景を使う。
+- 都市の会話の初期背景は、その都市の `travel/<cityId>-settings.json` の `storyBackgroundId`（ミラノはミラノ編の背景 `milano_cafe`）。未指定の都市は現在地（なければ宿）の背景を使う。
 - 所持品のアイコンは道中交流カタログの品物の `iconPath`（未指定なら共通の `assets/items/item.svg`）。
 - 観光地のバトル後に自由時間から改めてクイズに挑める道中交流（ミラノのガッレリアの願掛け）は、`encounters/entry-rules.json` の `quizAfterLandmarkBattle` で指定する。
 - Debugの「仮の場面」は、ミラノ固定ではなく役割で選んだ都市を元にする（上の「Debugの「仮の場面」」の項）。

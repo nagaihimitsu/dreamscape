@@ -8,7 +8,7 @@
       "nameEn": "Ark Citadel",
       "latitude": 39.77777778,
       "longitude": 64.41027778,
-      "backgroundAssetId": "uz_bg_bukhara_ark",
+      "backgroundId": "uz_bg_bukhara_ark",
       "openingWindows": [
         {
           "start": 540,
@@ -57,7 +57,7 @@
       "nameEn": "Poi Kalyan",
       "latitude": 39.77583333,
       "longitude": 64.41416667,
-      "backgroundAssetId": "uz_bg_bukhara_poi_kalyan",
+      "backgroundId": "uz_bg_bukhara_poi_kalyan",
       "openingWindows": [
         {
           "start": 540,
@@ -106,7 +106,7 @@
       "nameEn": "Samanid Mausoleum",
       "latitude": 39.77694444,
       "longitude": 64.40055556,
-      "backgroundAssetId": "uz_bg_bukhara_samanid_mausoleum",
+      "backgroundId": "uz_bg_bukhara_samanid_mausoleum",
       "openingWindows": [
         {
           "start": 540,
@@ -155,7 +155,7 @@
       "nameEn": "Lyabi Hauz",
       "latitude": 39.77305556,
       "longitude": 64.42027778,
-      "backgroundAssetId": "uz_bg_bukhara_lyabi_hauz",
+      "backgroundId": "uz_bg_bukhara_lyabi_hauz",
       "openingWindows": [
         {
           "start": 540,
@@ -196,7 +196,7 @@
       "nameEn": "Chor Minor exterior",
       "latitude": 39.77482706,
       "longitude": 64.42736864,
-      "backgroundAssetId": "uz_bg_bukhara_chor_minor",
+      "backgroundId": "uz_bg_bukhara_chor_minor",
       "openingWindows": [
         {
           "start": 540,
@@ -240,7 +240,7 @@
       "nameEn": "Bolo Hauz exterior",
       "latitude": 39.77777778,
       "longitude": 64.4075,
-      "backgroundAssetId": "uz_bg_bukhara_bolo_hauz",
+      "backgroundId": "uz_bg_bukhara_bolo_hauz",
       "openingWindows": [
         {
           "start": 540,
@@ -284,7 +284,7 @@
       "nameEn": "Toki Zargaron",
       "latitude": 39.776391,
       "longitude": 64.416639,
-      "backgroundAssetId": "uz_bg_bukhara_toki_zargaron",
+      "backgroundId": "uz_bg_bukhara_toki_zargaron",
       "openingWindows": [
         {
           "start": 540,
@@ -328,7 +328,7 @@
       "nameEn": "Abdulaziz Khan Madrasa",
       "latitude": 39.77583333,
       "longitude": 64.41777778,
-      "backgroundAssetId": "uz_bg_bukhara_abdulaziz_khan",
+      "backgroundId": "uz_bg_bukhara_abdulaziz_khan",
       "openingWindows": [
         {
           "start": 540,
@@ -380,7 +380,7 @@
       "nameEn": "Ulugh Beg Madrasa",
       "latitude": 39.77667906,
       "longitude": 64.41753077,
-      "backgroundAssetId": "uz_bg_bukhara_ulugh_beg",
+      "backgroundId": "uz_bg_bukhara_ulugh_beg",
       "openingWindows": [
         {
           "start": 540,
@@ -432,7 +432,7 @@
       "nameEn": "Magoki Attori",
       "latitude": 39.7732,
       "longitude": 64.4183,
-      "backgroundAssetId": "uz_bg_bukhara_magoki_attori",
+      "backgroundId": "uz_bg_bukhara_magoki_attori",
       "openingWindows": [
         {
           "start": 540,
@@ -484,7 +484,7 @@
       "nameEn": "Bukhara lodging hub",
       "latitude": 39.7727,
       "longitude": 64.4214,
-      "backgroundAssetId": "uz_bg_bukhara_hotel_hub",
+      "backgroundId": "uz_bg_bukhara_hotel_hub",
       "openingWindows": [
         {
           "start": 0,

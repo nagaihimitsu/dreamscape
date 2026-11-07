@@ -11,7 +11,7 @@
       "enemyDescriptionJa": "祖母から塔の番を継いだ青年。動かない歯車に毎朝油を差し、止まった時計の番人では仕事にならないと思っている。",
       "storyId": "battles/smp_mihon_clock_tower",
       "quizId": "smp_mihon_clock_tower_quiz",
-      "backgroundAssetId": "smp_bg_mihon_clock_tower",
+      "backgroundId": "smp_bg_mihon_clock_tower",
       "portrait": "abstract",
       "scenes": {
         "intro": "intro",
@@ -33,7 +33,7 @@
       "storyId": "battles/smp_mihon_market_b",
       "quizId": "smp_mihon_market_b_quiz",
       "format": "B",
-      "backgroundAssetId": "smp_bg_mihon_market",
+      "backgroundId": "smp_bg_mihon_market",
       "portrait": "abstract",
       "scenes": {
         "intro": "intro",
@@ -71,7 +71,7 @@
       "storyId": "battles/smp_mihon_library_c",
       "quizId": "smp_mihon_library_c_quiz",
       "format": "C",
-      "backgroundAssetId": "smp_bg_mihon_library",
+      "backgroundId": "smp_bg_mihon_library",
       "portrait": "abstract",
       "scenes": {
         "intro": "intro",
@@ -111,7 +111,7 @@
       "enemyDescriptionJa": "旅人に『時間にいいかげんな街』と言われるのが悔しい。子どもの頃の約束の言葉は、忘れたふりをしている。",
       "storyId": "battles/smp_mihon_finale",
       "quizId": "smp_mihon_finale_quiz",
-      "backgroundAssetId": "smp_bg_mihon_clock_tower",
+      "backgroundId": "smp_bg_mihon_clock_tower",
       "portrait": "abstract",
       "scenes": {
         "intro": "intro",

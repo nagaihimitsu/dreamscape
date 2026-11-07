@@ -115,14 +115,14 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
       battles.push(battleSchema.parse({ id: item.battleId, titleJa: script.titleJa, descriptionJa: script.descriptionJa,
         landmarkId: place.id, enemyNameJa: script.enemyNameJa, enemyTitleJa: script.enemyTitleJa,
         enemyDescriptionJa: script.enemyDescriptionJa, storyId: item.battleStoryId, quizId: item.quizId,
-        backgroundAssetId: place.backgroundAssetId, portrait: "abstract", scenes: { intro: "intro", afterRounds: ["after_1", "after_2"], outro: "outro" } }));
+        backgroundId: place.backgroundId, portrait: "abstract", scenes: { intro: "intro", afterRounds: ["after_1", "after_2"], outro: "outro" } }));
       addRewards(event.id, false);
     }
     for (const item of plan.dates) {
       const event = travel.events.find((entry) => entry.id === item.eventId)!;
       const place = travel.places.find((entry) => entry.id === event.placeId);
       const destination = input.destinations.find((entry) => entry.id === item.destinationId && entry.cityId === plan.cityId);
-      if (!place || !destination || !place.destinationIds?.includes(destination.id) || destination.backgroundAssetId !== place.backgroundAssetId)
+      if (!place || !destination || !place.destinationIds?.includes(destination.id) || destination.backgroundId !== place.backgroundId)
         throw new Error(`Journey scaffold: missing date destination ${item.destinationId}`);
       const script = narrative.dates[item.eventId];
       memories[item.memoryId] = { titleJa: script.memoryTitleJa, descriptionJa: script.memoryDescriptionJa };
@@ -132,7 +132,7 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
       }
       dates.push(dateSchema.parse({ id: item.eventId, kind: "normal", chapterId: plan.cityId,
         titleJa: script.titleJa, descriptionJa: script.descriptionJa, apCost: event.apCost, storyId: item.storyId,
-        requiredCompletedChapters: [plan.cityId], destinationId: destination.id, backgroundAssetId: place.backgroundAssetId,
+        requiredCompletedChapters: [plan.cityId], destinationId: destination.id, backgroundId: place.backgroundId,
         choiceCount: 2, effectCount: 2 }));
     }
     const script = narrative.finales[plan.cityId];
@@ -146,7 +146,7 @@ export function buildJourneyFragments(input: JourneyScaffoldInput, rawNarrative:
     battles.push(battleSchema.parse({ id: plan.finale.battleId, scope: "city_finale", cityId: plan.cityId, landmarkId: null,
       titleJa: script.titleJa, descriptionJa: script.descriptionJa, enemyNameJa: script.enemyNameJa, enemyTitleJa: script.enemyTitleJa,
       enemyDescriptionJa: script.enemyDescriptionJa, storyId: plan.finale.battleStoryId, quizId: plan.finale.quizId,
-      backgroundAssetId: place.backgroundAssetId, portrait: "abstract", scenes: { intro: "intro", afterRounds: ["after_1", "after_2", "after_3", "after_4"], outro: "outro" } }));
+      backgroundId: place.backgroundId, portrait: "abstract", scenes: { intro: "intro", afterRounds: ["after_1", "after_2", "after_3", "after_4"], outro: "outro" } }));
     const destinationEvents = travel.events.filter((event) => event.placeId === place.id);
     const costs = new Set(destinationEvents.map((event) => event.admissionCost ?? 0));
     if (costs.size !== 1) throw new Error(`Journey scaffold: inconsistent admission at ${place.id}`);
@@ -189,7 +189,7 @@ export function loadJourneyScaffold(root: string, journeyId: string, sources = l
   const imageAssetIds: Record<string, string> = {};
   for (const city of cities) for (const landmarkId of plannedLandmarks[city.cityId]) {
     const place = city.places.find((entry) => entry.id === landmarkId);
-    const assetId = place && backgrounds[place.backgroundAssetId]?.imageAssetId;
+    const assetId = place && backgrounds[place.backgroundId]?.imageAssetId;
     const asset = assets.find((entry) => entry.id === assetId);
     if (!asset || asset.isPlaceholder || asset.path !== observationsFile.images[landmarkId]?.path)
       throw new Error(`Journey scaffold: observation and background image differ ${landmarkId}`);

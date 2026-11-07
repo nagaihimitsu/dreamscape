@@ -12,8 +12,8 @@ describe("authored Indian date destinations", () => {
     for (const destination of destinations) {
       const place = travel.places.find((item) => item.destinationIds?.includes(destination.id));
       expect(place?.cityId).toBe(cityId);
-      expect(place?.backgroundAssetId).toBe(destination.backgroundAssetId);
-      expect(presentation.backgrounds[destination.backgroundAssetId]).toBeDefined();
+      expect(place?.backgroundId).toBe(destination.backgroundId);
+      expect(presentation.backgrounds[destination.backgroundId]).toBeDefined();
       expect(destination.facts.length).toBeGreaterThan(0);
       const event = travel.events.find((event) => event.placeId === place?.id && event.category === "date");
       expect(event).toBeDefined();

@@ -249,8 +249,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   for (const destination of destinations) {
     if (!cities.some((item) => item.id === destination.cityId))
       throw new Error(`Unknown date destination city: ${destination.id}/${destination.cityId}`);
-    if (!presentation.backgrounds[destination.backgroundAssetId])
-      throw new Error(`Unknown date destination background: ${destination.id}/${destination.backgroundAssetId}`);
+    if (!presentation.backgrounds[destination.backgroundId])
+      throw new Error(`Unknown date destination background: ${destination.id}/${destination.backgroundId}`);
   }
   const characters = parseCatalog(characterCatalogSchema, "presentation/characters.json");
   validateBackgroundAssets(publicFiles, presentation.backgrounds, tourism.assets);
@@ -384,7 +384,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
         throw new Error(`Unknown date destination: ${date.id}/${date.destinationId}`);
       if (destination.cityId !== date.chapterId)
         throw new Error(`Date destination city mismatch: ${date.id}/${date.destinationId}`);
-      if (destination.backgroundAssetId !== date.backgroundAssetId)
+      if (destination.backgroundId !== date.backgroundId)
         throw new Error(`Date destination background mismatch: ${date.id}/${date.destinationId}`);
     }
     if (
@@ -394,8 +394,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     ) {
       throw new Error(`Unknown chapter reference: ${date.id}`);
     }
-    if (!presentation.backgrounds[date.backgroundAssetId])
-      throw new Error(`Unknown background: ${date.backgroundAssetId}`);
+    if (!presentation.backgrounds[date.backgroundId])
+      throw new Error(`Unknown background: ${date.backgroundId}`);
     if (date.apCost > balance.apCap)
       throw new Error(`Date cost exceeds AP cap: ${date.id}`);
     unique(date.requiredPlayedDateIds, "required date ID");
@@ -592,8 +592,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
       throw new Error(`Battle intermediate scene count mismatch: ${battle.id}`);
     if (!stories[battle.storyId])
       throw new Error(`Unknown battle storyId: ${battle.storyId}`);
-    if (!presentation.backgrounds[battle.backgroundAssetId])
-      throw new Error(`Unknown battle background: ${battle.backgroundAssetId}`);
+    if (!presentation.backgrounds[battle.backgroundId])
+      throw new Error(`Unknown battle background: ${battle.backgroundId}`);
     unique(
       [
         battle.scenes.intro,
@@ -768,7 +768,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     const compiled = stories[storyId];
     if (!compiled) throw new Error(`Unknown arrival story: ${storyId}`);
     validateNoInkRandom(compiled);
-    const backgrounds = travels.find(({ city }) => city.id === current.id)!.travel.places.map((place) => place.backgroundAssetId);
+    const backgrounds = travels.find(({ city }) => city.id === current.id)!.travel.places.map((place) => place.backgroundId);
     epilogueScenarios += withContext(storyLabel(storyId), () =>
       validateEpilogue(compiled, { ...context, backgroundIds: backgrounds }, (text, speaker, explicitEmotion) => {
         if (!["heroine", "narrator"].includes(speaker)) throw new Error("City arrival cannot speak for the player");

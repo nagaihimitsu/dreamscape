@@ -30,7 +30,7 @@ describe("Luang Prabang city foundation", () => {
       expect(event.contentStatus).toBe("pending_content");
       expect(getTravelEventAvailability(prototypePreviewState(cityId), event.id, "walk").available).toBe(false);
       const place = travel.places.find((item) => item.id === event.placeId)!;
-      const asset = tourismAssets.find((item) => item.id === presentation.backgrounds[place.backgroundAssetId]?.imageAssetId);
+      const asset = tourismAssets.find((item) => item.id === presentation.backgrounds[place.backgroundId]?.imageAssetId);
       expect(asset).toMatchObject({ isPlaceholder: false });
       expect(asset?.licenseName).toMatch(/CC BY/);
     }

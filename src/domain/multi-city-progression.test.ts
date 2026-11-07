@@ -84,7 +84,7 @@ describe("city-specific progression", () => {
     const backgroundId = "test_city_view";
     presentation.backgrounds[backgroundId] = { ...presentation.backgrounds.milano_cafe, nameJa: "試験都市" };
     tagContext.backgroundIds.push(backgroundId);
-    cityContents.test_city.travel.places.find((place) => place.id === "test_place")!.backgroundAssetId = backgroundId;
+    cityContents.test_city.travel.places.find((place) => place.id === "test_place")!.backgroundId = backgroundId;
     try {
       const initial = createGame();
       const state = { ...initial, currentCityId: "test_city", travel: { ...initial.travel, currentPlaceId: "test_place", hotelPlaceId: "test_hotel" } };

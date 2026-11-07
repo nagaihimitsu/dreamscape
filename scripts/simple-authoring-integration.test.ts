@@ -88,7 +88,7 @@ VAR heroine_name = ""
       chapterId: "milano",
       titleJa: "追加のデート",
       storyId: "milano/fixture_simple_date",
-      backgroundAssetId: "milano_la_scala_date",
+      backgroundId: "milano_la_scala_date",
     });
     await writeFile(datesPath, JSON.stringify(dateCatalog));
     const travelPath = path.join(root, "content/journeys/milano/travel/milano.json");

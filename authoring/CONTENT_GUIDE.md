@@ -64,7 +64,7 @@ VAR heroine_name = ""
   "chapterId": "milano",
   "titleJa": "新しいデート",
   "storyId": "milano/new_date",
-  "backgroundAssetId": "milano_cafe"
+  "backgroundId": "milano_cafe"
 }
 ```
 
@@ -130,7 +130,7 @@ JSONにはコメントを入れず、カンマ、引用符、配列の括弧を�
 
 ### 敵・バトルの項目
 
-`battle_*.json` の `id`、`titleJa`、`descriptionJa`、`enemyNameJa`、`enemyTitleJa`、`enemyDescriptionJa` は対決と人物の識別・表示。`landmarkId`、`storyId`、`quizId`、`backgroundAssetId` は観光地・Ink・問題セット・登録済み背景への参照です。`scenes.intro`、`afterRounds`、`outro` はInkの `battle_scene` に渡される場面名で、通常戦は中間2つ。`format` はAでは省略可能、B/Cは明示。任意の `portrait` は既存で定義済みの表示種別に限られます。新規の立ち絵種類には実装作業が別途必要です。
+`battle_*.json` の `id`、`titleJa`、`descriptionJa`、`enemyNameJa`、`enemyTitleJa`、`enemyDescriptionJa` は対決と人物の識別・表示。`landmarkId`、`storyId`、`quizId`、`backgroundId` は観光地・Ink・問題セット・登録済み背景への参照です。`scenes.intro`、`afterRounds`、`outro` はInkの `battle_scene` に渡される場面名で、通常戦は中間2つ。`format` はAでは省略可能、B/Cは明示。任意の `portrait` は既存で定義済みの表示種別に限られます。新規の立ち絵種類には実装作業が別途必要です。
 
 B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）、0から数える `roundIndex`、候補 `caseClueIds`、正解 `correctClueIds`、主張・成功・失敗の `claimScene` / `successScene` / `failureScene` を記入します。Bは `pressScene` も指定し、正解証拠は1つ。Cは異なる2つを順不同で組み合わせます。証拠は未発見でもケース資料として開けるよう候補に含めます。英語3択の正解はクイズ側で別に指定します。
 
@@ -140,7 +140,7 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 
 観光・発見・バトルを持つメイン観光地と、デート中に訪れる行き先は別のデータです。デート先のために敵・クイズ・観光エピソードを作る必要はありません。将来、メイン観光地と同じ場所をデートで再訪する場合も、同じ場所を指すデート先を登録できます。
 
-1. `content/journeys/<旅行編ID>/romance/date_destinations.json` の `destinations` に、安定した `id`、`cityId`、日本語・英語の名称、短い `descriptionJa`、`backgroundAssetId`、`facts` を登録します。事実ごとに `publisher`・`title`・`url`・`checkedAt`・`claimType`・`claimJa` を記録し、実際に資料の該当箇所を確認してください。事実・解釈・仮説・伝説は既存の観光資料と同じ区分を使います。
+1. `content/journeys/<旅行編ID>/romance/date_destinations.json` の `destinations` に、安定した `id`、`cityId`、日本語・英語の名称、短い `descriptionJa`、`backgroundId`、`facts` を登録します。事実ごとに `publisher`・`title`・`url`・`checkedAt`・`claimType`・`claimJa` を記録し、実際に資料の該当箇所を確認してください。事実・解釈・仮説・伝説は既存の観光資料と同じ区分を使います。
 2. 権利を確認した写真を `content/journeys/<旅行編ID>/public/assets/tourism/` に置き、`content/journeys/<旅行編ID>/tourism/catalog.json` の `assets` に実寸・作者・出典URL・ライセンス・加工内容を登録します。同じ旅行編の `romance/presentation.json` の背景から `imageAssetId` で参照し、必要なら `imagePosition` の x / y を0〜100で指定します。写真家の権利だけでなく被写体の権利も確認してください。近隣の風景を使う場合は実際の場所を代替テキスト・クレジットに明記します。確認できる画像がない場合は `fallback: "neutral"` を使います。出典は会話中の操作メニューから確認できます。
    背景に訪問対象が写っていないときは、行き先に任意の `referenceImage`（HTTPSの `url`、リンク名 `labelJa`、背景についての `backgroundNoteJa`）を追加し、実物を確認できる公式資料へ案内できます。外部リンクは写真のゲーム内への転載許諾を意味しません。
 3. `content/journeys/<旅行編ID>/romance/date_catalog.json` の通常デートに `destinationId` と必要に応じて `requiredCompletedEpisodeIds` を指定します。デートの `chapterId`、行き先の `cityId`、双方の背景IDを一致させます。訪問後に開放する通常デートでは、必要エピソードを指定したうえで `requiredCompletedChapters` を空配列にできます。交際後も同じ短編を遊べる場合は `allowAfterEnding` を指定します。
@@ -155,7 +155,7 @@ B/Cの `reasoning` には `kind`（Bは `contradiction`、Cは `connection`）�
 
 ### 通常デートのデータ
 
-デート（`romance/date_catalog.json` の `dates`）の `id`、`chapterId`、`titleJa`、`descriptionJa`、`storyId`、`backgroundAssetId` はイベント、章、表示文、脚本、背景です。`kind` は通常なら `normal`。`apCost`、`minRomanceStage`、`minAffection`、`requiredCompletedChapters` は開始条件で、`destinationId`・`requiredCompletedEpisodeIds`・`requiredCompletedCityIds` は必要な場合のみ。通常デートの `requiredPlayedDateIds` は空配列とし、他のデートを必須にしません。期間限定イベントには `forbiddenCompletedEpisodeIds` で終了条件を指定でき、`eventLabelJa` で「今だけの出来事」などの種別を表示できます。`repeatable` は再挑戦可否で、通常デートは `false`、告白は再挑戦のため `true` にします。`rewardOnlyOnce` は効果の重複防止、`needsDeferred` は告白保留後の条件、`choiceCount` / `effectCount` は各経路の選択・効果回数です。
+デート（`romance/date_catalog.json` の `dates`）の `id`、`chapterId`、`titleJa`、`descriptionJa`、`storyId`、`backgroundId` はイベント、章、表示文、脚本、背景です。`kind` は通常なら `normal`。`apCost`、`minRomanceStage`、`minAffection`、`requiredCompletedChapters` は開始条件で、`destinationId`・`requiredCompletedEpisodeIds`・`requiredCompletedCityIds` は必要な場合のみ。通常デートの `requiredPlayedDateIds` は空配列とし、他のデートを必須にしません。期間限定イベントには `forbiddenCompletedEpisodeIds` で終了条件を指定でき、`eventLabelJa` で「今だけの出来事」などの種別を表示できます。`repeatable` は再挑戦可否で、通常デートは `false`、告白は再挑戦のため `true` にします。`rewardOnlyOnce` は効果の重複防止、`needsDeferred` は告白保留後の条件、`choiceCount` / `effectCount` は各経路の選択・効果回数です。
 
 `effect_catalog.json` の各 `id` と任意の `memoryId` はInkの `# effect:` に対応します。告白を除く恋愛選択には `responseProfileId` を指定し、`content/romance/response_profiles.json` のリスク特性から選びます。`responseProfileId` を指定した選択の関係値は確率判定で決まり、固定の `affectionDelta`・`trustDelta`・`sparkDelta` は使われません。`affectionDelta` は `0` とし、`trustDelta`・`sparkDelta` は書きません。台詞と選択の性格に合うプロフィールを選び、全段階をレビューしてください。思い出は `presentation.json` の `memories` に同じIDと `titleJa` / `descriptionJa` を登録します。Stage・告白条件は `progression.json` で管理し、特定デートIDを条件にしません。
 
