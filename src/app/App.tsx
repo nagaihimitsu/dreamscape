@@ -8,7 +8,8 @@ import { PreparingJourney } from "../features/journey/PreparingJourney";
 import { UnavailableJourney } from "../features/journey/UnavailableJourney";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
 import { GameApp } from "./GameApp";
-import { browserStorage, type AppProps } from "./app-storage";
+import type { KeyedStorage } from "../persistence/old-data";
+import { browserKeyedStorage, browserStorage, type AppProps } from "./app-storage";
 
 export default function App(props: AppProps = {}) {
   const [journeyId, setJourneyId] = useState(defaultJourneyId);
@@ -46,11 +47,13 @@ export default function App(props: AppProps = {}) {
       ? <PreparingJourney key={journeyId} journey={journey} storage={scopedStorage} onSwitchJourney={switchJourney} selectorFocus={selectorFocus} />
       : <UnavailableJourney journey={journey} onSwitchJourney={switchJourney} selectorFocus={selectorFocus} />;
   }
-  if (journey?.initialState) return <PlayableJourney key={journeyId} {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={switchJourney} selectorFocus={selectorFocus} />;
-  return <GameApp key={journeyId} {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={switchJourney} selectorFocus={selectorFocus} />;
+  // 「古い保存データの整理」 reads the browser's own storage; a page given another storage has none.
+  const oldDataStorage = props.storage ? undefined : browserKeyedStorage;
+  if (journey?.initialState) return <PlayableJourney key={journeyId} {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={switchJourney} selectorFocus={selectorFocus} oldDataStorage={oldDataStorage} />;
+  return <GameApp key={journeyId} {...props} storage={scopedStorage} journeyId={journeyId} onSwitchJourney={switchJourney} selectorFocus={selectorFocus} oldDataStorage={oldDataStorage} />;
 }
 
-function PlayableJourney(props: AppProps & { storage: typeof browserStorage; journeyId: string; onSwitchJourney: (id: string) => void; selectorFocus: SelectorFocus }) {
+function PlayableJourney(props: AppProps & { storage: typeof browserStorage; journeyId: string; onSwitchJourney: (id: string) => void; selectorFocus: SelectorFocus; oldDataStorage?: KeyedStorage }) {
   const [status, setStatus] = useState<"loading" | "ready" | string>("loading");
   useEffect(() => {
     const draft = loadJourneyDraft(props.storage);

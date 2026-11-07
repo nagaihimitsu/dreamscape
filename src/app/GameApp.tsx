@@ -8,7 +8,7 @@ import {
   tourismAssets,
   getCityContent,
 } from "../content";
-import { defaultJourneyId, getJourney } from "../content/journeys";
+import { defaultJourneyId, getJourney, journeys } from "../content/journeys";
 import { currencyForCity, formatMoneyForCity } from "../content/currency";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
 import { observeLocalLandmark, waitForTravel } from "../domain/travel-game";
@@ -27,6 +27,8 @@ import { useGameSession } from "./useGameSession";
 import { leaveStep } from "./unsaved-progress";
 import { titleSaveActions } from "./save-recovery";
 import type { DeleteSnapshot } from "./save-deletion";
+import { OldDataCleanup } from "./OldDataCleanup";
+import type { KeyedStorage } from "../persistence/old-data";
 import { CanalScene } from "../components/CanalScene";
 import { HeldItems } from "../components/HeldItems";
 import { secureRomanceRoll } from "../random/romance-source";
@@ -92,7 +94,8 @@ export function GameApp({
   journeyId = defaultJourneyId,
   onSwitchJourney,
   selectorFocus,
-}: AppProps & { journeyId?: string; onSwitchJourney?: (id: string) => void; selectorFocus?: SelectorFocus }) {
+  oldDataStorage,
+}: AppProps & { journeyId?: string; onSwitchJourney?: (id: string) => void; selectorFocus?: SelectorFocus; oldDataStorage?: KeyedStorage }) {
   const isDebug = import.meta.env.DEV && debug;
   const [selectedLandmarkId, setSelectedLandmarkId] = useState<string | null>(null);
   const displaySettings = usePresentationSettings(storage);
@@ -118,6 +121,7 @@ export function GameApp({
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
   const [confirmDeparture, setConfirmDeparture] = useState(false);
   const [settings, setSettings] = useState(false);
+  const [oldDataOpen, setOldDataOpen] = useState(false);
   const [switchJourneyTo, setSwitchJourneyTo] = useState<string | null>(null);
   // This journey's screen is the end of a switch (or of the lock's 再試行):
   // the title's selector has taken the focus back (child effects run first).
@@ -877,6 +881,8 @@ export function GameApp({
               </button>
             </form>
           )}
+          {!isDebug && oldDataStorage && <button type="button" className="text-button old-data-entry"
+            onClick={() => { setSettings(false); setOldDataOpen(true); }}>古い保存データの整理</button>}
           <button className="text-button delete-entry" onClick={requestDelete}>
             {isDebug ? "Debug用の一時データの消去" : "保存データの消去"}
           </button>
@@ -889,6 +895,8 @@ export function GameApp({
           </button>
         </Modal>
       )}
+      {oldDataOpen && oldDataStorage && <OldDataCleanup storage={oldDataStorage}
+        context={{ journeys, currentJourneyId: journeyId }} onClose={() => setOldDataOpen(false)} />}
       {travelEffects}
     </div>
   );
