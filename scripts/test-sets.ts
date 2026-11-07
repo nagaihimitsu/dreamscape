@@ -4,8 +4,11 @@ import path from "node:path";
 /**
  * The unit test files, relative to the repository root. Every one of them runs
  * in `npm test`; `npm run test:quick` runs only the quick set (splitTestFiles).
+ * Tests of shared code sit next to it in src/ and scripts/; the tests of one
+ * journey's own content, route and tools sit in tests/journeys/<journeyId>/, so
+ * a new journey's folder there is found without editing this list.
  */
-export const testFilePatterns = ["src/**/*.test.ts", "scripts/**/*.test.ts"];
+export const testFilePatterns = ["src/**/*.test.ts", "scripts/**/*.test.ts", "tests/journeys/**/*.test.ts"];
 
 /**
  * Modules that run the whole content build: the pipeline itself

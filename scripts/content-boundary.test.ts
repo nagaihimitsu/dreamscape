@@ -1,7 +1,8 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
+import { SAMPLE_JOURNEY_ID } from "./content-layout";
 
 // The game reads content only through the validated, merged mirror in
 // src/content/generated/. The authored content/ tree is the pipeline's input:
@@ -71,31 +72,50 @@ describe("content boundary", () => {
   });
 });
 
-describe("journey-specific tools", () => {
-  // scripts/journeys/<journeyId>/ holds tools for one journey. Shared code and
-  // tools choose per-journey behavior from manifest data, never by importing them.
-  const journeyTools = path.join(root, "scripts/journeys");
+describe("journey-specific tools and tests", () => {
+  // scripts/journeys/<journeyId>/ holds tools for one journey and
+  // tests/journeys/<journeyId>/ the tests of its own content, route and tools.
+  // Shared code, tools and tests choose per-journey behavior from manifest
+  // data, never by importing them, so a journey's folders go with the journey.
+  const journeyFolders = [path.join(root, "scripts/journeys"), path.join(root, "tests/journeys")];
+  const inside = (file: string, folder: string) => file === folder || file.startsWith(`${folder}${path.sep}`);
   const imports = (file: string, text: string) => [...text.matchAll(/(?:from|import\()\s*["']([^"']+)["']/gu)]
     .map((match) => match[1]).filter((specifier) => specifier.startsWith("."))
-    .filter((specifier) => {
-      const target = path.resolve(path.dirname(file), specifier);
-      return target === journeyTools || target.startsWith(`${journeyTools}${path.sep}`);
-    });
+    .filter((specifier) => journeyFolders.some((folder) => inside(path.resolve(path.dirname(file), specifier), folder)));
 
-  it("detects imports of a journey's tools", () => {
+  it("detects imports of a journey's tools and tests", () => {
     expect(imports(path.join(root, "scripts/city-bundle.ts"), [
       'import { a } from "./journeys/golden_triangle/india-draft";',
       'const b = await import("../scripts/journeys/golden_triangle/india-followup");',
       'import { c } from "./journey-transit-decisions";',
-    ].join("\n"))).toEqual(["./journeys/golden_triangle/india-draft", "../scripts/journeys/golden_triangle/india-followup"]);
+      'import { d } from "../tests/journeys/golden_triangle/test-journey";',
+      'import { e } from "../tests/fixtures/current-game";',
+    ].join("\n"))).toEqual([
+      "./journeys/golden_triangle/india-draft",
+      "../scripts/journeys/golden_triangle/india-followup",
+      "../tests/journeys/golden_triangle/test-journey",
+    ]);
   });
 
-  it("keeps shared code and tools independent of them", () => {
+  it("keeps shared code, tools and tests independent of them", () => {
     // This file's own examples above are not imports.
-    const files = [...codeFiles(path.join(root, "src")), ...codeFiles(path.join(root, "scripts"))]
-      .filter((file) => !file.startsWith(`${journeyTools}${path.sep}`) && file !== fileURLToPath(import.meta.url));
+    const files = ["src", "scripts", "tests"].flatMap((folder) => codeFiles(path.join(root, folder)))
+      .filter((file) => !journeyFolders.some((folder) => inside(file, folder)) && file !== fileURLToPath(import.meta.url));
     expect(files).toContain(path.join(root, "scripts/city-bundle.ts"));
+    expect(files).toContain(path.join(root, "tests/e2e/helpers.ts"));
     const violations = files.flatMap((file) => imports(file, readFileSync(file, "utf8")).map((specifier) => `${path.relative(root, file)}: ${specifier}`));
     expect(violations).toEqual([]);
+  });
+
+  it("names a journey with each of its tool and test folders", () => {
+    // A folder left behind after its journey was removed fails here.
+    const journeyIds = readdirSync(path.join(contentRoot, "journeys"), { withFileTypes: true })
+      .filter((entry) => entry.isDirectory() && existsSync(path.join(contentRoot, "journeys", entry.name, "manifest.json")))
+      .map((entry) => entry.name);
+    expect(journeyIds).toContain("milano");
+    const folders = journeyFolders.flatMap((folder) => readdirSync(folder, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory()).map((entry) => path.relative(root, path.join(folder, entry.name))));
+    expect(folders).toContain("tests/journeys/milano");
+    expect(folders.filter((folder) => ![...journeyIds, SAMPLE_JOURNEY_ID].includes(path.basename(folder)))).toEqual([]);
   });
 });

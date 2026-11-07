@@ -5,7 +5,7 @@ import { expect, expectNoActiveScene, generated, journeyCatalog, ops, playUntil,
 // and tests only) played like a player from the title screen to the end of the
 // journey, with no Debug and no state shortcut; every action waits for its save. It
 // runs on a development server of its own built with the sample
-// (playwright.sample.config.ts). The route is the one src/domain/sample-journey-route.test.ts
+// (playwright.sample.config.ts). The route is the one tests/journeys/sample_trip/route.test.ts
 // plays with the game functions; its IDs come from the generated content. It covers
 // the screens a new journey needs (journey:new copies the sample) and the city
 // finale, epilogue and end of a journey, which the Milan tests reach only through a
