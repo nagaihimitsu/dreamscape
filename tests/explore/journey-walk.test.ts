@@ -151,7 +151,6 @@ function walk(seed: number, total: number) {
   let state: GameState | undefined;
   let since = 0;
   let runs = 0;
-  let saved: GameState | null = null;
   let trace: string[] = [];
   const fail = (step: number, message: string): never => {
     throw new Error([
@@ -169,7 +168,6 @@ function walk(seed: number, total: number) {
       start = runs <= playable.length ? own[0] : own[Math.floor(next() * own.length)];
       state = startState(start);
       memory.clear();
-      saved = null;
       since = 0;
       trace = [`(start ${start.label})`];
     }
@@ -204,7 +202,8 @@ function walk(seed: number, total: number) {
       fail(step, `AP (held + stored) is ${totalAp(changed)}, expected ${expected}: new reward IDs [${earned.join(", ")}], AP of a started date ${spentAp(previous, changed)}`);
     const storage = journeyStorage(base, journeyId);
     // saveGame validates the state (validateGameState) and refuses a revision that did not increase.
-    const result = saveGame(storage, changed, saved);
+    // (No expected previous snapshot: one tab, so the other-tab check would only repeat a validation.)
+    const result = saveGame(storage, changed);
     if (!result.ok) {
       try { validateGameState(changed); }
       catch (error) { fail(step, `validateGameState refused the new state: ${(error as Error).message}`); }
@@ -215,7 +214,6 @@ function walk(seed: number, total: number) {
     const restored = (loaded as Extract<typeof loaded, { status: "loaded" }>).state;
     try { expect(restored).toEqual(changed); }
     catch { fail(step, "the save → load round trip changed the state"); }
-    saved = restored;
     state = restored;
     since++;
     record(journeyId, previous, state);
