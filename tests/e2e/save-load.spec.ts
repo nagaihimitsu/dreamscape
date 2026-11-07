@@ -1,4 +1,5 @@
-import { allStorage, expect, journeyCatalog, learningKey, ops, playUntil, presentationKey, readSave, saveKey, test, tier } from "./helpers";
+import { DOUBLE_TAP_WINDOW_MS } from "../../src/components/double-tap";
+import { allStorage, expect, journeyCatalog, learningKey, ops, placeGuideSave, playUntil, presentationKey, readSave, saveKey, test, tier } from "./helpers";
 
 // Lane 1 (docs/10): saving and resuming are only ever checked through the real flow.
 
@@ -123,6 +124,39 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   expect(prompts).toEqual(["beforeunload"]);
 });
 
+// AGENTS.md 選択肢の誤タップ防止, docs/02 「UX/スマホ」: 「切り替える」 rebuilds the screen with the other
+// journey's saved scene under the finger. With lines shown whole (reduced motion), the second tap of a
+// quick double tap would read its first line on unseen: no tap is taken for a moment after a switch.
+test("a quick double tap on 「切り替える」 does not read on the other journey's saved story scene", { tag: tier.gate }, async ({ page }) => {
+  const other = journeyCatalog().journeys.find((journey) => journey.id !== "milano" && journey.status === "available");
+  expect(other, "an available journey besides Milan").toBeDefined();
+  await page.clock.install();
+  await ops.startJourney(page);
+  // State shortcut (lane 2 in docs/10): the other journey's save holds a sightseeing guide at its first line.
+  const placed = await placeGuideSave(page, other!.id);
+  // With manual saving and a move not yet saved, switching asks first, with its 「切り替える」.
+  await ops.setAutoSave(page, false);
+  await ops.goTo(page, "p_duomo");
+  await expect(page.getByTestId("tourism-guide")).toBeVisible();
+  await ops.settled(page);
+  const settings = await ops.openSettings(page);
+  await settings.getByLabel("旅行編").selectOption(other!.id);
+  const confirm = await ops.centerOf(page.getByRole("dialog", { name: "旅行編を切り替える" }).getByRole("button", { name: "切り替える", exact: true }));
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await page.touchscreen.tap(confirm.x, confirm.y);
+  const line = page.getByTestId("dialogue-text");
+  // The second tap comes while the other journey's guide is on screen (the held clock keeps it a double tap).
+  await expect(line).toContainText(placed.activeTourism!.frame!.text);
+  await page.touchscreen.tap(confirm.x, confirm.y);
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await page.clock.resume();
+  await ops.settled(page);
+  await expect(line).toContainText(placed.activeTourism!.frame!.text);
+  expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest("#tourism-screen"), confirm),
+    "the second tap landed on the other journey's guide").toBe(true);
+  expect(await readSave(page, other!.id)).toEqual(placed);
+});
+
 // AGENTS.md 「明示確認と別タブ競合の保護を維持する」: a second tab never overwrites the first one's progress.
 test("a second tab cannot open a journey that is already open", { tag: tier.gate }, async ({ page, context }) => {
   await ops.startJourney(page, "milano", ["先の名前", "あゆみ"]);
@@ -142,6 +176,38 @@ test("a second tab cannot open a journey that is already open", { tag: tier.gate
   await expect(second.getByRole("main")).toBeFocused();
   await expect(second.getByTestId("travelers")).toContainText("先の名前");
   expect(await allStorage(second)).toEqual(saved);
+});
+
+// AGENTS.md 選択肢の誤タップ防止: 再試行 rebuilds the screen like a switch, with the journey's saved
+// scene under the finger; the second tap of a quick double tap does not read its first line on.
+test("a quick double tap on 「再試行」 does not read on the saved story scene that opens", { tag: tier.gate }, async ({ page, context }) => {
+  await page.goto("/");
+  // State shortcut (lane 2 in docs/10): Milan's save holds its first sightseeing guide at the first line.
+  const placed = await placeGuideSave(page, "milano");
+  await page.reload();
+  await expect(page.getByTestId("tourism-guide")).toBeVisible();
+  const second = await context.newPage();
+  await second.clock.install();
+  await second.goto("/");
+  const retry = second.getByRole("button", { name: "再試行" });
+  await expect(retry).toBeVisible();
+  await page.close();
+  // The closed tab's lock is gone, so the next check opens the journey without waiting.
+  await expect.poll(() => second.evaluate(async () => (await navigator.locks.query()).held?.length ?? 0)).toBe(0);
+  const point = await ops.centerOf(retry);
+  await second.clock.pauseAt(await second.evaluate(() => Date.now() + 1_000));
+  await second.touchscreen.tap(point.x, point.y);
+  const line = second.getByTestId("dialogue-text");
+  // The second tap comes while the guide is on screen (the held clock keeps it a double tap).
+  await expect(line).toContainText(placed.activeTourism!.frame!.text);
+  await second.touchscreen.tap(point.x, point.y);
+  await second.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await second.clock.resume();
+  await ops.settled(second);
+  await expect(line).toContainText(placed.activeTourism!.frame!.text);
+  expect(await second.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest("#tourism-screen"), point),
+    "the second tap landed on the guide").toBe(true);
+  expect(await readSave(second)).toEqual(placed);
 });
 
 // AGENTS.md 「安全に読み込めないデータを勝手に上書き・削除しない」, docs/07 acceptance 10.

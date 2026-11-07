@@ -149,6 +149,25 @@ export async function placeSave(page: Page, journeyId: string, builder: string, 
 }
 
 /**
+ * placeSave with a story scene on screen: the journey's new game (scenario-builders' newJourney)
+ * with the first sightseeing guide that Debug lists in its first city opened (openTourismScene),
+ * at the guide's first line. Returns the saved state. Development server only.
+ */
+export async function placeGuideSave(page: Page, journeyId: string): Promise<GameState> {
+  const result = await page.evaluate(async ({ journeyId, modules }) => {
+    const builders = await import(/* @vite-ignore */ modules.builders);
+    const { debugTargets } = await import(/* @vite-ignore */ modules.debugState);
+    const { saveGame } = await import(/* @vite-ignore */ modules.persistence);
+    const { journeyStorage } = await import(/* @vite-ignore */ modules.journeyStorage);
+    const start = builders.newJourney(journeyId, ["航", "澪"]);
+    const guide = debugTargets(start.currentCityId).tourism.find((target: { unavailable?: string }) => !target.unavailable);
+    return saveGame(journeyStorage(localStorage, journeyId), builders.openTourismScene(start, guide.id));
+  }, { journeyId, modules: devModules });
+  expect(result, `placing a sightseeing guide as the ${journeyId} save`).toEqual({ ok: true });
+  return readSave(page, journeyId);
+}
+
+/**
  * Every UI operation the specs share, in one place (button names and labels
  * change here, not in each spec).
  */

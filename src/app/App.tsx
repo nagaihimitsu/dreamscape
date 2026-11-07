@@ -7,15 +7,20 @@ import { loadJourneyDraft, promoteJourneyDraft } from "../persistence/journey-pr
 import { PreparingJourney } from "../features/journey/PreparingJourney";
 import { UnavailableJourney } from "../features/journey/UnavailableJourney";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
+import { holdTaps } from "../components/tap-hold";
 import { GameApp } from "./GameApp";
 import { browserStorage, type AppProps } from "./app-storage";
 
 export default function App(props: AppProps = {}) {
   const [journeyId, setJourneyId] = useState(defaultJourneyId);
   // A switch rebuilds the screen (key={journeyId}); the new screen's journey
-  // selector takes the keyboard focus back (see JourneySelection).
+  // selector takes the keyboard focus back (see JourneySelection). The other
+  // journey's screen, perhaps its saved story scene, appears under the finger:
+  // the second tap of a double tap on 「切り替える」 must not press or read it
+  // (tap-hold.ts; the new GameApp starts with that scene, so it sees no start).
   const [restoreSelectorFocus, setRestoreSelectorFocus] = useState(false);
   const switchJourney = useCallback((id: string) => {
+    holdTaps();
     setRestoreSelectorFocus(true);
     setJourneyId(id);
   }, []);
@@ -25,8 +30,10 @@ export default function App(props: AppProps = {}) {
   const scopedStorage = useMemo(() => journeyStorage(baseStorage, journeyId), [baseStorage, journeyId]);
   const [lockAttempt, setLockAttempt] = useState(0);
   // 再試行 rebuilds the screen like a switch: the selector keeps the focus
-  // while the lock is checked again, and the new screen takes it at the end.
+  // while the lock is checked again, and the new screen takes it at the end;
+  // taps are held as for a switch.
   const retryLock = useCallback(() => {
+    holdTaps();
     setRestoreSelectorFocus(true);
     setLockAttempt((value) => value + 1);
   }, []);

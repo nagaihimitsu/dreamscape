@@ -6,7 +6,8 @@
  * which would skip the feedback); after a press on any control of the page
  * while a story scene is shown (a reply, a tool, the header's buttons, a modal's
  * 「閉じる」) or a tap that closes something over it, the scene's next line; after
- * a story scene starts, ends or is loaded, the new screen. Any tap this soon
+ * a story scene starts, ends or is loaded, or the journey is switched (or its
+ * lock tried again), the new screen. Any tap this soon
  * after such a tap is that second tap.
  */
 
