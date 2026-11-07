@@ -1,1330 +1,1330 @@
 {
   "schemaVersion": 1,
   "questions": {
-    "gt_delhi_red_fort_palace": {
+    "gt_delhi_red_fort_paradise_line": {
       "source": {
-        "questionEn": "Why would a board game showing only soldiers miss an important part of the Red Fort?",
+        "questionEn": "A student points to the Hall of Private Audience. Which famous line is carved inside it?",
         "options": [
           {
             "id": "A",
-            "textEn": "It was built as a palace as well as a fort."
+            "textEn": "The world is a bridge. Pass over it, but build no house on it."
           },
           {
             "id": "B",
-            "textEn": "It was built as a public market without a palace."
+            "textEn": "If there is a paradise on earth, it is this, it is this, it is this."
           },
           {
             "id": "C",
-            "textEn": "It was built as a royal tomb without living quarters."
-          }
-        ],
-        "correctOptionId": "A"
-      },
-      "questionJa": "兵士だけが登場する盤上ゲームでは、レッド・フォートのどんな重要な面を取りこぼしますか？",
-      "optionsJa": {
-        "A": "要塞であると同時に、宮殿として造られた。",
-        "B": "宮殿を持たない公共の市場として造られた。",
-        "C": "居住区を持たない王家の墓として造られた。"
-      }
-    },
-    "gt_delhi_red_fort_channel": {
-      "source": {
-        "questionEn": "A thin line connects the private palace buildings on a plan of the Red Fort. What was the Nahr-i-Behisht?",
-        "options": [
-          {
-            "id": "A",
-            "textEn": "A tunnel for soldiers to move between the buildings."
-          },
-          {
-            "id": "B",
-            "textEn": "A water channel running between the palace rooms."
-          },
-          {
-            "id": "C",
-            "textEn": "A wall separating the rooms from one another."
+            "textEn": "Truth alone wins, and every visitor must remember it."
           }
         ],
         "correctOptionId": "B"
       },
-      "questionJa": "レッド・フォートの図では、宮殿の私的な建物を細い線がつないでいます。ナフル・イ・ベヒシュトは何でしたか？",
+      "questionJa": "生徒の一人が内謁の間を指さします。その中に刻まれている有名な言葉はどれですか？",
       "optionsJa": {
-        "A": "兵士が建物の間を移動する地下道。",
-        "B": "宮殿の居室の間を流れる水路。",
-        "C": "居室を互いに隔てる壁。"
+        "A": "世界は橋である。渡りなさい、だがその上に家を建ててはならない。",
+        "B": "地上に楽園があるならば、それはここだ、ここだ、ここだ。",
+        "C": "真理のみが勝つ。訪れる者はみな、それを忘れてはならない。"
       }
     },
-    "gt_delhi_red_fort_changed_roles": {
+    "gt_delhi_red_fort_august_flag": {
       "source": {
-        "questionEn": "Which sequence best describes how people used the Red Fort over time?",
+        "questionEn": "A boy salutes and asks what happens at the Red Fort every Independence Day. What is the answer?",
         "options": [
           {
             "id": "A",
-            "textEn": "A British military site, then a Mughal palace, then a place to celebrate independence."
+            "textEn": "The Prime Minister raises the national flag and speaks to the country from its walls."
           },
           {
             "id": "B",
-            "textEn": "A place to celebrate independence, then a Mughal palace, then British military buildings."
+            "textEn": "The President opens the old royal treasury to the public for one day."
           },
           {
             "id": "C",
-            "textEn": "A Mughal palace, later British military buildings, and a place to celebrate independence."
+            "textEn": "Every school in Delhi holds its final exams inside the fort."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "少年が敬礼して、毎年の独立記念日にレッド・フォートで何が行われるかを尋ねます。答えは何ですか？",
+      "optionsJa": {
+        "A": "首相が国旗を掲げ、城壁から国民に向けて演説する。",
+        "B": "大統領が、古い王家の宝物庫を一日だけ一般に公開する。",
+        "C": "デリーのすべての学校が、城の中で期末試験を行う。"
+      }
+    },
+    "gt_delhi_red_fort_last_emperor_trial": {
+      "source": {
+        "questionEn": "A quiet student asks what happened in 1858 to the man who lived in this palace. What happened?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "He moved to a new palace in Agra and never came back."
+          },
+          {
+            "id": "B",
+            "textEn": "He gave the palace to his poet friends and became a teacher."
+          },
+          {
+            "id": "C",
+            "textEn": "The last Mughal emperor was put on trial by the British in his own palace."
           }
         ],
         "correctOptionId": "C"
       },
-      "questionJa": "人々によるレッド・フォートの使い方の変化を、最もよく表している順序はどれですか？",
+      "questionJa": "物静かな生徒が、この宮殿に住んでいた人物に1858年何が起きたのかを尋ねます。何が起きましたか？",
       "optionsJa": {
-        "A": "英国軍の施設、次にムガル帝国の宮殿、そして独立を祝う場所。",
-        "B": "独立を祝う場所、次にムガル帝国の宮殿、そして英国軍の施設。",
-        "C": "ムガル帝国の宮殿、その後の英国軍の施設、そして独立を祝う場所。"
+        "A": "アーグラの新しい宮殿へ移り、二度と戻らなかった。",
+        "B": "宮殿を詩人の友人たちに譲り、教師になった。",
+        "C": "最後のムガル皇帝が、自分の宮殿でイギリス側によって裁判にかけられた。"
       }
     },
-    "gt_delhi_qutb_unfinished_ambition": {
+    "gt_delhi_qutb_iron_pillar_fence": {
       "source": {
-        "questionEn": "The Alai Minar remains much lower than the Qutb Minar. What had its builder planned?",
+        "questionEn": "A man wants to hug the Iron Pillar, but a fence stands in his way. Why was the fence put around its base?",
         "options": [
           {
             "id": "A",
-            "textEn": "A low platform for watching the older tower."
+            "textEn": "Because the pillar is slowly sinking, so nobody may stand near it."
           },
           {
             "id": "B",
-            "textEn": "A tower twice the scale of the Qutb Minar."
+            "textEn": "To protect it from the huge number of visitors who used to touch it."
           },
           {
             "id": "C",
-            "textEn": "A small copy designed to stay below the first balcony."
+            "textEn": "Because the pillar now belongs to a private collector."
           }
         ],
         "correctOptionId": "B"
       },
-      "questionJa": "アラーイー・ミナールは、クトゥブ・ミナールよりずっと低いまま残っています。造営者は何を計画していましたか？",
+      "questionJa": "ある男性が鉄柱を抱きしめたがっていますが、柵が行く手をふさいでいます。なぜ柱の根元の周りに柵が設けられたのですか？",
       "optionsJa": {
-        "A": "古い塔を見るための低い台。",
-        "B": "クトゥブ・ミナールの二倍の規模の塔。",
-        "C": "最初のバルコニーより低く収める、小さな模造塔。"
+        "A": "柱が少しずつ沈んでいて、誰も近くに立てないから。",
+        "B": "以前は柱に触れていた、非常に多くの見物客から守るため。",
+        "C": "柱が今では個人の収集家のものだから。"
       }
     },
-    "gt_delhi_qutb_gate_record": {
+    "gt_delhi_qutb_iron_pillar_rust": {
       "source": {
-        "questionEn": "What provides a written record of when the Alai Darwaza gateway was built?",
+        "questionEn": "The science teacher asks why the Iron Pillar has resisted rust for about 1,600 years. What is the best answer?",
         "options": [
           {
             "id": "A",
-            "textEn": "The number of steps beside the gateway."
+            "textEn": "Workers have covered it with a special oil every year since it was made."
           },
           {
             "id": "B",
-            "textEn": "The colour of its stone in the sunlight."
+            "textEn": "It is made of a modern metal that replaced the old pillar around 1900."
           },
           {
             "id": "C",
-            "textEn": "The inscriptions carved on the gateway."
+            "textEn": "A thin protective layer forms on its surface, helped by phosphorus in the iron."
           }
         ],
         "correctOptionId": "C"
       },
-      "questionJa": "アラーイー門がいつ造られたかについて、文字による記録を伝えるものはどれですか？",
+      "questionJa": "理科の教師が、鉄柱がおよそ1600年も錆びに耐えてきたのはなぜかと尋ねます。最も適切な答えはどれですか？",
       "optionsJa": {
-        "A": "門のそばにある階段の段数。",
-        "B": "日光の下で見える石の色。",
-        "C": "門に刻まれた碑文。"
+        "A": "造られて以来、作業員が毎年特別な油を塗ってきたから。",
+        "B": "1900年ごろに古い柱と取り替えられた、現代の金属でできているから。",
+        "C": "鉄に含まれるリンの働きもあって、表面に薄い保護膜ができるから。"
       }
     },
-    "gt_delhi_qutb_many_hands": {
+    "gt_delhi_qutb_iron_pillar_journey": {
       "source": {
-        "questionEn": "What do the building and repair records tell us about the Qutb Minar?",
+        "questionEn": "According to research on the Iron Pillar, where did it first stand?",
         "options": [
           {
             "id": "A",
-            "textEn": "Later rulers added to and repaired an earlier tower."
+            "textEn": "Far away in central India, before it was moved to Delhi."
           },
           {
             "id": "B",
-            "textEn": "One ruler completed it, and no one changed it later."
+            "textEn": "In the same spot in Delhi where it stands today."
           },
           {
             "id": "C",
-            "textEn": "Later work changed the gardens, but never the tower itself."
+            "textEn": "In a museum in London until India became independent."
           }
         ],
         "correctOptionId": "A"
       },
-      "questionJa": "建設と修理の記録は、クトゥブ・ミナールについて何を伝えていますか？",
+      "questionJa": "鉄柱についての研究によると、この柱は最初どこに立っていましたか？",
       "optionsJa": {
-        "A": "後の支配者たちが、先に建てられた塔を増築・修理した。",
-        "B": "一人の支配者が完成させ、その後は誰も手を加えなかった。",
-        "C": "後の作業で庭園は変えられたが、塔そのものは変えられなかった。"
+        "A": "デリーに移される前、遠く離れた中部インドに。",
+        "B": "今立っているのと同じ、デリーのこの場所に。",
+        "C": "インドが独立するまで、ロンドンの博物館に。"
       }
     },
-    "gt_delhi_humayun_garden_hope": {
+    "gt_delhi_humayun_library_stairs": {
       "source": {
-        "questionEn": "What idea is expressed by the garden's four-part layout and water channels at Humayun's Tomb?",
+        "questionEn": "The uncle tests the 'foreign friends'. How did Emperor Humayun die?",
         "options": [
           {
             "id": "A",
-            "textEn": "A map of the emperor’s four military camps."
+            "textEn": "He fell down the steep stairs of his library."
           },
           {
             "id": "B",
-            "textEn": "A plan for four separate trading markets."
+            "textEn": "He was poisoned at a wedding feast in Agra."
           },
           {
             "id": "C",
-            "textEn": "The rivers of paradise described in the Quran."
+            "textEn": "He drowned while crossing a river on an elephant."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "叔父が「外国の友人たち」を試します。フマユーン帝はどのように亡くなりましたか？",
+      "optionsJa": {
+        "A": "書庫の急な階段から転落した。",
+        "B": "アーグラの婚礼の宴で毒を盛られた。",
+        "C": "象に乗って川を渡る途中で溺れ死んだ。"
+      }
+    },
+    "gt_delhi_humayun_first_tomb": {
+      "source": {
+        "questionEn": "'The first tomb you see when you come in. Whose is it?' Which answer is correct?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A tomb that the British moved here from Agra in the 1800s."
+          },
+          {
+            "id": "B",
+            "textEn": "Isa Khan's, a noble from the court of Sher Shah Suri, built before Humayun's tomb."
+          },
+          {
+            "id": "C",
+            "textEn": "The tomb of Humayun's royal cook, built by his son Akbar."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "「入ってきて最初に見える墓。あれは誰の墓だ？」正しい答えはどれですか？",
+      "optionsJa": {
+        "A": "1800年代にイギリスがアーグラからここへ移した墓。",
+        "B": "シェール・シャー・スーリの宮廷に仕えた貴族、イーサー・ハーンの墓。フマユーン廟より前に建てられた。",
+        "C": "フマユーンの宮廷料理人の墓。息子のアクバルが建てた。"
+      }
+    },
+    "gt_delhi_humayun_1857_arrest": {
+      "source": {
+        "questionEn": "Last question: what happened at Humayun's Tomb in September 1857?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "The British held a royal wedding in its garden."
+          },
+          {
+            "id": "B",
+            "textEn": "The tomb was closed for repairs for the first time."
+          },
+          {
+            "id": "C",
+            "textEn": "The last Mughal emperor was arrested there by the British."
           }
         ],
         "correctOptionId": "C"
       },
-      "questionJa": "フマユーン廟の庭を四つに分ける構成と水路は、どのような考えを表していますか？",
+      "questionJa": "最後の質問です。1857年9月、フマユーン廟で何が起きましたか？",
       "optionsJa": {
-        "A": "皇帝の四つの軍営の地図。",
-        "B": "四つの独立した交易市場の計画。",
-        "C": "クルアーンに描かれる楽園の川。"
+        "A": "イギリス側が、その庭で王族の結婚式を挙げた。",
+        "B": "廟が初めて修理のために閉鎖された。",
+        "C": "最後のムガル皇帝が、そこでイギリス側に捕らえられた。"
       }
     },
-    "gt_delhi_humayun_more_than_one": {
+    "gt_delhi_jama_world_view_name": {
       "source": {
-        "questionEn": "What would be missing from a description that mentions only Humayun as buried here?",
+        "questionEn": "The old perfume seller says the mosque was named Masjid-i-Jahan Numa. What does the name mean?",
         "options": [
           {
             "id": "A",
-            "textEn": "Many other members of the Mughal family are also buried here."
+            "textEn": "A mosque built beside the river of the moon."
           },
           {
             "id": "B",
-            "textEn": "The building commemorates the emperor, but contains no graves."
+            "textEn": "A mosque made only for travellers from far lands."
           },
           {
             "id": "C",
-            "textEn": "The other graves belong only to people who built the tomb."
-          }
-        ],
-        "correctOptionId": "A"
-      },
-      "questionJa": "ここに葬られた人としてフマユーンだけを挙げる説明では、何が抜け落ちますか？",
-      "optionsJa": {
-        "A": "ほかにも多くのムガル皇族がここに葬られていること。",
-        "B": "建物は皇帝を記念しているが、墓を含まないこと。",
-        "C": "ほかの墓は、廟を建てた人々だけのものであること。"
-      }
-    },
-    "gt_delhi_humayun_future_taj": {
-      "source": {
-        "questionEn": "Which later monument was influenced by the garden-tomb tradition represented by Humayun's Tomb?",
-        "options": [
-          {
-            "id": "A",
-            "textEn": "The Qutb Minar in Delhi."
-          },
-          {
-            "id": "B",
-            "textEn": "The Taj Mahal in Agra."
-          },
-          {
-            "id": "C",
-            "textEn": "The Alai Minar in Delhi."
-          }
-        ],
-        "correctOptionId": "B"
-      },
-      "questionJa": "フマユーン廟に見られる庭園墓の伝統は、後のどの建造物に影響しましたか？",
-      "optionsJa": {
-        "A": "デリーのクトゥブ・ミナール。",
-        "B": "アーグラのタージ・マハル。",
-        "C": "デリーのアラーイー・ミナール。"
-      }
-    },
-    "gt_delhi_jama_shared_patron": {
-      "source": {
-        "questionEn": "What connects the Jama Masjid in Delhi with the Red Fort and the Taj Mahal?",
-        "options": [
-          {
-            "id": "A",
-            "textEn": "They were all built as tombs for the same family."
-          },
-          {
-            "id": "B",
-            "textEn": "They were all ordered by the Mughal emperor Shah Jahan."
-          },
-          {
-            "id": "C",
-            "textEn": "They were all parts of one palace within the same walls."
-          }
-        ],
-        "correctOptionId": "B"
-      },
-      "questionJa": "デリーのジャーマー・マスジドと、レッド・フォート、タージ・マハルをつなぐものは何ですか？",
-      "optionsJa": {
-        "A": "すべて同じ一族の墓として造られたこと。",
-        "B": "すべてムガル皇帝シャー・ジャハーンが造らせたこと。",
-        "C": "すべて同じ城壁内にある一つの宮殿の一部だったこと。"
-      }
-    },
-    "gt_delhi_jama_royal_gate": {
-      "source": {
-        "questionEn": "Why was the eastern entrance of the Jama Masjid larger and more prominent than the northern and southern entrances?",
-        "options": [
-          {
-            "id": "A",
-            "textEn": "It was originally reserved for the king and his court."
-          },
-          {
-            "id": "B",
-            "textEn": "It was designed as a private entrance for gardeners."
-          },
-          {
-            "id": "C",
-            "textEn": "It was the main entrance reserved for foreign merchants."
-          }
-        ],
-        "correctOptionId": "A"
-      },
-      "questionJa": "ジャーマー・マスジドの東側入口は、なぜ北・南の入口より大きく目立つ造りだったのですか？",
-      "optionsJa": {
-        "A": "もともと王と宮廷の人々のための入口だったから。",
-        "B": "庭師専用の入口として設計されたから。",
-        "C": "外国商人のために設けられた正面入口だったから。"
-      }
-    },
-    "gt_delhi_jama_living_mosque": {
-      "source": {
-        "questionEn": "Why is it incomplete to describe the Jama Masjid only as a monument from the past?",
-        "options": [
-          {
-            "id": "A",
-            "textEn": "Only royal ceremonies take place there today."
-          },
-          {
-            "id": "B",
-            "textEn": "Its only role today is to display Mughal stonework."
-          },
-          {
-            "id": "C",
-            "textEn": "People still come here to pray."
+            "textEn": "A mosque that commands a view of the world."
           }
         ],
         "correctOptionId": "C"
       },
-      "questionJa": "ジャーマー・マスジドを過去の記念建造物としてだけ説明すると、なぜ不十分なのですか？",
+      "questionJa": "年老いた香料売りは、このモスクがマスジド・イ・ジャハーン・ヌマーと名付けられたと言います。その名前はどういう意味ですか？",
       "optionsJa": {
-        "A": "現在は王家の儀式だけが行われるから。",
-        "B": "現在の役割はムガル建築の石造技術を展示することだけだから。",
-        "C": "現在も人々が祈りに訪れるから。"
+        "A": "月の川のほとりに建てられたモスク。",
+        "B": "遠い国から来た旅人のためだけに造られたモスク。",
+        "C": "世界を見渡すモスク。"
       }
     },
-    "gt_delhi_finale_inside_the_walls": {
+    "gt_delhi_jama_after_1857": {
       "source": {
-        "questionEn": "A film shows only the walls of the Red Fort. Which detail would reveal something about life inside?",
+        "questionEn": "What happened to the Jama Masjid after the uprising of 1857?",
         "options": [
           {
             "id": "A",
-            "textEn": "The channel connecting the private palace rooms."
+            "textEn": "British troops occupied it, and it was returned only after five years of petitions."
           },
           {
             "id": "B",
-            "textEn": "The height of the outer defensive walls."
+            "textEn": "It was sold to a rich merchant and turned into a covered market."
           },
           {
             "id": "C",
-            "textEn": "The positions of the gates through the outer wall."
+            "textEn": "It was taken apart and rebuilt on another hill outside the city."
           }
         ],
         "correctOptionId": "A"
       },
-      "questionJa": "映像にはレッド・フォートの城壁しか映っていません。内側の暮らしを伝えるには、どの細部が役立ちますか？",
+      "questionJa": "1857年の反乱のあと、ジャーマー・マスジドはどうなりましたか？",
       "optionsJa": {
-        "A": "宮殿の私的な居室をつなぐ水路。",
-        "B": "外側の防御用の壁の高さ。",
-        "C": "外壁を通る門の位置。"
+        "A": "イギリス軍が占拠し、5年にわたる請願の末にようやく返還された。",
+        "B": "裕福な商人に売られ、屋根付きの市場に変えられた。",
+        "C": "解体され、町の外の別の丘に建て直された。"
       }
     },
-    "gt_delhi_finale_low_tower": {
+    "gt_delhi_jama_ramzan_signal": {
       "source": {
-        "questionEn": "Which caption avoids mistaking the unfinished Alai Minar for a deliberately small tower?",
+        "questionEn": "During Ramzan, what is announced from one of the mosque's pavilions?",
         "options": [
           {
             "id": "A",
-            "textEn": "A small tower completed exactly as its builder planned."
+            "textEn": "The winners of the lane's yearly perfume contest."
           },
           {
             "id": "B",
-            "textEn": "The first storey of a tower intended to be much larger."
+            "textEn": "The time to break the day's fast."
           },
           {
             "id": "C",
-            "textEn": "The base left after a completed tower was damaged."
+            "textEn": "The names of new shops allowed to open nearby."
           }
         ],
         "correctOptionId": "B"
       },
-      "questionJa": "未完のアラーイー・ミナールを、意図して小さく造った塔と取り違えない説明はどれですか？",
+      "questionJa": "ラマザーンの間、モスクの楼閣の一つから何が告げられますか？",
       "optionsJa": {
-        "A": "造営者の計画どおりに完成した小さな塔。",
-        "B": "はるかに大きくする予定だった塔の第一層。",
-        "C": "完成した塔が損傷した後に残った基部。"
+        "A": "路地で毎年開かれる香水コンテストの優勝者。",
+        "B": "その日の断食を終える時刻。",
+        "C": "近くで開店を許された新しい店の名前。"
       }
     },
-    "gt_delhi_finale_garden_meaning": {
+    "gt_delhi_finale_ladies_coach": {
       "source": {
-        "questionEn": "Which caption adds the historical meaning of the water channels in Humayun's garden-tomb?",
+        "questionEn": "Aman thinks his grandmother is confused because she talked about a 'ladies' coach' on the Delhi Metro. Is she right?",
         "options": [
           {
             "id": "A",
-            "textEn": "The channels divided the ground for rival armies."
+            "textEn": "No. Delhi Metro trains have no special coaches at all."
           },
           {
             "id": "B",
-            "textEn": "The channels marked the borders of four trading cities."
+            "textEn": "Yes. The first coach in the direction of travel is reserved for women."
           },
           {
             "id": "C",
-            "textEn": "The garden design recalls the rivers of paradise."
+            "textEn": "Only on Sundays, when one coach is kept for grandparents."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "アマンは、祖母がデリーメトロの「女性車両」の話をしたので、祖母が混乱していると考えています。祖母の言うことは正しいですか？",
+      "optionsJa": {
+        "A": "いいえ。デリーメトロの列車に、特別な車両は一つもない。",
+        "B": "はい。進行方向の先頭車両は、女性専用になっている。",
+        "C": "日曜日だけ。一両が祖父母のために確保される。"
+      }
+    },
+    "gt_delhi_finale_moonlight_square": {
+      "source": {
+        "questionEn": "Her note says, 'Where the moon fell into the water, my last shopping.' Which place in Old Delhi fits best?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Chandni Chowk, named for the moon reflected in a pool there."
+          },
+          {
+            "id": "B",
+            "textEn": "A riverside market that opens only on full-moon nights."
+          },
+          {
+            "id": "C",
+            "textEn": "The Lotus Temple, whose pools are shaped like a moon."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "彼女のメモには「月が水に落ちた所で、最後の買い物」とあります。オールドデリーで最もよく当てはまる場所はどこですか？",
+      "optionsJa": {
+        "A": "そこの池に映った月にちなんで名付けられた、チャンドニー・チョーク。",
+        "B": "満月の夜にだけ開く、川沿いの市場。",
+        "C": "池が月の形をしている、ロータス寺院。"
+      }
+    },
+    "gt_delhi_finale_spice_market": {
+      "source": {
+        "questionEn": "A sweet seller says she asked where to buy a whole year of spices. Where would she most likely go?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "To the duty-free shop at Delhi airport."
+          },
+          {
+            "id": "B",
+            "textEn": "To the covered bazaar inside the Red Fort, which sells only spices."
+          },
+          {
+            "id": "C",
+            "textEn": "To Khari Baoli, described as Asia's largest wholesale spice market."
           }
         ],
         "correctOptionId": "C"
       },
-      "questionJa": "フマユーンの庭園墓の水路に、歴史的な意味を添える説明はどれですか？",
+      "questionJa": "菓子屋は、彼女が一年分の香辛料をどこで買えるかを尋ねたと言います。彼女が最も行きそうな場所はどこですか？",
       "optionsJa": {
-        "A": "水路は敵対する軍隊のために土地を分けた。",
-        "B": "水路は四つの交易都市の境界を示した。",
-        "C": "庭園の構成は楽園の川を思い起こさせる。"
+        "A": "デリー空港の免税店。",
+        "B": "香辛料だけを売る、レッド・フォート内の屋根付き市場。",
+        "C": "アジア最大の香辛料の卸売市場といわれる、カーリー・バーオリー。"
       }
     },
-    "gt_delhi_finale_mosque_today": {
+    "gt_delhi_finale_evening_show": {
       "source": {
-        "questionEn": "Which caption correctly describes the Jama Masjid today?",
+        "questionEn": "The fort closes to day visitors at sunset. How could someone still be inside at seven in the evening?",
         "options": [
           {
             "id": "A",
-            "textEn": "A historic mosque where people still worship."
+            "textEn": "The guards let older visitors stay after dark."
           },
           {
             "id": "B",
-            "textEn": "A former mosque now used only for royal ceremonies."
+            "textEn": "An evening sound-and-light show is held inside the fort."
           },
           {
             "id": "C",
-            "textEn": "A royal residence later turned into a museum."
+            "textEn": "A night market opens in the Hall of Public Audience."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "城は日没とともに、昼間の見学者には閉まります。夜7時にまだ城の中にいられるのは、どうしてですか？",
+      "optionsJa": {
+        "A": "衛兵が、年配の見学者には暗くなってからも残らせてくれるから。",
+        "B": "夜の光と音のショーが、城の中で開かれるから。",
+        "C": "公謁の間で夜市が開かれるから。"
+      }
+    },
+    "gt_delhi_finale_first_show": {
+      "source": {
+        "questionEn": "Aman says there were no light shows at the fort sixty years ago. When did the Red Fort's sound-and-light show begin?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "In 1965, as one of the first such shows in Asia."
+          },
+          {
+            "id": "B",
+            "textEn": "In 2023, when the fort first opened after dark."
+          },
+          {
+            "id": "C",
+            "textEn": "In 1997, after the fort was cleaned for a royal birthday."
           }
         ],
         "correctOptionId": "A"
       },
-      "questionJa": "現在のジャーマー・マスジドを正しく説明している文はどれですか？",
+      "questionJa": "アマンは、60年前の城に光のショーなどなかったと言います。レッド・フォートの光と音のショーはいつ始まりましたか？",
       "optionsJa": {
-        "A": "人々が今も礼拝する、歴史あるモスク。",
-        "B": "現在は王家の儀式だけに使われる、かつてのモスク。",
-        "C": "後に博物館となった王家の住まい。"
+        "A": "1965年。アジアで最初期のこの種のショーの一つとして。",
+        "B": "2023年。城が初めて夜間に公開されたとき。",
+        "C": "1997年。王族の誕生日に向けて城が清掃されたあと。"
       }
     },
-    "gt_delhi_finale_next_city": {
+    "gt_agra_taj_mumtaz_last_journey": {
       "source": {
-        "questionEn": "Which link can help visitors compare Humayun's Tomb with the Taj Mahal in Agra?",
+        "questionEn": "Tanvi asks Nikhil where and how Mumtaz Mahal died. What is the answer?",
         "options": [
           {
             "id": "A",
-            "textEn": "The same emperor commissioned both monuments."
+            "textEn": "Peacefully in her palace in Agra, in her old age."
           },
           {
             "id": "B",
-            "textEn": "The earlier garden-tomb helped shape the tradition of the later monument."
+            "textEn": "In Burhanpur in the Deccan, during childbirth, while travelling with Shah Jahan's army."
           },
           {
             "id": "C",
-            "textEn": "The same team completed both monuments in one building project."
+            "textEn": "In a hunting accident near the Yamuna river."
           }
         ],
         "correctOptionId": "B"
       },
-      "questionJa": "フマユーン廟とアーグラのタージ・マハルを見比べるとき、どのつながりが手がかりになりますか？",
+      "questionJa": "タンヴィはニキルに、ムムターズ・マハルがどこで、どのように亡くなったかを尋ねます。答えは何ですか？",
       "optionsJa": {
-        "A": "同じ皇帝が両方の建造物の造営を命じた。",
-        "B": "先にできた庭園墓が、後の建造物につながる伝統を形作った。",
-        "C": "同じチームが一つの建設事業で両方の建造物を完成させた。"
+        "A": "年老いてから、アーグラの宮殿で安らかに。",
+        "B": "シャー・ジャハーンの軍に同行していたデカン地方のブルハーンプルで、出産の際に。",
+        "C": "ヤムナー川の近くで、狩りの事故によって。"
       }
     },
-    "gt_agra_taj_garden_position": {
+    "gt_agra_taj_first_grave": {
       "source": {
-        "questionEn": "Where did the designers place the Taj Mahal mausoleum within its main garden?",
+        "questionEn": "'He built this for her right away,' says Nikhil. Where was Mumtaz Mahal first buried?",
         "options": [
           {
             "id": "A",
-            "textEn": "At the exact centre, with equal garden space on every side."
+            "textEn": "In a walled garden at Burhanpur, for some months, before her body was brought to Agra."
           },
           {
             "id": "B",
-            "textEn": "At one end, with the garden stretching out in front of it."
+            "textEn": "Directly under the Taj Mahal's great dome, on the day she died."
           },
           {
             "id": "C",
-            "textEn": "Beside the entrance gate, with the garden hidden behind it."
+            "textEn": "In her family's home town in Persia."
           }
         ],
-        "correctOptionId": "B"
+        "correctOptionId": "A"
       },
-      "questionJa": "設計者たちは、タージ・マハルの墓廟を主庭園のどこに置きましたか？",
+      "questionJa": "「彼はすぐに、彼女のためにこれを建てたんだ」とニキルは言います。ムムターズ・マハルが最初に埋葬されたのはどこですか？",
       "optionsJa": {
-        "A": "ちょうど中央に、四方の庭の広さが等しくなるように。",
-        "B": "一方の端に、その前に庭が広がるように。",
-        "C": "入口の門の隣に、その後ろに庭が隠れるように。"
+        "A": "ブルハーンプルの塀に囲まれた庭園に、数か月のあいだ。その後、遺体はアーグラへ運ばれた。",
+        "B": "亡くなったその日に、タージ・マハルの大ドームの真下へ。",
+        "C": "ペルシアにある、彼女の一族の故郷の町。"
       }
     },
-    "gt_agra_taj_cenotaphs": {
+    "gt_agra_taj_balancing_twin": {
       "source": {
-        "questionEn": "The decorated cenotaphs stand in the main hall. Where are the actual graves?",
+        "questionEn": "Tanvi points to the building on the east side that looks just like the mosque. Why was it built?",
         "options": [
           {
             "id": "A",
-            "textEn": "In the garden beside the main entrance."
+            "textEn": "As a second mosque, because one was too small for the crowds."
           },
           {
             "id": "B",
-            "textEn": "Inside the bases of the four minarets."
+            "textEn": "As a home for the emperor's guards and their horses."
           },
           {
             "id": "C",
-            "textEn": "In a lower burial chamber."
+            "textEn": "As a copy of the mosque, to balance the whole design."
           }
         ],
         "correctOptionId": "C"
       },
-      "questionJa": "装飾された記念棺は主室にあります。実際の墓はどこにありますか？",
+      "questionJa": "タンヴィは、モスクにそっくりな東側の建物を指さします。それは何のために建てられましたか？",
       "optionsJa": {
-        "A": "正面入口のそばの庭に。",
-        "B": "四本のミナレットの土台の中に。",
-        "C": "下の埋葬室に。"
+        "A": "一つでは群衆に小さすぎたので、二つ目のモスクとして。",
+        "B": "皇帝の衛兵とその馬の住まいとして。",
+        "C": "全体の設計の釣り合いを取るための、モスクの写しとして。"
       }
     },
-    "gt_agra_taj_later_cenotaph": {
+    "gt_agra_fort_who_confined": {
       "source": {
-        "questionEn": "Why does Shah Jahan's cenotaph stand beside the central cenotaph of Mumtaz Mahal?",
+        "questionEn": "The colonel asks who kept Shah Jahan shut away in Agra Fort. Who was it?",
         "options": [
           {
             "id": "A",
-            "textEn": "His cenotaph was added later beside hers."
+            "textEn": "The British army, after the uprising of 1857."
           },
           {
             "id": "B",
-            "textEn": "Her cenotaph was moved there from a garden pavilion."
+            "textEn": "A Persian king who had invaded Delhi."
           },
           {
             "id": "C",
-            "textEn": "Both cenotaphs were originally placed outside the hall."
-          }
-        ],
-        "correctOptionId": "A"
-      },
-      "questionJa": "なぜシャー・ジャハーンの記念棺は、中央にあるムムターズ・マハルの記念棺の隣にあるのでしょう？",
-      "optionsJa": {
-        "A": "彼の記念棺が、後から彼女の隣に加えられたから。",
-        "B": "彼女の記念棺が、庭のあずまやからそこへ移されたから。",
-        "C": "両方の記念棺が、もともと主室の外に置かれていたから。"
-      }
-    },
-    "gt_agra_fort_generations": {
-      "source": {
-        "questionEn": "Why can visitors see both red sandstone buildings and white marble palaces at Agra Fort?",
-        "options": [
-          {
-            "id": "A",
-            "textEn": "Different emperors rebuilt and added to the fort over time."
-          },
-          {
-            "id": "B",
-            "textEn": "All the buildings were made as one project by a single emperor."
-          },
-          {
-            "id": "C",
-            "textEn": "The white palaces were moved here from another city in recent times."
-          }
-        ],
-        "correctOptionId": "A"
-      },
-      "questionJa": "アーグラ城で赤砂岩の建物と白大理石の宮殿の両方を見られるのはなぜですか？",
-      "optionsJa": {
-        "A": "異なる皇帝たちが、時を隔てて城を建て直し、増築したから。",
-        "B": "すべての建物が、一人の皇帝による一つの計画で造られたから。",
-        "C": "白い宮殿が、近年ほかの都市から移されたから。"
-      }
-    },
-    "gt_agra_fort_living_city": {
-      "source": {
-        "questionEn": "Besides defence, what important role did Agra Fort have?",
-        "options": [
-          {
-            "id": "A",
-            "textEn": "It was a burial garden for the whole royal family."
-          },
-          {
-            "id": "B",
-            "textEn": "It was a royal home and a place for meetings and government."
-          },
-          {
-            "id": "C",
-            "textEn": "It was a market run entirely by visiting foreign merchants."
-          }
-        ],
-        "correctOptionId": "B"
-      },
-      "questionJa": "防衛のほかに、アーグラ城はどのような重要な役割を持っていましたか？",
-      "optionsJa": {
-        "A": "王族全員のための墓の庭園でした。",
-        "B": "皇帝の住まいであり、謁見や政治の場でした。",
-        "C": "訪れた外国商人だけが運営する市場でした。"
-      }
-    },
-    "gt_agra_fort_last_years": {
-      "source": {
-        "questionEn": "Which monument can be seen from Musamman Burj, where Shah Jahan spent his last years?",
-        "options": [
-          {
-            "id": "A",
-            "textEn": "The Red Fort in Delhi."
-          },
-          {
-            "id": "B",
-            "textEn": "The palace complex at Fatehpur Sikri."
-          },
-          {
-            "id": "C",
-            "textEn": "The Taj Mahal."
+            "textEn": "His own son Aurangzeb, who had taken the throne."
           }
         ],
         "correctOptionId": "C"
       },
-      "questionJa": "シャー・ジャハーンが晩年を過ごしたムサンマン・ブルジュから見えるのは、どの建物ですか？",
+      "questionJa": "大佐は、シャー・ジャハーンをアーグラ城に閉じ込めたのは誰かと尋ねます。それは誰でしたか？",
       "optionsJa": {
-        "A": "デリーのレッド・フォート。",
-        "B": "ファテープル・シークリーの宮殿群。",
-        "C": "タージ・マハル。"
+        "A": "1857年の反乱のあとの、イギリス軍。",
+        "B": "デリーに侵攻したペルシアの王。",
+        "C": "王位を手にした、実の息子のアウラングゼーブ。"
       }
     },
-    "gt_agra_itimad_daughters_memorial": {
+    "gt_agra_fort_jahanara_care": {
       "source": {
-        "questionEn": "Why did Nur Jahan commission the tomb of Itimad-ud-Daulah?",
+        "questionEn": "Who looked after Shah Jahan in the fort until his death in 1666?",
         "options": [
           {
             "id": "A",
-            "textEn": "To celebrate her husband's coronation."
+            "textEn": "A palace guard who later wrote a famous book about him."
           },
           {
             "id": "B",
-            "textEn": "To honour her father after his death."
+            "textEn": "His daughter Jahanara."
           },
           {
             "id": "C",
-            "textEn": "To prepare a tomb only for herself."
+            "textEn": "Mumtaz Mahal's younger sister."
           }
         ],
         "correctOptionId": "B"
       },
-      "questionJa": "ヌール・ジャハーンはなぜイティマード・ウッダウラ廟の造営を依頼したのですか？",
+      "questionJa": "1666年に亡くなるまで、城でシャー・ジャハーンの世話をしたのは誰ですか？",
       "optionsJa": {
-        "A": "夫の戴冠式を祝うため。",
-        "B": "亡くなった父に敬意を表するため。",
-        "C": "自分だけのための墓を用意するため。"
+        "A": "のちに彼について有名な本を書いた、宮殿の衛兵。",
+        "B": "娘のジャハーナーラー。",
+        "C": "ムムターズ・マハルの妹。"
       }
     },
-    "gt_agra_itimad_inlay": {
+    "gt_agra_fort_army_today": {
       "source": {
-        "questionEn": "How were the coloured stone patterns on the white marble surface of the tomb made?",
+        "questionEn": "The colonel says soldiers are still at the fort today. Is he right?",
         "options": [
           {
             "id": "A",
-            "textEn": "By painting all the colours onto plain marble."
+            "textEn": "Yes. Part of the fort is used by the Indian Army and is closed to the public."
           },
           {
             "id": "B",
-            "textEn": "By hanging coloured cloth over the marble walls."
+            "textEn": "No. The army left the fort in 1858 and never came back."
           },
           {
             "id": "C",
-            "textEn": "By fitting pieces of coloured stone into the marble."
-          }
-        ],
-        "correctOptionId": "C"
-      },
-      "questionJa": "廟の白大理石の表面にある色石の模様は、どのように作られましたか？",
-      "optionsJa": {
-        "A": "無地の大理石に、すべての色を絵の具で描いて。",
-        "B": "大理石の壁に色つきの布を掛けて。",
-        "C": "大理石に色石の小片をはめ込んで。"
-      }
-    },
-    "gt_agra_itimad_light": {
-      "source": {
-        "questionEn": "What do the carved openings in the tomb’s stone screens allow into the rooms?",
-        "options": [
-          {
-            "id": "A",
-            "textEn": "Soft natural light."
-          },
-          {
-            "id": "B",
-            "textEn": "Water from the garden channels."
-          },
-          {
-            "id": "C",
-            "textEn": "Smoke from lamps hidden in the walls."
+            "textEn": "Only once a year, when soldiers march through it on a holiday."
           }
         ],
         "correctOptionId": "A"
       },
-      "questionJa": "廟の石の格子に彫られた透かしの部分は、何を部屋に通しますか？",
+      "questionJa": "大佐は、今も城には兵士がいると言います。彼の言うことは正しいですか？",
       "optionsJa": {
-        "A": "柔らかな自然光。",
-        "B": "庭の水路からの水。",
-        "C": "壁の中に隠されたランプの煙。"
+        "A": "はい。城の一部はインド陸軍が使っていて、一般には公開されていない。",
+        "B": "いいえ。軍は1858年に城を離れ、二度と戻らなかった。",
+        "C": "年に一度、祝日に兵士が中を行進するときだけ。"
+      }
+    },
+    "gt_agra_itimad_before_taj": {
+      "source": {
+        "questionEn": "The petition says, 'This tomb is not the Taj's baby. It came first.' Is that true?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "No. It was built as a small copy after the Taj was finished."
+          },
+          {
+            "id": "B",
+            "textEn": "Yes. It was finished about four years before work on the Taj Mahal began."
+          },
+          {
+            "id": "C",
+            "textEn": "Nobody knows, because both were built in the same year."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "請願書には「この墓はタージの赤ちゃんではない。こちらが先にできた」とあります。それは本当ですか？",
+      "optionsJa": {
+        "A": "いいえ。タージが完成したあとに、小さな写しとして建てられた。",
+        "B": "はい。タージ・マハルの工事が始まるおよそ4年前に完成していた。",
+        "C": "両方とも同じ年に建てられたので、誰にも分からない。"
+      }
+    },
+    "gt_agra_itimad_who_lies_here": {
+      "source": {
+        "questionEn": "Who was Itimad-ud-Daulah, the man buried here with his wife?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A Persian noble who came to the Mughal court and rose to the top of the government."
+          },
+          {
+            "id": "B",
+            "textEn": "The architect who later designed the Taj Mahal."
+          },
+          {
+            "id": "C",
+            "textEn": "A Rajput prince from Jaipur who married into the royal family."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "ここに妻とともに葬られている、イティマード・ウッダウラとは誰ですか？",
+      "optionsJa": {
+        "A": "ムガルの宮廷に来て、政権の最高位まで昇りつめたペルシアの貴族。",
+        "B": "のちにタージ・マハルを設計した建築家。",
+        "C": "結婚によって王家の一員となった、ジャイプールのラージプートの王子。"
+      }
+    },
+    "gt_agra_itimad_unsupported_claim": {
+      "source": {
+        "questionEn": "Which claim in the petition is NOT supported by history?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "It was the first Mughal tomb covered in white marble."
+          },
+          {
+            "id": "B",
+            "textEn": "Its stone inlay came before the inlay work of the Taj Mahal."
+          },
+          {
+            "id": "C",
+            "textEn": "Nur Jahan also designed the Taj Mahal."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "請願書の主張のうち、歴史の裏付けがないものはどれですか？",
+      "optionsJa": {
+        "A": "白い大理石で覆われた、最初のムガルの墓廟である。",
+        "B": "その石の象嵌は、タージ・マハルの象嵌細工よりも先に作られた。",
+        "C": "ヌール・ジャハーンは、タージ・マハルの設計もした。"
+      }
+    },
+    "gt_agra_fatehpur_bridge_words": {
+      "source": {
+        "questionEn": "The great gate's inscription says, 'The world is a bridge, pass over it, but build no houses on it.' Whose words does it quote?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Jesus, son of Mary."
+          },
+          {
+            "id": "B",
+            "textEn": "Emperor Akbar, written on the day of his wedding."
+          },
+          {
+            "id": "C",
+            "textEn": "The gate's builder, as a joke for future builders."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "大門の碑文には「世界は橋である。渡りなさい、だがその上に家を建ててはならない」とあります。これは誰の言葉の引用ですか？",
+      "optionsJa": {
+        "A": "マリアの子、イエス。",
+        "B": "結婚式の日に書かれた、アクバル帝の言葉。",
+        "C": "門を建てた人が、後の世の建設者への冗談として書いた言葉。"
+      }
+    },
+    "gt_agra_fatehpur_saint_for_heir": {
+      "source": {
+        "questionEn": "Why did Emperor Akbar first come to the village of Sikri?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "To hunt tigers in the forests around a lake."
+          },
+          {
+            "id": "B",
+            "textEn": "To escape a fire that had destroyed his palace in Agra."
+          },
+          {
+            "id": "C",
+            "textEn": "To seek the blessing of the Sufi saint Shaikh Salim Chishti for an heir."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "アクバル帝が初めてシークリーの村を訪れたのは、なぜですか？",
+      "optionsJa": {
+        "A": "湖の周りの森で虎を狩るため。",
+        "B": "アーグラの宮殿を焼いた火事から逃れるため。",
+        "C": "跡継ぎを授かるよう、スーフィーの聖者シャイフ・サリーム・チシュティーの祝福を求めるため。"
       }
     },
     "gt_agra_fatehpur_short_capital": {
       "source": {
-        "questionEn": "What is surprising about Fatehpur Sikri despite the size of its royal buildings?",
+        "questionEn": "How long did Fatehpur Sikri serve as the Mughal capital?",
         "options": [
           {
             "id": "A",
-            "textEn": "It served as the Mughal capital for only a short period."
+            "textEn": "For more than two hundred years."
           },
           {
             "id": "B",
-            "textEn": "It remained the Mughal capital until the empire ended."
+            "textEn": "Only until 1585, about fifteen years after it was founded."
           },
           {
             "id": "C",
-            "textEn": "It was built as a palace but never used by an emperor."
-          }
-        ],
-        "correctOptionId": "A"
-      },
-      "questionJa": "王宮の建物の規模を考えると、ファテープル・シークリーの何が意外ですか？",
-      "optionsJa": {
-        "A": "ムガール帝国の首都だった期間が短かったこと。",
-        "B": "帝国が終わるまで、ずっとムガール帝国の首都だったこと。",
-        "C": "宮殿として建てられたのに、皇帝には一度も使われなかったこと。"
-      }
-    },
-    "gt_agra_fatehpur_working_city": {
-      "source": {
-        "questionEn": "Which description best shows who lived and worked in Fatehpur Sikri?",
-        "options": [
-          {
-            "id": "A",
-            "textEn": "Only the emperor and his family lived inside the city."
-          },
-          {
-            "id": "B",
-            "textEn": "The court, soldiers and servants had living and working spaces there."
-          },
-          {
-            "id": "C",
-            "textEn": "Only visiting pilgrims stayed there; no one worked for the court."
+            "textEn": "Never. The court left before a single building was finished."
           }
         ],
         "correctOptionId": "B"
       },
-      "questionJa": "ファテープル・シークリーで誰が暮らし、働いていたかを最もよく表す説明はどれですか？",
+      "questionJa": "ファテープル・シークリーは、どれくらいの期間ムガルの都でしたか？",
       "optionsJa": {
-        "A": "街の中で暮らしたのは皇帝とその家族だけでした。",
-        "B": "宮廷の人々、兵士、使用人たちの暮らす場所や働く場所がありました。",
-        "C": "訪れた巡礼者だけが滞在し、宮廷のために働く人はいませんでした。"
+        "A": "200年以上。",
+        "B": "1585年まで。築かれてからおよそ15年だけ。",
+        "C": "一度もない。建物が一つも完成しないうちに、宮廷は去った。"
       }
     },
-    "gt_agra_fatehpur_after_move": {
+    "gt_agra_finale_cut_hands": {
       "source": {
-        "questionEn": "What happened after the Mughal court moved from Fatehpur Sikri to Lahore?",
+        "questionEn": "The guide says Shah Jahan cut off the hands of the Taj Mahal's workers. What do historians say?",
         "options": [
           {
             "id": "A",
-            "textEn": "Every royal building was immediately taken apart."
+            "textEn": "It is true, and the workers' names were written in a court diary."
           },
           {
             "id": "B",
-            "textEn": "All later emperors were forbidden to enter the city."
+            "textEn": "There is no historical evidence for it. It is a popular legend."
           },
           {
             "id": "C",
-            "textEn": "Mughal emperors still used the city for temporary visits."
-          }
-        ],
-        "correctOptionId": "C"
-      },
-      "questionJa": "ムガール宮廷がファテープル・シークリーからラホールへ移った後、どうなりましたか？",
-      "optionsJa": {
-        "A": "王宮の建物はすべて、すぐに解体されました。",
-        "B": "後の皇帝は全員、この街に入ることを禁じられました。",
-        "C": "ムガール皇帝たちは、その後も一時的な訪問にこの街を使いました。"
-      }
-    },
-    "gt_agra_finale_taj_memorial": {
-      "source": {
-        "questionEn": "Which caption correctly explains why the Taj Mahal was commissioned?",
-        "options": [
-          {
-            "id": "A",
-            "textEn": "A palace built to celebrate a military victory."
-          },
-          {
-            "id": "B",
-            "textEn": "A mausoleum commissioned by Shah Jahan in memory of Mumtaz Mahal."
-          },
-          {
-            "id": "C",
-            "textEn": "A hall built for the coronation of Shah Jahan."
+            "textEn": "Only the chief architect lost his hands, as a punishment."
           }
         ],
         "correctOptionId": "B"
       },
-      "questionJa": "タージ・マハルが造営された理由を正しく説明するキャプションはどれですか？",
+      "questionJa": "ガイドは、シャー・ジャハーンがタージ・マハルの職人たちの手を切り落としたと言います。歴史家はどう言っていますか？",
       "optionsJa": {
-        "A": "軍事的勝利を祝うために建てられた宮殿。",
-        "B": "ムムターズ・マハルをしのんで、シャー・ジャハーンが造営を命じた墓廟。",
-        "C": "シャー・ジャハーンの戴冠式のために建てられた広間。"
+        "A": "本当であり、職人たちの名前は宮廷の日誌に記されている。",
+        "B": "それを示す歴史的な証拠はない。よく知られた伝説である。",
+        "C": "罰として手を失ったのは、主任建築家だけだった。"
       }
     },
-    "gt_agra_finale_fort_layers": {
+    "gt_agra_finale_moonlight_garden": {
       "source": {
-        "questionEn": "Which caption best explains the different royal buildings in Agra Fort?",
+        "questionEn": "He also says a 'Black Taj' was planned across the river at Mehtab Bagh. What did researchers find there?",
         "options": [
           {
             "id": "A",
-            "textEn": "A fort shaped by building projects under different emperors."
+            "textEn": "A garden with a large pool for viewing the Taj and its reflection, not a black tomb."
           },
           {
             "id": "B",
-            "textEn": "A fort built entirely by one emperor in a single project."
+            "textEn": "The base of a black marble tomb that was never finished."
           },
           {
             "id": "C",
-            "textEn": "A fort made by gathering old palaces moved from other cities."
+            "textEn": "A secret tunnel under the river joining the two banks."
           }
         ],
         "correctOptionId": "A"
       },
-      "questionJa": "アーグラ城のさまざまな王宮建築を最もよく説明するキャプションはどれですか？",
+      "questionJa": "ガイドはさらに、川向こうのメヘターブ・バーグに「黒いタージ」が計画されていたと言います。研究者たちはそこで何を見つけましたか？",
       "optionsJa": {
-        "A": "異なる皇帝の時代の造営によって形作られた城。",
-        "B": "一人の皇帝が一つの計画ですべて建てた城。",
-        "C": "ほかの都市から古い宮殿を移し、集めて造った城。"
+        "A": "黒い墓ではなく、タージと水面に映るその姿を眺めるための、大きな池のある庭園。",
+        "B": "完成しなかった、黒い大理石の墓の土台。",
+        "C": "両岸を結ぶ、川の下の秘密のトンネル。"
       }
     },
-    "gt_agra_finale_baby_taj": {
+    "gt_agra_finale_builders_next": {
       "source": {
-        "questionEn": "Which caption avoids a mistake about the tomb nicknamed the 'Baby Taj'?",
+        "questionEn": "After the Taj Mahal was finished, what did many of its skilled builders do next?",
         "options": [
           {
             "id": "A",
-            "textEn": "A small copy made after the Taj Mahal was finished."
+            "textEn": "They were sent back to Persia and never returned to India."
           },
           {
             "id": "B",
-            "textEn": "A model that was later rebuilt as the Taj Mahal itself."
+            "textEn": "They stopped working, because nobody needed their skills anymore."
           },
           {
             "id": "C",
-            "textEn": "An earlier tomb with its own patrons and family history."
+            "textEn": "They helped to build Shah Jahan's new capital, Shahjahanabad, in Delhi."
           }
         ],
         "correctOptionId": "C"
       },
-      "questionJa": "「ベビー・タージ」という愛称の廟について、誤りを避けたキャプションはどれですか？",
+      "questionJa": "タージ・マハルが完成したあと、熟練した建設者の多くは次に何をしましたか？",
       "optionsJa": {
-        "A": "タージ・マハルの完成後に造られた小さな複製。",
-        "B": "後にタージ・マハルそのものへと建て替えられた模型。",
-        "C": "独自の造営主と家族の歴史を持つ、タージより先の墓廟。"
+        "A": "ペルシアへ送り返され、二度とインドに戻らなかった。",
+        "B": "もう誰も彼らの技能を必要としなかったので、働くのをやめた。",
+        "C": "デリーに造られる、シャー・ジャハーンの新しい都シャージャハーナーバードの建設を手伝った。"
       }
     },
-    "gt_agra_finale_working_city": {
+    "gt_agra_finale_one_signature": {
       "source": {
-        "questionEn": "Which caption gives a fuller account of Fatehpur Sikri than \"a large palace\"?",
+        "questionEn": "Whose signature can be found among the Taj Mahal's inscriptions?",
         "options": [
           {
             "id": "A",
-            "textEn": "A private garden with no buildings for public affairs."
+            "textEn": "Shah Jahan's own, carved above the main door."
           },
           {
             "id": "B",
-            "textEn": "A city with spaces for government, worship and everyday life."
+            "textEn": "The calligrapher Amanat Khan's, dated 1638."
           },
           {
             "id": "C",
-            "textEn": "A single royal home built apart from all other activities."
+            "textEn": "The chief stonemason's, carved on Mumtaz's tomb."
           }
         ],
         "correctOptionId": "B"
       },
-      "questionJa": "「大きな宮殿」よりも、ファテープル・シークリーを十分に伝えるキャプションはどれですか？",
+      "questionJa": "タージ・マハルの碑文の中に、誰の署名が見つかりますか？",
       "optionsJa": {
-        "A": "公の用務のための建物を持たない私庭。",
-        "B": "政治、礼拝、日常生活のための空間を持つ都市。",
-        "C": "ほかのすべての活動から切り離して建てられた、一つの王家の住まい。"
+        "A": "正面の扉の上に刻まれた、シャー・ジャハーン自身の署名。",
+        "B": "1638年の日付が入った、書家アマーナト・ハーンの署名。",
+        "C": "ムムターズの墓に刻まれた、石工の親方の署名。"
       }
     },
-    "gt_agra_finale_visible_memorials": {
+    "gt_agra_finale_taj_ganj": {
       "source": {
-        "questionEn": "Which caption fits a diagram of the decorated cenotaphs in the Taj Mahal’s main hall?",
+        "questionEn": "The guide's family lives in Taj Ganj, just outside the Taj's south gate. What was Taj Ganj in the plan of the Taj Mahal?",
         "options": [
           {
             "id": "A",
-            "textEn": "Memorials above the actual burial chamber."
+            "textEn": "A royal hunting ground closed to ordinary people."
           },
           {
             "id": "B",
-            "textEn": "The actual graves in an open garden."
+            "textEn": "A farming village much older than the city of Agra."
           },
           {
             "id": "C",
-            "textEn": "Royal seats used for meetings with visitors."
+            "textEn": "A bazaar and caravanserai area that was part of the Taj complex."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ガイドの家族は、タージの南門のすぐ外にあるタージ・ガンジに住んでいます。タージ・マハルの計画の中で、タージ・ガンジは何でしたか？",
+      "optionsJa": {
+        "A": "一般の人々の立ち入りが禁じられた、王家の狩猟場。",
+        "B": "アーグラの町よりもずっと古い農村。",
+        "C": "タージの建物群の一部だった、市場と隊商宿の区域。"
+      }
+    },
+    "gt_jaipur_amber_ganesh_gate": {
+      "source": {
+        "questionEn": "One painting shows a peacock above Amber's Ganesh Pol. The other shows a different figure. Which figure is really painted above this gate?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A royal peacock, the symbol of the queen's rooms."
+          },
+          {
+            "id": "B",
+            "textEn": "An elephant carrying the king to battle."
+          },
+          {
+            "id": "C",
+            "textEn": "Lord Ganesha, a sign of good luck."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "一方の絵では、アンベール城のガネーシュ・ポールの上に孔雀が描かれています。もう一方の絵には、別の姿が描かれています。この門の上に実際に描かれているのはどれですか？",
+      "optionsJa": {
+        "A": "王妃の部屋の象徴である、王家の孔雀。",
+        "B": "王を戦場へ運ぶ象。",
+        "C": "幸運のしるしである、ガネーシャ神。"
+      }
+    },
+    "gt_jaipur_amber_mirror_hall": {
+      "source": {
+        "questionEn": "In the copy, the ceiling of the Sheesh Mahal is painted with gold stars. What really covers its walls and ceilings?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Thousands of tiny mirrors."
+          },
+          {
+            "id": "B",
+            "textEn": "Sheets of real gold from Persia."
+          },
+          {
+            "id": "C",
+            "textEn": "Paintings of the night sky made by court astronomers."
           }
         ],
         "correctOptionId": "A"
       },
-      "questionJa": "タージ・マハルの主室にある装飾された記念棺の図に合うキャプションはどれですか？",
+      "questionJa": "写しの絵では、シーシュ・マハルの天井に金色の星が描かれています。実際にその壁と天井を覆っているのは何ですか？",
       "optionsJa": {
-        "A": "実際の埋葬室の上にある記念物。",
-        "B": "屋外の庭にある実際の墓。",
-        "C": "来訪者との会見に使われた皇帝の座席。"
+        "A": "何千もの小さな鏡。",
+        "B": "ペルシアから来た、本物の金の板。",
+        "C": "宮廷の天文学者たちが描いた、夜空の絵。"
       }
     },
-    "gt_jaipur_amber_returning_army": {
+    "gt_jaipur_amber_who_built": {
       "source": {
-        "questionEn": "A crowd gathers in Jaleb Chowk as soldiers return. What did returning armies historically display there?",
+        "questionEn": "The copy's caption says, 'Built by the king who founded Jaipur.' Which caption is accurate?",
         "options": [
           {
             "id": "A",
-            "textEn": "Gifts prepared by the crowd for the soldiers."
+            "textEn": "Built in 1727, at the same time as the new city of Jaipur."
           },
           {
             "id": "B",
-            "textEn": "Goods taken during their military campaigns."
+            "textEn": "Commissioned by Raja Man Singh I in 1592, long before Jaipur was founded."
           },
           {
             "id": "C",
-            "textEn": "Plans for gardens that the soldiers would build."
+            "textEn": "Built by the British as a summer house for officers."
           }
         ],
         "correctOptionId": "B"
       },
-      "questionJa": "兵士が戻り、ジャレーブ・チョークに人々が集まります。帰還した軍は、かつてそこで何を展示したのでしょうか。",
+      "questionJa": "写しの説明文には「ジャイプールを築いた王が建てた」とあります。正確な説明文はどれですか？",
       "optionsJa": {
-        "A": "集まった人々が兵士のために用意した贈り物。",
-        "B": "軍事行動の間に奪ってきた品々。",
-        "C": "兵士たちが造る予定の庭園の設計図。"
+        "A": "1727年、新しい町ジャイプールと同時に建てられた。",
+        "B": "1592年にラージャ・マーン・シング1世が建造を命じた。ジャイプールが築かれるずっと前のこと。",
+        "C": "イギリスが、将校たちの夏の別邸として建てた。"
       }
     },
-    "gt_jaipur_amber_life_inside": {
+    "gt_jaipur_hawa_crown_shape": {
       "source": {
-        "questionEn": "Amber has royal quarters, gardens and temples. What does this combination tell us about the fort?",
+        "questionEn": "The vegetable seller says guides always compare the pointed top of Hawa Mahal to something. What is it said to represent?",
         "options": [
           {
             "id": "A",
-            "textEn": "It was a place to live and worship as well as a fort."
+            "textEn": "A beehive, because the windows look like small cells."
           },
           {
             "id": "B",
-            "textEn": "It was a temporary camp without permanent homes."
+            "textEn": "The crown of Lord Krishna."
           },
           {
             "id": "C",
-            "textEn": "It was a single temple with no royal living space."
-          }
-        ],
-        "correctOptionId": "A"
-      },
-      "questionJa": "アンベールには王族の居住区、庭園、寺院があります。この組み合わせから、城について何が分かりますか。",
-      "optionsJa": {
-        "A": "城であると同時に、暮らしや礼拝の場所でもあった。",
-        "B": "恒久的な住まいのない、一時的な野営地だった。",
-        "C": "王族の居住空間を持たない、一つの寺院だった。"
-      }
-    },
-    "gt_jaipur_amber_tunnel_link": {
-      "source": {
-        "questionEn": "A historic underground passage connected Amber with another fort. Which one?",
-        "options": [
-          {
-            "id": "A",
-            "textEn": "Nahargarh Fort, above the city of Jaipur."
-          },
-          {
-            "id": "B",
-            "textEn": "Agra Fort, beside the Yamuna River."
-          },
-          {
-            "id": "C",
-            "textEn": "Jaigarh Fort, on the hill near Amber."
-          }
-        ],
-        "correctOptionId": "C"
-      },
-      "questionJa": "歴史ある地下通路は、アンベールと別の城を結んでいました。どの城でしょうか。",
-      "optionsJa": {
-        "A": "ジャイプール市街の上にあるナハルガル城。",
-        "B": "ヤムナー川沿いのアーグラ城。",
-        "C": "アンベール近くの丘にあるジャイガル城。"
-      }
-    },
-    "gt_jaipur_hawa_screened_view": {
-      "source": {
-        "questionEn": "Why did screened windows matter to women of the royal court watching street processions from Hawa Mahal?",
-        "options": [
-          {
-            "id": "A",
-            "textEn": "They made the women easier to see from the street."
-          },
-          {
-            "id": "B",
-            "textEn": "They let the women watch without being seen from outside."
-          },
-          {
-            "id": "C",
-            "textEn": "They prevented the women from seeing the street at all."
+            "textEn": "A ship's sail catching the wind."
           }
         ],
         "correctOptionId": "B"
       },
-      "questionJa": "ハワー・マハルから街路の行列を見る宮廷の女性たちにとって、格子のある窓はなぜ重要だったのでしょうか。",
+      "questionJa": "野菜売りの女性は、ガイドたちがいつもハワー・マハルのとがった頂を何かにたとえると言います。それは何を表しているといわれますか？",
       "optionsJa": {
-        "A": "通りから女性たちの姿を見えやすくした。",
-        "B": "外から姿を見られずに、女性たちが眺められるようにした。",
-        "C": "女性たちから通りがまったく見えないようにした。"
+        "A": "窓が小さな巣房のように見えるので、蜂の巣。",
+        "B": "クリシュナ神の冠。",
+        "C": "風を受ける船の帆。"
       }
     },
-    "gt_jaipur_hawa_airflow": {
+    "gt_jaipur_hawa_ramps": {
       "source": {
-        "questionEn": "Hawa Mahal has many small windows. Besides shaping the view, what practical role did these openings have?",
+        "questionEn": "Inside Hawa Mahal, how do visitors go up to the higher floors?",
         "options": [
           {
             "id": "A",
-            "textEn": "They stored water for the rooms below."
+            "textEn": "By a narrow wooden ladder behind each window."
           },
           {
             "id": "B",
-            "textEn": "They closed the building to moving air."
+            "textEn": "By an old lift that was added for the royal family."
           },
           {
             "id": "C",
-            "textEn": "They helped air move through the building."
+            "textEn": "By ramps, instead of stairs."
           }
         ],
         "correctOptionId": "C"
       },
-      "questionJa": "ハワー・マハルには多くの小窓があります。眺め方に関わるだけでなく、これらの開口部にはどんな実用的な役割がありましたか。",
+      "questionJa": "ハワー・マハルの中では、見学者はどうやって上の階へ上がりますか？",
       "optionsJa": {
-        "A": "下の部屋のために水を蓄えた。",
-        "B": "建物に空気が流れ込まないようにした。",
-        "C": "建物の中を空気が流れるのを助けた。"
+        "A": "それぞれの窓の裏にある、狭い木のはしごで。",
+        "B": "王家のために後から付けられた、古い昇降機で。",
+        "C": "階段ではなく、傾斜路（スロープ）で。"
       }
     },
-    "gt_jaipur_hawa_rear_entrance": {
+    "gt_jaipur_hawa_window_count": {
       "source": {
-        "questionEn": "A visitor looks for an entrance in Hawa Mahal's famous facade. Where is the entrance actually located?",
+        "questionEn": "The seller has counted the windows for forty years and always gets 951. What number is usually given for Hawa Mahal's windows?",
         "options": [
           {
             "id": "A",
-            "textEn": "Behind the palace, away from the famous facade."
+            "textEn": "There are 953 windows."
           },
           {
             "id": "B",
-            "textEn": "At the centre of the famous facade."
+            "textEn": "There are 365, one for each day of the year."
           },
           {
             "id": "C",
-            "textEn": "Through a doorway at one end of the street-facing facade."
+            "textEn": "There are 108, like a string of prayer beads."
           }
         ],
         "correctOptionId": "A"
       },
-      "questionJa": "来訪者が、ハワー・マハルの有名な正面ファサードに入口を探しています。実際には入口はどこにありますか。",
+      "questionJa": "野菜売りの女性は40年間窓を数えてきて、いつも951になります。ハワー・マハルの窓の数として、一般に示されるのはどれですか？",
       "optionsJa": {
-        "A": "有名な正面ファサードから離れた、宮殿の背後側。",
-        "B": "有名な正面ファサードの中央。",
-        "C": "通りに面したファサードの片端にある出入口。"
+        "A": "窓は953ある。",
+        "B": "窓は365ある。一年の一日に一つずつ。",
+        "C": "窓は108ある。数珠の玉のように。"
       }
     },
-    "gt_jaipur_palace_public_roles": {
+    "gt_jaipur_palace_silver_water_jars": {
       "source": {
-        "questionEn": "Jaipur's City Palace was more than a royal home. Which other activities belonged there?",
+        "questionEn": "The mother points to the giant silver jars. Why did a Maharaja of Jaipur take jars like these to England?",
         "options": [
           {
             "id": "A",
-            "textEn": "Government work, religious rituals and community entertainment."
+            "textEn": "To carry Ganges water for his journey to King Edward VII's coronation."
           },
           {
             "id": "B",
-            "textEn": "Public markets and workshops, with government work kept outside the palace."
+            "textEn": "To give them to the British king as a wedding present."
           },
           {
             "id": "C",
-            "textEn": "Private holidays, with government and ceremonies kept elsewhere."
+            "textEn": "To bring English tea back to the palace."
           }
         ],
         "correctOptionId": "A"
       },
-      "questionJa": "ジャイプールのシティ・パレスは、王族の住まいであるだけではありませんでした。ほかにどんな活動が行われていましたか。",
+      "questionJa": "母親が巨大な銀の壺を指さします。ジャイプールのマハラジャは、なぜこのような壺をイギリスへ持っていったのですか？",
       "optionsJa": {
-        "A": "行政の仕事、宗教儀礼、地域の人々の娯楽。",
-        "B": "行政の仕事を宮殿の外に置いた、公共の市場や作業場。",
-        "C": "行政や儀礼を別の場所に置いた、私的な休暇。"
+        "A": "エドワード7世の戴冠式へ向かう旅のために、ガンジス川の水を運ぶため。",
+        "B": "イギリス国王への結婚の贈り物にするため。",
+        "C": "宮殿へイギリスの紅茶を持ち帰るため。"
       }
     },
-    "gt_jaipur_palace_supported_makers": {
+    "gt_jaipur_palace_four_season_gates": {
       "source": {
-        "questionEn": "Why are painters and other skilled makers part of the City Palace's history?",
+        "questionEn": "In one courtyard of the City Palace there are four decorated gates. What do they stand for?",
         "options": [
           {
             "id": "A",
-            "textEn": "The palace first supported artists when it became a museum."
+            "textEn": "The four wives of the king who built them."
           },
           {
             "id": "B",
-            "textEn": "Earlier rulers collected finished objects but did not order new work."
+            "textEn": "The four seasons, each with a Hindu god."
           },
           {
             "id": "C",
-            "textEn": "The court supported many arts and commissioned objects."
-          }
-        ],
-        "correctOptionId": "C"
-      },
-      "questionJa": "シティ・パレスの歴史に、画家やほかの熟練した作り手が関わるのはなぜですか。",
-      "optionsJa": {
-        "A": "宮殿が芸術家を初めて支援したのは、博物館になったときだった。",
-        "B": "かつての支配者たちは完成品を集めたが、新たな制作を依頼しなかった。",
-        "C": "宮廷が多様な芸術を支援し、品々の制作を依頼した。"
-      }
-    },
-    "gt_jaipur_palace_museum_purpose": {
-      "source": {
-        "questionEn": "According to the museum's description, why does it display objects collected and commissioned by earlier rulers?",
-        "options": [
-          {
-            "id": "A",
-            "textEn": "To show royal wealth without exploring the cultural setting of the objects."
-          },
-          {
-            "id": "B",
-            "textEn": "To share the region's culture and traditions through its collections."
-          },
-          {
-            "id": "C",
-            "textEn": "To document royal family life without showing the region's wider traditions."
+            "textEn": "The four countries that traded with Jaipur."
           }
         ],
         "correctOptionId": "B"
       },
-      "questionJa": "博物館の説明によると、かつての支配者たちが収集し、制作を依頼した品々を展示するのはなぜですか。",
+      "questionJa": "シティ・パレスのある中庭には、装飾された四つの門があります。それらは何を表していますか？",
       "optionsJa": {
-        "A": "品々の文化的背景を掘り下げずに、王家の富を示すため。",
-        "B": "所蔵品を通して、その地域の文化や伝統を伝えるため。",
-        "C": "地域のより広い伝統には触れず、王家の暮らしを記録するため。"
+        "A": "それらを建てた王の、四人の妃。",
+        "B": "四つの季節。それぞれにヒンドゥーの神が結びついている。",
+        "C": "ジャイプールと交易した四つの国。"
       }
     },
-    "gt_jaipur_jantar_naked_eye": {
+    "gt_jaipur_palace_still_home": {
       "source": {
-        "questionEn": "The huge stone instruments at Jantar Mantar look like buildings. What were they designed to help people do?",
+        "questionEn": "Is the City Palace only a museum today?",
         "options": [
           {
             "id": "A",
-            "textEn": "Magnify distant stars through lenses built into the stone."
+            "textEn": "Yes. The British turned the whole palace into a museum in 1900."
           },
           {
             "id": "B",
-            "textEn": "Track the water level inside the stone structures."
+            "textEn": "Yes. Nobody has lived there since Jaipur was founded."
           },
           {
             "id": "C",
-            "textEn": "Observe positions in the sky with the naked eye."
+            "textEn": "No. Part of it is still a home for the present-day royal family."
           }
         ],
         "correctOptionId": "C"
       },
-      "questionJa": "ジャンタル・マンタルの巨大な石の装置は、建物のように見えます。人々のどんな活動を助けるために設計されたのでしょうか。",
+      "questionJa": "シティ・パレスは、今では博物館でしかないのですか？",
       "optionsJa": {
-        "A": "石に組み込んだレンズで、遠くの星を拡大して見ること。",
-        "B": "石造の構造物の内側にある水の高さを追跡すること。",
-        "C": "肉眼で天体の位置を観測すること。"
+        "A": "はい。1900年に、イギリスが宮殿全体を博物館にした。",
+        "B": "はい。ジャイプールが築かれて以来、誰も住んでいない。",
+        "C": "いいえ。一部は今も、現在の王家の住まいになっている。"
       }
     },
-    "gt_jaipur_jantar_shared_knowledge": {
+    "gt_jaipur_jantar_local_time": {
       "source": {
-        "questionEn": "How does UNESCO describe the scientific knowledge behind Jantar Mantar?",
+        "questionEn": "What time does the shadow on the giant sundial, the Samrat Yantra, show?",
         "options": [
           {
             "id": "A",
-            "textEn": "It grew from traditions shared across different cultures."
+            "textEn": "Indian Standard Time, the same as a mobile phone."
           },
           {
             "id": "B",
-            "textEn": "It belonged to one family with no outside influences."
+            "textEn": "The local time, set by the sun's position over Jaipur."
           },
           {
             "id": "C",
-            "textEn": "It began with no connection to earlier astronomy."
-          }
-        ],
-        "correctOptionId": "A"
-      },
-      "questionJa": "ジャンタル・マンタルの背景にある科学の知識について、ユネスコはどう説明していますか。",
-      "optionsJa": {
-        "A": "異なる文化の間で共有された伝統から育った。",
-        "B": "外部の影響を受けない一つの家族だけのものだった。",
-        "C": "以前の天文学とは関係なく始まった。"
-      }
-    },
-    "gt_jaipur_jantar_royal_authority": {
-      "source": {
-        "questionEn": "Why was Jantar Mantar more than a place for studying the sky?",
-        "options": [
-          {
-            "id": "A",
-            "textEn": "It kept scientific work separate from the court's political decisions."
-          },
-          {
-            "id": "B",
-            "textEn": "It connected sky observations with royal power and social beliefs."
-          },
-          {
-            "id": "C",
-            "textEn": "It supplied the court with decorative models of instruments used elsewhere."
+            "textEn": "London time, for the British officials of the past."
           }
         ],
         "correctOptionId": "B"
       },
-      "questionJa": "ジャンタル・マンタルが、空を研究する場所というだけではなかったのはなぜでしょうか。",
+      "questionJa": "巨大な日時計サムラート・ヤントラの影は、どんな時刻を示しますか？",
       "optionsJa": {
-        "A": "科学の仕事を、宮廷の政治的な決定から切り離していたから。",
-        "B": "天体観測を、王の権力や社会の信仰と結び付けたから。",
-        "C": "ほかの場所で使う装置の装飾用模型を、宮廷に提供していたから。"
+        "A": "携帯電話と同じ、インド標準時。",
+        "B": "ジャイプールの上空の太陽の位置で決まる、地方時。",
+        "C": "昔のイギリス人役人のための、ロンドンの時刻。"
       }
     },
-    "gt_jaipur_finale_amber_courtyards": {
+    "gt_jaipur_jantar_two_seconds": {
       "source": {
-        "questionEn": "A film shows Amber's courtyards one after another. Which caption best describes the palace layout?",
+        "questionEn": "How precisely can Jaipur's Samrat Yantra measure time?",
         "options": [
           {
             "id": "A",
-            "textEn": "A single open camp with no separate living areas."
+            "textEn": "To about two seconds."
           },
           {
             "id": "B",
-            "textEn": "Four identical rooms used only for storing weapons."
+            "textEn": "Only to the nearest hour."
           },
           {
             "id": "C",
-            "textEn": "Several courtyard sections containing different parts of palace life."
-          }
-        ],
-        "correctOptionId": "C"
-      },
-      "questionJa": "映像にアンベールの中庭が次々と映ります。宮殿の構成を最もよく説明する字幕はどれですか。",
-      "optionsJa": {
-        "A": "居住区の区別がない、一つの開放的な野営地。",
-        "B": "武器を保管するためだけに使われた、四つの同じ部屋。",
-        "C": "宮殿の暮らしのさまざまな部分を収めた、中庭のある複数の区画。"
-      }
-    },
-    "gt_jaipur_finale_hawa_two_views": {
-      "source": {
-        "questionEn": "A film cuts from Hawa Mahal's street to a view through its screens. What difference should the caption explain?",
-        "options": [
-          {
-            "id": "A",
-            "textEn": "Women inside could watch the street while remaining hidden from view."
-          },
-          {
-            "id": "B",
-            "textEn": "People in the street could watch every room without obstruction."
-          },
-          {
-            "id": "C",
-            "textEn": "The screens stopped people inside from seeing any street activity."
+            "textEn": "Only whether it is morning or afternoon."
           }
         ],
         "correctOptionId": "A"
       },
-      "questionJa": "映像がハワー・マハル前の通りから、格子越しの眺めに切り替わります。字幕では、どんな違いを説明すべきでしょうか。",
+      "questionJa": "ジャイプールのサムラート・ヤントラは、どれくらい精密に時刻を測ることができますか？",
       "optionsJa": {
-        "A": "内側の女性たちは、姿を見られずに通りを眺められた。",
-        "B": "通りの人々は、遮られることなくすべての部屋を見られた。",
-        "C": "格子は、内側の人々から通りの活動を一切見えなくした。"
+        "A": "約2秒の精度まで。",
+        "B": "1時間単位までしか測れない。",
+        "C": "午前か午後かが分かるだけ。"
       }
     },
-    "gt_jaipur_finale_palace_makers": {
+    "gt_jaipur_jantar_time_correction": {
       "source": {
-        "questionEn": "A film about the City Palace's historic collections has introduced the rulers who ordered new works. Whose role should it show next to explain how those works were produced?",
+        "questionEn": "At twelve o'clock by Divya's phone, the shadow has not reached the noon line. Why?",
         "options": [
           {
             "id": "A",
-            "textEn": "The officials who valued the finished objects for the rulers."
+            "textEn": "The sundial has been broken since the early 1900s."
           },
           {
             "id": "B",
-            "textEn": "The artists and skilled makers supported by the court."
+            "textEn": "The shadow only moves correctly when the moon is up."
           },
           {
             "id": "C",
-            "textEn": "The modern museum staff who arranged the original objects for display."
+            "textEn": "To get standard time, you must correct for the difference in longitude and the time of year."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ディヴィヤの携帯で12時ちょうどなのに、影は正午の線に届いていません。なぜですか？",
+      "optionsJa": {
+        "A": "日時計は1900年代の初めから壊れているから。",
+        "B": "影は、月が出ているときにしか正しく動かないから。",
+        "C": "標準時を得るには、経度の差と、一年の中の時期による違いを補正しなければならないから。"
+      }
+    },
+    "gt_jaipur_finale_pink_city": {
+      "source": {
+        "questionEn": "The bride's cousin blocks the door and asks, 'Why is our old city pink?' What is the best answer?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Pink stone is found only in the hills around Jaipur."
+          },
+          {
+            "id": "B",
+            "textEn": "It is widely said the king had it painted pink, a colour of welcome, for a royal visit in 1876."
+          },
+          {
+            "id": "C",
+            "textEn": "A paint company gave the city free paint in the 1950s."
           }
         ],
         "correctOptionId": "B"
       },
-      "questionJa": "シティ・パレスの歴史ある所蔵品を紹介する映像で、新たな作品を注文した支配者たちが登場しました。その作品がどう生み出されたかを説明するには、次に誰の役割を見せるべきでしょうか。",
+      "questionJa": "花嫁のいとこが門をふさいで尋ねます。「私たちの旧市街は、なぜピンクなの？」最も適切な答えはどれですか？",
       "optionsJa": {
-        "A": "完成した品々の価値を、支配者のために評価した役人たち。",
-        "B": "宮廷の支援を受けた芸術家や熟練した作り手の仕事。",
-        "C": "元の品々を展示用に配置した、現代の博物館職員たち。"
+        "A": "ピンクの石は、ジャイプールの周りの丘でしか採れないから。",
+        "B": "1876年の王族の訪問に合わせて、王が歓迎の色であるピンクに塗らせたと広く言われているから。",
+        "C": "1950年代に、塗料会社が町に塗料を無料で配ったから。"
       }
     },
-    "gt_jaipur_finale_jantar_stone_tool": {
+    "gt_jaipur_finale_sawai_title": {
       "source": {
-        "questionEn": "A fixed stone structure fills the screen at Jantar Mantar. Which caption identifies its purpose?",
+        "questionEn": "The kings of Jaipur used the title 'Sawai'. What does it mean?",
         "options": [
           {
             "id": "A",
-            "textEn": "A stage built to display goods brought back by an army."
+            "textEn": "One and a quarter."
           },
           {
             "id": "B",
-            "textEn": "A closed storehouse built to keep the royal grain supply."
+            "textEn": "Son of the sun."
           },
           {
             "id": "C",
-            "textEn": "An instrument for observing positions in the sky without a telescope."
-          }
-        ],
-        "correctOptionId": "C"
-      },
-      "questionJa": "ジャンタル・マンタルの固定された石造装置が画面いっぱいに映ります。用途を示す字幕はどれですか。",
-      "optionsJa": {
-        "A": "軍が持ち帰った品々を展示するための舞台。",
-        "B": "王室の穀物を保管するための閉じた倉庫。",
-        "C": "望遠鏡を使わずに天体の位置を観測するための装置。"
-      }
-    },
-    "gt_jaipur_finale_shared_sky": {
-      "source": {
-        "questionEn": "The final shot returns to Jaipur's observatory. Which historical idea fits this place?",
-        "options": [
-          {
-            "id": "A",
-            "textEn": "Different scientific traditions met here while studying the same sky."
-          },
-          {
-            "id": "B",
-            "textEn": "The study of the sky began here without any earlier knowledge."
-          },
-          {
-            "id": "C",
-            "textEn": "Its observations had no connection with ideas from other cultures."
+            "textEn": "Keeper of the pink city."
           }
         ],
         "correctOptionId": "A"
       },
-      "questionJa": "最後の映像は、ジャイプールの観測所に戻ります。この場所に合う歴史上の説明はどれですか。",
+      "questionJa": "ジャイプールの王たちは「サワーイー」という称号を用いました。どういう意味ですか？",
       "optionsJa": {
-        "A": "同じ空を研究する、異なる科学の伝統がここで出会った。",
-        "B": "それ以前の知識を持たずに、空の研究がここで始まった。",
-        "C": "その観測は、ほかの文化の考え方と関係がなかった。"
+        "A": "一と四分の一。",
+        "B": "太陽の子。",
+        "C": "ピンクの町の守り手。"
+      }
+    },
+    "gt_jaipur_finale_city_planner": {
+      "source": {
+        "questionEn": "Who is given much of the credit for planning Jaipur, and how was the city laid out?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "A British engineer, who copied the streets of London."
+          },
+          {
+            "id": "B",
+            "textEn": "The king's astrologer, who chose each street by the stars alone."
+          },
+          {
+            "id": "C",
+            "textEn": "Vidyadhar Bhattacharya, following the Shilpa Shastra, an old Indian manual of architecture."
+          }
+        ],
+        "correctOptionId": "C"
+      },
+      "questionJa": "ジャイプールの都市計画の功績の多くは誰のものとされ、町はどのように区画されましたか？",
+      "optionsJa": {
+        "A": "ロンドンの街路をまねた、イギリス人の技師。",
+        "B": "星だけを頼りに通りを一本ずつ決めた、王の占星術師。",
+        "C": "インドの古い建築の手引書シルパ・シャーストラに従った、ヴィディヤーダル・バッターチャーリヤ。"
+      }
+    },
+    "gt_jaipur_finale_gangaur": {
+      "source": {
+        "questionEn": "Every spring, a women's festival procession leaves the women's quarters of the City Palace and passes through these streets. Which festival is it?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "Holi, the festival of colours."
+          },
+          {
+            "id": "B",
+            "textEn": "Gangaur, which honours the goddess Gauri."
+          },
+          {
+            "id": "C",
+            "textEn": "Diwali, the festival of lights."
+          }
+        ],
+        "correctOptionId": "B"
+      },
+      "questionJa": "毎年春、女性たちの祭りの行列がシティ・パレスの女性の居住区を出て、この通りを進みます。何という祭りですか？",
+      "optionsJa": {
+        "A": "色の祭り、ホーリー。",
+        "B": "女神ガウリーをたたえる、ガンガウル。",
+        "C": "光の祭り、ディーワーリー。"
+      }
+    },
+    "gt_jaipur_finale_screened_windows": {
+      "source": {
+        "questionEn": "The bride's grandmother asks why the screened windows of Hawa Mahal were built. What is the answer?",
+        "options": [
+          {
+            "id": "A",
+            "textEn": "So that royal women could watch the street and the bazaar without being seen."
+          },
+          {
+            "id": "B",
+            "textEn": "So that guards could shoot arrows at enemies in the street."
+          },
+          {
+            "id": "C",
+            "textEn": "So that the king could count the shoppers in the bazaar below."
+          }
+        ],
+        "correctOptionId": "A"
+      },
+      "questionJa": "花嫁の祖母は、ハワー・マハルの格子窓が何のために造られたのかを尋ねます。答えは何ですか？",
+      "optionsJa": {
+        "A": "王家の女性たちが、見られることなく通りや市場を眺められるように。",
+        "B": "衛兵が、通りの敵に矢を射られるように。",
+        "C": "王が、下の市場の買い物客を数えられるように。"
       }
     }
   }

@@ -4,55 +4,66 @@ VAR player_address = ""
 VAR romance_stage = 1
 VAR ending_reached = false
 
-# background: gt_bg_agra_agra_fort
+# background: gt_bg_agra_hotel_hub
 # speaker: narrator
-サナと別れる前に、{heroine_name}は『歩く版』を送った。送信を見届けると、サナが眉を上げる。
+宿に戻ると、ロビーの長椅子で、アンワルが甥とチャイを飲んでいた。銀の杖が、壁に立てかけてある。
 # speaker: enemy
-「私に長い方を送ったね」
+「おお、本当の話のお嬢さん。今日の客の一人がね、明日もう一度タージへ行くそうだ。壁の書家の名前を、自分の目で探しに」
 # speaker: heroine
-# reaction: heroine,teasing,music
-「はい。消さない方を、ちゃんと見てほしくて」
+# reaction: heroine,surprised,sparkle
+「えっ……本当ですか」
 # speaker: enemy
-「了解。気に入ったふりは、しないよ」
+「本当の話だよ。わしは、嘘は物語の中でしかつかない」
 # speaker: narrator
-彼女は一瞬返事を探し、それから、はっきりうなずいた。サナも画面をしまう。
-# speaker: enemy
-「ラヴィにも、あなたが紹介するって伝えておく？　あの人、空白があると全部しゃべって埋めるから」
-# speaker: heroine
-# reaction: heroine,surprised,interrobang
-「今度は、話す方の三分もあるんですか？」
-# speaker: enemy
-「決まりはない。ただ、何も言わないでいると、ラヴィの説明になる」
-# speaker: heroine
-# emotion: serious
-「じゃあ、少しだけ、わたしが話したいです。何を言うかは、まだ決まっていません」
-# speaker: enemy
-「そのまま伝える。ニールにも、短くする係から降りたって言っておいて。降りたのは、あなたの映像だけね」
+彼はチャイを飲み干し、甥の肩を叩いて立ち上がった。部屋のことは片付けさせた、と言い残して。
 # speaker: narrator
-サナは片手を上げて歩いていった。{heroine_name}は見送ってから、ようやく大きく息を吐く。
-# speaker: heroine
-# reaction: heroine,worried,sigh
-「上手な案に、好きじゃないところもあるって言うの、難しかった」
-# speaker: narrator
-ニールに近況を送る。サナに会い、短い版と歩く版ができたこと。まだ三分に収めきれていないことも隠さず書いた。
-# speaker: heroine
-「『楽しみにしてる』、だって。……一番簡単な返事で、一番大変な宿題が来た」
-{ ending_reached:
-# speaker: heroine
-# emotion: teasing
-「{player_address}も、好きだからって全部褒めなくていいよ。でも、黙ってると気になるから、一つは教えてね」
+部屋の扉を開けると、ハートも白鳥も消えていた。寝台は、ただの白い寝台に戻っている。
+{
+- ending_reached:
+    # speaker: heroine
+    # reaction: heroine,shy,blush
+    「……全部、片付いちゃった。ちょっとだけ残してもらえばよかった、かな。今のは、聞かなかったことにして」
+- romance_stage >= 3:
+    # speaker: heroine
+    「片付けてもらえて、よかった。……よかった、はず。うん」
 - else:
-# speaker: heroine
-# emotion: smile
-「{player_address}にも、見てほしい。全部いいって言わなくていいから、気になったところを一つ教えて」
+    # speaker: heroine
+    「ほっとした。……ほっとしたのに、少しだけ寂しいのは、なんでだろう」
 }
 # speaker: narrator
-こちらが二つの版を指で示すと、彼女はスマートフォンを渡した。短い方も、消したわけではない。
-# speaker: heroine
-「比べてみよう。歩く方が、ぜんぶ勝つとは思ってないんだ」
+窓辺のグラスにだけ、着いた日の花びらが浮かんでいた。片付ける人も、それには手を出さなかったらしい。
 # speaker: narrator
-出発の支度を終え、二人はジャイプールへ向かう。移動の合間、彼女は見出しを一つ外してから、画面を閉じた。
+二人は宿の屋上に上がり、アンワルにもらった菓子の箱を開けた。半透明の、四角い砂糖漬け。ペーターは冬瓜からできているのだと、箱に書いてある。
 # speaker: heroine
-# reaction: heroine,happy,sparkle
-「次で最後の街なのに、まだ撮りたいものが増えそう。……困るの、ちょっと楽しみになってきた」
+# reaction: heroine,happy,music
+「甘い……。でも、思ったより軽い。冬瓜って、こんなに化けるんだ」
+# speaker: narrator
+暗い屋根の連なりの向こうに、タージの白いドームが、ぼんやり浮かんでいる。
+# speaker: heroine
+「本当の話を、ちゃんと届く言葉で言うのって、難しいね。正しいだけじゃ、アンワルさんの言うとおり、誰も泣かない」
+# speaker: heroine
+# emotion: serious
+「でも今日、自分の言葉で言えた。カムラさんに、報告できる」
+# speaker: narrator
+彼女は鞄から、デリーでアマンにもらった案内を取り出した。ジャイプールの結婚式の日付を、指でなぞる。
+# speaker: heroine
+「ジャイプールの結婚式、行きたい。誘われたからじゃなくて、わたしが行きたいの。……一緒に、来てくれる？」
+{
+- ending_reached:
+    # speaker: heroine
+    # emotion: smile
+    「今日、人前で『わたしたちのことは、わたしたちで決める』って言ったでしょう。あれ、恋人として言ったんだよ。ちゃんと届いてた？」
+- romance_stage >= 3:
+    # speaker: heroine
+    「今日、『二人で来たのは本当です』って言ったの、覚えてる？　……あれは、本当だから」
+- romance_stage == 2:
+    # speaker: heroine
+    # reaction: heroine,teasing,blush
+    「人前で、『わたしたち』って言っちゃった。……勢いだからね。勢い、だから」
+- else:
+    # speaker: heroine
+    「人前で話すの、すごく怖かった。隣にいてくれて、助かった。……ありがとう」
+}
+# speaker: narrator
+ペーターの最後の一切れを半分に割って、彼女は片方をこちらへ差し出した。新婚ではない二人の、アーグラ最後の夜だった。
 -> END

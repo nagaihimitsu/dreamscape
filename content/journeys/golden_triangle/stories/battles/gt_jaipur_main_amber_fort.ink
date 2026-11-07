@@ -5,7 +5,6 @@ VAR battle_scene = "intro"
 VAR answer_correct = false
 VAR battle_score = 0
 
-# background: gt_bg_jaipur_amber_fort
 { battle_scene == "intro": -> introduction }
 { battle_scene == "after_1": -> after_first }
 { battle_scene == "after_2": -> after_second }
@@ -13,101 +12,131 @@ VAR battle_score = 0
 -> END
 
 === introduction ===
-# speaker: enemy
-「そこは通り道だよ。見るなら、もっと奥。足を使う価値のある所へ行こう」
+# background: gt_bg_jaipur_amber_fort
 # speaker: narrator
-アンベール城の中庭で立ち止まると、帽子を二つ抱えた男性に声をかけられた。鞄からは三つ目のつばが出ている。
-# speaker: heroine
-# reaction: heroine,surprised,question
-「え、ここは見なくていいんですか？」
-# speaker: enemy
-「効率よく見るならね。元バス運転手のハリッシュだ。遠回りを削るのは得意だよ」
+十分前、{heroine_name}は一枚の絵を買った。中庭の隅の小さな露店で、若い画家が描いていた、アンベール城の細密画。手のひらほどの紙に、門も宮殿も、細い筆で描き込まれている。
 # speaker: narrator
-示された案内図には、最初の中庭を素通りする線がある。彼女はつられて歩きかけ、踏み出した足を戻した。
-# speaker: heroine
-「でも、わたしは今ここが気になって。こんなに広いの、ただ通るためだけじゃない気がします」
-# speaker: enemy
-# reaction: enemy,question
-「広場だろう。人が集まる。そこは見れば分かる」
-# speaker: heroine
-# reaction: heroine,serious,exclamation
-「何をしに集まったかは、見ただけじゃ分からないです」
+誰かへのお土産ではなく、自分のための買い物。旅に出てから、たぶん初めてだった。
 # speaker: narrator
-彼女は案内を広げる。ハリッシュは帽子を持ち替え、広場の使われ方についての説明へ目を落とした。
+その絵が、門の近くの大きな土産物屋に、三十枚並んでいた。同じ構図。同じ色。値段は三分の一。光沢のある紙に、印刷されている。
+# speaker: heroine
+# reaction: heroine,surprised,gloom
+「……同じ絵。手描きだって、言ってたのに」
+# speaker: narrator
+足が、中庭の露店へ引き返していた。画家は顔を上げず、筆を動かし続けている。
+# speaker: heroine
+# emotion: serious
+「すみません。さっきの絵、手描きだって言いましたよね。向こうのお店に、同じ絵がたくさんありました」
+# speaker: narrator
+周りの露店の店主たちが、ちらりとこちらを見た。画家の筆が、止まった。
+# speaker: enemy
+「……サリームだ。この中庭で、八年描いている」
+# speaker: narrator
+彼はゆっくり顔を上げた。怒鳴りはしなかった。その分、声が冷たかった。
+# speaker: enemy
+「あんたは、どっちがどっちを写したと思った」
+# speaker: heroine
+# reaction: heroine,worried,sweat
+「それは……その……」
+# speaker: enemy
+「答えなくていい。顔に書いてある。……向こうの一枚を持ってこい。並べて見ろ。実物を見た人間にしか、描けないものがある」
+# speaker: narrator
+{heroine_name}は印刷の一枚を買って戻り、二枚を並べた。まず目に入ったのは、王の宮殿へ入る、色鮮やかな門。その上に描かれた姿が、二枚で違っていた。
 -> END
 
 === after_first ===
-# speaker: enemy
+# background: gt_bg_jaipur_amber_fort
 { answer_correct:
-「帰還した軍隊が、戦利品を示した。君が引っかかったのは、そこか」
+    # speaker: heroine
+    「サリームさんの絵が、ガネーシャ。……門の名前と同じ。向こうのは、孔雀になってる」
 - else:
-「帰還した軍隊が、戦利品を示した場所だったのか。通り道という私の説明も、ずいぶん省略していたな」
+    # speaker: enemy
+    「ガネーシャだ。ガネーシュ・ポール、ガネーシャの門。名前を読めば分かる。向こうのは孔雀になっている」
 }
-# speaker: heroine
-「誰かが見せるために、誰かを集めていたんですね。門の大きさだけ見てたら、通り過ぎてた」
-# speaker: enemy
-「昔の使い方が分かっても、今日の足の数は二本のままだ」
 # speaker: narrator
-彼は膝をさすった。気づかれたと分かると、わざと鞄の留め具をいじる。
-# speaker: heroine
-# emotion: worried
-「足、つらいんですか？」
-# speaker: enemy
-「休憩を勧める顔だね。もう十分勧められた。省く場所を自分で決めたいんだよ」
+土産物屋の店主が、騒ぎを聞きつけてやってきた。腹の出た男で、首から金の鎖を下げている。
 # speaker: narrator
-彼女は言いかけた言葉を飲み込み、案内図へ戻った。城の中には、軍のためだけではない場所も並んでいる。
+「何を言いがかりつけてる。うちのが元の絵だ。うちの職人が描いて、それを刷ったんだ」
+# speaker: enemy
+「職人の名前は」
+# speaker: narrator
+店主は答えず、話をそらした。サリームはもう店主を見ていなかった。次の場所を、筆の尻で示す。
+# speaker: enemy
+「鏡の間。天井を見ろ」
+# speaker: narrator
+印刷の方の天井には、金色の星が描かれていた。サリームの絵の天井は、細かな点の集まりで埋め尽くされている。
+# speaker: heroine
+「……サリームさん、これ、何日描いたんですか」
+# speaker: enemy
+「鏡の間に、四日座った。警備員に顔を覚えられた」
 -> END
 
 === after_second ===
-# speaker: heroine
+# background: gt_bg_jaipur_amber_fort
 { answer_correct:
-「住まいも庭も寺院もある。ここで一日過ごす人なら、ぜんぶ同じ用事じゃないですね」
+    # speaker: heroine
+    「何千もの小さな鏡。だから点で描いたんですね。……星じゃない。鏡なんだ」
 - else:
-「住まいも庭も寺院も含む宮殿なんですね。戦いの場所、だけで考えてました」
+    # speaker: enemy
+    「鏡だ。何千もの、小さな鏡。星に見えるのは、写真がぼやけていたからだ。実物を見ていない証拠だ」
 }
-# speaker: enemy
-「違う用事の人間を、同じ所で降ろすな。昔、散々言われたよ」
+# speaker: narrator
+{heroine_name}には、もう分かっていた。印刷の方は、サリームの絵を写真に撮って刷ったものだ。写真でぼやけた所だけ、別のものにすり替わっている。
+# speaker: narrator
+疑ったのは、自分の方だった。
 # speaker: heroine
-# reaction: heroine,teasing,music
-「今も、わたしたちの用事を聞く前に、降りる所を決めてました」
-# speaker: narrator
-ハリッシュが口を開き、閉じる。帽子を一つ、自分の頭へ乱暴に載せた。
+# emotion: worried
+「わたし……」
 # speaker: enemy
-# reaction: enemy,sweat
-「乗っていない人を案内したのは、久しぶりだ」
+「まだだ。最後に、あっちの説明書きを読め」
 # speaker: narrator
-彼は案内図の丘の上を指す。別の城とのつながりが描かれていた。
+印刷の絵の下に、英語の説明が刷り込まれていた。この城は、ジャイプールを築いた王が建てた、と。
 # speaker: enemy
-「こっちに通じるという地下通路の話もある。近道のつもりで話す前に、相手の城くらいは確かめるか」
+「おれの絵には、説明は書かない。書くなら、正しいことを書く」
 -> END
 
 === conclusion ===
-# speaker: enemy
+# background: gt_bg_jaipur_amber_fort
 { answer_correct:
-「ジャイガル城。そう、そのつながりだ」
+    # speaker: heroine
+    「城を建てたのは、マーン・シング一世。ジャイプールができる、ずっと前です。向こうの説明は、二人の王を混ぜてる」
 - else:
-「相手はジャイガル城だ。地下通路があるという話と、今日そこを歩けるかは別に考えないとな」
+    # speaker: enemy
+    「城を建てさせたのはマーン・シング一世だ。ジャイプールより百年以上前。向こうは王を取り違えている。……描いた奴は、ここに来たこともない」
 }
 # speaker: narrator
-通路へは向かわず、図の上だけで二つの城をたどる。彼女は案内を畳み、今いる中庭へ顔を戻した。
+土産物屋の店主は、いつの間にかいなくなっていた。周りの店主たちが、黙ってこちらを見ている。
+# speaker: narrator
+{heroine_name}はサリームに向き直り、深く頭を下げた。
+# speaker: heroine
+# emotion: serious
+「ごめんなさい。確かめもしないで、サリームさんを疑いました。みんなの前で」
 # speaker: enemy
-{ battle_score == 3:
-「説明は君の方が細かかった。私の道なら歩数は少ない。それは譲らないよ」
+「謝罪は受け取る。……だが、あんたがさっき、ここで大きな声で言ったことは、もう戻らない」
+# speaker: heroine
+「……はい。だから、戻すために、もう一回大きな声を出してきます」
+# speaker: narrator
+彼女は土産物屋の前に立った。印刷の絵を手に取っている観光客たちに、はっきり聞こえる声で言った。
+# speaker: heroine
+「この絵の本物は、中庭の奥の露店にあります。描いた人が、今もそこにいます」
+# speaker: narrator
+観光客の何人かが、顔を見合わせて中庭の方へ歩き出した。戻ってくると、サリームは筆を止めて、こちらを見ていた。
+{
+- battle_score == 3:
+    # speaker: enemy
+    「全部、見分けた。……画家の目だな。疑ったのも、見る目があったからだ。向きを間違えただけで」
+- battle_score == 2:
+    # speaker: enemy
+    「二つは見分けた。残りの一つは、おれが言った。それでいい。見ようとしたことの方が大事だ」
 - else:
-「知らないところを確かめた分、私は予定より長くここにいる。足には、あとで文句を言われるな」
+    # speaker: enemy
+    「見分けたのは、ほとんどおれだ。だが最後に声を出したのは、あんただ」
 }
-# speaker: heroine
-「わたしは、もう少しここを見ます。奥へ行くのが遅くなっても」
+# speaker: narrator
+サリームは{heroine_name}の手から絵を取り、裏返した。細い筆で、自分の名前を書き入れる。
 # speaker: enemy
-「なら、帽子は要るかい。予備の予備まで持ってきた」
+「おれの仕事だと言えるときだけ、名前を書く。……これは、あんたの絵だ」
 # speaker: heroine
-# reaction: heroine,happy,music
-「大丈夫です。そこは、ちょっと省いてきてもよかったかもしれませんね」
-# speaker: narrator
-ハリッシュは三つ目の帽子を押し込んだ。最短経路の図は消さずにしまい、彼自身が選んだ陰の方へ歩いていく。
-# speaker: heroine
-# emotion: smile
-「自分で決めたい、か。わたし、すぐ座りましょうって言うところだった」
-# speaker: narrator
-彼女は中庭から奥の門へ向け、短い映像を撮った。先を急がない分だけ、門の向こうの人影が小さく動く。
+# reaction: heroine,smile,sparkle
+「……わたしが、自分のために買った、初めての絵です。疑ったことも、ちゃんと一緒に覚えておきます」
 -> END

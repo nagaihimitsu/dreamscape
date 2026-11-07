@@ -4,6 +4,7 @@ VAR player_address = ""
 VAR battle_scene = "intro"
 VAR answer_correct = false
 VAR battle_score = 0
+
 { battle_scene == "intro": -> introduction }
 { battle_scene == "after_1": -> after_first }
 { battle_scene == "after_2": -> after_second }
@@ -12,103 +13,127 @@ VAR battle_score = 0
 
 === introduction ===
 # background: gt_bg_agra_taj_mahal
-# speaker: enemy
-「真ん中で待つ、と言ったのは私だ。私が聞きたい。どこの真ん中だ？」
 # speaker: narrator
-タージ・マハルの庭で、男性が電話に向かって眉をつり上げていた。通話が切れると、持っていた案内図まで裏返す。
-# speaker: heroine
-# reaction: heroine,worried,question
-「誰かと、はぐれたんですか？」
-# speaker: enemy
-「母と別々に見ていてね。待ち合わせが下手なんだ。母ではなく、私が」
+タージ・マハルへ続く長い水路の途中に、白い大理石のベンチがある。記念写真の列が、今日も二十人ほど伸びていた。
 # speaker: narrator
-ファリドは市内で菓子店を営んでいるという。今日は母と見学に来たが、店では一言で通じる説明が、ここでは通じなかった。
+列を眺めていた{heroine_name}の前に、青年が飛び出してきた。額に汗。胸ポケットを、何度も手で押さえている。
 # speaker: enemy
-「店なら『真ん中の箱』で済む。ここには箱が多すぎる」
+「お願いがあります！　あのベンチを、十分だけ確保してください！」
 # speaker: heroine
-# reaction: heroine,teasing,music
-「タージ・マハルを箱に入れようとしてる時点で、ちょっと」
-# speaker: enemy
-「入る箱なら、うちでも取り寄せられないな」
+# reaction: heroine,surprised,interrobang
+「か、確保？」
 # speaker: narrator
-ファリドは母へ、場所を決め直すので動かず待っていてほしいと送った。{heroine_name}が案内図の庭を指す。
-# speaker: heroine
-「まず、ここ全体の真ん中と、白い建物の位置を分けませんか。わたしも、正面からだと同じに見えてました」
+ニキル、ラクナウの銀行員。恋人のタンヴィは、今トイレの列に並んでいる。戻ってきたら、あのベンチで指輪を出す。三か月前から決めていたという。
 # speaker: enemy
-「分けよう。これ以上、中央を増やしたくない」
+「写真を撮るはずだった友達が来られなくなって。列に並び直したら、彼女が戻ってきてしまう。お二人がベンチに座って、ゆっくり写真を撮っててくれれば」
+# speaker: heroine
+# reaction: heroine,shy,blush
+「わたしたちが、あそこに？　二人で？　……ゆっくり？」
+# speaker: narrator
+ニキルは携帯を見せた。プロポーズの手順が三十枚のスライドになっている。七枚目に、ベンチの写真と赤い丸。
+# speaker: heroine
+# reaction: heroine,exasperated,sweat
+「スライドまで……。わ、分かりました。ゆっくり、ですね」
+# speaker: narrator
+列の順番が来て、二人はベンチに並んで座った。後ろの視線が痛い。{heroine_name}は、意味もなく三回、髪を直した。
+# speaker: narrator
+予定より早く、緑のクルタの女性が戻ってきた。タンヴィだ。ベンチの二人と、汗だくの恋人と、彼の胸ポケットを順に見て、彼女はすべてを理解した顔になった。
+# speaker: narrator
+ニキルが、練習どおりの台詞を始める。「シャー・ジャハーンは、ムムターズをそれほど愛して……」
+# speaker: narrator
+タンヴィが静かに遮った。「ねえ、ニキル。ムムターズがどこで、どうやって亡くなったか、知ってる？」
 -> END
 
 === after_first ===
 # background: gt_bg_agra_taj_mahal
 { answer_correct:
-# speaker: enemy
-「庭の端に墓廟。よし、白い建物を『庭の真ん中』と呼んだ私が悪い」
+    # speaker: narrator
+    タンヴィはうなずいた。「そう。戦の旅の途中で、出産で。何人目の子かは、資料でも十三とか十四とか揺れるの。それくらい、何度も」
 - else:
-# speaker: enemy
-「墓廟は庭の端か。私も間違えた。母の返事がかみ合わないわけだ」
+    # speaker: narrator
+    タンヴィは首を振った。「ブルハーンプル。夫の遠征についていって、出産の途中で。何人目の子かは、資料でも十三とか十四とか揺れるの」
 }
-# speaker: narrator
-案内図の前で落ち合うことに決めると、母から『今見ている説明を読んだら行く』と返事が来た。急いでいたのは、息子だけらしい。
 # speaker: enemy
 # reaction: enemy,sweat
-「待つのは苦手だ。店なら、待っている間にも何か包める」
-# speaker: heroine
-「じゃあ、説明の続きを一緒に。上に見える二つの石棺のこと、わたしも気になってたんです」
+「で、でも、それだけ愛してたから、こんな建物を、すぐに……」
 # speaker: narrator
-主廟の内部写真を撮ろうとはせず、手元の資料図を開く。見える石棺と、実際に葬られた場所は同じなのだろうか。
+タンヴィは、白いドームを見上げた。怒っているというより、ずっと前から考えていたことを口にする顔だった。
+# speaker: narrator
+「すぐ、じゃないよ。最初のお墓、どこだったと思う？」
+# speaker: narrator
+ベンチの上で、{heroine_name}は身動きできなかった。立てば、ニキルの計画が終わる。座っていれば、二人の喧嘩の特等席。
 -> END
 
 === after_second ===
 # background: gt_bg_agra_taj_mahal
 { answer_correct:
-# speaker: heroine
-「上はしのぶための記念棺。実際のお墓は下の埋葬室。見える場所だけじゃないんだね」
+    # speaker: narrator
+    「そう。遠くの庭に仮に埋めて、何か月もたってから、ここへ運ばれたの」とタンヴィ。
 - else:
-# speaker: heroine
-# reaction: heroine,surprised,exclamation
-「上の石棺に眠っていると思ってた。実際のお墓は、下の埋葬室なんだ」
+    # speaker: narrator
+    「ブルハーンプルの庭に、仮に埋められたの。ここへ運ばれたのは、何か月もあと」とタンヴィ。
 }
 # speaker: enemy
-「箱の中身を決めつけるな、と。今度は私の商売に刺さった」
-# speaker: heroine
-# reaction: heroine,exasperated,sweat
-「そこの例えは、箱から離れませんか」
+「タンヴィ……君は、タージが嫌いなの？」
 # speaker: narrator
-ファリドはすぐに頭を下げた。図へ目を戻すと、二つの記念棺の並びを、左右から指で測る。
-# speaker: enemy
-「すまない。……ただ、これは揃っていないね。外から見た印象と違う。どうしてだろう」
+「好きよ。建物としては、世界で一番。でも、ここで求婚されるのは、また別の話」
+# speaker: heroine
+# emotion: serious
+「……わたしも、ちょっと分かります。きれいだからこそ、自分の話と重ねたくないこともあるのかなって」
+# speaker: narrator
+言ってから、{heroine_name}ははっとした。ニキルの顔が、さらに一段沈んだ。
+# speaker: heroine
+# reaction: heroine,worried,sweat
+「ご、ごめんなさい。ニキルさんの三か月を、否定したいわけじゃなくて……」
+# speaker: narrator
+タンヴィは、廟の左右に一つずつ建つ、そっくりな赤い建物を指さした。
+# speaker: narrator
+「あっちはモスク。じゃあ、反対側のそっくりな方は、何のために建てたと思う？」
 -> END
 
 === conclusion ===
 # background: gt_bg_agra_taj_mahal
 { answer_correct:
-# speaker: enemy
-「シャー・ジャハーンの記念棺が、妃の隣に後から置かれた。形より、人が増えた順番だったか」
+    # speaker: narrator
+    「そう。釣り合いのため。片方があるから、もう片方が要る。きれいだけど、それだけの役目」
 - else:
-# speaker: enemy
-「妃の隣に、シャー・ジャハーンの記念棺が後から加わったんだね。完全な対称、とは言えないな」
-}
-{ battle_score == 3:
-# speaker: heroine
-# reaction: heroine,happy,sparkle
-「三つとも分かった。中央で迷ったところから、こんなところまで来ちゃったね」
-- else:
-# speaker: heroine
-# emotion: smile
-「図を開いてよかった。目だけで揃えようとすると、見えなくなる話もあるんだね」
+    # speaker: narrator
+    「釣り合いのためよ。モスクの写し。きれいだけど、片方のためだけにある」
 }
 # speaker: narrator
-こちらへ近づく年配の女性に、ファリドが片手を上げた。彼女が最初に尋ねたのは、店に電話していなかったか、だった。
+タンヴィはニキルに向き直った。「わたし、誰かの設計図の釣り合いのために置かれる方には、なりたくないの」
 # speaker: enemy
-# reaction: enemy,interrobang
-「今日はしてない。……二回だけだ。出る前と、出た後」
+「設計図なんて、僕は……」
+# speaker: narrator
+「スライド三十枚。わたしは一枚も見てない。お母さんは見たのに」
+# speaker: narrator
+沈黙。{heroine_name}は、ずっと引っかかっていたことを、やっと言葉にした。
 # speaker: heroine
-# reaction: heroine,teasing,music
-「それ、ほとんど今じゃないですか」
+「タンヴィさんが嫌なのは、タージじゃなくて……一度も、聞かれなかったこと、ですよね」
 # speaker: narrator
-彼は反論せず、スマートフォンを深くしまった。母の歩く方へ向き直る前に、こちらの案内図を指す。
+タンヴィは少し驚いた顔をして、それから、ゆっくりうなずいた。
 # speaker: enemy
-「その『中央』には気を付けて。次に会っても、私はおすすめしない」
+「……聞けばよかった。どこで、どうしたいか」
 # speaker: narrator
-店主は母の歩幅に合わせようとして、早くなり、また戻った。{heroine_name}も地図を畳み、今度は本物の庭へ目を向けた。
+ニキルは胸ポケットから手を離した。指輪の箱は、出てこなかった。
+# speaker: narrator
+「次は、場所から一緒に決めて。そうしたら、答えはたぶん同じだから」
+{
+- battle_score == 3:
+    # speaker: enemy
+    「あなた、三問とも彼女の側の答えでしたね。……僕の味方は、いないのか」
+- battle_score == 2:
+    # speaker: enemy
+    「二問は彼女の言うとおりでした。残りの一問で、僕を励ましてください」
+- else:
+    # speaker: enemy
+    「あなたも知らなかったんですね。……よかった。僕だけじゃなかった」
+}
+# speaker: narrator
+後ろの列から、拍手とも抗議ともつかない声が上がった。ベンチの番は、とっくに時間切れだった。
+# speaker: narrator
+二人が立ち上がると、ニキルとタンヴィは並んで、ベンチではなく出口の方へ歩いていった。さっきより、少しだけ近い距離で。
+# speaker: heroine
+# reaction: heroine,shy,blush
+「……ねえ。わたしたち、世界で一番ロマンチックなベンチに座っちゃったね。ふりで、だけど」
 -> END

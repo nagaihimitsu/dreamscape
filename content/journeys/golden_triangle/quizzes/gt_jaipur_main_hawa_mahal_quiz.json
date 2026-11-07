@@ -5,142 +5,158 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "gt_jaipur_hawa_screened_view",
-      "questionEn": "Why did screened windows matter to women of the royal court watching street processions from Hawa Mahal?",
+      "id": "gt_jaipur_hawa_crown_shape",
+      "questionEn": "The vegetable seller says guides always compare the pointed top of Hawa Mahal to something. What is it said to represent?",
       "options": [
         {
           "id": "A",
-          "textEn": "They made the women easier to see from the street."
+          "textEn": "A beehive, because the windows look like small cells."
         },
         {
           "id": "B",
-          "textEn": "They let the women watch without being seen from outside."
+          "textEn": "The crown of Lord Krishna."
         },
         {
           "id": "C",
-          "textEn": "They prevented the women from seeing the street at all."
+          "textEn": "A ship's sail catching the wind."
         }
       ],
       "correctOptionId": "B",
       "vocabularyJa": [
         {
-          "word": "screened",
-          "meaning": "ここでは、格子で覆われた"
+          "word": "compare",
+          "meaning": "たとえる"
         },
         {
-          "word": "court",
-          "meaning": "ここでは、王族や周囲の人々からなる宮廷"
+          "word": "pointed",
+          "meaning": "先のとがった"
         },
         {
-          "word": "processions",
-          "meaning": "行列、行進"
+          "word": "beehive",
+          "meaning": "蜂の巣"
+        },
+        {
+          "word": "crown",
+          "meaning": "冠"
+        },
+        {
+          "word": "sail",
+          "meaning": "帆"
         }
       ],
-      "hintJa": "見る人と、外から見られる人を分けて考えましょう。窓には、視線の届き方を変える役割もありました。",
-      "correctExplanationJa": "格子越しに街を見ながら、通りの人からは姿を見られにくくするためです。政府観光案内は、当時のパルダーという社会・宗教上の隔離慣習との関係を説明します。窓の美しさだけでなく、そこで暮らした人の行動に目を向けられます。",
-      "incorrectExplanationJa": "外へ姿をよく見せるためでも、外を一切見せないためでもありません。格子は女性たちが姿を隠したまま街路を眺める助けになりました。見る方向によって、窓の役割は違っていたのです。",
+      "hintJa": "建てた王は、ある神を深く信仰していた。",
+      "correctExplanationJa": "頂上のピラミッドのような形は、クリシュナ神の冠を表すと説明されています。ハワー・マハルは「ジャイプールの冠」とも呼ばれます。",
+      "incorrectExplanationJa": "頂上の形は、クリシュナ神の冠を表すと紹介されています。蜂の巣や帆も似て見えますが、案内で語られるのは冠です。",
       "sources": [
         {
-          "publisher": "Ministry of Tourism, Government of India",
-          "title": "Discovering Hawa Mahal's Architectural Splendor",
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Hawa Mahal",
           "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "宮廷女性がパルダーの慣習の下で、格子を通して街の様子や王族・宗教行列を、街路側から見られずに観察したと説明する。"
+          "checkedAt": "2026-11-07",
+          "claimType": "interpretation",
+          "claimJa": "頂上のピラミッド状の構造はクリシュナ神の冠を表すと説明される。1799年にマハーラージャ・サワーイー・プラタープ・シングが建て、ラール・チャンド・ウスタードが設計した。"
         }
       ],
       "difficulty": "easy"
     },
     {
-      "id": "gt_jaipur_hawa_airflow",
-      "questionEn": "Hawa Mahal has many small windows. Besides shaping the view, what practical role did these openings have?",
+      "id": "gt_jaipur_hawa_ramps",
+      "questionEn": "Inside Hawa Mahal, how do visitors go up to the higher floors?",
       "options": [
         {
           "id": "A",
-          "textEn": "They stored water for the rooms below."
+          "textEn": "By a narrow wooden ladder behind each window."
         },
         {
           "id": "B",
-          "textEn": "They closed the building to moving air."
+          "textEn": "By an old lift that was added for the royal family."
         },
         {
           "id": "C",
-          "textEn": "They helped air move through the building."
+          "textEn": "By ramps, instead of stairs."
         }
       ],
       "correctOptionId": "C",
       "vocabularyJa": [
         {
-          "word": "openings",
-          "meaning": "開口部、開いている部分"
+          "word": "higher floors",
+          "meaning": "上の階"
         },
         {
-          "word": "practical",
-          "meaning": "実用的な"
+          "word": "ladder",
+          "meaning": "はしご"
         },
         {
-          "word": "air",
-          "meaning": "空気"
+          "word": "lift",
+          "meaning": "昇降機、エレベーター"
+        },
+        {
+          "word": "ramps",
+          "meaning": "傾斜路、スロープ"
         }
       ],
-      "hintJa": "この建物は「風の宮殿」と呼ばれます。装飾のすき間を、目に見えるもの以外も通ります。",
-      "correctExplanationJa": "小窓は通風を助けました。人が外を見る仕組みと、空気が通る仕組みが同じ建物に組み込まれています。窓の多さを眺めるだけでなく、人がそこで過ごすための工夫として見られます。",
-      "incorrectExplanationJa": "貯水槽ではなく、空気を遮断する仕組みでもありません。政府観光案内は、多数の小窓が通風や涼しさに役立つと説明しています。繰り返す窓の形には、見た目以外の働きがあります。",
+      "hintJa": "中に入って探しても、階段が見つからない。",
+      "correctExplanationJa": "ハワー・マハルの上の階へは、階段ではなく傾斜路で上ります。正面には入口がなく、入るのは裏側からです。",
+      "incorrectExplanationJa": "上の階へは傾斜路で上ります。はしごや昇降機ではありません。",
       "sources": [
         {
-          "publisher": "Ministry of Tourism, Government of India",
-          "title": "Discovering Hawa Mahal's Architectural Splendor",
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Hawa Mahal",
           "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal",
-          "checkedAt": "2026-11-04",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "多数の小窓が建物の通風と冷却を助ける構成であると説明する。定量的な温度差や当日の気象条件は扱わない。"
+          "claimJa": "上の階へは階段ではなく傾斜路で上がる。正面の入口はなく、入口は裏側にある。"
         }
       ],
-      "difficulty": "easy"
+      "difficulty": "medium"
     },
     {
-      "id": "gt_jaipur_hawa_rear_entrance",
-      "questionEn": "A visitor looks for an entrance in Hawa Mahal's famous facade. Where is the entrance actually located?",
+      "id": "gt_jaipur_hawa_window_count",
+      "questionEn": "The seller has counted the windows for forty years and always gets 951. What number is usually given for Hawa Mahal's windows?",
       "options": [
         {
           "id": "A",
-          "textEn": "Behind the palace, away from the famous facade."
+          "textEn": "There are 953 windows."
         },
         {
           "id": "B",
-          "textEn": "At the centre of the famous facade."
+          "textEn": "There are 365, one for each day of the year."
         },
         {
           "id": "C",
-          "textEn": "Through a doorway at one end of the street-facing facade."
+          "textEn": "There are 108, like a string of prayer beads."
         }
       ],
       "correctOptionId": "A",
       "vocabularyJa": [
         {
-          "word": "facade",
-          "meaning": "建物の正面、ファサード"
+          "word": "counted",
+          "meaning": "数えた"
         },
         {
-          "word": "entrance",
-          "meaning": "入口"
+          "word": "usually given",
+          "meaning": "一般に示される"
         },
         {
-          "word": "located",
-          "meaning": "位置している、設けられている"
+          "word": "string",
+          "meaning": "（糸に通した）一連"
+        },
+        {
+          "word": "prayer beads",
+          "meaning": "数珠"
         }
       ],
-      "hintJa": "写真でよく見る顔と、建物に入るための側は、必ずしも同じではありません。",
-      "correctExplanationJa": "入口は背後側にあります。外からの有名な姿だけを知っていると、正面を眺めたまま入口を探し続けてしまいそうです。建築の構成についての問題で、当日の入場規制や経路の保証ではありません。",
-      "incorrectExplanationJa": "有名な正面ファサードの中央や片端に、通りから入る入口があるのではありません。入口は背後側です。正面の外観を見る場所と、中へ入る場所が異なる点に気付くと、建物の構成が分かりやすくなります。",
+      "hintJa": "四十年数えた数に、とても近い。",
+      "correctExplanationJa": "ハワー・マハルの窓（ジャローカー）は953と紹介されています。通りから数えて951なら、ほとんど当たりです。",
+      "incorrectExplanationJa": "一般に示される窓の数は953です。年の日数や数珠の玉の数ではありません。",
       "sources": [
         {
-          "publisher": "Ministry of Tourism, Government of India",
-          "title": "Discovering Hawa Mahal's Architectural Splendor",
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Hawa Mahal",
           "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/hawa-mahal",
-          "checkedAt": "2026-11-04",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "政府観光案内は、ハワー・マハルには正面入口がなく背後側の入口があると説明する。"
+          "claimJa": "ハワー・マハルの名は953の窓（ジャローカー）に由来すると紹介される。"
         }
       ],
       "difficulty": "medium"

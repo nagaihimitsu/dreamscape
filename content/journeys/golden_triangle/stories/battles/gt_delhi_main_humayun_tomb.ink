@@ -13,118 +13,147 @@ VAR battle_score = 0
 
 === introduction ===
 # background: gt_bg_delhi_humayun_tomb
-# speaker: enemy
-「撮らなくていいよ」
 # speaker: narrator
-フマユーン廟の庭で、ベンチの端にいた女性が言った。{heroine_name}は、持ち上げかけたスマートフォンを胸元へ戻す。
+水路沿いの木陰で、{heroine_name}が廟のドームを見上げていたとき、誰かに腕をつかまれた。
+# speaker: narrator
+二十歳くらいの女の子だった。隣に、同じくらいの年の青年。二人とも、顔から血の気が引いている。
+# speaker: narrator
+「お願い、十分だけ友達になって！」
 # speaker: heroine
-# reaction: heroine,surprised,sweat
-「あ、ごめんなさい。建物を……お一人で、待ってらっしゃるのかと思って」
-# speaker: enemy
-「一人で座ると、待ってることになるの？　今、座りたくて座ってる」
+# reaction: heroine,surprised,interrobang
+「と、友達？　今から？」
 # speaker: narrator
-言葉をなくした彼女を見て、女性は少しだけ声を緩めた。サイラと名乗り、昔は学校の給食を作っていたと話す。
-# speaker: enemy
-「今日は息子と来た。あの子は全部見たい。私は、あと十分、ゆっくり座りたい。両方、観光だろ」
+女の子はメヘル、青年はカビールと名乗った。大学の同級生。西門から、メヘルの叔父が入ってきたのだという。
+# speaker: narrator
+二人きりでいるところを見られたら、夕飯の前に母親に知れる。そして母親に知れたら、親戚中に知れる。メヘルは早口でそう説明した。
+# speaker: narrator
+「カビールは歴史学科だから、外国のお友達を案内してるってことにする。あなたたちは、わたしの文通相手。お願い！」
 # speaker: heroine
 # emotion: worried
-「寂しいのかなって、勝手に思いました。すみません」
+「え、でも、わたし、嘘は……」
 # speaker: enemy
-「謝るのは一回でいい。二回目から、こっちが慰める仕事になる」
+「メヘル！」
 # speaker: narrator
-彼女は口を閉じ、サイラの見ていた方へ顔を向けた。庭の水路が、道とは違う線を描いている。
-# speaker: heroine
-「ここは……何を見ていらしたんですか？」
+返事より先に、太い声が飛んできた。口ひげ、腹の上で張ったクルタ、手にはなぜか新聞。大股で近づいてくる。
 # speaker: enemy
-「この区切り。人を並ばせるみたいだと思って。給食の癖だね。説明だと、もっと違うものを表してるらしい」
+「こんな所で何をしている。……そっちの若いのは誰だ」
+# speaker: narrator
+メヘルが、外国の友達とガイド役の同級生だと説明する。{heroine_name}は否定しなかった。否定しそびれた、の方が近い。
+# speaker: enemy
+「スレーシュだ。この子の叔父。所得税の調査官を三十五年やった。話の合わない申告は、匂いで分かる」
+# speaker: narrator
+スレーシュはこちらに鼻を向け、本当に匂いをかぐ仕草をした。それから新聞を丸め、指揮棒のように振る。
+# speaker: enemy
+「案内してもらったんなら、答えられるな？　ここに眠る皇帝は、どうやって死んだ」
 -> END
 
 === after_first ===
 # background: gt_bg_delhi_humayun_tomb
 { answer_correct:
-    # speaker: heroine
-    「楽園の川を表す庭。列を作るための線ではないんですね」
+    # speaker: enemy
+    「……図書室の階段。ほう。ちゃんと聞いていたようだな」
+    # speaker: narrator
+    カビールの肩が、目に見えて下がった。息を止めていたらしい。
 - else:
-    # speaker: heroine
-    「楽園の川のイメージと結び付く水路だそうです。きれいに分けた理由も、見た目だけじゃなかった」
+    # speaker: enemy
+    # reaction: enemy,question
+    「ガイドがいて、それか？　書庫の階段から落ちたんだ。礼拝の声に振り向いてな」
+    # speaker: narrator
+    カビールが慌てて「説明はしたんです、忘れちゃったんです」と口を挟む。スレーシュの目が細くなった。
 }
-# speaker: enemy
-「それなら、慌てて建物へ一直線に行かなくてもいいね。ゆっくり座る方に、根拠がついた」
+# speaker: narrator
+スレーシュが手帳に何か書き込む隙に、メヘルが{heroine_name}の耳元でささやく。「ありがとう、あと少しだけ」
 # speaker: heroine
-# reaction: heroine,teasing,question
-「もしかして、説明より先に結論がありました？」
-# speaker: enemy
-# reaction: enemy,music
-「六十年以上生きてると、先に座りたい時がある」
+# emotion: worried
+「……ごめんなさい。黙ってるのも、嘘の一部みたいで、苦しいの」
 # speaker: narrator
-スマートフォンが震えた。サイラは息子からの短い連絡を読み、顔を上げる。
+メヘルの目が一瞬揺れた。けれど、叔父が振り返る方が早かった。
 # speaker: enemy
-「『お墓を見終わった』だって。皇帝一人の墓ならすぐ済むんだろうね」
+「次の項目。帳簿は入口から見るものだ。入ってすぐ、最初に見た墓。あれは誰の墓だ」
 # speaker: narrator
-こちらが示した説明には、フマユーン以外の名も並んでいる。サイラは老眼鏡を掛け直した。
+新聞の先が、正門の方を指した。カビールが答えかけ、叔父の一睨みで口を閉じる。
+# speaker: enemy
+「お前には聞いていない。お客さんに聞いている」
 -> END
 
 === after_second ===
 # background: gt_bg_delhi_humayun_tomb
 { answer_correct:
-    # speaker: heroine
-    「皇帝一人だけじゃなくて、多くのムガル皇族の墓もあるんですね」
+    # speaker: enemy
+    「イーサー・ハーン。正解だ。……フマユーンの廟の入口で、別の王に仕えた男の墓が出迎える。面白いだろう」
+    # speaker: narrator
+    スレーシュは問題を出した側なのに、少し得意そうだった。
 - else:
-    # speaker: heroine
-    「この墓群には、多くのムガル皇族も眠っているんだって。名前一つで全部見た気になるところでした」
+    # speaker: enemy
+    「違う。イーサー・ハーン、シェール・シャーの宮廷の男だ。フマユーンの廟より古い。入口の申告で、もうつまずいたな」
+    # speaker: narrator
+    メヘルの手が、{heroine_name}の袖を強く握った。
 }
-# speaker: enemy
-「……『まだあるよ』と送ったら、あの子、全部探し始めるね」
 # speaker: narrator
-サイラは書きかけた返事を消した。代わりに、座っている場所だけ伝える。
+スレーシュは腕時計を見た。三度目だった。視線が、こちらではなく東の門の方へ流れる。
+# speaker: narrator
+クルタの胸ポケットから、赤いものが少しのぞいていた。薔薇だ。新聞で隠すように、彼は姿勢を変えた。
 # speaker: heroine
-# reaction: heroine,surprised,question
-「教えないんですか？」
+# reaction: heroine,teasing,question
+「……あの、スレーシュさん。どなたかと、待ち合わせですか？」
 # speaker: enemy
-「聞かれたら話す。知ったことを全部、相手の予定に入れなくてもいい」
+# reaction: enemy,sweat
+「調査官に質問するな。質問するのはわたしだ」
 # speaker: narrator
-彼女は返事に少し迷う。自分ならすぐ知らせたくなる、と言いかけて、やめずに口にした。
-# speaker: heroine
-# emotion: serious
-「わたしは、言いたくなります。面白いところ、見逃したらもったいないから」
+咳払いを一つ。声が、少しだけ大きくなった。
 # speaker: enemy
-「うん。あなたはそうすればいい。どこまで行く旅なの？」
-# speaker: narrator
-彼女がアーグラへ行く予定を伝えると、サイラは説明の先を指した。まだ訪ねていない建物へ、庭園墓の話がつながっている。
+「最後の項目だ。千八百五十七年の九月、この廟で何があった」
 -> END
 
 === conclusion ===
 # background: gt_bg_delhi_humayun_tomb
 { answer_correct:
-    # speaker: heroine
-    「後のタージ・マハルにも影響したんだ。これは言います。アーグラで、庭も比べたいです」
+    # speaker: enemy
+    「最後の皇帝が、先祖の墓に逃げ込んで、ここで捕まった。……合格だ。申告に誤りなし」
 - else:
-    # speaker: heroine
-    「フマユーン廟の庭園墓が、後のタージ・マハルにも影響したんですね。次に見た時、今度は見落としたくないな」
+    # speaker: enemy
+    「最後の皇帝が、ここで捕まったんだ。先祖の墓に逃げ込んでな。……まあ、いい。合格にしてやる」
 }
+# speaker: narrator
+そのとき、東の門の方から女性の声がした。「スレーシュ！」
+# speaker: narrator
+淡い色のサリーの女性が、手を振っている。スレーシュの手から新聞が落ち、胸ポケットの薔薇が、全員の前にあらわになった。
+# speaker: narrator
+メヘルの目が、ゆっくり細くなる。「……叔父さん。その薔薇、誰に？」
+# speaker: enemy
+# reaction: enemy,sweat
+「大学の同級生だ。四十年ぶりに連絡が来て……いや、違う、これは調査だ」
+# speaker: narrator
+沈黙。庭の水路の上を、風だけが渡っていく。最初に口を開いたのはスレーシュだった。
+# speaker: enemy
+「提案がある。今日この廟で、誰も、誰にも会わなかった」
+# speaker: narrator
+「異議なし」とメヘルが即答し、カビールが何度もうなずいた。三人の視線が、そろって{heroine_name}に向く。
+# speaker: heroine
+# emotion: serious
+「わたしは、誰にも言いません。言う相手もいないですし。……でも、いつかお母さんに、自分の口で言えたらいいなって思います。二人とも」
+# speaker: enemy
+「二人とも、とは。……わしも入っているのか」
+# speaker: heroine
+「入ってます」
+# speaker: narrator
+スレーシュは落ちた新聞を拾い、少し笑った。
+# speaker: enemy
+「税務署に三十五年いて分かったことがある。いちばん申告が合わないのは、家族の帳簿だ。わしの頃も、若いのはみんなここで会っていたよ」
 {
 - battle_score == 3:
     # speaker: enemy
-    「よく読んだね。でも、全部覚えても私の息子の足は止まらない。あれは別の難問」
+    「君の申告は完璧だった。調査官として言う。……完璧すぎて、むしろ怪しかった」
 - battle_score == 2:
     # speaker: enemy
-    「二つ分かって、一つ読み直した。座ってる間にも、案外進むもんだね」
+    「君の申告には一か所だけ誤りがあった。今日は修正申告で許す」
 - else:
     # speaker: enemy
-    「読み違えもあったね。私なんて最初、給食の列にしてた。紙は逃げないから、後でまた読めばいい」
+    「君の申告は穴だらけだ。だが今日、わしは誰にも会っていないから、何も見なかった」
 }
 # speaker: narrator
-遠くで、こちらを探す青年が足を止めた。サイラは片手を上げ、座ったまま隣を示した。
-# speaker: enemy
-「ほら。急がせる人にも、座る場所はある」
+叔父は東の門へ、若い二人は西の門へ。互いに振り返らないまま、別々の方向へ歩いていった。
 # speaker: heroine
-# emotion: smile
-「撮らせてくださいとは、言いません。今日はお話だけ、覚えていきます」
-# speaker: enemy
-「それならいいよ。気の毒なおばあさんにしないでね」
-# speaker: heroine
-# reaction: heroine,teasing,music
-「しません。けっこう、手ごわかったので」
-# speaker: narrator
-サイラは笑わず、片方の眉を上げた。彼女は少しだけ慌てたが、言い直さなかった。別れた後も、ベンチは二人の静かな場所になっていた。
+# reaction: heroine,exasperated,sigh
+「……わたし、嘘の友達になって、嘘の共犯者になって、最後は監査に通っちゃった」
 -> END

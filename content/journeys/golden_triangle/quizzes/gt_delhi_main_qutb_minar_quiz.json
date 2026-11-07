@@ -5,145 +5,173 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "gt_delhi_qutb_unfinished_ambition",
-      "questionEn": "The Alai Minar remains much lower than the Qutb Minar. What had its builder planned?",
+      "id": "gt_delhi_qutb_iron_pillar_fence",
+      "questionEn": "A man wants to hug the Iron Pillar, but a fence stands in his way. Why was the fence put around its base?",
       "options": [
         {
           "id": "A",
-          "textEn": "A low platform for watching the older tower."
+          "textEn": "Because the pillar is slowly sinking, so nobody may stand near it."
         },
         {
           "id": "B",
-          "textEn": "A tower twice the scale of the Qutb Minar."
+          "textEn": "To protect it from the huge number of visitors who used to touch it."
         },
         {
           "id": "C",
-          "textEn": "A small copy designed to stay below the first balcony."
+          "textEn": "Because the pillar now belongs to a private collector."
         }
       ],
       "correctOptionId": "B",
       "vocabularyJa": [
         {
-          "word": "builder",
-          "meaning": "造営者"
+          "word": "fence",
+          "meaning": "柵"
         },
         {
-          "word": "planned",
-          "meaning": "計画していた"
+          "word": "base",
+          "meaning": "根元"
         },
         {
-          "word": "scale",
-          "meaning": "規模"
+          "word": "used to",
+          "meaning": "以前は〜していた"
+        },
+        {
+          "word": "collector",
+          "meaning": "収集家"
         }
       ],
-      "hintJa": "いま見える低さは、目標の大きさを示しているとは限らない。",
-      "correctExplanationJa": "計画はクトゥブ・ミナールの二倍の規模でしたが、第一層までで未完に終わりました。低い姿の向こうに、大きな計画が残っています。",
-      "incorrectExplanationJa": "小さく造る計画ではありませんでした。クトゥブ・ミナールの二倍を目指した塔が、第一層までで止まった姿です。",
+      "hintJa": "背中をつけて両腕を回すと願いがかなう、と言われていた。何千人、何万人が同じことをしたら？",
+      "correctExplanationJa": "柱に背をつけて腕を回せると幸運が訪れる、という習わしがありました。訪れる人があまりに多いため、根元を守る柵が設けられています。",
+      "incorrectExplanationJa": "沈んでいるわけでも、誰かの持ち物になったわけでもありません。抱きつく習わしで大勢が触れたため、根元を守る柵が作られました。",
       "sources": [
         {
-          "publisher": "UNESCO World Heritage Centre",
-          "title": "Qutb Minar and its Monuments, Delhi",
-          "url": "https://whc.unesco.org/en/list/233/",
-          "checkedAt": "2026-11-04",
+          "publisher": "IUPAC Chemistry International",
+          "title": "600 Years Young",
+          "url": "https://list.iupac.org/publications/ci/2005/2706/3_veazey.html",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "アラーイー・ミナールはクトゥブ・ミナールの二倍の規模を計画し、第一層を残して未完。"
+          "claimJa": "新しい柵が、大勢の訪問者から柱の根元を守っている。"
+        },
+        {
+          "publisher": "Onmanorama",
+          "title": "The story of the iron pillar in Delhi that refuses to rust",
+          "url": "https://www.onmanorama.com/travel/outside-kerala/2024/03/15/iron-pillar-qutub-minar-no-rust-delhi.amp.html",
+          "checkedAt": "2026-11-07",
+          "claimType": "legend",
+          "claimJa": "背を柱につけて腕を回せた人には幸運が訪れると言われ、柵ができるまでは柱に触れることができた。"
         }
       ],
       "difficulty": "easy"
     },
     {
-      "id": "gt_delhi_qutb_gate_record",
-      "questionEn": "What provides a written record of when the Alai Darwaza gateway was built?",
+      "id": "gt_delhi_qutb_iron_pillar_rust",
+      "questionEn": "The science teacher asks why the Iron Pillar has resisted rust for about 1,600 years. What is the best answer?",
       "options": [
         {
           "id": "A",
-          "textEn": "The number of steps beside the gateway."
+          "textEn": "Workers have covered it with a special oil every year since it was made."
         },
         {
           "id": "B",
-          "textEn": "The colour of its stone in the sunlight."
+          "textEn": "It is made of a modern metal that replaced the old pillar around 1900."
         },
         {
           "id": "C",
-          "textEn": "The inscriptions carved on the gateway."
+          "textEn": "A thin protective layer forms on its surface, helped by phosphorus in the iron."
         }
       ],
       "correctOptionId": "C",
       "vocabularyJa": [
         {
-          "word": "provides",
-          "meaning": "伝える・与える"
+          "word": "resisted",
+          "meaning": "（〜に）耐えてきた"
         },
         {
-          "word": "inscriptions",
-          "meaning": "碑文"
+          "word": "rust",
+          "meaning": "錆び"
         },
         {
-          "word": "carved",
-          "meaning": "刻まれた"
+          "word": "protective layer",
+          "meaning": "保護する膜"
+        },
+        {
+          "word": "phosphorus",
+          "meaning": "リン（元素）"
         }
       ],
-      "hintJa": "模様と思って見ていた部分の中に、読むことのできるものがある。",
-      "correctExplanationJa": "門に刻まれた碑文に、1311年の造営が記されています。古そうに見えるという印象と、文字として残る記録を分けることができます。",
-      "incorrectExplanationJa": "碑文が年代の記録を伝えます。色や階段の数から年を推測するのではなく、門に刻まれた文字が手がかりになります。",
+      "hintJa": "誰かが毎年手入れしているのでも、すり替えたのでもない。鉄そのものに秘密がある。",
+      "correctExplanationJa": "研究によれば、鉄に含まれるリンが、表面に錆の進行を妨げる薄い膜ができるのを助けています。魔法ではなく、作り方と材料の話です。",
+      "incorrectExplanationJa": "毎年の塗装でも、近代の金属への交換でもありません。鉄に含まれるリンの働きで、表面に保護膜ができると考えられています。",
       "sources": [
         {
-          "publisher": "Delhi Tourism",
-          "title": "Qutab Minar",
-          "url": "https://www.delhitourism.gov.in/tourist_place/qutab_minar.html",
-          "checkedAt": "2026-11-04",
+          "publisher": "IUPAC Chemistry International",
+          "title": "600 Years Young",
+          "url": "https://list.iupac.org/publications/ci/2005/2706/3_veazey.html",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "アラーイー門の碑文にAH710年、西暦1311年の造営が記録されている。"
+          "claimJa": "耐食性には鉄中のリンが重要で、表面に保護的な不動態膜が形成される、とバラスブラマニアンが説明している。"
         }
       ],
       "difficulty": "medium"
     },
     {
-      "id": "gt_delhi_qutb_many_hands",
-      "questionEn": "What do the building and repair records tell us about the Qutb Minar?",
+      "id": "gt_delhi_qutb_iron_pillar_journey",
+      "questionEn": "According to research on the Iron Pillar, where did it first stand?",
       "options": [
         {
           "id": "A",
-          "textEn": "Later rulers added to and repaired an earlier tower."
+          "textEn": "Far away in central India, before it was moved to Delhi."
         },
         {
           "id": "B",
-          "textEn": "One ruler completed it, and no one changed it later."
+          "textEn": "In the same spot in Delhi where it stands today."
         },
         {
           "id": "C",
-          "textEn": "Later work changed the gardens, but never the tower itself."
+          "textEn": "In a museum in London until India became independent."
         }
       ],
       "correctOptionId": "A",
       "vocabularyJa": [
         {
-          "word": "rulers",
-          "meaning": "支配者たち"
+          "word": "research",
+          "meaning": "研究"
         },
         {
-          "word": "added to",
-          "meaning": "増築した"
+          "word": "central India",
+          "meaning": "中部インド"
         },
         {
-          "word": "repaired",
-          "meaning": "修理した"
+          "word": "spot",
+          "meaning": "地点"
+        },
+        {
+          "word": "independent",
+          "meaning": "独立した"
         }
       ],
-      "hintJa": "塔に残っているのは、造り始めた人の記録だけだろうか。",
-      "correctExplanationJa": "建設を始めたアイバクの後、イルトゥトゥミシュらが増築し、後代の修理も碑文に残りました。一本の塔に、複数の時代の仕事が重なっています。",
-      "incorrectExplanationJa": "一人の仕事で固定された塔ではありません。後継者による増築があり、その後も修理が行われたことを記録から確認できます。",
+      "hintJa": "柱の古い碑文には、もとは別の丘の上にあったことが書かれている。",
+      "correctExplanationJa": "柱は約1600年前、中部インドで造られ建てられたと研究者は考えています。のちに数百キロ離れたデリーへ運ばれ、今の場所に立てられました。",
+      "incorrectExplanationJa": "最初からここにあったわけではありません。研究では、中部インドのウダヤギリ付近に建てられ、のちにデリーへ移されたとされています。",
       "sources": [
         {
-          "publisher": "Delhi Tourism",
-          "title": "Qutab Minar",
-          "url": "https://www.delhitourism.gov.in/tourist_place/qutab_minar.html",
-          "checkedAt": "2026-11-04",
+          "publisher": "IUPAC Chemistry International",
+          "title": "600 Years Young",
+          "url": "https://list.iupac.org/publications/ci/2005/2706/3_veazey.html",
+          "checkedAt": "2026-11-07",
+          "claimType": "interpretation",
+          "claimJa": "研究者は、柱が約1600年前に中部インドのボーパール近郊ウダヤギリで造られ、約七世紀前にデリーのクトゥブ複合遺跡へ移されたとする。"
+        },
+        {
+          "publisher": "Onmanorama",
+          "title": "The story of the iron pillar in Delhi that refuses to rust",
+          "url": "https://www.onmanorama.com/travel/outside-kerala/2024/03/15/iron-pillar-qutub-minar-no-rust-delhi.amp.html",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "アイバクの第一層に後継者が階を追加。塔の碑文にはフィーローズ・シャー・トゥグルク、シカンダル・ローディーの修理が記される。"
+          "claimJa": "柱の碑文には、もとはヴィシュヌパダの丘の上にあったと記されている。"
         }
       ],
-      "difficulty": "hard"
+      "difficulty": "medium"
     }
   ]
 }

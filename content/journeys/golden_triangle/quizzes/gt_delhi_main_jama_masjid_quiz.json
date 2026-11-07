@@ -5,142 +5,154 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "gt_delhi_jama_shared_patron",
-      "questionEn": "What connects the Jama Masjid in Delhi with the Red Fort and the Taj Mahal?",
+      "id": "gt_delhi_jama_world_view_name",
+      "questionEn": "The old perfume seller says the mosque was named Masjid-i-Jahan Numa. What does the name mean?",
       "options": [
         {
           "id": "A",
-          "textEn": "They were all built as tombs for the same family."
+          "textEn": "A mosque built beside the river of the moon."
         },
         {
           "id": "B",
-          "textEn": "They were all ordered by the Mughal emperor Shah Jahan."
+          "textEn": "A mosque made only for travellers from far lands."
         },
         {
           "id": "C",
-          "textEn": "They were all parts of one palace within the same walls."
-        }
-      ],
-      "correctOptionId": "B",
-      "vocabularyJa": [
-        {
-          "word": "connects",
-          "meaning": "つなぐ"
-        },
-        {
-          "word": "ordered",
-          "meaning": "命じた"
-        },
-        {
-          "word": "emperor",
-          "meaning": "皇帝"
-        }
-      ],
-      "hintJa": "礼拝の場、宮殿、墓。用途や場所が違っても、造営を命じた人からつながる。",
-      "correctExplanationJa": "いずれもシャー・ジャハーンの造営です。同じ皇帝が関わりながら、祈り、暮らし、追悼という異なる目的を持つ建物が残っています。",
-      "incorrectExplanationJa": "同じ建物の一部でも、すべて墓でもありません。異なる目的の建物をつなぐのは、造営を命じた皇帝シャー・ジャハーンです。",
-      "sources": [
-        {
-          "publisher": "Delhi Tourism",
-          "title": "Jama Masjid",
-          "url": "https://delhitourism.gov.in/tourist_place/jama_masjid.html",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "ジャーマー・マスジドの造営者シャー・ジャハーンは、レッド・フォートとタージ・マハルの造営者でもある。"
-        }
-      ],
-      "difficulty": "easy"
-    },
-    {
-      "id": "gt_delhi_jama_royal_gate",
-      "questionEn": "Why was the eastern entrance of the Jama Masjid larger and more prominent than the northern and southern entrances?",
-      "options": [
-        {
-          "id": "A",
-          "textEn": "It was originally reserved for the king and his court."
-        },
-        {
-          "id": "B",
-          "textEn": "It was designed as a private entrance for gardeners."
-        },
-        {
-          "id": "C",
-          "textEn": "It was the main entrance reserved for foreign merchants."
-        }
-      ],
-      "correctOptionId": "A",
-      "vocabularyJa": [
-        {
-          "word": "entrance",
-          "meaning": "入口"
-        },
-        {
-          "word": "prominent",
-          "meaning": "目立つ"
-        },
-        {
-          "word": "reserved for",
-          "meaning": "〜のために取っておかれた"
-        }
-      ],
-      "hintJa": "同じ建物への入口でも、通る人の立場が造りに表れることがある。",
-      "correctExplanationJa": "東側はもともと王と宮廷の人々のための入口でした。華やかさを眺めるだけでなく、誰がそこを通ったかという見方ができます。",
-      "incorrectExplanationJa": "王と宮廷の人々のために用いられた入口です。北・南側との規模の違いは、かつての人の立場とも関わります。",
-      "sources": [
-        {
-          "publisher": "Archnet",
-          "title": "Jama Masjid (Delhi)",
-          "url": "https://www.archnet.org/sites/1571",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "東の入口は王と宮廷用に設けられた三層の入口で、北・南の二層の入口より目立つ。"
-        }
-      ],
-      "difficulty": "medium"
-    },
-    {
-      "id": "gt_delhi_jama_living_mosque",
-      "questionEn": "Why is it incomplete to describe the Jama Masjid only as a monument from the past?",
-      "options": [
-        {
-          "id": "A",
-          "textEn": "Only royal ceremonies take place there today."
-        },
-        {
-          "id": "B",
-          "textEn": "Its only role today is to display Mughal stonework."
-        },
-        {
-          "id": "C",
-          "textEn": "People still come here to pray."
+          "textEn": "A mosque that commands a view of the world."
         }
       ],
       "correctOptionId": "C",
       "vocabularyJa": [
         {
-          "word": "incomplete",
-          "meaning": "不十分な"
+          "word": "perfume",
+          "meaning": "香水、香料"
         },
         {
-          "word": "monument",
-          "meaning": "記念建造物"
+          "word": "commands a view of",
+          "meaning": "〜を見渡す"
         },
         {
-          "word": "pray",
-          "meaning": "祈る"
+          "word": "travellers",
+          "meaning": "旅人"
         }
       ],
-      "hintJa": "見学の案内とは別に、礼拝者のための入場も案内されている。",
-      "correctExplanationJa": "現在も礼拝の場です。昔の造りを知る楽しさと、今ここを使う人々への配慮を一緒に持って訪ねられます。具体的な見学条件は現地案内で確認します。",
-      "incorrectExplanationJa": "今も祈りに訪れる人がいるモスクです。過去の建築だけを見るのではなく、現在の使われ方も含めて理解できます。",
+      "hintJa": "モスクは町の小高い丘の上に建てられた。階段を上りきったら、何が見える？",
+      "correctExplanationJa": "シャー・ジャハーンは、城から少し離れた小高い丘にこのモスクを建てました。名前は「世界を見渡すモスク」という意味です。",
+      "incorrectExplanationJa": "マスジド・イ・ジャハーン・ヌマーは「世界を見渡すモスク」という意味です。小高い丘の上に建てられ、今も長い階段が通りから続いています。",
       "sources": [
         {
-          "publisher": "Delhi Tourism",
-          "title": "Jama Masjid",
-          "url": "https://delhitourism.gov.in/tourist_place/jama_masjid.html",
-          "checkedAt": "2026-11-04",
+          "publisher": "Rana Safvi",
+          "title": "Glorious history of Delhi's Jama Masjid — the mosque that promised a view of the world",
+          "url": "https://ranasafvi.com/glorious-history-of-delhis-jama-masjid-the-mosque-that-promised-a-view-of-the-world/amp/",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "観光客と礼拝者の入場を別々に案内しており、現在も礼拝の場として使われる。"
+          "claimJa": "モスクはパハーリー・ボージャラという小高い丘に建てられ、世界を見渡すモスク（マスジド・エ・ジャハーン・ヌマー）と名付けられた。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_delhi_jama_after_1857",
+      "questionEn": "What happened to the Jama Masjid after the uprising of 1857?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "British troops occupied it, and it was returned only after five years of petitions."
+        },
+        {
+          "id": "B",
+          "textEn": "It was sold to a rich merchant and turned into a covered market."
+        },
+        {
+          "id": "C",
+          "textEn": "It was taken apart and rebuilt on another hill outside the city."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "uprising",
+          "meaning": "反乱、蜂起"
+        },
+        {
+          "word": "troops",
+          "meaning": "軍隊"
+        },
+        {
+          "word": "occupied",
+          "meaning": "占拠した"
+        },
+        {
+          "word": "petitions",
+          "meaning": "請願"
+        },
+        {
+          "word": "taken apart",
+          "meaning": "解体された"
+        }
+      ],
+      "hintJa": "反乱の後、英国軍は礼拝を禁じ、取り壊す案まで出た。それでも、モスクは今ここにある。",
+      "correctExplanationJa": "1857年の後、英国軍がモスクを占拠し、礼拝を止めさせました。取り壊しや教会への転用まで議論されましたが、ムスリム住民の度重なる請願の末、1862年11月に返還されました。",
+      "incorrectExplanationJa": "売却も移築もされていません。英国軍に占拠されて礼拝が止められ、五年後の1862年、住民の請願が実って返還されました。",
+      "sources": [
+        {
+          "publisher": "Rana Safvi",
+          "title": "Glorious history of Delhi's Jama Masjid — the mosque that promised a view of the world",
+          "url": "https://ranasafvi.com/glorious-history-of-delhis-jama-masjid-the-mosque-that-promised-a-view-of-the-world/amp/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "1857年後に英国が占拠して礼拝を禁じ、取り壊しや教会への転用も議論されたが、五年後の1862年11月28日、請願を受けて返還された。"
+        }
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "gt_delhi_jama_ramzan_signal",
+      "questionEn": "During Ramzan, what is announced from one of the mosque's pavilions?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "The winners of the lane's yearly perfume contest."
+        },
+        {
+          "id": "B",
+          "textEn": "The time to break the day's fast."
+        },
+        {
+          "id": "C",
+          "textEn": "The names of new shops allowed to open nearby."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "Ramzan",
+          "meaning": "ラマザーン（断食月。ラマダーン）"
+        },
+        {
+          "word": "announced",
+          "meaning": "告げられる"
+        },
+        {
+          "word": "pavilions",
+          "meaning": "（屋根のある）楼閣"
+        },
+        {
+          "word": "break the fast",
+          "meaning": "断食を終える"
+        }
+      ],
+      "hintJa": "断食月の夕方、通り中が、モスクからの合図を待っている。",
+      "correctExplanationJa": "断食月ラマザーンの間、モスクの楼閣の一つから、その日の断食を終える時刻が告げられます。通りの人々は、その合図を待って食事を始めます。",
+      "incorrectExplanationJa": "告げられるのは、その日の断食を終える時刻です。断食月の夕方、通りは食事の支度をして合図を待ちます。",
+      "sources": [
+        {
+          "publisher": "Rana Safvi",
+          "title": "Glorious history of Delhi's Jama Masjid — the mosque that promised a view of the world",
+          "url": "https://ranasafvi.com/glorious-history-of-delhis-jama-masjid-the-mosque-that-promised-a-view-of-the-world/amp/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ラマザーンの間、断食を終える知らせはモスクの楼閣の一つから告げられる。"
         }
       ],
       "difficulty": "medium"

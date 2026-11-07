@@ -13,119 +13,143 @@ VAR battle_score = 0
 
 === introduction ===
 # background: gt_bg_delhi_red_fort
-# speaker: enemy
-# reaction: enemy,exclamation
-「そこから入ったら負け」
 # speaker: narrator
-レッド・フォートの見学路で、{heroine_name}の足が止まる。声をかけた女性は、慌てて手帳を持ち上げた。
-# speaker: enemy
-「こっちの城の話。ごめん。現物は、もちろん見学の案内どおり」
+城門の奥、天井のある古い商店街チャッタ・チョーク。{heroine_name}が腕輪の棚に手を伸ばしたとき、紺のセーターの波が押し寄せた。
 # speaker: narrator
-ターラーと名乗った彼女の手帳には、友達と遊ぶ盤面がある。壁の中は『広場』『広場』『かなり広い広場』で埋まっていた。
+十二、三歳の子どもたち。四十人近く。全員がノートを開き、全員が同時に言った。「インタビュー、プリーズ！」
 # speaker: heroine
-# reaction: heroine,teasing,music
-「最後の広場だけ、気合が入ってますね」
+# reaction: heroine,surprised_big,interrobang
+「えっ、えっ、わたし？　待って、四十人？」
 # speaker: enemy
-「仕事じゃ荷物の行き先を全部決めるのに、休みの日は三マスで行き詰まる。入っていいよ。負けるけど」
-# speaker: heroine
-# reaction: heroine,surprised,interrobang
-「入っても入らなくても負けませんか？」
+# reaction: enemy,sigh
+「三十八人です。二人はトイレ。……すみません、引率のニディです」
 # speaker: narrator
-ターラーは口元だけ笑う。昨日、友人に同じ手で負けたので、自分の版では勝ちたいのだという。
+ショールを肩に掛け直した女性が、笛を首から下げたまま頭を下げる。下げ方が速い。謝り慣れている。
+# speaker: enemy
+「英語の宿題なんです。『外国人観光客に遺産について質問する』。一時半にバスが出ます。さっき韓国の団体に逃げられました」
+# speaker: heroine
+# emotion: worried
+「逃げたくなる気持ちも、ちょっと分かります……」
+# speaker: enemy
+「分かります。わたしも毎日逃げたい。でも、この子たちを手ぶらで帰すと、帰りのバスが地獄になるんです」
+# speaker: narrator
+先生の背後で、子どもたちが押し合う。誰が最初に聞くかで、もう小さな戦争が始まっていた。
 # speaker: heroine
 # emotion: serious
-「でも、この中で暮らす人の場所がないです。城を取っても、帰れない」
+「……分かりました。でも一人ずつ、順番に。押さないって約束してくれるなら」
 # speaker: enemy
-「住む？　ここを？　……待って。私、防御だけ見てた？」
+# reaction: enemy,exclamation
+「聞いた？　一列！　約束を破った人は、バスで歌を歌ってもらいます」
 # speaker: narrator
-彼女が開いた城の説明に、駒を置く手が止まる。まずは、この城が新しい都に造られた理由から読み直すことになった。
+一瞬で列ができた。歌はよほど嫌らしい。先頭は三つ編みの女の子、学級委員のアンジャリ。ノートの文字は几帳面で、質問には番号まで振ってある。
+# speaker: narrator
+列の最後に、一人だけノートを閉じたままの少年がいる。前の子の背中ばかり見ていた。
+# speaker: narrator
+アンジャリが胸を張り、宮殿の奥、白い大理石の広間を指さした。外国人がどれくらい知っているか、試す顔だった。
 -> END
 
 === after_first ===
 # background: gt_bg_delhi_red_fort
 { answer_correct:
-    # speaker: enemy
-    「宮殿要塞。皇帝も暮らす。私の城、雇い主の家がなかった」
+    # speaker: narrator
+    アンジャリの眉が、少しだけ下がった。外国人が知っていたのが、ほんの少し悔しいらしい。それでもすぐに付け足す。「書いたのはアミール・フスローです！」
 - else:
-    # speaker: enemy
-    「新都の中心の宮殿要塞なんだ。防衛だけじゃなく、皇帝の住まい。二人して立ち退かせるところだった」
+    # speaker: narrator
+    アンジャリが勝ち誇って正解を読み上げる。「地上に楽園があるなら、それはここ！　書いたのはアミール・フスローです！」
 }
 # speaker: narrator
-ターラーは『かなり広い広場』を宮殿に直し、隅に小さく『食事中は攻撃不可』と書いた。
-# speaker: heroine
-「それは、昔の決まり？」
-# speaker: enemy
-# reaction: enemy,music
-「私の決まり。昨日、おやつを取りに行った隙に負けたから」
-# speaker: heroine
-# reaction: heroine,teasing,question
-「歴史を直すより、仕返しが進んでる気がします」
+列の最後で、閉じたノートの少年が何か言った。声が小さすぎて、隣の子にしか届かない。
 # speaker: narrator
-ターラーは聞こえなかった顔で、建物をつなぐ線へ駒を置く。こちらが配置図を示すと、彼女は指を止めた。
+隣の子が大声で通訳した。「ファイズが、『誰が書いたかは分かってない』って！」
+# speaker: narrator
+アンジャリが振り返って睨む。少年は首をすくめ、それきり何も言わなかった。何人かが笑った。
+# speaker: heroine
+# emotion: worried
+「先生。今の子は……」
 # speaker: enemy
-「これ、通り道にしていい線？　色を決める前に知りたい」
+「ファイズ。話しません。去年の春から、授業で一度も」
+# speaker: narrator
+先生は腕時計を見ながら言った。冷たいというより、もう何度も同じ説明をした人の速さだった。
+# speaker: enemy
+「次！　ソーヌー！」
+# speaker: narrator
+二番手の男の子が、敬礼したまま前に出る。敬礼の角度が妙に本格的で、周りがまた笑った。
 -> END
 
 === after_second ===
 # background: gt_bg_delhi_red_fort
 { answer_correct:
-    # speaker: enemy
-    「水路。ナフル・イ・ベヒシュト。宮殿の居室をつないでいた……この駒、泳いでる」
+    # speaker: narrator
+    ソーヌーは「正解！」と叫んで、城壁に向かって演説の真似を始めた。手振りが大きすぎて、土産物屋の棚の鈴が一斉に鳴った。
 - else:
-    # speaker: enemy
-    「道じゃなく、水路だって。ナフル・イ・ベヒシュトが居室をつないでいた。移動のルールも直さなきゃ」
+    # speaker: narrator
+    ソーヌーは「ブブー」と言って、城壁の上で国旗を掲げる首相の真似を始めた。手振りが大きすぎて、土産物屋の棚の鈴が一斉に鳴った。
 }
-# speaker: narrator
-青く塗った線が、勢い余って宮殿までにじむ。ターラーは黙って手帳を遠ざけた。
-# speaker: heroine
-# reaction: heroine,happy,music
-「大変。皇帝の家が、またなくなりました」
 # speaker: enemy
-# reaction: enemy,sweat
-「乾かしてる。歴史的な被害には数えないで」
+# reaction: enemy,anger
+「ソーヌー！　鈴の代金はお父さんに請求します！　……はい、ここまで。バスに向かいます」
 # speaker: narrator
-笑いながらあおぐうち、別のページが開いた。城を取ったら終わり、と太い線で囲まれている。
+列が崩れて歩き出す。最後の少年もノートを抱えて歩き出した。一度も開かないまま。
 # speaker: heroine
-「本物は、取ったところで終わってないですよね。説明の続き、もっと後まであります」
+# emotion: serious
+「待ってください。まだ質問していない子がいます」
 # speaker: enemy
-「ゲームを長くする相談なら、慎重に聞きます。仕事があるので」
+「三十八人と一時間です。話さない子を待つ時間は、わたしにはないんです」
+# speaker: heroine
+「じゃあ、わたしの時間を使います。一分だけ。……押したりしません。待つだけです」
+# speaker: narrator
+先生は口を開きかけ、閉じた。腕時計を見て、もう一度{heroine_name}を見る。
+# speaker: enemy
+# reaction: enemy,sigh
+「……一分です。あなたが無駄にした一分は、あとで生徒に恨まれますよ」
+# speaker: narrator
+{heroine_name}は少年の前にしゃがんだ。目の高さが合う。何も聞かず、ただ待つ。
+# speaker: narrator
+三十秒。ファイズはノートを開き、一行書いて、こちらへ向けた。それから、かすれた声で読み上げた。
+# speaker: narrator
+「この楽園に住んでいた人は、ここで、どうなったの」
+# speaker: narrator
+騒いでいた子どもたちが、一人ずつ黙っていった。
 -> END
 
 === conclusion ===
 # background: gt_bg_delhi_red_fort
 { answer_correct:
-    # speaker: enemy
-    「宮殿、英軍の施設、独立を祝う場所。同じ壁でも、そこでやることが変わってきたのか」
+    # speaker: narrator
+    ファイズの目が、初めてまっすぐこちらを見た。そして、続きを自分で話し始めた。「最後の皇帝。詩を書く人だった。自分の家で、裁判にかけられて、遠くへ送られた」
 - else:
-    # speaker: enemy
-    「宮殿の後は英軍の施設にもなって、やがて独立を祝う場所になったんだ。勝った人の名前だけ変えるんじゃ足りないね」
+    # speaker: narrator
+    ファイズは小さく首を振り、答えを自分で話し始めた。「最後の皇帝は、自分の家で裁判にかけられた。詩を書く人だった。それから、遠くへ送られた」
 }
 # speaker: narrator
-ターラーは『城を取ったら終わり』を見つめる。それから消さず、線をもう一本引いた。
+声は小さい。けれど、もう途切れなかった。楽園と書かれた広間の主が、同じ建物で囚人になった話。三十八人が、誰も茶化さずに聞いていた。
 # speaker: heroine
-# reaction: heroine,surprised,question
-「そこは、変えないんですか？」
-# speaker: enemy
-「変えない。私の休み、帝国の歴史ほど長くないから。ゲームはここまで。本物の続きは、見に行く」
+# reaction: heroine,surprised,sparkle
+「すごい。わたし、今の話、一生忘れないと思う」
 {
 - battle_score == 3:
-    # speaker: enemy
-    「建物の方は全部取られた。でも盤面なら、まだ負けてない」
+    # speaker: narrator
+    アンジャリが列から叫ぶ。「外国の人、全問正解！　ずるい、来年もう一回勝負して！」
 - battle_score == 2:
-    # speaker: enemy
-    「二つ見つかった。見落とした一つは、地図を挟んでおく。未来の私に任せる」
+    # speaker: narrator
+    アンジャリが指を二本立てる。「二問正解。外国の人にしては、まあまあです」
 - else:
-    # speaker: enemy
-    「調べ直すページが増えたね。私も広場三つで済ませた前科があるので、追及はしません」
+    # speaker: narrator
+    ソーヌーが胸を叩く。「大丈夫！　バスで僕がインドの歴史を全部教えるから、乗っていって！」
 }
-# speaker: narrator
-二人の見学者の印を置くと、ターラーはその先へ、もう一つ小さな四角を足した。
 # speaker: enemy
-# reaction: enemy,music
-「では、新ルール。見学の人も、おやつの時間は帰る」
-# speaker: heroine
-# reaction: heroine,exasperated,sigh
-「その友達、よほど悔しかったんですね」
+「……あの子、去年から一度も、授業で手を挙げなかったんです」
 # speaker: narrator
-ターラーは否定せず、にじんだ青をあおぎ続けた。二人は実物の水路を見に行く。こちらの城には、ターラーの新ルールはない。
+先生はノートに何か書きつけ、すぐ顔を上げた。感動した顔ではなかった。
+# speaker: enemy
+「でも、明日になったら、また黙りますよ。あなたは明日ここにいない。毎日あの子の隣にいるのは、わたしです」
+# speaker: heroine
+# emotion: serious
+「はい。……だから、先生に見ていてほしかったんです。今日、あの子が話したところ」
+# speaker: narrator
+先生は答えず、笛を鳴らした。列が動き出す。歩きながら、一度だけ振り返った。
+# speaker: enemy
+「さっき三十八人と言いましたけど。聞いていたのは、三十九人でした」
+# speaker: narrator
+バスへ向かう列の最後、ファイズがノートを胸に抱えて歩いていく。閉じたノートの端から、さっきの一行がはみ出していた。
 -> END

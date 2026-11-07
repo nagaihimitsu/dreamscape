@@ -5,150 +5,170 @@
   "englishLevel": "B1",
   "questions": [
     {
-      "id": "gt_jaipur_amber_returning_army",
-      "questionEn": "A crowd gathers in Jaleb Chowk as soldiers return. What did returning armies historically display there?",
+      "id": "gt_jaipur_amber_ganesh_gate",
+      "questionEn": "One painting shows a peacock above Amber's Ganesh Pol. The other shows a different figure. Which figure is really painted above this gate?",
       "options": [
         {
           "id": "A",
-          "textEn": "Gifts prepared by the crowd for the soldiers."
+          "textEn": "A royal peacock, the symbol of the queen's rooms."
         },
         {
           "id": "B",
-          "textEn": "Goods taken during their military campaigns."
+          "textEn": "An elephant carrying the king to battle."
         },
         {
           "id": "C",
-          "textEn": "Plans for gardens that the soldiers would build."
-        }
-      ],
-      "correctOptionId": "B",
-      "vocabularyJa": [
-        {
-          "word": "crowd",
-          "meaning": "集まった人々、群衆"
-        },
-        {
-          "word": "display",
-          "meaning": "展示する、見せる"
-        },
-        {
-          "word": "campaigns",
-          "meaning": "ここでは、軍事作戦・軍事行動"
-        }
-      ],
-      "hintJa": "この中庭では、戻ってきた軍の成果を人々に見せる場面がありました。品物がどちらから運ばれてきたかを考えましょう。",
-      "correctExplanationJa": "帰還した軍は、戦利品を人々に見せました。今は広く見える中庭も、当時は軍の力を示す舞台の一つだったと分かります。華やかな凱旋には、品物を奪われた側もいたことを忘れずに読みます。",
-      "incorrectExplanationJa": "人々から兵士への贈り物や庭園の設計図ではなく、軍が持ち帰った戦利品です。政府観光案内は、その品々を公衆に示した場所としてジャレーブ・チョークを紹介しています。",
-      "sources": [
-        {
-          "publisher": "Ministry of Tourism, Government of India",
-          "title": "Explore the Amber Fort in Jaipur",
-          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/amber-fort",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "ジャレーブ・チョークは軍のパレードの場で、兵士が勝利で得た戦利品を人々に示したと説明されている。"
-        }
-      ],
-      "difficulty": "easy"
-    },
-    {
-      "id": "gt_jaipur_amber_life_inside",
-      "questionEn": "Amber has royal quarters, gardens and temples. What does this combination tell us about the fort?",
-      "options": [
-        {
-          "id": "A",
-          "textEn": "It was a place to live and worship as well as a fort."
-        },
-        {
-          "id": "B",
-          "textEn": "It was a temporary camp without permanent homes."
-        },
-        {
-          "id": "C",
-          "textEn": "It was a single temple with no royal living space."
-        }
-      ],
-      "correctOptionId": "A",
-      "vocabularyJa": [
-        {
-          "word": "quarters",
-          "meaning": "ここでは、居住区"
-        },
-        {
-          "word": "worship",
-          "meaning": "礼拝する、信仰を実践する"
-        },
-        {
-          "word": "permanent",
-          "meaning": "恒久的な、常設の"
-        }
-      ],
-      "hintJa": "城壁の内側にあるものを、戦いの道具だけで説明できるでしょうか。そこで過ごした人の日常にも目を向けます。",
-      "correctExplanationJa": "アンベールは防御の城という一面だけでなく、王族が暮らす宮殿でもありました。居住区や庭園、寺院を合わせて見ると、生活や信仰が城の中に組み込まれていたことが見えてきます。",
-      "incorrectExplanationJa": "一時的な野営地でも、居住区のない一つの寺院でもありません。王族の住まい、庭園、礼拝の場などを含む複合的な場所です。城壁だけでなく、その内側の暮らしにも役割がありました。",
-      "sources": [
-        {
-          "publisher": "Ministry of Tourism, Government of India",
-          "title": "Explore the Amber Fort in Jaipur",
-          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/amber-fort",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "政府観光案内は王族の住まい、女性たちの居住区、王の庭園、各宮殿を挙げる。州観光局の同城紹介でも王の居住区、庭園、寺院を含む複数区画を説明する。"
-        },
-        {
-          "publisher": "Rajasthan Tourism",
-          "title": "Amber Palace",
-          "url": "https://www.tourism.rajasthan.gov.in/amber-palace.html",
-          "checkedAt": "2026-11-04",
-          "claimType": "documented_fact",
-          "claimJa": "城内の区画として王の居住区、女性の居住区、庭園、寺院などを列挙する。今回は検索サービス取得の該当節で確認した。"
-        }
-      ],
-      "difficulty": "easy"
-    },
-    {
-      "id": "gt_jaipur_amber_tunnel_link",
-      "questionEn": "A historic underground passage connected Amber with another fort. Which one?",
-      "options": [
-        {
-          "id": "A",
-          "textEn": "Nahargarh Fort, above the city of Jaipur."
-        },
-        {
-          "id": "B",
-          "textEn": "Agra Fort, beside the Yamuna River."
-        },
-        {
-          "id": "C",
-          "textEn": "Jaigarh Fort, on the hill near Amber."
+          "textEn": "Lord Ganesha, a sign of good luck."
         }
       ],
       "correctOptionId": "C",
       "vocabularyJa": [
         {
-          "word": "underground",
-          "meaning": "地下の"
+          "word": "peacock",
+          "meaning": "孔雀"
         },
         {
-          "word": "passage",
-          "meaning": "通路"
+          "word": "figure",
+          "meaning": "（描かれた）姿"
         },
         {
-          "word": "connected",
-          "meaning": "結んだ、つないでいた"
+          "word": "Lord Ganesha",
+          "meaning": "ガネーシャ神"
+        },
+        {
+          "word": "good luck",
+          "meaning": "幸運"
         }
       ],
-      "hintJa": "遠くの都市まで延びる道ではありません。アンベール近くで、もう一つの城と結び付いていた通路です。",
-      "correctExplanationJa": "結ばれていたのはジャイガル城です。別々の名所に見える二つの城には、地下通路によるつながりがありました。この歴史上の接続は、現在その通路を自由に通れるという案内ではありません。",
-      "incorrectExplanationJa": "ナハルガル城やアーグラ城ではなく、近くのジャイガル城です。地上の眺めだけでは見つけにくい、城同士のつながりがあります。現行の通行可否や移動経路とは区別します。",
+      "hintJa": "門の名前を、もう一度読んでみよう。",
+      "correctExplanationJa": "ガネーシュ・ポールは王たちの私的な宮殿への入口で、門の上には幸運の象徴としてガネーシャが描かれています。門の名前どおりです。",
+      "incorrectExplanationJa": "門の上に描かれているのはガネーシャです。ガネーシュ・ポール、つまりガネーシャの門。私的な宮殿へ入る門として、幸運を願う姿が描かれました。",
       "sources": [
         {
-          "publisher": "Ministry of Tourism, Government of India",
-          "title": "Explore the Amber Fort in Jaipur",
-          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/amber-fort",
-          "checkedAt": "2026-11-04",
+          "publisher": "The Better India",
+          "title": "These 9 Marvellous Doorways in Amer Fort & City Palace Offer a Glimpse of Jaipur's History",
+          "url": "https://www.thebetterindia.com/68039/doorways-jaipur-amer-fort-city-palace/",
+          "checkedAt": "2026-11-07",
           "claimType": "documented_fact",
-          "claimJa": "城の地下通路がジャイガル城に結び付くと政府観光案内が説明する。現在の全区間通行可能性はこの問題では扱わない。"
+          "claimJa": "ガネーシュ・ポールはマハーラージャの私的な宮殿への入口で、門の上に幸運を象徴するガネーシャが描かれている。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_jaipur_amber_mirror_hall",
+      "questionEn": "In the copy, the ceiling of the Sheesh Mahal is painted with gold stars. What really covers its walls and ceilings?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Thousands of tiny mirrors."
+        },
+        {
+          "id": "B",
+          "textEn": "Sheets of real gold from Persia."
+        },
+        {
+          "id": "C",
+          "textEn": "Paintings of the night sky made by court astronomers."
+        }
+      ],
+      "correctOptionId": "A",
+      "vocabularyJa": [
+        {
+          "word": "copy",
+          "meaning": "写し、模写"
+        },
+        {
+          "word": "ceiling",
+          "meaning": "天井"
+        },
+        {
+          "word": "tiny",
+          "meaning": "とても小さな"
+        },
+        {
+          "word": "astronomers",
+          "meaning": "天文学者"
+        }
+      ],
+      "hintJa": "「シーシュ・マハル」の「シーシュ」は、ガラスや鏡を指す言葉。",
+      "correctExplanationJa": "シーシュ・マハル（鏡の間）の壁と天井は、何千もの小さな鏡で飾られています。光が当たると、部屋中がきらめきます。",
+      "incorrectExplanationJa": "壁と天井を覆っているのは、何千もの小さな鏡です。金の板でも星の絵でもありません。",
+      "sources": [
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Amber Fort",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/amber-fort",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "シーシュ・マハルの壁と天井は、何千もの小さな鏡で飾られている。"
+        }
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "gt_jaipur_amber_who_built",
+      "questionEn": "The copy's caption says, 'Built by the king who founded Jaipur.' Which caption is accurate?",
+      "options": [
+        {
+          "id": "A",
+          "textEn": "Built in 1727, at the same time as the new city of Jaipur."
+        },
+        {
+          "id": "B",
+          "textEn": "Commissioned by Raja Man Singh I in 1592, long before Jaipur was founded."
+        },
+        {
+          "id": "C",
+          "textEn": "Built by the British as a summer house for officers."
+        }
+      ],
+      "correctOptionId": "B",
+      "vocabularyJa": [
+        {
+          "word": "caption",
+          "meaning": "説明文"
+        },
+        {
+          "word": "founded",
+          "meaning": "創設した"
+        },
+        {
+          "word": "accurate",
+          "meaning": "正確な"
+        },
+        {
+          "word": "commissioned",
+          "meaning": "建造を命じた"
+        },
+        {
+          "word": "summer house",
+          "meaning": "夏の別邸"
+        },
+        {
+          "word": "Man Singh I",
+          "meaning": "マーン・シング1世（アンベールの王）"
+        }
+      ],
+      "hintJa": "ジャイプールの町を築いたのはジャイ・シング2世。アンベールの城は、それよりずっと前からここにあった。",
+      "correctExplanationJa": "アンベール城は1592年、マーン・シング1世の命で築かれました。ジャイ・シング2世が平地に新しい都ジャイプールを築くのは、百年以上あとのことです。",
+      "incorrectExplanationJa": "城を築かせたのはマーン・シング1世で、1592年のこと。ジャイプールの町ができるより、ずっと前です。写しの説明文は、二人の王を取り違えていました。",
+      "sources": [
+        {
+          "publisher": "Incredible India (Ministry of Tourism, Government of India)",
+          "title": "Amber Fort",
+          "url": "https://www.incredibleindia.gov.in/en/rajasthan/jaipur/amber-fort",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "アンベール城は1592年にマハーラージャ・マーン・シング1世の命で築かれた。"
+        },
+        {
+          "publisher": "Jaipur Municipal Corporation",
+          "title": "History of Jaipur",
+          "url": "https://jaipurmc.org/Presentation/AboutJaipur/HistoryOfJaipur.aspx",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ジャイプールの名は、創設者マハーラージャ・ジャイ・シング2世に由来する。"
         }
       ],
       "difficulty": "medium"
