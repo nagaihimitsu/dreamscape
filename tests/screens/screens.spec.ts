@@ -37,6 +37,15 @@ const flows: FlowScene[] = [
     await ops.startJourney(page);
     await ops.openSettings(page);
   } },
+  { scene: "flow-old-data", titleJa: "古い保存データの整理", descriptionJa: "旅を始め、旧版のセーブ・バックアップ・以前のミラノ編の英語ノートを置いて「設定」→「古い保存データの整理」", open: async (page) => {
+    await ops.startJourney(page);
+    await page.evaluate(() => {
+      localStorage.setItem("dreamscape.journey.golden_triangle.save.v1", JSON.stringify({ schemaVersion: 13, revision: 3 }));
+      localStorage.setItem("dreamscape.journey.milano.save.v1.backup.1762500000000", "{damaged-save");
+      localStorage.setItem("dreamscape.learning.v1", JSON.stringify({ schemaVersion: 1, records: {} }));
+    });
+    await ops.openOldDataCleanup(page);
+  } },
   { scene: "flow-route-choice", titleJa: "移動手段の選択", descriptionJa: "旅を始めて「最後の晩餐」を選ぶ（徒歩と路面電車16番）", open: async (page) => {
     await ops.startJourney(page);
     await ops.goTo(page, "p_supper");

@@ -1451,6 +1451,7 @@ dialog.modal::backdrop {
   border-radius: 4px;
 }
 .old-data-list .translation-setting {
+  align-items: center;
   padding: 4px 0;
 }
 .old-data-size {
