@@ -151,6 +151,9 @@
   line-height: 1.8;
   cursor: pointer;
 }
+/* A tap on the line goes on to the next one: a one-line line is still a
+   44 px tap row (docs/10「タップ領域」); the text stays at its top. */
+.vn-dialogue .dialogue-text[role="button"] { min-height: 44px; }
 .vn-dialogue .dialogue-next-mark {
   color: var(--vn-muted);
   font-size: 12px;
