@@ -2,20 +2,22 @@ import { travelCatalogSchema } from "../src/content/travel-schemas";
 import { cityLayer, displayPath, journeyCatalogOf, loadContentSources, requireCity, type ContentSources } from "./content-sources";
 import { authoringProfileOf } from "./journey-authoring";
 import { inspectCityTransit, unsupportedTransitRoutes, type CityTransitReview } from "./transit-ledger";
+import type { TransportPending } from "./transport-validation";
 
 // The authoring tools' view of a journey's in-city transport: which modes its
 // per-city transit ledgers cover, where a city's ledger is, and the review of
 // every city (journey:transit, city:bundle, journey:readiness).
 
 /** A journey's declared transport modes (non-walk IDs) and, while it waits for its switch, what it waits for. */
-export type JourneyTransitPlan = { journeyId: string; modes: string[]; pendingJa?: string };
+export type JourneyTransitPlan = { journeyId: string; modes: string[]; pending?: TransportPending };
 
 export function journeyTransitPlan(sources: ContentSources, journeyId: string): JourneyTransitPlan {
   const journey = journeyCatalogOf(sources).journeys.find((entry) => entry.id === journeyId);
   const manifest = sources.manifests.find((entry) => entry.id === journeyId);
   if (!journey || !manifest) throw new Error(`Unknown journey: ${journeyId}`);
-  const pendingJa = authoringProfileOf(manifest.data, manifest.file)?.transitDecisionLedger?.pendingJa;
-  return { journeyId, modes: journey.transportModes.map((mode) => mode.id), ...(pendingJa ? { pendingJa } : {}) };
+  const ledger = authoringProfileOf(manifest.data, manifest.file)?.transitDecisionLedger;
+  return { journeyId, modes: journey.transportModes.map((mode) => mode.id),
+    ...(ledger ? { pending: { pendingJa: ledger.pendingJa, inspectCommand: ledger.inspectCommand } } : {}) };
 }
 
 /** The plan of the journey a city belongs to. */
@@ -33,7 +35,7 @@ export function cityTransitPlan(sources: ContentSources, cityId: string): Journe
  */
 export function cityTransitPath(sources: ContentSources, cityId: string): string | undefined {
   const plan = cityTransitPlan(sources, cityId);
-  if (!plan.modes.length || plan.pendingJa) return undefined;
+  if (!plan.modes.length || plan.pending) return undefined;
   return `${displayPath(sources.root, cityLayer(sources, cityId).directory)}/travel/${cityId}-transit.json`;
 }
 
@@ -43,13 +45,13 @@ export type CityTransitReport = CityTransitReview & {
   unsupportedRoutes: string[];
 };
 export type JourneyTransitReport =
-  | { journeyId: string; pendingJa: string }
+  | { journeyId: string; pending: TransportPending }
   | { journeyId: string; modes: string[]; cities: CityTransitReport[] };
 
 /** Review every city of a journey (journey:transit): its ledger against its routes, or what the journey waits for. */
 export function inspectJourneyTransit(root: string, journeyId: string, sources = loadContentSources(root)): JourneyTransitReport {
   const plan = journeyTransitPlan(sources, journeyId);
-  if (plan.pendingJa) return { journeyId, pendingJa: plan.pendingJa };
+  if (plan.pending) return { journeyId, pending: plan.pending };
   const journey = journeyCatalogOf(sources).journeys.find((entry) => entry.id === journeyId)!;
   if (!plan.modes.length) return { journeyId, modes: [], cities: [] };
   return { journeyId, modes: plan.modes, cities: journey.cities.map(({ id: cityId }) => {

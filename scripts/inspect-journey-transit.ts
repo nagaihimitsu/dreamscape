@@ -2,6 +2,7 @@ import { transportLabel } from "../src/content/transport";
 import { journeyCatalogOf, loadContentSources } from "./content-sources";
 import { inspectJourneyTransit } from "./journey-transit";
 import { formatTransitCounts } from "./transit-ledger";
+import { transportWaitingJa } from "./transport-validation";
 
 // npm run journey:transit -- --journey <journeyId> [--json]: every city's transit ledger against its routes.
 // Exits 1 while a decision is inconclusive or a route of a declared mode lacks its sources.
@@ -13,8 +14,8 @@ const root = process.cwd();
 const sources = loadContentSources(root);
 const report = inspectJourneyTransit(root, rest[1], sources);
 if (json) console.log(JSON.stringify(report, null, 2));
-else if ("pendingJa" in report) {
-  console.log(`${report.journeyId}: ${report.pendingJa}（交通は旧方式のままです。都市ごとの交通判断台帳はまだ使いません。旧方式の台帳はその旅行編の道具で確認します）`);
+else if ("pending" in report) {
+  console.log(`${report.journeyId}: ${transportWaitingJa(report.pending)}`);
 } else if (!report.cities.length) {
   console.log(`${report.journeyId}: 徒歩だけの旅行編です（transportModes が空なので、交通判断台帳は要りません）`);
 } else {
@@ -26,4 +27,4 @@ else if ("pendingJa" in report) {
       console.log(`  事実の出典かゲーム用の推定の印（estimation: "game_model"）がない経路 ${city.unsupportedRoutes.length}本: ${city.unsupportedRoutes.slice(0, 3).join("、")}${city.unsupportedRoutes.length > 3 ? " ほか" : ""}`);
   }
 }
-if (!("pendingJa" in report) && report.cities.some((city) => !city.ready || city.unsupportedRoutes.length)) process.exitCode = 1;
+if (!("pending" in report) && report.cities.some((city) => !city.ready || city.unsupportedRoutes.length)) process.exitCode = 1;

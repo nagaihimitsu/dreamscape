@@ -8,7 +8,7 @@
 
 - 都市の施設・営業時間のゲーム設定・料金・交通・写真・出典：既存の [city:bundle](CITY_BUNDLES.md) で都市単位に編集。
 - 旅行編全体の通貨・開始予算・都市順・都市クリア報酬：`content/journeys/<旅行編ID>/manifest.json`。
-- 制作ツールの設定（イベントIDの接頭辞、観察資料のファイル、画像フォルダ。インド編だけは、旧方式の交通のための旅行編全体の判断台帳 `transitDecisionLedger` と、移行待ちの印 `pendingJa`）：同じ `manifest.json` の `authoring`。`authoring` がない旅行編（ミラノ編）は、この生成・検査・反映ツールの対象外です。観察資料・交通判断台帳のパスは、`/` 区切りのリポジトリからの相対パスで、その旅行編の `authoring/journeys/<旅行編ID>/` の中に置きます（`..` や絶対パス、他の旅行編のフォルダは `content:build` がエラーにします。`transitDecisionLedger.cities` もその旅行編の都市だけ）。`eventPrefix` を設定した旅行編では、接頭辞のないIDを `content:build` が警告します（[IDの名前空間](../docs/02_TECH_ARCHITECTURE.md#ストーリーidとidの名前空間)）。
+- 制作ツールの設定（イベントIDの接頭辞、観察資料のファイル、画像フォルダ。インド編だけは、旧方式の交通のための旅行編全体の判断台帳 `transitDecisionLedger` と、移行待ちの印 `pendingJa`、そのあいだ台帳を確かめるコマンド `inspectCommand`）：同じ `manifest.json` の `authoring`。`authoring` がない旅行編（ミラノ編）は、この生成・検査・反映ツールの対象外です。観察資料・交通判断台帳のパスは、`/` 区切りのリポジトリからの相対パスで、その旅行編の `authoring/journeys/<旅行編ID>/` の中に置きます（`..` や絶対パス、他の旅行編のフォルダは `content:build` がエラーにします。`transitDecisionLedger.cities` もその旅行編の都市だけ）。`eventPrefix` を設定した旅行編では、接頭辞のないIDを `content:build` が警告します（[IDの名前空間](../docs/02_TECH_ARCHITECTURE.md#ストーリーidとidの名前空間)）。
 - 乗り物：`manifest.json` の `transportModes`（徒歩のほかに2つまで）と、都市ごとの交通判断台帳 `content/journeys/<旅行編ID>/travel/<都市ID>-transit.json`（[技術設計](../docs/02_TECH_ARCHITECTURE.md#乗り物と交通判断台帳)）。都市の編集用JSONの `transitDecisions` からも書き出せます。
 - 写真に対応する観察ポイント：各旅行編の `authoring/journeys/<旅行編ID>/drafts/observation-cards.json`。画像変更時には実画像を確認し、領域とSHA-256を更新。
 - シナリオ：Ink、紹介・クリア文・登場人物・思い出のメタデータJSON。

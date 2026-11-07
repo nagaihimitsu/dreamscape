@@ -43,4 +43,10 @@ describe("transport checks in content:build", () => {
       routes: data.routes.map((route: { mode: string; estimation?: string }) => route.mode === "rental_bicycle" ? { ...route, estimation: undefined } : route) }) })))
       .toThrow("乗り物の経路12本に、ゲーム用の推定の印");
   }, 60_000);
+
+  it("refuses a vehicle route from the hotel to the hotel (no ledger decision covers it)", () => {
+    expect(() => validateContent(edit({ "travel/mihon.json": (data) => ({ ...data,
+      routes: [...data.routes, { ...data.routes.find((route: { mode: string }) => route.mode === "rental_bicycle"), fromPlaceId: "mihon_hotel", toPlaceId: "mihon_hotel", minutes: 0 }] }) })))
+      .toThrow('同じ地点への経路は徒歩だけです: authoring/templates/sample_trip/travel/mihon.json の mihon_hotel → mihon_hotel が "rental_bicycle" です。');
+  }, 60_000);
 });

@@ -28,11 +28,14 @@ export const journeyAuthoringSchema = z.object({
    * The old journey-wide transit decision ledger for the listed cities (see
    * journey-transit-decisions.ts). Only a journey that still waits for its
    * switch to the per-city transport system keeps it; `pendingJa` says what
-   * it waits for (Golden Triangle: 「ツアー機能待ち」), and content:build
-   * reports the journey as waiting instead of applying the new transport
-   * checks (scripts/transport-validation.ts).
+   * it waits for (Golden Triangle: 「ツアー機能待ち」) and `inspectCommand` the
+   * journey's own command that checks the old ledger meanwhile (Golden
+   * Triangle: `npm run india:transit`); content:build, journey:transit and
+   * journey:readiness report the journey as waiting instead of applying the
+   * new transport checks (scripts/transport-validation.ts).
    */
-  transitDecisionLedger: z.object({ file: relativePath, cities: z.array(id).min(1), pendingJa: japanese }).strict().optional(),
+  transitDecisionLedger: z.object({ file: relativePath, cities: z.array(id).min(1), pendingJa: japanese,
+    inspectCommand: z.string().regex(/^npm run [a-z][a-z0-9:_-]*$/, "Use npm run <script name>") }).strict().optional(),
 }).strict();
 export type JourneyAuthoringProfile = z.infer<typeof journeyAuthoringSchema>;
 

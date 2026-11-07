@@ -24,7 +24,7 @@ function memoryStorage() {
 describe("Uzbekistan scenario-ready foundation", () => {
   it("records a sourced game decision for every public-transport and taxi direction", () => {
     const review = inspectJourneyTransit(process.cwd(), "uzbekistan");
-    if ("pendingJa" in review) throw new Error("Uzbekistan uses the per-city transit ledgers");
+    if ("pending" in review) throw new Error("Uzbekistan uses the per-city transit ledgers");
     expect(review.cities.map((city) => city.cityId)).toEqual(cities);
     for (const city of review.cities) {
       expect(city.decisions).toBe(city.directions * review.modes.length);

@@ -7,7 +7,7 @@ const place = (id: string) => ({ id, cityId: "test_city", nameJa: "地点", name
 const route = (from: string, to: string, mode: string, minutes = 10, cost = 0) => ({ fromPlaceId: from, toPlaceId: to, mode, minutes, cost, sources: source });
 const travel = (routes: TravelCatalog["routes"]): TravelCatalog => ({ cityId: "test_city", places: [place("a"), place("b")], routes, events: [] });
 const journey = (modes: JourneyTransport["journey"]["transportModes"], pendingJa?: string): JourneyTransport =>
-  ({ journey: { id: "test_trip", transportModes: modes }, ...(pendingJa ? { pendingJa } : {}) });
+  ({ journey: { id: "test_trip", transportModes: modes }, ...(pendingJa ? { pending: { pendingJa, inspectCommand: "npm run test:transit" } } : {}) });
 const tram = { id: "tram", nameJa: "路面電車", movingJa: "路面電車で移動中", kind: "tram" as const };
 
 describe("route modes", () => {
@@ -22,6 +22,16 @@ describe("route modes", () => {
       '乗り物 "bus" は content/journeys/test_trip/manifest.json の transportModes に宣言されていません: content/journeys/test_trip/travel/test_city.json の a → b。' +
       "manifest.json に宣言するか、経路の mode を直してください（Undeclared transport mode: content/journeys/test_trip/travel/test_city.json a → b uses \"bus\"; " +
       "declare it in content/journeys/test_trip/manifest.json transportModes）。");
+  });
+
+  it("refuses a vehicle route from a place to the same place, naming the file, the place and the mode", () => {
+    expect(() => checkRouteModes(travel([route("a", "a", "walk", 0), route("a", "a", "tram", 0, 2)]),
+      "content/journeys/test_trip/travel/test_city.json", journey([tram]))).toThrow(
+      '同じ地点への経路は徒歩だけです: content/journeys/test_trip/travel/test_city.json の a → a が "tram" です。' +
+      "その地点の徒歩0分の経路だけを残してください（Same-place route of a vehicle: content/journeys/test_trip/travel/test_city.json a uses \"tram\"）。");
+    // A journey waiting for its switch keeps its old modes, but not a vehicle to the same place either.
+    expect(() => checkRouteModes(travel([route("a", "a", "tram", 0, 2)]), "x.json", journey([tram], "ツアー機能待ち")))
+      .toThrow("同じ地点への経路は徒歩だけです: x.json の a → a");
   });
 
   it("applies to a journey that waits for its switch too (it declares its old modes)", () => {
@@ -63,7 +73,8 @@ describe("per-city transit ledgers in content:build", () => {
       .toBe("Transport test_trip: modes walk, taxi; transit ledgers 1: available 0, not_suitable 2, not_applicable 0, inconclusive 0");
     expect(transportSummary(journey([{ ...taxi, rental: true }]), [])).toBe("Transport test_trip: modes walk, taxi (rental)");
     expect(transportSummary(journey([taxi], "ツアー機能待ち"), []))
-      .toBe("Transport test_trip: ツアー機能待ち（交通は旧方式のまま。都市ごとの交通判断台帳と新しい交通の確認はまだ使いません）; modes walk, taxi");
+      .toBe("Transport test_trip: ツアー機能待ち（交通は旧方式のまま。都市ごとの交通判断台帳と新しい交通の確認はまだ使いません。" +
+        "旧方式の判断台帳は npm run test:transit で確かめます）; modes walk, taxi");
   });
 });
 

@@ -12,8 +12,9 @@ import path from "node:path";
 import { SAMPLE_JOURNEY_ID } from "./content-layout";
 import { journeyCatalogOf, journeyFolderPath, loadContentSources, parseCatalog, requireCity, type ContentSources } from "./content-sources";
 import { servedFile } from "./public-assets";
-import { cityTransitPath, cityTransitPlan } from "./journey-transit";
+import { cityTransitPath, cityTransitPlan, journeyTransitPlan } from "./journey-transit";
 import { inspectCityTransit } from "./transit-ledger";
+import type { TransportPending } from "./transport-validation";
 import { describeSampleLeftover, sampleLeftovers, type SampleLeftover } from "./sample-journey";
 
 /** Report from real catalog entries; no additional hand-maintained content list. */
@@ -38,12 +39,16 @@ export type JourneyReadinessInput = {
   assetExists: (assetPath: string) => boolean;
   /** Sample content left in the journey's folder (paths relative to the repository); none for the sample itself. */
   sampleLeftovers: SampleLeftover[];
+  /** While the journey waits for its transport switch: what it waits for (reported, never an issue). */
+  transportPending?: TransportPending;
 };
 
 export type JourneyReadinessIssue = { code: string; detail: string };
 export type JourneyEventReadiness = { id: string; cityId: string; category: "main" | "date"; placeId: string; issues: JourneyReadinessIssue[] };
 export type JourneyCityReadiness = { cityId: string; events: JourneyEventReadiness[]; issues: JourneyReadinessIssue[] };
-export type JourneyReadinessReport = { journeyId: string; ready: boolean; readyForPromotion: boolean; issues: JourneyReadinessIssue[]; cities: JourneyCityReadiness[] };
+export type JourneyReadinessReport = { journeyId: string; ready: boolean; readyForPromotion: boolean; issues: JourneyReadinessIssue[]; cities: JourneyCityReadiness[];
+  /** The journey still uses the old transport and its old ledger (e.g. 「ツアー機能待ち」); readiness does not depend on it. */
+  transportPending?: TransportPending };
 
 /** Check actual authored references and binaries, not a manually maintained ready flag. */
 export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyReadinessReport {
@@ -186,7 +191,8 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
   });
   const readyForPromotion = issues.every((issue) => issue.code === "journey_unavailable") &&
     cities.every((city) => city.issues.every((issue) => issue.code === "city_incomplete") && city.events.every((event) => event.issues.every((issue) => issue.code === "event_pending")));
-  return { journeyId: trip.id, readyForPromotion, ready: readyForPromotion && issues.length === 0 && cities.every((city) => city.issues.length === 0 && city.events.every((event) => event.issues.length === 0)), issues, cities };
+  return { journeyId: trip.id, readyForPromotion, ready: readyForPromotion && issues.length === 0 && cities.every((city) => city.issues.length === 0 && city.events.every((event) => event.issues.length === 0)), issues, cities,
+    ...(input.transportPending ? { transportPending: input.transportPending } : {}) };
 }
 
 export function loadJourneyReadiness(root: string, journeyId: string): JourneyReadinessInput {
@@ -209,7 +215,8 @@ export function journeyReadinessInput(sources: ContentSources, journeyId: string
   });
   const quizzes = sources.quizFiles.filter((quiz) => !quiz.example).map((quiz) => quizSchema.parse(quiz.data));
   const storyIds = new Set(sources.storyFiles.map((story) => story.id));
-  return { trip, cities, quizzes, sampleLeftovers: journeySampleLeftovers(sources, journeyId), journey: parseCatalog(sources, journeySchema, "progression/journey.json"),
+  const { pending } = journeyTransitPlan(sources, journeyId);
+  return { trip, cities, quizzes, sampleLeftovers: journeySampleLeftovers(sources, journeyId), ...(pending ? { transportPending: pending } : {}), journey: parseCatalog(sources, journeySchema, "progression/journey.json"),
     tourism: parseCatalog(sources, tourismCatalogSchema, "tourism/catalog.json"),
     backgrounds: parseCatalog(sources, presentationSchema, "romance/presentation.json").backgrounds,
     dates: parseCatalog(sources, dateCatalogSchema, "romance/date_catalog.json").dates,

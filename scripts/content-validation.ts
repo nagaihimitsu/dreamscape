@@ -177,8 +177,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   // transport checks read one thing of them: whether a journey still waits for its transport switch.
   const manifestFiles = new Map(sources.manifests.map((manifest) => [manifest.id, displayPath(root, manifest.file)]));
   const pendingTransport = new Map(sources.manifests.flatMap((manifest) => {
-    const pendingJa = authoringProfileOf(manifest.data, manifest.file)?.transitDecisionLedger?.pendingJa;
-    return pendingJa ? [[manifest.id, pendingJa] as const] : [];
+    const ledger = authoringProfileOf(manifest.data, manifest.file)?.transitDecisionLedger;
+    return ledger ? [[manifest.id, { pendingJa: ledger.pendingJa, inspectCommand: ledger.inspectCommand }] as const] : [];
   }));
   // Each journey folder keeps to its own cities and content (and the core layer to core content).
   checkContentOwnership(sources);
@@ -234,7 +234,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   if (!journeyCatalog.journeys.some((item) => item.status === "available"))
     throw new Error('No available journey: at least one content/journeys/<journeyId>/manifest.json needs "status": "available"');
   for (const plannedJourney of journeyCatalog.journeys)
-    checkTransportModeCount({ journey: plannedJourney, pendingJa: pendingTransport.get(plannedJourney.id), manifestFile: manifestFiles.get(plannedJourney.id) });
+    checkTransportModeCount({ journey: plannedJourney, pending: pendingTransport.get(plannedJourney.id), manifestFile: manifestFiles.get(plannedJourney.id) });
   for (const plannedJourney of journeyCatalog.journeys) {
     const art = plannedJourney.titleArt;
     if (art && !servedFile(publicFiles, art.imagePath))
@@ -744,7 +744,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     const owner = journeyCatalog.journeys.find((item) => item.cities.some((planned) => planned.id === current.id));
     // checkContentOwnership keeps every city file in the folder of the journey that lists it.
     if (owner) {
-      const transport = { journey: owner, pendingJa: pendingTransport.get(owner.id), manifestFile: manifestFiles.get(owner.id) };
+      const transport = { journey: owner, pending: pendingTransport.get(owner.id), manifestFile: manifestFiles.get(owner.id) };
       checkRouteModes(travel, travelFile, transport);
       checkCityRentals(travel, settings.rentals, settingsFile, transport);
       const review = checkCityTransit({ travel, transit, transitFile, travelFile }, transport, { requireLedger: true });
@@ -862,7 +862,7 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
     /** What each journey folder provides, for the build report. */
     journeyContents: journeyContents(sources),
     /** Each journey's in-city transport (modes, transit ledger counts, or what it waits for), for the build report. */
-    transport: journeyCatalog.journeys.map((item) => transportSummary({ journey: item, pendingJa: pendingTransport.get(item.id) }, transitReviews.get(item.id) ?? [])),
+    transport: journeyCatalog.journeys.map((item) => transportSummary({ journey: item, pending: pendingTransport.get(item.id) }, transitReviews.get(item.id) ?? [])),
     /** Word meanings no English text uses, for the build report. */
     unusedWordMeanings: unusedWordMeanings(sources),
   };

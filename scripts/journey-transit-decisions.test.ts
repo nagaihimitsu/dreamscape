@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { travelCatalogSchema, type TravelCatalog } from "../src/content/travel-schemas";
 import { buildJourneyTransitDecisionReview, journeyTransitDecisionFile, readJourneyTransitDecisions, type JourneyTransitDecisionInput } from "./journey-transit-decisions";
@@ -7,6 +8,7 @@ const fact = { publisher: "試験資料", title: "試験用資料", url: "https:
 const model = { ...fact, title: "ゲーム値", claimType: "hypothesis" as const, claimJa: "試験用の推定値。" };
 
 // Golden Triangle keeps one journey-wide ledger for Delhi, Agra and Jaipur.
+const packageScripts: Record<string, string> = JSON.parse(readFileSync("package.json", "utf8")).scripts;
 const ledgerCities = ["delhi", "agra", "jaipur"] as const;
 
 function fixture() {
@@ -74,6 +76,9 @@ describe("journey-wide transit decision ledger", () => {
     expect(() => readJourneyTransitDecisions(process.cwd(), "uzbekistan")).toThrow("Journey has no transit decision ledger: uzbekistan");
     // The journey-wide ledger stays only while the journey waits for its transport switch.
     expect(profile.transitDecisionLedger?.pendingJa).toBe("ツアー機能待ち");
+    // The reports point to the journey's own ledger check, a script of package.json.
+    expect(profile.transitDecisionLedger?.inspectCommand).toBe("npm run india:transit");
+    expect(packageScripts["india:transit"]).toBe("tsx scripts/journeys/golden_triangle/inspect-india-transit.ts");
     expect(journeyAuthoringSchema.safeParse({ ...profile, transitDecisionLedger: { ...profile.transitDecisionLedger, pendingJa: undefined } }).success).toBe(false);
   });
 });

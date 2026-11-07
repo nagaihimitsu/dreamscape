@@ -75,7 +75,8 @@
         "agra",
         "jaipur"
       ],
-      "pendingJa": "ツアー機能待ち"
+      "pendingJa": "ツアー機能待ち",
+      "inspectCommand": "npm run india:transit"
     }
   }
 }
