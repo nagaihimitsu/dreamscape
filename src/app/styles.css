@@ -189,8 +189,15 @@ h3 {
   white-space: nowrap;
 }
 .journey-progress-button .pill { padding: 4px 1px; font-size: 9px; letter-spacing: -0.1px; }
+/* Tap targets of at least 44 × 44 px (docs/10「タップ領域」). The progress
+   pill grows within the two rows it spans. 待機 and 休む keep their 32 px
+   height so free time's sticky bar does not grow again on narrow phones,
+   where they wrap below the pill; they are 44 px wide instead. */
+.journey-progress-button { min-height: 44px; }
+.journey-controls .travel-wait summary,
+.journey-controls .travel-sleep-toggle { min-width: 44px; justify-content: center; }
 .journey-quick-actions { grid-area: actions; display: flex; justify-content: flex-end; align-items: center; gap: 0; }
-.journey-quick-actions button { min-width: 34px; min-height: 36px; padding: 4px 2px; font-size: 12px; }
+.journey-quick-actions button { min-width: 44px; min-height: 44px; padding: 4px 2px; font-size: 12px; }
 .records-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .records-heading h2 { margin: 0 0 10px; }
 .records-heading button { width: auto; min-height: 44px; padding: 8px 12px; }
