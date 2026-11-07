@@ -23,11 +23,13 @@ function completeMainEvent(initial: GameState): GameState {
 }
 
 describe("travel save and concurrency", () => {
-  it("rejects an unregistered directed mode without charging or moving", () => {
+  it("rejects a mode without a route here, or one the journey does not declare, without charging or moving", () => {
     const state = createGame();
-    expect(milanoTravelCatalog.routes.some((route) => route.fromPlaceId === "p_hotel" && route.toPlaceId === "p_duomo" && route.mode === "bus")).toBe(false);
-    expect(getTravelEventAvailability(state, "milano_duomo_episode", "bus").available).toBe(false);
-    expect(beginTravelEvent(state, "milano_duomo_episode", "bus", state.revision)).toBe(state);
+    for (const mode of ["tram", "bus"]) {
+      expect(milanoTravelCatalog.routes.some((route) => route.fromPlaceId === "p_hotel" && route.toPlaceId === "p_duomo" && route.mode === mode)).toBe(false);
+      expect(getTravelEventAvailability(state, "milano_duomo_episode", mode)).toEqual({ available: false, reason: "この移動経路はまだ利用できません。" });
+      expect(beginTravelEvent(state, "milano_duomo_episode", mode, state.revision)).toBe(state);
+    }
   });
 
   it("resumes a reserved scene without consuming the route twice and settles its time once", () => {
@@ -129,21 +131,27 @@ describe("travel save and concurrency", () => {
 
   it("reserves an actual two-leg paid return when walking would be too late, reloads and pays once", () => {
     const homeRoutes = getTravelHomeRoutes(createGame(), "p_prada");
-    const rail = homeRoutes.find((route) => route.mode === "rail")!;
+    // Prada → hotel: walking 46 minutes, tram 24 direct, taxi direct, and a taxi to the Duomo then a short walk (cheaper than the direct taxi).
+    const viaTaxi = homeRoutes.find((route) => route.mode === "taxi" && route.viaPlaceId === "p_duomo")!;
+    const directTaxi = homeRoutes.find((route) => route.mode === "taxi" && route.viaPlaceId === undefined)!;
+    const tram = homeRoutes.find((route) => route.mode === "tram")!;
     const walk = homeRoutes.find((route) => route.mode === "walk")!;
-    const firstLeg = milanoTravelCatalog.routes.find((route) => route.fromPlaceId === "p_prada" && route.toPlaceId === "p_duomo" && route.mode === "rail")!;
+    const firstLeg = milanoTravelCatalog.routes.find((route) => route.fromPlaceId === "p_prada" && route.toPlaceId === "p_duomo" && route.mode === "taxi")!;
     const secondLeg = milanoTravelCatalog.routes.find((route) => route.fromPlaceId === "p_duomo" && route.toPlaceId === "p_hotel" && route.mode === "walk")!;
-    expect(rail.viaPlaceId).toBe("p_duomo");
-    expect(rail.minutes).toBe(firstLeg.minutes + secondLeg.minutes);
-    expect(rail.cost).toBe(firstLeg.cost + secondLeg.cost);
+    expect(viaTaxi.minutes).toBe(firstLeg.minutes + secondLeg.minutes);
+    expect(viaTaxi.cost).toBe(firstLeg.cost + secondLeg.cost);
+    expect(viaTaxi.cost).toBeLessThan(directTaxi.cost);
 
     const initial = createGame();
-    const atPrada = { ...initial, ap: 3, travelBudget: rail.cost, travel: { ...initial.travel, currentPlaceId: "p_prada", minute: 19 * 60 + 50 } };
+    // 20:25 after waiting: walking and the tram arrive after 21:00, the direct taxi costs more than the budget.
+    const atPrada = { ...initial, ap: 3, travelBudget: viaTaxi.cost, travel: { ...initial.travel, currentPlaceId: "p_prada", minute: 19 * 60 + 55 } };
     const reserved = waitForTravel(atPrada, 30, atPrada.revision);
     expect(reserved).not.toBe(atPrada);
     expect(reserved.travel.minute + walk.minutes).toBeGreaterThan(21 * 60);
-    expect(reserved.travel.minute + rail.minutes).toBeLessThanOrEqual(21 * 60);
-    expect(reserved.travel.returnReserve).toBe(rail.cost);
+    expect(reserved.travel.minute + tram.minutes).toBeGreaterThan(21 * 60);
+    expect(directTaxi.cost).toBeGreaterThan(reserved.travelBudget);
+    expect(reserved.travel.minute + viaTaxi.minutes).toBeLessThanOrEqual(21 * 60);
+    expect(reserved.travel.returnReserve).toBe(viaTaxi.cost);
     expect(reserved.travelBudget).toBe(atPrada.travelBudget);
 
     const storage = new MemoryStorage();
@@ -155,11 +163,11 @@ describe("travel save and concurrency", () => {
     expect(loaded.status).toBe("loaded");
     if (loaded.status !== "loaded") throw new Error("reserved travel save did not load");
     expect(loaded.state).toEqual(reserved);
-    const slept = sleepAtHotel(loaded.state, "rail", loaded.state.revision);
+    const slept = sleepAtHotel(loaded.state, "taxi", loaded.state.revision);
     expect(slept.travelBudget).toBe(0);
     expect(slept.travel).toMatchObject({ currentPlaceId: "p_hotel", day: 2, minute: 540, returnReserve: 0 });
     expect(slept.ap).toBe(atPrada.ap);
-    expect(sleepAtHotel(slept, "rail", loaded.state.revision)).toBe(slept);
+    expect(sleepAtHotel(slept, "taxi", loaded.state.revision)).toBe(slept);
     expect(saveGame(storage, slept, loaded.state).ok).toBe(true);
     expect(loadGame(storage)).toEqual({ status: "loaded", state: slept });
   });
@@ -183,7 +191,7 @@ describe("travel save and concurrency", () => {
     const state = { ...initial, ap: 3, travelBudget: 5,
       travel: { ...initial.travel, currentPlaceId: "p_prada", minute: 20 * 60 + 20, returnReserve: 5 } };
     expect(sleepAtHotel(state, "walk", state.revision)).toBe(state);
-    expect(sleepAtHotel(state, "rail", state.revision).travel.day).toBe(2);
+    expect(sleepAtHotel(state, "tram", state.revision).travel.day).toBe(2);
   });
 
   it("settles an interrupted visit before a new visit is started at the same place", () => {

@@ -1,0 +1,4562 @@
+{
+  "schemaVersion": 2,
+  "cityId": "milano",
+  "sourceRefs": {
+    "art_parere_34_2024": {
+      "publisher": "Autorità di regolazione dei trasporti（ART）",
+      "title": "Parere n. 34/2024（2024年6月6日）",
+      "url": "https://www.autorita-trasporti.it/wp-content/uploads/2024/06/Parere-n.-34_2024_signed.pdf",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "州の空港圏タクシー料金の改定案への公的な意見書。案の値（初乗り4.10ユーロ、1キロ1.32ユーロ、1時間34.48ユーロ）を7ページに載せている。"
+    },
+    "atm_tickets_en": {
+      "publisher": "ATM（Azienda Trasporti Milanesi）",
+      "title": "Tickets for Milan and its surroundings",
+      "url": "https://www.atm.it/en/ViaggiaConNoi/Biglietti/Pages/tickets_milan.aspx",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "普通券は1人2.20ユーロで、最初の改札から90分有効。地上の路線と地下鉄で何回でも乗れる（ページに掲載日はなく、2026-11-07に表示されていた値）。"
+    },
+    "atm_tickets_it": {
+      "publisher": "ATM（Azienda Trasporti Milanesi）",
+      "title": "Biglietti per Milano e dintorni",
+      "url": "https://www.atm.it/it/viaggiaconnoi/biglietti/pagine/tipologie.aspx",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "「Biglietto da 2,20 €」「Vale per 90 minuti dalla prima convalida」。使える範囲はMi1–Mi3（ミラノ市と近くの市町）。"
+    },
+    "cenacolo_info": {
+      "publisher": "Museo Cenacolo Vinciano",
+      "title": "Info（How to get here）",
+      "url": "https://cenacolovinciano.org/en/info/",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "美術館の案内に、16番の路面電車は S. Maria delle Grazie 停留所に停まり（Tram 16 … stop in S. Maria delle Grazie）、タクシーはルッフィーニ通り1番、切符売り場の向かいに停まる（Cabs stop at via Ruffini 1, opposite the ticket office）とある。"
+    },
+    "dgr_2569_2024": {
+      "publisher": "Regione Lombardia（タクシー協同組合 La Fontana のサイトにある写し）",
+      "title": "Deliberazione N° XII/2569, seduta del 17/06/2024（付属A〜C）",
+      "url": "https://www.lafontana-taxi.it/wp-content/uploads/2024/06/nuove-tariffe-taxi.pdf.pdf",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "付属B：平日の初乗り4.10ユーロ、1キロ1.32ユーロ、停車・待ち1時間34.48ユーロ、メーター17.35ユーロから割増。州の決議の第三者の写しで読んだ値（ARTの意見書の値と一致）。"
+    },
+    "dgr_6828_2026": {
+      "publisher": "Regione Lombardia（BURL 2026年10月2日 Serie Ordinaria n.40）",
+      "title": "D.g.r. 28 settembre 2026 – n. XII/6828",
+      "url": "https://www.regione.lombardia.it/content/dam/rl/canali-tematici-servizi/09-infrastrutture-trasporti-e-mobilit%C3%A0/09-taxi-collegamenti-aeroportuali-e-noleggio/red-servizio-taxi-tra/allegati/DGR_6828_2026_tariffe%20taxi%202026_BURL.pdf",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "2026年もDGR 2569/2024 付属Bのタクシー料金を維持する。初乗りは平日・休日・夜（21〜6時）の3種。"
+    },
+    "lombardia_taxi": {
+      "publisher": "Regione Lombardia",
+      "title": "Servizio e tariffe taxi nel bacino aeroportuale",
+      "url": "https://www.regione.lombardia.it/infrastrutture-trasporti-e-mobilita/taxi-collegamenti-aeroportuali-e-noleggio/servizio-e-tariffe-taxi-nel-bacino-aeroportuale",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "ミラノ市は空港圏の市町で、圏内のタクシーは共通料金を使う。標準の1回（1人・荷物なし・市内5km・5分の停車や待ち・平日昼）は13.60ユーロ。"
+    },
+    "milano_gtfs": {
+      "publisher": "Comune di Milano（データ作成 AMAT、運行 ATM）",
+      "title": "Orari del trasporto pubblico locale nel Comune di Milano in formato GTFS（ds929）",
+      "url": "https://dati.comune.milano.it/dataset/ds929-orari-del-trasporto-pubblico-locale-nel-comune-di-milano-in-formato-gtfs",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "ミラノ市の公開時刻表データ（2026年10月26日〜11月30日の分）。路面電車24番はミッソーリ（Missori M3）とリパモンティ通り・ロレンツィーニ通りの停留所を、16番はコルドゥージオ・ドゥオモと S. Maria delle Grazie（Cenacolo Vinciano）の停留所を乗り換えなしで結ぶ。ほかの組の路面電車の系統と停留所もこのデータで確かめた。ライセンスはCreative Commons Attribution。"
+    },
+    "osrm_taxi": {
+      "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+      "title": "車の経路計算 table/v1/driving（ミラノの14地点）",
+      "url": "https://router.project-osrm.org/table/v1/driving/",
+      "checkedAt": "2026-11-07",
+      "claimType": "hypothesis",
+      "claimJa": "車の道のりと渋滞なしの時間を2026-11-07に1回問い合わせた。ゲームの分数は車をつかまえる5分と渋滞なしの時間の2倍（切り上げ）を足した推定。料金は平日昼の州の料金（初乗り4.10ユーロ＋1キロ1.32ユーロ＋混雑で延びた時間1分約0.575ユーロ）を2人で1台として切り上げた推定で、追加料金は入れない。乗り場の位置は、最後の晩餐（ルッフィーニ通り）のほかは確かめていない。実際の所要時間・運賃ではない。"
+    },
+    "tram_model": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "路面電車の所要時間と料金の推定（ミラノ市の時刻表データから計算）",
+      "url": "https://dati.comune.milano.it/dataset/ds929-orari-del-trasporto-pubblico-locale-nel-comune-di-milano-in-formato-gtfs",
+      "checkedAt": "2026-11-07",
+      "claimType": "hypothesis",
+      "claimJa": "停留所までの徒歩（直線距離×1.3を分速75メートル）、平均の待ち（10〜18時の間隔の半分）、時刻表の乗車時間、停留所からの徒歩を足した。平日（2026-11-10）と日曜（2026-11-08）の長い方を切り上げた分数。料金は2人分（1人2.20ユーロ×2を切り上げて5ユーロ。1日券や90分以内の乗り継ぎは使わない）。実際の所要時間・運賃ではない。"
+    }
+  },
+  "decisions": [
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_galleria",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_galleria",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_supper",
+      "mode": "tram",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "16番が最後の晩餐の前の停留所（S. Maria delle Grazie）に停まる。消える地下鉄M1の代わり。",
+      "sourceRefs": [
+        "milano_gtfs",
+        "atm_tickets_en",
+        "atm_tickets_it",
+        "tram_model"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_supper",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "徒歩20分以上。1台に2人で乗る昼間の料金の目安。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi",
+        "cenacolo_info"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_castello",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_castello",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_scala",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_scala",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_brera",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_brera",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_darsena",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_darsena",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "徒歩20分以上。1台に2人で乗る昼間の料金の目安。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_navigli",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_navigli",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "徒歩20分以上。1台に2人で乗る昼間の料金の目安。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_satiro",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_satiro",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_roastery",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_roastery",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_prada",
+      "mode": "tram",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "24番が都心（ミッソーリ）とプラダ財団の近く（約430m）を乗り換えなしで結ぶ。歩くと40分以上。",
+      "sourceRefs": [
+        "milano_gtfs",
+        "atm_tickets_en",
+        "atm_tickets_it",
+        "tram_model"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_prada",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "徒歩20分以上。1台に2人で乗る昼間の料金の目安。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_novecento",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_novecento",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_maurizio",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_maurizio",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_duomo",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_duomo",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_supper",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_supper",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi",
+        "cenacolo_info"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_castello",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_castello",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_scala",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_scala",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_brera",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_brera",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_darsena",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_darsena",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_navigli",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_navigli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_satiro",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_satiro",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_roastery",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_roastery",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_prada",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_prada",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_novecento",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_novecento",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_maurizio",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_maurizio",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_galleria",
+      "toPlaceId": "p_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_duomo",
+      "mode": "tram",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "16番が最後の晩餐の前の停留所（S. Maria delle Grazie）に停まる。消える地下鉄M1の代わり。",
+      "sourceRefs": [
+        "milano_gtfs",
+        "atm_tickets_en",
+        "atm_tickets_it",
+        "tram_model"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_duomo",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "徒歩20分以上。1台に2人で乗る昼間の料金の目安。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi",
+        "cenacolo_info"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_galleria",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_galleria",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi",
+        "cenacolo_info"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_castello",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_castello",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_scala",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_scala",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi",
+        "cenacolo_info"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_brera",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_brera",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi",
+        "cenacolo_info"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_darsena",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_darsena",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi",
+        "cenacolo_info"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_navigli",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_navigli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi",
+        "cenacolo_info"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_satiro",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_satiro",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi",
+        "cenacolo_info"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_roastery",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_roastery",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_prada",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "乗り換えなしの路面電車がない（両地点の近く600m以内を結ぶ直通がない。乗り換えが必要）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_prada",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi",
+        "cenacolo_info"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_novecento",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_novecento",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi",
+        "cenacolo_info"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_maurizio",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_maurizio",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_hotel",
+      "mode": "tram",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "作者の決定で追加。16番が最後の晩餐の前の停留所に停まる。帰り道の一覧の遠回りを減らす。",
+      "sourceRefs": [
+        "milano_gtfs",
+        "atm_tickets_en",
+        "atm_tickets_it",
+        "tram_model"
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_duomo",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_duomo",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_galleria",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_galleria",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_supper",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_supper",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_scala",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_scala",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_brera",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_brera",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_darsena",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_darsena",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_navigli",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_navigli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_satiro",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_satiro",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_roastery",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_roastery",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_prada",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "乗り換えなしの路面電車がない（両地点の近く600m以内を結ぶ直通がない。乗り換えが必要）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_prada",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_novecento",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_novecento",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_maurizio",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_maurizio",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_castello",
+      "toPlaceId": "p_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_duomo",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_duomo",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_galleria",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_galleria",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_supper",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_supper",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi",
+        "cenacolo_info"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_castello",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_castello",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_brera",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_brera",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_darsena",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_darsena",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_navigli",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_navigli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_satiro",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_satiro",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_roastery",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_roastery",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_prada",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_prada",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_novecento",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_novecento",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_maurizio",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_maurizio",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_scala",
+      "toPlaceId": "p_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_duomo",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_duomo",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_galleria",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_galleria",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_supper",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_supper",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi",
+        "cenacolo_info"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_castello",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_castello",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_scala",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_scala",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_darsena",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_darsena",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_navigli",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_navigli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_satiro",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_satiro",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_roastery",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_roastery",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_prada",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "乗り換えなしの路面電車がない（両地点の近く600m以内を結ぶ直通がない。乗り換えが必要）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_prada",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_novecento",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_novecento",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_maurizio",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_maurizio",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_brera",
+      "toPlaceId": "p_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_duomo",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_duomo",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "徒歩20分以上。1台に2人で乗る昼間の料金の目安。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_galleria",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_galleria",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_supper",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_supper",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi",
+        "cenacolo_info"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_castello",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_castello",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_scala",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_scala",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_brera",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_brera",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_navigli",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_navigli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_satiro",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_satiro",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_roastery",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_roastery",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_prada",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "乗り換えなしの路面電車がない（両地点の近く600m以内を結ぶ直通がない。乗り換えが必要）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_prada",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_novecento",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_novecento",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_maurizio",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "乗り換えなしの路面電車がない（両地点の近く600m以内を結ぶ直通がない。乗り換えが必要）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_maurizio",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "作者の決定で足さない（3番。歩いて27〜30分で、提案の時間では2分しか短くならない）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_hotel",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "徒歩20分以上。1台に2人で乗る昼間の料金の目安。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_duomo",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_duomo",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "徒歩20分以上。1台に2人で乗る昼間の料金の目安。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_galleria",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_galleria",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_supper",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_supper",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi",
+        "cenacolo_info"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_castello",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_castello",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_scala",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_scala",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_brera",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_brera",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_darsena",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_darsena",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_satiro",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_satiro",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_roastery",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_roastery",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_prada",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "乗り換えなしの路面電車がない（両地点の近く600m以内を結ぶ直通がない。乗り換えが必要）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_prada",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_novecento",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_novecento",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_maurizio",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "乗り換えなしの路面電車がない（両地点の近く600m以内を結ぶ直通がない。乗り換えが必要）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_maurizio",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "作者の決定で足さない（3番。歩いて27〜30分で、提案の時間では2分しか短くならない）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_hotel",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "徒歩20分以上。1台に2人で乗る昼間の料金の目安。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_duomo",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_duomo",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_galleria",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_galleria",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_supper",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_supper",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi",
+        "cenacolo_info"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_castello",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_castello",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_scala",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_scala",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_brera",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_brera",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_darsena",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_darsena",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_navigli",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_navigli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_roastery",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_roastery",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_prada",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_prada",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_novecento",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_novecento",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_maurizio",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_maurizio",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_satiro",
+      "toPlaceId": "p_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_duomo",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_duomo",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_galleria",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_galleria",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_supper",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_supper",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_castello",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_castello",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_scala",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_scala",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_brera",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_brera",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_darsena",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_darsena",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_navigli",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_navigli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_satiro",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_satiro",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_prada",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_prada",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_novecento",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_novecento",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_maurizio",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_maurizio",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_roastery",
+      "toPlaceId": "p_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_duomo",
+      "mode": "tram",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "24番が都心（ミッソーリ）とプラダ財団の近く（約430m）を乗り換えなしで結ぶ。歩くと40分以上。",
+      "sourceRefs": [
+        "milano_gtfs",
+        "atm_tickets_en",
+        "atm_tickets_it",
+        "tram_model"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_duomo",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "徒歩20分以上。1台に2人で乗る昼間の料金の目安。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_galleria",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_galleria",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_supper",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "乗り換えなしの路面電車がない（両地点の近く600m以内を結ぶ直通がない。乗り換えが必要）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_supper",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi",
+        "cenacolo_info"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_castello",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "乗り換えなしの路面電車がない（両地点の近く600m以内を結ぶ直通がない。乗り換えが必要）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_castello",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_scala",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_scala",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_brera",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "乗り換えなしの路面電車がない（両地点の近く600m以内を結ぶ直通がない。乗り換えが必要）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_brera",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_darsena",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "乗り換えなしの路面電車がない（両地点の近く600m以内を結ぶ直通がない。乗り換えが必要）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_darsena",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_navigli",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "乗り換えなしの路面電車がない（両地点の近く600m以内を結ぶ直通がない。乗り換えが必要）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_navigli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_satiro",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_satiro",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_roastery",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_roastery",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_novecento",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_novecento",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_maurizio",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "乗り換えなしの路面電車がない（両地点の近く600m以内を結ぶ直通がない。乗り換えが必要）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_maurizio",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_hotel",
+      "mode": "tram",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "24番が都心（ミッソーリ）とプラダ財団の近く（約430m）を乗り換えなしで結ぶ。歩くと40分以上。",
+      "sourceRefs": [
+        "milano_gtfs",
+        "atm_tickets_en",
+        "atm_tickets_it",
+        "tram_model"
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_hotel",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "徒歩20分以上。1台に2人で乗る昼間の料金の目安。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_duomo",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_duomo",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_galleria",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_galleria",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_supper",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_supper",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi",
+        "cenacolo_info"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_castello",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_castello",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_scala",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_scala",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_brera",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_brera",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_darsena",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_darsena",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_navigli",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_navigli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_satiro",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_satiro",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_roastery",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_roastery",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_prada",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_prada",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_maurizio",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_maurizio",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_novecento",
+      "toPlaceId": "p_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_duomo",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_duomo",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_galleria",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_galleria",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_supper",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_supper",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_castello",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_castello",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_scala",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_scala",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_brera",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_brera",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_darsena",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_darsena",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_navigli",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "直通の路面電車はあるが足さない（短くなるのが小さい、または経路の数を増やさないため）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_navigli",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_satiro",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_satiro",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_roastery",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_roastery",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_prada",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "乗り換えなしの路面電車がない（両地点の近く600m以内を結ぶ直通がない。乗り換えが必要）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_prada",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "タクシーは、ホテル・ドゥオモと遠い4か所（最後の晩餐・ダルセナ・ナヴィリオ洗濯屋小路・プラダ財団）を結ぶ片道だけにする（作者の決定）。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_novecento",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_novecento",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_hotel",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_maurizio",
+      "toPlaceId": "p_hotel",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_duomo",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_duomo",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_galleria",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_galleria",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_supper",
+      "mode": "tram",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "作者の決定で追加。16番が最後の晩餐の前の停留所に停まる。帰り道の一覧の遠回りを減らす。",
+      "sourceRefs": [
+        "milano_gtfs",
+        "atm_tickets_en",
+        "atm_tickets_it",
+        "tram_model"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_supper",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_castello",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_castello",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_scala",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_scala",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_brera",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_brera",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_darsena",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "作者の決定で足さない（3番。歩いて27〜30分で、提案の時間では2分しか短くならない）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_darsena",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "徒歩20分以上。1台に2人で乗る昼間の料金の目安。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_navigli",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "作者の決定で足さない（3番。歩いて27〜30分で、提案の時間では2分しか短くならない）。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_navigli",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "徒歩20分以上。1台に2人で乗る昼間の料金の目安。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_satiro",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_satiro",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_roastery",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_roastery",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_prada",
+      "mode": "tram",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "24番が都心（ミッソーリ）とプラダ財団の近く（約430m）を乗り換えなしで結ぶ。歩くと40分以上。",
+      "sourceRefs": [
+        "milano_gtfs",
+        "atm_tickets_en",
+        "atm_tickets_it",
+        "tram_model"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_prada",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "徒歩20分以上。1台に2人で乗る昼間の料金の目安。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026",
+        "dgr_2569_2024",
+        "art_parere_34_2024",
+        "osrm_taxi"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_novecento",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_novecento",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_maurizio",
+      "mode": "tram",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、路面電車の経路は置かない。",
+      "sourceRefs": [
+        "milano_gtfs"
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_maurizio",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-07",
+      "reasonJa": "歩いて20分未満で着くので、タクシーの経路は置かない。",
+      "sourceRefs": [
+        "lombardia_taxi",
+        "dgr_6828_2026"
+      ]
+    }
+  ]
+}

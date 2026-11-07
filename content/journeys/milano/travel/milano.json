@@ -3652,86 +3652,149 @@
     },
     {
       "fromPlaceId": "p_duomo",
-      "toPlaceId": "p_prada",
-      "mode": "rail",
-      "minutes": 31,
-      "cost": 5,
+      "toPlaceId": "p_supper",
+      "mode": "taxi",
+      "minutes": 22,
+      "cost": 15,
+      "transferNote": "近くの車道から乗り、ルッフィーニ通りで降りる",
+      "estimation": "game_model",
       "sources": [
         {
-          "publisher": "Fondazione Prada / ATM Milano",
-          "title": "Getting to Fondazione Prada and Milan tickets",
-          "url": "https://www.fondazioneprada.org/servizio-visitatori-en/?lang=en",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "M3の区間は公式案内に基づく。移動時間と二人分の整数ユーロ費用はゲーム用の推定値。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_prada",
-      "toPlaceId": "p_duomo",
-      "mode": "rail",
-      "minutes": 31,
-      "cost": 5,
-      "sources": [
+          "publisher": "Regione Lombardia",
+          "title": "Servizio e tariffe taxi nel bacino aeroportuale",
+          "url": "https://www.regione.lombardia.it/infrastrutture-trasporti-e-mobilita/taxi-collegamenti-aeroportuali-e-noleggio/servizio-e-tariffe-taxi-nel-bacino-aeroportuale",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市は空港圏の市町で、圏内のタクシーは共通料金を使う。標準の1回（1人・荷物なし・市内5km・5分の停車や待ち・平日昼）は13.60ユーロ。"
+        },
         {
-          "publisher": "Fondazione Prada / ATM Milano",
-          "title": "Getting to Fondazione Prada and Milan tickets",
-          "url": "https://www.fondazioneprada.org/servizio-visitatori-en/?lang=en",
-          "checkedAt": "2026-11-02",
+          "publisher": "Regione Lombardia（タクシー協同組合 La Fontana のサイトにある写し）",
+          "title": "Deliberazione N° XII/2569, seduta del 17/06/2024（付属A〜C）",
+          "url": "https://www.lafontana-taxi.it/wp-content/uploads/2024/06/nuove-tariffe-taxi.pdf.pdf",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "付属B：平日の初乗り4.10ユーロ、1キロ1.32ユーロ、停車・待ち1時間34.48ユーロ、メーター17.35ユーロから割増。州の決議の第三者の写しで読んだ値（ARTの意見書の値と一致）。"
+        },
+        {
+          "publisher": "Museo Cenacolo Vinciano",
+          "title": "Info（How to get here）",
+          "url": "https://cenacolovinciano.org/en/info/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "美術館の案内に、16番の路面電車は S. Maria delle Grazie 停留所に停まり（Tram 16 … stop in S. Maria delle Grazie）、タクシーはルッフィーニ通り1番、切符売り場の向かいに停まる（Cabs stop at via Ruffini 1, opposite the ticket office）とある。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（ミラノの14地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
           "claimType": "hypothesis",
-          "claimJa": "M3の区間は公式案内に基づく。移動時間と二人分の整数ユーロ費用はゲーム用の推定値。"
+          "claimJa": "車の道のりと渋滞なしの時間を2026-11-07に1回問い合わせた。ゲームの分数は車をつかまえる5分と渋滞なしの時間の2倍（切り上げ）を足した推定。料金は平日昼の州の料金（初乗り4.10ユーロ＋1キロ1.32ユーロ＋混雑で延びた時間1分約0.575ユーロ）を2人で1台として切り上げた推定で、追加料金は入れない。乗り場の位置は、最後の晩餐（ルッフィーニ通り）のほかは確かめていない。実際の所要時間・運賃ではない。"
         }
       ]
     },
     {
       "fromPlaceId": "p_duomo",
       "toPlaceId": "p_supper",
-      "mode": "rail",
-      "minutes": 20,
+      "mode": "tram",
+      "minutes": 22,
       "cost": 5,
+      "transferNote": "16番",
+      "estimation": "game_model",
       "sources": [
         {
-          "publisher": "ATM Milano / Rome2Rio",
-          "title": "Duomo and Santa Maria delle Grazie",
-          "url": "https://www.rome2rio.com/s/Piazza-del-Duomo/Piazza-di-Santa-Maria-delle-Grazie-20123-Milano-MI-Italy",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "M1の利用は経路案内を参照し、徒歩や待ち時間を含む時間と二人分の費用はゲーム用の推定値。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_supper",
-      "toPlaceId": "p_duomo",
-      "mode": "rail",
-      "minutes": 20,
-      "cost": 5,
-      "sources": [
+          "publisher": "Comune di Milano（データ作成 AMAT、運行 ATM）",
+          "title": "Orari del trasporto pubblico locale nel Comune di Milano in formato GTFS（ds929）",
+          "url": "https://dati.comune.milano.it/dataset/ds929-orari-del-trasporto-pubblico-locale-nel-comune-di-milano-in-formato-gtfs",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市の公開時刻表データ（2026年10月26日〜11月30日の分）。路面電車24番はミッソーリ（Missori M3）とリパモンティ通り・ロレンツィーニ通りの停留所を、16番はコルドゥージオ・ドゥオモと S. Maria delle Grazie（Cenacolo Vinciano）の停留所を乗り換えなしで結ぶ。ほかの組の路面電車の系統と停留所もこのデータで確かめた。ライセンスはCreative Commons Attribution。"
+        },
         {
-          "publisher": "ATM Milano / Rome2Rio",
-          "title": "Duomo and Santa Maria delle Grazie",
-          "url": "https://www.rome2rio.com/s/Piazza-del-Duomo/Piazza-di-Santa-Maria-delle-Grazie-20123-Milano-MI-Italy",
-          "checkedAt": "2026-11-02",
+          "publisher": "ATM（Azienda Trasporti Milanesi）",
+          "title": "Tickets for Milan and its surroundings",
+          "url": "https://www.atm.it/en/ViaggiaConNoi/Biglietti/Pages/tickets_milan.aspx",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "普通券は1人2.20ユーロで、最初の改札から90分有効。地上の路線と地下鉄で何回でも乗れる（ページに掲載日はなく、2026-11-07に表示されていた値）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "路面電車の所要時間と料金の推定（ミラノ市の時刻表データから計算）",
+          "url": "https://dati.comune.milano.it/dataset/ds929-orari-del-trasporto-pubblico-locale-nel-comune-di-milano-in-formato-gtfs",
+          "checkedAt": "2026-11-07",
           "claimType": "hypothesis",
-          "claimJa": "M1の利用は経路案内を参照し、徒歩や待ち時間を含む時間と二人分の費用はゲーム用の推定値。"
+          "claimJa": "停留所までの徒歩（直線距離×1.3を分速75メートル）、平均の待ち（10〜18時の間隔の半分）、時刻表の乗車時間、停留所からの徒歩を足した。平日（2026-11-10）と日曜（2026-11-08）の長い方を切り上げた分数。料金は2人分（1人2.20ユーロ×2を切り上げて5ユーロ。1日券や90分以内の乗り継ぎは使わない）。実際の所要時間・運賃ではない。"
         }
       ]
     },
     {
       "fromPlaceId": "p_duomo",
-      "toPlaceId": "p_prada",
-      "mode": "bus",
-      "minutes": 35,
-      "cost": 5,
+      "toPlaceId": "p_darsena",
+      "mode": "taxi",
+      "minutes": 16,
+      "cost": 11,
+      "transferNote": "近くの車道から乗る",
+      "estimation": "game_model",
       "sources": [
         {
-          "publisher": "ATM Milano / Milano 市 / Fondazione Prada",
-          "title": "交通手段とゲーム用モデル",
-          "url": "https://www.fondazioneprada.org/servizio-visitatori-en/?lang=en",
-          "checkedAt": "2026-11-02",
+          "publisher": "Regione Lombardia",
+          "title": "Servizio e tariffe taxi nel bacino aeroportuale",
+          "url": "https://www.regione.lombardia.it/infrastrutture-trasporti-e-mobilita/taxi-collegamenti-aeroportuali-e-noleggio/servizio-e-tariffe-taxi-nel-bacino-aeroportuale",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市は空港圏の市町で、圏内のタクシーは共通料金を使う。標準の1回（1人・荷物なし・市内5km・5分の停車や待ち・平日昼）は13.60ユーロ。"
+        },
+        {
+          "publisher": "Regione Lombardia（タクシー協同組合 La Fontana のサイトにある写し）",
+          "title": "Deliberazione N° XII/2569, seduta del 17/06/2024（付属A〜C）",
+          "url": "https://www.lafontana-taxi.it/wp-content/uploads/2024/06/nuove-tariffe-taxi.pdf.pdf",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "付属B：平日の初乗り4.10ユーロ、1キロ1.32ユーロ、停車・待ち1時間34.48ユーロ、メーター17.35ユーロから割増。州の決議の第三者の写しで読んだ値（ARTの意見書の値と一致）。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（ミラノの14地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
           "claimType": "hypothesis",
-          "claimJa": "路線または運賃制度をもとに、待機を含む時間と二人分の費用をゲーム用に仮設定した。実際の所要時間・運賃ではない。"
+          "claimJa": "車の道のりと渋滞なしの時間を2026-11-07に1回問い合わせた。ゲームの分数は車をつかまえる5分と渋滞なしの時間の2倍（切り上げ）を足した推定。料金は平日昼の州の料金（初乗り4.10ユーロ＋1キロ1.32ユーロ＋混雑で延びた時間1分約0.575ユーロ）を2人で1台として切り上げた推定で、追加料金は入れない。乗り場の位置は、最後の晩餐（ルッフィーニ通り）のほかは確かめていない。実際の所要時間・運賃ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "p_duomo",
+      "toPlaceId": "p_navigli",
+      "mode": "taxi",
+      "minutes": 19,
+      "cost": 12,
+      "transferNote": "近くの車道から乗る",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Regione Lombardia",
+          "title": "Servizio e tariffe taxi nel bacino aeroportuale",
+          "url": "https://www.regione.lombardia.it/infrastrutture-trasporti-e-mobilita/taxi-collegamenti-aeroportuali-e-noleggio/servizio-e-tariffe-taxi-nel-bacino-aeroportuale",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市は空港圏の市町で、圏内のタクシーは共通料金を使う。標準の1回（1人・荷物なし・市内5km・5分の停車や待ち・平日昼）は13.60ユーロ。"
+        },
+        {
+          "publisher": "Regione Lombardia（タクシー協同組合 La Fontana のサイトにある写し）",
+          "title": "Deliberazione N° XII/2569, seduta del 17/06/2024（付属A〜C）",
+          "url": "https://www.lafontana-taxi.it/wp-content/uploads/2024/06/nuove-tariffe-taxi.pdf.pdf",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "付属B：平日の初乗り4.10ユーロ、1キロ1.32ユーロ、停車・待ち1時間34.48ユーロ、メーター17.35ユーロから割増。州の決議の第三者の写しで読んだ値（ARTの意見書の値と一致）。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（ミラノの14地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "車の道のりと渋滞なしの時間を2026-11-07に1回問い合わせた。ゲームの分数は車をつかまえる5分と渋滞なしの時間の2倍（切り上げ）を足した推定。料金は平日昼の州の料金（初乗り4.10ユーロ＋1キロ1.32ユーロ＋混雑で延びた時間1分約0.575ユーロ）を2人で1台として切り上げた推定で、追加料金は入れない。乗り場の位置は、最後の晩餐（ルッフィーニ通り）のほかは確かめていない。実際の所要時間・運賃ではない。"
         }
       ]
     },
@@ -3739,50 +3802,34 @@
       "fromPlaceId": "p_duomo",
       "toPlaceId": "p_prada",
       "mode": "taxi",
-      "minutes": 18,
-      "cost": 12,
+      "minutes": 19,
+      "cost": 13,
+      "transferNote": "近くの車道から乗る",
+      "estimation": "game_model",
       "sources": [
         {
-          "publisher": "ATM Milano / Milano 市 / Fondazione Prada",
-          "title": "交通手段とゲーム用モデル",
-          "url": "https://www.comune.milano.it/servizi/mobilita/utilizzare-il-servizio-taxi",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "路線または運賃制度をもとに、待機を含む時間と二人分の費用をゲーム用に仮設定した。実際の所要時間・運賃ではない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_prada",
-      "toPlaceId": "p_duomo",
-      "mode": "bus",
-      "minutes": 35,
-      "cost": 5,
-      "sources": [
+          "publisher": "Regione Lombardia",
+          "title": "Servizio e tariffe taxi nel bacino aeroportuale",
+          "url": "https://www.regione.lombardia.it/infrastrutture-trasporti-e-mobilita/taxi-collegamenti-aeroportuali-e-noleggio/servizio-e-tariffe-taxi-nel-bacino-aeroportuale",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市は空港圏の市町で、圏内のタクシーは共通料金を使う。標準の1回（1人・荷物なし・市内5km・5分の停車や待ち・平日昼）は13.60ユーロ。"
+        },
         {
-          "publisher": "ATM Milano / Milano 市 / Fondazione Prada",
-          "title": "交通手段とゲーム用モデル",
-          "url": "https://www.fondazioneprada.org/servizio-visitatori-en/?lang=en",
-          "checkedAt": "2026-11-02",
-          "claimType": "hypothesis",
-          "claimJa": "路線または運賃制度をもとに、待機を含む時間と二人分の費用をゲーム用に仮設定した。実際の所要時間・運賃ではない。"
-        }
-      ]
-    },
-    {
-      "fromPlaceId": "p_prada",
-      "toPlaceId": "p_duomo",
-      "mode": "taxi",
-      "minutes": 18,
-      "cost": 12,
-      "sources": [
+          "publisher": "Regione Lombardia（タクシー協同組合 La Fontana のサイトにある写し）",
+          "title": "Deliberazione N° XII/2569, seduta del 17/06/2024（付属A〜C）",
+          "url": "https://www.lafontana-taxi.it/wp-content/uploads/2024/06/nuove-tariffe-taxi.pdf.pdf",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "付属B：平日の初乗り4.10ユーロ、1キロ1.32ユーロ、停車・待ち1時間34.48ユーロ、メーター17.35ユーロから割増。州の決議の第三者の写しで読んだ値（ARTの意見書の値と一致）。"
+        },
         {
-          "publisher": "ATM Milano / Milano 市 / Fondazione Prada",
-          "title": "交通手段とゲーム用モデル",
-          "url": "https://www.comune.milano.it/servizi/mobilita/utilizzare-il-servizio-taxi",
-          "checkedAt": "2026-11-02",
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（ミラノの14地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
           "claimType": "hypothesis",
-          "claimJa": "路線または運賃制度をもとに、待機を含む時間と二人分の費用をゲーム用に仮設定した。実際の所要時間・運賃ではない。"
+          "claimJa": "車の道のりと渋滞なしの時間を2026-11-07に1回問い合わせた。ゲームの分数は車をつかまえる5分と渋滞なしの時間の2倍（切り上げ）を足した推定。料金は平日昼の州の料金（初乗り4.10ユーロ＋1キロ1.32ユーロ＋混雑で延びた時間1分約0.575ユーロ）を2人で1台として切り上げた推定で、追加料金は入れない。乗り場の位置は、最後の晩餐（ルッフィーニ通り）のほかは確かめていない。実際の所要時間・運賃ではない。"
         }
       ]
     },
@@ -3792,14 +3839,594 @@
       "mode": "tram",
       "minutes": 35,
       "cost": 5,
+      "transferNote": "24番・ミッソーリから乗る",
+      "estimation": "game_model",
       "sources": [
         {
-          "publisher": "Fondazione Prada",
-          "title": "Fondazione Prada Milano visitor information",
-          "url": "https://www.fondazioneprada.org/servizio-visitatori-en/?lang=en",
-          "checkedAt": "2026-11-02",
+          "publisher": "Comune di Milano（データ作成 AMAT、運行 ATM）",
+          "title": "Orari del trasporto pubblico locale nel Comune di Milano in formato GTFS（ds929）",
+          "url": "https://dati.comune.milano.it/dataset/ds929-orari-del-trasporto-pubblico-locale-nel-comune-di-milano-in-formato-gtfs",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市の公開時刻表データ（2026年10月26日〜11月30日の分）。路面電車24番はミッソーリ（Missori M3）とリパモンティ通り・ロレンツィーニ通りの停留所を、16番はコルドゥージオ・ドゥオモと S. Maria delle Grazie（Cenacolo Vinciano）の停留所を乗り換えなしで結ぶ。ほかの組の路面電車の系統と停留所もこのデータで確かめた。ライセンスはCreative Commons Attribution。"
+        },
+        {
+          "publisher": "ATM（Azienda Trasporti Milanesi）",
+          "title": "Tickets for Milan and its surroundings",
+          "url": "https://www.atm.it/en/ViaggiaConNoi/Biglietti/Pages/tickets_milan.aspx",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "普通券は1人2.20ユーロで、最初の改札から90分有効。地上の路線と地下鉄で何回でも乗れる（ページに掲載日はなく、2026-11-07に表示されていた値）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "路面電車の所要時間と料金の推定（ミラノ市の時刻表データから計算）",
+          "url": "https://dati.comune.milano.it/dataset/ds929-orari-del-trasporto-pubblico-locale-nel-comune-di-milano-in-formato-gtfs",
+          "checkedAt": "2026-11-07",
           "claimType": "hypothesis",
-          "claimJa": "施設へのトラム24番の案内に基づくゲーム用の片道候補。歩行・待機・乗車時間はゲーム用推定、二人分の料金も整数ユーロに丸めた調整値。実際の運行・運賃とは異なる。"
+          "claimJa": "停留所までの徒歩（直線距離×1.3を分速75メートル）、平均の待ち（10〜18時の間隔の半分）、時刻表の乗車時間、停留所からの徒歩を足した。平日（2026-11-10）と日曜（2026-11-08）の長い方を切り上げた分数。料金は2人分（1人2.20ユーロ×2を切り上げて5ユーロ。1日券や90分以内の乗り継ぎは使わない）。実際の所要時間・運賃ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_duomo",
+      "mode": "taxi",
+      "minutes": 21,
+      "cost": 14,
+      "transferNote": "ルッフィーニ通りで乗り、近くの車道で降りる",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Regione Lombardia",
+          "title": "Servizio e tariffe taxi nel bacino aeroportuale",
+          "url": "https://www.regione.lombardia.it/infrastrutture-trasporti-e-mobilita/taxi-collegamenti-aeroportuali-e-noleggio/servizio-e-tariffe-taxi-nel-bacino-aeroportuale",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市は空港圏の市町で、圏内のタクシーは共通料金を使う。標準の1回（1人・荷物なし・市内5km・5分の停車や待ち・平日昼）は13.60ユーロ。"
+        },
+        {
+          "publisher": "Regione Lombardia（タクシー協同組合 La Fontana のサイトにある写し）",
+          "title": "Deliberazione N° XII/2569, seduta del 17/06/2024（付属A〜C）",
+          "url": "https://www.lafontana-taxi.it/wp-content/uploads/2024/06/nuove-tariffe-taxi.pdf.pdf",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "付属B：平日の初乗り4.10ユーロ、1キロ1.32ユーロ、停車・待ち1時間34.48ユーロ、メーター17.35ユーロから割増。州の決議の第三者の写しで読んだ値（ARTの意見書の値と一致）。"
+        },
+        {
+          "publisher": "Museo Cenacolo Vinciano",
+          "title": "Info（How to get here）",
+          "url": "https://cenacolovinciano.org/en/info/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "美術館の案内に、16番の路面電車は S. Maria delle Grazie 停留所に停まり（Tram 16 … stop in S. Maria delle Grazie）、タクシーはルッフィーニ通り1番、切符売り場の向かいに停まる（Cabs stop at via Ruffini 1, opposite the ticket office）とある。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（ミラノの14地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "車の道のりと渋滞なしの時間を2026-11-07に1回問い合わせた。ゲームの分数は車をつかまえる5分と渋滞なしの時間の2倍（切り上げ）を足した推定。料金は平日昼の州の料金（初乗り4.10ユーロ＋1キロ1.32ユーロ＋混雑で延びた時間1分約0.575ユーロ）を2人で1台として切り上げた推定で、追加料金は入れない。乗り場の位置は、最後の晩餐（ルッフィーニ通り）のほかは確かめていない。実際の所要時間・運賃ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_duomo",
+      "mode": "tram",
+      "minutes": 23,
+      "cost": 5,
+      "transferNote": "16番",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Comune di Milano（データ作成 AMAT、運行 ATM）",
+          "title": "Orari del trasporto pubblico locale nel Comune di Milano in formato GTFS（ds929）",
+          "url": "https://dati.comune.milano.it/dataset/ds929-orari-del-trasporto-pubblico-locale-nel-comune-di-milano-in-formato-gtfs",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市の公開時刻表データ（2026年10月26日〜11月30日の分）。路面電車24番はミッソーリ（Missori M3）とリパモンティ通り・ロレンツィーニ通りの停留所を、16番はコルドゥージオ・ドゥオモと S. Maria delle Grazie（Cenacolo Vinciano）の停留所を乗り換えなしで結ぶ。ほかの組の路面電車の系統と停留所もこのデータで確かめた。ライセンスはCreative Commons Attribution。"
+        },
+        {
+          "publisher": "ATM（Azienda Trasporti Milanesi）",
+          "title": "Tickets for Milan and its surroundings",
+          "url": "https://www.atm.it/en/ViaggiaConNoi/Biglietti/Pages/tickets_milan.aspx",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "普通券は1人2.20ユーロで、最初の改札から90分有効。地上の路線と地下鉄で何回でも乗れる（ページに掲載日はなく、2026-11-07に表示されていた値）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "路面電車の所要時間と料金の推定（ミラノ市の時刻表データから計算）",
+          "url": "https://dati.comune.milano.it/dataset/ds929-orari-del-trasporto-pubblico-locale-nel-comune-di-milano-in-formato-gtfs",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "停留所までの徒歩（直線距離×1.3を分速75メートル）、平均の待ち（10〜18時の間隔の半分）、時刻表の乗車時間、停留所からの徒歩を足した。平日（2026-11-10）と日曜（2026-11-08）の長い方を切り上げた分数。料金は2人分（1人2.20ユーロ×2を切り上げて5ユーロ。1日券や90分以内の乗り継ぎは使わない）。実際の所要時間・運賃ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "p_supper",
+      "toPlaceId": "p_hotel",
+      "mode": "tram",
+      "minutes": 18,
+      "cost": 5,
+      "transferNote": "16番",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Comune di Milano（データ作成 AMAT、運行 ATM）",
+          "title": "Orari del trasporto pubblico locale nel Comune di Milano in formato GTFS（ds929）",
+          "url": "https://dati.comune.milano.it/dataset/ds929-orari-del-trasporto-pubblico-locale-nel-comune-di-milano-in-formato-gtfs",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市の公開時刻表データ（2026年10月26日〜11月30日の分）。路面電車24番はミッソーリ（Missori M3）とリパモンティ通り・ロレンツィーニ通りの停留所を、16番はコルドゥージオ・ドゥオモと S. Maria delle Grazie（Cenacolo Vinciano）の停留所を乗り換えなしで結ぶ。ほかの組の路面電車の系統と停留所もこのデータで確かめた。ライセンスはCreative Commons Attribution。"
+        },
+        {
+          "publisher": "ATM（Azienda Trasporti Milanesi）",
+          "title": "Tickets for Milan and its surroundings",
+          "url": "https://www.atm.it/en/ViaggiaConNoi/Biglietti/Pages/tickets_milan.aspx",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "普通券は1人2.20ユーロで、最初の改札から90分有効。地上の路線と地下鉄で何回でも乗れる（ページに掲載日はなく、2026-11-07に表示されていた値）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "路面電車の所要時間と料金の推定（ミラノ市の時刻表データから計算）",
+          "url": "https://dati.comune.milano.it/dataset/ds929-orari-del-trasporto-pubblico-locale-nel-comune-di-milano-in-formato-gtfs",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "停留所までの徒歩（直線距離×1.3を分速75メートル）、平均の待ち（10〜18時の間隔の半分）、時刻表の乗車時間、停留所からの徒歩を足した。平日（2026-11-10）と日曜（2026-11-08）の長い方を切り上げた分数。料金は2人分（1人2.20ユーロ×2を切り上げて5ユーロ。1日券や90分以内の乗り継ぎは使わない）。実際の所要時間・運賃ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_duomo",
+      "mode": "taxi",
+      "minutes": 19,
+      "cost": 12,
+      "transferNote": "近くの車道で降りる",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Regione Lombardia",
+          "title": "Servizio e tariffe taxi nel bacino aeroportuale",
+          "url": "https://www.regione.lombardia.it/infrastrutture-trasporti-e-mobilita/taxi-collegamenti-aeroportuali-e-noleggio/servizio-e-tariffe-taxi-nel-bacino-aeroportuale",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市は空港圏の市町で、圏内のタクシーは共通料金を使う。標準の1回（1人・荷物なし・市内5km・5分の停車や待ち・平日昼）は13.60ユーロ。"
+        },
+        {
+          "publisher": "Regione Lombardia（タクシー協同組合 La Fontana のサイトにある写し）",
+          "title": "Deliberazione N° XII/2569, seduta del 17/06/2024（付属A〜C）",
+          "url": "https://www.lafontana-taxi.it/wp-content/uploads/2024/06/nuove-tariffe-taxi.pdf.pdf",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "付属B：平日の初乗り4.10ユーロ、1キロ1.32ユーロ、停車・待ち1時間34.48ユーロ、メーター17.35ユーロから割増。州の決議の第三者の写しで読んだ値（ARTの意見書の値と一致）。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（ミラノの14地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "車の道のりと渋滞なしの時間を2026-11-07に1回問い合わせた。ゲームの分数は車をつかまえる5分と渋滞なしの時間の2倍（切り上げ）を足した推定。料金は平日昼の州の料金（初乗り4.10ユーロ＋1キロ1.32ユーロ＋混雑で延びた時間1分約0.575ユーロ）を2人で1台として切り上げた推定で、追加料金は入れない。乗り場の位置は、最後の晩餐（ルッフィーニ通り）のほかは確かめていない。実際の所要時間・運賃ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "p_darsena",
+      "toPlaceId": "p_hotel",
+      "mode": "taxi",
+      "minutes": 17,
+      "cost": 11,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Regione Lombardia",
+          "title": "Servizio e tariffe taxi nel bacino aeroportuale",
+          "url": "https://www.regione.lombardia.it/infrastrutture-trasporti-e-mobilita/taxi-collegamenti-aeroportuali-e-noleggio/servizio-e-tariffe-taxi-nel-bacino-aeroportuale",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市は空港圏の市町で、圏内のタクシーは共通料金を使う。標準の1回（1人・荷物なし・市内5km・5分の停車や待ち・平日昼）は13.60ユーロ。"
+        },
+        {
+          "publisher": "Regione Lombardia（タクシー協同組合 La Fontana のサイトにある写し）",
+          "title": "Deliberazione N° XII/2569, seduta del 17/06/2024（付属A〜C）",
+          "url": "https://www.lafontana-taxi.it/wp-content/uploads/2024/06/nuove-tariffe-taxi.pdf.pdf",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "付属B：平日の初乗り4.10ユーロ、1キロ1.32ユーロ、停車・待ち1時間34.48ユーロ、メーター17.35ユーロから割増。州の決議の第三者の写しで読んだ値（ARTの意見書の値と一致）。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（ミラノの14地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "車の道のりと渋滞なしの時間を2026-11-07に1回問い合わせた。ゲームの分数は車をつかまえる5分と渋滞なしの時間の2倍（切り上げ）を足した推定。料金は平日昼の州の料金（初乗り4.10ユーロ＋1キロ1.32ユーロ＋混雑で延びた時間1分約0.575ユーロ）を2人で1台として切り上げた推定で、追加料金は入れない。乗り場の位置は、最後の晩餐（ルッフィーニ通り）のほかは確かめていない。実際の所要時間・運賃ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_duomo",
+      "mode": "taxi",
+      "minutes": 21,
+      "cost": 13,
+      "transferNote": "近くの車道で降りる",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Regione Lombardia",
+          "title": "Servizio e tariffe taxi nel bacino aeroportuale",
+          "url": "https://www.regione.lombardia.it/infrastrutture-trasporti-e-mobilita/taxi-collegamenti-aeroportuali-e-noleggio/servizio-e-tariffe-taxi-nel-bacino-aeroportuale",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市は空港圏の市町で、圏内のタクシーは共通料金を使う。標準の1回（1人・荷物なし・市内5km・5分の停車や待ち・平日昼）は13.60ユーロ。"
+        },
+        {
+          "publisher": "Regione Lombardia（タクシー協同組合 La Fontana のサイトにある写し）",
+          "title": "Deliberazione N° XII/2569, seduta del 17/06/2024（付属A〜C）",
+          "url": "https://www.lafontana-taxi.it/wp-content/uploads/2024/06/nuove-tariffe-taxi.pdf.pdf",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "付属B：平日の初乗り4.10ユーロ、1キロ1.32ユーロ、停車・待ち1時間34.48ユーロ、メーター17.35ユーロから割増。州の決議の第三者の写しで読んだ値（ARTの意見書の値と一致）。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（ミラノの14地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "車の道のりと渋滞なしの時間を2026-11-07に1回問い合わせた。ゲームの分数は車をつかまえる5分と渋滞なしの時間の2倍（切り上げ）を足した推定。料金は平日昼の州の料金（初乗り4.10ユーロ＋1キロ1.32ユーロ＋混雑で延びた時間1分約0.575ユーロ）を2人で1台として切り上げた推定で、追加料金は入れない。乗り場の位置は、最後の晩餐（ルッフィーニ通り）のほかは確かめていない。実際の所要時間・運賃ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "p_navigli",
+      "toPlaceId": "p_hotel",
+      "mode": "taxi",
+      "minutes": 19,
+      "cost": 12,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Regione Lombardia",
+          "title": "Servizio e tariffe taxi nel bacino aeroportuale",
+          "url": "https://www.regione.lombardia.it/infrastrutture-trasporti-e-mobilita/taxi-collegamenti-aeroportuali-e-noleggio/servizio-e-tariffe-taxi-nel-bacino-aeroportuale",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市は空港圏の市町で、圏内のタクシーは共通料金を使う。標準の1回（1人・荷物なし・市内5km・5分の停車や待ち・平日昼）は13.60ユーロ。"
+        },
+        {
+          "publisher": "Regione Lombardia（タクシー協同組合 La Fontana のサイトにある写し）",
+          "title": "Deliberazione N° XII/2569, seduta del 17/06/2024（付属A〜C）",
+          "url": "https://www.lafontana-taxi.it/wp-content/uploads/2024/06/nuove-tariffe-taxi.pdf.pdf",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "付属B：平日の初乗り4.10ユーロ、1キロ1.32ユーロ、停車・待ち1時間34.48ユーロ、メーター17.35ユーロから割増。州の決議の第三者の写しで読んだ値（ARTの意見書の値と一致）。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（ミラノの14地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "車の道のりと渋滞なしの時間を2026-11-07に1回問い合わせた。ゲームの分数は車をつかまえる5分と渋滞なしの時間の2倍（切り上げ）を足した推定。料金は平日昼の州の料金（初乗り4.10ユーロ＋1キロ1.32ユーロ＋混雑で延びた時間1分約0.575ユーロ）を2人で1台として切り上げた推定で、追加料金は入れない。乗り場の位置は、最後の晩餐（ルッフィーニ通り）のほかは確かめていない。実際の所要時間・運賃ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_duomo",
+      "mode": "taxi",
+      "minutes": 21,
+      "cost": 14,
+      "transferNote": "近くの車道で降りる",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Regione Lombardia",
+          "title": "Servizio e tariffe taxi nel bacino aeroportuale",
+          "url": "https://www.regione.lombardia.it/infrastrutture-trasporti-e-mobilita/taxi-collegamenti-aeroportuali-e-noleggio/servizio-e-tariffe-taxi-nel-bacino-aeroportuale",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市は空港圏の市町で、圏内のタクシーは共通料金を使う。標準の1回（1人・荷物なし・市内5km・5分の停車や待ち・平日昼）は13.60ユーロ。"
+        },
+        {
+          "publisher": "Regione Lombardia（タクシー協同組合 La Fontana のサイトにある写し）",
+          "title": "Deliberazione N° XII/2569, seduta del 17/06/2024（付属A〜C）",
+          "url": "https://www.lafontana-taxi.it/wp-content/uploads/2024/06/nuove-tariffe-taxi.pdf.pdf",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "付属B：平日の初乗り4.10ユーロ、1キロ1.32ユーロ、停車・待ち1時間34.48ユーロ、メーター17.35ユーロから割増。州の決議の第三者の写しで読んだ値（ARTの意見書の値と一致）。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（ミラノの14地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "車の道のりと渋滞なしの時間を2026-11-07に1回問い合わせた。ゲームの分数は車をつかまえる5分と渋滞なしの時間の2倍（切り上げ）を足した推定。料金は平日昼の州の料金（初乗り4.10ユーロ＋1キロ1.32ユーロ＋混雑で延びた時間1分約0.575ユーロ）を2人で1台として切り上げた推定で、追加料金は入れない。乗り場の位置は、最後の晩餐（ルッフィーニ通り）のほかは確かめていない。実際の所要時間・運賃ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_duomo",
+      "mode": "tram",
+      "minutes": 35,
+      "cost": 5,
+      "transferNote": "24番・ミッソーリで降りる",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Comune di Milano（データ作成 AMAT、運行 ATM）",
+          "title": "Orari del trasporto pubblico locale nel Comune di Milano in formato GTFS（ds929）",
+          "url": "https://dati.comune.milano.it/dataset/ds929-orari-del-trasporto-pubblico-locale-nel-comune-di-milano-in-formato-gtfs",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市の公開時刻表データ（2026年10月26日〜11月30日の分）。路面電車24番はミッソーリ（Missori M3）とリパモンティ通り・ロレンツィーニ通りの停留所を、16番はコルドゥージオ・ドゥオモと S. Maria delle Grazie（Cenacolo Vinciano）の停留所を乗り換えなしで結ぶ。ほかの組の路面電車の系統と停留所もこのデータで確かめた。ライセンスはCreative Commons Attribution。"
+        },
+        {
+          "publisher": "ATM（Azienda Trasporti Milanesi）",
+          "title": "Tickets for Milan and its surroundings",
+          "url": "https://www.atm.it/en/ViaggiaConNoi/Biglietti/Pages/tickets_milan.aspx",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "普通券は1人2.20ユーロで、最初の改札から90分有効。地上の路線と地下鉄で何回でも乗れる（ページに掲載日はなく、2026-11-07に表示されていた値）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "路面電車の所要時間と料金の推定（ミラノ市の時刻表データから計算）",
+          "url": "https://dati.comune.milano.it/dataset/ds929-orari-del-trasporto-pubblico-locale-nel-comune-di-milano-in-formato-gtfs",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "停留所までの徒歩（直線距離×1.3を分速75メートル）、平均の待ち（10〜18時の間隔の半分）、時刻表の乗車時間、停留所からの徒歩を足した。平日（2026-11-10）と日曜（2026-11-08）の長い方を切り上げた分数。料金は2人分（1人2.20ユーロ×2を切り上げて5ユーロ。1日券や90分以内の乗り継ぎは使わない）。実際の所要時間・運賃ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_hotel",
+      "mode": "taxi",
+      "minutes": 26,
+      "cost": 17,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Regione Lombardia",
+          "title": "Servizio e tariffe taxi nel bacino aeroportuale",
+          "url": "https://www.regione.lombardia.it/infrastrutture-trasporti-e-mobilita/taxi-collegamenti-aeroportuali-e-noleggio/servizio-e-tariffe-taxi-nel-bacino-aeroportuale",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市は空港圏の市町で、圏内のタクシーは共通料金を使う。標準の1回（1人・荷物なし・市内5km・5分の停車や待ち・平日昼）は13.60ユーロ。"
+        },
+        {
+          "publisher": "Regione Lombardia（タクシー協同組合 La Fontana のサイトにある写し）",
+          "title": "Deliberazione N° XII/2569, seduta del 17/06/2024（付属A〜C）",
+          "url": "https://www.lafontana-taxi.it/wp-content/uploads/2024/06/nuove-tariffe-taxi.pdf.pdf",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "付属B：平日の初乗り4.10ユーロ、1キロ1.32ユーロ、停車・待ち1時間34.48ユーロ、メーター17.35ユーロから割増。州の決議の第三者の写しで読んだ値（ARTの意見書の値と一致）。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（ミラノの14地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "車の道のりと渋滞なしの時間を2026-11-07に1回問い合わせた。ゲームの分数は車をつかまえる5分と渋滞なしの時間の2倍（切り上げ）を足した推定。料金は平日昼の州の料金（初乗り4.10ユーロ＋1キロ1.32ユーロ＋混雑で延びた時間1分約0.575ユーロ）を2人で1台として切り上げた推定で、追加料金は入れない。乗り場の位置は、最後の晩餐（ルッフィーニ通り）のほかは確かめていない。実際の所要時間・運賃ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "p_prada",
+      "toPlaceId": "p_hotel",
+      "mode": "tram",
+      "minutes": 38,
+      "cost": 5,
+      "transferNote": "24番・ミッソーリで降りる",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Comune di Milano（データ作成 AMAT、運行 ATM）",
+          "title": "Orari del trasporto pubblico locale nel Comune di Milano in formato GTFS（ds929）",
+          "url": "https://dati.comune.milano.it/dataset/ds929-orari-del-trasporto-pubblico-locale-nel-comune-di-milano-in-formato-gtfs",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市の公開時刻表データ（2026年10月26日〜11月30日の分）。路面電車24番はミッソーリ（Missori M3）とリパモンティ通り・ロレンツィーニ通りの停留所を、16番はコルドゥージオ・ドゥオモと S. Maria delle Grazie（Cenacolo Vinciano）の停留所を乗り換えなしで結ぶ。ほかの組の路面電車の系統と停留所もこのデータで確かめた。ライセンスはCreative Commons Attribution。"
+        },
+        {
+          "publisher": "ATM（Azienda Trasporti Milanesi）",
+          "title": "Tickets for Milan and its surroundings",
+          "url": "https://www.atm.it/en/ViaggiaConNoi/Biglietti/Pages/tickets_milan.aspx",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "普通券は1人2.20ユーロで、最初の改札から90分有効。地上の路線と地下鉄で何回でも乗れる（ページに掲載日はなく、2026-11-07に表示されていた値）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "路面電車の所要時間と料金の推定（ミラノ市の時刻表データから計算）",
+          "url": "https://dati.comune.milano.it/dataset/ds929-orari-del-trasporto-pubblico-locale-nel-comune-di-milano-in-formato-gtfs",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "停留所までの徒歩（直線距離×1.3を分速75メートル）、平均の待ち（10〜18時の間隔の半分）、時刻表の乗車時間、停留所からの徒歩を足した。平日（2026-11-10）と日曜（2026-11-08）の長い方を切り上げた分数。料金は2人分（1人2.20ユーロ×2を切り上げて5ユーロ。1日券や90分以内の乗り継ぎは使わない）。実際の所要時間・運賃ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_supper",
+      "mode": "tram",
+      "minutes": 18,
+      "cost": 5,
+      "transferNote": "16番",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Comune di Milano（データ作成 AMAT、運行 ATM）",
+          "title": "Orari del trasporto pubblico locale nel Comune di Milano in formato GTFS（ds929）",
+          "url": "https://dati.comune.milano.it/dataset/ds929-orari-del-trasporto-pubblico-locale-nel-comune-di-milano-in-formato-gtfs",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市の公開時刻表データ（2026年10月26日〜11月30日の分）。路面電車24番はミッソーリ（Missori M3）とリパモンティ通り・ロレンツィーニ通りの停留所を、16番はコルドゥージオ・ドゥオモと S. Maria delle Grazie（Cenacolo Vinciano）の停留所を乗り換えなしで結ぶ。ほかの組の路面電車の系統と停留所もこのデータで確かめた。ライセンスはCreative Commons Attribution。"
+        },
+        {
+          "publisher": "ATM（Azienda Trasporti Milanesi）",
+          "title": "Tickets for Milan and its surroundings",
+          "url": "https://www.atm.it/en/ViaggiaConNoi/Biglietti/Pages/tickets_milan.aspx",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "普通券は1人2.20ユーロで、最初の改札から90分有効。地上の路線と地下鉄で何回でも乗れる（ページに掲載日はなく、2026-11-07に表示されていた値）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "路面電車の所要時間と料金の推定（ミラノ市の時刻表データから計算）",
+          "url": "https://dati.comune.milano.it/dataset/ds929-orari-del-trasporto-pubblico-locale-nel-comune-di-milano-in-formato-gtfs",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "停留所までの徒歩（直線距離×1.3を分速75メートル）、平均の待ち（10〜18時の間隔の半分）、時刻表の乗車時間、停留所からの徒歩を足した。平日（2026-11-10）と日曜（2026-11-08）の長い方を切り上げた分数。料金は2人分（1人2.20ユーロ×2を切り上げて5ユーロ。1日券や90分以内の乗り継ぎは使わない）。実際の所要時間・運賃ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_darsena",
+      "mode": "taxi",
+      "minutes": 18,
+      "cost": 12,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Regione Lombardia",
+          "title": "Servizio e tariffe taxi nel bacino aeroportuale",
+          "url": "https://www.regione.lombardia.it/infrastrutture-trasporti-e-mobilita/taxi-collegamenti-aeroportuali-e-noleggio/servizio-e-tariffe-taxi-nel-bacino-aeroportuale",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市は空港圏の市町で、圏内のタクシーは共通料金を使う。標準の1回（1人・荷物なし・市内5km・5分の停車や待ち・平日昼）は13.60ユーロ。"
+        },
+        {
+          "publisher": "Regione Lombardia（タクシー協同組合 La Fontana のサイトにある写し）",
+          "title": "Deliberazione N° XII/2569, seduta del 17/06/2024（付属A〜C）",
+          "url": "https://www.lafontana-taxi.it/wp-content/uploads/2024/06/nuove-tariffe-taxi.pdf.pdf",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "付属B：平日の初乗り4.10ユーロ、1キロ1.32ユーロ、停車・待ち1時間34.48ユーロ、メーター17.35ユーロから割増。州の決議の第三者の写しで読んだ値（ARTの意見書の値と一致）。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（ミラノの14地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "車の道のりと渋滞なしの時間を2026-11-07に1回問い合わせた。ゲームの分数は車をつかまえる5分と渋滞なしの時間の2倍（切り上げ）を足した推定。料金は平日昼の州の料金（初乗り4.10ユーロ＋1キロ1.32ユーロ＋混雑で延びた時間1分約0.575ユーロ）を2人で1台として切り上げた推定で、追加料金は入れない。乗り場の位置は、最後の晩餐（ルッフィーニ通り）のほかは確かめていない。実際の所要時間・運賃ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_navigli",
+      "mode": "taxi",
+      "minutes": 21,
+      "cost": 13,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Regione Lombardia",
+          "title": "Servizio e tariffe taxi nel bacino aeroportuale",
+          "url": "https://www.regione.lombardia.it/infrastrutture-trasporti-e-mobilita/taxi-collegamenti-aeroportuali-e-noleggio/servizio-e-tariffe-taxi-nel-bacino-aeroportuale",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市は空港圏の市町で、圏内のタクシーは共通料金を使う。標準の1回（1人・荷物なし・市内5km・5分の停車や待ち・平日昼）は13.60ユーロ。"
+        },
+        {
+          "publisher": "Regione Lombardia（タクシー協同組合 La Fontana のサイトにある写し）",
+          "title": "Deliberazione N° XII/2569, seduta del 17/06/2024（付属A〜C）",
+          "url": "https://www.lafontana-taxi.it/wp-content/uploads/2024/06/nuove-tariffe-taxi.pdf.pdf",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "付属B：平日の初乗り4.10ユーロ、1キロ1.32ユーロ、停車・待ち1時間34.48ユーロ、メーター17.35ユーロから割増。州の決議の第三者の写しで読んだ値（ARTの意見書の値と一致）。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（ミラノの14地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "車の道のりと渋滞なしの時間を2026-11-07に1回問い合わせた。ゲームの分数は車をつかまえる5分と渋滞なしの時間の2倍（切り上げ）を足した推定。料金は平日昼の州の料金（初乗り4.10ユーロ＋1キロ1.32ユーロ＋混雑で延びた時間1分約0.575ユーロ）を2人で1台として切り上げた推定で、追加料金は入れない。乗り場の位置は、最後の晩餐（ルッフィーニ通り）のほかは確かめていない。実際の所要時間・運賃ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_prada",
+      "mode": "taxi",
+      "minutes": 25,
+      "cost": 16,
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Regione Lombardia",
+          "title": "Servizio e tariffe taxi nel bacino aeroportuale",
+          "url": "https://www.regione.lombardia.it/infrastrutture-trasporti-e-mobilita/taxi-collegamenti-aeroportuali-e-noleggio/servizio-e-tariffe-taxi-nel-bacino-aeroportuale",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市は空港圏の市町で、圏内のタクシーは共通料金を使う。標準の1回（1人・荷物なし・市内5km・5分の停車や待ち・平日昼）は13.60ユーロ。"
+        },
+        {
+          "publisher": "Regione Lombardia（タクシー協同組合 La Fontana のサイトにある写し）",
+          "title": "Deliberazione N° XII/2569, seduta del 17/06/2024（付属A〜C）",
+          "url": "https://www.lafontana-taxi.it/wp-content/uploads/2024/06/nuove-tariffe-taxi.pdf.pdf",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "付属B：平日の初乗り4.10ユーロ、1キロ1.32ユーロ、停車・待ち1時間34.48ユーロ、メーター17.35ユーロから割増。州の決議の第三者の写しで読んだ値（ARTの意見書の値と一致）。"
+        },
+        {
+          "publisher": "Project OSRM（デモサーバー）／地図 © OpenStreetMap contributors（ODbL）",
+          "title": "車の経路計算 table/v1/driving（ミラノの14地点）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "車の道のりと渋滞なしの時間を2026-11-07に1回問い合わせた。ゲームの分数は車をつかまえる5分と渋滞なしの時間の2倍（切り上げ）を足した推定。料金は平日昼の州の料金（初乗り4.10ユーロ＋1キロ1.32ユーロ＋混雑で延びた時間1分約0.575ユーロ）を2人で1台として切り上げた推定で、追加料金は入れない。乗り場の位置は、最後の晩餐（ルッフィーニ通り）のほかは確かめていない。実際の所要時間・運賃ではない。"
+        }
+      ]
+    },
+    {
+      "fromPlaceId": "p_hotel",
+      "toPlaceId": "p_prada",
+      "mode": "tram",
+      "minutes": 40,
+      "cost": 5,
+      "transferNote": "24番・ミッソーリから乗る",
+      "estimation": "game_model",
+      "sources": [
+        {
+          "publisher": "Comune di Milano（データ作成 AMAT、運行 ATM）",
+          "title": "Orari del trasporto pubblico locale nel Comune di Milano in formato GTFS（ds929）",
+          "url": "https://dati.comune.milano.it/dataset/ds929-orari-del-trasporto-pubblico-locale-nel-comune-di-milano-in-formato-gtfs",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ミラノ市の公開時刻表データ（2026年10月26日〜11月30日の分）。路面電車24番はミッソーリ（Missori M3）とリパモンティ通り・ロレンツィーニ通りの停留所を、16番はコルドゥージオ・ドゥオモと S. Maria delle Grazie（Cenacolo Vinciano）の停留所を乗り換えなしで結ぶ。ほかの組の路面電車の系統と停留所もこのデータで確かめた。ライセンスはCreative Commons Attribution。"
+        },
+        {
+          "publisher": "ATM（Azienda Trasporti Milanesi）",
+          "title": "Tickets for Milan and its surroundings",
+          "url": "https://www.atm.it/en/ViaggiaConNoi/Biglietti/Pages/tickets_milan.aspx",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "普通券は1人2.20ユーロで、最初の改札から90分有効。地上の路線と地下鉄で何回でも乗れる（ページに掲載日はなく、2026-11-07に表示されていた値）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "路面電車の所要時間と料金の推定（ミラノ市の時刻表データから計算）",
+          "url": "https://dati.comune.milano.it/dataset/ds929-orari-del-trasporto-pubblico-locale-nel-comune-di-milano-in-formato-gtfs",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "停留所までの徒歩（直線距離×1.3を分速75メートル）、平均の待ち（10〜18時の間隔の半分）、時刻表の乗車時間、停留所からの徒歩を足した。平日（2026-11-10）と日曜（2026-11-08）の長い方を切り上げた分数。料金は2人分（1人2.20ユーロ×2を切り上げて5ユーロ。1日券や90分以内の乗り継ぎは使わない）。実際の所要時間・運賃ではない。"
         }
       ]
     }
