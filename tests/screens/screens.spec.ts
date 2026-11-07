@@ -37,6 +37,11 @@ const flows: FlowScene[] = [
     await ops.startJourney(page);
     await ops.openSettings(page);
   } },
+  { scene: "flow-route-choice", titleJa: "移動手段の選択", descriptionJa: "旅を始めて「最後の晩餐」を選ぶ（徒歩と路面電車16番）", open: async (page) => {
+    await ops.startJourney(page);
+    await ops.goTo(page, "p_supper");
+    await expect(ops.routeButton(page, "路面電車")).toBeVisible();
+  } },
   { scene: "flow-tourism-guide", titleJa: "観光案内", descriptionJa: "ドゥオモ広場へ歩いた直後", open: async (page) => {
     await ops.startJourney(page);
     await ops.goTo(page, "p_duomo");

@@ -95,3 +95,33 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await expect(page.getByText("現在地：ノヴェチェント美術館")).toBeVisible();
   await expect(page.getByLabel(`残り${finished.ap}AP`)).toBeVisible();
 });
+
+// The journey's own transport modes (manifest transportModes): the route dialog names
+// them with the line, the ride is paid and timed by its route, and the transition shows
+// the mode's caption and art.
+test("a new Milan journey rides tram 16 to the Last Supper, named in the route dialog and shown on the way", { tag: tier.gate }, async ({ page }) => {
+  await page.clock.install();
+  await ops.startJourney(page, "milano");
+  const before = await readSave(page);
+  await ops.goTo(page, "p_supper");
+  await expect(page.getByRole("dialog", { name: "最後の晩餐へ" })).toBeVisible();
+  await expect(ops.routeButton(page, "徒歩 19分")).toBeEnabled();
+  const tram = ops.routeButton(page, "路面電車（16番） 18分 · €5");
+  await expect(tram).toBeEnabled();
+  // Hold the page's clock so the short transition (0.45 s with reduced motion) stays while it is checked.
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await tram.click();
+  const transition = page.getByTestId("travel-transition");
+  await expect(transition).toHaveAttribute("data-mode", "tram");
+  await expect(transition).toHaveAttribute("data-kind", "tram");
+  await expect(transition.locator(".travel-transition-label")).toHaveText("路面電車で移動中");
+  await expect(transition.locator(".is-tram svg")).toHaveCount(1);
+  const arrived = await readSave(page);
+  expect(arrived.revision).toBe(before.revision + 1);
+  expect(arrived.travel).toMatchObject({ currentPlaceId: "p_supper", minute: before.travel.minute + 18 });
+  expect(arrived.travelBudget).toBe(before.travelBudget - 5);
+  await page.clock.resume();
+  await expect(transition).toHaveCount(0);
+  await expect(page.getByTestId("tourism-guide")).toBeVisible();
+  await expect(page.getByText("現在地：最後の晩餐")).toBeVisible();
+});

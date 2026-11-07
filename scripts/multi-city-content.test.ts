@@ -21,6 +21,18 @@ const manifest = (journeyId: string) => `content/journeys/${journeyId}/manifest.
 /** Milan's folder; the fictional cities below join Milan's journey and live there too. */
 const mi = "content/journeys/milano";
 
+/**
+ * Milan's transit ledger for a fictional city of Milan's journey: Milan declares its modes,
+ * so every city of the journey needs one (content:build). The decisions of the copied places
+ * are kept, with the places renamed.
+ */
+async function copyTransitLedger(cityId: string, rename: (placeId: string) => string | undefined) {
+  const ledger = await read(`${mi}/travel/milano-transit.json`);
+  const decisions = ledger.decisions.filter((decision: any) => rename(decision.fromPlaceId) && rename(decision.toPlaceId))
+    .map((decision: any) => ({ ...decision, fromPlaceId: rename(decision.fromPlaceId), toPlaceId: rename(decision.toPlaceId) }));
+  await write(`${mi}/travel/${cityId}-transit.json`, { ...ledger, cityId, decisions });
+}
+
 /** A fictional, isolated second city reuses fixture artwork and Ink. */
 async function addSecondCity() {
   const milan = await read(`${mi}/cities/milano.json`);
@@ -84,6 +96,7 @@ async function addSecondCity() {
   await write(`${mi}/travel/test_city.json`, { cityId: second.id, places, routes, events });
   const settings = await read(`${mi}/travel/milano-settings.json`);
   await write(`${mi}/travel/test_city-settings.json`, { ...settings, hotelPlaceId: prefix("p_hotel") });
+  await copyTransitLedger(second.id, (placeId) => placeIds.includes(placeId) ? prefix(placeId) : undefined);
 }
 
 beforeEach(async () => {
@@ -112,6 +125,7 @@ describe("multi-city content build", () => {
     const settings = await read(`${mi}/travel/milano-settings.json`);
     settings.hotelPlaceId = `future_${settings.hotelPlaceId}`;
     await write(`${mi}/travel/future_city-settings.json`, settings);
+    await copyTransitLedger(successor.id, (placeId) => `future_${placeId}`);
     await expect(buildContent(root, false)).resolves.toBeDefined();
   }, 120000);
 

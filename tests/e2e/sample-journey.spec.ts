@@ -13,6 +13,8 @@ import { expect, expectNoActiveScene, generated, journeyCatalog, ops, playUntil,
 const JOURNEY = "sample_trip";
 
 type TravelEvent = { id: string; placeId: string; category: "main" | "date"; apCost: number };
+type MapRoute = { fromPlaceId: string; toPlaceId: string; mode: string };
+type Rental = { modeId: string; placeIds: string[]; cost: number };
 type Progression = {
   episodes: { id: string; kind: "episode" | "city_finale"; cityId: string; landmarkId: string | null }[];
   storyBattles: { battleId: string }[];
@@ -22,9 +24,11 @@ type Encounters = { items: { id: string; cityId: string }[]; encounters: { id: s
 
 /** The sample's city, events, battles and encounters, from the generated content of this run. */
 function sampleRoute() {
-  const city = journeyCatalog().journeys.find((journey) => journey.id === JOURNEY)?.cities[0];
+  const journey = journeyCatalog().journeys.find((item) => item.id === JOURNEY);
+  const city = journey?.cities[0];
   expect(city, "the sample journey in the generated content (playwright.sample.config.ts builds it)").toBeDefined();
-  const events = generated<{ events: TravelEvent[] }>(`travel/${city!.id}.json`).events;
+  const { events, routes } = generated<{ events: TravelEvent[]; routes: MapRoute[] }>(`travel/${city!.id}.json`);
+  const rental = generated<{ rentals?: Rental[] }>(`travel/${city!.id}-settings.json`).rentals?.[0];
   const { episodes, storyBattles } = generated<Progression>("progression/journey.json");
   const episode = episodes.find((item) => item.cityId === city!.id && item.kind === "episode")!;
   const finale = episodes.find((item) => item.cityId === city!.id && item.kind === "city_finale")!;
@@ -41,13 +45,28 @@ function sampleRoute() {
     encounterIds: encounters.filter((item) => item.landmarkId === episode.landmarkId).map((item) => item.id),
     itemIds: items.filter((item) => item.cityId === city!.id).map((item) => item.id),
     specials: events.filter((item) => storyBattles.some((entry) => entry.battleId === item.id)),
+    // Optional part: the rental bicycle, rented at the hotel and ridden until the party leaves the city.
+    rental: rental && { offer: rental, mode: journey!.transportModes.find((mode) => mode.id === rental.modeId)! },
+    routes,
     battle: (id: string) => battles.find((battle) => battle.id === id)!,
   };
 }
-type Route = ReturnType<typeof sampleRoute>;
+type SampleRoute = ReturnType<typeof sampleRoute>;
+
+/**
+ * Go to a place like a player: by the rented mode when a route of it leads there
+ * (the route dialog lists walking and the rental), else on the only route, walking.
+ */
+async function goToPlace(page: Page, route: SampleRoute, placeId: string) {
+  const state = await readSave(page, JOURNEY);
+  const mode = route.rental?.mode;
+  const ride = mode && state.travel.rentedModeIds.includes(mode.id) &&
+    route.routes.some((item) => item.fromPlaceId === state.travel.currentPlaceId && item.toPlaceId === placeId && item.mode === mode.id);
+  await ops.goTo(page, placeId, ride ? mode.nameJa : undefined);
+}
 
 /** The correct answer of the open question, like a player who followed the story; "A" for other choices. */
-function correctAnswers(route: Route): Pick {
+function correctAnswers(route: SampleRoute): Pick {
   const quizzes = quizCatalog();
   return (state: GameState) => {
     const battle = state.activeBattle;
@@ -71,6 +90,8 @@ async function playBattleToResult(page: Page, pick: Pick) {
 test("the sample journey plays from a new journey through its city finale and epilogue to the end of the journey", { tag: tier.sample }, async ({ page }) => {
   // About 30 s (every scene of the sample, special battles included); slower runners need more.
   test.setTimeout(120_000);
+  // Time runs normally; it is held only while the bicycle's transition is checked.
+  await page.clock.install();
   const route = sampleRoute();
   const source = savedGame(JOURNEY);
   const pick = correctAnswers(route);
@@ -83,9 +104,44 @@ test("the sample journey plays from a new journey through its city finale and ep
   expect(await readSave(page, JOURNEY)).toMatchObject({ currentCityId: route.city.id, ap: 0 });
   await expect(page.getByLabel("残り0AP")).toBeVisible();
 
+  // 0. (Optional part) The rental bicycle. Its route is listed but closed until the
+  // bicycle is rented at the hotel; renting asks once more, pays once and takes no time.
+  const rental = route.rental;
+  if (rental) {
+    const { offer, mode } = rental;
+    await ops.goTo(page, route.episode.placeId);
+    await expect(ops.routeButton(page, mode.nameJa)).toBeDisabled();
+    await expect(page.getByRole("dialog")).toContainText(`${mode.nameJa}は滞在先で借りると乗れます。`);
+    await expect(ops.routeButton(page, "徒歩")).toBeEnabled();
+    await page.getByRole("dialog").getByRole("button", { name: "閉じる", exact: true }).click();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    const before = await readSave(page, JOURNEY);
+    await page.getByTestId("travel-rentals").getByRole("button", { name: `${mode.nameJa}を借りる`, exact: true }).click();
+    await expect(page.getByRole("dialog", { name: "乗り物を借りる" })).toBeVisible();
+    await page.getByTestId(`travel-rent-${offer.modeId}`).click();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await expect(page.getByTestId("travel-rentals")).toContainText(`${mode.nameJa}を借りています（${route.city.nameJa}にいるあいだ）`);
+    const rented = await readSave(page, JOURNEY);
+    expect(rented.revision).toBe(before.revision + 1);
+    expect(rented.travelBudget).toBe(before.travelBudget - offer.cost);
+    expect(rented.travel).toEqual({ ...before.travel, rentedModeIds: [offer.modeId] });
+  }
+
   // 1. Sightseeing. The tower also holds the date and the finale; at each step of this
-  // route a place offers one open event, so going there starts it at once.
-  await ops.goTo(page, route.episode.placeId);
+  // route a place offers one open event, so going there starts it at once (by the
+  // rented bicycle when there is one: hold the page's clock so its short transition,
+  // 0.45 s with reduced motion, stays while it is checked).
+  if (rental) await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await goToPlace(page, route, route.episode.placeId);
+  if (rental) {
+    const transition = page.getByTestId("travel-transition");
+    await expect(transition).toHaveAttribute("data-mode", rental.mode.id);
+    await expect(transition).toHaveAttribute("data-kind", "bicycle");
+    await expect(transition.locator(".travel-transition-label")).toHaveText(rental.mode.movingJa);
+    expect((await readSave(page, JOURNEY)).travel.currentPlaceId).toBe(route.episode.placeId);
+    await page.clock.resume();
+    await expect(transition).toHaveCount(0);
+  }
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await playUntil(page, (state) => state.activeTourism?.phase === "exploring", { source, pick });
@@ -108,7 +164,7 @@ test("the sample journey plays from a new journey through its city finale and ep
   await expect(page.getByLabel(`残り${result.ap}AP`)).toBeVisible();
 
   // 3. The date: its AP is spent once when it starts, and it ends on the map (docs/07 acceptance 3, 4).
-  await ops.goTo(page, route.date.placeId);
+  await goToPlace(page, route, route.date.placeId);
   await expect(page.getByTestId("romance-scene")).toBeVisible();
   const dating = await readSave(page, JOURNEY);
   expect(dating.activeDate?.dateId).toBe(route.date.id);
@@ -122,7 +178,7 @@ test("the sample journey plays from a new journey through its city finale and ep
   // 4. (Optional part) Special battles B and C: the place's guide, then the battle whose
   // evidence the player chooses in the clue book (AGENTS.md: 矛盾追及B・証拠連結C).
   for (const special of route.specials) {
-    await ops.goTo(page, special.placeId);
+    await goToPlace(page, route, special.placeId);
     await expect(page.getByTestId("tourism-guide")).toBeVisible();
     await playUntil(page, (state) => state.activeTourism?.phase === "exploring", { source, pick });
     await page.getByTestId("observation-proceed").click();
@@ -137,7 +193,7 @@ test("the sample journey plays from a new journey through its city finale and ep
   }
 
   // 5. The city finale clears the city (its clear reward is in the receipt, paid once).
-  await ops.goTo(page, route.finale.placeId);
+  await goToPlace(page, route, route.finale.placeId);
   const finale = await playBattleToResult(page, pick);
   expect(finale.completedCityIds).toEqual([route.city.id]);
   await ops.toEpilogue(page);
@@ -151,9 +207,13 @@ test("the sample journey plays from a new journey through its city finale and ep
   await expect(page.getByTestId("city-progress")).toContainText("都市クリア");
   await expect(page.getByRole("button", { name: /へ出発/ })).toHaveCount(0);
 
+  // The rental lasts while the party stays in the city.
+  expect(ended.travel.rentedModeIds).toEqual(rental ? [rental.offer.modeId] : []);
+
   // A reload resumes the finished journey exactly as saved.
   await page.reload();
   await ops.chooseJourney(page, JOURNEY);
   await expect(menu).toBeVisible();
   expect(await readSave(page, JOURNEY)).toEqual(ended);
+  if (rental) await expect(page.getByTestId("travel-rentals")).toContainText(`${rental.mode.nameJa}を借りています`);
 });

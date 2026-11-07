@@ -212,11 +212,21 @@ export const ops = {
     await expect(note).toBeVisible();
     return note;
   },
-  /** Pick a destination on the travel menu, opening the longer list when needed. */
-  async goTo(page: Page, placeId: string) {
+  /**
+   * Pick a destination on the travel menu, opening the longer list when needed. A
+   * destination reached by more than one route opens the route dialog 「{place}へ」;
+   * `route` is the start of the route button to press there (the mode's name, e.g.
+   * 「徒歩」 or 「路面電車」).
+   */
+  async goTo(page: Page, placeId: string, route?: string) {
     const place = page.getByTestId(`travel-place-${placeId}`);
     if (!(await place.isVisible())) await page.getByText("ほかの行き先を見る", { exact: true }).click();
     await place.getByRole("button").click();
+    if (route) await ops.routeButton(page, route).click();
+  },
+  /** The route dialog's button whose label starts with `route` (the mode's name). */
+  routeButton(page: Page, route: string): Locator {
+    return page.getByRole("dialog").getByRole("button", { name: new RegExp(`^${route}`, "u") });
   },
   /** Close a sightseeing guide and go on to the landmark's battle. */
   async skipGuideToBattle(page: Page) {
