@@ -71,6 +71,13 @@ export const tourismClueSchema = z
     titleJa: japanese,
     descriptionJa: japanese,
     factId: id,
+    /**
+     * Questions of a quiz of the same landmark whose question, correct answer
+     * or explanation needs what this clue shows (checked by content:build; the
+     * game does not read it). An empty list is deliberate: an observation-only
+     * clue (観察だけの手がかり) that no question depends on. See docs/07
+     * 「観察だけの手がかり」.
+     */
     relatedQuestionIds: uniqueIds,
     region: observationRegionSchema.nullable(),
     sources: z.array(tourismSourceSchema).min(1),
@@ -103,6 +110,11 @@ export const tourismCatalogSchema = z
     clues: z.array(tourismClueSchema),
   })
   .strict();
+
+/** An observation-only clue: no quiz question depends on it (empty relatedQuestionIds). */
+export function isObservationOnlyClue(clue: { relatedQuestionIds: readonly string[] }): boolean {
+  return clue.relatedQuestionIds.length === 0;
+}
 
 export type TourismAsset = z.infer<typeof tourismAssetSchema>;
 export type TourismClue = z.infer<typeof tourismClueSchema>;

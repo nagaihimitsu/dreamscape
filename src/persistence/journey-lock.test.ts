@@ -154,6 +154,35 @@ describe("journey lock", () => {
     expect(journeyLockNotice("loading")).toEqual({ role: "status", message: "保存データを確認しています。", retry: false });
   });
 
+  it("keeps the journey closed when a request throws instead of returning a promise, on the first request or a retry", async () => {
+    const denied = () => { throw new DOMException("denied", "SecurityError"); };
+    const name = newName();
+    const first = openView({ request: denied }, name);
+    await settle();
+    expect(first.statuses).toEqual(["unsupported"]);
+    // The page's chain of requests is not left broken: the next view of the journey still asks.
+    const locks = new FakeLocks();
+    first.hold.cancel();
+    const next = openView(locks, name);
+    await settle();
+    expect(next.statuses).toEqual(["ready"]);
+    next.hold.cancel();
+
+    // Another tab holds the lock, and the retry's request throws.
+    const busyName = newName();
+    await locks.otherTab(busyName);
+    let calls = 0;
+    const flaky: LockManagerLike = { request: (...args) => ++calls > 1 ? denied() : locks.request(...args) };
+    const view = openView(flaky, busyName);
+    await settle();
+    expect(view.statuses).toEqual([]);
+    await vi.advanceTimersByTimeAsync(LOCK_RETRY_MS);
+    expect(view.statuses).toEqual(["unsupported"]);
+    await vi.advanceTimersByTimeAsync(LOCK_RETRY_MS * LOCK_RETRIES);
+    expect(calls).toBe(2);
+    expect(view.statuses).toEqual(["unsupported"]);
+  });
+
   it("asks only for views that edit the slot: not Debug, not a read-only preparation page", () => {
     const initialState = {} as NonNullable<Parameters<typeof needsJourneyLock>[0]>["initialState"];
     expect(needsJourneyLock({ status: "available", initialState: undefined }, false)).toBe(true);

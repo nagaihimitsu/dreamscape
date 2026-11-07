@@ -95,47 +95,49 @@ describe("journey-specific tools and tests", () => {
     return journeyFolders.some((folder) => inside(target, folder)) && journeyOf(target) !== journeyOf(file);
   });
 
+  // The examples use made-up journeys (trip_a, trip_b): this file names no journey of the
+  // repository, so removing any journey leaves it unchanged.
   it("detects imports of a journey's tools and tests", () => {
     expect(imports(path.join(root, "scripts/city-bundle.ts"), [
-      'import { a } from "./journeys/golden_triangle/india-draft";',
-      'const b = await import("../scripts/journeys/golden_triangle/india-followup");',
+      'import { a } from "./journeys/trip_a/draft";',
+      'const b = await import("../scripts/journeys/trip_a/followup");',
       'import { c } from "./journey-transit-decisions";',
-      'import { d } from "../tests/journeys/golden_triangle/test-journey";',
+      'import { d } from "../tests/journeys/trip_a/test-journey";',
       'import { e } from "../tests/fixtures/current-game";',
-      'import "../tests/journeys/milano/setup";',
-      'import type { F } from "../tests/journeys/milano/types";',
-      'export { g } from "./journeys/golden_triangle/india-draft";',
+      'import "../tests/journeys/trip_b/setup";',
+      'import type { F } from "../tests/journeys/trip_b/types";',
+      'export { g } from "./journeys/trip_a/draft";',
     ].join("\n"))).toEqual([
-      "./journeys/golden_triangle/india-draft",
-      "../scripts/journeys/golden_triangle/india-followup",
-      "../tests/journeys/golden_triangle/test-journey",
-      "../tests/journeys/milano/setup",
-      "../tests/journeys/milano/types",
-      "./journeys/golden_triangle/india-draft",
+      "./journeys/trip_a/draft",
+      "../scripts/journeys/trip_a/followup",
+      "../tests/journeys/trip_a/test-journey",
+      "../tests/journeys/trip_b/setup",
+      "../tests/journeys/trip_b/types",
+      "./journeys/trip_a/draft",
     ]);
   });
 
   it("detects imports of another journey's tools and tests from a journey folder", () => {
-    const milanoTest = path.join(root, "tests/journeys/milano/city.test.ts");
-    expect(imports(milanoTest, [
+    const testOfA = path.join(root, "tests/journeys/trip_a/city.test.ts");
+    expect(imports(testOfA, [
       // Its own folder, its own tools and shared code are fine.
       'import { a } from "./full-route-helpers";',
-      'import { b } from "../../../scripts/journeys/milano/tool";',
+      'import { b } from "../../../scripts/journeys/trip_a/tool";',
       'import { c } from "../../../src/domain/city";',
       // Another journey's tests and tools are not.
-      'import { installTestGoldenTriangle } from "../golden_triangle/test-journey";',
-      'import "../golden_triangle/setup";',
-      'import { d } from "../../../scripts/journeys/golden_triangle/india-draft";',
+      'import { installTestTrip } from "../trip_b/test-journey";',
+      'import "../trip_b/setup";',
+      'import { d } from "../../../scripts/journeys/trip_b/draft";',
     ].join("\n"))).toEqual([
-      "../golden_triangle/test-journey",
-      "../golden_triangle/setup",
-      "../../../scripts/journeys/golden_triangle/india-draft",
+      "../trip_b/test-journey",
+      "../trip_b/setup",
+      "../../../scripts/journeys/trip_b/draft",
     ]);
-    const gtTool = path.join(root, "scripts/journeys/golden_triangle/india-draft.ts");
-    expect(imports(gtTool, [
-      'import { a } from "../../../tests/journeys/golden_triangle/test-journey";',
-      'import { b } from "../../../tests/journeys/milano/full-route-helpers";',
-    ].join("\n"))).toEqual(["../../../tests/journeys/milano/full-route-helpers"]);
+    const toolOfB = path.join(root, "scripts/journeys/trip_b/draft.ts");
+    expect(imports(toolOfB, [
+      'import { a } from "../../../tests/journeys/trip_b/test-journey";',
+      'import { b } from "../../../tests/journeys/trip_a/full-route-helpers";',
+    ].join("\n"))).toEqual(["../../../tests/journeys/trip_a/full-route-helpers"]);
   });
 
   it("keeps shared code, tools and tests independent of them, and each journey's folders of the others'", () => {
@@ -155,10 +157,11 @@ describe("journey-specific tools and tests", () => {
     const journeyIds = readdirSync(path.join(contentRoot, "journeys"), { withFileTypes: true })
       .filter((entry) => entry.isDirectory() && existsSync(path.join(contentRoot, "journeys", entry.name, "manifest.json")))
       .map((entry) => entry.name);
-    expect(journeyIds).toContain("milano");
-    const folders = journeyFolders.flatMap((folder) => readdirSync(folder, { withFileTypes: true })
+    expect(journeyIds.length).toBeGreaterThan(0);
+    // scripts/journeys/ goes away with the last journey that has its own tools (Git keeps no empty folder).
+    const folders = journeyFolders.filter((folder) => existsSync(folder)).flatMap((folder) => readdirSync(folder, { withFileTypes: true })
       .filter((entry) => entry.isDirectory()).map((entry) => path.relative(root, path.join(folder, entry.name))));
-    expect(folders).toContain("tests/journeys/milano");
+    expect(folders.length).toBeGreaterThan(0);
     expect(folders.filter((folder) => ![...journeyIds, SAMPLE_JOURNEY_ID].includes(path.basename(folder)))).toEqual([]);
   });
 });

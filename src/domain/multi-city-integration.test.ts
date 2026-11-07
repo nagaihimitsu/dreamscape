@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { effects } from "../content";
 import { loadGame, saveGame, type StorageLike } from "../persistence";
-import { getBattleAvailability, leaveBattle, startBattle } from "./battle";
+import { getBattleAvailability, startBattle } from "./battle";
 import { clearCity, playBattleToResult } from "../dev/scenario-builders";
 import { departToNextCity, getNextCity } from "./city-travel";
-import { getEpisodeAvailability, startEpisode } from "./chapter";
-import { advanceEncounter, chooseEncounter, finishEncounter, proceedFromTourism, startEncounter } from "./encounter";
+import { getEpisodeAvailability, leaveBattleResult, startEpisode } from "./chapter";
+import { advanceEncounter, chooseEncounter, encounterCanFinish, finishEncounter, proceedFromTourism, startEncounter } from "./encounter";
 import { startCityEpilogue } from "./epilogue";
 import { createGame, getDateAvailability, startDate, validateGameState, type GameState } from "./game";
 import { installTestCity } from "../dev/test-cities";
@@ -18,10 +18,10 @@ class MemoryStorage implements StorageLike {
   setItem(key: string, value: string) { this.values.set(key, value); }
 }
 
-/** Complete real Ink/quiz/reasoning logic, including the saved travel reservation. */
+/** Complete real Ink/quiz/reasoning logic, including the saved travel reservation, and leave the result as its screen does. */
 function finishBattle(initial: GameState): GameState {
   const state = playBattleToResult(initial);
-  return leaveBattle(state, state.revision);
+  return leaveBattleResult(state, state.revision);
 }
 
 const finishMilan = () => clearCity(createGame());
@@ -116,7 +116,7 @@ describe("two registered cities through the real game runtime", () => {
       expect(count).toBeLessThan(60);
       const active = cityState.activeEncounter;
       if (active.frame.choices.length) cityState = chooseEncounter(cityState, active.frame.choices[0].index, cityState.revision);
-      else if (active.frame.ended) cityState = finishEncounter(cityState, cityState.revision);
+      else if (encounterCanFinish(cityState)) cityState = finishEncounter(cityState, cityState.revision);
       else cityState = advanceEncounter(cityState, cityState.revision);
     }
     expect(cityState.completedEncounterIds).toContain("test_encounter");

@@ -159,12 +159,20 @@ export const ops = {
     await ops.beginJourney(page, journeyId, names);
     await expect(page.getByTestId("travel-menu")).toBeVisible();
   },
-  /** Title screen: choose a journey and names and press 「旅をはじめる」, without waiting for the scene that opens (an arrival, or the map). */
+  /** Title screen: choose a journey and names and press 「旅をはじめる」 (a fresh title: its start says so), without waiting for the scene that opens (an arrival, or the map). */
   async beginJourney(page: Page, journeyId = "milano", names: readonly [string, string] = ["航", "澪"]) {
     await ops.chooseJourney(page, journeyId);
     await ops.fillNames(page, names);
-    await page.getByRole("button", { name: "旅をはじめる", exact: true }).click();
+    const start = ops.startButton(page);
+    await expect(start).toHaveAccessibleName(ops.startLabel);
+    await start.click();
   },
+  /** Title screen: the start button, whatever it says (「旅をはじめる」, or 「元のデータを退避して／残して新しく始める」 over an unreadable save). */
+  startButton(page: Page): Locator {
+    return page.getByTestId("title-start");
+  },
+  /** The start button's name on a title in its normal state (no unreadable save); the arrow after it is hidden from the name. */
+  startLabel: "旅をはじめる",
   /** Title screen: choose the journey (a page load opens the first available one; its save, if any, opens with it). */
   async chooseJourney(page: Page, journeyId: string) {
     await page.getByLabel("旅行編").selectOption(journeyId);

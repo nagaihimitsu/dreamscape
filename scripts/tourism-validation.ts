@@ -113,6 +113,9 @@ export function validateTourism(
     );
     if (!landmark?.clueIds.includes(clue.id))
       throw new Error(`Unlisted tourism clue: ${clue.id}`);
+    // An empty list is an observation-only clue and needs no check. A listed
+    // question must belong to a quiz of the clue's own landmark (a city
+    // finale quiz has no landmark, so its questions cannot be listed).
     for (const questionId of clue.relatedQuestionIds) {
       if (
         !Object.values(quizzes).some(

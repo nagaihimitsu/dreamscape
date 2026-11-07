@@ -169,6 +169,7 @@ describe("real-place optional dates", () => {
     const returning: string[] = [];
     const afterBoth = playDate(afterCafe, ids[2], [0, 0], returning);
     expect(returning.join("\n")).toContain("洗濯");
+    expect(returning.join("\n")).not.toContain("前にも運河の近くで話しましたね");
     expect(afterBoth.playedDateIds).toContain("milano_cafe_01");
     expect(afterBoth.playedDateIds).toContain(ids[2]);
     expect(afterBoth.memories).toEqual(expect.arrayContaining(afterCafe.memories));

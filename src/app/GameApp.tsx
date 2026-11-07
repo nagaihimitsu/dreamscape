@@ -414,6 +414,7 @@ export function GameApp({
                 {nameForm}
                 <button
                   className="primary"
+                  data-testid="title-start"
                   disabled={!player.trim() || !heroine.trim() || titleActions.start === "disabled"}
                 >
                   {invalid

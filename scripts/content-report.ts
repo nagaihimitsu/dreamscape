@@ -5,6 +5,7 @@ import { imageReferences } from "./content-ownership";
 import { CODE_IMAGE_FILES } from "../src/content/code-images";
 import { displayPath, journeyFileOf, type ContentSources } from "./content-sources";
 import { normalizeWord, wordPattern } from "../src/content/word-meanings";
+import { isObservationOnlyClue } from "../src/content/tourism-schemas";
 
 // What content:build reports besides errors (pure, on the loaded sources):
 // warnings about files and IDs that are probably mistakes but do not break
@@ -264,7 +265,22 @@ function entryKeys(table: FieldTable, prefix = ""): string[] {
     : rule.mode === "nested" ? entryKeys(rule.fields, `${prefix}${key}.`) : []);
 }
 
-/** What each journey folder provides, in manifest order (zero counts are left out for catalogs). */
+/**
+ * The observation-only clues (no quiz question depends on them, docs/07) that
+ * the files `own` accepts provide in the merged tourism catalog.
+ */
+function observationOnlyClues(sources: ContentSources, own: (file: string) => boolean): number {
+  const catalog = sources.catalogs["tourism/catalog.json"];
+  const files = catalog?.provenance.items.clues ?? [];
+  const clues = isObject(catalog?.value) ? catalog.value.clues : undefined;
+  return (Array.isArray(clues) ? clues : []).filter((clue, index) => own(files[index] ?? "") && isObject(clue) &&
+    Array.isArray(clue.relatedQuestionIds) && isObservationOnlyClue({ relatedQuestionIds: clue.relatedQuestionIds })).length;
+}
+
+/**
+ * What each journey folder provides, in manifest order (zero counts are left
+ * out for catalogs). After its clues comes how many of them are observation-only.
+ */
 export function journeyContents(sources: ContentSources): JourneyContents[] {
   return sources.manifests.map((manifest): JourneyContents => {
     const own = (file: string) => file.startsWith(manifest.directory + path.sep);
@@ -281,6 +297,8 @@ export function journeyContents(sources: ContentSources): JourneyContents[] {
         const files = [...(provenance?.items[key] ?? []), ...Object.values(provenance?.keys[key] ?? {})];
         const count = files.filter(own).length;
         if (count) counts.push([entryLabel(rule.kind, key), count]);
+        const observationOnly = rule.kind === "tourism/catalog.json" && key === "clues" ? observationOnlyClues(sources, own) : 0;
+        if (observationOnly) counts.push(["observation-only clues", observationOnly]);
       }
     }
     return { id: manifest.id, status: manifest.data.status, counts };
