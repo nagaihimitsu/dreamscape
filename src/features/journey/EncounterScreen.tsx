@@ -83,7 +83,7 @@ export function EncounterScreen({ view, learning, speed, reduceMotion, autoAdvan
   const sceneTap = useSceneTap({ lineShown: ready, choicesShown: !!quiz || view.choices.length > 0, windowHidden: windowVisibility.hidden });
   return (
     <div className="vn-scene encounter-scene" data-testid="encounter-screen" data-has-choices={!!quiz || view.choices.length > 0} data-dialogue-hidden={windowVisibility.hidden || undefined} onClick={sceneTap.onClick}>
-      <div className="vn-background">{view.backgroundImage ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundImage}`} alt="" /> : <CanalScene backgroundId={view.background} />}</div>
+      <div className="vn-background" data-testid="scene-picture">{view.backgroundImage ? <img className="encounter-background" src={`${import.meta.env.BASE_URL}${view.backgroundImage}`} alt="" /> : <CanalScene backgroundId={view.background} />}</div>
       {!quiz && view.portraits && <div className="vn-character-layer encounter-character-layer" data-two-characters={!!view.portraits.heroine && !!view.portraits.enemy}>
         {(["heroine", "enemy"] as const).map((id) => {
           const portrait = view.portraits?.[id];

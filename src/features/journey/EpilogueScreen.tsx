@@ -80,7 +80,7 @@ export function EpilogueScreen({
     <div id="city-epilogue-screen" data-testid={arrival ? "city-arrival-screen" : "city-epilogue-screen"}>
       {showLogo && <CityArrivalLogo nameJa={city.nameJa} reduceMotion={reduceMotion} onEnd={onLogoComplete ?? (() => undefined)} />}
       <div className="vn-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} onClick={sceneTap.onClick}>
-        <div className="vn-background">
+        <div className="vn-background" data-testid="scene-picture">
           <CanalScene backgroundId={frame.background} />
         </div>
         <div className="vn-character-layer">

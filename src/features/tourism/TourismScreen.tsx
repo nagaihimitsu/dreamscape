@@ -170,7 +170,7 @@ export function TourismScreen({
       )}
       {active.phase === "guide" && frame ? (
         <div className="vn-scene tourism-guide-scene" data-dialogue-hidden={windowVisibility.hidden || undefined} onClick={sceneTap.onClick}>
-          <div className="vn-background">
+          <div className="vn-background" data-testid="scene-picture">
             <CanalScene backgroundId={frame.background} imageAssetId={landmark.imageAssetId} />
           </div>
           <span className="sr-only">{asset.altJa}</span>

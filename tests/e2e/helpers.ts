@@ -236,11 +236,11 @@ export const ops = {
    * (a tap anywhere but on a control reads on, docs/02 「UX/スマホ」). Taken while the window is shown.
    */
   async sceneBackgroundPoint(page: Page): Promise<{ x: number; y: number }> {
-    const scene = page.locator(".vn-scene").filter({ visible: true });
-    const sceneBox = (await scene.boundingBox())!;
-    const windowBox = (await scene.locator(".vn-dialogue").boundingBox())!;
-    const point = { x: sceneBox.x + sceneBox.width / 2, y: (sceneBox.y + windowBox.y) / 2 };
-    const hit = await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.closest(".vn-background") !== null, point);
+    const picture = (await page.getByTestId("scene-picture").filter({ visible: true }).boundingBox())!;
+    const line = (await page.getByTestId("dialogue-text").boundingBox())!;
+    // A quarter of the way down from the picture's top to the line: well above the window's name plate and tools.
+    const point = { x: picture.x + picture.width / 2, y: picture.y + (line.y - picture.y) / 4 };
+    const hit = await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.closest('[data-testid="scene-picture"]') !== null, point);
     expect(hit, "the point shows the scene's picture, not a control or the window").toBe(true);
     return point;
   },
