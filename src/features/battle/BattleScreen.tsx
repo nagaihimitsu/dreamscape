@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { dialogueExpressions, dialogueReactions, landmarks, presentation, reasoningIntroductions, tourismAssets } from "../../content";
+import { dialogueExpressions, dialogueReactions, landmarks, learningTranslations, presentation, reasoningIntroductions, tourismAssets } from "../../content";
 import { resolveDialogueExpression } from "../../content/dialogue-expressions";
 import { resolveDialogueReaction } from "../../content/dialogue-reactions";
 import type { GameState } from "../../domain/game";
@@ -90,6 +90,8 @@ export function BattleScreen({
   const question = quiz.questions[active.roundIndex];
   const answer = active.answers[active.roundIndex];
   const outcome = getBattleOutcome(active.score, quiz.questions.length);
+  // The same translation as the option's 「訳を見る」 (shown after a wrong answer whatever the translation settings).
+  const correctTranslation = question && learningTranslations[question.id]?.optionsJa[question.correctOptionId];
   const perfectAnswer = active.phase === "feedback" && !!answer?.correct &&
     active.answers.length === quiz.questions.length && active.score === quiz.questions.length;
   const record = game.battleRecords.find((item) => item.battleId === battle.id);
@@ -627,6 +629,7 @@ export function BattleScreen({
                         )?.textEn
                       }
                     </span>
+                    {correctTranslation && <span>（{correctTranslation}）</span>}
                   </p>
                 )}
                 <p>
