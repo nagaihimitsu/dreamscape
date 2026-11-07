@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { createGame, validateGameState, type GameState } from "../../../src/domain/game";
 import { createDebugState } from "../../../src/dev/debug-state";
 import { encounters } from "../../../src/content/encounters";
-import { advanceEncounter, answerEncounterQuiz, chooseEncounter, finishEncounter, getEncounterAvailability, startEncounter, validateEncounterState } from "../../../src/domain/encounter";
+import { advanceEncounter, answerEncounterQuiz, chooseEncounter, encounterCanFinish, finishEncounter, getEncounterAvailability, startEncounter, validateEncounterState } from "../../../src/domain/encounter";
 import { closeTourism } from "../../../src/domain/tourism";
 
 function play(state: GameState, id: string, optionId: string): GameState {
@@ -17,7 +17,7 @@ function play(state: GameState, id: string, optionId: string): GameState {
       const choice = active.frame.choices.find((item) => item.optionId === optionId);
       expect(choice).toBeDefined();
       next = chooseEncounter(next, choice!.index, next.revision);
-    } else if (active.frame.ended) {
+    } else if (encounterCanFinish(next)) {
       const revision = next.revision;
       next = finishEncounter(next, revision);
       expect(finishEncounter(next, revision)).toBe(next);
@@ -65,7 +65,7 @@ describe("the Milan pick and location encounters", () => {
         ? answerEncounterQuiz(state, answer, state.revision)
         : active.frame.choices.length
           ? chooseEncounter(state, 0, state.revision)
-          : active.frame.ended && active.phase === "outcome"
+          : encounterCanFinish(state)
             ? finishEncounter(state, state.revision)
             : advanceEncounter(state, state.revision);
       state = validateGameState(JSON.parse(JSON.stringify(state)));

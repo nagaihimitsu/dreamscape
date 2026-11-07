@@ -1,9 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { battleQuizzes, battles } from "../../../src/content";
 import { playBattleToResult } from "../../../src/dev/scenario-builders";
-import { leaveBattle } from "../../../src/domain/battle";
-import { startEpisode } from "../../../src/domain/chapter";
-import { advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, finishEncounter, getEncounterAvailability, getTourismEncounterAvailability, proceedFromTourism, startEncounter, startTourismEncounter } from "../../../src/domain/encounter";
+import { leaveBattleResult, startEpisode } from "../../../src/domain/chapter";
+import { advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterCanFinish, finishEncounter, getEncounterAvailability, getTourismEncounterAvailability, proceedFromTourism, startEncounter, startTourismEncounter } from "../../../src/domain/encounter";
 import { createGame, validateGameState, type GameState } from "../../../src/domain/game";
 import { closeTourism, openTourism, skipTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
 
@@ -19,7 +18,7 @@ function enterGalleria(): GameState {
   let state = startEpisode(createGame(), "milano_duomo_episode");
   expect(state.activeTourism?.landmarkId).toBe("duomo_milano");
   state = finishBattle(startTourismBattle(state, state.revision));
-  state = leaveBattle(state, state.revision);
+  state = leaveBattleResult(state, state.revision);
   state = startEpisode(state, "milano_galleria_episode");
   expect(state.activeTourism?.landmarkId).toBe(galleria);
   return restore(state);
@@ -47,7 +46,7 @@ describe("the Galleria conversation during observation", () => {
       const before = state;
       const updated = active.frame.choices.length
         ? chooseEncounter(state, 2, state.revision)
-        : active.frame.ended ? finishEncounter(state, state.revision) : advanceEncounter(state, state.revision);
+        : encounterCanFinish(state) ? finishEncounter(state, state.revision) : advanceEncounter(state, state.revision);
       state = restore(continueTourismEncounters(before, updated, () => 0));
     }
     expect(state.activeTourism?.encounterIds).toEqual([encounter]);
@@ -81,7 +80,7 @@ describe("the Galleria conversation during observation", () => {
       expect(state.activeTourism).toBeNull();
       state = active.frame.choices.length
         ? chooseEncounter(state, choiceIndex, state.revision)
-        : active.frame.ended
+        : encounterCanFinish(state)
           ? finishEncounter(state, state.revision)
           : advanceEncounter(state, state.revision);
     }
@@ -107,7 +106,7 @@ describe("the Galleria conversation during observation", () => {
       const active = state.activeEncounter!;
       state = active.frame.choices.length
         ? chooseEncounter(state, (choiceIndex + 1) % 3, state.revision)
-        : active.frame.ended
+        : encounterCanFinish(state)
           ? finishEncounter(state, state.revision)
           : advanceEncounter(state, state.revision);
     }
@@ -130,7 +129,7 @@ describe("the Galleria conversation during observation", () => {
     let state = exploreGalleria();
     state = finishBattle(startTourismBattle(state, state.revision));
     expect(state.claimedRewardIds.filter((id) => id === "victory_galleria_first")).toHaveLength(1);
-    state = leaveBattle(state, state.revision);
+    state = leaveBattleResult(state, state.revision);
     state = restore(openTourism(state, galleria));
     const ap = state.ap;
     const pending = state.pendingApRewards;
@@ -145,7 +144,7 @@ describe("the Galleria conversation during observation", () => {
           ? advanceEncounter(state, state.revision)
         : active.frame.choices.length
         ? chooseEncounter(state, 0, state.revision)
-        : active.frame.ended && active.phase === "outcome"
+        : encounterCanFinish(state)
           ? finishEncounter(state, state.revision)
           : advanceEncounter(state, state.revision);
     }
@@ -165,7 +164,7 @@ describe("the Galleria conversation during observation", () => {
       const active = state.activeEncounter;
       expect(active.phase).toBe("story");
       state = active.frame.choices.length ? chooseEncounter(state, 2, state.revision)
-        : active.frame.ended ? finishEncounter(state, state.revision)
+        : encounterCanFinish(state) ? finishEncounter(state, state.revision)
           : advanceEncounter(state, state.revision);
       state = restore(state);
     }

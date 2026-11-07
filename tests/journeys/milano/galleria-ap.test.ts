@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { playBattleToResult } from "../../../src/dev/scenario-builders";
-import { leaveBattle } from "../../../src/domain/battle";
-import { startEpisode } from "../../../src/domain/chapter";
-import { advanceEncounter, chooseEncounter, finishEncounter, startTourismEncounter } from "../../../src/domain/encounter";
+import { leaveBattleResult, startEpisode } from "../../../src/domain/chapter";
+import { advanceEncounter, chooseEncounter, encounterCanFinish, finishEncounter, startTourismEncounter } from "../../../src/domain/encounter";
 import { createGame, validateGameState, type GameState } from "../../../src/domain/game";
 import { earnRewards, settlePendingAp } from "../../../src/domain/rewards";
 import { skipTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
@@ -17,7 +16,7 @@ describe("Galleria encounter and battle AP reward", () => {
   it("preserves a pending overflow without granting it twice across both routes", () => {
     let state = startEpisode(createGame(), "milano_duomo_episode");
     state = finishBattle(startTourismBattle(state, state.revision));
-    state = leaveBattle(state, state.revision);
+    state = leaveBattleResult(state, state.revision);
     state = startEpisode(state, "milano_galleria_episode");
     state = skipTourismGuide(state, state.revision);
     state = restore({ ...state, ap: 12 });
@@ -26,7 +25,7 @@ describe("Galleria encounter and battle AP reward", () => {
       state = restore(state);
       const active = state.activeEncounter!;
       state = active.frame.choices.length ? chooseEncounter(state, 0, state.revision)
-        : active.frame.ended ? finishEncounter(state, state.revision)
+        : encounterCanFinish(state) ? finishEncounter(state, state.revision)
           : advanceEncounter(state, state.revision);
     }
     expect(state.activeEncounter).toBeNull();

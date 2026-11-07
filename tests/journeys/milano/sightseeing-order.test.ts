@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { advanceDate, chooseDate, createGame, finishDate, validateGameState, type GameState } from "../../../src/domain/game";
-import { getEpisodeAvailability, startEpisode } from "../../../src/domain/chapter";
+import { getEpisodeAvailability, leaveBattleResult, startEpisode } from "../../../src/domain/chapter";
 import { skipTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
-import { leaveBattle, startBattle } from "../../../src/domain/battle";
+import { startBattle } from "../../../src/domain/battle";
 import { playBattleToResult } from "../../../src/dev/scenario-builders";
 import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, sleepAtHotel, waitForTravel } from "../../../src/domain/travel-game";
 
@@ -13,10 +13,10 @@ function permutations<T>(items: readonly T[]): T[][] {
   return items.length === 0 ? [[]] : items.flatMap((item, i) => permutations(items.filter((_, j) => i !== j)).map((tail) => [item, ...tail]));
 }
 
-/** Execute the real battle rules and case evidence, rather than faking its receipt. */
+/** Execute the real battle rules and case evidence, rather than faking its receipt, and leave the result as its screen does. */
 function completeBattle(initial: GameState): GameState {
   const state = playBattleToResult(initial);
-  return validateGameState(JSON.parse(JSON.stringify(leaveBattle(state, state.revision))));
+  return validateGameState(JSON.parse(JSON.stringify(leaveBattleResult(state, state.revision))));
 }
 
 describe("Milan independent main destinations", () => {

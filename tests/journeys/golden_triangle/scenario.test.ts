@@ -3,8 +3,8 @@ import { dates, episodes } from "../../../src/content";
 import { getJourney } from "../../../src/content/journeys";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 import { journeyStorage } from "../../../src/persistence/journey-storage";
-import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle } from "../../../src/domain/battle";
-import { startEpisode } from "../../../src/domain/chapter";
+import { advanceBattle, answerBattle, getActiveBattleContent } from "../../../src/domain/battle";
+import { leaveBattleResult, startEpisode } from "../../../src/domain/chapter";
 import { advanceCompletedJourneyCity, getNextCity } from "../../../src/domain/city-travel";
 import { isDateUnlockedForTravel } from "../../../src/domain/date-rules";
 import { advanceCityEpilogue, completeArrivalLogo, startCityArrival } from "../../../src/domain/epilogue";
@@ -42,7 +42,7 @@ describe("authored Golden Triangle journey", () => {
     // Every step of the battle is saved and loaded again on the way to its result.
     const playBattle = (initial: GameState, correct: boolean) => {
       const result = playBattleToResult(checkpoint(initial), { answer: correct ? correctAnswer : wrongAnswer, after: (next) => checkpoint(next) });
-      return checkpoint(leaveBattle(result, result.revision));
+      return checkpoint(leaveBattleResult(result, result.revision));
     };
     for (const [cityIndex, { id: cityId }] of journey.cities.entries()) {
       expect(state.currentCityId).toBe(cityId);
@@ -180,8 +180,8 @@ it("finishes the three-city story without any date or optional memory, in altern
       }
       expect(state.activeBattle?.score).toBe(score);
       const rewarded = state;
-      state = leaveBattle(state, state.revision);
-      expect(leaveBattle(state, rewarded.revision)).toBe(state);
+      state = leaveBattleResult(state, state.revision);
+      expect(leaveBattleResult(state, rewarded.revision)).toBe(state);
       state = roundtrip(state);
       expect(state.playedDateIds).toEqual([]);
       expect(state.memories).toEqual([]);

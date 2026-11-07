@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { getCityContent } from "../content";
 import { createGame, type GameState } from "../domain/game";
-import { leaveBattle } from "../domain/battle";
+import { leaveBattleResult } from "../domain/chapter";
 import { playBattleToResult } from "../dev/scenario-builders";
 import { closeTourism, openTourism, skipTourismGuide, startTourismBattle } from "../domain/tourism";
 import { beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, getTravelHomeRoutes, sleepAtHotel, waitForTravel } from "../domain/travel-game";
@@ -94,7 +94,7 @@ describe("travel save and concurrency", () => {
     const initial = createGame();
     const tourist = beginTravelEvent(initial, "milano_duomo_episode", "walk", initial.revision);
     const result = completeMainEvent(tourist);
-    const menu = leaveBattle(result, result.revision);
+    const menu = leaveBattleResult(result, result.revision);
     expect(getTravelEventAvailability(menu, "milano_san_satiro_date_01", "walk").available).toBe(true);
     const date = beginTravelEvent(menu, "milano_san_satiro_date_01", "walk", menu.revision, () => 1);
     expect(date.activeDate?.dateId).toBe("milano_san_satiro_date_01");

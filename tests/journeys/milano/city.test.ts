@@ -33,6 +33,7 @@ import {
   getEpisodeAvailability,
   startEpisode,
   enterFreeTime,
+  leaveBattleResult,
 } from "../../../src/domain/chapter";
 import {
   skipTourismGuide,
@@ -41,7 +42,7 @@ import {
   getTourismAvailability,
 } from "../../../src/domain/tourism";
 import { startCityEpilogue, advanceCityEpilogue } from "../../../src/domain/epilogue";
-import { startEncounter, chooseEncounter, advanceEncounter, finishEncounter } from "../../../src/domain/encounter";
+import { startEncounter, chooseEncounter, advanceEncounter, encounterCanFinish, finishEncounter } from "../../../src/domain/encounter";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 const episodes = allEpisodes.filter((episode) => episode.cityId === "milano");
 const restore = (state: GameState) => {
@@ -168,7 +169,7 @@ function collectPick(initial: GameState): GameState {
     const active = state.activeEncounter;
     state = active.frame.choices.length
       ? chooseEncounter(state, 0, state.revision)
-      : active.frame.ended
+      : encounterCanFinish(state)
         ? finishEncounter(state, state.revision)
         : advanceEncounter(state, state.revision);
   }
@@ -352,7 +353,7 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(state.completedCityIds).toEqual([]);
     expect(startDate(state, date.id)).toBe(state);
     state = finishEpisode(state, finale(), 0);
-    state = leaveBattle(state, state.revision);
+    state = leaveBattleResult(state, state.revision);
     expect(startDate(createGame(), date.id).activeDate).toBeNull();
     const before = totalAp(state);
     state = playDate(state, date.id, [1, 2]);
@@ -361,7 +362,7 @@ describe("Milan's four episodes and distinct city finale", () => {
     expect(state.endingReached).toBe(false);
     let ended = inRelationship(tour());
     ended = finishEpisode(ended, finale(), 0);
-    ended = leaveBattle(ended, ended.revision);
+    ended = leaveBattleResult(ended, ended.revision);
     const beforeEnding = totalAp(ended);
     ended = playDate(ended, date.id, [2, 1]);
     expect(totalAp(ended)).toBe(beforeEnding - date.apCost);

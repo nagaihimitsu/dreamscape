@@ -10,6 +10,7 @@ import { getJourney } from "../../../src/content/journeys";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 import { journeyStorage } from "../../../src/persistence/journey-storage";
 import { advanceBattle, answerBattle, getActiveBattleContent, leaveBattle, selectReasoningClue, startBattle, submitBattleEvidence } from "../../../src/domain/battle";
+import { leaveBattleResult } from "../../../src/domain/chapter";
 import { advanceEncounter, chooseEncounter, continueTourismEncounters, finishEncounter, proceedFromTourism } from "../../../src/domain/encounter";
 import { advanceCityEpilogue, startCityEpilogue } from "../../../src/domain/epilogue";
 import { advanceDate, chooseDate, createGame, finishDate, validateGameState, type GameState } from "../../../src/domain/game";
@@ -154,14 +155,14 @@ describe("sample journey route", () => {
     // What a reload can repeat pays nothing twice: the final answer again from the save made before the result ...
     expect(playBattle(restore(lastSave))).toEqual(s);
     // ... leaving the restored result, also with a second (stale) tap ...
-    const left = act(restore(s), (current) => leaveBattle(current, current.revision));
-    expect(leaveBattle(left, s.revision)).toBe(left);
+    const left = act(restore(s), (current) => leaveBattleResult(current, current.revision));
+    expect(leaveBattleResult(left, s.revision)).toBe(left);
     expect(totalAp(left)).toBe(3);
     expect(left.travel.activeEvent).toBeNull();
     // ... and clearing the battle again from the map (re-clear).
     const again = playBattle(act(left, (current) => startBattle(current, BATTLE)));
     expect(again.battleRewardReceipt?.entries ?? []).toEqual([]);
-    const replayed = act(again, (current) => leaveBattle(current, current.revision));
+    const replayed = act(again, (current) => leaveBattleResult(current, current.revision));
     expect(replayed.battleRecords.find((record) => record.battleId === BATTLE)?.attempts).toBe(2);
     expect(totalAp(replayed)).toBe(3);
     expect(replayed.claimedRewardIds).toEqual(left.claimedRewardIds);
@@ -197,7 +198,7 @@ describe("sample journey route", () => {
     s = begin(s, FINALE);
     expect(s.activeBattle?.battleId).toBe("smp_mihon_finale_battle");
     s = playBattle(s);
-    s = act(s, (current) => leaveBattle(current, current.revision));
+    s = act(s, (current) => leaveBattleResult(current, current.revision));
     expect(s.completedCityIds).toEqual([CITY]);
     expect(totalAp(s)).toBe(7);
 
