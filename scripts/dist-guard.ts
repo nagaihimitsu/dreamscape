@@ -31,8 +31,11 @@ export const devOnlyMarkers: readonly DevOnlyMarker[] = [
   { text: "制作中の都市ではありません", source: "src/dev/prototype-preview-state.ts" },
   // In-memory fixtures shared by unit tests and Debug.
   { text: "仮の場面の元になる都市がありません", source: "src/dev/fixture-template.ts" },
-  // A journey's own test helpers (tests/journeys/<journeyId>/).
-  { text: "test_golden_triangle", source: "tests/journeys/golden_triangle/test-journey.ts" },
+  // A journey's own test helpers (tests/journeys/<journeyId>/) have no marker of
+  // their own, so removing a journey's test folder needs no change here: they
+  // build on src/dev/test-cities.ts (its fixture-template marker above shows up
+  // with them), their paths carry the "tests/journeys/" marker below, and
+  // scripts/dist-guard.test.ts checks that the game's sources never import tests/.
   // The journey for development and tests only (npm run dev:sample, unit tests);
   // its ID also names its image folder.
   { text: "sample_trip", source: "authoring/templates/sample_trip/manifest.json" },
