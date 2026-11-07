@@ -213,6 +213,7 @@ export function RomanceScene({
                     disabled={!ready || choiceReadyRevision !== game.revision}
                     key={`${game.revision}-${choice.index}`}
                     className="choice"
+                    data-testid="date-choice"
                     onClick={() => {
                       if (choiceLock.current || windowVisibility.hidden || dialogueObstructed()) return;
                       choiceLock.current = true;
@@ -236,7 +237,7 @@ export function RomanceScene({
                 ))}
               </div>
             ) : frame.ended ? (
-              <button disabled={!ready} className="primary" onClick={advance}>
+              <button disabled={!ready} className="primary" data-testid="date-finish" onClick={advance}>
                 {date?.kind === "normal"
                   ? "デートを終える"
                   : "この時間を終える"}{" "}

@@ -112,7 +112,7 @@ export function CanalScene({
       </svg>
       )}
       {image && <BackgroundArtwork key={image} path={image} position={artwork ? artwork.imagePosition : backdrop?.imagePosition} />}
-      <span className="scene-stamp">
+      <span className="scene-stamp" data-testid="scene-stamp">
         {artwork?.captionJa ?? backdrop?.captionJa}
       </span>
     </div>

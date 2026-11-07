@@ -271,11 +271,11 @@ export function GameApp({
         <a href="#main" className="brand">
           Dreamscape<span>旅の余白</span>
         </a>
-        <span className="edition">{editionCityName}の旅</span>
+        <span className="edition" data-testid="journey-edition">{editionCityName}の旅</span>
       </header>
       {game && (
         <div className="journey-bar">
-          <span className="travelers">
+          <span className="travelers" data-testid="travelers">
             {game.playerName}
             <span className="amp"> と </span>
             {game.heroineName}
@@ -362,7 +362,7 @@ export function GameApp({
         )}
         {!game ? (
           <>
-            <div className="intro-art">
+            <div className="intro-art" data-testid="title-art">
               <CanalScene compact artwork={getJourney(journeyId)?.titleArt} />
             </div>
             <section className="paper intro">

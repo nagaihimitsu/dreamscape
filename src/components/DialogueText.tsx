@@ -72,6 +72,7 @@ export function DialogueText({
       <p
         ref={textRef}
         className="dialogue-text"
+        data-testid="dialogue-text"
         data-ready={ready}
         role={onAdvance ? "button" : undefined}
         tabIndex={onAdvance ? 0 : undefined}
