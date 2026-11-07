@@ -45,7 +45,7 @@ const encounterSchema = z.object({
     alreadyStoryId: storyId,
   }).strict().optional(),
 }).strict();
-const encounterCatalogObjectSchema = z.object({
+export const encounterCatalogSchema = z.object({
   schemaVersion: z.literal(1),
   items: z.array(z.object({
     id, cityId: id, nameJa: japaneseText, descriptionJa: japaneseText,
@@ -54,7 +54,6 @@ const encounterCatalogObjectSchema = z.object({
   }).strict()),
   encounters: z.array(encounterSchema),
 }).strict();
-export const encounterCatalogSchema = encounterCatalogObjectSchema;
 const encounterInputSchema = encounterSchema.extend({
   cityId: id.optional(),
   descriptionJa: japaneseText.optional(),
@@ -62,7 +61,7 @@ const encounterInputSchema = encounterSchema.extend({
   options: z.array(optionSchema).length(3).optional(),
 });
 /** Author-facing catalog: plain three-choice encounters need no rule boilerplate. */
-export const encounterCatalogInputSchema = encounterCatalogObjectSchema.extend({
+export const encounterCatalogInputSchema = encounterCatalogSchema.extend({
   encounters: z.array(encounterInputSchema),
 });
 export function normalizeEncounterCatalog(

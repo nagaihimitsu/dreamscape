@@ -164,6 +164,9 @@ describe("optional tourism and discoveries", () => {
 
   it("blocks overlapping romance, names and rewards while allowing visits after the romance ending", () => {
     const fresh = explore();
+    // A tourism scene holds no battle, so no battle result can be recorded or paid from it.
+    expect(fresh.activeTourism).not.toBeNull();
+    expect(fresh.activeBattle).toBeNull();
     expect(finalizeBattleProgress(fresh)).toBe(fresh);
     expect(setNames(fresh, "違う", "名前")).toBe(fresh);
     expect(startBattle(fresh, battles[0].id)).toBe(fresh);

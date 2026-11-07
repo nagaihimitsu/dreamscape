@@ -86,6 +86,27 @@ describe("English notebook storage", () => {
     expect(storage.writes).toBe(1);
   });
 
+  it("keeps, but never shows, an outdated record of a battle that still exists (its questions renamed), and saves later changes", () => {
+    // E.g. a Milano battle kept by the v14 renames: its fingerprint and question IDs changed.
+    const outdated = { runId: "run-0", contentHash: "old-hash", answers: [{ questionId: "removed_question", optionId: "A", correct: true, hintUsed: false }] };
+    const raw = JSON.stringify({ ...JSON.parse(notebook([])), records: { [battle.id]: outdated } });
+    const storage = memoryStorage(raw);
+    const loaded = loadLearning(storage);
+    expect(loaded.error).toBe("");
+    expect(loaded.raw).toBe(raw);
+    expect(loaded.data.records[battle.id]).toEqual(outdated);
+    // The battle was played, so only the outdated fingerprint keeps the record out of the review.
+    const played = { ...createGame(), battleRecords: [{ battleId: battle.id, attempts: 1, firstScore: 1, bestScore: 1, lastScore: 1 }] };
+    expect(answeredQuestions(played, { data: loaded.data } as unknown as Learning)).toEqual([]);
+    const current = JSON.parse(notebook([{ questionId: question.id, optionId: question.correctOptionId, correct: true, hintUsed: false }])) as LearningState;
+    expect(answeredQuestions(played, { data: current } as unknown as Learning)).toHaveLength(1);
+    const saved = commitLearning(storage, loaded.raw, loaded.data, reveal);
+    expect(saved.status).toBe("saved");
+    if (saved.status !== "saved") return;
+    expect(JSON.parse(storage.getItem(LEARNING_KEY)!).records[battle.id]).toEqual(outdated);
+    expect(storage.writes).toBe(1);
+  });
+
   it("rejects an invalid change without writing", () => {
     const storage = memoryStorage();
     const { raw, data } = loadLearning(storage);

@@ -3,7 +3,6 @@ import {
   landmarks,
   episodes,
   journeyConfig,
-  rewardRules,
   allRewardRules,
   type EpisodeDefinition,
   type RewardRule,
@@ -307,7 +306,7 @@ export function validateJourneyState(state: GameState): void {
       hasCompletedBattle(state, episode) !==
       state.completedEpisodeIds.includes(episode.id)
     )
-      throw new Error("完了したバトルと章の記録が一致しません。");
+      throw new Error("完了したバトルと観光エピソードの記録が一致しません。");
     if (
       episode.kind === "city_finale" &&
       state.completedCityIds.includes(episode.cityId) !==

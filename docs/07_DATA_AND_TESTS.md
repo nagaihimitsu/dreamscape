@@ -41,9 +41,9 @@
 - v14 で変えたこと：
   - 章の記録 `completedChapters` を保存しない。デートの章（`chapterId`・`requiredCompletedChapters`、都市IDと同じ）は、その都市のエピソードを1つでも終えた（`completedEpisodeIds`）ときに完了とみなす。
   - 告白の解決方式 `activeDate.resolutionMode` の `legacy_fixed` を `fixed` に改名した（通常の恋愛イベントは `random_v1` のまま）。
-  - データの項目名をそろえた（保存には入らないが、途中の場面の指紋に含まれる）：道中交流の金額 `costEuro` → `cost`、`completionMoneyEuro` → `completionMoney`（旅行編の通貨の整数単位。ユーロ専用の名前はなくなった）、背景 `backgroundAssetId` → `backgroundId`、都市の会話の初期背景 `storyBackgroundAssetId` → `storyBackgroundId`。
+  - データの項目名をそろえた（保存には入らないが、途中の場面の指紋に含まれる）：道中交流の金額 `costEuro` → `cost`、`completionMoneyEuro` → `completionMoney`（旅行編の通貨の整数単位。ユーロ専用の名前はなくなった）、背景 `backgroundAssetId` → `backgroundId`、都市の会話の初期背景 `storyBackgroundAssetId` → `storyBackgroundId`。対決の指紋も変わるため、v14 より前に英語ノートに残った対決の解答記録は消えずに残るが表示されない（その対決を遊び直すと新しい記録に置き換わる）。
   - 都市の仮の初回クリア報酬ID `<都市ID>_legacy_episode_placeholder` を `<接頭辞>_<都市ID>_first_clear` に改名した（0 AP、報酬の規則なし）。
-  - 会話（ストーリー）・クイズ・問題の名前を [IDの付け方](02_TECH_ARCHITECTURE.md#idの付け方) にそろえた：ストーリー64本（ミラノ49本。`milano/` フォルダはなくなり、デートは `dates/`、エピローグは `epilogues/milano`。インド編は観光案内12本を観光地の名前に。見本3本）、クイズ13件（ミラノ10件、見本3件。ファイル名＝クイズID）、ミラノの問題33件。見本の編の対決・エピソード・地図の出来事・報酬のID9件も役割の語にそろえた。対決・デート・エピソードなど保存データに入るミラノ編とインド編のIDは変えていない。ストーリーとクイズのIDは途中の場面の指紋に含まれる（保存には直接入らない）。
+  - 会話（ストーリー）・クイズ・問題の名前を [IDの付け方](02_TECH_ARCHITECTURE.md#idの付け方) にそろえた：ストーリー64本（ミラノ49本。`milano/` フォルダはなくなり、デートは `dates/`、エピローグは `epilogues/milano`。インド編は観光案内12本を観光地の名前に。見本3本）、クイズ13件（ミラノ10件、見本3件。ファイル名＝クイズID）、ミラノの問題33件。見本の編の対決・エピソード・地図の出来事・報酬のID9件も役割の語にそろえた。対決・デート・エピソードなど保存データに入るミラノ編とインド編のIDは変えていない。進行中の道中交流はストーリーIDを、進行中の対決は答えた問題のIDをそのまま保存する。それ以外のストーリー・クイズ・問題のIDは、途中の場面の指紋を通してだけ保存に関わる。v13 以前のセーブは再開しないので、遊ぶ人に見える違いはない。
   - ミラノ編の使っていない道中交流 `galleria_cafe`・`galleria_gift`・`galleria_outing` を消した。品物「雄牛のしおり」（`galleria_souvenir`）を使う `brera_bookmark` も、その品物の入手先が `galleria_cafe` だけで出会えなくなるため、品物と一緒に消した。
   - 借りた乗り物 `travel.rentedModeIds`（必須。その都市で借りた乗り物のID。次の都市へ出発すると空になる）を加えた。読み込み時に、今の都市で借りられる乗り物（`"rental": true` で借りる場所があるもの）だけであることを確かめ、違えば読み込まない。帰りの交通費の確保（`returnReserve`）は、借りた乗り物を含めて今乗れる経路から確かめる。
   - 乗り物の経路の `mode` は旅行編が宣言したIDになった（ミラノ編は `tram`・`taxi`、鉄道・バスの経路はなくなった）。経路は保存には入らないが、移動中の場面・帰りの交通費の確保に効く。

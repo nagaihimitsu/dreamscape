@@ -114,6 +114,7 @@ describe("three-city journey using development-only fixtures", () => {
     if (reloaded.status !== "loaded") throw new Error("Expected completed city to load");
     // Loading pays nothing again, and no battle result is open that could record the finale twice.
     expect(reloaded.state).toEqual(completed);
+    expect(reloaded.state.activeBattle).toBeNull();
     expect(finalizeBattleProgress(reloaded.state)).toBe(reloaded.state);
     expect(reloaded.state.claimedRewardIds.filter((id) => id === clearReward.id)).toHaveLength(1);
   }, 120_000);

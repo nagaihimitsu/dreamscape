@@ -40,9 +40,9 @@ export function RomanceScene({
 }) {
   const active = game.activeDate!;
   const frame = active.frame;
-  const backgroundId = presentation.backgrounds[frame.background]?.imageAssetId;
-  const backgroundAsset = backgroundId
-    ? tourismAssets.find((asset) => asset.id === backgroundId)
+  const backgroundImageAssetId = presentation.backgrounds[frame.background]?.imageAssetId;
+  const backgroundAsset = backgroundImageAssetId
+    ? tourismAssets.find((asset) => asset.id === backgroundImageAssetId)
     : undefined;
   // A restored save may still be reading the original Ink. Its annotations
   // and location belong to that script, not necessarily the replacement.
