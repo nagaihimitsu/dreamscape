@@ -20,7 +20,7 @@ it("builds a new encounter and date with Ink, small catalog entries and a travel
   const dateId = "fixture_simple_date";
   const encounterStory = "encounters/fixture_simple_encounter";
   const paidEncounterStory = "encounters/fixture_paid_encounter";
-  const dateStory = "milano/fixture_simple_date";
+  const dateStory = "dates/fixture_simple_date";
   try {
     await prepareContentFixture(root);
     const encountersPath = path.join(root, "content/journeys/milano/encounters/catalog.json");
@@ -87,7 +87,7 @@ VAR heroine_name = ""
       id: "fixture_simple_date",
       chapterId: "milano",
       titleJa: "追加のデート",
-      storyId: "milano/fixture_simple_date",
+      storyId: "dates/fixture_simple_date",
       backgroundId: "milano_la_scala_date",
     });
     await writeFile(datesPath, JSON.stringify(dateCatalog));
@@ -103,11 +103,11 @@ VAR heroine_name = ""
       apCost: 2,
     });
     await writeFile(travelPath, JSON.stringify(travelCatalog));
-    let dateInk = await readFile(path.join(root, storySourceFile("milano/sound_cafe_01")), "utf8");
+    let dateInk = await readFile(path.join(root, storySourceFile("dates/milano_date_cafe")), "utf8");
     for (const [index, profile] of [[1, "playful"], [2, "attentive"], [3, "honest"]] as const) {
       dateInk = dateInk.replace(`sound_cafe_01_2_${index}`, `common_date_second_${profile}`);
     }
-    await writeFile(path.join(root, "content/journeys/milano/stories/milano/fixture_simple_date.ink"), dateInk);
+    await writeFile(path.join(root, "content/journeys/milano/stories/dates/fixture_simple_date.ink"), dateInk);
 
     const result = await buildContent(root, false);
     expect(result.dates.find((date) => date.id === "fixture_simple_date")).toMatchObject({

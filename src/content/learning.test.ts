@@ -66,14 +66,14 @@ describe("learning content", () => {
     // The value content:build uses when no journey folder provides learning/details.json.
     expect(learningDetailsSchema.parse({ schemaVersion: 1, questions: {} })).toEqual({ schemaVersion: 1, questions: {} });
     const value = learningDetailsSchema.parse(details);
-    for (const detail of Object.values(value.questions)) expect(detail.storyId).toBe("learning/sound_english");
+    for (const detail of Object.values(value.questions)) expect(detail.storyId).toBe("learning/milano_english");
     const issues = (value: unknown) => learningDetailsSchema.safeParse(value).error?.issues
       .map((issue) => ({ code: issue.code, path: issue.path }));
     const withoutStory = structuredClone(details) as any;
     delete withoutStory.questions.sound_supper_2.storyId;
     expect(issues(withoutStory)).toEqual([{ code: "invalid_type", path: ["questions", "sound_supper_2", "storyId"] }]);
     // One story for the whole file is no longer a field.
-    expect(issues({ ...structuredClone(details), storyId: "learning/sound_english" }))
+    expect(issues({ ...structuredClone(details), storyId: "learning/milano_english" }))
       .toEqual([{ code: "unrecognized_keys", path: [] }]);
   });
 });

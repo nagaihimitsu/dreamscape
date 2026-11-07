@@ -158,19 +158,19 @@ describe("catalog merge", () => {
 
   it("merges English-note details of several journeys per question, each with its own story", () => {
     const rule = catalogRule("learning/details.json");
-    const milano = { schemaVersion: 1, questions: { sound_supper_1: { storyId: "learning/sound_english" } } };
+    const milano = { schemaVersion: 1, questions: { sound_supper_1: { storyId: "learning/milano_english" } } };
     const gt = { schemaVersion: 1, questions: { gt_question: { storyId: "learning/gt_english" } } };
     const merged = mergeCatalog(rule, [journey(milano, "milano/details.json"), journey(gt, "gt/details.json")])!;
     expect(JSON.stringify(merged.value)).toBe(JSON.stringify({
       schemaVersion: 1,
-      questions: { sound_supper_1: { storyId: "learning/sound_english" }, gt_question: { storyId: "learning/gt_english" } },
+      questions: { sound_supper_1: { storyId: "learning/milano_english" }, gt_question: { storyId: "learning/gt_english" } },
     }));
     // An error inside a question names the file that provides it.
     expect(sourceFileOf(merged.provenance, ["questions", "gt_question", "storyId"])).toBe("gt/details.json");
     expect(() => mergeCatalog(rule, [journey(milano, "milano/details.json"), journey(milano, "gt/details.json")]))
       .toThrow('Duplicate key "questions.sound_supper_1" in learning/details.json: milano/details.json and gt/details.json');
     // The file has no story of its own any more.
-    expect(() => mergeCatalog(rule, [journey({ ...milano, storyId: "learning/sound_english" }, "milano/details.json")]))
+    expect(() => mergeCatalog(rule, [journey({ ...milano, storyId: "learning/milano_english" }, "milano/details.json")]))
       .toThrow('Unknown key "storyId" in milano/details.json');
   });
 
@@ -195,7 +195,7 @@ describe("content file layout", () => {
     expect(classifyContentFile("cities/old/delhi.json", "core")).toEqual({ type: "unknown" });
     expect(classifyContentFile("travel/delhi.json", "core")).toEqual({ type: "travel", cityId: "delhi", settings: false });
     expect(classifyContentFile("travel/delhi-settings.json", "core")).toEqual({ type: "travel", cityId: "delhi", settings: true });
-    expect(classifyContentFile("stories/milano/sound_cafe_01.ink", "journey")).toEqual({ type: "story", id: "milano/sound_cafe_01" });
+    expect(classifyContentFile("stories/dates/milano_date_cafe.ink", "journey")).toEqual({ type: "story", id: "dates/milano_date_cafe" });
     expect(classifyContentFile("quizzes/x.example.json", "core")).toEqual({ type: "quiz", example: true });
     expect(classifyContentFile("quizzes/sub/x.json", "core")).toEqual({ type: "quiz", example: false });
     expect(classifyContentFile("travel/research/routes.csv", "core")).toEqual({ type: "other" });

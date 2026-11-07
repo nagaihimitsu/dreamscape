@@ -40,7 +40,7 @@
       ],
       "titleJa": "回らない願掛け",
       "descriptionJa": "回らない願掛け。この場所で選べる小さな出会い。",
-      "storyId": "encounters/sound_galleria_fortune",
+      "storyId": "encounters/milano_galleria_fortune",
       "repeatable": true,
       "alternativeApRewardId": "victory_galleria_first",
       "options": [
@@ -112,9 +112,9 @@
         },
         "chancePercent": 25,
         "rewardItemId": "galleria_ticket",
-        "wonStoryId": "encounters/sound_fortune_won",
-        "lostStoryId": "encounters/sound_fortune_lost",
-        "alreadyStoryId": "encounters/sound_fortune_already"
+        "wonStoryId": "encounters/milano_galleria_fortune_won",
+        "lostStoryId": "encounters/milano_galleria_fortune_lost",
+        "alreadyStoryId": "encounters/milano_galleria_fortune_already"
       },
       "landmarkId": "galleria_vittorio_emanuele_ii",
       "availability": "tourism"
@@ -125,7 +125,7 @@
       "landmarkId": "duomo_milano",
       "titleJa": "切れた三本目",
       "descriptionJa": "切れた三本目。この場所で選べる小さな出会い。",
-      "storyId": "encounters/sound_duomo_string",
+      "storyId": "encounters/milano_duomo_string",
       "options": [
         {
           "id": "coil",
@@ -159,7 +159,7 @@
       "landmarkId": "last_supper",
       "titleJa": "広場の無声映画",
       "descriptionJa": "広場の無声映画。この場所で選べる小さな出会い。",
-      "storyId": "encounters/sound_supper_pantomime",
+      "storyId": "encounters/milano_supper_pantomime",
       "options": [
         {
           "id": "act",
@@ -192,7 +192,7 @@
       "landmarkId": "galleria_vittorio_emanuele_ii",
       "titleJa": "版の実演、手はポケットに",
       "descriptionJa": "版の実演、手はポケットに。商品・価格・出店はゲーム内の創作。",
-      "storyId": "encounters/sound_galleria_print",
+      "storyId": "encounters/milano_galleria_print",
       "options": [
         {
           "id": "pay",
@@ -225,7 +225,7 @@
       "landmarkId": "galleria_vittorio_emanuele_ii",
       "titleJa": "券を一枚、手の中へ",
       "descriptionJa": "券を一枚、手の中へ。商品・価格・出店はゲーム内の創作。",
-      "storyId": "encounters/sound_galleria_ticket_press",
+      "storyId": "encounters/milano_galleria_ticket_press",
       "options": [
         {
           "id": "press",
@@ -262,7 +262,7 @@
       "landmarkId": "la_scala_case",
       "titleJa": "喉飴を噛む人",
       "descriptionJa": "喉飴を噛む人。商品・価格・出店はゲーム内の創作。",
-      "storyId": "encounters/sound_scala_mint",
+      "storyId": "encounters/milano_scala_mint",
       "options": [
         {
           "id": "buy",
@@ -295,7 +295,7 @@
       "landmarkId": "castello_sforzesco",
       "titleJa": "弦を一本、余らせて",
       "descriptionJa": "弦を一本、余らせて。この場所で選べる小さな出会い。",
-      "storyId": "encounters/sound_castello_pick",
+      "storyId": "encounters/milano_castello_pick",
       "options": [
         {
           "id": "give",
@@ -332,7 +332,7 @@
       "landmarkId": "brera_case",
       "titleJa": "モデルは五秒",
       "descriptionJa": "モデルは五秒。この場所で選べる小さな出会い。",
-      "storyId": "encounters/sound_brera_sitter",
+      "storyId": "encounters/milano_brera_sitter",
       "options": [
         {
           "id": "pose",

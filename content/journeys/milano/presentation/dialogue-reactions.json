@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "entries": [
     {
-      "storyId": "battles/milano_last_supper_b",
+      "storyId": "battles/milano_special_b_last_supper",
       "speaker": "enemy",
       "text": "「それは将来の『同上』のために確保してある！」",
       "targetCharacterId": "heroine",
@@ -10,14 +10,14 @@
       "mark": "sigh"
     },
     {
-      "storyId": "battles/milano_last_supper_b",
+      "storyId": "battles/milano_special_b_last_supper",
       "speaker": "heroine",
       "text": "「横に持っているから、だと思います」",
       "targetCharacterId": "enemy",
       "mark": "sweat"
     },
     {
-      "storyId": "battles/milano_last_supper_c",
+      "storyId": "battles/milano_special_c_last_supper",
       "speaker": "enemy",
       "text": "「だから困る！　パンとチーズも、隣に置くと勝手にサンドイッチを名乗る。私は仕切りを入れる」",
       "targetCharacterId": "heroine",
@@ -25,7 +25,7 @@
       "mark": "sigh"
     },
     {
-      "storyId": "battles/milano_last_supper_c",
+      "storyId": "battles/milano_special_c_last_supper",
       "speaker": "heroine",
       "text": "「……中央の人は？」",
       "targetCharacterId": "enemy",

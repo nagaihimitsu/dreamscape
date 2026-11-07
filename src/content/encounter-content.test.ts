@@ -13,7 +13,7 @@ beforeEach(async () => {
 afterEach(async () => { await rm(fixture, { recursive: true, force: true }); });
 
 /** The Castello pick encounter's story (no published Ink asks about an item, so the tests add the query). */
-const PICK_STORY = "encounters/sound_castello_pick";
+const PICK_STORY = "encounters/milano_castello_pick";
 /** The story with an Ink item query (`has_item_status`) on the item, before its last line. */
 function withItemQuery(source: string, itemId: string): string {
   expect(source).not.toContain("has_item_status");
@@ -49,10 +49,10 @@ describe("encounter build integration", () => {
   }, 120000);
 
   it("rejects item queries in existing stories which do not receive inventory", async () => {
-    const file = path.join(fixture, storySourceFile("milano/sound_cafe_01"));
+    const file = path.join(fixture, storySourceFile("dates/milano_date_cafe"));
     const source = await readFile(file, "utf8");
     await writeFile(file, `${source}\n{has_item_status("blue_pick", "gifted"): 持っています}\n`);
-    await expect(buildContent(fixture, false)).rejects.toThrow("Item references are only supported in encounters: milano/sound_cafe_01");
+    await expect(buildContent(fixture, false)).rejects.toThrow("Item references are only supported in encounters: dates/milano_date_cafe");
   }, 120000);
 
   it("rejects an Ink item query belonging to another city", async () => {

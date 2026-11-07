@@ -40,7 +40,7 @@
 | `learning/translations.json` | 全問題の和訳（原文の写しと照合される） | `Missing translation` |
 | `learning/word-meanings.json` | 共通の辞書（`content/learning/word-meanings.json`）にない英単語だけ | `Missing word meaning` |
 | `stories/tourism/smp_mihon_clock_tower_guide.ink` | 観光案内 | `Unknown tourism guideStoryId: tourism/smp_mihon_clock_tower_guide` |
-| `stories/battles/smp_mihon_clock_tower.ink` | 通常戦の会話 | `Unknown battle storyId: battles/smp_mihon_clock_tower` |
+| `stories/battles/smp_mihon_main_clock_tower.ink` | 通常戦の会話 | `Unknown battle storyId: battles/smp_mihon_main_clock_tower` |
 | `stories/battles/smp_mihon_finale.ink` | 都市フィナーレの会話 | `Unknown battle storyId: battles/smp_mihon_finale` |
 | `stories/epilogues/mihon.ink` | 都市エピローグ | `Unknown epilogue story: epilogues/mihon` |
 | `stories/dates/smp_mihon_date_tower_square.ink` | 通常デートの会話 | `Unknown storyId: dates/smp_mihon_date_tower_square` |
@@ -56,14 +56,14 @@
 
 朝市でパン屋のサラの「誰も時間を守らない」という断言に、資料を1枚突きつけます（全3問のうち第2問）。
 
-- ファイル：`quizzes/smp_mihon_special_b_market_quiz.json`、`stories/battles/smp_mihon_market_b.ink`、`stories/tourism/smp_mihon_market_guide.ink`、`public/assets/tourism/sample_trip/mihon_market.png`
+- ファイル：`quizzes/smp_mihon_special_b_market_quiz.json`、`stories/battles/smp_mihon_special_b_market.ink`、`stories/tourism/smp_mihon_market_guide.ink`、`public/assets/tourism/sample_trip/mihon_market.png`
 - 項目のID：`smp_mihon_market_b`、`mihon_market`、`smp_bg_mihon_market`、`smp_img_mihon_market`、`smp_obs_mihon_market_rain`、`smp_obs_mihon_market_timer`、`smp_obs_mihon_market_rows`、`smp_mihon_market_b_q1`、`smp_mihon_market_b_q2`、`smp_mihon_market_b_q3`
 
 ### 特殊戦C（証拠連結）
 
 図書室で、司書のイオに資料を2枚組み合わせて示します（全3問のうち第3問）。
 
-- ファイル：`quizzes/smp_mihon_special_c_library_quiz.json`、`stories/battles/smp_mihon_library_c.ink`、`stories/tourism/smp_mihon_library_guide.ink`、`public/assets/tourism/sample_trip/mihon_library.png`
+- ファイル：`quizzes/smp_mihon_special_c_library_quiz.json`、`stories/battles/smp_mihon_special_c_library.ink`、`stories/tourism/smp_mihon_library_guide.ink`、`public/assets/tourism/sample_trip/mihon_library.png`
 - 項目のID：`smp_mihon_library_c`、`mihon_library`、`smp_bg_mihon_library`、`smp_img_mihon_library`、`smp_obs_mihon_library_diary`、`smp_obs_mihon_library_letters`、`smp_obs_mihon_library_weather`、`smp_obs_mihon_library_hours`、`smp_mihon_library_c_q1`、`smp_mihon_library_c_q2`、`smp_mihon_library_c_q3`
 
 ### 道中交流と品物

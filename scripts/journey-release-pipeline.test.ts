@@ -85,7 +85,7 @@ const originalTranslations = JSON.parse(read(`${milano}/learning/translations.js
 /** A Milan Ink template for India's folder: Milan's own backgrounds become the shared default background. */
 const inkTemplate = (storyId: string) =>
   read(`${milano}/stories/${storyId}.ink`).replace(/#\s*background\s*:\s*[A-Za-z0-9_]+/gu, "# background: default_scene");
-const dateTemplate = inkTemplate("milano/sound_cafe_01");
+const dateTemplate = inkTemplate("dates/milano_date_cafe");
 
 /** India's catalogs that hold nothing but India's unpublished entries. */
 const emptiedCatalogs = ["progression/journey.json", "battles/catalog.json", "romance/date_catalog.json",
@@ -123,8 +123,8 @@ function authorCity(root: string, plan: ReturnType<typeof journeyRequirements>[n
   writeFileSync(narrativeFile, JSON.stringify(narrative));
   const translations: Record<string, { questionJa: string; optionsJa: Record<string, string> }> = {};
   for (const item of plan.main) {
-    write(`${layer}/stories/${item.guideStoryId}.ink`, inkTemplate("tourism/sound_duomo"));
-    write(`${layer}/stories/${item.battleStoryId}.ink`, inkTemplate("battles/sound_duomo"));
+    write(`${layer}/stories/${item.guideStoryId}.ink`, inkTemplate("tourism/milano_duomo_guide"));
+    write(`${layer}/stories/${item.battleStoryId}.ink`, inkTemplate("battles/milano_main_duomo"));
     const quiz = { ...structuredClone(originalQuiz), id: item.quizId, landmarkId: item.landmarkId };
     quiz.questions.forEach((question: { id: string }, index: number) => {
       const translated = originalTranslations[question.id];
@@ -143,8 +143,8 @@ function authorCity(root: string, plan: ReturnType<typeof journeyRequirements>[n
     for (const [from, to] of Object.entries(map)) story = story.replaceAll(from, to);
     write(`${layer}/stories/${item.storyId}.ink`, story);
   }
-  write(`${layer}/stories/${plan.finale.battleStoryId}.ink`, inkTemplate("battles/sound_finale"));
-  write(`${layer}/stories/${plan.finale.epilogueStoryId}.ink`, inkTemplate("milano/sound_epilogue"));
+  write(`${layer}/stories/${plan.finale.battleStoryId}.ink`, inkTemplate("battles/milano_finale"));
+  write(`${layer}/stories/${plan.finale.epilogueStoryId}.ink`, inkTemplate("epilogues/milano"));
   const finalQuiz = JSON.parse(read(`${milano}/quizzes/milano_finale_quiz.json`));
   finalQuiz.id = plan.finale.quizId; finalQuiz.cityId = plan.cityId;
   finalQuiz.questions.forEach((question: { id: string }, index: number) => {

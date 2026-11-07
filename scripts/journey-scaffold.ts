@@ -45,7 +45,7 @@ export function journeyRequirements(input: JourneyScaffoldInput, selectedCityIds
     main: travel.events.filter((event) => event.category === "main" && event.id.startsWith(`${input.eventPrefix}_${travel.cityId}_main_`) &&
       input.plannedLandmarks[travel.cityId]?.includes(event.placeId)).map((event) => ({
       eventId: event.id, landmarkId: event.placeId, battleId: `${event.id}_battle`, quizId: `${event.id}_quiz`,
-      guideStoryId: `tourism/${event.id}_guide`, battleStoryId: `battles/${event.id}`,
+      guideStoryId: `tourism/${input.eventPrefix}_${event.placeId}_guide`, battleStoryId: `battles/${event.id}`,
     })),
     dates: travel.events.filter((event) => event.category === "date" && event.id.startsWith(`${input.eventPrefix}_${travel.cityId}_date_`)).map((event) => ({
       eventId: event.id, destinationId: event.placeId, storyId: `dates/${event.id}`, memoryId: `${event.id}_memory`,

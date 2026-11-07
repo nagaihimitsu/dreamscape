@@ -116,7 +116,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 
 ### ストーリーIDとIDの名前空間
 
-- ストーリーIDは、その層の `stories/` からの相対パスから `.ink` を除いたもの（例：`content/journeys/milano/stories/milano/sound_cafe_01.ink` → `milano/sound_cafe_01`）。旅行編フォルダ名は含まない。複数の旅行編が `stories/battles/` のような同じフォルダ名を使えるため、ファイル名（または旅行編専用のサブフォルダ）でIDが重ならないようにする。
+- ストーリーIDは、その層の `stories/` からの相対パスから `.ink` を除いたもの（例：`content/journeys/milano/stories/dates/milano_date_cafe.ink` → `dates/milano_date_cafe`）。旅行編フォルダ名は含まない。複数の旅行編が `stories/battles/` のような同じフォルダ名を使えるため、ファイル名（または旅行編専用のサブフォルダ）でIDが重ならないようにする。
 - 都市・地点・観光地・発見・画像・背景・思い出・効果・デート・行き先・エピソード・報酬・対決・クイズ・問題・道中交流・品物・旅行編のIDは、すべての旅行編で共有する一つの名前空間にある。保存データもこれらのIDを記録するため、公開後は変更しない（例外として、セーブ版 v14 で一度だけ改名した。以後は変えない。[セーブの版](07_DATA_AND_TESTS.md#セーブの版)）。
 - 新しい旅行編では、`manifest.json` の `authoring.eventPrefix` と同じ接頭辞をIDとストーリーのファイル名に付けることを推奨する（インド編 `gt_`、ウズベキスタン編 `uz_`、ルアンパパーン編 `lpb_`）。地点ID（観光地・デートの行き先・移動の地点）は都市IDを接頭辞にする（例：`delhi_red_fort`）。都市ごとに1本のストーリーは都市IDをファイル名にしてよい（例：`arrivals/delhi`・`epilogues/delhi`）。英語ノートの話題ID（`learning/details.json` の `topics[].id`）も全旅行編で重ならないよう同じ接頭辞を付ける（例：`gt_which_subject`）。ミラノ編は作成時からの `milano_`・`sound_` などをそのまま使う。`authoring.eventPrefix` を持つ旅行編でこの決まりに合わないIDは、`content:build` が警告する（ミラノ編は接頭辞を持たないため対象外。既存の例外は `UNPREFIXED_ID_EXCEPTIONS`）。対象は、カタログの項目のID（対決・道中交流・品物・人物・エピソード・報酬・デート・行き先・効果・画像・観光地・発見）、背景・思い出、英語ノートの話題、ストーリー、クイズと問題、都市の `firstClearReward.rewardSourceId`、移動の地点とイベント。
 

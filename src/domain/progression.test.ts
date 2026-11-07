@@ -152,7 +152,7 @@ describe("relationship progression", () => {
 
 describe("confession and relationship ending", () => {
   it("recalls the San Maurizio date only when its actual memory is present", () => {
-    const storyId = "milano/sound_confession_01";
+    const storyId = "dates/milano_date_confession";
     const opening = (memories: string[]) => {
       let step = beginStory(storyId, "晴", "灯", {}, memories);
       const lines: string[] = [];

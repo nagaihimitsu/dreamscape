@@ -120,7 +120,7 @@ APの獲得量は案内の読了やクイズの成績により変わります。
 
 対訳設定・開閉・復習マーク・各バトルの直近の回答は、ゲーム本体とは別に旅行編ごとの `dreamscape.journey.<旅行編ID>.learning.v1`（ミラノ編は `dreamscape.journey.milano.learning.v1`）に保存します。壊れたデータや未知の版は自動上書きせず、別タブで更新されたときは再読込を案内します。問題やバトル内容の指紋が変わった古い回答は現在の問題に重ねません。戦績はあるのに英語ノートに回答が記録されていないバトルは「以前の回答内容は未記録」と表示し、回答を推測しません。
 
-対訳は各旅行編の `content/journeys/<旅行編ID>/learning/translations.json` に、安定した問題IDと原文・選択肢・正解の照合用スナップショット、日本語訳を置きます。問題を変更すると `npm run content:check` が不一致を報告するので、訳を確認して照合用の原文も更新します。詳しい文法・語法は各旅行編の `content/journeys/<旅行編ID>/learning/details.json` に問題ごとに置き、問題ごとに学習会話の `storyId` を指定します（ミラノ編の会話は `content/journeys/milano/stories/learning/sound_english.ink`）。語句・質問の対象が英文中にあること、資料URL、会話の話者・行数・効果なしの契約をビルドで確認します。英語の自然さや訳の妥当性は人が確認してください。
+対訳は各旅行編の `content/journeys/<旅行編ID>/learning/translations.json` に、安定した問題IDと原文・選択肢・正解の照合用スナップショット、日本語訳を置きます。問題を変更すると `npm run content:check` が不一致を報告するので、訳を確認して照合用の原文も更新します。詳しい文法・語法は各旅行編の `content/journeys/<旅行編ID>/learning/details.json` に問題ごとに置き、問題ごとに学習会話の `storyId` を指定します（ミラノ編の会話は `content/journeys/milano/stories/learning/milano_english.ink`）。語句・質問の対象が英文中にあること、資料URL、会話の話者・行数・効果なしの契約をビルドで確認します。英語の自然さや訳の妥当性は人が確認してください。
 
 ## 特別対決：矛盾追及・証拠連結
 
@@ -262,7 +262,7 @@ npm run test:saves
 
 ## 文章・データの編集
 
-会話の編集元は各旅行編フォルダ `content/journeys/<旅行編ID>/stories/` の `.ink` ファイルです。ストーリーIDは `stories/` からの相対パスです。ミラノのデートは、例えば [`sound_cafe_01.ink`](content/journeys/milano/stories/milano/sound_cafe_01.ink) にあります。インドの配置は [制作記録の編集元一覧](authoring/journeys/golden_triangle/drafts/scenario/README.md#編集元) を参照してください。台詞と選択肢をReactに埋め込まず、Inkに置いています。
+会話の編集元は各旅行編フォルダ `content/journeys/<旅行編ID>/stories/` の `.ink` ファイルです。ストーリーIDは `stories/` からの相対パスです。ミラノのデートは、例えば [`dates/milano_date_cafe.ink`](content/journeys/milano/stories/dates/milano_date_cafe.ink) にあります。インドの配置は [制作記録の編集元一覧](authoring/journeys/golden_triangle/drafts/scenario/README.md#編集元) を参照してください。台詞と選択肢をReactに埋め込まず、Inkに置いています。
 
 ```ink
 # speaker: heroine
@@ -362,7 +362,7 @@ Inkには `battle_scene`（catalogのシーン名）、`answer_correct`（直前
 
 報酬の条件は `guide_read` / `battle_complete` / `battle_score` / `episode_clear` / `city_clear`。対象は通常の `episodeId` または特殊戦の `battleId` のどちらか一方を指定します。特殊戦の `episode_clear` はその対決の初完了を条件とし、観光エピソード数や都市のクリア条件は増やしません。`minScore` は好成績報酬だけに指定します。特殊戦の既存 `completionReward` は `battle_complete` として共通の報酬処理で扱います。IDは保存に使うため、公開後に変更しないでください。ミラノの `firstClearReward`（`chapter_milano_first_clear`、4AP）は『最後の晩餐』の `episode_clear` 報酬で、都市クリアのIDとは別です。章末の短い地の文はこのJSON、人物の台詞はInkに置きます。
 
-フィナーレの `epilogueStoryId` は都市ごとに設定します（ミラノは `milano/sound_epilogue`）。Inkに名前・呼称・`romance_stage`・`ending_reached` を渡し、恋愛効果や選択肢は許可しません。デート間の固定順序はなく、実体験だけを思い出として参照します。都市クリアと交際状態は別々に記録します。
+フィナーレの `epilogueStoryId` は都市ごとに設定します（ミラノは `epilogues/milano`）。Inkに名前・呼称・`romance_stage`・`ending_reached` を渡し、恋愛効果や選択肢は許可しません。デート間の固定順序はなく、実体験だけを思い出として参照します。都市クリアと交際状態は別々に記録します。
 
 ## 実装とセーブ
 

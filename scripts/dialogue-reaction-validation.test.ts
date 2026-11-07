@@ -70,7 +70,7 @@ it("integrates date and battle annotations through the real content pipeline", a
       entries: [
         { storyId: "milano/cafe_tourism_01", speaker: "heroine", text: "「昔、大聖堂の石をこの運河で運んだんだって」", targetCharacterId: "heroine", expression: "smile" },
         { storyId: "battles/milano_castello", speaker: "enemy", text: "「まだ驚かないで。驚きの整理番号が出ていない」", targetCharacterId: "enemy", mark: "question" },
-        { storyId: "battles/milano_last_supper_b_rebuttal", speaker: "heroine", text: "「待って。本当に、全部が同じ理由なんですか？」", targetCharacterId: "heroine", mark: "question" },
+        { storyId: "battles/milano_special_b_last_supper_rebuttal", speaker: "heroine", text: "「待って。本当に、全部が同じ理由なんですか？」", targetCharacterId: "heroine", mark: "question" },
       ],
     }));
     await expect(buildContent(fixture, false)).resolves.toBeDefined();

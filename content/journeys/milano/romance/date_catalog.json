@@ -8,7 +8,7 @@
       "descriptionJa": "ロースタリーで彼女の一杯をうらやんだことから、味見の順番を二人で決める。",
       "apCost": 2,
       "minRomanceStage": 1,
-      "storyId": "milano/sound_cafe_01",
+      "storyId": "dates/milano_date_cafe",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -61,7 +61,7 @@
       "apCost": 3,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_walk_01",
+      "storyId": "dates/milano_date_duomo_square_walk",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -112,7 +112,7 @@
       "apCost": 0,
       "minRomanceStage": 2,
       "minAffection": 0,
-      "storyId": "milano/sound_invitation_01",
+      "storyId": "dates/milano_date_invitation",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -162,7 +162,7 @@
       "apCost": 3,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_night_01",
+      "storyId": "dates/milano_date_naviglio_night",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -213,7 +213,7 @@
       "apCost": 0,
       "minRomanceStage": 2,
       "minAffection": 0,
-      "storyId": "milano/sound_confession_01",
+      "storyId": "dates/milano_date_confession",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -288,7 +288,7 @@
       "apCost": 0,
       "minRomanceStage": 2,
       "minAffection": 0,
-      "storyId": "milano/sound_reassurance_01",
+      "storyId": "dates/milano_date_reassurance",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -337,7 +337,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_city_date_01",
+      "storyId": "dates/milano_date_galleria_revisit",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -392,7 +392,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_la_scala_date_01",
+      "storyId": "dates/milano_date_la_scala",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_galleria_episode"
@@ -444,7 +444,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_brera_date_01",
+      "storyId": "dates/milano_date_brera",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_last_supper_episode"
@@ -496,7 +496,7 @@
       "apCost": 1,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_navigli_date_01",
+      "storyId": "dates/milano_date_navigli",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_castello_episode"
@@ -548,7 +548,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_san_satiro_date_01",
+      "storyId": "dates/milano_date_san_satiro",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_duomo_episode"
@@ -600,7 +600,7 @@
       "apCost": 2,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_starbucks_roastery_date_01",
+      "storyId": "dates/milano_date_starbucks_roastery",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_galleria_episode"
@@ -652,7 +652,7 @@
       "apCost": 3,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_fondazione_prada_date_01",
+      "storyId": "dates/milano_date_fondazione_prada",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_last_supper_episode"
@@ -708,7 +708,7 @@
       "apCost": 0,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_rain_pause_01",
+      "storyId": "dates/milano_date_rain_pause",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -760,7 +760,7 @@
       "apCost": 0,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_recovery_01",
+      "storyId": "dates/milano_date_recovery",
       "requiredCompletedChapters": [
         "milano"
       ],
@@ -807,7 +807,7 @@
       "apCost": 1,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_novecento_date_01",
+      "storyId": "dates/milano_date_novecento",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_duomo_episode"
@@ -859,7 +859,7 @@
       "apCost": 1,
       "minRomanceStage": 1,
       "minAffection": 0,
-      "storyId": "milano/sound_maurizio_date_sound",
+      "storyId": "dates/milano_date_san_maurizio",
       "requiredCompletedChapters": [],
       "requiredCompletedEpisodeIds": [
         "milano_castello_episode"
