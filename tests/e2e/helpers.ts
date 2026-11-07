@@ -192,7 +192,10 @@ export const ops = {
   },
   /** The start button's name on a title in its normal state (no unreadable save); the arrow after it is hidden from the name. */
   startLabel: "旅をはじめる",
-  /** Title screen: choose the journey (a page load opens the first available one; its save, if any, opens with it). */
+  /**
+   * Title screen: choose the journey. A page load opens the playable journey last opened in this browser
+   * (in a new browser context, the first available one); its save, if any, opens with it.
+   */
   async chooseJourney(page: Page, journeyId: string) {
     await page.getByLabel("旅行編").selectOption(journeyId);
   },

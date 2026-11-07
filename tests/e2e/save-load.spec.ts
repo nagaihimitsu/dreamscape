@@ -310,7 +310,8 @@ test("the title offers no start or deletion over another journey's save, and dis
   const copied = (await allStorage(page))[saveKey(otherJourney)];
   expect(copied).toContain('"currentCityId":"milano"');
 
-  // The storage area cannot be read (e.g. blocked site data): Milano's title disables both.
+  // The storage area cannot be read (e.g. blocked site data): the title of the journey last opened
+  // (the other one, chosen above; the saves cannot be read, that preference can) disables both.
   await page.addInitScript(() => {
     const getItem = Storage.prototype.getItem;
     Storage.prototype.getItem = function (key: string) {

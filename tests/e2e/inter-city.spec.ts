@@ -42,8 +42,8 @@ test("finishing a journey's first city reads its ending and moves the journey to
   for (const field of ["playerName", "heroineName", "ap", "travelBudget", "completedCityIds", "completedEpisodeIds", "memories"] as const)
     expect(arrived[field], field).toEqual(finale[field]);
 
+  // A reload reopens the journey last opened on this device with its save, without choosing it again.
   await page.reload();
-  await ops.chooseJourney(page, journeyId);
   await expect(menu).toHaveAttribute("aria-label", `${to.nameJa}の行き先`);
   expect(await readSave(page, journeyId)).toEqual(arrived);
 });

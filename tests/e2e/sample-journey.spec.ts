@@ -151,9 +151,8 @@ test("the sample journey plays from a new journey through its city finale and ep
   await expect(page.getByTestId("city-progress")).toContainText("都市クリア");
   await expect(page.getByRole("button", { name: /へ出発/ })).toHaveCount(0);
 
-  // A reload resumes the finished journey exactly as saved.
+  // A reload resumes the finished journey exactly as saved: the journey last opened on this device opens by itself.
   await page.reload();
-  await ops.chooseJourney(page, JOURNEY);
   await expect(menu).toBeVisible();
   expect(await readSave(page, JOURNEY)).toEqual(ended);
 });
