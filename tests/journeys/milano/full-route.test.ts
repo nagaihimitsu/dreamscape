@@ -15,14 +15,14 @@ import { newJourney } from "../../../src/dev/scenario-builders";
 import { advanceBattle, answerBattle, getActiveBattleContent, getReasoningContext, selectReasoningClue, submitBattleEvidence } from "../../../src/domain/battle";
 import { leaveBattleResult } from "../../../src/domain/chapter";
 import {
-  advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterStoryCanFinish,
+  advanceEncounter, answerEncounterQuiz, chooseEncounter, continueTourismEncounters, encounterCanFinish,
   finishEncounter, getActiveEncounterDefinition, getEncounterOptionAvailability, proceedFromTourism,
 } from "../../../src/domain/encounter";
 import { advanceCityEpilogue, startCityEpilogue } from "../../../src/domain/epilogue";
 import { advanceDate, chooseDate, confessionResult, finishDate, startDate, validateGameState, type GameState } from "../../../src/domain/game";
 import { claimPendingRewards } from "../../../src/domain/rewards";
 import { advanceTourismGuide, skipTourismGuide } from "../../../src/domain/tourism";
-import { getNextTravelWaitTime, getTravelDestinations } from "../../../src/domain/travel-destinations";
+import { getTravelDestinations, getTravelWaitOptions } from "../../../src/domain/travel-destinations";
 import { applyPlayerAction } from "../../../src/domain/player-action";
 import { beginTravelEvent, getTravelEventAvailability, getTravelSleepOptions, sleepAtHotel, waitForTravel } from "../../../src/domain/travel-game";
 
@@ -52,9 +52,9 @@ function nextFromMap(s: GameState): GameState {
     const mode = event?.routes.find((item) => getTravelEventAvailability(s, id, item.mode).available)?.mode;
     if (mode) return act(s, (current) => beginTravelEvent(current, id, mode, current.revision, roll));
   }
-  const next = getNextTravelWaitTime(s);
-  if (next !== null && waitForTravel(s, next - s.travel.minute, s.revision) !== s)
-    return act(s, (current) => waitForTravel(current, next - current.travel.minute, current.revision));
+  // TravelActions' 「次の時刻まで待つ」 (the wait to the next opening), when the screen offers it.
+  const wait = getTravelWaitOptions(s).find((option) => option.until !== null && option.available);
+  if (wait) return act(s, (current) => waitForTravel(current, wait.minutes, current.revision));
   const night = getTravelSleepOptions(s).find((option) => option.plan.ok);
   expect(night, "no way to start an event, wait or rest").toBeDefined();
   return act(s, (current) => sleepAtHotel(current, night!.route.mode, current.revision, night!.route.viaPlaceId ?? null));
@@ -74,7 +74,7 @@ function encounterStep(s: GameState, allCorrect: boolean): GameState {
     expect(choice, `${event.id}: no usable choice`).toBeDefined();
     return act(s, (current) => chooseEncounter(current, choice!.index, current.revision));
   }
-  const finish = active.frame.ended && (active.phase === "outcome" || encounterStoryCanFinish(s));
+  const finish = encounterCanFinish(s);
   return act(s, (current) => continueTourismEncounters(current, finish ? finishEncounter(current, current.revision) : advanceEncounter(current, current.revision), roll));
 }
 

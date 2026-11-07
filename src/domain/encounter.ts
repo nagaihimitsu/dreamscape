@@ -97,7 +97,7 @@ function hasLandmarkBattle(state: GameState, event: EncounterDefinition): boolea
 }
 
 /** A deferred quiz's leave branch, or its pre-battle visit, ends without the quiz. */
-export function encounterStoryCanFinish(state: GameState): boolean {
+function encounterStoryCanFinish(state: GameState): boolean {
   const active = state.activeEncounter;
   if (!active || active.phase !== "story" || !active.frame.ended || !active.selectedOptionId) return false;
   const event = getActiveEncounterDefinition(active);

@@ -7,6 +7,7 @@ import {
   advanceEncounter,
   answerEncounterQuiz,
   chooseEncounter,
+  encounterCanFinish,
   finishEncounter,
   getEncounterAvailability,
   startEncounter,
@@ -28,7 +29,7 @@ function play(state: GameState, id: string, optionId: string, roll = 0, answer =
       const choice = active.frame.choices.find((item) => item.optionId === optionId);
       expect(choice, `${id}/${optionId}`).toBeDefined();
       next = chooseEncounter(next, choice!.index, next.revision);
-    } else if (active.frame.ended && (active.phase === "outcome" || (active.phase === "story" && id !== "galleria_fortune"))) {
+    } else if (encounterCanFinish(next)) {
       const done = finishEncounter(next, next.revision);
       expect(done.activeEncounter).toBeNull();
       expect(finishEncounter(done, next.revision)).toEqual(done);
