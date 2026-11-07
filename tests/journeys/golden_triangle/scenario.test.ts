@@ -10,6 +10,7 @@ import { isDateUnlockedForTravel } from "../../../src/domain/date-rules";
 import { advanceCityEpilogue, completeArrivalLogo, startCityArrival } from "../../../src/domain/epilogue";
 import { advanceDate, chooseDate, createGame, finishDate, startDate, validateGameState, type GameState } from "../../../src/domain/game";
 import { advanceTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
+import { correctAnswer, playBattleToResult, wrongAnswer } from "../../../src/dev/scenario-builders";
 
 /** Exercise the actual published scripts, questions and definitions, not Debug fixtures. */
 describe("authored Golden Triangle journey", () => {
@@ -38,19 +39,10 @@ describe("authored Golden Triangle journey", () => {
       return loaded.state;
     };
     state = checkpoint(startCityArrival(state, state.revision));
+    // Every step of the battle is saved and loaded again on the way to its result.
     const playBattle = (initial: GameState, correct: boolean) => {
-      let current = initial;
-      for (let steps = 0; current.activeBattle?.phase !== "result"; steps++) {
-        expect(steps).toBeLessThan(300);
-        current = checkpoint(current);
-        const active = current.activeBattle;
-        if (!active) throw new Error("Expected an authored battle");
-        if (active.phase === "question") {
-          const question = getActiveBattleContent(active).quiz.questions[active.roundIndex];
-          current = answerBattle(current, correct ? question.correctOptionId : question.options.find((option) => option.id !== question.correctOptionId)!.id, current.revision);
-        } else current = advanceBattle(current, current.revision);
-      }
-      return checkpoint(leaveBattle(current, current.revision));
+      const result = playBattleToResult(checkpoint(initial), { answer: correct ? correctAnswer : wrongAnswer, after: (next) => checkpoint(next) });
+      return checkpoint(leaveBattle(result, result.revision));
     };
     for (const [cityIndex, { id: cityId }] of journey.cities.entries()) {
       expect(state.currentCityId).toBe(cityId);
