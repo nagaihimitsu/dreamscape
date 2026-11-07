@@ -651,6 +651,8 @@ footer span {
   height: 18px;
   margin: 2px 0 0;
 }
+/* The text speed select fills its 44 px row instead of the browser's ~19 px box. */
+.modal .translation-setting select { min-height: 44px; margin: -10px 0; }
 @media (max-width: 600px) {
   dialog.modal[aria-labelledby="settings-title"] {
     padding: 18px 22px;
