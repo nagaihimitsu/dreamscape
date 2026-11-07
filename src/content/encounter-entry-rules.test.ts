@@ -21,14 +21,14 @@ describe("location-based encounters", () => {
       .toThrow("A quiz after the landmark battle needs a tourism encounter with a quiz: duomo_string");
   });
 
-  it("opens duomo_string after the Duomo and scala_mint after La Scala, and keeps the Galleria encounters (the dormant galleria_cafe/gift/outing included) closed", () => {
+  it("opens duomo_string after the Duomo and scala_mint after La Scala, and keeps the Galleria encounters closed", () => {
     const fresh = createGame("たいち", "あゆみ");
     const afterDuomo = { ...fresh, completedEpisodeIds: ["milano_duomo_episode"] };
     expect(getEncounterAvailability(fresh, "duomo_string").available).toBe(false);
     expect(getEncounterAvailability(afterDuomo, "duomo_string").available).toBe(true);
     expect(getEncounterAvailability(afterDuomo, "galleria_print").available).toBe(false);
     expect(getEncounterAvailability(afterDuomo, "scala_mint").available).toBe(false);
-    for (const id of ["galleria_cafe", "galleria_gift", "galleria_outing", "galleria_fortune"])
+    for (const id of ["galleria_ticket_press", "galleria_fortune"])
       expect(getEncounterAvailability(afterDuomo, id).available).toBe(false);
 
     const afterScala = { ...afterDuomo, battleRecords: [{ battleId: "milano_la_scala_b01", firstScore: 0, lastScore: 0, bestScore: 0, attempts: 1 }] };

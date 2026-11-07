@@ -181,7 +181,7 @@ Inkの `VAR player_name` / `heroine_name` / `player_address` は設定名を受�
 
 交流Inkは名前変数を宣言し、英語3択を一度置きます。選択肢の英文はInkにだけ記述し、費用やアイテム操作がある場合は安定した `option` IDでカタログのルールと結び付けます。選択後の日本語の会話はどの枝も完走させ、効果や残高操作をInkに書きません。正誤のない返答と、正解がある任意の文化クイズを区別します。小さな観光クイズは既存の問題スキーマを使い、事実・伝承・創作を混同せず出典の該当箇所を確認してください。クイズの賞品と当落後のInk、アイテムの贈与・使用、既存報酬と共有するAPの条件はカタログで参照します。
 
-交流Inkから以前の品物を参照する場合は `EXTERNAL has_item_status(id, status)` を宣言し、例えば `has_item_status("galleria_souvenir", "gifted")` のように登録済みIDと `held`・`gifted`・`used` の固定文字列を使います。状態の変更はゲーム側だけが行います。この参照は現時点では道中交流のInkで使用できます。`npm run content:check` は重複ID、参照、選択肢と分岐、出典の形式、アイテム参照を検証します。既存の戦闘・デートInkを改稿した場合、過去の途中セーブを再開できなくなることがあります。
+交流Inkから以前の品物を参照する場合は `EXTERNAL has_item_status(id, status)` を宣言し、例えば `has_item_status("blue_pick", "gifted")` のように登録済みIDと `held`・`gifted`・`used` の固定文字列を使います。状態の変更はゲーム側だけが行います。この参照は現時点では道中交流のInkで使用できます。`npm run content:check` は重複ID、参照、選択肢と分岐、出典の形式、アイテム参照を検証します。既存の戦闘・デートInkを改稿した場合、過去の途中セーブを再開できなくなることがあります。
 
 都市（`cities/<都市ID>.json`）の `id`、`countryCode`、`nameJa`、`themeJa`、`landmarkIdsPlanned`、`productionStatus` は都市と場所の識別、表示、予定と状態。`firstClearReward` は都市の初回クリア報酬の `rewardSourceId` と `ap` です（`ap` が正の場合、同じIDの `episode_clear` 報酬を一つの観光エピソードに設定します。0なら設定しません）。`progression/journey.json` の `episodes` は順路（各都市の最初のエピソードは前提なし）、`rewards` は一度限りの報酬です。各エピソードの `id`、`kind`、`cityId`、`landmarkId`、`battleId`、`requiredEpisodeIds`、`titleJa` / `descriptionJa` / `clearTitleJa` / `clearDescriptionJa` は識別・参照・順序・表示文。都市フィナーレは `kind: "city_finale"`、`landmarkId: null` と `epilogueStoryId` を指定します。
 

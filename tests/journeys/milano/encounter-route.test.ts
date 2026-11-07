@@ -87,20 +87,11 @@ describe("Milan encounter route", () => {
     lost = play(lost, "galleria_fortune", "believe", 0);
     expect(lost.encounterRewards.galleria_fortune.roll).toBe(2500);
     expect(lost.inventory.galleria_ticket).toBeUndefined();
-
-    // The bookmark from the dormant Galleria cafe can still be offered at Brera once its case is complete.
-    const withBookmark: GameState = {
-      ...initial,
-      completedEncounterIds: ["galleria_cafe", "galleria_outing"],
-      inventory: { galleria_souvenir: "held" },
-      battleRecords: [...initial.battleRecords, { battleId: "milano_brera_c01", attempts: 1, firstScore: 2, bestScore: 2, lastScore: 2 }],
-    };
-    expect(play(withBookmark, "brera_bookmark", "offer").inventory.galleria_souvenir).toBe("gifted");
   });
 });
 
 describe("Milan place entry", () => {
-  it("gates encounters by visited place and case, keeps dormant ones closed and allows a free exit", () => {
+  it("gates encounters by visited place and case and allows a free exit", () => {
     const fresh = createGame("ユウ", "ミオ");
     const first: GameState = { ...fresh, completedEpisodeIds: ["milano_duomo_episode"] };
     // A completed episode in a real save always carries its completed battle.
@@ -112,7 +103,6 @@ describe("Milan place entry", () => {
     expect(getEncounterAvailability(first, "duomo_string").available).toBe(true);
     expect(getEncounterAvailability(first, "galleria_fortune").available).toBe(false);
     expect(getEncounterAvailability(second, "galleria_print").available).toBe(false);
-    expect(getEncounterAvailability(second, "galleria_cafe").available).toBe(false);
     expect(getEncounterAvailability(second, "scala_mint").available).toBe(false);
 
     let state = startEncounter(second, "galleria_fortune", () => 100);

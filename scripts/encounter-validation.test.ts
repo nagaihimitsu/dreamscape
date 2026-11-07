@@ -92,14 +92,15 @@ describe("encounter content validation", () => {
 
   it("rejects missing, mismatched and ambiguously awarded items", () => {
     const data = input();
-    const gift = data.catalog.encounters.find((event) => event.id === "galleria_gift")!;
+    const gift = data.catalog.encounters.find((event) => event.id === "castello_pick")!;
     gift.options[0].giftItemId = "missing_item";
     expect(() => validateEncounterContent(data)).toThrow("Unknown encounter item");
-    gift.options[0].giftItemId = "galleria_souvenir";
+    gift.options[0].giftItemId = "blue_pick";
     gift.options[0].requiresItemId = "galleria_ticket";
     expect(() => validateEncounterContent(data)).toThrow("matching requirement");
-    gift.options[0].requiresItemId = "galleria_souvenir";
-    data.catalog.encounters.find((event) => event.id === "galleria_cafe")!.completionItemId = "galleria_ticket";
+    gift.options[0].requiresItemId = "blue_pick";
+    // The ticket's source is the Fortune quiz; a second source would make the award ambiguous.
+    data.catalog.encounters.find((event) => event.id === "duomo_string")!.completionItemId = "galleria_ticket";
     expect(() => validateEncounterContent(data)).toThrow("Duplicate encounter item source");
   });
 
@@ -115,13 +116,13 @@ describe("encounter content validation", () => {
     data.journey.episodes.push({ ...data.journey.episodes[0], id: "fixture_episode", cityId: "fixture_city" });
     data.catalog.items.push({ id: "foreign_item", cityId: "fixture_city", nameJa: "別の街の品", descriptionJa: "別の街で入手する品。" });
 
-    const cafe = data.catalog.encounters.find((event) => event.id === "galleria_cafe")!;
-    const originalCompletion = cafe.completionItemId;
-    cafe.completionItemId = "foreign_item";
+    const giver = data.catalog.encounters.find((event) => event.id === "duomo_string")!;
+    const originalCompletion = giver.completionItemId;
+    giver.completionItemId = "foreign_item";
     expect(() => validateEncounterContent(data)).toThrow("Encounter completion item city mismatch");
-    cafe.completionItemId = originalCompletion;
+    giver.completionItemId = originalCompletion;
 
-    const gift = data.catalog.encounters.find((event) => event.id === "galleria_gift")!;
+    const gift = data.catalog.encounters.find((event) => event.id === "castello_pick")!;
     for (const field of ["requiresItemId", "consumeItemId", "giftItemId"] as const) {
       const option = gift.options[0];
       const previous = option[field];
@@ -143,7 +144,7 @@ describe("encounter content validation", () => {
 
   it("requires each item to have a gift or use opportunity in its city", () => {
     const data = input();
-    for (const id of ["galleria_souvenir", "galleria_ticket"]) {
+    for (const id of ["blue_pick", "galleria_ticket"]) {
       const uses = data.catalog.encounters.flatMap((event) => event.options.flatMap((option) =>
         (["giftItemId", "consumeItemId"] as const).filter((field) => option[field] === id).map((field) => ({ option, field }))));
       expect(uses.length).toBeGreaterThan(0);
@@ -170,7 +171,7 @@ describe("encounter content validation", () => {
     event.quiz!.wonStoryId = "encounters/missing";
     expect(() => validateEncounterContent(data)).toThrow("Unknown encounter story");
     event.quiz!.wonStoryId = originalWonStoryId;
-    data.catalog.encounters.find((item) => item.id === "galleria_gift")!.options[0].responseProfileId = "missing_profile";
+    data.catalog.encounters.find((item) => item.id === "castello_pick")!.options[0].responseProfileId = "missing_profile";
     expect(() => validateEncounterContent(data)).toThrow("Unknown encounter response profile");
   });
 
@@ -180,7 +181,8 @@ describe("encounter content validation", () => {
     fortune.options[0].cost = 4;
     expect(() => validateEncounterContent(data)).toThrow("Repeatable encounter must be free");
     fortune.options[0].cost = 0;
-    const gift = data.catalog.encounters.find((event) => event.id === "galleria_gift")!;
+    const gift = data.catalog.encounters.find((event) => event.id === "castello_pick")!;
+    expect(gift.options[2].deferCompletion).toBe(true);
     gift.options[2].cost = 1;
     expect(() => validateEncounterContent(data)).toThrow("Deferred encounter choice must have no cost or effects");
     gift.options[2].cost = 0;
@@ -197,10 +199,10 @@ describe("encounter content validation", () => {
     expect(() => validateEncounterContent(data)).not.toThrow();
     for (const change of [
       () => { event.options[0].cost = 1; },
-      () => { event.options[0].requiresItemId = "galleria_souvenir"; },
+      () => { event.options[0].requiresItemId = "blue_pick"; },
       () => { event.options[0].responseProfileId = "honest"; },
       () => { event.completionMoney = 1; },
-      () => { event.completionItemId = "galleria_souvenir"; },
+      () => { event.completionItemId = "blue_pick"; },
     ]) {
       const snapshot = structuredClone(event);
       change();
@@ -232,11 +234,12 @@ describe("encounter content validation", () => {
 
   it("takes English choices from Ink, rejects an option textEn that differs from its Ink choice, and rejects Ink effects", () => {
     const data = input();
-    const event = data.catalog.encounters.find((item) => item.id === "galleria_cafe")!;
+    const event = data.catalog.encounters.find((item) => item.id === "galleria_print")!;
     const source = sources[event.storyId];
-    data.stories[event.storyId] = compileInk(source.replace("Two coffees, please.", "Something else, please."));
+    expect(source).toContain("Show us a fresh print, please.");
+    data.stories[event.storyId] = compileInk(source.replace("Show us a fresh print, please.", "Something else, please."));
     expect(() => validateEncounterContent(data)).not.toThrow();
-    event.options[0].textEn = "Two coffees, please.";
+    event.options[0].textEn = "Show us a fresh print, please.";
     expect(() => validateEncounterContent(data)).toThrow("Encounter choice does not match data");
     delete event.options[0].textEn;
     data.stories[event.storyId] = compileInk(source.replace("# speaker: narrator", `# effect: ${data.context.effectIds[0]}\n# speaker: narrator`));
@@ -244,8 +247,8 @@ describe("encounter content validation", () => {
   });
 
   it("rejects dynamic or unknown item queries and unrecognised statuses", () => {
-    expect(validateItemReferences('EXTERNAL has_item_status(id, status)\n{has_item_status("galleria_souvenir", "gifted"): はい}', ["galleria_souvenir"])).toEqual(["galleria_souvenir"]);
-    for (const call of ['has_item_status(item, "held")', 'has_item_status("unknown", "held")', 'has_item_status("galleria_souvenir", "sold")'])
-      expect(() => validateItemReferences(call, ["galleria_souvenir"])).toThrow("known literal item and status");
+    expect(validateItemReferences('EXTERNAL has_item_status(id, status)\n{has_item_status("blue_pick", "gifted"): はい}', ["blue_pick"])).toEqual(["blue_pick"]);
+    for (const call of ['has_item_status(item, "held")', 'has_item_status("unknown", "held")', 'has_item_status("blue_pick", "sold")'])
+      expect(() => validateItemReferences(call, ["blue_pick"])).toThrow("known literal item and status");
   });
 });

@@ -1,7 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { completedDateCount, createGame, validateGameState, type GameState } from "./game";
+import { compileInk } from "../../scripts/ink-validation";
 import { encounters } from "../content/encounters";
-import { responseProfiles } from "../content";
+import type { EncounterDefinition } from "../content/encounter-schemas";
+import { responseProfiles, stories } from "../content";
 import { finishEpisode } from "../dev/scenario-builders";
 import { loadGame, saveGame, type StorageLike } from "../persistence";
 import { startEncounter, startTourismEncounter, chooseEncounter, advanceEncounter, answerEncounterQuiz, finishEncounter, getEncounterAvailability, getEncounterOptionAvailability, validateEncounterState } from "./encounter";
@@ -72,23 +74,140 @@ function fortune(initial: GameState, answer: "A" | "B", roll: number): GameState
   return finish(state);
 }
 
-describe("travel encounters", () => {
-  // Exercise dormant payment/gift rules without offering them in live play.
-  const currentEntries = [...encounters.encounters];
-  const useCurrentCatalog = () => { encounters.encounters.splice(0, encounters.encounters.length, ...currentEntries); };
-  beforeEach(() => {
-    // Reuse the existing dormant payment/gift examples as domain fixtures,
-    // but exercise the current Fortune scene and its saved lottery.
-    const examples = structuredClone(currentEntries);
-    for (const entry of examples) {
-      if (entry.availability === "dormant") delete entry.availability;
+// Test-only encounters at the Galleria with test Ink: a café that charges, pays back on completion and hands over a
+// souvenir; a gift of that souvenir with response profiles; an outing that takes the Fortune ticket or a fee and reads
+// the souvenir's state in Ink. No published encounter combines these rules (the dormant Milano ones that did were
+// removed in v14), so these fixtures exercise them next to the current Fortune scene and its saved lottery.
+const SOUVENIR = "test_souvenir";
+const CAFE = "test_cafe";
+const GIFT = "test_gift";
+const OUTING = "test_outing";
+const testInk: Record<string, string> = {
+  [CAFE]: `VAR player_name = ""
+VAR heroine_name = ""
+# background: milano_galleria
+# speaker: narrator
+試験用のカフェ。店先で注文票が風に飛んだ。
+# speaker: heroine
+「拾えた。お礼に何か頼もうか。」
+* [Two coffees, please.]
+    # speaker: heroine
+    「小さいけれど、濃いね。」
+    -> done
+* [A cappuccino and a pastry, please.]
+    # speaker: heroine
+    「お菓子は半分にしよう。」
+    -> done
+* [Nothing for now, thank you.]
+    # speaker: heroine
+    「香りだけで少し休めた。」
+    -> done
+=== done ===
+# speaker: narrator
+店員はお礼に小銭と、雄牛のしおりを渡した。
+-> END`,
+  [GIFT]: `VAR player_name = ""
+VAR heroine_name = ""
+VAR romance_result = "positive"
+# background: milano_galleria
+# speaker: heroine
+「そのしおり、どうするの？」
+* [Would you like this bookmark?]
+    { romance_result == "positive":
+        # speaker: heroine
+        「いいの？　次に本を開いたら思い出しそう。」
+    - else:
+        # speaker: heroine
+        「ありがとう。でも、二人で使う方がいいな。」
     }
-    encounters.encounters.splice(0, encounters.encounters.length, ...examples);
+    -> given
+* [This bookmark made me think of you.]
+    { romance_result == "positive":
+        # speaker: heroine
+        「私を？　理由は今度聞かせて。」
+    - else:
+        # speaker: heroine
+        「ありがとう。でも、その理由はちゃんと聞いておきたいな。」
+    }
+    -> given
+* [I'll keep it for now.]
+    # speaker: heroine
+    「うん。急いで決めなくていいよ。」
+    -> END
+=== given ===
+# speaker: narrator
+彼女はしおりを手帳にはさんだ。
+-> END`,
+  [OUTING]: `VAR player_name = ""
+VAR heroine_name = ""
+EXTERNAL has_item_status(id, status)
+# background: milano_galleria
+# speaker: narrator
+小さな臨時展示の案内が出ていた。
+* [Use the ticket.]
+    # speaker: narrator
+    展示券を渡して中へ入った。
+    -> exhibition
+* [Buy an entry ticket.]
+    # speaker: narrator
+    入場料を払って中へ入った。
+    -> exhibition
+* [Not now.]
+    # speaker: heroine
+    「展示はまた今度にしよう。」
+    -> END
+=== exhibition ===
+# speaker: heroine
+「同じ床に、違う街の印が並んでいるんだね。」
+{has_item_status("${SOUVENIR}", "gifted"):
+    「しおりの牛には、手帳で待っててもらおう。」
+}
+-> END`,
+};
+/** A test encounter at the Galleria, in the shape of the published Galleria print stall (city, landmark, sources). */
+function testEncounter(id: string, options: EncounterDefinition["options"], extra: Partial<EncounterDefinition> = {}): EncounterDefinition {
+  const base = structuredClone(encounters.encounters.find((event) => event.id === "galleria_print")!);
+  return { ...base, id, titleJa: "試験用の寄り道", descriptionJa: "試験用の寄り道。", storyId: `encounters/${id}`, options, ...extra };
+}
+const testEncounters = (): EncounterDefinition[] => [
+  testEncounter(CAFE, [
+    { id: "coffee", translationJa: "コーヒーを二杯ください。", cost: 4 },
+    { id: "coffee_pastry", translationJa: "カプチーノとお菓子を一つずつください。", cost: 8 },
+    { id: "nothing", translationJa: "今は何もいりません、ありがとう。", cost: 0 },
+  ], { completionMoney: 2, completionItemId: SOUVENIR }),
+  testEncounter(GIFT, [
+    { id: "offer", translationJa: "このしおり、いりますか？", cost: 0, requiresItemId: SOUVENIR, giftItemId: SOUVENIR, responseProfileId: "attentive" },
+    { id: "thought", translationJa: "このしおりを見て、あなたを思い出しました。", cost: 0, requiresItemId: SOUVENIR, giftItemId: SOUVENIR, responseProfileId: "honest" },
+    { id: "later", translationJa: "今は自分で持っておく。", cost: 0, deferCompletion: true },
+  ]),
+  testEncounter(OUTING, [
+    { id: "ticket", translationJa: "展示券を使う。", cost: 0, requiresItemId: "galleria_ticket", consumeItemId: "galleria_ticket" },
+    { id: "buy", translationJa: "入場券を買う。", cost: 4 },
+    { id: "later", translationJa: "今はやめておく。", cost: 0, deferCompletion: true },
+  ]),
+];
+const testEncounterIn = (id: string) => encounters.encounters.find((event) => event.id === id)!;
+
+describe("travel encounters", () => {
+  const currentEntries = [...encounters.encounters];
+  const currentItems = [...encounters.items];
+  /** The published catalog only (the test encounters and the souvenir removed). */
+  const useCurrentCatalog = () => {
+    encounters.encounters.splice(0, encounters.encounters.length, ...currentEntries);
+    encounters.items.splice(0, encounters.items.length, ...currentItems);
+  };
+  beforeEach(() => {
+    encounters.encounters.push(...testEncounters());
+    encounters.items.push({ id: SOUVENIR, cityId: "milano", nameJa: "雄牛のしおり", descriptionJa: "試験用のカフェで受け取ったしおり。" });
+    for (const [id, source] of Object.entries(testInk)) stories[`encounters/${id}`] = compileInk(source, `encounters/${id}.ink`);
   });
-  afterEach(useCurrentCatalog);
+  afterEach(() => {
+    useCurrentCatalog();
+    for (const id of Object.keys(testInk)) delete stories[`encounters/${id}`];
+  });
 
   it("charges and rewards currency-neutral amounts once", () => {
-    const cafe = encounters.encounters.find((event) => event.id === "galleria_cafe")!;
+    const cafe = testEncounterIn(CAFE);
     const option = cafe.options[0];
     option.cost = 7;
     cafe.completionMoney = 3;
@@ -101,11 +220,13 @@ describe("travel encounters", () => {
   });
 
   it("does not start dormant encounters and rejects a changed active definition", () => {
-    const cafe = untilChoice(startEncounter(ready(), "galleria_cafe", () => 0));
-    useCurrentCatalog();
-    expect(getEncounterAvailability(ready(), "galleria_cafe").available).toBe(false);
-    expect(getEncounterAvailability(ready(), "galleria_gift").available).toBe(false);
-    expect(getEncounterAvailability(ready(), "galleria_outing").available).toBe(false);
+    const cafe = untilChoice(startEncounter(ready(), CAFE, () => 0));
+    for (const id of [CAFE, GIFT, OUTING]) testEncounterIn(id).availability = "dormant";
+    const fresh = ready();
+    for (const id of [CAFE, GIFT, OUTING]) {
+      expect(getEncounterAvailability(fresh, id)).toEqual({ available: false, reason: "この寄り道は自由時間からは選べません。" });
+      expect(startEncounter(fresh, id, () => 0)).toBe(fresh);
+    }
     expect(() => restored(cafe)).toThrow("道中交流の保存状態が一致しません");
   });
 
@@ -133,12 +254,12 @@ describe("travel encounters", () => {
     }
   });
   it("rejects an altered encounter fingerprint instead of resuming it", () => {
-    const started = startEncounter(ready(), "galleria_cafe", () => 0);
+    const started = startEncounter(ready(), CAFE, () => 0);
     const changed = { ...started, activeEncounter: { ...started.activeEncounter!, contentHash: "outdated" } };
     expect(() => restored(changed)).toThrow("道中交流の保存状態が一致しません");
   });
   it("charges the chosen amount once, preserves the completed café reward and rejects insufficient funds", () => {
-    let state = untilChoice(startEncounter(ready(), "galleria_cafe", () => 0));
+    let state = untilChoice(startEncounter(ready(), CAFE, () => 0));
     const startingBudget = state.travelBudget;
     const poor = { ...state, travelBudget: 3 };
     expect(getEncounterOptionAvailability(poor, 0).available).toBe(false);
@@ -147,13 +268,13 @@ describe("travel encounters", () => {
     expect(state.travelBudget).toBe(startingBudget - 4);
     state = finish(state);
     expect(state.travelBudget).toBe(startingBudget - 4 + 2);
-    expect(state.inventory.galleria_souvenir).toBe("held");
-    expect(startEncounter(state, "galleria_cafe", () => 0)).toBe(state);
+    expect(state.inventory[SOUVENIR]).toBe("held");
+    expect(startEncounter(state, CAFE, () => 0)).toBe(state);
   });
   it("does not allow a purchase to spend money reserved for the return journey", () => {
     const initial = ready();
     const reserved = { ...initial, travelBudget: 8, travel: { ...initial.travel, returnReserve: 5 } };
-    const choice = untilChoice(startEncounter(reserved, "galleria_cafe", () => 0));
+    const choice = untilChoice(startEncounter(reserved, CAFE, () => 0));
     expect(getEncounterOptionAvailability(choice, 0).available).toBe(false);
     expect(chooseEncounter(choice, 0, choice.revision)).toBe(choice);
     expect(choice.travelBudget).toBe(8);
@@ -162,14 +283,14 @@ describe("travel encounters", () => {
   });
   it("allows the free conversation, the gift to be deferred, and only one transfer", () => {
     const initial = ready();
-    let state = finish(choose(startEncounter(initial, "galleria_cafe", () => 0), 2));
+    let state = finish(choose(startEncounter(initial, CAFE, () => 0), 2));
     expect(state.travelBudget).toBe(initial.travelBudget + 2);
-    state = finish(choose(startEncounter(state, "galleria_gift", () => 0), 2));
-    expect(state.inventory.galleria_souvenir).toBe("held");
-    expect(state.completedEncounterIds).not.toContain("galleria_gift");
-    state = finish(choose(startEncounter(state, "galleria_gift", () => 0), 0));
-    expect(state.inventory.galleria_souvenir).toBe("gifted");
-    expect(startEncounter(state, "galleria_gift", () => 0)).toBe(state);
+    state = finish(choose(startEncounter(state, GIFT, () => 0), 2));
+    expect(state.inventory[SOUVENIR]).toBe("held");
+    expect(state.completedEncounterIds).not.toContain(GIFT);
+    state = finish(choose(startEncounter(state, GIFT, () => 0), 0));
+    expect(state.inventory[SOUVENIR]).toBe("gifted");
+    expect(startEncounter(state, GIFT, () => 0)).toBe(state);
   });
   it("draws only on the first perfect quiz even after a failed attempt, and never re-awards a ticket", () => {
     let state = fortune(ready(), "A", 0);
@@ -178,7 +299,7 @@ describe("travel encounters", () => {
     state = fortune(state, "B", 0);
     expect(state.encounterRewards.galleria_fortune).toEqual({ roll: 0, chancePercent: 25, won: true });
     expect(state.inventory.galleria_ticket).toBe("held");
-    state = finish(choose(startEncounter(state, "galleria_outing", () => 0), 0));
+    state = finish(choose(startEncounter(state, OUTING, () => 0), 0));
     expect(state.inventory.galleria_ticket).toBe("used");
     state = fortune(state, "B", 0);
     expect(state.inventory.galleria_ticket).toBe("used");
@@ -191,18 +312,18 @@ describe("travel encounters", () => {
     state = fortune(state, "B", 0);
     expect(state.encounterRewards.galleria_fortune.won).toBe(false);
     expect(state.inventory.galleria_ticket).toBeUndefined();
-    state = finish(choose(startEncounter(state, "galleria_outing", () => 0), 1));
+    state = finish(choose(startEncounter(state, OUTING, () => 0), 1));
     expect(state.travelBudget).toBe(startingBudget - 4);
   });
   it("reconstructs gift reactions from saved tickets and rejects altered outcomes", () => {
-    const withItem = finish(choose(startEncounter(ready(), "galleria_cafe", () => 0), 2));
-    const happy = choose(startEncounter(withItem, "galleria_gift", () => 0), 0);
-    const unhappy = choose(startEncounter(withItem, "galleria_gift", () => 9999), 0);
+    const withItem = finish(choose(startEncounter(ready(), CAFE, () => 0), 2));
+    const happy = choose(startEncounter(withItem, GIFT, () => 0), 0);
+    const unhappy = choose(startEncounter(withItem, GIFT, () => 9999), 0);
     expect(happy.activeEncounter!.romanceResolution!.result).toBe("positive");
     expect(unhappy.activeEncounter!.romanceResolution!.result).toBe("negative");
     expect(happy.activeEncounter!.frame.text).not.toBe(unhappy.activeEncounter!.frame.text);
     expect(() => validateEncounterState({ ...happy, trust: happy.trust + 1 })).toThrow("道中交流の保存状態が一致しません。");
-    expect(() => validateEncounterState({ ...happy, inventory: { ...happy.inventory, galleria_souvenir: "held" } })).toThrow("道中交流の保存状態が一致しません。");
+    expect(() => validateEncounterState({ ...happy, inventory: { ...happy.inventory, [SOUVENIR]: "held" } })).toThrow("道中交流の保存状態が一致しません。");
   });
   it("rejects missing draws, inconsistent prizes and forged outcome stories", () => {
     let state = choose(startEncounter(ready(), "galleria_fortune", () => 0), 0);
@@ -221,9 +342,9 @@ describe("travel encounters", () => {
     expect(() => validateEncounterState(altered)).toThrow("道中交流の保存状態が一致しません。");
   });
   it("reads a previously gifted souvenir in a later encounter without changing it", () => {
-    let state = finish(choose(startEncounter(ready(), "galleria_cafe", () => 0), 2));
-    state = finish(choose(startEncounter(state, "galleria_gift", () => 0), 0));
-    state = choose(startEncounter(state, "galleria_outing", () => 0), 1);
+    let state = finish(choose(startEncounter(ready(), CAFE, () => 0), 2));
+    state = finish(choose(startEncounter(state, GIFT, () => 0), 0));
+    state = choose(startEncounter(state, OUTING, () => 0), 1);
     const lines: string[] = [];
     for (let i = 0; i < 100; i++) {
       lines.push(state.activeEncounter!.frame.text);
@@ -231,7 +352,7 @@ describe("travel encounters", () => {
       state = restored(advanceEncounter(state, state.revision));
     }
     expect(lines.join("\n")).toContain("しおり");
-    expect(state.inventory.galleria_souvenir).toBe("gifted");
+    expect(state.inventory[SOUVENIR]).toBe("gifted");
   });
   it("keeps recorded lottery odds and an active response profile across rebalancing", () => {
     const quiz = encounters.encounters.find((event) => event.id === "galleria_fortune")!.quiz!;
@@ -240,8 +361,8 @@ describe("travel encounters", () => {
     const oldBase = profile.baseChance;
     try {
       const drawn = fortune(ready(), "B", 2000);
-      let active = finish(choose(startEncounter(drawn, "galleria_cafe", () => 0), 2));
-      active = untilChoice(startEncounter(active, "galleria_gift", () => 7000));
+      let active = finish(choose(startEncounter(drawn, CAFE, () => 0), 2));
+      active = untilChoice(startEncounter(active, GIFT, () => 7000));
       quiz.chancePercent = 0;
       profile.baseChance = 0;
       expect(restored(drawn).encounterRewards.galleria_fortune.won).toBe(true);
@@ -289,18 +410,18 @@ describe("travel encounters", () => {
     }
 
     const base = galleriaReady();
-    const payment = untilChoice(startEncounter(base, "galleria_cafe", () => 0));
+    const payment = untilChoice(startEncounter(base, CAFE, () => 0));
     const paid = chooseEncounter(payment, 0, payment.revision);
     const otherPayment = chooseEncounter(payment, 1, payment.revision);
     expect(commitFirst(payment, paid, otherPayment).travelBudget).toBe(payment.travelBudget - 4);
 
     const withItem = finish(paid);
-    expect(withItem.inventory.galleria_souvenir).toBe("held");
-    const gift = untilChoice(startEncounter(withItem, "galleria_gift", () => 0));
+    expect(withItem.inventory[SOUVENIR]).toBe("held");
+    const gift = untilChoice(startEncounter(withItem, GIFT, () => 0));
     const given = chooseEncounter(gift, 0, gift.revision);
     const kept = chooseEncounter(gift, 2, gift.revision);
     const savedGift = commitFirst(gift, given, kept);
-    expect(savedGift.inventory.galleria_souvenir).toBe("gifted");
+    expect(savedGift.inventory[SOUVENIR]).toBe("gifted");
     expect(savedGift.travelBudget).toBe(gift.travelBudget);
 
     let quiz = choose(startEncounter(base, "galleria_fortune", () => 0), 0);
@@ -314,8 +435,8 @@ describe("travel encounters", () => {
   });
   it("evaluates existing stage thresholds after a gift without counting it as a date", () => {
     const start = { ...ready(), playedDateIds: ["milano_cafe_01"], affection: 1, trust: 0, spark: 1 };
-    let state = finish(choose(startEncounter(start, "galleria_cafe", () => 0), 2));
-    state = choose(startEncounter(state, "galleria_gift", () => 0), 0);
+    let state = finish(choose(startEncounter(start, CAFE, () => 0), 2));
+    state = choose(startEncounter(state, GIFT, () => 0), 0);
     expect(state.romanceStage).toBe(1);
     state = finish(state);
     expect(state.romanceStage).toBe(2);
@@ -323,37 +444,37 @@ describe("travel encounters", () => {
     expect(state.playedDateIds).toEqual(["milano_cafe_01"]);
 
     const withoutDate = { ...ready(), affection: 1, trust: 0, spark: 1 };
-    let other = finish(choose(startEncounter(withoutDate, "galleria_cafe", () => 0), 2));
-    other = finish(choose(startEncounter(other, "galleria_gift", () => 0), 0));
+    let other = finish(choose(startEncounter(withoutDate, CAFE, () => 0), 2));
+    other = finish(choose(startEncounter(other, GIFT, () => 0), 0));
     expect(other.romanceStage).toBe(1);
     expect(completedDateCount(other)).toBe(0);
   });
   it("prevents using and gifting an item from a different city without touching money or AP", () => {
-    let state = finish(choose(startEncounter(ready(), "galleria_cafe", () => 0), 2));
-    state = untilChoice(startEncounter(state, "galleria_gift", () => 0));
-    const souvenir = encounters.items.find((item) => item.id === "galleria_souvenir")!;
+    let state = finish(choose(startEncounter(ready(), CAFE, () => 0), 2));
+    state = untilChoice(startEncounter(state, GIFT, () => 0));
+    const souvenir = encounters.items.find((item) => item.id === SOUVENIR)!;
     const cityId = souvenir.cityId;
     try {
       souvenir.cityId = "roma";
       expect(getEncounterOptionAvailability(state, 0).available).toBe(false);
       expect(chooseEncounter(state, 0, state.revision)).toBe(state);
-      expect(state.inventory.galleria_souvenir).toBe("held");
+      expect(state.inventory[SOUVENIR]).toBe("held");
       expect(() => validateEncounterState(state)).toThrow("道中交流の保存状態が一致しません。");
     } finally { souvenir.cityId = cityId; }
     const next = finish(chooseEncounter(state, 0, state.revision));
-    expect(next.inventory.galleria_souvenir).toBe("gifted");
+    expect(next.inventory[SOUVENIR]).toBe("gifted");
     expect(next.travelBudget).toBe(state.travelBudget);
     expect(next.ap).toBe(state.ap);
   });
   it("rejects both prize and completion awards from a different city before state changes", () => {
-    let cafe = choose(startEncounter(ready(), "galleria_cafe", () => 0), 2);
+    let cafe = choose(startEncounter(ready(), CAFE, () => 0), 2);
     while (!cafe.activeEncounter!.frame.ended) cafe = advanceEncounter(cafe, cafe.revision);
-    const souvenir = encounters.items.find((item) => item.id === "galleria_souvenir")!;
+    const souvenir = encounters.items.find((item) => item.id === SOUVENIR)!;
     const originalSouvenirCity = souvenir.cityId;
     try {
       souvenir.cityId = "roma";
       expect(finishEncounter(cafe, cafe.revision)).toBe(cafe);
-      expect(cafe.inventory.galleria_souvenir).toBeUndefined();
+      expect(cafe.inventory[SOUVENIR]).toBeUndefined();
     } finally { souvenir.cityId = originalSouvenirCity; }
 
     let quiz = choose(startEncounter(ready(), "galleria_fortune", () => 0), 0);
@@ -373,7 +494,7 @@ describe("travel encounters", () => {
   });
   it("does not consume an entry ticket from another city", () => {
     const won = fortune(ready(), "B", 0);
-    const outing = untilChoice(startEncounter(won, "galleria_outing", () => 0));
+    const outing = untilChoice(startEncounter(won, OUTING, () => 0));
     const ticket = encounters.items.find((item) => item.id === "galleria_ticket")!;
     const original = ticket.cityId;
     try {
@@ -395,18 +516,18 @@ describe("travel encounters", () => {
       const initial = { ...ready(), completedCityIds: ["milano", "roma"], inventory: { test_roma_item: "left_behind" as const } };
       expect(() => validateEncounterState({ ...initial, inventory: { test_roma_item: "held" } })).toThrow("道中交流の保存状態が一致しません。");
       expect(() => validateEncounterState({ ...initial, completedCityIds: ["milano"] })).toThrow("道中交流の保存状態が一致しません。");
-      expect(getEncounterAvailability(initial, "galleria_cafe").available).toBe(true);
-      const bought = finish(choose(startEncounter(initial, "galleria_cafe", () => 0), 2));
-      const gifted = finish(choose(startEncounter(bought, "galleria_gift", () => 0), 0));
+      expect(getEncounterAvailability(initial, CAFE).available).toBe(true);
+      const bought = finish(choose(startEncounter(initial, CAFE, () => 0), 2));
+      const gifted = finish(choose(startEncounter(bought, GIFT, () => 0), 0));
       expect(gifted.inventory.test_roma_item).toBe("left_behind");
-      expect(gifted.inventory.galleria_souvenir).toBe("gifted");
+      expect(gifted.inventory[SOUVENIR]).toBe("gifted");
       expect(gifted.ap).toBe(initial.ap);
       expect(gifted.travelBudget).toBe(initial.travelBudget + 2);
     } finally { encounters.items.pop(); }
   });
   it("resumes a current Milan encounter, and rejects a changed city", () => {
     const initial = galleriaReady();
-    const started = startEncounter(initial, "galleria_cafe", () => 4321);
+    const started = startEncounter(initial, CAFE, () => 4321);
     const reloaded = validateGameState(JSON.parse(JSON.stringify(started)));
     expect(reloaded.activeEncounter).toEqual(started.activeEncounter);
     expect(reloaded.inventory).toEqual(initial.inventory);
@@ -414,7 +535,7 @@ describe("travel encounters", () => {
     expect(reloaded.travelBudget).toBe(initial.travelBudget);
     expect(advanceEncounter(reloaded, reloaded.revision)).not.toBe(reloaded);
 
-    const event = encounters.encounters.find((item) => item.id === "galleria_cafe")!;
+    const event = testEncounterIn(CAFE);
     const original = event.cityId;
     try {
       event.cityId = "roma";

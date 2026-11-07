@@ -10,7 +10,7 @@ function visit(landmarkId: string): GameState {
   const state = { ...createGame(), visitedLandmarkIds: [landmarkId],
     completedEpisodeIds: ["milano_duomo_episode", "milano_galleria_episode", "milano_last_supper_episode", "milano_castello_episode"],
     battleRecords: ["milano_galleria_01", "milano_la_scala_b01", "milano_brera_c01"].map(battleRecord),
-    inventory: { blue_pick: "held" as const, galleria_ticket: "held" as const, galleria_souvenir: "held" as const },
+    inventory: { blue_pick: "held" as const, galleria_ticket: "held" as const },
   };
   const result = openTourism(state, landmarkId);
   expect(result.activeTourism?.phase).toBe("exploring");
@@ -28,10 +28,16 @@ describe("automatic place encounters", () => {
       expect(next.activeEncounter?.returnTourism?.encounterIds).toContain(id);
     });
 
-  it("never introduces the three dormant encounters", () => {
+  it("never introduces a dormant encounter", () => {
+    // No published encounter is dormant; the rule is checked on a Galleria encounter made dormant for this test.
     const state = visit("galleria_vittorio_emanuele_ii");
-    for (const event of encounters.encounters.filter((entry) => entry.availability === "dormant"))
+    const event = encounters.encounters.find((entry) => entry.id === "galleria_print")!;
+    expect(event.availability).toBeUndefined();
+    expect(getTourismEncounterAvailability(state, event.id).available).toBe(true);
+    event.availability = "dormant";
+    try {
       expect(getTourismEncounterAvailability(state, event.id).available).toBe(false);
+    } finally { delete event.availability; }
   });
 
   it("runs newly unlocked encounters in sequence without repeating deferred choices", () => {

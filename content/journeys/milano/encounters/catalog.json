@@ -2,13 +2,6 @@
   "schemaVersion": 1,
   "items": [
     {
-      "id": "galleria_souvenir",
-      "cityId": "milano",
-      "nameJa": "雄牛のしおり",
-      "descriptionJa": "ガッレリアのカフェで受け取った、小さな雄牛の絵のしおり。",
-      "iconPath": "assets/items/galleria-bookmark.svg"
-    },
-    {
       "id": "galleria_ticket",
       "cityId": "milano",
       "nameJa": "ガッレリアの展示券",
@@ -24,60 +17,6 @@
     }
   ],
   "encounters": [
-    {
-      "id": "galleria_cafe",
-      "cityId": "milano",
-      "sources": [
-        {
-          "publisher": "Reuters",
-          "title": "Milan like a local",
-          "url": "https://www.reuters.com/city-memo/milan-like-local-2026-01-31/",
-          "checkedAt": "2026-11-01",
-          "claimType": "documented_fact",
-          "claimJa": "ミラノのバールではカウンターに立ってエスプレッソを飲む過ごし方がある。"
-        },
-        {
-          "publisher": "Camparino in Galleria",
-          "title": "Camparino in Galleria Milan",
-          "url": "https://www.camparino.com/en/",
-          "checkedAt": "2026-11-01",
-          "claimType": "documented_fact",
-          "claimJa": "ガッレリアのカンパリーノは1915年から続き、ミラノのアペリティーヴォで知られる。"
-        },
-        {
-          "publisher": "Camparino in Galleria",
-          "title": "Bar di Passo menu",
-          "url": "https://www.camparino.com/our-menu/",
-          "checkedAt": "2026-11-01",
-          "claimType": "documented_fact",
-          "claimJa": "カンパリーノのメニューにはエスプレッソ、カプチーノとクロワッサンがある。"
-        }
-      ],
-      "titleJa": "カンパリーノでひと休み",
-      "descriptionJa": "ガッレリアの老舗で休憩する。表示価格はゲーム内の設定。",
-      "storyId": "encounters/galleria_cafe_rewrite",
-      "completionMoney": 2,
-      "completionItemId": "galleria_souvenir",
-      "options": [
-        {
-          "id": "coffee",
-          "translationJa": "コーヒーを二杯ください。",
-          "cost": 4
-        },
-        {
-          "id": "coffee_pastry",
-          "translationJa": "カプチーノとお菓子を一つずつください。",
-          "cost": 8
-        },
-        {
-          "id": "nothing",
-          "translationJa": "今は何もいりません、ありがとう。",
-          "cost": 0
-        }
-      ],
-      "landmarkId": "galleria_vittorio_emanuele_ii",
-      "availability": "dormant"
-    },
     {
       "id": "galleria_fortune",
       "cityId": "milano",
@@ -179,88 +118,6 @@
       },
       "landmarkId": "galleria_vittorio_emanuele_ii",
       "availability": "tourism"
-    },
-    {
-      "id": "galleria_gift",
-      "cityId": "milano",
-      "sources": [
-        {
-          "publisher": "Euronews",
-          "title": "A real bull ache: Milan restores a national treasure’s family jewels",
-          "url": "https://www.euronews.com/2026/05/29/a-real-bull-ache-milan-restores-a-national-treasures-family-jewels",
-          "checkedAt": "2026-11-01",
-          "claimType": "documented_fact",
-          "claimJa": "ガッレリア中央の床の雄牛はトリノ市の紋章で、ミラノを表すのは赤い十字。"
-        }
-      ],
-      "titleJa": "しおりを贈る",
-      "descriptionJa": "手元のしおりを、一緒に旅する相手に渡すか考える。",
-      "storyId": "encounters/galleria_gift_rewrite",
-      "options": [
-        {
-          "id": "offer",
-          "translationJa": "このしおり、いりますか？",
-          "cost": 0,
-          "requiresItemId": "galleria_souvenir",
-          "giftItemId": "galleria_souvenir",
-          "responseProfileId": "attentive"
-        },
-        {
-          "id": "thought",
-          "translationJa": "このしおりを見て、あなたを思い出しました。",
-          "cost": 0,
-          "requiresItemId": "galleria_souvenir",
-          "giftItemId": "galleria_souvenir",
-          "responseProfileId": "honest"
-        },
-        {
-          "id": "later",
-          "translationJa": "今は自分で持っておく。",
-          "cost": 0,
-          "deferCompletion": true
-        }
-      ],
-      "landmarkId": "galleria_vittorio_emanuele_ii",
-      "availability": "dormant"
-    },
-    {
-      "id": "galleria_outing",
-      "cityId": "milano",
-      "sources": [
-        {
-          "publisher": "Euronews",
-          "title": "A real bull ache: Milan restores a national treasure’s family jewels",
-          "url": "https://www.euronews.com/2026/05/29/a-real-bull-ache-milan-restores-a-national-treasures-family-jewels",
-          "checkedAt": "2026-11-01",
-          "claimType": "documented_fact",
-          "claimJa": "ガッレリア中央の床の雄牛はトリノ市の紋章で、ミラノを表すのは赤い十字。"
-        }
-      ],
-      "titleJa": "紋章の小さな展示",
-      "descriptionJa": "臨時の紋章展示へ、展示券かゲーム内の入場料で入る。",
-      "storyId": "encounters/galleria_outing_rewrite",
-      "options": [
-        {
-          "id": "ticket",
-          "translationJa": "展示券を使う。",
-          "cost": 0,
-          "requiresItemId": "galleria_ticket",
-          "consumeItemId": "galleria_ticket"
-        },
-        {
-          "id": "buy",
-          "translationJa": "入場券を買う。",
-          "cost": 4
-        },
-        {
-          "id": "later",
-          "translationJa": "今はやめておく。",
-          "cost": 0,
-          "deferCompletion": true
-        }
-      ],
-      "landmarkId": "galleria_vittorio_emanuele_ii",
-      "availability": "dormant"
     },
     {
       "id": "duomo_string",
@@ -498,43 +355,6 @@
           "checkedAt": "2026-11-02",
           "claimType": "documented_fact",
           "claimJa": "ブレラは身体の見え方を大胆に表現したマンテーニャの作品を所蔵する。"
-        }
-      ]
-    },
-    {
-      "id": "brera_bookmark",
-      "cityId": "milano",
-      "landmarkId": "brera_case",
-      "titleJa": "読みかけの角を守る",
-      "descriptionJa": "読みかけの角を守る。この場所で選べる小さな出会い。",
-      "storyId": "encounters/sound_brera_bookmark",
-      "options": [
-        {
-          "id": "offer",
-          "cost": 0,
-          "requiresItemId": "galleria_souvenir",
-          "giftItemId": "galleria_souvenir"
-        },
-        {
-          "id": "gift",
-          "cost": 0,
-          "requiresItemId": "galleria_souvenir",
-          "giftItemId": "galleria_souvenir"
-        },
-        {
-          "id": "later",
-          "cost": 0,
-          "deferCompletion": true
-        }
-      ],
-      "sources": [
-        {
-          "publisher": "Pinacoteca di Brera",
-          "title": "The Kiss",
-          "url": "https://pinacotecabrera.org/en/collezioni/collezione-on-line/the-kiss/",
-          "checkedAt": "2026-11-02",
-          "claimType": "documented_fact",
-          "claimJa": "ブレラはハイエツの《接吻》を所蔵する。"
         }
       ]
     }
