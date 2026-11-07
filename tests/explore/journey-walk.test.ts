@@ -7,20 +7,22 @@
 //   rewards whose IDs are newly recorded (each ID once) minus the AP of a date started in that step,
 //   every offered action changes the state, and the save → load round trip gives the same state;
 // - liveness: before the end of the journey there is always something to do (zero actions = stuck);
-// - progress (fixed seeds only): together the fixed seeds reach the end of every available journey,
-//   so a soft lock that leaves something to press but no way forward (e.g. a result screen whose only
-//   control leads back to it) fails too.
+// - progress (the fixed run only): every start's run leaves its first city at least once (a departure,
+//   or the end of the journey from its last city), and the walks clear every city of every available
+//   journey and read its epilogue. A soft lock that leaves something to press but no way out of a
+//   city (e.g. a result screen whose only control leads back to it) fails too, in any city.
 // A failure names the seed, the step and the last actions; rerun it with DREAMSCAPE_WALK_SEEDS and
 // `npm run test:walk` (it builds the content with the sample journey first: which journeys the content
 // holds changes the walk).
 // The starts are every journey's title and the start of each of its later cities; run r of seed s
-// begins at start (s + r) mod their number, so the seeds begin in different places and the last
-// cities of multi-city journeys are walked too. A run ends at the end of the journey (8 times out of
-// 10; otherwise it stays for the dates still open) or after RESTART_STEPS steps.
-// Apart from the journeys' ends, which content the walks reached is printed as a summary, never
+// begins at start (s + r) mod their number. The fixed run has one seed per start (1 … the number of
+// starts), so each start begins exactly one fixed seed's walk: releasing a journey or adding a city
+// adds a walk instead of leaving a start unwalked. A run ends at the end of the journey (8 times out
+// of 10; otherwise it stays for the dates still open) or after RESTART_STEPS steps.
+// Apart from those progress checks, which content the walks reached is printed as a summary, never
 // asserted: it shows content that normal play cannot reach (e.g. most Milano place encounters,
 // ideas2 [WP06a]) without failing.
-// PR/verify: the fixed seeds below. Weekly: DREAMSCAPE_WALK_SEEDS (comma-separated) and
+// PR/verify: the fixed run. Weekly: DREAMSCAPE_WALK_SEEDS (comma-separated) and
 // DREAMSCAPE_WALK_STEPS (steps per seed) widen it.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { afterAll, describe, expect, it } from "vitest";
@@ -37,8 +39,7 @@ import { applyPlayerAction, listPlayerActions, playerActionChange, type PlayerAc
 import { loadGame, saveGame } from "../../src/persistence";
 import { journeyStorage } from "../../src/persistence/journey-storage";
 
-const FIXED_SEEDS = [1, 2, 3, 4];
-const FIXED_STEPS = 1500;
+const FIXED_STEPS = 1200;
 const RESTART_STEPS = 1200;
 const TRACE_LENGTH = 25;
 
@@ -49,12 +50,6 @@ function envList(name: string): number[] | undefined {
   if (values.some((value) => !Number.isSafeInteger(value))) throw new Error(`${name} must be integers separated by commas: ${raw}`);
   return values;
 }
-const seeds = envList("DREAMSCAPE_WALK_SEEDS") ?? FIXED_SEEDS;
-const steps = envList("DREAMSCAPE_WALK_STEPS")?.[0] ?? FIXED_STEPS;
-/** The fixed seeds with at least the fixed steps: a walk's first steps never depend on its length. */
-const fixedRun = seeds === FIXED_SEEDS && steps >= FIXED_STEPS;
-/** Seeds whose walk ran to its last step (the progress check needs all fixed seeds). */
-const finished = new Set<number>();
 
 /** mulberry32: a small seeded generator, so a seed always replays the same walk. */
 function random(seed: number): () => number {
@@ -79,6 +74,18 @@ const starts: Start[] = playable.flatMap((journey) => [
   } },
   ...journey.cities.slice(1).map((city) => ({ journeyId: journey.id, label: `${journey.id}: ${city.id} start`, build: () => cityStart(city.id, ["ユウ", "ミオ"]) })),
 ]);
+/** Run r of seed s begins at start (s + r) mod the number of starts. */
+const startOf = (seed: number, run: number) => starts[(((seed + run) % starts.length) + starts.length) % starts.length];
+/** One seed per start: seed i's first run begins at start i mod the number of starts, so every start is walked. */
+const FIXED_SEEDS = starts.map((_, index) => index + 1);
+const seeds = envList("DREAMSCAPE_WALK_SEEDS") ?? FIXED_SEEDS;
+const steps = envList("DREAMSCAPE_WALK_STEPS")?.[0] ?? FIXED_STEPS;
+/** The fixed seeds with at least the fixed steps: a walk's first steps never depend on its length. */
+const fixedRun = seeds === FIXED_SEEDS && steps >= FIXED_STEPS;
+/** Seeds whose walk ran to its last step (the progress checks need all fixed seeds). */
+const finished = new Set<number>();
+/** Starts with a run that left the start's city: a departure, or the end of the journey. */
+const leftStartCity = new Set<string>();
 const startCache = new Map<string, GameState>();
 const startState = (start: Start) => {
   if (!startCache.has(start.label)) startCache.set(start.label, validateGameState(start.build()));
@@ -119,12 +126,18 @@ function pick(state: GameState, actions: PlayerAction[], next: () => number): Pl
 }
 
 const totalAp = (state: GameState) => state.ap + state.pendingApRewards.reduce((sum, reward) => sum + reward.remainingAp, 0);
-const ruleAp = (id: string) => allRewardRules.find((rule) => rule.id === id)!.ap;
+function ruleAp(id: string): number {
+  const rule = allRewardRules.find((item) => item.id === id);
+  if (!rule) throw new Error(`no reward rule has the recorded ID ${id}`);
+  return rule.ap;
+}
 /** AP the step spent: only starting a date costs AP (startDate). */
 function spentAp(previous: GameState, next: GameState): number {
-  const date = next.activeDate;
-  if (!date || previous.activeDate?.runId === date.runId) return 0;
-  return dates.find((item) => item.id === date.dateId)!.apCost;
+  const active = next.activeDate;
+  if (!active || previous.activeDate?.runId === active.runId) return 0;
+  const date = dates.find((item) => item.id === active.dateId);
+  if (!date) throw new Error(`no date has the started ID ${active.dateId}`);
+  return date.apCost;
 }
 const describeAction = (action: PlayerAction) => JSON.stringify(action);
 
@@ -139,8 +152,9 @@ function reachedFor(journeyId: string): Reached {
   return reached.get(journeyId)!;
 }
 /** Only what this step did counts (a later city's start state already holds the earlier cities). */
-function record(journeyId: string, previous: GameState, state: GameState) {
-  const seen = reachedFor(journeyId);
+function record(start: Start, previous: GameState, state: GameState) {
+  const seen = reachedFor(start.journeyId);
+  if (state.currentCityId !== startState(start).currentCityId || isJourneyComplete(state)) leftStartCity.add(start.label);
   const added = (before: string[], after: string[]) => after.filter((id) => !before.includes(id));
   seen.steps++;
   seen.cities.add(state.currentCityId);
@@ -183,7 +197,7 @@ function walk(seed: number, total: number) {
   for (let step = 0; step < total; step++) {
     if (!state || since >= RESTART_STEPS) {
       // The starts take turns, seed by seed and run by run.
-      start = starts[(((seed + runs++) % starts.length) + starts.length) % starts.length];
+      start = startOf(seed, runs++);
       since = 0;
       trace = [`(start ${start.label})`];
       state = run(step, "building the start", () => startState(start!));
@@ -211,26 +225,27 @@ function walk(seed: number, total: number) {
     const lost = previous.claimedRewardIds.filter((id) => !changed.claimedRewardIds.includes(id));
     if (lost.length) fail(step, `reward IDs were forgotten (and could be paid again): ${lost.join(", ")}`);
     const earned = changed.claimedRewardIds.filter((id) => !previous.claimedRewardIds.includes(id));
-    const expected = totalAp(previous) + earned.reduce((sum, id) => sum + ruleAp(id), 0) - spentAp(previous, changed);
+    const spent = run(step, "counting the AP of a started date", () => spentAp(previous, changed));
+    const expected = totalAp(previous) + run(step, "counting the AP of the new reward IDs", () => earned.reduce((sum, id) => sum + ruleAp(id), 0)) - spent;
     if (totalAp(changed) !== expected)
-      fail(step, `AP (held + stored) is ${totalAp(changed)}, expected ${expected}: new reward IDs [${earned.join(", ")}], AP of a started date ${spentAp(previous, changed)}`);
-    const storage = journeyStorage(base, journeyId);
+      fail(step, `AP (held + stored) is ${totalAp(changed)}, expected ${expected}: new reward IDs [${earned.join(", ")}], AP of a started date ${spent}`);
+    const storage = run(step, "opening the journey's storage", () => journeyStorage(base, journeyId));
     // saveGame validates the state (validateGameState) and refuses a revision that did not increase.
     // (No expected previous snapshot: one tab, so the other-tab check would only repeat a validation.)
-    const result = saveGame(storage, changed);
+    const result = run(step, "saveGame", () => saveGame(storage, changed));
     if (!result.ok) {
       try { validateGameState(changed); }
       catch (error) { fail(step, `validateGameState refused the new state: ${(error as Error).message}`); }
       fail(step, `saveGame refused the new state: ${result.message}`);
     }
-    const loaded = loadGame(storage);
+    const loaded = run(step, "loadGame", () => loadGame(storage));
     if (loaded.status !== "loaded") fail(step, `loadGame could not read the save back (${loaded.status})`);
     const restored = (loaded as Extract<typeof loaded, { status: "loaded" }>).state;
     try { expect(restored).toEqual(changed); }
     catch { fail(step, "the save → load round trip changed the state"); }
     state = restored;
     since++;
-    run(step, "recording what the step reached", () => record(journeyId, previous, restored));
+    run(step, "recording what the step reached", () => record(start!, previous, restored));
   }
   finished.add(seed);
 }
@@ -273,19 +288,23 @@ describe("random walk through the game functions", () => {
     writeFileSync("artifacts/explore/journey-walk-coverage.txt", `${text}\n`);
   });
 
-  it.each(seeds)("seed %i: every step is valid and saved, and the player is never stuck before the end", (seed) => {
+  it.each(seeds.map((seed) => ({ seed, label: startOf(seed, 0).label })))("seed $seed (from 「$label」): every step is valid and saved, and the player is never stuck before the end", ({ seed }) => {
     walk(seed, steps);
   }, 120_000);
 
   // Runs after the seeds' walks (tests of a file run in order). Deterministic for the content built.
-  it.runIf(fixedRun)("the fixed seeds reach the end of every available journey", () => {
+  it.runIf(fixedRun)("the fixed run leaves every start's city and clears every city of every available journey and reads its epilogue", () => {
     const unfinished = FIXED_SEEDS.filter((seed) => !finished.has(seed));
-    expect(unfinished, "these fixed seeds did not finish their walk (failed above, or left out with -t): the check needs them all").toEqual([]);
-    const notEnded = playable.filter((journey) => reachedFor(journey.id).ends === 0).map((journey) => journey.id);
-    expect(notEnded, [
-      "no fixed seed reached the end of these journeys (the summary shows how far they got): a way forward is missing,",
-      "e.g. a screen whose only controls lead back to it. If the journey grew instead (more cities or starts), raise",
-      "FIXED_SEEDS or FIXED_STEPS (docs/10「関数の層のランダムウォーク」)",
+    expect(unfinished, "these fixed seeds did not finish their walk (failed above, or left out with -t): the checks need them all").toEqual([]);
+    const fix = "If the journey grew instead (a run needs more steps), raise FIXED_STEPS or RESTART_STEPS (docs/10「関数の層のランダムウォーク」)";
+    const stayed = starts.filter((start) => !leftStartCity.has(start.label)).map((start) => start.label);
+    expect(stayed, [
+      "no run from these starts left the start's city (no departure, or no end of the journey from its last city; the summary shows",
+      `how far the walks got): a way forward is missing, e.g. a screen whose only controls lead back to it. ${fix}`,
     ].join(" ")).toEqual([]);
+    const missing = (kind: "cleared" | "epilogues") => playable.flatMap((journey) =>
+      journey.cities.filter((city) => !reachedFor(journey.id)[kind].has(city.id)).map((city) => `${journey.id}: ${city.id}`));
+    expect(missing("cleared"), `no walk cleared these cities. ${fix}`).toEqual([]);
+    expect(missing("epilogues"), `no walk read the epilogue of these cities. ${fix}`).toEqual([]);
   });
 });

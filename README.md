@@ -233,7 +233,7 @@ tests/screens/                    # 人が見る画面一覧の撮影（npm run 
 | `npm run test:e2e` | E2E（Playwright）の開発サーバーの2つの段（合否判定 `gate` とDebug起動台 `debug`）。1つの段だけは `npx playwright test --project=gate`（[E2Eの段](docs/10_DEVELOPMENT_CHECKS.md#e2eの段)） |
 | `npm run test:e2e:prod` | 本番ビルド（`npm run build` の後の `vite preview`）でのE2E。起動・全旅行編の開始画面・ミラノの最初の流れ・本番にDebugがないこと、タイトル画面までの読み込み量の報告 |
 | `npm run test:e2e:sample` | 見本の編を含めて生成した専用の開発サーバー（4175番）でのE2E。見本の編を新しい旅から旅の終わりまで遊ぶ。終わると見本なしで生成し直す。ほかの段と同時に実行しない |
-| `npm run test:walk` | 見本の編を含めて生成してから、ゲーム関数の層のランダムウォーク（全旅行編を種付きで歩き、保存・AP・報酬・詰みを毎手確かめ、固定の種ではどの旅行編も旅の終わりに届くことを確かめる）を実行し、到達した内容の要約を表示する。種と手数は `DREAMSCAPE_WALK_SEEDS`・`DREAMSCAPE_WALK_STEPS`（[探索テスト](docs/10_DEVELOPMENT_CHECKS.md#探索テスト)） |
+| `npm run test:walk` | 見本の編を含めて生成してから、ゲーム関数の層のランダムウォーク（全旅行編を種付きで歩き、保存・AP・報酬・詰みを毎手確かめ、固定の歩みではどの開始地点からも1回以上その都市を出て、全都市をクリアしてエピローグを読むことを確かめる）を実行し、到達した内容の要約を表示する。種と手数は `DREAMSCAPE_WALK_SEEDS`・`DREAMSCAPE_WALK_STEPS`（[探索テスト](docs/10_DEVELOPMENT_CHECKS.md#探索テスト)） |
 | `npm run test:e2e:explore` | 週1回のモンキー（`@explore`）。押せる部品を種付きの乱数で押し続け、エラー・保存・詰みを確かめる。種は `MONKEY_SEED`、開始地点ごとの秒数は `MONKEY_SECONDS`（合否判定にしない） |
 | `npm run test:e2e:webkit` | `@smoke` のテストを iPhone 13 の WebKit で実行（WebKit を入れた環境だけ。CIでは週1回） |
 | `npm run screens` | 主要な画面を320px・390pxで撮り `artifacts/screens/index.html` にまとめる（人の確認用。`-- --previous <前の一覧>` で変わった画面に印。[人が画面を確かめる](docs/10_DEVELOPMENT_CHECKS.md#人が画面を確かめる)） |
