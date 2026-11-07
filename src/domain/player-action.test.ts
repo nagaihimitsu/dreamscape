@@ -4,8 +4,11 @@
 import { describe, expect, it } from "vitest";
 import { battles, episodes, getCityContent, journeyConfig } from "../content";
 import { defaultJourneyId, journeys } from "../content/journeys";
-import { cityStart, clearCity, completedCity, departFromClearedCity, newJourney, openBattleScene, openEpilogueScene, readEpilogue } from "../dev/scenario-builders";
-import { getActiveBattleContent } from "./battle";
+import {
+  cityStart, clearCity, completedCity, correctAnswer, departFromClearedCity, newJourney, openBattleScene, openEpilogueScene, readEpilogue, wrongAnswer,
+  type AnswerPicker,
+} from "../dev/scenario-builders";
+import { getActiveBattleContent, getBattleOutcome } from "./battle";
 import { battleCityId, storyBattlesForCity } from "./chapter";
 import { isJourneyComplete } from "./city-travel";
 import { startCityArrival } from "./epilogue";
@@ -80,23 +83,23 @@ describe("the actions a player can take now", () => {
     expect(kinds(listPlayerActions(state))).toContain("evidence_submit");
   });
 
-  /** Each battle's result screen on the way through the journey, every city in turn (correct answers). */
-  function everyBattleResult(journeyId: string): GameState[] {
+  /** Each battle's result screen on the way through the journey, every city in turn (answers by `answer`). */
+  function everyBattleResult(journeyId: string, answer: AnswerPicker): GameState[] {
     const results: GameState[] = [];
     const cities = playable.find((journey) => journey.id === journeyId)!.cities;
     let state = cityStart(cities[0].id);
     for (const [index, city] of cities.entries()) {
       expect(state.currentCityId).toBe(city.id);
-      const cleared = clearCity(state, { onResult: (result) => results.push(result) });
+      const cleared = clearCity(state, { answer, onResult: (result) => results.push(result) });
       if (index < cities.length - 1) state = departFromClearedCity(cleared);
     }
     return results;
   }
-  it.each(playable.map((journey) => [journey.id, journey.cityTransition ?? "manual"]))("%s: every battle's result has a way out: free time after each battle but a finale whatever the city transition (%s), and a finale its epilogue (free time too unless the journey moves on after it)", (journeyId, transition) => {
+  /** Every episode, special battle and finale of the journey has a result, and each result a way out. */
+  function expectWaysOut(journeyId: string, transition: string, results: GameState[]) {
     const cityIds = playable.find((journey) => journey.id === journeyId)!.cities.map((city) => city.id);
     const battleIds = [...episodes.filter((episode) => cityIds.includes(episode.cityId)).map((episode) => episode.battleId),
       ...cityIds.flatMap((cityId) => storyBattlesForCity(cityId).map((battle) => battle.battleId))];
-    const results = everyBattleResult(journeyId);
     expect(new Set(results.map((result) => result.activeBattle!.battleId)), "every episode, special battle and finale").toEqual(new Set(battleIds));
     for (const result of results) {
       const { battle } = getActiveBattleContent(result.activeBattle!);
@@ -111,6 +114,24 @@ describe("the actions a player can take now", () => {
       // Each way out closes the result screen (to free time, the battle's place, or the epilogue).
       for (const kind of ["battle_leave", "battle_epilogue"] as const)
         if (actions.includes(kind)) expect(apply(result, { kind }).activeBattle, `${battle.id}: ${kind}`).toBeNull();
+    }
+  }
+  const transitions = playable.map((journey) => [journey.id, journey.cityTransition ?? "manual"]);
+  it.each(transitions)("%s: every battle's result has a way out: free time after each battle but a finale whatever the city transition (%s), and a finale its epilogue (free time too unless the journey moves on after it)", (journeyId, transition) => {
+    expectWaysOut(journeyId, transition, everyBattleResult(journeyId, correctAnswer));
+  });
+
+  // docs/04: 「失敗しても各対決の完了は記録され、旅を続けられる」 — a lost finale clears its city too.
+  it.each(transitions)("%s: a battle lost with every answer wrong (DEFEAT) still completes, and its result has the same ways out as a win (%s), so the journey goes on", (journeyId, transition) => {
+    const results = everyBattleResult(journeyId, wrongAnswer);
+    expectWaysOut(journeyId, transition, results);
+    const finales = results.filter((result) => getActiveBattleContent(result.activeBattle!).battle.scope === "city_finale");
+    expect(finales).toHaveLength(playable.find((journey) => journey.id === journeyId)!.cities.length);
+    for (const finale of finales) {
+      const active = finale.activeBattle!;
+      const { battle, quiz } = getActiveBattleContent(active);
+      expect(getBattleOutcome(active.score, quiz.questions.length), battle.id).toBe("defeat");
+      expect(finale.completedCityIds, battle.id).toContain(battle.cityId);
     }
   });
 
