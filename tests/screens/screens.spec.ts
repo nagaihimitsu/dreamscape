@@ -30,7 +30,7 @@ const toBattle = async (page: Page) => {
 const flows: FlowScene[] = [
   { scene: "flow-title", titleJa: "タイトル画面", descriptionJa: "最初の画面", open: async (page) => {
     await page.goto("/");
-    await expect(page.getByRole("button", { name: "旅をはじめる", exact: true })).toBeVisible();
+    await expect(ops.startButton(page)).toBeVisible();
   } },
   { scene: "flow-travel-menu", titleJa: "旅の始まりの行き先", descriptionJa: "ミラノの旅を始めた直後", open: (page) => ops.startJourney(page) },
   { scene: "flow-settings", titleJa: "設定", descriptionJa: "旅を始めて「設定」", open: async (page) => {

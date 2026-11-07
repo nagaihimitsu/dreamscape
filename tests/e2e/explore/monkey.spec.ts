@@ -20,6 +20,9 @@ import { bothStorages, devModules, expect, journeyCatalog, ops, placeSave, saveK
 // rerun line too (the `reproduce` annotation). The romance draws come from a seeded
 // crypto.getRandomValues (addInitScript, test side only). A failure prints MONKEY_SEED and the
 // last presses; rerun with the same MONKEY_SEED and MONKEY_SECONDS (and -g for the start point).
+// Playwright's own test timeout (MONKEY_SECONDS + 120 s) ends the test without fail(): rerun it
+// from the line printed at the start of the test (and the `reproduce` annotation), which name
+// the same MONKEY_SEED, MONKEY_SECONDS and start point.
 const seed = Number(process.env.MONKEY_SEED ?? Math.floor(Math.random() * 1_000_000));
 const seconds = Number(process.env.MONKEY_SECONDS ?? 40);
 const RELOAD_EVERY = 40;
@@ -157,22 +160,6 @@ startPoints.forEach((start, index) => {
     const rerun = `MONKEY_SEED=${seed} MONKEY_SECONDS=${seconds} npm run test:e2e:explore -- -g "${start.name}"`;
     testInfo.annotations.push({ type: "MONKEY_SEED", description: String(seed) }, { type: "reproduce", description: `rerun: ${rerun}` });
     console.log(`monkey from ${start.name}: MONKEY_SEED=${seed} (start point ${index}, seed ${ownSeed}), MONKEY_SECONDS=${seconds}`);
-    // Seeded romance draws (crypto.getRandomValues, used by the game's secure roll); test side only.
-    await page.addInitScript((value) => {
-      let a = value >>> 0;
-      const draw = () => {
-        a = (a + 0x6d2b79f5) >>> 0;
-        let t = a;
-        t = Math.imul(t ^ (t >>> 15), t | 1);
-        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-        return (t ^ (t >>> 14)) >>> 0;
-      };
-      const original = crypto.getRandomValues.bind(crypto);
-      crypto.getRandomValues = ((array: Parameters<typeof original>[0]) => {
-        if (array instanceof Uint32Array) { for (let i = 0; i < array.length; i++) array[i] = draw(); return array; }
-        return original(array);
-      }) as typeof crypto.getRandomValues;
-    }, ownSeed);
     const trace: string[] = [];
     const log = (line: string) => { trace.push(line); if (trace.length > TRACE) trace.shift(); };
     let step = 0;
@@ -201,7 +188,7 @@ startPoints.forEach((start, index) => {
     let opened: Start | undefined;
     let lastRevision = -1;
     const openStart = async (again: boolean) => {
-      opened = start.pick(next);
+      opened = await must("choosing the start point", async () => start.pick(next));
       log(`(start${again ? " again" : ""} ${opened.label})`);
       await must(`the start point did not open (${opened.label})`, () => opened!.open(page));
       lastRevision = -1;
@@ -210,6 +197,22 @@ startPoints.forEach((start, index) => {
     let presses = 0;
     const savedText = (journeyId: string) => must("reading the save", () => page.evaluate((key) => localStorage.getItem(key), saveKey(journeyId)));
     try {
+      // Seeded romance draws (crypto.getRandomValues, used by the game's secure roll); test side only.
+      await must("seeding the romance draws", () => page.addInitScript((value) => {
+        let a = value >>> 0;
+        const draw = () => {
+          a = (a + 0x6d2b79f5) >>> 0;
+          let t = a;
+          t = Math.imul(t ^ (t >>> 15), t | 1);
+          t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+          return (t ^ (t >>> 14)) >>> 0;
+        };
+        const original = crypto.getRandomValues.bind(crypto);
+        crypto.getRandomValues = ((array: Parameters<typeof original>[0]) => {
+          if (array instanceof Uint32Array) { for (let i = 0; i < array.length; i++) array[i] = draw(); return array; }
+          return original(array);
+        }) as typeof crypto.getRandomValues;
+      }, ownSeed));
       before = await must("the title did not open", async () => {
         await page.goto("/");
         return bothStorages(page);

@@ -163,7 +163,11 @@ export const ops = {
   async beginJourney(page: Page, journeyId = "milano", names: readonly [string, string] = ["航", "澪"]) {
     await ops.chooseJourney(page, journeyId);
     await ops.fillNames(page, names);
-    await page.getByRole("button", { name: "旅をはじめる", exact: true }).click();
+    await ops.startButton(page).click();
+  },
+  /** Title screen: the start button, whatever it says (「旅をはじめる」, or 「元のデータを退避して／残して新しく始める」 over an unreadable save). */
+  startButton(page: Page): Locator {
+    return page.getByTestId("title-start");
   },
   /** Title screen: choose the journey (a page load opens the first available one; its save, if any, opens with it). */
   async chooseJourney(page: Page, journeyId: string) {

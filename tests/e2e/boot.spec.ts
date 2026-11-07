@@ -1,5 +1,5 @@
 import { appendFileSync } from "node:fs";
-import { allStorage, expect, journeyCatalog, test, tier } from "./helpers";
+import { allStorage, expect, journeyCatalog, ops, test, tier } from "./helpers";
 
 // AGENTS.md 「データ・セーブ・品質」, docs/07 acceptance 1 and 12: every registered
 // journey (from the generated catalog of this checkout, never a fixed list) opens
@@ -28,14 +28,14 @@ test("the title screen opens every registered journey without writing a save", {
       // (manifest initialState) it can store names for later; without one,
       // as a journey fresh from `npm run journey:new`, it is read-only.
       await expect(page.getByText("この旅行編は制作中です。", { exact: false })).toBeVisible();
-      await expect(page.getByRole("button", { name: "旅をはじめる" })).toHaveCount(0);
+      await expect(ops.startButton(page)).toHaveCount(0);
       if (entry.initialState) await expect(page.getByRole("button", { name: "旅の準備を保存する" })).toBeVisible();
       else {
         await expect(page.getByRole("status")).toHaveText("この旅行編は制作中です。公開をお待ちください。");
         await expect(page.getByRole("button")).toHaveCount(0);
       }
     } else {
-      await expect(page.getByRole("button", { name: "旅をはじめる", exact: true })).toBeVisible();
+      await expect(ops.startButton(page)).toBeVisible();
       // Before the trip starts, the heading names the selected journey's first city.
       await expect(page.getByTestId("journey-edition")).toHaveText(`${entry.cities[0].nameJa}の旅`);
       // The journey's own title art (a missing file fails the error guard), else the shared neutral scene.
@@ -55,7 +55,7 @@ test("the title screen opens every registered journey without writing a save", {
 test("the production build ignores the Debug and character preview switches", { tag: tier.prod }, async ({ page }) => {
   for (const query of ["?debug", "?character-preview", "?debug&city=milano&scene=battle"]) {
     await page.goto(`/${query}`);
-    await expect(page.getByRole("button", { name: "旅をはじめる", exact: true })).toBeVisible();
+    await expect(ops.startButton(page)).toBeVisible();
     await expect(page.getByTestId("debug-panel")).toHaveCount(0);
     await expect(page.getByTestId("debug-session")).toHaveCount(0);
     await expect(page.getByText("場面の確認")).toHaveCount(0);
@@ -82,7 +82,7 @@ test("reports how many bytes the title screen loads", { tag: tier.prod }, async 
     type: request.resourceType(), url: new URL(request.url()).pathname, bytes: size.responseHeadersSize + size.responseBodySize,
   }))));
   await page.goto("/");
-  await expect(page.getByRole("button", { name: "旅をはじめる", exact: true })).toBeVisible();
+  await expect(ops.startButton(page)).toBeVisible();
   await page.waitForLoadState("load");
   await expect.poll(() => page.evaluate(() => [...document.images].every((image) => image.complete))).toBe(true);
   const files = await Promise.all(sizes);

@@ -131,7 +131,7 @@ test("a second tab cannot open a journey that is already open", { tag: tier.gate
   const second = await context.newPage();
   await second.goto("/");
   await expect(second.getByRole("alert")).toContainText("別のタブで開いています");
-  await expect(second.getByRole("button", { name: "旅をはじめる" })).toHaveCount(0);
+  await expect(ops.startButton(second)).toHaveCount(0);
   expect(await allStorage(second)).toEqual(saved);
 
   // Once the first tab is closed, the second can continue the same journey.
@@ -153,7 +153,8 @@ test("an unreadable save stays as it was until the player backs it up and starts
   await page.reload();
   const alert = page.getByRole("alert");
   await expect(alert).toContainText("保存データを読み込めませんでした");
-  await expect(page.getByRole("button", { name: "旅をはじめる" })).toHaveCount(0);
+  // The title offers only a start that keeps the original (no plain 「旅をはじめる」).
+  await expect(ops.startButton(page)).toContainText("元のデータを退避して新しく始める");
 
   // Asking to delete and then choosing 「消去せず戻る」 changes nothing.
   await alert.getByRole("button", { name: "保存データを消去する" }).click();
@@ -236,7 +237,7 @@ test("the title offers no start or deletion over another journey's save, and dis
   await ops.chooseJourney(page, otherJourney);
   await expect(page.getByRole("alert")).toContainText("保存先の旅行編と現在地の旅行編が一致しないか、現在地を確認できません。元のデータは変更せず保護しています。");
   await expect(page.getByLabel("主人公の名前")).toHaveCount(0);
-  await expect(page.getByRole("button", { name: /旅をはじめる|新しく始める/ })).toHaveCount(0);
+  await expect(ops.startButton(page)).toHaveCount(0);
   await expect(page.getByRole("button", { name: "保存データを消去する" })).toHaveCount(0);
   const copied = (await allStorage(page))[saveKey(otherJourney)];
   expect(copied).toContain('"currentCityId":"milano"');
@@ -252,7 +253,7 @@ test("the title offers no start or deletion over another journey's save, and dis
   await page.reload();
   await expect(page.getByRole("alert")).toContainText("このブラウザの保存領域を読み取れません。保存の設定を確認してください。");
   await ops.fillNames(page);
-  await expect(page.getByRole("button", { name: /新しく始める/ })).toBeDisabled();
+  await expect(ops.startButton(page)).toBeDisabled();
   await expect(page.getByRole("button", { name: "保存データを消去する" })).toBeDisabled();
   expect((await allStorage(page))[saveKey(otherJourney)]).toBe(copied);
 });
@@ -278,7 +279,7 @@ test("a save from a newer version is reported as such, and deleting it removes o
   const confirm = page.getByRole("dialog", { name: "保存データを消去しますか？" });
   await expect(confirm).toContainText("以前に退避したバックアップと、ほかのサイトのデータは消去しません。");
   await confirm.getByRole("button", { name: "保存データを消去する" }).click();
-  await expect(page.getByRole("button", { name: "旅をはじめる", exact: true })).toBeVisible();
+  await expect(ops.startButton(page)).toBeVisible();
   await expect(page.getByRole("alert")).toHaveCount(0);
   const storage = await allStorage(page);
   expect(storage).not.toHaveProperty([saveKey()]);
