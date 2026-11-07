@@ -27,12 +27,7 @@ export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
  * Add nothing here for new content: give it the prefix instead.
  */
 export const UNPREFIXED_ID_EXCEPTIONS: Readonly<Record<string, readonly string[]>> = {
-  golden_triangle: ["delhi_legacy_episode_placeholder", "agra_legacy_episode_placeholder", "jaipur_legacy_episode_placeholder"],
-  uzbekistan: [
-    "tashkent_legacy_episode_placeholder", "samarkand_legacy_episode_placeholder",
-    "bukhara_legacy_episode_placeholder", "khiva_legacy_episode_placeholder",
-  ],
-  luang_prabang: ["luang_prabang_legacy_episode_placeholder", "luang_prabang_hotel_bg"],
+  luang_prabang: ["luang_prabang_hotel_bg"],
 };
 
 type Entry = Record<string, unknown>;

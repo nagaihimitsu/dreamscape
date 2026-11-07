@@ -6,7 +6,7 @@
   "nameJa": "ブハラ",
   "themeJa": "池と交易ドームを歩く街",
   "firstClearReward": {
-    "rewardSourceId": "bukhara_legacy_episode_placeholder",
+    "rewardSourceId": "uz_bukhara_first_clear",
     "ap": 0
   },
   "landmarkIdsPlanned": [

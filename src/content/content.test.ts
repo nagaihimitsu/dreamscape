@@ -452,8 +452,8 @@ describe("content build acceptance", () => {
   it("rejects duplicate city first-clear reward source IDs", async () => {
     await replace(
       "content/journeys/golden_triangle/cities/agra.json",
-      '"agra_legacy_episode_placeholder"',
-      '"delhi_legacy_episode_placeholder"',
+      '"gt_agra_first_clear"',
+      '"gt_delhi_first_clear"',
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Duplicate reward source",

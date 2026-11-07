@@ -26,7 +26,7 @@ describe("Golden Triangle authoring draft", () => {
       const travel = travelCatalogSchema.parse(draft[`travel/${id}.json`]);
       const settings = travelSettingsSchema.parse(draft[`travel/${id}-settings.json`]);
       expect(city.productionStatus).toBe("prototype");
-      expect(city.firstClearReward).toEqual({ rewardSourceId: `${id}_legacy_episode_placeholder`, ap: 0 });
+      expect(city.firstClearReward).toEqual({ rewardSourceId: `gt_${id}_first_clear`, ap: 0 });
       expect(settings.initialBudget).toBe(index === 0 ? journey.initialBudget : 0);
       expect(settings.lodgingCost).toBe(journey.cityPlan!.lodgingCost);
       expect(travel.places).toHaveLength(11);

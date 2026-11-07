@@ -81,7 +81,7 @@ export function completeTestCity(root: string, template: ReturnType<typeof expor
   identity.fromPlaceId = hotel.id;
   identity.toPlaceId = hotel.id;
   template.city = { schemaVersion: 1, id: "testcity", countryCode: "ZZ", nameJa: "試験都市", themeJa: "試験用",
-    firstClearReward: { rewardSourceId: "testcity_legacy_placeholder", ap: 0 }, landmarkIdsPlanned: [], productionStatus: "prototype" };
+    firstClearReward: { rewardSourceId: "testcity_first_clear", ap: 0 }, landmarkIdsPlanned: [], productionStatus: "prototype" };
   template.travel = { cityId: "testcity", places: [hotel], routes: [identity], events: [] };
   template.travelSettings = { initialBudget: 1000, hotelPlaceId: hotel.id, lodgingCost: 0, retryMinutes: 15, notes: "試験用設定" };
   template.backgrounds = { testcity_hotel_bg: { nameJa: "試験", captionJa: "試験の滞在先", color: "#817569" } };
