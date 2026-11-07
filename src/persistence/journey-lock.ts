@@ -58,21 +58,30 @@ export function holdJourneyLock(
   let pageActive = true;
   let release: (() => void) | undefined;
   let retry: ReturnType<typeof setTimeout> | undefined;
-  const acquire = (retriesLeft: number): Promise<unknown> =>
-    locks.request(name, { ifAvailable: true }, (lock) => {
-      if (cancelled || !pageActive) return;
-      if (!lock) {
-        if (retriesLeft > 0) retry = setTimeout(() => track(acquire(retriesLeft - 1)), LOCK_RETRY_MS);
-        else report("busy");
-        return;
-      }
-      return new Promise<void>((resolve) => {
-        release = resolve;
-        report("ready");
+  const acquire = (retriesLeft: number): Promise<unknown> => {
+    let request: Promise<unknown>;
+    try {
+      request = locks.request(name, { ifAvailable: true }, (lock) => {
+        if (cancelled || !pageActive) return;
+        if (!lock) {
+          if (retriesLeft > 0) retry = setTimeout(() => track(acquire(retriesLeft - 1)), LOCK_RETRY_MS);
+          else report("busy");
+          return;
+        }
+        return new Promise<void>((resolve) => {
+          release = resolve;
+          report("ready");
+        });
       });
-    }).catch(() => {
+    } catch (error) {
+      // A request that throws instead of returning a rejected promise is refused the same way
+      // (and the page's chain of requests stays settled for the next view).
+      request = Promise.reject(error);
+    }
+    return request.catch(() => {
       if (!cancelled) report("unsupported");
     });
+  };
   // The request promise settles only after its lock has been released.
   const track = (request: Promise<unknown>) => { settledRequests.set(name, request); };
   const previous = settledRequests.get(name) ?? Promise.resolve();

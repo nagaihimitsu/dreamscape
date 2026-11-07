@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { journeys } from "../content/journeys";
 import { createGame } from "../domain";
 import { deleteSaveData, LEARNING_KEY, loadGame, SAVE_KEY, saveGame } from "../persistence";
 import { journeyStorage } from "../persistence/journey-storage";
@@ -15,7 +16,7 @@ function browser() {
     setItem: (key: string, value: string) => { data.set(key, value); },
     removeItem: (key: string) => { data.delete(key); },
   };
-  return { data, slot: journeyStorage(base, "milano") };
+  return { data, base, slot: journeyStorage(base, "milano") };
 }
 
 describe("deleting the save from settings", () => {
@@ -95,6 +96,22 @@ describe("deleting the save from settings", () => {
     slot.setItem(SAVE_KEY, "{changed");
     expect(checkDeleteRequest(slot, startScreen)).toEqual({ closeSettings: false, notice: unconfirmed });
     expect(checkDeleteRequest(slot, { ...startScreen, loaded: { status: "empty" } })).toEqual({ closeSettings: false, notice: unconfirmed });
+  });
+
+  it("never deletes another journey's save found in this slot, from the title or with a game open", () => {
+    const { data, base, slot } = browser();
+    const other = journeys.find((journey) => journey.id !== "milano" && journey.status === "available")!;
+    const otherSlot = journeyStorage(base, other.id);
+    expect(saveGame(otherSlot, createGame("ユウ", "ミオ", { journeyId: other.id })).ok).toBe(true);
+    const foreign = otherSlot.getItem(SAVE_KEY)!;
+    slot.setItem(SAVE_KEY, foreign);
+    const loaded = loadGame(slot);
+    expect(loaded).toMatchObject({ status: "invalid", kind: "journey", raw: foreign });
+    const refused = { closeSettings: false, notice: "保存先の旅行編と現在地の旅行編が一致しないか、現在地を確認できません。元のデータは変更せず保護しています。" };
+    expect(checkDeleteRequest(slot, { hasGame: false, savedGame: null, protectedOriginal: null, loaded })).toEqual(refused);
+    expect(checkDeleteRequest(slot, { hasGame: true, savedGame: null, protectedOriginal: foreign, loaded })).toEqual(refused);
+    expect(slot.getItem(SAVE_KEY)).toBe(foreign);
+    expect(data.size).toBe(2);
   });
 
   it("reports unreadable browser storage without offering deletion", () => {

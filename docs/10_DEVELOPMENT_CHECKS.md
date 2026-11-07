@@ -193,10 +193,10 @@
 | 保護 | 関数（単体テスト） | E2E |
 | --- | --- | --- |
 | 別タブ：同じ旅行編を開いている間は待つ画面と「再試行」。前のページが閉じる間は少し待ち、同じページの前の画面の解放を待ってから取る。画面が消える・ページが隠れると手放し、応答を待つ間に画面が消えた要求は、あとから応答や拒否が来ても取らず、何も表示しない | `holdJourneyLock`（`src/persistence/journey-lock.ts`。偽のLockManagerで `journey-lock.test.ts`） | `save-load.spec.ts` の別タブ。ページが隠れたとき・戻る操作でキャッシュから戻ったときの `useJourneyLock` の処理（`pagehide`・`pageshow`）はE2Eで確かめられない（PlaywrightのChromiumは戻る操作でページを読み込み直す） |
-| Web Locksのない・要求を拒むブラウザでは旅行編を開かず、「再試行」も出さない（Debugと、保存のない準備中の案内は除く） | `holdJourneyLock`・`journeyLockNotice`・`needsJourneyLock`（同上） | なし（Chromiumは対応） |
+| Web Locksのない・要求を拒むブラウザでは旅行編を開かず、「再試行」も出さない（要求が拒否の約束を返す場合も、その場で例外を出す場合も同じ。Debugと、保存のない準備中の案内は除く） | `holdJourneyLock`・`journeyLockNotice`・`needsJourneyLock`（同上） | なし（Chromiumは対応） |
 | 手動セーブで保存していない進行は、旅行編の切り替え・「ロード」・ページを閉じる前に確かめる（自動保存ならページを閉じても尋ねない） | `hasUnsavedProgress`・`leaveStep`（`src/app/unsaved-progress.ts`、`unsaved-progress.test.ts`） | `save-load.spec.ts` の手動セーブ（「旅行編を切り替える」「保存した場面を読み込みますか？」と、再読み込みでブラウザが尋ねること） |
 | 読めないセーブから新しく始める：手動セーブなら最初の「セーブ」まで元のまま残し、そのとき元のバイト列を退避する。自動保存なら先に退避する。表示の後に別タブが変えたデータと、ほかの旅行編のセーブは置き換えない。タイトルは、ほかの旅行編のセーブには開始と消去を出さず、保存領域を読み取れないときは両方を押せなくする | `titleSaveActions`・`writeNewGame`・`writeExplicitSave`（`src/app/save-recovery.ts`、`save-recovery.test.ts`） | `save-load.spec.ts` の読めないセーブ（自動保存で先に退避／手動セーブで最初の「セーブ」時に退避／表示の後に別タブが書き換えると開始を断り、何も開かない）と、タイトルの開始・消去（ほかの旅行編のセーブ／保存領域を読み取れない） |
-| 保存データの消去：確認の前後で保存が変わっていれば消さない | `checkDeleteRequest`（`src/app/save-deletion.ts`）、`deleteSaveData` | `save-load.spec.ts` の新しい版のセーブ |
+| 保存データの消去：確認の前後で保存が変わっていれば消さない。この枠にあるほかの旅行編のセーブは、どの画面から頼まれても消さない | `checkDeleteRequest`（`src/app/save-deletion.ts`、`save-deletion.test.ts`）、`deleteSaveData` | `save-load.spec.ts` の新しい版のセーブ |
 | 英語ノート：壊れた記録・古いタブからの上書きを拒む | `loadLearning`・`commitLearning`（`src/features/learning/learning-storage.ts`） | なし |
 
 ## 探索テスト

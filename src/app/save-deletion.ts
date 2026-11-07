@@ -20,6 +20,9 @@ export function checkDeleteRequest(storage: StorageLike, session: DeleteSession)
   const { hasGame, savedGame, protectedOriginal, loaded } = session;
   try {
     const current = loadGame(storage);
+    // Another journey's save found in this slot stays protected: it is never deleted from this
+    // journey's screens (the title does not offer it either, titleSaveActions).
+    if (current.status === "invalid" && current.kind === "journey") return { closeSettings: false, notice: current.message };
     if (hasGame) {
       if (savedGame === null
         ? protectedOriginal === null
