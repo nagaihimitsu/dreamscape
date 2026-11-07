@@ -13,7 +13,8 @@ import {
 } from "./old-data";
 
 const context: OldDataContext = {
-  journeys: [{ id: "milano", nameJa: "ミラノ編" }, { id: "trip_b", nameJa: "見本B編" }],
+  journeys: [{ id: "milano", nameJa: "ミラノ編", status: "available" }, { id: "trip_b", nameJa: "見本B編", status: "available" },
+    { id: "trip_c", nameJa: "見本C編", status: "preparing" }],
   currentJourneyId: "milano",
 };
 const key = (journeyId: string, logical: string) => journeyStorage(memory(), journeyId).physicalKey(logical);
@@ -81,6 +82,9 @@ describe("which old saved data can be removed", () => {
     }]);
     for (const version of [1, 12]) expect(list({ [save("trip_b")]: JSON.stringify({ schemaVersion: version }) })[0].keys[0].noteJa)
       .toBe(`バージョン${version}の旧版のセーブ`);
+    // A preparing journey opens its preparation page, not a new journey: the impact says so.
+    expect(list({ [save("trip_c")]: v13 })).toMatchObject([{ id: "old_version:trip_c", titleJa: "見本C編のセーブ（旧版）",
+      impactJa: "バージョン13の形式のため、今の版では再開できません。見本C編は準備中で、今は遊べません。消去すると、遊べるようになったとき新しい旅から始まります。英語ノートは消えません。" }]);
     // The journey open in this tab: its slot is the title's and 「保存データの消去」's, not the cleanup's.
     expect(list({ ...kept, [save("milano")]: v13 })).toEqual([]);
     expect(list({ [save("trip_b")]: v13 }, { ...context, currentJourneyId: "trip_b" })).toEqual([]);

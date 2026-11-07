@@ -22,7 +22,8 @@ import { slotLockName } from "./journey-lock";
  */
 
 /** A journey of this version, as the list names it. */
-export type KnownJourney = { id: string; nameJa: string };
+/** A journey of this version; a preparing one opens its preparation page, not a game. */
+export type KnownJourney = { id: string; nameJa: string; status: "available" | "preparing" };
 export type OldDataContext = {
   journeys: readonly KnownJourney[];
   /** The journey open in this tab: its save slot is never listed and this tab already holds its lock. */
@@ -152,7 +153,9 @@ export function listOldData(entries: ReadonlyMap<string, string>, context: OldDa
       if (content.kind === "old") items.push({
         id: `old_version:${journey.id}`, lock,
         titleJa: `${journey.nameJa}のセーブ（旧版）`,
-        impactJa: `バージョン${content.version}の形式のため、今の版では再開できません。消去すると、${journey.nameJa}は次に開いたとき新しい旅から始まります。英語ノートは消えません。`,
+        impactJa: `バージョン${content.version}の形式のため、今の版では再開できません。` + (journey.status === "available"
+          ? `消去すると、${journey.nameJa}は次に開いたとき新しい旅から始まります。`
+          : `${journey.nameJa}は準備中で、今は遊べません。消去すると、遊べるようになったとき新しい旅から始まります。`) + "英語ノートは消えません。",
         keys: [entry(slot.save, raw, contentNote(content))],
       });
     }
