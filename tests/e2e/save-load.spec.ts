@@ -288,6 +288,71 @@ test("a save from a newer version is reported as such, and deleting it removes o
   expect(storage).toMatchObject(others);
 });
 
+// AGENTS.md 「削除は対象キーと影響範囲を示し、明示確認と別タブ競合の保護を維持する」, docs/07 「古い保存データの整理」.
+// What may be removed is decided by old-data.ts (unit-tested); this checks what only a browser shows: the
+// origin's real keys are listed, nothing goes before the second confirmation, a journey open in another
+// tab (its Web Lock) refuses the removal, and afterwards exactly the chosen keys are gone.
+test("old saved data is listed with its keys, removed only after confirmation and never while its journey is open in another tab", { tag: tier.gate }, async ({ page, context }) => {
+  await ops.startJourney(page);
+  const indiaName = journeyCatalog().journeys.find((journey) => journey.id === "golden_triangle")!.nameJa;
+  const old = {
+    [saveKey("golden_triangle")]: JSON.stringify({ schemaVersion: 13, revision: 3, completedChapters: [] }),
+    [`${saveKey()}.backup.1762500000000`]: "{damaged-save",
+    "dreamscape.save.v1": JSON.stringify({ schemaVersion: 9, revision: 30 }),
+    "dreamscape.learning.v1": JSON.stringify({ schemaVersion: 1, records: {} }),
+  };
+  await page.evaluate((items) => {
+    for (const [key, value] of Object.entries(items)) localStorage.setItem(key, value);
+    localStorage.setItem("another-app.on-this-origin", "kept");
+  }, { ...old, [learningKey("golden_triangle")]: JSON.stringify({ schemaVersion: 1, records: {} }) });
+  const before = await allStorage(page);
+
+  // Another tab opens the Indian journey (its title reports the old save and holds the journey's lock).
+  const other = await context.newPage();
+  await other.goto("/");
+  await expect(other.getByRole("alert")).toContainText("別のタブで開いています");
+  await ops.chooseJourney(other, "golden_triangle");
+  await expect(other.getByRole("alert")).toContainText("保存データの形式はバージョン13です");
+
+  let cleanup = await ops.openOldDataCleanup(page);
+  for (const key of Object.keys(old)) await expect(cleanup.getByText(key, { exact: true })).toBeVisible();
+  // The save in use, every journey's English notes, the settings and other apps' keys are not listed.
+  for (const key of [saveKey(), learningKey(), learningKey("golden_triangle"), presentationKey, "another-app.on-this-origin"])
+    await expect(cleanup.getByText(key, { exact: true })).toHaveCount(0);
+
+  // 「消去せず戻る」 changes nothing.
+  let confirm = await ops.chooseOldData(page, cleanup, [new RegExp(`${indiaName}のセーブ（旧版）`), /ミラノ編のバックアップ/]);
+  await expect(confirm.getByText(saveKey("golden_triangle"), { exact: true })).toBeVisible();
+  await confirm.getByRole("button", { name: "消去せず戻る" }).click();
+  expect(await allStorage(page)).toEqual(before);
+
+  // While the other tab has the journey open, nothing is removed.
+  await cleanup.getByRole("button", { name: "選んだデータを消去する" }).click();
+  await confirm.getByRole("button", { name: "消去する", exact: true }).click();
+  await expect(cleanup.getByRole("alert")).toHaveText(`${indiaName}を別のタブで開いているため、何も消去しませんでした。そのタブを閉じてからやり直してください。`);
+  expect(await allStorage(page)).toEqual(before);
+
+  // Once it is closed, exactly the chosen keys go; the game in this tab carries on.
+  await other.close();
+  await cleanup.getByRole("button", { name: "選んだデータを消去する" }).click();
+  await confirm.getByRole("button", { name: "消去する", exact: true }).click();
+  await expect(cleanup.getByRole("status")).toHaveText("消去しました（キー2個）。");
+  const after = await allStorage(page);
+  const { [saveKey("golden_triangle")]: _removedSave, [`${saveKey()}.backup.1762500000000`]: _removedBackup, ...kept } = before;
+  expect(after).toEqual(kept);
+  await ops.closeDialog(cleanup);
+  await page.reload();
+  await expect(page.getByTestId("travel-menu")).toBeVisible();
+  cleanup = await ops.openOldDataCleanup(page);
+  await expect(cleanup.getByText(saveKey("golden_triangle"), { exact: true })).toHaveCount(0);
+  await expect(cleanup.getByText("dreamscape.learning.v1", { exact: true })).toBeVisible();
+  confirm = await ops.chooseOldData(page, cleanup, [/以前のミラノ編のセーブ/, /以前のミラノ編の英語ノート/]);
+  await confirm.getByRole("button", { name: "消去する", exact: true }).click();
+  await expect(cleanup.getByText("整理できる古い保存データはありません。")).toBeVisible();
+  const { "dreamscape.save.v1": _rootSave, "dreamscape.learning.v1": _rootNotes, ...left } = kept;
+  expect(await allStorage(page)).toEqual(left);
+});
+
 // AGENTS.md 「保存領域の読込失敗…」 and the save rule of docs/02: a write that fails says so,
 // changes nothing, never locks the player out, and the last good save is what a reload resumes.
 test("a save that cannot be written is reported, the game stays usable and the last good save survives", { tag: tier.gate }, async ({ page }) => {

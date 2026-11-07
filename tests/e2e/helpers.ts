@@ -188,6 +188,22 @@ export const ops = {
     await expect(settings).toBeVisible();
     return settings;
   },
+  /** Settings → 「古い保存データの整理」 (the settings dialog closes, the cleanup dialog opens). */
+  async openOldDataCleanup(page: Page): Promise<Locator> {
+    const settings = await ops.openSettings(page);
+    await settings.getByRole("button", { name: "古い保存データの整理" }).click();
+    const cleanup = page.getByRole("dialog", { name: "古い保存データの整理" });
+    await expect(cleanup).toBeVisible();
+    return cleanup;
+  },
+  /** In 「古い保存データの整理」: tick the listed items whose titles match, then 「選んだデータを消去する」 (the confirmation opens). */
+  async chooseOldData(page: Page, cleanup: Locator, titles: readonly RegExp[]): Promise<Locator> {
+    for (const title of titles) await cleanup.getByRole("checkbox", { name: title }).check();
+    await cleanup.getByRole("button", { name: "選んだデータを消去する" }).click();
+    const confirm = page.getByRole("dialog", { name: "選んだ保存データを消去しますか？" });
+    await expect(confirm).toBeVisible();
+    return confirm;
+  },
   async closeDialog(dialog: Locator) {
     await dialog.getByRole("button", { name: "閉じる", exact: true }).click();
     await expect(dialog).toBeHidden();
