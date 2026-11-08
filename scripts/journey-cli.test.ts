@@ -1,4 +1,5 @@
 import { spawnSync } from "node:child_process";
+import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { journeyReleaseSummary, namedJa, parseJourneyScaffoldArgs } from "./journey-cli";
@@ -43,6 +44,32 @@ describe("journey authoring commands", () => {
       .toEqual(["京都編（kyoto）の祇園（gion）までの公開の確認に合格しました（全体の内容の検証）。ファイルは変更していません。--apply しても、内容が変わらないため書き込むファイルはありません。"]);
   });
 
+  const run = (script: string, args: string[]) =>
+    spawnSync(process.execPath, ["--import", "tsx", path.join("scripts", script), ...args], { cwd: root, encoding: "utf8" });
+  type Manifest = { id: string; nameJa: string; cityPlan?: unknown; cities: { id: string; nameJa: string }[] };
+  const manifests = readdirSync(path.join(root, "content/journeys")).sort()
+    .map((id) => JSON.parse(readFileSync(path.join(root, "content/journeys", id, "manifest.json"), "utf8")) as Manifest);
+
+  // journey:readiness on a registered journey (about a second each): the headings name the journey and
+  // its cities in Japanese with their IDs, and a journey it cannot check gives only its message.
+  it("journey:readiness heads its report with the journey's and the cities' Japanese names", () => {
+    const planned = manifests.find((manifest) => manifest.cityPlan)!;
+    const result = run("inspect-journey-readiness.ts", ["--journey", planned.id]);
+    expect(result.status, result.stderr).toBe(0);
+    const lines = result.stdout.split("\n");
+    expect(lines[0]).toMatch(new RegExp(`^${planned.nameJa}（${planned.id}）: (?:参照の準備完了|準備中)$`, "u"));
+    for (const city of planned.cities) expect(lines).toContainEqual(expect.stringMatching(new RegExp(`^${city.nameJa}（${city.id}）: \\d+ 候補$`, "u")));
+  });
+
+  it("journey:readiness on a journey without a city plan prints only the message and exits with 1", () => {
+    const unplanned = manifests.find((manifest) => !manifest.cityPlan);
+    expect(unplanned, "a registered journey without cityPlan (today Milan)").toBeDefined();
+    const result = run("inspect-journey-readiness.ts", ["--journey", unplanned!.id]);
+    expect(result.status).toBe(1);
+    expect(result.stdout).toBe("");
+    expect(result.stderr.trim()).toBe(`旅行編「${unplanned!.id}」の manifest.json に都市の計画（cityPlan）がないため、準備を確かめられません（journey:readiness は cityPlan を持つ旅行編を確かめます）。`);
+  });
+
   // The commands themselves, on errors that stop them before any content is read or built (each run takes well under a second).
   it.each([
     ["inspect-journey-readiness.ts", [], "--journey ID is required"],
@@ -54,12 +81,12 @@ describe("journey authoring commands", () => {
     ["check-journey-scenario.ts", ["--journey", "no_such_journey"], "Usage: npm run journey:scenario"],
     ["check-journey-scenario.ts", ["--journey", "no_such_journey", "--directory", "nowhere"], "Unknown authoring journey: no_such_journey"],
   ])("%s %j prints only the message and exits with 1", (script, args, message) => {
-    const run = spawnSync(process.execPath, ["--import", "tsx", path.join("scripts", script), ...args], { cwd: root, encoding: "utf8" });
-    expect(run.status).toBe(1);
-    expect(run.stdout).toBe("");
-    expect(run.stderr).toContain(message);
+    const result = run(script, args);
+    expect(result.status).toBe(1);
+    expect(result.stdout).toBe("");
+    expect(result.stderr).toContain(message);
     // One message, no stack trace.
-    expect(run.stderr.trim().split("\n")).toHaveLength(1);
-    expect(run.stderr).not.toMatch(/^\s+at /mu);
+    expect(result.stderr.trim().split("\n")).toHaveLength(1);
+    expect(result.stderr).not.toMatch(/^\s+at /mu);
   });
 });

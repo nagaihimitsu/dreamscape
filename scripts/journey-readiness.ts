@@ -55,7 +55,7 @@ export function inspectJourneyReadiness(input: JourneyReadinessInput): JourneyRe
   const issues: JourneyReadinessIssue[] = [];
   const problem = (list: JourneyReadinessIssue[], code: string, detail: string) => { list.push({ code, detail }); };
   const { trip } = input;
-  if (!trip.cityPlan) throw new Error("Journey plan is missing");
+  if (!trip.cityPlan) throw new Error(`旅行編「${trip.id}」の manifest.json に都市の計画（cityPlan）がないため、準備を確かめられません（journey:readiness は cityPlan を持つ旅行編を確かめます）。`);
   if (trip.status !== "available") problem(issues, "journey_unavailable", "旅行編は準備中です。");
   // A journey copied from the sample (journey:new) keeps its fictional sources, images and texts until they are replaced.
   for (const leftover of input.sampleLeftovers) problem(issues, "sample_content_left", describeSampleLeftover(leftover));

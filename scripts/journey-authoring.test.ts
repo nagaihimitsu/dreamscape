@@ -156,6 +156,12 @@ describe("journey authoring with four cities", () => {
     }
   });
 
+  it("refuses a journey without a city plan with a Japanese message", () => {
+    const source = loadJourneyReadiness(process.cwd(), "luang_prabang");
+    expect(() => inspectJourneyReadiness({ ...source, trip: { ...source.trip, id: "kyoto", cityPlan: undefined } })).toThrow(
+      "旅行編「kyoto」の manifest.json に都市の計画（cityPlan）がないため、準備を確かめられません（journey:readiness は cityPlan を持つ旅行編を確かめます）。");
+  });
+
   it("does not promote a city whose transit ledger still has inconclusive decisions", () => {
     const source = loadJourneyReadiness(process.cwd(), "luang_prabang");
     expect(source.cities.map((entry) => entry.inconclusiveTransit)).toEqual([0]);

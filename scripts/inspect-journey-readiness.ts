@@ -13,7 +13,7 @@ if (args.some((arg) => arg !== "--json" && arg !== "--require-ready")) {
 }
 const root = process.cwd();
 const input = attempt(() => loadJourneyReadiness(root, journeyId));
-const report = inspectJourneyReadiness(input);
+const report = attempt(() => inspectJourneyReadiness(input));
 if (args.includes("--json")) console.log(JSON.stringify(report, null, 2));
 else {
   console.log(`${namedJa(input.trip)}: ${report.ready ? "参照の準備完了" : "準備中"}`);
