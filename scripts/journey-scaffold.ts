@@ -176,6 +176,9 @@ export function loadJourneyScaffold(root: string, journeyId: string, sources = l
   if (observationsFile.clues.some((clue) => !observationsFile.provenance[clue.id] || observationsFile.provenance[clue.id].needsFurtherResearch))
     throw new Error("Journey scaffold: observations contain unresolved or missing provenance");
   for (const clue of observationsFile.clues) {
+    // Cards are written before any question exists; links go into the released tourism catalog (docs/07 観察だけの手がかり).
+    if (clue.relatedQuestionIds.length)
+      throw new Error(`観察資料の観察ポイント「${clue.id}」に問題ID（relatedQuestionIds: ${clue.relatedQuestionIds.join(", ")}）が書かれています: ${profile.observationFile}。観察資料には問題IDを書かず、[] のままにします。都市を公開（journey:release -- --apply）した後、旅行編の tourism/catalog.json で、その観察ポイントを本当に使う問題にだけ問題IDを書いてください。`);
     const image = observationsFile.images[clue.landmarkId];
     if (!image || !image.path.startsWith(`${profile.imageDirectory}/`) || !/^[a-z0-9_]+\.jpg$/.test(image.path.slice(profile.imageDirectory.length + 1)))
       throw new Error(`Journey scaffold: missing observation image ${clue.landmarkId}`);

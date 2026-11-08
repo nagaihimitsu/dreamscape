@@ -20,7 +20,7 @@
 ## ウズベキスタン編の例
 
 ```sh
-# 固定ID、Inkの置き場所、入力メタデータの雛形を表示
+# 固定ID、Inkの置き場所、入力メタデータの雛形を表示（--requirements は省略できます）
 npm run journey:scaffold -- --requirements --journey uzbekistan
 
 # タシュケントだけを制作する場合

@@ -115,6 +115,28 @@ describe("journey authoring with four cities", () => {
       `旅行編「atlantis」は登録されていません（content/journeys/<旅行編ID>/manifest.json）。登録されている旅行編: ${registered.join(", ")}（Unknown journey）。`);
   });
 
+  it("journey:scaffold refuses observation cards that already name question IDs", () => {
+    const root = mkdtempSync(path.join(tmpdir(), "dreamscape-scaffold-cards-"));
+    try {
+      // The real content with a copy of Golden Triangle's manifest and cards in the temporary root.
+      const sources = loadContentSources(process.cwd());
+      const manifest = "content/journeys/golden_triangle/manifest.json";
+      const cardsFile = getJourneyAuthoringProfile(process.cwd(), "golden_triangle").observationFile;
+      const cards = JSON.parse(readFileSync(cardsFile, "utf8"));
+      for (const [file, content] of [[manifest, readFileSync(manifest, "utf8")], [cardsFile, JSON.stringify(cards)]]) {
+        mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+        writeFileSync(path.join(root, file), content);
+      }
+      expect(loadJourneyScaffold(root, "golden_triangle", sources).observations).toHaveLength(cards.clues.length);
+      const [card] = cards.clues;
+      card.relatedQuestionIds = ["gt_delhi_main_red_fort_quiz_q1"];
+      writeFileSync(path.join(root, cardsFile), JSON.stringify(cards));
+      expect(() => loadJourneyScaffold(root, "golden_triangle", sources)).toThrow(
+        `観察資料の観察ポイント「${card.id}」に問題ID（relatedQuestionIds: gt_delhi_main_red_fort_quiz_q1）が書かれています: ${cardsFile}。` +
+        "観察資料には問題IDを書かず、[] のままにします。都市を公開（journey:release -- --apply）した後、旅行編の tourism/catalog.json で、その観察ポイントを本当に使う問題にだけ問題IDを書いてください。");
+    } finally { rmSync(root, { recursive: true, force: true }); }
+  });
+
   it("reports missing narrative content in the fourth city instead of declaring readiness", () => {
     const source = loadJourneyReadiness(process.cwd(), "golden_triangle");
     const delhi = source.cities.find((entry) => entry.city.id === "delhi")!;
