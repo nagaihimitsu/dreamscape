@@ -150,6 +150,31 @@ describe("Luang Prabang city foundation", () => {
     }
   });
 
+  it("cites the author's confirmation of Sakkaline Rd (recorded 2026-11-08) on the 8 bicycle directions that ride it (user answer 8)", () => {
+    const ledger = JSON.parse(readFileSync(`content/journeys/${cityId}/travel/${cityId}-transit.json`, "utf8")) as {
+      sourceRefs: Record<string, { publisher: string; checkedAt: string; claimType: string; claimJa: string }>;
+      decisions: { fromPlaceId: string; toPlaceId: string; mode: string; checkedAt: string; reasonJa: string; sourceRefs: string[] }[];
+    };
+    expect(ledger.sourceRefs.field_check_2026_07_sakkaline).toMatchObject({ publisher: "Dreamscape 作者の現地確認", checkedAt: "2026-11-08", claimType: "documented_fact" });
+    const short = (id: string) => id.replace("luang_prabang_", "");
+    const sakkaline = ledger.decisions.filter((decision) => decision.reasonJa.includes("サッカリン通り"));
+    expect(sakkaline.map((decision) => `${short(decision.fromPlaceId)}>${short(decision.toPlaceId)}`).sort()).toEqual([
+      "ethnology>xieng_thong", "hotel>xieng_thong", "wat_phol_phao>wat_sen", "wat_phol_phao>xieng_thong",
+      "wat_sen>wat_phol_phao", "xieng_thong>ethnology", "xieng_thong>hotel", "xieng_thong>wat_phol_phao"]);
+    const { travel } = getCityContent(cityId);
+    for (const decision of sakkaline) {
+      const where = `${decision.fromPlaceId}>${decision.toPlaceId}`;
+      expect(decision, where).toMatchObject({ mode: "bicycle", checkedAt: "2026-11-08" });
+      expect(decision.sourceRefs, where).toContain("field_check_2026_07_sakkaline");
+      expect(decision.reasonJa, where).toContain("ゲームでは時間を問わず走れることにする");
+      expect(decision.reasonJa, where).not.toContain("確かめていない。");
+      const route = travel.routes.find((item) => item.mode === "bicycle" && item.fromPlaceId === decision.fromPlaceId && item.toPlaceId === decision.toPlaceId)!;
+      expect(route.sources, where).toContainEqual(ledger.sourceRefs.field_check_2026_07_sakkaline);
+    }
+    // Only these 8 directions cite it.
+    expect(ledger.decisions.filter((decision) => decision.sourceRefs.includes("field_check_2026_07_sakkaline"))).toHaveLength(8);
+  });
+
   it("never lets the rental bicycle hide another way home: renting only adds bicycle options (rule a compares with the walk only)", () => {
     const state = prototypePreviewState(cityId);
     const rented = rentTransport(state, "bicycle", state.revision);
