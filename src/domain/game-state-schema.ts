@@ -4,6 +4,7 @@ import { responseProfileSchema } from "../content/schemas";
 import { storyFrameSchema } from "../story/runtime";
 import { DAY_END } from "./travel";
 import { activeEncounterSchema } from "./encounter-state";
+import { stableContentId } from "./stable-id";
 import { activeEpilogueSchema } from "./epilogue";
 import { activeTourismSchema } from "./tourism";
 import { battleRewardReceiptSchema, pendingApRewardSchema } from "./rewards";
@@ -15,7 +16,6 @@ export const GAME_STATE_VERSION = 14;
 const uniqueStrings = z
   .array(z.string().min(1))
   .refine((items) => new Set(items).size === items.length);
-const stableContentId = z.string().regex(/^[a-z][a-z0-9_]*$/);
 export const nameSchema = z.string().trim().min(1).max(balance.maxNameLength);
 const relationshipValuesSchema = z.object({
   affection: z.number().int(), trust: z.number().int(), spark: z.number().int(),

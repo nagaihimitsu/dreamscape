@@ -278,6 +278,9 @@ describe("save format v14 (docs/07: one format per version, no migration)", () =
     const { returnTourism, ...active } = meeting.activeEncounter!;
     expect(returnTourism).toBeDefined();
     const moment = (fields: object) => ({ ...meeting, activeTourism: null, activeEncounter: { ...active, ...fields } });
+    expect(validateGameState(JSON.parse(JSON.stringify(moment({ returnTourism }))))).toEqual(meeting);
+    // No moment at all: the shape of the removed free-time start.
+    expect(() => validateGameState(moment({}))).toThrow("道中交流の時点の記録が一致しません。");
     expect(() => validateGameState(moment({ afterBattle: { battleId: "milano_duomo_01", encounterIds: ["duomo_string"] } })))
       .toThrow("道中交流の時点の記録が一致しません。");
     expect(() => validateGameState(moment({ trip: { eventId: "milano_duomo_episode", modeId: "tram" } }))).toThrow("道中交流の時点の記録が一致しません。");

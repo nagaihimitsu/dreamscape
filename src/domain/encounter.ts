@@ -380,15 +380,17 @@ export function validateEncounterState(state: GameState): void {
   }
   const active = state.activeEncounter;
   if (!active) return;
-  // The after-battle and trip moments come with stage 3 of the condition system; nothing writes them yet.
-  if (active.afterBattle || active.trip) throw new Error("道中交流の時点の記録が一致しません。");
+  // Until stage 3 of the condition system writes the after-battle and trip moments, an encounter runs only from
+  // a landmark's observation (decision 7): one without that return point (the removed free-time start's shape)
+  // or with another moment is refused.
+  if (!active.returnTourism || active.afterBattle || active.trip) throw new Error("道中交流の時点の記録が一致しません。");
   const event = getActiveEncounterDefinition(active);
   if (event.cityId !== state.currentCityId) fail();
   if (state.activeDate || state.activeTourism || state.activeEpilogue || state.activeBattle) fail();
-  if (active.returnTourism && (active.returnTourism.landmarkId !== event.landmarkId ||
+  if (active.returnTourism.landmarkId !== event.landmarkId ||
       !validObservationEncounterIds(active.returnTourism.landmarkId, active.returnTourism.encounterIds) ||
       (active.returnTourism.encounterIds && !active.returnTourism.encounterIds.includes(event.id)) ||
-      !state.visitedLandmarkIds.includes(active.returnTourism.landmarkId))) fail();
+      !state.visitedLandmarkIds.includes(active.returnTourism.landmarkId)) fail();
   if (active.storyHash !== storyFingerprint(activeStoryId(active, active.storyId))) fail();
   const validStories = [event!.storyId, ...(event!.quiz ? [event!.quiz.wonStoryId, event!.quiz.lostStoryId, event!.quiz.alreadyStoryId] : [])];
   if (!validStories.includes(active.storyId)) fail();
