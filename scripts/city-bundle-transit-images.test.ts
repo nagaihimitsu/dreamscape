@@ -64,6 +64,16 @@ describe("city editing bundle: transit ledgers, images and observations", () => 
     const beforeDuplicate = fingerprint(root);
     await expect(applyCityBundle(root, duplicate, true)).rejects.toThrow(`Duplicate transit decision: delhi:${first.fromPlaceId}:${first.toPlaceId}:${first.mode}`);
     expect(fingerprint(root)).toBe(beforeDuplicate);
+    // A new record (here one taken out of the ledger first) is added once, at the end of the ledger.
+    const ledger = readJson(root, indiaDecisionFile);
+    const added = ledger.decisions.find((item: Decision) => item.cityId === "delhi") as Decision;
+    const without = ledger.decisions.filter((item: Decision) => item !== added);
+    writeJson(root, indiaDecisionFile, { ...ledger, decisions: without });
+    const addition = exportCityBundle(root, "delhi");
+    expect((addition.transitDecisions as Decision[]).some((item) => same(item, added))).toBe(false);
+    (addition.transitDecisions as Decision[]).push(added);
+    await applyCityBundle(root, addition, true);
+    expect(readJson(root, indiaDecisionFile)).toEqual({ ...ledger, decisions: [...without, added] });
   }, 180_000);
 
   it("edits the selected Uzbek transit ledger while rejecting unknown directions and image changes", async () => {

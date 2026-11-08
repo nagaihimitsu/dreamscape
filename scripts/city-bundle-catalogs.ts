@@ -13,7 +13,7 @@ import type { CityBundle } from "./city-bundle-schema";
 import { bundleCatalogKinds, cityFiles, existing, layerPath, read } from "./city-bundle-files";
 import { journeyAuthoringProfiles } from "./journey-authoring";
 import { cityTransitFile, readTransitLedger, replaceTransitDecisions } from "./journey-transit-review";
-import { journeyTransitDecisionFile } from "./journey-transit-decisions";
+import { journeyTransitDecisionFile, transitDecisionKey } from "./journey-transit-decisions";
 import { findPublicFile } from "./public-assets";
 
 export const assertUniqueIds = <T>(items: readonly T[], get: (v: T) => string, label: string) => {
@@ -200,17 +200,16 @@ export function mergeCityCatalogs(sources: ContentSources, bundle: CityBundle, b
     if (!isDeepStrictEqual(baseline?.transitDecisions, bundle.transitDecisions)) {
       // Replace each of this city's records where it stands (one direction and mode), drop removed
       // ones and append new ones, so an edit changes only its own lines; other cities' records stay.
-      type Decision = { cityId: string; fromPlaceId: string; toPlaceId: string; mode: string };
-      const key = (entry: Decision) => `${entry.cityId}:${entry.fromPlaceId}:${entry.toPlaceId}:${entry.mode}`;
+      type Decision = Parameters<typeof transitDecisionKey>[0];
       const pending = new Map<string, Decision>();
       for (const entry of bundle.transitDecisions as Decision[]) {
-        if (pending.has(key(entry))) throw new Error(`Duplicate transit decision: ${key(entry)}`);
-        pending.set(key(entry), entry);
+        if (pending.has(transitDecisionKey(entry))) throw new Error(`Duplicate transit decision: ${transitDecisionKey(entry)}`);
+        pending.set(transitDecisionKey(entry), entry);
       }
       ledger.decisions = ledger.decisions.flatMap((entry: Decision) => {
         if (entry.cityId !== cityId) return [entry];
-        const replacement = pending.get(key(entry));
-        pending.delete(key(entry));
+        const replacement = pending.get(transitDecisionKey(entry));
+        pending.delete(transitDecisionKey(entry));
         return replacement ? [replacement] : [];
       });
       ledger.decisions.push(...pending.values());
