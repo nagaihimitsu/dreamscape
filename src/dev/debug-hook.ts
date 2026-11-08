@@ -16,7 +16,7 @@ export interface DebugSceneInfo {
 
 /**
  * Read-only: every call returns a copy, so a test cannot change Debug or the
- * game through it. Both return null while the settings screen is shown.
+ * game through it. Both return null while the scene picker (場面の確認) is shown.
  */
 export interface DreamscapeDebugHook {
   /** The Debug game as last saved in its memory storage (every action is saved unless 自動保存 is off). */

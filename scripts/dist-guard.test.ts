@@ -2,7 +2,10 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { checkThirdPartyLicenses, describeFindings, devOnlyMarkers, findDevOnlyCode, isTextAsset, type DistFile } from "./dist-guard";
+import {
+  checkThirdPartyLicenses, describeDebugOnTitle, describeFindings, devOnlyMarkers, eagerFiles, findDebugCodeOnTitle, findDevOnlyCode, isTextAsset,
+  lazyDebugMarkers, type DistFile,
+} from "./dist-guard";
 import { runtimeImports } from "./test-sets";
 
 // No content build needed: the markers are checked against the repository's
@@ -18,7 +21,7 @@ const cleanBuild: DistFile[] = [
 
 describe("production build guard", () => {
   it("keeps every marker in the file it comes from", () => {
-    for (const { text, source } of devOnlyMarkers) {
+    for (const { text, source } of [...devOnlyMarkers, ...lazyDebugMarkers]) {
       const file = path.join(root, source);
       expect(existsSync(file), `${source} (source of "${text}") is missing; update scripts/dist-guard.ts`).toBe(true);
       const found = source.includes(text) || (!source.endsWith("/") && readFileSync(file, "utf8").includes(text));
@@ -28,22 +31,66 @@ describe("production build guard", () => {
 
   it("finds nothing in a build without development code", () => {
     expect(findDevOnlyCode(cleanBuild)).toEqual([]);
+    expect(findDebugCodeOnTitle(cleanBuild, ["index.html", ...eagerFiles(cleanBuild[0].text!)])).toEqual([]);
   });
 
-  it("finds Debug, fixtures and test journeys in the text and paths of built files", () => {
+  it("finds the test hook, fixtures and test journeys in the text and paths of any built file, Debug's lazy chunks included", () => {
     const leaked: DistFile[] = [
       ...cleanBuild,
-      { path: "assets/DebugMode-x1.js", text: 'jsx("main",{className:"debug-panel","data-testid":"debug-panel"})' },
-      { path: "assets/index-def.js", text: 'throw Error("仮の場面の元になる都市がありません。公開中の旅行編のどれかに…")' },
+      { path: "assets/DebugMode-x1.js", text: 'Object.defineProperty(t,"__dreamscapeDebug",{value:h})' },
+      { path: "assets/index-def.js", text: 'const e={id:"test-fixture-city"}' },
       { path: "assets/tourism/sample_trip/mihon_market.png", text: null },
       { path: "assets/index-abc.js.map", text: '{"sources":["../src/dev/debug-state.ts"]}' },
     ];
     expect(findDevOnlyCode(leaked).map(({ path, where, marker }) => [path, where, marker.text])).toEqual([
-      ["assets/DebugMode-x1.js", "content", "debug-panel"],
-      ["assets/index-def.js", "content", "仮の場面の元になる都市がありません"],
+      ["assets/DebugMode-x1.js", "content", "__dreamscapeDebug"],
+      ["assets/index-def.js", "content", "test-fixture"],
       ["assets/tourism/sample_trip/mihon_market.png", "path", "sample_trip"],
       ["assets/index-abc.js.map", "content", "src/dev/"],
     ]);
+  });
+
+  it("lets Debug's code ship in lazily loaded files only", () => {
+    const debug = 'jsx("main",{className:"debug-panel","data-testid":"debug-panel"});throw Error("仮の場面の元になる都市がありません。")';
+    const html = '<script type="module" crossorigin src="./assets/index-abc.js"></script><link rel="stylesheet" crossorigin href="./assets/index-abc.css">';
+    const build: DistFile[] = [
+      { path: "index.html", text: html },
+      { path: "assets/index-abc.js", text: 'const d=()=>import("./DebugMode-x1.js")' },
+      { path: "assets/index-abc.css", text: ".travel-menu{display:grid}" },
+      { path: "assets/DebugMode-x1.js", text: debug },
+      { path: "assets/DebugMode-x1.css", text: ".debug-panel{display:grid}" },
+    ];
+    const eager = ["index.html", ...eagerFiles(html)];
+    // The test-only markers are not lazy markers: the lazy chunk holds none of them.
+    expect(findDevOnlyCode(build)).toEqual([]);
+    expect(findDebugCodeOnTitle(build, eager)).toEqual([]);
+    // The same code in the entry script, a chunk the entry preloads, the eager stylesheet or the page itself is on the title page.
+    const preloaded = '<script type="module" src="./assets/index-abc.js"></script><link rel="modulepreload" href="./assets/DebugMode-x1.js">';
+    expect(findDebugCodeOnTitle(build, ["index.html", ...eagerFiles(preloaded)]).map(({ path, marker }) => [path, marker.text])).toEqual([
+      ["assets/DebugMode-x1.js", "debug-panel"],
+      ["assets/DebugMode-x1.js", "仮の場面の元になる都市がありません"],
+    ]);
+    const leaked = build.map((file) => file.path === "assets/index-abc.js" ? { ...file, text: `${file.text};${debug}` }
+      : file.path === "assets/index-abc.css" ? { ...file, text: ".debug-panel{display:grid}" }
+        : file.path === "index.html" ? { ...file, text: `${html}<p>Debug · 通常セーブとは別</p>` } : file);
+    expect(findDebugCodeOnTitle(leaked, eager).map(({ path, marker }) => [path, marker.source])).toEqual([
+      ["index.html", "src/dev/DebugMode.tsx"],
+      ["assets/index-abc.js", "src/dev/DebugMode.tsx"],
+      ["assets/index-abc.js", "src/dev/fixture-template.ts"],
+      ["assets/index-abc.css", "src/dev/DebugMode.tsx"],
+    ]);
+  });
+
+  it("reads the files index.html loads at once, however its attributes are written", () => {
+    expect(eagerFiles([
+      '<link rel="icon" type="image/png" href="./favicon-16.png" /><link rel="manifest" href="./manifest.webmanifest" />',
+      '<script type="module" crossorigin src="./assets/index-06YRtxEe.js"></script>',
+      "<link crossorigin rel=modulepreload href=assets/shared-a1.js>",
+      "<LINK HREF='/assets/index-Cc3mH7MU.css' REL='stylesheet'>",
+      '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP">',
+      '<script src="./legacy.js"></script><script type="module">import "./inline"</script>',
+      '<link rel="preload" href="./assets/font.woff2" as="font">',
+    ].join("\n"))).toEqual(["assets/index-06YRtxEe.js", "assets/shared-a1.js", "assets/index-Cc3mH7MU.css"]);
   });
 
   it("reports the sample journey in generated content and in served image paths", () => {
@@ -67,36 +114,65 @@ describe("production build guard", () => {
     expect(isTextAsset("assets.js/photo")).toBe(false);
   });
 
-  it("names the file, the text and its source in the report", () => {
-    const [finding] = findDevOnlyCode([{ path: "assets/DebugMode-x1.js", text: "debug-panel" }]);
+  it("names the file, the text and its source in the reports", () => {
+    const [finding] = findDevOnlyCode([{ path: "assets/DebugMode-x1.js", text: "__dreamscapeDebug" }]);
     const report = describeFindings("dist", [finding]);
     expect(report).toContain("本番ビルド（dist）");
-    expect(report).toContain("- assets/DebugMode-x1.js の内容に「debug-panel」（目印の由来: src/dev/DebugMode.tsx）");
+    expect(report).toContain("- assets/DebugMode-x1.js の内容に「__dreamscapeDebug」（目印の由来: src/dev/debug-hook.ts）");
+    const [onTitle] = findDebugCodeOnTitle([{ path: "assets/index-abc.js", text: "debug-panel" }], ["assets/index-abc.js"]);
+    const titleReport = describeDebugOnTitle("dist", [onTitle]);
+    expect(titleReport).toContain("本番ビルド（dist）のタイトル画面で読み込むファイルにDebugのコードが入っています。");
+    expect(titleReport).toContain("- assets/index-abc.js に「debug-panel」（目印の由来: src/dev/DebugMode.tsx）");
   });
 });
 
-/** Game source files that ship: src/ without Debug/preview (src/dev/), tests and in-memory test fixtures. */
+/** Game source files outside src/dev/ that ship: src/ without tests and in-memory test fixtures. */
 function productionSources(): string[] {
   return readdirSync(path.join(root, "src"), { recursive: true, encoding: "utf8" })
     .map((file) => `src/${file.split(path.sep).join("/")}`)
     .filter((file) => /\.tsx?$/.test(file) && !file.startsWith("src/dev/") && !/\.test\.tsx?$/.test(file) && !file.includes("test-fixture"));
 }
 const devOnlyImport = /(^|\/)dev\/|test-fixture|(^|\/)tests\//;
+const testImport = /test-fixture|(^|\/)tests\//;
+const read = (file: string) => readFileSync(path.join(root, file), "utf8");
 
-describe("development-only code in the game's sources", () => {
-  it("is reached only through main.tsx's lazy imports behind import.meta.env.DEV", () => {
+describe("Debug's code in the game's sources", () => {
+  it("is reached only through main.tsx's two lazy imports, opened only on the dev server or with Debug mode on", () => {
     const sources = productionSources();
     expect(sources).toContain("src/main.tsx");
     expect(sources).toContain("src/app/GameApp.tsx");
-    const reached = sources.flatMap((file) => runtimeImports(readFileSync(path.join(root, file), "utf8"))
+    expect(sources).toContain("src/app/debug-mode.ts");
+    expect(sources).toContain("src/domain/relationship-change.ts");
+    const reached = sources.flatMap((file) => runtimeImports(read(file))
       .filter((specifier) => devOnlyImport.test(specifier)).map((specifier) => `${file} → ${specifier}`));
     expect(reached).toEqual(["src/main.tsx → ./dev/CharacterPreview", "src/main.tsx → ./dev/DebugMode"]);
-    // Each one is the lazy branch of a DEV check, which Vite removes from production builds;
-    // the Debug launch URL (?debug&…) and the test hook live behind it in src/dev/.
-    const main = readFileSync(path.join(root, "src/main.tsx"), "utf8");
-    const guarded = [...main.matchAll(/= import\.meta\.env\.DEV\s*\?\s*React\.lazy\(\(\) => import\("(\.\/dev\/\w+)"\)\)\s*:\s*null;/g)].map((match) => match[1]);
-    expect(guarded.sort()).toEqual(["./dev/CharacterPreview", "./dev/DebugMode"]);
-    expect(main).toMatch(/const query = import\.meta\.env\.DEV \? new URLSearchParams\(window\.location\.search\) : null;/);
+    // Each one is a dynamic import only (a lazy chunk the title page does not load, checked by
+    // scripts/check-dist.ts on every build); a static import of the same module would add a second line above.
+    const main = read("src/main.tsx");
+    const lazy = [...main.matchAll(/= React\.lazy\(\(\) => import\("(\.\/dev\/\w+)"\)\);/g)].map((match) => match[1]);
+    expect(lazy.sort()).toEqual(["./dev/CharacterPreview", "./dev/DebugMode"]);
+    // ?debug and ?character-preview open them only on the development server or on a device whose
+    // Debug mode is on (AGENTS.md; the boot production test checks it with a fresh browser).
+    expect(main).toContain("const debugAllowed = import.meta.env.DEV || readDebugMode(browserStorage);");
+    expect(main).toContain('const showDebug = debugAllowed && query.has("debug");');
+    expect(main).toContain('const showCharacterPreview = debugAllowed && query.has("character-preview");');
+  });
+
+  it("ships without the test hook, which DebugMode installs only on the development server", () => {
+    const debugMode = read("src/dev/DebugMode.tsx");
+    expect(debugMode).toMatch(/useEffect\(\(\) => import\.meta\.env\.DEV \? installDebugHook\(window, \{/u);
+    expect(debugMode.match(/installDebugHook\(/gu)).toHaveLength(1);
+  });
+
+  it("shipped as Debug, imports no tests and no in-memory test fixtures", () => {
+    // src/dev/ ships as Debug's lazy chunks (not its unit tests). The dist markers tests/fixtures/ and
+    // tests/journeys/ only match source-map paths, which the build does not write, so this scan is what
+    // keeps such an import out.
+    const shipped = readdirSync(path.join(root, "src/dev"), { encoding: "utf8" })
+      .filter((file) => /\.tsx?$/.test(file) && !/\.test\.tsx?$/.test(file)).map((file) => `src/dev/${file}`);
+    expect(shipped).toEqual(expect.arrayContaining(["src/dev/DebugMode.tsx", "src/dev/scenario-builders.ts", "src/dev/test-cities.ts"]));
+    expect(shipped.flatMap((file) => runtimeImports(read(file)).filter((specifier) => testImport.test(specifier))
+      .map((specifier) => `${file} → ${specifier}`))).toEqual([]);
   });
 });
 

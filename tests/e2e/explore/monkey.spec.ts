@@ -47,7 +47,7 @@ const playable = journeyCatalog().journeys.filter((journey) => journey.status ==
 /** The Debug examples of docs/10 that open a scene with a game state (not the prototype map check, which has none). */
 const debugUrls = debugSessionExampleUrls(readFileSync(new URL("../../../docs/10_DEVELOPMENT_CHECKS.md", import.meta.url), "utf8"));
 /** Controls the monkey never presses: they delete data, switch journeys or leave Debug (labels as shown). */
-const excludedLabels = ["消去", "通常プレイに戻る", "設定へ戻る"];
+const excludedLabels = ["消去", "通常プレイに戻る", "場面の選択へ戻る"];
 
 type Source = { kind: "save"; journeyId: string } | { kind: "debug" };
 type Check = { revision: number | null; error: string | null; ended: boolean };

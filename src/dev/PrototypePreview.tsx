@@ -59,7 +59,7 @@ export function PrototypePreview({ cityId, onClose }: { cityId: string; onClose:
   }
 
   return <main className="debug-panel" data-testid="debug-prototype-preview">
-    <header className="debug-session-bar"><strong>{city.nameJa} · 都市データの確認</strong><button type="button" onClick={onClose}>設定へ戻る</button></header>
+    <header className="debug-session-bar"><strong>{city.nameJa} · 都市データの確認</strong><button type="button" onClick={onClose}>場面の選択へ戻る</button></header>
     <p>制作中の地点・ゲーム用推定経路です。{getJourneyForCity(cityId)?.farePartySize === 2 && "料金は2人分です。"}観光やデートの物語は始まりません。操作と保存はこの画面だけの一時データです。</p>
     <p data-testid="debug-prototype-status">現在地：{current.nameJa}　{game.travel.day}日目{weekday === undefined ? "" : `（${["月", "火", "水", "木", "金", "土", "日"][weekday]}）`} {String(Math.floor(game.travel.minute / 60)).padStart(2, "0")}:{String(game.travel.minute % 60).padStart(2, "0")}　{formatMoneyForCity(cityId, game.travelBudget)}　{Math.min(balance.apCap, game.ap)} AP</p>
     <PlaceMap game={game} events={travel.events} />

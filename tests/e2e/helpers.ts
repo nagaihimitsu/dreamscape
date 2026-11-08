@@ -456,7 +456,7 @@ export const ops = {
     return restore;
   },
   /**
-   * After a navigation into Debug (a launch URL, or a link to its settings screen): what Debug
+   * After a navigation into Debug (a launch URL, or a link to its scene picker 「場面の確認」): what Debug
    * shows first. Debug is loaded only after the page's load event (React.lazy in src/main.tsx),
    * module by module from the development server, and then builds its game: about 1 s here,
    * 1.4–1.7 s under 6× CPU throttling, and more than the 5 s an assertion waits by default with
@@ -472,8 +472,9 @@ export const ops = {
     await ops.debugShown(page.getByTestId("debug-session"));
     return url;
   },
+  /** Debug's bar 「場面の選択へ戻る」: back to the scene picker 「場面の確認」. */
   async backToDebugSettings(page: Page) {
-    await page.getByRole("button", { name: "設定へ戻る" }).click();
+    await page.getByRole("button", { name: "場面の選択へ戻る" }).click();
     await expect(page.getByTestId("debug-panel")).toBeVisible();
   },
   /** Special battle B/C: after the claim, the optional rebuttal lines and the cut-in (presentation only, never saved). */

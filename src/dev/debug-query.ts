@@ -26,12 +26,12 @@ export type DebugSettings = {
   roll: "positive" | "negative";
 };
 
-/** The value range the settings screen offers (AP is also capped by the game's AP limit). */
+/** The value range the scene picker (場面の確認) offers (AP is also capped by the game's AP limit). */
 export const debugValueRanges = {
   ap: [0, 12], affection: [-20, 20], trust: [-20, 20], spark: [-20, 20],
 } as const satisfies Record<"ap" | "affection" | "trust" | "spark", readonly [number, number]>;
 
-/** A launch URL's values; omitted ones take the settings screen's defaults. `map` shows a prototype city's map. */
+/** A launch URL's values; omitted ones take the scene picker's defaults. `map` shows a prototype city's map. */
 export interface DebugQuery {
   dataMode: DebugDataMode;
   cityId?: string;
@@ -79,7 +79,7 @@ function parseValue(key: QueryKey, value: string): string | number {
   return value;
 }
 
-/** Read `location.search`: only `?debug` opens the settings screen; any other item makes it a launch URL. */
+/** Read `location.search`: only `?debug` opens the scene picker (場面の確認); any other item makes it a launch URL. */
 export function parseDebugQuery(search: string): ParsedDebugQuery {
   const params = [...new URLSearchParams(search)].filter(([key]) => key !== "debug");
   if (!params.length) return { kind: "panel" };
@@ -93,7 +93,7 @@ export function parseDebugQuery(search: string): ParsedDebugQuery {
       values[key as QueryKey] = parseValue(key as QueryKey, value);
     }
     if (values.scene === undefined)
-      throw new Error("場面（scene）がありません。scene=battle のように場面を指定するか、?debug だけで設定画面を開いてください。");
+      throw new Error("場面（scene）がありません。scene=battle のように場面を指定するか、?debug だけで場面の確認を開いてください。");
     const query: DebugQuery = { dataMode: (values.data as DebugDataMode | undefined) ?? "real", scene: values.scene as DebugQuery["scene"] };
     if (values.city !== undefined) query.cityId = values.city as string;
     if (values.target !== undefined) query.target = values.target as string;

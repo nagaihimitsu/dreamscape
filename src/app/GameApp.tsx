@@ -99,7 +99,8 @@ export function GameApp({
   selectorFocus,
   oldDataStorage,
 }: AppProps & { journeyId?: string; onSwitchJourney?: (id: string) => void; selectorFocus?: SelectorFocus; oldDataStorage?: KeyedStorage }) {
-  const isDebug = import.meta.env.DEV && debug;
+  // Only Debug (src/dev/DebugMode.tsx) passes `debug`, on the dev server and, with Debug mode on, in production.
+  const isDebug = debug;
   const displaySettings = usePresentationSettings(storage);
   const session = useGameSession(storage, displaySettings.value.autoSave);
   const { game, loaded, invalid, notice, setNotice, commit, getCurrent, save } = session;
@@ -720,7 +721,7 @@ export function GameApp({
           onClose={() => setDeleteSnapshot(null)}
         >
           <h2 id="delete-title">{isDebug ? "Debug用の一時データを消去しますか？" : "保存データを消去しますか？"}</h2>
-          {isDebug ? <p>Debug用の進行と英語ノートを消去して設定画面へ戻ります。通常のセーブ・英語ノート・表示設定は消去しません。</p> : <><p>
+          {isDebug ? <p>Debug用の進行と英語ノートを消去して場面の確認へ戻ります。通常のセーブ・英語ノート・表示設定は消去しません。</p> : <><p>
             このブラウザに保存された名前、旅の進行、AP、恋愛・バトルの記録、英語ノートと対訳設定を消去します。元には戻せません。
           </p>
           <p className="fine-print">
