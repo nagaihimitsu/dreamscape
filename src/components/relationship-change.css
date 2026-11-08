@@ -1,0 +1,36 @@
+/*
+ * Debug mode's relationship-change strip (RelationshipChangeNote): the first child of
+ * <main>, in the normal flow like a notice. In the phone play layout the scene below
+ * shrinks to make room and the dialogue window stays at the bottom, so the next tap
+ * target does not move. No animation; no thick left border (AGENTS.md).
+ */
+.relationship-change {
+  flex: none;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--ds-parchment-2);
+  border-bottom: 1px solid var(--ds-parchment-line);
+  color: var(--ds-ink);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.relationship-change-label {
+  flex: none;
+  margin-top: 1px;
+  padding: 0 6px;
+  border: 1px solid var(--ds-ink-muted);
+  border-radius: 3px;
+  color: var(--ds-ink-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.relationship-change-lines {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.relationship-change-lines p {
+  margin: 0;
+}

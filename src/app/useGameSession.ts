@@ -11,8 +11,11 @@ import { hasUnsavedProgress as unsavedProgress, leaveStep } from "./unsaved-prog
 export type GameChange = (state: GameState) => GameState;
 export type GameStorage = StorageLike & { removeItem(key: string): void };
 
+/** Called after every player action that changed the game (not after a load, a new game or a deletion). */
+export type CommitListener = (previous: GameState, next: GameState) => void;
+
 /** Owns the in-memory game and the snapshots used to protect persisted progress. */
-export function useGameSession(storage: GameStorage, autoSave: boolean) {
+export function useGameSession(storage: GameStorage, autoSave: boolean, onCommitted?: CommitListener) {
   const [loaded] = useState(() => loadGame(storage));
   const [game, setGame] = useState<GameState | null>(loaded.status === "loaded" ? loaded.state : null);
   const gameRef = useRef(game);
@@ -44,6 +47,7 @@ export function useGameSession(storage: GameStorage, autoSave: boolean) {
     }
     adopt(next);
     setNotice("");
+    onCommitted?.(previous, next);
     return true;
   }
   useEffect(() => {

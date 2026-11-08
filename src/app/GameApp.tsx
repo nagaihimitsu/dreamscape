@@ -90,6 +90,8 @@ import { storySceneChanged, storySceneOnScreen } from "./story-scene-change";
 import { holdTaps } from "../components/tap-hold";
 import { useDebugMode } from "./debug-mode";
 import { DebugModeSetting } from "./DebugModeSetting";
+import { relationshipChange, type RelationshipChange } from "../domain/relationship-change";
+import { RelationshipChangeNote } from "../components/RelationshipChangeNote";
 import { PAGE_MARGIN_ATTRIBUTE } from "../components/scene-tap";
 
 export function GameApp({
@@ -106,7 +108,21 @@ export function GameApp({
   const displaySettings = usePresentationSettings(storage);
   // This device's Debug-mode switch (journeyStorage passes its key through unscoped).
   const debugMode = useDebugMode(storage);
-  const session = useGameSession(storage, displaySettings.value.autoSave);
+  // While Debug mode is on (always in a Debug session), a choice's relationship changes show above
+  // its story scene until the scene ends or the next change (relationship-change.ts). Never saved
+  // or logged. Read through a ref: a caller may hold an older `commit` (travel timers).
+  const showChanges = isDebug || debugMode.on;
+  const showChangesRef = useRef(showChanges);
+  showChangesRef.current = showChanges;
+  const [shownChange, setShownChange] = useState<{ scene: string; change: RelationshipChange } | null>(null);
+  useEffect(() => { if (!showChanges) setShownChange(null); }, [showChanges]);
+  const session = useGameSession(storage, displaySettings.value.autoSave, (previous, next) => {
+    if (!showChangesRef.current) return;
+    const change = relationshipChange(previous, next);
+    // Only inside a story scene: with none on screen, a null key would match the map.
+    const scene = storySceneOnScreen(next);
+    if (change && scene) setShownChange({ scene, change });
+  });
   const { game, loaded, invalid, notice, setNotice, commit, getCurrent, save } = session;
   // The second tap of a double tap that starts or ends a story scene must not press the next
   // screen or read the new scene on (story-scene-change.ts).
@@ -187,6 +203,8 @@ export function GameApp({
   }
   function loadSavedGame() {
     if (!session.restore()) return;
+    // A load can bring back the same date run (the same scene key): its earlier change is not shown again.
+    setShownChange(null);
     // A load replaces the screen under the finger like a scene start, also when the same scene
     // comes back (a date, battle or encounter is a new instance: sceneEpoch): the second tap of a
     // double tap on 「ロード」 or 「ロードする」 must not read the restored line on.
@@ -367,6 +385,7 @@ export function GameApp({
       )}
       {/* A tap on main's own margin beside a narrow story scene reads on (scene-tap.ts). */}
       <main id="main" ref={main} tabIndex={-1} {...{ [PAGE_MARGIN_ATTRIBUTE]: "" }}>
+        {showChanges && shownChange && shownChange.scene === storyScene && <RelationshipChangeNote change={shownChange.change} />}
         {learning.error && (
           <div className="notice" role="status">
             {learning.error}
