@@ -158,6 +158,17 @@ export function watchFolderTree(folder: string, onChange: (relative: string | nu
 
 const alive = (child: ChildProcess | undefined): child is ChildProcess => !!child && child.exitCode === null && child.signalCode === null;
 
+/**
+ * dev:watch's exit code when the dev server ends: its own code (0 after q), or
+ * 1 when a signal other than an interrupt or termination request killed it
+ * (a crash, SIGKILL from the out-of-memory killer), so a script or CI step
+ * running dev:watch sees the failure. Ctrl+C reaches vite as SIGINT too.
+ */
+export function devServerExitCode(code: number | null, signal: NodeJS.Signals | null): number {
+  if (signal && signal !== "SIGINT" && signal !== "SIGTERM") return 1;
+  return code ?? 0;
+}
+
 function watchContent(root: string, withSample: boolean, dev: boolean): void {
   const folders = ["content", "public", ...(withSample ? [SAMPLE_JOURNEY_DIRECTORY] : [])];
   const missing = folders.filter((folder) => !existsSync(path.join(root, folder)));
@@ -173,7 +184,7 @@ function watchContent(root: string, withSample: boolean, dev: boolean): void {
       stop(1);
     });
     // Quitting the dev server (q, or a crash) also ends the watcher.
-    vite.on("exit", (code) => stop(code ?? 0));
+    vite.on("exit", (code, signal) => stop(devServerExitCode(code, signal)));
   };
   const build = () => new Promise<void>((resolve) => {
     const files = [...changed];

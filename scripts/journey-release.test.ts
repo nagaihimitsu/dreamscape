@@ -61,6 +61,20 @@ describe("journey release rules", () => {
     } finally { rmSync(root, { recursive: true, force: true }); }
   });
 
+  it("keeps the text of an already released manifest, city and travel file, whatever its layout", () => {
+    const { root, original } = temporaryRoot();
+    try {
+      // The released state, written compactly (as an editor or another tool may leave it): a rerun changes no data,
+      // so each file keeps its text instead of being rewritten in the canonical layout.
+      const released = { ...original, ...journeyReleaseChanges(original, journeyId) };
+      const compact = Object.fromEntries(Object.entries(released).map(([file, value]) => [file, JSON.stringify(JSON.parse(value))]));
+      expect(compact[ownManifest]).not.toBe(released[ownManifest]);
+      const again = journeyReleaseChanges(compact, journeyId);
+      for (const file of [ownManifest, ...cityIds.flatMap((id) => [`content/cities/${id}.json`, `content/travel/${id}.json`])])
+        expect(again[file], file).toBe(compact[file]);
+    } finally { rmSync(root, { recursive: true, force: true }); }
+  });
+
   it("restores already changed files when a later write fails", () => {
     const { root, original } = temporaryRoot();
     try {

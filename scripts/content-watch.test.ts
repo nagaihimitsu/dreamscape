@@ -2,7 +2,7 @@ import { mkdirSync, mkdtempSync, renameSync, rmSync, writeFileSync } from "node:
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import { createRebuildScheduler, triggersRebuild, watchFolderTree } from "./content-watch";
+import { createRebuildScheduler, devServerExitCode, triggersRebuild, watchFolderTree } from "./content-watch";
 
 describe("content:watch", () => {
   it("rebuilds for content files, not for editor swap files, the tools' temporary files or dot folders", () => {
@@ -13,6 +13,15 @@ describe("content:watch", () => {
       "journeys/milano/cities/milano.json.journey-release-12-34-ab", "journeys/milano/cities/milano.json.journey-rollback-12-34-ab",
       "travel/delhi.json.city-bundle-12-34-ab", "travel/delhi.json.city-rollback-12-34-ab"])
       expect(triggersRebuild(file), file).toBe(false);
+  });
+
+  it("dev:watch ends with the dev server's code, and with 1 when a signal killed it", () => {
+    expect(devServerExitCode(0, null)).toBe(0); // q in vite
+    expect(devServerExitCode(1, null)).toBe(1);
+    expect(devServerExitCode(null, "SIGINT")).toBe(0); // Ctrl+C reaches vite too
+    expect(devServerExitCode(null, "SIGTERM")).toBe(0); // dev:watch stopping it
+    expect(devServerExitCode(null, "SIGKILL")).toBe(1); // e.g. the out-of-memory killer
+    expect(devServerExitCode(null, "SIGSEGV")).toBe(1);
   });
 
   it("runs one build for a burst of changes and exactly one more for changes during a build, never two at once", async () => {
