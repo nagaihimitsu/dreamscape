@@ -36,6 +36,24 @@ import "./battle.css";
 const FEEDBACK_GAP_PX = 8;
 
 /**
+ * The lowest edge (viewport y) of the boxes held over the top of a scroller's
+ * view at `x`, from `top` down: sticky or fixed boxes stacked there, as the
+ * round bar, or a header held above it. `top` when nothing is held there.
+ * Boxes that hold `line` itself are not over it.
+ */
+function heldOverTop(x: number, top: number, line: Element) {
+  let edge = top;
+  for (let held = 0; held < 4; held++) {
+    let box = document.elementFromPoint(x, edge + 1);
+    while (box && !box.contains(line) && !/^(sticky|fixed)$/.test(getComputedStyle(box).position)) box = box.parentElement;
+    const bottom = box && !box.contains(line) ? box.getBoundingClientRect().bottom : edge;
+    if (bottom <= edge) break;
+    edge = bottom;
+  }
+  return edge;
+}
+
+/**
  * Focuses the answer's feedback (screen readers read on from there) and shows
  * its start: its first line (「正しい答え：…」 after a wrong answer, else the
  * explanation) just below the sticky round bar. The box's top padding may sit
@@ -45,9 +63,10 @@ const FEEDBACK_GAP_PX = 8;
  * here from the bar as laid out keeps that line clear of the bar, and a
  * feedback that fits below the bar then shows whole. One taller than that room
  * may still be left with its start under the bar (a hidden one is centred, for
- * example), so it is scrolled back until the first line shows; the rest and
- * 「敵の反応を見る」 are read by scrolling on. Both jumps are instant, as the
- * browser's own.
+ * example), so it is scrolled back until the first line shows below the lowest
+ * box held over the top of the view (the bar, and anything held above it); the
+ * rest and 「敵の反応を見る」 are read by scrolling on. Both jumps are instant,
+ * as the browser's own.
  */
 function focusFeedbackStart(feedback: HTMLElement, area: HTMLElement | null, bar: HTMLElement | null) {
   if (!area || !bar) {
@@ -56,14 +75,18 @@ function focusFeedbackStart(feedback: HTMLElement, area: HTMLElement | null, bar
   }
   const line = feedback.querySelector(":scope > p") ?? feedback;
   // Below 500 px of portrait height the reading area grows with its content and the
-  // page scrolls instead (battle.css): the bar then sticks to the top of the screen.
+  // page scrolls instead (battle.css): the bar then sticks to the top of the screen,
+  // and the journey bar above the battle scrolls away with the page (styles.css).
   const pageScrolls = getComputedStyle(area).overflowY === "visible";
   const barBox = bar.getBoundingClientRect();
   const barBottom = pageScrolls ? barBox.height : barBox.bottom - area.getBoundingClientRect().top;
   const lineOffset = line.getBoundingClientRect().top - feedback.getBoundingClientRect().top;
   feedback.style.scrollMarginTop = `${Math.max(0, barBottom + FEEDBACK_GAP_PX - lineOffset)}px`;
   feedback.focus();
-  const covered = bar.getBoundingClientRect().bottom + FEEDBACK_GAP_PX - line.getBoundingClientRect().top;
+  const lineBox = line.getBoundingClientRect();
+  const viewTop = pageScrolls ? 0 : area.getBoundingClientRect().top + area.clientTop;
+  const clear = Math.max(bar.getBoundingClientRect().bottom, heldOverTop(lineBox.left + 4, viewTop, line));
+  const covered = clear + FEEDBACK_GAP_PX - lineBox.top;
   if (covered <= 0) return;
   if (pageScrolls) window.scrollBy(0, -covered);
   else area.scrollTop -= covered;

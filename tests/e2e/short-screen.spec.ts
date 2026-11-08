@@ -1,0 +1,110 @@
+import { devModules, expect, ops, playUntil, savedGame, test, tier } from "./helpers";
+
+// Below 500 px of portrait height the page scrolls instead of the battle's reading area
+// (battle.css), and the battle holds its round bar (問題番号・正誤・手がかり帳) at the top of
+// the screen. In normal play the journey bar above the battle then scrolls away with the
+// page (styles.css); were it held at the top too, it would cover the round bar and the start
+// of a long explanation (UI_REVIEW_CHECKLIST: 「スクロールして重なった部品の下に隠れない」).
+// Debug cannot show this (its session caps the game's height, so the journey bar always
+// scrolls away there), and Debug must leave the normal storage as it was, so this is
+// played from a normal save. State shortcut (lane 2 in docs/10): reaching a city's battles
+// takes minutes of play, so the page's own scene builders open the battle on a cleared
+// city and the game's own saveGame stores it as a normal save; the answer and the reading
+// are played in the UI. The battle and the answer are chosen as in debug-scenes.spec.ts's
+// long explanation (the default Debug city's first ordinary battle, a wrong first answer).
+test.use({ viewport: { width: 320, height: 480 } });
+
+test("battle on a 320×480 screen: after a wrong answer the round bar, 手がかり帳 and the explanation's first line are not under the journey bar", { tag: tier.debug }, async ({ page }) => {
+  await page.goto("/");
+  const placed = await page.evaluate(async ({ modules, journeysModule }) => {
+    const { battles, battleQuizzes } = await import(/* @vite-ignore */ modules.content);
+    const { debugTargets, defaultDebugCityId } = await import(/* @vite-ignore */ modules.debugState);
+    const builders = await import(/* @vite-ignore */ modules.builders);
+    const { saveGame } = await import(/* @vite-ignore */ modules.persistence);
+    const { journeyStorage } = await import(/* @vite-ignore */ modules.journeyStorage);
+    const { getJourneyForCity } = await import(/* @vite-ignore */ journeysModule);
+    const cityId: string = defaultDebugCityId;
+    const battle = battles.find((item: { id: string; reasoning?: unknown }) => !item.reasoning &&
+      debugTargets(cityId).battle.some((target: { id: string; unavailable?: string }) => target.id === item.id && !target.unavailable));
+    const question = battleQuizzes[battle.quizId].questions[0];
+    const journeyId: string = getJourneyForCity(cityId).id;
+    const state = builders.openBattleScene(builders.completedCity(cityId, { names: ["航", "澪"] }), battle.id);
+    return {
+      journeyId, saved: saveGame(journeyStorage(localStorage, journeyId), state),
+      wrong: question.options.find((option: { id: string }) => option.id !== question.correctOptionId).id as string,
+    };
+  }, { modules: devModules, journeysModule: "/src/content/journeys.ts" });
+  expect(placed.saved, "the battle placed as a normal save").toEqual({ ok: true });
+  // The default Debug city belongs to the default journey, whose save opens at once.
+  await page.goto("/");
+  await expect(page.locator(".battle-screen")).toBeVisible();
+  await expect(page.getByTestId("debug-session")).toHaveCount(0);
+  const source = savedGame(placed.journeyId);
+  await playUntil(page, (state) => state.activeBattle?.phase === "feedback", { source, pick: () => placed.wrong });
+  await expect(page.getByTestId("battle-feedback")).toBeFocused();
+
+  const start = await page.evaluate(() => {
+    const area = document.getElementById("battle-content")!;
+    const bar = area.querySelector(".battle-roundbar")!.getBoundingClientRect();
+    const feedback = document.getElementById("battle-feedback")!.getBoundingClientRect();
+    const first = document.querySelector("#battle-feedback .correct-answer")!;
+    const line = first.getBoundingClientRect();
+    const shown = document.elementFromPoint(line.left + 4, line.top + 1);
+    const barShown = document.elementFromPoint(bar.left + 4, bar.top + 4);
+    return {
+      pageScrolls: getComputedStyle(area).overflowY === "visible", scrolled: scrollY,
+      room: innerHeight - bar.bottom, rest: feedback.bottom - line.top, below: line.top - bar.bottom,
+      shown: !!shown && first.contains(shown), barShown: !!barShown?.closest(".battle-roundbar"),
+    };
+  });
+  expect(start.pageScrolls, "on this screen the page scrolls, not the reading area").toBe(true);
+  expect(start.scrolled, "the page scrolled down to the explanation").toBeGreaterThan(0);
+  expect(start.rest, "the explanation from its first line on is taller than the room below the round bar").toBeGreaterThan(start.room);
+  expect(start.barShown, "the round bar shows at the top of the screen, not the journey bar over it").toBe(true);
+  expect(start.shown, "the first line of the explanation shows, not the journey bar or the round bar over it").toBe(true);
+  expect(start.below, "the first line starts just below the round bar").toBeLessThanOrEqual(12);
+
+  // 手がかり帳 in the round bar, with the focus ring that keyboard focus draws around it.
+  const notebook = page.locator(".battle-roundbar").getByRole("button", { name: "手がかり帳" });
+  await expect(notebook).toBeVisible();
+  await page.keyboard.press("Shift");
+  const ring = await notebook.evaluate((button) => {
+    const scrolled = scrollY;
+    button.focus({ preventScroll: true });
+    const style = getComputedStyle(button);
+    const out = parseFloat(style.outlineWidth) + parseFloat(style.outlineOffset);
+    const box = button.getBoundingClientRect();
+    const x = box.left + box.width / 2, y = box.top + box.height / 2;
+    const screen = document.querySelector(".battle-screen")!;
+    const points: [number, number][] = [[x, y], [x, box.top - out + 1], [x, box.bottom + out - 1], [box.left - out + 1, y], [box.right + out - 1, y]];
+    return {
+      drawn: button.matches(":focus-visible") && out > 0, kept: scrollY === scrolled,
+      clear: points.every(([px, py]) => {
+        const hit = py >= 0 && py < innerHeight ? document.elementFromPoint(px, py) : null;
+        return !!hit && screen.contains(hit);
+      }),
+    };
+  });
+  expect(ring.drawn, "keyboard focus draws a ring around 手がかり帳").toBe(true);
+  expect(ring.kept, "focusing 手がかり帳 does not scroll").toBe(true);
+  expect(ring.clear, "手がかり帳 and its focus ring show on the screen, with nothing over them").toBe(true);
+
+  // The journey bar's controls are back at the top of the page.
+  await page.evaluate(() => scrollTo({ top: 0 }));
+  const settings = page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "設定", exact: true });
+  expect(await settings.evaluate((button) => {
+    const box = button.getBoundingClientRect();
+    return button.contains(document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2));
+  }), "scrolled back to the top, the journey bar's 設定 shows").toBe(true);
+
+  // 「敵の反応を見る」 at the explanation's end is reached by scrolling and reads on.
+  await page.evaluate(() => scrollTo({ top: document.documentElement.scrollHeight }));
+  const reaction = page.getByRole("button", { name: "敵の反応を見る" });
+  expect(await reaction.evaluate((button) => {
+    const box = button.getBoundingClientRect();
+    const at = (y: number) => button.contains(document.elementFromPoint(box.left + box.width / 2, y));
+    return at(box.top + 1) && at(box.bottom - 1);
+  }), "「敵の反応を見る」 shows whole at the end of the page").toBe(true);
+  await ops.tapAt(page, await ops.centerOf(reaction));
+  await expect.poll(async () => (await source(page))!.activeBattle?.phase).toBe("dialogue");
+});
