@@ -402,6 +402,22 @@
   padding: 7px 0;
   background: #faf8f4;
 }
+/* The bar sticks below the reading area's top padding: fill that strip too, so
+   text scrolled up behind the bar is not left showing, cut, above it (the
+   scrolling paper clips the fill to its own box). */
+.battle-screen .battle-roundbar::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 40px;
+  background: inherit;
+}
+/* There the page scrolls and the bar sticks to the top of the screen. */
+@media (max-width: 700px) and (max-height: 499px) and (orientation: portrait) {
+  .battle-screen .battle-roundbar::before { display: none; }
+}
 .battle-screen .battle-roundbar .notebook-button {
   min-height: 44px;
   padding: 6px 10px;
