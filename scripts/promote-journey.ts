@@ -225,10 +225,12 @@ export function journeyInputFingerprint(root: string, ignore: ReadonlySet<string
  * without overwriting (link), together with its directories, and removed again
  * on rollback. A file whose text stays the same (e.g. an already published
  * city) is not rewritten, but it must still be unchanged on disk. Returns the
- * written files.
+ * written files. `move` and `afterStaging` (called once the temporary files
+ * are written, before they are checked again) let tests fail a rename or edit
+ * a file at that moment.
  */
 export function writeJourneyReleaseFiles(root: string, original: ReleaseFiles, next: Record<string, string>, journeyId: string, move = renameSync,
-  expectedFingerprint?: string, layer: string = CONTENT_DIRECTORY): string[] {
+  expectedFingerprint?: string, layer: string = CONTENT_DIRECTORY, afterStaging?: () => void): string[] {
   const requested = Object.keys(next);
   const cityIds = journeyCities(original, journeyId);
   const fragments = new Set(fragmentFiles(layer));
@@ -260,6 +262,7 @@ export function writeJourneyReleaseFiles(root: string, original: ReleaseFiles, n
       writeFileSync(temporary, next[relative], { flag: "wx", mode: original[relative] === null ? 0o644 : statSync(target).mode });
       staged.push(temporary);
     }
+    afterStaging?.();
     // Detect changes even if the files were edited while the temporary files were written.
     for (const relative of requested) if (current(relative) !== original[relative])
       throw new Error(`File changed while validating: ${relative}`);
@@ -372,7 +375,7 @@ export async function prepareJourneyRelease(root: string, journeyId: string, app
     if (journeyInputFingerprint(root) !== fingerprint) throw new Error("Content or assets changed during validation; release was not applied.");
     if (narrativeFile && includeFragments && readFileSync(narrativeFile, "utf8") !== narrativeOriginal) throw new Error("Scenario metadata changed during validation; release was not applied.");
     if (translationsFile && includeFragments && readFileSync(translationsFile, "utf8") !== translationsOriginal) throw new Error("Quiz translations changed during validation; release was not applied.");
-    const files = apply ? writeJourneyReleaseFiles(root, original, next, journeyId, renameSync, fingerprint, layer) : changedReleaseFiles(original, next);
-    return { journey: { id: journeyId, nameJa: before.trip.nameJa }, lastCity: { id: last.id, nameJa: last.nameJa }, files };
+    const written = apply ? writeJourneyReleaseFiles(root, original, next, journeyId, renameSync, fingerprint, layer) : changedReleaseFiles(original, next);
+    return { journey: { id: journeyId, nameJa: before.trip.nameJa }, lastCity: { id: last.id, nameJa: last.nameJa }, files: written };
   } finally { rmSync(stage, { recursive: true, force: true }); }
 }
