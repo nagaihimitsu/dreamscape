@@ -1,17 +1,29 @@
 import { useEffect, useRef, type ReactNode } from "react";
-/** Native modal keeps keyboard focus inside and the underlying page inert. */
+import { useSettling } from "./ConfirmActionButton";
+/**
+ * Native modal keeps keyboard focus inside and the underlying page inert.
+ *
+ * `settlePresses`: the dialog opens under the finger that opened it (an item of the header's
+ * ⚙設定 panel), so for a moment it takes no press, as a confirmation's action waits
+ * (useSettling): the second tap of a double tap on the item would otherwise press what the
+ * dialog shows at that point (at 320–390 px, 「ゲームの設定」's point is the autosave checkbox
+ * of the settings). Keys and the first focus are not held.
+ */
 export function Modal({
   labelledBy,
   onClose,
   children,
   className = "",
+  settlePresses = false,
 }: {
   labelledBy: string;
   onClose: () => void;
   children: ReactNode;
   className?: string;
+  settlePresses?: boolean;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
+  const settling = useSettling(settlePresses ? true : null);
   useEffect(() => {
     const element = dialog.current!;
     const previouslyFocused = document.activeElement as HTMLElement | null;
@@ -45,6 +57,7 @@ export function Modal({
       ref={dialog}
       className={`modal ${className}`.trim()}
       aria-labelledby={labelledBy}
+      data-settling={settling ? "" : undefined}
       onKeyDown={(event) => {
         if (event.key !== "Tab") return;
         const targets = Array.from(

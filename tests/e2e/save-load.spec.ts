@@ -1,4 +1,5 @@
 import { DOUBLE_TAP_WINDOW_MS } from "../../src/components/double-tap";
+import { CONFIRM_SETTLE_MS } from "../../src/components/ConfirmActionButton";
 import { LAST_JOURNEY_KEY } from "../../src/app/last-journey";
 import { allStorage, expect, generated, journeyCatalog, learningKey, ops, placeGuideSave, playUntil, presentationKey, readSave, saveKey, test, tier } from "./helpers";
 
@@ -98,6 +99,7 @@ test("a preparing journey saved with empty name fields keeps the default names",
 });
 
 test("a manual save keeps the saved position and settings when unsaved changes are discarded", { tag: tier.gate }, async ({ page }) => {
+  await page.clock.install();
   await ops.startJourney(page);
 
   // セーブ・ロード・ゲームの設定 live in the header's ⚙設定 (UI redesign §3.1, U2/U24/U28), a
@@ -135,6 +137,37 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await expect(panel).toBeHidden();
   await expect(gear).toBeFocused();
   await expect(page.getByTestId("travel-menu")).toBeVisible();
+  expect(await readSave(page)).toEqual(untouched);
+  // A quick double tap on 「ゲームの設定」 (AGENTS.md 選択肢の誤タップ防止): the dialog opens under the
+  // finger, and on a phone the point is one of its controls (the autosave checkbox at 320–390 px).
+  // The second tap changes nothing, as the dialog takes no press for a moment (Modal's
+  // settlePresses), then takes them as usual. The page's clock is held, so the second tap comes
+  // within that moment however slow the machine.
+  {
+    const point = await ops.centerOf((await ops.openMenu(page)).getByRole("button", { name: "ゲームの設定", exact: true }));
+    await ops.holdClock(page);
+    await page.touchscreen.tap(point.x, point.y);
+    const settings = page.getByRole("dialog", { name: "ゲームの設定" });
+    await expect(settings).toBeVisible();
+    const autosave = settings.getByLabel("自動保存する");
+    const speed = settings.getByLabel("文字送り");
+    await expect(autosave).toBeChecked();
+    const speedBefore = await speed.inputValue();
+    expect(await settings.evaluate((dialog, { x, y }) => [...dialog.querySelectorAll("label, button, select, input")].some((control) => {
+      const box = control.getBoundingClientRect();
+      return x >= box.left && x <= box.right && y >= box.top && y <= box.bottom;
+    }), point), "the second tap's point is one of the settings' controls").toBe(true);
+    await page.touchscreen.tap(point.x, point.y);
+    await expect(settings).toBeVisible();
+    await expect(autosave).toBeChecked();
+    expect(await speed.inputValue()).toBe(speedBefore);
+    await page.clock.fastForward(CONFIRM_SETTLE_MS);
+    await page.clock.resume();
+    await expect(settings).not.toHaveAttribute("data-settling");
+    expect(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.closest("dialog")?.getAttribute("aria-labelledby"), point),
+      "a later tap at that point reaches the settings").toBe("settings-title");
+    await ops.closeDialog(settings);
+  }
   expect(await readSave(page)).toEqual(untouched);
 
   await ops.setAutoSave(page, false);

@@ -237,11 +237,15 @@ export const ops = {
     await ops.openMenu(page);
     await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name, exact: true }).click();
   },
-  /** ⚙設定 → 「ゲームの設定」: returns the settings dialog (文字送り, 自動保存, names, the saved data). */
+  /**
+   * ⚙設定 → 「ゲームの設定」: returns the settings dialog (文字送り, 自動保存, names, the saved data)
+   * once it takes presses (it opens under the finger and waits a moment: Modal's settlePresses).
+   */
   async openSettings(page: Page): Promise<Locator> {
     await ops.menuItem(page, "ゲームの設定");
     const settings = page.getByRole("dialog", { name: "ゲームの設定" });
     await expect(settings).toBeVisible();
+    await expect(settings).not.toHaveAttribute("data-settling");
     return settings;
   },
   /** Settings → 「古い保存データの整理」 (the settings dialog closes, the cleanup dialog opens). */
@@ -298,12 +302,14 @@ export const ops = {
   },
   /**
    * ⚙設定 → 「ロード」 while progress is unsaved (manual saving): returns the confirmation
-   * 「保存した場面を読み込みますか？」 with its 「ロードする」 (`loadButton`).
+   * 「保存した場面を読み込みますか？」 with its 「ロードする」 (`loadButton`), once it takes presses
+   * (it opens under the finger and waits a moment, like the settings).
    */
   async askToLoad(page: Page): Promise<{ dialog: Locator; loadButton: Locator }> {
     await ops.loadSaved(page);
     const dialog = page.getByRole("dialog", { name: "保存した場面を読み込みますか？" });
     await expect(dialog).toBeVisible();
+    await expect(dialog).not.toHaveAttribute("data-settling");
     return { dialog, loadButton: dialog.getByRole("button", { name: "ロードする", exact: true }) };
   },
   /** The header's progress (観光・対決 / 都市クリア) opens 旅の記録; returns that dialog. */

@@ -479,6 +479,8 @@ footer span {
   overflow: auto;
   box-shadow: 0 18px 60px #11221b35;
 }
+/* Opened under the finger (Modal's settlePresses): no press reaches it for a moment. */
+.modal[data-settling] { pointer-events: none; }
 .modal h2 {
   font-size: 22px;
   margin: 10px 0 20px;

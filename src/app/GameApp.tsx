@@ -684,7 +684,7 @@ export function GameApp({
         />
       )}
       {confirmLoad && (
-        <Modal labelledBy="load-title" onClose={() => setConfirmLoad(false)}>
+        <Modal labelledBy="load-title" onClose={() => setConfirmLoad(false)} settlePresses>
           <h2 id="load-title">保存した場面を読み込みますか？</h2>
           <p>まだ保存していない進行は失われます。</p>
           <button className="secondary" autoFocus onClick={() => setConfirmLoad(false)}>戻る</button>
@@ -733,7 +733,7 @@ export function GameApp({
         </Modal>
       )}
       {settings && game && (
-        <Modal labelledBy="settings-title" onClose={() => setSettings(false)}>
+        <Modal labelledBy="settings-title" onClose={() => setSettings(false)} settlePresses>
           <h2 id="settings-title">ゲームの設定</h2>
           {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} />}
           <label className="translation-setting">
