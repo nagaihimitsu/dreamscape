@@ -834,6 +834,14 @@ footer span {
   .mobile-play-active > footer {
     display: none;
   }
+  /* A battle holds its own round bar (問題番号・正誤・手がかり帳) at the top of the
+     screen as the page scrolls (battle.css). The journey bar scrolls away with the
+     page above it instead of being held over that bar, which would hide the bar and
+     leave little room to read an answer's explanation; scrolling back to the top
+     shows it again. Without :has() (Safari before 15.4) it stays held, as before. */
+  .app-shell:has(> main > .battle-screen) > .journey-bar {
+    position: relative;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   * {
