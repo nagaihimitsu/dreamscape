@@ -3,7 +3,8 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import type { Shot } from "../../scripts/dev/screen-gallery";
 import { debugExampleUrls } from "../../scripts/dev/screen-gallery";
-import { expect, ops, playUntil, test, type Page } from "../e2e/helpers";
+import { debugQueryString } from "../../src/dev/debug-query";
+import { debugGame, expect, ops, playUntil, test, type Page } from "../e2e/helpers";
 
 // Screens for people checking by eye (`npm run screens`, docs/10「人が画面を確かめる」).
 // Not a gate and no image comparison: each test only brings a screen up the way a
@@ -36,6 +37,15 @@ const flows: FlowScene[] = [
   { scene: "flow-settings", titleJa: "設定", descriptionJa: "旅を始めて「設定」", open: async (page) => {
     await ops.startJourney(page);
     await ops.openSettings(page);
+  } },
+  { scene: "flow-settings-debug-mode", titleJa: "設定のDebugモード（パスワード）", descriptionJa: "旅を始めて「設定」→「Debugモードをオンにする」、違うパスワードで「オンにする」", open: async (page) => {
+    await ops.startJourney(page);
+    const section = (await ops.openSettings(page)).getByTestId("debug-mode-setting");
+    await section.getByRole("button", { name: "Debugモードをオンにする" }).click();
+    await section.getByLabel("パスワード").fill("admin");
+    await section.getByRole("button", { name: "オンにする", exact: true }).click();
+    await expect(section.getByRole("alert")).toBeVisible();
+    await section.scrollIntoViewIfNeeded();
   } },
   { scene: "flow-old-data", titleJa: "古い保存データの整理", descriptionJa: "旅を始め、旧版のセーブ・バックアップ・以前のミラノ編の英語ノートを置いて「設定」→「古い保存データの整理」", open: async (page) => {
     await ops.startJourney(page);
@@ -93,6 +103,19 @@ for (const flow of flows)
     await flow.open(page);
     await save(page, flow.scene, flow.titleJa, { kind: "flow", descriptionJa: flow.descriptionJa }, page.viewportSize()!.width);
   });
+
+// Debug mode's relationship-change strip (always on in Debug): a date after its first reply.
+const changeUrl = debugQueryString({ dataMode: "real", cityId: "milano", scene: "date", target: "milano_brera_date_01",
+  progress: "completed", ap: 9, affection: 0, trust: 0, spark: 0, roll: "positive" });
+test("Debugの関係の変化（デートの返答の後）（Debug起動URL）", async ({ page }) => {
+  await page.goto(`/${changeUrl}`);
+  await ops.debugShown(page.getByTestId("debug-session"));
+  await playUntil(page, (state) => !!state.activeDate?.frame.choices.length, { source: debugGame });
+  await page.getByTestId("date-choice").first().click();
+  await expect(page.getByTestId("relationship-change")).toBeVisible();
+  await ops.settled(page);
+  await save(page, "debug-relationship-change", "Debugの関係の変化（デートの返答の後）", { kind: "debug", url: changeUrl }, page.viewportSize()!.width);
+});
 
 // Every example URL of docs/10 that the normal development server opens (debug-state.test.ts proves they open).
 const examples = debugExampleUrls(readFileSync(path.resolve("docs/10_DEVELOPMENT_CHECKS.md"), "utf8"));

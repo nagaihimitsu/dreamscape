@@ -1,4 +1,5 @@
 import { appendFileSync } from "node:fs";
+import { eagerFiles } from "../../scripts/dist-guard";
 import { allStorage, expect, journeyCatalog, ops, test, tier } from "./helpers";
 
 // AGENTS.md 「データ・セーブ・品質」, docs/07 acceptance 1 and 12: every registered
@@ -56,9 +57,16 @@ test("the title screen opens every registered journey without writing a save, an
   await expect(selector).toHaveValue(catalog.journeys.filter((journey) => journey.status === "available").at(-1)!.id);
 });
 
-// AGENTS.md 「Debug機能は開発用で…本番ビルドに公開しない」, docs/07 acceptance 14: in the
-// production build the development switches are ignored and the normal title opens.
-test("the production build ignores the Debug and character preview switches", { tag: tier.prod }, async ({ page }) => {
+// AGENTS.md 「本番ビルドでは、設定でパスワード…を入れてDebugモードをオンにした端末だけが使い、Debugの画面は
+// タイトル画面で読み込むファイルに入れない」, docs/07 acceptance 14: in a fresh browser (Debug mode off) the
+// production build ignores ?debug and ?character-preview, opens the normal title, has no test hook and
+// loads none of Debug's files (debug-mode.spec.ts turns Debug mode on through 設定).
+test("with Debug mode off, the production build ignores ?debug and ?character-preview", { tag: tier.prod }, async ({ page, baseURL }) => {
+  const requested: string[] = [];
+  page.on("request", (request) => {
+    const url = new URL(request.url());
+    if (url.origin === new URL(baseURL!).origin && ["script", "stylesheet"].includes(request.resourceType())) requested.push(url.pathname);
+  });
   for (const query of ["?debug", "?character-preview", "?debug&city=milano&scene=battle"]) {
     await page.goto(`/${query}`);
     await expect(ops.startButton(page)).toBeVisible();
@@ -68,6 +76,10 @@ test("the production build ignores the Debug and character preview switches", { 
     await expect(page.getByText("場面の確認")).toHaveCount(0);
   }
   expect(await page.evaluate(() => "__dreamscapeDebug" in window)).toBe(false);
+  // Only the files index.html loads at once (Debug's lazy chunks, whatever their names, are never requested).
+  const eager = new Set(eagerFiles(await (await page.request.get("/")).text()).map((file) => `/${file}`));
+  expect(requested.length).toBeGreaterThan(0);
+  for (const path of requested) expect(eager, path).toContain(path);
   // The icons are real images here (the dev server would answer a missing file with its page).
   const icons = await page.locator('link[rel="icon"], link[rel="apple-touch-icon"]').evaluateAll((links) =>
     links.map((link) => (link as HTMLLinkElement).href));

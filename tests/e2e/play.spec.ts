@@ -223,6 +223,8 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await expect.poll(async () => (await readSave(page)).revision).toBe(choosing.revision + 1);
   const replied = await readSave(page);
   expect(replied.activeDate!.choiceCount).toBe(choosing.activeDate!.choiceCount + 1);
+  // The relationship values stay hidden from players: only Debug mode (off by default) shows a reply's changes.
+  await expect(page.getByTestId("relationship-change")).toHaveCount(0);
   await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
   await page.clock.resume();
   // At the last line a tap on the picture ends the date, as a tap on the line does. The free

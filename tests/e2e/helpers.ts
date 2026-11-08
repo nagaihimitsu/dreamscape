@@ -168,6 +168,26 @@ export async function placeGuideSave(page: Page, journeyId: string): Promise<Gam
   return readSave(page, journeyId);
 }
 
+/**
+ * placeSave with a date on screen: Milan cleared (scenario-builders' completedCity, 12 AP) and the first
+ * date that Debug lists for the journey's first city started there with the saved reaction ticket 0
+ * (every reply positive), at its first line. Returns the saved state. Development server only.
+ */
+export async function placeDateSave(page: Page, journeyId = "milano"): Promise<GameState> {
+  const result = await page.evaluate(async ({ journeyId, modules }) => {
+    const builders = await import(/* @vite-ignore */ modules.builders);
+    const { debugTargets } = await import(/* @vite-ignore */ modules.debugState);
+    const { saveGame } = await import(/* @vite-ignore */ modules.persistence);
+    const { journeyStorage } = await import(/* @vite-ignore */ modules.journeyStorage);
+    const cityId = builders.newJourney(journeyId, ["航", "澪"]).currentCityId;
+    const date = debugTargets(cityId).date.find((target: { unavailable?: string }) => !target.unavailable);
+    const cleared = builders.withAp(builders.completedCity(cityId, { names: ["航", "澪"] }), 12);
+    return saveGame(journeyStorage(localStorage, journeyId), builders.startDateScene(cleared, date.id, builders.rollTickets.positive));
+  }, { journeyId, modules: devModules });
+  expect(result, `placing a date as the ${journeyId} save`).toEqual({ ok: true });
+  return readSave(page, journeyId);
+}
+
 /** Where a tap never reads a story scene on: controls and `data-no-advance` areas (src/components/scene-tap.ts). */
 const notReadingOn = "a, button, input, select, textarea, label, summary, dialog, [role=button], [role=link], [data-no-advance]";
 /**
@@ -268,6 +288,27 @@ export const ops = {
   async setAutoSave(page: Page, on: boolean) {
     const settings = await ops.openSettings(page);
     await settings.getByLabel("自動保存する").setChecked(on);
+    await ops.closeDialog(settings);
+  },
+  /**
+   * 設定 → 「Debugモード」 → 「Debugモードをオンにする」, the password (「adminmode」, not a secret:
+   * src/app/debug-mode.ts) and 「オンにする」; closes 設定 again. The switch is this device's preference.
+   */
+  async turnOnDebugMode(page: Page, password = "adminmode") {
+    const settings = await ops.openSettings(page);
+    const section = settings.getByTestId("debug-mode-setting");
+    await section.getByRole("button", { name: "Debugモードをオンにする" }).click();
+    await section.getByLabel("パスワード").fill(password);
+    await section.getByRole("button", { name: "オンにする", exact: true }).click();
+    await expect(section.getByText("Debugモードはオンです（この端末だけ）。")).toBeVisible();
+    await ops.closeDialog(settings);
+  },
+  /** 設定 → 「Debugモードをオフにする」 (no password; it waits out its 0.5 s settle); closes 設定 again. */
+  async turnOffDebugMode(page: Page) {
+    const settings = await ops.openSettings(page);
+    const section = settings.getByTestId("debug-mode-setting");
+    await section.getByRole("button", { name: "Debugモードをオフにする" }).click();
+    await expect(section.getByText("Debugモードをオフにしました。")).toBeVisible();
     await ops.closeDialog(settings);
   },
   /** The 「閉じる」 of the notice shown at the top of the screen (after 「セーブ」, for one). */
