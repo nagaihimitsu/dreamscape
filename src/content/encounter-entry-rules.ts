@@ -10,8 +10,10 @@ const ruleSchema = z.object({
   /**
    * An encounter with a quiz that waits for the landmark's battle: it can be
    * met during the first observation, before the rule's milestone (its story
-   * then ends without the quiz); an observation of the landmark after the
-   * battle was played goes on to the quiz.
+   * then ends without the quiz); met after the battle was played, it goes on
+   * to the quiz. In Milan no observation of the Galleria opens after its
+   * battle today, so its quiz is reached only once stage 3's after-battle
+   * moment exists.
    */
   quizAfterLandmarkBattle: z.literal(true).optional(),
 }).strict().refine((rule) => !!rule.completedEpisodeId !== !!rule.completedStoryBattleId,
