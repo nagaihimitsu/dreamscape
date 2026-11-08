@@ -151,7 +151,14 @@ const BACKUP_PREFIX = `${SAVE_KEY}.backup.`;
 
 /** A backup's key as backupAndCreate writes it: `<SAVE_KEY>.backup.<Date.now()>`, `.<n>` added when that key is taken. */
 export function isSaveBackupKey(key: string): boolean {
-  return key.startsWith(BACKUP_PREFIX) && /^\d+(?:\.\d+)?$/.test(key.slice(BACKUP_PREFIX.length));
+  return saveBackupTime(key) !== null;
+}
+
+/** When a backup was made (the `Date.now()` in its key), or null for a key that is not a backup's. */
+export function saveBackupTime(key: string): number | null {
+  if (!key.startsWith(BACKUP_PREFIX)) return null;
+  const stamp = /^(\d+)(?:\.\d+)?$/.exec(key.slice(BACKUP_PREFIX.length))?.[1];
+  return stamp === undefined ? null : Number(stamp);
 }
 
 /** Explicit recovery only: retain the exact original before creating a new game. */

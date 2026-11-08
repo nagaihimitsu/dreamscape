@@ -4,12 +4,14 @@
 // journeys this version does not have are listed; the saves this version loads, this journey's own
 // slot, the notes of existing journeys, the display settings and other sites' keys never are.
 import { describe, expect, it } from "vitest";
+import { journeys } from "../content/journeys";
 import { createGame } from "../domain";
 import { LEARNING_KEY, SAVE_KEY } from "./index";
+import type { LockManagerLike } from "./journey-lock";
 import { journeyStorage } from "./journey-storage";
 import {
-  formatOldDataSize, listOldData, oldDataLockNames, readDreamscapeEntries, readOldData, removeOldData,
-  type KeyedStorage, type OldDataContext,
+  formatOldDataSize, listOldData, oldDataContext, oldDataLockNames, readDreamscapeEntries, readOldData, removeChosenOldData,
+  removeOldData, type KeyedStorage, type OldDataContext,
 } from "./old-data";
 
 const context: OldDataContext = {
@@ -174,6 +176,18 @@ describe("which old saved data can be removed", () => {
     expect(readOldData(storage, context).items.map((item) => item.id)).toEqual(["old_version:trip_b"]);
   });
 
+  it("lists with every journey of this version, so a preparing journey's draft and notes are never 「この版にない」 keys", () => {
+    const context = oldDataContext("milano");
+    expect(context).toEqual({ journeys, currentJourneyId: "milano" });
+    const preparing = journeys.filter((journey) => journey.status === "preparing");
+    expect(preparing.map((journey) => journey.id).sort()).toEqual(["luang_prabang", "uzbekistan"]);
+    const values = Object.fromEntries(preparing.flatMap((journey) => [
+      [save(journey.id), JSON.stringify({ kind: "journey_preparation", schemaVersion: 1, journeyId: journey.id })],
+      [notes(journey.id), notebook],
+    ]));
+    expect(list(values, context)).toEqual([]);
+  });
+
   it("names each lock once and none for keys no tab of this version locks", () => {
     const items = list({ [backup("milano", "1")]: damaged, [save("trip_b")]: v13, [backup("trip_b", "1")]: damaged, [LEARNING_KEY]: notebook, [notes("gone")]: notebook });
     expect(oldDataLockNames(items)).toEqual(["dreamscape:dreamscape.journey.gone.save.v1", "dreamscape:dreamscape.journey.trip_b.save.v1"]);
@@ -222,7 +236,7 @@ describe("removing old saved data", () => {
       const before = Object.fromEntries(storage.data);
       const result = removeOldData(storage, listing, ["backup:milano", "old_version:trip_b"]);
       expect(result, label).toEqual({ ok: false, removedKeys: [],
-        message: "一覧を開いた後に保存データが変わったため、何も消去しませんでした。一覧を読み直したので、もう一度選んでください。" });
+        message: "一覧を開いた後に保存データが変わったため、何も消去しませんでした。一覧を読み直しました。選んだ内容を確かめてからやり直してください。" });
       expect(Object.fromEntries(storage.data), label).toEqual(before);
     }
   });
@@ -245,6 +259,28 @@ describe("removing old saved data", () => {
     expect(failing.data.has(backup("milano", "1"))).toBe(false);
     expect(failing.data.get(backup("milano", "2"))).toBe(v13);
     expect(failing.data.get(LEARNING_KEY)).toBe(notebook);
+  });
+
+  it("holds only the chosen items' locks: a journey open in another tab refuses only what touches its keys", async () => {
+    const tripB = "dreamscape:dreamscape.journey.trip_b.save.v1";
+    const asked: string[] = [];
+    // Another tab has 見本B編 open: its slot lock is taken; every other lock is free.
+    const locks: LockManagerLike = { request: async (name, _options, callback) => {
+      asked.push(name);
+      return callback(name === tripB ? null : { name, mode: "exclusive" } as Lock);
+    } };
+    const storage = memory({ ...old });
+    const listing = readOldData(storage, context);
+    expect(await removeChosenOldData(storage, locks, listing, ["backup:milano", "old_version:trip_b"])).toEqual({ status: "busy", name: tripB });
+    expect(Object.fromEntries(storage.data)).toEqual(old);
+    // Milan's old keys and this journey's backups need no lock: they go while 見本B編 stays open.
+    asked.length = 0;
+    expect(await removeChosenOldData(storage, locks, listing, ["old_milano:save", "backup:milano"]))
+      .toEqual({ status: "done", value: { ok: true, removedKeys: [backup("milano", "1"), backup("milano", "2"), SAVE_KEY] } });
+    expect(asked).toEqual([]);
+    expect(storage.data.has(save("trip_b"))).toBe(true);
+    expect(await removeChosenOldData(storage, undefined, readOldData(storage, context), ["old_version:trip_b"])).toEqual({ status: "unsupported" });
+    expect(storage.data.has(save("trip_b"))).toBe(true);
   });
 
   it("refuses an empty choice and ignores an item the list does not have", () => {

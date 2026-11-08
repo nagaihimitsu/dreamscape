@@ -1457,9 +1457,14 @@ dialog.modal::backdrop {
 .old-data-size {
   white-space: nowrap;
 }
-/* The heading takes the focus when the dialog changes step (read first); it is not a control. */
-dialog.old-data h2:focus {
+/* The heading or the result line takes the focus when the dialog changes step (read first); neither is a control. */
+dialog.old-data h2:focus,
+dialog.old-data .old-data-notice:focus {
   outline: none;
+}
+/* A journey that is not in this version is named by its ID: wrap a long one instead of widening the dialog. */
+.old-data-list strong {
+  overflow-wrap: anywhere;
 }
 .old-data-impact {
   font-size: 13px;

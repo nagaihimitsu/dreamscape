@@ -416,6 +416,18 @@ test("from another journey, the cleanup lists that journey's own old data, and a
   await page.clock.resume();
   await expect(remove).toBeEnabled();
   expect(await besidesGame()).toEqual(before);
+  // The wait starts again each time the confirmation opens (here after 「消去せず戻る」).
+  await confirm.getByRole("button", { name: "消去せず戻る" }).click();
+  await expect(confirm).toBeHidden();
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await ops.tap(page, ask);
+  await expect(confirm).toBeVisible();
+  await page.clock.runFor(300);
+  await ops.tap(page, remove);
+  await expect(remove).toBeDisabled();
+  await page.clock.resume();
+  await expect(remove).toBeEnabled();
+  expect(await besidesGame()).toEqual(before);
 
   // A deliberate press removes the backup once, without this journey's lock: a second press that
   // reaches the button before it re-renders as disabled (both clicks in one task) removes nothing more

@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createGame } from "../domain";
 import { cityContents, getCityContent } from "../content";
 import { getJourney } from "../content/journeys";
-import { backupAndCreate, deleteSaveData, isSaveBackupKey, LEARNING_KEY, loadGame, SAVE_KEY, saveGame } from "./index";
+import { backupAndCreate, deleteSaveData, isSaveBackupKey, LEARNING_KEY, loadGame, SAVE_KEY, saveBackupTime, saveGame } from "./index";
 import { journeyPhysicalKey, journeyStorage, parseJourneyPhysicalKey, storagePhysicalKey } from "./journey-storage";
 import { journeyDraftStartParameters, loadJourneyDraft, promoteJourneyDraft, saveJourneyDraft } from "./journey-preparation";
 
@@ -163,8 +163,12 @@ describe("independent journey saves", () => {
     expect(backups).toEqual(["dreamscape.journey.milano.save.v1.backup.1762500000000",
       "dreamscape.journey.milano.save.v1.backup.1762500000000.1", "dreamscape.journey.milano.save.v1.backup.1762500000000.2"]);
     for (const key of backups) expect(isSaveBackupKey(parseJourneyPhysicalKey(key)!.key), key).toBe(true);
-    for (const key of [SAVE_KEY, `${SAVE_KEY}.backup.`, `${SAVE_KEY}.backup.abc`, `${SAVE_KEY}.backup.1.x`, `${SAVE_KEY}.backup.1.2.3`, `${SAVE_KEY}.extra`])
+    // The backup time is read from the same name (the cleanup shows it).
+    expect(backups.map((key) => saveBackupTime(parseJourneyPhysicalKey(key)!.key))).toEqual([1_762_500_000_000, 1_762_500_000_000, 1_762_500_000_000]);
+    for (const key of [SAVE_KEY, `${SAVE_KEY}.backup.`, `${SAVE_KEY}.backup.abc`, `${SAVE_KEY}.backup.1.x`, `${SAVE_KEY}.backup.1.2.3`, `${SAVE_KEY}.extra`]) {
       expect(isSaveBackupKey(key), key).toBe(false);
+      expect(saveBackupTime(key), key).toBeNull();
+    }
   });
 
   it("promotes saved names and initial values only after real city registration is available", () => {

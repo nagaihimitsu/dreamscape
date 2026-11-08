@@ -8,7 +8,7 @@ import {
   tourismAssets,
   getCityContent,
 } from "../content";
-import { defaultJourneyId, getJourney, journeys } from "../content/journeys";
+import { defaultJourneyId, getJourney } from "../content/journeys";
 import { currencyForCity, formatMoneyForCity } from "../content/currency";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
 import { observeLocalLandmark, waitForTravel } from "../domain/travel-game";
@@ -28,7 +28,7 @@ import { leaveStep } from "./unsaved-progress";
 import { titleSaveActions } from "./save-recovery";
 import type { DeleteSnapshot } from "./save-deletion";
 import { OldDataCleanup } from "./OldDataCleanup";
-import type { KeyedStorage } from "../persistence/old-data";
+import { oldDataContext, type KeyedStorage } from "../persistence/old-data";
 import { CanalScene } from "../components/CanalScene";
 import { HeldItems } from "../components/HeldItems";
 import { secureRomanceRoll } from "../random/romance-source";
@@ -897,7 +897,7 @@ export function GameApp({
         </Modal>
       )}
       {oldDataOpen && oldDataStorage && <OldDataCleanup storage={oldDataStorage}
-        context={{ journeys, currentJourneyId: journeyId }} onClose={() => setOldDataOpen(false)} />}
+        context={oldDataContext(journeyId)} onClose={() => setOldDataOpen(false)} />}
       {travelEffects}
     </div>
   );

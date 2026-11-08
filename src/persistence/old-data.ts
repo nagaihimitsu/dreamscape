@@ -1,6 +1,7 @@
-import { LEARNING_KEY, SAVE_KEY, isSaveBackupKey, loadGame } from "./index";
+import { journeys } from "../content/journeys";
+import { LEARNING_KEY, SAVE_KEY, isSaveBackupKey, loadGame, saveBackupTime } from "./index";
 import { journeyPhysicalKey, parseJourneyPhysicalKey } from "./journey-storage";
-import { slotLockName } from "./journey-lock";
+import { runWithSlotLocks, slotLockName, type LockedRun, type LockManagerLike } from "./journey-lock";
 
 /**
  * 「古い保存データの整理」 (Settings): which of this browser's Dreamscape keys the game no longer uses
@@ -21,7 +22,6 @@ import { slotLockName } from "./journey-lock";
  * included). Debug keeps its data in memory only, so nothing of it is in browser storage.
  */
 
-/** A journey of this version, as the list names it. */
 /** A journey of this version; a preparing one opens its preparation page, not a game. */
 export type KnownJourney = { id: string; nameJa: string; status: "available" | "preparing" };
 export type OldDataContext = {
@@ -29,6 +29,15 @@ export type OldDataContext = {
   /** The journey open in this tab: its save slot is never listed and this tab already holds its lock. */
   currentJourneyId: string;
 };
+
+/**
+ * The context the game lists with: every journey of this version, preparing ones included (their
+ * preparation drafts and English notes belong to a journey this version has, so they are never
+ * offered as 「この版にない旅行編」 keys), and the journey open in this tab.
+ */
+export function oldDataContext(currentJourneyId: string, catalog: readonly KnownJourney[] = journeys): OldDataContext {
+  return { journeys: catalog, currentJourneyId };
+}
 
 export type OldDataKey = {
   key: string;
@@ -40,7 +49,10 @@ export type OldDataKey = {
   backedUpAt: number | null;
 };
 export type OldDataItem = {
-  /** What the item is and stable while the same keys are listed: `old_version:<id>`, `backup:<id>`, `old_milano:save|learning`, `removed:<id>:save|learning`. */
+  /**
+   * What the item is: `old_version:<id>`, `backup:<id>`, `old_milano:save|learning`, `removed:<id>:save|learning`.
+   * Stable for the same journey and kind; the keys under it may change between two readings.
+   */
   id: string;
   titleJa: string;
   impactJa: string;
@@ -105,10 +117,8 @@ function contentNote(content: SaveContent, unreadableJa = UNREADABLE_JA): string
   }
 }
 
-function backupTime(key: string): number | null {
-  const stamp = /\.backup\.(\d{1,15})(?:\.\d+)?$/.exec(key)?.[1];
-  return stamp === undefined ? null : Number(stamp);
-}
+/** A backup's time from its key: a journey slot's key is read back to the key the game wrote. */
+const backupTime = (key: string): number | null => saveBackupTime(parseJourneyPhysicalKey(key)?.key ?? key);
 
 const entry = (key: string, value: string, noteJa: string): OldDataKey =>
   ({ key, noteJa, chars: key.length + value.length, backedUpAt: backupTime(key) });
@@ -235,7 +245,7 @@ export function removeOldData(storage: KeyedStorage, listing: OldDataListing, ch
     const removable = new Set(listOldData(now, listing.context).flatMap((item) => item.keys.map((key) => key.key)));
     if (keys.some((key) => now.get(key) !== listing.values.get(key) || !removable.has(key)))
       return { ok: false, removedKeys: [],
-        message: "一覧を開いた後に保存データが変わったため、何も消去しませんでした。一覧を読み直したので、もう一度選んでください。" };
+        message: "一覧を開いた後に保存データが変わったため、何も消去しませんでした。一覧を読み直しました。選んだ内容を確かめてからやり直してください。" };
   } catch {
     return { ok: false, removedKeys: [], message: "保存データを読み取れなかったため、何も消去しませんでした。ブラウザの保存設定を確認してください。" };
   }
@@ -250,6 +260,17 @@ export function removeOldData(storage: KeyedStorage, listing: OldDataListing, ch
     removedKeys.push(key);
   }
   return { ok: true, removedKeys };
+}
+
+/**
+ * Remove the chosen items while this page holds the slot locks of those items only (oldDataLockNames):
+ * a journey open in another tab refuses only a removal that touches its keys ("busy", nothing removed);
+ * "unsupported" without Web Locks.
+ */
+export function removeChosenOldData(storage: KeyedStorage, locks: LockManagerLike | undefined, listing: OldDataListing,
+  chosenIds: readonly string[]): Promise<LockedRun<OldDataRemoval>> {
+  const chosen = listing.items.filter((item) => chosenIds.includes(item.id));
+  return runWithSlotLocks(locks, oldDataLockNames(chosen), () => removeOldData(storage, listing, chosenIds));
 }
 
 /** Approximate size as the list shows it (UTF-16, rounded up to 0.1 KB). */

@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { ConfirmActionButton } from "../components/ConfirmActionButton";
 import { Modal } from "../components/Modal";
-import { runWithSlotLocks } from "../persistence/journey-lock";
 import {
-  formatOldDataSize, oldDataLockNames, readOldData, removeOldData,
+  formatOldDataSize, readOldData, removeChosenOldData,
   type KeyedStorage, type OldDataContext, type OldDataItem, type OldDataListing,
 } from "../persistence/old-data";
 
@@ -38,17 +37,20 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
   const pressed = useRef(false);
   const [working, setWorking] = useState(false);
   const [notice, setNotice] = useState<Notice | null>(null);
-  // A step change rebuilds the dialog's content: the confirmation and a result start at the
-  // heading (read first, scrolled into view); 「消去せず戻る」 returns to the button it came from.
-  const [focusRequest, setFocusRequest] = useState<{ target: "heading" | "remove" } | null>(null);
+  // A step change rebuilds the dialog's content: the confirmation starts at its heading (read first,
+  // scrolled into view); a result at its line, which is rendered already filled, so a screen reader
+  // reads it from the focus rather than from a live region it never saw change; 「消去せず戻る」
+  // returns to the button it came from.
+  const [focusRequest, setFocusRequest] = useState<{ target: "heading" | "notice" | "remove" } | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
+  const noticeLine = useRef<HTMLParagraphElement>(null);
   const removeButton = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     if (!focusRequest) return;
     if (focusRequest.target === "remove" && removeButton.current) removeButton.current.focus();
     else {
       heading.current?.closest("dialog")?.scrollTo({ top: 0 });
-      heading.current?.focus({ preventScroll: true });
+      (focusRequest.target === "notice" && noticeLine.current ? noticeLine.current : heading.current)?.focus({ preventScroll: true });
     }
   }, [focusRequest]);
   const items = listing?.items ?? [];
@@ -61,14 +63,14 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
     setChosen((ids) => ids.filter((id) => fresh?.items.some((item) => item.id === id)));
     setConfirming(false);
     setNotice(next);
-    setFocusRequest({ target: "heading" });
+    setFocusRequest({ target: "notice" });
   }
   async function remove() {
     if (!listing || pressed.current) return;
     pressed.current = true;
     setWorking(true);
     const locks = typeof navigator === "undefined" ? undefined : navigator.locks;
-    const run = await runWithSlotLocks(locks, oldDataLockNames(chosenItems), () => removeOldData(storage, listing, chosen));
+    const run = await removeChosenOldData(storage, locks, listing, chosen);
     pressed.current = false;
     setWorking(false);
     if (run.status === "busy") {
@@ -95,13 +97,13 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
           <KeyList item={item} />
         </li>)}
       </ul>
-      <p className="fine-print">一覧にないデータ（開いている旅行編のセーブ、今の版で読み込めるセーブ、この版にある旅行編の英語ノート、表示設定など）は残ります。ほかの旅行編を別のタブで開いている間は消去できません。</p>
+      <p className="fine-print">一覧にないデータ（開いている旅行編のセーブ、今の版で読み込めるセーブ、この版にある旅行編の英語ノート、表示設定など）は残ります。選んだ旅行編を別のタブで開いている間は消去できません。</p>
       <button type="button" className="secondary" onClick={() => { setConfirming(false); setFocusRequest({ target: "remove" }); }}>消去せず戻る</button>
       <ConfirmActionButton className="danger-button" disabled={working} onClick={() => void remove()}>消去する</ConfirmActionButton>
     </> : <>
       <h2 id="old-data-title" ref={heading} tabIndex={-1}>古い保存データの整理</h2>
       <p>このブラウザに残っている、今のゲームでは使わない保存データです。消去するものを選んでください。</p>
-      {notice && <p className="old-data-notice" role={notice.role}>{notice.text}</p>}
+      {notice && <p className="old-data-notice" role={notice.role} ref={noticeLine} tabIndex={-1}>{notice.text}</p>}
       {!listing ? <p role="alert">保存データを読み取れませんでした。ブラウザの保存設定を確認してください。</p>
         : items.length === 0 ? <p>整理できる古い保存データはありません。</p>
         : <ul className="old-data-list">
