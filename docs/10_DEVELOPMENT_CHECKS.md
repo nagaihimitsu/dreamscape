@@ -112,8 +112,8 @@
 | --- | --- | --- | --- | --- |
 | 合否判定 | `@gate` | 開発サーバー（`npm run dev`） | `boot`・`play`・`save-load`・`inter-city` の全テスト | 19件、2ワーカーで約1分半（予算: 約20件・2ワーカーで2分以内） |
 | Debug起動台 | `@debug` | 開発サーバー | `debug-scenes`（下の道3） | 15件、2ワーカーで約1分半 |
-| 本番ビルド | `@prod` | `npm run build` の後に `vite preview`（`playwright.prod.config.ts`） | 起動と全旅行編の開始画面、ミラノの開始からバトル結果・デートまで（`play`）、本番での確認（下表） | 4件、ビルド込みで約20秒（CIではビルドの分だけ長い） |
-| 見本の編の通しプレイ | `@sample` | 見本の編を含めて生成した専用の開発サーバー（`npm run dev:sample`、4175番。`playwright.sample.config.ts`） | 見本の編を新しい旅から旅の終わりまで近道なしで遊ぶ（`sample-journey`）、起動と全旅行編の開始画面（`boot`。見本の編を含み、CIでは `journey:new` で作ったばかりの旅行編も含む） | 2件、サーバーの起動と終わりの生成込みで約40秒（通しプレイは約30秒） |
+| 本番ビルド | `@prod` | `npm run build` の後に `vite preview`（`playwright.prod.config.ts`） | 起動と全旅行編の開始画面、ミラノの開始からバトル結果・デートまで（`play`）、本番での確認（下表） | 4件、ビルド込みで約30秒（CIではビルドの分だけ長い） |
+| 見本の編の通しプレイ | `@sample` | 見本の編を含めて生成した専用の開発サーバー（`npm run dev:sample`、4175番。`playwright.sample.config.ts`） | 見本の編を新しい旅から旅の終わりまで近道なしで遊ぶ（`sample-journey`）、起動と全旅行編の開始画面（`boot`。見本の編を含み、CIでは `journey:new` で作ったばかりの旅行編も含む） | 2件、サーバーの起動と終わりの生成込みで約1分半（通しプレイは約1分20秒） |
 | WebKit（週1回・手動。合否判定にしない） | `@smoke` | 開発サーバー（`playwright.webkit.config.ts`、iPhone 13 の WebKit） | `boot`・`play` の `@smoke` のテストを、Safariと同じ描画エンジン（Linux版のWebKit。実機のiPhoneとは同じではないので、公開前の実機確認は残す）で実行する。WebKitを使うのはこの設定だけで、手元の標準の実行とPRの確認はWebKitを必要としない | 2件。手元ではChromiumで同じ2件を確かめる（`npx playwright test --grep @smoke`） |
 | 探索（週1回・手動。合否判定にしない） | `@explore` | 開発サーバー（`playwright.explore.config.ts`） | モンキー（`explore/monkey.spec.ts`）。[探索テスト](#探索テスト) | 3件（開始地点ごと）。`MONKEY_SECONDS` 秒ずつ（手元の既定40秒、CIでは55秒） |
 
