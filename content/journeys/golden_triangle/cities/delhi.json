@@ -6,7 +6,7 @@
   "nameJa": "デリー",
   "themeJa": "歴史と日常が重なる街",
   "firstClearReward": {
-    "rewardSourceId": "delhi_legacy_episode_placeholder",
+    "rewardSourceId": "gt_delhi_first_clear",
     "ap": 0
   },
   "landmarkIdsPlanned": [

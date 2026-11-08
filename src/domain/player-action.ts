@@ -10,6 +10,7 @@ import { advanceDate, chooseDate, finishDate, type GameState } from "./game";
 import { canClaimPendingRewards, claimPendingRewards } from "./rewards";
 import { openTourism, advanceTourismGuide, discoverClue, getDiscoverableClueIds, replayTourismGuide, skipTourismGuide } from "./tourism";
 import { getTravelDestinations, getTravelWaitOptions } from "./travel-destinations";
+import { getRentalOffers, rentTransport } from "./transport";
 import {
   beginTravelEvent, finishTravelEventIfComplete, getLocalObservationLandmarkIds, getTravelEventAvailability, getTravelSleepOptions,
   observeLocalLandmark, sleepAtHotel, waitForTravel, type TravelMode,
@@ -32,8 +33,9 @@ export function applyPlayerAction(previous: GameState, change: (state: GameState
  * ending's 「自由時間へ」, the clue book's page turning) are not actions.
  */
 export type PlayerAction =
-  // Free time: TravelMenu, FreeTimeHub, TravelActions (待機・休む), PendingRewards, CityProgress.
+  // Free time: TravelMenu (TravelRentals: 借りる), FreeTimeHub, TravelActions (待機・休む), PendingRewards, CityProgress.
   | { kind: "travel"; eventId: string; mode: TravelMode }
+  | { kind: "rent"; modeId: string }
   | { kind: "observe_again"; landmarkId: string }
   | { kind: "wait"; minutes: number }
   | { kind: "rest"; mode: TravelMode; viaPlaceId: string | null }
@@ -138,6 +140,7 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
     ...(canClaimPendingRewards(state) ? [{ kind: "claim_ap" as const }] : []),
     ...(getPlayerDeparture(state) ? [{ kind: "depart" as const }] : []),
     ...getTravelWaitOptions(state).filter((option) => option.available).map((option) => ({ kind: "wait" as const, minutes: option.minutes })),
+    ...getRentalOffers(state).filter((choice) => choice.available).map((choice) => ({ kind: "rent" as const, modeId: choice.offer.modeId })),
     ...getTravelSleepOptions(state).filter((option) => option.plan.ok)
       .map(({ route }) => ({ kind: "rest" as const, mode: route.mode, viaPlaceId: route.viaPlaceId ?? null })),
   ];
@@ -151,6 +154,7 @@ export function playerActionChange(action: PlayerAction, nextRoll: () => number)
       case "travel": return beginTravelEvent(state, action.eventId, action.mode, revision, nextRoll);
       case "observe_again": return observeLocalLandmark(state, action.landmarkId, revision, nextRoll);
       case "wait": return waitForTravel(state, action.minutes, revision);
+      case "rent": return rentTransport(state, action.modeId, revision);
       case "rest": return sleepAtHotel(state, action.mode, revision, action.viaPlaceId);
       case "depart": return departToNextCity(state, revision);
       case "read_epilogue": case "battle_epilogue": return startCityEpilogue(state, state.currentCityId, revision);

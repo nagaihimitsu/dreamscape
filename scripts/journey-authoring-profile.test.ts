@@ -30,12 +30,8 @@ function issues(authoring: Record<string, unknown>) {
 describe("journey authoring profiles", () => {
   it("accepts paths inside the journey's authoring folder", () => {
     expect(authoringProfileOf(manifest({}), label)?.eventPrefix).toBe("ky");
-    expect(authoringProfileOf(manifest({ transitDirectory: "authoring/journeys/kyoto/research/transit" }), label)?.transitDirectory)
-      .toBe("authoring/journeys/kyoto/research/transit");
-    // The journey's folder itself may hold the per-city ledgers.
-    expect(authoringProfileOf(manifest({ transitDirectory: "authoring/journeys/kyoto" }), label)).toBeDefined();
     expect(authoringProfileOf(manifest({
-      transitDecisionLedger: { file: "authoring/journeys/kyoto/research/decisions.json", cities: ["kyoto_city", "nara"] },
+      transitDecisionLedger: { file: "authoring/journeys/kyoto/research/decisions.json", cities: ["kyoto_city", "nara"], pendingJa: "ツアー機能待ち", inspectCommand: "npm run kyoto:transit" },
     }), label)?.transitDecisionLedger?.cities).toEqual(["kyoto_city", "nara"]);
     expect(authoringProfileOf({ id: "milano", cities: [] }, label)).toBeUndefined();
   });
@@ -47,23 +43,36 @@ describe("journey authoring profiles", () => {
       expect(isRelativePath(value), value).toBe(false);
     expect(issues({ observationFile: "authoring/journeys/kyoto/../milano/drafts/observation-cards.json" }))
       .toContain("observationFile: Use a relative path with / separators, without .. or an absolute path");
-    expect(issues({ transitDirectory: "/tmp/kyoto" }))
-      .toContain("transitDirectory: Use a relative path with / separators, without .. or an absolute path");
+    expect(issues({ transitDecisionLedger: { file: "/tmp/kyoto/decisions.json", cities: ["nara"], pendingJa: "ツアー機能待ち", inspectCommand: "npm run kyoto:transit" } }))
+      .toContain("transitDecisionLedger.file: Use a relative path with / separators, without .. or an absolute path");
   });
 
   it("keeps the files below authoring/journeys/<journeyId>/", () => {
     expect(issues({ observationFile: "authoring/journeys/milano/drafts/observation-cards.json" }))
       .toEqual(["observationFile: Keep the authoring files of kyoto below authoring/journeys/kyoto/"]);
-    expect(issues({ transitDirectory: "authoring/research/kyoto" }))
-      .toEqual(["transitDirectory: Keep the authoring files of kyoto below authoring/journeys/kyoto/"]);
+    // Per-city transit ledgers are content files now (travel/<city>-transit.json); the old key is refused.
+    expect(issues({ transitDirectory: "authoring/journeys/kyoto/research/transit" }))
+      .toEqual([': Unrecognized key: "transitDirectory"']);
     // A neighbour whose name starts with the journey ID is another folder.
-    expect(issues({ transitDecisionLedger: { file: "authoring/journeys/kyoto_old/decisions.json", cities: ["nara"] } }))
+    expect(issues({ transitDecisionLedger: { file: "authoring/journeys/kyoto_old/decisions.json", cities: ["nara"], pendingJa: "ツアー機能待ち", inspectCommand: "npm run kyoto:transit" } }))
       .toEqual(["transitDecisionLedger.file: Keep the authoring files of kyoto below authoring/journeys/kyoto/"]);
   });
 
   it("lets the transit ledger list only the manifest's cities", () => {
-    expect(issues({ transitDecisionLedger: { file: "authoring/journeys/kyoto/decisions.json", cities: ["nara", "delhi"] } }))
+    expect(issues({ transitDecisionLedger: { file: "authoring/journeys/kyoto/decisions.json", cities: ["nara", "delhi"], pendingJa: "ツアー機能待ち", inspectCommand: "npm run kyoto:transit" } }))
       .toEqual(["transitDecisionLedger.cities.1: delhi is not a city of this manifest"]);
+  });
+
+  it("keeps the old journey-wide ledger only with what the journey waits for (pendingJa, Japanese) and the command that checks it", () => {
+    expect(issues({ transitDecisionLedger: { file: "authoring/journeys/kyoto/decisions.json", cities: ["nara"], inspectCommand: "npm run kyoto:transit" } }))
+      .toEqual(["transitDecisionLedger.pendingJa: Invalid input: expected string, received undefined"]);
+    expect(issues({ transitDecisionLedger: { file: "authoring/journeys/kyoto/decisions.json", cities: ["nara"], pendingJa: "waiting", inspectCommand: "npm run kyoto:transit" } }))
+      .toEqual(["transitDecisionLedger.pendingJa: Expected Japanese text"]);
+    expect(issues({ transitDecisionLedger: { file: "authoring/journeys/kyoto/decisions.json", cities: ["nara"], pendingJa: "ツアー機能待ち" } }))
+      .toEqual(["transitDecisionLedger.inspectCommand: Invalid input: expected string, received undefined"]);
+    for (const command of ["kyoto:transit", "npm run", "npm run kyoto:transit && rm -rf x", "npx tsx scripts/a.ts"])
+      expect(issues({ transitDecisionLedger: { file: "authoring/journeys/kyoto/decisions.json", cities: ["nara"], pendingJa: "ツアー機能待ち", inspectCommand: command } }), command)
+        .toEqual(["transitDecisionLedger.inspectCommand: Use npm run <script name>"]);
   });
 
   it("keeps the image folder a served path below assets/", () => {

@@ -15,6 +15,17 @@ const followup = "authoring/journeys/golden_triangle/research/golden-triangle-fo
 export const indiaDraftDirectory = path.join(root, "authoring/journeys/golden_triangle/drafts");
 const readJson = (file: string): unknown => JSON.parse(readFileSync(path.join(root, file), "utf8"));
 const fail = (message: string): never => { throw new Error(`India draft: ${message}`); };
+/**
+ * The research records keep the field names they were written with: a place's
+ * background was `backgroundAssetId` there, and is `backgroundId` since save v14.
+ */
+function withCurrentPlaceFields(catalog: unknown): unknown {
+  if (!catalog || typeof catalog !== "object" || !Array.isArray((catalog as { places?: unknown }).places)) return catalog;
+  const places = (catalog as { places: unknown[] }).places.map((place) => place && typeof place === "object"
+    ? Object.fromEntries(Object.entries(place).map(([key, value]) => [key === "backgroundAssetId" ? "backgroundId" : key, value]))
+    : place);
+  return { ...catalog, places };
+}
 const followupSchema = z.object({
   records: z.array(z.object({ placeId: z.string().regex(/^[a-z][a-z0-9_]*$/), cityId: z.string().optional(),
     sources: z.array(tourismSourceSchema).min(1) }).passthrough()),
@@ -56,10 +67,10 @@ export function buildIndiaDraft(): Record<string, unknown> {
   const usedEventIds = new Set<string>();
   for (const [index, id] of sequence.entries()) {
     const sourceCity = citySchema.parse(readJson(`${research}/cities/${id}.json`));
-    // This old compatibility field is NOT the city-clear reward. Until the
-    // episode has been authored, use an explicit unpublished placeholder.
-    const city = citySchema.parse({ ...sourceCity, firstClearReward: { rewardSourceId: `${id}_legacy_episode_placeholder`, ap: 0 } });
-    const original = travelCatalogSchema.parse(readJson(`${research}/travel/${id}.json`));
+    // The first-clear reward is NOT the city-clear reward. Until it is decided,
+    // use the placeholder <prefix>_<city>_first_clear with 0 AP (gt = manifest authoring.eventPrefix).
+    const city = citySchema.parse({ ...sourceCity, firstClearReward: { rewardSourceId: `gt_${id}_first_clear`, ap: 0 } });
+    const original = travelCatalogSchema.parse(withCurrentPlaceFields(readJson(`${research}/travel/${id}.json`)));
     const originalSettings = travelSettingsSchema.parse(readJson(`${research}/travel/${id}-settings.json`));
     const settings = travelSettingsSchema.parse({ ...originalSettings, initialBudget: index === 0 ? journey.initialBudget : 0,
       lodgingCost: journey.cityPlan.lodgingCost,
@@ -143,7 +154,7 @@ export function buildIndiaDraft(): Record<string, unknown> {
     followupResearch: ["venues", "access", "transit", "images"].map((name) => `authoring/journeys/golden_triangle/research/golden-triangle-followup-20261103/${name}.json`),
     warnings: [
       "候補イベント・背景IDは実コンテンツ未接続。クリア条件として使わない。",
-      "firstClearRewardは旧互換episode_clear用の0 AP仮欄で、本来の初回報酬は未決定。都市クリア4APは別のcity_clear報酬。",
+      "firstClearRewardは初回クリア報酬の0 AP仮欄（gt_<都市>_first_clear）で、本来の初回報酬は未決定。都市クリア4APは別のcity_clear報酬。",
       "座標は入口の実測ではない。営業時間はゲーム試作で現地開館時刻ではない。",
       "タクシーは2人分のゲーム推定。異地点の徒歩は未検証のため出力しない。",
       "この制作ドラフトには画像を含みません。登録済み画像の出典と利用条件は content/journeys/golden_triangle/tourism/catalog.json を確認してください。"

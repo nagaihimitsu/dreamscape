@@ -8,7 +8,7 @@ import generatedQuizzes from "../src/content/generated/quizzes.json";
 import effectsData from "../src/content/generated/content/romance/effect_catalog.json";
 import presentationData from "../src/content/generated/content/romance/presentation.json";
 import profileData from "../src/content/generated/content/romance/response_profiles.json";
-import { encounterCatalogSchema, type EncounterCatalog } from "../src/content/encounter-schemas";
+import { encounterCatalogSchema, normalizeEncounterCatalog, type EncounterCatalog } from "../src/content/encounter-schemas";
 import { journeySchema } from "../src/content/journey-schemas";
 import { tourismCatalogSchema } from "../src/content/tourism-schemas";
 import { quizSchema } from "../src/content/schemas";
@@ -16,6 +16,7 @@ import { validateItemReferences } from "../src/story/items";
 import { compileInk } from "./ink-validation";
 import { validateQuizEntries } from "./quiz-validation";
 import { validateEncounterContent } from "./encounter-validation";
+import { zodIssues } from "../tests/fixtures/zod-issues";
 import { loadContentSources, storyFile } from "./content-sources";
 
 // These tests check Milan's encounters and items (cityId "milano", the city of input()); other
@@ -34,11 +35,10 @@ const sources = Object.fromEntries(paths.map((id) => [id, readFileSync(storyFile
 const stories = Object.fromEntries(Object.entries(sources).map(([id, source]) => [id, compileInk(source, `${id}.ink`)]));
 
 function input() {
-  const quiz = quizSchema.parse(generatedQuizzes.sound_supper_b1);
+  const quiz = quizSchema.parse(generatedQuizzes.milano_main_last_supper_quiz);
   return {
     catalog: encounterCatalogSchema.parse(structuredClone(catalogData)),
     cityId: "milano",
-    currencyCode: "EUR",
     landmarks: tourismCatalogSchema.parse(tourismData).landmarks,
     journey: journeySchema.parse(journeyData),
     stories: { ...stories },
@@ -51,41 +51,38 @@ function input() {
 }
 
 describe("journey currency rules", () => {
-  it("accepts neutral amounts and rejects ambiguous old and new fields", () => {
-    const data = structuredClone(catalogData);
-    const event = data.encounters.find((entry) => entry.id === "galleria_cafe")!;
-    const priced = event.options[0];
-    // Keep the old catalog intact while exercising author-facing fields.
-    const neutral = structuredClone(data) as unknown as { encounters: Array<Record<string, unknown>> };
-    const changed = neutral.encounters.find((entry) => entry.id === "galleria_cafe")!;
-    const options = changed.options as Array<Record<string, unknown>>;
-    options[0].cost = priced.costEuro;
-    delete options[0].costEuro;
-    changed.completionMoney = changed.completionMoneyEuro;
-    delete changed.completionMoneyEuro;
-    expect(encounterCatalogSchema.safeParse(neutral).success).toBe(true);
-    options[0].costEuro = 0;
-    expect(encounterCatalogSchema.safeParse(neutral).success).toBe(false);
-    delete options[0].costEuro;
-    changed.completionMoneyEuro = 0;
-    expect(encounterCatalogSchema.safeParse(neutral).success).toBe(false);
+  it("takes amounts in the journey's currency (cost, completionMoney) and refuses the Euro-only names v14 removed", () => {
+    type Loose = { encounters: Array<Record<string, unknown> & { options: Array<Record<string, unknown>> }> };
+    const data = structuredClone(catalogData) as unknown as Loose;
+    const eventIndex = data.encounters.findIndex((entry) => entry.options.some((option) => option.cost !== undefined));
+    const event = data.encounters[eventIndex];
+    const optionIndex = event.options.findIndex((option) => option.cost !== undefined);
+    expect(eventIndex).toBeGreaterThanOrEqual(0);
+    event.completionMoney = 3;
+    expect(encounterCatalogSchema.safeParse(data).success).toBe(true);
+    const old = structuredClone(data);
+    old.encounters[eventIndex].options[optionIndex].costEuro = old.encounters[eventIndex].options[optionIndex].cost;
+    delete old.encounters[eventIndex].options[optionIndex].cost;
+    expect(() => encounterCatalogSchema.parse(old)).toThrow(zodIssues(
+      { code: "unrecognized_keys", path: ["encounters", eventIndex, "options", optionIndex], keys: ["costEuro"] }));
+    const oldPayment = structuredClone(data);
+    oldPayment.encounters[eventIndex].completionMoneyEuro = 3;
+    delete oldPayment.encounters[eventIndex].completionMoney;
+    expect(() => encounterCatalogSchema.parse(oldPayment)).toThrow(zodIssues(
+      { code: "unrecognized_keys", path: ["encounters", eventIndex], keys: ["completionMoneyEuro"] }));
   });
+});
 
-  it("refuses euro-specific fields in another currency, including zero", () => {
-    const data = input();
-    data.currencyCode = "INR";
-    expect(() => validateEncounterContent(data)).toThrow("Euro-denominated encounter rules in INR city");
-    for (const event of data.catalog.encounters) {
-      event.completionMoney = event.completionMoneyEuro;
-      delete event.completionMoneyEuro;
-      for (const option of event.options) {
-        option.cost = option.costEuro;
-        delete option.costEuro;
-      }
+describe("encounter catalog fields", () => {
+  it("refuses the `availability` field v14 removed: every encounter is met at its observation (decision 7)", () => {
+    for (const value of ["tourism", "dormant"]) {
+      const data = structuredClone(catalogData) as unknown as { encounters: Array<Record<string, unknown>> };
+      data.encounters[0].availability = value;
+      expect(() => encounterCatalogSchema.parse(data), value).toThrow(zodIssues(
+        { code: "unrecognized_keys", path: ["encounters", 0], keys: ["availability"] }));
+      expect(() => normalizeEncounterCatalog(data, tourismCatalogSchema.parse(tourismData).landmarks), value).toThrow(zodIssues(
+        { code: "unrecognized_keys", path: ["encounters", 0], keys: ["availability"] }));
     }
-    expect(() => validateEncounterContent(data)).not.toThrow();
-    data.catalog.encounters[0].options[0].costEuro = 0;
-    expect(() => validateEncounterContent(data)).toThrow("Euro-denominated encounter rules in INR city");
   });
 });
 
@@ -108,14 +105,15 @@ describe("encounter content validation", () => {
 
   it("rejects missing, mismatched and ambiguously awarded items", () => {
     const data = input();
-    const gift = data.catalog.encounters.find((event) => event.id === "galleria_gift")!;
+    const gift = data.catalog.encounters.find((event) => event.id === "castello_pick")!;
     gift.options[0].giftItemId = "missing_item";
     expect(() => validateEncounterContent(data)).toThrow("Unknown encounter item");
-    gift.options[0].giftItemId = "galleria_souvenir";
+    gift.options[0].giftItemId = "blue_pick";
     gift.options[0].requiresItemId = "galleria_ticket";
     expect(() => validateEncounterContent(data)).toThrow("matching requirement");
-    gift.options[0].requiresItemId = "galleria_souvenir";
-    data.catalog.encounters.find((event) => event.id === "galleria_cafe")!.completionItemId = "galleria_ticket";
+    gift.options[0].requiresItemId = "blue_pick";
+    // The ticket's source is the Fortune quiz; a second source would make the award ambiguous.
+    data.catalog.encounters.find((event) => event.id === "duomo_string")!.completionItemId = "galleria_ticket";
     expect(() => validateEncounterContent(data)).toThrow("Duplicate encounter item source");
   });
 
@@ -131,13 +129,13 @@ describe("encounter content validation", () => {
     data.journey.episodes.push({ ...data.journey.episodes[0], id: "fixture_episode", cityId: "fixture_city" });
     data.catalog.items.push({ id: "foreign_item", cityId: "fixture_city", nameJa: "別の街の品", descriptionJa: "別の街で入手する品。" });
 
-    const cafe = data.catalog.encounters.find((event) => event.id === "galleria_cafe")!;
-    const originalCompletion = cafe.completionItemId;
-    cafe.completionItemId = "foreign_item";
+    const giver = data.catalog.encounters.find((event) => event.id === "duomo_string")!;
+    const originalCompletion = giver.completionItemId;
+    giver.completionItemId = "foreign_item";
     expect(() => validateEncounterContent(data)).toThrow("Encounter completion item city mismatch");
-    cafe.completionItemId = originalCompletion;
+    giver.completionItemId = originalCompletion;
 
-    const gift = data.catalog.encounters.find((event) => event.id === "galleria_gift")!;
+    const gift = data.catalog.encounters.find((event) => event.id === "castello_pick")!;
     for (const field of ["requiresItemId", "consumeItemId", "giftItemId"] as const) {
       const option = gift.options[0];
       const previous = option[field];
@@ -159,7 +157,7 @@ describe("encounter content validation", () => {
 
   it("requires each item to have a gift or use opportunity in its city", () => {
     const data = input();
-    for (const id of ["galleria_souvenir", "galleria_ticket"]) {
+    for (const id of ["blue_pick", "galleria_ticket"]) {
       const uses = data.catalog.encounters.flatMap((event) => event.options.flatMap((option) =>
         (["giftItemId", "consumeItemId"] as const).filter((field) => option[field] === id).map((field) => ({ option, field }))));
       expect(uses.length).toBeGreaterThan(0);
@@ -186,20 +184,21 @@ describe("encounter content validation", () => {
     event.quiz!.wonStoryId = "encounters/missing";
     expect(() => validateEncounterContent(data)).toThrow("Unknown encounter story");
     event.quiz!.wonStoryId = originalWonStoryId;
-    data.catalog.encounters.find((item) => item.id === "galleria_gift")!.options[0].responseProfileId = "missing_profile";
+    data.catalog.encounters.find((item) => item.id === "castello_pick")!.options[0].responseProfileId = "missing_profile";
     expect(() => validateEncounterContent(data)).toThrow("Unknown encounter response profile");
   });
 
   it("rejects repeatable paid choices, deferred effects and duplicate quiz questions", () => {
     const data = input();
     const fortune = data.catalog.encounters.find((event) => event.id === "galleria_fortune")!;
-    fortune.options[0].costEuro = 4;
+    fortune.options[0].cost = 4;
     expect(() => validateEncounterContent(data)).toThrow("Repeatable encounter must be free");
-    fortune.options[0].costEuro = 0;
-    const gift = data.catalog.encounters.find((event) => event.id === "galleria_gift")!;
-    gift.options[2].costEuro = 1;
+    fortune.options[0].cost = 0;
+    const gift = data.catalog.encounters.find((event) => event.id === "castello_pick")!;
+    expect(gift.options[2].deferCompletion).toBe(true);
+    gift.options[2].cost = 1;
     expect(() => validateEncounterContent(data)).toThrow("Deferred encounter choice must have no cost or effects");
-    gift.options[2].costEuro = 0;
+    gift.options[2].cost = 0;
     fortune.quiz!.question.id = Object.values(data.quizzes)[0].questions[0].id;
     expect(() => validateEncounterContent(data)).toThrow("Duplicate production quiz question ID");
   });
@@ -212,11 +211,11 @@ describe("encounter content validation", () => {
     expect(event.alternativeApRewardId).toBe("victory_galleria_first");
     expect(() => validateEncounterContent(data)).not.toThrow();
     for (const change of [
-      () => { event.options[0].costEuro = 1; },
-      () => { event.options[0].requiresItemId = "galleria_souvenir"; },
+      () => { event.options[0].cost = 1; },
+      () => { event.options[0].requiresItemId = "blue_pick"; },
       () => { event.options[0].responseProfileId = "honest"; },
-      () => { event.completionMoneyEuro = 1; },
-      () => { event.completionItemId = "galleria_souvenir"; },
+      () => { event.completionMoney = 1; },
+      () => { event.completionItemId = "blue_pick"; },
     ]) {
       const snapshot = structuredClone(event);
       change();
@@ -238,21 +237,22 @@ describe("encounter content validation", () => {
 
   it("rejects an unsafe integer for a cost or completion payment", () => {
     const price = structuredClone(catalogData);
-    price.encounters[0].options[0].costEuro = Number.MAX_SAFE_INTEGER + 1;
+    price.encounters[0].options[0].cost = Number.MAX_SAFE_INTEGER + 1;
     expect(encounterCatalogSchema.safeParse(price).success).toBe(false);
 
     const reward = structuredClone(catalogData);
-    reward.encounters[0].completionMoneyEuro = Number.MAX_SAFE_INTEGER + 1;
+    reward.encounters[0].completionMoney = Number.MAX_SAFE_INTEGER + 1;
     expect(encounterCatalogSchema.safeParse(reward).success).toBe(false);
   });
 
   it("takes English choices from Ink, rejects an option textEn that differs from its Ink choice, and rejects Ink effects", () => {
     const data = input();
-    const event = data.catalog.encounters.find((item) => item.id === "galleria_cafe")!;
+    const event = data.catalog.encounters.find((item) => item.id === "galleria_print")!;
     const source = sources[event.storyId];
-    data.stories[event.storyId] = compileInk(source.replace("Two coffees, please.", "Something else, please."));
+    expect(source).toContain("Show us a fresh print, please.");
+    data.stories[event.storyId] = compileInk(source.replace("Show us a fresh print, please.", "Something else, please."));
     expect(() => validateEncounterContent(data)).not.toThrow();
-    event.options[0].textEn = "Two coffees, please.";
+    event.options[0].textEn = "Show us a fresh print, please.";
     expect(() => validateEncounterContent(data)).toThrow("Encounter choice does not match data");
     delete event.options[0].textEn;
     data.stories[event.storyId] = compileInk(source.replace("# speaker: narrator", `# effect: ${data.context.effectIds[0]}\n# speaker: narrator`));
@@ -260,8 +260,8 @@ describe("encounter content validation", () => {
   });
 
   it("rejects dynamic or unknown item queries and unrecognised statuses", () => {
-    expect(validateItemReferences('EXTERNAL has_item_status(id, status)\n{has_item_status("galleria_souvenir", "gifted"): はい}', ["galleria_souvenir"])).toEqual(["galleria_souvenir"]);
-    for (const call of ['has_item_status(item, "held")', 'has_item_status("unknown", "held")', 'has_item_status("galleria_souvenir", "sold")'])
-      expect(() => validateItemReferences(call, ["galleria_souvenir"])).toThrow("known literal item and status");
+    expect(validateItemReferences('EXTERNAL has_item_status(id, status)\n{has_item_status("blue_pick", "gifted"): はい}', ["blue_pick"])).toEqual(["blue_pick"]);
+    for (const call of ['has_item_status(item, "held")', 'has_item_status("unknown", "held")', 'has_item_status("blue_pick", "sold")'])
+      expect(() => validateItemReferences(call, ["blue_pick"])).toThrow("known literal item and status");
   });
 });

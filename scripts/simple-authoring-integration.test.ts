@@ -8,7 +8,9 @@ import { dates, getCityContent, landmarks, stories } from "../src/content";
 import { encounters } from "../src/content/encounters";
 import { normalizeEncounterCatalog } from "../src/content/encounter-schemas";
 import { prepareContentFixture, storySourceFile } from "../src/content/test-fixtures";
-import { advanceEncounter, chooseEncounter, finishEncounter, startEncounter } from "../src/domain/encounter";
+import { advanceEncounter, chooseEncounter, finishEncounter } from "../src/domain/encounter";
+import { closeTourism } from "../src/domain/tourism";
+import { meetEncounter } from "../tests/fixtures/encounter-moment";
 import { advanceDate, chooseDate, finishDate, startDate, validateGameState } from "../src/domain/game";
 import { buildContent } from "./content-pipeline";
 
@@ -20,7 +22,7 @@ it("builds a new encounter and date with Ink, small catalog entries and a travel
   const dateId = "fixture_simple_date";
   const encounterStory = "encounters/fixture_simple_encounter";
   const paidEncounterStory = "encounters/fixture_paid_encounter";
-  const dateStory = "milano/fixture_simple_date";
+  const dateStory = "dates/fixture_simple_date";
   try {
     await prepareContentFixture(root);
     const encountersPath = path.join(root, "content/journeys/milano/encounters/catalog.json");
@@ -37,8 +39,8 @@ it("builds a new encounter and date with Ink, small catalog entries and a travel
       titleJa: "追加の買い物",
       storyId: paidEncounterStory,
       options: [
-        { id: "tea", costEuro: 4 },
-        { id: "cake", costEuro: 8 },
+        { id: "tea", cost: 4 },
+        { id: "cake", cost: 8 },
         { id: "skip" },
       ],
     });
@@ -87,8 +89,8 @@ VAR heroine_name = ""
       id: "fixture_simple_date",
       chapterId: "milano",
       titleJa: "追加のデート",
-      storyId: "milano/fixture_simple_date",
-      backgroundAssetId: "milano_la_scala_date",
+      storyId: "dates/fixture_simple_date",
+      backgroundId: "milano_la_scala_date",
     });
     await writeFile(datesPath, JSON.stringify(dateCatalog));
     const travelPath = path.join(root, "content/journeys/milano/travel/milano.json");
@@ -103,11 +105,11 @@ VAR heroine_name = ""
       apCost: 2,
     });
     await writeFile(travelPath, JSON.stringify(travelCatalog));
-    let dateInk = await readFile(path.join(root, storySourceFile("milano/sound_cafe_01")), "utf8");
+    let dateInk = await readFile(path.join(root, storySourceFile("dates/milano_date_cafe")), "utf8");
     for (const [index, profile] of [[1, "playful"], [2, "attentive"], [3, "honest"]] as const) {
       dateInk = dateInk.replace(`sound_cafe_01_2_${index}`, `common_date_second_${profile}`);
     }
-    await writeFile(path.join(root, "content/journeys/milano/stories/milano/fixture_simple_date.ink"), dateInk);
+    await writeFile(path.join(root, "content/journeys/milano/stories/dates/fixture_simple_date.ink"), dateInk);
 
     const result = await buildContent(root, false);
     expect(result.dates.find((date) => date.id === "fixture_simple_date")).toMatchObject({
@@ -169,7 +171,7 @@ VAR heroine_name = ""
 
     // Ink order is deliberately different from the rules catalog. IDs, not
     // position or duplicated English text, must determine the price.
-    state = restore(startEncounter(state, paidEncounterId, () => 0));
+    state = restore(meetEncounter(state, paidEncounterId));
     while (state.activeEncounter && !state.activeEncounter.frame.choices.length && !state.activeEncounter.frame.ended)
       state = restore(advanceEncounter(state, state.revision));
     expect(state.activeEncounter?.frame.choices.map(({ text, optionId, translationJa }) => ({ text, optionId, translationJa }))).toEqual([
@@ -190,6 +192,9 @@ VAR heroine_name = ""
     state = restore(finishEncounter(state, state.revision));
     expect(state.completedEncounterIds).toContain(paidEncounterId);
     expect(state.travelBudget).toBe(initialBudget - 4);
+    // Both encounters returned to the Galleria's observation; leave it for free time.
+    expect(state.activeTourism?.landmarkId).toBe("galleria_vittorio_emanuele_ii");
+    state = restore(closeTourism(state, state.revision));
 
     const apTotal = (game: typeof state) => game.ap + game.pendingApRewards.reduce((total, reward) => total + reward.remainingAp, 0);
     const initialAp = apTotal(state);

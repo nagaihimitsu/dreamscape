@@ -33,7 +33,8 @@ describe("automatic India city transition with development-only content", () => 
     const memory = effects.find((effect) => effect.memoryId)?.memoryId;
     if (!memory) throw new Error("Expected a memory fixture");
     test_delhi = validateGameState({ ...test_delhi, playerName: "主人公", heroineName: "ヒロイン", affection: 3, trust: 2, spark: 1,
-      memories: [memory], completedEncounterIds: [...test_delhi.completedEncounterIds, "test_delhi_encounter"], inventory: { test_delhi_item: "held" },
+      memories: [memory], completedEncounterIds: [...test_delhi.completedEncounterIds, "test_delhi_encounter"],
+      seenEncounterIds: [...test_delhi.seenEncounterIds, "test_delhi_encounter"], inventory: { test_delhi_item: "held" },
       travel: { ...test_delhi.travel, day: 4, calendar: { journeyDay: 4, cityStartJourneyDay: 1, startWeekday: 0 } } });
     const started = advanceCompletedJourneyCity(test_delhi, test_delhi.revision);
     expect(started.currentCityId).toBe("test_delhi");
@@ -57,7 +58,7 @@ describe("automatic India city transition with development-only content", () => 
     expect(test_agra.travel).toMatchObject({ hotelPlaceId: "test_agra_hotel", currentPlaceId: "test_agra_hotel", day: 1, minute: 540 });
     expect(test_agra.travel.calendar).toEqual({ journeyDay: 4, cityStartJourneyDay: 4, startWeekday: 0 });
     expect(test_agra.inventory.test_delhi_item).toBe("left_behind");
-    for (const field of ["playerName", "heroineName", "ap", "pendingApRewards", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds", "completedEncounterIds"] as const)
+    for (const field of ["playerName", "heroineName", "ap", "pendingApRewards", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds", "completedEncounterIds", "seenEncounterIds", "itemUses"] as const)
       expect(test_agra[field]).toEqual(test_delhi[field]);
     expect(validateGameState(test_agra)).toEqual(test_agra);
     expect(advanceCompletedJourneyCity(test_agra, lastStep.revision)).toBe(test_agra);

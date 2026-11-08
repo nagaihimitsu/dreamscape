@@ -91,8 +91,8 @@ export function getCityContent(cityId: string): CityContent {
  */
 export function getCityStoryBackground(cityId: string, placeId: string): string | undefined {
   const { travel, travelSettings } = getCityContent(cityId);
-  return travelSettings.storyBackgroundAssetId ?? (travel.places.find((place) => place.id === placeId) ??
-    travel.places.find((place) => place.id === travelSettings.hotelPlaceId))?.backgroundAssetId;
+  return travelSettings.storyBackgroundId ?? (travel.places.find((place) => place.id === placeId) ??
+    travel.places.find((place) => place.id === travelSettings.hotelPlaceId))?.backgroundId;
 }
 export const battleQuizzes: Record<string, QuizDefinition> = Object.fromEntries(
   Object.entries(generatedQuizzes).map(([id, quiz]) => [

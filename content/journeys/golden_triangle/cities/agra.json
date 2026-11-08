@@ -6,7 +6,7 @@
   "nameJa": "アーグラ",
   "themeJa": "建築に刻まれた記憶の街",
   "firstClearReward": {
-    "rewardSourceId": "agra_legacy_episode_placeholder",
+    "rewardSourceId": "gt_agra_first_clear",
     "ap": 0
   },
   "landmarkIdsPlanned": [

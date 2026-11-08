@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "battles": [
     {
-      "id": "smp_mihon_clock_tower_battle",
+      "id": "smp_mihon_main_clock_tower_battle",
       "titleJa": "止まった針の理由",
       "descriptionJa": "時計塔で、時計を直したい時計番のトーマに会う。",
       "landmarkId": "mihon_clock_tower",
       "enemyNameJa": "トーマ",
       "enemyTitleJa": "時計を直したい時計番",
       "enemyDescriptionJa": "祖母から塔の番を継いだ青年。動かない歯車に毎朝油を差し、止まった時計の番人では仕事にならないと思っている。",
-      "storyId": "battles/smp_mihon_clock_tower",
-      "quizId": "smp_mihon_clock_tower_quiz",
-      "backgroundAssetId": "smp_bg_mihon_clock_tower",
+      "storyId": "battles/smp_mihon_main_clock_tower",
+      "quizId": "smp_mihon_main_clock_tower_quiz",
+      "backgroundId": "smp_bg_mihon_clock_tower",
       "portrait": "abstract",
       "scenes": {
         "intro": "intro",
@@ -23,17 +23,17 @@
       }
     },
     {
-      "id": "smp_mihon_market_b",
+      "id": "smp_mihon_special_b_market",
       "titleJa": "誰も時間を守らない？",
       "descriptionJa": "朝市で、パン屋のサラの大きすぎる断言に資料を一枚突きつける。全3問のうち第2問は矛盾追及。",
       "landmarkId": "mihon_market",
       "enemyNameJa": "サラ",
       "enemyTitleJa": "焼き時間にうるさいパン屋",
       "enemyDescriptionJa": "焼きたてを食べてほしいのに、客は好きな時間にしか来ない。待たせるのも待つのも苦手。",
-      "storyId": "battles/smp_mihon_market_b",
-      "quizId": "smp_mihon_market_b_quiz",
+      "storyId": "battles/smp_mihon_special_b_market",
+      "quizId": "smp_mihon_special_b_market_quiz",
       "format": "B",
-      "backgroundAssetId": "smp_bg_mihon_market",
+      "backgroundId": "smp_bg_mihon_market",
       "portrait": "abstract",
       "scenes": {
         "intro": "intro",
@@ -61,17 +61,17 @@
       }
     },
     {
-      "id": "smp_mihon_library_c",
+      "id": "smp_mihon_special_c_library",
       "titleJa": "記録にない約束",
       "descriptionJa": "図書室で、二枚の資料を結んで司書のイオに見せる。全3問のうち第3問は証拠連結。",
       "landmarkId": "mihon_library",
       "enemyNameJa": "イオ",
       "enemyTitleJa": "記録しか信じない司書",
       "enemyDescriptionJa": "書かれていないことは起きていない、が口癖。本当は、言い伝えを信じて恥をかいた昔の自分が苦手。",
-      "storyId": "battles/smp_mihon_library_c",
-      "quizId": "smp_mihon_library_c_quiz",
+      "storyId": "battles/smp_mihon_special_c_library",
+      "quizId": "smp_mihon_special_c_library_quiz",
       "format": "C",
-      "backgroundAssetId": "smp_bg_mihon_library",
+      "backgroundId": "smp_bg_mihon_library",
       "portrait": "abstract",
       "scenes": {
         "intro": "intro",
@@ -111,7 +111,7 @@
       "enemyDescriptionJa": "旅人に『時間にいいかげんな街』と言われるのが悔しい。子どもの頃の約束の言葉は、忘れたふりをしている。",
       "storyId": "battles/smp_mihon_finale",
       "quizId": "smp_mihon_finale_quiz",
-      "backgroundAssetId": "smp_bg_mihon_clock_tower",
+      "backgroundId": "smp_bg_mihon_clock_tower",
       "portrait": "abstract",
       "scenes": {
         "intro": "intro",

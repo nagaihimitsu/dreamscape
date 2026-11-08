@@ -40,7 +40,7 @@ import {
   getDateAvailability,
 } from "./date-rules";
 
-import { validateTravelState, validateGameHistory, validateActiveDateState } from "./game-state-validation";
+import { validateTravelState, validateGameHistory, validateActiveDateState, validateStoryProgress } from "./game-state-validation";
 
 export { GAME_STATE_VERSION, gameStateSchema } from "./game-state-schema";
 export type { GameState, ActiveDate } from "./game-state-schema";
@@ -70,13 +70,18 @@ export function createGame(
   return {
     schemaVersion: GAME_STATE_VERSION,
     currentCityId: cityId,
-    travel: { currentPlaceId: travelSettings.hotelPlaceId, hotelPlaceId: travelSettings.hotelPlaceId, day: 1, minute: 540, returnReserve: 0, returnDeadline: DAY_END, activeEvent: null,
+    travel: { currentPlaceId: travelSettings.hotelPlaceId, hotelPlaceId: travelSettings.hotelPlaceId, day: 1, minute: 540, returnReserve: 0, returnDeadline: DAY_END, activeEvent: null, rentedModeIds: [], rideCounts: {}, temporaryFlags: [],
       ...(journey.startWeekday === undefined ? {} : { calendar: { journeyDay: 1, cityStartJourneyDay: 1, startWeekday: journey.startWeekday } }) },
     travelBudget: journey.initialBudget ?? travelSettings.initialBudget,
     inventory: {},
     completedEncounterIds: [],
+    seenEncounterIds: [],
+    itemUses: {},
+    storyProgress: { lines: {}, flags: [] },
     encounterRewards: {},
     activeEncounter: null,
+    tour: null,
+    completedTourIds: [],
     revision: 0,
     playerName: nameSchema.parse(playerName),
     heroineName: nameSchema.parse(heroineName),
@@ -88,7 +93,6 @@ export function createGame(
     recoveryAfterRejection: false,
     completedRecoveryCount: 0,
     romanceStage: initial?.romanceStage ?? 1,
-    completedChapters: [],
     claimedRewardIds: [],
     playedDateIds: [],
     memories: [],
@@ -226,7 +230,7 @@ export function startDate(state: GameState, dateId: string, nextRoll: () => numb
       step: 1,
       appliedEffectIds: [],
       pendingOutcome: null,
-      resolutionMode: date.kind === "confession" ? "legacy_fixed" : "random_v1",
+      resolutionMode: date.kind === "confession" ? "fixed" : "random_v1",
       randomPlan: date.kind === "confession" ? [] : createRomanceRollPlan(date.choiceCount, nextRoll),
       resolvedChoices: [],
       // Freeze the data used by every future choice in this event, so an
@@ -280,7 +284,7 @@ export function chooseDate(
   const date = dates.find((item) => item.id === active.dateId)!;
   const storyId = activeDateStoryId(date, active);
   const toneBefore = deriveRelationshipTone(state);
-  if (active.resolutionMode === "legacy_fixed") {
+  if (active.resolutionMode === "fixed") {
     return applyStep(
       { ...state, revision: state.revision + 1 },
       { ...active, choiceCount: active.choiceCount + 1, step: active.step + 1 },
@@ -398,5 +402,6 @@ export function validateGameState(input: unknown): GameState {
   validateEpilogueState(state);
   validateGameHistory(state);
   validateActiveDateState(state);
+  validateStoryProgress(state);
   return state;
 }

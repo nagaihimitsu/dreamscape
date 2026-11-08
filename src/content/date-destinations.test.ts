@@ -8,12 +8,12 @@ import { dateDestinationSchema } from "./date-destinations";
 import destinationData from "./generated/content/romance/date_destinations.json";
 
 type Destination = {
-  id: string; cityId: string; backgroundAssetId: string;
+  id: string; cityId: string; backgroundId: string;
   facts: { publisher: string; title: string; url: string; checkedAt: string; claimType: string; claimJa: string }[];
 };
 type DateEntry = {
   id: string; destinationId?: string;
-  chapterId: string; backgroundAssetId: string; requiredCompletedChapters: string[];
+  chapterId: string; backgroundId: string; requiredCompletedChapters: string[];
   requiredCompletedEpisodeIds?: string[];
 };
 let fixture: string;
@@ -61,11 +61,11 @@ describe("date destination content references", () => {
   });
 
   it("rejects an unregistered background and a date/destination background mismatch", async () => {
-    await editScalaDestination((destination) => { destination.backgroundAssetId = "missing_background"; });
+    await editScalaDestination((destination) => { destination.backgroundId = "missing_background"; });
     await expect(buildContent(fixture, false)).rejects.toThrow("Unknown date destination background");
     // Back to the repository's destination (its own background), then a date with another background.
-    await editScalaDestination((destination) => { expect(destination.backgroundAssetId).toBe("milano_la_scala_date"); });
-    await editScalaDate((date) => { date.backgroundAssetId = "milano_cafe"; });
+    await editScalaDestination((destination) => { expect(destination.backgroundId).toBe("milano_la_scala_date"); });
+    await editScalaDate((date) => { date.backgroundId = "milano_cafe"; });
     await expect(buildContent(fixture, false)).rejects.toThrow("Date destination background mismatch");
   });
 

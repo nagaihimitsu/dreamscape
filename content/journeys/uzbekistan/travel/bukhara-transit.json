@@ -1,0 +1,2828 @@
+{
+  "schemaVersion": 2,
+  "cityId": "bukhara",
+  "sourceRefs": {
+    "old_town": {
+      "publisher": "Wikivoyage",
+      "title": "Bukhara — Get around",
+      "url": "https://en.wikivoyage.org/wiki/Bukhara",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+    },
+    "no_urban_rail": {
+      "publisher": "Kupibilet",
+      "title": "Бухара: гид по достопримечательностям и отдыху",
+      "url": "https://www.kupibilet.ru/gid/uzbekistan/bukhara",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "検索索引で本文の「ブハラには地下鉄、トラム、トロリーバスがない」という記述を確認。ページ直接取得は403だったため二次情報として扱う。近郊の長距離鉄道は市内観光移動に登録しない。"
+    },
+    "rail_scope": {
+      "publisher": "Wikivoyage",
+      "title": "Bukhara — Get in / Get around",
+      "url": "https://en.wikivoyage.org/wiki/Bukhara",
+      "checkedAt": "2026-11-04",
+      "claimType": "documented_fact",
+      "claimJa": "長距離列車のブハラ1駅は旧市街の外、カガンにある。今回の旧市街内11地点間を結ぶ市内鉄道としては採用しない。"
+    },
+    "taxi_model": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "ブハラ旧市街外周のタクシーモデル",
+      "url": "https://en.wikivoyage.org/wiki/Bukhara",
+      "checkedAt": "2026-11-04",
+      "claimType": "hypothesis",
+      "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
+    },
+    "yandex_start": {
+      "publisher": "Yandex Go",
+      "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+      "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+      "checkedAt": "2026-11-07",
+      "claimType": "documented_fact",
+      "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+    },
+    "taxi_fare_model": {
+      "publisher": "Dreamscape ゲーム編集",
+      "title": "タクシー料金の計算（配車アプリの料金表の式）",
+      "url": "https://router.project-osrm.org/table/v1/driving/",
+      "checkedAt": "2026-11-07",
+      "claimType": "hypothesis",
+      "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
+    }
+  },
+  "decisions": [
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル9分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル16分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩4分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩9分＋配車待ち4分＋推定走行9分。1台2人分24000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル4分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル13分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩4分＋配車待ち4分＋推定走行5分。1台2人分20000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩4分＋配車待ち4分＋推定走行5分。1台2人分20000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩5分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ark",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩3分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_ark",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_ark",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル9分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩9分＋配車待ち4分＋推定走行5分。1台2人分20000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩6分＋配車待ち4分＋推定走行6分。1台2人分21000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩11分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル13分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル4分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル8分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル6分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩7分＋配車待ち4分＋推定走行6分。1台2人分21000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_poi_kalyan",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩5分＋配車待ち4分＋推定走行6分。1台2人分21000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_ark",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_ark",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル16分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩9分＋配車待ち4分＋推定走行5分。1台2人分20000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩7分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩12分＋配車待ち4分＋推定走行9分。1台2人分24000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル12分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩7分＋配車待ち4分＋推定走行5分。1台2人分20000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩7分＋配車待ち4分＋推定走行5分。1台2人分20000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩7分＋配車待ち4分＋推定走行5分。1台2人分20000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩8分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_samanid_mausoleum",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩6分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_ark",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_ark",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩4分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩6分＋配車待ち4分＋推定走行6分。1台2人分21000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩7分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル12分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩3分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩4分＋配車待ち4分＋推定走行6分。1台2人分21000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル11分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル13分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル3分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_lyabi_hauz",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル3分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_ark",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_ark",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩9分＋配車待ち4分＋推定走行9分。1台2人分24000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩11分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩12分＋配車待ち4分＋推定走行9分。1台2人分24000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル12分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩8分＋配車待ち4分＋推定走行9分。1台2人分24000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩9分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩9分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩9分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩10分＋配車待ち4分＋推定走行4分。1台2人分19000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_chor_minor",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩8分＋配車待ち4分＋推定走行4分。1台2人分19000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_ark",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_ark",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル4分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル13分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル12分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩3分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩8分＋配車待ち4分＋推定走行9分。1台2人分24000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩3分＋配車待ち4分＋推定走行5分。1台2人分20000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩3分＋配車待ち4分＋推定走行5分。1台2人分20000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩3分＋配車待ち4分＋推定走行5分。1台2人分20000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩4分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_bolo_hauz",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩2分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_ark",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_ark",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル13分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル4分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩7分＋配車待ち4分＋推定走行5分。1台2人分20000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩4分＋配車待ち4分＋推定走行6分。1台2人分21000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩9分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩3分＋配車待ち4分＋推定走行5分。1台2人分20000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル4分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル2分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル12分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_toki_zargaron",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩3分＋配車待ち4分＋推定走行6分。1台2人分21000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_ark",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_ark",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩4分＋配車待ち4分＋推定走行5分。1台2人分20000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル8分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩7分＋配車待ち4分＋推定走行5分。1台2人分20000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル11分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩9分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩3分＋配車待ち4分＋推定走行5分。1台2人分20000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル4分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル2分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル8分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_abdulaziz_khan",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル14分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_ark",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_ark",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩4分＋配車待ち4分＋推定走行5分。1台2人分20000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル6分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩7分＋配車待ち4分＋推定走行5分。1台2人分20000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル13分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩9分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩3分＋配車待ち4分＋推定走行5分。1台2人分20000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル2分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル2分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル10分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_ulugh_beg",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩3分＋配車待ち4分＋推定走行6分。1台2人分21000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_ark",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_ark",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩5分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩7分＋配車待ち4分＋推定走行6分。1台2人分21000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩8分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル3分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩10分＋配車待ち4分＋推定走行4分。1台2人分19000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩4分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル12分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル8分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル10分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_magoki_attori",
+      "toPlaceId": "bukhara_hotel_hub",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル6分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_ark",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_ark",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩3分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_poi_kalyan",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩5分＋配車待ち4分＋推定走行6分。1台2人分21000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_samanid_mausoleum",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩6分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_lyabi_hauz",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル3分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_chor_minor",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩8分＋配車待ち4分＋推定走行4分。1台2人分19000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_bolo_hauz",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩2分＋配車待ち4分＋推定走行7分。1台2人分22000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_toki_zargaron",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩3分＋配車待ち4分＋推定走行6分。1台2人分21000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_abdulaziz_khan",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル14分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_ulugh_beg",
+      "mode": "taxi",
+      "status": "available",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "歩行者区域内を運転せず外周道路で乗降。両端の徒歩3分＋配車待ち4分＋推定走行6分。1台2人分21000スムのゲーム値。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town",
+        "yandex_start",
+        "taxi_fare_model"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "metro",
+      "status": "not_applicable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "登録した旧市街内の2地点を結ぶ地下鉄・都市鉄道としては対象外。カガンの長距離列車は都市間移動であり、市内経路に混ぜない。",
+      "sourceRefs": [
+        "no_urban_rail",
+        "rail_scope"
+      ]
+    },
+    {
+      "fromPlaceId": "bukhara_hotel_hub",
+      "toPlaceId": "bukhara_magoki_attori",
+      "mode": "taxi",
+      "status": "not_suitable",
+      "checkedAt": "2026-11-04",
+      "reasonJa": "徒歩モデル6分の短い回廊、または同じ外周乗降ゾーン。場内への車両進入を想定せず徒歩を採用。タクシー会社の営業不存在を意味しない。",
+      "sourceRefs": [
+        "taxi_model",
+        "old_town"
+      ]
+    }
+  ]
+}

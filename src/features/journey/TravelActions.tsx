@@ -8,7 +8,7 @@ import type { GameState } from "../../domain/game";
 import { getTravelWaitOptions } from "../../domain/travel-destinations";
 import { getTravelSleepOptions } from "../../domain/travel-game";
 import { formatTravelTime } from "./travel-time";
-import { travelModeLabels } from "./travel-visibility";
+import { transportLabel } from "../../content/transport";
 
 /** Time and lodging use the same game rules as the destination menu. */
 export function TravelActions({ game, onTravelWait, onTravelSleep }: {
@@ -33,7 +33,7 @@ export function TravelActions({ game, onTravelWait, onTravelSleep }: {
       <p>滞在先へ戻り、翌日9:00に出発します。ゲーム内の宿泊費は{formatMoneyForCity(game.currentCityId, travelSettings.lodgingCost)}、APは使いません。予算の不足分は補助されます。{getJourneyForCity(game.currentCityId)?.farePartySize === 2 && "移動料金は2人分のゲーム内の目安です。"}</p>
       <div className="travel-choice-routes">{sleepOptions.map(({ route, plan: result }) => {
         const via = route.viaPlaceId ? travel.places.find((place) => place.id === route.viaPlaceId)?.nameJa : undefined;
-        return <div key={JSON.stringify([route.mode, route.viaPlaceId ?? null])}><button type="button" className="secondary travel-route" disabled={!result.ok} onClick={() => { onTravelSleep(route.mode, route.viaPlaceId ?? null); setShowSleep(false); }}>{travelModeLabels[route.mode]}{route.transferNote ? `（${route.transferNote}）` : ""}{via ? `・${via}から徒歩` : ""} {route.minutes}分 · {formatMoneyForCity(game.currentCityId, route.cost)}{result.ok && result.usedAssistance ? "（宿泊費の不足分は補助）" : ""}</button>{!result.ok && <p className="fine-print">{result.reason === "budget" ? "この移動手段の予算が足りません。" : "この経路では帰れません。"}</p>}</div>;
+        return <div key={JSON.stringify([route.mode, route.viaPlaceId ?? null])}><button type="button" className="secondary travel-route" disabled={!result.ok} onClick={() => { onTravelSleep(route.mode, route.viaPlaceId ?? null); setShowSleep(false); }}>{transportLabel(game.currentCityId, route.mode)}{route.transferNote ? `（${route.transferNote}）` : ""}{via ? `・${via}から徒歩` : ""} {route.minutes}分 · {formatMoneyForCity(game.currentCityId, route.cost)}{result.ok && result.usedAssistance ? "（宿泊費の不足分は補助）" : ""}</button>{!result.ok && <p className="fine-print">{result.reason === "budget" ? "この移動手段の予算が足りません。" : "この経路では帰れません。"}</p>}</div>;
       })}</div>
       {sleepOptions.length === 0 && <p>滞在先への経路は確認されていません。</p>}
     </Modal>}

@@ -1,13 +1,20 @@
-import { dates, dateDestinations, getCityContent, progression, type DateDefinition } from "../content";
+import { dates, dateDestinations, episodes, getCityContent, progression, type DateDefinition } from "../content";
 import type { GameState, ActiveDate } from "./game-state-schema";
 import { storyFingerprint } from "../story/runtime";
 import type { Availability } from "./game";
 
+/**
+ * A date's chapter is a city ID (its `requiredCompletedChapters`): it counts as
+ * completed once any episode of that city is, so it is derived, not saved.
+ */
+export function hasCompletedChapter(state: GameState, chapterId: string): boolean {
+  return state.completedEpisodeIds.some((id) =>
+    episodes.some((episode) => episode.id === id && episode.cityId === chapterId));
+}
+
 function meetsDateConditions(state: GameState, date: DateDefinition): boolean {
   return (
-    date.requiredCompletedChapters.every((id) =>
-      state.completedChapters.includes(id),
-    ) &&
+    date.requiredCompletedChapters.every((id) => hasCompletedChapter(state, id)) &&
     (date.requiredCompletedCityIds ?? []).every((id) =>
       state.completedCityIds.includes(id),
     ) &&

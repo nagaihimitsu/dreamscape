@@ -1,5 +1,7 @@
 # ミラノの旅行データ
 
+> 交通の注記（2026-11-07）：ミラノの交通は徒歩・路面電車・タクシーです（鉄道・バスの6本は消しました）。路面電車8本とタクシー14本の判断・時間・料金・出典は `content/journeys/milano/travel/milano-transit.json`（交通判断台帳）にあります。`MILANO_TRANSPORT.csv` は、前からある3本（24番の路面電車とタクシー2本）の記録を直したものです。
+
 [`content/journeys/milano/travel/milano.json`](../../../../../content/journeys/milano/travel/milano.json) の座標は地点の代表点です。施設の入口や道路への接続を測量した値ではありません。ホテルはコルドゥージオ駅付近に置いた架空の宿です。
 
 徒歩時間は OpenSidewalkMap の歩行網から A→B と B→A を別々に計算し、両端の代表点への直線接続を足して時速4.5 kmで換算した推定値です。実歩行、臨時閉鎖、施設内通路を保証しません。© OpenStreetMap contributors、ODbL 1.0、<https://www.openstreetmap.org/copyright>。歩行網は OpenSidewalkMap Milan、使用した版と計算方法は [`MILANO_ROUTE_METHOD.md`](MILANO_ROUTE_METHOD.md) を参照してください。ゲーム内の予算・宿泊費・交通の所要時間や固定料金は調整値で、現実の実測値ではありません。交通は登録された片道のみ利用できます。

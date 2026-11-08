@@ -3,11 +3,18 @@ import type { TravelEvent, TravelPlace, TravelRoute } from "../content/travel-sc
 import type { GameState } from "./game";
 import { DAY_END, NIGHT_START, groupDestinationEvents, selectNearbyDestinations, type DestinationPlace } from "./travel";
 import { getTravelEventAvailability, isTravelEventVisible, isUnclearedMainTravelEvent, waitForTravel } from "./travel-game";
+import { isTransportModeUsable } from "./transport";
 
 export type TravelDestinationEvent = TravelEvent & {
   walkMinutes: number | null;
   place: TravelPlace;
+  /** Every route there, a not-yet-rented rental route included (the route dialog shows it with its reason). */
   routes: TravelRoute[];
+  /**
+   * The routes the destination line and the event's availability use: those the party
+   * may ride now (a rental mode once rented), or every route when none can be ridden.
+   */
+  describedRoutes: TravelRoute[];
   available: boolean;
   unavailableReason?: string;
   unclearedMain: boolean;
@@ -24,8 +31,12 @@ export function getTravelDestinations(state: GameState) {
     const routes = outgoing.filter((route) => route.toPlaceId === event.placeId);
     if (!place || routes.length === 0) return [];
     const walk = routes.find((route) => route.mode === "walk");
-    const availability = routes.map((route) => getTravelEventAvailability(state, event.id, route.mode));
-    return [{ ...event, walkMinutes: walk?.minutes ?? null, place, routes,
+    // The menu lists a rental route before it is rented (with its reason), but the event's
+    // reason comes from a usable route: a closed event says so, not 「…で借りると乗れます」.
+    const usable = routes.filter((route) => isTransportModeUsable(state, route.mode));
+    const describedRoutes = usable.length ? usable : routes;
+    const availability = describedRoutes.map((route) => getTravelEventAvailability(state, event.id, route.mode));
+    return [{ ...event, walkMinutes: walk?.minutes ?? null, place, routes, describedRoutes,
       available: availability.some((result) => result.available), unavailableReason: availability[0]?.reason,
       unclearedMain: isUnclearedMainTravelEvent(state, event.id) }];
   });

@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { buildJourneyFragments, journeyRequirements, loadJourneyScaffold } from "../../../scripts/journey-scaffold";
 
@@ -32,5 +33,16 @@ describe("Golden Triangle authoring scaffold", () => {
     const finale = fragments.finaleEvents[0];
     const destinationEvent = input.cities.find((city) => city.cityId === "delhi")!.events.find((event) => event.placeId === finale.placeId)!;
     expect(finale.admissionCost ?? 0).toBe(destinationEvent.admissionCost ?? 0);
+  });
+
+  it("names the stories as the published catalogs do (docs/02 「IDの付け方」): the guide after the landmark, the battle after its event", () => {
+    const catalog = (file: string) => JSON.parse(readFileSync(`content/journeys/golden_triangle/${file}`, "utf8"));
+    const guides = new Map(catalog("tourism/catalog.json").landmarks.map((landmark: { id: string; guideStoryId: string }) => [landmark.id, landmark.guideStoryId]));
+    const battles = new Map(catalog("battles/catalog.json").battles.map((battle: { id: string; storyId: string }) => [battle.id, battle.storyId]));
+    for (const plan of journeyRequirements(input)) for (const main of plan.main) {
+      expect(main.guideStoryId).toBe(`tourism/gt_${main.landmarkId}_guide`);
+      expect(guides.get(main.landmarkId)).toBe(main.guideStoryId);
+      expect(battles.get(main.battleId)).toBe(main.battleStoryId);
+    }
   });
 });

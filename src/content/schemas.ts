@@ -24,7 +24,7 @@ export const dateSchema = z
     destinationId: id.optional(),
     allowAfterEnding: z.boolean().optional(),
     rewardOnlyOnce: z.boolean().default(true),
-    backgroundAssetId: id,
+    backgroundId: id,
     minAffection: z.number().int().nonnegative().default(0),
     requiredPlayedDateIds: z.array(id).default([]),
     repeatable: z.boolean().default(false),
@@ -312,7 +312,7 @@ export const battleSchema = z
     enemyDescriptionJa: japaneseText,
     storyId: z.string().regex(/^[a-z][a-z0-9_]*(\/[a-z][a-z0-9_]*)+$/),
     quizId: id,
-    backgroundAssetId: id,
+    backgroundId: id,
     portrait: z
       .enum(["porter", "fortune", "archivist", "conductor", "abstract"])
       .optional(),

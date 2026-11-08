@@ -5,11 +5,12 @@ import { getBattleAvailability, startBattle } from "./battle";
 import { clearCity, playBattleToResult } from "../dev/scenario-builders";
 import { departToNextCity, getNextCity } from "./city-travel";
 import { getEpisodeAvailability, leaveBattleResult, startEpisode } from "./chapter";
-import { advanceEncounter, chooseEncounter, encounterCanFinish, finishEncounter, proceedFromTourism, startEncounter } from "./encounter";
+import { advanceEncounter, chooseEncounter, encounterCanFinish, finishEncounter, proceedFromTourism } from "./encounter";
+import { meetEncounter } from "../../tests/fixtures/encounter-moment";
 import { startCityEpilogue } from "./epilogue";
 import { createGame, getDateAvailability, startDate, validateGameState, type GameState } from "./game";
 import { installTestCity } from "../dev/test-cities";
-import { openTourism, skipTourismGuide, startTourismBattle } from "./tourism";
+import { closeTourism, openTourism, skipTourismGuide, startTourismBattle } from "./tourism";
 import { beginTravelEvent, waitForTravel } from "./travel-game";
 
 class MemoryStorage implements StorageLike {
@@ -26,6 +27,19 @@ function finishBattle(initial: GameState): GameState {
 
 const finishMilan = () => clearCity(createGame());
 
+/** Meet the encounter in a new observation of its landmark, play it with one option, and close the observation. */
+function playEncounter(initial: GameState, encounterId: string, optionId: string): GameState {
+  let state = meetEncounter(initial, encounterId);
+  expect(state.activeEncounter?.encounterId).toBe(encounterId);
+  for (let step = 0; state.activeEncounter; step++) {
+    expect(step, `${encounterId}/${optionId}`).toBeLessThan(100);
+    const choice = state.activeEncounter.frame.choices.find((item) => item.optionId === optionId);
+    state = choice ? chooseEncounter(state, choice.index, state.revision)
+      : encounterCanFinish(state) ? finishEncounter(state, state.revision) : advanceEncounter(state, state.revision);
+  }
+  return closeTourism(state, state.revision);
+}
+
 describe("two registered cities through the real game runtime", () => {
   let cleanup: () => void;
   // Milan's IDs below (dates, encounters, items) are part of the test.
@@ -40,7 +54,8 @@ describe("two registered cities through the real game runtime", () => {
     const memory = effects.find((effect) => effect.memoryId)?.memoryId;
     if (!memory) throw new Error("No existing memory fixture");
     const before = validateGameState({ ...reached, inventory: { ...reached.inventory, blue_pick: "held" },
-      completedEncounterIds: [...reached.completedEncounterIds, "duomo_string"], memories: [memory] });
+      completedEncounterIds: [...reached.completedEncounterIds, "duomo_string"], seenEncounterIds: [...reached.seenEncounterIds, "duomo_string"],
+      memories: [memory] });
     expect(getNextCity(before)?.city.id).toBe("test_city");
     expect(before.claimedRewardIds.length).toBeGreaterThan(0);
     const activeMilanDate = startDate(before, "milano_cafe_01", () => 0);
@@ -52,7 +67,7 @@ describe("two registered cities through the real game runtime", () => {
     const activeMilanTourism = openTourism(before, "duomo_milano");
     expect(activeMilanTourism.activeTourism).not.toBeNull();
     expect(departToNextCity(activeMilanTourism, activeMilanTourism.revision)).toBe(activeMilanTourism);
-    const activeMilanEncounter = startEncounter(before, "supper_pantomime", () => 0);
+    const activeMilanEncounter = meetEncounter(before, "supper_pantomime");
     expect(activeMilanEncounter.activeEncounter).not.toBeNull();
     expect(departToNextCity(activeMilanEncounter, activeMilanEncounter.revision)).toBe(activeMilanEncounter);
     const activeMilanEpilogue = startCityEpilogue(before, "milano", before.revision);
@@ -68,8 +83,9 @@ describe("two registered cities through the real game runtime", () => {
     expect(after.travel).toMatchObject({ currentPlaceId: "test_hotel", hotelPlaceId: "test_hotel", day: 1, minute: 540, activeEvent: null });
     expect(after.inventory.blue_pick).toBe("left_behind");
     expect(after.completedEncounterIds).toContain("duomo_string");
-    for (const field of ["playerName", "heroineName", "ap", "pendingApRewards", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds"] as const)
-      expect(after[field]).toEqual(before[field]);
+    expect(after.seenEncounterIds).toEqual(before.seenEncounterIds);
+    for (const field of ["playerName", "heroineName", "ap", "pendingApRewards", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds", "tour", "completedTourIds"] as const)
+      expect(after[field], field).toEqual(before[field]);
     expect(departToNextCity(after, before.revision)).toBe(after);
     expect(getNextCity(after)).toBeUndefined();
     const concurrentStorage = new MemoryStorage();
@@ -146,4 +162,26 @@ describe("two registered cities through the real game runtime", () => {
     expect(cityState.inventory.blue_pick).toBe("left_behind");
     expect(validateGameState(cityState)).toEqual(cityState);
   }, 120_000);
+
+  it("keeps the record of an item given away in Milan through the departure, and the next city's save still checks it", () => {
+    // The pick received at the Duomo and given at the Castello (game functions; docs/07: use records stay after leaving the city).
+    const milan = playEncounter(playEncounter(finishMilan(), "duomo_string", "case"), "castello_pick", "give");
+    expect(milan.inventory.blue_pick).toBe("gifted");
+    expect(milan.itemUses).toEqual({ blue_pick: { encounterId: "castello_pick", optionId: "give" } });
+    expect(getNextCity(milan)?.city.id).toBe("test_city");
+    const after = departToNextCity(milan, milan.revision);
+    expect(after.currentCityId).toBe("test_city");
+    expect(after.itemUses).toEqual(milan.itemUses);
+    // A given item is history, not an unused one: it is not left behind.
+    expect(after.inventory).toEqual({ blue_pick: "gifted" });
+    expect(after.seenEncounterIds).toEqual(["duomo_string", "castello_pick"]);
+    expect(after.completedEncounterIds).toEqual(["duomo_string", "castello_pick"]);
+    const storage = new MemoryStorage();
+    expect(saveGame(storage, after)).toEqual({ ok: true });
+    expect(loadGame(storage)).toEqual({ status: "loaded", state: after });
+    // The departed city's records are still checked in the next city.
+    expect(() => validateGameState({ ...after, itemUses: {} })).toThrow("品物を渡した・使った記録が一致しません。");
+    expect(() => validateGameState({ ...after, itemUses: { blue_pick: { encounterId: "castello_pick", optionId: "later" } } }))
+      .toThrow("品物を渡した・使った記録が一致しません。");
+  });
 });

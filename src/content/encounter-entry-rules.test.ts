@@ -5,7 +5,7 @@ import { encounters } from "./encounters";
 import { journeyConfig } from "./index";
 import { encounterEntryRulesSchema, validateEncounterEntryRules } from "./encounter-entry-rules";
 import { createGame } from "../domain/game";
-import { getEncounterAvailability } from "../domain/encounter";
+import { encounterOffered } from "../../tests/fixtures/encounter-moment";
 
 describe("location-based encounters", () => {
   it("validates entry IDs, places and completion milestones", () => {
@@ -14,24 +14,24 @@ describe("location-based encounters", () => {
     expect(() => encounterEntryRulesSchema.parse({ ...rules, entries: [...rules.entries, rules.entries[0]] })).toThrow(zodIssues({ code: "custom", message: "Duplicate encounter entry rule" }));
     expect(() => validateEncounterEntryRules({ ...rules, entries: [{ ...rules.entries[0], landmarkId: "last_supper" }] }, encounters.encounters, journeyConfig)).toThrow("Unknown or mismatched encounter entry: duomo_string/last_supper");
     expect(() => validateEncounterEntryRules({ ...rules, entries: [{ ...rules.entries[0], completedEpisodeId: "unknown_episode" }] }, encounters.encounters, journeyConfig)).toThrow("Unknown encounter entry episode: duomo_string/unknown_episode");
-    // Only the Galleria fortune (a tourism encounter with a quiz) defers its quiz until the landmark battle.
+    // Only the Galleria fortune (an encounter with a quiz) defers its quiz until the landmark battle.
     expect(rules.entries.filter((entry) => entry.quizAfterLandmarkBattle).map((entry) => entry.encounterId)).toEqual(["galleria_fortune"]);
     const duomo = rules.entries.find((entry) => entry.encounterId === "duomo_string")!;
     expect(() => validateEncounterEntryRules({ ...rules, entries: [{ ...duomo, quizAfterLandmarkBattle: true }] }, encounters.encounters, journeyConfig))
-      .toThrow("A quiz after the landmark battle needs a tourism encounter with a quiz: duomo_string");
+      .toThrow("A quiz after the landmark battle needs an encounter with a quiz: duomo_string");
   });
 
-  it("opens duomo_string after the Duomo and scala_mint after La Scala, and keeps the Galleria encounters (the dormant galleria_cafe/gift/outing included) closed", () => {
+  it("offers duomo_string in the Duomo's observation after its episode and scala_mint after La Scala's battle, and keeps the Galleria's later encounters closed", () => {
     const fresh = createGame("たいち", "あゆみ");
     const afterDuomo = { ...fresh, completedEpisodeIds: ["milano_duomo_episode"] };
-    expect(getEncounterAvailability(fresh, "duomo_string").available).toBe(false);
-    expect(getEncounterAvailability(afterDuomo, "duomo_string").available).toBe(true);
-    expect(getEncounterAvailability(afterDuomo, "galleria_print").available).toBe(false);
-    expect(getEncounterAvailability(afterDuomo, "scala_mint").available).toBe(false);
-    for (const id of ["galleria_cafe", "galleria_gift", "galleria_outing", "galleria_fortune"])
-      expect(getEncounterAvailability(afterDuomo, id).available).toBe(false);
+    expect(encounterOffered(fresh, "duomo_string")).toEqual({ available: false, reason: "この場所を訪れたあとに出会えます。" });
+    expect(encounterOffered(afterDuomo, "duomo_string")).toEqual({ available: true, reason: "" });
+    for (const id of ["galleria_print", "galleria_ticket_press", "scala_mint"])
+      expect(encounterOffered(afterDuomo, id), id).toEqual({ available: false, reason: "この場所を訪れたあとに出会えます。" });
+    // The fortune teller's quiz waits for the Galleria battle (quizAfterLandmarkBattle): her story is met in the first observation.
+    expect(encounterOffered(afterDuomo, "galleria_fortune")).toEqual({ available: true, reason: "" });
 
     const afterScala = { ...afterDuomo, battleRecords: [{ battleId: "milano_la_scala_b01", firstScore: 0, lastScore: 0, bestScore: 0, attempts: 1 }] };
-    expect(getEncounterAvailability(afterScala, "scala_mint").available).toBe(true);
+    expect(encounterOffered(afterScala, "scala_mint")).toEqual({ available: true, reason: "" });
   });
 });

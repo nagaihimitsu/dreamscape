@@ -6,7 +6,7 @@
   "nameJa": "サマルカンド",
   "themeJa": "青い建築と日常が交わる街",
   "firstClearReward": {
-    "rewardSourceId": "samarkand_legacy_episode_placeholder",
+    "rewardSourceId": "uz_samarkand_first_clear",
     "ap": 0
   },
   "landmarkIdsPlanned": [

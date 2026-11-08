@@ -7,7 +7,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { journeyStorage } from "./journey-storage";
 import {
   holdJourneyLock, journeyLockName, journeyLockNotice, LOCK_RETRIES, LOCK_RETRY_MS, needsJourneyLock,
-  type JourneyLockHold, type JourneyLockStatus, type LockManagerLike,
+  runWithSlotLocks, type JourneyLockHold, type JourneyLockStatus, type LockManagerLike,
 } from "./journey-lock";
 
 /** The Web Locks of one browser, shared by all its tabs. */
@@ -341,5 +341,72 @@ describe("journey lock", () => {
     // A hidden page neither retries nor reports another tab.
     expect(hidden.statuses).toEqual(["loading"]);
     await other.close();
+  });
+});
+
+// 「古い保存データの整理」 removes keys of other journeys only while no tab has those journeys open
+// (AGENTS.md 「別タブ競合の保護を維持する」): it holds their slot locks for the removal, asked once.
+describe("removing under the slots' locks", () => {
+  /** Let the fake browser answer and release: a lock released inside another's callback settles a
+   * task later (a 0 ms timer set while timers run is due 1 ms later under fake timers). */
+  async function finish<T>(run: Promise<T>): Promise<T> {
+    let result: { value: T } | { error: unknown } | undefined;
+    run.then((value) => { result = { value }; }, (error: unknown) => { result = { error }; });
+    for (let turn = 0; turn < 20 && !result; turn++) await vi.advanceTimersByTimeAsync(1);
+    if (!result) throw new Error("the run never finished");
+    if ("error" in result) throw result.error;
+    return result.value;
+  }
+
+  it("runs the action once while holding every named lock and lets them go afterwards", async () => {
+    const locks = new FakeLocks();
+    const [first, second] = [newName(), newName()].sort();
+    let heldDuring: string[] = [];
+    let runs = 0;
+    const run = runWithSlotLocks(locks, [second, first, second], () => { runs++; heldDuring = [...locks.held].sort(); return "removed"; });
+    expect(await finish(run)).toEqual({ status: "done", value: "removed" });
+    expect(runs).toBe(1);
+    expect(heldDuring).toEqual([first, second]);
+    expect(locks.requests).toEqual([{ name: first, granted: true }, { name: second, granted: true }]);
+    expect(locks.held.size).toBe(0);
+  });
+
+  it("refuses at once, without running the action, while another tab has one of the journeys open", async () => {
+    const locks = new FakeLocks();
+    const [free, open] = [newName(), newName()].sort();
+    const other = await locks.otherTab(open);
+    let ran = false;
+    expect(await finish(runWithSlotLocks(locks, [open, free], () => { ran = true; }))).toEqual({ status: "busy", name: open });
+    expect(ran).toBe(false);
+    // Asked once, without retries or waiting; the free lock is let go of again.
+    await vi.advanceTimersByTimeAsync(LOCK_RETRIES * LOCK_RETRY_MS);
+    expect(locks.requests.filter((request) => request.name === open)).toEqual([{ name: open, granted: true }, { name: open, granted: false }]);
+    expect(locks.held.has(free)).toBe(false);
+    expect(locks.held.has(open)).toBe(true);
+    await other.close();
+    expect(await finish(runWithSlotLocks(locks, [free, open], () => "now"))).toEqual({ status: "done", value: "now" });
+  });
+
+  it("runs at once with no lock to take, and refuses without Web Locks or when a request is refused", async () => {
+    const locks = new FakeLocks();
+    expect(await finish(runWithSlotLocks(locks, [], () => 1))).toEqual({ status: "done", value: 1 });
+    expect(locks.requests).toEqual([]);
+    let ran = false;
+    const action = () => { ran = true; };
+    expect(await finish(runWithSlotLocks(undefined, [newName()], action))).toEqual({ status: "unsupported" });
+    expect(await finish(runWithSlotLocks(undefined, [], action))).toEqual({ status: "unsupported" });
+    const rejecting: LockManagerLike = { request: () => Promise.reject(new DOMException("denied", "SecurityError")) };
+    expect(await finish(runWithSlotLocks(rejecting, [newName()], action))).toEqual({ status: "unsupported" });
+    const throwing: LockManagerLike = { request: () => { throw new DOMException("denied", "SecurityError"); } };
+    expect(await finish(runWithSlotLocks(throwing, [newName()], action))).toEqual({ status: "unsupported" });
+    expect(ran).toBe(false);
+  });
+
+  it("passes the action's own error on instead of calling it a refusal of the locks, and lets the locks go", async () => {
+    const locks = new FakeLocks();
+    const name = newName();
+    await expect(finish(runWithSlotLocks(locks, [name], () => { throw new Error("removal failed"); }))).rejects.toThrow("removal failed");
+    await settle();
+    expect(locks.held.has(name)).toBe(false);
   });
 });

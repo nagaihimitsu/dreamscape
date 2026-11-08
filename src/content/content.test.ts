@@ -18,7 +18,7 @@ import { parseStoryTags } from "./tags";
 import { changeCatalogEntry, prepareContentFixture, quizSourceFile, registerOwnArtwork, storySourceFile } from "./test-fixtures";
 
 let fixture: string;
-const storyFile = storySourceFile("milano/sound_cafe_01");
+const storyFile = storySourceFile("dates/milano_date_cafe");
 const dateFile = "content/journeys/milano/romance/date_catalog.json";
 
 beforeEach(async () => {
@@ -260,7 +260,7 @@ describe("content build acceptance", () => {
     );
     expect(Object.keys(generated).sort()).toEqual(
       [...new Set([
-        "learning/sound_english",
+        "learning/milano_english",
         ...dates.map((date) => date.storyId),
         ...battleCatalogSchema.parse(await mirror("battles/catalog.json")).battles.map((battle) => battle.storyId),
         ...reasoningIntroCatalogSchema.parse(await mirror("presentation/reasoning-intros.json")).entries.map((entry) => entry.storyId),
@@ -284,7 +284,7 @@ describe("content build acceptance", () => {
       "窓辺に、二人分のコーヒー。",
     );
     const result = await buildContent(fixture, false);
-    const story = new Story(result.stories["milano/sound_cafe_01"]);
+    const story = new Story(result.stories["dates/milano_date_cafe"]);
     expect(story.Continue()).toContain("窓辺に、二人分のコーヒー。");
   });
 
@@ -381,7 +381,7 @@ describe("content build acceptance", () => {
 
   it("requires the name variables expected by the runtime", async () => {
     await replace(
-      storySourceFile("milano/sound_invitation_01"),
+      storySourceFile("dates/milano_date_invitation"),
       'VAR player_name = ""',
       "// player name accidentally removed",
     );
@@ -440,7 +440,7 @@ describe("content build acceptance", () => {
 
   it("rejects invalid confession readiness branches", async () => {
     await replace(
-      storySourceFile("milano/sound_confession_01"),
+      storySourceFile("dates/milano_date_confession"),
       'confession_result == "accepted":',
       "true:",
     );
@@ -451,7 +451,7 @@ describe("content build acceptance", () => {
 
   it("rejects missing outcome events in confession", async () => {
     await replace(
-      storySourceFile("milano/sound_confession_01"),
+      storySourceFile("dates/milano_date_confession"),
       "# effect: milano_confession_accepted",
       "# effect: sound_invitation_01_1_1",
     );
@@ -477,8 +477,8 @@ describe("content build acceptance", () => {
   it("rejects duplicate city first-clear reward source IDs", async () => {
     await replace(
       "content/journeys/golden_triangle/cities/agra.json",
-      '"agra_legacy_episode_placeholder"',
-      '"delhi_legacy_episode_placeholder"',
+      '"gt_agra_first_clear"',
+      '"gt_delhi_first_clear"',
     );
     await expect(buildContent(fixture, false)).rejects.toThrow(
       "Duplicate reward source",
@@ -487,7 +487,7 @@ describe("content build acceptance", () => {
 
   it("still validates the example quiz, which is never played", async () => {
     await replace(
-      quizSourceFile("milano_last_supper_b1_example"),
+      quizSourceFile("milano_last_supper_example_quiz"),
       '"correctOptionId": "A"',
       '"correctOptionId": "D"',
     );

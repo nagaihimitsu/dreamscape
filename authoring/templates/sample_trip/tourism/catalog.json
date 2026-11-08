@@ -53,7 +53,7 @@
       "descriptionJa": "針が三時で止まったままの、見本用の架空の時計塔。",
       "imageAssetId": "smp_img_mihon_clock_tower",
       "guideStoryId": "tourism/smp_mihon_clock_tower_guide",
-      "battleId": "smp_mihon_clock_tower_battle",
+      "battleId": "smp_mihon_main_clock_tower_battle",
       "clueIds": [
         "smp_obs_mihon_clock_tower_hands"
       ]
@@ -66,7 +66,7 @@
       "descriptionJa": "パン屋のサラが、街の人は時間を守らないと怒っている。",
       "imageAssetId": "smp_img_mihon_market",
       "guideStoryId": "tourism/smp_mihon_market_guide",
-      "battleId": "smp_mihon_market_b",
+      "battleId": "smp_mihon_special_b_market",
       "clueIds": [
         "smp_obs_mihon_market_rain",
         "smp_obs_mihon_market_timer",
@@ -81,7 +81,7 @@
       "descriptionJa": "司書のイオが、記録にない言い伝えは信じないと言う。",
       "imageAssetId": "smp_img_mihon_library",
       "guideStoryId": "tourism/smp_mihon_library_guide",
-      "battleId": "smp_mihon_library_c",
+      "battleId": "smp_mihon_special_c_library",
       "clueIds": [
         "smp_obs_mihon_library_diary",
         "smp_obs_mihon_library_letters",

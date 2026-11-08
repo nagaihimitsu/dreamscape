@@ -184,7 +184,8 @@ export type ContentFileType =
   | { type: "catalog"; kind: MergedKind }
   | { type: "manifest" }
   | { type: "city"; id: string }
-  | { type: "travel"; cityId: string; settings: boolean }
+  /** `travel/<city>.json` (routes), `-settings.json` (settings) or `-transit.json` (the per-city transit ledger). */
+  | { type: "travel"; cityId: string; part: "routes" | "settings" | "transit" }
   | { type: "story"; id: string }
   | { type: "quiz"; example: boolean }
   | { type: "public" }
@@ -208,15 +209,15 @@ export function classifyContentFile(relative: string, layer: LayerType): Content
   if (rule) return { type: "catalog", kind: rule.kind as MergedKind };
   const city = /^cities\/([^/]+)\.json$/u.exec(relative);
   if (city) return { type: "city", id: city[1] };
-  const travel = /^travel\/([^/]+?)(-settings)?\.json$/u.exec(relative);
-  if (travel) return { type: "travel", cityId: travel[1], settings: Boolean(travel[2]) };
+  const travel = /^travel\/([^/]+?)(?:-(settings|transit))?\.json$/u.exec(relative);
+  if (travel) return { type: "travel", cityId: travel[1], part: travel[2] === "settings" ? "settings" : travel[2] === "transit" ? "transit" : "routes" };
   const story = storyIdFromPath(relative);
   if (story !== undefined) return { type: "story", id: story };
   if (/^quizzes\/.+\.json$/u.test(relative)) return { type: "quiz", example: relative.endsWith(".example.json") };
   return { type: "unknown" };
 }
 
-/** `stories/milano/sound_cafe_01.ink` (relative to its layer) → `milano/sound_cafe_01`. */
+/** `stories/dates/milano_date_cafe.ink` (relative to its layer) → `dates/milano_date_cafe`. */
 export function storyIdFromPath(relative: string): string | undefined {
   return /^stories\/(.+)\.ink$/u.exec(relative)?.[1];
 }

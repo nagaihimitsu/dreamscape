@@ -58,16 +58,13 @@ function activeStoryId(active: ActiveEncounter, id: string): string {
   return id;
 }
 
-export function getEncounterAvailability(state: GameState, id: string): Availability {
-  const event = findEncounter(id);
-  if (!event) return unavailable("寄り道が見つかりません。");
-  const revisitableQuiz = event.availability === "tourism" && !!entryRule(event)?.quizAfterLandmarkBattle && hasLandmarkBattle(state, event);
-  if (event.availability === "dormant" || (event.availability === "tourism" && !revisitableQuiz))
-    return unavailable("この寄り道は自由時間からは選べません。");
-  return getEncounterEntryAvailability(state, event);
-}
-
-/** Shared rules apply regardless of whether an encounter starts at an observation screen. */
+/**
+ * The entry rules of an encounter apart from the moment it is looked up at
+ * (its entry rule's milestone, the city, no other scene, not completed unless
+ * repeatable, and the items its actionable choices need). Encounters start
+ * only during an observation (getTourismEncounterAvailability); there is no
+ * way to start one from free time.
+ */
 function getEncounterEntryAvailability(state: GameState, event: EncounterDefinition): Availability {
   if (event.cityId !== state.currentCityId) return unavailable("この街では出かけられません。");
   const rule = entryRule(event);
@@ -87,7 +84,7 @@ function getEncounterEntryAvailability(state: GameState, event: EncounterDefinit
 
 /** Used before entering a special encounter's battle, while still in free time. */
 export function hasPendingPlaceEncounter(state: GameState, landmarkId: string): boolean {
-  return encounters.encounters.some((event) => event.landmarkId === landmarkId && event.availability !== "dormant" && getEncounterEntryAvailability(state, event).available);
+  return encounters.encounters.some((event) => event.landmarkId === landmarkId && getEncounterEntryAvailability(state, event).available);
 }
 
 /** Keep the optional cultural quiz after the main battle, so it cannot reveal its answer first. */
@@ -120,7 +117,7 @@ export function getEncounterOptionAvailability(state: GameState, index: number):
   const option = event && choice ? encounterChoiceOption(event, choice) : undefined;
   if (!active || active.phase !== "story" || active.selectedOptionId !== null || !option || !active.frame.choices.some((choice) => choice.index === index)) return unavailable("この選択肢は使えません。");
   if (!event || event.cityId !== state.currentCityId || !optionItemsBelongToEncounter(event, option)) return unavailable("この街では使えない品物です。");
-  const cost = option.cost ?? option.costEuro ?? 0;
+  const cost = option.cost ?? 0;
   if (state.travelBudget < cost) return unavailable("旅行予算が足りません。");
   if (state.travelBudget - cost < state.travel.returnReserve) return unavailable("帰りの交通費を確保しているため、今は使えません。");
   if (option.requiresItemId && state.inventory[option.requiresItemId] !== "held") return unavailable("必要な品物を持っていません。");
@@ -158,25 +155,20 @@ function beginEncounter(state: GameState, event: EncounterDefinition, nextRoll: 
   } };
 }
 
-export function startEncounter(state: GameState, id: string, nextRoll: () => number = secureRomanceRoll): GameState {
-  if (!getEncounterAvailability(state, id).available) return state;
-  return beginEncounter(state, findEncounter(id)!, nextRoll);
-}
-
 /** A place encounter uses the same unlock and item rules as its existing definition. */
 export function getTourismEncounterAvailability(state: GameState, id: string): Availability {
   const event = findEncounter(id);
   const active = state.activeTourism;
-  if (!event || event.availability === "dormant" || event.cityId !== state.currentCityId ||
+  if (!event || event.cityId !== state.currentCityId ||
       !active || active.phase !== "exploring" || active.landmarkId !== event.landmarkId ||
       !state.visitedLandmarkIds.includes(active.landmarkId) ||
       state.activeBattle || state.activeDate || state.activeEncounter || state.activeEpilogue ||
       active.encounterIds?.includes(id) ||
       (!event.repeatable && state.completedEncounterIds.includes(id)))
     return unavailable("今は話しかけられません。");
-  // An encounter with a deferred quiz is available during the first
-  // observation, before its separate post-battle quiz becomes available.
-  if (event.availability === "tourism" && entryRule(event)?.quizAfterLandmarkBattle) return available;
+  // An encounter whose quiz waits for the landmark's battle is met during the
+  // first observation, before its milestone; its story then ends without the quiz.
+  if (entryRule(event)?.quizAfterLandmarkBattle) return available;
   return getEncounterEntryAvailability({ ...state, activeTourism: null }, event);
 }
 
@@ -219,11 +211,18 @@ export function chooseEncounter(state: GameState, index: number, expectedRevisio
   const choice = active.frame.choices.find((item) => item.index === index)!;
   const option = encounterChoiceOption(event, choice)!;
   if (option.textEn !== undefined && choice.text !== option.textEn) throw new Error("交流の選択肢が一致しません。");
-  const cost = option.cost ?? option.costEuro ?? 0;
+  const cost = option.cost ?? 0;
   if (state.travelBudget - cost < state.travel.returnReserve) return state;
-  let next = { ...state, travelBudget: state.travelBudget - cost, inventory: { ...state.inventory } };
-  if (option.consumeItemId) next.inventory[option.consumeItemId] = "used";
-  if (option.giftItemId) next.inventory[option.giftItemId] = "gifted";
+  let next = { ...state, travelBudget: state.travelBudget - cost, inventory: { ...state.inventory }, itemUses: { ...state.itemUses } };
+  // The item's status and the option that changed it are written together.
+  if (option.consumeItemId) {
+    next.inventory[option.consumeItemId] = "used";
+    next.itemUses[option.consumeItemId] = { encounterId: event.id, optionId: option.id };
+  }
+  if (option.giftItemId) {
+    next.inventory[option.giftItemId] = "gifted";
+    next.itemUses[option.giftItemId] = { encounterId: event.id, optionId: option.id };
+  }
   let result = "positive";
   let romanceResolution: ActiveEncounter["romanceResolution"] = null;
   if (option.responseProfileId) {
@@ -311,10 +310,12 @@ export function finishEncounter(state: GameState, expectedRevision: number): Gam
   if (event.quiz && active.phase !== "outcome" && !encounterStoryCanFinish(state)) return state;
   const option = event.options.find((item) => item.id === active.selectedOptionId)!;
   const first = !state.completedEncounterIds.includes(event.id) && !option.deferCompletion;
-  let next: GameState = { ...state, revision: state.revision + 1, activeEncounter: null };
+  // Seen with any choice, 「また今度」 included; completion stays a separate record.
+  const seenEncounterIds = state.seenEncounterIds.includes(event.id) ? state.seenEncounterIds : [...state.seenEncounterIds, event.id];
+  let next: GameState = { ...state, revision: state.revision + 1, activeEncounter: null, seenEncounterIds };
   if (first) {
     if (event.completionItemId && next.inventory[event.completionItemId]) throw new Error("品物の記録が一致しません。");
-    const total = next.travelBudget + (event.completionMoney ?? event.completionMoneyEuro ?? 0);
+    const total = next.travelBudget + (event.completionMoney ?? 0);
     if (!Number.isSafeInteger(total)) throw new Error("旅行予算の上限を超えました。");
     next = { ...next, travelBudget: total, completedEncounterIds: [...next.completedEncounterIds, event.id],
       inventory: event.completionItemId ? { ...next.inventory, [event.completionItemId]: "held" } : next.inventory };
@@ -330,9 +331,35 @@ export function finishEncounter(state: GameState, expectedRevision: number): Gam
   return active.romanceResolution ? evaluateProgression(next) : next;
 }
 
+/**
+ * itemUses names, for exactly the gifted and used items, the option that gave
+ * the item away (giftItemId) or used it (consumeItemId), in an encounter that
+ * was completed or is running with that option chosen.
+ */
+function validateItemUses(state: GameState): void {
+  const spent = Object.entries(state.inventory).filter(([, status]) => status === "gifted" || status === "used");
+  const consistent = Object.keys(state.itemUses).length === spent.length && spent.every(([id, status]) => {
+    const use = state.itemUses[id];
+    const event = use && findEncounter(use.encounterId);
+    const option = event?.options.find((item) => item.id === use.optionId);
+    return !!event && !!option && (status === "gifted" ? option.giftItemId : option.consumeItemId) === id &&
+      optionItemsBelongToEncounter(event, option) &&
+      (state.completedEncounterIds.includes(event.id) ||
+        (state.activeEncounter?.encounterId === event.id && state.activeEncounter.selectedOptionId === option.id));
+  });
+  if (!consistent) throw new Error("品物を渡した・使った記録が一致しません。");
+}
+
 /** Reject changed scripts, invalid snapshots, impossible item/reward combinations and stale quiz state. */
 export function validateEncounterState(state: GameState): void {
   const fail = (): never => { throw new Error("道中交流の保存状態が一致しません。"); };
+  // Seen encounters belong to this city or to a city the journey has completed; every completed one was seen.
+  if (state.seenEncounterIds.some((id) => {
+    const event = findEncounter(id);
+    return !event || (event.cityId !== state.currentCityId && !state.completedCityIds.includes(event.cityId));
+  }) || state.completedEncounterIds.some((id) => !state.seenEncounterIds.includes(id)))
+    throw new Error("道中交流を見た記録が一致しません。");
+  validateItemUses(state);
   for (const id of state.completedEncounterIds) {
     const event = findEncounter(id);
     if (!event || !itemBelongsToEncounter(event, event.completionItemId) || (event.completionItemId && !state.inventory[event.completionItemId])) fail();
@@ -345,13 +372,6 @@ export function validateEncounterState(state: GameState): void {
     const completionEvent = encounters.encounters.find((item) => item.completionItemId === id);
     if (prizeEvent && (!itemBelongsToEncounter(prizeEvent, id) || !state.encounterRewards[prizeEvent.id]?.won)) fail();
     if (completionEvent && (!itemBelongsToEncounter(completionEvent, id) || !state.completedEncounterIds.includes(completionEvent.id))) fail();
-    if (status === "gifted" || status === "used") {
-      const matching = encounters.encounters.some((item) => item.options.some((option) =>
-        (status === "gifted" ? option.giftItemId === id : option.consumeItemId === id) && optionItemsBelongToEncounter(item, option) &&
-        (state.completedEncounterIds.includes(item.id) ||
-          (state.activeEncounter?.encounterId === item.id && state.activeEncounter.selectedOptionId === option.id))));
-      if (!matching) fail();
-    }
   }
   for (const [id, record] of Object.entries(state.encounterRewards)) {
     const event = encounters.encounters.find((item) => item.id === id && !!item.quiz);
@@ -360,13 +380,17 @@ export function validateEncounterState(state: GameState): void {
   }
   const active = state.activeEncounter;
   if (!active) return;
+  // Until stage 3 of the condition system writes the after-battle and trip moments, an encounter runs only from
+  // a landmark's observation (decision 7). The schema allows one moment at most, so requiring the observation's
+  // return point also refuses the other two moments, and the removed free-time start's shape (no moment at all).
+  if (!active.returnTourism) throw new Error("道中交流の時点の記録が一致しません。");
   const event = getActiveEncounterDefinition(active);
   if (event.cityId !== state.currentCityId) fail();
   if (state.activeDate || state.activeTourism || state.activeEpilogue || state.activeBattle) fail();
-  if (active.returnTourism && (event.availability === "dormant" || active.returnTourism.landmarkId !== event.landmarkId ||
+  if (active.returnTourism.landmarkId !== event.landmarkId ||
       !validObservationEncounterIds(active.returnTourism.landmarkId, active.returnTourism.encounterIds) ||
       (active.returnTourism.encounterIds && !active.returnTourism.encounterIds.includes(event.id)) ||
-      !state.visitedLandmarkIds.includes(active.returnTourism.landmarkId))) fail();
+      !state.visitedLandmarkIds.includes(active.returnTourism.landmarkId)) fail();
   if (active.storyHash !== storyFingerprint(activeStoryId(active, active.storyId))) fail();
   const validStories = [event!.storyId, ...(event!.quiz ? [event!.quiz.wonStoryId, event!.quiz.lostStoryId, event!.quiz.alreadyStoryId] : [])];
   if (!validStories.includes(active.storyId)) fail();
@@ -375,6 +399,9 @@ export function validateEncounterState(state: GameState): void {
   if (option && !optionItemsBelongToEncounter(event!, option)) fail();
   if (option?.giftItemId && state.inventory[option.giftItemId] !== "gifted") fail();
   if (option?.consumeItemId && state.inventory[option.consumeItemId] !== "used") fail();
+  for (const itemId of [option?.giftItemId, option?.consumeItemId])
+    if (itemId && (state.itemUses[itemId]?.encounterId !== event.id || state.itemUses[itemId]?.optionId !== option!.id))
+      throw new Error("品物を渡した・使った記録が一致しません。");
   const resolution = active.romanceResolution;
   if (!!option?.responseProfileId !== !!resolution) fail();
   if (resolution) {

@@ -35,10 +35,24 @@
   },
   "farePartySize": 2,
   "intercityModes": [],
+  "transportModes": [
+    {
+      "id": "tuk_tuk",
+      "nameJa": "トゥクトゥク",
+      "movingJa": "トゥクトゥクで移動中",
+      "kind": "three_wheeler"
+    },
+    {
+      "id": "bicycle",
+      "nameJa": "自転車",
+      "movingJa": "自転車で移動中",
+      "kind": "bicycle",
+      "rental": true
+    }
+  ],
   "authoring": {
     "eventPrefix": "lpb",
     "observationFile": "authoring/journeys/luang_prabang/drafts/observation-cards.json",
-    "imageDirectory": "assets/tourism/luang_prabang",
-    "transitDirectory": "authoring/journeys/luang_prabang/research/luang-prabang-20261104"
+    "imageDirectory": "assets/tourism/luang_prabang"
   }
 }

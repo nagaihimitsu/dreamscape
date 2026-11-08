@@ -20,6 +20,7 @@ export function FreeTimeHub({
   onSelectLandmark,
   placeFocusRequest,
   onTravelEvent,
+  onRent,
   nextCityName,
   onDepart,
 }: {
@@ -34,6 +35,7 @@ export function FreeTimeHub({
   onSelectLandmark: (id: string | null) => void;
   placeFocusRequest: number;
   onTravelEvent: (id: string, mode: TravelRoute["mode"]) => void;
+  onRent: (modeId: string) => boolean;
   nextCityName?: string;
   onDepart: () => void;
 }) {
@@ -48,7 +50,7 @@ export function FreeTimeHub({
       <h1 className="sr-only">{city.nameJa}の行き先</h1>
       <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} showNext={false} showSummary={false} />
 
-      <TravelMenu key={game.currentCityId} game={game} onTravelEvent={onTravelEvent} />
+      <TravelMenu key={game.currentCityId} game={game} onTravelEvent={onTravelEvent} onRent={onRent} />
 
       {localLandmarks.map((landmark) => <section key={landmark.id} aria-label={`${landmark.nameJa}で過ごす`}>
         <button className="secondary" onClick={() => onTourism(landmark.id)}>{landmark.nameJa}を観察する</button>

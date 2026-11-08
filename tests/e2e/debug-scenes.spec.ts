@@ -93,7 +93,7 @@ function itemEncounter(page: Page, byAnswer = false): Promise<ItemEncounter | un
 }
 
 // AGENTS.md 「英語は…道中交流で主人公の返答・行動を選ぶ3択に用いる」「道中の品物は所属都市を登録し…」.
-test("an encounter answered in English gives its item, and the scene ends back at the place", { tag: tier.debug }, async ({ page }) => {
+test("an encounter answered in English gives its item, and the scene ends back in its landmark's observation", { tag: tier.debug }, async ({ page }) => {
   const encounter = await itemEncounter(page);
   expect(encounter, "an encounter with an item that Debug can open").toBeDefined();
   // A won reward needs the saved ticket below its chance: the positive ticket (0) always wins.
@@ -104,9 +104,11 @@ test("an encounter answered in English gives its item, and the scene ends back a
   expect(done.inventory[encounter!.itemId]).toBe("held");
   // The header lists it among the items held in this city.
   await expect(page.getByRole("group", { name: "所持アイテム" }).getByRole("button", { name: `${encounter!.itemName}の詳細` })).toBeVisible();
-  // Encounters waiting at the same place may follow; the scene ends back at the place or the travel menu.
-  await playUntil(page, (state) => !state.activeEncounter, { source: debugGame, pick });
-  await expect(page.getByTestId("observation-viewport").or(page.getByTestId("travel-menu"))).toBeVisible();
+  // Debug meets the encounter in its landmark's observation, as play does (encounters start nowhere else);
+  // encounters waiting in the same observation may follow, and the scene ends back in that observation.
+  const after = await playUntil(page, (state) => !state.activeEncounter, { source: debugGame, pick });
+  expect(after.activeTourism, "the observation the encounter started from").not.toBeNull();
+  await expect(page.getByTestId("observation-viewport")).toBeVisible();
   await ops.backToDebugSettings(page);
 });
 
@@ -224,7 +226,7 @@ for (const kind of ["encounter", "epilogue", "battle", "rebuttal"] as const) {
     expect((await debugGame(page))!.revision).toBe(before.revision);
     expect(await line.textContent()).toBe(text);
     // A tap on the picture (the battle's stage) goes one line on, like a tap on the line.
-    await ops.tap(page, await ops.sceneBackgroundPoint(page));
+    await ops.tapAt(page, await ops.sceneBackgroundPoint(page));
     await expect(line).not.toHaveText(text!);
     expect((await debugGame(page))!.revision).toBe(kind === "rebuttal" ? before.revision : before.revision + 1);
   });
@@ -242,7 +244,7 @@ test("rebuttal: the tap that ends it does not also skip the cut-in under the fin
   const last = page.getByTestId("reasoning-rebuttal-advance");
   for (let step = 0; step < 50 && !(await last.isVisible()); step++) {
     const text = await line.textContent();
-    await ops.tap(page, await ops.sceneBackgroundPoint(page));
+    await ops.tapAt(page, await ops.sceneBackgroundPoint(page));
     await expect(line).not.toHaveText(text!);
   }
   await expect(last).toBeVisible();
@@ -305,11 +307,11 @@ test("encounter: the tap on the picture or the line that closes the held-item de
     await expect(detail).toBeVisible();
   };
   await openDetail();
-  await ops.tap(page, picture);
+  await ops.tapAt(page, picture);
   await expect(detail).toBeHidden();
   await expect(line).toHaveText(text!);
   await openDetail();
-  await ops.tap(page, await ops.centerOf(line));
+  await ops.tapAt(page, await ops.centerOf(line));
   await expect(detail).toBeHidden();
   await expect(line).toHaveText(text!);
   expect((await debugGame(page))!.revision).toBe(held.revision);
@@ -338,7 +340,7 @@ test("encounter: the tap on the picture or the line that closes the held-item de
   await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
   await page.clock.resume();
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await ops.tap(page, picture);
+  await ops.tapAt(page, picture);
   await expect.poll(revision).toBeGreaterThan(held.revision + 1);
 });
 
@@ -353,7 +355,7 @@ test("tourism: a tap on the landmark's heading, and on a wide screen on the page
   const line = page.getByTestId("dialogue-text");
   const before = (await debugGame(page))!;
   const heading = page.getByTestId("tourism-screen").getByRole("heading", { level: 1 });
-  await ops.tap(page, await ops.centerOf(heading));
+  await ops.tapAt(page, await ops.centerOf(heading));
   await expect.poll(async () => (await debugGame(page))!.revision).toBe(before.revision + 1);
   await page.setViewportSize({ width: 1280, height: 800 });
   const text = await line.textContent();

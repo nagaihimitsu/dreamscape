@@ -1451,6 +1451,72 @@ dialog.modal::backdrop {
   margin-top: 22px;
   color: #93443c;
 }
+/* 「古い保存データの整理」 sits above 「保存データの消去」: both manage this browser's data. */
+.old-data-entry {
+  display: block;
+  min-height: 44px;
+  margin-top: 22px;
+}
+.old-data-entry + .delete-entry {
+  margin-top: 4px;
+}
+.old-data-list {
+  list-style: none;
+  margin: 12px 0;
+  padding: 0;
+}
+.old-data-list > li {
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background: #f1ede1;
+  border-radius: 4px;
+}
+.old-data-list .translation-setting {
+  align-items: center;
+  padding: 4px 0;
+}
+.old-data-size {
+  white-space: nowrap;
+}
+/* The heading or the result line takes the focus when the dialog changes step (read first); neither is a control. */
+dialog.old-data h2:focus,
+dialog.old-data .old-data-notice:focus {
+  outline: none;
+}
+/* A journey that is not in this version is named by its ID: wrap a long one instead of widening the dialog. */
+.old-data-list strong {
+  overflow-wrap: anywhere;
+}
+.old-data-impact {
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 4px 0 6px;
+}
+.old-data-keys {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #5c6459;
+}
+.old-data-keys li + li {
+  margin-top: 4px;
+}
+/* Key names are long and unbroken: wrap them anywhere instead of widening the dialog. */
+.old-data-keys code {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 11px;
+  color: #303d36;
+}
+.old-data-notice {
+  margin: 10px 0;
+  font-weight: 600;
+}
+.old-data-hint {
+  margin-top: 4px;
+}
 .danger-button {
   width: 100%;
   margin-top: 12px;

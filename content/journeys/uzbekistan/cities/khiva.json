@@ -5,7 +5,7 @@
   "nameJa": "ヒヴァ",
   "themeJa": "城壁の内側に息づく街",
   "firstClearReward": {
-    "rewardSourceId": "khiva_legacy_episode_placeholder",
+    "rewardSourceId": "uz_khiva_first_clear",
     "ap": 0
   },
   "landmarkIdsPlanned": [

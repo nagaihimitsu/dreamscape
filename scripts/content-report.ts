@@ -12,13 +12,14 @@ import { isObservationOnlyClue } from "../src/content/tourism-schemas";
 // the game, and what each journey folder provides. content:build prints the
 // warnings as counts (details with --verbose) and one line per journey.
 
-export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-prefix" | "tourism-photo";
+export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-prefix" | "unused-transport-mode" | "tourism-photo";
 export type ContentWarning = { kind: ContentWarningKind; message: string };
 /** How content:build counts each kind of warning. */
 export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "unknown-file": "unknown file(s) in journey folders",
   "unused-public-file": "unused public file(s)",
   "id-prefix": "ID(s) without the journey prefix",
+  "unused-transport-mode": "declared transport mode(s) without routes",
   "tourism-photo": "tourism photo(s) to convert to WebP (npm run images:optimize)",
 };
 
@@ -28,21 +29,32 @@ export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
  * Add nothing here for new content: give it the prefix instead.
  */
 export const UNPREFIXED_ID_EXCEPTIONS: Readonly<Record<string, readonly string[]>> = {
-  golden_triangle: ["delhi_legacy_episode_placeholder", "agra_legacy_episode_placeholder", "jaipur_legacy_episode_placeholder"],
-  uzbekistan: [
-    "tashkent_legacy_episode_placeholder", "samarkand_legacy_episode_placeholder",
-    "bukhara_legacy_episode_placeholder", "khiva_legacy_episode_placeholder",
-  ],
-  luang_prabang: ["luang_prabang_legacy_episode_placeholder", "luang_prabang_hotel_bg"],
+  luang_prabang: ["luang_prabang_hotel_bg"],
 };
 
 type Entry = Record<string, unknown>;
 const isObject = (value: unknown): value is Entry => typeof value === "object" && value !== null && !Array.isArray(value);
 const list = (value: unknown): Entry[] => (Array.isArray(value) ? value.filter(isObject) : []);
 
-/** Warnings of the loaded content: unknown files, unused public files, IDs without the journey prefix. */
+/** Warnings of the loaded content: unknown files, unused public files, IDs without the journey prefix, transport modes without routes. */
 export function contentWarnings(sources: ContentSources): ContentWarning[] {
-  return [...unknownJourneyFiles(sources), ...unusedPublicFiles(sources), ...unprefixedIds(sources)];
+  return [...unknownJourneyFiles(sources), ...unusedPublicFiles(sources), ...unprefixedIds(sources), ...unusedTransportModes(sources)];
+}
+
+/**
+ * Transport modes a manifest declares (`transportModes`) that no route of
+ * the journey's cities uses: a leftover or a typo, or routes still to come.
+ * The game only shows a mode on its routes, so nothing breaks.
+ */
+export function unusedTransportModes(sources: ContentSources): ContentWarning[] {
+  return sources.manifests.flatMap((manifest): ContentWarning[] => {
+    const cityIds = new Set(list(manifest.data.cities).map((city) => city.id));
+    const routed = new Set(sources.cities.filter((city) => cityIds.has(city.id))
+      .flatMap((city) => list(isObject(city.travel) ? city.travel.routes : undefined).map((route) => route.mode)));
+    return list(manifest.data.transportModes).map((mode) => mode.id).filter((id): id is string => typeof id === "string" && !routed.has(id))
+      .map((id) => ({ kind: "unused-transport-mode", message: `Transport mode without routes: ${displayPath(sources.root, manifest.file)} ` +
+        `declares "${id}" in transportModes, but no route of ${manifest.id}'s cities uses it (add its routes or remove the declaration)` }));
+  });
 }
 
 /**

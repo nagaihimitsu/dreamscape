@@ -22,7 +22,7 @@ type Encounter = (typeof encounters.encounters)[number];
 /**
  * Debug's states hold no items: items come only from encounters, and Debug
  * never plays one before the scene. An encounter whose every choice needs an
- * item therefore never starts there (getEncounterAvailability: 必要な品物を持っていません).
+ * item therefore never starts there (its observation refuses it: 必要な品物を持っていません).
  */
 function encounterTarget(item: Encounter): DebugTarget {
   const choices = item.options.filter((option) => !option.deferCompletion);
@@ -43,7 +43,7 @@ export function debugTargets(cityId: string): Record<DebugScene, DebugTarget[]> 
   return {
     tourism: landmarks.filter((item) => item.cityId === cityId).map((item) => ({ id: item.id, name: item.nameJa })),
     battle: battles.filter((item) => battleCityId(item.id) === cityId).map((item) => ({ id: item.id, name: item.titleJa })),
-    encounter: encounters.encounters.filter((item) => item.cityId === cityId && item.availability !== "dormant").map(encounterTarget),
+    encounter: encounters.encounters.filter((item) => item.cityId === cityId).map(encounterTarget),
     date: dates.filter((item) => item.kind === "normal" && travel.events.some((event) => event.id === item.id)).map((item) => ({ id: item.id, name: item.titleJa })),
     epilogue: episodes.filter((item) => item.cityId === cityId && item.kind === "city_finale" && item.epilogueStoryId)
       .map((item) => ({ id: item.id, name: `${city.nameJa}のエピローグ` })),

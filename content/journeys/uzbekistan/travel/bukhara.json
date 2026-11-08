@@ -8,7 +8,7 @@
       "nameEn": "Ark Citadel",
       "latitude": 39.77777778,
       "longitude": 64.41027778,
-      "backgroundAssetId": "uz_bg_bukhara_ark",
+      "backgroundId": "uz_bg_bukhara_ark",
       "openingWindows": [
         {
           "start": 540,
@@ -57,7 +57,7 @@
       "nameEn": "Poi Kalyan",
       "latitude": 39.77583333,
       "longitude": 64.41416667,
-      "backgroundAssetId": "uz_bg_bukhara_poi_kalyan",
+      "backgroundId": "uz_bg_bukhara_poi_kalyan",
       "openingWindows": [
         {
           "start": 540,
@@ -106,7 +106,7 @@
       "nameEn": "Samanid Mausoleum",
       "latitude": 39.77694444,
       "longitude": 64.40055556,
-      "backgroundAssetId": "uz_bg_bukhara_samanid_mausoleum",
+      "backgroundId": "uz_bg_bukhara_samanid_mausoleum",
       "openingWindows": [
         {
           "start": 540,
@@ -155,7 +155,7 @@
       "nameEn": "Lyabi Hauz",
       "latitude": 39.77305556,
       "longitude": 64.42027778,
-      "backgroundAssetId": "uz_bg_bukhara_lyabi_hauz",
+      "backgroundId": "uz_bg_bukhara_lyabi_hauz",
       "openingWindows": [
         {
           "start": 540,
@@ -196,7 +196,7 @@
       "nameEn": "Chor Minor exterior",
       "latitude": 39.77482706,
       "longitude": 64.42736864,
-      "backgroundAssetId": "uz_bg_bukhara_chor_minor",
+      "backgroundId": "uz_bg_bukhara_chor_minor",
       "openingWindows": [
         {
           "start": 540,
@@ -240,7 +240,7 @@
       "nameEn": "Bolo Hauz exterior",
       "latitude": 39.77777778,
       "longitude": 64.4075,
-      "backgroundAssetId": "uz_bg_bukhara_bolo_hauz",
+      "backgroundId": "uz_bg_bukhara_bolo_hauz",
       "openingWindows": [
         {
           "start": 540,
@@ -284,7 +284,7 @@
       "nameEn": "Toki Zargaron",
       "latitude": 39.776391,
       "longitude": 64.416639,
-      "backgroundAssetId": "uz_bg_bukhara_toki_zargaron",
+      "backgroundId": "uz_bg_bukhara_toki_zargaron",
       "openingWindows": [
         {
           "start": 540,
@@ -328,7 +328,7 @@
       "nameEn": "Abdulaziz Khan Madrasa",
       "latitude": 39.77583333,
       "longitude": 64.41777778,
-      "backgroundAssetId": "uz_bg_bukhara_abdulaziz_khan",
+      "backgroundId": "uz_bg_bukhara_abdulaziz_khan",
       "openingWindows": [
         {
           "start": 540,
@@ -380,7 +380,7 @@
       "nameEn": "Ulugh Beg Madrasa",
       "latitude": 39.77667906,
       "longitude": 64.41753077,
-      "backgroundAssetId": "uz_bg_bukhara_ulugh_beg",
+      "backgroundId": "uz_bg_bukhara_ulugh_beg",
       "openingWindows": [
         {
           "start": 540,
@@ -432,7 +432,7 @@
       "nameEn": "Magoki Attori",
       "latitude": 39.7732,
       "longitude": 64.4183,
-      "backgroundAssetId": "uz_bg_bukhara_magoki_attori",
+      "backgroundId": "uz_bg_bukhara_magoki_attori",
       "openingWindows": [
         {
           "start": 540,
@@ -484,7 +484,7 @@
       "nameEn": "Bukhara lodging hub",
       "latitude": 39.7727,
       "longitude": 64.4214,
-      "backgroundAssetId": "uz_bg_bukhara_hotel_hub",
+      "backgroundId": "uz_bg_bukhara_hotel_hub",
       "openingWindows": [
         {
           "start": 0,
@@ -613,7 +613,7 @@
       "toPlaceId": "bukhara_lyabi_hauz",
       "mode": "taxi",
       "minutes": 15,
-      "cost": 22000,
+      "cost": 8000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -623,7 +623,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -632,6 +632,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -666,7 +682,7 @@
       "toPlaceId": "bukhara_chor_minor",
       "mode": "taxi",
       "minutes": 22,
-      "cost": 24000,
+      "cost": 6000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -676,7 +692,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -685,6 +701,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -771,7 +803,7 @@
       "toPlaceId": "bukhara_abdulaziz_khan",
       "mode": "taxi",
       "minutes": 13,
-      "cost": 20000,
+      "cost": 6000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -781,7 +813,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -790,6 +822,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -824,7 +872,7 @@
       "toPlaceId": "bukhara_ulugh_beg",
       "mode": "taxi",
       "minutes": 13,
-      "cost": 20000,
+      "cost": 4000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -834,7 +882,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -843,6 +891,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -877,7 +941,7 @@
       "toPlaceId": "bukhara_magoki_attori",
       "mode": "taxi",
       "minutes": 16,
-      "cost": 22000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -887,7 +951,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -896,6 +960,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -930,7 +1010,7 @@
       "toPlaceId": "bukhara_hotel_hub",
       "mode": "taxi",
       "minutes": 14,
-      "cost": 22000,
+      "cost": 8000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -940,7 +1020,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -949,6 +1029,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -1035,7 +1131,7 @@
       "toPlaceId": "bukhara_samanid_mausoleum",
       "mode": "taxi",
       "minutes": 18,
-      "cost": 20000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -1045,7 +1141,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -1054,6 +1150,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -1088,7 +1200,7 @@
       "toPlaceId": "bukhara_lyabi_hauz",
       "mode": "taxi",
       "minutes": 16,
-      "cost": 21000,
+      "cost": 6000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -1098,7 +1210,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -1107,6 +1219,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -1141,7 +1269,7 @@
       "toPlaceId": "bukhara_chor_minor",
       "mode": "taxi",
       "minutes": 22,
-      "cost": 22000,
+      "cost": 8000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -1151,7 +1279,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -1160,6 +1288,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -1298,7 +1442,7 @@
       "toPlaceId": "bukhara_magoki_attori",
       "mode": "taxi",
       "minutes": 17,
-      "cost": 21000,
+      "cost": 4000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -1308,7 +1452,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -1317,6 +1461,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -1351,7 +1511,7 @@
       "toPlaceId": "bukhara_hotel_hub",
       "mode": "taxi",
       "minutes": 15,
-      "cost": 21000,
+      "cost": 6000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -1361,7 +1521,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -1370,6 +1530,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -1430,7 +1606,7 @@
       "toPlaceId": "bukhara_poi_kalyan",
       "mode": "taxi",
       "minutes": 18,
-      "cost": 20000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -1440,7 +1616,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -1449,6 +1625,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -1509,7 +1701,7 @@
       "toPlaceId": "bukhara_lyabi_hauz",
       "mode": "taxi",
       "minutes": 18,
-      "cost": 22000,
+      "cost": 6000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -1519,7 +1711,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -1528,6 +1720,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -1562,7 +1770,7 @@
       "toPlaceId": "bukhara_chor_minor",
       "mode": "taxi",
       "minutes": 25,
-      "cost": 24000,
+      "cost": 8000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -1572,7 +1780,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -1581,6 +1789,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -1641,7 +1865,7 @@
       "toPlaceId": "bukhara_toki_zargaron",
       "mode": "taxi",
       "minutes": 16,
-      "cost": 20000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -1651,7 +1875,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -1660,6 +1884,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -1694,7 +1934,7 @@
       "toPlaceId": "bukhara_abdulaziz_khan",
       "mode": "taxi",
       "minutes": 16,
-      "cost": 20000,
+      "cost": 8000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -1704,7 +1944,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -1713,6 +1953,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -1747,7 +2003,7 @@
       "toPlaceId": "bukhara_ulugh_beg",
       "mode": "taxi",
       "minutes": 16,
-      "cost": 20000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -1757,7 +2013,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -1766,6 +2022,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -1800,7 +2072,7 @@
       "toPlaceId": "bukhara_magoki_attori",
       "mode": "taxi",
       "minutes": 19,
-      "cost": 22000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -1810,7 +2082,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -1819,6 +2091,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -1853,7 +2141,7 @@
       "toPlaceId": "bukhara_hotel_hub",
       "mode": "taxi",
       "minutes": 17,
-      "cost": 22000,
+      "cost": 8000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -1863,7 +2151,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -1872,6 +2160,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -1906,7 +2210,7 @@
       "toPlaceId": "bukhara_ark",
       "mode": "taxi",
       "minutes": 15,
-      "cost": 22000,
+      "cost": 6000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -1916,7 +2220,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -1925,6 +2229,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -1959,7 +2279,7 @@
       "toPlaceId": "bukhara_poi_kalyan",
       "mode": "taxi",
       "minutes": 16,
-      "cost": 21000,
+      "cost": 6000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -1969,7 +2289,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -1978,6 +2298,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -2012,7 +2348,7 @@
       "toPlaceId": "bukhara_samanid_mausoleum",
       "mode": "taxi",
       "minutes": 18,
-      "cost": 22000,
+      "cost": 7000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -2022,7 +2358,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -2031,6 +2367,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -2117,7 +2469,7 @@
       "toPlaceId": "bukhara_bolo_hauz",
       "mode": "taxi",
       "minutes": 14,
-      "cost": 22000,
+      "cost": 6000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -2127,7 +2479,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -2136,6 +2488,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -2170,7 +2538,7 @@
       "toPlaceId": "bukhara_toki_zargaron",
       "mode": "taxi",
       "minutes": 14,
-      "cost": 21000,
+      "cost": 7000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -2180,7 +2548,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -2189,6 +2557,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -2327,7 +2711,7 @@
       "toPlaceId": "bukhara_ark",
       "mode": "taxi",
       "minutes": 22,
-      "cost": 24000,
+      "cost": 8000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -2337,7 +2721,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -2346,6 +2730,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -2380,7 +2780,7 @@
       "toPlaceId": "bukhara_poi_kalyan",
       "mode": "taxi",
       "minutes": 22,
-      "cost": 22000,
+      "cost": 9000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -2390,7 +2790,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -2399,6 +2799,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -2433,7 +2849,7 @@
       "toPlaceId": "bukhara_samanid_mausoleum",
       "mode": "taxi",
       "minutes": 25,
-      "cost": 24000,
+      "cost": 8000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -2443,7 +2859,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -2452,6 +2868,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -2538,7 +2970,7 @@
       "toPlaceId": "bukhara_bolo_hauz",
       "mode": "taxi",
       "minutes": 21,
-      "cost": 24000,
+      "cost": 8000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -2548,7 +2980,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -2557,6 +2989,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -2591,7 +3039,7 @@
       "toPlaceId": "bukhara_toki_zargaron",
       "mode": "taxi",
       "minutes": 20,
-      "cost": 22000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -2601,7 +3049,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -2610,6 +3058,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -2644,7 +3108,7 @@
       "toPlaceId": "bukhara_abdulaziz_khan",
       "mode": "taxi",
       "minutes": 20,
-      "cost": 22000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -2654,7 +3118,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -2663,6 +3127,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -2697,7 +3177,7 @@
       "toPlaceId": "bukhara_ulugh_beg",
       "mode": "taxi",
       "minutes": 20,
-      "cost": 22000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -2707,7 +3187,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -2716,6 +3196,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -2750,7 +3246,7 @@
       "toPlaceId": "bukhara_magoki_attori",
       "mode": "taxi",
       "minutes": 18,
-      "cost": 19000,
+      "cost": 9000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -2760,7 +3256,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -2769,6 +3265,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -2803,7 +3315,7 @@
       "toPlaceId": "bukhara_hotel_hub",
       "mode": "taxi",
       "minutes": 16,
-      "cost": 19000,
+      "cost": 6000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -2813,7 +3325,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -2822,6 +3334,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -2934,7 +3462,7 @@
       "toPlaceId": "bukhara_lyabi_hauz",
       "mode": "taxi",
       "minutes": 14,
-      "cost": 22000,
+      "cost": 6000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -2944,7 +3472,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -2953,6 +3481,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -2987,7 +3531,7 @@
       "toPlaceId": "bukhara_chor_minor",
       "mode": "taxi",
       "minutes": 21,
-      "cost": 24000,
+      "cost": 7000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -2997,7 +3541,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -3006,6 +3550,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -3066,7 +3626,7 @@
       "toPlaceId": "bukhara_toki_zargaron",
       "mode": "taxi",
       "minutes": 12,
-      "cost": 20000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -3076,7 +3636,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -3085,6 +3645,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -3119,7 +3695,7 @@
       "toPlaceId": "bukhara_abdulaziz_khan",
       "mode": "taxi",
       "minutes": 12,
-      "cost": 20000,
+      "cost": 7000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -3129,7 +3705,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -3138,6 +3714,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -3172,7 +3764,7 @@
       "toPlaceId": "bukhara_ulugh_beg",
       "mode": "taxi",
       "minutes": 12,
-      "cost": 20000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -3182,7 +3774,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -3191,6 +3783,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -3225,7 +3833,7 @@
       "toPlaceId": "bukhara_magoki_attori",
       "mode": "taxi",
       "minutes": 15,
-      "cost": 22000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -3235,7 +3843,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -3244,6 +3852,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -3278,7 +3902,7 @@
       "toPlaceId": "bukhara_hotel_hub",
       "mode": "taxi",
       "minutes": 13,
-      "cost": 22000,
+      "cost": 9000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -3288,7 +3912,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -3297,6 +3921,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -3383,7 +4023,7 @@
       "toPlaceId": "bukhara_samanid_mausoleum",
       "mode": "taxi",
       "minutes": 16,
-      "cost": 20000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -3393,7 +4033,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -3402,6 +4042,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -3436,7 +4092,7 @@
       "toPlaceId": "bukhara_lyabi_hauz",
       "mode": "taxi",
       "minutes": 14,
-      "cost": 21000,
+      "cost": 8000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -3446,7 +4102,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -3455,6 +4111,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -3489,7 +4161,7 @@
       "toPlaceId": "bukhara_chor_minor",
       "mode": "taxi",
       "minutes": 20,
-      "cost": 22000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -3499,7 +4171,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -3508,6 +4180,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -3542,7 +4230,7 @@
       "toPlaceId": "bukhara_bolo_hauz",
       "mode": "taxi",
       "minutes": 12,
-      "cost": 20000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -3552,7 +4240,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -3561,6 +4249,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -3699,7 +4403,7 @@
       "toPlaceId": "bukhara_hotel_hub",
       "mode": "taxi",
       "minutes": 13,
-      "cost": 21000,
+      "cost": 7000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -3709,7 +4413,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -3718,6 +4422,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -3752,7 +4472,7 @@
       "toPlaceId": "bukhara_ark",
       "mode": "taxi",
       "minutes": 13,
-      "cost": 20000,
+      "cost": 6000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -3762,7 +4482,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -3771,6 +4491,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -3831,7 +4567,7 @@
       "toPlaceId": "bukhara_samanid_mausoleum",
       "mode": "taxi",
       "minutes": 16,
-      "cost": 20000,
+      "cost": 9000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -3841,7 +4577,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -3850,6 +4586,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -3910,7 +4662,7 @@
       "toPlaceId": "bukhara_chor_minor",
       "mode": "taxi",
       "minutes": 20,
-      "cost": 22000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -3920,7 +4672,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -3929,6 +4681,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -3963,7 +4731,7 @@
       "toPlaceId": "bukhara_bolo_hauz",
       "mode": "taxi",
       "minutes": 12,
-      "cost": 20000,
+      "cost": 9000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -3973,7 +4741,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -3982,6 +4750,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -4146,7 +4930,7 @@
       "toPlaceId": "bukhara_ark",
       "mode": "taxi",
       "minutes": 13,
-      "cost": 20000,
+      "cost": 4000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -4156,7 +4940,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -4165,6 +4949,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -4225,7 +5025,7 @@
       "toPlaceId": "bukhara_samanid_mausoleum",
       "mode": "taxi",
       "minutes": 16,
-      "cost": 20000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -4235,7 +5035,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -4244,6 +5044,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -4304,7 +5120,7 @@
       "toPlaceId": "bukhara_chor_minor",
       "mode": "taxi",
       "minutes": 20,
-      "cost": 22000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -4314,7 +5130,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -4323,6 +5139,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -4357,7 +5189,7 @@
       "toPlaceId": "bukhara_bolo_hauz",
       "mode": "taxi",
       "minutes": 12,
-      "cost": 20000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -4367,7 +5199,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -4376,6 +5208,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -4514,7 +5362,7 @@
       "toPlaceId": "bukhara_hotel_hub",
       "mode": "taxi",
       "minutes": 13,
-      "cost": 21000,
+      "cost": 7000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -4524,7 +5372,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -4533,6 +5381,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -4567,7 +5431,7 @@
       "toPlaceId": "bukhara_ark",
       "mode": "taxi",
       "minutes": 16,
-      "cost": 22000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -4577,7 +5441,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -4586,6 +5450,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -4620,7 +5500,7 @@
       "toPlaceId": "bukhara_poi_kalyan",
       "mode": "taxi",
       "minutes": 17,
-      "cost": 21000,
+      "cost": 4000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -4630,7 +5510,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -4639,6 +5519,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -4673,7 +5569,7 @@
       "toPlaceId": "bukhara_samanid_mausoleum",
       "mode": "taxi",
       "minutes": 19,
-      "cost": 22000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -4683,7 +5579,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -4692,6 +5588,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -4752,7 +5664,7 @@
       "toPlaceId": "bukhara_chor_minor",
       "mode": "taxi",
       "minutes": 18,
-      "cost": 19000,
+      "cost": 8000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -4762,7 +5674,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -4771,6 +5683,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -4805,7 +5733,7 @@
       "toPlaceId": "bukhara_bolo_hauz",
       "mode": "taxi",
       "minutes": 15,
-      "cost": 22000,
+      "cost": 5000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -4815,7 +5743,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -4824,6 +5752,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -4988,7 +5932,7 @@
       "toPlaceId": "bukhara_ark",
       "mode": "taxi",
       "minutes": 14,
-      "cost": 22000,
+      "cost": 8000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -4998,7 +5942,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -5007,6 +5951,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -5041,7 +6001,7 @@
       "toPlaceId": "bukhara_poi_kalyan",
       "mode": "taxi",
       "minutes": 15,
-      "cost": 21000,
+      "cost": 6000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -5051,7 +6011,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -5060,6 +6020,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -5094,7 +6070,7 @@
       "toPlaceId": "bukhara_samanid_mausoleum",
       "mode": "taxi",
       "minutes": 17,
-      "cost": 22000,
+      "cost": 9000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -5104,7 +6080,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -5113,6 +6089,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -5173,7 +6165,7 @@
       "toPlaceId": "bukhara_chor_minor",
       "mode": "taxi",
       "minutes": 16,
-      "cost": 19000,
+      "cost": 6000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -5183,7 +6175,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -5192,6 +6184,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -5226,7 +6234,7 @@
       "toPlaceId": "bukhara_bolo_hauz",
       "mode": "taxi",
       "minutes": 13,
-      "cost": 22000,
+      "cost": 9000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -5236,7 +6244,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -5245,6 +6253,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -5279,7 +6303,7 @@
       "toPlaceId": "bukhara_toki_zargaron",
       "mode": "taxi",
       "minutes": 13,
-      "cost": 21000,
+      "cost": 8000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -5289,7 +6313,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -5298,6 +6322,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },
@@ -5358,7 +6398,7 @@
       "toPlaceId": "bukhara_ulugh_beg",
       "mode": "taxi",
       "minutes": 13,
-      "cost": 21000,
+      "cost": 8000,
       "transferNote": "旧市街外周で乗降・徒歩込み",
       "estimation": "game_model",
       "sources": [
@@ -5368,7 +6408,7 @@
           "url": "https://en.wikivoyage.org/wiki/Bukhara",
           "checkedAt": "2026-11-04",
           "claimType": "hypothesis",
-          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は車1台2人分15000＋走行分数×1000スムの暫定ゲーム値で、実運賃や見積ではない。"
+          "claimJa": "旧市街の歩行者区域を横断運転せず、外周の道路まで徒歩で出て乗降するゲーム用モデル。所要分数は両端の徒歩、配車待ち4分、外周の推定走行時間を含む。料金は配車アプリの料金表の式による（別の出典）。"
         },
         {
           "publisher": "Wikivoyage",
@@ -5377,6 +6417,22 @@
           "checkedAt": "2026-11-04",
           "claimType": "documented_fact",
           "claimJa": "旧市街は歩いて回りやすく、大部分が歩行者中心。旧市街を通る9番バスはリャビ・ハウズ付近を東西に走ると案内。都市の他の路線も存在する。案内の路線情報は運行保証ではない。"
+        },
+        {
+          "publisher": "Yandex Go",
+          "title": "Цена на такси, номер телефона: тариф Старт, Бухара",
+          "url": "https://taxi.yandex.uz/ru_uz/bukhara/tariff/start/",
+          "checkedAt": "2026-11-07",
+          "claimType": "documented_fact",
+          "claimJa": "ブハラの配車アプリの「スタート」料金の上限（割増を含まない）：最低3,700スム（1km・3分を含む）、市内1kmごと900スム以下、1分ごと270スム以下。「2026年11月10日まで有効」と書かれている。車を呼ぶことが有料になる場合があると書かれている（額は書いていない）。"
+        },
+        {
+          "publisher": "Dreamscape ゲーム編集",
+          "title": "タクシー料金の計算（配車アプリの料金表の式）",
+          "url": "https://router.project-osrm.org/table/v1/driving/",
+          "checkedAt": "2026-11-07",
+          "claimType": "hypothesis",
+          "claimJa": "料金＝最低3,700スム＋1kmごと900スム×（道のり−1km）＋1分ごと270スム×（乗車時間−3分）を1,000スム単位で切り上げた、1台（2人）分のゲーム用の値。道のりと乗車時間は公開の経路計算（OSRM、OpenStreetMapのデータ、2026-11-07取得）の渋滞なしの値。割増と車を呼ぶ料金は入れない。画面の分数は待ち・乗り降りの歩きを含む今までのゲーム用の値のままで、料金には乗っている分だけを使う。実際の運賃ではない。"
         }
       ]
     },

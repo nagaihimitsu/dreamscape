@@ -12,6 +12,8 @@ import { defaultJourneyId, getJourney } from "../content/journeys";
 import { currencyForCity, formatMoneyForCity } from "../content/currency";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
 import { observeLocalLandmark, waitForTravel } from "../domain/travel-game";
+import { rentTransport } from "../domain/transport";
+import { getTransportMode } from "../content/transport";
 import { getGameWeekday } from "../domain/travel";
 import { getPlayerDeparture, departToNextCity } from "../domain/city-travel";
 import {
@@ -25,12 +27,15 @@ import { useGameSession } from "./useGameSession";
 import { leaveStep } from "./unsaved-progress";
 import { titleSaveActions } from "./save-recovery";
 import type { DeleteSnapshot } from "./save-deletion";
+import { OldDataCleanup } from "./OldDataCleanup";
+import { oldDataContext, type KeyedStorage } from "../persistence/old-data";
 import { CanalScene } from "../components/CanalScene";
 import { HeldItems } from "../components/HeldItems";
 import { secureRomanceRoll } from "../random/romance-source";
 import { usePresentationSettings } from "../components/usePresentationSettings";
 import { RomanceScene } from "../features/romance/RomanceScene";
 import { Modal } from "../components/Modal";
+import { ConfirmActionButton } from "../components/ConfirmActionButton";
 import { withNames } from "../features/romance/RomanceMenu";
 import { BattleScreen } from "../features/battle/BattleScreen";
 import { TourismScreen } from "../features/tourism/TourismScreen";
@@ -95,7 +100,8 @@ export function GameApp({
   journeyId = defaultJourneyId,
   onSwitchJourney,
   selectorFocus,
-}: AppProps & { journeyId?: string; onSwitchJourney?: (id: string) => void; selectorFocus?: SelectorFocus }) {
+  oldDataStorage,
+}: AppProps & { journeyId?: string; onSwitchJourney?: (id: string) => void; selectorFocus?: SelectorFocus; oldDataStorage?: KeyedStorage }) {
   const isDebug = import.meta.env.DEV && debug;
   const [selectedLandmarkId, setSelectedLandmarkId] = useState<string | null>(null);
   const displaySettings = usePresentationSettings(storage);
@@ -129,6 +135,7 @@ export function GameApp({
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
   const [confirmDeparture, setConfirmDeparture] = useState(false);
   const [settings, setSettings] = useState(false);
+  const [oldDataOpen, setOldDataOpen] = useState(false);
   const [switchJourneyTo, setSwitchJourneyTo] = useState<string | null>(null);
   // This journey's screen is the end of a switch (or of the lock's 再試行):
   // the title's selector has taken the focus back (child effects run first).
@@ -479,7 +486,7 @@ export function GameApp({
               choices: activeEncounter.frame.choices.map((choice) => {
                 const option = encounterChoiceOption(currentEncounter, choice);
                 const availability = getEncounterOptionAvailability(game, choice.index);
-                return { index: choice.index, textEn: choice.text, translationJa: choice.translationJa ?? option?.translationJa ?? "", cost: option?.cost ?? option?.costEuro, unavailableReason: availability.available ? undefined : availability.reason };
+                return { index: choice.index, textEn: choice.text, translationJa: choice.translationJa ?? option?.translationJa ?? "", cost: option?.cost, unavailableReason: availability.available ? undefined : availability.reason };
               }),
               ended: encounterCanFinish(game),
               finishLabel: activeEncounter.returnTourism ? "観光に戻る" : undefined,
@@ -617,7 +624,7 @@ export function GameApp({
           />
         ) : game.endingReached && showRomanceEnding ? (
           <>
-            <CanalScene backgroundId={currentTravelPlace?.backgroundAssetId} />
+            <CanalScene backgroundId={currentTravelPlace?.backgroundId} />
             <section className="paper ending" data-testid="romance-ending">
               <p className="eyebrow">交際開始</p>
               <h1>{presentation.ending.titleJa}</h1>
@@ -650,6 +657,7 @@ export function GameApp({
             onTourism={(id) => commit((state) => observeLocalLandmark(state, id, game.revision, nextRomanceRoll))}
             onBattle={(id) => commit((state) => startBattle(state, id))}
             onTravelEvent={(id, mode) => travelToEvent(id, mode, game.revision)}
+            onRent={(modeId) => commit((state) => rentTransport(state, modeId, game.revision))}
             nextCityName={departure?.city.nameJa}
             onDepart={() => setConfirmDeparture(true)}
           />
@@ -660,7 +668,8 @@ export function GameApp({
       </footer>
       {confirmDeparture && game && departure && <Modal labelledBy="departure-title" onClose={() => setConfirmDeparture(false)}>
         <h2 id="departure-title">{departure.city.nameJa}へ出発</h2>
-        <p>次の街へ進みます。今の街の未使用アイテムは持って行けません。</p>
+        <p>次の街へ進みます。今の街の未使用アイテムは持って行けません。{game.travel.rentedModeIds.length > 0 &&
+          `借りている${game.travel.rentedModeIds.map((modeId) => getTransportMode(game.currentCityId, modeId)?.nameJa ?? modeId).join("・")}は返します。`}</p>
         <button type="button" className="primary" onClick={() => {
           if (commit((state) => departToNextCity(state, game.revision))) setConfirmDeparture(false);
         }}>出発する</button>
@@ -784,7 +793,7 @@ export function GameApp({
           >
             消去せず戻る
           </button>
-          <button
+          <ConfirmActionButton
             className="danger-button"
             onClick={() => {
               if (!session.deleteConfirmed(deleteSnapshot)) {
@@ -795,7 +804,7 @@ export function GameApp({
             }}
           >
             {isDebug ? "Debug用の一時データを消去する" : "保存データを消去する"}
-          </button>
+          </ConfirmActionButton>
         </Modal>
       )}
       {switchJourneyTo && (
@@ -888,6 +897,8 @@ export function GameApp({
               </button>
             </form>
           )}
+          {!isDebug && oldDataStorage && <button type="button" className="text-button old-data-entry"
+            onClick={() => { setSettings(false); setOldDataOpen(true); }}>古い保存データの整理</button>}
           <button className="text-button delete-entry" onClick={requestDelete}>
             {isDebug ? "Debug用の一時データの消去" : "保存データの消去"}
           </button>
@@ -900,6 +911,8 @@ export function GameApp({
           </button>
         </Modal>
       )}
+      {oldDataOpen && oldDataStorage && <OldDataCleanup storage={oldDataStorage}
+        context={oldDataContext(journeyId)} onClose={() => setOldDataOpen(false)} />}
       {travelEffects}
     </div>
   );

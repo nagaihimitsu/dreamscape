@@ -1,6 +1,7 @@
 import { namedJa } from "./journey-cli";
 import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readiness";
 import { buildContent } from "./content-pipeline";
+import { transportWaitingJa } from "./transport-validation";
 
 const args = process.argv.slice(2);
 const journeyFlag = args.indexOf("--journey");
@@ -16,6 +17,7 @@ const report = inspectJourneyReadiness(input);
 if (args.includes("--json")) console.log(JSON.stringify(report, null, 2));
 else {
   console.log(`${namedJa(input.trip)}: ${report.ready ? "参照の準備完了" : "準備中"}`);
+  if (report.transportPending) console.log(`  交通: ${transportWaitingJa(report.transportPending)}`);
   for (const issue of report.issues) console.log(`  - ${issue.detail}`);
   for (const city of report.cities) {
     console.log(`\n${namedJa(input.trip.cities.find((entry) => entry.id === city.cityId) ?? { id: city.cityId })}: ${city.events.length} 候補`);

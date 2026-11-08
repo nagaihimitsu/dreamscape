@@ -60,8 +60,8 @@ describe("the template city of Debug's 仮の場面", () => {
     expect(journeys.at(-1)?.id).toBe(sampleJourneyId);
     const sample = {
       city: "mihon", journey: sampleJourneyId,
-      normal: ["smp_mihon_clock_tower", "mihon_clock_tower", "smp_mihon_clock_tower_battle", "mihon_clock_tower"], finale: "smp_mihon_finale",
-      specialB: "smp_mihon_market_b", specialC: "smp_mihon_library_c", encounter: ["smp_mihon_bookmark_stall", "smp_mihon_three_bookmark"],
+      normal: ["smp_mihon_main_clock_tower", "mihon_clock_tower", "smp_mihon_main_clock_tower_battle", "mihon_clock_tower"], finale: "smp_mihon_finale",
+      specialB: "smp_mihon_special_b_market", specialC: "smp_mihon_special_c_library", encounter: ["smp_mihon_bookmark_stall", "smp_mihon_three_bookmark"],
       date: ["smp_mihon_date_tower_square", "mihon_tower_square"], missing: [], note: "",
     };
     expect(roleIds(findDebugTemplate(contentOf([...repositoryJourneys, sampleJourneyId])))).toEqual(sample);

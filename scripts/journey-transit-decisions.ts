@@ -9,7 +9,7 @@ import { getJourneyAuthoringProfile, journeyAuthoringProfiles } from "./journey-
 /**
  * A journey-wide transit decision ledger (`authoring.transitDecisionLedger` of a
  * manifest): one file reviews rail and bus for every direction of the listed
- * cities. Unlike per-city ledgers (`transitDirectory`), a direction without a
+ * cities. Unlike per-city ledgers (`travel/<city>-transit.json`), a direction without a
  * playable route or a decision is allowed and reported as unresearched.
  */
 export const journeyTransitDecisionModes = ["rail", "bus"] as const;

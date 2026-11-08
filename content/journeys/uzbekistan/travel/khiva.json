@@ -8,7 +8,7 @@
       "nameEn": "Kunya Ark",
       "latitude": 41.37889,
       "longitude": 60.35806,
-      "backgroundAssetId": "uz_bg_khiva_kunya_ark",
+      "backgroundId": "uz_bg_khiva_kunya_ark",
       "openingWindows": [
         {
           "start": 540,
@@ -57,7 +57,7 @@
       "nameEn": "Juma Mosque",
       "latitude": 41.3775,
       "longitude": 60.3599,
-      "backgroundAssetId": "uz_bg_khiva_juma_mosque",
+      "backgroundId": "uz_bg_khiva_juma_mosque",
       "openingWindows": [
         {
           "start": 540,
@@ -106,7 +106,7 @@
       "nameEn": "Tash Hauli Palace",
       "latitude": 41.37838,
       "longitude": 60.36165,
-      "backgroundAssetId": "uz_bg_khiva_tash_hauli",
+      "backgroundId": "uz_bg_khiva_tash_hauli",
       "openingWindows": [
         {
           "start": 540,
@@ -155,7 +155,7 @@
       "nameEn": "Islam Khoja Complex",
       "latitude": 41.3766,
       "longitude": 60.3605,
-      "backgroundAssetId": "uz_bg_khiva_islam_khoja",
+      "backgroundId": "uz_bg_khiva_islam_khoja",
       "openingWindows": [
         {
           "start": 540,
@@ -204,7 +204,7 @@
       "nameEn": "Kalta Minor exterior",
       "latitude": 41.3783,
       "longitude": 60.35797,
-      "backgroundAssetId": "uz_bg_khiva_kalta_minor",
+      "backgroundId": "uz_bg_khiva_kalta_minor",
       "openingWindows": [
         {
           "start": 360,
@@ -248,7 +248,7 @@
       "nameEn": "Pahlavan Mahmud Mausoleum exterior",
       "latitude": 41.37688,
       "longitude": 60.35938,
-      "backgroundAssetId": "uz_bg_khiva_pahlavan_mahmud",
+      "backgroundId": "uz_bg_khiva_pahlavan_mahmud",
       "openingWindows": [
         {
           "start": 360,
@@ -292,7 +292,7 @@
       "nameEn": "Muhammad Amin Khan Madrasa exterior",
       "latitude": 41.37801,
       "longitude": 60.35773,
-      "backgroundAssetId": "uz_bg_khiva_muhammad_amin_khan",
+      "backgroundId": "uz_bg_khiva_muhammad_amin_khan",
       "openingWindows": [
         {
           "start": 360,
@@ -336,7 +336,7 @@
       "nameEn": "Ota Darvoza (West Gate)",
       "latitude": 41.37823,
       "longitude": 60.35725,
-      "backgroundAssetId": "uz_bg_khiva_ota_darvoza",
+      "backgroundId": "uz_bg_khiva_ota_darvoza",
       "openingWindows": [
         {
           "start": 360,
@@ -380,7 +380,7 @@
       "nameEn": "Palvan Darvoza (East Gate)",
       "latitude": 41.37718,
       "longitude": 60.36217,
-      "backgroundAssetId": "uz_bg_khiva_palvan_darvoza",
+      "backgroundId": "uz_bg_khiva_palvan_darvoza",
       "openingWindows": [
         {
           "start": 360,
@@ -424,7 +424,7 @@
       "nameEn": "Bogcha Darvoza (North Gate)",
       "latitude": 41.38162,
       "longitude": 60.36119,
-      "backgroundAssetId": "uz_bg_khiva_bogcha_darvoza",
+      "backgroundId": "uz_bg_khiva_bogcha_darvoza",
       "openingWindows": [
         {
           "start": 360,
@@ -468,7 +468,7 @@
       "nameEn": "Fictional Khiva hotel outside the West Gate",
       "latitude": 41.3782,
       "longitude": 60.3562,
-      "backgroundAssetId": "uz_bg_khiva_hotel_hub",
+      "backgroundId": "uz_bg_khiva_hotel_hub",
       "sources": [
         {
           "publisher": "Dreamscape game design",

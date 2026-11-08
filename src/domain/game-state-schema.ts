@@ -4,18 +4,18 @@ import { responseProfileSchema } from "../content/schemas";
 import { storyFrameSchema } from "../story/runtime";
 import { DAY_END } from "./travel";
 import { activeEncounterSchema } from "./encounter-state";
+import { stableContentId } from "./stable-id";
 import { activeEpilogueSchema } from "./epilogue";
 import { activeTourismSchema } from "./tourism";
 import { battleRewardReceiptSchema, pendingApRewardSchema } from "./rewards";
 import { activeBattleSchema, battleRecordSchema } from "./battle";
 
 /** The only saved game format this build reads; older versions are not migrated. */
-export const GAME_STATE_VERSION = 13;
+export const GAME_STATE_VERSION = 14;
 
 const uniqueStrings = z
   .array(z.string().min(1))
   .refine((items) => new Set(items).size === items.length);
-const stableContentId = z.string().regex(/^[a-z][a-z0-9_]*$/);
 export const nameSchema = z.string().trim().min(1).max(balance.maxNameLength);
 const relationshipValuesSchema = z.object({
   affection: z.number().int(), trust: z.number().int(), spark: z.number().int(),
@@ -53,7 +53,7 @@ const activeDateSchema = z.object({
   appliedEffectIds: uniqueStrings,
   pendingOutcome: z.enum(["accepted", "deferred", "rejected"]).nullable(),
   // Confession conversations use fixed effects; other events use saved random tickets.
-  resolutionMode: z.enum(["legacy_fixed", "random_v1"]),
+  resolutionMode: z.enum(["fixed", "random_v1"]),
   randomPlan: z.array(romanceRollTicketSchema),
   resolvedChoices: z.array(resolvedChoiceSchema),
   responseSnapshot: responseSnapshotSchema.nullable(),
@@ -77,6 +77,15 @@ const travelStateSchema = z.object({
     placeId: stableContentId,
     endMinute: z.number().int().min(540).max(1320),
   }).strict().nullable(),
+  // Rental transport modes rented in the current city (src/domain/transport.ts);
+  // a rental lasts until the party leaves the city.
+  rentedModeIds: uniqueStrings,
+  // Rides by vehicle in the current city, per declared mode other than walking
+  // (beginTravelEvent counts a trip that changes place; no key = no ride yet).
+  rideCounts: z.record(stableContentId, z.number().int().positive().safe()),
+  // Story flags that last the day or the stay in this city (common condition system, stage 3: declared in
+  // progression/story.json, set by encounter effects, cleared by sleeping and departing). None is declared yet.
+  temporaryFlags: uniqueStrings,
 }).strict().superRefine((travel, context) => {
   if (travel.calendar && travel.calendar.journeyDay - travel.calendar.cityStartJourneyDay + 1 !== travel.day)
     context.addIssue({ code: "custom", message: "Travel day and journey calendar disagree", path: ["calendar"] });
@@ -90,7 +99,6 @@ export const gameStateSchema = z.object({
   ap: z.number().int().min(0).max(balance.apCap),
   affection: z.number().int(),
   romanceStage: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),
-  completedChapters: uniqueStrings,
   claimedRewardIds: uniqueStrings,
   playedDateIds: uniqueStrings,
   memories: uniqueStrings,
@@ -118,14 +126,30 @@ export const gameStateSchema = z.object({
   travelBudget: z.number().int().nonnegative().safe(),
   inventory: z.record(stableContentId, z.enum(["held", "gifted", "used", "left_behind"])),
   completedEncounterIds: uniqueStrings,
+  // Every encounter finished, with any choice (「また今度」 included); completedEncounterIds is a subset.
+  seenEncounterIds: uniqueStrings,
+  // The encounter and option that gave away or used each gifted/used item, written with its inventory status.
+  itemUses: z.record(stableContentId, z.object({ encounterId: stableContentId, optionId: stableContentId }).strict()),
+  // The authored story state of the common condition system (stage 3: lines → reached step, permanent flags,
+  // declared in progression/story.json and written by encounter effects). None is declared yet, so it stays empty.
+  storyProgress: z.object({ lines: z.record(stableContentId, stableContentId), flags: uniqueStrings }).strict(),
   encounterRewards: z.record(stableContentId, z.object({
     roll: z.number().int().min(0).max(9999),
     chancePercent: z.number().int().min(0).max(100),
     won: z.boolean(),
   }).strict()),
   activeEncounter: activeEncounterSchema.nullable(),
+  // The tour system's records (tour design §5.3): the tour booked or running, and the tours finished in this journey.
+  // No tour exists yet, so only the empty values load; stage 2a widens both without a new save version.
+  tour: z.null(),
+  completedTourIds: z.array(stableContentId).max(0),
   currentCityId: stableContentId,
   travel: travelStateSchema,
 }).strict();
 export type GameState = z.infer<typeof gameStateSchema>;
 export type ActiveDate = NonNullable<GameState["activeDate"]>;
+
+/** A scene is in progress: a map event, a date, a battle, a tourism scene, an encounter or an epilogue. */
+export function hasActiveScene(state: GameState): boolean {
+  return !!(state.travel.activeEvent || state.activeDate || state.activeBattle || state.activeTourism || state.activeEncounter || state.activeEpilogue);
+}

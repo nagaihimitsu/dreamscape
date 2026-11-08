@@ -8,7 +8,7 @@
       "nameEn": "Amber Fort and Palace",
       "latitude": 26.9859,
       "longitude": 75.8507,
-      "backgroundAssetId": "gt_bg_jaipur_amber_fort",
+      "backgroundId": "gt_bg_jaipur_amber_fort",
       "openingWindows": [
         {
           "start": 540,
@@ -92,7 +92,7 @@
       "nameEn": "Hawa Mahal",
       "latitude": 26.92413,
       "longitude": 75.82639,
-      "backgroundAssetId": "gt_bg_jaipur_hawa_mahal",
+      "backgroundId": "gt_bg_jaipur_hawa_mahal",
       "openingWindows": [
         {
           "start": 540,
@@ -168,7 +168,7 @@
       "nameEn": "City Palace Jaipur",
       "latitude": 26.92624,
       "longitude": 75.82381,
-      "backgroundAssetId": "gt_bg_jaipur_city_palace",
+      "backgroundId": "gt_bg_jaipur_city_palace",
       "openingWindows": [
         {
           "start": 570,
@@ -260,7 +260,7 @@
       "nameEn": "Jantar Mantar Jaipur",
       "latitude": 26.92473,
       "longitude": 75.82451,
-      "backgroundAssetId": "gt_bg_jaipur_jantar_mantar",
+      "backgroundId": "gt_bg_jaipur_jantar_mantar",
       "openingWindows": [
         {
           "start": 540,
@@ -336,7 +336,7 @@
       "nameEn": "Jal Mahal",
       "latitude": 26.95367,
       "longitude": 75.84233,
-      "backgroundAssetId": "gt_bg_jaipur_jal_mahal",
+      "backgroundId": "gt_bg_jaipur_jal_mahal",
       "openingWindows": [
         {
           "start": 540,
@@ -396,7 +396,7 @@
       "nameEn": "Nahargarh Fort",
       "latitude": 26.94009,
       "longitude": 75.81691,
-      "backgroundAssetId": "gt_bg_jaipur_nahargarh_fort",
+      "backgroundId": "gt_bg_jaipur_nahargarh_fort",
       "openingWindows": [
         {
           "start": 540,
@@ -456,7 +456,7 @@
       "nameEn": "Albert Hall Museum",
       "latitude": 26.91171,
       "longitude": 75.8195,
-      "backgroundAssetId": "gt_bg_jaipur_albert_hall",
+      "backgroundId": "gt_bg_jaipur_albert_hall",
       "openingWindows": [
         {
           "start": 540,
@@ -516,7 +516,7 @@
       "nameEn": "Jaigarh Fort",
       "latitude": 26.98469,
       "longitude": 75.8454,
-      "backgroundAssetId": "gt_bg_jaipur_jaigarh_fort",
+      "backgroundId": "gt_bg_jaipur_jaigarh_fort",
       "openingWindows": [
         {
           "start": 540,
@@ -600,7 +600,7 @@
       "nameEn": "Johari Bazaar",
       "latitude": 26.91934,
       "longitude": 75.82592,
-      "backgroundAssetId": "gt_bg_jaipur_johari_bazaar",
+      "backgroundId": "gt_bg_jaipur_johari_bazaar",
       "openingWindows": [
         {
           "start": 540,
@@ -668,7 +668,7 @@
       "nameEn": "Panna Meena ka Kund",
       "latitude": 26.99121,
       "longitude": 75.85123,
-      "backgroundAssetId": "gt_bg_jaipur_panna_meena_kund",
+      "backgroundId": "gt_bg_jaipur_panna_meena_kund",
       "openingWindows": [
         {
           "start": 540,
@@ -744,7 +744,7 @@
       "nameEn": "fictional lodging / Badi Chaupar metro",
       "latitude": 26.92296,
       "longitude": 75.82682,
-      "backgroundAssetId": "gt_bg_jaipur_hotel_hub",
+      "backgroundId": "gt_bg_jaipur_hotel_hub",
       "openingWindows": [
         {
           "start": 0,

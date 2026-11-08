@@ -30,7 +30,12 @@ const settledRequests = new Map<string, Promise<unknown>>();
 
 /** One lock per journey slot, shared by every tab of the browser. */
 export function journeyLockName(storage: StorageLike): string {
-  return `dreamscape:${storagePhysicalKey(storage, SAVE_KEY)}`;
+  return slotLockName(storagePhysicalKey(storage, SAVE_KEY));
+}
+
+/** The lock of the slot whose game save is stored under the browser key `physicalSaveKey`. */
+export function slotLockName(physicalSaveKey: string): string {
+  return `dreamscape:${physicalSaveKey}`;
 }
 
 /** Views that edit the journey's slot hold its lock. Debug storage is isolated and a
@@ -99,6 +104,43 @@ export function holdJourneyLock(
       release?.();
     },
   };
+}
+
+export type LockedRun<T> = { status: "done"; value: T } | { status: "busy"; name: string } | { status: "unsupported" };
+
+/**
+ * Run `action` once while this page holds every named slot lock, each asked without waiting
+ * (`ifAvailable`): a lock another tab holds (that journey is open there) refuses the run before
+ * anything is done, reported as "busy" with the first such name. The locks are let go of as soon as
+ * `action` returns. "unsupported" without Web Locks or when a request is refused. Do not pass a lock
+ * this page already holds (it would answer busy); with no names the action runs at once.
+ */
+export async function runWithSlotLocks<T>(
+  locks: LockManagerLike | undefined,
+  names: readonly string[],
+  action: () => T,
+): Promise<LockedRun<T>> {
+  if (!locks?.request) return { status: "unsupported" };
+  const ordered = [...new Set(names)].sort();
+  let failure: { error: unknown } | undefined;
+  const step = async (index: number): Promise<LockedRun<T>> => {
+    if (index === ordered.length) {
+      try { return { status: "done", value: action() }; }
+      catch (error) { failure = { error }; throw error; }
+    }
+    let outcome: LockedRun<T> = { status: "busy", name: ordered[index] };
+    await locks.request(ordered[index], { ifAvailable: true }, async (lock) => {
+      if (lock) outcome = await step(index + 1);
+    });
+    return outcome;
+  };
+  try {
+    return await step(0);
+  } catch (error) {
+    // The action's own error is not a refusal of the locks.
+    if (failure) throw failure.error;
+    return { status: "unsupported" };
+  }
 }
 
 /** What the editing view shows in place of the journey while it does not hold the lock. */

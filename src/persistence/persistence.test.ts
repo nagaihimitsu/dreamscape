@@ -1,6 +1,10 @@
 import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { describe, expect, it, vi } from "vitest";
-import { advanceDate, chooseDate, createGame, startDate } from "../domain";
+import { advanceDate, chooseDate, createGame, startDate, validateGameState, type GameState } from "../domain";
+import { completedCity } from "../dev/scenario-builders";
+import { advanceEncounter, chooseEncounter, encounterCanFinish, finishEncounter } from "../domain/encounter";
+import { meetEncounter } from "../../tests/fixtures/encounter-moment";
+import { zodIssues } from "../../tests/fixtures/zod-issues";
 // A date in progress saved in the first save format (schemaVersion 1).
 import firstFormatSave from "../../tests/fixtures/save-format-v1.json";
 import {
@@ -12,6 +16,7 @@ import {
   sameGameState,
   SAVE_KEY,
   saveGame,
+  SUPPORTED_SAVE_VERSION,
   type StorageLike,
 } from "./index";
 
@@ -199,6 +204,152 @@ describe("local save persistence", () => {
       message: expect.stringContaining("空き容量"),
     });
     expect(loadGame(storage)).toEqual({ status: "loaded", state: previous });
+  });
+});
+
+describe("save format v14 (docs/07: one format per version, no migration)", () => {
+  // A save as v13 wrote it: the same shape plus the completedChapters record v14 removed.
+  const v13Save = () => JSON.stringify({ ...createGame(), schemaVersion: 13, completedChapters: ["milano"] });
+
+  it("is the version every new game is written in", () => {
+    expect(SUPPORTED_SAVE_VERSION).toBe(14);
+    expect(createGame().schemaVersion).toBe(14);
+  });
+
+  it("round-trips a v14 save with a date in progress", () => {
+    const storage = new MemoryStorage();
+    const state = startDate(seedCurrentFreeTime(createGame("旅人", "小春")), "milano_cafe_01");
+    expect(state.activeDate).not.toBeNull();
+    expect(saveGame(storage, state)).toEqual({ ok: true });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 14 });
+    expect(loadGame(storage)).toEqual({ status: "loaded", state });
+  });
+
+  it("round-trips the condition records written in play, and keeps an earlier v14 shape without them as unreadable and untouched", () => {
+    /** The encounter met in a new observation of its landmark and played with one option to its end. */
+    const play = (initial: GameState, encounterId: string, optionId: string) => {
+      let state = meetEncounter(initial, encounterId);
+      for (let step = 0; state.activeEncounter; step++) {
+        expect(step, `${encounterId}/${optionId}`).toBeLessThan(100);
+        const active = state.activeEncounter;
+        const choice = active.frame.choices.find((item) => item.optionId === optionId);
+        state = choice ? chooseEncounter(state, choice.index, state.revision)
+          : encounterCanFinish(state) ? finishEncounter(state, state.revision) : advanceEncounter(state, state.revision);
+      }
+      return state;
+    };
+    // Milan cleared; the Duomo's string put off, then taken (seen once, completed), the pick given at the Castello
+    // (its use names the encounter and option), and tram rides counted (planted: the writer is pinned in
+    // tests/journeys/milano/transport.test.ts).
+    let state = play(play(play(completedCity("milano"), "duomo_string", "leave"), "duomo_string", "case"), "castello_pick", "give");
+    expect(state.seenEncounterIds).toEqual(["duomo_string", "castello_pick"]);
+    expect(state.completedEncounterIds).toEqual(["duomo_string", "castello_pick"]);
+    expect(state.itemUses).toEqual({ blue_pick: { encounterId: "castello_pick", optionId: "give" } });
+    state = { ...state, travel: { ...state.travel, rideCounts: { tram: 2 } } };
+    const storage = new MemoryStorage();
+    expect(saveGame(storage, state)).toEqual({ ok: true });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 14, seenEncounterIds: state.seenEncounterIds,
+      itemUses: state.itemUses, travel: { rideCounts: { tram: 2 } } });
+    expect(loadGame(storage)).toEqual({ status: "loaded", state });
+    // The v14 shape before these records (development builds only): not an old version, unreadable, kept as it is.
+    const { seenEncounterIds: _seen, itemUses: _uses, ...older } = state;
+    const { rideCounts: _rides, ...olderTravel } = state.travel;
+    const raw = JSON.stringify({ ...older, travel: olderTravel });
+    const slot = new MemoryStorage();
+    slot.setItem(SAVE_KEY, raw);
+    expect(loadGame(slot)).toMatchObject({ status: "invalid", kind: "corrupt", raw });
+    expect(saveGame(slot, createGame()).ok).toBe(false);
+    expect(slot.getItem(SAVE_KEY)).toBe(raw);
+  });
+
+  it("holds the condition system's story state and moments empty until stage 3 declares and writes them", () => {
+    const fresh = createGame();
+    expect(fresh.storyProgress).toEqual({ lines: {}, flags: [] });
+    expect(fresh.travel.temporaryFlags).toEqual([]);
+    expect(validateGameState(JSON.parse(JSON.stringify(fresh)))).toEqual(fresh);
+    const story = (storyProgress: unknown) => ({ ...fresh, storyProgress });
+    expect(() => validateGameState(story({ lines: { smp_mihon_lili_line: "met" }, flags: [] }))).toThrow("物語の進行の記録が一致しません。");
+    expect(() => validateGameState(story({ lines: {}, flags: ["smp_mihon_lili_drawing_talk"] }))).toThrow("物語の進行の記録が一致しません。");
+    expect(() => validateGameState({ ...fresh, travel: { ...fresh.travel, temporaryFlags: ["smp_mihon_lili_just_met"] } }))
+      .toThrow("この都市での物語の印の記録が一致しません。");
+    // Malformed shapes are refused by the schema itself (pinned to its issues), before the emptiness rule above.
+    for (const [shape, issue] of [
+      [undefined, { code: "invalid_type", path: ["storyProgress"] }],
+      [{ lines: {} }, { code: "invalid_type", path: ["storyProgress", "flags"] }],
+      [{ lines: {}, flags: [], steps: {} }, { code: "unrecognized_keys", path: ["storyProgress"], keys: ["steps"] }],
+      [{ lines: { a: "Bad" }, flags: [] }, { code: "invalid_format", path: ["storyProgress", "lines", "a"] }],
+      [{ lines: { Bad: "a" }, flags: [] }, { code: "invalid_key", path: ["storyProgress", "lines", "Bad"] }],
+      [{ lines: {}, flags: ["a", "a"] }, { code: "custom", path: ["storyProgress", "flags"] }],
+      [{ lines: {}, flags: [""] }, { code: "too_small", path: ["storyProgress", "flags", 0] }],
+    ] as const)
+      expect(() => validateGameState(story(shape)), JSON.stringify(shape)).toThrow(zodIssues(issue));
+    // An encounter in progress may continue only from its observation; the after-battle and trip moments are not written yet.
+    const meeting = meetEncounter(completedCity("milano"), "duomo_string");
+    const { returnTourism, ...active } = meeting.activeEncounter!;
+    expect(returnTourism).toBeDefined();
+    const moment = (fields: object) => ({ ...meeting, activeTourism: null, activeEncounter: { ...active, ...fields } });
+    expect(validateGameState(JSON.parse(JSON.stringify(moment({ returnTourism }))))).toEqual(meeting);
+    // No moment at all: the shape of the removed free-time start.
+    expect(() => validateGameState(moment({}))).toThrow("道中交流の時点の記録が一致しません。");
+    expect(() => validateGameState(moment({ afterBattle: { battleId: "milano_duomo_01", encounterIds: ["duomo_string"] } })))
+      .toThrow("道中交流の時点の記録が一致しません。");
+    expect(() => validateGameState(moment({ trip: { eventId: "milano_duomo_episode", modeId: "tram" } }))).toThrow("道中交流の時点の記録が一致しません。");
+    expect(() => validateGameState(moment({ returnTourism, afterBattle: { battleId: "milano_duomo_01", encounterIds: [] } })))
+      .toThrow("An encounter has at most one moment to continue from");
+    // The moments' shapes are strict: refused by the schema before the moment check.
+    expect(() => validateGameState(moment({ afterBattle: { battleId: "milano_duomo_01" } })))
+      .toThrow(zodIssues({ code: "invalid_type", path: ["activeEncounter", "afterBattle", "encounterIds"] }));
+    expect(() => validateGameState(moment({ trip: { eventId: "milano_duomo_episode", modeId: "tram", minutes: 3 } })))
+      .toThrow(zodIssues({ code: "unrecognized_keys", path: ["activeEncounter", "trip"], keys: ["minutes"] }));
+  });
+
+  it("holds the tour records empty in v14 until the tour system writes them", () => {
+    // Tour design §5.3 (tour decision 2 (i)): both fields join v14 now, empty; stage 2a widens them without a new version.
+    const fresh = createGame();
+    expect(fresh.tour).toBeNull();
+    expect(fresh.completedTourIds).toEqual([]);
+    const storage = new MemoryStorage();
+    expect(saveGame(storage, fresh)).toEqual({ ok: true });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 14, tour: null, completedTourIds: [] });
+    expect(loadGame(storage)).toEqual({ status: "loaded", state: fresh });
+    // A filled value is refused: no tour can be booked, run or finished yet.
+    expect(() => validateGameState({ ...fresh, tour: { status: "booked", tourId: "smp_mihon_tour_cape", offerId: "web", pricePaid: 0, bookedDay: 1 } }))
+      .toThrow(zodIssues({ code: "invalid_type", path: ["tour"], expected: "null" }));
+    expect(() => validateGameState({ ...fresh, completedTourIds: ["smp_mihon_tour_cape"] }))
+      .toThrow(zodIssues({ code: "too_big", path: ["completedTourIds"], maximum: 0 }));
+    // The v14 shape before these fields (development builds only): not an old version, unreadable, kept as it is.
+    const { tour: _tour, completedTourIds: _finished, ...older } = fresh;
+    const raw = JSON.stringify(older);
+    const slot = new MemoryStorage();
+    slot.setItem(SAVE_KEY, raw);
+    expect(loadGame(slot)).toMatchObject({ status: "invalid", kind: "corrupt", raw });
+    expect(saveGame(slot, createGame()).ok).toBe(false);
+    expect(slot.getItem(SAVE_KEY)).toBe(raw);
+  });
+
+  it("reports a v13 save as an identified old version, never migrates, overwrites or deletes it", () => {
+    const storage = new MemoryStorage();
+    const raw = v13Save();
+    storage.setItem(SAVE_KEY, raw);
+    expect(loadGame(storage)).toEqual({
+      status: "invalid", kind: "legacy", raw,
+      message: "保存データの形式はバージョン13です。現在のバージョンでは読み込めません。データの破損によって読み込めない場合もあります。元のデータは残っています。",
+    });
+    expect(saveGame(storage, createGame()).ok).toBe(false);
+    expect(storage.getItem(SAVE_KEY)).toBe(raw);
+    // Starting over is an explicit choice that keeps the old save as a backup.
+    expect(backupAndCreate(storage, createGame(), raw)).toEqual({ ok: true });
+    const backups = [...storage.values.entries()].filter(([key]) => key.startsWith(`${SAVE_KEY}.backup.`));
+    expect(backups.map(([, value]) => value)).toEqual([raw]);
+  });
+
+  it("leaves an unknown newer version (v15) unchanged", () => {
+    const storage = new MemoryStorage();
+    const raw = JSON.stringify({ ...createGame(), schemaVersion: 15 });
+    storage.setItem(SAVE_KEY, raw);
+    expect(loadGame(storage)).toMatchObject({ status: "invalid", kind: "newer", raw });
+    expect(saveGame(storage, createGame()).ok).toBe(false);
+    expect(storage.getItem(SAVE_KEY)).toBe(raw);
   });
 });
 

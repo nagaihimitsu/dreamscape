@@ -6,7 +6,7 @@ import { DAY_END, DAY_START } from "../src/domain/travel";
 /** Check the city's authored destinations against the existing game catalogs. */
 export function validateTravelContent(
   travel: TravelCatalog,
-  settings: { hotelPlaceId: string; storyBackgroundAssetId?: string },
+  settings: { hotelPlaceId: string; storyBackgroundId?: string },
   cityId: string,
   journey: JourneyConfig,
   dates: DateDefinition[],
@@ -14,17 +14,17 @@ export function validateTravelContent(
   landmarkIds: readonly string[],
   destinationIds: readonly string[],
   backgrounds: Record<string, unknown>,
-  options: { allowPendingContent?: boolean; plannedLandmarkIds?: readonly string[] } = {},
+  options: { allowPendingContent?: boolean; plannedLandmarkIds?: readonly string[]; rentalModeIds?: readonly string[] } = {},
 ): void {
   if (travel.cityId !== cityId) throw new Error(`Unknown travel city: ${travel.cityId}`);
   if (!travel.places.some((place) => place.id === settings.hotelPlaceId))
     throw new Error(`Unknown travel hotel: ${settings.hotelPlaceId}`);
-  if (settings.storyBackgroundAssetId !== undefined && !backgrounds[settings.storyBackgroundAssetId])
-    throw new Error(`Unknown travel story background: ${cityId}/${settings.storyBackgroundAssetId}`);
+  if (settings.storyBackgroundId !== undefined && !backgrounds[settings.storyBackgroundId])
+    throw new Error(`Unknown travel story background: ${cityId}/${settings.storyBackgroundId}`);
   const assignedLandmarks = new Set<string>();
   const assignedDestinations = new Set<string>();
   for (const place of travel.places) {
-    if (!backgrounds[place.backgroundAssetId]) throw new Error(`Unknown travel background: ${place.id}/${place.backgroundAssetId}`);
+    if (!backgrounds[place.backgroundId]) throw new Error(`Unknown travel background: ${place.id}/${place.backgroundId}`);
     for (const landmarkId of place.landmarkIds ?? []) {
       if (!landmarkIds.includes(landmarkId) || assignedLandmarks.has(landmarkId)) throw new Error(`Unknown or duplicate travel landmark: ${place.id}/${landmarkId}`);
       assignedLandmarks.add(landmarkId);
@@ -38,9 +38,11 @@ export function validateTravelContent(
     // authored transport: never infer a walking route from its coordinates.
     if (!travel.routes.some((route) => route.fromPlaceId === place.id && route.toPlaceId === place.id && route.mode === "walk"))
       throw new Error(`Missing same-place route: ${place.id}`);
+    // A rental mode is an extra way to go: without the rental every place is still reached (and the hotel).
     for (const destination of travel.places) {
       if (place.id === destination.id) continue;
-      if (!travel.routes.some((route) => route.fromPlaceId === place.id && route.toPlaceId === destination.id && route.minutes < DAY_END - DAY_START))
+      if (!travel.routes.some((route) => route.fromPlaceId === place.id && route.toPlaceId === destination.id && route.minutes < DAY_END - DAY_START &&
+          !options.rentalModeIds?.includes(route.mode)))
         throw new Error(`Missing usable directed route: ${place.id}/${destination.id}`);
     }
   }

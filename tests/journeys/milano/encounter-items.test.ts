@@ -2,11 +2,13 @@ import { describe, expect, it } from "vitest";
 import { createGame, validateGameState, type GameState } from "../../../src/domain/game";
 import { createDebugState } from "../../../src/dev/debug-state";
 import { encounters } from "../../../src/content/encounters";
-import { advanceEncounter, answerEncounterQuiz, chooseEncounter, encounterCanFinish, finishEncounter, getEncounterAvailability, startEncounter, validateEncounterState } from "../../../src/domain/encounter";
+import { advanceEncounter, answerEncounterQuiz, chooseEncounter, encounterCanFinish, finishEncounter, validateEncounterState } from "../../../src/domain/encounter";
+import { encounterOffered, meetEncounter } from "../../fixtures/encounter-moment";
 import { closeTourism } from "../../../src/domain/tourism";
 
+/** Meet the encounter in a new observation of its landmark and play it with the given choice. */
 function play(state: GameState, id: string, optionId: string): GameState {
-  let next = startEncounter(state, id, () => 0);
+  let next = meetEncounter(state, id);
   expect(next.activeEncounter?.encounterId).toBe(id);
   for (let step = 0; step < 100 && next.activeEncounter; step++) {
     // The running scene may be saved/reloaded at every line and choice.
@@ -36,13 +38,13 @@ describe("the Milan pick and location encounters", () => {
     expect(state.completedEncounterIds).not.toContain("duomo_string");
     state = play(state, "duomo_string", "case");
     expect(state.inventory.blue_pick).toBe("held");
-    expect(getEncounterAvailability(state, "castello_pick").available).toBe(false);
+    expect(encounterOffered(state, "castello_pick").available).toBe(false);
     state = { ...state, completedEpisodeIds: [...state.completedEpisodeIds, "milano_castello_episode"] };
     state = play(state, "castello_pick", "later");
     expect(state.inventory.blue_pick).toBe("held");
     state = play(state, "castello_pick", "give");
     expect(state.inventory.blue_pick).toBe("gifted");
-    expect(getEncounterAvailability(state, "castello_pick").available).toBe(false);
+    expect(encounterOffered(state, "castello_pick").available).toBe(false);
   });
 
   it("does not require a ticket for the ordinary print visit and spends the stated cost exactly once", () => {
@@ -50,7 +52,7 @@ describe("the Milan pick and location encounters", () => {
     const paid = play(base, "galleria_print", "pay");
     expect(paid.travelBudget).toBe(base.travelBudget - 4);
     expect(paid.inventory.galleria_ticket).toBeUndefined();
-    expect(getEncounterAvailability(paid, "galleria_ticket_press").available).toBe(false);
+    expect(encounterOffered(paid, "galleria_ticket_press").available).toBe(false);
   });
 
   it("lets a preexisting ticket be used later even after paying for the ordinary print", () => {
@@ -81,6 +83,7 @@ describe("the Milan pick and location encounters", () => {
     expect(state.inventory.galleria_ticket).toBe("held");
     state = play(state, "galleria_ticket_press", "press");
     expect(state.inventory.galleria_ticket).toBe("used");
+    expect(state.itemUses).toEqual({ galleria_ticket: { encounterId: "galleria_ticket_press", optionId: "press" } });
     expect(state.travelBudget).toBe(before - 4);
   });
 });

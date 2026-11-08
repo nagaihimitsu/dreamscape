@@ -48,10 +48,23 @@
   "cityTransition": "after_epilogue",
   "farePartySize": 2,
   "intercityModes": [],
+  "transportModes": [
+    {
+      "id": "metro",
+      "nameJa": "地下鉄",
+      "movingJa": "地下鉄で移動中",
+      "kind": "rail"
+    },
+    {
+      "id": "taxi",
+      "nameJa": "タクシー",
+      "movingJa": "タクシーで移動中",
+      "kind": "car"
+    }
+  ],
   "authoring": {
     "eventPrefix": "uz",
     "observationFile": "authoring/journeys/uzbekistan/drafts/observation-cards.json",
-    "imageDirectory": "assets/tourism/uzbekistan",
-    "transitDirectory": "authoring/journeys/uzbekistan/research/uzbekistan-20261104"
+    "imageDirectory": "assets/tourism/uzbekistan"
   }
 }

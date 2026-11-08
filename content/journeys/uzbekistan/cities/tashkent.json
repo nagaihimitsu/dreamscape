@@ -6,7 +6,7 @@
   "nameJa": "タシュケント",
   "themeJa": "市場と緑の道がつなぐ都市",
   "firstClearReward": {
-    "rewardSourceId": "tashkent_legacy_episode_placeholder",
+    "rewardSourceId": "uz_tashkent_first_clear",
     "ap": 0
   },
   "landmarkIdsPlanned": [

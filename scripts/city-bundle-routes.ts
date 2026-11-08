@@ -12,7 +12,7 @@ const sharedRoute = {
 };
 const compactRouteSchema = z.object({
   fromPlaceId: id, toPlaceId: id,
-  mode: z.enum(["walk", "rail", "tram", "bus", "taxi"]),
+  mode: id,
   minutes: z.number().int().nonnegative(), cost: z.number().int().nonnegative(),
   ...sharedRoute, bothDirections: z.literal(true).optional(),
 }).strict().refine((route) => !route.bothDirections || route.fromPlaceId !== route.toPlaceId,

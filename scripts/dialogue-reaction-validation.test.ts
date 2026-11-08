@@ -68,16 +68,23 @@ it("integrates date and battle annotations through the real content pipeline", a
     await writeFile(path.join(fixture, "content/journeys/milano/presentation/dialogue-reactions.json"), JSON.stringify({
       schemaVersion: 1,
       entries: [
-        { storyId: "milano/cafe_tourism_01", speaker: "heroine", text: "「昔、大聖堂の石をこの運河で運んだんだって」", targetCharacterId: "heroine", expression: "smile" },
-        { storyId: "battles/milano_castello", speaker: "enemy", text: "「まだ驚かないで。驚きの整理番号が出ていない」", targetCharacterId: "enemy", mark: "question" },
-        { storyId: "battles/milano_last_supper_b_rebuttal", speaker: "heroine", text: "「待って。本当に、全部が同じ理由なんですか？」", targetCharacterId: "heroine", mark: "question" },
+        { storyId: "dates/milano_date_cafe", speaker: "heroine", text: "「猫舌なのに、いちばんいい匂いのときに飲みたいんです。かなり不利な趣味。」", targetCharacterId: "heroine", expression: "smile" },
+        { storyId: "battles/milano_main_castello", speaker: "enemy", text: "「写真、一枚でよかったんだ。新しい顔を作るのは待ってくれよ。」", targetCharacterId: "enemy", mark: "question" },
+        { storyId: "battles/milano_special_b_last_supper_rebuttal", speaker: "heroine", text: "「待って。本当に、全部が同じ理由なんですか？」", targetCharacterId: "heroine", mark: "question" },
       ],
     }));
-    await expect(buildContent(fixture, false)).resolves.toBeDefined();
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      await expect(buildContent(fixture, false)).resolves.toBeDefined();
+      // Each entry names a real line of a date, a battle and a special battle, reached with its speaker.
+      expect(warn.mock.calls.flat().filter((message) => String(message).includes("dialogue reaction"))).toEqual([]);
+    } finally {
+      warn.mockRestore();
+    }
     const learningDetails = JSON.parse(await readFile(path.join(fixture, "content/journeys/milano/learning/details.json"), "utf8"));
     await writeFile(path.join(fixture, "content/journeys/milano/presentation/dialogue-reactions.json"), JSON.stringify({
       schemaVersion: 1,
-      entries: [{ storyId: learningDetails.questions.sound_supper_1.storyId, speaker: "heroine", text: "「Which descriptionが、この文では主語だね。」", targetCharacterId: "heroine", mark: "question" }],
+      entries: [{ storyId: learningDetails.questions.milano_last_supper_q1.storyId, speaker: "heroine", text: "「Which descriptionが、この文では主語だね。」", targetCharacterId: "heroine", mark: "question" }],
     }));
     await expect(buildContent(fixture, false)).rejects.toThrow("Unsupported dialogue reaction story");
   } finally {

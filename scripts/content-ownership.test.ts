@@ -46,7 +46,7 @@ beforeEach(() => {
   manifest("uzbekistan", 30, ["tashkent"]);
   city(mi, "milano");
   city(gt, "delhi", { arrivalStoryId: "arrivals/delhi", landmarkIdsPlanned: ["delhi_red_fort"] },
-    { places: [{ id: "delhi_red_fort", cityId: "delhi", backgroundAssetId: "gt_bg_red_fort", landmarkIds: ["delhi_red_fort"] }],
+    { places: [{ id: "delhi_red_fort", cityId: "delhi", backgroundId: "gt_bg_red_fort", landmarkIds: ["delhi_red_fort"] }],
       events: [{ id: "gt_delhi_episode", cityId: "delhi" }] });
   city(uz, "tashkent");
   write(`${mi}/tourism/catalog.json`, { schemaVersion: 1, assets: [{ id: "duomo_photo" }], landmarks: [{ id: "duomo", cityId: "milano" }] });
@@ -61,14 +61,14 @@ beforeEach(() => {
   write("content/romance/effect_catalog.json", { schemaVersion: 1, effects: [{ id: "common_date_first_playful" }] });
   write(`${gt}/romance/effect_catalog.json`, { schemaVersion: 1, effects: [{ id: "gt_effect", memoryId: "gt_memory" }] });
   write(`${gt}/romance/date_catalog.json`, { schemaVersion: 1, dates: [{
-    id: "gt_date", chapterId: "delhi", storyId: "dates/gt_date", backgroundAssetId: "default_scene",
+    id: "gt_date", chapterId: "delhi", storyId: "dates/gt_date", backgroundId: "default_scene",
     requiredCompletedChapters: ["delhi"], requiredCompletedEpisodeIds: ["gt_delhi_episode"],
   }] });
   write(`${gt}/progression/journey.json`, { schemaVersion: 1,
     episodes: [{ id: "gt_delhi_episode", cityId: "delhi", landmarkId: "delhi_red_fort", battleId: "gt_battle" }],
     rewards: [{ id: "gt_reward", episodeId: "gt_delhi_episode" }] });
   write(`${gt}/battles/catalog.json`, { schemaVersion: 1, battles: [{
-    id: "gt_battle", landmarkId: "delhi_red_fort", storyId: "battles/gt_battle", quizId: "gt_quiz", backgroundAssetId: "gt_bg_red_fort",
+    id: "gt_battle", landmarkId: "delhi_red_fort", storyId: "battles/gt_battle", quizId: "gt_quiz", backgroundId: "gt_bg_red_fort",
   }] });
   write(`${gt}/learning/translations.json`, { schemaVersion: 1, questions: { gt_question: {} } });
   write(`${gt}/quizzes/gt_quiz.json`, { id: "gt_quiz", landmarkId: "delhi_red_fort", questions: [{ id: "gt_question" }] });
@@ -87,7 +87,7 @@ describe("checkContentOwnership", () => {
 
   it("leaves unknown IDs to the content pipeline", () => {
     write(`${gt}/romance/date_catalog.json`, { schemaVersion: 1, dates: [{
-      id: "gt_date", chapterId: "nowhere", storyId: "dates/missing", backgroundAssetId: "missing_bg",
+      id: "gt_date", chapterId: "nowhere", storyId: "dates/missing", backgroundId: "missing_bg",
     }] });
     expect(() => check()).not.toThrow();
   });
@@ -115,9 +115,9 @@ describe("checkContentOwnership", () => {
   });
 
   it("rejects references to another journey's content with both files", () => {
-    write(`${gt}/romance/date_catalog.json`, { schemaVersion: 1, dates: [{ id: "gt_date", chapterId: "delhi", backgroundAssetId: "uz_bg_registan" }] });
+    write(`${gt}/romance/date_catalog.json`, { schemaVersion: 1, dates: [{ id: "gt_date", chapterId: "delhi", backgroundId: "uz_bg_registan" }] });
     expect(() => check()).toThrow(
-      'Reference to another layer: content/journeys/golden_triangle/romance/date_catalog.json dates["gt_date"] backgroundAssetId ' +
+      'Reference to another layer: content/journeys/golden_triangle/romance/date_catalog.json dates["gt_date"] backgroundId ' +
       '"uz_bg_registan" is the background defined in content/journeys/uzbekistan/romance/presentation.json; ' +
       "a journey folder may only refer to its own content and the core layer.");
   });
@@ -146,13 +146,13 @@ describe("checkContentOwnership", () => {
     write(`${uz}/quizzes/uz_quiz.json`, { id: "uz_quiz", landmarkId: "duomo", questions: [{ id: "uz_question" }] });
     write(`${gt}/stories/dates/gt_date.ink`, "# background: uz_bg_registan\n* [Hi # effect: uz_effect]\n");
     write(`${gt}/learning/translations.json`, { schemaVersion: 1, questions: { gt_question: {}, uz_question: {} } });
-    city(gt, "agra", { nextCityId: "tashkent" }, { places: [{ id: "agra_fort", backgroundAssetId: "uz_bg_registan" }] });
+    city(gt, "agra", { nextCityId: "tashkent" }, { places: [{ id: "agra_fort", backgroundId: "uz_bg_registan" }] });
     expect(() => check()).toThrow(new Error([
       'Reference to another layer: content/journeys/golden_triangle/learning/translations.json questions.uz_question question ID "uz_question" ' +
       "is the question defined in content/journeys/uzbekistan/quizzes/uz_quiz.json; a journey folder may only refer to its own content and the core layer.",
       'Content entry outside its layer\'s cities: content/journeys/golden_triangle/cities/agra.json nextCityId "tashkent" is a city of ' +
       "content/journeys/uzbekistan/cities/tashkent.json; content/journeys/golden_triangle/ may only describe the cities of its manifest (delhi, agra).",
-      'Reference to another layer: content/journeys/golden_triangle/travel/agra.json places["agra_fort"] backgroundAssetId "uz_bg_registan" ' +
+      'Reference to another layer: content/journeys/golden_triangle/travel/agra.json places["agra_fort"] backgroundId "uz_bg_registan" ' +
       "is the background defined in content/journeys/uzbekistan/romance/presentation.json; a journey folder may only refer to its own content and the core layer.",
       'Reference to another layer: content/journeys/uzbekistan/quizzes/uz_quiz.json landmarkId "duomo" is the landmark defined in ' +
       "content/journeys/milano/tourism/catalog.json; a journey folder may only refer to its own content and the core layer.",
@@ -203,16 +203,16 @@ describe("checkContentOwnership", () => {
   });
 
   it("checks a city's story background in its travel settings", () => {
-    write(`${gt}/travel/delhi-settings.json`, { storyBackgroundAssetId: "uz_bg_registan" });
+    write(`${gt}/travel/delhi-settings.json`, { storyBackgroundId: "uz_bg_registan" });
     expect(() => check()).toThrow(
-      'Reference to another layer: content/journeys/golden_triangle/travel/delhi-settings.json storyBackgroundAssetId "uz_bg_registan" ' +
+      'Reference to another layer: content/journeys/golden_triangle/travel/delhi-settings.json storyBackgroundId "uz_bg_registan" ' +
       "is the background defined in content/journeys/uzbekistan/romance/presentation.json; a journey folder may only refer to its own content and the core layer.");
     // The shared default is usable by every journey; Milan's cafe belongs to Milan.
-    write(`${gt}/travel/delhi-settings.json`, { storyBackgroundAssetId: "default_scene" });
+    write(`${gt}/travel/delhi-settings.json`, { storyBackgroundId: "default_scene" });
     expect(() => check()).not.toThrow();
-    write(`${gt}/travel/delhi-settings.json`, { storyBackgroundAssetId: "milano_cafe" });
+    write(`${gt}/travel/delhi-settings.json`, { storyBackgroundId: "milano_cafe" });
     expect(() => check()).toThrow(
-      'Reference to another layer: content/journeys/golden_triangle/travel/delhi-settings.json storyBackgroundAssetId "milano_cafe" ' +
+      'Reference to another layer: content/journeys/golden_triangle/travel/delhi-settings.json storyBackgroundId "milano_cafe" ' +
       "is the background defined in content/journeys/milano/romance/presentation.json; a journey folder may only refer to its own content and the core layer.");
   });
 });
@@ -302,12 +302,12 @@ describe("content:build", () => {
     const fixture = mkdtempSync(path.join(tmpdir(), "dreamscape-ownership-build-"));
     try {
       await prepareContentFixture(fixture);
-      await changeCatalogEntry(fixture, "romance/date_catalog.json", "dates", "gt_delhi_date_india_gate", (date: { backgroundAssetId: string }) => {
-        date.backgroundAssetId = "uz_bg_samarkand_registan";
+      await changeCatalogEntry(fixture, "romance/date_catalog.json", "dates", "gt_delhi_date_india_gate", (date: { backgroundId: string }) => {
+        date.backgroundId = "uz_bg_samarkand_registan";
       });
       await expect(buildContent(fixture, false)).rejects.toThrow(
         'Reference to another layer: content/journeys/golden_triangle/romance/date_catalog.json dates["gt_delhi_date_india_gate"] ' +
-        'backgroundAssetId "uz_bg_samarkand_registan" is the background defined in content/journeys/uzbekistan/romance/presentation.json');
+        'backgroundId "uz_bg_samarkand_registan" is the background defined in content/journeys/uzbekistan/romance/presentation.json');
     } finally {
       rmSync(fixture, { recursive: true, force: true });
     }

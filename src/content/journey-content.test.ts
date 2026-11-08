@@ -89,7 +89,7 @@ describe("integrated journey content contract", () => {
     expect(finale.requiredEpisodeIds).toEqual(
       stops.map((episode) => episode.id),
     );
-    expect(finale.epilogueStoryId).toBe("milano/sound_epilogue");
+    expect(finale.epilogueStoryId).toBe("epilogues/milano");
     const firstClear = result.journey.rewards.find(
       (rule) => rule.id === cityData.firstClearReward.rewardSourceId,
     )!;
