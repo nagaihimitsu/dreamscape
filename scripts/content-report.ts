@@ -255,6 +255,8 @@ export type JourneyContents = { id: string; status: unknown; counts: [string, nu
 
 /** A short name for the entries of a catalog key: the key (`dates`, `wardrobe cities`), or the file for generic keys. */
 function entryLabel(kind: MergedKind, key: string): string {
+  // Groups of files, not files: "artworks 1" would read as one image.
+  if (kind === "presentation/own-artwork.json") return "own artwork groups";
   const name = key === "questions" || key === "entries" ? path.posix.basename(kind, ".json").replaceAll("-", " ") : key;
   return name.replaceAll(".", " ").replace(/([a-z])([A-Z])/gu, "$1 $2").toLowerCase();
 }

@@ -15,7 +15,7 @@ import { reasoningIntroCatalogSchema } from "./reasoning-intros";
 import { battleCatalogSchema, citySchema, dateCatalogSchema } from "./schemas";
 import { tourismCatalogSchema } from "./tourism-schemas";
 import { parseStoryTags } from "./tags";
-import { changeCatalogEntry, prepareContentFixture, quizSourceFile, storySourceFile } from "./test-fixtures";
+import { changeCatalogEntry, prepareContentFixture, quizSourceFile, registerOwnArtwork, storySourceFile } from "./test-fixtures";
 
 let fixture: string;
 const storyFile = storySourceFile("milano/sound_cafe_01");
@@ -63,6 +63,9 @@ describe("content build acceptance", () => {
     await sharp({ create: { width: 1760, height: 560, channels: 3, background: "#e6d8bb" } }).webp().toFile(image);
     const titleArt = { imagePath: "assets/title/milano.webp", captionJa: "ミラノ ／ 運河の午後" };
     await writeFile(manifestFile, JSON.stringify({ ...manifest, titleArt }));
+    // Title art is the author's own illustration: served only once the journey lists it as own artwork.
+    await expect(buildContent(fixture, false)).rejects.toThrow("出典のない画像：content/journeys/milano/public/assets/title/milano.webp。");
+    await registerOwnArtwork(fixture, "content/journeys/milano", [titleArt.imagePath]);
     const result = await buildContent(fixture);
     expect(result.warnings).toContainEqual({ kind: "unknown-file",
       message: expect.stringContaining("Unknown file in a journey folder: content/journeys/milano/notes.txt ") });
@@ -138,10 +141,12 @@ describe("content build acceptance", () => {
     expressions.neutral = `${dir}/neutral.png`;
     await writeFile(path.join(fixture, "public", expressions.neutral), await render(1024));
     await writeFile(file, JSON.stringify(data));
+    await registerOwnArtwork(fixture, "content", [expressions.neutral]);
     await expect(buildContent(fixture, false)).resolves.toBeDefined();
     expressions.smile = `${dir}/smile.png`;
     await writeFile(path.join(fixture, "public", expressions.smile), await render(1024));
     await writeFile(file, JSON.stringify(data));
+    await registerOwnArtwork(fixture, "content", [expressions.smile]);
     await expect(buildContent(fixture, false)).resolves.toBeDefined();
     await writeFile(path.join(fixture, "public", expressions.smile), await render(512));
     await expect(buildContent(fixture, false)).rejects.toThrow("dimensions do not match canvas 1024x1536");
@@ -183,6 +188,7 @@ describe("content build acceptance", () => {
     await writeFile(path.join(fixture, "public", imagePath), image);
     for (const id of expressionIds) pose.expressions[id] = imagePath;
     await writeFile(file, JSON.stringify(data));
+    await registerOwnArtwork(fixture, "content", [imagePath]);
     await expect(buildContent(fixture, false)).resolves.toBeDefined();
     pose.expressions.teasing_big = `${dir}/missing.png`;
     await writeFile(file, JSON.stringify(data));

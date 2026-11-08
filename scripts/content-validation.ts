@@ -16,6 +16,7 @@ import { displayPath, journeyFolderPath, parseCatalog as parseSourceCatalog, par
 import { DEFAULT_BACKGROUND_ID } from "../src/content/default-background";
 import { authoringProfileOf } from "./journey-authoring";
 import { checkContentOwnership } from "./content-ownership";
+import { checkImageRights } from "./image-rights";
 import { contentWarnings, journeyContents, unusedWordMeanings } from "./content-report";
 import { characterCatalogSchema } from "../src/content/character-assets";
 import { encounterCatalogInputSchema, normalizeEncounterCatalog } from "../src/content/encounter-schemas";
@@ -647,6 +648,8 @@ export function validateContent(sources: ContentSources, options: { storyCache?:
   // Every tourism image is served (checkTourismImages decodes them after this validation).
   const assetFiles = sources.catalogs["tourism/catalog.json"]?.provenance.items.assets ?? [];
   tourism.assets.forEach((asset, index) => requireServedFile(publicFiles, asset.path, journeyFolderOf(assetFiles[index])));
+  // Every served image is a credited tourism image or listed as artwork made for Dreamscape (image-rights.ts).
+  checkImageRights(sources, tourism.assets);
   for (const current of cities) {
     const landmarks = tourism.landmarks.filter((landmark) => landmark.cityId === current.id);
     const ids = new Set(landmarks.map((landmark) => landmark.id));
