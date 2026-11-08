@@ -176,7 +176,11 @@ export const FONT_CREDIT = {
   ],
 } as const;
 
-/** The footnote of the list (decision D5): own artwork is left out on purpose, and where fact sources are shown. */
+/**
+ * The footnote of the list (decision D5): own artwork is left out on purpose, and where fact sources are
+ * shown (the clue book's cards, ClueDetails, and a quiz's explanation, BattleScreen; no date screen shows
+ * fact sources, only its background's image credit).
+ */
 export const OWN_ARTWORK_NOTE_JA =
   "Dreamscape のために作った絵（キャラクターの立ち絵・アイコンなど）は、この一覧に載せていません。" +
-  "情報の出典は、手がかり帳・クイズの解説・デートの説明に表示しています。";
+  "情報の出典は、手がかり帳とクイズの解説に表示しています。";

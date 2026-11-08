@@ -53,7 +53,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 
 ## 共通データと旅行編フォルダ
 
-- `content/`（`content/journeys/` を除く）は全旅行編で共有する基盤データ（共通レイヤー）。置けるのは `romance/balance.json`・`romance/response_profiles.json`・共通デート効果（`common_date_*`）・`romance/presentation.json` の共通部分（保留・エンディング表示、感情、共通の既定背景 `default_scene`）・`romance/progression.json` の段階と告白・`learning/word-meanings.json`・`presentation/characters.json` だけ。都市・移動・Ink・クイズや旅行編専用のカタログは置けず、共通データから都市や旅行編のデータを参照することもできない（`scripts/content-ownership.ts` が検査）。
+- `content/`（`content/journeys/` を除く）は全旅行編で共有する基盤データ（共通レイヤー）。置けるのは `romance/balance.json`・`romance/response_profiles.json`・共通デート効果（`common_date_*`）・`romance/presentation.json` の共通部分（保留・エンディング表示、感情、共通の既定背景 `default_scene`）・`romance/progression.json` の段階と告白・`learning/word-meanings.json`・`presentation/characters.json`・`presentation/own-artwork.json`（直下の `public/` が配信する、Dreamscape のために作った絵の一覧。下の「画像の出典と自作の絵」）だけ。都市・移動・Ink・クイズや旅行編専用のカタログは置けず、共通データから都市や旅行編のデータを参照することもできない（`scripts/content-ownership.ts` が検査）。
 - 各旅行編は `content/journeys/<journeyId>/`（`manifest.json` で登録し、`order` の順に並ぶ）へ同じ相対配置でデータを置く（開発・テスト専用の見本の編だけは `authoring/templates/sample_trip/` に置き、明示したときだけ読む。下の「見本の編」）。`npm run content:build` が共通データと各旅行編を統合・検証して `src/content/generated/content/` に書き出し、ゲームはこの生成物だけを読む。
 - 画像は、全旅行編で共有するものをリポジトリ直下の `public/`、旅行編だけが使うもの（観光写真・デート背景・その旅行編の品物アイコン）を `content/journeys/<journeyId>/public/` に、配信時と同じ相対パス（`assets/tourism/...` など）で置く。`npm run content:build` がこれらを `src/content/generated/public/`（生成物。Git管理しない）へまとめて写し（変更のないファイルはサイズと更新時刻で判定して省略し、元がなくなったファイルは消す）、Viteはこのフォルダを `publicDir` として配信・ビルドする（Viteプラグインや独自のVite処理は使わない）。同じ相対パスの画像を二つのフォルダに置くと `content:build` が失敗する。データ中の画像パスは配信時の相対パスのままで、置き場所によって変わらない。旅行編のデータが使えるのは自分の `public/` と直下の `public/` の画像だけ、共通データは直下の `public/` の画像だけ。
 - 既定の旅行編（タイトル画面で最後に開いた旅行編がないとき・新しいゲーム・Debugの初期値）は、`order` 順で最初の公開中（`status: "available"`）の旅行編とその最初の都市。公開中の旅行編がない場合、`content:build` が失敗する。
@@ -73,6 +73,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 | `learning/word-meanings.json` | `words` をキーごとに統合（同じ内容の重複だけ許可） |
 | `presentation/characters.json` | `characters` を連結、`battleCharacters`・`wardrobe.cities`・`wardrobe.scenes` をキーごとに統合。`expressionIds`・`wardrobe.regions`・`wardrobe.countries` は共通データのみ |
 | `presentation/dialogue-expressions.json`・`dialogue-reactions.json`・`reasoning-intros.json` | `entries` を連結 |
+| `presentation/own-artwork.json` | `artworks` を連結。ただし各層の一覧は、その層の `public/` が配信する画像だけを扱う（下の「画像の出典と自作の絵」）。どの層にもなければエラー（共通データが持つ） |
 | `progression/journey.json` | `episodes`・`storyBattles`・`rewards` を連結 |
 | `romance/balance.json`・`romance/response_profiles.json` | ファイル全体を共通データだけが持つ |
 | `romance/date_catalog.json`・`date_destinations.json`・`effect_catalog.json` | `dates`・`destinations`・`effects` を連結 |
@@ -96,6 +97,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
   - `productionStatus: "complete"` の都市に、その都市の `kind: "city_finale"` のエピソード（`progression/journey.json`）がない（`Complete city has no city finale`）。都市クリア・エピローグ・次の都市への出発はフィナーレの後に起きるため。
   - データの画像（観光画像の `path`、背景の `imagePath`、品物の `iconPath`、人物画像、タイトルの絵）が、別の旅行編の `public/` の画像を指す。旅行編のデータが使えるのは自分の `public/` と直下の `public/` の画像、共通データが使えるのは直下の `public/` の画像だけ（`Reference to another layer`）。
   - `manifest.json` の `authoring` のパス（`observationFile`・`transitDecisionLedger.file`）が、`/` 区切りのリポジトリからの相対パスでない（絶対パス、`..`、`\` を含む）か、`authoring/journeys/<旅行編ID>/` の外を指す。`transitDecisionLedger.cities` にその旅行編の都市以外がある。`imageDirectory` は配信時のパス（`assets/` で始まる相対パス）。
+  - 配信する画像が、出典つきの観光画像でも自作の絵の一覧にある絵でもない（「出典のない画像」）、その両方である、一覧にあるファイルをその層が配信していない、同じ層の一覧に2回ある（下の「画像の出典と自作の絵」）。
 - 統合したカタログのスキーマエラーは、問題の項目を持つファイルごとに `Invalid content in <ファイル>:` で始まるまとまりで示し、位置（`path`）はそのファイルの中での位置にする（例：旅行編の最初の対決なら、統合後の `battles[9]` ではなく `battles[0]`）。統合後の位置は、エラーの `cause` に残る。
 - 警告（生成は続ける。件数を表示し、`npm run content:build -- --verbose` で一覧。判定は `scripts/content-report.ts`）。警告があっても、単体テスト（`test:quick`・`npm test`）・CI・`npm run verify`・公開は失敗しない。直すかどうかは制作者が一覧を見て判断する
   - 旅行編フォルダの読み込まれず配信もされないファイル（上の「統合の規則」）。
@@ -105,6 +107,15 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
   - `manifest.json` の `transportModes` に宣言したのに、その旅行編のどの都市の経路にも使われていない乗り物（`unusedTransportModes`。経路を足すか、宣言を消す）。
 - 成功すると、旅行編ごとに1行、そのフォルダが持つ都市・ストーリー・クイズ・配信ファイルの数と、各カタログの項目数（0件の種類は省略）を表示する（例：`Journey uzbekistan (preparing): cities 4, stories 0, quizzes 0, public files 40; destinations 24, backgrounds 44, assets 40`）。置き忘れや、空のまま公開しかけていることに気付くための表示。観光の手がかり（`clues`）の後には、そのうち問題と結び付かない観察だけの手がかりの数を出す（0件なら省略。`clues 29, observation-only clues 29`。[観察だけの手がかり](07_DATA_AND_TESTS.md#観察だけの手がかり)）。
 - 語の意味（共通の `learning/word-meanings.json` と旅行編の断片）のうち、どの英文にも出ない語があれば、その数を表示する（一覧は `--verbose`。判定は `scripts/content-report.ts` の `unusedWordMeanings`）。対象の英文は、クイズの問題文・選択肢（例のクイズ `*.example.json` を除く）と、道中交流の問題・選択肢（カタログの `textEn` と、そのInkの選択肢の文）。使われない語は害がないため警告ではなく、消すかどうかは制作者が判断する。
+
+### 画像の出典と自作の絵
+
+- 配信する画像（直下の `public/` と各旅行編の `public/` にある `.png`・`.webp`・`.jpg`・`.jpeg`・`.svg`・`.gif`・`.avif`・`.ico`）は、どれも次のどちらか一方に当たる。判定は `scripts/image-rights.ts` の `checkImageRights`（単体テスト `scripts/image-rights.test.ts`）。
+  - 出典つきの観光画像：その旅行編の `tourism/catalog.json` の `assets` に、作者・出典・ライセンス・加工・確認日とともに登録した画像（[CONTENT_GUIDE](../authoring/CONTENT_GUIDE.md)）。共通の `public/` には置かない。
+  - Dreamscape のために作った絵：その画像を配信する層の `presentation/own-artwork.json` に、配信時のパスを1行ずつ書いた絵。直下の `public/` の絵は共通データの `content/presentation/own-artwork.json`、旅行編の `public/` の絵はその旅行編の `content/journeys/<旅行編ID>/presentation/own-artwork.json`。形式は `{ "schemaVersion": 1, "artworks": [{ "noteJa": "日本語の説明", "paths": ["assets/…"] }] }`（`src/content/own-artwork-schema.ts`）。ヒロインの立ち絵、仮の立ち絵、漫符、品物のアイコン、ブラウザのアイコン、作者が用意したタイトルの絵がここに入る。
+- `content:build` は、どちらでもない画像（「出典のない画像」）、両方である画像（「画像の扱いが二重です」）、一覧にあるのにその層が配信していないファイル（「自作の絵の一覧にあるファイルがありません」。古い行が、後で同じ名前で置いた別の画像を覆わないように）、同じ層の一覧に2回あるファイルを、1つのエラーにまとめて示して止まる。画像でない配信ファイル（`manifest.webmanifest`）は対象外。画像を足す・消す・名前を変えるときは、同じ変更で一覧も直す。
+- 自作の絵は、出典の一覧（クレジットの画面）に載せない。観光画像の一覧のために、`content:build` は旅行編ごとの観光画像のIDの一覧 `src/content/generated/image-journeys.json` を書き出し、`src/content/credits.ts` の `photoCredits` が読む。
+- ライブラリのライセンス：本番ビルドは `vite.config.ts` の `build.license` で、使っているライブラリの名前・版・ライセンスと本文の一覧 `dist/third-party-licenses.json` を書き出す（開発サーバーにはない）。`npm run dist:check` が、それが読めるJSONの配列で、各項目に名前・版・識別子・本文があり、`package.json` の `dependencies` のすべてが載っていることを確かめる（`scripts/dist-guard.ts` の `checkThirdPartyLicenses`）。
 
 ### 乗り物と交通判断台帳
 
@@ -125,6 +136,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 - `stories.json`（コンパイル済みInk）、`quizzes.json`（出題するクイズ）。
 - `content/`：統合・検証済みのカタログを、旧 `content/` と同じ相対パス（`battles/catalog.json`、`cities/delhi.json`、`journeys/catalog.json` など）で書き出した写し。都市・移動ファイルは元のバイト列のまま写す。ゲームと参照だけの単体テストはここだけを読む（`scripts/content-boundary.test.ts` が検査）。
 - `public/`：直下の `public/` と各旅行編の `public/` を集めた配信フォルダ（`vite.config.ts` の `publicDir`）。
+- `image-journeys.json`：旅行編ごとの観光画像のIDの一覧（上の「画像の出典と自作の絵」）。
 - `build-info.json`：生成に含めた `content/journeys/` の外の旅行編フォルダ（`{ "extraJourneyFolders": { "sample_trip": "authoring/templates/sample_trip" } }`、なければ空）。
 
 `stories.json`・`quizzes.json` は毎回書き直す。`content/`・`public/` は変更のないファイルを書き直さず、元がなくなったファイルを削除する。JSONや画像を編集した後も、Inkと同様に `npm run content:build` を実行する。
@@ -174,7 +186,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 - Debugの「仮の場面」は、準備中の旅行編の都市ごとに `<都市ID>_episode`・`<都市ID>_battle`・`<都市ID>_special_b`・`<都市ID>_date` など `<都市ID>_` で始まるID（試験用の都市では `test_`）と、`<都市ID>/guide` などのストーリーIDをメモリ上だけで作る。準備中の旅行編の正式データには、上の接頭辞（例：`uz_`）を付けたIDを使う。
 - 仮の場面（`src/dev/test-cities.ts`）と一部の単体テストは、実在する1都市のデータを役割ごとに複製して試験用の都市を作る。開発用で、通常プレイには影響しない。元にする都市は `src/dev/fixture-template.ts` の `findDebugTemplate` がデータから選ぶ。候補は、見本の編が読み込まれていれば（`npm run dev:sample`・単体テスト）その都市、なければ公開中の旅行編を `order` 順・都市順に見て、必須の役割をすべて持つ最初の都市（今のデータではミラノ）。必須の役割は、案内と対決のある観光地の通常エピソード、その出来事の地点と徒歩の経路、エピローグのある都市フィナーレ。任意の役割（特殊戦B・特殊戦C、品物をくれる道中交流、デート）は元の都市にあるものだけを作り、ないものはDebugの設定画面に注記して、場面の一覧では選べないことを示す（例：ミラノ編がない構成ではインド編のデリーが元になり、特殊戦と道中交流の仮の場面はない）。条件を満たす都市がなければ、その旨を表示して作らない。ミラノのIDを使うテストは `installTestCity({ templateCityId: "milano" })` と元の都市を明示する。仮の場面は準備中で実際のエピソードがまだない旅行編だけに作る。
 - 旅行編ID `sample_trip`、接頭辞 `smp_`、都市ID `mihon`、並び順 `order: 9000` は、開発・テスト専用の見本の編（`authoring/templates/sample_trip/`、下の「見本の編」）のために予約する。`content/journeys/` には置かず、本番には含めない。`npm run journey:new` は、`sample_trip`・`smp`・`mihon` を旅行編ID・都市ID・接頭辞のどれに指定しても拒否し（`_` で区切ったIDの一部としても。`sample_trip` はどこに含んでも、本番の `dist/` の検査に掛かるため拒否する）、新しい旅行編に `order: 9000` を使わない。
-- 本番ビルド（`npm run build`・`npm run verify`）は `vite build` の後に `scripts/check-dist.ts` で `dist/` を検査し、Debug・プレビュー（`src/dev/`）、テスト用の仮データ（`src/dev/test-cities.ts`・`src/content/test-fixtures.ts`・`tests/fixtures/`）、見本の編の旅行編ID `sample_trip`（画像フォルダ名にも使う）に固有の目印の文字列と、開発・テスト用のファイルのパス（`src/dev/`・`tests/fixtures/`・`tests/journeys/`。ソースマップなどに出る）が、公開されるファイルの名前か内容にあればビルドを失敗にする。検出に使う文字列と由来のファイルは `scripts/dist-guard.ts` にあり、由来のファイルから文字列が消えると `scripts/dist-guard.test.ts` が失敗する。旅行編ごとのテストの補助（`tests/journeys/<旅行編ID>/` の `test-journey.ts` など）は自分の目印を持たない。旅行編を外すときにそのフォルダを消しても、`scripts/dist-guard.ts` を直さずに済むようにするためで、補助は `src/dev/test-cities.ts` の上に仮の都市を作るのでその目印が一緒に現れ、パスには `tests/journeys/` の目印が出る。加えて `scripts/dist-guard.test.ts` が、本番のコードが `tests/` を読み込まないことを確かめる。検出は目印による確認で、開発用のコードが入ったことを必ず見つけるものではない（目印を持たない新しいファイルや、目印の部分が使われずに省かれたコードは見逃す）。`src/dev/` などに開発用のファイルを足したら、そのファイルに固有の文字列も目印に加える（旅行編ごとのテストのフォルダの補助は除く）。
+- 本番ビルド（`npm run build`・`npm run verify`）は `vite build` の後に `scripts/check-dist.ts` で `dist/` を検査し、Debug・プレビュー（`src/dev/`）、テスト用の仮データ（`src/dev/test-cities.ts`・`src/content/test-fixtures.ts`・`tests/fixtures/`）、見本の編の旅行編ID `sample_trip`（画像フォルダ名にも使う）に固有の目印の文字列と、開発・テスト用のファイルのパス（`src/dev/`・`tests/fixtures/`・`tests/journeys/`。ソースマップなどに出る）が、公開されるファイルの名前か内容にあればビルドを失敗にする。ライブラリのライセンス一覧 `third-party-licenses.json` がないか、`package.json` の `dependencies` のどれかが載っていないときも失敗にする（上の「画像の出典と自作の絵」）。検出に使う文字列と由来のファイルは `scripts/dist-guard.ts` にあり、由来のファイルから文字列が消えると `scripts/dist-guard.test.ts` が失敗する。旅行編ごとのテストの補助（`tests/journeys/<旅行編ID>/` の `test-journey.ts` など）は自分の目印を持たない。旅行編を外すときにそのフォルダを消しても、`scripts/dist-guard.ts` を直さずに済むようにするためで、補助は `src/dev/test-cities.ts` の上に仮の都市を作るのでその目印が一緒に現れ、パスには `tests/journeys/` の目印が出る。加えて `scripts/dist-guard.test.ts` が、本番のコードが `tests/` を読み込まないことを確かめる。検出は目印による確認で、開発用のコードが入ったことを必ず見つけるものではない（目印を持たない新しいファイルや、目印の部分が使われずに省かれたコードは見逃す）。`src/dev/` などに開発用のファイルを足したら、そのファイルに固有の文字列も目印に加える（旅行編ごとのテストのフォルダの補助は除く）。
 
 ### 新しい編を追加する手順
 
@@ -212,7 +224,7 @@ tests/journeys/<journeyId>/ # その旅行編だけの内容・経路・制作�
 ### 既定背景とタイトルの絵
 - 共通の既定背景は `default_scene`（名前「旅の余白」、説明「旅の余白 ／ 予定のない午後」、色 `#e6d8bb`、`fallback: "neutral"`）。共通データの `content/romance/presentation.json` が定義し、`content:build` は共通データにないとエラーにする（旅行編のフォルダに置いても認めない）。IDはコードでは `src/content/default-background.ts` の `DEFAULT_BACKGROUND_ID` だけで扱う。Inkも都市も背景を指定しない会話の初期背景（`src/story/runtime.ts`）、背景を渡されない `CanalScene`、タイトルの絵がない旅行編のタイトルに使う。色だけの中立な場面で、運河の絵は表示しない。
 - `milano_cafe`（運河沿いのカフェ、「ミラノ ／ 予定のない午後」）はミラノ編の背景（`content/journeys/milano/romance/presentation.json`）。IDと意味は以前の共通背景と同じで、運河の絵と同じ空の色（`#e6d8bb`）で表示する。ミラノの会話の初期背景（ミラノの `storyBackgroundId`）として使い、他の旅行編からは参照できない。
-- タイトルの絵は旅行編ごとに `manifest.json` の任意の `titleArt` で指定する。`imagePath`（配信時のパス。`assets/` で始まる WebP・PNG・JPEG）、`captionJa`（絵の左下に重ねる短い説明。例「ミラノ ／ 運河の午後」）、任意の `imagePosition`（切り抜くときに残す位置。`x`・`y` を0〜100の％で指定し、省略時は中央）。画像はその旅行編の `content/journeys/<旅行編ID>/public/assets/…`（例：`public/assets/title/<旅行編ID>.webp` → `assets/title/<旅行編ID>.webp`）か、全旅行編で共有するなら直下の `public/assets/…` に置く。`content:build` は画像がないとき（`Missing title art image`）と、他の旅行編のフォルダの画像を指すとき（`Reference to another layer`）にエラーにする。`titleArt` がない旅行編と、画像を読み込めなかった場合は、既定背景 `default_scene` の色と説明（絵を読み込めなかった場合は `captionJa`）を表示する。準備中の旅行編の画面（`PreparingJourney`・`UnavailableJourney`）には絵の欄がないので表示されない。`tests/e2e/boot.spec.ts` は公開中の各旅行編のタイトルで、指定した絵と説明（なければ既定背景）が表示され、画像が読み込めることを確かめる。
+- タイトルの絵は旅行編ごとに `manifest.json` の任意の `titleArt` で指定する。`imagePath`（配信時のパス。`assets/` で始まる WebP・PNG・JPEG）、`captionJa`（絵の左下に重ねる短い説明。例「ミラノ ／ 運河の午後」）、任意の `imagePosition`（切り抜くときに残す位置。`x`・`y` を0〜100の％で指定し、省略時は中央）。画像はその旅行編の `content/journeys/<旅行編ID>/public/assets/…`（例：`public/assets/title/<旅行編ID>.webp` → `assets/title/<旅行編ID>.webp`）か、全旅行編で共有するなら直下の `public/assets/…` に置く。作者が用意した絵は、置いた層の `presentation/own-artwork.json`（旅行編の `public/` ならその旅行編の、直下の `public/` なら `content/presentation/own-artwork.json`）に配信時のパスを1行足す（足さないと `content:build` が「出典のない画像」で止まる。上の「画像の出典と自作の絵」）。`content:build` は画像がないとき（`Missing title art image`）と、他の旅行編のフォルダの画像を指すとき（`Reference to another layer`）にエラーにする。`titleArt` がない旅行編と、画像を読み込めなかった場合は、既定背景 `default_scene` の色と説明（絵を読み込めなかった場合は `captionJa`）を表示する。準備中の旅行編の画面（`PreparingJourney`・`UnavailableJourney`）には絵の欄がないので表示されない。`tests/e2e/boot.spec.ts` は公開中の各旅行編のタイトルで、指定した絵と説明（なければ既定背景）が表示され、画像が読み込めることを確かめる。
 - タイトルの絵の表示枠（2026年11月、Chromiumで実測）。枠は画面の横幅いっぱい（PCでは最大 878px）で、高さだけが画面によって変わり、画像は枠を覆うように中央（または `imagePosition`）を基準に切り抜かれる。
 
   | 画面 | 表示枠（CSS px） | 横:縦 |

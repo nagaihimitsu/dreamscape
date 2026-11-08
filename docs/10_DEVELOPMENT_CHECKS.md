@@ -384,7 +384,7 @@ GitHub Actionsは次のワークフローを実行する。同じイベントで
 
 ### 本番ビルドの検査
 
-`npm run build` と `npm run verify` は、`vite build` の後に `npm run dist:check`（`scripts/check-dist.ts`）で `dist/` を検査する。Debug・人物素材のプレビュー（`src/dev/`）、テスト用の仮データ（`src/dev/test-cities.ts`・`src/content/test-fixtures.ts`・`tests/fixtures/`）、開発・テスト専用の見本の編（`sample_trip`。画像のフォルダ名にも使う）に固有の文字列か、開発・テスト用のファイルのパス（`src/dev/`・`tests/fixtures/`・`tests/journeys/`。ソースマップや開発用のJSX変換が書き込む）が、公開されるファイルの名前か内容に1つでもあれば、ファイル名・文字列・その由来を表示してビルドを失敗にする。`vite.config.ts` は変えていない。
+`npm run build` と `npm run verify` は、`vite build` の後に `npm run dist:check`（`scripts/check-dist.ts`）で `dist/` を検査する。Debug・人物素材のプレビュー（`src/dev/`）、テスト用の仮データ（`src/dev/test-cities.ts`・`src/content/test-fixtures.ts`・`tests/fixtures/`）、開発・テスト専用の見本の編（`sample_trip`。画像のフォルダ名にも使う）に固有の文字列か、開発・テスト用のファイルのパス（`src/dev/`・`tests/fixtures/`・`tests/journeys/`。ソースマップや開発用のJSX変換が書き込む）が、公開されるファイルの名前か内容に1つでもあれば、ファイル名・文字列・その由来を表示してビルドを失敗にする。あわせて、`vite.config.ts` の `build.license` が書き出すライブラリのライセンス一覧 `dist/third-party-licenses.json` が、読めるJSONの配列で、各項目に名前・版・識別子・本文があり、`package.json` の `dependencies` のすべてを載せていることを確かめ、足りなければ日本語の理由を表示して失敗にする（`checkThirdPartyLicenses`。単体テストは `scripts/dist-guard.test.ts`）。
 
 - 失敗した場合は、開発専用のモジュールを `import.meta.env.DEV` の分岐の外から読み込んでいないか、生成物（`src/content/generated/`）に見本の編が入っていないか（`src/content/generated/build-info.json` の `extraJourneyFolders`。単体テストや `npm run dev:sample` の後に `vite build` を直接実行した場合など）を確かめる。生成物が原因なら `npm run content:build` で生成し直してからビルドする。
 - 検出に使う文字列と由来のファイルは `scripts/dist-guard.ts` にある。由来のファイルを改名・改稿して文字列が消えると `scripts/dist-guard.test.ts` が失敗するので、そのファイルに固有の別の文字列へ差し替える。本番のコードやコンテンツが同じ文字列を使うとビルドが失敗するため、目印には開発用のファイルにしかない文字列を選ぶ。

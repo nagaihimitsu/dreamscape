@@ -166,8 +166,8 @@ B/C戦の戦績と途中状態は保存します。反論とカットインは�
 
 ### 基本衣装・表情の画像を追加する
 
-1. 背景を透過した全身PNGまたはWebPを用意します。白背景の参照画像は正式な立ち絵とは別に管理し、拡張子だけを変えて登録しないでください。基本衣装 `default_01` の `standing_01` は **1024×1536px** を共通キャンバスとして設定しています。同じ衣装・ポーズの差分は、人物の位置とキャンバスを揃え、画像ごとにトリミングしません。配信するファイルは、見た目の変わらない可逆のWebPにすると軽くなります（今の12表情は可逆WebPで、PNGの約4割の大きさ。元のPNGは配信しない `authoring/characters/heroine/default_01/standing_01/` に置いています）。
-2. 例えば `public/assets/characters/heroine/default_01/standing_01/neutral.webp` に置き、`characters.json` の `heroine` → `costumes` → `default_01` → `poses` → `standing_01` の `expressions` に `"neutral": "assets/characters/heroine/default_01/standing_01/neutral.webp"` と登録します。パスは `public/` からの相対パスです。
+1. 背景を透過した全身PNGまたはWebPを用意します。白背景の参照画像は正式な立ち絵とは別に管理し、拡張子だけを変えて登録しないでください。基本衣装 `default_01` の `standing_01` は **1024×1536px** を共通キャンバスとして設定しています。同じ衣装・ポーズの差分は、人物の位置とキャンバスを揃え、画像ごとにトリミングしません。配信するファイルは、見た目の変わらない可逆のWebPにすると軽くなります（今の12表情は可逆WebPで、PNGの約4割の大きさ。元のPNGは配信しない `authoring/characters/heroine/default_01/standing_01/` に置いています。可逆のWebPは、例えば sharp の `.webp({ lossless: true, effort: 6 })` や `cwebp -lossless` で作れます）。
+2. 例えば `public/assets/characters/heroine/default_01/standing_01/neutral.webp` に置き、`characters.json` の `heroine` → `costumes` → `default_01` → `poses` → `standing_01` の `expressions` に `"neutral": "assets/characters/heroine/default_01/standing_01/neutral.webp"` と登録します。パスは `public/` からの相対パスです。Dreamscape のために作った絵なので、同じパスを [`content/presentation/own-artwork.json`](content/presentation/own-artwork.json) の立ち絵の `paths` にも1行足します（足さないと `npm run content:check` が「出典のない画像」で止まります。自作の絵は出典の一覧に載せません。[技術構成](docs/02_TECH_ARCHITECTURE.md#画像の出典と自作の絵)）。
 3. 表情IDは `neutral`、`smile`、`happy`、`shy`、`shy_deep`、`surprised`、`surprised_big`、`worried`、`serious`、`teasing`、`teasing_big`、`exasperated` です。差分が届いたら `expressions` に一枚ずつ追加し、未納品のファイルは登録しません。`neutral` だけでもその衣装が使われ、未登録の表情は同じ衣装・ポーズの `neutral` が表示されます。表情の指定にはInkの既存の `emotion` タグを使います。
 4. `npm run content:check` を実行します。登録済みファイルの存在、実際の形式・寸法・透過画素、表情や衣装の参照を検証します。これは背景が適切に切り抜かれたことや透過の縁の品質まで保証するものではないため、下記プレビューで目視確認してください。衣装が未納品の場合は基本素材を使い、画像の読み込みに失敗しても会話は続きます。
 
@@ -232,9 +232,9 @@ tests/screens/                    # 人が見る画面一覧の撮影（npm run 
 | `npm run test:quick` | コンテンツを生成してから速い組の単体テスト（日常の確認。全件は `npm test`・CI・`verify`。[テストの組](docs/10_DEVELOPMENT_CHECKS.md#単体テストの組と所要時間)） |
 | `npm test` | コンテンツを生成してから全単体テスト |
 | `npm run test:saves` | コンテンツを生成してから保存関連の単体テスト（`src/persistence/`）だけ |
-| `npm run build` | 生成・型検査・本番ビルド（`dist/`）と、`dist/` にDebug・テスト用のコードやデータがないかの検査 |
+| `npm run build` | 生成・型検査・本番ビルド（`dist/`）と、`dist/` にDebug・テスト用のコードやデータがないか、ライブラリのライセンス一覧（`third-party-licenses.json`）があるかの検査 |
 | `npm run verify` | 見本の編を含めた生成・全単体テストの後、見本なしで生成し直して型検査・本番ビルド・`dist/` の検査を行う（公開前・大きな変更）。最初の生成は会話の全分岐検査のキャッシュを使わない |
-| `npm run dist:check` | ビルド済みの `dist/` にDebug・プレビュー・テスト用のコードや旅行編がないかを検査（`build`・`verify` が自動で実行） |
+| `npm run dist:check` | ビルド済みの `dist/` にDebug・プレビュー・テスト用のコードや旅行編がないか、`package.json` の `dependencies` がすべてライブラリのライセンス一覧に載っているかを検査（`build`・`verify` が自動で実行） |
 | `npm run test:e2e` | E2E（Playwright）の開発サーバーの2つの段（合否判定 `gate` とDebug起動台 `debug`）。1つの段だけは `npx playwright test --project=gate`（[E2Eの段](docs/10_DEVELOPMENT_CHECKS.md#e2eの段)） |
 | `npm run test:e2e:prod` | 本番ビルド（`npm run build` の後の `vite preview`）でのE2E。起動・全旅行編の開始画面・ミラノの最初の流れ・本番にDebugがないこと、タイトル画面までの読み込み量の報告 |
 | `npm run test:e2e:sample` | 見本の編を含めて生成した専用の開発サーバー（4175番）でのE2E。見本の編を新しい旅から旅の終わりまで遊ぶ。終わると見本なしで生成し直す。ほかの段と同時に実行しない |
