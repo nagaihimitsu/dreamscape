@@ -7,7 +7,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
   checkDist, checkThirdPartyLicenses, describeDebugOnTitle, describeFindings, devOnlyMarkers, eagerFiles, findDebugCodeOnTitle, findDevOnlyCode,
-  isTextAsset, lazyDebugMarkers, type DistFile,
+  isTextAsset, lazyDebugMarkers, THIRD_PARTY_LICENSES_PATH, type DistFile,
 } from "./dist-guard";
 import { runtimeImports } from "./test-sets";
 
@@ -118,13 +118,19 @@ describe("production build guard", () => {
   });
 
   // What scripts/check-dist.ts runs on every build: a small build whose lazy Debug chunk may hold Debug's code
-  // but never the test hook or the sample journey, and whose title files may hold no Debug code.
+  // but never the test hook or the sample journey, and whose title files may hold no Debug code. It has the
+  // licence list the real build writes (one entry per package.json dependency, which the command reads), so the
+  // command passes the licence check and its exit code says whether the test-code or title check failed.
   const checkedHtml = '<script type="module" crossorigin src="./assets/index-abc.js"></script><link rel="stylesheet" href="./assets/index-abc.css">';
+  const dependencies = Object.keys(JSON.parse(readFileSync(path.join(root, "package.json"), "utf8")).dependencies ?? {});
+  const licenses = JSON.stringify(dependencies.map((name) =>
+    ({ name, version: "1.0.0", identifier: "MIT", text: `MIT License\n\nCopyright (c) ${name} authors` })));
   const checkedBuild: DistFile[] = [
     { path: "index.html", text: checkedHtml },
     { path: "assets/index-abc.js", text: 'const d=()=>import("./DebugMode-x1.js")' },
     { path: "assets/index-abc.css", text: ".travel-menu{display:grid}" },
     { path: "assets/DebugMode-x1.js", text: 'jsx("main",{className:"debug-panel"})' },
+    { path: THIRD_PARTY_LICENSES_PATH, text: licenses },
   ];
   const withText = (build: DistFile[], file: string, text: string) =>
     build.map((item) => item.path === file ? { ...item, text: `${item.text};${text}` } : item);
@@ -149,7 +155,7 @@ describe("production build guard", () => {
     expect(checkDist(checkedBuild.filter((file) => file.path !== "index.html")).missing).toEqual(["index.html"]);
   });
 
-  it("fails the build command (scripts/check-dist.ts) on such a build, whichever built file holds the code", () => {
+  it("passes a clean build and fails the build command (scripts/check-dist.ts) on a leak, whichever built file holds the code", () => {
     const tsx = pathToFileURL(createRequire(import.meta.url).resolve("tsx")).href;
     const folder = mkdtempSync(path.join(tmpdir(), "dreamscape-dist-"));
     const check = (build: DistFile[]) => {
@@ -161,14 +167,27 @@ describe("production build guard", () => {
       return spawnSync(process.execPath, ["--import", tsx, path.join(root, "scripts/check-dist.ts"), folder], { cwd: root, encoding: "utf8" });
     };
     try {
+      expect(dependencies.length).toBeGreaterThan(0);
+      expect(checkThirdPartyLicenses(licenses, dependencies)).toEqual([]);
+      // The clean build passes every check, the licence check included.
+      const clean = check(checkedBuild);
+      expect(clean.status, clean.stderr).toBe(0);
+      expect(clean.stdout).toContain(`の検査: テスト専用のコードとデータは含まれていません（${checkedBuild.length} ファイル）。`);
+      // Each leak fails at its own check (the licence list is the same valid one).
       const hook = check(hookAndSampleInDebug);
       expect(hook.status, hook.stdout).toBe(1);
       expect(hook.stderr).toContain("- assets/DebugMode-x1.js の内容に「__dreamscapeDebug」");
       expect(hook.stderr).toContain("- assets/DebugMode-x1.js の内容に「sample_trip」");
+      expect(hook.stderr).not.toContain("ライセンス一覧に問題があります");
       const title = check(debugOnTitle);
       expect(title.status, title.stdout).toBe(1);
       expect(title.stderr).toContain("のタイトル画面で読み込むファイルにDebugのコードが入っています。");
       expect(title.stderr).toContain("- assets/index-abc.js に「debug-panel」");
+      expect(title.stderr).not.toContain("ライセンス一覧に問題があります");
+      // Without the licence list the clean build fails at the licence check.
+      const unlicensed = check(checkedBuild.filter((file) => file.path !== THIRD_PARTY_LICENSES_PATH));
+      expect(unlicensed.status, unlicensed.stdout).toBe(1);
+      expect(unlicensed.stderr).toContain("のライブラリのライセンス一覧に問題があります。\n- third-party-licenses.json がありません。");
     } finally {
       rmSync(folder, { recursive: true, force: true });
     }
