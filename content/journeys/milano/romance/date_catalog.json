@@ -21,7 +21,6 @@
       "needsDeferred": false,
       "choiceCount": 2,
       "effectCount": 2,
-      "actionLabelJa": "カフェデートに誘う",
       "validationContexts": [
         {
           "romanceStage": 1,
@@ -72,7 +71,6 @@
       "needsDeferred": false,
       "choiceCount": 2,
       "effectCount": 2,
-      "actionLabelJa": "散歩に誘う",
       "validationContexts": [
         {
           "romanceStage": 1,
@@ -123,7 +121,6 @@
       "needsDeferred": false,
       "choiceCount": 1,
       "effectCount": 1,
-      "actionLabelJa": "誘いに応える",
       "validationContexts": [
         {
           "romanceStage": 1,
@@ -150,8 +147,7 @@
           "confessionReady": true,
           "endingReached": true
         }
-      ],
-      "invitationJa": "「行きたい所があるの。今日は、私についてきて」"
+      ]
     },
     {
       "id": "milano_night_01",
@@ -173,7 +169,6 @@
       "needsDeferred": false,
       "choiceCount": 2,
       "effectCount": 2,
-      "actionLabelJa": "夜景デートに誘う",
       "validationContexts": [
         {
           "romanceStage": 1,
@@ -224,7 +219,6 @@
       "needsDeferred": false,
       "choiceCount": 1,
       "effectCount": 1,
-      "actionLabelJa": "気持ちを伝える",
       "validationContexts": [
         {
           "romanceStage": 2,
@@ -299,7 +293,6 @@
       "needsDeferred": true,
       "choiceCount": 1,
       "effectCount": 1,
-      "actionLabelJa": "もう少し話す",
       "validationContexts": [
         {
           "romanceStage": 1,
@@ -352,7 +345,6 @@
       "needsDeferred": false,
       "choiceCount": 2,
       "effectCount": 2,
-      "actionLabelJa": "旅の余韻を一緒に過ごす",
       "validationContexts": [
         {
           "romanceStage": 1,
@@ -405,7 +397,6 @@
       "needsDeferred": false,
       "choiceCount": 2,
       "effectCount": 2,
-      "actionLabelJa": "この場所へ誘う",
       "validationContexts": [
         {
           "romanceStage": 1,
@@ -457,7 +448,6 @@
       "needsDeferred": false,
       "choiceCount": 2,
       "effectCount": 2,
-      "actionLabelJa": "この場所へ誘う",
       "validationContexts": [
         {
           "romanceStage": 1,
@@ -509,7 +499,6 @@
       "needsDeferred": false,
       "choiceCount": 2,
       "effectCount": 2,
-      "actionLabelJa": "この場所へ誘う",
       "validationContexts": [
         {
           "romanceStage": 1,
@@ -561,7 +550,6 @@
       "needsDeferred": false,
       "choiceCount": 2,
       "effectCount": 2,
-      "actionLabelJa": "この場所へ誘う",
       "validationContexts": [
         {
           "romanceStage": 1,
@@ -613,7 +601,6 @@
       "needsDeferred": false,
       "choiceCount": 2,
       "effectCount": 2,
-      "actionLabelJa": "この場所へ誘う",
       "validationContexts": [
         {
           "romanceStage": 1,
@@ -665,7 +652,6 @@
       "needsDeferred": false,
       "choiceCount": 2,
       "effectCount": 2,
-      "actionLabelJa": "この場所へ誘う",
       "validationContexts": [
         {
           "romanceStage": 1,
@@ -725,9 +711,6 @@
       "needsDeferred": false,
       "choiceCount": 1,
       "effectCount": 1,
-      "actionLabelJa": "雨宿りする",
-      "eventLabelJa": "今だけの出来事",
-      "invitationJa": "「もう少し、ここにいてもいいですか」",
       "validationContexts": [
         {
           "romanceStage": 1,
@@ -772,8 +755,6 @@
       "needsDeferred": false,
       "choiceCount": 1,
       "effectCount": 1,
-      "actionLabelJa": "もう一度話す",
-      "eventLabelJa": "ふたりの時間",
       "validationContexts": [
         {
           "romanceStage": 1,
@@ -820,7 +801,6 @@
       "needsDeferred": false,
       "choiceCount": 2,
       "effectCount": 2,
-      "actionLabelJa": "この場所へ誘う",
       "validationContexts": [
         {
           "romanceStage": 1,
@@ -872,7 +852,6 @@
       "needsDeferred": false,
       "choiceCount": 2,
       "effectCount": 2,
-      "actionLabelJa": "この場所へ誘う",
       "validationContexts": [
         {
           "romanceStage": 1,

@@ -390,11 +390,6 @@ h3 {
   justify-content: space-between;
   gap: 10px;
 }
-.cost {
-  font-family: Georgia, serif;
-  font-size: 22px;
-  color: var(--green);
-}
 .save-tools {
   display: flex;
   align-items: center;
@@ -924,9 +919,6 @@ dialog.modal::backdrop {
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
-}
-.cost {
-  white-space: nowrap;
 }
 .ending {
   padding-top: 42px;

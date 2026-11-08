@@ -32,9 +32,6 @@ export const dateSchema = z
     needsDeferred: z.boolean().default(false),
     choiceCount: z.number().int().min(0).max(2).default(2),
     effectCount: z.number().int().min(0).max(2).default(2),
-    actionLabelJa: text.default("デートに誘う"),
-    eventLabelJa: text.optional(),
-    invitationJa: text.optional(),
     validationContexts: z
       .array(
         z
