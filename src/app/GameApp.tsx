@@ -11,7 +11,7 @@ import {
 import { defaultJourneyId, getJourney } from "../content/journeys";
 import { currencyForCity, formatMoneyForCity } from "../content/currency";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
-import { observeLocalLandmark, waitForTravel } from "../domain/travel-game";
+import { waitForTravel } from "../domain/travel-game";
 import { rentTransport } from "../domain/transport";
 import { getTransportMode } from "../content/transport";
 import { getGameWeekday } from "../domain/travel";
@@ -654,7 +654,6 @@ export function GameApp({
             onStartEpisode={(id) => commit((state) => startEpisode(state, id))}
             onEpilogue={(id) => commit((state) => startCityEpilogue(state, id, game.revision))}
             onChooseDate={(id) => setConfirmation({ kind: "date", id })}
-            onTourism={(id) => commit((state) => observeLocalLandmark(state, id, game.revision, nextRomanceRoll))}
             onBattle={(id) => commit((state) => startBattle(state, id))}
             onTravelEvent={(id, mode) => travelToEvent(id, mode, game.revision)}
             onRent={(modeId) => commit((state) => rentTransport(state, modeId, game.revision))}

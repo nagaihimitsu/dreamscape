@@ -1,9 +1,9 @@
-import { battles, dates, episodes, getCityContent, journeyConfig, landmarks } from "../content";
+import { battles, dates, episodes, getCityContent } from "../content";
 import { getBattleAvailability, startBattle } from "./battle";
 import { getEpisodeAvailability, isEpisodeUnlocked, isStoryBattleUnlocked, startEpisode } from "./chapter";
 import { getDateAvailability, isDateUnlockedForTravel, isEventVisible, startDate, type GameState } from "./game";
 import { hasPendingPlaceEncounter } from "./encounter";
-import { getTourismAvailability, openTourism } from "./tourism";
+import { openTourism } from "./tourism";
 import { canReturnByDayEnd, DAY_END, getGameWeekday, planOvernight, planTravelEvent } from "./travel";
 import { compareRouteCost, findTravelHomeRoutes, type HomeRoute } from "./travel-routes";
 import type { TravelEvent, TravelRoute } from "../content/travel-schemas";
@@ -160,29 +160,6 @@ export function beginTravelEvent(state: GameState, eventId: string, mode: Travel
   if (started === (observeFirst ? sceneState : moved)) return state;
   return { ...started, travel: { ...started.travel,
     activeEvent: { eventId, placeId: event.placeId, endMinute: availability.plan.endMinute } } };
-}
-
-/**
- * Free time's 「…を観察する」 (FreeTimeHub): the visited landmarks of the open main events at the
- * player's place that can be visited now, in landmark order.
- */
-export function getLocalObservationLandmarkIds(state: GameState): string[] {
-  const local = new Set(getCityContent(state.currentCityId).travel.events
-    .filter((event) => event.placeId === state.travel.currentPlaceId && event.category === "main" && isTravelEventVisible(state, event))
-    .flatMap((event) => {
-      const landmarkId = episodes.find((episode) => episode.id === event.id)?.landmarkId ?? battles.find((battle) => battle.id === event.id)?.landmarkId;
-      return landmarkId ? [landmarkId] : [];
-    }));
-  return landmarks.filter((landmark) => local.has(landmark.id) && state.visitedLandmarkIds.includes(landmark.id) &&
-    getTourismAvailability(state, landmark.id).available).map((landmark) => landmark.id);
-}
-
-/** Observe a landmark at the player's place again: its episode or special battle, started on foot from here. */
-export function observeLocalLandmark(state: GameState, landmarkId: string, expectedRevision: number, nextRoll?: () => number): GameState {
-  const episode = episodes.find((item) => item.landmarkId === landmarkId);
-  const storyBattle = journeyConfig.storyBattles.find((entry) => battles.find((battle) => battle.id === entry.battleId)?.landmarkId === landmarkId);
-  const eventId = episode?.id ?? storyBattle?.battleId;
-  return eventId ? beginTravelEvent(state, eventId, "walk", expectedRevision, nextRoll) : state;
 }
 
 /** Settle the saved time reservation once the current scene completes or is left. */

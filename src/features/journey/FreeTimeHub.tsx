@@ -1,7 +1,6 @@
-import { landmarks, getCityContent } from "../../content";
+import { getCityContent } from "../../content";
 import type { TravelRoute } from "../../content/travel-schemas";
 import type { GameState } from "../../domain/game";
-import { getLocalObservationLandmarkIds } from "../../domain/travel-game";
 import { CityProgress } from "./CityProgress";
 import { PendingRewards } from "./PendingRewards";
 import { TravelMenu } from "./TravelMenu";
@@ -14,7 +13,6 @@ export function FreeTimeHub({
   onStartEpisode,
   onEpilogue,
   onChooseDate,
-  onTourism,
   onBattle,
   selectedLandmarkId,
   onSelectLandmark,
@@ -29,7 +27,6 @@ export function FreeTimeHub({
   onStartEpisode: (id: string) => void;
   onEpilogue: (id: string) => void;
   onChooseDate: (id: string) => void;
-  onTourism: (id: string) => void;
   onBattle: (id: string) => void;
   selectedLandmarkId: string | null;
   onSelectLandmark: (id: string | null) => void;
@@ -40,8 +37,6 @@ export function FreeTimeHub({
   onDepart: () => void;
 }) {
   const { city } = getCityContent(game.currentCityId);
-  const observable = getLocalObservationLandmarkIds(game);
-  const localLandmarks = landmarks.filter((landmark) => observable.includes(landmark.id));
   // Retain the existing callback contract for callers; direct navigation from
   // these callbacks is deliberately not presented in the destination list.
   void onChooseDate; void selectedLandmarkId; void onSelectLandmark; void placeFocusRequest;
@@ -51,10 +46,6 @@ export function FreeTimeHub({
       <CityProgress game={game} onStart={onStartEpisode} onStoryBattle={onBattle} onEpilogue={onEpilogue} showNext={false} showSummary={false} />
 
       <TravelMenu key={game.currentCityId} game={game} onTravelEvent={onTravelEvent} onRent={onRent} />
-
-      {localLandmarks.map((landmark) => <section key={landmark.id} aria-label={`${landmark.nameJa}で過ごす`}>
-        <button className="secondary" onClick={() => onTourism(landmark.id)}>{landmark.nameJa}を観察する</button>
-      </section>)}
 
       <PendingRewards game={game} onClaim={onClaimRewards} compact />
       {nextCityName && <button type="button" className="secondary" onClick={onDepart}>{nextCityName}へ出発</button>}

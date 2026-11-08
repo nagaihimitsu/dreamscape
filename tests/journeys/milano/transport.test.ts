@@ -7,8 +7,8 @@ import { inspectJourneyTransit } from "../../../scripts/journey-transit";
 import { playBattleToResult } from "../../../src/dev/scenario-builders";
 import { leaveBattleResult } from "../../../src/domain/chapter";
 import { createGame, validateGameState, type GameState } from "../../../src/domain/game";
-import { closeTourism, skipTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
-import { beginTravelEvent, finishTravelEventIfComplete, getTravelHomeRoutes, observeLocalLandmark, sleepAtHotel } from "../../../src/domain/travel-game";
+import { skipTourismGuide, startTourismBattle } from "../../../src/domain/tourism";
+import { beginTravelEvent, getTravelHomeRoutes, sleepAtHotel } from "../../../src/domain/travel-game";
 import { composeHomeRoutes } from "../../../src/domain/travel-routes";
 import { loadGame, saveGame, type StorageLike } from "../../../src/persistence";
 import { zodIssues } from "../../fixtures/zod-issues";
@@ -101,7 +101,7 @@ describe("Milano transport", () => {
     let state = roundTrip(beginTravelEvent(start, "milano_last_supper_episode", "tram", start.revision));
     expect(state.travel).toMatchObject({ currentPlaceId: "p_supper" });
     expect(state.travel.rideCounts).toEqual({ tram: 1 });
-    // The visit to its result and back to free time; observing it again here is on foot.
+    // The visit to its result and back to free time.
     state = skipTourismGuide(state, state.revision);
     state = playBattleToResult(startTourismBattle(state, state.revision));
     state = roundTrip(leaveBattleResult(state, state.revision));
@@ -115,14 +115,6 @@ describe("Milano transport", () => {
     const again = roundTrip(beginTravelEvent(state, "milano_duomo_episode", "tram", state.revision));
     expect(again.travel).toMatchObject({ currentPlaceId: "p_duomo" });
     expect(again.travel.rideCounts).toEqual({ tram: 2 });
-    // Leaving the Duomo's observation halfway and observing it again from here starts it on foot: no ride.
-    let duomo = skipTourismGuide(again, again.revision);
-    duomo = finishTravelEventIfComplete(duomo, closeTourism(duomo, duomo.revision));
-    expect(duomo.travel.activeEvent).toBeNull();
-    const local = roundTrip(observeLocalLandmark(duomo, "duomo_milano", duomo.revision));
-    expect(local.activeTourism?.landmarkId).toBe("duomo_milano");
-    expect(local.travel).toMatchObject({ currentPlaceId: "p_duomo" });
-    expect(local.travel.rideCounts).toEqual({ tram: 2 });
     const tampered = (rideCounts: Record<string, number>) => ({ ...state, travel: { ...state.travel, rideCounts } });
     expect(validateGameState(tampered({ tram: 3, taxi: 1 })).travel.rideCounts).toEqual({ tram: 3, taxi: 1 });
     // Milano's old bus and rail routes are gone (M), walking is never counted.

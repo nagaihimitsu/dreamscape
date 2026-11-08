@@ -12,8 +12,8 @@ import { openTourism, advanceTourismGuide, discoverClue, getDiscoverableClueIds,
 import { getTravelDestinations, getTravelWaitOptions } from "./travel-destinations";
 import { getRentalOffers, rentTransport } from "./transport";
 import {
-  beginTravelEvent, finishTravelEventIfComplete, getLocalObservationLandmarkIds, getTravelEventAvailability, getTravelSleepOptions,
-  observeLocalLandmark, sleepAtHotel, waitForTravel, type TravelMode,
+  beginTravelEvent, finishTravelEventIfComplete, getTravelEventAvailability, getTravelSleepOptions, sleepAtHotel, waitForTravel,
+  type TravelMode,
 } from "./travel-game";
 
 /**
@@ -36,7 +36,6 @@ export type PlayerAction =
   // Free time: TravelMenu (TravelRentals: 借りる), FreeTimeHub, TravelActions (待機・休む), PendingRewards, CityProgress.
   | { kind: "travel"; eventId: string; mode: TravelMode }
   | { kind: "rent"; modeId: string }
-  | { kind: "observe_again"; landmarkId: string }
   | { kind: "wait"; minutes: number }
   | { kind: "rest"; mode: TravelMode; viaPlaceId: string | null }
   | { kind: "depart" }
@@ -135,7 +134,6 @@ export function listPlayerActions(state: GameState): PlayerAction[] {
     ...getTravelDestinations(state).candidates.flatMap((event) => event.routes
       .filter((route) => getTravelEventAvailability(state, event.id, route.mode).available)
       .map((route) => ({ kind: "travel" as const, eventId: event.id, mode: route.mode }))),
-    ...getLocalObservationLandmarkIds(state).map((landmarkId) => ({ kind: "observe_again" as const, landmarkId })),
     ...(canReadCityEpilogue(state) ? [{ kind: "read_epilogue" as const }] : []),
     ...(canClaimPendingRewards(state) ? [{ kind: "claim_ap" as const }] : []),
     ...(getPlayerDeparture(state) ? [{ kind: "depart" as const }] : []),
@@ -152,7 +150,6 @@ export function playerActionChange(action: PlayerAction, nextRoll: () => number)
     const revision = state.revision;
     switch (action.kind) {
       case "travel": return beginTravelEvent(state, action.eventId, action.mode, revision, nextRoll);
-      case "observe_again": return observeLocalLandmark(state, action.landmarkId, revision, nextRoll);
       case "wait": return waitForTravel(state, action.minutes, revision);
       case "rent": return rentTransport(state, action.modeId, revision);
       case "rest": return sleepAtHotel(state, action.mode, revision, action.viaPlaceId);
