@@ -150,3 +150,15 @@ export function validateActiveDateState(state: GameState): void {
     }, state.memories);
   }
 }
+
+/**
+ * The story state of the common condition system: every saved line, step and
+ * flag must be declared (stage 3 declares them in progression/story.json).
+ * No journey declares any yet, so only the empty records are valid.
+ */
+export function validateStoryProgress(state: GameState): void {
+  if (Object.keys(state.storyProgress.lines).length || state.storyProgress.flags.length)
+    throw new Error("物語の進行の記録が一致しません。");
+  if (state.travel.temporaryFlags.length)
+    throw new Error("この都市での物語の印の記録が一致しません。");
+}

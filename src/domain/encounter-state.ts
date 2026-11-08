@@ -4,6 +4,7 @@ import { responseProfileSchema } from "../content/schemas";
 import { encounters } from "../content/encounters";
 
 const roll = z.number().int().min(0).max(9999);
+const id = z.string().regex(/^[a-z][a-z0-9_]*$/);
 
 /** All random tickets are committed at the start, before any choice is made. */
 export const activeEncounterSchema = z.object({
@@ -30,7 +31,14 @@ export const activeEncounterSchema = z.object({
   }).strict().nullable(),
   // An optional return point, not a second active scene. Older saves omit it.
   returnTourism: z.object({ landmarkId: z.string().min(1), contentHash: z.string().min(1), encounterIds: z.array(z.string().min(1)).optional() }).strict().optional(),
-}).strict();
+  // The other moments of the common condition system (design p5 §2.10, Appendix A), declared in the v14
+  // format for stage 3, which writes them: an encounter met on leaving a battle's result (the battle and the
+  // encounters of that chain), or on a trip to a map event (the event and the mode). Nothing writes them yet,
+  // so validateEncounterState refuses a save that holds one.
+  afterBattle: z.object({ battleId: id, encounterIds: z.array(id) }).strict().optional(),
+  trip: z.object({ eventId: id, modeId: id }).strict().optional(),
+}).strict().refine((active) => [active.returnTourism, active.afterBattle, active.trip].filter(Boolean).length <= 1,
+  "An encounter has at most one moment to continue from");
 
 export type ActiveEncounter = z.infer<typeof activeEncounterSchema>;
 

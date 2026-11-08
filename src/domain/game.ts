@@ -40,7 +40,7 @@ import {
   getDateAvailability,
 } from "./date-rules";
 
-import { validateTravelState, validateGameHistory, validateActiveDateState } from "./game-state-validation";
+import { validateTravelState, validateGameHistory, validateActiveDateState, validateStoryProgress } from "./game-state-validation";
 
 export { GAME_STATE_VERSION, gameStateSchema } from "./game-state-schema";
 export type { GameState, ActiveDate } from "./game-state-schema";
@@ -70,13 +70,14 @@ export function createGame(
   return {
     schemaVersion: GAME_STATE_VERSION,
     currentCityId: cityId,
-    travel: { currentPlaceId: travelSettings.hotelPlaceId, hotelPlaceId: travelSettings.hotelPlaceId, day: 1, minute: 540, returnReserve: 0, returnDeadline: DAY_END, activeEvent: null, rentedModeIds: [], rideCounts: {},
+    travel: { currentPlaceId: travelSettings.hotelPlaceId, hotelPlaceId: travelSettings.hotelPlaceId, day: 1, minute: 540, returnReserve: 0, returnDeadline: DAY_END, activeEvent: null, rentedModeIds: [], rideCounts: {}, temporaryFlags: [],
       ...(journey.startWeekday === undefined ? {} : { calendar: { journeyDay: 1, cityStartJourneyDay: 1, startWeekday: journey.startWeekday } }) },
     travelBudget: journey.initialBudget ?? travelSettings.initialBudget,
     inventory: {},
     completedEncounterIds: [],
     seenEncounterIds: [],
     itemUses: {},
+    storyProgress: { lines: {}, flags: [] },
     encounterRewards: {},
     activeEncounter: null,
     revision: 0,
@@ -399,5 +400,6 @@ export function validateGameState(input: unknown): GameState {
   validateEpilogueState(state);
   validateGameHistory(state);
   validateActiveDateState(state);
+  validateStoryProgress(state);
   return state;
 }

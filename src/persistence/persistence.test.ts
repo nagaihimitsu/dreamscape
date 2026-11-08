@@ -1,6 +1,6 @@
 import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { describe, expect, it, vi } from "vitest";
-import { advanceDate, chooseDate, createGame, startDate, type GameState } from "../domain";
+import { advanceDate, chooseDate, createGame, startDate, validateGameState, type GameState } from "../domain";
 import { completedCity } from "../dev/scenario-builders";
 import { advanceEncounter, chooseEncounter, encounterCanFinish, finishEncounter } from "../domain/encounter";
 import { meetEncounter } from "../../tests/fixtures/encounter-moment";
@@ -259,6 +259,32 @@ describe("save format v14 (docs/07: one format per version, no migration)", () =
     expect(loadGame(slot)).toMatchObject({ status: "invalid", kind: "corrupt", raw });
     expect(saveGame(slot, createGame()).ok).toBe(false);
     expect(slot.getItem(SAVE_KEY)).toBe(raw);
+  });
+
+  it("holds the condition system's story state and moments empty until stage 3 declares and writes them", () => {
+    const fresh = createGame();
+    expect(fresh.storyProgress).toEqual({ lines: {}, flags: [] });
+    expect(fresh.travel.temporaryFlags).toEqual([]);
+    expect(validateGameState(JSON.parse(JSON.stringify(fresh)))).toEqual(fresh);
+    const story = (storyProgress: unknown) => ({ ...fresh, storyProgress });
+    expect(() => validateGameState(story({ lines: { smp_mihon_lili_line: "met" }, flags: [] }))).toThrow("物語の進行の記録が一致しません。");
+    expect(() => validateGameState(story({ lines: {}, flags: ["smp_mihon_lili_drawing_talk"] }))).toThrow("物語の進行の記録が一致しません。");
+    expect(() => validateGameState({ ...fresh, travel: { ...fresh.travel, temporaryFlags: ["smp_mihon_lili_just_met"] } }))
+      .toThrow("この都市での物語の印の記録が一致しません。");
+    for (const shape of [undefined, { lines: {} }, { lines: {}, flags: [], steps: {} }, { lines: { a: "Bad" }, flags: [] }, { lines: {}, flags: ["a", "a"] }])
+      expect(() => validateGameState(story(shape)), JSON.stringify(shape)).toThrow();
+    // An encounter in progress may continue only from its observation; the after-battle and trip moments are not written yet.
+    const meeting = meetEncounter(completedCity("milano"), "duomo_string");
+    const { returnTourism, ...active } = meeting.activeEncounter!;
+    expect(returnTourism).toBeDefined();
+    const moment = (fields: object) => ({ ...meeting, activeTourism: null, activeEncounter: { ...active, ...fields } });
+    expect(() => validateGameState(moment({ afterBattle: { battleId: "milano_duomo_01", encounterIds: ["duomo_string"] } })))
+      .toThrow("道中交流の時点の記録が一致しません。");
+    expect(() => validateGameState(moment({ trip: { eventId: "milano_duomo_episode", modeId: "tram" } }))).toThrow("道中交流の時点の記録が一致しません。");
+    expect(() => validateGameState(moment({ returnTourism, afterBattle: { battleId: "milano_duomo_01", encounterIds: [] } })))
+      .toThrow("An encounter has at most one moment to continue from");
+    expect(() => validateGameState(moment({ afterBattle: { battleId: "milano_duomo_01" } }))).toThrow();
+    expect(() => validateGameState(moment({ trip: { eventId: "milano_duomo_episode", modeId: "tram", minutes: 3 } }))).toThrow();
   });
 
   it("reports a v13 save as an identified old version, never migrates, overwrites or deletes it", () => {

@@ -83,6 +83,9 @@ const travelStateSchema = z.object({
   // Rides by vehicle in the current city, per declared mode other than walking
   // (beginTravelEvent counts a trip that changes place; no key = no ride yet).
   rideCounts: z.record(stableContentId, z.number().int().positive().safe()),
+  // Story flags that last the day or the stay in this city (common condition system, stage 3: declared in
+  // progression/story.json, set by encounter effects, cleared by sleeping and departing). None is declared yet.
+  temporaryFlags: uniqueStrings,
 }).strict().superRefine((travel, context) => {
   if (travel.calendar && travel.calendar.journeyDay - travel.calendar.cityStartJourneyDay + 1 !== travel.day)
     context.addIssue({ code: "custom", message: "Travel day and journey calendar disagree", path: ["calendar"] });
@@ -127,6 +130,9 @@ export const gameStateSchema = z.object({
   seenEncounterIds: uniqueStrings,
   // The encounter and option that gave away or used each gifted/used item, written with its inventory status.
   itemUses: z.record(stableContentId, z.object({ encounterId: stableContentId, optionId: stableContentId }).strict()),
+  // The authored story state of the common condition system (stage 3: lines → reached step, permanent flags,
+  // declared in progression/story.json and written by encounter effects). None is declared yet, so it stays empty.
+  storyProgress: z.object({ lines: z.record(stableContentId, stableContentId), flags: uniqueStrings }).strict(),
   encounterRewards: z.record(stableContentId, z.object({
     roll: z.number().int().min(0).max(9999),
     chancePercent: z.number().int().min(0).max(100),

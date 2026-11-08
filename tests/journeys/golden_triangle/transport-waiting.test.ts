@@ -52,9 +52,11 @@ describe("Golden Triangle waits for its transport switch", () => {
     const cleared = completedCity("delhi");
     const counted = validateGameState({ ...cleared, travel: { ...cleared.travel, rideCounts: { taxi: 2, rail: 1, bus: 1 } } });
     expect(() => validateGameState({ ...cleared, travel: { ...cleared.travel, rideCounts: { metro: 1 } } })).toThrow("乗り物に乗った回数の記録が一致しません。");
-    const agra = departToNextCity(counted, counted.revision);
+    // A flag of the stay would end there too (none is declared yet, so such a save would not load).
+    const flagged = { ...counted, travel: { ...counted.travel, temporaryFlags: ["gt_delhi_test_flag"] } };
+    const agra = departToNextCity(flagged, flagged.revision);
     expect(agra.currentCityId).toBe("agra");
-    expect(agra.travel.rideCounts).toEqual({});
+    expect(agra.travel).toMatchObject({ rideCounts: {}, temporaryFlags: [], rentedModeIds: [] });
     expect(validateGameState(JSON.parse(JSON.stringify(agra)))).toEqual(agra);
   });
 });

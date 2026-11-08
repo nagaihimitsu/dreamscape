@@ -380,6 +380,8 @@ export function validateEncounterState(state: GameState): void {
   }
   const active = state.activeEncounter;
   if (!active) return;
+  // The after-battle and trip moments come with stage 3 of the condition system; nothing writes them yet.
+  if (active.afterBattle || active.trip) throw new Error("道中交流の時点の記録が一致しません。");
   const event = getActiveEncounterDefinition(active);
   if (event.cityId !== state.currentCityId) fail();
   if (state.activeDate || state.activeTourism || state.activeEpilogue || state.activeBattle) fail();
