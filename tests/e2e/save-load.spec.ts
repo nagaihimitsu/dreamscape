@@ -1,11 +1,16 @@
-import { allStorage, expect, journeyCatalog, learningKey, ops, playUntil, presentationKey, readSave, saveKey, test, tier } from "./helpers";
+import { DOUBLE_TAP_WINDOW_MS } from "../../src/components/double-tap";
+import { LAST_JOURNEY_KEY } from "../../src/app/last-journey";
+import { allStorage, expect, generated, journeyCatalog, learningKey, ops, placeGuideSave, playUntil, presentationKey, readSave, saveKey, test, tier } from "./helpers";
 
 // Lane 1 (docs/10): saving and resuming are only ever checked through the real flow.
 
 // AGENTS.md 「同一バージョン内の保存・再開を守る」「セーブ再開で二重消費しない」; docs/07 acceptance 2, 5, 6 and 「英語学習データと保存の方針」.
 test("autosaved progress, a battle question, the English note and the text speed are restored after a reload", { tag: tier.gate }, async ({ page }) => {
   test.setTimeout(120_000);
-  await ops.startJourney(page);
+  // Name fields left empty start with the default names, their placeholders (nameOrDefault, src/domain/player-names.ts).
+  await ops.startJourney(page, "milano", ["", ""]);
+  const balance = generated<{ defaultPlayerName: string; defaultHeroineName: string }>("romance/balance.json");
+  expect(await readSave(page)).toMatchObject({ playerName: balance.defaultPlayerName, heroineName: balance.defaultHeroineName });
   await ops.goTo(page, "p_duomo");
   await ops.skipGuideToBattle(page);
   const beforeBattle = await readSave(page);
@@ -76,6 +81,22 @@ test("autosaved progress, a battle question, the English note and the text speed
 // AGENTS.md 「現在のバージョンで作成した有効なセーブは…正しく保存・再開できる」 and docs/07 acceptance 6;
 // docs/07 acceptance 10: with manual saving, leaving unsaved progress asks first (switching journeys,
 // ロード, reloading), as hasUnsavedProgress/leaveStep decide (docs/10 「画面の保護を担う関数」).
+// UI stage 0, item I: like the title's start, a preparing journey's 「旅の準備を保存する」 with empty name fields
+// saves the default names shown as placeholders (nameOrDefault in PreparingJourney).
+test("a preparing journey saved with empty name fields keeps the default names", { tag: tier.gate }, async ({ page }) => {
+  const preparing = journeyCatalog().journeys.find((journey) => journey.status === "preparing" && journey.initialState);
+  test.skip(!preparing, "no preparing journey with an initial state to save names for");
+  const balance = generated<{ defaultPlayerName: string; defaultHeroineName: string }>("romance/balance.json");
+  await page.goto("/");
+  await ops.chooseJourney(page, preparing!.id);
+  await expect(page.getByLabel("主人公の名前")).toHaveValue("");
+  await expect(page.getByLabel("ヒロインの名前")).toHaveValue("");
+  await page.getByRole("button", { name: "旅の準備を保存する" }).click();
+  await expect(page.getByRole("status")).toContainText(`${balance.defaultPlayerName} と ${balance.defaultHeroineName}`);
+  expect(JSON.parse((await allStorage(page))[saveKey(preparing!.id)]!)).toMatchObject({
+    kind: "journey_preparation", journeyId: preparing!.id, playerName: balance.defaultPlayerName, heroineName: balance.defaultHeroineName });
+});
+
 test("a manual save keeps the saved position and settings when unsaved changes are discarded", { tag: tier.gate }, async ({ page }) => {
   await ops.startJourney(page);
   await ops.setAutoSave(page, false);
@@ -115,13 +136,47 @@ test("a manual save keeps the saved position and settings when unsaved changes a
 
   // ロード asks too, and loading brings the manual save's scene back.
   await page.getByTestId("tourism-skip").click();
-  await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "ロード", exact: true }).click();
-  const loading = page.getByRole("dialog", { name: "保存した場面を読み込みますか？" });
-  await loading.getByRole("button", { name: "ロードする", exact: true }).click();
-  await expect(loading).toBeHidden();
+  const loading = await ops.askToLoad(page);
+  await loading.loadButton.click();
+  await expect(loading.dialog).toBeHidden();
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
   await expect(page.getByRole("status").filter({ hasText: "保存した場面から再開しました。" })).toBeVisible();
   expect(prompts).toEqual(["beforeunload"]);
+});
+
+// AGENTS.md 選択肢の誤タップ防止, docs/02 「UX/スマホ」: 「切り替える」 rebuilds the screen with the other
+// journey's saved scene under the finger. With lines shown whole (reduced motion), the second tap of a
+// quick double tap would read its first line on unseen: no tap is taken for a moment after a switch.
+test("a quick double tap on 「切り替える」 does not read on the other journey's saved story scene", { tag: tier.gate }, async ({ page }) => {
+  const other = journeyCatalog().journeys.find((journey) => journey.id !== "milano" && journey.status === "available");
+  expect(other, "an available journey besides Milan").toBeDefined();
+  await page.clock.install();
+  await ops.startJourney(page);
+  // State shortcut (lane 2 in docs/10): the other journey's save holds a sightseeing guide at its first line.
+  const placed = await placeGuideSave(page, other!.id);
+  // With manual saving and a move not yet saved, switching asks first, with its 「切り替える」.
+  await ops.setAutoSave(page, false);
+  await ops.goTo(page, "p_duomo");
+  await expect(page.getByTestId("tourism-guide")).toBeVisible();
+  await ops.settled(page);
+  const settings = await ops.openSettings(page);
+  await settings.getByLabel("旅行編").selectOption(other!.id);
+  const confirm = await ops.centerOf(page.getByRole("dialog", { name: "旅行編を切り替える" }).getByRole("button", { name: "切り替える", exact: true }));
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+  await page.touchscreen.tap(confirm.x, confirm.y);
+  const line = page.getByTestId("dialogue-text");
+  // The second tap comes while the other journey's guide is on screen (the held clock keeps it a double tap).
+  await expect(line).toContainText(placed.activeTourism!.frame!.text);
+  await page.touchscreen.tap(confirm.x, confirm.y);
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await page.clock.resume();
+  await ops.settled(page);
+  await expect(line).toContainText(placed.activeTourism!.frame!.text);
+  // It reads on only where a tap would: the picture or the line, not one of the guide's controls.
+  expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest("#tourism-screen"), confirm),
+    "the second tap landed on the other journey's guide").toBe(true);
+  expect(await ops.readsOnAt(page, confirm), "the second tap landed on the guide's picture or line, not on a control").toBe(true);
+  expect(await readSave(page, other!.id)).toEqual(placed);
 });
 
 // AGENTS.md 「明示確認と別タブ競合の保護を維持する」: a second tab never overwrites the first one's progress.
@@ -143,6 +198,40 @@ test("a second tab cannot open a journey that is already open", { tag: tier.gate
   await expect(second.getByRole("main")).toBeFocused();
   await expect(second.getByTestId("travelers")).toContainText("先の名前");
   expect(await allStorage(second)).toEqual(saved);
+});
+
+// AGENTS.md 選択肢の誤タップ防止: 再試行 rebuilds the screen like a switch, with the journey's saved
+// scene under the finger; the second tap of a quick double tap does not read its first line on.
+test("a quick double tap on 「再試行」 does not read on the saved story scene that opens", { tag: tier.gate }, async ({ page, context }) => {
+  await page.goto("/");
+  // State shortcut (lane 2 in docs/10): Milan's save holds its first sightseeing guide at the first line.
+  const placed = await placeGuideSave(page, "milano");
+  await page.reload();
+  await expect(page.getByTestId("tourism-guide")).toBeVisible();
+  const second = await context.newPage();
+  await second.clock.install();
+  await second.goto("/");
+  const retry = second.getByRole("button", { name: "再試行" });
+  await expect(retry).toBeVisible();
+  await page.close();
+  // The closed tab's lock is gone, so the next check opens the journey without waiting.
+  await expect.poll(() => second.evaluate(async () => (await navigator.locks.query()).held?.length ?? 0)).toBe(0);
+  const point = await ops.centerOf(retry);
+  await second.clock.pauseAt(await second.evaluate(() => Date.now() + 1_000));
+  await second.touchscreen.tap(point.x, point.y);
+  const line = second.getByTestId("dialogue-text");
+  // The second tap comes while the guide is on screen (the held clock keeps it a double tap).
+  await expect(line).toContainText(placed.activeTourism!.frame!.text);
+  await second.touchscreen.tap(point.x, point.y);
+  await second.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await second.clock.resume();
+  await ops.settled(second);
+  await expect(line).toContainText(placed.activeTourism!.frame!.text);
+  // It reads on only where a tap would: the picture or the line, not one of the guide's controls.
+  expect(await second.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest("#tourism-screen"), point),
+    "the second tap landed on the guide").toBe(true);
+  expect(await ops.readsOnAt(second, point), "the second tap landed on the guide's picture or line, not on a control").toBe(true);
+  expect(await readSave(second)).toEqual(placed);
 });
 
 // AGENTS.md 「安全に読み込めないデータを勝手に上書き・削除しない」, docs/07 acceptance 10.
@@ -242,7 +331,8 @@ test("the title offers no start or deletion over another journey's save, and dis
   const copied = (await allStorage(page))[saveKey(otherJourney)];
   expect(copied).toContain('"currentCityId":"milano"');
 
-  // The storage area cannot be read (e.g. blocked site data): Milano's title disables both.
+  // The storage area cannot be read (e.g. blocked site data): the title of the journey last opened
+  // (the other one, chosen above; the saves cannot be read, that preference can) disables both.
   await page.addInitScript(() => {
     const getItem = Storage.prototype.getItem;
     Storage.prototype.getItem = function (key: string) {
@@ -321,7 +411,8 @@ test("old saved data is listed with its keys, removed only after confirmation an
     for (const [key, value] of Object.entries(items)) localStorage.setItem(key, value);
     localStorage.setItem("another-app.on-this-origin", "kept");
   }, { ...old, [learningKey("golden_triangle")]: JSON.stringify({ schemaVersion: 1, records: {} }) });
-  const before = await allStorage(page);
+  const seeded = await allStorage(page);
+  expect(seeded[LAST_JOURNEY_KEY]).not.toBe("golden_triangle");
 
   // Another tab opens the Indian journey (its title reports the old save and holds the journey's lock).
   const other = await context.newPage();
@@ -329,11 +420,16 @@ test("old saved data is listed with its keys, removed only after confirmation an
   await expect(other.getByRole("alert")).toContainText("別のタブで開いています");
   await ops.chooseJourney(other, "golden_triangle");
   await expect(other.getByRole("alert")).toContainText("保存データの形式はバージョン13です");
+  // Choosing it remembers the journey on this device (a preference, never listed for removal); the
+  // other tab writes nothing else (the old save it reports stays as it was).
+  await expect.poll(async () => (await allStorage(page))[LAST_JOURNEY_KEY]).toBe("golden_triangle");
+  const before = await allStorage(page);
+  expect(before).toEqual({ ...seeded, [LAST_JOURNEY_KEY]: "golden_triangle" });
 
   let cleanup = await ops.openOldDataCleanup(page);
   for (const key of Object.keys(old)) await expect(cleanup.getByText(key, { exact: true })).toBeVisible();
-  // The save in use, every journey's English notes, the settings and other apps' keys are not listed.
-  for (const key of [saveKey(), learningKey(), learningKey("golden_triangle"), presentationKey, "another-app.on-this-origin"])
+  // The save in use, every journey's English notes, the settings, the remembered journey and other apps' keys are not listed.
+  for (const key of [saveKey(), learningKey(), learningKey("golden_triangle"), presentationKey, LAST_JOURNEY_KEY, "another-app.on-this-origin"])
     await expect(cleanup.getByText(key, { exact: true })).toHaveCount(0);
 
   // 「消去せず戻る」 changes nothing.
@@ -357,7 +453,10 @@ test("old saved data is listed with its keys, removed only after confirmation an
   const { [saveKey("golden_triangle")]: _removedSave, [`${saveKey()}.backup.1762500000000`]: _removedBackup, ...kept } = before;
   expect(after).toEqual(kept);
   await ops.closeDialog(cleanup);
+  // The reload opens the journey last chosen on this device (the other tab's Indian journey): choose Milan again.
   await page.reload();
+  await expect(page.getByLabel("旅行編")).toHaveValue("golden_triangle");
+  await ops.chooseJourney(page, "milano");
   await expect(page.getByTestId("travel-menu")).toBeVisible();
   cleanup = await ops.openOldDataCleanup(page);
   await expect(cleanup.getByText(saveKey("golden_triangle"), { exact: true })).toHaveCount(0);
@@ -366,7 +465,7 @@ test("old saved data is listed with its keys, removed only after confirmation an
   await confirm.getByRole("button", { name: "消去する", exact: true }).click();
   await expect(cleanup.getByText("整理できる古い保存データはありません。")).toBeVisible();
   const { "dreamscape.save.v1": _rootSave, "dreamscape.learning.v1": _rootNotes, ...left } = kept;
-  expect(await allStorage(page)).toEqual(left);
+  expect(await allStorage(page)).toEqual({ ...left, [LAST_JOURNEY_KEY]: "milano" });
 });
 
 // The cleanup opened from a journey other than the default one (here the Indian journey) treats that

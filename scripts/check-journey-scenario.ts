@@ -1,17 +1,23 @@
 import { validateJourneyScenario } from "./journey-scenario-validation";
 
-// --no-cache: validate every date route without the Ink validation cache.
-const noCache = process.argv.includes("--no-cache");
-const args = process.argv.slice(2).filter((arg) => arg !== "--no-cache");
-const options: Record<string, string> = {};
-const usage = "Usage: npm run journey:scenario -- --journey ID --directory PATH [--city CITY] [--no-cache]";
-for (let index = 0; index < args.length; index += 2) {
-  const flag = args[index];
-  const value = args[index + 1];
-  if (!["--journey", "--directory", "--city"].includes(flag) || !value || value.startsWith("--") || options[flag]) throw new Error(usage);
-  options[flag] = value;
+try {
+  // --no-cache: validate every date route without the Ink validation cache.
+  const noCache = process.argv.includes("--no-cache");
+  const args = process.argv.slice(2).filter((arg) => arg !== "--no-cache");
+  const options: Record<string, string> = {};
+  const usage = "Usage: npm run journey:scenario -- --journey ID --directory PATH [--city CITY] [--no-cache]";
+  for (let index = 0; index < args.length; index += 2) {
+    const flag = args[index];
+    const value = args[index + 1];
+    if (!["--journey", "--directory", "--city"].includes(flag) || !value || value.startsWith("--") || options[flag]) throw new Error(usage);
+    options[flag] = value;
+  }
+  if (!options["--journey"] || !options["--directory"]) throw new Error(usage);
+  console.log(JSON.stringify(await validateJourneyScenario(process.cwd(), options["--journey"], options["--directory"], options["--city"],
+    noCache ? { storyCache: null } : {}), null, 2));
+  console.log("脚本の検証が完了しました。クイズ・和訳・本番統合の公開判定は journey:release で別途行います。");
+} catch (error) {
+  // The message only: a stack trace would bury it.
+  console.error(error instanceof Error ? error.message : error);
+  process.exitCode = 1;
 }
-if (!options["--journey"] || !options["--directory"]) throw new Error(usage);
-console.log(JSON.stringify(await validateJourneyScenario(process.cwd(), options["--journey"], options["--directory"], options["--city"],
-  noCache ? { storyCache: null } : {}), null, 2));
-console.log("脚本の検証が完了しました。クイズ・和訳・本番統合の公開判定は journey:release で別途行います。");

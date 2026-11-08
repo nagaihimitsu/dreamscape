@@ -1,4 +1,4 @@
-import { mkdtempSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
@@ -61,6 +61,20 @@ describe("journey release rules", () => {
     } finally { rmSync(root, { recursive: true, force: true }); }
   });
 
+  it("keeps the text of an already released manifest, city and travel file, whatever its layout", () => {
+    const { root, original } = temporaryRoot();
+    try {
+      // The released state, written compactly (as an editor or another tool may leave it): a rerun changes no data,
+      // so each file keeps its text instead of being rewritten in the canonical layout.
+      const released = { ...original, ...journeyReleaseChanges(original, journeyId) };
+      const compact = Object.fromEntries(Object.entries(released).map(([file, value]) => [file, JSON.stringify(JSON.parse(value))]));
+      expect(compact[ownManifest]).not.toBe(released[ownManifest]);
+      const again = journeyReleaseChanges(compact, journeyId);
+      for (const file of [ownManifest, ...cityIds.flatMap((id) => [`content/cities/${id}.json`, `content/travel/${id}.json`])])
+        expect(again[file], file).toBe(compact[file]);
+    } finally { rmSync(root, { recursive: true, force: true }); }
+  });
+
   it("restores already changed files when a later write fails", () => {
     const { root, original } = temporaryRoot();
     try {
@@ -85,6 +99,15 @@ describe("journey release rules", () => {
       const combined = { ...original, ...changes };
       const repeated = mergeJourneyReleaseFragments(combined, journeyReleaseChanges(combined, journeyId, "alpha"), fragments, [quiz]);
       expect(repeated).toEqual(changes);
+      // A second release changes no text, so it would write nothing.
+      for (const [file, value] of Object.entries(repeated)) expect(value, file).toBe(combined[file]);
+      // Also a released travel file in another layout (compact JSON): the fragments add nothing new to it, so it keeps its text.
+      const travelFile = "content/travel/alpha.json";
+      const compact = { ...combined, [travelFile]: JSON.stringify(JSON.parse(combined[travelFile])) };
+      expect(compact[travelFile]).not.toBe(combined[travelFile]);
+      expect(mergeJourneyReleaseFragments(compact, journeyReleaseChanges(compact, journeyId, "alpha"), fragments, [quiz])[travelFile]).toBe(compact[travelFile]);
+      // A catalog whose data does not change keeps its text (here compact JSON), so it is not rewritten either.
+      expect(changes["content/learning/translations.json"]).toBe(original["content/learning/translations.json"]);
       expect(JSON.parse(changes["content/progression/journey.json"]).episodes.map((item: { id: string }) => item.id)).toEqual(["other_episode", "alpha_episode"]);
       expect(JSON.parse(changes["content/tourism/catalog.json"]).assets).toEqual([{ id: "other_photo" }]);
       expect(JSON.parse(changes["content/romance/presentation.json"]).backgrounds).toEqual({ other: {} });
@@ -93,6 +116,69 @@ describe("journey release rules", () => {
       const collision = { ...fragments, episodes: [{ id: "other_episode", cityId: "alpha" }] } as typeof fragments;
       expect(() => mergeJourneyReleaseFragments(original, journeyReleaseChanges(original, journeyId, "alpha"), collision, [quiz]))
         .toThrow("Existing episode differs: other_episode");
+    } finally { rmSync(root, { recursive: true, force: true }); }
+  });
+
+  it("writes only the files whose text changes and keeps the text of unchanged ones", () => {
+    const { root, original } = temporaryRoot();
+    try {
+      const released = journeyReleaseChanges(original, journeyId, "alpha");
+      expect(writeJourneyReleaseFiles(root, original, released, journeyId).sort()).toEqual(Object.keys(released).sort());
+      // Releasing the published city again: nothing to write, so nothing is moved.
+      const now = Object.fromEntries(Object.keys(original).map((file) => [file, readFileSync(path.join(root, file), "utf8")]));
+      let moves = 0;
+      const counted: typeof renameSync = (from, to) => { moves++; renameSync(from, to); };
+      expect(writeJourneyReleaseFiles(root, now, journeyReleaseChanges(now, journeyId, "alpha"), journeyId, counted)).toEqual([]);
+      expect(moves).toBe(0);
+      // A published file in another layout (compact JSON) keeps its text; only the next city's markers are written.
+      const compact = "content/cities/alpha.json";
+      const edited = { ...now, [compact]: JSON.stringify(JSON.parse(now[compact])) };
+      writeFileSync(path.join(root, compact), edited[compact]);
+      const next = journeyReleaseChanges(edited, journeyId, "beta");
+      expect(next[compact]).toBe(edited[compact]);
+      expect(writeJourneyReleaseFiles(root, edited, next, journeyId, counted).sort()).toEqual(["content/cities/beta.json", "content/travel/beta.json"]);
+      expect(moves).toBe(2);
+      expect(readFileSync(path.join(root, compact), "utf8")).toBe(edited[compact]);
+    } finally { rmSync(root, { recursive: true, force: true }); }
+  });
+
+  it("refuses a release when a file it validated changed, also one it would not rewrite", () => {
+    const { root, original } = temporaryRoot();
+    try {
+      writeJourneyReleaseFiles(root, original, journeyReleaseChanges(original, journeyId, "alpha"), journeyId);
+      const now = Object.fromEntries(Object.keys(original).map((file) => [file, readFileSync(path.join(root, file), "utf8")]));
+      const next = journeyReleaseChanges(now, journeyId, "beta");
+      // The published first city is validated with the release of the second, but not rewritten.
+      const published = "content/cities/alpha.json";
+      expect(next[published]).toBe(now[published]);
+      writeFileSync(path.join(root, published), "edited elsewhere");
+      let staged = false;
+      expect(() => writeJourneyReleaseFiles(root, now, next, journeyId, undefined, undefined, undefined, () => { staged = true; }))
+        .toThrow(`File changed while validating: ${published}`);
+      // Refused before any temporary file was written.
+      expect(staged).toBe(false);
+      expect(readFileSync(path.join(root, published), "utf8")).toBe("edited elsewhere");
+      expect(readFileSync(path.join(root, "content/cities/beta.json"), "utf8")).toBe(now["content/cities/beta.json"]);
+    } finally { rmSync(root, { recursive: true, force: true }); }
+  });
+
+  it("refuses a release when a file it would not rewrite is edited after the temporary files were written", () => {
+    const { root, original } = temporaryRoot();
+    try {
+      writeJourneyReleaseFiles(root, original, journeyReleaseChanges(original, journeyId, "alpha"), journeyId);
+      const now = Object.fromEntries(Object.keys(original).map((file) => [file, readFileSync(path.join(root, file), "utf8")]));
+      const next = journeyReleaseChanges(now, journeyId, "beta");
+      const published = "content/cities/alpha.json";
+      expect(next[published]).toBe(now[published]);
+      let moves = 0;
+      expect(() => writeJourneyReleaseFiles(root, now, next, journeyId, (from, to) => { moves++; renameSync(from, to); }, undefined, undefined,
+        () => writeFileSync(path.join(root, published), "edited while staging"))).toThrow(`File changed while validating: ${published}`);
+      expect(moves).toBe(0);
+      expect(readFileSync(path.join(root, published), "utf8")).toBe("edited while staging");
+      for (const file of ["content/cities/beta.json", "content/travel/beta.json", ownManifest]) expect(readFileSync(path.join(root, file), "utf8"), file).toBe(now[file]);
+      // The temporary files are removed again.
+      for (const folder of ["content/cities", "content/travel", `content/journeys/${journeyId}`])
+        expect(readdirSync(path.join(root, folder)).filter((name) => name.includes(".journey-release-")), folder).toEqual([]);
     } finally { rmSync(root, { recursive: true, force: true }); }
   });
 

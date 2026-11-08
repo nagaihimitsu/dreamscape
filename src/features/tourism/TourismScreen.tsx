@@ -20,6 +20,7 @@ import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { DialogueControls } from "../../components/DialogueControls";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
 import { DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
+import { useSceneTap } from "../../components/useSceneTap";
 import { ObservationViewer } from "./ObservationViewer";
 import { ClueDetails } from "./ClueDetails";
 import "./tourism.css";
@@ -103,6 +104,7 @@ export function TourismScreen({
     onAdvance: advanceSafely,
     defaultEnabled: autoAdvanceEnabled,
   });
+  const sceneTap = useSceneTap({ active: active.phase === "guide" && !!frame, lineShown: ready, choicesShown: false, windowHidden: windowVisibility.hidden });
   useEffect(() => {
     const media = window.matchMedia(COMPACT_OBSERVATION);
     const update = () => setCompactObservation(media.matches);
@@ -144,7 +146,7 @@ export function TourismScreen({
   }
 
   const toolbar = (
-    <div className="tourism-toolbar">
+    <div className="tourism-toolbar" data-no-advance>
       <button className="notebook-button" onClick={onNotebook}>手がかり帳</button>
     </div>
   );
@@ -154,6 +156,7 @@ export function TourismScreen({
       className={`tourism-screen${active.phase === "guide" ? " guide-active" : ""}`}
       id="tourism-screen"
       data-testid="tourism-screen"
+      {...sceneTap.props}
     >
       {active.phase === "guide" && <header className="tourism-heading">
         <p className="eyebrow">観光と観察 · 旅先の発見</p>
@@ -168,7 +171,7 @@ export function TourismScreen({
       )}
       {active.phase === "guide" && frame ? (
         <div className="vn-scene tourism-guide-scene" data-dialogue-hidden={windowVisibility.hidden || undefined}>
-          <div className="vn-background">
+          <div className="vn-background" data-testid="scene-picture">
             <CanalScene backgroundId={frame.background} imageAssetId={landmark.imageAssetId} />
           </div>
           <span className="sr-only">{asset.altJa}</span>
@@ -194,6 +197,7 @@ export function TourismScreen({
             <DialogueControls close={<button type="button" className="text-button" data-testid="tourism-skip" aria-label="観光案内を閉じる" onClick={onSkip}>閉じる</button>} entries={entries} auto={autoAdvance} />
             <DialogueText
               key={game.revision}
+              ref={sceneTap.line}
               text={frame.text}
               speed={autoAdvance.fast ? 0 : speed}
               onReady={onReady}
@@ -247,7 +251,7 @@ export function TourismScreen({
           </details>
         </div>
       )}
-      {active.phase === "guide" && <details className="tourism-credits">
+      {active.phase === "guide" && <details className="tourism-credits" data-no-advance>
         <summary>画像の出典と利用条件</summary>
         <p>{asset.creditJa}</p>
         <p>{asset.modificationJa}</p>

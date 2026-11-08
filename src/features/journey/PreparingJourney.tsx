@@ -4,16 +4,18 @@ import type { Journey } from "../../content/journeys";
 import { loadJourneyDraft, saveJourneyDraft } from "../../persistence/journey-preparation";
 import type { StorageLike } from "../../persistence";
 import { JourneySelection, type SelectorFocus } from "./JourneySelection";
+import { TitleNameFields } from "./TitleNameFields";
+import { nameOrDefault } from "../../domain/player-names";
 
 /** A saved preparation is not a playable city: no fictional hotel or budget is introduced. */
 export function PreparingJourney({ journey, storage, onSwitchJourney, selectorFocus }: { journey: Journey; storage: StorageLike; onSwitchJourney: (id: string) => void; selectorFocus?: SelectorFocus }) {
   const [loaded, setLoaded] = useState(() => loadJourneyDraft(storage));
-  const [player, setPlayer] = useState(balance.defaultPlayerName);
-  const [heroine, setHeroine] = useState(balance.defaultHeroineName);
+  const [player, setPlayer] = useState("");
+  const [heroine, setHeroine] = useState("");
   const [error, setError] = useState("");
   function prepare(event: FormEvent) {
     event.preventDefault();
-    const result = saveJourneyDraft(storage, player.trim(), heroine.trim());
+    const result = saveJourneyDraft(storage, nameOrDefault(player, balance.defaultPlayerName), nameOrDefault(heroine, balance.defaultHeroineName));
     if (!result.ok) {
       setError(result.message);
       return;
@@ -40,10 +42,9 @@ export function PreparingJourney({ journey, storage, onSwitchJourney, selectorFo
           <p>{loaded.draft.playerName} と {loaded.draft.heroineName}</p>
           <p>物語と観光の公開までお待ちください。</p>
         </div> : loaded.status === "empty" && <form onSubmit={prepare} className="name-form">
-          <label>主人公の名前<input name="playerName" value={player} maxLength={balance.maxNameLength} required autoComplete="off" onChange={(event) => setPlayer(event.target.value)} /></label>
-          <label>ヒロインの名前<input name="heroineName" value={heroine} maxLength={balance.maxNameLength} required autoComplete="off" onChange={(event) => setHeroine(event.target.value)} /></label>
+          <TitleNameFields player={player} heroine={heroine} onPlayer={setPlayer} onHeroine={setHeroine} />
           {error && <p role="alert">{error}</p>}
-          <button className="primary" disabled={!player.trim() || !heroine.trim()}>旅の準備を保存する <span aria-hidden="true">→</span></button>
+          <button className="primary">旅の準備を保存する <span aria-hidden="true">→</span></button>
         </form>}
       </section>
     </main>

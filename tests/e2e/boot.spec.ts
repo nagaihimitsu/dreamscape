@@ -6,7 +6,7 @@ import { allStorage, expect, journeyCatalog, ops, test, tier } from "./helpers";
 // its start screen, and opening the title writes no save. In the sample tier the list
 // also has the sample journey, and in CI a journey just made by `npm run journey:new`
 // (e2e.yml), which must open as a preparing journey.
-test("the title screen opens every registered journey without writing a save", { tag: [tier.gate, tier.prod, tier.sample, tier.smoke] }, async ({ page }) => {
+test("the title screen opens every registered journey without writing a save, and a reload reopens the last playable one", { tag: [tier.gate, tier.prod, tier.sample, tier.smoke] }, async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveTitle(/Dreamscape/);
   const catalog = journeyCatalog();
@@ -50,6 +50,10 @@ test("the title screen opens every registered journey without writing a save", {
     await expect(selector).toBeFocused();
   }
   expect(Object.keys(await allStorage(page)).filter((key) => key.includes(".save."))).toEqual([]);
+  // The title opens the journey last opened in this browser (src/app/last-journey.ts): the last playable
+  // one gone through above, as a preparing journey is never reopened.
+  await page.reload();
+  await expect(selector).toHaveValue(catalog.journeys.filter((journey) => journey.status === "available").at(-1)!.id);
 });
 
 // AGENTS.md 「Debug機能は開発用で…本番ビルドに公開しない」, docs/07 acceptance 14: in the

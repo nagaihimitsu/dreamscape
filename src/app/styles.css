@@ -348,6 +348,15 @@ h3 {
 .name-form .primary {
   margin-top: 7px;
 }
+/* The default names shown as placeholders: lighter than a typed name, still readable (about 4.6:1). */
+.name-form input::placeholder {
+  color: #70756a;
+  opacity: 1;
+}
+.name-form .name-defaults {
+  grid-column: 1 / -1;
+  margin: -8px 0 0;
+}
 .fine-print {
   font-size: 11px;
   color: #70756a;
@@ -481,6 +490,18 @@ footer span {
 }
 .unrevealed {
   visibility: hidden;
+}
+/* Right after a press on a control, its story scene's line takes no taps:
+   the second tap of the double tap must not skip the line the press brought
+   (useSceneTap). A tap there falls through to the scene, which ignores it.
+   data-dialogue-line = DIALOGUE_LINE_ATTRIBUTE (src/components/scene-tap.ts). */
+[data-tap-settling] [data-dialogue-line] {
+  pointer-events: none;
+}
+/* Right after a story scene starts or ends, no tap reaches the new screen: the
+   second tap of a double tap would press whatever moved under the finger (tap-hold.ts). */
+:root[data-tap-hold] body * {
+  pointer-events: none !important;
 }
 .text-button {
   background: none;

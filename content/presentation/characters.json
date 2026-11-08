@@ -43,18 +43,18 @@
                 "originY": 0
               },
               "expressions": {
-                "neutral": "assets/characters/heroine/default_01/standing_01/neutral.png",
-                "smile": "assets/characters/heroine/default_01/standing_01/smile.png",
-                "happy": "assets/characters/heroine/default_01/standing_01/happy.png",
-                "shy": "assets/characters/heroine/default_01/standing_01/shy.png",
-                "shy_deep": "assets/characters/heroine/default_01/standing_01/shy_deep.png",
-                "surprised": "assets/characters/heroine/default_01/standing_01/surprised.png",
-                "surprised_big": "assets/characters/heroine/default_01/standing_01/surprised_big.png",
-                "worried": "assets/characters/heroine/default_01/standing_01/worried.png",
-                "serious": "assets/characters/heroine/default_01/standing_01/serious.png",
-                "teasing": "assets/characters/heroine/default_01/standing_01/teasing.png",
-                "teasing_big": "assets/characters/heroine/default_01/standing_01/teasing_big.png",
-                "exasperated": "assets/characters/heroine/default_01/standing_01/exasperated.png"
+                "neutral": "assets/characters/heroine/default_01/standing_01/neutral.webp",
+                "smile": "assets/characters/heroine/default_01/standing_01/smile.webp",
+                "happy": "assets/characters/heroine/default_01/standing_01/happy.webp",
+                "shy": "assets/characters/heroine/default_01/standing_01/shy.webp",
+                "shy_deep": "assets/characters/heroine/default_01/standing_01/shy_deep.webp",
+                "surprised": "assets/characters/heroine/default_01/standing_01/surprised.webp",
+                "surprised_big": "assets/characters/heroine/default_01/standing_01/surprised_big.webp",
+                "worried": "assets/characters/heroine/default_01/standing_01/worried.webp",
+                "serious": "assets/characters/heroine/default_01/standing_01/serious.webp",
+                "teasing": "assets/characters/heroine/default_01/standing_01/teasing.webp",
+                "teasing_big": "assets/characters/heroine/default_01/standing_01/teasing_big.webp",
+                "exasperated": "assets/characters/heroine/default_01/standing_01/exasperated.webp"
               }
             }
           ]

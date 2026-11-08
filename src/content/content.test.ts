@@ -15,7 +15,7 @@ import { reasoningIntroCatalogSchema } from "./reasoning-intros";
 import { battleCatalogSchema, citySchema, dateCatalogSchema } from "./schemas";
 import { tourismCatalogSchema } from "./tourism-schemas";
 import { parseStoryTags } from "./tags";
-import { changeCatalogEntry, prepareContentFixture, quizSourceFile, storySourceFile } from "./test-fixtures";
+import { changeCatalogEntry, prepareContentFixture, quizSourceFile, registerOwnArtwork, storySourceFile } from "./test-fixtures";
 
 let fixture: string;
 const storyFile = storySourceFile("dates/milano_date_cafe");
@@ -63,6 +63,9 @@ describe("content build acceptance", () => {
     await sharp({ create: { width: 1760, height: 560, channels: 3, background: "#e6d8bb" } }).webp().toFile(image);
     const titleArt = { imagePath: "assets/title/milano.webp", captionJa: "ミラノ ／ 運河の午後" };
     await writeFile(manifestFile, JSON.stringify({ ...manifest, titleArt }));
+    // Title art is the author's own illustration: served only once the journey lists it as own artwork.
+    await expect(buildContent(fixture, false)).rejects.toThrow("出典のない画像：content/journeys/milano/public/assets/title/milano.webp。");
+    await registerOwnArtwork(fixture, "content/journeys/milano", [titleArt.imagePath]);
     const result = await buildContent(fixture);
     expect(result.warnings).toContainEqual({ kind: "unknown-file",
       message: expect.stringContaining("Unknown file in a journey folder: content/journeys/milano/notes.txt ") });
@@ -71,6 +74,37 @@ describe("content build acceptance", () => {
     expect(await readFile(path.join(fixture, "src/content/generated/public/assets/title/milano.webp"))).toEqual(await readFile(image));
     await writeFile(manifestFile, JSON.stringify({ ...manifest, titleArt: { ...titleArt, imagePath: "assets/title/missing.webp" } }));
     await expect(buildContent(fixture, false)).rejects.toThrow("Missing title art image: milano/assets/title/missing.webp (place it in content/journeys/milano/public/)");
+  }, 120000);
+  it("warns about a tourism photo that npm run images:optimize would convert, but not about a placeholder", async () => {
+    // A JPEG larger than 1600×1800 px that no landmark zooms: the build goes on and the warning names the command.
+    const photo = "assets/tourism/content-test-photo.jpg";
+    await sharp({ create: { width: 2000, height: 1000, channels: 3, background: "#7f9fbf" } }).jpeg()
+      .toFile(path.join(fixture, "content/journeys/milano/public", photo));
+    const record = { id: "milano_content_test_photo", path: photo, width: 2000, height: 1000, altJa: "試験用の写真。", isPlaceholder: false,
+      sourceUrl: "https://commons.wikimedia.org/wiki/File:Content_test.jpg", licenseName: "CC BY-SA 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0", creditJa: "写真：試験", modificationJa: "試験用の写真。", checkedAt: "2026-11-08" };
+    const catalogFile = path.join(fixture, "content/journeys/milano/tourism/catalog.json");
+    const catalog = JSON.parse(await readFile(catalogFile, "utf8"));
+    const warningsAbout = async (assets: unknown[], id = record.id) => {
+      await writeFile(catalogFile, JSON.stringify({ ...catalog, assets: [...catalog.assets, ...assets] }));
+      return (await buildContent(fixture, false)).warnings.filter((warning) => warning.message.includes(id));
+    };
+    expect(await warningsAbout([record])).toEqual([{ kind: "tourism-photo", message: "観光写真を軽くできます: content/journeys/milano/tourism/catalog.json の " +
+      "\"milano_content_test_photo\"（assets/tourism/content-test-photo.jpg、JPEG 2000×1000）。npm run images:optimize -- --journey milano --write で、" +
+      "WebPにして1600×1800pxの枠に収めます。" }]);
+    expect(await warningsAbout([{ ...record, isPlaceholder: true }])).toEqual([]);
+    // A byte copy of a sample image (what journey:new copies) whose isPlaceholder was cleared: journey:readiness asks to
+    // replace it, and neither npm run images:optimize nor this warning names it (markSampleCopies), although it is a PNG.
+    const sampleImage = path.resolve("authoring/templates/sample_trip/public/assets/tourism/sample_trip/mihon_clock_tower.png");
+    const copy = "assets/tourism/content-test-copy.png";
+    await writeFile(path.join(fixture, "content/journeys/milano/public", copy), await readFile(sampleImage));
+    const { width, height } = await sharp(sampleImage).metadata();
+    const copyRecord = { ...record, id: "milano_content_test_copy", path: copy, width: width!, height: height! };
+    const placeholderPhoto = { ...record, isPlaceholder: true };
+    expect(await warningsAbout([placeholderPhoto, copyRecord], copyRecord.id)).toEqual([]);
+    // The same picture re-encoded (no longer a byte copy) is a photo like any other.
+    await sharp(sampleImage).png({ compressionLevel: 1 }).toFile(path.join(fixture, "content/journeys/milano/public", copy));
+    expect((await warningsAbout([placeholderPhoto, copyRecord], copyRecord.id)).map((warning) => warning.kind)).toEqual(["tourism-photo"]);
   }, 120000);
   it("rejects a registered but missing background image", async () => {
     const file = path.join(fixture, "content/romance/presentation.json");
@@ -138,10 +172,12 @@ describe("content build acceptance", () => {
     expressions.neutral = `${dir}/neutral.png`;
     await writeFile(path.join(fixture, "public", expressions.neutral), await render(1024));
     await writeFile(file, JSON.stringify(data));
+    await registerOwnArtwork(fixture, "content", [expressions.neutral]);
     await expect(buildContent(fixture, false)).resolves.toBeDefined();
     expressions.smile = `${dir}/smile.png`;
     await writeFile(path.join(fixture, "public", expressions.smile), await render(1024));
     await writeFile(file, JSON.stringify(data));
+    await registerOwnArtwork(fixture, "content", [expressions.smile]);
     await expect(buildContent(fixture, false)).resolves.toBeDefined();
     await writeFile(path.join(fixture, "public", expressions.smile), await render(512));
     await expect(buildContent(fixture, false)).rejects.toThrow("dimensions do not match canvas 1024x1536");
@@ -183,6 +219,7 @@ describe("content build acceptance", () => {
     await writeFile(path.join(fixture, "public", imagePath), image);
     for (const id of expressionIds) pose.expressions[id] = imagePath;
     await writeFile(file, JSON.stringify(data));
+    await registerOwnArtwork(fixture, "content", [imagePath]);
     await expect(buildContent(fixture, false)).resolves.toBeDefined();
     pose.expressions.teasing_big = `${dir}/missing.png`;
     await writeFile(file, JSON.stringify(data));

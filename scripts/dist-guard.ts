@@ -98,3 +98,41 @@ export function describeFindings(folder: string, findings: readonly DevOnlyFindi
     "生成物が原因の場合は `npm run content:build` で生成し直してからビルドします。",
   ].join("\n");
 }
+
+/**
+ * The licence notices of the libraries the production build bundles: MIT and
+ * BSD-2-Clause ask that the copyright and licence text go with every copy.
+ * vite.config.ts writes them (`build.license`) to this file of the build,
+ * which the credits list shows.
+ */
+export const THIRD_PARTY_LICENSES_PATH = "third-party-licenses.json";
+
+/**
+ * Problems with the build's licence file (`text` is its content, or null when
+ * it is missing): it must be a JSON list of { name, version, identifier, text }
+ * with an identifier and a licence text for every entry, and name every
+ * package of package.json `dependencies` (all of them end up in the bundle).
+ */
+export function checkThirdPartyLicenses(text: string | null, dependencies: readonly string[]): string[] {
+  if (text === null) return [`${THIRD_PARTY_LICENSES_PATH} がありません。vite.config.ts の build.license でライブラリのライセンス一覧を書き出してください。`];
+  let entries: unknown;
+  try {
+    entries = JSON.parse(text);
+  } catch {
+    return [`${THIRD_PARTY_LICENSES_PATH} を JSON として読めません。`];
+  }
+  if (!Array.isArray(entries)) return [`${THIRD_PARTY_LICENSES_PATH} はライブラリの一覧（JSON の配列）ではありません。`];
+  const problems: string[] = [];
+  const names = new Set<string>();
+  entries.forEach((entry, index) => {
+    const item = (typeof entry === "object" && entry !== null ? entry : {}) as Record<string, unknown>;
+    const label = typeof item.name === "string" ? `${item.name}${typeof item.version === "string" ? ` ${item.version}` : ""}` : `${index + 1} 件目`;
+    if (typeof item.name === "string") names.add(item.name);
+    for (const key of ["name", "version", "identifier", "text"])
+      if (typeof item[key] !== "string" || !(item[key] as string).trim())
+        problems.push(`${THIRD_PARTY_LICENSES_PATH} の ${label} に ${key} がありません。`);
+  });
+  for (const name of dependencies)
+    if (!names.has(name)) problems.push(`${THIRD_PARTY_LICENSES_PATH} に ${name}（package.json の dependencies）のライセンスがありません。`);
+  return problems;
+}

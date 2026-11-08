@@ -44,8 +44,6 @@ function random(start: number): () => number {
 }
 
 const playable = journeyCatalog().journeys.filter((journey) => journey.status === "available");
-/** The journey a page load opens (the first available one); another journey is chosen on its title, as a player does. */
-const openedFirst = playable[0].id;
 /** The Debug examples of docs/10 that open a scene with a game state (not the prototype map check, which has none). */
 const debugUrls = debugSessionExampleUrls(readFileSync(new URL("../../../docs/10_DEVELOPMENT_CHECKS.md", import.meta.url), "utf8"));
 /** Controls the monkey never presses: they delete data, switch journeys or leave Debug (labels as shown). */
@@ -109,10 +107,17 @@ function choose(page: Page, roll: number) {
   }, { roll, excludedLabels });
 }
 
-/** After a load, open the journey's saved game (a player chooses it on the title after a reload). */
+/**
+ * After a load, open the journey's saved game. A load reopens the journey last opened in this browser
+ * (src/app/last-journey.ts); after the storage was cleared it opens the default journey's title, where a
+ * player chooses the journey.
+ */
 async function resume(page: Page, journeyId: string) {
-  if (journeyId !== openedFirst) await ops.chooseJourney(page, journeyId);
-  await expect(page.getByTestId("travelers")).toBeVisible();
+  const selector = page.getByLabel("旅行編");
+  const game = page.getByTestId("travelers");
+  await expect(game.or(selector).first()).toBeVisible();
+  if (!(await game.isVisible()) && await selector.inputValue() !== journeyId) await ops.chooseJourney(page, journeyId);
+  await expect(game).toBeVisible();
 }
 
 /** A new journey from the title; the monkey presses on from the scene that opens (its arrival). */
@@ -256,10 +261,7 @@ startPoints.forEach((start, index) => {
             ? "  (another element covered the control)" : "  (the control went away before the press)");
         }
         // Wait on the game's own settling marks, not on time.
-        await must("the page did not settle after the press", async () => {
-          await expect(page.locator("[data-answer-settling]")).toHaveCount(0);
-          await expect(page.getByTestId("travel-transition")).toHaveCount(0);
-        });
+        await must("the page did not settle after the press", () => ops.settled(page));
         if (pageError) fail(`uncaught exception in the page: ${pageError}`);
         const state = await must("reading the game state", () => check(page, opened!.source));
         if (state.error) fail(state.error);

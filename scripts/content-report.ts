@@ -12,7 +12,7 @@ import { isObservationOnlyClue } from "../src/content/tourism-schemas";
 // the game, and what each journey folder provides. content:build prints the
 // warnings as counts (details with --verbose) and one line per journey.
 
-export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-prefix" | "unused-transport-mode";
+export type ContentWarningKind = "unknown-file" | "unused-public-file" | "id-prefix" | "unused-transport-mode" | "tourism-photo";
 export type ContentWarning = { kind: ContentWarningKind; message: string };
 /** How content:build counts each kind of warning. */
 export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
@@ -20,6 +20,7 @@ export const CONTENT_WARNING_LABELS: Record<ContentWarningKind, string> = {
   "unused-public-file": "unused public file(s)",
   "id-prefix": "ID(s) without the journey prefix",
   "unused-transport-mode": "declared transport mode(s) without routes",
+  "tourism-photo": "tourism photo(s) to convert to WebP (npm run images:optimize)",
 };
 
 /**
@@ -267,6 +268,8 @@ export type JourneyContents = { id: string; status: unknown; counts: [string, nu
 
 /** A short name for the entries of a catalog key: the key (`dates`, `wardrobe cities`), or the file for generic keys. */
 function entryLabel(kind: MergedKind, key: string): string {
+  // Groups of files, not files: "artworks 1" would read as one image.
+  if (kind === "presentation/own-artwork.json") return "own artwork groups";
   const name = key === "questions" || key === "entries" ? path.posix.basename(kind, ".json").replaceAll("-", " ") : key;
   return name.replaceAll(".", " ").replace(/([a-z])([A-Z])/gu, "$1 $2").toLowerCase();
 }

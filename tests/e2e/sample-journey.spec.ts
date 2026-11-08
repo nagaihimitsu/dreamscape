@@ -210,9 +210,8 @@ test("the sample journey plays from a new journey through its city finale and ep
   // The rental lasts while the party stays in the city.
   expect(ended.travel.rentedModeIds).toEqual(rental ? [rental.offer.modeId] : []);
 
-  // A reload resumes the finished journey exactly as saved.
+  // A reload resumes the finished journey exactly as saved: the journey last opened on this device opens by itself.
   await page.reload();
-  await ops.chooseJourney(page, JOURNEY);
   await expect(menu).toBeVisible();
   expect(await readSave(page, JOURNEY)).toEqual(ended);
   if (rental) await expect(page.getByTestId("travel-rentals")).toContainText(`${rental.mode.nameJa}を借りています`);

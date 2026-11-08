@@ -4,9 +4,11 @@ import { readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { resolvePublicFile } from "../../scripts/public-assets";
+import { loadContentSources } from "../../scripts/content-sources";
+import { checkImageRights, ownArtworkByLayer } from "../../scripts/image-rights";
 import tourismData from "./generated/content/tourism/catalog.json";
 import battleData from "./generated/content/battles/catalog.json";
-import { linkFiles, prepareContentFixture, quizSourceFile, replaceFixtureFile, storySourceFile } from "./test-fixtures";
+import { linkFiles, prepareContentFixture, quizSourceFile, registerOwnArtwork, replaceFixtureFile, storySourceFile } from "./test-fixtures";
 
 let fixture: string | undefined;
 afterEach(async () => {
@@ -27,6 +29,31 @@ it("creates an isolated undelivered-artwork fixture without changing the source 
   await expect(access(path.join(fixture, "public/assets/characters"))).rejects.toThrow(/ENOENT/);
   await expect(access(path.join(fixture, "public/assets/presentation/heroine_shy_placeholder.svg"))).resolves.toBeUndefined();
   expect(await readFile(original, "utf8")).toBe(source);
+});
+
+it("lists as own artwork only the images the fixture serves, and lets a test register the images it adds", async () => {
+  fixture = await mkdtemp(path.join(tmpdir(), "dreamscape-fixture-check-"));
+  await prepareContentFixture(fixture);
+  const repository = ownArtworkByLayer(loadContentSources(path.resolve("."))).byLayer;
+  let sources = loadContentSources(fixture);
+  const listed = ownArtworkByLayer(sources).byLayer;
+  // The character images are not copied, so their lines are dropped; every other line stays.
+  const kept = [...repository.get("core")!.keys()].filter((assetPath) => !assetPath.startsWith("assets/characters/"));
+  expect(kept.length).toBeLessThan(repository.get("core")!.size);
+  expect([...listed.get("core")!.keys()]).toEqual(kept);
+  expect([...listed.get("milano")!.keys()]).toEqual([...repository.get("milano")!.keys()]);
+  const tourismAssets = (tourismData.assets as { path: string }[]);
+  expect(() => checkImageRights(sources, tourismAssets)).not.toThrow();
+  // An added image is refused until the test registers it, in its layer's list (created when the layer has none).
+  const title = path.join(fixture, "content/journeys/golden_triangle/public/assets/title/golden_triangle.webp");
+  await mkdir(path.dirname(title), { recursive: true });
+  await writeFile(title, "image");
+  sources = loadContentSources(fixture);
+  expect(() => checkImageRights(sources, tourismAssets)).toThrow("出典のない画像：content/journeys/golden_triangle/public/assets/title/golden_triangle.webp。");
+  await registerOwnArtwork(fixture, "content/journeys/golden_triangle", ["assets/title/golden_triangle.webp"]);
+  sources = loadContentSources(fixture);
+  expect(() => checkImageRights(sources, tourismAssets)).not.toThrow();
+  expect([...ownArtworkByLayer(sources).byLayer.get("golden_triangle")!.keys()]).toEqual(["assets/title/golden_triangle.webp"]);
 });
 
 it("links the journeys' images into real folders, so a test can add or replace files without touching the repository", async () => {

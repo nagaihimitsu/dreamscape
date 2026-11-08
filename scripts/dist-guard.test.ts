@@ -2,7 +2,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { describeFindings, devOnlyMarkers, findDevOnlyCode, isTextAsset, type DistFile } from "./dist-guard";
+import { checkThirdPartyLicenses, describeFindings, devOnlyMarkers, findDevOnlyCode, isTextAsset, type DistFile } from "./dist-guard";
 import { runtimeImports } from "./test-sets";
 
 // No content build needed: the markers are checked against the repository's
@@ -97,5 +97,35 @@ describe("development-only code in the game's sources", () => {
     const guarded = [...main.matchAll(/= import\.meta\.env\.DEV\s*\?\s*React\.lazy\(\(\) => import\("(\.\/dev\/\w+)"\)\)\s*:\s*null;/g)].map((match) => match[1]);
     expect(guarded.sort()).toEqual(["./dev/CharacterPreview", "./dev/DebugMode"]);
     expect(main).toMatch(/const query = import\.meta\.env\.DEV \? new URLSearchParams\(window\.location\.search\) : null;/);
+  });
+});
+
+describe("library licence notices of the production build", () => {
+  const entry = (name: string, extra: Record<string, unknown> = {}) =>
+    ({ name, version: "1.0.0", identifier: "MIT", text: `MIT License\n\nCopyright (c) ${name} authors`, ...extra });
+  const dependencies = ["leaflet", "zod"];
+
+  it("accepts a list with a licence text for every package, dependencies and their bundled packages", () => {
+    expect(checkThirdPartyLicenses(JSON.stringify([entry("leaflet", { identifier: "BSD-2-Clause" }), entry("scheduler"), entry("zod")]), dependencies)).toEqual([]);
+  });
+
+  it("names a missing or unreadable file, an entry without its licence and a dependency left out", () => {
+    expect(checkThirdPartyLicenses(null, dependencies)).toEqual([
+      "third-party-licenses.json がありません。vite.config.ts の build.license でライブラリのライセンス一覧を書き出してください。"]);
+    expect(checkThirdPartyLicenses("<!doctype html>", dependencies)).toEqual(["third-party-licenses.json を JSON として読めません。"]);
+    expect(checkThirdPartyLicenses("{}", dependencies)).toEqual(["third-party-licenses.json はライブラリの一覧（JSON の配列）ではありません。"]);
+    expect(checkThirdPartyLicenses(JSON.stringify([entry("leaflet", { text: "" }), entry("zod", { identifier: undefined }), {}]), dependencies)).toEqual([
+      "third-party-licenses.json の leaflet 1.0.0 に text がありません。",
+      "third-party-licenses.json の zod 1.0.0 に identifier がありません。",
+      "third-party-licenses.json の 3 件目 に name がありません。",
+      "third-party-licenses.json の 3 件目 に version がありません。",
+      "third-party-licenses.json の 3 件目 に identifier がありません。",
+      "third-party-licenses.json の 3 件目 に text がありません。",
+    ]);
+    // A text of white space only is no licence text.
+    expect(checkThirdPartyLicenses(JSON.stringify([entry("leaflet", { text: " \n\t " }), entry("zod")]), dependencies)).toEqual([
+      "third-party-licenses.json の leaflet 1.0.0 に text がありません。"]);
+    expect(checkThirdPartyLicenses(JSON.stringify([entry("leaflet")]), dependencies)).toEqual([
+      "third-party-licenses.json に zod（package.json の dependencies）のライセンスがありません。"]);
   });
 });

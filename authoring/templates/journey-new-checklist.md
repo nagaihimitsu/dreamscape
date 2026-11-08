@@ -10,7 +10,7 @@
 
 - [ ] 舞台：実在する著名な観光地にする（`AGENTS.md` の「観光と学習」）。地点・観光地・デートの行き先の名前（`nameJa`・`nameEn`。見本は「見本の…」「Mihon …」）、座標（見本は海上の 0,0 付近）、徒歩時間とその出典。
 - [ ] 出典：すべての `sources` と画像の `sourceUrl` を、実際に確認した資料の発行者・題名・URL・確認日に置き換え、`claimType` で事実・解釈・仮説・伝説を区別し、`claimJa` に資料が支える主張を書く。見本の「見本用の架空の…」は残さない。
-- [ ] 画像：`public/assets/tourism/{{journeyId}}/` の見本の画像を、権利を確認した画像に差し替える。`tourism/catalog.json` の幅・高さ・説明・ライセンス・クレジット・加工内容を直し、`isPlaceholder` を `false` にする。
+- [ ] 画像：`public/assets/tourism/{{journeyId}}/` の見本の画像を、権利を確認した画像に差し替える。`tourism/catalog.json` の幅・高さ・説明・ライセンス・クレジット・加工内容を直し、`isPlaceholder` を `false` にする。JPEG・PNG の写真は `npm run images:optimize -- --journey {{journeyId}} --write` で WebP にする。品物のアイコンやタイトルの絵など、Dreamscape のために作った絵は `presentation/own-artwork.json` に配信時のパスを登録する（出典のない画像があると `npm run content:build` が止まる）。
 - [ ] 文章：観光案内・対決・デート・都市フィナーレ・エピローグ（含めた場合は特殊戦・道中交流）の会話と、カタログの表示文、クイズと和訳を書き直す。ヒロインの台詞・デートは `docs/09_HEROINE_CHARACTER_BIBLE.md` を読んでから書く。各Inkの冒頭の `//` コメントは書き方の規則なので残してよい。
 - [ ] 英単語：`learning/word-meanings.json` を新しい英文に合わせる（共通の辞書 `content/learning/word-meanings.json` にない語だけを置く。どの英文も使わない語は `npm run content:build -- --verbose` で一覧できる）。
 - [ ] 旅行編と都市の設定：`manifest.json` の通貨・開始資金・`cityPlan`、都市の国コード `countryCode`（見本は `XX`）と `themeJa`、`travel/{{cityId}}-settings.json` の宿泊費・メモ。
@@ -25,6 +25,6 @@
 
 1. `npm run content:build` で検証する。`npm run dev` のタイトル画面には「準備中」として並ぶ。
 2. `npm run journey:readiness -- --journey {{journeyId}}` で、残っている見本の内容と未完成の項目を確かめる。
-3. 上の項目を置き換える。地点・交通・背景などの都市データは `authoring/CITY_BUNDLES.md` の `city:bundle` で編集できる。観光地やデートの登録を生成する `journey:scaffold`（`authoring/JOURNEY_AUTHORING.md`）は、観察資料 `authoring/journeys/{{journeyId}}/drafts/observation-cards.json`（まだない）に仮でない JPEG の観光画像ごとの記録と出典を確かめた観察ポイントを置いてから、乗り物（徒歩のほかに2つまで）は `manifest.json` の `transportModes` に宣言し、都市ごとの交通判断台帳 `travel/<都市ID>-transit.json` を置く。交通の判断を数える `journey:transit` はそれから使う（乗り物を宣言しないうちは徒歩だけで、台帳は要らない）。
+3. 上の項目を置き換える。地点・交通・背景などの都市データは `authoring/CITY_BUNDLES.md` の `city:bundle` で編集できる。観光地やデートの登録を生成する `journey:scaffold`（`authoring/JOURNEY_AUTHORING.md`）は、観察資料 `authoring/journeys/{{journeyId}}/drafts/observation-cards.json`（まだない）に仮でない JPEG または WebP の観光画像ごとの記録と出典を確かめた観察ポイントを置いてから、乗り物（徒歩のほかに2つまで）は `manifest.json` の `transportModes` に宣言し、都市ごとの交通判断台帳 `travel/<都市ID>-transit.json` を置く。交通の判断を数える `journey:transit` はそれから使う（乗り物を宣言しないうちは徒歩だけで、台帳は要らない）。
 4. `npm run content:build` と `npm run journey:readiness -- --journey {{journeyId}}` を繰り返し、準備中であること（「旅行編は準備中です。」）以外の問題がなくなったら `npm run journey:release -- --check --journey {{journeyId}}`、続けて `--apply` で公開の状態にする。
 5. 公開前に `npm run verify` とE2E一式を実行する。

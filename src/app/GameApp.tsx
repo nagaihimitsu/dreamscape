@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from "react";
 import {
   balance,
   dates,
@@ -45,6 +45,8 @@ import { EnglishReview } from "../features/learning/EnglishReview";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
 import { CityProgressBadge, CityRecords } from "../features/journey/CityProgress";
 import { TravelActions } from "../features/journey/TravelActions";
+import { TitleNameFields } from "../features/journey/TitleNameFields";
+import { nameOrDefault } from "../domain/player-names";
 import { useTravelEffects } from "./useTravelEffects";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
 import { encounters } from "../content/encounters";
@@ -85,6 +87,9 @@ import {
 } from "../domain/battle";
 
 import { browserStorage, type AppProps } from "./app-storage";
+import { storySceneChanged, storySceneOnScreen } from "./story-scene-change";
+import { holdTaps } from "../components/tap-hold";
+import { PAGE_MARGIN_ATTRIBUTE } from "../components/scene-tap";
 
 type Confirmation = { kind: "date"; id: string };
 
@@ -102,6 +107,14 @@ export function GameApp({
   const displaySettings = usePresentationSettings(storage);
   const session = useGameSession(storage, displaySettings.value.autoSave, () => setSelectedLandmarkId(null));
   const { game, loaded, invalid, notice, setNotice, commit, getCurrent, save } = session;
+  // The second tap of a double tap that starts or ends a story scene must not press the next
+  // screen or read the new scene on (story-scene-change.ts).
+  const storyScene = storySceneOnScreen(game);
+  const shownStoryScene = useRef(storyScene);
+  useLayoutEffect(() => {
+    if (storySceneChanged(shownStoryScene.current, storyScene)) holdTaps();
+    shownStoryScene.current = storyScene;
+  }, [storyScene]);
   const titleActions = titleSaveActions(loaded);
   const learning = useLearning(game, storage, !isDebug);
   const { travelToEvent, returnToHotel, effects: travelEffects } = useTravelEffects({
@@ -153,12 +166,9 @@ export function GameApp({
   const [confirmLoad, setConfirmLoad] = useState(false);
   const [showRomanceEnding, setShowRomanceEnding] = useState(false);
   const [placeFocusRequest, setPlaceFocusRequest] = useState(0);
-  const [player, setPlayer] = useState(
-    game?.playerName ?? balance.defaultPlayerName,
-  );
-  const [heroine, setHeroine] = useState(
-    game?.heroineName ?? balance.defaultHeroineName,
-  );
+  // The title starts with empty fields (the default names are their placeholders); 設定 fills in the current names.
+  const [player, setPlayer] = useState(game?.playerName ?? "");
+  const [heroine, setHeroine] = useState(game?.heroineName ?? "");
 
   function returnToPlace(landmarkId: string | null | undefined) {
     setSelectedLandmarkId(landmarkId ?? null);
@@ -166,7 +176,7 @@ export function GameApp({
   }
   function begin(event: FormEvent) {
     event.preventDefault();
-    session.begin(player, heroine, journeyId);
+    session.begin(nameOrDefault(player, balance.defaultPlayerName), nameOrDefault(heroine, balance.defaultHeroineName), journeyId);
   }
   function requestDelete() {
     const result = session.prepareDelete();
@@ -182,6 +192,10 @@ export function GameApp({
   }
   function loadSavedGame() {
     if (!session.restore()) return;
+    // A load replaces the screen under the finger like a scene start, also when the same scene
+    // comes back (a date, battle or encounter is a new instance: sceneEpoch): the second tap of a
+    // double tap on 「ロード」 or 「ロードする」 must not read the restored line on.
+    holdTaps();
     setConfirmation(null);
     setShowRomanceEnding(false);
     setSceneEpoch((epoch) => epoch + 1);
@@ -362,7 +376,8 @@ export function GameApp({
           </span>
         </div>
       )}
-      <main id="main" ref={main} tabIndex={-1}>
+      {/* A tap on main's own margin beside a narrow story scene reads on (scene-tap.ts). */}
+      <main id="main" ref={main} tabIndex={-1} {...{ [PAGE_MARGIN_ATTRIBUTE]: "" }}>
         {learning.error && (
           <div className="notice" role="status">
             {learning.error}
@@ -418,11 +433,11 @@ export function GameApp({
               )}
               {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} restoreFocus={selectorFocus?.restoreFocus} />}
               {titleActions.start !== "hidden" && <form onSubmit={begin} className="name-form">
-                {nameForm}
+                <TitleNameFields player={player} heroine={heroine} onPlayer={setPlayer} onHeroine={setHeroine} />
                 <button
                   className="primary"
                   data-testid="title-start"
-                  disabled={!player.trim() || !heroine.trim() || titleActions.start === "disabled"}
+                  disabled={titleActions.start === "disabled"}
                 >
                   {invalid
                     ? displaySettings.value.autoSave ? "元のデータを退避して新しく始める" : "元のデータを残して新しく始める"

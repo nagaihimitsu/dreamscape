@@ -1,3 +1,4 @@
+import { namedJa } from "./journey-cli";
 import { inspectJourneyReadiness, loadJourneyReadiness } from "./journey-readiness";
 import { buildContent } from "./content-pipeline";
 import { transportWaitingJa } from "./transport-validation";
@@ -5,20 +6,21 @@ import { transportWaitingJa } from "./transport-validation";
 const args = process.argv.slice(2);
 const journeyFlag = args.indexOf("--journey");
 const journeyId = args[journeyFlag + 1];
-if (journeyFlag < 0 || !journeyId || journeyId.startsWith("--")) throw new Error("--journey ID is required");
+if (journeyFlag < 0 || !journeyId || journeyId.startsWith("--")) fail("--journey ID is required");
 args.splice(journeyFlag, 2);
 if (args.some((arg) => arg !== "--json" && arg !== "--require-ready")) {
-  throw new Error("Usage: npx tsx scripts/inspect-journey-readiness.ts --journey ID [--json] [--require-ready]");
+  fail("Usage: npx tsx scripts/inspect-journey-readiness.ts --journey ID [--json] [--require-ready]");
 }
 const root = process.cwd();
-const report = inspectJourneyReadiness(loadJourneyReadiness(root, journeyId));
+const input = attempt(() => loadJourneyReadiness(root, journeyId));
+const report = attempt(() => inspectJourneyReadiness(input));
 if (args.includes("--json")) console.log(JSON.stringify(report, null, 2));
 else {
-  console.log(`${report.journeyId}: ${report.ready ? "参照の準備完了" : "準備中"}`);
+  console.log(`${namedJa(input.trip)}: ${report.ready ? "参照の準備完了" : "準備中"}`);
   if (report.transportPending) console.log(`  交通: ${transportWaitingJa(report.transportPending)}`);
   for (const issue of report.issues) console.log(`  - ${issue.detail}`);
   for (const city of report.cities) {
-    console.log(`\n${city.cityId}: ${city.events.length} 候補`);
+    console.log(`\n${namedJa(input.trip.cities.find((entry) => entry.id === city.cityId) ?? { id: city.cityId })}: ${city.events.length} 候補`);
     for (const issue of city.issues) console.log(`  - ${issue.detail}`);
     for (const event of city.events) {
       console.log(`  ${event.id} (${event.category}): ${event.issues.length ? event.issues.map((issue) => issue.code).join(", ") : "参照あり"}`);
@@ -30,7 +32,26 @@ if (args.includes("--require-ready")) {
   else {
     // Reference presence is not enough: apply the same complete Ink, image,
     // route and cross-catalog validation as a normal production build.
-    await buildContent(root, false);
-    console.log("Journey release gate: full content validation passed.");
+    try {
+      await buildContent(root, false);
+      console.log("Journey release gate: full content validation passed.");
+    } catch (error) {
+      console.error(error instanceof Error ? error.message : error);
+      process.exitCode = 1;
+    }
+  }
+}
+
+/** Print a failure before any report output without its stack trace, and stop with exit code 1. */
+function fail(error: unknown): never {
+  console.error(error instanceof Error ? error.message : error);
+  process.exit(1);
+}
+
+function attempt<T>(run: () => T): T {
+  try {
+    return run();
+  } catch (error) {
+    return fail(error);
   }
 }

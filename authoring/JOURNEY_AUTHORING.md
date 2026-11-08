@@ -1,6 +1,6 @@
 # 旅行編へシナリオとクイズを取り込む
 
-都市の地点・旅行データ・背景・観察資料が用意された旅行編に、脚本とクイズを追加する手順です。旅行編フォルダそのものは `npm run journey:new` で見本の編から作れます（[技術設計](../docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順)）。作った旅行編は `authoring`（`eventPrefix` など）を持つので、`journey:readiness`・`journey:release` と都市データの [city:bundle](CITY_BUNDLES.md) はすぐに使えます。`journey:scaffold` は、観察資料（`authoring.observationFile`。`journey:new` はパスだけを決め、ファイルは作りません）に仮でない JPEG（`.jpg`）の観光画像ごとの記録と出典を確かめた観察ポイントを置き、背景の画像を差し替えてから（見本の画像は PNG で仮の扱い）、`journey:transit` は、`manifest.json` の `transportModes` に乗り物を宣言したら、都市ごとの交通判断台帳 `travel/<都市ID>-transit.json` を置いて使います（乗り物を宣言しないうちは徒歩だけで、台帳は要りません。下の「編集するもの」）。見本の出典・画像・文章が残っているうちは `journey:readiness` が「見本の…が残っています」と示し、`journey:release` は止まります。インド編、ウズベキスタン編、ルアンパパーン編は同じ生成・検査・反映処理を使います。都市数や都市の順序は各旅行編の `content/journeys/<旅行編ID>/manifest.json` に従います。
+都市の地点・旅行データ・背景・観察資料が用意された旅行編に、脚本とクイズを追加する手順です。旅行編フォルダそのものは `npm run journey:new` で見本の編から作れます（[技術設計](../docs/02_TECH_ARCHITECTURE.md#新しい編を追加する手順)）。作った旅行編は `authoring`（`eventPrefix` など）を持つので、`journey:readiness`・`journey:release` と都市データの [city:bundle](CITY_BUNDLES.md) はすぐに使えます。`journey:scaffold` は、観察資料（`authoring.observationFile`。`journey:new` はパスだけを決め、ファイルは作りません）に仮でない JPEG（`.jpg`）または WebP（`.webp`）の観光画像ごとの記録と出典を確かめた観察ポイントを置き、背景の画像を差し替えてから（見本の画像は PNG で仮の扱い）、`journey:transit` は、`manifest.json` の `transportModes` に乗り物を宣言したら、都市ごとの交通判断台帳 `travel/<都市ID>-transit.json` を置いて使います（乗り物を宣言しないうちは徒歩だけで、台帳は要りません。下の「編集するもの」）。見本の出典・画像・文章が残っているうちは `journey:readiness` が「見本の…が残っています」と示し、`journey:release` は止まります。インド編、ウズベキスタン編、ルアンパパーン編は同じ生成・検査・反映処理を使います。都市数や都市の順序は各旅行編の `content/journeys/<旅行編ID>/manifest.json` に従います。
 
 インド3都市は脚本51本（到着会話3本を含む）・クイズ51問・デート18件・都市フィナーレ3件を登録済みです。[完成版の構成と制作記録](journeys/golden_triangle/drafts/scenario/README.md)を参照できます。登録済みInkは `content/journeys/golden_triangle/stories/` のみを編集し、クイズは同じフォルダの `quizzes/` と対訳、メタデータは対応するカタログを更新します。制作時の `narrative.json` は初期登録入力として残し、更新内容を自動同期する正本にはしません。以下の新規登録手順は、未制作のウズベキスタン編などにも利用できます。
 
@@ -21,7 +21,7 @@
 ## ウズベキスタン編の例
 
 ```sh
-# 固定ID、Inkの置き場所、入力メタデータの雛形を表示
+# 固定ID、Inkの置き場所、入力メタデータの雛形を表示（--requirements は省略できます）
 npm run journey:scaffold -- --requirements --journey uzbekistan
 
 # タシュケントだけを制作する場合
@@ -39,9 +39,9 @@ npm run journey:release -- --check --journey uzbekistan --through tashkent --nar
 
 `requirements` の `narrativeTemplate` 部分を別のJSONへ保存し、各 `null` を実際の脚本メタデータに置き換えます。Inkとクイズは指定のIDで旅行編フォルダの `content/journeys/<旅行編ID>/stories/`、`quizzes/` に追加します（ストーリーIDは `stories/` からの相対パス）。和訳の形式は [インド編の制作手順](journeys/golden_triangle/scaffold/README.md) と共通です。脚本の命名・タグ・クイズの内容規約は [CONTENT_GUIDE](CONTENT_GUIDE.md) に従ってください。
 
-通常対決は3問、都市フィナーレは5問、通常デートは2回の3択を使います。観察の根拠と `factId` は各旅行編の `observation-cards.json`、場所・画像・出典は都市の編集用JSONから確認できます。観察資料の観察ポイントは問題より先に書くので `relatedQuestionIds: []` のままにします。登録した観察ポイントは、問題と結び付かない観察だけの手がかりとして始まります。都市を公開（下の `--apply`）した後、旅行編の `tourism/catalog.json` で、問題文・正解・解説が本当にその内容を使う観察ポイントにだけ問題IDを書きます。公開済みの旅行編の付け直しは、シナリオ改修のときに行います（[データ契約](../docs/07_DATA_AND_TESTS.md#観察だけの手がかり)）。問題や恋愛の台詞はこれらの資料を参考に制作し、検証用の仮文を本番の脚本に混ぜないでください。
+通常対決は3問、都市フィナーレは5問、通常デートは2回の3択を使います。観察の根拠と `factId` は各旅行編の `observation-cards.json`、場所・画像・出典は都市の編集用JSONから確認できます。観察資料の観察ポイントは問題より先に書くので `relatedQuestionIds: []` のままにします（問題IDを書いた観察ポイントがあると、`journey:scaffold` はその観察ポイントとファイルを示して止まります）。登録した観察ポイントは、問題と結び付かない観察だけの手がかりとして始まります。都市を公開（下の `--apply`）した後、旅行編の `tourism/catalog.json` で、問題文・正解・解説が本当にその内容を使う観察ポイントにだけ問題IDを書きます。公開済みの旅行編の付け直しは、シナリオ改修のときに行います（[データ契約](../docs/07_DATA_AND_TESTS.md#観察だけの手がかり)）。問題や恋愛の台詞はこれらの資料を参考に制作し、検証用の仮文を本番の脚本に混ぜないでください。
 
-`--check` の成功後に `--apply` で関連カタログへ反映できます。反映先は旅行編の `manifest.json` と、その旅行編フォルダ `content/journeys/<旅行編ID>/` のカタログだけで、その層にまだないカタログや、既存のカタログにないキー（例：`memories`）は、追加する項目があるときだけ作られます。他の層にある同じIDの定義は内容が一致すれば再登録せず、異なれば反映を拒否します。これはGitへのコミット・プッシュやサイトのデプロイではありません。後続都市を先に公開することはできず、既公開都市を保持して次都市まで順番に反映します。未制作脚本、クイズ・和訳の欠落、都市所属不一致、画像差替え、途中の編集競合がある場合は反映を拒否します。
+`--check` の成功後に `--apply` で関連カタログへ反映できます。反映先は旅行編の `manifest.json` と、その旅行編フォルダ `content/journeys/<旅行編ID>/` のカタログだけで、その層にまだないカタログや、既存のカタログにないキー（例：`memories`）は、追加する項目があるときだけ作られます。他の層にある同じIDの定義は内容が一致すれば再登録せず、異なれば反映を拒否します。`--check` は `--apply` で書き込むファイルを、`--apply` は書き込んだファイルを一覧で示します。内容が変わらないファイル（公開済みの都市など）は書き直さず、元の書式のまま残します（検証に使ったファイルが検証の途中で編集されていれば、書き直さないファイルでも反映を拒否します）。これはGitへのコミット・プッシュやサイトのデプロイではありません。後続都市を先に公開することはできず、既公開都市を保持して次都市まで順番に反映します。未制作脚本、クイズ・和訳の欠落、都市所属不一致、画像差替え、途中の編集競合がある場合は反映を拒否します。
 
 通常観光は順不同で訪問でき、案内初読了・初完了・初好成績・エピソードクリアが各1APです。フィナーレは同じ都市の主観光を参照し、都市クリア報酬は旅行編の設定を使います。特殊戦B/Cの場所・証拠・対戦人物は脚本とクイズの制作時に決め、見本の編の特殊戦B・C（[見本の編](templates/sample_trip/README.md) の「任意の部分」）やミラノ編と同じ形式で追加してください。
 
