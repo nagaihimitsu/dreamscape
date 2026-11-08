@@ -45,6 +45,25 @@ describe("city editing bundle: transit ledgers, images and observations", () => 
     expect(report.counts.delhi.unresearched).toBe(0);
     expect(report.counts.delhi.inconclusive).toBe(0);
     expect(report.counts.delhi.available).toBeGreaterThan(0);
+    // The journey-wide ledger interleaves the cities (Delhi's records come first and last). The removal
+    // dropped only that record, and an edit replaces its record where it stands: nothing else moves.
+    type Decision = (typeof decisions)[number];
+    const same = (a: Decision, b: Decision) => a.cityId === b.cityId && a.fromPlaceId === b.fromPlaceId && a.toPlaceId === b.toPlaceId && a.mode === b.mode;
+    expect(updated.decisions).toEqual(original.decisions.filter((item: Decision) => !same(item, decision)));
+    const edit = exportCityBundle(root, "delhi");
+    const last = (edit.transitDecisions as (Decision & { reasonJa: string })[]).at(-1)!;
+    last.reasonJa += " 編集テストの注記。";
+    await applyCityBundle(root, edit, true);
+    const position = updated.decisions.findIndex((item: Decision) => same(item, last));
+    expect(position).toBeGreaterThan(updated.decisions.findIndex((item: Decision) => item.cityId !== "delhi"));
+    expect(readJson(root, indiaDecisionFile).decisions).toEqual(updated.decisions.map((item: Decision, index: number) => (index === position ? last : item)));
+    // Two records for one direction and mode are refused, writing nothing.
+    const duplicate = exportCityBundle(root, "delhi");
+    const [first] = duplicate.transitDecisions as Decision[];
+    (duplicate.transitDecisions as Decision[]).push(structuredClone(first));
+    const beforeDuplicate = fingerprint(root);
+    await expect(applyCityBundle(root, duplicate, true)).rejects.toThrow(`Duplicate transit decision: delhi:${first.fromPlaceId}:${first.toPlaceId}:${first.mode}`);
+    expect(fingerprint(root)).toBe(beforeDuplicate);
   }, 180_000);
 
   it("edits the selected Uzbek transit ledger while rejecting unknown directions and image changes", async () => {

@@ -198,15 +198,22 @@ export function mergeCityCatalogs(sources: ContentSources, bundle: CityBundle, b
     if (!decisionFile) throw new Error(`No transit decision ledger for city: ${cityId}`);
     const ledger = read(root, decisionFile);
     if (!isDeepStrictEqual(baseline?.transitDecisions, bundle.transitDecisions)) {
-      // Keep every other city's records in their original order.
-      let inserted = false;
-      ledger.decisions = ledger.decisions.flatMap((entry: { cityId: string }) => {
+      // Replace each of this city's records where it stands (one direction and mode), drop removed
+      // ones and append new ones, so an edit changes only its own lines; other cities' records stay.
+      type Decision = { cityId: string; fromPlaceId: string; toPlaceId: string; mode: string };
+      const key = (entry: Decision) => `${entry.cityId}:${entry.fromPlaceId}:${entry.toPlaceId}:${entry.mode}`;
+      const pending = new Map<string, Decision>();
+      for (const entry of bundle.transitDecisions as Decision[]) {
+        if (pending.has(key(entry))) throw new Error(`Duplicate transit decision: ${key(entry)}`);
+        pending.set(key(entry), entry);
+      }
+      ledger.decisions = ledger.decisions.flatMap((entry: Decision) => {
         if (entry.cityId !== cityId) return [entry];
-        if (inserted) return [];
-        inserted = true;
-        return bundle.transitDecisions!;
+        const replacement = pending.get(key(entry));
+        pending.delete(key(entry));
+        return replacement ? [replacement] : [];
       });
-      if (!inserted) ledger.decisions.push(...bundle.transitDecisions);
+      ledger.decisions.push(...pending.values());
     }
     values[decisionFile] = ledger;
   }
