@@ -377,11 +377,21 @@ test("encounter: the tap on the picture or the line that closes the held-item de
   expect(held.activeEncounter, "a line to read after the item is given").not.toBeNull();
   const line = page.getByTestId("dialogue-text");
   const text = await line.textContent();
-  const picture = await ops.sceneBackgroundPoint(page);
   const detail = page.getByRole("group", { name: "所持アイテム" }).getByRole("dialog");
   const openDetail = async () => {
     await expect(await ops.openHeldItems(page)).toContainText(encounter!.itemName);
   };
+  // The detail hangs from the header over the picture's top, as far down as its text takes (the
+  // fonts decide): the picture's point is taken below it, halfway to the line.
+  const column = await ops.sceneBackgroundPoint(page);
+  await openDetail();
+  const foot = await detail.evaluate((element) => element.getBoundingClientRect().bottom);
+  await page.keyboard.press("Escape");
+  await expect(detail).toBeHidden();
+  const lineTop = (await line.boundingBox())!.y;
+  expect(foot, "the open detail ends above the line").toBeLessThan(lineTop);
+  const picture = { x: column.x, y: Math.max(column.y, (foot + lineTop) / 2) };
+  expect(await ops.readsOnAt(page, picture), "the point below the detail shows the scene's picture").toBe(true);
   await openDetail();
   await ops.tapAt(page, picture);
   await expect(detail).toBeHidden();
