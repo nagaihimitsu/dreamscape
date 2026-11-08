@@ -151,6 +151,34 @@ export function findDebugCodeOnTitle(
   return findings;
 }
 
+export interface DistCheck {
+  /** Test-only code or data in any built file or path (devOnlyMarkers over every file). */
+  devOnly: DevOnlyFinding[];
+  /** index.html and the files it loads at once (eagerFiles). */
+  titleFiles: string[];
+  /** Title files that index.html names but the build lacks (index.html itself included). */
+  missing: string[];
+  /** Debug code in a title file (lazyDebugMarkers over titleFiles only). */
+  onTitle: DebugOnTitleFinding[];
+}
+
+/**
+ * The checks of scripts/check-dist.ts over all files of a build, except the
+ * licence check. Which marker list scans which files is decided here (and unit
+ * tested), so the command only reads the folder, passes every file and prints.
+ */
+export function checkDist(files: readonly DistFile[]): DistCheck {
+  const indexHtml = files.find((file) => file.path === "index.html")?.text ?? "";
+  // The page itself and what it loads at once; Debug's chunks load only when Debug is opened.
+  const titleFiles = ["index.html", ...eagerFiles(indexHtml)];
+  return {
+    devOnly: findDevOnlyCode(files),
+    titleFiles,
+    missing: titleFiles.filter((name) => !files.some((file) => file.path === name)),
+    onTitle: findDebugCodeOnTitle(files, titleFiles),
+  };
+}
+
 /** A report of Debug code on the title page for the person who ran the build. */
 export function describeDebugOnTitle(folder: string, findings: readonly DebugOnTitleFinding[]): string {
   return [

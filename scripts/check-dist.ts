@@ -9,8 +9,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import {
-  checkThirdPartyLicenses, describeDebugOnTitle, describeFindings, eagerFiles, findDebugCodeOnTitle, findDevOnlyCode, isTextAsset,
-  THIRD_PARTY_LICENSES_PATH, type DistFile,
+  checkDist, checkThirdPartyLicenses, describeDebugOnTitle, describeFindings, isTextAsset, THIRD_PARTY_LICENSES_PATH, type DistFile,
 } from "./dist-guard";
 
 const folder = process.argv[2] ?? "dist";
@@ -29,19 +28,16 @@ const files: DistFile[] = readdirSync(root, { recursive: true, withFileTypes: tr
     return { path: relative, text: isTextAsset(relative) ? readFileSync(file, "utf8") : null };
   });
 
-const findings = findDevOnlyCode(files);
-if (findings.length > 0) {
-  console.error(describeFindings(folder, findings));
+// Every file goes to the check (scripts/dist-guard.test.ts runs this command on small builds).
+const { devOnly, titleFiles, missing, onTitle } = checkDist(files);
+if (devOnly.length > 0) {
+  console.error(describeFindings(folder, devOnly));
   process.exit(1);
 }
-// The page itself and what it loads at once; Debug's chunks load only when Debug is opened.
-const titleFiles = ["index.html", ...eagerFiles(files.find((file) => file.path === "index.html")!.text!)];
-const missing = titleFiles.filter((name) => !files.some((file) => file.path === name));
 if (missing.length > 0) {
   console.error(`${folder}/index.html が読み込むファイルがビルドにありません: ${missing.join(", ")}`);
   process.exit(1);
 }
-const onTitle = findDebugCodeOnTitle(files, titleFiles);
 if (onTitle.length > 0) {
   console.error(describeDebugOnTitle(folder, onTitle));
   process.exit(1);

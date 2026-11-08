@@ -1,10 +1,13 @@
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { createRequire } from "node:module";
+import { tmpdir } from "node:os";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
-  checkThirdPartyLicenses, describeDebugOnTitle, describeFindings, devOnlyMarkers, eagerFiles, findDebugCodeOnTitle, findDevOnlyCode, isTextAsset,
-  lazyDebugMarkers, type DistFile,
+  checkDist, checkThirdPartyLicenses, describeDebugOnTitle, describeFindings, devOnlyMarkers, eagerFiles, findDebugCodeOnTitle, findDevOnlyCode,
+  isTextAsset, lazyDebugMarkers, type DistFile,
 } from "./dist-guard";
 import { runtimeImports } from "./test-sets";
 
@@ -114,6 +117,63 @@ describe("production build guard", () => {
     expect(isTextAsset("assets.js/photo")).toBe(false);
   });
 
+  // What scripts/check-dist.ts runs on every build: a small build whose lazy Debug chunk may hold Debug's code
+  // but never the test hook or the sample journey, and whose title files may hold no Debug code.
+  const checkedHtml = '<script type="module" crossorigin src="./assets/index-abc.js"></script><link rel="stylesheet" href="./assets/index-abc.css">';
+  const checkedBuild: DistFile[] = [
+    { path: "index.html", text: checkedHtml },
+    { path: "assets/index-abc.js", text: 'const d=()=>import("./DebugMode-x1.js")' },
+    { path: "assets/index-abc.css", text: ".travel-menu{display:grid}" },
+    { path: "assets/DebugMode-x1.js", text: 'jsx("main",{className:"debug-panel"})' },
+  ];
+  const withText = (build: DistFile[], file: string, text: string) =>
+    build.map((item) => item.path === file ? { ...item, text: `${item.text};${text}` } : item);
+  const hookAndSampleInDebug = withText(checkedBuild, "assets/DebugMode-x1.js", 'Object.defineProperty(t,"__dreamscapeDebug",{});const s="sample_trip"');
+  const debugOnTitle = withText(checkedBuild, "assets/index-abc.js", 'jsx("div",{className:"debug-panel"})');
+
+  it("checks every built file for test-only code and the title page's files for Debug code", () => {
+    expect(checkDist(checkedBuild)).toEqual({
+      devOnly: [], titleFiles: ["index.html", "assets/index-abc.js", "assets/index-abc.css"], missing: [], onTitle: [],
+    });
+    // The lazy Debug chunk is searched for the test hook and the sample journey like every other file.
+    expect(checkDist(hookAndSampleInDebug).devOnly.map(({ path, marker }) => [path, marker.text])).toEqual([
+      ["assets/DebugMode-x1.js", "__dreamscapeDebug"],
+      ["assets/DebugMode-x1.js", "sample_trip"],
+    ]);
+    expect(checkDist(hookAndSampleInDebug).onTitle).toEqual([]);
+    // Debug's code in the entry script is on the title page.
+    expect(checkDist(debugOnTitle).onTitle.map(({ path, marker }) => [path, marker.text])).toEqual([["assets/index-abc.js", "debug-panel"]]);
+    expect(checkDist(debugOnTitle).devOnly).toEqual([]);
+    // A file index.html loads at once that the build lacks, and a build without index.html.
+    expect(checkDist(checkedBuild.filter((file) => file.path !== "assets/index-abc.css")).missing).toEqual(["assets/index-abc.css"]);
+    expect(checkDist(checkedBuild.filter((file) => file.path !== "index.html")).missing).toEqual(["index.html"]);
+  });
+
+  it("fails the build command (scripts/check-dist.ts) on such a build, whichever built file holds the code", () => {
+    const tsx = pathToFileURL(createRequire(import.meta.url).resolve("tsx")).href;
+    const folder = mkdtempSync(path.join(tmpdir(), "dreamscape-dist-"));
+    const check = (build: DistFile[]) => {
+      rmSync(folder, { recursive: true, force: true });
+      for (const file of build) {
+        mkdirSync(path.dirname(path.join(folder, file.path)), { recursive: true });
+        writeFileSync(path.join(folder, file.path), file.text ?? "");
+      }
+      return spawnSync(process.execPath, ["--import", tsx, path.join(root, "scripts/check-dist.ts"), folder], { cwd: root, encoding: "utf8" });
+    };
+    try {
+      const hook = check(hookAndSampleInDebug);
+      expect(hook.status, hook.stdout).toBe(1);
+      expect(hook.stderr).toContain("- assets/DebugMode-x1.js の内容に「__dreamscapeDebug」");
+      expect(hook.stderr).toContain("- assets/DebugMode-x1.js の内容に「sample_trip」");
+      const title = check(debugOnTitle);
+      expect(title.status, title.stdout).toBe(1);
+      expect(title.stderr).toContain("のタイトル画面で読み込むファイルにDebugのコードが入っています。");
+      expect(title.stderr).toContain("- assets/index-abc.js に「debug-panel」");
+    } finally {
+      rmSync(folder, { recursive: true, force: true });
+    }
+  });
+
   it("names the file, the text and its source in the reports", () => {
     const [finding] = findDevOnlyCode([{ path: "assets/DebugMode-x1.js", text: "__dreamscapeDebug" }]);
     const report = describeFindings("dist", [finding]);
@@ -168,8 +228,10 @@ describe("Debug's code in the game's sources", () => {
     // src/dev/ ships as Debug's lazy chunks (not its unit tests). The dist markers tests/fixtures/ and
     // tests/journeys/ only match source-map paths, which the build does not write, so this scan is what
     // keeps such an import out.
-    const shipped = readdirSync(path.join(root, "src/dev"), { encoding: "utf8" })
-      .filter((file) => /\.tsx?$/.test(file) && !/\.test\.tsx?$/.test(file)).map((file) => `src/dev/${file}`);
+    // Every file of src/dev/ and its subfolders, as productionSources() reads src/.
+    const shipped = readdirSync(path.join(root, "src/dev"), { recursive: true, encoding: "utf8" })
+      .map((file) => `src/dev/${file.split(path.sep).join("/")}`)
+      .filter((file) => /\.tsx?$/.test(file) && !/\.test\.tsx?$/.test(file));
     expect(shipped).toEqual(expect.arrayContaining(["src/dev/DebugMode.tsx", "src/dev/scenario-builders.ts", "src/dev/test-cities.ts"]));
     expect(shipped.flatMap((file) => runtimeImports(read(file)).filter((specifier) => testImport.test(specifier))
       .map((specifier) => `${file} → ${specifier}`))).toEqual([]);
