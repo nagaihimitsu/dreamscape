@@ -142,6 +142,12 @@ describe("scenario builders", () => {
 
     const encounter = startEncounterScene(cityStart("mihon"), "smp_mihon_bookmark_stall", rollTickets.positive);
     expect(encounter.activeEncounter?.encounterId).toBe("smp_mihon_bookmark_stall");
+    // Met as play meets it: in the observation of its landmark (the first visit's guide skipped), which it returns to.
+    expect(encounter.activeEncounter?.returnTourism).toMatchObject({ landmarkId: "mihon_clock_tower", encounterIds: ["smp_mihon_bookmark_stall"] });
+    expect(encounter.visitedLandmarkIds).toEqual(["mihon_clock_tower"]);
+    // An encounter whose observation refuses it (every choice needs an item nobody holds yet) does not start.
+    expect(() => startEncounterScene(cityStart("mihon"), "smp_mihon_bookmark_gift", rollTickets.positive))
+      .toThrow("この進行状態では交流を始められません。必要な進行や品物を確認してください。");
 
     for (const [roll, ticket] of Object.entries(rollTickets)) {
       let date = startDateScene(cleared, "smp_mihon_date_tower_square", ticket);

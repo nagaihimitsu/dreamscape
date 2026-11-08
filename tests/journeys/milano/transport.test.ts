@@ -81,25 +81,30 @@ describe("Milano transport", () => {
     expect(start.travel.rideCounts).toEqual({});
     expect(beginTravelEvent(start, "milano_duomo_episode", "walk", start.revision).travel.rideCounts).toEqual({});
     let state = roundTrip(beginTravelEvent(start, "milano_last_supper_episode", "tram", start.revision));
-    expect(state.travel).toMatchObject({ currentPlaceId: "p_supper", rideCounts: { tram: 1 } });
+    expect(state.travel).toMatchObject({ currentPlaceId: "p_supper" });
+    expect(state.travel.rideCounts).toEqual({ tram: 1 });
     // The visit to its result and back to free time; observing it again here is on foot.
     state = skipTourismGuide(state, state.revision);
     state = playBattleToResult(startTourismBattle(state, state.revision));
     state = roundTrip(leaveBattleResult(state, state.revision));
-    expect(state.travel).toMatchObject({ currentPlaceId: "p_supper", rideCounts: { tram: 1 } });
+    expect(state.travel).toMatchObject({ currentPlaceId: "p_supper" });
+    expect(state.travel.rideCounts).toEqual({ tram: 1 });
     // The ride home by tram is not counted, and the count stays in the city overnight.
     const slept = roundTrip(sleepAtHotel(state, "tram", state.revision));
-    expect(slept.travel).toMatchObject({ currentPlaceId: "p_hotel", day: 2, rideCounts: { tram: 1 } });
+    expect(slept.travel).toMatchObject({ currentPlaceId: "p_hotel", day: 2 });
+    expect(slept.travel.rideCounts).toEqual({ tram: 1 });
     // A second tram ride (line 16 from the Last Supper to the Duomo) counts on.
     const again = roundTrip(beginTravelEvent(state, "milano_duomo_episode", "tram", state.revision));
-    expect(again.travel).toMatchObject({ currentPlaceId: "p_duomo", rideCounts: { tram: 2 } });
+    expect(again.travel).toMatchObject({ currentPlaceId: "p_duomo" });
+    expect(again.travel.rideCounts).toEqual({ tram: 2 });
     // Leaving the Duomo's observation halfway and observing it again from here starts it on foot: no ride.
     let duomo = skipTourismGuide(again, again.revision);
     duomo = finishTravelEventIfComplete(duomo, closeTourism(duomo, duomo.revision));
     expect(duomo.travel.activeEvent).toBeNull();
     const local = roundTrip(observeLocalLandmark(duomo, "duomo_milano", duomo.revision));
     expect(local.activeTourism?.landmarkId).toBe("duomo_milano");
-    expect(local.travel).toMatchObject({ currentPlaceId: "p_duomo", rideCounts: { tram: 2 } });
+    expect(local.travel).toMatchObject({ currentPlaceId: "p_duomo" });
+    expect(local.travel.rideCounts).toEqual({ tram: 2 });
     const tampered = (rideCounts: Record<string, number>) => ({ ...state, travel: { ...state.travel, rideCounts } });
     expect(validateGameState(tampered({ tram: 3, taxi: 1 })).travel.rideCounts).toEqual({ tram: 3, taxi: 1 });
     // Milano's old bus and rail routes are gone (M), walking is never counted.

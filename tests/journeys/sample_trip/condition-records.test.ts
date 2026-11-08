@@ -27,6 +27,10 @@ function saved(state: GameState): GameState {
   return state;
 }
 
+/** The encounter and item records the checks below compare exactly. */
+const records = ({ seenEncounterIds, completedEncounterIds, inventory, itemUses }: GameState) =>
+  ({ seenEncounterIds, completedEncounterIds, inventory, itemUses });
+
 /** Read the encounter (met in a new observation of its landmark) up to its choice and pick the option. */
 function choose(state: GameState, encounterId: string, optionId: string): GameState {
   let next = meetEncounter(state, encounterId);
@@ -56,17 +60,17 @@ describe("condition records of the sample journey's encounters (seenEncounterIds
     if (!getJourney("sample_trip"))
       throw new Error("見本の旅（sample_trip）が生成物にありません。npm run content:build -- --with-sample を実行してから、もう一度テストしてください。");
     let state = saved(cityStart("mihon"));
-    expect(state).toMatchObject({ seenEncounterIds: [], completedEncounterIds: [], itemUses: {} });
+    expect(records(state)).toEqual({ seenEncounterIds: [], completedEncounterIds: [], inventory: {}, itemUses: {} });
 
     // 「また今度」: seen, not completed, nothing received.
     state = saved(finish(choose(state, STALL, "later")));
-    expect(state).toMatchObject({ seenEncounterIds: [STALL], completedEncounterIds: [], inventory: {}, itemUses: {} });
+    expect(records(state)).toEqual({ seenEncounterIds: [STALL], completedEncounterIds: [], inventory: {}, itemUses: {} });
     // Completed later: still seen once; the bookmark is received (receiving writes no use).
     state = saved(finish(choose(state, STALL, "drawn")));
-    expect(state).toMatchObject({ seenEncounterIds: [STALL], completedEncounterIds: [STALL], inventory: { [BOOKMARK]: "held" }, itemUses: {} });
+    expect(records(state)).toEqual({ seenEncounterIds: [STALL], completedEncounterIds: [STALL], inventory: { [BOOKMARK]: "held" }, itemUses: {} });
     // The gift put off: seen, the bookmark kept.
     state = saved(finish(choose(state, GIFT, "later")));
-    expect(state).toMatchObject({ seenEncounterIds: [STALL, GIFT], completedEncounterIds: [STALL], inventory: { [BOOKMARK]: "held" }, itemUses: {} });
+    expect(records(state)).toEqual({ seenEncounterIds: [STALL, GIFT], completedEncounterIds: [STALL], inventory: { [BOOKMARK]: "held" }, itemUses: {} });
 
     // Choosing to tuck it into her guidebook gives it away: the status and the option are written at the same moment,
     // before the scene ends (a save in between keeps both).
@@ -76,7 +80,7 @@ describe("condition records of the sample journey's encounters (seenEncounterIds
     expect(chosen.itemUses).toEqual({ [BOOKMARK]: { encounterId: GIFT, optionId: "guidebook" } });
     expect(chosen.seenEncounterIds).toEqual([STALL, GIFT]);
     const done = saved(finish(chosen));
-    expect(done).toMatchObject({ seenEncounterIds: [STALL, GIFT], completedEncounterIds: [STALL, GIFT],
+    expect(records(done)).toEqual({ seenEncounterIds: [STALL, GIFT], completedEncounterIds: [STALL, GIFT],
       inventory: { [BOOKMARK]: "gifted" }, itemUses: { [BOOKMARK]: { encounterId: GIFT, optionId: "guidebook" } } });
   });
 

@@ -328,6 +328,17 @@ describe("travel encounters", () => {
     expect(() => validateEncounterState({ ...happy, inventory: { ...happy.inventory, [SOUVENIR]: "held" } })).toThrow("品物を渡した・使った記録が一致しません。");
     expect(() => validateEncounterState({ ...happy, inventory: { ...happy.inventory, [SOUVENIR]: "held" }, itemUses: {} })).toThrow("道中交流の保存状態が一致しません。");
   });
+  it("requires the running gift's own use record even when another completed encounter could have given the item", () => {
+    const again: EncounterDefinition = { ...structuredClone(testEncounterIn(GIFT)), id: "test_gift_again" };
+    encounters.encounters.push(again);
+    const withItem = finish(choose(meetEncounter(ready(), CAFE), 2));
+    const giving = choose(meetEncounter(withItem, again.id), 0);
+    expect(giving.itemUses).toEqual({ [SOUVENIR]: { encounterId: again.id, optionId: "offer" } });
+    // Forged: the other gift encounter is marked done and named as the giver, while this one has chosen to give.
+    const forged = { ...giving, completedEncounterIds: [...giving.completedEncounterIds, GIFT], seenEncounterIds: [...giving.seenEncounterIds, GIFT],
+      itemUses: { [SOUVENIR]: { encounterId: GIFT, optionId: "offer" } } };
+    expect(() => validateEncounterState(forged)).toThrow("品物を渡した・使った記録が一致しません。");
+  });
   it("rejects missing draws, inconsistent prizes and forged outcome stories", () => {
     let state = choose(meetEncounter(ready(), "galleria_fortune", () => 0), 0);
     state = untilPhase(state, "quiz");

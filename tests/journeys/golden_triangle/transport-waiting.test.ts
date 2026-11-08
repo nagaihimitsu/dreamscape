@@ -47,7 +47,8 @@ describe("Golden Triangle waits for its transport switch", () => {
     const event = getCityContent("delhi").travel.events.find((item) => getTravelEventAvailability(start, item.id, "taxi").available)!;
     expect(event, "a Delhi event reached by taxi").toBeDefined();
     const rode = beginTravelEvent(start, event.id, "taxi", start.revision);
-    expect(rode.travel).toMatchObject({ currentPlaceId: event.placeId, rideCounts: { taxi: 1 } });
+    expect(rode.travel).toMatchObject({ currentPlaceId: event.placeId });
+    expect(rode.travel.rideCounts).toEqual({ taxi: 1 });
     expect(validateGameState(JSON.parse(JSON.stringify(rode)))).toEqual(rode);
     const cleared = completedCity("delhi");
     const counted = validateGameState({ ...cleared, travel: { ...cleared.travel, rideCounts: { taxi: 2, rail: 1, bus: 1 } } });
@@ -56,7 +57,9 @@ describe("Golden Triangle waits for its transport switch", () => {
     const flagged = { ...counted, travel: { ...counted.travel, temporaryFlags: ["gt_delhi_test_flag"] } };
     const agra = departToNextCity(flagged, flagged.revision);
     expect(agra.currentCityId).toBe("agra");
-    expect(agra.travel).toMatchObject({ rideCounts: {}, temporaryFlags: [], rentedModeIds: [] });
+    expect(agra.travel.rideCounts).toEqual({});
+    expect(agra.travel.temporaryFlags).toEqual([]);
+    expect(agra.travel.rentedModeIds).toEqual([]);
     expect(validateGameState(JSON.parse(JSON.stringify(agra)))).toEqual(agra);
   });
 });

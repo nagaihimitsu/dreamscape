@@ -152,12 +152,14 @@ describe("rental transport (sample journey)", () => {
     const rented = rentTransport(state, BIKE, state.revision);
     expect(rented.travel.rideCounts).toEqual({});
     const moved = beginTravelEvent(rented, EPISODE, BIKE, rented.revision);
-    expect(moved.travel).toMatchObject({ currentPlaceId: TOWER, rideCounts: { [BIKE]: 1 } });
+    expect(moved.travel).toMatchObject({ currentPlaceId: TOWER });
+    expect(moved.travel.rideCounts).toEqual({ [BIKE]: 1 });
     const storage = new MemoryStorage();
     expect(saveGame(storage, moved).ok).toBe(true);
     expect(loadGame(storage)).toEqual({ status: "loaded", state: moved });
     const tower = { ...rented, travel: { ...rented.travel, currentPlaceId: TOWER, rideCounts: { [BIKE]: 1 } } };
-    expect(sleepAtHotel(tower, BIKE, tower.revision, null).travel).toMatchObject({ currentPlaceId: HOTEL, day: 2, rideCounts: { [BIKE]: 1 } });
+    expect(sleepAtHotel(tower, BIKE, tower.revision, null).travel).toMatchObject({ currentPlaceId: HOTEL, day: 2 });
+    expect(sleepAtHotel(tower, BIKE, tower.revision, null).travel.rideCounts).toEqual({ [BIKE]: 1 });
     const tampered = (base: GameState, rideCounts: Record<string, number>) => ({ ...base, travel: { ...base.travel, rideCounts } });
     // Not rented yet, walking, or a mode the sample does not declare.
     for (const counts of [{ [BIKE]: 1 }, { walk: 1 }, { bicycle: 1 }] as Record<string, number>[])
