@@ -10,8 +10,11 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   // A name that looks like markup is shown as plain text (AGENTS.md: player input is text, never HTML).
   await ops.startJourney(page, "milano", ["<b>航</b>", "澪"]);
   const menu = page.getByTestId("travel-menu");
-  await expect(page.getByTestId("travelers")).toContainText("<b>航</b>");
-  await expect(page.getByTestId("travelers").locator("b")).toHaveCount(0);
+  // The names head 旅の記録 (opened from the header's progress).
+  const records = await ops.openRecords(page);
+  await expect(records.getByTestId("travelers")).toContainText("<b>航</b>");
+  await expect(records.getByTestId("travelers").locator("b")).toHaveCount(0);
+  await ops.closeDialog(records);
   await expect(page.getByLabel("残り0AP")).toBeVisible();
 
   // Walking to the Duomo opens its sightseeing guide on arrival.
@@ -62,6 +65,22 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
     "the second tap landed on the guide").toBe(true);
   expect((await readSave(page)).revision).toBe(first.revision + 3);
   await expect(line).toHaveAttribute("data-ready", "false");
+  // ⚙設定's panel over the guide (UI redesign §3.1): while it is open the line is not written
+  // on (the clock moves 2 s), and a tap on the picture only closes the panel (its layer takes
+  // the tap, outside the scene) and gives the focus back to ⚙設定; the line stays as it was.
+  // That tap counts as a tap over something, so the tap on the line below is still its second.
+  const unrevealed = () => line.locator(".unrevealed").evaluate((element) => element.textContent!.length);
+  const left = await unrevealed();
+  const panel = await ops.openMenu(page);
+  await expect(panel.getByRole("button", { name: "セーブ", exact: true })).toBeFocused();
+  await page.clock.fastForward(2_000);
+  expect(await unrevealed(), "the line waits while the panel is open").toBe(left);
+  await ops.tapAt(page, picture);
+  await expect(panel).toBeHidden();
+  await expect(ops.settingsButton(page)).toBeFocused();
+  await expect(line).toHaveAttribute("data-ready", "false");
+  expect(await unrevealed()).toBe(left);
+  expect((await readSave(page)).revision).toBe(first.revision + 3);
   // A tap on the line itself right after those presses counts as a press's second tap (the
   // clock is held, so it falls within the double-tap window): it does not finish the line.
   const lineBox = (await line.boundingBox())!;

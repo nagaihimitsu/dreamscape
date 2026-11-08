@@ -220,13 +220,27 @@ export const ops = {
     await page.getByLabel("主人公の名前").fill(names[0]);
     await page.getByLabel("ヒロインの名前").fill(names[1]);
   },
-  /** The header's 「設定」. */
+  /** The header's ⚙設定: a button whose small panel holds セーブ, ロード and ゲームの設定 (openMenu). */
   settingsButton(page: Page): Locator {
     return page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "設定", exact: true });
   },
+  /** Opens ⚙設定's panel (if it is not open yet) and returns it: セーブ, ロード, ゲームの設定. */
+  async openMenu(page: Page): Promise<Locator> {
+    const button = ops.settingsButton(page);
+    if (await button.getAttribute("aria-expanded") !== "true") await button.click();
+    const panel = page.getByTestId("hud-menu-panel");
+    await expect(panel).toBeVisible();
+    return panel;
+  },
+  /** One of ⚙設定's items, pressed from its panel (inside the header's 「旅の操作」). */
+  async menuItem(page: Page, name: "セーブ" | "ロード" | "ゲームの設定") {
+    await ops.openMenu(page);
+    await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name, exact: true }).click();
+  },
+  /** ⚙設定 → 「ゲームの設定」: returns the settings dialog (文字送り, 自動保存, names, the saved data). */
   async openSettings(page: Page): Promise<Locator> {
-    await ops.settingsButton(page).click();
-    const settings = page.getByRole("dialog", { name: "設定" });
+    await ops.menuItem(page, "ゲームの設定");
+    const settings = page.getByRole("dialog", { name: "ゲームの設定" });
     await expect(settings).toBeVisible();
     return settings;
   },
@@ -274,22 +288,48 @@ export const ops = {
   noticeClose(page: Page): Locator {
     return page.getByRole("main").getByRole("status").getByRole("button", { name: "閉じる", exact: true });
   },
+  /** ⚙設定 → 「セーブ」. */
   async manualSave(page: Page) {
-    await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "セーブ", exact: true }).click();
+    await ops.menuItem(page, "セーブ");
   },
-  /** The header's 「ロード」: with nothing unsaved the saved scene comes back at once (with unsaved progress it asks first: askToLoad). */
-  async load(page: Page) {
-    await page.getByRole("navigation", { name: "旅の操作" }).getByRole("button", { name: "ロード", exact: true }).click();
+  /** ⚙設定 → 「ロード」: with nothing unsaved the saved scene comes back at once (with unsaved progress it asks first: askToLoad). */
+  async loadSaved(page: Page) {
+    await ops.menuItem(page, "ロード");
   },
   /**
-   * The header's 「ロード」 while progress is unsaved (manual saving): returns the confirmation
+   * ⚙設定 → 「ロード」 while progress is unsaved (manual saving): returns the confirmation
    * 「保存した場面を読み込みますか？」 with its 「ロードする」 (`loadButton`).
    */
   async askToLoad(page: Page): Promise<{ dialog: Locator; loadButton: Locator }> {
-    await ops.load(page);
+    await ops.loadSaved(page);
     const dialog = page.getByRole("dialog", { name: "保存した場面を読み込みますか？" });
     await expect(dialog).toBeVisible();
     return { dialog, loadButton: dialog.getByRole("button", { name: "ロードする", exact: true }) };
+  },
+  /** The header's progress (観光・対決 / 都市クリア) opens 旅の記録; returns that dialog. */
+  async openRecords(page: Page): Promise<Locator> {
+    await page.getByTestId("city-progress").click();
+    const records = page.getByRole("dialog", { name: "旅の記録" });
+    await expect(records).toBeVisible();
+    return records;
+  },
+  /** 「{player} と {heroine}」 from 旅の記録's header line (the names are not in the header): opens 旅の記録, reads the line, closes it. */
+  async readTravelers(page: Page): Promise<string> {
+    const records = await ops.openRecords(page);
+    const travelers = await records.getByTestId("travelers").innerText();
+    await ops.closeDialog(records);
+    return travelers;
+  },
+  /** The header's held items: one item's own button (「{item}の詳細」), or 「所持品」 (「所持品（{n}個）」) for two or more. */
+  heldItemsButton(page: Page): Locator {
+    return page.getByRole("group", { name: "所持アイテム" }).getByRole("button", { name: /の詳細$|^所持品（\d+個）$/u });
+  },
+  /** Opens the held items' detail (the item, or every held item) under the header and returns it. */
+  async openHeldItems(page: Page): Promise<Locator> {
+    await ops.heldItemsButton(page).click();
+    const detail = page.getByRole("group", { name: "所持アイテム" }).getByRole("dialog");
+    await expect(detail).toBeVisible();
+    return detail;
   },
   async openEnglishNote(page: Page): Promise<Locator> {
     await page.getByRole("button", { name: "英語ノートを開く" }).click();
@@ -339,8 +379,13 @@ export const ops = {
     await ops.settled(page);
     const picture = (await page.getByTestId("scene-picture").filter({ visible: true }).boundingBox())!;
     const line = (await page.getByTestId("dialogue-text").boundingBox())!;
-    // A quarter of the way down from the picture's top to the line: well above the window's name plate and tools.
-    const point = { x: picture.x + picture.width / 2, y: picture.y + (line.y - picture.y) / 4 };
+    // The picture runs on behind the header (and the guide's heading) that lie over its top:
+    // what shows of it starts below them.
+    const covered = await page.evaluate(() => Math.max(0, ...[...document.querySelectorAll('[data-testid="journey-bar"], .tourism-heading')]
+      .map((element) => element.getBoundingClientRect()).filter((box) => box.height > 0).map((box) => box.bottom)));
+    const top = Math.max(picture.y, covered);
+    // A quarter of the way down from the picture's shown top to the line: well above the window's name plate and tools.
+    const point = { x: picture.x + picture.width / 2, y: top + (line.y - top) / 4 };
     expect(await showsAt(page, point, '[data-testid="scene-picture"]'), "the point shows the scene's picture, not a control or the window").toBe(true);
     return point;
   },

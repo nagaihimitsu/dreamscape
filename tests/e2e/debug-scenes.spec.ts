@@ -110,8 +110,10 @@ test("an encounter answered in English gives its item, and the scene ends back i
   const pick = (state: GameState) => state.activeEncounter?.phase === "quiz" ? encounter!.correctOptionId! : "A";
   const done = await playUntil(page, (state) => state.completedEncounterIds.includes(encounter!.encounterId), { source: debugGame, pick });
   expect(done.inventory[encounter!.itemId]).toBe("held");
-  // The header lists it among the items held in this city.
-  await expect(page.getByRole("group", { name: "所持アイテム" }).getByRole("button", { name: `${encounter!.itemName}の詳細` })).toBeVisible();
+  // The header lists it among the items held in this city: its detail (or, with more items, the
+  // list of every held item) names it.
+  await expect(await ops.openHeldItems(page)).toContainText(encounter!.itemName);
+  await page.keyboard.press("Escape");
   // Debug meets the encounter in its landmark's observation, as play does (encounters start nowhere else);
   // encounters waiting in the same observation may follow, and the scene ends back in that observation.
   const after = await playUntil(page, (state) => !state.activeEncounter, { source: debugGame, pick });
@@ -359,9 +361,11 @@ test("battle: a long explanation after a wrong answer starts below the round bar
 
 // docs/02 「UX/スマホ」: no tap reads on while something is open over the scene. The header's
 // held-item detail closes on a tap anywhere outside it; that tap only closes it, on the picture and
-// on the line alike. The detail is not modal: the keyboard reads on while it is open, as before, and
-// a screen reader's activation of the line reads on after the detail has gone; so do taps again.
-test("encounter: the tap on the picture or the line that closes the held-item detail does not read on, Enter on the line does", { tag: tier.debug }, async ({ page }) => {
+// on the line alike (its layer takes the tap, outside the scene). While it is open it counts as open
+// over the scene like ⚙設定's panel (UI redesign §3.1): Enter on the line waits and the line is not
+// written on; once it is closed (Esc, or a pan that starts over the picture) the line reads on again,
+// by the keyboard, by a screen reader's activation and by taps.
+test("encounter: the tap on the picture or the line that closes the held-item detail does not read on, nor does Enter while it is open", { tag: tier.debug }, async ({ page }) => {
   const encounter = await itemEncounter(page, true);
   expect(encounter, "an encounter whose English answer gives an item, that Debug can open").toBeDefined();
   // Time runs normally; it is held below so that a line stays half written.
@@ -374,11 +378,9 @@ test("encounter: the tap on the picture or the line that closes the held-item de
   const line = page.getByTestId("dialogue-text");
   const text = await line.textContent();
   const picture = await ops.sceneBackgroundPoint(page);
-  const items = page.getByRole("group", { name: "所持アイテム" });
-  const detail = items.getByRole("dialog");
+  const detail = page.getByRole("group", { name: "所持アイテム" }).getByRole("dialog");
   const openDetail = async () => {
-    await items.getByRole("button", { name: `${encounter!.itemName}の詳細` }).click();
-    await expect(detail).toBeVisible();
+    await expect(await ops.openHeldItems(page)).toContainText(encounter!.itemName);
   };
   await openDetail();
   await ops.tapAt(page, picture);
@@ -389,19 +391,31 @@ test("encounter: the tap on the picture or the line that closes the held-item de
   await expect(detail).toBeHidden();
   await expect(line).toHaveText(text!);
   expect((await debugGame(page))!.revision).toBe(held.revision);
-  // Enter on the line reads one line on with the detail open: the closing taps did not. The next line
-  // is written letter by letter (motion not reduced), and the clock is held, so it stays half written.
+  // Enter on the line waits while the detail is open; Esc closes it (back on its button) and Enter
+  // then reads one line on. The next line is written letter by letter (motion not reduced), and
+  // the clock is held, so it stays half written; with the detail open again it is not written on.
   const revision = async () => (await debugGame(page))!.revision;
-  await openDetail();
   await page.emulateMedia({ reducedMotion: "no-preference" });
+  await openDetail();
+  await line.focus();
+  await page.keyboard.press("Enter");
+  await expect(detail).toBeVisible();
+  expect(await revision(), "Enter did not read on while the detail was open").toBe(held.revision);
+  await page.keyboard.press("Escape");
+  await expect(detail).toBeHidden();
+  await expect(ops.heldItemsButton(page)).toBeFocused();
   await ops.holdClock(page);
   await line.focus();
   await page.keyboard.press("Enter");
   await expect.poll(revision).toBe(held.revision + 1);
   const next = (await debugGame(page))!.activeEncounter;
   expect(next && !next.frame.choices.length, "the encounter shows another line (perhaps its last), not choices").toBeTruthy();
-  await expect(detail).toBeVisible();
   await expect(line).toHaveAttribute("data-ready", "false");
+  await openDetail();
+  const unrevealed = () => line.locator(".unrevealed").evaluate((element) => element.textContent!.length);
+  const left = await unrevealed();
+  await page.clock.fastForward(2_000);
+  expect(await unrevealed(), "the line waits while the detail is open").toBe(left);
   // A pan that starts over the picture closes the detail with no click. A click on the line with no
   // pointer behind it (as a screen reader activates it) is then no tap over the detail: like a tap on
   // the line, it writes the line out at once.

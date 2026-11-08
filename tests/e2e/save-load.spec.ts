@@ -99,6 +99,44 @@ test("a preparing journey saved with empty name fields keeps the default names",
 
 test("a manual save keeps the saved position and settings when unsaved changes are discarded", { tag: tier.gate }, async ({ page }) => {
   await ops.startJourney(page);
+
+  // セーブ・ロード・ゲームの設定 live in the header's ⚙設定 (UI redesign §3.1, U2/U24/U28), a
+  // disclosure: by keyboard it opens on セーブ, the arrows move between its three items, Esc
+  // closes it back on ⚙設定, and leaving it with Tab closes it.
+  const gear = ops.settingsButton(page);
+  const panel = page.getByTestId("hud-menu-panel");
+  const item = (name: string) => panel.getByRole("button", { name, exact: true });
+  await gear.focus();
+  await page.keyboard.press("Enter");
+  await expect(panel.getByRole("button")).toHaveText(["セーブ", "ロード", "ゲームの設定"]);
+  await expect(item("セーブ")).toBeFocused();
+  await page.keyboard.press("ArrowDown");
+  await expect(item("ロード")).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(panel).toBeHidden();
+  await expect(gear).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(item("セーブ")).toBeFocused();
+  for (let step = 0; step < 3; step++) await page.keyboard.press("Tab");
+  await expect(panel).toBeHidden();
+  // ゲームの設定 opens the settings dialog, which gives the focus back to ⚙設定 when it closes.
+  await gear.focus();
+  await page.keyboard.press("Enter");
+  await item("ゲームの設定").focus();
+  await page.keyboard.press("Enter");
+  await ops.closeDialog(page.getByRole("dialog", { name: "ゲームの設定" }));
+  await expect(gear).toBeFocused();
+  // A tap outside the panel only closes it: nothing under it is pressed (here a destination),
+  // the save stays as it was, and the focus is back on ⚙設定.
+  const untouched = await readSave(page);
+  await ops.openMenu(page);
+  await expect(item("セーブ")).toBeFocused();
+  await ops.tapAt(page, await ops.centerOf(await ops.destination(page, "p_duomo")));
+  await expect(panel).toBeHidden();
+  await expect(gear).toBeFocused();
+  await expect(page.getByTestId("travel-menu")).toBeVisible();
+  expect(await readSave(page)).toEqual(untouched);
+
   await ops.setAutoSave(page, false);
   const initial = await readSave(page);
 
@@ -134,8 +172,14 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await expect(reopened.getByLabel("自動保存する")).not.toBeChecked();
   await ops.closeDialog(reopened);
 
-  // ロード asks too, and loading brings the manual save's scene back.
+  // ロード asks too: 戻る keeps the scene and gives the focus back to ⚙設定, and loading brings
+  // the manual save's scene back.
   await page.getByTestId("tourism-skip").click();
+  const asked = await ops.askToLoad(page);
+  await asked.dialog.getByRole("button", { name: "戻る", exact: true }).click();
+  await expect(asked.dialog).toBeHidden();
+  await expect(gear).toBeFocused();
+  await expect(page.getByTestId("tourism-guide")).toHaveCount(0);
   const loading = await ops.askToLoad(page);
   await loading.loadButton.click();
   await expect(loading.dialog).toBeHidden();
@@ -196,7 +240,7 @@ test("a second tab cannot open a journey that is already open", { tag: tier.gate
   // AGENTS.md 「アクセシビリティを考慮する」: 再試行 disappears with the lock message, so the
   // resumed game's main area takes the focus instead of leaving it on the page body.
   await expect(second.getByRole("main")).toBeFocused();
-  await expect(second.getByTestId("travelers")).toContainText("先の名前");
+  expect(await ops.readTravelers(second)).toContain("先の名前");
   expect(await allStorage(second)).toEqual(saved);
 });
 

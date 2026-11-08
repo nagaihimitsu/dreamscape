@@ -100,7 +100,7 @@ test("the sample journey plays from a new journey through its city finale and ep
   // docs/07 acceptance 1: the names are entered and the journey starts on its city's map.
   await ops.startJourney(page, JOURNEY, ["ユウ", "ミオ"]);
   await expect(menu).toHaveAttribute("aria-label", `${route.city.nameJa}の行き先`);
-  await expect(page.getByTestId("travelers")).toContainText("ユウ");
+  expect(await ops.readTravelers(page)).toContain("ユウ");
   expect(await readSave(page, JOURNEY)).toMatchObject({ currentCityId: route.city.id, ap: 0 });
   await expect(page.getByLabel("残り0AP")).toBeVisible();
 

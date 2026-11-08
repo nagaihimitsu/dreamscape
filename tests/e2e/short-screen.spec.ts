@@ -104,19 +104,20 @@ test("battle on a 320×480 screen: after a wrong answer the round bar, 手がか
   expect(ring.kept, "focusing 手がかり帳 does not scroll").toBe(true);
   expect(ring.clear, "手がかり帳 and its focus ring show on the screen, with nothing over them").toBe(true);
 
-  // Scrolled back to the top of the page, the journey bar's controls show again, and 設定 opens.
+  // Scrolled back to the top of the page, the header's controls show again, and ⚙設定 →
+  // ゲームの設定 opens.
   await page.evaluate(() => scrollTo({ top: 0 }));
   await expect(ops.settingsButton(page)).toBeInViewport();
   await ops.closeDialog(await ops.openSettings(page));
 
-  // Where :has() is missing (Safari before 15.4) the journey bar stays held at the top of the
-  // screen above the round bar (styles.css). A load brings the explanation back and focuses it
-  // at once, while no tap reaches the page (tap-hold.ts): its first line then starts just below
-  // the held journey bar.
+  // Were the header held at the top of the screen above the round bar (as it was where :has()
+  // was missing, before UI step 1.2): a load brings the explanation back and focuses it at once,
+  // while no tap reaches the page (tap-hold.ts), and its first line then starts just below the
+  // held header.
   const stillHeld = await page.addStyleTag({ content: '[data-testid="journey-bar"] { position: sticky !important; }' });
   await page.evaluate(() => scrollTo({ top: document.documentElement.scrollHeight }));
   expect((await page.evaluate(feedbackStart)).lineTop, "at the end of the page the first line is above the screen").toBeLessThan(0);
-  await ops.load(page);
+  await ops.loadSaved(page);
   await expect(page.getByTestId("battle-feedback")).toBeFocused();
   await ops.settled(page);
   const held = await page.evaluate(feedbackStart);
