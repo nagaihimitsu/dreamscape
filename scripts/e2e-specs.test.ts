@@ -22,10 +22,16 @@ function specTests(text: string): { title: string; tiers: string[] }[] {
   }));
 }
 
-/** Helpers that need the development server's modules (Debug, scene builders, in-page imports). */
+/** Helpers that need the development server's modules (Debug's test hook and launch waits, scene builders, in-page imports). */
 const devServerOnly = /placeSave|devModules|openDebugScene|debugShown|debugGame|import\(/u;
 /** …and Debug URLs: shortcuts around the real flow. */
 const shortcuts = new RegExp(`${devServerOnly.source}|\\?debug`, "u");
+/**
+ * …and in specs with production tests also every `place…Save` helper (placeGuideSave, placeDateSave
+ * build their state with the dev server's modules). Not part of `shortcuts`: save-load.spec.ts uses
+ * placeGuideSave on purpose for its double-tap steps (docs/10).
+ */
+const notInProduction = new RegExp(`${devServerOnly.source}|place\\w*Save`, "u");
 
 describe("E2E specs", () => {
   it("are found", () => {
@@ -76,9 +82,11 @@ describe("E2E specs", () => {
 
   it("use development-server modules only in specs without production-build tests", () => {
     for (const name of specs.filter((spec) => specTests(source(spec)).some((test) => test.tiers.includes("prod"))))
-      expect(source(name), `${name} has tier.prod tests, which run against the production build`).not.toMatch(devServerOnly);
+      expect(source(name), `${name} has tier.prod tests, which run against the production build`).not.toMatch(notInProduction);
   });
 
+  // Debug itself ships (behind Debug mode; debug-mode.spec.ts runs in prod through the real switch);
+  // its test hook and the dev server's shortcuts that the @debug tests use do not.
   it("keep Debug launchpad tests out of the gate and production tiers", () => {
     for (const name of specs) for (const test of specTests(source(name)))
       if (test.tiers.includes("debug"))

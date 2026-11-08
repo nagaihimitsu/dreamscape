@@ -55,6 +55,8 @@ const kept = {
   "dreamscape.presentation.v1": JSON.stringify({ schemaVersion: 1, confirmChoices: true, reduceMotion: false }),
   // The journey the title opens (src/app/last-journey.ts): a per-device preference like the settings.
   "dreamscape.last-journey.v1": "milano",
+  // The Debug-mode switch (src/app/debug-mode.ts): another per-device preference.
+  "dreamscape.debug-mode.v1": "on",
   "dreamscape.journey.trip_b.unknown": "not a slot key",
   "dreamscape.unknown.v1": "not a known key",
   // Shaped like slot keys, but not as the game writes them (backups are `.backup.<time>[.<n>]`).
@@ -69,7 +71,7 @@ const kept = {
 };
 
 describe("which old saved data can be removed", () => {
-  it("lists nothing for the data in use, the settings, the remembered journey, the English notes and other sites' keys", () => {
+  it("lists nothing for the data in use, the settings, the remembered journey, the Debug-mode switch, the English notes and other sites' keys", () => {
     expect(list(kept)).toEqual([]);
     // Another journey's save that is not an old version stays: damaged, newer, of another journey
     // (a Milan save in its slot), a preparation draft — its own title handles those.

@@ -4,7 +4,7 @@ import { debugQueryString, parseDebugQuery, settingsQuery, type DebugQuery, type
 const settings: DebugSettings = { cityId: "milano", scene: "date", id: "milano_brera_date_01", progress: "completed", ap: 9, affection: -3, trust: 2, spark: 0, roll: "negative" };
 
 describe("Debug launch URLs", () => {
-  it("opens the settings screen for ?debug alone", () => {
+  it("opens the scene picker (場面の確認) for ?debug alone", () => {
     expect(parseDebugQuery("?debug")).toEqual({ kind: "panel" });
     expect(parseDebugQuery("?debug=1")).toEqual({ kind: "panel" });
     expect(parseDebugQuery("")).toEqual({ kind: "panel" });
@@ -22,7 +22,7 @@ describe("Debug launch URLs", () => {
     expect(parseDebugQuery(debugQueryString(map))).toEqual({ kind: "launch", query: map });
   });
 
-  it("leaves omitted items to the settings screen's defaults and ignores the order", () => {
+  it("leaves omitted items to the scene picker's defaults and ignores the order", () => {
     expect(parseDebugQuery("?scene=battle&debug&city=delhi")).toEqual({ kind: "launch", query: { dataMode: "real", cityId: "delhi", scene: "battle" } });
     expect(parseDebugQuery("?debug&scene=epilogue")).toEqual({ kind: "launch", query: { dataMode: "real", scene: "epilogue" } });
     // A setting without a target (a city without that scene) leaves the target out.

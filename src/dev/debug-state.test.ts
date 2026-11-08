@@ -59,7 +59,7 @@ describe("Debug launch URLs against the content", () => {
     return resolveDebugLaunch(parsed.query);
   };
 
-  it("fills omitted items with the settings screen's defaults", () => {
+  it("fills omitted items with the scene picker's defaults", () => {
     expect(launch("?debug&scene=tourism")).toEqual({ kind: "scene", settings: defaultDebugSettings() });
     const delhi = launch("?debug&city=delhi&scene=battle");
     expect(delhi).toEqual({ kind: "scene", settings: { ...defaultDebugSettings("delhi"), scene: "battle", id: debugTargets("delhi").battle[0].id } });
@@ -80,7 +80,7 @@ describe("Debug launch URLs against the content", () => {
     expect(() => resolveDebugLaunch(query)).toThrow(message);
   });
 
-  it("opens every scene the settings screen lists for a cleared Milan and sample city, and explains the rest", () => {
+  it("opens every scene the scene picker (場面の確認) lists for a cleared Milan and sample city, and explains the rest", () => {
     if (!getJourney("sample_trip"))
       throw new Error("見本の旅（sample_trip）が生成物にありません。npm run content:build -- --with-sample を実行してから、もう一度テストしてください。");
     const unavailable: string[] = [];

@@ -13,6 +13,7 @@ import {
   type DebugScene, type DebugSettings,
 } from "./debug-state";
 import { rollTickets } from "./scenario-builders";
+import { relationshipAxisLabels } from "../domain/relationship-change";
 import { PrototypePreview } from "./PrototypePreview";
 import "./debug-mode.css";
 
@@ -28,7 +29,7 @@ function newStorage(): MemoryStorage {
 type Session = { storage: MemoryStorage; roll: () => number; key: number; info: DebugSceneInfo };
 
 const errorText = (error: unknown, fallback: string) => error instanceof Error ? error.message : fallback;
-/** The address bar shows what a reload opens: the open scene's launch URL, or the settings screen. */
+/** The address bar shows what a reload opens: the open scene's launch URL, or 「場面の確認」. */
 const showInAddressBar = (search: string) => window.history.replaceState(null, "", search);
 const mapQuery = (dataMode: DebugDataMode, cityId: string): DebugQuery => ({ dataMode, cityId, scene: "map" });
 
@@ -52,17 +53,18 @@ export default function DebugMode() {
   const isPrototype = getCityContent(cityId).city.productionStatus === "prototype";
   const sceneUrl = new URL(debugQueryString(isPrototype ? mapQuery(dataMode, cityId) : settingsQuery(dataMode, settings)), window.location.href).href;
 
-  // Development-only, read-only view of the open scene for tests; removed with this screen.
+  // Read-only view of the open scene for tests, removed with this screen. Development server
+  // only: a production build drops it (Debug itself ships behind Debug mode; the hook never does).
   const shown = useRef({ session, prototype });
   useEffect(() => { shown.current = { session, prototype }; });
-  useEffect(() => installDebugHook(window, {
+  useEffect(() => import.meta.env.DEV ? installDebugHook(window, {
     state: () => {
       const current = shown.current.session;
       const loaded = current ? loadGame(current.storage) : null;
       return loaded?.status === "loaded" ? loaded.state : null;
     },
     scene: () => shown.current.session?.info ?? shown.current.prototype,
-  }), []);
+  }) : undefined, []);
 
   function update(next: DebugSettings) {
     setSettings(next);
@@ -149,22 +151,22 @@ export default function DebugMode() {
     <main className="debug-panel debug-launch-error" data-testid="debug-launch-error">
       <h1>場面を開けませんでした</h1>
       <p role="alert">{launchError}</p>
-      <p>使えるURLの項目は docs/10_DEVELOPMENT_CHECKS.md の「Debug起動URL」にあります。設定画面で場面を選び直すこともできます。</p>
-      <p><a href="?debug">場面の確認（設定画面）へ</a></p>
+      <p>使えるURLの項目は docs/10_DEVELOPMENT_CHECKS.md の「Debug起動URL」にあります。場面の確認で選び直すこともできます。</p>
+      <p><a href="?debug">場面の確認へ</a></p>
       <a href={import.meta.env.BASE_URL}>通常プレイに戻る</a>
     </main>
   );
   if (prototype) return <PrototypePreview key={prototype.cityId} cityId={prototype.cityId} onClose={backToSettings} />;
   if (session) return (
     <div className="debug-session" data-testid="debug-session">
-      <header className="debug-session-bar"><div><strong>Debug · 通常セーブとは別</strong><span data-testid="debug-place">開始地点: {session.info.location}</span></div><button type="button" onClick={backToSettings}>設定へ戻る</button></header>
+      <header className="debug-session-bar"><div><strong>Debug · 通常セーブとは別</strong><span data-testid="debug-place">開始地点: {session.info.location}</span></div><button type="button" onClick={backToSettings}>場面の選択へ戻る</button></header>
       <App key={session.key} storage={session.storage} nextRomanceRoll={session.roll} debug />
     </div>
   );
   return (
     <main className="debug-panel" data-testid="debug-panel">
       <h1>場面の確認</h1>
-      <p>開発用の一時データです。制作中の都市は実際の候補地点・推定経路を確認できます。通常のセーブ・英語ノート・設定は変更しません。</p>
+      <p>確認用の一時データです。制作中の都市は実際の候補地点・推定経路を確認できます。通常のセーブ・英語ノート・設定は変更しません。</p>
       <p className="debug-template" data-testid="debug-template">{template.text}{template.note}</p>
       <form onSubmit={submit}>
         <label>確認データ
@@ -202,7 +204,7 @@ export default function DebugMode() {
           </select>
         </label>
         <div className="debug-values">
-          {([["ap", "AP"], ["affection", "親しさ"], ["trust", "信頼"], ["spark", "恋愛の意識"]] as const).map(([key, label]) => {
+          {([["ap", "AP"], ["affection", relationshipAxisLabels.affection], ["trust", relationshipAxisLabels.trust], ["spark", relationshipAxisLabels.spark]] as const).map(([key, label]) => {
             const [min, max] = debugValueRanges[key];
             return <label key={key}>{label}<input data-testid={`debug-${key}`} type="number" min={min} max={max} step="1" value={settings[key]}
               onChange={(event) => update({ ...settings, [key]: Math.min(max, Math.max(min, Math.trunc(Number(event.target.value)) || 0)) })} /></label>;
