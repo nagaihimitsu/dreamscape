@@ -363,9 +363,15 @@ export const ops = {
     expect(hit, "the point is the tool row itself, not one of its buttons").toBe("会話の操作");
     return point!;
   },
-  /** The middle of an element on screen, for taps at a point (`tapAt`, `doubleTap`). */
+  /**
+   * The middle of an element on screen, for taps at a point (`tapAt`, `doubleTap`). The element is
+   * scrolled into view first, as a player scrolls to what they tap: one shown only in part at the
+   * edge of a scrolling area (the battle's reading area after a long explanation, whose length
+   * depends on the fonts) has its middle outside that area, where a tap reaches something else.
+   */
   async centerOf(locator: Locator): Promise<{ x: number; y: number }> {
     await expect(locator).toBeVisible();
+    await locator.scrollIntoViewIfNeeded();
     const box = (await locator.boundingBox())!;
     return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
   },

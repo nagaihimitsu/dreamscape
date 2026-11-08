@@ -266,7 +266,9 @@ test("rebuttal: the tap that ends it does not also skip the cut-in under the fin
 
 // A story scene that starts under the finger (here the enemy's reaction after an answer's
 // feedback) does not take the second tap of the double tap that started it: taps are held for
-// a moment, so its first line is not read on before it is seen (lines appear whole here).
+// a moment, so its first line is not read on before it is seen (lines appear whole here). The
+// button is tapped where it shows (after a long explanation it starts at the bottom edge of the
+// reading area), and the second tap falls on the reaction where a tap reads on.
 test("battle: a double tap on 「敵の反応を見る」 opens the reaction and stays on its first line", { tag: tier.debug }, async ({ page }) => {
   const target = (await tapTargets(page)).battle;
   expect(target, "a battle that Debug opens in its default city").toBeDefined();
@@ -274,12 +276,15 @@ test("battle: a double tap on 「敵の反応を見る」 opens the reaction and
   await ops.openDebugScene(page, settings(target!));
   const feedback = await playUntil(page, (state) => state.activeBattle?.phase === "feedback", { source: debugGame });
   const reaction = await ops.centerOf(page.getByTestId("battle-advance"));
+  expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest('[data-testid="battle-advance"]'), reaction),
+    "the double tap lands on 「敵の反応を見る」").toBe(true);
   await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
   await ops.doubleTap(page, reaction);
   await expect.poll(async () => (await debugGame(page))!.activeBattle?.phase).toBe("dialogue");
   await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
   await page.clock.resume();
   await ops.settled(page);
+  expect(await ops.readsOnAt(page, reaction), "the second tap landed where a tap reads the reaction on").toBe(true);
   expect((await debugGame(page))!.revision).toBe(feedback.revision + 1);
 });
 
