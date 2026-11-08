@@ -8,12 +8,10 @@ import {
   getCityContent,
 } from "../content";
 import { defaultJourneyId, getJourney } from "../content/journeys";
-import { currencyForCity, formatMoneyForCity } from "../content/currency";
 import { JourneySelection, type SelectorFocus } from "../features/journey/JourneySelection";
 import { waitForTravel } from "../domain/travel-game";
 import { rentTransport } from "../domain/transport";
 import { getTransportMode } from "../content/transport";
-import { getGameWeekday } from "../domain/travel";
 import { getPlayerDeparture, departToNextCity } from "../domain/city-travel";
 import {
   advanceDate,
@@ -28,7 +26,6 @@ import type { DeleteSnapshot } from "./save-deletion";
 import { OldDataCleanup } from "./OldDataCleanup";
 import { oldDataContext, type KeyedStorage } from "../persistence/old-data";
 import { CanalScene } from "../components/CanalScene";
-import { HeldItems } from "../components/HeldItems";
 import { secureRomanceRoll } from "../random/romance-source";
 import { usePresentationSettings } from "../components/usePresentationSettings";
 import { RomanceScene } from "../features/romance/RomanceScene";
@@ -41,14 +38,13 @@ import { ClueNotebook } from "../features/tourism/ClueNotebook";
 import { useLearning } from "../features/learning/useLearning";
 import { EnglishReview } from "../features/learning/EnglishReview";
 import { FreeTimeHub } from "../features/journey/FreeTimeHub";
-import { CityProgressBadge, CityRecords } from "../features/journey/CityProgress";
+import { CityRecords } from "../features/journey/CityProgress";
 import { TravelActions } from "../features/journey/TravelActions";
-import { placeDisplayName } from "../features/journey/travel-labels";
 import { TitleNameFields } from "../features/journey/TitleNameFields";
 import { nameOrDefault } from "../domain/player-names";
 import { useTravelEffects } from "./useTravelEffects";
+import { JourneyHud } from "./JourneyHud";
 import { EncounterScreen } from "../features/journey/EncounterScreen";
-import { encounters } from "../content/encounters";
 import { advanceEncounter, chooseEncounter, answerEncounterQuiz, finishEncounter, getEncounterOptionAvailability, getEncounterQuizFeedback, getActiveEncounterDefinition, encounterChoiceOption, encounterCanFinish, proceedFromTourism, continueTourismEncounters } from "../domain/encounter";
 import { EpilogueScreen } from "../features/journey/EpilogueScreen";
 import { startCityEpilogue, advanceCityEpilogue, completeArrivalLogo } from "../domain/epilogue";
@@ -244,7 +240,6 @@ export function GameApp({
   const currentTravelPlace = game
     ? currentCity!.travel.places.find((place) => place.id === game.travel.currentPlaceId)
     : undefined;
-  const weekday = getGameWeekday(game?.travel.calendar);
   const departure = game ? getPlayerDeparture(game) : undefined;
   const resultExits = game ? getBattleResultExits(game) : { epilogue: false, leave: false };
   const observationLandmarkId = game ? getBattleObservationLandmarkId(game) : null;
@@ -285,44 +280,22 @@ export function GameApp({
         </a>
         <span className="edition" data-testid="journey-edition">{editionCityName}の旅</span>
       </header>
-      {game && (
-        <div className="journey-bar" data-testid="journey-bar">
-          <span className="travelers" data-testid="travelers">
-            {game.playerName}
-            <span className="amp"> と </span>
-            {game.heroineName}
-          </span>
-          <div className="journey-context" data-testid="journey-context">
-            <span>現在地：{placeDisplayName(game, currentTravelPlace)}</span>
-            <strong>{game.travel.day}日目{weekday === undefined ? null : <span aria-label={`ゲーム内の${["月", "火", "水", "木", "金", "土", "日"][weekday]}曜日`}>（{["月", "火", "水", "木", "金", "土", "日"][weekday]}）</span>} {String(Math.floor(game.travel.minute / 60)).padStart(2, "0")}:{String(game.travel.minute % 60).padStart(2, "0")}</strong>
-          </div>
-          <div className="journey-resources">
-            <span className="travel-budget" aria-label={`旅の予算 ${game.travelBudget}${currencyForCity(game.currentCityId).unitJa}`}>{formatMoneyForCity(game.currentCityId, game.travelBudget)}</span>
-            <span className="ap" aria-label={`残り${game.ap}AP`}>
-              {game.ap}
-              <small> AP</small>
-            </span>
-            <HeldItems items={encounters.items.filter((item) => item.cityId === game.currentCityId && game.inventory[item.id] === "held").map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa, iconPath: item.iconPath }))} />
-          </div>
-          <div className="journey-controls" data-testid="city-progress">
-            <button className="journey-progress-button" type="button" aria-label="観光地・発見・戦績を見る" onClick={() => setRecordsOpen(true)}><CityProgressBadge game={game} /></button>
-            {game.endingReached && <span className="city-relationship">交際中</span>}
-            {idle && !showRomanceEnding && <TravelActions game={game}
-              onTravelWait={(minutes) => commit((state) => waitForTravel(state, minutes, game.revision))}
-              onTravelSleep={(mode, viaPlaceId) => returnToHotel(mode, viaPlaceId, game.revision)} />}
-          </div>
-          <nav className="journey-quick-actions" aria-label="旅の操作">
-            <button type="button" aria-label="英語ノートを開く" onClick={() => openEnglish()}>英語</button>
-            <button type="button" onClick={save}>セーブ</button>
-            <button type="button" onClick={reload}>ロード</button>
-            <button type="button" onClick={() => {
-              setPlayer(game.playerName);
-              setHeroine(game.heroineName);
-              setSettings(true);
-            }}>設定</button>
-          </nav>
-        </div>
-      )}
+      {game && <JourneyHud
+        game={game}
+        place={currentTravelPlace}
+        freeTimeActions={idle && !showRomanceEnding ? <TravelActions game={game}
+          onTravelWait={(minutes) => commit((state) => waitForTravel(state, minutes, game.revision))}
+          onTravelSleep={(mode, viaPlaceId) => returnToHotel(mode, viaPlaceId, game.revision)} /> : undefined}
+        onRecords={() => setRecordsOpen(true)}
+        onEnglish={() => openEnglish()}
+        onSave={save}
+        onLoad={reload}
+        onSettings={() => {
+          setPlayer(game.playerName);
+          setHeroine(game.heroineName);
+          setSettings(true);
+        }}
+      />}
       {game && (
         <div className="journey-stage" aria-label="旅の進行">
           <span>
@@ -646,6 +619,10 @@ export function GameApp({
       </Modal>}
       {recordsOpen && game && <Modal labelledBy="city-records-title" onClose={() => setRecordsOpen(false)}>
         <div className="records-heading"><h2 id="city-records-title">旅の記録</h2><button type="button" className="secondary" onClick={() => setRecordsOpen(false)}>閉じる</button></div>
+        <p className="records-travelers">
+          <span data-testid="travelers">{game.playerName}<span className="amp"> と </span>{game.heroineName}</span>
+          {game.endingReached && <span className="records-relationship">交際中</span>}
+        </p>
         <CityRecords game={game} />
       </Modal>}
       {notebook && game && (canObserve || cityNotebook) && (
@@ -757,7 +734,7 @@ export function GameApp({
       )}
       {settings && game && (
         <Modal labelledBy="settings-title" onClose={() => setSettings(false)}>
-          <h2 id="settings-title">設定</h2>
+          <h2 id="settings-title">ゲームの設定</h2>
           {!isDebug && onSwitchJourney && <JourneySelection value={journeyId} onChange={requestJourneySwitch} />}
           <label className="translation-setting">
             <input type="checkbox" checked={displaySettings.value.autoSave} disabled={!!displaySettings.error}

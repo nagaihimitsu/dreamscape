@@ -19,6 +19,7 @@ import { useDialogueScrollReset } from "../../components/useDialogueScrollReset"
 import { useAutoAdvance } from "../../components/useAutoAdvance";
 import { DialogueControls } from "../../components/DialogueControls";
 import { dialogueObstructed } from "../../components/dialogueObstructed";
+import { useMeasuredHeight } from "../../components/useMeasuredHeight";
 import { DialogueWindowRestore, useDialogueWindow } from "../../components/DialogueWindowVisibility";
 import { useSceneTap } from "../../components/useSceneTap";
 import { ObservationViewer } from "./ObservationViewer";
@@ -145,6 +146,9 @@ export function TourismScreen({
     }
   }
 
+  // The guide's heading lies under the header over the picture on phones; its
+  // height is the scene's reserve below the header (--label-h, styles.css).
+  const measuredHeading = useMeasuredHeight("--label-h");
   const toolbar = (
     <div className="tourism-toolbar" data-no-advance>
       <button className="notebook-button" onClick={onNotebook}>手がかり帳</button>
@@ -158,7 +162,7 @@ export function TourismScreen({
       data-testid="tourism-screen"
       {...sceneTap.props}
     >
-      {active.phase === "guide" && <header className="tourism-heading">
+      {active.phase === "guide" && <header className="tourism-heading" ref={measuredHeading}>
         <p className="eyebrow">観光と観察 · 旅先の発見</p>
         <h1>{landmark.nameJa}</h1>
         <p className="landmark-english" lang="en">{landmark.nameEn}</p>

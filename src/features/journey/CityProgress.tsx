@@ -8,7 +8,7 @@ import {
 import { getEpisodeAvailability, getNextEpisode, getNextStoryBattle, storyBattlesForCity } from "../../domain/chapter";
 import type { GameState } from "../../domain/game";
 import { canReadCityEpilogue } from "../../domain/epilogue";
-import { formatCityProgress } from "./city-progress-label";
+import { formatCityProgress, type CityProgressCounts } from "./city-progress-label";
 import "./city.css";
 
 export function CityProgress({
@@ -90,19 +90,24 @@ export function CityProgress({
   );
 }
 
-export function CityProgressBadge({ game }: { game: GameState }) {
+/** The current city's cleared stops and special battles (the header and the summary show them). */
+export function cityProgressCounts(game: GameState): CityProgressCounts {
   const { city } = getCityContent(game.currentCityId);
   const stops = episodes.filter((episode) => episode.cityId === city.id && episode.kind !== "city_finale");
   const storyBattles = storyBattlesForCity(city.id);
-  const cityCompleted = game.completedCityIds.includes(city.id);
-  return <span className="pill" data-testid={cityCompleted ? "city-complete" : undefined}>
-    {formatCityProgress({
-      completedStops: stops.filter((episode) => game.completedEpisodeIds.includes(episode.id)).length,
-      stops: stops.length,
-      completedSpecialBattles: storyBattles.filter((item) => game.battleRecords.some((record) => record.battleId === item.battleId && record.attempts > 0)).length,
-      specialBattles: storyBattles.length,
-      cityCompleted,
-    })}
+  return {
+    completedStops: stops.filter((episode) => game.completedEpisodeIds.includes(episode.id)).length,
+    stops: stops.length,
+    completedSpecialBattles: storyBattles.filter((item) => game.battleRecords.some((record) => record.battleId === item.battleId && record.attempts > 0)).length,
+    specialBattles: storyBattles.length,
+    cityCompleted: game.completedCityIds.includes(city.id),
+  };
+}
+
+export function CityProgressBadge({ game }: { game: GameState }) {
+  const counts = cityProgressCounts(game);
+  return <span className="pill" data-testid={counts.cityCompleted ? "city-complete" : undefined}>
+    {formatCityProgress(counts)}
   </span>;
 }
 

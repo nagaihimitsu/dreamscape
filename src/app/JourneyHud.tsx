@@ -1,0 +1,187 @@
+import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
+import { currencyForCity, formatMoneyForCity } from "../content/currency";
+import { encounters } from "../content/encounters";
+import type { TravelPlace } from "../content/travel-schemas";
+import { DismissLayer } from "../components/DismissLayer";
+import { HeldItems } from "../components/HeldItems";
+import { Icon, type IconName } from "../components/icons";
+import type { GameState } from "../domain/game";
+import { getGameWeekday, getTimePeriod } from "../domain/travel";
+import { cityProgressCounts } from "../features/journey/CityProgress";
+import { cityProgressParts, type CityProgressPart } from "../features/journey/city-progress-label";
+import { placeDisplayName } from "../features/journey/travel-labels";
+import { formatTravelTime } from "../features/journey/travel-time";
+import { moneyLength, weekdayLabel } from "./journey-hud-text";
+import { useMeasuredHeight } from "../components/useMeasuredHeight";
+import "./journey-hud.css";
+
+const progressIcons: Record<CityProgressPart["kind"], IconName> = { tourism: "camera", battles: "swords", cleared: "stamp" };
+
+/**
+ * The header of every game screen (UI redesign §3.1): row 1 shows where and when
+ * the couple are and what they have (display only), row 2 holds what can be
+ * pressed: the city's progress (opens 旅の記録), 待機・休む in free time (until
+ * they move to the free-time band), the held items, 英語ノート and ⚙設定 with
+ * セーブ・ロード・ゲームの設定. Its height is measured as `--hud-h` for the
+ * reserves of the scenes it lies over.
+ */
+export function JourneyHud({ game, place, freeTimeActions, onRecords, onEnglish, onSave, onLoad, onSettings }: {
+  game: GameState;
+  place: TravelPlace | undefined;
+  freeTimeActions?: ReactNode;
+  onRecords: () => void;
+  onEnglish: () => void;
+  onSave: () => void;
+  onLoad: () => void;
+  onSettings: () => void;
+}) {
+  const measured = useMeasuredHeight("--hud-h");
+  const weekday = getGameWeekday(game.travel.calendar);
+  const money = formatMoneyForCity(game.currentCityId, game.travelBudget);
+  const parts = cityProgressParts(cityProgressCounts(game));
+  const items = encounters.items
+    .filter((item) => item.cityId === game.currentCityId && game.inventory[item.id] === "held")
+    .map((item) => ({ id: item.id, name: item.nameJa, description: item.descriptionJa, iconPath: item.iconPath }));
+  return (
+    <div className="journey-hud" data-testid="journey-bar" ref={measured} onMouseDown={keepFocusOffControls}>
+      <div className="hud-status">
+        <p className="hud-plate" data-testid="journey-context">
+          <span className="hud-place"><Icon name="pin" /><span className="sr-only">現在地：</span>{placeDisplayName(game, place)}</span>
+          <span className="hud-time">
+            <Icon name={getTimePeriod(game.travel.minute) === "day" ? "sun" : "moon"} />
+            {game.travel.day}日目{weekday === undefined ? null : <span aria-label={weekdayLabel(weekday).spoken}>{weekdayLabel(weekday).short}</span>} {formatTravelTime(game.travel.minute)}
+          </span>
+        </p>
+        <p className="hud-wallet">
+          <span className="travel-budget" data-length={moneyLength(money)} aria-label={`旅の予算 ${game.travelBudget}${currencyForCity(game.currentCityId).unitJa}`}><Icon name="coin" />{money}</span>
+          <span className="ap" aria-label={`残り${game.ap}AP`}><Icon name="star" />{game.ap}<small> AP</small></span>
+        </p>
+      </div>
+      <div className="hud-actions">
+        <button
+          type="button"
+          className="hud-progress"
+          data-testid="city-progress"
+          aria-label={`旅の記録：${parts.map((part) => part.text).join("、")}`}
+          onClick={onRecords}
+        >
+          <span className="hud-progress-parts" data-testid={parts[0].kind === "cleared" ? "city-complete" : undefined}>
+            {parts.map((part) => <span key={part.kind} className="hud-progress-part"><Icon name={progressIcons[part.kind]} />{part.text}</span>)}
+          </span>
+          <Icon name="chevron-right" className="hud-chevron" />
+        </button>
+        {freeTimeActions}
+        <HeldItems items={items} />
+        <nav className="hud-tools" aria-label="旅の操作">
+          <button type="button" className="hud-tool" aria-label="英語ノートを開く" onClick={onEnglish}>
+            <Icon name="book" /><span className="hud-tool-word">英語ノート</span>
+          </button>
+          <HudMenu onSave={onSave} onLoad={onLoad} onSettings={onSettings} />
+        </nav>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * A press on the header's text (the place, the money) keeps the focus where it
+ * is, as on a page's plain text, instead of dropping it to the page: the open
+ * ⚙設定 panel then gives it back to its button (HudMenu).
+ */
+function keepFocusOffControls(event: { target: EventTarget; preventDefault: () => void }) {
+  if (event.target instanceof Element && !event.target.closest("button, a, input, select, summary, [tabindex]")) event.preventDefault();
+}
+
+/**
+ * ⚙設定 (U2, U24): a disclosure button with its small panel of セーブ, ロード
+ * and ゲームの設定 (U28) right under the header (APG Disclosure, not an ARIA menu:
+ * three ordinary buttons, and Tab works as everywhere else). Opening moves the
+ * focus to セーブ (ArrowUp/ArrowDown also move between the three); Esc closes and
+ * returns it to ⚙設定; leaving the group with the focus or a press elsewhere
+ * closes it. A tap on the page outside the header only closes it (DismissLayer).
+ * Choosing an item closes the panel and puts the focus on ⚙設定 before the action
+ * runs, so a dialog it opens gives the focus back to ⚙設定 when it closes.
+ */
+function HudMenu({ onSave, onLoad, onSettings }: { onSave: () => void; onLoad: () => void; onSettings: () => void }) {
+  const [open, setOpen] = useState(false);
+  const group = useRef<HTMLDivElement>(null);
+  const gear = useRef<HTMLButtonElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
+  const backToGear = () => gear.current?.focus({ preventScroll: true });
+
+  useLayoutEffect(() => {
+    if (open) panel.current?.querySelector("button")?.focus({ preventScroll: true });
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || document.querySelector("dialog[open]")) return;
+      event.preventDefault();
+      setOpen(false);
+      backToGear();
+    };
+    // A press on the header outside the group (another of its buttons, its text):
+    // the panel closes and that button works as usual; on the text the focus,
+    // which the press leaves where it was, goes back to ⚙設定. The dismiss layer
+    // handles presses on the rest of the page.
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target || group.current?.contains(target) || target.closest(".dismiss-layer")) return;
+      const focusWasInside = !!group.current?.contains(document.activeElement);
+      setOpen(false);
+      if (focusWasInside && !target.closest("button, a, input, select, summary, [tabindex]")) backToGear();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("pointerdown", onPointerDown, true);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("pointerdown", onPointerDown, true);
+    };
+  }, [open]);
+
+  const choose = (action: () => void) => () => {
+    setOpen(false);
+    backToGear();
+    action();
+  };
+  const moveWithArrows = (event: ReactKeyboardEvent) => {
+    if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+    const buttons = [...(panel.current?.querySelectorAll("button") ?? [])];
+    const index = buttons.indexOf(document.activeElement as HTMLButtonElement);
+    if (index < 0) return;
+    event.preventDefault();
+    buttons[(index + (event.key === "ArrowDown" ? 1 : buttons.length - 1)) % buttons.length].focus();
+  };
+  return (
+    <div
+      className="hud-menu"
+      ref={group}
+      onBlur={(event) => {
+        const next = event.relatedTarget;
+        if (open && next instanceof Node && !group.current?.contains(next)) setOpen(false);
+      }}
+    >
+      <button
+        ref={gear}
+        type="button"
+        className="hud-tool"
+        data-testid="hud-menu"
+        aria-expanded={open}
+        aria-controls="hud-menu-panel"
+        onClick={() => setOpen((value) => !value)}
+      >
+        <Icon name="gear" /><span className="hud-tool-word">設定</span>
+      </button>
+      <div id="hud-menu-panel" className="hud-menu-panel" data-testid="hud-menu-panel" ref={panel} hidden={!open} onKeyDown={moveWithArrows}>
+        <button type="button" onClick={choose(onSave)}><Icon name="save" />セーブ</button>
+        <button type="button" onClick={choose(onLoad)}><Icon name="load" />ロード</button>
+        <button type="button" onClick={choose(onSettings)}><Icon name="sliders" />ゲームの設定</button>
+      </div>
+      {open && <DismissLayer owner={group.current} onClose={(focusWasInside) => {
+        setOpen(false);
+        if (focusWasInside) backToGear();
+      }} />}
+    </div>
+  );
+}
