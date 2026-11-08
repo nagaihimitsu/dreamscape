@@ -172,8 +172,10 @@ test("a quick double tap on 「切り替える」 does not read on the other jou
   await page.clock.resume();
   await ops.settled(page);
   await expect(line).toContainText(placed.activeTourism!.frame!.text);
+  // It reads on only where a tap would: the picture or the line, not one of the guide's controls.
   expect(await page.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest("#tourism-screen"), confirm),
     "the second tap landed on the other journey's guide").toBe(true);
+  expect(await ops.readsOnAt(page, confirm), "the second tap landed on the guide's picture or line, not on a control").toBe(true);
   expect(await readSave(page, other!.id)).toEqual(placed);
 });
 
@@ -225,8 +227,10 @@ test("a quick double tap on 「再試行」 does not read on the saved story sce
   await second.clock.resume();
   await ops.settled(second);
   await expect(line).toContainText(placed.activeTourism!.frame!.text);
+  // It reads on only where a tap would: the picture or the line, not one of the guide's controls.
   expect(await second.evaluate(({ x, y }) => !!document.elementFromPoint(x, y)?.closest("#tourism-screen"), point),
     "the second tap landed on the guide").toBe(true);
+  expect(await ops.readsOnAt(second, point), "the second tap landed on the guide's picture or line, not on a control").toBe(true);
   expect(await readSave(second)).toEqual(placed);
 });
 
@@ -407,6 +411,8 @@ test("old saved data is listed with its keys, removed only after confirmation an
     for (const [key, value] of Object.entries(items)) localStorage.setItem(key, value);
     localStorage.setItem("another-app.on-this-origin", "kept");
   }, { ...old, [learningKey("golden_triangle")]: JSON.stringify({ schemaVersion: 1, records: {} }) });
+  const seeded = await allStorage(page);
+  expect(seeded[LAST_JOURNEY_KEY]).not.toBe("golden_triangle");
 
   // Another tab opens the Indian journey (its title reports the old save and holds the journey's lock).
   const other = await context.newPage();
@@ -414,9 +420,11 @@ test("old saved data is listed with its keys, removed only after confirmation an
   await expect(other.getByRole("alert")).toContainText("別のタブで開いています");
   await ops.chooseJourney(other, "golden_triangle");
   await expect(other.getByRole("alert")).toContainText("保存データの形式はバージョン13です");
-  // Choosing it remembers the journey on this device (a preference, never listed for removal).
+  // Choosing it remembers the journey on this device (a preference, never listed for removal); the
+  // other tab writes nothing else (the old save it reports stays as it was).
   await expect.poll(async () => (await allStorage(page))[LAST_JOURNEY_KEY]).toBe("golden_triangle");
   const before = await allStorage(page);
+  expect(before).toEqual({ ...seeded, [LAST_JOURNEY_KEY]: "golden_triangle" });
 
   let cleanup = await ops.openOldDataCleanup(page);
   for (const key of Object.keys(old)) await expect(cleanup.getByText(key, { exact: true })).toBeVisible();

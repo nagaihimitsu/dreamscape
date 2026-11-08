@@ -167,6 +167,21 @@ export async function placeGuideSave(page: Page, journeyId: string): Promise<Gam
   return readSave(page, journeyId);
 }
 
+/** Where a tap never reads a story scene on: controls and `data-no-advance` areas (src/components/scene-tap.ts). */
+const notReadingOn = "a, button, input, select, textarea, label, summary, dialog, [role=button], [role=link], [data-no-advance]";
+/**
+ * Whether the page shows `surface` (a CSS selector) at the point, and no control or `data-no-advance`
+ * area there other than the surface itself (the line is a button that reads on).
+ */
+function showsAt(page: Page, point: { x: number; y: number }, surface: string): Promise<boolean> {
+  return page.evaluate(({ x, y, surface, controls }) => {
+    const element = document.elementFromPoint(x, y);
+    const shown = element?.closest(surface);
+    const control = element?.closest(controls);
+    return !!shown && (!control || control === shown);
+  }, { ...point, surface, controls: notReadingOn });
+}
+
 /**
  * Every UI operation the specs share, in one place (button names and labels
  * change here, not in each spec).
@@ -317,13 +332,16 @@ export const ops = {
     const line = (await page.getByTestId("dialogue-text").boundingBox())!;
     // A quarter of the way down from the picture's top to the line: well above the window's name plate and tools.
     const point = { x: picture.x + picture.width / 2, y: picture.y + (line.y - picture.y) / 4 };
-    const hit = await page.evaluate(({ x, y }) => {
-      const element = document.elementFromPoint(x, y);
-      return element?.closest('[data-testid="scene-picture"]') !== null &&
-        element?.closest("a, button, input, select, textarea, label, summary, dialog, [role=button], [role=link], [data-no-advance]") === null;
-    }, point);
-    expect(hit, "the point shows the scene's picture, not a control or the window").toBe(true);
+    expect(await showsAt(page, point, '[data-testid="scene-picture"]'), "the point shows the scene's picture, not a control or the window").toBe(true);
     return point;
+  },
+  /**
+   * Whether a tap at the point would read the story scene on: it shows the line (a button that
+   * reads on), or the scene's picture with no control or `data-no-advance` area there (the same
+   * rule as sceneBackgroundPoint).
+   */
+  async readsOnAt(page: Page, point: { x: number; y: number }): Promise<boolean> {
+    return await showsAt(page, point, '[data-testid="dialogue-text"]') || await showsAt(page, point, '[data-testid="scene-picture"]');
   },
   /**
    * A point in a gap of the dialogue window's tool row (「閉じる」「ログ」「高速送り」), between two

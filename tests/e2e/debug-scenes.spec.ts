@@ -370,3 +370,32 @@ test("tourism: a tap on the landmark's heading, and on a wide screen on the page
   await expect(line).not.toHaveText(text!);
   expect((await debugGame(page))!.revision).toBe(before.revision + 2);
 });
+
+// AGENTS.md 「選択肢の誤タップ防止」: a city finale has no place name above its stage, so on a portrait
+// phone its 「画像の出典」 takes the top of the stage's row (battle.css) instead of sitting on the round
+// bar's 手がかり帳, where a tap meant for one button would press the other. One finale of Debug's default
+// city at a common and at the smallest phone size; every battle and size stays in the screens gallery.
+test("city finale: 「画像の出典」 does not overlap the question's 手がかり帳 at 390×844 and 320×568", { tag: tier.debug }, async ({ page }) => {
+  const finale = await page.evaluate(async (modules) => {
+    const { battles } = await import(/* @vite-ignore */ modules.content);
+    const { debugTargets, defaultDebugCityId } = await import(/* @vite-ignore */ modules.debugState);
+    const listed = new Set(debugTargets(defaultDebugCityId).battle
+      .filter((target: { unavailable?: string }) => !target.unavailable).map((target: { id: string }) => target.id));
+    const id = battles.find((battle: { id: string; scope?: string }) => battle.scope === "city_finale" && listed.has(battle.id))?.id as string | undefined;
+    return id ? { cityId: defaultDebugCityId as string, id } : undefined;
+  }, devModules);
+  expect(finale, "a city finale that Debug opens in its default city").toBeDefined();
+  await ops.openDebugScene(page, settings({ cityId: finale!.cityId, scene: "battle", id: finale!.id }));
+  await playUntil(page, (state) => state.activeBattle?.phase === "question", { source: debugGame });
+  const credit = page.getByRole("button", { name: "画像の出典", exact: true });
+  const clueBook = page.getByRole("button", { name: "手がかり帳", exact: true });
+  for (const [width, height] of [[390, 844], [320, 568]] as const) {
+    await page.setViewportSize({ width, height });
+    await expect(credit).toBeVisible();
+    await expect(clueBook).toBeVisible();
+    const [a, b] = [(await credit.boundingBox())!, (await clueBook.boundingBox())!];
+    const overlap = a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height;
+    expect(overlap, `「画像の出典」 ${JSON.stringify(a)} and 手がかり帳 ${JSON.stringify(b)} at ${width}×${height}`).toBe(false);
+  }
+  await ops.backToDebugSettings(page);
+});
