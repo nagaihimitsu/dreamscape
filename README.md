@@ -301,7 +301,7 @@ npm run test:saves
 
 画像は、旅行編だけが使うもの（観光写真・デート背景・その旅行編の品物アイコン）を `content/journeys/<旅行編ID>/public/assets/` に、全旅行編で共有するもの（ヒロイン・演出・共通アイコン）をリポジトリ直下の `public/assets/` に置きます。データには `public/` を除いた配信時のパス（例: `assets/tourism/india/agra_taj_mahal.webp`）を書き、置き場所によって変わりません。`npm run content:build` がこれらを `src/content/generated/public/`（生成物。Git管理せず、手動編集しない）へまとめ、開発サーバーとビルドはこのフォルダを配信します。同じパスの画像を二か所に置くとビルドが失敗します。画像を追加・差し替えた後も `npm run content:build` を実行してください。
 
-新しい通常デートは、InkとJSON定義・効果を追加するだけで既存のメニューと会話画面に表示されます。`kind` は `normal` / `special` / `confession` / `reassurance`。通常は `choiceCount: 2`、無料イベントは必要に応じて0〜2回の3択を設定できます。`effectCount` は各経路で期待する効果数です。`actionLabelJa` もJSONにあり、Reactにイベント固有の文言を追加する必要はありません。
+新しい通常デートは、InkとJSON定義（デートのカタログと、都市の移動データ `<旅行編>/travel/<都市ID>.json` の `events`）・効果を追加するだけで、行き先一覧と会話画面に表示されます。`kind` は `normal` / `special` / `confession` / `reassurance`。通常は `choiceCount: 2`、無料イベントは必要に応じて0〜2回の3択を設定できます。`effectCount` は各経路で期待する効果数です。行き先一覧に出る地点名・イベント名・説明もJSONにあり、Reactにイベント固有の文言を追加する必要はありません。
 
 `validationContexts` に関係段階、告白結果、引用するmemoryId、交際状態を指定し、その文脈から全分岐を検証します。告白は成立・保留・拒否の文脈をすべて指定します。通常デートは各文脈9経路、選択機会1回のイベントは各文脈3経路です。
 
