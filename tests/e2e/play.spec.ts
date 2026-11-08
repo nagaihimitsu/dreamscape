@@ -103,6 +103,8 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await page.clock.resume();
   const result = await playUntil(page, (state) => state.activeBattle?.phase === "result");
   await expect(page.getByTestId("battle-result")).toBeVisible();
+  // The result heading shows English but is named in Japanese (OutcomeHeading; its unit test pins each word).
+  await expect(page.getByTestId("battle-result").getByRole("heading", { level: 2, name: /^(完全勝利|勝利|敗北)$/u })).toBeVisible();
   await expect(page.getByTestId("battle-rewards")).toBeVisible();
   expect(result.activeBattle!.answers.length).toBeGreaterThan(0);
   expect(result.completedEpisodeIds).toEqual(["milano_duomo_episode"]);

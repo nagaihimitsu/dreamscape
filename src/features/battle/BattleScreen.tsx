@@ -21,6 +21,7 @@ import { EnemyPortrait } from "./EnemyPortrait";
 import { BattleRewards } from "../journey/BattleRewards";
 import { ReasoningPanel } from "./ReasoningPanel";
 import { ReasoningCutIn } from "./ReasoningCutIn";
+import { OutcomeHeading } from "./OutcomeHeading";
 import { DOUBLE_TAP_WINDOW_MS, isSecondTap } from "../../components/double-tap";
 import {
   Translation,
@@ -30,16 +31,6 @@ import {
 import { InteractiveEnglish } from "../learning/InteractiveEnglish";
 import type { Learning } from "../learning/useLearning";
 import "./battle.css";
-
-/**
- * The result heading shows the English word as decoration; screen readers read
- * the Japanese instead (the page is Japanese, the English part is marked as such).
- */
-const outcomeHeadings = {
-  perfect: { en: "PERFECT VICTORY", ja: "完全勝利" },
-  victory: { en: "VICTORY", ja: "勝利" },
-  defeat: { en: "DEFEAT", ja: "敗北" },
-} as const;
 
 interface Props {
   learning: Learning;
@@ -412,10 +403,7 @@ export function BattleScreen({
           <div className="battle-result" data-testid="battle-result">
             <p className="eyebrow">今回の結果</p>
             <div className="battle-result-heading">
-              <h2 className="outcome">
-                <span lang="en" aria-hidden="true">{outcomeHeadings[outcome].en}</span>
-                <span className="sr-only">{outcomeHeadings[outcome].ja}</span>
-              </h2>
+              <OutcomeHeading outcome={outcome} />
               <p className="battle-score">
                 <strong>{active.score}</strong>
                 <span> / {quiz.questions.length} 問正解</span>

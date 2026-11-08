@@ -708,6 +708,9 @@
   .battle-screen .battle-stage-compact .eyebrow {
     display: none;
   }
+  /* Without a place name (city finale) the credit comes right before the stage: 54 px down would sit
+     on the round bar's 手がかり帳, so it takes the top of the stage's row beside the enemy's name. */
+  .battle-screen .vn-credit-link:has(+ .battle-stage-compact) { top: 5px; }
   .battle-screen .battle-paper {
     flex: 1 1 auto;
     min-height: 0;

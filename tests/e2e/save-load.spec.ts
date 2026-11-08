@@ -81,6 +81,22 @@ test("autosaved progress, a battle question, the English note and the text speed
 // AGENTS.md 「現在のバージョンで作成した有効なセーブは…正しく保存・再開できる」 and docs/07 acceptance 6;
 // docs/07 acceptance 10: with manual saving, leaving unsaved progress asks first (switching journeys,
 // ロード, reloading), as hasUnsavedProgress/leaveStep decide (docs/10 「画面の保護を担う関数」).
+// UI stage 0, item I: like the title's start, a preparing journey's 「旅の準備を保存する」 with empty name fields
+// saves the default names shown as placeholders (nameOrDefault in PreparingJourney).
+test("a preparing journey saved with empty name fields keeps the default names", { tag: tier.gate }, async ({ page }) => {
+  const preparing = journeyCatalog().journeys.find((journey) => journey.status === "preparing" && journey.initialState);
+  test.skip(!preparing, "no preparing journey with an initial state to save names for");
+  const balance = generated<{ defaultPlayerName: string; defaultHeroineName: string }>("romance/balance.json");
+  await page.goto("/");
+  await ops.chooseJourney(page, preparing!.id);
+  await expect(page.getByLabel("主人公の名前")).toHaveValue("");
+  await expect(page.getByLabel("ヒロインの名前")).toHaveValue("");
+  await page.getByRole("button", { name: "旅の準備を保存する" }).click();
+  await expect(page.getByRole("status")).toContainText(`${balance.defaultPlayerName} と ${balance.defaultHeroineName}`);
+  expect(JSON.parse((await allStorage(page))[saveKey(preparing!.id)]!)).toMatchObject({
+    kind: "journey_preparation", journeyId: preparing!.id, playerName: balance.defaultPlayerName, heroineName: balance.defaultHeroineName });
+});
+
 test("a manual save keeps the saved position and settings when unsaved changes are discarded", { tag: tier.gate }, async ({ page }) => {
   await ops.startJourney(page);
   await ops.setAutoSave(page, false);
