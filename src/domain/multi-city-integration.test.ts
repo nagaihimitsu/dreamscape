@@ -41,7 +41,8 @@ describe("two registered cities through the real game runtime", () => {
     const memory = effects.find((effect) => effect.memoryId)?.memoryId;
     if (!memory) throw new Error("No existing memory fixture");
     const before = validateGameState({ ...reached, inventory: { ...reached.inventory, blue_pick: "held" },
-      completedEncounterIds: [...reached.completedEncounterIds, "duomo_string"], memories: [memory] });
+      completedEncounterIds: [...reached.completedEncounterIds, "duomo_string"], seenEncounterIds: [...reached.seenEncounterIds, "duomo_string"],
+      memories: [memory] });
     expect(getNextCity(before)?.city.id).toBe("test_city");
     expect(before.claimedRewardIds.length).toBeGreaterThan(0);
     const activeMilanDate = startDate(before, "milano_cafe_01", () => 0);
@@ -69,6 +70,7 @@ describe("two registered cities through the real game runtime", () => {
     expect(after.travel).toMatchObject({ currentPlaceId: "test_hotel", hotelPlaceId: "test_hotel", day: 1, minute: 540, activeEvent: null });
     expect(after.inventory.blue_pick).toBe("left_behind");
     expect(after.completedEncounterIds).toContain("duomo_string");
+    expect(after.seenEncounterIds).toEqual(before.seenEncounterIds);
     for (const field of ["playerName", "heroineName", "ap", "pendingApRewards", "travelBudget", "affection", "trust", "spark", "romanceStage", "confessionStatus", "memories", "claimedRewardIds", "completedEpisodeIds", "completedCityIds", "battleRecords", "playedDateIds"] as const)
       expect(after[field]).toEqual(before[field]);
     expect(departToNextCity(after, before.revision)).toBe(after);

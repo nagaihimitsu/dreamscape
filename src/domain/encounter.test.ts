@@ -322,7 +322,11 @@ describe("travel encounters", () => {
     expect(unhappy.activeEncounter!.romanceResolution!.result).toBe("negative");
     expect(happy.activeEncounter!.frame.text).not.toBe(unhappy.activeEncounter!.frame.text);
     expect(() => validateEncounterState({ ...happy, trust: happy.trust + 1 })).toThrow("道中交流の保存状態が一致しません。");
-    expect(() => validateEncounterState({ ...happy, inventory: { ...happy.inventory, [SOUVENIR]: "held" } })).toThrow("道中交流の保存状態が一致しません。");
+    // The chosen gift's item put back in the bag: its use record no longer matches an item given away;
+    // dropping the record too leaves the chosen option's gift ungiven.
+    expect(happy.itemUses[SOUVENIR]).toEqual({ encounterId: GIFT, optionId: "offer" });
+    expect(() => validateEncounterState({ ...happy, inventory: { ...happy.inventory, [SOUVENIR]: "held" } })).toThrow("品物を渡した・使った記録が一致しません。");
+    expect(() => validateEncounterState({ ...happy, inventory: { ...happy.inventory, [SOUVENIR]: "held" }, itemUses: {} })).toThrow("道中交流の保存状態が一致しません。");
   });
   it("rejects missing draws, inconsistent prizes and forged outcome stories", () => {
     let state = choose(meetEncounter(ready(), "galleria_fortune", () => 0), 0);

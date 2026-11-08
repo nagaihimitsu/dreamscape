@@ -143,6 +143,8 @@ describe("sample journey route", () => {
     s = playEncounter(s, "ask", "give");
     expect(s.inventory.smp_mihon_three_bookmark).toBe("gifted");
     expect(s.completedEncounterIds).toEqual(["smp_mihon_bookmark_stall", "smp_mihon_bookmark_gift"]);
+    expect(s.seenEncounterIds).toEqual(["smp_mihon_bookmark_stall", "smp_mihon_bookmark_gift"]);
+    expect(s.itemUses).toEqual({ smp_mihon_three_bookmark: { encounterId: "smp_mihon_bookmark_gift", optionId: "give" } });
     expect(s.activeTourism?.phase).toBe("exploring");
     // Battle (+1 complete, +1 for 2 or more correct).
     s = act(s, (current) => proceedFromTourism(current, current.revision, () => 0));

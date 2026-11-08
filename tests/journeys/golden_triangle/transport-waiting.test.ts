@@ -7,6 +7,11 @@ import { validateContent } from "../../../scripts/content-validation";
 import { inspectJourneyReadiness, loadJourneyReadiness } from "../../../scripts/journey-readiness";
 import { cityTransitPath, inspectJourneyTransit } from "../../../scripts/journey-transit";
 import { transportWaitingJa } from "../../../scripts/transport-validation";
+import { getCityContent } from "../../../src/content";
+import { completedCity } from "../../../src/dev/scenario-builders";
+import { departToNextCity } from "../../../src/domain/city-travel";
+import { createGame, validateGameState } from "../../../src/domain/game";
+import { beginTravelEvent, getTravelEventAvailability } from "../../../src/domain/travel-game";
 
 const pending = { pendingJa: "ツアー機能待ち", inspectCommand: "npm run india:transit" };
 const waitingJa = "ツアー機能待ち（交通は旧方式のまま。都市ごとの交通判断台帳と新しい交通の確認はまだ使いません。旧方式の判断台帳は npm run india:transit で確かめます）";
@@ -35,4 +40,22 @@ describe("Golden Triangle waits for its transport switch", () => {
     const summary = validateContent(selectJourneys(loadContentSources(process.cwd()), ["golden_triangle"])).transport;
     expect(summary).toContain(`Transport golden_triangle: ${waitingJa}; modes walk, taxi, rail, bus`);
   }, 120_000);
+
+  it("counts rides by its current declared modes while waiting, and starts every later city with no ride counted", () => {
+    const start = createGame("旅人", "相手", { journeyId: "golden_triangle" });
+    // The first map event of Delhi that the party can reach by taxi from the hotel right away.
+    const event = getCityContent("delhi").travel.events.find((item) => getTravelEventAvailability(start, item.id, "taxi").available)!;
+    expect(event, "a Delhi event reached by taxi").toBeDefined();
+    const rode = beginTravelEvent(start, event.id, "taxi", start.revision);
+    expect(rode.travel).toMatchObject({ currentPlaceId: event.placeId, rideCounts: { taxi: 1 } });
+    expect(validateGameState(JSON.parse(JSON.stringify(rode)))).toEqual(rode);
+    const cleared = completedCity("delhi");
+    const counted = validateGameState({ ...cleared, travel: { ...cleared.travel, rideCounts: { taxi: 2, rail: 1, bus: 1 } } });
+    expect(() => validateGameState({ ...cleared, travel: { ...cleared.travel, rideCounts: { metro: 1 } } })).toThrow("乗り物に乗った回数の記録が一致しません。");
+    const agra = departToNextCity(counted, counted.revision);
+    expect(agra.currentCityId).toBe("agra");
+    expect(agra.travel.rideCounts).toEqual({});
+    expect(validateGameState(JSON.parse(JSON.stringify(agra)))).toEqual(agra);
+  });
 });
+

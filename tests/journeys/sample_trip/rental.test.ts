@@ -145,4 +145,24 @@ describe("rental transport (sample journey)", () => {
     expect(after.travel.rentedModeIds).toEqual([]);
     expect(validateGameState(JSON.parse(JSON.stringify(after)))).toEqual(after);
   });
+
+  it("counts the bicycle rides once rented (never walking or the ride home), keeps them overnight and refuses tampered counts", () => {
+    const state = start();
+    expect(beginTravelEvent(state, EPISODE, "walk", state.revision).travel.rideCounts).toEqual({});
+    const rented = rentTransport(state, BIKE, state.revision);
+    expect(rented.travel.rideCounts).toEqual({});
+    const moved = beginTravelEvent(rented, EPISODE, BIKE, rented.revision);
+    expect(moved.travel).toMatchObject({ currentPlaceId: TOWER, rideCounts: { [BIKE]: 1 } });
+    const storage = new MemoryStorage();
+    expect(saveGame(storage, moved).ok).toBe(true);
+    expect(loadGame(storage)).toEqual({ status: "loaded", state: moved });
+    const tower = { ...rented, travel: { ...rented.travel, currentPlaceId: TOWER, rideCounts: { [BIKE]: 1 } } };
+    expect(sleepAtHotel(tower, BIKE, tower.revision, null).travel).toMatchObject({ currentPlaceId: HOTEL, day: 2, rideCounts: { [BIKE]: 1 } });
+    const tampered = (base: GameState, rideCounts: Record<string, number>) => ({ ...base, travel: { ...base.travel, rideCounts } });
+    // Not rented yet, walking, or a mode the sample does not declare.
+    for (const counts of [{ [BIKE]: 1 }, { walk: 1 }, { bicycle: 1 }] as Record<string, number>[])
+      expect(() => validateGameState(tampered(state, counts)), JSON.stringify(counts)).toThrow("乗り物に乗った回数の記録が一致しません。");
+    expect(validateGameState(tampered(rented, { [BIKE]: 4 })).travel.rideCounts).toEqual({ [BIKE]: 4 });
+    expect(() => validateGameState(tampered(rented, { [BIKE]: 0 }))).toThrow();
+  });
 });

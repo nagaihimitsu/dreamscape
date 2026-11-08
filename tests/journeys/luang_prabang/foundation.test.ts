@@ -5,7 +5,8 @@ import { getJourney } from "../../../src/content/journeys";
 import { prototypePreviewState } from "../../../src/dev/prototype-preview-state";
 import { inspectJourneyTransit } from "../../../scripts/journey-transit";
 import { loadJourneyScaffold, journeyRequirements } from "../../../scripts/journey-scaffold";
-import { createGame } from "../../../src/domain/game";
+import { createGame, validateGameState } from "../../../src/domain/game";
+import { rentTransport } from "../../../src/domain/transport";
 import { planTravel } from "../../../src/domain/travel";
 import { getTravelEventAvailability } from "../../../src/domain/travel-game";
 import { loadGame, saveGame } from "../../../src/persistence";
@@ -147,5 +148,20 @@ describe("Luang Prabang city foundation", () => {
       expect(decision.reasonJa.includes("夜市"), `${decision.fromPlaceId}>${decision.toPlaceId}`)
         .toBe(!decision.reasonJa.startsWith("中心の通り（シーサワンウォン通り）を通らない"));
     }
+  });
+
+  it("saves ride counts of the tuk-tuk, and of the bicycle only once it is rented", () => {
+    const state = prototypePreviewState(cityId);
+    const tampered = (base: typeof state, rideCounts: Record<string, number>) => ({ ...base, travel: { ...base.travel, rideCounts } });
+    expect(validateGameState(tampered(state, { tuk_tuk: 3 })).travel.rideCounts).toEqual({ tuk_tuk: 3 });
+    for (const counts of [{ bicycle: 1 }, { metro: 1 }, { walk: 1 }] as Record<string, number>[])
+      expect(() => validateGameState(tampered(state, counts)), JSON.stringify(counts)).toThrow("乗り物に乗った回数の記録が一致しません。");
+    const rented = rentTransport(state, "bicycle", state.revision);
+    expect(rented.travel.rentedModeIds).toEqual(["bicycle"]);
+    const counted = validateGameState(tampered(rented, { bicycle: 2, tuk_tuk: 1 }));
+    const data = new Map<string, string>();
+    const storage = { getItem: (key: string) => data.get(key) ?? null, setItem: (key: string, value: string) => { data.set(key, value); } };
+    expect(saveGame(storage, counted)).toEqual({ ok: true });
+    expect(loadGame(storage)).toEqual({ status: "loaded", state: counted });
   });
 });

@@ -4,6 +4,9 @@
 import { describe, expect, it } from "vitest";
 import { getCityContent } from "../../../src/content";
 import { getJourney } from "../../../src/content/journeys";
+import { prototypePreviewState } from "../../../src/dev/prototype-preview-state";
+import { validateGameState } from "../../../src/domain/game";
+import { loadGame, saveGame } from "../../../src/persistence";
 
 const cities = ["tashkent", "samarkand", "bukhara", "khiva"] as const;
 const minimumFare: Record<string, number> = { tashkent: 4600, samarkand: 4100, bukhara: 3700 };
@@ -46,5 +49,17 @@ describe("Uzbekistan transport", () => {
     expect(spread("tashkent")).toEqual({ lowest: 5000, highest: 19000, median: 11000 });
     expect(spread("samarkand")).toEqual({ lowest: 5000, highest: 15000, median: 8000 });
     expect(spread("bukhara")).toEqual({ lowest: 4000, highest: 9000, median: 6000 });
+  });
+
+  it("saves ride counts of the declared metro and taxi, and refuses the buses U1 dropped", () => {
+    const state = prototypePreviewState("tashkent");
+    const tampered = (rideCounts: Record<string, number>) => ({ ...state, travel: { ...state.travel, rideCounts } });
+    const counted = validateGameState(tampered({ metro: 2, taxi: 1 }));
+    const values = new Map<string, string>();
+    const storage = { getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => { values.set(key, value); } };
+    expect(saveGame(storage, counted)).toEqual({ ok: true });
+    expect(loadGame(storage)).toEqual({ status: "loaded", state: counted });
+    for (const counts of [{ bus: 1 }, { walk: 1 }, { tuk_tuk: 1 }] as Record<string, number>[])
+      expect(() => validateGameState(tampered(counts)), JSON.stringify(counts)).toThrow("乗り物に乗った回数の記録が一致しません。");
   });
 });

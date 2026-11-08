@@ -41,7 +41,8 @@ describe("three-city journey using development-only fixtures", () => {
     const memory = effects.find((entry) => entry.memoryId)?.memoryId;
     if (!memory) throw new Error("Expected a memory fixture");
     test_delhi = validateGameState({ ...test_delhi, playerName: "主人公", heroineName: "ヒロイン", affection: 3, trust: 2, spark: 1,
-      memories: [memory], completedEncounterIds: [...test_delhi.completedEncounterIds, "test_delhi_encounter"], inventory: { test_delhi_item: "held" } });
+      memories: [memory], completedEncounterIds: [...test_delhi.completedEncounterIds, "test_delhi_encounter"],
+      seenEncounterIds: [...test_delhi.seenEncounterIds, "test_delhi_encounter"], inventory: { test_delhi_item: "held" } });
     expect(getNextCity(test_delhi)?.city.id).toBe("test_agra");
     const storage = journeyStorage(new MemoryStorage(), "test_golden_triangle");
     expect(saveGame(storage, test_delhi).ok).toBe(true);

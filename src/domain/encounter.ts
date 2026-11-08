@@ -213,9 +213,16 @@ export function chooseEncounter(state: GameState, index: number, expectedRevisio
   if (option.textEn !== undefined && choice.text !== option.textEn) throw new Error("交流の選択肢が一致しません。");
   const cost = option.cost ?? 0;
   if (state.travelBudget - cost < state.travel.returnReserve) return state;
-  let next = { ...state, travelBudget: state.travelBudget - cost, inventory: { ...state.inventory } };
-  if (option.consumeItemId) next.inventory[option.consumeItemId] = "used";
-  if (option.giftItemId) next.inventory[option.giftItemId] = "gifted";
+  let next = { ...state, travelBudget: state.travelBudget - cost, inventory: { ...state.inventory }, itemUses: { ...state.itemUses } };
+  // The item's status and the option that changed it are written together.
+  if (option.consumeItemId) {
+    next.inventory[option.consumeItemId] = "used";
+    next.itemUses[option.consumeItemId] = { encounterId: event.id, optionId: option.id };
+  }
+  if (option.giftItemId) {
+    next.inventory[option.giftItemId] = "gifted";
+    next.itemUses[option.giftItemId] = { encounterId: event.id, optionId: option.id };
+  }
   let result = "positive";
   let romanceResolution: ActiveEncounter["romanceResolution"] = null;
   if (option.responseProfileId) {
@@ -303,7 +310,9 @@ export function finishEncounter(state: GameState, expectedRevision: number): Gam
   if (event.quiz && active.phase !== "outcome" && !encounterStoryCanFinish(state)) return state;
   const option = event.options.find((item) => item.id === active.selectedOptionId)!;
   const first = !state.completedEncounterIds.includes(event.id) && !option.deferCompletion;
-  let next: GameState = { ...state, revision: state.revision + 1, activeEncounter: null };
+  // Seen with any choice, 「また今度」 included; completion stays a separate record.
+  const seenEncounterIds = state.seenEncounterIds.includes(event.id) ? state.seenEncounterIds : [...state.seenEncounterIds, event.id];
+  let next: GameState = { ...state, revision: state.revision + 1, activeEncounter: null, seenEncounterIds };
   if (first) {
     if (event.completionItemId && next.inventory[event.completionItemId]) throw new Error("品物の記録が一致しません。");
     const total = next.travelBudget + (event.completionMoney ?? 0);
@@ -322,9 +331,35 @@ export function finishEncounter(state: GameState, expectedRevision: number): Gam
   return active.romanceResolution ? evaluateProgression(next) : next;
 }
 
+/**
+ * itemUses names, for exactly the gifted and used items, the option that gave
+ * the item away (giftItemId) or used it (consumeItemId), in an encounter that
+ * was completed or is running with that option chosen.
+ */
+function validateItemUses(state: GameState): void {
+  const spent = Object.entries(state.inventory).filter(([, status]) => status === "gifted" || status === "used");
+  const consistent = Object.keys(state.itemUses).length === spent.length && spent.every(([id, status]) => {
+    const use = state.itemUses[id];
+    const event = use && findEncounter(use.encounterId);
+    const option = event?.options.find((item) => item.id === use.optionId);
+    return !!event && !!option && (status === "gifted" ? option.giftItemId : option.consumeItemId) === id &&
+      optionItemsBelongToEncounter(event, option) &&
+      (state.completedEncounterIds.includes(event.id) ||
+        (state.activeEncounter?.encounterId === event.id && state.activeEncounter.selectedOptionId === option.id));
+  });
+  if (!consistent) throw new Error("品物を渡した・使った記録が一致しません。");
+}
+
 /** Reject changed scripts, invalid snapshots, impossible item/reward combinations and stale quiz state. */
 export function validateEncounterState(state: GameState): void {
   const fail = (): never => { throw new Error("道中交流の保存状態が一致しません。"); };
+  // Seen encounters belong to this city or to a city the journey has completed; every completed one was seen.
+  if (state.seenEncounterIds.some((id) => {
+    const event = findEncounter(id);
+    return !event || (event.cityId !== state.currentCityId && !state.completedCityIds.includes(event.cityId));
+  }) || state.completedEncounterIds.some((id) => !state.seenEncounterIds.includes(id)))
+    throw new Error("道中交流を見た記録が一致しません。");
+  validateItemUses(state);
   for (const id of state.completedEncounterIds) {
     const event = findEncounter(id);
     if (!event || !itemBelongsToEncounter(event, event.completionItemId) || (event.completionItemId && !state.inventory[event.completionItemId])) fail();
@@ -337,13 +372,6 @@ export function validateEncounterState(state: GameState): void {
     const completionEvent = encounters.encounters.find((item) => item.completionItemId === id);
     if (prizeEvent && (!itemBelongsToEncounter(prizeEvent, id) || !state.encounterRewards[prizeEvent.id]?.won)) fail();
     if (completionEvent && (!itemBelongsToEncounter(completionEvent, id) || !state.completedEncounterIds.includes(completionEvent.id))) fail();
-    if (status === "gifted" || status === "used") {
-      const matching = encounters.encounters.some((item) => item.options.some((option) =>
-        (status === "gifted" ? option.giftItemId === id : option.consumeItemId === id) && optionItemsBelongToEncounter(item, option) &&
-        (state.completedEncounterIds.includes(item.id) ||
-          (state.activeEncounter?.encounterId === item.id && state.activeEncounter.selectedOptionId === option.id))));
-      if (!matching) fail();
-    }
   }
   for (const [id, record] of Object.entries(state.encounterRewards)) {
     const event = encounters.encounters.find((item) => item.id === id && !!item.quiz);
@@ -367,6 +395,9 @@ export function validateEncounterState(state: GameState): void {
   if (option && !optionItemsBelongToEncounter(event!, option)) fail();
   if (option?.giftItemId && state.inventory[option.giftItemId] !== "gifted") fail();
   if (option?.consumeItemId && state.inventory[option.consumeItemId] !== "used") fail();
+  for (const itemId of [option?.giftItemId, option?.consumeItemId])
+    if (itemId && (state.itemUses[itemId]?.encounterId !== event.id || state.itemUses[itemId]?.optionId !== option!.id))
+      throw new Error("品物を渡した・使った記録が一致しません。");
   const resolution = active.romanceResolution;
   if (!!option?.responseProfileId !== !!resolution) fail();
   if (resolution) {

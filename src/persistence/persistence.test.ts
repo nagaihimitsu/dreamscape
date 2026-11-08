@@ -1,6 +1,9 @@
 import { seedCurrentFreeTime } from "../../tests/fixtures/current-game";
 import { describe, expect, it, vi } from "vitest";
-import { advanceDate, chooseDate, createGame, startDate } from "../domain";
+import { advanceDate, chooseDate, createGame, startDate, type GameState } from "../domain";
+import { completedCity } from "../dev/scenario-builders";
+import { advanceEncounter, chooseEncounter, encounterCanFinish, finishEncounter } from "../domain/encounter";
+import { meetEncounter } from "../../tests/fixtures/encounter-moment";
 // A date in progress saved in the first save format (schemaVersion 1).
 import firstFormatSave from "../../tests/fixtures/save-format-v1.json";
 import {
@@ -219,6 +222,43 @@ describe("save format v14 (docs/07: one format per version, no migration)", () =
     expect(saveGame(storage, state)).toEqual({ ok: true });
     expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 14 });
     expect(loadGame(storage)).toEqual({ status: "loaded", state });
+  });
+
+  it("round-trips the condition records written in play, and keeps an earlier v14 shape without them as unreadable and untouched", () => {
+    /** The encounter met in a new observation of its landmark and played with one option to its end. */
+    const play = (initial: GameState, encounterId: string, optionId: string) => {
+      let state = meetEncounter(initial, encounterId);
+      for (let step = 0; state.activeEncounter; step++) {
+        expect(step, `${encounterId}/${optionId}`).toBeLessThan(100);
+        const active = state.activeEncounter;
+        const choice = active.frame.choices.find((item) => item.optionId === optionId);
+        state = choice ? chooseEncounter(state, choice.index, state.revision)
+          : encounterCanFinish(state) ? finishEncounter(state, state.revision) : advanceEncounter(state, state.revision);
+      }
+      return state;
+    };
+    // Milan cleared; the Duomo's string put off, then taken (seen once, completed), the pick given at the Castello
+    // (its use names the encounter and option), and tram rides counted (planted: the writer is pinned in
+    // tests/journeys/milano/transport.test.ts).
+    let state = play(play(play(completedCity("milano"), "duomo_string", "leave"), "duomo_string", "case"), "castello_pick", "give");
+    expect(state.seenEncounterIds).toEqual(["duomo_string", "castello_pick"]);
+    expect(state.completedEncounterIds).toEqual(["duomo_string", "castello_pick"]);
+    expect(state.itemUses).toEqual({ blue_pick: { encounterId: "castello_pick", optionId: "give" } });
+    state = { ...state, travel: { ...state.travel, rideCounts: { tram: 2 } } };
+    const storage = new MemoryStorage();
+    expect(saveGame(storage, state)).toEqual({ ok: true });
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toMatchObject({ schemaVersion: 14, seenEncounterIds: state.seenEncounterIds,
+      itemUses: state.itemUses, travel: { rideCounts: { tram: 2 } } });
+    expect(loadGame(storage)).toEqual({ status: "loaded", state });
+    // The v14 shape before these records (development builds only): not an old version, unreadable, kept as it is.
+    const { seenEncounterIds: _seen, itemUses: _uses, ...older } = state;
+    const { rideCounts: _rides, ...olderTravel } = state.travel;
+    const raw = JSON.stringify({ ...older, travel: olderTravel });
+    const slot = new MemoryStorage();
+    slot.setItem(SAVE_KEY, raw);
+    expect(loadGame(slot)).toMatchObject({ status: "invalid", kind: "corrupt", raw });
+    expect(saveGame(slot, createGame()).ok).toBe(false);
+    expect(slot.getItem(SAVE_KEY)).toBe(raw);
   });
 
   it("reports a v13 save as an identified old version, never migrates, overwrites or deletes it", () => {

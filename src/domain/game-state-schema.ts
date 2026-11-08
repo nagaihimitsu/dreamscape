@@ -80,6 +80,9 @@ const travelStateSchema = z.object({
   // Rental transport modes rented in the current city (src/domain/transport.ts);
   // a rental lasts until the party leaves the city.
   rentedModeIds: uniqueStrings,
+  // Rides by vehicle in the current city, per declared mode other than walking
+  // (beginTravelEvent counts a trip that changes place; no key = no ride yet).
+  rideCounts: z.record(stableContentId, z.number().int().positive().safe()),
 }).strict().superRefine((travel, context) => {
   if (travel.calendar && travel.calendar.journeyDay - travel.calendar.cityStartJourneyDay + 1 !== travel.day)
     context.addIssue({ code: "custom", message: "Travel day and journey calendar disagree", path: ["calendar"] });
@@ -120,6 +123,10 @@ export const gameStateSchema = z.object({
   travelBudget: z.number().int().nonnegative().safe(),
   inventory: z.record(stableContentId, z.enum(["held", "gifted", "used", "left_behind"])),
   completedEncounterIds: uniqueStrings,
+  // Every encounter finished, with any choice (「また今度」 included); completedEncounterIds is a subset.
+  seenEncounterIds: uniqueStrings,
+  // The encounter and option that gave away or used each gifted/used item, written with its inventory status.
+  itemUses: z.record(stableContentId, z.object({ encounterId: stableContentId, optionId: stableContentId }).strict()),
   encounterRewards: z.record(stableContentId, z.object({
     roll: z.number().int().min(0).max(9999),
     chancePercent: z.number().int().min(0).max(100),

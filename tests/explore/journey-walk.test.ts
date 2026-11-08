@@ -142,11 +142,11 @@ function spentAp(previous: GameState, next: GameState): number {
 const describeAction = (action: PlayerAction) => JSON.stringify(action);
 
 /** What the walks reached, per journey (printed at the end, never asserted). */
-type Reached = Record<"cities" | "episodes" | "battles" | "dates" | "encounters" | "rentals" | "cleared" | "epilogues", Set<string>> & { ends: number; steps: number };
+type Reached = Record<"cities" | "episodes" | "battles" | "dates" | "encounters" | "rentals" | "rides" | "cleared" | "epilogues", Set<string>> & { ends: number; steps: number };
 const reached = new Map<string, Reached>();
 function reachedFor(journeyId: string): Reached {
   if (!reached.has(journeyId)) reached.set(journeyId, {
-    cities: new Set(), episodes: new Set(), battles: new Set(), dates: new Set(), encounters: new Set(), rentals: new Set(),
+    cities: new Set(), episodes: new Set(), battles: new Set(), dates: new Set(), encounters: new Set(), rentals: new Set(), rides: new Set(),
     cleared: new Set(), epilogues: new Set(), ends: 0, steps: 0,
   });
   return reached.get(journeyId)!;
@@ -164,6 +164,10 @@ function record(start: Start, previous: GameState, state: GameState) {
   if (state.activeEncounter) seen.encounters.add(state.activeEncounter.encounterId);
   // A rental (rent action) of this step, by city: mode IDs are journey-local.
   added(previous.travel.rentedModeIds, state.travel.rentedModeIds).forEach((id) => seen.rentals.add(`${state.currentCityId}/${id}`));
+  // A ride by vehicle of this step (the saved ride count went up), by city.
+  if (previous.currentCityId === state.currentCityId)
+    for (const [modeId, count] of Object.entries(state.travel.rideCounts))
+      if (count > (previous.travel.rideCounts[modeId] ?? 0)) seen.rides.add(`${state.currentCityId}/${modeId}`);
   added(previous.completedCityIds, state.completedCityIds).forEach((id) => seen.cleared.add(id));
   added(previous.viewedEpilogueCityIds, state.viewedEpilogueCityIds).forEach((id) => seen.epilogues.add(id));
   if (isJourneyComplete(state) && !isJourneyComplete(previous)) seen.ends++;
@@ -275,7 +279,9 @@ function summary(): string {
       count("battles started", battleIds, seen.battles),
       count("dates started", dateIds, seen.dates),
       count("place encounters met", cityEncounters.map((event) => event.id), seen.encounters),
-      count("rentals made", cityIds.flatMap((cityId) => (getCityContent(cityId).travelSettings.rentals ?? []).map((offer) => `${cityId}/${offer.modeId}`)), seen.rentals));
+      count("rentals made", cityIds.flatMap((cityId) => (getCityContent(cityId).travelSettings.rentals ?? []).map((offer) => `${cityId}/${offer.modeId}`)), seen.rentals),
+      count("vehicles ridden", cityIds.flatMap((cityId) => [...new Set(getCityContent(cityId).travel.routes
+        .filter((route) => route.mode !== "walk").map((route) => `${cityId}/${route.mode}`))]), seen.rides));
   }
   return lines.join("\n");
 }

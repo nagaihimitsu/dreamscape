@@ -7,7 +7,7 @@ import { getTourismAvailability, openTourism } from "./tourism";
 import { canReturnByDayEnd, DAY_END, getGameWeekday, planOvernight, planTravelEvent } from "./travel";
 import { compareRouteCost, findTravelHomeRoutes, type HomeRoute } from "./travel-routes";
 import type { TravelEvent, TravelRoute } from "../content/travel-schemas";
-import { getTransportMode } from "../content/transport";
+import { getTransportMode, WALK_MODE_ID } from "../content/transport";
 import { getUsableRoutes, isTransportModeUsable, rentalReason } from "./transport";
 import { hasActiveScene } from "./game-state-schema";
 
@@ -135,8 +135,12 @@ export function beginTravelEvent(state: GameState, eventId: string, mode: Travel
   const availability = getTravelEventAvailability(state, eventId, mode);
   const event = getTravelEventDefinition(state, eventId);
   if (!availability.available || !availability.plan || !event) return state;
+  // A ride by vehicle counts once the trip changes place (walking and starting an event here do not).
+  // The journey waiting for its transport switch (ツアー機能待ち) counts its current declared modes the same way.
+  const rides = mode !== WALK_MODE_ID && event.placeId !== state.travel.currentPlaceId
+    ? { ...state.travel.rideCounts, [mode]: (state.travel.rideCounts[mode] ?? 0) + 1 } : state.travel.rideCounts;
   const moved = { ...state, travelBudget: availability.plan.remainingBudget,
-    travel: { ...state.travel, currentPlaceId: event.placeId, minute: availability.plan.arrivalMinute, returnReserve: availability.plan.returnReserve, returnDeadline: DAY_END } };
+    travel: { ...state.travel, currentPlaceId: event.placeId, minute: availability.plan.arrivalMinute, returnReserve: availability.plan.returnReserve, returnDeadline: DAY_END, rideCounts: rides } };
   const episode = episodes.find((item) => item.id === eventId);
   if (replayBattleId && (!episode || episode.battleId !== replayBattleId || !state.battleRecords.some((record) => record.battleId === replayBattleId && record.attempts > 0))) return state;
   const isDate = dates.some((date) => date.id === eventId);

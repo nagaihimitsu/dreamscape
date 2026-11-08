@@ -4,7 +4,7 @@ import { activeDateStoryId, completedDateCount, dateBelongsToCity, hasCompletedC
 import type { GameState } from "./game-state-schema";
 import { resolveRomanceChoice } from "./romance-random";
 import { minimumHomeFare } from "./travel-routes";
-import { getTransportMode } from "../content/transport";
+import { getTransportMode, WALK_MODE_ID } from "../content/transport";
 import { getUsableRoutes } from "./transport";
 
 /** Cross-check the saved schedule, return fare and currently running scene. */
@@ -21,6 +21,11 @@ export function validateTravelState(state: GameState): void {
   if (travel.rentedModeIds.some((modeId) => !getTransportMode(state.currentCityId, modeId)?.rental ||
       !getCityContent(state.currentCityId).travelSettings.rentals?.some((offer) => offer.modeId === modeId)))
     throw new Error("借りた乗り物の記録が一致しません。");
+  // Rides are counted per declared mode other than walking, a rental mode only once rented (both end on departure).
+  if (Object.keys(travel.rideCounts).some((modeId) => {
+    const mode = getTransportMode(state.currentCityId, modeId);
+    return !mode || modeId === WALK_MODE_ID || (!!mode.rental && !travel.rentedModeIds.includes(modeId));
+  })) throw new Error("乗り物に乗った回数の記録が一致しません。");
   const returnMinute = travel.activeEvent?.endMinute ?? travel.minute;
   const requiredFare = minimumHomeFare(getUsableRoutes(state), travel.currentPlaceId, travel.hotelPlaceId, returnMinute);
   if (requiredFare === undefined || travel.returnReserve < requiredFare)
