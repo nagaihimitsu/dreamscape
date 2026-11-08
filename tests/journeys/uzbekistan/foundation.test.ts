@@ -169,6 +169,7 @@ describe("Uzbekistan scenario-ready foundation", () => {
   // wherever one runs) is the case the journey budget was chosen to cover.
   it.each([["cheapest", Math.min, Infinity], ["dearest", Math.max, -Infinity]] as const)(
     "funds all forty planned visits and hotel returns from one initial journey budget, taking the %s way each time", (_way, pick, none) => {
+    const UNLIMITED = Number.MAX_SAFE_INTEGER;
     let remaining = getJourney("uzbekistan")!.initialBudget!;
     for (const cityId of cities) {
       const { travel, travelSettings } = getCityContent(cityId);
@@ -179,15 +180,18 @@ describe("Uzbekistan scenario-ready foundation", () => {
         let visitCost: number = none;
         // This verifies the travel budget only. AP comes from future authored
         // scenarios; each visit may take a separate day with free lodging.
+        // Plans are made with an unlimited budget, so the dearest way is never
+        // replaced by a cheaper one that happens to fit; affordability is checked below.
         for (let weekday = 0; weekday < 7; weekday++) for (let minute = DAY_START; minute < DAY_END; minute += 30) {
           const snapshot = { currentPlaceId: travelSettings.hotelPlaceId, hotelPlaceId: travelSettings.hotelPlaceId,
-            day: 1, minute, weekday, ap: 12, travelBudget: remaining };
+            day: 1, minute, weekday, ap: 12, travelBudget: UNLIMITED };
           for (const route of outbound) for (const back of home) {
             const plan = planTravelEvent(snapshot, event, route, back, place);
-            if (plan.ok) visitCost = pick(visitCost, remaining - plan.remainingBudget + back.cost + travelSettings.lodgingCost);
+            if (plan.ok) visitCost = pick(visitCost, UNLIMITED - plan.remainingBudget + back.cost + travelSettings.lodgingCost);
           }
         }
-        expect(Number.isFinite(visitCost), `${cityId}: ${event.id} within remaining budget ${remaining}`).toBe(true);
+        expect(Number.isFinite(visitCost), `${cityId}: ${event.id} can be visited`).toBe(true);
+        expect(visitCost, `${cityId}: ${event.id} within remaining budget ${remaining}`).toBeLessThanOrEqual(remaining);
         remaining -= visitCost;
       }
       // Leave room to enter any planned venue once again for its later finale.
