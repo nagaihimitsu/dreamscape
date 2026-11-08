@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ConfirmActionButton } from "../components/ConfirmActionButton";
+import { ConfirmActionButton, useSettling } from "../components/ConfirmActionButton";
 import { Modal } from "../components/Modal";
 import {
   formatOldDataSize, readOldData, removeChosenOldData,
@@ -37,6 +37,11 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
   const pressed = useRef(false);
   const [working, setWorking] = useState(false);
   const [notice, setNotice] = useState<Notice | null>(null);
+  // After a result the list's foot waits as well: 「閉じる」 is where 「消去する」 was, so the quick
+  // second tap of a double tap on 「消去する」 would close the dialog before the result line is seen.
+  // Each result is a new notice, and opening the confirmation clears it, so the list that
+  // 「消去せず戻る」 returns to does not wait (its focus goes to 「選んだデータを消去する」).
+  const footSettling = useSettling(notice);
   // A step change rebuilds the dialog's content: the confirmation starts at its heading (read first,
   // scrolled into view); a result at its line, which is rendered already filled, so a screen reader
   // reads it from the focus rather than from a live region it never saw change; 「消去せず戻る」
@@ -89,9 +94,10 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
 
   // The dialog keeps one size and its buttons stay at its foot in both steps (styles.css,
   // dialog.old-data), so the confirmation's 「消去せず戻る」 takes the place of 「選んだデータを消去する」
-  // and 「消去する」 that of 「閉じる」: a slow second tap of a double tap on 「選んだデータを消去する」
-  // lands on 「消去せず戻る」, never on 「消去する」 (user decision 2026-11-08). A quick one meets
-  // ConfirmActionButton's wait as well.
+  // and 「消去する」 that of 「閉じる」 (user decision 2026-11-08). The second tap of a double tap on
+  // 「選んだデータを消去する」, quick or slow, lands on 「消去せず戻る」 and goes back to the list; nothing
+  // is removed. ConfirmActionButton's wait covers a quick tap that does reach 「消去する」. After a
+  // result, the list's foot buttons wait too (footSettling).
   return <Modal labelledBy="old-data-title" className="old-data" onClose={onClose}>
     <div className="old-data-body" ref={body}>
       {confirming ? <>
@@ -131,9 +137,9 @@ export function OldDataCleanup({ storage, context, onClose }: { storage: KeyedSt
         <ConfirmActionButton className="danger-button" disabled={working} onClick={() => void remove()}>消去する</ConfirmActionButton>
       </> : <>
         {items.length > 0 && !chosenItems.length && <p className="fine-print old-data-hint">消去するものにチェックを付けると押せます。</p>}
-        {items.length > 0 && <button type="button" className="danger-button" ref={removeButton} disabled={!chosenItems.length}
+        {items.length > 0 && <button type="button" className="danger-button" ref={removeButton} disabled={!chosenItems.length || footSettling}
           onClick={() => { setNotice(null); setConfirming(true); setFocusRequest({ target: "heading" }); }}>選んだデータを消去する</button>}
-        <button type="button" className="secondary" onClick={onClose}>閉じる</button>
+        <button type="button" className="secondary" disabled={footSettling} onClick={onClose}>閉じる</button>
       </>}
     </div>
   </Modal>;

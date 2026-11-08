@@ -482,6 +482,43 @@ for (const size of [{ width: 390, height: 844 }, { width: 320, height: 568 }]) {
     await expect(page.getByRole("dialog", { name: "古い保存データの整理" })).toBeVisible();
     expect(await allStorage(page)).toEqual(before);
   });
+
+  // The other way round: after the result, 「閉じる」 is where 「消去する」 was. A quick second tap of a
+  // double tap on 「消去する」 (200 ms, the page's clock held) must not close the dialog before the
+  // result line is seen: the list's buttons wait a moment after a result (OldDataCleanup).
+  test(`a quick second tap where 「消去する」 was keeps the result shown (${size.width}×${size.height})`, { tag: tier.gate }, async ({ page }) => {
+    await page.setViewportSize(size);
+    await page.clock.install();
+    await ops.startJourney(page);
+    const backup = `${saveKey()}.backup.1762500000000`;
+    await page.evaluate((items) => { for (const [key, value] of Object.entries(items)) localStorage.setItem(key, value); }, {
+      [saveKey("golden_triangle")]: JSON.stringify({ schemaVersion: 13, revision: 3, completedChapters: [] }),
+      [backup]: "{damaged-save",
+      "dreamscape.learning.v1": JSON.stringify({ schemaVersion: 1, records: {} }),
+    });
+    const { [backup]: _removed, ...kept } = await allStorage(page);
+    const cleanup = await ops.openOldDataCleanup(page);
+    const confirm = await ops.chooseOldData(page, cleanup, [/ミラノ編のバックアップ/]);
+    const remove = confirm.getByRole("button", { name: "消去する", exact: true });
+    await expect(remove).toBeEnabled();
+    const box = (await remove.boundingBox())!;
+    const point = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+    await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1_000));
+    await page.touchscreen.tap(point.x, point.y);
+    const result = cleanup.getByRole("status");
+    await expect(result).toHaveText("消去しました（キー1個）。");
+    await page.clock.runFor(200);
+    const close = cleanup.getByRole("button", { name: "閉じる", exact: true });
+    expect(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.closest("button")?.textContent, point)).toBe("閉じる");
+    await expect(close).toBeDisabled();
+    await page.touchscreen.tap(point.x, point.y);
+    await expect(cleanup).toBeVisible();
+    await expect(result).toBeVisible();
+    await page.clock.resume();
+    await expect(close).toBeEnabled();
+    await expect(result).toBeVisible();
+    expect(await allStorage(page)).toEqual(kept);
+  });
 }
 
 // AGENTS.md 「保存領域の読込失敗…」 and the save rule of docs/02: a write that fails says so,
