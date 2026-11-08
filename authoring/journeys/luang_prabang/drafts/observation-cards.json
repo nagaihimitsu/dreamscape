@@ -204,20 +204,20 @@
   ],
   "images": {
     "luang_prabang_xieng_thong": {
-      "path": "assets/tourism/luang_prabang/lpb_xieng_thong.jpg",
-      "sha256": "762cc9677760cb67d0e2652e1e3804d20276fdd36179771b21573e93070c6b9a"
+      "path": "assets/tourism/luang_prabang/lpb_xieng_thong.webp",
+      "sha256": "6b2475e854dda5a259d6265b6871cdffa32c30a06417b4c664030480b059dcc2"
     },
     "luang_prabang_royal_palace": {
-      "path": "assets/tourism/luang_prabang/lpb_royal_palace.jpg",
-      "sha256": "9deecebd9d2cfc84a28320975cd955e29de92fbc37b18daeddd6b0369f482bbc"
+      "path": "assets/tourism/luang_prabang/lpb_royal_palace.webp",
+      "sha256": "92e9ed78eff8af7116c4cf3ce1c21627814e9fbfc4721d91eedb4e1895d1db1e"
     },
     "luang_prabang_phousi": {
-      "path": "assets/tourism/luang_prabang/lpb_phousi.jpg",
-      "sha256": "9023413b2e81b83a7ca6247c1ec1517e368c81ec5a23ebd4143ecf5c1eb8f6a8"
+      "path": "assets/tourism/luang_prabang/lpb_phousi.webp",
+      "sha256": "9c15b913494375daa9a8191f8b1141838eb36d8ed3758c20b22f808f9f5520b1"
     },
     "luang_prabang_wat_mai": {
-      "path": "assets/tourism/luang_prabang/lpb_wat_mai.jpg",
-      "sha256": "8225b51aa95b8e80f86fa0c5dcd309e0a3e37df9e5dc595912bdd32bda9d728e"
+      "path": "assets/tourism/luang_prabang/lpb_wat_mai.webp",
+      "sha256": "dcc56ea1f9cebe4c06763b01989d086a1ce5a38fb259760f504ac0748555b6c4"
     }
   },
   "provenance": {
