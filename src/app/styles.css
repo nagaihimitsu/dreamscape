@@ -152,8 +152,9 @@ h3 {
 /* 旅の記録's header line: the couple's names (as text, never HTML) and 交際中. */
 .records-travelers { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin: 0 0 12px; font-size: 15px; overflow-wrap: anywhere; }
 .records-relationship { padding: 2px 10px; border-radius: 999px; background: var(--ds-parchment-2); color: var(--ds-ink); font-size: 12px; white-space: nowrap; }
+/* 「と」 between the names in 旅の記録 (6.2:1 on --paper). */
 .amp {
-  color: var(--muted);
+  color: var(--ds-ink-muted);
   font-size: 11px;
 }
 /* The header stays a band of its own above an active scene's own layout where

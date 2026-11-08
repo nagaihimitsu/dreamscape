@@ -90,6 +90,28 @@ test("a new Milan journey walks to the Duomo, plays its guide, quiz battle and a
   await page.clock.resume();
   // The line now being written finishes by itself; later lines appear whole.
   await expect(line).toHaveAttribute("data-ready", "true");
+  // 自動送り (ゲームの設定) waits while ⚙設定's panel is open too (UI redesign §5.3). With the line
+  // written in full and the clock held, the clock moves past the longest wait (7 s) with the panel
+  // open: the story stays. Once the panel is closed the line reads on by itself. 自動送り is turned
+  // off again for the rest of the journey.
+  const settings = await ops.openSettings(page);
+  await settings.getByLabel("自動送りする").check();
+  await ops.holdClock(page);
+  await ops.closeDialog(settings);
+  const waiting = await readSave(page);
+  const waitingText = await line.textContent();
+  const menuPanel = await ops.openMenu(page);
+  await page.clock.fastForward(8_000);
+  await expect(line).toHaveText(waitingText!);
+  expect((await readSave(page)).revision, "自動送り waited while the panel was open").toBe(waiting.revision);
+  await page.keyboard.press("Escape");
+  await expect(menuPanel).toBeHidden();
+  await page.clock.fastForward(8_000);
+  await expect.poll(async () => (await readSave(page)).revision, "自動送り read on once the panel was closed").toBe(waiting.revision + 1);
+  await page.clock.resume();
+  await ops.setAutoAdvance(page, false);
+  // The line it read on to is written letter by letter (it waited while the settings were open).
+  await expect(line).toHaveAttribute("data-ready", "true");
   await page.emulateMedia({ reducedMotion: "reduce" });
   await playUntil(page, (state) => state.activeTourism?.phase === "exploring");
   await expect(page.getByTestId("observation-viewport")).toBeVisible();

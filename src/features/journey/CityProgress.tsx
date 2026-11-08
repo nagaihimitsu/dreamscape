@@ -8,7 +8,7 @@ import {
 import { getEpisodeAvailability, getNextEpisode, getNextStoryBattle, storyBattlesForCity } from "../../domain/chapter";
 import type { GameState } from "../../domain/game";
 import { canReadCityEpilogue } from "../../domain/epilogue";
-import { formatCityProgress, type CityProgressCounts } from "./city-progress-label";
+import type { CityProgressCounts } from "./city-progress-label";
 import "./city.css";
 
 export function CityProgress({
@@ -17,30 +17,23 @@ export function CityProgress({
   onStoryBattle,
   onEpilogue,
   showNext = true,
-  showSummary = true,
 }: {
   game: GameState;
   onStart: (id: string) => void;
   onStoryBattle: (id: string) => void;
   onEpilogue: (cityId: string) => void;
   showNext?: boolean;
-  showSummary?: boolean;
 }) {
   const { city } = getCityContent(game.currentCityId);
   const next = getNextEpisode(game);
   const nextBattle = getNextStoryBattle(game);
   const epilogue = canReadCityEpilogue(game, city.id);
-  if (!showSummary && !showNext && !epilogue) return null;
+  if (!showNext && !epilogue) return null;
   return (
     <section
       className="city-progress paper"
-      data-testid={showSummary ? "city-progress" : undefined}
       aria-label={`${city.nameJa}の旅の記録`}
     >
-      {showSummary && <div className="section-meta">
-        <h2>{city.nameJa}の旅{game.endingReached && <small className="city-relationship">交際中</small>}</h2>
-        <CityProgressBadge game={game} />
-      </div>}
       {showNext && nextBattle && (
         <div className="next-destination">
           <p className="eyebrow">旅の続き</p>
@@ -90,7 +83,7 @@ export function CityProgress({
   );
 }
 
-/** The current city's cleared stops and special battles (the header and the summary show them). */
+/** The current city's cleared stops and special battles (the header's progress shows them). */
 export function cityProgressCounts(game: GameState): CityProgressCounts {
   const { city } = getCityContent(game.currentCityId);
   const stops = episodes.filter((episode) => episode.cityId === city.id && episode.kind !== "city_finale");
@@ -102,13 +95,6 @@ export function cityProgressCounts(game: GameState): CityProgressCounts {
     specialBattles: storyBattles.length,
     cityCompleted: game.completedCityIds.includes(city.id),
   };
-}
-
-export function CityProgressBadge({ game }: { game: GameState }) {
-  const counts = cityProgressCounts(game);
-  return <span className="pill" data-testid={counts.cityCompleted ? "city-complete" : undefined}>
-    {formatCityProgress(counts)}
-  </span>;
 }
 
 /** Journey records can be positioned independently of the progress summary. */

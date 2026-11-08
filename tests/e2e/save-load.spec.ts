@@ -176,7 +176,25 @@ test("a manual save keeps the saved position and settings when unsaved changes a
   await ops.goTo(page, "p_duomo");
   await expect(page.getByTestId("tourism-guide")).toBeVisible();
   expect(await readSave(page)).toEqual(initial);
-  await ops.manualSave(page);
+  // A quick double tap on ⚙設定 → 「セーブ」 over the guide (AGENTS.md 選択肢の誤タップ防止): the panel
+  // leaves from under the finger, and on a phone a control of the guide lies under セーブ's point
+  // (手がかり帳 at 320–390 px). The scene is saved, and the second tap presses nothing: no tap reaches
+  // the page for a moment after セーブ, as after a scene change. The page's clock is held, so the
+  // second tap comes within that moment however slow the machine.
+  const savePoint = await ops.centerOf((await ops.openMenu(page)).getByRole("button", { name: "セーブ", exact: true }));
+  await ops.holdClock(page);
+  await page.touchscreen.tap(savePoint.x, savePoint.y);
+  await expect(panel).toBeHidden();
+  expect(await page.evaluate(({ x, y }) => [...document.querySelectorAll("#tourism-screen button")].some((control) => {
+    const box = control.getBoundingClientRect();
+    return x >= box.left && x <= box.right && y >= box.top && y <= box.bottom;
+  }), savePoint), "the second tap's point is one of the guide's controls").toBe(true);
+  await page.touchscreen.tap(savePoint.x, savePoint.y);
+  await page.clock.fastForward(DOUBLE_TAP_WINDOW_MS);
+  await page.clock.resume();
+  await ops.settled(page);
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await expect(page.getByTestId("tourism-guide")).toBeVisible();
   const manual = await readSave(page);
   expect(manual.travel.currentPlaceId).toBe("p_duomo");
   expect(manual.activeTourism?.landmarkId).toBe("duomo_milano");

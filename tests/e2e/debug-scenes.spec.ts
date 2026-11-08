@@ -363,8 +363,9 @@ test("battle: a long explanation after a wrong answer starts below the round bar
 // held-item detail closes on a tap anywhere outside it; that tap only closes it, on the picture and
 // on the line alike (its layer takes the tap, outside the scene). While it is open it counts as open
 // over the scene like ⚙設定's panel (UI redesign §3.1): Enter on the line waits and the line is not
-// written on; once it is closed (Esc, or a pan that starts over the picture) the line reads on again,
-// by the keyboard, by a screen reader's activation and by taps.
+// written on; the focus leaving it closes it; once it is closed (Esc, Tab past it, or a pan that
+// starts over the picture) the line reads on again, by the keyboard, by a screen reader's activation
+// and by taps.
 test("encounter: the tap on the picture or the line that closes the held-item detail does not read on, nor does Enter while it is open", { tag: tier.debug }, async ({ page }) => {
   const encounter = await itemEncounter(page, true);
   expect(encounter, "an encounter whose English answer gives an item, that Debug can open").toBeDefined();
@@ -401,19 +402,34 @@ test("encounter: the tap on the picture or the line that closes the held-item de
   await expect(detail).toBeHidden();
   await expect(line).toHaveText(text!);
   expect((await debugGame(page))!.revision).toBe(held.revision);
-  // Enter on the line waits while the detail is open; Esc closes it (back on its button) and Enter
-  // then reads one line on. The next line is written letter by letter (motion not reduced), and
-  // the clock is held, so it stays half written; with the detail open again it is not written on.
+  // A press that leaves the focus on the line (Safari does not focus a pressed button) opens the
+  // detail with the line still focused: Enter on the line waits while the detail is open, and Esc
+  // closes it (back on its button).
   const revision = async () => (await debugGame(page))!.revision;
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await openDetail();
   await line.focus();
+  await ops.heldItemsButton(page).evaluate((button) => (button as HTMLElement).click());
+  await expect(detail).toBeVisible();
+  await expect(line).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(detail).toBeVisible();
   expect(await revision(), "Enter did not read on while the detail was open").toBe(held.revision);
   await page.keyboard.press("Escape");
   await expect(detail).toBeHidden();
   await expect(ops.heldItemsButton(page)).toBeFocused();
+  // By keyboard the detail never stays open behind the focus: Tab goes to its × and, past it, out of
+  // the 所持アイテム group, which closes the detail (as leaving ⚙設定's panel closes it) and leaves the
+  // focus where Tab took it. Enter on the line then reads one line on. The next line is written
+  // letter by letter (motion not reduced), and the clock is held, so it stays half written; with
+  // the detail open again it is not written on.
+  await page.keyboard.press("Enter");
+  await expect(detail).toBeVisible();
+  await page.keyboard.press("Tab");
+  await expect(detail.getByRole("button", { name: /を閉じる$/u })).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(detail).toBeHidden();
+  await expect(page.getByTestId("dismiss-layer")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "英語ノートを開く" })).toBeFocused();
   await ops.holdClock(page);
   await line.focus();
   await page.keyboard.press("Enter");

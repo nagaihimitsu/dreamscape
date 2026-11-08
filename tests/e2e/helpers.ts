@@ -288,6 +288,12 @@ export const ops = {
     await settings.getByLabel("自動保存する").setChecked(on);
     await ops.closeDialog(settings);
   },
+  /** ゲームの設定's 自動送り (story lines read on by themselves after a reading time). */
+  async setAutoAdvance(page: Page, on: boolean) {
+    const settings = await ops.openSettings(page);
+    await settings.getByLabel("自動送りする").setChecked(on);
+    await ops.closeDialog(settings);
+  },
   /** The 「閉じる」 of the notice shown at the top of the screen (after 「セーブ」, for one). */
   noticeClose(page: Page): Locator {
     return page.getByRole("main").getByRole("status").getByRole("button", { name: "閉じる", exact: true });

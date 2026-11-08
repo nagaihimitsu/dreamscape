@@ -5,6 +5,7 @@ import type { TravelPlace } from "../content/travel-schemas";
 import { DismissLayer } from "../components/DismissLayer";
 import { HeldItems } from "../components/HeldItems";
 import { Icon, type IconName } from "../components/icons";
+import { holdTaps } from "../components/tap-hold";
 import type { GameState } from "../domain/game";
 import { getGameWeekday, getTimePeriod } from "../domain/travel";
 import { cityProgressCounts } from "../features/journey/CityProgress";
@@ -16,6 +17,16 @@ import { useMeasuredHeight } from "../components/useMeasuredHeight";
 import "./journey-hud.css";
 
 const progressIcons: Record<CityProgressPart["kind"], IconName> = { tourism: "camera", battles: "swords", cleared: "stamp" };
+
+/**
+ * The header's popovers open one at a time, all hanging from its bottom edge:
+ * ⚙設定's panel and the held items' detail close each other (a press outside
+ * either closes it), and opening one of them also closes free time's open 待機
+ * menu (a `<details>`, which closes only when its own summary is pressed).
+ */
+function closeWaitMenu() {
+  for (const details of document.querySelectorAll<HTMLDetailsElement>(".journey-hud details[open]")) details.open = false;
+}
 
 /**
  * The header of every game screen (UI redesign §3.1): row 1 shows where and when
@@ -71,7 +82,7 @@ export function JourneyHud({ game, place, freeTimeActions, onRecords, onEnglish,
           <Icon name="chevron-right" className="hud-chevron" />
         </button>
         {freeTimeActions}
-        <HeldItems items={items} />
+        <HeldItems items={items} onOpen={closeWaitMenu} />
         <nav className="hud-tools" aria-label="旅の操作">
           <button type="button" className="hud-tool" aria-label="英語ノートを開く" onClick={onEnglish}>
             <Icon name="book" /><span className="hud-tool-word">英語ノート</span>
@@ -100,7 +111,12 @@ function keepFocusOffControls(event: { target: EventTarget; preventDefault: () =
  * returns it to ⚙設定; leaving the group with the focus or a press elsewhere
  * closes it. A tap on the page outside the header only closes it (DismissLayer).
  * Choosing an item closes the panel and puts the focus on ⚙設定 before the action
- * runs, so a dialog it opens gives the focus back to ⚙設定 when it closes.
+ * runs, so a dialog it opens gives the focus back to ⚙設定 when it closes. The
+ * panel then leaves from under the finger: ロード and ゲームの設定 open dialogs
+ * that take no press for a moment (or a load holds taps), and セーブ, which opens
+ * none, holds the page's taps for that moment itself (holdTaps), so the second
+ * tap of a double tap presses nothing that lay under it (in a sightseeing guide,
+ * 手がかり帳).
  */
 function HudMenu({ onSave, onLoad, onSettings }: { onSave: () => void; onLoad: () => void; onSettings: () => void }) {
   const [open, setOpen] = useState(false);
@@ -140,9 +156,10 @@ function HudMenu({ onSave, onLoad, onSettings }: { onSave: () => void; onLoad: (
     };
   }, [open]);
 
-  const choose = (action: () => void) => () => {
+  const choose = (action: () => void, opensNoDialog = false) => () => {
     setOpen(false);
     backToGear();
+    if (opensNoDialog) holdTaps();
     action();
   };
   const moveWithArrows = (event: ReactKeyboardEvent) => {
@@ -169,12 +186,15 @@ function HudMenu({ onSave, onLoad, onSettings }: { onSave: () => void; onLoad: (
         data-testid="hud-menu"
         aria-expanded={open}
         aria-controls="hud-menu-panel"
-        onClick={() => setOpen((value) => !value)}
+        onClick={() => {
+          if (!open) closeWaitMenu();
+          setOpen(!open);
+        }}
       >
         <Icon name="gear" /><span className="hud-tool-word">設定</span>
       </button>
       <div id="hud-menu-panel" className="hud-menu-panel" data-testid="hud-menu-panel" ref={panel} hidden={!open} onKeyDown={moveWithArrows}>
-        <button type="button" onClick={choose(onSave)}><Icon name="save" />セーブ</button>
+        <button type="button" onClick={choose(onSave, true)}><Icon name="save" />セーブ</button>
         <button type="button" onClick={choose(onLoad)}><Icon name="load" />ロード</button>
         <button type="button" onClick={choose(onSettings)}><Icon name="sliders" />ゲームの設定</button>
       </div>

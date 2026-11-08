@@ -20,8 +20,3 @@ export function cityProgressParts(counts: CityProgressCounts): CityProgressPart[
     ? [tourism, { kind: "battles", text: `対決 ${counts.completedSpecialBattles} / ${counts.specialBattles}` }]
     : [tourism];
 }
-
-/** The progress pill's text. Cities without special battles show no 対決 count. */
-export function formatCityProgress(counts: CityProgressCounts): string {
-  return cityProgressParts(counts).map((part) => part.text).join(" · ");
-}
